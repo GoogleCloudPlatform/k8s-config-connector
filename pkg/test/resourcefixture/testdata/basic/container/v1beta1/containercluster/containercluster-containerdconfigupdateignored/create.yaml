@@ -1,0 +1,59 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: container.cnrm.cloud.google.com/v1beta1
+kind: ContainerCluster
+metadata:
+  name: containercluster-${uniqueId}
+spec:
+  location: us-west2
+  initialNodeCount: 1
+  minMasterVersion: "1.34"
+  nodeConfig:
+    oauthScopes:
+      - https://www.googleapis.com/auth/cloud-platform
+    containerdConfig:
+      privateRegistryAccessConfig:
+        enabled: true
+        certificateAuthorityDomainConfig:
+          - fqdns:
+              - "example.com"
+            gcpSecretManagerCertificateConfig:
+              secretRef:
+                external: "projects/${projectId}/secrets/kcc-test-ca-cert/versions/1"
+      writableCgroups:
+        enabled: true
+      registryHosts:
+        - server: "my-registry.example.com"
+          hosts:
+            - host: "https://my-registry.example.com"
+              capabilities:
+                - "HOST_CAPABILITY_PULL"
+                - "HOST_CAPABILITY_RESOLVE"
+              dialTimeout: "10s"
+              overridePath: true
+              header:
+                - key: "Authorization"
+                  value:
+                    - "Bearer token123"
+              ca:
+                - secretRef:
+                    external: "projects/${projectId}/secrets/kcc-test-ca-cert/versions/1"
+              client:
+                - cert:
+                    secretRef:
+                      external: "projects/${projectId}/secrets/kcc-test-client-cert/versions/1"
+                  key:
+                    secretRef:
+                      external: "projects/${projectId}/secrets/kcc-test-client-key/versions/1"

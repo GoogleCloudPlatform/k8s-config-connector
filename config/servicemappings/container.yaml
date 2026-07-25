@@ -135,6 +135,34 @@ spec:
             version: v1beta1
             group: compute.cnrm.cloud.google.com
           targetField: self_link
+        - tfField: node_config.containerd_config.private_registry_access_config.certificate_authority_domain_config.gcp_secret_manager_certificate_config.secret_uri
+          key: secretRef
+          gvk:
+            kind: SecretManagerSecretVersion
+            version: v1beta1
+            group: secretmanager.cnrm.cloud.google.com
+          targetField: name
+        - tfField: node_config.containerd_config.registry_hosts.hosts.ca.gcp_secret_manager_secret_uri
+          key: secretRef
+          gvk:
+            kind: SecretManagerSecretVersion
+            version: v1beta1
+            group: secretmanager.cnrm.cloud.google.com
+          targetField: name
+        - tfField: node_config.containerd_config.registry_hosts.hosts.client.cert.gcp_secret_manager_secret_uri
+          key: secretRef
+          gvk:
+            kind: SecretManagerSecretVersion
+            version: v1beta1
+            group: secretmanager.cnrm.cloud.google.com
+          targetField: name
+        - tfField: node_config.containerd_config.registry_hosts.hosts.client.key.gcp_secret_manager_secret_uri
+          key: secretRef
+          gvk:
+            kind: SecretManagerSecretVersion
+            version: v1beta1
+            group: secretmanager.cnrm.cloud.google.com
+          targetField: name
     - name: google_container_node_pool
       kind: ContainerNodePool
       idTemplate: "{{project}}/{{location}}/{{cluster}}/{{name}}"
@@ -228,6 +256,34 @@ spec:
             version: v1beta1
             group: compute.cnrm.cloud.google.com
           targetField: self_link
+        - tfField: node_config.containerd_config.private_registry_access_config.certificate_authority_domain_config.gcp_secret_manager_certificate_config.secret_uri
+          key: secretRef
+          gvk:
+            kind: SecretManagerSecretVersion
+            version: v1beta1
+            group: secretmanager.cnrm.cloud.google.com
+          targetField: name
+        - tfField: node_config.containerd_config.registry_hosts.hosts.ca.gcp_secret_manager_secret_uri
+          key: secretRef
+          gvk:
+            kind: SecretManagerSecretVersion
+            version: v1beta1
+            group: secretmanager.cnrm.cloud.google.com
+          targetField: name
+        - tfField: node_config.containerd_config.registry_hosts.hosts.client.cert.gcp_secret_manager_secret_uri
+          key: secretRef
+          gvk:
+            kind: SecretManagerSecretVersion
+            version: v1beta1
+            group: secretmanager.cnrm.cloud.google.com
+          targetField: name
+        - tfField: node_config.containerd_config.registry_hosts.hosts.client.key.gcp_secret_manager_secret_uri
+          key: secretRef
+          gvk:
+            kind: SecretManagerSecretVersion
+            version: v1beta1
+            group: secretmanager.cnrm.cloud.google.com
+          targetField: name
       containers:
         - type: project
           tfField: project
