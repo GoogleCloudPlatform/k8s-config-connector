@@ -31,10 +31,7 @@ go run . generate-types \
   --include-skipped-output \
   --resource ReCAPTCHAEnterpriseFirewallPolicy:FirewallPolicy
 
-go run . generate-mapper \
-  --service google.cloud.recaptchaenterprise.v1 \
-  --api-version recaptchaenterprise.cnrm.cloud.google.com/v1alpha1 \
-  --include-skipped-output
+
 
 # --- v1beta1 ---
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
@@ -47,8 +44,9 @@ go run . generate-types \
 
 go run . generate-mapper \
   --service google.cloud.recaptchaenterprise.v1 \
-  --api-version recaptchaenterprise.cnrm.cloud.google.com/v1beta1 \
-  --include-skipped-output
+  --api-version "recaptchaenterprise.cnrm.cloud.google.com/v1beta1" \
+  --include-skipped-output \
+  --multiversion
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

@@ -30,10 +30,7 @@ go run . generate-types \
     --api-version documentai.cnrm.cloud.google.com/v1alpha1 \
     --resource DocumentAIProcessor:Processor
 
-go run . generate-mapper \
-    --multiversion \
-    --service google.cloud.documentai.v1 \
-    --api-version documentai.cnrm.cloud.google.com/v1alpha1
+
 
 # --- v1beta1 ---
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
@@ -44,9 +41,9 @@ go run . generate-types \
     --resource DocumentAIProcessorVersion:ProcessorVersion
 
 go run . generate-mapper \
-    --multiversion \
-    --service google.cloud.documentai.v1 \
-    --api-version documentai.cnrm.cloud.google.com/v1beta1
+  --service google.cloud.documentai.v1 \
+  --api-version "documentai.cnrm.cloud.google.com/v1beta1" \
+  --multiversion
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

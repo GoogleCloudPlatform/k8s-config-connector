@@ -30,10 +30,7 @@ go run . generate-types \
   --resource CloudBuildConnection:Connection \
   --include-skipped-output
 
-go run . generate-mapper \
-  --service google.devtools.cloudbuild.v2 \
-  --api-version cloudbuild.cnrm.cloud.google.com/v1alpha1 \
-  --include-skipped-output
+
 
 # --- v1beta1 ---
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
@@ -44,9 +41,10 @@ go run . generate-types \
   --include-skipped-output
 
 go run . generate-mapper \
-  --service google.devtools.cloudbuild.v1 \
-  --api-version cloudbuild.cnrm.cloud.google.com/v1beta1 \
-  --include-skipped-output
+  --service google.devtools.cloudbuild.v1,google.devtools.cloudbuild.v2 \
+  --api-version "cloudbuild.cnrm.cloud.google.com/v1beta1" \
+  --include-skipped-output \
+  --multiversion
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

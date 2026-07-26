@@ -17,6 +17,7 @@ package discoveryengine
 import (
 	pb "cloud.google.com/go/discoveryengine/apiv1/discoveryenginepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/discoveryengine/v1alpha1"
+	krmdiscoveryenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/discoveryengine/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"google.golang.org/protobuf/types/known/structpb"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
@@ -116,4 +117,116 @@ func SearchResponse_Summary_ToProto(mapCtx *direct.MapContext, in *krm.SearchRes
 	out.SummaryText = direct.ValueOf(in.SummaryText)
 	out.SummarySkippedReasons = direct.EnumSlice_ToProto[pb.SearchResponse_Summary_SummarySkippedReason](mapCtx, in.SummarySkippedReasons)
 	return out
+}
+
+// --- Unversioned delegating forwarders / manual overrides version wrappers ---
+
+func DiscoveryEngineControlObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Control) *krmdiscoveryenginev1alpha1.DiscoveryEngineControlObservedState {
+	return DiscoveryEngineControlObservedState_v1alpha1_FromProto(mapCtx, in)
+}
+
+func DiscoveryEngineDataStoreSpec_FromProto(mapCtx *direct.MapContext, in *pb.DataStore) *krmdiscoveryenginev1alpha1.DiscoveryEngineDataStoreSpec {
+	return DiscoveryEngineDataStoreSpec_v1alpha1_FromProto(mapCtx, in)
+}
+
+func DiscoveryEngineDataStoreTargetSiteSpec_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.DiscoveryEngineDataStoreTargetSiteSpec) *pb.TargetSite {
+	return DiscoveryEngineDataStoreTargetSiteSpec_v1alpha1_ToProto(mapCtx, in)
+}
+
+func DiscoveryEngineControlSpec_FromProto(mapCtx *direct.MapContext, in *pb.Control) *krmdiscoveryenginev1alpha1.DiscoveryEngineControlSpec {
+	return DiscoveryEngineControlSpec_v1alpha1_FromProto(mapCtx, in)
+}
+
+func DiscoveryEngineDataStoreTargetSiteSpec_FromProto(mapCtx *direct.MapContext, in *pb.TargetSite) *krmdiscoveryenginev1alpha1.DiscoveryEngineDataStoreTargetSiteSpec {
+	return DiscoveryEngineDataStoreTargetSiteSpec_v1alpha1_FromProto(mapCtx, in)
+}
+
+func DiscoveryEngineDataStoreSpec_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.DiscoveryEngineDataStoreSpec) *pb.DataStore {
+	return DiscoveryEngineDataStoreSpec_v1alpha1_ToProto(mapCtx, in)
+}
+
+func DiscoveryEngineDataStoreObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataStore) *krmdiscoveryenginev1alpha1.DiscoveryEngineDataStoreObservedState {
+	return DiscoveryEngineDataStoreObservedState_v1alpha1_FromProto(mapCtx, in)
+}
+
+func DiscoveryEngineControlSpec_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.DiscoveryEngineControlSpec) *pb.Control {
+	return DiscoveryEngineControlSpec_v1alpha1_ToProto(mapCtx, in)
+}
+
+func DiscoveryEngineControlObservedState_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.DiscoveryEngineControlObservedState) *pb.Control {
+	return DiscoveryEngineControlObservedState_v1alpha1_ToProto(mapCtx, in)
+}
+
+// --- Unversioned delegating forwarders / manual overrides version wrappers ---
+
+func DiscoveryEngineDataStoreTargetSiteObservedState_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.DiscoveryEngineDataStoreTargetSiteObservedState) *pb.TargetSite {
+	return DiscoveryEngineDataStoreTargetSiteObservedState_v1alpha1_ToProto(mapCtx, in)
+}
+
+func DiscoveryEngineDataStoreTargetSiteObservedState_FromProto(mapCtx *direct.MapContext, in *pb.TargetSite) *krmdiscoveryenginev1alpha1.DiscoveryEngineDataStoreTargetSiteObservedState {
+	return DiscoveryEngineDataStoreTargetSiteObservedState_v1alpha1_FromProto(mapCtx, in)
+}
+
+func DiscoveryEngineSessionSpec_FromProto(mapCtx *direct.MapContext, in *pb.Session) *krmdiscoveryenginev1alpha1.DiscoveryEngineSessionSpec {
+	return DiscoveryEngineSessionSpec_v1alpha1_FromProto(mapCtx, in)
+}
+
+func DiscoveryEngineSessionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Session) *krmdiscoveryenginev1alpha1.DiscoveryEngineSessionObservedState {
+	return DiscoveryEngineSessionObservedState_v1alpha1_FromProto(mapCtx, in)
+}
+
+func DiscoveryEngineEngineObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Engine) *krmdiscoveryenginev1alpha1.DiscoveryEngineEngineObservedState {
+	return DiscoveryEngineEngineObservedState_v1alpha1_FromProto(mapCtx, in)
+}
+
+func DiscoveryEngineEngineObservedState_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.DiscoveryEngineEngineObservedState) *pb.Engine {
+	return DiscoveryEngineEngineObservedState_v1alpha1_ToProto(mapCtx, in)
+}
+
+func DiscoveryEngineSessionSpec_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.DiscoveryEngineSessionSpec) *pb.Session {
+	return DiscoveryEngineSessionSpec_v1alpha1_ToProto(mapCtx, in)
+}
+
+// --- Unversioned delegating forwarders / manual overrides version wrappers ---
+
+func Engine_SearchEngineConfig_FromProto(mapCtx *direct.MapContext, in *pb.Engine_SearchEngineConfig) *krmdiscoveryenginev1alpha1.Engine_SearchEngineConfig {
+	return Engine_SearchEngineConfig_v1alpha1_FromProto(mapCtx, in)
+}
+
+func DiscoveryEngineSessionObservedState_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.DiscoveryEngineSessionObservedState) *pb.Session {
+	return DiscoveryEngineSessionObservedState_v1alpha1_ToProto(mapCtx, in)
+}
+
+func Engine_SearchEngineConfig_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.Engine_SearchEngineConfig) *pb.Engine_SearchEngineConfig {
+	return Engine_SearchEngineConfig_v1alpha1_ToProto(mapCtx, in)
+}
+
+func Engine_ChatEngineConfig_FromProto(mapCtx *direct.MapContext, in *pb.Engine_ChatEngineConfig) *krmdiscoveryenginev1alpha1.Engine_ChatEngineConfig {
+	return Engine_ChatEngineConfig_v1alpha1_FromProto(mapCtx, in)
+}
+
+func Engine_CommonConfig_FromProto(mapCtx *direct.MapContext, in *pb.Engine_CommonConfig) *krmdiscoveryenginev1alpha1.Engine_CommonConfig {
+	return Engine_CommonConfig_v1alpha1_FromProto(mapCtx, in)
+}
+
+func DiscoveryEngineDataStoreObservedState_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.DiscoveryEngineDataStoreObservedState) *pb.DataStore {
+	return DiscoveryEngineDataStoreObservedState_v1alpha1_ToProto(mapCtx, in)
+}
+
+func Engine_CommonConfig_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.Engine_CommonConfig) *pb.Engine_CommonConfig {
+	return Engine_CommonConfig_v1alpha1_ToProto(mapCtx, in)
+}
+
+func Engine_ChatEngineConfig_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.Engine_ChatEngineConfig) *pb.Engine_ChatEngineConfig {
+	return Engine_ChatEngineConfig_v1alpha1_ToProto(mapCtx, in)
+}
+
+// --- Unversioned delegating forwarders / manual overrides version wrappers ---
+
+func SearchResponse_Summary_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SearchResponse_Summary) *krm.SearchResponse_Summary {
+	return SearchResponse_Summary_FromProto(mapCtx, in)
+}
+
+func SearchResponse_Summary_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.SearchResponse_Summary) *pb.SearchResponse_Summary {
+	return SearchResponse_Summary_ToProto(mapCtx, in)
 }

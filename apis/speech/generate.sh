@@ -32,9 +32,7 @@ go run . generate-types \
     --resource SpeechCustomClass:CustomClass \
     --resource SpeechPhraseSet:PhraseSet
 
-go run . generate-mapper \
-    --service google.cloud.speech.v2 \
-    --api-version speech.cnrm.cloud.google.com/v1alpha1
+
 
 # --- v1beta1 ---
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
@@ -47,8 +45,9 @@ go run . generate-types \
     --resource SpeechPhraseSet:PhraseSet
 
 go run . generate-mapper \
-    --service google.cloud.speech.v2 \
-    --api-version speech.cnrm.cloud.google.com/v1beta1
+  --service google.cloud.speech.v2 \
+  --api-version "speech.cnrm.cloud.google.com/v1beta1" \
+  --multiversion
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
