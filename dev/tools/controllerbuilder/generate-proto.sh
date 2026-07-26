@@ -157,4 +157,6 @@ protoc --include_imports --include_source_info \
     "${PROTO_FILES[@]}" \
     -o ${VERSIONED_OUTPUT_PATH} 2> >(grep -v "Import .* is unused" >&2)
 
-cp "${VERSIONED_OUTPUT_PATH}" "${OUTPUT_PATH}"
+if [ "${VERSIONED_OUTPUT_PATH}" != "${OUTPUT_PATH}" ]; then
+    cp "${VERSIONED_OUTPUT_PATH}" "${OUTPUT_PATH}"
+fi
