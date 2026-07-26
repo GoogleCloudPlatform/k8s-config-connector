@@ -21,12 +21,13 @@ REPO_ROOT="$(git rev-parse --show-toplevel)"
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
-# --- v1alpha1 ---
-# We need a newer googleapis to get BackendAuthenticationConfig and AuthzPolicy
+# We need a newer googleapis to get BackendAuthenticationConfig, AuthzPolicy, and TLSInspectionPolicy
 PROTO_SHA="cdc919ff596e263f2cc55a9780d2f74633da1ced"
 PROTO_OUT="${REPO_ROOT}/.build/googleapis-${PROTO_SHA}.pb"
 
 ./generate-proto.sh ${PROTO_SHA} ${PROTO_OUT}
+
+# --- v1alpha1 ---
 
 
 # Run for google.cloud.networksecurity.v1 resources
@@ -63,11 +64,6 @@ go run . generate-types \
 
 
 # --- v1beta1 ---
-# We need a newer googleapis to get AuthzPolicy, TLSInspectionPolicy, and BackendAuthenticationConfig for shared multiversion mappers
-PROTO_SHA="cdc919ff596e263f2cc55a9780d2f74633da1ced" 
-PROTO_OUT="${REPO_ROOT}/.build/googleapis-${PROTO_SHA}.pb"
-
-./generate-proto.sh ${PROTO_SHA} ${PROTO_OUT}
 
 
 go run . generate-types \
