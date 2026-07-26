@@ -19,20 +19,20 @@
 // +generated:mapper
 // krm.group: dataform.cnrm.cloud.google.com
 // krm.version: v1beta1
-// proto.service: google.cloud.dataform.v1beta1
 // proto.service: google.cloud.dataform.v1
+// proto.service: google.cloud.dataform.v1beta1
 
 package dataform
 
 import (
-	dataformpb "cloud.google.com/go/dataform/apiv1/dataformpb"
-	pb "cloud.google.com/go/dataform/apiv1beta1/dataformpb"
+	pb "cloud.google.com/go/dataform/apiv1/dataformpb"
+	dataformpb "cloud.google.com/go/dataform/apiv1beta1/dataformpb"
 	krmdataformv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataform/v1alpha1"
 	krmdataformv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataform/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func DataformFolderObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Folder) *krmdataformv1alpha1.DataformFolderObservedState {
+func DataformFolderObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *dataformpb.Folder) *krmdataformv1alpha1.DataformFolderObservedState {
 	if in == nil {
 		return nil
 	}
@@ -47,11 +47,11 @@ func DataformFolderObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, i
 	// MISSING: CreatorIAMPrincipal
 	return out
 }
-func DataformFolderObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataformv1alpha1.DataformFolderObservedState) *pb.Folder {
+func DataformFolderObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataformv1alpha1.DataformFolderObservedState) *dataformpb.Folder {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Folder{}
+	out := &dataformpb.Folder{}
 	// MISSING: Name
 	// MISSING: DisplayName
 	// MISSING: ContainingFolder
@@ -62,7 +62,7 @@ func DataformFolderObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in 
 	// MISSING: CreatorIAMPrincipal
 	return out
 }
-func DataformFolderSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Folder) *krmdataformv1alpha1.DataformFolderSpec {
+func DataformFolderSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *dataformpb.Folder) *krmdataformv1alpha1.DataformFolderSpec {
 	if in == nil {
 		return nil
 	}
@@ -77,11 +77,11 @@ func DataformFolderSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Fol
 	// MISSING: CreatorIAMPrincipal
 	return out
 }
-func DataformFolderSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataformv1alpha1.DataformFolderSpec) *pb.Folder {
+func DataformFolderSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataformv1alpha1.DataformFolderSpec) *dataformpb.Folder {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Folder{}
+	out := &dataformpb.Folder{}
 	// MISSING: Name
 	// MISSING: DisplayName
 	// MISSING: ContainingFolder
@@ -92,7 +92,7 @@ func DataformFolderSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataf
 	// MISSING: CreatorIAMPrincipal
 	return out
 }
-func DataformRepositoryObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Repository) *krmdataformv1beta1.DataformRepositoryObservedState {
+func DataformRepositoryObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *dataformpb.Repository) *krmdataformv1beta1.DataformRepositoryObservedState {
 	if in == nil {
 		return nil
 	}
@@ -107,11 +107,11 @@ func DataformRepositoryObservedState_v1beta1_FromProto(mapCtx *direct.MapContext
 	// MISSING: InternalMetadata
 	return out
 }
-func DataformRepositoryObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmdataformv1beta1.DataformRepositoryObservedState) *pb.Repository {
+func DataformRepositoryObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmdataformv1beta1.DataformRepositoryObservedState) *dataformpb.Repository {
 	if in == nil {
 		return nil
 	}
-	out := &pb.Repository{}
+	out := &dataformpb.Repository{}
 	// MISSING: Name
 	// MISSING: ContainingFolder
 	// MISSING: TeamFolderName
@@ -122,7 +122,7 @@ func DataformRepositoryObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, 
 	// MISSING: InternalMetadata
 	return out
 }
-func DataformTeamFolderObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *dataformpb.TeamFolder) *krmdataformv1alpha1.DataformTeamFolderObservedState {
+func DataformTeamFolderObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.TeamFolder) *krmdataformv1alpha1.DataformTeamFolderObservedState {
 	if in == nil {
 		return nil
 	}
@@ -134,11 +134,11 @@ func DataformTeamFolderObservedState_v1alpha1_FromProto(mapCtx *direct.MapContex
 	out.CreatorIAMPrincipal = in.CreatorIamPrincipal
 	return out
 }
-func DataformTeamFolderObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataformv1alpha1.DataformTeamFolderObservedState) *dataformpb.TeamFolder {
+func DataformTeamFolderObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataformv1alpha1.DataformTeamFolderObservedState) *pb.TeamFolder {
 	if in == nil {
 		return nil
 	}
-	out := &dataformpb.TeamFolder{}
+	out := &pb.TeamFolder{}
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
@@ -146,7 +146,7 @@ func DataformTeamFolderObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext,
 	out.CreatorIamPrincipal = in.CreatorIAMPrincipal
 	return out
 }
-func DataformTeamFolderSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *dataformpb.TeamFolder) *krmdataformv1alpha1.DataformTeamFolderSpec {
+func DataformTeamFolderSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.TeamFolder) *krmdataformv1alpha1.DataformTeamFolderSpec {
 	if in == nil {
 		return nil
 	}
@@ -155,11 +155,11 @@ func DataformTeamFolderSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *da
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	return out
 }
-func DataformTeamFolderSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataformv1alpha1.DataformTeamFolderSpec) *dataformpb.TeamFolder {
+func DataformTeamFolderSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataformv1alpha1.DataformTeamFolderSpec) *pb.TeamFolder {
 	if in == nil {
 		return nil
 	}
-	out := &dataformpb.TeamFolder{}
+	out := &pb.TeamFolder{}
 	// MISSING: Name
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	return out

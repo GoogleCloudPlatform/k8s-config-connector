@@ -26,16 +26,8 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 PROTO_SHA="cdc919ff596e263f2cc55a9780d2f74633da1ced"
 PROTO_OUT="${REPO_ROOT}/.build/googleapis-${PROTO_SHA}.pb"
 
-# Unset SKIP_GENERATE_PROTOS so this specific script fetches the newer proto
-OLD_SKIP_GENERATE_PROTOS="${SKIP_GENERATE_PROTOS:-}"
-unset SKIP_GENERATE_PROTOS
-
 ./generate-proto.sh ${PROTO_SHA} ${PROTO_OUT}
 
-# Restore SKIP_GENERATE_PROTOS
-if [[ -n "${OLD_SKIP_GENERATE_PROTOS}" ]]; then
-  export SKIP_GENERATE_PROTOS="${OLD_SKIP_GENERATE_PROTOS}"
-fi
 
 # Run for google.cloud.networksecurity.v1 resources
 go run . generate-types \
@@ -70,23 +62,13 @@ go run . generate-types \
 # Generate mappers for networksecurity v1alpha1
 
 
-cd ${REPO_ROOT}
-
 # --- v1beta1 ---
 # We need a newer googleapis to get AuthzPolicy, TLSInspectionPolicy, and BackendAuthenticationConfig for shared multiversion mappers
 PROTO_SHA="cdc919ff596e263f2cc55a9780d2f74633da1ced" 
 PROTO_OUT="${REPO_ROOT}/.build/googleapis-${PROTO_SHA}.pb"
 
-# Unset SKIP_GENERATE_PROTOS so this specific script fetches the newer proto
-OLD_SKIP_GENERATE_PROTOS="${SKIP_GENERATE_PROTOS:-}"
-unset SKIP_GENERATE_PROTOS
-
 ./generate-proto.sh ${PROTO_SHA} ${PROTO_OUT}
 
-# Restore SKIP_GENERATE_PROTOS
-if [[ -n "${OLD_SKIP_GENERATE_PROTOS}" ]]; then
-  export SKIP_GENERATE_PROTOS="${OLD_SKIP_GENERATE_PROTOS}"
-fi
 
 go run . generate-types \
     --service google.cloud.networksecurity.v1beta1 \
