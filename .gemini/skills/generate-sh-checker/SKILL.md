@@ -51,10 +51,7 @@ This skill helps maintain the `generate.sh` pattern across all `apis/` subdirect
     source "${REPO_ROOT}/dev/tools/goimports.sh"
     cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
-    # Prevent concurrent git lock failures during parallel builds
-    if [[ "${SKIP_GENERATE_PROTOS:-0}" != "1" ]]; then
-      ./generate-proto.sh
-    fi
+    ./generate-proto.sh
 
     # --- v1alpha1 (if applicable) ---
     go run . generate-types \
@@ -93,8 +90,8 @@ This skill helps maintain the `generate.sh` pattern across all `apis/` subdirect
     -   **Different Proto Packages/Versions**: If a resource (e.g. an alpha/beta resource like `ComputeFutureReservation`) belongs to a different proto package/version (e.g. `google.cloud.compute.v1beta`) than the default `--service` package (e.g. `google.cloud.compute.v1`), you can specify its fully-qualified name in the `--resource` flag (e.g. `--resource ComputeFutureReservation:google.cloud.compute.v1beta.FutureReservation`). This allows `generate-types` to locate the correct message descriptors across different packages when compiling multiple API levels.
 
 5.  **Execute and Verify**:
-    -   Make `generate.sh` executable: `chmod +x apis/<SERVICE>/<VERSION>/generate.sh`.
-    -   Run it: `./apis/<SERVICE>/<VERSION>/generate.sh`.
+    -   Make `generate.sh` executable: `chmod +x apis/<SERVICE>/generate.sh`.
+    -   Run it: `./apis/<SERVICE>/generate.sh`.
     -   Verify that `types.generated.go` is created in the API directory.
     -   Verify that `pkg/controller/direct/<SERVICE>/mapper.generated.go` is updated.
     -   Verify that CRDs in `config/crds/resources/` are updated.
