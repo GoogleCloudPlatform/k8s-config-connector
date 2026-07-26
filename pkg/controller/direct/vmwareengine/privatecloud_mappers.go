@@ -25,7 +25,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func NetworkConfig_FromProto(mapCtx *direct.MapContext, in *pb.NetworkConfig) *krm.NetworkConfig {
+func NetworkConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.NetworkConfig) *krm.NetworkConfig {
 	if in == nil {
 		return nil
 	}
@@ -38,7 +38,7 @@ func NetworkConfig_FromProto(mapCtx *direct.MapContext, in *pb.NetworkConfig) *k
 	}
 	return out
 }
-func NetworkConfig_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConfig) *pb.NetworkConfig {
+func NetworkConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConfig) *pb.NetworkConfig {
 	if in == nil {
 		return nil
 	}
@@ -49,7 +49,7 @@ func NetworkConfig_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConfig) *pb
 	}
 	return out
 }
-func NetworkConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NetworkConfig) *krm.NetworkConfigObservedState {
+func NetworkConfigObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.NetworkConfig) *krm.NetworkConfigObservedState {
 	if in == nil {
 		return nil
 	}
@@ -59,7 +59,7 @@ func NetworkConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Netw
 	out.DNSServerIP = direct.LazyPtr(in.GetDnsServerIp())
 	return out
 }
-func NetworkConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConfigObservedState) *pb.NetworkConfig {
+func NetworkConfigObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConfigObservedState) *pb.NetworkConfig {
 	if in == nil {
 		return nil
 	}
@@ -69,7 +69,7 @@ func NetworkConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Netwo
 	out.DnsServerIp = direct.ValueOf(in.DNSServerIP)
 	return out
 }
-func PrivateCloud_ManagementCluster_FromProto(mapCtx *direct.MapContext, in *pb.PrivateCloud_ManagementCluster) *krm.PrivateCloud_ManagementCluster {
+func PrivateCloud_ManagementCluster_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.PrivateCloud_ManagementCluster) *krm.PrivateCloud_ManagementCluster {
 	if in == nil {
 		return nil
 	}
@@ -85,7 +85,7 @@ func PrivateCloud_ManagementCluster_FromProto(mapCtx *direct.MapContext, in *pb.
 	// MISSING: StretchedClusterConfig
 	return out
 }
-func PrivateCloud_ManagementCluster_ToProto(mapCtx *direct.MapContext, in *krm.PrivateCloud_ManagementCluster) *pb.PrivateCloud_ManagementCluster {
+func PrivateCloud_ManagementCluster_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.PrivateCloud_ManagementCluster) *pb.PrivateCloud_ManagementCluster {
 	if in == nil {
 		return nil
 	}
@@ -99,7 +99,7 @@ func PrivateCloud_ManagementCluster_ToProto(mapCtx *direct.MapContext, in *krm.P
 	// MISSING: StretchedClusterConfig
 	return out
 }
-func VMwareEnginePrivateCloudObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PrivateCloud) *krm.VMwareEnginePrivateCloudObservedState {
+func VMwareEnginePrivateCloudObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.PrivateCloud) *krm.VMwareEnginePrivateCloudObservedState {
 	if in == nil {
 		return nil
 	}
@@ -110,14 +110,14 @@ func VMwareEnginePrivateCloudObservedState_FromProto(mapCtx *direct.MapContext, 
 	out.DeleteTime = direct.StringTimestamp_FromProto(mapCtx, in.GetDeleteTime())
 	out.ExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpireTime())
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.NetworkConfig = NetworkConfigObservedState_FromProto(mapCtx, in.GetNetworkConfig())
+	out.NetworkConfig = NetworkConfigObservedState_v1alpha1_FromProto(mapCtx, in.GetNetworkConfig())
 	out.HCX = Hcx_FromProto(mapCtx, in.GetHcx())
 	out.NSX = Nsx_FromProto(mapCtx, in.GetNsx())
 	out.Vcenter = Vcenter_FromProto(mapCtx, in.GetVcenter())
 	out.UID = direct.LazyPtr(in.GetUid())
 	return out
 }
-func VMwareEnginePrivateCloudObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VMwareEnginePrivateCloudObservedState) *pb.PrivateCloud {
+func VMwareEnginePrivateCloudObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.VMwareEnginePrivateCloudObservedState) *pb.PrivateCloud {
 	if in == nil {
 		return nil
 	}
@@ -128,7 +128,7 @@ func VMwareEnginePrivateCloudObservedState_ToProto(mapCtx *direct.MapContext, in
 	out.DeleteTime = direct.StringTimestamp_ToProto(mapCtx, in.DeleteTime)
 	out.ExpireTime = direct.StringTimestamp_ToProto(mapCtx, in.ExpireTime)
 	out.State = direct.Enum_ToProto[pb.PrivateCloud_State](mapCtx, in.State)
-	out.NetworkConfig = NetworkConfigObservedState_ToProto(mapCtx, in.NetworkConfig)
+	out.NetworkConfig = NetworkConfigObservedState_v1alpha1_ToProto(mapCtx, in.NetworkConfig)
 	out.Hcx = Hcx_ToProto(mapCtx, in.HCX)
 	out.Nsx = Nsx_ToProto(mapCtx, in.NSX)
 	out.Vcenter = Vcenter_ToProto(mapCtx, in.Vcenter)

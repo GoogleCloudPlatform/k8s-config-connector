@@ -65,56 +65,6 @@ func Hcx_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvmwareenginev1alpha1
 	out.Fqdn = direct.ValueOf(in.FQDN)
 	return out
 }
-func NetworkConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.NetworkConfig) *krmvmwareenginev1alpha1.NetworkConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krmvmwareenginev1alpha1.NetworkConfig{}
-	out.ManagementCIDR = direct.LazyPtr(in.GetManagementCidr())
-	// MISSING: VmwareEngineNetwork
-	// MISSING: VmwareEngineNetworkCanonical
-	// MISSING: ManagementIPAddressLayoutVersion
-	// MISSING: DNSServerIP
-	return out
-}
-func NetworkConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvmwareenginev1alpha1.NetworkConfig) *pb.NetworkConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.NetworkConfig{}
-	out.ManagementCidr = direct.ValueOf(in.ManagementCIDR)
-	// MISSING: VmwareEngineNetwork
-	// MISSING: VmwareEngineNetworkCanonical
-	// MISSING: ManagementIPAddressLayoutVersion
-	// MISSING: DNSServerIP
-	return out
-}
-func NetworkConfigObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.NetworkConfig) *krmvmwareenginev1alpha1.NetworkConfigObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krmvmwareenginev1alpha1.NetworkConfigObservedState{}
-	// MISSING: ManagementCIDR
-	// MISSING: VmwareEngineNetwork
-	// MISSING: VmwareEngineNetworkCanonical
-	// (near miss): "VmwareEngineNetworkCanonical" vs "VMwareEngineNetworkCanonical"
-	out.ManagementIPAddressLayoutVersion = direct.LazyPtr(in.GetManagementIpAddressLayoutVersion())
-	out.DNSServerIP = direct.LazyPtr(in.GetDnsServerIp())
-	return out
-}
-func NetworkConfigObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvmwareenginev1alpha1.NetworkConfigObservedState) *pb.NetworkConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.NetworkConfig{}
-	// MISSING: ManagementCIDR
-	// MISSING: VmwareEngineNetwork
-	// MISSING: VmwareEngineNetworkCanonical
-	// (near miss): "VmwareEngineNetworkCanonical" vs "VMwareEngineNetworkCanonical"
-	out.ManagementIpAddressLayoutVersion = direct.ValueOf(in.ManagementIPAddressLayoutVersion)
-	out.DnsServerIp = direct.ValueOf(in.DNSServerIP)
-	return out
-}
 func NetworkPolicy_NetworkService_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.NetworkPolicy_NetworkService) *krmvmwareenginev1alpha1.NetworkPolicy_NetworkService {
 	if in == nil {
 		return nil
@@ -467,48 +417,6 @@ func VMwareEngineNetworkSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm
 	out.Type = direct.Enum_ToProto[pb.VmwareEngineNetwork_Type](mapCtx, in.Type)
 	// MISSING: Uid
 	// MISSING: Etag
-	return out
-}
-func VMwareEnginePrivateCloudObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.PrivateCloud) *krmvmwareenginev1alpha1.VMwareEnginePrivateCloudObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krmvmwareenginev1alpha1.VMwareEnginePrivateCloudObservedState{}
-	// MISSING: Name
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	out.DeleteTime = direct.StringTimestamp_FromProto(mapCtx, in.GetDeleteTime())
-	out.ExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpireTime())
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.NetworkConfig = NetworkConfigObservedState_v1alpha1_FromProto(mapCtx, in.GetNetworkConfig())
-	// MISSING: Hcx
-	// (near miss): "Hcx" vs "HCX"
-	// MISSING: Nsx
-	// (near miss): "Nsx" vs "NSX"
-	out.Vcenter = Vcenter_v1alpha1_FromProto(mapCtx, in.GetVcenter())
-	// MISSING: Uid
-	// (near miss): "Uid" vs "UID"
-	return out
-}
-func VMwareEnginePrivateCloudObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvmwareenginev1alpha1.VMwareEnginePrivateCloudObservedState) *pb.PrivateCloud {
-	if in == nil {
-		return nil
-	}
-	out := &pb.PrivateCloud{}
-	// MISSING: Name
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	out.DeleteTime = direct.StringTimestamp_ToProto(mapCtx, in.DeleteTime)
-	out.ExpireTime = direct.StringTimestamp_ToProto(mapCtx, in.ExpireTime)
-	out.State = direct.Enum_ToProto[pb.PrivateCloud_State](mapCtx, in.State)
-	out.NetworkConfig = NetworkConfigObservedState_v1alpha1_ToProto(mapCtx, in.NetworkConfig)
-	// MISSING: Hcx
-	// (near miss): "Hcx" vs "HCX"
-	// MISSING: Nsx
-	// (near miss): "Nsx" vs "NSX"
-	out.Vcenter = Vcenter_v1alpha1_ToProto(mapCtx, in.Vcenter)
-	// MISSING: Uid
-	// (near miss): "Uid" vs "UID"
 	return out
 }
 func VMwareEnginePrivateCloudSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.PrivateCloud) *krmvmwareenginev1alpha1.VMwareEnginePrivateCloudSpec {

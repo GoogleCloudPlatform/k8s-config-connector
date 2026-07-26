@@ -152,7 +152,8 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1-
     }
   },
   "networkConfig": {
-    "managementCidr": "192.168.50.0/24"
+    "managementCidr": "192.168.50.0/24",
+    "vmwareEngineNetwork": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}"
   }
 }
 
@@ -219,7 +220,9 @@ X-Xss-Protection: 0
     "networkConfig": {
       "dnsServerIp": "192.168.30.234",
       "managementCidr": "192.168.50.0/24",
-      "managementIpAddressLayoutVersion": 2
+      "managementIpAddressLayoutVersion": 2,
+      "vmwareEngineNetwork": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}",
+      "vmwareEngineNetworkCanonical": "projects/${projectNumber}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}"
     },
     "nsx": {
       "fqdn": "nsx-414860.c8819727.us-central1.gve.goog",
@@ -1063,7 +1066,9 @@ X-Xss-Protection: 0
   "networkConfig": {
     "dnsServerIp": "192.168.30.234",
     "managementCidr": "192.168.50.0/24",
-    "managementIpAddressLayoutVersion": 2
+    "managementIpAddressLayoutVersion": 2,
+    "vmwareEngineNetwork": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}",
+    "vmwareEngineNetworkCanonical": "projects/${projectNumber}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}"
   },
   "nsx": {
     "fqdn": "nsx-414860.c8819727.us-central1.gve.goog",
@@ -1154,7 +1159,9 @@ X-Xss-Protection: 0
     "networkConfig": {
       "dnsServerIp": "192.168.30.234",
       "managementCidr": "192.168.50.0/24",
-      "managementIpAddressLayoutVersion": 2
+      "managementIpAddressLayoutVersion": 2,
+      "vmwareEngineNetwork": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}",
+      "vmwareEngineNetworkCanonical": "projects/${projectNumber}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}"
     },
     "nsx": {
       "fqdn": "nsx-414860.c8819727.us-central1.gve.goog",
