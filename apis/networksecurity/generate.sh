@@ -22,7 +22,6 @@ source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 # --- v1alpha1 ---
-cd ${REPO_ROOT}/dev/tools/controllerbuilder
 # We need a newer googleapis to get BackendAuthenticationConfig and AuthzPolicy
 PROTO_SHA="cdc919ff596e263f2cc55a9780d2f74633da1ced"
 PROTO_OUT="${REPO_ROOT}/.build/googleapis-${PROTO_SHA}.pb"
@@ -74,7 +73,6 @@ go run . generate-types \
 cd ${REPO_ROOT}
 
 # --- v1beta1 ---
-cd ${REPO_ROOT}/dev/tools/controllerbuilder
 # We need a newer googleapis to get AuthzPolicy, TLSInspectionPolicy, and BackendAuthenticationConfig for shared multiversion mappers
 PROTO_SHA="cdc919ff596e263f2cc55a9780d2f74633da1ced" 
 PROTO_OUT="${REPO_ROOT}/.build/googleapis-${PROTO_SHA}.pb"
