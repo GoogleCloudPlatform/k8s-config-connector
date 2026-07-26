@@ -29,8 +29,8 @@ func init() {
 
 func vmwareEnginePrivateCloudFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.PrivateCloud{},
-		VMwareEnginePrivateCloudSpec_FromProto, VMwareEnginePrivateCloudSpec_ToProto,
-		VMwareEnginePrivateCloudObservedState_FromProto, VMwareEnginePrivateCloudObservedState_ToProto,
+		VMwareEnginePrivateCloudSpec_v1alpha1_FromProto, VMwareEnginePrivateCloudSpec_v1alpha1_ToProto,
+		VMwareEnginePrivateCloudObservedState_v1alpha1_FromProto, VMwareEnginePrivateCloudObservedState_v1alpha1_ToProto,
 	)
 
 	f.SpecFields.Insert(".network_config")

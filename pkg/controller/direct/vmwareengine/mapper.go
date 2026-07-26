@@ -43,13 +43,7 @@ func VMwareEngineNetworkPeeringSpec_v1alpha1_FromProto(mapCtx *direct.MapContext
 	return VMwareEngineNetworkPeeringSpec_FromProto(mapCtx, in)
 }
 
-func VMwareEnginePrivateCloudObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PrivateCloud) *krmvmwareenginev1alpha1.VMwareEnginePrivateCloudObservedState {
-	return VMwareEnginePrivateCloudObservedState_v1alpha1_FromProto(mapCtx, in)
-}
 
-func VMwareEnginePrivateCloudObservedState_ToProto(mapCtx *direct.MapContext, in *krmvmwareenginev1alpha1.VMwareEnginePrivateCloudObservedState) *pb.PrivateCloud {
-	return VMwareEnginePrivateCloudObservedState_v1alpha1_ToProto(mapCtx, in)
-}
 
 func VMwareEngineNetworkPeeringSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvmwareenginev1alpha1.VMwareEngineNetworkPeeringSpec) *pb.NetworkPeering {
 	return VMwareEngineNetworkPeeringSpec_ToProto(mapCtx, in)
@@ -121,14 +115,10 @@ func VmwareEngineNetwork_VPCNetworkObservedState_ToProto(mapCtx *direct.MapConte
 	return VmwareEngineNetwork_VPCNetworkObservedState_v1alpha1_ToProto(mapCtx, in)
 }
 
-func VMwareEnginePrivateCloudSpec_FromProto(mapCtx *direct.MapContext, in *pb.PrivateCloud) *krmvmwareenginev1alpha1.VMwareEnginePrivateCloudSpec {
-	return VMwareEnginePrivateCloudSpec_v1alpha1_FromProto(mapCtx, in)
-}
+
 
 func VmwareEngineNetwork_VPCNetworkObservedState_FromProto(mapCtx *direct.MapContext, in *pb.VmwareEngineNetwork_VpcNetwork) *krmvmwareenginev1alpha1.VmwareEngineNetwork_VPCNetworkObservedState {
 	return VmwareEngineNetwork_VPCNetworkObservedState_v1alpha1_FromProto(mapCtx, in)
 }
 
-func VMwareEnginePrivateCloudSpec_ToProto(mapCtx *direct.MapContext, in *krmvmwareenginev1alpha1.VMwareEnginePrivateCloudSpec) *pb.PrivateCloud {
-	return VMwareEnginePrivateCloudSpec_v1alpha1_ToProto(mapCtx, in)
-}
+
