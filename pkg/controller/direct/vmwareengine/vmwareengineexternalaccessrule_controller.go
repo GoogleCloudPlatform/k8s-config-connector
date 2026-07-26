@@ -127,7 +127,7 @@ func (a *externalAccessRuleAdapter) Create(ctx context.Context, createOp *direct
 
 	mapCtx := &direct.MapContext{}
 	desired := a.desired.DeepCopy()
-	resource := VMwareEngineExternalAccessRuleSpec_ToProto(mapCtx, &desired.Spec)
+	resource := VMwareEngineExternalAccessRuleSpec_v1alpha1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -166,7 +166,7 @@ func (a *externalAccessRuleAdapter) Update(ctx context.Context, updateOp *direct
 
 	mapCtx := &direct.MapContext{}
 	desired := a.desired.DeepCopy()
-	resource := VMwareEngineExternalAccessRuleSpec_ToProto(mapCtx, &desired.Spec)
+	resource := VMwareEngineExternalAccessRuleSpec_v1alpha1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}

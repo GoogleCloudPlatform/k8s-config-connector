@@ -160,7 +160,7 @@ func (a *recognizerAdapter) Create(ctx context.Context, createOp *directbase.Cre
 	}
 
 	desired := a.desired.DeepCopy()
-	resource := SpeechRecognizerSpec_ToProto(mapCtx, &desired.Spec)
+	resource := SpeechRecognizerSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -181,7 +181,7 @@ func (a *recognizerAdapter) Create(ctx context.Context, createOp *directbase.Cre
 	log.V(2).Info("successfully created speech recognizer in gcp", "name", a.id)
 
 	status := &krm.SpeechRecognizerStatus{}
-	status.ObservedState = SpeechRecognizerObservedState_FromProto(mapCtx, created)
+	status.ObservedState = SpeechRecognizerObservedState_v1beta1_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -200,7 +200,7 @@ func (a *recognizerAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 	}
 
 	desired := a.desired.DeepCopy()
-	resource := SpeechRecognizerSpec_ToProto(mapCtx, &desired.Spec)
+	resource := SpeechRecognizerSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -245,7 +245,7 @@ func (a *recognizerAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 	}
 
 	status := &krm.SpeechRecognizerStatus{}
-	status.ObservedState = SpeechRecognizerObservedState_FromProto(mapCtx, updated)
+	status.ObservedState = SpeechRecognizerObservedState_v1beta1_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -262,7 +262,7 @@ func (a *recognizerAdapter) Export(ctx context.Context) (*unstructured.Unstructu
 
 	obj := &krm.SpeechRecognizer{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(SpeechRecognizerSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(SpeechRecognizerSpec_v1beta1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}

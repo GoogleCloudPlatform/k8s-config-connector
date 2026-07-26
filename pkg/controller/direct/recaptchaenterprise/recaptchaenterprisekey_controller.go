@@ -136,7 +136,7 @@ func (a *RecaptchaEnterpriseKeyAdapter) Create(ctx context.Context, createOp *di
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	resource := RecaptchaEnterpriseKeySpec_ToProto(mapCtx, &desired.Spec)
+	resource := RecaptchaEnterpriseKeySpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -170,7 +170,7 @@ func (a *RecaptchaEnterpriseKeyAdapter) Update(ctx context.Context, updateOp *di
 	log.V(2).Info("updating RecaptchaEnterpriseKey", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	desiredPb := RecaptchaEnterpriseKeySpec_ToProto(mapCtx, &a.desired.Spec)
+	desiredPb := RecaptchaEnterpriseKeySpec_v1beta1_ToProto(mapCtx, &a.desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -218,7 +218,7 @@ func (a *RecaptchaEnterpriseKeyAdapter) Export(ctx context.Context) (*unstructur
 
 	obj := &krm.RecaptchaEnterpriseKey{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(RecaptchaEnterpriseKeySpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(RecaptchaEnterpriseKeySpec_v1beta1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}

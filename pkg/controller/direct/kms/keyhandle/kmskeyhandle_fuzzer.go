@@ -30,8 +30,8 @@ func init() {
 
 func KMSKeyHandleFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.KeyHandle{},
-		kms.KMSKeyHandleSpec_FromProto, kms.KMSKeyHandleSpec_ToProto,
-		kms.KMSKeyHandleObservedState_FromProto, kms.KMSKeyHandleObservedState_ToProto,
+		kms.KMSKeyHandleSpec_v1beta1_FromProto, kms.KMSKeyHandleSpec_v1beta1_ToProto,
+		kms.KMSKeyHandleObservedState_v1beta1_FromProto, kms.KMSKeyHandleObservedState_v1beta1_ToProto,
 	)
 
 	// Field comparison details:

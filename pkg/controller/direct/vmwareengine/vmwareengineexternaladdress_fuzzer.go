@@ -29,7 +29,7 @@ func init() {
 
 func vmwareEngineExternalAddressFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.ExternalAddress{},
-		VMwareEngineExternalAddressSpec_FromProto, VMwareEngineExternalAddressSpec_ToProto,
+		VMwareEngineExternalAddressSpec_v1beta1_FromProto, VMwareEngineExternalAddressSpec_v1beta1_ToProto,
 		VMwareEngineExternalAddressObservedState_FromProto, VMwareEngineExternalAddressObservedState_ToProto,
 	)
 

@@ -159,7 +159,7 @@ func (a *importJobAdapter) Create(ctx context.Context, createOp *directbase.Crea
 	log.V(2).Info("successfully created kms importjob in gcp", "name", a.id)
 
 	status := &krm.KMSImportJobStatus{}
-	status.ObservedState = KMSImportJobObservedState_FromProto(mapCtx, created)
+	status.ObservedState = KMSImportJobObservedState_v1beta1_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}

@@ -29,7 +29,7 @@ func init() {
 
 func KMSCryptoKeyVersionFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.CryptoKeyVersion{},
-		KMSCryptoKeyVersionSpec_FromProto, KMSCryptoKeyVersionSpec_ToProto,
+		KMSCryptoKeyVersionSpec_v1alpha1_FromProto, KMSCryptoKeyVersionSpec_v1alpha1_ToProto,
 		KMSCryptoKeyVersionStatus_FromProto, KMSCryptoKeyVersionStatus_ToProto,
 	)
 

@@ -34,14 +34,6 @@ func Expr_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Expr) *exp
 	return Expr_ToProto(mapCtx, in)
 }
 
-func IAMServiceAccountSpec_ToProto(mapCtx *direct.MapContext, in *krmiamv1beta1.IAMServiceAccountSpec) *pb.ServiceAccount {
-	return IAMServiceAccountSpec_v1beta1_ToProto(mapCtx, in)
-}
-
-func IAMServiceAccountSpec_FromProto(mapCtx *direct.MapContext, in *pb.ServiceAccount) *krmiamv1beta1.IAMServiceAccountSpec {
-	return IAMServiceAccountSpec_v1beta1_FromProto(mapCtx, in)
-}
-
 func IAMServiceAccountKeySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmiamv1beta1.IAMServiceAccountKeySpec) *pb.ServiceAccountKey {
 	return IAMServiceAccountKeySpec_ToProto(mapCtx, in)
 }

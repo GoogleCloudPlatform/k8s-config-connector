@@ -164,7 +164,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	}
 
 	status := &krm.KMSAutokeyConfigStatus{}
-	status.ObservedState = kms.KMSAutokeyConfigObservedState_FromProto(mapCtx, updated)
+	status.ObservedState = kms.KMSAutokeyConfigObservedState_v1beta1_FromProto(mapCtx, updated)
 
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
@@ -264,7 +264,7 @@ func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperati
 	log.V(2).Info("successfully deleted AutokeyConfig in KCC by resetting the key_project", "name", a.id)
 	status := &krm.KMSAutokeyConfigStatus{}
 	// The state in ObservedState is expected to be UNINITIALIZED as we have set the key_project to empty
-	status.ObservedState = kms.KMSAutokeyConfigObservedState_FromProto(mapCtx, updated)
+	status.ObservedState = kms.KMSAutokeyConfigObservedState_v1beta1_FromProto(mapCtx, updated)
 
 	if mapCtx.Err() != nil {
 		return false, mapCtx.Err()

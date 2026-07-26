@@ -16,20 +16,11 @@ package recaptchaenterprise
 
 import (
 	pb "cloud.google.com/go/recaptchaenterprise/v2/apiv1/recaptchaenterprisepb"
-	krmrecaptchaenterprisev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/recaptchaenterprise/v1alpha1"
 	krmrecaptchaenterprisev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/recaptchaenterprise/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
 // --- Unversioned delegating forwarders / manual overrides version wrappers ---
-
-func ReCAPTCHAEnterpriseFirewallPolicySpec_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicy) *krmrecaptchaenterprisev1alpha1.ReCAPTCHAEnterpriseFirewallPolicySpec {
-	return ReCAPTCHAEnterpriseFirewallPolicySpec_v1alpha1_FromProto(mapCtx, in)
-}
-
-func ReCAPTCHAEnterpriseFirewallPolicySpec_ToProto(mapCtx *direct.MapContext, in *krmrecaptchaenterprisev1alpha1.ReCAPTCHAEnterpriseFirewallPolicySpec) *pb.FirewallPolicy {
-	return ReCAPTCHAEnterpriseFirewallPolicySpec_v1alpha1_ToProto(mapCtx, in)
-}
 
 func KeyWebSettings_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.WebKeySettings) *krmrecaptchaenterprisev1beta1.KeyWebSettings {
 	return KeyWebSettings_FromProto(mapCtx, in)
@@ -56,11 +47,3 @@ func KeyTestingOptions_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Testi
 }
 
 // --- Unversioned delegating forwarders / manual overrides version wrappers ---
-
-func RecaptchaEnterpriseKeySpec_FromProto(mapCtx *direct.MapContext, in *pb.Key) *krmrecaptchaenterprisev1beta1.RecaptchaEnterpriseKeySpec {
-	return RecaptchaEnterpriseKeySpec_v1beta1_FromProto(mapCtx, in)
-}
-
-func RecaptchaEnterpriseKeySpec_ToProto(mapCtx *direct.MapContext, in *krmrecaptchaenterprisev1beta1.RecaptchaEnterpriseKeySpec) *pb.Key {
-	return RecaptchaEnterpriseKeySpec_v1beta1_ToProto(mapCtx, in)
-}

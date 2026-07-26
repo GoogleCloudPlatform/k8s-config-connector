@@ -121,7 +121,7 @@ func (a *networkAdapter) Create(ctx context.Context, createOp *directbase.Create
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	resource := VMwareEngineNetworkSpec_ToProto(mapCtx, &desired.Spec)
+	resource := VMwareEngineNetworkSpec_v1alpha1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -156,7 +156,7 @@ func (a *networkAdapter) Update(ctx context.Context, updateOp *directbase.Update
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	resource := VMwareEngineNetworkSpec_ToProto(mapCtx, &desired.Spec)
+	resource := VMwareEngineNetworkSpec_v1alpha1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -214,7 +214,7 @@ func (a *networkAdapter) Export(ctx context.Context) (*unstructured.Unstructured
 
 	obj := &krm.VMwareEngineNetwork{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(VMwareEngineNetworkSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(VMwareEngineNetworkSpec_v1alpha1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
