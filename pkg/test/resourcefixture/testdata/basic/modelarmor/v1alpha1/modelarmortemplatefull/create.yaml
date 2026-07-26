@@ -1,0 +1,35 @@
+apiVersion: modelarmor.cnrm.cloud.google.com/v1alpha1
+kind: ModelArmorTemplate
+metadata:
+  name: modelarmortemplatefull-${unique_id}
+spec:
+  projectRef:
+    external: ${PROJECT_ID}
+  location: us-central1
+  resourceID: modelarmortemplatefull-${unique_id}
+  labels:
+    foo: bar
+  filterConfig:
+    piAndJailbreakFilterSettings:
+      filterEnforcement: ENFORCED
+      confidenceLevel: LOW
+    raiSettings:
+      raiFilters:
+      - filterType: SEXUALLY_EXPLICIT
+        confidenceLevel: LOW
+    maliciousUriFilterSettings:
+      filterEnforcement: ENFORCED
+    sdpSettings:
+      basicConfig:
+        filterEnforcement: ENFORCED
+  templateMetadata:
+    ignorePartialInvocationFailures: true
+    customPromptSafetyErrorCode: 400
+    customPromptSafetyErrorMessage: "blocked prompt"
+    customLlmResponseSafetyErrorCode: 401
+    customLlmResponseSafetyErrorMessage: "blocked response"
+    logTemplateOperations: true
+    logSanitizeOperations: true
+    enforcementType: ENFORCED
+    multiLanguageDetection:
+      enableMultiLanguageDetection: true

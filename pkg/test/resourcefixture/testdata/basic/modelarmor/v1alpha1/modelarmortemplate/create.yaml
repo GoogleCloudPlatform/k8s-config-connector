@@ -1,0 +1,22 @@
+apiVersion: modelarmor.cnrm.cloud.google.com/v1alpha1
+kind: ModelArmorTemplate
+metadata:
+  name: modelarmortemplate-${unique_id}
+spec:
+  projectRef:
+    external: ${PROJECT_ID}
+  location: us-central1
+  resourceID: modelarmortemplate-${unique_id}
+  filterConfig:
+    piAndJailbreakFilterSettings:
+      filterEnforcement: ENFORCED
+      confidenceLevel: LOW
+    raiSettings:
+      raiFilters:
+      - filterType: SEXUALLY_EXPLICIT
+        confidenceLevel: LOW
+    maliciousUriFilterSettings:
+      filterEnforcement: ENFORCED
+    sdpSettings:
+      basicConfig:
+        filterEnforcement: ENFORCED

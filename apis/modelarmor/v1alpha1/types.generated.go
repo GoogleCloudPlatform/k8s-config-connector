@@ -18,6 +18,7 @@
 // krm.version: v1alpha1
 // proto.service: google.cloud.modelarmor.v1
 // resource: ModelArmorTemplate:Template
+// resource: ModelArmorFloorSetting:FloorSetting
 
 package v1alpha1
 
