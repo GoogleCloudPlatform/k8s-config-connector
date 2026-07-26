@@ -128,7 +128,7 @@ func (a *ServiceBindingAdapter) Create(ctx context.Context, createOp *directbase
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	resource := NetworkServicesServiceBindingSpec_ToProto(mapCtx, &desired.Spec)
+	resource := NetworkServicesServiceBindingSpec_v1alpha1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -155,7 +155,7 @@ func (a *ServiceBindingAdapter) Create(ctx context.Context, createOp *directbase
 	log.V(2).Info("successfully created ServiceBinding", "name", a.id)
 
 	status := &krm.NetworkServicesServiceBindingStatus{}
-	status.ObservedState = NetworkServicesServiceBindingObservedState_FromProto(mapCtx, created)
+	status.ObservedState = NetworkServicesServiceBindingObservedState_v1alpha1_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -181,7 +181,7 @@ func (a *ServiceBindingAdapter) Export(ctx context.Context) (*unstructured.Unstr
 
 	obj := &krm.NetworkServicesServiceBinding{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(NetworkServicesServiceBindingSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(NetworkServicesServiceBindingSpec_v1alpha1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}

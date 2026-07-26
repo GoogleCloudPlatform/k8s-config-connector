@@ -91,7 +91,7 @@ func (m *modelArtifactRegistryRepository) AdapterForObject(ctx context.Context, 
 	}
 
 	mapCtx := &direct.MapContext{}
-	desiredPb := ArtifactRegistryRepositorySpec_ToProto(mapCtx, &obj.Spec)
+	desiredPb := ArtifactRegistryRepositorySpec_v1beta1_ToProto(mapCtx, &obj.Spec)
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
@@ -206,7 +206,7 @@ func (a *ArtifactRegistryRepositoryAdapter) Update(ctx context.Context, updateOp
 
 func (a *ArtifactRegistryRepositoryAdapter) updateStatus(ctx context.Context, op directbase.Operation, latest *pb.Repository) error {
 	mapCtx := &direct.MapContext{}
-	status := ArtifactRegistryRepositoryStatus_FromProto(mapCtx, latest)
+	status := ArtifactRegistryRepositoryStatus_v1beta1_FromProto(mapCtx, latest)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -233,7 +233,7 @@ func (a *ArtifactRegistryRepositoryAdapter) Export(ctx context.Context) (*unstru
 
 	obj := &krm.ArtifactRegistryRepository{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(ArtifactRegistryRepositorySpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(ArtifactRegistryRepositorySpec_v1beta1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
@@ -278,7 +278,7 @@ func (a *ArtifactRegistryRepositoryAdapter) Delete(ctx context.Context, deleteOp
 }
 
 func compareRepository(ctx context.Context, actual, desired *pb.Repository) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
-	maskedActual, err := mappers.OnlySpecFields(actual, ArtifactRegistryRepositorySpec_FromProto, ArtifactRegistryRepositorySpec_ToProto)
+	maskedActual, err := mappers.OnlySpecFields(actual, ArtifactRegistryRepositorySpec_v1beta1_FromProto, ArtifactRegistryRepositorySpec_v1beta1_ToProto)
 	if err != nil {
 		return nil, nil, err
 	}

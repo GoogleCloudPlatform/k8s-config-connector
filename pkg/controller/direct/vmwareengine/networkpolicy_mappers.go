@@ -27,8 +27,8 @@ func VMwareEngineNetworkPolicySpec_FromProto(mapCtx *direct.MapContext, in *pb.N
 	}
 	out := &krm.VMwareEngineNetworkPolicySpec{}
 	// MISSING: Name
-	out.InternetAccess = NetworkPolicy_NetworkService_FromProto(mapCtx, in.GetInternetAccess())
-	out.ExternalIP = NetworkPolicy_NetworkService_FromProto(mapCtx, in.GetExternalIp())
+	out.InternetAccess = NetworkPolicy_NetworkService_v1alpha1_FromProto(mapCtx, in.GetInternetAccess())
+	out.ExternalIP = NetworkPolicy_NetworkService_v1alpha1_FromProto(mapCtx, in.GetExternalIp())
 	out.EdgeServicesCIDR = direct.LazyPtr(in.GetEdgeServicesCidr())
 	if in.GetVmwareEngineNetwork() != "" {
 		out.VMwareEngineNetworkRef = &krm.VmwareEngineNetworkRef{
@@ -44,8 +44,8 @@ func VMwareEngineNetworkPolicySpec_ToProto(mapCtx *direct.MapContext, in *krm.VM
 	}
 	out := &pb.NetworkPolicy{}
 	// MISSING: Name
-	out.InternetAccess = NetworkPolicy_NetworkService_ToProto(mapCtx, in.InternetAccess)
-	out.ExternalIp = NetworkPolicy_NetworkService_ToProto(mapCtx, in.ExternalIP)
+	out.InternetAccess = NetworkPolicy_NetworkService_v1alpha1_ToProto(mapCtx, in.InternetAccess)
+	out.ExternalIp = NetworkPolicy_NetworkService_v1alpha1_ToProto(mapCtx, in.ExternalIP)
 	out.EdgeServicesCidr = direct.ValueOf(in.EdgeServicesCIDR)
 	if in.VMwareEngineNetworkRef != nil {
 		out.VmwareEngineNetwork = in.VMwareEngineNetworkRef.External
@@ -61,8 +61,8 @@ func VMwareEngineNetworkPolicyObservedState_FromProto(mapCtx *direct.MapContext,
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	out.InternetAccess = NetworkPolicy_NetworkServiceObservedState_FromProto(mapCtx, in.GetInternetAccess())
-	out.ExternalIP = NetworkPolicy_NetworkServiceObservedState_FromProto(mapCtx, in.GetExternalIp())
+	out.InternetAccess = NetworkPolicy_NetworkServiceObservedState_v1alpha1_FromProto(mapCtx, in.GetInternetAccess())
+	out.ExternalIP = NetworkPolicy_NetworkServiceObservedState_v1alpha1_FromProto(mapCtx, in.GetExternalIp())
 	out.UID = direct.LazyPtr(in.GetUid())
 	out.VMwareEngineNetworkCanonical = direct.LazyPtr(in.GetVmwareEngineNetworkCanonical())
 	return out
@@ -75,8 +75,8 @@ func VMwareEngineNetworkPolicyObservedState_ToProto(mapCtx *direct.MapContext, i
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	out.InternetAccess = NetworkPolicy_NetworkServiceObservedState_ToProto(mapCtx, in.InternetAccess)
-	out.ExternalIp = NetworkPolicy_NetworkServiceObservedState_ToProto(mapCtx, in.ExternalIP)
+	out.InternetAccess = NetworkPolicy_NetworkServiceObservedState_v1alpha1_ToProto(mapCtx, in.InternetAccess)
+	out.ExternalIp = NetworkPolicy_NetworkServiceObservedState_v1alpha1_ToProto(mapCtx, in.ExternalIP)
 	out.Uid = direct.ValueOf(in.UID)
 	out.VmwareEngineNetworkCanonical = direct.ValueOf(in.VMwareEngineNetworkCanonical)
 	return out

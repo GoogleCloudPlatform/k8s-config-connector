@@ -81,7 +81,7 @@ func KMSCryptoKeyVersionStatus_FromProto(mapCtx *direct.MapContext, in *pb.Crypt
 		if attestation == nil {
 			attestation = &krmv1alpha1.CryptokeyversionAttestationStatus{}
 		}
-		attestation.ExternalProtectionLevelOptions = CryptokeyversionExternalProtectionLevelOptionsStatus_FromProto(mapCtx, in.GetExternalProtectionLevelOptions())
+		attestation.ExternalProtectionLevelOptions = CryptokeyversionExternalProtectionLevelOptionsStatus_v1alpha1_FromProto(mapCtx, in.GetExternalProtectionLevelOptions())
 	}
 
 	if attestation != nil {
@@ -108,7 +108,7 @@ func KMSCryptoKeyVersionStatus_ToProto(mapCtx *direct.MapContext, in *krmv1alpha
 		att := &in.Attestation[0]
 		out.Attestation = CryptokeyversionAttestationStatus_ToProto(mapCtx, att)
 		if att.ExternalProtectionLevelOptions != nil {
-			out.ExternalProtectionLevelOptions = CryptokeyversionExternalProtectionLevelOptionsStatus_ToProto(mapCtx, att.ExternalProtectionLevelOptions)
+			out.ExternalProtectionLevelOptions = CryptokeyversionExternalProtectionLevelOptionsStatus_v1alpha1_ToProto(mapCtx, att.ExternalProtectionLevelOptions)
 		}
 	}
 
@@ -191,7 +191,7 @@ func CryptokeyversionAttestationStatus_FromProto(mapCtx *direct.MapContext, in *
 	if in.GetContent() != nil {
 		out.Content = direct.LazyPtr(string(in.GetContent()))
 	}
-	out.CertChains = CryptokeyversionCertChainsStatus_FromProto(mapCtx, in.GetCertChains())
+	out.CertChains = CryptokeyversionCertChainsStatus_v1alpha1_FromProto(mapCtx, in.GetCertChains())
 	return out
 }
 
@@ -206,7 +206,7 @@ func CryptokeyversionAttestationStatus_ToProto(mapCtx *direct.MapContext, in *kr
 	if in.Content != nil {
 		out.Content = []byte(*in.Content)
 	}
-	out.CertChains = CryptokeyversionCertChainsStatus_ToProto(mapCtx, in.CertChains)
+	out.CertChains = CryptokeyversionCertChainsStatus_v1alpha1_ToProto(mapCtx, in.CertChains)
 	return out
 }
 

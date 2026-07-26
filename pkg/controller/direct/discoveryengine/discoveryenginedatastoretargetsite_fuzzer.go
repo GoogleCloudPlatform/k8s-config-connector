@@ -28,8 +28,8 @@ func init() {
 
 func dataStoreTargetSiteFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.TargetSite{},
-		DiscoveryEngineDataStoreTargetSiteSpec_FromProto, DiscoveryEngineDataStoreTargetSiteSpec_ToProto,
-		DiscoveryEngineDataStoreTargetSiteObservedState_FromProto, DiscoveryEngineDataStoreTargetSiteObservedState_ToProto,
+		DiscoveryEngineDataStoreTargetSiteSpec_v1alpha1_FromProto, DiscoveryEngineDataStoreTargetSiteSpec_v1alpha1_ToProto,
+		DiscoveryEngineDataStoreTargetSiteObservedState_v1alpha1_FromProto, DiscoveryEngineDataStoreTargetSiteObservedState_v1alpha1_ToProto,
 	)
 
 	f.UnimplementedFields.Insert(".name") // special field

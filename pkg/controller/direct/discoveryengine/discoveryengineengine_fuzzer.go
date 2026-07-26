@@ -29,7 +29,7 @@ func init() {
 func engineFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.Engine{},
 		DiscoveryEngineEngineSpec_FromProto, DiscoveryEngineEngineSpec_ToProto,
-		DiscoveryEngineEngineObservedState_FromProto, DiscoveryEngineEngineObservedState_ToProto,
+		DiscoveryEngineEngineObservedState_v1alpha1_FromProto, DiscoveryEngineEngineObservedState_v1alpha1_ToProto,
 	)
 
 	f.UnimplementedFields.Insert(".chat_engine_metadata") // Could be status

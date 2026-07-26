@@ -29,7 +29,7 @@ func init() {
 
 func recaptchaEnterpriseKeyFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.Key{},
-		RecaptchaEnterpriseKeySpec_FromProto, RecaptchaEnterpriseKeySpec_ToProto,
+		RecaptchaEnterpriseKeySpec_v1beta1_FromProto, RecaptchaEnterpriseKeySpec_v1beta1_ToProto,
 		RecaptchaEnterpriseKeyStatus_FromProto, RecaptchaEnterpriseKeyStatus_ToProto,
 	)
 

@@ -28,8 +28,8 @@ func init() {
 
 func ArtifactRegistryRepositoryFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.Repository{},
-		ArtifactRegistryRepositorySpec_FromProto, ArtifactRegistryRepositorySpec_ToProto,
-		ArtifactRegistryRepositoryStatus_FromProto, ArtifactRegistryRepositoryStatus_ToProto,
+		ArtifactRegistryRepositorySpec_v1beta1_FromProto, ArtifactRegistryRepositorySpec_v1beta1_ToProto,
+		ArtifactRegistryRepositoryStatus_v1beta1_FromProto, ArtifactRegistryRepositoryStatus_v1beta1_ToProto,
 	)
 
 	f.FilterSpec = func(in *pb.Repository) {

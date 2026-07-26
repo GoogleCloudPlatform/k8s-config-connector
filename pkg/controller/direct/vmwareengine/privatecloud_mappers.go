@@ -78,7 +78,7 @@ func PrivateCloud_ManagementCluster_v1alpha1_FromProto(mapCtx *direct.MapContext
 	// Note: in KRM we use a []NodeTypeConfig with a virtual field "NodeTypeID" as map key to the proto message
 	// which is a map[string]NodeTypeConfig
 	for k, v := range in.GetNodeTypeConfigs() {
-		nodeTypeConfig := NodeTypeConfig_FromProto(mapCtx, v)
+		nodeTypeConfig := NodeTypeConfig_v1alpha1_FromProto(mapCtx, v)
 		nodeTypeConfig.NodeTypeID = direct.LazyPtr(k)
 		out.NodeTypeConfigs = append(out.NodeTypeConfigs, nodeTypeConfig)
 	}
@@ -94,7 +94,7 @@ func PrivateCloud_ManagementCluster_v1alpha1_ToProto(mapCtx *direct.MapContext, 
 	out.NodeTypeConfigs = make(map[string]*pb.NodeTypeConfig)
 	for _, v := range in.NodeTypeConfigs {
 		nodeTypeID := direct.ValueOf(v.NodeTypeID)
-		out.NodeTypeConfigs[nodeTypeID] = NodeTypeConfig_ToProto(mapCtx, v)
+		out.NodeTypeConfigs[nodeTypeID] = NodeTypeConfig_v1alpha1_ToProto(mapCtx, v)
 	}
 	// MISSING: StretchedClusterConfig
 	return out
@@ -111,9 +111,9 @@ func VMwareEnginePrivateCloudObservedState_v1alpha1_FromProto(mapCtx *direct.Map
 	out.ExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpireTime())
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.NetworkConfig = NetworkConfigObservedState_v1alpha1_FromProto(mapCtx, in.GetNetworkConfig())
-	out.HCX = Hcx_FromProto(mapCtx, in.GetHcx())
-	out.NSX = Nsx_FromProto(mapCtx, in.GetNsx())
-	out.Vcenter = Vcenter_FromProto(mapCtx, in.GetVcenter())
+	out.HCX = Hcx_v1alpha1_FromProto(mapCtx, in.GetHcx())
+	out.NSX = Nsx_v1alpha1_FromProto(mapCtx, in.GetNsx())
+	out.Vcenter = Vcenter_v1alpha1_FromProto(mapCtx, in.GetVcenter())
 	out.UID = direct.LazyPtr(in.GetUid())
 	return out
 }
@@ -129,9 +129,9 @@ func VMwareEnginePrivateCloudObservedState_v1alpha1_ToProto(mapCtx *direct.MapCo
 	out.ExpireTime = direct.StringTimestamp_ToProto(mapCtx, in.ExpireTime)
 	out.State = direct.Enum_ToProto[pb.PrivateCloud_State](mapCtx, in.State)
 	out.NetworkConfig = NetworkConfigObservedState_v1alpha1_ToProto(mapCtx, in.NetworkConfig)
-	out.Hcx = Hcx_ToProto(mapCtx, in.HCX)
-	out.Nsx = Nsx_ToProto(mapCtx, in.NSX)
-	out.Vcenter = Vcenter_ToProto(mapCtx, in.Vcenter)
+	out.Hcx = Hcx_v1alpha1_ToProto(mapCtx, in.HCX)
+	out.Nsx = Nsx_v1alpha1_ToProto(mapCtx, in.NSX)
+	out.Vcenter = Vcenter_v1alpha1_ToProto(mapCtx, in.Vcenter)
 	out.Uid = direct.ValueOf(in.UID)
 	return out
 }

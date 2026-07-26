@@ -28,8 +28,8 @@ func init() {
 
 func fuzzControl() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.Control{},
-		DiscoveryEngineControlSpec_FromProto, DiscoveryEngineControlSpec_ToProto,
-		DiscoveryEngineControlObservedState_FromProto, DiscoveryEngineControlObservedState_ToProto,
+		DiscoveryEngineControlSpec_v1alpha1_FromProto, DiscoveryEngineControlSpec_v1alpha1_ToProto,
+		DiscoveryEngineControlObservedState_v1alpha1_FromProto, DiscoveryEngineControlObservedState_v1alpha1_ToProto,
 	)
 
 	f.UnimplementedFields.Insert(".name")                          // special field

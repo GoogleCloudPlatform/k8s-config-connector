@@ -29,7 +29,7 @@ func init() {
 
 func speechCustomClassFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.CustomClass{},
-		SpeechCustomClassSpec_FromProto, SpeechCustomClassSpec_ToProto,
+		SpeechCustomClassSpec_v1beta1_FromProto, SpeechCustomClassSpec_v1beta1_ToProto,
 		SpeechCustomClassObservedState_FromProto, SpeechCustomClassObservedState_ToProto,
 	)
 
