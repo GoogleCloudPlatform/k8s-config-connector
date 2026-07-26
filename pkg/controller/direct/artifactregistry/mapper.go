@@ -18,7 +18,6 @@ import (
 	"sort"
 
 	pb "cloud.google.com/go/artifactregistry/apiv1/artifactregistrypb"
-	krmartifactregistryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/artifactregistry/v1alpha1"
 	krmartifactregistryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/artifactregistry/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -86,4 +85,3 @@ func CleanupPolicies_ToProto(mapCtx *direct.MapContext, in []krmartifactregistry
 // --- Unversioned delegating forwarders / manual overrides version wrappers ---
 
 // --- Unversioned delegating forwarders / manual overrides version wrappers ---
-
