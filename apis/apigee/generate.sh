@@ -30,8 +30,6 @@ go run . generate-types \
   --skip-scaffold-files
 
 cd ${REPO_ROOT}
-
-cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
 if [ -d "${REPO_ROOT}/pkg/controller/direct/apigee" ]; then

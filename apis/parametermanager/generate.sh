@@ -40,8 +40,6 @@ cd ${REPO_ROOT}
 # Generate the CRD YAML from the type structs
 
 # Format the generated Go code
-
-cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
 if [ -d "${REPO_ROOT}/pkg/controller/direct/parametermanager" ]; then
