@@ -21,11 +21,6 @@ set -o pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 
-if [[ "${SKIP_GENERATE_PROTOS:-0}" == "1" ]]; then
-  echo "Skipping generate-proto.sh as requested by SKIP_GENERATE_PROTOS=1"
-  exit 0
-fi
-
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 # We share the version with mockgcp, which is maybe a boundary violation, but is convenient.
@@ -54,7 +49,18 @@ if [ "${GOOGLEAPI_VERSION}" == "HEAD" ]; then
     GOOGLEAPI_VERSION=$(git ls-remote https://github.com/googleapis/googleapis.git refs/heads/master | awk '{print $1}')
 fi
 
-VERSIONED_OUTPUT_PATH="${OUTPUT_PATH%.pb}-${GOOGLEAPI_VERSION}.pb"
+if [ -n "${2:-}" ]; then
+    # Explicitly provided output path, use it directly
+    VERSIONED_OUTPUT_PATH="${OUTPUT_PATH}"
+else
+    # Default output path, version it with the SHA
+    VERSIONED_OUTPUT_PATH="${OUTPUT_PATH%.pb}-${GOOGLEAPI_VERSION}.pb"
+fi
+
+if [[ "${SKIP_GENERATE_PROTOS:-0}" == "1" ]] && [ -f "${VERSIONED_OUTPUT_PATH}" ]; then
+    echo "Skipping generate-proto.sh as requested by SKIP_GENERATE_PROTOS=1 and output file exists: ${VERSIONED_OUTPUT_PATH}"
+    exit 0
+fi
 
 if [ "${GOOGLEAPI_VERSION}" == "${DEFAULT_GOOGLE_API_VERSION}" ]; then
     VERSION_DIR="${DEFAULT_GOOGLEAPI_DIR}"
