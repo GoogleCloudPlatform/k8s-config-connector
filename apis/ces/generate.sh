@@ -25,16 +25,7 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 PROTO_SHA="1526e545e9d26f23b9c5d0f04af17297def8d045"
 PROTO_OUT="${REPO_ROOT}/.build/googleapis-${PROTO_SHA}.pb"
 
-# Unset SKIP_GENERATE_PROTOS so this specific script fetches the newer proto
-OLD_SKIP_GENERATE_PROTOS="${SKIP_GENERATE_PROTOS:-}"
-unset SKIP_GENERATE_PROTOS
-
 ./generate-proto.sh ${PROTO_SHA} ${PROTO_OUT}
-
-# Restore SKIP_GENERATE_PROTOS
-if [[ -n "${OLD_SKIP_GENERATE_PROTOS}" ]]; then
-  export SKIP_GENERATE_PROTOS="${OLD_SKIP_GENERATE_PROTOS}"
-fi
 
 go run . generate-types \
   --service google.cloud.ces.v1beta \

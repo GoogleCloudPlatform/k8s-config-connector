@@ -23,7 +23,6 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ./generate-proto.sh
 
 # --- v1alpha1 ---
-cd ${REPO_ROOT}/dev/tools/controllerbuilder
 # Generate KRM Go types from the OpenAPI / Discovery API JSON specification, ignoring all 'kind' fields and setting required fields
 go run "${REPO_ROOT}/dev/tools/openapi-to-krm/main.go" \
   --schema-file "${REPO_ROOT}/apis/dns/v1beta1/dns-api.json" \
@@ -42,7 +41,6 @@ go run "${REPO_ROOT}/dev/tools/openapi-to-krm/cmd/generate-mapper/main.go" \
   --output-file "${REPO_ROOT}/pkg/controller/direct/dns/zz_generated.v1alpha1.mappers.go"
 
 # --- v1beta1 ---
-cd ${REPO_ROOT}/dev/tools/controllerbuilder
 # Generate KRM Go types from the OpenAPI / Discovery API JSON specification, ignoring all 'kind' fields and setting required fields
 go run "${REPO_ROOT}/dev/tools/openapi-to-krm/main.go" \
   --schema-file "${REPO_ROOT}/apis/dns/v1beta1/dns-api.json" \

@@ -23,8 +23,6 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ./generate-proto.sh
 
 # --- v1alpha1 ---
-cd ${REPO_ROOT}/dev/tools/controllerbuilder
-
 go run . generate-types \
     --service google.cloud.certificatemanager.v1 \
     --api-version "certificatemanager.cnrm.cloud.google.com/v1alpha1" \
@@ -39,8 +37,6 @@ sed -i 's/out.IntermediateCas = direct.Slice_FromProto/out.IntermediateCAs = dir
 sed -i 's/Slice_ToProto(mapCtx, in.IntermediateCas,/Slice_ToProto(mapCtx, in.IntermediateCAs,/g' "${REPO_ROOT}/pkg/controller/direct/certificatemanager/mapper.generated.go"
 
 # --- v1beta1 ---
-cd ${REPO_ROOT}/dev/tools/controllerbuilder
-
 go run . generate-types \
     --service google.cloud.certificatemanager.v1 \
     --api-version "certificatemanager.cnrm.cloud.google.com/v1beta1" \

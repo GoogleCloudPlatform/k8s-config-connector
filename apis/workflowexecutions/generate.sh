@@ -22,9 +22,6 @@ source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ./generate-proto.sh
 
-source "${REPO_ROOT}/dev/tools/goimports.sh"
-cd "${REPO_ROOT}/dev/tools/controllerbuilder"
-
 go run . generate-types \
   --service google.cloud.workflows.executions.v1 \
   --api-version workflowexecutions.cnrm.cloud.google.com/v1alpha1 \

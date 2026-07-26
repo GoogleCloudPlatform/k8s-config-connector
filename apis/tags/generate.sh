@@ -23,8 +23,6 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ./generate-proto.sh
 
 # --- v1alpha1 ---
-cd ${REPO_ROOT}/dev/tools/controllerbuilder
-
 # generate-types and generate-mapper are not needed for v1alpha1 as the resource has been promoted to v1beta1
 # and v1alpha1 support is maintained via additional-versions in v1beta1.
 
@@ -33,8 +31,6 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 #
 
 # --- v1beta1 ---
-cd ${REPO_ROOT}/dev/tools/controllerbuilder
-
 go run . generate-types \
   --service google.cloud.resourcemanager.v3 \
   --api-version tags.cnrm.cloud.google.com/v1beta1  \
