@@ -39,6 +39,16 @@ func (s *FirewallActivationServer) CreateFirewallEndpoint(ctx context.Context, r
 }
 
 func (s *FirewallActivationServer) createFirewallEndpoint(ctx context.Context, req *pbv1.CreateFirewallEndpointRequest) (*longrunningpb.Operation, error) {
+	if req.Parent == "" {
+		return nil, status.Errorf(codes.InvalidArgument, "Parent is required")
+	}
+	if req.FirewallEndpointId == "" {
+		return nil, status.Errorf(codes.InvalidArgument, "FirewallEndpointId is required")
+	}
+	if req.FirewallEndpoint == nil {
+		return nil, status.Errorf(codes.InvalidArgument, "FirewallEndpoint is required")
+	}
+
 	name := req.Parent + "/firewallEndpoints/" + req.FirewallEndpointId
 
 	fqn := name
@@ -77,6 +87,9 @@ func (s *FirewallActivationServer) GetFirewallEndpoint(ctx context.Context, req 
 }
 
 func (s *FirewallActivationServer) getFirewallEndpoint(ctx context.Context, req *pbv1.GetFirewallEndpointRequest) (*pbv1.FirewallEndpoint, error) {
+	if req.Name == "" {
+		return nil, status.Errorf(codes.InvalidArgument, "Name is required")
+	}
 	name, err := s.parseFirewallEndpointName(req.Name)
 	if err != nil {
 		return nil, err
@@ -103,6 +116,9 @@ func (s *FirewallActivationServer) UpdateFirewallEndpoint(ctx context.Context, r
 }
 
 func (s *FirewallActivationServer) updateFirewallEndpoint(ctx context.Context, req *pbv1.UpdateFirewallEndpointRequest) (*longrunningpb.Operation, error) {
+	if req.GetFirewallEndpoint() == nil {
+		return nil, status.Errorf(codes.InvalidArgument, "FirewallEndpoint is required")
+	}
 	name, err := s.parseFirewallEndpointName(req.GetFirewallEndpoint().GetName())
 	if err != nil {
 		return nil, err
@@ -167,6 +183,9 @@ func (s *FirewallActivationServer) DeleteFirewallEndpoint(ctx context.Context, r
 }
 
 func (s *FirewallActivationServer) deleteFirewallEndpoint(ctx context.Context, req *pbv1.DeleteFirewallEndpointRequest) (*longrunningpb.Operation, error) {
+	if req.Name == "" {
+		return nil, status.Errorf(codes.InvalidArgument, "Name is required")
+	}
 	name, err := s.parseFirewallEndpointName(req.Name)
 	if err != nil {
 		return nil, err
