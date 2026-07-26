@@ -42,7 +42,6 @@ status:
     networkConfig:
       dnsServerIP: 192.168.30.234
       managementIPAddressLayoutVersion: 2
-      vmwareEngineNetworkCanonical: projects/${projectNumber}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}
     nsx:
       fqdn: nsx-414860.c8819727.us-west2.gve.goog
       internalIP: 192.168.30.18
