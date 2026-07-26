@@ -106,10 +106,6 @@ if [ -f "${VERSIONED_OUTPUT_PATH}" ]; then
     exit 0
 fi
 
-if [[ -n ${SKIP_GENERATE_PROTOS:-} ]]; then
-  echo "SKIP_GENERATE_PROTOS is set; skipping generation of protos"
-  exit 0
-fi
 
 shopt -s nullglob
 PROTO_FILES=(
