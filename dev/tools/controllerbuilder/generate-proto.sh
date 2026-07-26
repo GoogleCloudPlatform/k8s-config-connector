@@ -25,6 +25,7 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 # We share the version with mockgcp, which is maybe a boundary violation, but is convenient.
 # (It would be confusing if these were out of sync!)
+# Extract the default git commit SHA version of the googleapis repository from apis/git.versions
 DEFAULT_GOOGLE_API_VERSION=$(grep https://github.com/googleapis/googleapis ${REPO_ROOT}/apis/git.versions | awk '{print $2}')
 
 # Take googleapi version as parameter, default to version from git.versions.
@@ -53,7 +54,8 @@ if [ -n "${2:-}" ]; then
     # Explicitly provided output path, use it directly
     VERSIONED_OUTPUT_PATH="${OUTPUT_PATH}"
 else
-    # Default output path, version it with the SHA
+    # Default output path, version it with the SHA.
+    # ${OUTPUT_PATH%.pb} strips the suffix '.pb' from the path, then we append the SHA.
     VERSIONED_OUTPUT_PATH="${OUTPUT_PATH%.pb}-${GOOGLEAPI_VERSION}.pb"
 fi
 
@@ -109,6 +111,8 @@ if [ -f "${VERSIONED_OUTPUT_PATH}" ]; then
 fi
 
 
+# Enable nullglob shell option so that unmatched glob patterns (e.g. if certain subdirectories don't contain any .proto files)
+# expand to an empty string instead of the literal wildcard string, avoiding protoc errors.
 shopt -s nullglob
 PROTO_FILES=(
     ${REPO_ROOT}/mockgcp/apis/google/apps/cloudidentity/*/*.proto
@@ -148,8 +152,11 @@ PROTO_FILES=(
     ${VERSION_DIR}/google/container/*/*.proto
     ${VERSION_DIR}/google/privacy/dlp/v2/*.proto
 )
+# Disable nullglob shell option to restore the default shell globbing behavior
 shopt -u nullglob
 
+# Compile the protocols to a single descriptor set binary file (.pb).
+# 2> >(...) redirects stderr into process substitution to filter out noisy "Import ... is unused" warnings.
 protoc --include_imports --include_source_info \
     --experimental_allow_proto3_optional \
     -I ${VERSION_DIR}/ \
