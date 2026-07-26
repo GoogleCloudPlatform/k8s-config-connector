@@ -23,8 +23,6 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ./generate-proto.sh
 
 # --- v1alpha1 ---
-cd ${REPO_ROOT}/dev/tools/controllerbuilder
-
 go run . generate-types \
   --service google.cloud.managedkafka.v1 \
   --api-version managedkafka.cnrm.cloud.google.com/v1alpha1 \
@@ -35,8 +33,6 @@ go run . generate-types \
   --resource ManagedKafkaTopic:Topic
 
 # --- v1beta1 ---
-cd ${REPO_ROOT}/dev/tools/controllerbuilder
-
 go run . generate-types \
   --service google.cloud.managedkafka.v1 \
   --api-version managedkafka.cnrm.cloud.google.com/v1beta1 \

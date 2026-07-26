@@ -22,16 +22,7 @@ source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ./generate-proto.sh
 
-# Unset SKIP_GENERATE_PROTOS so this specific script fetches the newer proto
-OLD_SKIP_GENERATE_PROTOS="${SKIP_GENERATE_PROTOS:-}"
-unset SKIP_GENERATE_PROTOS
-
 ./generate-proto.sh 0fcabfc28371e7bab8107402eb06ad58134ee383 "${REPO_ROOT}/.build/googleapis-mapmanagement.pb"
-
-# Restore SKIP_GENERATE_PROTOS
-if [[ -n "${OLD_SKIP_GENERATE_PROTOS}" ]]; then
-  export SKIP_GENERATE_PROTOS="${OLD_SKIP_GENERATE_PROTOS}"
-fi
 
 go run . generate-types \
   --proto-source-path "${REPO_ROOT}/.build/googleapis-mapmanagement.pb" \

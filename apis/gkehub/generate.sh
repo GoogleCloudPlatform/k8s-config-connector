@@ -23,7 +23,6 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ./generate-proto.sh
 
 # --- v1alpha1 ---
-cd ${REPO_ROOT}/dev/tools/controllerbuilder
 #!/bin/bash
 # Copyright 2026 Google LLC
 #
@@ -47,8 +46,6 @@ set -o pipefail
 # Hand-written types, no proto generation yet.
 
 # --- v1beta1 ---
-cd ${REPO_ROOT}/dev/tools/controllerbuilder
-
 go run . generate-types \
   --service google.cloud.gkehub.v1beta --api-version gkehub.cnrm.cloud.google.com/v1beta1 \
   --resource GKEHubFeatureMembership:MembershipFeatureSpec
