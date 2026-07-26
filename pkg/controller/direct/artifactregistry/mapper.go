@@ -81,7 +81,3 @@ func CleanupPolicies_ToProto(mapCtx *direct.MapContext, in []krmartifactregistry
 	}
 	return out
 }
-
-// --- Unversioned delegating forwarders / manual overrides version wrappers ---
-
-// --- Unversioned delegating forwarders / manual overrides version wrappers ---
