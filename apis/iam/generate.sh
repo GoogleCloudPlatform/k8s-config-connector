@@ -23,8 +23,6 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ./generate-proto.sh
 
 # --- v1alpha1 ---
-cd ${REPO_ROOT}/dev/tools/controllerbuilder
-
 go run . generate-types \
   --service google.iam.v2 \
   --api-version iam.cnrm.cloud.google.com/v1alpha1 \
@@ -33,7 +31,6 @@ go run . generate-types \
 
 
 # --- v1beta1 ---
-cd ${REPO_ROOT}/dev/tools/controllerbuilder
 go run . generate-types \
     --service google.iam.admin.v1 \
     --api-version iam.cnrm.cloud.google.com/v1beta1 \

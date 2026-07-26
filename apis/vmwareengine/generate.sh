@@ -23,8 +23,6 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ./generate-proto.sh
 
 # --- v1alpha1 ---
-cd ${REPO_ROOT}/dev/tools/controllerbuilder
-
 go run . generate-types \
     --service google.cloud.vmwareengine.v1 \
     --api-version vmwareengine.cnrm.cloud.google.com/v1alpha1  \
@@ -38,8 +36,6 @@ go run . generate-types \
 
 
 # --- v1beta1 ---
-cd ${REPO_ROOT}/dev/tools/controllerbuilder
-
 go run . generate-types \
     --service google.cloud.vmwareengine.v1 \
     --api-version vmwareengine.cnrm.cloud.google.com/v1beta1  \
