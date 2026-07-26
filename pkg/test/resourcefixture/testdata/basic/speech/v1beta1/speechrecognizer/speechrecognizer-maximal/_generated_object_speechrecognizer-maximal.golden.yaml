@@ -34,7 +34,11 @@ status:
   observedGeneration: 2
   observedState:
     createTime: "1970-01-01T00:00:00Z"
-    defaultRecognitionConfig: {}
+    defaultRecognitionConfig:
+      languageCodes:
+      - en-US
+      - fr-FR
+      model: chirp
     etag: abcdef123456
     state: ACTIVE
     uid: 0123456789abcdef

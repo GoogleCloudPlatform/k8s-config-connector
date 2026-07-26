@@ -18,7 +18,9 @@ import (
 	"sort"
 
 	pb "cloud.google.com/go/artifactregistry/apiv1/artifactregistrypb"
+	krmartifactregistryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/artifactregistry/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/artifactregistry/v1beta1"
+	krmartifactregistryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/artifactregistry/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -80,4 +82,44 @@ func CleanupPolicies_ToProto(mapCtx *direct.MapContext, in []krm.CleanupPolicy) 
 		}
 	}
 	return out
+}
+
+// --- Unversioned delegating forwarders / manual overrides version wrappers ---
+
+func ArtifactRegistryRepositoryStatus_FromProto(mapCtx *direct.MapContext, in *pb.Repository) *krmartifactregistryv1beta1.ArtifactRegistryRepositoryStatus {
+	return ArtifactRegistryRepositoryStatus_v1beta1_FromProto(mapCtx, in)
+}
+
+func ArtifactRegistryRepositorySpec_ToProto(mapCtx *direct.MapContext, in *krmartifactregistryv1beta1.ArtifactRegistryRepositorySpec) *pb.Repository {
+	return ArtifactRegistryRepositorySpec_v1beta1_ToProto(mapCtx, in)
+}
+
+func ArtifactRegistryRepositoryStatus_ToProto(mapCtx *direct.MapContext, in *krmartifactregistryv1beta1.ArtifactRegistryRepositoryStatus) *pb.Repository {
+	return ArtifactRegistryRepositoryStatus_v1beta1_ToProto(mapCtx, in)
+}
+
+func ArtifactRegistryVPCSCConfigSpec_ToProto(mapCtx *direct.MapContext, in *krmartifactregistryv1alpha1.ArtifactRegistryVPCSCConfigSpec) *pb.VPCSCConfig {
+	return ArtifactRegistryVPCSCConfigSpec_v1alpha1_ToProto(mapCtx, in)
+}
+
+func ArtifactRegistryRepositorySpec_FromProto(mapCtx *direct.MapContext, in *pb.Repository) *krmartifactregistryv1beta1.ArtifactRegistryRepositorySpec {
+	return ArtifactRegistryRepositorySpec_v1beta1_FromProto(mapCtx, in)
+}
+
+// --- Unversioned delegating forwarders / manual overrides version wrappers ---
+
+func CleanupPolicy_ToProto(mapCtx *direct.MapContext, in *krmartifactregistryv1beta1.CleanupPolicy) *pb.CleanupPolicy {
+	return CleanupPolicy_v1beta1_ToProto(mapCtx, in)
+}
+
+func CleanupPolicy_FromProto(mapCtx *direct.MapContext, in *pb.CleanupPolicy) *krmartifactregistryv1beta1.CleanupPolicy {
+	return CleanupPolicy_v1beta1_FromProto(mapCtx, in)
+}
+
+func ArtifactRegistryVPCSCConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.VPCSCConfig) *krmartifactregistryv1alpha1.ArtifactRegistryVPCSCConfigObservedState {
+	return ArtifactRegistryVPCSCConfigObservedState_v1alpha1_FromProto(mapCtx, in)
+}
+
+func ArtifactRegistryVPCSCConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.VPCSCConfig) *krmartifactregistryv1alpha1.ArtifactRegistryVPCSCConfigSpec {
+	return ArtifactRegistryVPCSCConfigSpec_v1alpha1_FromProto(mapCtx, in)
 }
