@@ -54,7 +54,7 @@ func CleanupPolicies_FromProto(mapCtx *direct.MapContext, in map[string]*pb.Clea
 	}
 	var out []krmartifactregistryv1beta1.CleanupPolicy
 	for id, policy := range in {
-		p := CleanupPolicy_FromProto(mapCtx, policy)
+		p := CleanupPolicy_v1beta1_FromProto(mapCtx, policy)
 		if p != nil {
 			p.ID = direct.LazyPtr(id)
 			out = append(out, *p)
@@ -74,7 +74,7 @@ func CleanupPolicies_ToProto(mapCtx *direct.MapContext, in []krmartifactregistry
 	out := make(map[string]*pb.CleanupPolicy)
 	for _, policy := range in {
 		id := direct.ValueOf(policy.ID)
-		p := CleanupPolicy_ToProto(mapCtx, &policy)
+		p := CleanupPolicy_v1beta1_ToProto(mapCtx, &policy)
 		if p != nil {
 			out[id] = p
 		}
