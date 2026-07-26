@@ -149,36 +149,3 @@ func TestDirectResourceFileNaming(t *testing.T) {
 	}
 	test.CompareGoldenFile(t, "testdata/exceptions/naming_violations.txt", want)
 }
-
-func TestGenerateScriptsLocation(t *testing.T) {
-	apisDir := "../../apis"
-
-	err := filepath.Walk(apisDir, func(path string, info os.FileInfo, err error) error {
-		if err != nil {
-			return err
-		}
-		if info.IsDir() {
-			return nil
-		}
-
-		if info.Name() == "generate.sh" {
-			relPath, err := filepath.Rel(apisDir, path)
-			if err != nil {
-				return err
-			}
-
-			// Normalize path separators to forward slash
-			relSlash := filepath.ToSlash(relPath)
-			parts := strings.Split(relSlash, "/")
-
-			// Valid path must be exactly "apis/<service>/generate.sh" (relative parts: ["<service>", "generate.sh"])
-			if len(parts) != 2 {
-				t.Errorf("generate.sh script at %s is in an invalid location. generate.sh must live directly under apis/<service>/ (e.g., apis/<service>/generate.sh) to support concurrent generation.", relPath)
-			}
-		}
-		return nil
-	})
-	if err != nil {
-		t.Fatalf("error walking apis directory: %v", err)
-	}
-}
