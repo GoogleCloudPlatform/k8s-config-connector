@@ -102,7 +102,9 @@ fi
 
 if [ -f "${VERSIONED_OUTPUT_PATH}" ]; then
     echo "Using cached googleapis pb file at ${VERSIONED_OUTPUT_PATH}"
-    cp "${VERSIONED_OUTPUT_PATH}" "${OUTPUT_PATH}"
+    if [ "${VERSIONED_OUTPUT_PATH}" != "${OUTPUT_PATH}" ]; then
+        cp "${VERSIONED_OUTPUT_PATH}" "${OUTPUT_PATH}"
+    fi
     exit 0
 fi
 
