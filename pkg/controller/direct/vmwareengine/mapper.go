@@ -43,12 +43,12 @@ func VMwareEngineNetworkPeeringSpec_v1alpha1_FromProto(mapCtx *direct.MapContext
 	return VMwareEngineNetworkPeeringSpec_FromProto(mapCtx, in)
 }
 
-func PrivateCloud_ManagementCluster_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvmwareenginev1alpha1.PrivateCloud_ManagementCluster) *pb.PrivateCloud_ManagementCluster {
-	return PrivateCloud_ManagementCluster_ToProto(mapCtx, in)
+func VMwareEnginePrivateCloudObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PrivateCloud) *krmvmwareenginev1alpha1.VMwareEnginePrivateCloudObservedState {
+	return VMwareEnginePrivateCloudObservedState_v1alpha1_FromProto(mapCtx, in)
 }
 
-func PrivateCloud_ManagementCluster_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.PrivateCloud_ManagementCluster) *krmvmwareenginev1alpha1.PrivateCloud_ManagementCluster {
-	return PrivateCloud_ManagementCluster_FromProto(mapCtx, in)
+func VMwareEnginePrivateCloudObservedState_ToProto(mapCtx *direct.MapContext, in *krmvmwareenginev1alpha1.VMwareEnginePrivateCloudObservedState) *pb.PrivateCloud {
+	return VMwareEnginePrivateCloudObservedState_v1alpha1_ToProto(mapCtx, in)
 }
 
 func VMwareEngineNetworkPeeringSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvmwareenginev1alpha1.VMwareEngineNetworkPeeringSpec) *pb.NetworkPeering {

@@ -152,7 +152,8 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-west2-a
     }
   },
   "networkConfig": {
-    "managementCidr": "192.168.30.0/24"
+    "managementCidr": "192.168.30.0/24",
+    "vmwareEngineNetwork": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}"
   }
 }
 
@@ -219,7 +220,9 @@ X-Xss-Protection: 0
     "networkConfig": {
       "dnsServerIp": "192.168.30.234",
       "managementCidr": "192.168.30.0/24",
-      "managementIpAddressLayoutVersion": 2
+      "managementIpAddressLayoutVersion": 2,
+      "vmwareEngineNetwork": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}",
+      "vmwareEngineNetworkCanonical": "projects/${projectNumber}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}"
     },
     "nsx": {
       "fqdn": "nsx-414860.c8819727.us-west2.gve.goog",
@@ -269,7 +272,9 @@ X-Xss-Protection: 0
   "networkConfig": {
     "dnsServerIp": "192.168.30.234",
     "managementCidr": "192.168.30.0/24",
-    "managementIpAddressLayoutVersion": 2
+    "managementIpAddressLayoutVersion": 2,
+    "vmwareEngineNetwork": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}",
+    "vmwareEngineNetworkCanonical": "projects/${projectNumber}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}"
   },
   "nsx": {
     "fqdn": "nsx-414860.c8819727.us-west2.gve.goog",
@@ -307,7 +312,8 @@ X-Goog-Request-Params: private_cloud.name=projects%2F${projectId}%2Flocations%2F
   },
   "name": "projects/${projectId}/locations/us-west2-a/privateClouds/vmwareengineprivatecloud-minimal-${uniqueId}",
   "networkConfig": {
-    "managementCidr": "192.168.30.0/24"
+    "managementCidr": "192.168.30.0/24",
+    "vmwareEngineNetwork": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}"
   }
 }
 
@@ -374,7 +380,9 @@ X-Xss-Protection: 0
     "networkConfig": {
       "dnsServerIp": "192.168.30.234",
       "managementCidr": "192.168.30.0/24",
-      "managementIpAddressLayoutVersion": 2
+      "managementIpAddressLayoutVersion": 2,
+      "vmwareEngineNetwork": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}",
+      "vmwareEngineNetworkCanonical": "projects/${projectNumber}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}"
     },
     "nsx": {
       "fqdn": "nsx-414860.c8819727.us-west2.gve.goog",
@@ -424,7 +432,9 @@ X-Xss-Protection: 0
   "networkConfig": {
     "dnsServerIp": "192.168.30.234",
     "managementCidr": "192.168.30.0/24",
-    "managementIpAddressLayoutVersion": 2
+    "managementIpAddressLayoutVersion": 2,
+    "vmwareEngineNetwork": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}",
+    "vmwareEngineNetworkCanonical": "projects/${projectNumber}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}"
   },
   "nsx": {
     "fqdn": "nsx-414860.c8819727.us-west2.gve.goog",
@@ -515,7 +525,9 @@ X-Xss-Protection: 0
     "networkConfig": {
       "dnsServerIp": "192.168.30.234",
       "managementCidr": "192.168.30.0/24",
-      "managementIpAddressLayoutVersion": 2
+      "managementIpAddressLayoutVersion": 2,
+      "vmwareEngineNetwork": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}",
+      "vmwareEngineNetworkCanonical": "projects/${projectNumber}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}"
     },
     "nsx": {
       "fqdn": "nsx-414860.c8819727.us-west2.gve.goog",
