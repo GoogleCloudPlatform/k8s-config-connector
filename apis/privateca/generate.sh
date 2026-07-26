@@ -51,8 +51,6 @@ sed -i 's/out.Value = in.Value/out.Value = []byte(in.Value)/g' pkg/controller/di
 sed -i '/ZeroMaxIssuerPathLength/d' pkg/controller/direct/privateca/mapper.generated.go
 
 # Format files
-
-cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
 if [ -d "${REPO_ROOT}/pkg/controller/direct/privateca" ]; then

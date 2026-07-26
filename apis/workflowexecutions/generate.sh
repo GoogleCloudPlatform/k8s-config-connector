@@ -34,8 +34,6 @@ go run . generate-mapper \
   --include-skipped-output
 
 cd "${REPO_ROOT}"
-
-cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
 if [ -d "${REPO_ROOT}/pkg/controller/direct/workflowexecutions" ]; then

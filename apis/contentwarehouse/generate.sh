@@ -32,8 +32,6 @@ go run . generate-types \
     --resource ContentWarehouseSynonymSet:SynonymSet
 
 cd "${REPO_ROOT}"
-
-cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
 if [ -d "${REPO_ROOT}/pkg/controller/direct/contentwarehouse" ]; then
