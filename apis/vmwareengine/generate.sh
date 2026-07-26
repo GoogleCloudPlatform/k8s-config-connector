@@ -35,9 +35,7 @@ go run . generate-types \
     --resource VMwareEnginePrivateCloud:PrivateCloud \
     --resource VMwareEnginePrivateConnection:PrivateConnection \
 
-go run . generate-mapper \
-    --service google.cloud.vmwareengine.v1 \
-    --api-version vmwareengine.cnrm.cloud.google.com/v1alpha1
+
 
 # --- v1beta1 ---
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
@@ -48,9 +46,9 @@ go run . generate-types \
     --resource VMwareEngineExternalAddress:ExternalAddress
 
 go run . generate-mapper \
-    --service google.cloud.vmwareengine.v1 \
-    --api-version vmwareengine.cnrm.cloud.google.com/v1beta1 \
-    --multiversion
+  --service google.cloud.vmwareengine.v1 \
+  --api-version "vmwareengine.cnrm.cloud.google.com/v1beta1" \
+  --multiversion
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

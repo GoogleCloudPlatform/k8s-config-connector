@@ -34,9 +34,7 @@ go run . generate-types \
   --resource BigtableLogicalView:LogicalView \
   --resource BigtableMaterializedView:MaterializedView
 
-go run . generate-mapper \
-  --service google.bigtable.admin.v2 \
-  --api-version bigtable.cnrm.cloud.google.com/v1alpha1
+
 
 # --- v1beta1 ---
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
@@ -49,9 +47,9 @@ go run . generate-types \
   --resource BigtableGCPolicy:GcRule
 
 go run . generate-mapper \
-  --multiversion \
   --service google.bigtable.admin.v2 \
-  --api-version bigtable.cnrm.cloud.google.com/v1beta1
+  --api-version "bigtable.cnrm.cloud.google.com/v1beta1" \
+  --multiversion
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

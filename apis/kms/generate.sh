@@ -31,10 +31,7 @@ go run . generate-types \
   --resource KMSCryptoKeyVersion:CryptoKeyVersion \
   --resource KMSKeyRingImportJob:ImportJob
 
-go run . generate-mapper \
-  --service google.cloud.kms.v1 \
-  --api-version kms.cnrm.cloud.google.com/v1beta1 \
-  --include-skipped-output
+
 
 # --- v1beta1 ---
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
@@ -50,8 +47,9 @@ go run . generate-types \
 
 go run . generate-mapper \
   --service google.cloud.kms.v1 \
-  --api-version kms.cnrm.cloud.google.com/v1beta1 \
-  --include-skipped-output
+  --api-version "kms.cnrm.cloud.google.com/v1beta1" \
+  --include-skipped-output \
+  --multiversion
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

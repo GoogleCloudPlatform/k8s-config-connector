@@ -32,11 +32,7 @@ go run . generate-types \
   --resource FirestoreField:Field \
   --resource FirestoreBackupSchedule:BackupSchedule
 
-go run . generate-mapper \
-  --multiversion \
-  --service google.firestore.admin.v1 \
-  --service google.firestore.v1 \
-  --api-version firestore.cnrm.cloud.google.com/v1alpha1
+
 
 # --- v1beta1 ---
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
@@ -48,10 +44,9 @@ go run . generate-types \
   --resource FirestoreIndex:Index
 
 go run . generate-mapper \
-  --multiversion \
-  --service google.firestore.admin.v1 \
-  --service google.firestore.v1 \
-  --api-version firestore.cnrm.cloud.google.com/v1beta1
+  --service google.firestore.admin.v1,google.firestore.v1 \
+  --api-version "firestore.cnrm.cloud.google.com/v1beta1" \
+  --multiversion
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

@@ -30,9 +30,7 @@ go run . generate-types \
   --api-version iam.cnrm.cloud.google.com/v1alpha1 \
   --resource IAMDenyPolicy:Policy
 
-go run . generate-mapper \
-  --service google.iam.v2 \
-  --api-version iam.cnrm.cloud.google.com/v1alpha1
+
 
 # --- v1beta1 ---
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
@@ -44,9 +42,10 @@ go run . generate-types \
     --resource IAMServiceAccount:ServiceAccount
 
 go run . generate-mapper \
-    --service google.iam.admin.v1 \
-    --api-version iam.cnrm.cloud.google.com/v1beta1 \
-    --include-skipped-output
+  --service google.iam.admin.v1,google.iam.v2 \
+  --api-version "iam.cnrm.cloud.google.com/v1beta1" \
+  --include-skipped-output \
+  --multiversion
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

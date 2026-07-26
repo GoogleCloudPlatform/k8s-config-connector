@@ -36,9 +36,7 @@ go run . generate-types \
 # because its proto definition is not published in the public googleapis repository.
 
 
-go run . generate-mapper \
-    --service google.cloud.networkservices.v1 \
-    --api-version "networkservices.cnrm.cloud.google.com/v1alpha1"
+
 
 # --- v1beta1 ---
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
@@ -52,9 +50,10 @@ go run . generate-types \
 
 
 go run . generate-mapper \
-    --service google.cloud.networkservices.v1 \
-    --api-version "networkservices.cnrm.cloud.google.com/v1beta1" \
-    --include-skipped-output
+  --service google.cloud.networkservices.v1 \
+  --api-version "networkservices.cnrm.cloud.google.com/v1beta1" \
+  --include-skipped-output \
+  --multiversion
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

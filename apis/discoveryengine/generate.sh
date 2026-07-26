@@ -40,11 +40,12 @@ mv ../../../apis/discoveryengine/v1alpha1/types.generated.go ../../../apis/disco
 
 
 
-go run . generate-mapper --service google.cloud.discoveryengine.v1 --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1
-mv ../../../pkg/controller/direct/discoveryengine/mapper.generated.go ../../../pkg/controller/direct/discoveryengine/v1_mapper.generated.go
 
-go run . generate-mapper --service google.cloud.discoveryengine.v1beta --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1
-mv ../../../pkg/controller/direct/discoveryengine/mapper.generated.go ../../../pkg/controller/direct/discoveryengine/v1beta_mapper.generated.go
+
+go run . generate-mapper \
+  --service google.cloud.discoveryengine.v1,google.cloud.discoveryengine.v1beta \
+  --api-version "discoveryengine.cnrm.cloud.google.com/v1alpha1" \
+  --multiversion
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

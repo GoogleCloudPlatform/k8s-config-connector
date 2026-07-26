@@ -26,20 +26,20 @@ package bigtable
 import (
 	pb "cloud.google.com/go/bigtable/admin/apiv2/adminpb"
 	krmbigtablev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1alpha1"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1beta1"
+	krmbigtablev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func AppProfile_DataBoostIsolationReadOnly_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AppProfile_DataBoostIsolationReadOnly) *krm.AppProfile_DataBoostIsolationReadOnly {
+func AppProfile_DataBoostIsolationReadOnly_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AppProfile_DataBoostIsolationReadOnly) *krmbigtablev1beta1.AppProfile_DataBoostIsolationReadOnly {
 	if in == nil {
 		return nil
 	}
-	out := &krm.AppProfile_DataBoostIsolationReadOnly{}
+	out := &krmbigtablev1beta1.AppProfile_DataBoostIsolationReadOnly{}
 	out.ComputeBillingOwner = direct.Enum_FromProto(mapCtx, in.GetComputeBillingOwner())
 	return out
 }
-func AppProfile_DataBoostIsolationReadOnly_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.AppProfile_DataBoostIsolationReadOnly) *pb.AppProfile_DataBoostIsolationReadOnly {
+func AppProfile_DataBoostIsolationReadOnly_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.AppProfile_DataBoostIsolationReadOnly) *pb.AppProfile_DataBoostIsolationReadOnly {
 	if in == nil {
 		return nil
 	}
@@ -49,16 +49,16 @@ func AppProfile_DataBoostIsolationReadOnly_v1beta1_ToProto(mapCtx *direct.MapCon
 	}
 	return out
 }
-func AppProfile_SingleClusterRouting_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AppProfile_SingleClusterRouting) *krm.AppProfile_SingleClusterRouting {
+func AppProfile_SingleClusterRouting_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AppProfile_SingleClusterRouting) *krmbigtablev1beta1.AppProfile_SingleClusterRouting {
 	if in == nil {
 		return nil
 	}
-	out := &krm.AppProfile_SingleClusterRouting{}
+	out := &krmbigtablev1beta1.AppProfile_SingleClusterRouting{}
 	out.ClusterID = direct.LazyPtr(in.GetClusterId())
 	out.AllowTransactionalWrites = direct.LazyPtr(in.GetAllowTransactionalWrites())
 	return out
 }
-func AppProfile_SingleClusterRouting_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.AppProfile_SingleClusterRouting) *pb.AppProfile_SingleClusterRouting {
+func AppProfile_SingleClusterRouting_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.AppProfile_SingleClusterRouting) *pb.AppProfile_SingleClusterRouting {
 	if in == nil {
 		return nil
 	}
@@ -67,38 +67,20 @@ func AppProfile_SingleClusterRouting_v1beta1_ToProto(mapCtx *direct.MapContext, 
 	out.AllowTransactionalWrites = direct.ValueOf(in.AllowTransactionalWrites)
 	return out
 }
-func AppProfile_StandardIsolation_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AppProfile_StandardIsolation) *krm.AppProfile_StandardIsolation {
+func AppProfile_StandardIsolation_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AppProfile_StandardIsolation) *krmbigtablev1beta1.AppProfile_StandardIsolation {
 	if in == nil {
 		return nil
 	}
-	out := &krm.AppProfile_StandardIsolation{}
+	out := &krmbigtablev1beta1.AppProfile_StandardIsolation{}
 	out.Priority = direct.Enum_FromProto(mapCtx, in.GetPriority())
 	return out
 }
-func AppProfile_StandardIsolation_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.AppProfile_StandardIsolation) *pb.AppProfile_StandardIsolation {
+func AppProfile_StandardIsolation_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.AppProfile_StandardIsolation) *pb.AppProfile_StandardIsolation {
 	if in == nil {
 		return nil
 	}
 	out := &pb.AppProfile_StandardIsolation{}
 	out.Priority = direct.Enum_ToProto[pb.AppProfile_Priority](mapCtx, in.Priority)
-	return out
-}
-func AuthorizedView_FamilySubsets_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AuthorizedView_FamilySubsets) *krmbigtablev1alpha1.AuthorizedView_FamilySubsets {
-	if in == nil {
-		return nil
-	}
-	out := &krmbigtablev1alpha1.AuthorizedView_FamilySubsets{}
-	out.Qualifiers = in.Qualifiers
-	out.QualifierPrefixes = in.QualifierPrefixes
-	return out
-}
-func AuthorizedView_FamilySubsets_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1alpha1.AuthorizedView_FamilySubsets) *pb.AuthorizedView_FamilySubsets {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AuthorizedView_FamilySubsets{}
-	out.Qualifiers = in.Qualifiers
-	out.QualifierPrefixes = in.QualifierPrefixes
 	return out
 }
 func AuthorizedView_SubsetView_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AuthorizedView_SubsetView) *krmbigtablev1alpha1.AuthorizedView_SubsetView {
@@ -157,11 +139,11 @@ func AutoscalingTargets_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigta
 	// (near miss): "StorageUtilizationGibPerNode" vs "StorageUtilizationGiBPerNode"
 	return out
 }
-func BackupInfo_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackupInfo) *krm.BackupInfo {
+func BackupInfo_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackupInfo) *krmbigtablev1beta1.BackupInfo {
 	if in == nil {
 		return nil
 	}
-	out := &krm.BackupInfo{}
+	out := &krmbigtablev1beta1.BackupInfo{}
 	// MISSING: Backup
 	// MISSING: StartTime
 	// MISSING: EndTime
@@ -169,7 +151,7 @@ func BackupInfo_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.BackupInfo) 
 	// MISSING: SourceBackup
 	return out
 }
-func BackupInfo_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackupInfo) *pb.BackupInfo {
+func BackupInfo_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.BackupInfo) *pb.BackupInfo {
 	if in == nil {
 		return nil
 	}
@@ -181,17 +163,17 @@ func BackupInfo_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BackupInfo) *
 	// MISSING: SourceBackup
 	return out
 }
-func BigtableAppProfileObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AppProfile) *krm.BigtableAppProfileObservedState {
+func BigtableAppProfileObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AppProfile) *krmbigtablev1beta1.BigtableAppProfileObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.BigtableAppProfileObservedState{}
+	out := &krmbigtablev1beta1.BigtableAppProfileObservedState{}
 	// MISSING: Name
 	// MISSING: Etag
 	// MISSING: Priority
 	return out
 }
-func BigtableAppProfileObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BigtableAppProfileObservedState) *pb.AppProfile {
+func BigtableAppProfileObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.BigtableAppProfileObservedState) *pb.AppProfile {
 	if in == nil {
 		return nil
 	}
@@ -278,7 +260,7 @@ func BigtableBackupSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Bac
 	out := &krmbigtablev1alpha1.BigtableBackupSpec{}
 	// MISSING: Name
 	if in.GetSourceTable() != "" {
-		out.SourceTableRef = &krm.TableRef{External: in.GetSourceTable()}
+		out.SourceTableRef = &krmbigtablev1beta1.TableRef{External: in.GetSourceTable()}
 	}
 	out.ExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpireTime())
 	out.BackupType = direct.Enum_FromProto(mapCtx, in.GetBackupType())
@@ -347,11 +329,11 @@ func BigtableClusterSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigt
 	out.EncryptionConfig = Cluster_EncryptionConfig_v1alpha1_ToProto(mapCtx, in.EncryptionConfig)
 	return out
 }
-func BigtableInstanceSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krm.BigtableInstanceSpec {
+func BigtableInstanceSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krmbigtablev1beta1.BigtableInstanceSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.BigtableInstanceSpec{}
+	out := &krmbigtablev1beta1.BigtableInstanceSpec{}
 	// MISSING: Name
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	// MISSING: State
@@ -363,7 +345,7 @@ func BigtableInstanceSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.In
 	// MISSING: Tags
 	return out
 }
-func BigtableInstanceSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BigtableInstanceSpec) *pb.Instance {
+func BigtableInstanceSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.BigtableInstanceSpec) *pb.Instance {
 	if in == nil {
 		return nil
 	}
@@ -459,15 +441,15 @@ func BigtableMaterializedViewSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in
 	out.DeletionProtection = direct.ValueOf(in.DeletionProtection)
 	return out
 }
-func ChangeStreamConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ChangeStreamConfig) *krm.ChangeStreamConfig {
+func ChangeStreamConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ChangeStreamConfig) *krmbigtablev1beta1.ChangeStreamConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ChangeStreamConfig{}
+	out := &krmbigtablev1beta1.ChangeStreamConfig{}
 	out.RetentionPeriod = direct.StringDuration_FromProto(mapCtx, in.GetRetentionPeriod())
 	return out
 }
-func ChangeStreamConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ChangeStreamConfig) *pb.ChangeStreamConfig {
+func ChangeStreamConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.ChangeStreamConfig) *pb.ChangeStreamConfig {
 	if in == nil {
 		return nil
 	}
@@ -529,38 +511,18 @@ func Cluster_EncryptionConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *kr
 	}
 	return out
 }
-func EncryptionInfo_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionInfo) *krmbigtablev1alpha1.EncryptionInfo {
+func EncryptionInfo_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionInfo) *krmbigtablev1beta1.EncryptionInfo {
 	if in == nil {
 		return nil
 	}
-	out := &krmbigtablev1alpha1.EncryptionInfo{}
-	// MISSING: EncryptionType
-	// MISSING: EncryptionStatus
-	// MISSING: KMSKeyVersion
-	return out
-}
-func EncryptionInfo_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1alpha1.EncryptionInfo) *pb.EncryptionInfo {
-	if in == nil {
-		return nil
-	}
-	out := &pb.EncryptionInfo{}
-	// MISSING: EncryptionType
-	// MISSING: EncryptionStatus
-	// MISSING: KMSKeyVersion
-	return out
-}
-func EncryptionInfo_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionInfo) *krm.EncryptionInfo {
-	if in == nil {
-		return nil
-	}
-	out := &krm.EncryptionInfo{}
+	out := &krmbigtablev1beta1.EncryptionInfo{}
 	out.EncryptionType = direct.Enum_FromProto(mapCtx, in.GetEncryptionType())
 	// MISSING: EncryptionStatus
 	// MISSING: KMSKeyVersion
 	// (near miss): "KMSKeyVersion" vs "KmsKeyVersion"
 	return out
 }
-func EncryptionInfo_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionInfo) *pb.EncryptionInfo {
+func EncryptionInfo_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.EncryptionInfo) *pb.EncryptionInfo {
 	if in == nil {
 		return nil
 	}
@@ -571,16 +533,16 @@ func EncryptionInfo_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Encryptio
 	// (near miss): "KMSKeyVersion" vs "KmsKeyVersion"
 	return out
 }
-func RestoreInfo_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.RestoreInfo) *krm.RestoreInfo {
+func RestoreInfo_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.RestoreInfo) *krmbigtablev1beta1.RestoreInfo {
 	if in == nil {
 		return nil
 	}
-	out := &krm.RestoreInfo{}
+	out := &krmbigtablev1beta1.RestoreInfo{}
 	out.SourceType = direct.Enum_FromProto(mapCtx, in.GetSourceType())
 	out.BackupInfo = BackupInfo_v1beta1_FromProto(mapCtx, in.GetBackupInfo())
 	return out
 }
-func RestoreInfo_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.RestoreInfo) *pb.RestoreInfo {
+func RestoreInfo_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.RestoreInfo) *pb.RestoreInfo {
 	if in == nil {
 		return nil
 	}
@@ -591,16 +553,16 @@ func RestoreInfo_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.RestoreInfo)
 	}
 	return out
 }
-func TableColumnFamily_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ColumnFamily) *krm.TableColumnFamily {
+func TableColumnFamily_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ColumnFamily) *krmbigtablev1beta1.TableColumnFamily {
 	if in == nil {
 		return nil
 	}
-	out := &krm.TableColumnFamily{}
+	out := &krmbigtablev1beta1.TableColumnFamily{}
 	// MISSING: GcRule
 	// MISSING: ValueType
 	return out
 }
-func TableColumnFamily_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.TableColumnFamily) *pb.ColumnFamily {
+func TableColumnFamily_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.TableColumnFamily) *pb.ColumnFamily {
 	if in == nil {
 		return nil
 	}
@@ -609,16 +571,16 @@ func TableColumnFamily_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.TableC
 	// MISSING: ValueType
 	return out
 }
-func Table_ClusterState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Table_ClusterState) *krm.Table_ClusterState {
+func Table_ClusterState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Table_ClusterState) *krmbigtablev1beta1.Table_ClusterState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Table_ClusterState{}
+	out := &krmbigtablev1beta1.Table_ClusterState{}
 	// MISSING: ReplicationState
 	// MISSING: EncryptionInfo
 	return out
 }
-func Table_ClusterState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Table_ClusterState) *pb.Table_ClusterState {
+func Table_ClusterState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.Table_ClusterState) *pb.Table_ClusterState {
 	if in == nil {
 		return nil
 	}

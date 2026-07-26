@@ -69,11 +69,7 @@ go run . generate-types \
   --proto-source-path ${PROTO_OUT}
 
 # Generate mappers for networksecurity v1alpha1
-go run . generate-mapper \
-  --service google.cloud.networksecurity.v1,google.cloud.networksecurity.v1beta1 \
-  --api-version networksecurity.cnrm.cloud.google.com/v1alpha1 \
-  --proto-source-path ${PROTO_OUT} \
-  --multiversion
+
 
 cd ${REPO_ROOT}
 
@@ -102,10 +98,10 @@ go run . generate-types \
     --proto-source-path ${PROTO_OUT}
 
 go run . generate-mapper \
-    --multiversion \
-    --service google.cloud.networksecurity.v1,google.cloud.networksecurity.v1beta1 \
-    --api-version networksecurity.cnrm.cloud.google.com/v1beta1 \
-    --proto-source-path ${PROTO_OUT}
+  --service google.cloud.networksecurity.v1,google.cloud.networksecurity.v1beta1 \
+  --api-version "networksecurity.cnrm.cloud.google.com/v1beta1" \
+  --proto-source-path ${PROTO_OUT} \
+  --multiversion
 
 
 
