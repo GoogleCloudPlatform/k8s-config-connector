@@ -57,8 +57,6 @@ mv "${REPO_ROOT}/pkg/controller/direct/beyondcorp/beyondcorpclientgateway/beyond
 rmdir "${REPO_ROOT}/pkg/controller/direct/beyondcorp/beyondcorpclientgateway/beyondcorp/" || true
 sed -i 's/package beyondcorp/package beyondcorpclientgateway/g' "${REPO_ROOT}/pkg/controller/direct/beyondcorp/beyondcorpclientgateway/mapper.generated.go"
 
-cd "${REPO_ROOT}"
-
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
