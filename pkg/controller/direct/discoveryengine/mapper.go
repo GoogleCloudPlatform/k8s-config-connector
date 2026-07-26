@@ -98,7 +98,7 @@ func DiscoveryEngineEngineSpec_ToProto(mapCtx *direct.MapContext, in *krm.Discov
 	return out
 }
 
-func SearchResponse_Summary_FromProto(mapCtx *direct.MapContext, in *pb.SearchResponse_Summary) *krm.SearchResponse_Summary {
+func SearchResponse_Summary_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SearchResponse_Summary) *krm.SearchResponse_Summary {
 	if in == nil {
 		return nil
 	}
@@ -108,7 +108,7 @@ func SearchResponse_Summary_FromProto(mapCtx *direct.MapContext, in *pb.SearchRe
 	return out
 }
 
-func SearchResponse_Summary_ToProto(mapCtx *direct.MapContext, in *krm.SearchResponse_Summary) *pb.SearchResponse_Summary {
+func SearchResponse_Summary_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.SearchResponse_Summary) *pb.SearchResponse_Summary {
 	if in == nil {
 		return nil
 	}
@@ -116,20 +116,4 @@ func SearchResponse_Summary_ToProto(mapCtx *direct.MapContext, in *krm.SearchRes
 	out.SummaryText = direct.ValueOf(in.SummaryText)
 	out.SummarySkippedReasons = direct.EnumSlice_ToProto[pb.SearchResponse_Summary_SummarySkippedReason](mapCtx, in.SummarySkippedReasons)
 	return out
-}
-
-// --- Unversioned delegating forwarders / manual overrides version wrappers ---
-
-// --- Unversioned delegating forwarders / manual overrides version wrappers ---
-
-// --- Unversioned delegating forwarders / manual overrides version wrappers ---
-
-// --- Unversioned delegating forwarders / manual overrides version wrappers ---
-
-func SearchResponse_Summary_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SearchResponse_Summary) *krm.SearchResponse_Summary {
-	return SearchResponse_Summary_FromProto(mapCtx, in)
-}
-
-func SearchResponse_Summary_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.SearchResponse_Summary) *pb.SearchResponse_Summary {
-	return SearchResponse_Summary_ToProto(mapCtx, in)
 }
