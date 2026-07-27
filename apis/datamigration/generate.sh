@@ -34,6 +34,7 @@ go run . generate-types \
 go run . generate-mapper \
     --service google.cloud.clouddms.v1 \
     --api-version datamigration.cnrm.cloud.google.com/v1alpha1
+
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
