@@ -1,0 +1,10 @@
+apiVersion: container.cnrm.cloud.google.com/v1beta1
+kind: ContainerCluster
+metadata:
+  name: containercluster-${uniqueId}
+spec:
+  location: us-central1
+  initialNodeCount: 1
+  userManagedKeysConfig:
+    controlPlaneDiskEncryptionKeyRef:
+      name: kmscryptokey-1-${uniqueId}
