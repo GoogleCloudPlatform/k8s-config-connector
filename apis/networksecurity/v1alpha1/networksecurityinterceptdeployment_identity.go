@@ -39,6 +39,10 @@ type NetworkSecurityInterceptDeploymentIdentity struct {
 	InterceptDeployment string
 }
 
+func (i *NetworkSecurityInterceptDeploymentIdentity) ParentString() string {
+	return fmt.Sprintf("projects/%s/locations/%s", i.Project, i.Location)
+}
+
 func (i *NetworkSecurityInterceptDeploymentIdentity) String() string {
 	return NetworkSecurityInterceptDeploymentIdentityFormat.ToString(*i)
 }
