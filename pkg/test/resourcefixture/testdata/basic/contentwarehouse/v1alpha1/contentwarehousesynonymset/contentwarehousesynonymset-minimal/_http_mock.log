@@ -1,0 +1,102 @@
+GRPC /google.cloud.contentwarehouse.v1.SynonymSetService/GetSynonymSet
+
+{
+  "name": "projects/${projectId}/locations/us/synonymSets/cws${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = synonymSet "projects/${projectId}/locations/us/synonymSets/cws${uniqueId}" not found
+
+{}
+
+---
+
+GRPC /google.cloud.contentwarehouse.v1.SynonymSetService/CreateSynonymSet
+
+{
+  "parent": "projects/${projectId}/locations/us",
+  "synonymSet": {
+    "context": "cws${uniqueId}",
+    "name": "projects/${projectId}/locations/us/synonymSets/cws${uniqueId}",
+    "synonyms": [
+      {
+        "words": [
+          "invoice",
+          "bill"
+        ]
+      }
+    ]
+  }
+}
+
+OK
+
+{
+  "context": "cws${uniqueId}",
+  "name": "projects/${projectId}/locations/us/synonymSets/cws${uniqueId}",
+  "synonyms": [
+    {
+      "words": [
+        "invoice",
+        "bill"
+      ]
+    }
+  ]
+}
+
+---
+
+GRPC /google.cloud.contentwarehouse.v1.SynonymSetService/GetSynonymSet
+
+{
+  "name": "projects/${projectId}/locations/us/synonymSets/cws${uniqueId}"
+}
+
+OK
+
+{
+  "context": "cws${uniqueId}",
+  "name": "projects/${projectId}/locations/us/synonymSets/cws${uniqueId}",
+  "synonyms": [
+    {
+      "words": [
+        "invoice",
+        "bill"
+      ]
+    }
+  ]
+}
+
+---
+
+GRPC /google.cloud.contentwarehouse.v1.SynonymSetService/GetSynonymSet
+
+{
+  "name": "projects/${projectId}/locations/us/synonymSets/cws${uniqueId}"
+}
+
+OK
+
+{
+  "context": "cws${uniqueId}",
+  "name": "projects/${projectId}/locations/us/synonymSets/cws${uniqueId}",
+  "synonyms": [
+    {
+      "words": [
+        "invoice",
+        "bill"
+      ]
+    }
+  ]
+}
+
+---
+
+GRPC /google.cloud.contentwarehouse.v1.SynonymSetService/DeleteSynonymSet
+
+{
+  "name": "projects/${projectId}/locations/us/synonymSets/cws${uniqueId}"
+}
+
+OK
+
+{}

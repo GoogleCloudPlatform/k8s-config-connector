@@ -65,6 +65,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/configdeployment"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/contactcenterinsights/ccinsightsphrasematcher"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/container"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/contentwarehouse"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/datacatalog"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/dataflow"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/dataform"

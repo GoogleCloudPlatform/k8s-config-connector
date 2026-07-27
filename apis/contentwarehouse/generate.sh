@@ -40,6 +40,8 @@ ${CONTROLLERBUILDER} generate-types \
     --resource ContentWarehouseDocument:Document \
     --resource ContentWarehouseSynonymSet:SynonymSet
 
+go run . generate-mapper --service google.cloud.contentwarehouse.v1 --api-version contentwarehouse.cnrm.cloud.google.com/v1alpha1
+
 cd "${REPO_ROOT}"
 dev/tasks/generate-crds
 

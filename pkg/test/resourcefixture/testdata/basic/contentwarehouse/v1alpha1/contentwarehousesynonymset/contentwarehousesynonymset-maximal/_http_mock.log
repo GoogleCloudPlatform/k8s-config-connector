@@ -1,0 +1,217 @@
+GRPC /google.cloud.contentwarehouse.v1.SynonymSetService/GetSynonymSet
+
+{
+  "name": "projects/${projectId}/locations/us/synonymSets/cws${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = synonymSet "projects/${projectId}/locations/us/synonymSets/cws${uniqueId}" not found
+
+{}
+
+---
+
+GRPC /google.cloud.contentwarehouse.v1.SynonymSetService/CreateSynonymSet
+
+{
+  "parent": "projects/${projectId}/locations/us",
+  "synonymSet": {
+    "context": "cws${uniqueId}",
+    "name": "projects/${projectId}/locations/us/synonymSets/cws${uniqueId}",
+    "synonyms": [
+      {
+        "words": [
+          "invoice",
+          "bill",
+          "receipt"
+        ]
+      },
+      {
+        "words": [
+          "employee",
+          "worker"
+        ]
+      }
+    ]
+  }
+}
+
+OK
+
+{
+  "context": "cws${uniqueId}",
+  "name": "projects/${projectId}/locations/us/synonymSets/cws${uniqueId}",
+  "synonyms": [
+    {
+      "words": [
+        "invoice",
+        "bill",
+        "receipt"
+      ]
+    },
+    {
+      "words": [
+        "employee",
+        "worker"
+      ]
+    }
+  ]
+}
+
+---
+
+GRPC /google.cloud.contentwarehouse.v1.SynonymSetService/GetSynonymSet
+
+{
+  "name": "projects/${projectId}/locations/us/synonymSets/cws${uniqueId}"
+}
+
+OK
+
+{
+  "context": "cws${uniqueId}",
+  "name": "projects/${projectId}/locations/us/synonymSets/cws${uniqueId}",
+  "synonyms": [
+    {
+      "words": [
+        "invoice",
+        "bill",
+        "receipt"
+      ]
+    },
+    {
+      "words": [
+        "employee",
+        "worker"
+      ]
+    }
+  ]
+}
+
+---
+
+GRPC /google.cloud.contentwarehouse.v1.SynonymSetService/UpdateSynonymSet
+
+{
+  "name": "projects/${projectId}/locations/us/synonymSets/cws${uniqueId}",
+  "synonymSet": {
+    "context": "cws${uniqueId}",
+    "name": "projects/${projectId}/locations/us/synonymSets/cws${uniqueId}",
+    "synonyms": [
+      {
+        "words": [
+          "invoice",
+          "bill",
+          "receipt",
+          "statement"
+        ]
+      },
+      {
+        "words": [
+          "employee",
+          "worker",
+          "staff"
+        ]
+      }
+    ]
+  }
+}
+
+OK
+
+{
+  "context": "cws${uniqueId}",
+  "name": "projects/${projectId}/locations/us/synonymSets/cws${uniqueId}",
+  "synonyms": [
+    {
+      "words": [
+        "invoice",
+        "bill",
+        "receipt",
+        "statement"
+      ]
+    },
+    {
+      "words": [
+        "employee",
+        "worker",
+        "staff"
+      ]
+    }
+  ]
+}
+
+---
+
+GRPC /google.cloud.contentwarehouse.v1.SynonymSetService/GetSynonymSet
+
+{
+  "name": "projects/${projectId}/locations/us/synonymSets/cws${uniqueId}"
+}
+
+OK
+
+{
+  "context": "cws${uniqueId}",
+  "name": "projects/${projectId}/locations/us/synonymSets/cws${uniqueId}",
+  "synonyms": [
+    {
+      "words": [
+        "invoice",
+        "bill",
+        "receipt",
+        "statement"
+      ]
+    },
+    {
+      "words": [
+        "employee",
+        "worker",
+        "staff"
+      ]
+    }
+  ]
+}
+
+---
+
+GRPC /google.cloud.contentwarehouse.v1.SynonymSetService/GetSynonymSet
+
+{
+  "name": "projects/${projectId}/locations/us/synonymSets/cws${uniqueId}"
+}
+
+OK
+
+{
+  "context": "cws${uniqueId}",
+  "name": "projects/${projectId}/locations/us/synonymSets/cws${uniqueId}",
+  "synonyms": [
+    {
+      "words": [
+        "invoice",
+        "bill",
+        "receipt",
+        "statement"
+      ]
+    },
+    {
+      "words": [
+        "employee",
+        "worker",
+        "staff"
+      ]
+    }
+  ]
+}
+
+---
+
+GRPC /google.cloud.contentwarehouse.v1.SynonymSetService/DeleteSynonymSet
+
+{
+  "name": "projects/${projectId}/locations/us/synonymSets/cws${uniqueId}"
+}
+
+OK
+
+{}

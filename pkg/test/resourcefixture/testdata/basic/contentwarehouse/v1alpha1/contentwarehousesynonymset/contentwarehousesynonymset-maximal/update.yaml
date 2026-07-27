@@ -1,0 +1,19 @@
+apiVersion: contentwarehouse.cnrm.cloud.google.com/v1alpha1
+kind: ContentWarehouseSynonymSet
+metadata:
+  name: cws${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us
+  context: "testcontext"
+  synonyms:
+    - words:
+        - "invoice"
+        - "bill"
+        - "receipt"
+        - "statement"
+    - words:
+        - "employee"
+        - "worker"
+        - "staff"

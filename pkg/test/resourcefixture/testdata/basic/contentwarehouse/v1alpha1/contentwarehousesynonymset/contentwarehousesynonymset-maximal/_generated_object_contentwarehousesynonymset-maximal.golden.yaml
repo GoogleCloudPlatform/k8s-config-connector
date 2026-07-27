@@ -1,0 +1,36 @@
+apiVersion: contentwarehouse.cnrm.cloud.google.com/v1alpha1
+kind: ContentWarehouseSynonymSet
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: cws${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  context: testcontext
+  location: us
+  projectRef:
+    external: ${projectId}
+  synonyms:
+  - words:
+    - invoice
+    - bill
+    - receipt
+    - statement
+  - words:
+    - employee
+    - worker
+    - staff
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us/synonymSets/cws${uniqueId}
+  observedGeneration: 2
+  observedState: {}
