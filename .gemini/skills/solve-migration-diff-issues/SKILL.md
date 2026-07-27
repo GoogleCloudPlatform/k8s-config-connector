@@ -26,7 +26,7 @@ The migration test (`TestMigrationToDirect` in `tests/e2e/migration_test.go`) ex
 ## The 4-Step Development Sequence (How to Fix Issues)
 
 ### Step 1: Diagnose the Takeover Diff (MANDATORY - RUN ON REAL GCP FIRST)
-Before writing any code or making any changes, you must diagnose the behavior against real GCP.
+Before writing any code or making any changes, you must diagnose the behavior against real GCP and document it in a separate commit.
 1. Run the E2E migration test suite against real GCP for the specific fixture to exercise the APIs and generate audit logs:
    ```bash
    ./hack/record-gcp TestMigrationToDirect/fixtures/<fixture-name>$
@@ -35,12 +35,15 @@ Before writing any code or making any changes, you must diagnose the behavior ag
    `pkg/test/resourcefixture/testdata/basic/<service>/<version>/<resource>/<fixture-name>/_migration_diffs.json`
 3. Look for blocks containing `"isNewObject": false`. Note that diffs may appear from legacy re-reconciliation (Phase 2), Direct takeover (Phase 3), or Direct re-reconciliation (Phase 4). Diffs occurring during **Phase 3** or **Phase 4** indicate mismatches or re-reconciliation bugs where the Direct controller attempts to modify fields on an unchanged resource.
 4. Analyze the diff. A diff of the form `"old": <value>, "new": null` (or vice-versa) indicates a mismatch where a field is populated in one state but not the other on real GCP.
+5. **Commit the Baseline Analysis:** Commit the generated diffs/logs from Step 1 into a **separate commit** so the reviewer can clearly understand the problem. Add your detailed analysis of the issue and diffs directly to the commit message.
 
 ### Step 2: Identify the Root Cause
 Using the diff produced in Step 1, identify why the Direct controller sees a difference between KRM and GCP:
 * **Derived/Computed Fields:** In GCP, some fields (e.g., a BigQuery view's `schema`, default database settings, or server-generated metadata) are automatically computed/derived by the server. These are omitted in the KRM spec (desired is `nil`) but populated by GCP (actual is non-nil).
 * **Casing & Aliases:** Strings returned by the GCP API might have different casing (e.g. `INT64` vs `INTEGER`, `true` vs `TRUE`) or format (e.g. fully-qualified URIs vs relative paths).
 * **Default Values:** The old controller might have applied a default value that the new Direct controller does not apply, or vice-versa.
+* **Diff Suppression in Legacy Controller:** The TF or DCL controller might have custom diff suppression functions (`DiffSuppressFunc` or similar) to suppress diffs for specific fields. Check the legacy controller for this logic to see if it needs to be replicated in the Direct controller.
+* **Legacy Controller Bugs (Phase 2 Writes):** If there is an unexpected write in Phase 2, that means there is a bug in the legacy controller. If Phase 3 and Phase 4 have the same write as Phase 2, it is not a breaking change.
 
 ### Step 3: Formulate the Fix in the Direct Controller
 1. Locate the comparison logic for the resource:
@@ -64,18 +67,16 @@ Using the diff produced in Step 1, identify why the Direct controller sees a dif
      }
      ```
 4. **Normalize Values before Comparison:** If the diff is due to formatting or casing differences, implement normalization helpers to format both `actual` and `desired` identically before calling `reflect.DeepEqual`.
+5. **Create a Clean Commit:** After the fix is created, create a commit with the fix alone so it is easy to review.
 
 ### Step 4: Validate the Fix (MANDATORY)
-1. Run the E2E migration test with `WRITE_GOLDEN_OUTPUT=1` on **mock GCP** first to verify alignment:
-   ```bash
-   E2E_KUBE_TARGET=envtest E2E_GCP_TARGET=mock GOLDEN_REQUEST_CHECKS=1 GOLDEN_OBJECT_CHECKS=1 WRITE_GOLDEN_OUTPUT=1 RUN_E2E=1 go test ./tests/e2e -v -run TestMigrationToDirect/fixtures/<fixture-name>$
-   ```
-2. Verify that the `"isNewObject": false` block in `_migration_diffs.json` is **completely gone**, indicating a clean 0-write takeover.
-3. Run the E2E migration test against **real GCP** to verify that real GCP works and does not log any unexpected writes:
+1. Run the E2E migration test against **real GCP** to verify alignment and update golden files:
    ```bash
    ./hack/record-gcp TestMigrationToDirect/fixtures/<fixture-name>$
    ```
-4. Confirm that the test passes with a perfect green status and there are no unexpected write operations in the real GCP traffic.
+2. Verify that the `"isNewObject": false` block in `_migration_diffs.json` is **completely gone**, indicating a clean 0-write takeover on real GCP.
+3. Confirm that the test passes with a perfect green status and there are no unexpected write calls to the GCP API in the real GCP traffic.
+4. **Iterate if Necessary:** If there are still bugs, diffs, or unexpected writes at this step, repeat Step 2 and Step 3 to fix the issue until validation passes cleanly.
 
 ---
 
