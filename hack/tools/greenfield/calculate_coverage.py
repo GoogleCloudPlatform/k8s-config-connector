@@ -104,6 +104,33 @@ def get_kcc_resources(kcc_dir):
                     resources.append({'group': group, 'kind': kind})
     return resources
 
+def get_inflight_resources(status_file_path):
+    resources = []
+    if not os.path.exists(status_file_path):
+        return resources
+        
+    with open(status_file_path, 'r') as f:
+        in_table = False
+        for line in f:
+            line = line.strip()
+            if line.startswith('| Resource | Service |'):
+                in_table = True
+                continue
+            if in_table and line.startswith('| :---'):
+                continue
+            if in_table and line.startswith('|'):
+                parts = [p.strip() for p in line.split('|')]
+                if len(parts) >= 6:
+                    resource = parts[1]
+                    service = parts[2]
+                    
+                    if resource and service:
+                        resources.append({
+                            'group': f"{service}.cnrm.cloud.google.com",
+                            'kind': resource
+                        })
+    return resources
+
 def match_resources(gcp_resources, kcc_resources):
     covered = set()
     kcc_map = {}
@@ -126,6 +153,12 @@ def match_resources(gcp_resources, kcc_resources):
         "cloudkms": ["kms"],
         "aiplatform": ["aiplatform", "vertexai"],
         "cloudasset": ["asset"],
+        "batch": ["cloudbatch"],
+    }
+
+    kcc_kind_aliases = {
+        "aiplatform/EntityType": ["VertexAIFeaturestoreEntityType"],
+        "aiplatform/Feature": ["VertexAIFeaturestoreEntityTypeFeature"],
     }
 
     for gcp_type, info in gcp_resources.items():
@@ -303,6 +336,12 @@ def main():
     all_gcp_raw_count = len(gcp_raw)
 
     kcc_resources = get_kcc_resources(kcc_dir)
+    
+    # Inject in-flight resources
+    status_file = os.path.join(os.path.dirname(__file__), "RESOURCE_STATUS.md")
+    inflight_resources = get_inflight_resources(status_file)
+    kcc_resources.extend(inflight_resources)
+    
     # match_resources needs to work with unified keys now
     covered = set()
     kcc_map = {}
@@ -325,50 +364,70 @@ def main():
         "cloudkms": ["kms"],
         "aiplatform": ["aiplatform", "vertexai"],
         "cloudasset": ["asset"],
+        "batch": ["cloudbatch"],
+    }
+
+    kcc_kind_aliases = {
+        "aiplatform/EntityType": ["VertexAIFeaturestoreEntityType"],
+        "aiplatform/Feature": ["VertexAIFeaturestoreEntityTypeFeature"],
     }
 
     for key, info in gcp_resources.items():
+        if key in kcc_kind_aliases:
+            found_alias = False
+            for alias_kind in kcc_kind_aliases[key]:
+                for service_kinds in kcc_map.values():
+                    if alias_kind in service_kinds:
+                        covered.add(key)
+                        found_alias = True
+                        break
+                if found_alias: break
+            if found_alias: continue
+            
         gcp_service_base = info['service']
         gcp_name = info['name']
-        matched_kcc_service = None
+        matched_kcc_services = []
         if key == "iam/AccessPolicy":
-            matched_kcc_service = "accesscontextmanager"
-        elif gcp_service_base in kcc_map:
-            matched_kcc_service = gcp_service_base
-        elif gcp_service_base.endswith('s') and gcp_service_base[:-1] in kcc_map:
-            matched_kcc_service = gcp_service_base[:-1]
-        elif gcp_service_base + 's' in kcc_map:
-            matched_kcc_service = gcp_service_base + 's'
+            matched_kcc_services = ["accesscontextmanager"]
         else:
+            variants = [gcp_service_base]
+            if gcp_service_base.endswith('s'):
+                variants.append(gcp_service_base[:-1])
+            variants.append(gcp_service_base + 's')
+            
             for canonical_name, aliases in service_aliases.items():
                 all_variants = [canonical_name] + aliases
                 if gcp_service_base in all_variants:
-                    for variant in all_variants:
-                        if variant in kcc_map:
-                            matched_kcc_service = variant
-                            break
-                    if matched_kcc_service:
-                        break
+                    variants.extend(all_variants)
+            
+            for v in set(variants):
+                if v in kcc_map:
+                    matched_kcc_services.append(v)
         
-        if not matched_kcc_service: continue
+        if not matched_kcc_services: continue
         name_norm = gcp_name.lower()
-        for kcc_kind in kcc_map[matched_kcc_service]:
-            kind_norm = kcc_kind.lower()
-            prefixes = [matched_kcc_service.replace("-", "").lower(), gcp_service_base.replace("-", "").lower(), "gcp", "google", "cloud", "bigquery", "api"]
-            if kind_norm == name_norm:
-                covered.add(key)
-                break
-            found_prefix_match = False
-            for p in prefixes:
-                if kind_norm.startswith(p) and len(kind_norm) > len(p):
-                    if kind_norm[len(p):] == name_norm:
-                        covered.add(key)
-                        found_prefix_match = True
-                        break
-            if found_prefix_match: break
-            if kind_norm.endswith('s') and kind_norm[:-1] == name_norm:
-                covered.add(key)
-                break
+        
+        all_service_prefixes = [s.replace("-", "").lower() for s in variants]
+        
+        for matched_kcc_service in matched_kcc_services:
+            for kcc_kind in kcc_map[matched_kcc_service]:
+                kind_norm = kcc_kind.lower()
+                prefixes = all_service_prefixes + [gcp_service_base.replace("-", "").lower(), "gcp", "google", "cloud", "bigquery", "api"]
+                if kind_norm == name_norm:
+                    covered.add(key)
+                    break
+                found_prefix_match = False
+                for p in prefixes:
+                    if kind_norm.startswith(p) and len(kind_norm) > len(p):
+                        if kind_norm[len(p):] == name_norm:
+                            covered.add(key)
+                            found_prefix_match = True
+                            break
+                if found_prefix_match: break
+                if kind_norm.endswith('s') and kind_norm[:-1] == name_norm:
+                    covered.add(key)
+                    break
+            if key in covered: break
     
     # Categorization
     all_gcp_keys = set(gcp_resources.keys())
