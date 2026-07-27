@@ -450,13 +450,55 @@ func TestIamSubtractFromBindings(t *testing.T) {
 			input: []*cloudresourcemanager.Binding{
 				{
 					Role:    "role-1",
-					Members: []string{"member-1", "member-2"},
+					Members: []string{"member-2", "member-3"},
 				},
 			},
 			remove: []*cloudresourcemanager.Binding{
 				{
 					Role:    "role-1",
-					Members: []string{"member-1"},
+					Members: []string{"member-2", "member-1"},
+				},
+			},
+			expect: []*cloudresourcemanager.Binding{
+				{
+					Role:    "role-1",
+					Members: []string{"member-3"},
+				},
+			},
+		},
+		// Removal of tombstoned member
+		{
+			input: []*cloudresourcemanager.Binding{
+				{
+					Role:    "role-1",
+					Members: []string{"deleted:serviceAccount:foo@bar.com?uid=123", "member-2"},
+				},
+			},
+			remove: []*cloudresourcemanager.Binding{
+				{
+					Role:    "role-1",
+					Members: []string{"serviceAccount:foo@bar.com"},
+				},
+			},
+			expect: []*cloudresourcemanager.Binding{
+				{
+					Role:    "role-1",
+					Members: []string{"member-2"},
+				},
+			},
+		},
+		// Removal of clean member using tombstone identifier
+		{
+			input: []*cloudresourcemanager.Binding{
+				{
+					Role:    "role-1",
+					Members: []string{"serviceAccount:foo@bar.com", "member-2"},
+				},
+			},
+			remove: []*cloudresourcemanager.Binding{
+				{
+					Role:    "role-1",
+					Members: []string{"deleted:serviceAccount:foo@bar.com?uid=123"},
 				},
 			},
 			expect: []*cloudresourcemanager.Binding{
