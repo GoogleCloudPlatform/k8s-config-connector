@@ -15,6 +15,9 @@
 set -o errexit
 set -o nounset
 set -o pipefail
+
+export GODEBUG=gotypesalias=0
+
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd "${REPO_ROOT}"
 

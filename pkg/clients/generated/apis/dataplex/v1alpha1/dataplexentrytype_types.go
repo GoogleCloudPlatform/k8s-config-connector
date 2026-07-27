@@ -39,7 +39,7 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type EntrytypeAuthorization struct {
-	/* Immutable. The IAM permission grantable on the Entry Group to allow access to instantiate Entries of Dataplex owned Entry Types, only settable for Dataplex owned Types. */
+	/* Immutable. The IAM permission grantable on the Entry Group to allow access to instantiate Entries of Dataplex Universal Catalog owned Entry Types, only settable for Dataplex Universal Catalog owned Types. */
 	// +optional
 	AlternateUsePermission *string `json:"alternateUsePermission,omitempty"`
 }

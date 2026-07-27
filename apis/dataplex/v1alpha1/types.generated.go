@@ -26,14 +26,15 @@
 // resource: DataplexAspectType:AspectType
 // resource: DataplexDataScan:DataScan
 // resource: DataplexMetadataJob:MetadataJob
+// resource: DataplexMetadataFeed:MetadataFeed
 
 package v1alpha1
 
 // +kcc:proto=google.cloud.dataplex.v1.AspectType.Authorization
 type AspectType_Authorization struct {
 	// Immutable. The IAM permission grantable on the EntryGroup to allow access
-	//  to instantiate Aspects of Dataplex owned AspectTypes, only settable for
-	//  Dataplex owned Types.
+	//  to instantiate Aspects of Dataplex Universal Catalog owned AspectTypes,
+	//  only settable for Dataplex Universal Catalog owned Types.
 	// +kcc:proto:field=google.cloud.dataplex.v1.AspectType.Authorization.alternate_use_permission
 	AlternateUsePermission *string `json:"alternateUsePermission,omitempty"`
 }
@@ -829,8 +830,8 @@ type DataScan_ExecutionStatus struct {
 // +kcc:proto=google.cloud.dataplex.v1.EntryType.Authorization
 type EntryType_Authorization struct {
 	// Immutable. The IAM permission grantable on the Entry Group to allow
-	//  access to instantiate Entries of Dataplex owned Entry Types, only
-	//  settable for Dataplex owned Types.
+	//  access to instantiate Entries of Dataplex Universal Catalog owned Entry
+	//  Types, only settable for Dataplex Universal Catalog owned Types.
 	// +kcc:proto:field=google.cloud.dataplex.v1.EntryType.Authorization.alternate_use_permission
 	AlternateUsePermission *string `json:"alternateUsePermission,omitempty"`
 }
