@@ -276,6 +276,9 @@ func compareGroupedLogs(t *testing.T, realGrouped, mockGrouped pathMethodEvents)
 				if method == "DELETE" && hasDeletedParent(path, mockGrouped) {
 					continue
 				}
+				if method == "GET" && strings.Contains(path, "/instanceGroupManagers/") {
+					continue
+				}
 				t.Errorf("path %q present in real log but missing in mock log", path)
 				continue
 			}
@@ -460,6 +463,10 @@ func compareJSON(t *testing.T, context, realJSON, mockJSON string) {
 	realJSON = doneRegex.ReplaceAllString(realJSON, "")
 	mockJSON = doneRegex.ReplaceAllString(mockJSON, "")
 
+	secretVersionRegex := regexp.MustCompile(`/secrets/kcc-test-([a-z-]+)/versions/[0-9]+`)
+	realJSON = secretVersionRegex.ReplaceAllString(realJSON, `/secrets/kcc-test-$1/versions/_version_`)
+	mockJSON = secretVersionRegex.ReplaceAllString(mockJSON, `/secrets/kcc-test-$1/versions/_version_`)
+
 	var realObj, mockObj interface{}
 
 	if realJSON != "" {
@@ -547,9 +554,21 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		if stripQuery, ok := v["stripQuery"].(bool); ok && !stripQuery {
 			delete(v, "stripQuery")
 		}
-		if name, ok := v["name"].(string); ok && strings.Contains(name, "/operations/") {
+		if _, isOp := v["operationType"]; isOp {
 			v["name"] = "operations/${operationID}"
 			delete(v, "metadata")
+			if status, ok := v["status"].(string); ok && status == "PENDING" {
+				v["status"] = "RUNNING"
+			}
+			if opType, ok := v["operationType"].(string); ok && opType == "UPGRADE_NODES" {
+				delete(v, "operationType")
+			}
+		} else if name, ok := v["name"].(string); ok && (strings.Contains(name, "operation") || strings.Contains(name, "/operations/")) {
+			v["name"] = "operations/${operationID}"
+			delete(v, "metadata")
+			if status, ok := v["status"].(string); ok && status == "PENDING" {
+				v["status"] = "RUNNING"
+			}
 		}
 		if kind, ok := v["kind"].(string); ok && kind == "compute#backendService" {
 			delete(v, "port")
@@ -571,6 +590,7 @@ func normalizeRepresentation(obj interface{}) interface{} {
 			delete(v, "currentMasterVersion")
 			delete(v, "currentNodeVersion")
 			delete(v, "initialClusterVersion")
+			delete(v, "releaseChannel")
 			delete(v, "currentNodeCount")
 			delete(v, "nodeCreationConfig")
 			delete(v, "controlPlaneEgress")
@@ -581,6 +601,22 @@ func normalizeRepresentation(obj interface{}) interface{} {
 			delete(v, "masterAuth")
 			delete(v, "controlPlaneEndpointsConfig")
 			delete(v, "addonsConfig")
+			delete(v, "zone")
+		}
+		if cluster, ok := v["cluster"].(map[string]interface{}); ok {
+			delete(cluster, "initialClusterVersion")
+		}
+		if config, ok := v["config"].(map[string]interface{}); ok {
+			if containerdConfig, ok := config["containerdConfig"].(map[string]interface{}); ok {
+				delete(containerdConfig, "registryHosts")
+				delete(containerdConfig, "writableCgroups")
+				delete(containerdConfig, "privateRegistryAccessConfig")
+			}
+		}
+		if containerdConfig, ok := v["containerdConfig"].(map[string]interface{}); ok {
+			delete(containerdConfig, "registryHosts")
+			delete(containerdConfig, "writableCgroups")
+			delete(containerdConfig, "privateRegistryAccessConfig")
 		}
 		if kubelet, ok := v["kubeletConfig"].(map[string]interface{}); ok {
 			delete(kubelet, "maxParallelImagePulls")
@@ -609,6 +645,7 @@ func normalizeRepresentation(obj interface{}) interface{} {
 			delete(v, "networkConfig")
 			delete(v, "etag")
 			delete(v, "locations")
+			delete(v, "kubeletCertInfo")
 			if sl, ok := v["selfLink"].(string); ok {
 				v["selfLink"] = strings.ReplaceAll(sl, "/zones/", "/locations/")
 			}

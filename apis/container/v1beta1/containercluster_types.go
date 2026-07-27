@@ -920,6 +920,10 @@ type NodeConfig struct {
 	// +kcc:proto:field=google.container.v1.NodeConfig.kubelet_config
 	KubeletConfig *KubeletConfig `json:"kubeletConfig,omitempty"`
 
+	/* Parameters for containerd customization. */
+	// +kcc:proto:field=google.container.v1.NodeConfig.containerd_config
+	ContainerdConfig *ContainerdConfig `json:"containerdConfig,omitempty"`
+
 	/* Immutable. The map of Kubernetes labels (key/value pairs) to be applied to each node. These will added in addition to any default label(s) that Kubernetes may apply to the node. */
 	// +kcc:proto:field=google.container.v1.NodeConfig.labels
 	Labels map[string]string `json:"labels,omitempty"`
