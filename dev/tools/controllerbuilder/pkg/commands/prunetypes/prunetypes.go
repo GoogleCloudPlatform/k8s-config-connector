@@ -289,8 +289,13 @@ func PruneTypes(ctx context.Context, o *PruneTypesOptions) error {
 			klog.Infof("Commented out unreachable type %s in %s", item.typeName.Name(), targetFile)
 		}
 
-		if err := os.WriteFile(targetFile, content, 0644); err != nil {
-			return fmt.Errorf("writing %s: %w", targetFile, err)
+		tmpPath := targetFile + ".tmp"
+		if err := os.WriteFile(tmpPath, content, 0644); err != nil {
+			return fmt.Errorf("writing temp file %s: %w", tmpPath, err)
+		}
+		if err := os.Rename(tmpPath, targetFile); err != nil {
+			os.Remove(tmpPath)
+			return fmt.Errorf("renaming %q to %q: %w", tmpPath, targetFile, err)
 		}
 	}
 

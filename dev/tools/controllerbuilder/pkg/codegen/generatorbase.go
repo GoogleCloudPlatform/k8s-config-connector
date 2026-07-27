@@ -150,8 +150,13 @@ func (f *generatedFile) Write(addCopyright bool, writeEmptyFiles bool) error {
 	}
 
 	klog.V(2).Infof("writing file %v", p)
-	if err := os.WriteFile(p, formatted, 0644); err != nil {
-		return fmt.Errorf("writing %q: %w", p, err)
+	tmpPath := p + ".tmp"
+	if err := os.WriteFile(tmpPath, formatted, 0644); err != nil {
+		return fmt.Errorf("writing temp file %q: %w", tmpPath, err)
+	}
+	if err := os.Rename(tmpPath, p); err != nil {
+		os.Remove(tmpPath)
+		return fmt.Errorf("renaming %q to %q: %w", tmpPath, p, err)
 	}
 
 	return nil
