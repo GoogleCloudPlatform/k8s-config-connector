@@ -30,7 +30,7 @@ metadata:
   name: computesubnetwork-${uniqueId}
 spec:
   ipCidrRange: 10.128.0.0/20
-  region: us-central1
+  region: europe-west4
   networkRef:
     external: projects/${projectId}/global/networks/computenetwork-${uniqueId}
 ---
@@ -45,7 +45,7 @@ metadata:
 spec:
   projectRef:
     external: projects/${projectId}
-  location: us-central1
+  location: europe-west4
   serviceClass: "gcp-memorystore-redis"
   description: "Service Connection Policy for redis"
   networkRef:
@@ -63,7 +63,7 @@ spec:
   pscConfigs:
   - networkRef:
       external: projects/${projectId}/global/networks/computenetwork-${uniqueId}
-  location: us-central1
+  location: europe-west4
   projectRef:
     external: ${projectId}
 ---
@@ -75,7 +75,7 @@ metadata:
   name: computeaddress-1a-${uniqueId}
 spec:
   addressType: INTERNAL
-  location: us-central1
+  location: europe-west4
   purpose: GCE_ENDPOINT
   subnetworkRef:
     name: computesubnetwork-${uniqueId}
@@ -91,9 +91,9 @@ spec:
   allowPscGlobalAccess: true
   ipAddress:
     addressRef:
-      external: projects/${projectId}/regions/us-central1/addresses/computeaddress-1a-${uniqueId}
+      name: computeaddress-1a-${uniqueId}
   loadBalancingScheme: ""
-  location: us-central1
+  location: europe-west4
   networkRef:
     name: computenetwork-${uniqueId}
   subnetworkRef:
@@ -111,7 +111,7 @@ metadata:
   name: computeaddress-1b-${uniqueId}
 spec:
   addressType: INTERNAL
-  location: us-central1
+  location: europe-west4
   purpose: GCE_ENDPOINT
   subnetworkRef:
     name: computesubnetwork-${uniqueId}
@@ -127,9 +127,82 @@ spec:
   allowPscGlobalAccess: true
   ipAddress:
     addressRef:
-      external: projects/${projectId}/regions/us-central1/addresses/computeaddress-1b-${uniqueId}
+      name: computeaddress-1b-${uniqueId}
   loadBalancingScheme: ""
-  location: us-central1
+  location: europe-west4
+  networkRef:
+    name: computenetwork-${uniqueId}
+  subnetworkRef:
+    name: computesubnetwork-${uniqueId}
+  target:
+    redisClusterServiceAttachment:
+      redisClusterRef:
+        name: rediscluster-${uniqueId}
+      connectionType: CONNECTION_TYPE_DISCOVERY
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeAddress
+metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: computeaddress-2a-${uniqueId}
+spec:
+  addressType: INTERNAL
+  location: europe-west4
+  purpose: GCE_ENDPOINT
+  subnetworkRef:
+    name: computesubnetwork-${uniqueId}
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeForwardingRule
+metadata:
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: "direct"
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: computeforwardingrule-2a-${uniqueId}
+spec:
+  allowPscGlobalAccess: true
+  ipAddress:
+    addressRef:
+      name: computeaddress-2a-${uniqueId}
+  loadBalancingScheme: ""
+  location: europe-west4
+  networkRef:
+    name: computenetwork-${uniqueId}
+  subnetworkRef:
+    name: computesubnetwork-${uniqueId}
+  target:
+    redisClusterServiceAttachment:
+      redisClusterRef:
+        name: rediscluster-${uniqueId}
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeAddress
+metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: computeaddress-2b-${uniqueId}
+spec:
+  addressType: INTERNAL
+  location: europe-west4
+  purpose: GCE_ENDPOINT
+  subnetworkRef:
+    name: computesubnetwork-${uniqueId}
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeForwardingRule
+metadata:
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: "direct"
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: computeforwardingrule-2b-${uniqueId}
+spec:
+  allowPscGlobalAccess: true
+  ipAddress:
+    addressRef:
+      name: computeaddress-2b-${uniqueId}
+  loadBalancingScheme: ""
+  location: europe-west4
   networkRef:
     name: computenetwork-${uniqueId}
   subnetworkRef:

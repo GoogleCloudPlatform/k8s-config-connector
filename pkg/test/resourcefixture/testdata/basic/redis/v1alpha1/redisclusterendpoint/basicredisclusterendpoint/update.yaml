@@ -27,3 +27,10 @@ spec:
     - pscConnection:
         forwardingRuleRef:
           name: computeforwardingrule-1b-${uniqueId}
+  - connections:
+      - pscConnection:
+          forwardingRuleRef:
+            name: computeforwardingrule-2a-${uniqueId}
+      - pscConnection:
+          forwardingRuleRef:
+            name: computeforwardingrule-2b-${uniqueId}

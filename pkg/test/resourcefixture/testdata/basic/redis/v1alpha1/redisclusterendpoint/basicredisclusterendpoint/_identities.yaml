@@ -4,7 +4,7 @@
   name: computenetwork-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: //compute.googleapis.com/projects/${projectId}/regions/us-central1/subnetworks/computesubnetwork-${uniqueId}
+- caisURL: //compute.googleapis.com/projects/${projectId}/regions/europe-west4/subnetworks/computesubnetwork-${uniqueId}
   group: compute.cnrm.cloud.google.com
   kind: ComputeSubnetwork
   name: computesubnetwork-${uniqueId}
@@ -16,34 +16,58 @@
   name: scp-${uniqueId}
   namespace: ${uniqueId}
   version: v1alpha1
-- caisURL: //redis.googleapis.com/projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}
+- caisURL: //redis.googleapis.com/projects/${projectId}/locations/europe-west4/clusters/rediscluster-${uniqueId}
   group: redis.cnrm.cloud.google.com
   kind: RedisCluster
   name: rediscluster-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: //compute.googleapis.com/projects/${projectId}/regions/us-central1/addresses/computeaddress-1a-${uniqueId}
+- caisURL: //compute.googleapis.com/projects/${projectId}/regions/europe-west4/addresses/computeaddress-1a-${uniqueId}
   group: compute.cnrm.cloud.google.com
   kind: ComputeAddress
   name: computeaddress-1a-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: //compute.googleapis.com/projects/${projectId}/regions/us-central1/forwardingRules/computeforwardingrule-1a-${uniqueId}
+- caisURL: //compute.googleapis.com/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1a-${uniqueId}
   group: compute.cnrm.cloud.google.com
   kind: ComputeForwardingRule
   name: computeforwardingrule-1a-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: //compute.googleapis.com/projects/${projectId}/regions/us-central1/addresses/computeaddress-1b-${uniqueId}
+- caisURL: //compute.googleapis.com/projects/${projectId}/regions/europe-west4/addresses/computeaddress-1b-${uniqueId}
   group: compute.cnrm.cloud.google.com
   kind: ComputeAddress
   name: computeaddress-1b-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: //compute.googleapis.com/projects/${projectId}/regions/us-central1/forwardingRules/computeforwardingrule-1b-${uniqueId}
+- caisURL: //compute.googleapis.com/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1b-${uniqueId}
   group: compute.cnrm.cloud.google.com
   kind: ComputeForwardingRule
   name: computeforwardingrule-1b-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: //compute.googleapis.com/projects/${projectId}/regions/europe-west4/addresses/computeaddress-2a-${uniqueId}
+  group: compute.cnrm.cloud.google.com
+  kind: ComputeAddress
+  name: computeaddress-2a-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: //compute.googleapis.com/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-2a-${uniqueId}
+  group: compute.cnrm.cloud.google.com
+  kind: ComputeForwardingRule
+  name: computeforwardingrule-2a-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: //compute.googleapis.com/projects/${projectId}/regions/europe-west4/addresses/computeaddress-2b-${uniqueId}
+  group: compute.cnrm.cloud.google.com
+  kind: ComputeAddress
+  name: computeaddress-2b-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: //compute.googleapis.com/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-2b-${uniqueId}
+  group: compute.cnrm.cloud.google.com
+  kind: ComputeForwardingRule
+  name: computeforwardingrule-2b-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
 - caisURL: unknown
