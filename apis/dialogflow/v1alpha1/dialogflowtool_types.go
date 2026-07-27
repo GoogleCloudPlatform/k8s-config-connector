@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	discoveryenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/discoveryengine/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -122,4 +123,37 @@ type DialogflowToolList struct {
 
 func init() {
 	SchemeBuilder.Register(&DialogflowTool{}, &DialogflowToolList{})
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3beta1.Tool.DataStoreTool
+type Tool_DataStoreTool struct {
+	// Required. List of data stores to search.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Tool.DataStoreTool.data_store_connections
+	DataStoreConnections []DataStoreConnection `json:"dataStoreConnections,omitempty"`
+
+	// Required. Fallback prompt configurations to use.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.Tool.DataStoreTool.fallback_prompt
+	FallbackPrompt *Tool_DataStoreTool_FallbackPrompt `json:"fallbackPrompt,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3beta1.DataStoreConnection
+type DataStoreConnection struct {
+	// The type of the connected data store.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.DataStoreConnection.data_store_type
+	DataStoreType *string `json:"dataStoreType,omitempty"`
+
+	// The referenced DiscoveryEngineDataStore resource.
+	DataStoreRef *discoveryenginev1alpha1.DiscoveryEngineDataStoreRef `json:"dataStoreRef,omitempty"`
+
+	// The document processing mode for the data store connection. Should only be
+	//  set for PUBLIC_WEB and UNSTRUCTURED data stores. If not set it is
+	//  considered as DOCUMENTS, as this is the legacy mode.
+	// +kcc:proto:field=google.cloud.dialogflow.cx.v3beta1.DataStoreConnection.document_processing_mode
+	DocumentProcessingMode *string `json:"documentProcessingMode,omitempty"`
+}
+
+// +kcc:proto=google.cloud.dialogflow.cx.v3beta1.Tool.ExtensionTool
+type Tool_ExtensionTool struct {
+	// The referenced VertexAIExtension resource.
+	ExtensionRef *VertexAIExtensionRef `json:"extensionRef,omitempty"`
 }
