@@ -24,3 +24,6 @@ spec:
     - pscConnection:
         forwardingRuleRef:
           name: computeforwardingrule-1a-${uniqueId}
+    - pscConnection:
+        forwardingRuleRef:
+          name: computeforwardingrule-1b-${uniqueId}

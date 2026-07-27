@@ -820,6 +820,16 @@ func normalizeRepresentation(obj interface{}) interface{} {
 				}
 			}
 		}
+		// Unsupported fields in RedisCluster
+		if effectiveMaintenanceVersion, ok := v["effectiveMaintenanceVersion"].(string); ok && effectiveMaintenanceVersion == "REDISCLUSTER_20260626_00_01" {
+			delete(v, "effectiveMaintenanceVersion")
+		}
+		if satisfiesPzi, ok := v["satisfiesPzi"].(bool); ok && satisfiesPzi == true {
+			delete(v, "satisfiesPzi")
+		}
+		if serverCaMode, ok := v["serverCaMode"].(float64); ok && serverCaMode == 0 {
+			delete(v, "serverCaMode")
+		}
 		for k, val := range v {
 			v[k] = normalizeRepresentation(val)
 		}

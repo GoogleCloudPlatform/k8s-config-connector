@@ -165,7 +165,7 @@ func (a *EndpointAdapter) Create(ctx context.Context, createOp *directbase.Creat
 		return err
 	}
 
-	actual, err := a.updateConnections(ctx, a.desired.Spec.ClusterEndpoints, createOp.GetUnstructured())
+	actual, err := a.updateClusterEndpoints(ctx, a.desired.Spec.ClusterEndpoints, createOp.GetUnstructured())
 	if err != nil {
 		return err
 	}
@@ -188,7 +188,7 @@ func (a *EndpointAdapter) Update(ctx context.Context, updateOp *directbase.Updat
 		return err
 	}
 
-	actual, err := a.updateConnections(ctx, a.desired.Spec.ClusterEndpoints, updateOp.GetUnstructured())
+	actual, err := a.updateClusterEndpoints(ctx, a.desired.Spec.ClusterEndpoints, updateOp.GetUnstructured())
 	if err != nil {
 		return err
 	}
@@ -213,13 +213,13 @@ func (a *EndpointAdapter) Delete(ctx context.Context, deleteOp *directbase.Delet
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting user created cluster endpoints", "name", a.id)
 
-	if _, err := a.updateConnections(ctx, nil, deleteOp.GetUnstructured()); err != nil {
+	if _, err := a.updateClusterEndpoints(ctx, nil, deleteOp.GetUnstructured()); err != nil {
 		return false, err
 	}
 	return true, nil
 }
 
-func (a *EndpointAdapter) updateConnections(ctx context.Context, userCreated []krm.ClusterEndpoint_ClusterEndpoint, obj *unstructured.Unstructured) (*pb.Cluster, error) {
+func (a *EndpointAdapter) updateClusterEndpoints(ctx context.Context, userCreated []krm.ClusterEndpoint_ClusterEndpoint, obj *unstructured.Unstructured) (*pb.Cluster, error) {
 	mapCtx := &direct.MapContext{}
 	oldFRs := make(map[string]struct{})
 	for _, endpoint := range a.actual.ClusterEndpoints {
@@ -248,6 +248,11 @@ func (a *EndpointAdapter) updateConnections(ctx context.Context, userCreated []k
 	}
 
 	var endpoints []*pb.ClusterEndpoint
+	if len(a.actual.ClusterEndpoints) > 0 && a.actual.ClusterEndpoints[0] != nil {
+		if a.actual.ClusterEndpoints[0].Connections[0].GetPscAutoConnection() != nil {
+			endpoints = append(endpoints, a.actual.ClusterEndpoints[0])
+		}
+	}
 	for _, uc := range userCreated {
 		endpoints = append(endpoints, ClusterEndpoint_ClusterEndpoint_ToProto(mapCtx, &uc))
 	}

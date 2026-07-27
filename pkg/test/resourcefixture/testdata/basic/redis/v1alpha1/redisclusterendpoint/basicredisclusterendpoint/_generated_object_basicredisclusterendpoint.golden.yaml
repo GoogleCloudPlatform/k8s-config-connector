@@ -18,6 +18,13 @@ spec:
     - pscConnection:
         forwardingRuleRef:
           name: ${forwardingRuleID}
+  - connections:
+    - pscConnection:
+        forwardingRuleRef:
+          name: ${forwardingRuleID}
+    - pscConnection:
+        forwardingRuleRef:
+          name: ${forwardingRuleID}
   clusterRef:
     name: rediscluster-${uniqueId}
 status:
@@ -31,11 +38,14 @@ status:
   observedState:
     clusterEndpoints:
     - connections:
-      - {}
-      - {}
-    - connections:
-      - pscConnection:
-          pscConnectionStatus: PSC_CONNECTION_STATUS_ACTIVE
       - pscConnection:
           connectionType: CONNECTION_TYPE_DISCOVERY
+          pscConnectionStatus: PSC_CONNECTION_STATUS_ACTIVE
+      - pscConnection:
+          pscConnectionStatus: PSC_CONNECTION_STATUS_ACTIVE
+    - connections:
+      - pscConnection:
+          connectionType: CONNECTION_TYPE_DISCOVERY
+          pscConnectionStatus: PSC_CONNECTION_STATUS_ACTIVE
+      - pscConnection:
           pscConnectionStatus: PSC_CONNECTION_STATUS_ACTIVE
