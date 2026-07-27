@@ -34,11 +34,6 @@ go run . generate-types \
 go run . generate-mapper \
     --service google.cloud.clouddms.v1 \
     --api-version datamigration.cnrm.cloud.google.com/v1alpha1
-
-# Fix acronym for IntermediateCas -> IntermediateCAs
-sed -i 's/out.IntermediateCas = direct.Slice_FromProto/out.IntermediateCAs = direct.Slice_FromProto/g' "${REPO_ROOT}/pkg/controller/direct/certificatemanager/mapper.generated.go"
-sed -i 's/Slice_ToProto(mapCtx, in.IntermediateCas,/Slice_ToProto(mapCtx, in.IntermediateCAs,/g' "${REPO_ROOT}/pkg/controller/direct/certificatemanager/mapper.generated.go"
-
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
