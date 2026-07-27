@@ -252,7 +252,7 @@ def main():
     kcc_sha = sys.argv[2]
     k = int(sys.argv[3]) if len(sys.argv) > 3 else 10
     
-    temp_dir = "/usr/local/google/home/acpana/.gemini/tmp/k8s-config-connector-11/kcc_coverage"
+    temp_dir = os.environ.get("KCC_COVERAGE_TEMP_DIR") or os.path.expanduser("~/.gemini/tmp/kcc_coverage")
     os.makedirs(temp_dir, exist_ok=True)
     
     googleapis_dir = os.path.join(temp_dir, "googleapis")
