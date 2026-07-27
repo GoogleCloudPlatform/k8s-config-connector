@@ -28,6 +28,7 @@ import (
 	"sort"
 	"strings"
 	"sync"
+	"syscall"
 	"time"
 )
 
@@ -44,6 +45,9 @@ func main() {
 	if *listFile == "" || *baseTest == "" || len(flag.Args()) == 0 {
 		log.Fatalf("Usage: paralleltestrunner -list-file=<file> -base-test=<base> <cmd> [args...]")
 	}
+
+	restoreFD := configureFileDescriptors()
+	defer restoreFD()
 
 	tests := readList(*listFile)
 
@@ -190,6 +194,35 @@ func readList(path string) []string {
 	return list
 }
 
+func configureFileDescriptors() func() {
+	var originalRLimit syscall.Rlimit
+	if err := syscall.Getrlimit(syscall.RLIMIT_NOFILE, &originalRLimit); err != nil {
+		return func() {}
+	}
+
+	// Dynamic Core Ratio Formula: Every batch of 4 CPU cores requires 1024 file descriptors
+	requiredFDs := uint64((runtime.NumCPU()+3)/4) * 1024
+
+	// Apply safety ceiling cap of 12,288 (12K FDs) as a guardrail against resource exhaustion
+	maxFDTarget := uint64(12288)
+	targetFDs := min(originalRLimit.Max, min(requiredFDs, maxFDTarget))
+
+	// Elevate soft limit if lower than required (capped by system hard limit)
+	if originalRLimit.Cur < targetFDs {
+		newRLimit := originalRLimit
+		newRLimit.Cur = targetFDs
+		if err := syscall.Setrlimit(syscall.RLIMIT_NOFILE, &newRLimit); err == nil {
+			log.Printf("paralleltestrunner: dynamically elevated ulimit -n soft limit from %d to %d (hard limit: %d)", originalRLimit.Cur, newRLimit.Cur, originalRLimit.Max)
+			return func() {
+				_ = syscall.Setrlimit(syscall.RLIMIT_NOFILE, &originalRLimit)
+				log.Printf("paralleltestrunner: restored original ulimit -n soft limit to %d", originalRLimit.Cur)
+			}
+		}
+	}
+
+	return func() {}
+}
+
 func calculateOptimalJobs(userJ int, numTests int) int {
 	// Short-circuit: no tests need to run
 	if numTests < 1 {
@@ -205,19 +238,34 @@ func calculateOptimalJobs(userJ int, numTests int) int {
 		return jobs
 	}
 
-	// 1.5x CPU cores multiplier
-	jobs = int(float64(runtime.NumCPU()) * 1.5)
+	isCI := os.Getenv("CI") != "" || os.Getenv("GITHUB_ACTIONS") != "" || os.Getenv("BUILD_ID") != ""
 
-	// Preserve floor baseline of at least 4 parallel workers
-	jobs = max(jobs, 4)
+	// Check current file descriptor ulimit
+	var rLimit syscall.Rlimit
+	fdLimit := uint64(1024)
+	if err := syscall.Getrlimit(syscall.RLIMIT_NOFILE, &rLimit); err == nil {
+		fdLimit = rLimit.Cur
+	}
 
-	// Cap at max 8 parallel workers to avoid file descriptor (ulimit) exhaustion from concurrent envtest instances
-	jobs = min(jobs, 8)
+	if isCI {
+		// In CI environments (e.g. GitHub Actions), cap parallelism conservatively (max 4)
+		// to avoid overloading VM memory and CPU allocation.
+		jobs = min(runtime.NumCPU(), 4)
+		log.Printf("paralleltestrunner: CI environment detected. Using conservative parallelism -j=%d (CPU cores: %d)", jobs, runtime.NumCPU())
+	} else {
+		// On local developer machines, scale parallelism dynamically with CPU cores and file descriptor limits.
+		// Each envtest process consumes ~250 file descriptors.
+		safeFDJobs := int(fdLimit / 250)
+		cpuJobs := runtime.NumCPU()
+
+		// Scale up to 8 jobs for local runs if CPUs and ulimit permit
+		targetJobs := max(4, min(cpuJobs, 8))
+		jobs = min(targetJobs, safeFDJobs)
+		log.Printf("paralleltestrunner: local environment detected. Auto-scaled parallelism -j=%d (CPU cores: %d, FD limit: %d, total tests: %d)", jobs, runtime.NumCPU(), fdLimit, numTests)
+	}
 
 	// Cap by total test count if total tests < jobs
 	jobs = min(jobs, numTests)
-
-	log.Printf("paralleltestrunner: auto-detected parallelism -j=%d (CPU cores: %d, total tests: %d)", jobs, runtime.NumCPU(), numTests)
 	return jobs
 }
 
