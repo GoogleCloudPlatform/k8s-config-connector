@@ -22,11 +22,29 @@ cd ${REPO_ROOT}
 
 pushd dev/tools/controllerbuilder
 ./generate-proto.sh
+echo "Pre-compiling controllerbuilder..."
+go build -o controllerbuilder .
 popd
+
+# Define a wrapper for go run . inside dev/tools/controllerbuilder to use the precompiled binary
+go() {
+  if [[ "$1" == "run" && "$2" == "." && -f "./controllerbuilder" ]]; then
+    ./controllerbuilder "${@:3}"
+  else
+    command go "$@"
+  fi
+}
+export -f go
 
 # For efficiency, we generate CRDs only once at the end
 export SKIP_GENERATE_CRDS=1
 export SKIP_GENERATE_PROTOS=1
+
+NUM_CORES=$(nproc 2>/dev/null || echo 4)
+MAX_PARALLEL_JOBS=${NUM_CORES}
+echo "Running API generation in parallel with up to ${MAX_PARALLEL_JOBS} jobs"
+
+active_jobs=0
 
 for f in $(find apis -name "generate.sh" | sort); do
     # Skip some generate.sh scripts that are not up to date
@@ -93,8 +111,27 @@ for f in $(find apis -name "generate.sh" | sort); do
         continue
     fi
 
+    # Wait if we reached maximum parallel capacity
+    while [ ${active_jobs} -ge ${MAX_PARALLEL_JOBS} ]; do
+        if ! wait -n; then
+            echo "A background job failed! Aborting."
+            exit 1
+        fi
+        active_jobs=$((active_jobs - 1))
+    done
+
     echo "running ${f}"
-    ./${f}
+    ./${f} &
+    active_jobs=$((active_jobs + 1))
+done
+
+# Wait for all remaining background jobs
+while [ ${active_jobs} -gt 0 ]; do
+    if ! wait -n; then
+        echo "A background job failed! Aborting."
+        exit 1
+    fi
+    active_jobs=$((active_jobs - 1))
 done
 
 # Now we generate CRDs
@@ -104,3 +141,6 @@ echo "Cleaning Go build cache to prevent stale metadata compilation issues"
 go clean -cache
 echo "Generating CRDs"
 dev/tasks/generate-crds
+
+# Clean up the pre-compiled controllerbuilder binary
+rm -f dev/tools/controllerbuilder/controllerbuilder
