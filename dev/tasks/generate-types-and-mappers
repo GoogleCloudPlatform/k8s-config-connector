@@ -135,8 +135,12 @@ for s in "${!service_map[@]}"; do
     scripts+=("${service_map[$s]}")
 done
 
-# Cap default parallel worker processes to 8 to prevent machine memory and disk lock contention
-NUM_WORKERS="${PARALLELISM:-8}"
+# Detect CPU cores and scale parallelism dynamically, capped at 16 to avoid resource exhaustion
+CPU_CORES=$(nproc 2>/dev/null || getconf _NPROCESSORS_ONLN 2>/dev/null || echo 8)
+if [[ ${CPU_CORES} -gt 16 ]]; then
+    CPU_CORES=16
+fi
+NUM_WORKERS="${PARALLELISM:-${CPU_CORES}}"
 echo "Running ${#scripts[@]} generator tasks in parallel with ${NUM_WORKERS} workers..."
 
 # Worker function to execute a single generate.sh script in parallel with shared concurrent-safe Go build cache
