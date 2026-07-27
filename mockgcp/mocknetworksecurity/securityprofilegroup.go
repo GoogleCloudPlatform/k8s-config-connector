@@ -31,6 +31,8 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
+// SecurityProfileGroupServer implements the MockGCP gRPC server for the
+// NetworkSecurity SecurityProfileGroup API, providing mock CRUD/LRO operations.
 type SecurityProfileGroupServer struct {
 	*MockService
 	pbv1.UnimplementedSecurityProfileGroupServiceServer
