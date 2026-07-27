@@ -75,7 +75,7 @@ func ExternalAccessRule_IPRange_FromProto(mapCtx *direct.MapContext, in *pb.Exte
 	}
 	return out
 }
-func ExternalAccessRule_IPRange_ToProto(mapCtx *direct.MapContext, in *krm.ExternalAccessRule_IPRange) *pb.ExternalAccessRule_IpRange {
+func ExternalAccessRule_IPRange_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.ExternalAccessRule_IPRange) *pb.ExternalAccessRule_IpRange {
 	if in == nil {
 		return nil
 	}

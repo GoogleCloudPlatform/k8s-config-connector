@@ -31,7 +31,7 @@ func init() {
 func KMSAutokeyConfigFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.AutokeyConfig{},
 		kms.KMSAutokeyConfigSpec_FromProto, kms.KMSAutokeyConfigSpec_ToProto,
-		kms.KMSAutokeyConfigObservedState_FromProto, kms.KMSAutokeyConfigObservedState_ToProto,
+		kms.KMSAutokeyConfigObservedState_v1beta1_FromProto, kms.KMSAutokeyConfigObservedState_v1beta1_ToProto,
 	)
 
 	f.SpecField(".key_project")

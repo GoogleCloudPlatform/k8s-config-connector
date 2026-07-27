@@ -47,7 +47,7 @@ func VMwareEngineNetworkPeeringObservedState_ToProto(mapCtx *direct.MapContext, 
 	out.Uid = direct.ValueOf(in.UID)
 	return out
 }
-func VMwareEngineNetworkPeeringSpec_FromProto(mapCtx *direct.MapContext, in *pb.NetworkPeering) *krm.VMwareEngineNetworkPeeringSpec {
+func VMwareEngineNetworkPeeringSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.NetworkPeering) *krm.VMwareEngineNetworkPeeringSpec {
 	if in == nil {
 		return nil
 	}
@@ -69,7 +69,7 @@ func VMwareEngineNetworkPeeringSpec_FromProto(mapCtx *direct.MapContext, in *pb.
 	out.Description = direct.LazyPtr(in.GetDescription())
 	return out
 }
-func VMwareEngineNetworkPeeringSpec_ToProto(mapCtx *direct.MapContext, in *krm.VMwareEngineNetworkPeeringSpec) *pb.NetworkPeering {
+func VMwareEngineNetworkPeeringSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.VMwareEngineNetworkPeeringSpec) *pb.NetworkPeering {
 	if in == nil {
 		return nil
 	}

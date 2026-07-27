@@ -29,8 +29,8 @@ func init() {
 
 func speechRecognizerFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.Recognizer{},
-		SpeechRecognizerSpec_FromProto, SpeechRecognizerSpec_ToProto,
-		SpeechRecognizerObservedState_FromProto, SpeechRecognizerObservedState_ToProto,
+		SpeechRecognizerSpec_v1beta1_FromProto, SpeechRecognizerSpec_v1beta1_ToProto,
+		SpeechRecognizerObservedState_v1beta1_FromProto, SpeechRecognizerObservedState_v1beta1_ToProto,
 	)
 
 	f.SpecFields.Insert(".display_name")

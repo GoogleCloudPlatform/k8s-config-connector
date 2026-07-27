@@ -139,7 +139,7 @@ func (a *FirewallPolicyAdapter) Create(ctx context.Context, createOp *directbase
 	mapCtx := &direct.MapContext{}
 
 	desired := a.desired.DeepCopy()
-	resource := ReCAPTCHAEnterpriseFirewallPolicySpec_ToProto(mapCtx, &desired.Spec)
+	resource := ReCAPTCHAEnterpriseFirewallPolicySpec_v1alpha1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -172,7 +172,7 @@ func (a *FirewallPolicyAdapter) Update(ctx context.Context, updateOp *directbase
 	log.V(2).Info("updating FirewallPolicy", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	desiredPb := ReCAPTCHAEnterpriseFirewallPolicySpec_ToProto(mapCtx, &a.desired.Spec)
+	desiredPb := ReCAPTCHAEnterpriseFirewallPolicySpec_v1alpha1_ToProto(mapCtx, &a.desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -220,7 +220,7 @@ func (a *FirewallPolicyAdapter) Export(ctx context.Context) (*unstructured.Unstr
 
 	obj := &krm.ReCAPTCHAEnterpriseFirewallPolicy{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(ReCAPTCHAEnterpriseFirewallPolicySpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(ReCAPTCHAEnterpriseFirewallPolicySpec_v1alpha1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}

@@ -31,7 +31,7 @@ func init() {
 
 func iamServiceAccountFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.ServiceAccount{},
-		IAMServiceAccountSpec_FromProto, IAMServiceAccountSpec_ToProto,
+		IAMServiceAccountSpec_v1beta1_FromProto, IAMServiceAccountSpec_v1beta1_ToProto,
 		IAMServiceAccountStatus_FromProto, IAMServiceAccountStatus_ToProto,
 	)
 

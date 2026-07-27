@@ -154,7 +154,7 @@ type SpeechRecognizerObservedState struct {
 	//  [RecognizeRequest.config][google.cloud.speech.v2.RecognizeRequest.config]
 	//  field.
 	// +kcc:proto:field=google.cloud.speech.v2.Recognizer.default_recognition_config
-	DefaultRecognitionConfig *RecognitionConfigObservedState `json:"defaultRecognitionConfig,omitempty"`
+	DefaultRecognitionConfig *RecognitionConfig `json:"defaultRecognitionConfig,omitempty"`
 
 	// Output only. The Recognizer lifecycle state.
 	// +kcc:proto:field=google.cloud.speech.v2.Recognizer.state

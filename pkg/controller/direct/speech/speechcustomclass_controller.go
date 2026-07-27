@@ -130,7 +130,7 @@ func (a *customClassAdapter) Create(ctx context.Context, createOp *directbase.Cr
 	log.V(2).Info("creating speech customclass", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	resource := SpeechCustomClassSpec_ToProto(mapCtx, &a.desired.Spec)
+	resource := SpeechCustomClassSpec_v1beta1_ToProto(mapCtx, &a.desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -165,7 +165,7 @@ func (a *customClassAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	log.V(2).Info("updating speech customclass", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	resource := SpeechCustomClassSpec_ToProto(mapCtx, &a.desired.Spec)
+	resource := SpeechCustomClassSpec_v1beta1_ToProto(mapCtx, &a.desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -215,7 +215,7 @@ func (a *customClassAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 
 	obj := &krm.SpeechCustomClass{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(SpeechCustomClassSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(SpeechCustomClassSpec_v1beta1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}

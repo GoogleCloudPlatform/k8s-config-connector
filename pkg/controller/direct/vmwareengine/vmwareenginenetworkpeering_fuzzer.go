@@ -29,7 +29,7 @@ func init() {
 
 func vmwareEngineNetworkPeeringFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.NetworkPeering{},
-		VMwareEngineNetworkPeeringSpec_FromProto, VMwareEngineNetworkPeeringSpec_ToProto,
+		VMwareEngineNetworkPeeringSpec_v1alpha1_FromProto, VMwareEngineNetworkPeeringSpec_v1alpha1_ToProto,
 		VMwareEngineNetworkPeeringObservedState_FromProto, VMwareEngineNetworkPeeringObservedState_ToProto,
 	)
 

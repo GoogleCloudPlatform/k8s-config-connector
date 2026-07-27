@@ -26,105 +26,105 @@ package recaptchaenterprise
 import (
 	pb "cloud.google.com/go/recaptchaenterprise/v2/apiv1/recaptchaenterprisepb"
 	krmrecaptchaenterprisev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/recaptchaenterprise/v1alpha1"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/recaptchaenterprise/v1beta1"
+	krmrecaptchaenterprisev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/recaptchaenterprise/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func FirewallAction_FromProto(mapCtx *direct.MapContext, in *pb.FirewallAction) *krmrecaptchaenterprisev1alpha1.FirewallAction {
+func FirewallAction_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallAction) *krmrecaptchaenterprisev1alpha1.FirewallAction {
 	if in == nil {
 		return nil
 	}
 	out := &krmrecaptchaenterprisev1alpha1.FirewallAction{}
-	out.Allow = FirewallAction_AllowAction_FromProto(mapCtx, in.GetAllow())
-	out.Block = FirewallAction_BlockAction_FromProto(mapCtx, in.GetBlock())
-	out.IncludeRecaptchaScript = FirewallAction_IncludeRecaptchaScriptAction_FromProto(mapCtx, in.GetIncludeRecaptchaScript())
-	out.Redirect = FirewallAction_RedirectAction_FromProto(mapCtx, in.GetRedirect())
-	out.Substitute = FirewallAction_SubstituteAction_FromProto(mapCtx, in.GetSubstitute())
-	out.SetHeader = FirewallAction_SetHeaderAction_FromProto(mapCtx, in.GetSetHeader())
+	out.Allow = FirewallAction_AllowAction_v1alpha1_FromProto(mapCtx, in.GetAllow())
+	out.Block = FirewallAction_BlockAction_v1alpha1_FromProto(mapCtx, in.GetBlock())
+	out.IncludeRecaptchaScript = FirewallAction_IncludeRecaptchaScriptAction_v1alpha1_FromProto(mapCtx, in.GetIncludeRecaptchaScript())
+	out.Redirect = FirewallAction_RedirectAction_v1alpha1_FromProto(mapCtx, in.GetRedirect())
+	out.Substitute = FirewallAction_SubstituteAction_v1alpha1_FromProto(mapCtx, in.GetSubstitute())
+	out.SetHeader = FirewallAction_SetHeaderAction_v1alpha1_FromProto(mapCtx, in.GetSetHeader())
 	return out
 }
-func FirewallAction_ToProto(mapCtx *direct.MapContext, in *krmrecaptchaenterprisev1alpha1.FirewallAction) *pb.FirewallAction {
+func FirewallAction_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmrecaptchaenterprisev1alpha1.FirewallAction) *pb.FirewallAction {
 	if in == nil {
 		return nil
 	}
 	out := &pb.FirewallAction{}
-	if oneof := FirewallAction_AllowAction_ToProto(mapCtx, in.Allow); oneof != nil {
+	if oneof := FirewallAction_AllowAction_v1alpha1_ToProto(mapCtx, in.Allow); oneof != nil {
 		out.FirewallActionOneof = &pb.FirewallAction_Allow{Allow: oneof}
 	}
-	if oneof := FirewallAction_BlockAction_ToProto(mapCtx, in.Block); oneof != nil {
+	if oneof := FirewallAction_BlockAction_v1alpha1_ToProto(mapCtx, in.Block); oneof != nil {
 		out.FirewallActionOneof = &pb.FirewallAction_Block{Block: oneof}
 	}
-	if oneof := FirewallAction_IncludeRecaptchaScriptAction_ToProto(mapCtx, in.IncludeRecaptchaScript); oneof != nil {
+	if oneof := FirewallAction_IncludeRecaptchaScriptAction_v1alpha1_ToProto(mapCtx, in.IncludeRecaptchaScript); oneof != nil {
 		out.FirewallActionOneof = &pb.FirewallAction_IncludeRecaptchaScript{IncludeRecaptchaScript: oneof}
 	}
-	if oneof := FirewallAction_RedirectAction_ToProto(mapCtx, in.Redirect); oneof != nil {
+	if oneof := FirewallAction_RedirectAction_v1alpha1_ToProto(mapCtx, in.Redirect); oneof != nil {
 		out.FirewallActionOneof = &pb.FirewallAction_Redirect{Redirect: oneof}
 	}
-	if oneof := FirewallAction_SubstituteAction_ToProto(mapCtx, in.Substitute); oneof != nil {
+	if oneof := FirewallAction_SubstituteAction_v1alpha1_ToProto(mapCtx, in.Substitute); oneof != nil {
 		out.FirewallActionOneof = &pb.FirewallAction_Substitute{Substitute: oneof}
 	}
-	if oneof := FirewallAction_SetHeaderAction_ToProto(mapCtx, in.SetHeader); oneof != nil {
+	if oneof := FirewallAction_SetHeaderAction_v1alpha1_ToProto(mapCtx, in.SetHeader); oneof != nil {
 		out.FirewallActionOneof = &pb.FirewallAction_SetHeader{SetHeader: oneof}
 	}
 	return out
 }
-func FirewallAction_AllowAction_FromProto(mapCtx *direct.MapContext, in *pb.FirewallAction_AllowAction) *krmrecaptchaenterprisev1alpha1.FirewallAction_AllowAction {
+func FirewallAction_AllowAction_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallAction_AllowAction) *krmrecaptchaenterprisev1alpha1.FirewallAction_AllowAction {
 	if in == nil {
 		return nil
 	}
 	out := &krmrecaptchaenterprisev1alpha1.FirewallAction_AllowAction{}
 	return out
 }
-func FirewallAction_AllowAction_ToProto(mapCtx *direct.MapContext, in *krmrecaptchaenterprisev1alpha1.FirewallAction_AllowAction) *pb.FirewallAction_AllowAction {
+func FirewallAction_AllowAction_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmrecaptchaenterprisev1alpha1.FirewallAction_AllowAction) *pb.FirewallAction_AllowAction {
 	if in == nil {
 		return nil
 	}
 	out := &pb.FirewallAction_AllowAction{}
 	return out
 }
-func FirewallAction_BlockAction_FromProto(mapCtx *direct.MapContext, in *pb.FirewallAction_BlockAction) *krmrecaptchaenterprisev1alpha1.FirewallAction_BlockAction {
+func FirewallAction_BlockAction_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallAction_BlockAction) *krmrecaptchaenterprisev1alpha1.FirewallAction_BlockAction {
 	if in == nil {
 		return nil
 	}
 	out := &krmrecaptchaenterprisev1alpha1.FirewallAction_BlockAction{}
 	return out
 }
-func FirewallAction_BlockAction_ToProto(mapCtx *direct.MapContext, in *krmrecaptchaenterprisev1alpha1.FirewallAction_BlockAction) *pb.FirewallAction_BlockAction {
+func FirewallAction_BlockAction_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmrecaptchaenterprisev1alpha1.FirewallAction_BlockAction) *pb.FirewallAction_BlockAction {
 	if in == nil {
 		return nil
 	}
 	out := &pb.FirewallAction_BlockAction{}
 	return out
 }
-func FirewallAction_IncludeRecaptchaScriptAction_FromProto(mapCtx *direct.MapContext, in *pb.FirewallAction_IncludeRecaptchaScriptAction) *krmrecaptchaenterprisev1alpha1.FirewallAction_IncludeRecaptchaScriptAction {
+func FirewallAction_IncludeRecaptchaScriptAction_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallAction_IncludeRecaptchaScriptAction) *krmrecaptchaenterprisev1alpha1.FirewallAction_IncludeRecaptchaScriptAction {
 	if in == nil {
 		return nil
 	}
 	out := &krmrecaptchaenterprisev1alpha1.FirewallAction_IncludeRecaptchaScriptAction{}
 	return out
 }
-func FirewallAction_IncludeRecaptchaScriptAction_ToProto(mapCtx *direct.MapContext, in *krmrecaptchaenterprisev1alpha1.FirewallAction_IncludeRecaptchaScriptAction) *pb.FirewallAction_IncludeRecaptchaScriptAction {
+func FirewallAction_IncludeRecaptchaScriptAction_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmrecaptchaenterprisev1alpha1.FirewallAction_IncludeRecaptchaScriptAction) *pb.FirewallAction_IncludeRecaptchaScriptAction {
 	if in == nil {
 		return nil
 	}
 	out := &pb.FirewallAction_IncludeRecaptchaScriptAction{}
 	return out
 }
-func FirewallAction_RedirectAction_FromProto(mapCtx *direct.MapContext, in *pb.FirewallAction_RedirectAction) *krmrecaptchaenterprisev1alpha1.FirewallAction_RedirectAction {
+func FirewallAction_RedirectAction_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallAction_RedirectAction) *krmrecaptchaenterprisev1alpha1.FirewallAction_RedirectAction {
 	if in == nil {
 		return nil
 	}
 	out := &krmrecaptchaenterprisev1alpha1.FirewallAction_RedirectAction{}
 	return out
 }
-func FirewallAction_RedirectAction_ToProto(mapCtx *direct.MapContext, in *krmrecaptchaenterprisev1alpha1.FirewallAction_RedirectAction) *pb.FirewallAction_RedirectAction {
+func FirewallAction_RedirectAction_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmrecaptchaenterprisev1alpha1.FirewallAction_RedirectAction) *pb.FirewallAction_RedirectAction {
 	if in == nil {
 		return nil
 	}
 	out := &pb.FirewallAction_RedirectAction{}
 	return out
 }
-func FirewallAction_SetHeaderAction_FromProto(mapCtx *direct.MapContext, in *pb.FirewallAction_SetHeaderAction) *krmrecaptchaenterprisev1alpha1.FirewallAction_SetHeaderAction {
+func FirewallAction_SetHeaderAction_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallAction_SetHeaderAction) *krmrecaptchaenterprisev1alpha1.FirewallAction_SetHeaderAction {
 	if in == nil {
 		return nil
 	}
@@ -133,7 +133,7 @@ func FirewallAction_SetHeaderAction_FromProto(mapCtx *direct.MapContext, in *pb.
 	out.Value = direct.LazyPtr(in.GetValue())
 	return out
 }
-func FirewallAction_SetHeaderAction_ToProto(mapCtx *direct.MapContext, in *krmrecaptchaenterprisev1alpha1.FirewallAction_SetHeaderAction) *pb.FirewallAction_SetHeaderAction {
+func FirewallAction_SetHeaderAction_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmrecaptchaenterprisev1alpha1.FirewallAction_SetHeaderAction) *pb.FirewallAction_SetHeaderAction {
 	if in == nil {
 		return nil
 	}
@@ -142,7 +142,7 @@ func FirewallAction_SetHeaderAction_ToProto(mapCtx *direct.MapContext, in *krmre
 	out.Value = direct.ValueOf(in.Value)
 	return out
 }
-func FirewallAction_SubstituteAction_FromProto(mapCtx *direct.MapContext, in *pb.FirewallAction_SubstituteAction) *krmrecaptchaenterprisev1alpha1.FirewallAction_SubstituteAction {
+func FirewallAction_SubstituteAction_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallAction_SubstituteAction) *krmrecaptchaenterprisev1alpha1.FirewallAction_SubstituteAction {
 	if in == nil {
 		return nil
 	}
@@ -150,7 +150,7 @@ func FirewallAction_SubstituteAction_FromProto(mapCtx *direct.MapContext, in *pb
 	out.Path = direct.LazyPtr(in.GetPath())
 	return out
 }
-func FirewallAction_SubstituteAction_ToProto(mapCtx *direct.MapContext, in *krmrecaptchaenterprisev1alpha1.FirewallAction_SubstituteAction) *pb.FirewallAction_SubstituteAction {
+func FirewallAction_SubstituteAction_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmrecaptchaenterprisev1alpha1.FirewallAction_SubstituteAction) *pb.FirewallAction_SubstituteAction {
 	if in == nil {
 		return nil
 	}
@@ -158,17 +158,17 @@ func FirewallAction_SubstituteAction_ToProto(mapCtx *direct.MapContext, in *krmr
 	out.Path = direct.ValueOf(in.Path)
 	return out
 }
-func KeyAndroidSettings_FromProto(mapCtx *direct.MapContext, in *pb.AndroidKeySettings) *krm.KeyAndroidSettings {
+func KeyAndroidSettings_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AndroidKeySettings) *krmrecaptchaenterprisev1beta1.KeyAndroidSettings {
 	if in == nil {
 		return nil
 	}
-	out := &krm.KeyAndroidSettings{}
+	out := &krmrecaptchaenterprisev1beta1.KeyAndroidSettings{}
 	out.AllowAllPackageNames = direct.LazyPtr(in.GetAllowAllPackageNames())
 	out.AllowedPackageNames = in.AllowedPackageNames
 	// MISSING: SupportNonGoogleAppStoreDistribution
 	return out
 }
-func KeyAndroidSettings_ToProto(mapCtx *direct.MapContext, in *krm.KeyAndroidSettings) *pb.AndroidKeySettings {
+func KeyAndroidSettings_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmrecaptchaenterprisev1beta1.KeyAndroidSettings) *pb.AndroidKeySettings {
 	if in == nil {
 		return nil
 	}
@@ -178,17 +178,17 @@ func KeyAndroidSettings_ToProto(mapCtx *direct.MapContext, in *krm.KeyAndroidSet
 	// MISSING: SupportNonGoogleAppStoreDistribution
 	return out
 }
-func KeyIosSettings_FromProto(mapCtx *direct.MapContext, in *pb.IOSKeySettings) *krm.KeyIosSettings {
+func KeyIosSettings_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.IOSKeySettings) *krmrecaptchaenterprisev1beta1.KeyIosSettings {
 	if in == nil {
 		return nil
 	}
-	out := &krm.KeyIosSettings{}
+	out := &krmrecaptchaenterprisev1beta1.KeyIosSettings{}
 	out.AllowAllBundleIds = direct.LazyPtr(in.GetAllowAllBundleIds())
 	out.AllowedBundleIds = in.AllowedBundleIds
 	// MISSING: AppleDeveloperID
 	return out
 }
-func KeyIosSettings_ToProto(mapCtx *direct.MapContext, in *krm.KeyIosSettings) *pb.IOSKeySettings {
+func KeyIosSettings_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmrecaptchaenterprisev1beta1.KeyIosSettings) *pb.IOSKeySettings {
 	if in == nil {
 		return nil
 	}
@@ -199,20 +199,20 @@ func KeyIosSettings_ToProto(mapCtx *direct.MapContext, in *krm.KeyIosSettings) *
 	return out
 }
 
-/* found existing non-generated mapping function "KeyTestingOptions_FromProto", skipping
-func KeyTestingOptions_FromProto(mapCtx *direct.MapContext, in *pb.TestingOptions) *krm.KeyTestingOptions {
+/* found existing non-generated mapping function "KeyTestingOptions_v1beta1_FromProto", skipping
+func KeyTestingOptions_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.TestingOptions) *krmrecaptchaenterprisev1beta1.KeyTestingOptions {
 	if in == nil {
 		return nil
 	}
-	out := &krm.KeyTestingOptions{}
+	out := &krmrecaptchaenterprisev1beta1.KeyTestingOptions{}
 	out.TestingScore = direct.LazyPtr(in.GetTestingScore())
 	out.TestingChallenge = direct.Enum_FromProto(mapCtx, in.GetTestingChallenge())
 	return out
 }
 */
 
-/* found existing non-generated mapping function "KeyTestingOptions_ToProto", skipping
-func KeyTestingOptions_ToProto(mapCtx *direct.MapContext, in *krm.KeyTestingOptions) *pb.TestingOptions {
+/* found existing non-generated mapping function "KeyTestingOptions_v1beta1_ToProto", skipping
+func KeyTestingOptions_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmrecaptchaenterprisev1beta1.KeyTestingOptions) *pb.TestingOptions {
 	if in == nil {
 		return nil
 	}
@@ -223,20 +223,20 @@ func KeyTestingOptions_ToProto(mapCtx *direct.MapContext, in *krm.KeyTestingOpti
 }
 */
 
-/* found existing non-generated mapping function "KeyWafSettings_FromProto", skipping
-func KeyWafSettings_FromProto(mapCtx *direct.MapContext, in *pb.WafSettings) *krm.KeyWafSettings {
+/* found existing non-generated mapping function "KeyWafSettings_v1beta1_FromProto", skipping
+func KeyWafSettings_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.WafSettings) *krmrecaptchaenterprisev1beta1.KeyWafSettings {
 	if in == nil {
 		return nil
 	}
-	out := &krm.KeyWafSettings{}
+	out := &krmrecaptchaenterprisev1beta1.KeyWafSettings{}
 	out.WafService = direct.Enum_FromProto(mapCtx, in.GetWafService())
 	out.WafFeature = direct.Enum_FromProto(mapCtx, in.GetWafFeature())
 	return out
 }
 */
 
-/* found existing non-generated mapping function "KeyWafSettings_ToProto", skipping
-func KeyWafSettings_ToProto(mapCtx *direct.MapContext, in *krm.KeyWafSettings) *pb.WafSettings {
+/* found existing non-generated mapping function "KeyWafSettings_v1beta1_ToProto", skipping
+func KeyWafSettings_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmrecaptchaenterprisev1beta1.KeyWafSettings) *pb.WafSettings {
 	if in == nil {
 		return nil
 	}
@@ -247,12 +247,12 @@ func KeyWafSettings_ToProto(mapCtx *direct.MapContext, in *krm.KeyWafSettings) *
 }
 */
 
-/* found existing non-generated mapping function "KeyWebSettings_FromProto", skipping
-func KeyWebSettings_FromProto(mapCtx *direct.MapContext, in *pb.WebKeySettings) *krm.KeyWebSettings {
+/* found existing non-generated mapping function "KeyWebSettings_v1beta1_FromProto", skipping
+func KeyWebSettings_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.WebKeySettings) *krmrecaptchaenterprisev1beta1.KeyWebSettings {
 	if in == nil {
 		return nil
 	}
-	out := &krm.KeyWebSettings{}
+	out := &krmrecaptchaenterprisev1beta1.KeyWebSettings{}
 	out.AllowAllDomains = direct.LazyPtr(in.GetAllowAllDomains())
 	out.AllowedDomains = in.AllowedDomains
 	out.AllowAmpTraffic = direct.LazyPtr(in.GetAllowAmpTraffic())
@@ -263,9 +263,9 @@ func KeyWebSettings_FromProto(mapCtx *direct.MapContext, in *pb.WebKeySettings) 
 */
 
 /*
-found existing non-generated mapping function "KeyWebSettings_ToProto", skipping
+found existing non-generated mapping function "KeyWebSettings_v1beta1_ToProto", skipping
 
-	func KeyWebSettings_ToProto(mapCtx *direct.MapContext, in *krm.KeyWebSettings) *pb.WebKeySettings {
+	func KeyWebSettings_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmrecaptchaenterprisev1beta1.KeyWebSettings) *pb.WebKeySettings {
 		if in == nil {
 			return nil
 		}
@@ -278,7 +278,7 @@ found existing non-generated mapping function "KeyWebSettings_ToProto", skipping
 		return out
 	}
 */
-func ReCAPTCHAEnterpriseFirewallPolicySpec_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicy) *krmrecaptchaenterprisev1alpha1.ReCAPTCHAEnterpriseFirewallPolicySpec {
+func ReCAPTCHAEnterpriseFirewallPolicySpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicy) *krmrecaptchaenterprisev1alpha1.ReCAPTCHAEnterpriseFirewallPolicySpec {
 	if in == nil {
 		return nil
 	}
@@ -287,10 +287,10 @@ func ReCAPTCHAEnterpriseFirewallPolicySpec_FromProto(mapCtx *direct.MapContext, 
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.Path = direct.LazyPtr(in.GetPath())
 	out.Condition = direct.LazyPtr(in.GetCondition())
-	out.Actions = direct.Slice_FromProto(mapCtx, in.Actions, FirewallAction_FromProto)
+	out.Actions = direct.Slice_FromProto(mapCtx, in.Actions, FirewallAction_v1alpha1_FromProto)
 	return out
 }
-func ReCAPTCHAEnterpriseFirewallPolicySpec_ToProto(mapCtx *direct.MapContext, in *krmrecaptchaenterprisev1alpha1.ReCAPTCHAEnterpriseFirewallPolicySpec) *pb.FirewallPolicy {
+func ReCAPTCHAEnterpriseFirewallPolicySpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmrecaptchaenterprisev1alpha1.ReCAPTCHAEnterpriseFirewallPolicySpec) *pb.FirewallPolicy {
 	if in == nil {
 		return nil
 	}
@@ -299,46 +299,46 @@ func ReCAPTCHAEnterpriseFirewallPolicySpec_ToProto(mapCtx *direct.MapContext, in
 	out.Description = direct.ValueOf(in.Description)
 	out.Path = direct.ValueOf(in.Path)
 	out.Condition = direct.ValueOf(in.Condition)
-	out.Actions = direct.Slice_ToProto(mapCtx, in.Actions, FirewallAction_ToProto)
+	out.Actions = direct.Slice_ToProto(mapCtx, in.Actions, FirewallAction_v1alpha1_ToProto)
 	return out
 }
-func RecaptchaEnterpriseKeySpec_FromProto(mapCtx *direct.MapContext, in *pb.Key) *krm.RecaptchaEnterpriseKeySpec {
+func RecaptchaEnterpriseKeySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Key) *krmrecaptchaenterprisev1beta1.RecaptchaEnterpriseKeySpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.RecaptchaEnterpriseKeySpec{}
+	out := &krmrecaptchaenterprisev1beta1.RecaptchaEnterpriseKeySpec{}
 	// MISSING: Name
 	out.DisplayName = in.GetDisplayName()
-	out.WebSettings = KeyWebSettings_FromProto(mapCtx, in.GetWebSettings())
-	out.AndroidSettings = KeyAndroidSettings_FromProto(mapCtx, in.GetAndroidSettings())
-	out.IosSettings = KeyIosSettings_FromProto(mapCtx, in.GetIosSettings())
+	out.WebSettings = KeyWebSettings_v1beta1_FromProto(mapCtx, in.GetWebSettings())
+	out.AndroidSettings = KeyAndroidSettings_v1beta1_FromProto(mapCtx, in.GetAndroidSettings())
+	out.IosSettings = KeyIosSettings_v1beta1_FromProto(mapCtx, in.GetIosSettings())
 	// MISSING: ExpressSettings
 	// MISSING: Labels
 	// MISSING: CreateTime
-	out.TestingOptions = KeyTestingOptions_FromProto(mapCtx, in.GetTestingOptions())
-	out.WafSettings = KeyWafSettings_FromProto(mapCtx, in.GetWafSettings())
+	out.TestingOptions = KeyTestingOptions_v1beta1_FromProto(mapCtx, in.GetTestingOptions())
+	out.WafSettings = KeyWafSettings_v1beta1_FromProto(mapCtx, in.GetWafSettings())
 	return out
 }
-func RecaptchaEnterpriseKeySpec_ToProto(mapCtx *direct.MapContext, in *krm.RecaptchaEnterpriseKeySpec) *pb.Key {
+func RecaptchaEnterpriseKeySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmrecaptchaenterprisev1beta1.RecaptchaEnterpriseKeySpec) *pb.Key {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Key{}
 	// MISSING: Name
 	out.DisplayName = RecaptchaEnterpriseKeySpec_DisplayName_ToProto(mapCtx, in.DisplayName)
-	if oneof := KeyWebSettings_ToProto(mapCtx, in.WebSettings); oneof != nil {
+	if oneof := KeyWebSettings_v1beta1_ToProto(mapCtx, in.WebSettings); oneof != nil {
 		out.PlatformSettings = &pb.Key_WebSettings{WebSettings: oneof}
 	}
-	if oneof := KeyAndroidSettings_ToProto(mapCtx, in.AndroidSettings); oneof != nil {
+	if oneof := KeyAndroidSettings_v1beta1_ToProto(mapCtx, in.AndroidSettings); oneof != nil {
 		out.PlatformSettings = &pb.Key_AndroidSettings{AndroidSettings: oneof}
 	}
-	if oneof := KeyIosSettings_ToProto(mapCtx, in.IosSettings); oneof != nil {
+	if oneof := KeyIosSettings_v1beta1_ToProto(mapCtx, in.IosSettings); oneof != nil {
 		out.PlatformSettings = &pb.Key_IosSettings{IosSettings: oneof}
 	}
 	// MISSING: ExpressSettings
 	// MISSING: Labels
 	// MISSING: CreateTime
-	out.TestingOptions = KeyTestingOptions_ToProto(mapCtx, in.TestingOptions)
-	out.WafSettings = KeyWafSettings_ToProto(mapCtx, in.WafSettings)
+	out.TestingOptions = KeyTestingOptions_v1beta1_ToProto(mapCtx, in.TestingOptions)
+	out.WafSettings = KeyWafSettings_v1beta1_ToProto(mapCtx, in.WafSettings)
 	return out
 }

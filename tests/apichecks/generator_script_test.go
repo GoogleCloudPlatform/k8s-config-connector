@@ -1,0 +1,55 @@
+// Copyright 2026 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package lint
+
+import (
+	"os"
+	"path/filepath"
+	"strings"
+	"testing"
+)
+
+func TestGenerateScriptsLocation(t *testing.T) {
+	apisDir := "../../apis"
+
+	err := filepath.Walk(apisDir, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+		if info.IsDir() {
+			return nil
+		}
+
+		if info.Name() == "generate.sh" {
+			relPath, err := filepath.Rel(apisDir, path)
+			if err != nil {
+				return err
+			}
+
+			// Normalize path separators to forward slash
+			relSlash := filepath.ToSlash(relPath)
+			parts := strings.Split(relSlash, "/")
+
+			// Valid path must be exactly "apis/<service>/generate.sh" (relative parts: ["<service>", "generate.sh"])
+			if len(parts) != 2 {
+				t.Errorf("generate.sh script at %s is in an invalid location. generate.sh must live directly under apis/<service>/ (e.g., apis/<service>/generate.sh) to support concurrent generation.", relPath)
+			}
+		}
+		return nil
+	})
+	if err != nil {
+		t.Fatalf("error walking apis directory: %v", err)
+	}
+}
