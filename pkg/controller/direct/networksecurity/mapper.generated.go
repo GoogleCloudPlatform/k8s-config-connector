@@ -1437,6 +1437,70 @@ func NetworkSecuritySecurityProfileGroupSpec_v1alpha1_ToProto(mapCtx *direct.Map
 	}
 	return out
 }
+func NetworkSecuritySecurityProfileObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityProfile) *krmnetworksecurityv1alpha1.NetworkSecuritySecurityProfileObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.NetworkSecuritySecurityProfileObservedState{}
+	out.ThreatPreventionProfile = ThreatPreventionProfileObservedState_v1alpha1_FromProto(mapCtx, in.GetThreatPreventionProfile())
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	return out
+}
+func NetworkSecuritySecurityProfileObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.NetworkSecuritySecurityProfileObservedState) *pb.SecurityProfile {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SecurityProfile{}
+	if oneof := ThreatPreventionProfileObservedState_v1alpha1_ToProto(mapCtx, in.ThreatPreventionProfile); oneof != nil {
+		out.Profile = &pb.SecurityProfile_ThreatPreventionProfile{ThreatPreventionProfile: oneof}
+	}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.Etag = direct.ValueOf(in.Etag)
+	return out
+}
+func NetworkSecuritySecurityProfileSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityProfile) *krmnetworksecurityv1alpha1.NetworkSecuritySecurityProfileSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.NetworkSecuritySecurityProfileSpec{}
+	out.ThreatPreventionProfile = ThreatPreventionProfile_v1alpha1_FromProto(mapCtx, in.GetThreatPreventionProfile())
+	out.CustomMirroringProfile = CustomMirroringProfile_v1alpha1_FromProto(mapCtx, in.GetCustomMirroringProfile())
+	out.CustomInterceptProfile = CustomInterceptProfile_v1alpha1_FromProto(mapCtx, in.GetCustomInterceptProfile())
+	out.URLFilteringProfile = URLFilteringProfile_v1alpha1_FromProto(mapCtx, in.GetUrlFilteringProfile())
+	// MISSING: Name
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Labels = in.Labels
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	return out
+}
+func NetworkSecuritySecurityProfileSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.NetworkSecuritySecurityProfileSpec) *pb.SecurityProfile {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SecurityProfile{}
+	if oneof := ThreatPreventionProfile_v1alpha1_ToProto(mapCtx, in.ThreatPreventionProfile); oneof != nil {
+		out.Profile = &pb.SecurityProfile_ThreatPreventionProfile{ThreatPreventionProfile: oneof}
+	}
+	if oneof := CustomMirroringProfile_v1alpha1_ToProto(mapCtx, in.CustomMirroringProfile); oneof != nil {
+		out.Profile = &pb.SecurityProfile_CustomMirroringProfile{CustomMirroringProfile: oneof}
+	}
+	if oneof := CustomInterceptProfile_v1alpha1_ToProto(mapCtx, in.CustomInterceptProfile); oneof != nil {
+		out.Profile = &pb.SecurityProfile_CustomInterceptProfile{CustomInterceptProfile: oneof}
+	}
+	if oneof := URLFilteringProfile_v1alpha1_ToProto(mapCtx, in.URLFilteringProfile); oneof != nil {
+		out.Profile = &pb.SecurityProfile_UrlFilteringProfile{UrlFilteringProfile: oneof}
+	}
+	// MISSING: Name
+	out.Description = direct.ValueOf(in.Description)
+	out.Labels = in.Labels
+	out.Type = direct.Enum_ToProto[pb.SecurityProfile_ProfileType](mapCtx, in.Type)
+	return out
+}
 func NetworkSecurityTLSInspectionPolicyObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.TlsInspectionPolicy) *krmnetworksecurityv1alpha1.NetworkSecurityTLSInspectionPolicyObservedState {
 	if in == nil {
 		return nil

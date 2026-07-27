@@ -23,6 +23,7 @@ import (
 var NetworkSecuritySecurityProfileGVK = GroupVersion.WithKind("NetworkSecuritySecurityProfile")
 
 // NetworkSecuritySecurityProfileSpec defines the desired state of NetworkSecuritySecurityProfile
+// +kcc:spec:proto=google.cloud.networksecurity.v1.SecurityProfile
 type NetworkSecuritySecurityProfileSpec struct {
 	// The project that this resource belongs to.
 	// +required
@@ -181,6 +182,7 @@ type NetworkSecuritySecurityProfileStatus struct {
 }
 
 // NetworkSecuritySecurityProfileObservedState is the state of the NetworkSecuritySecurityProfile resource as most recently observed in GCP.
+// +kcc:observedstate:proto=google.cloud.networksecurity.v1.SecurityProfile
 type NetworkSecuritySecurityProfileObservedState struct {
 	// The threat prevention configuration for the SecurityProfile.
 	// +kcc:proto:field=google.cloud.networksecurity.v1.SecurityProfile.threat_prevention_profile
