@@ -49,6 +49,11 @@ type dataStoreService struct {
 	pb.UnimplementedDataStoreServiceServer
 }
 
+type identityMappingStoreService struct {
+	*MockService
+	pb.UnimplementedIdentityMappingStoreServiceServer
+}
+
 // New creates a MockService.
 func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.MockService {
 	s := &MockService{
@@ -66,6 +71,7 @@ func (s *MockService) ExpectedHosts() []string {
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterDataStoreServiceServer(grpcServer, &dataStoreService{MockService: s})
 	pb.RegisterConversationalSearchServiceServer(grpcServer, &conversationalSearchService{MockService: s})
+	pb.RegisterIdentityMappingStoreServiceServer(grpcServer, &identityMappingStoreService{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -76,6 +82,7 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 
 	mux.AddService(pb.NewDataStoreServiceClient(conn))
 	mux.AddService(pb.NewConversationalSearchServiceClient(conn))
+	mux.AddService(pb.NewIdentityMappingStoreServiceClient(conn))
 	mux.AddOperationsPath("/v1/{prefix=**}/operations/{name}", conn)
 
 	return mux, nil

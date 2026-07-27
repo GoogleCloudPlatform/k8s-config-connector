@@ -1,0 +1,8 @@
+apiVersion: discoveryengine.cnrm.cloud.google.com/v1alpha1
+kind: DiscoveryEngineIdentityMappingStore
+metadata:
+  name: identitymappingstore-${uniqueId}
+spec:
+  projectRef:
+    external: projects/${projectId}
+  location: global
