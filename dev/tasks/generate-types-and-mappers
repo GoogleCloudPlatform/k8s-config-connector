@@ -139,12 +139,28 @@ done
 NUM_WORKERS="${PARALLELISM:-8}"
 echo "Running ${#scripts[@]} generator tasks in parallel with ${NUM_WORKERS} workers..."
 
-# Worker function to execute a single generate.sh script in parallel with its own isolated Go build cache
+# Detect if running in a CI/CD environment (like GitHub Actions)
+IS_CI=0
+if [[ -n "${CI:-}" || -n "${GITHUB_ACTIONS:-}" ]]; then
+    IS_CI=1
+fi
+export IS_CI
+
+# Worker function to execute a single generate.sh script in parallel
 run_one() {
     local cmd="$1"
     
-    # Point directly to the shared concurrent-safe Go build cache
-    export GOCACHE="${GOCACHE_BASE}/shared"
+    if [[ "${IS_CI}" == "1" ]]; then
+        # In CI/CD, use the shared concurrent-safe Go build cache directly to avoid I/O bottlenecks
+        export GOCACHE="${GOCACHE_BASE}/shared"
+    else
+        # For local runs, create an isolated cache per worker to prevent Go build lock contention on multi-core workstations
+        local worker_cache
+        worker_cache=$(mktemp -d "${GOCACHE_BASE}/worker-XXXXXX")
+        cp -r "${GOCACHE_BASE}/shared/." "${worker_cache}/"
+        export GOCACHE="${worker_cache}"
+        trap 'rm -rf "${worker_cache}"' EXIT
+    fi
 
     echo "running: ${cmd}"
     if ! eval "${cmd}"; then
