@@ -244,15 +244,19 @@ def unify_hierarchies(resources):
     return unified
 
 def main():
+    update_gap = "--update-gap" in sys.argv
+    if update_gap:
+        sys.argv.remove("--update-gap")
+
     if len(sys.argv) < 3:
-        print("Usage: python calculate_coverage.py <googleapis_sha> <kcc_sha> [k]")
+        print("Usage: python calculate_coverage.py <googleapis_sha> <kcc_sha> [k] [--update-gap]")
         sys.exit(1)
         
     googleapis_sha = sys.argv[1]
     kcc_sha = sys.argv[2]
     k = int(sys.argv[3]) if len(sys.argv) > 3 else 10
     
-    temp_dir = "/usr/local/google/home/acpana/.gemini/tmp/k8s-config-connector-11/kcc_coverage"
+    temp_dir = os.path.join(os.environ.get("TMPDIR", "/tmp"), "kcc_coverage")
     os.makedirs(temp_dir, exist_ok=True)
     
     googleapis_dir = os.path.join(temp_dir, "googleapis")
@@ -263,6 +267,15 @@ def main():
         prepare_repo("https://github.com/GoogleCloudPlatform/k8s-config-connector.git", kcc_dir, kcc_sha)
 
     gcp_raw = get_gcp_resources(googleapis_dir)
+    
+    # Hardcode StorageBucketObject due to non-standard googleapis definition in v1/v2
+    gcp_raw["storage.googleapis.com/Object"] = {
+        'service': 'storage',
+        'pkg': 'google.storage.v2',
+        'name': 'Object',
+        'ops': {'CREATE', 'DELETE'},
+        'patterns': ['projects/{project}/buckets/{bucket}/objects/{object}']
+    }
     
     # Apply Skip List before unification
     skip_file = os.path.join(os.path.dirname(__file__), "coverage_skip.json")
@@ -385,33 +398,34 @@ def main():
     
     # Generate Gap Analysis Table for tracking
     gap_file = os.path.join(os.path.dirname(__file__), "gap_analysis.txt")
-    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    
-    analysis_lines = [
-        f"Gap Analysis Snapshot - {now}",
-        f"GoogleAPIs SHA: {googleapis_sha}",
-        f"KCC SHA:        {kcc_sha}",
-        "-" * 55,
-        f"{'Metric':<30} | {'Value':<10}",
-        "-" * 55,
-        f"{'Total GCP Resources (Raw)':<30} | {all_gcp_raw_count:<10}",
-        f"{'Unified (Hierarchical)':<30} | {unification_count:<10}",
-        f"{'Processed Resources (Unified)':<30} | {len(all_gcp_keys):<10}",
-        f"{'Skipped (Policy)':<30} | {skipped_count:<10}",
-        f"{'Implemented in KCC':<30} | {len(covered):<10}",
-        f"{'Missing from KCC':<30} | {len(missing):<10}",
-        "-" * 55,
-        f"{'Missing Manageable':<30} | {len(missing_manageable):<10}",
-        f"{'Missing Fully Manageable':<30} | {len(missing_fully_manageable):<10}",
-        f"{'Missing Next Layer':<30} | {len(missing_next_layer):<10}",
-        f"{'Missing Next Next Layer':<30} | {len(missing_next_next_layer):<10}",
-        "-" * 55,
-        f"{'Current Coverage':<30} | {len(covered)/max(1, len(all_gcp_keys)):.2%}",
-        ""
-    ]
-    
-    with open(gap_file, 'w') as f:
-        f.write("\n".join(analysis_lines))
+    if update_gap:
+        now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        
+        analysis_lines = [
+            f"Gap Analysis Snapshot - {now}",
+            f"GoogleAPIs SHA: {googleapis_sha}",
+            f"KCC SHA:        {kcc_sha}",
+            "-" * 55,
+            f"{'Metric':<30} | {'Value':<10}",
+            "-" * 55,
+            f"{'Total GCP Resources (Raw)':<30} | {all_gcp_raw_count:<10}",
+            f"{'Unified (Hierarchical)':<30} | {unification_count:<10}",
+            f"{'Processed Resources (Unified)':<30} | {len(all_gcp_keys):<10}",
+            f"{'Skipped (Policy)':<30} | {skipped_count:<10}",
+            f"{'Implemented in KCC':<30} | {len(covered):<10}",
+            f"{'Missing from KCC':<30} | {len(missing):<10}",
+            "-" * 55,
+            f"{'Missing Manageable':<30} | {len(missing_manageable):<10}",
+            f"{'Missing Fully Manageable':<30} | {len(missing_fully_manageable):<10}",
+            f"{'Missing Next Layer':<30} | {len(missing_next_layer):<10}",
+            f"{'Missing Next Next Layer':<30} | {len(missing_next_next_layer):<10}",
+            "-" * 55,
+            f"{'Current Coverage':<30} | {len(covered)/max(1, len(all_gcp_keys)):.2%}",
+            ""
+        ]
+        
+        with open(gap_file, 'w') as f:
+            f.write("\n".join(analysis_lines))
 
     print("\n--- Coverage Summary ---")
     print(f"Total GCP Resources (Raw): {all_gcp_raw_count}")
@@ -429,26 +443,37 @@ def main():
     print(f"  - Next Next Layer:      {len(missing_next_next_layer)} (Fully Manageable + 2 Parents)")
     print(f"  - Next Layer Targets:   {len(missing_next_layer)} (Fully Manageable + 1 Parent)")
     print(f"  - Easy Targets:         {len(missing_easy)} (Fully Manageable + Leaf Pattern)")
-    print(f"\n[SAVED] Gap analysis snapshot written to {gap_file}")
+    if update_gap:
+        print(f"\n[SAVED] Gap analysis snapshot written to {gap_file}")
 
-    print(f"\n--- Next {k} Easiest Resources to Implement ---")
-    print("(Criteria: Easy Targets)")
-    for m in sorted(list(missing_easy))[:k]:
+    print(f"\n--- Top {k} Missing Manageable Resources ---")
+    
+    def sort_key(m):
+        if m in missing_easy: return 0
+        if m in missing_next_layer: return 1
+        if m in missing_next_next_layer: return 2
+        if m in missing_fully_manageable: return 3
+        return 4
+        
+    for m in sorted(list(missing_manageable), key=lambda x: (sort_key(x), x))[:k]:
         patterns = ", ".join(gcp_resources[m]['patterns'])
+        rtypes = ", ".join(gcp_resources[m]['rtypes'])
+        layer = "Unknown"
+        if m in missing_easy:
+            layer = "Easy (Leaf)"
+        elif m in missing_next_layer:
+            layer = "Next Layer (1 Parent)"
+        elif m in missing_next_next_layer:
+            layer = "Next Next Layer (2 Parents)"
+        elif m in missing_fully_manageable:
+            layer = "Fully Manageable (Deeply Nested)"
+        else:
+            layer = "Partially Manageable (Missing Create or Delete)"
+            
         print(f"  - {m}")
         print(f"    Patterns: {patterns}")
-
-    print(f"\n--- Next Layer Targets (1 Parent) ---")
-    for m in sorted(list(missing_next_layer)):
-        patterns = ", ".join(gcp_resources[m]['patterns'])
-        print(f"  - {m}")
-        print(f"    Patterns: {patterns}")
-
-    print(f"\n--- Next Next Layer Targets (2 Parents) ---")
-    for m in sorted(list(missing_next_next_layer)):
-        patterns = ", ".join(gcp_resources[m]['patterns'])
-        print(f"  - {m}")
-        print(f"    Patterns: {patterns}")
+        print(f"    ProtoPath: {rtypes}")
+        print(f"    Layer: {layer}")
 
 if __name__ == "__main__":
     main()

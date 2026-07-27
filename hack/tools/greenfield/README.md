@@ -10,19 +10,20 @@ It is used to identify gaps in resource coverage and prioritize the "easiest" ne
 - **Capability Detection**: Identifies which GCP resources support `Create` and `Delete` operations based on gRPC service definitions.
 - **Hierarchy Analysis**: Detects "leaf" resources whose parents are Projects, Folders, Organizations, or Locations.
 - **Heuristic Matching**: Links GCP proto types to KCC CRDs by accounting for service aliases and naming conventions (e.g., stripping "Compute" prefix from `ComputeInstance`).
-- **Prioritization**: Recommends the "Next K" resources to implement based on ease of management.
+- **Prioritization**: Recommends the Top K missing manageable resources to implement, sorted by ease of implementation (Leaf, Next Layer, etc.).
 
 ## Usage
 
 ```bash
-python3 hack/tools/greenfield/calculate_coverage.py <googleapis_sha> <kcc_sha> [k]
+python3 hack/tools/greenfield/calculate_coverage.py <googleapis_sha> <kcc_sha> [k] [--update-gap]
 ```
 
 ### Parameters
 
 - `<googleapis_sha>`: The git SHA, branch, or tag in the `googleapis/googleapis` repo (e.g., `master`).
 - `<kcc_sha>`: The git SHA in the `k8s-config-connector` repo. Use `LOCAL` to compare against your current working directory.
-- `[k]`: (Optional) The number of "easiest" resources to list. Defaults to 10.
+- `[k]`: (Optional) The number of top manageable resources to list. Defaults to 10.
+- `--update-gap`: (Optional) If provided, updates the `gap_analysis.txt` file with the coverage snapshot.
 
 ### Example
 
