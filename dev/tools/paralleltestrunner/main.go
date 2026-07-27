@@ -24,6 +24,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"runtime"
 	"sort"
 	"strings"
 	"sync"
@@ -32,7 +33,7 @@ import (
 
 var (
 	listFile       = flag.String("list-file", "", "File containing the list of tests")
-	j              = flag.Int("j", 4, "Number of parallel processes")
+	j              = flag.Int("j", 0, "Number of parallel processes (0 = auto-detect)")
 	baseTest       = flag.String("base-test", "", "Base test name, e.g. TestE2EScript/scenarios")
 	checkUnchanged = flag.Bool("check-unchanged", false, "Fail if the list file is modified (i.e. missing tests found)")
 	timeout        = flag.Duration("timeout", 5*time.Minute, "Timeout for each test")
@@ -46,9 +47,11 @@ func main() {
 
 	tests := readList(*listFile)
 
+	numJobs := calculateOptimalJobs(*j, len(tests))
+
 	success := true
 	var wg sync.WaitGroup
-	sem := make(chan struct{}, *j)
+	sem := make(chan struct{}, numJobs)
 	var mu sync.Mutex
 
 	if len(tests) > 0 {
@@ -185,6 +188,37 @@ func readList(path string) []string {
 		}
 	}
 	return list
+}
+
+func calculateOptimalJobs(userJ int, numTests int) int {
+	// Short-circuit: no tests need to run
+	if numTests < 1 {
+		log.Printf("paralleltestrunner: 0 tests to run")
+		return 0
+	}
+
+	var jobs int
+	// If user explicitly passed -j > 0, honor user preference (capped by numTests)
+	if userJ > 0 {
+		jobs = min(userJ, numTests)
+		log.Printf("paralleltestrunner: using user-specified parallelism -j=%d (selected %d worker jobs for %d tests)", userJ, jobs, numTests)
+		return jobs
+	}
+
+	// 1.5x CPU cores multiplier
+	jobs = int(float64(runtime.NumCPU()) * 1.5)
+
+	// Preserve floor baseline of at least 4 parallel workers
+	jobs = max(jobs, 4)
+
+	// Cap at max 8 parallel workers to avoid file descriptor (ulimit) exhaustion from concurrent envtest instances
+	jobs = min(jobs, 8)
+
+	// Cap by total test count if total tests < jobs
+	jobs = min(jobs, numTests)
+
+	log.Printf("paralleltestrunner: auto-detected parallelism -j=%d (CPU cores: %d, total tests: %d)", jobs, runtime.NumCPU(), numTests)
+	return jobs
 }
 
 func writeList(path string, list []string) {

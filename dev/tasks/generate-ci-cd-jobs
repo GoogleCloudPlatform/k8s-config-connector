@@ -138,7 +138,6 @@ time go build -o \${REPO_ROOT}/.build/paralleltestrunner \${REPO_ROOT}/dev/tools
 echo "Running ${short} fixtures tests in parallel..."
 \${REPO_ROOT}/.build/paralleltestrunner \\
     -list-file="\${REPO_ROOT}/tests/e2e/testdata/fixtures-${short}-list.txt" \\
-    -j=4 \\
     -base-test="TestAllInSeries/fixtures" \\
     -check-unchanged=true \\
     -- \${REPO_ROOT}/dev/tasks/run-e2e
