@@ -14,6 +14,9 @@
 
 package mocknetworksecurity
 
+// MockGCP implementation for NetworkSecurity SecurityProfile CRUD operations.
+// This mock aligns the behavioral correctness of NetworkSecuritySecurityProfile with simulated GCP services.
+
 import (
 	"context"
 	"fmt"
