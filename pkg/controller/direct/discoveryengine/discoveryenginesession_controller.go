@@ -116,7 +116,7 @@ func (m *sessionModel) AdapterForObject(ctx context.Context, op *directbase.Adap
 	id := identity.(*krm.DiscoveryEngineSessionIdentity)
 
 	mapCtx := &direct.MapContext{}
-	desired := DiscoveryEngineSessionSpec_ToProto(mapCtx, &obj.Spec)
+	desired := DiscoveryEngineSessionSpec_v1alpha1_ToProto(mapCtx, &obj.Spec)
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
@@ -243,7 +243,7 @@ func (a *sessionAdapter) Update(ctx context.Context, updateOp *directbase.Update
 }
 
 func compareSession(ctx context.Context, actual, desired *pb.Session) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
-	maskedActual, err := mappers.OnlySpecFields(actual, DiscoveryEngineSessionSpec_FromProto, DiscoveryEngineSessionSpec_ToProto)
+	maskedActual, err := mappers.OnlySpecFields(actual, DiscoveryEngineSessionSpec_v1alpha1_FromProto, DiscoveryEngineSessionSpec_v1alpha1_ToProto)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -267,7 +267,7 @@ func compareSession(ctx context.Context, actual, desired *pb.Session) (*structur
 func (a *sessionAdapter) updateStatus(ctx context.Context, op directbase.Operation, latest *pb.Session) error {
 	mapCtx := &direct.MapContext{}
 	status := &krm.DiscoveryEngineSessionStatus{}
-	status.ObservedState = DiscoveryEngineSessionObservedState_FromProto(mapCtx, latest)
+	status.ObservedState = DiscoveryEngineSessionObservedState_v1alpha1_FromProto(mapCtx, latest)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -284,7 +284,7 @@ func (a *sessionAdapter) Export(ctx context.Context) (*unstructured.Unstructured
 
 	obj := &krm.DiscoveryEngineSession{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(DiscoveryEngineSessionSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(DiscoveryEngineSessionSpec_v1alpha1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}

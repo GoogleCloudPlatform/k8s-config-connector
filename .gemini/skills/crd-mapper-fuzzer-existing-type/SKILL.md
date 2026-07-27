@@ -11,11 +11,17 @@ This skill outlines standard practices when transitioning an existing KCC resour
 ## Workflow
 
 ### 1. Configure generate.sh
-Configure `apis/<service>/<version>/generate.sh` to include the resource and pass the `--include-skipped-output` flag. Passing `--include-skipped-output` to both `generate-types` and `generate-mapper` ensures that any output otherwise skipped is still generated but commented out. This provides an invaluable reference when manual modifications/hand-coding of types are needed.
+Configure `apis/<service>/generate.sh` to include the resource. 
+
+* **Types Generation**: Run `generate-types` for each version present under `apis/<service>/` (e.g. `v1alpha1` and `v1beta1`).
+* **Mappers Generation**: Run `generate-mapper` **exactly once** at the very end of the consolidated script (targeting the highest supported version, e.g. `v1beta1`) and **always pass `--multiversion` by default**. Because `generate-mapper` scans the entire service API directory, running it once with `--multiversion` compiles mappers for all versions into `mapper.generated.go` with version suffixes, avoiding duplicate clashes and accidental file overwrites.
+
+Sourcing `${REPO_ROOT}/dev/tools/goimports.sh`, cd'ing to `${REPO_ROOT}/dev/tools/controllerbuilder`, and passing `--include-skipped-output` to both `generate-types` and `generate-mapper` ensures that any output otherwise skipped is still generated but commented out. This provides an invaluable reference when manual modifications/hand-coding of types are needed.
 
 - **Keep Type File Names Matching Lowercase Proto Message**: If the KRM Kind name differs from the underlying Proto message name (e.g. Kind `NotebookInstance` but Proto `Instance`), do NOT rename the types file to follow the lowercase KRM Kind name (e.g. `notebookinstance_types.go`). The `generate-types` tool expects the file to be named `<lowercase_proto_message_name>_types.go` (e.g. `instance_types.go`). Renaming it will cause generator panics and duplicate/untracked file generation.
 
 ```bash
+# Run from dev/tools/controllerbuilder
 go run . generate-types \
     --service <proto.package> \
     --api-version "<service>.cnrm.cloud.google.com/<version>" \
@@ -25,7 +31,8 @@ go run . generate-types \
 go run . generate-mapper \
     --service <proto.package> \
     --api-version "<service>.cnrm.cloud.google.com/<version>" \
-    --include-skipped-output
+    --include-skipped-output \
+    --multiversion
 ```
 
 ### 2. Standards for Strict Schema Compatibility

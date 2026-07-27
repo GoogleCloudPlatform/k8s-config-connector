@@ -20,21 +20,122 @@
 // krm.group: iam.cnrm.cloud.google.com
 // krm.version: v1beta1
 // proto.service: google.iam.admin.v1
+// proto.service: google.iam.v2
 
 package iam
 
 import (
 	pb "cloud.google.com/go/iam/admin/apiv1/adminpb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/v1beta1"
+	iampb "cloud.google.com/go/iam/apiv2/iampb"
+	krmiamv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/v1alpha1"
+	krmiamv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-/* found existing non-generated mapping function "IAMServiceAccountKeyObservedState_FromProto", skipping
-func IAMServiceAccountKeyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ServiceAccountKey) *krm.IAMServiceAccountKeyObservedState {
+/* found existing non-generated mapping function "DenyRule_v1alpha1_FromProto", skipping
+func DenyRule_v1alpha1_FromProto(mapCtx *direct.MapContext, in *iampb.DenyRule) *krmiamv1alpha1.DenyRule {
 	if in == nil {
 		return nil
 	}
-	out := &krm.IAMServiceAccountKeyObservedState{}
+	out := &krmiamv1alpha1.DenyRule{}
+	out.DeniedPrincipals = in.DeniedPrincipals
+	out.ExceptionPrincipals = in.ExceptionPrincipals
+	out.DeniedPermissions = in.DeniedPermissions
+	out.ExceptionPermissions = in.ExceptionPermissions
+	out.DenialCondition = Expr_v1alpha1_FromProto(mapCtx, in.GetDenialCondition())
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "DenyRule_v1alpha1_ToProto", skipping
+
+	func DenyRule_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmiamv1alpha1.DenyRule) *iampb.DenyRule {
+		if in == nil {
+			return nil
+		}
+		out := &iampb.DenyRule{}
+		out.DeniedPrincipals = in.DeniedPrincipals
+		out.ExceptionPrincipals = in.ExceptionPrincipals
+		out.DeniedPermissions = in.DeniedPermissions
+		out.ExceptionPermissions = in.ExceptionPermissions
+		out.DenialCondition = Expr_v1alpha1_ToProto(mapCtx, in.DenialCondition)
+		return out
+	}
+*/
+func IAMDenyPolicyObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *iampb.Policy) *krmiamv1alpha1.IAMDenyPolicyObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmiamv1alpha1.IAMDenyPolicyObservedState{}
+	// MISSING: Name
+	// MISSING: Uid
+	// MISSING: Kind
+	// MISSING: Annotations
+	// MISSING: Etag
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: DeleteTime
+	// MISSING: ManagingAuthority
+	return out
+}
+func IAMDenyPolicyObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmiamv1alpha1.IAMDenyPolicyObservedState) *iampb.Policy {
+	if in == nil {
+		return nil
+	}
+	out := &iampb.Policy{}
+	// MISSING: Name
+	// MISSING: Uid
+	// MISSING: Kind
+	// MISSING: Annotations
+	// MISSING: Etag
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: DeleteTime
+	// MISSING: ManagingAuthority
+	return out
+}
+func IAMDenyPolicySpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *iampb.Policy) *krmiamv1alpha1.IAMDenyPolicySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmiamv1alpha1.IAMDenyPolicySpec{}
+	// MISSING: Name
+	// MISSING: Uid
+	// MISSING: Kind
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	// MISSING: Annotations
+	// MISSING: Etag
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: DeleteTime
+	out.Rules = direct.Slice_FromProto(mapCtx, in.Rules, PolicyRule_v1alpha1_FromProto)
+	// MISSING: ManagingAuthority
+	return out
+}
+func IAMDenyPolicySpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmiamv1alpha1.IAMDenyPolicySpec) *iampb.Policy {
+	if in == nil {
+		return nil
+	}
+	out := &iampb.Policy{}
+	// MISSING: Name
+	// MISSING: Uid
+	// MISSING: Kind
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	// MISSING: Annotations
+	// MISSING: Etag
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: DeleteTime
+	out.Rules = direct.Slice_ToProto(mapCtx, in.Rules, PolicyRule_v1alpha1_ToProto)
+	// MISSING: ManagingAuthority
+	return out
+}
+func IAMServiceAccountKeyObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ServiceAccountKey) *krmiamv1beta1.IAMServiceAccountKeyObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmiamv1beta1.IAMServiceAccountKeyObservedState{}
 	// MISSING: Name
 	// MISSING: PrivateKeyData
 	// MISSING: ValidAfterTime
@@ -44,10 +145,7 @@ func IAMServiceAccountKeyObservedState_FromProto(mapCtx *direct.MapContext, in *
 	// MISSING: Disabled
 	return out
 }
-*/
-
-/* found existing non-generated mapping function "IAMServiceAccountKeyObservedState_ToProto", skipping
-func IAMServiceAccountKeyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.IAMServiceAccountKeyObservedState) *pb.ServiceAccountKey {
+func IAMServiceAccountKeyObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmiamv1beta1.IAMServiceAccountKeyObservedState) *pb.ServiceAccountKey {
 	if in == nil {
 		return nil
 	}
@@ -61,14 +159,13 @@ func IAMServiceAccountKeyObservedState_ToProto(mapCtx *direct.MapContext, in *kr
 	// MISSING: Disabled
 	return out
 }
-*/
 
-/* found existing non-generated mapping function "IAMServiceAccountKeySpec_FromProto", skipping
-func IAMServiceAccountKeySpec_FromProto(mapCtx *direct.MapContext, in *pb.ServiceAccountKey) *krm.IAMServiceAccountKeySpec {
+/* found existing non-generated mapping function "IAMServiceAccountKeySpec_v1beta1_FromProto", skipping
+func IAMServiceAccountKeySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ServiceAccountKey) *krmiamv1beta1.IAMServiceAccountKeySpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.IAMServiceAccountKeySpec{}
+	out := &krmiamv1beta1.IAMServiceAccountKeySpec{}
 	// MISSING: Name
 	out.PrivateKeyType = direct.Enum_FromProto(mapCtx, in.GetPrivateKeyType())
 	out.KeyAlgorithm = direct.Enum_FromProto(mapCtx, in.GetKeyAlgorithm())
@@ -84,9 +181,9 @@ func IAMServiceAccountKeySpec_FromProto(mapCtx *direct.MapContext, in *pb.Servic
 */
 
 /*
-found existing non-generated mapping function "IAMServiceAccountKeySpec_ToProto", skipping
+found existing non-generated mapping function "IAMServiceAccountKeySpec_v1beta1_ToProto", skipping
 
-	func IAMServiceAccountKeySpec_ToProto(mapCtx *direct.MapContext, in *krm.IAMServiceAccountKeySpec) *pb.ServiceAccountKey {
+	func IAMServiceAccountKeySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmiamv1beta1.IAMServiceAccountKeySpec) *pb.ServiceAccountKey {
 		if in == nil {
 			return nil
 		}
@@ -104,11 +201,11 @@ found existing non-generated mapping function "IAMServiceAccountKeySpec_ToProto"
 		return out
 	}
 */
-func IAMServiceAccountSpec_FromProto(mapCtx *direct.MapContext, in *pb.ServiceAccount) *krm.IAMServiceAccountSpec {
+func IAMServiceAccountSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ServiceAccount) *krmiamv1beta1.IAMServiceAccountSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.IAMServiceAccountSpec{}
+	out := &krmiamv1beta1.IAMServiceAccountSpec{}
 	// MISSING: Name
 	// MISSING: ProjectID
 	// MISSING: UniqueID
@@ -120,7 +217,7 @@ func IAMServiceAccountSpec_FromProto(mapCtx *direct.MapContext, in *pb.ServiceAc
 	out.Disabled = direct.LazyPtr(in.GetDisabled())
 	return out
 }
-func IAMServiceAccountSpec_ToProto(mapCtx *direct.MapContext, in *krm.IAMServiceAccountSpec) *pb.ServiceAccount {
+func IAMServiceAccountSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmiamv1beta1.IAMServiceAccountSpec) *pb.ServiceAccount {
 	if in == nil {
 		return nil
 	}
@@ -134,5 +231,25 @@ func IAMServiceAccountSpec_ToProto(mapCtx *direct.MapContext, in *krm.IAMService
 	out.Description = direct.ValueOf(in.Description)
 	// MISSING: OAUTH2ClientID
 	out.Disabled = direct.ValueOf(in.Disabled)
+	return out
+}
+func PolicyRule_v1alpha1_FromProto(mapCtx *direct.MapContext, in *iampb.PolicyRule) *krmiamv1alpha1.PolicyRule {
+	if in == nil {
+		return nil
+	}
+	out := &krmiamv1alpha1.PolicyRule{}
+	out.DenyRule = DenyRule_v1alpha1_FromProto(mapCtx, in.GetDenyRule())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	return out
+}
+func PolicyRule_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmiamv1alpha1.PolicyRule) *iampb.PolicyRule {
+	if in == nil {
+		return nil
+	}
+	out := &iampb.PolicyRule{}
+	if oneof := DenyRule_v1alpha1_ToProto(mapCtx, in.DenyRule); oneof != nil {
+		out.Kind = &iampb.PolicyRule_DenyRule{DenyRule: oneof}
+	}
+	out.Description = direct.ValueOf(in.Description)
 	return out
 }

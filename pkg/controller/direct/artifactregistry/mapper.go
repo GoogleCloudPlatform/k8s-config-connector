@@ -18,7 +18,7 @@ import (
 	"sort"
 
 	pb "cloud.google.com/go/artifactregistry/apiv1/artifactregistrypb"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/artifactregistry/v1beta1"
+	krmartifactregistryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/artifactregistry/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -30,16 +30,16 @@ func CleanupPolicyCondition_TagState_ToProto(mapCtx *direct.MapContext, in *stri
 	return &val
 }
 
-func ArtifactRegistryRepositoryRef_FromProto(mapCtx *direct.MapContext, in *pb.Repository) *krm.ArtifactRegistryRepositoryRef {
+func ArtifactRegistryRepositoryRef_FromProto(mapCtx *direct.MapContext, in *pb.Repository) *krmartifactregistryv1beta1.ArtifactRegistryRepositoryRef {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ArtifactRegistryRepositoryRef{}
+	out := &krmartifactregistryv1beta1.ArtifactRegistryRepositoryRef{}
 	out.External = in.GetName()
 	return out
 }
 
-func ArtifactRegistryRepositoryRef_ToProto(mapCtx *direct.MapContext, in *krm.ArtifactRegistryRepositoryRef) *pb.Repository {
+func ArtifactRegistryRepositoryRef_ToProto(mapCtx *direct.MapContext, in *krmartifactregistryv1beta1.ArtifactRegistryRepositoryRef) *pb.Repository {
 	if in == nil {
 		return nil
 	}
@@ -48,13 +48,13 @@ func ArtifactRegistryRepositoryRef_ToProto(mapCtx *direct.MapContext, in *krm.Ar
 	return out
 }
 
-func CleanupPolicies_FromProto(mapCtx *direct.MapContext, in map[string]*pb.CleanupPolicy) []krm.CleanupPolicy {
+func CleanupPolicies_FromProto(mapCtx *direct.MapContext, in map[string]*pb.CleanupPolicy) []krmartifactregistryv1beta1.CleanupPolicy {
 	if in == nil {
 		return nil
 	}
-	var out []krm.CleanupPolicy
+	var out []krmartifactregistryv1beta1.CleanupPolicy
 	for id, policy := range in {
-		p := CleanupPolicy_FromProto(mapCtx, policy)
+		p := CleanupPolicy_v1beta1_FromProto(mapCtx, policy)
 		if p != nil {
 			p.ID = direct.LazyPtr(id)
 			out = append(out, *p)
@@ -67,14 +67,14 @@ func CleanupPolicies_FromProto(mapCtx *direct.MapContext, in map[string]*pb.Clea
 	return out
 }
 
-func CleanupPolicies_ToProto(mapCtx *direct.MapContext, in []krm.CleanupPolicy) map[string]*pb.CleanupPolicy {
+func CleanupPolicies_ToProto(mapCtx *direct.MapContext, in []krmartifactregistryv1beta1.CleanupPolicy) map[string]*pb.CleanupPolicy {
 	if in == nil {
 		return nil
 	}
 	out := make(map[string]*pb.CleanupPolicy)
 	for _, policy := range in {
 		id := direct.ValueOf(policy.ID)
-		p := CleanupPolicy_ToProto(mapCtx, &policy)
+		p := CleanupPolicy_v1beta1_ToProto(mapCtx, &policy)
 		if p != nil {
 			out[id] = p
 		}

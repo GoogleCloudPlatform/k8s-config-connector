@@ -97,7 +97,7 @@ func (m *dataStoreModel) AdapterForObject(ctx context.Context, op *directbase.Ad
 	}
 
 	mapCtx := &direct.MapContext{}
-	desired := DiscoveryEngineDataStoreSpec_ToProto(mapCtx, &obj.Spec)
+	desired := DiscoveryEngineDataStoreSpec_v1alpha1_ToProto(mapCtx, &obj.Spec)
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
@@ -184,7 +184,7 @@ func (a *dataStoreAdapter) Create(ctx context.Context, createOp *directbase.Crea
 
 	status := &krm.DiscoveryEngineDataStoreStatus{}
 	mapCtx := &direct.MapContext{}
-	status.ObservedState = DiscoveryEngineDataStoreObservedState_FromProto(mapCtx, created)
+	status.ObservedState = DiscoveryEngineDataStoreObservedState_v1alpha1_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -227,7 +227,7 @@ func (a *dataStoreAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 
 	status := &krm.DiscoveryEngineDataStoreStatus{}
 	mapCtx := &direct.MapContext{}
-	status.ObservedState = DiscoveryEngineDataStoreObservedState_FromProto(mapCtx, updated)
+	status.ObservedState = DiscoveryEngineDataStoreObservedState_v1alpha1_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -243,7 +243,7 @@ func (a *dataStoreAdapter) Export(ctx context.Context) (*unstructured.Unstructur
 
 	obj := &krm.DiscoveryEngineDataStore{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(DiscoveryEngineDataStoreSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(DiscoveryEngineDataStoreSpec_v1alpha1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}

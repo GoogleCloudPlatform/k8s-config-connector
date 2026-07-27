@@ -28,8 +28,8 @@ func init() {
 
 func sessionFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.Session{},
-		DiscoveryEngineSessionSpec_FromProto, DiscoveryEngineSessionSpec_ToProto,
-		DiscoveryEngineSessionObservedState_FromProto, DiscoveryEngineSessionObservedState_ToProto,
+		DiscoveryEngineSessionSpec_v1alpha1_FromProto, DiscoveryEngineSessionSpec_v1alpha1_ToProto,
+		DiscoveryEngineSessionObservedState_v1alpha1_FromProto, DiscoveryEngineSessionObservedState_v1alpha1_ToProto,
 	)
 
 	f.Unimplemented_Identity(".name")

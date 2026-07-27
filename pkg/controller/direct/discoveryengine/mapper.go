@@ -56,13 +56,13 @@ func DiscoveryEngineEngineSpec_FromProto(mapCtx *direct.MapContext, in *pb.Engin
 		return nil
 	}
 	out := &krm.DiscoveryEngineEngineSpec{}
-	out.ChatEngineConfig = Engine_ChatEngineConfig_FromProto(mapCtx, in.GetChatEngineConfig())
-	out.SearchEngineConfig = Engine_SearchEngineConfig_FromProto(mapCtx, in.GetSearchEngineConfig())
+	out.ChatEngineConfig = Engine_ChatEngineConfig_v1alpha1_FromProto(mapCtx, in.GetChatEngineConfig())
+	out.SearchEngineConfig = Engine_SearchEngineConfig_v1alpha1_FromProto(mapCtx, in.GetSearchEngineConfig())
 	// MISSING: ChatEngineMetadata
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.SolutionType = direct.Enum_FromProto(mapCtx, in.GetSolutionType())
 	out.IndustryVertical = direct.Enum_FromProto(mapCtx, in.GetIndustryVertical())
-	out.CommonConfig = Engine_CommonConfig_FromProto(mapCtx, in.GetCommonConfig())
+	out.CommonConfig = Engine_CommonConfig_v1alpha1_FromProto(mapCtx, in.GetCommonConfig())
 	out.DisableAnalytics = direct.LazyPtr(in.GetDisableAnalytics())
 
 	for _, dataStoreID := range in.DataStoreIds {
@@ -78,17 +78,17 @@ func DiscoveryEngineEngineSpec_ToProto(mapCtx *direct.MapContext, in *krm.Discov
 		return nil
 	}
 	out := &pb.Engine{}
-	if oneof := Engine_ChatEngineConfig_ToProto(mapCtx, in.ChatEngineConfig); oneof != nil {
+	if oneof := Engine_ChatEngineConfig_v1alpha1_ToProto(mapCtx, in.ChatEngineConfig); oneof != nil {
 		out.EngineConfig = &pb.Engine_ChatEngineConfig_{ChatEngineConfig: oneof}
 	}
-	if oneof := Engine_SearchEngineConfig_ToProto(mapCtx, in.SearchEngineConfig); oneof != nil {
+	if oneof := Engine_SearchEngineConfig_v1alpha1_ToProto(mapCtx, in.SearchEngineConfig); oneof != nil {
 		out.EngineConfig = &pb.Engine_SearchEngineConfig_{SearchEngineConfig: oneof}
 	}
 	// MISSING: ChatEngineMetadata
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.SolutionType = direct.Enum_ToProto[pb.SolutionType](mapCtx, in.SolutionType)
 	out.IndustryVertical = direct.Enum_ToProto[pb.IndustryVertical](mapCtx, in.IndustryVertical)
-	out.CommonConfig = Engine_CommonConfig_ToProto(mapCtx, in.CommonConfig)
+	out.CommonConfig = Engine_CommonConfig_v1alpha1_ToProto(mapCtx, in.CommonConfig)
 	out.DisableAnalytics = direct.ValueOf(in.DisableAnalytics)
 
 	for _, dataStoreRef := range in.DataStoreRefs {
@@ -98,7 +98,7 @@ func DiscoveryEngineEngineSpec_ToProto(mapCtx *direct.MapContext, in *krm.Discov
 	return out
 }
 
-func SearchResponse_Summary_FromProto(mapCtx *direct.MapContext, in *pb.SearchResponse_Summary) *krm.SearchResponse_Summary {
+func SearchResponse_Summary_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SearchResponse_Summary) *krm.SearchResponse_Summary {
 	if in == nil {
 		return nil
 	}
@@ -108,7 +108,7 @@ func SearchResponse_Summary_FromProto(mapCtx *direct.MapContext, in *pb.SearchRe
 	return out
 }
 
-func SearchResponse_Summary_ToProto(mapCtx *direct.MapContext, in *krm.SearchResponse_Summary) *pb.SearchResponse_Summary {
+func SearchResponse_Summary_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.SearchResponse_Summary) *pb.SearchResponse_Summary {
 	if in == nil {
 		return nil
 	}

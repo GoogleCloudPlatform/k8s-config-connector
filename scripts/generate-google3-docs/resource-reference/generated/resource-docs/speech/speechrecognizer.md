@@ -246,32 +246,9 @@ observedGeneration: integer
 observedState:
   createTime: string
   defaultRecognitionConfig:
-    adaptation:
-      customClasses:
-      - createTime: string
-        deleteTime: string
-        etag: string
-        expireTime: string
-        kmsKeyName: string
-        kmsKeyVersionName: string
-        name: string
-        reconciling: boolean
-        state: string
-        uid: string
-        updateTime: string
-      phraseSets:
-      - inlinePhraseSet:
-          createTime: string
-          deleteTime: string
-          etag: string
-          expireTime: string
-          kmsKeyName: string
-          kmsKeyVersionName: string
-          name: string
-          reconciling: boolean
-          state: string
-          uid: string
-          updateTime: string
+    languageCodes:
+    - string
+    model: string
   deleteTime: string
   etag: string
   expireTime: string
@@ -375,199 +352,42 @@ observedState:
         </td>
     </tr>
     <tr>
-        <td><code>observedState.defaultRecognitionConfig.adaptation</code></td>
+        <td><code>observedState.defaultRecognitionConfig.languageCodes</code></td>
         <td>
-            <p><code class="apitype">object</code></p>
-            <p>Speech adaptation context that weights recognizer predictions for specific words and phrases.</p>
+            <p><code class="apitype">list (string)</code></p>
+            <p>Optional. The language of the supplied audio as a
+ [BCP-47](https://www.rfc-editor.org/rfc/bcp/bcp47.txt) language tag.
+ Language tags are normalized to BCP-47 before they are used eg "en-us"
+ becomes "en-US".
+
+ Supported languages for each model are listed in the [Table of Supported
+ Models](https://cloud.google.com/speech-to-text/v2/docs/speech-to-text-supported-languages).
+
+ If additional languages are provided, recognition result will contain
+ recognition in the most likely language detected. The recognition result
+ will include the language tag of the language detected in the audio.</p>
         </td>
     </tr>
     <tr>
-        <td><code>observedState.defaultRecognitionConfig.adaptation.customClasses</code></td>
+        <td><code>observedState.defaultRecognitionConfig.languageCodes[]</code></td>
         <td>
-            <p><code class="apitype">list (object)</code></p>
-            <p>A list of inline CustomClasses. Existing CustomClass resources can be referenced directly in a PhraseSet.</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>observedState.defaultRecognitionConfig.adaptation.customClasses[]</code></td>
-        <td>
-            <p><code class="apitype">object</code></p>
+            <p><code class="apitype">string</code></p>
             <p></p>
         </td>
     </tr>
     <tr>
-        <td><code>observedState.defaultRecognitionConfig.adaptation.customClasses[].createTime</code></td>
+        <td><code>observedState.defaultRecognitionConfig.model</code></td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Output only. Creation time.</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>observedState.defaultRecognitionConfig.adaptation.customClasses[].deleteTime</code></td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>Output only. The time at which this resource was requested for deletion.</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>observedState.defaultRecognitionConfig.adaptation.customClasses[].etag</code></td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>Output only. This checksum is computed by the server based on the value of other fields. This may be sent on update, undelete, and delete requests to ensure the client has an up-to-date value before proceeding.</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>observedState.defaultRecognitionConfig.adaptation.customClasses[].expireTime</code></td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>Output only. The time at which this resource will be purged.</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>observedState.defaultRecognitionConfig.adaptation.customClasses[].kmsKeyName</code></td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>Output only. The [KMS key name](https://cloud.google.com/kms/docs/resource-hierarchy#keys) with which the CustomClass is encrypted. The expected format is `projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}`.</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>observedState.defaultRecognitionConfig.adaptation.customClasses[].kmsKeyVersionName</code></td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>Output only. The [KMS key version name](https://cloud.google.com/kms/docs/resource-hierarchy#key_versions) with which the CustomClass is encrypted. The expected format is `projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}/cryptoKeyVersions/{crypto_key_version}`.</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>observedState.defaultRecognitionConfig.adaptation.customClasses[].name</code></td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>Output only. Identifier. The resource name of the CustomClass. Format: `projects/{project}/locations/{location}/customClasses/{custom_class}`.</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>observedState.defaultRecognitionConfig.adaptation.customClasses[].reconciling</code></td>
-        <td>
-            <p><code class="apitype">boolean</code></p>
-            <p>Output only. Whether or not this CustomClass is in the process of being updated.</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>observedState.defaultRecognitionConfig.adaptation.customClasses[].state</code></td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>Output only. The CustomClass lifecycle state.</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>observedState.defaultRecognitionConfig.adaptation.customClasses[].uid</code></td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>Output only. System-assigned unique identifier for the CustomClass.</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>observedState.defaultRecognitionConfig.adaptation.customClasses[].updateTime</code></td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>Output only. The most recent time this resource was modified.</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>observedState.defaultRecognitionConfig.adaptation.phraseSets</code></td>
-        <td>
-            <p><code class="apitype">list (object)</code></p>
-            <p>A list of inline or referenced PhraseSets.</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>observedState.defaultRecognitionConfig.adaptation.phraseSets[]</code></td>
-        <td>
-            <p><code class="apitype">object</code></p>
-            <p></p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>observedState.defaultRecognitionConfig.adaptation.phraseSets[].inlinePhraseSet</code></td>
-        <td>
-            <p><code class="apitype">object</code></p>
-            <p>An inline defined PhraseSet.</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>observedState.defaultRecognitionConfig.adaptation.phraseSets[].inlinePhraseSet.createTime</code></td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>Output only. Creation time.</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>observedState.defaultRecognitionConfig.adaptation.phraseSets[].inlinePhraseSet.deleteTime</code></td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>Output only. The time at which this resource was requested for deletion.</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>observedState.defaultRecognitionConfig.adaptation.phraseSets[].inlinePhraseSet.etag</code></td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>Output only. This checksum is computed by the server based on the value of other fields. This may be sent on update, undelete, and delete requests to ensure the client has an up-to-date value before proceeding.</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>observedState.defaultRecognitionConfig.adaptation.phraseSets[].inlinePhraseSet.expireTime</code></td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>Output only. The time at which this resource will be purged.</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>observedState.defaultRecognitionConfig.adaptation.phraseSets[].inlinePhraseSet.kmsKeyName</code></td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>Output only. The [KMS key name](https://cloud.google.com/kms/docs/resource-hierarchy#keys) with which the PhraseSet is encrypted. The expected format is `projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}`.</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>observedState.defaultRecognitionConfig.adaptation.phraseSets[].inlinePhraseSet.kmsKeyVersionName</code></td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>Output only. The [KMS key version name](https://cloud.google.com/kms/docs/resource-hierarchy#key_versions) with which the PhraseSet is encrypted. The expected format is `projects/{project}/locations/{location}/keyRings/{key_ring}/cryptoKeys/{crypto_key}/cryptoKeyVersions/{crypto_key_version}`.</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>observedState.defaultRecognitionConfig.adaptation.phraseSets[].inlinePhraseSet.name</code></td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>Output only. Identifier. The resource name of the PhraseSet. Format: `projects/{project}/locations/{location}/phraseSets/{phrase_set}`.</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>observedState.defaultRecognitionConfig.adaptation.phraseSets[].inlinePhraseSet.reconciling</code></td>
-        <td>
-            <p><code class="apitype">boolean</code></p>
-            <p>Output only. Whether or not this PhraseSet is in the process of being updated.</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>observedState.defaultRecognitionConfig.adaptation.phraseSets[].inlinePhraseSet.state</code></td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>Output only. The PhraseSet lifecycle state.</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>observedState.defaultRecognitionConfig.adaptation.phraseSets[].inlinePhraseSet.uid</code></td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>Output only. System-assigned unique identifier for the PhraseSet.</p>
-        </td>
-    </tr>
-    <tr>
-        <td><code>observedState.defaultRecognitionConfig.adaptation.phraseSets[].inlinePhraseSet.updateTime</code></td>
-        <td>
-            <p><code class="apitype">string</code></p>
-            <p>Output only. The most recent time this resource was modified.</p>
+            <p>Optional. Which model to use for recognition requests. Select the model
+ best suited to your domain to get best results.
+
+ Guidance for choosing which model to use can be found in the [Transcription
+ Models
+ Documentation](https://cloud.google.com/speech-to-text/v2/docs/transcription-model)
+ and the models supported in each region can be found in the [Table Of
+ Supported
+ Models](https://cloud.google.com/speech-to-text/v2/docs/speech-to-text-supported-languages).</p>
         </td>
     </tr>
     <tr>

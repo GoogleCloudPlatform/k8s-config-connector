@@ -84,10 +84,11 @@ Currently, `DataCatalogPolicyTag` is managed by the Terraform controller (marked
 ### Instructions
 
 - [ ] 1.  **Create a generate.sh**:
-    Create or append to `apis/datacatalog/v1beta1/generate.sh` which includes `DataCatalogPolicyTag`.
+    Create or append to `apis/datacatalog/generate.sh` which includes `DataCatalogPolicyTag`.
     It likely maps to something like `google.cloud.datacatalog.v1`.
     Example:
     ```bash
+    # Run from dev/tools/controllerbuilder
     go run . generate-types \
       --service google.cloud.datacatalog.v1 \
       --api-version datacatalog.cnrm.cloud.google.com/v1beta1 \
@@ -97,13 +98,14 @@ Currently, `DataCatalogPolicyTag` is managed by the Terraform controller (marked
     go run . generate-mapper \
       --service google.cloud.datacatalog.v1 \
       --api-version datacatalog.cnrm.cloud.google.com/v1beta1 \
-      --include-skipped-output
+      --include-skipped-output \
+      --multiversion
     ```
 
- - [ ] 2.  Set the write permission on the new `apis/datacatalog/v1beta1/generate.sh` file. You should do this by running both `chmod +x apis/datacatalog/v1beta1/generate.sh` and `git add --chmod=+x apis/datacatalog/v1beta1/generate.sh`.
+ - [ ] 2.  Set the write permission on the new `apis/datacatalog/generate.sh` file. You should do this by running both `chmod +x apis/datacatalog/generate.sh` and `git add --chmod=+x apis/datacatalog/generate.sh`.
 
  - [ ] 3.  **Generate Scaffolding**:
-    Run `apis/datacatalog/v1beta1/generate.sh`. This should create `apis/datacatalog/v1beta1/policytag_types.go`.
+    Run `apis/datacatalog/generate.sh`. This should create `apis/datacatalog/v1beta1/policytag_types.go`.
 
 - [ ] 4. **Iterate on Types**:
     Validate the generated CRD by running `./dev/tasks/diff-crds --base master`. This tool prints any differences between the current branch and the master branch for the generated CRD.

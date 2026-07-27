@@ -20,7 +20,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func InlineCustomClassObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CustomClass) *krm.InlineCustomClassObservedState {
+func InlineCustomClassObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.CustomClass) *krm.InlineCustomClassObservedState {
 	if in == nil {
 		return nil
 	}
@@ -41,7 +41,7 @@ func InlineCustomClassObservedState_FromProto(mapCtx *direct.MapContext, in *pb.
 	out.KMSKeyVersionName = direct.LazyPtr(in.GetKmsKeyVersionName())
 	return out
 }
-func InlineCustomClassObservedState_ToProto(mapCtx *direct.MapContext, in *krm.InlineCustomClassObservedState) *pb.CustomClass {
+func InlineCustomClassObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.InlineCustomClassObservedState) *pb.CustomClass {
 	if in == nil {
 		return nil
 	}
@@ -62,7 +62,7 @@ func InlineCustomClassObservedState_ToProto(mapCtx *direct.MapContext, in *krm.I
 	out.KmsKeyVersionName = direct.ValueOf(in.KMSKeyVersionName)
 	return out
 }
-func InlinePhraseSetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PhraseSet) *krm.InlinePhraseSetObservedState {
+func InlinePhraseSetObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.PhraseSet) *krm.InlinePhraseSetObservedState {
 	if in == nil {
 		return nil
 	}
@@ -80,7 +80,7 @@ func InlinePhraseSetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Ph
 	out.KMSKeyVersionName = direct.LazyPtr(in.GetKmsKeyVersionName())
 	return out
 }
-func InlinePhraseSetObservedState_ToProto(mapCtx *direct.MapContext, in *krm.InlinePhraseSetObservedState) *pb.PhraseSet {
+func InlinePhraseSetObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.InlinePhraseSetObservedState) *pb.PhraseSet {
 	if in == nil {
 		return nil
 	}
@@ -98,14 +98,14 @@ func InlinePhraseSetObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Inl
 	out.KmsKeyVersionName = direct.ValueOf(in.KMSKeyVersionName)
 	return out
 }
-func SpeechRecognizerObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Recognizer) *krm.SpeechRecognizerObservedState {
+func SpeechRecognizerObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Recognizer) *krm.SpeechRecognizerObservedState {
 	if in == nil {
 		return nil
 	}
 	out := &krm.SpeechRecognizerObservedState{}
 	// MISSING: Name
 	out.UID = direct.LazyPtr(in.GetUid())
-	out.DefaultRecognitionConfig = RecognitionConfigObservedState_FromProto(mapCtx, in.GetDefaultRecognitionConfig())
+	out.DefaultRecognitionConfig = RecognitionConfig_v1beta1_FromProto(mapCtx, in.GetDefaultRecognitionConfig())
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
@@ -117,14 +117,14 @@ func SpeechRecognizerObservedState_FromProto(mapCtx *direct.MapContext, in *pb.R
 	out.KMSKeyVersionName = direct.LazyPtr(in.GetKmsKeyVersionName())
 	return out
 }
-func SpeechRecognizerObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SpeechRecognizerObservedState) *pb.Recognizer {
+func SpeechRecognizerObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.SpeechRecognizerObservedState) *pb.Recognizer {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Recognizer{}
 	// MISSING: Name
 	out.Uid = direct.ValueOf(in.UID)
-	out.DefaultRecognitionConfig = RecognitionConfigObservedState_ToProto(mapCtx, in.DefaultRecognitionConfig)
+	out.DefaultRecognitionConfig = RecognitionConfig_v1beta1_ToProto(mapCtx, in.DefaultRecognitionConfig)
 	out.State = direct.Enum_ToProto[pb.Recognizer_State](mapCtx, in.State)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
@@ -136,7 +136,7 @@ func SpeechRecognizerObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Sp
 	out.KmsKeyVersionName = direct.ValueOf(in.KMSKeyVersionName)
 	return out
 }
-func SpeechAdaptation_AdaptationPhraseSet_PhraseSet_ToProto(mapCtx *direct.MapContext, in *krm.PhraseSetRef) *pb.SpeechAdaptation_AdaptationPhraseSet_PhraseSet {
+func SpeechAdaptation_AdaptationPhraseSet_PhraseSet_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.PhraseSetRef) *pb.SpeechAdaptation_AdaptationPhraseSet_PhraseSet {
 	if in == nil {
 		return nil
 	}
@@ -144,7 +144,7 @@ func SpeechAdaptation_AdaptationPhraseSet_PhraseSet_ToProto(mapCtx *direct.MapCo
 	out.PhraseSet = in.External
 	return out
 }
-func InlineCustomClass_FromProto(mapCtx *direct.MapContext, in *pb.CustomClass) *krm.InlineCustomClass {
+func InlineCustomClass_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.CustomClass) *krm.InlineCustomClass {
 	if in == nil {
 		return nil
 	}
@@ -154,7 +154,7 @@ func InlineCustomClass_FromProto(mapCtx *direct.MapContext, in *pb.CustomClass) 
 	/* NOTYET out.Annotations = in.Annotations */
 	return out
 }
-func InlineCustomClass_ToProto(mapCtx *direct.MapContext, in *krm.InlineCustomClass) *pb.CustomClass {
+func InlineCustomClass_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.InlineCustomClass) *pb.CustomClass {
 	if in == nil {
 		return nil
 	}
@@ -164,43 +164,43 @@ func InlineCustomClass_ToProto(mapCtx *direct.MapContext, in *krm.InlineCustomCl
 	/* NOTYET out.Annotations = in.Annotations */
 	return out
 }
-func SpeechAdaptation_FromProto(mapCtx *direct.MapContext, in *pb.SpeechAdaptation) *krm.SpeechAdaptation {
+func SpeechAdaptation_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SpeechAdaptation) *krm.SpeechAdaptation {
 	if in == nil {
 		return nil
 	}
 	out := &krm.SpeechAdaptation{}
-	out.PhraseSets = direct.Slice_FromProto(mapCtx, in.PhraseSets, SpeechAdaptation_AdaptationPhraseSet_FromProto)
-	out.CustomClasses = direct.Slice_FromProto(mapCtx, in.CustomClasses, InlineCustomClass_FromProto)
+	out.PhraseSets = direct.Slice_FromProto(mapCtx, in.PhraseSets, SpeechAdaptation_AdaptationPhraseSet_v1beta1_FromProto)
+	out.CustomClasses = direct.Slice_FromProto(mapCtx, in.CustomClasses, InlineCustomClass_v1beta1_FromProto)
 	return out
 }
-func SpeechAdaptation_ToProto(mapCtx *direct.MapContext, in *krm.SpeechAdaptation) *pb.SpeechAdaptation {
+func SpeechAdaptation_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.SpeechAdaptation) *pb.SpeechAdaptation {
 	if in == nil {
 		return nil
 	}
 	out := &pb.SpeechAdaptation{}
-	out.PhraseSets = direct.Slice_ToProto(mapCtx, in.PhraseSets, SpeechAdaptation_AdaptationPhraseSet_ToProto)
-	out.CustomClasses = direct.Slice_ToProto(mapCtx, in.CustomClasses, InlineCustomClass_ToProto)
+	out.PhraseSets = direct.Slice_ToProto(mapCtx, in.PhraseSets, SpeechAdaptation_AdaptationPhraseSet_v1beta1_ToProto)
+	out.CustomClasses = direct.Slice_ToProto(mapCtx, in.CustomClasses, InlineCustomClass_v1beta1_ToProto)
 	return out
 }
-func SpeechAdaptationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SpeechAdaptation) *krm.SpeechAdaptationObservedState {
+func SpeechAdaptationObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SpeechAdaptation) *krm.SpeechAdaptationObservedState {
 	if in == nil {
 		return nil
 	}
 	out := &krm.SpeechAdaptationObservedState{}
-	out.PhraseSets = direct.Slice_FromProto(mapCtx, in.PhraseSets, SpeechAdaptation_AdaptationPhraseSetObservedState_FromProto)
-	out.CustomClasses = direct.Slice_FromProto(mapCtx, in.CustomClasses, InlineCustomClassObservedState_FromProto)
+	out.PhraseSets = direct.Slice_FromProto(mapCtx, in.PhraseSets, SpeechAdaptation_AdaptationPhraseSetObservedState_v1beta1_FromProto)
+	out.CustomClasses = direct.Slice_FromProto(mapCtx, in.CustomClasses, InlineCustomClassObservedState_v1beta1_FromProto)
 	return out
 }
-func SpeechAdaptationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SpeechAdaptationObservedState) *pb.SpeechAdaptation {
+func SpeechAdaptationObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.SpeechAdaptationObservedState) *pb.SpeechAdaptation {
 	if in == nil {
 		return nil
 	}
 	out := &pb.SpeechAdaptation{}
-	out.PhraseSets = direct.Slice_ToProto(mapCtx, in.PhraseSets, SpeechAdaptation_AdaptationPhraseSetObservedState_ToProto)
-	out.CustomClasses = direct.Slice_ToProto(mapCtx, in.CustomClasses, InlineCustomClassObservedState_ToProto)
+	out.PhraseSets = direct.Slice_ToProto(mapCtx, in.PhraseSets, SpeechAdaptation_AdaptationPhraseSetObservedState_v1beta1_ToProto)
+	out.CustomClasses = direct.Slice_ToProto(mapCtx, in.CustomClasses, InlineCustomClassObservedState_v1beta1_ToProto)
 	return out
 }
-func InlinePhraseSet_FromProto(mapCtx *direct.MapContext, in *pb.PhraseSet) *krm.InlinePhraseSet {
+func InlinePhraseSet_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.PhraseSet) *krm.InlinePhraseSet {
 	if in == nil {
 		return nil
 	}
@@ -211,7 +211,7 @@ func InlinePhraseSet_FromProto(mapCtx *direct.MapContext, in *pb.PhraseSet) *krm
 	/* NOTYET out.Annotations = in.Annotations */
 	return out
 }
-func InlinePhraseSet_ToProto(mapCtx *direct.MapContext, in *krm.InlinePhraseSet) *pb.PhraseSet {
+func InlinePhraseSet_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.InlinePhraseSet) *pb.PhraseSet {
 	if in == nil {
 		return nil
 	}
@@ -223,7 +223,7 @@ func InlinePhraseSet_ToProto(mapCtx *direct.MapContext, in *krm.InlinePhraseSet)
 	/* NOTYET out.Annotations = in.Annotations */
 	return out
 }
-func SpeechAdaptation_AdaptationPhraseSet_FromProto(mapCtx *direct.MapContext, in *pb.SpeechAdaptation_AdaptationPhraseSet) *krm.SpeechAdaptation_AdaptationPhraseSet {
+func SpeechAdaptation_AdaptationPhraseSet_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SpeechAdaptation_AdaptationPhraseSet) *krm.SpeechAdaptation_AdaptationPhraseSet {
 	if in == nil {
 		return nil
 	}
@@ -233,36 +233,36 @@ func SpeechAdaptation_AdaptationPhraseSet_FromProto(mapCtx *direct.MapContext, i
 			External: in.GetPhraseSet(),
 		}
 	} */
-	out.InlinePhraseSet = InlinePhraseSet_FromProto(mapCtx, in.GetInlinePhraseSet())
+	out.InlinePhraseSet = InlinePhraseSet_v1beta1_FromProto(mapCtx, in.GetInlinePhraseSet())
 	return out
 }
-func SpeechAdaptation_AdaptationPhraseSet_ToProto(mapCtx *direct.MapContext, in *krm.SpeechAdaptation_AdaptationPhraseSet) *pb.SpeechAdaptation_AdaptationPhraseSet {
+func SpeechAdaptation_AdaptationPhraseSet_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.SpeechAdaptation_AdaptationPhraseSet) *pb.SpeechAdaptation_AdaptationPhraseSet {
 	if in == nil {
 		return nil
 	}
 	out := &pb.SpeechAdaptation_AdaptationPhraseSet{}
-	/* NOTYET if oneof := SpeechAdaptation_AdaptationPhraseSet_PhraseSet_ToProto(mapCtx, in.PhraseSetRef); oneof != nil {
+	/* NOTYET if oneof := SpeechAdaptation_AdaptationPhraseSet_PhraseSet_v1beta1_ToProto(mapCtx, in.PhraseSetRef); oneof != nil {
 		out.Value = oneof
 	} */
-	if oneof := InlinePhraseSet_ToProto(mapCtx, in.InlinePhraseSet); oneof != nil {
+	if oneof := InlinePhraseSet_v1beta1_ToProto(mapCtx, in.InlinePhraseSet); oneof != nil {
 		out.Value = &pb.SpeechAdaptation_AdaptationPhraseSet_InlinePhraseSet{InlinePhraseSet: oneof}
 	}
 	return out
 }
-func SpeechAdaptation_AdaptationPhraseSetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SpeechAdaptation_AdaptationPhraseSet) *krm.SpeechAdaptation_AdaptationPhraseSetObservedState {
+func SpeechAdaptation_AdaptationPhraseSetObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SpeechAdaptation_AdaptationPhraseSet) *krm.SpeechAdaptation_AdaptationPhraseSetObservedState {
 	if in == nil {
 		return nil
 	}
 	out := &krm.SpeechAdaptation_AdaptationPhraseSetObservedState{}
-	out.InlinePhraseSet = InlinePhraseSetObservedState_FromProto(mapCtx, in.GetInlinePhraseSet())
+	out.InlinePhraseSet = InlinePhraseSetObservedState_v1beta1_FromProto(mapCtx, in.GetInlinePhraseSet())
 	return out
 }
-func SpeechAdaptation_AdaptationPhraseSetObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SpeechAdaptation_AdaptationPhraseSetObservedState) *pb.SpeechAdaptation_AdaptationPhraseSet {
+func SpeechAdaptation_AdaptationPhraseSetObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.SpeechAdaptation_AdaptationPhraseSetObservedState) *pb.SpeechAdaptation_AdaptationPhraseSet {
 	if in == nil {
 		return nil
 	}
 	out := &pb.SpeechAdaptation_AdaptationPhraseSet{}
-	if oneof := InlinePhraseSetObservedState_ToProto(mapCtx, in.InlinePhraseSet); oneof != nil {
+	if oneof := InlinePhraseSetObservedState_v1beta1_ToProto(mapCtx, in.InlinePhraseSet); oneof != nil {
 		out.Value = &pb.SpeechAdaptation_AdaptationPhraseSet_InlinePhraseSet{InlinePhraseSet: oneof}
 	}
 	return out
