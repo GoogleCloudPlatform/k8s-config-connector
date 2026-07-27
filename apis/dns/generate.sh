@@ -62,9 +62,6 @@ go run "${REPO_ROOT}/dev/tools/openapi-to-krm/cmd/generate-mapper/main.go" \
   --mapper "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dns/v1beta1/DNSRecordSetStatus::google.golang.org/api/dns/v1/ResourceRecordSet" \
   --output-file "${REPO_ROOT}/pkg/controller/direct/dns/zz_generated.mappers.go"
 
-source "${REPO_ROOT}/dev/tools/goimports.sh"
-go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w "${REPO_ROOT}/pkg/controller/direct/dns/"
-
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
