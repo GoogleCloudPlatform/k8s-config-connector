@@ -143,15 +143,8 @@ echo "Running ${#scripts[@]} generator tasks in parallel with ${NUM_WORKERS} wor
 run_one() {
     local cmd="$1"
     
-    # Create an isolated temporary GOCACHE directory per worker process, pre-seeded from shared cache.
-    # This prevents race conditions and lock collisions while allowing instant cached compilation.
-    local worker_cache
-    worker_cache=$(mktemp -d "${GOCACHE_BASE}/worker-XXXXXX")
-    cp -r "${GOCACHE_BASE}/shared/." "${worker_cache}/"
-    export GOCACHE="${worker_cache}"
-
-    # Ensure worker cache directory is cleaned up when this worker subshell finishes
-    trap 'rm -rf "${worker_cache}"' EXIT
+    # Point directly to the shared concurrent-safe Go build cache
+    export GOCACHE="${GOCACHE_BASE}/shared"
 
     echo "running: ${cmd}"
     if ! eval "${cmd}"; then
