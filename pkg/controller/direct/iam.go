@@ -17,6 +17,7 @@ package direct
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"cloud.google.com/go/iam/apiv1/iampb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/iam/v1beta1"
@@ -59,7 +60,7 @@ func GetIAMPolicyMember(ctx context.Context, reader client.Reader, want *v1beta1
 			continue
 		}
 		for _, member := range binding.Members {
-			if member == string(memberID) {
+			if memberMatches(member, string(memberID)) {
 				actual.Spec.Role = want.Spec.Role
 			}
 		}
@@ -100,7 +101,7 @@ func SetIAMPolicyMember(ctx context.Context, reader client.Reader, want *v1beta1
 
 	hasMember := false
 	for _, member := range binding.Members {
-		if member == string(memberID) {
+		if memberMatches(member, string(memberID)) {
 			hasMember = true
 		}
 	}
@@ -127,7 +128,7 @@ func SetIAMPolicyMember(ctx context.Context, reader client.Reader, want *v1beta1
 			continue
 		}
 		for _, member := range binding.Members {
-			if member == string(memberID) {
+			if memberMatches(member, string(memberID)) {
 				actual.Spec.Role = want.Spec.Role
 			}
 		}
@@ -168,7 +169,7 @@ func DeleteIAMPolicyMember(ctx context.Context, reader client.Reader, want *v1be
 	var newMembers []string
 	removedMember := false
 	for _, member := range binding.Members {
-		if member == string(removeMember) {
+		if memberMatches(member, string(removeMember)) {
 			removedMember = true
 			continue
 		}
@@ -186,4 +187,18 @@ func DeleteIAMPolicyMember(ctx context.Context, reader client.Reader, want *v1be
 
 	log.Info("updated iam policy to remove member", "updatedPolicy", newPolicy, "member", removeMember)
 	return nil
+}
+
+func memberMatches(member, wantMember string) bool {
+	return strings.EqualFold(stripTombstone(member), stripTombstone(wantMember))
+}
+
+func stripTombstone(member string) string {
+	if strings.HasPrefix(strings.ToLower(member), "deleted:") {
+		member = member[len("deleted:"):]
+	}
+	if i := strings.Index(member, "?"); i != -1 {
+		member = member[:i]
+	}
+	return member
 }
