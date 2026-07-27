@@ -23,10 +23,7 @@ REPO_ROOT="$(git rev-parse --show-toplevel)"
 GCLOUD_VERSION="546.0.0"
 GCLOUD_DIR="${REPO_ROOT}/.build/gcloud/${GCLOUD_VERSION}"
 
-if [[ "${USE_SYSTEM_GCLOUD:-0}" == "1" ]]; then
-  echo "Using system gcloud as requested by USE_SYSTEM_GCLOUD=1"
-else
-  if [[ ! -d "${GCLOUD_DIR}" ]]; then
+if [[ ! -d "${GCLOUD_DIR}" ]]; then
   echo "Downloading gcloud ${GCLOUD_VERSION}..."
   mkdir -p "${REPO_ROOT}/.build/gcloud"
   
@@ -50,7 +47,6 @@ else
 
   # Install alpha and beta components
   "${GCLOUD_DIR}/bin/gcloud" components install alpha beta --quiet
-  fi
-
-  export PATH="${GCLOUD_DIR}/bin:${PATH}"
 fi
+
+export PATH="${GCLOUD_DIR}/bin:${PATH}"
