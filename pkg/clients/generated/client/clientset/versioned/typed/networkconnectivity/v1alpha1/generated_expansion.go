@@ -23,8 +23,6 @@ package v1alpha1
 
 type NetworkConnectivityInternalRangeExpansion interface{}
 
-type NetworkConnectivityMulticloudDataTransferConfigExpansion interface{}
-
 type NetworkConnectivityRegionalEndpointExpansion interface{}
 
 type NetworkConnectivityServiceConnectionPolicyExpansion interface{}

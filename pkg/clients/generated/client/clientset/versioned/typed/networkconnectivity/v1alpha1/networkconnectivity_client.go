@@ -32,7 +32,6 @@ import (
 type NetworkconnectivityV1alpha1Interface interface {
 	RESTClient() rest.Interface
 	NetworkConnectivityInternalRangesGetter
-	NetworkConnectivityMulticloudDataTransferConfigsGetter
 	NetworkConnectivityRegionalEndpointsGetter
 	NetworkConnectivityServiceConnectionPoliciesGetter
 }
@@ -44,10 +43,6 @@ type NetworkconnectivityV1alpha1Client struct {
 
 func (c *NetworkconnectivityV1alpha1Client) NetworkConnectivityInternalRanges(namespace string) NetworkConnectivityInternalRangeInterface {
 	return newNetworkConnectivityInternalRanges(c, namespace)
-}
-
-func (c *NetworkconnectivityV1alpha1Client) NetworkConnectivityMulticloudDataTransferConfigs(namespace string) NetworkConnectivityMulticloudDataTransferConfigInterface {
-	return newNetworkConnectivityMulticloudDataTransferConfigs(c, namespace)
 }
 
 func (c *NetworkconnectivityV1alpha1Client) NetworkConnectivityRegionalEndpoints(namespace string) NetworkConnectivityRegionalEndpointInterface {

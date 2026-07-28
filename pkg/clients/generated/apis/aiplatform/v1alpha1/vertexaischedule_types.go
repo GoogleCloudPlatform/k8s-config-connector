@@ -122,13 +122,9 @@ type VertexaischeduleEncryptionSpec struct {
 }
 
 type VertexaischeduleGcsNotebookSource struct {
-	/* The version of the Cloud Storage object to read. If unset, the current version of the object is read. See https://cloud.google.com/storage/docs/metadata#generation-number. */
+	/* Reference to a StorageBucketObject. */
 	// +optional
-	GenerationRef *v1alpha1.ResourceRef `json:"generationRef,omitempty"`
-
-	/* The Cloud Storage url pointing to the ipynb file. Format: `gs://bucket/notebook_file.ipynb` */
-	// +optional
-	UriRef *v1alpha1.ResourceRef `json:"uriRef,omitempty"`
+	ObjectRef *v1alpha1.ResourceRef `json:"objectRef,omitempty"`
 }
 
 type VertexaischeduleMachineSpec struct {
@@ -214,7 +210,7 @@ type VertexaischeduleNotebookExecutionJob struct {
 
 	/* The Cloud Storage location to upload the result to. Format: `gs://bucket-name` */
 	// +optional
-	GcsOutputURIRef *v1alpha1.ResourceRef `json:"gcsOutputURIRef,omitempty"`
+	GcsOutputRef *v1alpha1.ResourceRef `json:"gcsOutputRef,omitempty"`
 
 	/* The name of the kernel to use during notebook execution. If unset, the default kernel is used. */
 	// +optional
