@@ -17,6 +17,7 @@ package networkservices
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	gcp "cloud.google.com/go/networkservices/apiv1"
 	pb "cloud.google.com/go/networkservices/apiv1/networkservicespb"
@@ -240,6 +241,55 @@ func (a *NetworkServicesHTTPRouteAdapter) Delete(ctx context.Context, deleteOp *
 	return true, nil
 }
 
+func normalizeGCPResourceName(val string) string {
+	val = strings.TrimPrefix(val, "https://")
+	val = strings.TrimPrefix(val, "http://")
+	val = strings.TrimPrefix(val, "//")
+
+	prefixes := []string{
+		"networkservices.googleapis.com/v1alpha1/",
+		"networkservices.googleapis.com/v1beta1/",
+		"networkservices.googleapis.com/v1/",
+		"networkservices.googleapis.com/",
+		"www.googleapis.com/compute/v1/",
+		"www.googleapis.com/compute/beta/",
+		"compute.googleapis.com/compute/v1/",
+		"compute.googleapis.com/compute/beta/",
+	}
+	for _, prefix := range prefixes {
+		if strings.HasPrefix(val, prefix) {
+			val = strings.TrimPrefix(val, prefix)
+			break
+		}
+	}
+	return val
+}
+
+func normalizeHTTPRoute(obj *pb.HttpRoute) {
+	if obj == nil {
+		return
+	}
+	for i, g := range obj.Gateways {
+		obj.Gateways[i] = normalizeGCPResourceName(g)
+	}
+	for i, m := range obj.Meshes {
+		obj.Meshes[i] = normalizeGCPResourceName(m)
+	}
+	for _, rule := range obj.Rules {
+		if rule.Action == nil {
+			continue
+		}
+		for _, dest := range rule.Action.Destinations {
+			if dest != nil {
+				dest.ServiceName = normalizeGCPResourceName(dest.ServiceName)
+			}
+		}
+		if rule.Action.RequestMirrorPolicy != nil && rule.Action.RequestMirrorPolicy.Destination != nil {
+			rule.Action.RequestMirrorPolicy.Destination.ServiceName = normalizeGCPResourceName(rule.Action.RequestMirrorPolicy.Destination.ServiceName)
+		}
+	}
+}
+
 func compareHTTPRoute(ctx context.Context, actual, desired *pb.HttpRoute) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
 	maskedActual, err := mappers.OnlySpecFields(actual, NetworkServicesHTTPRouteSpec_FromProto, NetworkServicesHTTPRouteSpec_ToProto)
 	if err != nil {
@@ -255,6 +305,9 @@ func compareHTTPRoute(ctx context.Context, actual, desired *pb.HttpRoute) (*stru
 	}
 	populateDefaults(maskedActual)
 	populateDefaults(clonedDesired)
+
+	normalizeHTTPRoute(maskedActual)
+	normalizeHTTPRoute(clonedDesired)
 
 	diffs, updateMask, err := tags.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {

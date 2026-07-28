@@ -1,248 +1,3 @@
-GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Foperations%2F${operationID}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "done": true,
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.networkservices.v1.OperationMetadata",
-    "apiVersion": "v1",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": null,
-    "target": "projects/${projectId}/locations/global/httpRoutes/networkserviceshttproute-${uniqueId}",
-    "verb": "update"
-  },
-  "name": "projects/${projectId}/locations/global/operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.cloud.networkservices.v1.HttpRoute",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "description": "A test HttpRoute",
-    "gateways": [
-      "projects/${projectId}/locations/global/gateways/networkservicesgateway-1-${uniqueId}"
-    ],
-    "hostnames": [
-      "test1",
-      "test2"
-    ],
-    "labels": {
-      "cnrm-test": "true",
-      "foo": "bar",
-      "managed-by-cnrm": "true"
-    },
-    "meshes": [
-      "projects/${projectId}/locations/global/meshes/networkservicesmesh-1-${uniqueId}"
-    ],
-    "name": "projects/${projectId}/locations/global/httpRoutes/networkserviceshttproute-${uniqueId}",
-    "rules": [
-      {
-        "action": {
-          "corsPolicy": {
-            "allowCredentials": true,
-            "allowHeaders": [
-              "foo",
-              "bar"
-            ],
-            "allowMethods": [
-              "GET",
-              "POST"
-            ],
-            "allowOriginRegexes": [
-              ".*.foo.com",
-              ".*.bar.com"
-            ],
-            "allowOrigins": [
-              "foo.com",
-              "bar.com"
-            ],
-            "exposeHeaders": [
-              "foo",
-              "bar"
-            ],
-            "maxAge": "35"
-          },
-          "destinations": [
-            {
-              "serviceName": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/computebackendservice-1-${uniqueId}",
-              "weight": 1
-            },
-            {
-              "serviceName": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/computebackendservice-1-${uniqueId}",
-              "weight": 1
-            }
-          ],
-          "faultInjectionPolicy": {
-            "abort": {
-              "httpStatus": 501,
-              "percentage": 1
-            },
-            "delay": {
-              "fixedDelay": "10s",
-              "percentage": 2
-            }
-          },
-          "requestHeaderModifier": {
-            "add": {
-              "baz1": "qux1",
-              "foo1": "bar1"
-            },
-            "remove": [
-              "foo3",
-              "bar3"
-            ],
-            "set": {
-              "baz2": "qux2",
-              "foo2": "bar2"
-            }
-          },
-          "requestMirrorPolicy": {
-            "destination": {
-              "serviceName": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/computebackendservice-1-${uniqueId}"
-            }
-          },
-          "responseHeaderModifier": {
-            "add": {
-              "baz1": "qux1",
-              "foo1": "bar1"
-            },
-            "remove": [
-              "foo3",
-              "bar3"
-            ],
-            "set": {
-              "baz2": "qux2",
-              "foo2": "bar2"
-            }
-          },
-          "retryPolicy": {
-            "numRetries": 3,
-            "perTryTimeout": "5s",
-            "retryConditions": [
-              "refused-stream",
-              "cancelled"
-            ]
-          },
-          "timeout": "30s",
-          "urlRewrite": {
-            "hostRewrite": "foo",
-            "pathPrefixRewrite": "foo"
-          }
-        },
-        "matches": [
-          {
-            "fullPathMatch": "/foo/bar",
-            "headers": [
-              {
-                "header": "foo-header",
-                "prefixMatch": "bar-value"
-              }
-            ]
-          },
-          {
-            "ignoreCase": true,
-            "prefixMatch": "/foo/"
-          },
-          {
-            "regexMatch": "/foo/.*/bar/.*"
-          },
-          {
-            "headers": [
-              {
-                "exactMatch": "bar",
-                "header": "foo"
-              },
-              {
-                "header": "foo",
-                "regexMatch": "b.*ar"
-              },
-              {
-                "header": "foo",
-                "prefixMatch": "ba"
-              },
-              {
-                "header": "foo",
-                "presentMatch": true
-              },
-              {
-                "header": "foo",
-                "suffixMatch": "ar"
-              },
-              {
-                "header": "foo",
-                "invertMatch": true,
-                "rangeMatch": {
-                  "end": 5
-                }
-              }
-            ],
-            "prefixMatch": "/"
-          },
-          {
-            "prefixMatch": "/",
-            "queryParameters": [
-              {
-                "exactMatch": "bar",
-                "queryParameter": "foo"
-              },
-              {
-                "queryParameter": "foo",
-                "regexMatch": ".*bar.*"
-              },
-              {
-                "presentMatch": true,
-                "queryParameter": "foo"
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "action": {
-          "redirect": {
-            "hostRedirect": "foo",
-            "httpsRedirect": true,
-            "portRedirect": 7777,
-            "responseCode": "MOVED_PERMANENTLY_DEFAULT",
-            "stripQuery": true
-          }
-        }
-      },
-      {
-        "action": {
-          "redirect": {
-            "hostRedirect": "test",
-            "prefixRewrite": "foo",
-            "responseCode": "FOUND"
-          }
-        }
-      },
-      {
-        "action": {
-          "redirect": {
-            "hostRedirect": "test",
-            "pathRedirect": "/foo",
-            "responseCode": "FOUND"
-          }
-        }
-      }
-    ],
-    "updateTime": "2024-04-01T12:34:56.123456Z"
-  }
-}
-
----
-
 GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/httpRoutes/networkserviceshttproute-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -262,7 +17,7 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "A test HttpRoute",
   "gateways": [
-    "projects/${projectId}/locations/global/gateways/networkservicesgateway-1-${uniqueId}"
+    "https://networkservices.googleapis.com/v1alpha1/projects/${projectId}/locations/global/gateways/networkservicesgateway-1-${uniqueId}"
   ],
   "hostnames": [
     "test1",
@@ -274,7 +29,7 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "meshes": [
-    "projects/${projectId}/locations/global/meshes/networkservicesmesh-1-${uniqueId}"
+    "https://networkservices.googleapis.com/v1alpha1/projects/${projectId}/locations/global/meshes/networkservicesmesh-1-${uniqueId}"
   ],
   "name": "projects/${projectId}/locations/global/httpRoutes/networkserviceshttproute-${uniqueId}",
   "rules": [
@@ -306,11 +61,11 @@ X-Xss-Protection: 0
         },
         "destinations": [
           {
-            "serviceName": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/computebackendservice-1-${uniqueId}",
+            "serviceName": "projects/${projectId}/global/backendServices/computebackendservice-1-${uniqueId}",
             "weight": 1
           },
           {
-            "serviceName": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/computebackendservice-1-${uniqueId}",
+            "serviceName": "projects/${projectId}/global/backendServices/computebackendservice-1-${uniqueId}",
             "weight": 1
           }
         ],
@@ -340,7 +95,7 @@ X-Xss-Protection: 0
         },
         "requestMirrorPolicy": {
           "destination": {
-            "serviceName": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/computebackendservice-1-${uniqueId}"
+            "serviceName": "projects/${projectId}/global/backendServices/computebackendservice-1-${uniqueId}"
           }
         },
         "responseHeaderModifier": {
