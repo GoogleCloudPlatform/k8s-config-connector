@@ -51,6 +51,45 @@ func (s *RegionalTargetHTTPSProxiesV1) Get(ctx context.Context, req *pb.GetRegio
 	return obj, nil
 }
 
+func (s *RegionalTargetHTTPSProxiesV1) expandFields(ctx context.Context, obj *pb.TargetHttpsProxy) error {
+	if obj.SslCertificates != nil {
+		var certs []string
+		for _, cert := range obj.GetSslCertificates() {
+			// todo(yuhou): this is a strange design of TF/GCP API.
+			// GCP field `sslCertificates` refers to SSL Certificate resource or Certificate Manager Certificate resource,
+			// Mixing Classic Certificates and Certificate Manager Certificates is not allowed.
+			// TF handled it by adding a new field `certificateManagerCertificates` and using `conflictWith` to avoid the mixed values.
+			// ref: https://github.com/hashicorp/terraform-provider-google/blob/31e35e8baaee132be5e25cd5d4740b9ac920dd57/google/services/compute/resource_compute_target_https_proxy.go#L1073s
+			if strings.Contains(cert, "certificates") {
+				parsedCert := strings.TrimPrefix(cert, "https://certificatemanager.googleapis.com/v1/")
+				parsedCert = strings.TrimPrefix(parsedCert, "//certificatemanager.googleapis.com/")
+				tokens := strings.Split(parsedCert, "/")
+				if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "certificates" {
+				} else {
+					return status.Errorf(codes.InvalidArgument, "certificateManagerCertificate %q is not valid", cert)
+				}
+				certs = append(certs, fmt.Sprintf("//certificatemanager.googleapis.com/projects/%s/locations/%s/certificates/%s", tokens[1], tokens[3], tokens[5]))
+			} else {
+				sslCertName, err := s.parseRegionalSslCertificateName(cert)
+				if err != nil {
+					return status.Errorf(codes.InvalidArgument, "sslCertName %q is not valid", sslCertName)
+				}
+				certs = append(certs, BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/regions/%s/sslCertificates/%s", sslCertName.Project.ID, sslCertName.Region, sslCertName.Name)))
+			}
+		}
+		obj.SslCertificates = certs
+	}
+
+	if obj.UrlMap != nil {
+		mapName, err := s.parseRegionalUrlMapName(obj.GetUrlMap())
+		if err != nil {
+			return status.Errorf(codes.InvalidArgument, "mapName %q is not valid", mapName)
+		}
+		obj.UrlMap = PtrTo(BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/regions/%s/urlMaps/%s", mapName.Project.ID, mapName.Region, mapName.Name)))
+	}
+	return nil
+}
+
 func (s *RegionalTargetHTTPSProxiesV1) Insert(ctx context.Context, req *pb.InsertRegionTargetHttpsProxyRequest) (*pb.Operation, error) {
 	reqName := "projects/" + req.GetProject() + "/regions/" + req.GetRegion() + "/targetHttpsProxies/" + req.GetTargetHttpsProxyResource().GetName()
 	name, err := s.parseRegionalTargetHttpsProxyName(reqName)
@@ -74,41 +113,8 @@ func (s *RegionalTargetHTTPSProxiesV1) Insert(ctx context.Context, req *pb.Inser
 		obj.TlsEarlyData = PtrTo("DISABLED")
 	}
 
-	if obj.SslCertificates != nil {
-		var certs []string
-		for _, cert := range obj.GetSslCertificates() {
-			// todo(yuhou): this is a strange design of TF/GCP API.
-			// GCP field `sslCertificates` refers to SSL Certificate resource or Certificate Manager Certificate resource,
-			// Mixing Classic Certificates and Certificate Manager Certificates is not allowed.
-			// TF handled it by adding a new field `certificateManagerCertificates` and using `conflictWith` to avoid the mixed values.
-			// ref: https://github.com/hashicorp/terraform-provider-google/blob/31e35e8baaee132be5e25cd5d4740b9ac920dd57/google/services/compute/resource_compute_target_https_proxy.go#L1073s
-			if strings.Contains(cert, "certificates") {
-				parsedCert := strings.TrimPrefix(cert, "https://certificatemanager.googleapis.com/v1/")
-				parsedCert = strings.TrimPrefix(parsedCert, "//certificatemanager.googleapis.com/")
-				tokens := strings.Split(parsedCert, "/")
-				if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "certificates" {
-				} else {
-					return nil, status.Errorf(codes.InvalidArgument, "certificateManagerCertificate %q is not valid", cert)
-				}
-				certs = append(certs, fmt.Sprintf("//certificatemanager.googleapis.com/projects/%s/locations/%s/certificates/%s", tokens[1], tokens[3], tokens[5]))
-
-			} else {
-				sslCertName, err := s.parseRegionalSslCertificateName(cert)
-				if err != nil {
-					return nil, status.Errorf(codes.InvalidArgument, "sslCertName %q is not valid", sslCertName)
-				}
-				certs = append(certs, BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/regions/%s/sslCertificates/%s", sslCertName.Project.ID, sslCertName.Region, sslCertName.Name)))
-			}
-			obj.SslCertificates = certs
-		}
-	}
-
-	if obj.UrlMap != nil {
-		mapName, err := s.parseRegionalUrlMapName(obj.GetUrlMap())
-		if err != nil {
-			return nil, status.Errorf(codes.InvalidArgument, "mapName %q is not valid", mapName)
-		}
-		obj.UrlMap = PtrTo(BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/regions/%s/urlMaps/%s", mapName.Project.ID, mapName.Region, mapName.Name)))
+	if err := s.expandFields(ctx, obj); err != nil {
+		return nil, err
 	}
 	obj.Region = PtrTo(BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/regions/%s", name.Project.ID, name.Region)))
 
@@ -142,7 +148,18 @@ func (s *RegionalTargetHTTPSProxiesV1) Patch(ctx context.Context, req *pb.PatchR
 		return nil, err
 	}
 
-	proto.Merge(obj, req.GetTargetHttpsProxyResource())
+	patched := req.GetTargetHttpsProxyResource()
+	if err := s.expandFields(ctx, patched); err != nil {
+		return nil, err
+	}
+
+	if patched.SslCertificates != nil {
+		obj.SslCertificates = append(obj.SslCertificates, patched.SslCertificates...)
+	}
+
+	patchedCopy := proto.Clone(patched).(*pb.TargetHttpsProxy)
+	patchedCopy.SslCertificates = nil
+	proto.Merge(obj, patchedCopy)
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err

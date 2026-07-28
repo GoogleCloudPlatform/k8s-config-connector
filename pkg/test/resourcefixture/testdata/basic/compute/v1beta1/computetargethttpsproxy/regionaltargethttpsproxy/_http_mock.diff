@@ -71,7 +71,7 @@
 893c904
 <   "urlMap": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}"
 ---
->   "urlMap": "projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}"
+>   "urlMap": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/urlMaps/${urlMapID}"
 898c909
 < DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/targetHttpsProxies/${targetHttpsProxyID}?alt=json
 ---

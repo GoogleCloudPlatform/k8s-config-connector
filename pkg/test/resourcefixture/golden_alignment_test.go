@@ -467,6 +467,10 @@ func compareJSON(t *testing.T, context, realJSON, mockJSON string) {
 	realJSON = secretVersionRegex.ReplaceAllString(realJSON, `/secrets/kcc-test-$1/versions/_version_`)
 	mockJSON = secretVersionRegex.ReplaceAllString(mockJSON, `/secrets/kcc-test-$1/versions/_version_`)
 
+	// Normalize certificate manager prefix
+	realJSON = strings.ReplaceAll(realJSON, "//certificatemanager.googleapis.com/", "")
+	mockJSON = strings.ReplaceAll(mockJSON, "//certificatemanager.googleapis.com/", "")
+
 	var realObj, mockObj interface{}
 
 	if realJSON != "" {

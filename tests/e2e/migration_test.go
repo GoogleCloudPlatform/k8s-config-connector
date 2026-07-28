@@ -118,6 +118,12 @@ func TestMigrationToDirect(t *testing.T) {
 				continue
 			}
 
+			// Skip fixtures that explicitly specify the direct reconciler annotation in their create.yaml,
+			// as they are already direct-first tests, not migration tests.
+			if strings.Contains(string(fixture.Create), "alpha.cnrm.cloud.google.com/reconciler: direct") {
+				continue
+			}
+
 			testName := fixture.Name
 			if os.Getenv("USE_FULL_TEST_NAMES") == "true" {
 				testName = "pkg/test/resourcefixture/testdata/" + fixture.TestKey
@@ -175,6 +181,18 @@ func runMigrationScenario(ctx context.Context, t *testing.T, fixture resourcefix
 
 	// Setup namespaces
 	create.SetupNamespacesAndApplyDefaults(h, opt.Create, project)
+
+	// Hack: set project-id because mockkubeapiserver does not support webhooks
+	for _, u := range opt.Create {
+		annotations := u.GetAnnotations()
+		if annotations == nil {
+			annotations = make(map[string]string)
+		}
+		if annotations["cnrm.cloud.google.com/project-id"] == "" {
+			annotations["cnrm.cloud.google.com/project-id"] = project.ProjectID
+			u.SetAnnotations(annotations)
+		}
+	}
 
 	// Create ConfigConnector
 	cc := &opcorev1beta1.ConfigConnector{}
