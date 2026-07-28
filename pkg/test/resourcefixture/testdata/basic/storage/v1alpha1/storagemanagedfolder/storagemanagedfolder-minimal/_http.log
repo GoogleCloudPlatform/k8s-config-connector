@@ -1,16 +1,3 @@
-GRPC /google.storage.control.v2.StorageControl/GetManagedFolder
-
-{
-  "name": "projects/_/buckets/bucket-${uniqueId}/managedFolders/managedfolder-${uniqueId}",
-  "requestId": "1234"
-}
-
-error: rpc error: code = NotFound desc = The specified bucket does not exist.
-
-{}
-
----
-
 GET https://storage.googleapis.com/storage/v1/b/bucket-${uniqueId}?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -34,21 +21,6 @@ Vary: X-Origin
     "message": "The specified bucket does not exist."
   }
 }
-
----
-
-GRPC /google.storage.control.v2.StorageControl/CreateManagedFolder
-
-{
-  "managedFolder": {},
-  "managedFolderId": "managedfolder-${uniqueId}",
-  "parent": "projects/_/buckets/bucket-${uniqueId}",
-  "requestId": "1234"
-}
-
-error: rpc error: code = NotFound desc = The specified bucket does not exist.
-
-{}
 
 ---
 
@@ -339,32 +311,6 @@ Vary: X-Origin
 
 {
   "kind": "storage#objects"
-}
-
----
-
-DELETE https://storage.googleapis.com/storage/v1/b/bucket-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-409 Conflict
-Content-Type: application/json; charset=UTF-8
-Pragma: no-cache
-Server: UploadServer
-Vary: Origin
-Vary: X-Origin
-
-{
-  "error": {
-    "code": 409,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "The bucket you tried to delete is not empty.",
-        "reason": "conflict"
-      }
-    ],
-    "message": "The bucket you tried to delete is not empty."
-  }
 }
 
 ---

@@ -27,6 +27,7 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"k8s.io/klog/v2"
 
+	grpcpb "cloud.google.com/go/storage/control/apiv2/controlpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/storage/v1"
@@ -407,6 +408,34 @@ func (s *buckets) DeleteBucket(ctx context.Context, req *pb.DeleteBucketRequest)
 	}
 
 	fqn := name.String()
+
+	// Check if there are any folders inside the bucket
+	hasFolders := false
+	folderKind := (&grpcpb.Folder{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, folderKind, storage.ListOptions{
+		Prefix: fmt.Sprintf("projects/_/buckets/%s/folders/", name.Bucket),
+	}, func(obj proto.Message) error {
+		hasFolders = true
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	// Check if there are any managed folders inside the bucket
+	hasManagedFolders := false
+	managedFolderKind := (&grpcpb.ManagedFolder{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, managedFolderKind, storage.ListOptions{
+		Prefix: fmt.Sprintf("projects/_/buckets/%s/managedFolders/", name.Bucket),
+	}, func(obj proto.Message) error {
+		hasManagedFolders = true
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	if hasFolders || hasManagedFolders {
+		return nil, status.Errorf(codes.AlreadyExists, "The bucket you tried to delete is not empty.")
+	}
 
 	deletedObj := &pb.Bucket{}
 	if err := s.storage.Delete(ctx, fqn, deletedObj); err != nil {
