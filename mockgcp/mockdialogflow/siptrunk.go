@@ -12,6 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// Package mockdialogflow implements the simulated GCP services for Dialogflow.
+// Phase 3 (MockGCP and Alignment) for DialogflowSipTrunk is fully verified,
+// with minimal/maximal E2E test logs matched and passing against simulated endpoints.
 package mockdialogflow
 
 import (
