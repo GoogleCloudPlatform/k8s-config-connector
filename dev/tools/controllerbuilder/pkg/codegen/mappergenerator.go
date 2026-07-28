@@ -179,6 +179,39 @@ func isFieldIgnored(field protoreflect.FieldDescriptor) bool {
 		"google.cloud.sql.v1beta4.DatabaseInstance.pool_node_config",
 		"google.cloud.sql.v1beta4.DatabaseInstance.final_backup_config",
 		"google.cloud.sql.v1beta4.DatabaseInstance.psc_auto_connection_config",
+		"google.cloud.sql.v1beta4.DatabaseInstance.switch_transaction_logs_to_cloud_storage_enabled",
+		"google.cloud.sql.v1beta4.DatabaseInstance.include_replicas_for_major_version_upgrade",
+		"google.cloud.sql.v1beta4.IpConfiguration.server_ca_mode",
+		"google.cloud.sql.v1beta4.IpConfiguration.custom_subject_alternative_names",
+		"google.cloud.sql.v1beta4.IpConfiguration.server_ca_pool",
+		"google.cloud.sql.v1beta4.IpConfiguration.server_certificate_rotation_mode",
+		"google.cloud.sql.v1beta4.InsightsConfig.enhanced_query_insights_enabled",
+		"google.cloud.sql.v1beta4.OnPremisesConfiguration.ssl_option",
+		"google.cloud.sql.v1beta4.PscConfig.psc_auto_connections",
+		"google.cloud.sql.v1beta4.PscConfig.network_attachment_uri",
+		"google.cloud.sql.v1beta4.PscConfig.psc_auto_dns_enabled",
+		"google.cloud.sql.v1beta4.PscConfig.psc_write_endpoint_dns_enabled",
+		"google.cloud.sql.v1beta4.PscConfig.psc_auto_connection_policy_enabled",
+		"google.cloud.sql.v1beta4.SqlActiveDirectoryConfig.mode",
+		"google.cloud.sql.v1beta4.SqlActiveDirectoryConfig.dns_servers",
+		"google.cloud.sql.v1beta4.SqlActiveDirectoryConfig.admin_credential_secret_name",
+		"google.cloud.sql.v1beta4.SqlActiveDirectoryConfig.organizational_unit",
+		"google.cloud.sql.v1beta4.Settings.replication_lag_max_seconds",
+		"google.cloud.sql.v1beta4.Settings.retain_backups_on_delete",
+		"google.cloud.sql.v1beta4.Settings.data_disk_provisioned_iops",
+		"google.cloud.sql.v1beta4.Settings.data_disk_provisioned_throughput",
+		"google.cloud.sql.v1beta4.Settings.final_backup_config",
+		"google.cloud.sql.v1beta4.Settings.accelerated_replica_mode",
+		"google.cloud.sql.v1beta4.Settings.auto_upgrade_enabled",
+		"google.cloud.sql.v1beta4.Settings.data_api_access",
+		"google.cloud.sql.v1beta4.DatabaseInstance.tags",
+		"google.cloud.sql.v1beta4.DatabaseInstance.node_count",
+		"google.cloud.sql.v1beta4.DatabaseInstance.satisfies_pzi",
+		"google.cloud.sql.v1beta4.DatabaseInstance.nodes",
+		"google.cloud.sql.v1beta4.DatabaseInstance.dns_names",
+		"google.cloud.sql.v1beta4.OnPremisesConfiguration.selected_objects",
+		"google.cloud.sql.v1beta4.BackupConfiguration.backup_tier",
+		"google.cloud.run.v2.VolumeMount.sub_path",
 	}
 	for _, ign := range ignored {
 		if fullName == ign {
@@ -206,6 +239,7 @@ func (v *MapperGenerator) visitMessage(msg protoreflect.MessageDescriptor) {
 		fullName == "google.cloud.sql.v1beta4.ReadPoolAutoScaleConfig" ||
 		fullName == "google.cloud.sql.v1beta4.ReadPoolAutoScaleConfig.TargetMetric" ||
 		fullName == "google.cloud.sql.v1beta4.SqlServerEntraIdConfig" ||
+		fullName == "google.cloud.sql.v1beta4.SelectedObjects" ||
 		strings.Contains(fullName, "TemplateReference") {
 		klog.Infof("Skipping mapper generation for %s because it is not supported in the current Go client library", msg.FullName())
 		return
@@ -1185,6 +1219,8 @@ func krmFromProtoFunctionName(protoField protoreflect.FieldDescriptor, krmFieldN
 		return "direct.StringTimestamp_FromProto"
 	case "google.protobuf.Struct":
 		return "direct.Struct_FromProto"
+	case "google.cloud.aiplatform.v1.Schema", "google.cloud.aiplatform.v1beta1.Schema":
+		return "Schema_FromProto"
 	case "google.protobuf.Duration":
 		return "direct.StringDuration_FromProto"
 	case "google.protobuf.Int64Value":
@@ -1219,6 +1255,8 @@ func krmToProtoFunctionName(protoField protoreflect.FieldDescriptor, krmFieldNam
 		return "direct.StringTimestamp_ToProto"
 	case "google.protobuf.Struct":
 		return "direct.Struct_ToProto"
+	case "google.cloud.aiplatform.v1.Schema", "google.cloud.aiplatform.v1beta1.Schema":
+		return "Schema_ToProto"
 	case "google.protobuf.Duration":
 		return "direct.StringDuration_ToProto"
 	case "google.protobuf.Int64Value":

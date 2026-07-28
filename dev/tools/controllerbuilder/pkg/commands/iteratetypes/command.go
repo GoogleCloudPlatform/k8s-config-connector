@@ -41,7 +41,7 @@ type ResourceMetadata struct {
 	Validated *bool
 }
 
-func (r *ResourceMetadata) String() string {
+func (r ResourceMetadata) String() string {
 	return fmt.Sprintf("%s:%s:%s", r.Service, r.Package, r.Proto)
 }
 

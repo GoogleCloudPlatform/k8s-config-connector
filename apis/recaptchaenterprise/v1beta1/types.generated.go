@@ -31,6 +31,11 @@ type AndroidKeySettings struct {
 
 	// Optional. Android package names of apps allowed to use the key.
 	//  Example: 'com.companyname.appname'
+	//  Each key supports a maximum of 250 package names. To use a key on more
+	//  apps, set `allow_all_package_names` to true. When this is set, you
+	//  are responsible for validating the package name by checking the
+	//  `token_properties.android_package_name` field in each assessment response
+	//  against your list of allowed package names.
 	// +kcc:proto:field=google.cloud.recaptchaenterprise.v1.AndroidKeySettings.allowed_package_names
 	AllowedPackageNames []string `json:"allowedPackageNames,omitempty"`
 
@@ -76,8 +81,13 @@ type IosKeySettings struct {
 	// +kcc:proto:field=google.cloud.recaptchaenterprise.v1.IOSKeySettings.allow_all_bundle_ids
 	AllowAllBundleIds *bool `json:"allowAllBundleIds,omitempty"`
 
-	// Optional. iOS bundle ids of apps allowed to use the key.
+	// Optional. iOS bundle IDs of apps allowed to use the key.
 	//  Example: 'com.companyname.productname.appname'
+	//  Each key supports a maximum of 250 bundle IDs. To use a key on more
+	//  apps, set `allow_all_bundle_ids` to true. When this is set, you
+	//  are responsible for validating the bundle id by checking the
+	//  `token_properties.ios_bundle_id` field in each assessment response
+	//  against your list of allowed bundle IDs.
 	// +kcc:proto:field=google.cloud.recaptchaenterprise.v1.IOSKeySettings.allowed_bundle_ids
 	AllowedBundleIds []string `json:"allowedBundleIds,omitempty"`
 
@@ -129,7 +139,7 @@ type Key struct {
 	// +kcc:proto:field=google.cloud.recaptchaenterprise.v1.Key.testing_options
 	TestingOptions *TestingOptions `json:"testingOptions,omitempty"`
 
-	// Optional. Settings for WAF
+	// Optional. Settings for Web Application Firewall (WAF).
 	// +kcc:proto:field=google.cloud.recaptchaenterprise.v1.Key.waf_settings
 	WafSettings *WafSettings `json:"wafSettings,omitempty"`
 }
@@ -156,11 +166,12 @@ type TestingOptions struct {
 
 // +kcc:proto=google.cloud.recaptchaenterprise.v1.WafSettings
 type WafSettings struct {
-	// Required. The WAF service that uses this key.
+	// Required. The Web Application Firewall (WAF) service that uses this key.
 	// +kcc:proto:field=google.cloud.recaptchaenterprise.v1.WafSettings.waf_service
 	WafService *string `json:"wafService,omitempty"`
 
-	// Required. The WAF feature for which this key is enabled.
+	// Required. The Web Application Firewall (WAF) feature for which this key is
+	//  enabled.
 	// +kcc:proto:field=google.cloud.recaptchaenterprise.v1.WafSettings.waf_feature
 	WafFeature *string `json:"wafFeature,omitempty"`
 }
@@ -178,6 +189,10 @@ type WebKeySettings struct {
 	//  subdomains of an allowed domain are automatically allowed. A valid domain
 	//  requires a host and must not include any path, port, query or fragment.
 	//  Examples: 'example.com' or 'subdomain.example.com'
+	//  Each key supports a maximum of 250 domains. To use a key on more domains,
+	//  set `allow_all_domains` to true. When this is set, you are responsible for
+	//  validating the hostname by checking the `token_properties.hostname` field
+	//  in each assessment response against your list of allowed domains.
 	// +kcc:proto:field=google.cloud.recaptchaenterprise.v1.WebKeySettings.allowed_domains
 	AllowedDomains []string `json:"allowedDomains,omitempty"`
 
@@ -192,9 +207,36 @@ type WebKeySettings struct {
 
 	// Optional. Settings for the frequency and difficulty at which this key
 	//  triggers captcha challenges. This should only be specified for
-	//  IntegrationTypes CHECKBOX and INVISIBLE and SCORE_AND_CHALLENGE.
+	//  `IntegrationType` CHECKBOX, INVISIBLE or POLICY_BASED_CHALLENGE.
 	// +kcc:proto:field=google.cloud.recaptchaenterprise.v1.WebKeySettings.challenge_security_preference
 	ChallengeSecurityPreference *string `json:"challengeSecurityPreference,omitempty"`
+
+	// Optional. Challenge settings.
+	// +kcc:proto:field=google.cloud.recaptchaenterprise.v1.WebKeySettings.challenge_settings
+	ChallengeSettings *WebKeySettings_ChallengeSettings `json:"challengeSettings,omitempty"`
+}
+*/
+
+/* unreachable type WebKeySettings_ActionSettings
+// +kcc:proto=google.cloud.recaptchaenterprise.v1.WebKeySettings.ActionSettings
+type WebKeySettings_ActionSettings struct {
+	// Required. A challenge is triggered if the end-user score is below that
+	//  threshold. Value must be between 0 and 1 (inclusive).
+	// +kcc:proto:field=google.cloud.recaptchaenterprise.v1.WebKeySettings.ActionSettings.score_threshold
+	ScoreThreshold *float32 `json:"scoreThreshold,omitempty"`
+}
+*/
+
+/* unreachable type WebKeySettings_ChallengeSettings
+// +kcc:proto=google.cloud.recaptchaenterprise.v1.WebKeySettings.ChallengeSettings
+type WebKeySettings_ChallengeSettings struct {
+	// Required. Defines when a challenge is triggered (unless the default
+	//  threshold is overridden for the given action, see `action_settings`).
+	// +kcc:proto:field=google.cloud.recaptchaenterprise.v1.WebKeySettings.ChallengeSettings.default_settings
+	DefaultSettings *WebKeySettings_ActionSettings `json:"defaultSettings,omitempty"`
+
+	// TODO: unsupported map type with key string and value message
+
 }
 */
 

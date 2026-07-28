@@ -89,7 +89,9 @@ func (f *generatedFile) Write(addCopyright bool, writeEmptyFiles bool) error {
 		return nil
 	}
 
-	if strings.Contains(f.body.String(), "apiextensionsv1.") {
+	strippedBody := stripComments(f.body.String())
+
+	if strings.Contains(strippedBody, "apiextensionsv1.JSON") {
 		f.addImport("apiextensionsv1", "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1")
 	}
 
@@ -129,21 +131,35 @@ func (f *generatedFile) Write(addCopyright bool, writeEmptyFiles bool) error {
 		fmt.Fprintf(&w, "%s\n", s)
 	}
 
-	if f.goPackage != "" {
-		fmt.Fprintf(&w, "package %s\n", f.goPackage)
+	goPackage := f.goPackage
+	if goPackage == "" && f.key.GoPackage != "" {
+		goPackage = lastGoComponent(f.key.GoPackage)
+	}
+
+	if goPackage != "" {
+		fmt.Fprintf(&w, "package %s\n", goPackage)
 		fmt.Fprintf(&w, "\n")
 	}
 
 	if len(f.imports) != 0 {
-		w.WriteString("import (\n")
+		hasImports := false
+		var importBlock bytes.Buffer
+		importBlock.WriteString("import (\n")
 		for pkgName, alias := range f.imports {
 			if alias == "" {
-				w.WriteString(fmt.Sprintf("\t%q\n", pkgName))
+				importBlock.WriteString(fmt.Sprintf("\t%q\n", pkgName))
+				hasImports = true
 			} else {
-				w.WriteString(fmt.Sprintf("\t%s %q\n", alias, pkgName))
+				if strings.Contains(strippedBody, alias+".") {
+					importBlock.WriteString(fmt.Sprintf("\t%s %q\n", alias, pkgName))
+					hasImports = true
+				}
 			}
 		}
-		w.WriteString(")\n")
+		importBlock.WriteString(")\n")
+		if hasImports {
+			w.Write(importBlock.Bytes())
+		}
 	}
 	f.body.WriteTo(&w)
 
@@ -282,4 +298,32 @@ func (g *generatorBase) findFuncDeclaration(goFuncName string, srcDir string, sk
 	}
 
 	return nil
+}
+
+func stripComments(s string) string {
+	// Strip block comments /* ... */
+	for {
+		start := strings.Index(s, "/*")
+		if start == -1 {
+			break
+		}
+		end := strings.Index(s[start:], "*/")
+		if end == -1 {
+			break
+		}
+		s = s[:start] + s[start+end+2:]
+	}
+	// Strip line comments // ...
+	var lines []string
+	for _, line := range strings.Split(s, "\n") {
+		trimmed := strings.TrimSpace(line)
+		if strings.HasPrefix(trimmed, "//") {
+			continue
+		}
+		if idx := strings.Index(line, "//"); idx != -1 {
+			line = line[:idx]
+		}
+		lines = append(lines, line)
+	}
+	return strings.Join(lines, "\n")
 }

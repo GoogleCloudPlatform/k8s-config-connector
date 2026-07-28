@@ -257,6 +257,7 @@ func PubSubSubscriptionSpec_FromProto(mapCtx *direct.MapContext, in *pb.Subscrip
 	out.PushConfig = PushConfig_FromProto(mapCtx, in.GetPushConfig())
 	out.BigqueryConfig = BigQueryConfig_FromProto(mapCtx, in.GetBigqueryConfig())
 	out.CloudStorageConfig = CloudStorageConfig_FromProto(mapCtx, in.GetCloudStorageConfig())
+	// MISSING: BigtableConfig
 	out.AckDeadlineSeconds = direct.LazyPtr(in.GetAckDeadlineSeconds())
 	out.RetainAckedMessages = direct.LazyPtr(in.GetRetainAckedMessages())
 	out.MessageRetentionDuration = direct.StringDuration_FromProto(mapCtx, in.GetMessageRetentionDuration())
@@ -272,6 +273,7 @@ func PubSubSubscriptionSpec_FromProto(mapCtx *direct.MapContext, in *pb.Subscrip
 	// MISSING: State
 	// MISSING: AnalyticsHubSubscriptionInfo
 	// MISSING: MessageTransforms
+	// MISSING: Tags
 	return out
 }
 func PubSubSubscriptionSpec_ToProto(mapCtx *direct.MapContext, in *krm.PubSubSubscriptionSpec) *pb.Subscription {
@@ -286,6 +288,7 @@ func PubSubSubscriptionSpec_ToProto(mapCtx *direct.MapContext, in *krm.PubSubSub
 	out.PushConfig = PushConfig_ToProto(mapCtx, in.PushConfig)
 	out.BigqueryConfig = BigQueryConfig_ToProto(mapCtx, in.BigqueryConfig)
 	out.CloudStorageConfig = CloudStorageConfig_ToProto(mapCtx, in.CloudStorageConfig)
+	// MISSING: BigtableConfig
 	out.AckDeadlineSeconds = direct.ValueOf(in.AckDeadlineSeconds)
 	out.RetainAckedMessages = direct.ValueOf(in.RetainAckedMessages)
 	out.MessageRetentionDuration = direct.StringDuration_ToProto(mapCtx, in.MessageRetentionDuration)
@@ -301,6 +304,7 @@ func PubSubSubscriptionSpec_ToProto(mapCtx *direct.MapContext, in *krm.PubSubSub
 	// MISSING: State
 	// MISSING: AnalyticsHubSubscriptionInfo
 	// MISSING: MessageTransforms
+	// MISSING: Tags
 	return out
 }
 
@@ -320,6 +324,7 @@ func PubSubTopicSpec_FromProto(mapCtx *direct.MapContext, in *pb.Topic) *krm.Pub
 	// MISSING: State
 	// MISSING: IngestionDataSourceSettings
 	// MISSING: MessageTransforms
+	// MISSING: Tags
 	return out
 }
 */
@@ -340,6 +345,7 @@ func PubSubTopicSpec_ToProto(mapCtx *direct.MapContext, in *krm.PubSubTopicSpec)
 	// MISSING: State
 	// MISSING: IngestionDataSourceSettings
 	// MISSING: MessageTransforms
+	// MISSING: Tags
 	return out
 }
 */

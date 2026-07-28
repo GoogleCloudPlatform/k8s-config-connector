@@ -152,9 +152,7 @@ func BackupConfigurationObservedState_ToProto(mapCtx *direct.MapContext, in *krm
 	// MISSING: PointInTimeRecoveryEnabled
 	// MISSING: TransactionLogRetentionDays
 	// MISSING: BackupRetentionSettings
-	if oneof := BackupConfigurationObservedState_TransactionalLogStorageState_ToProto(mapCtx, in.TransactionalLogStorageState); oneof != nil {
-		out.TransactionalLogStorageState = oneof
-	}
+	out.TransactionalLogStorageState = direct.EnumPtr_ToProto[pb.BackupConfiguration_TransactionalLogStorageState](mapCtx, in.TransactionalLogStorageState)
 	return out
 }
 func BackupRetentionSettings_FromProto(mapCtx *direct.MapContext, in *pb.BackupRetentionSettings) *krm.BackupRetentionSettings {
@@ -302,9 +300,7 @@ func DatabaseInstance_ToProto(mapCtx *direct.MapContext, in *krm.DatabaseInstanc
 	// MISSING: AvailableMaintenanceVersions
 	out.MaintenanceVersion = direct.ValueOf(in.MaintenanceVersion)
 	// MISSING: UpgradableDatabaseVersions
-	if oneof := DatabaseInstance_SqlNetworkArchitecture_ToProto(mapCtx, in.SQLNetworkArchitecture); oneof != nil {
-		out.SqlNetworkArchitecture = oneof
-	}
+	out.SqlNetworkArchitecture = direct.EnumPtr_ToProto[pb.DatabaseInstance_SqlNetworkArchitecture](mapCtx, in.SQLNetworkArchitecture)
 	// MISSING: PSCServiceAttachmentLink
 	// MISSING: DNSName
 	// MISSING: PrimaryDNSName
@@ -447,9 +443,7 @@ func DatabaseInstance_SQLOutOfDiskReport_ToProto(mapCtx *direct.MapContext, in *
 		return nil
 	}
 	out := &pb.DatabaseInstance_SqlOutOfDiskReport{}
-	if oneof := DatabaseInstance_SQLOutOfDiskReport_SqlOutOfDiskState_ToProto(mapCtx, in.SQLOutOfDiskState); oneof != nil {
-		out.SqlOutOfDiskState = oneof
-	}
+	out.SqlOutOfDiskState = direct.EnumPtr_ToProto[pb.DatabaseInstance_SqlOutOfDiskReport_SqlOutOfDiskState](mapCtx, in.SQLOutOfDiskState)
 	out.SqlMinRecommendedIncreaseSizeGb = in.SQLMinRecommendedIncreaseSizeGB
 	return out
 }
@@ -611,6 +605,36 @@ func IPConfiguration_ToProto(mapCtx *direct.MapContext, in *krm.IPConfiguration)
 	out.EnablePrivatePathForGoogleCloudServices = direct.BoolValue_ToProto(mapCtx, in.EnablePrivatePathForGoogleCloudServices)
 	out.SslMode = direct.Enum_ToProto[pb.IpConfiguration_SslMode](mapCtx, in.SSLMode)
 	out.PscConfig = PSCConfig_ToProto(mapCtx, in.PSCConfig)
+	return out
+}
+func IPConfigurationObservedState_FromProto(mapCtx *direct.MapContext, in *pb.IpConfiguration) *krm.IPConfigurationObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.IPConfigurationObservedState{}
+	// MISSING: IPV4Enabled
+	// MISSING: PrivateNetwork
+	// MISSING: RequireSSL
+	// MISSING: AuthorizedNetworks
+	// MISSING: AllocatedIPRange
+	// MISSING: EnablePrivatePathForGoogleCloudServices
+	// MISSING: SSLMode
+	out.PSCConfig = PSCConfigObservedState_FromProto(mapCtx, in.GetPscConfig())
+	return out
+}
+func IPConfigurationObservedState_ToProto(mapCtx *direct.MapContext, in *krm.IPConfigurationObservedState) *pb.IpConfiguration {
+	if in == nil {
+		return nil
+	}
+	out := &pb.IpConfiguration{}
+	// MISSING: IPV4Enabled
+	// MISSING: PrivateNetwork
+	// MISSING: RequireSSL
+	// MISSING: AuthorizedNetworks
+	// MISSING: AllocatedIPRange
+	// MISSING: EnablePrivatePathForGoogleCloudServices
+	// MISSING: SSLMode
+	out.PscConfig = PSCConfigObservedState_ToProto(mapCtx, in.PSCConfig)
 	return out
 }
 func IPMapping_FromProto(mapCtx *direct.MapContext, in *pb.IpMapping) *krm.IPMapping {
@@ -805,6 +829,24 @@ func PSCConfig_ToProto(mapCtx *direct.MapContext, in *krm.PSCConfig) *pb.PscConf
 	out := &pb.PscConfig{}
 	out.PscEnabled = in.PSCEnabled
 	out.AllowedConsumerProjects = in.AllowedConsumerProjects
+	return out
+}
+func PSCConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PscConfig) *krm.PSCConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PSCConfigObservedState{}
+	// MISSING: PSCEnabled
+	// MISSING: AllowedConsumerProjects
+	return out
+}
+func PSCConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.PSCConfigObservedState) *pb.PscConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PscConfig{}
+	// MISSING: PSCEnabled
+	// MISSING: AllowedConsumerProjects
 	return out
 }
 func PasswordValidationPolicy_FromProto(mapCtx *direct.MapContext, in *pb.PasswordValidationPolicy) *krm.PasswordValidationPolicy {
@@ -1054,7 +1096,7 @@ func SettingsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Settings)
 	// MISSING: ReplicationType
 	// MISSING: StorageAutoResizeLimit
 	// MISSING: ActivationPolicy
-	// MISSING: IPConfiguration
+	out.IPConfiguration = IPConfigurationObservedState_FromProto(mapCtx, in.GetIpConfiguration())
 	// MISSING: StorageAutoResize
 	// MISSING: LocationPreference
 	// MISSING: DatabaseFlags
@@ -1095,7 +1137,7 @@ func SettingsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.SettingsOb
 	// MISSING: ReplicationType
 	// MISSING: StorageAutoResizeLimit
 	// MISSING: ActivationPolicy
-	// MISSING: IPConfiguration
+	out.IpConfiguration = IPConfigurationObservedState_ToProto(mapCtx, in.IPConfiguration)
 	// MISSING: StorageAutoResize
 	// MISSING: LocationPreference
 	// MISSING: DatabaseFlags

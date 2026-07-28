@@ -20,7 +20,9 @@ import (
 	pb "cloud.google.com/go/aiplatform/apiv1/aiplatformpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/aiplatform/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/types/known/structpb"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 func AIPlatformModelObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Model) *krm.AIPlatformModelObservedState {
@@ -459,5 +461,29 @@ func SmoothGradConfig_NoiseSigma_ToProto(mapCtx *direct.MapContext, in *float32)
 	}
 	out := &pb.SmoothGradConfig_NoiseSigma{}
 	out.NoiseSigma = direct.ValueOf(in)
+	return out
+}
+
+func Schema_FromProto(mapCtx *direct.MapContext, in *pb.Schema) apiextensionsv1.JSON {
+	if in == nil {
+		return apiextensionsv1.JSON{}
+	}
+	b, err := protojson.Marshal(in)
+	if err != nil {
+		mapCtx.Errorf("marshalling Schema to json: %v", err)
+		return apiextensionsv1.JSON{}
+	}
+	return apiextensionsv1.JSON{Raw: b}
+}
+
+func Schema_ToProto(mapCtx *direct.MapContext, in apiextensionsv1.JSON) *pb.Schema {
+	if len(in.Raw) == 0 {
+		return nil
+	}
+	out := &pb.Schema{}
+	if err := protojson.Unmarshal(in.Raw, out); err != nil {
+		mapCtx.Errorf("unmarshalling json to Schema: %v", err)
+		return nil
+	}
 	return out
 }

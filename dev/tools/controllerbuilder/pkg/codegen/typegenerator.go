@@ -225,23 +225,7 @@ func (g *TypeGenerator) WriteVisitedMessages() error {
 			FileName:  "types.generated.go",
 		}
 		out := g.getOutputFile(k)
-
-		for i := 0; i < msg.Fields().Len(); i++ {
-			field := msg.Fields().Get(i)
-			if field.Message() != nil {
-				name := field.Message().FullName()
-				if name == "google.cloud.connectors.v1.Secret" {
-					out.addImport("secretmanagerv1beta1", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1")
-				}
-				if name == "google.rpc.Status" {
-					out.addImport("common", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common")
-					break
-				}
-			}
-		}
-
 		out.goPackage = lastGoComponent(g.goPackage)
-
 		out.fileAnnotation = g.generatedFileAnnotation
 
 		goTypeName := GoNameForProtoMessage(msg)
@@ -270,6 +254,20 @@ func (g *TypeGenerator) WriteVisitedMessages() error {
 			continue
 		}
 
+		for i := 0; i < msg.Fields().Len(); i++ {
+			field := msg.Fields().Get(i)
+			if field.Message() != nil {
+				name := field.Message().FullName()
+				if name == "google.cloud.connectors.v1.Secret" {
+					out.addImport("secretmanagerv1beta1", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1")
+				}
+				if name == "google.rpc.Status" {
+					out.addImport("common", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common")
+					break
+				}
+			}
+		}
+
 		WriteMessage(&out.body, msg)
 	}
 	return errors.Join(g.errors...)
@@ -287,22 +285,7 @@ func (g *TypeGenerator) WriteOutputMessages() error {
 			FileName:  "types.generated.go",
 		}
 		out := g.getOutputFile(k)
-
-		for _, field := range msgDetails.OutputFields {
-			if field.Message() != nil {
-				name := field.Message().FullName()
-				if name == "google.cloud.connectors.v1.Secret" {
-					out.addImport("secretmanagerv1beta1", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1")
-				}
-				if name == "google.rpc.Status" {
-					out.addImport("common", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common")
-					break
-				}
-			}
-		}
-
 		out.goPackage = lastGoComponent(g.goPackage)
-
 		out.fileAnnotation = g.generatedFileAnnotation
 
 		goTypeName := goNameForOutputProtoMessage(msg)
@@ -329,6 +312,19 @@ func (g *TypeGenerator) WriteOutputMessages() error {
 				WriteObservedStateMessageAsComment(&out.body, msgDetails, fmt.Sprintf("found existing non-generated go type with proto tag %q, skipping", msg.FullName()), g.observedStateMessages)
 			}
 			continue
+		}
+
+		for _, field := range msgDetails.OutputFields {
+			if field.Message() != nil {
+				name := field.Message().FullName()
+				if name == "google.cloud.connectors.v1.Secret" {
+					out.addImport("secretmanagerv1beta1", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1")
+				}
+				if name == "google.rpc.Status" {
+					out.addImport("common", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common")
+					break
+				}
+			}
 		}
 
 		WriteObservedStateMessage(&out.body, msgDetails, g.observedStateMessages)
