@@ -29,7 +29,7 @@ import (
 	krmcomputerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krmvertexaiv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vertexai/v1alpha1"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vertexai/v1beta1"
+	krmvertexaiv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vertexai/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -234,9 +234,11 @@ func DedicatedResources_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Ded
 	out.MinReplicaCount = direct.LazyPtr(in.GetMinReplicaCount())
 	out.MaxReplicaCount = direct.LazyPtr(in.GetMaxReplicaCount())
 	out.RequiredReplicaCount = direct.LazyPtr(in.GetRequiredReplicaCount())
+	out.InitialReplicaCount = direct.LazyPtr(in.GetInitialReplicaCount())
 	out.AutoscalingMetricSpecs = direct.Slice_FromProto(mapCtx, in.AutoscalingMetricSpecs, AutoscalingMetricSpec_v1alpha1_FromProto)
 	out.Spot = direct.LazyPtr(in.GetSpot())
 	out.FlexStart = FlexStart_v1alpha1_FromProto(mapCtx, in.GetFlexStart())
+	out.ScaleToZeroSpec = DedicatedResources_ScaleToZeroSpec_v1alpha1_FromProto(mapCtx, in.GetScaleToZeroSpec())
 	return out
 }
 func DedicatedResources_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.DedicatedResources) *pb.DedicatedResources {
@@ -248,9 +250,29 @@ func DedicatedResources_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmverte
 	out.MinReplicaCount = direct.ValueOf(in.MinReplicaCount)
 	out.MaxReplicaCount = direct.ValueOf(in.MaxReplicaCount)
 	out.RequiredReplicaCount = direct.ValueOf(in.RequiredReplicaCount)
+	out.InitialReplicaCount = direct.ValueOf(in.InitialReplicaCount)
 	out.AutoscalingMetricSpecs = direct.Slice_ToProto(mapCtx, in.AutoscalingMetricSpecs, AutoscalingMetricSpec_v1alpha1_ToProto)
 	out.Spot = direct.ValueOf(in.Spot)
 	out.FlexStart = FlexStart_v1alpha1_ToProto(mapCtx, in.FlexStart)
+	out.ScaleToZeroSpec = DedicatedResources_ScaleToZeroSpec_v1alpha1_ToProto(mapCtx, in.ScaleToZeroSpec)
+	return out
+}
+func DedicatedResources_ScaleToZeroSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.DedicatedResources_ScaleToZeroSpec) *krmvertexaiv1alpha1.DedicatedResources_ScaleToZeroSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.DedicatedResources_ScaleToZeroSpec{}
+	out.MinScaleupPeriod = direct.StringDuration_FromProto(mapCtx, in.GetMinScaleupPeriod())
+	out.IdleScaledownPeriod = direct.StringDuration_FromProto(mapCtx, in.GetIdleScaledownPeriod())
+	return out
+}
+func DedicatedResources_ScaleToZeroSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.DedicatedResources_ScaleToZeroSpec) *pb.DedicatedResources_ScaleToZeroSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DedicatedResources_ScaleToZeroSpec{}
+	out.MinScaleupPeriod = direct.StringDuration_ToProto(mapCtx, in.MinScaleupPeriod)
+	out.IdleScaledownPeriod = direct.StringDuration_ToProto(mapCtx, in.IdleScaledownPeriod)
 	return out
 }
 func DiskSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.DiskSpec) *krmvertexaiv1alpha1.DiskSpec {
@@ -295,11 +317,11 @@ func EncryptionSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv
 */
 
 /* found existing non-generated mapping function "EncryptionSpec_v1beta1_FromProto", skipping
-func EncryptionSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionSpec) *krm.EncryptionSpec {
+func EncryptionSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionSpec) *krmvertexaiv1beta1.EncryptionSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.EncryptionSpec{}
+	out := &krmvertexaiv1beta1.EncryptionSpec{}
 	// MISSING: KMSKeyName
 	return out
 }
@@ -308,7 +330,7 @@ func EncryptionSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Encrypti
 /*
 found existing non-generated mapping function "EncryptionSpec_v1beta1_ToProto", skipping
 
-	func EncryptionSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.EncryptionSpec) *pb.EncryptionSpec {
+	func EncryptionSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1beta1.EncryptionSpec) *pb.EncryptionSpec {
 		if in == nil {
 			return nil
 		}
@@ -461,6 +483,28 @@ func GCSDestination_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv
 	out.OutputUriPrefix = direct.ValueOf(in.OutputURIPrefix)
 	return out
 }
+func LustreMount_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.LustreMount) *krmvertexaiv1alpha1.LustreMount {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.LustreMount{}
+	out.InstanceIP = direct.LazyPtr(in.GetInstanceIp())
+	out.VolumeHandle = direct.LazyPtr(in.GetVolumeHandle())
+	out.Filesystem = direct.LazyPtr(in.GetFilesystem())
+	out.MountPoint = direct.LazyPtr(in.GetMountPoint())
+	return out
+}
+func LustreMount_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.LustreMount) *pb.LustreMount {
+	if in == nil {
+		return nil
+	}
+	out := &pb.LustreMount{}
+	out.InstanceIp = direct.ValueOf(in.InstanceIP)
+	out.VolumeHandle = direct.ValueOf(in.VolumeHandle)
+	out.Filesystem = direct.ValueOf(in.Filesystem)
+	out.MountPoint = direct.ValueOf(in.MountPoint)
+	return out
+}
 func MachineSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.MachineSpec) *krmvertexaiv1alpha1.MachineSpec {
 	if in == nil {
 		return nil
@@ -473,6 +517,7 @@ func MachineSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.MachineSpe
 	out.TpuTopology = direct.LazyPtr(in.GetTpuTopology())
 	out.MultihostGpuNodeCount = direct.LazyPtr(in.GetMultihostGpuNodeCount())
 	out.ReservationAffinity = ReservationAffinity_v1alpha1_FromProto(mapCtx, in.GetReservationAffinity())
+	out.MinGpuDriverVersion = direct.LazyPtr(in.GetMinGpuDriverVersion())
 	return out
 }
 func MachineSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.MachineSpec) *pb.MachineSpec {
@@ -487,6 +532,7 @@ func MachineSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1al
 	out.TpuTopology = direct.ValueOf(in.TpuTopology)
 	out.MultihostGpuNodeCount = direct.ValueOf(in.MultihostGpuNodeCount)
 	out.ReservationAffinity = ReservationAffinity_v1alpha1_ToProto(mapCtx, in.ReservationAffinity)
+	out.MinGpuDriverVersion = direct.ValueOf(in.MinGpuDriverVersion)
 	return out
 }
 func MetadataStore_DataplexConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.MetadataStore_DataplexConfig) *krmvertexaiv1alpha1.MetadataStore_DataplexConfig {
@@ -505,15 +551,15 @@ func MetadataStore_DataplexConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in
 	out.EnabledPipelinesLineage = direct.ValueOf(in.EnabledPipelinesLineage)
 	return out
 }
-func MetadataStore_DataplexConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.MetadataStore_DataplexConfig) *krm.MetadataStore_DataplexConfig {
+func MetadataStore_DataplexConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.MetadataStore_DataplexConfig) *krmvertexaiv1beta1.MetadataStore_DataplexConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krm.MetadataStore_DataplexConfig{}
+	out := &krmvertexaiv1beta1.MetadataStore_DataplexConfig{}
 	out.EnabledPipelinesLineage = direct.LazyPtr(in.GetEnabledPipelinesLineage())
 	return out
 }
-func MetadataStore_DataplexConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.MetadataStore_DataplexConfig) *pb.MetadataStore_DataplexConfig {
+func MetadataStore_DataplexConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1beta1.MetadataStore_DataplexConfig) *pb.MetadataStore_DataplexConfig {
 	if in == nil {
 		return nil
 	}
@@ -537,15 +583,15 @@ func MetadataStore_MetadataStoreState_v1alpha1_ToProto(mapCtx *direct.MapContext
 	out.DiskUtilizationBytes = direct.ValueOf(in.DiskUtilizationBytes)
 	return out
 }
-func MetadataStore_MetadataStoreState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.MetadataStore_MetadataStoreState) *krm.MetadataStore_MetadataStoreState {
+func MetadataStore_MetadataStoreState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.MetadataStore_MetadataStoreState) *krmvertexaiv1beta1.MetadataStore_MetadataStoreState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.MetadataStore_MetadataStoreState{}
+	out := &krmvertexaiv1beta1.MetadataStore_MetadataStoreState{}
 	out.DiskUtilizationBytes = direct.LazyPtr(in.GetDiskUtilizationBytes())
 	return out
 }
-func MetadataStore_MetadataStoreState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.MetadataStore_MetadataStoreState) *pb.MetadataStore_MetadataStoreState {
+func MetadataStore_MetadataStoreState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1beta1.MetadataStore_MetadataStoreState) *pb.MetadataStore_MetadataStoreState {
 	if in == nil {
 		return nil
 	}
@@ -713,6 +759,162 @@ func TrainingConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv
 	out.TimeoutTrainingMilliHours = direct.ValueOf(in.TimeoutTrainingMilliHours)
 	return out
 }
+func VertexAIBatchPredictionJobObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.BatchPredictionJob) *krmvertexaiv1alpha1.VertexAIBatchPredictionJobObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.VertexAIBatchPredictionJobObservedState{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Model
+	// MISSING: ModelVersionID
+	// MISSING: UnmanagedContainerModel
+	// MISSING: InputConfig
+	// MISSING: InstanceConfig
+	// MISSING: ModelParameters
+	// MISSING: OutputConfig
+	// MISSING: DedicatedResources
+	// MISSING: ServiceAccount
+	// MISSING: ManualBatchTuningParameters
+	// MISSING: GenerateExplanation
+	// MISSING: ExplanationSpec
+	// MISSING: OutputInfo
+	// MISSING: State
+	// MISSING: Error
+	// MISSING: PartialFailures
+	// MISSING: ResourcesConsumed
+	// MISSING: CompletionStats
+	// MISSING: CreateTime
+	// MISSING: StartTime
+	// MISSING: EndTime
+	// MISSING: UpdateTime
+	// MISSING: Labels
+	// MISSING: EncryptionSpec
+	// MISSING: ModelMonitoringConfig
+	// MISSING: ModelMonitoringStatsAnomalies
+	// MISSING: ModelMonitoringStatus
+	// MISSING: DisableContainerLogging
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
+func VertexAIBatchPredictionJobObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.VertexAIBatchPredictionJobObservedState) *pb.BatchPredictionJob {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BatchPredictionJob{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Model
+	// MISSING: ModelVersionID
+	// MISSING: UnmanagedContainerModel
+	// MISSING: InputConfig
+	// MISSING: InstanceConfig
+	// MISSING: ModelParameters
+	// MISSING: OutputConfig
+	// MISSING: DedicatedResources
+	// MISSING: ServiceAccount
+	// MISSING: ManualBatchTuningParameters
+	// MISSING: GenerateExplanation
+	// MISSING: ExplanationSpec
+	// MISSING: OutputInfo
+	// MISSING: State
+	// MISSING: Error
+	// MISSING: PartialFailures
+	// MISSING: ResourcesConsumed
+	// MISSING: CompletionStats
+	// MISSING: CreateTime
+	// MISSING: StartTime
+	// MISSING: EndTime
+	// MISSING: UpdateTime
+	// MISSING: Labels
+	// MISSING: EncryptionSpec
+	// MISSING: ModelMonitoringConfig
+	// MISSING: ModelMonitoringStatsAnomalies
+	// MISSING: ModelMonitoringStatus
+	// MISSING: DisableContainerLogging
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
+func VertexAIBatchPredictionJobSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.BatchPredictionJob) *krmvertexaiv1alpha1.VertexAIBatchPredictionJobSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.VertexAIBatchPredictionJobSpec{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Model
+	// MISSING: ModelVersionID
+	// MISSING: UnmanagedContainerModel
+	// MISSING: InputConfig
+	// MISSING: InstanceConfig
+	// MISSING: ModelParameters
+	// MISSING: OutputConfig
+	// MISSING: DedicatedResources
+	// MISSING: ServiceAccount
+	// MISSING: ManualBatchTuningParameters
+	// MISSING: GenerateExplanation
+	// MISSING: ExplanationSpec
+	// MISSING: OutputInfo
+	// MISSING: State
+	// MISSING: Error
+	// MISSING: PartialFailures
+	// MISSING: ResourcesConsumed
+	// MISSING: CompletionStats
+	// MISSING: CreateTime
+	// MISSING: StartTime
+	// MISSING: EndTime
+	// MISSING: UpdateTime
+	// MISSING: Labels
+	// MISSING: EncryptionSpec
+	// MISSING: ModelMonitoringConfig
+	// MISSING: ModelMonitoringStatsAnomalies
+	// MISSING: ModelMonitoringStatus
+	// MISSING: DisableContainerLogging
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
+func VertexAIBatchPredictionJobSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.VertexAIBatchPredictionJobSpec) *pb.BatchPredictionJob {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BatchPredictionJob{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: Model
+	// MISSING: ModelVersionID
+	// MISSING: UnmanagedContainerModel
+	// MISSING: InputConfig
+	// MISSING: InstanceConfig
+	// MISSING: ModelParameters
+	// MISSING: OutputConfig
+	// MISSING: DedicatedResources
+	// MISSING: ServiceAccount
+	// MISSING: ManualBatchTuningParameters
+	// MISSING: GenerateExplanation
+	// MISSING: ExplanationSpec
+	// MISSING: OutputInfo
+	// MISSING: State
+	// MISSING: Error
+	// MISSING: PartialFailures
+	// MISSING: ResourcesConsumed
+	// MISSING: CompletionStats
+	// MISSING: CreateTime
+	// MISSING: StartTime
+	// MISSING: EndTime
+	// MISSING: UpdateTime
+	// MISSING: Labels
+	// MISSING: EncryptionSpec
+	// MISSING: ModelMonitoringConfig
+	// MISSING: ModelMonitoringStatsAnomalies
+	// MISSING: ModelMonitoringStatus
+	// MISSING: DisableContainerLogging
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
 func VertexAICustomJobObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.CustomJob) *krmvertexaiv1alpha1.VertexAICustomJobObservedState {
 	if in == nil {
 		return nil
@@ -812,7 +1014,7 @@ func VertexAIDataLabelingJobSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, i
 
 	if v := in.GetDatasets(); len(v) != 0 {
 		for i := range v {
-			out.DatasetRefs = append(out.DatasetRefs, krm.VertexAIDatasetRef{External: v[i]})
+			out.DatasetRefs = append(out.DatasetRefs, refsv1beta1.VertexAIDatasetRef{External: v[i]})
 		}
 	}
 
@@ -820,7 +1022,7 @@ func VertexAIDataLabelingJobSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, i
 	out.LabelerCount = direct.LazyPtr(in.GetLabelerCount())
 	out.InstructionURI = direct.LazyPtr(in.GetInstructionUri())
 	out.InputsSchemaURI = direct.LazyPtr(in.GetInputsSchemaUri())
-	out.Inputs = JSON_v1alpha1_FromProto(mapCtx, in.GetInputs())
+	out.Inputs = apiextensionsv1.JSON_v1alpha1_FromProto(mapCtx, in.GetInputs())
 	out.Labels = in.Labels
 	out.SpecialistPools = in.SpecialistPools
 	out.EncryptionSpec = EncryptionSpec_v1alpha1_FromProto(mapCtx, in.GetEncryptionSpec())
@@ -844,18 +1046,18 @@ func VertexAIDataLabelingJobSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in 
 	out.LabelerCount = direct.ValueOf(in.LabelerCount)
 	out.InstructionUri = direct.ValueOf(in.InstructionURI)
 	out.InputsSchemaUri = direct.ValueOf(in.InputsSchemaURI)
-	out.Inputs = JSON_v1alpha1_ToProto(mapCtx, in.Inputs)
+	out.Inputs = apiextensionsv1.JSON_v1alpha1_ToProto(mapCtx, in.Inputs)
 	out.Labels = in.Labels
 	out.SpecialistPools = in.SpecialistPools
 	out.EncryptionSpec = EncryptionSpec_v1alpha1_ToProto(mapCtx, in.EncryptionSpec)
 	out.ActiveLearningConfig = ActiveLearningConfig_v1alpha1_ToProto(mapCtx, in.ActiveLearningConfig)
 	return out
 }
-func VertexAIDatasetObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Dataset) *krm.VertexAIDatasetObservedState {
+func VertexAIDatasetObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Dataset) *krmvertexaiv1beta1.VertexAIDatasetObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.VertexAIDatasetObservedState{}
+	out := &krmvertexaiv1beta1.VertexAIDatasetObservedState{}
 	out.Name = direct.LazyPtr(in.GetName())
 	// MISSING: Description
 	// MISSING: Metadata
@@ -871,7 +1073,7 @@ func VertexAIDatasetObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, i
 	// MISSING: SatisfiesPzi
 	return out
 }
-func VertexAIDatasetObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.VertexAIDatasetObservedState) *pb.Dataset {
+func VertexAIDatasetObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1beta1.VertexAIDatasetObservedState) *pb.Dataset {
 	if in == nil {
 		return nil
 	}
@@ -891,11 +1093,11 @@ func VertexAIDatasetObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in 
 	// MISSING: SatisfiesPzi
 	return out
 }
-func VertexAIDatasetSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Dataset) *krm.VertexAIDatasetSpec {
+func VertexAIDatasetSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Dataset) *krmvertexaiv1beta1.VertexAIDatasetSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.VertexAIDatasetSpec{}
+	out := &krmvertexaiv1beta1.VertexAIDatasetSpec{}
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	// MISSING: Description
 	out.MetadataSchemaURI = direct.LazyPtr(in.GetMetadataSchemaUri())
@@ -912,7 +1114,7 @@ func VertexAIDatasetSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Dat
 	// MISSING: SatisfiesPzi
 	return out
 }
-func VertexAIDatasetSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.VertexAIDatasetSpec) *pb.Dataset {
+func VertexAIDatasetSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1beta1.VertexAIDatasetSpec) *pb.Dataset {
 	if in == nil {
 		return nil
 	}
@@ -1157,18 +1359,18 @@ func VertexAIMetadataStoreObservedState_v1alpha1_ToProto(mapCtx *direct.MapConte
 	out.State = MetadataStore_MetadataStoreState_v1alpha1_ToProto(mapCtx, in.State)
 	return out
 }
-func VertexAIMetadataStoreObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.MetadataStore) *krm.VertexAIMetadataStoreObservedState {
+func VertexAIMetadataStoreObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.MetadataStore) *krmvertexaiv1beta1.VertexAIMetadataStoreObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.VertexAIMetadataStoreObservedState{}
+	out := &krmvertexaiv1beta1.VertexAIMetadataStoreObservedState{}
 	out.Name = direct.LazyPtr(in.GetName())
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	out.State = MetadataStore_MetadataStoreState_v1beta1_FromProto(mapCtx, in.GetState())
 	return out
 }
-func VertexAIMetadataStoreObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.VertexAIMetadataStoreObservedState) *pb.MetadataStore {
+func VertexAIMetadataStoreObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1beta1.VertexAIMetadataStoreObservedState) *pb.MetadataStore {
 	if in == nil {
 		return nil
 	}
@@ -1199,17 +1401,17 @@ func VertexAIMetadataStoreSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *k
 	out.DataplexConfig = MetadataStore_DataplexConfig_v1alpha1_ToProto(mapCtx, in.DataplexConfig)
 	return out
 }
-func VertexAIMetadataStoreSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.MetadataStore) *krm.VertexAIMetadataStoreSpec {
+func VertexAIMetadataStoreSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.MetadataStore) *krmvertexaiv1beta1.VertexAIMetadataStoreSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.VertexAIMetadataStoreSpec{}
+	out := &krmvertexaiv1beta1.VertexAIMetadataStoreSpec{}
 	out.EncryptionSpec = EncryptionSpec_v1beta1_FromProto(mapCtx, in.GetEncryptionSpec())
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.DataplexConfig = MetadataStore_DataplexConfig_v1beta1_FromProto(mapCtx, in.GetDataplexConfig())
 	return out
 }
-func VertexAIMetadataStoreSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.VertexAIMetadataStoreSpec) *pb.MetadataStore {
+func VertexAIMetadataStoreSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1beta1.VertexAIMetadataStoreSpec) *pb.MetadataStore {
 	if in == nil {
 		return nil
 	}
@@ -1217,6 +1419,354 @@ func VertexAIMetadataStoreSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *kr
 	out.EncryptionSpec = EncryptionSpec_v1beta1_ToProto(mapCtx, in.EncryptionSpec)
 	out.Description = direct.ValueOf(in.Description)
 	out.DataplexConfig = MetadataStore_DataplexConfig_v1beta1_ToProto(mapCtx, in.DataplexConfig)
+	return out
+}
+func VertexAIModelMonitorObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ModelMonitor) *krmvertexaiv1alpha1.VertexAIModelMonitorObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.VertexAIModelMonitorObservedState{}
+	// MISSING: TabularObjective
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: ModelMonitoringTarget
+	// MISSING: TrainingDataset
+	// MISSING: NotificationSpec
+	// MISSING: OutputSpec
+	// MISSING: ExplanationSpec
+	// MISSING: ModelMonitoringSchema
+	// MISSING: EncryptionSpec
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
+func VertexAIModelMonitorObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.VertexAIModelMonitorObservedState) *pb.ModelMonitor {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ModelMonitor{}
+	// MISSING: TabularObjective
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: ModelMonitoringTarget
+	// MISSING: TrainingDataset
+	// MISSING: NotificationSpec
+	// MISSING: OutputSpec
+	// MISSING: ExplanationSpec
+	// MISSING: ModelMonitoringSchema
+	// MISSING: EncryptionSpec
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
+func VertexAIModelMonitorSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ModelMonitor) *krmvertexaiv1alpha1.VertexAIModelMonitorSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.VertexAIModelMonitorSpec{}
+	// MISSING: TabularObjective
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: ModelMonitoringTarget
+	// MISSING: TrainingDataset
+	// MISSING: NotificationSpec
+	// MISSING: OutputSpec
+	// MISSING: ExplanationSpec
+	// MISSING: ModelMonitoringSchema
+	// MISSING: EncryptionSpec
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
+func VertexAIModelMonitorSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.VertexAIModelMonitorSpec) *pb.ModelMonitor {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ModelMonitor{}
+	// MISSING: TabularObjective
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: ModelMonitoringTarget
+	// MISSING: TrainingDataset
+	// MISSING: NotificationSpec
+	// MISSING: OutputSpec
+	// MISSING: ExplanationSpec
+	// MISSING: ModelMonitoringSchema
+	// MISSING: EncryptionSpec
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
+func VertexAINasJobObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.NasJob) *krmvertexaiv1alpha1.VertexAINasJobObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.VertexAINasJobObservedState{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: NasJobSpec
+	// MISSING: NasJobOutput
+	// MISSING: State
+	// MISSING: CreateTime
+	// MISSING: StartTime
+	// MISSING: EndTime
+	// MISSING: UpdateTime
+	// MISSING: Error
+	// MISSING: Labels
+	// MISSING: EncryptionSpec
+	// MISSING: EnableRestrictedImageTraining
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
+func VertexAINasJobObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.VertexAINasJobObservedState) *pb.NasJob {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NasJob{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: NasJobSpec
+	// MISSING: NasJobOutput
+	// MISSING: State
+	// MISSING: CreateTime
+	// MISSING: StartTime
+	// MISSING: EndTime
+	// MISSING: UpdateTime
+	// MISSING: Error
+	// MISSING: Labels
+	// MISSING: EncryptionSpec
+	// MISSING: EnableRestrictedImageTraining
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
+func VertexAINasJobSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.NasJob) *krmvertexaiv1alpha1.VertexAINasJobSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.VertexAINasJobSpec{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: NasJobSpec
+	// MISSING: NasJobOutput
+	// MISSING: State
+	// MISSING: CreateTime
+	// MISSING: StartTime
+	// MISSING: EndTime
+	// MISSING: UpdateTime
+	// MISSING: Error
+	// MISSING: Labels
+	// MISSING: EncryptionSpec
+	// MISSING: EnableRestrictedImageTraining
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
+func VertexAINasJobSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.VertexAINasJobSpec) *pb.NasJob {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NasJob{}
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: NasJobSpec
+	// MISSING: NasJobOutput
+	// MISSING: State
+	// MISSING: CreateTime
+	// MISSING: StartTime
+	// MISSING: EndTime
+	// MISSING: UpdateTime
+	// MISSING: Error
+	// MISSING: Labels
+	// MISSING: EncryptionSpec
+	// MISSING: EnableRestrictedImageTraining
+	// MISSING: SatisfiesPzs
+	// MISSING: SatisfiesPzi
+	return out
+}
+func VertexAINotebookExecutionJobObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.NotebookExecutionJob) *krmvertexaiv1alpha1.VertexAINotebookExecutionJobObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.VertexAINotebookExecutionJobObservedState{}
+	// MISSING: DataformRepositorySource
+	// MISSING: GCSNotebookSource
+	// MISSING: DirectNotebookSource
+	// MISSING: NotebookRuntimeTemplateResourceName
+	// MISSING: CustomEnvironmentSpec
+	// MISSING: GCSOutputURI
+	// MISSING: ExecutionUser
+	// MISSING: ServiceAccount
+	// MISSING: WorkbenchRuntime
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: ExecutionTimeout
+	// MISSING: ScheduleResourceName
+	// MISSING: JobState
+	// MISSING: Status
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Labels
+	// MISSING: KernelName
+	// MISSING: EncryptionSpec
+	return out
+}
+func VertexAINotebookExecutionJobObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.VertexAINotebookExecutionJobObservedState) *pb.NotebookExecutionJob {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NotebookExecutionJob{}
+	// MISSING: DataformRepositorySource
+	// MISSING: GCSNotebookSource
+	// MISSING: DirectNotebookSource
+	// MISSING: NotebookRuntimeTemplateResourceName
+	// MISSING: CustomEnvironmentSpec
+	// MISSING: GCSOutputURI
+	// MISSING: ExecutionUser
+	// MISSING: ServiceAccount
+	// MISSING: WorkbenchRuntime
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: ExecutionTimeout
+	// MISSING: ScheduleResourceName
+	// MISSING: JobState
+	// MISSING: Status
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Labels
+	// MISSING: KernelName
+	// MISSING: EncryptionSpec
+	return out
+}
+func VertexAINotebookExecutionJobSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.NotebookExecutionJob) *krmvertexaiv1alpha1.VertexAINotebookExecutionJobSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.VertexAINotebookExecutionJobSpec{}
+	// MISSING: DataformRepositorySource
+	// MISSING: GCSNotebookSource
+	// MISSING: DirectNotebookSource
+	// MISSING: NotebookRuntimeTemplateResourceName
+	// MISSING: CustomEnvironmentSpec
+	// MISSING: GCSOutputURI
+	// MISSING: ExecutionUser
+	// MISSING: ServiceAccount
+	// MISSING: WorkbenchRuntime
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: ExecutionTimeout
+	// MISSING: ScheduleResourceName
+	// MISSING: JobState
+	// MISSING: Status
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Labels
+	// MISSING: KernelName
+	// MISSING: EncryptionSpec
+	return out
+}
+func VertexAINotebookExecutionJobSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.VertexAINotebookExecutionJobSpec) *pb.NotebookExecutionJob {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NotebookExecutionJob{}
+	// MISSING: DataformRepositorySource
+	// MISSING: GCSNotebookSource
+	// MISSING: DirectNotebookSource
+	// MISSING: NotebookRuntimeTemplateResourceName
+	// MISSING: CustomEnvironmentSpec
+	// MISSING: GCSOutputURI
+	// MISSING: ExecutionUser
+	// MISSING: ServiceAccount
+	// MISSING: WorkbenchRuntime
+	// MISSING: Name
+	// MISSING: DisplayName
+	// MISSING: ExecutionTimeout
+	// MISSING: ScheduleResourceName
+	// MISSING: JobState
+	// MISSING: Status
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: Labels
+	// MISSING: KernelName
+	// MISSING: EncryptionSpec
+	return out
+}
+func VertexAIOnlineEvaluatorObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.OnlineEvaluator) *krmvertexaiv1alpha1.VertexAIOnlineEvaluatorObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.VertexAIOnlineEvaluatorObservedState{}
+	// MISSING: CloudObservability
+	// MISSING: Name
+	// MISSING: AgentResource
+	// MISSING: MetricSources
+	// MISSING: Config
+	// MISSING: State
+	// MISSING: StateDetails
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: DisplayName
+	return out
+}
+func VertexAIOnlineEvaluatorObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.VertexAIOnlineEvaluatorObservedState) *pb.OnlineEvaluator {
+	if in == nil {
+		return nil
+	}
+	out := &pb.OnlineEvaluator{}
+	// MISSING: CloudObservability
+	// MISSING: Name
+	// MISSING: AgentResource
+	// MISSING: MetricSources
+	// MISSING: Config
+	// MISSING: State
+	// MISSING: StateDetails
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: DisplayName
+	return out
+}
+func VertexAIOnlineEvaluatorSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.OnlineEvaluator) *krmvertexaiv1alpha1.VertexAIOnlineEvaluatorSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.VertexAIOnlineEvaluatorSpec{}
+	// MISSING: CloudObservability
+	// MISSING: Name
+	// MISSING: AgentResource
+	// MISSING: MetricSources
+	// MISSING: Config
+	// MISSING: State
+	// MISSING: StateDetails
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: DisplayName
+	return out
+}
+func VertexAIOnlineEvaluatorSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.VertexAIOnlineEvaluatorSpec) *pb.OnlineEvaluator {
+	if in == nil {
+		return nil
+	}
+	out := &pb.OnlineEvaluator{}
+	// MISSING: CloudObservability
+	// MISSING: Name
+	// MISSING: AgentResource
+	// MISSING: MetricSources
+	// MISSING: Config
+	// MISSING: State
+	// MISSING: StateDetails
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: DisplayName
 	return out
 }
 func WorkerPoolSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.WorkerPoolSpec) *krmvertexaiv1alpha1.WorkerPoolSpec {
@@ -1229,6 +1779,7 @@ func WorkerPoolSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.WorkerP
 	out.MachineSpec = MachineSpec_v1alpha1_FromProto(mapCtx, in.GetMachineSpec())
 	out.ReplicaCount = direct.LazyPtr(in.GetReplicaCount())
 	out.NfsMounts = direct.Slice_FromProto(mapCtx, in.NfsMounts, NfsMount_v1alpha1_FromProto)
+	out.LustreMounts = direct.Slice_FromProto(mapCtx, in.LustreMounts, LustreMount_v1alpha1_FromProto)
 	out.DiskSpec = DiskSpec_v1alpha1_FromProto(mapCtx, in.GetDiskSpec())
 	return out
 }
@@ -1246,6 +1797,7 @@ func WorkerPoolSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv
 	out.MachineSpec = MachineSpec_v1alpha1_ToProto(mapCtx, in.MachineSpec)
 	out.ReplicaCount = direct.ValueOf(in.ReplicaCount)
 	out.NfsMounts = direct.Slice_ToProto(mapCtx, in.NfsMounts, NfsMount_v1alpha1_ToProto)
+	out.LustreMounts = direct.Slice_ToProto(mapCtx, in.LustreMounts, LustreMount_v1alpha1_ToProto)
 	out.DiskSpec = DiskSpec_v1alpha1_ToProto(mapCtx, in.DiskSpec)
 	return out
 }

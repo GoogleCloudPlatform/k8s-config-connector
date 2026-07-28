@@ -224,6 +224,8 @@ type Value struct {
 // +kcc:observedstate:proto=google.cloud.aiplatform.v1beta1.Dataset
 type DatasetObservedState struct {
 	// Output only. Identifier. The resource name of the Dataset.
+	//  Format:
+	//  `projects/{project}/locations/{location}/datasets/{dataset}`
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.Dataset.name
 	Name *string `json:"name,omitempty"`
 

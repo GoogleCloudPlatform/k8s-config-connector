@@ -32,7 +32,12 @@ go run . generate-types \
     --resource VertexAIExampleStore:ExampleStore \
     --resource VertexAIFeatureGroup:FeatureGroup \
     --resource VertexAIDataLabelingJob:DataLabelingJob \
-    --resource VertexAICustomJob:CustomJob
+    --resource VertexAICustomJob:CustomJob \
+    --resource VertexAIBatchPredictionJob:BatchPredictionJob \
+    --resource VertexAIModelMonitor:ModelMonitor \
+    --resource VertexAINasJob:NasJob \
+    --resource VertexAINotebookExecutionJob:NotebookExecutionJob \
+    --resource VertexAIOnlineEvaluator:OnlineEvaluator
 
 # --- v1beta1 ---
 go run . generate-types \
