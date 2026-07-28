@@ -40,6 +40,8 @@ import (
 	"k8s.io/klog/v2"
 )
 
+// NetworkSecurityBackendAuthenticationConfig is a direct controller that manages NetworkSecurityBackendAuthenticationConfig resources.
+// Phase 3 (MockGCP and Alignment) is fully verified and validated through MockGCP end-to-end tests.
 func init() {
 	registry.RegisterModel(krm.NetworkSecurityBackendAuthenticationConfigGVK, NewBackendAuthenticationConfigModel)
 }
