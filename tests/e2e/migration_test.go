@@ -38,6 +38,9 @@ import (
 	testvariable "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture/variable"
 	testyaml "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/yaml"
 
+	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/reflect/protoreflect"
+
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -441,8 +444,8 @@ func formatDiffsRaw(t *testing.T, listener *migrationDiffListener) string {
 		for _, f := range fields {
 			rd.Fields = append(rd.Fields, rawDiffField{
 				ID:  f.ID,
-				Old: f.Old,
-				New: f.New,
+				Old: jsonFriendlyValue(f.Old),
+				New: jsonFriendlyValue(f.New),
 			})
 		}
 		rawDiffs = append(rawDiffs, rd)
@@ -454,4 +457,68 @@ func formatDiffsRaw(t *testing.T, listener *migrationDiffListener) string {
 		t.Fatalf("FAIL: error marshaling diffs to JSON: %v", err)
 	}
 	return string(bytes) + "\n"
+}
+
+func jsonFriendlyValue(val any) any {
+	if val == nil {
+		return nil
+	}
+
+	// If it's a protoreflect.Value, extract its interface
+	if pv, ok := val.(protoreflect.Value); ok {
+		if !pv.IsValid() {
+			return nil
+		}
+		val = pv.Interface()
+	}
+
+	switch v := val.(type) {
+	case protoreflect.Message:
+		return jsonFriendlyMessage(v)
+	case protoreflect.List:
+		return jsonFriendlyList(v)
+	case protoreflect.Map:
+		return jsonFriendlyMap(v)
+	case proto.Message:
+		return jsonFriendlyMessage(v.ProtoReflect())
+	case []byte:
+		return string(v)
+	default:
+		return v
+	}
+}
+
+func jsonFriendlyMessage(m protoreflect.Message) any {
+	if m == nil || !m.IsValid() {
+		return nil
+	}
+	res := make(map[string]any)
+	m.Range(func(fd protoreflect.FieldDescriptor, v protoreflect.Value) bool {
+		res[string(fd.Name())] = jsonFriendlyValue(v)
+		return true
+	})
+	return res
+}
+
+func jsonFriendlyList(l protoreflect.List) any {
+	if l == nil {
+		return nil
+	}
+	var res []any
+	for i := 0; i < l.Len(); i++ {
+		res = append(res, jsonFriendlyValue(l.Get(i)))
+	}
+	return res
+}
+
+func jsonFriendlyMap(m protoreflect.Map) any {
+	if m == nil {
+		return nil
+	}
+	res := make(map[string]any)
+	m.Range(func(k protoreflect.MapKey, v protoreflect.Value) bool {
+		res[k.String()] = jsonFriendlyValue(v)
+		return true
+	})
+	return res
 }
