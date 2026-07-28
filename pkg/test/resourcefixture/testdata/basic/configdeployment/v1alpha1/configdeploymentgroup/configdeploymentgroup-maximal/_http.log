@@ -1,0 +1,381 @@
+GET https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/deploymentGroups/configdeploymentgroup-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdeploymentGroups%2Fconfigdeploymentgroup-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/deploymentGroups/configdeploymentgroup-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/deploymentGroups?%24alt=json%3Benum-encoding%3Dint&deploymentGroupId=configdeploymentgroup-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "annotations": {
+    "client": "custom-client"
+  },
+  "deploymentUnits": [
+    {
+      "id": "unit1"
+    },
+    {
+      "dependencies": [
+        "unit1"
+      ],
+      "id": "unit2"
+    }
+  ],
+  "labels": {
+    "env": "test-create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/deploymentGroups/configdeploymentgroup-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.config.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deploymentGroups/configdeploymentgroup-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.config.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deploymentGroups/configdeploymentgroup-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.config.v1.DeploymentGroup",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "deploymentUnits": [
+      {
+        "id": "unit1"
+      },
+      {
+        "dependencies": [
+          "unit1"
+        ],
+        "id": "unit2"
+      }
+    ],
+    "name": "projects/${projectId}/locations/us-central1/deploymentGroups/configdeploymentgroup-${uniqueId}",
+    "state": "ACTIVE",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/deploymentGroups/configdeploymentgroup-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdeploymentGroups%2Fconfigdeploymentgroup-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "annotations": {
+    "client": "custom-client"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "deploymentUnits": [
+    {
+      "id": "unit1"
+    },
+    {
+      "dependencies": [
+        "unit1"
+      ],
+      "id": "unit2"
+    }
+  ],
+  "labels": {
+    "env": "test-create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/deploymentGroups/configdeploymentgroup-${uniqueId}",
+  "state": 2,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/deploymentGroups/configdeploymentgroup-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=labels%2Cannotations%2CdeploymentUnits
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: deployment_group.name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdeploymentGroups%2Fconfigdeploymentgroup-${uniqueId}
+
+{
+  "annotations": {
+    "client": "custom-client-updated"
+  },
+  "deploymentUnits": [
+    {
+      "id": "unit1"
+    },
+    {
+      "dependencies": [
+        "unit1"
+      ],
+      "id": "unit3"
+    }
+  ],
+  "labels": {
+    "env": "test-update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/deploymentGroups/configdeploymentgroup-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.config.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deploymentGroups/configdeploymentgroup-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.config.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deploymentGroups/configdeploymentgroup-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.config.v1.DeploymentGroup",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "deploymentUnits": [
+      {
+        "id": "unit1"
+      },
+      {
+        "dependencies": [
+          "unit1"
+        ],
+        "id": "unit3"
+      }
+    ],
+    "name": "projects/${projectId}/locations/us-central1/deploymentGroups/configdeploymentgroup-${uniqueId}",
+    "state": "ACTIVE",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/deploymentGroups/configdeploymentgroup-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdeploymentGroups%2Fconfigdeploymentgroup-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "annotations": {
+    "client": "custom-client-updated"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "deploymentUnits": [
+    {
+      "id": "unit1"
+    },
+    {
+      "dependencies": [
+        "unit1"
+      ],
+      "id": "unit3"
+    }
+  ],
+  "labels": {
+    "env": "test-update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/deploymentGroups/configdeploymentgroup-${uniqueId}",
+  "state": 2,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/deploymentGroups/configdeploymentgroup-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FdeploymentGroups%2Fconfigdeploymentgroup-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.config.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deploymentGroups/configdeploymentgroup-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://config.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.config.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/deploymentGroups/configdeploymentgroup-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.config.v1.DeploymentGroup",
+    "deploymentUnits": [
+      {
+        "id": "unit1"
+      },
+      {
+        "dependencies": [
+          "unit1"
+        ],
+        "id": "unit3"
+      }
+    ],
+    "name": "projects/${projectId}/locations/us-central1/deploymentGroups/configdeploymentgroup-${uniqueId}",
+    "state": "DELETED"
+  }
+}
