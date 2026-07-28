@@ -142,7 +142,7 @@ func iamMemberImport(newUpdaterFunc NewResourceIamUpdaterFunc, resourceIdParser 
 			if b.Role == role && conditionKeyFromCondition(b.Condition).Title == conditionTitle {
 				containsMember := false
 				for _, m := range b.Members {
-					if strings.ToLower(m) == strings.ToLower(member) {
+					if iamMemberMatches(m, member) {
 						containsMember = true
 					}
 				}
@@ -270,7 +270,7 @@ func resourceIamMemberRead(newUpdaterFunc NewResourceIamUpdaterFunc) schema.Read
 		log.Printf("[DEBUG]: Looking for member %q in found binding", eMember.Members[0])
 		var member string
 		for _, m := range binding.Members {
-			if strings.ToLower(m) == strings.ToLower(eMember.Members[0]) {
+			if iamMemberMatches(m, eMember.Members[0]) {
 				member = m
 			}
 		}
