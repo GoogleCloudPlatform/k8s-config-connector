@@ -56,11 +56,17 @@ type Gateway struct {
 
 	// Required. One or more port numbers (1-65535), on which the Gateway will
 	//  receive traffic. The proxy binds to the specified ports.
-	//  Gateways of type 'SECURE_WEB_GATEWAY' are limited to 1 port.
+	//  Gateways of type 'SECURE_WEB_GATEWAY' are limited to 5 ports.
 	//  Gateways of type 'OPEN_MESH' listen on 0.0.0.0 for IPv4 and :: for IPv6 and
 	//  support multiple ports.
 	// +kcc:proto:field=google.cloud.networkservices.v1.Gateway.ports
 	Ports []int32 `json:"ports,omitempty"`
+
+	// Optional. If true, the Gateway will listen on all ports. This is mutually
+	//  exclusive with the `ports` field. This field only applies to gateways of
+	//  type 'SECURE_WEB_GATEWAY'.
+	// +kcc:proto:field=google.cloud.networkservices.v1.Gateway.all_ports
+	AllPorts *bool `json:"allPorts,omitempty"`
 
 	// Optional. Scope determines how configuration across multiple Gateway
 	//  instances are merged. The configuration for multiple Gateway instances with
@@ -127,6 +133,12 @@ type Gateway struct {
 	//  This field is required for gateways of type SECURE_WEB_GATEWAY.
 	// +kcc:proto:field=google.cloud.networkservices.v1.Gateway.routing_mode
 	RoutingMode *string `json:"routingMode,omitempty"`
+
+	// Optional. If true, the gateway will allow traffic from clients outside of
+	//  the region where the gateway is located.
+	//  This field is configurable only for gateways of type SECURE_WEB_GATEWAY.
+	// +kcc:proto:field=google.cloud.networkservices.v1.Gateway.allow_global_access
+	AllowGlobalAccess *bool `json:"allowGlobalAccess,omitempty"`
 }
 */
 
@@ -135,7 +147,7 @@ type Gateway struct {
 // +kcc:proto=google.cloud.networkservices.v1.HttpRoute
 type HTTPRoute struct {
 	// Identifier. Name of the HttpRoute resource. It matches pattern
-	//  `projects/* /locations/global/httpRoutes/http_route_name>`.
+	//  `projects/* /locations/* /httpRoutes/http_route_name>`.
 	// +kcc:proto:field=google.cloud.networkservices.v1.HttpRoute.name
 	Name *string `json:"name,omitempty"`
 
@@ -175,7 +187,7 @@ type HTTPRoute struct {
 	//  one of the routing rules to route the requests served by the mesh.
 	//
 	//  Each mesh reference should match the pattern:
-	//  `projects/* /locations/global/meshes/<mesh_name>`
+	//  `projects/* /locations/* /meshes/<mesh_name>`
 	//
 	//  The attached Mesh should be of a type SIDECAR
 	// +kcc:proto:field=google.cloud.networkservices.v1.HttpRoute.meshes
@@ -186,7 +198,7 @@ type HTTPRoute struct {
 	//  gateway.
 	//
 	//  Each gateway reference should match the pattern:
-	//  `projects/* /locations/global/gateways/<gateway_name>`
+	//  `projects/* /locations/* /gateways/<gateway_name>`
 	// +kcc:proto:field=google.cloud.networkservices.v1.HttpRoute.gateways
 	Gateways []string `json:"gateways,omitempty"`
 

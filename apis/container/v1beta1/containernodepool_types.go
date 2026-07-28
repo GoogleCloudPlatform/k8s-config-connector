@@ -481,37 +481,37 @@ type WritableCgroups struct {
 	Enabled *bool `json:"enabled,omitempty"`
 }
 
-// +kcc:proto=google.container.v1.ContainerdConfig.RegistryHost
+// +kcc:proto=google.container.v1.ContainerdConfig.RegistryHostConfig
 type RegistryHosts struct {
 	/* Defines the host name of the registry server. */
-	// +kcc:proto:field=google.container.v1.ContainerdConfig.RegistryHost.server
+	// +kcc:proto:field=google.container.v1.ContainerdConfig.RegistryHostConfig.server
 	Server *string `json:"server,omitempty"`
 
 	/* Configures a list of host-specific configurations for the server. */
-	// +kcc:proto:field=google.container.v1.ContainerdConfig.RegistryHost.hosts
+	// +kcc:proto:field=google.container.v1.ContainerdConfig.RegistryHostConfig.hosts
 	Hosts []RegistryHostsConfig `json:"hosts,omitempty"`
 }
 
-// +kcc:proto=google.container.v1.ContainerdConfig.RegistryHost.Host
+// +kcc:proto=google.container.v1.ContainerdConfig.RegistryHostConfig.HostConfig
 type RegistryHostsConfig struct {
 	/* Configures the registry host/mirror. */
-	// +kcc:proto:field=google.container.v1.ContainerdConfig.RegistryHost.Host.host
+	// +kcc:proto:field=google.container.v1.ContainerdConfig.RegistryHostConfig.HostConfig.host
 	Host *string `json:"host,omitempty"`
 
 	/* Represent the capabilities of the registry host, specifying what operations a host is capable of performing. */
-	// +kcc:proto:field=google.container.v1.ContainerdConfig.RegistryHost.Host.capabilities
+	// +kcc:proto:field=google.container.v1.ContainerdConfig.RegistryHostConfig.HostConfig.capabilities
 	Capabilities []string `json:"capabilities,omitempty"`
 
 	/* Indicate the host's API root endpoint is defined in the URL path rather than by the API specification. */
-	// +kcc:proto:field=google.container.v1.ContainerdConfig.RegistryHost.Host.override_path
+	// +kcc:proto:field=google.container.v1.ContainerdConfig.RegistryHostConfig.HostConfig.override_path
 	OverridePath *bool `json:"overridePath,omitempty"`
 
 	/* Specifies the maximum duration allowed for a connection attempt to complete. */
-	// +kcc:proto:field=google.container.v1.ContainerdConfig.RegistryHost.Host.dial_timeout
+	// +kcc:proto:field=google.container.v1.ContainerdConfig.RegistryHostConfig.HostConfig.dial_timeout
 	DialTimeout *string `json:"dialTimeout,omitempty"`
 
 	/* Configures the registry host headers. */
-	// +kcc:proto:field=google.container.v1.ContainerdConfig.RegistryHost.Host.header
+	// +kcc:proto:field=google.container.v1.ContainerdConfig.RegistryHostConfig.HostConfig.header
 	Header []RegistryHeader `json:"header,omitempty"`
 
 	/* Configures the registry host certificate. */
@@ -521,7 +521,7 @@ type RegistryHostsConfig struct {
 	Client []RegistryClient `json:"client,omitempty"`
 }
 
-// +kcc:proto=google.container.v1.ContainerdConfig.RegistryHost.Header
+// +kcc:proto=google.container.v1.ContainerdConfig.RegistryHostConfig.RegistryHeader
 type RegistryHeader struct {
 	/* Configures the header key. */
 	Key *string `json:"key,omitempty"`
@@ -530,14 +530,14 @@ type RegistryHeader struct {
 	Value []string `json:"value,omitempty"`
 }
 
-// +kcc:proto=google.container.v1.ContainerdConfig.RegistryHost.CA
+// +kcc:proto=google.container.v1.ContainerdConfig.RegistryHostConfig.CertificateConfig
 type RegistryCA struct {
 	/* Reference to SecretManagerSecretVersion for the CA certificate. */
-	// +kcc:proto:field=google.container.v1.ContainerdConfig.RegistryHost.CA.gcp_secret_manager_secret_uri
+	// +kcc:proto:field=google.container.v1.ContainerdConfig.RegistryHostConfig.CertificateConfig.gcp_secret_manager_secret_uri
 	SecretRef *refsv1beta1.SecretManagerSecretVersionRef `json:"secretRef,omitempty"`
 }
 
-// +kcc:proto=google.container.v1.ContainerdConfig.RegistryHost.Client
+// +kcc:proto=google.container.v1.ContainerdConfig.RegistryHostConfig.CertificateConfigPair
 type RegistryClient struct {
 	/* Configures the client certificate. */
 	Cert *RegistryClientCert `json:"cert,omitempty"`
@@ -546,17 +546,17 @@ type RegistryClient struct {
 	Key *RegistryClientKey `json:"key,omitempty"`
 }
 
-// +kcc:proto=google.container.v1.ContainerdConfig.RegistryHost.ClientCert
+// +kcc:proto=google.container.v1.ContainerdConfig.RegistryHostConfig.CertificateConfig
 type RegistryClientCert struct {
 	/* Reference to SecretManagerSecretVersion for the client certificate. */
-	// +kcc:proto:field=google.container.v1.ContainerdConfig.RegistryHost.ClientCert.gcp_secret_manager_secret_uri
+	// +kcc:proto:field=google.container.v1.ContainerdConfig.RegistryHostConfig.CertificateConfig.gcp_secret_manager_secret_uri
 	SecretRef *refsv1beta1.SecretManagerSecretVersionRef `json:"secretRef,omitempty"`
 }
 
-// +kcc:proto=google.container.v1.ContainerdConfig.RegistryHost.ClientKey
+// +kcc:proto=google.container.v1.ContainerdConfig.RegistryHostConfig.CertificateConfig
 type RegistryClientKey struct {
 	/* Reference to SecretManagerSecretVersion for the client key. */
-	// +kcc:proto:field=google.container.v1.ContainerdConfig.RegistryHost.ClientKey.gcp_secret_manager_secret_uri
+	// +kcc:proto:field=google.container.v1.ContainerdConfig.RegistryHostConfig.CertificateConfig.gcp_secret_manager_secret_uri
 	SecretRef *refsv1beta1.SecretManagerSecretVersionRef `json:"secretRef,omitempty"`
 }
 

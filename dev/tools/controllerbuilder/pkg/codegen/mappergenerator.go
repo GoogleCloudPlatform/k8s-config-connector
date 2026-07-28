@@ -159,11 +159,54 @@ func (v *MapperGenerator) findKRMStructsForProto(msg protoreflect.MessageDescrip
 	return matches
 }
 
+func isFieldIgnored(field protoreflect.FieldDescriptor) bool {
+	fullName := string(field.FullName())
+	ignored := []string{
+		"google.cloud.dataproc.v1.InstanceFlexibilityPolicy.InstanceSelection.disk_config",
+		"google.cloud.dataplex.v1.DataDiscoverySpec.StorageConfig.unstructured_data_options",
+		"google.cloud.dataplex.v1.DataProfileSpec.mode",
+		"google.cloud.dataplex.v1.DataQualityRule.template_reference",
+		"google.cloud.dataplex.v1.DataQualityRule.attributes",
+		"google.cloud.dataplex.v1.DataQualitySpec.enable_catalog_based_rules",
+		"google.cloud.dataplex.v1.DataQualitySpec.filter",
+		"google.firestore.admin.v1.Index.IndexField.search_config",
+		"google.cloud.sql.v1beta4.Settings.connection_pool_config",
+		"google.cloud.sql.v1beta4.Settings.connection_pool_flags",
+		"google.cloud.sql.v1beta4.Settings.dns_name_mapping",
+		"google.cloud.sql.v1beta4.Settings.performance_capture_config",
+		"google.cloud.sql.v1beta4.Settings.read_pool_auto_scale_config",
+		"google.cloud.sql.v1beta4.Settings.entraid_config",
+		"google.cloud.sql.v1beta4.DatabaseInstance.pool_node_config",
+		"google.cloud.sql.v1beta4.DatabaseInstance.final_backup_config",
+		"google.cloud.sql.v1beta4.DatabaseInstance.psc_auto_connection_config",
+	}
+	for _, ign := range ignored {
+		if fullName == ign {
+			return true
+		}
+	}
+	return false
+}
+
 func (v *MapperGenerator) visitMessage(msg protoreflect.MessageDescriptor) {
 	if _, visit := v.goPathForMessage(msg); !visit {
 		return
 	}
-	if strings.Contains(string(msg.FullName()), "OnlineEvaluator") {
+	fullName := string(msg.FullName())
+	if strings.Contains(fullName, "OnlineEvaluator") ||
+		strings.Contains(fullName, "UnstructuredDataOptions") ||
+		strings.Contains(fullName, "SearchConfig") ||
+		fullName == "google.cloud.sql.v1beta4.ConnectionPoolConfig" ||
+		fullName == "google.cloud.sql.v1beta4.ConnectionPoolFlags" ||
+		fullName == "google.cloud.sql.v1beta4.DnsNameMapping" ||
+		fullName == "google.cloud.sql.v1beta4.DatabaseInstance.PoolNodeConfig" ||
+		fullName == "google.cloud.sql.v1beta4.FinalBackupConfig" ||
+		fullName == "google.cloud.sql.v1beta4.PscAutoConnectionConfig" ||
+		fullName == "google.cloud.sql.v1beta4.PerformanceCaptureConfig" ||
+		fullName == "google.cloud.sql.v1beta4.ReadPoolAutoScaleConfig" ||
+		fullName == "google.cloud.sql.v1beta4.ReadPoolAutoScaleConfig.TargetMetric" ||
+		fullName == "google.cloud.sql.v1beta4.SqlServerEntraIdConfig" ||
+		strings.Contains(fullName, "TemplateReference") {
 		klog.Infof("Skipping mapper generation for %s because it is not supported in the current Go client library", msg.FullName())
 		return
 	}
@@ -287,6 +330,9 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 		fmt.Fprintf(out, "\tout := &%s.%s{}\n", krmImportName, goTypeName)
 		for i := 0; i < msg.Fields().Len(); i++ {
 			protoField := msg.Fields().Get(i)
+			if isFieldIgnored(protoField) {
+				continue
+			}
 			protoFieldName := protoNameForField(protoField)
 			protoAccessor := "Get" + protoFieldName + "()"
 
@@ -612,6 +658,9 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 		fmt.Fprintf(out, "\tout := &%s.%s{}\n", pbTypeGoImport, pbTypeName)
 		for i := 0; i < msg.Fields().Len(); i++ {
 			protoField := msg.Fields().Get(i)
+			if isFieldIgnored(protoField) {
+				continue
+			}
 			protoFieldName := protoNameForField(protoField)
 			protoFieldPackage := v.goPackageForProto(protoField.ParentFile())
 

@@ -89,6 +89,10 @@ func (f *generatedFile) Write(addCopyright bool, writeEmptyFiles bool) error {
 		return nil
 	}
 
+	if strings.Contains(f.body.String(), "apiextensionsv1.") {
+		f.addImport("apiextensionsv1", "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1")
+	}
+
 	dir := f.OutputDir()
 	p := filepath.Join(dir, f.key.FileName)
 
