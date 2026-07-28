@@ -230,15 +230,12 @@ func calculateOptimalJobs(userJ int, numTests int) int {
 		return 0
 	}
 
-	var jobs int
 	// If user explicitly passed -j > 0, honor user preference (capped by numTests)
 	if userJ > 0 {
-		jobs = min(userJ, numTests)
+		jobs := min(userJ, numTests)
 		log.Printf("paralleltestrunner: using user-specified parallelism -j=%d (selected %d worker jobs for %d tests)", userJ, jobs, numTests)
 		return jobs
 	}
-
-	isCI := os.Getenv("CI") != "" || os.Getenv("GITHUB_ACTIONS") != "" || os.Getenv("BUILD_ID") != ""
 
 	// Check current file descriptor ulimit
 	var rLimit syscall.Rlimit
@@ -247,25 +244,19 @@ func calculateOptimalJobs(userJ int, numTests int) int {
 		fdLimit = rLimit.Cur
 	}
 
-	if isCI {
-		// In CI environments (e.g. GitHub Actions), cap parallelism conservatively (max 4)
-		// to avoid overloading VM memory and CPU allocation.
-		jobs = min(runtime.NumCPU(), 4)
-		log.Printf("paralleltestrunner: CI environment detected. Using conservative parallelism -j=%d (CPU cores: %d)", jobs, runtime.NumCPU())
-	} else {
-		// On local developer machines, scale parallelism dynamically with CPU cores and file descriptor limits.
-		// Each envtest process consumes ~250 file descriptors.
-		safeFDJobs := int(fdLimit / 250)
-		cpuJobs := runtime.NumCPU()
+	// Each envtest process consumes ~250 file descriptors (etcd + kube-apiserver + controller-manager).
+	safeFDJobs := int(fdLimit / 250)
 
-		// Scale up to 8 jobs for local runs if CPUs and ulimit permit
-		targetJobs := max(4, min(cpuJobs, 8))
-		jobs = min(targetJobs, safeFDJobs)
-		log.Printf("paralleltestrunner: local environment detected. Auto-scaled parallelism -j=%d (CPU cores: %d, FD limit: %d, total tests: %d)", jobs, runtime.NumCPU(), fdLimit, numTests)
-	}
+	// Target a 2x CPU multiplier for I/O-bound envtest workers, bounded between 4 and 8 jobs:
+	// - Floor of 4: Ensures 2-vCPU CI runners (e.g. GitHub Actions) utilize 4 parallel workers efficiently.
+	// - 2x Multiplier: Maximizes throughput for I/O-heavy envtest setups (etcd DB operations, IPC, and HTTP requests).
+	// - Ceiling of 8: Avoids CPU thread scheduling contention and webhook startup 10s timeouts observed at >8 workers.
+	targetJobs := max(4, min(runtime.NumCPU()*2, 8))
+	jobs := min(targetJobs, safeFDJobs)
 
 	// Cap by total test count if total tests < jobs
 	jobs = min(jobs, numTests)
+	log.Printf("paralleltestrunner: auto-scaled parallelism -j=%d (CPU cores: %d, FD limit: %d, total tests: %d)", jobs, runtime.NumCPU(), fdLimit, numTests)
 	return jobs
 }
 
