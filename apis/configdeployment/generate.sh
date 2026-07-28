@@ -28,6 +28,10 @@ go run . generate-types \
   --api-version configdeployment.cnrm.cloud.google.com/v1alpha1 \
   --resource ConfigDeploymentGroup:DeploymentGroup
 
+go run . generate-mapper \
+  --service google.cloud.config.v1 \
+  --api-version "configdeployment.cnrm.cloud.google.com/v1alpha1"
+
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
