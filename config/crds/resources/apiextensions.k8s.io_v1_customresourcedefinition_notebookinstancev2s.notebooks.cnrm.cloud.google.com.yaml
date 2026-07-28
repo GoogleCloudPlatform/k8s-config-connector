@@ -490,7 +490,7 @@ spec:
                           type: object
                         type: array
                     type: object
-                  gcpId:
+                  gcpID:
                     description: Output only. Unique ID of the resource.
                     type: string
                   healthInfo:

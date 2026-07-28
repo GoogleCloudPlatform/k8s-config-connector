@@ -373,7 +373,7 @@ type NotebookInstanceV2ObservedState struct {
 
 	// Output only. Unique ID of the resource.
 	// +kcc:proto:field=google.cloud.notebooks.v2.Instance.id
-	GCPID *string `json:"gcpId,omitempty"`
+	GCPID *string `json:"gcpID,omitempty"`
 
 	// Output only. Instance health_state.
 	// +kcc:proto:field=google.cloud.notebooks.v2.Instance.health_state
