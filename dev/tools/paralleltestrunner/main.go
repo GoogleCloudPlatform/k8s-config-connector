@@ -24,15 +24,17 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"runtime"
 	"sort"
 	"strings"
 	"sync"
+	"syscall"
 	"time"
 )
 
 var (
 	listFile       = flag.String("list-file", "", "File containing the list of tests")
-	j              = flag.Int("j", 4, "Number of parallel processes")
+	j              = flag.Int("j", 0, "Number of parallel processes (0 = auto-detect)")
 	baseTest       = flag.String("base-test", "", "Base test name, e.g. TestE2EScript/scenarios")
 	checkUnchanged = flag.Bool("check-unchanged", false, "Fail if the list file is modified (i.e. missing tests found)")
 	timeout        = flag.Duration("timeout", 5*time.Minute, "Timeout for each test")
@@ -44,11 +46,16 @@ func main() {
 		log.Fatalf("Usage: paralleltestrunner -list-file=<file> -base-test=<base> <cmd> [args...]")
 	}
 
+	restoreFD := configureFileDescriptors()
+	defer restoreFD()
+
 	tests := readList(*listFile)
+
+	numJobs := calculateOptimalJobs(*j, len(tests))
 
 	success := true
 	var wg sync.WaitGroup
-	sem := make(chan struct{}, *j)
+	sem := make(chan struct{}, numJobs)
 	var mu sync.Mutex
 
 	if len(tests) > 0 {
@@ -185,6 +192,72 @@ func readList(path string) []string {
 		}
 	}
 	return list
+}
+
+func configureFileDescriptors() func() {
+	var originalRLimit syscall.Rlimit
+	if err := syscall.Getrlimit(syscall.RLIMIT_NOFILE, &originalRLimit); err != nil {
+		return func() {}
+	}
+
+	// Dynamic Core Ratio Formula: Every batch of 4 CPU cores requires 1024 file descriptors
+	requiredFDs := uint64((runtime.NumCPU()+3)/4) * 1024
+
+	// Apply safety ceiling cap of 12,288 (12K FDs) as a guardrail against resource exhaustion
+	maxFDTarget := uint64(12288)
+	targetFDs := min(originalRLimit.Max, min(requiredFDs, maxFDTarget))
+
+	// Elevate soft limit if lower than required (capped by system hard limit)
+	if originalRLimit.Cur < targetFDs {
+		newRLimit := originalRLimit
+		newRLimit.Cur = targetFDs
+		if err := syscall.Setrlimit(syscall.RLIMIT_NOFILE, &newRLimit); err == nil {
+			log.Printf("paralleltestrunner: dynamically elevated ulimit -n soft limit from %d to %d (hard limit: %d)", originalRLimit.Cur, newRLimit.Cur, originalRLimit.Max)
+			return func() {
+				_ = syscall.Setrlimit(syscall.RLIMIT_NOFILE, &originalRLimit)
+				log.Printf("paralleltestrunner: restored original ulimit -n soft limit to %d", originalRLimit.Cur)
+			}
+		}
+	}
+
+	return func() {}
+}
+
+func calculateOptimalJobs(userJ int, numTests int) int {
+	// Short-circuit: no tests need to run
+	if numTests < 1 {
+		log.Printf("paralleltestrunner: 0 tests to run")
+		return 0
+	}
+
+	// If user explicitly passed -j > 0, honor user preference (capped by numTests)
+	if userJ > 0 {
+		jobs := min(userJ, numTests)
+		log.Printf("paralleltestrunner: using user-specified parallelism -j=%d (selected %d worker jobs for %d tests)", userJ, jobs, numTests)
+		return jobs
+	}
+
+	// Check current file descriptor ulimit
+	var rLimit syscall.Rlimit
+	fdLimit := uint64(1024)
+	if err := syscall.Getrlimit(syscall.RLIMIT_NOFILE, &rLimit); err == nil {
+		fdLimit = rLimit.Cur
+	}
+
+	// Each envtest process consumes ~250 file descriptors (etcd + kube-apiserver + controller-manager).
+	safeFDJobs := int(fdLimit / 250)
+
+	// Target a 2x CPU multiplier for I/O-bound envtest workers, bounded between 4 and 8 jobs:
+	// - Floor of 4: Ensures 2-vCPU CI runners (e.g. GitHub Actions) utilize 4 parallel workers efficiently.
+	// - 2x Multiplier: Maximizes throughput for I/O-heavy envtest setups (etcd DB operations, IPC, and HTTP requests).
+	// - Ceiling of 8: Avoids CPU thread scheduling contention and webhook startup 10s timeouts observed at >8 workers.
+	targetJobs := max(4, min(runtime.NumCPU()*2, 8))
+	jobs := min(targetJobs, safeFDJobs)
+
+	// Cap by total test count if total tests < jobs
+	jobs = min(jobs, numTests)
+	log.Printf("paralleltestrunner: auto-scaled parallelism -j=%d (CPU cores: %d, FD limit: %d, total tests: %d)", jobs, runtime.NumCPU(), fdLimit, numTests)
+	return jobs
 }
 
 func writeList(path string, list []string) {
