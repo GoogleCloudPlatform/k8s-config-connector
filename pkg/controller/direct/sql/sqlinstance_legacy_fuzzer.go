@@ -275,6 +275,7 @@ func sqlInstanceLegacyFuzzer() fuzztesting.KRMFuzzer_NoProto {
 	f.Unimplemented_NotYetTriaged(".Settings.IpConfiguration.ServerCaPool")
 	f.Unimplemented_NotYetTriaged(".Settings.IpConfiguration.ServerCertificateRotationMode")
 	f.Unimplemented_NotYetTriaged(".Settings.IpConfiguration.PscConfig.NetworkAttachmentUri")
+	f.Unimplemented_NotYetTriaged(".Settings.IpConfiguration.PscConfig.PscAutoConnectionPolicyEnabled")
 	f.Unimplemented_NotYetTriaged(".Settings.IpConfiguration.PscConfig.PscAutoConnections")
 	f.Unimplemented_NotYetTriaged(".Settings.IpConfiguration.PscConfig.PscAutoDnsEnabled")
 	f.Unimplemented_NotYetTriaged(".Settings.IpConfiguration.PscConfig.PscWriteEndpointDnsEnabled")
