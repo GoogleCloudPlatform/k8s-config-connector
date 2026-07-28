@@ -29,22 +29,43 @@ if [[ -z "${CONTROLLERBUILDER}" ]]; then
 fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
-./generate-proto.sh
+./generate-proto.sh 62da249e76b878fa8d667a0d7bfa4dc33d790cb8 "${REPO_ROOT}/.build/googleapis-62da249e76b878fa8d667a0d7bfa4dc33d790cb8.pb"
 
 # --- v1alpha1 ---
 ${CONTROLLERBUILDER} generate-types \
+    --proto-source-path "${REPO_ROOT}/.build/googleapis-62da249e76b878fa8d667a0d7bfa4dc33d790cb8.pb" \
     --service google.cloud.aiplatform.v1beta1 \
     --api-version vertexai.cnrm.cloud.google.com/v1alpha1 \
+    --include-skipped-output \
     --resource VertexAIFeaturestore:Featurestore \
     --resource VertexAIMetadataStore:MetadataStore \
     --resource VertexAIDeploymentResourcePool:DeploymentResourcePool \
     --resource VertexAIExampleStore:ExampleStore \
     --resource VertexAIFeatureGroup:FeatureGroup \
     --resource VertexAIDataLabelingJob:DataLabelingJob \
-    --resource VertexAICustomJob:CustomJob
+    --resource VertexAICustomJob:CustomJob \
+    --resource VertexAIBatchPredictionJob:BatchPredictionJob \
+    --resource VertexAIModelMonitor:ModelMonitor \
+    --resource VertexAINasJob:NasJob \
+    --resource VertexAINotebookExecutionJob:NotebookExecutionJob \
+    --resource VertexAIOnlineEvaluator:OnlineEvaluator \
+    --resource VertexAIReasoningEngine:ReasoningEngine \
+    --resource VertexAIArtifact:Artifact \
+    --resource VertexAIContext:Context \
+    --resource VertexAIDatasetVersion:DatasetVersion \
+    --resource VertexAIExecution:Execution \
+    --resource VertexAIFeatureMonitor:FeatureMonitor \
+    --resource VertexAIFeatureView:FeatureView \
+    --resource VertexAIMemory:Memory \
+    --resource VertexAIModelMonitoringJob:ModelMonitoringJob \
+    --resource VertexAIRagDataSchema:RagDataSchema \
+    --resource VertexAISession:Session \
+    --resource VertexAITensorboardExperiment:TensorboardExperiment \
+    --resource VertexAITrial:Trial
 
 # --- v1beta1 ---
 ${CONTROLLERBUILDER} generate-types \
+    --proto-source-path "${REPO_ROOT}/.build/googleapis-62da249e76b878fa8d667a0d7bfa4dc33d790cb8.pb" \
     --service google.cloud.aiplatform.v1beta1 \
     --api-version vertexai.cnrm.cloud.google.com/v1beta1 \
     --include-skipped-output \
@@ -52,6 +73,7 @@ ${CONTROLLERBUILDER} generate-types \
     --resource VertexAIDataset:Dataset
 
 ${CONTROLLERBUILDER} generate-mapper \
+    --proto-source-path "${REPO_ROOT}/.build/googleapis-62da249e76b878fa8d667a0d7bfa4dc33d790cb8.pb" \
     --service google.cloud.aiplatform.v1beta1 \
     --api-version vertexai.cnrm.cloud.google.com/v1beta1 \
     --include-skipped-output \
@@ -59,7 +81,6 @@ ${CONTROLLERBUILDER} generate-mapper \
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
-
 if [ -d "${REPO_ROOT}/pkg/controller/direct/vertexai" ]; then
   go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w pkg/controller/direct/vertexai/
 fi

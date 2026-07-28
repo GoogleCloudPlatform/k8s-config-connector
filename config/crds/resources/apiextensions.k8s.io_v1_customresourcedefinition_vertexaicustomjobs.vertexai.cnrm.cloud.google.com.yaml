@@ -381,18 +381,18 @@ spec:
                           is 24 hours.
                         type: string
                       restartJobOnWorkerRestart:
-                        description: Restarts the entire CustomJob if a worker gets
-                          restarted. This feature can be used by distributed training
-                          jobs that are not resilient to workers leaving and joining
-                          a job.
+                        description: Optional. Restarts the entire CustomJob if a
+                          worker gets restarted. This feature can be used by distributed
+                          training jobs that are not resilient to workers leaving
+                          and joining a job.
                         type: boolean
                       strategy:
                         description: Optional. This determines which type of scheduling
                           strategy to use.
                         type: string
                       timeout:
-                        description: The maximum job running time. The default is
-                          7 days.
+                        description: Optional. The maximum job running time. The default
+                          is 7 days.
                         type: string
                     type: object
                   serviceAccountRef:
@@ -523,6 +523,27 @@ spec:
                                 (Persistent Disk Hard Disk Drive) or "hyperdisk-balanced".'
                               type: string
                           type: object
+                        lustreMounts:
+                          description: Optional. List of Lustre mounts.
+                          items:
+                            properties:
+                              filesystem:
+                                description: Required. The name of the Lustre filesystem.
+                                type: string
+                              instanceIP:
+                                description: Required. IP address of the Lustre instance.
+                                type: string
+                              mountPoint:
+                                description: Required. Destination mount path. The
+                                  Lustre file system will be mounted for the user
+                                  under /mnt/lustre/<mount_point>
+                                type: string
+                              volumeHandle:
+                                description: Required. The unique identifier of the
+                                  Lustre volume.
+                                type: string
+                            type: object
+                          type: array
                         machineSpec:
                           description: Optional. Immutable. The specification of a
                             single machine.
@@ -568,6 +589,12 @@ spec:
                                  [BatchPredictionJob][google.cloud.aiplatform.v1beta1.BatchPredictionJob] or
                                  as part of [WorkerPoolSpec][google.cloud.aiplatform.v1beta1.WorkerPoolSpec]
                                  this field is required.
+                              type: string
+                            minGpuDriverVersion:
+                              description: Optional. Immutable. The minimum GPU driver
+                                version that this machine requires. For example, "535.104.06".
+                                If not specified, the default GPU driver version will
+                                be used by the underlying infrastructure.
                               type: string
                             multihostGpuNodeCount:
                               description: Optional. Immutable. The number of nodes

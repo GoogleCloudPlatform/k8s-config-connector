@@ -132,6 +132,18 @@ spec:
                           max_runtime_duration can be set up to 7 days.
                         type: string
                     type: object
+                  initialReplicaCount:
+                    description: Immutable. Number of initial replicas being deployed
+                      on when scaling the workload up from zero or when creating the
+                      workload in case [min_replica_count][google.cloud.aiplatform.v1beta1.DedicatedResources.min_replica_count]
+                      = 0. When [min_replica_count][google.cloud.aiplatform.v1beta1.DedicatedResources.min_replica_count]
+                      > 0 (meaning that the scale-to-zero feature is not enabled),
+                      [initial_replica_count][google.cloud.aiplatform.v1beta1.DedicatedResources.initial_replica_count]
+                      should not be set. When [min_replica_count][google.cloud.aiplatform.v1beta1.DedicatedResources.min_replica_count]
+                      = 0 (meaning that the scale-to-zero feature is enabled), [initial_replica_count][google.cloud.aiplatform.v1beta1.DedicatedResources.initial_replica_count]
+                      should be larger than zero, but no greater than [max_replica_count][google.cloud.aiplatform.v1beta1.DedicatedResources.max_replica_count].
+                    format: int32
+                    type: integer
                   machineSpec:
                     description: Required. Immutable. The specification of a single
                       machine being used.
@@ -176,6 +188,12 @@ spec:
                            [BatchPredictionJob][google.cloud.aiplatform.v1beta1.BatchPredictionJob] or
                            as part of [WorkerPoolSpec][google.cloud.aiplatform.v1beta1.WorkerPoolSpec]
                            this field is required.
+                        type: string
+                      minGpuDriverVersion:
+                        description: Optional. Immutable. The minimum GPU driver version
+                          that this machine requires. For example, "535.104.06". If
+                          not specified, the default GPU driver version will be used
+                          by the underlying infrastructure.
                         type: string
                       multihostGpuNodeCount:
                         description: Optional. Immutable. The number of nodes per
@@ -246,6 +264,21 @@ spec:
                       default required_replica_count will be min_replica_count.
                     format: int32
                     type: integer
+                  scaleToZeroSpec:
+                    description: Optional. Specification for scale-to-zero feature.
+                    properties:
+                      idleScaledownPeriod:
+                        description: Optional. Duration of no traffic before scaling
+                          to zero. [MinValue=300] (5 minutes) [MaxValue=28800] (8
+                          hours)
+                        type: string
+                      minScaleupPeriod:
+                        description: Optional. Minimum duration that a deployment
+                          will be scaled up before traffic is evaluated for potential
+                          scale-down. [MinValue=300] (5 minutes) [MaxValue=28800]
+                          (8 hours)
+                        type: string
+                    type: object
                   spot:
                     description: Optional. If true, schedule the deployment workload
                       on [spot VMs](https://cloud.google.com/kubernetes-engine/docs/concepts/spot-vms).

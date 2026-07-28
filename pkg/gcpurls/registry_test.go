@@ -71,10 +71,24 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 	// If Cloud Asset Inventory added support for an asset, and we had given it a different "url template":
 	ignoredTemplates := map[string]bool{
 		// AI Platform
-		"//aiplatform.googleapis.com/projects/{}/locations/{}/exampleStores/{}":              true,
-		"//aiplatform.googleapis.com/projects/{}/locations/{}/metadataStores/{}/contexts/{}": true,
-		"//aiplatform.googleapis.com/projects/{}/locations/{}/studies/{}":                    true,
-		"//aiplatform.googleapis.com/projects/{}/locations/{}/schedules/{}":                  true,
+		"//aiplatform.googleapis.com/projects/{}/locations/{}/exampleStores/{}":                        true,
+		"//aiplatform.googleapis.com/projects/{}/locations/{}/metadataStores/{}/contexts/{}":           true,
+		"//aiplatform.googleapis.com/projects/{}/locations/{}/studies/{}":                              true,
+		"//aiplatform.googleapis.com/projects/{}/locations/{}/schedules/{}":                            true,
+		"//aiplatform.googleapis.com/projects/{}/locations/{}/tensorboards/{}/experiments/{}":          true,
+		"//aiplatform.googleapis.com/projects/{}/locations/{}/studies/{}/trials/{}":                    true,
+		"//aiplatform.googleapis.com/projects/{}/locations/{}/metadataStores/{}/artifacts/{}":          true,
+		"//aiplatform.googleapis.com/projects/{}/locations/{}/datasets/{}/datasetVersions/{}":          true,
+		"//aiplatform.googleapis.com/projects/{}/locations/{}/metadataStores/{}/executions/{}":         true,
+		"//aiplatform.googleapis.com/projects/{}/locations/{}/featureGroups/{}/featureMonitors/{}":     true,
+		"//aiplatform.googleapis.com/projects/{}/locations/{}/featureOnlineStores/{}/featureViews/{}":  true,
+		"//aiplatform.googleapis.com/projects/{}/locations/{}/reasoningEngines/{}/memories/{}":         true,
+		"//aiplatform.googleapis.com/projects/{}/locations/{}/modelMonitors/{}":                        true,
+		"//aiplatform.googleapis.com/projects/{}/locations/{}/modelMonitors/{}/modelMonitoringJobs/{}": true,
+		"//aiplatform.googleapis.com/projects/{}/locations/{}/onlineEvaluators/{}":                     true,
+		"//aiplatform.googleapis.com/projects/{}/locations/{}/ragCorpora/{}":                           true,
+		"//aiplatform.googleapis.com/projects/{}/locations/{}/ragCorpora/{}/ragDataSchemas/{}":         true,
+		"//aiplatform.googleapis.com/projects/{}/locations/{}/reasoningEngines/{}/sessions/{}":         true,
 
 		// AlloyDB
 		"//alloydb.googleapis.com/projects/{}/locations/{}/clusters/{}/users/{}": true,

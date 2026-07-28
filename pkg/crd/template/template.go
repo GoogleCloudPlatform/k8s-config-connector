@@ -67,6 +67,9 @@ func propsToValue(props apiextensions.JSONSchemaProps) interface{} {
 		if props.XPreserveUnknownFields != nil && *props.XPreserveUnknownFields {
 			return "schemaless"
 		}
+		if props.Type == "" {
+			return "schemaless"
+		}
 		panic(fmt.Sprintf("unhandled type: %v", props.Type))
 	}
 }
