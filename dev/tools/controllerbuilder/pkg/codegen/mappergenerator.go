@@ -163,6 +163,10 @@ func (v *MapperGenerator) visitMessage(msg protoreflect.MessageDescriptor) {
 	if _, visit := v.goPathForMessage(msg); !visit {
 		return
 	}
+	if strings.Contains(string(msg.FullName()), "OnlineEvaluator") {
+		klog.Infof("Skipping mapper generation for %s because it is not supported in the current Go client library", msg.FullName())
+		return
+	}
 	goTypes := v.findKRMStructsForProto(msg)
 	if len(goTypes) == 0 {
 		klog.V(2).Infof("no go types found for proto %v", msg.FullName())
@@ -253,6 +257,10 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 	goFields := make(map[string]*gocode.StructField)
 	for _, f := range goType.Fields {
 		goFields[f.Name] = f
+		if f.GoPackage != "" && f.GoPackage != pair.KRMType.GoPackage {
+			alias := v.getGoImportAlias(f.GoPackage)
+			klog.Infof("Added import alias %q for %q from field %q of struct %q", alias, f.GoPackage, f.Name, goTypeName)
+		}
 	}
 
 	krmImportName := v.getGoImportAlias(pair.KRMType.GoPackage)
@@ -364,7 +372,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				switch protoField.Kind() {
 				case protoreflect.MessageKind:
 					krmElemTypeName := strings.TrimPrefix(krmField.Type, "*")
-					fromProtoElemFunc = krmElemTypeName + versionSpecifier + "_FromProto"
+					fromProtoElemFunc = cleanMapperFunctionName(krmElemTypeName + versionSpecifier + "_FromProto")
 					if _, ok := protoMessagesNotMappedToGoStruct[string(protoField.Message().FullName())]; ok {
 						fromProtoElemFunc = krmFromProtoFunctionName(protoField, krmField.Name)
 					}
@@ -392,7 +400,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				switch protoField.Kind() {
 				case protoreflect.MessageKind:
 					krmElemTypeName := strings.TrimPrefix(krmSliceElemType, "*")
-					functionName := krmElemTypeName + versionSpecifier + "_FromProto"
+					functionName := cleanMapperFunctionName(krmElemTypeName + versionSpecifier + "_FromProto")
 					if _, ok := protoMessagesNotMappedToGoStruct[string(protoField.Message().FullName())]; ok {
 						functionName = krmFromProtoFunctionName(protoField, krmField.Name)
 					}
@@ -513,7 +521,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				krmTypeName := krmField.Type
 				krmTypeName = strings.TrimPrefix(krmTypeName, "*")
 
-				functionName := krmTypeName + versionSpecifier + "_FromProto"
+				functionName := cleanMapperFunctionName(krmTypeName + versionSpecifier + "_FromProto")
 				switch krmTypeName {
 				case "string":
 					functionName = string(msg.Name()) + "_" + krmFieldName + "_FromProto"
@@ -662,7 +670,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 
 				switch protoField.Kind() {
 				case protoreflect.MessageKind:
-					functionName := krmElemTypeName + versionSpecifier + "_ToProto"
+					functionName := cleanMapperFunctionName(krmElemTypeName + versionSpecifier + "_ToProto")
 					if _, ok := protoMessagesNotMappedToGoStruct[string(protoField.Message().FullName())]; ok {
 						functionName = krmToProtoFunctionName(protoField, krmField.Name)
 					}
@@ -704,7 +712,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 
 				switch protoField.Kind() {
 				case protoreflect.MessageKind:
-					functionName := krmElemTypeName + versionSpecifier + "_ToProto"
+					functionName := cleanMapperFunctionName(krmElemTypeName + versionSpecifier + "_ToProto")
 					if _, ok := protoMessagesNotMappedToGoStruct[string(protoField.Message().FullName())]; ok {
 						functionName = krmToProtoFunctionName(protoField, krmField.Name)
 					}
@@ -818,7 +826,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				krmTypeName := krmField.Type
 				krmTypeName = strings.TrimPrefix(krmTypeName, "*")
 
-				functionName := krmTypeName + versionSpecifier + "_ToProto"
+				functionName := cleanMapperFunctionName(krmTypeName + versionSpecifier + "_ToProto")
 				switch krmTypeName {
 				case "string":
 					functionName = string(msg.Name()) + "_" + krmFieldName + "_ToProto"
@@ -864,11 +872,11 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				protoTypeName := v.goPackageForProto(protoField.Enum().ParentFile()) + "." + protoNameForEnum(protoField.Enum())
 				functionName := "direct.Enum_ToProto"
 				if protoIsPointerInGo(protoField) {
-					functionName = "EnumPtr_ToProto[" + protoTypeName + "]"
+					functionName = "direct.EnumPtr_ToProto"
 				}
 
 				oneof := protoField.ContainingOneof()
-				if oneof != nil {
+				if oneof != nil && !oneof.IsSynthetic() {
 					// These are very rare and irregular; just require a custom method
 					functionName := fmt.Sprintf("%s_%s_ToProto", goTypeName, protoFieldName)
 
@@ -1232,6 +1240,9 @@ func (o *MapperGenerator) getGoImportAlias(goPackage string) string {
 	}
 
 	importAlias := lastComponent(goPackage)
+	if goPackage == "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1" {
+		importAlias = "apiextensionsv1"
+	}
 
 	// Disambiguate in a way that preserves compatibility with the existing code
 	if strings.Contains(goPackage, "k8s-config-connector/apis/refs/") {
@@ -1243,6 +1254,8 @@ func (o *MapperGenerator) getGoImportAlias(goPackage string) string {
 		tokens := strings.Split(suffix, "/")
 		if len(tokens) == 2 {
 			importAlias = "krm" + tokens[0] + tokens[1]
+		} else if len(tokens) == 1 {
+			importAlias = "krm" + tokens[0]
 		} else {
 			klog.Fatalf("cannot determine import alias for %s", goPackage)
 		}
@@ -1306,4 +1319,8 @@ func usesPointersInProtoBinding(msg protoreflect.MessageDescriptor) bool {
 	default:
 		return false
 	}
+}
+
+func cleanMapperFunctionName(name string) string {
+	return strings.TrimPrefix(name, "apiextensionsv1.")
 }

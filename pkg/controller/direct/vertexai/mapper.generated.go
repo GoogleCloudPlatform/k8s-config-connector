@@ -1014,7 +1014,7 @@ func VertexAIDataLabelingJobSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, i
 
 	if v := in.GetDatasets(); len(v) != 0 {
 		for i := range v {
-			out.DatasetRefs = append(out.DatasetRefs, refsv1beta1.VertexAIDatasetRef{External: v[i]})
+			out.DatasetRefs = append(out.DatasetRefs, krmvertexaiv1beta1.VertexAIDatasetRef{External: v[i]})
 		}
 	}
 
@@ -1022,7 +1022,7 @@ func VertexAIDataLabelingJobSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, i
 	out.LabelerCount = direct.LazyPtr(in.GetLabelerCount())
 	out.InstructionURI = direct.LazyPtr(in.GetInstructionUri())
 	out.InputsSchemaURI = direct.LazyPtr(in.GetInputsSchemaUri())
-	out.Inputs = apiextensionsv1.JSON_v1alpha1_FromProto(mapCtx, in.GetInputs())
+	out.Inputs = JSON_v1alpha1_FromProto(mapCtx, in.GetInputs())
 	out.Labels = in.Labels
 	out.SpecialistPools = in.SpecialistPools
 	out.EncryptionSpec = EncryptionSpec_v1alpha1_FromProto(mapCtx, in.GetEncryptionSpec())
@@ -1046,7 +1046,7 @@ func VertexAIDataLabelingJobSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in 
 	out.LabelerCount = direct.ValueOf(in.LabelerCount)
 	out.InstructionUri = direct.ValueOf(in.InstructionURI)
 	out.InputsSchemaUri = direct.ValueOf(in.InputsSchemaURI)
-	out.Inputs = apiextensionsv1.JSON_v1alpha1_ToProto(mapCtx, in.Inputs)
+	out.Inputs = JSON_v1alpha1_ToProto(mapCtx, in.Inputs)
 	out.Labels = in.Labels
 	out.SpecialistPools = in.SpecialistPools
 	out.EncryptionSpec = EncryptionSpec_v1alpha1_ToProto(mapCtx, in.EncryptionSpec)
@@ -1699,74 +1699,6 @@ func VertexAINotebookExecutionJobSpec_v1alpha1_ToProto(mapCtx *direct.MapContext
 	// MISSING: Labels
 	// MISSING: KernelName
 	// MISSING: EncryptionSpec
-	return out
-}
-func VertexAIOnlineEvaluatorObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.OnlineEvaluator) *krmvertexaiv1alpha1.VertexAIOnlineEvaluatorObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krmvertexaiv1alpha1.VertexAIOnlineEvaluatorObservedState{}
-	// MISSING: CloudObservability
-	// MISSING: Name
-	// MISSING: AgentResource
-	// MISSING: MetricSources
-	// MISSING: Config
-	// MISSING: State
-	// MISSING: StateDetails
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: DisplayName
-	return out
-}
-func VertexAIOnlineEvaluatorObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.VertexAIOnlineEvaluatorObservedState) *pb.OnlineEvaluator {
-	if in == nil {
-		return nil
-	}
-	out := &pb.OnlineEvaluator{}
-	// MISSING: CloudObservability
-	// MISSING: Name
-	// MISSING: AgentResource
-	// MISSING: MetricSources
-	// MISSING: Config
-	// MISSING: State
-	// MISSING: StateDetails
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: DisplayName
-	return out
-}
-func VertexAIOnlineEvaluatorSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.OnlineEvaluator) *krmvertexaiv1alpha1.VertexAIOnlineEvaluatorSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krmvertexaiv1alpha1.VertexAIOnlineEvaluatorSpec{}
-	// MISSING: CloudObservability
-	// MISSING: Name
-	// MISSING: AgentResource
-	// MISSING: MetricSources
-	// MISSING: Config
-	// MISSING: State
-	// MISSING: StateDetails
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: DisplayName
-	return out
-}
-func VertexAIOnlineEvaluatorSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.VertexAIOnlineEvaluatorSpec) *pb.OnlineEvaluator {
-	if in == nil {
-		return nil
-	}
-	out := &pb.OnlineEvaluator{}
-	// MISSING: CloudObservability
-	// MISSING: Name
-	// MISSING: AgentResource
-	// MISSING: MetricSources
-	// MISSING: Config
-	// MISSING: State
-	// MISSING: StateDetails
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	// MISSING: DisplayName
 	return out
 }
 func WorkerPoolSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.WorkerPoolSpec) *krmvertexaiv1alpha1.WorkerPoolSpec {

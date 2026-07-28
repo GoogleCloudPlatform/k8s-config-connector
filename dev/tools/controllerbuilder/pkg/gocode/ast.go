@@ -147,77 +147,84 @@ func LoadPackageTree(goPackage string, basePath string) ([]*Package, error) {
 
 func (p *Package) inspect(packageName string, pkg *ast.Package) error {
 	var errs []error
-	var comments []ast.Node
 
 	for _, pkgFile := range pkg.Files {
 		var pkgComments []ast.Node
 		for _, comment := range pkgFile.Comments {
 			pkgComments = append(pkgComments, comment)
 		}
-		comments, err := parseComments(pkgComments)
+		parsedComments, err := parseComments(pkgComments)
 		if err != nil {
 			return err
 		}
-		p.Comments = append(p.Comments, comments...)
-	}
+		p.Comments = append(p.Comments, parsedComments...)
 
-	ast.Inspect(pkg, func(n ast.Node) bool {
-		if n == nil {
-			return true
-		}
-		switch n := n.(type) {
-		case *ast.ImportSpec:
-			goPackage := n.Path.Value
-			goPackage, err := strconv.Unquote(goPackage)
-			if err != nil {
-				errs = append(errs, fmt.Errorf("unquoting import path %q: %w", n.Path.Value, err))
+		var fileImports []*GoImport
+		var fileErrs []error
+		var comments []ast.Node
+
+		ast.Inspect(pkgFile, func(n ast.Node) bool {
+			if n == nil {
+				return true
 			}
-
-			alias := ""
-			if n.Name != nil {
-				alias = n.Name.String()
-			} else {
-				alias = lastComponent(goPackage)
-			}
-			alias = strings.TrimSuffix(alias, "\"")
-
-			p.Imports = append(p.Imports, &GoImport{
-				GoPackage: goPackage,
-				Alias:     alias,
-			})
-
-		case *ast.TypeSpec:
-			switch def := n.Type.(type) {
-			case *ast.StructType:
-				if err := p.addStruct(n.Name, def, comments); err != nil {
-					errs = append(errs, err)
+			switch n := n.(type) {
+			case *ast.ImportSpec:
+				goPackage := n.Path.Value
+				goPackage, err := strconv.Unquote(goPackage)
+				if err != nil {
+					fileErrs = append(fileErrs, fmt.Errorf("unquoting import path %q: %w", n.Path.Value, err))
 				}
-			case *ast.Ident, *ast.SelectorExpr:
-				// type alias or simple type
-			case *ast.InterfaceType:
-				// always skip, nothing to generate for interface
+
+				alias := ""
+				if n.Name != nil {
+					alias = n.Name.String()
+				} else {
+					alias = lastComponent(goPackage)
+				}
+				alias = strings.TrimSuffix(alias, "\"")
+
+				imp := &GoImport{
+					GoPackage: goPackage,
+					Alias:     alias,
+				}
+				fileImports = append(fileImports, imp)
+				p.Imports = append(p.Imports, imp)
+
+			case *ast.TypeSpec:
+				switch def := n.Type.(type) {
+				case *ast.StructType:
+					if err := p.addStruct(n.Name, def, comments, fileImports); err != nil {
+						fileErrs = append(fileErrs, err)
+					}
+				case *ast.Ident, *ast.SelectorExpr:
+					// type alias or simple type
+				case *ast.InterfaceType:
+					// always skip, nothing to generate for interface
+				default:
+					fileErrs = append(fileErrs, fmt.Errorf("unhandled type spec in %q: %T, %+v", n.Name, n.Type, n.Type))
+				}
+				comments = nil
+
+			case *ast.Comment:
+				comments = append(comments, n)
+			case *ast.CommentGroup:
+				// A CommentGroup contains a list of comments
+				// Do not truncate comments when we encounter the group
 			default:
-				errs = append(errs, fmt.Errorf("unhandled type spec in %q: %T, %+v", n.Name, n.Type, n.Type))
+				// n != nil
+				comments = nil
 			}
-			comments = nil
 
-		case *ast.Comment:
-			comments = append(comments, n)
-		case *ast.CommentGroup:
-			// A CommentGroup contains a list of comments
-			// Do not truncate comments when we encounter the group
-		default:
-			// n != nil
-			comments = nil
-		}
+			return true
+		})
 
-		return true
-	})
+		errs = append(errs, fileErrs...)
+	}
 
 	return errors.Join(errs...)
 }
 
-func (p *Package) addStruct(name *ast.Ident, def *ast.StructType, comments []ast.Node) error {
+func (p *Package) addStruct(name *ast.Ident, def *ast.StructType, comments []ast.Node, imports []*GoImport) error {
 	goStruct := &GoStruct{
 		GoPackage: p.GoPackage,
 		Name:      name.String(),
@@ -242,7 +249,7 @@ func (p *Package) addStruct(name *ast.Ident, def *ast.StructType, comments []ast
 			if packageName == "apiextensionsv1" {
 				structField.GoPackage = "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 			} else {
-				for _, imp := range p.Imports {
+				for _, imp := range imports {
 					if imp.Alias == packageName {
 						structField.GoPackage = imp.GoPackage
 						break
@@ -250,7 +257,7 @@ func (p *Package) addStruct(name *ast.Ident, def *ast.StructType, comments []ast
 				}
 			}
 			if structField.GoPackage == "" {
-				for _, imp := range p.Imports {
+				for _, imp := range imports {
 					fmt.Printf("imp: %+v\n", imp)
 				}
 				panic(fmt.Sprintf("could not find import for %q (package %q) in package %q", goType, packageName, p.GoPackage))

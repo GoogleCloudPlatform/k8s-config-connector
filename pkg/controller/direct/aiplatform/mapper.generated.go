@@ -276,9 +276,7 @@ func ComputationBasedMetricSpec_ToProto(mapCtx *direct.MapContext, in *krm.Compu
 		return nil
 	}
 	out := &pb.ComputationBasedMetricSpec{}
-	if oneof := ComputationBasedMetricSpec_Type_ToProto(mapCtx, in.Type); oneof != nil {
-		out.Type = oneof
-	}
+	out.Type = direct.EnumPtr_ToProto[pb.ComputationBasedMetricSpec_ComputationBasedMetricType](mapCtx, in.Type)
 	out.Parameters = direct.Struct_ToProto(mapCtx, &in.Parameters)
 	return out
 }
@@ -1020,9 +1018,7 @@ func GenerationConfig_ToProto(mapCtx *direct.MapContext, in *krm.GenerationConfi
 	out.RoutingConfig = GenerationConfig_RoutingConfig_ToProto(mapCtx, in.RoutingConfig)
 	out.AudioTimestamp = in.AudioTimestamp
 	out.ResponseModalities = direct.EnumSlice_ToProto[pb.GenerationConfig_Modality](mapCtx, in.ResponseModalities)
-	if oneof := GenerationConfig_MediaResolution_ToProto(mapCtx, in.MediaResolution); oneof != nil {
-		out.MediaResolution = oneof
-	}
+	out.MediaResolution = direct.EnumPtr_ToProto[pb.GenerationConfig_MediaResolution](mapCtx, in.MediaResolution)
 	out.SpeechConfig = SpeechConfig_ToProto(mapCtx, in.SpeechConfig)
 	out.ThinkingConfig = GenerationConfig_ThinkingConfig_ToProto(mapCtx, in.ThinkingConfig)
 	out.ImageConfig = ImageConfig_ToProto(mapCtx, in.ImageConfig)
@@ -1063,9 +1059,7 @@ func GenerationConfig_RoutingConfig_AutoRoutingMode_ToProto(mapCtx *direct.MapCo
 		return nil
 	}
 	out := &pb.GenerationConfig_RoutingConfig_AutoRoutingMode{}
-	if oneof := GenerationConfig_RoutingConfig_AutoRoutingMode_ModelRoutingPreference_ToProto(mapCtx, in.ModelRoutingPreference); oneof != nil {
-		out.ModelRoutingPreference = oneof
-	}
+	out.ModelRoutingPreference = direct.EnumPtr_ToProto[pb.GenerationConfig_RoutingConfig_AutoRoutingMode_ModelRoutingPreference](mapCtx, in.ModelRoutingPreference)
 	return out
 }
 func GenerationConfig_RoutingConfig_ManualRoutingMode_FromProto(mapCtx *direct.MapContext, in *pb.GenerationConfig_RoutingConfig_ManualRoutingMode) *krm.GenerationConfig_RoutingConfig_ManualRoutingMode {
@@ -1101,9 +1095,7 @@ func GenerationConfig_ThinkingConfig_ToProto(mapCtx *direct.MapContext, in *krm.
 	out := &pb.GenerationConfig_ThinkingConfig{}
 	out.IncludeThoughts = in.IncludeThoughts
 	out.ThinkingBudget = in.ThinkingBudget
-	if oneof := GenerationConfig_ThinkingConfig_ThinkingLevel_ToProto(mapCtx, in.ThinkingLevel); oneof != nil {
-		out.ThinkingLevel = oneof
-	}
+	out.ThinkingLevel = direct.EnumPtr_ToProto[pb.GenerationConfig_ThinkingConfig_ThinkingLevel](mapCtx, in.ThinkingLevel)
 	return out
 }
 func GenieSource_FromProto(mapCtx *direct.MapContext, in *pb.GenieSource) *krm.GenieSource {
@@ -1140,9 +1132,7 @@ func ImageConfig_ToProto(mapCtx *direct.MapContext, in *krm.ImageConfig) *pb.Ima
 	out := &pb.ImageConfig{}
 	out.ImageOutputOptions = ImageConfig_ImageOutputOptions_ToProto(mapCtx, in.ImageOutputOptions)
 	out.AspectRatio = in.AspectRatio
-	if oneof := ImageConfig_PersonGeneration_ToProto(mapCtx, in.PersonGeneration); oneof != nil {
-		out.PersonGeneration = oneof
-	}
+	out.PersonGeneration = direct.EnumPtr_ToProto[pb.ImageConfig_PersonGeneration](mapCtx, in.PersonGeneration)
 	out.ImageSize = in.ImageSize
 	return out
 }
@@ -2354,9 +2344,7 @@ func Presets_ToProto(mapCtx *direct.MapContext, in *krm.Presets) *pb.Presets {
 		return nil
 	}
 	out := &pb.Presets{}
-	if oneof := Presets_Query_ToProto(mapCtx, in.Query); oneof != nil {
-		out.Query = oneof
-	}
+	out.Query = direct.EnumPtr_ToProto[pb.Presets_Query](mapCtx, in.Query)
 	out.Modality = direct.Enum_ToProto[pb.Presets_Modality](mapCtx, in.Modality)
 	return out
 }
