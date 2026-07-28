@@ -14,7 +14,12 @@ spec:
   createPipelineJobRequest:
     pipelineJob:
       displayName: Maximal Pipeline Job
+      encryptionSpec:
+        kmsKeyRef:
+          external: projects/${projectId}/locations/us-central1/keyRings/foo/cryptoKeys/bar
       location: us-central1
+      networkRef:
+        external: projects/${projectId}/global/networks/foo
       pipelineSpec:
         components:
           hello-world-component:
@@ -45,6 +50,8 @@ spec:
         external: ${projectId}
       runtimeConfig:
         gcsOutputDirectory: gs://vertexai-pipelinejob-bucket-${uniqueId}/output
+      serviceAccountRef:
+        external: foo@${projectId}.iam.gserviceaccount.com
   cron: 30 * * * *
   displayName: updated-vertexaischedule-maximal-${uniqueId}
   location: us-central1

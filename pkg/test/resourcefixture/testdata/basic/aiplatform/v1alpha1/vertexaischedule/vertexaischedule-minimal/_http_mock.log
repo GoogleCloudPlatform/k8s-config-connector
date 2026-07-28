@@ -349,6 +349,134 @@ OK
 
 ---
 
+GRPC /google.cloud.aiplatform.v1.ScheduleService/UpdateSchedule
+
+{
+  "schedule": {
+    "createPipelineJobRequest": {
+      "pipelineJob": {
+        "displayName": "Minimal Pipeline Job",
+        "pipelineSpec": {
+          "components": {
+            "hello-world-component": {
+              "executorLabel": "hello-world-executor"
+            }
+          },
+          "deploymentConfig": {
+            "@type": "type.googleapis.com/ml_pipelines.PipelineDeploymentConfig",
+            "executors": {
+              "hello-world-executor": {
+                "container": {
+                  "command": [
+                    "echo",
+                    "Hello World"
+                  ],
+                  "image": "alpine:latest"
+                }
+              }
+            }
+          },
+          "pipelineInfo": {
+            "name": "hello-world-pipeline"
+          },
+          "root": {
+            "dag": {
+              "tasks": {
+                "hello-world-task": {
+                  "cachingOptions": {
+                    "enableCache": true
+                  },
+                  "componentRef": {
+                    "name": "hello-world-component"
+                  },
+                  "taskInfo": {
+                    "name": "hello-world-task"
+                  }
+                }
+              }
+            }
+          },
+          "schemaVersion": "2.1.0"
+        },
+        "runtimeConfig": {
+          "gcsOutputDirectory": "gs://vertexai-pipelinejob-bucket-${uniqueId}/output"
+        }
+      }
+    },
+    "cron": "2 * * * *",
+    "displayName": "updated-vertexaischedule-minimal-${uniqueId}",
+    "maxConcurrentRunCount": "1",
+    "name": "projects/${projectId}/locations/us-central1/schedules/vertexaischedule-minimal-${uniqueId}"
+  },
+  "updateMask": "cron,displayName"
+}
+
+OK
+
+{
+  "createPipelineJobRequest": {
+    "pipelineJob": {
+      "displayName": "Minimal Pipeline Job",
+      "pipelineSpec": {
+        "components": {
+          "hello-world-component": {
+            "executorLabel": "hello-world-executor"
+          }
+        },
+        "deploymentConfig": {
+          "@type": "type.googleapis.com/ml_pipelines.PipelineDeploymentConfig",
+          "executors": {
+            "hello-world-executor": {
+              "container": {
+                "command": [
+                  "echo",
+                  "Hello World"
+                ],
+                "image": "alpine:latest"
+              }
+            }
+          }
+        },
+        "pipelineInfo": {
+          "name": "hello-world-pipeline"
+        },
+        "root": {
+          "dag": {
+            "tasks": {
+              "hello-world-task": {
+                "cachingOptions": {
+                  "enableCache": true
+                },
+                "componentRef": {
+                  "name": "hello-world-component"
+                },
+                "taskInfo": {
+                  "name": "hello-world-task"
+                }
+              }
+            }
+          }
+        },
+        "schemaVersion": "2.1.0"
+      },
+      "runtimeConfig": {
+        "gcsOutputDirectory": "gs://vertexai-pipelinejob-bucket-${uniqueId}/output"
+      }
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "cron": "2 * * * *",
+  "displayName": "updated-vertexaischedule-minimal-${uniqueId}",
+  "maxConcurrentRunCount": "1",
+  "name": "projects/${projectId}/locations/us-central1/schedules/vertexaischedule-minimal-${uniqueId}",
+  "nextRunTime": "2024-04-01T12:34:56.123456Z",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "ACTIVE",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
 GRPC /google.cloud.aiplatform.v1.ScheduleService/GetSchedule
 
 {
@@ -409,8 +537,80 @@ OK
     }
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "cron": "1 * * * *",
-  "displayName": "vertexaischedule-minimal-${uniqueId}",
+  "cron": "2 * * * *",
+  "displayName": "updated-vertexaischedule-minimal-${uniqueId}",
+  "maxConcurrentRunCount": "1",
+  "name": "projects/${projectNumber}/locations/us-central1/schedules/vertexaischedule-minimal-${uniqueId}",
+  "nextRunTime": "2024-04-01T12:34:56.123456Z",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "state": "ACTIVE",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.ScheduleService/GetSchedule
+
+{
+  "name": "projects/${projectId}/locations/us-central1/schedules/vertexaischedule-minimal-${uniqueId}"
+}
+
+OK
+
+{
+  "createPipelineJobRequest": {
+    "pipelineJob": {
+      "displayName": "Minimal Pipeline Job",
+      "pipelineSpec": {
+        "components": {
+          "hello-world-component": {
+            "executorLabel": "hello-world-executor"
+          }
+        },
+        "deploymentConfig": {
+          "@type": "type.googleapis.com/ml_pipelines.PipelineDeploymentConfig",
+          "executors": {
+            "hello-world-executor": {
+              "container": {
+                "command": [
+                  "echo",
+                  "Hello World"
+                ],
+                "image": "alpine:latest"
+              }
+            }
+          }
+        },
+        "pipelineInfo": {
+          "name": "hello-world-pipeline"
+        },
+        "root": {
+          "dag": {
+            "tasks": {
+              "hello-world-task": {
+                "cachingOptions": {
+                  "enableCache": true
+                },
+                "componentRef": {
+                  "name": "hello-world-component"
+                },
+                "taskInfo": {
+                  "name": "hello-world-task"
+                }
+              }
+            }
+          }
+        },
+        "schemaVersion": "2.1.0"
+      },
+      "runtimeConfig": {
+        "gcsOutputDirectory": "gs://vertexai-pipelinejob-bucket-${uniqueId}/output"
+      }
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "cron": "2 * * * *",
+  "displayName": "updated-vertexaischedule-minimal-${uniqueId}",
   "maxConcurrentRunCount": "1",
   "name": "projects/${projectNumber}/locations/us-central1/schedules/vertexaischedule-minimal-${uniqueId}",
   "nextRunTime": "2024-04-01T12:34:56.123456Z",

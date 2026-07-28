@@ -31,6 +31,13 @@ spec:
         external: ${projectId}
       location: us-central1
       displayName: "Maximal Pipeline Job"
+      encryptionSpec:
+        kmsKeyRef:
+          external: "projects/${projectId}/locations/us-central1/keyRings/foo/cryptoKeys/bar"
+      networkRef:
+        external: "projects/${projectId}/global/networks/foo"
+      serviceAccountRef:
+        external: "foo@${projectId}.iam.gserviceaccount.com"
       runtimeConfig:
         gcsOutputDirectory: gs://vertexai-pipelinejob-bucket-${uniqueId}/output
       pipelineSpec:

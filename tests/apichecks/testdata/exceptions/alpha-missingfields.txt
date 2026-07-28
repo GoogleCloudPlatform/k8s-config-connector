@@ -4052,9 +4052,7 @@
 [missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createNotebookExecutionJobRequest.notebookExecutionJobID" is not set in unstructured objects
 [missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createNotebookExecutionJobRequest.parent" is not set in unstructured objects
 [missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createPipelineJobRequest.parent" is not set in unstructured objects
-[missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createPipelineJobRequest.pipelineJob.encryptionSpec.kmsKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createPipelineJobRequest.pipelineJob.labels" is not set in unstructured objects
-[missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createPipelineJobRequest.pipelineJob.networkRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createPipelineJobRequest.pipelineJob.preflightValidations" is not set in unstructured objects
 [missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createPipelineJobRequest.pipelineJob.pscInterfaceConfig.dnsPeeringConfigs[].domain" is not set in unstructured objects
 [missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createPipelineJobRequest.pipelineJob.pscInterfaceConfig.dnsPeeringConfigs[].targetNetworkRef" is not set; neither 'external' nor 'name' are set
@@ -4062,7 +4060,6 @@
 [missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createPipelineJobRequest.pipelineJob.pscInterfaceConfig.networkAttachmentRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createPipelineJobRequest.pipelineJob.reservedIPRanges[]" is not set in unstructured objects
 [missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createPipelineJobRequest.pipelineJob.runtimeConfig.failurePolicy" is not set in unstructured objects
-[missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createPipelineJobRequest.pipelineJob.serviceAccountRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createPipelineJobRequest.pipelineJob.templateURI" is not set in unstructured objects
 [missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.createPipelineJobRequest.pipelineJobID" is not set in unstructured objects
 [missing_field] crd=vertexaischedules.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.endTime" is not set in unstructured objects

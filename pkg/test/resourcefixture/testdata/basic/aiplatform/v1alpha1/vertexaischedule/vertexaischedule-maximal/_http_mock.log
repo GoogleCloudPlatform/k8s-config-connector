@@ -158,6 +158,10 @@ GRPC /google.cloud.aiplatform.v1.ScheduleService/CreateSchedule
     "createPipelineJobRequest": {
       "pipelineJob": {
         "displayName": "Maximal Pipeline Job",
+        "encryptionSpec": {
+          "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/foo/cryptoKeys/bar"
+        },
+        "network": "projects/${projectId}/global/networks/foo",
         "pipelineSpec": {
           "components": {
             "hello-world-component": {
@@ -202,7 +206,8 @@ GRPC /google.cloud.aiplatform.v1.ScheduleService/CreateSchedule
         },
         "runtimeConfig": {
           "gcsOutputDirectory": "gs://vertexai-pipelinejob-bucket-${uniqueId}/output"
-        }
+        },
+        "serviceAccount": "foo@${projectId}.iam.gserviceaccount.com"
       }
     },
     "cron": "0 * * * *",
@@ -220,6 +225,10 @@ OK
   "createPipelineJobRequest": {
     "pipelineJob": {
       "displayName": "Maximal Pipeline Job",
+      "encryptionSpec": {
+        "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/foo/cryptoKeys/bar"
+      },
+      "network": "projects/${projectId}/global/networks/foo",
       "pipelineSpec": {
         "components": {
           "hello-world-component": {
@@ -264,7 +273,8 @@ OK
       },
       "runtimeConfig": {
         "gcsOutputDirectory": "gs://vertexai-pipelinejob-bucket-${uniqueId}/output"
-      }
+      },
+      "serviceAccount": "foo@${projectId}.iam.gserviceaccount.com"
     }
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -294,6 +304,10 @@ OK
   "createPipelineJobRequest": {
     "pipelineJob": {
       "displayName": "Maximal Pipeline Job",
+      "encryptionSpec": {
+        "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/foo/cryptoKeys/bar"
+      },
+      "network": "projects/${projectId}/global/networks/foo",
       "pipelineSpec": {
         "components": {
           "hello-world-component": {
@@ -338,7 +352,8 @@ OK
       },
       "runtimeConfig": {
         "gcsOutputDirectory": "gs://vertexai-pipelinejob-bucket-${uniqueId}/output"
-      }
+      },
+      "serviceAccount": "foo@${projectId}.iam.gserviceaccount.com"
     }
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -362,6 +377,10 @@ GRPC /google.cloud.aiplatform.v1.ScheduleService/UpdateSchedule
     "createPipelineJobRequest": {
       "pipelineJob": {
         "displayName": "Maximal Pipeline Job",
+        "encryptionSpec": {
+          "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/foo/cryptoKeys/bar"
+        },
+        "network": "projects/${projectId}/global/networks/foo",
         "pipelineSpec": {
           "components": {
             "hello-world-component": {
@@ -406,7 +425,8 @@ GRPC /google.cloud.aiplatform.v1.ScheduleService/UpdateSchedule
         },
         "runtimeConfig": {
           "gcsOutputDirectory": "gs://vertexai-pipelinejob-bucket-${uniqueId}/output"
-        }
+        },
+        "serviceAccount": "foo@${projectId}.iam.gserviceaccount.com"
       }
     },
     "cron": "30 * * * *",
@@ -424,6 +444,10 @@ OK
   "createPipelineJobRequest": {
     "pipelineJob": {
       "displayName": "Maximal Pipeline Job",
+      "encryptionSpec": {
+        "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/foo/cryptoKeys/bar"
+      },
+      "network": "projects/${projectId}/global/networks/foo",
       "pipelineSpec": {
         "components": {
           "hello-world-component": {
@@ -468,7 +492,8 @@ OK
       },
       "runtimeConfig": {
         "gcsOutputDirectory": "gs://vertexai-pipelinejob-bucket-${uniqueId}/output"
-      }
+      },
+      "serviceAccount": "foo@${projectId}.iam.gserviceaccount.com"
     }
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -497,6 +522,10 @@ OK
   "createPipelineJobRequest": {
     "pipelineJob": {
       "displayName": "Maximal Pipeline Job",
+      "encryptionSpec": {
+        "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/foo/cryptoKeys/bar"
+      },
+      "network": "projects/${projectId}/global/networks/foo",
       "pipelineSpec": {
         "components": {
           "hello-world-component": {
@@ -541,7 +570,8 @@ OK
       },
       "runtimeConfig": {
         "gcsOutputDirectory": "gs://vertexai-pipelinejob-bucket-${uniqueId}/output"
-      }
+      },
+      "serviceAccount": "foo@${projectId}.iam.gserviceaccount.com"
     }
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -570,6 +600,10 @@ OK
   "createPipelineJobRequest": {
     "pipelineJob": {
       "displayName": "Maximal Pipeline Job",
+      "encryptionSpec": {
+        "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/foo/cryptoKeys/bar"
+      },
+      "network": "projects/${projectId}/global/networks/foo",
       "pipelineSpec": {
         "components": {
           "hello-world-component": {
@@ -614,7 +648,8 @@ OK
       },
       "runtimeConfig": {
         "gcsOutputDirectory": "gs://vertexai-pipelinejob-bucket-${uniqueId}/output"
-      }
+      },
+      "serviceAccount": "foo@${projectId}.iam.gserviceaccount.com"
     }
   },
   "createTime": "2024-04-01T12:34:56.123456Z",

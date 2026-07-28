@@ -15,29 +15,20 @@
 apiVersion: aiplatform.cnrm.cloud.google.com/v1alpha1
 kind: VertexAISchedule
 metadata:
-  name: vertexaischedule-maximal-${uniqueId}
+  name: vertexaischedule-minimal-${uniqueId}
 spec:
   projectRef:
     external: ${projectId}
   location: us-central1
-  displayName: vertexaischedule-maximal-${uniqueId}
-  maxConcurrentRunCount: 2
-  allowQueueing: true
-  maxRunCount: 5
-  cron: "0 * * * *"
+  displayName: updated-vertexaischedule-minimal-${uniqueId}
+  maxConcurrentRunCount: 1
+  cron: "2 * * * *"
   createPipelineJobRequest:
     pipelineJob:
       projectRef:
         external: ${projectId}
       location: us-central1
-      displayName: "Maximal Pipeline Job"
-      encryptionSpec:
-        kmsKeyRef:
-          external: "projects/${projectId}/locations/us-central1/keyRings/foo/cryptoKeys/bar"
-      networkRef:
-        external: "projects/${projectId}/global/networks/foo"
-      serviceAccountRef:
-        external: "foo@${projectId}.iam.gserviceaccount.com"
+      displayName: "Minimal Pipeline Job"
       runtimeConfig:
         gcsOutputDirectory: gs://vertexai-pipelinejob-bucket-${uniqueId}/output
       pipelineSpec:
