@@ -1231,6 +1231,13 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 		})
 	}
 
+	visitor.objectTransforms = append(visitor.objectTransforms, func(path string, m map[string]any) {
+		if m["kind"] == "compute#subnetwork" {
+			delete(m, "allowSubnetCidrRoutesOverlap")
+			delete(m, "enableFlowLogs")
+		}
+	})
+
 	// Common variables
 	visitor.replacePaths[".uid"] = "111111111111111111111"
 	visitor.replacePaths[".etag"] = "abcdef0123A="

@@ -137,9 +137,7 @@ X-Xss-Protection: 0
     "regions/africa-south1": {
       "subnetworks": [
         {
-          "allowSubnetCidrRoutesOverlap": false,
           "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-          "enableFlowLogs": false,
           "fingerprint": "abcdef0123A=",
           "gatewayAddress": "10.218.0.1",
           "id": "1234567890",
@@ -160,9 +158,7 @@ X-Xss-Protection: 0
     "regions/asia-east1": {
       "subnetworks": [
         {
-          "allowSubnetCidrRoutesOverlap": false,
           "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-          "enableFlowLogs": false,
           "fingerprint": "abcdef0123A=",
           "gatewayAddress": "10.140.0.1",
           "id": "1234567890",
@@ -183,9 +179,7 @@ X-Xss-Protection: 0
     "regions/asia-east2": {
       "subnetworks": [
         {
-          "allowSubnetCidrRoutesOverlap": false,
           "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-          "enableFlowLogs": false,
           "fingerprint": "abcdef0123A=",
           "gatewayAddress": "10.170.0.1",
           "id": "1234567890",
@@ -206,9 +200,7 @@ X-Xss-Protection: 0
     "regions/asia-northeast1": {
       "subnetworks": [
         {
-          "allowSubnetCidrRoutesOverlap": false,
           "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-          "enableFlowLogs": false,
           "fingerprint": "abcdef0123A=",
           "gatewayAddress": "10.146.0.1",
           "id": "1234567890",
@@ -229,9 +221,7 @@ X-Xss-Protection: 0
     "regions/asia-northeast2": {
       "subnetworks": [
         {
-          "allowSubnetCidrRoutesOverlap": false,
           "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-          "enableFlowLogs": false,
           "fingerprint": "abcdef0123A=",
           "gatewayAddress": "10.174.0.1",
           "id": "1234567890",
@@ -252,9 +242,7 @@ X-Xss-Protection: 0
     "regions/asia-northeast3": {
       "subnetworks": [
         {
-          "allowSubnetCidrRoutesOverlap": false,
           "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-          "enableFlowLogs": false,
           "fingerprint": "abcdef0123A=",
           "gatewayAddress": "10.178.0.1",
           "id": "1234567890",
@@ -275,9 +263,7 @@ X-Xss-Protection: 0
     "regions/asia-south1": {
       "subnetworks": [
         {
-          "allowSubnetCidrRoutesOverlap": false,
           "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-          "enableFlowLogs": false,
           "fingerprint": "abcdef0123A=",
           "gatewayAddress": "10.160.0.1",
           "id": "1234567890",
@@ -298,9 +284,7 @@ X-Xss-Protection: 0
     "regions/asia-south2": {
       "subnetworks": [
         {
-          "allowSubnetCidrRoutesOverlap": false,
           "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-          "enableFlowLogs": false,
           "fingerprint": "abcdef0123A=",
           "gatewayAddress": "10.190.0.1",
           "id": "1234567890",
@@ -321,9 +305,7 @@ X-Xss-Protection: 0
     "regions/asia-southeast1": {
       "subnetworks": [
         {
-          "allowSubnetCidrRoutesOverlap": false,
           "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-          "enableFlowLogs": false,
           "fingerprint": "abcdef0123A=",
           "gatewayAddress": "10.148.0.1",
           "id": "1234567890",
@@ -344,9 +326,7 @@ X-Xss-Protection: 0
     "regions/asia-southeast2": {
       "subnetworks": [
         {
-          "allowSubnetCidrRoutesOverlap": false,
           "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-          "enableFlowLogs": false,
           "fingerprint": "abcdef0123A=",
           "gatewayAddress": "10.184.0.1",
           "id": "1234567890",
@@ -367,9 +347,7 @@ X-Xss-Protection: 0
     "regions/australia-southeast1": {
       "subnetworks": [
         {
-          "allowSubnetCidrRoutesOverlap": false,
           "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-          "enableFlowLogs": false,
           "fingerprint": "abcdef0123A=",
           "gatewayAddress": "10.152.0.1",
           "id": "1234567890",
@@ -390,9 +368,7 @@ X-Xss-Protection: 0
     "regions/australia-southeast2": {
       "subnetworks": [
         {
-          "allowSubnetCidrRoutesOverlap": false,
           "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-          "enableFlowLogs": false,
           "fingerprint": "abcdef0123A=",
           "gatewayAddress": "10.192.0.1",
           "id": "1234567890",
@@ -413,9 +389,7 @@ X-Xss-Protection: 0
     "regions/europe-central2": {
       "subnetworks": [
         {
-          "allowSubnetCidrRoutesOverlap": false,
           "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-          "enableFlowLogs": false,
           "fingerprint": "abcdef0123A=",
           "gatewayAddress": "10.186.0.1",
           "id": "1234567890",
@@ -436,9 +410,7 @@ X-Xss-Protection: 0
     "regions/europe-north1": {
       "subnetworks": [
         {
-          "allowSubnetCidrRoutesOverlap": false,
           "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-          "enableFlowLogs": false,
           "fingerprint": "abcdef0123A=",
           "gatewayAddress": "10.166.0.1",
           "id": "1234567890",
@@ -459,9 +431,7 @@ X-Xss-Protection: 0
     "regions/europe-north2": {
       "subnetworks": [
         {
-          "allowSubnetCidrRoutesOverlap": false,
           "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-          "enableFlowLogs": false,
           "fingerprint": "abcdef0123A=",
           "gatewayAddress": "10.226.0.1",
           "id": "1234567890",
@@ -482,9 +452,7 @@ X-Xss-Protection: 0
     "regions/europe-southwest1": {
       "subnetworks": [
         {
-          "allowSubnetCidrRoutesOverlap": false,
           "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-          "enableFlowLogs": false,
           "fingerprint": "abcdef0123A=",
           "gatewayAddress": "10.204.0.1",
           "id": "1234567890",
@@ -505,9 +473,7 @@ X-Xss-Protection: 0
     "regions/europe-west1": {
       "subnetworks": [
         {
-          "allowSubnetCidrRoutesOverlap": false,
           "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-          "enableFlowLogs": false,
           "fingerprint": "abcdef0123A=",
           "gatewayAddress": "10.132.0.1",
           "id": "1234567890",
@@ -528,9 +494,7 @@ X-Xss-Protection: 0
     "regions/europe-west10": {
       "subnetworks": [
         {
-          "allowSubnetCidrRoutesOverlap": false,
           "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-          "enableFlowLogs": false,
           "fingerprint": "abcdef0123A=",
           "gatewayAddress": "10.214.0.1",
           "id": "1234567890",
@@ -551,9 +515,7 @@ X-Xss-Protection: 0
     "regions/europe-west12": {
       "subnetworks": [
         {
-          "allowSubnetCidrRoutesOverlap": false,
           "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-          "enableFlowLogs": false,
           "fingerprint": "abcdef0123A=",
           "gatewayAddress": "10.210.0.1",
           "id": "1234567890",
@@ -574,9 +536,7 @@ X-Xss-Protection: 0
     "regions/europe-west2": {
       "subnetworks": [
         {
-          "allowSubnetCidrRoutesOverlap": false,
           "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-          "enableFlowLogs": false,
           "fingerprint": "abcdef0123A=",
           "gatewayAddress": "10.154.0.1",
           "id": "1234567890",
@@ -597,9 +557,7 @@ X-Xss-Protection: 0
     "regions/europe-west3": {
       "subnetworks": [
         {
-          "allowSubnetCidrRoutesOverlap": false,
           "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-          "enableFlowLogs": false,
           "fingerprint": "abcdef0123A=",
           "gatewayAddress": "10.156.0.1",
           "id": "1234567890",
@@ -620,9 +578,7 @@ X-Xss-Protection: 0
     "regions/europe-west4": {
       "subnetworks": [
         {
-          "allowSubnetCidrRoutesOverlap": false,
           "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-          "enableFlowLogs": false,
           "fingerprint": "abcdef0123A=",
           "gatewayAddress": "10.164.0.1",
           "id": "1234567890",
@@ -643,9 +599,7 @@ X-Xss-Protection: 0
     "regions/europe-west6": {
       "subnetworks": [
         {
-          "allowSubnetCidrRoutesOverlap": false,
           "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-          "enableFlowLogs": false,
           "fingerprint": "abcdef0123A=",
           "gatewayAddress": "10.172.0.1",
           "id": "1234567890",
@@ -666,9 +620,7 @@ X-Xss-Protection: 0
     "regions/europe-west8": {
       "subnetworks": [
         {
-          "allowSubnetCidrRoutesOverlap": false,
           "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-          "enableFlowLogs": false,
           "fingerprint": "abcdef0123A=",
           "gatewayAddress": "10.198.0.1",
           "id": "1234567890",
@@ -689,9 +641,7 @@ X-Xss-Protection: 0
     "regions/europe-west9": {
       "subnetworks": [
         {
-          "allowSubnetCidrRoutesOverlap": false,
           "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-          "enableFlowLogs": false,
           "fingerprint": "abcdef0123A=",
           "gatewayAddress": "10.200.0.1",
           "id": "1234567890",
@@ -712,9 +662,7 @@ X-Xss-Protection: 0
     "regions/me-central1": {
       "subnetworks": [
         {
-          "allowSubnetCidrRoutesOverlap": false,
           "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-          "enableFlowLogs": false,
           "fingerprint": "abcdef0123A=",
           "gatewayAddress": "10.212.0.1",
           "id": "1234567890",
@@ -747,9 +695,7 @@ X-Xss-Protection: 0
     "regions/me-west1": {
       "subnetworks": [
         {
-          "allowSubnetCidrRoutesOverlap": false,
           "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-          "enableFlowLogs": false,
           "fingerprint": "abcdef0123A=",
           "gatewayAddress": "10.208.0.1",
           "id": "1234567890",
@@ -770,9 +716,7 @@ X-Xss-Protection: 0
     "regions/northamerica-northeast1": {
       "subnetworks": [
         {
-          "allowSubnetCidrRoutesOverlap": false,
           "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-          "enableFlowLogs": false,
           "fingerprint": "abcdef0123A=",
           "gatewayAddress": "10.162.0.1",
           "id": "1234567890",
@@ -793,9 +737,7 @@ X-Xss-Protection: 0
     "regions/northamerica-northeast2": {
       "subnetworks": [
         {
-          "allowSubnetCidrRoutesOverlap": false,
           "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-          "enableFlowLogs": false,
           "fingerprint": "abcdef0123A=",
           "gatewayAddress": "10.188.0.1",
           "id": "1234567890",
@@ -816,9 +758,7 @@ X-Xss-Protection: 0
     "regions/northamerica-south1": {
       "subnetworks": [
         {
-          "allowSubnetCidrRoutesOverlap": false,
           "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-          "enableFlowLogs": false,
           "fingerprint": "abcdef0123A=",
           "gatewayAddress": "10.224.0.1",
           "id": "1234567890",
@@ -839,9 +779,7 @@ X-Xss-Protection: 0
     "regions/southamerica-east1": {
       "subnetworks": [
         {
-          "allowSubnetCidrRoutesOverlap": false,
           "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-          "enableFlowLogs": false,
           "fingerprint": "abcdef0123A=",
           "gatewayAddress": "10.158.0.1",
           "id": "1234567890",
@@ -862,9 +800,7 @@ X-Xss-Protection: 0
     "regions/southamerica-west1": {
       "subnetworks": [
         {
-          "allowSubnetCidrRoutesOverlap": false,
           "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-          "enableFlowLogs": false,
           "fingerprint": "abcdef0123A=",
           "gatewayAddress": "10.194.0.1",
           "id": "1234567890",
@@ -885,9 +821,7 @@ X-Xss-Protection: 0
     "regions/us-central1": {
       "subnetworks": [
         {
-          "allowSubnetCidrRoutesOverlap": false,
           "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-          "enableFlowLogs": false,
           "fingerprint": "abcdef0123A=",
           "gatewayAddress": "10.128.0.1",
           "id": "1234567890",
@@ -908,9 +842,7 @@ X-Xss-Protection: 0
     "regions/us-east1": {
       "subnetworks": [
         {
-          "allowSubnetCidrRoutesOverlap": false,
           "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-          "enableFlowLogs": false,
           "fingerprint": "abcdef0123A=",
           "gatewayAddress": "10.142.0.1",
           "id": "1234567890",
@@ -931,9 +863,7 @@ X-Xss-Protection: 0
     "regions/us-east4": {
       "subnetworks": [
         {
-          "allowSubnetCidrRoutesOverlap": false,
           "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-          "enableFlowLogs": false,
           "fingerprint": "abcdef0123A=",
           "gatewayAddress": "10.150.0.1",
           "id": "1234567890",
@@ -954,9 +884,7 @@ X-Xss-Protection: 0
     "regions/us-east5": {
       "subnetworks": [
         {
-          "allowSubnetCidrRoutesOverlap": false,
           "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-          "enableFlowLogs": false,
           "fingerprint": "abcdef0123A=",
           "gatewayAddress": "10.202.0.1",
           "id": "1234567890",
@@ -977,9 +905,7 @@ X-Xss-Protection: 0
     "regions/us-south1": {
       "subnetworks": [
         {
-          "allowSubnetCidrRoutesOverlap": false,
           "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-          "enableFlowLogs": false,
           "fingerprint": "abcdef0123A=",
           "gatewayAddress": "10.206.0.1",
           "id": "1234567890",
@@ -1000,9 +926,7 @@ X-Xss-Protection: 0
     "regions/us-west1": {
       "subnetworks": [
         {
-          "allowSubnetCidrRoutesOverlap": false,
           "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-          "enableFlowLogs": false,
           "fingerprint": "abcdef0123A=",
           "gatewayAddress": "10.138.0.1",
           "id": "1234567890",
@@ -1023,9 +947,7 @@ X-Xss-Protection: 0
     "regions/us-west2": {
       "subnetworks": [
         {
-          "allowSubnetCidrRoutesOverlap": false,
           "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-          "enableFlowLogs": false,
           "fingerprint": "abcdef0123A=",
           "gatewayAddress": "10.168.0.1",
           "id": "1234567890",
@@ -1046,9 +968,7 @@ X-Xss-Protection: 0
     "regions/us-west3": {
       "subnetworks": [
         {
-          "allowSubnetCidrRoutesOverlap": false,
           "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-          "enableFlowLogs": false,
           "fingerprint": "abcdef0123A=",
           "gatewayAddress": "10.180.0.1",
           "id": "1234567890",
@@ -1069,9 +989,7 @@ X-Xss-Protection: 0
     "regions/us-west4": {
       "subnetworks": [
         {
-          "allowSubnetCidrRoutesOverlap": false,
           "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-          "enableFlowLogs": false,
           "fingerprint": "abcdef0123A=",
           "gatewayAddress": "10.182.0.1",
           "id": "1234567890",
