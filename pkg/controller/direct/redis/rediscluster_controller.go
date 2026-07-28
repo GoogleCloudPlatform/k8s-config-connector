@@ -17,9 +17,8 @@ package redis
 import (
 	"context"
 	"fmt"
+	"reflect"
 	"strings"
-
-	"google.golang.org/api/option"
 
 	api "cloud.google.com/go/redis/cluster/apiv1"
 	pb "cloud.google.com/go/redis/cluster/apiv1/clusterpb"
@@ -36,10 +35,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
-
-	gcp "cloud.google.com/go/redis/cluster/apiv1"
 )
 
 func init() {
@@ -58,7 +54,9 @@ type redisClusterModel struct {
 var _ directbase.Model = &redisClusterModel{}
 
 type redisClusterAdapter struct {
-	id *krm.RedisClusterIdentity
+	projectID  string
+	location   string
+	resourceID string
 
 	desired *pb.Cluster
 	actual  *pb.Cluster
@@ -69,56 +67,63 @@ type redisClusterAdapter struct {
 // adapter implements the Adapter interface.
 var _ directbase.Adapter = &redisClusterAdapter{}
 
-func (m *redisClusterModel) client(ctx context.Context) (*gcp.CloudRedisClusterClient, error) {
-	var opts []option.ClientOption
-	opts, err := m.config.RESTClientOptions()
-	if err != nil {
-		return nil, err
-	}
-	gcpClient, err := gcp.NewCloudRedisClusterRESTClient(ctx, opts...)
-	if err != nil {
-		return nil, fmt.Errorf("building RedisCluster client: %w", err)
-	}
-	return gcpClient, err
-}
-
 // AdapterForObject implements the Model interface.
 func (m *redisClusterModel) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
 	u := op.GetUnstructured()
 	kube := op.Reader
-
-	// Get RedisCluster GCP client
-	gcpClient, err := m.client(ctx)
+	gcpClient, err := newGCPClient(ctx, m.config)
+	if err != nil {
+		return nil, err
+	}
+	redisClustersClient, err := gcpClient.newClusterClient(ctx)
 	if err != nil {
 		return nil, err
 	}
 
+	// TODO: Just fetch this object?
 	obj := &krm.RedisCluster{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	id, err := obj.GetIdentity(ctx, kube)
+	resourceID := direct.ValueOf(obj.Spec.ResourceID)
+	if resourceID == "" {
+		resourceID = obj.GetName()
+	}
+	if resourceID == "" {
+		return nil, fmt.Errorf("cannot resolve resource ID")
+	}
+
+	location := direct.ValueOf(obj.Spec.Location)
+	if location == "" {
+		return nil, fmt.Errorf("cannot resolve location")
+	}
+
+	projectRef, err := refs.ResolveProject(ctx, kube, obj.GetNamespace(), &obj.Spec.ProjectRef)
 	if err != nil {
 		return nil, err
 	}
-
-	if err := common.NormalizeReferences(ctx, kube, obj, nil); err != nil {
-		return nil, fmt.Errorf("normalizing references: %w", err)
+	projectID := projectRef.ProjectID
+	if projectID == "" {
+		return nil, fmt.Errorf("cannot resolve project")
 	}
 
-	if obj.Spec.KMSKeyRef != nil {
-		resolvedKMSKey, err := refs.ResolveKMSCryptoKeyRef(ctx, kube, obj, obj.Spec.KMSKeyRef)
-		if err != nil {
-			return nil, fmt.Errorf("resolving KMSKeyRef: %w", err)
-		}
-		obj.Spec.KMSKeyRef = resolvedKMSKey
+	if err := common.VisitFields(obj, &refNormalizer{ctx: ctx, src: obj, project: *projectRef, kube: kube}); err != nil {
+		return nil, err
 	}
 
 	mapCtx := &direct.MapContext{}
 	desired := RedisClusterSpec_ToProto(mapCtx, &obj.Spec)
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
+	}
+
+	// Default to disabled persistence config
+	if desired.PersistenceConfig == nil {
+		desired.PersistenceConfig = &pb.ClusterPersistenceConfig{}
+	}
+	if desired.PersistenceConfig.Mode == pb.ClusterPersistenceConfig_PERSISTENCE_MODE_UNSPECIFIED {
+		desired.PersistenceConfig.Mode = pb.ClusterPersistenceConfig_DISABLED
 	}
 
 	// Mask out some fields in the persistenceConfig, to accommodate KRM "discriminated union" semantics
@@ -133,32 +138,12 @@ func (m *redisClusterModel) AdapterForObject(ctx context.Context, op *directbase
 	}
 
 	return &redisClusterAdapter{
-		id:             id.(*krm.RedisClusterIdentity),
+		projectID:      projectID,
+		location:       location,
+		resourceID:     resourceID,
 		desired:        desired,
-		clustersClient: gcpClient,
+		clustersClient: redisClustersClient,
 	}, nil
-}
-
-func (a *redisClusterAdapter) normalizeReplicationConfig(config *pb.CrossClusterReplicationConfig) {
-	if config == nil {
-		return
-	}
-	// The Redis API is strict:
-	// - PRIMARY clusters must NOT have primary_cluster set.
-	// - SECONDARY clusters must NOT have secondary_clusters set.
-	// - NONE clusters must NOT have either set.
-	role := config.GetClusterRole()
-	switch role {
-	case pb.CrossClusterReplicationConfig_PRIMARY:
-		config.PrimaryCluster = nil
-	case pb.CrossClusterReplicationConfig_SECONDARY:
-		config.SecondaryClusters = nil
-	case pb.CrossClusterReplicationConfig_NONE, pb.CrossClusterReplicationConfig_CLUSTER_ROLE_UNSPECIFIED:
-		config.PrimaryCluster = nil
-		config.SecondaryClusters = nil
-	default:
-		// do nothing, keep existing configs
-	}
 }
 
 func (m *redisClusterModel) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
@@ -167,12 +152,12 @@ func (m *redisClusterModel) AdapterForURL(ctx context.Context, url string) (dire
 
 // Find implements the Adapter interface.
 func (a *redisClusterAdapter) Find(ctx context.Context) (bool, error) {
-	if a.id.Cluster == "" {
+	if a.resourceID == "" {
 		return false, nil
 	}
 
 	req := &pb.GetClusterRequest{
-		Name: a.id.String(),
+		Name: a.fullyQualifiedName(),
 	}
 	redisCluster, err := a.clustersClient.GetCluster(ctx, req)
 	if err != nil {
@@ -190,13 +175,13 @@ func (a *redisClusterAdapter) Find(ctx context.Context) (bool, error) {
 // Delete implements the Adapter interface.
 func (a *redisClusterAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	// Already deleted
-	if a.id.Cluster == "" {
+	if a.resourceID == "" {
 		return false, nil
 	}
 
 	// TODO: Delete via status selfLink?
 	req := &pb.DeleteClusterRequest{
-		Name: a.id.String(),
+		Name: a.fullyQualifiedName(),
 	}
 
 	op, err := a.clustersClient.DeleteCluster(ctx, req)
@@ -205,13 +190,13 @@ func (a *redisClusterAdapter) Delete(ctx context.Context, deleteOp *directbase.D
 			return false, nil
 		}
 		if !strings.Contains(err.Error(), "missing \"value\" field") {
-			return false, fmt.Errorf("deleting redisCluster %s: %w", a.id.String(), err)
+			return false, fmt.Errorf("deleting redisCluster %s: %w", a.fullyQualifiedName(), err)
 		}
 	}
 
 	if err := op.Wait(ctx); err != nil {
 		if !strings.Contains(err.Error(), "missing \"value\" field") {
-			return false, fmt.Errorf("waiting for redisCluster delete %s: %w", a.id.String(), err)
+			return false, fmt.Errorf("waiting for redisCluster delete %s: %w", a.fullyQualifiedName(), err)
 		}
 	}
 
@@ -229,15 +214,13 @@ func (a *redisClusterAdapter) Create(ctx context.Context, createOp *directbase.C
 	log := klog.FromContext(ctx)
 	log.V(0).Info("creating object", "u", u)
 
-	parent := "projects/" + a.id.Project + "/locations/" + a.id.Location
+	parent := "projects/" + a.projectID + "/locations/" + a.location
 
 	req := &pb.CreateClusterRequest{
 		Parent:    parent,
-		ClusterId: a.id.Cluster,
+		ClusterId: a.resourceID,
 		Cluster:   a.desired,
 	}
-	a.normalizeReplicationConfig(req.Cluster.CrossClusterReplicationConfig)
-
 	log.V(0).Info("making redis CreateCluster call", "request", req)
 
 	op, err := a.clustersClient.CreateCluster(ctx, req)
@@ -247,21 +230,24 @@ func (a *redisClusterAdapter) Create(ctx context.Context, createOp *directbase.C
 
 	created, err := op.Wait(ctx)
 	if err != nil {
-		return fmt.Errorf("waiting for redisCluster create %s: %w", a.id.String(), err)
+		return fmt.Errorf("waiting for redisCluster create %s: %w", a.fullyQualifiedName(), err)
 	}
 
 	log.V(0).Info("created redisCluster", "redisCluster", created)
 
-	// Set externalRef
-	status := &krm.RedisClusterStatus{}
-	status.ExternalRef = direct.PtrTo(a.id.String())
+	/* TODO: Any reason to write resourceID back?  It's required anyway
+	resourceID := lastComponent(created.Name)
+	if err := unstructured.SetNestedField(u.Object, resourceID, "spec", "resourceID"); err != nil {
+		return fmt.Errorf("setting spec.resourceID: %w", err)
+	}
+	*/
 
 	mapCtx := &direct.MapContext{}
-	status.ObservedState = RedisClusterObservedState_FromProto(mapCtx, created)
+	observedState := RedisClusterObservedState_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	return createOp.UpdateStatus(ctx, status, nil)
+	return setObservedState(u, observedState)
 }
 
 // Update implements the Adapter interface.
@@ -271,34 +257,50 @@ func (a *redisClusterAdapter) Update(ctx context.Context, updateOp *directbase.U
 	log := klog.FromContext(ctx)
 	log.V(0).Info("updating object", "u", u)
 
-	diffs, err := compareRedisCluster(ctx, a.actual, a.desired)
-	if err != nil {
-		return fmt.Errorf("comparing actual and desired RedisCluster: %w", err)
+	updateMask := &fieldmaskpb.FieldMask{}
+
+	// TODO: What if a different field (immutability again)
+
+	report := &structuredreporting.Diff{Object: u}
+	if direct.ValueOf(a.desired.ReplicaCount) != direct.ValueOf(a.actual.ReplicaCount) {
+		updateMask.Paths = append(updateMask.Paths, "replica_count")
+		report.AddField("replica_count", a.actual.ReplicaCount, a.desired.ReplicaCount)
+	}
+
+	if direct.ValueOf(a.desired.ShardCount) != direct.ValueOf(a.actual.ShardCount) {
+		updateMask.Paths = append(updateMask.Paths, "shard_count")
+		report.AddField("shard_count", a.actual.ShardCount, a.desired.ShardCount)
+	}
+
+	if direct.ValueOf(a.desired.DeletionProtectionEnabled) != direct.ValueOf(a.actual.DeletionProtectionEnabled) {
+		updateMask.Paths = append(updateMask.Paths, "deletion_protection_enabled")
+		report.AddField("deletion_protection_enabled", a.actual.DeletionProtectionEnabled, a.desired.DeletionProtectionEnabled)
+	}
+
+	if !proto.Equal(a.desired.PersistenceConfig, a.actual.PersistenceConfig) {
+		report.AddField("persistence_config", a.actual.PersistenceConfig, a.desired.PersistenceConfig)
+		updateMask.Paths = append(updateMask.Paths, "persistence_config")
+	}
+
+	if !reflect.DeepEqual(a.desired.GetRedisConfigs(), a.actual.GetRedisConfigs()) {
+		report.AddField("redis_configs", a.actual.GetRedisConfigs(), a.desired.GetRedisConfigs())
+		updateMask.Paths = append(updateMask.Paths, "redis_configs")
 	}
 
 	var latest *pb.Cluster
-	if diffs.HasDiff() {
-		diffs.Object = u
-		structuredreporting.ReportDiff(ctx, diffs)
+	if len(updateMask.Paths) != 0 {
+		structuredreporting.ReportDiff(ctx, report)
 
 		// exactly 1 update_mask field must be specified per update request
-
-		for _, field := range diffs.Fields {
-			if field.ProtoFieldDescriptor == nil {
-				return fmt.Errorf("unexpected diff field without proto descriptor: %s", field.ID)
-			}
-			path := string(field.ProtoFieldDescriptor.Name())
-
+		for _, path := range updateMask.Paths {
 			req := &pb.UpdateClusterRequest{
 				Cluster: a.desired,
 			}
-			a.normalizeReplicationConfig(req.Cluster.CrossClusterReplicationConfig)
-
 			req.UpdateMask = &fieldmaskpb.FieldMask{
 				Paths: []string{path},
 			}
 
-			req.Cluster.Name = a.id.String()
+			req.Cluster.Name = a.fullyQualifiedName()
 
 			log.V(0).Info("making redis UpdateCluster call", "request", req)
 
@@ -309,7 +311,7 @@ func (a *redisClusterAdapter) Update(ctx context.Context, updateOp *directbase.U
 
 			updated, err := op.Wait(ctx)
 			if err != nil {
-				return fmt.Errorf("waiting for redisCluster update %s: %w", a.id.String(), err)
+				return fmt.Errorf("waiting for redisCluster update %s: %w", a.fullyQualifiedName(), err)
 			}
 			log.V(0).Info("updated redisCluster", "redisCluster", updated)
 
@@ -319,89 +321,14 @@ func (a *redisClusterAdapter) Update(ctx context.Context, updateOp *directbase.U
 		latest = a.actual
 	}
 
-	status := &krm.RedisClusterStatus{}
-	if status.ExternalRef == nil {
-		// If it is the first reconciliation after switching to direct controller,
-		// or is an acquisition with updates, then fill out the ExternalRef.
-		status.ExternalRef = direct.LazyPtr(a.id.String())
-	}
 	mapCtx := &direct.MapContext{}
-	status.ObservedState = RedisClusterObservedState_FromProto(mapCtx, latest)
+	observedState := RedisClusterObservedState_FromProto(mapCtx, latest)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	return updateOp.UpdateStatus(ctx, status, nil)
+	return setObservedState(u, observedState)
 }
 
-func compareRedisCluster(ctx context.Context, actual, desired *pb.Cluster) (*structuredreporting.Diff, error) {
-	var maskedActual *pb.Cluster
-	{
-		// A "trick" to only compare spec fields - round trip via the spec
-		mapCtx := &direct.MapContext{}
-		spec := RedisClusterSpec_FromProto(mapCtx, actual)
-		if mapCtx.Err() != nil {
-			return nil, mapCtx.Err()
-		}
-		maskedActual = RedisClusterSpec_ToProto(mapCtx, spec)
-		if mapCtx.Err() != nil {
-			return nil, mapCtx.Err()
-		}
-	}
-
-	maskedActual = populateDefaults(maskedActual)
-	desired = populateDefaults(proto.CloneOf(desired))
-
-	// If CrossClusterReplicationConfig is unspecified, use the actual value as default
-	if desired.CrossClusterReplicationConfig == nil {
-		desired.CrossClusterReplicationConfig = maskedActual.CrossClusterReplicationConfig
-	}
-
-	diffs, _, err := tags.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
-	if err != nil {
-		return nil, err
-	}
-	return diffs, nil
-}
-
-func populateDefaults(cluster *pb.Cluster) *pb.Cluster {
-	if cluster.PersistenceConfig == nil {
-		cluster.PersistenceConfig = &pb.ClusterPersistenceConfig{}
-	}
-	if cluster.PersistenceConfig.Mode == pb.ClusterPersistenceConfig_PERSISTENCE_MODE_UNSPECIFIED {
-		cluster.PersistenceConfig.Mode = pb.ClusterPersistenceConfig_DISABLED
-	}
-	if cluster.AuthorizationMode == pb.AuthorizationMode_AUTH_MODE_UNSPECIFIED {
-		cluster.AuthorizationMode = pb.AuthorizationMode_AUTH_MODE_DISABLED
-	}
-	if cluster.NodeType == pb.NodeType_NODE_TYPE_UNSPECIFIED {
-		cluster.NodeType = pb.NodeType_REDIS_HIGHMEM_MEDIUM
-	}
-	if cluster.TransitEncryptionMode == pb.TransitEncryptionMode_TRANSIT_ENCRYPTION_MODE_UNSPECIFIED {
-		cluster.TransitEncryptionMode = pb.TransitEncryptionMode_TRANSIT_ENCRYPTION_MODE_DISABLED
-	}
-	if cluster.ZoneDistributionConfig == nil {
-		cluster.ZoneDistributionConfig = &pb.ZoneDistributionConfig{}
-	}
-	if cluster.ZoneDistributionConfig.Mode == pb.ZoneDistributionConfig_ZONE_DISTRIBUTION_MODE_UNSPECIFIED {
-		cluster.ZoneDistributionConfig.Mode = pb.ZoneDistributionConfig_MULTI_ZONE
-	}
-
-	if cluster.AutomatedBackupConfig != nil {
-		if cluster.AutomatedBackupConfig.AutomatedBackupMode == pb.AutomatedBackupConfig_AUTOMATED_BACKUP_MODE_UNSPECIFIED {
-			cluster.AutomatedBackupConfig.AutomatedBackupMode = pb.AutomatedBackupConfig_DISABLED
-		}
-		if cluster.AutomatedBackupConfig.AutomatedBackupMode == pb.AutomatedBackupConfig_DISABLED {
-			cluster.AutomatedBackupConfig.Schedule = nil
-			cluster.AutomatedBackupConfig.Retention = nil
-		}
-	} else {
-		cluster.AutomatedBackupConfig = &pb.AutomatedBackupConfig{AutomatedBackupMode: pb.AutomatedBackupConfig_DISABLED}
-	}
-
-	// clear pscConfig as it's not included in the response
-	if cluster.PscConfigs != nil {
-		cluster.PscConfigs = nil
-	}
-
-	return cluster
+func (a *redisClusterAdapter) fullyQualifiedName() string {
+	return fmt.Sprintf("projects/%s/locations/%s/clusters/%s", a.projectID, a.location, a.resourceID)
 }
