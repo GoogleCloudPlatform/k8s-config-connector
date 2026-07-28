@@ -52,6 +52,9 @@ var realGCPSkipFixtures = map[string]bool{
 	"tags/v1beta1/tagstagkey/tagkeyacquire":        true,
 	"tags/v1beta1/tagstagvalue/tagvalueacquire":    true,
 	"tags/v1beta1/tagstagkey/tagkeyprojectautogen": true,
+	// NetworkSecurity BackendAuthenticationConfig requires invitation-only early access allowlist.
+	"networksecurity/v1alpha1/networksecuritybackendauthenticationconfig/backendauthconfig-maximal": true,
+	"networksecurity/v1alpha1/networksecuritybackendauthenticationconfig/backendauthconfig-minimal": true,
 }
 
 func TestGoldenLogAlignment(t *testing.T) {
