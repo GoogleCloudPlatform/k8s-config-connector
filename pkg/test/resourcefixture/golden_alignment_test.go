@@ -75,7 +75,16 @@ func TestGoldenLogAlignment(t *testing.T) {
 
 				if fileExists(realLogPath) && fileExists(mockLogPath) {
 					t.Run(relPath, func(t *testing.T) {
-						compareLogs(t, realLogPath, mockLogPath)
+						primaryKind, err := getPrimaryKind(createPath)
+						if err != nil {
+							t.Fatalf("failed to get primary kind for %s: %v", path, err)
+						}
+						dependenciesPath := filepath.Join(path, "dependencies.yaml")
+						depKinds, err := getDependencyKinds(dependenciesPath)
+						if err != nil {
+							t.Fatalf("failed to get dependency kinds for %s: %v", path, err)
+						}
+						compareLogs(t, realLogPath, mockLogPath, depKinds, primaryKind)
 					})
 				}
 			}
@@ -166,9 +175,14 @@ func groupByPathAndMethod(events []httpEvent) pathMethodEvents {
 	return grouped
 }
 
-func compareLogs(t *testing.T, realPath, mockPath string) {
+func compareLogs(t *testing.T, realPath, mockPath string, depKinds map[string]string, primaryKind string) {
 	realEvents := readLog(t, realPath)
 	mockEvents := readLog(t, mockPath)
+
+	if len(depKinds) > 0 {
+		realEvents = filterDependencyEvents(realEvents, depKinds, primaryKind)
+		mockEvents = filterDependencyEvents(mockEvents, depKinds, primaryKind)
+	}
 
 	realGrouped := groupByPathAndMethod(realEvents)
 	mockGrouped := groupByPathAndMethod(mockEvents)
@@ -753,4 +767,179 @@ func getGVKFromYAML(path string) (schema.GroupVersionKind, error) {
 		return schema.GroupVersionKind{}, err
 	}
 	return u.GroupVersionKind(), nil
+}
+
+func getPrimaryKind(path string) (string, error) {
+	gvk, err := getGVKFromYAML(path)
+	if err != nil {
+		return "", err
+	}
+	return gvk.Kind, nil
+}
+
+func getDependencyKinds(path string) (map[string]string, error) {
+	bytes, err := os.ReadFile(path)
+	if err != nil {
+		if os.IsNotExist(err) {
+			return nil, nil
+		}
+		return nil, err
+	}
+
+	depKinds := make(map[string]string)
+	// Split by "---" to support multi-document YAML files
+	docs := strings.Split(string(bytes), "\n---")
+	for _, doc := range docs {
+		doc = strings.TrimSpace(doc)
+		if doc == "" {
+			continue
+		}
+		var u unstructured.Unstructured
+		if err := yaml.Unmarshal([]byte(doc), &u); err != nil {
+			// Some files might have comments or other non-YAML content, or split issues
+			continue
+		}
+		kind := u.GetKind()
+		if kind == "Project" || kind == "Folder" || kind == "Organization" {
+			continue
+		}
+		name := u.GetName()
+		if len(name) >= 3 {
+			depKinds[name] = kind
+		}
+		if resourceID, _, _ := unstructured.NestedString(u.Object, "spec", "resourceID"); len(resourceID) >= 3 {
+			depKinds[resourceID] = kind
+		}
+		for _, ph := range getPlaceholdersForKind(kind) {
+			depKinds[ph] = kind
+		}
+	}
+	return depKinds, nil
+}
+
+func getPlaceholdersForKind(kind string) []string {
+	switch kind {
+	case "ComputeNetwork":
+		return []string{"${networkID}"}
+	case "ComputeSubnetwork":
+		return []string{"${subnetworkID}"}
+	case "ComputeAddress":
+		return []string{"${addressID}"}
+	case "ComputeForwardingRule":
+		return []string{"${forwardingRuleID}"}
+	case "ComputeFirewall":
+		return []string{"${firewallID}"}
+	case "ComputeRouter":
+		return []string{"${routerID}"}
+	case "ComputeRoute":
+		return []string{"${routeID}"}
+	case "ComputeDisk":
+		return []string{"${diskID}"}
+	case "ComputeInstance":
+		return []string{"${instanceID}"}
+	case "KMSKeyRing":
+		return []string{"${kmsKeyRingID}", "${keyRingID}"}
+	case "KMSCryptoKey":
+		return []string{"${kmsCryptoKeyID}", "${cryptoKeyID}"}
+	case "IAMServiceAccount":
+		return []string{"${serviceAccountID}", "${serviceAccountEmail}"}
+	case "CertificateManagerCertificateMap":
+		return []string{"${certificateMapID}"}
+	case "CertificateManagerCertificate":
+		return []string{"${certificateID}"}
+	case "CertificateManagerDNSAuthorization":
+		return []string{"${dnsAuthorizationID}"}
+	}
+	return nil
+}
+
+func filterDependencyEvents(events []httpEvent, depKinds map[string]string, primaryKind string) []httpEvent {
+	var filtered []httpEvent
+	for _, ev := range events {
+		if !isDependencyEvent(ev, depKinds, primaryKind) {
+			filtered = append(filtered, ev)
+		}
+	}
+	return filtered
+}
+
+func isDependencyEvent(ev httpEvent, depKinds map[string]string, primaryKind string) bool {
+	// PATCH requests are never part of dependency creation/setup, so they are always kept
+	if ev.Method == "PATCH" {
+		return false
+	}
+
+	//  tested resource is a virtual resource (i.e. primaryKind == "RedisClusterEndpoint"), any HTTP traffic
+	//  containing /clusters/ (the parent RedisCluster) is not treated as dependency traffic and is kept in the comparison.
+	if primaryKind == "RedisClusterEndpoint" {
+		if strings.Contains(ev.URL, "/clusters/") {
+			return false
+		}
+	}
+
+	isIAM := primaryKind == "IAMPolicy" || primaryKind == "IAMPolicyMember" || primaryKind == "IAMPartialPolicy" || primaryKind == "IAMAuditConfig"
+
+	for depName, kind := range depKinds {
+		// If a dependency resource has the same kind as the primary resource under test,
+		// we keep all of its events.
+		if kind == primaryKind {
+			continue
+		}
+
+		// Clean the URL to get the path
+		urlPath := strings.Split(cleanURL(ev.URL), "?")[0]
+
+		// If the path doesn't contain the dependency name, check if it's a POST to create it
+		if !strings.Contains(urlPath, depName) {
+			if ev.Method == "POST" && (strings.Contains(ev.RequestBody, depName) || strings.Contains(ev.URL, depName)) {
+				return true
+			}
+			continue
+		}
+
+		// If the path contains depName, check if it is a valid segment (boundary check)
+		idx := strings.Index(urlPath, depName)
+		if idx == -1 {
+			continue
+		}
+
+		if idx > 0 {
+			before := urlPath[idx-1]
+			if before != '/' && before != ':' && before != '=' {
+				continue
+			}
+		}
+
+		suffix := urlPath[idx+len(depName):]
+		// If suffix is empty or /, it is the dependency resource itself
+		if suffix == "" || suffix == "/" {
+			return true
+		}
+
+		// If suffix starts with /operations, /locations, or /regions, it's an LRO or location metadata on the dependency itself
+		if strings.HasPrefix(suffix, "/operations") || strings.HasPrefix(suffix, "/locations") || strings.HasPrefix(suffix, "/regions") {
+			return true
+		}
+
+		// If suffix has more than one path segment (i.e. contains a '/' after the first segment),
+		// it is a child resource of the dependency, so it belongs to the primary resource under test.
+		trimmedSuffix := strings.TrimPrefix(suffix, "/")
+		if strings.Contains(trimmedSuffix, "/") {
+			continue
+		}
+
+		// If the primary resource is NOT an IAM resource, and suffix is an IAM path segment, it is an IAM policy request on the dependency itself
+		if !isIAM {
+			if strings.HasPrefix(suffix, "/iam") ||
+				strings.HasPrefix(suffix, ":setIamPolicy") ||
+				strings.HasPrefix(suffix, ":getIamPolicy") ||
+				strings.HasPrefix(suffix, ":testIamPermissions") {
+				return true
+			}
+		}
+
+		// Any other single-segment suffix (e.g. /setLabels) is a custom subresource/action on the dependency itself, so filter it out
+		return true
+	}
+	return false
 }
