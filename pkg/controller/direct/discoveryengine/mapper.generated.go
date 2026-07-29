@@ -1533,6 +1533,48 @@ func DiscoveryEngineSessionSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *
 	out.IsPinned = direct.ValueOf(in.IsPinned)
 	return out
 }
+func DiscoveryEngineSitemapObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *discoveryenginepb.Sitemap) *krmdiscoveryenginev1alpha1.DiscoveryEngineSitemapObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.DiscoveryEngineSitemapObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	return out
+}
+func DiscoveryEngineSitemapObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.DiscoveryEngineSitemapObservedState) *discoveryenginepb.Sitemap {
+	if in == nil {
+		return nil
+	}
+	out := &discoveryenginepb.Sitemap{}
+	out.Name = direct.ValueOf(in.Name)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	return out
+}
+func DiscoveryEngineSitemapSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *discoveryenginepb.Sitemap) *krmdiscoveryenginev1alpha1.DiscoveryEngineSitemapSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.DiscoveryEngineSitemapSpec{}
+	out.URI = direct.LazyPtr(in.GetUri())
+	return out
+}
+func DiscoveryEngineSitemapSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.DiscoveryEngineSitemapSpec) *discoveryenginepb.Sitemap {
+	if in == nil {
+		return nil
+	}
+	out := &discoveryenginepb.Sitemap{}
+	if oneof := DiscoveryEngineSitemapSpec_Uri_ToProto(mapCtx, in.URI); oneof != nil {
+		out.Feed = oneof
+	}
+	return out
+}
+func DiscoveryEngineSitemapSpec_Uri_ToProto(mapCtx *direct.MapContext, in *string) *discoveryenginepb.Sitemap_Uri {
+	if in == nil {
+		return nil
+	}
+	return &discoveryenginepb.Sitemap_Uri{Uri: *in}
+}
 func DiscoveryEngineUserStoreObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *discoveryenginepb.UserStore) *krmdiscoveryenginev1alpha1.DiscoveryEngineUserStoreObservedState {
 	if in == nil {
 		return nil

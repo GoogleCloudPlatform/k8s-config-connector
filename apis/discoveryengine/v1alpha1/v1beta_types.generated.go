@@ -22,6 +22,7 @@
 // resource: DiscoveryEngineLicenseConfig:LicenseConfig
 // resource: DiscoveryEngineServingConfig:ServingConfig
 // resource: DiscoveryEngineUserStore:UserStore
+// resource: DiscoveryEngineSitemap:Sitemap
 
 package v1alpha1
 
