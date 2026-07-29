@@ -57,10 +57,21 @@ shard_service() {
   echo "${service}"
 }
 
+all_fixture_services=()
+for group in $(rgrep --no-filename '^[ ]*group:' config/crds | sort | uniq | awk '{print $2}'); do
+  if [[ "${group}" != *.cnrm.cloud.google.com ]]; then
+    continue
+  fi
+  short=$(echo ${group} | sed s@.cnrm.cloud.google.com@@g)
+  if [[ "${short}" == "blockchainnodeengine" || "${short}" == "videostitcher" ]]; then
+    continue
+  fi
+  all_fixture_services+=("${short}")
+done
+
 priority_fixture_targets=()
-for service in "${unique_services[@]}"; do
-  script="dev/ci/presubmits/tests-e2e-fixtures-${service}"
-  if [[ -f "${script}" ]]; then
+for service in "${unique_services[@]:-}"; do
+  if [[ " ${all_fixture_services[*]:-} " =~ " ${service} " ]]; then
     for target in $(shard_service "${service}"); do
       priority_fixture_targets+=("${target}")
     done
@@ -68,9 +79,7 @@ for service in "${unique_services[@]}"; do
 done
 
 remaining_fixture_targets=()
-for f in $(find dev/ci/presubmits -name "tests-e2e-fixtures-*" -type f | sort); do
-  name=$(basename "${f}")
-  service="${name#tests-e2e-fixtures-}"
+for service in "${all_fixture_services[@]}"; do
   if [[ " ${unique_services[*]:-} " =~ " ${service} " ]]; then
     echo "Service ${service} marked for priority upfront verification."
   else
@@ -80,19 +89,11 @@ for f in $(find dev/ci/presubmits -name "tests-e2e-fixtures-*" -type f | sort); 
   fi
 done
 
-# Discover all sample suites
-sample_services=()
-for f in $(find dev/ci/presubmits -name "tests-e2e-samples-*" -type f | sort); do
-  name=$(basename "${f}")
-  sample_services+=("${name#tests-e2e-samples-}")
-done
+# Sample services match the discovered CRD services
+sample_services=("${all_fixture_services[@]}")
 
-# Discover all scenario suites
-scenario_suites=()
-for f in $(find dev/ci/presubmits -name "tests-scenarios-*" -type f | sort); do
-  name=$(basename "${f}")
-  scenario_suites+=("${name#tests-scenarios-}")
-done
+# Scenario suites
+scenario_suites=("acquisition" "gkehubfeaturemembership" "powertool" "unclassified")
 
 unit_tests_shards=("1-of-4" "2-of-4" "3-of-4" "4-of-4")
 
