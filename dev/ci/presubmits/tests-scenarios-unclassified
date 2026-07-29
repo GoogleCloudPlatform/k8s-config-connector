@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2024 Google LLC
+# Copyright 2025 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,13 +22,13 @@ function on_error() {
 }
 trap on_error ERR
 
-export REPO_ROOT="$(git rev-parse --show-toplevel)"
-cd ${REPO_ROOT}/
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+cd "${REPO_ROOT}"
 
-. ${REPO_ROOT}/dev/tasks/setup-envtest
+. "${REPO_ROOT}/dev/tasks/setup-envtest"
 
-export SKIP_TESTS="TestE2EScript/scenarios/acquisition|TestE2EScript/scenarios/powertool|TestE2EScript/scenarios/gkehubfeaturemembership|TestE2EScript/scenarios/iam/iampartialpolicy|TestE2EScript/scenarios/tracker/tracker-iampartialpolicy"
-export TEST_TIMEOUT=3600s
+export USE_FULL_TEST_NAMES=true
+export TEST_TIMEOUT=15m
 
 echo "Prebuilding e2e tests..."
 export PREBUILT_TEST_BINARY=${REPO_ROOT}/.build/tests-e2e
@@ -38,9 +38,8 @@ time go test -c -o ${PREBUILT_TEST_BINARY} ./tests/e2e
 echo "Building paralleltestrunner..."
 time go build -o ${REPO_ROOT}/.build/paralleltestrunner ${REPO_ROOT}/dev/tools/paralleltestrunner
 
-echo "Running scenarios tests in parallel..."
+echo "Running unclassified scenarios tests in parallel..."
 ${REPO_ROOT}/.build/paralleltestrunner \
-    -list-file="${REPO_ROOT}/tests/e2e/testdata/scenarios-list.txt" \
-    -base-test="TestE2EScript/scenarios" \
-    -check-unchanged=true \
+    -list-file="${REPO_ROOT}/tests/e2e/testdata/scenarios-unclassified-list.txt" \
+    -base-test="TestE2EScript/scenarios/unclassified" \
     -- ${REPO_ROOT}/dev/tasks/run-e2e
