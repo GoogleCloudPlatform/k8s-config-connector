@@ -59,5 +59,11 @@ var (
 		Kind:    reflect.TypeOf(SecurityCenterManagementEventThreatDetectionCustomModule{}).Name(),
 	}
 
+	SecurityCenterManagementSecurityHealthAnalyticsCustomModuleGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(SecurityCenterManagementSecurityHealthAnalyticsCustomModule{}).Name(),
+	}
+
 	securitycentermanagementAPIVersion = SchemeGroupVersion.String()
 )

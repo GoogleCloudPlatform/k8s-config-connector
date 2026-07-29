@@ -202,6 +202,7 @@ import (
 	secretmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/secretmanager/v1beta1"
 	securesourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/securesourcemanager/v1beta1"
 	securitycenterv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/securitycenter/v1alpha1"
+	securitycentermanagementv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/securitycentermanagement/v1alpha1"
 	servicedirectoryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/servicedirectory/v1beta1"
 	servicenetworkingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/servicenetworking/v1alpha1"
 	servicenetworkingv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/servicenetworking/v1beta1"
@@ -419,6 +420,7 @@ type Interface interface {
 	SecretmanagerV1beta1() secretmanagerv1beta1.SecretmanagerV1beta1Interface
 	SecuresourcemanagerV1beta1() securesourcemanagerv1beta1.SecuresourcemanagerV1beta1Interface
 	SecuritycenterV1alpha1() securitycenterv1alpha1.SecuritycenterV1alpha1Interface
+	SecuritycentermanagementV1alpha1() securitycentermanagementv1alpha1.SecuritycentermanagementV1alpha1Interface
 	ServicedirectoryV1beta1() servicedirectoryv1beta1.ServicedirectoryV1beta1Interface
 	ServicenetworkingV1alpha1() servicenetworkingv1alpha1.ServicenetworkingV1alpha1Interface
 	ServicenetworkingV1beta1() servicenetworkingv1beta1.ServicenetworkingV1beta1Interface
@@ -634,6 +636,7 @@ type Clientset struct {
 	secretmanagerV1beta1             *secretmanagerv1beta1.SecretmanagerV1beta1Client
 	securesourcemanagerV1beta1       *securesourcemanagerv1beta1.SecuresourcemanagerV1beta1Client
 	securitycenterV1alpha1           *securitycenterv1alpha1.SecuritycenterV1alpha1Client
+	securitycentermanagementV1alpha1 *securitycentermanagementv1alpha1.SecuritycentermanagementV1alpha1Client
 	servicedirectoryV1beta1          *servicedirectoryv1beta1.ServicedirectoryV1beta1Client
 	servicenetworkingV1alpha1        *servicenetworkingv1alpha1.ServicenetworkingV1alpha1Client
 	servicenetworkingV1beta1         *servicenetworkingv1beta1.ServicenetworkingV1beta1Client
@@ -1554,6 +1557,11 @@ func (c *Clientset) SecuritycenterV1alpha1() securitycenterv1alpha1.Securitycent
 	return c.securitycenterV1alpha1
 }
 
+// SecuritycentermanagementV1alpha1 retrieves the SecuritycentermanagementV1alpha1Client
+func (c *Clientset) SecuritycentermanagementV1alpha1() securitycentermanagementv1alpha1.SecuritycentermanagementV1alpha1Interface {
+	return c.securitycentermanagementV1alpha1
+}
+
 // ServicedirectoryV1beta1 retrieves the ServicedirectoryV1beta1Client
 func (c *Clientset) ServicedirectoryV1beta1() servicedirectoryv1beta1.ServicedirectoryV1beta1Interface {
 	return c.servicedirectoryV1beta1
@@ -2471,6 +2479,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.securitycentermanagementV1alpha1, err = securitycentermanagementv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.servicedirectoryV1beta1, err = servicedirectoryv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -2801,6 +2813,7 @@ func New(c rest.Interface) *Clientset {
 	cs.secretmanagerV1beta1 = secretmanagerv1beta1.New(c)
 	cs.securesourcemanagerV1beta1 = securesourcemanagerv1beta1.New(c)
 	cs.securitycenterV1alpha1 = securitycenterv1alpha1.New(c)
+	cs.securitycentermanagementV1alpha1 = securitycentermanagementv1alpha1.New(c)
 	cs.servicedirectoryV1beta1 = servicedirectoryv1beta1.New(c)
 	cs.servicenetworkingV1alpha1 = servicenetworkingv1alpha1.New(c)
 	cs.servicenetworkingV1beta1 = servicenetworkingv1beta1.New(c)

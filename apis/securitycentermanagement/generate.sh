@@ -27,6 +27,7 @@ if [[ -z "${CONTROLLERBUILDER}" ]]; then
     CONTROLLERBUILDER="go run ${REPO_ROOT}/dev/tools/controllerbuilder"
   fi
 fi
+
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
