@@ -1461,6 +1461,8 @@ cloud.google.com/go/vision/v2 v2.7.4/go.mod h1:ynDKnsDN/0RtqkKxQZ2iatv3Dm9O+HfRb
 cloud.google.com/go/vision/v2 v2.7.5/go.mod h1:GcviprJLFfK9OLf0z8Gm6lQb6ZFUulvpZws+mm6yPLM=
 cloud.google.com/go/vision/v2 v2.7.6/go.mod h1:ZkvWTVNPBU3YZYzgF9Y1jwEbD1NBOCyJn0KFdQfE6Bw=
 cloud.google.com/go/vision/v2 v2.8.0/go.mod h1:ocqDiA2j97pvgogdyhoxiQp2ZkDCyr0HWpicywGGRhU=
+cloud.google.com/go/vision/v2 v2.15.0 h1:aTR1vj4++WtS9HD6YdGuoaYygMTJ873WaoV9sYjlQCc=
+cloud.google.com/go/vision/v2 v2.15.0/go.mod h1:DUdjdFkXqPvEoPC4WDYFvYCn0LlAZ4vVz29A0bXvW90=
 cloud.google.com/go/vmmigration v1.2.0/go.mod h1:IRf0o7myyWFSmVR1ItrBSFLFD/rJkfDCUTO4vLlJvsE=
 cloud.google.com/go/vmmigration v1.3.0/go.mod h1:oGJ6ZgGPQOFdjHuocGcLqX4lc98YQ7Ygq8YQwHh9A7g=
 cloud.google.com/go/vmmigration v1.5.0/go.mod h1:E4YQ8q7/4W9gobHjQg4JJSgXXSgY21nA5r8swQV+Xxc=
