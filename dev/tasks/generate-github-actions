@@ -148,9 +148,9 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
             shard_cnt="\${BASH_REMATCH[2]}"
             shard_idx=\$((shard_num - 1))
             service="\${target%-\${shard_num}-of-\${shard_cnt}}"
-            ./dev/ci/presubmits/tests-e2e-fixtures-\${service} "\${shard_idx}" "\${shard_cnt}"
+            ./dev/ci/presubmits/tests-e2e-fixtures-service "\${service}" "\${shard_idx}" "\${shard_cnt}"
           else
-            ./dev/ci/presubmits/tests-e2e-fixtures-\${target} "0" "1"
+            ./dev/ci/presubmits/tests-e2e-fixtures-service "\${target}" "0" "1"
           fi
         env:
           TARGET_SERVICE: \${{ matrix.service }}
