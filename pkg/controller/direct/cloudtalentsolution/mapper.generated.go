@@ -80,8 +80,8 @@ found existing non-generated mapping function "CloudTalentSolutionCompanySpec_To
 		}
 		out := &pb.Company{}
 		// MISSING: Name
-		out.DisplayName = CloudTalentSolutionCompanySpec_DisplayName_ToProto(mapCtx, in.DisplayName)
-		out.ExternalID = CloudTalentSolutionCompanySpec_ExternalId_ToProto(mapCtx, in.ExternalID)
+		out.DisplayName = in.DisplayName
+		out.ExternalId = in.ExternalID
 		out.Size = direct.Enum_ToProto[pb.CompanySize](mapCtx, in.Size)
 		out.HeadquartersAddress = direct.ValueOf(in.HeadquartersAddress)
 		out.HiringAgency = direct.ValueOf(in.HiringAgency)

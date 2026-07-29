@@ -220,7 +220,7 @@ func BudgetThresholdRule_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbilli
 		return nil
 	}
 	out := &pb.ThresholdRule{}
-	out.ThresholdPercent = direct.ValueOf(in.ThresholdPercent)
+	out.ThresholdPercent = in.ThresholdPercent
 	out.SpendBasis = direct.Enum_ToProto[pb.ThresholdRule_Basis](mapCtx, in.SpendBasis)
 	return out
 }

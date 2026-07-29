@@ -746,7 +746,7 @@ func NetworkServicesGatewaySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *k
 	out.Type = direct.Enum_ToProto[pb.Gateway_Type](mapCtx, in.Type)
 	out.Addresses = in.Addresses
 	out.Ports = in.Ports
-	out.Scope = NetworkServicesGatewaySpec_Scope_ToProto(mapCtx, in.Scope)
+	out.Scope = in.Scope
 	// MISSING: ServerTLSPolicy
 	// MISSING: CertificateUrls
 	// MISSING: GatewaySecurityPolicy

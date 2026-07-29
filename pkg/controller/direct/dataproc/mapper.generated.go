@@ -673,7 +673,7 @@ found existing non-generated mapping function "ClusterInitializationActions_v1be
 			return nil
 		}
 		out := &pb.NodeInitializationAction{}
-		out.ExecutableFile = ClusterInitializationActions_ExecutableFile_ToProto(mapCtx, in.ExecutableFile)
+		out.ExecutableFile = in.ExecutableFile
 		out.ExecutionTimeout = direct.StringDuration_ToProto(mapCtx, in.ExecutionTimeout)
 		return out
 	}

@@ -2322,7 +2322,7 @@ func Schema_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.Schema) *krm.S
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.Nullable = direct.LazyPtr(in.GetNullable())
 	out.Default = Value_FromProto(mapCtx, in.GetDefault())
-	out.Items = apiextensionsv1.JSON_FromProto(mapCtx, in.GetItems())
+	out.Items = JSON_FromProto(mapCtx, in.GetItems())
 	out.MinItems = direct.LazyPtr(in.GetMinItems())
 	out.MaxItems = direct.LazyPtr(in.GetMaxItems())
 	out.Enum = in.Enum
@@ -2359,7 +2359,7 @@ found existing non-generated mapping function "Schema_ToProto", skipping
 		out.Description = direct.ValueOf(in.Description)
 		out.Nullable = direct.ValueOf(in.Nullable)
 		out.Default = Value_ToProto(mapCtx, in.Default)
-		out.Items = apiextensionsv1.JSON_ToProto(mapCtx, in.Items)
+		out.Items = JSON_ToProto(mapCtx, in.Items)
 		out.MinItems = direct.ValueOf(in.MinItems)
 		out.MaxItems = direct.ValueOf(in.MaxItems)
 		out.Enum = in.Enum

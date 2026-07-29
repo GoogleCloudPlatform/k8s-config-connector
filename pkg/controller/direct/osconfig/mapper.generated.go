@@ -278,7 +278,7 @@ found existing non-generated mapping function "OSPolicy_ToProto", skipping
 			return nil
 		}
 		out := &pb.OSPolicy{}
-		out.ID = OSPolicy_Id_ToProto(mapCtx, in.ID)
+		out.Id = in.ID
 		out.Description = direct.ValueOf(in.Description)
 		out.Mode = direct.Enum_ToProto[pb.OSPolicy_Mode](mapCtx, in.Mode)
 		out.ResourceGroups = direct.Slice_ToProto(mapCtx, in.ResourceGroups, OSPolicy_ResourceGroup_ToProto)
@@ -329,7 +329,7 @@ found existing non-generated mapping function "OSPolicyAssignment_InstanceFilter
 			return nil
 		}
 		out := &pb.OSPolicyAssignment_InstanceFilter_Inventory{}
-		out.OSShortName = OSPolicyAssignment_InstanceFilter_Inventory_OsShortName_ToProto(mapCtx, in.OSShortName)
+		out.OsShortName = in.OSShortName
 		out.OsVersion = direct.ValueOf(in.OSVersion)
 		return out
 	}
@@ -393,7 +393,7 @@ func OSPolicy_InventoryFilter_ToProto(mapCtx *direct.MapContext, in *krm.OSPolic
 		return nil
 	}
 	out := &pb.OSPolicy_InventoryFilter{}
-	out.OSShortName = OSPolicy_InventoryFilter_OsShortName_ToProto(mapCtx, in.OSShortName)
+	out.OsShortName = in.OSShortName
 	out.OsVersion = direct.ValueOf(in.OSVersion)
 	return out
 }
@@ -422,7 +422,7 @@ found existing non-generated mapping function "OSPolicy_Resource_ToProto", skipp
 			return nil
 		}
 		out := &pb.OSPolicy_Resource{}
-		out.ID = OSPolicy_Resource_Id_ToProto(mapCtx, in.ID)
+		out.Id = in.ID
 		if oneof := OSPolicy_Resource_PackageResource_ToProto(mapCtx, in.Pkg); oneof != nil {
 			out.ResourceType = &pb.OSPolicy_Resource_Pkg{Pkg: oneof}
 		}
@@ -580,7 +580,7 @@ found existing non-generated mapping function "OSPolicy_Resource_FileResource_To
 		if oneof := OSPolicy_Resource_FileResource_Content_ToProto(mapCtx, in.Content); oneof != nil {
 			out.Source = oneof
 		}
-		out.Path = OSPolicy_Resource_FileResource_Path_ToProto(mapCtx, in.Path)
+		out.Path = in.Path
 		out.State = direct.Enum_ToProto[pb.OSPolicy_Resource_FileResource_DesiredState](mapCtx, in.State)
 		out.Permissions = direct.ValueOf(in.Permissions)
 		return out
@@ -612,8 +612,8 @@ func OSPolicy_Resource_File_GCS_ToProto(mapCtx *direct.MapContext, in *krm.OSPol
 		return nil
 	}
 	out := &pb.OSPolicy_Resource_File_Gcs{}
-	out.Bucket = OSPolicy_Resource_File_GCS_Bucket_ToProto(mapCtx, in.Bucket)
-	out.Object = OSPolicy_Resource_File_GCS_Object_ToProto(mapCtx, in.Object)
+	out.Bucket = in.Bucket
+	out.Object = in.Object
 	out.Generation = direct.ValueOf(in.Generation)
 	return out
 }
@@ -637,7 +637,7 @@ func OSPolicy_Resource_File_Remote_ToProto(mapCtx *direct.MapContext, in *krm.OS
 		return nil
 	}
 	out := &pb.OSPolicy_Resource_File_Remote{}
-	out.URI = OSPolicy_Resource_File_Remote_Uri_ToProto(mapCtx, in.URI)
+	out.Uri = in.URI
 	out.Sha256Checksum = direct.ValueOf(in.Sha256Checksum)
 	return out
 }
@@ -712,7 +712,7 @@ found existing non-generated mapping function "OSPolicy_Resource_PackageResource
 			return nil
 		}
 		out := &pb.OSPolicy_Resource_PackageResource_APT{}
-		out.Name = OSPolicy_Resource_PackageResource_Apt_Name_ToProto(mapCtx, in.Name)
+		out.Name = in.Name
 		return out
 	}
 */
@@ -754,7 +754,7 @@ found existing non-generated mapping function "OSPolicy_Resource_PackageResource
 			return nil
 		}
 		out := &pb.OSPolicy_Resource_PackageResource_GooGet{}
-		out.Name = OSPolicy_Resource_PackageResource_GooGet_Name_ToProto(mapCtx, in.Name)
+		out.Name = in.Name
 		return out
 	}
 */
@@ -812,7 +812,7 @@ func OSPolicy_Resource_PackageResource_Yum_ToProto(mapCtx *direct.MapContext, in
 		return nil
 	}
 	out := &pb.OSPolicy_Resource_PackageResource_YUM{}
-	out.Name = OSPolicy_Resource_PackageResource_Yum_Name_ToProto(mapCtx, in.Name)
+	out.Name = in.Name
 	return out
 }
 */
@@ -836,7 +836,7 @@ found existing non-generated mapping function "OSPolicy_Resource_PackageResource
 			return nil
 		}
 		out := &pb.OSPolicy_Resource_PackageResource_Zypper{}
-		out.Name = OSPolicy_Resource_PackageResource_Zypper_Name_ToProto(mapCtx, in.Name)
+		out.Name = in.Name
 		return out
 	}
 */
@@ -893,8 +893,8 @@ func OSPolicy_Resource_RepositoryResource_AptRepository_ToProto(mapCtx *direct.M
 	}
 	out := &pb.OSPolicy_Resource_RepositoryResource_AptRepository{}
 	out.ArchiveType = direct.Enum_ToProto[pb.OSPolicy_Resource_RepositoryResource_AptRepository_ArchiveType](mapCtx, in.ArchiveType)
-	out.URI = OSPolicy_Resource_RepositoryResource_AptRepository_Uri_ToProto(mapCtx, in.URI)
-	out.Distribution = OSPolicy_Resource_RepositoryResource_AptRepository_Distribution_ToProto(mapCtx, in.Distribution)
+	out.Uri = in.URI
+	out.Distribution = in.Distribution
 	out.Components = in.Components
 	out.GpgKey = direct.ValueOf(in.GpgKey)
 	return out
@@ -919,8 +919,8 @@ func OSPolicy_Resource_RepositoryResource_GooRepository_ToProto(mapCtx *direct.M
 		return nil
 	}
 	out := &pb.OSPolicy_Resource_RepositoryResource_GooRepository{}
-	out.Name = OSPolicy_Resource_RepositoryResource_GooRepository_Name_ToProto(mapCtx, in.Name)
-	out.URL = OSPolicy_Resource_RepositoryResource_GooRepository_Url_ToProto(mapCtx, in.URL)
+	out.Name = in.Name
+	out.Url = in.URL
 	return out
 }
 */
@@ -945,9 +945,9 @@ func OSPolicy_Resource_RepositoryResource_YumRepository_ToProto(mapCtx *direct.M
 		return nil
 	}
 	out := &pb.OSPolicy_Resource_RepositoryResource_YumRepository{}
-	out.ID = OSPolicy_Resource_RepositoryResource_YumRepository_Id_ToProto(mapCtx, in.ID)
+	out.Id = in.ID
 	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.BaseURL = OSPolicy_Resource_RepositoryResource_YumRepository_BaseUrl_ToProto(mapCtx, in.BaseURL)
+	out.BaseUrl = in.BaseURL
 	out.GpgKeys = in.GpgKeys
 	return out
 }
@@ -975,9 +975,9 @@ found existing non-generated mapping function "OSPolicy_Resource_RepositoryResou
 			return nil
 		}
 		out := &pb.OSPolicy_Resource_RepositoryResource_ZypperRepository{}
-		out.ID = OSPolicy_Resource_RepositoryResource_ZypperRepository_Id_ToProto(mapCtx, in.ID)
+		out.Id = in.ID
 		out.DisplayName = direct.ValueOf(in.DisplayName)
-		out.BaseURL = OSPolicy_Resource_RepositoryResource_ZypperRepository_BaseUrl_ToProto(mapCtx, in.BaseURL)
+		out.BaseUrl = in.BaseURL
 		out.GpgKeys = in.GpgKeys
 		return out
 	}

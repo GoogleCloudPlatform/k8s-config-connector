@@ -142,7 +142,7 @@ func AlertpolicyBooleanTest_ToProto(mapCtx *direct.MapContext, in *krm.Alertpoli
 		return nil
 	}
 	out := &pb.AlertPolicy_Condition_SqlCondition_BooleanTest{}
-	out.Column = AlertpolicyBooleanTest_Column_ToProto(mapCtx, in.Column)
+	out.Column = in.Column
 	return out
 }
 
@@ -192,7 +192,7 @@ func AlertpolicyConditionMatchedLog_ToProto(mapCtx *direct.MapContext, in *krm.A
 		return nil
 	}
 	out := &pb.AlertPolicy_Condition_LogMatch{}
-	out.Filter = AlertpolicyConditionMatchedLog_Filter_ToProto(mapCtx, in.Filter)
+	out.Filter = in.Filter
 	out.LabelExtractors = in.LabelExtractors
 	return out
 }
@@ -218,7 +218,7 @@ func AlertpolicyConditionMonitoringQueryLanguage_ToProto(mapCtx *direct.MapConte
 		return nil
 	}
 	out := &pb.AlertPolicy_Condition_MonitoringQueryLanguageCondition{}
-	out.Query = AlertpolicyConditionMonitoringQueryLanguage_Query_ToProto(mapCtx, in.Query)
+	out.Query = in.Query
 	out.Duration = direct.StringDuration_ToProto(mapCtx, in.Duration)
 	out.Trigger = AlertpolicyTrigger_ToProto(mapCtx, in.Trigger)
 	out.EvaluationMissingData = direct.Enum_ToProto[pb.AlertPolicy_Condition_EvaluationMissingData](mapCtx, in.EvaluationMissingData)
@@ -251,7 +251,7 @@ found existing non-generated mapping function "AlertpolicyConditionPrometheusQue
 			return nil
 		}
 		out := &pb.AlertPolicy_Condition_PrometheusQueryLanguageCondition{}
-		out.Query = AlertpolicyConditionPrometheusQueryLanguage_Query_ToProto(mapCtx, in.Query)
+		out.Query = in.Query
 		out.Duration = direct.StringDuration_ToProto(mapCtx, in.Duration)
 		out.EvaluationInterval = direct.StringDuration_ToProto(mapCtx, in.EvaluationInterval)
 		out.Labels = in.Labels
@@ -279,7 +279,7 @@ func AlertpolicyConditionSql_ToProto(mapCtx *direct.MapContext, in *krm.Alertpol
 		return nil
 	}
 	out := &pb.AlertPolicy_Condition_SqlCondition{}
-	out.Query = AlertpolicyConditionSql_Query_ToProto(mapCtx, in.Query)
+	out.Query = in.Query
 	if oneof := AlertpolicyMinutes_ToProto(mapCtx, in.Minutes); oneof != nil {
 		out.Schedule = &pb.AlertPolicy_Condition_SqlCondition_Minutes_{Minutes: oneof}
 	}
@@ -366,7 +366,7 @@ found existing non-generated mapping function "AlertpolicyConditions_ToProto", s
 		}
 		out := &pb.AlertPolicy_Condition{}
 		out.Name = direct.ValueOf(in.Name)
-		out.DisplayName = AlertpolicyConditions_DisplayName_ToProto(mapCtx, in.DisplayName)
+		out.DisplayName = in.DisplayName
 		if oneof := AlertpolicyConditionThreshold_ToProto(mapCtx, in.ConditionThreshold); oneof != nil {
 			out.Condition = &pb.AlertPolicy_Condition_ConditionThreshold{ConditionThreshold: oneof}
 		}
@@ -426,7 +426,7 @@ found existing non-generated mapping function "AlertpolicyDaily_ToProto", skippi
 			return nil
 		}
 		out := &pb.AlertPolicy_Condition_SqlCondition_Daily{}
-		out.Periodicity = direct.ValueOf(in.Periodicity)
+		out.Periodicity = in.Periodicity
 		out.ExecutionTime = AlertpolicyExecutionTime_ToProto(mapCtx, in.ExecutionTime)
 		return out
 	}
@@ -516,7 +516,7 @@ func AlertpolicyHourly_ToProto(mapCtx *direct.MapContext, in *krm.AlertpolicyHou
 		return nil
 	}
 	out := &pb.AlertPolicy_Condition_SqlCondition_Hourly{}
-	out.Periodicity = direct.ValueOf(in.Periodicity)
+	out.Periodicity = in.Periodicity
 	out.MinuteOffset = in.MinuteOffset
 	return out
 }
@@ -541,7 +541,7 @@ found existing non-generated mapping function "AlertpolicyMinutes_ToProto", skip
 			return nil
 		}
 		out := &pb.AlertPolicy_Condition_SqlCondition_Minutes{}
-		out.Periodicity = direct.ValueOf(in.Periodicity)
+		out.Periodicity = in.Periodicity
 		return out
 	}
 */
@@ -599,7 +599,7 @@ func AlertpolicyRowCountTest_ToProto(mapCtx *direct.MapContext, in *krm.Alertpol
 	}
 	out := &pb.AlertPolicy_Condition_SqlCondition_RowCountTest{}
 	out.Comparison = direct.Enum_ToProto[pb.ComparisonType](mapCtx, in.Comparison)
-	out.Threshold = direct.ValueOf(in.Threshold)
+	out.Threshold = in.Threshold
 	return out
 }
 */
@@ -953,7 +953,7 @@ func MonitoringAlertPolicySpec_ToProto(mapCtx *direct.MapContext, in *krm.Monito
 	}
 	out := &pb.AlertPolicy{}
 	// MISSING: Name
-	out.DisplayName = MonitoringAlertPolicySpec_DisplayName_ToProto(mapCtx, in.DisplayName)
+	out.DisplayName = in.DisplayName
 	out.Documentation = AlertpolicyDocumentation_ToProto(mapCtx, in.Documentation)
 	// MISSING: UserLabels
 	out.Conditions = direct.Slice_ToProto(mapCtx, in.Conditions, AlertpolicyConditions_ToProto)
@@ -1075,9 +1075,9 @@ func MonitoringGroupSpec_ToProto(mapCtx *direct.MapContext, in *krm.MonitoringGr
 	}
 	out := &pb.Group{}
 	// MISSING: Name
-	out.DisplayName = MonitoringGroupSpec_DisplayName_ToProto(mapCtx, in.DisplayName)
+	out.DisplayName = in.DisplayName
 	// MISSING: ParentName
-	out.Filter = MonitoringGroupSpec_Filter_ToProto(mapCtx, in.Filter)
+	out.Filter = in.Filter
 	out.IsCluster = direct.ValueOf(in.IsCluster)
 	return out
 }
@@ -1111,7 +1111,7 @@ func MonitoringMetricDescriptorSpec_ToProto(mapCtx *direct.MapContext, in *krm.M
 	}
 	out := &metricpb.MetricDescriptor{}
 	// MISSING: Name
-	out.Type = MonitoringMetricDescriptorSpec_Type_ToProto(mapCtx, in.Type)
+	out.Type = in.Type
 	out.Labels = direct.Slice_ToProto(mapCtx, in.Labels, MetricdescriptorLabels_ToProto)
 	out.MetricKind = direct.Enum_ToProto[metricpb.MetricDescriptor_MetricKind](mapCtx, in.MetricKind)
 	out.ValueType = direct.Enum_ToProto[metricpb.MetricDescriptor_ValueType](mapCtx, in.ValueType)

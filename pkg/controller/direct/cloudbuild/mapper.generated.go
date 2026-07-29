@@ -405,7 +405,7 @@ found existing non-generated mapping function "CloudBuildWorkerPoolSpec_v1beta1_
 		}
 		out := &pb.WorkerPool{}
 		// MISSING: Name
-		out.DisplayName = CloudBuildWorkerPoolSpec_DisplayName_ToProto(mapCtx, in.DisplayName)
+		out.DisplayName = in.DisplayName
 		// MISSING: Uid
 		// MISSING: Annotations
 		// MISSING: DeleteTime

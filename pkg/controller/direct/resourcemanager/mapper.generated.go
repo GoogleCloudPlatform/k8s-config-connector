@@ -49,7 +49,7 @@ func FolderSpec_ToProto(mapCtx *direct.MapContext, in *krm.FolderSpec) *pb.Folde
 	out := &pb.Folder{}
 	// MISSING: Name
 	// MISSING: Parent
-	out.DisplayName = FolderSpec_DisplayName_ToProto(mapCtx, in.DisplayName)
+	out.DisplayName = in.DisplayName
 	// MISSING: State
 	// MISSING: CreateTime
 	// MISSING: UpdateTime

@@ -325,7 +325,7 @@ func RecaptchaEnterpriseKeySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *k
 	}
 	out := &pb.Key{}
 	// MISSING: Name
-	out.DisplayName = RecaptchaEnterpriseKeySpec_DisplayName_ToProto(mapCtx, in.DisplayName)
+	out.DisplayName = in.DisplayName
 	if oneof := KeyWebSettings_v1beta1_ToProto(mapCtx, in.WebSettings); oneof != nil {
 		out.PlatformSettings = &pb.Key_WebSettings{WebSettings: oneof}
 	}
