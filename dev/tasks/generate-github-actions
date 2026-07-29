@@ -185,7 +185,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
         with:
           version: '546.0.0'
           install_components: 'alpha,beta'
-      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-\${{ matrix.service }}"
+      - name: "Run fixture test for \${{ matrix.service }}"
         run: |
           target="\${{ matrix.service }}"
           if [[ "\${target}" =~ ([0-9]+)-of-([0-9]+)$ ]]; then
@@ -193,9 +193,9 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
             shard_cnt="\${BASH_REMATCH[2]}"
             shard_idx=\$((shard_num - 1))
             service="\${target%-\${shard_num}-of-\${shard_cnt}}"
-            ./dev/ci/presubmits/tests-e2e-fixtures-\${service} "\${shard_idx}" "\${shard_cnt}"
+            ./dev/ci/presubmits/tests-e2e-fixtures-service "\${service}" "\${shard_idx}" "\${shard_cnt}"
           else
-            ./dev/ci/presubmits/tests-e2e-fixtures-\${target} "0" "1"
+            ./dev/ci/presubmits/tests-e2e-fixtures-service "\${target}" "0" "1"
           fi
         env:
           ARTIFACTS: /tmp/artifacts
@@ -241,9 +241,9 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
         with:
           version: '546.0.0'
           install_components: 'alpha,beta'
-      - name: "Run dev/ci/presubmits/tests-e2e-samples-\${{ matrix.service }}"
+      - name: "Run sample test for \${{ matrix.service }}"
         run: |
-          ./dev/ci/presubmits/tests-e2e-samples-\${{ matrix.service }}
+          ./dev/ci/presubmits/tests-e2e-samples-service "\${{ matrix.service }}"
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
@@ -288,9 +288,9 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
         with:
           version: '546.0.0'
           install_components: 'alpha,beta'
-      - name: "Run dev/ci/presubmits/tests-scenarios-\${{ matrix.suite }}"
+      - name: "Run scenario test for \${{ matrix.suite }}"
         run: |
-          ./dev/ci/presubmits/tests-scenarios-\${{ matrix.suite }}
+          ./dev/ci/presubmits/tests-scenarios-suite "\${{ matrix.suite }}"
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
