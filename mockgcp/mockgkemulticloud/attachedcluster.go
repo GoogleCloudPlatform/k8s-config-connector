@@ -153,7 +153,7 @@ func (s *GKEMulticloudV1) UpdateAttachedCluster(ctx context.Context, req *pb.Upd
 			obj.LoggingConfig.ComponentConfig.EnableComponents = req.GetAttachedCluster().GetLoggingConfig().GetComponentConfig().GetEnableComponents()
 		case "monitoring_config.managed_prometheus_config.enabled":
 			obj.MonitoringConfig = req.GetAttachedCluster().GetMonitoringConfig()
-		case "platformVersion":
+		case "platformVersion", "platform_version":
 			ver, err := trimPlatformVersion(req.GetAttachedCluster().GetPlatformVersion())
 			if err != nil {
 				return nil, err

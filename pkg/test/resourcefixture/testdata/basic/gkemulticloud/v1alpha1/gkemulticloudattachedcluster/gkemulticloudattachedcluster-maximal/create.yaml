@@ -1,0 +1,40 @@
+apiVersion: gkemulticloud.cnrm.cloud.google.com/v1alpha1
+kind: GKEMulticloudAttachedCluster
+metadata:
+  name: attachedcluster-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-west1
+  description: "A maximal attached cluster test description"
+  platformVersion: 1.25.0-gke.1
+  distribution: generic
+  oidcConfig:
+    issuerURL: https://oidc.eks.us-west-1.amazonaws.com/id/12345678901234567890123456789012
+    jwks: dGVzdC1qd2tzLWRhdGE=
+  fleet:
+    projectRef:
+      external: ${projectId}
+  annotations:
+    my-annotation-key: my-annotation-val
+  loggingConfig:
+    componentConfig:
+      enableComponents:
+        - SYSTEM_COMPONENTS
+        - WORKLOADS
+  authorization:
+    adminUsers:
+      - username: admin-user@example.com
+    adminGroups:
+      - group: admin-group@example.com
+  monitoringConfig:
+    managedPrometheusConfig:
+      enabled: true
+    cloudMonitoringConfig:
+      enabled: true
+  binaryAuthorization:
+    evaluationMode: DISABLED
+  securityPostureConfig:
+    vulnerabilityMode: VULNERABILITY_DISABLED
+  tags:
+    my-tag-key: my-tag-val

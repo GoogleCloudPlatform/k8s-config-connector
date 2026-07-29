@@ -1,0 +1,719 @@
+GRPC /google.cloud.gkemulticloud.v1.AttachedClusters/GetAttachedCluster
+
+{
+  "name": "projects/${projectId}/locations/us-west1/attachedClusters/attachedcluster-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = cluster not found
+
+{}
+
+---
+
+GRPC /google.cloud.gkemulticloud.v1.AttachedClusters/CreateAttachedCluster
+
+{
+  "attachedCluster": {
+    "annotations": {
+      "my-annotation-key": "my-annotation-val"
+    },
+    "authorization": {
+      "adminGroups": [
+        {
+          "group": "admin-group@example.com"
+        }
+      ],
+      "adminUsers": [
+        {
+          "username": "admin-user@example.com"
+        }
+      ]
+    },
+    "binaryAuthorization": {
+      "evaluationMode": "DISABLED"
+    },
+    "description": "A maximal attached cluster test description",
+    "distribution": "generic",
+    "fleet": {
+      "project": "projects/${projectId}"
+    },
+    "loggingConfig": {
+      "componentConfig": {
+        "enableComponents": [
+          "SYSTEM_COMPONENTS",
+          "WORKLOADS"
+        ]
+      }
+    },
+    "monitoringConfig": {
+      "cloudMonitoringConfig": {
+        "enabled": true
+      },
+      "managedPrometheusConfig": {
+        "enabled": true
+      }
+    },
+    "name": "projects/${projectId}/locations/us-west1/attachedClusters/attachedcluster-${uniqueId}",
+    "oidcConfig": {
+      "issuerUrl": "https://oidc.eks.us-west-1.amazonaws.com/id/12345678901234567890123456789012",
+      "jwks": "dGVzdC1qd2tzLWRhdGE="
+    },
+    "platformVersion": "1.25.0-gke.1",
+    "securityPostureConfig": {
+      "vulnerabilityMode": "VULNERABILITY_DISABLED"
+    },
+    "tags": {
+      "my-tag-key": "my-tag-val"
+    }
+  },
+  "attachedClusterId": "attachedcluster-${uniqueId}",
+  "parent": "projects/${projectId}/locations/us-west1"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkemulticloud.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-west1/attachedClusters/attachedcluster-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkemulticloud.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-west1/attachedClusters/attachedcluster-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.gkemulticloud.v1.AttachedCluster",
+    "annotations": {
+      "my-annotation-key": "my-annotation-val"
+    },
+    "authorization": {
+      "adminGroups": [
+        {
+          "group": "admin-group@example.com"
+        }
+      ],
+      "adminUsers": [
+        {
+          "username": "admin-user@example.com"
+        }
+      ]
+    },
+    "binaryAuthorization": {
+      "evaluationMode": "DISABLED"
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "A maximal attached cluster test description",
+    "distribution": "generic",
+    "etag": "abcdef0123A=",
+    "fleet": {
+      "membership": "projects/${projectId}/locations/global/memberships/attachedcluster-${uniqueId}",
+      "project": "projects/${projectId}"
+    },
+    "kubernetesVersion": "1.25",
+    "loggingConfig": {
+      "componentConfig": {
+        "enableComponents": [
+          "SYSTEM_COMPONENTS",
+          "WORKLOADS"
+        ]
+      }
+    },
+    "monitoringConfig": {
+      "cloudMonitoringConfig": {
+        "enabled": true
+      },
+      "managedPrometheusConfig": {
+        "enabled": true
+      }
+    },
+    "name": "projects/${projectId}/locations/us-west1/attachedClusters/attachedcluster-${uniqueId}",
+    "oidcConfig": {
+      "issuerUrl": "https://oidc.eks.us-west-1.amazonaws.com/id/12345678901234567890123456789012",
+      "jwks": "dGVzdC1qd2tzLWRhdGE="
+    },
+    "platformVersion": "1.25.0-gke.1",
+    "securityPostureConfig": {
+      "vulnerabilityMode": "VULNERABILITY_DISABLED"
+    },
+    "state": "RUNNING",
+    "tags": {
+      "my-tag-key": "my-tag-val"
+    },
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GRPC /google.cloud.gkemulticloud.v1.AttachedClusters/GetAttachedCluster
+
+{
+  "name": "projects/${projectId}/locations/us-west1/attachedClusters/attachedcluster-${uniqueId}"
+}
+
+OK
+
+{
+  "annotations": {
+    "my-annotation-key": "my-annotation-val"
+  },
+  "authorization": {
+    "adminGroups": [
+      {
+        "group": "admin-group@example.com"
+      }
+    ],
+    "adminUsers": [
+      {
+        "username": "admin-user@example.com"
+      }
+    ]
+  },
+  "binaryAuthorization": {
+    "evaluationMode": "DISABLED"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "A maximal attached cluster test description",
+  "distribution": "generic",
+  "etag": "abcdef0123A=",
+  "fleet": {
+    "membership": "projects/${projectId}/locations/global/memberships/attachedcluster-${uniqueId}",
+    "project": "projects/${projectId}"
+  },
+  "kubernetesVersion": "1.25",
+  "loggingConfig": {
+    "componentConfig": {
+      "enableComponents": [
+        "SYSTEM_COMPONENTS",
+        "WORKLOADS"
+      ]
+    }
+  },
+  "monitoringConfig": {
+    "cloudMonitoringConfig": {
+      "enabled": true
+    },
+    "managedPrometheusConfig": {
+      "enabled": true
+    }
+  },
+  "name": "projects/${projectId}/locations/us-west1/attachedClusters/attachedcluster-${uniqueId}",
+  "oidcConfig": {
+    "issuerUrl": "https://oidc.eks.us-west-1.amazonaws.com/id/12345678901234567890123456789012",
+    "jwks": "dGVzdC1qd2tzLWRhdGE="
+  },
+  "platformVersion": "1.25.0-gke.1",
+  "securityPostureConfig": {
+    "vulnerabilityMode": "VULNERABILITY_DISABLED"
+  },
+  "state": "RUNNING",
+  "tags": {
+    "my-tag-key": "my-tag-val"
+  },
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.gkemulticloud.v1.AttachedClusters/GetAttachedCluster
+
+{
+  "name": "projects/${projectId}/locations/us-west1/attachedClusters/attachedcluster-${uniqueId}"
+}
+
+OK
+
+{
+  "annotations": {
+    "my-annotation-key": "my-annotation-val"
+  },
+  "authorization": {
+    "adminGroups": [
+      {
+        "group": "admin-group@example.com"
+      }
+    ],
+    "adminUsers": [
+      {
+        "username": "admin-user@example.com"
+      }
+    ]
+  },
+  "binaryAuthorization": {
+    "evaluationMode": "DISABLED"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "A maximal attached cluster test description",
+  "distribution": "generic",
+  "etag": "abcdef0123A=",
+  "fleet": {
+    "membership": "projects/${projectId}/locations/global/memberships/attachedcluster-${uniqueId}",
+    "project": "projects/${projectId}"
+  },
+  "kubernetesVersion": "1.25",
+  "loggingConfig": {
+    "componentConfig": {
+      "enableComponents": [
+        "SYSTEM_COMPONENTS",
+        "WORKLOADS"
+      ]
+    }
+  },
+  "monitoringConfig": {
+    "cloudMonitoringConfig": {
+      "enabled": true
+    },
+    "managedPrometheusConfig": {
+      "enabled": true
+    }
+  },
+  "name": "projects/${projectId}/locations/us-west1/attachedClusters/attachedcluster-${uniqueId}",
+  "oidcConfig": {
+    "issuerUrl": "https://oidc.eks.us-west-1.amazonaws.com/id/12345678901234567890123456789012",
+    "jwks": "dGVzdC1qd2tzLWRhdGE="
+  },
+  "platformVersion": "1.25.0-gke.1",
+  "securityPostureConfig": {
+    "vulnerabilityMode": "VULNERABILITY_DISABLED"
+  },
+  "state": "RUNNING",
+  "tags": {
+    "my-tag-key": "my-tag-val"
+  },
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.gkemulticloud.v1.AttachedClusters/UpdateAttachedCluster
+
+{
+  "attachedCluster": {
+    "annotations": {
+      "my-annotation-key": "updated-annotation-val"
+    },
+    "authorization": {
+      "adminGroups": [
+        {
+          "group": "admin-group@example.com"
+        }
+      ],
+      "adminUsers": [
+        {
+          "username": "updated-admin-user@example.com"
+        }
+      ]
+    },
+    "binaryAuthorization": {
+      "evaluationMode": "DISABLED"
+    },
+    "description": "Updated description for attached cluster",
+    "distribution": "generic",
+    "fleet": {
+      "project": "projects/${projectId}"
+    },
+    "loggingConfig": {
+      "componentConfig": {
+        "enableComponents": [
+          "SYSTEM_COMPONENTS"
+        ]
+      }
+    },
+    "monitoringConfig": {
+      "cloudMonitoringConfig": {
+        "enabled": true
+      },
+      "managedPrometheusConfig": {}
+    },
+    "name": "projects/${projectId}/locations/us-west1/attachedClusters/attachedcluster-${uniqueId}",
+    "oidcConfig": {
+      "issuerUrl": "https://oidc.eks.us-west-1.amazonaws.com/id/12345678901234567890123456789012",
+      "jwks": "dGVzdC1qd2tzLWRhdGE="
+    },
+    "platformVersion": "1.25.0-gke.2",
+    "securityPostureConfig": {
+      "vulnerabilityMode": "VULNERABILITY_DISABLED"
+    },
+    "tags": {
+      "my-tag-key": "my-tag-val"
+    }
+  },
+  "updateMask": "annotations,description,platformVersion"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkemulticloud.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-west1/attachedClusters/attachedcluster-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkemulticloud.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-west1/attachedClusters/attachedcluster-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.gkemulticloud.v1.AttachedCluster",
+    "annotations": {
+      "my-annotation-key": "updated-annotation-val"
+    },
+    "authorization": {
+      "adminGroups": [
+        {
+          "group": "admin-group@example.com"
+        }
+      ],
+      "adminUsers": [
+        {
+          "username": "admin-user@example.com"
+        }
+      ]
+    },
+    "binaryAuthorization": {
+      "evaluationMode": "DISABLED"
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Updated description for attached cluster",
+    "distribution": "generic",
+    "etag": "abcdef0123A=",
+    "fleet": {
+      "membership": "projects/${projectId}/locations/global/memberships/attachedcluster-${uniqueId}",
+      "project": "projects/${projectId}"
+    },
+    "kubernetesVersion": "1.25",
+    "loggingConfig": {
+      "componentConfig": {
+        "enableComponents": [
+          "SYSTEM_COMPONENTS",
+          "WORKLOADS"
+        ]
+      }
+    },
+    "monitoringConfig": {
+      "cloudMonitoringConfig": {
+        "enabled": true
+      },
+      "managedPrometheusConfig": {
+        "enabled": true
+      }
+    },
+    "name": "projects/${projectId}/locations/us-west1/attachedClusters/attachedcluster-${uniqueId}",
+    "oidcConfig": {
+      "issuerUrl": "https://oidc.eks.us-west-1.amazonaws.com/id/12345678901234567890123456789012",
+      "jwks": "dGVzdC1qd2tzLWRhdGE="
+    },
+    "platformVersion": "1.25.0-gke.2",
+    "securityPostureConfig": {
+      "vulnerabilityMode": "VULNERABILITY_DISABLED"
+    },
+    "state": "RUNNING",
+    "tags": {
+      "my-tag-key": "my-tag-val"
+    },
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GRPC /google.cloud.gkemulticloud.v1.AttachedClusters/GetAttachedCluster
+
+{
+  "name": "projects/${projectId}/locations/us-west1/attachedClusters/attachedcluster-${uniqueId}"
+}
+
+OK
+
+{
+  "annotations": {
+    "my-annotation-key": "updated-annotation-val"
+  },
+  "authorization": {
+    "adminGroups": [
+      {
+        "group": "admin-group@example.com"
+      }
+    ],
+    "adminUsers": [
+      {
+        "username": "admin-user@example.com"
+      }
+    ]
+  },
+  "binaryAuthorization": {
+    "evaluationMode": "DISABLED"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated description for attached cluster",
+  "distribution": "generic",
+  "etag": "abcdef0123A=",
+  "fleet": {
+    "membership": "projects/${projectId}/locations/global/memberships/attachedcluster-${uniqueId}",
+    "project": "projects/${projectId}"
+  },
+  "kubernetesVersion": "1.25",
+  "loggingConfig": {
+    "componentConfig": {
+      "enableComponents": [
+        "SYSTEM_COMPONENTS",
+        "WORKLOADS"
+      ]
+    }
+  },
+  "monitoringConfig": {
+    "cloudMonitoringConfig": {
+      "enabled": true
+    },
+    "managedPrometheusConfig": {
+      "enabled": true
+    }
+  },
+  "name": "projects/${projectId}/locations/us-west1/attachedClusters/attachedcluster-${uniqueId}",
+  "oidcConfig": {
+    "issuerUrl": "https://oidc.eks.us-west-1.amazonaws.com/id/12345678901234567890123456789012",
+    "jwks": "dGVzdC1qd2tzLWRhdGE="
+  },
+  "platformVersion": "1.25.0-gke.2",
+  "securityPostureConfig": {
+    "vulnerabilityMode": "VULNERABILITY_DISABLED"
+  },
+  "state": "RUNNING",
+  "tags": {
+    "my-tag-key": "my-tag-val"
+  },
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.gkemulticloud.v1.AttachedClusters/GetAttachedCluster
+
+{
+  "name": "projects/${projectId}/locations/us-west1/attachedClusters/attachedcluster-${uniqueId}"
+}
+
+OK
+
+{
+  "annotations": {
+    "my-annotation-key": "updated-annotation-val"
+  },
+  "authorization": {
+    "adminGroups": [
+      {
+        "group": "admin-group@example.com"
+      }
+    ],
+    "adminUsers": [
+      {
+        "username": "admin-user@example.com"
+      }
+    ]
+  },
+  "binaryAuthorization": {
+    "evaluationMode": "DISABLED"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated description for attached cluster",
+  "distribution": "generic",
+  "etag": "abcdef0123A=",
+  "fleet": {
+    "membership": "projects/${projectId}/locations/global/memberships/attachedcluster-${uniqueId}",
+    "project": "projects/${projectId}"
+  },
+  "kubernetesVersion": "1.25",
+  "loggingConfig": {
+    "componentConfig": {
+      "enableComponents": [
+        "SYSTEM_COMPONENTS",
+        "WORKLOADS"
+      ]
+    }
+  },
+  "monitoringConfig": {
+    "cloudMonitoringConfig": {
+      "enabled": true
+    },
+    "managedPrometheusConfig": {
+      "enabled": true
+    }
+  },
+  "name": "projects/${projectId}/locations/us-west1/attachedClusters/attachedcluster-${uniqueId}",
+  "oidcConfig": {
+    "issuerUrl": "https://oidc.eks.us-west-1.amazonaws.com/id/12345678901234567890123456789012",
+    "jwks": "dGVzdC1qd2tzLWRhdGE="
+  },
+  "platformVersion": "1.25.0-gke.2",
+  "securityPostureConfig": {
+    "vulnerabilityMode": "VULNERABILITY_DISABLED"
+  },
+  "state": "RUNNING",
+  "tags": {
+    "my-tag-key": "my-tag-val"
+  },
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.gkemulticloud.v1.AttachedClusters/GetAttachedCluster
+
+{
+  "name": "projects/${projectId}/locations/us-west1/attachedClusters/attachedcluster-${uniqueId}"
+}
+
+OK
+
+{
+  "annotations": {
+    "my-annotation-key": "updated-annotation-val"
+  },
+  "authorization": {
+    "adminGroups": [
+      {
+        "group": "admin-group@example.com"
+      }
+    ],
+    "adminUsers": [
+      {
+        "username": "admin-user@example.com"
+      }
+    ]
+  },
+  "binaryAuthorization": {
+    "evaluationMode": "DISABLED"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated description for attached cluster",
+  "distribution": "generic",
+  "etag": "abcdef0123A=",
+  "fleet": {
+    "membership": "projects/${projectId}/locations/global/memberships/attachedcluster-${uniqueId}",
+    "project": "projects/${projectId}"
+  },
+  "kubernetesVersion": "1.25",
+  "loggingConfig": {
+    "componentConfig": {
+      "enableComponents": [
+        "SYSTEM_COMPONENTS",
+        "WORKLOADS"
+      ]
+    }
+  },
+  "monitoringConfig": {
+    "cloudMonitoringConfig": {
+      "enabled": true
+    },
+    "managedPrometheusConfig": {
+      "enabled": true
+    }
+  },
+  "name": "projects/${projectId}/locations/us-west1/attachedClusters/attachedcluster-${uniqueId}",
+  "oidcConfig": {
+    "issuerUrl": "https://oidc.eks.us-west-1.amazonaws.com/id/12345678901234567890123456789012",
+    "jwks": "dGVzdC1qd2tzLWRhdGE="
+  },
+  "platformVersion": "1.25.0-gke.2",
+  "securityPostureConfig": {
+    "vulnerabilityMode": "VULNERABILITY_DISABLED"
+  },
+  "state": "RUNNING",
+  "tags": {
+    "my-tag-key": "my-tag-val"
+  },
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.gkemulticloud.v1.AttachedClusters/DeleteAttachedCluster
+
+{
+  "name": "projects/${projectId}/locations/us-west1/attachedClusters/attachedcluster-${uniqueId}"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkemulticloud.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-west1/attachedClusters/attachedcluster-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.gkemulticloud.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-west1/attachedClusters/attachedcluster-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-west1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
