@@ -16,7 +16,7 @@
 // +generated:types
 // krm.group: aiplatform.cnrm.cloud.google.com
 // krm.version: v1alpha1
-// proto.service: google.cloud.aiplatform.v1
+// proto.service: google.cloud.aiplatform.v1,google.cloud.aiplatform.v1beta1
 // resource: VertexAISpecialistPool:SpecialistPool
 // resource: AIPlatformModel:Model
 // resource: VertexAIFeatureOnlineStore:FeatureOnlineStore
@@ -25,6 +25,7 @@
 // resource: VertexAIStudy:Study
 // resource: VertexAITrainingPipeline:TrainingPipeline
 // resource: VertexAISchedule:Schedule
+// resource: VertexAIExtension:Extension
 
 package v1alpha1
 
