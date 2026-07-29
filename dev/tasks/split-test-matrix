@@ -89,10 +89,10 @@ for service in "${all_fixture_services[@]}"; do
   fi
 done
 
-# Sample services match the discovered CRD services
-sample_services=("${all_fixture_services[@]}")
+# Defined sample services supported by E2E samples suite
+sample_services=("alloydb" "apigateway" "apigee" "bigquery" "bigqueryconnection" "bigquerydatapolicy" "bigquerydatatransfer" "cloudbuild" "cloudidentity" "compute" "dataflow" "dataproc" "gkehub" "iam" "kms" "orgpolicy" "redis" "secretmanager" "spanner" "sql" "storage" "unclassified" "workstations")
 
-# Scenario suites
+# Scenario suites supported by E2E scenarios suite
 scenario_suites=("acquisition" "gkehubfeaturemembership" "powertool" "unclassified")
 
 unit_tests_shards=("1-of-4" "2-of-4" "3-of-4" "4-of-4")
