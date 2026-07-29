@@ -242,6 +242,9 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		// Migration Center
 		"//migrationcenter.googleapis.com/projects/{}/locations/{}/groups/{}": true,
 
+		// Model Armor
+		"//modelarmor.googleapis.com/projects/{}/locations/{}/templates/{}": true,
+
 		// Network Connectivity
 		"//networkconnectivity.googleapis.com/projects/{}/locations/{}/regionalEndpoints/{}":             true,
 		"//networkconnectivity.googleapis.com/projects/{}/locations/{}/multicloudDataTransferConfigs/{}": true,
