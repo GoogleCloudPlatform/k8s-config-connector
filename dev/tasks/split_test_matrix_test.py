@@ -106,8 +106,9 @@ class TestSplitTestMatrix(unittest.TestCase):
         all_fixtures = sorted(priority_fixtures + remaining_fixtures)
         self.assertEqual(all_fixtures, ["alloydb", "bigquery", "compute", "kms", "storage"])
 
-        # All 5 services present in samples
-        self.assertEqual(sorted(samples), ["alloydb", "bigquery", "compute", "kms", "storage"])
+        # 23 supported sample services present in samples
+        expected_samples = ["alloydb", "apigateway", "apigee", "bigquery", "bigqueryconnection", "bigquerydatapolicy", "bigquerydatatransfer", "cloudbuild", "cloudidentity", "compute", "dataflow", "dataproc", "gkehub", "iam", "kms", "orgpolicy", "redis", "secretmanager", "spanner", "sql", "storage", "unclassified", "workstations"]
+        self.assertEqual(sorted(samples), sorted(expected_samples))
 
         # Scenario suites present
         self.assertEqual(scenarios, ["acquisition", "gkehubfeaturemembership", "powertool", "unclassified"])
