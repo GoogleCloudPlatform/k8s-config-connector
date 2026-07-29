@@ -21,6 +21,7 @@
 // krm.version: v1alpha1
 // proto.service: google.cloud.discoveryengine.v1
 // proto.service: google.cloud.discoveryengine.v1beta
+// proto.service: google.cloud.discoveryengine.v1alpha
 
 package discoveryengine
 
@@ -28,6 +29,7 @@ import (
 	pb "cloud.google.com/go/discoveryengine/apiv1/discoveryenginepb"
 	discoveryenginepb "cloud.google.com/go/discoveryengine/apiv1beta/discoveryenginepb"
 	krmdiscoveryenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/discoveryengine/v1alpha1"
+	v1alphapb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/cloud/discoveryengine/v1alpha"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -907,6 +909,136 @@ func ConversationMessage_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdisc
 	// MISSING: CreateTime
 	return out
 }
+func DataConnector_ActionConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *v1alphapb.DataConnector_ActionConfig) *krmdiscoveryenginev1alpha1.DataConnector_ActionConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.DataConnector_ActionConfig{}
+	out.ActionParams = in.ActionParams
+	out.CreateBapConnection = direct.LazyPtr(in.GetCreateBapConnection())
+	return out
+}
+func DataConnector_ActionConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.DataConnector_ActionConfig) *v1alphapb.DataConnector_ActionConfig {
+	if in == nil {
+		return nil
+	}
+	out := &v1alphapb.DataConnector_ActionConfig{}
+	out.ActionParams = in.ActionParams
+	out.CreateBapConnection = direct.ValueOf(in.CreateBapConnection)
+	return out
+}
+func DataConnector_BapConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *v1alphapb.DataConnector_BapConfig) *krmdiscoveryenginev1alpha1.DataConnector_BapConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.DataConnector_BapConfig{}
+	out.EnabledActions = in.EnabledActions
+	out.SupportedConnectorModes = in.SupportedConnectorModes
+	return out
+}
+func DataConnector_BapConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.DataConnector_BapConfig) *v1alphapb.DataConnector_BapConfig {
+	if in == nil {
+		return nil
+	}
+	out := &v1alphapb.DataConnector_BapConfig{}
+	out.EnabledActions = in.EnabledActions
+	out.SupportedConnectorModes = in.SupportedConnectorModes
+	return out
+}
+func DataConnector_Destination_v1alpha1_FromProto(mapCtx *direct.MapContext, in *v1alphapb.DataConnector_Destination) *krmdiscoveryenginev1alpha1.DataConnector_Destination {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.DataConnector_Destination{}
+	out.Host = direct.LazyPtr(in.GetHost())
+	out.Port = direct.LazyPtr(in.GetPort())
+	return out
+}
+func DataConnector_Destination_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.DataConnector_Destination) *v1alphapb.DataConnector_Destination {
+	if in == nil {
+		return nil
+	}
+	out := &v1alphapb.DataConnector_Destination{}
+	out.Host = direct.ValueOf(in.Host)
+	out.Port = direct.ValueOf(in.Port)
+	return out
+}
+func DataConnector_DestinationConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *v1alphapb.DataConnector_DestinationConfig) *krmdiscoveryenginev1alpha1.DataConnector_DestinationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.DataConnector_DestinationConfig{}
+	out.Key = direct.LazyPtr(in.GetKey())
+	out.Params = direct.LazyPtr(in.GetParams())
+	out.Destinations = direct.Slice_FromProto(mapCtx, in.Destinations, DataConnector_Destination_v1alpha1_FromProto)
+	return out
+}
+func DataConnector_DestinationConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.DataConnector_DestinationConfig) *v1alphapb.DataConnector_DestinationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &v1alphapb.DataConnector_DestinationConfig{}
+	out.Key = direct.ValueOf(in.Key)
+	out.Params = direct.ValueOf(in.Params)
+	out.Destinations = direct.Slice_ToProto(mapCtx, in.Destinations, DataConnector_Destination_v1alpha1_ToProto)
+	return out
+}
+func DataConnector_Error_v1alpha1_FromProto(mapCtx *direct.MapContext, in *v1alphapb.DataConnector_Error) *krmdiscoveryenginev1alpha1.DataConnector_Error {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.DataConnector_Error{}
+	out.Code = direct.LazyPtr(in.GetCode())
+	out.Message = direct.LazyPtr(in.GetMessage())
+	return out
+}
+func DataConnector_Error_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.DataConnector_Error) *v1alphapb.DataConnector_Error {
+	if in == nil {
+		return nil
+	}
+	out := &v1alphapb.DataConnector_Error{}
+	out.Code = direct.ValueOf(in.Code)
+	out.Message = direct.ValueOf(in.Message)
+	return out
+}
+func DataConnector_SourceEntity_v1alpha1_FromProto(mapCtx *direct.MapContext, in *v1alphapb.DataConnector_SourceEntity) *krmdiscoveryenginev1alpha1.DataConnector_SourceEntity {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.DataConnector_SourceEntity{}
+	out.EntityName = direct.LazyPtr(in.GetEntityName())
+	out.KeyPropertyMappings = in.KeyPropertyMappings
+	out.Params = direct.LazyPtr(in.GetParams())
+	return out
+}
+func DataConnector_SourceEntity_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.DataConnector_SourceEntity) *v1alphapb.DataConnector_SourceEntity {
+	if in == nil {
+		return nil
+	}
+	out := &v1alphapb.DataConnector_SourceEntity{}
+	out.EntityName = direct.ValueOf(in.EntityName)
+	out.KeyPropertyMappings = in.KeyPropertyMappings
+	out.Params = direct.ValueOf(in.Params)
+	return out
+}
+func DataConnector_SourceEntityStatus_v1alpha1_FromProto(mapCtx *direct.MapContext, in *v1alphapb.DataConnector_SourceEntityStatus) *krmdiscoveryenginev1alpha1.DataConnector_SourceEntityStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.DataConnector_SourceEntityStatus{}
+	out.EntityName = direct.LazyPtr(in.GetEntityName())
+	out.DataStore = direct.LazyPtr(in.GetDataStore())
+	return out
+}
+func DataConnector_SourceEntityStatus_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.DataConnector_SourceEntityStatus) *v1alphapb.DataConnector_SourceEntityStatus {
+	if in == nil {
+		return nil
+	}
+	out := &v1alphapb.DataConnector_SourceEntityStatus{}
+	out.EntityName = direct.ValueOf(in.EntityName)
+	out.DataStore = direct.ValueOf(in.DataStore)
+	return out
+}
 func DataStore_BillingEstimation_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.DataStore_BillingEstimation) *krmdiscoveryenginev1alpha1.DataStore_BillingEstimation {
 	if in == nil {
 		return nil
@@ -1037,6 +1169,100 @@ func DiscoveryEngineConversationSpec_v1alpha1_ToProto(mapCtx *direct.MapContext,
 	out.State = direct.Enum_ToProto[pb.Conversation_State](mapCtx, in.State)
 	out.UserPseudoId = direct.ValueOf(in.UserPseudoID)
 	out.Messages = direct.Slice_ToProto(mapCtx, in.Messages, ConversationMessage_v1alpha1_ToProto)
+	return out
+}
+func DiscoveryEngineDataConnectorObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *v1alphapb.DataConnector) *krmdiscoveryenginev1alpha1.DiscoveryEngineDataConnectorObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.DiscoveryEngineDataConnectorObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	// MISSING: KMSKeyName
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.State = direct.LazyPtr(in.GetState())
+	out.BlockingReasons = in.BlockingReasons
+	out.IsActionConfigured = direct.LazyPtr(in.GetIsActionConfigured())
+	out.LastSyncTime = direct.StringTimestamp_FromProto(mapCtx, in.GetLastSyncTime())
+	out.LatestPauseTime = direct.StringTimestamp_FromProto(mapCtx, in.GetLatestPauseTime())
+	out.StaticIPAddresses = in.StaticIpAddresses
+	out.Errors = direct.Slice_FromProto(mapCtx, in.Errors, DataConnector_Error_v1alpha1_FromProto)
+	out.ActionState = direct.LazyPtr(in.GetActionState())
+	out.ConnectorType = direct.LazyPtr(in.GetConnectorType())
+	out.PrivateConnectivityProjectID = direct.LazyPtr(in.GetPrivateConnectivityProjectId())
+	out.RealtimeState = direct.LazyPtr(in.GetRealtimeState())
+	out.EntitiesStatus = direct.Slice_FromProto(mapCtx, in.EntitiesStatus, DataConnector_SourceEntityStatus_v1alpha1_FromProto)
+	return out
+}
+func DiscoveryEngineDataConnectorObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.DiscoveryEngineDataConnectorObservedState) *v1alphapb.DataConnector {
+	if in == nil {
+		return nil
+	}
+	out := &v1alphapb.DataConnector{}
+	out.Name = direct.ValueOf(in.Name)
+	// MISSING: KMSKeyName
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.State = direct.ValueOf(in.State)
+	out.BlockingReasons = in.BlockingReasons
+	out.IsActionConfigured = direct.ValueOf(in.IsActionConfigured)
+	out.LastSyncTime = direct.StringTimestamp_ToProto(mapCtx, in.LastSyncTime)
+	out.LatestPauseTime = direct.StringTimestamp_ToProto(mapCtx, in.LatestPauseTime)
+	out.StaticIpAddresses = in.StaticIPAddresses
+	out.Errors = direct.Slice_ToProto(mapCtx, in.Errors, DataConnector_Error_v1alpha1_ToProto)
+	out.ActionState = direct.ValueOf(in.ActionState)
+	out.ConnectorType = direct.ValueOf(in.ConnectorType)
+	out.PrivateConnectivityProjectId = direct.ValueOf(in.PrivateConnectivityProjectID)
+	out.RealtimeState = direct.ValueOf(in.RealtimeState)
+	out.EntitiesStatus = direct.Slice_ToProto(mapCtx, in.EntitiesStatus, DataConnector_SourceEntityStatus_v1alpha1_ToProto)
+	return out
+}
+func DiscoveryEngineDataConnectorSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *v1alphapb.DataConnector) *krmdiscoveryenginev1alpha1.DiscoveryEngineDataConnectorSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.DiscoveryEngineDataConnectorSpec{}
+	out.DataSource = direct.LazyPtr(in.GetDataSource())
+	out.RefreshInterval = direct.LazyPtr(in.GetRefreshInterval())
+	out.ConnectorModes = in.ConnectorModes
+	out.Entities = direct.Slice_FromProto(mapCtx, in.Entities, DataConnector_SourceEntity_v1alpha1_FromProto)
+	out.Params = in.Params
+	out.JsonParams = direct.LazyPtr(in.GetJsonParams())
+	out.AutoRunDisabled = direct.LazyPtr(in.GetAutoRunDisabled())
+	out.IncrementalSyncDisabled = direct.LazyPtr(in.GetIncrementalSyncDisabled())
+	out.IncrementalRefreshInterval = direct.LazyPtr(in.GetIncrementalRefreshInterval())
+	// MISSING: KMSKeyName
+	// (near miss): "KMSKeyName" vs "KmsKeyName"
+	out.StaticIPEnabled = direct.LazyPtr(in.GetStaticIpEnabled())
+	out.ActionConfig = DataConnector_ActionConfig_v1alpha1_FromProto(mapCtx, in.GetActionConfig())
+	out.BapConfig = DataConnector_BapConfig_v1alpha1_FromProto(mapCtx, in.GetBapConfig())
+	out.DataSourceVersion = direct.LazyPtr(in.GetDataSourceVersion())
+	out.DestinationConfigs = direct.Slice_FromProto(mapCtx, in.DestinationConfigs, DataConnector_DestinationConfig_v1alpha1_FromProto)
+	out.SyncMode = direct.LazyPtr(in.GetSyncMode())
+	return out
+}
+func DiscoveryEngineDataConnectorSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.DiscoveryEngineDataConnectorSpec) *v1alphapb.DataConnector {
+	if in == nil {
+		return nil
+	}
+	out := &v1alphapb.DataConnector{}
+	out.DataSource = direct.ValueOf(in.DataSource)
+	out.RefreshInterval = direct.ValueOf(in.RefreshInterval)
+	out.ConnectorModes = in.ConnectorModes
+	out.Entities = direct.Slice_ToProto(mapCtx, in.Entities, DataConnector_SourceEntity_v1alpha1_ToProto)
+	out.Params = in.Params
+	out.JsonParams = direct.ValueOf(in.JsonParams)
+	out.AutoRunDisabled = direct.ValueOf(in.AutoRunDisabled)
+	out.IncrementalSyncDisabled = direct.ValueOf(in.IncrementalSyncDisabled)
+	out.IncrementalRefreshInterval = direct.ValueOf(in.IncrementalRefreshInterval)
+	// MISSING: KMSKeyName
+	// (near miss): "KMSKeyName" vs "KmsKeyName"
+	out.StaticIpEnabled = direct.ValueOf(in.StaticIPEnabled)
+	out.ActionConfig = DataConnector_ActionConfig_v1alpha1_ToProto(mapCtx, in.ActionConfig)
+	out.BapConfig = DataConnector_BapConfig_v1alpha1_ToProto(mapCtx, in.BapConfig)
+	out.DataSourceVersion = direct.ValueOf(in.DataSourceVersion)
+	out.DestinationConfigs = direct.Slice_ToProto(mapCtx, in.DestinationConfigs, DataConnector_DestinationConfig_v1alpha1_ToProto)
+	out.SyncMode = direct.ValueOf(in.SyncMode)
 	return out
 }
 func DiscoveryEngineDataStoreObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.DataStore) *krmdiscoveryenginev1alpha1.DiscoveryEngineDataStoreObservedState {

@@ -49,6 +49,7 @@ gen-proto-no-fixup:
 		./apis/google/apps/cloudidentity/v1beta1/*.proto \
 		./apis/mockgcp/cloud/config/v1/*.proto \
 		./apis/google/cloud/dns/v1/*.proto \
+		./apis/google/cloud/discoveryengine/v1alpha/*.proto \
 		./apis/mockgcp/cloud/apigee/v1/*.proto \
 		./apis/mockgcp/cloud/bigquery/v2/*.proto \
 		./apis/mockgcp/cloud/ids/v1/*.proto \

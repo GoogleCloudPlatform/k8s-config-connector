@@ -1,0 +1,160 @@
+// Copyright 2026 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+package google.cloud.discoveryengine.v1alpha;
+
+import "google/api/field_behavior.proto";
+import "google/api/resource.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/cloud/discoveryengine/v1alpha;discoveryenginepb";
+
+message DataConnector {
+  option (google.api.resource) = {
+    type: "discoveryengine.googleapis.com/DataConnector"
+    pattern: "projects/{project}/locations/{location}/collections/{collection}/dataConnector"
+  };
+
+  message SourceEntity {
+    string entity_name = 1;
+    map<string, string> key_property_mappings = 2;
+    string params = 3;
+  }
+
+  message ActionConfig {
+    map<string, string> action_params = 1;
+    bool create_bap_connection = 2;
+  }
+
+  message BapConfig {
+    repeated string enabled_actions = 1;
+    repeated string supported_connector_modes = 2;
+  }
+
+  message DestinationConfig {
+    string key = 1;
+    string params = 2;
+    repeated Destination destinations = 3;
+  }
+
+  message Destination {
+    string host = 1;
+    int64 port = 2;
+  }
+
+  message Error {
+    int64 code = 1;
+    string message = 2;
+  }
+
+  message SourceEntityStatus {
+    string entity_name = 1;
+    string data_store = 2;
+  }
+
+  // Output only. The full resource name of the Data Connector.
+  string name = 1 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Required. The identifier for the data source.
+  string data_source = 2 [(google.api.field_behavior) = REQUIRED];
+
+  // Required. The refresh interval for data sync.
+  string refresh_interval = 3 [(google.api.field_behavior) = REQUIRED];
+
+  // The modes enabled for this connector.
+  repeated string connector_modes = 4;
+
+  // List of entities from the connected data source to ingest.
+  repeated SourceEntity entities = 5;
+
+  // Params needed to access the source in String-to-String format.
+  map<string, string> params = 6;
+
+  // Params needed to access the source in JSON string format.
+  string json_params = 7;
+
+  // Indicates whether full syncs are paused for this connector.
+  bool auto_run_disabled = 8;
+
+  // Indicates whether incremental syncs are paused for this connector.
+  bool incremental_sync_disabled = 9;
+
+  // The refresh interval specifically for incremental data syncs.
+  string incremental_refresh_interval = 10;
+
+  // The KMS key to be used to protect the DataStores managed by this connector.
+  string kms_key_name = 11;
+
+  // Whether customer has enabled static IP addresses for this connector.
+  bool static_ip_enabled = 12;
+
+  // Action configuration for the data connector.
+  ActionConfig action_config = 13;
+
+  // BAP configuration for the data connector.
+  BapConfig bap_config = 14;
+
+  // The version of the data source.
+  int64 data_source_version = 15;
+
+  // Destination connector configurations for the data connector.
+  repeated DestinationConfig destination_configs = 16;
+
+  // The data synchronization mode supported by the data connector.
+  string sync_mode = 17;
+
+  // Output only. Timestamp when the DataConnector was created.
+  google.protobuf.Timestamp create_time = 18 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Output only. Timestamp when the DataConnector was updated.
+  google.protobuf.Timestamp update_time = 19 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Output only. The state of the connector.
+  string state = 20 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Output only. User actions that must be completed before the connector can start syncing data.
+  repeated string blocking_reasons = 21 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Output only. Whether the action connector is fully configured.
+  bool is_action_configured = 22 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Output only. For periodic connectors only, the last time a data sync was completed.
+  google.protobuf.Timestamp last_sync_time = 23 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Output only. The most recent timestamp when this DataConnector was paused.
+  google.protobuf.Timestamp latest_pause_time = 24 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Output only. The static IP addresses used by this connector.
+  repeated string static_ip_addresses = 25 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Output only. The errors from initialization or from the latest connector run.
+  repeated Error errors = 26 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Output only. State of the action connector.
+  string action_state = 27 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Output only. The type of connector.
+  string connector_type = 28 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Output only. The tenant project ID associated with private connectivity connectors.
+  string private_connectivity_project_id = 29 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Output only. The real-time sync state.
+  string realtime_state = 30 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Output only. Entities statuses.
+  repeated SourceEntityStatus entities_status = 31 [(google.api.field_behavior) = OUTPUT_ONLY];
+}
