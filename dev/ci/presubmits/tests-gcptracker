@@ -46,7 +46,7 @@ time go build -o ${REPO_ROOT}/.build/paralleltestrunner ${REPO_ROOT}/dev/tools/p
 
 echo "Running scenario tests for gcptracker..."
 GOLDEN_REQUEST_CHECKS=1 E2E_KUBE_TARGET=envtest E2E_GCP_TARGET=mock RUN_E2E=1 \
-  ${PREBUILT_TEST_BINARY} -test.count=1 -timeout 600s -v -test.run '^TestE2EScript/scenarios/tracker/tracker-iampartialpolicy$'
+  ${PREBUILT_TEST_BINARY} -test.count=1 -test.timeout=600s -test.v -test.run '^TestE2EScript/scenarios/tracker/tracker-iampartialpolicy$'
 
 echo "Running fixture and sample iam tests with the gcptracker in parallel..."
 ${REPO_ROOT}/.build/paralleltestrunner \
