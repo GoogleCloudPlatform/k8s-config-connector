@@ -933,6 +933,78 @@ func DataStore_BillingEstimation_v1alpha1_ToProto(mapCtx *direct.MapContext, in 
 	out.WebsiteDataUpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.WebsiteDataUpdateTime)
 	return out
 }
+func DiscoveryEngineChatEngineObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Engine) *krmdiscoveryenginev1alpha1.DiscoveryEngineChatEngineObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.DiscoveryEngineChatEngineObservedState{}
+	// MISSING: SearchEngineConfig
+	// MISSING: MediaRecommendationEngineConfig
+	// MISSING: ChatEngineMetadata
+	// MISSING: Name
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: DataStoreIds
+	// MISSING: SolutionType
+	return out
+}
+func DiscoveryEngineChatEngineObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.DiscoveryEngineChatEngineObservedState) *pb.Engine {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Engine{}
+	// MISSING: SearchEngineConfig
+	// MISSING: MediaRecommendationEngineConfig
+	// MISSING: ChatEngineMetadata
+	// MISSING: Name
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: DataStoreIds
+	// MISSING: SolutionType
+	return out
+}
+func DiscoveryEngineChatEngineSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Engine) *krmdiscoveryenginev1alpha1.DiscoveryEngineChatEngineSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.DiscoveryEngineChatEngineSpec{}
+	out.ChatEngineConfig = Engine_ChatEngineConfig_v1alpha1_FromProto(mapCtx, in.GetChatEngineConfig())
+	// MISSING: SearchEngineConfig
+	// MISSING: MediaRecommendationEngineConfig
+	// MISSING: ChatEngineMetadata
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: DataStoreIds
+	// MISSING: SolutionType
+	out.IndustryVertical = direct.Enum_FromProto(mapCtx, in.GetIndustryVertical())
+	out.CommonConfig = Engine_CommonConfig_v1alpha1_FromProto(mapCtx, in.GetCommonConfig())
+	out.DisableAnalytics = direct.LazyPtr(in.GetDisableAnalytics())
+	return out
+}
+func DiscoveryEngineChatEngineSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.DiscoveryEngineChatEngineSpec) *pb.Engine {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Engine{}
+	if oneof := Engine_ChatEngineConfig_v1alpha1_ToProto(mapCtx, in.ChatEngineConfig); oneof != nil {
+		out.EngineConfig = &pb.Engine_ChatEngineConfig_{ChatEngineConfig: oneof}
+	}
+	// MISSING: SearchEngineConfig
+	// MISSING: MediaRecommendationEngineConfig
+	// MISSING: ChatEngineMetadata
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	// MISSING: CreateTime
+	// MISSING: UpdateTime
+	// MISSING: DataStoreIds
+	// MISSING: SolutionType
+	out.IndustryVertical = direct.Enum_ToProto[pb.IndustryVertical](mapCtx, in.IndustryVertical)
+	out.CommonConfig = Engine_CommonConfig_v1alpha1_ToProto(mapCtx, in.CommonConfig)
+	out.DisableAnalytics = direct.ValueOf(in.DisableAnalytics)
+	return out
+}
 func DiscoveryEngineControlObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Control) *krmdiscoveryenginev1alpha1.DiscoveryEngineControlObservedState {
 	if in == nil {
 		return nil

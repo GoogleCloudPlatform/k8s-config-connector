@@ -2338,6 +2338,20 @@
 [missing_field] crd=dialogflowsecuritysettings.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.redactionStrategy" is not set in unstructured objects
 [missing_field] crd=dialogflowsecuritysettings.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.retentionStrategy" is not set in unstructured objects
 [missing_field] crd=dialogflowsecuritysettings.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.retentionWindowDays" is not set in unstructured objects
+[missing_field] crd=discoveryenginechatengines.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.chatEngineConfig.agentCreationConfig.business" is not set in unstructured objects
+[missing_field] crd=discoveryenginechatengines.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.chatEngineConfig.agentCreationConfig.defaultLanguageCode" is not set in unstructured objects
+[missing_field] crd=discoveryenginechatengines.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.chatEngineConfig.agentCreationConfig.location" is not set in unstructured objects
+[missing_field] crd=discoveryenginechatengines.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.chatEngineConfig.agentCreationConfig.timeZone" is not set in unstructured objects
+[missing_field] crd=discoveryenginechatengines.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.chatEngineConfig.allowCrossRegion" is not set in unstructured objects
+[missing_field] crd=discoveryenginechatengines.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.chatEngineConfig.dialogflowAgentToLink" is not set in unstructured objects
+[missing_field] crd=discoveryenginechatengines.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.collection" is not set in unstructured objects
+[missing_field] crd=discoveryenginechatengines.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.commonConfig.companyName" is not set in unstructured objects
+[missing_field] crd=discoveryenginechatengines.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataStoreRefs[]" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=discoveryenginechatengines.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.disableAnalytics" is not set in unstructured objects
+[missing_field] crd=discoveryenginechatengines.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
+[missing_field] crd=discoveryenginechatengines.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.industryVertical" is not set in unstructured objects
+[missing_field] crd=discoveryenginechatengines.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=discoveryenginechatengines.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=discoveryenginecontrols.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.boostAction.boost" is not set in unstructured objects
 [missing_field] crd=discoveryenginecontrols.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.boostAction.dataStoreRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=discoveryenginecontrols.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.boostAction.filter" is not set in unstructured objects

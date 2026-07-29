@@ -20,6 +20,7 @@
 // resource: DiscoveryEngineControl:Control
 // resource: DiscoveryEngineDataStore:DataStore
 // resource: DiscoveryEngineEngine:Engine
+// resource: DiscoveryEngineChatEngine:Engine
 // resource: DiscoveryEngineIdentityMappingStore:IdentityMappingStore
 // resource: DiscoveryEngineDataStoreTargetSite:TargetSite
 // resource: DiscoveryEngineConversation:Conversation

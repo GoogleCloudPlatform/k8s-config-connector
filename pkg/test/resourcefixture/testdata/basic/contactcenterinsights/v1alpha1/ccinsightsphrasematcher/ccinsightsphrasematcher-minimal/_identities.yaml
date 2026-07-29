@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: contactcenterinsights.cnrm.cloud.google.com
+  kind: CCInsightsPhraseMatcher
+  name: phrasematcher-minimal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
