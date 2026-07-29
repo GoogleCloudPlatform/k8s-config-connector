@@ -1,0 +1,690 @@
+[
+  {
+    "controller": "direct",
+    "isNewObject": true,
+    "resource": "BigQueryTable/bigquerytablesample${uniqueId}"
+  },
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "BigQueryDataset/bigquerydatasetaccessfull${uniqueId}",
+    "fields": [
+      {
+        "id": "access.#",
+        "old": "0",
+        "new": "6"
+      },
+      {
+        "id": "access.1721160693.dataset.#",
+        "old": "0",
+        "new": "0"
+      },
+      {
+        "id": "access.1721160693.domain",
+        "old": "",
+        "new": "google.com"
+      },
+      {
+        "id": "access.1721160693.group_by_email",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "access.1721160693.iam_member",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "access.1721160693.role",
+        "old": "",
+        "new": "READER"
+      },
+      {
+        "id": "access.1721160693.routine.#",
+        "old": "0",
+        "new": "0"
+      },
+      {
+        "id": "access.1721160693.special_group",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "access.1721160693.user_by_email",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "access.1721160693.view.#",
+        "old": "0",
+        "new": "0"
+      },
+      {
+        "id": "access.180839421.dataset.#",
+        "old": "0",
+        "new": "0"
+      },
+      {
+        "id": "access.180839421.domain",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "access.180839421.group_by_email",
+        "old": "",
+        "new": "kcc-eng@google.com"
+      },
+      {
+        "id": "access.180839421.iam_member",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "access.180839421.role",
+        "old": "",
+        "new": "READER"
+      },
+      {
+        "id": "access.180839421.routine.#",
+        "old": "0",
+        "new": "0"
+      },
+      {
+        "id": "access.180839421.special_group",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "access.180839421.user_by_email",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "access.180839421.view.#",
+        "old": "0",
+        "new": "0"
+      },
+      {
+        "id": "access.2450091614.dataset.#",
+        "old": "0",
+        "new": "0"
+      },
+      {
+        "id": "access.2450091614.domain",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "access.2450091614.group_by_email",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "access.2450091614.iam_member",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "access.2450091614.role",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "access.2450091614.routine.#",
+        "old": "0",
+        "new": "1"
+      },
+      {
+        "id": "access.2450091614.routine.0.dataset_id",
+        "old": "",
+        "new": "bigquerydatasetsample${uniqueId}"
+      },
+      {
+        "id": "access.2450091614.routine.0.project_id",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "access.2450091614.routine.0.routine_id",
+        "old": "",
+        "new": "bigqueryroutine${uniqueId}"
+      },
+      {
+        "id": "access.2450091614.special_group",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "access.2450091614.user_by_email",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "access.2450091614.view.#",
+        "old": "0",
+        "new": "0"
+      },
+      {
+        "id": "access.3117412004.dataset.#",
+        "old": "0",
+        "new": "1"
+      },
+      {
+        "id": "access.3117412004.dataset.0.dataset.#",
+        "old": "0",
+        "new": "1"
+      },
+      {
+        "id": "access.3117412004.dataset.0.dataset.0.dataset_id",
+        "old": "",
+        "new": "bigquerydatasetsample${uniqueId}"
+      },
+      {
+        "id": "access.3117412004.dataset.0.dataset.0.project_id",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "access.3117412004.dataset.0.target_types.#",
+        "old": "0",
+        "new": "1"
+      },
+      {
+        "id": "access.3117412004.dataset.0.target_types.0",
+        "old": "",
+        "new": "VIEWS"
+      },
+      {
+        "id": "access.3117412004.domain",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "access.3117412004.group_by_email",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "access.3117412004.iam_member",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "access.3117412004.role",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "access.3117412004.routine.#",
+        "old": "0",
+        "new": "0"
+      },
+      {
+        "id": "access.3117412004.special_group",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "access.3117412004.user_by_email",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "access.3117412004.view.#",
+        "old": "0",
+        "new": "0"
+      },
+      {
+        "id": "access.3793192849.dataset.#",
+        "old": "0",
+        "new": "0"
+      },
+      {
+        "id": "access.3793192849.domain",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "access.3793192849.group_by_email",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "access.3793192849.iam_member",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "access.3793192849.role",
+        "old": "",
+        "new": "OWNER"
+      },
+      {
+        "id": "access.3793192849.routine.#",
+        "old": "0",
+        "new": "0"
+      },
+      {
+        "id": "access.3793192849.special_group",
+        "old": "",
+        "new": "projectOwners"
+      },
+      {
+        "id": "access.3793192849.user_by_email",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "access.3793192849.view.#",
+        "old": "0",
+        "new": "0"
+      },
+      {
+        "id": "access.3946637888.dataset.#",
+        "old": "0",
+        "new": "0"
+      },
+      {
+        "id": "access.3946637888.domain",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "access.3946637888.group_by_email",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "access.3946637888.iam_member",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "access.3946637888.role",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "access.3946637888.routine.#",
+        "old": "0",
+        "new": "0"
+      },
+      {
+        "id": "access.3946637888.special_group",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "access.3946637888.user_by_email",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "access.3946637888.view.#",
+        "old": "0",
+        "new": "1"
+      },
+      {
+        "id": "access.3946637888.view.0.dataset_id",
+        "old": "",
+        "new": "bigquerydatasetsample${uniqueId}"
+      },
+      {
+        "id": "access.3946637888.view.0.project_id",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "access.3946637888.view.0.table_id",
+        "old": "",
+        "new": "bigquerytablesample${uniqueId}"
+      },
+      {
+        "id": "creation_time",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "dataset_id",
+        "old": "",
+        "new": "bigquerydatasetaccessfull${uniqueId}"
+      },
+      {
+        "id": "default_collation",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "default_table_expiration_ms",
+        "old": "",
+        "new": "3600000"
+      },
+      {
+        "id": "delete_contents_on_destroy",
+        "old": "",
+        "new": "false"
+      },
+      {
+        "id": "description",
+        "old": "",
+        "new": "BigQuery Dataset With Full Access Block"
+      },
+      {
+        "id": "etag",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "friendly_name",
+        "old": "",
+        "new": "bigquerydataset-fullaccessblock"
+      },
+      {
+        "id": "is_case_insensitive",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "labels.%",
+        "old": "0",
+        "new": "2"
+      },
+      {
+        "id": "labels.cnrm-test",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "labels.managed-by-cnrm",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "last_modified_time",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "location",
+        "old": "",
+        "new": "us-central1"
+      },
+      {
+        "id": "max_time_travel_hours",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "self_link",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "storage_billing_model",
+        "old": "",
+        "new": ""
+      }
+    ]
+  },
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "BigQueryDataset/bigquerydatasetsample${uniqueId}",
+    "fields": [
+      {
+        "id": "access.#",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "creation_time",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "dataset_id",
+        "old": "",
+        "new": "bigquerydatasetsample${uniqueId}"
+      },
+      {
+        "id": "default_collation",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "delete_contents_on_destroy",
+        "old": "",
+        "new": "false"
+      },
+      {
+        "id": "etag",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "is_case_insensitive",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "labels.%",
+        "old": "0",
+        "new": "2"
+      },
+      {
+        "id": "labels.cnrm-test",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "labels.managed-by-cnrm",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "last_modified_time",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "location",
+        "old": "",
+        "new": "us-central1"
+      },
+      {
+        "id": "max_time_travel_hours",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "self_link",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "storage_billing_model",
+        "old": "",
+        "new": ""
+      }
+    ]
+  },
+  {
+    "controller": "direct",
+    "isNewObject": true,
+    "resource": "BigQueryTable/bigquerytablesample${uniqueId}"
+  },
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "BigQueryRoutine/bigqueryroutine${uniqueId}",
+    "fields": [
+      {
+        "id": "creation_time",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "dataset_id",
+        "old": "",
+        "new": "bigquerydatasetsample${uniqueId}"
+      },
+      {
+        "id": "definition_body",
+        "old": "",
+        "new": "CREATE FUNCTION Add(x FLOAT64, y FLOAT64) RETURNS FLOAT64 AS (x + y);"
+      },
+      {
+        "id": "last_modified_time",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "routine_id",
+        "old": "",
+        "new": "bigqueryroutine${uniqueId}"
+      },
+      {
+        "id": "routine_type",
+        "old": "",
+        "new": "PROCEDURE"
+      }
+    ]
+  },
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "BigQueryTable/bigquerytable-main-${uniqueId}",
+    "fields": [
+      {
+        "id": "creation_time",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "dataset_id",
+        "old": "",
+        "new": "bigquerydatasetsample${uniqueId}"
+      },
+      {
+        "id": "deletion_protection",
+        "old": "",
+        "new": "false"
+      },
+      {
+        "id": "etag",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "expiration_time",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "friendly_name",
+        "old": "",
+        "new": "main-table"
+      },
+      {
+        "id": "labels.%",
+        "old": "0",
+        "new": "2"
+      },
+      {
+        "id": "labels.cnrm-test",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "labels.managed-by-cnrm",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "last_modified_time",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "location",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "num_bytes",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "num_long_term_bytes",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "num_rows",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "schema",
+        "old": "",
+        "new": "[{\"description\":\"Date\",\"mode\":\"REQUIRED\",\"name\":\"dt\",\"type\":\"DATE\"},{\"description\":\"User ID\",\"mode\":\"REQUIRED\",\"name\":\"user_id\",\"type\":\"STRING\"},{\"description\":\"Unique identifier of the entity\",\"mode\":\"REQUIRED\",\"name\":\"guid\",\"type\":\"STRING\"}]"
+      },
+      {
+        "id": "self_link",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "table_id",
+        "old": "",
+        "new": "bigquerytable-main-${uniqueId}"
+      },
+      {
+        "id": "time_partitioning.#",
+        "old": "0",
+        "new": "1"
+      },
+      {
+        "id": "time_partitioning.0.expiration_ms",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "time_partitioning.0.field",
+        "old": "",
+        "new": "dt"
+      },
+      {
+        "id": "time_partitioning.0.type",
+        "old": "",
+        "new": "DAY"
+      },
+      {
+        "id": "type",
+        "old": "",
+        "new": ""
+      }
+    ]
+  }
+]

@@ -1,0 +1,329 @@
+[
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "ServiceIdentity/serviceidentity-${uniqueId}",
+    "fields": [
+      {
+        "id": "email",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "service",
+        "old": "",
+        "new": "bigquery.googleapis.com"
+      }
+    ]
+  },
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "IAMServiceAccount/iamsa-${uniqueId}",
+    "fields": [
+      {
+        "id": "account_id",
+        "old": "",
+        "new": "iamsa-${uniqueId}"
+      },
+      {
+        "id": "disabled",
+        "old": "",
+        "new": "false"
+      },
+      {
+        "id": "email",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "member",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "unique_id",
+        "old": "",
+        "new": ""
+      }
+    ]
+  },
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "KMSKeyRing/kmskeyring-${uniqueId}",
+    "fields": [
+      {
+        "id": "location",
+        "old": "",
+        "new": "us"
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": "kmskeyring-${uniqueId}"
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "self_link",
+        "old": "",
+        "new": ""
+      }
+    ]
+  },
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "KMSCryptoKey/kmscryptokey-${uniqueId}",
+    "fields": [
+      {
+        "id": "destroy_scheduled_duration",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "import_only",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "key_ring",
+        "old": "",
+        "new": "projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}"
+      },
+      {
+        "id": "labels.%",
+        "old": "0",
+        "new": "3"
+      },
+      {
+        "id": "labels.cnrm-test",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "labels.key-one",
+        "old": "",
+        "new": "value-one"
+      },
+      {
+        "id": "labels.managed-by-cnrm",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": "kmscryptokey-${uniqueId}"
+      },
+      {
+        "id": "purpose",
+        "old": "",
+        "new": "ENCRYPT_DECRYPT"
+      },
+      {
+        "id": "self_link",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "version_template.#",
+        "old": "",
+        "new": ""
+      }
+    ]
+  },
+  {
+    "controller": "iampolicy",
+    "isNewObject": false,
+    "resource": "",
+    "fields": [
+      {
+        "id": "spec.bindings[role=roles/cloudkms.cryptoKeyEncrypterDecrypter]",
+        "old": "absent in desired spec",
+        "new": "present in actual spec"
+      }
+    ]
+  },
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "BigQueryDataset/bigquerydataset${uniqueId}",
+    "fields": [
+      {
+        "id": "access.#",
+        "old": "0",
+        "new": "1"
+      },
+      {
+        "id": "access.3793192849.dataset.#",
+        "old": "0",
+        "new": "0"
+      },
+      {
+        "id": "access.3793192849.domain",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "access.3793192849.group_by_email",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "access.3793192849.iam_member",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "access.3793192849.role",
+        "old": "",
+        "new": "OWNER"
+      },
+      {
+        "id": "access.3793192849.routine.#",
+        "old": "0",
+        "new": "0"
+      },
+      {
+        "id": "access.3793192849.special_group",
+        "old": "",
+        "new": "projectOwners"
+      },
+      {
+        "id": "access.3793192849.user_by_email",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "access.3793192849.view.#",
+        "old": "0",
+        "new": "0"
+      },
+      {
+        "id": "creation_time",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "dataset_id",
+        "old": "",
+        "new": "bigquerydataset${uniqueId}"
+      },
+      {
+        "id": "default_collation",
+        "old": "",
+        "new": "und:ci"
+      },
+      {
+        "id": "default_encryption_configuration.#",
+        "old": "0",
+        "new": "1"
+      },
+      {
+        "id": "default_encryption_configuration.0.kms_key_name",
+        "old": "",
+        "new": "projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
+      },
+      {
+        "id": "default_partition_expiration_ms",
+        "old": "",
+        "new": "3600000"
+      },
+      {
+        "id": "default_table_expiration_ms",
+        "old": "",
+        "new": "3600000"
+      },
+      {
+        "id": "delete_contents_on_destroy",
+        "old": "",
+        "new": "false"
+      },
+      {
+        "id": "description",
+        "old": "",
+        "new": "Fully Configured BigQuery Dataset"
+      },
+      {
+        "id": "etag",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "friendly_name",
+        "old": "",
+        "new": "bigquerydataset-fullyconfigured"
+      },
+      {
+        "id": "is_case_insensitive",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "labels.%",
+        "old": "0",
+        "new": "2"
+      },
+      {
+        "id": "labels.cnrm-test",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "labels.managed-by-cnrm",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "last_modified_time",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "location",
+        "old": "",
+        "new": "US"
+      },
+      {
+        "id": "max_time_travel_hours",
+        "old": "",
+        "new": "72"
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "self_link",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "storage_billing_model",
+        "old": "",
+        "new": ""
+      }
+    ]
+  }
+]
