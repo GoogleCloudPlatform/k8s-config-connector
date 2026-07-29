@@ -694,6 +694,11 @@ spec:
                                             type: string
                                         type: object
                                     type: object
+                                  compressionMode:
+                                    description: 'Specifies the compression mode for
+                                      this route. Possible values: ["COMPRESSION_MODE_UNSPECIFIED",
+                                      "DISABLED", "AUTOMATIC"]'
+                                    type: string
                                   corsPolicy:
                                     description: CORSPolicy defines Cross-Origin-Resource-Sharing
                                       configuration, including which CORS response

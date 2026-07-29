@@ -503,6 +503,10 @@ type EdgecacheserviceRouteAction struct {
 	/* The URL rewrite configuration for requests that match this route. */
 	// +optional
 	UrlRewrite *EdgecacheserviceUrlRewrite `json:"urlRewrite,omitempty"`
+
+	/* Specifies the compression mode for this route. Possible values: ["COMPRESSION_MODE_UNSPECIFIED", "DISABLED", "AUTOMATIC"] */
+	// +optional
+	CompressionMode *string `json:"compressionMode,omitempty"`
 }
 
 type EdgecacheserviceRouteRule struct {

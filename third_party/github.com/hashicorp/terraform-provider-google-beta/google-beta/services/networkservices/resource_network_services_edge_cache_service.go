@@ -816,6 +816,12 @@ specified.`,
 																	},
 																},
 															},
+															"compression_mode": {
+																Type:         schema.TypeString,
+																Optional:     true,
+																ValidateFunc: verify.ValidateEnum([]string{"COMPRESSION_MODE_UNSPECIFIED", "DISABLED", "AUTOMATIC", ""}),
+																Description:  `Specifies the compression mode for this route. Possible values: ["COMPRESSION_MODE_UNSPECIFIED", "DISABLED", "AUTOMATIC"]`,
+															},
 														},
 													},
 												},
@@ -1843,6 +1849,7 @@ func flattenNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleRouteActio
 		flattenNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleRouteActionUrlRewrite(original["urlRewrite"], d, config)
 	transformed["cors_policy"] =
 		flattenNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleRouteActionCorsPolicy(original["corsPolicy"], d, config)
+	transformed["compression_mode"] = original["compressionMode"]
 	return []interface{}{transformed}
 }
 func flattenNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleRouteActionCdnPolicy(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
@@ -2838,7 +2845,18 @@ func expandNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleRouteAction
 		transformed["corsPolicy"] = transformedCorsPolicy
 	}
 
+	transformedCompressionMode, err := expandNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleRouteActionCompressionMode(original["compression_mode"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedCompressionMode); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+		transformed["compressionMode"] = transformedCompressionMode
+	}
+
 	return transformed, nil
+}
+
+func expandNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleRouteActionCompressionMode(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return v, nil
 }
 
 func expandNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleRouteActionCdnPolicy(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
