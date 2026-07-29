@@ -107,6 +107,42 @@ func BigQuerySource_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv
 	out.InputUri = direct.ValueOf(in.InputURI)
 	return out
 }
+func BlurBaselineConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.BlurBaselineConfig) *krmvertexaiv1alpha1.BlurBaselineConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.BlurBaselineConfig{}
+	out.MaxBlurSigma = direct.LazyPtr(in.GetMaxBlurSigma())
+	return out
+}
+func BlurBaselineConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.BlurBaselineConfig) *pb.BlurBaselineConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.BlurBaselineConfig{}
+	out.MaxBlurSigma = direct.ValueOf(in.MaxBlurSigma)
+	return out
+}
+func Checkpoint_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Checkpoint) *krmvertexaiv1alpha1.Checkpoint {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.Checkpoint{}
+	out.CheckpointID = direct.LazyPtr(in.GetCheckpointId())
+	out.Epoch = direct.LazyPtr(in.GetEpoch())
+	out.Step = direct.LazyPtr(in.GetStep())
+	return out
+}
+func Checkpoint_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.Checkpoint) *pb.Checkpoint {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Checkpoint{}
+	out.CheckpointId = direct.ValueOf(in.CheckpointID)
+	out.Epoch = direct.ValueOf(in.Epoch)
+	out.Step = direct.ValueOf(in.Step)
+	return out
+}
 func ContainerSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ContainerSpec) *krmvertexaiv1alpha1.ContainerSpec {
 	if in == nil {
 		return nil
@@ -253,6 +289,24 @@ func DedicatedResources_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmverte
 	out.FlexStart = FlexStart_v1alpha1_ToProto(mapCtx, in.FlexStart)
 	return out
 }
+func DeployedModelRef_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.DeployedModelRef) *krmvertexaiv1alpha1.DeployedModelRef {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.DeployedModelRef{}
+	out.Endpoint = direct.LazyPtr(in.GetEndpoint())
+	out.DeployedModelID = direct.LazyPtr(in.GetDeployedModelId())
+	return out
+}
+func DeployedModelRef_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.DeployedModelRef) *pb.DeployedModelRef {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DeployedModelRef{}
+	out.Endpoint = direct.ValueOf(in.Endpoint)
+	out.DeployedModelId = direct.ValueOf(in.DeployedModelID)
+	return out
+}
 func DiskSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.DiskSpec) *krmvertexaiv1alpha1.DiskSpec {
 	if in == nil {
 		return nil
@@ -351,6 +405,106 @@ func ExampleStoreConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmverte
 	out.VertexEmbeddingModel = direct.ValueOf(in.VertexEmbeddingModel)
 	return out
 }
+func Examples_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Examples) *krmvertexaiv1alpha1.Examples {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.Examples{}
+	out.ExampleGCSSource = Examples_ExampleGCSSource_v1alpha1_FromProto(mapCtx, in.GetExampleGcsSource())
+	out.NearestNeighborSearchConfig = Value_v1alpha1_FromProto(mapCtx, in.GetNearestNeighborSearchConfig())
+	out.Presets = Presets_v1alpha1_FromProto(mapCtx, in.GetPresets())
+	out.GCSSource = GCSSource_v1alpha1_FromProto(mapCtx, in.GetGcsSource())
+	out.NeighborCount = direct.LazyPtr(in.GetNeighborCount())
+	return out
+}
+func Examples_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.Examples) *pb.Examples {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Examples{}
+	if oneof := Examples_ExampleGCSSource_v1alpha1_ToProto(mapCtx, in.ExampleGCSSource); oneof != nil {
+		out.Source = &pb.Examples_ExampleGcsSource_{ExampleGcsSource: oneof}
+	}
+	if oneof := Value_v1alpha1_ToProto(mapCtx, in.NearestNeighborSearchConfig); oneof != nil {
+		out.Config = &pb.Examples_NearestNeighborSearchConfig{NearestNeighborSearchConfig: oneof}
+	}
+	if oneof := Presets_v1alpha1_ToProto(mapCtx, in.Presets); oneof != nil {
+		out.Config = &pb.Examples_Presets{Presets: oneof}
+	}
+	out.GcsSource = GCSSource_v1alpha1_ToProto(mapCtx, in.GCSSource)
+	out.NeighborCount = direct.ValueOf(in.NeighborCount)
+	return out
+}
+func Examples_ExampleGCSSource_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Examples_ExampleGcsSource) *krmvertexaiv1alpha1.Examples_ExampleGCSSource {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.Examples_ExampleGCSSource{}
+	out.DataFormat = direct.Enum_FromProto(mapCtx, in.GetDataFormat())
+	out.GCSSource = GCSSource_v1alpha1_FromProto(mapCtx, in.GetGcsSource())
+	return out
+}
+func Examples_ExampleGCSSource_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.Examples_ExampleGCSSource) *pb.Examples_ExampleGcsSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Examples_ExampleGcsSource{}
+	out.DataFormat = direct.Enum_ToProto[pb.Examples_ExampleGcsSource_DataFormat](mapCtx, in.DataFormat)
+	out.GcsSource = GCSSource_v1alpha1_ToProto(mapCtx, in.GCSSource)
+	return out
+}
+func ExplanationParameters_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ExplanationParameters) *krmvertexaiv1alpha1.ExplanationParameters {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.ExplanationParameters{}
+	out.SampledShapleyAttribution = SampledShapleyAttribution_v1alpha1_FromProto(mapCtx, in.GetSampledShapleyAttribution())
+	out.IntegratedGradientsAttribution = IntegratedGradientsAttribution_v1alpha1_FromProto(mapCtx, in.GetIntegratedGradientsAttribution())
+	out.XraiAttribution = XraiAttribution_v1alpha1_FromProto(mapCtx, in.GetXraiAttribution())
+	out.Examples = Examples_v1alpha1_FromProto(mapCtx, in.GetExamples())
+	out.TopK = direct.LazyPtr(in.GetTopK())
+	out.OutputIndices = ListValue_v1alpha1_FromProto(mapCtx, in.GetOutputIndices())
+	return out
+}
+func ExplanationParameters_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.ExplanationParameters) *pb.ExplanationParameters {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ExplanationParameters{}
+	if oneof := SampledShapleyAttribution_v1alpha1_ToProto(mapCtx, in.SampledShapleyAttribution); oneof != nil {
+		out.Method = &pb.ExplanationParameters_SampledShapleyAttribution{SampledShapleyAttribution: oneof}
+	}
+	if oneof := IntegratedGradientsAttribution_v1alpha1_ToProto(mapCtx, in.IntegratedGradientsAttribution); oneof != nil {
+		out.Method = &pb.ExplanationParameters_IntegratedGradientsAttribution{IntegratedGradientsAttribution: oneof}
+	}
+	if oneof := XraiAttribution_v1alpha1_ToProto(mapCtx, in.XraiAttribution); oneof != nil {
+		out.Method = &pb.ExplanationParameters_XraiAttribution{XraiAttribution: oneof}
+	}
+	if oneof := Examples_v1alpha1_ToProto(mapCtx, in.Examples); oneof != nil {
+		out.Method = &pb.ExplanationParameters_Examples{Examples: oneof}
+	}
+	out.TopK = direct.ValueOf(in.TopK)
+	out.OutputIndices = ListValue_v1alpha1_ToProto(mapCtx, in.OutputIndices)
+	return out
+}
+func ExplanationSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ExplanationSpec) *krmvertexaiv1alpha1.ExplanationSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.ExplanationSpec{}
+	out.Parameters = ExplanationParameters_v1alpha1_FromProto(mapCtx, in.GetParameters())
+	out.Metadata = ExplanationMetadata_v1alpha1_FromProto(mapCtx, in.GetMetadata())
+	return out
+}
+func ExplanationSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.ExplanationSpec) *pb.ExplanationSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ExplanationSpec{}
+	out.Parameters = ExplanationParameters_v1alpha1_ToProto(mapCtx, in.Parameters)
+	out.Metadata = ExplanationMetadata_v1alpha1_ToProto(mapCtx, in.Metadata)
+	return out
+}
 func FeatureGroup_BigQuery_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.FeatureGroup_BigQuery) *krmvertexaiv1alpha1.FeatureGroup_BigQuery {
 	if in == nil {
 		return nil
@@ -389,6 +543,40 @@ func FeatureGroup_BigQuery_TimeSeries_v1alpha1_ToProto(mapCtx *direct.MapContext
 	}
 	out := &pb.FeatureGroup_BigQuery_TimeSeries{}
 	out.TimestampColumn = direct.ValueOf(in.TimestampColumn)
+	return out
+}
+func FeatureNoiseSigma_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.FeatureNoiseSigma) *krmvertexaiv1alpha1.FeatureNoiseSigma {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.FeatureNoiseSigma{}
+	out.NoiseSigma = direct.Slice_FromProto(mapCtx, in.NoiseSigma, FeatureNoiseSigma_NoiseSigmaForFeature_v1alpha1_FromProto)
+	return out
+}
+func FeatureNoiseSigma_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.FeatureNoiseSigma) *pb.FeatureNoiseSigma {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FeatureNoiseSigma{}
+	out.NoiseSigma = direct.Slice_ToProto(mapCtx, in.NoiseSigma, FeatureNoiseSigma_NoiseSigmaForFeature_v1alpha1_ToProto)
+	return out
+}
+func FeatureNoiseSigma_NoiseSigmaForFeature_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.FeatureNoiseSigma_NoiseSigmaForFeature) *krmvertexaiv1alpha1.FeatureNoiseSigma_NoiseSigmaForFeature {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.FeatureNoiseSigma_NoiseSigmaForFeature{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Sigma = direct.LazyPtr(in.GetSigma())
+	return out
+}
+func FeatureNoiseSigma_NoiseSigmaForFeature_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.FeatureNoiseSigma_NoiseSigmaForFeature) *pb.FeatureNoiseSigma_NoiseSigmaForFeature {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FeatureNoiseSigma_NoiseSigmaForFeature{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Sigma = direct.ValueOf(in.Sigma)
 	return out
 }
 func Featurestore_OnlineServingConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Featurestore_OnlineServingConfig) *krmvertexaiv1alpha1.Featurestore_OnlineServingConfig {
@@ -459,6 +647,58 @@ func GCSDestination_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv
 	}
 	out := &pb.GcsDestination{}
 	out.OutputUriPrefix = direct.ValueOf(in.OutputURIPrefix)
+	return out
+}
+func GCSSource_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.GcsSource) *krmvertexaiv1alpha1.GCSSource {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.GCSSource{}
+	out.Uris = in.Uris
+	return out
+}
+func GCSSource_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.GCSSource) *pb.GcsSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GcsSource{}
+	out.Uris = in.Uris
+	return out
+}
+func GenieSource_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.GenieSource) *krmvertexaiv1alpha1.GenieSource {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.GenieSource{}
+	out.BaseModelURI = direct.LazyPtr(in.GetBaseModelUri())
+	return out
+}
+func GenieSource_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.GenieSource) *pb.GenieSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GenieSource{}
+	out.BaseModelUri = direct.ValueOf(in.BaseModelURI)
+	return out
+}
+func IntegratedGradientsAttribution_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.IntegratedGradientsAttribution) *krmvertexaiv1alpha1.IntegratedGradientsAttribution {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.IntegratedGradientsAttribution{}
+	out.StepCount = direct.LazyPtr(in.GetStepCount())
+	out.SmoothGradConfig = SmoothGradConfig_v1alpha1_FromProto(mapCtx, in.GetSmoothGradConfig())
+	out.BlurBaselineConfig = BlurBaselineConfig_v1alpha1_FromProto(mapCtx, in.GetBlurBaselineConfig())
+	return out
+}
+func IntegratedGradientsAttribution_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.IntegratedGradientsAttribution) *pb.IntegratedGradientsAttribution {
+	if in == nil {
+		return nil
+	}
+	out := &pb.IntegratedGradientsAttribution{}
+	out.StepCount = direct.ValueOf(in.StepCount)
+	out.SmoothGradConfig = SmoothGradConfig_v1alpha1_ToProto(mapCtx, in.SmoothGradConfig)
+	out.BlurBaselineConfig = BlurBaselineConfig_v1alpha1_ToProto(mapCtx, in.BlurBaselineConfig)
 	return out
 }
 func MachineSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.MachineSpec) *krmvertexaiv1alpha1.MachineSpec {
@@ -553,6 +793,142 @@ func MetadataStore_MetadataStoreState_v1beta1_ToProto(mapCtx *direct.MapContext,
 	out.DiskUtilizationBytes = direct.ValueOf(in.DiskUtilizationBytes)
 	return out
 }
+func ModelContainerSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ModelContainerSpec) *krmvertexaiv1alpha1.ModelContainerSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.ModelContainerSpec{}
+	out.ImageURI = direct.LazyPtr(in.GetImageUri())
+	out.Command = in.Command
+	out.Args = in.Args
+	out.Env = direct.Slice_FromProto(mapCtx, in.Env, EnvVar_v1alpha1_FromProto)
+	out.Ports = direct.Slice_FromProto(mapCtx, in.Ports, Port_v1alpha1_FromProto)
+	out.PredictRoute = direct.LazyPtr(in.GetPredictRoute())
+	out.HealthRoute = direct.LazyPtr(in.GetHealthRoute())
+	out.InvokeRoutePrefix = direct.LazyPtr(in.GetInvokeRoutePrefix())
+	out.GrpcPorts = direct.Slice_FromProto(mapCtx, in.GrpcPorts, Port_v1alpha1_FromProto)
+	out.DeploymentTimeout = direct.StringDuration_FromProto(mapCtx, in.GetDeploymentTimeout())
+	out.SharedMemorySizeMb = direct.LazyPtr(in.GetSharedMemorySizeMb())
+	out.StartupProbe = Probe_v1alpha1_FromProto(mapCtx, in.GetStartupProbe())
+	out.HealthProbe = Probe_v1alpha1_FromProto(mapCtx, in.GetHealthProbe())
+	out.LivenessProbe = Probe_v1alpha1_FromProto(mapCtx, in.GetLivenessProbe())
+	return out
+}
+func ModelContainerSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.ModelContainerSpec) *pb.ModelContainerSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ModelContainerSpec{}
+	out.ImageUri = direct.ValueOf(in.ImageURI)
+	out.Command = in.Command
+	out.Args = in.Args
+	out.Env = direct.Slice_ToProto(mapCtx, in.Env, EnvVar_v1alpha1_ToProto)
+	out.Ports = direct.Slice_ToProto(mapCtx, in.Ports, Port_v1alpha1_ToProto)
+	out.PredictRoute = direct.ValueOf(in.PredictRoute)
+	out.HealthRoute = direct.ValueOf(in.HealthRoute)
+	out.InvokeRoutePrefix = direct.ValueOf(in.InvokeRoutePrefix)
+	out.GrpcPorts = direct.Slice_ToProto(mapCtx, in.GrpcPorts, Port_v1alpha1_ToProto)
+	out.DeploymentTimeout = direct.StringDuration_ToProto(mapCtx, in.DeploymentTimeout)
+	out.SharedMemorySizeMb = direct.ValueOf(in.SharedMemorySizeMb)
+	out.StartupProbe = Probe_v1alpha1_ToProto(mapCtx, in.StartupProbe)
+	out.HealthProbe = Probe_v1alpha1_ToProto(mapCtx, in.HealthProbe)
+	out.LivenessProbe = Probe_v1alpha1_ToProto(mapCtx, in.LivenessProbe)
+	return out
+}
+func ModelGardenSource_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ModelGardenSource) *krmvertexaiv1alpha1.ModelGardenSource {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.ModelGardenSource{}
+	out.PublicModelName = direct.LazyPtr(in.GetPublicModelName())
+	out.VersionID = direct.LazyPtr(in.GetVersionId())
+	out.SkipHfModelCache = direct.LazyPtr(in.GetSkipHfModelCache())
+	return out
+}
+func ModelGardenSource_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.ModelGardenSource) *pb.ModelGardenSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ModelGardenSource{}
+	out.PublicModelName = direct.ValueOf(in.PublicModelName)
+	out.VersionId = direct.ValueOf(in.VersionID)
+	out.SkipHfModelCache = direct.ValueOf(in.SkipHfModelCache)
+	return out
+}
+func ModelSourceInfo_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ModelSourceInfo) *krmvertexaiv1alpha1.ModelSourceInfo {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.ModelSourceInfo{}
+	out.SourceType = direct.Enum_FromProto(mapCtx, in.GetSourceType())
+	out.Copy = direct.LazyPtr(in.GetCopy())
+	return out
+}
+func ModelSourceInfo_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.ModelSourceInfo) *pb.ModelSourceInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ModelSourceInfo{}
+	out.SourceType = direct.Enum_ToProto[pb.ModelSourceInfo_ModelSourceType](mapCtx, in.SourceType)
+	out.Copy = direct.ValueOf(in.Copy)
+	return out
+}
+func Model_BaseModelSource_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Model_BaseModelSource) *krmvertexaiv1alpha1.Model_BaseModelSource {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.Model_BaseModelSource{}
+	out.ModelGardenSource = ModelGardenSource_v1alpha1_FromProto(mapCtx, in.GetModelGardenSource())
+	out.GenieSource = GenieSource_v1alpha1_FromProto(mapCtx, in.GetGenieSource())
+	return out
+}
+func Model_BaseModelSource_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.Model_BaseModelSource) *pb.Model_BaseModelSource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Model_BaseModelSource{}
+	if oneof := ModelGardenSource_v1alpha1_ToProto(mapCtx, in.ModelGardenSource); oneof != nil {
+		out.Source = &pb.Model_BaseModelSource_ModelGardenSource{ModelGardenSource: oneof}
+	}
+	if oneof := GenieSource_v1alpha1_ToProto(mapCtx, in.GenieSource); oneof != nil {
+		out.Source = &pb.Model_BaseModelSource_GenieSource{GenieSource: oneof}
+	}
+	return out
+}
+func Model_ExportFormatObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Model_ExportFormat) *krmvertexaiv1alpha1.Model_ExportFormatObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.Model_ExportFormatObservedState{}
+	out.ID = direct.LazyPtr(in.GetId())
+	out.ExportableContents = direct.EnumSlice_FromProto(mapCtx, in.ExportableContents)
+	return out
+}
+func Model_ExportFormatObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.Model_ExportFormatObservedState) *pb.Model_ExportFormat {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Model_ExportFormat{}
+	out.Id = direct.ValueOf(in.ID)
+	out.ExportableContents = direct.EnumSlice_ToProto[pb.Model_ExportFormat_ExportableContent](mapCtx, in.ExportableContents)
+	return out
+}
+func Model_OriginalModelInfoObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Model_OriginalModelInfo) *krmvertexaiv1alpha1.Model_OriginalModelInfoObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.Model_OriginalModelInfoObservedState{}
+	out.Model = direct.LazyPtr(in.GetModel())
+	return out
+}
+func Model_OriginalModelInfoObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.Model_OriginalModelInfoObservedState) *pb.Model_OriginalModelInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Model_OriginalModelInfo{}
+	out.Model = direct.ValueOf(in.Model)
+	return out
+}
 func NfsMount_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.NfsMount) *krmvertexaiv1alpha1.NfsMount {
 	if in == nil {
 		return nil
@@ -589,6 +965,196 @@ func PSCInterfaceConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmverte
 	out := &pb.PscInterfaceConfig{}
 	out.NetworkAttachment = direct.ValueOf(in.NetworkAttachment)
 	out.DnsPeeringConfigs = direct.Slice_ToProto(mapCtx, in.DNSPeeringConfigs, DNSPeeringConfig_v1alpha1_ToProto)
+	return out
+}
+func Port_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Port) *krmvertexaiv1alpha1.Port {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.Port{}
+	out.ContainerPort = direct.LazyPtr(in.GetContainerPort())
+	return out
+}
+func Port_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.Port) *pb.Port {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Port{}
+	out.ContainerPort = direct.ValueOf(in.ContainerPort)
+	return out
+}
+func PredictSchemata_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.PredictSchemata) *krmvertexaiv1alpha1.PredictSchemata {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.PredictSchemata{}
+	out.InstanceSchemaURI = direct.LazyPtr(in.GetInstanceSchemaUri())
+	out.ParametersSchemaURI = direct.LazyPtr(in.GetParametersSchemaUri())
+	out.PredictionSchemaURI = direct.LazyPtr(in.GetPredictionSchemaUri())
+	return out
+}
+func PredictSchemata_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.PredictSchemata) *pb.PredictSchemata {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PredictSchemata{}
+	out.InstanceSchemaUri = direct.ValueOf(in.InstanceSchemaURI)
+	out.ParametersSchemaUri = direct.ValueOf(in.ParametersSchemaURI)
+	out.PredictionSchemaUri = direct.ValueOf(in.PredictionSchemaURI)
+	return out
+}
+func Presets_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Presets) *krmvertexaiv1alpha1.Presets {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.Presets{}
+	out.Query = direct.Enum_FromProto(mapCtx, in.GetQuery())
+	out.Modality = direct.Enum_FromProto(mapCtx, in.GetModality())
+	return out
+}
+func Presets_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.Presets) *pb.Presets {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Presets{}
+	if oneof := Presets_Query_ToProto(mapCtx, in.Query); oneof != nil {
+		out.Query = oneof
+	}
+	out.Modality = direct.Enum_ToProto[pb.Presets_Modality](mapCtx, in.Modality)
+	return out
+}
+func Probe_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Probe) *krmvertexaiv1alpha1.Probe {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.Probe{}
+	out.Exec = Probe_ExecAction_v1alpha1_FromProto(mapCtx, in.GetExec())
+	out.HTTPGet = Probe_HTTPGetAction_v1alpha1_FromProto(mapCtx, in.GetHttpGet())
+	out.Grpc = Probe_GrpcAction_v1alpha1_FromProto(mapCtx, in.GetGrpc())
+	out.TCPSocket = Probe_TCPSocketAction_v1alpha1_FromProto(mapCtx, in.GetTcpSocket())
+	out.PeriodSeconds = direct.LazyPtr(in.GetPeriodSeconds())
+	out.TimeoutSeconds = direct.LazyPtr(in.GetTimeoutSeconds())
+	out.FailureThreshold = direct.LazyPtr(in.GetFailureThreshold())
+	out.SuccessThreshold = direct.LazyPtr(in.GetSuccessThreshold())
+	out.InitialDelaySeconds = direct.LazyPtr(in.GetInitialDelaySeconds())
+	return out
+}
+func Probe_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.Probe) *pb.Probe {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Probe{}
+	if oneof := Probe_ExecAction_v1alpha1_ToProto(mapCtx, in.Exec); oneof != nil {
+		out.ProbeType = &pb.Probe_Exec{Exec: oneof}
+	}
+	if oneof := Probe_HTTPGetAction_v1alpha1_ToProto(mapCtx, in.HTTPGet); oneof != nil {
+		out.ProbeType = &pb.Probe_HttpGet{HttpGet: oneof}
+	}
+	if oneof := Probe_GrpcAction_v1alpha1_ToProto(mapCtx, in.Grpc); oneof != nil {
+		out.ProbeType = &pb.Probe_Grpc{Grpc: oneof}
+	}
+	if oneof := Probe_TCPSocketAction_v1alpha1_ToProto(mapCtx, in.TCPSocket); oneof != nil {
+		out.ProbeType = &pb.Probe_TcpSocket{TcpSocket: oneof}
+	}
+	out.PeriodSeconds = direct.ValueOf(in.PeriodSeconds)
+	out.TimeoutSeconds = direct.ValueOf(in.TimeoutSeconds)
+	out.FailureThreshold = direct.ValueOf(in.FailureThreshold)
+	out.SuccessThreshold = direct.ValueOf(in.SuccessThreshold)
+	out.InitialDelaySeconds = direct.ValueOf(in.InitialDelaySeconds)
+	return out
+}
+func Probe_ExecAction_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Probe_ExecAction) *krmvertexaiv1alpha1.Probe_ExecAction {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.Probe_ExecAction{}
+	out.Command = in.Command
+	return out
+}
+func Probe_ExecAction_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.Probe_ExecAction) *pb.Probe_ExecAction {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Probe_ExecAction{}
+	out.Command = in.Command
+	return out
+}
+func Probe_GrpcAction_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Probe_GrpcAction) *krmvertexaiv1alpha1.Probe_GrpcAction {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.Probe_GrpcAction{}
+	out.Port = direct.LazyPtr(in.GetPort())
+	out.Service = direct.LazyPtr(in.GetService())
+	return out
+}
+func Probe_GrpcAction_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.Probe_GrpcAction) *pb.Probe_GrpcAction {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Probe_GrpcAction{}
+	out.Port = direct.ValueOf(in.Port)
+	out.Service = direct.ValueOf(in.Service)
+	return out
+}
+func Probe_HTTPGetAction_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Probe_HttpGetAction) *krmvertexaiv1alpha1.Probe_HTTPGetAction {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.Probe_HTTPGetAction{}
+	out.Path = direct.LazyPtr(in.GetPath())
+	out.Port = direct.LazyPtr(in.GetPort())
+	out.Host = direct.LazyPtr(in.GetHost())
+	out.Scheme = direct.LazyPtr(in.GetScheme())
+	out.HTTPHeaders = direct.Slice_FromProto(mapCtx, in.HttpHeaders, Probe_HTTPHeader_v1alpha1_FromProto)
+	return out
+}
+func Probe_HTTPGetAction_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.Probe_HTTPGetAction) *pb.Probe_HttpGetAction {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Probe_HttpGetAction{}
+	out.Path = direct.ValueOf(in.Path)
+	out.Port = direct.ValueOf(in.Port)
+	out.Host = direct.ValueOf(in.Host)
+	out.Scheme = direct.ValueOf(in.Scheme)
+	out.HttpHeaders = direct.Slice_ToProto(mapCtx, in.HTTPHeaders, Probe_HTTPHeader_v1alpha1_ToProto)
+	return out
+}
+func Probe_HTTPHeader_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Probe_HttpHeader) *krmvertexaiv1alpha1.Probe_HTTPHeader {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.Probe_HTTPHeader{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Value = direct.LazyPtr(in.GetValue())
+	return out
+}
+func Probe_HTTPHeader_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.Probe_HTTPHeader) *pb.Probe_HttpHeader {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Probe_HttpHeader{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Value = direct.ValueOf(in.Value)
+	return out
+}
+func Probe_TCPSocketAction_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Probe_TcpSocketAction) *krmvertexaiv1alpha1.Probe_TCPSocketAction {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.Probe_TCPSocketAction{}
+	out.Port = direct.LazyPtr(in.GetPort())
+	out.Host = direct.LazyPtr(in.GetHost())
+	return out
+}
+func Probe_TCPSocketAction_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.Probe_TCPSocketAction) *pb.Probe_TcpSocketAction {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Probe_TcpSocketAction{}
+	out.Port = direct.ValueOf(in.Port)
+	out.Host = direct.ValueOf(in.Host)
 	return out
 }
 func PythonPackageSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.PythonPackageSpec) *krmvertexaiv1alpha1.PythonPackageSpec {
@@ -673,6 +1239,22 @@ func SampleConfig_FollowingBatchSamplePercentage_ToProto(mapCtx *direct.MapConte
 	}
 	return &pb.SampleConfig_FollowingBatchSamplePercentage{FollowingBatchSamplePercentage: *in}
 }
+func SampledShapleyAttribution_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SampledShapleyAttribution) *krmvertexaiv1alpha1.SampledShapleyAttribution {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.SampledShapleyAttribution{}
+	out.PathCount = direct.LazyPtr(in.GetPathCount())
+	return out
+}
+func SampledShapleyAttribution_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.SampledShapleyAttribution) *pb.SampledShapleyAttribution {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SampledShapleyAttribution{}
+	out.PathCount = direct.ValueOf(in.PathCount)
+	return out
+}
 func Scheduling_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Scheduling) *krmvertexaiv1alpha1.Scheduling {
 	if in == nil {
 		return nil
@@ -696,6 +1278,36 @@ func Scheduling_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alp
 	out.DisableRetries = direct.ValueOf(in.DisableRetries)
 	out.MaxWaitDuration = direct.StringDuration_ToProto(mapCtx, in.MaxWaitDuration)
 	return out
+}
+func SmoothGradConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SmoothGradConfig) *krmvertexaiv1alpha1.SmoothGradConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.SmoothGradConfig{}
+	out.NoiseSigma = direct.LazyPtr(in.GetNoiseSigma())
+	out.FeatureNoiseSigma = FeatureNoiseSigma_v1alpha1_FromProto(mapCtx, in.GetFeatureNoiseSigma())
+	out.NoisySampleCount = direct.LazyPtr(in.GetNoisySampleCount())
+	return out
+}
+func SmoothGradConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.SmoothGradConfig) *pb.SmoothGradConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SmoothGradConfig{}
+	if oneof := SmoothGradConfig_NoiseSigma_ToProto(mapCtx, in.NoiseSigma); oneof != nil {
+		out.GradientNoiseSigma = oneof
+	}
+	if oneof := FeatureNoiseSigma_v1alpha1_ToProto(mapCtx, in.FeatureNoiseSigma); oneof != nil {
+		out.GradientNoiseSigma = &pb.SmoothGradConfig_FeatureNoiseSigma{FeatureNoiseSigma: oneof}
+	}
+	out.NoisySampleCount = direct.ValueOf(in.NoisySampleCount)
+	return out
+}
+func SmoothGradConfig_NoiseSigma_ToProto(mapCtx *direct.MapContext, in *float32) *pb.SmoothGradConfig_NoiseSigma {
+	if in == nil {
+		return nil
+	}
+	return &pb.SmoothGradConfig_NoiseSigma{NoiseSigma: *in}
 }
 func TrainingConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.TrainingConfig) *krmvertexaiv1alpha1.TrainingConfig {
 	if in == nil {
@@ -803,6 +1415,8 @@ func VertexAIDataLabelingJobObservedState_v1alpha1_ToProto(mapCtx *direct.MapCon
 	out.Error = direct.Status_ToProto(mapCtx, in.Error)
 	return out
 }
+
+/* found existing non-generated mapping function "VertexAIDataLabelingJobSpec_v1alpha1_FromProto", skipping
 func VertexAIDataLabelingJobSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.DataLabelingJob) *krmvertexaiv1alpha1.VertexAIDataLabelingJobSpec {
 	if in == nil {
 		return nil
@@ -810,11 +1424,11 @@ func VertexAIDataLabelingJobSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, i
 	out := &krmvertexaiv1alpha1.VertexAIDataLabelingJobSpec{}
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 
-	if v := in.GetDatasets(); len(v) != 0 {
-		for i := range v {
-			out.DatasetRefs = append(out.DatasetRefs, krmvertexaiv1beta1.VertexAIDatasetRef{External: v[i]})
-		}
-	}
+						if v := in.GetDatasets(); len(v) != 0 {
+							for i := range v {
+								out.DatasetRefs = append(out.DatasetRefs, krmvertexaiv1beta1.VertexAIDatasetRef{External: v[i]})
+							}
+						}
 
 	out.AnnotationLabels = in.AnnotationLabels
 	out.LabelerCount = direct.LazyPtr(in.GetLabelerCount())
@@ -827,30 +1441,36 @@ func VertexAIDataLabelingJobSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, i
 	out.ActiveLearningConfig = ActiveLearningConfig_v1alpha1_FromProto(mapCtx, in.GetActiveLearningConfig())
 	return out
 }
-func VertexAIDataLabelingJobSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.VertexAIDataLabelingJobSpec) *pb.DataLabelingJob {
-	if in == nil {
-		return nil
-	}
-	out := &pb.DataLabelingJob{}
-	out.DisplayName = direct.ValueOf(in.DisplayName)
+*/
 
-	if v := in.DatasetRefs; len(v) != 0 {
-		for i := range v {
-			out.Datasets = append(out.Datasets, v[i].External)
+/*
+found existing non-generated mapping function "VertexAIDataLabelingJobSpec_v1alpha1_ToProto", skipping
+
+	func VertexAIDataLabelingJobSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.VertexAIDataLabelingJobSpec) *pb.DataLabelingJob {
+		if in == nil {
+			return nil
 		}
-	}
+		out := &pb.DataLabelingJob{}
+		out.DisplayName = direct.ValueOf(in.DisplayName)
 
-	out.AnnotationLabels = in.AnnotationLabels
-	out.LabelerCount = direct.ValueOf(in.LabelerCount)
-	out.InstructionUri = direct.ValueOf(in.InstructionURI)
-	out.InputsSchemaUri = direct.ValueOf(in.InputsSchemaURI)
-	out.Inputs = JSON_v1alpha1_ToProto(mapCtx, in.Inputs)
-	out.Labels = in.Labels
-	out.SpecialistPools = in.SpecialistPools
-	out.EncryptionSpec = EncryptionSpec_v1alpha1_ToProto(mapCtx, in.EncryptionSpec)
-	out.ActiveLearningConfig = ActiveLearningConfig_v1alpha1_ToProto(mapCtx, in.ActiveLearningConfig)
-	return out
-}
+							if v := in.DatasetRefs; len(v) != 0 {
+								for i := range v {
+									out.Datasets = append(out.Datasets, v[i].External)
+								}
+							}
+
+		out.AnnotationLabels = in.AnnotationLabels
+		out.LabelerCount = direct.ValueOf(in.LabelerCount)
+		out.InstructionUri = direct.ValueOf(in.InstructionURI)
+		out.InputsSchemaUri = direct.ValueOf(in.InputsSchemaURI)
+		out.Inputs = JSON_v1alpha1_ToProto(mapCtx, in.Inputs)
+		out.Labels = in.Labels
+		out.SpecialistPools = in.SpecialistPools
+		out.EncryptionSpec = EncryptionSpec_v1alpha1_ToProto(mapCtx, in.EncryptionSpec)
+		out.ActiveLearningConfig = ActiveLearningConfig_v1alpha1_ToProto(mapCtx, in.ActiveLearningConfig)
+		return out
+	}
+*/
 func VertexAIDatasetObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Dataset) *krmvertexaiv1beta1.VertexAIDatasetObservedState {
 	if in == nil {
 		return nil
@@ -1219,6 +1839,104 @@ func VertexAIMetadataStoreSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *kr
 	out.DataplexConfig = MetadataStore_DataplexConfig_v1beta1_ToProto(mapCtx, in.DataplexConfig)
 	return out
 }
+func VertexAIModelObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Model) *krmvertexaiv1alpha1.VertexAIModelObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.VertexAIModelObservedState{}
+	// MISSING: Name
+	out.VersionID = direct.LazyPtr(in.GetVersionId())
+	out.VersionCreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetVersionCreateTime())
+	out.VersionUpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetVersionUpdateTime())
+	out.SupportedExportFormats = direct.Slice_FromProto(mapCtx, in.SupportedExportFormats, Model_ExportFormatObservedState_v1alpha1_FromProto)
+	out.TrainingPipeline = direct.LazyPtr(in.GetTrainingPipeline())
+	out.SupportedDeploymentResourcesTypes = direct.EnumSlice_FromProto(mapCtx, in.SupportedDeploymentResourcesTypes)
+	out.SupportedInputStorageFormats = in.SupportedInputStorageFormats
+	out.SupportedOutputStorageFormats = in.SupportedOutputStorageFormats
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.DeployedModels = direct.Slice_FromProto(mapCtx, in.DeployedModels, DeployedModelRef_v1alpha1_FromProto)
+	// MISSING: Etag
+	out.ModelSourceInfo = ModelSourceInfo_v1alpha1_FromProto(mapCtx, in.GetModelSourceInfo())
+	out.OriginalModelInfo = Model_OriginalModelInfoObservedState_v1alpha1_FromProto(mapCtx, in.GetOriginalModelInfo())
+	out.MetadataArtifact = direct.LazyPtr(in.GetMetadataArtifact())
+	out.SatisfiesPzs = direct.LazyPtr(in.GetSatisfiesPzs())
+	out.SatisfiesPzi = direct.LazyPtr(in.GetSatisfiesPzi())
+	out.Checkpoints = direct.Slice_FromProto(mapCtx, in.Checkpoints, Checkpoint_v1alpha1_FromProto)
+	return out
+}
+func VertexAIModelObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.VertexAIModelObservedState) *pb.Model {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Model{}
+	// MISSING: Name
+	out.VersionId = direct.ValueOf(in.VersionID)
+	out.VersionCreateTime = direct.StringTimestamp_ToProto(mapCtx, in.VersionCreateTime)
+	out.VersionUpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.VersionUpdateTime)
+	out.SupportedExportFormats = direct.Slice_ToProto(mapCtx, in.SupportedExportFormats, Model_ExportFormatObservedState_v1alpha1_ToProto)
+	out.TrainingPipeline = direct.ValueOf(in.TrainingPipeline)
+	out.SupportedDeploymentResourcesTypes = direct.EnumSlice_ToProto[pb.Model_DeploymentResourcesType](mapCtx, in.SupportedDeploymentResourcesTypes)
+	out.SupportedInputStorageFormats = in.SupportedInputStorageFormats
+	out.SupportedOutputStorageFormats = in.SupportedOutputStorageFormats
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.DeployedModels = direct.Slice_ToProto(mapCtx, in.DeployedModels, DeployedModelRef_v1alpha1_ToProto)
+	// MISSING: Etag
+	out.ModelSourceInfo = ModelSourceInfo_v1alpha1_ToProto(mapCtx, in.ModelSourceInfo)
+	out.OriginalModelInfo = Model_OriginalModelInfoObservedState_v1alpha1_ToProto(mapCtx, in.OriginalModelInfo)
+	out.MetadataArtifact = direct.ValueOf(in.MetadataArtifact)
+	out.SatisfiesPzs = direct.ValueOf(in.SatisfiesPzs)
+	out.SatisfiesPzi = direct.ValueOf(in.SatisfiesPzi)
+	out.Checkpoints = direct.Slice_ToProto(mapCtx, in.Checkpoints, Checkpoint_v1alpha1_ToProto)
+	return out
+}
+func VertexAIModelSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Model) *krmvertexaiv1alpha1.VertexAIModelSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.VertexAIModelSpec{}
+	// MISSING: Name
+	out.VersionAliases = in.VersionAliases
+	out.DisplayName = in.GetDisplayName()
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.VersionDescription = direct.LazyPtr(in.GetVersionDescription())
+	out.DefaultCheckpointID = direct.LazyPtr(in.GetDefaultCheckpointId())
+	out.PredictSchemata = PredictSchemata_v1alpha1_FromProto(mapCtx, in.GetPredictSchemata())
+	out.MetadataSchemaURI = direct.LazyPtr(in.GetMetadataSchemaUri())
+	out.Metadata = Value_v1alpha1_FromProto(mapCtx, in.GetMetadata())
+	out.ContainerSpec = ModelContainerSpec_v1alpha1_FromProto(mapCtx, in.GetContainerSpec())
+	out.ArtifactURI = direct.LazyPtr(in.GetArtifactUri())
+	out.ExplanationSpec = ExplanationSpec_v1alpha1_FromProto(mapCtx, in.GetExplanationSpec())
+	// MISSING: Etag
+	out.Labels = in.Labels
+	out.EncryptionSpec = EncryptionSpec_v1alpha1_FromProto(mapCtx, in.GetEncryptionSpec())
+	out.BaseModelSource = Model_BaseModelSource_v1alpha1_FromProto(mapCtx, in.GetBaseModelSource())
+	return out
+}
+func VertexAIModelSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.VertexAIModelSpec) *pb.Model {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Model{}
+	// MISSING: Name
+	out.VersionAliases = in.VersionAliases
+	out.DisplayName = VertexAIModelSpec_DisplayName_ToProto(mapCtx, in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	out.VersionDescription = direct.ValueOf(in.VersionDescription)
+	out.DefaultCheckpointId = direct.ValueOf(in.DefaultCheckpointID)
+	out.PredictSchemata = PredictSchemata_v1alpha1_ToProto(mapCtx, in.PredictSchemata)
+	out.MetadataSchemaUri = direct.ValueOf(in.MetadataSchemaURI)
+	out.Metadata = Value_v1alpha1_ToProto(mapCtx, in.Metadata)
+	out.ContainerSpec = ModelContainerSpec_v1alpha1_ToProto(mapCtx, in.ContainerSpec)
+	out.ArtifactUri = direct.ValueOf(in.ArtifactURI)
+	out.ExplanationSpec = ExplanationSpec_v1alpha1_ToProto(mapCtx, in.ExplanationSpec)
+	// MISSING: Etag
+	out.Labels = in.Labels
+	out.EncryptionSpec = EncryptionSpec_v1alpha1_ToProto(mapCtx, in.EncryptionSpec)
+	out.BaseModelSource = Model_BaseModelSource_v1alpha1_ToProto(mapCtx, in.BaseModelSource)
+	return out
+}
 func VertexAITensorboardExperimentObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.TensorboardExperiment) *krmvertexaiv1alpha1.VertexAITensorboardExperimentObservedState {
 	if in == nil {
 		return nil
@@ -1351,5 +2069,25 @@ func WorkerPoolSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv
 	out.ReplicaCount = direct.ValueOf(in.ReplicaCount)
 	out.NfsMounts = direct.Slice_ToProto(mapCtx, in.NfsMounts, NfsMount_v1alpha1_ToProto)
 	out.DiskSpec = DiskSpec_v1alpha1_ToProto(mapCtx, in.DiskSpec)
+	return out
+}
+func XraiAttribution_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.XraiAttribution) *krmvertexaiv1alpha1.XraiAttribution {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.XraiAttribution{}
+	out.StepCount = direct.LazyPtr(in.GetStepCount())
+	out.SmoothGradConfig = SmoothGradConfig_v1alpha1_FromProto(mapCtx, in.GetSmoothGradConfig())
+	out.BlurBaselineConfig = BlurBaselineConfig_v1alpha1_FromProto(mapCtx, in.GetBlurBaselineConfig())
+	return out
+}
+func XraiAttribution_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.XraiAttribution) *pb.XraiAttribution {
+	if in == nil {
+		return nil
+	}
+	out := &pb.XraiAttribution{}
+	out.StepCount = direct.ValueOf(in.StepCount)
+	out.SmoothGradConfig = SmoothGradConfig_v1alpha1_ToProto(mapCtx, in.SmoothGradConfig)
+	out.BlurBaselineConfig = BlurBaselineConfig_v1alpha1_ToProto(mapCtx, in.BlurBaselineConfig)
 	return out
 }
