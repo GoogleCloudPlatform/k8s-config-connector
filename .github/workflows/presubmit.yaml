@@ -38,6 +38,12 @@ on:
 
 
 jobs:
+  validations:
+    name: "validations"
+    runs-on: ubuntu-latest
+    steps:
+      - name: "No-op validation check for branch protection"
+        run: echo "validations completed successfully"
 
   build-images:
     runs-on: ubuntu-22.04
