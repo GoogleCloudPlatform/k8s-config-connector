@@ -61,7 +61,7 @@ Create or update the file to match the canonical example. Key requirements:
 
 Read the canonical `apis/artifactregistry/v1beta1/artifactregistryrepository_reference.go` to refresh your understanding.
 
-**CRITICAL RULE FOR REFERENCE TYPES:** Whenever a reference type (e.g., `<Kind>Ref` implementing `refsv1beta1.Ref`) is needed, it must **always** be defined and implemented in its own separate file named `<kind>_reference.go` rather than inside `_types.go`. This keeps the API types clean and ensures reference-related types are organized consistently across packages.
+**CRITICAL RULE FOR REFERENCE TYPES:** Whenever a reference type (e.g., `<Kind>Ref`) is needed, it must **always** be defined and implemented in its own separate file named `<kind>_reference.go` rather than inside `_types.go`. This keeps the API types clean and ensures reference-related types are organized consistently across packages.
 
 Create or update the file to match the canonical example. Key requirements:
 - Use the standard copyright header (Year 2026).
@@ -71,9 +71,20 @@ Create or update the file to match the canonical example. Key requirements:
   - **Important:** Add a clean, simple doc comment like `// <Kind>Ref is a reference to a GCP <Kind>.` right above the struct definition. Avoid verbose or awkward boilerplate phrasing like "defines the resource reference to..." or "which External field...".
   - The `External` field MUST have specific godoc: `"A reference to an externally managed <Kind> resource. Should be in the format \"projects/{{projectID}}/...\""`. Do not use generic docstrings.
   - The `Name` and `Namespace` fields should have godocs: `"The name of a <Kind> resource."` and `"The namespace of a <Kind> resource."`.
+  - If `Name` and `Namespace` fields are commented out with `NOTYET`, uncomment them.
 - Include `func init() { refs.Register(&<Kind>Ref{}) }`.
 - Implement boilerplate methods: `GetGVK`, `GetNamespacedName`, `GetExternal`, `SetExternal`, `ValidateExternal`, `ParseExternalToIdentity`.
 - Implement `Normalize` to populate the `External` field:
+  - If the current `Normalize` function only verifies `external` field, likely it was added as an external-only reference before. Remove the external-only normalization and start using `refs.Normalize`.
+    Example external-only `Normalize` function:
+    ```
+    func (r *ComputeBackendBucketRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+      if r.External == "" {
+        return fmt.Errorf("external reference must be specified for %s", ComputeBackendBucketGVK.Kind)
+      }
+      return r.ValidateExternal(r.External)
+    }
+    ```
   - **CRITICAL WARNING:** If the referenced resource is a direct controller or any modern resource that supports `status.externalRef` (or equivalent status-based identity), **NEVER** use `NormalizeWithFallback` or any custom fallback function that reads from the `spec` (such as calling `getIdentityFrom<Kind>Spec`). You **MUST** delegate `Normalize` directly to `refs.Normalize`.
   - **Why?** `refs.Normalize` reads strictly from status and avoids using spec. If a reference looks at the spec (via `getIdentityFrom<Kind>Spec`) during normalization before the resource is fully ready/created in GCP, it will prematurely return an identity string. This leads to broken dependency validation, reconciliation loops, and cascading lookup failures because dependent resources assume the dependency is ready when it is not.
   - **Legacy Fallbacks:** Only use `refs.NormalizeWithFallback` for older, legacy resources (e.g. DCL or Terraform) that completely lack `status.externalRef`.
