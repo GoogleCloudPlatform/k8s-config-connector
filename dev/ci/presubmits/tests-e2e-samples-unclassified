@@ -23,41 +23,24 @@ function on_error() {
 trap on_error ERR
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
-cd ${REPO_ROOT}/
+cd "${REPO_ROOT}"
 
-. ${REPO_ROOT}/dev/tasks/setup-envtest
+. "${REPO_ROOT}/dev/tasks/setup-envtest"
 
-SKIP_TEST_APIGROUPS=(
-    "alloydb.cnrm.cloud.google.com"
-    "apigateway.cnrm.cloud.google.com"
-    "apigee.cnrm.cloud.google.com"
-    "bigquery.cnrm.cloud.google.com"
-    "bigqueryconnection.cnrm.cloud.google.com"
-    "bigquerydatapolicy.cnrm.cloud.google.com"
-    "bigquerydatatransfer.cnrm.cloud.google.com"
-    "cloudbuild.cnrm.cloud.google.com"
-    "cloudidentity.cnrm.cloud.google.com"
-    "compute.cnrm.cloud.google.com"
-    "dataflow.cnrm.cloud.google.com"
-    "dataproc.cnrm.cloud.google.com"
-    "gkehub.cnrm.cloud.google.com"
-    "iam.cnrm.cloud.google.com"
-    "kms.cnrm.cloud.google.com"
-    "orgpolicy.cnrm.cloud.google.com"
-    "redis.cnrm.cloud.google.com"
-    "secretmanager.cnrm.cloud.google.com"
-    "spanner.cnrm.cloud.google.com"
-    "sql.cnrm.cloud.google.com"
-    "storage.cnrm.cloud.google.com"
-    "workstations.cnrm.cloud.google.com"
-)
+export ONLY_TEST_APIGROUPS=""
+export USE_FULL_TEST_NAMES=true
+export TEST_TIMEOUT=15m
 
-export RUN_TESTS=TestAllInSeries/samples
-# The env var 'KCC_ENG_GROUP_EMAIL' needs to be set to unblock sample
-# 'folder-level-entitlement'.
-export MOCK_GROUP_EMAIL="test@group.com"
-export SKIP_TEST_APIGROUP=$(IFS=, ; echo "${SKIP_TEST_APIGROUPS[*]}")
-export TEST_TIMEOUT=1h30m
+echo "Prebuilding e2e tests..."
+export PREBUILT_TEST_BINARY=${REPO_ROOT}/.build/tests-e2e
+mkdir -p ${REPO_ROOT}/.build
+time go test -c -o ${PREBUILT_TEST_BINARY} ./tests/e2e
 
-echo "Running samples in tests/e2e..."
-${REPO_ROOT}/dev/tasks/run-e2e
+echo "Building paralleltestrunner..."
+time go build -o ${REPO_ROOT}/.build/paralleltestrunner ${REPO_ROOT}/dev/tools/paralleltestrunner
+
+echo "Running unclassified samples tests in parallel..."
+${REPO_ROOT}/.build/paralleltestrunner \
+    -list-file="${REPO_ROOT}/tests/e2e/testdata/samples-unclassified-list.txt" \
+    -base-test="TestAllInSeries/samples" \
+    -- ${REPO_ROOT}/dev/tasks/run-e2e
