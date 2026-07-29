@@ -1,0 +1,28 @@
+apiVersion: networkservices.cnrm.cloud.google.com/v1alpha1
+kind: NetworkServicesEdgeCacheService
+metadata:
+  name: edgecacheservice-${uniqueId}
+spec:
+  description: Updated media edge cache service
+  projectRef:
+    external: ${projectId}
+  resourceID: edgecacheservice${uniqueId}
+  routing:
+    hostRule:
+    - description: host rule description
+      hosts:
+      - sslcert.tf-test.club
+      pathMatcher: routes
+    pathMatcher:
+    - name: routes
+      routeRule:
+      - description: route rule with custom methods
+        priority: "1"
+        matchRule:
+        - prefixMatch: /
+        origin: origin-${uniqueId}
+        routeMethods:
+          allowedMethods:
+          - GET
+          - HEAD
+          - PUT

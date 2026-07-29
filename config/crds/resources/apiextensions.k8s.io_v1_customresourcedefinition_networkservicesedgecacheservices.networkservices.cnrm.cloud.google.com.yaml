@@ -783,6 +783,17 @@ spec:
                                         type: string
                                     type: object
                                 type: object
+                              routeMethods:
+                                description: Supported HTTP methods.
+                                properties:
+                                  allowedMethods:
+                                    description: The list of allowed HTTP methods.
+                                    items:
+                                      type: string
+                                    type: array
+                                required:
+                                - allowedMethods
+                                type: object
                               urlRedirect:
                                 description: The URL redirect configuration for requests
                                   that match this route.
