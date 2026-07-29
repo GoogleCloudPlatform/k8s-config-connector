@@ -88,8 +88,8 @@ cloud.google.com/go/devicestreaming v1.0.0 h1:+yVSFN0uTmhUFd5U8nu6MSLpkNd4DFGHDV
 cloud.google.com/go/devicestreaming v1.0.0/go.mod h1:9qJYACHii1+4yiv9TewXrFpsX4jc77ZAqcEuapi7lJ4=
 cloud.google.com/go/dialogflow v1.82.0 h1:PKC7h47s036UsW4YxTV2aRCTOChEzMzioczRdlKSApk=
 cloud.google.com/go/dialogflow v1.82.0/go.mod h1:UtuiGOq9gAlTz9u4Vt+q1syMrx9ANQzTk+lC3WDdSOw=
-cloud.google.com/go/discoveryengine v1.22.0 h1:NQFGHmvIPHwZW/IT8zfMFPjJDwaJAlrMBL/FTi2toLU=
-cloud.google.com/go/discoveryengine v1.22.0/go.mod h1:wwjQ1QH8MBe8iQS1VxJCIy+WR4e0CXAoI7mDfwnKiNk=
+cloud.google.com/go/discoveryengine v1.32.0 h1:iPoWBWLMVzf3DhBrYAAybhamVUJ2BjJZyOezEy5/FNw=
+cloud.google.com/go/discoveryengine v1.32.0/go.mod h1:H5dyX1t0Y89kJF/JuwHcE4tiE9/lHFChLwxvZJc6aJw=
 cloud.google.com/go/documentai v1.48.0 h1:qodgYZJgA89EWNJeeWXWBe/5kq9C5cQhthJweI6Z6CE=
 cloud.google.com/go/documentai v1.48.0/go.mod h1:mGjfbNf0cqCHKgxMZZV7frbfoF9T2hKkU1h88QyOy3c=
 cloud.google.com/go/edgecontainer v1.9.0 h1:9S7YGenFNDVMoh5tulCbSniETQ+XxgjDDie/sEhdkw8=
