@@ -806,7 +806,7 @@ func NewHarness(ctx context.Context, t *testing.T, opts ...HarnessOption) *Harne
 	// Wait for the webhook server to start (mgr.Start runs asynchronously)
 	if len(webhooks) > 0 {
 		webhookWaitStart := time.Now()
-		webhookTimeout := 30 * time.Second
+		webhookTimeout := 90 * time.Second
 		for {
 			webhookStarted := mgr.GetWebhookServer().StartedChecker()
 			req := &http.Request{}

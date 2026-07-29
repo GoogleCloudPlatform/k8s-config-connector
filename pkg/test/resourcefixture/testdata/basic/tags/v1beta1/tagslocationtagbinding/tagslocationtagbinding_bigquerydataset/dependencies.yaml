@@ -46,4 +46,4 @@ spec:
   description: For valuename resources.
   parentRef:
     name: tagstagkey-${uniqueId}
-  shortName: valuename
+  shortName: valuename${uniqueId}
