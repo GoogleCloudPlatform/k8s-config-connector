@@ -25,7 +25,7 @@ package securitycenter
 
 import (
 	pb "cloud.google.com/go/securitycenter/apiv1/securitycenterpb"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	krmbigqueryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/securitycenter/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -63,7 +63,7 @@ func SecurityCenterBigQueryExportSpec_FromProto(mapCtx *direct.MapContext, in *p
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.Filter = direct.LazyPtr(in.GetFilter())
 	if in.GetDataset() != "" {
-		out.DatasetRef = &refsv1beta1.BigQueryDatasetRef{External: in.GetDataset()}
+		out.DatasetRef = &krmbigqueryv1beta1.BigQueryDatasetRef{External: in.GetDataset()}
 	}
 	return out
 }

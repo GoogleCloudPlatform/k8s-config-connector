@@ -83,7 +83,7 @@ type BigQueryDataTransferConfigSpec struct {
 
 	// The BigQuery target dataset id.
 	// +kcc:proto:field=google.cloud.bigquery.datatransfer.v1.TransferConfig.destination_dataset_id
-	DatasetRef *bigquery.DatasetRef `json:"datasetRef,omitempty"`
+	DatasetRef *bigquery.BigQueryDatasetRef `json:"datasetRef,omitempty"`
 
 	// Is this config disabled. When set to true, no runs will be scheduled for
 	//  this transfer config.

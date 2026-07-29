@@ -334,7 +334,7 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 	mapCtx := &direct.MapContext{}
 	obj.Spec = direct.ValueOf(BigQueryTableSpec_FromProto(mapCtx, a.actual))
 	// Populate the reference from the identity
-	obj.Spec.DatasetRef = &krm.DatasetRef{External: a.id.Parent().String()}
+	obj.Spec.DatasetRef = &krm.BigQueryDatasetRef{External: a.id.Parent().String()}
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}

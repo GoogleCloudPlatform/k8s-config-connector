@@ -111,7 +111,7 @@ func Listing_BigQueryDatasetSource_FromProto(mapCtx *direct.MapContext, in *pb.L
 	}
 	out := &krm.BigQueryDatasetSource{}
 	if out.DatasetRef != nil {
-		out.DatasetRef = &bigqueryv1beta1.DatasetRef{
+		out.DatasetRef = &bigqueryv1beta1.BigQueryDatasetRef{
 			External: in.Dataset,
 		}
 	}

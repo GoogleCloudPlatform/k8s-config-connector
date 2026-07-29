@@ -70,7 +70,7 @@ spec:
                   type: string
                 type: array
               datasetRef:
-                description: DatasetRef is a reference to a BigQueryDataset.
+                description: BigQueryDatasetRef is a reference to a BigQueryDataset.
                 oneOf:
                 - not:
                     required:

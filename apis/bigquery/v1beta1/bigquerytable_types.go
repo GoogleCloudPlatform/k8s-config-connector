@@ -628,7 +628,7 @@ type BigQueryTableSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// +required
-	DatasetRef *DatasetRef `json:"datasetRef"`
+	DatasetRef *BigQueryDatasetRef `json:"datasetRef"`
 
 	// A user-friendly description of this table.
 	// +optional

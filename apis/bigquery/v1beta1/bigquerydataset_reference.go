@@ -26,14 +26,14 @@ import (
 )
 
 func init() {
-	refs.Register(&DatasetRef{}, &BigQueryDataset{})
+	refs.Register(&BigQueryDatasetRef{}, &BigQueryDataset{})
 }
 
-var _ refs.Ref = &DatasetRef{}
-var _ refs.ExternalRef = &DatasetRef{}
+var _ refs.Ref = &BigQueryDatasetRef{}
+var _ refs.ExternalRef = &BigQueryDatasetRef{}
 
-// DatasetRef is a reference to a BigQueryDataset.
-type DatasetRef struct {
+// BigQueryDatasetRef is a reference to a BigQueryDataset.
+type BigQueryDatasetRef struct {
 	// A reference to an externally-managed BigQueryDataset resource.
 	// Should be in the format "projects/{{projectID}}/datasets/{{datasetID}}".
 	External string `json:"external,omitempty"`
@@ -46,12 +46,12 @@ type DatasetRef struct {
 }
 
 // GetGVK returns the GroupVersionKind for BigQueryDataset.
-func (r *DatasetRef) GetGVK() schema.GroupVersionKind {
+func (r *BigQueryDatasetRef) GetGVK() schema.GroupVersionKind {
 	return BigQueryDatasetGVK
 }
 
 // GetNamespacedName returns the NamespacedName for the reference.
-func (r *DatasetRef) GetNamespacedName() types.NamespacedName {
+func (r *BigQueryDatasetRef) GetNamespacedName() types.NamespacedName {
 	return types.NamespacedName{
 		Name:      r.Name,
 		Namespace: r.Namespace,
@@ -59,17 +59,17 @@ func (r *DatasetRef) GetNamespacedName() types.NamespacedName {
 }
 
 // GetExternal returns the external reference.
-func (r *DatasetRef) GetExternal() string {
+func (r *BigQueryDatasetRef) GetExternal() string {
 	return r.External
 }
 
-func (r *DatasetRef) SetExternal(ref string) {
+func (r *BigQueryDatasetRef) SetExternal(ref string) {
 	r.External = ref
 	r.Name = ""
 	r.Namespace = ""
 }
 
-func (r *DatasetRef) ValidateExternal(ref string) error {
+func (r *BigQueryDatasetRef) ValidateExternal(ref string) error {
 	id := &DatasetIdentity{}
 	if err := id.FromExternal(ref); err != nil {
 		return err
@@ -77,7 +77,7 @@ func (r *DatasetRef) ValidateExternal(ref string) error {
 	return nil
 }
 
-func (r *DatasetRef) Normalize(ctx context.Context, reader client.Reader, otherNamespace string) error {
+func (r *BigQueryDatasetRef) Normalize(ctx context.Context, reader client.Reader, otherNamespace string) error {
 	fallback := func(u *unstructured.Unstructured) string {
 		identity, err := getIdentityFromBigQueryDatasetSpec(ctx, reader, u)
 		if err != nil {
@@ -88,7 +88,7 @@ func (r *DatasetRef) Normalize(ctx context.Context, reader client.Reader, otherN
 	return refs.NormalizeWithFallback(ctx, reader, r, otherNamespace, fallback)
 }
 
-func (r *DatasetRef) ParseExternalToIdentity() (identity.Identity, error) {
+func (r *BigQueryDatasetRef) ParseExternalToIdentity() (identity.Identity, error) {
 	id := &DatasetIdentity{}
 	if err := id.FromExternal(r.External); err != nil {
 		return nil, err

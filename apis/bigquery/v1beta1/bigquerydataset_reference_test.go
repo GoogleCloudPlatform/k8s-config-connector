@@ -47,7 +47,7 @@ func TestDatasetRef_ValidateExternal(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			r := &DatasetRef{}
+			r := &BigQueryDatasetRef{}
 			err := r.ValidateExternal(tt.ref)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("ValidateExternal() error = %v, wantErr %v", err, tt.wantErr)

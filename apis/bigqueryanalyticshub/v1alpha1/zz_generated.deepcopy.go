@@ -419,7 +419,7 @@ func (in *BigQueryDatasetSource) DeepCopyInto(out *BigQueryDatasetSource) {
 	*out = *in
 	if in.DatasetRef != nil {
 		in, out := &in.DatasetRef, &out.DatasetRef
-		*out = new(bigqueryv1beta1.DatasetRef)
+		*out = new(bigqueryv1beta1.BigQueryDatasetRef)
 		**out = **in
 	}
 	if in.SelectedResources != nil {

@@ -67,7 +67,7 @@ func (in *LogSinkDestination) DeepCopyInto(out *LogSinkDestination) {
 	*out = *in
 	if in.BigQueryDatasetRef != nil {
 		in, out := &in.BigQueryDatasetRef, &out.BigQueryDatasetRef
-		*out = new(bigqueryv1beta1.DatasetRef)
+		*out = new(bigqueryv1beta1.BigQueryDatasetRef)
 		**out = **in
 	}
 	if in.LoggingLogBucketRef != nil {

@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	bigqueryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -43,7 +44,7 @@ type SecurityCenterBigQueryExportSpec struct {
 
 	// The dataset to write findings' updates to.
 	// +kubebuilder:validation:Required
-	DatasetRef *refsv1beta1.BigQueryDatasetRef `json:"datasetRef"`
+	DatasetRef *bigqueryv1beta1.BigQueryDatasetRef `json:"datasetRef"`
 
 	// The SecurityCenterBigQueryExport name. If not given, the metadata.name will be used.
 	// +kubebuilder:validation:Optional

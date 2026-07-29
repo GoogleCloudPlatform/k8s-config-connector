@@ -81,32 +81,10 @@ spec:
                 description: 'Immutable. The deployment group that this DIRECT endpoint
                   group is connected to, for example: `projects/123456789/locations/global/mirroringDeploymentGroups/my-dg`.
                   See https://google.aip.dev/124.'
-                oneOf:
-                - not:
-                    required:
-                    - external
-                  required:
-                  - name
-                - not:
-                    anyOf:
-                    - required:
-                      - name
-                    - required:
-                      - namespace
-                  required:
-                  - external
                 properties:
                   external:
                     description: A reference to an externally managed NetworkSecurityMirroringDeploymentGroup
-                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/mirroringDeploymentGroups/{{mirroringDeploymentGroupID}}".
-                    type: string
-                  name:
-                    description: The name field of a NetworkSecurityMirroringDeploymentGroup
-                      resource.
-                    type: string
-                  namespace:
-                    description: The namespace field of a NetworkSecurityMirroringDeploymentGroup
-                      resource.
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/interceptDeploymentGroups/{{interceptDeploymentGroupID}}".
                     type: string
                 type: object
               projectRef:

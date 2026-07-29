@@ -32,7 +32,7 @@ type LogSinkBigQueryOptions struct {
 
 type LogSinkDestination struct {
 	// +optional
-	BigQueryDatasetRef *bigqueryv1beta1.DatasetRef `json:"bigQueryDatasetRef,omitempty"`
+	BigQueryDatasetRef *bigqueryv1beta1.BigQueryDatasetRef `json:"bigQueryDatasetRef,omitempty"`
 
 	// +optional
 	LoggingLogBucketRef *LoggingLogBucketRef `json:"loggingLogBucketRef,omitempty"`
