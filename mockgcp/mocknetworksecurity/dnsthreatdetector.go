@@ -47,7 +47,10 @@ func (s *DnsThreatDetectorServer) CreateDnsThreatDetector(ctx context.Context, r
 		return nil, err
 	}
 
-	return obj, nil
+	// Real GCP does not return labels (and potentially other fields) in the Create response
+	responseObj := proto.Clone(obj).(*pbv1.DnsThreatDetector)
+	responseObj.Labels = nil
+	return responseObj, nil
 }
 
 func (s *DnsThreatDetectorServer) GetDnsThreatDetector(ctx context.Context, req *pbv1.GetDnsThreatDetectorRequest) (*pbv1.DnsThreatDetector, error) {
@@ -107,7 +110,10 @@ func (s *DnsThreatDetectorServer) UpdateDnsThreatDetector(ctx context.Context, r
 		return nil, err
 	}
 
-	return updated, nil
+	// Real GCP does not return labels in the Update response
+	responseObj := proto.Clone(updated).(*pbv1.DnsThreatDetector)
+	responseObj.Labels = nil
+	return responseObj, nil
 }
 
 func (s *DnsThreatDetectorServer) DeleteDnsThreatDetector(ctx context.Context, req *pbv1.DeleteDnsThreatDetectorRequest) (*emptypb.Empty, error) {
