@@ -31,7 +31,8 @@ go run . generate-types --service google.cloud.discoveryengine.v1 --api-version 
   --resource DiscoveryEngineDataStoreTargetSite:TargetSite \
   --resource DiscoveryEngineConversation:Conversation \
   --resource DiscoveryEngineSession:Session \
-  --resource DiscoveryEngineSearchEngine:SiteSearchEngine
+  --resource DiscoveryEngineSearchEngine:SiteSearchEngine \
+  --resource DiscoveryEngineSchema:Schema
 mv ../../../apis/discoveryengine/v1alpha1/types.generated.go ../../../apis/discoveryengine/v1alpha1/v1_types.generated.go
 
 go run . generate-types --service google.cloud.discoveryengine.v1beta --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1 \
