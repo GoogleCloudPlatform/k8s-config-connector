@@ -572,22 +572,22 @@ jobs:
           path: /tmp/artifacts/
 
 
-  validate-generate:
+  validate-generated-files:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - uses: ./dev/actions/cache-go
-      - name: "Run dev/ci/presubmits/validate-generate"
+      - name: "Run dev/ci/presubmits/validate-generated-files"
         run: |
-          ./dev/ci/presubmits/validate-generate
+          ./dev/ci/presubmits/validate-generated-files
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4
         if: ${{ !cancelled() }}
         with:
-          name: artifacts-validate-generate
+          name: artifacts-validate-generated-files
           path: /tmp/artifacts/
 
 
@@ -696,7 +696,7 @@ jobs:
       - unit-tests-operator
       - validate-ensure
       - validate-fmt
-      - validate-generate
+      - validate-generated-files
       - validate-github-actions
       - validate-manifests
       - validate-resource-docs
