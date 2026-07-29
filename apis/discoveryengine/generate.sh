@@ -33,6 +33,7 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 
 ${CONTROLLERBUILDER} generate-types --service google.cloud.discoveryengine.v1 --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1 \
+  --resource DiscoveryEngineCMEKConfig:CmekConfig \
   --resource DiscoveryEngineControl:Control \
   --resource DiscoveryEngineDataStore:DataStore \
   --resource DiscoveryEngineEngine:Engine \

@@ -66,7 +66,7 @@ type DiscoveryEngineIdentityMappingStoreStatus struct { /* Conditions represent 
 // +kcc:observedstate:proto=google.cloud.discoveryengine.v1.IdentityMappingStore
 type DiscoveryEngineIdentityMappingStoreObservedState struct {
 	// Output only. CMEK-related information for the Identity Mapping Store.
-	CmekConfig *CmekConfig `json:"cmekConfig,omitempty"`
+	CmekConfig *CMEKConfig `json:"cmekConfig,omitempty"`
 }
 
 // +genclient

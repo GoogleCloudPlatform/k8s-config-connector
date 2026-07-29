@@ -8,20 +8,21 @@ metadata:
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: alpha
     cnrm.cloud.google.com/system: "true"
-  name: discoveryengineidentitymappingstores.discoveryengine.cnrm.cloud.google.com
+  name: discoveryenginecmekconfigs.discoveryengine.cnrm.cloud.google.com
 spec:
   group: discoveryengine.cnrm.cloud.google.com
   names:
     categories:
     - gcp
-    kind: DiscoveryEngineIdentityMappingStore
-    listKind: DiscoveryEngineIdentityMappingStoreList
-    plural: discoveryengineidentitymappingstores
+    kind: DiscoveryEngineCMEKConfig
+    listKind: DiscoveryEngineCMEKConfigList
+    plural: discoveryenginecmekconfigs
     shortNames:
-    - gcpdiscoveryengineidentitymappingstore
-    - gcpdiscoveryengineidentitymappingstores
-    singular: discoveryengineidentitymappingstore
+    - gcpdiscoveryenginecmekconfig
+    - gcpdiscoveryenginecmekconfigs
+    singular: discoveryenginecmekconfig
   preserveUnknownFields: false
   scope: Namespaced
   versions:
@@ -44,7 +45,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: DiscoveryEngineIdentityMappingStore is the Schema for the DiscoveryEngineIdentityMappingStore
+        description: DiscoveryEngineCMEKConfig is the Schema for the DiscoveryEngineCMEKConfig
           API
         properties:
           apiVersion:
@@ -60,22 +61,39 @@ spec:
           metadata:
             type: object
           spec:
-            description: DiscoveryEngineIdentityMappingStoreSpec defines the desired
-              state of DiscoveryEngineIdentityMappingStore
+            description: DiscoveryEngineCMEKConfigSpec defines the desired state of
+              DiscoveryEngineCMEKConfig
             properties:
-              kmsKeyName:
-                description: |-
-                  Input only. The KMS key to be used to protect this Identity Mapping Store
-                  at creation time.
-
-                  Must be set for requests that need to comply with CMEK Org Policy
-                  protections.
-
-                  If this field is set and processed successfully, the Identity Mapping Store
-                  will be protected by the KMS key, as indicated in the cmek_config field.
-                type: string
+              kmsKeyRef:
+                description: KMS key resource name which will be used to encrypt resources.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed KMSCryptoKey.
+                      Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
+                    type: string
+                  name:
+                    description: The `name` of a `KMSCryptoKey` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` of a `KMSCryptoKey` resource.
+                    type: string
+                type: object
               location:
-                description: The location of this resource.
+                description: Immutable. The location of this resource.
                 type: string
               projectRef:
                 description: The project that this resource belongs to.
@@ -109,19 +127,54 @@ spec:
                     description: The `namespace` field of a `Project` resource.
                     type: string
                 type: object
-              resourceID:
-                description: The DiscoveryEngineIdentityMappingStore name. If not
-                  given, the metadata.name will be used.
-                type: string
+              singleRegionKeys:
+                description: Optional. Single-regional CMEKs that are required for
+                  some VAIS features.
+                items:
+                  properties:
+                    kmsKeyRef:
+                      description: Optional. Single-regional kms key resource name
+                        which will be used to encrypt resources.
+                      oneOf:
+                      - not:
+                          required:
+                          - external
+                        required:
+                        - name
+                      - not:
+                          anyOf:
+                          - required:
+                            - name
+                          - required:
+                            - namespace
+                        required:
+                        - external
+                      properties:
+                        external:
+                          description: A reference to an externally managed KMSCryptoKey.
+                            Should be in the format `projects/[kms_project_id]/locations/[region]/keyRings/[key_ring_id]/cryptoKeys/[key]`.
+                          type: string
+                        name:
+                          description: The `name` of a `KMSCryptoKey` resource.
+                          type: string
+                        namespace:
+                          description: The `namespace` of a `KMSCryptoKey` resource.
+                          type: string
+                      type: object
+                  type: object
+                type: array
             required:
+            - kmsKeyRef
             - location
             - projectRef
             type: object
           status:
-            description: DiscoveryEngineIdentityMappingStoreStatus defines the config
-              connector machine state of DiscoveryEngineIdentityMappingStore
+            description: DiscoveryEngineCMEKConfigStatus defines the config connector
+              machine state of DiscoveryEngineCMEKConfig
             properties:
               conditions:
+                description: Conditions represent the latest available observations
+                  of the object's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -146,7 +199,7 @@ spec:
                   type: object
                 type: array
               externalRef:
-                description: A unique specifier for the DiscoveryEngineIdentityMappingStore
+                description: A unique specifier for the DiscoveryEngineCMEKConfig
                   resource in GCP.
                 type: string
               observedGeneration:
@@ -161,35 +214,35 @@ spec:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
                 properties:
-                  cmekConfig:
-                    description: Output only. CMEK-related information for the Identity
-                      Mapping Store.
-                    properties:
-                      kmsKey:
-                        description: KMS key resource name which will be used to encrypt
-                          resources `projects/{project}/locations/{location}/keyRings/{keyRing}/cryptoKeys/{keyId}`.
-                        type: string
-                      kmsKeyVersion:
-                        description: KMS key version resource name which will be used
-                          to encrypt resources `<kms_key>/cryptoKeyVersions/{keyVersion}`.
-                        type: string
-                      name:
-                        description: Required. The name of the CmekConfig of the form
-                          `projects/{project}/locations/{location}/cmekConfig` or
-                          `projects/{project}/locations/{location}/cmekConfigs/{cmek_config}`.
-                        type: string
-                      singleRegionKeys:
-                        description: Optional. Single-regional CMEKs that are required
-                          for some VAIS features.
-                        items:
-                          properties:
-                            kmsKey:
-                              description: Optional. Single-regional kms key resource
-                                name which will be used to encrypt resources.
-                              type: string
-                          type: object
-                        type: array
-                    type: object
+                  isDefault:
+                    description: Output only. The default CmekConfig for the Customer.
+                    type: boolean
+                  kmsKeyVersion:
+                    description: KMS key version resource name which will be used
+                      to encrypt resources.
+                    type: string
+                  lastRotationTimestampMicros:
+                    description: Output only. The timestamp of the last key rotation.
+                    format: int64
+                    type: integer
+                  notebooklmState:
+                    description: Output only. Whether the NotebookLM Corpus is ready
+                      to be used.
+                    type: string
+                  singleRegionKeys:
+                    description: Optional. Single-regional CMEKs that are required
+                      for some VAIS features.
+                    items:
+                      properties:
+                        kmsKey:
+                          description: Optional. Single-regional kms key resource
+                            name which will be used to encrypt resources.
+                          type: string
+                      type: object
+                    type: array
+                  state:
+                    description: Output only. The states of the CmekConfig.
+                    type: string
                 type: object
             type: object
         required:
