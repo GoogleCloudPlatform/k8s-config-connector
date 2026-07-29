@@ -37,5 +37,5 @@ if [[ ! -f "${PREBUILT_TEST_BINARY}" ]]; then
   time go test -c -o ${PREBUILT_TEST_BINARY} ./tests/e2e
 fi
 
-echo "Running annotation and stateabsentinspec tests sequentially..."
-RUN_E2E=1 GOLDEN_REQUEST_CHECKS=1 E2E_GCP_TARGET=mock ${PREBUILT_TEST_BINARY} -test.run "^TestAllInSeries/annotations-fixtures$" -test.timeout 15m -test.v
+echo "Running stateabsentinspec tests sequentially..."
+RUN_E2E=1 GOLDEN_REQUEST_CHECKS=1 E2E_GCP_TARGET=mock ${PREBUILT_TEST_BINARY} -test.run "^TestAllInSeries/stateabsentinspec-fixtures$" -test.timeout 15m -test.v
