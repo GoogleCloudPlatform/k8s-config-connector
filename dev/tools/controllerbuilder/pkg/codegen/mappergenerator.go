@@ -1288,6 +1288,34 @@ func (o *MapperGenerator) goPackageForProto(parentFile protoreflect.FileDescript
 
 	importAlias := strings.TrimSuffix(lastComponent(protoGoPackage), "pb") + "pb"
 
+	aliasIsUsed := func(alias string) bool {
+		for _, pkg := range o.importedPackages {
+			if pkg.alias == alias {
+				return true
+			}
+		}
+		return false
+	}
+
+	if aliasIsUsed(importAlias) {
+		tokens := strings.Split(protoGoPackage, "/")
+		if len(tokens) >= 2 {
+			secondToLast := tokens[len(tokens)-2]
+			importAlias = strings.TrimSuffix(lastComponent(protoGoPackage), "pb") + secondToLast + "pb"
+		}
+	}
+
+	if aliasIsUsed(importAlias) {
+		baseAlias := importAlias
+		for i := 2; ; i++ {
+			candidate := fmt.Sprintf("%s%d", baseAlias, i)
+			if !aliasIsUsed(candidate) {
+				importAlias = candidate
+				break
+			}
+		}
+	}
+
 	o.AddGoImportAlias(protoGoPackage, importAlias)
 	return importAlias
 }
