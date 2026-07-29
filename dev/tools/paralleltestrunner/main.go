@@ -38,6 +38,8 @@ var (
 	baseTest       = flag.String("base-test", "", "Base test name, e.g. TestE2EScript/scenarios")
 	checkUnchanged = flag.Bool("check-unchanged", false, "Fail if the list file is modified (i.e. missing tests found)")
 	timeout        = flag.Duration("timeout", 5*time.Minute, "Timeout for each test")
+	shardIndex     = flag.Int("shard-index", 0, "Index of the current shard (0-based)")
+	shardCount     = flag.Int("shard-count", 1, "Total number of shards")
 )
 
 func main() {
@@ -49,7 +51,32 @@ func main() {
 	restoreFD := configureFileDescriptors()
 	defer restoreFD()
 
-	tests := readList(*listFile)
+	allTests := readList(*listFile)
+	if len(allTests) == 0 {
+		log.Printf("paralleltestrunner: list file %q missing or empty, discovering tests dynamically...", *listFile)
+		cmd := exec.Command(flag.Args()[0], flag.Args()[1:]...)
+		cmd.Env = os.Environ()
+		cmd.Env = append(cmd.Env, "RUN_TESTS="+*baseTest)
+		cmd.Env = append(cmd.Env, "SKIP_ALL=1")
+		output, _ := cmd.CombinedOutput()
+		allTests = parseNewTests(output, *baseTest, nil)
+		log.Printf("paralleltestrunner: dynamically discovered %d tests", len(allTests))
+	}
+
+	tests := allTests
+	if *shardCount > 1 {
+		if *shardIndex < 0 || *shardIndex >= *shardCount {
+			log.Fatalf("Invalid shard-index %d for shard-count %d", *shardIndex, *shardCount)
+		}
+		var sharded []string
+		for i, t := range tests {
+			if i%*shardCount == *shardIndex {
+				sharded = append(sharded, t)
+			}
+		}
+		tests = sharded
+		log.Printf("paralleltestrunner: running shard %d/%d (%d tests selected from total %d)", *shardIndex+1, *shardCount, len(tests), len(allTests))
+	}
 
 	numJobs := calculateOptimalJobs(*j, len(tests))
 
@@ -128,45 +155,49 @@ func main() {
 		wg.Wait()
 	}
 
-	fmt.Printf("Running catch-all to find any new tests...\n")
+	if *shardIndex == 0 {
+		fmt.Printf("Running catch-all to find any new tests...\n")
 
-	cmd := exec.Command(flag.Args()[0], flag.Args()[1:]...)
-	cmd.Env = os.Environ()
-	cmd.Env = append(cmd.Env, "RUN_TESTS="+*baseTest)
-	cmd.Env = append(cmd.Env, "SKIP_ALL=1")
+		cmd := exec.Command(flag.Args()[0], flag.Args()[1:]...)
+		cmd.Env = os.Environ()
+		cmd.Env = append(cmd.Env, "RUN_TESTS="+*baseTest)
+		cmd.Env = append(cmd.Env, "SKIP_ALL=1")
 
-	catchAllStart := time.Now()
-	output, err := cmd.CombinedOutput()
-	catchAllDuration := time.Since(catchAllStart)
-	newTests := parseNewTests(output, *baseTest, tests)
+		catchAllStart := time.Now()
+		output, err := cmd.CombinedOutput()
+		catchAllDuration := time.Since(catchAllStart)
+		newTests := parseNewTests(output, *baseTest, allTests)
 
-	if len(newTests) > 0 {
-		fmt.Printf("Found %d new tests:\n", len(newTests))
-		for _, t := range newTests {
-			fmt.Printf("  %s\n", t)
-		}
-
-		allTests := append(tests, newTests...)
-		sort.Strings(allTests)
-		writeList(*listFile, allTests)
-
-		if *checkUnchanged {
-			fmt.Printf("ERROR: test list file %s was modified because new tests were found. Please commit the updated file.\n", *listFile)
-			if err != nil {
-				fmt.Printf("Catch-all also failed:\n%s\n", string(output))
+		if len(newTests) > 0 {
+			fmt.Printf("Found %d new tests:\n", len(newTests))
+			for _, t := range newTests {
+				fmt.Printf("  %s\n", t)
 			}
-			os.Exit(1)
-		}
-	}
 
-	if err != nil && len(newTests) > 0 {
-		fmt.Printf("Catch-all failed (new tests likely failed):\n%s\n", string(output))
-		success = false
-	} else if err != nil && len(newTests) == 0 {
-		fmt.Printf("Catch-all failed with no new tests found:\n%s\n", string(output))
-		success = false
+			updatedAllTests := append(allTests, newTests...)
+			sort.Strings(updatedAllTests)
+			writeList(*listFile, updatedAllTests)
+
+			if *checkUnchanged {
+				fmt.Printf("ERROR: test list file %s was modified because new tests were found. Please commit the updated file.\n", *listFile)
+				if err != nil {
+					fmt.Printf("Catch-all also failed:\n%s\n", string(output))
+				}
+				os.Exit(1)
+			}
+		}
+
+		if err != nil && len(newTests) > 0 {
+			fmt.Printf("Catch-all failed (new tests likely failed):\n%s\n", string(output))
+			success = false
+		} else if err != nil && len(newTests) == 0 {
+			fmt.Printf("Catch-all failed with no new tests found:\n%s\n", string(output))
+			success = false
+		} else {
+			fmt.Printf("Catch-all succeeded in %v\n", catchAllDuration.Round(time.Millisecond))
+		}
 	} else {
-		fmt.Printf("Catch-all succeeded in %v\n", catchAllDuration.Round(time.Millisecond))
+		log.Printf("paralleltestrunner: skipping catch-all check on non-primary shard %d/%d", *shardIndex+1, *shardCount)
 	}
 
 	if !success {
@@ -190,6 +221,9 @@ func readList(path string) []string {
 		if t != "" && !strings.HasPrefix(t, "#") {
 			list = append(list, t)
 		}
+	}
+	if err := scanner.Err(); err != nil {
+		log.Fatalf("error scanning list file %s: %v", path, err)
 	}
 	return list
 }
@@ -263,7 +297,8 @@ func calculateOptimalJobs(userJ int, numTests int) int {
 func writeList(path string, list []string) {
 	var buf bytes.Buffer
 	for _, t := range list {
-		buf.WriteString(t + "\n")
+		buf.WriteString(t)
+		buf.WriteByte('\n')
 	}
 	if err := os.WriteFile(path, buf.Bytes(), 0644); err != nil {
 		log.Fatalf("error writing list file: %v", err)
@@ -290,6 +325,9 @@ func parseNewTests(output []byte, baseTest string, knownTests []string) []string
 				newTests = append(newTests, t)
 			}
 		}
+	}
+	if err := scanner.Err(); err != nil {
+		log.Printf("error scanning output in parseNewTests: %v", err)
 	}
 	return newTests
 }
