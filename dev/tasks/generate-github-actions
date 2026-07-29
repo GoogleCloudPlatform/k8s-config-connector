@@ -142,7 +142,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
           install_components: 'alpha,beta'
       - name: "Run priority E2E fixtures for \${{ matrix.service }}"
         run: |
-          target="\${{ matrix.service }}"
+          target="\${TARGET_SERVICE}"
           if [[ "\${target}" =~ ([0-9]+)-of-([0-9]+)$ ]]; then
             shard_num="\${BASH_REMATCH[1]}"
             shard_cnt="\${BASH_REMATCH[2]}"
@@ -153,6 +153,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
             ./dev/ci/presubmits/tests-e2e-fixtures-\${target} "0" "1"
           fi
         env:
+          TARGET_SERVICE: \${{ matrix.service }}
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4
@@ -187,7 +188,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
           install_components: 'alpha,beta'
       - name: "Run fixture test for \${{ matrix.service }}"
         run: |
-          target="\${{ matrix.service }}"
+          target="\${TARGET_SERVICE}"
           if [[ "\${target}" =~ ([0-9]+)-of-([0-9]+)$ ]]; then
             shard_num="\${BASH_REMATCH[1]}"
             shard_cnt="\${BASH_REMATCH[2]}"
@@ -198,6 +199,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
             ./dev/ci/presubmits/tests-e2e-fixtures-service "\${target}" "0" "1"
           fi
         env:
+          TARGET_SERVICE: \${{ matrix.service }}
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4
@@ -243,8 +245,9 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
           install_components: 'alpha,beta'
       - name: "Run sample test for \${{ matrix.service }}"
         run: |
-          ./dev/ci/presubmits/tests-e2e-samples-service "\${{ matrix.service }}"
+          ./dev/ci/presubmits/tests-e2e-samples-service "\${TARGET_SERVICE}"
         env:
+          TARGET_SERVICE: \${{ matrix.service }}
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4
@@ -290,8 +293,9 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
           install_components: 'alpha,beta'
       - name: "Run scenario test for \${{ matrix.suite }}"
         run: |
-          ./dev/ci/presubmits/tests-scenarios-suite "\${{ matrix.suite }}"
+          ./dev/ci/presubmits/tests-scenarios-suite "\${TARGET_SUITE}"
         env:
+          TARGET_SUITE: \${{ matrix.suite }}
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4
@@ -485,11 +489,10 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
     steps:
       - name: Verify all checks succeeded
         run: |
-          results='\${{ toJSON(needs) }}'
           echo "Analyzing job results..."
 
           # Find any job whose result is 'failure' or 'cancelled' (ignoring 'success' and 'skipped')
-          failures=\$(echo "\$results" | jq '[to_entries[] | select(.value.result == "failure" or .value.result == "cancelled")]')
+          failures=\$(echo "\$NEEDS_RESULTS" | jq '[to_entries[] | select(.value.result == "failure" or .value.result == "cancelled")]')
           
           if [ "\$(echo "\$failures" | jq '. | length')" -ne 0 ]; then
             echo "ERROR: One or more checks failed or were cancelled:"
@@ -497,6 +500,8 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
             exit 1
           fi
           echo "All checks completed successfully or were skipped safely!"
+        env:
+          NEEDS_RESULTS: \${{ toJSON(needs) }}
 EOF
 
 
