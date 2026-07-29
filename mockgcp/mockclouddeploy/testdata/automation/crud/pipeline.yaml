@@ -1,0 +1,8 @@
+apiVersion: deploy.cloud.google.com/v1
+kind: DeliveryPipeline
+metadata:
+  name: pipeline-18c6a32eead1734f
+description: test pipeline
+serialPipeline:
+  stages:
+  - targetId: target-18c6a32eead1734f
