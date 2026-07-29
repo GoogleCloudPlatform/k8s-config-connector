@@ -19,64 +19,54 @@
 // +generated:mapper
 // krm.group: networkconnectivity.cnrm.cloud.google.com
 // krm.version: v1alpha1
-// proto.service: google.cloud.networkconnectivity.v1
+// proto.service: mockgcp.cloud.networkconnectivity.v1
 
 package networkconnectivity
 
 import (
 	pb "cloud.google.com/go/networkconnectivity/apiv1/networkconnectivitypb"
-	krmcomputerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkconnectivity/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func AllocationOptions_FromProto(mapCtx *direct.MapContext, in *pb.InternalRange_AllocationOptions) *krm.AllocationOptions {
+/* found existing non-generated mapping function "GoogleRpcStatus_FromProto", skipping
+func GoogleRpcStatus_FromProto(mapCtx *direct.MapContext, in *pb.GoogleRpcStatus) *krm.GoogleRpcStatus {
 	if in == nil {
 		return nil
 	}
-	out := &krm.AllocationOptions{}
-	out.AllocationStrategy = direct.Enum_FromProto(mapCtx, in.GetAllocationStrategy())
-	out.FirstAvailableRangesLookupSize = direct.LazyPtr(in.GetFirstAvailableRangesLookupSize())
+	out := &krm.GoogleRpcStatus{}
+	out.Code = direct.LazyPtr(in.GetCode())
+	// MISSING: Details
+	out.Message = direct.LazyPtr(in.GetMessage())
 	return out
 }
-func AllocationOptions_ToProto(mapCtx *direct.MapContext, in *krm.AllocationOptions) *pb.InternalRange_AllocationOptions {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "GoogleRpcStatus_ToProto", skipping
+
+	func GoogleRpcStatus_ToProto(mapCtx *direct.MapContext, in *krm.GoogleRpcStatus) *pb.GoogleRpcStatus {
+		if in == nil {
+			return nil
+		}
+		out := &pb.GoogleRpcStatus{}
+		out.Code = direct.ValueOf(in.Code)
+		// MISSING: Details
+		out.Message = direct.ValueOf(in.Message)
+		return out
 	}
-	out := &pb.InternalRange_AllocationOptions{}
-	out.AllocationStrategy = direct.Enum_ToProto[pb.InternalRange_AllocationStrategy](mapCtx, in.AllocationStrategy)
-	out.FirstAvailableRangesLookupSize = direct.ValueOf(in.FirstAvailableRangesLookupSize)
-	return out
-}
-func Migration_FromProto(mapCtx *direct.MapContext, in *pb.InternalRange_Migration) *krm.Migration {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Migration{}
-	out.Source = direct.LazyPtr(in.GetSource())
-	out.Target = direct.LazyPtr(in.GetTarget())
-	return out
-}
-func Migration_ToProto(mapCtx *direct.MapContext, in *krm.Migration) *pb.InternalRange_Migration {
-	if in == nil {
-		return nil
-	}
-	out := &pb.InternalRange_Migration{}
-	out.Source = direct.ValueOf(in.Source)
-	out.Target = direct.ValueOf(in.Target)
-	return out
-}
+*/
 func NetworkConnectivityInternalRangeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.InternalRange) *krm.NetworkConnectivityInternalRangeObservedState {
 	if in == nil {
 		return nil
 	}
 	out := &krm.NetworkConnectivityInternalRangeObservedState{}
-	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	// MISSING: ExcludeCIDRRanges
+	// MISSING: Immutable
+	// MISSING: Name
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	out.Users = in.Users
-	// MISSING: Immutable
-	// MISSING: ExcludeCIDRRanges
 	return out
 }
 func NetworkConnectivityInternalRangeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConnectivityInternalRangeObservedState) *pb.InternalRange {
@@ -84,87 +74,156 @@ func NetworkConnectivityInternalRangeObservedState_ToProto(mapCtx *direct.MapCon
 		return nil
 	}
 	out := &pb.InternalRange{}
-	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	// MISSING: ExcludeCIDRRanges
+	// MISSING: Immutable
+	// MISSING: Name
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	out.Users = in.Users
-	// MISSING: Immutable
-	// MISSING: ExcludeCIDRRanges
 	return out
 }
+
+/* found existing non-generated mapping function "NetworkConnectivityInternalRangeSpec_FromProto", skipping
 func NetworkConnectivityInternalRangeSpec_FromProto(mapCtx *direct.MapContext, in *pb.InternalRange) *krm.NetworkConnectivityInternalRangeSpec {
 	if in == nil {
 		return nil
 	}
 	out := &krm.NetworkConnectivityInternalRangeSpec{}
-	// MISSING: Name
-	out.Labels = in.Labels
+	out.AllocationOptions = AllocationOptions_FromProto(mapCtx, in.GetAllocationOptions())
 	out.Description = direct.LazyPtr(in.GetDescription())
+	// MISSING: ExcludeCIDRRanges
+	// MISSING: Immutable
 	out.IPCIDRRange = direct.LazyPtr(in.GetIpCidrRange())
+	out.Labels = in.Labels
+	out.Migration = Migration_FromProto(mapCtx, in.GetMigration())
+	// MISSING: Name
 	if in.GetNetwork() != "" {
 		out.NetworkRef = &krmcomputerefs.ComputeNetworkRef{External: in.GetNetwork()}
 	}
-	out.Usage = direct.Enum_FromProto(mapCtx, in.GetUsage())
-	out.Peering = direct.Enum_FromProto(mapCtx, in.GetPeering())
+	out.Overlaps = in.Overlaps
+	out.Peering = direct.LazyPtr(in.GetPeering())
 	out.PrefixLength = direct.LazyPtr(in.GetPrefixLength())
 	out.TargetCIDRRange = in.TargetCidrRange
-	out.Overlaps = direct.EnumSlice_FromProto(mapCtx, in.Overlaps)
-	out.Migration = Migration_FromProto(mapCtx, in.GetMigration())
-	// MISSING: Immutable
-	out.AllocationOptions = AllocationOptions_FromProto(mapCtx, in.GetAllocationOptions())
-	// MISSING: ExcludeCIDRRanges
+	out.Usage = direct.LazyPtr(in.GetUsage())
 	return out
 }
-func NetworkConnectivityInternalRangeSpec_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConnectivityInternalRangeSpec) *pb.InternalRange {
+*/
+
+/*
+found existing non-generated mapping function "NetworkConnectivityInternalRangeSpec_ToProto", skipping
+
+	func NetworkConnectivityInternalRangeSpec_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConnectivityInternalRangeSpec) *pb.InternalRange {
+		if in == nil {
+			return nil
+		}
+		out := &pb.InternalRange{}
+		out.AllocationOptions = AllocationOptions_ToProto(mapCtx, in.AllocationOptions)
+		out.Description = direct.ValueOf(in.Description)
+		// MISSING: ExcludeCIDRRanges
+		// MISSING: Immutable
+		out.IpCidrRange = direct.ValueOf(in.IPCIDRRange)
+		out.Labels = in.Labels
+		out.Migration = Migration_ToProto(mapCtx, in.Migration)
+		// MISSING: Name
+		if in.NetworkRef != nil {
+			out.Network = in.NetworkRef.External
+		}
+		out.Overlaps = in.Overlaps
+		out.Peering = direct.ValueOf(in.Peering)
+		out.PrefixLength = direct.ValueOf(in.PrefixLength)
+		out.TargetCidrRange = in.TargetCIDRRange
+		out.Usage = direct.ValueOf(in.Usage)
+		return out
+	}
+*/
+func NetworkConnectivityMulticloudDataTransferConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MulticloudDataTransferConfig) *krm.NetworkConnectivityMulticloudDataTransferConfigObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &pb.InternalRange{}
-	out.Labels = in.Labels
-	out.Description = direct.ValueOf(in.Description)
-	out.IpCidrRange = direct.ValueOf(in.IPCIDRRange)
-	if in.NetworkRef != nil {
-		out.Network = in.NetworkRef.External
-	}
-	out.Usage = direct.Enum_ToProto[pb.InternalRange_Usage](mapCtx, in.Usage)
-	out.Peering = direct.Enum_ToProto[pb.InternalRange_Peering](mapCtx, in.Peering)
-	out.PrefixLength = direct.ValueOf(in.PrefixLength)
-	out.TargetCidrRange = in.TargetCIDRRange
-	out.Overlaps = direct.EnumSlice_ToProto[pb.InternalRange_Overlap](mapCtx, in.Overlaps)
-	out.Migration = Migration_ToProto(mapCtx, in.Migration)
-	// MISSING: Immutable
-	out.AllocationOptions = AllocationOptions_ToProto(mapCtx, in.AllocationOptions)
-	// MISSING: ExcludeCIDRRanges
+	out := &krm.NetworkConnectivityMulticloudDataTransferConfigObservedState{}
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.DestinationsActiveCount = direct.LazyPtr(in.GetDestinationsActiveCount())
+	out.DestinationsCount = direct.LazyPtr(in.GetDestinationsCount())
+	// MISSING: Etag
+	// MISSING: Name
+	out.Services = Services_FromProto(mapCtx, in.Services)
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	return out
 }
+func NetworkConnectivityMulticloudDataTransferConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConnectivityMulticloudDataTransferConfigObservedState) *pb.MulticloudDataTransferConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MulticloudDataTransferConfig{}
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.DestinationsActiveCount = direct.ValueOf(in.DestinationsActiveCount)
+	out.DestinationsCount = direct.ValueOf(in.DestinationsCount)
+	// MISSING: Etag
+	// MISSING: Name
+	out.Services = Services_ToProto(mapCtx, in.Services)
+	out.Uid = direct.ValueOf(in.Uid)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+func NetworkConnectivityMulticloudDataTransferConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.MulticloudDataTransferConfig) *krm.NetworkConnectivityMulticloudDataTransferConfigSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NetworkConnectivityMulticloudDataTransferConfigSpec{}
+	out.Description = direct.LazyPtr(in.GetDescription())
+	// MISSING: Etag
+	out.Labels = in.Labels
+	// MISSING: Name
+	return out
+}
+func NetworkConnectivityMulticloudDataTransferConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConnectivityMulticloudDataTransferConfigSpec) *pb.MulticloudDataTransferConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MulticloudDataTransferConfig{}
+	out.Description = direct.ValueOf(in.Description)
+	// MISSING: Etag
+	out.Labels = in.Labels
+	// MISSING: Name
+	return out
+}
+
+/* found existing non-generated mapping function "NetworkConnectivityServiceConnectionPolicyObservedState_FromProto", skipping
 func NetworkConnectivityServiceConnectionPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ServiceConnectionPolicy) *krm.NetworkConnectivityServiceConnectionPolicyObservedState {
 	if in == nil {
 		return nil
 	}
 	out := &krm.NetworkConnectivityServiceConnectionPolicyObservedState{}
-	// MISSING: Name
+	// MISSING: AutoCreatedSubnetInfo
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.Infrastructure = direct.LazyPtr(in.GetInfrastructure())
 	// MISSING: Labels
-	out.Infrastructure = direct.Enum_FromProto(mapCtx, in.GetInfrastructure())
+	// MISSING: Name
 	out.PSCConnections = direct.Slice_FromProto(mapCtx, in.PscConnections, PSCConnection_FromProto)
-	out.Etag = in.Etag
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "NetworkConnectivityServiceConnectionPolicyObservedState_ToProto", skipping
 func NetworkConnectivityServiceConnectionPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConnectivityServiceConnectionPolicyObservedState) *pb.ServiceConnectionPolicy {
 	if in == nil {
 		return nil
 	}
 	out := &pb.ServiceConnectionPolicy{}
-	// MISSING: Name
+	// MISSING: AutoCreatedSubnetInfo
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.Etag = direct.ValueOf(in.Etag)
+	out.Infrastructure = direct.ValueOf(in.Infrastructure)
 	// MISSING: Labels
-	out.Infrastructure = direct.Enum_ToProto[pb.Infrastructure](mapCtx, in.Infrastructure)
+	// MISSING: Name
 	out.PscConnections = direct.Slice_ToProto(mapCtx, in.PSCConnections, PSCConnection_ToProto)
-	out.Etag = in.Etag
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	return out
 }
+*/
 
 /*
 found existing non-generated mapping function "NetworkConnectivityServiceConnectionPolicySpec_FromProto", skipping
@@ -174,12 +233,13 @@ found existing non-generated mapping function "NetworkConnectivityServiceConnect
 			return nil
 		}
 		out := &krm.NetworkConnectivityServiceConnectionPolicySpec{}
-		// MISSING: Name
-		// MISSING: Labels
+		// MISSING: AutoCreatedSubnetInfo
 		out.Description = direct.LazyPtr(in.GetDescription())
+		// MISSING: Labels
+		// MISSING: Name
 		out.Network = direct.LazyPtr(in.GetNetwork())
-		out.ServiceClass = direct.LazyPtr(in.GetServiceClass())
 		out.PSCConfig = PSCConfig_FromProto(mapCtx, in.GetPscConfig())
+		out.ServiceClass = direct.LazyPtr(in.GetServiceClass())
 		return out
 	}
 */
@@ -188,75 +248,28 @@ func NetworkConnectivityServiceConnectionPolicySpec_ToProto(mapCtx *direct.MapCo
 		return nil
 	}
 	out := &pb.ServiceConnectionPolicy{}
-	// MISSING: Name
-	// MISSING: Labels
+	// MISSING: AutoCreatedSubnetInfo
 	out.Description = direct.ValueOf(in.Description)
+	// MISSING: Labels
+	// MISSING: Name
 	out.Network = NetworkConnectivityServiceConnectionPolicySpec_Network_ToProto(mapCtx, in.Network)
-	out.ServiceClass = direct.ValueOf(in.ServiceClass)
 	out.PscConfig = PSCConfig_ToProto(mapCtx, in.PSCConfig)
+	out.ServiceClass = direct.ValueOf(in.ServiceClass)
 	return out
 }
-func PSCConfig_FromProto(mapCtx *direct.MapContext, in *pb.ServiceConnectionPolicy_PscConfig) *krm.PSCConfig {
+func StateTimeline_FromProto(mapCtx *direct.MapContext, in *pb.StateTimeline) *krm.StateTimeline {
 	if in == nil {
 		return nil
 	}
-	out := &krm.PSCConfig{}
-	out.Subnetworks = PSCConfig_Subnetworks_FromProto(mapCtx, in.Subnetworks)
-	out.Limit = in.Limit
-	out.ProducerInstanceLocation = direct.Enum_FromProto(mapCtx, in.GetProducerInstanceLocation())
-	// MISSING: AllowedGoogleProducersResourceHierarchyLevel
+	out := &krm.StateTimeline{}
+	out.States = direct.Slice_FromProto(mapCtx, in.States, StateMetadata_FromProto)
 	return out
 }
-func PSCConfig_ToProto(mapCtx *direct.MapContext, in *krm.PSCConfig) *pb.ServiceConnectionPolicy_PscConfig {
+func StateTimeline_ToProto(mapCtx *direct.MapContext, in *krm.StateTimeline) *pb.StateTimeline {
 	if in == nil {
 		return nil
 	}
-	out := &pb.ServiceConnectionPolicy_PscConfig{}
-	out.Subnetworks = PSCConfig_Subnetworks_ToProto(mapCtx, in.Subnetworks)
-	out.Limit = in.Limit
-	out.ProducerInstanceLocation = direct.Enum_ToProto[pb.ServiceConnectionPolicy_PscConfig_ProducerInstanceLocation](mapCtx, in.ProducerInstanceLocation)
-	// MISSING: AllowedGoogleProducersResourceHierarchyLevel
-	return out
-}
-func PSCConnection_FromProto(mapCtx *direct.MapContext, in *pb.ServiceConnectionPolicy_PscConnection) *krm.PSCConnection {
-	if in == nil {
-		return nil
-	}
-	out := &krm.PSCConnection{}
-	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
-	out.ConsumerForwardingRule = direct.LazyPtr(in.GetConsumerForwardingRule())
-	out.ConsumerAddress = direct.LazyPtr(in.GetConsumerAddress())
-	out.ErrorType = direct.Enum_FromProto(mapCtx, in.GetErrorType())
-	out.Error = direct.Status_FromProto(mapCtx, in.GetError())
-	out.GCEOperation = direct.LazyPtr(in.GetGceOperation())
-	out.ConsumerTargetProject = direct.LazyPtr(in.GetConsumerTargetProject())
-	out.PSCConnectionID = direct.LazyPtr(in.GetPscConnectionId())
-	out.ErrorInfo = GoogleRpcErrorInfo_FromProto(mapCtx, in.GetErrorInfo())
-	out.SelectedSubnetwork = direct.LazyPtr(in.GetSelectedSubnetwork())
-	out.ProducerInstanceID = direct.LazyPtr(in.GetProducerInstanceId())
-	// MISSING: ProducerInstanceMetadata
-	// MISSING: ServiceClass
-	// MISSING: IPVersion
-	return out
-}
-func PSCConnection_ToProto(mapCtx *direct.MapContext, in *krm.PSCConnection) *pb.ServiceConnectionPolicy_PscConnection {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ServiceConnectionPolicy_PscConnection{}
-	out.State = direct.Enum_ToProto[pb.ServiceConnectionPolicy_State](mapCtx, in.State)
-	out.ConsumerForwardingRule = direct.ValueOf(in.ConsumerForwardingRule)
-	out.ConsumerAddress = direct.ValueOf(in.ConsumerAddress)
-	out.ErrorType = direct.Enum_ToProto[pb.ConnectionErrorType](mapCtx, in.ErrorType)
-	out.Error = direct.Status_ToProto(mapCtx, in.Error)
-	out.GceOperation = direct.ValueOf(in.GCEOperation)
-	out.ConsumerTargetProject = direct.ValueOf(in.ConsumerTargetProject)
-	out.PscConnectionId = direct.ValueOf(in.PSCConnectionID)
-	out.ErrorInfo = GoogleRpcErrorInfo_ToProto(mapCtx, in.ErrorInfo)
-	out.SelectedSubnetwork = direct.ValueOf(in.SelectedSubnetwork)
-	out.ProducerInstanceId = direct.ValueOf(in.ProducerInstanceID)
-	// MISSING: ProducerInstanceMetadata
-	// MISSING: ServiceClass
-	out.State = direct.Enum_ToProto[pb.ServiceConnectionPolicy_State](mapCtx, in.State)
+	out := &pb.StateTimeline{}
+	out.States = direct.Slice_ToProto(mapCtx, in.States, StateMetadata_ToProto)
 	return out
 }

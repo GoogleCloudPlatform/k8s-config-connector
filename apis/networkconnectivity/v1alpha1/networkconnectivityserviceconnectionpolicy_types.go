@@ -33,7 +33,7 @@ var (
 )
 
 // NetworkConnectivityServiceConnectionPolicySpec defines the desired state of NetworkConnectivityServiceConnectionPolicy
-// +kcc:spec:proto=google.cloud.networkconnectivity.v1.ServiceConnectionPolicy
+// +kcc:spec:proto=mockgcp.cloud.networkconnectivity.v1.ServiceConnectionPolicy
 type NetworkConnectivityServiceConnectionPolicySpec struct {
 
 	/* Immutable. The Project that this resource belongs to. */
@@ -64,7 +64,7 @@ type NetworkConnectivityServiceConnectionPolicySpec struct {
 	ServiceClass *string `json:"serviceClass,omitempty"`
 }
 
-// +kcc:proto=google.cloud.networkconnectivity.v1.ServiceConnectionPolicy.PscConfig
+// +kcc:proto=mockgcp.cloud.networkconnectivity.v1.ServiceConnectionPolicy.PscConfig
 type PSCConfig struct {
 	/* TODO:AFTER-MAPPINGS
 	// Optional. List of Projects, Folders, or Organizations from where the Producer instance can be within. For example, a network administrator can provide both 'organizations/foo' and 'projects/bar' as allowed_google_producers_resource_hierarchy_levels. This allowlists this network to connect with any Producer instance within the 'foo' organization or the 'bar' project. By default, allowed_google_producers_resource_hierarchy_level is empty. The format for each allowed_google_producers_resource_hierarchy_level is / where is one of 'projects', 'folders', or 'organizations' and is either the ID or the number of the resource type. Format for each allowed_google_producers_resource_hierarchy_level value: 'projects/' or 'folders/' or 'organizations/' Eg. [projects/my-project-id, projects/567, folders/891, organizations/123]
@@ -101,7 +101,7 @@ type NetworkConnectivityServiceConnectionPolicyStatus struct {
 }
 
 // NetworkConnectivityServiceConnectionPolicySpec defines the desired state of NetworkConnectivityServiceConnectionPolicy
-// +kcc:observedstate:proto=google.cloud.networkconnectivity.v1.ServiceConnectionPolicy
+// +kcc:observedstate:proto=mockgcp.cloud.networkconnectivity.v1.ServiceConnectionPolicy
 type NetworkConnectivityServiceConnectionPolicyObservedState struct {
 	// Output only. Time when the ServiceConnectionMap was created.
 	CreateTime *string `json:"createTime,omitempty"`
@@ -151,50 +151,50 @@ func init() {
 	SchemeBuilder.Register(&NetworkConnectivityServiceConnectionPolicy{}, &NetworkConnectivityServiceConnectionPolicyList{})
 }
 
-// +kcc:proto=google.cloud.networkconnectivity.v1.ServiceConnectionPolicy.PscConnection
+// +kcc:proto=mockgcp.cloud.networkconnectivity.v1.ServiceConnectionPolicy.PscConnection
 type PSCConnection struct {
 	// The resource reference of the consumer address.
-	// +kcc:proto:field=google.cloud.networkconnectivity.v1.ServiceConnectionPolicy.PscConnection.consumer_address
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.ServiceConnectionPolicy.PscConnection.consumer_address
 	ConsumerAddress *string `json:"consumerAddress,omitempty"`
 
 	// The resource reference of the PSC Forwarding Rule within the consumer VPC.
-	// +kcc:proto:field=google.cloud.networkconnectivity.v1.ServiceConnectionPolicy.PscConnection.consumer_forwarding_rule
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.ServiceConnectionPolicy.PscConnection.consumer_forwarding_rule
 	ConsumerForwardingRule *string `json:"consumerForwardingRule,omitempty"`
 
 	// The project where the PSC connection is created.
-	// +kcc:proto:field=google.cloud.networkconnectivity.v1.ServiceConnectionPolicy.PscConnection.consumer_target_project
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.ServiceConnectionPolicy.PscConnection.consumer_target_project
 	ConsumerTargetProject *string `json:"consumerTargetProject,omitempty"`
 
 	// The most recent error during operating this connection. Deprecated, please use error_info instead.
-	// +kcc:proto:field=google.cloud.networkconnectivity.v1.ServiceConnectionPolicy.PscConnection.error
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.ServiceConnectionPolicy.PscConnection.error
 	Error *common.Status `json:"error,omitempty"`
 
 	// Output only. The error info for the latest error during operating this connection.
-	// +kcc:proto:field=google.cloud.networkconnectivity.v1.ServiceConnectionPolicy.PscConnection.error_info
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.ServiceConnectionPolicy.PscConnection.error_info
 	ErrorInfo *GoogleRpcErrorInfo `json:"errorInfo,omitempty"`
 
 	// The error type indicates whether the error is consumer facing, producer facing or system internal.
-	// +kcc:proto:field=google.cloud.networkconnectivity.v1.ServiceConnectionPolicy.PscConnection.error_type
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.ServiceConnectionPolicy.PscConnection.error_type
 	ErrorType *string `json:"errorType,omitempty"`
 
 	// The last Compute Engine operation to setup PSC connection.
-	// +kcc:proto:field=google.cloud.networkconnectivity.v1.ServiceConnectionPolicy.PscConnection.gce_operation
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.ServiceConnectionPolicy.PscConnection.gce_operation
 	GCEOperation *string `json:"gceOperation,omitempty"`
 
 	// Immutable. Deprecated. Use producer_instance_metadata instead. An immutable identifier for the producer instance.
-	// +kcc:proto:field=google.cloud.networkconnectivity.v1.ServiceConnectionPolicy.PscConnection.producer_instance_id
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.ServiceConnectionPolicy.PscConnection.producer_instance_id
 	ProducerInstanceID *string `json:"producerInstanceID,omitempty"`
 
 	// The PSC connection id of the PSC forwarding rule.
-	// +kcc:proto:field=google.cloud.networkconnectivity.v1.ServiceConnectionPolicy.PscConnection.psc_connection_id
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.ServiceConnectionPolicy.PscConnection.psc_connection_id
 	PSCConnectionID *string `json:"pscConnectionID,omitempty"`
 
 	// Output only. The URI of the subnetwork selected to allocate IP address for this connection.
-	// +kcc:proto:field=google.cloud.networkconnectivity.v1.ServiceConnectionPolicy.PscConnection.selected_subnetwork
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.ServiceConnectionPolicy.PscConnection.selected_subnetwork
 	SelectedSubnetwork *string `json:"selectedSubnetwork,omitempty"`
 
 	// State of the PSC Connection
-	// +kcc:proto:field=google.cloud.networkconnectivity.v1.ServiceConnectionPolicy.PscConnection.state
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.ServiceConnectionPolicy.PscConnection.state
 	State *string `json:"state,omitempty"`
 }
 

@@ -33,7 +33,7 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 
 go run . generate-types \
-  --service google.cloud.networkconnectivity.v1 \
+  --service mockgcp.cloud.networkconnectivity.v1 \
   --api-version networkconnectivity.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output \
   --resource NetworkConnectivityInternalRange:InternalRange \
@@ -41,7 +41,7 @@ go run . generate-types \
   --resource NetworkConnectivityMulticloudDataTransferConfig:MulticloudDataTransferConfig
 
 go run . generate-mapper \
-  --service google.cloud.networkconnectivity.v1 \
+  --service mockgcp.cloud.networkconnectivity.v1 \
   --api-version networkconnectivity.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output
 
