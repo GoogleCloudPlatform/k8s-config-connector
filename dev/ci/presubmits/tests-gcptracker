@@ -33,10 +33,23 @@ export WRITE_GOLDEN_OUTPUT=1
 # Flag gate for gcptracker usage
 export KCC_RECONCILE_FLAG_GATE=USE_DEPENDENCY_TRACKER
 
+export USE_FULL_TEST_NAMES=true
+export TEST_TIMEOUT=15m
+
+echo "Prebuilding e2e tests..."
+export PREBUILT_TEST_BINARY=${REPO_ROOT}/.build/tests-e2e
+mkdir -p ${REPO_ROOT}/.build
+time go test -c -o ${PREBUILT_TEST_BINARY} ./tests/e2e
+
+echo "Building paralleltestrunner..."
+time go build -o ${REPO_ROOT}/.build/paralleltestrunner ${REPO_ROOT}/dev/tools/paralleltestrunner
+
 echo "Running scenario tests for gcptracker..."
 GOLDEN_REQUEST_CHECKS=1 E2E_KUBE_TARGET=envtest E2E_GCP_TARGET=mock RUN_E2E=1 \
-  go test -test.count=1 -timeout 600s -v ./tests/e2e -run '^TestE2EScript/scenarios/tracker/tracker-iampartialpolicy$'
+  ${PREBUILT_TEST_BINARY} -test.count=1 -timeout 600s -v -test.run '^TestE2EScript/scenarios/tracker/tracker-iampartialpolicy$'
 
-echo "Running fixture and sample iam tests with the gcptracker..."
-export RUN_TESTS='TestAllInSeries/samples/iampartialpolicy'
-${REPO_ROOT}/dev/tasks/run-e2e
+echo "Running fixture and sample iam tests with the gcptracker in parallel..."
+${REPO_ROOT}/.build/paralleltestrunner \
+    -list-file="${REPO_ROOT}/tests/e2e/testdata/samples-iam-list.txt" \
+    -base-test="TestAllInSeries/samples" \
+    -- ${REPO_ROOT}/dev/tasks/run-e2e
