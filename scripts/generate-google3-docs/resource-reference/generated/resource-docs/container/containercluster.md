@@ -4405,7 +4405,7 @@ spec:
     clusterIpv4CidrBlock: /20
     servicesIpv4CidrBlock: /20
   datapathProvider: ADVANCED_DATAPATH
-  inTransitEncryptionConfig: IN_TRANSIT_ENCRYPTION_DISABLED
+  inTransitEncryptionConfig: IN_TRANSIT_ENCRYPTION_INTER_NODE_TRANSPARENT # or IN_TRANSIT_ENCRYPTION_DISABLED to disable
 ```
 
 ### Routes Based Container Cluster
