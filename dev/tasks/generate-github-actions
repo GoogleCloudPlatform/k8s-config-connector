@@ -131,7 +131,10 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
         service: \${{ fromJSON(needs.prepare-test-matrix.outputs.priority_fixtures_json) }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      - uses: ./dev/actions/cache-go
+      - uses: actions/setup-go@4a3601121dd01d1626a1e23e37211e3254c1c06c # v6.4.0
+        with:
+          go-version-file: 'go.mod'
+          cache: false
       - name: Download prebuilt test binaries
         uses: actions/download-artifact@484a0b528fb4d7bd804637ccb632e47a0e638317 # v4
         with:
@@ -177,7 +180,10 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
         service: \${{ fromJSON(needs.prepare-test-matrix.outputs.remaining_fixtures_json) }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      - uses: ./dev/actions/cache-go
+      - uses: actions/setup-go@4a3601121dd01d1626a1e23e37211e3254c1c06c # v6.4.0
+        with:
+          go-version-file: 'go.mod'
+          cache: false
       - name: Download prebuilt test binaries
         uses: actions/download-artifact@484a0b528fb4d7bd804637ccb632e47a0e638317 # v4
         with:
@@ -234,7 +240,10 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
         service: \${{ fromJSON(needs.prepare-test-matrix.outputs.samples_json) }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      - uses: ./dev/actions/cache-go
+      - uses: actions/setup-go@4a3601121dd01d1626a1e23e37211e3254c1c06c # v6.4.0
+        with:
+          go-version-file: 'go.mod'
+          cache: false
       - name: Download prebuilt test binaries
         uses: actions/download-artifact@484a0b528fb4d7bd804637ccb632e47a0e638317 # v4
         with:
@@ -282,7 +291,10 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
         suite: \${{ fromJSON(needs.prepare-test-matrix.outputs.scenarios_json) }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      - uses: ./dev/actions/cache-go
+      - uses: actions/setup-go@4a3601121dd01d1626a1e23e37211e3254c1c06c # v6.4.0
+        with:
+          go-version-file: 'go.mod'
+          cache: false
       - name: Download prebuilt test binaries
         uses: actions/download-artifact@484a0b528fb4d7bd804637ccb632e47a0e638317 # v4
         with:
@@ -421,9 +433,18 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
 EOF
     fi
 
+    if [[ "${name}" == "validate-fmt" || "${name}" == "validate-github-actions" || "${name}" == "validate-resource-docs" || "${name}" == "validate-untested-fields" ]]; then
+cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
+      - uses: actions/setup-go@4a3601121dd01d1626a1e23e37211e3254c1c06c # v6.4.0
+        with:
+          go-version-file: 'go.mod'
+          cache: false
+EOF
+    else
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
       - uses: ./dev/actions/cache-go
 EOF
+    fi
 
     # TODO: We should look at the script to see if it needs gcloud
     if [[ "${name}" == "test-mockgcp" || "${name}" == "unit-tests" || "${name}" == "unit-tests-operator" ]]; then
