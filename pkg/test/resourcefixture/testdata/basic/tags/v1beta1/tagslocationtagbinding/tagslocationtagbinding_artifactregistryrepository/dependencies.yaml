@@ -33,7 +33,7 @@ spec:
   description: For valuename resources.
   parentRef:
     name: tagstagkey-${uniqueId}
-  shortName: valuename
+  shortName: valuename${uniqueId}
 ---
 apiVersion: artifactregistry.cnrm.cloud.google.com/v1beta1
 kind: ArtifactRegistryRepository
