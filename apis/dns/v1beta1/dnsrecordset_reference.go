@@ -19,6 +19,8 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/computerefs"
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -43,6 +45,7 @@ type DNSRecordSetRef struct {
 
 func init() {
 	refs.Register(&DNSRecordSetRef{}, &DNSRecordSet{})
+	refs.Register(&RecordsetRrdatasRefs{})
 }
 
 func (r *DNSRecordSetRef) GetGVK() schema.GroupVersionKind {
@@ -95,4 +98,75 @@ func (r *DNSRecordSetRef) Normalize(ctx context.Context, reader client.Reader, d
 		return identity.String()
 	}
 	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
+}
+
+var _ refs.Ref = &RecordsetRrdatasRefs{}
+
+func (r *RecordsetRrdatasRefs) GetGVK() schema.GroupVersionKind {
+	return computev1beta1.ComputeAddressGVK
+}
+
+func (r *RecordsetRrdatasRefs) GetNamespacedName() types.NamespacedName {
+	var name, namespace string
+	if r.Name != nil {
+		name = *r.Name
+	}
+	if r.Namespace != nil {
+		namespace = *r.Namespace
+	}
+	return types.NamespacedName{
+		Name:      name,
+		Namespace: namespace,
+	}
+}
+
+func (r *RecordsetRrdatasRefs) GetExternal() string {
+	if r.External != nil {
+		return *r.External
+	}
+	return ""
+}
+
+func (r *RecordsetRrdatasRefs) SetExternal(ref string) {
+	r.External = &ref
+	r.Name = nil
+	r.Namespace = nil
+}
+
+func (r *RecordsetRrdatasRefs) ValidateExternal(ref string) error {
+	return nil
+}
+
+func (r *RecordsetRrdatasRefs) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	if r.External != nil && *r.External != "" {
+		return nil
+	}
+
+	key := r.GetNamespacedName()
+	if key.Name == "" {
+		return nil
+	}
+	if key.Namespace == "" {
+		key.Namespace = defaultNamespace
+	}
+
+	ref := &computev1beta1.ComputeAddressRef{
+		Name:      key.Name,
+		Namespace: key.Namespace,
+	}
+
+	// Create a non-gcp resolver (config: nil) since we are resolving a Kube reference
+	resolver := computerefs.NewComputeAddressResolver(nil)
+
+	// Create a dummy source object just to pass the defaultNamespace
+	src := &unstructured.Unstructured{}
+	src.SetNamespace(defaultNamespace)
+
+	ip, err := resolver.ResolveComputeAddressIP(ctx, reader, src, ref)
+	if err != nil {
+		return err
+	}
+
+	r.External = &ip
+	return nil
 }

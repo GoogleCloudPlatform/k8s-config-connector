@@ -1,0 +1,18 @@
+apiVersion: dns.cnrm.cloud.google.com/v1beta1
+kind: DNSRecordSet
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${projectId}
+  name: cnrm-dns-example-${uniqueId}.com.a
+spec:
+  managedZoneRef:
+    external: dnsmanagedzone-${uniqueId}
+  name: cnrm-dns-example-${uniqueId}.com.
+  routingPolicy:
+    wrr:
+    - healthCheckedTargets: {}
+      weight: 0.5
+    - healthCheckedTargets: {}
+      weight: 0.5
+  ttl: 300
+  type: A

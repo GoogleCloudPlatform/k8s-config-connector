@@ -44,6 +44,11 @@ func DNSRecordSetSpec_ToAPI(mapCtx *direct.MapContext, in *krm.DNSRecordSetSpec)
 	out.Name = in.Name
 	out.RoutingPolicy = RecordsetRoutingPolicy_ToAPI(mapCtx, in.RoutingPolicy)
 	out.Rrdatas = in.Rrdatas
+	for _, ref := range in.RrdatasRefs {
+		if ref.External != nil && *ref.External != "" {
+			out.Rrdatas = append(out.Rrdatas, *ref.External)
+		}
+	}
 	out.Ttl = direct.ValueOf(in.Ttl)
 	out.Type = in.Type
 	return out
@@ -120,6 +125,11 @@ func RecordsetGeo_FromAPI(mapCtx *direct.MapContext, in *api.RRSetRoutingPolicyG
 	out := &krm.RecordsetGeo{}
 	out.Location = in.Location
 	out.HealthCheckedTargets = RecordsetHealthCheckedTargets_FromAPI(mapCtx, in.HealthCheckedTargets)
+	for _, r := range in.Rrdatas {
+		out.RrdatasRefs = append(out.RrdatasRefs, krm.RecordsetRrdatasRefs{
+			External: direct.LazyPtr(r),
+		})
+	}
 	return out
 }
 
@@ -130,6 +140,11 @@ func RecordsetGeo_ToAPI(mapCtx *direct.MapContext, in *krm.RecordsetGeo) *api.RR
 	out := &api.RRSetRoutingPolicyGeoPolicyGeoPolicyItem{}
 	out.Location = in.Location
 	out.HealthCheckedTargets = RecordsetHealthCheckedTargets_ToAPI(mapCtx, in.HealthCheckedTargets)
+	for _, ref := range in.RrdatasRefs {
+		if ref.External != nil && *ref.External != "" {
+			out.Rrdatas = append(out.Rrdatas, *ref.External)
+		}
+	}
 	return out
 }
 
@@ -140,6 +155,11 @@ func RecordsetBackupGeo_FromAPI(mapCtx *direct.MapContext, in *api.RRSetRoutingP
 	out := &krm.RecordsetBackupGeo{}
 	out.Location = in.Location
 	out.HealthCheckedTargets = RecordsetHealthCheckedTargets_FromAPI(mapCtx, in.HealthCheckedTargets)
+	for _, r := range in.Rrdatas {
+		out.RrdatasRefs = append(out.RrdatasRefs, krm.RecordsetRrdatasRefs{
+			External: direct.LazyPtr(r),
+		})
+	}
 	return out
 }
 
@@ -150,6 +170,11 @@ func RecordsetBackupGeo_ToAPI(mapCtx *direct.MapContext, in *krm.RecordsetBackup
 	out := &api.RRSetRoutingPolicyGeoPolicyGeoPolicyItem{}
 	out.Location = in.Location
 	out.HealthCheckedTargets = RecordsetHealthCheckedTargets_ToAPI(mapCtx, in.HealthCheckedTargets)
+	for _, ref := range in.RrdatasRefs {
+		if ref.External != nil && *ref.External != "" {
+			out.Rrdatas = append(out.Rrdatas, *ref.External)
+		}
+	}
 	return out
 }
 
@@ -160,6 +185,11 @@ func RecordsetWrr_FromAPI(mapCtx *direct.MapContext, in *api.RRSetRoutingPolicyW
 	out := &krm.RecordsetWrr{}
 	out.Weight = in.Weight
 	out.HealthCheckedTargets = RecordsetHealthCheckedTargets_FromAPI(mapCtx, in.HealthCheckedTargets)
+	for _, r := range in.Rrdatas {
+		out.RrdatasRefs = append(out.RrdatasRefs, krm.RecordsetRrdatasRefs{
+			External: direct.LazyPtr(r),
+		})
+	}
 	return out
 }
 
@@ -170,6 +200,11 @@ func RecordsetWrr_ToAPI(mapCtx *direct.MapContext, in *krm.RecordsetWrr) *api.RR
 	out := &api.RRSetRoutingPolicyWrrPolicyWrrPolicyItem{}
 	out.Weight = in.Weight
 	out.HealthCheckedTargets = RecordsetHealthCheckedTargets_ToAPI(mapCtx, in.HealthCheckedTargets)
+	for _, ref := range in.RrdatasRefs {
+		if ref.External != nil && *ref.External != "" {
+			out.Rrdatas = append(out.Rrdatas, *ref.External)
+		}
+	}
 	return out
 }
 
