@@ -31,7 +31,6 @@ import (
 
 	pb "cloud.google.com/go/aiplatform/apiv1beta1/aiplatformpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
-	"github.com/google/uuid"
 )
 
 type tensorboardService struct {
@@ -70,7 +69,7 @@ func (s *tensorboardService) CreateTensorboard(ctx context.Context, req *pb.Crea
 	obj := proto.CloneOf(req.Tensorboard)
 	obj.Name = fqn
 
-	obj.BlobStoragePathPrefix = "cloud-ai-platform-" + uuid.New().String()
+	obj.BlobStoragePathPrefix = "cloud-ai-platform-00000000-1111-2222-3333-444444444444"
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
 

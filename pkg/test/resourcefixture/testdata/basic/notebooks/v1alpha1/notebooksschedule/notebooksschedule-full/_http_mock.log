@@ -387,7 +387,7 @@ GRPC /google.cloud.notebooks.v1.NotebookService/CreateSchedule
       "masterType": "n1-standard-4",
       "scaleTier": "CUSTOM",
       "serviceAccount": "n-sch-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
-      "tensorboard": "projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}",
+      "tensorboard": "projects/${projectId}/locations/us-central1/tensorboards/${tensorboardID}",
       "vertexAiParameters": {
         "network": "projects/${projectId}/global/networks/${networkID}"
       }
@@ -443,7 +443,7 @@ OK
       "masterType": "n1-standard-4",
       "scaleTier": "CUSTOM",
       "serviceAccount": "n-sch-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
-      "tensorboard": "projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}",
+      "tensorboard": "projects/${projectId}/locations/us-central1/tensorboards/${tensorboardID}",
       "vertexAiParameters": {
         "network": "projects/${projectId}/global/networks/${networkID}"
       }
@@ -473,7 +473,7 @@ OK
     "masterType": "n1-standard-4",
     "scaleTier": "CUSTOM",
     "serviceAccount": "n-sch-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
-    "tensorboard": "projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}",
+    "tensorboard": "projects/${projectId}/locations/us-central1/tensorboards/${tensorboardID}",
     "vertexAiParameters": {
       "network": "projects/${projectId}/global/networks/${networkID}"
     }
@@ -502,7 +502,7 @@ OK
     "masterType": "n1-standard-4",
     "scaleTier": "CUSTOM",
     "serviceAccount": "n-sch-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
-    "tensorboard": "projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}",
+    "tensorboard": "projects/${projectId}/locations/us-central1/tensorboards/${tensorboardID}",
     "vertexAiParameters": {
       "network": "projects/${projectId}/global/networks/${networkID}"
     }

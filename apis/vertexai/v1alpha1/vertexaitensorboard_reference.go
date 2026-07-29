@@ -18,24 +18,18 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var VertexAITensorboardGVK = schema.GroupVersionKind{
-	Group:   "vertexai.cnrm.cloud.google.com",
-	Version: "v1alpha1",
-	Kind:    "VertexAITensorboard",
-}
-
 var _ refs.Ref = &VertexAITensorboardRef{}
 
-// VertexAITensorboardRef is a reference to a VertexAITensorboard.
+// VertexAITensorboardRef is a reference to a GCP VertexAITensorboard.
 type VertexAITensorboardRef struct {
 	// A reference to an externally managed VertexAITensorboard resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/tensorboards/{{tensorboardID}}".
@@ -49,7 +43,7 @@ type VertexAITensorboardRef struct {
 }
 
 func init() {
-	refs.Register(&VertexAITensorboardRef{}, nil)
+	refs.Register(&VertexAITensorboardRef{}, &VertexAITensorboard{})
 }
 
 func (r *VertexAITensorboardRef) GetGVK() schema.GroupVersionKind {
@@ -73,31 +67,6 @@ func (r *VertexAITensorboardRef) SetExternal(external string) {
 	r.Namespace = ""
 }
 
-var VertexAITensorboardIdentityFormat = gcpurls.Template[VertexAITensorboardIdentity]("aiplatform.googleapis.com", "projects/{project}/locations/{location}/tensorboards/{tensorboard}")
-
-type VertexAITensorboardIdentity struct {
-	Project     string
-	Location    string
-	Tensorboard string
-}
-
-func (i *VertexAITensorboardIdentity) String() string {
-	return VertexAITensorboardIdentityFormat.ToString(*i)
-}
-
-func (i *VertexAITensorboardIdentity) FromExternal(ref string) error {
-	parsed, match, err := VertexAITensorboardIdentityFormat.Parse(ref)
-	if err != nil {
-		return fmt.Errorf("format of VertexAITensorboard external=%q was not known (use %s): %w", ref, VertexAITensorboardIdentityFormat.CanonicalForm(), err)
-	}
-	if !match {
-		return fmt.Errorf("format of VertexAITensorboard external=%q was not known (use %s)", ref, VertexAITensorboardIdentityFormat.CanonicalForm())
-	}
-
-	*i = *parsed
-	return nil
-}
-
 func (r *VertexAITensorboardRef) ValidateExternal(ref string) error {
 	id := &VertexAITensorboardIdentity{}
 	return id.FromExternal(ref)
@@ -117,8 +86,15 @@ func (r *VertexAITensorboardRef) ParseExternalToIdentity() (identity.Identity, e
 
 func (r *VertexAITensorboardRef) Normalize(ctx context.Context, reader client.Reader, otherNamespace string) error {
 	fallback := func(u *unstructured.Unstructured) string {
-		name, _, _ := unstructured.NestedString(u.Object, "status", "name")
-		return name
+		structuredObj, err := common.ToStructuredType[*VertexAITensorboard](u)
+		if err != nil {
+			return ""
+		}
+		identity, err := getIdentityFromVertexAITensorboardSpec(ctx, reader, structuredObj)
+		if err != nil {
+			return ""
+		}
+		return identity.String()
 	}
 	return refs.NormalizeWithFallback(ctx, reader, r, otherNamespace, fallback)
 }
