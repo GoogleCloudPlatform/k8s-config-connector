@@ -20,6 +20,7 @@
 // resource: DiscoveryEngineControl:Control
 // resource: DiscoveryEngineDataStore:DataStore
 // resource: DiscoveryEngineEngine:Engine
+// resource: DiscoveryEngineRecommendationEngine:Engine
 // resource: DiscoveryEngineIdentityMappingStore:IdentityMappingStore
 // resource: DiscoveryEngineDataStoreTargetSite:TargetSite
 // resource: DiscoveryEngineConversation:Conversation
@@ -1008,7 +1009,6 @@ type Engine_CommonConfig struct {
 	CompanyName *string `json:"companyName,omitempty"`
 }
 
-/* unreachable type Engine_MediaRecommendationEngineConfig
 // +kcc:proto=google.cloud.discoveryengine.v1.Engine.MediaRecommendationEngineConfig
 type Engine_MediaRecommendationEngineConfig struct {
 	// Required. The type of engine. e.g., `recommended-for-you`.
@@ -1065,9 +1065,7 @@ type Engine_MediaRecommendationEngineConfig struct {
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.Engine.MediaRecommendationEngineConfig.engine_features_config
 	EngineFeaturesConfig *Engine_MediaRecommendationEngineConfig_EngineFeaturesConfig `json:"engineFeaturesConfig,omitempty"`
 }
-*/
 
-/* unreachable type Engine_MediaRecommendationEngineConfig_EngineFeaturesConfig
 // +kcc:proto=google.cloud.discoveryengine.v1.Engine.MediaRecommendationEngineConfig.EngineFeaturesConfig
 type Engine_MediaRecommendationEngineConfig_EngineFeaturesConfig struct {
 	// Recommended for you engine feature config.
@@ -1078,9 +1076,7 @@ type Engine_MediaRecommendationEngineConfig_EngineFeaturesConfig struct {
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.Engine.MediaRecommendationEngineConfig.EngineFeaturesConfig.most_popular_config
 	MostPopularConfig *Engine_MediaRecommendationEngineConfig_MostPopularFeatureConfig `json:"mostPopularConfig,omitempty"`
 }
-*/
 
-/* unreachable type Engine_MediaRecommendationEngineConfig_MostPopularFeatureConfig
 // +kcc:proto=google.cloud.discoveryengine.v1.Engine.MediaRecommendationEngineConfig.MostPopularFeatureConfig
 type Engine_MediaRecommendationEngineConfig_MostPopularFeatureConfig struct {
 	// The time window of which the engine is queried at training and
@@ -1090,9 +1086,7 @@ type Engine_MediaRecommendationEngineConfig_MostPopularFeatureConfig struct {
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.Engine.MediaRecommendationEngineConfig.MostPopularFeatureConfig.time_window_days
 	TimeWindowDays *int64 `json:"timeWindowDays,omitempty"`
 }
-*/
 
-/* unreachable type Engine_MediaRecommendationEngineConfig_OptimizationObjectiveConfig
 // +kcc:proto=google.cloud.discoveryengine.v1.Engine.MediaRecommendationEngineConfig.OptimizationObjectiveConfig
 type Engine_MediaRecommendationEngineConfig_OptimizationObjectiveConfig struct {
 	// Required. The name of the field to target. Currently supported
@@ -1104,9 +1098,7 @@ type Engine_MediaRecommendationEngineConfig_OptimizationObjectiveConfig struct {
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.Engine.MediaRecommendationEngineConfig.OptimizationObjectiveConfig.target_field_value_float
 	TargetFieldValueFloat *float32 `json:"targetFieldValueFloat,omitempty"`
 }
-*/
 
-/* unreachable type Engine_MediaRecommendationEngineConfig_RecommendedForYouFeatureConfig
 // +kcc:proto=google.cloud.discoveryengine.v1.Engine.MediaRecommendationEngineConfig.RecommendedForYouFeatureConfig
 type Engine_MediaRecommendationEngineConfig_RecommendedForYouFeatureConfig struct {
 	// The type of event with which the engine is queried at prediction time.
@@ -1119,7 +1111,6 @@ type Engine_MediaRecommendationEngineConfig_RecommendedForYouFeatureConfig struc
 	// +kcc:proto:field=google.cloud.discoveryengine.v1.Engine.MediaRecommendationEngineConfig.RecommendedForYouFeatureConfig.context_event_type
 	ContextEventType *string `json:"contextEventType,omitempty"`
 }
-*/
 
 // +kcc:proto=google.cloud.discoveryengine.v1.Engine.SearchEngineConfig
 type Engine_SearchEngineConfig struct {

@@ -36,6 +36,7 @@ ${CONTROLLERBUILDER} generate-types --service google.cloud.discoveryengine.v1 --
   --resource DiscoveryEngineControl:Control \
   --resource DiscoveryEngineDataStore:DataStore \
   --resource DiscoveryEngineEngine:Engine \
+  --resource DiscoveryEngineRecommendationEngine:Engine \
   --resource DiscoveryEngineIdentityMappingStore:IdentityMappingStore \
   --resource DiscoveryEngineDataStoreTargetSite:TargetSite \
   --resource DiscoveryEngineConversation:Conversation \
