@@ -45,10 +45,23 @@ jobs:
       remaining_fixtures_json: ${{ steps.split.outputs.remaining_fixtures_json }}
       samples_json: ${{ steps.split.outputs.samples_json }}
       scenarios_json: ${{ steps.split.outputs.scenarios_json }}
+      unit_tests_json: ${{ steps.split.outputs.unit_tests_json }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0
+      - uses: ./dev/actions/cache-go
+      - name: Prebuild test binaries
+        run: |
+          mkdir -p bin
+          go test -c -o bin/tests-e2e ./tests/e2e
+          go build -o bin/paralleltestrunner ./dev/tools/paralleltestrunner
+      - name: Upload prebuilt test binaries
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4
+        with:
+          name: prebuilt-test-binaries
+          path: bin/
+          retention-days: 1
       - name: Split test matrix between priority and non-priority
         id: split
         run: ./dev/tasks/split-test-matrix
@@ -57,7 +70,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/capture-pprof"
         run: |
@@ -65,7 +78,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4
         if: ${{ !cancelled() }}
         with:
           name: artifacts-capture-pprof
@@ -76,7 +89,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/fuzz-roundtrippers"
         run: |
@@ -84,7 +97,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4
         if: ${{ !cancelled() }}
         with:
           name: artifacts-fuzz-roundtrippers
@@ -95,7 +108,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0
       - name: Free up disk space
@@ -105,7 +118,7 @@ jobs:
           go-version-file: 'go.mod'
           cache: false
       - name: golangci-lint
-        uses: golangci/golangci-lint-action@v9
+        uses: golangci/golangci-lint-action@2226d7cb06a077fc737907665249f1a705864010 # v6.0.1
         with:
           version: v2.9.0
           args: --timeout=20m
@@ -114,7 +127,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0
       - uses: ./dev/actions/cache-go
@@ -124,7 +137,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4
         if: ${{ !cancelled() }}
         with:
           name: artifacts-license-lint
@@ -135,7 +148,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/run-linters"
         run: |
@@ -143,7 +156,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4
         if: ${{ !cancelled() }}
         with:
           name: artifacts-run-linters
@@ -154,7 +167,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/smoketest-with-kind"
         run: |
@@ -162,7 +175,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4
         if: ${{ !cancelled() }}
         with:
           name: artifacts-smoketest-with-kind
@@ -173,9 +186,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - uses: ./dev/actions/cache-go
-      - uses: 'google-github-actions/setup-gcloud@v3'
+      - uses: google-github-actions/setup-gcloud@01af06c41d9aa0790d6fdc8f0b982b768ca4d102 # v2
         with:
           version: '546.0.0'
           install_components: 'alpha,beta'
@@ -185,7 +198,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4
         if: ${{ !cancelled() }}
         with:
           name: artifacts-test-mockgcp
@@ -196,7 +209,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/test-pause"
         run: |
@@ -204,7 +217,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4
         if: ${{ !cancelled() }}
         with:
           name: artifacts-test-pause
@@ -216,7 +229,7 @@ jobs:
     needs: unit-tests
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-e2e-direct-iam"
         run: |
@@ -224,30 +237,10 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-direct-iam
-          path: /tmp/artifacts/
-
-
-  tests-e2e-fixtures:
-    runs-on: ubuntu-latest
-    needs: unit-tests
-    timeout-minutes: 60
-    steps:
-      - uses: actions/checkout@v6
-      - uses: ./dev/actions/cache-go
-      - name: "Run dev/ci/presubmits/tests-e2e-fixtures"
-        run: |
-          ./dev/ci/presubmits/tests-e2e-fixtures
-        env:
-          ARTIFACTS: /tmp/artifacts
-      - name: "Upload artifacts"
-        uses: actions/upload-artifact@v7
-        if: ${{ !cancelled() }}
-        with:
-          name: artifacts-tests-e2e-fixtures
           path: /tmp/artifacts/
 
 
@@ -262,19 +255,35 @@ jobs:
       matrix:
         service: ${{ fromJSON(needs.prepare-test-matrix.outputs.priority_fixtures_json) }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - uses: ./dev/actions/cache-go
-      - uses: 'google-github-actions/setup-gcloud@v3'
+      - name: Download prebuilt test binaries
+        uses: actions/download-artifact@484a0b528fb4d7bd804637ccb632e47a0e638317 # v4
+        with:
+          name: prebuilt-test-binaries
+          path: bin/
+      - name: Make binaries executable
+        run: chmod +x bin/* || true
+      - uses: google-github-actions/setup-gcloud@01af06c41d9aa0790d6fdc8f0b982b768ca4d102 # v2
         with:
           version: '546.0.0'
           install_components: 'alpha,beta'
       - name: "Run priority E2E fixtures for ${{ matrix.service }}"
         run: |
-          ./dev/ci/presubmits/tests-e2e-fixtures-${{ matrix.service }}
+          target="${{ matrix.service }}"
+          if [[ "${target}" =~ ([0-9]+)-of-([0-9]+)$ ]]; then
+            shard_num="${BASH_REMATCH[1]}"
+            shard_cnt="${BASH_REMATCH[2]}"
+            shard_idx=$((shard_num - 1))
+            service="${target%-${shard_num}-of-${shard_cnt}}"
+            ./dev/ci/presubmits/tests-e2e-fixtures-${service} "${shard_idx}" "${shard_cnt}"
+          else
+            ./dev/ci/presubmits/tests-e2e-fixtures-${target} "0" "1"
+          fi
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4
         if: ${{ !cancelled() }}
         with:
           name: artifacts-priority-e2e-fixtures-${{ matrix.service }}
@@ -283,27 +292,43 @@ jobs:
   tests-e2e-fixtures-matrix:
     name: "tests-e2e-fixtures-${{ matrix.service }}"
     runs-on: ubuntu-latest
-    needs: [prepare-test-matrix, priority-e2e-fixtures, unit-tests]
-    if: ${{ !cancelled() && needs.priority-e2e-fixtures.result != 'failure' && needs.unit-tests.result == 'success' }}
+    needs: prepare-test-matrix
+    if: ${{ !cancelled() }}
     timeout-minutes: 60
     strategy:
       fail-fast: false
       matrix:
         service: ${{ fromJSON(needs.prepare-test-matrix.outputs.remaining_fixtures_json) }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - uses: ./dev/actions/cache-go
-      - uses: 'google-github-actions/setup-gcloud@v3'
+      - name: Download prebuilt test binaries
+        uses: actions/download-artifact@484a0b528fb4d7bd804637ccb632e47a0e638317 # v4
+        with:
+          name: prebuilt-test-binaries
+          path: bin/
+      - name: Make binaries executable
+        run: chmod +x bin/* || true
+      - uses: google-github-actions/setup-gcloud@01af06c41d9aa0790d6fdc8f0b982b768ca4d102 # v2
         with:
           version: '546.0.0'
           install_components: 'alpha,beta'
       - name: "Run dev/ci/presubmits/tests-e2e-fixtures-${{ matrix.service }}"
         run: |
-          ./dev/ci/presubmits/tests-e2e-fixtures-${{ matrix.service }}
+          target="${{ matrix.service }}"
+          if [[ "${target}" =~ ([0-9]+)-of-([0-9]+)$ ]]; then
+            shard_num="${BASH_REMATCH[1]}"
+            shard_cnt="${BASH_REMATCH[2]}"
+            shard_idx=$((shard_num - 1))
+            service="${target%-${shard_num}-of-${shard_cnt}}"
+            ./dev/ci/presubmits/tests-e2e-fixtures-${service} "${shard_idx}" "${shard_cnt}"
+          else
+            ./dev/ci/presubmits/tests-e2e-fixtures-${target} "0" "1"
+          fi
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-${{ matrix.service }}
@@ -312,17 +337,24 @@ jobs:
   tests-e2e-samples-matrix:
     name: "tests-e2e-samples-${{ matrix.service }}"
     runs-on: ubuntu-latest
-    needs: [prepare-test-matrix, priority-e2e-fixtures, unit-tests]
-    if: ${{ !cancelled() && needs.priority-e2e-fixtures.result != 'failure' && needs.unit-tests.result == 'success' }}
+    needs: prepare-test-matrix
+    if: ${{ !cancelled() }}
     timeout-minutes: 60
     strategy:
       fail-fast: false
       matrix:
         service: ${{ fromJSON(needs.prepare-test-matrix.outputs.samples_json) }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - uses: ./dev/actions/cache-go
-      - uses: 'google-github-actions/setup-gcloud@v3'
+      - name: Download prebuilt test binaries
+        uses: actions/download-artifact@484a0b528fb4d7bd804637ccb632e47a0e638317 # v4
+        with:
+          name: prebuilt-test-binaries
+          path: bin/
+      - name: Make binaries executable
+        run: chmod +x bin/* || true
+      - uses: google-github-actions/setup-gcloud@01af06c41d9aa0790d6fdc8f0b982b768ca4d102 # v2
         with:
           version: '546.0.0'
           install_components: 'alpha,beta'
@@ -332,7 +364,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-samples-${{ matrix.service }}
@@ -342,7 +374,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-gcptracker"
         run: |
@@ -350,7 +382,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-gcptracker
@@ -361,7 +393,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-preview"
         run: |
@@ -369,7 +401,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-preview
@@ -379,17 +411,24 @@ jobs:
   tests-scenarios-matrix:
     name: "tests-scenarios-${{ matrix.suite }}"
     runs-on: ubuntu-latest
-    needs: [prepare-test-matrix, priority-e2e-fixtures, unit-tests]
-    if: ${{ !cancelled() && needs.priority-e2e-fixtures.result != 'failure' && needs.unit-tests.result == 'success' }}
+    needs: prepare-test-matrix
+    if: ${{ !cancelled() }}
     timeout-minutes: 60
     strategy:
       fail-fast: false
       matrix:
         suite: ${{ fromJSON(needs.prepare-test-matrix.outputs.scenarios_json) }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - uses: ./dev/actions/cache-go
-      - uses: 'google-github-actions/setup-gcloud@v3'
+      - name: Download prebuilt test binaries
+        uses: actions/download-artifact@484a0b528fb4d7bd804637ccb632e47a0e638317 # v4
+        with:
+          name: prebuilt-test-binaries
+          path: bin/
+      - name: Make binaries executable
+        run: chmod +x bin/* || true
+      - uses: google-github-actions/setup-gcloud@01af06c41d9aa0790d6fdc8f0b982b768ca4d102 # v2
         with:
           version: '546.0.0'
           install_components: 'alpha,beta'
@@ -399,7 +438,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-scenarios-${{ matrix.suite }}
@@ -409,11 +448,11 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Free up disk space
         run: dev/tasks/free-disk-space-on-github-actions-runner
       - uses: ./dev/actions/cache-go
-      - uses: 'google-github-actions/setup-gcloud@v3'
+      - uses: google-github-actions/setup-gcloud@01af06c41d9aa0790d6fdc8f0b982b768ca4d102 # v2
         with:
           version: '546.0.0'
           install_components: 'alpha,beta'
@@ -423,22 +462,21 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4
         if: ${{ !cancelled() }}
         with:
           name: artifacts-unit-tests
           path: /tmp/artifacts/
 
-
   unit-tests-operator:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Free up disk space
         run: dev/tasks/free-disk-space-on-github-actions-runner
       - uses: ./dev/actions/cache-go
-      - uses: 'google-github-actions/setup-gcloud@v3'
+      - uses: google-github-actions/setup-gcloud@01af06c41d9aa0790d6fdc8f0b982b768ca4d102 # v2
         with:
           version: '546.0.0'
           install_components: 'alpha,beta'
@@ -448,7 +486,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4
         if: ${{ !cancelled() }}
         with:
           name: artifacts-unit-tests-operator
@@ -459,7 +497,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/validate-generated-files"
         run: |
@@ -467,7 +505,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4
         if: ${{ !cancelled() }}
         with:
           name: artifacts-validate-generated-files
@@ -478,7 +516,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0
       - uses: ./dev/actions/cache-go
@@ -490,7 +528,7 @@ jobs:
           BASE_COMMIT: ${{ github.event.pull_request.base.sha }}
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4
         if: ${{ !cancelled() }}
         with:
           name: artifacts-validate-untested-fields
@@ -498,6 +536,7 @@ jobs:
 
 
   presubmit-gatekeeper:
+    name: presubmit-gatekeeper
     needs:
       - prepare-test-matrix
       - capture-pprof
@@ -509,7 +548,6 @@ jobs:
       - test-mockgcp
       - test-pause
       - tests-e2e-direct-iam
-      - tests-e2e-fixtures
       - priority-e2e-fixtures
       - tests-e2e-fixtures-matrix
       - tests-e2e-samples-matrix
