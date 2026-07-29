@@ -125,6 +125,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterServiceAttachmentsServer(grpcServer, &RegionalServiceAttachmentV1{MockService: s})
 
 	pb.RegisterFirewallPoliciesServer(grpcServer, &FirewallPoliciesV1{MockService: s})
+	pb.RegisterNetworkFirewallPoliciesServer(grpcServer, &NetworkFirewallPoliciesV1{MockService: s})
 
 	pb.RegisterGlobalForwardingRulesServer(grpcServer, &GlobalForwardingRulesV1{MockService: s})
 	pb.RegisterForwardingRulesServer(grpcServer, &RegionalForwardingRulesV1{MockService: s})
@@ -277,6 +278,10 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	}
 
 	if err := pb.RegisterFirewallPoliciesHandler(ctx, mux.ServeMux, conn); err != nil {
+		return nil, err
+	}
+
+	if err := pb.RegisterNetworkFirewallPoliciesHandler(ctx, mux.ServeMux, conn); err != nil {
 		return nil, err
 	}
 
@@ -483,10 +488,12 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		}
 
 		isRouter := strings.Contains(r.URL.Path, "/routers")
+		isFirewallPolicy := strings.Contains(r.URL.Path, "/global/firewallPolicies")
+		isGET := r.Method == http.MethodGet
 
 		var captured *responseCapture
 		var originalWriter http.ResponseWriter = w
-		if isLegacyHealthCheck || isRouter {
+		if isLegacyHealthCheck || isRouter || (isFirewallPolicy && isGET) {
 			captured = &responseCapture{ResponseWriter: w}
 			w = captured
 		}
@@ -514,6 +521,14 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 			if isRouter {
 				if len(bodyBytes) > 0 && captured.code < 400 {
 					if rewritten, err := rewriteRouterResponse(bodyBytes); err == nil {
+						bodyBytes = rewritten
+					}
+				}
+			}
+
+			if isFirewallPolicy && isGET {
+				if len(bodyBytes) > 0 && captured.code < 400 {
+					if rewritten, err := rewriteFirewallPolicyResponse(bodyBytes, r.URL.Path); err == nil {
 						bodyBytes = rewritten
 					}
 				}
@@ -654,4 +669,66 @@ func rewriteRouterResponse(bodyBytes []byte) ([]byte, error) {
 	}
 
 	return json.Marshal(data)
+}
+
+func rewriteFirewallPolicyResponse(bodyBytes []byte, path string) ([]byte, error) {
+	var data map[string]any
+	if err := json.Unmarshal(bodyBytes, &data); err != nil {
+		return bodyBytes, nil
+	}
+
+	if strings.HasSuffix(path, "/getRule") {
+		rewriteFirewallPolicyRuleMap(data)
+	} else {
+		if kind, ok := data["kind"].(string); ok {
+			if kind == "compute#firewallPolicy" {
+				data["policySource"] = "USER_DEFINED"
+				rewriteFirewallPolicyMap(data)
+			}
+		}
+	}
+
+	return json.Marshal(data)
+}
+
+func rewriteFirewallPolicyMap(policy map[string]any) {
+	if rules, ok := policy["rules"].([]any); ok {
+		for _, rVal := range rules {
+			if r, ok := rVal.(map[string]any); ok {
+				rewriteFirewallPolicyRuleMap(r)
+			}
+		}
+	}
+}
+
+func rewriteFirewallPolicyRuleMap(rule map[string]any) {
+	rule["targetType"] = "INSTANCES"
+
+	priorityVal, hasPriority := rule["priority"]
+	if hasPriority {
+		priority := int64(priorityVal.(float64))
+		if priority >= 2147483644 && priority <= 2147483647 {
+			rule["ruleTupleCount"] = 2
+		} else {
+			count := 2
+			if matchVal, ok := rule["match"].(map[string]any); ok {
+				if srcIpRanges, ok := matchVal["srcIpRanges"].([]any); ok {
+					count += len(srcIpRanges)
+				}
+				if destIpRanges, ok := matchVal["destIpRanges"].([]any); ok {
+					count += len(destIpRanges)
+				}
+			}
+			rule["ruleTupleCount"] = count
+		}
+	}
+
+	if matchVal, ok := rule["match"].(map[string]any); ok {
+		if srcNetworkContext, ok := matchVal["srcNetworkContext"].(string); ok {
+			matchVal["srcNetworkScope"] = srcNetworkContext
+		}
+		if destNetworkContext, ok := matchVal["destNetworkContext"].(string); ok {
+			matchVal["destNetworkScope"] = destNetworkContext
+		}
+	}
 }

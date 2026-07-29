@@ -28,7 +28,7 @@ spec:
     - 172.20.0.0/16
     srcNetworkContext: INTRA_VPC
   projectRef:
-    external: ${projectId}
+    external: projects/${projectId}
   resourceID: "1000"
   targetServiceAccountRefs:
   - name: gsa-2-${uniqueId}
