@@ -186,8 +186,10 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//developerconnect.googleapis.com/projects/{}/locations/{}/insightsConfigs/{}":   true,
 
 		// Discovery Engine
+		"//discoveryengine.googleapis.com/projects/{}/locations/{}/collections/{}/dataStores/{}/siteSearchEngine": true,
 		"//discoveryengine.googleapis.com/projects/{}/locations/{}/collections/{}/engines/{}/servingConfigs/{}":   true,
 		"//discoveryengine.googleapis.com/projects/{}/locations/{}/collections/{}/dataStores/{}/conversations/{}": true,
+		"//discoveryengine.googleapis.com/projects/{}/locations/{}/collections/{}/engines/{}/widgetConfigs/{}":    true,
 		"//discoveryengine.googleapis.com/projects/{}/locations/{}/dataStores/{}/controls/{}":                     true,
 		"//discoveryengine.googleapis.com/projects/{}/locations/{}/dataStores/{}/conversations/{}":                true,
 		"//discoveryengine.googleapis.com/projects/{}/locations/{}/dataStores/{}/sessions/{}":                     true,
@@ -195,7 +197,6 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//discoveryengine.googleapis.com/projects/{}/locations/{}/licenseConfigs/{}/":                            true,
 		"//discoveryengine.googleapis.com/projects/{}/locations/{}/licenseConfigs/{}":                             true,
 		"//discoveryengine.googleapis.com/projects/{}/locations/{}/sampleQuerySets/{}/sampleQueries/{}":           true,
-		"//discoveryengine.googleapis.com/projects/{}/locations/{}/collections/{}/dataStores/{}/siteSearchEngine": true,
 		"//discoveryengine.googleapis.com/projects/{}/locations/{}/userStores/{}":                                 true,
 
 		// DLP

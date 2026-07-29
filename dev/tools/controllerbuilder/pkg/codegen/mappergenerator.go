@@ -1288,6 +1288,28 @@ func (o *MapperGenerator) goPackageForProto(parentFile protoreflect.FileDescript
 
 	importAlias := strings.TrimSuffix(lastComponent(protoGoPackage), "pb") + "pb"
 
+	// Check for collision and disambiguate
+	collision := true
+	for collision {
+		collision = false
+		for _, pkg := range o.importedPackages {
+			if pkg.alias == importAlias && pkg.goPackage != protoGoPackage {
+				collision = true
+				break
+			}
+		}
+		if collision {
+			// Try to disambiguate by injecting the api version segment (e.g. apiv1alpha)
+			parts := strings.Split(protoGoPackage, "/")
+			if len(parts) >= 2 {
+				ver := parts[len(parts)-2]
+				importAlias = strings.TrimSuffix(lastComponent(protoGoPackage), "pb") + ver + "pb"
+			} else {
+				importAlias = importAlias + "_"
+			}
+		}
+	}
+
 	o.AddGoImportAlias(protoGoPackage, importAlias)
 	return importAlias
 }
