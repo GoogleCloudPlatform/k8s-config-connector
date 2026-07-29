@@ -47,7 +47,8 @@ ${CONTROLLERBUILDER} generate-types --service google.cloud.discoveryengine.v1bet
   --resource DiscoveryEngineSampleQuery:SampleQuery \
   --resource DiscoveryEngineLicenseConfig:LicenseConfig \
   --resource DiscoveryEngineServingConfig:ServingConfig \
-  --resource DiscoveryEngineUserStore:UserStore
+  --resource DiscoveryEngineUserStore:UserStore \
+  --resource DiscoveryEngineAssistant:Assistant
 mv ../../../apis/discoveryengine/v1alpha1/types.generated.go ../../../apis/discoveryengine/v1alpha1/v1beta_types.generated.go
 
 

@@ -625,6 +625,94 @@ func AssistantGroundedContent_v1alpha1_ToProto(mapCtx *direct.MapContext, in *kr
 	out.Content = AssistantContent_v1alpha1_ToProto(mapCtx, in.Content)
 	return out
 }
+func Assistant_CustomerPolicy_v1alpha1_FromProto(mapCtx *direct.MapContext, in *discoveryenginepb.Assistant_CustomerPolicy) *krmdiscoveryenginev1alpha1.Assistant_CustomerPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.Assistant_CustomerPolicy{}
+	out.BannedPhrases = direct.Slice_FromProto(mapCtx, in.BannedPhrases, Assistant_CustomerPolicy_BannedPhrase_v1alpha1_FromProto)
+	out.ModelArmorConfig = Assistant_CustomerPolicy_ModelArmorConfig_v1alpha1_FromProto(mapCtx, in.GetModelArmorConfig())
+	return out
+}
+func Assistant_CustomerPolicy_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.Assistant_CustomerPolicy) *discoveryenginepb.Assistant_CustomerPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &discoveryenginepb.Assistant_CustomerPolicy{}
+	out.BannedPhrases = direct.Slice_ToProto(mapCtx, in.BannedPhrases, Assistant_CustomerPolicy_BannedPhrase_v1alpha1_ToProto)
+	out.ModelArmorConfig = Assistant_CustomerPolicy_ModelArmorConfig_v1alpha1_ToProto(mapCtx, in.ModelArmorConfig)
+	return out
+}
+func Assistant_CustomerPolicy_BannedPhrase_v1alpha1_FromProto(mapCtx *direct.MapContext, in *discoveryenginepb.Assistant_CustomerPolicy_BannedPhrase) *krmdiscoveryenginev1alpha1.Assistant_CustomerPolicy_BannedPhrase {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.Assistant_CustomerPolicy_BannedPhrase{}
+	out.Phrase = direct.LazyPtr(in.GetPhrase())
+	out.MatchType = direct.Enum_FromProto(mapCtx, in.GetMatchType())
+	out.IgnoreDiacritics = direct.LazyPtr(in.GetIgnoreDiacritics())
+	return out
+}
+func Assistant_CustomerPolicy_BannedPhrase_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.Assistant_CustomerPolicy_BannedPhrase) *discoveryenginepb.Assistant_CustomerPolicy_BannedPhrase {
+	if in == nil {
+		return nil
+	}
+	out := &discoveryenginepb.Assistant_CustomerPolicy_BannedPhrase{}
+	out.Phrase = direct.ValueOf(in.Phrase)
+	out.MatchType = direct.Enum_ToProto[discoveryenginepb.Assistant_CustomerPolicy_BannedPhrase_BannedPhraseMatchType](mapCtx, in.MatchType)
+	out.IgnoreDiacritics = direct.ValueOf(in.IgnoreDiacritics)
+	return out
+}
+func Assistant_GenerationConfig_SystemInstruction_v1alpha1_FromProto(mapCtx *direct.MapContext, in *discoveryenginepb.Assistant_GenerationConfig_SystemInstruction) *krmdiscoveryenginev1alpha1.Assistant_GenerationConfig_SystemInstruction {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.Assistant_GenerationConfig_SystemInstruction{}
+	out.AdditionalSystemInstruction = direct.LazyPtr(in.GetAdditionalSystemInstruction())
+	return out
+}
+func Assistant_GenerationConfig_SystemInstruction_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.Assistant_GenerationConfig_SystemInstruction) *discoveryenginepb.Assistant_GenerationConfig_SystemInstruction {
+	if in == nil {
+		return nil
+	}
+	out := &discoveryenginepb.Assistant_GenerationConfig_SystemInstruction{}
+	out.AdditionalSystemInstruction = direct.ValueOf(in.AdditionalSystemInstruction)
+	return out
+}
+func Assistant_ToolInfo_v1alpha1_FromProto(mapCtx *direct.MapContext, in *discoveryenginepb.Assistant_ToolInfo) *krmdiscoveryenginev1alpha1.Assistant_ToolInfo {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.Assistant_ToolInfo{}
+	out.ToolName = direct.LazyPtr(in.GetToolName())
+	out.ToolDisplayName = direct.LazyPtr(in.GetToolDisplayName())
+	return out
+}
+func Assistant_ToolInfo_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.Assistant_ToolInfo) *discoveryenginepb.Assistant_ToolInfo {
+	if in == nil {
+		return nil
+	}
+	out := &discoveryenginepb.Assistant_ToolInfo{}
+	out.ToolName = direct.ValueOf(in.ToolName)
+	out.ToolDisplayName = direct.ValueOf(in.ToolDisplayName)
+	return out
+}
+func Assistant_ToolList_v1alpha1_FromProto(mapCtx *direct.MapContext, in *discoveryenginepb.Assistant_ToolList) *krmdiscoveryenginev1alpha1.Assistant_ToolList {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.Assistant_ToolList{}
+	out.ToolInfo = direct.Slice_FromProto(mapCtx, in.ToolInfo, Assistant_ToolInfo_v1alpha1_FromProto)
+	return out
+}
+func Assistant_ToolList_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.Assistant_ToolList) *discoveryenginepb.Assistant_ToolList {
+	if in == nil {
+		return nil
+	}
+	out := &discoveryenginepb.Assistant_ToolList{}
+	out.ToolInfo = direct.Slice_ToProto(mapCtx, in.ToolInfo, Assistant_ToolInfo_v1alpha1_ToProto)
+	return out
+}
 func CmekConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.CmekConfig) *krmdiscoveryenginev1alpha1.CmekConfig {
 	if in == nil {
 		return nil
@@ -931,6 +1019,58 @@ func DataStore_BillingEstimation_v1alpha1_ToProto(mapCtx *direct.MapContext, in 
 	out.StructuredDataUpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.StructuredDataUpdateTime)
 	out.UnstructuredDataUpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UnstructuredDataUpdateTime)
 	out.WebsiteDataUpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.WebsiteDataUpdateTime)
+	return out
+}
+func DiscoveryEngineAssistantObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *discoveryenginepb.Assistant) *krmdiscoveryenginev1alpha1.DiscoveryEngineAssistantObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.DiscoveryEngineAssistantObservedState{}
+	// MISSING: Name
+	// MISSING: CreateTime
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func DiscoveryEngineAssistantObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.DiscoveryEngineAssistantObservedState) *discoveryenginepb.Assistant {
+	if in == nil {
+		return nil
+	}
+	out := &discoveryenginepb.Assistant{}
+	// MISSING: Name
+	// MISSING: CreateTime
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+func DiscoveryEngineAssistantSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *discoveryenginepb.Assistant) *krmdiscoveryenginev1alpha1.DiscoveryEngineAssistantSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.DiscoveryEngineAssistantSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.GenerationConfig = Assistant_GenerationConfig_v1alpha1_FromProto(mapCtx, in.GetGenerationConfig())
+	out.WebGroundingType = direct.Enum_FromProto(mapCtx, in.GetWebGroundingType())
+	out.DefaultWebGroundingToggleOff = direct.LazyPtr(in.GetDefaultWebGroundingToggleOff())
+	out.EnabledTools = EnabledTools_FromProto(mapCtx, in.EnabledTools)
+	out.CustomerPolicy = Assistant_CustomerPolicy_v1alpha1_FromProto(mapCtx, in.GetCustomerPolicy())
+	// MISSING: CreateTime
+	return out
+}
+func DiscoveryEngineAssistantSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.DiscoveryEngineAssistantSpec) *discoveryenginepb.Assistant {
+	if in == nil {
+		return nil
+	}
+	out := &discoveryenginepb.Assistant{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	out.GenerationConfig = Assistant_GenerationConfig_v1alpha1_ToProto(mapCtx, in.GenerationConfig)
+	out.WebGroundingType = direct.Enum_ToProto[discoveryenginepb.Assistant_WebGroundingType](mapCtx, in.WebGroundingType)
+	out.DefaultWebGroundingToggleOff = direct.ValueOf(in.DefaultWebGroundingToggleOff)
+	out.EnabledTools = EnabledTools_ToProto(mapCtx, in.EnabledTools)
+	out.CustomerPolicy = Assistant_CustomerPolicy_v1alpha1_ToProto(mapCtx, in.CustomerPolicy)
+	// MISSING: CreateTime
 	return out
 }
 func DiscoveryEngineControlObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Control) *krmdiscoveryenginev1alpha1.DiscoveryEngineControlObservedState {

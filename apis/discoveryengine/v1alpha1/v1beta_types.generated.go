@@ -22,6 +22,7 @@
 // resource: DiscoveryEngineLicenseConfig:LicenseConfig
 // resource: DiscoveryEngineServingConfig:ServingConfig
 // resource: DiscoveryEngineUserStore:UserStore
+// resource: DiscoveryEngineAssistant:Assistant
 
 package v1alpha1
 
@@ -71,6 +72,64 @@ type AnswerGenerationSpec_UserDefinedClassifierSpec struct {
 	Seed *int32 `json:"seed,omitempty"`
 }
 */
+
+// +kcc:proto=google.cloud.discoveryengine.v1beta.Assistant.CustomerPolicy
+type Assistant_CustomerPolicy struct {
+	// Optional. List of banned phrases.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.Assistant.CustomerPolicy.banned_phrases
+	BannedPhrases []Assistant_CustomerPolicy_BannedPhrase `json:"bannedPhrases,omitempty"`
+
+	// Optional. Model Armor configuration to be used for sanitizing user
+	//  prompts and assistant responses.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.Assistant.CustomerPolicy.model_armor_config
+	ModelArmorConfig *Assistant_CustomerPolicy_ModelArmorConfig `json:"modelArmorConfig,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1beta.Assistant.CustomerPolicy.BannedPhrase
+type Assistant_CustomerPolicy_BannedPhrase struct {
+	// Required. The raw string content to be banned.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.Assistant.CustomerPolicy.BannedPhrase.phrase
+	Phrase *string `json:"phrase,omitempty"`
+
+	// Optional. Match type for the banned phrase.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.Assistant.CustomerPolicy.BannedPhrase.match_type
+	MatchType *string `json:"matchType,omitempty"`
+
+	// Optional. If true, diacritical marks (e.g., accents, umlauts) are
+	//  ignored when matching banned phrases. For example, "cafe" would match
+	//  "café".
+	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.Assistant.CustomerPolicy.BannedPhrase.ignore_diacritics
+	IgnoreDiacritics *bool `json:"ignoreDiacritics,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1beta.Assistant.GenerationConfig.SystemInstruction
+type Assistant_GenerationConfig_SystemInstruction struct {
+	// Optional. Additional system instruction that will be added to the
+	//  default system instruction.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.Assistant.GenerationConfig.SystemInstruction.additional_system_instruction
+	AdditionalSystemInstruction *string `json:"additionalSystemInstruction,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1beta.Assistant.ToolInfo
+type Assistant_ToolInfo struct {
+	// The name of the tool as defined by
+	//  DataConnectorService.QueryAvailableActions.
+	//  Note: it's using `action` in the DataConnectorService apis, but they are
+	//  the same as the `tool` here.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.Assistant.ToolInfo.tool_name
+	ToolName *string `json:"toolName,omitempty"`
+
+	// The display name of the tool.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.Assistant.ToolInfo.tool_display_name
+	ToolDisplayName *string `json:"toolDisplayName,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1beta.Assistant.ToolList
+type Assistant_ToolList struct {
+	// The list of tools with corresponding tool information.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.Assistant.ToolList.tool_info
+	ToolInfo []Assistant_ToolInfo `json:"toolInfo,omitempty"`
+}
 
 // +kcc:proto=google.cloud.discoveryengine.v1beta.EmbeddingConfig
 type EmbeddingConfig struct {

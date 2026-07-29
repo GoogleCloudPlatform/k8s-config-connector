@@ -2325,6 +2325,24 @@
 [missing_field] crd=dialogflowsecuritysettings.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.redactionStrategy" is not set in unstructured objects
 [missing_field] crd=dialogflowsecuritysettings.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.retentionStrategy" is not set in unstructured objects
 [missing_field] crd=dialogflowsecuritysettings.dialogflow.cnrm.cloud.google.com version=v1alpha1: field ".spec.retentionWindowDays" is not set in unstructured objects
+[missing_field] crd=discoveryengineassistants.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.customerPolicy.bannedPhrases[].ignoreDiacritics" is not set in unstructured objects
+[missing_field] crd=discoveryengineassistants.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.customerPolicy.bannedPhrases[].matchType" is not set in unstructured objects
+[missing_field] crd=discoveryengineassistants.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.customerPolicy.bannedPhrases[].phrase" is not set in unstructured objects
+[missing_field] crd=discoveryengineassistants.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.customerPolicy.modelArmorConfig.failureMode" is not set in unstructured objects
+[missing_field] crd=discoveryengineassistants.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.customerPolicy.modelArmorConfig.responseTemplateRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=discoveryengineassistants.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.customerPolicy.modelArmorConfig.userPromptTemplateRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=discoveryengineassistants.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.defaultWebGroundingToggleOff" is not set in unstructured objects
+[missing_field] crd=discoveryengineassistants.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
+[missing_field] crd=discoveryengineassistants.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
+[missing_field] crd=discoveryengineassistants.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.enabledTools" is not set in unstructured objects
+[missing_field] crd=discoveryengineassistants.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.engineRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=discoveryengineassistants.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.generationConfig.allowedModelIDs[]" is not set in unstructured objects
+[missing_field] crd=discoveryengineassistants.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.generationConfig.defaultLanguage" is not set in unstructured objects
+[missing_field] crd=discoveryengineassistants.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.generationConfig.defaultModelID" is not set in unstructured objects
+[missing_field] crd=discoveryengineassistants.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.generationConfig.systemInstruction.additionalSystemInstruction" is not set in unstructured objects
+[missing_field] crd=discoveryengineassistants.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=discoveryengineassistants.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=discoveryengineassistants.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.webGroundingType" is not set in unstructured objects
 [missing_field] crd=discoveryenginecontrols.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.boostAction.boost" is not set in unstructured objects
 [missing_field] crd=discoveryenginecontrols.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.boostAction.dataStoreRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=discoveryenginecontrols.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.boostAction.filter" is not set in unstructured objects

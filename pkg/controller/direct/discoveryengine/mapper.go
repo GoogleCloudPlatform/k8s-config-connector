@@ -18,6 +18,7 @@ import (
 	pb "cloud.google.com/go/discoveryengine/apiv1/discoveryenginepb"
 	discoveryenginepb "cloud.google.com/go/discoveryengine/apiv1beta/discoveryenginepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/discoveryengine/v1alpha1"
+	modelarmorv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/modelarmor/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	datepb "google.golang.org/genproto/googleapis/type/date"
 	"google.golang.org/protobuf/types/known/structpb"
@@ -471,5 +472,84 @@ func DiscoveryEngineServingConfigSpec_v1alpha1_ToProto(mapCtx *direct.MapContext
 	out.ReplacementControlIds = in.ReplacementControlIDs
 	out.IgnoreControlIds = in.IgnoreControlIDs
 	out.PersonalizationSpec = SearchRequest_PersonalizationSpec_v1alpha1_ToProto(mapCtx, in.PersonalizationSpec)
+	return out
+}
+
+func EnabledTools_FromProto(mapCtx *direct.MapContext, in map[string]*discoveryenginepb.Assistant_ToolList) map[string]krm.Assistant_ToolList {
+	if in == nil {
+		return nil
+	}
+	out := make(map[string]krm.Assistant_ToolList)
+	for k, v := range in {
+		val := Assistant_ToolList_v1alpha1_FromProto(mapCtx, v)
+		if val != nil {
+			out[k] = *val
+		}
+	}
+	return out
+}
+
+func EnabledTools_ToProto(mapCtx *direct.MapContext, in map[string]krm.Assistant_ToolList) map[string]*discoveryenginepb.Assistant_ToolList {
+	if in == nil {
+		return nil
+	}
+	out := make(map[string]*discoveryenginepb.Assistant_ToolList)
+	for k, v := range in {
+		out[k] = Assistant_ToolList_v1alpha1_ToProto(mapCtx, &v)
+	}
+	return out
+}
+
+func Assistant_CustomerPolicy_ModelArmorConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *discoveryenginepb.Assistant_CustomerPolicy_ModelArmorConfig) *krm.Assistant_CustomerPolicy_ModelArmorConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Assistant_CustomerPolicy_ModelArmorConfig{}
+	if in.GetUserPromptTemplate() != "" {
+		out.UserPromptTemplateRef = &modelarmorv1alpha1.ModelArmorTemplateRef{External: in.GetUserPromptTemplate()}
+	}
+	if in.GetResponseTemplate() != "" {
+		out.ResponseTemplateRef = &modelarmorv1alpha1.ModelArmorTemplateRef{External: in.GetResponseTemplate()}
+	}
+	out.FailureMode = direct.Enum_FromProto(mapCtx, in.GetFailureMode())
+	return out
+}
+
+func Assistant_CustomerPolicy_ModelArmorConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.Assistant_CustomerPolicy_ModelArmorConfig) *discoveryenginepb.Assistant_CustomerPolicy_ModelArmorConfig {
+	if in == nil {
+		return nil
+	}
+	out := &discoveryenginepb.Assistant_CustomerPolicy_ModelArmorConfig{}
+	if in.UserPromptTemplateRef != nil {
+		out.UserPromptTemplate = in.UserPromptTemplateRef.External
+	}
+	if in.ResponseTemplateRef != nil {
+		out.ResponseTemplate = in.ResponseTemplateRef.External
+	}
+	out.FailureMode = direct.Enum_ToProto[discoveryenginepb.Assistant_CustomerPolicy_ModelArmorConfig_FailureMode](mapCtx, in.FailureMode)
+	return out
+}
+
+func Assistant_GenerationConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *discoveryenginepb.Assistant_GenerationConfig) *krm.Assistant_GenerationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Assistant_GenerationConfig{}
+	out.DefaultModelID = direct.LazyPtr(in.GetDefaultModelId())
+	out.AllowedModelIDs = in.GetAllowedModelIds()
+	out.SystemInstruction = Assistant_GenerationConfig_SystemInstruction_v1alpha1_FromProto(mapCtx, in.GetSystemInstruction())
+	out.DefaultLanguage = direct.LazyPtr(in.GetDefaultLanguage())
+	return out
+}
+
+func Assistant_GenerationConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.Assistant_GenerationConfig) *discoveryenginepb.Assistant_GenerationConfig {
+	if in == nil {
+		return nil
+	}
+	out := &discoveryenginepb.Assistant_GenerationConfig{}
+	out.DefaultModelId = direct.ValueOf(in.DefaultModelID)
+	out.AllowedModelIds = in.AllowedModelIDs
+	out.SystemInstruction = Assistant_GenerationConfig_SystemInstruction_v1alpha1_ToProto(mapCtx, in.SystemInstruction)
+	out.DefaultLanguage = direct.ValueOf(in.DefaultLanguage)
 	return out
 }

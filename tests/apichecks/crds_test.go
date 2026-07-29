@@ -1132,6 +1132,29 @@ func TestCRDObjectTypes(t *testing.T) {
 
 	}
 
+	legacyEmptyObservedStateCRDs := map[string]bool{
+		"dialogflowsecuritysettings.dialogflow.cnrm.cloud.google.com":                 true,
+		"accesscontextmanageraccesslevels.accesscontextmanager.cnrm.cloud.google.com": true,
+		"apigeeenvironments.apigee.cnrm.cloud.google.com":                             true,
+		"apigeeorganizations.apigee.cnrm.cloud.google.com":                            true,
+		"artifactregistryvpcscconfigs.artifactregistry.cnrm.cloud.google.com":         true,
+		"bigquerydatapolicies.bigquerydatapolicy.cnrm.cloud.google.com":               true,
+		"bigquerytables.bigquery.cnrm.cloud.google.com":                               true,
+		"bigtableauthorizedviews.bigtable.cnrm.cloud.google.com":                      true,
+		"bigtablelogicalviews.bigtable.cnrm.cloud.google.com":                         true,
+		"bigtablematerializedviews.bigtable.cnrm.cloud.google.com":                    true,
+		"clouddmsmigrationjobs.clouddms.cnrm.cloud.google.com":                        true,
+		"datacatalogpolicytags.datacatalog.cnrm.cloud.google.com":                     true,
+		"dataformfolders.dataform.cnrm.cloud.google.com":                              true,
+		"dataformrepositories.dataform.cnrm.cloud.google.com":                         true,
+		"discoveryenginecontrols.discoveryengine.cnrm.cloud.google.com":               true,
+		"discoveryengineengines.discoveryengine.cnrm.cloud.google.com":                true,
+		"iamdenypolicies.iam.cnrm.cloud.google.com":                                   true,
+		"servicenetworkingpeereddnsdomains.servicenetworking.cnrm.cloud.google.com":   true,
+		"contentwarehousedocuments.contentwarehouse.cnrm.cloud.google.com":            true,
+		"videostitchercdnkeys.videostitcher.cnrm.cloud.google.com":                    true,
+	}
+
 	crds, err := crdloader.LoadAllCRDs()
 	if err != nil {
 		t.Fatalf("error loading crds: %v", err)
@@ -1147,6 +1170,15 @@ func TestCRDObjectTypes(t *testing.T) {
 					continue
 				}
 				schema := version.Schema.OpenAPIV3Schema
+				if status, ok := schema.Properties["status"]; ok {
+					if observedState, ok := status.Properties["observedState"]; ok {
+						if observedState.Type == "object" && len(observedState.Properties) == 0 && observedState.AdditionalProperties == nil && (observedState.XPreserveUnknownFields == nil || !*observedState.XPreserveUnknownFields) {
+							if !legacyEmptyObservedStateCRDs[crd.Name] {
+								t.Errorf("CRD %s has status.observedState without subfields. This is not allowed and cannot be exempted.", crd.Name)
+							}
+						}
+					}
+				}
 				for name, subProps := range schema.Properties {
 					if name == "metadata" {
 						continue
