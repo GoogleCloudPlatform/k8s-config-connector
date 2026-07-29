@@ -51,12 +51,16 @@ ${CONTROLLERBUILDER} generate-types --service google.cloud.discoveryengine.v1bet
   --resource DiscoveryEngineUserStore:UserStore
 mv ../../../apis/discoveryengine/v1alpha1/types.generated.go ../../../apis/discoveryengine/v1alpha1/v1beta_types.generated.go
 
+${CONTROLLERBUILDER} generate-types --service google.cloud.discoveryengine.v1alpha --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1 \
+  --resource DiscoveryEngineACLConfig:AclConfig
+mv ../../../apis/discoveryengine/v1alpha1/types.generated.go ../../../apis/discoveryengine/v1alpha1/v1alpha_types.generated.go
+
 
 
 
 
 ${CONTROLLERBUILDER} generate-mapper \
-  --service google.cloud.discoveryengine.v1,google.cloud.discoveryengine.v1beta \
+  --service google.cloud.discoveryengine.v1,google.cloud.discoveryengine.v1beta,google.cloud.discoveryengine.v1alpha \
   --api-version "discoveryengine.cnrm.cloud.google.com/v1alpha1" \
   --multiversion
 

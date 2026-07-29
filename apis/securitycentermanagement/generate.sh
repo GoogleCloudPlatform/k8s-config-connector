@@ -29,7 +29,6 @@ if [[ -z "${CONTROLLERBUILDER}" ]]; then
 fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
-
 ./generate-proto.sh
 
 ${CONTROLLERBUILDER} generate-types \
