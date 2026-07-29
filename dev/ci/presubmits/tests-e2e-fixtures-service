@@ -45,14 +45,8 @@ time go test -c -o ${PREBUILT_TEST_BINARY} ./tests/e2e
 echo "Building paralleltestrunner..."
 time go build -o ${REPO_ROOT}/.build/paralleltestrunner ${REPO_ROOT}/dev/tools/paralleltestrunner
 
-JOBS_ARG=""
-if [[ "${SERVICE}" == "compute" ]]; then
-  JOBS_ARG="-j=6"
-fi
-
 echo "Running ${SERVICE} fixtures tests in parallel..."
 ${REPO_ROOT}/.build/paralleltestrunner \
-    ${JOBS_ARG} \
     -list-file="${REPO_ROOT}/tests/e2e/testdata/fixtures-${SERVICE}-list.txt" \
     -base-test="TestAllInSeries/fixtures" \
     -check-unchanged=true \
