@@ -18,6 +18,7 @@ import (
 	pb "cloud.google.com/go/discoveryengine/apiv1/discoveryenginepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/discoveryengine/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	datepb "google.golang.org/genproto/googleapis/type/date"
 	"google.golang.org/protobuf/types/known/structpb"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
@@ -115,5 +116,119 @@ func SearchResponse_Summary_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.
 	out := &pb.SearchResponse_Summary{}
 	out.SummaryText = direct.ValueOf(in.SummaryText)
 	out.SummarySkippedReasons = direct.EnumSlice_ToProto[pb.SearchResponse_Summary_SummarySkippedReason](mapCtx, in.SummarySkippedReasons)
+	return out
+}
+
+func Date_v1alpha1_FromProto(mapCtx *direct.MapContext, in *datepb.Date) *krm.Date {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Date{}
+	out.Year = direct.LazyPtr(in.GetYear())
+	out.Month = direct.LazyPtr(in.GetMonth())
+	out.Day = direct.LazyPtr(in.GetDay())
+	return out
+}
+
+func Date_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.Date) *datepb.Date {
+	if in == nil {
+		return nil
+	}
+	out := &datepb.Date{}
+	out.Year = direct.ValueOf(in.Year)
+	out.Month = direct.ValueOf(in.Month)
+	out.Day = direct.ValueOf(in.Day)
+	return out
+}
+
+func AssistantGroundedContent_TextGroundingMetadata_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AssistantGroundedContent_TextGroundingMetadata) *krm.AssistantGroundedContent_TextGroundingMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AssistantGroundedContent_TextGroundingMetadata{}
+	out.Segments = direct.Slice_FromProto(mapCtx, in.Segments, AssistantGroundedContent_TextGroundingMetadata_Segment_v1alpha1_FromProto)
+	out.References = direct.Slice_FromProto(mapCtx, in.References, AssistantGroundedContent_TextGroundingMetadata_Reference_v1alpha1_FromProto)
+	return out
+}
+
+func AssistantGroundedContent_TextGroundingMetadata_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.AssistantGroundedContent_TextGroundingMetadata) *pb.AssistantGroundedContent_TextGroundingMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AssistantGroundedContent_TextGroundingMetadata{}
+	out.Segments = direct.Slice_ToProto(mapCtx, in.Segments, AssistantGroundedContent_TextGroundingMetadata_Segment_v1alpha1_ToProto)
+	out.References = direct.Slice_ToProto(mapCtx, in.References, AssistantGroundedContent_TextGroundingMetadata_Reference_v1alpha1_ToProto)
+	return out
+}
+
+func AssistantGroundedContent_TextGroundingMetadata_Segment_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AssistantGroundedContent_TextGroundingMetadata_Segment) *krm.AssistantGroundedContent_TextGroundingMetadata_Segment {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AssistantGroundedContent_TextGroundingMetadata_Segment{}
+	out.StartIndex = direct.LazyPtr(in.GetStartIndex())
+	out.EndIndex = direct.LazyPtr(in.GetEndIndex())
+	out.ReferenceIndices = in.GetReferenceIndices()
+	out.GroundingScore = direct.LazyPtr(in.GetGroundingScore())
+	out.Text = direct.LazyPtr(in.GetText())
+	return out
+}
+
+func AssistantGroundedContent_TextGroundingMetadata_Segment_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.AssistantGroundedContent_TextGroundingMetadata_Segment) *pb.AssistantGroundedContent_TextGroundingMetadata_Segment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AssistantGroundedContent_TextGroundingMetadata_Segment{}
+	out.StartIndex = direct.ValueOf(in.StartIndex)
+	out.EndIndex = direct.ValueOf(in.EndIndex)
+	out.ReferenceIndices = in.ReferenceIndices
+	out.GroundingScore = direct.ValueOf(in.GroundingScore)
+	out.Text = direct.ValueOf(in.Text)
+	return out
+}
+
+func AssistantGroundedContent_TextGroundingMetadata_Reference_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AssistantGroundedContent_TextGroundingMetadata_Reference) *krm.AssistantGroundedContent_TextGroundingMetadata_Reference {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AssistantGroundedContent_TextGroundingMetadata_Reference{}
+	out.Content = direct.LazyPtr(in.GetContent())
+	out.DocumentMetadata = AssistantGroundedContent_TextGroundingMetadata_Reference_DocumentMetadata_v1alpha1_FromProto(mapCtx, in.GetDocumentMetadata())
+	return out
+}
+
+func AssistantGroundedContent_TextGroundingMetadata_Reference_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.AssistantGroundedContent_TextGroundingMetadata_Reference) *pb.AssistantGroundedContent_TextGroundingMetadata_Reference {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AssistantGroundedContent_TextGroundingMetadata_Reference{}
+	out.Content = direct.ValueOf(in.Content)
+	out.DocumentMetadata = AssistantGroundedContent_TextGroundingMetadata_Reference_DocumentMetadata_v1alpha1_ToProto(mapCtx, in.DocumentMetadata)
+	return out
+}
+
+func AssistantGroundedContent_TextGroundingMetadata_Reference_DocumentMetadata_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AssistantGroundedContent_TextGroundingMetadata_Reference_DocumentMetadata) *krm.AssistantGroundedContent_TextGroundingMetadata_Reference_DocumentMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AssistantGroundedContent_TextGroundingMetadata_Reference_DocumentMetadata{}
+	out.Document = direct.LazyPtr(in.GetDocument())
+	out.URI = direct.LazyPtr(in.GetUri())
+	out.Title = direct.LazyPtr(in.GetTitle())
+	out.PageIdentifier = direct.LazyPtr(in.GetPageIdentifier())
+	out.Domain = direct.LazyPtr(in.GetDomain())
+	return out
+}
+
+func AssistantGroundedContent_TextGroundingMetadata_Reference_DocumentMetadata_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.AssistantGroundedContent_TextGroundingMetadata_Reference_DocumentMetadata) *pb.AssistantGroundedContent_TextGroundingMetadata_Reference_DocumentMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AssistantGroundedContent_TextGroundingMetadata_Reference_DocumentMetadata{}
+	out.Document = in.Document
+	out.Uri = in.URI
+	out.Title = in.Title
+	out.PageIdentifier = in.PageIdentifier
+	out.Domain = in.Domain
 	return out
 }

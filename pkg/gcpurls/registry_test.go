@@ -184,6 +184,8 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//discoveryengine.googleapis.com/projects/{}/locations/{}/dataStores/{}/conversations/{}":                true,
 		"//discoveryengine.googleapis.com/projects/{}/locations/{}/dataStores/{}/sessions/{}":                     true,
 		"//discoveryengine.googleapis.com/projects/{}/locations/{}/identityMappingStores/{}":                      true,
+		"//discoveryengine.googleapis.com/projects/{}/locations/{}/licenseConfigs/{}/":                            true,
+		"//discoveryengine.googleapis.com/projects/{}/locations/{}/licenseConfigs/{}":                             true,
 		"//discoveryengine.googleapis.com/projects/{}/locations/{}/sampleQuerySets/{}/sampleQueries/{}":           true,
 		"//discoveryengine.googleapis.com/projects/{}/locations/{}/collections/{}/dataStores/{}/siteSearchEngine": true,
 
