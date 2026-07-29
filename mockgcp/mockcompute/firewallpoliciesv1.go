@@ -332,7 +332,7 @@ func populateDefaultRules(obj *pb.FirewallPolicy) {
 	obj.Rules = []*pb.FirewallPolicyRule{
 		{
 			Action:        PtrTo("goto_next"),
-			Description:   PtrTo("default egress rule ipv6"),
+			Description:   PtrTo("default egress rule"),
 			Direction:     PtrTo("EGRESS"),
 			EnableLogging: PtrTo(false),
 			Kind:          PtrTo("compute#firewallPolicyRule"),
@@ -349,7 +349,7 @@ func populateDefaultRules(obj *pb.FirewallPolicy) {
 		},
 		{
 			Action:        PtrTo("goto_next"),
-			Description:   PtrTo("default ingress rule ipv6"),
+			Description:   PtrTo("default ingress rule"),
 			Direction:     PtrTo("INGRESS"),
 			EnableLogging: PtrTo(false),
 			Kind:          PtrTo("compute#firewallPolicyRule"),
