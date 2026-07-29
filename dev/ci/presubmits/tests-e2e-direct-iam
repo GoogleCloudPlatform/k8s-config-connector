@@ -39,7 +39,9 @@ export TEST_TIMEOUT=15m
 echo "Prebuilding e2e tests..."
 export PREBUILT_TEST_BINARY=${REPO_ROOT}/.build/tests-e2e
 mkdir -p ${REPO_ROOT}/.build
-time go test -c -o ${PREBUILT_TEST_BINARY} ./tests/e2e
+if [[ ! -f "${PREBUILT_TEST_BINARY}" ]]; then
+  time go test -c -o ${PREBUILT_TEST_BINARY} ./tests/e2e
+fi
 
 echo "Building paralleltestrunner..."
 time go build -o ${REPO_ROOT}/.build/paralleltestrunner ${REPO_ROOT}/dev/tools/paralleltestrunner
@@ -52,10 +54,7 @@ ${REPO_ROOT}/.build/paralleltestrunner \
 
 # Running direct and tracker tests
 export KCC_RECONCILE_FLAG_GATE=USE_DEPENDENCY_TRACKER
-unset ONLY_TEST_APIGROUPS
+export ONLY_TEST_APIGROUPS="iam.cnrm.cloud.google.com"
 
-echo "Running sample iam tests with the gcptracker in parallel..."
-${REPO_ROOT}/.build/paralleltestrunner \
-    -list-file="${REPO_ROOT}/tests/e2e/testdata/samples-iam-list.txt" \
-    -base-test="TestAllInSeries/samples" \
-    -- ${REPO_ROOT}/dev/tasks/run-e2e
+echo "Running sample iam tests with the gcptracker..."
+${PREBUILT_TEST_BINARY} -test.run "^TestAllInSeries/samples$" -test.timeout 15m -test.v
