@@ -121,7 +121,7 @@ fmt:
 	# 04bfe4ee9ca5764577b029acc6a1957fd1997153 includes fix to not log "Skipped" for each skipped file
 	GOFLAGS= go run github.com/google/addlicense@04bfe4ee9ca5764577b029acc6a1957fd1997153 -c "Google LLC" -l apache \
 	-ignore ".build/**" -ignore "vendor/**" -ignore "third_party/**" \
-	-ignore "config/crds/**" -ignore "config/cloudcodesnippets/**" \
+	-ignore "config/crds/**" -ignore "./config/crds/**" -ignore "config/cloudcodesnippets/**" \
 	-ignore "**/*.html" -ignore "config/installbundle/components/clusterroles/cnrm_admin.yaml" \
 	-ignore "config/installbundle/components/clusterroles/cnrm_viewer.yaml" \
 	-ignore "operator/channels/**" \

@@ -56,10 +56,6 @@ for f in $(find apis -name "generate.sh" | sort); do
         echo "Skipping ${f}"
         continue
     fi
-    if [[ "${f}" == *"discoveryengine"* ]]; then
-        echo "Skipping ${f}"
-        continue
-    fi
     if [[ "${f}" == *"documentai"* ]]; then
         echo "Skipping ${f}"
         continue
