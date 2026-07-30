@@ -1,0 +1,94 @@
+[
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "BigQueryDataset/bigquerydatasetsample${uniqueId}",
+    "fields": [
+      {
+        "id": "access.#",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "creation_time",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "dataset_id",
+        "old": "",
+        "new": "bigquerydatasetsample${uniqueId}"
+      },
+      {
+        "id": "default_collation",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "delete_contents_on_destroy",
+        "old": "",
+        "new": "false"
+      },
+      {
+        "id": "etag",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "friendly_name",
+        "old": "",
+        "new": "bigquerydataset-sample"
+      },
+      {
+        "id": "is_case_insensitive",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "labels.%",
+        "old": "0",
+        "new": "2"
+      },
+      {
+        "id": "labels.cnrm-test",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "labels.managed-by-cnrm",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "last_modified_time",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "location",
+        "old": "",
+        "new": "US"
+      },
+      {
+        "id": "max_time_travel_hours",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "self_link",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "storage_billing_model",
+        "old": "",
+        "new": ""
+      }
+    ]
+  }
+]
