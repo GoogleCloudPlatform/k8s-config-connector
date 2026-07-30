@@ -50,6 +50,9 @@ func main() {
 	defer restoreFD()
 
 	tests := readList(*listFile)
+	if len(tests) == 0 {
+		tests = discoverTestsDynamically(*listFile, *baseTest, flag.Args())
+	}
 
 	numJobs := calculateOptimalJobs(*j, len(tests))
 
@@ -146,9 +149,9 @@ func main() {
 			fmt.Printf("  %s\n", t)
 		}
 
-		allTests := append(tests, newTests...)
-		sort.Strings(allTests)
-		writeList(*listFile, allTests)
+		updatedAllTests := append(tests, newTests...)
+		sort.Strings(updatedAllTests)
+		writeList(*listFile, updatedAllTests)
 
 		if *checkUnchanged {
 			fmt.Printf("ERROR: test list file %s was modified because new tests were found. Please commit the updated file.\n", *listFile)
@@ -190,6 +193,9 @@ func readList(path string) []string {
 		if t != "" && !strings.HasPrefix(t, "#") {
 			list = append(list, t)
 		}
+	}
+	if err := scanner.Err(); err != nil {
+		log.Fatalf("error scanning list file %s: %v", path, err)
 	}
 	return list
 }
@@ -263,7 +269,8 @@ func calculateOptimalJobs(userJ int, numTests int) int {
 func writeList(path string, list []string) {
 	var buf bytes.Buffer
 	for _, t := range list {
-		buf.WriteString(t + "\n")
+		buf.WriteString(t)
+		buf.WriteByte('\n')
 	}
 	if err := os.WriteFile(path, buf.Bytes(), 0644); err != nil {
 		log.Fatalf("error writing list file: %v", err)
@@ -291,5 +298,20 @@ func parseNewTests(output []byte, baseTest string, knownTests []string) []string
 			}
 		}
 	}
+	if err := scanner.Err(); err != nil {
+		log.Printf("error scanning output in parseNewTests: %v", err)
+	}
 	return newTests
+}
+
+func discoverTestsDynamically(listFile string, baseTest string, args []string) []string {
+	log.Printf("paralleltestrunner: list file %q missing or empty, discovering tests dynamically...", listFile)
+	cmd := exec.Command(args[0], args[1:]...)
+	cmd.Env = os.Environ()
+	cmd.Env = append(cmd.Env, "RUN_TESTS="+baseTest)
+	cmd.Env = append(cmd.Env, "SKIP_ALL=1")
+	output, _ := cmd.CombinedOutput()
+	tests := parseNewTests(output, baseTest, nil)
+	log.Printf("paralleltestrunner: dynamically discovered %d tests", len(tests))
+	return tests
 }

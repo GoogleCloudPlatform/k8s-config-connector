@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+function on_error() {
+  echo "<hint_for_agent>Run 'dev/ci/presubmits/tests-e2e-samples-suite' to fix.</hint_for_agent>"
+}
+trap on_error ERR
+
+SERVICE="${1:-${SERVICE_NAME:-}}"
+if [[ -z "${SERVICE}" ]]; then
+  echo "Usage: $0 <service_short_name>"
+  exit 1
+fi
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+cd "${REPO_ROOT}"
+
+. "${REPO_ROOT}/dev/tasks/setup-envtest"
+
+if [[ "${SERVICE}" == "unclassified" ]]; then
+  unset ONLY_TEST_APIGROUPS
+else
+  export ONLY_TEST_APIGROUPS="${SERVICE}.cnrm.cloud.google.com"
+fi
+
+export USE_FULL_TEST_NAMES=true
+export TEST_TIMEOUT=15m
+
+if [[ -z "${PREBUILT_TEST_BINARY:-}" ]]; then
+  if [[ -f "${REPO_ROOT}/bin/tests-e2e" ]]; then
+    export PREBUILT_TEST_BINARY="${REPO_ROOT}/bin/tests-e2e"
+  else
+    export PREBUILT_TEST_BINARY="${REPO_ROOT}/.build/tests-e2e"
+    mkdir -p "${REPO_ROOT}/.build"
+    if [[ ! -f "${PREBUILT_TEST_BINARY}" ]]; then
+      echo "Prebuilding e2e tests..."
+      time go test -c -o "${PREBUILT_TEST_BINARY}" ./tests/e2e
+    fi
+  fi
+fi
+
+echo "Running ${SERVICE} samples tests..."
+${PREBUILT_TEST_BINARY} -test.run "^TestAllInSeries/samples$" -test.timeout 15m -test.v

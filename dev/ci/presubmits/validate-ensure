@@ -18,24 +18,18 @@ set -o nounset
 set -o pipefail
 
 function on_error() {
-  echo "<hint_for_agent>Run 'dev/ci/presubmits/unit-tests' to fix.</hint_for_agent>"
+  echo "<hint_for_agent>Run 'make ensure' to update vendored code.</hint_for_agent>"
 }
 trap on_error ERR
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
-cd ${REPO_ROOT}
+cd "${REPO_ROOT}"
 
-. ${REPO_ROOT}/dev/tasks/install-gcloud
-. ${REPO_ROOT}/dev/tasks/setup-envtest
+make ensure
 
-echo "Running unit tests..."
-# A dummy default project id is required for a few unit test cases
-gcloud config set project foobar --quiet
-
-# Env var VALIDATE_URLS needs to be unset to avoid calling URLs in TestReferenceDocConsistency under scripts/generate-google3-docs/.
-unset VALIDATE_URLS
-
-# Get all unit test packages excluding the operator, E2E tests, and preview CLI tests
-UNIT_TEST_PACKAGES=$(go list ./... | grep -v "/operator" | grep -v "tests/e2e" | grep -v "pkg/cli/preview")
-
-go test -test.count=1 -parallel 2 -v ${UNIT_TEST_PACKAGES}
+changed_files=$(git diff --name-only)
+if [[ -n "${changed_files}" ]]; then
+  echo "ERROR: Vendored code does not match go.mod (+ override patches). Please run 'make ensure' and update your PR."
+  git diff
+  exit 1
+fi

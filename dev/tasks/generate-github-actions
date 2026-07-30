@@ -42,6 +42,9 @@ cat > ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
 
 name: ci-presubmit
 
+permissions:
+  contents: read
+
 on:
   pull_request:
     types: [opened, synchronize, reopened]
@@ -79,10 +82,24 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
       remaining_fixtures_json: \${{ steps.split.outputs.remaining_fixtures_json }}
       samples_json: \${{ steps.split.outputs.samples_json }}
       scenarios_json: \${{ steps.split.outputs.scenarios_json }}
+      unit_tests_json: \${{ steps.split.outputs.unit_tests_json }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0
+# zizmor: ignore[unpinned-uses]
+      - uses: ./dev/actions/cache-go
+      - name: Prebuild test binaries
+        run: |
+          mkdir -p bin
+          go test -c -ldflags="-s -w" -buildvcs=false -o bin/tests-e2e ./tests/e2e
+          go build -ldflags="-s -w" -buildvcs=false -o bin/paralleltestrunner ./dev/tools/paralleltestrunner
+      - name: Upload prebuilt test binaries
+        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
+        with:
+          name: prebuilt-test-binaries
+          path: bin/
+          retention-days: 1
       - name: Split test matrix between priority and non-priority
         id: split
         run: ./dev/tasks/split-test-matrix
@@ -91,8 +108,8 @@ EOF
 for f in $(find dev/ci/presubmits -type f | sort ); do
     name=$(basename ${f})
 
-    # Skip crd-equivalence-check here, we generate it as a separate workflow
-    if [[ "${name}" == "crd-equivalence-check" ]]; then
+    # Skip crd-equivalence-check and standalone tests-e2e-fixtures here
+    if [[ "${name}" == "crd-equivalence-check" || "${name}" == "tests-e2e-fixtures" ]]; then
         continue
     fi
 
@@ -114,19 +131,39 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
       matrix:
         service: \${{ fromJSON(needs.prepare-test-matrix.outputs.priority_fixtures_json) }}
     steps:
-      - uses: actions/checkout@v6
-      - uses: ./dev/actions/cache-go
-      - uses: 'google-github-actions/setup-gcloud@v3'
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # v5.3.0
+        with:
+          go-version-file: 'go.mod'
+          cache: false
+      - name: Download prebuilt test binaries
+        uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
+        with:
+          name: prebuilt-test-binaries
+          path: bin/
+      - name: Make binaries executable
+        run: chmod +x bin/* || true
+      - uses: google-github-actions/setup-gcloud@77e7a554d41e2ee56fc945c52dfd3f33d12def9a # v2.1.4
         with:
           version: '546.0.0'
           install_components: 'alpha,beta'
       - name: "Run priority E2E fixtures for \${{ matrix.service }}"
         run: |
-          ./dev/ci/presubmits/tests-e2e-fixtures-\${{ matrix.service }}
+          target="\${TARGET_SERVICE}"
+          if [[ "\${target}" =~ ([0-9]+)-of-([0-9]+)$ ]]; then
+            shard_num="\${BASH_REMATCH[1]}"
+            shard_cnt="\${BASH_REMATCH[2]}"
+            shard_idx=\$((shard_num - 1))
+            service="\${target%-\${shard_num}-of-\${shard_cnt}}"
+            ./dev/ci/presubmits/tests-e2e-fixtures-suite "\${service}" "\${shard_idx}" "\${shard_cnt}"
+          else
+            ./dev/ci/presubmits/tests-e2e-fixtures-suite "\${target}" "0" "1"
+          fi
         env:
+          TARGET_SERVICE: \${{ matrix.service }}
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
         if: \${{ !cancelled() }}
         with:
           name: artifacts-priority-e2e-fixtures-\${{ matrix.service }}
@@ -135,27 +172,47 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
   tests-e2e-fixtures-matrix:
     name: "tests-e2e-fixtures-\${{ matrix.service }}"
     runs-on: ubuntu-latest
-    needs: [prepare-test-matrix, priority-e2e-fixtures, unit-tests]
-    if: \${{ !cancelled() && needs.priority-e2e-fixtures.result != 'failure' && needs.unit-tests.result == 'success' }}
+    needs: prepare-test-matrix
+    if: \${{ !cancelled() }}
     timeout-minutes: 60
     strategy:
       fail-fast: false
       matrix:
         service: \${{ fromJSON(needs.prepare-test-matrix.outputs.remaining_fixtures_json) }}
     steps:
-      - uses: actions/checkout@v6
-      - uses: ./dev/actions/cache-go
-      - uses: 'google-github-actions/setup-gcloud@v3'
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # v5.3.0
+        with:
+          go-version-file: 'go.mod'
+          cache: false
+      - name: Download prebuilt test binaries
+        uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
+        with:
+          name: prebuilt-test-binaries
+          path: bin/
+      - name: Make binaries executable
+        run: chmod +x bin/* || true
+      - uses: google-github-actions/setup-gcloud@77e7a554d41e2ee56fc945c52dfd3f33d12def9a # v2.1.4
         with:
           version: '546.0.0'
           install_components: 'alpha,beta'
-      - name: "Run dev/ci/presubmits/tests-e2e-fixtures-\${{ matrix.service }}"
+      - name: "Run fixture test for \${{ matrix.service }}"
         run: |
-          ./dev/ci/presubmits/tests-e2e-fixtures-\${{ matrix.service }}
+          target="\${TARGET_SERVICE}"
+          if [[ "\${target}" =~ ([0-9]+)-of-([0-9]+)$ ]]; then
+            shard_num="\${BASH_REMATCH[1]}"
+            shard_cnt="\${BASH_REMATCH[2]}"
+            shard_idx=\$((shard_num - 1))
+            service="\${target%-\${shard_num}-of-\${shard_cnt}}"
+            ./dev/ci/presubmits/tests-e2e-fixtures-suite "\${service}" "\${shard_idx}" "\${shard_cnt}"
+          else
+            ./dev/ci/presubmits/tests-e2e-fixtures-suite "\${target}" "0" "1"
+          fi
         env:
+          TARGET_SERVICE: \${{ matrix.service }}
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
         if: \${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-\${{ matrix.service }}
@@ -175,27 +232,38 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
   tests-e2e-samples-matrix:
     name: "tests-e2e-samples-\${{ matrix.service }}"
     runs-on: ubuntu-latest
-    needs: [prepare-test-matrix, priority-e2e-fixtures, unit-tests]
-    if: \${{ !cancelled() && needs.priority-e2e-fixtures.result != 'failure' && needs.unit-tests.result == 'success' }}
+    needs: prepare-test-matrix
+    if: \${{ !cancelled() }}
     timeout-minutes: 60
     strategy:
       fail-fast: false
       matrix:
         service: \${{ fromJSON(needs.prepare-test-matrix.outputs.samples_json) }}
     steps:
-      - uses: actions/checkout@v6
-      - uses: ./dev/actions/cache-go
-      - uses: 'google-github-actions/setup-gcloud@v3'
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # v5.3.0
+        with:
+          go-version-file: 'go.mod'
+          cache: false
+      - name: Download prebuilt test binaries
+        uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
+        with:
+          name: prebuilt-test-binaries
+          path: bin/
+      - name: Make binaries executable
+        run: chmod +x bin/* || true
+      - uses: google-github-actions/setup-gcloud@77e7a554d41e2ee56fc945c52dfd3f33d12def9a # v2.1.4
         with:
           version: '546.0.0'
           install_components: 'alpha,beta'
-      - name: "Run dev/ci/presubmits/tests-e2e-samples-\${{ matrix.service }}"
+      - name: "Run sample test for \${{ matrix.service }}"
         run: |
-          ./dev/ci/presubmits/tests-e2e-samples-\${{ matrix.service }}
+          ./dev/ci/presubmits/tests-e2e-samples-suite "\${TARGET_SERVICE}"
         env:
+          TARGET_SERVICE: \${{ matrix.service }}
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
         if: \${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-samples-\${{ matrix.service }}
@@ -215,33 +283,110 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
   tests-scenarios-matrix:
     name: "tests-scenarios-\${{ matrix.suite }}"
     runs-on: ubuntu-latest
-    needs: [prepare-test-matrix, priority-e2e-fixtures, unit-tests]
-    if: \${{ !cancelled() && needs.priority-e2e-fixtures.result != 'failure' && needs.unit-tests.result == 'success' }}
+    needs: prepare-test-matrix
+    if: \${{ !cancelled() }}
     timeout-minutes: 60
     strategy:
       fail-fast: false
       matrix:
         suite: \${{ fromJSON(needs.prepare-test-matrix.outputs.scenarios_json) }}
     steps:
-      - uses: actions/checkout@v6
-      - uses: ./dev/actions/cache-go
-      - uses: 'google-github-actions/setup-gcloud@v3'
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # v5.3.0
+        with:
+          go-version-file: 'go.mod'
+          cache: false
+      - name: Download prebuilt test binaries
+        uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
+        with:
+          name: prebuilt-test-binaries
+          path: bin/
+      - name: Make binaries executable
+        run: chmod +x bin/* || true
+      - uses: google-github-actions/setup-gcloud@77e7a554d41e2ee56fc945c52dfd3f33d12def9a # v2.1.4
         with:
           version: '546.0.0'
           install_components: 'alpha,beta'
-      - name: "Run dev/ci/presubmits/tests-scenarios-\${{ matrix.suite }}"
+      - name: "Run scenario test for \${{ matrix.suite }}"
         run: |
-          ./dev/ci/presubmits/tests-scenarios-\${{ matrix.suite }}
+          ./dev/ci/presubmits/tests-scenarios-suite "\${TARGET_SUITE}"
         env:
+          TARGET_SUITE: \${{ matrix.suite }}
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
         if: \${{ !cancelled() }}
         with:
           name: artifacts-tests-scenarios-\${{ matrix.suite }}
           path: /tmp/artifacts/
 EOF
         fi
+        continue
+    fi
+
+    if [[ "${name}" == "tests-e2e-direct-iam" ]]; then
+        jobs_array+=("tests-e2e-direct-iam")
+cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
+
+  tests-e2e-direct-iam:
+    runs-on: ubuntu-latest
+    needs: prepare-test-matrix
+    if: \${{ !cancelled() }}
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+# zizmor: ignore[unpinned-uses]
+      - uses: ./dev/actions/cache-go
+      - uses: google-github-actions/setup-gcloud@77e7a554d41e2ee56fc945c52dfd3f33d12def9a # v2.1.4
+        with:
+          version: '546.0.0'
+          install_components: 'alpha,beta'
+      - name: "Run direct IAM tests"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-suite iam
+        env:
+          KCC_USE_DIRECT_RECONCILERS: "IAMPartialPolicy"
+          KCC_RECONCILE_FLAG_GATE: "USE_DEPENDENCY_TRACKER"
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
+        if: \${{ !cancelled() }}
+        with:
+          name: artifacts-tests-e2e-direct-iam
+          path: /tmp/artifacts/
+EOF
+        continue
+    fi
+
+    if [[ "${name}" == "unit-tests" ]]; then
+        jobs_array+=("unit-tests")
+cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
+
+  unit-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Free up disk space
+        run: dev/tasks/free-disk-space-on-github-actions-runner
+# zizmor: ignore[unpinned-uses]
+      - uses: ./dev/actions/cache-go
+      - uses: google-github-actions/setup-gcloud@77e7a554d41e2ee56fc945c52dfd3f33d12def9a # v2.1.4
+        with:
+          version: '546.0.0'
+          install_components: 'alpha,beta'
+      - name: "Run dev/ci/presubmits/unit-tests"
+        run: |
+          ./dev/ci/presubmits/unit-tests
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
+        if: \${{ !cancelled() }}
+        with:
+          name: artifacts-unit-tests
+          path: /tmp/artifacts/
+EOF
         continue
     fi
 
@@ -258,17 +403,17 @@ EOF
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0
       - name: Free up disk space
         run: dev/tasks/free-disk-space-on-github-actions-runner
-      - uses: actions/setup-go@4a3601121dd01d1626a1e23e37211e3254c1c06c # v6.4.0
+      - uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # v5.3.0
         with:
           go-version-file: 'go.mod'
           cache: false
       - name: golangci-lint
-        uses: golangci/golangci-lint-action@v9
+        uses: golangci/golangci-lint-action@a4f60bb28d35aeee14e6880718e0c85ff1882e64 # v6.0.1
         with:
           version: v2.9.0
           args: --timeout=20m
@@ -280,9 +425,10 @@ EOF
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0
+# zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
       - name: "Run ${f}"
         run: |
@@ -290,7 +436,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
         if: \${{ !cancelled() }}
         with:
           name: artifacts-${name}
@@ -300,17 +446,12 @@ EOF
     continue
     fi
 
-    if [[ "${name}" == tests-e2e-* || "${name}" == tests-scenarios-* ]]; then
-cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
-    needs: unit-tests
-EOF
-    fi
 
     if [[ "${name}" == "validate-untested-fields" ]]; then
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0
 EOF
@@ -318,7 +459,7 @@ EOF
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 EOF
     fi
 
@@ -329,14 +470,24 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
 EOF
     fi
 
+    if [[ "${name}" == "validate-fmt" || "${name}" == "validate-github-actions" || "${name}" == "validate-resource-docs" || "${name}" == "validate-untested-fields" ]]; then
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
+      - uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # v5.3.0
+        with:
+          go-version-file: 'go.mod'
+          cache: false
+EOF
+    else
+cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
+# zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
 EOF
+    fi
 
     # TODO: We should look at the script to see if it needs gcloud
     if [[ "${name}" == "test-mockgcp" || "${name}" == "unit-tests" || "${name}" == "unit-tests-operator" ]]; then
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
-      - uses: 'google-github-actions/setup-gcloud@v3'
+      - uses: google-github-actions/setup-gcloud@77e7a554d41e2ee56fc945c52dfd3f33d12def9a # v2.1.4
         with:
           version: '546.0.0'
           install_components: 'alpha,beta'
@@ -365,7 +516,7 @@ EOF
 
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
         if: \${{ !cancelled() }}
         with:
           name: artifacts-${name}
@@ -378,6 +529,7 @@ done
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
 
   presubmit-gatekeeper:
+    name: presubmit-gatekeeper
     needs:
       - prepare-test-matrix
 EOF
@@ -394,11 +546,10 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
     steps:
       - name: Verify all checks succeeded
         run: |
-          results='\${{ toJSON(needs) }}'
           echo "Analyzing job results..."
 
           # Find any job whose result is 'failure' or 'cancelled' (ignoring 'success' and 'skipped')
-          failures=\$(echo "\$results" | jq '[to_entries[] | select(.value.result == "failure" or .value.result == "cancelled")]')
+          failures=\$(echo "\$NEEDS_RESULTS" | jq '[to_entries[] | select(.value.result == "failure" or .value.result == "cancelled")]')
           
           if [ "\$(echo "\$failures" | jq '. | length')" -ne 0 ]; then
             echo "ERROR: One or more checks failed or were cancelled:"
@@ -406,6 +557,8 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
             exit 1
           fi
           echo "All checks completed successfully or were skipped safely!"
+        env:
+          NEEDS_RESULTS: \${{ toJSON(needs) }}
 EOF
 
 
@@ -435,6 +588,9 @@ cat > ${REPO_ROOT}/.github/workflows/crd-equivalence-check.yaml <<EOF
 
 name: crd-equivalence-check
 
+permissions:
+  contents: read
+
 on:
   pull_request:
     types: [opened, synchronize, reopened, labeled, unlabeled]
@@ -454,9 +610,10 @@ jobs:
     if: \${{ contains(github.event.pull_request.labels.*.name, 'direct-migration') }}
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0
+# zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/crd-equivalence-check"
         run: |
@@ -464,7 +621,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
         if: \${{ !cancelled() }}
         with:
           name: artifacts-crd-equivalence-check
@@ -494,6 +651,9 @@ cat > ${REPO_ROOT}/.github/workflows/experiments-ci.yaml <<EOF
 
 name: experiments-ci
 
+permissions:
+  contents: read
+
 on:
   pull_request:
     types: [opened, synchronize, reopened]
@@ -514,7 +674,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+# zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
         with:
           go-version: '1.26'
@@ -546,6 +707,9 @@ cat > ${REPO_ROOT}/.github/workflows/ci-presubmit-bypass.yaml <<EOF
 # Generated by dev/tasks/generate-github-actions. DO NOT EDIT.
 
 name: ci-presubmit
+
+permissions:
+  contents: read
 
 on:
   pull_request:

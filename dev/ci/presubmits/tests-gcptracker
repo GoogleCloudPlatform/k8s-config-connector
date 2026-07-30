@@ -25,18 +25,21 @@ trap on_error ERR
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}/
 
-. ${REPO_ROOT}/dev/tasks/setup-envtest
+. "${REPO_ROOT}/dev/tasks/setup-envtest"
 
-# Always write golden output
-export WRITE_GOLDEN_OUTPUT=1
+echo "Prebuilding e2e tests..."
+export PREBUILT_TEST_BINARY=${REPO_ROOT}/.build/tests-e2e
+mkdir -p ${REPO_ROOT}/.build
+if [[ ! -f "${PREBUILT_TEST_BINARY}" ]]; then
+  time go test -c -o ${PREBUILT_TEST_BINARY} ./tests/e2e
+fi
 
-# Flag gate for gcptracker usage
+# Running direct and tracker tests
 export KCC_RECONCILE_FLAG_GATE=USE_DEPENDENCY_TRACKER
+export ONLY_TEST_APIGROUPS="iam.cnrm.cloud.google.com"
 
-echo "Running scenario tests for gcptracker..."
-GOLDEN_REQUEST_CHECKS=1 E2E_KUBE_TARGET=envtest E2E_GCP_TARGET=mock RUN_E2E=1 \
-  go test -test.count=1 -timeout 600s -v ./tests/e2e -run '^TestE2EScript/scenarios/tracker/tracker-iampartialpolicy$'
+echo "Running sample iam tests with the gcptracker..."
+${PREBUILT_TEST_BINARY} -test.run "^TestAllInSeries/samples$" -test.timeout 15m -test.v
 
-echo "Running fixture and sample iam tests with the gcptracker..."
-export RUN_TESTS='TestAllInSeries/samples/iampartialpolicy'
-${REPO_ROOT}/dev/tasks/run-e2e
+echo "Running gcptracker scenarios tests..."
+(cd tests/e2e && ${PREBUILT_TEST_BINARY} -test.run "^TestE2EScript/scenarios/tracker/tracker-iampartialpolicy$" -test.timeout 15m -test.v)

@@ -244,7 +244,9 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 				!strings.Contains(name, "iam-sqlinstanceref")
 		}
 		pathFilter := func(path string) bool {
-			return !strings.Contains(path, "testdata/iam/iampartialpolicy")
+			return !strings.Contains(path, "testdata/iam/iampartialpolicy") &&
+				!strings.Contains(path, "testdata/reconcileintervalannotations") &&
+				!strings.Contains(path, "testdata/stateabsentinspec")
 		}
 
 		fixtures := resourcefixture.LoadWithPathFilter(t, pathFilter, lightFilter, nil)
@@ -355,7 +357,7 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 				// Run with the fallback controller if we are forcing direct
 				if forceDirect {
 					// Acquisition tests are designed for the Direct controller and will fail with Terraform
-					if testName == "tagkeyacquire" || testName == "tagvalueacquire" {
+					if fixture.Name == "tagkeyacquire" || fixture.Name == "tagvalueacquire" {
 						t.Logf("skipping scenario with fallback to old controller for acquisition test %q", fixture.TestKey)
 					} else {
 						t.Logf("also running scenario with fallback to old controller for fixture %q", fixture.TestKey)
@@ -1271,6 +1273,130 @@ func TestIAM_AllInSeries(t *testing.T) {
 				}
 			}
 			t.Run(fixture.Name, func(t *testing.T) {
+				if skipTestReason != "" {
+					t.Skip(skipTestReason)
+				}
+
+				ctx := addTestTimeout(ctx, t, subtestTimeout, fixture.TestKey)
+
+				loadFixture := func(project testgcp.GCPProject, uniqueID string) (*unstructured.Unstructured, create.CreateDeleteTestOptions) {
+					primaryResource := bytesToUnstructured(t, fixture.Create, uniqueID, project)
+
+					opt := create.CreateDeleteTestOptions{CleanupResources: true}
+
+					if fixture.Dependencies != nil {
+						dependencyYamls := testyaml.SplitYAML(t, fixture.Dependencies)
+						for _, dependBytes := range dependencyYamls {
+							depUnstruct := bytesToUnstructured(t, dependBytes, uniqueID, project)
+							opt.Create = append(opt.Create, depUnstruct)
+						}
+					}
+
+					opt.Create = append(opt.Create, primaryResource)
+					opt.PrimaryResource = primaryResource
+
+					if fixture.Update != nil {
+						u := bytesToUnstructured(t, fixture.Update, uniqueID, project)
+						opt.Updates = append(opt.Updates, u)
+					}
+
+					return primaryResource, opt
+				}
+
+				options := ScenarioOptions{
+					TestPause: false,
+				}
+				runScenario(ctx, t, options, fixture, loadFixture)
+			})
+		}
+	})
+
+	t.Run("reconcileintervalannotations-fixtures", func(t *testing.T) {
+		fixtures := resourcefixture.LoadWithPathFilter(t, func(path string) bool {
+			return strings.Contains(path, "testdata/reconcileintervalannotations")
+		}, nil, nil)
+		for _, fixture := range fixtures {
+			fixture := fixture
+			group := fixture.GVK.Group
+
+			skipTestReason := ""
+
+			if s := os.Getenv("SKIP_TEST_APIGROUP"); s != "" {
+				skippedGroups := strings.Split(s, ",")
+				if slice.StringSliceContains(skippedGroups, group) {
+					skipTestReason = fmt.Sprintf("skipping test %s because group %q matched entries in SKIP_TEST_APIGROUP=%s", fixture.TestKey, group, s)
+				}
+			}
+			if s := os.Getenv("ONLY_TEST_APIGROUPS"); s != "" {
+				groups := strings.Split(s, ",")
+				if !slice.StringSliceContains(groups, group) {
+					skipTestReason = fmt.Sprintf("skipping test %s because group %q did not match ONLY_TEST_APIGROUPS=%s", fixture.TestKey, group, s)
+				}
+			}
+
+			t.Run(fixture.TestKey, func(t *testing.T) {
+				if skipTestReason != "" {
+					t.Skip(skipTestReason)
+				}
+
+				ctx := addTestTimeout(ctx, t, subtestTimeout, fixture.TestKey)
+
+				loadFixture := func(project testgcp.GCPProject, uniqueID string) (*unstructured.Unstructured, create.CreateDeleteTestOptions) {
+					primaryResource := bytesToUnstructured(t, fixture.Create, uniqueID, project)
+
+					opt := create.CreateDeleteTestOptions{CleanupResources: true}
+
+					if fixture.Dependencies != nil {
+						dependencyYamls := testyaml.SplitYAML(t, fixture.Dependencies)
+						for _, dependBytes := range dependencyYamls {
+							depUnstruct := bytesToUnstructured(t, dependBytes, uniqueID, project)
+							opt.Create = append(opt.Create, depUnstruct)
+						}
+					}
+
+					opt.Create = append(opt.Create, primaryResource)
+					opt.PrimaryResource = primaryResource
+
+					if fixture.Update != nil {
+						u := bytesToUnstructured(t, fixture.Update, uniqueID, project)
+						opt.Updates = append(opt.Updates, u)
+					}
+
+					return primaryResource, opt
+				}
+
+				options := ScenarioOptions{
+					TestPause: false,
+				}
+				runScenario(ctx, t, options, fixture, loadFixture)
+			})
+		}
+	})
+
+	t.Run("stateabsentinspec-fixtures", func(t *testing.T) {
+		fixtures := resourcefixture.LoadWithPathFilter(t, func(path string) bool {
+			return strings.Contains(path, "testdata/stateabsentinspec")
+		}, nil, nil)
+		for _, fixture := range fixtures {
+			fixture := fixture
+			group := fixture.GVK.Group
+
+			skipTestReason := ""
+
+			if s := os.Getenv("SKIP_TEST_APIGROUP"); s != "" {
+				skippedGroups := strings.Split(s, ",")
+				if slice.StringSliceContains(skippedGroups, group) {
+					skipTestReason = fmt.Sprintf("skipping test %s because group %q matched entries in SKIP_TEST_APIGROUP=%s", fixture.TestKey, group, s)
+				}
+			}
+			if s := os.Getenv("ONLY_TEST_APIGROUPS"); s != "" {
+				groups := strings.Split(s, ",")
+				if !slice.StringSliceContains(groups, group) {
+					skipTestReason = fmt.Sprintf("skipping test %s because group %q did not match ONLY_TEST_APIGROUPS=%s", fixture.TestKey, group, s)
+				}
+			}
+
+			t.Run(fixture.TestKey, func(t *testing.T) {
 				if skipTestReason != "" {
 					t.Skip(skipTestReason)
 				}
