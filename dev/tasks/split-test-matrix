@@ -54,7 +54,29 @@ unique_services=($(echo "${services[@]:-}" | tr ' ' '\n' | sort -u | grep -v '^$
 
 shard_service() {
   local service="$1"
-  echo "${service}"
+  case "${service}" in
+    compute)
+      echo "compute-1-of-4"
+      echo "compute-2-of-4"
+      echo "compute-3-of-4"
+      echo "compute-4-of-4"
+      ;;
+    sql)
+      echo "sql-1-of-2"
+      echo "sql-2-of-2"
+      ;;
+    container)
+      echo "container-1-of-2"
+      echo "container-2-of-2"
+      ;;
+    bigquery)
+      echo "bigquery-1-of-2"
+      echo "bigquery-2-of-2"
+      ;;
+    *)
+      echo "${service}"
+      ;;
+  esac
 }
 
 all_fixture_services=()

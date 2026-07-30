@@ -28,14 +28,19 @@ cd ${REPO_ROOT}
 . ${REPO_ROOT}/dev/tasks/install-gcloud
 . ${REPO_ROOT}/dev/tasks/setup-envtest
 
-echo "Running unit tests..."
-# A dummy default project id is required for a few unit test cases
-gcloud config set project foobar --quiet
-
-# Env var VALIDATE_URLS needs to be unset to avoid calling URLs in TestReferenceDocConsistency under scripts/generate-google3-docs/.
-unset VALIDATE_URLS
+SHARD_SPEC="${1:-${SHARD_SPEC:-}}"
 
 # Get all unit test packages excluding the operator, E2E tests, and preview CLI tests
-UNIT_TEST_PACKAGES=$(go list ./... | grep -v "/operator" | grep -v "tests/e2e" | grep -v "pkg/cli/preview")
+ALL_PACKAGES=$(go list ./... | grep -v "/operator" | grep -v "tests/e2e" | grep -v "pkg/cli/preview")
+
+if [[ "${SHARD_SPEC}" =~ ([0-9]+)-of-([0-9]+)$ ]]; then
+  SHARD_NUM="${BASH_REMATCH[1]}"
+  TOTAL_SHARDS="${BASH_REMATCH[2]}"
+  UNIT_TEST_PACKAGES=$(echo "${ALL_PACKAGES}" | awk -v num="${SHARD_NUM}" -v total="${TOTAL_SHARDS}" 'NR % total == (num % total)')
+  echo "Running unit tests (shard ${SHARD_NUM} of ${TOTAL_SHARDS})..."
+else
+  UNIT_TEST_PACKAGES="${ALL_PACKAGES}"
+  echo "Running unit tests..."
+fi
 
 go test -test.count=1 -parallel 2 -v ${UNIT_TEST_PACKAGES}
