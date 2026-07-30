@@ -360,6 +360,46 @@ jobs:
           name: artifacts-tests-e2e-fixtures-${{ matrix.service }}
           path: /tmp/artifacts/
 
+  # Note: Collector job added to satisfy GitHub Branch Protection required check name for tests-e2e-fixtures-compute (mostly a hack for branch protection)
+  tests-e2e-fixtures-compute:
+    name: "tests-e2e-fixtures-compute"
+    runs-on: ubuntu-latest
+    needs: [prepare-test-matrix, priority-e2e-fixtures, tests-e2e-fixtures-matrix]
+    if: ${{ !cancelled() && !contains(needs.priority-e2e-fixtures.result, 'failure') && !contains(needs.tests-e2e-fixtures-matrix.result, 'failure') }}
+    steps:
+      - name: "Verify compute shards completion"
+        run: echo "All compute fixture shards completed successfully."
+
+  # Note: Collector job added to satisfy GitHub Branch Protection required check name for tests-e2e-fixtures-sql (mostly a hack for branch protection)
+  tests-e2e-fixtures-sql:
+    name: "tests-e2e-fixtures-sql"
+    runs-on: ubuntu-latest
+    needs: [prepare-test-matrix, priority-e2e-fixtures, tests-e2e-fixtures-matrix]
+    if: ${{ !cancelled() && !contains(needs.priority-e2e-fixtures.result, 'failure') && !contains(needs.tests-e2e-fixtures-matrix.result, 'failure') }}
+    steps:
+      - name: "Verify sql shards completion"
+        run: echo "All sql fixture shards completed successfully."
+
+  # Note: Collector job added to satisfy GitHub Branch Protection required check name for tests-e2e-fixtures-container (mostly a hack for branch protection)
+  tests-e2e-fixtures-container:
+    name: "tests-e2e-fixtures-container"
+    runs-on: ubuntu-latest
+    needs: [prepare-test-matrix, priority-e2e-fixtures, tests-e2e-fixtures-matrix]
+    if: ${{ !cancelled() && !contains(needs.priority-e2e-fixtures.result, 'failure') && !contains(needs.tests-e2e-fixtures-matrix.result, 'failure') }}
+    steps:
+      - name: "Verify container shards completion"
+        run: echo "All container fixture shards completed successfully."
+
+  # Note: Collector job added to satisfy GitHub Branch Protection required check name for tests-e2e-fixtures-bigquery (mostly a hack for branch protection)
+  tests-e2e-fixtures-bigquery:
+    name: "tests-e2e-fixtures-bigquery"
+    runs-on: ubuntu-latest
+    needs: [prepare-test-matrix, priority-e2e-fixtures, tests-e2e-fixtures-matrix]
+    if: ${{ !cancelled() && !contains(needs.priority-e2e-fixtures.result, 'failure') && !contains(needs.tests-e2e-fixtures-matrix.result, 'failure') }}
+    steps:
+      - name: "Verify bigquery shards completion"
+        run: echo "All bigquery fixture shards completed successfully."
+
   tests-e2e-samples-matrix:
     name: "tests-e2e-samples-${{ matrix.service }}"
     runs-on: ubuntu-latest
@@ -480,7 +520,7 @@ jobs:
           name: artifacts-tests-scenarios-${{ matrix.suite }}
           path: /tmp/artifacts/
 
-  unit-tests:
+  unit-tests-matrix:
     name: "unit-tests-${{ matrix.shard }}"
     runs-on: ubuntu-latest
     needs: prepare-test-matrix
@@ -510,6 +550,16 @@ jobs:
         with:
           name: artifacts-unit-tests-${{ matrix.shard }}
           path: /tmp/artifacts/
+
+  # Note: Collector job added to satisfy GitHub Branch Protection required check name for unit-tests (mostly a hack for branch protection)
+  unit-tests:
+    name: "unit-tests"
+    runs-on: ubuntu-latest
+    needs: unit-tests-matrix
+    if: ${{ !cancelled() && !contains(needs.unit-tests-matrix.result, 'failure') }}
+    steps:
+      - name: "Verify unit-tests completion"
+        run: echo "All unit-test matrix shards completed successfully."
 
   unit-tests-operator:
     runs-on: ubuntu-latest
@@ -704,10 +754,15 @@ jobs:
       - tests-e2e-direct-iam
       - priority-e2e-fixtures
       - tests-e2e-fixtures-matrix
+      - tests-e2e-fixtures-compute
+      - tests-e2e-fixtures-sql
+      - tests-e2e-fixtures-container
+      - tests-e2e-fixtures-bigquery
       - tests-e2e-samples-matrix
       - tests-gcptracker
       - tests-preview
       - tests-scenarios-matrix
+      - unit-tests-matrix
       - unit-tests
       - unit-tests-operator
       - validate-ensure
