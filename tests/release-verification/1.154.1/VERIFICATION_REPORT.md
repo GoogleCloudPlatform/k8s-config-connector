@@ -122,6 +122,35 @@ selfLink: https://www.googleapis.com/compute/v1/projects/cnrm-barni-2/regions/us
 
 ---
 
+### 5. Compute Address (`gcloud compute addresses describe computeaddress-ipcollection-verify --global --project=cnrm-barni-2`)
+```yaml
+address: 34.110.201.145
+addressType: EXTERNAL
+creationTimestamp: '2026-07-30T16:03:50.146-07:00'
+id: '2735072934183200441'
+kind: compute#address
+labels:
+  managed-by-cnrm: 'true'
+name: computeaddress-ipcollection-verify
+networkTier: PREMIUM
+selfLink: https://www.googleapis.com/compute/v1/projects/cnrm-barni-2/global/addresses/computeaddress-ipcollection-verify
+status: RESERVED
+```
+> **Verification Note:** External Compute Address created and reconciled to `Ready: True`.
+
+---
+
+### 6. Compute Router (`gcloud compute routers describe kcc-router-verify-1154 --region=us-central1 --project=cnrm-barni-2`)
+```yaml
+creationTimestamp: '2026-07-30T14:13:59.099-07:00'
+encryptedInterconnectRouter: false
+id: '8720098397891461241'
+kind: compute#router
+name: kcc-router-verify-1154
+network: https://www.googleapis.com/compute/v1/projects/cnrm-barni-2/global/networks/kcc-network-verify-1154
+region: https://www.googleapis.com/compute/v1/projects/cnrm-barni-2/regions/us-central1
+```
+
 ### 4. Storage Bucket (`gcloud storage buckets describe gs://kcc-bucket-verify-1154 --project=cnrm-barni-2`)
 ```text
 ERROR: (gcloud.storage.buckets.describe) [barni@google.com] does not have permission to access instance [kcc-bucket-verify-1154]: There is an IP filtering condition that is preventing access to the resource.
