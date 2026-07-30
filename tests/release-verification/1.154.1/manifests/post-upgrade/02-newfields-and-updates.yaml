@@ -81,7 +81,8 @@ spec:
           threshold: 0
 
 ---
-# 5. ComputeNetwork & ComputeSubnetwork
+---
+# 5. ComputeNetwork & ComputeSubnetwork (New fields: networkProfile & reservedInternalRangeRef)
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeNetwork
 metadata:
@@ -103,6 +104,11 @@ spec:
   region: us-central1
   networkRef:
     name: kcc-network-verify-1154
+  secondaryIpRange:
+    - rangeName: verify-secondary-range
+      ipCidrRange: "192.168.1.0/24"
+      reservedInternalRangeRef:
+        external: "projects/cnrm-barni-2/locations/us-central1/internalRanges/verify-range"
 
 ---
 # 6. ComputeRouterNAT (New Feature: Private NAT support)
@@ -148,5 +154,59 @@ spec:
           - "503"
         overrideResponseCode: 502
         path: "/custom-error-502.html"
+
+---
+# 8. ComputeAddress (New field: spec.ipCollectionRef)
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeAddress
+metadata:
+  name: computeaddress-ipcollection-verify
+  annotations:
+    cnrm.cloud.google.com/project-id: "cnrm-barni-2"
+spec:
+  location: global
+  addressType: EXTERNAL
+  ipCollectionRef:
+    external: "projects/cnrm-barni-2/global/publicDelegatedPrefixes/verify-pdp"
+
+---
+# 9. DNSRecordSet (New fields: spec.routingPolicy.geo[].healthCheckRef, rrdatasRefs)
+apiVersion: dns.cnrm.cloud.google.com/v1beta1
+kind: DNSRecordSet
+metadata:
+  name: dnsrecordset-routingpolicy-verify
+  annotations:
+    cnrm.cloud.google.com/project-id: "cnrm-barni-2"
+spec:
+  name: "verify-record.example.com."
+  type: A
+  ttl: 300
+  managedZoneRef:
+    name: "verify-zone"
+  routingPolicy:
+    healthCheckRef:
+      external: "projects/cnrm-barni-2/global/healthChecks/verify-check"
+    geo:
+      - location: us-central1
+        rrdatasRefs:
+          - external: "192.0.2.1"
+
+---
+# 10. RedisCluster (New field: spec.crossClusterReplicationConfig)
+apiVersion: redis.cnrm.cloud.google.com/v1beta1
+kind: RedisCluster
+metadata:
+  name: rediscluster-replication-verify
+  annotations:
+    cnrm.cloud.google.com/project-id: "cnrm-barni-2"
+spec:
+  projectRef:
+    external: "cnrm-barni-2"
+  location: us-central1
+  shardCount: 3
+  crossClusterReplicationConfig:
+    clusterRole: PRIMARY
+
+
 
 

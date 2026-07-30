@@ -56,8 +56,20 @@ kubectl get monitoringalertpolicy monitoringalertpolicy-sql-verify -o jsonpath='
 echo "5. ComputeRouterNAT (type: PRIVATE):"
 kubectl get computerouternat kcc-routernat-privatenat-verify -o jsonpath='{.spec.type}' && echo ""
 echo ""
-echo "6. ComputeURLMap (spec.defaultCustomErrorResponsePolicy):"
-kubectl get computeurlmap urlmap-errorpolicy-verify -o jsonpath='{.spec.defaultCustomErrorResponsePolicy}' && echo ""
+echo "6. ComputeURLMap (defaultCustomErrorResponsePolicy & test fields):"
+kubectl get computeurlmap urlmap-errorpolicy-verify -o jsonpath='{"ErrorPolicy: "}{.spec.defaultCustomErrorResponsePolicy}{"\nTest:        "}{.spec.test[*]}' && echo ""
+
+echo "7. ComputeAddress (spec.ipCollectionRef):"
+kubectl get computeaddress computeaddress-ipcollection-verify -o jsonpath='{.spec.ipCollectionRef}' 2>/dev/null || echo "not found" && echo ""
+
+echo "8. ComputeSubnetwork (spec.secondaryIpRange[].reservedInternalRangeRef):"
+kubectl get computesubnetwork kcc-subnet-verify-1154 -o jsonpath='{.spec.secondaryIpRange[*].reservedInternalRangeRef}' 2>/dev/null || echo "not found" && echo ""
+
+echo "9. DNSRecordSet (spec.routingPolicy):"
+kubectl get dnsrecordset dnsrecordset-routingpolicy-verify -o jsonpath='{.spec.routingPolicy}' 2>/dev/null || echo "not found" && echo ""
+
+echo "10. RedisCluster (spec.crossClusterReplicationConfig):"
+kubectl get rediscluster rediscluster-replication-verify -o jsonpath='{.spec.crossClusterReplicationConfig}' 2>/dev/null || echo "not found" && echo ""
 
 echo ""
 echo "[Bug Fixes & Resource Status Check]"
@@ -73,6 +85,10 @@ resources=(
   "computesecuritypolicy/kcc-secpolicy-verify-1154"
   "monitoringalertpolicy/monitoringalertpolicy-sql-verify"
   "computerouternat/kcc-routernat-privatenat-verify"
+  "computeurlmap/urlmap-errorpolicy-verify"
+  "computeaddress/computeaddress-ipcollection-verify"
+  "dnsrecordset/dnsrecordset-routingpolicy-verify"
+  "rediscluster/rediscluster-replication-verify"
 )
 
 for res in "${resources[@]}"; do

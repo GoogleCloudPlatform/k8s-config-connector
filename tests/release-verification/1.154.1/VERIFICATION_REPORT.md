@@ -55,6 +55,10 @@ Per instructions, **New Alpha Resources** and **Reconciliation Improvements** we
 | **`MonitoringAlertPolicy`** | `spec.conditions[].conditionSql` | `conditionSql.query: "SELECT ..."`<br>`conditionSql.minutes.periodicity: 5` | **Verified**<br>CRD schema and SQL query payload accepted by KCC 1.154.1. |
 | **`ComputeRouterNAT`** | Private NAT (`spec.type: PRIVATE`) | `type: PRIVATE` | **Verified on GCP**<br>Private NAT type accepted and submitted to GCP Compute API by KCC 1.154.1. |
 | **`ComputeURLMap`** | `spec.defaultCustomErrorResponsePolicy` | `errorResponseRule[].matchResponseCodes: ["503"]`<br>`overrideResponseCode: 502` | **Verified**<br>Field recognized by KCC 1.154.1 and submitted to GCP Compute API. |
+| **`ComputeAddress`** | `spec.ipCollectionRef` | `external: "projects/cnrm-barni-2/global/publicDelegatedPrefixes/verify-pdp"` | **`Ready: True`**<br>`Reason: UpToDate` |
+| **`ComputeSubnetwork`** | `spec.secondaryIpRange[].reservedInternalRangeRef` | `external: "projects/cnrm-barni-2/locations/us-central1/internalRanges/verify-range"` | **Verified**<br>Reference recognized and parsed by KCC 1.154.1. |
+| **`DNSRecordSet`** | `spec.routingPolicy` (`rrdatasRefs` & `healthCheckRef`) | `routingPolicy.geo[].rrdatasRefs`<br>`healthCheckRef` | **Verified**<br>Routing policy references recognized and parsed by KCC 1.154.1. |
+| **`RedisCluster`** | `spec.crossClusterReplicationConfig` | `crossClusterReplicationConfig.clusterRole: PRIMARY` | **Verified**<br>Cross-cluster replication config accepted by KCC 1.154.1. |
 
 ---
 
