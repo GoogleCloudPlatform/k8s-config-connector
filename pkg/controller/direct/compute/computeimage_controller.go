@@ -23,7 +23,6 @@ package compute
 import (
 	"context"
 	"fmt"
-	"reflect"
 
 	compute "cloud.google.com/go/compute/apiv1"
 	computepb "cloud.google.com/go/compute/apiv1/computepb"
@@ -198,9 +197,16 @@ func (a *ComputeImageAdapter) Update(ctx context.Context, updateOp *directbase.U
 	mapCtx := &direct.MapContext{}
 
 	// Update labels if needed
-	desiredLabels := updateOp.GetUnstructured().GetLabels()
-	actualLabels := a.actual.Labels
-	labelsChanged := !reflect.DeepEqual(desiredLabels, actualLabels)
+	labelsChanged := false
+	if len(a.actual.Labels) != len(a.desired.Labels) {
+		labelsChanged = true
+	} else {
+		for k, v := range a.desired.Labels {
+			if a.actual.Labels[k] != v {
+				labelsChanged = true
+			}
+		}
+	}
 
 	diffs, _, err := compareComputeImage(ctx, a.actual, a.desired)
 	if err != nil {
@@ -217,10 +223,14 @@ func (a *ComputeImageAdapter) Update(ctx context.Context, updateOp *directbase.U
 
 			a.desired.Name = direct.LazyPtr(a.id.Image)
 
+			patched := &computepb.Image{
+				Family:      a.desired.Family,
+				Description: a.desired.Description,
+			}
 			req := &computepb.PatchImageRequest{
 				Project:       a.id.Project,
 				Image:         a.id.Image,
-				ImageResource: a.desired,
+				ImageResource: patched,
 			}
 			op, err := a.gcpClient.Patch(ctx, req)
 			if err != nil {
@@ -241,7 +251,7 @@ func (a *ComputeImageAdapter) Update(ctx context.Context, updateOp *directbase.U
 				Resource: a.id.Image,
 				GlobalSetLabelsRequestResource: &computepb.GlobalSetLabelsRequest{
 					LabelFingerprint: a.actual.LabelFingerprint,
-					Labels:           desiredLabels,
+					Labels:           a.desired.Labels,
 				},
 			}
 			op, err := a.gcpClient.SetLabels(ctx, req)
@@ -338,8 +348,36 @@ func compareComputeImage(ctx context.Context, actual, desired *computepb.Image) 
 		return nil, nil, err
 	}
 	maskedActual.Name = desired.Name
+	maskedActual.Labels = actual.Labels
 
 	clonedDesired := proto.CloneOf(desired)
+	clonedDesired.Labels = actual.Labels
+
+	populateDefaults := func(obj *computepb.Image) {
+		obj.SourceDisk = canonicalizeComputeURL(obj.SourceDisk)
+		obj.SourceImage = canonicalizeComputeURL(obj.SourceImage)
+		obj.SourceSnapshot = canonicalizeComputeURL(obj.SourceSnapshot)
+		obj.StorageLocations = canonicalizeComputeURLs(obj.StorageLocations)
+	}
+
+	populateDefaults(clonedDesired)
+	populateDefaults(maskedActual)
+
+	if clonedDesired.DiskSizeGb == nil || *clonedDesired.DiskSizeGb == 0 {
+		clonedDesired.DiskSizeGb = maskedActual.DiskSizeGb
+	}
+	if len(clonedDesired.StorageLocations) == 0 {
+		clonedDesired.StorageLocations = maskedActual.StorageLocations
+	}
+	if len(clonedDesired.Licenses) == 0 {
+		clonedDesired.Licenses = maskedActual.Licenses
+	}
+	if clonedDesired.RawDisk == nil {
+		clonedDesired.RawDisk = maskedActual.RawDisk
+	}
+	if len(clonedDesired.GuestOsFeatures) == 0 {
+		clonedDesired.GuestOsFeatures = maskedActual.GuestOsFeatures
+	}
 
 	diffs, updateMask, err := tags.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {

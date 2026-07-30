@@ -270,6 +270,8 @@ func LegacyNormalize(t *testing.T, h *create.Harness, project testgcp.GCPProject
 	// Specific to Compute
 	addReplacement("natIP", "192.0.0.10")
 	addReplacement("fingerprint", "abcdef0123A=")
+	addReplacement("sourceDiskId", "${diskID}")
+	addReplacement("labelFingerprint", "abcdef0123A=")
 
 	// Specific to Dataplex
 	addReplacement("executionStatus.updateTime", "2024-04-01T12:34:56.123456Z")
