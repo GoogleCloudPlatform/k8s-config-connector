@@ -24,6 +24,7 @@ package compute
 import (
 	"context"
 	"fmt"
+	"sort"
 	"strings"
 
 	"google.golang.org/protobuf/proto"
@@ -612,6 +613,15 @@ func trimDiskTypePrefix(t string) string {
 	return t
 }
 
+func trimZonePrefix(z string) string {
+	normalized := refs.TrimComputeURIPrefix(z)
+	parts := strings.Split(normalized, "/")
+	if len(parts) > 0 {
+		return parts[len(parts)-1]
+	}
+	return z
+}
+
 func compareComputeDisk(ctx context.Context, actual, desired *computepb.Disk, id *v1beta1.ComputeDiskIdentity) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
 	maskedActual, err := mappers.OnlySpecFields(actual, ComputeDiskSpec_v1beta1_FromProto, ComputeDiskSpec_v1beta1_ToProto)
 	if err != nil {
@@ -622,6 +632,10 @@ func compareComputeDisk(ctx context.Context, actual, desired *computepb.Disk, id
 
 	clonedDesired := proto.CloneOf(desired)
 	clonedDesired.Name = actual.Name
+
+	if clonedDesired.SizeGb == nil {
+		maskedActual.SizeGb = nil
+	}
 
 	populateDefaults := func(obj *computepb.Disk) {
 		// Populate physical_block_size_bytes default
@@ -659,6 +673,12 @@ func compareComputeDisk(ctx context.Context, actual, desired *computepb.Disk, id
 				obj.ResourcePolicies[i] = *u
 			}
 		}
+
+		// Canonicalize ReplicaZones to short zone names and sort them
+		for i, z := range obj.ReplicaZones {
+			obj.ReplicaZones[i] = trimZonePrefix(z)
+		}
+		sort.Strings(obj.ReplicaZones)
 	}
 
 	populateDefaults(clonedDesired)

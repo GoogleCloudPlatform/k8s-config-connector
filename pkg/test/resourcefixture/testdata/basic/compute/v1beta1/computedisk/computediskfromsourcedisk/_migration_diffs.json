@@ -267,29 +267,5 @@
         "new": "us-central1-a"
       }
     ]
-  },
-  {
-    "controller": "direct",
-    "isNewObject": false,
-    "resource": "ComputeDisk/computedisk-1-${uniqueId}",
-    "fields": [
-      {
-        "id": "size_gb",
-        "old": 500,
-        "new": 0
-      }
-    ]
-  },
-  {
-    "controller": "direct",
-    "isNewObject": false,
-    "resource": "ComputeDisk/computedisk-1-${uniqueId}",
-    "fields": [
-      {
-        "id": "size_gb",
-        "old": 500,
-        "new": 0
-      }
-    ]
   }
 ]
