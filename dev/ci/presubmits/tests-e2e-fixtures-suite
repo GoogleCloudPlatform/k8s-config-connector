@@ -34,6 +34,10 @@ cd "${REPO_ROOT}"
 . "${REPO_ROOT}/dev/tasks/setup-envtest"
 
 BASE_TEST="TestAllInSeries/fixtures"
+# Special cross-cutting fixture categories (reconcileintervalannotations, stateabsentinspec)
+# contain resources spanning multiple API groups. Instead of restricting by ONLY_TEST_APIGROUPS,
+# we override BASE_TEST to point directly to their testdata directory. Standard CRD services
+# (storage, compute, etc.) filter by ONLY_TEST_APIGROUPS.
 if [[ "${SERVICE}" == "reconcileintervalannotations" || "${SERVICE}" == "stateabsentinspec" ]]; then
   BASE_TEST="TestAllInSeries/fixtures/pkg/test/resourcefixture/testdata/${SERVICE}"
 else
