@@ -28,7 +28,6 @@ cd ${REPO_ROOT}
 . ${REPO_ROOT}/dev/tasks/install-gcloud
 . ${REPO_ROOT}/dev/tasks/setup-envtest
 
-echo "Running operator unit tests..."
 # A dummy default project id is required for a few unit test cases
 gcloud config set project foobar --quiet
 
@@ -36,4 +35,18 @@ cd operator
 
 make manifests
 
-go test -test.count=1 -parallel 2 -v ./pkg/... ./scripts/...
+SHARD_SPEC="${1:-${SHARD_SPEC:-}}"
+
+ALL_PACKAGES=$(go list ./pkg/... ./scripts/...)
+
+if [[ "${SHARD_SPEC}" =~ ([0-9]+)-of-([0-9]+)$ ]]; then
+  SHARD_NUM="${BASH_REMATCH[1]}"
+  TOTAL_SHARDS="${BASH_REMATCH[2]}"
+  OPERATOR_PACKAGES=$(echo "${ALL_PACKAGES}" | awk -v num="${SHARD_NUM}" -v total="${TOTAL_SHARDS}" 'NR % total == (num % total)')
+  echo "Running operator unit tests (shard ${SHARD_NUM} of ${TOTAL_SHARDS})..."
+else
+  OPERATOR_PACKAGES="${ALL_PACKAGES}"
+  echo "Running operator unit tests..."
+fi
+
+go test -test.count=1 -parallel 2 -v ${OPERATOR_PACKAGES}

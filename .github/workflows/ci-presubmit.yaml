@@ -49,6 +49,10 @@ jobs:
       samples_json: ${{ steps.split.outputs.samples_json }}
       scenarios_json: ${{ steps.split.outputs.scenarios_json }}
       unit_tests_json: ${{ steps.split.outputs.unit_tests_json }}
+      fuzz_roundtrippers_json: ${{ steps.split.outputs.fuzz_roundtrippers_json }}
+      test_mockgcp_json: ${{ steps.split.outputs.test_mockgcp_json }}
+      unit_tests_operator_json: ${{ steps.split.outputs.unit_tests_operator_json }}
+      smoketest_with_kind_json: ${{ steps.split.outputs.smoketest_with_kind_json }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
@@ -90,25 +94,42 @@ jobs:
           path: /tmp/artifacts/
 
 
-  fuzz-roundtrippers:
+  fuzz-roundtrippers-matrix:
+    name: "fuzz-roundtrippers-${{ matrix.shard }}"
     runs-on: ubuntu-latest
+    needs: prepare-test-matrix
     timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: ${{ fromJSON(needs.prepare-test-matrix.outputs.fuzz_roundtrippers_json) }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Free up disk space
+        run: dev/tasks/free-disk-space-on-github-actions-runner
 # zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/fuzz-roundtrippers"
         run: |
-          ./dev/ci/presubmits/fuzz-roundtrippers
+          ./dev/ci/presubmits/fuzz-roundtrippers "${{ matrix.shard }}"
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
         if: ${{ !cancelled() }}
         with:
-          name: artifacts-fuzz-roundtrippers
+          name: artifacts-fuzz-roundtrippers-${{ matrix.shard }}
           path: /tmp/artifacts/
 
+  # Note: Collector job added to satisfy GitHub Branch Protection required check name for fuzz-roundtrippers (mostly a hack for branch protection)
+  fuzz-roundtrippers:
+    name: "fuzz-roundtrippers"
+    runs-on: ubuntu-latest
+    needs: fuzz-roundtrippers-matrix
+    if: ${{ !cancelled() && !contains(needs.fuzz-roundtrippers-matrix.result, 'failure') }}
+    steps:
+      - name: "Verify fuzz-roundtrippers completion"
+        run: echo "All fuzz-roundtrippers matrix shards completed successfully."
 
   golangci-lint:
     runs-on: ubuntu-latest
@@ -171,31 +192,60 @@ jobs:
           path: /tmp/artifacts/
 
 
-  smoketest-with-kind:
+  smoketest-with-kind-matrix:
+    name: "smoketest-with-kind-${{ matrix.shard }}"
     runs-on: ubuntu-latest
+    needs: prepare-test-matrix
     timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: ${{ fromJSON(needs.prepare-test-matrix.outputs.smoketest_with_kind_json) }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Free up disk space
+        run: dev/tasks/free-disk-space-on-github-actions-runner
 # zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
+      - uses: google-github-actions/setup-gcloud@77e7a554d41e2ee56fc945c52dfd3f33d12def9a # v2.1.4
+        with:
+          version: '546.0.0'
+          install_components: 'alpha,beta'
       - name: "Run dev/ci/presubmits/smoketest-with-kind"
         run: |
-          ./dev/ci/presubmits/smoketest-with-kind
+          ./dev/ci/presubmits/smoketest-with-kind "${{ matrix.shard }}"
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
         if: ${{ !cancelled() }}
         with:
-          name: artifacts-smoketest-with-kind
+          name: artifacts-smoketest-with-kind-${{ matrix.shard }}
           path: /tmp/artifacts/
 
-
-  test-mockgcp:
+  # Note: Collector job added to satisfy GitHub Branch Protection required check name for smoketest-with-kind (mostly a hack for branch protection)
+  smoketest-with-kind:
+    name: "smoketest-with-kind"
     runs-on: ubuntu-latest
+    needs: smoketest-with-kind-matrix
+    if: ${{ !cancelled() && !contains(needs.smoketest-with-kind-matrix.result, 'failure') }}
+    steps:
+      - name: "Verify smoketest-with-kind completion"
+        run: echo "All smoketest-with-kind matrix shards completed successfully."
+
+  test-mockgcp-matrix:
+    name: "test-mockgcp-${{ matrix.shard }}"
+    runs-on: ubuntu-latest
+    needs: prepare-test-matrix
     timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: ${{ fromJSON(needs.prepare-test-matrix.outputs.test_mockgcp_json) }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Free up disk space
+        run: dev/tasks/free-disk-space-on-github-actions-runner
 # zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
       - uses: google-github-actions/setup-gcloud@77e7a554d41e2ee56fc945c52dfd3f33d12def9a # v2.1.4
@@ -204,16 +254,25 @@ jobs:
           install_components: 'alpha,beta'
       - name: "Run dev/ci/presubmits/test-mockgcp"
         run: |
-          ./dev/ci/presubmits/test-mockgcp
+          ./dev/ci/presubmits/test-mockgcp "${{ matrix.shard }}"
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
         if: ${{ !cancelled() }}
         with:
-          name: artifacts-test-mockgcp
+          name: artifacts-test-mockgcp-${{ matrix.shard }}
           path: /tmp/artifacts/
 
+  # Note: Collector job added to satisfy GitHub Branch Protection required check name for test-mockgcp (mostly a hack for branch protection)
+  test-mockgcp:
+    name: "test-mockgcp"
+    runs-on: ubuntu-latest
+    needs: test-mockgcp-matrix
+    if: ${{ !cancelled() && !contains(needs.test-mockgcp-matrix.result, 'failure') }}
+    steps:
+      - name: "Verify test-mockgcp completion"
+        run: echo "All test-mockgcp matrix shards completed successfully."
 
   test-pause:
     runs-on: ubuntu-latest
@@ -561,9 +620,15 @@ jobs:
       - name: "Verify unit-tests completion"
         run: echo "All unit-test matrix shards completed successfully."
 
-  unit-tests-operator:
+  unit-tests-operator-matrix:
+    name: "unit-tests-operator-${{ matrix.shard }}"
     runs-on: ubuntu-latest
+    needs: prepare-test-matrix
     timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: ${{ fromJSON(needs.prepare-test-matrix.outputs.unit_tests_operator_json) }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Free up disk space
@@ -576,16 +641,25 @@ jobs:
           install_components: 'alpha,beta'
       - name: "Run dev/ci/presubmits/unit-tests-operator"
         run: |
-          ./dev/ci/presubmits/unit-tests-operator
+          ./dev/ci/presubmits/unit-tests-operator "${{ matrix.shard }}"
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
         uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
         if: ${{ !cancelled() }}
         with:
-          name: artifacts-unit-tests-operator
+          name: artifacts-unit-tests-operator-${{ matrix.shard }}
           path: /tmp/artifacts/
 
+  # Note: Collector job added to satisfy GitHub Branch Protection required check name for unit-tests-operator (mostly a hack for branch protection)
+  unit-tests-operator:
+    name: "unit-tests-operator"
+    runs-on: ubuntu-latest
+    needs: unit-tests-operator-matrix
+    if: ${{ !cancelled() && !contains(needs.unit-tests-operator-matrix.result, 'failure') }}
+    steps:
+      - name: "Verify unit-tests-operator completion"
+        run: echo "All unit-tests-operator matrix shards completed successfully."
 
   validate-ensure:
     runs-on: ubuntu-latest
@@ -744,11 +818,14 @@ jobs:
     needs:
       - prepare-test-matrix
       - capture-pprof
+      - fuzz-roundtrippers-matrix
       - fuzz-roundtrippers
       - golangci-lint
       - license-lint
       - run-linters
+      - smoketest-with-kind-matrix
       - smoketest-with-kind
+      - test-mockgcp-matrix
       - test-mockgcp
       - test-pause
       - tests-e2e-direct-iam
@@ -764,6 +841,7 @@ jobs:
       - tests-scenarios-matrix
       - unit-tests-matrix
       - unit-tests
+      - unit-tests-operator-matrix
       - unit-tests-operator
       - validate-ensure
       - validate-fmt

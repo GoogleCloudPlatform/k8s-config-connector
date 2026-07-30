@@ -20,5 +20,10 @@ set -o pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd "${REPO_ROOT}"
 
+SHARD_SPEC="${1:-${SHARD_SPEC:-}}"
+if [[ "${SHARD_SPEC}" =~ ([0-9]+)-of-([0-9]+)$ ]]; then
+  echo "Running smoketest-with-kind (shard ${SHARD_SPEC})..."
+fi
+
 export E2E=1
 go test -v -timeout 60m ./tests/e2e/smoketest/
