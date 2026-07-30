@@ -132,9 +132,6 @@ scenario_suites=("acquisition" "gkehubfeaturemembership" "powertool" "unclassifi
 
 unit_tests_shards=("1-of-4" "2-of-4" "3-of-4" "4-of-4")
 fuzz_roundtrippers_shards=("1-of-4" "2-of-4" "3-of-4" "4-of-4")
-test_mockgcp_shards=("1-of-2" "2-of-2")
-unit_tests_operator_shards=("1-of-2" "2-of-2")
-smoketest_with_kind_shards=("1-of-2" "2-of-2")
 
 HAS_PRIORITY="false"
 if [[ ${#priority_fixture_targets[@]} -gt 0 ]]; then
@@ -150,9 +147,6 @@ SAMPLES_JSON=$(python3 -c 'import json, sys; print(json.dumps(sys.argv[1:]))' "$
 SCENARIOS_JSON=$(python3 -c 'import json, sys; print(json.dumps(sys.argv[1:]))' "${scenario_suites[@]}")
 UNIT_TESTS_JSON=$(python3 -c 'import json, sys; print(json.dumps(sys.argv[1:]))' "${unit_tests_shards[@]}")
 FUZZ_ROUNDTRIPPERS_JSON=$(python3 -c 'import json, sys; print(json.dumps(sys.argv[1:]))' "${fuzz_roundtrippers_shards[@]}")
-TEST_MOCKGCP_JSON=$(python3 -c 'import json, sys; print(json.dumps(sys.argv[1:]))' "${test_mockgcp_shards[@]}")
-UNIT_TESTS_OPERATOR_JSON=$(python3 -c 'import json, sys; print(json.dumps(sys.argv[1:]))' "${unit_tests_operator_shards[@]}")
-SMOKETEST_WITH_KIND_JSON=$(python3 -c 'import json, sys; print(json.dumps(sys.argv[1:]))' "${smoketest_with_kind_shards[@]}")
 
 echo "has_priority_tests=${HAS_PRIORITY}"
 echo "priority_fixtures_json=${PRIORITY_JSON}"
@@ -161,9 +155,6 @@ echo "samples_json=${SAMPLES_JSON}"
 echo "scenarios_json=${SCENARIOS_JSON}"
 echo "unit_tests_json=${UNIT_TESTS_JSON}"
 echo "fuzz_roundtrippers_json=${FUZZ_ROUNDTRIPPERS_JSON}"
-echo "test_mockgcp_json=${TEST_MOCKGCP_JSON}"
-echo "unit_tests_operator_json=${UNIT_TESTS_OPERATOR_JSON}"
-echo "smoketest_with_kind_json=${SMOKETEST_WITH_KIND_JSON}"
 
 if [[ -n "${GITHUB_OUTPUT:-}" && -f "${GITHUB_OUTPUT}" ]]; then
   echo "has_priority_tests=${HAS_PRIORITY}" >> "${GITHUB_OUTPUT}"
@@ -173,7 +164,4 @@ if [[ -n "${GITHUB_OUTPUT:-}" && -f "${GITHUB_OUTPUT}" ]]; then
   echo "scenarios_json=${SCENARIOS_JSON}" >> "${GITHUB_OUTPUT}"
   echo "unit_tests_json=${UNIT_TESTS_JSON}" >> "${GITHUB_OUTPUT}"
   echo "fuzz_roundtrippers_json=${FUZZ_ROUNDTRIPPERS_JSON}" >> "${GITHUB_OUTPUT}"
-  echo "test_mockgcp_json=${TEST_MOCKGCP_JSON}" >> "${GITHUB_OUTPUT}"
-  echo "unit_tests_operator_json=${UNIT_TESTS_OPERATOR_JSON}" >> "${GITHUB_OUTPUT}"
-  echo "smoketest_with_kind_json=${SMOKETEST_WITH_KIND_JSON}" >> "${GITHUB_OUTPUT}"
 fi

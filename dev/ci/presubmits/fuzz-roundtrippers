@@ -37,7 +37,7 @@ else
   echo "Running fuzz-roundtrippers..."
 fi
 
-go test -v ./pkg/fuzztesting/fuzztests/ -fuzz=FuzzAllMappers -parallel 2 -fuzztime 600s # fuzz for 10 minutes because we are fuzzing all the registered mappers
+go test -v ./pkg/fuzztesting/fuzztests/ -fuzz=FuzzAllMappers -parallel 2 -fuzztime 300s # fuzz for 5 minutes per shard
 
 # Please do not add more fuzzers here; register them so they are run with FuzzAllMappers (or a similar approach)
 

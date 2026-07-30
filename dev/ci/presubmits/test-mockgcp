@@ -28,18 +28,7 @@ REPO_ROOT="$(git rev-parse --show-toplevel)"
 
 cd ${REPO_ROOT}/mockgcp
 
-SHARD_SPEC="${1:-${SHARD_SPEC:-}}"
+export E2E_GCP_TARGET=mock
+export WRITE_GOLDEN_OUTPUT=1
 
-ALL_PACKAGES=$(go list ./...)
-
-if [[ "${SHARD_SPEC}" =~ ([0-9]+)-of-([0-9]+)$ ]]; then
-  SHARD_NUM="${BASH_REMATCH[1]}"
-  TOTAL_SHARDS="${BASH_REMATCH[2]}"
-  MOCKGCP_PACKAGES=$(echo "${ALL_PACKAGES}" | awk -v num="${SHARD_NUM}" -v total="${TOTAL_SHARDS}" 'NR % total == (num % total)')
-  echo "Running mockgcp tests (shard ${SHARD_NUM} of ${TOTAL_SHARDS})..."
-else
-  MOCKGCP_PACKAGES="${ALL_PACKAGES}"
-  echo "Running mockgcp tests..."
-fi
-
-go test -parallel 2 -v ${MOCKGCP_PACKAGES}
+go test -parallel 2 -v ./...
