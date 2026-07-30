@@ -39,3 +39,11 @@ unset VALIDATE_URLS
 UNIT_TEST_PACKAGES=$(go list ./... | grep -v "/operator" | grep -v "tests/e2e" | grep -v "pkg/cli/preview")
 
 go test -test.count=1 -v ${UNIT_TEST_PACKAGES}
+
+echo "Running crd-mcp-server unit tests..."
+# crd-mcp-server is an independent Go module with its own go.mod.
+# We should pushd into its directory to run its tests, as they cannot be
+# included in the root module's go test invocation above.
+pushd dev/tools/crd-mcp-server
+go test -test.count=1 -v ./...
+popd
