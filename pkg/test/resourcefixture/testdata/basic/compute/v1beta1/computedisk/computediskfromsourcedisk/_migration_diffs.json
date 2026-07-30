@@ -1,0 +1,295 @@
+[
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "ComputeDisk/computedisk-2-${uniqueId}",
+    "fields": [
+      {
+        "id": "creation_timestamp",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "description",
+        "old": "",
+        "new": "an example disk without reference"
+      },
+      {
+        "id": "enable_confidential_compute",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "guest_os_features.#",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "label_fingerprint",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "labels.%",
+        "old": "0",
+        "new": "2"
+      },
+      {
+        "id": "labels.cnrm-test",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "labels.managed-by-cnrm",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "last_attach_timestamp",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "last_detach_timestamp",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "licenses.#",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": "computedisk-2-${uniqueId}"
+      },
+      {
+        "id": "physical_block_size_bytes",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "provisioned_iops",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "provisioned_throughput",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "resource_policies.#",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "self_link",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "size",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "source_disk_id",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "source_image_id",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "source_snapshot_id",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "type",
+        "old": "",
+        "new": "pd-standard"
+      },
+      {
+        "id": "users.#",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "zone",
+        "old": "",
+        "new": "us-central1-a"
+      }
+    ]
+  },
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "ComputeDisk/computedisk-1-${uniqueId}",
+    "fields": [
+      {
+        "id": "creation_timestamp",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "description",
+        "old": "",
+        "new": "an example disk from source disk"
+      },
+      {
+        "id": "enable_confidential_compute",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "guest_os_features.#",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "label_fingerprint",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "labels.%",
+        "old": "0",
+        "new": "2"
+      },
+      {
+        "id": "labels.cnrm-test",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "labels.managed-by-cnrm",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "last_attach_timestamp",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "last_detach_timestamp",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "licenses.#",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": "computedisk-1-${uniqueId}"
+      },
+      {
+        "id": "physical_block_size_bytes",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "provisioned_iops",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "provisioned_throughput",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "resource_policies.#",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "self_link",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "size",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "source_disk",
+        "old": "",
+        "new": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/computedisk-2-${uniqueId}"
+      },
+      {
+        "id": "source_disk_id",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "source_image_id",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "source_snapshot_id",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "type",
+        "old": "",
+        "new": "pd-standard"
+      },
+      {
+        "id": "users.#",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "zone",
+        "old": "",
+        "new": "us-central1-a"
+      }
+    ]
+  },
+  {
+    "controller": "direct",
+    "isNewObject": false,
+    "resource": "ComputeDisk/computedisk-1-${uniqueId}",
+    "fields": [
+      {
+        "id": "size_gb",
+        "old": 500,
+        "new": 0
+      }
+    ]
+  },
+  {
+    "controller": "direct",
+    "isNewObject": false,
+    "resource": "ComputeDisk/computedisk-1-${uniqueId}",
+    "fields": [
+      {
+        "id": "size_gb",
+        "old": 500,
+        "new": 0
+      }
+    ]
+  }
+]
