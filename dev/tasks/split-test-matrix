@@ -103,15 +103,26 @@ for service in "${unique_services[@]:-}"; do
 done
 
 remaining_fixture_targets=()
+sharded_fixture_targets=()
+standard_fixture_targets=()
+
 for service in "${all_fixture_services[@]}"; do
   if [[ " ${unique_services[*]:-} " =~ " ${service} " ]]; then
     echo "Service ${service} marked for priority upfront verification."
   else
-    for target in $(shard_service "${service}"); do
-      remaining_fixture_targets+=("${target}")
-    done
+    if [[ "${service}" == "compute" || "${service}" == "sql" || "${service}" == "container" || "${service}" == "bigquery" ]]; then
+      for target in $(shard_service "${service}"); do
+        sharded_fixture_targets+=("${target}")
+      done
+    else
+      for target in $(shard_service "${service}"); do
+        standard_fixture_targets+=("${target}")
+      done
+    fi
   fi
 done
+
+remaining_fixture_targets=("${sharded_fixture_targets[@]:-}" "${standard_fixture_targets[@]:-}")
 
 # Defined sample services supported by E2E samples suite
 sample_services=("alloydb" "apigateway" "apigee" "bigquery" "bigqueryconnection" "bigquerydatapolicy" "bigquerydatatransfer" "cloudbuild" "cloudidentity" "compute" "dataflow" "dataproc" "gkehub" "iam" "kms" "orgpolicy" "redis" "secretmanager" "spanner" "sql" "storage" "unclassified" "workstations")
