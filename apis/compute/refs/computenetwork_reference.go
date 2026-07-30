@@ -31,6 +31,7 @@ import (
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/types"
+	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
@@ -45,6 +46,10 @@ var _ refsv1beta1.Ref = &ComputeNetworkRef{}
 // ComputeNetworkRef is a reference to a GCP ComputeNetwork.
 // +k8s:deepcopy-gen=true
 type ComputeNetworkRef struct {
+	// For backward compatibility, the external value can also be full URIs
+	// (e.g. "https://www.googleapis.com/compute/v1/projects/{{projectID}}/global/networks/{{networkID}}")
+	// or short names (e.g. "my-vpc").
+
 	// A reference to an externally managed ComputeNetwork resource.
 	// Should be in the format "projects/{{projectID}}/global/networks/{{networkID}}".
 	External string `json:"external,omitempty"`
@@ -81,6 +86,45 @@ func (r *ComputeNetworkRef) SetExternal(ref string) {
 	r.Namespace = ""
 }
 
+// CanonicalizeNetworkValue transforms any raw network string (full URI, short name, or relative path with project number)
+// into a canonical relative path: "projects/{projectID}/global/networks/{network}".
+func CanonicalizeNetworkValue(ctx context.Context, val string, parentProjectID string, projectMapper *projects.ProjectMapper) string {
+	if val == "" {
+		return ""
+	}
+
+	// 1. Trim scheme & domain prefix
+	trimmed := apirefs.TrimComputeURIPrefix(val)
+
+	// 2. Expand short names (no slashes) using parentProjectID
+	if !strings.Contains(trimmed, "/") {
+		if parentProjectID == "" {
+			klog.V(2).Infof("cannot canonicalize short network name %q without parent project ID", val)
+			return val
+		}
+		trimmed = fmt.Sprintf("projects/%s/global/networks/%s", parentProjectID, trimmed)
+	}
+
+	// 3. Use FromExternal() to parse and validate the network value
+	id := &ComputeNetworkIdentity{}
+	if err := id.FromExternal(trimmed); err != nil {
+		return trimmed
+	}
+
+	// 4. Resolve numeric Project Number to Project ID if projectMapper is available
+	if projectMapper != nil && id.Project != "" {
+		if projectID, err := projectMapper.ReplaceProjectNumberWithID(ctx, id.Project); err == nil {
+			id.Project = projectID
+		}
+	}
+
+	return id.String()
+}
+
+// ValidateExternal checks if ref is a valid external reference format.
+// It supports full HTTPS URIs ("https://www.googleapis.com/compute/v1/projects/{project}/global/networks/{network}")
+// and relative resource names ("projects/{project}/global/networks/{network}").
+// Raw short names (e.g. "my-vpc") are not valid external references until canonicalized via CanonicalizeExternal.
 func (r *ComputeNetworkRef) ValidateExternal(ref string) error {
 	trimmedRef := apirefs.TrimComputeURIPrefix(ref)
 	id := &ComputeNetworkIdentity{}
