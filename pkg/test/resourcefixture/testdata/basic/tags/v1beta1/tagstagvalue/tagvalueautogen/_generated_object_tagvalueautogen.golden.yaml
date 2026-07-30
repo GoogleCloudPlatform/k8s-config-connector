@@ -16,7 +16,7 @@ spec:
   parentRef:
     name: tagstagkey-${uniqueId}
   resourceID: ${tagValueID}
-  shortName: valuename
+  shortName: valuename${uniqueId}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -27,6 +27,6 @@ status:
   createTime: "1970-01-01T00:00:00Z"
   externalRef: tagValues/${tagValueID}
   name: ${tagValueID}
-  namespacedName: ${organizationID}/keyname${uniqueId}/valuename
+  namespacedName: ${organizationID}/keyname${uniqueId}/valuename${uniqueId}
   observedGeneration: 2
   updateTime: "1970-01-01T00:00:00Z"

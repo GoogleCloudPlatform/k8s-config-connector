@@ -13,10 +13,17 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "${projectId}",
   "etag": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
   "name": "projects/${projectNumber}",
+  "parent": "folders/${folderID}",
   "projectId": "${projectId}",
-  "state": 1
+  "state": 1,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
@@ -92,7 +99,7 @@ Content-Type: application/json
   "shortName": "keyname${uniqueId}"
 }
 
-409 Conflict
+200 OK
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -103,11 +110,37 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.CreateTagKeyMetadata"
+  },
+  "name": "operations/${operationID}"
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v3/operations/${operationID}
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
   "error": {
-    "code": 409,
-    "message": "A TagKey with short name 'keyname${uniqueId}' already exists under parent 'projects/${projectNumber}'",
-    "status": "ALREADY_EXISTS"
-  }
+    "code": 6,
+    "message": "\u003ceye3 title='ALREADY_EXISTS'/\u003e generic::ALREADY_EXISTS: A TagKey with short name 'keyname${uniqueId}' already exists under parent 'projects/${projectNumber}'"
+  },
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.CreateTagKeyMetadata"
+  },
+  "name": "operations/${operationID}"
 }
 
 ---
@@ -135,6 +168,16 @@ X-Xss-Protection: 0
       "namespacedName": "${projectId}/keyname${uniqueId}",
       "parent": "projects/${projectNumber}",
       "shortName": "keyname${uniqueId}",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    },
+    {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "description": "For keyname resources.",
+      "etag": "abcdef0123A=",
+      "name": "tagKeys/281479058617937",
+      "namespacedName": "${projectId}/keynamey4matsxackwa2bq",
+      "parent": "projects/${projectNumber}",
+      "shortName": "keynamey4matsxackwa2bq",
       "updateTime": "2024-04-01T12:34:56.123456Z"
     }
   ]
@@ -227,7 +270,7 @@ X-Xss-Protection: 0
 GET https://cloudresourcemanager.googleapis.com/v3/tagKeys/${tagKeyID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 
-404 Not Found
+403 Forbidden
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -239,15 +282,8 @@ X-Xss-Protection: 0
 
 {
   "error": {
-    "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "tagKey \"tagKeys/${tagKeyID}\" not found",
-        "reason": "notFound"
-      }
-    ],
-    "message": "tagKey \"tagKeys/${tagKeyID}\" not found",
-    "status": "NOT_FOUND"
+    "code": 403,
+    "message": "com.google.apps.framework.request.StatusException: \u003ceye3 title='PERMISSION_DENIED'/\u003e generic::PERMISSION_DENIED: Permission denied on resource 'tagKeys/${tagKeyID}' (or it may not exist).",
+    "status": "PERMISSION_DENIED"
   }
 }

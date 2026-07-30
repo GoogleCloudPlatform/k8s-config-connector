@@ -13,10 +13,17 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "${projectId}",
   "etag": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
   "name": "projects/${projectNumber}",
+  "parent": "folders/${folderID}",
   "projectId": "${projectId}",
-  "state": 1
+  "state": 1,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---

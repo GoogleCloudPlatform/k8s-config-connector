@@ -157,7 +157,7 @@ Content-Type: application/json
   "shortName": "valuename${uniqueId}"
 }
 
-409 Conflict
+200 OK
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -168,11 +168,37 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.CreateTagValueMetadata"
+  },
+  "name": "operations/${operationID}"
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v3/operations/${operationID}
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
   "error": {
-    "code": 409,
-    "message": "A TagValue with short name 'valuename${uniqueId}' already exists under parent 'tagKeys/${tagKeyID}'",
-    "status": "ALREADY_EXISTS"
-  }
+    "code": 6,
+    "message": "\u003ceye3 title='ALREADY_EXISTS'/\u003e generic::ALREADY_EXISTS: A TagValue with short name 'valuename${uniqueId}' already exists under parent 'tagKeys/${tagKeyID}'"
+  },
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.resourcemanager.v3.CreateTagValueMetadata"
+  },
+  "name": "operations/${operationID}"
 }
 
 ---
@@ -292,7 +318,7 @@ X-Xss-Protection: 0
 GET https://cloudresourcemanager.googleapis.com/v3/tagValues/${tagValueID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 
-404 Not Found
+403 Forbidden
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -304,16 +330,9 @@ X-Xss-Protection: 0
 
 {
   "error": {
-    "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "tagValue \"tagValues/${tagValueID}\" not found",
-        "reason": "notFound"
-      }
-    ],
-    "message": "tagValue \"tagValues/${tagValueID}\" not found",
-    "status": "NOT_FOUND"
+    "code": 403,
+    "message": "com.google.apps.framework.request.StatusException: \u003ceye3 title='PERMISSION_DENIED'/\u003e generic::PERMISSION_DENIED: Permission denied on resource 'tagValues/${tagValueID}' (or it may not exist).",
+    "status": "PERMISSION_DENIED"
   }
 }
 

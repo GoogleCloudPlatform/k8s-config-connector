@@ -31,6 +31,7 @@ kind: TagsTagValue
 metadata:
   annotations:
     cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+    cnrm.cloud.google.com/reconciler: direct
   name: tagstagvalue-dep-${uniqueId}
 spec:
   description: For valuename resources.
