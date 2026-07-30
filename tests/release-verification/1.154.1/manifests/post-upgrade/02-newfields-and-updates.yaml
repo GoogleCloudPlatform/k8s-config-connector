@@ -1,0 +1,119 @@
+# Post-Upgrade Test Resources (KCC 1.154.1)
+# These resources verify new fields introduced in release 1.154.1.
+
+---
+# 1. StorageBucket (New field: spec.ipFilter)
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageBucket
+metadata:
+  name: kcc-bucket-verify-1154
+  annotations:
+    cnrm.cloud.google.com/project-id: "cnrm-barni-2"
+spec:
+  location: US
+  uniformBucketLevelAccess: true
+  ipFilter:
+    mode: Enabled
+    publicNetworkSource:
+      allowedIpCidrRanges:
+        - "192.0.2.0/24"
+
+---
+# 2. PubSubTopic (New field: spec.messageStoragePolicy.enforceInTransit)
+apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+kind: PubSubTopic
+metadata:
+  name: kcc-topic-verify-1154
+  annotations:
+    cnrm.cloud.google.com/project-id: "cnrm-barni-2"
+spec:
+  messageStoragePolicy:
+    allowedPersistenceRegions:
+      - us-central1
+      - us-east1
+    enforceInTransit: true
+
+---
+# 3. ComputeSecurityPolicy (New field: spec.region)
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSecurityPolicy
+metadata:
+  name: kcc-secpolicy-verify-1154
+  annotations:
+    cnrm.cloud.google.com/project-id: "cnrm-barni-2"
+spec:
+  description: "Regional security policy verifying spec.region field in 1.154"
+  region: us-central1
+
+---
+# 4. MonitoringAlertPolicy (New field: spec.conditions[].conditionSql)
+apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+kind: MonitoringAlertPolicy
+metadata:
+  name: monitoringalertpolicy-sql-verify
+  annotations:
+    cnrm.cloud.google.com/project-id: "cnrm-barni-2"
+spec:
+  displayName: "Verify SQL Condition Alert Policy 1.154"
+  combiner: OR
+  conditions:
+    - displayName: "SQL Log Query Alert Condition"
+      conditionSql:
+        query: "SELECT count(*) FROM `logging.googleapis.com/logs` WHERE severity = 'ERROR'"
+        minutes:
+          periodicity: 5
+        rowCountTest:
+          comparison: COMPARISON_GT
+          threshold: 0
+
+---
+# 5. ComputeNetwork & ComputeSubnetwork
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: kcc-network-verify-1154
+  annotations:
+    cnrm.cloud.google.com/project-id: "cnrm-barni-2"
+spec:
+  autoCreateSubnetworks: false
+
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSubnetwork
+metadata:
+  name: kcc-subnet-verify-1154
+  annotations:
+    cnrm.cloud.google.com/project-id: "cnrm-barni-2"
+spec:
+  ipCidrRange: "10.10.0.0/24"
+  region: us-central1
+  networkRef:
+    name: kcc-network-verify-1154
+
+---
+# 6. ComputeRouterNAT (New Feature: Private NAT support)
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeRouter
+metadata:
+  name: kcc-router-verify-1154
+  annotations:
+    cnrm.cloud.google.com/project-id: "cnrm-barni-2"
+spec:
+  region: us-central1
+  networkRef:
+    name: kcc-network-verify-1154
+
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeRouterNAT
+metadata:
+  name: kcc-routernat-privatenat-verify
+  annotations:
+    cnrm.cloud.google.com/project-id: "cnrm-barni-2"
+spec:
+  region: us-central1
+  routerRef:
+    name: kcc-router-verify-1154
+  natIpAllocateOption: MANUAL_ONLY
+  sourceSubnetworkIpRangesToNat: ALL_SUBNETWORKS_ALL_IP_RANGES
+  type: PRIVATE

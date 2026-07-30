@@ -1,0 +1,93 @@
+# Pre-Upgrade Test Resources (KCC 1.153.0)
+# These resources verify bug fix resolutions and establish base resources before upgrading to 1.154.1.
+
+---
+# 1. MemorystoreInstance (Verifies fixes for drift loop & false updates in PR #11547 and #11559)
+apiVersion: memorystore.cnrm.cloud.google.com/v1beta1
+kind: MemorystoreInstance
+metadata:
+  name: memorystore-instance-verify
+  annotations:
+    cnrm.cloud.google.com/project-id: "cnrm-barni-2"
+spec:
+  projectRef:
+    external: projects/cnrm-barni-2
+  location: us-central1
+  shardCount: 1
+  replicaCount: 1
+  nodeType: STANDARD_SMALL
+  mode: STANDALONE
+  engineVersion: VALKEY_7_2
+
+---
+# 2. BigQueryDataset & BigQueryTable (Verifies fix for perpetual diff on tables inheriting dataset encryption in PR #9623)
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryDataset
+metadata:
+  name: bigquerydatasetverify
+  annotations:
+    cnrm.cloud.google.com/project-id: "cnrm-barni-2"
+spec:
+  description: "Test dataset for release 1.154 verification"
+  location: US
+
+---
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryTable
+metadata:
+  name: bigquerytableverify
+  annotations:
+    cnrm.cloud.google.com/project-id: "cnrm-barni-2"
+spec:
+  datasetRef:
+    name: bigquerydatasetverify
+  schema: |
+    [
+      {
+        "name": "id",
+        "type": "STRING",
+        "mode": "REQUIRED"
+      },
+      {
+        "name": "created_at",
+        "type": "TIMESTAMP",
+        "mode": "NULLABLE"
+      }
+    ]
+
+---
+# 3. Base StorageBucket (Will be updated with spec.ipFilter in post-upgrade)
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageBucket
+metadata:
+  name: kcc-bucket-verify-1154
+  annotations:
+    cnrm.cloud.google.com/project-id: "cnrm-barni-2"
+spec:
+  location: US
+  uniformBucketLevelAccess: true
+
+---
+# 4. Base PubSubTopic (Will be updated with spec.messageStoragePolicy.enforceInTransit in post-upgrade)
+apiVersion: pubsub.cnrm.cloud.google.com/v1beta1
+kind: PubSubTopic
+metadata:
+  name: kcc-topic-verify-1154
+  annotations:
+    cnrm.cloud.google.com/project-id: "cnrm-barni-2"
+spec:
+  messageStoragePolicy:
+    allowedPersistenceRegions:
+      - us-central1
+      - us-east1
+
+---
+# 5. Base ComputeSecurityPolicy (Will be updated with spec.region in post-upgrade)
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSecurityPolicy
+metadata:
+  name: kcc-secpolicy-verify-1154
+  annotations:
+    cnrm.cloud.google.com/project-id: "cnrm-barni-2"
+spec:
+  description: "Security policy for 1.154 release verification"
