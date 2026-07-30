@@ -248,7 +248,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 {
   "description": "For valuename resources.",
   "parent": "tagKeys/${tagKeyID}",
-  "shortName": "valuename${uniqueId}"
+  "shortName": "valuename"
 }
 
 200 OK
@@ -296,9 +296,9 @@ X-Xss-Protection: 0
     "description": "For valuename resources.",
     "etag": "abcdef0123A=",
     "name": "tagValues/${tagValueID}",
-    "namespacedName": "${organizationID}/keyname${uniqueId}/valuename${uniqueId}",
+    "namespacedName": "${organizationID}/keyname${uniqueId}/valuename",
     "parent": "tagKeys/${tagKeyID}",
-    "shortName": "valuename${uniqueId}",
+    "shortName": "valuename",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
@@ -324,9 +324,9 @@ X-Xss-Protection: 0
   "description": "For valuename resources.",
   "etag": "abcdef0123A=",
   "name": "tagValues/${tagValueID}",
-  "namespacedName": "${organizationID}/keyname${uniqueId}/valuename${uniqueId}",
+  "namespacedName": "${organizationID}/keyname${uniqueId}/valuename",
   "parent": "tagKeys/${tagKeyID}",
-  "shortName": "valuename${uniqueId}",
+  "shortName": "valuename",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
@@ -358,7 +358,7 @@ X-Xss-Protection: 0
     "name": "tagBindings/%2F%2Fbigquery.googleapis.com%2Fprojects%2F${projectNumber}%2Fdatasets%2Fbigquerydatasetsample${uniqueId}/tagValues/${tagValueID}",
     "parent": "//bigquery.googleapis.com/projects/${projectNumber}/datasets/bigquerydatasetsample${uniqueId}",
     "tagValue": "tagValues/${tagValueID}",
-    "tagValueNamespacedName": "${organizationID}/keyname${uniqueId}/valuename${uniqueId}"
+    "tagValueNamespacedName": "${organizationID}/keyname${uniqueId}/valuename"
   }
 }
 
@@ -384,7 +384,7 @@ X-Xss-Protection: 0
       "name": "tagBindings/%2F%2Fbigquery.googleapis.com%2Fprojects%2F${projectNumber}%2Fdatasets%2Fbigquerydatasetsample${uniqueId}/tagValues/${tagValueID}",
       "parent": "//bigquery.googleapis.com/projects/${projectNumber}/datasets/bigquerydatasetsample${uniqueId}",
       "tagValue": "tagValues/${tagValueID}",
-      "tagValueNamespacedName": "${organizationID}/keyname${uniqueId}/valuename${uniqueId}"
+      "tagValueNamespacedName": "${organizationID}/keyname${uniqueId}/valuename"
     }
   ]
 }
@@ -436,7 +436,7 @@ X-Xss-Protection: 0
       "name": "tagBindings/%2F%2Fbigquery.googleapis.com%2Fprojects%2F${projectNumber}%2Fdatasets%2Fbigquerydatasetsample${uniqueId}/tagValues/${tagValueID}",
       "parent": "//bigquery.googleapis.com/projects/${projectNumber}/datasets/bigquerydatasetsample${uniqueId}",
       "tagValue": "tagValues/${tagValueID}",
-      "tagValueNamespacedName": "${organizationID}/keyname${uniqueId}/valuename${uniqueId}"
+      "tagValueNamespacedName": "${organizationID}/keyname${uniqueId}/valuename"
     }
   ]
 }
@@ -486,9 +486,9 @@ X-Xss-Protection: 0
   "description": "For valuename resources.",
   "etag": "abcdef0123A=",
   "name": "tagValues/${tagValueID}",
-  "namespacedName": "${organizationID}/keyname${uniqueId}/valuename${uniqueId}",
+  "namespacedName": "${organizationID}/keyname${uniqueId}/valuename",
   "parent": "tagKeys/${tagKeyID}",
-  "shortName": "valuename${uniqueId}",
+  "shortName": "valuename",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
@@ -543,9 +543,9 @@ X-Xss-Protection: 0
     "description": "For valuename resources.",
     "etag": "abcdef0123A=",
     "name": "tagValues/${tagValueID}",
-    "namespacedName": "${organizationID}/keyname${uniqueId}/valuename${uniqueId}",
+    "namespacedName": "${organizationID}/keyname${uniqueId}/valuename",
     "parent": "tagKeys/${tagKeyID}",
-    "shortName": "valuename${uniqueId}",
+    "shortName": "valuename",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
