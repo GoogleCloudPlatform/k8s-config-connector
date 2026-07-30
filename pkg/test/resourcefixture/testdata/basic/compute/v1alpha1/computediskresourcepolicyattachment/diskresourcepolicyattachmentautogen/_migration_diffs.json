@@ -1,0 +1,213 @@
+[
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "ComputeDisk/computedisk-${uniqueId}",
+    "fields": [
+      {
+        "id": "creation_timestamp",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "enable_confidential_compute",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "guest_os_features.#",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "image",
+        "old": "",
+        "new": "debian-cloud/debian-11"
+      },
+      {
+        "id": "label_fingerprint",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "labels.%",
+        "old": "0",
+        "new": "2"
+      },
+      {
+        "id": "labels.cnrm-test",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "labels.managed-by-cnrm",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "last_attach_timestamp",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "last_detach_timestamp",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "licenses.#",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": "computedisk${uniqueId}"
+      },
+      {
+        "id": "physical_block_size_bytes",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "provisioned_iops",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "provisioned_throughput",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "resource_policies.#",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "self_link",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "size",
+        "old": "",
+        "new": "50"
+      },
+      {
+        "id": "source_disk_id",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "source_image_id",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "source_snapshot_id",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "type",
+        "old": "",
+        "new": "pd-ssd"
+      },
+      {
+        "id": "users.#",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "zone",
+        "old": "",
+        "new": "us-central1-a"
+      }
+    ]
+  },
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "ComputeResourcePolicy/computediskresourcepolicyattachment-${uniqueId}",
+    "fields": [
+      {
+        "id": "name",
+        "old": "",
+        "new": "computediskresourcepolicyattachment${uniqueId}"
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "region",
+        "old": "",
+        "new": "us-central1"
+      },
+      {
+        "id": "self_link",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "snapshot_schedule_policy.#",
+        "old": "0",
+        "new": "1"
+      },
+      {
+        "id": "snapshot_schedule_policy.0.schedule.#",
+        "old": "0",
+        "new": "1"
+      },
+      {
+        "id": "snapshot_schedule_policy.0.schedule.0.daily_schedule.#",
+        "old": "0",
+        "new": "1"
+      },
+      {
+        "id": "snapshot_schedule_policy.0.schedule.0.daily_schedule.0.days_in_cycle",
+        "old": "",
+        "new": "1"
+      },
+      {
+        "id": "snapshot_schedule_policy.0.schedule.0.daily_schedule.0.start_time",
+        "old": "",
+        "new": "04:00"
+      }
+    ]
+  },
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "ComputeDiskResourcePolicyAttachment/computediskresourcepolicyattachment-${uniqueId}",
+    "fields": [
+      {
+        "id": "disk",
+        "old": "",
+        "new": "computedisk${uniqueId}"
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": "computediskresourcepolicyattachment${uniqueId}"
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "zone",
+        "old": "",
+        "new": "us-central1-a"
+      }
+    ]
+  }
+]
