@@ -33,7 +33,12 @@ cd "${REPO_ROOT}"
 
 . "${REPO_ROOT}/dev/tasks/setup-envtest"
 
-export ONLY_TEST_APIGROUPS="${SERVICE}.cnrm.cloud.google.com"
+BASE_TEST="TestAllInSeries/fixtures"
+if [[ "${SERVICE}" == "reconcileintervalannotations" || "${SERVICE}" == "stateabsentinspec" ]]; then
+  BASE_TEST="TestAllInSeries/fixtures/pkg/test/resourcefixture/testdata/${SERVICE}"
+else
+  export ONLY_TEST_APIGROUPS="${SERVICE}.cnrm.cloud.google.com"
+fi
 export USE_FULL_TEST_NAMES=true
 export TEST_TIMEOUT=15m
 
@@ -48,6 +53,6 @@ time go build -o ${REPO_ROOT}/.build/paralleltestrunner ${REPO_ROOT}/dev/tools/p
 echo "Running ${SERVICE} fixtures tests in parallel..."
 ${REPO_ROOT}/.build/paralleltestrunner \
     -list-file="${REPO_ROOT}/tests/e2e/testdata/fixtures-${SERVICE}-list.txt" \
-    -base-test="TestAllInSeries/fixtures" \
+    -base-test="${BASE_TEST}" \
     -check-unchanged=true \
     -- ${REPO_ROOT}/dev/tasks/run-e2e

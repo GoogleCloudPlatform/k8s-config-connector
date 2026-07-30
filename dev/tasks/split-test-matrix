@@ -68,6 +68,8 @@ for group in $(rgrep --no-filename '^[ ]*group:' config/crds | sort | uniq | awk
   fi
   all_fixture_services+=("${short}")
 done
+all_fixture_services+=("reconcileintervalannotations")
+all_fixture_services+=("stateabsentinspec")
 
 priority_fixture_targets=()
 for service in "${unique_services[@]:-}"; do
