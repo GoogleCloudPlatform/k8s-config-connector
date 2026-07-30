@@ -25,10 +25,11 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
           # This is to get all the commits.
           fetch-depth: 0
+          persist-credentials: false
       - uses: ./dev/actions/cache-go
       - name: "Set env"
         run: |
@@ -40,7 +41,7 @@ jobs:
           git config user.name "GitHub Actions Bot"
           git config user.email "noreply@github.com"
           echo "Checking the current state..."
-          echo "Release version: ${{ env.RELEASE_VERSION }}"
+          echo "Release version: ${RELEASE_VERSION}"
           echo "Location: $(pwd)"
           echo "Last 10 commits:"
           git log --oneline -10
@@ -56,7 +57,7 @@ jobs:
             exit 1
           fi
           git add -A .
-          git commit -m "Upgrade KCC operator to version ${{ env.RELEASE_VERSION }}"
+          git commit -m "Upgrade KCC operator to version ${RELEASE_VERSION}"
       - name: "Create PR"
         run: |
           echo "Adding a remote pointing to GoogleCloudPlatform/k8s-config-connector..."
@@ -67,6 +68,6 @@ jobs:
           echo "Creating the PR against master branch of GoogleCloudPlatform/k8s-config-connector..."
           git push -u target ${BRANCH}
           gh repo set-default GoogleCloudPlatform/k8s-config-connector
-          gh pr create --head ${BRANCH} --title 'Upgrade KCC operator to version ${{ env.RELEASE_VERSION }}' --body 'Upgrade KCC operator to version ${{ env.RELEASE_VERSION }}.'
+          gh pr create --head ${BRANCH} --title 'Upgrade KCC operator to version ${RELEASE_VERSION}' --body 'Upgrade KCC operator to version ${RELEASE_VERSION}.'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
