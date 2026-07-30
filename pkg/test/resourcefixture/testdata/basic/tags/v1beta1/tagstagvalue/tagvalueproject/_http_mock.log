@@ -92,7 +92,7 @@ Content-Type: application/json
 {
   "description": "For valuename resources.",
   "parent": "tagKeys/${tagKeyID}",
-  "shortName": "valuename"
+  "shortName": "valuename${uniqueId}"
 }
 
 200 OK
@@ -139,9 +139,9 @@ X-Xss-Protection: 0
     "description": "For valuename resources.",
     "etag": "abcdef0123A=",
     "name": "tagValues/${tagValueID}",
-    "namespacedName": "${projectId}/keyname${uniqueId}/valuename",
+    "namespacedName": "${projectId}/keyname${uniqueId}/valuename${uniqueId}",
     "parent": "tagKeys/${tagKeyID}",
-    "shortName": "valuename",
+    "shortName": "valuename${uniqueId}",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
@@ -166,9 +166,9 @@ X-Xss-Protection: 0
   "description": "For valuename resources.",
   "etag": "abcdef0123A=",
   "name": "tagValues/${tagValueID}",
-  "namespacedName": "${projectId}/keyname${uniqueId}/valuename",
+  "namespacedName": "${projectId}/keyname${uniqueId}/valuename${uniqueId}",
   "parent": "tagKeys/${tagKeyID}",
-  "shortName": "valuename",
+  "shortName": "valuename${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
@@ -221,9 +221,9 @@ X-Xss-Protection: 0
     "description": "For valuename resources.",
     "etag": "abcdef0123A=",
     "name": "tagValues/${tagValueID}",
-    "namespacedName": "${projectId}/keyname${uniqueId}/valuename",
+    "namespacedName": "${projectId}/keyname${uniqueId}/valuename${uniqueId}",
     "parent": "tagKeys/${tagKeyID}",
-    "shortName": "valuename",
+    "shortName": "valuename${uniqueId}",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
