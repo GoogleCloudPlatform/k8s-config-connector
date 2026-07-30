@@ -22,6 +22,17 @@ import (
 
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
+func isNetworkServicesOperation(m map[string]any) bool {
+	if metadata, ok := m["metadata"].(map[string]any); ok {
+		if typeURL, ok := metadata["@type"].(string); ok {
+			if strings.Contains(typeURL, "google.cloud.networkservices") {
+				return true
+			}
+		}
+	}
+	return false
+}
+
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
 	if !strings.Contains(url, "networkservices.googleapis.com") {
 		return
@@ -46,7 +57,21 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 
 	replacements.ReplacePath(".metadata.createTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".metadata.endTime", mockgcpregistry.PlaceholderTimestamp)
-	replacements.ReplacePath(".metadata.requestedCancellation", nil)
+
+	replacements.TransformObject("", func(m map[string]any) {
+		if !isNetworkServicesOperation(m) {
+			return
+		}
+		// Clean up Operation metadata
+		if m["metadata"] != nil {
+			if metadata, ok := m["metadata"].(map[string]any); ok {
+				delete(metadata, "requestedCancellation")
+			}
+			if done, ok := m["done"].(bool); ok && !done {
+				delete(m, "done")
+			}
+		}
+	})
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
