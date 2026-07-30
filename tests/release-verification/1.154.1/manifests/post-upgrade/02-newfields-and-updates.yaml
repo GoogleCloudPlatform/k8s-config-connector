@@ -131,3 +131,22 @@ spec:
   natIpAllocateOption: MANUAL_ONLY
   sourceSubnetworkIpRangesToNat: ALL_SUBNETWORKS_ALL_IP_RANGES
   type: PRIVATE
+
+---
+# 7. ComputeURLMap (New field: spec.defaultCustomErrorResponsePolicy)
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeURLMap
+metadata:
+  name: urlmap-errorpolicy-verify
+  annotations:
+    cnrm.cloud.google.com/project-id: "cnrm-barni-2"
+spec:
+  location: global
+  defaultCustomErrorResponsePolicy:
+    errorResponseRule:
+      - matchResponseCodes:
+          - "503"
+        overrideResponseCode: 502
+        path: "/custom-error-502.html"
+
+

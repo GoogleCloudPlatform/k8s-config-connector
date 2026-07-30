@@ -55,6 +55,9 @@ kubectl get monitoringalertpolicy monitoringalertpolicy-sql-verify -o jsonpath='
 
 echo "5. ComputeRouterNAT (type: PRIVATE):"
 kubectl get computerouternat kcc-routernat-privatenat-verify -o jsonpath='{.spec.type}' && echo ""
+echo ""
+echo "6. ComputeURLMap (spec.defaultCustomErrorResponsePolicy):"
+kubectl get computeurlmap urlmap-errorpolicy-verify -o jsonpath='{.spec.defaultCustomErrorResponsePolicy}' && echo ""
 
 echo ""
 echo "[Bug Fixes & Resource Status Check]"

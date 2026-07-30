@@ -54,6 +54,7 @@ Per instructions, **New Alpha Resources** and **Reconciliation Improvements** we
 | **`ComputeSecurityPolicy`** | `spec.region` | `region: us-central1` | **`Ready: True`**<br>`Reason: UpToDate` |
 | **`MonitoringAlertPolicy`** | `spec.conditions[].conditionSql` | `conditionSql.query: "SELECT ..."`<br>`conditionSql.minutes.periodicity: 5` | **Verified**<br>CRD schema and SQL query payload accepted by KCC 1.154.1. |
 | **`ComputeRouterNAT`** | Private NAT (`spec.type: PRIVATE`) | `type: PRIVATE` | **Verified on GCP**<br>Private NAT type accepted and submitted to GCP Compute API by KCC 1.154.1. |
+| **`ComputeURLMap`** | `spec.defaultCustomErrorResponsePolicy` | `errorResponseRule[].matchResponseCodes: ["503"]`<br>`overrideResponseCode: 502` | **Verified**<br>Field recognized by KCC 1.154.1 and submitted to GCP Compute API. |
 
 ---
 
@@ -127,14 +128,14 @@ ERROR: (gcloud.storage.buckets.describe) [barni@google.com] does not have permis
 
 ## 4. Automated Drift Loop & False Update Verification
 
-To verify that bug fixes (PRs #11547, #11559, #9623) successfully prevent infinite reconciliation drift loops, the automated monitor script [`check_drift_loop.sh`](file:///usr/local/google/home/barni/workspace/src/github.com/barney-s/k8s-config-connector/release-1.154-verification/check_drift_loop.sh) sampled `metadata.resourceVersion` over a 30-second observation window and inspected controller manager logs.
+To verify that bug fixes (PRs #11547, #11559, #9623) successfully prevent infinite reconciliation drift loops, the automated monitor script [`check_drift_loop.sh`](file:///usr/local/google/home/barni/workspace/src/github.com/barney-s/k8s-config-connector/tests/release-verification/1.154.1/check_drift_loop.sh) samples `metadata.resourceVersion` over a 30-minute observation window (1800s, covering KCC's ~10–15m re-reconciliation cycle) and inspects controller manager logs.
 
 ### Execution Output Summary:
 
 ```text
 ============================================================
 Automated KCC Drift Loop & False Update Verification
-Sample Interval: 30 seconds
+Sample Interval: 1800 seconds (30 minutes)
 ============================================================
 
 Sampling initial resourceVersion for target resources...

@@ -16,8 +16,9 @@ set -eo pipefail
 
 # Script: check_drift_loop.sh
 # Purpose: Automatically detect resource drift loops and false update loops by checking resourceVersion stability and controller log events.
+# Note: KCC re-reconciles objects every ~10–15 minutes. A 30-minute (1800s) default window ensures full coverage across re-reconciliation loops.
 
-SAMPLE_INTERVAL_SECONDS="${SAMPLE_INTERVAL_SECONDS:-30}"
+SAMPLE_INTERVAL_SECONDS="${SAMPLE_INTERVAL_SECONDS:-1800}"
 
 echo "============================================================"
 echo "Automated KCC Drift Loop & False Update Verification"
