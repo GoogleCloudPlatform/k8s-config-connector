@@ -48,6 +48,10 @@ var realGCPSkipFixtures = map[string]bool{
 	// GKEBackup BackupChannel requires distinct source and destination projects.
 	"gkebackup/v1alpha1/gkebackupbackupchannel/gkebackupbackupchannel-maximal": true,
 	"gkebackup/v1alpha1/gkebackupbackupchannel/gkebackupbackupchannel-minimal": true,
+	// Tags acquire and project tag key tests have environment-dependent real GCP payloads
+	"tags/v1beta1/tagstagkey/tagkeyacquire":        true,
+	"tags/v1beta1/tagstagvalue/tagvalueacquire":    true,
+	"tags/v1beta1/tagstagkey/tagkeyprojectautogen": true,
 }
 
 func TestGoldenLogAlignment(t *testing.T) {
