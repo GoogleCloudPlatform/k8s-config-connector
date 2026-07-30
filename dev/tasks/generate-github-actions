@@ -61,6 +61,9 @@ on:
       - '!experiments/**'
 
 
+permissions:
+  contents: read
+
 jobs:
 EOF
 
@@ -91,7 +94,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
           go test -c -ldflags="-s -w" -buildvcs=false -o bin/tests-e2e ./tests/e2e
           go build -ldflags="-s -w" -buildvcs=false -o bin/paralleltestrunner ./dev/tools/paralleltestrunner
       - name: Upload prebuilt test binaries
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: prebuilt-test-binaries
           path: bin/
@@ -133,13 +136,13 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
           go-version-file: 'go.mod'
           cache: false
       - name: Download prebuilt test binaries
-        uses: actions/download-artifact@484a0b528fb4d7bd804637ccb632e47a0e638317 # v4
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
           name: prebuilt-test-binaries
           path: bin/
       - name: Make binaries executable
         run: chmod +x bin/* || true
-      - uses: google-github-actions/setup-gcloud@01af06c41d9aa0790d6fdc8f0b982b768ca4d102 # v2
+      - uses: google-github-actions/setup-gcloud@e427ad8a34f8676edf47cf7d7925499adf3eb74f # v2
         with:
           version: '546.0.0'
           install_components: 'alpha,beta'
@@ -159,7 +162,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
           TARGET_SERVICE: \${{ matrix.service }}
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: \${{ !cancelled() }}
         with:
           name: artifacts-priority-e2e-fixtures-\${{ matrix.service }}
@@ -182,13 +185,13 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
           go-version-file: 'go.mod'
           cache: false
       - name: Download prebuilt test binaries
-        uses: actions/download-artifact@484a0b528fb4d7bd804637ccb632e47a0e638317 # v4
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
           name: prebuilt-test-binaries
           path: bin/
       - name: Make binaries executable
         run: chmod +x bin/* || true
-      - uses: google-github-actions/setup-gcloud@01af06c41d9aa0790d6fdc8f0b982b768ca4d102 # v2
+      - uses: google-github-actions/setup-gcloud@e427ad8a34f8676edf47cf7d7925499adf3eb74f # v2
         with:
           version: '546.0.0'
           install_components: 'alpha,beta'
@@ -208,7 +211,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
           TARGET_SERVICE: \${{ matrix.service }}
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: \${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-\${{ matrix.service }}
@@ -242,13 +245,13 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
           go-version-file: 'go.mod'
           cache: false
       - name: Download prebuilt test binaries
-        uses: actions/download-artifact@484a0b528fb4d7bd804637ccb632e47a0e638317 # v4
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
           name: prebuilt-test-binaries
           path: bin/
       - name: Make binaries executable
         run: chmod +x bin/* || true
-      - uses: google-github-actions/setup-gcloud@01af06c41d9aa0790d6fdc8f0b982b768ca4d102 # v2
+      - uses: google-github-actions/setup-gcloud@e427ad8a34f8676edf47cf7d7925499adf3eb74f # v2
         with:
           version: '546.0.0'
           install_components: 'alpha,beta'
@@ -259,7 +262,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
           TARGET_SERVICE: \${{ matrix.service }}
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: \${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-samples-\${{ matrix.service }}
@@ -293,13 +296,13 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
           go-version-file: 'go.mod'
           cache: false
       - name: Download prebuilt test binaries
-        uses: actions/download-artifact@484a0b528fb4d7bd804637ccb632e47a0e638317 # v4
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
           name: prebuilt-test-binaries
           path: bin/
       - name: Make binaries executable
         run: chmod +x bin/* || true
-      - uses: google-github-actions/setup-gcloud@01af06c41d9aa0790d6fdc8f0b982b768ca4d102 # v2
+      - uses: google-github-actions/setup-gcloud@e427ad8a34f8676edf47cf7d7925499adf3eb74f # v2
         with:
           version: '546.0.0'
           install_components: 'alpha,beta'
@@ -310,7 +313,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
           TARGET_SUITE: \${{ matrix.suite }}
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: \${{ !cancelled() }}
         with:
           name: artifacts-tests-scenarios-\${{ matrix.suite }}
@@ -332,7 +335,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - uses: ./dev/actions/cache-go
-      - uses: google-github-actions/setup-gcloud@01af06c41d9aa0790d6fdc8f0b982b768ca4d102 # v2
+      - uses: google-github-actions/setup-gcloud@e427ad8a34f8676edf47cf7d7925499adf3eb74f # v2
         with:
           version: '546.0.0'
           install_components: 'alpha,beta'
@@ -344,7 +347,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
           KCC_RECONCILE_FLAG_GATE: "USE_DEPENDENCY_TRACKER"
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: \${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-direct-iam
@@ -365,7 +368,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
       - name: Free up disk space
         run: dev/tasks/free-disk-space-on-github-actions-runner
       - uses: ./dev/actions/cache-go
-      - uses: google-github-actions/setup-gcloud@01af06c41d9aa0790d6fdc8f0b982b768ca4d102 # v2
+      - uses: google-github-actions/setup-gcloud@e427ad8a34f8676edf47cf7d7925499adf3eb74f # v2
         with:
           version: '546.0.0'
           install_components: 'alpha,beta'
@@ -375,7 +378,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: \${{ !cancelled() }}
         with:
           name: artifacts-unit-tests
@@ -407,7 +410,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
           go-version-file: 'go.mod'
           cache: false
       - name: golangci-lint
-        uses: golangci/golangci-lint-action@e72a236d1230b954a09c29ea7df2087d8e8795a0 # v6.0.1
+        uses: golangci/golangci-lint-action@a4f60bb28d35aeee14e6880718e0c85ff1882e64 # v6.0.1
         with:
           version: v2.9.0
           args: --timeout=20m
@@ -429,7 +432,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: \${{ !cancelled() }}
         with:
           name: artifacts-${name}
@@ -479,7 +482,7 @@ EOF
     # TODO: We should look at the script to see if it needs gcloud
     if [[ "${name}" == "test-mockgcp" || "${name}" == "unit-tests" || "${name}" == "unit-tests-operator" ]]; then
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
-      - uses: google-github-actions/setup-gcloud@01af06c41d9aa0790d6fdc8f0b982b768ca4d102 # v2
+      - uses: google-github-actions/setup-gcloud@e427ad8a34f8676edf47cf7d7925499adf3eb74f # v2
         with:
           version: '546.0.0'
           install_components: 'alpha,beta'
@@ -508,7 +511,7 @@ EOF
 
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: \${{ !cancelled() }}
         with:
           name: artifacts-${name}
@@ -593,6 +596,9 @@ on:
     paths:
       - 'config/crds/resources/**'
 
+permissions:
+  contents: read
+
 jobs:
   crd-equivalence-check:
     runs-on: ubuntu-latest
@@ -609,7 +615,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: \${{ !cancelled() }}
         with:
           name: artifacts-crd-equivalence-check
@@ -653,6 +659,9 @@ on:
     branches: ["master", "release-*"]
     paths:
       - 'experiments/**'
+
+permissions:
+  contents: read
 
 jobs:
   test:
@@ -704,6 +713,9 @@ on:
     paths:
       - 'experiments/**'
       - '**.md'
+
+permissions:
+  contents: read
 
 jobs:
   presubmit-gatekeeper:

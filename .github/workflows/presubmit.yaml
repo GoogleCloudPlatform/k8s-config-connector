@@ -37,6 +37,9 @@ on:
       - '!experiments/**'
 
 
+permissions:
+  contents: read
+
 jobs:
   validations:
     name: "validations"

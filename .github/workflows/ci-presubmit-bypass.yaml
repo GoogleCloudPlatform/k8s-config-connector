@@ -29,6 +29,9 @@ on:
       - 'experiments/**'
       - '**.md'
 
+permissions:
+  contents: read
+
 jobs:
   presubmit-gatekeeper:
     runs-on: ubuntu-latest
