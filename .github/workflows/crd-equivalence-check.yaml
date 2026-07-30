@@ -16,6 +16,9 @@
 
 name: crd-equivalence-check
 
+permissions:
+  contents: read
+
 on:
   pull_request:
     types: [opened, synchronize, reopened, labeled, unlabeled]

@@ -16,6 +16,9 @@
 
 name: ci-presubmit
 
+permissions:
+  contents: read
+
 on:
   pull_request:
     types: [opened, synchronize, reopened]
@@ -223,6 +226,32 @@ jobs:
           name: artifacts-test-pause
           path: /tmp/artifacts/
 
+
+  tests-e2e-direct-iam:
+    runs-on: ubuntu-latest
+    needs: prepare-test-matrix
+    if: ${{ !cancelled() }}
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: ./dev/actions/cache-go
+      - uses: google-github-actions/setup-gcloud@01af06c41d9aa0790d6fdc8f0b982b768ca4d102 # v2
+        with:
+          version: '546.0.0'
+          install_components: 'alpha,beta'
+      - name: "Run direct IAM tests"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-suite iam
+        env:
+          KCC_USE_DIRECT_RECONCILERS: "IAMPartialPolicy"
+          KCC_RECONCILE_FLAG_GATE: "USE_DEPENDENCY_TRACKER"
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4
+        if: ${{ !cancelled() }}
+        with:
+          name: artifacts-tests-e2e-direct-iam
+          path: /tmp/artifacts/
 
   priority-e2e-fixtures:
     name: "tests-e2e-fixtures-${{ matrix.service }}"
@@ -650,6 +679,7 @@ jobs:
       - smoketest-with-kind
       - test-mockgcp
       - test-pause
+      - tests-e2e-direct-iam
       - priority-e2e-fixtures
       - tests-e2e-fixtures-matrix
       - tests-e2e-samples-matrix
