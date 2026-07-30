@@ -95,7 +95,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
           go test -c -ldflags="-s -w" -buildvcs=false -o bin/tests-e2e ./tests/e2e
           go build -ldflags="-s -w" -buildvcs=false -o bin/paralleltestrunner ./dev/tools/paralleltestrunner
       - name: Upload prebuilt test binaries
-        uses: actions/upload-artifact@c7d193f32edcb7bfad88892161225aeda64e9392 # v4.0.0
+        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
         with:
           name: prebuilt-test-binaries
           path: bin/
@@ -137,13 +137,13 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
           go-version-file: 'go.mod'
           cache: false
       - name: Download prebuilt test binaries
-        uses: actions/download-artifact@7a1cd3216ca9260cd8022db641d960b1db4d1be4 # v4.0.0
+        uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
         with:
           name: prebuilt-test-binaries
           path: bin/
       - name: Make binaries executable
         run: chmod +x bin/* || true
-      - uses: google-github-actions/setup-gcloud@98ddc00a17442e89a24bbf282954a3b65ce6d200 # v2.1.0
+      - uses: google-github-actions/setup-gcloud@77e7a554d41e2ee56fc945c52dfd3f33d12def9a # v2.1.4
         with:
           version: '546.0.0'
           install_components: 'alpha,beta'
@@ -163,7 +163,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
           TARGET_SERVICE: \${{ matrix.service }}
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@c7d193f32edcb7bfad88892161225aeda64e9392 # v4.0.0
+        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
         if: \${{ !cancelled() }}
         with:
           name: artifacts-priority-e2e-fixtures-\${{ matrix.service }}
@@ -186,13 +186,13 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
           go-version-file: 'go.mod'
           cache: false
       - name: Download prebuilt test binaries
-        uses: actions/download-artifact@7a1cd3216ca9260cd8022db641d960b1db4d1be4 # v4.0.0
+        uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
         with:
           name: prebuilt-test-binaries
           path: bin/
       - name: Make binaries executable
         run: chmod +x bin/* || true
-      - uses: google-github-actions/setup-gcloud@98ddc00a17442e89a24bbf282954a3b65ce6d200 # v2.1.0
+      - uses: google-github-actions/setup-gcloud@77e7a554d41e2ee56fc945c52dfd3f33d12def9a # v2.1.4
         with:
           version: '546.0.0'
           install_components: 'alpha,beta'
@@ -212,7 +212,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
           TARGET_SERVICE: \${{ matrix.service }}
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@c7d193f32edcb7bfad88892161225aeda64e9392 # v4.0.0
+        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
         if: \${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-\${{ matrix.service }}
@@ -246,13 +246,13 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
           go-version-file: 'go.mod'
           cache: false
       - name: Download prebuilt test binaries
-        uses: actions/download-artifact@7a1cd3216ca9260cd8022db641d960b1db4d1be4 # v4.0.0
+        uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
         with:
           name: prebuilt-test-binaries
           path: bin/
       - name: Make binaries executable
         run: chmod +x bin/* || true
-      - uses: google-github-actions/setup-gcloud@98ddc00a17442e89a24bbf282954a3b65ce6d200 # v2.1.0
+      - uses: google-github-actions/setup-gcloud@77e7a554d41e2ee56fc945c52dfd3f33d12def9a # v2.1.4
         with:
           version: '546.0.0'
           install_components: 'alpha,beta'
@@ -263,7 +263,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
           TARGET_SERVICE: \${{ matrix.service }}
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@c7d193f32edcb7bfad88892161225aeda64e9392 # v4.0.0
+        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
         if: \${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-samples-\${{ matrix.service }}
@@ -297,13 +297,13 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
           go-version-file: 'go.mod'
           cache: false
       - name: Download prebuilt test binaries
-        uses: actions/download-artifact@7a1cd3216ca9260cd8022db641d960b1db4d1be4 # v4.0.0
+        uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
         with:
           name: prebuilt-test-binaries
           path: bin/
       - name: Make binaries executable
         run: chmod +x bin/* || true
-      - uses: google-github-actions/setup-gcloud@98ddc00a17442e89a24bbf282954a3b65ce6d200 # v2.1.0
+      - uses: google-github-actions/setup-gcloud@77e7a554d41e2ee56fc945c52dfd3f33d12def9a # v2.1.4
         with:
           version: '546.0.0'
           install_components: 'alpha,beta'
@@ -314,7 +314,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
           TARGET_SUITE: \${{ matrix.suite }}
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@c7d193f32edcb7bfad88892161225aeda64e9392 # v4.0.0
+        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
         if: \${{ !cancelled() }}
         with:
           name: artifacts-tests-scenarios-\${{ matrix.suite }}
@@ -337,7 +337,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 # zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
-      - uses: google-github-actions/setup-gcloud@98ddc00a17442e89a24bbf282954a3b65ce6d200 # v2.1.0
+      - uses: google-github-actions/setup-gcloud@77e7a554d41e2ee56fc945c52dfd3f33d12def9a # v2.1.4
         with:
           version: '546.0.0'
           install_components: 'alpha,beta'
@@ -349,7 +349,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
           KCC_RECONCILE_FLAG_GATE: "USE_DEPENDENCY_TRACKER"
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@c7d193f32edcb7bfad88892161225aeda64e9392 # v4.0.0
+        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
         if: \${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-direct-iam
@@ -371,7 +371,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
         run: dev/tasks/free-disk-space-on-github-actions-runner
 # zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
-      - uses: google-github-actions/setup-gcloud@98ddc00a17442e89a24bbf282954a3b65ce6d200 # v2.1.0
+      - uses: google-github-actions/setup-gcloud@77e7a554d41e2ee56fc945c52dfd3f33d12def9a # v2.1.4
         with:
           version: '546.0.0'
           install_components: 'alpha,beta'
@@ -381,7 +381,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@c7d193f32edcb7bfad88892161225aeda64e9392 # v4.0.0
+        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
         if: \${{ !cancelled() }}
         with:
           name: artifacts-unit-tests
@@ -436,7 +436,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@c7d193f32edcb7bfad88892161225aeda64e9392 # v4.0.0
+        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
         if: \${{ !cancelled() }}
         with:
           name: artifacts-${name}
@@ -487,7 +487,7 @@ EOF
     # TODO: We should look at the script to see if it needs gcloud
     if [[ "${name}" == "test-mockgcp" || "${name}" == "unit-tests" || "${name}" == "unit-tests-operator" ]]; then
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
-      - uses: google-github-actions/setup-gcloud@98ddc00a17442e89a24bbf282954a3b65ce6d200 # v2.1.0
+      - uses: google-github-actions/setup-gcloud@77e7a554d41e2ee56fc945c52dfd3f33d12def9a # v2.1.4
         with:
           version: '546.0.0'
           install_components: 'alpha,beta'
@@ -516,7 +516,7 @@ EOF
 
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@c7d193f32edcb7bfad88892161225aeda64e9392 # v4.0.0
+        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
         if: \${{ !cancelled() }}
         with:
           name: artifacts-${name}
@@ -621,7 +621,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@c7d193f32edcb7bfad88892161225aeda64e9392 # v4.0.0
+        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
         if: \${{ !cancelled() }}
         with:
           name: artifacts-crd-equivalence-check
