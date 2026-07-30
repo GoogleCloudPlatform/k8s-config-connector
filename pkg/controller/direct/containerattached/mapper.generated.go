@@ -159,6 +159,7 @@ func ContainerAttachedClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.At
 	out.BinaryAuthorization = BinaryAuthorization_FromProto(mapCtx, in.GetBinaryAuthorization())
 	// MISSING: SecurityPostureConfig
 	// MISSING: Tags
+	// MISSING: SystemComponentsConfig
 	return out
 }
 */
@@ -194,6 +195,7 @@ func ContainerAttachedClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm.Con
 	out.BinaryAuthorization = BinaryAuthorization_ToProto(mapCtx, in.BinaryAuthorization)
 	// MISSING: SecurityPostureConfig
 	// MISSING: Tags
+	// MISSING: SystemComponentsConfig
 	return out
 }
 */

@@ -141,7 +141,6 @@ func Date_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.Date) *datepb.Date
 	out.Day = direct.ValueOf(in.Day)
 	return out
 }
-
 func AssistantGroundedContent_TextGroundingMetadata_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AssistantGroundedContent_TextGroundingMetadata) *krm.AssistantGroundedContent_TextGroundingMetadata {
 	if in == nil {
 		return nil

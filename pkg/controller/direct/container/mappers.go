@@ -321,3 +321,45 @@ func ContainerNodePoolSpec_ToProto(mapCtx *direct.MapContext, in *krm.ContainerN
 	out.Version = direct.ValueOf(in.Version)
 	return out
 }
+
+func RegistryHosts_FromProto(mapCtx *direct.MapContext, in *pb.ContainerdConfig_RegistryHostConfig) *krm.RegistryHosts {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RegistryHosts{}
+	out.Server = direct.LazyPtr(in.GetServer())
+	out.Hosts = direct.Slice_FromProto(mapCtx, in.GetHosts(), RegistryHostsConfig_FromProto)
+	return out
+}
+
+func RegistryHosts_ToProto(mapCtx *direct.MapContext, in *krm.RegistryHosts) *pb.ContainerdConfig_RegistryHostConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ContainerdConfig_RegistryHostConfig{}
+	out.Server = direct.ValueOf(in.Server)
+	out.Hosts = direct.Slice_ToProto(mapCtx, in.Hosts, RegistryHostsConfig_ToProto)
+	return out
+}
+
+func RegistryHostsConfig_FromProto(mapCtx *direct.MapContext, in *pb.ContainerdConfig_RegistryHostConfig_HostConfig) *krm.RegistryHostsConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RegistryHostsConfig{}
+	out.Host = direct.LazyPtr(in.GetHost())
+	out.Capabilities = direct.EnumSlice_FromProto(mapCtx, in.GetCapabilities())
+	out.OverridePath = direct.LazyPtr(in.GetOverridePath())
+	return out
+}
+
+func RegistryHostsConfig_ToProto(mapCtx *direct.MapContext, in *krm.RegistryHostsConfig) *pb.ContainerdConfig_RegistryHostConfig_HostConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ContainerdConfig_RegistryHostConfig_HostConfig{}
+	out.Host = direct.ValueOf(in.Host)
+	out.Capabilities = direct.EnumSlice_ToProto[pb.ContainerdConfig_RegistryHostConfig_HostCapability](mapCtx, in.Capabilities)
+	out.OverridePath = direct.ValueOf(in.OverridePath)
+	return out
+}

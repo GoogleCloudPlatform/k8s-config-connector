@@ -17,31 +17,60 @@
 // krm.group: discoveryengine.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // proto.service: google.cloud.discoveryengine.v1beta
-// // resource: DiscoveryEngineLicenseConfig:LicenseConfig
-// // resource: DiscoveryEngineSampleQuery:SampleQuery
-// // resource: DiscoveryEngineSampleQuerySet:SampleQuerySet
-// // resource: DiscoveryEngineServingConfig:ServingConfig
+// resource: DiscoveryEngineSampleQuerySet:SampleQuerySet
+// resource: DiscoveryEngineSampleQuery:SampleQuery
+// resource: DiscoveryEngineLicenseConfig:LicenseConfig
+// resource: DiscoveryEngineServingConfig:ServingConfig
+// resource: DiscoveryEngineUserStore:UserStore
 
 package v1alpha1
 
-// +kcc:proto=google.type.Date
-type Date struct {
-	// Year of the date. Must be from 1 to 9999, or 0 to specify a date without
-	//  a year.
-	// +kcc:proto:field=google.type.Date.year
-	Year *int32 `json:"year,omitempty"`
-
-	// Month of a year. Must be from 1 to 12, or 0 to specify a year without a
-	//  month and day.
-	// +kcc:proto:field=google.type.Date.month
-	Month *int32 `json:"month,omitempty"`
-
-	// Day of a month. Must be from 1 to 31 and valid for the year and month, or 0
-	//  to specify a year by itself or a year and month where the day isn't
-	//  significant.
-	// +kcc:proto:field=google.type.Date.day
-	Day *int32 `json:"day,omitempty"`
+/* unreachable type AnswerGenerationSpec
+// +kcc:proto=google.cloud.discoveryengine.v1beta.AnswerGenerationSpec
+type AnswerGenerationSpec struct {
+	// Optional. The specification for user specified classifier spec.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.AnswerGenerationSpec.user_defined_classifier_spec
+	UserDefinedClassifierSpec *AnswerGenerationSpec_UserDefinedClassifierSpec `json:"userDefinedClassifierSpec,omitempty"`
 }
+*/
+
+/* unreachable type AnswerGenerationSpec_UserDefinedClassifierSpec
+// +kcc:proto=google.cloud.discoveryengine.v1beta.AnswerGenerationSpec.UserDefinedClassifierSpec
+type AnswerGenerationSpec_UserDefinedClassifierSpec struct {
+	// Optional. Whether or not to enable and include user defined classifier.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.AnswerGenerationSpec.UserDefinedClassifierSpec.enable_user_defined_classifier
+	EnableUserDefinedClassifier *bool `json:"enableUserDefinedClassifier,omitempty"`
+
+	// Optional. The preamble to be used for the user defined classifier.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.AnswerGenerationSpec.UserDefinedClassifierSpec.preamble
+	Preamble *string `json:"preamble,omitempty"`
+
+	// Optional. The model id to be used for the user defined classifier.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.AnswerGenerationSpec.UserDefinedClassifierSpec.model_id
+	ModelID *string `json:"modelID,omitempty"`
+
+	// Optional. The task marker to be used for the user defined classifier.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.AnswerGenerationSpec.UserDefinedClassifierSpec.task_marker
+	TaskMarker *string `json:"taskMarker,omitempty"`
+
+	// Optional. The top-p value to be used for the user defined classifier.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.AnswerGenerationSpec.UserDefinedClassifierSpec.top_p
+	TopP *float64 `json:"topP,omitempty"`
+
+	// Optional. The top-k value to be used for the user defined classifier.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.AnswerGenerationSpec.UserDefinedClassifierSpec.top_k
+	TopK *int64 `json:"topK,omitempty"`
+
+	// Optional. The temperature value to be used for the user defined
+	//  classifier.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.AnswerGenerationSpec.UserDefinedClassifierSpec.temperature
+	Temperature *float64 `json:"temperature,omitempty"`
+
+	// Optional. The seed value to be used for the user defined classifier.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.AnswerGenerationSpec.UserDefinedClassifierSpec.seed
+	Seed *int32 `json:"seed,omitempty"`
+}
+*/
 
 // +kcc:proto=google.cloud.discoveryengine.v1beta.EmbeddingConfig
 type EmbeddingConfig struct {
@@ -292,6 +321,10 @@ type SearchRequest_ContentSearchSpec_SummarySpec struct {
 	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.SearchRequest.ContentSearchSpec.SummarySpec.ignore_jail_breaking_query
 	IgnoreJailBreakingQuery *bool `json:"ignoreJailBreakingQuery,omitempty"`
 
+	// Optional. Multimodal specification.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.SearchRequest.ContentSearchSpec.SummarySpec.multimodal_spec
+	MultimodalSpec *SearchRequest_ContentSearchSpec_SummarySpec_MultiModalSpec `json:"multimodalSpec,omitempty"`
+
 	// If specified, the spec will be used to modify the prompt provided to
 	//  the LLM.
 	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.SearchRequest.ContentSearchSpec.SummarySpec.model_prompt_spec
@@ -342,6 +375,13 @@ type SearchRequest_ContentSearchSpec_SummarySpec_ModelSpec struct {
 	//     lifecycle](https://cloud.google.com/generative-ai-app-builder/docs/answer-generation-models).
 	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.SearchRequest.ContentSearchSpec.SummarySpec.ModelSpec.version
 	Version *string `json:"version,omitempty"`
+}
+
+// +kcc:proto=google.cloud.discoveryengine.v1beta.SearchRequest.ContentSearchSpec.SummarySpec.MultiModalSpec
+type SearchRequest_ContentSearchSpec_SummarySpec_MultiModalSpec struct {
+	// Optional. Source of image returned in the answer.
+	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.SearchRequest.ContentSearchSpec.SummarySpec.MultiModalSpec.image_source
+	ImageSource *string `json:"imageSource,omitempty"`
 }
 
 // +kcc:proto=google.cloud.discoveryengine.v1beta.SearchRequest.PersonalizationSpec
@@ -395,4 +435,23 @@ type ServingConfig_MediaConfig struct {
 	//  freshness cutoff days.
 	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.ServingConfig.MediaConfig.content_freshness_cutoff_days
 	ContentFreshnessCutoffDays *int32 `json:"contentFreshnessCutoffDays,omitempty"`
+}
+
+// +kcc:proto=google.type.Date
+type Date struct {
+	// Year of the date. Must be from 1 to 9999, or 0 to specify a date without
+	//  a year.
+	// +kcc:proto:field=google.type.Date.year
+	Year *int32 `json:"year,omitempty"`
+
+	// Month of a year. Must be from 1 to 12, or 0 to specify a year without a
+	//  month and day.
+	// +kcc:proto:field=google.type.Date.month
+	Month *int32 `json:"month,omitempty"`
+
+	// Day of a month. Must be from 1 to 31 and valid for the year and month, or 0
+	//  to specify a year by itself or a year and month where the day isn't
+	//  significant.
+	// +kcc:proto:field=google.type.Date.day
+	Day *int32 `json:"day,omitempty"`
 }

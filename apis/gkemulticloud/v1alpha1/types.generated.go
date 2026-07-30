@@ -120,6 +120,19 @@ type KubernetesSecret struct {
 	Namespace *string `json:"namespace,omitempty"`
 }
 
+/* unreachable type Label
+// +kcc:proto=google.cloud.gkemulticloud.v1.Label
+type Label struct {
+	// This is the key of the label.
+	// +kcc:proto:field=google.cloud.gkemulticloud.v1.Label.key
+	Key *string `json:"key,omitempty"`
+
+	// This is the value of the label.
+	// +kcc:proto:field=google.cloud.gkemulticloud.v1.Label.value
+	Value *string `json:"value,omitempty"`
+}
+*/
+
 // +kcc:proto=google.cloud.gkemulticloud.v1.LoggingComponentConfig
 type LoggingComponentConfig struct {
 	// The components to be enabled.
@@ -159,6 +172,40 @@ type SecurityPostureConfig struct {
 	// +kcc:proto:field=google.cloud.gkemulticloud.v1.SecurityPostureConfig.vulnerability_mode
 	VulnerabilityMode *string `json:"vulnerabilityMode,omitempty"`
 }
+
+/* unreachable type SystemComponentsConfig
+// +kcc:proto=google.cloud.gkemulticloud.v1.SystemComponentsConfig
+type SystemComponentsConfig struct {
+	// Sets custom tolerations for pods created by auto-installed components.
+	// +kcc:proto:field=google.cloud.gkemulticloud.v1.SystemComponentsConfig.tolerations
+	Tolerations []Toleration `json:"tolerations,omitempty"`
+
+	// Sets custom labels for pods created by auto-installed components.
+	// +kcc:proto:field=google.cloud.gkemulticloud.v1.SystemComponentsConfig.labels
+	Labels []Label `json:"labels,omitempty"`
+}
+*/
+
+/* unreachable type Toleration
+// +kcc:proto=google.cloud.gkemulticloud.v1.Toleration
+type Toleration struct {
+	// Key is the taint key that the toleration applies to.
+	// +kcc:proto:field=google.cloud.gkemulticloud.v1.Toleration.key
+	Key *string `json:"key,omitempty"`
+
+	// Value is the taint value that the toleration applies to.
+	// +kcc:proto:field=google.cloud.gkemulticloud.v1.Toleration.value
+	Value *string `json:"value,omitempty"`
+
+	// KeyOperator represents a key's relationship to the value e.g. 'Exist'.
+	// +kcc:proto:field=google.cloud.gkemulticloud.v1.Toleration.key_operator
+	KeyOperator *string `json:"keyOperator,omitempty"`
+
+	// Effect indicates the taint effect to match e.g. 'NoSchedule'
+	// +kcc:proto:field=google.cloud.gkemulticloud.v1.Toleration.effect
+	Effect *string `json:"effect,omitempty"`
+}
+*/
 
 // +kcc:proto=google.cloud.gkemulticloud.v1.WorkloadIdentityConfig
 type WorkloadIdentityConfig struct {

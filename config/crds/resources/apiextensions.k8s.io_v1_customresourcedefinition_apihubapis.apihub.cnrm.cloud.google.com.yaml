@@ -125,6 +125,17 @@ spec:
                           type: string
                         type: array
                     type: object
+                  uriValues:
+                    description: The attribute values associated with a resource in
+                      case attribute data type is URL, URI or IP, like gs://bucket-name/object-name.
+                    properties:
+                      values:
+                        description: Required. The attribute values in case attribute
+                          data type is string or JSON.
+                        items:
+                          type: string
+                        type: array
+                    type: object
                 type: object
               apiRequirements:
                 description: Optional. The API requirements of the API.
@@ -181,6 +192,17 @@ spec:
                   stringValues:
                     description: The attribute values associated with a resource in
                       case attribute data type is string.
+                    properties:
+                      values:
+                        description: Required. The attribute values in case attribute
+                          data type is string or JSON.
+                        items:
+                          type: string
+                        type: array
+                    type: object
+                  uriValues:
+                    description: The attribute values associated with a resource in
+                      case attribute data type is URL, URI or IP, like gs://bucket-name/object-name.
                     properties:
                       values:
                         description: Required. The attribute values in case attribute
@@ -282,6 +304,17 @@ spec:
                           type: string
                         type: array
                     type: object
+                  uriValues:
+                    description: The attribute values associated with a resource in
+                      case attribute data type is URL, URI or IP, like gs://bucket-name/object-name.
+                    properties:
+                      values:
+                        description: Required. The attribute values in case attribute
+                          data type is string or JSON.
+                        items:
+                          type: string
+                        type: array
+                    type: object
                 type: object
               attributeRefs:
                 description: 'Optional. The list of user defined attributes associated
@@ -373,6 +406,17 @@ spec:
                         stringValues:
                           description: The attribute values associated with a resource
                             in case attribute data type is string.
+                          properties:
+                            values:
+                              description: Required. The attribute values in case
+                                attribute data type is string or JSON.
+                              items:
+                                type: string
+                              type: array
+                          type: object
+                        uriValues:
+                          description: The attribute values associated with a resource
+                            in case attribute data type is URL, URI or IP, like gs://bucket-name/object-name.
                           properties:
                             values:
                               description: Required. The attribute values in case

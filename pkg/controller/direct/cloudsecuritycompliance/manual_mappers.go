@@ -70,38 +70,3 @@ func CloudSecurityComplianceFrameworkObservedState_ToProto(mapCtx *direct.MapCon
 	out.SupportedTargetResourceTypes = direct.EnumSlice_ToProto[pb.TargetResourceType](mapCtx, in.SupportedTargetResourceTypes)
 	return out
 }
-
-// Since CloudControlGroup and Framework_CloudControlGroupDetails are missing in the public pb package,
-// we define dummy mapping functions to prevent the generator from generating invalid references to them.
-
-func CloudControlGroup_FromProto(mapCtx *direct.MapContext, in interface{}) *krm.CloudControlGroup {
-	return nil
-}
-
-func CloudControlGroup_ToProto(mapCtx *direct.MapContext, in *krm.CloudControlGroup) interface{} {
-	return nil
-}
-
-func CloudControlGroupObservedState_FromProto(mapCtx *direct.MapContext, in interface{}) *krm.CloudControlGroupObservedState {
-	return nil
-}
-
-func CloudControlGroupObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CloudControlGroupObservedState) interface{} {
-	return nil
-}
-
-func Framework_CloudControlGroupDetails_FromProto(mapCtx *direct.MapContext, in interface{}) *krm.Framework_CloudControlGroupDetails {
-	return nil
-}
-
-func Framework_CloudControlGroupDetails_ToProto(mapCtx *direct.MapContext, in *krm.Framework_CloudControlGroupDetails) interface{} {
-	return nil
-}
-
-func Framework_CloudControlGroupDetailsObservedState_FromProto(mapCtx *direct.MapContext, in interface{}) *krm.Framework_CloudControlGroupDetailsObservedState {
-	return nil
-}
-
-func Framework_CloudControlGroupDetailsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.Framework_CloudControlGroupDetailsObservedState) interface{} {
-	return nil
-}

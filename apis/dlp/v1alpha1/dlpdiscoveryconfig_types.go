@@ -102,7 +102,7 @@ type DLPDiscoveryConfigStatus struct {
 type DLPDiscoveryConfigObservedState struct {
 	// Target to match against for determining what to scan and how frequently.
 	// +kcc:proto:field=google.privacy.dlp.v2.DiscoveryConfig.targets
-	Targets []DiscoveryTargetObservedState `json:"targets,omitempty"`
+	Targets []DiscoveryTarget `json:"targets,omitempty"`
 
 	// Output only. A stream of errors encountered when the config was activated.
 	//  Repeated errors may result in the config automatically being paused. Output

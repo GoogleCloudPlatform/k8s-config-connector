@@ -25,6 +25,9 @@ const _ = grpc.SupportPackageIsVersion7
 type SqlConnectServiceClient interface {
 	// Retrieves connect settings about a Cloud SQL instance.
 	GetConnectSettings(ctx context.Context, in *GetConnectSettingsRequest, opts ...grpc.CallOption) (*ConnectSettings, error)
+	// Retrieves connect settings about a Cloud SQL instance using the instance
+	// DNS name.
+	ResolveConnectSettings(ctx context.Context, in *ResolveConnectSettingsRequest, opts ...grpc.CallOption) (*ConnectSettings, error)
 	// Generates a short-lived X509 certificate containing the provided public key
 	// and signed by a private key specific to the target instance. Users may use
 	// the certificate to authenticate as themselves when connecting to the
@@ -49,6 +52,15 @@ func (c *sqlConnectServiceClient) GetConnectSettings(ctx context.Context, in *Ge
 	return out, nil
 }
 
+func (c *sqlConnectServiceClient) ResolveConnectSettings(ctx context.Context, in *ResolveConnectSettingsRequest, opts ...grpc.CallOption) (*ConnectSettings, error) {
+	out := new(ConnectSettings)
+	err := c.cc.Invoke(ctx, "/google.cloud.sql.v1beta4.SqlConnectService/ResolveConnectSettings", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *sqlConnectServiceClient) GenerateEphemeralCert(ctx context.Context, in *GenerateEphemeralCertRequest, opts ...grpc.CallOption) (*GenerateEphemeralCertResponse, error) {
 	out := new(GenerateEphemeralCertResponse)
 	err := c.cc.Invoke(ctx, "/google.cloud.sql.v1beta4.SqlConnectService/GenerateEphemeralCert", in, out, opts...)
@@ -64,6 +76,9 @@ func (c *sqlConnectServiceClient) GenerateEphemeralCert(ctx context.Context, in 
 type SqlConnectServiceServer interface {
 	// Retrieves connect settings about a Cloud SQL instance.
 	GetConnectSettings(context.Context, *GetConnectSettingsRequest) (*ConnectSettings, error)
+	// Retrieves connect settings about a Cloud SQL instance using the instance
+	// DNS name.
+	ResolveConnectSettings(context.Context, *ResolveConnectSettingsRequest) (*ConnectSettings, error)
 	// Generates a short-lived X509 certificate containing the provided public key
 	// and signed by a private key specific to the target instance. Users may use
 	// the certificate to authenticate as themselves when connecting to the
@@ -78,6 +93,9 @@ type UnimplementedSqlConnectServiceServer struct {
 
 func (UnimplementedSqlConnectServiceServer) GetConnectSettings(context.Context, *GetConnectSettingsRequest) (*ConnectSettings, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetConnectSettings not implemented")
+}
+func (UnimplementedSqlConnectServiceServer) ResolveConnectSettings(context.Context, *ResolveConnectSettingsRequest) (*ConnectSettings, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ResolveConnectSettings not implemented")
 }
 func (UnimplementedSqlConnectServiceServer) GenerateEphemeralCert(context.Context, *GenerateEphemeralCertRequest) (*GenerateEphemeralCertResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GenerateEphemeralCert not implemented")
@@ -113,6 +131,24 @@ func _SqlConnectService_GetConnectSettings_Handler(srv interface{}, ctx context.
 	return interceptor(ctx, in, info, handler)
 }
 
+func _SqlConnectService_ResolveConnectSettings_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ResolveConnectSettingsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(SqlConnectServiceServer).ResolveConnectSettings(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/google.cloud.sql.v1beta4.SqlConnectService/ResolveConnectSettings",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(SqlConnectServiceServer).ResolveConnectSettings(ctx, req.(*ResolveConnectSettingsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _SqlConnectService_GenerateEphemeralCert_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GenerateEphemeralCertRequest)
 	if err := dec(in); err != nil {
@@ -141,6 +177,10 @@ var SqlConnectService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetConnectSettings",
 			Handler:    _SqlConnectService_GetConnectSettings_Handler,
+		},
+		{
+			MethodName: "ResolveConnectSettings",
+			Handler:    _SqlConnectService_ResolveConnectSettings_Handler,
 		},
 		{
 			MethodName: "GenerateEphemeralCert",

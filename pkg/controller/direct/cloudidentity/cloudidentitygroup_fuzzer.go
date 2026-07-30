@@ -43,6 +43,7 @@ func groupFuzzer() fuzztesting.KRMFuzzer_NoProto {
 
 	f.Unimplemented_NotYetTriaged(".DynamicGroupMetadata")
 	f.Unimplemented_NotYetTriaged(".PosixGroups")
+	f.Unimplemented_NotYetTriaged(".ExternalIds")
 
 	f.Ignore_JSONBookkeeping(".ForceSendFields")
 	f.Ignore_JSONBookkeeping(".NullFields")

@@ -268,7 +268,7 @@ type Environment struct {
 	// +kcc:proto:field=google.dataflow.v1beta3.Environment.worker_pools
 	WorkerPools []WorkerPool `json:"workerPools,omitempty"`
 
-	// A description of the process that generated the request.
+	// Optional. A description of the process that generated the request.
 	// +kcc:proto:field=google.dataflow.v1beta3.Environment.user_agent
 	UserAgent apiextensionsv1.JSON `json:"userAgent,omitempty"`
 
@@ -336,6 +336,10 @@ type Environment struct {
 	//  mode](https://cloud.google.com/dataflow/docs/guides/streaming-modes).
 	// +kcc:proto:field=google.dataflow.v1beta3.Environment.streaming_mode
 	StreamingMode *string `json:"streamingMode,omitempty"`
+
+	// Optional. True when any worker pool that uses public IPs is present.
+	// +kcc:proto:field=google.dataflow.v1beta3.Environment.use_public_ips
+	UsePublicIps *bool `json:"usePublicIps,omitempty"`
 }
 */
 
@@ -609,6 +613,10 @@ type FlexTemplateRuntimeEnvironment struct {
 	//  mode](https://cloud.google.com/dataflow/docs/guides/streaming-modes).
 	// +kcc:proto:field=google.dataflow.v1beta3.FlexTemplateRuntimeEnvironment.streaming_mode
 	StreamingMode *string `json:"streamingMode,omitempty"`
+
+	// Optional. Additional pipeline option flags for the job.
+	// +kcc:proto:field=google.dataflow.v1beta3.FlexTemplateRuntimeEnvironment.additional_pipeline_options
+	AdditionalPipelineOptions []string `json:"additionalPipelineOptions,omitempty"`
 }
 */
 
@@ -879,6 +887,13 @@ type Package struct {
 	//    bucket.storage.googleapis.com/
 	// +kcc:proto:field=google.dataflow.v1beta3.Package.location
 	Location *string `json:"location,omitempty"`
+
+	// Optional. The hex-encoded SHA256 checksum of the package.
+	//  If the checksum is provided, the worker will verify the checksum of the
+	//  package before using it. If the checksum does not match, the worker will
+	//  fail to start.
+	// +kcc:proto:field=google.dataflow.v1beta3.Package.sha256
+	Sha256 *string `json:"sha256,omitempty"`
 }
 */
 
@@ -937,6 +952,17 @@ type RuntimeUpdatableParams struct {
 	//  pipeline](https://cloud.google.com/dataflow/docs/guides/updating-a-pipeline).
 	// +kcc:proto:field=google.dataflow.v1beta3.RuntimeUpdatableParams.worker_utilization_hint
 	WorkerUtilizationHint *float64 `json:"workerUtilizationHint,omitempty"`
+
+	// Optional. Deprecated: Use `autoscaling_tier` instead.
+	//  The backlog threshold duration in seconds for autoscaling. Value must be
+	//  non-negative.
+	// +kcc:proto:field=google.dataflow.v1beta3.RuntimeUpdatableParams.acceptable_backlog_duration
+	AcceptableBacklogDuration *string `json:"acceptableBacklogDuration,omitempty"`
+
+	// Optional. The backlog threshold tier for autoscaling. Value must be one of
+	//  "low-latency", "medium-latency", or "high-latency".
+	// +kcc:proto:field=google.dataflow.v1beta3.RuntimeUpdatableParams.autoscaling_tier
+	AutoscalingTier *string `json:"autoscalingTier,omitempty"`
 }
 */
 
@@ -1227,6 +1253,14 @@ type WorkerPool struct {
 	// +kcc:proto:field=google.dataflow.v1beta3.WorkerPool.disk_type
 	DiskType *string `json:"diskType,omitempty"`
 
+	// Optional. IOPS provisioned for the root disk for VMs.
+	// +kcc:proto:field=google.dataflow.v1beta3.WorkerPool.disk_provisioned_iops
+	DiskProvisionedIops *int64 `json:"diskProvisionedIops,omitempty"`
+
+	// Optional. Throughput provisioned for the root disk for VMs.
+	// +kcc:proto:field=google.dataflow.v1beta3.WorkerPool.disk_provisioned_throughput_mibps
+	DiskProvisionedThroughputMibps *int64 `json:"diskProvisionedThroughputMibps,omitempty"`
+
 	// Fully qualified source image for disks.
 	// +kcc:proto:field=google.dataflow.v1beta3.WorkerPool.disk_source_image
 	DiskSourceImage *string `json:"diskSourceImage,omitempty"`
@@ -1421,6 +1455,10 @@ type JobObservedState struct {
 	// Output only. Resources used by the Dataflow Service to run the job.
 	// +kcc:proto:field=google.dataflow.v1beta3.Job.service_resources
 	ServiceResources *ServiceResourcesObservedState `json:"serviceResources,omitempty"`
+
+	// Output only. Indicates whether the job can be paused.
+	// +kcc:proto:field=google.dataflow.v1beta3.Job.pausable
+	Pausable *bool `json:"pausable,omitempty"`
 }
 */
 

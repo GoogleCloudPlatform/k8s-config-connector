@@ -120,6 +120,30 @@ type BackupRetentionSettings struct {
 	RetainedBackups *Int32Value `json:"retainedBackups,omitempty"`
 }
 
+// +kcc:proto=google.cloud.sql.v1beta4.ConnectionPoolConfig
+type ConnectionPoolConfig struct {
+	// Whether managed connection pooling is enabled.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.ConnectionPoolConfig.connection_pooling_enabled
+	ConnectionPoolingEnabled *bool `json:"connectionPoolingEnabled,omitempty"`
+
+	// Optional. List of connection pool configuration flags.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.ConnectionPoolConfig.flags
+	Flags []ConnectionPoolFlags `json:"flags,omitempty"`
+}
+
+// +kcc:proto=google.cloud.sql.v1beta4.ConnectionPoolFlags
+type ConnectionPoolFlags struct {
+	// Required. The name of the flag.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.ConnectionPoolFlags.name
+	Name *string `json:"name,omitempty"`
+
+	// Required. The value of the flag. Boolean flags are set to `on` for true
+	//  and `off` for false. This field must be omitted if the flag
+	//  doesn't take a value.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.ConnectionPoolFlags.value
+	Value *string `json:"value,omitempty"`
+}
+
 // +kcc:proto=google.cloud.sql.v1beta4.DataCacheConfig
 type DataCacheConfig struct {
 	// Whether data cache is enabled for the instance.
@@ -323,13 +347,48 @@ type DatabaseInstance struct {
 	// A primary instance and disaster recovery (DR) replica pair.
 	//  A DR replica is a cross-region replica that you designate
 	//  for failover in the event that the primary instance
-	//  experiences regional failure. Only applicable to MySQL.
+	//  experiences regional failure.
+	//  Applicable to MySQL and PostgreSQL.
 	// +kcc:proto:field=google.cloud.sql.v1beta4.DatabaseInstance.replication_cluster
 	ReplicationCluster *ReplicationCluster `json:"replicationCluster,omitempty"`
 
 	// Gemini instance configuration.
 	// +kcc:proto:field=google.cloud.sql.v1beta4.DatabaseInstance.gemini_config
 	GeminiConfig *GeminiInstanceConfig `json:"geminiConfig,omitempty"`
+
+	// Input only. Whether Cloud SQL is enabled to switch storing point-in-time
+	//  recovery log files from a data disk to Cloud Storage.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.DatabaseInstance.switch_transaction_logs_to_cloud_storage_enabled
+	SwitchTransactionLogsToCloudStorageEnabled *bool `json:"switchTransactionLogsToCloudStorageEnabled,omitempty"`
+
+	// Input only. Determines whether an in-place major version upgrade of
+	//  replicas happens when an in-place major version upgrade of a primary
+	//  instance is initiated.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.DatabaseInstance.include_replicas_for_major_version_upgrade
+	IncludeReplicasForMajorVersionUpgrade *bool `json:"includeReplicasForMajorVersionUpgrade,omitempty"`
+
+	// Optional. Input only. Immutable. Tag keys and tag values that are bound to
+	//  this instance. You must represent each item in the map as:
+	//  `"<tag-key-namespaced-name>" : "<tag-value-short-name>"`.
+	//
+	//  For example, a single resource can have the following tags:
+	//  ```
+	//    "123/environment": "production",
+	//    "123/costCenter": "marketing",
+	//  ```
+	//
+	//  For more information on tag creation and management, see
+	//  https://cloud.google.com/resource-manager/docs/tags/tags-overview.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.DatabaseInstance.tags
+	Tags map[string]string `json:"tags,omitempty"`
+
+	// The number of read pool nodes in a read pool.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.DatabaseInstance.node_count
+	NodeCount *int32 `json:"nodeCount,omitempty"`
+}
+
+// +kcc:proto=google.cloud.sql.v1beta4.DatabaseInstance.PoolNodeConfig
+type DatabaseInstance_PoolNodeConfig struct {
 }
 
 // +kcc:proto=google.cloud.sql.v1beta4.DatabaseInstance.SqlFailoverReplica
@@ -429,6 +488,23 @@ type DiskEncryptionStatus struct {
 	Kind *string `json:"kind,omitempty"`
 }
 
+// +kcc:proto=google.cloud.sql.v1beta4.DnsNameMapping
+type DNSNameMapping struct {
+}
+
+// +kcc:proto=google.cloud.sql.v1beta4.FinalBackupConfig
+type FinalBackupConfig struct {
+	// Whether the final backup is enabled for the instance.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.FinalBackupConfig.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// The number of days to retain the final backup after the instance deletion.
+	//  The final backup will be purged at (time_of_instance_deletion +
+	//  retention_days).
+	// +kcc:proto:field=google.cloud.sql.v1beta4.FinalBackupConfig.retention_days
+	RetentionDays *int32 `json:"retentionDays,omitempty"`
+}
+
 // +kcc:proto=google.cloud.sql.v1beta4.GeminiInstanceConfig
 type GeminiInstanceConfig struct {
 }
@@ -449,7 +525,7 @@ type InsightsConfig struct {
 	RecordApplicationTags *bool `json:"recordApplicationTags,omitempty"`
 
 	// Maximum query length stored in bytes. Default value: 1024 bytes.
-	//  Range: 256-4500 bytes. Query length more than this field value will be
+	//  Range: 256-4500 bytes. Query lengths greater than this field value will be
 	//  truncated to this value. When unset, query length will be the default
 	//  value. Changing query length will restart the database.
 	// +kcc:proto:field=google.cloud.sql.v1beta4.InsightsConfig.query_string_length
@@ -459,6 +535,10 @@ type InsightsConfig struct {
 	//  for all queries combined. Default is 5.
 	// +kcc:proto:field=google.cloud.sql.v1beta4.InsightsConfig.query_plans_per_minute
 	QueryPlansPerMinute *Int32Value `json:"queryPlansPerMinute,omitempty"`
+
+	// Optional. Whether enhanced query insights feature is enabled.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.InsightsConfig.enhanced_query_insights_enabled
+	EnhancedQueryInsightsEnabled *bool `json:"enhancedQueryInsightsEnabled,omitempty"`
 }
 
 // +kcc:proto=google.cloud.sql.v1beta4.InstanceReference
@@ -551,6 +631,29 @@ type IPConfiguration struct {
 	// PSC settings for this instance.
 	// +kcc:proto:field=google.cloud.sql.v1beta4.IpConfiguration.psc_config
 	PSCConfig *PSCConfig `json:"pscConfig,omitempty"`
+
+	// Specify what type of CA is used for the server certificate.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.IpConfiguration.server_ca_mode
+	ServerCAMode *string `json:"serverCAMode,omitempty"`
+
+	// Optional. Custom Subject Alternative Name(SAN)s for a Cloud SQL instance.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.IpConfiguration.custom_subject_alternative_names
+	CustomSubjectAlternativeNames []string `json:"customSubjectAlternativeNames,omitempty"`
+
+	// Optional. The resource name of the server CA pool for an instance with
+	//  `CUSTOMER_MANAGED_CAS_CA` as the `server_ca_mode`.
+	//  Format: projects/{PROJECT}/locations/{REGION}/caPools/{CA_POOL_ID}
+	// +kcc:proto:field=google.cloud.sql.v1beta4.IpConfiguration.server_ca_pool
+	ServerCAPool *string `json:"serverCAPool,omitempty"`
+
+	// Optional. Controls the automatic server certificate rotation feature. This
+	//  feature is disabled by default. When enabled, the server certificate will
+	//  be automatically rotated during Cloud SQL scheduled maintenance or
+	//  self-service maintenance updates up to six months before it expires. This
+	//  setting can only be set if server_ca_mode is either GOOGLE_MANAGED_CAS_CA
+	//  or CUSTOMER_MANAGED_CAS_CA.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.IpConfiguration.server_certificate_rotation_mode
+	ServerCertificateRotationMode *string `json:"serverCertificateRotationMode,omitempty"`
 }
 
 // +kcc:proto=google.cloud.sql.v1beta4.IpMapping
@@ -599,17 +702,19 @@ type LocationPreference struct {
 
 // +kcc:proto=google.cloud.sql.v1beta4.MaintenanceWindow
 type MaintenanceWindow struct {
-	// hour of day - 0 to 23.
+	// Hour of day - 0 to 23. Specify in the UTC time zone.
 	// +kcc:proto:field=google.cloud.sql.v1beta4.MaintenanceWindow.hour
 	Hour *Int32Value `json:"hour,omitempty"`
 
-	// day of week (1-7), starting on Monday.
+	// Day of week - `MONDAY`, `TUESDAY`, `WEDNESDAY`, `THURSDAY`, `FRIDAY`,
+	//  `SATURDAY`, or `SUNDAY`. Specify in the UTC time zone.
+	//  Returned in output as an integer, 1 to 7, where `1` equals Monday.
 	// +kcc:proto:field=google.cloud.sql.v1beta4.MaintenanceWindow.day
 	Day *Int32Value `json:"day,omitempty"`
 
-	// Maintenance timing setting: `canary` (Earlier) or `stable` (Later).
-	//  [Learn
-	//  more](https://cloud.google.com/sql/docs/mysql/instance-settings#maintenance-timing-2ndgen).
+	// Maintenance timing settings: `canary`, `stable`, or `week5`.
+	//  For more information, see [About maintenance on Cloud SQL
+	//  instances](https://cloud.google.com/sql/docs/mysql/maintenance).
 	// +kcc:proto:field=google.cloud.sql.v1beta4.MaintenanceWindow.update_track
 	UpdateTrack *string `json:"updateTrack,omitempty"`
 
@@ -653,7 +758,7 @@ type MySQLReplicaConfiguration struct {
 	// +kcc:proto:field=google.cloud.sql.v1beta4.MySqlReplicaConfiguration.client_certificate
 	ClientCertificate *string `json:"clientCertificate,omitempty"`
 
-	// PEM representation of the replica's private key. The corresponsing public
+	// PEM representation of the replica's private key. The corresponding public
 	//  key is encoded in the client's certificate.
 	// +kcc:proto:field=google.cloud.sql.v1beta4.MySqlReplicaConfiguration.client_key
 	ClientKey *string `json:"clientKey,omitempty"`
@@ -698,7 +803,7 @@ type OnPremisesConfiguration struct {
 	// +kcc:proto:field=google.cloud.sql.v1beta4.OnPremisesConfiguration.client_certificate
 	ClientCertificate *string `json:"clientCertificate,omitempty"`
 
-	// PEM representation of the replica's private key. The corresponsing public
+	// PEM representation of the replica's private key. The corresponding public
 	//  key is encoded in the client's certificate.
 	// +kcc:proto:field=google.cloud.sql.v1beta4.OnPremisesConfiguration.client_key
 	ClientKey *string `json:"clientKey,omitempty"`
@@ -710,6 +815,15 @@ type OnPremisesConfiguration struct {
 	// The reference to Cloud SQL instance if the source is Cloud SQL.
 	// +kcc:proto:field=google.cloud.sql.v1beta4.OnPremisesConfiguration.source_instance
 	SourceInstance *InstanceReference `json:"sourceInstance,omitempty"`
+
+	// Optional. A list of objects that the user selects for replication from an
+	//  external source instance.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.OnPremisesConfiguration.selected_objects
+	SelectedObjects []SelectedObjects `json:"selectedObjects,omitempty"`
+
+	// Optional. SslOption for replica connection to the on-premises source.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.OnPremisesConfiguration.ssl_option
+	SSLOption *string `json:"sslOption,omitempty"`
 }
 
 // +kcc:proto=google.cloud.sql.v1beta4.PasswordValidationPolicy
@@ -735,7 +849,9 @@ type PasswordValidationPolicy struct {
 	// +kcc:proto:field=google.cloud.sql.v1beta4.PasswordValidationPolicy.password_change_interval
 	PasswordChangeInterval *string `json:"passwordChangeInterval,omitempty"`
 
-	// Whether the password policy is enabled or not.
+	// Whether to enable the password policy or not. When enabled, passwords must
+	//  meet complexity requirements. Keep this policy enabled to help prevent
+	//  unauthorized access. Disabling this policy allows weak passwords.
 	// +kcc:proto:field=google.cloud.sql.v1beta4.PasswordValidationPolicy.enable_password_policy
 	EnablePasswordPolicy *bool `json:"enablePasswordPolicy,omitempty"`
 
@@ -743,6 +859,126 @@ type PasswordValidationPolicy struct {
 	//  API.
 	// +kcc:proto:field=google.cloud.sql.v1beta4.PasswordValidationPolicy.disallow_compromised_credentials
 	DisallowCompromisedCredentials *bool `json:"disallowCompromisedCredentials,omitempty"`
+}
+
+// +kcc:proto=google.cloud.sql.v1beta4.PerformanceCaptureConfig
+type PerformanceCaptureConfig struct {
+	// Optional. Enables or disables the performance capture feature.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.PerformanceCaptureConfig.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// Optional. Specifies the interval in seconds between consecutive probes that
+	//  check if any trigger condition thresholds have been reached.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.PerformanceCaptureConfig.probing_interval_seconds
+	ProbingIntervalSeconds *int32 `json:"probingIntervalSeconds,omitempty"`
+
+	// Optional. Specifies the minimum number of consecutive probe threshold that
+	//  triggers performance capture.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.PerformanceCaptureConfig.probe_threshold
+	ProbeThreshold *int32 `json:"probeThreshold,omitempty"`
+
+	// Optional. Specifies the minimum number of MySQL `Threads_running` to
+	//  trigger the performance capture on the primary instance.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.PerformanceCaptureConfig.running_threads_threshold
+	RunningThreadsThreshold *int32 `json:"runningThreadsThreshold,omitempty"`
+
+	// Optional. Specifies the minimum number of seconds replica must be lagging
+	//  behind primary instance to trigger the performance capture on replica.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.PerformanceCaptureConfig.seconds_behind_source_threshold
+	SecondsBehindSourceThreshold *int32 `json:"secondsBehindSourceThreshold,omitempty"`
+
+	// Optional. Specifies the amount of time in seconds that a transaction needs
+	//  to have been open before the watcher starts recording it.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.PerformanceCaptureConfig.transaction_duration_threshold
+	TransactionDurationThreshold *int32 `json:"transactionDurationThreshold,omitempty"`
+
+	// Optional. Specifies the minimum percentage of CPU utilization to trigger
+	//  the performance capture. Valid integers range from `10` to `99`. Enter `0`
+	//  to disable the check.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.PerformanceCaptureConfig.cpu_utilization_threshold_percent
+	CPUUtilizationThresholdPercent *int32 `json:"cpuUtilizationThresholdPercent,omitempty"`
+
+	// Optional. Specifies the minimum percentage of memory usage to trigger the
+	//  performance capture.
+	//  Valid integers range from `10` to `99`. Enter `0` to disable the check.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.PerformanceCaptureConfig.memory_usage_threshold_percent
+	MemoryUsageThresholdPercent *int32 `json:"memoryUsageThresholdPercent,omitempty"`
+
+	// Optional. Specifies the minimum allowed number of transactions in lock wait
+	//  state to trigger the performance capture. Valid integers range from `10` to
+	//  `10000`. Enter `0` to disable the check.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.PerformanceCaptureConfig.transaction_lock_wait_threshold_count
+	TransactionLockWaitThresholdCount *int32 `json:"transactionLockWaitThresholdCount,omitempty"`
+
+	// Optional. Specifies the minimum allowed number of semaphore waits to
+	//  trigger the performance capture. Valid integers range from `10` to `10000`.
+	//  Enter `0` to disable the check.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.PerformanceCaptureConfig.semaphore_wait_threshold_count
+	SemaphoreWaitThresholdCount *int32 `json:"semaphoreWaitThresholdCount,omitempty"`
+
+	// Optional. Specifies the minimum number of undo log entries in the history
+	//  list length to trigger the performance capture. Valid integers range from
+	//  `10000` to `10000000`. Enter `0` to disable the check.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.PerformanceCaptureConfig.history_list_length_threshold_count
+	HistoryListLengthThresholdCount *int32 `json:"historyListLengthThresholdCount,omitempty"`
+
+	// Optional. Specifies the amount of time in seconds that a transaction needs
+	//  to have been open before the watcher starts terminating it. Valid integers
+	//  range from `60` to `604800` (7 days). Enter `0` to disable. If enabled
+	//  (i.e., > 0), this value must be greater than or equal to
+	//  `transaction_duration_threshold`. Configurations where
+	//  `0 < transaction_kill_threshold_seconds < transaction_duration_threshold`
+	//  will be rejected.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.PerformanceCaptureConfig.transaction_kill_threshold_seconds
+	TransactionKillThresholdSeconds *int32 `json:"transactionKillThresholdSeconds,omitempty"`
+
+	// Optional. Specifies a customer-defined list of users to exclude from
+	//  transaction termination. Entries can be in the format 'user@host' or just
+	//  'user'. A standalone 'user' implies 'user@%', excluding the user from any
+	//  host. Wildcard '%' is allowed in the host part of the 'user@host' format.
+	//  Example: `["app_user", "db_admin@10.1.2.3", "report_user@%"]`
+	// +kcc:proto:field=google.cloud.sql.v1beta4.PerformanceCaptureConfig.transaction_kill_excluded_user_hosts
+	TransactionKillExcludedUserHosts []string `json:"transactionKillExcludedUserHosts,omitempty"`
+
+	// Optional. Determines which transactions are allowed to be terminated when
+	//  they exceed `transaction_kill_threshold_seconds`. This allows protecting
+	//  write-heavy transactions from auto-termination if desired. Defaults to
+	//  `READ_ONLY_TRANSACTIONS` if unspecified.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.PerformanceCaptureConfig.transaction_kill_type
+	TransactionKillType *string `json:"transactionKillType,omitempty"`
+}
+
+// +kcc:proto=google.cloud.sql.v1beta4.PscAutoConnectionConfig
+type PSCAutoConnectionConfig struct {
+	// Optional. This is the project ID of consumer service project of this
+	//  consumer endpoint.
+	//
+	//  Optional. This is only applicable if consumer_network is a shared vpc
+	//  network.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.PscAutoConnectionConfig.consumer_project
+	ConsumerProject *string `json:"consumerProject,omitempty"`
+
+	// Optional. The consumer network of this consumer endpoint. This must be a
+	//  resource path that includes both the host project and the network name.
+	//
+	//  For example, `projects/project1/global/networks/network1`.
+	//
+	//  The consumer host project of this network might be different from the
+	//  consumer service project.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.PscAutoConnectionConfig.consumer_network
+	ConsumerNetwork *string `json:"consumerNetwork,omitempty"`
+
+	// The IP address of the consumer endpoint.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.PscAutoConnectionConfig.ip_address
+	IPAddress *string `json:"ipAddress,omitempty"`
+
+	// The connection status of the consumer endpoint.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.PscAutoConnectionConfig.status
+	Status *string `json:"status,omitempty"`
+
+	// The connection policy status of the consumer network.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.PscAutoConnectionConfig.consumer_network_status
+	ConsumerNetworkStatus *string `json:"consumerNetworkStatus,omitempty"`
 }
 
 // +kcc:proto=google.cloud.sql.v1beta4.PscConfig
@@ -759,6 +995,84 @@ type PSCConfig struct {
 	//  (numeric) or by a project id (alphanumeric).
 	// +kcc:proto:field=google.cloud.sql.v1beta4.PscConfig.allowed_consumer_projects
 	AllowedConsumerProjects []string `json:"allowedConsumerProjects,omitempty"`
+
+	// Optional. The list of settings for requested Private Service Connect
+	//  consumer endpoints that can be used to connect to this Cloud SQL instance.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.PscConfig.psc_auto_connections
+	PSCAutoConnections []PSCAutoConnectionConfig `json:"pscAutoConnections,omitempty"`
+
+	// Optional. The network attachment of the consumer network that the
+	//  Private Service Connect enabled Cloud SQL instance is
+	//  authorized to connect via PSC interface.
+	//  format: projects/PROJECT/regions/REGION/networkAttachments/ID
+	// +kcc:proto:field=google.cloud.sql.v1beta4.PscConfig.network_attachment_uri
+	NetworkAttachmentURI *string `json:"networkAttachmentURI,omitempty"`
+
+	// Optional. Indicates whether Private Service Connect DNS automation is
+	//  enabled for this instance. When enabled, Cloud SQL provisions a universal
+	//  DNS record across all networks configured with Private Service Connect
+	//  auto-connections. This will default to true for new instances when
+	//  Private Service Connect is enabled.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.PscConfig.psc_auto_dns_enabled
+	PSCAutoDNSEnabled *bool `json:"pscAutoDNSEnabled,omitempty"`
+
+	// Optional. Indicates whether Private Service Connect write endpoint DNS
+	//  automation is enabled for this instance. When enabled, Cloud SQL provisions
+	//  a universal global DNS record across all networks configured with Private
+	//  Service Connect auto-connections that points to the cluster primary
+	//  instance. This feature is only supported for Enterprise Plus edition. This
+	//  will default to true for new enterprise plus instances when
+	//  `psc_auto_dns_enabled` is enabled.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.PscConfig.psc_write_endpoint_dns_enabled
+	PSCWriteEndpointDNSEnabled *bool `json:"pscWriteEndpointDNSEnabled,omitempty"`
+
+	// Optional. Whether to set up the PSC service connection policy
+	//  automatically.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.PscConfig.psc_auto_connection_policy_enabled
+	PSCAutoConnectionPolicyEnabled *bool `json:"pscAutoConnectionPolicyEnabled,omitempty"`
+}
+
+// +kcc:proto=google.cloud.sql.v1beta4.ReadPoolAutoScaleConfig
+type ReadPoolAutoScaleConfig struct {
+	// Indicates whether read pool auto scaling is enabled.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.ReadPoolAutoScaleConfig.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// Minimum number of read pool nodes to be maintained.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.ReadPoolAutoScaleConfig.min_node_count
+	MinNodeCount *int32 `json:"minNodeCount,omitempty"`
+
+	// Maximum number of read pool nodes to be maintained.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.ReadPoolAutoScaleConfig.max_node_count
+	MaxNodeCount *int32 `json:"maxNodeCount,omitempty"`
+
+	// Optional. Target metrics for read pool auto scaling.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.ReadPoolAutoScaleConfig.target_metrics
+	TargetMetrics []ReadPoolAutoScaleConfig_TargetMetric `json:"targetMetrics,omitempty"`
+
+	// Indicates whether read pool auto scaling supports scale in operations
+	//  (removing nodes).
+	// +kcc:proto:field=google.cloud.sql.v1beta4.ReadPoolAutoScaleConfig.disable_scale_in
+	DisableScaleIn *bool `json:"disableScaleIn,omitempty"`
+
+	// The cooldown period for scale in operations.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.ReadPoolAutoScaleConfig.scale_in_cooldown_seconds
+	ScaleInCooldownSeconds *int32 `json:"scaleInCooldownSeconds,omitempty"`
+
+	// The cooldown period for scale out operations.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.ReadPoolAutoScaleConfig.scale_out_cooldown_seconds
+	ScaleOutCooldownSeconds *int32 `json:"scaleOutCooldownSeconds,omitempty"`
+}
+
+// +kcc:proto=google.cloud.sql.v1beta4.ReadPoolAutoScaleConfig.TargetMetric
+type ReadPoolAutoScaleConfig_TargetMetric struct {
+	// The metric name to be used for auto scaling.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.ReadPoolAutoScaleConfig.TargetMetric.metric
+	Metric *string `json:"metric,omitempty"`
+
+	// The target value for the metric.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.ReadPoolAutoScaleConfig.TargetMetric.target_value
+	TargetValue *float32 `json:"targetValue,omitempty"`
 }
 
 // +kcc:proto=google.cloud.sql.v1beta4.ReplicaConfiguration
@@ -806,6 +1120,13 @@ type ReplicationCluster struct {
 	FailoverDrReplicaName *string `json:"failoverDrReplicaName,omitempty"`
 }
 */
+
+// +kcc:proto=google.cloud.sql.v1beta4.SelectedObjects
+type SelectedObjects struct {
+	// Required. The name of the database to migrate.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.SelectedObjects.database
+	Database *string `json:"database,omitempty"`
+}
 
 // +kcc:proto=google.cloud.sql.v1beta4.Settings
 type Settings struct {
@@ -947,7 +1268,7 @@ type Settings struct {
 	// +kcc:proto:field=google.cloud.sql.v1beta4.Settings.sql_server_audit_config
 	SQLServerAuditConfig *SQLServerAuditConfig `json:"sqlServerAuditConfig,omitempty"`
 
-	// Optional. The edition of the instance.
+	// Optional. The edition type of the Cloud SQL instance.
 	// +kcc:proto:field=google.cloud.sql.v1beta4.Settings.edition
 	Edition *string `json:"edition,omitempty"`
 
@@ -981,10 +1302,15 @@ type Settings struct {
 	// +kcc:proto:field=google.cloud.sql.v1beta4.Settings.data_cache_config
 	DataCacheConfig *DataCacheConfig `json:"dataCacheConfig,omitempty"`
 
+	// Optional. Configuration value for recreation of replica after certain
+	//  replication lag.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.Settings.replication_lag_max_seconds
+	ReplicationLagMaxSeconds *Int32Value `json:"replicationLagMaxSeconds,omitempty"`
+
 	// Optional. When this parameter is set to true, Cloud SQL instances can
 	//  connect to Vertex AI to pass requests for real-time predictions and
 	//  insights to the AI. The default value is false. This applies only to Cloud
-	//  SQL for PostgreSQL instances.
+	//  SQL for MySQL and Cloud SQL for PostgreSQL instances.
 	// +kcc:proto:field=google.cloud.sql.v1beta4.Settings.enable_google_ml_integration
 	EnableGoogleMlIntegration *bool `json:"enableGoogleMlIntegration,omitempty"`
 
@@ -993,6 +1319,60 @@ type Settings struct {
 	//  Dataplex on Cloud SQL instances is activated.
 	// +kcc:proto:field=google.cloud.sql.v1beta4.Settings.enable_dataplex_integration
 	EnableDataplexIntegration *bool `json:"enableDataplexIntegration,omitempty"`
+
+	// Optional. When this parameter is set to true, Cloud SQL retains backups of
+	//  the instance even after the instance is deleted. The ON_DEMAND backup will
+	//  be retained until customer deletes the backup or the project. The AUTOMATED
+	//  backup will be retained based on the backups retention setting.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.Settings.retain_backups_on_delete
+	RetainBackupsOnDelete *bool `json:"retainBackupsOnDelete,omitempty"`
+
+	// Optional. Provisioned number of I/O operations per second for the data
+	//  disk. This field is only used for hyperdisk-balanced disk types.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.Settings.data_disk_provisioned_iops
+	DataDiskProvisionedIops *int64 `json:"dataDiskProvisionedIops,omitempty"`
+
+	// Optional. Provisioned throughput measured in MiB per second for the data
+	//  disk. This field is only used for hyperdisk-balanced disk types.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.Settings.data_disk_provisioned_throughput
+	DataDiskProvisionedThroughput *int64 `json:"dataDiskProvisionedThroughput,omitempty"`
+
+	// Optional. The managed connection pooling configuration for the instance.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.Settings.connection_pool_config
+	ConnectionPoolConfig *ConnectionPoolConfig `json:"connectionPoolConfig,omitempty"`
+
+	// Optional. The final backup configuration for the instance.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.Settings.final_backup_config
+	FinalBackupConfig *FinalBackupConfig `json:"finalBackupConfig,omitempty"`
+
+	// Optional. The read pool auto-scale configuration for the instance.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.Settings.read_pool_auto_scale_config
+	ReadPoolAutoScaleConfig *ReadPoolAutoScaleConfig `json:"readPoolAutoScaleConfig,omitempty"`
+
+	// Optional. Configures whether the replica is in accelerated mode. This
+	//  feature is in private preview and requires allowlisting to take effect.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.Settings.accelerated_replica_mode
+	AcceleratedReplicaMode *bool `json:"acceleratedReplicaMode,omitempty"`
+
+	// Optional. Cloud SQL for MySQL auto-upgrade configuration. When this
+	//  parameter is set to true, auto-upgrade is enabled for MySQL 8.0 minor
+	//  versions. The MySQL version must be 8.0.35 or higher.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.Settings.auto_upgrade_enabled
+	AutoUpgradeEnabled *bool `json:"autoUpgradeEnabled,omitempty"`
+
+	// Optional. The Microsoft Entra ID configuration for the SQL Server instance.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.Settings.entraid_config
+	EntraidConfig *SQLServerEntraIDConfig `json:"entraidConfig,omitempty"`
+
+	// This parameter controls whether to allow using ExecuteSql API to connect to
+	//  the instance. Not allowed by default.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.Settings.data_api_access
+	DataAPIAccess *string `json:"dataAPIAccess,omitempty"`
+
+	// Optional. Configuration for Performance Capture, provides diagnostic
+	//  metrics during high load situations.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.Settings.performance_capture_config
+	PerformanceCaptureConfig *PerformanceCaptureConfig `json:"performanceCaptureConfig,omitempty"`
 }
 
 // +kcc:proto=google.cloud.sql.v1beta4.SqlActiveDirectoryConfig
@@ -1004,6 +1384,25 @@ type SQLActiveDirectoryConfig struct {
 	// The name of the domain (e.g., mydomain.com).
 	// +kcc:proto:field=google.cloud.sql.v1beta4.SqlActiveDirectoryConfig.domain
 	Domain *string `json:"domain,omitempty"`
+
+	// Optional. The mode of the Active Directory configuration.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.SqlActiveDirectoryConfig.mode
+	Mode *string `json:"mode,omitempty"`
+
+	// Optional. Domain controller IPv4 addresses used to bootstrap Active
+	//  Directory.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.SqlActiveDirectoryConfig.dns_servers
+	DNSServers []string `json:"dnsServers,omitempty"`
+
+	// Optional. The secret manager key storing the administrator credential.
+	//  (e.g., projects/{project}/secrets/{secret}).
+	// +kcc:proto:field=google.cloud.sql.v1beta4.SqlActiveDirectoryConfig.admin_credential_secret_name
+	AdminCredentialSecretName *string `json:"adminCredentialSecretName,omitempty"`
+
+	// Optional. The organizational unit distinguished name. This is the full
+	//  hierarchical path to the organizational unit.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.SqlActiveDirectoryConfig.organizational_unit
+	OrganizationalUnit *string `json:"organizationalUnit,omitempty"`
 }
 
 // +kcc:proto=google.cloud.sql.v1beta4.SqlServerAuditConfig
@@ -1023,6 +1422,18 @@ type SQLServerAuditConfig struct {
 	// How often to upload generated audit files.
 	// +kcc:proto:field=google.cloud.sql.v1beta4.SqlServerAuditConfig.upload_interval
 	UploadInterval *string `json:"uploadInterval,omitempty"`
+}
+
+// +kcc:proto=google.cloud.sql.v1beta4.SqlServerEntraIdConfig
+type SQLServerEntraIDConfig struct {
+
+	// Optional. The tenant ID for the Entra ID configuration.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.SqlServerEntraIdConfig.tenant_id
+	TenantID *string `json:"tenantID,omitempty"`
+
+	// Optional. The application ID for the Entra ID configuration.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.SqlServerEntraIdConfig.application_id
+	ApplicationID *string `json:"applicationID,omitempty"`
 }
 
 // +kcc:proto=google.cloud.sql.v1beta4.SslCert
@@ -1081,6 +1492,17 @@ type BackupConfigurationObservedState struct {
 	//  for the database for point-in-time recovery.
 	// +kcc:proto:field=google.cloud.sql.v1beta4.BackupConfiguration.transactional_log_storage_state
 	TransactionalLogStorageState *string `json:"transactionalLogStorageState,omitempty"`
+
+	// Output only. Backup tier that manages the backups for the instance.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.BackupConfiguration.backup_tier
+	BackupTier *string `json:"backupTier,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.sql.v1beta4.ConnectionPoolConfig
+type ConnectionPoolConfigObservedState struct {
+	// Output only. Number of connection poolers.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.ConnectionPoolConfig.pooler_count
+	PoolerCount *int32 `json:"poolerCount,omitempty"`
 }
 
 // +kcc:observedstate:proto=google.cloud.sql.v1beta4.DatabaseInstance
@@ -1127,13 +1549,88 @@ type DatabaseInstanceObservedState struct {
 	// A primary instance and disaster recovery (DR) replica pair.
 	//  A DR replica is a cross-region replica that you designate
 	//  for failover in the event that the primary instance
-	//  experiences regional failure. Only applicable to MySQL.
+	//  experiences regional failure.
+	//  Applicable to MySQL and PostgreSQL.
 	// +kcc:proto:field=google.cloud.sql.v1beta4.DatabaseInstance.replication_cluster
 	ReplicationCluster *ReplicationClusterObservedState `json:"replicationCluster,omitempty"`
 
 	// Gemini instance configuration.
 	// +kcc:proto:field=google.cloud.sql.v1beta4.DatabaseInstance.gemini_config
 	GeminiConfig *GeminiInstanceConfigObservedState `json:"geminiConfig,omitempty"`
+
+	// Output only. This status indicates whether the instance satisfies PZI.
+	//
+	//  The status is reserved for future use.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.DatabaseInstance.satisfies_pzi
+	SatisfiesPzi *bool `json:"satisfiesPzi,omitempty"`
+
+	// Output only. Entries containing information about each read pool node of
+	//  the read pool.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.DatabaseInstance.nodes
+	Nodes []DatabaseInstance_PoolNodeConfigObservedState `json:"nodes,omitempty"`
+
+	// Output only. The list of DNS names used by this instance.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.DatabaseInstance.dns_names
+	DNSNames []DNSNameMappingObservedState `json:"dnsNames,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.sql.v1beta4.DatabaseInstance.PoolNodeConfig
+type DatabaseInstance_PoolNodeConfigObservedState struct {
+	// Output only. The name of the read pool node, to be used for retrieving
+	//  metrics and logs.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.DatabaseInstance.PoolNodeConfig.name
+	Name *string `json:"name,omitempty"`
+
+	// Output only. The zone of the read pool node.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.DatabaseInstance.PoolNodeConfig.gce_zone
+	GCEZone *string `json:"gceZone,omitempty"`
+
+	// Output only. Mappings containing IP addresses that can be used to connect
+	//  to the read pool node.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.DatabaseInstance.PoolNodeConfig.ip_addresses
+	IPAddresses []IPMapping `json:"ipAddresses,omitempty"`
+
+	// Output only. The DNS name of the read pool node.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.DatabaseInstance.PoolNodeConfig.dns_name
+	DNSName *string `json:"dnsName,omitempty"`
+
+	// Output only. The current state of the read pool node.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.DatabaseInstance.PoolNodeConfig.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. The list of DNS names used by this read pool node.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.DatabaseInstance.PoolNodeConfig.dns_names
+	DNSNames []DNSNameMappingObservedState `json:"dnsNames,omitempty"`
+
+	// Output only. The Private Service Connect (PSC) service attachment of the
+	//  read pool node.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.DatabaseInstance.PoolNodeConfig.psc_service_attachment_link
+	PSCServiceAttachmentLink *string `json:"pscServiceAttachmentLink,omitempty"`
+
+	// Output only. The list of settings for requested automatically-setup
+	//  Private Service Connect (PSC) consumer endpoints that can be used to
+	//  connect to this read pool node.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.DatabaseInstance.PoolNodeConfig.psc_auto_connections
+	PSCAutoConnections []PSCAutoConnectionConfigObservedState `json:"pscAutoConnections,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.sql.v1beta4.DnsNameMapping
+type DNSNameMappingObservedState struct {
+	// Output only. The DNS name.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.DnsNameMapping.name
+	Name *string `json:"name,omitempty"`
+
+	// Output only. The connection type of the DNS name.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.DnsNameMapping.connection_type
+	ConnectionType *string `json:"connectionType,omitempty"`
+
+	// Output only. The scope that the DNS name applies to.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.DnsNameMapping.dns_scope
+	DNSScope *string `json:"dnsScope,omitempty"`
+
+	// Output only. The manager for this DNS record.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.DnsNameMapping.record_manager
+	RecordManager *string `json:"recordManager,omitempty"`
 }
 
 // +kcc:observedstate:proto=google.cloud.sql.v1beta4.GeminiInstanceConfig
@@ -1163,15 +1660,85 @@ type GeminiInstanceConfigObservedState struct {
 	FlagRecommenderEnabled *bool `json:"flagRecommenderEnabled,omitempty"`
 }
 
+// +kcc:observedstate:proto=google.cloud.sql.v1beta4.IpConfiguration
+type IPConfigurationObservedState struct {
+	// PSC settings for this instance.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.IpConfiguration.psc_config
+	PSCConfig *PSCConfigObservedState `json:"pscConfig,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.sql.v1beta4.PscAutoConnectionConfig
+type PSCAutoConnectionConfigObservedState struct {
+	// Optional. This is the project ID of consumer service project of this
+	//  consumer endpoint.
+	//
+	//  Optional. This is only applicable if consumer_network is a shared vpc
+	//  network.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.PscAutoConnectionConfig.consumer_project
+	ConsumerProject *string `json:"consumerProject,omitempty"`
+
+	// Optional. The consumer network of this consumer endpoint. This must be a
+	//  resource path that includes both the host project and the network name.
+	//
+	//  For example, `projects/project1/global/networks/network1`.
+	//
+	//  The consumer host project of this network might be different from the
+	//  consumer service project.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.PscAutoConnectionConfig.consumer_network
+	ConsumerNetwork *string `json:"consumerNetwork,omitempty"`
+
+	// The IP address of the consumer endpoint.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.PscAutoConnectionConfig.ip_address
+	IPAddress *string `json:"ipAddress,omitempty"`
+
+	// The connection status of the consumer endpoint.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.PscAutoConnectionConfig.status
+	Status *string `json:"status,omitempty"`
+
+	// The connection policy status of the consumer network.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.PscAutoConnectionConfig.consumer_network_status
+	ConsumerNetworkStatus *string `json:"consumerNetworkStatus,omitempty"`
+
+	// Output only. The service connection policy created automatically for the
+	//  consumer network when `psc_auto_connection_policy_enabled` is true. It is
+	//  in the format of:
+	//  `projects/{project}/regions/{region}/serviceConnectionPolicies/{policy_id}`
+	//  The `policy_id` is in format of `$NETWORK-$RANDOM`.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.PscAutoConnectionConfig.service_connection_policy
+	ServiceConnectionPolicy *string `json:"serviceConnectionPolicy,omitempty"`
+
+	// Output only. The status of service connection policy creation.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.PscAutoConnectionConfig.service_connection_policy_creation_result
+	ServiceConnectionPolicyCreationResult *string `json:"serviceConnectionPolicyCreationResult,omitempty"`
+
+	// Output only. The status of automated DNS provisioning.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.PscAutoConnectionConfig.instance_auto_dns_status
+	InstanceAutoDNSStatus *string `json:"instanceAutoDNSStatus,omitempty"`
+
+	// Output only. The status of automated DNS provisioning for the write
+	//  endpoint.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.PscAutoConnectionConfig.write_endpoint_auto_dns_status
+	WriteEndpointAutoDNSStatus *string `json:"writeEndpointAutoDNSStatus,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.sql.v1beta4.PscConfig
+type PSCConfigObservedState struct {
+	// Optional. The list of settings for requested Private Service Connect
+	//  consumer endpoints that can be used to connect to this Cloud SQL instance.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.PscConfig.psc_auto_connections
+	PSCAutoConnections []PSCAutoConnectionConfigObservedState `json:"pscAutoConnections,omitempty"`
+}
+
 // +kcc:observedstate:proto=google.cloud.sql.v1beta4.ReplicationCluster
 type ReplicationClusterObservedState struct {
-	// Output only. If set, it indicates this instance has a private service
-	//  access (PSA) dns endpoint that is pointing to the primary instance of the
-	//  cluster. If this instance is the primary, the dns should be pointing to
-	//  this instance. After Switchover or Replica failover, this DNS endpoint
-	//  points to the promoted instance. This is a read-only field, returned to the
-	//  user as information. This field can exist even if a standalone instance
-	//  does not yet have a replica, or had a DR replica that was deleted.
+	// Output only. If set, this field indicates this instance has a private
+	//  service access (PSA) DNS endpoint that is pointing to the primary instance
+	//  of the cluster. If this instance is the primary, then the DNS endpoint
+	//  points to this instance. After a switchover or replica failover operation,
+	//  this DNS endpoint points to the promoted instance. This is a read-only
+	//  field, returned to the user as information. This field can exist even if a
+	//  standalone instance doesn't have a DR replica yet or the DR replica is
+	//  deleted.
 	// +kcc:proto:field=google.cloud.sql.v1beta4.ReplicationCluster.psa_write_endpoint
 	PsaWriteEndpoint *string `json:"psaWriteEndpoint,omitempty"`
 
@@ -1183,7 +1750,28 @@ type ReplicationClusterObservedState struct {
 
 // +kcc:observedstate:proto=google.cloud.sql.v1beta4.Settings
 type SettingsObservedState struct {
+	// The settings for IP Management. This allows to enable or disable the
+	//  instance IP and manage which external networks can connect to the instance.
+	//  The IPv4 address cannot be disabled for Second Generation instances.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.Settings.ip_configuration
+	IPConfiguration *IPConfigurationObservedState `json:"ipConfiguration,omitempty"`
+
 	// The daily backup configuration for the instance.
 	// +kcc:proto:field=google.cloud.sql.v1beta4.Settings.backup_configuration
 	BackupConfiguration *BackupConfigurationObservedState `json:"backupConfiguration,omitempty"`
+
+	// Optional. The managed connection pooling configuration for the instance.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.Settings.connection_pool_config
+	ConnectionPoolConfig *ConnectionPoolConfigObservedState `json:"connectionPoolConfig,omitempty"`
+
+	// Optional. The Microsoft Entra ID configuration for the SQL Server instance.
+	// +kcc:proto:field=google.cloud.sql.v1beta4.Settings.entraid_config
+	EntraidConfig *SQLServerEntraIDConfigObservedState `json:"entraidConfig,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.sql.v1beta4.SqlServerEntraIdConfig
+type SQLServerEntraIDConfigObservedState struct {
+	// Output only. This is always sql#sqlServerEntraIdConfig
+	// +kcc:proto:field=google.cloud.sql.v1beta4.SqlServerEntraIdConfig.kind
+	Kind *string `json:"kind,omitempty"`
 }

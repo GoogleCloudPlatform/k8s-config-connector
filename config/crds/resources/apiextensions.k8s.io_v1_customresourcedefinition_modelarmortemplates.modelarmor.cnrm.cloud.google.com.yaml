@@ -302,6 +302,12 @@ spec:
                   logTemplateOperations:
                     description: Optional. If true, log template crud operations.
                     type: boolean
+                  modalities:
+                    description: Optional. Specifies the modalities to scan. If empty,
+                      only text modality will be scanned.
+                    items:
+                      type: string
+                    type: array
                   multiLanguageDetection:
                     description: Optional. Metadata for multi language detection.
                     properties:

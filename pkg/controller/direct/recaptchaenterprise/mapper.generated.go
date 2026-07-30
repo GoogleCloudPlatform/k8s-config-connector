@@ -258,6 +258,7 @@ func KeyWebSettings_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.WebKeySe
 	out.AllowAmpTraffic = direct.LazyPtr(in.GetAllowAmpTraffic())
 	out.IntegrationType = direct.Enum_FromProto(mapCtx, in.GetIntegrationType())
 	out.ChallengeSecurityPreference = direct.Enum_FromProto(mapCtx, in.GetChallengeSecurityPreference())
+	// MISSING: ChallengeSettings
 	return out
 }
 */
@@ -275,6 +276,7 @@ found existing non-generated mapping function "KeyWebSettings_v1beta1_ToProto", 
 		out.AllowAmpTraffic = direct.ValueOf(in.AllowAmpTraffic)
 		out.IntegrationType = direct.Enum_ToProto[pb.WebKeySettings_IntegrationType](mapCtx, in.IntegrationType)
 		out.ChallengeSecurityPreference = direct.Enum_ToProto[pb.WebKeySettings_ChallengeSecurityPreference](mapCtx, in.ChallengeSecurityPreference)
+		// MISSING: ChallengeSettings
 		return out
 	}
 */

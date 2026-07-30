@@ -23,13 +23,17 @@
 
 package v1alpha1
 
+// +kcc:proto=google.cloud.developerconnect.v1.AppHubService
+type AppHubService struct {
+}
+
 // +kcc:proto=google.cloud.developerconnect.v1.AppHubWorkload
 type AppHubWorkload struct {
 }
 
 // +kcc:proto=google.cloud.developerconnect.v1.ArtifactConfig
 type ArtifactConfig struct {
-	// Optional. Set if the artifact is stored in Artifact regsitry.
+	// Optional. Set if the artifact is stored in Artifact registry.
 	// +kcc:proto:field=google.cloud.developerconnect.v1.ArtifactConfig.google_artifact_registry
 	GoogleArtifactRegistry *GoogleArtifactRegistry `json:"googleArtifactRegistry,omitempty"`
 
@@ -54,8 +58,9 @@ type BitbucketCloudConfig struct {
 
 	// Required. Immutable. SecretManager resource containing the webhook secret
 	//  used to verify webhook events, formatted as
-	//  `projects/*/secrets/*/versions/*`. This is used to validate and create
-	//  webhooks.
+	//  `projects/*/secrets/*/versions/*` or
+	//  `projects/*/locations/*/secrets/*/versions/*` (if regional secrets are
+	//  supported in that location). This is used to validate and create webhooks.
 	// +kcc:proto:field=google.cloud.developerconnect.v1.BitbucketCloudConfig.webhook_secret_secret_version
 	WebhookSecretSecretVersion *string `json:"webhookSecretSecretVersion,omitempty"`
 
@@ -81,7 +86,9 @@ type BitbucketDataCenterConfig struct {
 
 	// Required. Immutable. SecretManager resource containing the webhook secret
 	//  used to verify webhook events, formatted as
-	//  `projects/*/secrets/*/versions/*`. This is used to validate webhooks.
+	//  `projects/*/secrets/*/versions/*` or
+	//  `projects/*/locations/*/secrets/*/versions/*` (if regional secrets are
+	//  supported in that location). This is used to validate webhooks.
 	// +kcc:proto:field=google.cloud.developerconnect.v1.BitbucketDataCenterConfig.webhook_secret_secret_version
 	WebhookSecretSecretVersion *string `json:"webhookSecretSecretVersion,omitempty"`
 
@@ -128,6 +135,52 @@ type GKEWorkload struct {
 	Cluster *string `json:"cluster,omitempty"`
 }
 
+// +kcc:proto=google.cloud.developerconnect.v1.GenericHTTPEndpointConfig
+type GenericHTTPEndpointConfig struct {
+	// Optional. Basic authentication with username and password.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.GenericHTTPEndpointConfig.basic_authentication
+	BasicAuthentication *GenericHTTPEndpointConfig_BasicAuthentication `json:"basicAuthentication,omitempty"`
+
+	// Optional. Bearer token authentication with a token.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.GenericHTTPEndpointConfig.bearer_token_authentication
+	BearerTokenAuthentication *GenericHTTPEndpointConfig_BearerTokenAuthentication `json:"bearerTokenAuthentication,omitempty"`
+
+	// Required. Immutable. The service provider's https endpoint.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.GenericHTTPEndpointConfig.host_uri
+	HostURI *string `json:"hostURI,omitempty"`
+
+	// Optional. Configuration for using Service Directory to privately connect to
+	//  a HTTP service provider. This should only be set if the Http service
+	//  provider is hosted on-premises and not reachable by public internet. If
+	//  this field is left empty, calls to the HTTP service provider will be made
+	//  over the public internet.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.GenericHTTPEndpointConfig.service_directory_config
+	ServiceDirectoryConfig *ServiceDirectoryConfig `json:"serviceDirectoryConfig,omitempty"`
+
+	// Optional. The SSL certificate to use for requests to the HTTP service
+	//  provider.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.GenericHTTPEndpointConfig.ssl_ca_certificate
+	SSLCACertificate *string `json:"sslCACertificate,omitempty"`
+}
+
+// +kcc:proto=google.cloud.developerconnect.v1.GenericHTTPEndpointConfig.BasicAuthentication
+type GenericHTTPEndpointConfig_BasicAuthentication struct {
+	// The password SecretManager secret version to authenticate as.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.GenericHTTPEndpointConfig.BasicAuthentication.password_secret_version
+	PasswordSecretVersion *string `json:"passwordSecretVersion,omitempty"`
+
+	// Required. The username to authenticate as.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.GenericHTTPEndpointConfig.BasicAuthentication.username
+	Username *string `json:"username,omitempty"`
+}
+
+// +kcc:proto=google.cloud.developerconnect.v1.GenericHTTPEndpointConfig.BearerTokenAuthentication
+type GenericHTTPEndpointConfig_BearerTokenAuthentication struct {
+	// Optional. The token SecretManager secret version to authenticate as.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.GenericHTTPEndpointConfig.BearerTokenAuthentication.token_secret_version
+	TokenSecretVersion *string `json:"tokenSecretVersion,omitempty"`
+}
+
 // +kcc:proto=google.cloud.developerconnect.v1.GitHubConfig
 type GitHubConfig struct {
 	// Required. Immutable. The GitHub Application that was installed to the
@@ -157,12 +210,16 @@ type GitHubEnterpriseConfig struct {
 	AppID *int64 `json:"appID,omitempty"`
 
 	// Optional. SecretManager resource containing the private key of the GitHub
-	//  App, formatted as `projects/*/secrets/*/versions/*`.
+	//  App, formatted as `projects/*/secrets/*/versions/*` or
+	//  `projects/*/locations/*/secrets/*/versions/*` (if regional secrets are
+	//  supported in that location).
 	// +kcc:proto:field=google.cloud.developerconnect.v1.GitHubEnterpriseConfig.private_key_secret_version
 	PrivateKeySecretVersion *string `json:"privateKeySecretVersion,omitempty"`
 
 	// Optional. SecretManager resource containing the webhook secret of the
-	//  GitHub App, formatted as `projects/*/secrets/*/versions/*`.
+	//  GitHub App, formatted as `projects/*/secrets/*/versions/*` or
+	//  `projects/*/locations/*/secrets/*/versions/*` (if regional secrets are
+	//  supported in that location).
 	// +kcc:proto:field=google.cloud.developerconnect.v1.GitHubEnterpriseConfig.webhook_secret_secret_version
 	WebhookSecretSecretVersion *string `json:"webhookSecretSecretVersion,omitempty"`
 
@@ -181,13 +238,19 @@ type GitHubEnterpriseConfig struct {
 	// Optional. SSL certificate to use for requests to GitHub Enterprise.
 	// +kcc:proto:field=google.cloud.developerconnect.v1.GitHubEnterpriseConfig.ssl_ca_certificate
 	SSLCACertificate *string `json:"sslCACertificate,omitempty"`
+
+	// Optional. Immutable. GitHub Enterprise organization in which the GitHub App
+	//  is created.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.GitHubEnterpriseConfig.organization
+	Organization *string `json:"organization,omitempty"`
 }
 
 // +kcc:proto=google.cloud.developerconnect.v1.GitLabConfig
 type GitLabConfig struct {
 	// Required. Immutable. SecretManager resource containing the webhook secret
-	//  of a GitLab project, formatted as `projects/*/secrets/*/versions/*`. This
-	//  is used to validate webhooks.
+	//  of a GitLab project, formatted as `projects/*/secrets/*/versions/*` or
+	//  `projects/*/locations/*/secrets/*/versions/*` (if regional secrets are
+	//  supported in that location). This is used to validate webhooks.
 	// +kcc:proto:field=google.cloud.developerconnect.v1.GitLabConfig.webhook_secret_secret_version
 	WebhookSecretSecretVersion *string `json:"webhookSecretSecretVersion,omitempty"`
 
@@ -213,8 +276,9 @@ type GitLabEnterpriseConfig struct {
 	HostURI *string `json:"hostURI,omitempty"`
 
 	// Required. Immutable. SecretManager resource containing the webhook secret
-	//  of a GitLab project, formatted as `projects/*/secrets/*/versions/*`. This
-	//  is used to validate webhooks.
+	//  of a GitLab project, formatted as `projects/*/secrets/*/versions/*` or
+	//  `projects/*/locations/*/secrets/*/versions/*` (if regional secrets are
+	//  supported in that location). This is used to validate webhooks.
 	// +kcc:proto:field=google.cloud.developerconnect.v1.GitLabEnterpriseConfig.webhook_secret_secret_version
 	WebhookSecretSecretVersion *string `json:"webhookSecretSecretVersion,omitempty"`
 
@@ -272,6 +336,15 @@ type GoogleArtifactRegistry struct {
 	ArtifactRegistryPackage *string `json:"artifactRegistryPackage,omitempty"`
 }
 
+// +kcc:proto=google.cloud.developerconnect.v1.GoogleCloudRun
+type GoogleCloudRun struct {
+	// Required. Immutable. The name of the Cloud Run service.
+	//  Format:
+	//  `projects/{project}/locations/{location}/services/{service}`.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.GoogleCloudRun.service_uri
+	ServiceURI *string `json:"serviceURI,omitempty"`
+}
+
 // +kcc:proto=google.cloud.developerconnect.v1.InstallationState
 type InstallationState struct {
 }
@@ -279,9 +352,19 @@ type InstallationState struct {
 // +kcc:proto=google.cloud.developerconnect.v1.OAuthCredential
 type OAuthCredential struct {
 	// Required. A SecretManager resource containing the OAuth token that
-	//  authorizes the connection. Format: `projects/*/secrets/*/versions/*`.
+	//  authorizes the connection. Format: `projects/*/secrets/*/versions/*` or
+	//  `projects/*/locations/*/secrets/*/versions/*` (if regional secrets are
+	//  supported in that location).
 	// +kcc:proto:field=google.cloud.developerconnect.v1.OAuthCredential.oauth_token_secret_version
 	OauthTokenSecretVersion *string `json:"oauthTokenSecretVersion,omitempty"`
+}
+
+// +kcc:proto=google.cloud.developerconnect.v1.Projects
+type Projects struct {
+	// Optional. The project IDs.
+	//  Format: {project}
+	// +kcc:proto:field=google.cloud.developerconnect.v1.Projects.project_ids
+	ProjectIds []string `json:"projectIds,omitempty"`
 }
 
 // +kcc:proto=google.cloud.developerconnect.v1.RuntimeConfig
@@ -294,13 +377,40 @@ type RuntimeConfig struct {
 	URI *string `json:"uri,omitempty"`
 }
 
+// +kcc:proto=google.cloud.developerconnect.v1.SecureSourceManagerInstanceConfig
+type SecureSourceManagerInstanceConfig struct {
+	// Required. Immutable. Secure Source Manager instance resource, formatted as
+	//  `projects/*/locations/*/instances/*`
+	// +kcc:proto:field=google.cloud.developerconnect.v1.SecureSourceManagerInstanceConfig.instance
+	Instance *string `json:"instance,omitempty"`
+}
+
 // +kcc:proto=google.cloud.developerconnect.v1.UserCredential
 type UserCredential struct {
 	// Required. A SecretManager resource containing the user token that
 	//  authorizes the Developer Connect connection. Format:
-	//  `projects/*/secrets/*/versions/*`.
+	//  `projects/*/secrets/*/versions/*` or
+	//  `projects/*/locations/*/secrets/*/versions/*` (if regional secrets are
+	//  supported in that location).
 	// +kcc:proto:field=google.cloud.developerconnect.v1.UserCredential.user_token_secret_version
 	UserTokenSecretVersion *string `json:"userTokenSecretVersion,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.developerconnect.v1.AppHubService
+type AppHubServiceObservedState struct {
+	// Required. Output only. Immutable. The name of the App Hub Service.
+	//  Format:
+	//  `projects/{project}/locations/{location}/applications/{application}/services/{service}`.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.AppHubService.apphub_service
+	ApphubService *string `json:"apphubService,omitempty"`
+
+	// Output only. The criticality of the App Hub Service.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.AppHubService.criticality
+	Criticality *string `json:"criticality,omitempty"`
+
+	// Output only. The environment of the App Hub Service.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.AppHubService.environment
+	Environment *string `json:"environment,omitempty"`
 }
 
 // +kcc:observedstate:proto=google.cloud.developerconnect.v1.AppHubWorkload
@@ -439,6 +549,18 @@ type GitLabEnterpriseConfigObservedState struct {
 	ServerVersion *string `json:"serverVersion,omitempty"`
 }
 
+// +kcc:observedstate:proto=google.cloud.developerconnect.v1.GitProxyConfig
+type GitProxyConfigObservedState struct {
+	// Output only. The base URI for the HTTP proxy endpoint. Has
+	//  the format
+	//  `https://{generatedID}-c-h-{shortRegion}.developerconnect.dev`
+	//  Populated only when enabled is set to true.
+	//  This endpoint is used by other Google services that integrate with
+	//  Developer Connect.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.GitProxyConfig.http_proxy_base_uri
+	HTTPProxyBaseURI *string `json:"httpProxyBaseURI,omitempty"`
+}
+
 // +kcc:observedstate:proto=google.cloud.developerconnect.v1.InstallationState
 type InstallationStateObservedState struct {
 	// Output only. Current step of the installation process.
@@ -469,9 +591,17 @@ type RuntimeConfigObservedState struct {
 	// +kcc:proto:field=google.cloud.developerconnect.v1.RuntimeConfig.gke_workload
 	GKEWorkload *GKEWorkloadObservedState `json:"gkeWorkload,omitempty"`
 
+	// Output only. Cloud Run runtime.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.RuntimeConfig.google_cloud_run
+	GoogleCloudRun *GoogleCloudRun `json:"googleCloudRun,omitempty"`
+
 	// Output only. App Hub Workload.
 	// +kcc:proto:field=google.cloud.developerconnect.v1.RuntimeConfig.app_hub_workload
 	AppHubWorkload *AppHubWorkloadObservedState `json:"appHubWorkload,omitempty"`
+
+	// Output only. App Hub Service.
+	// +kcc:proto:field=google.cloud.developerconnect.v1.RuntimeConfig.app_hub_service
+	AppHubService *AppHubServiceObservedState `json:"appHubService,omitempty"`
 
 	// Required. Immutable. The URI of the runtime configuration.
 	//  For GKE, this is the cluster name.

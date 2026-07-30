@@ -106,21 +106,27 @@ type AttachedCluster struct {
 	// +kcc:proto:field=google.cloud.gkemulticloud.v1.AttachedCluster.security_posture_config
 	SecurityPostureConfig *SecurityPostureConfig `json:"securityPostureConfig,omitempty"`
 
-	// Optional. Input only. Tag keys/values directly bound to this resource.
+	// Optional. Input only. Tag keys and values directly bound to this resource.
 	//
-	//  Tag key must be specified in the format <tag namespace>/<tag key name>
+	//  The tag key must be specified in the format
+	//  `<tag namespace>/<tag key name>,`
 	//  where the tag namespace is the ID of the organization or name of the
-	//  project that the tag key is defined in.
-	//  The short name of a tag key or value can have a maximum length of 256
-	//  characters. The permitted character set for the short name includes UTF-8
-	//  encoded Unicode characters except single quotes ('), double quotes ("),
-	//  backslashes (\), and forward slashes (/).
+	//  project that the tag key is defined in. The short name of a tag key or
+	//  value can have a maximum length of 256 characters. The permitted character
+	//  set for the short name includes UTF-8 encoded Unicode characters except
+	//  single quotation marks (`'`), double quotation marks (`"`), backslashes
+	//  (`\`), and forward slashes (`/`).
 	//
 	//  See
 	//  [Tags](https://cloud.google.com/resource-manager/docs/tags/tags-overview)
 	//  for more details on Google Cloud Platform tags.
 	// +kcc:proto:field=google.cloud.gkemulticloud.v1.AttachedCluster.tags
 	Tags map[string]string `json:"tags,omitempty"`
+
+	// Optional. Kubernetes configurations for auto-installed components on the
+	//  cluster.
+	// +kcc:proto:field=google.cloud.gkemulticloud.v1.AttachedCluster.system_components_config
+	SystemComponentsConfig *SystemComponentsConfig `json:"systemComponentsConfig,omitempty"`
 }
 */
 
@@ -261,6 +267,19 @@ type KubernetesSecret struct {
 }
 */
 
+/* unreachable type Label
+// +kcc:proto=google.cloud.gkemulticloud.v1.Label
+type Label struct {
+	// This is the key of the label.
+	// +kcc:proto:field=google.cloud.gkemulticloud.v1.Label.key
+	Key *string `json:"key,omitempty"`
+
+	// This is the value of the label.
+	// +kcc:proto:field=google.cloud.gkemulticloud.v1.Label.value
+	Value *string `json:"value,omitempty"`
+}
+*/
+
 /* found existing non-generated go type "LoggingComponentConfig", skipping
 
 // +kcc:proto=google.cloud.gkemulticloud.v1.LoggingComponentConfig
@@ -312,6 +331,40 @@ type SecurityPostureConfig struct {
 	// Sets which mode to use for vulnerability scanning.
 	// +kcc:proto:field=google.cloud.gkemulticloud.v1.SecurityPostureConfig.vulnerability_mode
 	VulnerabilityMode *string `json:"vulnerabilityMode,omitempty"`
+}
+*/
+
+/* unreachable type SystemComponentsConfig
+// +kcc:proto=google.cloud.gkemulticloud.v1.SystemComponentsConfig
+type SystemComponentsConfig struct {
+	// Sets custom tolerations for pods created by auto-installed components.
+	// +kcc:proto:field=google.cloud.gkemulticloud.v1.SystemComponentsConfig.tolerations
+	Tolerations []Toleration `json:"tolerations,omitempty"`
+
+	// Sets custom labels for pods created by auto-installed components.
+	// +kcc:proto:field=google.cloud.gkemulticloud.v1.SystemComponentsConfig.labels
+	Labels []Label `json:"labels,omitempty"`
+}
+*/
+
+/* unreachable type Toleration
+// +kcc:proto=google.cloud.gkemulticloud.v1.Toleration
+type Toleration struct {
+	// Key is the taint key that the toleration applies to.
+	// +kcc:proto:field=google.cloud.gkemulticloud.v1.Toleration.key
+	Key *string `json:"key,omitempty"`
+
+	// Value is the taint value that the toleration applies to.
+	// +kcc:proto:field=google.cloud.gkemulticloud.v1.Toleration.value
+	Value *string `json:"value,omitempty"`
+
+	// KeyOperator represents a key's relationship to the value e.g. 'Exist'.
+	// +kcc:proto:field=google.cloud.gkemulticloud.v1.Toleration.key_operator
+	KeyOperator *string `json:"keyOperator,omitempty"`
+
+	// Effect indicates the taint effect to match e.g. 'NoSchedule'
+	// +kcc:proto:field=google.cloud.gkemulticloud.v1.Toleration.effect
+	Effect *string `json:"effect,omitempty"`
 }
 */
 

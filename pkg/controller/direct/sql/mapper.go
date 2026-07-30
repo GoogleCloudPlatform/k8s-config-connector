@@ -62,3 +62,67 @@ func DatabaseInstance_SQLOutOfDiskReport_SqlOutOfDiskState_ToProto(mapCtx *direc
 	out := direct.Enum_ToProto[pb.DatabaseInstance_SqlOutOfDiskReport_SqlOutOfDiskState](mapCtx, in)
 	return &out
 }
+
+func BackupConfigurationObservedState_BackupTier_ToProto(mapCtx *direct.MapContext, in *string) *pb.BackupConfiguration_BackupTier {
+	if in == nil {
+		return nil
+	}
+	out := direct.Enum_ToProto[pb.BackupConfiguration_BackupTier](mapCtx, in)
+	return &out
+}
+
+func DatabaseInstance_PoolNodeConfigObservedState_State_ToProto(mapCtx *direct.MapContext, in *string) *pb.DatabaseInstance_SqlInstanceState {
+	if in == nil {
+		return nil
+	}
+	out := direct.Enum_ToProto[pb.DatabaseInstance_SqlInstanceState](mapCtx, in)
+	return &out
+}
+
+func IPConfiguration_ServerCaMode_ToProto(mapCtx *direct.MapContext, in *string) *pb.IpConfiguration_CaMode {
+	if in == nil {
+		return nil
+	}
+	out := direct.Enum_ToProto[pb.IpConfiguration_CaMode](mapCtx, in)
+	return &out
+}
+
+func IPConfiguration_ServerCertificateRotationMode_ToProto(mapCtx *direct.MapContext, in *string) *pb.IpConfiguration_ServerCertificateRotationMode {
+	if in == nil {
+		return nil
+	}
+	out := direct.Enum_ToProto[pb.IpConfiguration_ServerCertificateRotationMode](mapCtx, in)
+	return &out
+}
+
+func PSCAutoConnectionConfigObservedState_InstanceAutoDnsStatus_ToProto(mapCtx *direct.MapContext, in *string) *pb.AutoDnsStatus {
+	if in == nil {
+		return nil
+	}
+	out := direct.Enum_ToProto[pb.AutoDnsStatus](mapCtx, in)
+	return &out
+}
+
+func PSCAutoConnectionConfigObservedState_WriteEndpointAutoDnsStatus_ToProto(mapCtx *direct.MapContext, in *string) *pb.AutoDnsStatus {
+	if in == nil {
+		return nil
+	}
+	out := direct.Enum_ToProto[pb.AutoDnsStatus](mapCtx, in)
+	return &out
+}
+
+func PerformanceCaptureConfig_TransactionKillType_ToProto(mapCtx *direct.MapContext, in *string) *pb.PerformanceCaptureConfig_TransactionKillType {
+	if in == nil {
+		return nil
+	}
+	out := direct.Enum_ToProto[pb.PerformanceCaptureConfig_TransactionKillType](mapCtx, in)
+	return &out
+}
+
+func Settings_DataApiAccess_ToProto(mapCtx *direct.MapContext, in *string) *pb.Settings_DataApiAccess {
+	if in == nil {
+		return nil
+	}
+	out := direct.Enum_ToProto[pb.Settings_DataApiAccess](mapCtx, in)
+	return &out
+}

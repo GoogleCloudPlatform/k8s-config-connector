@@ -108,7 +108,7 @@ spec:
                       type: object
                     googleArtifactRegistry:
                       description: Optional. Set if the artifact is stored in Artifact
-                        regsitry.
+                        registry.
                       properties:
                         artifactRegistryPackage:
                           description: Required. Immutable. The name of the artifact
@@ -255,6 +255,22 @@ spec:
                       application is deployed.
                     items:
                       properties:
+                        appHubService:
+                          description: Output only. App Hub Service.
+                          properties:
+                            apphubService:
+                              description: 'Required. Output only. Immutable. The
+                                name of the App Hub Service. Format: `projects/{project}/locations/{location}/applications/{application}/services/{service}`.'
+                              type: string
+                            criticality:
+                              description: Output only. The criticality of the App
+                                Hub Service.
+                              type: string
+                            environment:
+                              description: Output only. The environment of the App
+                                Hub Service.
+                              type: string
+                          type: object
                         appHubWorkload:
                           description: Output only. App Hub Workload.
                           properties:
@@ -281,6 +297,14 @@ spec:
                             deployment:
                               description: 'Output only. The name of the GKE deployment.
                                 Format: `projects/{project}/locations/{location}/clusters/{cluster}/namespaces/{namespace}/deployments/{deployment}`.'
+                              type: string
+                          type: object
+                        googleCloudRun:
+                          description: Output only. Cloud Run runtime.
+                          properties:
+                            serviceURI:
+                              description: 'Required. Immutable. The name of the Cloud
+                                Run service. Format: `projects/{project}/locations/{location}/services/{service}`.'
                               type: string
                           type: object
                         state:

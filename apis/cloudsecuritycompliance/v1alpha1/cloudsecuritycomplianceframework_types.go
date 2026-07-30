@@ -40,9 +40,6 @@ type CloudSecurityComplianceFrameworkSpec struct {
 	// Optional. The description of the framework. The maximum length is 2000 characters.
 	Description *string `json:"description,omitempty"`
 
-	// Optional. The details of the cloud control groups included in the framework.
-	CloudControlGroupDetails []Framework_CloudControlGroupDetails `json:"cloudControlGroupDetails,omitempty"`
-
 	// Optional. The details of the cloud controls directly added without any grouping in the framework.
 	CloudControlDetails []CloudControlDetails `json:"cloudControlDetails,omitempty"`
 
@@ -74,9 +71,6 @@ type CloudSecurityComplianceFrameworkObservedState struct {
 
 	// Output only. The type of the framework. The default is TYPE_CUSTOM.
 	Type *string `json:"type,omitempty"`
-
-	// Optional. The details of the cloud control groups included in the framework.
-	CloudControlGroupDetails []Framework_CloudControlGroupDetailsObservedState `json:"cloudControlGroupDetails,omitempty"`
 
 	// Output only. cloud providers supported.
 	SupportedCloudProviders []string `json:"supportedCloudProviders,omitempty"`
@@ -137,46 +131,4 @@ type CloudControlDetails struct {
 	//  cloudcontrol.Eg: { "name": "location","value": "us-west-1"}.
 	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControlDetails.parameters
 	Parameters []Parameter `json:"parameters,omitempty"`
-}
-
-// kcc:proto=google.cloud.cloudsecuritycompliance.v1.CloudControlGroup
-type CloudControlGroup struct {
-	// Required. The name of the cloud control group in the format:
-	//  “organizations/{organization}/locations/{location}/
-	//  cloudControlGroups/{cloud-control-group}”
-	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControlGroup.name
-	CloudControlGroupRef *CloudSecurityComplianceCloudControlGroupRef `json:"cloudControlGroupRef,omitempty"`
-
-	// Optional. The description of the cloud control group.The maximum length is
-	//  2000 characters.
-	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControlGroup.description
-	Description *string `json:"description,omitempty"`
-
-	// Optional. The control identifier used to fetch the findings. This is same
-	//  as the control report name.
-	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControlGroup.control_id
-	ControlID *string `json:"controlID,omitempty"`
-
-	// Required. The details of the cloud controls to be referred to in the
-	//  framework.
-	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControlGroup.cloud_control_details
-	CloudControlDetails []CloudControlDetails `json:"cloudControlDetails,omitempty"`
-
-	// Optional. Major revision of the cloud control group.
-	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControlGroup.major_revision_id
-	MajorRevisionID *int64 `json:"majorRevisionID,omitempty"`
-
-	// Optional. The industry-defined Control assciated with the cloud controls in
-	//  this group.
-	//  organizations/{organization}/locations/{location}/controls/{control_id}
-	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControlGroup.control
-	ControlRef *CloudSecurityComplianceControlRef `json:"controlRef,omitempty"`
-}
-
-// kcc:observedstate:proto=google.cloud.cloudsecuritycompliance.v1.CloudControlGroup
-type CloudControlGroupObservedState struct {
-	// Optional. Output only. The type of the cloud control group. Default is
-	//  TYPE_CUSTOM.
-	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.CloudControlGroup.type
-	Type *string `json:"type,omitempty"`
 }

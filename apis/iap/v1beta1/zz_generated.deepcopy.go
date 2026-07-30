@@ -692,6 +692,16 @@ func (in *OAuthSettings) DeepCopyInto(out *OAuthSettings) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.ClientID != nil {
+		in, out := &in.ClientID, &out.ClientID
+		*out = new(string)
+		**out = **in
+	}
+	if in.ClientSecret != nil {
+		in, out := &in.ClientSecret, &out.ClientSecret
+		*out = new(string)
+		**out = **in
+	}
 	if in.ProgrammaticClients != nil {
 		in, out := &in.ProgrammaticClients, &out.ProgrammaticClients
 		*out = make([]string, len(*in))
