@@ -100,11 +100,11 @@ class TestSplitTestMatrix(unittest.TestCase):
         self.assertNotIn("compute", remaining_fixtures)
         self.assertNotIn("storage", remaining_fixtures)
         self.assertNotIn("alloydb", remaining_fixtures)
-        self.assertEqual(len(remaining_fixtures), 2)
+        self.assertEqual(len(remaining_fixtures), 4) # 2 unchanged + 2 static (reconcileintervalannotations, stateabsentinspec)
 
-        # Total fixtures set equals all 5 services
+        # Total fixtures set equals all 5 services plus 2 static services
         all_fixtures = sorted(priority_fixtures + remaining_fixtures)
-        self.assertEqual(all_fixtures, ["alloydb", "bigquery", "compute", "kms", "storage"])
+        self.assertEqual(all_fixtures, sorted(["alloydb", "bigquery", "compute", "kms", "storage", "reconcileintervalannotations", "stateabsentinspec"]))
 
         # 23 supported sample services present in samples
         expected_samples = ["alloydb", "apigateway", "apigee", "bigquery", "bigqueryconnection", "bigquerydatapolicy", "bigquerydatatransfer", "cloudbuild", "cloudidentity", "compute", "dataflow", "dataproc", "gkehub", "iam", "kms", "orgpolicy", "redis", "secretmanager", "spanner", "sql", "storage", "unclassified", "workstations"]
@@ -127,8 +127,8 @@ class TestSplitTestMatrix(unittest.TestCase):
         # Dummy 'none' passed for priority when empty
         self.assertEqual(priority_fixtures, ["none"])
 
-        # All 5 services in remaining fixtures
-        self.assertEqual(sorted(remaining_fixtures), ["alloydb", "bigquery", "compute", "kms", "storage"])
+        # All 5 services plus 2 static services in remaining fixtures
+        self.assertEqual(sorted(remaining_fixtures), sorted(["alloydb", "bigquery", "compute", "kms", "storage", "reconcileintervalannotations", "stateabsentinspec"]))
 
     def test_sample_list_independence_from_all_crd_services(self):
         """Tests that samples list is NOT naively populated with all CRD services (catches phantom sample job regression)."""
@@ -143,8 +143,8 @@ class TestSplitTestMatrix(unittest.TestCase):
         remaining_fixtures = json.loads(outputs["remaining_fixtures_json"])
         samples = json.loads(outputs["samples_json"])
 
-        # Fixture services MUST include the 10 fake CRD services (5 original + 10 fake = 15 total)
-        self.assertEqual(len(remaining_fixtures), 15)
+        # Fixture services MUST include the 10 fake CRD services (5 original + 10 fake + 2 static = 17 total)
+        self.assertEqual(len(remaining_fixtures), 17)
         for idx in range(10):
             self.assertIn(f"fakecrdservice{idx}", remaining_fixtures)
 
