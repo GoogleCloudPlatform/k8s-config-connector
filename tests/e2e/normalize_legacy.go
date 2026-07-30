@@ -84,6 +84,18 @@ func LegacyNormalize(t *testing.T, h *create.Harness, project testgcp.GCPProject
 				// Access Context Manager uses an unusual operation path: "operations/accessPolicies/${accessPolicyId}/delete/${operationID}"
 			default:
 				r.OperationIDs[id] = true
+				if strings.HasPrefix(id, "org-") {
+					folder := testgcp.TestFolderID.Get()
+					org := testgcp.TestOrgID.Get()
+					if folder != "" {
+						normalizedFolderID := strings.ReplaceAll(id, folder, "${folderID}")
+						r.OperationIDs[normalizedFolderID] = true
+					}
+					if org != "" {
+						normalizedOrgID := strings.ReplaceAll(id, org, "${organizationID}")
+						r.OperationIDs[normalizedOrgID] = true
+					}
+				}
 			}
 		}
 	}
