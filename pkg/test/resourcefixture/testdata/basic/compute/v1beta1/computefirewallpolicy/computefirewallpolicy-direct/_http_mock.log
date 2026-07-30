@@ -88,7 +88,7 @@ X-Xss-Protection: 0
   "rules": [
     {
       "action": "goto_next",
-      "description": "default egress rule ipv6",
+      "description": "default egress rule",
       "direction": "EGRESS",
       "enableLogging": false,
       "kind": "compute#firewallPolicyRule",
@@ -107,7 +107,7 @@ X-Xss-Protection: 0
     },
     {
       "action": "goto_next",
-      "description": "default ingress rule ipv6",
+      "description": "default ingress rule",
       "direction": "INGRESS",
       "enableLogging": false,
       "kind": "compute#firewallPolicyRule",
@@ -262,7 +262,7 @@ X-Xss-Protection: 0
   "rules": [
     {
       "action": "goto_next",
-      "description": "default egress rule ipv6",
+      "description": "default egress rule",
       "direction": "EGRESS",
       "enableLogging": false,
       "kind": "compute#firewallPolicyRule",
@@ -281,7 +281,7 @@ X-Xss-Protection: 0
     },
     {
       "action": "goto_next",
-      "description": "default ingress rule ipv6",
+      "description": "default ingress rule",
       "direction": "INGRESS",
       "enableLogging": false,
       "kind": "compute#firewallPolicyRule",

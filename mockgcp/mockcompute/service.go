@@ -488,12 +488,12 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		}
 
 		isRouter := strings.Contains(r.URL.Path, "/routers")
-		isFirewallPolicy := strings.Contains(r.URL.Path, "/global/firewallPolicies")
+		isNetworkFirewallPolicy := strings.Contains(r.URL.Path, "/global/firewallPolicies") && !strings.Contains(r.URL.Path, "/locations/")
 		isGET := r.Method == http.MethodGet
 
 		var captured *responseCapture
 		var originalWriter http.ResponseWriter = w
-		if isLegacyHealthCheck || isRouter || (isFirewallPolicy && isGET) {
+		if isLegacyHealthCheck || isRouter || (isNetworkFirewallPolicy && isGET) {
 			captured = &responseCapture{ResponseWriter: w}
 			w = captured
 		}
@@ -526,7 +526,7 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 				}
 			}
 
-			if isFirewallPolicy && isGET {
+			if isNetworkFirewallPolicy && isGET {
 				if len(bodyBytes) > 0 && captured.code < 400 {
 					if rewritten, err := rewriteFirewallPolicyResponse(bodyBytes, r.URL.Path); err == nil {
 						bodyBytes = rewritten
