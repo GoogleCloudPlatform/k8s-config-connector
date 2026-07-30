@@ -62,7 +62,7 @@ func BigQueryDataTransferConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.
 	}
 	out := &krm.BigQueryDataTransferConfigSpec{}
 	if in.GetDestinationDatasetId() != "" {
-		out.DatasetRef = &bigquery.BigQueryDatasetRef{External: in.GetDestinationDatasetId()}
+		out.DatasetRef = &bigquery.DatasetRef{External: in.GetDestinationDatasetId()}
 	}
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.DataSourceID = direct.LazyPtr(in.GetDataSourceId())

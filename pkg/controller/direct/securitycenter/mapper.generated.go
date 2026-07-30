@@ -63,7 +63,7 @@ func SecurityCenterBigQueryExportSpec_FromProto(mapCtx *direct.MapContext, in *p
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.Filter = direct.LazyPtr(in.GetFilter())
 	if in.GetDataset() != "" {
-		out.DatasetRef = &krmbigqueryv1beta1.BigQueryDatasetRef{External: in.GetDataset()}
+		out.DatasetRef = &krmbigqueryv1beta1.DatasetRef{External: in.GetDataset()}
 	}
 	return out
 }

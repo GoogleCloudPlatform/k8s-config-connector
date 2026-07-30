@@ -167,7 +167,7 @@ uniqueWriterIdentity: boolean
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>BigQueryDatasetRef is a reference to a BigQueryDataset.</p>
+            <p>DatasetRef is a reference to a BigQueryDataset.</p>
         </td>
     </tr>
     <tr>

@@ -155,7 +155,7 @@ func (in *BigQueryDataTransferConfigSpec) DeepCopyInto(out *BigQueryDataTransfer
 	}
 	if in.DatasetRef != nil {
 		in, out := &in.DatasetRef, &out.DatasetRef
-		*out = new(bigqueryv1beta1.BigQueryDatasetRef)
+		*out = new(bigqueryv1beta1.DatasetRef)
 		**out = **in
 	}
 	if in.Disabled != nil {

@@ -91,7 +91,7 @@ spec:
                   - storageBucketRef
                 properties:
                   bigQueryDatasetRef:
-                    description: BigQueryDatasetRef is a reference to a BigQueryDataset.
+                    description: DatasetRef is a reference to a BigQueryDataset.
                     oneOf:
                     - not:
                         required:

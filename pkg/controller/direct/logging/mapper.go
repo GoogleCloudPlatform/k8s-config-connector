@@ -165,7 +165,7 @@ func LoggingLogSinkSpec_FromProto(mapCtx *direct.MapContext, in *pb.LogSink) *kr
 	if dest != "" {
 		if strings.HasPrefix(dest, "bigquery.googleapis.com/") {
 			val := strings.TrimPrefix(dest, "bigquery.googleapis.com/")
-			out.Destination.BigQueryDatasetRef = &bigqueryv1beta1.BigQueryDatasetRef{External: val}
+			out.Destination.BigQueryDatasetRef = &bigqueryv1beta1.DatasetRef{External: val}
 		} else if strings.HasPrefix(dest, "logging.googleapis.com/") {
 			val := strings.TrimPrefix(dest, "logging.googleapis.com/")
 			out.Destination.LoggingLogBucketRef = &krm.LoggingLogBucketRef{External: val}

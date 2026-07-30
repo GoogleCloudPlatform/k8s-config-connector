@@ -44,7 +44,7 @@ type SecurityCenterBigQueryExportSpec struct {
 
 	// The dataset to write findings' updates to.
 	// +kubebuilder:validation:Required
-	DatasetRef *bigqueryv1beta1.BigQueryDatasetRef `json:"datasetRef"`
+	DatasetRef *bigqueryv1beta1.DatasetRef `json:"datasetRef"`
 
 	// The SecurityCenterBigQueryExport name. If not given, the metadata.name will be used.
 	// +kubebuilder:validation:Optional

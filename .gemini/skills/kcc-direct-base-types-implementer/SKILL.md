@@ -76,7 +76,7 @@ After running the generator (via `generate.sh`), you must verify and enforce the
   return r.ValidateExternal(r.External)
   }
   ```
-  * Also implement `<kind>_identity.go` of the new reference resource(e.g., `computebackendbucket_identity.go`), as the `FromExternal` function is used in `<kind>_reference.go`. 
+  * Also implement `<kind>_identity.go` of the new reference resource(e.g., `networksecurityinterceptdeploymentgroup_identity.go`), as the `FromExternal` function is used in `<kind>_reference.go`. 
   Example initial identity:
   ```
   var (
