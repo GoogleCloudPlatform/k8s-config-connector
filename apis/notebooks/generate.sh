@@ -24,12 +24,18 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 # --- v1alpha1 ---
 go run . generate-types \
-  --service google.cloud.notebooks.v1 \
+  --service google.cloud.notebooks.v1,google.cloud.notebooks.v2 \
   --api-version notebooks.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output \
   --resource NotebooksEnvironment:Environment \
   --resource NotebooksExecution:Execution \
-  --resource NotebooksSchedule:Schedule
+  --resource NotebooksSchedule:Schedule \
+  --resource NotebookInstanceV2:Instance
+
+go run . generate-mapper \
+  --service google.cloud.notebooks.v2 \
+  --api-version notebooks.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output
 
 # --- v1beta1 ---
 go run . generate-types \
