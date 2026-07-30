@@ -22,8 +22,8 @@ After running the generator (via `generate.sh`), you must verify and enforce the
 - **Reference Fields**: Ensure that fields referencing other GCP/KCC resources are implemented as proper KCC reference fields (e.g., using `pubsubv1beta1.PubSubTopicRef` or `refsv1beta1.ProjectRef`), following the `Ref` suffix naming convention. You **MUST NOT** add new exceptions to `tests/apichecks/testdata/exceptions/missingrefs.txt`. All reference-like fields must be implemented as proper references.
 - **Implement a New Reference Types**:
 
-  * Whenever a new reference type (e.g. `<Kind>Ref`) is needed, likely this reference resource does not have full KCC support yet. Only external reference is allowed.
-  The `<Kind>Ref` must **always** be defined and implemented in its own separate file named `<kind>_reference.go` (e.g., `computebackendbucket_reference.go`) under `apis/<service>/v1alpha1`(e.g., `apis/compute/v1alpha1/`) directory. This keeps the main type definitions clean and isolated from reference resolution boilerplate.
+  * When a field is a reference to another resource, and that reference resource does not have full KCC support yet, we should support it as external-only reference.
+  The `<newkind>Ref` must **always** be defined and implemented in its own separate file named `<newkind>_reference.go` (e.g., `networksecurityinterceptdeploymentgroup_reference.go`) under `apis/<service>/v1alpha1`(e.g., `apis/networksecurity/v1alpha1/`) directory. This keeps the main type definitions clean and isolated from reference resolution boilerplate.
   Example external-only reference:
   ```
   var _ refsv1beta1.Ref = &NetworkSecurityInterceptDeploymentGroupRef{}
