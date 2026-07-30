@@ -69,9 +69,42 @@ spec:
                 items:
                   type: string
                 type: array
+              collection:
+                description: Immutable. The collection of this resource.
+                type: string
+              dataStoreRef:
+                description: Immutable. The DataStore this serving config belongs
+                  to. Only one of engineRef or dataStoreRef can be set.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed DiscoveryEngineDataStore
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/datastores/{{datastoreID}}".
+                    type: string
+                  name:
+                    description: The name of a DiscoveryEngineDataStore resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a DiscoveryEngineDataStore resource.
+                    type: string
+                type: object
               displayName:
                 description: Required. The human readable serving config display name.
-                  Used in Discovery UI.
+                  Used in Discovery UI. Must be a UTF-8 encoded string with a length
+                  limit of 128 characters.
                 type: string
               dissociateControlIDs:
                 description: Condition do not associate specifications.
@@ -82,7 +115,8 @@ spec:
                 description: How much diversity to use in recommendation model results.
                 type: string
               embeddingConfig:
-                description: Bring your own embedding config.
+                description: Bring your own embedding config. The config is used for
+                  search semantic retrieval.
                 properties:
                   fieldPath:
                     description: Full field path in the schema mapped as embedding
@@ -91,6 +125,7 @@ spec:
                 type: object
               engineRef:
                 description: Immutable. The Engine this serving config belongs to.
+                  Only one of engineRef or dataStoreRef can be set.
                 oneOf:
                 - not:
                     required:
@@ -382,7 +417,7 @@ spec:
                   type: string
                 type: array
               location:
-                description: Immutable. Location of the resource.
+                description: Immutable. The location of this resource.
                 type: string
               mediaConfig:
                 description: The MediaConfig of the serving configuration.
@@ -438,7 +473,7 @@ spec:
                     type: string
                 type: object
               projectRef:
-                description: Immutable. The Project that this resource belongs to.
+                description: The project that this resource belongs to.
                 oneOf:
                 - not:
                     required:
@@ -484,8 +519,8 @@ spec:
                   type: string
                 type: array
               resourceID:
-                description: Immutable. The DiscoveryEngineServingConfig name. If
-                  not given, the metadata.name will be used.
+                description: The DiscoveryEngineServingConfig name. If not given,
+                  the metadata.name will be used.
                 type: string
               solutionType:
                 description: Required. Immutable. Specifies the solution type that
@@ -497,8 +532,8 @@ spec:
                   type: string
                 type: array
             required:
+            - collection
             - displayName
-            - engineRef
             - location
             - projectRef
             - solutionType

@@ -20,18 +20,20 @@ import (
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 // DataStoreIdentity is the identity of a DiscoveryEngineDataStore.
 type DataStoreIdentity struct {
-	parent *DataStoreParent
-	id     string
+	parent     *DataStoreParent
+	collection string
+	id         string
 }
 
 func (i *DataStoreIdentity) String() string {
-	return i.parent.String() + "/datastores/" + i.id
+	return i.parent.String() + "/collections/" + i.collection + "/dataStores/" + i.id
 }
 
 func (i *DataStoreIdentity) ID() string {
@@ -78,7 +80,7 @@ func NewDataStoreIdentity(ctx context.Context, reader client.Reader, obj *Discov
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		// Validate desired with actual
-		actualParent, actualResourceID, err := ParseDataStoreExternal(externalRef)
+		actualParent, actualCollection, actualResourceID, err := ParseDataStoreExternal(externalRef)
 		if err != nil {
 			return nil, err
 		}
@@ -87,6 +89,9 @@ func NewDataStoreIdentity(ctx context.Context, reader client.Reader, obj *Discov
 		}
 		if actualParent.Location != location {
 			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualParent.Location, location)
+		}
+		if actualCollection != obj.Spec.Collection {
+			return nil, fmt.Errorf("spec.collection changed, expect %s, got %s", actualCollection, obj.Spec.Collection)
 		}
 		if actualResourceID != resourceID {
 			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
@@ -98,19 +103,44 @@ func NewDataStoreIdentity(ctx context.Context, reader client.Reader, obj *Discov
 			ProjectID: projectID,
 			Location:  location,
 		},
-		id: resourceID,
+		collection: obj.Spec.Collection,
+		id:         resourceID,
 	}, nil
 }
 
-func ParseDataStoreExternal(external string) (parent *DataStoreParent, resourceID string, err error) {
-	tokens := strings.Split(external, "/")
-	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "datastores" {
-		return nil, "", fmt.Errorf("format of DiscoveryEngineDataStore external=%q was not known (use projects/{{projectID}}/locations/{{location}}/datastores/{{datastoreID}})", external)
+func ParseDataStoreExternal(external string) (parent *DataStoreParent, collection string, resourceID string, err error) {
+	id, err := ParseDiscoveryEngineDataStoreExternal(external)
+	if err != nil {
+		return nil, "", "", err
 	}
 	parent = &DataStoreParent{
-		ProjectID: tokens[1],
-		Location:  tokens[3],
+		ProjectID: id.ProjectID,
+		Location:  id.Location,
 	}
-	resourceID = tokens[5]
-	return parent, resourceID, nil
+	return parent, id.Collection, id.DataStore, nil
+}
+
+func (i *DataStoreIdentity) FromExternal(ref string) error {
+	s := ref
+	s = strings.TrimPrefix(s, "https:")
+	s = strings.TrimPrefix(s, "http:")
+	s = strings.TrimPrefix(s, "//discoveryengine.googleapis.com/")
+	s = strings.TrimPrefix(s, "discoveryengine.googleapis.com/")
+	s = strings.TrimPrefix(s, "/")
+	parent, collection, resourceID, err := ParseDataStoreExternal(s)
+	if err != nil {
+		return err
+	}
+	i.parent = parent
+	i.collection = collection
+	i.id = resourceID
+	return nil
+}
+
+func (obj *DiscoveryEngineDataStore) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	specIdentity, err := NewDataStoreIdentity(ctx, reader, obj)
+	if err != nil {
+		return nil, err
+	}
+	return specIdentity, nil
 }

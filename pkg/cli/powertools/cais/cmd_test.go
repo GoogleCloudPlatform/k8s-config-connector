@@ -260,13 +260,21 @@ func TestGoldenIdentitiesYamlFiles(t *testing.T) {
 				}
 			}
 
-			// If the identity is server-generated, and not specified, inject a spec.resourceID value.
 			gk := u.GroupVersionKind().GroupKind()
 			if obj, err := kccscheme.NewObject(gk); err == nil {
 				if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, obj); err == nil {
 					if resource, ok := obj.(identity.Resource); ok {
-						tempReader := cais.NewInMemoryReader(scheme, []*unstructured.Unstructured{u})
+						tempReader := cais.NewInMemoryReader(scheme, kccObjs)
 						if id, err := resource.GetIdentity(ctx, tempReader); err == nil && id != nil {
+							hasIdentity := true
+							if sgId, ok := id.(identity.ServerGeneratedIdentity); ok {
+								hasIdentity = sgId.HasIdentitySpecified()
+							}
+							if hasIdentity {
+								if val, _, _ := unstructured.NestedString(u.Object, "status", "externalRef"); val == "" {
+									_ = unstructured.SetNestedField(u.Object, id.String(), "status", "externalRef")
+								}
+							}
 							if sgId, ok := id.(identity.ServerGeneratedIdentity); ok {
 								if !sgId.HasIdentitySpecified() {
 									if gk.Kind == "KMSKeyHandle" {

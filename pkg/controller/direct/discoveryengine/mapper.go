@@ -278,6 +278,52 @@ func SearchRequest_ContentSearchSpec_v1alpha1_ToProto(mapCtx *direct.MapContext,
 	return out
 }
 
+func SearchRequest_ContentSearchSpec_ChunkSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *discoveryenginepb.SearchRequest_ContentSearchSpec_ChunkSpec) *krm.SearchRequest_ContentSearchSpec_ChunkSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SearchRequest_ContentSearchSpec_ChunkSpec{}
+	out.NumPreviousChunks = direct.LazyPtr(in.GetNumPreviousChunks())
+	out.NumNextChunks = direct.LazyPtr(in.GetNumNextChunks())
+	return out
+}
+
+func SearchRequest_ContentSearchSpec_ChunkSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.SearchRequest_ContentSearchSpec_ChunkSpec) *discoveryenginepb.SearchRequest_ContentSearchSpec_ChunkSpec {
+	if in == nil {
+		return nil
+	}
+	out := &discoveryenginepb.SearchRequest_ContentSearchSpec_ChunkSpec{}
+	out.NumPreviousChunks = direct.ValueOf(in.NumPreviousChunks)
+	out.NumNextChunks = direct.ValueOf(in.NumNextChunks)
+	return out
+}
+
+func SearchRequest_ContentSearchSpec_ExtractiveContentSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *discoveryenginepb.SearchRequest_ContentSearchSpec_ExtractiveContentSpec) *krm.SearchRequest_ContentSearchSpec_ExtractiveContentSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SearchRequest_ContentSearchSpec_ExtractiveContentSpec{}
+	out.MaxExtractiveAnswerCount = direct.LazyPtr(in.GetMaxExtractiveAnswerCount())
+	out.MaxExtractiveSegmentCount = direct.LazyPtr(in.GetMaxExtractiveSegmentCount())
+	out.ReturnExtractiveSegmentScore = direct.LazyPtr(in.GetReturnExtractiveSegmentScore())
+	out.NumPreviousSegments = direct.LazyPtr(in.GetNumPreviousSegments())
+	out.NumNextSegments = direct.LazyPtr(in.GetNumNextSegments())
+	return out
+}
+
+func SearchRequest_ContentSearchSpec_ExtractiveContentSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.SearchRequest_ContentSearchSpec_ExtractiveContentSpec) *discoveryenginepb.SearchRequest_ContentSearchSpec_ExtractiveContentSpec {
+	if in == nil {
+		return nil
+	}
+	out := &discoveryenginepb.SearchRequest_ContentSearchSpec_ExtractiveContentSpec{}
+	out.MaxExtractiveAnswerCount = direct.ValueOf(in.MaxExtractiveAnswerCount)
+	out.MaxExtractiveSegmentCount = direct.ValueOf(in.MaxExtractiveSegmentCount)
+	out.ReturnExtractiveSegmentScore = direct.ValueOf(in.ReturnExtractiveSegmentScore)
+	out.NumPreviousSegments = direct.ValueOf(in.NumPreviousSegments)
+	out.NumNextSegments = direct.ValueOf(in.NumNextSegments)
+	return out
+}
+
 func SearchRequest_ContentSearchSpec_SnippetSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *discoveryenginepb.SearchRequest_ContentSearchSpec_SnippetSpec) *krm.SearchRequest_ContentSearchSpec_SnippetSpec {
 	if in == nil {
 		return nil
@@ -372,52 +418,6 @@ func SearchRequest_ContentSearchSpec_SummarySpec_ModelSpec_v1alpha1_ToProto(mapC
 	return out
 }
 
-func SearchRequest_ContentSearchSpec_ExtractiveContentSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *discoveryenginepb.SearchRequest_ContentSearchSpec_ExtractiveContentSpec) *krm.SearchRequest_ContentSearchSpec_ExtractiveContentSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SearchRequest_ContentSearchSpec_ExtractiveContentSpec{}
-	out.MaxExtractiveAnswerCount = direct.LazyPtr(in.GetMaxExtractiveAnswerCount())
-	out.MaxExtractiveSegmentCount = direct.LazyPtr(in.GetMaxExtractiveSegmentCount())
-	out.ReturnExtractiveSegmentScore = direct.LazyPtr(in.GetReturnExtractiveSegmentScore())
-	out.NumPreviousSegments = direct.LazyPtr(in.GetNumPreviousSegments())
-	out.NumNextSegments = direct.LazyPtr(in.GetNumNextSegments())
-	return out
-}
-
-func SearchRequest_ContentSearchSpec_ExtractiveContentSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.SearchRequest_ContentSearchSpec_ExtractiveContentSpec) *discoveryenginepb.SearchRequest_ContentSearchSpec_ExtractiveContentSpec {
-	if in == nil {
-		return nil
-	}
-	out := &discoveryenginepb.SearchRequest_ContentSearchSpec_ExtractiveContentSpec{}
-	out.MaxExtractiveAnswerCount = direct.ValueOf(in.MaxExtractiveAnswerCount)
-	out.MaxExtractiveSegmentCount = direct.ValueOf(in.MaxExtractiveSegmentCount)
-	out.ReturnExtractiveSegmentScore = direct.ValueOf(in.ReturnExtractiveSegmentScore)
-	out.NumPreviousSegments = direct.ValueOf(in.NumPreviousSegments)
-	out.NumNextSegments = direct.ValueOf(in.NumNextSegments)
-	return out
-}
-
-func SearchRequest_ContentSearchSpec_ChunkSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *discoveryenginepb.SearchRequest_ContentSearchSpec_ChunkSpec) *krm.SearchRequest_ContentSearchSpec_ChunkSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.SearchRequest_ContentSearchSpec_ChunkSpec{}
-	out.NumPreviousChunks = direct.LazyPtr(in.GetNumPreviousChunks())
-	out.NumNextChunks = direct.LazyPtr(in.GetNumNextChunks())
-	return out
-}
-
-func SearchRequest_ContentSearchSpec_ChunkSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.SearchRequest_ContentSearchSpec_ChunkSpec) *discoveryenginepb.SearchRequest_ContentSearchSpec_ChunkSpec {
-	if in == nil {
-		return nil
-	}
-	out := &discoveryenginepb.SearchRequest_ContentSearchSpec_ChunkSpec{}
-	out.NumPreviousChunks = direct.ValueOf(in.NumPreviousChunks)
-	out.NumNextChunks = direct.ValueOf(in.NumNextChunks)
-	return out
-}
-
 func DiscoveryEngineServingConfigSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *discoveryenginepb.ServingConfig) *krm.DiscoveryEngineServingConfigSpec {
 	if in == nil {
 		return nil
@@ -432,14 +432,14 @@ func DiscoveryEngineServingConfigSpec_v1alpha1_FromProto(mapCtx *direct.MapConte
 	out.DiversityLevel = direct.LazyPtr(in.GetDiversityLevel())
 	out.EmbeddingConfig = EmbeddingConfig_v1alpha1_FromProto(mapCtx, in.GetEmbeddingConfig())
 	out.RankingExpression = direct.LazyPtr(in.GetRankingExpression())
-	out.FilterControlIDs = in.GetFilterControlIds()
-	out.BoostControlIDs = in.GetBoostControlIds()
-	out.RedirectControlIDs = in.GetRedirectControlIds()
-	out.SynonymsControlIDs = in.GetSynonymsControlIds()
-	out.OnewaySynonymsControlIDs = in.GetOnewaySynonymsControlIds()
-	out.DissociateControlIDs = in.GetDissociateControlIds()
-	out.ReplacementControlIDs = in.GetReplacementControlIds()
-	out.IgnoreControlIDs = in.GetIgnoreControlIds()
+	out.FilterControlIDs = in.FilterControlIds
+	out.BoostControlIDs = in.BoostControlIds
+	out.RedirectControlIDs = in.RedirectControlIds
+	out.SynonymsControlIDs = in.SynonymsControlIds
+	out.OnewaySynonymsControlIDs = in.OnewaySynonymsControlIds
+	out.DissociateControlIDs = in.DissociateControlIds
+	out.ReplacementControlIDs = in.ReplacementControlIds
+	out.IgnoreControlIDs = in.IgnoreControlIds
 	out.PersonalizationSpec = SearchRequest_PersonalizationSpec_v1alpha1_FromProto(mapCtx, in.GetPersonalizationSpec())
 	return out
 }

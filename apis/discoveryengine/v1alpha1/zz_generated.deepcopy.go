@@ -3410,6 +3410,11 @@ func (in *DiscoveryEngineServingConfigSpec) DeepCopyInto(out *DiscoveryEngineSer
 		*out = new(DiscoveryEngineEngineRef)
 		**out = **in
 	}
+	if in.DataStoreRef != nil {
+		in, out := &in.DataStoreRef, &out.DataStoreRef
+		*out = new(DiscoveryEngineDataStoreRef)
+		**out = **in
+	}
 	if in.ResourceID != nil {
 		in, out := &in.ResourceID, &out.ResourceID
 		*out = new(string)
@@ -3490,14 +3495,14 @@ func (in *DiscoveryEngineServingConfigSpec) DeepCopyInto(out *DiscoveryEngineSer
 		*out = new(SearchRequest_PersonalizationSpec)
 		(*in).DeepCopyInto(*out)
 	}
-	if in.GenericConfig != nil {
-		in, out := &in.GenericConfig, &out.GenericConfig
-		*out = new(ServingConfig_GenericConfig)
-		(*in).DeepCopyInto(*out)
-	}
 	if in.MediaConfig != nil {
 		in, out := &in.MediaConfig, &out.MediaConfig
 		*out = new(ServingConfig_MediaConfig)
+		(*in).DeepCopyInto(*out)
+	}
+	if in.GenericConfig != nil {
+		in, out := &in.GenericConfig, &out.GenericConfig
+		*out = new(ServingConfig_GenericConfig)
 		(*in).DeepCopyInto(*out)
 	}
 }

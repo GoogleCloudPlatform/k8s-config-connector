@@ -22,6 +22,7 @@ import (
 
 	pb "cloud.google.com/go/discoveryengine/apiv1/discoveryenginepb"
 	pb_v1beta "cloud.google.com/go/discoveryengine/apiv1beta/discoveryenginepb"
+	pbbeta "cloud.google.com/go/discoveryengine/apiv1beta/discoveryenginepb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
@@ -70,6 +71,7 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb_v1beta.RegisterLicenseConfigServiceServer(grpcServer, &licenseConfigService{MockService: s})
 	pb.RegisterEngineServiceServer(grpcServer, &engineService{MockService: s})
 	pb_v1beta.RegisterUserStoreServiceServer(grpcServer, &userStoreService{MockService: s})
+	pbbeta.RegisterServingConfigServiceServer(grpcServer, &servingConfigService{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -83,6 +85,7 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	mux.AddService(pb_v1beta.NewLicenseConfigServiceClient(conn))
 	mux.AddService(pb.NewEngineServiceClient(conn))
 	mux.AddService(pb_v1beta.NewUserStoreServiceClient(conn))
+	mux.AddService(pbbeta.NewServingConfigServiceClient(conn))
 	mux.AddOperationsPath("/v1/{prefix=**}/operations/{name}", conn)
 
 	return mux, nil

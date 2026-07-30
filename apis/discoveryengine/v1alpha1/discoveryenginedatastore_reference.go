@@ -23,6 +23,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -40,6 +41,38 @@ type DiscoveryEngineDataStoreRef struct {
 
 	// The namespace of a DiscoveryEngineDataStore resource.
 	Namespace string `json:"namespace,omitempty"`
+}
+
+var _ refsv1beta1.Ref = &DiscoveryEngineDataStoreRef{}
+
+func (r *DiscoveryEngineDataStoreRef) GetGVK() schema.GroupVersionKind {
+	return DiscoveryEngineDataStoreGVK
+}
+
+func (r *DiscoveryEngineDataStoreRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{
+		Namespace: r.Namespace,
+		Name:      r.Name,
+	}
+}
+
+func (r *DiscoveryEngineDataStoreRef) GetExternal() string {
+	return r.External
+}
+
+func (r *DiscoveryEngineDataStoreRef) SetExternal(ref string) {
+	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
+}
+
+func (r *DiscoveryEngineDataStoreRef) ValidateExternal(ref string) error {
+	identity := &DataStoreIdentity{}
+	return identity.FromExternal(ref)
+}
+
+func (r *DiscoveryEngineDataStoreRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	return refsv1beta1.Normalize(ctx, reader, r, defaultNamespace)
 }
 
 // DiscoveryEngineDataStoreID is a reference to a DiscoveryEngineDataStore.
@@ -197,4 +230,8 @@ func valueOf[T any](t *T) T {
 		return zeroVal
 	}
 	return *t
+}
+
+func init() {
+	refsv1beta1.Register(&DiscoveryEngineDataStoreRef{}, &DiscoveryEngineDataStore{})
 }

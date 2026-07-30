@@ -25,23 +25,30 @@ var DiscoveryEngineServingConfigGVK = GroupVersion.WithKind("DiscoveryEngineServ
 // DiscoveryEngineServingConfigSpec defines the desired state of DiscoveryEngineServingConfig
 // +kcc:spec:proto=google.cloud.discoveryengine.v1beta.ServingConfig
 type DiscoveryEngineServingConfigSpec struct {
-	// Immutable. The Project that this resource belongs to.
-	// +required
+	// The project that this resource belongs to.
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
 
-	// Immutable. Location of the resource.
+	// Immutable. The location of this resource.
 	// +required
 	Location string `json:"location"`
 
-	// Immutable. The Engine this serving config belongs to.
+	// Immutable. The collection of this resource.
 	// +required
-	EngineRef *DiscoveryEngineEngineRef `json:"engineRef"`
+	Collection string `json:"collection"`
 
-	// Immutable.
+	// Immutable. The Engine this serving config belongs to. Only one of engineRef or dataStoreRef can be set.
+	// +optional
+	EngineRef *DiscoveryEngineEngineRef `json:"engineRef,omitempty"`
+
+	// Immutable. The DataStore this serving config belongs to. Only one of engineRef or dataStoreRef can be set.
+	// +optional
+	DataStoreRef *DiscoveryEngineDataStoreRef `json:"dataStoreRef,omitempty"`
+
 	// The DiscoveryEngineServingConfig name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// Required. The human readable serving config display name. Used in Discovery UI.
+	// Must be a UTF-8 encoded string with a length limit of 128 characters.
 	// +required
 	DisplayName *string `json:"displayName,omitempty"`
 
@@ -50,49 +57,64 @@ type DiscoveryEngineServingConfigSpec struct {
 	SolutionType *string `json:"solutionType,omitempty"`
 
 	// The id of the model to use at serving time.
+	// +optional
 	ModelID *string `json:"modelID,omitempty"`
 
 	// How much diversity to use in recommendation model results.
+	// +optional
 	DiversityLevel *string `json:"diversityLevel,omitempty"`
 
-	// Bring your own embedding config.
+	// Bring your own embedding config. The config is used for search semantic retrieval.
+	// +optional
 	EmbeddingConfig *EmbeddingConfig `json:"embeddingConfig,omitempty"`
 
 	// The ranking expression controls the customized ranking on retrieval documents.
+	// +optional
 	RankingExpression *string `json:"rankingExpression,omitempty"`
 
 	// Filter controls to use in serving path.
+	// +optional
 	FilterControlIDs []string `json:"filterControlIDs,omitempty"`
 
 	// Boost controls to use in serving path.
+	// +optional
 	BoostControlIDs []string `json:"boostControlIDs,omitempty"`
 
 	// IDs of the redirect controls.
+	// +optional
 	RedirectControlIDs []string `json:"redirectControlIDs,omitempty"`
 
 	// Condition synonyms specifications.
+	// +optional
 	SynonymsControlIDs []string `json:"synonymsControlIDs,omitempty"`
 
 	// Condition oneway synonyms specifications.
+	// +optional
 	OnewaySynonymsControlIDs []string `json:"onewaySynonymsControlIDs,omitempty"`
 
 	// Condition do not associate specifications.
+	// +optional
 	DissociateControlIDs []string `json:"dissociateControlIDs,omitempty"`
 
 	// Condition replacement specifications.
+	// +optional
 	ReplacementControlIDs []string `json:"replacementControlIDs,omitempty"`
 
 	// Condition ignore specifications.
+	// +optional
 	IgnoreControlIDs []string `json:"ignoreControlIDs,omitempty"`
 
 	// The specification for personalization spec.
+	// +optional
 	PersonalizationSpec *SearchRequest_PersonalizationSpec `json:"personalizationSpec,omitempty"`
 
-	// The GenericConfig of the serving configuration.
-	GenericConfig *ServingConfig_GenericConfig `json:"genericConfig,omitempty"`
-
 	// The MediaConfig of the serving configuration.
+	// +optional
 	MediaConfig *ServingConfig_MediaConfig `json:"mediaConfig,omitempty"`
+
+	// The GenericConfig of the serving configuration.
+	// +optional
+	GenericConfig *ServingConfig_GenericConfig `json:"genericConfig,omitempty"`
 }
 
 // DiscoveryEngineServingConfigStatus defines the config connector machine state of DiscoveryEngineServingConfig
@@ -115,9 +137,11 @@ type DiscoveryEngineServingConfigStatus struct {
 // +kcc:observedstate:proto=google.cloud.discoveryengine.v1beta.ServingConfig
 type DiscoveryEngineServingConfigObservedState struct {
 	// Output only. ServingConfig created timestamp.
+	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
 
 	// Output only. ServingConfig updated timestamp.
+	// +optional
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
