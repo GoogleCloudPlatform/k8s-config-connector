@@ -151,9 +151,9 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
             shard_cnt="\${BASH_REMATCH[2]}"
             shard_idx=\$((shard_num - 1))
             service="\${target%-\${shard_num}-of-\${shard_cnt}}"
-            ./dev/ci/presubmits/tests-e2e-fixtures-service "\${service}" "\${shard_idx}" "\${shard_cnt}"
+            ./dev/ci/presubmits/tests-e2e-fixtures-suite "\${service}" "\${shard_idx}" "\${shard_cnt}"
           else
-            ./dev/ci/presubmits/tests-e2e-fixtures-service "\${target}" "0" "1"
+            ./dev/ci/presubmits/tests-e2e-fixtures-suite "\${target}" "0" "1"
           fi
         env:
           TARGET_SERVICE: \${{ matrix.service }}
@@ -200,9 +200,9 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
             shard_cnt="\${BASH_REMATCH[2]}"
             shard_idx=\$((shard_num - 1))
             service="\${target%-\${shard_num}-of-\${shard_cnt}}"
-            ./dev/ci/presubmits/tests-e2e-fixtures-service "\${service}" "\${shard_idx}" "\${shard_cnt}"
+            ./dev/ci/presubmits/tests-e2e-fixtures-suite "\${service}" "\${shard_idx}" "\${shard_cnt}"
           else
-            ./dev/ci/presubmits/tests-e2e-fixtures-service "\${target}" "0" "1"
+            ./dev/ci/presubmits/tests-e2e-fixtures-suite "\${target}" "0" "1"
           fi
         env:
           TARGET_SERVICE: \${{ matrix.service }}
@@ -254,7 +254,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
           install_components: 'alpha,beta'
       - name: "Run sample test for \${{ matrix.service }}"
         run: |
-          ./dev/ci/presubmits/tests-e2e-samples-service "\${TARGET_SERVICE}"
+          ./dev/ci/presubmits/tests-e2e-samples-suite "\${TARGET_SERVICE}"
         env:
           TARGET_SERVICE: \${{ matrix.service }}
           ARTIFACTS: /tmp/artifacts
@@ -317,6 +317,49 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
           path: /tmp/artifacts/
 EOF
         fi
+        continue
+    fi
+
+    if [[ "${name}" == "tests-e2e-direct-iam" ]]; then
+        jobs_array+=("tests-e2e-direct-iam")
+cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
+
+  tests-e2e-direct-iam:
+    runs-on: ubuntu-latest
+    needs: prepare-test-matrix
+    if: \${{ !cancelled() }}
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/setup-go@4a3601121dd01d1626a1e23e37211e3254c1c06c # v6.4.0
+        with:
+          go-version-file: 'go.mod'
+          cache: false
+      - name: Download prebuilt test binaries
+        uses: actions/download-artifact@484a0b528fb4d7bd804637ccb632e47a0e638317 # v4
+        with:
+          name: prebuilt-test-binaries
+          path: bin/
+      - name: Make binaries executable
+        run: chmod +x bin/* || true
+      - uses: google-github-actions/setup-gcloud@01af06c41d9aa0790d6fdc8f0b982b768ca4d102 # v2
+        with:
+          version: '546.0.0'
+          install_components: 'alpha,beta'
+      - name: "Run direct IAM tests"
+        run: |
+          ./dev/ci/presubmits/tests-e2e-fixtures-suite iam
+        env:
+          KCC_USE_DIRECT_RECONCILERS: "IAMPartialPolicy"
+          KCC_RECONCILE_FLAG_GATE: "USE_DEPENDENCY_TRACKER"
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4
+        if: \${{ !cancelled() }}
+        with:
+          name: artifacts-tests-e2e-direct-iam
+          path: /tmp/artifacts/
+EOF
         continue
     fi
 

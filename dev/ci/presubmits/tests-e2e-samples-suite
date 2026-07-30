@@ -18,7 +18,7 @@ set -o nounset
 set -o pipefail
 
 function on_error() {
-  echo "<hint_for_agent>Run 'dev/ci/presubmits/tests-e2e-fixtures-service' to fix.</hint_for_agent>"
+  echo "<hint_for_agent>Run 'dev/ci/presubmits/tests-e2e-samples-suite' to fix.</hint_for_agent>"
 }
 trap on_error ERR
 
@@ -33,26 +33,21 @@ cd "${REPO_ROOT}"
 
 . "${REPO_ROOT}/dev/tasks/setup-envtest"
 
-BASE_TEST="TestAllInSeries/fixtures"
-if [[ "${SERVICE}" == "reconcileintervalannotations" || "${SERVICE}" == "stateabsentinspec" ]]; then
-  BASE_TEST="TestAllInSeries/fixtures/pkg/test/resourcefixture/testdata/${SERVICE}"
+if [[ "${SERVICE}" == "unclassified" ]]; then
+  unset ONLY_TEST_APIGROUPS
 else
   export ONLY_TEST_APIGROUPS="${SERVICE}.cnrm.cloud.google.com"
 fi
+
 export USE_FULL_TEST_NAMES=true
 export TEST_TIMEOUT=15m
 
 echo "Prebuilding e2e tests..."
 export PREBUILT_TEST_BINARY=${REPO_ROOT}/.build/tests-e2e
 mkdir -p ${REPO_ROOT}/.build
-time go test -c -o ${PREBUILT_TEST_BINARY} ./tests/e2e
+if [[ ! -f "${PREBUILT_TEST_BINARY}" ]]; then
+  time go test -c -o ${PREBUILT_TEST_BINARY} ./tests/e2e
+fi
 
-echo "Building paralleltestrunner..."
-time go build -o ${REPO_ROOT}/.build/paralleltestrunner ${REPO_ROOT}/dev/tools/paralleltestrunner
-
-echo "Running ${SERVICE} fixtures tests in parallel..."
-${REPO_ROOT}/.build/paralleltestrunner \
-    -list-file="${REPO_ROOT}/tests/e2e/testdata/fixtures-${SERVICE}-list.txt" \
-    -base-test="${BASE_TEST}" \
-    -check-unchanged=true \
-    -- ${REPO_ROOT}/dev/tasks/run-e2e
+echo "Running ${SERVICE} samples tests..."
+${PREBUILT_TEST_BINARY} -test.run "^TestAllInSeries/samples$" -test.timeout 15m -test.v

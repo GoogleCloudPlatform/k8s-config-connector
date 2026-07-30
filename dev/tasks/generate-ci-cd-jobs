@@ -20,5 +20,5 @@ set -o pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}
 
-echo "Generating/verifying periodic runner dev/ci/periodics/e2e-service..."
-chmod +x ${REPO_ROOT}/dev/ci/periodics/e2e-service
+echo "Generating/verifying periodic runner dev/ci/periodics/e2e-suite..."
+chmod +x ${REPO_ROOT}/dev/ci/periodics/e2e-suite

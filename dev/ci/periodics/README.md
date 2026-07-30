@@ -19,5 +19,5 @@ ARTIFACTS=`pwd`/artifactz
 mkdir -p ${ARTIFACTS}
 export ARTIFACTS
 
-dev/ci/periodics/e2e-service-monitoring
+dev/ci/periodics/e2e-suite monitoring
 ```
