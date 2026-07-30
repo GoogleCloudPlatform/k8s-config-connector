@@ -1,7 +1,7 @@
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/autoscalers/${autoscalerID}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/autoscalers/computeautoscaler-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: project=${projectId}&zone=us-central1-a&autoscaler=${autoscalerID}
+X-Goog-Request-Params: project=${projectId}&zone=us-central1-a&autoscaler=computeautoscaler-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -27,128 +27,8 @@ X-Xss-Protection: 0
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "id": "000000000000000000000",
   "kind": "compute#autoscaler",
-  "name": "${autoscalerID}",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/autoscalers/${autoscalerID}",
-  "status": "ACTIVE",
-  "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/computeinstancegroupmanager-${uniqueId}",
-  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
-}
-
----
-
-PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/autoscalers?autoscaler=${autoscalerID}
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: project=${projectId}&zone=us-central1-a
-
-{
-  "autoscalingPolicy": {
-    "coolDownPeriodSec": 60,
-    "cpuUtilization": {
-      "predictiveMethod": "NONE",
-      "utilizationTarget": 0.6
-    },
-    "maxNumReplicas": 5,
-    "minNumReplicas": 1,
-    "mode": "ON"
-  },
-  "target": "projects/${projectId}/zones/us-central1-a/instanceGroupManagers/computeinstancegroupmanager-${uniqueId}",
-  "zone": "us-central1-a"
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "id": "000000000000000000000",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "compute#operation",
-  "name": "${operationID}",
-  "operationType": "compute.autoscalers.patch",
-  "progress": 0,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "RUNNING",
-  "targetId": "${autoscalerID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/autoscalers/${autoscalerID}",
-  "user": "user@example.com",
-  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: project=${projectId}&zone=us-central1-a&operation=${operationID}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "endTime": "2024-04-01T12:34:56.123456Z",
-  "id": "000000000000000000000",
-  "insertTime": "2024-04-01T12:34:56.123456Z",
-  "kind": "compute#operation",
-  "name": "${operationID}",
-  "operationType": "compute.autoscalers.patch",
-  "progress": 100,
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}",
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "status": "DONE",
-  "targetId": "${autoscalerID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/autoscalers/${autoscalerID}",
-  "user": "user@example.com",
-  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
-}
-
----
-
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/autoscalers/${autoscalerID}
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: project=${projectId}&zone=us-central1-a&autoscaler=${autoscalerID}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "autoscalingPolicy": {
-    "coolDownPeriodSec": 60,
-    "cpuUtilization": {
-      "predictiveMethod": "NONE",
-      "utilizationTarget": 0.6
-    },
-    "maxNumReplicas": 5,
-    "minNumReplicas": 1,
-    "mode": "ON"
-  },
-  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
-  "id": "000000000000000000000",
-  "kind": "compute#autoscaler",
-  "name": "${autoscalerID}",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/autoscalers/${autoscalerID}",
+  "name": "computeautoscaler-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/autoscalers/computeautoscaler-${uniqueId}",
   "status": "ACTIVE",
   "target": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/computeinstancegroupmanager-${uniqueId}",
   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
