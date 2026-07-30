@@ -13,6 +13,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# dev/ci/periodics/e2e-service is the master runner script for periodic E2E tests.
+#
+# Periodic jobs run on a recurring schedule (nightly/hourly) against REAL GCP (E2E_GCP_TARGET=real).
+# They provision a real GCP project, run fixture tests (TestAllInSeries/fixtures), and produce
+# a golden.zip artifact containing real HTTP traffic logs (_http.log) used to update mockgcp.
+#
+# Usage:
+#   dev/ci/periodics/e2e-service <service_short_name>
+#
+# Default Behavior:
+#   - ONLY_TEST_APIGROUPS is set to <service>.cnrm.cloud.google.com
+#   - EXTRA_GCP_SERVICES defaults to <service>.googleapis.com for ~90% of standard services.
+#
+# Edge Cases:
+#   - The case statement below overrides EXTRA_GCP_SERVICES only for services where the GCP
+#     API endpoint name differs from the KCC short name (e.g. sql -> sqladmin.googleapis.com)
+#     or where multiple GCP APIs must be enabled upfront.
+
 set -o errexit
 set -o nounset
 set -o pipefail
