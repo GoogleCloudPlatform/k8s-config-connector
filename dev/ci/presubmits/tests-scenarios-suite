@@ -36,11 +36,17 @@ cd "${REPO_ROOT}"
 export USE_FULL_TEST_NAMES=true
 export TEST_TIMEOUT=15m
 
-echo "Prebuilding e2e tests..."
-export PREBUILT_TEST_BINARY=${REPO_ROOT}/.build/tests-e2e
-mkdir -p ${REPO_ROOT}/.build
-if [[ ! -f "${PREBUILT_TEST_BINARY}" ]]; then
-  time go test -c -o ${PREBUILT_TEST_BINARY} ./tests/e2e
+if [[ -z "${PREBUILT_TEST_BINARY:-}" ]]; then
+  if [[ -f "${REPO_ROOT}/bin/tests-e2e" ]]; then
+    export PREBUILT_TEST_BINARY="${REPO_ROOT}/bin/tests-e2e"
+  else
+    export PREBUILT_TEST_BINARY="${REPO_ROOT}/.build/tests-e2e"
+    mkdir -p "${REPO_ROOT}/.build"
+    if [[ ! -f "${PREBUILT_TEST_BINARY}" ]]; then
+      echo "Prebuilding e2e tests..."
+      time go test -c -o "${PREBUILT_TEST_BINARY}" ./tests/e2e
+    fi
+  fi
 fi
 
 echo "Running ${SUITE} scenarios tests..."
