@@ -46,16 +46,29 @@ fi
 export USE_FULL_TEST_NAMES=true
 export TEST_TIMEOUT=15m
 
-echo "Prebuilding e2e tests..."
-export PREBUILT_TEST_BINARY=${REPO_ROOT}/.build/tests-e2e
-mkdir -p ${REPO_ROOT}/.build
-time go test -c -o ${PREBUILT_TEST_BINARY} ./tests/e2e
+if [[ -z "${PREBUILT_TEST_BINARY:-}" ]]; then
+  if [[ -f "${REPO_ROOT}/bin/tests-e2e" ]]; then
+    export PREBUILT_TEST_BINARY="${REPO_ROOT}/bin/tests-e2e"
+  else
+    export PREBUILT_TEST_BINARY="${REPO_ROOT}/.build/tests-e2e"
+    mkdir -p "${REPO_ROOT}/.build"
+    if [[ ! -f "${PREBUILT_TEST_BINARY}" ]]; then
+      echo "Prebuilding e2e tests..."
+      time go test -c -o "${PREBUILT_TEST_BINARY}" ./tests/e2e
+    fi
+  fi
+fi
 
-echo "Building paralleltestrunner..."
-time go build -o ${REPO_ROOT}/.build/paralleltestrunner ${REPO_ROOT}/dev/tools/paralleltestrunner
+PARALLEL_TEST_RUNNER="${REPO_ROOT}/.build/paralleltestrunner"
+if [[ -f "${REPO_ROOT}/bin/paralleltestrunner" ]]; then
+  PARALLEL_TEST_RUNNER="${REPO_ROOT}/bin/paralleltestrunner"
+elif [[ ! -f "${PARALLEL_TEST_RUNNER}" ]]; then
+  echo "Building paralleltestrunner..."
+  time go build -o "${PARALLEL_TEST_RUNNER}" "${REPO_ROOT}/dev/tools/paralleltestrunner"
+fi
 
 echo "Running ${SERVICE} fixtures tests in parallel..."
-${REPO_ROOT}/.build/paralleltestrunner \
+${PARALLEL_TEST_RUNNER} \
     -list-file="${REPO_ROOT}/tests/e2e/testdata/fixtures-${SERVICE}-list.txt" \
     -base-test="${BASE_TEST}" \
     -check-unchanged=true \
