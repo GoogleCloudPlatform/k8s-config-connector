@@ -1,7 +1,0 @@
-- caisURL: unknown
-  error: not yet supported
-  group: container.cnrm.cloud.google.com
-  kind: ContainerCluster
-  name: containercluster-${uniqueId}
-  namespace: ${uniqueId}
-  version: v1beta1

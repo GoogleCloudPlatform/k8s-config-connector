@@ -39,15 +39,11 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/register"
 )
 
-var exemptedGroupKinds = map[schema.GroupKind]bool{
-	// EdgeContainerNodePool does not implement UpdateNodePool mock, making label updates impossible to test in MockGCP.
-	{Group: "edgecontainer.cnrm.cloud.google.com", Kind: "EdgeContainerNodePool"}: true,
-	// VertexAITensorboard does not support updating labels field in mock GCP.
-	{Group: "vertexai.cnrm.cloud.google.com", Kind: "VertexAITensorboard"}: true,
-	// EdgeNetworkNetwork does not support updating labels (labels field is immutable).
-	{Group: "edgenetwork.cnrm.cloud.google.com", Kind: "EdgeNetworkNetwork"}: true,
-	// EdgeNetworkSubnet does not support updating labels (labels field is immutable).
-	{Group: "edgenetwork.cnrm.cloud.google.com", Kind: "EdgeNetworkSubnet"}: true,
+func isPreferredVersion(vNew, vOld string) bool {
+	if vNew == "v1beta1" && vOld == "v1alpha1" {
+		return true
+	}
+	return false
 }
 
 func TestVerifyLabelsTestCasesExist(t *testing.T) {
@@ -68,13 +64,26 @@ func TestVerifyLabelsTestCasesExist(t *testing.T) {
 
 	allFixtures := resourcefixture.Load(t)
 
+	// Deduplicate GVKs by GroupKind, keeping the preferred version (v1beta1 > v1alpha1)
+	dedupedGVKs := make(map[schema.GroupKind]schema.GroupVersionKind)
+	for _, gvk := range gvks {
+		gk := schema.GroupKind{Group: gvk.Group, Kind: gvk.Kind}
+		if existing, ok := dedupedGVKs[gk]; ok {
+			if isPreferredVersion(gvk.Version, existing.Version) {
+				dedupedGVKs[gk] = gvk
+			}
+		} else {
+			dedupedGVKs[gk] = gvk
+		}
+	}
+
 	var matchingGVKs []schema.GroupVersionKind
 
-	for _, gvk := range gvks {
+	for _, gvk := range dedupedGVKs {
 		gk := schema.GroupKind{Group: gvk.Group, Kind: gvk.Kind}
 		config, ok := resourceconfig.ControllerConfigStatic[gk]
 		if !ok {
-			continue
+			t.Fatalf("missing static controller configuration for GroupKind %v", gk)
 		}
 
 		supportsTF := false
@@ -88,35 +97,47 @@ func TestVerifyLabelsTestCasesExist(t *testing.T) {
 			}
 		}
 
+		if !supportsTF && !supportsDCL {
+			continue
+		}
+
 		hasLabels := false
 		if supportsTF {
 			rcs, err := smLoader.GetResourceConfigs(gvk)
-			if err == nil {
-				for _, rc := range rcs {
-					if rc.MetadataMapping.Labels != "" {
-						hasLabels = true
-						break
-					}
+			if err != nil {
+				t.Fatalf("error getting resource configs for %v: %v", gvk, err)
+			}
+			for _, rc := range rcs {
+				if rc.MetadataMapping.Labels != "" {
+					hasLabels = true
+					break
 				}
 			}
 		}
 
 		if supportsDCL {
 			s, err := dclschemaloader.GetDCLSchemaForGVK(gvk, serviceMetadataLoader, dclSchemaLoader)
-			if err == nil && s != nil {
+			if err != nil {
+				t.Fatalf("error getting DCL schema for %v: %v", gvk, err)
+			}
+			if s != nil {
 				_, _, found, err := dclextension.GetLabelsFieldSchema(s)
-				if err == nil && found {
+				if err != nil {
+					t.Fatalf("error getting labels field schema for %v: %v", gvk, err)
+				}
+				if found {
 					hasLabels = true
 				}
 			}
 		}
 
 		if hasLabels {
-			// Only require labels test case if there is a basic test case for this GVK.
-			if _, found := findBasicFixture(gvk, allFixtures); found {
-				gk := schema.GroupKind{Group: gvk.Group, Kind: gvk.Kind}
-				if !exemptedGroupKinds[gk] {
-					matchingGVKs = append(matchingGVKs, gvk)
+			_, found := findBasicFixture(gvk, allFixtures)
+			if found {
+				matchingGVKs = append(matchingGVKs, gvk)
+			} else {
+				if gvk.Version == "v1beta1" {
+					t.Errorf("missing basic test fixture for v1beta1 GVK %v", gvk)
 				}
 			}
 		}
@@ -136,6 +157,7 @@ func TestVerifyLabelsTestCasesExist(t *testing.T) {
 	testDataPath := filepath.Join(packagePath, "testdata")
 
 	missingCount := 0
+	var missingGVKs []schema.GroupVersionKind
 
 	for _, gvk := range matchingGVKs {
 		kindLower := strings.ToLower(gvk.Kind)
@@ -148,12 +170,21 @@ func TestVerifyLabelsTestCasesExist(t *testing.T) {
 		_, errUpdate := os.Stat(updatePath)
 
 		if os.IsNotExist(errCreate) || os.IsNotExist(errUpdate) {
-			missingCount++
-			t.Errorf("missing labels-only test case files for GVK %v (expected folder: %s)", gvk, folderPath)
+			if os.Getenv("GENERATE_LABELS_TESTS") != "1" {
+				missingCount++
+				missingGVKs = append(missingGVKs, gvk)
+				t.Errorf("missing labels-only test case files for GVK %v (expected folder: %s)", gvk, folderPath)
+				t.Logf("New labels test case for GVK %v was not generated because GENERATE_LABELS_TESTS is not set to 1", gvk)
+				continue
+			}
 
 			basicFixture, found := findBasicFixture(gvk, allFixtures)
 			if !found {
-				t.Logf("Warning: could not find any basic fixture for GVK %v, cannot auto-generate labels-only test case", gvk)
+				if gvk.Version == "v1beta1" {
+					t.Errorf("could not find any basic fixture for GVK %v, cannot auto-generate labels-only test case", gvk)
+				} else {
+					t.Logf("Warning: could not find any basic fixture for GVK %v, cannot auto-generate labels-only test case", gvk)
+				}
 				continue
 			}
 
@@ -170,6 +201,17 @@ func TestVerifyLabelsTestCasesExist(t *testing.T) {
 				u := &unstructured.Unstructured{}
 				if err := yaml.Unmarshal(docBytes, u); err != nil {
 					t.Fatalf("error unmarshalling document: %v", err)
+				}
+
+				// Strip reconciler annotation if present
+				annotations := u.GetAnnotations()
+				if annotations != nil {
+					delete(annotations, "alpha.cnrm.cloud.google.com/reconciler")
+					if len(annotations) == 0 {
+						u.SetAnnotations(nil)
+					} else {
+						u.SetAnnotations(annotations)
+					}
 				}
 
 				if u.GroupVersionKind() == gvk {
@@ -226,7 +268,11 @@ func TestVerifyLabelsTestCasesExist(t *testing.T) {
 	}
 
 	if missingCount > 0 {
-		t.Errorf("%d labels-only test cases were missing and have been auto-generated. Please check in the generated files.", missingCount)
+		var gvkstrs []string
+		for _, m := range missingGVKs {
+			gvkstrs = append(gvkstrs, m.String())
+		}
+		t.Errorf("%d labels-only test cases were missing: %s. Run with GENERATE_LABELS_TESTS=1 to auto-generate them.", missingCount, strings.Join(gvkstrs, ", "))
 	}
 }
 

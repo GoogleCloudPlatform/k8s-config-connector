@@ -1,6 +1,0 @@
-- caisURL: unknown
-  group: networksecurity.cnrm.cloud.google.com
-  kind: NetworkSecurityServerTLSPolicy
-  name: networksecurityservertlspolicy-${uniqueId}
-  namespace: ${uniqueId}
-  version: v1beta1
