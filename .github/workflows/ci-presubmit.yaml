@@ -61,7 +61,7 @@ jobs:
           go test -c -ldflags="-s -w" -buildvcs=false -o bin/tests-e2e ./tests/e2e
           go build -ldflags="-s -w" -buildvcs=false -o bin/paralleltestrunner ./dev/tools/paralleltestrunner
       - name: Upload prebuilt test binaries
-        uses: actions/upload-artifact@ea165f8d65b6e2d93e1b764b8d7831f25399583b # v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4.0.0
         with:
           name: prebuilt-test-binaries
           path: bin/
@@ -83,7 +83,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@ea165f8d65b6e2d93e1b764b8d7831f25399583b # v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4.0.0
         if: ${{ !cancelled() }}
         with:
           name: artifacts-capture-pprof
@@ -103,7 +103,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@ea165f8d65b6e2d93e1b764b8d7831f25399583b # v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4.0.0
         if: ${{ !cancelled() }}
         with:
           name: artifacts-fuzz-roundtrippers
@@ -144,7 +144,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@ea165f8d65b6e2d93e1b764b8d7831f25399583b # v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4.0.0
         if: ${{ !cancelled() }}
         with:
           name: artifacts-license-lint
@@ -164,7 +164,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@ea165f8d65b6e2d93e1b764b8d7831f25399583b # v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4.0.0
         if: ${{ !cancelled() }}
         with:
           name: artifacts-run-linters
@@ -184,7 +184,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@ea165f8d65b6e2d93e1b764b8d7831f25399583b # v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4.0.0
         if: ${{ !cancelled() }}
         with:
           name: artifacts-smoketest-with-kind
@@ -198,7 +198,7 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 # zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
-      - uses: google-github-actions/setup-gcloud@e427ad8a34f828a2a75d5e533036a1612a20b759 # v2
+      - uses: google-github-actions/setup-gcloud@01af06c41d9aa0790d6fdc8f0b982b768ca4d102 # v2.1.0
         with:
           version: '546.0.0'
           install_components: 'alpha,beta'
@@ -208,7 +208,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@ea165f8d65b6e2d93e1b764b8d7831f25399583b # v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4.0.0
         if: ${{ !cancelled() }}
         with:
           name: artifacts-test-mockgcp
@@ -228,7 +228,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@ea165f8d65b6e2d93e1b764b8d7831f25399583b # v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4.0.0
         if: ${{ !cancelled() }}
         with:
           name: artifacts-test-pause
@@ -244,7 +244,7 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 # zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
-      - uses: google-github-actions/setup-gcloud@e427ad8a34f828a2a75d5e533036a1612a20b759 # v2
+      - uses: google-github-actions/setup-gcloud@01af06c41d9aa0790d6fdc8f0b982b768ca4d102 # v2.1.0
         with:
           version: '546.0.0'
           install_components: 'alpha,beta'
@@ -256,7 +256,7 @@ jobs:
           KCC_RECONCILE_FLAG_GATE: "USE_DEPENDENCY_TRACKER"
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@ea165f8d65b6e2d93e1b764b8d7831f25399583b # v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4.0.0
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-direct-iam
@@ -279,13 +279,13 @@ jobs:
           go-version-file: 'go.mod'
           cache: false
       - name: Download prebuilt test binaries
-        uses: actions/download-artifact@d3f86a106a0b12753a811c7504f2537f7c653d9e # v4
+        uses: actions/download-artifact@484a0b528fb4d7bd804637ccb632e47a0e638317 # v4.0.0
         with:
           name: prebuilt-test-binaries
           path: bin/
       - name: Make binaries executable
         run: chmod +x bin/* || true
-      - uses: google-github-actions/setup-gcloud@e427ad8a34f828a2a75d5e533036a1612a20b759 # v2
+      - uses: google-github-actions/setup-gcloud@01af06c41d9aa0790d6fdc8f0b982b768ca4d102 # v2.1.0
         with:
           version: '546.0.0'
           install_components: 'alpha,beta'
@@ -305,7 +305,7 @@ jobs:
           TARGET_SERVICE: ${{ matrix.service }}
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@ea165f8d65b6e2d93e1b764b8d7831f25399583b # v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4.0.0
         if: ${{ !cancelled() }}
         with:
           name: artifacts-priority-e2e-fixtures-${{ matrix.service }}
@@ -328,13 +328,13 @@ jobs:
           go-version-file: 'go.mod'
           cache: false
       - name: Download prebuilt test binaries
-        uses: actions/download-artifact@d3f86a106a0b12753a811c7504f2537f7c653d9e # v4
+        uses: actions/download-artifact@484a0b528fb4d7bd804637ccb632e47a0e638317 # v4.0.0
         with:
           name: prebuilt-test-binaries
           path: bin/
       - name: Make binaries executable
         run: chmod +x bin/* || true
-      - uses: google-github-actions/setup-gcloud@e427ad8a34f828a2a75d5e533036a1612a20b759 # v2
+      - uses: google-github-actions/setup-gcloud@01af06c41d9aa0790d6fdc8f0b982b768ca4d102 # v2.1.0
         with:
           version: '546.0.0'
           install_components: 'alpha,beta'
@@ -354,7 +354,7 @@ jobs:
           TARGET_SERVICE: ${{ matrix.service }}
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@ea165f8d65b6e2d93e1b764b8d7831f25399583b # v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4.0.0
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-fixtures-${{ matrix.service }}
@@ -377,13 +377,13 @@ jobs:
           go-version-file: 'go.mod'
           cache: false
       - name: Download prebuilt test binaries
-        uses: actions/download-artifact@d3f86a106a0b12753a811c7504f2537f7c653d9e # v4
+        uses: actions/download-artifact@484a0b528fb4d7bd804637ccb632e47a0e638317 # v4.0.0
         with:
           name: prebuilt-test-binaries
           path: bin/
       - name: Make binaries executable
         run: chmod +x bin/* || true
-      - uses: google-github-actions/setup-gcloud@e427ad8a34f828a2a75d5e533036a1612a20b759 # v2
+      - uses: google-github-actions/setup-gcloud@01af06c41d9aa0790d6fdc8f0b982b768ca4d102 # v2.1.0
         with:
           version: '546.0.0'
           install_components: 'alpha,beta'
@@ -394,7 +394,7 @@ jobs:
           TARGET_SERVICE: ${{ matrix.service }}
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@ea165f8d65b6e2d93e1b764b8d7831f25399583b # v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4.0.0
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-e2e-samples-${{ matrix.service }}
@@ -413,7 +413,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@ea165f8d65b6e2d93e1b764b8d7831f25399583b # v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4.0.0
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-gcptracker
@@ -433,7 +433,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@ea165f8d65b6e2d93e1b764b8d7831f25399583b # v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4.0.0
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-preview
@@ -457,13 +457,13 @@ jobs:
           go-version-file: 'go.mod'
           cache: false
       - name: Download prebuilt test binaries
-        uses: actions/download-artifact@d3f86a106a0b12753a811c7504f2537f7c653d9e # v4
+        uses: actions/download-artifact@484a0b528fb4d7bd804637ccb632e47a0e638317 # v4.0.0
         with:
           name: prebuilt-test-binaries
           path: bin/
       - name: Make binaries executable
         run: chmod +x bin/* || true
-      - uses: google-github-actions/setup-gcloud@e427ad8a34f828a2a75d5e533036a1612a20b759 # v2
+      - uses: google-github-actions/setup-gcloud@01af06c41d9aa0790d6fdc8f0b982b768ca4d102 # v2.1.0
         with:
           version: '546.0.0'
           install_components: 'alpha,beta'
@@ -474,7 +474,7 @@ jobs:
           TARGET_SUITE: ${{ matrix.suite }}
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@ea165f8d65b6e2d93e1b764b8d7831f25399583b # v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4.0.0
         if: ${{ !cancelled() }}
         with:
           name: artifacts-tests-scenarios-${{ matrix.suite }}
@@ -489,7 +489,7 @@ jobs:
         run: dev/tasks/free-disk-space-on-github-actions-runner
 # zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
-      - uses: google-github-actions/setup-gcloud@e427ad8a34f828a2a75d5e533036a1612a20b759 # v2
+      - uses: google-github-actions/setup-gcloud@01af06c41d9aa0790d6fdc8f0b982b768ca4d102 # v2.1.0
         with:
           version: '546.0.0'
           install_components: 'alpha,beta'
@@ -499,7 +499,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@ea165f8d65b6e2d93e1b764b8d7831f25399583b # v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4.0.0
         if: ${{ !cancelled() }}
         with:
           name: artifacts-unit-tests
@@ -514,7 +514,7 @@ jobs:
         run: dev/tasks/free-disk-space-on-github-actions-runner
 # zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
-      - uses: google-github-actions/setup-gcloud@e427ad8a34f828a2a75d5e533036a1612a20b759 # v2
+      - uses: google-github-actions/setup-gcloud@01af06c41d9aa0790d6fdc8f0b982b768ca4d102 # v2.1.0
         with:
           version: '546.0.0'
           install_components: 'alpha,beta'
@@ -524,7 +524,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@ea165f8d65b6e2d93e1b764b8d7831f25399583b # v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4.0.0
         if: ${{ !cancelled() }}
         with:
           name: artifacts-unit-tests-operator
@@ -544,7 +544,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@ea165f8d65b6e2d93e1b764b8d7831f25399583b # v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4.0.0
         if: ${{ !cancelled() }}
         with:
           name: artifacts-validate-ensure
@@ -566,7 +566,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@ea165f8d65b6e2d93e1b764b8d7831f25399583b # v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4.0.0
         if: ${{ !cancelled() }}
         with:
           name: artifacts-validate-fmt
@@ -586,7 +586,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@ea165f8d65b6e2d93e1b764b8d7831f25399583b # v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4.0.0
         if: ${{ !cancelled() }}
         with:
           name: artifacts-validate-generated-files
@@ -608,7 +608,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@ea165f8d65b6e2d93e1b764b8d7831f25399583b # v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4.0.0
         if: ${{ !cancelled() }}
         with:
           name: artifacts-validate-github-actions
@@ -628,7 +628,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@ea165f8d65b6e2d93e1b764b8d7831f25399583b # v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4.0.0
         if: ${{ !cancelled() }}
         with:
           name: artifacts-validate-manifests
@@ -650,7 +650,7 @@ jobs:
         env:
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@ea165f8d65b6e2d93e1b764b8d7831f25399583b # v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4.0.0
         if: ${{ !cancelled() }}
         with:
           name: artifacts-validate-resource-docs
@@ -676,7 +676,7 @@ jobs:
           BASE_COMMIT: ${{ github.event.pull_request.base.sha }}
           ARTIFACTS: /tmp/artifacts
       - name: "Upload artifacts"
-        uses: actions/upload-artifact@ea165f8d65b6e2d93e1b764b8d7831f25399583b # v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v4.0.0
         if: ${{ !cancelled() }}
         with:
           name: artifacts-validate-untested-fields
