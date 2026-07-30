@@ -84,7 +84,7 @@ spec:
                 properties:
                   external:
                     description: A reference to an externally managed NetworkSecurityMirroringDeploymentGroup
-                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/interceptDeploymentGroups/{{interceptDeploymentGroupID}}".
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/mirroringDeploymentGroups/{{mirroringDeploymentGroupID}}".
                     type: string
                 type: object
               projectRef:

@@ -31,7 +31,7 @@ var NetworkSecurityMirroringDeploymentGroupGVK = GroupVersion.WithKind("NetworkS
 
 type NetworkSecurityMirroringDeploymentGroupRef struct {
 	/* A reference to an externally managed NetworkSecurityMirroringDeploymentGroup resource.
-	Should be in the format "projects/{{projectID}}/locations/{{location}}/interceptDeploymentGroups/{{interceptDeploymentGroupID}}". */
+	Should be in the format "projects/{{projectID}}/locations/{{location}}/mirroringDeploymentGroups/{{mirroringDeploymentGroupID}}". */
 	External string `json:"external,omitempty"`
 
 	/* NOTYET
