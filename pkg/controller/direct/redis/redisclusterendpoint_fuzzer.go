@@ -66,6 +66,7 @@ func redisClusterEndpointFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".rotate_server_certificate")
 	f.UnimplementedFields.Insert(".server_ca_mode")
 	f.UnimplementedFields.Insert(".server_ca_pool")
+	f.UnimplementedFields.Insert(".async_cluster_endpoints_deletion_enabled")
 
 	f.SpecFields.Insert(".cluster_endpoints")
 	f.StatusFields.Insert(".cluster_endpoints")

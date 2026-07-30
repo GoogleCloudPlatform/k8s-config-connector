@@ -128,7 +128,7 @@ func RedisClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *krm.
 		out.KMSKeyRef = &refs.KMSCryptoKeyRef{External: in.GetKmsKey()}
 	}
 	out.AutomatedBackupConfig = AutomatedBackupConfig_FromProto(mapCtx, in.GetAutomatedBackupConfig())
-
+	out.AsyncClusterEndpointsDeletionEnabled = in.AsyncClusterEndpointsDeletionEnabled
 	return out
 }
 
@@ -153,6 +153,7 @@ func RedisClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm.RedisClusterSpe
 		out.KmsKey = &in.KMSKeyRef.External
 	}
 	out.AutomatedBackupConfig = AutomatedBackupConfig_ToProto(mapCtx, in.AutomatedBackupConfig)
+	out.AsyncClusterEndpointsDeletionEnabled = in.AsyncClusterEndpointsDeletionEnabled
 	return out
 }
 

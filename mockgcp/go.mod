@@ -63,7 +63,7 @@ require (
 	cloud.google.com/go/pubsub v1.50.2
 	cloud.google.com/go/pubsublite v1.8.2
 	cloud.google.com/go/recaptchaenterprise/v2 v2.26.0
-	cloud.google.com/go/redis v1.23.0
+	cloud.google.com/go/redis v1.25.0
 	cloud.google.com/go/secretmanager v1.20.0
 	cloud.google.com/go/securesourcemanager v1.4.1
 	cloud.google.com/go/securitycenter v1.44.0

@@ -78,7 +78,7 @@ require (
 	cloud.google.com/go/profiler v0.4.3
 	cloud.google.com/go/pubsub/v2 v2.5.1
 	cloud.google.com/go/recaptchaenterprise/v2 v2.26.0
-	cloud.google.com/go/redis v1.23.0
+	cloud.google.com/go/redis v1.25.0
 	cloud.google.com/go/resourcemanager v1.15.0
 	cloud.google.com/go/run v1.21.0
 	cloud.google.com/go/saasplatform v0.9.0

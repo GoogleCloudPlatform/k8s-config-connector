@@ -1181,8 +1181,8 @@ cloud.google.com/go/redis v1.13.2/go.mod h1:0Hg7pCMXS9uz02q+LoEVl5dNHUkIQv+C/3L7
 cloud.google.com/go/redis v1.13.3/go.mod h1:vbUpCKUAZSYzFcWKmICnYgRAhTFg9r+djWqFxDYXi4U=
 cloud.google.com/go/redis v1.14.1/go.mod h1:MbmBxN8bEnQI4doZPC1BzADU4HGocHBk2de3SbgOkqs=
 cloud.google.com/go/redis v1.14.2/go.mod h1:g0Lu7RRRz46ENdFKQ2EcQZBAJ2PtJHJLuiiRuEXwyQw=
-cloud.google.com/go/redis v1.23.0 h1:y/NCxLQR46TQufJNjgINfWsRjCxkgClU37mMf/D1EE4=
-cloud.google.com/go/redis v1.23.0/go.mod h1:EUlUT24BAL6LsE1f/N9Bg3LhRCfH+LzwLGbst3KuZRw=
+cloud.google.com/go/redis v1.25.0 h1:tRuy6PJgMyZanP+Jrs7NTMzA4lSoRlmRSvb5txGsE7k=
+cloud.google.com/go/redis v1.25.0/go.mod h1:ebtw9WLFKswecHO2ifNykuteNJNwoPqMCHz4UI11kF4=
 cloud.google.com/go/resourcemanager v1.3.0/go.mod h1:bAtrTjZQFJkiWTPDb1WBjzvc6/kifjj4QBYuKCCoqKA=
 cloud.google.com/go/resourcemanager v1.4.0/go.mod h1:MwxuzkumyTX7/a3n37gmsT3py7LIXwrShilPh3P1tR0=
 cloud.google.com/go/resourcemanager v1.5.0/go.mod h1:eQoXNAiAvCf5PXxWxXjhKQoTMaUSNrEfg+6qdf/wots=

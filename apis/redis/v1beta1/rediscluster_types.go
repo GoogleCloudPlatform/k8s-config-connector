@@ -85,6 +85,13 @@ type RedisClusterSpec struct {
 
 	// Optional. Cross cluster replication config.
 	CrossClusterReplicationConfig *CrossClusterReplicationConfig `json:"crossClusterReplicationConfig,omitempty"`
+
+	// Optional. If true, cluster endpoints that are created and registered by
+	//  customers can be deleted asynchronously. That is, such a cluster endpoint
+	//  can be de-registered before the forwarding rules in the cluster endpoint
+	//  are deleted.
+	// +kcc:proto:field=google.cloud.redis.cluster.v1.Cluster.async_cluster_endpoints_deletion_enabled
+	AsyncClusterEndpointsDeletionEnabled *bool `json:"asyncClusterEndpointsDeletionEnabled,omitempty"`
 }
 
 type PscConfigSpec struct {
