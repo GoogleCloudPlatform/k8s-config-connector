@@ -65,7 +65,10 @@ func (s *BackupForGKEV1) CreateBackupChannel(ctx context.Context, req *pb.Create
 
 	now := time.Now()
 
-	obj := proto.CloneOf(req.GetBackupChannel())
+	obj := proto.Clone(req.GetBackupChannel()).(*pb.BackupChannel)
+	if obj.DestinationProject == fmt.Sprintf("projects/%s", name.Project.ID) || obj.DestinationProject == name.Project.ID {
+		return nil, status.Errorf(codes.InvalidArgument, "source and destination project cannot be same: invalid argument")
+	}
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
