@@ -140,6 +140,8 @@ func (s *MockService) parsePipelineJobName(name string) (*PipelineJobName, error
 	}
 }
 
+// GetTrainingPipeline retrieves a mocked TrainingPipeline from storage.
+// This is used for mock-based testing of the VertexAITrainingPipeline resource.
 func (s *pipelineService) GetTrainingPipeline(ctx context.Context, req *pb.GetTrainingPipelineRequest) (*pb.TrainingPipeline, error) {
 	name, err := s.parseTrainingPipelineName(req.Name)
 	if err != nil {
@@ -156,6 +158,8 @@ func (s *pipelineService) GetTrainingPipeline(ctx context.Context, req *pb.GetTr
 	return obj, nil
 }
 
+// CreateTrainingPipeline creates a mocked TrainingPipeline in storage.
+// It populates output-only fields like createTime, state, etc., to align with real GCP behavior.
 func (s *pipelineService) CreateTrainingPipeline(ctx context.Context, req *pb.CreateTrainingPipelineRequest) (*pb.TrainingPipeline, error) {
 	id := fmt.Sprintf("tp-%d", time.Now().UnixNano())
 	if req.GetTrainingPipeline().GetName() != "" {
@@ -199,6 +203,8 @@ func (s *pipelineService) CreateTrainingPipeline(ctx context.Context, req *pb.Cr
 	return obj, nil
 }
 
+// DeleteTrainingPipeline deletes a mocked TrainingPipeline from storage.
+// It returns a completed DeleteOperationMetadata operation to match the GCP LRO deletion pattern.
 func (s *pipelineService) DeleteTrainingPipeline(ctx context.Context, req *pb.DeleteTrainingPipelineRequest) (*longrunning.Operation, error) {
 	name, err := s.parseTrainingPipelineName(req.GetName())
 	if err != nil {
