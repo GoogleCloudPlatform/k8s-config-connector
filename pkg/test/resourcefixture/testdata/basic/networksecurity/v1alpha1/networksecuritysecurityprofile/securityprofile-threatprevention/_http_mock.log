@@ -1,10 +1,10 @@
 GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/GetSecurityProfile
 
 {
-  "name": "projects/${projectId}/locations/global/securityProfiles/sp-max-${uniqueId}"
+  "name": "projects/${projectId}/locations/global/securityProfiles/sp-${uniqueId}"
 }
 
-error: rpc error: code = NotFound desc = Resource 'projects/${projectId}/locations/global/securityProfiles/sp-max-${uniqueId}' was not found
+error: rpc error: code = NotFound desc = Resource 'projects/${projectId}/locations/global/securityProfiles/sp-${uniqueId}' was not found
 
 {}
 
@@ -15,11 +15,11 @@ GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/CreateSecurity
 {
   "parent": "projects/${projectId}/locations/global",
   "securityProfile": {
-    "description": "Maximal security profile description",
+    "description": "security profile description",
     "labels": {
       "foo": "bar"
     },
-    "name": "projects/${projectId}/locations/global/securityProfiles/sp-max-${uniqueId}",
+    "name": "projects/${projectId}/locations/global/securityProfiles/sp-${uniqueId}",
     "threatPreventionProfile": {
       "antivirusOverrides": [
         {
@@ -50,7 +50,7 @@ GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/CreateSecurity
     },
     "type": "THREAT_PREVENTION"
   },
-  "securityProfileId": "sp-max-${uniqueId}"
+  "securityProfileId": "sp-${uniqueId}"
 }
 
 OK
@@ -60,7 +60,7 @@ OK
     "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/global/securityProfiles/sp-max-${uniqueId}",
+    "target": "projects/${projectId}/locations/global/securityProfiles/sp-${uniqueId}",
     "verb": "create"
   },
   "name": "projects/${projectId}/locations/global/operations/${operationID}"
@@ -83,19 +83,19 @@ OK
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/global/securityProfiles/sp-max-${uniqueId}",
+    "target": "projects/${projectId}/locations/global/securityProfiles/sp-${uniqueId}",
     "verb": "create"
   },
   "name": "projects/${projectId}/locations/global/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.networksecurity.v1.SecurityProfile",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "description": "Maximal security profile description",
+    "description": "security profile description",
     "etag": "abcdef0123A=",
     "labels": {
       "foo": "bar"
     },
-    "name": "projects/${projectId}/locations/global/securityProfiles/sp-max-${uniqueId}",
+    "name": "projects/${projectId}/locations/global/securityProfiles/sp-${uniqueId}",
     "threatPreventionProfile": {
       "antivirusOverrides": [
         {
@@ -134,19 +134,19 @@ OK
 GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/GetSecurityProfile
 
 {
-  "name": "projects/${projectId}/locations/global/securityProfiles/sp-max-${uniqueId}"
+  "name": "projects/${projectId}/locations/global/securityProfiles/sp-${uniqueId}"
 }
 
 OK
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "Maximal security profile description",
+  "description": "security profile description",
   "etag": "abcdef0123A=",
   "labels": {
     "foo": "bar"
   },
-  "name": "projects/${projectId}/locations/global/securityProfiles/sp-max-${uniqueId}",
+  "name": "projects/${projectId}/locations/global/securityProfiles/sp-${uniqueId}",
   "threatPreventionProfile": {
     "antivirusOverrides": [
       {
@@ -184,19 +184,19 @@ OK
 GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/GetSecurityProfile
 
 {
-  "name": "projects/${projectId}/locations/global/securityProfiles/sp-max-${uniqueId}"
+  "name": "projects/${projectId}/locations/global/securityProfiles/sp-${uniqueId}"
 }
 
 OK
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "Maximal security profile description",
+  "description": "security profile description",
   "etag": "abcdef0123A=",
   "labels": {
     "foo": "bar"
   },
-  "name": "projects/${projectId}/locations/global/securityProfiles/sp-max-${uniqueId}",
+  "name": "projects/${projectId}/locations/global/securityProfiles/sp-${uniqueId}",
   "threatPreventionProfile": {
     "antivirusOverrides": [
       {
@@ -235,11 +235,11 @@ GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/UpdateSecurity
 
 {
   "securityProfile": {
-    "description": "Maximal security profile description updated",
+    "description": "security profile description updated",
     "labels": {
       "foo": "baz"
     },
-    "name": "projects/${projectId}/locations/global/securityProfiles/sp-max-${uniqueId}",
+    "name": "projects/${projectId}/locations/global/securityProfiles/sp-${uniqueId}",
     "threatPreventionProfile": {
       "antivirusOverrides": [
         {
@@ -272,7 +272,7 @@ OK
     "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/global/securityProfiles/sp-max-${uniqueId}",
+    "target": "projects/${projectId}/locations/global/securityProfiles/sp-${uniqueId}",
     "verb": "update"
   },
   "name": "projects/${projectId}/locations/global/operations/${operationID}"
@@ -295,19 +295,19 @@ OK
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/global/securityProfiles/sp-max-${uniqueId}",
+    "target": "projects/${projectId}/locations/global/securityProfiles/sp-${uniqueId}",
     "verb": "update"
   },
   "name": "projects/${projectId}/locations/global/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.networksecurity.v1.SecurityProfile",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "description": "Maximal security profile description updated",
+    "description": "security profile description updated",
     "etag": "abcdef0123A=",
     "labels": {
       "foo": "baz"
     },
-    "name": "projects/${projectId}/locations/global/securityProfiles/sp-max-${uniqueId}",
+    "name": "projects/${projectId}/locations/global/securityProfiles/sp-${uniqueId}",
     "threatPreventionProfile": {
       "antivirusOverrides": [
         {
@@ -338,19 +338,19 @@ OK
 GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/GetSecurityProfile
 
 {
-  "name": "projects/${projectId}/locations/global/securityProfiles/sp-max-${uniqueId}"
+  "name": "projects/${projectId}/locations/global/securityProfiles/sp-${uniqueId}"
 }
 
 OK
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "Maximal security profile description updated",
+  "description": "security profile description updated",
   "etag": "abcdef0123A=",
   "labels": {
     "foo": "baz"
   },
-  "name": "projects/${projectId}/locations/global/securityProfiles/sp-max-${uniqueId}",
+  "name": "projects/${projectId}/locations/global/securityProfiles/sp-${uniqueId}",
   "threatPreventionProfile": {
     "antivirusOverrides": [
       {
@@ -380,19 +380,19 @@ OK
 GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/GetSecurityProfile
 
 {
-  "name": "projects/${projectId}/locations/global/securityProfiles/sp-max-${uniqueId}"
+  "name": "projects/${projectId}/locations/global/securityProfiles/sp-${uniqueId}"
 }
 
 OK
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "Maximal security profile description updated",
+  "description": "security profile description updated",
   "etag": "abcdef0123A=",
   "labels": {
     "foo": "baz"
   },
-  "name": "projects/${projectId}/locations/global/securityProfiles/sp-max-${uniqueId}",
+  "name": "projects/${projectId}/locations/global/securityProfiles/sp-${uniqueId}",
   "threatPreventionProfile": {
     "antivirusOverrides": [
       {
@@ -422,19 +422,19 @@ OK
 GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/GetSecurityProfile
 
 {
-  "name": "projects/${projectId}/locations/global/securityProfiles/sp-max-${uniqueId}"
+  "name": "projects/${projectId}/locations/global/securityProfiles/sp-${uniqueId}"
 }
 
 OK
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "Maximal security profile description updated",
+  "description": "security profile description updated",
   "etag": "abcdef0123A=",
   "labels": {
     "foo": "baz"
   },
-  "name": "projects/${projectId}/locations/global/securityProfiles/sp-max-${uniqueId}",
+  "name": "projects/${projectId}/locations/global/securityProfiles/sp-${uniqueId}",
   "threatPreventionProfile": {
     "antivirusOverrides": [
       {
@@ -464,7 +464,7 @@ OK
 GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/DeleteSecurityProfile
 
 {
-  "name": "projects/${projectId}/locations/global/securityProfiles/sp-max-${uniqueId}"
+  "name": "projects/${projectId}/locations/global/securityProfiles/sp-${uniqueId}"
 }
 
 OK
@@ -474,7 +474,7 @@ OK
     "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/global/securityProfiles/sp-max-${uniqueId}",
+    "target": "projects/${projectId}/locations/global/securityProfiles/sp-${uniqueId}",
     "verb": "delete"
   },
   "name": "projects/${projectId}/locations/global/operations/${operationID}"
@@ -497,7 +497,7 @@ OK
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/global/securityProfiles/sp-max-${uniqueId}",
+    "target": "projects/${projectId}/locations/global/securityProfiles/sp-${uniqueId}",
     "verb": "delete"
   },
   "name": "projects/${projectId}/locations/global/operations/${operationID}",

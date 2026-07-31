@@ -1,13 +1,13 @@
-- caisURL: unknown
+- caisURL: //networksecurity.googleapis.com/projects/${projectId}/locations/global/mirroringEndpointGroups/mirroringeg-dep-${uniqueId}
   group: networksecurity.cnrm.cloud.google.com
-  kind: NetworkSecuritySecurityProfile
-  name: sp-dep-${uniqueId}-tp
+  kind: NetworkSecurityMirroringEndpointGroup
+  name: mirroringeg-dep-${uniqueId}
   namespace: ${uniqueId}
   version: v1alpha1
 - caisURL: unknown
   group: networksecurity.cnrm.cloud.google.com
   kind: NetworkSecuritySecurityProfile
-  name: sp-dep-${uniqueId}-uf
+  name: sp-dep-${uniqueId}-cm
   namespace: ${uniqueId}
   version: v1alpha1
 - caisURL: unknown

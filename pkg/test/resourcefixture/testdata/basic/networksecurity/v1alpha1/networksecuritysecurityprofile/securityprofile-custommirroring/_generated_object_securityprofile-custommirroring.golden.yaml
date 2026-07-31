@@ -1,5 +1,5 @@
 apiVersion: networksecurity.cnrm.cloud.google.com/v1alpha1
-kind: NetworkSecuritySecurityProfileGroup
+kind: NetworkSecuritySecurityProfile
 metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
@@ -7,19 +7,19 @@ metadata:
   generation: 2
   labels:
     cnrm-test: "true"
-  name: spg-max-${uniqueId}
+  name: sp-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  description: Maximal security profile group - updated
+  customMirroringProfile:
+    mirroringEndpointGroupRef:
+      name: mirroringeg-${uniqueId}
+  description: security profile description updated
   labels:
     foo: baz
   location: global
   projectRef:
     external: projects/${projectId}
-  threatPreventionProfileRef:
-    name: sp-dep-${uniqueId}-tp
-  urlFilteringProfileRef:
-    name: sp-dep-${uniqueId}-uf
+  type: CUSTOM_MIRRORING
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -27,10 +27,9 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: projects/${projectId}/locations/global/securityProfileGroups/spg-max-${uniqueId}
+  externalRef: projects/${projectId}/locations/global/securityProfiles/sp-${uniqueId}
   observedGeneration: 2
   observedState:
     createTime: "1970-01-01T00:00:00Z"
-    dataPathID: 12345
     etag: abcdef123456
     updateTime: "1970-01-01T00:00:00Z"

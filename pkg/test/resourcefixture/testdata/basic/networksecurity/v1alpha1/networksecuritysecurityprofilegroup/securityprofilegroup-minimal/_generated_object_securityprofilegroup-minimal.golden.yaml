@@ -4,7 +4,7 @@ metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 1
+  generation: 2
   labels:
     cnrm-test: "true"
   name: spg-min-${uniqueId}
@@ -13,6 +13,8 @@ spec:
   location: global
   projectRef:
     external: projects/${projectId}
+  threatPreventionProfileRef:
+    name: sp-dep-${uniqueId}-2
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -21,7 +23,7 @@ status:
     status: "True"
     type: Ready
   externalRef: projects/${projectId}/locations/global/securityProfileGroups/spg-min-${uniqueId}
-  observedGeneration: 1
+  observedGeneration: 2
   observedState:
     createTime: "1970-01-01T00:00:00Z"
     dataPathID: 12345

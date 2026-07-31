@@ -8,4 +8,4 @@ spec:
   location: global
   # at least one profile must be set
   threatPreventionProfileRef:
-    name: sp-dep-${uniqueId}
+    name: sp-dep-${uniqueId}-2
