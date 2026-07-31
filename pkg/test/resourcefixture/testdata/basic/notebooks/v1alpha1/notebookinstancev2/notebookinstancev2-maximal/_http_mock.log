@@ -1,0 +1,528 @@
+GRPC /google.cloud.notebooks.v2.NotebookService/GetInstance
+
+{
+  "name": "projects/${projectId}/locations/us-central1-a/instances/notebookinstancev2-maximal-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = instance "projects/${projectId}/locations/us-central1-a/instances/notebookinstancev2-maximal-${uniqueId}" not found
+
+{}
+
+---
+
+GRPC /google.cloud.notebooks.v2.NotebookService/CreateInstance
+
+{
+  "instance": {
+    "disableProxyAccess": true,
+    "gceSetup": {
+      "bootDisk": {
+        "diskEncryption": "GMEK",
+        "diskSizeGb": "100",
+        "diskType": "PD_SSD"
+      },
+      "containerImage": {
+        "repository": "gcr.io/deeplearning-platform-release/base-cpu"
+      },
+      "dataDisks": [
+        {
+          "diskEncryption": "GMEK",
+          "diskSizeGb": "100",
+          "diskType": "PD_SSD"
+        }
+      ],
+      "disablePublicIp": true,
+      "machineType": "n1-standard-1",
+      "metadata": {
+        "enable-os-config": "true"
+      },
+      "shieldedInstanceConfig": {
+        "enableIntegrityMonitoring": true,
+        "enableVtpm": true
+      },
+      "tags": [
+        "tag1",
+        "tag2"
+      ]
+    },
+    "instanceOwners": [
+      "${projectNumber}-compute@developer.gserviceaccount.com"
+    ],
+    "labels": {
+      "environment": "development",
+      "team": "config-connector"
+    }
+  },
+  "instanceId": "notebookinstancev2-maximal-${uniqueId}",
+  "parent": "projects/${projectId}/locations/us-central1-a"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.notebooks.v2.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endpoint": "CreateInstance",
+    "target": "projects/${projectId}/locations/us-central1-a/instances/notebookinstancev2-maximal-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.notebooks.v2.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "endpoint": "CreateInstance",
+    "target": "projects/${projectId}/locations/us-central1-a/instances/notebookinstancev2-maximal-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.notebooks.v2.Instance",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "creator": "someone@somewhere.com",
+    "disableProxyAccess": true,
+    "gceSetup": {
+      "bootDisk": {
+        "diskEncryption": "GMEK",
+        "diskSizeGb": "100",
+        "diskType": "PD_SSD"
+      },
+      "containerImage": {
+        "repository": "gcr.io/deeplearning-platform-release/base-cpu"
+      },
+      "dataDisks": [
+        {
+          "diskEncryption": "GMEK",
+          "diskSizeGb": "100",
+          "diskType": "PD_SSD"
+        }
+      ],
+      "disablePublicIp": true,
+      "machineType": "n1-standard-1",
+      "metadata": {
+        "enable-os-config": "true"
+      },
+      "shieldedInstanceConfig": {
+        "enableIntegrityMonitoring": true,
+        "enableVtpm": true
+      },
+      "tags": [
+        "tag1",
+        "tag2"
+      ]
+    },
+    "healthState": "HEALTHY",
+    "instanceOwners": [
+      "${projectNumber}-compute@developer.gserviceaccount.com"
+    ],
+    "labels": {
+      "environment": "development",
+      "team": "config-connector"
+    },
+    "name": "projects/${projectId}/locations/us-central1-a/instances/notebookinstancev2-maximal-${uniqueId}",
+    "proxyUri": "https://notebookinstancev2-maximal-${uniqueId}-dot-us-central1.notebooks.googleusercontent.com",
+    "state": "ACTIVE",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GRPC /google.cloud.notebooks.v2.NotebookService/GetInstance
+
+{
+  "name": "projects/${projectId}/locations/us-central1-a/instances/notebookinstancev2-maximal-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "creator": "${creatorID}",
+  "disableProxyAccess": true,
+  "gceSetup": {
+    "bootDisk": {
+      "diskEncryption": "GMEK",
+      "diskSizeGb": "100",
+      "diskType": "PD_SSD"
+    },
+    "containerImage": {
+      "repository": "gcr.io/deeplearning-platform-release/base-cpu"
+    },
+    "dataDisks": [
+      {
+        "diskEncryption": "GMEK",
+        "diskSizeGb": "100",
+        "diskType": "PD_SSD"
+      }
+    ],
+    "disablePublicIp": true,
+    "machineType": "n1-standard-1",
+    "metadata": {
+      "enable-os-config": "true"
+    },
+    "networkInterfaces": [
+      {
+        "network": "projects/${projectId}/global/networks/default",
+        "subnet": "projects/${projectId}/regions/us-central1/subnetworks/default"
+      }
+    ],
+    "serviceAccounts": [
+      {
+        "email": "${projectNumber}-compute@developer.gserviceaccount.com"
+      }
+    ],
+    "shieldedInstanceConfig": {
+      "enableIntegrityMonitoring": true,
+      "enableVtpm": true
+    },
+    "tags": [
+      "tag1",
+      "tag2"
+    ]
+  },
+  "healthState": "HEALTHY",
+  "instanceOwners": [
+    "${projectNumber}-compute@developer.gserviceaccount.com"
+  ],
+  "labels": {
+    "environment": "development",
+    "team": "config-connector"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/instances/notebookinstancev2-maximal-${uniqueId}",
+  "proxyUri": "https://notebookinstancev2-maximal-${uniqueId}-dot-us-central1.notebooks.googleusercontent.com",
+  "state": "ACTIVE",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.notebooks.v2.NotebookService/UpdateInstance
+
+{
+  "instance": {
+    "disableProxyAccess": true,
+    "gceSetup": {
+      "bootDisk": {
+        "diskEncryption": "GMEK",
+        "diskSizeGb": "100",
+        "diskType": "PD_SSD"
+      },
+      "containerImage": {
+        "repository": "gcr.io/deeplearning-platform-release/base-cpu"
+      },
+      "dataDisks": [
+        {
+          "diskEncryption": "GMEK",
+          "diskSizeGb": "100",
+          "diskType": "PD_SSD"
+        }
+      ],
+      "disablePublicIp": true,
+      "machineType": "n1-standard-2",
+      "metadata": {
+        "enable-os-config": "true"
+      },
+      "shieldedInstanceConfig": {
+        "enableIntegrityMonitoring": true,
+        "enableVtpm": true
+      },
+      "tags": [
+        "tag1",
+        "tag2"
+      ]
+    },
+    "instanceOwners": [
+      "${projectNumber}-compute@developer.gserviceaccount.com"
+    ],
+    "labels": {
+      "environment": "staging",
+      "team": "config-connector"
+    },
+    "name": "projects/${projectId}/locations/us-central1-a/instances/notebookinstancev2-maximal-${uniqueId}"
+  },
+  "updateMask": "gceSetup,labels"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.notebooks.v2.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endpoint": "UpdateInstance",
+    "target": "projects/${projectId}/locations/us-central1-a/instances/notebookinstancev2-maximal-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.notebooks.v2.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "endpoint": "UpdateInstance",
+    "target": "projects/${projectId}/locations/us-central1-a/instances/notebookinstancev2-maximal-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.notebooks.v2.Instance",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "creator": "someone@somewhere.com",
+    "disableProxyAccess": true,
+    "gceSetup": {
+      "bootDisk": {
+        "diskEncryption": "GMEK",
+        "diskSizeGb": "100",
+        "diskType": "PD_SSD"
+      },
+      "containerImage": {
+        "repository": "gcr.io/deeplearning-platform-release/base-cpu"
+      },
+      "dataDisks": [
+        {
+          "diskEncryption": "GMEK",
+          "diskSizeGb": "100",
+          "diskType": "PD_SSD"
+        }
+      ],
+      "disablePublicIp": true,
+      "machineType": "n1-standard-2",
+      "metadata": {
+        "enable-os-config": "true"
+      },
+      "shieldedInstanceConfig": {
+        "enableIntegrityMonitoring": true,
+        "enableVtpm": true
+      },
+      "tags": [
+        "tag1",
+        "tag2"
+      ]
+    },
+    "instanceOwners": [
+      "${projectNumber}-compute@developer.gserviceaccount.com"
+    ],
+    "labels": {
+      "environment": "staging",
+      "team": "config-connector"
+    },
+    "name": "projects/${projectId}/locations/us-central1-a/instances/notebookinstancev2-maximal-${uniqueId}",
+    "proxyUri": "https://notebookinstancev2-maximal-${uniqueId}-dot-us-central1.notebooks.googleusercontent.com",
+    "state": "PROVISIONING",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GRPC /google.cloud.notebooks.v2.NotebookService/GetInstance
+
+{
+  "name": "projects/${projectId}/locations/us-central1-a/instances/notebookinstancev2-maximal-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "creator": "${creatorID}",
+  "disableProxyAccess": true,
+  "gceSetup": {
+    "bootDisk": {
+      "diskEncryption": "GMEK",
+      "diskSizeGb": "100",
+      "diskType": "PD_SSD"
+    },
+    "containerImage": {
+      "repository": "gcr.io/deeplearning-platform-release/base-cpu"
+    },
+    "dataDisks": [
+      {
+        "diskEncryption": "GMEK",
+        "diskSizeGb": "100",
+        "diskType": "PD_SSD"
+      }
+    ],
+    "disablePublicIp": true,
+    "machineType": "n1-standard-2",
+    "metadata": {
+      "enable-os-config": "true"
+    },
+    "networkInterfaces": [
+      {
+        "network": "projects/${projectId}/global/networks/default",
+        "subnet": "projects/${projectId}/regions/us-central1/subnetworks/default"
+      }
+    ],
+    "serviceAccounts": [
+      {
+        "email": "${projectNumber}-compute@developer.gserviceaccount.com"
+      }
+    ],
+    "shieldedInstanceConfig": {
+      "enableIntegrityMonitoring": true,
+      "enableVtpm": true
+    },
+    "tags": [
+      "tag1",
+      "tag2"
+    ]
+  },
+  "healthState": "HEALTHY",
+  "instanceOwners": [
+    "${projectNumber}-compute@developer.gserviceaccount.com"
+  ],
+  "labels": {
+    "environment": "staging",
+    "team": "config-connector"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/instances/notebookinstancev2-maximal-${uniqueId}",
+  "proxyUri": "https://notebookinstancev2-maximal-${uniqueId}-dot-us-central1.notebooks.googleusercontent.com",
+  "state": "ACTIVE",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.notebooks.v2.NotebookService/GetInstance
+
+{
+  "name": "projects/${projectId}/locations/us-central1-a/instances/notebookinstancev2-maximal-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "creator": "${creatorID}",
+  "disableProxyAccess": true,
+  "gceSetup": {
+    "bootDisk": {
+      "diskEncryption": "GMEK",
+      "diskSizeGb": "100",
+      "diskType": "PD_SSD"
+    },
+    "containerImage": {
+      "repository": "gcr.io/deeplearning-platform-release/base-cpu"
+    },
+    "dataDisks": [
+      {
+        "diskEncryption": "GMEK",
+        "diskSizeGb": "100",
+        "diskType": "PD_SSD"
+      }
+    ],
+    "disablePublicIp": true,
+    "machineType": "n1-standard-2",
+    "metadata": {
+      "enable-os-config": "true"
+    },
+    "networkInterfaces": [
+      {
+        "network": "projects/${projectId}/global/networks/default",
+        "subnet": "projects/${projectId}/regions/us-central1/subnetworks/default"
+      }
+    ],
+    "serviceAccounts": [
+      {
+        "email": "${projectNumber}-compute@developer.gserviceaccount.com"
+      }
+    ],
+    "shieldedInstanceConfig": {
+      "enableIntegrityMonitoring": true,
+      "enableVtpm": true
+    },
+    "tags": [
+      "tag1",
+      "tag2"
+    ]
+  },
+  "healthState": "HEALTHY",
+  "instanceOwners": [
+    "${projectNumber}-compute@developer.gserviceaccount.com"
+  ],
+  "labels": {
+    "environment": "staging",
+    "team": "config-connector"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/instances/notebookinstancev2-maximal-${uniqueId}",
+  "proxyUri": "https://notebookinstancev2-maximal-${uniqueId}-dot-us-central1.notebooks.googleusercontent.com",
+  "state": "ACTIVE",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.notebooks.v2.NotebookService/DeleteInstance
+
+{
+  "name": "projects/${projectId}/locations/us-central1-a/instances/notebookinstancev2-maximal-${uniqueId}"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.notebooks.v2.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endpoint": "DeleteInstance",
+    "target": "projects/${projectId}/locations/us-central1-a/instances/notebookinstancev2-maximal-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.notebooks.v2.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "endpoint": "DeleteInstance",
+    "target": "projects/${projectId}/locations/us-central1-a/instances/notebookinstancev2-maximal-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
