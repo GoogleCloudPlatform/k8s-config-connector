@@ -151,6 +151,7 @@ PROTO_FILES=(
     ${VERSION_DIR}/google/cloud/memorystore/v1/*.proto
     ${VERSION_DIR}/google/container/*/*.proto
     ${VERSION_DIR}/google/privacy/dlp/v2/*.proto
+    ${VERSION_DIR}/grafeas/v1/*.proto
 )
 # Disable nullglob shell option to restore the default shell globbing behavior
 shopt -u nullglob
