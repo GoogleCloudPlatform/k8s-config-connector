@@ -79,7 +79,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Session projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/sessions/session-${uniqueId} not found.",
+    "message": "Session with name \"projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/sessions/session-${uniqueId}\" does not exist.",
     "status": "NOT_FOUND"
   }
 }
