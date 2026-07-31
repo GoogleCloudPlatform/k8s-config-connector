@@ -17,6 +17,7 @@ package registry
 import (
 	"context"
 	"fmt"
+	"sort"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
@@ -58,7 +59,21 @@ func PreferredGVK(gk schema.GroupKind) (schema.GroupVersionKind, bool) {
 // AdapterForURL will return a directbase.Adapter bound to the resource specified by the URL,
 // or (nil, nil) if it is not recognized.
 func AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
+	var list []*registration
 	for _, registration := range singleton.registrations {
+		list = append(list, registration)
+	}
+	sort.Slice(list, func(i, j int) bool {
+		if list[i].gvk.Group != list[j].gvk.Group {
+			return list[i].gvk.Group < list[j].gvk.Group
+		}
+		if list[i].gvk.Kind != list[j].gvk.Kind {
+			return list[i].gvk.Kind < list[j].gvk.Kind
+		}
+		return list[i].gvk.Version > list[j].gvk.Version
+	})
+
+	for _, registration := range list {
 		if registration.model == nil {
 			return nil, fmt.Errorf("registry was not initialized (must call registry.Init)")
 		}
