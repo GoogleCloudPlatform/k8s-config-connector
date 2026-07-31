@@ -92,13 +92,9 @@ func (store *cloudTalentSolutionMock) handleTalentRequest(w http.ResponseWriter,
 		store.mu.Lock()
 		defer store.mu.Unlock()
 
-		// Use the name specified by the controller (derived from the KRM resource ID)
-		fullName := company.Name
-		if fullName == "" {
-			companyID := fmt.Sprintf("mock-company-id-%s", company.ExternalID)
-			fullName = fmt.Sprintf("projects/%s/tenants/%s/companies/%s", project, tenant, companyID)
-			company.Name = fullName
-		}
+		companyID := fmt.Sprintf("mock-company-id-%s", company.ExternalID)
+		fullName := fmt.Sprintf("projects/%s/tenants/%s/companies/%s", project, tenant, companyID)
+		company.Name = fullName
 
 		company.DerivedInfo = map[string]any{}
 		company.Suspended = false

@@ -33,7 +33,7 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: projects/${projectId}/tenants/mock-default-tenant-id/companies/ctsco-max-${uniqueId}
+  externalRef: projects/${projectId}/tenants/mock-default-tenant-id/companies/mock-company-id-max-ext-id-${uniqueId}
   observedGeneration: 2
   observedState:
     derivedInfo: {}

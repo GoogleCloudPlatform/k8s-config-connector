@@ -179,6 +179,11 @@ func (a *adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	}
 	log.V(2).Info("successfully created cloudtalentsolution company", "name", a.id)
 
+	parts := strings.Split(created.GetName(), "/")
+	if len(parts) > 0 {
+		a.id.Company = parts[len(parts)-1]
+	}
+
 	return a.updateStatus(ctx, createOp, created)
 }
 
@@ -200,25 +205,29 @@ func (a *adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		return err
 	}
 
-	if !diffs.HasDiff() {
-		log.V(2).Info("no field needs update", "name", a.id)
-		return nil
+	latest := a.actual
+	if diffs.HasDiff() {
+		diffs.Object = updateOp.GetUnstructured()
+		structuredreporting.ReportDiff(ctx, diffs)
+
+		req := &pb.UpdateCompanyRequest{
+			Company:    a.desired,
+			UpdateMask: updateMask,
+		}
+		updated, err := a.gcpClient.UpdateCompany(ctx, req)
+		if err != nil {
+			return fmt.Errorf("updating cloudtalentsolution company %s: %w", a.id, err)
+		}
+		log.V(2).Info("successfully updated cloudtalentsolution company", "name", a.id)
+		latest = updated
 	}
 
-	diffs.Object = updateOp.GetUnstructured()
-	structuredreporting.ReportDiff(ctx, diffs)
-
-	req := &pb.UpdateCompanyRequest{
-		Company:    a.desired,
-		UpdateMask: updateMask,
+	parts := strings.Split(latest.GetName(), "/")
+	if len(parts) > 0 {
+		a.id.Company = parts[len(parts)-1]
 	}
-	updated, err := a.gcpClient.UpdateCompany(ctx, req)
-	if err != nil {
-		return fmt.Errorf("updating cloudtalentsolution company %s: %w", a.id, err)
-	}
-	log.V(2).Info("successfully updated cloudtalentsolution company", "name", a.id)
 
-	return a.updateStatus(ctx, updateOp, updated)
+	return a.updateStatus(ctx, updateOp, latest)
 }
 
 func (a *adapter) updateStatus(ctx context.Context, op directbase.Operation, latest *pb.Company) error {

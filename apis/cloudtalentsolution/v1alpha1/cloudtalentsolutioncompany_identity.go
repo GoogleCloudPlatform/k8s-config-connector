@@ -104,10 +104,17 @@ func (obj *CloudTalentSolutionCompany) GetIdentity(ctx context.Context, reader c
 			specIdentity.Tenant = statusIdentity.Tenant
 		}
 
-		if statusIdentity.String() != specIdentity.String() {
-			return nil, fmt.Errorf("cannot change CloudTalentSolutionCompany identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+		if statusIdentity.Project != specIdentity.Project || statusIdentity.Tenant != specIdentity.Tenant {
+			return nil, fmt.Errorf("cannot change CloudTalentSolutionCompany parent identity (old=%q, new parent=%s/%s)", statusIdentity.String(), specIdentity.Project, specIdentity.Tenant)
 		}
+
+		specIdentity.Company = statusIdentity.Company
 	}
 
 	return specIdentity, nil
+}
+
+// ExternalIdentifier implements the identity.ExternalIdentifier interface.
+func (obj *CloudTalentSolutionCompany) ExternalIdentifier() *string {
+	return obj.Status.ExternalRef
 }
