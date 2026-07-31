@@ -54,7 +54,29 @@ unique_services=($(echo "${services[@]:-}" | tr ' ' '\n' | sort -u | grep -v '^$
 
 shard_service() {
   local service="$1"
-  echo "${service}"
+  case "${service}" in
+    compute)
+      echo "compute-1-of-4"
+      echo "compute-2-of-4"
+      echo "compute-3-of-4"
+      echo "compute-4-of-4"
+      ;;
+    sql)
+      echo "sql-1-of-2"
+      echo "sql-2-of-2"
+      ;;
+    container)
+      echo "container-1-of-2"
+      echo "container-2-of-2"
+      ;;
+    bigquery)
+      echo "bigquery-1-of-2"
+      echo "bigquery-2-of-2"
+      ;;
+    *)
+      echo "${service}"
+      ;;
+  esac
 }
 
 all_fixture_services=()
@@ -81,15 +103,26 @@ for service in "${unique_services[@]:-}"; do
 done
 
 remaining_fixture_targets=()
+sharded_fixture_targets=()
+standard_fixture_targets=()
+
 for service in "${all_fixture_services[@]}"; do
   if [[ " ${unique_services[*]:-} " =~ " ${service} " ]]; then
     echo "Service ${service} marked for priority upfront verification."
   else
-    for target in $(shard_service "${service}"); do
-      remaining_fixture_targets+=("${target}")
-    done
+    if [[ "${service}" == "compute" || "${service}" == "sql" || "${service}" == "container" || "${service}" == "bigquery" ]]; then
+      for target in $(shard_service "${service}"); do
+        sharded_fixture_targets+=("${target}")
+      done
+    else
+      for target in $(shard_service "${service}"); do
+        standard_fixture_targets+=("${target}")
+      done
+    fi
   fi
 done
+
+remaining_fixture_targets=("${sharded_fixture_targets[@]:-}" "${standard_fixture_targets[@]:-}")
 
 # Defined sample services supported by E2E samples suite
 sample_services=("alloydb" "apigateway" "apigee" "bigquery" "bigqueryconnection" "bigquerydatapolicy" "bigquerydatatransfer" "cloudbuild" "cloudidentity" "compute" "dataflow" "dataproc" "gkehub" "iam" "kms" "orgpolicy" "redis" "secretmanager" "spanner" "sql" "storage" "unclassified" "workstations")
@@ -98,6 +131,7 @@ sample_services=("alloydb" "apigateway" "apigee" "bigquery" "bigqueryconnection"
 scenario_suites=("acquisition" "gkehubfeaturemembership" "powertool" "unclassified")
 
 unit_tests_shards=("1-of-4" "2-of-4" "3-of-4" "4-of-4")
+fuzz_roundtrippers_shards=("1-of-4" "2-of-4" "3-of-4" "4-of-4")
 
 HAS_PRIORITY="false"
 if [[ ${#priority_fixture_targets[@]} -gt 0 ]]; then
@@ -112,6 +146,7 @@ REMAINING_JSON=$(python3 -c 'import json, sys; print(json.dumps(sys.argv[1:]))' 
 SAMPLES_JSON=$(python3 -c 'import json, sys; print(json.dumps(sys.argv[1:]))' "${sample_services[@]}")
 SCENARIOS_JSON=$(python3 -c 'import json, sys; print(json.dumps(sys.argv[1:]))' "${scenario_suites[@]}")
 UNIT_TESTS_JSON=$(python3 -c 'import json, sys; print(json.dumps(sys.argv[1:]))' "${unit_tests_shards[@]}")
+FUZZ_ROUNDTRIPPERS_JSON=$(python3 -c 'import json, sys; print(json.dumps(sys.argv[1:]))' "${fuzz_roundtrippers_shards[@]}")
 
 echo "has_priority_tests=${HAS_PRIORITY}"
 echo "priority_fixtures_json=${PRIORITY_JSON}"
@@ -119,6 +154,7 @@ echo "remaining_fixtures_json=${REMAINING_JSON}"
 echo "samples_json=${SAMPLES_JSON}"
 echo "scenarios_json=${SCENARIOS_JSON}"
 echo "unit_tests_json=${UNIT_TESTS_JSON}"
+echo "fuzz_roundtrippers_json=${FUZZ_ROUNDTRIPPERS_JSON}"
 
 if [[ -n "${GITHUB_OUTPUT:-}" && -f "${GITHUB_OUTPUT}" ]]; then
   echo "has_priority_tests=${HAS_PRIORITY}" >> "${GITHUB_OUTPUT}"
@@ -127,4 +163,5 @@ if [[ -n "${GITHUB_OUTPUT:-}" && -f "${GITHUB_OUTPUT}" ]]; then
   echo "samples_json=${SAMPLES_JSON}" >> "${GITHUB_OUTPUT}"
   echo "scenarios_json=${SCENARIOS_JSON}" >> "${GITHUB_OUTPUT}"
   echo "unit_tests_json=${UNIT_TESTS_JSON}" >> "${GITHUB_OUTPUT}"
+  echo "fuzz_roundtrippers_json=${FUZZ_ROUNDTRIPPERS_JSON}" >> "${GITHUB_OUTPUT}"
 fi

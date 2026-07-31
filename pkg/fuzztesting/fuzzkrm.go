@@ -18,6 +18,7 @@ import (
 	"fmt"
 	"math/rand"
 	"os"
+	"strconv"
 	"testing"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -54,7 +55,25 @@ func RegisterFuzzer(fuzzer FuzzFn) {
 }
 
 func ChooseFuzzer(n int64) FuzzFn {
-	return fuzzers[n%int64(len(fuzzers))]
+	all := fuzzers
+	totalShards := os.Getenv("FUZZ_TOTAL_SHARDS")
+	shardIdxStr := os.Getenv("FUZZ_SHARD_INDEX")
+	if totalShards != "" && shardIdxStr != "" {
+		total, _ := strconv.Atoi(totalShards)
+		shardIdx, _ := strconv.Atoi(shardIdxStr)
+		if total > 1 && shardIdx >= 0 {
+			var sharded []FuzzFn
+			for i, f := range all {
+				if i%total == shardIdx {
+					sharded = append(sharded, f)
+				}
+			}
+			if len(sharded) > 0 {
+				all = sharded
+			}
+		}
+	}
+	return all[n%int64(len(all))]
 }
 
 func GetRegisteredFuzzers() []any {

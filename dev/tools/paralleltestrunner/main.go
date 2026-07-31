@@ -38,6 +38,8 @@ var (
 	baseTest       = flag.String("base-test", "", "Base test name, e.g. TestE2EScript/scenarios")
 	checkUnchanged = flag.Bool("check-unchanged", false, "Fail if the list file is modified (i.e. missing tests found)")
 	timeout        = flag.Duration("timeout", 5*time.Minute, "Timeout for each test")
+	shardIndex     = flag.Int("shard-index", -1, "0-based shard index for partitioning tests")
+	totalShards    = flag.Int("total-shards", 0, "Total number of shards for partitioning tests")
 )
 
 func main() {
@@ -52,6 +54,18 @@ func main() {
 	tests := readList(*listFile)
 	if len(tests) == 0 {
 		tests = discoverTestsDynamically(*listFile, *baseTest, flag.Args())
+	}
+	allListTests := append([]string(nil), tests...)
+
+	if *totalShards > 1 && *shardIndex >= 0 {
+		var sharded []string
+		for idx, t := range tests {
+			if idx%*totalShards == *shardIndex {
+				sharded = append(sharded, t)
+			}
+		}
+		log.Printf("paralleltestrunner: sharding tests (shard %d of %d): selected %d / %d tests", *shardIndex+1, *totalShards, len(sharded), len(tests))
+		tests = sharded
 	}
 
 	numJobs := calculateOptimalJobs(*j, len(tests))
@@ -141,7 +155,7 @@ func main() {
 	catchAllStart := time.Now()
 	output, err := cmd.CombinedOutput()
 	catchAllDuration := time.Since(catchAllStart)
-	newTests := parseNewTests(output, *baseTest, tests)
+	newTests := parseNewTests(output, *baseTest, allListTests)
 
 	if len(newTests) > 0 {
 		fmt.Printf("Found %d new tests:\n", len(newTests))
@@ -149,9 +163,11 @@ func main() {
 			fmt.Printf("  %s\n", t)
 		}
 
-		updatedAllTests := append(tests, newTests...)
-		sort.Strings(updatedAllTests)
-		writeList(*listFile, updatedAllTests)
+		if *totalShards <= 1 {
+			updatedAllTests := append(allListTests, newTests...)
+			sort.Strings(updatedAllTests)
+			writeList(*listFile, updatedAllTests)
+		}
 
 		if *checkUnchanged {
 			fmt.Printf("ERROR: test list file %s was modified because new tests were found. Please commit the updated file.\n", *listFile)

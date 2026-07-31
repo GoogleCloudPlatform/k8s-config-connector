@@ -67,9 +67,18 @@ elif [[ ! -f "${PARALLEL_TEST_RUNNER}" ]]; then
   time go build -o "${PARALLEL_TEST_RUNNER}" "${REPO_ROOT}/dev/tools/paralleltestrunner"
 fi
 
+SHARD_INDEX="${2:-0}"
+TOTAL_SHARDS="${3:-1}"
+
+SHARD_FLAGS=""
+if [[ "${TOTAL_SHARDS}" -gt 1 ]]; then
+  SHARD_FLAGS="-shard-index=${SHARD_INDEX} -total-shards=${TOTAL_SHARDS}"
+fi
+
 echo "Running ${SERVICE} fixtures tests in parallel..."
 ${PARALLEL_TEST_RUNNER} \
     -list-file="${REPO_ROOT}/tests/e2e/testdata/fixtures-${SERVICE}-list.txt" \
     -base-test="${BASE_TEST}" \
     -check-unchanged=true \
+    ${SHARD_FLAGS} \
     -- ${REPO_ROOT}/dev/tasks/run-e2e
