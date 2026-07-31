@@ -16,13 +16,13 @@ GRPC /google.cloud.gkemulticloud.v1.AttachedClusters/CreateAttachedCluster
   "attachedCluster": {
     "distribution": "generic",
     "fleet": {
-      "project": "projects/${projectId}"
+      "project": "projects/${projectNumber}"
     },
     "name": "projects/${projectId}/locations/us-west1/attachedClusters/attachedcluster-${uniqueId}",
     "oidcConfig": {
       "issuerUrl": "https://oidc.eks.us-west-1.amazonaws.com/id/12345678901234567890123456789012"
     },
-    "platformVersion": "1.25.0-gke.1"
+    "platformVersion": "1.34.0-gke.1"
   },
   "attachedClusterId": "attachedcluster-${uniqueId}",
   "parent": "projects/${projectId}/locations/us-west1"
@@ -69,10 +69,10 @@ OK
     "distribution": "generic",
     "etag": "abcdef0123A=",
     "fleet": {
-      "membership": "projects/${projectId}/locations/global/memberships/attachedcluster-${uniqueId}",
-      "project": "projects/${projectId}"
+      "membership": "projects/${projectNumber}/locations/global/memberships/attachedcluster-${uniqueId}",
+      "project": "projects/${projectNumber}"
     },
-    "kubernetesVersion": "1.25",
+    "kubernetesVersion": "1.34",
     "monitoringConfig": {
       "managedPrometheusConfig": {}
     },
@@ -80,7 +80,7 @@ OK
     "oidcConfig": {
       "issuerUrl": "https://oidc.eks.us-west-1.amazonaws.com/id/12345678901234567890123456789012"
     },
-    "platformVersion": "1.25.0-gke.1",
+    "platformVersion": "1.34.0-gke.1",
     "state": "RUNNING",
     "uid": "111111111111111111111",
     "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -105,10 +105,10 @@ OK
   "distribution": "generic",
   "etag": "abcdef0123A=",
   "fleet": {
-    "membership": "projects/${projectId}/locations/global/memberships/attachedcluster-${uniqueId}",
-    "project": "projects/${projectId}"
+    "membership": "projects/${projectNumber}/locations/global/memberships/attachedcluster-${uniqueId}",
+    "project": "projects/${projectNumber}"
   },
-  "kubernetesVersion": "1.25",
+  "kubernetesVersion": "1.34",
   "monitoringConfig": {
     "managedPrometheusConfig": {}
   },
@@ -116,7 +116,7 @@ OK
   "oidcConfig": {
     "issuerUrl": "https://oidc.eks.us-west-1.amazonaws.com/id/12345678901234567890123456789012"
   },
-  "platformVersion": "1.25.0-gke.1",
+  "platformVersion": "1.34.0-gke.1",
   "state": "RUNNING",
   "uid": "111111111111111111111",
   "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -140,10 +140,10 @@ OK
   "distribution": "generic",
   "etag": "abcdef0123A=",
   "fleet": {
-    "membership": "projects/${projectId}/locations/global/memberships/attachedcluster-${uniqueId}",
-    "project": "projects/${projectId}"
+    "membership": "projects/${projectNumber}/locations/global/memberships/attachedcluster-${uniqueId}",
+    "project": "projects/${projectNumber}"
   },
-  "kubernetesVersion": "1.25",
+  "kubernetesVersion": "1.34",
   "monitoringConfig": {
     "managedPrometheusConfig": {}
   },
@@ -151,7 +151,7 @@ OK
   "oidcConfig": {
     "issuerUrl": "https://oidc.eks.us-west-1.amazonaws.com/id/12345678901234567890123456789012"
   },
-  "platformVersion": "1.25.0-gke.1",
+  "platformVersion": "1.34.0-gke.1",
   "state": "RUNNING",
   "uid": "111111111111111111111",
   "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -175,10 +175,10 @@ OK
   "distribution": "generic",
   "etag": "abcdef0123A=",
   "fleet": {
-    "membership": "projects/${projectId}/locations/global/memberships/attachedcluster-${uniqueId}",
-    "project": "projects/${projectId}"
+    "membership": "projects/${projectNumber}/locations/global/memberships/attachedcluster-${uniqueId}",
+    "project": "projects/${projectNumber}"
   },
-  "kubernetesVersion": "1.25",
+  "kubernetesVersion": "1.34",
   "monitoringConfig": {
     "managedPrometheusConfig": {}
   },
@@ -186,7 +186,7 @@ OK
   "oidcConfig": {
     "issuerUrl": "https://oidc.eks.us-west-1.amazonaws.com/id/12345678901234567890123456789012"
   },
-  "platformVersion": "1.25.0-gke.1",
+  "platformVersion": "1.34.0-gke.1",
   "state": "RUNNING",
   "uid": "111111111111111111111",
   "updateTime": "2024-04-01T12:34:56.123456Z"

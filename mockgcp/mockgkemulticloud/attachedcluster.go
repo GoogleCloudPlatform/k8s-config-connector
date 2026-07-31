@@ -78,7 +78,9 @@ func (s *GKEMulticloudV1) CreateAttachedCluster(ctx context.Context, req *pb.Cre
 			ManagedPrometheusConfig: &pb.ManagedPrometheusConfig{},
 		}
 	}
-	obj.Fleet.Membership = obj.Fleet.Project + "/locations/global/memberships/" + req.AttachedClusterId
+	projectNumber := name.Project.Number
+	obj.Fleet.Project = fmt.Sprintf("projects/%d", projectNumber)
+	obj.Fleet.Membership = fmt.Sprintf("projects/%d/locations/global/memberships/%s", projectNumber, req.AttachedClusterId)
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
 	obj.Etag = fields.ComputeWeakEtag(obj)
@@ -88,7 +90,7 @@ func (s *GKEMulticloudV1) CreateAttachedCluster(ctx context.Context, req *pb.Cre
 	}
 	obj.KubernetesVersion = ver
 	obj.State = pb.AttachedCluster_RUNNING
-	obj.Uid = "111111111111111111111"
+	obj.Uid = "00000000-0000-0000-0000-000000000001"
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err

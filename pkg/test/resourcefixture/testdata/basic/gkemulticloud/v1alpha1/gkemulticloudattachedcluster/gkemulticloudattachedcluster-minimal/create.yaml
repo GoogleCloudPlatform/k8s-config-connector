@@ -6,10 +6,10 @@ spec:
   projectRef:
     external: ${projectId}
   location: us-west1
-  platformVersion: 1.25.0-gke.1
+  platformVersion: 1.34.0-gke.1
   distribution: generic
   oidcConfig:
     issuerURL: https://oidc.eks.us-west-1.amazonaws.com/id/12345678901234567890123456789012
   fleet:
     projectRef:
-      external: ${projectId}
+      external: projects/${projectNumber}

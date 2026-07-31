@@ -35,7 +35,7 @@ GRPC /google.cloud.gkemulticloud.v1.AttachedClusters/CreateAttachedCluster
     "description": "A maximal attached cluster test description",
     "distribution": "generic",
     "fleet": {
-      "project": "projects/${projectId}"
+      "project": "projects/${projectNumber}"
     },
     "loggingConfig": {
       "componentConfig": {
@@ -58,7 +58,7 @@ GRPC /google.cloud.gkemulticloud.v1.AttachedClusters/CreateAttachedCluster
       "issuerUrl": "https://oidc.eks.us-west-1.amazonaws.com/id/12345678901234567890123456789012",
       "jwks": "dGVzdC1qd2tzLWRhdGE="
     },
-    "platformVersion": "1.25.0-gke.1",
+    "platformVersion": "1.34.0-gke.1",
     "securityPostureConfig": {
       "vulnerabilityMode": "VULNERABILITY_DISABLED"
     },
@@ -127,10 +127,10 @@ OK
     "distribution": "generic",
     "etag": "abcdef0123A=",
     "fleet": {
-      "membership": "projects/${projectId}/locations/global/memberships/attachedcluster-${uniqueId}",
-      "project": "projects/${projectId}"
+      "membership": "projects/${projectNumber}/locations/global/memberships/attachedcluster-${uniqueId}",
+      "project": "projects/${projectNumber}"
     },
-    "kubernetesVersion": "1.25",
+    "kubernetesVersion": "1.34",
     "loggingConfig": {
       "componentConfig": {
         "enableComponents": [
@@ -152,7 +152,7 @@ OK
       "issuerUrl": "https://oidc.eks.us-west-1.amazonaws.com/id/12345678901234567890123456789012",
       "jwks": "dGVzdC1qd2tzLWRhdGE="
     },
-    "platformVersion": "1.25.0-gke.1",
+    "platformVersion": "1.34.0-gke.1",
     "securityPostureConfig": {
       "vulnerabilityMode": "VULNERABILITY_DISABLED"
     },
@@ -199,10 +199,10 @@ OK
   "distribution": "generic",
   "etag": "abcdef0123A=",
   "fleet": {
-    "membership": "projects/${projectId}/locations/global/memberships/attachedcluster-${uniqueId}",
-    "project": "projects/${projectId}"
+    "membership": "projects/${projectNumber}/locations/global/memberships/attachedcluster-${uniqueId}",
+    "project": "projects/${projectNumber}"
   },
-  "kubernetesVersion": "1.25",
+  "kubernetesVersion": "1.34",
   "loggingConfig": {
     "componentConfig": {
       "enableComponents": [
@@ -224,7 +224,7 @@ OK
     "issuerUrl": "https://oidc.eks.us-west-1.amazonaws.com/id/12345678901234567890123456789012",
     "jwks": "dGVzdC1qd2tzLWRhdGE="
   },
-  "platformVersion": "1.25.0-gke.1",
+  "platformVersion": "1.34.0-gke.1",
   "securityPostureConfig": {
     "vulnerabilityMode": "VULNERABILITY_DISABLED"
   },
@@ -270,10 +270,10 @@ OK
   "distribution": "generic",
   "etag": "abcdef0123A=",
   "fleet": {
-    "membership": "projects/${projectId}/locations/global/memberships/attachedcluster-${uniqueId}",
-    "project": "projects/${projectId}"
+    "membership": "projects/${projectNumber}/locations/global/memberships/attachedcluster-${uniqueId}",
+    "project": "projects/${projectNumber}"
   },
-  "kubernetesVersion": "1.25",
+  "kubernetesVersion": "1.34",
   "loggingConfig": {
     "componentConfig": {
       "enableComponents": [
@@ -295,7 +295,7 @@ OK
     "issuerUrl": "https://oidc.eks.us-west-1.amazonaws.com/id/12345678901234567890123456789012",
     "jwks": "dGVzdC1qd2tzLWRhdGE="
   },
-  "platformVersion": "1.25.0-gke.1",
+  "platformVersion": "1.34.0-gke.1",
   "securityPostureConfig": {
     "vulnerabilityMode": "VULNERABILITY_DISABLED"
   },
@@ -334,7 +334,7 @@ GRPC /google.cloud.gkemulticloud.v1.AttachedClusters/UpdateAttachedCluster
     "description": "Updated description for attached cluster",
     "distribution": "generic",
     "fleet": {
-      "project": "projects/${projectId}"
+      "project": "projects/${projectNumber}"
     },
     "loggingConfig": {
       "componentConfig": {
@@ -354,7 +354,7 @@ GRPC /google.cloud.gkemulticloud.v1.AttachedClusters/UpdateAttachedCluster
       "issuerUrl": "https://oidc.eks.us-west-1.amazonaws.com/id/12345678901234567890123456789012",
       "jwks": "dGVzdC1qd2tzLWRhdGE="
     },
-    "platformVersion": "1.25.0-gke.2",
+    "platformVersion": "1.34.0-gke.2",
     "securityPostureConfig": {
       "vulnerabilityMode": "VULNERABILITY_DISABLED"
     },
@@ -422,10 +422,10 @@ OK
     "distribution": "generic",
     "etag": "abcdef0123A=",
     "fleet": {
-      "membership": "projects/${projectId}/locations/global/memberships/attachedcluster-${uniqueId}",
-      "project": "projects/${projectId}"
+      "membership": "projects/${projectNumber}/locations/global/memberships/attachedcluster-${uniqueId}",
+      "project": "projects/${projectNumber}"
     },
-    "kubernetesVersion": "1.25",
+    "kubernetesVersion": "1.34",
     "loggingConfig": {
       "componentConfig": {
         "enableComponents": [
@@ -447,7 +447,7 @@ OK
       "issuerUrl": "https://oidc.eks.us-west-1.amazonaws.com/id/12345678901234567890123456789012",
       "jwks": "dGVzdC1qd2tzLWRhdGE="
     },
-    "platformVersion": "1.25.0-gke.2",
+    "platformVersion": "1.34.0-gke.2",
     "securityPostureConfig": {
       "vulnerabilityMode": "VULNERABILITY_DISABLED"
     },
@@ -494,10 +494,10 @@ OK
   "distribution": "generic",
   "etag": "abcdef0123A=",
   "fleet": {
-    "membership": "projects/${projectId}/locations/global/memberships/attachedcluster-${uniqueId}",
-    "project": "projects/${projectId}"
+    "membership": "projects/${projectNumber}/locations/global/memberships/attachedcluster-${uniqueId}",
+    "project": "projects/${projectNumber}"
   },
-  "kubernetesVersion": "1.25",
+  "kubernetesVersion": "1.34",
   "loggingConfig": {
     "componentConfig": {
       "enableComponents": [
@@ -519,7 +519,7 @@ OK
     "issuerUrl": "https://oidc.eks.us-west-1.amazonaws.com/id/12345678901234567890123456789012",
     "jwks": "dGVzdC1qd2tzLWRhdGE="
   },
-  "platformVersion": "1.25.0-gke.2",
+  "platformVersion": "1.34.0-gke.2",
   "securityPostureConfig": {
     "vulnerabilityMode": "VULNERABILITY_DISABLED"
   },
@@ -565,10 +565,10 @@ OK
   "distribution": "generic",
   "etag": "abcdef0123A=",
   "fleet": {
-    "membership": "projects/${projectId}/locations/global/memberships/attachedcluster-${uniqueId}",
-    "project": "projects/${projectId}"
+    "membership": "projects/${projectNumber}/locations/global/memberships/attachedcluster-${uniqueId}",
+    "project": "projects/${projectNumber}"
   },
-  "kubernetesVersion": "1.25",
+  "kubernetesVersion": "1.34",
   "loggingConfig": {
     "componentConfig": {
       "enableComponents": [
@@ -590,7 +590,7 @@ OK
     "issuerUrl": "https://oidc.eks.us-west-1.amazonaws.com/id/12345678901234567890123456789012",
     "jwks": "dGVzdC1qd2tzLWRhdGE="
   },
-  "platformVersion": "1.25.0-gke.2",
+  "platformVersion": "1.34.0-gke.2",
   "securityPostureConfig": {
     "vulnerabilityMode": "VULNERABILITY_DISABLED"
   },
@@ -636,10 +636,10 @@ OK
   "distribution": "generic",
   "etag": "abcdef0123A=",
   "fleet": {
-    "membership": "projects/${projectId}/locations/global/memberships/attachedcluster-${uniqueId}",
-    "project": "projects/${projectId}"
+    "membership": "projects/${projectNumber}/locations/global/memberships/attachedcluster-${uniqueId}",
+    "project": "projects/${projectNumber}"
   },
-  "kubernetesVersion": "1.25",
+  "kubernetesVersion": "1.34",
   "loggingConfig": {
     "componentConfig": {
       "enableComponents": [
@@ -661,7 +661,7 @@ OK
     "issuerUrl": "https://oidc.eks.us-west-1.amazonaws.com/id/12345678901234567890123456789012",
     "jwks": "dGVzdC1qd2tzLWRhdGE="
   },
-  "platformVersion": "1.25.0-gke.2",
+  "platformVersion": "1.34.0-gke.2",
   "securityPostureConfig": {
     "vulnerabilityMode": "VULNERABILITY_DISABLED"
   },

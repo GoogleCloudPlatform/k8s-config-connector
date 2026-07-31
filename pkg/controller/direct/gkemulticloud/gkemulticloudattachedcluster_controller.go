@@ -55,12 +55,14 @@ type model struct {
 	config config.ControllerConfig
 }
 
-func (m *model) client(ctx context.Context) (*gcp.AttachedClustersClient, error) {
+func (m *model) client(ctx context.Context, location string) (*gcp.AttachedClustersClient, error) {
 	var opts []option.ClientOption
 	opts, err := m.config.GRPCClientOptions()
 	if err != nil {
 		return nil, err
 	}
+	endpoint := fmt.Sprintf("%s-gkemulticloud.googleapis.com:443", location)
+	opts = append(opts, option.WithEndpoint(endpoint))
 	gcpClient, err := gcp.NewAttachedClustersClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building AttachedClusters client: %w", err)
@@ -86,7 +88,7 @@ func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForO
 	}
 	id := identity.(*krm.GKEMulticloudAttachedClusterIdentity)
 
-	gcpClient, err := m.client(ctx)
+	gcpClient, err := m.client(ctx, id.Location)
 	if err != nil {
 		return nil, err
 	}
@@ -112,7 +114,7 @@ func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapt
 		return nil, nil
 	}
 
-	gcpClient, err := m.client(ctx)
+	gcpClient, err := m.client(ctx, id.Location)
 	if err != nil {
 		return nil, err
 	}
