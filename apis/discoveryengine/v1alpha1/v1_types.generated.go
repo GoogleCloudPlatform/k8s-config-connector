@@ -24,6 +24,7 @@
 // resource: DiscoveryEngineDataStoreTargetSite:TargetSite
 // resource: DiscoveryEngineConversation:Conversation
 // resource: DiscoveryEngineSession:Session
+// resource: DiscoveryEngineSearchEngine:SiteSearchEngine
 
 package v1alpha1
 
