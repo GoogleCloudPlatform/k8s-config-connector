@@ -25,7 +25,9 @@ Please respect the following review criteria and invariants when reviewing.
 ## 4. References & Identity
 *   All string fields referencing a GCP resource identifier must map to a reference struct in Go to validate format/semantics.
 *   If a resource is a child of another GCP resource, this relationship must be explicitly denoted in the code.
-*   Compare the implementation against the provided reference files in https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/7894 and https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/7907/
+*   The  `apis/refs/v1beta1/` directory is deprecated. No new `${resource_name}_reference.go` file is added under `apis/refs/v1beta1/` directory. No new `<Kind>Ref` implementation is added into existing files under `apis/refs/v1beta1/` directory. 
+*   Only use `refs.Normalize` and do not use `refs.NormalizeWithFallback` for greenfield resources.
+*   
 
 ## 5. Completeness & Heuristics (Proto-to-CRD mapping)
 *   **Completeness Goal:** Greenfield resources must aim for 100% coverage of the fields defined in the Google API proto. Compare the generated CRD YAML against the generated proto files. The CRD must map **all** fields declared in the Proto.

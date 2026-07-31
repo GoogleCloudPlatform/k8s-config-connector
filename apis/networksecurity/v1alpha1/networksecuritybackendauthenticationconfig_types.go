@@ -15,6 +15,8 @@
 package v1alpha1
 
 import (
+	certificatemanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/certificatemanager/v1alpha1"
+	certificatemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/certificatemanager/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -50,7 +52,7 @@ type NetworkSecurityBackendAuthenticationConfigSpec struct {
 	//  TLS and the backend requests a client certificate. Must have a CLIENT_AUTH
 	//  scope.
 	// +kcc:proto:field=google.cloud.networksecurity.v1.BackendAuthenticationConfig.client_certificate
-	ClientCertificateRef *refsv1beta1.CertificateManagerCertificateRef `json:"clientCertificateRef,omitempty"`
+	ClientCertificateRef *certificatemanagerv1beta1.CertificateManagerCertificateRef `json:"clientCertificateRef,omitempty"`
 
 	// Optional. A reference to a TrustConfig resource from the
 	//  certificatemanager.googleapis.com namespace. This is a relative resource
@@ -61,7 +63,7 @@ type NetworkSecurityBackendAuthenticationConfigSpec struct {
 	//  if specified, to validate the server certificates presented by the backend.
 	//  Required unless wellKnownRoots is set to PUBLIC_ROOTS.
 	// +kcc:proto:field=google.cloud.networksecurity.v1.BackendAuthenticationConfig.trust_config
-	TrustConfigRef *refsv1beta1.CertificateManagerTrustConfigRef `json:"trustConfigRef,omitempty"`
+	TrustConfigRef *certificatemanagerv1alpha1.CertificateManagerTrustConfigRef `json:"trustConfigRef,omitempty"`
 
 	// Well known roots to use for server certificate validation.
 	// +kcc:proto:field=google.cloud.networksecurity.v1.BackendAuthenticationConfig.well_known_roots

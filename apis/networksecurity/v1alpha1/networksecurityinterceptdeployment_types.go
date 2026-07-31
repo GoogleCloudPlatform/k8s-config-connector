@@ -46,7 +46,7 @@ type NetworkSecurityInterceptDeploymentSpec struct {
 
 	// Required. Immutable. The deployment group that this deployment is a part of, for example: `projects/123456789/locations/global/interceptDeploymentGroups/my-dg`.
 	// +kubebuilder:validation:Required
-	InterceptDeploymentGroupRef *refsv1beta1.NetworkSecurityInterceptDeploymentGroupRef `json:"interceptDeploymentGroupRef"`
+	InterceptDeploymentGroupRef *NetworkSecurityInterceptDeploymentGroupRef `json:"interceptDeploymentGroupRef"`
 
 	// Optional. Labels are key/value pairs that help to organize and filter resources.
 	// +kubebuilder:validation:Optional

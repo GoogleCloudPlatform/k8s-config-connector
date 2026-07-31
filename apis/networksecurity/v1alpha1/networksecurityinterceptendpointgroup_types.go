@@ -44,7 +44,7 @@ type NetworkSecurityInterceptEndpointGroupSpec struct {
 	// `projects/123456789/locations/global/interceptDeploymentGroups/my-dg`.
 	// +kcc:proto:field=google.cloud.networksecurity.v1.InterceptEndpointGroup.intercept_deployment_group
 	// +kubebuilder:validation:Required
-	InterceptDeploymentGroupRef *refsv1beta1.NetworkSecurityInterceptDeploymentGroupRef `json:"interceptDeploymentGroupRef"`
+	InterceptDeploymentGroupRef *NetworkSecurityInterceptDeploymentGroupRef `json:"interceptDeploymentGroupRef"`
 
 	// Optional. User-provided description of the endpoint group.
 	// Used as additional context for the endpoint group.

@@ -25,9 +25,11 @@ package mirroringendpointgroup
 
 import (
 	pb "cloud.google.com/go/networksecurity/apiv1/networksecuritypb"
+	certificatemanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/certificatemanager/v1alpha1"
+	certificatemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/certificatemanager/v1beta1"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networksecurity/v1alpha1"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	networksecurityv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networksecurity/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -174,10 +176,10 @@ func NetworkSecurityBackendAuthenticationConfigSpec_FromProto(mapCtx *direct.Map
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.Labels = in.Labels
 	if in.GetClientCertificate() != "" {
-		out.ClientCertificateRef = &refsv1beta1.CertificateManagerCertificateRef{External: in.GetClientCertificate()}
+		out.ClientCertificateRef = &certificatemanagerv1beta1.CertificateManagerCertificateRef{External: in.GetClientCertificate()}
 	}
 	if in.GetTrustConfig() != "" {
-		out.TrustConfigRef = &refsv1beta1.CertificateManagerTrustConfigRef{External: in.GetTrustConfig()}
+		out.TrustConfigRef = &certificatemanagerv1alpha1.CertificateManagerTrustConfigRef{External: in.GetTrustConfig()}
 	}
 	out.WellKnownRoots = direct.Enum_FromProto(mapCtx, in.GetWellKnownRoots())
 	return out
@@ -234,7 +236,7 @@ func NetworkSecurityInterceptDeploymentSpec_FromProto(mapCtx *direct.MapContext,
 		out.ForwardingRuleRef = &computev1beta1.ForwardingRuleRef{External: in.GetForwardingRule()}
 	}
 	if in.GetInterceptDeploymentGroup() != "" {
-		out.InterceptDeploymentGroupRef = &refsv1beta1.NetworkSecurityInterceptDeploymentGroupRef{External: in.GetInterceptDeploymentGroup()}
+		out.InterceptDeploymentGroupRef = &networksecurityv1alpha1.NetworkSecurityInterceptDeploymentGroupRef{External: in.GetInterceptDeploymentGroup()}
 	}
 	out.Description = direct.LazyPtr(in.GetDescription())
 	return out
@@ -291,7 +293,7 @@ func NetworkSecurityInterceptEndpointGroupSpec_FromProto(mapCtx *direct.MapConte
 	// MISSING: Name
 	out.Labels = in.Labels
 	if in.GetInterceptDeploymentGroup() != "" {
-		out.InterceptDeploymentGroupRef = &refsv1beta1.NetworkSecurityInterceptDeploymentGroupRef{External: in.GetInterceptDeploymentGroup()}
+		out.InterceptDeploymentGroupRef = &networksecurityv1alpha1.NetworkSecurityInterceptDeploymentGroupRef{External: in.GetInterceptDeploymentGroup()}
 	}
 	out.Description = direct.LazyPtr(in.GetDescription())
 	return out
@@ -344,7 +346,7 @@ func NetworkSecurityMirroringDeploymentSpec_FromProto(mapCtx *direct.MapContext,
 		out.ForwardingRuleRef = &computev1beta1.ForwardingRuleRef{External: in.GetForwardingRule()}
 	}
 	if in.GetMirroringDeploymentGroup() != "" {
-		out.MirroringDeploymentGroupRef = &refsv1beta1.NetworkSecurityMirroringDeploymentGroupRef{External: in.GetMirroringDeploymentGroup()}
+		out.MirroringDeploymentGroupRef = &networksecurityv1alpha1.NetworkSecurityMirroringDeploymentGroupRef{External: in.GetMirroringDeploymentGroup()}
 	}
 	out.Description = direct.LazyPtr(in.GetDescription())
 	return out
@@ -401,7 +403,7 @@ func NetworkSecurityMirroringEndpointGroupSpec_FromProto(mapCtx *direct.MapConte
 	// MISSING: Name
 	out.Labels = in.Labels
 	if in.GetMirroringDeploymentGroup() != "" {
-		out.MirroringDeploymentGroupRef = &refsv1beta1.NetworkSecurityMirroringDeploymentGroupRef{External: in.GetMirroringDeploymentGroup()}
+		out.MirroringDeploymentGroupRef = &networksecurityv1alpha1.NetworkSecurityMirroringDeploymentGroupRef{External: in.GetMirroringDeploymentGroup()}
 	}
 	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
 	out.Description = direct.LazyPtr(in.GetDescription())

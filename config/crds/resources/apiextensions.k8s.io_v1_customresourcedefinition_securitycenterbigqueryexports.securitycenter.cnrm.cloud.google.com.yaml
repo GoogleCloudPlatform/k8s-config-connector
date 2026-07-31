@@ -81,14 +81,14 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The BigQueryDataset selfLink, when not managed by
-                      Config Connector.
+                    description: A reference to an externally-managed BigQueryDataset
+                      resource. Should be in the format "projects/{{projectID}}/datasets/{{datasetID}}".
                     type: string
                   name:
-                    description: Name of the referenced object.
+                    description: The name of a BigQueryDataset resource.
                     type: string
                   namespace:
-                    description: Namespace of the referenced object.
+                    description: The namespace of a BigQueryDataset resource.
                     type: string
                 type: object
               description:

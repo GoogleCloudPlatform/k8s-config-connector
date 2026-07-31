@@ -27,11 +27,12 @@ package networksecurity
 import (
 	pb "cloud.google.com/go/networksecurity/apiv1/networksecuritypb"
 	networksecuritypb "cloud.google.com/go/networksecurity/apiv1beta1/networksecuritypb"
+	krmcertificatemanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/certificatemanager/v1alpha1"
+	krmcertificatemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/certificatemanager/v1beta1"
 	krmcomputerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	krmcomputev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krmnetworksecurityv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networksecurity/v1alpha1"
 	krmnetworksecurityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networksecurity/v1beta1"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -868,10 +869,10 @@ func NetworkSecurityBackendAuthenticationConfigSpec_v1alpha1_FromProto(mapCtx *d
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.Labels = in.Labels
 	if in.GetClientCertificate() != "" {
-		out.ClientCertificateRef = &refsv1beta1.CertificateManagerCertificateRef{External: in.GetClientCertificate()}
+		out.ClientCertificateRef = &krmcertificatemanagerv1beta1.CertificateManagerCertificateRef{External: in.GetClientCertificate()}
 	}
 	if in.GetTrustConfig() != "" {
-		out.TrustConfigRef = &refsv1beta1.CertificateManagerTrustConfigRef{External: in.GetTrustConfig()}
+		out.TrustConfigRef = &krmcertificatemanagerv1alpha1.CertificateManagerTrustConfigRef{External: in.GetTrustConfig()}
 	}
 	out.WellKnownRoots = direct.Enum_FromProto(mapCtx, in.GetWellKnownRoots())
 	return out
@@ -1182,7 +1183,7 @@ func NetworkSecurityInterceptDeploymentSpec_v1alpha1_FromProto(mapCtx *direct.Ma
 		out.ForwardingRuleRef = &krmcomputev1beta1.ForwardingRuleRef{External: in.GetForwardingRule()}
 	}
 	if in.GetInterceptDeploymentGroup() != "" {
-		out.InterceptDeploymentGroupRef = &refsv1beta1.NetworkSecurityInterceptDeploymentGroupRef{External: in.GetInterceptDeploymentGroup()}
+		out.InterceptDeploymentGroupRef = &krmnetworksecurityv1alpha1.NetworkSecurityInterceptDeploymentGroupRef{External: in.GetInterceptDeploymentGroup()}
 	}
 	out.Description = direct.LazyPtr(in.GetDescription())
 	return out
@@ -1239,7 +1240,7 @@ func NetworkSecurityInterceptEndpointGroupSpec_v1alpha1_FromProto(mapCtx *direct
 	// MISSING: Name
 	out.Labels = in.Labels
 	if in.GetInterceptDeploymentGroup() != "" {
-		out.InterceptDeploymentGroupRef = &refsv1beta1.NetworkSecurityInterceptDeploymentGroupRef{External: in.GetInterceptDeploymentGroup()}
+		out.InterceptDeploymentGroupRef = &krmnetworksecurityv1alpha1.NetworkSecurityInterceptDeploymentGroupRef{External: in.GetInterceptDeploymentGroup()}
 	}
 	out.Description = direct.LazyPtr(in.GetDescription())
 	return out
@@ -1292,7 +1293,7 @@ func NetworkSecurityMirroringDeploymentSpec_v1alpha1_FromProto(mapCtx *direct.Ma
 		out.ForwardingRuleRef = &krmcomputev1beta1.ForwardingRuleRef{External: in.GetForwardingRule()}
 	}
 	if in.GetMirroringDeploymentGroup() != "" {
-		out.MirroringDeploymentGroupRef = &refsv1beta1.NetworkSecurityMirroringDeploymentGroupRef{External: in.GetMirroringDeploymentGroup()}
+		out.MirroringDeploymentGroupRef = &krmnetworksecurityv1alpha1.NetworkSecurityMirroringDeploymentGroupRef{External: in.GetMirroringDeploymentGroup()}
 	}
 	out.Description = direct.LazyPtr(in.GetDescription())
 	return out
@@ -1349,7 +1350,7 @@ func NetworkSecurityMirroringEndpointGroupSpec_v1alpha1_FromProto(mapCtx *direct
 	// MISSING: Name
 	out.Labels = in.Labels
 	if in.GetMirroringDeploymentGroup() != "" {
-		out.MirroringDeploymentGroupRef = &refsv1beta1.NetworkSecurityMirroringDeploymentGroupRef{External: in.GetMirroringDeploymentGroup()}
+		out.MirroringDeploymentGroupRef = &krmnetworksecurityv1alpha1.NetworkSecurityMirroringDeploymentGroupRef{External: in.GetMirroringDeploymentGroup()}
 	}
 	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
 	out.Description = direct.LazyPtr(in.GetDescription())
@@ -1532,7 +1533,7 @@ func NetworkSecurityTLSInspectionPolicySpec_v1alpha1_FromProto(mapCtx *direct.Ma
 	out.Description = direct.LazyPtr(in.GetDescription())
 	// MISSING: CAPool
 	if in.GetTrustConfig() != "" {
-		out.TrustConfigRef = &refsv1beta1.CertificateManagerTrustConfigRef{External: in.GetTrustConfig()}
+		out.TrustConfigRef = &krmcertificatemanagerv1alpha1.CertificateManagerTrustConfigRef{External: in.GetTrustConfig()}
 	}
 	out.ExcludePublicCASet = in.ExcludePublicCaSet
 	out.MinTLSVersion = direct.Enum_FromProto(mapCtx, in.GetMinTlsVersion())

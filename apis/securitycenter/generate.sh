@@ -28,6 +28,10 @@ go run . generate-types \
   --resource SecurityCenterMuteConfig:MuteConfig \
   --resource SecurityCenterBigQueryExport:BigQueryExport
 
+go run . generate-mapper \
+  --service google.cloud.securitycenter.v1 \
+  --api-version "securitycenter.cnrm.cloud.google.com/v1alpha1"
+
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 

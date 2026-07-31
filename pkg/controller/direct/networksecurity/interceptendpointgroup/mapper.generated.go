@@ -26,7 +26,7 @@ package interceptendpointgroup
 import (
 	pb "cloud.google.com/go/networksecurity/apiv1/networksecuritypb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networksecurity/v1alpha1"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	networksecurityv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networksecurity/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -122,7 +122,7 @@ func NetworkSecurityInterceptEndpointGroupSpec_FromProto(mapCtx *direct.MapConte
 	// MISSING: Name
 	out.Labels = in.Labels
 	if in.GetInterceptDeploymentGroup() != "" {
-		out.InterceptDeploymentGroupRef = &refsv1beta1.NetworkSecurityInterceptDeploymentGroupRef{External: in.GetInterceptDeploymentGroup()}
+		out.InterceptDeploymentGroupRef = &networksecurityv1alpha1.NetworkSecurityInterceptDeploymentGroupRef{External: in.GetInterceptDeploymentGroup()}
 	}
 	out.Description = direct.LazyPtr(in.GetDescription())
 	return out

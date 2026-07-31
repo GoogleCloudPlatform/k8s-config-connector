@@ -54,7 +54,7 @@ type NetworkSecurityMirroringDeploymentSpec struct {
 	// `projects/123456789/locations/global/mirroringDeploymentGroups/my-dg`.
 	// See https://google.aip.dev/124.
 	// +kubebuilder:validation:Required
-	MirroringDeploymentGroupRef *refsv1beta1.NetworkSecurityMirroringDeploymentGroupRef `json:"mirroringDeploymentGroupRef"`
+	MirroringDeploymentGroupRef *NetworkSecurityMirroringDeploymentGroupRef `json:"mirroringDeploymentGroupRef"`
 
 	// Optional. User-provided description of the deployment.
 	// Used as additional context for the deployment.

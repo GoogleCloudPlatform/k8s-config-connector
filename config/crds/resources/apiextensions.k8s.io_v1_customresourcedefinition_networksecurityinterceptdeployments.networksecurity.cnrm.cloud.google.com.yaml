@@ -100,32 +100,10 @@ spec:
               interceptDeploymentGroupRef:
                 description: 'Required. Immutable. The deployment group that this
                   deployment is a part of, for example: `projects/123456789/locations/global/interceptDeploymentGroups/my-dg`.'
-                oneOf:
-                - not:
-                    required:
-                    - external
-                  required:
-                  - name
-                - not:
-                    anyOf:
-                    - required:
-                      - name
-                    - required:
-                      - namespace
-                  required:
-                  - external
                 properties:
                   external:
                     description: A reference to an externally managed NetworkSecurityInterceptDeploymentGroup
                       resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/interceptDeploymentGroups/{{interceptDeploymentGroupID}}".
-                    type: string
-                  name:
-                    description: The name field of a NetworkSecurityInterceptDeploymentGroup
-                      resource.
-                    type: string
-                  namespace:
-                    description: The namespace field of a NetworkSecurityInterceptDeploymentGroup
-                      resource.
                     type: string
                 type: object
               labels:

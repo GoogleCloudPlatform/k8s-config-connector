@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	certificatemanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/certificatemanager/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/privateca/privatecarefs"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
@@ -48,7 +49,7 @@ type NetworkSecurityTLSInspectionPolicySpec struct {
 	// Optional. A TrustConfig resource that contains the trust store for validation of client credentials.
 	// The TrustConfig resource must be in the format "projects/{project}/locations/{location}/trustConfigs/{trustConfig}".
 	// +kcc:proto:field=google.cloud.networksecurity.v1.TlsInspectionPolicy.trust_config
-	TrustConfigRef *refsv1beta1.CertificateManagerTrustConfigRef `json:"trustConfigRef,omitempty"`
+	TrustConfigRef *certificatemanagerv1alpha1.CertificateManagerTrustConfigRef `json:"trustConfigRef,omitempty"`
 
 	// Optional. If True, then the TrustConfig will exclude public CA certificates.
 	// +kcc:proto:field=google.cloud.networksecurity.v1.TlsInspectionPolicy.exclude_public_ca_set

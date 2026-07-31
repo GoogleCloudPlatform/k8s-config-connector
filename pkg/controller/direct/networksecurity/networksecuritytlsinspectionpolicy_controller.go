@@ -19,6 +19,8 @@ import (
 	"fmt"
 	"time"
 
+	certificatemanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/certificatemanager/v1alpha1"
+
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networksecurity/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/privateca/privatecarefs"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -257,7 +259,7 @@ func (a *tlsInspectionPolicyAdapter) Export(ctx context.Context) (*unstructured.
 		obj.Spec.CaPoolRef = &privatecarefs.PrivateCACAPoolRef{External: a.actual.CaPool}
 	}
 	if a.actual.TrustConfig != "" {
-		obj.Spec.TrustConfigRef = &refsv1beta1.CertificateManagerTrustConfigRef{External: a.actual.TrustConfig}
+		obj.Spec.TrustConfigRef = &certificatemanagerv1alpha1.CertificateManagerTrustConfigRef{External: a.actual.TrustConfig}
 	}
 
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
