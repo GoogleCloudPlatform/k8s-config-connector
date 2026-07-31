@@ -1,0 +1,209 @@
+GRPC /google.cloud.notebooks.v2.NotebookService/GetInstance
+
+{
+  "name": "projects/${projectId}/locations/us-central1-a/instances/notebookinstancev2-minimal-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = instance "projects/${projectId}/locations/us-central1-a/instances/notebookinstancev2-minimal-${uniqueId}" not found
+
+{}
+
+---
+
+GRPC /google.cloud.notebooks.v2.NotebookService/CreateInstance
+
+{
+  "instance": {
+    "gceSetup": {
+      "containerImage": {
+        "repository": "gcr.io/deeplearning-platform-release/base-cpu"
+      },
+      "machineType": "n1-standard-1"
+    }
+  },
+  "instanceId": "notebookinstancev2-minimal-${uniqueId}",
+  "parent": "projects/${projectId}/locations/us-central1-a"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.notebooks.v2.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endpoint": "CreateInstance",
+    "target": "projects/${projectId}/locations/us-central1-a/instances/notebookinstancev2-minimal-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.notebooks.v2.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "endpoint": "CreateInstance",
+    "target": "projects/${projectId}/locations/us-central1-a/instances/notebookinstancev2-minimal-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.notebooks.v2.Instance",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "creator": "someone@somewhere.com",
+    "gceSetup": {
+      "containerImage": {
+        "repository": "gcr.io/deeplearning-platform-release/base-cpu"
+      },
+      "machineType": "n1-standard-1"
+    },
+    "healthState": "HEALTHY",
+    "name": "projects/${projectId}/locations/us-central1-a/instances/notebookinstancev2-minimal-${uniqueId}",
+    "proxyUri": "https://notebookinstancev2-minimal-${uniqueId}-dot-us-central1.notebooks.googleusercontent.com",
+    "state": "ACTIVE",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GRPC /google.cloud.notebooks.v2.NotebookService/GetInstance
+
+{
+  "name": "projects/${projectId}/locations/us-central1-a/instances/notebookinstancev2-minimal-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "creator": "${creatorID}",
+  "gceSetup": {
+    "bootDisk": {
+      "diskEncryption": "GMEK",
+      "diskSizeGb": "150",
+      "diskType": "PD_STANDARD"
+    },
+    "containerImage": {
+      "repository": "gcr.io/deeplearning-platform-release/base-cpu"
+    },
+    "machineType": "n1-standard-1",
+    "networkInterfaces": [
+      {
+        "network": "projects/${projectId}/global/networks/default",
+        "subnet": "projects/${projectId}/regions/us-central1/subnetworks/default"
+      }
+    ],
+    "serviceAccounts": [
+      {
+        "email": "${projectNumber}-compute@developer.gserviceaccount.com"
+      }
+    ]
+  },
+  "healthState": "HEALTHY",
+  "name": "projects/${projectId}/locations/us-central1-a/instances/notebookinstancev2-minimal-${uniqueId}",
+  "proxyUri": "https://notebookinstancev2-minimal-${uniqueId}-dot-us-central1.notebooks.googleusercontent.com",
+  "state": "ACTIVE",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.notebooks.v2.NotebookService/GetInstance
+
+{
+  "name": "projects/${projectId}/locations/us-central1-a/instances/notebookinstancev2-minimal-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "creator": "${creatorID}",
+  "gceSetup": {
+    "bootDisk": {
+      "diskEncryption": "GMEK",
+      "diskSizeGb": "150",
+      "diskType": "PD_STANDARD"
+    },
+    "containerImage": {
+      "repository": "gcr.io/deeplearning-platform-release/base-cpu"
+    },
+    "machineType": "n1-standard-1",
+    "networkInterfaces": [
+      {
+        "network": "projects/${projectId}/global/networks/default",
+        "subnet": "projects/${projectId}/regions/us-central1/subnetworks/default"
+      }
+    ],
+    "serviceAccounts": [
+      {
+        "email": "${projectNumber}-compute@developer.gserviceaccount.com"
+      }
+    ]
+  },
+  "healthState": "HEALTHY",
+  "name": "projects/${projectId}/locations/us-central1-a/instances/notebookinstancev2-minimal-${uniqueId}",
+  "proxyUri": "https://notebookinstancev2-minimal-${uniqueId}-dot-us-central1.notebooks.googleusercontent.com",
+  "state": "ACTIVE",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.notebooks.v2.NotebookService/DeleteInstance
+
+{
+  "name": "projects/${projectId}/locations/us-central1-a/instances/notebookinstancev2-minimal-${uniqueId}"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.notebooks.v2.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endpoint": "DeleteInstance",
+    "target": "projects/${projectId}/locations/us-central1-a/instances/notebookinstancev2-minimal-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.notebooks.v2.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "endpoint": "DeleteInstance",
+    "target": "projects/${projectId}/locations/us-central1-a/instances/notebookinstancev2-minimal-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
