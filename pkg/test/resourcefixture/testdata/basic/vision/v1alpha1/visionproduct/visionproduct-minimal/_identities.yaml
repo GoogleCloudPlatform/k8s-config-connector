@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: vision.cnrm.cloud.google.com
+  kind: VisionProduct
+  name: visionproduct-min-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

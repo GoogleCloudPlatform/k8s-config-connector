@@ -3435,10 +3435,6 @@
 [missing_field] crd=notebookinstancev2s.notebooks.cnrm.cloud.google.com version=v1alpha1: field ".spec.gceSetup.vmImage.family" is not set in unstructured objects
 [missing_field] crd=notebookinstancev2s.notebooks.cnrm.cloud.google.com version=v1alpha1: field ".spec.gceSetup.vmImage.name" is not set in unstructured objects
 [missing_field] crd=notebookinstancev2s.notebooks.cnrm.cloud.google.com version=v1alpha1: field ".spec.gceSetup.vmImage.project" is not set in unstructured objects
-[missing_field] crd=notebookinstancev2s.notebooks.cnrm.cloud.google.com version=v1alpha1: field ".spec.instanceOwners[]" is not set in unstructured objects
-[missing_field] crd=notebookinstancev2s.notebooks.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
-[missing_field] crd=notebookinstancev2s.notebooks.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
-[missing_field] crd=notebookinstancev2s.notebooks.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=notebookruntimes.notebooks.cnrm.cloud.google.com version=v1alpha1: field ".spec.accessConfig.accessType" is not set in unstructured objects
 [missing_field] crd=notebookruntimes.notebooks.cnrm.cloud.google.com version=v1alpha1: field ".spec.accessConfig.runtimeOwner" is not set in unstructured objects
 [missing_field] crd=notebookruntimes.notebooks.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
