@@ -1,0 +1,283 @@
+// Copyright 2026 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package grafeas
+
+import (
+	"context"
+	"fmt"
+
+	grafeas "cloud.google.com/go/grafeas/apiv1"
+	"google.golang.org/api/option"
+	pb "google.golang.org/genproto/googleapis/grafeas/v1"
+	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/fieldmaskpb"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/klog/v2"
+
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/grafeas/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
+)
+
+func init() {
+	registry.RegisterModel(krm.GrafeasNoteGVK, newGrafeasNoteModel)
+}
+
+func newGrafeasNoteModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
+	return &model{config: *config}, nil
+}
+
+type model struct {
+	config config.ControllerConfig
+}
+
+// model implements the Model interface.
+var _ directbase.Model = &model{}
+
+type adapter struct {
+	id      *krm.GrafeasNoteIdentity
+	desired *pb.Note
+	actual  *pb.Note
+	gcp     *grafeas.Client
+}
+
+// adapter implements the Adapter interface.
+var _ directbase.Adapter = &adapter{}
+
+func (m *model) client(ctx context.Context) (*grafeas.Client, error) {
+	var opts []option.ClientOption
+	opts, err := m.config.GRPCClientOptions()
+	if err != nil {
+		return nil, err
+	}
+
+	opts = append(opts, option.WithEndpoint("containeranalysis.googleapis.com:443"))
+
+	gcpClient, err := grafeas.NewClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building grafeas client: %w", err)
+	}
+	return gcpClient, nil
+}
+
+func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
+	u := op.GetUnstructured()
+	reader := op.Reader
+
+	gcpClient, err := m.client(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	obj := &krm.GrafeasNote{}
+	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
+		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
+	}
+
+	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
+	id, err := obj.GetIdentity(ctx, reader)
+	if err != nil {
+		return nil, err
+	}
+
+	mapCtx := &direct.MapContext{}
+	desired := GrafeasNoteSpec_ToProto(mapCtx, &obj.Spec)
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+
+	return &adapter{
+		id:      id.(*krm.GrafeasNoteIdentity),
+		desired: desired,
+		gcp:     gcpClient,
+	}, nil
+}
+
+func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
+	return nil, nil
+}
+
+func (a *adapter) fullyQualifiedName() string {
+	return fmt.Sprintf("projects/%s/notes/%s", a.id.Project, a.id.Note)
+}
+
+func (a *adapter) Find(ctx context.Context) (bool, error) {
+	if a.id.Note == "" {
+		return false, nil
+	}
+
+	req := &pb.GetNoteRequest{
+		Name: a.fullyQualifiedName(),
+	}
+	actual, err := a.gcp.GetNote(ctx, req)
+	if err != nil {
+		if direct.IsNotFound(err) {
+			return false, nil
+		}
+		return false, err
+	}
+
+	a.actual = actual
+	return true, nil
+}
+
+func (a *adapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
+	log := klog.FromContext(ctx)
+	log.V(2).Info("creating GrafeasNote", "name", a.fullyQualifiedName())
+
+	req := &pb.CreateNoteRequest{
+		Parent: "projects/" + a.id.Project,
+		NoteId: a.id.Note,
+		Note:   a.desired,
+	}
+
+	_, err := a.gcp.CreateNote(ctx, req)
+	if err != nil {
+		return fmt.Errorf("creating GrafeasNote: %w", err)
+	}
+
+	// Fetch fully-populated resource after creation
+	latest, err := a.gcp.GetNote(ctx, &pb.GetNoteRequest{Name: a.fullyQualifiedName()})
+	if err != nil {
+		return fmt.Errorf("getting GrafeasNote after create: %w", err)
+	}
+
+	return a.updateStatus(ctx, createOp, latest)
+}
+
+func (a *adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
+	log := klog.FromContext(ctx)
+	log.V(2).Info("updating GrafeasNote", "name", a.fullyQualifiedName())
+
+	diffs, updateMask, err := compareNote(ctx, a.actual, a.desired)
+	if err != nil {
+		return err
+	}
+
+	if !diffs.HasDiff() {
+		log.V(2).Info("no diff detected, skipping update", "name", a.fullyQualifiedName())
+		return a.updateStatus(ctx, updateOp, a.actual)
+	}
+
+	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
+	for _, path := range updateMask.Paths {
+		report.AddField(path, nil, nil)
+	}
+	structuredreporting.ReportDiff(ctx, report)
+
+	req := &pb.UpdateNoteRequest{
+		Name:       a.fullyQualifiedName(),
+		Note:       a.desired,
+		UpdateMask: updateMask,
+	}
+
+	_, err = a.gcp.UpdateNote(ctx, req)
+	if err != nil {
+		return fmt.Errorf("updating GrafeasNote: %w", err)
+	}
+
+	// Fetch fully-populated resource after update
+	latest, err := a.gcp.GetNote(ctx, &pb.GetNoteRequest{Name: a.fullyQualifiedName()})
+	if err != nil {
+		return fmt.Errorf("getting GrafeasNote after update: %w", err)
+	}
+
+	return a.updateStatus(ctx, updateOp, latest)
+}
+
+func (a *adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
+	log := klog.FromContext(ctx)
+	log.V(2).Info("deleting GrafeasNote", "name", a.fullyQualifiedName())
+
+	req := &pb.DeleteNoteRequest{
+		Name: a.fullyQualifiedName(),
+	}
+	err := a.gcp.DeleteNote(ctx, req)
+	if err != nil {
+		if direct.IsNotFound(err) {
+			return true, nil
+		}
+		return false, fmt.Errorf("deleting GrafeasNote: %w", err)
+	}
+
+	return true, nil
+}
+
+func (a *adapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
+	if a.actual == nil {
+		return nil, fmt.Errorf("GrafeasNote %q not found", a.fullyQualifiedName())
+	}
+
+	mapCtx := &direct.MapContext{}
+	spec := GrafeasNoteSpec_FromProto(mapCtx, a.actual)
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+
+	specObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(spec)
+	if err != nil {
+		return nil, fmt.Errorf("error converting GrafeasNote spec to unstructured: %w", err)
+	}
+
+	u := &unstructured.Unstructured{
+		Object: make(map[string]interface{}),
+	}
+	u.SetName(a.id.Note)
+	u.SetGroupVersionKind(krm.GrafeasNoteGVK)
+	if err := unstructured.SetNestedField(u.Object, specObj, "spec"); err != nil {
+		return nil, fmt.Errorf("setting spec: %w", err)
+	}
+
+	return u, nil
+}
+
+func (a *adapter) updateStatus(ctx context.Context, op directbase.Operation, latest *pb.Note) error {
+	mapCtx := &direct.MapContext{}
+	status := &krm.GrafeasNoteStatus{}
+	status.ObservedState = GrafeasNoteObservedState_FromProto(mapCtx, latest)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+
+	externalRef := a.fullyQualifiedName()
+	status.ExternalRef = &externalRef
+
+	return op.UpdateStatus(ctx, status, nil)
+}
+
+func compareNote(ctx context.Context, actual, desired *pb.Note) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
+	maskedActual, err := mappers.OnlySpecFields(actual, GrafeasNoteSpec_FromProto, GrafeasNoteSpec_ToProto)
+	if err != nil {
+		return nil, nil, err
+	}
+	maskedActual.Name = desired.Name
+
+	clonedDesired := proto.Clone(desired).(*pb.Note)
+
+	diffs, updateMask, err := common.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
+	if err != nil {
+		return nil, nil, err
+	}
+	return diffs, updateMask, nil
+}

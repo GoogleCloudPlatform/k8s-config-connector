@@ -1,0 +1,15 @@
+apiVersion: grafeas.cnrm.cloud.google.com/v1alpha1
+kind: GrafeasNote
+metadata:
+  name: grafeasnote-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  shortDescription: "updated short description"
+  longDescription: "updated long description"
+  relatedURL:
+    - url: https://example.com/updated
+      label: updated-label
+  attestation:
+    hint:
+      humanReadableName: initial-hint

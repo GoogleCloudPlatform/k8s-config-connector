@@ -1,0 +1,10 @@
+apiVersion: grafeas.cnrm.cloud.google.com/v1alpha1
+kind: GrafeasNote
+metadata:
+  name: grafeasnote-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  attestation:
+    hint:
+      humanReadableName: minimal-hint

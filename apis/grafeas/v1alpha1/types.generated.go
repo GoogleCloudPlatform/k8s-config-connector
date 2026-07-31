@@ -16,7 +16,7 @@
 // +generated:types
 // krm.group: grafeas.cnrm.cloud.google.com
 // krm.version: v1alpha1
-// proto.service: google.cloud.grafeas.v1,grafeas.v1
+// proto.service: grafeas.v1,google.cloud.grafeas.v1
 // resource: GrafeasNote:Note
 
 package v1alpha1
@@ -302,7 +302,8 @@ type License struct {
 	Comments *string `json:"comments,omitempty"`
 }
 
-/* unreachable type Note
+/* found existing non-generated go type with proto tag "grafeas.v1.Note", skipping
+
 // +kcc:proto=grafeas.v1.Note
 type Note struct {
 	// Output only. The name of the note in the form of

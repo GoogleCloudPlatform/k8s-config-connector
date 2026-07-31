@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: grafeas.cnrm.cloud.google.com
+  kind: GrafeasNote
+  name: grafeasnote-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

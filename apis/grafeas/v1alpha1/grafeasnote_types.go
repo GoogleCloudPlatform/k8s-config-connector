@@ -23,7 +23,7 @@ import (
 var GrafeasNoteGVK = GroupVersion.WithKind("GrafeasNote")
 
 // GrafeasNoteSpec defines the desired state of GrafeasNote
-// +kcc:spec:proto=google.cloud.grafeas.v1.Note
+// +kcc:spec:proto=grafeas.v1.Note
 type GrafeasNoteSpec struct {
 	// The project that this resource belongs to.
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
@@ -117,7 +117,7 @@ type GrafeasNoteStatus struct {
 }
 
 // GrafeasNoteObservedState is the state of the GrafeasNote resource as most recently observed in GCP.
-// +kcc:observedstate:proto=google.cloud.grafeas.v1.Note
+// +kcc:observedstate:proto=grafeas.v1.Note
 type GrafeasNoteObservedState struct {
 	// Output only. The type of analysis. This field can be used as a filter in
 	//  list requests.

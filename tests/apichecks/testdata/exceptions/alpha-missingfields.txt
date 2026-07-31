@@ -2667,7 +2667,6 @@
 [missing_field] crd=gkehubscoperbacrolebindings.gkehub.cnrm.cloud.google.com version=v1alpha1: field ".spec.role.customRole" is not set in unstructured objects
 [missing_field] crd=gkemulticloudattachedclusters.gkemulticloud.cnrm.cloud.google.com version=v1alpha1: field ".spec.proxyConfig.kubernetesSecret.name" is not set in unstructured objects
 [missing_field] crd=gkemulticloudattachedclusters.gkemulticloud.cnrm.cloud.google.com version=v1alpha1: field ".spec.proxyConfig.kubernetesSecret.namespace" is not set in unstructured objects
-[missing_field] crd=grafeasnotes.grafeas.cnrm.cloud.google.com version=v1alpha1: field ".spec.attestation.hint.humanReadableName" is not set in unstructured objects
 [missing_field] crd=grafeasnotes.grafeas.cnrm.cloud.google.com version=v1alpha1: field ".spec.build.builderVersion" is not set in unstructured objects
 [missing_field] crd=grafeasnotes.grafeas.cnrm.cloud.google.com version=v1alpha1: field ".spec.compliance.cisBenchmark.profileLevel" is not set in unstructured objects
 [missing_field] crd=grafeasnotes.grafeas.cnrm.cloud.google.com version=v1alpha1: field ".spec.compliance.cisBenchmark.severity" is not set in unstructured objects
@@ -2688,7 +2687,6 @@
 [missing_field] crd=grafeasnotes.grafeas.cnrm.cloud.google.com version=v1alpha1: field ".spec.image.fingerprint.v2Blob[]" is not set in unstructured objects
 [missing_field] crd=grafeasnotes.grafeas.cnrm.cloud.google.com version=v1alpha1: field ".spec.image.fingerprint.v2Name" is not set in unstructured objects
 [missing_field] crd=grafeasnotes.grafeas.cnrm.cloud.google.com version=v1alpha1: field ".spec.image.resourceURL" is not set in unstructured objects
-[missing_field] crd=grafeasnotes.grafeas.cnrm.cloud.google.com version=v1alpha1: field ".spec.longDescription" is not set in unstructured objects
 [missing_field] crd=grafeasnotes.grafeas.cnrm.cloud.google.com version=v1alpha1: field ".spec.package.architecture" is not set in unstructured objects
 [missing_field] crd=grafeasnotes.grafeas.cnrm.cloud.google.com version=v1alpha1: field ".spec.package.cpeURI" is not set in unstructured objects
 [missing_field] crd=grafeasnotes.grafeas.cnrm.cloud.google.com version=v1alpha1: field ".spec.package.description" is not set in unstructured objects
@@ -2717,13 +2715,9 @@
 [missing_field] crd=grafeasnotes.grafeas.cnrm.cloud.google.com version=v1alpha1: field ".spec.package.version.kind" is not set in unstructured objects
 [missing_field] crd=grafeasnotes.grafeas.cnrm.cloud.google.com version=v1alpha1: field ".spec.package.version.name" is not set in unstructured objects
 [missing_field] crd=grafeasnotes.grafeas.cnrm.cloud.google.com version=v1alpha1: field ".spec.package.version.revision" is not set in unstructured objects
-[missing_field] crd=grafeasnotes.grafeas.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=grafeasnotes.grafeas.cnrm.cloud.google.com version=v1alpha1: field ".spec.relatedNoteNames[]" is not set in unstructured objects
-[missing_field] crd=grafeasnotes.grafeas.cnrm.cloud.google.com version=v1alpha1: field ".spec.relatedURL[].label" is not set in unstructured objects
-[missing_field] crd=grafeasnotes.grafeas.cnrm.cloud.google.com version=v1alpha1: field ".spec.relatedURL[].url" is not set in unstructured objects
 [missing_field] crd=grafeasnotes.grafeas.cnrm.cloud.google.com version=v1alpha1: field ".spec.sbomReference.format" is not set in unstructured objects
 [missing_field] crd=grafeasnotes.grafeas.cnrm.cloud.google.com version=v1alpha1: field ".spec.sbomReference.version" is not set in unstructured objects
-[missing_field] crd=grafeasnotes.grafeas.cnrm.cloud.google.com version=v1alpha1: field ".spec.shortDescription" is not set in unstructured objects
 [missing_field] crd=grafeasnotes.grafeas.cnrm.cloud.google.com version=v1alpha1: field ".spec.upgrade.distributions[].classification" is not set in unstructured objects
 [missing_field] crd=grafeasnotes.grafeas.cnrm.cloud.google.com version=v1alpha1: field ".spec.upgrade.distributions[].cpeURI" is not set in unstructured objects
 [missing_field] crd=grafeasnotes.grafeas.cnrm.cloud.google.com version=v1alpha1: field ".spec.upgrade.distributions[].cve[]" is not set in unstructured objects

@@ -1,0 +1,117 @@
+GRPC /grafeas.v1.Grafeas/GetNote
+
+{
+  "name": "projects/${projectId}/notes/grafeasnote-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = Requested entity was not found
+
+{}
+
+---
+
+GRPC /grafeas.v1.Grafeas/CreateNote
+
+{
+  "note": {
+    "attestation": {
+      "hint": {
+        "humanReadableName": "minimal-hint"
+      }
+    }
+  },
+  "noteId": "grafeasnote-${uniqueId}",
+  "parent": "projects/${projectId}"
+}
+
+OK
+
+{
+  "attestation": {
+    "hint": {
+      "humanReadableName": "minimal-hint"
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "ATTESTATION",
+  "name": "projects/${projectId}/notes/grafeasnote-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /grafeas.v1.Grafeas/GetNote
+
+{
+  "name": "projects/${projectId}/notes/grafeasnote-${uniqueId}"
+}
+
+OK
+
+{
+  "attestation": {
+    "hint": {
+      "humanReadableName": "minimal-hint"
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "ATTESTATION",
+  "name": "projects/${projectId}/notes/grafeasnote-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /grafeas.v1.Grafeas/GetNote
+
+{
+  "name": "projects/${projectId}/notes/grafeasnote-${uniqueId}"
+}
+
+OK
+
+{
+  "attestation": {
+    "hint": {
+      "humanReadableName": "minimal-hint"
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "ATTESTATION",
+  "name": "projects/${projectId}/notes/grafeasnote-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /grafeas.v1.Grafeas/GetNote
+
+{
+  "name": "projects/${projectId}/notes/grafeasnote-${uniqueId}"
+}
+
+OK
+
+{
+  "attestation": {
+    "hint": {
+      "humanReadableName": "minimal-hint"
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "ATTESTATION",
+  "name": "projects/${projectId}/notes/grafeasnote-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /grafeas.v1.Grafeas/DeleteNote
+
+{
+  "name": "projects/${projectId}/notes/grafeasnote-${uniqueId}"
+}
+
+OK
+
+{}

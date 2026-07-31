@@ -1,0 +1,263 @@
+GRPC /grafeas.v1.Grafeas/GetNote
+
+{
+  "name": "projects/${projectId}/notes/grafeasnote-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = Requested entity was not found
+
+{}
+
+---
+
+GRPC /grafeas.v1.Grafeas/CreateNote
+
+{
+  "note": {
+    "attestation": {
+      "hint": {
+        "humanReadableName": "initial-hint"
+      }
+    },
+    "longDescription": "initial long description",
+    "relatedUrl": [
+      {
+        "label": "initial-label",
+        "url": "https://example.com/initial"
+      }
+    ],
+    "shortDescription": "initial short description"
+  },
+  "noteId": "grafeasnote-${uniqueId}",
+  "parent": "projects/${projectId}"
+}
+
+OK
+
+{
+  "attestation": {
+    "hint": {
+      "humanReadableName": "initial-hint"
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "ATTESTATION",
+  "longDescription": "initial long description",
+  "name": "projects/${projectId}/notes/grafeasnote-${uniqueId}",
+  "relatedUrl": [
+    {
+      "label": "initial-label",
+      "url": "https://example.com/initial"
+    }
+  ],
+  "shortDescription": "initial short description",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /grafeas.v1.Grafeas/GetNote
+
+{
+  "name": "projects/${projectId}/notes/grafeasnote-${uniqueId}"
+}
+
+OK
+
+{
+  "attestation": {
+    "hint": {
+      "humanReadableName": "initial-hint"
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "ATTESTATION",
+  "longDescription": "initial long description",
+  "name": "projects/${projectId}/notes/grafeasnote-${uniqueId}",
+  "relatedUrl": [
+    {
+      "label": "initial-label",
+      "url": "https://example.com/initial"
+    }
+  ],
+  "shortDescription": "initial short description",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /grafeas.v1.Grafeas/GetNote
+
+{
+  "name": "projects/${projectId}/notes/grafeasnote-${uniqueId}"
+}
+
+OK
+
+{
+  "attestation": {
+    "hint": {
+      "humanReadableName": "initial-hint"
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "ATTESTATION",
+  "longDescription": "initial long description",
+  "name": "projects/${projectId}/notes/grafeasnote-${uniqueId}",
+  "relatedUrl": [
+    {
+      "label": "initial-label",
+      "url": "https://example.com/initial"
+    }
+  ],
+  "shortDescription": "initial short description",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /grafeas.v1.Grafeas/UpdateNote
+
+{
+  "name": "projects/${projectId}/notes/grafeasnote-${uniqueId}",
+  "note": {
+    "attestation": {
+      "hint": {
+        "humanReadableName": "initial-hint"
+      }
+    },
+    "longDescription": "updated long description",
+    "relatedUrl": [
+      {
+        "label": "updated-label",
+        "url": "https://example.com/updated"
+      }
+    ],
+    "shortDescription": "updated short description"
+  },
+  "updateMask": "longDescription,relatedUrl,shortDescription"
+}
+
+OK
+
+{
+  "attestation": {
+    "hint": {
+      "humanReadableName": "initial-hint"
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "ATTESTATION",
+  "longDescription": "updated long description",
+  "name": "projects/${projectId}/notes/grafeasnote-${uniqueId}",
+  "relatedUrl": [
+    {
+      "label": "updated-label",
+      "url": "https://example.com/updated"
+    }
+  ],
+  "shortDescription": "updated short description",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /grafeas.v1.Grafeas/GetNote
+
+{
+  "name": "projects/${projectId}/notes/grafeasnote-${uniqueId}"
+}
+
+OK
+
+{
+  "attestation": {
+    "hint": {
+      "humanReadableName": "initial-hint"
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "ATTESTATION",
+  "longDescription": "updated long description",
+  "name": "projects/${projectId}/notes/grafeasnote-${uniqueId}",
+  "relatedUrl": [
+    {
+      "label": "updated-label",
+      "url": "https://example.com/updated"
+    }
+  ],
+  "shortDescription": "updated short description",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /grafeas.v1.Grafeas/GetNote
+
+{
+  "name": "projects/${projectId}/notes/grafeasnote-${uniqueId}"
+}
+
+OK
+
+{
+  "attestation": {
+    "hint": {
+      "humanReadableName": "initial-hint"
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "ATTESTATION",
+  "longDescription": "updated long description",
+  "name": "projects/${projectId}/notes/grafeasnote-${uniqueId}",
+  "relatedUrl": [
+    {
+      "label": "updated-label",
+      "url": "https://example.com/updated"
+    }
+  ],
+  "shortDescription": "updated short description",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /grafeas.v1.Grafeas/GetNote
+
+{
+  "name": "projects/${projectId}/notes/grafeasnote-${uniqueId}"
+}
+
+OK
+
+{
+  "attestation": {
+    "hint": {
+      "humanReadableName": "initial-hint"
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "ATTESTATION",
+  "longDescription": "updated long description",
+  "name": "projects/${projectId}/notes/grafeasnote-${uniqueId}",
+  "relatedUrl": [
+    {
+      "label": "updated-label",
+      "url": "https://example.com/updated"
+    }
+  ],
+  "shortDescription": "updated short description",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /grafeas.v1.Grafeas/DeleteNote
+
+{
+  "name": "projects/${projectId}/notes/grafeasnote-${uniqueId}"
+}
+
+OK
+
+{}

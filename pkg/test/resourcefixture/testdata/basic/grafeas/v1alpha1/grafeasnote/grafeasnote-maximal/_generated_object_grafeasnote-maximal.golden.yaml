@@ -1,0 +1,35 @@
+apiVersion: grafeas.cnrm.cloud.google.com/v1alpha1
+kind: GrafeasNote
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: grafeasnote-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  attestation:
+    hint:
+      humanReadableName: initial-hint
+  longDescription: updated long description
+  projectRef:
+    external: ${projectId}
+  relatedURL:
+  - label: updated-label
+    url: https://example.com/updated
+  shortDescription: updated short description
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/notes/grafeasnote-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    kind: ATTESTATION
+    updateTime: "1970-01-01T00:00:00Z"
