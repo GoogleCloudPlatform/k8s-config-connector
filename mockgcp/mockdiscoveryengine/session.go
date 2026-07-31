@@ -128,7 +128,7 @@ func (s *conversationalSearchService) GetSession(ctx context.Context, req *pb.Ge
 	obj := &pb.Session{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "Session %v not found.", name)
+			return nil, status.Errorf(codes.NotFound, "Session with name %q does not exist.", req.GetName())
 		}
 		return nil, err
 	}
