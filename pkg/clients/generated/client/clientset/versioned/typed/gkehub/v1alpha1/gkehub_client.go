@@ -31,6 +31,7 @@ import (
 
 type GkehubV1alpha1Interface interface {
 	RESTClient() rest.Interface
+	GKEHubFleetsGetter
 	GKEHubMembershipBindingsGetter
 	GKEHubNamespacesGetter
 	GKEHubScopesGetter
@@ -40,6 +41,10 @@ type GkehubV1alpha1Interface interface {
 // GkehubV1alpha1Client is used to interact with features provided by the gkehub.cnrm.cloud.google.com group.
 type GkehubV1alpha1Client struct {
 	restClient rest.Interface
+}
+
+func (c *GkehubV1alpha1Client) GKEHubFleets(namespace string) GKEHubFleetInterface {
+	return newGKEHubFleets(c, namespace)
 }
 
 func (c *GkehubV1alpha1Client) GKEHubMembershipBindings(namespace string) GKEHubMembershipBindingInterface {
