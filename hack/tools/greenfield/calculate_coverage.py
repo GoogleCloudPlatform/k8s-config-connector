@@ -73,12 +73,19 @@ def get_gcp_resources(googleapis_dir):
         if pkg not in service_rpcs: continue
         
         all_rpcs = service_rpcs[pkg]
-        create_variants = [f"Create{name}", f"Upsert{name}", f"BatchCreate{name}"]
+        create_variants = [
+            f"Create{name}", f"Upsert{name}", f"BatchCreate{name}", 
+            f"Insert{name}", f"Upload{name}", f"Update{name}", f"Patch{name}"
+        ]
         for v in create_variants:
             if v in all_rpcs:
                 info['ops'].add('CREATE')
                 break
-        delete_variants = [f"Delete{name}", f"Finish{name}", f"Abort{name}", f"Cancel{name}", f"Terminate{name}", f"Destroy{name}"]
+        delete_variants = [
+            f"Delete{name}", f"Finish{name}", f"Abort{name}", 
+            f"Cancel{name}", f"Terminate{name}", f"Destroy{name}", 
+            f"Disable{name}", f"Deactivate{name}"
+        ]
         for v in delete_variants:
             if v in all_rpcs:
                 info['ops'].add('DELETE')
