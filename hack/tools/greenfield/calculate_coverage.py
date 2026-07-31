@@ -73,12 +73,19 @@ def get_gcp_resources(googleapis_dir):
         if pkg not in service_rpcs: continue
         
         all_rpcs = service_rpcs[pkg]
-        create_variants = [f"Create{name}", f"Upsert{name}", f"BatchCreate{name}"]
+        create_variants = [
+            f"Create{name}", f"Upsert{name}", f"BatchCreate{name}", 
+            f"Insert{name}", f"Upload{name}", f"Update{name}", f"Patch{name}"
+        ]
         for v in create_variants:
             if v in all_rpcs:
                 info['ops'].add('CREATE')
                 break
-        delete_variants = [f"Delete{name}", f"Finish{name}", f"Abort{name}", f"Cancel{name}", f"Terminate{name}", f"Destroy{name}"]
+        delete_variants = [
+            f"Delete{name}", f"Finish{name}", f"Abort{name}", 
+            f"Cancel{name}", f"Terminate{name}", f"Destroy{name}", 
+            f"Disable{name}", f"Deactivate{name}"
+        ]
         for v in delete_variants:
             if v in all_rpcs:
                 info['ops'].add('DELETE')
@@ -457,6 +464,10 @@ def main():
     
     # Generate Gap Analysis Table for tracking
     gap_file = os.path.join(os.path.dirname(__file__), "gap_analysis.txt")
+    
+    total_manageable = len(covered) + len(missing_manageable)
+    manageable_coverage = len(covered) / max(1, total_manageable)
+    
     if update_gap:
         now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         
@@ -479,7 +490,8 @@ def main():
             f"{'Missing Next Layer':<30} | {len(missing_next_layer):<10}",
             f"{'Missing Next Next Layer':<30} | {len(missing_next_next_layer):<10}",
             "-" * 55,
-            f"{'Current Coverage':<30} | {len(covered)/max(1, len(all_gcp_keys)):.2%}",
+            f"{'Total API Coverage':<30} | {len(covered)/max(1, len(all_gcp_keys)):.2%}",
+            f"{'Manageable Coverage':<30} | {manageable_coverage:.2%}",
             ""
         ]
         
@@ -493,7 +505,8 @@ def main():
     print(f"  - Skipped (Policy):     {skipped_count}")
     print(f"  - Implemented in KCC:   {len(covered)}")
     print(f"  - Missing from KCC:     {len(missing)}")
-    print(f"  - Coverage:             {len(covered)/max(1, len(all_gcp_keys)):.2%}")
+    print(f"  - Total API Coverage:   {len(covered)/max(1, len(all_gcp_keys)):.2%}")
+    print(f"  - Manageable Coverage:  {manageable_coverage:.2%}")
     
     print("\n--- Gap Breakdown (Missing Resources) ---")
     print(f"Total Missing:            {len(missing)}")
