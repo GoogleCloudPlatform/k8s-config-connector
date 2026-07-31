@@ -3415,39 +3415,9 @@
 [missing_field] crd=networkserviceswasmplugins.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.logConfig.enable" is not set in unstructured objects
 [missing_field] crd=networkserviceswasmplugins.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.logConfig.minLogLevel" is not set in unstructured objects
 [missing_field] crd=networkserviceswasmplugins.networkservices.cnrm.cloud.google.com version=v1alpha1: field ".spec.logConfig.sampleRate" is not set in unstructured objects
-[missing_field] crd=notebookinstancev2s.notebooks.cnrm.cloud.google.com version=v1alpha1: field ".spec.gceSetup.acceleratorConfigs[].coreCount" is not set in unstructured objects
-[missing_field] crd=notebookinstancev2s.notebooks.cnrm.cloud.google.com version=v1alpha1: field ".spec.gceSetup.acceleratorConfigs[].type" is not set in unstructured objects
-[missing_field] crd=notebookinstancev2s.notebooks.cnrm.cloud.google.com version=v1alpha1: field ".spec.gceSetup.bootDisk.kmsKeyRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=notebookinstancev2s.notebooks.cnrm.cloud.google.com version=v1alpha1: field ".spec.gceSetup.containerImage.tag" is not set in unstructured objects
-[missing_field] crd=notebookinstancev2s.notebooks.cnrm.cloud.google.com version=v1alpha1: field ".spec.gceSetup.dataDisks[].kmsKeyRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=notebookinstancev2s.notebooks.cnrm.cloud.google.com version=v1alpha1: field ".spec.gceSetup.enableIPForwarding" is not set in unstructured objects
-[missing_field] crd=notebookinstancev2s.notebooks.cnrm.cloud.google.com version=v1alpha1: field ".spec.gceSetup.gpuDriverConfig.customGpuDriverPath" is not set in unstructured objects
-[missing_field] crd=notebookinstancev2s.notebooks.cnrm.cloud.google.com version=v1alpha1: field ".spec.gceSetup.gpuDriverConfig.enableGpuDriver" is not set in unstructured objects
-[missing_field] crd=notebookinstancev2s.notebooks.cnrm.cloud.google.com version=v1alpha1: field ".spec.gceSetup.networkInterfaces[].networkRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=notebookinstancev2s.notebooks.cnrm.cloud.google.com version=v1alpha1: field ".spec.gceSetup.networkInterfaces[].nicType" is not set in unstructured objects
-[missing_field] crd=notebookinstancev2s.notebooks.cnrm.cloud.google.com version=v1alpha1: field ".spec.gceSetup.networkInterfaces[].subnetRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=notebookinstancev2s.notebooks.cnrm.cloud.google.com version=v1alpha1: field ".spec.gceSetup.serviceAccounts[].serviceAccountRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=notebookinstancev2s.notebooks.cnrm.cloud.google.com version=v1alpha1: field ".spec.gceSetup.vmImage.family" is not set in unstructured objects
-[missing_field] crd=notebookinstancev2s.notebooks.cnrm.cloud.google.com version=v1alpha1: field ".spec.gceSetup.vmImage.name" is not set in unstructured objects
-[missing_field] crd=notebookinstancev2s.notebooks.cnrm.cloud.google.com version=v1alpha1: field ".spec.gceSetup.vmImage.project" is not set in unstructured objects
-[missing_field] crd=notebooksenvironments.notebooks.cnrm.cloud.google.com version=v1alpha1: field ".spec.containerImage.tag" is not set in unstructured objects
-[missing_field] crd=notebooksenvironments.notebooks.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
-[missing_field] crd=notebooksenvironments.notebooks.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
-[missing_field] crd=notebooksenvironments.notebooks.cnrm.cloud.google.com version=v1alpha1: field ".spec.postStartupScript" is not set in unstructured objects
-[missing_field] crd=notebooksenvironments.notebooks.cnrm.cloud.google.com version=v1alpha1: field ".spec.vmImage.imageName" is not set in unstructured objects
-[missing_field] crd=notebooksexecutions.notebooks.cnrm.cloud.google.com version=v1alpha1: field ".spec.executionTemplate.tensorboardRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=notebooksexecutions.notebooks.cnrm.cloud.google.com version=v1alpha1: field ".spec.executionTemplate.vertexAiParameters.networkRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=notebooksschedules.notebooks.cnrm.cloud.google.com version=v1alpha1: field ".spec.executionTemplate.dataprocParameters.clusterRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=notebooksschedules.notebooks.cnrm.cloud.google.com version=v1alpha1: field ".spec.executionTemplate.tensorboardRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=notebooksschedules.notebooks.cnrm.cloud.google.com version=v1alpha1: field ".spec.executionTemplate.vertexAiParameters.networkRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=osconfigpatchdeployments.osconfig.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
-[missing_field] crd=osconfigpatchdeployments.osconfig.cnrm.cloud.google.com version=v1alpha1: field ".spec.duration" is not set in unstructured objects
-[missing_field] crd=osconfigpatchdeployments.osconfig.cnrm.cloud.google.com version=v1alpha1: field ".spec.instanceFilter.all" is not set in unstructured objects
-[missing_field] crd=osconfigpatchdeployments.osconfig.cnrm.cloud.google.com version=v1alpha1: field ".spec.instanceFilter.groupLabels[].labels" is not set in unstructured objects
 [missing_field] crd=osconfigpatchdeployments.osconfig.cnrm.cloud.google.com version=v1alpha1: field ".spec.instanceFilter.instanceNamePrefixes[]" is not set in unstructured objects
 [missing_field] crd=osconfigpatchdeployments.osconfig.cnrm.cloud.google.com version=v1alpha1: field ".spec.instanceFilter.instances[]" is not set in unstructured objects
 [missing_field] crd=osconfigpatchdeployments.osconfig.cnrm.cloud.google.com version=v1alpha1: field ".spec.instanceFilter.zones[]" is not set in unstructured objects
-[missing_field] crd=osconfigpatchdeployments.osconfig.cnrm.cloud.google.com version=v1alpha1: field ".spec.oneTimeSchedule.executeTime" is not set in unstructured objects
 [missing_field] crd=osconfigpatchdeployments.osconfig.cnrm.cloud.google.com version=v1alpha1: field ".spec.patchConfig.apt.excludes[]" is not set in unstructured objects
 [missing_field] crd=osconfigpatchdeployments.osconfig.cnrm.cloud.google.com version=v1alpha1: field ".spec.patchConfig.apt.exclusivePackages[]" is not set in unstructured objects
 [missing_field] crd=osconfigpatchdeployments.osconfig.cnrm.cloud.google.com version=v1alpha1: field ".spec.patchConfig.apt.type" is not set in unstructured objects
