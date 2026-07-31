@@ -2854,6 +2854,7 @@
 [missing_field] crd=grafeasnotes.grafeas.cnrm.cloud.google.com version=v1alpha1: field ".spec.upgrade.windowsUpdate.lastPublishedTimestamp" is not set in unstructured objects
 [missing_field] crd=grafeasnotes.grafeas.cnrm.cloud.google.com version=v1alpha1: field ".spec.upgrade.windowsUpdate.supportURL" is not set in unstructured objects
 [missing_field] crd=grafeasnotes.grafeas.cnrm.cloud.google.com version=v1alpha1: field ".spec.upgrade.windowsUpdate.title" is not set in unstructured objects
+[missing_field] crd=grafeasnotes.grafeas.cnrm.cloud.google.com version=v1alpha1: field ".spec.vulnerability.advisoryPublishTime" is not set in unstructured objects
 [missing_field] crd=grafeasnotes.grafeas.cnrm.cloud.google.com version=v1alpha1: field ".spec.vulnerability.cvssScore" is not set in unstructured objects
 [missing_field] crd=grafeasnotes.grafeas.cnrm.cloud.google.com version=v1alpha1: field ".spec.vulnerability.cvssV2.attackComplexity" is not set in unstructured objects
 [missing_field] crd=grafeasnotes.grafeas.cnrm.cloud.google.com version=v1alpha1: field ".spec.vulnerability.cvssV2.attackVector" is not set in unstructured objects

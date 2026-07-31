@@ -219,6 +219,7 @@ func GKEMulticloudAttachedClusterObservedState_FromProto(mapCtx *direct.MapConte
 	out.KubernetesVersion = direct.LazyPtr(in.GetKubernetesVersion())
 	out.WorkloadIdentityConfig = WorkloadIdentityConfig_FromProto(mapCtx, in.GetWorkloadIdentityConfig())
 	out.Errors = direct.Slice_FromProto(mapCtx, in.Errors, AttachedClusterError_FromProto)
+	// MISSING: SystemComponentsConfig
 	return out
 }
 func GKEMulticloudAttachedClusterObservedState_ToProto(mapCtx *direct.MapContext, in *krm.GKEMulticloudAttachedClusterObservedState) *pb.AttachedCluster {
@@ -238,6 +239,7 @@ func GKEMulticloudAttachedClusterObservedState_ToProto(mapCtx *direct.MapContext
 	out.KubernetesVersion = direct.ValueOf(in.KubernetesVersion)
 	out.WorkloadIdentityConfig = WorkloadIdentityConfig_ToProto(mapCtx, in.WorkloadIdentityConfig)
 	out.Errors = direct.Slice_ToProto(mapCtx, in.Errors, AttachedClusterError_ToProto)
+	// MISSING: SystemComponentsConfig
 	return out
 }
 func GKEMulticloudAttachedClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.AttachedCluster) *krm.GKEMulticloudAttachedClusterSpec {
@@ -260,6 +262,7 @@ func GKEMulticloudAttachedClusterSpec_FromProto(mapCtx *direct.MapContext, in *p
 	out.BinaryAuthorization = BinaryAuthorization_FromProto(mapCtx, in.GetBinaryAuthorization())
 	out.SecurityPostureConfig = SecurityPostureConfig_FromProto(mapCtx, in.GetSecurityPostureConfig())
 	out.Tags = in.Tags
+	// MISSING: SystemComponentsConfig
 	return out
 }
 func GKEMulticloudAttachedClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm.GKEMulticloudAttachedClusterSpec) *pb.AttachedCluster {
@@ -282,6 +285,7 @@ func GKEMulticloudAttachedClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm
 	out.BinaryAuthorization = BinaryAuthorization_ToProto(mapCtx, in.BinaryAuthorization)
 	out.SecurityPostureConfig = SecurityPostureConfig_ToProto(mapCtx, in.SecurityPostureConfig)
 	out.Tags = in.Tags
+	// MISSING: SystemComponentsConfig
 	return out
 }
 func KubernetesSecret_FromProto(mapCtx *direct.MapContext, in *pb.KubernetesSecret) *krm.KubernetesSecret {

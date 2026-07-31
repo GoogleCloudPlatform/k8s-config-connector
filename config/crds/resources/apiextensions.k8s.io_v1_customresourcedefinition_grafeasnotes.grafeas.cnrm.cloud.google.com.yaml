@@ -550,6 +550,9 @@ spec:
               vulnerability:
                 description: A note describing a package vulnerability.
                 properties:
+                  advisoryPublishTime:
+                    description: The time this advisory was published by the source.
+                    type: string
                   cvssScore:
                     description: The CVSS score of this vulnerability. CVSS score
                       is on a scale of 0 - 10 where 0 indicates low severity and 10

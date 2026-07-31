@@ -745,6 +745,10 @@ type VulnerabilityNote struct {
 	// The full description of the v2 CVSS for this vulnerability.
 	// +kcc:proto:field=grafeas.v1.VulnerabilityNote.cvss_v2
 	CvssV2 *Cvss `json:"cvssV2,omitempty"`
+
+	// The time this advisory was published by the source.
+	// +kcc:proto:field=grafeas.v1.VulnerabilityNote.advisory_publish_time
+	AdvisoryPublishTime *string `json:"advisoryPublishTime,omitempty"`
 }
 
 // +kcc:proto=grafeas.v1.VulnerabilityNote.Detail
