@@ -1,0 +1,41 @@
+apiVersion: networkmanagement.cnrm.cloud.google.com/v1alpha1
+kind: NetworkManagementVPCFlowLogsConfig
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: flowlogsconfig-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  aggregationInterval: INTERVAL_5_SEC
+  description: An updated test vpc flow logs config description
+  filterExpr: "true"
+  flowSampling: 0.8
+  labels:
+    label-key: label-value-updated
+  location: global
+  metadata: CUSTOM_METADATA
+  metadataFields:
+  - src_instance
+  - dst_instance
+  projectRef:
+    external: ${projectId}
+  state: DISABLED
+  vpnTunnelRef:
+    external: projects/${projectId}/regions/us-central1/vpnTunnels/computevpntunnel-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/global/vpcFlowLogsConfigs/flowlogsconfig-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    targetResourceState: TARGET_RESOURCE_EXISTS
+    updateTime: "1970-01-01T00:00:00Z"
