@@ -17,7 +17,8 @@ spec:
   connectMode: DIRECT_PEERING
   displayName: Sample Redis Instance with Secondary IP Range - Updated
   memorySizeGb: 16
-  region: us-central1
+  readReplicasMode: READ_REPLICAS_ENABLED
+  region: europe-west4
   secondaryIpRange: auto
   tier: STANDARD_HA
 status:
@@ -39,3 +40,5 @@ status:
   observedState: {}
   persistenceIamIdentity: serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com
   port: 6379
+  readEndpoint: 10.57.59.77
+  readEndpointPort: 6379
