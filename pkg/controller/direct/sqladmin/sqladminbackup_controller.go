@@ -42,7 +42,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpclients/generated/google/cloud/sql/v1beta4"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
@@ -312,7 +311,7 @@ func (a *backupAdapter) Update(ctx context.Context, updateOp *directbase.UpdateO
 		return err
 	}
 
-	diffs, _, err := tags.DiffForTopLevelFields(ctx, a.desired.ProtoReflect(), maskedActual.ProtoReflect())
+	diffs, _, err := common.DiffForTopLevelFields(ctx, a.desired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
 		return err
 	}
