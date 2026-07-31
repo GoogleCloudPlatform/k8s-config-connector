@@ -60,6 +60,8 @@ cloud.google.com/go/compute v1.63.0 h1:KsBourH0wajM4RhzwPwRMKbxHVdvzGsk7StvACoWX
 cloud.google.com/go/compute v1.63.0/go.mod h1:Xm6PbsLgBpAg4va77ljbBdpMjzuU+uPp5Ze2dnZq7lw=
 cloud.google.com/go/compute/metadata v0.9.0 h1:pDUj4QMoPejqq20dK0Pg2N4yG9zIkYGdBtwLoEkH9Zs=
 cloud.google.com/go/compute/metadata v0.9.0/go.mod h1:E0bWwX5wTnLPedCKqk3pJmVgCBSM6qQI1yTBdEb3C10=
+cloud.google.com/go/config v1.12.0 h1:PrU7nSKveVGxtkbQcB6nYX574FB4T+u8/o6UN6JHDi0=
+cloud.google.com/go/config v1.12.0/go.mod h1:XatJxGrWQwZeJ0k4SIOmD2gkIlII8IzEBDm6ihGwCQ4=
 cloud.google.com/go/configdelivery v0.1.1 h1:Wy9ZzeOmPhEPE96IC3CQWluQoa6rH52JG3/8duj/Qk4=
 cloud.google.com/go/configdelivery v0.1.1/go.mod h1:+is0HvpI0/kHMf3As0X/gUPMgy0vby+mbJJIGW82+jA=
 cloud.google.com/go/contactcenterinsights v1.22.0 h1:VzNZG5RxHhRWlhmPg3GHUmPDqsZXbHq1GJ9yw6ISJbY=
