@@ -129,9 +129,11 @@ func (obj *DiscoveryEngineSession) GetIdentity(ctx context.Context, reader clien
 			return nil, err
 		}
 
-		if statusIdentity.String() != specIdentity.String() {
-			return nil, fmt.Errorf("cannot change DiscoveryEngineSession identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+		if statusIdentity.Project != specIdentity.Project || statusIdentity.Location != specIdentity.Location || statusIdentity.Datastore != specIdentity.Datastore {
+			return nil, fmt.Errorf("cannot change DiscoveryEngineSession parent identity (old=%q, new parent=%s/%s/%s)", statusIdentity.String(), specIdentity.Project, specIdentity.Location, specIdentity.Datastore)
 		}
+
+		specIdentity.Session = statusIdentity.Session
 	}
 
 	return specIdentity, nil

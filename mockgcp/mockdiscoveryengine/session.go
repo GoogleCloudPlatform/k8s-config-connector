@@ -47,10 +47,16 @@ func (s *conversationalSearchService) CreateSession(ctx context.Context, req *pb
 	}
 	now := time.Now()
 
+	// Real GCP ignores the client-specified session ID and assigns a numeric session ID.
+	sessionID := fmt.Sprintf("%d", now.UnixNano())
+	name.Session = sessionID
+
 	fqn := name.String()
 	obj := proto.Clone(req.GetSession()).(*pb.Session)
 	obj.Name = fqn
+	obj.State = pb.Session_IN_PROGRESS
 	obj.StartTime = timestamppb.New(now)
+	obj.EndTime = timestamppb.New(now)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -90,8 +96,21 @@ func (s *conversationalSearchService) UpdateSession(ctx context.Context, req *pb
 		return nil, err
 	}
 
-	// Simple merge of updated fields
-	proto.Merge(obj, req.GetSession())
+	paths := req.GetUpdateMask().GetPaths()
+	if len(paths) > 0 {
+		for _, path := range paths {
+			switch path {
+			case "state":
+				obj.State = req.GetSession().GetState()
+			case "display_name", "displayName":
+				obj.DisplayName = req.GetSession().GetDisplayName()
+			}
+		}
+	} else {
+		// Simple merge of updated fields
+		proto.Merge(obj, req.GetSession())
+	}
+	obj.Name = fqn
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err

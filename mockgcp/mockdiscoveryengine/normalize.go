@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,13 +15,33 @@
 package mockdiscoveryengine
 
 import (
+	"strings"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 )
 
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
+	replacements.ReplacePath(".startTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".endTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.RemovePath(".servingConfigDataStore")
+	replacements.RemovePath(".response.servingConfigDataStore")
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
+	if !strings.Contains(event.URL(), "discoveryengine.googleapis.com") {
+		return
+	}
+
+	event.VisitResponseStringValues(func(path string, value string) {
+		if path == ".name" || strings.HasSuffix(path, ".name") {
+			tokens := strings.Split(value, "/")
+			if len(tokens) >= 10 && tokens[len(tokens)-2] == "sessions" {
+				sessionID := tokens[len(tokens)-1]
+				// Normalize any generated numeric session ID to the expected test format
+				replacements.ReplaceStringValue(sessionID, "session-${uniqueId}")
+			}
+		}
+	})
 }
