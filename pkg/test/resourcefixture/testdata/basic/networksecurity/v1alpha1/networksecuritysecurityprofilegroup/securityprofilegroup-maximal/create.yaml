@@ -9,11 +9,9 @@ spec:
   description: "Maximal security profile group"
   labels:
     foo: bar
+  # found incompatible profiles:
+  # [THREAT_PREVENTION and CUSTOM_MIRRORING THREAT_PREVENTION and CUSTOM_INTERCEPT URL_FILTERING and CUSTOM_MIRRORING URL_FILTERING and CUSTOM_INTERCEPT CUSTOM_MIRRORING and CUSTOM_INTERCEPT]
   threatPreventionProfileRef:
-    external: "projects/${projectId}/locations/global/securityProfiles/dummy-threat-${uniqueId}"
-  customInterceptProfileRef:
-    external: "projects/${projectId}/locations/global/securityProfiles/dummy-intercept-${uniqueId}"
-  customMirroringProfileRef:
-    external: "projects/${projectId}/locations/global/securityProfiles/dummy-mirroring-${uniqueId}"
+    name: sp-dep-${uniqueId}-tp
   urlFilteringProfileRef:
-    external: "projects/${projectId}/locations/global/securityProfiles/dummy-url-${uniqueId}"
+    name: sp-dep-${uniqueId}-uf

@@ -1,0 +1,23 @@
+apiVersion: networksecurity.cnrm.cloud.google.com/v1alpha1
+kind: NetworkSecurityInterceptEndpointGroup
+metadata:
+  name: intercepteg-dep-${uniqueId}
+spec:
+  projectRef:
+    external: "projects/${projectId}"
+  location: global
+  interceptDeploymentGroupRef:
+    external: "projects/${projectId}/locations/global/interceptDeploymentGroups/my-idg"
+---
+apiVersion: networksecurity.cnrm.cloud.google.com/v1alpha1
+kind: NetworkSecuritySecurityProfile
+metadata:
+  name: sp-dep-${uniqueId}-ci
+spec:
+  projectRef:
+    external: "projects/${projectId}"
+  location: global
+  type: CUSTOM_INTERCEPT
+  customInterceptProfile:
+    interceptEndpointGroupRef:
+      name: intercepteg-dep-${uniqueId}

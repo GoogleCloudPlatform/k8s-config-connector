@@ -10,16 +10,14 @@ metadata:
   name: spg-max-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  description: Maximal security profile group - updated
+  customInterceptProfileRef:
+    name: sp-dep-${uniqueId}-ci
+  description: security profile group - updated
   labels:
     foo: baz
   location: global
   projectRef:
     external: projects/${projectId}
-  threatPreventionProfileRef:
-    name: sp-dep-${uniqueId}-tp
-  urlFilteringProfileRef:
-    name: sp-dep-${uniqueId}-uf
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"

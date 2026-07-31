@@ -60,6 +60,7 @@ OK
     "createTime": "2024-04-01T12:34:56.123456Z",
     "etag": "abcdef0123A=",
     "name": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-tp",
+    "threatPreventionProfile": {},
     "type": "THREAT_PREVENTION",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -79,6 +80,7 @@ OK
   "createTime": "2024-04-01T12:34:56.123456Z",
   "etag": "abcdef0123A=",
   "name": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-tp",
+  "threatPreventionProfile": {},
   "type": "THREAT_PREVENTION",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -172,6 +174,13 @@ OK
             "*about.example.com",
             "*help.example.com"
           ]
+        },
+        {
+          "filteringAction": "DENY",
+          "priority": 2147483647,
+          "urls": [
+            "*"
+          ]
         }
       ]
     }
@@ -203,6 +212,13 @@ OK
           "*example.com",
           "*about.example.com",
           "*help.example.com"
+        ]
+      },
+      {
+        "filteringAction": "DENY",
+        "priority": 2147483647,
+        "urls": [
+          "*"
         ]
       }
     ]
@@ -276,7 +292,7 @@ OK
   "response": {
     "@type": "type.googleapis.com/google.cloud.networksecurity.v1.SecurityProfileGroup",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "dataPathId": "12345",
+    "dataPathId": "2676",
     "description": "Maximal security profile group",
     "etag": "abcdef0123A=",
     "labels": {
@@ -301,7 +317,7 @@ OK
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "dataPathId": "12345",
+  "dataPathId": "2676",
   "description": "Maximal security profile group",
   "etag": "abcdef0123A=",
   "labels": {
@@ -325,7 +341,7 @@ OK
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "dataPathId": "12345",
+  "dataPathId": "2676",
   "description": "Maximal security profile group",
   "etag": "abcdef0123A=",
   "labels": {
@@ -391,7 +407,7 @@ OK
   "response": {
     "@type": "type.googleapis.com/google.cloud.networksecurity.v1.SecurityProfileGroup",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "dataPathId": "12345",
+    "dataPathId": "2676",
     "description": "Maximal security profile group - updated",
     "etag": "abcdef0123A=",
     "labels": {
@@ -416,7 +432,7 @@ OK
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "dataPathId": "12345",
+  "dataPathId": "2676",
   "description": "Maximal security profile group - updated",
   "etag": "abcdef0123A=",
   "labels": {
@@ -440,7 +456,7 @@ OK
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "dataPathId": "12345",
+  "dataPathId": "2676",
   "description": "Maximal security profile group - updated",
   "etag": "abcdef0123A=",
   "labels": {
@@ -464,7 +480,7 @@ OK
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "dataPathId": "12345",
+  "dataPathId": "2676",
   "description": "Maximal security profile group - updated",
   "etag": "abcdef0123A=",
   "labels": {
@@ -549,6 +565,13 @@ OK
           "*about.example.com",
           "*help.example.com"
         ]
+      },
+      {
+        "filteringAction": "DENY",
+        "priority": 2147483647,
+        "urls": [
+          "*"
+        ]
       }
     ]
   }
@@ -579,6 +602,13 @@ OK
           "*example.com",
           "*about.example.com",
           "*help.example.com"
+        ]
+      },
+      {
+        "filteringAction": "DENY",
+        "priority": 2147483647,
+        "urls": [
+          "*"
         ]
       }
     ]
@@ -646,6 +676,7 @@ OK
   "createTime": "2024-04-01T12:34:56.123456Z",
   "etag": "abcdef0123A=",
   "name": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-tp",
+  "threatPreventionProfile": {},
   "type": "THREAT_PREVENTION",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -664,6 +695,7 @@ OK
   "createTime": "2024-04-01T12:34:56.123456Z",
   "etag": "abcdef0123A=",
   "name": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-tp",
+  "threatPreventionProfile": {},
   "type": "THREAT_PREVENTION",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }

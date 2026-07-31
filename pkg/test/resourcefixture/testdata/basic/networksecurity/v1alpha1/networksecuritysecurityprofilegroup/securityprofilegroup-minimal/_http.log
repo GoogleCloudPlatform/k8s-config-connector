@@ -60,6 +60,7 @@ OK
     "createTime": "2024-04-01T12:34:56.123456Z",
     "etag": "abcdef0123A=",
     "name": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}",
+    "threatPreventionProfile": {},
     "type": "THREAT_PREVENTION",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -79,6 +80,7 @@ OK
   "createTime": "2024-04-01T12:34:56.123456Z",
   "etag": "abcdef0123A=",
   "name": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}",
+  "threatPreventionProfile": {},
   "type": "THREAT_PREVENTION",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -147,6 +149,7 @@ OK
     "createTime": "2024-04-01T12:34:56.123456Z",
     "etag": "abcdef0123A=",
     "name": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-2",
+    "threatPreventionProfile": {},
     "type": "THREAT_PREVENTION",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -166,6 +169,7 @@ OK
   "createTime": "2024-04-01T12:34:56.123456Z",
   "etag": "abcdef0123A=",
   "name": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-2",
+  "threatPreventionProfile": {},
   "type": "THREAT_PREVENTION",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -232,7 +236,7 @@ OK
   "response": {
     "@type": "type.googleapis.com/google.cloud.networksecurity.v1.SecurityProfileGroup",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "dataPathId": "12345",
+    "dataPathId": "2090",
     "etag": "abcdef0123A=",
     "name": "projects/${projectId}/locations/global/securityProfileGroups/spg-min-${uniqueId}",
     "threatPreventionProfile": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}",
@@ -252,7 +256,7 @@ OK
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "dataPathId": "12345",
+  "dataPathId": "2090",
   "etag": "abcdef0123A=",
   "name": "projects/${projectId}/locations/global/securityProfileGroups/spg-min-${uniqueId}",
   "threatPreventionProfile": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}",
@@ -271,7 +275,7 @@ OK
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "dataPathId": "12345",
+  "dataPathId": "2090",
   "etag": "abcdef0123A=",
   "name": "projects/${projectId}/locations/global/securityProfileGroups/spg-min-${uniqueId}",
   "threatPreventionProfile": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}",
@@ -327,7 +331,7 @@ OK
   "response": {
     "@type": "type.googleapis.com/google.cloud.networksecurity.v1.SecurityProfileGroup",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "dataPathId": "12345",
+    "dataPathId": "2090",
     "etag": "abcdef0123A=",
     "name": "projects/${projectId}/locations/global/securityProfileGroups/spg-min-${uniqueId}",
     "threatPreventionProfile": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-2",
@@ -347,7 +351,7 @@ OK
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "dataPathId": "12345",
+  "dataPathId": "2090",
   "etag": "abcdef0123A=",
   "name": "projects/${projectId}/locations/global/securityProfileGroups/spg-min-${uniqueId}",
   "threatPreventionProfile": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-2",
@@ -366,7 +370,7 @@ OK
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "dataPathId": "12345",
+  "dataPathId": "2090",
   "etag": "abcdef0123A=",
   "name": "projects/${projectId}/locations/global/securityProfileGroups/spg-min-${uniqueId}",
   "threatPreventionProfile": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-2",
@@ -385,7 +389,7 @@ OK
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "dataPathId": "12345",
+  "dataPathId": "2090",
   "etag": "abcdef0123A=",
   "name": "projects/${projectId}/locations/global/securityProfileGroups/spg-min-${uniqueId}",
   "threatPreventionProfile": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-2",
@@ -453,6 +457,7 @@ OK
   "createTime": "2024-04-01T12:34:56.123456Z",
   "etag": "abcdef0123A=",
   "name": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-2",
+  "threatPreventionProfile": {},
   "type": "THREAT_PREVENTION",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -471,6 +476,7 @@ OK
   "createTime": "2024-04-01T12:34:56.123456Z",
   "etag": "abcdef0123A=",
   "name": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-2",
+  "threatPreventionProfile": {},
   "type": "THREAT_PREVENTION",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -536,6 +542,7 @@ OK
   "createTime": "2024-04-01T12:34:56.123456Z",
   "etag": "abcdef0123A=",
   "name": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}",
+  "threatPreventionProfile": {},
   "type": "THREAT_PREVENTION",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -554,6 +561,7 @@ OK
   "createTime": "2024-04-01T12:34:56.123456Z",
   "etag": "abcdef0123A=",
   "name": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}",
+  "threatPreventionProfile": {},
   "type": "THREAT_PREVENTION",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }

@@ -1,24 +1,23 @@
-GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/GetSecurityProfile
+GRPC /google.cloud.networksecurity.v1.Mirroring/GetMirroringEndpointGroup
 
 {
-  "name": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-tp"
+  "name": "projects/${projectId}/locations/global/mirroringEndpointGroups/mirroringeg-dep-${uniqueId}"
 }
 
-error: rpc error: code = NotFound desc = Resource 'projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-tp' was not found
+error: rpc error: code = NotFound desc = Resource 'projects/${projectId}/locations/global/mirroringEndpointGroups/mirroringeg-dep-${uniqueId}' was not found
 
 {}
 
 ---
 
-GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/CreateSecurityProfile
+GRPC /google.cloud.networksecurity.v1.Mirroring/CreateMirroringEndpointGroup
 
 {
-  "parent": "projects/${projectId}/locations/global",
-  "securityProfile": {
-    "name": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-tp",
-    "type": "THREAT_PREVENTION"
+  "mirroringEndpointGroup": {
+    "mirroringDeploymentGroup": "projects/${projectId}/locations/global/mirroringDeploymentGroups/my-mdg"
   },
-  "securityProfileId": "sp-dep-${uniqueId}-tp"
+  "mirroringEndpointGroupId": "mirroringeg-dep-${uniqueId}",
+  "parent": "projects/${projectId}/locations/global"
 }
 
 OK
@@ -28,7 +27,7 @@ OK
     "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-tp",
+    "target": "projects/${projectId}/locations/global/mirroringEndpointGroups/mirroringeg-dep-${uniqueId}",
     "verb": "create"
   },
   "name": "projects/${projectId}/locations/global/operations/${operationID}"
@@ -51,16 +50,109 @@ OK
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-tp",
+    "target": "projects/${projectId}/locations/global/mirroringEndpointGroups/mirroringeg-dep-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.MirroringEndpointGroup",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "mirroringDeploymentGroup": "projects/${projectId}/locations/global/mirroringDeploymentGroups/my-mdg",
+    "name": "projects/${projectId}/locations/global/mirroringEndpointGroups/mirroringeg-dep-${uniqueId}",
+    "state": "ACTIVE",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.Mirroring/GetMirroringEndpointGroup
+
+{
+  "name": "projects/${projectId}/locations/global/mirroringEndpointGroups/mirroringeg-dep-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "mirroringDeploymentGroup": "projects/${projectId}/locations/global/mirroringDeploymentGroups/my-mdg",
+  "name": "projects/${projectId}/locations/global/mirroringEndpointGroups/mirroringeg-dep-${uniqueId}",
+  "state": "ACTIVE",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/GetSecurityProfile
+
+{
+  "name": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-cm"
+}
+
+error: rpc error: code = NotFound desc = Resource 'projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-cm' was not found
+
+{}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/CreateSecurityProfile
+
+{
+  "parent": "projects/${projectId}/locations/global",
+  "securityProfile": {
+    "customMirroringProfile": {
+      "mirroringEndpointGroup": "projects/${projectId}/locations/global/mirroringEndpointGroups/mirroringeg-dep-${uniqueId}"
+    },
+    "name": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-cm",
+    "type": "CUSTOM_MIRRORING"
+  },
+  "securityProfileId": "sp-dep-${uniqueId}-cm"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-cm",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-cm",
     "verb": "create"
   },
   "name": "projects/${projectId}/locations/global/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.networksecurity.v1.SecurityProfile",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "customMirroringProfile": {
+      "mirroringEndpointGroup": "projects/${projectId}/locations/global/mirroringEndpointGroups/mirroringeg-dep-${uniqueId}"
+    },
     "etag": "abcdef0123A=",
-    "name": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-tp",
-    "type": "THREAT_PREVENTION",
+    "name": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-cm",
+    "type": "CUSTOM_MIRRORING",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
@@ -70,143 +162,20 @@ OK
 GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/GetSecurityProfile
 
 {
-  "name": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-tp"
+  "name": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-cm"
 }
 
 OK
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "customMirroringProfile": {
+    "mirroringEndpointGroup": "projects/${projectId}/locations/global/mirroringEndpointGroups/mirroringeg-dep-${uniqueId}"
+  },
   "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-tp",
-  "type": "THREAT_PREVENTION",
+  "name": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-cm",
+  "type": "CUSTOM_MIRRORING",
   "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/GetSecurityProfile
-
-{
-  "name": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-uf"
-}
-
-error: rpc error: code = NotFound desc = Resource 'projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-uf' was not found
-
-{}
-
----
-
-GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/CreateSecurityProfile
-
-{
-  "parent": "projects/${projectId}/locations/global",
-  "securityProfile": {
-    "name": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-uf",
-    "type": "URL_FILTERING",
-    "urlFilteringProfile": {
-      "urlFilters": [
-        {
-          "filteringAction": "ALLOW",
-          "priority": 1,
-          "urls": [
-            "*example.com",
-            "*about.example.com",
-            "*help.example.com"
-          ]
-        }
-      ]
-    }
-  },
-  "securityProfileId": "sp-dep-${uniqueId}-uf"
-}
-
-OK
-
-{
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
-    "apiVersion": "v1",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-uf",
-    "verb": "create"
-  },
-  "name": "projects/${projectId}/locations/global/operations/${operationID}"
-}
-
----
-
-GRPC /google.longrunning.Operations/GetOperation
-
-{
-  "name": "projects/${projectId}/locations/global/operations/${operationID}"
-}
-
-OK
-
-{
-  "done": true,
-  "metadata": {
-    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
-    "apiVersion": "v1",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-uf",
-    "verb": "create"
-  },
-  "name": "projects/${projectId}/locations/global/operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.SecurityProfile",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "etag": "abcdef0123A=",
-    "name": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-uf",
-    "type": "URL_FILTERING",
-    "updateTime": "2024-04-01T12:34:56.123456Z",
-    "urlFilteringProfile": {
-      "urlFilters": [
-        {
-          "filteringAction": "ALLOW",
-          "priority": 1,
-          "urls": [
-            "*example.com",
-            "*about.example.com",
-            "*help.example.com"
-          ]
-        }
-      ]
-    }
-  }
-}
-
----
-
-GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/GetSecurityProfile
-
-{
-  "name": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-uf"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-uf",
-  "type": "URL_FILTERING",
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "urlFilteringProfile": {
-    "urlFilters": [
-      {
-        "filteringAction": "ALLOW",
-        "priority": 1,
-        "urls": [
-          "*example.com",
-          "*about.example.com",
-          "*help.example.com"
-        ]
-      }
-    ]
-  }
 }
 
 ---
@@ -228,13 +197,12 @@ GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/CreateSecurity
 {
   "parent": "projects/${projectId}/locations/global",
   "securityProfileGroup": {
-    "description": "Maximal security profile group",
+    "customMirroringProfile": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-cm",
+    "description": "security profile group",
     "labels": {
       "foo": "bar"
     },
-    "name": "projects/${projectId}/locations/global/securityProfileGroups/spg-max-${uniqueId}",
-    "threatPreventionProfile": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-tp",
-    "urlFilteringProfile": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-uf"
+    "name": "projects/${projectId}/locations/global/securityProfileGroups/spg-max-${uniqueId}"
   },
   "securityProfileGroupId": "spg-max-${uniqueId}"
 }
@@ -276,16 +244,15 @@ OK
   "response": {
     "@type": "type.googleapis.com/google.cloud.networksecurity.v1.SecurityProfileGroup",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "customMirroringProfile": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-cm",
     "dataPathId": "12345",
-    "description": "Maximal security profile group",
+    "description": "security profile group",
     "etag": "abcdef0123A=",
     "labels": {
       "foo": "bar"
     },
     "name": "projects/${projectId}/locations/global/securityProfileGroups/spg-max-${uniqueId}",
-    "threatPreventionProfile": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-tp",
-    "updateTime": "2024-04-01T12:34:56.123456Z",
-    "urlFilteringProfile": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-uf"
+    "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
 
@@ -301,16 +268,15 @@ OK
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "customMirroringProfile": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-cm",
   "dataPathId": "12345",
-  "description": "Maximal security profile group",
+  "description": "security profile group",
   "etag": "abcdef0123A=",
   "labels": {
     "foo": "bar"
   },
   "name": "projects/${projectId}/locations/global/securityProfileGroups/spg-max-${uniqueId}",
-  "threatPreventionProfile": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-tp",
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "urlFilteringProfile": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-uf"
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
@@ -325,16 +291,15 @@ OK
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "customMirroringProfile": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-cm",
   "dataPathId": "12345",
-  "description": "Maximal security profile group",
+  "description": "security profile group",
   "etag": "abcdef0123A=",
   "labels": {
     "foo": "bar"
   },
   "name": "projects/${projectId}/locations/global/securityProfileGroups/spg-max-${uniqueId}",
-  "threatPreventionProfile": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-tp",
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "urlFilteringProfile": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-uf"
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
@@ -343,13 +308,12 @@ GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/UpdateSecurity
 
 {
   "securityProfileGroup": {
-    "description": "Maximal security profile group - updated",
+    "customMirroringProfile": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-cm",
+    "description": "security profile group - updated",
     "labels": {
       "foo": "baz"
     },
-    "name": "projects/${projectId}/locations/global/securityProfileGroups/spg-max-${uniqueId}",
-    "threatPreventionProfile": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-tp",
-    "urlFilteringProfile": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-uf"
+    "name": "projects/${projectId}/locations/global/securityProfileGroups/spg-max-${uniqueId}"
   },
   "updateMask": "description,labels"
 }
@@ -391,16 +355,15 @@ OK
   "response": {
     "@type": "type.googleapis.com/google.cloud.networksecurity.v1.SecurityProfileGroup",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "customMirroringProfile": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-cm",
     "dataPathId": "12345",
-    "description": "Maximal security profile group - updated",
+    "description": "security profile group - updated",
     "etag": "abcdef0123A=",
     "labels": {
       "foo": "baz"
     },
     "name": "projects/${projectId}/locations/global/securityProfileGroups/spg-max-${uniqueId}",
-    "threatPreventionProfile": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-tp",
-    "updateTime": "2024-04-01T12:34:56.123456Z",
-    "urlFilteringProfile": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-uf"
+    "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
 
@@ -416,16 +379,15 @@ OK
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "customMirroringProfile": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-cm",
   "dataPathId": "12345",
-  "description": "Maximal security profile group - updated",
+  "description": "security profile group - updated",
   "etag": "abcdef0123A=",
   "labels": {
     "foo": "baz"
   },
   "name": "projects/${projectId}/locations/global/securityProfileGroups/spg-max-${uniqueId}",
-  "threatPreventionProfile": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-tp",
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "urlFilteringProfile": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-uf"
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
@@ -440,16 +402,15 @@ OK
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "customMirroringProfile": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-cm",
   "dataPathId": "12345",
-  "description": "Maximal security profile group - updated",
+  "description": "security profile group - updated",
   "etag": "abcdef0123A=",
   "labels": {
     "foo": "baz"
   },
   "name": "projects/${projectId}/locations/global/securityProfileGroups/spg-max-${uniqueId}",
-  "threatPreventionProfile": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-tp",
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "urlFilteringProfile": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-uf"
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
@@ -464,16 +425,15 @@ OK
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "customMirroringProfile": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-cm",
   "dataPathId": "12345",
-  "description": "Maximal security profile group - updated",
+  "description": "security profile group - updated",
   "etag": "abcdef0123A=",
   "labels": {
     "foo": "baz"
   },
   "name": "projects/${projectId}/locations/global/securityProfileGroups/spg-max-${uniqueId}",
-  "threatPreventionProfile": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-tp",
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "urlFilteringProfile": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-uf"
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
@@ -528,30 +488,20 @@ OK
 GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/GetSecurityProfile
 
 {
-  "name": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-uf"
+  "name": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-cm"
 }
 
 OK
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "customMirroringProfile": {
+    "mirroringEndpointGroup": "projects/${projectId}/locations/global/mirroringEndpointGroups/mirroringeg-dep-${uniqueId}"
+  },
   "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-uf",
-  "type": "URL_FILTERING",
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "urlFilteringProfile": {
-    "urlFilters": [
-      {
-        "filteringAction": "ALLOW",
-        "priority": 1,
-        "urls": [
-          "*example.com",
-          "*about.example.com",
-          "*help.example.com"
-        ]
-      }
-    ]
-  }
+  "name": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-cm",
+  "type": "CUSTOM_MIRRORING",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
@@ -559,30 +509,20 @@ OK
 GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/GetSecurityProfile
 
 {
-  "name": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-uf"
+  "name": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-cm"
 }
 
 OK
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "customMirroringProfile": {
+    "mirroringEndpointGroup": "projects/${projectId}/locations/global/mirroringEndpointGroups/mirroringeg-dep-${uniqueId}"
+  },
   "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-uf",
-  "type": "URL_FILTERING",
-  "updateTime": "2024-04-01T12:34:56.123456Z",
-  "urlFilteringProfile": {
-    "urlFilters": [
-      {
-        "filteringAction": "ALLOW",
-        "priority": 1,
-        "urls": [
-          "*example.com",
-          "*about.example.com",
-          "*help.example.com"
-        ]
-      }
-    ]
-  }
+  "name": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-cm",
+  "type": "CUSTOM_MIRRORING",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
@@ -590,7 +530,7 @@ OK
 GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/DeleteSecurityProfile
 
 {
-  "name": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-uf"
+  "name": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-cm"
 }
 
 OK
@@ -600,7 +540,7 @@ OK
     "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-uf",
+    "target": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-cm",
     "verb": "delete"
   },
   "name": "projects/${projectId}/locations/global/operations/${operationID}"
@@ -623,7 +563,7 @@ OK
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-uf",
+    "target": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-cm",
     "verb": "delete"
   },
   "name": "projects/${projectId}/locations/global/operations/${operationID}",
@@ -634,46 +574,46 @@ OK
 
 ---
 
-GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/GetSecurityProfile
+GRPC /google.cloud.networksecurity.v1.Mirroring/GetMirroringEndpointGroup
 
 {
-  "name": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-tp"
+  "name": "projects/${projectId}/locations/global/mirroringEndpointGroups/mirroringeg-dep-${uniqueId}"
 }
 
 OK
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-tp",
-  "type": "THREAT_PREVENTION",
+  "mirroringDeploymentGroup": "projects/${projectId}/locations/global/mirroringDeploymentGroups/my-mdg",
+  "name": "projects/${projectId}/locations/global/mirroringEndpointGroups/mirroringeg-dep-${uniqueId}",
+  "state": "ACTIVE",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/GetSecurityProfile
+GRPC /google.cloud.networksecurity.v1.Mirroring/GetMirroringEndpointGroup
 
 {
-  "name": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-tp"
+  "name": "projects/${projectId}/locations/global/mirroringEndpointGroups/mirroringeg-dep-${uniqueId}"
 }
 
 OK
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "etag": "abcdef0123A=",
-  "name": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-tp",
-  "type": "THREAT_PREVENTION",
+  "mirroringDeploymentGroup": "projects/${projectId}/locations/global/mirroringDeploymentGroups/my-mdg",
+  "name": "projects/${projectId}/locations/global/mirroringEndpointGroups/mirroringeg-dep-${uniqueId}",
+  "state": "ACTIVE",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-GRPC /google.cloud.networksecurity.v1.SecurityProfileGroupService/DeleteSecurityProfile
+GRPC /google.cloud.networksecurity.v1.Mirroring/DeleteMirroringEndpointGroup
 
 {
-  "name": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-tp"
+  "name": "projects/${projectId}/locations/global/mirroringEndpointGroups/mirroringeg-dep-${uniqueId}"
 }
 
 OK
@@ -683,7 +623,7 @@ OK
     "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-tp",
+    "target": "projects/${projectId}/locations/global/mirroringEndpointGroups/mirroringeg-dep-${uniqueId}",
     "verb": "delete"
   },
   "name": "projects/${projectId}/locations/global/operations/${operationID}"
@@ -706,11 +646,16 @@ OK
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/global/securityProfiles/sp-dep-${uniqueId}-tp",
+    "target": "projects/${projectId}/locations/global/mirroringEndpointGroups/mirroringeg-dep-${uniqueId}",
     "verb": "delete"
   },
   "name": "projects/${projectId}/locations/global/operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/google.protobuf.Empty"
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.MirroringEndpointGroup",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "mirroringDeploymentGroup": "projects/${projectId}/locations/global/mirroringDeploymentGroups/my-mdg",
+    "name": "projects/${projectId}/locations/global/mirroringEndpointGroups/mirroringeg-dep-${uniqueId}",
+    "state": "ACTIVE",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
