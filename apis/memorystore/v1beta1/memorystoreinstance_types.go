@@ -18,6 +18,8 @@ import (
 	"context"
 	"fmt"
 
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
+
 	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
@@ -112,7 +114,7 @@ type MemorystoreInstanceSpec struct {
 
 	// Optional. The KMS key reference for the instance.
 	// +kcc:proto:field=google.cloud.memorystore.v1.Instance.kms_key
-	KmsKeyRef *refsv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
+	KmsKeyRef *kmsv1beta1.KMSCryptoKeyRef `json:"kmsKeyRef,omitempty"`
 }
 
 var _ identity.Resource = &MemorystoreInstance{}

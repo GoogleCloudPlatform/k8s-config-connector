@@ -17,6 +17,7 @@ package v1beta1
 import (
 	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	secretmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1"
 	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
@@ -529,7 +530,7 @@ type TaskTemplate struct {
 	//  this container image. For more information, go to
 	//  https://cloud.google.com/run/docs/securing/using-cmek
 	// +kcc:proto:field=google.cloud.run.v2.TaskTemplate.encryption_key
-	EncryptionKeyRef *refs.KMSCryptoKeyRef `json:"encryptionKeyRef,omitempty"`
+	EncryptionKeyRef *kmsv1beta1.KMSCryptoKeyRef `json:"encryptionKeyRef,omitempty"`
 
 	// Optional. VPC Access configuration to use for this Task. For more
 	//  information, visit

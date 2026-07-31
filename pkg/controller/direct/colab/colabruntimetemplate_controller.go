@@ -153,29 +153,13 @@ func (a *runtimeTemplateAdapter) Find(ctx context.Context) (bool, error) {
 
 func (a *runtimeTemplateAdapter) normalizeReferences(ctx context.Context) error {
 	obj := a.desired
-	if obj.Spec.NetworkSpec != nil {
-		if obj.Spec.NetworkSpec.NetworkRef != nil {
-			if err := obj.Spec.NetworkSpec.NetworkRef.Normalize(ctx, a.reader, obj.GetNamespace()); err != nil {
-				return err
-			}
-		}
-		if obj.Spec.NetworkSpec.SubnetworkRef != nil {
-			if err := obj.Spec.NetworkSpec.SubnetworkRef.Normalize(ctx, a.reader, obj.GetNamespace()); err != nil {
-				return err
-			}
-		}
+	if err := common.NormalizeReferences(ctx, a.reader, obj, nil); err != nil {
+		return err
 	}
 	if obj.Spec.ServiceAccountRef != nil {
 		if err := obj.Spec.ServiceAccountRef.Resolve(ctx, a.reader, obj); err != nil {
 			return err
 		}
-	}
-	if obj.Spec.EncryptionSpec != nil && obj.Spec.EncryptionSpec.KMSKeyRef != nil {
-		kmsKeyRef, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, obj, obj.Spec.EncryptionSpec.KMSKeyRef)
-		if err != nil {
-			return err
-		}
-		obj.Spec.EncryptionSpec.KMSKeyRef = kmsKeyRef
 	}
 	return nil
 }

@@ -80,6 +80,8 @@ func (m *modelBackupSchedule) AdapterForObject(ctx context.Context, op *directba
 		return nil, err
 	}
 
+	//todo: resolve resource references
+
 	// Get spannerbackupschedules GCP client
 	gcpClient, err := m.client(ctx)
 	if err != nil {

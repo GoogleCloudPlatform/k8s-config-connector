@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -61,7 +62,7 @@ type APIHubInstance_Config struct {
 	//  `projects/([^/]+)/locations/([^/]+)/keyRings/([^/]+)/cryptoKeys/([^/]+)`,
 	//  where the location must match the instance location.
 	// +kcc:proto:field=google.cloud.apihub.v1.ApiHubInstance.Config.cmek_key_name
-	CmekKeyRef *refsv1beta1.KMSCryptoKeyRef `json:"cmekKeyRef,omitempty"`
+	CmekKeyRef *kmsv1beta1.KMSCryptoKeyRef `json:"cmekKeyRef,omitempty"`
 
 	// Optional. Disable ApiHub router.
 	// +kcc:proto:field=google.cloud.apihub.v1.ApiHubInstance.Config.disable_search

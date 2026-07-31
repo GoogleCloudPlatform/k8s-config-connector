@@ -28,7 +28,7 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/clouddms/v1alpha1"
 	krmcomputerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	krmcomputev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	krmkmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -146,7 +146,7 @@ func CloudDMSMigrationJobSpec_FromProto(mapCtx *direct.MapContext, in *pb.Migrat
 	out.ConversionWorkspace = ConversionWorkspaceInfo_FromProto(mapCtx, in.GetConversionWorkspace())
 	out.Filter = direct.LazyPtr(in.GetFilter())
 	if in.GetCmekKeyName() != "" {
-		out.CmekKeyNameRef = &refsv1beta1.KMSCryptoKeyRef{External: in.GetCmekKeyName()}
+		out.CmekKeyNameRef = &krmkmsv1beta1.KMSCryptoKeyRef{External: in.GetCmekKeyName()}
 	}
 	out.PerformanceConfig = MigrationJob_PerformanceConfig_FromProto(mapCtx, in.GetPerformanceConfig())
 	return out

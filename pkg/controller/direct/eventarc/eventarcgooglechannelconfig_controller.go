@@ -24,6 +24,8 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
+
 	gcp "cloud.google.com/go/eventarc/apiv1"
 	pb "cloud.google.com/go/eventarc/apiv1/eventarcpb"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
@@ -132,7 +134,7 @@ func (a *googleChannelConfigAdapter) Update(ctx context.Context, updateOp *direc
 	log.V(2).Info("updating eventarc googlechannelconfig", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	if err := a.normalizeReferenceFields(ctx); err != nil {
+	if err := common.NormalizeReferences(ctx, a.reader, a.desired, nil); err != nil {
 		return err
 	}
 
@@ -212,16 +214,4 @@ func (a *googleChannelConfigAdapter) Delete(ctx context.Context, deleteOp *direc
 	log.V(2).Info("deleting eventarc googlechannelconfig is a no-op", "name", a.id)
 	// GoogleChannelConfig is a singleton resource that cannot be deleted.
 	return true, nil
-}
-
-func (a *googleChannelConfigAdapter) normalizeReferenceFields(ctx context.Context) error {
-	obj := a.desired
-	if obj.Spec.CryptoKeyRef != nil {
-		kmsKeyRef, err := refs.ResolveKMSCryptoKeyRef(ctx, a.reader, obj, obj.Spec.CryptoKeyRef)
-		if err != nil {
-			return err
-		}
-		obj.Spec.CryptoKeyRef = kmsKeyRef
-	}
-	return nil
 }

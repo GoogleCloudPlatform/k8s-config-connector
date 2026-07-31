@@ -42,8 +42,6 @@ status:
   instanceType: CLOUD_SQL_INSTANCE
   ipAddress: 10.1.2.3
   observedGeneration: 2
-  observedState:
-    replicationCluster: {}
   publicIpAddress: 10.1.2.3
   selfLink: https://sqladmin.googleapis.com/sql/v1beta4/projects/${projectId}/instances/sqlinstance-primary-direct-${uniqueId}
   serverCaCert:

@@ -17,7 +17,7 @@ package datalabelingjob
 import (
 	pb "cloud.google.com/go/aiplatform/apiv1/aiplatformpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vertexai/v1alpha1"
 	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vertexai/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -188,7 +188,7 @@ func EncryptionSpecV1_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionSpec
 	}
 	out := &krm.EncryptionSpec{}
 	if in.GetKmsKeyName() != "" {
-		out.KMSKeyRef = &refsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKeyName()}
+		out.KMSKeyRef = &kmsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKeyName()}
 	}
 	return out
 }

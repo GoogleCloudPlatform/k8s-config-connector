@@ -19,6 +19,8 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
+
 	gcp "cloud.google.com/go/documentai/apiv1"
 	documentaipb "cloud.google.com/go/documentai/apiv1/documentaipb"
 	krmv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/documentai/v1beta1"
@@ -70,6 +72,10 @@ func (m *modelProcessorVersion) AdapterForObject(ctx context.Context, op *direct
 
 	id, err := krmv1beta1.NewProcessorVersionIdentity(ctx, reader, obj)
 	if err != nil {
+		return nil, err
+	}
+
+	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
 		return nil, err
 	}
 
