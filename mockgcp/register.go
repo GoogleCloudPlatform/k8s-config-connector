@@ -53,6 +53,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockfirestore"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgeminidataanalytics"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgkemulticloud"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockhypercomputecluster"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockiam"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockiap"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocklogging"

@@ -1,0 +1,1089 @@
+GRPC /google.cloud.hypercomputecluster.v1.HypercomputeCluster/GetCluster
+
+{
+  "name": "projects/${projectId}/locations/us-central1/clusters/hcc-maximal-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = cluster "projects/${projectId}/locations/us-central1/clusters/hcc-maximal-${uniqueId}" not found
+
+{}
+
+---
+
+GRPC /google.cloud.hypercomputecluster.v1.HypercomputeCluster/CreateCluster
+
+{
+  "cluster": {
+    "computeResources": {
+      "comp-1": {
+        "config": {
+          "newOnDemandInstances": {
+            "machineType": "n2-standard-2",
+            "zone": "us-central1-a"
+          }
+        }
+      }
+    },
+    "description": "A maximal HypercomputeCluster Cluster",
+    "labels": {
+      "env": "prod"
+    },
+    "name": "projects/${projectId}/locations/us-central1/clusters/hcc-maximal-${uniqueId}",
+    "networkResources": {
+      "net-1": {
+        "network": {
+          "network": "projects/${projectId}/global/networks/hcc-network-${uniqueId}"
+        }
+      }
+    },
+    "orchestrator": {
+      "slurm": {
+        "defaultPartition": "part-1",
+        "epilogBashScripts": [
+          "#!/bin/bash\necho 'epilog'"
+        ],
+        "loginNodes": {
+          "bootDisk": {
+            "sizeGb": "100",
+            "type": "pd-standard"
+          },
+          "count": "1",
+          "enableOsLogin": true,
+          "enablePublicIps": true,
+          "labels": {
+            "foo": "bar"
+          },
+          "machineType": "n2-standard-2",
+          "startupScript": "echo 'hello'",
+          "storageConfigs": [
+            {
+              "id": "stor-1",
+              "localMount": "/mnt/share"
+            }
+          ],
+          "zone": "us-central1-a"
+        },
+        "nodeSets": [
+          {
+            "computeId": "comp-1",
+            "computeInstance": {
+              "bootDisk": {
+                "sizeGb": "100",
+                "type": "pd-standard"
+              },
+              "labels": {
+                "foo": "bar"
+              },
+              "startupScript": "echo 'hello'"
+            },
+            "id": "nodeset-1",
+            "maxDynamicNodeCount": "10",
+            "staticNodeCount": "2",
+            "storageConfigs": [
+              {
+                "id": "stor-1",
+                "localMount": "/mnt/share"
+              }
+            ]
+          }
+        ],
+        "partitions": [
+          {
+            "id": "part-1",
+            "nodeSetIds": [
+              "nodeset-1"
+            ]
+          }
+        ],
+        "prologBashScripts": [
+          "#!/bin/bash\necho 'prolog'"
+        ]
+      }
+    },
+    "storageResources": {
+      "stor-1": {
+        "config": {
+          "existingBucket": {
+            "bucket": "projects/${projectId}/buckets/hcc-bucket-${uniqueId}"
+          }
+        }
+      }
+    }
+  },
+  "clusterId": "hcc-maximal-${uniqueId}",
+  "parent": "projects/${projectId}/locations/us-central1"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.hypercomputecluster.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/clusters/hcc-maximal-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.hypercomputecluster.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/clusters/hcc-maximal-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.hypercomputecluster.v1.Cluster",
+    "computeResources": {
+      "comp-1": {
+        "config": {
+          "newOnDemandInstances": {
+            "machineType": "n2-standard-2",
+            "zone": "us-central1-a"
+          }
+        }
+      }
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "A maximal HypercomputeCluster Cluster",
+    "labels": {
+      "env": "prod"
+    },
+    "name": "projects/${projectId}/locations/us-central1/clusters/hcc-maximal-${uniqueId}",
+    "networkResources": {
+      "net-1": {
+        "network": {
+          "network": "projects/${projectId}/global/networks/hcc-network-${uniqueId}"
+        }
+      }
+    },
+    "orchestrator": {
+      "slurm": {
+        "defaultPartition": "part-1",
+        "epilogBashScripts": [
+          "#!/bin/bash\necho 'epilog'"
+        ],
+        "loginNodes": {
+          "bootDisk": {
+            "sizeGb": "100",
+            "type": "pd-standard"
+          },
+          "count": "1",
+          "enableOsLogin": true,
+          "enablePublicIps": true,
+          "labels": {
+            "foo": "bar"
+          },
+          "machineType": "n2-standard-2",
+          "startupScript": "echo 'hello'",
+          "storageConfigs": [
+            {
+              "id": "stor-1",
+              "localMount": "/mnt/share"
+            }
+          ],
+          "zone": "us-central1-a"
+        },
+        "nodeSets": [
+          {
+            "computeId": "comp-1",
+            "computeInstance": {
+              "bootDisk": {
+                "sizeGb": "100",
+                "type": "pd-standard"
+              },
+              "labels": {
+                "foo": "bar"
+              },
+              "startupScript": "echo 'hello'"
+            },
+            "id": "nodeset-1",
+            "maxDynamicNodeCount": "10",
+            "staticNodeCount": "2",
+            "storageConfigs": [
+              {
+                "id": "stor-1",
+                "localMount": "/mnt/share"
+              }
+            ]
+          }
+        ],
+        "partitions": [
+          {
+            "id": "part-1",
+            "nodeSetIds": [
+              "nodeset-1"
+            ]
+          }
+        ],
+        "prologBashScripts": [
+          "#!/bin/bash\necho 'prolog'"
+        ]
+      }
+    },
+    "storageResources": {
+      "stor-1": {
+        "config": {
+          "existingBucket": {
+            "bucket": "projects/${projectId}/buckets/hcc-bucket-${uniqueId}"
+          }
+        }
+      }
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GRPC /google.cloud.hypercomputecluster.v1.HypercomputeCluster/GetCluster
+
+{
+  "name": "projects/${projectId}/locations/us-central1/clusters/hcc-maximal-${uniqueId}"
+}
+
+OK
+
+{
+  "computeResources": {
+    "comp-1": {
+      "config": {
+        "newOnDemandInstances": {
+          "machineType": "n2-standard-2",
+          "zone": "us-central1-a"
+        }
+      }
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "A maximal HypercomputeCluster Cluster",
+  "labels": {
+    "env": "prod"
+  },
+  "name": "projects/${projectId}/locations/us-central1/clusters/hcc-maximal-${uniqueId}",
+  "networkResources": {
+    "net-1": {
+      "network": {
+        "network": "projects/${projectId}/global/networks/hcc-network-${uniqueId}"
+      }
+    }
+  },
+  "orchestrator": {
+    "slurm": {
+      "defaultPartition": "part-1",
+      "epilogBashScripts": [
+        "#!/bin/bash\necho 'epilog'"
+      ],
+      "loginNodes": {
+        "bootDisk": {
+          "sizeGb": "100",
+          "type": "pd-standard"
+        },
+        "count": "1",
+        "enableOsLogin": true,
+        "enablePublicIps": true,
+        "labels": {
+          "foo": "bar"
+        },
+        "machineType": "n2-standard-2",
+        "startupScript": "echo 'hello'",
+        "storageConfigs": [
+          {
+            "id": "stor-1",
+            "localMount": "/mnt/share"
+          }
+        ],
+        "zone": "us-central1-a"
+      },
+      "nodeSets": [
+        {
+          "computeId": "comp-1",
+          "computeInstance": {
+            "bootDisk": {
+              "sizeGb": "100",
+              "type": "pd-standard"
+            },
+            "labels": {
+              "foo": "bar"
+            },
+            "startupScript": "echo 'hello'"
+          },
+          "id": "nodeset-1",
+          "maxDynamicNodeCount": "10",
+          "staticNodeCount": "2",
+          "storageConfigs": [
+            {
+              "id": "stor-1",
+              "localMount": "/mnt/share"
+            }
+          ]
+        }
+      ],
+      "partitions": [
+        {
+          "id": "part-1",
+          "nodeSetIds": [
+            "nodeset-1"
+          ]
+        }
+      ],
+      "prologBashScripts": [
+        "#!/bin/bash\necho 'prolog'"
+      ]
+    }
+  },
+  "storageResources": {
+    "stor-1": {
+      "config": {
+        "existingBucket": {
+          "bucket": "projects/${projectId}/buckets/hcc-bucket-${uniqueId}"
+        }
+      }
+    }
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.hypercomputecluster.v1.HypercomputeCluster/GetCluster
+
+{
+  "name": "projects/${projectId}/locations/us-central1/clusters/hcc-maximal-${uniqueId}"
+}
+
+OK
+
+{
+  "computeResources": {
+    "comp-1": {
+      "config": {
+        "newOnDemandInstances": {
+          "machineType": "n2-standard-2",
+          "zone": "us-central1-a"
+        }
+      }
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "A maximal HypercomputeCluster Cluster",
+  "labels": {
+    "env": "prod"
+  },
+  "name": "projects/${projectId}/locations/us-central1/clusters/hcc-maximal-${uniqueId}",
+  "networkResources": {
+    "net-1": {
+      "network": {
+        "network": "projects/${projectId}/global/networks/hcc-network-${uniqueId}"
+      }
+    }
+  },
+  "orchestrator": {
+    "slurm": {
+      "defaultPartition": "part-1",
+      "epilogBashScripts": [
+        "#!/bin/bash\necho 'epilog'"
+      ],
+      "loginNodes": {
+        "bootDisk": {
+          "sizeGb": "100",
+          "type": "pd-standard"
+        },
+        "count": "1",
+        "enableOsLogin": true,
+        "enablePublicIps": true,
+        "labels": {
+          "foo": "bar"
+        },
+        "machineType": "n2-standard-2",
+        "startupScript": "echo 'hello'",
+        "storageConfigs": [
+          {
+            "id": "stor-1",
+            "localMount": "/mnt/share"
+          }
+        ],
+        "zone": "us-central1-a"
+      },
+      "nodeSets": [
+        {
+          "computeId": "comp-1",
+          "computeInstance": {
+            "bootDisk": {
+              "sizeGb": "100",
+              "type": "pd-standard"
+            },
+            "labels": {
+              "foo": "bar"
+            },
+            "startupScript": "echo 'hello'"
+          },
+          "id": "nodeset-1",
+          "maxDynamicNodeCount": "10",
+          "staticNodeCount": "2",
+          "storageConfigs": [
+            {
+              "id": "stor-1",
+              "localMount": "/mnt/share"
+            }
+          ]
+        }
+      ],
+      "partitions": [
+        {
+          "id": "part-1",
+          "nodeSetIds": [
+            "nodeset-1"
+          ]
+        }
+      ],
+      "prologBashScripts": [
+        "#!/bin/bash\necho 'prolog'"
+      ]
+    }
+  },
+  "storageResources": {
+    "stor-1": {
+      "config": {
+        "existingBucket": {
+          "bucket": "projects/${projectId}/buckets/hcc-bucket-${uniqueId}"
+        }
+      }
+    }
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.hypercomputecluster.v1.HypercomputeCluster/UpdateCluster
+
+{
+  "cluster": {
+    "computeResources": {
+      "comp-1": {
+        "config": {
+          "newOnDemandInstances": {
+            "machineType": "n2-standard-2",
+            "zone": "us-central1-a"
+          }
+        }
+      }
+    },
+    "description": "An updated maximal HypercomputeCluster Cluster",
+    "labels": {
+      "env": "prod-updated"
+    },
+    "name": "projects/${projectId}/locations/us-central1/clusters/hcc-maximal-${uniqueId}",
+    "networkResources": {
+      "net-1": {
+        "network": {
+          "network": "projects/${projectId}/global/networks/hcc-network-${uniqueId}"
+        }
+      }
+    },
+    "orchestrator": {
+      "slurm": {
+        "defaultPartition": "part-1",
+        "epilogBashScripts": [
+          "#!/bin/bash\necho 'epilog'"
+        ],
+        "loginNodes": {
+          "bootDisk": {
+            "sizeGb": "100",
+            "type": "pd-standard"
+          },
+          "count": "1",
+          "enableOsLogin": true,
+          "enablePublicIps": true,
+          "labels": {
+            "foo": "bar"
+          },
+          "machineType": "n2-standard-2",
+          "startupScript": "echo 'hello'",
+          "storageConfigs": [
+            {
+              "id": "stor-1",
+              "localMount": "/mnt/share"
+            }
+          ],
+          "zone": "us-central1-a"
+        },
+        "nodeSets": [
+          {
+            "computeId": "comp-1",
+            "computeInstance": {
+              "bootDisk": {
+                "sizeGb": "100",
+                "type": "pd-standard"
+              },
+              "labels": {
+                "foo": "bar"
+              },
+              "startupScript": "echo 'hello'"
+            },
+            "id": "nodeset-1",
+            "maxDynamicNodeCount": "10",
+            "staticNodeCount": "2",
+            "storageConfigs": [
+              {
+                "id": "stor-1",
+                "localMount": "/mnt/share"
+              }
+            ]
+          }
+        ],
+        "partitions": [
+          {
+            "id": "part-1",
+            "nodeSetIds": [
+              "nodeset-1"
+            ]
+          }
+        ],
+        "prologBashScripts": [
+          "#!/bin/bash\necho 'prolog'"
+        ]
+      }
+    },
+    "storageResources": {
+      "stor-1": {
+        "config": {
+          "existingBucket": {
+            "bucket": "projects/${projectId}/buckets/hcc-bucket-${uniqueId}"
+          }
+        }
+      }
+    }
+  },
+  "updateMask": "description,labels"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.hypercomputecluster.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/clusters/hcc-maximal-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.hypercomputecluster.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/clusters/hcc-maximal-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.hypercomputecluster.v1.Cluster",
+    "computeResources": {
+      "comp-1": {
+        "config": {
+          "newOnDemandInstances": {
+            "machineType": "n2-standard-2",
+            "zone": "us-central1-a"
+          }
+        }
+      }
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "An updated maximal HypercomputeCluster Cluster",
+    "labels": {
+      "env": "prod-updated"
+    },
+    "name": "projects/${projectId}/locations/us-central1/clusters/hcc-maximal-${uniqueId}",
+    "networkResources": {
+      "net-1": {
+        "network": {
+          "network": "projects/${projectId}/global/networks/hcc-network-${uniqueId}"
+        }
+      }
+    },
+    "orchestrator": {
+      "slurm": {
+        "defaultPartition": "part-1",
+        "epilogBashScripts": [
+          "#!/bin/bash\necho 'epilog'"
+        ],
+        "loginNodes": {
+          "bootDisk": {
+            "sizeGb": "100",
+            "type": "pd-standard"
+          },
+          "count": "1",
+          "enableOsLogin": true,
+          "enablePublicIps": true,
+          "labels": {
+            "foo": "bar"
+          },
+          "machineType": "n2-standard-2",
+          "startupScript": "echo 'hello'",
+          "storageConfigs": [
+            {
+              "id": "stor-1",
+              "localMount": "/mnt/share"
+            }
+          ],
+          "zone": "us-central1-a"
+        },
+        "nodeSets": [
+          {
+            "computeId": "comp-1",
+            "computeInstance": {
+              "bootDisk": {
+                "sizeGb": "100",
+                "type": "pd-standard"
+              },
+              "labels": {
+                "foo": "bar"
+              },
+              "startupScript": "echo 'hello'"
+            },
+            "id": "nodeset-1",
+            "maxDynamicNodeCount": "10",
+            "staticNodeCount": "2",
+            "storageConfigs": [
+              {
+                "id": "stor-1",
+                "localMount": "/mnt/share"
+              }
+            ]
+          }
+        ],
+        "partitions": [
+          {
+            "id": "part-1",
+            "nodeSetIds": [
+              "nodeset-1"
+            ]
+          }
+        ],
+        "prologBashScripts": [
+          "#!/bin/bash\necho 'prolog'"
+        ]
+      }
+    },
+    "storageResources": {
+      "stor-1": {
+        "config": {
+          "existingBucket": {
+            "bucket": "projects/${projectId}/buckets/hcc-bucket-${uniqueId}"
+          }
+        }
+      }
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GRPC /google.cloud.hypercomputecluster.v1.HypercomputeCluster/GetCluster
+
+{
+  "name": "projects/${projectId}/locations/us-central1/clusters/hcc-maximal-${uniqueId}"
+}
+
+OK
+
+{
+  "computeResources": {
+    "comp-1": {
+      "config": {
+        "newOnDemandInstances": {
+          "machineType": "n2-standard-2",
+          "zone": "us-central1-a"
+        }
+      }
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "An updated maximal HypercomputeCluster Cluster",
+  "labels": {
+    "env": "prod-updated"
+  },
+  "name": "projects/${projectId}/locations/us-central1/clusters/hcc-maximal-${uniqueId}",
+  "networkResources": {
+    "net-1": {
+      "network": {
+        "network": "projects/${projectId}/global/networks/hcc-network-${uniqueId}"
+      }
+    }
+  },
+  "orchestrator": {
+    "slurm": {
+      "defaultPartition": "part-1",
+      "epilogBashScripts": [
+        "#!/bin/bash\necho 'epilog'"
+      ],
+      "loginNodes": {
+        "bootDisk": {
+          "sizeGb": "100",
+          "type": "pd-standard"
+        },
+        "count": "1",
+        "enableOsLogin": true,
+        "enablePublicIps": true,
+        "labels": {
+          "foo": "bar"
+        },
+        "machineType": "n2-standard-2",
+        "startupScript": "echo 'hello'",
+        "storageConfigs": [
+          {
+            "id": "stor-1",
+            "localMount": "/mnt/share"
+          }
+        ],
+        "zone": "us-central1-a"
+      },
+      "nodeSets": [
+        {
+          "computeId": "comp-1",
+          "computeInstance": {
+            "bootDisk": {
+              "sizeGb": "100",
+              "type": "pd-standard"
+            },
+            "labels": {
+              "foo": "bar"
+            },
+            "startupScript": "echo 'hello'"
+          },
+          "id": "nodeset-1",
+          "maxDynamicNodeCount": "10",
+          "staticNodeCount": "2",
+          "storageConfigs": [
+            {
+              "id": "stor-1",
+              "localMount": "/mnt/share"
+            }
+          ]
+        }
+      ],
+      "partitions": [
+        {
+          "id": "part-1",
+          "nodeSetIds": [
+            "nodeset-1"
+          ]
+        }
+      ],
+      "prologBashScripts": [
+        "#!/bin/bash\necho 'prolog'"
+      ]
+    }
+  },
+  "storageResources": {
+    "stor-1": {
+      "config": {
+        "existingBucket": {
+          "bucket": "projects/${projectId}/buckets/hcc-bucket-${uniqueId}"
+        }
+      }
+    }
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.hypercomputecluster.v1.HypercomputeCluster/GetCluster
+
+{
+  "name": "projects/${projectId}/locations/us-central1/clusters/hcc-maximal-${uniqueId}"
+}
+
+OK
+
+{
+  "computeResources": {
+    "comp-1": {
+      "config": {
+        "newOnDemandInstances": {
+          "machineType": "n2-standard-2",
+          "zone": "us-central1-a"
+        }
+      }
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "An updated maximal HypercomputeCluster Cluster",
+  "labels": {
+    "env": "prod-updated"
+  },
+  "name": "projects/${projectId}/locations/us-central1/clusters/hcc-maximal-${uniqueId}",
+  "networkResources": {
+    "net-1": {
+      "network": {
+        "network": "projects/${projectId}/global/networks/hcc-network-${uniqueId}"
+      }
+    }
+  },
+  "orchestrator": {
+    "slurm": {
+      "defaultPartition": "part-1",
+      "epilogBashScripts": [
+        "#!/bin/bash\necho 'epilog'"
+      ],
+      "loginNodes": {
+        "bootDisk": {
+          "sizeGb": "100",
+          "type": "pd-standard"
+        },
+        "count": "1",
+        "enableOsLogin": true,
+        "enablePublicIps": true,
+        "labels": {
+          "foo": "bar"
+        },
+        "machineType": "n2-standard-2",
+        "startupScript": "echo 'hello'",
+        "storageConfigs": [
+          {
+            "id": "stor-1",
+            "localMount": "/mnt/share"
+          }
+        ],
+        "zone": "us-central1-a"
+      },
+      "nodeSets": [
+        {
+          "computeId": "comp-1",
+          "computeInstance": {
+            "bootDisk": {
+              "sizeGb": "100",
+              "type": "pd-standard"
+            },
+            "labels": {
+              "foo": "bar"
+            },
+            "startupScript": "echo 'hello'"
+          },
+          "id": "nodeset-1",
+          "maxDynamicNodeCount": "10",
+          "staticNodeCount": "2",
+          "storageConfigs": [
+            {
+              "id": "stor-1",
+              "localMount": "/mnt/share"
+            }
+          ]
+        }
+      ],
+      "partitions": [
+        {
+          "id": "part-1",
+          "nodeSetIds": [
+            "nodeset-1"
+          ]
+        }
+      ],
+      "prologBashScripts": [
+        "#!/bin/bash\necho 'prolog'"
+      ]
+    }
+  },
+  "storageResources": {
+    "stor-1": {
+      "config": {
+        "existingBucket": {
+          "bucket": "projects/${projectId}/buckets/hcc-bucket-${uniqueId}"
+        }
+      }
+    }
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.hypercomputecluster.v1.HypercomputeCluster/GetCluster
+
+{
+  "name": "projects/${projectId}/locations/us-central1/clusters/hcc-maximal-${uniqueId}"
+}
+
+OK
+
+{
+  "computeResources": {
+    "comp-1": {
+      "config": {
+        "newOnDemandInstances": {
+          "machineType": "n2-standard-2",
+          "zone": "us-central1-a"
+        }
+      }
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "An updated maximal HypercomputeCluster Cluster",
+  "labels": {
+    "env": "prod-updated"
+  },
+  "name": "projects/${projectId}/locations/us-central1/clusters/hcc-maximal-${uniqueId}",
+  "networkResources": {
+    "net-1": {
+      "network": {
+        "network": "projects/${projectId}/global/networks/hcc-network-${uniqueId}"
+      }
+    }
+  },
+  "orchestrator": {
+    "slurm": {
+      "defaultPartition": "part-1",
+      "epilogBashScripts": [
+        "#!/bin/bash\necho 'epilog'"
+      ],
+      "loginNodes": {
+        "bootDisk": {
+          "sizeGb": "100",
+          "type": "pd-standard"
+        },
+        "count": "1",
+        "enableOsLogin": true,
+        "enablePublicIps": true,
+        "labels": {
+          "foo": "bar"
+        },
+        "machineType": "n2-standard-2",
+        "startupScript": "echo 'hello'",
+        "storageConfigs": [
+          {
+            "id": "stor-1",
+            "localMount": "/mnt/share"
+          }
+        ],
+        "zone": "us-central1-a"
+      },
+      "nodeSets": [
+        {
+          "computeId": "comp-1",
+          "computeInstance": {
+            "bootDisk": {
+              "sizeGb": "100",
+              "type": "pd-standard"
+            },
+            "labels": {
+              "foo": "bar"
+            },
+            "startupScript": "echo 'hello'"
+          },
+          "id": "nodeset-1",
+          "maxDynamicNodeCount": "10",
+          "staticNodeCount": "2",
+          "storageConfigs": [
+            {
+              "id": "stor-1",
+              "localMount": "/mnt/share"
+            }
+          ]
+        }
+      ],
+      "partitions": [
+        {
+          "id": "part-1",
+          "nodeSetIds": [
+            "nodeset-1"
+          ]
+        }
+      ],
+      "prologBashScripts": [
+        "#!/bin/bash\necho 'prolog'"
+      ]
+    }
+  },
+  "storageResources": {
+    "stor-1": {
+      "config": {
+        "existingBucket": {
+          "bucket": "projects/${projectId}/buckets/hcc-bucket-${uniqueId}"
+        }
+      }
+    }
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.hypercomputecluster.v1.HypercomputeCluster/DeleteCluster
+
+{
+  "name": "projects/${projectId}/locations/us-central1/clusters/hcc-maximal-${uniqueId}"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.hypercomputecluster.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/clusters/hcc-maximal-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.hypercomputecluster.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/clusters/hcc-maximal-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}

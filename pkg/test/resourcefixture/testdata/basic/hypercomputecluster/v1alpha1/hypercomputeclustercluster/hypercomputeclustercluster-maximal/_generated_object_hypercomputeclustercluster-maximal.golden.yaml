@@ -1,0 +1,94 @@
+apiVersion: hypercomputecluster.cnrm.cloud.google.com/v1alpha1
+kind: HypercomputeClusterCluster
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: hcc-maximal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  computeResources:
+    comp-1:
+      config:
+        newOnDemandInstances:
+          machineType: n2-standard-2
+          zone: us-central1-a
+  description: An updated maximal HypercomputeCluster Cluster
+  labels:
+    env: prod-updated
+  location: us-central1
+  networkResources:
+    net-1:
+      network:
+        network: projects/${projectId}/global/networks/hcc-network-${uniqueId}
+  orchestrator:
+    slurm:
+      defaultPartition: part-1
+      epilogBashScripts:
+      - |-
+        #!/bin/bash
+        echo 'epilog'
+      loginNodes:
+        bootDisk:
+          sizeGB: 100
+          type: pd-standard
+        count: 1
+        enableOSLogin: true
+        enablePublicIPs: true
+        labels:
+          foo: bar
+        machineType: n2-standard-2
+        startupScript: echo 'hello'
+        storageConfigs:
+        - id: stor-1
+          localMount: /mnt/share
+        zone: us-central1-a
+      nodeSets:
+      - computeID: comp-1
+        computeInstance:
+          bootDisk:
+            sizeGB: 100
+            type: pd-standard
+          labels:
+            foo: bar
+          startupScript: echo 'hello'
+        id: nodeset-1
+        maxDynamicNodeCount: 10
+        staticNodeCount: 2
+        storageConfigs:
+        - id: stor-1
+          localMount: /mnt/share
+      partitions:
+      - id: part-1
+        nodeSetIDs:
+        - nodeset-1
+      prologBashScripts:
+      - |-
+        #!/bin/bash
+        echo 'prolog'
+  projectRef:
+    external: ${projectId}
+  storageResources:
+    stor-1:
+      config:
+        existingBucket:
+          bucketRef:
+            external: projects/${projectId}/buckets/hcc-bucket-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/clusters/hcc-maximal-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    orchestrator:
+      slurm:
+        loginNodes: {}
+    updateTime: "1970-01-01T00:00:00Z"

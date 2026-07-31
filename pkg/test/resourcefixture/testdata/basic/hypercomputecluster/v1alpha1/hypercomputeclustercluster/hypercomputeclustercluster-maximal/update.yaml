@@ -1,0 +1,68 @@
+apiVersion: hypercomputecluster.cnrm.cloud.google.com/v1alpha1
+kind: HypercomputeClusterCluster
+metadata:
+  name: hcc-maximal-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  description: "An updated maximal HypercomputeCluster Cluster"
+  labels:
+    env: prod-updated
+  networkResources:
+    net-1:
+      network:
+        network: "projects/${projectId}/global/networks/hcc-network-${uniqueId}"
+  storageResources:
+    stor-1:
+      config:
+        existingBucket:
+          bucketRef:
+            external: "projects/${projectId}/buckets/hcc-bucket-${uniqueId}"
+  computeResources:
+    comp-1:
+      config:
+        newOnDemandInstances:
+          zone: us-central1-a
+          machineType: n2-standard-2
+  orchestrator:
+    slurm:
+      defaultPartition: "part-1"
+      loginNodes:
+        count: 1
+        zone: us-central1-a
+        machineType: n2-standard-2
+        bootDisk:
+          sizeGB: 100
+          type: "pd-standard"
+        enableOSLogin: true
+        enablePublicIPs: true
+        labels:
+          foo: bar
+        startupScript: "echo 'hello'"
+        storageConfigs:
+          - id: "stor-1"
+            localMount: "/mnt/share"
+      nodeSets:
+        - id: "nodeset-1"
+          computeID: "comp-1"
+          staticNodeCount: 2
+          maxDynamicNodeCount: 10
+          computeInstance:
+            bootDisk:
+              sizeGB: 100
+              type: "pd-standard"
+            labels:
+              foo: bar
+            startupScript: "echo 'hello'"
+          storageConfigs:
+            - id: "stor-1"
+              localMount: "/mnt/share"
+      partitions:
+        - id: "part-1"
+          nodeSetIDs:
+            - "nodeset-1"
+      epilogBashScripts:
+        - "#!/bin/bash\necho 'epilog'"
+      prologBashScripts:
+        - "#!/bin/bash\necho 'prolog'"

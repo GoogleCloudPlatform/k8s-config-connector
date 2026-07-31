@@ -1,0 +1,9 @@
+apiVersion: hypercomputecluster.cnrm.cloud.google.com/v1alpha1
+kind: HypercomputeClusterCluster
+metadata:
+  name: hcc-minimal-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  description: "A minimal HypercomputeCluster Cluster"

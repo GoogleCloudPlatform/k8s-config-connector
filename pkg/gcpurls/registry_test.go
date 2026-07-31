@@ -197,6 +197,9 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		// Grafeas Note
 		"//containeranalysis.googleapis.com/projects/{}/notes/{}": true,
 
+		// Hypercompute Cluster
+		"//hypercomputecluster.googleapis.com/projects/{}/locations/{}/clusters/{}": true,
+
 		// Firestore
 		"//firestore.googleapis.com/projects/{}/databases/{}/backupSchedules/{}":             true,
 		"//firestore.googleapis.com/projects/{}/databases/{}/collectionGroups/{}":            true,
