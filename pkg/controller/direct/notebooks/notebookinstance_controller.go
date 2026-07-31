@@ -17,6 +17,7 @@ package notebooks
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/notebooks/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -109,6 +110,10 @@ func (m *modelInstance) AdapterForObject(ctx context.Context, op *directbase.Ada
 }
 
 func (m *modelInstance) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
+	if strings.Contains(url, "notebookinstancev2") {
+		return nil, nil
+	}
+
 	id := &krm.NotebookInstanceIdentity{}
 	if err := id.FromExternal(url); err != nil {
 		// Not recognized

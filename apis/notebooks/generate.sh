@@ -37,6 +37,8 @@ go run . generate-mapper \
   --api-version notebooks.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output
 
+mv "${REPO_ROOT}/pkg/controller/direct/notebooks/mapper.generated.go" "${REPO_ROOT}/pkg/controller/direct/notebooks/mapper_v2.generated.go"
+
 # --- v1beta1 ---
 go run . generate-types \
   --service google.cloud.notebooks.v1 \
