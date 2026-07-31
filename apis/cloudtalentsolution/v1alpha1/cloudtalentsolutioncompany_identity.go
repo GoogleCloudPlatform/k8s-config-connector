@@ -100,6 +100,10 @@ func (obj *CloudTalentSolutionCompany) GetIdentity(ctx context.Context, reader c
 			return nil, err
 		}
 
+		if specIdentity.Tenant == "default" {
+			specIdentity.Tenant = statusIdentity.Tenant
+		}
+
 		if statusIdentity.String() != specIdentity.String() {
 			return nil, fmt.Errorf("cannot change CloudTalentSolutionCompany identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
 		}

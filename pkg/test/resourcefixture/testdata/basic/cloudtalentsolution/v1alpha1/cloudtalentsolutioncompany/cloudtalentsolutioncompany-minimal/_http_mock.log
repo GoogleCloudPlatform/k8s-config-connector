@@ -1,0 +1,85 @@
+GET https://jobs.googleapis.com/v4/projects/${projectId}/tenants?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json
+
+{
+  "tenants": [
+    {
+      "externalId": "default-tenant",
+      "name": "projects/${projectId}/tenants/mock-default-tenant-id"
+    }
+  ]
+}
+
+---
+
+GET https://jobs.googleapis.com/v4/projects/${projectId}/tenants/mock-default-tenant-id/companies/ctsco-min-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Ftenants%2Fmock-default-tenant-id%2Fcompanies%2Fctsco-min-${uniqueId}
+
+404 Not Found
+Content-Type: application/json
+
+{
+  "error": {
+    "code": 404,
+    "message": "Company projects/${projectId}/tenants/mock-default-tenant-id/companies/ctsco-min-${uniqueId} not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://jobs.googleapis.com/v4/projects/${projectId}/tenants/mock-default-tenant-id/companies?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Ftenants%2Fmock-default-tenant-id
+
+{
+  "displayName": "Minimal Test Company",
+  "externalId": "min-ext-id-${uniqueId}",
+  "name": "projects/${projectId}/tenants/mock-default-tenant-id/companies/ctsco-min-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json
+
+{
+  "derivedInfo": {},
+  "displayName": "Minimal Test Company",
+  "externalId": "min-ext-id-${uniqueId}",
+  "name": "projects/${projectId}/tenants/mock-default-tenant-id/companies/ctsco-min-${uniqueId}"
+}
+
+---
+
+GET https://jobs.googleapis.com/v4/projects/${projectId}/tenants/mock-default-tenant-id/companies/ctsco-min-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Ftenants%2Fmock-default-tenant-id%2Fcompanies%2Fctsco-min-${uniqueId}
+
+200 OK
+Content-Type: application/json
+
+{
+  "derivedInfo": {},
+  "displayName": "Minimal Test Company",
+  "externalId": "min-ext-id-${uniqueId}",
+  "name": "projects/${projectId}/tenants/mock-default-tenant-id/companies/ctsco-min-${uniqueId}"
+}
+
+---
+
+DELETE https://jobs.googleapis.com/v4/projects/${projectId}/tenants/mock-default-tenant-id/companies/ctsco-min-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Ftenants%2Fmock-default-tenant-id%2Fcompanies%2Fctsco-min-${uniqueId}
+
+200 OK
+Content-Type: application/json
+
+{}

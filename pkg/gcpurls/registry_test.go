@@ -205,6 +205,9 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		// IAP
 		"//iap.googleapis.com/projects/{}/brands/{}": true,
 
+		// Cloud Talent Solution
+		"//jobs.googleapis.com/projects/{}/tenants/{}/companies/{}": true,
+
 		// License Manager
 		"//licensemanager.googleapis.com/projects/{}/locations/{}/configurations/{}": true,
 
