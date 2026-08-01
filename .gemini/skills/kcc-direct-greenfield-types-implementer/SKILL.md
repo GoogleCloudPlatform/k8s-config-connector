@@ -40,11 +40,22 @@ set -o nounset
 set -o pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
+
+CONTROLLERBUILDER="${CONTROLLERBUILDER:-}"
+if [[ -z "${CONTROLLERBUILDER}" ]]; then
+  if [[ -x "${REPO_ROOT}/bin/controllerbuilder" ]]; then
+    CONTROLLERBUILDER="${REPO_ROOT}/bin/controllerbuilder"
+  else
+    CONTROLLERBUILDER="go run ${REPO_ROOT}/dev/tools/controllerbuilder"
+  fi
+fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
+# Note: generate-proto.sh reuses cached .build/googleapis-<SHA>.pb files by default.
+# Pass --force (or FORCE_GENERATE_PROTOS=1) to force re-compiling proto descriptors when testing proto edits:
 ./generate-proto.sh
 
-go run . generate-types \
+${CONTROLLERBUILDER} generate-types \
   --service <service> \
   --api-version <group>.cnrm.cloud.google.com/<api_version> \
   --resource <resource>

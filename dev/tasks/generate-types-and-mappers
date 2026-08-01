@@ -24,6 +24,13 @@ pushd dev/tools/controllerbuilder
 ./generate-proto.sh
 popd
 
+# Prebuild controllerbuilder for fast execution across all services
+export CONTROLLERBUILDER="${REPO_ROOT}/bin/controllerbuilder"
+if [[ ! -x "${CONTROLLERBUILDER}" ]]; then
+  echo "Prebuilding controllerbuilder..."
+  go build -o "${CONTROLLERBUILDER}" ./dev/tools/controllerbuilder
+fi
+
 # For efficiency, we generate CRDs only once at the end
 export SKIP_GENERATE_CRDS=1
 export SKIP_GENERATE_PROTOS=1
@@ -53,6 +60,10 @@ for f in $(find apis -name "generate.sh" | sort); do
         continue
     fi
     if [[ "${f}" == *"datastream"* ]]; then
+        echo "Skipping ${f}"
+        continue
+    fi
+    if [[ "${f}" == *"discoveryengine"* ]]; then
         echo "Skipping ${f}"
         continue
     fi

@@ -18,13 +18,22 @@ set -o nounset
 set -o pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
+
+CONTROLLERBUILDER="${CONTROLLERBUILDER:-}"
+if [[ -z "${CONTROLLERBUILDER}" ]]; then
+  if [[ -x "${REPO_ROOT}/bin/controllerbuilder" ]]; then
+    CONTROLLERBUILDER="${REPO_ROOT}/bin/controllerbuilder"
+  else
+    CONTROLLERBUILDER="go run ${REPO_ROOT}/dev/tools/controllerbuilder"
+  fi
+fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ./generate-proto.sh
 
 
 # Generate ResourceAllowance from v1alpha
-go run . generate-types \
+${CONTROLLERBUILDER} generate-types \
     --service google.cloud.batch.v1alpha \
     --api-version "batch.cnrm.cloud.google.com/v1alpha1" \
     --overlay ${REPO_ROOT}/apis/batch/v1alpha1/overlay.proto \
@@ -33,7 +42,7 @@ go run . generate-types \
 mv ${REPO_ROOT}/apis/batch/v1alpha1/types.generated.go ${REPO_ROOT}/apis/batch/v1alpha1/resourceallowance_types.generated.go
 
 # Generate Job and Task from v1
-go run . generate-types \
+${CONTROLLERBUILDER} generate-types \
     --service google.cloud.batch.v1 \
     --api-version "batch.cnrm.cloud.google.com/v1alpha1" \
     --overlay ${REPO_ROOT}/apis/batch/v1alpha1/overlay.proto \
@@ -41,7 +50,7 @@ go run . generate-types \
     --resource BatchJob:Job \
     --resource BatchTask:Task
 
-go run . generate-mapper \
+${CONTROLLERBUILDER} generate-mapper \
     --service google.cloud.batch.v1 \
     --api-version "batch.cnrm.cloud.google.com/v1alpha1" \
     --overlay ${REPO_ROOT}/apis/batch/v1alpha1/overlay.proto

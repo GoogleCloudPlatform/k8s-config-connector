@@ -18,19 +18,28 @@ set -o nounset
 set -o pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
+
+CONTROLLERBUILDER="${CONTROLLERBUILDER:-}"
+if [[ -z "${CONTROLLERBUILDER}" ]]; then
+  if [[ -x "${REPO_ROOT}/bin/controllerbuilder" ]]; then
+    CONTROLLERBUILDER="${REPO_ROOT}/bin/controllerbuilder"
+  else
+    CONTROLLERBUILDER="go run ${REPO_ROOT}/dev/tools/controllerbuilder"
+  fi
+fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ./generate-proto.sh
 
 # Generate the KCC type structs from the GCP proto definitions
-go run . generate-types \
+${CONTROLLERBUILDER} generate-types \
   --service google.cloud.parametermanager.v1 \
   --api-version parametermanager.cnrm.cloud.google.com/v1alpha1  \
   --resource ParameterManagerParameter:Parameter \
   --resource ParameterManagerParameterVersion:ParameterVersion
 
 # Generate the mapper functions that convert between the KCC structs and the GCP proto structs
-go run . generate-mapper \
+${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.parametermanager.v1 \
   --api-version parametermanager.cnrm.cloud.google.com/v1alpha1
 

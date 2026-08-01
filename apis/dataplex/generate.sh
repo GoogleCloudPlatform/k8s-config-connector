@@ -18,12 +18,21 @@ set -o nounset
 set -o pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
+
+CONTROLLERBUILDER="${CONTROLLERBUILDER:-}"
+if [[ -z "${CONTROLLERBUILDER}" ]]; then
+  if [[ -x "${REPO_ROOT}/bin/controllerbuilder" ]]; then
+    CONTROLLERBUILDER="${REPO_ROOT}/bin/controllerbuilder"
+  else
+    CONTROLLERBUILDER="go run ${REPO_ROOT}/dev/tools/controllerbuilder"
+  fi
+fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ./generate-proto.sh
 
 
-go run . generate-types \
+${CONTROLLERBUILDER} generate-types \
     --service google.cloud.dataplex.v1 \
     --api-version "dataplex.cnrm.cloud.google.com/v1alpha1" \
     --resource DataplexLake:Lake \
@@ -38,7 +47,7 @@ go run . generate-types \
 
 # Handled recursive self-referential fields by defining AspectType_MetadataTemplate manually in dataplexaspecttype_types.go
 
-go run . generate-mapper \
+${CONTROLLERBUILDER} generate-mapper \
     --service google.cloud.dataplex.v1 \
     --api-version "dataplex.cnrm.cloud.google.com/v1alpha1"
 
