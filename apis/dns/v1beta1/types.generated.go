@@ -118,6 +118,7 @@ type ManagedZoneCloudLoggingConfig struct {
 	// logging opt-in.
 	// +required
 	EnableLogging *bool `json:"enableLogging"`
+
 }
 
 /* found existing non-generated go type with openapi tag "ManagedZoneDnsSecConfig", skipping
@@ -144,6 +145,7 @@ type ManagedZoneForwardingConfig struct {
 	// name server if more than one target is given.
 	// +required
 	TargetNameServers []ManagedZoneForwardingConfigNameServerTarget `json:"targetNameServers"`
+
 }
 
 /* found existing non-generated go type with openapi tag "ManagedZoneForwardingConfigNameServerTarget", skipping
@@ -175,6 +177,7 @@ type ManagedZonePeeringConfig struct {
 	// The network with which to peer.
 	// +required
 	TargetNetwork *ManagedZonePeeringConfigTargetNetwork `json:"targetNetwork"`
+
 }
 
 /* found existing non-generated go type with openapi tag "ManagedZonePeeringConfigTargetNetwork", skipping
@@ -202,6 +205,7 @@ type ManagedZonePrivateVisibilityConfig struct {
 
 	// The list of VPC networks that can see this zone.
 	Networks []ManagedZonePrivateVisibilityConfigNetwork `json:"networks,omitempty"`
+
 }
 
 /* found existing non-generated go type with openapi tag "ManagedZonePrivateVisibilityConfigGKECluster", skipping
@@ -237,6 +241,7 @@ type ManagedZoneServiceDirectoryConfig struct {
 	// Contains information about the namespace associated with the zone.
 	// +required
 	Namespace *ManagedZoneServiceDirectoryConfigNamespace `json:"namespace"`
+
 }
 
 /* found existing non-generated go type with openapi tag "ManagedZoneServiceDirectoryConfigNamespace", skipping
@@ -329,6 +334,7 @@ type PolicyAlternativeNameServerConfigTargetNameServer struct {
 type PolicyDns64Config struct {
 	// The scope to which DNS64 config will be applied to.
 	Scope *PolicyDns64ConfigScope `json:"scope,omitempty"`
+
 }
 
 // +openapi:PolicyDns64ConfigScope
@@ -336,6 +342,7 @@ type PolicyDns64ConfigScope struct {
 	// Controls whether DNS64 is enabled globally for all networks bound to the
 	// policy.
 	AllQueries *bool `json:"allQueries,omitempty"`
+
 }
 
 /* found existing non-generated go type with openapi tag "PolicyNetwork", skipping
@@ -363,6 +370,7 @@ type RRSetRoutingPolicy struct {
 	PrimaryBackup *RRSetRoutingPolicyPrimaryBackupPolicy `json:"primaryBackup,omitempty"`
 
 	Wrr *RRSetRoutingPolicyWrrPolicy `json:"wrr,omitempty"`
+
 }
 
 // +openapi:RRSetRoutingPolicyGeoPolicy
@@ -378,6 +386,7 @@ type RRSetRoutingPolicyGeoPolicy struct {
 	// The primary geo routing configuration. If there are multiple items with the
 	// same location, an error is returned instead.
 	Items []RRSetRoutingPolicyGeoPolicyGeoPolicyItem `json:"items,omitempty"`
+
 }
 
 // +openapi:RRSetRoutingPolicyGeoPolicyGeoPolicyItem
@@ -397,6 +406,7 @@ type RRSetRoutingPolicyGeoPolicyGeoPolicyItem struct {
 	// health-checked targets for DNSSEC-enabled zones, you can only use at most one
 	// health-checked IP address per item.
 	SignatureRrdatas []string `json:"signatureRrdatas,omitempty"`
+
 }
 
 // +openapi:RRSetRoutingPolicyHealthCheckTargets
@@ -408,6 +418,7 @@ type RRSetRoutingPolicyHealthCheckTargets struct {
 
 	// Configuration for internal load balancers to be health checked.
 	InternalLoadBalancers []RRSetRoutingPolicyLoadBalancerTarget `json:"internalLoadBalancers,omitempty"`
+
 }
 
 // +openapi:RRSetRoutingPolicyLoadBalancerTarget
@@ -439,6 +450,7 @@ type RRSetRoutingPolicyLoadBalancerTarget struct {
 
 	// The region in which the load balancer is located.
 	Region *string `json:"region,omitempty"`
+
 }
 
 // +openapi:RRSetRoutingPolicyPrimaryBackupPolicy
@@ -456,11 +468,13 @@ type RRSetRoutingPolicyPrimaryBackupPolicy struct {
 	// When serving state is `PRIMARY`, this field provides the option of sending a
 	// small percentage of the traffic to the backup targets.
 	TrickleTraffic *float64 `json:"trickleTraffic,omitempty"`
+
 }
 
 // +openapi:RRSetRoutingPolicyWrrPolicy
 type RRSetRoutingPolicyWrrPolicy struct {
 	Items []RRSetRoutingPolicyWrrPolicyWrrPolicyItem `json:"items,omitempty"`
+
 }
 
 // +openapi:RRSetRoutingPolicyWrrPolicyWrrPolicyItem
@@ -484,6 +498,7 @@ type RRSetRoutingPolicyWrrPolicyWrrPolicyItem struct {
 	// `WrrPolicyItem` object's data is proportional to its weight relative to the sum
 	// of weights configured for all items. This weight must be non-negative.
 	Weight *float64 `json:"weight,omitempty"`
+
 }
 
 // +openapi:ResourceRecordSet
@@ -510,4 +525,6 @@ type ResourceRecordSet struct {
 	// The identifier of a supported record type. See the list of Supported DNS record
 	// types.
 	Type *string `json:"type,omitempty"`
+
 }
+
