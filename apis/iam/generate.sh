@@ -18,12 +18,21 @@ set -o nounset
 set -o pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
+
+CONTROLLERBUILDER="${CONTROLLERBUILDER:-}"
+if [[ -z "${CONTROLLERBUILDER}" ]]; then
+  if [[ -x "${REPO_ROOT}/bin/controllerbuilder" ]]; then
+    CONTROLLERBUILDER="${REPO_ROOT}/bin/controllerbuilder"
+  else
+    CONTROLLERBUILDER="go run ${REPO_ROOT}/dev/tools/controllerbuilder"
+  fi
+fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ./generate-proto.sh
 
 # --- v1alpha1 ---
-go run . generate-types \
+${CONTROLLERBUILDER} generate-types \
   --service google.iam.v2 \
   --api-version iam.cnrm.cloud.google.com/v1alpha1 \
   --resource IAMDenyPolicy:Policy
@@ -31,14 +40,14 @@ go run . generate-types \
 
 
 # --- v1beta1 ---
-go run . generate-types \
+${CONTROLLERBUILDER} generate-types \
     --service google.iam.admin.v1 \
     --api-version iam.cnrm.cloud.google.com/v1beta1 \
     --include-skipped-output \
     --resource IAMServiceAccountKey:ServiceAccountKey \
     --resource IAMServiceAccount:ServiceAccount
 
-go run . generate-mapper \
+${CONTROLLERBUILDER} generate-mapper \
   --service google.iam.admin.v1,google.iam.v2 \
   --api-version "iam.cnrm.cloud.google.com/v1beta1" \
   --include-skipped-output \

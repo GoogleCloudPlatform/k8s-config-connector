@@ -18,6 +18,15 @@ set -o nounset
 set -o pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
+
+CONTROLLERBUILDER="${CONTROLLERBUILDER:-}"
+if [[ -z "${CONTROLLERBUILDER}" ]]; then
+  if [[ -x "${REPO_ROOT}/bin/controllerbuilder" ]]; then
+    CONTROLLERBUILDER="${REPO_ROOT}/bin/controllerbuilder"
+  else
+    CONTROLLERBUILDER="go run ${REPO_ROOT}/dev/tools/controllerbuilder"
+  fi
+fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
@@ -30,14 +39,14 @@ PROTO_OUT="${REPO_ROOT}/.build/googleapis-${PROTO_SHA}.pb"
 # --- v1alpha1 ---
 
 
-go run . generate-types \
+${CONTROLLERBUILDER} generate-types \
   --service google.cloud.dataform.v1beta1 \
   --api-version dataform.cnrm.cloud.google.com/v1alpha1 \
   --overlay ${REPO_ROOT}/apis/dataform/v1alpha1/overlay.proto \
   --resource DataformFolder:Folder \
   --proto-source-path ${PROTO_OUT}
 
-go run . generate-types \
+${CONTROLLERBUILDER} generate-types \
   --service google.cloud.dataform.v1 \
   --api-version dataform.cnrm.cloud.google.com/v1alpha1 \
   --overlay ${REPO_ROOT}/apis/dataform/v1alpha1/overlay.proto \
@@ -49,13 +58,13 @@ go run . generate-types \
 # --- v1beta1 ---
 
 
-go run . generate-types \
+${CONTROLLERBUILDER} generate-types \
   --service google.cloud.dataform.v1beta1 \
   --api-version dataform.cnrm.cloud.google.com/v1beta1 \
   --resource DataformRepository:Repository \
   --proto-source-path ${PROTO_OUT}
 
-go run . generate-mapper \
+${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.dataform.v1,google.cloud.dataform.v1beta1 \
   --api-version "dataform.cnrm.cloud.google.com/v1beta1" \
   --proto-source-path ${PROTO_OUT} \

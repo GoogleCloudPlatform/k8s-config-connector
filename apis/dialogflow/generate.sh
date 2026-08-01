@@ -18,13 +18,22 @@ set -o nounset
 set -o pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
+
+CONTROLLERBUILDER="${CONTROLLERBUILDER:-}"
+if [[ -z "${CONTROLLERBUILDER}" ]]; then
+  if [[ -x "${REPO_ROOT}/bin/controllerbuilder" ]]; then
+    CONTROLLERBUILDER="${REPO_ROOT}/bin/controllerbuilder"
+  else
+    CONTROLLERBUILDER="go run ${REPO_ROOT}/dev/tools/controllerbuilder"
+  fi
+fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ./generate-proto.sh
 
 
 # Generate types for Dialogflow v2 service (KnowledgeBase, Generator)
-go run . generate-types \
+${CONTROLLERBUILDER} generate-types \
   --service google.cloud.dialogflow.v2 \
   --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
   --resource DialogflowKnowledgeBase:KnowledgeBase \
@@ -32,7 +41,7 @@ go run . generate-types \
   --resource DialogflowConversationDataset:ConversationDataset
 
 # Generate types for Dialogflow CX v3 service (SecuritySettings)
-go run . generate-types \
+${CONTROLLERBUILDER} generate-types \
   --service google.cloud.dialogflow.cx.v3 \
   --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output \
@@ -41,7 +50,7 @@ go run . generate-types \
 mv ${REPO_ROOT}/apis/dialogflow/v1alpha1/types.generated.go ${REPO_ROOT}/apis/dialogflow/v1alpha1/securitysettings_types.generated.go
 
 # Generate types for Dialogflow v1 service (SipTrunk)
-go run . generate-types \
+${CONTROLLERBUILDER} generate-types \
   --service google.cloud.dialogflow.v2beta1 \
   --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
   --resource DialogflowSipTrunk:SipTrunk
@@ -49,7 +58,7 @@ go run . generate-types \
 mv ${REPO_ROOT}/apis/dialogflow/v1alpha1/types.generated.go ${REPO_ROOT}/apis/dialogflow/v1alpha1/siptrunk_types.generated.go
 
 # Generate types for Dialogflow v2 service again to restore types.generated.go for Dialogflow v2
-go run . generate-types \
+${CONTROLLERBUILDER} generate-types \
   --service google.cloud.dialogflow.v2 \
   --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
   --resource DialogflowKnowledgeBase:KnowledgeBase \
@@ -57,13 +66,13 @@ go run . generate-types \
   --resource DialogflowConversationDataset:ConversationDataset
 
 # Generate mapper for Dialogflow CX v3 service
-go run . generate-mapper \
+${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.dialogflow.cx.v3 \
   --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output
 
 # Generate mapper for Dialogflow v1/v2beta1 service (SipTrunk)
-go run . generate-mapper \
+${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.dialogflow.v2beta1 \
   --api-version dialogflow.cnrm.cloud.google.com/v1alpha1 \
   --output-dir "${REPO_ROOT}/pkg/controller/direct/dialogflow/siptrunk"

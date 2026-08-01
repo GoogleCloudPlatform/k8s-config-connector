@@ -18,12 +18,21 @@ set -o nounset
 set -o pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
+
+CONTROLLERBUILDER="${CONTROLLERBUILDER:-}"
+if [[ -z "${CONTROLLERBUILDER}" ]]; then
+  if [[ -x "${REPO_ROOT}/bin/controllerbuilder" ]]; then
+    CONTROLLERBUILDER="${REPO_ROOT}/bin/controllerbuilder"
+  else
+    CONTROLLERBUILDER="go run ${REPO_ROOT}/dev/tools/controllerbuilder"
+  fi
+fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ./generate-proto.sh
 
 # --- v1alpha1 ---
-go run . generate-types \
+${CONTROLLERBUILDER} generate-types \
     --service google.cloud.certificatemanager.v1 \
     --api-version "certificatemanager.cnrm.cloud.google.com/v1alpha1" \
     --include-skipped-output \
@@ -37,7 +46,7 @@ sed -i 's/out.IntermediateCas = direct.Slice_FromProto/out.IntermediateCAs = dir
 sed -i 's/Slice_ToProto(mapCtx, in.IntermediateCas,/Slice_ToProto(mapCtx, in.IntermediateCAs,/g' "${REPO_ROOT}/pkg/controller/direct/certificatemanager/mapper.generated.go"
 
 # --- v1beta1 ---
-go run . generate-types \
+${CONTROLLERBUILDER} generate-types \
     --service google.cloud.certificatemanager.v1 \
     --api-version "certificatemanager.cnrm.cloud.google.com/v1beta1" \
     --include-skipped-output \
@@ -46,7 +55,7 @@ go run . generate-types \
     --resource CertificateManagerCertificateMap:CertificateMap \
     --resource CertificateManagerCertificateMapEntry:CertificateMapEntry
 
-go run . generate-mapper \
+${CONTROLLERBUILDER} generate-mapper \
     --service google.cloud.certificatemanager.v1 \
     --api-version "certificatemanager.cnrm.cloud.google.com/v1beta1" \
     --include-skipped-output \

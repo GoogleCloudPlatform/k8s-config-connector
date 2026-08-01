@@ -18,6 +18,15 @@ set -o nounset
 set -o pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
+
+CONTROLLERBUILDER="${CONTROLLERBUILDER:-}"
+if [[ -z "${CONTROLLERBUILDER}" ]]; then
+  if [[ -x "${REPO_ROOT}/bin/controllerbuilder" ]]; then
+    CONTROLLERBUILDER="${REPO_ROOT}/bin/controllerbuilder"
+  else
+    CONTROLLERBUILDER="go run ${REPO_ROOT}/dev/tools/controllerbuilder"
+  fi
+fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
@@ -31,7 +40,7 @@ PROTO_OUT="${REPO_ROOT}/.build/googleapis-${PROTO_SHA}.pb"
 
 
 # Run for google.cloud.networksecurity.v1 resources
-go run . generate-types \
+${CONTROLLERBUILDER} generate-types \
   --service google.cloud.networksecurity.v1 \
   --api-version networksecurity.cnrm.cloud.google.com/v1alpha1 \
   --resource NetworkSecurityBackendAuthenticationConfig:BackendAuthenticationConfig \
@@ -53,7 +62,7 @@ go run . generate-types \
   --proto-source-path ${PROTO_OUT}
 
 # Run for google.cloud.networksecurity.v1alpha1 resources (PartnerSSERealm)
-go run . generate-types \
+${CONTROLLERBUILDER} generate-types \
   --service google.cloud.networksecurity.v1alpha1 \
   --api-version networksecurity.cnrm.cloud.google.com/v1alpha1 \
   --resource NetworkSecurityPartnerSSERealm:PartnerSSERealm \
@@ -67,14 +76,14 @@ go run . generate-types \
 # --- v1beta1 ---
 
 
-go run . generate-types \
+${CONTROLLERBUILDER} generate-types \
     --service google.cloud.networksecurity.v1beta1 \
     --api-version networksecurity.cnrm.cloud.google.com/v1beta1 \
     --resource NetworkSecurityAuthorizationPolicy:AuthorizationPolicy \
     --resource NetworkSecurityClientTLSPolicy:ClientTlsPolicy \
     --proto-source-path ${PROTO_OUT}
 
-go run . generate-mapper \
+${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.networksecurity.v1,google.cloud.networksecurity.v1beta1 \
   --api-version "networksecurity.cnrm.cloud.google.com/v1beta1" \
   --proto-source-path ${PROTO_OUT} \
