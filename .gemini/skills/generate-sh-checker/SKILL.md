@@ -48,27 +48,35 @@ This skill helps maintain the `generate.sh` pattern across all `apis/` subdirect
     set -o pipefail
 
     REPO_ROOT="$(git rev-parse --show-toplevel)"
+    CONTROLLERBUILDER="${CONTROLLERBUILDER:-}"
+    if [[ -z "${CONTROLLERBUILDER}" ]]; then
+      if [[ -x "${REPO_ROOT}/bin/controllerbuilder" ]]; then
+        CONTROLLERBUILDER="${REPO_ROOT}/bin/controllerbuilder"
+      else
+        CONTROLLERBUILDER="go run ${REPO_ROOT}/dev/tools/controllerbuilder"
+      fi
+    fi
     source "${REPO_ROOT}/dev/tools/goimports.sh"
     cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
     ./generate-proto.sh
 
     # --- v1alpha1 (if applicable) ---
-    go run . generate-types \
+    ${CONTROLLERBUILDER} generate-types \
       --service <PROTO_SERVICE> \
       --api-version <GROUP>/v1alpha1 \
       --include-skipped-output \
       --resource <KIND1>:<PROTO_MESSAGE1>
 
     # --- v1beta1 (if applicable) ---
-    go run . generate-types \
+    ${CONTROLLERBUILDER} generate-types \
       --service <PROTO_SERVICE> \
       --api-version <GROUP>/v1beta1 \
       --include-skipped-output \
       --resource <KIND2>:<PROTO_MESSAGE2>
 
     # --- mappers (run exactly once at the end with --multiversion) ---
-    go run . generate-mapper \
+    ${CONTROLLERBUILDER} generate-mapper \
       --service <PROTO_SERVICE> \
       --api-version <GROUP>/<LATEST_VERSION> \
       --include-skipped-output \

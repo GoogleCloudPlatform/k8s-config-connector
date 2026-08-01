@@ -39,7 +39,7 @@ if [[ -n ${SKIP_GENERATE_PROTOS:-} ]]; then
 fi
 ./generate-proto.sh "0fcabfc28371e7bab8107402eb06ad58134ee383" "${REPO_ROOT}/.build/googleapis-gkehub.pb"
 
-go run . generate-types \
+${CONTROLLERBUILDER} generate-types \
   --proto-source-path "${REPO_ROOT}/.build/googleapis-gkehub.pb" \
   --service google.cloud.gkehub.v1 \
   --api-version gkehub.cnrm.cloud.google.com/v1alpha1 \
