@@ -1,0 +1,230 @@
+---
+description: A meta-skill for KCC kinds that describes the steps we need to take to get them to be "production ready" direct controllers at v1beta1 at least.
+name: checklist-for-kind
+schedule: never
+mode: workflow
+cooldown: 2h
+---
+
+# Checklist for KCC Resource Kind Migration
+
+This is a meta-skill describing the steps to migrate a KCC resource kind to a production-ready direct controller at `v1beta1` (or higher).
+
+Instead of doing the coding yourself under this skill, you will coordinate and orchestrate:
+1. Planning the migration steps.
+2. Opening GitHub issues for each step, labeling them with `overseer`, and leaving them unassigned (or assigning them to the current bot user).
+3. Monitoring progress of the Pull Requests.
+4. Opening subsequent issues once the prior steps are successfully completed.
+
+> [!IMPORTANT]
+> **Safety Guardrails (Strict Enforcement)**:
+> - **Do NOT write code or create PRs directly**: You must **never** checkout code, write code, run builds/tests, commit changes, or run `gh pr create` to send/push PRs. Your role under this skill is strictly limited to planning, progress tracking, and orchestration. All code implementation, CI fixing, and triage work must be delegated to coder and reviewer bots by creating child issues or assigning PRs back to their author bots.
+> - **Do NOT comment on child Pull Requests**: You must **never** comment directly on the child Pull Requests. The watch daemon will automatically monitor and handle PR review feedback and CI check failures. If you need to request action or re-trigger a run, do so only by assigning the PR to the PR author bot (using `gh pr edit <pr> --add-assignee <author>` or assigning via `gh` CLI). However, if the PR has the `overseer/giving-up` label, you MUST NOT assign the PR back to the bot, as this indicates the retry limit was reached and human OWNER intervention is required.
+> - **Do NOT approve, LGTM, or label PRs**: You must **never** approve, LGTM, or add approval/merging labels (such as `lgtm`, `approved`, or `automerge`) to any Pull Requests. These actions require human OWNER review and approval.
+> - **Do NOT work on closed Pull Requests**: If a PR is closed but not merged, dont assign bots to the PR.
+> - **Idempotent Issue Creation & Journal Recording**:
+>   - **Before creating any child issue**, you MUST search GitHub first for an existing open issue for that step:
+>     `gh issue list --repo GoogleCloudPlatform/k8s-config-connector --search "<step-title-keywords> {kind}" --json number,title,state`
+>   - If an open issue with that title already exists, **DO NOT run `gh issue create`**. Reuse the existing issue number in your progress table and journal file!
+>   - **Whenever you create an issue or update a step**, immediately write the issue/PR numbers to the local journal file (`.agents/workflows/checklist-for-kind/journal/{kind}.md`) and save it so `git status` registers the journal update.
+
+## Journaling and Progress Tracking
+
+To track the progress of each resource kind, maintain a journal file in `.agents/workflows/checklist-for-kind/journal/{kind}.md` (using the CamelCase Kind name).
+
+The journal should contain:
+1. The current step of the migration.
+2. A table tracking:
+   * Step Number and Name
+   * GitHub Issue link/number
+   * GitHub Pull Request link/number
+   * Status (e.g. `Open`, `PR Created`, `Merged`, `Completed`)
+   * Date Started and Date Completed
+
+Only proceed to the next step once the PR for the current step is merged successfully.
+
+3. In addition to the local journal file, **update the parent issue description** (using the issue ID/number extracted from `${SESSION_ID#issue-}`) or fall back to updating a comment:
+   * **Formatting the GitHub Description/Comment**: To keep the parent GitHub issue clean and avoid excessively chatty updates, the body posted to GitHub (description or comment) must **only** include the current step, the progress tracking table, and **at most the 3 most recent status update notes**. Do not include the entire historical list of check logs or updates under the table in the GitHub description/comment; all older history must remain in the local journal file on the branch only.
+   * Edit/create the description or comment using the `gh` CLI:
+     ```bash
+     gh issue edit ${SESSION_ID#issue-} --body "<updated_body>"
+     ```
+     If editing the issue description fails (due to write permissions on public repositories), **fall back to updating a comment**:
+     * Search the comments on the issue for an existing comment posted by yourself (check for author match with your GITHUB_USER_ID) that contains the text `Migration Progress`.
+     * If such a comment exists, edit it with the updated progress using:
+       ```bash
+       gh issue comment edit <comment-id> --body "<updated_comment_body>"
+       ```
+     * If no such comment exists, create a new comment:
+       ```bash
+       gh issue comment create ${SESSION_ID#issue-} --body "<updated_comment_body>"
+       ```
+4. Once all steps of the migration for the resource kind are successfully completed and verified merged, update the parent issue description to show completion, and close the parent issue:
+   ```bash
+   gh issue close ${SESSION_ID#issue-}
+   ```
+
+### Verifying PR CI Checks Status
+When checking if all CI check-runs have passed for a pull request, do NOT rely on a single unpaginated `gh api .../check-runs` call (since GitHub defaults to 30 items per page and might hide failing runs). Instead, use the `--paginate` option to ensure all runs are checked:
+```bash
+gh api repos/GoogleCloudPlatform/k8s-config-connector/commits/<head-sha>/check-runs --paginate --jq '.check_runs[] | select(.conclusion != "success" and .conclusion != "neutral" and .conclusion != "skipped") | {name: .name, conclusion: .conclusion}'
+```
+Or check via GitHub CLI:
+```bash
+gh pr checks <pr-number> --repo GoogleCloudPlatform/k8s-config-connector
+```
+Only declare the PR as fully passed/verified if no failures are returned across all pages of checks.
+
+## Steps
+
+
+### Step 1: Direct API Types
+
+The resource must have a direct KRM type (`_types.go`) scaffolded and updated via `generate.sh` using the controllerbuilder tool, ensuring strict schema compatibility with the existing CRD.
+
+1. Check if the resource already has direct types under `apis/` and a `generate.sh` script configured for the resource's service.
+2. Existing Terraform/DCL Resource**: Open a GitHub issue referencing `.gemini/skills/crd-mapper-fuzzer-existing-type/SKILL.md`.
+   
+**GitHub Issue Details for Existing Terraform/DCL Resource:**
+*   **Title:** `Implement direct KRM types and generate.sh for {kind}`
+*   **Assignee:** (leave unassigned or assign to the current bot)
+*   **Labels:** `overseer`, `overseer/review`
+*   **Body:**
+    ```
+    Please follow the skill .gemini/skills/crd-mapper-fuzzer-existing-type/SKILL.md for {kind}.
+
+    Make sure to configure/update `generate.sh` in the resource's service directory (e.g., `apis/{service}/{version}/generate.sh`), ensuring that the direct KRM type is strictly schema-compatible with the existing CRD.
+
+    For reference on setting up `generate.sh`, renaming files/fields to match acronyms, handling pointers, and ensuring proper directory structure, please also refer to the skill .gemini/skills/generate-sh-checker/SKILL.md.
+
+    If you find any shortcomings in the skill (that likely apply to other resources), you may update SKILL.md. Also keep a journal of any less general observations etc. To avoid git merge conflicts, use a file under .gemini/skills/crd-mapper-fuzzer-existing-type/journal/, named after the kind or a similarly unique name. You may grep journal entries to identify learnings from other resources; if you find an important pattern by doing that you may also update the SKILL.md itself.
+
+    The created PR must include these labels: `direct-migration` and `overseer`
+
+    ## Review Instructions
+    Use  .gemini/skills/reviewgen-brownfield-new-types/SKILL.md to conduct the review.
+    ```
+
+### Step 2: Identity and Reference Types Pattern
+
+The resource kind must have an identity and reference type that follow our canonical patterns.
+
+1. Check if the resource has `_identity.go` and `_reference.go` implementing `identity.IdentityV2` and `refs.Ref` using `gcpurls.Template`.
+2. If not, open a GitHub issue (unassigned or assigned to the current bot) to implement/move the kind to the identity and reference pattern.
+
+**GitHub Issue Details:**
+*   **Title:** `Move {kind} to identity and refs pattern`
+*   **Assignee:** (leave unassigned or assign to the current bot)
+*   **Labels:** `overseer`, `overseer/review`
+*   **Body:**
+    ```
+    Please follow the skill .gemini/skills/kcc-identity-reference/SKILL.md for {kind}
+
+    If you find any shortcomings in the skill (that likely apply to other resources), you may update SKILL.md. Also keep a journal of any less general observations etc. To avoid git merge conflicts, use a file under .gemini/skills/kcc-identity-reference/journal/, named after the kind or a similarly unique name. You may grep journal entries to identify learnings from other resources; if you find an important pattern by doing that you may also update the SKILL.md itself.
+
+    The created PR must include these labels: `direct-migration` and `overseer`
+
+    ## Review Instructions
+    Use  .gemini/skills/reviewgen-brownfield-new-types/SKILL.md to conduct the review.
+    ```
+
+### Step 3: Create a Round-Trip KRM Fuzzer
+
+For existing resources transitioning to a direct controller, a round-trip KRM fuzzer must be created to verify that all field mapping conversions between KRM and GCP proto representations are lossless and fully correct.
+
+1. Open a GitHub issue (unassigned or assigned to the current bot) to implement the round-trip KRM fuzzer at the expected path `pkg/controller/direct/{service}/{kind}_fuzzer.go`.
+
+**GitHub Issue Details:**
+*   **Title:** `Implement round-trip KRM fuzzer for {kind}`
+*   **Assignee:** (leave unassigned or assign to the current bot)
+*   **Labels:** `overseer`
+*   **Body:**
+    ```
+    Please follow the skill .gemini/skills/create-fuzzer/skill.md to implement a round-trip KRM fuzzer for {kind}.
+
+    The expected path for the fuzzer is `pkg/controller/direct/{service}/{kind}_fuzzer.go`. Ensure the direct controller package is imported/registered in `pkg/controller/direct/register/register.go` so the fuzzer executes under the central fuzz test suite.
+
+    If you find any shortcomings in the skill (that likely apply to other resources), you may update skill.md. Also keep a journal of any less general observations etc. To avoid git merge conflicts, use a file under .gemini/skills/create-fuzzer/journal/, named after the kind or a similarly unique name. You may grep journal entries to identify learnings from other resources; if you find an important pattern by doing that you may also update the skill.md itself.
+
+    The created PR must include these labels: `direct-migration` and `overseer`
+    ```
+
+### Step 4: Ensure MockGCP matches real gcp behavior
+We need to ensure that we have a mockgcp that aligns with realgcp.
+
+1. Open a GitHub issue assigned to `factorybot-robot` to implement or improve the MockGCP for the resource.
+
+**GitHub Issue Details:**
+*   **Title:** `Match real gcp behavior in MockGCP for {kind}`
+*   **Assignee:** `factorybot-robot`
+*   **Labels:** `overseer`
+*   **Body:**
+    ```
+    Please first check if a mock for the GCP {service},{resource} corresponding to the {kind} already exists in the codebase. Check under mockgcp/ folder.
+    If it doesnt exist, please follow the skill .gemini/skills/add-new-mockgcp-resource/SKILL.md to implement the mock for {service}, {resource} first.
+
+    Next please follow the skill .gemini/skills/match-mockgcp-with-realgcp/SKILL.md to match with realgcp for {service}, {resource}
+
+    CRITICAL: You MUST run `hack/record-gcp` against real GCP to record the initial baseline `_http.log`. Generating golden logs (`_http.log`) directly from MockGCP (e.g., by running with `E2E_GCP_TARGET=mock` and `WRITE_GOLDEN_OUTPUT=1`) is strictly forbidden, as it freezes mock-only behavior and bypasses actual GCP contract validation. And you MUST commit files modified by running `hack/record-gcp` in its own commit.
+
+    API ENABLEMENT TROUBLESHOOTING:
+    If `hack/record-gcp` fails with a 403 error indicating that the GCP API is disabled (e.g., "API has not been used in project ... before or it is disabled"), do NOT assume this is a permissions blocker.
+    To resolve this, you must enable the API manually using gcloud command in the project being used for E2E tests:
+    ```bash
+    gcloud services enable <api-service-domain> --project <gcp-project-id>
+    ```
+    Do NOT add the Service resource to `dependencies.yaml` because this is forbidden for E2E test fixtures to prevent unit test failures from pre-enabled check enforcement.
+
+    GCP RECORDING PR REPORTING REQUIREMENT:
+    In the created PR description, you MUST explicitly document whether `record-gcp` was successfully run against real GCP. If it was run, state the GCP project used. If it was not run (e.g., due to disabled APIs, missing permissions, or rate limits), you must document the specific command run, the full error message encountered, and the fallback approach you used to generate/align the HTTP logs.
+
+    If you find any shortcomings in these skills (that likely apply to other resources), you may update them. Also keep a journal of any less general observations etc. To avoid git merge conflicts, use a file under .gemini/skills/add-new-mockgcp-resource/journal/, named after the kind or a similarly unique name.
+
+    The created PR must include these labels: `direct-migration` and `overseer`
+    ```
+
+### Step 5: Implement Direct Controller & E2E Fixtures
+
+The direct controller must be implemented to manage reconciliation logic (Adapter: Find, Create, Update, Delete) and E2E fixtures must be created and recorded against mockgcp/real GCP to verify functionality.
+
+1. Open a GitHub issue (unassigned or assigned to the current bot) to implement the direct controller and E2E fixtures.
+
+**GitHub Issue Details:**
+*   **Title:** `Implement direct controller and test fixtures for {kind}`
+*   **Assignee:** (leave unassigned or assign to the current bot)
+*   **Labels:** `overseer`
+*   **Body:**
+    ```
+    Please follow the skills:
+    - .gemini/skills/kcc-direct-controller-implementer/SKILL.md
+    - .gemini/skills/kcc-direct-controller-logic-brownfield/SKILL.md
+    to implement the direct controller and record/verify test fixtures for {kind}.
+
+    If you find any shortcomings in these skills (that likely apply to other resources), you may update them. Also keep a journal of any less general observations etc. To avoid git merge conflicts, use a file under their respective journal/ folders, named after the kind or a similarly unique name.
+
+    The created PR must include these labels: `direct-migration` and `overseer`
+    ```
+
+### Step 6: Validate Direct Promotion
+
+1. Open a GitHub issue to validate the direct promotion for this resource.
+
+**GitHub Issue Details:**
+*   **Title:** `Validate direct promotion for {kind}`
+*   **Assignee:** (leave unassigned or assign to the current bot)
+*   **Labels:** `overseer`
+*   **Body:**
+    ```
+    Find the tests added under pkg/test/resourcefixture/testdata/basic for the {kind}.
+    Include only those tests that are not using direct annotation `alpha.cnrm.cloud.google.com/reconciler: direct` in `create.yaml`
+
+    For each test, follow .gemini/skills/solve-migration-diff-issues/SKILL.md to test the direct migration for {kind}.
+    You MUST re-record the HTTP cassettes against live GCP by running `./hack/record-gcp TestMigrationToDirect/fixtures/<fixture-name>$` so that the recorded GCP traffic conforms to the new direct controller behavior. Do NOT rely solely on mockgcp.
+
+    GCP RECORDING PR REPORTING REQUIREMENT:
+    In the created PR description, you MUST explicitly document whether `./hack/record-gcp` was successfully run against real GCP. If it was run, state the GCP project used. If it was not run (e.g., due to disabled APIs, missing permissions, or rate limits), you must document the specific command run, the full error message encountered, and the fallback approach you used.
+
+    If you find any shortcomings in these skills (that likely apply to other resources), you may update them. Also keep a journal of any less general observations etc. To avoid git merge conflicts, use a file under .gemini/skills/solve-migration-diff-issues/journal/, named after the kind or a similarly unique name.
+
+    The created PR must include these labels: `direct-migration` and `overseer`
+    ```
