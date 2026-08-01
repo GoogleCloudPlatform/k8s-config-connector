@@ -27,9 +27,9 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	"google.golang.org/api/option"
@@ -429,12 +429,12 @@ func convertGCPolicyToProto(gc gcp.GCPolicy) (*pb.GcRule, error) {
 func compareGcRule(ctx context.Context, actual, desired *pb.GcRule) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
 	if actual == nil {
 		clonedDesired := proto.CloneOf(desired)
-		diffs, updateMask, err := tags.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), nil)
+		diffs, updateMask, err := common.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), nil)
 		return diffs, updateMask, err
 	}
 	clonedDesired := proto.CloneOf(desired)
 	clonedActual := proto.CloneOf(actual)
-	diffs, updateMask, err := tags.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), clonedActual.ProtoReflect())
+	diffs, updateMask, err := common.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), clonedActual.ProtoReflect())
 	if err != nil {
 		return nil, nil, err
 	}

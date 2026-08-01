@@ -40,7 +40,6 @@ import (
 	dataprocgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/dataproc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
 
@@ -202,7 +201,7 @@ func (a *sessionTemplateAdapter) Update(ctx context.Context, updateOp *directbas
 
 	clonedDesired := proto.Clone(a.desired).(*pb.SessionTemplate)
 
-	diffs, _, err := tags.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
+	diffs, _, err := common.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
 		return err
 	}

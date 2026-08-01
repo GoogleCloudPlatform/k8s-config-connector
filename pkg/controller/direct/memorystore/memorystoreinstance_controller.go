@@ -27,7 +27,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	memorystorepb "cloud.google.com/go/memorystore/apiv1/memorystorepb"
@@ -399,7 +398,7 @@ func compareInstance(ctx context.Context, actual, desired *memorystorepb.Instanc
 	// Align actual endpoints/connections with desired when desired is a subset of actual.
 	alignEndpointsWithDesired(maskedActual, desired)
 
-	diffs, _, err := tags.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
+	diffs, _, err := common.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
 		return nil, err
 	}
