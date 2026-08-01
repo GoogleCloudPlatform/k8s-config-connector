@@ -39,7 +39,8 @@ export IMAGE_TAG
 echo "Building images with tag: ${IMAGE_TAG}"
 
 # Force the image names, to avoid depending on the current gcloud project
-export BUILDER_IMG=${IMAGE_PREFIX}builder:${IMAGE_TAG}
+export BUILDER_IMG=builder:${IMAGE_TAG}
+export BUILDER_REPO=builder
 export CONTROLLER_IMG=${IMAGE_PREFIX}controller:${IMAGE_TAG}
 export RECORDER_IMG=${IMAGE_PREFIX}recorder:${IMAGE_TAG}
 export WEBHOOK_IMG=${IMAGE_PREFIX}webhook:${IMAGE_TAG}
@@ -50,10 +51,27 @@ export CONFIG_CONNECTOR_IMG=${IMAGE_PREFIX}config-connector-cli:${IMAGE_TAG}
 export OPERATOR_IMG=${IMAGE_PREFIX}operator:${IMAGE_TAG}
 
 cd ${REPO_ROOT}
-make docker-build
+echo "===> [$(date -u +'%Y-%m-%dT%H:%M:%SZ')] Starting core image builds (docker buildx bake)..."
+IMAGE_PREFIX="${IMAGE_PREFIX}" IMAGE_TAG="${IMAGE_TAG}" docker buildx bake --load --set *.cache-from=type=gha,scope=kcc --set *.cache-to=type=gha,mode=max,scope=kcc
+echo "===> [$(date -u +'%Y-%m-%dT%H:%M:%SZ')] Completed core image builds."
 
-cd ${REPO_ROOT}/operator
-make docker-build
+cp config/installbundle/components/manager/base/manager_image_patch_template.yaml config/installbundle/components/manager/base/manager_image_patch.yaml
+sed -i'' -e 's@image: .*@image: '"${CONTROLLER_IMG}"'@' ./config/installbundle/components/manager/base/manager_image_patch.yaml
 
-# Remove images that are not artifacts we would want to promote / keep
-docker image rm ${BUILDER_IMG}
+cp config/installbundle/components/recorder/recorder_image_patch_template.yaml config/installbundle/components/recorder/recorder_image_patch.yaml
+sed -i'' -e 's@image: .*@image: '"${RECORDER_IMG}"'@' ./config/installbundle/components/recorder/recorder_image_patch.yaml
+
+cp config/installbundle/components/webhook/webhook_image_patch_template.yaml config/installbundle/components/webhook/webhook_image_patch.yaml
+sed -i'' -e 's@image: .*@image: '"${WEBHOOK_IMG}"'@' ./config/installbundle/components/webhook/webhook_image_patch.yaml
+
+cp config/installbundle/components/deletiondefender/deletiondefender_image_patch_template.yaml config/installbundle/components/deletiondefender/deletiondefender_image_patch.yaml
+sed -i'' -e 's@image: .*@image: '"${DELETION_DEFENDER_IMG}"'@' ./config/installbundle/components/deletiondefender/deletiondefender_image_patch.yaml
+
+cp config/installbundle/components/unmanageddetector/unmanageddetector_image_patch_template.yaml config/installbundle/components/unmanageddetector/unmanageddetector_image_patch.yaml
+sed -i'' -e 's@image: .*@image: '"${UNMANAGED_DETECTOR_IMG}"'@' ./config/installbundle/components/unmanageddetector/unmanageddetector_image_patch.yaml
+
+cp operator/config/manager/manager_image_patch_template.yaml operator/config/manager/manager_image_patch.yaml
+sed -i'' -e 's@image: .*@image: '"${OPERATOR_IMG}"'@' operator/config/manager/manager_image_patch.yaml
+
+cp -f operator/config/autopilot-manager/manager_image_patch_template.yaml operator/config/autopilot-manager/manager_image_patch.yaml
+sed -i'' -e 's@image: .*@image: '"${OPERATOR_IMG}"'@' operator/config/autopilot-manager/manager_image_patch.yaml

@@ -20,6 +20,13 @@ FROM golang:1.26.5 AS builder
 
 # Copy in the Go source code
 WORKDIR /go/src/github.com/GoogleCloudPlatform/k8s-config-connector
+
+COPY go.mod go.mod
+COPY go.sum go.sum
+COPY third_party/ third_party/
+COPY mockgcp/ mockgcp/
+RUN --mount=type=cache,target=/go/pkg/mod go mod download
+
 COPY operator/pkg/      operator/pkg/
 COPY operator/cmd/      operator/cmd/
 COPY operator/config/ operator/config/
@@ -34,15 +41,17 @@ COPY third_party/ third_party/
 COPY version/ version/
 COPY config/ config/
 COPY scripts/ scripts/
-COPY go.mod  go.mod
-COPY go.sum  go.sum
 
 # Generate channel manifests
 RUN dev/tasks/generate-channels
 
 # Build the binary from source
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -o manager github.com/GoogleCloudPlatform/k8s-config-connector/operator/cmd/manager
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -o gke_addon_poststart github.com/GoogleCloudPlatform/k8s-config-connector/operator/cmd/gke_addon_poststart
+RUN --mount=type=cache,target=/root/.cache/go-build \
+    --mount=type=cache,target=/go/pkg/mod \
+    CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -trimpath -p 4 -ldflags "-s -w -buildid=" -o manager github.com/GoogleCloudPlatform/k8s-config-connector/operator/cmd/manager
+RUN --mount=type=cache,target=/root/.cache/go-build \
+    --mount=type=cache,target=/go/pkg/mod \
+    CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -o gke_addon_poststart github.com/GoogleCloudPlatform/k8s-config-connector/operator/cmd/gke_addon_poststart
 
 # Generate licenses
 RUN go mod vendor -o temp-vendor # So we can load license files

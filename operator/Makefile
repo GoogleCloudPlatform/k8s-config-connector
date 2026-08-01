@@ -88,10 +88,12 @@ install: manifests
 uninstall: manifests
 	$(KUSTOMIZE) build config/crd | kubectl delete -f -
 
+DOCKER_BUILD := docker buildx build --load --cache-from=type=gha,scope=kcc --cache-to=type=gha,mode=max,scope=kcc $(DOCKER_BUILD_FLAGS)
+
 # Build the docker image
 .PHONY: docker-build
 docker-build:
-	docker build .. -f Dockerfile -t ${OPERATOR_IMG} --build-arg GKE_DISTROLESS_IMG=${GKE_DISTROLESS_IMG}
+	$(DOCKER_BUILD) .. -f Dockerfile -t ${OPERATOR_IMG} --build-arg GKE_DISTROLESS_IMG=${GKE_DISTROLESS_IMG}
 	@echo "updating kustomize image patch file for manager"
 	cp config/manager/manager_image_patch_template.yaml config/manager/manager_image_patch.yaml
 	sed -i'' -e 's@image: .*@image: '"${OPERATOR_IMG}"'@' config/manager/manager_image_patch.yaml

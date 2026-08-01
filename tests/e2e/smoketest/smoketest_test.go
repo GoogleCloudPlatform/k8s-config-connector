@@ -170,8 +170,10 @@ func TestSmoketest(t *testing.T) {
 		"IMAGE_TAG="+imageTag,
 		"IMAGE_PREFIX="+imagePrefix,
 	)
-	if output, err := buildCmd.CombinedOutput(); err != nil {
-		t.Fatalf("failed to build images: %v\nOutput: %s", err, string(output))
+	buildCmd.Stdout = os.Stdout
+	buildCmd.Stderr = os.Stderr
+	if err := buildCmd.Run(); err != nil {
+		t.Fatalf("failed to build images: %v", err)
 	}
 
 	t.Logf("Loading images into kind")
