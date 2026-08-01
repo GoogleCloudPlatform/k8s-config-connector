@@ -188,7 +188,7 @@ func (a *targetSiteAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating discoveryengine targetsite", "name", a.id)
 
-	desired := direct.ProtoClone(a.desired)
+	desired := proto.CloneOf(a.desired)
 	desired.Name = a.id.String()
 
 	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
