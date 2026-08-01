@@ -95,6 +95,9 @@ all_fixture_services+=("stateabsentinspec")
 
 priority_fixture_targets=()
 for service in "${unique_services[@]:-}"; do
+  if [[ -z "${service}" ]]; then
+    continue
+  fi
   if [[ " ${all_fixture_services[*]:-} " =~ " ${service} " ]]; then
     for target in $(shard_service "${service}"); do
       priority_fixture_targets+=("${target}")
@@ -122,7 +125,13 @@ for service in "${all_fixture_services[@]}"; do
   fi
 done
 
-remaining_fixture_targets=("${sharded_fixture_targets[@]:-}" "${standard_fixture_targets[@]:-}")
+remaining_fixture_targets=()
+if [[ ${#sharded_fixture_targets[@]} -gt 0 ]]; then
+  remaining_fixture_targets+=("${sharded_fixture_targets[@]}")
+fi
+if [[ ${#standard_fixture_targets[@]} -gt 0 ]]; then
+  remaining_fixture_targets+=("${standard_fixture_targets[@]}")
+fi
 
 # Defined sample services supported by E2E samples suite
 sample_services=("alloydb" "apigateway" "apigee" "bigquery" "bigqueryconnection" "bigquerydatapolicy" "bigquerydatatransfer" "cloudbuild" "cloudidentity" "compute" "dataflow" "dataproc" "gkehub" "iam" "kms" "orgpolicy" "redis" "secretmanager" "spanner" "sql" "storage" "unclassified" "workstations")
@@ -131,7 +140,7 @@ sample_services=("alloydb" "apigateway" "apigee" "bigquery" "bigqueryconnection"
 scenario_suites=("acquisition" "gkehubfeaturemembership" "powertool" "unclassified")
 
 unit_tests_shards=("1-of-4" "2-of-4" "3-of-4" "4-of-4")
-fuzz_roundtrippers_shards=("1-of-4" "2-of-4" "3-of-4" "4-of-4")
+fuzz_roundtrippers_shards=("1-of-8" "2-of-8" "3-of-8" "4-of-8" "5-of-8" "6-of-8" "7-of-8" "8-of-8")
 
 HAS_PRIORITY="false"
 if [[ ${#priority_fixture_targets[@]} -gt 0 ]]; then

@@ -98,7 +98,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        shard: ["1-of-4", "2-of-4", "3-of-4", "4-of-4"]
+        shard: ["1-of-8", "2-of-8", "3-of-8", "4-of-8", "5-of-8", "6-of-8", "7-of-8", "8-of-8"]
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Free up disk space
@@ -193,6 +193,10 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Free up disk space
+        run: dev/tasks/free-disk-space-on-github-actions-runner
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@c47758b77c9736f4b2ef4073d4d51994fabfe349 # v3.7.1
 # zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/smoketest-with-kind"
@@ -205,6 +209,26 @@ jobs:
         if: ${{ !cancelled() }}
         with:
           name: artifacts-smoketest-with-kind
+          path: /tmp/artifacts/
+
+
+  test-fuzz-random-mappers:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+# zizmor: ignore[unpinned-uses]
+      - uses: ./dev/actions/cache-go
+      - name: "Run dev/ci/presubmits/test-fuzz-random-mappers"
+        run: |
+          ./dev/ci/presubmits/test-fuzz-random-mappers
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
+        if: ${{ !cancelled() }}
+        with:
+          name: artifacts-test-fuzz-random-mappers
           path: /tmp/artifacts/
 
 
@@ -261,6 +285,13 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 # zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
+      - name: Download prebuilt test binaries
+        uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
+        with:
+          name: prebuilt-test-binaries
+          path: bin/
+      - name: Make binaries executable
+        run: chmod +x bin/* || true
       - uses: google-github-actions/setup-gcloud@77e7a554d41e2ee56fc945c52dfd3f33d12def9a # v2.1.4
         with:
           version: '546.0.0'
@@ -766,6 +797,7 @@ jobs:
       - license-lint
       - run-linters
       - smoketest-with-kind
+      - test-fuzz-random-mappers
       - test-mockgcp
       - test-pause
       - tests-e2e-direct-iam

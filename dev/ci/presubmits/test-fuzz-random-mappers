@@ -18,23 +18,12 @@ set -o nounset
 set -o pipefail
 
 function on_error() {
-  echo "<hint_for_agent>Run 'dev/ci/presubmits/unit-tests-operator' to fix.</hint_for_agent>"
+  echo "<hint_for_agent>Run 'dev/ci/presubmits/test-fuzz-random-mappers' to fix.</hint_for_agent>"
 }
 trap on_error ERR
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}
 
-. ${REPO_ROOT}/dev/tasks/install-gcloud
-. ${REPO_ROOT}/dev/tasks/setup-envtest
-
-# A dummy default project id is required for a few unit test cases
-gcloud config set project foobar --quiet
-
-cd operator
-
-make manifests
-
-echo "Running operator unit tests..."
-# Note: -parallel 6 was set for A/B testing against parallel 4.
-go test -test.count=1 -parallel 6 -v ./pkg/... ./scripts/...
+echo "Running test-fuzz-random-mappers..."
+go test -v ./pkg/fuzztesting/fuzztests/ -run=^TestSomeMappers$ -parallel 2
