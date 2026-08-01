@@ -168,7 +168,7 @@ func (a *engineAdapter) Create(ctx context.Context, createOp *directbase.CreateO
 
 	status := &krm.DiscoveryEngineEngineStatus{}
 	mapCtx := &direct.MapContext{}
-	status.ObservedState = DiscoveryEngineEngineObservedState_FromProto(mapCtx, created)
+	status.ObservedState = DiscoveryEngineEngineObservedState_v1alpha1_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -230,7 +230,7 @@ func (a *engineAdapter) Update(ctx context.Context, updateOp *directbase.UpdateO
 
 	status := &krm.DiscoveryEngineEngineStatus{}
 	mapCtx := &direct.MapContext{}
-	status.ObservedState = DiscoveryEngineEngineObservedState_FromProto(mapCtx, updated)
+	status.ObservedState = DiscoveryEngineEngineObservedState_v1alpha1_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}

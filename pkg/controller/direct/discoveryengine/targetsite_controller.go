@@ -94,7 +94,7 @@ func (m *targetSiteModel) AdapterForObject(ctx context.Context, op *directbase.A
 	}
 
 	mapCtx := &direct.MapContext{}
-	desired := DiscoveryEngineDataStoreTargetSiteSpec_ToProto(mapCtx, &obj.Spec)
+	desired := DiscoveryEngineDataStoreTargetSiteSpec_v1alpha1_ToProto(mapCtx, &obj.Spec)
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
@@ -176,7 +176,7 @@ func (a *targetSiteAdapter) Create(ctx context.Context, createOp *directbase.Cre
 
 	status := &krm.DiscoveryEngineDataStoreTargetSiteStatus{}
 	mapCtx := &direct.MapContext{}
-	status.ObservedState = DiscoveryEngineDataStoreTargetSiteObservedState_FromProto(mapCtx, created)
+	status.ObservedState = DiscoveryEngineDataStoreTargetSiteObservedState_v1alpha1_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -236,7 +236,7 @@ func (a *targetSiteAdapter) Update(ctx context.Context, updateOp *directbase.Upd
 
 	status := &krm.DiscoveryEngineDataStoreTargetSiteStatus{}
 	mapCtx := &direct.MapContext{}
-	status.ObservedState = DiscoveryEngineDataStoreTargetSiteObservedState_FromProto(mapCtx, updated)
+	status.ObservedState = DiscoveryEngineDataStoreTargetSiteObservedState_v1alpha1_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -251,7 +251,7 @@ func (a *targetSiteAdapter) Export(ctx context.Context) (*unstructured.Unstructu
 
 	obj := &krm.DiscoveryEngineDataStoreTargetSite{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(DiscoveryEngineDataStoreTargetSiteSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(DiscoveryEngineDataStoreTargetSiteSpec_v1alpha1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
