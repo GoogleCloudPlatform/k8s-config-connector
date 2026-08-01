@@ -1,0 +1,12 @@
+apiVersion: networksecurity.cnrm.cloud.google.com/v1alpha1
+kind: NetworkSecurityURLList
+metadata:
+  name: urllist-max-${uniqueId}
+spec:
+  projectRef:
+    external: "projects/${projectId}"
+  location: us-central1
+  description: "A URL list maximal test"
+  values:
+    - "google.com"
+    - "github.com"
