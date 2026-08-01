@@ -48,6 +48,14 @@ func TestSmoketest(t *testing.T) {
 	}
 	root := strings.TrimSpace(string(repoRoot))
 
+	logDiskUsage := func(label string) {
+		out, err := exec.Command("df", "-h", "/").Output()
+		if err == nil {
+			t.Logf("[DISK USAGE - %s]\n%s", label, string(out))
+		}
+	}
+	logDiskUsage("Test Start")
+
 	clusterName := "kcc-smoketest-" + strings.ToLower(time.Now().Format("20060102-150405"))
 
 	// Cleanup cluster at the end and collect logs if failed
@@ -71,10 +79,13 @@ func TestSmoketest(t *testing.T) {
 		}
 	})
 
-	t.Logf("Creating kind cluster %q", clusterName)
+	t.Logf("[PHASE START] Creating kind cluster %q", clusterName)
+	tKind := time.Now()
 	if err := runCommand(ctx, t, root, "kind", "create", "cluster", "--name", clusterName); err != nil {
 		t.Fatalf("failed to create kind cluster: %v", err)
 	}
+	t.Logf("[PHASE DONE] Kind cluster creation took %v", time.Since(tKind))
+	logDiskUsage("After Kind Creation")
 
 	imagePrefix := "registry.kind/"
 
@@ -163,7 +174,8 @@ func TestSmoketest(t *testing.T) {
 		revertManifests(filepath.Join(root, "config/installbundle/components"))
 	})
 
-	t.Logf("Building images with tag %q", imageTag)
+	t.Logf("[PHASE START] Building images with tag %q", imageTag)
+	tBuild := time.Now()
 	buildCmd := exec.CommandContext(ctx, filepath.Join(root, "dev/tasks/build-images"))
 	buildCmd.Dir = root
 	buildCmd.Env = append(os.Environ(),
@@ -175,6 +187,8 @@ func TestSmoketest(t *testing.T) {
 	if err := buildCmd.Run(); err != nil {
 		t.Fatalf("failed to build images: %v", err)
 	}
+	t.Logf("[PHASE DONE] Building images took %v", time.Since(tBuild))
+	logDiskUsage("After Docker Build")
 
 	t.Logf("Loading images into kind")
 	imagesToLoad := []string{
@@ -185,13 +199,18 @@ func TestSmoketest(t *testing.T) {
 		"deletiondefender",
 		"unmanageddetector",
 	}
+	kindArgs := []string{"load", "--name", clusterName, "docker-image"}
 	for _, img := range imagesToLoad {
 		fullImage := imagePrefix + img + ":" + imageTag
-		t.Logf("Loading image %q into kind", fullImage)
-		if err := runCommand(ctx, t, root, "kind", "load", "--name", clusterName, "docker-image", fullImage); err != nil {
-			t.Fatalf("failed to load image %q into kind: %v", fullImage, err)
-		}
+		kindArgs = append(kindArgs, fullImage)
 	}
+	t.Logf("[PHASE START] Bulk loading all %d images into kind cluster %q...", len(imagesToLoad), clusterName)
+	tLoad := time.Now()
+	if err := runCommand(ctx, t, root, "kind", kindArgs...); err != nil {
+		t.Fatalf("failed to bulk load images into kind: %v", err)
+	}
+	t.Logf("[PHASE DONE] Bulk loading images took %v", time.Since(tLoad))
+	logDiskUsage("After Kind Image Load")
 
 	t.Logf("Deploying operator to kind")
 	kustomizeCmd := exec.CommandContext(ctx, "kubectl", "kustomize", filepath.Join(root, "operator/config/default"))
@@ -300,13 +319,15 @@ spec:
 
 	h := NewHarness(ctx, t)
 
-	t.Logf("Waiting for KCC system components (webhook and controller managers) to be ready")
+	t.Logf("[PHASE START] Waiting for KCC system components (webhook and controller managers) to be ready")
+	tSystem := time.Now()
 	if err := h.WaitForDeploymentAvailable("cnrm-system", "cnrm-webhook-manager", 5*time.Minute); err != nil {
 		t.Fatalf("cnrm-webhook-manager failed to become ready: %v", err)
 	}
 	if err := h.WaitForStatefulSetReady("cnrm-system", "cnrm-controller-manager", 5*time.Minute); err != nil {
 		t.Fatalf("cnrm-controller-manager failed to become ready: %v", err)
 	}
+	t.Logf("[PHASE DONE] KCC system components ready in %v", time.Since(tSystem))
 
 	t.Logf("Creating namespace")
 	ns := "config-control"
@@ -337,7 +358,7 @@ spec:
 	// Try to apply StorageBucket with retries because of validating webhook propagation delay (issue #10260)
 	t.Logf("Creating StorageBucket (with retries for validating webhook propagation delay)")
 	applyTimeout := 3 * time.Minute
-	applyInterval := 5 * time.Second
+	applyInterval := 500 * time.Millisecond
 	applyDeadline := time.Now().Add(applyTimeout)
 	for {
 		applyCmd := exec.CommandContext(ctx, "kubectl", "apply", "-f", "-")
@@ -396,7 +417,7 @@ spec:
 				t.Fatalf("timeout waiting for cnrm-controller-manager pod to start")
 			}
 			t.Log("manager pod name is empty, retrying...")
-			time.Sleep(2 * time.Second)
+			time.Sleep(250 * time.Millisecond)
 			continue
 		}
 
@@ -406,7 +427,7 @@ spec:
 		metricsBytes, err := metricsCmd.Output()
 		if err != nil {
 			t.Logf("failed to get metrics from pod proxy: %v, retrying...", err)
-			time.Sleep(2 * time.Second)
+			time.Sleep(250 * time.Millisecond)
 			continue
 		}
 		metricsStr = string(metricsBytes)
@@ -430,7 +451,7 @@ spec:
 			break
 		}
 		t.Logf("Metrics not fully matching or populated yet (found %d lines). Retrying...", len(reconcileLines))
-		time.Sleep(2 * time.Second)
+		time.Sleep(250 * time.Millisecond)
 	}
 
 	t.Logf("Found %d kind worker entries in metrics:\n%s", len(reconcileLines), strings.Join(reconcileLines, "\n"))
@@ -443,6 +464,7 @@ spec:
 	}
 
 	t.Logf("Smoketest completed successfully (failed as expected)")
+	logDiskUsage("Test Completion")
 }
 
 func runCommand(ctx context.Context, t *testing.T, dir string, name string, args ...string) error {
@@ -528,7 +550,7 @@ func (h *Harness) WaitForDeploymentAvailable(ns, name string, timeout time.Durat
 		if time.Now().After(deadline) {
 			return fmt.Errorf("timeout waiting for deployment %s/%s to be available", ns, name)
 		}
-		time.Sleep(2 * time.Second)
+		time.Sleep(250 * time.Millisecond)
 	}
 }
 
@@ -554,14 +576,14 @@ func (h *Harness) WaitForStatefulSetReady(ns, name string, timeout time.Duration
 		if time.Now().After(deadline) {
 			return fmt.Errorf("timeout waiting for statefulset %s/%s to be ready", ns, name)
 		}
-		time.Sleep(2 * time.Second)
+		time.Sleep(250 * time.Millisecond)
 	}
 }
 
 func (h *Harness) MustWaitForObservedGeneration(gvr schema.GroupVersionResource, ns, name string, expectedGeneration int64) {
 	h.Logf("Waiting for %s/%s in namespace %s to have observedGeneration >= %d", gvr.Resource, name, ns, expectedGeneration)
 	timeout := 5 * time.Minute
-	pollInterval := 2 * time.Second
+	pollInterval := 250 * time.Millisecond
 	deadline := time.Now().Add(timeout)
 
 	for {

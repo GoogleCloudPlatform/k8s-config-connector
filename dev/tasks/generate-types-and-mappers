@@ -20,9 +20,16 @@ set -o pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}
 
-pushd dev/tools/controllerbuilder
+pushd dev/tools/controllerbuilder > /dev/null
 ./generate-proto.sh
-popd
+# Dynamically discover and pre-warm any custom PROTO_SHA referenced in apis/*/generate.sh
+for sha in $(grep -E "PROTO_SHA=" ${REPO_ROOT}/apis/*/generate.sh 2>/dev/null | cut -d"=" -f2 | tr -d "\"'" | sort -u); do
+  if [ -n "${sha}" ]; then
+    echo "Pre-warming custom proto SHA: ${sha}"
+    ./generate-proto.sh "${sha}"
+  fi
+done
+popd > /dev/null
 
 # Prebuild controllerbuilder for fast execution across all services
 export CONTROLLERBUILDER="${REPO_ROOT}/bin/controllerbuilder"
@@ -36,70 +43,10 @@ export SKIP_GENERATE_CRDS=1
 export SKIP_GENERATE_PROTOS=1
 
 for f in $(find apis -name "generate.sh" | sort); do
-    # Skip some generate.sh scripts that are not up to date
-    # TODO: Fix these!
-
-    if [[ "${f}" == *"backupdr"* ]]; then
+    if [[ "${f}" == *"backupdr"* || "${f}" == *"bigquerybiglake"* || "${f}" == *"bigtable"* || "${f}" == *"composer"* || "${f}" == *"contentwarehouse"* || "${f}" == *"datastream"* || "${f}" == *"discoveryengine"* || "${f}" == *"documentai"* || "${f}" == *"edgecontainer"* || "${f}" == *"gkebackup"* || "${f}" == *"orgpolicy"* || "${f}" == *"speech"* || "${f}" == *"tpu"* || "${f}" == *"vertexai"* || "${f}" == *"vmwareengine"* ]]; then
         echo "Skipping ${f}"
         continue
     fi
-    if [[ "${f}" == *"bigquerybiglake"* ]]; then
-        echo "Skipping ${f}"
-        continue
-    fi
-    if [[ "${f}" == *"bigtable"* ]]; then
-        echo "Skipping ${f}"
-        continue
-    fi
-    if [[ "${f}" == *"composer"* ]]; then
-        echo "Skipping ${f}"
-        continue
-    fi
-    if [[ "${f}" == *"contentwarehouse"* ]]; then
-        echo "Skipping ${f}"
-        continue
-    fi
-    if [[ "${f}" == *"datastream"* ]]; then
-        echo "Skipping ${f}"
-        continue
-    fi
-    if [[ "${f}" == *"discoveryengine"* ]]; then
-        echo "Skipping ${f}"
-        continue
-    fi
-    if [[ "${f}" == *"documentai"* ]]; then
-        echo "Skipping ${f}"
-        continue
-    fi
-    if [[ "${f}" == *"edgecontainer"* ]]; then
-        echo "Skipping ${f}"
-        continue
-    fi
-    if [[ "${f}" == *"gkebackup"* ]]; then
-        echo "Skipping ${f}"
-        continue
-    fi
-    if [[ "${f}" == *"orgpolicy"* ]]; then
-        echo "Skipping ${f}"
-        continue
-    fi
-    if [[ "${f}" == *"speech"* ]]; then
-        echo "Skipping ${f}"
-        continue
-    fi
-    if [[ "${f}" == *"tpu"* ]]; then
-        echo "Skipping ${f}"
-        continue
-    fi
-    if [[ "${f}" == *"vertexai"* ]]; then
-        echo "Skipping ${f}"
-        continue
-    fi
-    if [[ "${f}" == *"vmwareengine"* ]]; then
-        echo "Skipping ${f}"
-        continue
-    fi
-
     echo "running ${f}"
     (cd "${REPO_ROOT}" && ./"${f}")
 done

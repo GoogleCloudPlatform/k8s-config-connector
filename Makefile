@@ -90,13 +90,25 @@ manager: generate fmt vet
 generate-crds:
 	./dev/tasks/generate-crds
 
+bin/generate-crds: ./scripts/generate-crds/*.go
+	@mkdir -p bin
+	go build -o bin/generate-crds ./scripts/generate-crds
+
+bin/generate-cnrm-cluster-roles: ./scripts/generate-cnrm-cluster-roles/*.go
+	@mkdir -p bin
+	go build -o bin/generate-cnrm-cluster-roles ./scripts/generate-cnrm-cluster-roles
+
+bin/generate-gvks: ./scripts/generate-gvks/*.go
+	@mkdir -p bin
+	go build -o bin/generate-gvks ./scripts/generate-gvks
+
 # Generate manifests e.g. CRD, RBAC etc.
 .PHONY: manifests
-manifests: bin/kustomize generate
+manifests: bin/kustomize bin/generate-crds bin/generate-cnrm-cluster-roles bin/generate-gvks generate
 	make -C operator manifests
 	rm -rf config/crds/resources
 	rm -rf config/crds/tmp_resources
-	go build -o bin/generate-crds ./scripts/generate-crds && ./bin/generate-crds -output-dir=config/crds/tmp_resources
+	./bin/generate-crds -output-dir=config/crds/tmp_resources
 	# add kustomize patches on all CRDs
 	mkdir config/crds/resources
 	cp config/crds/kustomization.yaml kustomization.yaml
@@ -110,11 +122,11 @@ manifests: bin/kustomize generate
 
 	# Generating cnrm cluster roles is dependent on the existence of directory
 	# config/crds/resources with all the freshly generated CRDs.
-	go build -o bin/generate-cnrm-cluster-roles ./scripts/generate-cnrm-cluster-roles && ./bin/generate-cnrm-cluster-roles
+	./bin/generate-cnrm-cluster-roles
 
 	# Generating list of all supported GVKs is dependent on the existence of directory
 	# config/crds/resources with all the freshly generated CRDs.
-	go build -o bin/generate-gvks ./scripts/generate-gvks && ./bin/generate-gvks -output-dir=pkg/gvks/supportedgvks
+	./bin/generate-gvks -output-dir=pkg/gvks/supportedgvks
 
 # Format code
 .PHONY: fmt
