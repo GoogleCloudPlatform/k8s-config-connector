@@ -43,7 +43,8 @@ ${CONTROLLERBUILDER} generate-types \
     --resource VertexAIDataLabelingJob:DataLabelingJob \
     --resource VertexAICustomJob:CustomJob \
     --resource VertexAITensorboard:Tensorboard \
-    --resource VertexAITensorboardExperiment:TensorboardExperiment
+    --resource VertexAITensorboardExperiment:TensorboardExperiment \
+    --resource VertexAICachedContent:CachedContent
 
 # --- v1beta1 ---
 ${CONTROLLERBUILDER} generate-types \
@@ -65,5 +66,20 @@ sed -i 's/apiextensionsv1.JSON_v1alpha1_/JSON_v1alpha1_/g' "${REPO_ROOT}/pkg/con
 dev/tasks/generate-crds
 
 if [ -d "${REPO_ROOT}/pkg/controller/direct/vertexai" ]; then
+  # Strip problematic package prefix from generated JSON mappers
+  sed -i 's/apiextensionsv1.JSON_/JSON_/g' "${REPO_ROOT}/pkg/controller/direct/vertexai/mapper.generated.go"
+  # Fix incorrect alias for VertexAIDatasetRef
+  sed -i 's/refsv1beta1.VertexAIDatasetRef/krmvertexaiv1beta1.VertexAIDatasetRef/g' "${REPO_ROOT}/pkg/controller/direct/vertexai/mapper.generated.go"
+  # Fix specific JSON mapper type mismatches for FunctionDeclaration
+  sed -i 's/out.Parameters = JSON_v1alpha1_FromProto(mapCtx, in.GetParameters())/out.Parameters = direct.ValueOf(Schema_FromProto(mapCtx, in.GetParameters()))/g' "${REPO_ROOT}/pkg/controller/direct/vertexai/mapper.generated.go"
+  sed -i 's/out.Response = JSON_v1alpha1_FromProto(mapCtx, in.GetResponse())/out.Response = direct.ValueOf(Schema_FromProto(mapCtx, in.GetResponse()))/g' "${REPO_ROOT}/pkg/controller/direct/vertexai/mapper.generated.go"
+  sed -i 's/out.ParametersJsonSchema = JSON_v1alpha1_FromProto(mapCtx, in.GetParametersJsonSchema())/out.ParametersJsonSchema = direct.ValueOf(direct.Value_FromProto(mapCtx, in.GetParametersJsonSchema()))/g' "${REPO_ROOT}/pkg/controller/direct/vertexai/mapper.generated.go"
+  sed -i 's/out.ResponseJsonSchema = JSON_v1alpha1_FromProto(mapCtx, in.GetResponseJsonSchema())/out.ResponseJsonSchema = direct.ValueOf(direct.Value_FromProto(mapCtx, in.GetResponseJsonSchema()))/g' "${REPO_ROOT}/pkg/controller/direct/vertexai/mapper.generated.go"
+  # Fix ToProto side
+  sed -i 's/out.Parameters = JSON_v1alpha1_ToProto(mapCtx, in.Parameters)/out.Parameters = Schema_ToProto(mapCtx, \&in.Parameters)/g' "${REPO_ROOT}/pkg/controller/direct/vertexai/mapper.generated.go"
+  sed -i 's/out.Response = JSON_v1alpha1_ToProto(mapCtx, in.Response)/out.Response = Schema_ToProto(mapCtx, \&in.Response)/g' "${REPO_ROOT}/pkg/controller/direct/vertexai/mapper.generated.go"
+  sed -i 's/out.ParametersJsonSchema = JSON_v1alpha1_ToProto(mapCtx, in.ParametersJsonSchema)/out.ParametersJsonSchema = direct.Value_ToProto(mapCtx, \&in.ParametersJsonSchema)/g' "${REPO_ROOT}/pkg/controller/direct/vertexai/mapper.generated.go"
+  sed -i 's/out.ResponseJsonSchema = JSON_v1alpha1_ToProto(mapCtx, in.ResponseJsonSchema)/out.ResponseJsonSchema = direct.Value_ToProto(mapCtx, \&in.ResponseJsonSchema)/g' "${REPO_ROOT}/pkg/controller/direct/vertexai/mapper.generated.go"
+  
   go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w pkg/controller/direct/vertexai/
 fi

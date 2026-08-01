@@ -68,15 +68,26 @@ func aiplatformModelFuzzer() fuzztesting.KRMFuzzer {
 	f.FilterSpec = func(in *pb.Model) {
 		if in.Metadata != nil {
 			clearUnsupportedValueFields(in.Metadata)
+			if in.Metadata.Kind == nil {
+				in.Metadata = nil
+			}
 		}
 		if in.ExplanationSpec != nil {
 			if in.ExplanationSpec.Metadata != nil {
 				for _, input := range in.ExplanationSpec.Metadata.Inputs {
-					for _, b := range input.InputBaselines {
+					for i := len(input.InputBaselines) - 1; i >= 0; i-- {
+						b := input.InputBaselines[i]
 						clearUnsupportedValueFields(b)
+						if b == nil || b.Kind == nil {
+							input.InputBaselines = append(input.InputBaselines[:i], input.InputBaselines[i+1:]...)
+						}
 					}
-					for _, b := range input.EncodedBaselines {
+					for i := len(input.EncodedBaselines) - 1; i >= 0; i-- {
+						b := input.EncodedBaselines[i]
 						clearUnsupportedValueFields(b)
+						if b == nil || b.Kind == nil {
+							input.EncodedBaselines = append(input.EncodedBaselines[:i], input.EncodedBaselines[i+1:]...)
+						}
 					}
 					if input.Visualization != nil {
 						input.Visualization.Type = 0
@@ -86,11 +97,21 @@ func aiplatformModelFuzzer() fuzztesting.KRMFuzzer {
 				}
 				for _, output := range in.ExplanationSpec.Metadata.Outputs {
 					clearUnsupportedValueFields(output.GetIndexDisplayNameMapping())
+					if x, ok := output.GetDisplayNameMapping().(*pb.ExplanationMetadata_OutputMetadata_IndexDisplayNameMapping); ok {
+						if x.IndexDisplayNameMapping != nil && x.IndexDisplayNameMapping.Kind == nil {
+							output.DisplayNameMapping = nil
+						}
+					}
 				}
 			}
 			if in.ExplanationSpec.Parameters != nil {
 				if in.ExplanationSpec.Parameters.GetExamples() != nil {
 					clearUnsupportedValueFields(in.ExplanationSpec.Parameters.GetExamples().GetNearestNeighborSearchConfig())
+					if x, ok := in.ExplanationSpec.Parameters.GetExamples().GetConfig().(*pb.Examples_NearestNeighborSearchConfig); ok {
+						if x.NearestNeighborSearchConfig != nil && x.NearestNeighborSearchConfig.Kind == nil {
+							in.ExplanationSpec.Parameters.GetExamples().Config = nil
+						}
+					}
 				}
 			}
 		}

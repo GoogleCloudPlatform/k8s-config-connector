@@ -16,6 +16,7 @@ package aiplatform
 
 import (
 	"encoding/json"
+	"strconv"
 
 	aiplatformpb "cloud.google.com/go/aiplatform/apiv1beta1/aiplatformpb"
 	agentsearchv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/agentsearch/v1alpha1"
@@ -24,6 +25,7 @@ import (
 	servicedirectoryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/servicedirectory/v1beta1"
 	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"google.golang.org/protobuf/types/known/structpb"
 	"google.golang.org/protobuf/types/known/wrapperspb"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
@@ -382,5 +384,75 @@ func RuntimeConfig_ToProto(mapCtx *direct.MapContext, in *krm.RuntimeConfig) *ai
 		out.GoogleFirstPartyExtensionConfig = &aiplatformpb.RuntimeConfig_VertexAiSearchRuntimeConfig{VertexAiSearchRuntimeConfig: oneof}
 	}
 	out.DefaultParams = direct.Struct_ToProto(mapCtx, &in.DefaultParams)
+	return out
+}
+
+func Value_ToProto(mapCtx *direct.MapContext, in *krm.Value) *structpb.Value {
+	if in == nil {
+		return nil
+	}
+	out := &structpb.Value{}
+	if in.BoolValue != nil {
+		out.Kind = &structpb.Value_BoolValue{
+			BoolValue: direct.ValueOf(in.BoolValue),
+		}
+	}
+	if in.NullValue != nil {
+		strVal := direct.ValueOf(in.NullValue)
+		var value int
+		if val, ok := structpb.NullValue_value[strVal]; ok {
+			value = int(val)
+		} else {
+			var err error
+			value, err = strconv.Atoi(strVal)
+			if err != nil {
+				mapCtx.Errorf("error converting value %s from string to int", strVal)
+			}
+		}
+		out.Kind = &structpb.Value_NullValue{
+			NullValue: structpb.NullValue(value),
+		}
+	}
+	if in.NumberValue != nil {
+		out.Kind = &structpb.Value_NumberValue{
+			NumberValue: direct.ValueOf(in.NumberValue),
+		}
+	}
+	if in.StringValue != nil {
+		out.Kind = &structpb.Value_StringValue{
+			StringValue: direct.ValueOf(in.StringValue),
+		}
+	}
+	if len(in.StructValue.Raw) > 0 {
+		out.Kind = &structpb.Value_StructValue{
+			StructValue: direct.Struct_ToProto(mapCtx, &in.StructValue),
+		}
+	}
+	return out
+}
+
+func Value_FromProto(mapCtx *direct.MapContext, in *structpb.Value) *krm.Value {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Value{}
+	switch in.GetKind().(type) {
+	case *structpb.Value_StringValue:
+		value := in.GetStringValue()
+		out.StringValue = &value
+	case *structpb.Value_NumberValue:
+		value := in.GetNumberValue()
+		out.NumberValue = &value
+	case *structpb.Value_NullValue:
+		value := in.GetNullValue().String()
+		out.NullValue = &value
+	case *structpb.Value_BoolValue:
+		value := in.GetBoolValue()
+		out.BoolValue = &value
+	case *structpb.Value_StructValue:
+		if val := direct.Struct_FromProto(mapCtx, in.GetStructValue()); val != nil {
+			out.StructValue = *val
+		}
+	}
 	return out
 }

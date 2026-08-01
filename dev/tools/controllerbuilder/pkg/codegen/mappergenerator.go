@@ -229,6 +229,7 @@ func (v *MapperGenerator) GenerateMappers(goImports map[string]string) error {
 		{
 			out.addImport("refsv1beta1", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1")
 			out.addImport("", "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct")
+			out.addImport("apiextensionsv1", "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1")
 		}
 
 		v.writeMapFunctionsForPair(&out.body, out.OutputDir(), &pair)
@@ -514,6 +515,9 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				krmTypeName = strings.TrimPrefix(krmTypeName, "*")
 
 				functionName := krmTypeName + versionSpecifier + "_FromProto"
+				if strings.HasPrefix(functionName, "apiextensionsv1.JSON_") {
+					functionName = strings.TrimPrefix(functionName, "apiextensionsv1.")
+				}
 				switch krmTypeName {
 				case "string":
 					functionName = string(msg.Name()) + "_" + krmFieldName + "_FromProto"
@@ -526,7 +530,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 					functionName = krmFromProtoFunctionName(protoField, krmField.Name)
 				}
 
-				if functionName == "direct.Struct_FromProto" && !strings.HasPrefix(krmField.Type, "*") {
+				if (functionName == "direct.Struct_FromProto" || strings.HasSuffix(krmField.Type, "JSON")) && !strings.HasPrefix(krmField.Type, "*") {
 					fmt.Fprintf(out, "\tif v := %s(mapCtx, in.%s); v != nil {\n", functionName, protoAccessor)
 					fmt.Fprintf(out, "\t\tout.%s = *v\n", krmFieldName)
 					fmt.Fprintf(out, "\t}\n")
@@ -819,6 +823,9 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				krmTypeName = strings.TrimPrefix(krmTypeName, "*")
 
 				functionName := krmTypeName + versionSpecifier + "_ToProto"
+				if strings.HasPrefix(functionName, "apiextensionsv1.JSON_") {
+					functionName = strings.TrimPrefix(functionName, "apiextensionsv1.")
+				}
 				switch krmTypeName {
 				case "string":
 					functionName = string(msg.Name()) + "_" + krmFieldName + "_ToProto"
@@ -851,7 +858,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 					continue
 				}
 				valPrefix := ""
-				if functionName == "direct.Struct_ToProto" && !strings.HasPrefix(krmField.Type, "*") {
+				if (functionName == "direct.Struct_ToProto" || strings.HasSuffix(krmField.Type, "JSON")) && !strings.HasPrefix(krmField.Type, "*") {
 					valPrefix = "&"
 				}
 				fmt.Fprintf(out, "\tout.%s = %s(mapCtx, %sin.%s)\n",
@@ -1128,6 +1135,10 @@ func krmFromProtoFunctionName(protoField protoreflect.FieldDescriptor, krmFieldN
 		return "direct.StringTimestamp_FromProto"
 	case "google.protobuf.Struct":
 		return "direct.Struct_FromProto"
+	case "google.protobuf.Value":
+		return "direct.Value_FromProto"
+	case "google.protobuf.ListValue":
+		return "direct.ListValue_FromProto"
 	case "google.protobuf.Duration":
 		return "direct.StringDuration_FromProto"
 	case "google.protobuf.Int64Value":
@@ -1148,6 +1159,8 @@ func krmFromProtoFunctionName(protoField protoreflect.FieldDescriptor, krmFieldN
 		return "direct.UInt64Value_FromProto"
 	case "google.protobuf.BytesValue":
 		return "direct.BytesValue_FromProto"
+	case "google.cloud.aiplatform.v1beta1.Schema":
+		return "Schema_FromProto"
 	case "google.rpc.Status":
 		return "direct.Status_FromProto"
 	}
@@ -1162,6 +1175,10 @@ func krmToProtoFunctionName(protoField protoreflect.FieldDescriptor, krmFieldNam
 		return "direct.StringTimestamp_ToProto"
 	case "google.protobuf.Struct":
 		return "direct.Struct_ToProto"
+	case "google.protobuf.Value":
+		return "direct.Value_ToProto"
+	case "google.protobuf.ListValue":
+		return "direct.ListValue_ToProto"
 	case "google.protobuf.Duration":
 		return "direct.StringDuration_ToProto"
 	case "google.protobuf.Int64Value":
@@ -1182,6 +1199,8 @@ func krmToProtoFunctionName(protoField protoreflect.FieldDescriptor, krmFieldNam
 		return "direct.UInt64Value_ToProto"
 	case "google.protobuf.BytesValue":
 		return "direct.BytesValue_ToProto"
+	case "google.cloud.aiplatform.v1beta1.Schema":
+		return "Schema_ToProto"
 	case "google.rpc.Status":
 		return "direct.Status_ToProto"
 	}

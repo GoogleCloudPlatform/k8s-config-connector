@@ -145,19 +145,39 @@ func vertexAITrainingPipelineFuzzer() fuzztesting.KRMFuzzer {
 	f.FilterSpec = func(in *pb.TrainingPipeline) {
 		if in.TrainingTaskInputs != nil {
 			clearUnsupportedValueFields(in.TrainingTaskInputs)
+			if in.TrainingTaskInputs.Kind == nil {
+				in.TrainingTaskInputs = nil
+			}
+		}
+		if in.TrainingTaskMetadata != nil {
+			clearUnsupportedValueFields(in.TrainingTaskMetadata)
+			if in.TrainingTaskMetadata.Kind == nil {
+				in.TrainingTaskMetadata = nil
+			}
 		}
 		if in.ModelToUpload != nil {
 			if in.ModelToUpload.Metadata != nil {
 				clearUnsupportedValueFields(in.ModelToUpload.Metadata)
+				if in.ModelToUpload.Metadata.Kind == nil {
+					in.ModelToUpload.Metadata = nil
+				}
 			}
 			if in.ModelToUpload.ExplanationSpec != nil {
 				if in.ModelToUpload.ExplanationSpec.Metadata != nil {
 					for _, input := range in.ModelToUpload.ExplanationSpec.Metadata.Inputs {
-						for _, b := range input.InputBaselines {
+						for i := len(input.InputBaselines) - 1; i >= 0; i-- {
+							b := input.InputBaselines[i]
 							clearUnsupportedValueFields(b)
+							if b == nil || b.Kind == nil {
+								input.InputBaselines = append(input.InputBaselines[:i], input.InputBaselines[i+1:]...)
+							}
 						}
-						for _, b := range input.EncodedBaselines {
+						for i := len(input.EncodedBaselines) - 1; i >= 0; i-- {
+							b := input.EncodedBaselines[i]
 							clearUnsupportedValueFields(b)
+							if b == nil || b.Kind == nil {
+								input.EncodedBaselines = append(input.EncodedBaselines[:i], input.EncodedBaselines[i+1:]...)
+							}
 						}
 						if input.Visualization != nil {
 							input.Visualization.Type = 0
@@ -167,16 +187,28 @@ func vertexAITrainingPipelineFuzzer() fuzztesting.KRMFuzzer {
 					}
 					for _, output := range in.ModelToUpload.ExplanationSpec.Metadata.Outputs {
 						clearUnsupportedValueFields(output.GetIndexDisplayNameMapping())
+						if x, ok := output.GetDisplayNameMapping().(*pb.ExplanationMetadata_OutputMetadata_IndexDisplayNameMapping); ok {
+							if x.IndexDisplayNameMapping != nil && x.IndexDisplayNameMapping.Kind == nil {
+								output.DisplayNameMapping = nil
+							}
+						}
 					}
 				}
 				if in.ModelToUpload.ExplanationSpec.Parameters != nil {
 					if in.ModelToUpload.ExplanationSpec.Parameters.GetExamples() != nil {
 						clearUnsupportedValueFields(in.ModelToUpload.ExplanationSpec.Parameters.GetExamples().GetNearestNeighborSearchConfig())
+						if x, ok := in.ModelToUpload.ExplanationSpec.Parameters.GetExamples().GetConfig().(*pb.Examples_NearestNeighborSearchConfig); ok {
+							if x.NearestNeighborSearchConfig != nil && x.NearestNeighborSearchConfig.Kind == nil {
+								in.ModelToUpload.ExplanationSpec.Parameters.GetExamples().Config = nil
+							}
+						}
 					}
 				}
 			}
 		}
 	}
+
+	f.FilterStatus = f.FilterSpec
 
 	return f
 }

@@ -15,12 +15,11 @@
 package aiplatform
 
 import (
-	"strconv"
-
 	pb "cloud.google.com/go/aiplatform/apiv1/aiplatformpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/aiplatform/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"google.golang.org/protobuf/types/known/structpb"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
 func AIPlatformModelObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Model) *krm.AIPlatformModelObservedState {
@@ -81,7 +80,7 @@ func AIPlatformModelSpec_FromProto(mapCtx *direct.MapContext, in *pb.Model) *krm
 	out.VersionDescription = direct.LazyPtr(in.GetVersionDescription())
 	out.PredictSchemata = PredictSchemata_FromProto(mapCtx, in.GetPredictSchemata())
 	out.MetadataSchemaURI = direct.LazyPtr(in.GetMetadataSchemaUri())
-	out.Metadata = Value_FromProto(mapCtx, in.GetMetadata())
+	out.Metadata = direct.Value_FromProto(mapCtx, in.GetMetadata())
 	out.PipelineJob = direct.LazyPtr(in.GetPipelineJob())
 	out.ContainerSpec = ModelContainerSpec_FromProto(mapCtx, in.GetContainerSpec())
 	out.ArtifactURI = direct.LazyPtr(in.GetArtifactUri())
@@ -103,7 +102,7 @@ func AIPlatformModelSpec_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatformMo
 	out.VersionDescription = direct.ValueOf(in.VersionDescription)
 	out.PredictSchemata = PredictSchemata_ToProto(mapCtx, in.PredictSchemata)
 	out.MetadataSchemaUri = direct.ValueOf(in.MetadataSchemaURI)
-	out.Metadata = Value_ToProto(mapCtx, in.Metadata)
+	out.Metadata = direct.Value_ToProto(mapCtx, in.Metadata)
 	out.PipelineJob = direct.ValueOf(in.PipelineJob)
 	out.ContainerSpec = ModelContainerSpec_ToProto(mapCtx, in.ContainerSpec)
 	out.ArtifactUri = direct.ValueOf(in.ArtifactURI)
@@ -114,150 +113,6 @@ func AIPlatformModelSpec_ToProto(mapCtx *direct.MapContext, in *krm.AIPlatformMo
 	out.BaseModelSource = Model_BaseModelSource_ToProto(mapCtx, in.BaseModelSource)
 	return out
 }
-
-func Value_ToProto(mapCtx *direct.MapContext, in *krm.Value) *structpb.Value {
-	if in == nil {
-		return nil
-	}
-	out := &structpb.Value{}
-	if in.BoolValue != nil {
-		out.Kind = &structpb.Value_BoolValue{
-			BoolValue: direct.ValueOf(in.BoolValue),
-		}
-	}
-	if in.NullValue != nil {
-		strVal := direct.ValueOf(in.NullValue)
-		var value int
-		if val, ok := structpb.NullValue_value[strVal]; ok {
-			value = int(val)
-		} else {
-			var err error
-			value, err = strconv.Atoi(strVal)
-			if err != nil {
-				mapCtx.Errorf("error converting value %s from string to int", strVal)
-			}
-		}
-		out.Kind = &structpb.Value_NullValue{
-			NullValue: structpb.NullValue(value),
-		}
-	}
-	if in.NumberValue != nil {
-		out.Kind = &structpb.Value_NumberValue{
-			NumberValue: direct.ValueOf(in.NumberValue),
-		}
-	}
-	if in.StringValue != nil {
-		out.Kind = &structpb.Value_StringValue{
-			StringValue: direct.ValueOf(in.StringValue),
-		}
-	}
-	if len(in.StructValue.Raw) > 0 {
-		out.Kind = &structpb.Value_StructValue{
-			StructValue: direct.Struct_ToProto(mapCtx, &in.StructValue),
-		}
-	}
-	return out
-}
-
-func Value_FromProto(mapCtx *direct.MapContext, in *structpb.Value) *krm.Value {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Value{}
-	switch in.GetKind().(type) {
-	case *structpb.Value_StringValue:
-		value := in.GetStringValue()
-		out.StringValue = &value
-	case *structpb.Value_NumberValue:
-		value := in.GetNumberValue()
-		out.NumberValue = &value
-	case *structpb.Value_NullValue:
-		value := in.GetNullValue().String()
-		out.NullValue = &value
-	case *structpb.Value_BoolValue:
-		value := in.GetBoolValue()
-		out.BoolValue = &value
-	case *structpb.Value_StructValue:
-		if val := direct.Struct_FromProto(mapCtx, in.GetStructValue()); val != nil {
-			out.StructValue = *val
-		}
-	}
-	return out
-}
-
-func FunctionCall_FromProto(mapCtx *direct.MapContext, in *pb.FunctionCall) *krm.FunctionCall {
-	if in == nil {
-		return nil
-	}
-	out := &krm.FunctionCall{}
-	out.Name = direct.LazyPtr(in.GetName())
-	if val := direct.Struct_FromProto(mapCtx, in.GetArgs()); val != nil {
-		out.Args = *val
-	}
-	return out
-}
-
-func FunctionCall_ToProto(mapCtx *direct.MapContext, in *krm.FunctionCall) *pb.FunctionCall {
-	if in == nil {
-		return nil
-	}
-	out := &pb.FunctionCall{}
-	out.Name = direct.ValueOf(in.Name)
-	out.Args = direct.Struct_ToProto(mapCtx, &in.Args)
-	return out
-}
-
-func FunctionResponse_FromProto(mapCtx *direct.MapContext, in *pb.FunctionResponse) *krm.FunctionResponse {
-	if in == nil {
-		return nil
-	}
-	out := &krm.FunctionResponse{}
-	out.Name = direct.LazyPtr(in.GetName())
-	if val := direct.Struct_FromProto(mapCtx, in.GetResponse()); val != nil {
-		out.Response = *val
-	}
-	return out
-}
-
-func FunctionResponse_ToProto(mapCtx *direct.MapContext, in *krm.FunctionResponse) *pb.FunctionResponse {
-	if in == nil {
-		return nil
-	}
-	out := &pb.FunctionResponse{}
-	out.Name = direct.ValueOf(in.Name)
-	out.Response = direct.Struct_ToProto(mapCtx, &in.Response)
-	return out
-}
-
-/*
-func ListValue_FromProto(mapCtx *direct.MapContext, in *structpb.ListValue) *krm.ListValue {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ListValue{}
-	for _, v := range in.Values {
-		krmVal := Value_FromProto(mapCtx, v)
-		if krmVal != nil {
-			out.Values = append(out.Values, *krmVal)
-		}
-	}
-	return out
-}
-
-func ListValue_ToProto(mapCtx *direct.MapContext, in *krm.ListValue) *structpb.ListValue {
-	if in == nil {
-		return nil
-	}
-	out := &structpb.ListValue{}
-	for i := range in.Values {
-		pbVal := Value_ToProto(mapCtx, &in.Values[i])
-		if pbVal != nil {
-			out.Values = append(out.Values, pbVal)
-		}
-	}
-	return out
-}
-*/
 
 func ExplanationMetadata_FromProto(mapCtx *direct.MapContext, in *pb.ExplanationMetadata) *krm.ExplanationMetadata {
 	if in == nil {
@@ -310,8 +165,8 @@ func ExplanationMetadata_InputMetadata_FromProto(mapCtx *direct.MapContext, in *
 	out.IndexFeatureMapping = in.GetIndexFeatureMapping()
 	out.FeatureValueDomain = ExplanationMetadata_InputMetadata_FeatureValueDomain_FromProto(mapCtx, in.GetFeatureValueDomain())
 	out.Visualization = ExplanationMetadata_InputMetadata_Visualization_FromProto(mapCtx, in.GetVisualization())
-	out.InputBaselines = direct.Slice_FromProto(mapCtx, in.InputBaselines, Value_FromProto)
-	out.EncodedBaselines = direct.Slice_FromProto(mapCtx, in.EncodedBaselines, Value_FromProto)
+	out.InputBaselines = direct.Slice_FromProto(mapCtx, in.InputBaselines, direct.Value_FromProto)
+	out.EncodedBaselines = direct.Slice_FromProto(mapCtx, in.EncodedBaselines, direct.Value_FromProto)
 	return out
 }
 
@@ -328,11 +183,11 @@ func ExplanationMetadata_InputMetadata_ToProto(mapCtx *direct.MapContext, in *kr
 	out.Encoding = pb.ExplanationMetadata_InputMetadata_Encoding(pb.ExplanationMetadata_InputMetadata_Encoding_value[direct.ValueOf(in.Encoding)])
 	out.Modality = direct.ValueOf(in.Modality)
 	out.IndexFeatureMapping = in.IndexFeatureMapping
-	out.EncodedBaselines = direct.Slice_ToProto(mapCtx, in.EncodedBaselines, Value_ToProto)
+	out.EncodedBaselines = direct.Slice_ToProto(mapCtx, in.EncodedBaselines, direct.Value_ToProto)
 	out.FeatureValueDomain = ExplanationMetadata_InputMetadata_FeatureValueDomain_ToProto(mapCtx, in.FeatureValueDomain)
 	out.Visualization = ExplanationMetadata_InputMetadata_Visualization_ToProto(mapCtx, in.Visualization)
-	out.InputBaselines = direct.Slice_ToProto(mapCtx, in.InputBaselines, Value_ToProto)
-	out.EncodedBaselines = direct.Slice_ToProto(mapCtx, in.EncodedBaselines, Value_ToProto)
+	out.InputBaselines = direct.Slice_ToProto(mapCtx, in.InputBaselines, direct.Value_ToProto)
+	out.EncodedBaselines = direct.Slice_ToProto(mapCtx, in.EncodedBaselines, direct.Value_ToProto)
 	return out
 }
 
@@ -388,7 +243,9 @@ func ExplanationMetadata_OutputMetadata_FromProto(mapCtx *direct.MapContext, in 
 	}
 	out := &krm.ExplanationMetadata_OutputMetadata{}
 	out.DisplayNameMappingKey = DisplayNameMappingKey_FromProto(mapCtx, in.GetDisplayNameMappingKey())
-	out.IndexDisplayNameMapping = IndexDisplayNameMapping_FromProto(mapCtx, in.GetIndexDisplayNameMapping())
+	if v := IndexDisplayNameMapping_FromProto(mapCtx, in.GetIndexDisplayNameMapping()); v != nil {
+		out.IndexDisplayNameMapping = *v
+	}
 	out.OutputTensorName = direct.LazyPtr(in.GetOutputTensorName())
 	return out
 }
@@ -402,7 +259,7 @@ func ExplanationMetadata_OutputMetadata_ToProto(mapCtx *direct.MapContext, in *k
 	if oneof := DisplayNameMappingKey_ToProto(mapCtx, in.DisplayNameMappingKey); oneof != nil {
 		out.DisplayNameMapping = oneof
 	}
-	if oneof := IndexDisplayNameMapping_ToProto(mapCtx, in.IndexDisplayNameMapping); oneof != nil {
+	if oneof := IndexDisplayNameMapping_ToProto(mapCtx, &in.IndexDisplayNameMapping); oneof != nil {
 		out.DisplayNameMapping = oneof
 	}
 	return out
@@ -426,20 +283,24 @@ func DisplayNameMappingKey_ToProto(mapCtx *direct.MapContext, in *string) *pb.Ex
 	return out
 }
 
-func IndexDisplayNameMapping_FromProto(mapCtx *direct.MapContext, in *structpb.Value) *krm.Value {
+func IndexDisplayNameMapping_FromProto(mapCtx *direct.MapContext, in *structpb.Value) *apiextensionsv1.JSON {
 	if in == nil {
 		return nil
 	}
-	out := Value_FromProto(mapCtx, in)
+	out := direct.Value_FromProto(mapCtx, in)
 	return out
 }
 
-func IndexDisplayNameMapping_ToProto(mapCtx *direct.MapContext, in *krm.Value) *pb.ExplanationMetadata_OutputMetadata_IndexDisplayNameMapping {
-	if in == nil {
+func IndexDisplayNameMapping_ToProto(mapCtx *direct.MapContext, in *apiextensionsv1.JSON) *pb.ExplanationMetadata_OutputMetadata_IndexDisplayNameMapping {
+	if in == nil || len(in.Raw) == 0 {
+		return nil
+	}
+	val := direct.Value_ToProto(mapCtx, in)
+	if val == nil {
 		return nil
 	}
 	out := &pb.ExplanationMetadata_OutputMetadata_IndexDisplayNameMapping{
-		IndexDisplayNameMapping: Value_ToProto(mapCtx, in),
+		IndexDisplayNameMapping: val,
 	}
 	return out
 }
@@ -459,5 +320,81 @@ func SmoothGradConfig_NoiseSigma_ToProto(mapCtx *direct.MapContext, in *float32)
 	}
 	out := &pb.SmoothGradConfig_NoiseSigma{}
 	out.NoiseSigma = direct.ValueOf(in)
+	return out
+}
+
+func FunctionCall_FromProto(mapCtx *direct.MapContext, in *pb.FunctionCall) *krm.FunctionCall {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FunctionCall{}
+	out.Name = direct.LazyPtr(in.GetName())
+	if val := direct.Struct_FromProto(mapCtx, in.GetArgs()); val != nil {
+		out.Args = *val
+	}
+	return out
+}
+
+func FunctionCall_ToProto(mapCtx *direct.MapContext, in *krm.FunctionCall) *pb.FunctionCall {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FunctionCall{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Args = direct.Struct_ToProto(mapCtx, &in.Args)
+	return out
+}
+
+func FunctionResponse_FromProto(mapCtx *direct.MapContext, in *pb.FunctionResponse) *krm.FunctionResponse {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FunctionResponse{}
+	out.Name = direct.LazyPtr(in.GetName())
+	if val := direct.Struct_FromProto(mapCtx, in.GetResponse()); val != nil {
+		out.Response = *val
+	}
+	return out
+}
+
+func FunctionResponse_ToProto(mapCtx *direct.MapContext, in *krm.FunctionResponse) *pb.FunctionResponse {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FunctionResponse{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Response = direct.Struct_ToProto(mapCtx, &in.Response)
+	return out
+}
+
+func Examples_FromProto(mapCtx *direct.MapContext, in *pb.Examples) *krm.Examples {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Examples{}
+	out.ExampleGCSSource = Examples_ExampleGCSSource_FromProto(mapCtx, in.GetExampleGcsSource())
+	if v := direct.Value_FromProto(mapCtx, in.GetNearestNeighborSearchConfig()); v != nil {
+		out.NearestNeighborSearchConfig = *v
+	}
+	out.Presets = Presets_FromProto(mapCtx, in.GetPresets())
+	out.NeighborCount = direct.LazyPtr(in.GetNeighborCount())
+	return out
+}
+
+func Examples_ToProto(mapCtx *direct.MapContext, in *krm.Examples) *pb.Examples {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Examples{}
+	if oneof := Examples_ExampleGCSSource_ToProto(mapCtx, in.ExampleGCSSource); oneof != nil {
+		out.Source = &pb.Examples_ExampleGcsSource_{ExampleGcsSource: oneof}
+	}
+	if oneof := direct.Value_ToProto(mapCtx, &in.NearestNeighborSearchConfig); oneof != nil {
+		out.Config = &pb.Examples_NearestNeighborSearchConfig{NearestNeighborSearchConfig: oneof}
+	}
+	if oneof := Presets_ToProto(mapCtx, in.Presets); oneof != nil {
+		out.Config = &pb.Examples_Presets{Presets: oneof}
+	}
+	out.NeighborCount = direct.ValueOf(in.NeighborCount)
 	return out
 }

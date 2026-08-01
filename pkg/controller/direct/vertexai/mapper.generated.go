@@ -617,10 +617,18 @@ func FunctionDeclaration_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Fu
 	out := &krmvertexaiv1alpha1.FunctionDeclaration{}
 	out.Name = direct.LazyPtr(in.GetName())
 	out.Description = direct.LazyPtr(in.GetDescription())
-	out.Parameters = JSON_v1alpha1_FromProto(mapCtx, in.GetParameters())
-	out.ParametersJsonSchema = JSON_v1alpha1_FromProto(mapCtx, in.GetParametersJsonSchema())
-	out.Response = JSON_v1alpha1_FromProto(mapCtx, in.GetResponse())
-	out.ResponseJsonSchema = JSON_v1alpha1_FromProto(mapCtx, in.GetResponseJsonSchema())
+	if v := Schema_FromProto(mapCtx, in.GetParameters()); v != nil {
+		out.Parameters = *v
+	}
+	if v := direct.Value_FromProto(mapCtx, in.GetParametersJsonSchema()); v != nil {
+		out.ParametersJsonSchema = *v
+	}
+	if v := Schema_FromProto(mapCtx, in.GetResponse()); v != nil {
+		out.Response = *v
+	}
+	if v := direct.Value_FromProto(mapCtx, in.GetResponseJsonSchema()); v != nil {
+		out.ResponseJsonSchema = *v
+	}
 	return out
 }
 func FunctionDeclaration_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.FunctionDeclaration) *pb.FunctionDeclaration {
@@ -630,10 +638,10 @@ func FunctionDeclaration_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvert
 	out := &pb.FunctionDeclaration{}
 	out.Name = direct.ValueOf(in.Name)
 	out.Description = direct.ValueOf(in.Description)
-	out.Parameters = JSON_v1alpha1_ToProto(mapCtx, in.Parameters)
-	out.ParametersJsonSchema = JSON_v1alpha1_ToProto(mapCtx, in.ParametersJsonSchema)
-	out.Response = JSON_v1alpha1_ToProto(mapCtx, in.Response)
-	out.ResponseJsonSchema = JSON_v1alpha1_ToProto(mapCtx, in.ResponseJsonSchema)
+	out.Parameters = Schema_ToProto(mapCtx, &in.Parameters)
+	out.ParametersJsonSchema = direct.Value_ToProto(mapCtx, &in.ParametersJsonSchema)
+	out.Response = Schema_ToProto(mapCtx, &in.Response)
+	out.ResponseJsonSchema = direct.Value_ToProto(mapCtx, &in.ResponseJsonSchema)
 	return out
 }
 func FunctionResponse_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.FunctionResponse) *krmvertexaiv1alpha1.FunctionResponse {
@@ -1463,7 +1471,7 @@ func VertexAIDataLabelingJobSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, i
 	out.LabelerCount = direct.LazyPtr(in.GetLabelerCount())
 	out.InstructionURI = direct.LazyPtr(in.GetInstructionUri())
 	out.InputsSchemaURI = direct.LazyPtr(in.GetInputsSchemaUri())
-	out.Inputs = JSON_v1alpha1_FromProto(mapCtx, in.GetInputs())
+	out.Inputs = direct.Value_FromProto(mapCtx, in.GetInputs())
 	out.Labels = in.Labels
 	out.SpecialistPools = in.SpecialistPools
 	out.EncryptionSpec = EncryptionSpec_v1alpha1_FromProto(mapCtx, in.GetEncryptionSpec())
@@ -1487,7 +1495,7 @@ func VertexAIDataLabelingJobSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in 
 	out.LabelerCount = direct.ValueOf(in.LabelerCount)
 	out.InstructionUri = direct.ValueOf(in.InstructionURI)
 	out.InputsSchemaUri = direct.ValueOf(in.InputsSchemaURI)
-	out.Inputs = JSON_v1alpha1_ToProto(mapCtx, in.Inputs)
+	out.Inputs = direct.Value_ToProto(mapCtx, in.Inputs)
 	out.Labels = in.Labels
 	out.SpecialistPools = in.SpecialistPools
 	out.EncryptionSpec = EncryptionSpec_v1alpha1_ToProto(mapCtx, in.EncryptionSpec)
@@ -2054,8 +2062,7 @@ func VertexRagStore_RagResource_v1alpha1_FromProto(mapCtx *direct.MapContext, in
 	if in.GetRagCorpus() != "" {
 		out.RagCorpusRef = &krmvertexaiv1alpha1.VertexAIRagCorpusRef{External: in.GetRagCorpus()}
 	}
-	// MISSING: RagFileIds
-	// (near miss): "RagFileIds" vs "RagFileIDs"
+	out.RagFileIDs = in.RagFileIds
 	return out
 }
 func VertexRagStore_RagResource_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.VertexRagStore_RagResource) *pb.VertexRagStore_RagResource {
@@ -2066,8 +2073,7 @@ func VertexRagStore_RagResource_v1alpha1_ToProto(mapCtx *direct.MapContext, in *
 	if in.RagCorpusRef != nil {
 		out.RagCorpus = in.RagCorpusRef.External
 	}
-	// MISSING: RagFileIds
-	// (near miss): "RagFileIds" vs "RagFileIDs"
+	out.RagFileIds = in.RagFileIDs
 	return out
 }
 func VideoMetadata_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.VideoMetadata) *krmvertexaiv1alpha1.VideoMetadata {

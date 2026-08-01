@@ -20,6 +20,7 @@ import (
 	krmv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vertexai/v1alpha1"
 	krmv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/vertexai/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	latlng "google.golang.org/genproto/googleapis/type/latlng"
 	money "google.golang.org/genproto/googleapis/type/money"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/types/known/structpb"
@@ -240,5 +241,75 @@ func JSON_v1alpha1_ToProto(mapCtx *direct.MapContext, in *apiextensionsv1.JSON) 
 		mapCtx.Errorf("error unmarshalling JSON to structpb.Value: %v", err)
 		return nil
 	}
+	return out
+}
+
+func Schema_FromProto(mapCtx *direct.MapContext, in *pb.Schema) *apiextensionsv1.JSON {
+	if in == nil {
+		return nil
+	}
+	b, err := protojson.Marshal(in)
+	if err != nil {
+		mapCtx.Errorf("marshalling pb.Schema to json: %v", err)
+		return nil
+	}
+	return &apiextensionsv1.JSON{Raw: b}
+}
+
+func Schema_ToProto(mapCtx *direct.MapContext, in *apiextensionsv1.JSON) *pb.Schema {
+	if in == nil || len(in.Raw) == 0 {
+		return nil
+	}
+	out := &pb.Schema{}
+	if err := protojson.Unmarshal(in.Raw, out); err != nil {
+		mapCtx.Errorf("unmarshalling json to pb.Schema: %v", err)
+		return nil
+	}
+	return out
+}
+
+func LatLng_v1alpha1_FromProto(mapCtx *direct.MapContext, in *latlng.LatLng) *krmv1alpha1.LatLng {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.LatLng{}
+	out.Latitude = direct.LazyPtr(in.GetLatitude())
+	out.Longitude = direct.LazyPtr(in.GetLongitude())
+	return out
+}
+
+func LatLng_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.LatLng) *latlng.LatLng {
+	if in == nil {
+		return nil
+	}
+	out := &latlng.LatLng{}
+	out.Latitude = direct.ValueOf(in.Latitude)
+	out.Longitude = direct.ValueOf(in.Longitude)
+	return out
+}
+
+func CachedContent_UsageMetadata_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.CachedContent_UsageMetadata) *krmv1alpha1.CachedContent_UsageMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.CachedContent_UsageMetadata{}
+	out.TotalTokenCount = direct.LazyPtr(in.GetTotalTokenCount())
+	out.TextCount = direct.LazyPtr(in.GetTextCount())
+	out.ImageCount = direct.LazyPtr(in.GetImageCount())
+	out.VideoDurationSeconds = direct.LazyPtr(in.GetVideoDurationSeconds())
+	out.AudioDurationSeconds = direct.LazyPtr(in.GetAudioDurationSeconds())
+	return out
+}
+
+func CachedContent_UsageMetadata_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.CachedContent_UsageMetadata) *pb.CachedContent_UsageMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CachedContent_UsageMetadata{}
+	out.TotalTokenCount = direct.ValueOf(in.TotalTokenCount)
+	out.TextCount = direct.ValueOf(in.TextCount)
+	out.ImageCount = direct.ValueOf(in.ImageCount)
+	out.VideoDurationSeconds = direct.ValueOf(in.VideoDurationSeconds)
+	out.AudioDurationSeconds = direct.ValueOf(in.AudioDurationSeconds)
 	return out
 }
