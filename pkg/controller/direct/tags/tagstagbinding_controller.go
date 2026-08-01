@@ -385,5 +385,5 @@ func (a *TagsTagBindingAdapter) changedFields(ctx context.Context) (*structuredr
 		actualMasked = specProto.ProtoReflect()
 	}
 
-	return DiffForTopLevelFields(ctx, desired.ProtoReflect(), actualMasked)
+	return common.DiffForTopLevelFields(ctx, desired.ProtoReflect(), actualMasked)
 }
