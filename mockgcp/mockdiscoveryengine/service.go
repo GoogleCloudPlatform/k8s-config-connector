@@ -49,15 +49,7 @@ type dataStoreService struct {
 	pb.UnimplementedDataStoreServiceServer
 }
 
-type engineService struct {
-	*MockService
-	pb.UnimplementedEngineServiceServer
-}
 
-type siteSearchEngineService struct {
-	*MockService
-	pb.UnimplementedSiteSearchEngineServiceServer
-}
 
 // New creates a MockService.
 func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.MockService {

@@ -20,7 +20,6 @@ import (
 	"strings"
 
 	"google.golang.org/genproto/googleapis/longrunning"
-	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
@@ -35,9 +34,6 @@ type siteSearchEngineService struct {
 	pb.UnimplementedSiteSearchEngineServiceServer
 }
 
-func (s *MockService) RegisterSiteSearchEngine(grpcServer *grpc.Server) {
-	pb.RegisterSiteSearchEngineServiceServer(grpcServer, &siteSearchEngineService{MockService: s})
-}
 
 func (s *siteSearchEngineService) GetTargetSite(ctx context.Context, req *pb.GetTargetSiteRequest) (*pb.TargetSite, error) {
 	name, err := s.parseTargetSiteName(req.Name)
