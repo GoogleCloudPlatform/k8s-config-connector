@@ -49,6 +49,16 @@ type dataStoreService struct {
 	pb.UnimplementedDataStoreServiceServer
 }
 
+type engineService struct {
+	*MockService
+	pb.UnimplementedEngineServiceServer
+}
+
+type siteSearchEngineService struct {
+	*MockService
+	pb.UnimplementedSiteSearchEngineServiceServer
+}
+
 // New creates a MockService.
 func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.MockService {
 	s := &MockService{
@@ -62,21 +72,23 @@ func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.M
 func (s *MockService) ExpectedHosts() []string {
 	return []string{"discoveryengine.googleapis.com"}
 }
-
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterDataStoreServiceServer(grpcServer, &dataStoreService{MockService: s})
 	pb.RegisterConversationalSearchServiceServer(grpcServer, &conversationalSearchService{MockService: s})
+	pb.RegisterEngineServiceServer(grpcServer, &engineService{MockService: s})
+	pb.RegisterSiteSearchEngineServiceServer(grpcServer, &siteSearchEngineService{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	mux, err := httptogrpc.NewGRPCMux(conn)
+	mux, err := s.MockService.NewHTTPMux(ctx, conn)
 	if err != nil {
 		return nil, err
 	}
 
 	mux.AddService(pb.NewDataStoreServiceClient(conn))
 	mux.AddService(pb.NewConversationalSearchServiceClient(conn))
-	mux.AddOperationsPath("/v1/{prefix=**}/operations/{name}", conn)
+	mux.AddService(pb.NewEngineServiceClient(conn))
+	mux.AddService(pb.NewSiteSearchEngineServiceClient(conn))
 
 	return mux, nil
 }

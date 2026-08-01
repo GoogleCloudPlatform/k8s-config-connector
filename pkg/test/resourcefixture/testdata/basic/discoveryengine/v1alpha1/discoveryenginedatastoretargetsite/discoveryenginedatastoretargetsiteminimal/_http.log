@@ -31,6 +31,7 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal%2Fcol
 X-Goog-User-Project: ${projectId}
 
 {
+  "contentConfig": 3,
   "displayName": "My first data store",
   "industryVertical": 1,
   "name": "projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}"
@@ -51,6 +52,7 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/global/collections/default_collection/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.discoveryengine.v1.DataStore",
+    "contentConfig": 3,
     "defaultSchemaId": "default_schema",
     "displayName": "My first data store",
     "industryVertical": 1,
@@ -60,6 +62,63 @@ X-Xss-Protection: 0
 
 ---
 
+POST https://discoveryengine.googleapis.com/v1/projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/siteSearchEngine/targetSites?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal%2Fcollections%2Fdefault_collection%2FdataStores%2Fdatastore-${uniqueId}%2FsiteSearchEngine
+X-Goog-User-Project: ${projectId}
+
+{
+  "type": 1
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "name": "projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/siteSearchEngine/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.discoveryengine.v1.TargetSite",
+    "name": "projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/siteSearchEngine/targetSites/target-site-123",
+    "type": 1,
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://discoveryengine.googleapis.com/v1/projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/siteSearchEngine/targetSites/target-site-123?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fcollections%2Fdefault_collection%2FdataStores%2Fdatastore-${uniqueId}%2FsiteSearchEngine%2FtargetSites%2Ftarget-site-123
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/siteSearchEngine/targetSites/target-site-123",
+  "type": 1,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
 GET https://discoveryengine.googleapis.com/v1/projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -77,6 +136,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "contentConfig": 3,
   "createTime": "2024-04-01T12:34:56.123456Z",
   "defaultSchemaId": "default_schema",
   "displayName": "My first data store",
@@ -86,17 +146,11 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://discoveryengine.googleapis.com/v1/projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=displayName
+GET https://discoveryengine.googleapis.com/v1/projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/siteSearchEngine/targetSites/target-site-123?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: data_store.name=projects%2F${projectId}%2Flocations%2Fglobal%2Fcollections%2Fdefault_collection%2FdataStores%2Fdatastore-${uniqueId}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fcollections%2Fdefault_collection%2FdataStores%2Fdatastore-${uniqueId}%2FsiteSearchEngine%2FtargetSites%2Ftarget-site-123
 X-Goog-User-Project: ${projectId}
-
-{
-  "displayName": "Updated display name",
-  "industryVertical": 1,
-  "name": "projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}"
-}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -109,11 +163,32 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "defaultSchemaId": "default_schema",
-  "displayName": "Updated display name",
-  "industryVertical": 1,
-  "name": "projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}"
+  "name": "projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/siteSearchEngine/targetSites/target-site-123",
+  "type": 1,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://discoveryengine.googleapis.com/v1/projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/siteSearchEngine/targetSites/target-site-123?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fcollections%2Fdefault_collection%2FdataStores%2Fdatastore-${uniqueId}%2FsiteSearchEngine%2FtargetSites%2Ftarget-site-123
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "name": "projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/siteSearchEngine/operations/${operationID}"
 }
 
 ---
@@ -135,9 +210,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "contentConfig": 3,
   "createTime": "2024-04-01T12:34:56.123456Z",
   "defaultSchemaId": "default_schema",
-  "displayName": "Updated display name",
+  "displayName": "My first data store",
   "industryVertical": 1,
   "name": "projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}"
 }
