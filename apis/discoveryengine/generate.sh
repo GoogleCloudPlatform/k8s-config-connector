@@ -18,12 +18,21 @@ set -o nounset
 set -o pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
+
+CONTROLLERBUILDER="${CONTROLLERBUILDER:-}"
+if [[ -z "${CONTROLLERBUILDER}" ]]; then
+  if [[ -x "${REPO_ROOT}/bin/controllerbuilder" ]]; then
+    CONTROLLERBUILDER="${REPO_ROOT}/bin/controllerbuilder"
+  else
+    CONTROLLERBUILDER="go run ${REPO_ROOT}/dev/tools/controllerbuilder"
+  fi
+fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ./generate-proto.sh
 
 
-go run . generate-types --service google.cloud.discoveryengine.v1 --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1 \
+${CONTROLLERBUILDER} generate-types --service google.cloud.discoveryengine.v1 --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1 \
   --resource DiscoveryEngineControl:Control \
   --resource DiscoveryEngineDataStore:DataStore \
   --resource DiscoveryEngineEngine:Engine \
@@ -34,7 +43,7 @@ go run . generate-types --service google.cloud.discoveryengine.v1 --api-version 
   --resource DiscoveryEngineSearchEngine:SiteSearchEngine
 mv ../../../apis/discoveryengine/v1alpha1/types.generated.go ../../../apis/discoveryengine/v1alpha1/v1_types.generated.go
 
-go run . generate-types --service google.cloud.discoveryengine.v1beta --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1 \
+${CONTROLLERBUILDER} generate-types --service google.cloud.discoveryengine.v1beta --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1 \
   --resource DiscoveryEngineSampleQuerySet:SampleQuerySet \
   --resource DiscoveryEngineSampleQuery:SampleQuery
 mv ../../../apis/discoveryengine/v1alpha1/types.generated.go ../../../apis/discoveryengine/v1alpha1/v1beta_types.generated.go
@@ -43,7 +52,7 @@ mv ../../../apis/discoveryengine/v1alpha1/types.generated.go ../../../apis/disco
 
 
 
-go run . generate-mapper \
+${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.discoveryengine.v1,google.cloud.discoveryengine.v1beta \
   --api-version "discoveryengine.cnrm.cloud.google.com/v1alpha1" \
   --multiversion

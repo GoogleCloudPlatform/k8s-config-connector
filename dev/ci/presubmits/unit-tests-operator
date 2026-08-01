@@ -36,4 +36,5 @@ cd operator
 make manifests
 
 echo "Running operator unit tests..."
-go test -test.count=1 -parallel 2 -v ./pkg/... ./scripts/...
+# Note: -parallel 4 was determined by A/B testing; do not change unless new benchmark tests demonstrate a speedup.
+go test -test.count=1 -parallel 4 -v ./pkg/... ./scripts/...

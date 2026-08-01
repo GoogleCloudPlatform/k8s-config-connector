@@ -18,6 +18,15 @@ set -o nounset
 set -o pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
+
+CONTROLLERBUILDER="${CONTROLLERBUILDER:-}"
+if [[ -z "${CONTROLLERBUILDER}" ]]; then
+  if [[ -x "${REPO_ROOT}/bin/controllerbuilder" ]]; then
+    CONTROLLERBUILDER="${REPO_ROOT}/bin/controllerbuilder"
+  else
+    CONTROLLERBUILDER="go run ${REPO_ROOT}/dev/tools/controllerbuilder"
+  fi
+fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ./generate-proto.sh
@@ -31,7 +40,7 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 #
 
 # --- v1beta1 ---
-go run . generate-types \
+${CONTROLLERBUILDER} generate-types \
   --service google.cloud.resourcemanager.v3 \
   --api-version tags.cnrm.cloud.google.com/v1beta1  \
   --resource TagsTagKey:TagKey \
@@ -40,7 +49,7 @@ go run . generate-types \
   --resource TagsLocationTagBinding:TagBinding \
   --include-skipped-output
 
-go run . generate-mapper \
+${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.resourcemanager.v3 \
   --api-version tags.cnrm.cloud.google.com/v1beta1 \
   --api-dir ${REPO_ROOT}/apis/tags/v1beta1 \

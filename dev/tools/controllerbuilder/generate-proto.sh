@@ -28,6 +28,13 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 # Extract the default git commit SHA version of the googleapis repository from apis/git.versions
 DEFAULT_GOOGLE_API_VERSION=$(grep https://github.com/googleapis/googleapis ${REPO_ROOT}/apis/git.versions | awk '{print $2}')
 
+# Check for --force flag or env var FORCE_GENERATE_PROTOS=1
+FORCE_GENERATE="${FORCE_GENERATE_PROTOS:-0}"
+if [[ "${1:-}" == "--force" || "${1:-}" == "-f" ]]; then
+    FORCE_GENERATE=1
+    shift
+fi
+
 # Take googleapi version as parameter, default to version from git.versions.
 # Use "HEAD" to get the latest from remote.
 GOOGLEAPI_VERSION=${1:-$DEFAULT_GOOGLE_API_VERSION}
@@ -35,9 +42,17 @@ GOOGLEAPI_VERSION=${1:-$DEFAULT_GOOGLE_API_VERSION}
 # Take output path as parameter, default to .build/googleapis.pb
 OUTPUT_PATH=${2:-"${REPO_ROOT}/.build/googleapis.pb"}
 
-
 THIRD_PARTY="${REPO_ROOT}/.build/third_party"
 mkdir -p "${THIRD_PARTY}/"
+
+# Fast-path check: if versioned pb file already exists (and force is not set), exit immediately
+VERSIONED_OUTPUT_PATH="${OUTPUT_PATH%.pb}-${GOOGLEAPI_VERSION}.pb"
+if [[ "${FORCE_GENERATE}" != "1" ]] && [ -f "${VERSIONED_OUTPUT_PATH}" ]; then
+    if [ "${VERSIONED_OUTPUT_PATH}" != "${OUTPUT_PATH}" ]; then
+        cp "${VERSIONED_OUTPUT_PATH}" "${OUTPUT_PATH}"
+    fi
+    exit 0
+fi
 
 DEFAULT_GOOGLEAPI_DIR="${THIRD_PARTY}/googleapis"
 if [ ! -d "${DEFAULT_GOOGLEAPI_DIR}" ]; then

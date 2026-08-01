@@ -18,12 +18,21 @@ set -o nounset
 set -o pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
+
+CONTROLLERBUILDER="${CONTROLLERBUILDER:-}"
+if [[ -z "${CONTROLLERBUILDER}" ]]; then
+  if [[ -x "${REPO_ROOT}/bin/controllerbuilder" ]]; then
+    CONTROLLERBUILDER="${REPO_ROOT}/bin/controllerbuilder"
+  else
+    CONTROLLERBUILDER="go run ${REPO_ROOT}/dev/tools/controllerbuilder"
+  fi
+fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ./generate-proto.sh
 
 
-go run . generate-types \
+${CONTROLLERBUILDER} generate-types \
     --service google.logging.v2 \
     --api-version "logging.cnrm.cloud.google.com/v1beta1" \
     --include-skipped-output \
@@ -34,7 +43,7 @@ go run . generate-types \
     --resource LoggingLogSink:LogSink \
     --resource LoggingLogMetric:LogMetric
 
-go run . generate-mapper \
+${CONTROLLERBUILDER} generate-mapper \
     --service google.logging.v2 \
     --api-version "logging.cnrm.cloud.google.com/v1beta1" \
     --include-skipped-output
