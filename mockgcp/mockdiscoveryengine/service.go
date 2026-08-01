@@ -49,8 +49,6 @@ type dataStoreService struct {
 	pb.UnimplementedDataStoreServiceServer
 }
 
-
-
 // New creates a MockService.
 func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.MockService {
 	s := &MockService{
