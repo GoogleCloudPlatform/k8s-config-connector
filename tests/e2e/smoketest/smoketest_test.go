@@ -163,17 +163,29 @@ func TestSmoketest(t *testing.T) {
 		revertManifests(filepath.Join(root, "config/installbundle/components"))
 	})
 
-	t.Logf("Building images with tag %q", imageTag)
-	buildCmd := exec.CommandContext(ctx, filepath.Join(root, "dev/tasks/build-images"))
-	buildCmd.Dir = root
-	buildCmd.Env = append(os.Environ(),
-		"IMAGE_TAG="+imageTag,
-		"IMAGE_PREFIX="+imagePrefix,
-	)
-	buildCmd.Stdout = os.Stdout
-	buildCmd.Stderr = os.Stderr
-	if err := buildCmd.Run(); err != nil {
-		t.Fatalf("failed to build images: %v", err)
+	if os.Getenv("SKIP_BUILD_IMAGES") != "1" {
+		t.Logf("Building images with tag %q", imageTag)
+		buildCmd := exec.CommandContext(ctx, filepath.Join(root, "dev/tasks/build-images"))
+		buildCmd.Dir = root
+		buildCmd.Env = append(os.Environ(),
+			"IMAGE_TAG="+imageTag,
+			"IMAGE_PREFIX="+imagePrefix,
+		)
+		buildCmd.Stdout = os.Stdout
+		buildCmd.Stderr = os.Stderr
+		if err := buildCmd.Run(); err != nil {
+			t.Fatalf("failed to build images: %v", err)
+		}
+	} else {
+		t.Logf("Skipping image build (using pre-loaded docker images from artifact)")
+		patchCmd := exec.CommandContext(ctx, filepath.Join(root, "dev/tasks/build-images"))
+		patchCmd.Dir = root
+		patchCmd.Env = append(os.Environ(),
+			"IMAGE_TAG="+imageTag,
+			"IMAGE_PREFIX="+imagePrefix,
+			"SKIP_DOCKER_BUILD=1",
+		)
+		_ = patchCmd.Run()
 	}
 
 	t.Logf("Loading images into kind")

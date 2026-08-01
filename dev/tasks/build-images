@@ -51,9 +51,17 @@ export CONFIG_CONNECTOR_IMG=${IMAGE_PREFIX}config-connector-cli:${IMAGE_TAG}
 export OPERATOR_IMG=${IMAGE_PREFIX}operator:${IMAGE_TAG}
 
 cd ${REPO_ROOT}
-echo "===> [$(date -u +'%Y-%m-%dT%H:%M:%SZ')] Starting core image builds (docker buildx bake)..."
-IMAGE_PREFIX="${IMAGE_PREFIX}" IMAGE_TAG="${IMAGE_TAG}" docker buildx bake --load --set *.cache-from=type=gha,scope=kcc --set *.cache-to=type=gha,mode=max,scope=kcc
-echo "===> [$(date -u +'%Y-%m-%dT%H:%M:%SZ')] Completed core image builds."
+if [ "${SKIP_DOCKER_BUILD:-0}" != "1" ]; then
+  echo "===> [$(date -u +'%Y-%m-%dT%H:%M:%SZ')] Starting core image builds (docker buildx bake)..."
+  IMAGE_PREFIX="${IMAGE_PREFIX}" IMAGE_TAG="${IMAGE_TAG}" docker buildx bake --load --set *.cache-from=type=gha,scope=kcc --set *.cache-to=type=gha,mode=max,scope=kcc
+  echo "===> [$(date -u +'%Y-%m-%dT%H:%M:%SZ')] Completed core image builds."
+fi
+
+if [ "${SAVE_TARBALL:-0}" = "1" ]; then
+  echo "===> [$(date -u +'%Y-%m-%dT%H:%M:%SZ')] Saving images to /tmp/kcc-images.tar..."
+  docker save -o /tmp/kcc-images.tar "${CONTROLLER_IMG}" "${RECORDER_IMG}" "${WEBHOOK_IMG}" "${DELETION_DEFENDER_IMG}" "${UNMANAGED_DETECTOR_IMG}" "${OPERATOR_IMG}"
+  echo "===> [$(date -u +'%Y-%m-%dT%H:%M:%SZ')] Completed saving images to /tmp/kcc-images.tar."
+fi
 
 cp config/installbundle/components/manager/base/manager_image_patch_template.yaml config/installbundle/components/manager/base/manager_image_patch.yaml
 sed -i'' -e 's@image: .*@image: '"${CONTROLLER_IMG}"'@' ./config/installbundle/components/manager/base/manager_image_patch.yaml
