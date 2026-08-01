@@ -269,21 +269,24 @@ BLOCKED_KINDS=(
     "WorkloadManagerEvaluation"
 )
 
+declare -A BLOCKED_MAP
+for b in "${BLOCKED_KINDS[@]}"; do
+    BLOCKED_MAP["${b,,}"]=1
+done
+
+VALID_FILES=()
 for f in config/crds/resources/*.yaml; do
     KIND=$(grep -m 1 -E "^    kind: " "$f" | awk '{print $2}')
-    EXCLUDE=false
-    for BLOCKED in "${BLOCKED_KINDS[@]}"; do
-        if [[ "${KIND,,}" == "${BLOCKED,,}" ]]; then
-            EXCLUDE=true
-            break
-        fi
-    done
-    if [[ "$EXCLUDE" == false ]]; then
-        kustomize edit add resource "$f"
-    else
+    if [[ -n "${BLOCKED_MAP[${KIND,,}]:-}" ]]; then
         echo "Excluding unverified greenfield CRD from release bundle: $f"
+    else
+        VALID_FILES+=("$f")
     fi
 done
+
+if [[ ${#VALID_FILES[@]} -gt 0 ]]; then
+    kustomize edit add resource "${VALID_FILES[@]}"
+fi
 
 $LICENSING_SCRIPT <(kustomize build .) > $CRDS_FILE
 
