@@ -897,3 +897,75 @@ func Subsetting_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Subsetting) 
 	}
 	return out
 }
+
+// ComputeManagedSSLCertificateObservedState_v1alpha1_FromProto converts pb.SslCertificate to krmcomputev1alpha1.ComputeManagedSSLCertificateObservedState.
+// Handcoded due to a type mismatch: the proto defines 'id' as *uint64, but KRM represents it as *int64.
+func ComputeManagedSSLCertificateObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SslCertificate) *krmcomputev1alpha1.ComputeManagedSSLCertificateObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeManagedSSLCertificateObservedState{}
+	out.CreationTimestamp = in.CreationTimestamp
+	out.ExpireTime = in.ExpireTime
+	if in.Id != nil {
+		idVal := int64(*in.Id)
+		out.ID = &idVal
+	}
+	out.SelfLink = in.SelfLink
+	out.SubjectAlternativeNames = in.SubjectAlternativeNames
+	return out
+}
+
+// ComputeManagedSSLCertificateObservedState_v1alpha1_ToProto converts krmcomputev1alpha1.ComputeManagedSSLCertificateObservedState to pb.SslCertificate.
+// Handcoded due to a type mismatch: the proto defines 'id' as *uint64, but KRM represents it as *int64.
+func ComputeManagedSSLCertificateObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeManagedSSLCertificateObservedState) *pb.SslCertificate {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SslCertificate{}
+	out.CreationTimestamp = in.CreationTimestamp
+	out.ExpireTime = in.ExpireTime
+	if in.ID != nil {
+		idVal := uint64(*in.ID)
+		out.Id = &idVal
+	}
+	out.SelfLink = in.SelfLink
+	out.SubjectAlternativeNames = in.SubjectAlternativeNames
+	return out
+}
+
+// ComputeManagedSSLCertificateObservedState_v1beta1_FromProto converts pb.SslCertificate to krm.ComputeManagedSSLCertificateObservedState.
+// Handcoded due to a type mismatch: the proto defines 'id' as *uint64, but KRM represents it as *int64.
+func ComputeManagedSSLCertificateObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SslCertificate) *krm.ComputeManagedSSLCertificateObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ComputeManagedSSLCertificateObservedState{}
+	out.CreationTimestamp = in.CreationTimestamp
+	out.ExpireTime = in.ExpireTime
+	if in.Id != nil {
+		idVal := int64(*in.Id)
+		out.ID = &idVal
+	}
+	out.SelfLink = in.SelfLink
+	out.SubjectAlternativeNames = in.SubjectAlternativeNames
+	return out
+}
+
+// ComputeManagedSSLCertificateObservedState_v1beta1_ToProto converts krm.ComputeManagedSSLCertificateObservedState to pb.SslCertificate.
+// Handcoded due to a type mismatch: the proto defines 'id' as *uint64, but KRM represents it as *int64.
+func ComputeManagedSSLCertificateObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ComputeManagedSSLCertificateObservedState) *pb.SslCertificate {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SslCertificate{}
+	out.CreationTimestamp = in.CreationTimestamp
+	out.ExpireTime = in.ExpireTime
+	if in.ID != nil {
+		idVal := uint64(*in.ID)
+		out.Id = &idVal
+	}
+	out.SelfLink = in.SelfLink
+	out.SubjectAlternativeNames = in.SubjectAlternativeNames
+	return out
+}

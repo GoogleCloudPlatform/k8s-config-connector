@@ -92,8 +92,7 @@ type: string
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>Immutable. Properties relevant to a managed certificate.  These will be used if the
-certificate is managed (as indicated by a value of 'MANAGED' in 'type').</p>
+            <p>Immutable. Properties relevant to a managed certificate.  These will be used if the certificate is managed (as indicated by a value of 'MANAGED' in 'type').</p>
         </td>
     </tr>
     <tr>
@@ -103,8 +102,7 @@ certificate is managed (as indicated by a value of 'MANAGED' in 'type').</p>
         </td>
         <td>
             <p><code class="apitype">list (string)</code></p>
-            <p>Immutable. Domains for which a managed SSL certificate will be valid.  Currently,
-there can be up to 100 domains in this list.</p>
+            <p>Immutable. Domains for which a managed SSL certificate will be valid.  Currently, there can be up to 100 domains in this list.</p>
         </td>
     </tr>
     <tr>
@@ -134,7 +132,7 @@ there can be up to 100 domains in this list.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `name` field of a `Project` resource.</p>
+            <p>The `projectID` field of a project, when not managed by Config Connector.</p>
         </td>
     </tr>
     <tr>
@@ -144,7 +142,7 @@ there can be up to 100 domains in this list.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The `name` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -154,7 +152,7 @@ there can be up to 100 domains in this list.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The `namespace` field of a `Project` resource.</p>
         </td>
     </tr>
     <tr>
@@ -174,8 +172,7 @@ there can be up to 100 domains in this list.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. Enum field whose value is always 'MANAGED' - used to signal to the API
-which type this is. Default value: "MANAGED" Possible values: ["MANAGED"].</p>
+            <p>Immutable. Enum field whose value is always 'MANAGED' - used to signal to the API which type this is. Default value: "MANAGED" Possible values: ["MANAGED"].</p>
         </td>
     </tr>
 </tbody>
@@ -213,7 +210,7 @@ observedState:
         <td><code>conditions</code></td>
         <td>
             <p><code class="apitype">list (object)</code></p>
-            <p>Conditions represent the latest available observation of the resource's current state.</p>
+            <p>Conditions represent the latest available observations of the object's current state.</p>
         </td>
     </tr>
     <tr>
@@ -269,7 +266,7 @@ observedState:
         <td><code>observedState</code></td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The observed state of the underlying GCP resource.</p>
+            <p>ObservedState is the state of the resource as most recently observed in GCP.</p>
         </td>
     </tr>
     <tr>

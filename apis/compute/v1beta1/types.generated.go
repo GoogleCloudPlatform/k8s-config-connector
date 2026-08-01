@@ -49,6 +49,7 @@
 // resource: ComputeSnapshot:Snapshot
 // resource: ComputeSSLPolicy:SslPolicy
 // resource: ComputeSSLCertificate:SslCertificate
+// resource: ComputeManagedSSLCertificate:SslCertificate
 // resource: ComputeSubnetwork:Subnetwork
 // resource: ComputeTargetGRPCProxy:TargetGrpcProxy
 // resource: ComputeTargetHTTPSProxy:TargetHttpsProxy
@@ -7260,7 +7261,8 @@ type SSLCertificate struct {
 }
 */
 
-/* unreachable type SSLCertificateManagedSSLCertificate
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.SslCertificateManagedSslCertificate", skipping
+
 // +kcc:proto=google.cloud.compute.v1.SslCertificateManagedSslCertificate
 type SSLCertificateManagedSSLCertificate struct {
 	// [Output only] Detailed statuses of the domains specified for managed certificate resource.

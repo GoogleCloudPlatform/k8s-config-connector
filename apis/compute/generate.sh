@@ -38,6 +38,7 @@ go run . generate-types \
   --resource ComputeNetworkEndpoint:NetworkEndpoint \
   --resource ComputeMachineImage:MachineImage \
   --resource ComputeRegionSSLPolicy:SslPolicy \
+  --resource ComputeManagedSSLCertificate:SslCertificate \
   --include-skipped-output
 
 rm -f ${REPO_ROOT}/apis/compute/v1alpha1/computeregionautoscaler_types.go
@@ -78,6 +79,7 @@ go run . generate-types \
   --resource ComputeSnapshot:Snapshot \
   --resource ComputeSSLPolicy:SslPolicy \
   --resource ComputeSSLCertificate:SslCertificate \
+  --resource ComputeManagedSSLCertificate:SslCertificate \
   --resource ComputeSubnetwork:Subnetwork \
   --resource ComputeTargetGRPCProxy:TargetGrpcProxy \
   --resource ComputeTargetHTTPSProxy:TargetHttpsProxy \
