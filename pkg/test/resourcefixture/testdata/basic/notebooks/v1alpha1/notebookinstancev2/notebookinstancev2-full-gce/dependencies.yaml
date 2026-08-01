@@ -17,8 +17,7 @@ kind: ComputeNetwork
 metadata:
   name: ni2-net-${uniqueId}
 spec:
-  routingConfig:
-    routingMode: REGIONAL
+  routingMode: REGIONAL
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeSubnetwork

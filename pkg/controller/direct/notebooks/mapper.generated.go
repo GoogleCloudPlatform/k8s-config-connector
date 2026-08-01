@@ -247,6 +247,8 @@ func InstanceContainerImage_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmn
 	out.Tag = direct.ValueOf(in.Tag)
 	return out
 }
+
+/* found existing non-generated mapping function "InstanceDataDisk_v1alpha1_FromProto", skipping
 func InstanceDataDisk_v1alpha1_FromProto(mapCtx *direct.MapContext, in *notebookspb.DataDisk) *krmnotebooksv1alpha1.InstanceDataDisk {
 	if in == nil {
 		return nil
@@ -258,6 +260,9 @@ func InstanceDataDisk_v1alpha1_FromProto(mapCtx *direct.MapContext, in *notebook
 	// MISSING: KMSKey
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "InstanceDataDisk_v1alpha1_ToProto", skipping
 func InstanceDataDisk_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnotebooksv1alpha1.InstanceDataDisk) *notebookspb.DataDisk {
 	if in == nil {
 		return nil
@@ -269,6 +274,9 @@ func InstanceDataDisk_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnoteboo
 	// MISSING: KMSKey
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "InstanceGCESetup_v1alpha1_FromProto", skipping
 func InstanceGCESetup_v1alpha1_FromProto(mapCtx *direct.MapContext, in *notebookspb.GceSetup) *krmnotebooksv1alpha1.InstanceGCESetup {
 	if in == nil {
 		return nil
@@ -291,32 +299,38 @@ func InstanceGCESetup_v1alpha1_FromProto(mapCtx *direct.MapContext, in *notebook
 	// (near miss): "GpuDriverConfig" vs "GPUDriverConfig"
 	return out
 }
-func InstanceGCESetup_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnotebooksv1alpha1.InstanceGCESetup) *notebookspb.GceSetup {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "InstanceGCESetup_v1alpha1_ToProto", skipping
+
+	func InstanceGCESetup_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnotebooksv1alpha1.InstanceGCESetup) *notebookspb.GceSetup {
+		if in == nil {
+			return nil
+		}
+		out := &notebookspb.GceSetup{}
+		out.MachineType = direct.ValueOf(in.MachineType)
+		out.AcceleratorConfigs = direct.Slice_ToProto(mapCtx, in.AcceleratorConfigs, InstanceAcceleratorConfig_v1alpha1_ToProto)
+		out.ServiceAccounts = direct.Slice_ToProto(mapCtx, in.ServiceAccounts, InstanceServiceAccount_v1alpha1_ToProto)
+		if oneof := InstanceVMImage_v1alpha1_ToProto(mapCtx, in.VMImage); oneof != nil {
+			out.Image = &notebookspb.GceSetup_VmImage{VmImage: oneof}
+		}
+		if oneof := InstanceContainerImage_v1alpha1_ToProto(mapCtx, in.ContainerImage); oneof != nil {
+			out.Image = &notebookspb.GceSetup_ContainerImage{ContainerImage: oneof}
+		}
+		out.BootDisk = InstanceBootDisk_v1alpha1_ToProto(mapCtx, in.BootDisk)
+		out.DataDisks = direct.Slice_ToProto(mapCtx, in.DataDisks, InstanceDataDisk_v1alpha1_ToProto)
+		out.ShieldedInstanceConfig = InstanceShieldedInstanceConfig_v1alpha1_ToProto(mapCtx, in.ShieldedInstanceConfig)
+		out.NetworkInterfaces = direct.Slice_ToProto(mapCtx, in.NetworkInterfaces, InstanceNetworkInterface_v1alpha1_ToProto)
+		out.DisablePublicIp = direct.ValueOf(in.DisablePublicIP)
+		out.Tags = in.Tags
+		out.Metadata = in.Metadata
+		out.EnableIpForwarding = direct.ValueOf(in.EnableIPForwarding)
+		// MISSING: GpuDriverConfig
+		// (near miss): "GpuDriverConfig" vs "GPUDriverConfig"
+		return out
 	}
-	out := &notebookspb.GceSetup{}
-	out.MachineType = direct.ValueOf(in.MachineType)
-	out.AcceleratorConfigs = direct.Slice_ToProto(mapCtx, in.AcceleratorConfigs, InstanceAcceleratorConfig_v1alpha1_ToProto)
-	out.ServiceAccounts = direct.Slice_ToProto(mapCtx, in.ServiceAccounts, InstanceServiceAccount_v1alpha1_ToProto)
-	if oneof := InstanceVMImage_v1alpha1_ToProto(mapCtx, in.VMImage); oneof != nil {
-		out.Image = &notebookspb.GceSetup_VmImage{VmImage: oneof}
-	}
-	if oneof := InstanceContainerImage_v1alpha1_ToProto(mapCtx, in.ContainerImage); oneof != nil {
-		out.Image = &notebookspb.GceSetup_ContainerImage{ContainerImage: oneof}
-	}
-	out.BootDisk = InstanceBootDisk_v1alpha1_ToProto(mapCtx, in.BootDisk)
-	out.DataDisks = direct.Slice_ToProto(mapCtx, in.DataDisks, InstanceDataDisk_v1alpha1_ToProto)
-	out.ShieldedInstanceConfig = InstanceShieldedInstanceConfig_v1alpha1_ToProto(mapCtx, in.ShieldedInstanceConfig)
-	out.NetworkInterfaces = direct.Slice_ToProto(mapCtx, in.NetworkInterfaces, InstanceNetworkInterface_v1alpha1_ToProto)
-	out.DisablePublicIp = direct.ValueOf(in.DisablePublicIP)
-	out.Tags = in.Tags
-	out.Metadata = in.Metadata
-	out.EnableIpForwarding = direct.ValueOf(in.EnableIPForwarding)
-	// MISSING: GpuDriverConfig
-	// (near miss): "GpuDriverConfig" vs "GPUDriverConfig"
-	return out
-}
+*/
 func InstanceGCESetupObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *notebookspb.GceSetup) *krmnotebooksv1alpha1.InstanceGCESetupObservedState {
 	if in == nil {
 		return nil
@@ -405,6 +419,8 @@ func InstanceNetworkInterface_v1alpha1_ToProto(mapCtx *direct.MapContext, in *kr
 	out.NicType = direct.Enum_ToProto[notebookspb.NetworkInterface_NicType](mapCtx, in.NicType)
 	return out
 }
+
+/* found existing non-generated mapping function "InstanceServiceAccount_v1alpha1_FromProto", skipping
 func InstanceServiceAccount_v1alpha1_FromProto(mapCtx *direct.MapContext, in *notebookspb.ServiceAccount) *krmnotebooksv1alpha1.InstanceServiceAccount {
 	if in == nil {
 		return nil
@@ -414,15 +430,21 @@ func InstanceServiceAccount_v1alpha1_FromProto(mapCtx *direct.MapContext, in *no
 	// MISSING: Scopes
 	return out
 }
-func InstanceServiceAccount_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnotebooksv1alpha1.InstanceServiceAccount) *notebookspb.ServiceAccount {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "InstanceServiceAccount_v1alpha1_ToProto", skipping
+
+	func InstanceServiceAccount_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnotebooksv1alpha1.InstanceServiceAccount) *notebookspb.ServiceAccount {
+		if in == nil {
+			return nil
+		}
+		out := &notebookspb.ServiceAccount{}
+		// MISSING: Email
+		// MISSING: Scopes
+		return out
 	}
-	out := &notebookspb.ServiceAccount{}
-	// MISSING: Email
-	// MISSING: Scopes
-	return out
-}
+*/
 func InstanceServiceAccountObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *notebookspb.ServiceAccount) *krmnotebooksv1alpha1.InstanceServiceAccountObservedState {
 	if in == nil {
 		return nil

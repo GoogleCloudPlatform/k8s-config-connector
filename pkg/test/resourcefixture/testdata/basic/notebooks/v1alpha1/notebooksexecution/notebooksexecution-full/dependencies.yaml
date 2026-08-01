@@ -17,17 +17,16 @@ kind: ComputeNetwork
 metadata:
   name: n-exec-net-${uniqueId}
 spec:
-  routingConfig:
-    routingMode: REGIONAL
+  routingMode: REGIONAL
 ---
-apiVersion: vertexai.cnrm.cloud.google.com/v1beta1
+apiVersion: vertexai.cnrm.cloud.google.com/v1alpha1
 kind: VertexAITensorboard
 metadata:
   name: n-exec-tb-${uniqueId}
 spec:
   projectRef:
     external: ${projectId}
-  location: us-central1
+  region: us-central1
   displayName: Test Tensorboard
 ---
 apiVersion: iam.cnrm.cloud.google.com/v1beta1

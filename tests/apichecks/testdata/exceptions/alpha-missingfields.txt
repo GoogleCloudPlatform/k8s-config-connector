@@ -3447,7 +3447,6 @@
 [missing_field] crd=osconfigpatchdeployments.osconfig.cnrm.cloud.google.com version=v1alpha1: field ".spec.patchConfig.preStep.windowsExecStepConfig.gcsObject.object" is not set in unstructured objects
 [missing_field] crd=osconfigpatchdeployments.osconfig.cnrm.cloud.google.com version=v1alpha1: field ".spec.patchConfig.preStep.windowsExecStepConfig.interpreter" is not set in unstructured objects
 [missing_field] crd=osconfigpatchdeployments.osconfig.cnrm.cloud.google.com version=v1alpha1: field ".spec.patchConfig.preStep.windowsExecStepConfig.localPath" is not set in unstructured objects
-[missing_field] crd=osconfigpatchdeployments.osconfig.cnrm.cloud.google.com version=v1alpha1: field ".spec.patchConfig.rebootConfig" is not set in unstructured objects
 [missing_field] crd=osconfigpatchdeployments.osconfig.cnrm.cloud.google.com version=v1alpha1: field ".spec.patchConfig.windowsUpdate.classifications[]" is not set in unstructured objects
 [missing_field] crd=osconfigpatchdeployments.osconfig.cnrm.cloud.google.com version=v1alpha1: field ".spec.patchConfig.windowsUpdate.excludes[]" is not set in unstructured objects
 [missing_field] crd=osconfigpatchdeployments.osconfig.cnrm.cloud.google.com version=v1alpha1: field ".spec.patchConfig.windowsUpdate.exclusivePatches[]" is not set in unstructured objects
