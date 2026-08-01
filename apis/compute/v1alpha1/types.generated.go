@@ -29,6 +29,7 @@
 // resource: ComputeNetworkEndpoint:NetworkEndpoint
 // resource: ComputeMachineImage:MachineImage
 // resource: ComputeRegionSSLPolicy:SslPolicy
+// resource: ComputeInstanceGroupNamedPort:NamedPort
 
 package v1alpha1
 
@@ -1149,6 +1150,20 @@ type Metadata struct {
 	// [Output Only] Type of the resource. Always compute#metadata for metadata.
 	// +kcc:proto:field=google.cloud.compute.v1.Metadata.kind
 	Kind *string `json:"kind,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.compute.v1.NamedPort", skipping
+
+// +kcc:proto=google.cloud.compute.v1.NamedPort
+type NamedPort struct {
+	// The name for this named port. The name must be 1-63 characters long, and comply with RFC1035.
+	// +kcc:proto:field=google.cloud.compute.v1.NamedPort.name
+	Name *string `json:"name,omitempty"`
+
+	// The port number, which can be a value between 1 and 65535.
+	// +kcc:proto:field=google.cloud.compute.v1.NamedPort.port
+	Port *int32 `json:"port,omitempty"`
 }
 */
 

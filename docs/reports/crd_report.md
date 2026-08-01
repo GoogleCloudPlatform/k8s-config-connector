@@ -164,7 +164,7 @@
 | compute.cnrm.cloud.google.com                  | ComputeHTTPSHealthCheck                         | False        | True        | False  | Terraform  | True        |
 | compute.cnrm.cloud.google.com                  | ComputeImage                                    | False        | True        | False  | Terraform  | True        |
 | compute.cnrm.cloud.google.com                  | ComputeInstanceGroupManager                     | False        | True        | False  | DCL        | True        |
-| compute.cnrm.cloud.google.com                  | ComputeInstanceGroupNamedPort                   | True         | False       | False  | Terraform  | False       |
+| compute.cnrm.cloud.google.com                  | ComputeInstanceGroupNamedPort                   | True         | False       | False  | Terraform  | True        |
 | compute.cnrm.cloud.google.com                  | ComputeInstanceGroup                            | False        | True        | False  | Terraform  | True        |
 | compute.cnrm.cloud.google.com                  | ComputeInstance                                 | False        | True        | False  | Terraform  | True        |
 | compute.cnrm.cloud.google.com                  | ComputeInstanceTemplate                         | False        | True        | False  | Terraform  | False       |
@@ -372,6 +372,7 @@
 | healthcare.cnrm.cloud.google.com               | HealthcareDICOMStore                            | True         | False       | False  | Terraform  | False       |
 | healthcare.cnrm.cloud.google.com               | HealthcareFHIRStore                             | True         | False       | False  | Terraform  | False       |
 | healthcare.cnrm.cloud.google.com               | HealthcareHL7V2Store                            | True         | False       | False  | Terraform  | False       |
+| hypercomputecluster.cnrm.cloud.google.com      | HypercomputeClusterCluster                      | True         | False       | False  | Direct     | True        |
 | iam.cnrm.cloud.google.com                      | IAMAccessBoundaryPolicy                         | False        | True        | False  | Terraform  | False       |
 | iam.cnrm.cloud.google.com                      | IAMAuditConfig                                  | False        | True        | False  | Direct     | True        |
 | iam.cnrm.cloud.google.com                      | IAMCustomRole                                   | False        | True        | False  | Terraform  | False       |
@@ -466,6 +467,7 @@
 | networksecurity.cnrm.cloud.google.com          | NetworkSecuritySecurityProfile                  | True         | False       | False  | Direct     | True        |
 | networksecurity.cnrm.cloud.google.com          | NetworkSecurityServerTLSPolicy                  | False        | True        | False  | DCL        | False       |
 | networksecurity.cnrm.cloud.google.com          | NetworkSecurityTLSInspectionPolicy              | True         | False       | False  | Direct     | True        |
+| networksecurity.cnrm.cloud.google.com          | NetworkSecurityURLList                          | True         | False       | False  | Direct     | True        |
 | networkservices.cnrm.cloud.google.com          | NetworkServicesAuthzExtension                   | True         | False       | False  | Direct     | True        |
 | networkservices.cnrm.cloud.google.com          | NetworkServicesEdgeCacheKeyset                  | True         | False       | False  | Terraform  | False       |
 | networkservices.cnrm.cloud.google.com          | NetworkServicesEdgeCacheOrigin                  | True         | False       | False  | Terraform  | False       |
@@ -481,6 +483,7 @@
 | networkservices.cnrm.cloud.google.com          | NetworkServicesTLSRoute                         | False        | True        | False  | DCL        | False       |
 | networkservices.cnrm.cloud.google.com          | NetworkServicesWasmPlugin                       | True         | False       | False  | Direct     | True        |
 | notebooks.cnrm.cloud.google.com                | NotebookInstance                                | True         | True        | False  | Direct     | True        |
+| notebooks.cnrm.cloud.google.com                | NotebookInstanceV2                              | True         | False       | False  | Direct     | True        |
 | notebooks.cnrm.cloud.google.com                | NotebooksEnvironment                            | True         | False       | False  | Direct     | True        |
 | notebooks.cnrm.cloud.google.com                | NotebooksExecution                              | True         | False       | False  | Direct     | True        |
 | notebooks.cnrm.cloud.google.com                | NotebooksSchedule                               | True         | False       | False  | Direct     | True        |

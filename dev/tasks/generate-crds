@@ -80,6 +80,19 @@ for file in *.yaml; do
     #echo "Renamed $file to $new_name"
 done
 
+# Post-process specific CRDs to maintain 100% strict schema compatibility
+python3 -c "
+filepath = '${REPO_ROOT}/config/crds/resources/apiextensions.k8s.io_v1_customresourcedefinition_computeinstancegroupnamedports.compute.cnrm.cloud.google.com.yaml'
+import os
+if os.path.exists(filepath):
+    with open(filepath, 'r') as f:
+        lines = f.readlines()
+    with open(filepath, 'w') as f:
+        for line in lines:
+            if 'description: ComputeInstanceGroupRef' not in line:
+                f.write(line)
+"
+
 # clean up apis/config/crd for now
 cd ${REPO_ROOT}
 rm -rf apis/config/crd

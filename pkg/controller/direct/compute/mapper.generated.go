@@ -2697,6 +2697,52 @@ func ComputeInstanceGroupManagerSpec_v1beta1_ToProto(mapCtx *direct.MapContext, 
 }
 */
 
+/* found existing non-generated mapping function "ComputeInstanceGroupNamedPortObservedState_v1alpha1_FromProto", skipping
+func ComputeInstanceGroupNamedPortObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.NamedPort) *krmcomputev1alpha1.ComputeInstanceGroupNamedPortObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeInstanceGroupNamedPortObservedState{}
+	// MISSING: Name
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeInstanceGroupNamedPortObservedState_v1alpha1_ToProto", skipping
+func ComputeInstanceGroupNamedPortObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeInstanceGroupNamedPortObservedState) *pb.NamedPort {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NamedPort{}
+	// MISSING: Name
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeInstanceGroupNamedPortSpec_v1alpha1_FromProto", skipping
+func ComputeInstanceGroupNamedPortSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.NamedPort) *krmcomputev1alpha1.ComputeInstanceGroupNamedPortSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1alpha1.ComputeInstanceGroupNamedPortSpec{}
+	// MISSING: Name
+	out.Port = in.Port
+	return out
+}
+*/
+
+/* found existing non-generated mapping function "ComputeInstanceGroupNamedPortSpec_v1alpha1_ToProto", skipping
+func ComputeInstanceGroupNamedPortSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1alpha1.ComputeInstanceGroupNamedPortSpec) *pb.NamedPort {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NamedPort{}
+	// MISSING: Name
+	out.Port = in.Port
+	return out
+}
+*/
+
 /* found existing non-generated mapping function "ComputeInstanceGroupSpec_v1beta1_FromProto", skipping
 func ComputeInstanceGroupSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceGroup) *krmcomputev1beta1.ComputeInstanceGroupSpec {
 	if in == nil {
