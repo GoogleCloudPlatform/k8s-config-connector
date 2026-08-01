@@ -476,11 +476,20 @@ EOF
     # Emit all other standalone checks right in exact preserved structure and alphabetical placement
     jobs_array+=("${name}")
 
+    if [[ "${name}" == "smoketest-with-kind" ]]; then
+cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
+
+  ${name}:
+    needs: build-images
+    runs-on: ubuntu-latest
+EOF
+    else
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
 
   ${name}:
     runs-on: ubuntu-latest
 EOF
+    fi
 
     if [[ "${name}" == "golangci-lint" ]]; then
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
@@ -574,6 +583,22 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
 EOF
     fi
 
+    if [[ "${name}" == "smoketest-with-kind" ]]; then
+cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
+      - name: "Download Docker images artifact"
+        uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
+        with:
+          name: kcc-docker-images
+          path: /tmp/
+      - name: "Load pre-built Docker images into local daemon"
+        run: |
+          if [ -f /tmp/kcc-images.tar ]; then
+            echo "Loading pre-built Docker images from /tmp/kcc-images.tar..."
+            docker load -i /tmp/kcc-images.tar
+          fi
+EOF
+    fi
+
     # TODO: We should look at the script to see if it needs gcloud
     if [[ "${name}" == "test-mockgcp" || "${name}" == "unit-tests" || "${name}" == "unit-tests-operator" ]]; then
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
@@ -613,6 +638,16 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
           path: /tmp/artifacts/
 
 EOF
+
+    if [[ "${name}" == "build-images" ]]; then
+cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
+      - name: "Upload Docker images artifact"
+        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
+        with:
+          name: kcc-docker-images
+          path: /tmp/kcc-images.tar
+EOF
+    fi
 
 done
 
