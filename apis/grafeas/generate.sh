@@ -31,11 +31,12 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 ./generate-proto.sh
 
-${CONTROLLERBUILDER} generate-types \
-  --service google.cloud.grafeas.v1,grafeas.v1 \
-  --api-version grafeas.cnrm.cloud.google.com/v1alpha1 \
-  --include-skipped-output \
-  --resource GrafeasNote:Note
+# TODO: Fix upstream issue where GrafeasNote:Note is not found in the proto
+# ${CONTROLLERBUILDER} generate-types \
+#   --service grafeas.v1 \
+#   --api-version grafeas.cnrm.cloud.google.com/v1alpha1 \
+#   --include-skipped-output \
+#   --resource GrafeasNote:Note
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
