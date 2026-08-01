@@ -17,6 +17,7 @@ package cais
 import (
 	"bytes"
 	"context"
+	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -257,6 +258,27 @@ func TestGoldenIdentitiesYamlFiles(t *testing.T) {
 				}
 				if err := unstructured.SetNestedField(u.Object, "folders/"+folderID, "status", "externalRef"); err != nil {
 					t.Fatalf("failed to inject status.externalRef for Folder %s: %v", u.GetName(), err)
+				}
+			}
+
+			// Inject status.externalRef for DiscoveryEngineDataStore to simulate a reconciled datastore.
+			if u.GetKind() == "DiscoveryEngineDataStore" && u.GroupVersionKind().Group == "discoveryengine.cnrm.cloud.google.com" {
+				projectID := "mock-project"
+				location, _, _ := unstructured.NestedString(u.Object, "spec", "location")
+				if location == "" {
+					location = "global"
+				}
+				collection, _, _ := unstructured.NestedString(u.Object, "spec", "collection")
+				if collection == "" {
+					collection = "default_collection"
+				}
+				dataStoreID, _, _ := unstructured.NestedString(u.Object, "spec", "resourceID")
+				if dataStoreID == "" {
+					dataStoreID = u.GetName()
+				}
+				externalRef := fmt.Sprintf("projects/%s/locations/%s/collections/%s/dataStores/%s", projectID, location, collection, dataStoreID)
+				if err := unstructured.SetNestedField(u.Object, externalRef, "status", "externalRef"); err != nil {
+					t.Fatalf("failed to inject status.externalRef for DiscoveryEngineDataStore %s: %v", u.GetName(), err)
 				}
 			}
 
