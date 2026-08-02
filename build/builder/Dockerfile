@@ -49,10 +49,5 @@ RUN --mount=type=cache,target=/root/.cache/go-build \
       github.com/GoogleCloudPlatform/k8s-config-connector/cmd/manager \
       github.com/GoogleCloudPlatform/k8s-config-connector/cmd/config-connector
 
-ARG SKIP_THIRD_PARTY_LICENSES=""
 RUN --mount=type=cache,target=/go/pkg/mod \
-    if [ -z "${SKIP_THIRD_PARTY_LICENSES}" ]; then \
-      go run scripts/generate-third-party-licenses/main.go; \
-    else \
-      mkdir -p THIRD_PARTY_NOTICES MIRRORED_LIBRARY_SOURCE; \
-    fi
+    go run scripts/generate-third-party-licenses/main.go

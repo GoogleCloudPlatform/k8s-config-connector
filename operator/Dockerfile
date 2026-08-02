@@ -54,14 +54,8 @@ RUN --mount=type=cache,target=/root/.cache/go-build \
     CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -o gke_addon_poststart github.com/GoogleCloudPlatform/k8s-config-connector/operator/cmd/gke_addon_poststart
 
 # Generate licenses
-ARG SKIP_THIRD_PARTY_LICENSES=""
-RUN if [ -z "${SKIP_THIRD_PARTY_LICENSES}" ]; then \
-      go mod vendor -o temp-vendor && \
-      go run scripts/generate-third-party-licenses/main.go && \
-      rm -rf temp-vendor; \
-    else \
-      mkdir -p THIRD_PARTY_NOTICES MIRRORED_LIBRARY_SOURCE; \
-    fi
+RUN --mount=type=cache,target=/go/pkg/mod \
+    go run scripts/generate-third-party-licenses/main.go
 
 # Prepare a directory containing the binaries and other artifacts, and
 # configure any required permissions

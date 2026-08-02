@@ -28,16 +28,9 @@ variable "GKE_DISTROLESS_IMG" {
   default = "gcr.io/gke-release/gke-distroless/static:gke_distroless_20260207.00_p0"
 }
 
-variable "SKIP_THIRD_PARTY_LICENSES" {
-  default = "1"
-}
-
 target "builder" {
   dockerfile = "build/builder/Dockerfile"
   context    = "."
-  args = {
-    SKIP_THIRD_PARTY_LICENSES = "${SKIP_THIRD_PARTY_LICENSES}"
-  }
 }
 
 target "manager" {
@@ -124,6 +117,5 @@ target "operator" {
   tags       = ["${IMAGE_PREFIX}operator:${IMAGE_TAG}"]
   args = {
     GKE_DISTROLESS_IMG = "${GKE_DISTROLESS_IMG}"
-    SKIP_THIRD_PARTY_LICENSES = "${SKIP_THIRD_PARTY_LICENSES}"
   }
 }
