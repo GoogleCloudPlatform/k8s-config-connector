@@ -18,7 +18,6 @@ import (
 	"context"
 	"fmt"
 
-	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/notebooks/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
@@ -109,7 +108,7 @@ func (m *modelInstanceV2) AdapterForObject(ctx context.Context, op *directbase.A
 	}
 
 	mapCtx := &direct.MapContext{}
-	desired := Spec_ToProto(mapCtx, &obj.Spec)
+	desired := NotebookInstanceV2Spec_v1alpha1_ToProto(mapCtx, &obj.Spec)
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
@@ -227,7 +226,7 @@ func (a *InstanceV2Adapter) Update(ctx context.Context, updateOp *directbase.Upd
 }
 
 func compareNotebooksV2(ctx context.Context, actual, desired *notebookspb.Instance) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
-	maskedActual, err := mappers.OnlySpecFields(actual, Spec_FromProto, Spec_ToProto)
+	maskedActual, err := mappers.OnlySpecFields(actual, NotebookInstanceV2Spec_v1alpha1_FromProto, NotebookInstanceV2Spec_v1alpha1_ToProto)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -367,7 +366,7 @@ func (a *InstanceV2Adapter) Export(ctx context.Context) (*unstructured.Unstructu
 
 	obj := &krm.NotebookInstanceV2{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(Spec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(NotebookInstanceV2Spec_v1alpha1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
@@ -410,71 +409,4 @@ func (a *InstanceV2Adapter) Delete(ctx context.Context, deleteOp *directbase.Del
 		return false, fmt.Errorf("waiting delete InstanceV2 %s: %w", a.id, err)
 	}
 	return true, nil
-}
-
-func Spec_ToProto(mapCtx *direct.MapContext, in *krm.NotebookInstanceV2Spec) *notebookspb.Instance {
-	if in == nil {
-		return nil
-	}
-	out := NotebookInstanceV2Spec_v1alpha1_ToProto(mapCtx, in)
-	if out == nil {
-		return nil
-	}
-	// Manual mapping for ServiceAccounts
-	if in.GCESetup != nil && out.GetGceSetup() != nil {
-		outGCE := out.GetGceSetup()
-		for i, sa := range in.GCESetup.ServiceAccounts {
-			if i < len(outGCE.ServiceAccounts) && sa.ServiceAccountRef != nil {
-				outGCE.ServiceAccounts[i].Email = sa.ServiceAccountRef.External
-			}
-		}
-		// Manual mapping for GPUDriverConfig
-		if in.GCESetup.GPUDriverConfig != nil {
-			outGCE.GpuDriverConfig = &notebookspb.GPUDriverConfig{
-				EnableGpuDriver:     direct.ValueOf(in.GCESetup.GPUDriverConfig.EnableGpuDriver),
-				CustomGpuDriverPath: direct.ValueOf(in.GCESetup.GPUDriverConfig.CustomGpuDriverPath),
-			}
-		}
-		// Manual mapping for DataDisks KMS keys
-		for i, dd := range in.GCESetup.DataDisks {
-			if i < len(outGCE.DataDisks) && dd.KmsKeyRef != nil {
-				outGCE.DataDisks[i].KmsKey = dd.KmsKeyRef.External
-				outGCE.DataDisks[i].DiskEncryption = notebookspb.DiskEncryption_CMEK
-			}
-		}
-	}
-	return out
-}
-
-func Spec_FromProto(mapCtx *direct.MapContext, in *notebookspb.Instance) *krm.NotebookInstanceV2Spec {
-	if in == nil {
-		return nil
-	}
-	out := NotebookInstanceV2Spec_v1alpha1_FromProto(mapCtx, in)
-	if out == nil {
-		return nil
-	}
-	// Manual mapping for ServiceAccounts
-	if in.GetGceSetup() != nil && out.GCESetup != nil {
-		inGCE := in.GetGceSetup()
-		for i, sa := range inGCE.ServiceAccounts {
-			if i < len(out.GCESetup.ServiceAccounts) && sa.GetEmail() != "" {
-				out.GCESetup.ServiceAccounts[i].ServiceAccountRef = &refs.IAMServiceAccountRef{External: sa.GetEmail()}
-			}
-		}
-		// Manual mapping for GPUDriverConfig
-		if inGCE.GetGpuDriverConfig() != nil {
-			out.GCESetup.GPUDriverConfig = &krm.InstanceGPUDriverConfig{
-				EnableGpuDriver:     direct.LazyPtr(inGCE.GetGpuDriverConfig().GetEnableGpuDriver()),
-				CustomGpuDriverPath: direct.LazyPtr(inGCE.GetGpuDriverConfig().GetCustomGpuDriverPath()),
-			}
-		}
-		// Manual mapping for DataDisks KMS keys
-		for i, dd := range inGCE.DataDisks {
-			if i < len(out.GCESetup.DataDisks) && dd.GetKmsKey() != "" {
-				out.GCESetup.DataDisks[i].KmsKeyRef = &kmsv1beta1.KMSCryptoKeyRef{External: dd.GetKmsKey()}
-			}
-		}
-	}
-	return out
 }
