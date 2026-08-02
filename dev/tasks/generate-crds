@@ -25,9 +25,41 @@ if [[ -n ${SKIP_GENERATE_CRDS:-} ]]; then
   exit 0
 fi
 
+mkdir -p ${REPO_ROOT}/bin
+
+CONTROLLER_GEN="${REPO_ROOT}/bin/controller-gen"
+if [[ ! -x "${CONTROLLER_GEN}" ]]; then
+  echo "Prebuilding controller-gen..."
+  GOBIN="${REPO_ROOT}/bin" go install sigs.k8s.io/controller-tools/cmd/controller-gen@v0.16.5
+fi
+
+ADD_VALIDATION="${REPO_ROOT}/bin/add-validation-to-crds"
+if [[ ! -x "${ADD_VALIDATION}" ]]; then
+  echo "Prebuilding add-validation-to-crds..."
+  (cd ${REPO_ROOT} && go build -o "${ADD_VALIDATION}" ./scripts/add-validation-to-crds)
+fi
+
+CRD_TOOLS="${REPO_ROOT}/bin/crd-tools"
+if [[ ! -x "${CRD_TOOLS}" ]]; then
+  echo "Prebuilding crd-tools..."
+  (cd ${REPO_ROOT} && go build -o "${CRD_TOOLS}" ./scripts/crd-tools)
+fi
+
+GENERATE_GVKS="${REPO_ROOT}/bin/generate-gvks"
+if [[ ! -x "${GENERATE_GVKS}" ]]; then
+  echo "Prebuilding generate-gvks..."
+  (cd ${REPO_ROOT} && go build -o "${GENERATE_GVKS}" ./scripts/generate-gvks/main.go)
+fi
+
+GENERATE_ROLES="${REPO_ROOT}/bin/generate-cnrm-cluster-roles"
+if [[ ! -x "${GENERATE_ROLES}" ]]; then
+  echo "Prebuilding generate-cnrm-cluster-roles..."
+  (cd ${REPO_ROOT} && go build -o "${GENERATE_ROLES}" ./scripts/generate-cnrm-cluster-roles/main.go)
+fi
+
 # Run controller-gen to generate CRDs (including deepcopy)
 cd ${REPO_ROOT}/apis
-go run sigs.k8s.io/controller-tools/cmd/controller-gen@v0.16.5 \
+"${CONTROLLER_GEN}" \
   object:headerFile=${REPO_ROOT}/hack/boilerplate.go.txt \
   crd:crdVersions=v1,allowDangerousTypes=true,ignoreUnexportedFields=true \
   output:crd:artifacts:config=config/crd/ \
@@ -35,16 +67,16 @@ go run sigs.k8s.io/controller-tools/cmd/controller-gen@v0.16.5 \
 
 # Add OpenAPI validation to refs
 cd ${REPO_ROOT}
-go run ./scripts/add-validation-to-crds --dir apis/config/crd/
+"${ADD_VALIDATION}" --dir apis/config/crd/
 
 # Apply a few small tweaks to the CRDs
 cd ${REPO_ROOT}
-go run ./scripts/crd-tools set-field spec.preserveUnknownFields=false --dir apis/config/crd/
-go run ./scripts/crd-tools delete-field status --dir apis/config/crd/
-go run ./scripts/crd-tools set-annotation cnrm.cloud.google.com/version=0.0.0-dev --dir apis/config/crd/
-go run ./scripts/crd-tools delete-annotation controller-gen.kubebuilder.io/version --dir apis/config/crd/
-go run ./scripts/crd-tools reflow-descriptions --dir apis/config/crd/
-go run ./scripts/crd-tools backport-alpha --dir apis/config/crd/
+"${CRD_TOOLS}" set-field spec.preserveUnknownFields=false --dir apis/config/crd/
+"${CRD_TOOLS}" delete-field status --dir apis/config/crd/
+"${CRD_TOOLS}" set-annotation cnrm.cloud.google.com/version=0.0.0-dev --dir apis/config/crd/
+"${CRD_TOOLS}" delete-annotation controller-gen.kubebuilder.io/version --dir apis/config/crd/
+"${CRD_TOOLS}" reflow-descriptions --dir apis/config/crd/
+"${CRD_TOOLS}" backport-alpha --dir apis/config/crd/
 
 # Copy generated CRDs to apis/config/crd/
 # The crds directory is generated only as part of the release (currently)
@@ -85,10 +117,10 @@ cd ${REPO_ROOT}
 rm -rf apis/config/crd
 
 # Generated the supported GVKs file
-go run ./scripts/generate-gvks/main.go -output-dir=pkg/gvks/supportedgvks
+"${GENERATE_GVKS}" -output-dir=pkg/gvks/supportedgvks
 
 # Generate the cnrm_admin.yaml and cnrm_viewer.yaml RBAC files
-go run ./scripts/generate-cnrm-cluster-roles/main.go
+"${GENERATE_ROLES}"
 
 # controller-gen sometimes leaves empty imports in the api files.
 source "${REPO_ROOT}/dev/tools/goimports.sh"
