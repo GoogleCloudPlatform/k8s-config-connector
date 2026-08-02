@@ -483,6 +483,46 @@ func CCInsightsPhraseMatcherSpec_ToProto(mapCtx *direct.MapContext, in *krm.CCIn
 	out.RoleMatch = direct.Enum_ToProto[pb.ConversationParticipant_Role](mapCtx, in.RoleMatch)
 	return out
 }
+func CCInsightsQAScorecardObservedState_FromProto(mapCtx *direct.MapContext, in *pb.QaScorecard) *krm.CCInsightsQAScorecardObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CCInsightsQAScorecardObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func CCInsightsQAScorecardObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CCInsightsQAScorecardObservedState) *pb.QaScorecard {
+	if in == nil {
+		return nil
+	}
+	out := &pb.QaScorecard{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+func CCInsightsQAScorecardSpec_FromProto(mapCtx *direct.MapContext, in *pb.QaScorecard) *krm.CCInsightsQAScorecardSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CCInsightsQAScorecardSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	return out
+}
+func CCInsightsQAScorecardSpec_ToProto(mapCtx *direct.MapContext, in *krm.CCInsightsQAScorecardSpec) *pb.QaScorecard {
+	if in == nil {
+		return nil
+	}
+	out := &pb.QaScorecard{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	return out
+}
 func CCInsightsViewObservedState_FromProto(mapCtx *direct.MapContext, in *pb.View) *krm.CCInsightsViewObservedState {
 	if in == nil {
 		return nil

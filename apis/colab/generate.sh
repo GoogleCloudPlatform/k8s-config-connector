@@ -40,6 +40,10 @@ ${CONTROLLERBUILDER} generate-types \
   --resource ColabRuntimeTemplate:NotebookRuntimeTemplate \
   --skip-scaffold-files
 
+${CONTROLLERBUILDER} generate-mapper \
+  --service google.cloud.aiplatform.v1beta1 \
+  --api-version colab.cnrm.cloud.google.com/v1alpha1
+
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
