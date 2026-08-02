@@ -34,9 +34,7 @@ COPY mockgcp/ mockgcp/
 COPY operator/ operator/
 COPY third_party/ third_party/
 COPY version/ version/
-COPY scripts/generate-third-party-licenses scripts/generate-third-party-licenses
-COPY dev/tasks/generate-channels dev/tasks/generate-channels
-RUN dev/tasks/generate-channels
+COPY scripts/resource-autogen scripts/resource-autogen
 
 # Build the binaries from source in parallel. Note: the "-s -w" flags strip the tables
 # needed for debuggers, but not the line numbers for panics, and -trimpath reduces binary size.
