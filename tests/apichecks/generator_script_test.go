@@ -53,3 +53,49 @@ func TestGenerateScriptsLocation(t *testing.T) {
 		t.Fatalf("error walking apis directory: %v", err)
 	}
 }
+
+func TestGenerateScripts(t *testing.T) {
+	apisDir := "../../apis"
+
+	err := filepath.Walk(apisDir, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+		if info.IsDir() || info.Name() != "generate.sh" {
+			return nil
+		}
+
+		relPath, err := filepath.Rel(apisDir, path)
+		if err != nil {
+			return err
+		}
+
+		contentBytes, err := os.ReadFile(path)
+		if err != nil {
+			t.Fatalf("failed to read %s: %v", relPath, err)
+		}
+		content := string(contentBytes)
+
+		t.Run(relPath, func(t *testing.T) {
+			// 1) Must call ./generate-proto.sh
+			if !strings.Contains(content, "generate-proto.sh") {
+				t.Errorf("generate.sh script at %s is missing call to ./generate-proto.sh", relPath)
+			}
+
+			// 2) Must call generate-types (or openapi-to-krm)
+			if !strings.Contains(content, "generate-types") && !strings.Contains(content, "openapi-to-krm") {
+				t.Errorf("generate.sh script at %s is missing call to generate-types", relPath)
+			}
+
+			// 3) Must call dev/tasks/generate-crds
+			if !strings.Contains(content, "generate-crds") {
+				t.Errorf("generate.sh script at %s is missing call to dev/tasks/generate-crds", relPath)
+			}
+		})
+
+		return nil
+	})
+	if err != nil {
+		t.Fatalf("error walking apis directory: %v", err)
+	}
+}
