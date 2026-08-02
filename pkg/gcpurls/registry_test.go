@@ -21,6 +21,7 @@ import (
 	"regexp"
 	"testing"
 
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudidentity/v1alpha1"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudidentity/v1beta1"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/apis/filestore/v1beta1"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/register"

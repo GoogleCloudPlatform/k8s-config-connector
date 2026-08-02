@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -48,7 +48,7 @@ type MetastoreBackupSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	/* The MetastoreService that the backup belongs to. */
-	ServiceRef v1alpha1.ResourceRef `json:"serviceRef"`
+	ServiceRef k8sv1alpha1.ResourceRef `json:"serviceRef"`
 }
 
 type BackupObservedStateStatus struct {
@@ -76,7 +76,7 @@ type BackupObservedStateStatus struct {
 type MetastoreBackupStatus struct {
 	/* Conditions represent the latest available observations of the
 	   MetastoreBackup's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the MetastoreBackup resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -40,12 +40,12 @@ var _ = apiextensionsv1.JSON{}
 
 type TargetpoolHealthChecks struct {
 	// +optional
-	HttpHealthCheckRef *v1alpha1.ResourceRef `json:"httpHealthCheckRef,omitempty"`
+	HttpHealthCheckRef *k8sv1alpha1.ResourceRef `json:"httpHealthCheckRef,omitempty"`
 }
 
 type ComputeTargetPoolSpec struct {
 	// +optional
-	BackupTargetPoolRef *v1alpha1.ResourceRef `json:"backupTargetPoolRef,omitempty"`
+	BackupTargetPoolRef *k8sv1alpha1.ResourceRef `json:"backupTargetPoolRef,omitempty"`
 
 	/* Immutable. Textual description field. */
 	// +optional
@@ -59,7 +59,7 @@ type ComputeTargetPoolSpec struct {
 	HealthChecks []TargetpoolHealthChecks `json:"healthChecks,omitempty"`
 
 	// +optional
-	Instances []v1alpha1.ResourceRef `json:"instances,omitempty"`
+	Instances []k8sv1alpha1.ResourceRef `json:"instances,omitempty"`
 
 	/* Immutable. Where the target pool resides. Defaults to project region. */
 	Region string `json:"region"`
@@ -70,7 +70,7 @@ type ComputeTargetPoolSpec struct {
 
 	/* The resource URL for the security policy associated with this target pool. */
 	// +optional
-	SecurityPolicyRef *v1alpha1.ResourceRef `json:"securityPolicyRef,omitempty"`
+	SecurityPolicyRef *k8sv1alpha1.ResourceRef `json:"securityPolicyRef,omitempty"`
 
 	/* Immutable. How to distribute load. Options are "NONE" (no affinity). "CLIENT_IP" (hash of the source/dest addresses / ports), and "CLIENT_IP_PROTO" also includes the protocol (default "NONE"). */
 	// +optional
@@ -80,7 +80,7 @@ type ComputeTargetPoolSpec struct {
 type ComputeTargetPoolStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeTargetPool's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`

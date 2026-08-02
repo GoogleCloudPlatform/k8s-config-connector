@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -41,11 +41,11 @@ var _ = apiextensionsv1.JSON{}
 type ComputeTargetHTTPSProxySpec struct {
 	/* URLs to certificate manager certificate resources that are used to authenticate connections between users and the load balancer. Currently, you may specify up to 15 certificates. Certificate manager certificates do not apply when the load balancing scheme is set to INTERNAL_SELF_MANAGED. sslCertificates and certificateManagerCertificates fields cannot be defined together. */
 	// +optional
-	CertificateManagerCertificates []v1alpha1.ResourceRef `json:"certificateManagerCertificates,omitempty"`
+	CertificateManagerCertificates []k8sv1alpha1.ResourceRef `json:"certificateManagerCertificates,omitempty"`
 
 	/* A reference to the CertificateMap resource uri that identifies a certificate map associated with the given target proxy. This field can only be set for global target proxies. This field is only supported for EXTERNAL and EXTERNAL_MANAGED load balancing schemes. For INTERNAL_MANAGED, use certificateManagerCertificates instead. sslCertificates and certificateMap fields cannot be defined together. */
 	// +optional
-	CertificateMapRef *v1alpha1.ResourceRef `json:"certificateMapRef,omitempty"`
+	CertificateMapRef *k8sv1alpha1.ResourceRef `json:"certificateMapRef,omitempty"`
 
 	/* Immutable. An optional description of this resource. */
 	// +optional
@@ -72,18 +72,18 @@ type ComputeTargetHTTPSProxySpec struct {
 
 	/* Immutable. A URL referring to a networksecurity.ServerTlsPolicy resource that describes how the proxy should authenticate inbound traffic. serverTlsPolicy only applies to a global TargetHttpsProxy attached to globalForwardingRules with the loadBalancingScheme set to INTERNAL_SELF_MANAGED or EXTERNAL or EXTERNAL_MANAGED. For details which ServerTlsPolicy resources are accepted with INTERNAL_SELF_MANAGED and which with EXTERNAL, EXTERNAL_MANAGED loadBalancingScheme consult ServerTlsPolicy documentation. If left blank, communications are not encrypted. */
 	// +optional
-	ServerTlsPolicyRef *v1alpha1.ResourceRef `json:"serverTlsPolicyRef,omitempty"`
+	ServerTlsPolicyRef *k8sv1alpha1.ResourceRef `json:"serverTlsPolicyRef,omitempty"`
 
 	/* A list of ComputeSSLCertificate resources that are used to authenticate connections between users and the load balancer. At least one SSL certificate must be specified. */
 	// +optional
-	SslCertificates []v1alpha1.ResourceRef `json:"sslCertificates,omitempty"`
+	SslCertificates []k8sv1alpha1.ResourceRef `json:"sslCertificates,omitempty"`
 
 	/* A reference to the ComputeSSLPolicy resource that will be associated with the ComputeTargetHTTPSProxy resource. If not set, the ComputeTargetHTTPSProxy resource will not have any SSL policy configured. */
 	// +optional
-	SslPolicyRef *v1alpha1.ResourceRef `json:"sslPolicyRef,omitempty"`
+	SslPolicyRef *k8sv1alpha1.ResourceRef `json:"sslPolicyRef,omitempty"`
 
 	/* A reference to the ComputeURLMap resource that defines the mapping from URL to the BackendService. */
-	UrlMapRef v1alpha1.ResourceRef `json:"urlMapRef"`
+	UrlMapRef k8sv1alpha1.ResourceRef `json:"urlMapRef"`
 }
 
 type TargethttpsproxyObservedStateStatus struct {
@@ -95,7 +95,7 @@ type TargethttpsproxyObservedStateStatus struct {
 type ComputeTargetHTTPSProxyStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeTargetHTTPSProxy's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* Creation timestamp in RFC3339 text format. */
 	// +optional
 	CreationTimestamp *string `json:"creationTimestamp,omitempty"`

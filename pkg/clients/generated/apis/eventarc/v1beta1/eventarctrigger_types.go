@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -46,12 +46,12 @@ type TriggerCloudRunService struct {
 	/* Required. The region the Cloud Run service is deployed in. */
 	Region string `json:"region"`
 
-	ServiceRef v1alpha1.ResourceRef `json:"serviceRef"`
+	ServiceRef k8sv1alpha1.ResourceRef `json:"serviceRef"`
 }
 
 type TriggerDestination struct {
 	// +optional
-	CloudFunctionRef *v1alpha1.ResourceRef `json:"cloudFunctionRef,omitempty"`
+	CloudFunctionRef *k8sv1alpha1.ResourceRef `json:"cloudFunctionRef,omitempty"`
 
 	/* Cloud Run fully-managed service that receives the events. The service should be running in the same project of the trigger. */
 	// +optional
@@ -70,11 +70,11 @@ type TriggerDestination struct {
 	NetworkConfig *TriggerNetworkConfig `json:"networkConfig,omitempty"`
 
 	// +optional
-	WorkflowRef *v1alpha1.ResourceRef `json:"workflowRef,omitempty"`
+	WorkflowRef *k8sv1alpha1.ResourceRef `json:"workflowRef,omitempty"`
 }
 
 type TriggerGke struct {
-	ClusterRef v1alpha1.ResourceRef `json:"clusterRef"`
+	ClusterRef k8sv1alpha1.ResourceRef `json:"clusterRef"`
 
 	/* Required. The name of the Google Compute Engine in which the cluster resides, which can either be compute zone (for example, us-central1-a) for the zonal clusters or region (for example, us-central1) for regional clusters. */
 	Location string `json:"location"`
@@ -108,13 +108,13 @@ type TriggerMatchingCriteria struct {
 }
 
 type TriggerNetworkConfig struct {
-	NetworkAttachmentRef v1alpha1.ResourceRef `json:"networkAttachmentRef"`
+	NetworkAttachmentRef k8sv1alpha1.ResourceRef `json:"networkAttachmentRef"`
 }
 
 type TriggerPubsub struct {
 	/* Immutable. */
 	// +optional
-	TopicRef *v1alpha1.ResourceRef `json:"topicRef,omitempty"`
+	TopicRef *k8sv1alpha1.ResourceRef `json:"topicRef,omitempty"`
 }
 
 type TriggerTransport struct {
@@ -126,7 +126,7 @@ type TriggerTransport struct {
 type EventarcTriggerSpec struct {
 	/* Immutable. */
 	// +optional
-	ChannelRef *v1alpha1.ResourceRef `json:"channelRef,omitempty"`
+	ChannelRef *k8sv1alpha1.ResourceRef `json:"channelRef,omitempty"`
 
 	/* Required. Destination specifies where the events should be sent to. */
 	Destination TriggerDestination `json:"destination"`
@@ -142,14 +142,14 @@ type EventarcTriggerSpec struct {
 	MatchingCriteria []TriggerMatchingCriteria `json:"matchingCriteria"`
 
 	/* Immutable. The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// +optional
-	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+	ServiceAccountRef *k8sv1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 
 	/* Immutable. Optional. In order to deliver messages, Eventarc may use other GCP products as transport intermediary. This field contains a reference to that transport intermediary. This information can be used for debugging purposes. */
 	// +optional
@@ -170,7 +170,7 @@ type TriggerTransportStatus struct {
 type EventarcTriggerStatus struct {
 	/* Conditions represent the latest available observations of the
 	   EventarcTrigger's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* Output only. The creation time. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`

@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -41,11 +41,11 @@ var _ = apiextensionsv1.JSON{}
 type ReportScopes struct {
 	/* Optional. An App Hub Application to fetch data from. */
 	// +optional
-	ApplicationRef *v1alpha1.ResourceRef `json:"applicationRef,omitempty"`
+	ApplicationRef *k8sv1alpha1.ResourceRef `json:"applicationRef,omitempty"`
 
 	/* Optional. A Google Cloud Platform project to fetch data from. */
 	// +optional
-	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+	ProjectRef *k8sv1alpha1.ResourceRef `json:"projectRef,omitempty"`
 }
 
 type AppOptimizeReportSpec struct {
@@ -63,7 +63,7 @@ type AppOptimizeReportSpec struct {
 	Metrics []string `json:"metrics"`
 
 	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* The AppOptimizeReport name. If not given, the metadata.name will be used. */
 	// +optional
@@ -83,7 +83,7 @@ type ReportObservedStateStatus struct {
 type AppOptimizeReportStatus struct {
 	/* Conditions represent the latest available observations of the
 	   AppOptimizeReport's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the AppOptimizeReport resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

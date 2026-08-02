@@ -47,7 +47,7 @@ func (g *GeneralTypes) Generate() {
 	g.Print("package %s", g.Version.Name)
 
 	g.Print("import (\n")
-	g.Print("\"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1\"")
+	g.Print("k8sv1alpha1 \"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1\"")
 	g.Print("metav1 \"k8s.io/apimachinery/pkg/apis/meta/v1\"")
 	g.Print("apiextensionsv1 \"k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1\"")
 	g.Print(")")
@@ -91,7 +91,7 @@ func (g *GeneralTypes) Generate() {
 	g.Print("type %sStatus struct {", g.Name)
 	g.Print("\t/* Conditions represent the latest available observations of the")
 	g.Print("\t    %s's current state. */", g.Name)
-	g.Print("Conditions []v1alpha1.Condition `json:\"conditions,omitempty\"`")
+	g.Print("Conditions []k8sv1alpha1.Condition `json:\"conditions,omitempty\"`")
 
 	for i, f := range g.StatusFields {
 		if i != 0 {

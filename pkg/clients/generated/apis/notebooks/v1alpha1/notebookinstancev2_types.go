@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -63,7 +63,7 @@ type Notebookinstancev2BootDisk struct {
 
 	/* Optional. The KMS key used to encrypt the disks, only applicable if disk_encryption is CMEK. */
 	// +optional
-	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+	KmsKeyRef *k8sv1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 }
 
 type Notebookinstancev2ContainerImage struct {
@@ -91,7 +91,7 @@ type Notebookinstancev2DataDisks struct {
 
 	/* Optional. The KMS key used to encrypt the disks, only applicable if disk_encryption is CMEK. */
 	// +optional
-	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+	KmsKeyRef *k8sv1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 }
 
 type Notebookinstancev2GceSetup struct {
@@ -165,7 +165,7 @@ type Notebookinstancev2GpuDriverConfig struct {
 type Notebookinstancev2NetworkInterfaces struct {
 	/* Optional. The ComputeNetwork that this VM instance is in. */
 	// +optional
-	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+	NetworkRef *k8sv1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
 	/* Optional. The type of vNIC to be used on this interface. This may be gVNIC or VirtioNet. */
 	// +optional
@@ -173,13 +173,13 @@ type Notebookinstancev2NetworkInterfaces struct {
 
 	/* Optional. The ComputeSubnetwork that this VM instance is in. */
 	// +optional
-	SubnetRef *v1alpha1.ResourceRef `json:"subnetRef,omitempty"`
+	SubnetRef *k8sv1alpha1.ResourceRef `json:"subnetRef,omitempty"`
 }
 
 type Notebookinstancev2ServiceAccounts struct {
 	/* Optional. The IAMServiceAccount that serves as an identity for the VM instance. */
 	// +optional
-	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+	ServiceAccountRef *k8sv1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 }
 
 type Notebookinstancev2ShieldedInstanceConfig struct {
@@ -231,7 +231,7 @@ type NotebookInstanceV2Spec struct {
 	Location string `json:"location"`
 
 	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* The NotebookInstanceV2 name. If not given, the metadata.name will be used. */
 	// +optional
@@ -333,7 +333,7 @@ type Notebookinstancev2UpgradeHistoryStatus struct {
 type NotebookInstanceV2Status struct {
 	/* Conditions represent the latest available observations of the
 	   NotebookInstanceV2's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the NotebookInstanceV2 resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

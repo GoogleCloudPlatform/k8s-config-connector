@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -94,11 +94,11 @@ type WorkstationconfigContainer struct {
 type WorkstationconfigEncryptionKey struct {
 	/* Immutable. A reference to the Google Cloud KMS encryption key. For example, `"projects/PROJECT_ID/locations/REGION/keyRings/KEY_RING/cryptoKeys/KEY_NAME"`. The key must be in the same region as the workstation configuration. */
 	// +optional
-	KmsCryptoKeyRef *v1alpha1.ResourceRef `json:"kmsCryptoKeyRef,omitempty"`
+	KmsCryptoKeyRef *k8sv1alpha1.ResourceRef `json:"kmsCryptoKeyRef,omitempty"`
 
 	/* Immutable. A reference to a service account to use with the specified KMS key. We recommend that you use a separate service account and follow KMS best practices. For more information, see [Separation of duties](https://cloud.google.com/kms/docs/separation-of-duties) and `gcloud kms keys add-iam-policy-binding` [`--member`](https://cloud.google.com/sdk/gcloud/reference/kms/keys/add-iam-policy-binding#--member). */
 	// +optional
-	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+	ServiceAccountRef *k8sv1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 }
 
 type WorkstationconfigEnv struct {
@@ -187,7 +187,7 @@ type WorkstationconfigGceInstance struct {
 	Cloud Workstations service, and the image must be publicly
 	accessible. */
 	// +optional
-	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+	ServiceAccountRef *k8sv1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 
 	/* Optional. Scopes to grant to the [service_account][google.cloud.workstations.v1.WorkstationConfig.Host.GceInstance.service_account]. Various scopes are automatically added based on feature usage. When specified, users of workstations under this configuration must have `iam.serviceAccounts.actAs` on the service account. */
 	// +optional
@@ -338,7 +338,7 @@ type WorkstationConfigSpec struct {
 	Labels []WorkstationconfigLabels `json:"labels,omitempty"`
 
 	/* Parent is a reference to the parent WorkstationCluster for this WorkstationConfig. */
-	ParentRef v1alpha1.ResourceRef `json:"parentRef"`
+	ParentRef k8sv1alpha1.ResourceRef `json:"parentRef"`
 
 	/* Optional. Directories to persist across workstation sessions. */
 	// +optional
@@ -447,7 +447,7 @@ type WorkstationconfigObservedStateStatus struct {
 type WorkstationConfigStatus struct {
 	/* Conditions represent the latest available observations of the
 	   WorkstationConfig's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the WorkstationConfig resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

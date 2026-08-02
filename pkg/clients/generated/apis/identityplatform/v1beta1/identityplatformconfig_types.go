@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -116,7 +116,7 @@ type ConfigMultiTenant struct {
 	AllowTenants *bool `json:"allowTenants,omitempty"`
 
 	// +optional
-	DefaultTenantLocationRef *v1alpha1.ResourceRef `json:"defaultTenantLocationRef,omitempty"`
+	DefaultTenantLocationRef *k8sv1alpha1.ResourceRef `json:"defaultTenantLocationRef,omitempty"`
 }
 
 type ConfigNotification struct {
@@ -327,7 +327,7 @@ type ConfigSmtp struct {
 
 type ConfigTriggers struct {
 	// +optional
-	FunctionUriRef *v1alpha1.ResourceRef `json:"functionUriRef,omitempty"`
+	FunctionUriRef *k8sv1alpha1.ResourceRef `json:"functionUriRef,omitempty"`
 
 	/* When the trigger was changed. */
 	// +optional
@@ -337,7 +337,7 @@ type ConfigTriggers struct {
 type ConfigValueFrom struct {
 	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
 	// +optional
-	SecretKeyRef *v1alpha1.SecretKeyRef `json:"secretKeyRef,omitempty"`
+	SecretKeyRef *k8sv1alpha1.SecretKeyRef `json:"secretKeyRef,omitempty"`
 }
 
 type ConfigVerifyEmailTemplate struct {
@@ -396,7 +396,7 @@ type IdentityPlatformConfigSpec struct {
 	Notification *ConfigNotification `json:"notification,omitempty"`
 
 	/* Immutable. The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Configuration related to quotas. */
 	// +optional
@@ -536,7 +536,7 @@ type ConfigVerifyEmailTemplateStatus struct {
 type IdentityPlatformConfigStatus struct {
 	/* Conditions represent the latest available observations of the
 	   IdentityPlatformConfig's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	// +optional
 	Client *ConfigClientStatus `json:"client,omitempty"`
 

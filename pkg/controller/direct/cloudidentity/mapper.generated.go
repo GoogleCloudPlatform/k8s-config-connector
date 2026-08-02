@@ -24,17 +24,18 @@
 package cloudidentity
 
 import (
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudidentity/v1beta1"
+	krmcloudidentityv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudidentity/v1alpha1"
+	krmcloudidentityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/cloudidentity/v1beta1"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/apps/cloudidentity/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func CloudIdentityDeviceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.GoogleAppsCloudidentityDevicesV1Device) *krm.CloudIdentityDeviceObservedState {
+func CloudIdentityDeviceObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.GoogleAppsCloudidentityDevicesV1Device) *krmcloudidentityv1alpha1.CloudIdentityDeviceObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.CloudIdentityDeviceObservedState{}
-	out.AndroidSpecificAttributes = GoogleAppsCloudidentityDevicesV1AndroidAttributes_FromProto(mapCtx, in.GetAndroidSpecificAttributes())
+	out := &krmcloudidentityv1alpha1.CloudIdentityDeviceObservedState{}
+	out.AndroidSpecificAttributes = GoogleAppsCloudidentityDevicesV1AndroidAttributes_v1alpha1_FromProto(mapCtx, in.GetAndroidSpecificAttributes())
 	out.BasebandVersion = in.BasebandVersion
 	out.BootloaderVersion = in.BootloaderVersion
 	out.Brand = in.Brand
@@ -46,7 +47,7 @@ func CloudIdentityDeviceObservedState_FromProto(mapCtx *direct.MapContext, in *p
 	out.EnabledDeveloperOptions = in.EnabledDeveloperOptions
 	out.EnabledUsbDebugging = in.EnabledUsbDebugging
 	out.EncryptionState = in.EncryptionState
-	out.EndpointVerificationSpecificAttributes = GoogleAppsCloudidentityDevicesV1EndpointVerificationSpecificAttributes_FromProto(mapCtx, in.GetEndpointVerificationSpecificAttributes())
+	out.EndpointVerificationSpecificAttributes = GoogleAppsCloudidentityDevicesV1EndpointVerificationSpecificAttributes_v1alpha1_FromProto(mapCtx, in.GetEndpointVerificationSpecificAttributes())
 	out.Hostname = in.Hostname
 	out.Imei = in.Imei
 	out.KernelVersion = in.KernelVersion
@@ -67,12 +68,12 @@ func CloudIdentityDeviceObservedState_FromProto(mapCtx *direct.MapContext, in *p
 	out.WifiMacAddresses = in.WifiMacAddresses
 	return out
 }
-func CloudIdentityDeviceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CloudIdentityDeviceObservedState) *pb.GoogleAppsCloudidentityDevicesV1Device {
+func CloudIdentityDeviceObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudidentityv1alpha1.CloudIdentityDeviceObservedState) *pb.GoogleAppsCloudidentityDevicesV1Device {
 	if in == nil {
 		return nil
 	}
 	out := &pb.GoogleAppsCloudidentityDevicesV1Device{}
-	out.AndroidSpecificAttributes = GoogleAppsCloudidentityDevicesV1AndroidAttributes_ToProto(mapCtx, in.AndroidSpecificAttributes)
+	out.AndroidSpecificAttributes = GoogleAppsCloudidentityDevicesV1AndroidAttributes_v1alpha1_ToProto(mapCtx, in.AndroidSpecificAttributes)
 	out.BasebandVersion = in.BasebandVersion
 	out.BootloaderVersion = in.BootloaderVersion
 	out.Brand = in.Brand
@@ -84,7 +85,7 @@ func CloudIdentityDeviceObservedState_ToProto(mapCtx *direct.MapContext, in *krm
 	out.EnabledDeveloperOptions = in.EnabledDeveloperOptions
 	out.EnabledUsbDebugging = in.EnabledUsbDebugging
 	out.EncryptionState = in.EncryptionState
-	out.EndpointVerificationSpecificAttributes = GoogleAppsCloudidentityDevicesV1EndpointVerificationSpecificAttributes_ToProto(mapCtx, in.EndpointVerificationSpecificAttributes)
+	out.EndpointVerificationSpecificAttributes = GoogleAppsCloudidentityDevicesV1EndpointVerificationSpecificAttributes_v1alpha1_ToProto(mapCtx, in.EndpointVerificationSpecificAttributes)
 	out.Hostname = in.Hostname
 	out.Imei = in.Imei
 	out.KernelVersion = in.KernelVersion
@@ -105,18 +106,18 @@ func CloudIdentityDeviceObservedState_ToProto(mapCtx *direct.MapContext, in *krm
 	out.WifiMacAddresses = in.WifiMacAddresses
 	return out
 }
-func CloudIdentityDeviceSpec_FromProto(mapCtx *direct.MapContext, in *pb.GoogleAppsCloudidentityDevicesV1Device) *krm.CloudIdentityDeviceSpec {
+func CloudIdentityDeviceSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.GoogleAppsCloudidentityDevicesV1Device) *krmcloudidentityv1alpha1.CloudIdentityDeviceSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.CloudIdentityDeviceSpec{}
+	out := &krmcloudidentityv1alpha1.CloudIdentityDeviceSpec{}
 	out.AssetTag = in.AssetTag
 	out.DeviceType = in.DeviceType
 	// MISSING: Name
 	out.SerialNumber = in.SerialNumber
 	return out
 }
-func CloudIdentityDeviceSpec_ToProto(mapCtx *direct.MapContext, in *krm.CloudIdentityDeviceSpec) *pb.GoogleAppsCloudidentityDevicesV1Device {
+func CloudIdentityDeviceSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudidentityv1alpha1.CloudIdentityDeviceSpec) *pb.GoogleAppsCloudidentityDevicesV1Device {
 	if in == nil {
 		return nil
 	}
@@ -127,11 +128,11 @@ func CloudIdentityDeviceSpec_ToProto(mapCtx *direct.MapContext, in *krm.CloudIde
 	out.SerialNumber = in.SerialNumber
 	return out
 }
-func GoogleAppsCloudidentityDevicesV1AndroidAttributes_FromProto(mapCtx *direct.MapContext, in *pb.GoogleAppsCloudidentityDevicesV1AndroidAttributes) *krm.GoogleAppsCloudidentityDevicesV1AndroidAttributes {
+func GoogleAppsCloudidentityDevicesV1AndroidAttributes_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.GoogleAppsCloudidentityDevicesV1AndroidAttributes) *krmcloudidentityv1alpha1.GoogleAppsCloudidentityDevicesV1AndroidAttributes {
 	if in == nil {
 		return nil
 	}
-	out := &krm.GoogleAppsCloudidentityDevicesV1AndroidAttributes{}
+	out := &krmcloudidentityv1alpha1.GoogleAppsCloudidentityDevicesV1AndroidAttributes{}
 	out.CtsProfileMatch = in.CtsProfileMatch
 	out.EnabledUnknownSources = in.EnabledUnknownSources
 	out.HasPotentiallyHarmfulApps = in.HasPotentiallyHarmfulApps
@@ -142,7 +143,7 @@ func GoogleAppsCloudidentityDevicesV1AndroidAttributes_FromProto(mapCtx *direct.
 	out.VerifyAppsEnabled = in.VerifyAppsEnabled
 	return out
 }
-func GoogleAppsCloudidentityDevicesV1AndroidAttributes_ToProto(mapCtx *direct.MapContext, in *krm.GoogleAppsCloudidentityDevicesV1AndroidAttributes) *pb.GoogleAppsCloudidentityDevicesV1AndroidAttributes {
+func GoogleAppsCloudidentityDevicesV1AndroidAttributes_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudidentityv1alpha1.GoogleAppsCloudidentityDevicesV1AndroidAttributes) *pb.GoogleAppsCloudidentityDevicesV1AndroidAttributes {
 	if in == nil {
 		return nil
 	}
@@ -157,31 +158,81 @@ func GoogleAppsCloudidentityDevicesV1AndroidAttributes_ToProto(mapCtx *direct.Ma
 	out.VerifyAppsEnabled = in.VerifyAppsEnabled
 	return out
 }
-func GoogleAppsCloudidentityDevicesV1BrowserAttributes_FromProto(mapCtx *direct.MapContext, in *pb.GoogleAppsCloudidentityDevicesV1BrowserAttributes) *krm.GoogleAppsCloudidentityDevicesV1BrowserAttributes {
+func GoogleAppsCloudidentityDevicesV1AndroidAttributes_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.GoogleAppsCloudidentityDevicesV1AndroidAttributes) *krmcloudidentityv1beta1.GoogleAppsCloudidentityDevicesV1AndroidAttributes {
 	if in == nil {
 		return nil
 	}
-	out := &krm.GoogleAppsCloudidentityDevicesV1BrowserAttributes{}
-	out.ChromeBrowserInfo = GoogleAppsCloudidentityDevicesV1BrowserInfo_FromProto(mapCtx, in.GetChromeBrowserInfo())
+	out := &krmcloudidentityv1beta1.GoogleAppsCloudidentityDevicesV1AndroidAttributes{}
+	out.CtsProfileMatch = in.CtsProfileMatch
+	out.EnabledUnknownSources = in.EnabledUnknownSources
+	out.HasPotentiallyHarmfulApps = in.HasPotentiallyHarmfulApps
+	out.OwnerProfileAccount = in.OwnerProfileAccount
+	out.OwnershipPrivilege = in.OwnershipPrivilege
+	out.SupportsWorkProfile = in.SupportsWorkProfile
+	out.VerifiedBoot = in.VerifiedBoot
+	out.VerifyAppsEnabled = in.VerifyAppsEnabled
+	return out
+}
+func GoogleAppsCloudidentityDevicesV1AndroidAttributes_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmcloudidentityv1beta1.GoogleAppsCloudidentityDevicesV1AndroidAttributes) *pb.GoogleAppsCloudidentityDevicesV1AndroidAttributes {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GoogleAppsCloudidentityDevicesV1AndroidAttributes{}
+	out.CtsProfileMatch = in.CtsProfileMatch
+	out.EnabledUnknownSources = in.EnabledUnknownSources
+	out.HasPotentiallyHarmfulApps = in.HasPotentiallyHarmfulApps
+	out.OwnerProfileAccount = in.OwnerProfileAccount
+	out.OwnershipPrivilege = in.OwnershipPrivilege
+	out.SupportsWorkProfile = in.SupportsWorkProfile
+	out.VerifiedBoot = in.VerifiedBoot
+	out.VerifyAppsEnabled = in.VerifyAppsEnabled
+	return out
+}
+func GoogleAppsCloudidentityDevicesV1BrowserAttributes_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.GoogleAppsCloudidentityDevicesV1BrowserAttributes) *krmcloudidentityv1alpha1.GoogleAppsCloudidentityDevicesV1BrowserAttributes {
+	if in == nil {
+		return nil
+	}
+	out := &krmcloudidentityv1alpha1.GoogleAppsCloudidentityDevicesV1BrowserAttributes{}
+	out.ChromeBrowserInfo = GoogleAppsCloudidentityDevicesV1BrowserInfo_v1alpha1_FromProto(mapCtx, in.GetChromeBrowserInfo())
 	out.ChromeProfileID = in.ChromeProfileId
 	out.LastProfileSyncTime = direct.StringTimestamp_FromProto(mapCtx, in.GetLastProfileSyncTime())
 	return out
 }
-func GoogleAppsCloudidentityDevicesV1BrowserAttributes_ToProto(mapCtx *direct.MapContext, in *krm.GoogleAppsCloudidentityDevicesV1BrowserAttributes) *pb.GoogleAppsCloudidentityDevicesV1BrowserAttributes {
+func GoogleAppsCloudidentityDevicesV1BrowserAttributes_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudidentityv1alpha1.GoogleAppsCloudidentityDevicesV1BrowserAttributes) *pb.GoogleAppsCloudidentityDevicesV1BrowserAttributes {
 	if in == nil {
 		return nil
 	}
 	out := &pb.GoogleAppsCloudidentityDevicesV1BrowserAttributes{}
-	out.ChromeBrowserInfo = GoogleAppsCloudidentityDevicesV1BrowserInfo_ToProto(mapCtx, in.ChromeBrowserInfo)
+	out.ChromeBrowserInfo = GoogleAppsCloudidentityDevicesV1BrowserInfo_v1alpha1_ToProto(mapCtx, in.ChromeBrowserInfo)
 	out.ChromeProfileId = in.ChromeProfileID
 	out.LastProfileSyncTime = direct.StringTimestamp_ToProto(mapCtx, in.LastProfileSyncTime)
 	return out
 }
-func GoogleAppsCloudidentityDevicesV1BrowserInfo_FromProto(mapCtx *direct.MapContext, in *pb.GoogleAppsCloudidentityDevicesV1BrowserInfo) *krm.GoogleAppsCloudidentityDevicesV1BrowserInfo {
+func GoogleAppsCloudidentityDevicesV1BrowserAttributes_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.GoogleAppsCloudidentityDevicesV1BrowserAttributes) *krmcloudidentityv1beta1.GoogleAppsCloudidentityDevicesV1BrowserAttributes {
 	if in == nil {
 		return nil
 	}
-	out := &krm.GoogleAppsCloudidentityDevicesV1BrowserInfo{}
+	out := &krmcloudidentityv1beta1.GoogleAppsCloudidentityDevicesV1BrowserAttributes{}
+	out.ChromeBrowserInfo = GoogleAppsCloudidentityDevicesV1BrowserInfo_v1beta1_FromProto(mapCtx, in.GetChromeBrowserInfo())
+	out.ChromeProfileID = in.ChromeProfileId
+	out.LastProfileSyncTime = direct.StringTimestamp_FromProto(mapCtx, in.GetLastProfileSyncTime())
+	return out
+}
+func GoogleAppsCloudidentityDevicesV1BrowserAttributes_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmcloudidentityv1beta1.GoogleAppsCloudidentityDevicesV1BrowserAttributes) *pb.GoogleAppsCloudidentityDevicesV1BrowserAttributes {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GoogleAppsCloudidentityDevicesV1BrowserAttributes{}
+	out.ChromeBrowserInfo = GoogleAppsCloudidentityDevicesV1BrowserInfo_v1beta1_ToProto(mapCtx, in.ChromeBrowserInfo)
+	out.ChromeProfileId = in.ChromeProfileID
+	out.LastProfileSyncTime = direct.StringTimestamp_ToProto(mapCtx, in.LastProfileSyncTime)
+	return out
+}
+func GoogleAppsCloudidentityDevicesV1BrowserInfo_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.GoogleAppsCloudidentityDevicesV1BrowserInfo) *krmcloudidentityv1alpha1.GoogleAppsCloudidentityDevicesV1BrowserInfo {
+	if in == nil {
+		return nil
+	}
+	out := &krmcloudidentityv1alpha1.GoogleAppsCloudidentityDevicesV1BrowserInfo{}
 	out.BrowserManagementState = in.BrowserManagementState
 	out.BrowserVersion = in.BrowserVersion
 	out.IsBuiltInDNSClientEnabled = in.IsBuiltInDnsClientEnabled
@@ -198,7 +249,7 @@ func GoogleAppsCloudidentityDevicesV1BrowserInfo_FromProto(mapCtx *direct.MapCon
 	out.SafeBrowsingProtectionLevel = in.SafeBrowsingProtectionLevel
 	return out
 }
-func GoogleAppsCloudidentityDevicesV1BrowserInfo_ToProto(mapCtx *direct.MapContext, in *krm.GoogleAppsCloudidentityDevicesV1BrowserInfo) *pb.GoogleAppsCloudidentityDevicesV1BrowserInfo {
+func GoogleAppsCloudidentityDevicesV1BrowserInfo_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudidentityv1alpha1.GoogleAppsCloudidentityDevicesV1BrowserInfo) *pb.GoogleAppsCloudidentityDevicesV1BrowserInfo {
 	if in == nil {
 		return nil
 	}
@@ -219,12 +270,54 @@ func GoogleAppsCloudidentityDevicesV1BrowserInfo_ToProto(mapCtx *direct.MapConte
 	out.SafeBrowsingProtectionLevel = in.SafeBrowsingProtectionLevel
 	return out
 }
-func GoogleAppsCloudidentityDevicesV1CertificateAttributes_FromProto(mapCtx *direct.MapContext, in *pb.GoogleAppsCloudidentityDevicesV1CertificateAttributes) *krm.GoogleAppsCloudidentityDevicesV1CertificateAttributes {
+func GoogleAppsCloudidentityDevicesV1BrowserInfo_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.GoogleAppsCloudidentityDevicesV1BrowserInfo) *krmcloudidentityv1beta1.GoogleAppsCloudidentityDevicesV1BrowserInfo {
 	if in == nil {
 		return nil
 	}
-	out := &krm.GoogleAppsCloudidentityDevicesV1CertificateAttributes{}
-	out.CertificateTemplate = GoogleAppsCloudidentityDevicesV1CertificateTemplate_FromProto(mapCtx, in.GetCertificateTemplate())
+	out := &krmcloudidentityv1beta1.GoogleAppsCloudidentityDevicesV1BrowserInfo{}
+	out.BrowserManagementState = in.BrowserManagementState
+	out.BrowserVersion = in.BrowserVersion
+	out.IsBuiltInDNSClientEnabled = in.IsBuiltInDnsClientEnabled
+	out.IsBulkDataEntryAnalysisEnabled = in.IsBulkDataEntryAnalysisEnabled
+	out.IsChromeCleanupEnabled = in.IsChromeCleanupEnabled
+	out.IsChromeRemoteDesktopAppBlocked = in.IsChromeRemoteDesktopAppBlocked
+	out.IsFileDownloadAnalysisEnabled = in.IsFileDownloadAnalysisEnabled
+	out.IsFileUploadAnalysisEnabled = in.IsFileUploadAnalysisEnabled
+	out.IsRealtimeURLCheckEnabled = in.IsRealtimeUrlCheckEnabled
+	out.IsSecurityEventAnalysisEnabled = in.IsSecurityEventAnalysisEnabled
+	out.IsSiteIsolationEnabled = in.IsSiteIsolationEnabled
+	out.IsThirdPartyBlockingEnabled = in.IsThirdPartyBlockingEnabled
+	out.PasswordProtectionWarningTrigger = in.PasswordProtectionWarningTrigger
+	out.SafeBrowsingProtectionLevel = in.SafeBrowsingProtectionLevel
+	return out
+}
+func GoogleAppsCloudidentityDevicesV1BrowserInfo_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmcloudidentityv1beta1.GoogleAppsCloudidentityDevicesV1BrowserInfo) *pb.GoogleAppsCloudidentityDevicesV1BrowserInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GoogleAppsCloudidentityDevicesV1BrowserInfo{}
+	out.BrowserManagementState = in.BrowserManagementState
+	out.BrowserVersion = in.BrowserVersion
+	out.IsBuiltInDnsClientEnabled = in.IsBuiltInDNSClientEnabled
+	out.IsBulkDataEntryAnalysisEnabled = in.IsBulkDataEntryAnalysisEnabled
+	out.IsChromeCleanupEnabled = in.IsChromeCleanupEnabled
+	out.IsChromeRemoteDesktopAppBlocked = in.IsChromeRemoteDesktopAppBlocked
+	out.IsFileDownloadAnalysisEnabled = in.IsFileDownloadAnalysisEnabled
+	out.IsFileUploadAnalysisEnabled = in.IsFileUploadAnalysisEnabled
+	out.IsRealtimeUrlCheckEnabled = in.IsRealtimeURLCheckEnabled
+	out.IsSecurityEventAnalysisEnabled = in.IsSecurityEventAnalysisEnabled
+	out.IsSiteIsolationEnabled = in.IsSiteIsolationEnabled
+	out.IsThirdPartyBlockingEnabled = in.IsThirdPartyBlockingEnabled
+	out.PasswordProtectionWarningTrigger = in.PasswordProtectionWarningTrigger
+	out.SafeBrowsingProtectionLevel = in.SafeBrowsingProtectionLevel
+	return out
+}
+func GoogleAppsCloudidentityDevicesV1CertificateAttributes_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.GoogleAppsCloudidentityDevicesV1CertificateAttributes) *krmcloudidentityv1alpha1.GoogleAppsCloudidentityDevicesV1CertificateAttributes {
+	if in == nil {
+		return nil
+	}
+	out := &krmcloudidentityv1alpha1.GoogleAppsCloudidentityDevicesV1CertificateAttributes{}
+	out.CertificateTemplate = GoogleAppsCloudidentityDevicesV1CertificateTemplate_v1alpha1_FromProto(mapCtx, in.GetCertificateTemplate())
 	out.Fingerprint = in.Fingerprint
 	out.Issuer = in.Issuer
 	out.SerialNumber = in.SerialNumber
@@ -235,12 +328,12 @@ func GoogleAppsCloudidentityDevicesV1CertificateAttributes_FromProto(mapCtx *dir
 	out.ValidityStartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetValidityStartTime())
 	return out
 }
-func GoogleAppsCloudidentityDevicesV1CertificateAttributes_ToProto(mapCtx *direct.MapContext, in *krm.GoogleAppsCloudidentityDevicesV1CertificateAttributes) *pb.GoogleAppsCloudidentityDevicesV1CertificateAttributes {
+func GoogleAppsCloudidentityDevicesV1CertificateAttributes_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudidentityv1alpha1.GoogleAppsCloudidentityDevicesV1CertificateAttributes) *pb.GoogleAppsCloudidentityDevicesV1CertificateAttributes {
 	if in == nil {
 		return nil
 	}
 	out := &pb.GoogleAppsCloudidentityDevicesV1CertificateAttributes{}
-	out.CertificateTemplate = GoogleAppsCloudidentityDevicesV1CertificateTemplate_ToProto(mapCtx, in.CertificateTemplate)
+	out.CertificateTemplate = GoogleAppsCloudidentityDevicesV1CertificateTemplate_v1alpha1_ToProto(mapCtx, in.CertificateTemplate)
 	out.Fingerprint = in.Fingerprint
 	out.Issuer = in.Issuer
 	out.SerialNumber = in.SerialNumber
@@ -251,17 +344,49 @@ func GoogleAppsCloudidentityDevicesV1CertificateAttributes_ToProto(mapCtx *direc
 	out.ValidityStartTime = direct.StringTimestamp_ToProto(mapCtx, in.ValidityStartTime)
 	return out
 }
-func GoogleAppsCloudidentityDevicesV1CertificateTemplate_FromProto(mapCtx *direct.MapContext, in *pb.GoogleAppsCloudidentityDevicesV1CertificateTemplate) *krm.GoogleAppsCloudidentityDevicesV1CertificateTemplate {
+func GoogleAppsCloudidentityDevicesV1CertificateAttributes_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.GoogleAppsCloudidentityDevicesV1CertificateAttributes) *krmcloudidentityv1beta1.GoogleAppsCloudidentityDevicesV1CertificateAttributes {
 	if in == nil {
 		return nil
 	}
-	out := &krm.GoogleAppsCloudidentityDevicesV1CertificateTemplate{}
+	out := &krmcloudidentityv1beta1.GoogleAppsCloudidentityDevicesV1CertificateAttributes{}
+	out.CertificateTemplate = GoogleAppsCloudidentityDevicesV1CertificateTemplate_v1beta1_FromProto(mapCtx, in.GetCertificateTemplate())
+	out.Fingerprint = in.Fingerprint
+	out.Issuer = in.Issuer
+	out.SerialNumber = in.SerialNumber
+	out.Subject = in.Subject
+	out.Thumbprint = in.Thumbprint
+	out.ValidationState = in.ValidationState
+	out.ValidityExpirationTime = direct.StringTimestamp_FromProto(mapCtx, in.GetValidityExpirationTime())
+	out.ValidityStartTime = direct.StringTimestamp_FromProto(mapCtx, in.GetValidityStartTime())
+	return out
+}
+func GoogleAppsCloudidentityDevicesV1CertificateAttributes_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmcloudidentityv1beta1.GoogleAppsCloudidentityDevicesV1CertificateAttributes) *pb.GoogleAppsCloudidentityDevicesV1CertificateAttributes {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GoogleAppsCloudidentityDevicesV1CertificateAttributes{}
+	out.CertificateTemplate = GoogleAppsCloudidentityDevicesV1CertificateTemplate_v1beta1_ToProto(mapCtx, in.CertificateTemplate)
+	out.Fingerprint = in.Fingerprint
+	out.Issuer = in.Issuer
+	out.SerialNumber = in.SerialNumber
+	out.Subject = in.Subject
+	out.Thumbprint = in.Thumbprint
+	out.ValidationState = in.ValidationState
+	out.ValidityExpirationTime = direct.StringTimestamp_ToProto(mapCtx, in.ValidityExpirationTime)
+	out.ValidityStartTime = direct.StringTimestamp_ToProto(mapCtx, in.ValidityStartTime)
+	return out
+}
+func GoogleAppsCloudidentityDevicesV1CertificateTemplate_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.GoogleAppsCloudidentityDevicesV1CertificateTemplate) *krmcloudidentityv1alpha1.GoogleAppsCloudidentityDevicesV1CertificateTemplate {
+	if in == nil {
+		return nil
+	}
+	out := &krmcloudidentityv1alpha1.GoogleAppsCloudidentityDevicesV1CertificateTemplate{}
 	out.ID = in.Id
 	out.MajorVersion = in.MajorVersion
 	out.MinorVersion = in.MinorVersion
 	return out
 }
-func GoogleAppsCloudidentityDevicesV1CertificateTemplate_ToProto(mapCtx *direct.MapContext, in *krm.GoogleAppsCloudidentityDevicesV1CertificateTemplate) *pb.GoogleAppsCloudidentityDevicesV1CertificateTemplate {
+func GoogleAppsCloudidentityDevicesV1CertificateTemplate_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudidentityv1alpha1.GoogleAppsCloudidentityDevicesV1CertificateTemplate) *pb.GoogleAppsCloudidentityDevicesV1CertificateTemplate {
 	if in == nil {
 		return nil
 	}
@@ -271,23 +396,63 @@ func GoogleAppsCloudidentityDevicesV1CertificateTemplate_ToProto(mapCtx *direct.
 	out.MinorVersion = in.MinorVersion
 	return out
 }
-func GoogleAppsCloudidentityDevicesV1EndpointVerificationSpecificAttributes_FromProto(mapCtx *direct.MapContext, in *pb.GoogleAppsCloudidentityDevicesV1EndpointVerificationSpecificAttributes) *krm.GoogleAppsCloudidentityDevicesV1EndpointVerificationSpecificAttributes {
+func GoogleAppsCloudidentityDevicesV1CertificateTemplate_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.GoogleAppsCloudidentityDevicesV1CertificateTemplate) *krmcloudidentityv1beta1.GoogleAppsCloudidentityDevicesV1CertificateTemplate {
 	if in == nil {
 		return nil
 	}
-	out := &krm.GoogleAppsCloudidentityDevicesV1EndpointVerificationSpecificAttributes{}
-	// MISSING: AdditionalSignals
-	out.BrowserAttributes = direct.Slice_FromProto(mapCtx, in.BrowserAttributes, GoogleAppsCloudidentityDevicesV1BrowserAttributes_FromProto)
-	out.CertificateAttributes = direct.Slice_FromProto(mapCtx, in.CertificateAttributes, GoogleAppsCloudidentityDevicesV1CertificateAttributes_FromProto)
+	out := &krmcloudidentityv1beta1.GoogleAppsCloudidentityDevicesV1CertificateTemplate{}
+	out.ID = in.Id
+	out.MajorVersion = in.MajorVersion
+	out.MinorVersion = in.MinorVersion
 	return out
 }
-func GoogleAppsCloudidentityDevicesV1EndpointVerificationSpecificAttributes_ToProto(mapCtx *direct.MapContext, in *krm.GoogleAppsCloudidentityDevicesV1EndpointVerificationSpecificAttributes) *pb.GoogleAppsCloudidentityDevicesV1EndpointVerificationSpecificAttributes {
+func GoogleAppsCloudidentityDevicesV1CertificateTemplate_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmcloudidentityv1beta1.GoogleAppsCloudidentityDevicesV1CertificateTemplate) *pb.GoogleAppsCloudidentityDevicesV1CertificateTemplate {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GoogleAppsCloudidentityDevicesV1CertificateTemplate{}
+	out.Id = in.ID
+	out.MajorVersion = in.MajorVersion
+	out.MinorVersion = in.MinorVersion
+	return out
+}
+func GoogleAppsCloudidentityDevicesV1EndpointVerificationSpecificAttributes_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.GoogleAppsCloudidentityDevicesV1EndpointVerificationSpecificAttributes) *krmcloudidentityv1alpha1.GoogleAppsCloudidentityDevicesV1EndpointVerificationSpecificAttributes {
+	if in == nil {
+		return nil
+	}
+	out := &krmcloudidentityv1alpha1.GoogleAppsCloudidentityDevicesV1EndpointVerificationSpecificAttributes{}
+	// MISSING: AdditionalSignals
+	out.BrowserAttributes = direct.Slice_FromProto(mapCtx, in.BrowserAttributes, GoogleAppsCloudidentityDevicesV1BrowserAttributes_v1alpha1_FromProto)
+	out.CertificateAttributes = direct.Slice_FromProto(mapCtx, in.CertificateAttributes, GoogleAppsCloudidentityDevicesV1CertificateAttributes_v1alpha1_FromProto)
+	return out
+}
+func GoogleAppsCloudidentityDevicesV1EndpointVerificationSpecificAttributes_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmcloudidentityv1alpha1.GoogleAppsCloudidentityDevicesV1EndpointVerificationSpecificAttributes) *pb.GoogleAppsCloudidentityDevicesV1EndpointVerificationSpecificAttributes {
 	if in == nil {
 		return nil
 	}
 	out := &pb.GoogleAppsCloudidentityDevicesV1EndpointVerificationSpecificAttributes{}
 	// MISSING: AdditionalSignals
-	out.BrowserAttributes = direct.Slice_ToProto(mapCtx, in.BrowserAttributes, GoogleAppsCloudidentityDevicesV1BrowserAttributes_ToProto)
-	out.CertificateAttributes = direct.Slice_ToProto(mapCtx, in.CertificateAttributes, GoogleAppsCloudidentityDevicesV1CertificateAttributes_ToProto)
+	out.BrowserAttributes = direct.Slice_ToProto(mapCtx, in.BrowserAttributes, GoogleAppsCloudidentityDevicesV1BrowserAttributes_v1alpha1_ToProto)
+	out.CertificateAttributes = direct.Slice_ToProto(mapCtx, in.CertificateAttributes, GoogleAppsCloudidentityDevicesV1CertificateAttributes_v1alpha1_ToProto)
+	return out
+}
+func GoogleAppsCloudidentityDevicesV1EndpointVerificationSpecificAttributes_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.GoogleAppsCloudidentityDevicesV1EndpointVerificationSpecificAttributes) *krmcloudidentityv1beta1.GoogleAppsCloudidentityDevicesV1EndpointVerificationSpecificAttributes {
+	if in == nil {
+		return nil
+	}
+	out := &krmcloudidentityv1beta1.GoogleAppsCloudidentityDevicesV1EndpointVerificationSpecificAttributes{}
+	// MISSING: AdditionalSignals
+	out.BrowserAttributes = direct.Slice_FromProto(mapCtx, in.BrowserAttributes, GoogleAppsCloudidentityDevicesV1BrowserAttributes_v1beta1_FromProto)
+	out.CertificateAttributes = direct.Slice_FromProto(mapCtx, in.CertificateAttributes, GoogleAppsCloudidentityDevicesV1CertificateAttributes_v1beta1_FromProto)
+	return out
+}
+func GoogleAppsCloudidentityDevicesV1EndpointVerificationSpecificAttributes_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmcloudidentityv1beta1.GoogleAppsCloudidentityDevicesV1EndpointVerificationSpecificAttributes) *pb.GoogleAppsCloudidentityDevicesV1EndpointVerificationSpecificAttributes {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GoogleAppsCloudidentityDevicesV1EndpointVerificationSpecificAttributes{}
+	// MISSING: AdditionalSignals
+	out.BrowserAttributes = direct.Slice_ToProto(mapCtx, in.BrowserAttributes, GoogleAppsCloudidentityDevicesV1BrowserAttributes_v1beta1_ToProto)
+	out.CertificateAttributes = direct.Slice_ToProto(mapCtx, in.CertificateAttributes, GoogleAppsCloudidentityDevicesV1CertificateAttributes_v1beta1_ToProto)
 	return out
 }

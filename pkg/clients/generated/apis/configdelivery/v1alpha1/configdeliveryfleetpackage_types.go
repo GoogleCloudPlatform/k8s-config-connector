@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -48,11 +48,11 @@ type FleetpackageCloudBuildRepository struct {
 
 	/* Required. Name of the cloud build repository. Format is projects/{p}/locations/{l}/connections/{c}/repositories/{r}. */
 	// +optional
-	RepositoryRef *v1alpha1.ResourceRef `json:"repositoryRef,omitempty"`
+	RepositoryRef *k8sv1alpha1.ResourceRef `json:"repositoryRef,omitempty"`
 
 	/* Required. Google service account to use in CloudBuild triggers to fetch and store kubernetes configuration. */
 	// +optional
-	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+	ServiceAccountRef *k8sv1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 
 	/* Required. git tag of the underlying git repository. The git tag must be in the semantic version format `vX.Y.Z`. */
 	// +optional
@@ -66,7 +66,7 @@ type FleetpackageCloudBuildRepository struct {
 type FleetpackageFleet struct {
 	/* Required. The host project for the GKE fleet. Format is `projects/{project}`. */
 	// +optional
-	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+	ProjectRef *k8sv1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
 	/* Optional. selector allows targeting a subset of fleet members using their labels. */
 	// +optional
@@ -76,7 +76,7 @@ type FleetpackageFleet struct {
 type FleetpackageResourceBundle struct {
 	/* Required. Name of the `ResourceBundle`. Format is projects/{p}/locations/{l}/resourceBundles/{r}. */
 	// +optional
-	ResourceBundleRef *v1alpha1.ResourceRef `json:"resourceBundleRef,omitempty"`
+	ResourceBundleRef *k8sv1alpha1.ResourceRef `json:"resourceBundleRef,omitempty"`
 
 	/* Required. Tag refers to a version of the release in a `ResourceBundle`. This is a Git tag in the semantic version format `vX.Y.Z`. */
 	// +optional
@@ -146,7 +146,7 @@ type ConfigDeliveryFleetPackageSpec struct {
 	Location string `json:"location"`
 
 	/* The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Required. Information specifying the source of kubernetes configuration to deploy. */
 	// +optional
@@ -214,7 +214,7 @@ type FleetpackageObservedStateStatus struct {
 type ConfigDeliveryFleetPackageStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ConfigDeliveryFleetPackage's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the ConfigDeliveryFleetPackage resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

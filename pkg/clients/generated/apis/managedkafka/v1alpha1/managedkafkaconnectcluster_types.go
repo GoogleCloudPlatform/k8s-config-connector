@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -57,13 +57,13 @@ type ConnectclusterGcpConfig struct {
 
 	/* Optional. Secrets to load into workers. Exact SecretVersions from Secret Manager must be provided -- aliases are not supported. Up to 32 secrets may be loaded into one cluster. */
 	// +optional
-	SecretPaths []v1alpha1.ResourceRef `json:"secretPaths,omitempty"`
+	SecretPaths []k8sv1alpha1.ResourceRef `json:"secretPaths,omitempty"`
 }
 
 type ConnectclusterNetworkConfigs struct {
 	/* Optional. Additional subnets may be specified. They may be in another region, but must be in the same VPC network. The Connect workers can communicate with network endpoints in either the primary or additional subnets. */
 	// +optional
-	AdditionalSubnetRefs []v1alpha1.ResourceRef `json:"additionalSubnetRefs,omitempty"`
+	AdditionalSubnetRefs []k8sv1alpha1.ResourceRef `json:"additionalSubnetRefs,omitempty"`
 
 	/* Optional. Additional DNS domain names from the subnet's network to be made visible to the Connect Cluster. When using MirrorMaker2, it's necessary to add the bootstrap address's dns domain name of the target cluster to make it visible to the connector. For example: my-kafka-cluster.us-central1.managedkafka.my-project.cloud.goog */
 	// +optional
@@ -77,7 +77,7 @@ type ConnectclusterNetworkConfigs struct {
 	The CIDR range of the subnet must be within the IPv4 address ranges for
 	private networks, as specified in RFC 1918. The primary subnet CIDR range
 	must have a minimum size of /22 (1024 addresses). */
-	PrimarySubnetRef v1alpha1.ResourceRef `json:"primarySubnetRef"`
+	PrimarySubnetRef k8sv1alpha1.ResourceRef `json:"primarySubnetRef"`
 }
 
 type ManagedKafkaConnectClusterSpec struct {
@@ -85,7 +85,7 @@ type ManagedKafkaConnectClusterSpec struct {
 	CapacityConfig ConnectclusterCapacityConfig `json:"capacityConfig"`
 
 	/* Required. Reference to the Kafka cluster this Kafka Connect cluster is attached to. */
-	ClusterRef v1alpha1.ResourceRef `json:"clusterRef"`
+	ClusterRef k8sv1alpha1.ResourceRef `json:"clusterRef"`
 
 	/* Optional. Configurations for the worker that are overridden from the defaults. The key of the map is a Kafka Connect worker property name, for example: `exactly.once.source.support`. */
 	// +optional
@@ -102,7 +102,7 @@ type ManagedKafkaConnectClusterSpec struct {
 	Location string `json:"location"`
 
 	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* The ManagedKafkaConnectCluster name. If not given, the metadata.name will be used. */
 	// +optional
@@ -126,7 +126,7 @@ type ConnectclusterObservedStateStatus struct {
 type ManagedKafkaConnectClusterStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ManagedKafkaConnectCluster's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the ManagedKafkaConnectCluster resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

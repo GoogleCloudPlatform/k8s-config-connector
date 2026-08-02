@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -44,7 +44,7 @@ type GKEBackupBackupChannelSpec struct {
 	Description *string `json:"description,omitempty"`
 
 	/* Required. Immutable. The project where Backups are allowed to be stored. The format is `projects/{projectId}` or `projects/{projectNumber}`. */
-	DestinationProjectRef v1alpha1.ResourceRef `json:"destinationProjectRef"`
+	DestinationProjectRef k8sv1alpha1.ResourceRef `json:"destinationProjectRef"`
 
 	/* Optional. A set of custom labels supplied by user. */
 	// +optional
@@ -54,7 +54,7 @@ type GKEBackupBackupChannelSpec struct {
 	Location string `json:"location"`
 
 	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* The GKEBackupBackupChannel name. If not given, the metadata.name will be used. */
 	// +optional
@@ -86,7 +86,7 @@ type BackupchannelObservedStateStatus struct {
 type GKEBackupBackupChannelStatus struct {
 	/* Conditions represent the latest available observations of the
 	   GKEBackupBackupChannel's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the GKEBackupBackupChannel resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

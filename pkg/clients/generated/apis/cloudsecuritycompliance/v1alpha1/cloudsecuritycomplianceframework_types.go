@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -41,7 +41,7 @@ var _ = apiextensionsv1.JSON{}
 type FrameworkCloudControlDetails struct {
 	/* Required. The name of the CloudControl in the format: “organizations/{organization}/locations/{location}/ cloudControls/{cloud-control}” */
 	// +optional
-	CloudControlRef *v1alpha1.ResourceRef `json:"cloudControlRef,omitempty"`
+	CloudControlRef *k8sv1alpha1.ResourceRef `json:"cloudControlRef,omitempty"`
 
 	/* Required. Major revision of cloudcontrol */
 	// +optional
@@ -59,7 +59,7 @@ type FrameworkCloudControlGroup struct {
 
 	/* Required. The name of the cloud control group in the format: “organizations/{organization}/locations/{location}/ cloudControlGroups/{cloud-control-group}” */
 	// +optional
-	CloudControlGroupRef *v1alpha1.ResourceRef `json:"cloudControlGroupRef,omitempty"`
+	CloudControlGroupRef *k8sv1alpha1.ResourceRef `json:"cloudControlGroupRef,omitempty"`
 
 	/* Optional. The control identifier used to fetch the findings. This is same as the control report name. */
 	// +optional
@@ -67,7 +67,7 @@ type FrameworkCloudControlGroup struct {
 
 	/* Optional. The industry-defined Control assciated with the cloud controls in this group. organizations/{organization}/locations/{location}/controls/{control_id} */
 	// +optional
-	ControlRef *v1alpha1.ResourceRef `json:"controlRef,omitempty"`
+	ControlRef *k8sv1alpha1.ResourceRef `json:"controlRef,omitempty"`
 
 	/* Optional. The description of the cloud control group.The maximum length is 2000 characters. */
 	// +optional
@@ -122,7 +122,7 @@ type CloudSecurityComplianceFrameworkSpec struct {
 	Location string `json:"location"`
 
 	/* The organization that this resource belongs to. */
-	OrganizationRef v1alpha1.ResourceRef `json:"organizationRef"`
+	OrganizationRef k8sv1alpha1.ResourceRef `json:"organizationRef"`
 
 	/* The CloudSecurityComplianceFramework name. If not given, the metadata.name will be used. */
 	// +optional
@@ -166,7 +166,7 @@ type FrameworkObservedStateStatus struct {
 type CloudSecurityComplianceFrameworkStatus struct {
 	/* Conditions represent the latest available observations of the
 	   CloudSecurityComplianceFramework's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the CloudSecurityComplianceFramework resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

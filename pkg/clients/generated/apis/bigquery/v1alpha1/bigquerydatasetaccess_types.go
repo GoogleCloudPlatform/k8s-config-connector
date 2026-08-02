@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -78,7 +78,7 @@ type BigQueryDatasetAccessSpec struct {
 	IamMember *string `json:"iamMember,omitempty"`
 
 	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
@@ -112,7 +112,7 @@ type BigQueryDatasetAccessSpec struct {
 type BigQueryDatasetAccessStatus struct {
 	/* Conditions represent the latest available observations of the
 	   BigQueryDatasetAccess's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* If true, represents that that the iam_member in the config was translated to a different member type by the API, and is stored in state as a different member type. */
 	// +optional
 	ApiUpdatedMember *bool `json:"apiUpdatedMember,omitempty"`

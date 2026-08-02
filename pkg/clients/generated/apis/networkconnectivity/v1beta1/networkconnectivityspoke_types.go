@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -45,7 +45,7 @@ type SpokeInstances struct {
 
 	/* Immutable. */
 	// +optional
-	VirtualMachineRef *v1alpha1.ResourceRef `json:"virtualMachineRef,omitempty"`
+	VirtualMachineRef *k8sv1alpha1.ResourceRef `json:"virtualMachineRef,omitempty"`
 }
 
 type SpokeLinkedInterconnectAttachments struct {
@@ -53,7 +53,7 @@ type SpokeLinkedInterconnectAttachments struct {
 	SiteToSiteDataTransfer bool `json:"siteToSiteDataTransfer"`
 
 	/* Immutable. */
-	Uris []v1alpha1.ResourceRef `json:"uris"`
+	Uris []k8sv1alpha1.ResourceRef `json:"uris"`
 }
 
 type SpokeLinkedRouterApplianceInstances struct {
@@ -70,7 +70,7 @@ type SpokeLinkedVPCNetwork struct {
 	ExcludeExportRanges []string `json:"excludeExportRanges,omitempty"`
 
 	/* Immutable. */
-	UriRef v1alpha1.ResourceRef `json:"uriRef"`
+	UriRef k8sv1alpha1.ResourceRef `json:"uriRef"`
 }
 
 type SpokeLinkedVpnTunnels struct {
@@ -78,7 +78,7 @@ type SpokeLinkedVpnTunnels struct {
 	SiteToSiteDataTransfer bool `json:"siteToSiteDataTransfer"`
 
 	/* Immutable. */
-	Uris []v1alpha1.ResourceRef `json:"uris"`
+	Uris []k8sv1alpha1.ResourceRef `json:"uris"`
 }
 
 type NetworkConnectivitySpokeSpec struct {
@@ -87,7 +87,7 @@ type NetworkConnectivitySpokeSpec struct {
 	Description *string `json:"description,omitempty"`
 
 	/* Immutable. */
-	HubRef v1alpha1.ResourceRef `json:"hubRef"`
+	HubRef k8sv1alpha1.ResourceRef `json:"hubRef"`
 
 	/* Immutable. A collection of VLAN attachment resources. These resources should be redundant attachments that all advertise the same prefixes to Google Cloud. Alternatively, in active/passive configurations, all attachments should be capable of advertising the same prefixes. */
 	// +optional
@@ -109,7 +109,7 @@ type NetworkConnectivitySpokeSpec struct {
 	Location string `json:"location"`
 
 	/* Immutable. The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
@@ -119,7 +119,7 @@ type NetworkConnectivitySpokeSpec struct {
 type NetworkConnectivitySpokeStatus struct {
 	/* Conditions represent the latest available observations of the
 	   NetworkConnectivitySpoke's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* Output only. The time the spoke was created. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`

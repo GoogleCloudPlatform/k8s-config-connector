@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -59,7 +59,7 @@ type DataflowJobSpec struct {
 
 	/* The name for the Cloud KMS key for the job. */
 	// +optional
-	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+	KmsKeyRef *k8sv1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 
 	/* The machine type to use for the job. */
 	// +optional
@@ -71,7 +71,7 @@ type DataflowJobSpec struct {
 
 	/* ComputeNetworkRef is a reference to a GCP ComputeNetwork. */
 	// +optional
-	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+	NetworkRef *k8sv1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
 	/* Key/Value pairs to be passed to the Dataflow job (as used in the template). */
 	// +optional
@@ -86,11 +86,11 @@ type DataflowJobSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// +optional
-	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+	ServiceAccountRef *k8sv1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 
 	/* ComputeSubnetworkRef is a reference to a GCP ComputeSubnetwork. */
 	// +optional
-	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
+	SubnetworkRef *k8sv1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
 
 	/* A writeable location on Google Cloud Storage for the Dataflow job to dump its temporary data. */
 	TempGcsLocation string `json:"tempGcsLocation"`
@@ -110,7 +110,7 @@ type DataflowJobSpec struct {
 type DataflowJobStatus struct {
 	/* Conditions represent the latest available observations of the
 	   DataflowJob's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* The unique ID of this job. */
 	// +optional
 	JobId *string `json:"jobId,omitempty"`

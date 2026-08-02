@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -61,7 +61,7 @@ type SessionExecutionConfig struct {
 
 	/* Optional. The Cloud KMS key to use for encryption. */
 	// +optional
-	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+	KmsKeyRef *k8sv1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 
 	/* Optional. Tags used for network traffic control. */
 	// +optional
@@ -73,11 +73,11 @@ type SessionExecutionConfig struct {
 
 	/* Optional. Service account that used to execute workload. */
 	// +optional
-	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+	ServiceAccountRef *k8sv1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 
 	/* Optional. A Cloud Storage bucket used to stage workload dependencies, config files, and store workload output and other ephemeral data, such as Spark history files. If you do not specify a staging bucket, Cloud Dataproc will determine a Cloud Storage location according to the region where your workload is running, and then create and manage project-level, per-location staging and temporary buckets. **This field requires a Cloud Storage bucket name, not a `gs://...` URI to a Cloud Storage bucket.** */
 	// +optional
-	StagingBucketRef *v1alpha1.ResourceRef `json:"stagingBucketRef,omitempty"`
+	StagingBucketRef *k8sv1alpha1.ResourceRef `json:"stagingBucketRef,omitempty"`
 
 	/* Optional. Subnetwork URI to connect workload to. */
 	// +optional
@@ -158,7 +158,7 @@ type SessionSparkHistoryServerConfig struct {
 
 	* `projects/[project_id]/regions/[region]/clusters/[cluster_name]` */
 	// +optional
-	DataprocClusterRef *v1alpha1.ResourceRef `json:"dataprocClusterRef,omitempty"`
+	DataprocClusterRef *k8sv1alpha1.ResourceRef `json:"dataprocClusterRef,omitempty"`
 }
 
 type DataprocSessionSpec struct {
@@ -178,7 +178,7 @@ type DataprocSessionSpec struct {
 	Location string `json:"location"`
 
 	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* The DataprocSession name. If not given, the metadata.name will be used. */
 	// +optional
@@ -337,7 +337,7 @@ type SessionStateHistoryStatus struct {
 type DataprocSessionStatus struct {
 	/* Conditions represent the latest available observations of the
 	   DataprocSession's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the DataprocSession resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

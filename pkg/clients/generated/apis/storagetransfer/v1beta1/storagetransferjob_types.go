@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -94,7 +94,7 @@ type JobAzureCredentials struct {
 }
 
 type JobGcsDataSink struct {
-	BucketRef v1alpha1.ResourceRef `json:"bucketRef"`
+	BucketRef k8sv1alpha1.ResourceRef `json:"bucketRef"`
 
 	/* Google Cloud Storage path in bucket to transfer. */
 	// +optional
@@ -102,7 +102,7 @@ type JobGcsDataSink struct {
 }
 
 type JobGcsDataSource struct {
-	BucketRef v1alpha1.ResourceRef `json:"bucketRef"`
+	BucketRef k8sv1alpha1.ResourceRef `json:"bucketRef"`
 
 	/* Google Cloud Storage path in bucket to transfer. */
 	// +optional
@@ -123,7 +123,7 @@ type JobNotificationConfig struct {
 	PayloadFormat string `json:"payloadFormat"`
 
 	/* The PubSubTopic to which to publish notifications. */
-	TopicRef v1alpha1.ResourceRef `json:"topicRef"`
+	TopicRef k8sv1alpha1.ResourceRef `json:"topicRef"`
 }
 
 type JobObjectConditions struct {
@@ -302,7 +302,7 @@ type JobTransferSpec struct {
 type JobValueFrom struct {
 	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
 	// +optional
-	SecretKeyRef *v1alpha1.SecretKeyRef `json:"secretKeyRef,omitempty"`
+	SecretKeyRef *k8sv1alpha1.SecretKeyRef `json:"secretKeyRef,omitempty"`
 }
 
 type StorageTransferJobSpec struct {
@@ -332,7 +332,7 @@ type StorageTransferJobSpec struct {
 type StorageTransferJobStatus struct {
 	/* Conditions represent the latest available observations of the
 	   StorageTransferJob's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* When the Transfer Job was created. */
 	// +optional
 	CreationTime *string `json:"creationTime,omitempty"`

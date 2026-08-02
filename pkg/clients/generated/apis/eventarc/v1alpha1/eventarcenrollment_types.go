@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -47,7 +47,7 @@ type EventarcEnrollmentSpec struct {
 	CelMatch string `json:"celMatch"`
 
 	/* Required. Destination is the Pipeline that the Enrollment is delivering to. */
-	DestinationRef v1alpha1.ResourceRef `json:"destinationRef"`
+	DestinationRef k8sv1alpha1.ResourceRef `json:"destinationRef"`
 
 	/* Optional. Resource display name. */
 	// +optional
@@ -61,10 +61,10 @@ type EventarcEnrollmentSpec struct {
 	Location string `json:"location"`
 
 	/* Required. Resource name of the message bus identifying the source of the messages. */
-	MessageBusRef v1alpha1.ResourceRef `json:"messageBusRef"`
+	MessageBusRef k8sv1alpha1.ResourceRef `json:"messageBusRef"`
 
 	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* The EventarcEnrollment name. If not given, the metadata.name will be used. */
 	// +optional
@@ -92,7 +92,7 @@ type EnrollmentObservedStateStatus struct {
 type EventarcEnrollmentStatus struct {
 	/* Conditions represent the latest available observations of the
 	   EventarcEnrollment's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the EventarcEnrollment resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -49,7 +49,7 @@ type ParameterManagerParameterVersionSpec struct {
 	Disabled *bool `json:"disabled,omitempty"`
 
 	/* The resource name of the [Parameter][google.cloud.parametermanager.v1.Parameter] to create a [ParameterVersion][google.cloud.parametermanager.v1.ParameterVersion] for. */
-	ParameterRef v1alpha1.ResourceRef `json:"parameterRef"`
+	ParameterRef k8sv1alpha1.ResourceRef `json:"parameterRef"`
 
 	/* Required. Immutable. Payload content of a ParameterVersion resource.  This is only returned when the request provides the View value of FULL (default for GET request). */
 	Payload ParameterversionPayload `json:"payload"`
@@ -76,7 +76,7 @@ type ParameterversionObservedStateStatus struct {
 type ParameterManagerParameterVersionStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ParameterManagerParameterVersion's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the ParameterManagerParameterVersion resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

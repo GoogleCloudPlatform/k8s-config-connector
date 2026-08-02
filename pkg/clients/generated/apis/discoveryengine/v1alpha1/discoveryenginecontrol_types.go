@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -60,7 +60,7 @@ type ControlBoostAction struct {
 
 	/* Required. Specifies which data store's documents can be boosted by this control. Full data store name e.g. projects/123/locations/global/collections/default_collection/dataStores/default_data_store */
 	// +optional
-	DataStoreRef *v1alpha1.ResourceRef `json:"dataStoreRef,omitempty"`
+	DataStoreRef *k8sv1alpha1.ResourceRef `json:"dataStoreRef,omitempty"`
 
 	/* Required. Specifies which products to apply the boost to.
 
@@ -116,7 +116,7 @@ type ControlControlPoints struct {
 type ControlFilterAction struct {
 	/* Required. Specifies which data store's documents can be filtered by this control. Full data store name e.g. projects/123/locations/global/collections/default_collection/dataStores/default_data_store */
 	// +optional
-	DataStoreRef *v1alpha1.ResourceRef `json:"dataStoreRef,omitempty"`
+	DataStoreRef *k8sv1alpha1.ResourceRef `json:"dataStoreRef,omitempty"`
 
 	/* Required. A filter to apply on the matching condition results.
 
@@ -150,7 +150,7 @@ type ControlInterpolationBoostSpec struct {
 type ControlPromoteAction struct {
 	/* Required. Data store with which this promotion is attached to. */
 	// +optional
-	DataStoreRef *v1alpha1.ResourceRef `json:"dataStoreRef,omitempty"`
+	DataStoreRef *k8sv1alpha1.ResourceRef `json:"dataStoreRef,omitempty"`
 
 	/* Required. Promotion attached to this action. */
 	// +optional
@@ -231,7 +231,7 @@ type DiscoveryEngineControlSpec struct {
 	Conditions []ControlConditions `json:"conditions,omitempty"`
 
 	/* Immutable. The DataStore this control belongs to. */
-	DataStoreRef v1alpha1.ResourceRef `json:"dataStoreRef"`
+	DataStoreRef k8sv1alpha1.ResourceRef `json:"dataStoreRef"`
 
 	/* Required. Human readable name. The identifier used in UI views.
 
@@ -248,7 +248,7 @@ type DiscoveryEngineControlSpec struct {
 	Location string `json:"location"`
 
 	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Promote certain links based on predefined trigger queries. */
 	// +optional
@@ -284,7 +284,7 @@ type ControlObservedStateStatus struct {
 type DiscoveryEngineControlStatus struct {
 	/* Conditions represent the latest available observations of the
 	   DiscoveryEngineControl's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the DiscoveryEngineControl resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

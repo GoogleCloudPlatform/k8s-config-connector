@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -41,7 +41,7 @@ var _ = apiextensionsv1.JSON{}
 type ExternalaccessruleDestinationIPRanges struct {
 	/* The name of an `ExternalAddress` resource. The external address must have been reserved in the scope of this external access rule's parent network policy. */
 	// +optional
-	ExternalAddressRef *v1alpha1.ResourceRef `json:"externalAddressRef,omitempty"`
+	ExternalAddressRef *k8sv1alpha1.ResourceRef `json:"externalAddressRef,omitempty"`
 
 	/* A single IP address. For example: `10.0.0.5`. */
 	// +optional
@@ -55,7 +55,7 @@ type ExternalaccessruleDestinationIPRanges struct {
 type ExternalaccessruleSourceIPRanges struct {
 	/* The name of an `ExternalAddress` resource. The external address must have been reserved in the scope of this external access rule's parent network policy. */
 	// +optional
-	ExternalAddressRef *v1alpha1.ResourceRef `json:"externalAddressRef,omitempty"`
+	ExternalAddressRef *k8sv1alpha1.ResourceRef `json:"externalAddressRef,omitempty"`
 
 	/* A single IP address. For example: `10.0.0.5`. */
 	// +optional
@@ -88,7 +88,7 @@ type VMwareEngineExternalAccessRuleSpec struct {
 	IpProtocol *string `json:"ipProtocol,omitempty"`
 
 	/* Required. The resource name of the network policy to create a new external access firewall rule in. */
-	NetworkPolicyRef v1alpha1.ResourceRef `json:"networkPolicyRef"`
+	NetworkPolicyRef k8sv1alpha1.ResourceRef `json:"networkPolicyRef"`
 
 	/* External access rule priority, which determines the external access rule to use when multiple rules apply. If multiple rules have the same priority, their ordering is non-deterministic. If specific ordering is required, assign unique priorities to enforce such ordering. The external access rule priority is an integer from 100 to 4096, both inclusive. Lower integers indicate higher precedence. For example, a rule with priority `100` has higher precedence than a rule with priority `101`. */
 	// +optional
@@ -128,7 +128,7 @@ type ExternalaccessruleObservedStateStatus struct {
 type VMwareEngineExternalAccessRuleStatus struct {
 	/* Conditions represent the latest available observations of the
 	   VMwareEngineExternalAccessRule's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the VMwareEngineExternalAccessRule resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -58,7 +58,7 @@ type DatalabelingjobActiveLearningConfig struct {
 
 type DatalabelingjobEncryptionSpec struct {
 	/* Required. The Cloud KMS resource identifier of the customer managed encryption key used to protect a resource. The key needs to be in the same region as where the compute resource is created. */
-	KmsKeyRef v1alpha1.ResourceRef `json:"kmsKeyRef"`
+	KmsKeyRef k8sv1alpha1.ResourceRef `json:"kmsKeyRef"`
 }
 
 type DatalabelingjobSampleConfig struct {
@@ -99,7 +99,7 @@ type VertexAIDataLabelingJobSpec struct {
 
 	/* Required. Dataset resource names. Right now we only support labeling from a single Dataset. Format: projects/{project}/locations/{location}/datasets/{dataset} */
 	// +optional
-	DatasetRefs []v1alpha1.ResourceRef `json:"datasetRefs,omitempty"`
+	DatasetRefs []k8sv1alpha1.ResourceRef `json:"datasetRefs,omitempty"`
 
 	/* Required. The user-defined name of the DataLabelingJob. The name can be up to 128 characters long and can consist of any UTF-8 characters. Display name of a DataLabelingJob. */
 	// +optional
@@ -133,7 +133,7 @@ type VertexAIDataLabelingJobSpec struct {
 	Location string `json:"location"`
 
 	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* The VertexAIDataLabelingJob name. If not given, the metadata.name will be used. */
 	// +optional
@@ -201,7 +201,7 @@ type DatalabelingjobObservedStateStatus struct {
 type VertexAIDataLabelingJobStatus struct {
 	/* Conditions represent the latest available observations of the
 	   VertexAIDataLabelingJob's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the VertexAIDataLabelingJob resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -123,7 +123,7 @@ type RestoreVolumeDataRestorePolicyOverrides struct {
 type GKEBackupRestoreSpec struct {
 	/* Required. Immutable. A reference to the [Backup][google.cloud.gkebackup.v1.Backup] used as the source from which this Restore will restore. Note that this Backup must be a sub-resource of the RestorePlan's [backup_plan][google.cloud.gkebackup.v1.RestorePlan.backup_plan]. */
 	// +optional
-	BackupRef *v1alpha1.ResourceRef `json:"backupRef,omitempty"`
+	BackupRef *k8sv1alpha1.ResourceRef `json:"backupRef,omitempty"`
 
 	/* User specified descriptive string for this Restore. */
 	// +optional
@@ -142,7 +142,7 @@ type GKEBackupRestoreSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	/* Required. The RestorePlan from which this Restore is created. */
-	RestorePlanRef v1alpha1.ResourceRef `json:"restorePlanRef"`
+	RestorePlanRef k8sv1alpha1.ResourceRef `json:"restorePlanRef"`
 
 	/* Optional. Immutable. Overrides the volume data restore policies selected in the Restore Config for override-scoped resources. */
 	// +optional
@@ -461,7 +461,7 @@ type RestoreVolumeDataRestorePolicyBindingsStatus struct {
 type GKEBackupRestoreStatus struct {
 	/* Conditions represent the latest available observations of the
 	   GKEBackupRestore's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the GKEBackupRestore resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

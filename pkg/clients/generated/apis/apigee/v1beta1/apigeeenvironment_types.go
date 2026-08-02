@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -40,7 +40,7 @@ var _ = apiextensionsv1.JSON{}
 
 type ApigeeEnvironmentSpec struct {
 	/* Reference to parent Apigee Organization. */
-	ApigeeOrganizationRef v1alpha1.ResourceRef `json:"apigeeOrganizationRef"`
+	ApigeeOrganizationRef k8sv1alpha1.ResourceRef `json:"apigeeOrganizationRef"`
 
 	/* Optional. Description of the environment. */
 	// +optional
@@ -65,7 +65,7 @@ type EnvironmentObservedStateStatus struct {
 type ApigeeEnvironmentStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ApigeeEnvironment's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* Output only. Creation time of this environment as milliseconds since epoch. */
 	// +optional
 	CreatedAt *int64 `json:"createdAt,omitempty"`

@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -67,7 +67,7 @@ type VertexaifeatureonlinestoreDedicatedServingEndpoint struct {
 type VertexaifeatureonlinestoreEncryptionSpec struct {
 	/* Required. The Cloud KMS resource identifier of the customer managed encryption key used to protect a resource. Has the form: `projects/my-project/locations/my-region/keyRings/my-kr/cryptoKeys/my-key`. The key needs to be in the same region as where the compute resource is created. */
 	// +optional
-	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+	KmsKeyRef *k8sv1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 }
 
 type VertexaifeatureonlinestoreOptimized struct {
@@ -90,7 +90,7 @@ type VertexaifeatureonlinestorePrivateServiceConnectConfig struct {
 type VertexaifeatureonlinestorePscAutomationConfigs struct {
 	/* Required. The full name of the Google Compute Engine [network](https://cloud.google.com/compute/docs/networks-and-firewalls#networks). [Format](https://cloud.google.com/compute/docs/reference/rest/v1/networks/get): `projects/{project}/global/networks/{network}`. */
 	// +optional
-	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+	NetworkRef *k8sv1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
 	/* Required. Project id used to create forwarding rule. */
 	// +optional
@@ -122,7 +122,7 @@ type VertexAIFeatureOnlineStoreSpec struct {
 	Optimized *VertexaifeatureonlinestoreOptimized `json:"optimized,omitempty"`
 
 	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* The VertexAIFeatureOnlineStore name. If not given, the metadata.name will be used. */
 	// +optional
@@ -158,7 +158,7 @@ type VertexaifeatureonlinestoreObservedStateStatus struct {
 type VertexAIFeatureOnlineStoreStatus struct {
 	/* Conditions represent the latest available observations of the
 	   VertexAIFeatureOnlineStore's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the VertexAIFeatureOnlineStore resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

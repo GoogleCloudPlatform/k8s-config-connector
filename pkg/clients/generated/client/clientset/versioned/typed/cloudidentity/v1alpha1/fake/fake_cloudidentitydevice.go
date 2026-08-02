@@ -22,31 +22,31 @@
 package fake
 
 import (
-	v1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudidentity/v1beta1"
-	cloudidentityv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudidentity/v1beta1"
+	v1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/cloudidentity/v1alpha1"
+	cloudidentityv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/cloudidentity/v1alpha1"
 	gentype "k8s.io/client-go/gentype"
 )
 
 // fakeCloudIdentityDevices implements CloudIdentityDeviceInterface
 type fakeCloudIdentityDevices struct {
-	*gentype.FakeClientWithList[*v1beta1.CloudIdentityDevice, *v1beta1.CloudIdentityDeviceList]
-	Fake *FakeCloudidentityV1beta1
+	*gentype.FakeClientWithList[*v1alpha1.CloudIdentityDevice, *v1alpha1.CloudIdentityDeviceList]
+	Fake *FakeCloudidentityV1alpha1
 }
 
-func newFakeCloudIdentityDevices(fake *FakeCloudidentityV1beta1, namespace string) cloudidentityv1beta1.CloudIdentityDeviceInterface {
+func newFakeCloudIdentityDevices(fake *FakeCloudidentityV1alpha1, namespace string) cloudidentityv1alpha1.CloudIdentityDeviceInterface {
 	return &fakeCloudIdentityDevices{
-		gentype.NewFakeClientWithList[*v1beta1.CloudIdentityDevice, *v1beta1.CloudIdentityDeviceList](
+		gentype.NewFakeClientWithList[*v1alpha1.CloudIdentityDevice, *v1alpha1.CloudIdentityDeviceList](
 			fake.Fake,
 			namespace,
-			v1beta1.SchemeGroupVersion.WithResource("cloudidentitydevices"),
-			v1beta1.SchemeGroupVersion.WithKind("CloudIdentityDevice"),
-			func() *v1beta1.CloudIdentityDevice { return &v1beta1.CloudIdentityDevice{} },
-			func() *v1beta1.CloudIdentityDeviceList { return &v1beta1.CloudIdentityDeviceList{} },
-			func(dst, src *v1beta1.CloudIdentityDeviceList) { dst.ListMeta = src.ListMeta },
-			func(list *v1beta1.CloudIdentityDeviceList) []*v1beta1.CloudIdentityDevice {
+			v1alpha1.SchemeGroupVersion.WithResource("cloudidentitydevices"),
+			v1alpha1.SchemeGroupVersion.WithKind("CloudIdentityDevice"),
+			func() *v1alpha1.CloudIdentityDevice { return &v1alpha1.CloudIdentityDevice{} },
+			func() *v1alpha1.CloudIdentityDeviceList { return &v1alpha1.CloudIdentityDeviceList{} },
+			func(dst, src *v1alpha1.CloudIdentityDeviceList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.CloudIdentityDeviceList) []*v1alpha1.CloudIdentityDevice {
 				return gentype.ToPointerSlice(list.Items)
 			},
-			func(list *v1beta1.CloudIdentityDeviceList, items []*v1beta1.CloudIdentityDevice) {
+			func(list *v1alpha1.CloudIdentityDeviceList, items []*v1alpha1.CloudIdentityDevice) {
 				list.Items = gentype.FromPointerSlice(items)
 			},
 		),

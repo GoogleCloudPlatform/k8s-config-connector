@@ -927,6 +927,10 @@
 [missing_field] crd=cloudfunctions2functions.cloudfunctions2.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceConfig.uri" is not set in unstructured objects
 [missing_field] crd=cloudfunctions2functions.cloudfunctions2.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceConfig.vpcConnector" is not set in unstructured objects
 [missing_field] crd=cloudfunctions2functions.cloudfunctions2.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceConfig.vpcConnectorEgressSettings" is not set in unstructured objects
+[missing_field] crd=cloudidentitydevices.cloudidentity.cnrm.cloud.google.com version=v1alpha1: field ".spec.assetTag" is not set in unstructured objects
+[missing_field] crd=cloudidentitydevices.cloudidentity.cnrm.cloud.google.com version=v1alpha1: field ".spec.customer" is not set in unstructured objects
+[missing_field] crd=cloudidentitydevices.cloudidentity.cnrm.cloud.google.com version=v1alpha1: field ".spec.deviceType" is not set in unstructured objects
+[missing_field] crd=cloudidentitydevices.cloudidentity.cnrm.cloud.google.com version=v1alpha1: field ".spec.serialNumber" is not set in unstructured objects
 [missing_field] crd=cloudiotdeviceregistries.cloudiot.cnrm.cloud.google.com version=v1alpha1: field ".spec.credentials[].publicKeyCertificate" is not set in unstructured objects
 [missing_field] crd=cloudiotdeviceregistries.cloudiot.cnrm.cloud.google.com version=v1alpha1: field ".spec.eventNotificationConfigs[].pubsubTopicName" is not set in unstructured objects
 [missing_field] crd=cloudiotdeviceregistries.cloudiot.cnrm.cloud.google.com version=v1alpha1: field ".spec.eventNotificationConfigs[].subfolderMatches" is not set in unstructured objects

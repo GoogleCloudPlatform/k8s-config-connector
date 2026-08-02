@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -92,7 +92,7 @@ type VertexaischeduleDataformRepositorySource struct {
 
 	/* The resource name of the Dataform Repository. Format: projects/PROJECT_ID/locations/LOCATION_ID/repositories/REPOSITORY_ID */
 	// +optional
-	DataformRepositoryRef *v1alpha1.ResourceRef `json:"dataformRepositoryRef,omitempty"`
+	DataformRepositoryRef *k8sv1alpha1.ResourceRef `json:"dataformRepositoryRef,omitempty"`
 }
 
 type VertexaischeduleDirectNotebookSource struct {
@@ -108,7 +108,7 @@ type VertexaischeduleDnsPeeringConfigs struct {
 
 	/* Required. The VPC network name in the target_project where the DNS zone specified by 'domain' is visible. */
 	// +optional
-	TargetNetworkRef *v1alpha1.ResourceRef `json:"targetNetworkRef,omitempty"`
+	TargetNetworkRef *k8sv1alpha1.ResourceRef `json:"targetNetworkRef,omitempty"`
 
 	/* Required. The project ID hosting the Cloud DNS managed zone that contains the 'domain'. */
 	// +optional
@@ -118,7 +118,7 @@ type VertexaischeduleDnsPeeringConfigs struct {
 type VertexaischeduleEncryptionSpec struct {
 	/* Required. The Cloud KMS resource identifier of the customer managed encryption key used to protect a resource. Has the form: `projects/my-project/locations/my-region/keyRings/my-kr/cryptoKeys/my-key`. The key needs to be in the same region as where the compute resource is created. */
 	// +optional
-	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+	KmsKeyRef *k8sv1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 }
 
 type VertexaischeduleGcsNotebookSource struct {
@@ -172,11 +172,11 @@ type VertexaischeduleNetworkSpec struct {
 
 	/* The full name of the Google Compute Engine [network](https://cloud.google.com//compute/docs/networks-and-firewalls#networks) */
 	// +optional
-	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+	NetworkRef *k8sv1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
 	/* The name of the subnet that this instance is in. Format: projects/PROJECT_ID/regions/REGION/subnetworks/SUBNETWORK_ID */
 	// +optional
-	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
+	SubnetworkRef *k8sv1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
 }
 
 type VertexaischeduleNotebookExecutionJob struct {
@@ -214,7 +214,7 @@ type VertexaischeduleNotebookExecutionJob struct {
 
 	/* The Cloud Storage location to upload the result to. Format: `gs://bucket-name` */
 	// +optional
-	GcsOutputURIRef *v1alpha1.ResourceRef `json:"gcsOutputURIRef,omitempty"`
+	GcsOutputURIRef *k8sv1alpha1.ResourceRef `json:"gcsOutputURIRef,omitempty"`
 
 	/* The name of the kernel to use during notebook execution. If unset, the default kernel is used. */
 	// +optional
@@ -238,11 +238,11 @@ type VertexaischeduleNotebookExecutionJob struct {
 
 	/* The Schedule resource name if this job is triggered by one. Format: `projects/{project_id}/locations/{location}/schedules/{schedule_id}` */
 	// +optional
-	ScheduleRef *v1alpha1.ResourceRef `json:"scheduleRef,omitempty"`
+	ScheduleRef *k8sv1alpha1.ResourceRef `json:"scheduleRef,omitempty"`
 
 	/* The service account to run the execution as. */
 	// +optional
-	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+	ServiceAccountRef *k8sv1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 
 	/* The Workbench runtime configuration to use for the notebook execution. */
 	// +optional
@@ -277,7 +277,7 @@ type VertexaischedulePipelineJob struct {
 
 	/* Reference to a ComputeNetwork. */
 	// +optional
-	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+	NetworkRef *k8sv1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
 	/* The spec of the pipeline. */
 	// +optional
@@ -288,7 +288,7 @@ type VertexaischedulePipelineJob struct {
 	PreflightValidations *bool `json:"preflightValidations,omitempty"`
 
 	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Optional. Configuration for PSC-I for PipelineJob. */
 	// +optional
@@ -308,7 +308,7 @@ type VertexaischedulePipelineJob struct {
 
 	/* The service account that the pipeline workload runs as. */
 	// +optional
-	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+	ServiceAccountRef *k8sv1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 
 	/* A template uri from where the PipelineJob.pipeline_spec, if empty, will be downloaded. */
 	// +optional
@@ -322,7 +322,7 @@ type VertexaischedulePscInterfaceConfig struct {
 
 	/* Optional. The name of the Compute Engine network attachment to attach to the resource within the region and user project. */
 	// +optional
-	NetworkAttachmentRef *v1alpha1.ResourceRef `json:"networkAttachmentRef,omitempty"`
+	NetworkAttachmentRef *k8sv1alpha1.ResourceRef `json:"networkAttachmentRef,omitempty"`
 }
 
 type VertexaischeduleReservationAffinity struct {
@@ -387,7 +387,7 @@ type VertexAIScheduleSpec struct {
 	MaxRunCount *int64 `json:"maxRunCount,omitempty"`
 
 	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* The VertexAISchedule name. If not given, the metadata.name will be used. */
 	// +optional
@@ -817,7 +817,7 @@ type VertexaischeduleTemplateMetadataStatus struct {
 type VertexAIScheduleStatus struct {
 	/* Conditions represent the latest available observations of the
 	   VertexAISchedule's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the VertexAISchedule resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

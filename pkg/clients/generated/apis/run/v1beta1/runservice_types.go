@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -50,7 +50,7 @@ type ServiceBinaryAuthorization struct {
 
 type ServiceCloudSqlInstance struct {
 	// +optional
-	Instances []v1alpha1.ResourceRef `json:"instances,omitempty"`
+	Instances []k8sv1alpha1.ResourceRef `json:"instances,omitempty"`
 }
 
 type ServiceContainers struct {
@@ -174,7 +174,7 @@ type ServiceItems struct {
 
 	/* The Cloud Secret Manager secret version. Can be 'latest' for the latest value or an integer for a specific version */
 	// +optional
-	VersionRef *v1alpha1.ResourceRef `json:"versionRef,omitempty"`
+	VersionRef *k8sv1alpha1.ResourceRef `json:"versionRef,omitempty"`
 }
 
 type ServiceLivenessProbe struct {
@@ -208,13 +208,13 @@ type ServiceNetworkInterfaces struct {
 	network and subnetwork are specified, the given VPC subnetwork must belong to the given VPC network. If network is not specified, it will be
 	looked up from the subnetwork. */
 	// +optional
-	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+	NetworkRef *k8sv1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
 	/* The VPC subnetwork that the Cloud Run resource will get IPs from. At least one of network or subnetwork must be specified. If both
 	network and subnetwork are specified, the given VPC subnetwork must belong to the given VPC network. If subnetwork is not specified, the
 	subnetwork with the same name with the network will be used. */
 	// +optional
-	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
+	SubnetworkRef *k8sv1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
 
 	/* Network tags applied to this Cloud Run service. */
 	// +optional
@@ -265,16 +265,16 @@ type ServiceSecret struct {
 	Items []ServiceItems `json:"items,omitempty"`
 
 	/* The name of the secret in Cloud Secret Manager. Format: {secret} if the secret is in the same project. projects/{project}/secrets/{secret} if the secret is in a different project. */
-	SecretRef v1alpha1.ResourceRef `json:"secretRef"`
+	SecretRef k8sv1alpha1.ResourceRef `json:"secretRef"`
 }
 
 type ServiceSecretKeyRef struct {
 	/* The name of the secret in Cloud Secret Manager. Format: {secretName} if the secret is in the same project. projects/{project}/secrets/{secretName} if the secret is in a different project. */
-	SecretRef v1alpha1.ResourceRef `json:"secretRef"`
+	SecretRef k8sv1alpha1.ResourceRef `json:"secretRef"`
 
 	/* The Cloud Secret Manager secret version. Can be 'latest' for the latest value or an integer for a specific version. */
 	// +optional
-	VersionRef *v1alpha1.ResourceRef `json:"versionRef,omitempty"`
+	VersionRef *k8sv1alpha1.ResourceRef `json:"versionRef,omitempty"`
 }
 
 type ServiceStartupProbe struct {
@@ -330,7 +330,7 @@ type ServiceTemplate struct {
 
 	/* A reference to a customer managed encryption key (CMEK) to use to encrypt this container image. For more information, go to https://cloud.google.com/run/docs/securing/using-cmek */
 	// +optional
-	EncryptionKeyRef *v1alpha1.ResourceRef `json:"encryptionKeyRef,omitempty"`
+	EncryptionKeyRef *k8sv1alpha1.ResourceRef `json:"encryptionKeyRef,omitempty"`
 
 	/* The sandbox environment to host this Revision. Possible values: ["EXECUTION_ENVIRONMENT_GEN1", "EXECUTION_ENVIRONMENT_GEN2"]. */
 	// +optional
@@ -358,7 +358,7 @@ type ServiceTemplate struct {
 
 	/* Email address of the IAM service account associated with the revision of the service. The service account represents the identity of the running revision, and determines what permissions the revision has. If not provided, the revision will use the project's default service account. */
 	// +optional
-	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+	ServiceAccountRef *k8sv1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 
 	/* Enables session affinity. For more information, go to https://cloud.google.com/run/docs/configuring/session-affinity. */
 	// +optional
@@ -431,7 +431,7 @@ type ServiceVolumes struct {
 type ServiceVpcAccess struct {
 	/* VPC Access connector name. Format: projects/{project}/locations/{location}/connectors/{connector}, where {project} can be project id or number. */
 	// +optional
-	ConnectorRef *v1alpha1.ResourceRef `json:"connectorRef,omitempty"`
+	ConnectorRef *k8sv1alpha1.ResourceRef `json:"connectorRef,omitempty"`
 
 	/* Traffic VPC egress settings. Possible values: ["ALL_TRAFFIC", "PRIVATE_RANGES_ONLY"]. */
 	// +optional
@@ -488,7 +488,7 @@ type RunServiceSpec struct {
 	Location string `json:"location"`
 
 	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
@@ -557,7 +557,7 @@ type ServiceTrafficStatusesStatus struct {
 type RunServiceStatus struct {
 	/* Conditions represent the latest available observations of the
 	   RunService's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* The creation time. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`

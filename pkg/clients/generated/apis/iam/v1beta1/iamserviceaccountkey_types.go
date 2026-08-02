@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -56,13 +56,13 @@ type IAMServiceAccountKeySpec struct {
 	PublicKeyType *string `json:"publicKeyType,omitempty"`
 
 	/* Immutable. The Service Account to create a key for. */
-	ServiceAccountRef v1alpha1.ResourceRef `json:"serviceAccountRef"`
+	ServiceAccountRef k8sv1alpha1.ResourceRef `json:"serviceAccountRef"`
 }
 
 type IAMServiceAccountKeyStatus struct {
 	/* Conditions represent the latest available observations of the
 	   IAMServiceAccountKey's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* Immutable. The name used for this key pair. */
 	// +optional
 	Name *string `json:"name,omitempty"`

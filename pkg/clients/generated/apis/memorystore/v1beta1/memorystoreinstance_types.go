@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -119,15 +119,15 @@ type InstancePersistenceConfig struct {
 type InstancePrimaryInstance struct {
 	/* Optional. The full resource path of the remote instance. */
 	// +optional
-	InstanceRef *v1alpha1.ResourceRef `json:"instanceRef,omitempty"`
+	InstanceRef *k8sv1alpha1.ResourceRef `json:"instanceRef,omitempty"`
 }
 
 type InstancePscAutoConnection struct {
 	/* Required. The network where the PSC endpoints are created, in the form of projects/{project_id}/global/networks/{network_id}. */
-	NetworkRef v1alpha1.ResourceRef `json:"networkRef"`
+	NetworkRef k8sv1alpha1.ResourceRef `json:"networkRef"`
 
 	/* Required. The consumer project_id where PSC connections are established. This should be the same project_id that the instance is being created in. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 }
 
 type InstanceRdbConfig struct {
@@ -143,7 +143,7 @@ type InstanceRdbConfig struct {
 type InstanceSecondaryInstances struct {
 	/* Optional. The full resource path of the remote instance. */
 	// +optional
-	InstanceRef *v1alpha1.ResourceRef `json:"instanceRef,omitempty"`
+	InstanceRef *k8sv1alpha1.ResourceRef `json:"instanceRef,omitempty"`
 }
 
 type InstanceStartTime struct {
@@ -215,7 +215,7 @@ type MemorystoreInstanceSpec struct {
 
 	/* Optional. The KMS key reference for the instance. */
 	// +optional
-	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+	KmsKeyRef *k8sv1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 
 	/* Optional. Labels to represent user-provided metadata. */
 	// +optional
@@ -245,7 +245,7 @@ type MemorystoreInstanceSpec struct {
 	PersistenceConfig *InstancePersistenceConfig `json:"persistenceConfig,omitempty"`
 
 	/* The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Optional. Number of replica nodes per shard. If omitted the default is 0 replicas. */
 	// +optional
@@ -495,7 +495,7 @@ type InstanceUpdateInfoStatus struct {
 type MemorystoreInstanceStatus struct {
 	/* Conditions represent the latest available observations of the
 	   MemorystoreInstance's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the MemorystoreInstance resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

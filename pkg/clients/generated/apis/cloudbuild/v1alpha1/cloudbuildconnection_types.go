@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -40,7 +40,7 @@ var _ = apiextensionsv1.JSON{}
 
 type ConnectionAuthorizerCredential struct {
 	/* Required. A SecretManager resource containing the user token that authorizes the Cloud Build connection. Format: `projects/* /secrets/* /versions/*`. */
-	UserTokenSecretVersionRef v1alpha1.ResourceRef `json:"userTokenSecretVersionRef"`
+	UserTokenSecretVersionRef k8sv1alpha1.ResourceRef `json:"userTokenSecretVersionRef"`
 }
 
 type ConnectionBitbucketCloudConfig struct {
@@ -51,7 +51,7 @@ type ConnectionBitbucketCloudConfig struct {
 	ReadAuthorizerCredential ConnectionReadAuthorizerCredential `json:"readAuthorizerCredential"`
 
 	/* Required. SecretManager resource containing the webhook secret used to verify webhook events, formatted as `projects/* /secrets/* /versions/*`. */
-	WebhookSecretSecretVersionRef v1alpha1.ResourceRef `json:"webhookSecretSecretVersionRef"`
+	WebhookSecretSecretVersionRef k8sv1alpha1.ResourceRef `json:"webhookSecretSecretVersionRef"`
 
 	/* Required. The Bitbucket Cloud Workspace ID to be connected to Google Cloud Platform. */
 	Workspace string `json:"workspace"`
@@ -76,7 +76,7 @@ type ConnectionBitbucketDataCenterConfig struct {
 	SslCA *string `json:"sslCA,omitempty"`
 
 	/* Required. Immutable. SecretManager resource containing the webhook secret used to verify webhook events, formatted as `projects/* /secrets/* /versions/*`. */
-	WebhookSecretSecretVersionRef v1alpha1.ResourceRef `json:"webhookSecretSecretVersionRef"`
+	WebhookSecretSecretVersionRef k8sv1alpha1.ResourceRef `json:"webhookSecretSecretVersionRef"`
 }
 
 type ConnectionGithubConfig struct {
@@ -110,7 +110,7 @@ type ConnectionGithubEnterpriseConfig struct {
 
 	/* SecretManager resource containing the private key of the GitHub App, formatted as `projects/* /secrets/* /versions/*`. */
 	// +optional
-	PrivateKeySecretVersionRef *v1alpha1.ResourceRef `json:"privateKeySecretVersionRef,omitempty"`
+	PrivateKeySecretVersionRef *k8sv1alpha1.ResourceRef `json:"privateKeySecretVersionRef,omitempty"`
 
 	/* Configuration for using Service Directory to privately connect to a GitHub Enterprise server. This should only be set if the GitHub Enterprise server is hosted on-premises and not reachable by public internet. If this field is left empty, calls to the GitHub Enterprise server will be made over the public internet. */
 	// +optional
@@ -122,7 +122,7 @@ type ConnectionGithubEnterpriseConfig struct {
 
 	/* SecretManager resource containing the webhook secret of the GitHub App, formatted as `projects/* /secrets/* /versions/*`. */
 	// +optional
-	WebhookSecretSecretVersionRef *v1alpha1.ResourceRef `json:"webhookSecretSecretVersionRef,omitempty"`
+	WebhookSecretSecretVersionRef *k8sv1alpha1.ResourceRef `json:"webhookSecretSecretVersionRef,omitempty"`
 }
 
 type ConnectionGitlabConfig struct {
@@ -145,18 +145,18 @@ type ConnectionGitlabConfig struct {
 	SslCA *string `json:"sslCA,omitempty"`
 
 	/* Required. Immutable. SecretManager resource containing the webhook secret of a GitLab Enterprise project, formatted as `projects/* /secrets/* /versions/*`. */
-	WebhookSecretSecretVersionRef v1alpha1.ResourceRef `json:"webhookSecretSecretVersionRef"`
+	WebhookSecretSecretVersionRef k8sv1alpha1.ResourceRef `json:"webhookSecretSecretVersionRef"`
 }
 
 type ConnectionReadAuthorizerCredential struct {
 	/* Required. A SecretManager resource containing the user token that authorizes the Cloud Build connection. Format: `projects/* /secrets/* /versions/*`. */
-	UserTokenSecretVersionRef v1alpha1.ResourceRef `json:"userTokenSecretVersionRef"`
+	UserTokenSecretVersionRef k8sv1alpha1.ResourceRef `json:"userTokenSecretVersionRef"`
 }
 
 type ConnectionServiceDirectoryConfig struct {
 	/* Required. The Service Directory service name. */
 	// +optional
-	ServiceRef *v1alpha1.ResourceRef `json:"serviceRef,omitempty"`
+	ServiceRef *k8sv1alpha1.ResourceRef `json:"serviceRef,omitempty"`
 }
 
 type CloudBuildConnectionSpec struct {
@@ -192,7 +192,7 @@ type CloudBuildConnectionSpec struct {
 	Location string `json:"location"`
 
 	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* The CloudBuildConnection name. If not given, the metadata.name will be used. */
 	// +optional
@@ -308,7 +308,7 @@ type ConnectionReadAuthorizerCredentialStatus struct {
 type CloudBuildConnectionStatus struct {
 	/* Conditions represent the latest available observations of the
 	   CloudBuildConnection's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the CloudBuildConnection resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -93,7 +93,7 @@ type ContainerAnalysisOccurrenceSpec struct {
 	NoteName string `json:"noteName"`
 
 	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* A description of actions that can be taken to remedy the note. */
 	// +optional
@@ -112,7 +112,7 @@ type ContainerAnalysisOccurrenceSpec struct {
 type ContainerAnalysisOccurrenceStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ContainerAnalysisOccurrence's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* The time when the repository was created. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`

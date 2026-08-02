@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -139,10 +139,10 @@ type AppBigqueryExportSettings struct {
 
 type AppClientCertificateSettings struct {
 	// +optional
-	PassphraseRef *v1alpha1.ResourceRef `json:"passphraseRef,omitempty"`
+	PassphraseRef *k8sv1alpha1.ResourceRef `json:"passphraseRef,omitempty"`
 
 	// +optional
-	PrivateKeyRef *v1alpha1.ResourceRef `json:"privateKeyRef,omitempty"`
+	PrivateKeyRef *k8sv1alpha1.ResourceRef `json:"privateKeyRef,omitempty"`
 
 	// +optional
 	TlsCertificate *string `json:"tlsCertificate,omitempty"`
@@ -276,7 +276,7 @@ type AppEvaluationPersonas struct {
 
 	/* CESEvaluationPersonaRef defines the resource reference to CESEvaluationPersona. */
 	// +optional
-	NameRef *v1alpha1.ResourceRef `json:"nameRef,omitempty"`
+	NameRef *k8sv1alpha1.ResourceRef `json:"nameRef,omitempty"`
 }
 
 type AppEvaluationSettings struct {
@@ -453,13 +453,13 @@ type AppPersonaProperty struct {
 
 type AppRedactionConfig struct {
 	// +optional
-	DeidentifyTemplateRef *v1alpha1.ResourceRef `json:"deidentifyTemplateRef,omitempty"`
+	DeidentifyTemplateRef *k8sv1alpha1.ResourceRef `json:"deidentifyTemplateRef,omitempty"`
 
 	// +optional
 	EnableRedaction *bool `json:"enableRedaction,omitempty"`
 
 	// +optional
-	InspectTemplateRef *v1alpha1.ResourceRef `json:"inspectTemplateRef,omitempty"`
+	InspectTemplateRef *k8sv1alpha1.ResourceRef `json:"inspectTemplateRef,omitempty"`
 }
 
 type AppScenarioMetricsConfig struct {
@@ -651,7 +651,7 @@ type CESAppSpec struct {
 
 	/* Optional. List of guardrails for the app. Format: `projects/{project}/locations/{location}/apps/{app}/guardrails/{guardrail}` */
 	// +optional
-	GuardrailRefs []v1alpha1.ResourceRef `json:"guardrailRefs,omitempty"`
+	GuardrailRefs []k8sv1alpha1.ResourceRef `json:"guardrailRefs,omitempty"`
 
 	/* Optional. Language settings of the app. */
 	// +optional
@@ -681,7 +681,7 @@ type CESAppSpec struct {
 	Pinned *bool `json:"pinned,omitempty"`
 
 	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* The CESApp name. If not given, the metadata.name will be used. */
 	// +optional
@@ -689,7 +689,7 @@ type CESAppSpec struct {
 
 	/* Optional. The root agent is the entry point of the app. Format: `projects/{project}/locations/{location}/apps/{app}/agents/{agent}` */
 	// +optional
-	RootAgentRef *v1alpha1.ResourceRef `json:"rootAgentRef,omitempty"`
+	RootAgentRef *k8sv1alpha1.ResourceRef `json:"rootAgentRef,omitempty"`
 
 	/* Optional. TimeZone settings of the app. */
 	// +optional
@@ -766,7 +766,7 @@ type AppSchemaStatus struct {
 type CESAppStatus struct {
 	/* Conditions represent the latest available observations of the
 	   CESApp's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the CESApp resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -62,7 +62,7 @@ type BackupscheduleEncryptionConfig struct {
 
 	/* Optional. The Cloud KMS key that will be used to protect the backup. This field should be set only when [encryption_type][google.spanner.admin.database.v1.CreateBackupEncryptionConfig.encryption_type] is `CUSTOMER_MANAGED_ENCRYPTION`. Values are of the form `projects/<project>/locations/<location>/keyRings/<key_ring>/cryptoKeys/<kms_key_name>`. */
 	// +optional
-	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+	KmsKeyRef *k8sv1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 
 	/* Optional. Specifies the KMS configuration for the one or more keys used to
 	protect the backup. Values are of the form
@@ -80,7 +80,7 @@ type BackupscheduleEncryptionConfig struct {
 	Multi-regional location KMS keys are not supported for USER_MANAGED
 	instance configs. */
 	// +optional
-	KmsKeyRefs []v1alpha1.ResourceRef `json:"kmsKeyRefs,omitempty"`
+	KmsKeyRefs []k8sv1alpha1.ResourceRef `json:"kmsKeyRefs,omitempty"`
 }
 
 type BackupscheduleFullBackupSpec struct {
@@ -118,7 +118,7 @@ type SpannerBackupScheduleSpec struct {
 
 	/* Required. The Spanner Database that this backup applies to. */
 	// +optional
-	SpannerDatabaseRef *v1alpha1.ResourceRef `json:"spannerDatabaseRef,omitempty"`
+	SpannerDatabaseRef *k8sv1alpha1.ResourceRef `json:"spannerDatabaseRef,omitempty"`
 
 	/* Optional. The schedule specification based on which the backup creations are triggered. */
 	// +optional
@@ -148,7 +148,7 @@ type BackupscheduleObservedStateStatus struct {
 type SpannerBackupScheduleStatus struct {
 	/* Conditions represent the latest available observations of the
 	   SpannerBackupSchedule's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the SpannerBackupSchedule resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

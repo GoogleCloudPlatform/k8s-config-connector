@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -41,7 +41,7 @@ var _ = apiextensionsv1.JSON{}
 type LakeMetastore struct {
 	/* Optional. A relative reference to the Dataproc Metastore (https://cloud.google.com/dataproc-metastore/docs) service associated with the lake: `projects/{project_id}/locations/{location_id}/services/{service_id}` */
 	// +optional
-	ServiceRef *v1alpha1.ResourceRef `json:"serviceRef,omitempty"`
+	ServiceRef *k8sv1alpha1.ResourceRef `json:"serviceRef,omitempty"`
 }
 
 type DataplexLakeSpec struct {
@@ -61,7 +61,7 @@ type DataplexLakeSpec struct {
 	Metastore *LakeMetastore `json:"metastore,omitempty"`
 
 	/* The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* The DataplexLake name. If not given, the metadata.name will be used. */
 	// +optional
@@ -133,7 +133,7 @@ type LakeObservedStateStatus struct {
 type DataplexLakeStatus struct {
 	/* Conditions represent the latest available observations of the
 	   DataplexLake's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the DataplexLake resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

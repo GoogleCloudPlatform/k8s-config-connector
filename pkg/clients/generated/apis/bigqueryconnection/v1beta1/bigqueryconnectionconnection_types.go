@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -65,10 +65,10 @@ type ConnectionCloudSQL struct {
 	Credential ConnectionCredential `json:"credential"`
 
 	/* Reference to the SQL Database. */
-	DatabaseRef v1alpha1.ResourceRef `json:"databaseRef"`
+	DatabaseRef k8sv1alpha1.ResourceRef `json:"databaseRef"`
 
 	/* Reference to the Cloud SQL instance ID. */
-	InstanceRef v1alpha1.ResourceRef `json:"instanceRef"`
+	InstanceRef k8sv1alpha1.ResourceRef `json:"instanceRef"`
 
 	/* Type of the Cloud SQL database. */
 	Type string `json:"type"`
@@ -76,7 +76,7 @@ type ConnectionCloudSQL struct {
 
 type ConnectionCloudSpanner struct {
 	/* Reference to a spanner database ID. */
-	DatabaseRef v1alpha1.ResourceRef `json:"databaseRef"`
+	DatabaseRef k8sv1alpha1.ResourceRef `json:"databaseRef"`
 
 	/* Optional. Cloud Spanner database role for fine-grained access control.
 	The Cloud Spanner admin should have provisioned the database role with
@@ -123,7 +123,7 @@ type ConnectionCloudSpanner struct {
 type ConnectionCredential struct {
 	/* The Kubernetes Secret object that stores the "username" and "password" information. The Secret type has to be `kubernetes.io/basic-auth`. */
 	// +optional
-	SecretRef *v1alpha1.ResourceRef `json:"secretRef,omitempty"`
+	SecretRef *k8sv1alpha1.ResourceRef `json:"secretRef,omitempty"`
 }
 
 type ConnectionMetastoreService struct {
@@ -133,7 +133,7 @@ type ConnectionMetastoreService struct {
 
 	* `projects/[project_id]/locations/[region]/services/[service_id]` */
 	// +optional
-	MetastoreServiceRef *v1alpha1.ResourceRef `json:"metastoreServiceRef,omitempty"`
+	MetastoreServiceRef *k8sv1alpha1.ResourceRef `json:"metastoreServiceRef,omitempty"`
 }
 
 type ConnectionSpark struct {
@@ -154,7 +154,7 @@ type ConnectionSparkHistoryServer struct {
 
 	* `projects/[project_id]/regions/[region]/clusters/[cluster_name]` */
 	// +optional
-	DataprocClusterRef *v1alpha1.ResourceRef `json:"dataprocClusterRef,omitempty"`
+	DataprocClusterRef *k8sv1alpha1.ResourceRef `json:"dataprocClusterRef,omitempty"`
 }
 
 type BigQueryConnectionConnectionSpec struct {
@@ -190,7 +190,7 @@ type BigQueryConnectionConnectionSpec struct {
 	Location string `json:"location"`
 
 	/* The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Immutable. Optional. The BigQuery Connection ID used for resource creation or acquisition. For creation: If specified, this value is used as the connection ID. If not provided, a UUID will be generated and assigned as the connection ID. For acquisition: This field must be provided to identify the connection resource to acquire. */
 	// +optional
@@ -308,7 +308,7 @@ type ConnectionSparkStatus struct {
 type BigQueryConnectionConnectionStatus struct {
 	/* Conditions represent the latest available observations of the
 	   BigQueryConnectionConnection's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the BigQueryConnectionConnection resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

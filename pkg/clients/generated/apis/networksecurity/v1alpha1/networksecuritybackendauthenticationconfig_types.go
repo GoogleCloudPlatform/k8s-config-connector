@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -47,7 +47,7 @@ type NetworkSecurityBackendAuthenticationConfigSpec struct {
 	TLS and the backend requests a client certificate. Must have a CLIENT_AUTH
 	scope. */
 	// +optional
-	ClientCertificateRef *v1alpha1.ResourceRef `json:"clientCertificateRef,omitempty"`
+	ClientCertificateRef *k8sv1alpha1.ResourceRef `json:"clientCertificateRef,omitempty"`
 
 	/* Optional. Free-text description of the resource. */
 	// +optional
@@ -62,7 +62,7 @@ type NetworkSecurityBackendAuthenticationConfigSpec struct {
 	Location *string `json:"location,omitempty"`
 
 	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* The NetworkSecurityBackendAuthenticationConfig name. If not given, the metadata.name will be used. */
 	// +optional
@@ -77,7 +77,7 @@ type NetworkSecurityBackendAuthenticationConfigSpec struct {
 	if specified, to validate the server certificates presented by the backend.
 	Required unless wellKnownRoots is set to PUBLIC_ROOTS. */
 	// +optional
-	TrustConfigRef *v1alpha1.ResourceRef `json:"trustConfigRef,omitempty"`
+	TrustConfigRef *k8sv1alpha1.ResourceRef `json:"trustConfigRef,omitempty"`
 
 	/* Well known roots to use for server certificate validation. */
 	// +optional
@@ -101,7 +101,7 @@ type BackendauthenticationconfigObservedStateStatus struct {
 type NetworkSecurityBackendAuthenticationConfigStatus struct {
 	/* Conditions represent the latest available observations of the
 	   NetworkSecurityBackendAuthenticationConfig's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the NetworkSecurityBackendAuthenticationConfig resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

@@ -18,21 +18,33 @@ set -o nounset
 set -o pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
+
+CONTROLLERBUILDER="${CONTROLLERBUILDER:-}"
+if [[ -z "${CONTROLLERBUILDER}" ]]; then
+  if [[ -x "${REPO_ROOT}/bin/controllerbuilder" ]]; then
+    CONTROLLERBUILDER="${REPO_ROOT}/bin/controllerbuilder"
+  else
+    CONTROLLERBUILDER="go run ${REPO_ROOT}/dev/tools/controllerbuilder"
+  fi
+fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 ./generate-proto.sh
 
-go run . generate-types \
+# --- v1alpha1 ---
+${CONTROLLERBUILDER} generate-types \
   --service google.apps.cloudidentity.v1beta1 \
-  --api-version cloudidentity.cnrm.cloud.google.com/v1beta1 \
+  --api-version cloudidentity.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output \
   --resource CloudIdentityDevice:GoogleAppsCloudidentityDevicesV1Device
 
-go run . generate-mapper \
+# --- v1beta1 ---
+${CONTROLLERBUILDER} generate-mapper \
   --service google.apps.cloudidentity.v1beta1 \
   --api-version cloudidentity.cnrm.cloud.google.com/v1beta1 \
-  --include-skipped-output
+  --include-skipped-output \
+  --multiversion
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

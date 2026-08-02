@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -44,14 +44,14 @@ type GKEHubMembershipBindingSpec struct {
 	Labels map[string]string `json:"labels,omitempty"`
 
 	/* Immutable. The membership that this binding belongs to. */
-	MembershipRef v1alpha1.ResourceRef `json:"membershipRef"`
+	MembershipRef k8sv1alpha1.ResourceRef `json:"membershipRef"`
 
 	/* Immutable. Optional. The resourceID of the resource; if not provided, the name of the resource will be used as the resourceID. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	/* Immutable. The scope that this binding is bound to. */
-	ScopeRef v1alpha1.ResourceRef `json:"scopeRef"`
+	ScopeRef k8sv1alpha1.ResourceRef `json:"scopeRef"`
 }
 
 type MembershipbindingObservedStateStatus struct {
@@ -85,7 +85,7 @@ type MembershipbindingStateStatus struct {
 type GKEHubMembershipBindingStatus struct {
 	/* Conditions represent the latest available observations of the
 	   GKEHubMembershipBinding's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the GKEHubMembershipBinding resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

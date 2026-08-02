@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -41,7 +41,7 @@ var _ = apiextensionsv1.JSON{}
 type BackupDiskEncryptionConfiguration struct {
 	/* KMS key used to encrypt the backup. */
 	// +optional
-	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+	KmsKeyRef *k8sv1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 }
 
 type SQLAdminBackupSpec struct {
@@ -58,13 +58,13 @@ type SQLAdminBackupSpec struct {
 	DiskEncryptionConfiguration *BackupDiskEncryptionConfiguration `json:"diskEncryptionConfiguration,omitempty"`
 
 	/* The SQLInstance that this backup belongs to. */
-	InstanceRef v1alpha1.ResourceRef `json:"instanceRef"`
+	InstanceRef k8sv1alpha1.ResourceRef `json:"instanceRef"`
 
 	/* The location of this resource. */
 	Location string `json:"location"`
 
 	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* The SQLAdminBackup name (ID). If not given, the metadata.name will be used. */
 	// +optional
@@ -140,7 +140,7 @@ type BackupObservedStateStatus struct {
 type SQLAdminBackupStatus struct {
 	/* Conditions represent the latest available observations of the
 	   SQLAdminBackup's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the SQLAdminBackup resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

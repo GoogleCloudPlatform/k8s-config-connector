@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -51,7 +51,7 @@ type ScheduleAcceleratorConfig struct {
 type ScheduleDataprocParameters struct {
 	/* The Dataproc cluster used to run Dataproc execution. */
 	// +optional
-	ClusterRef *v1alpha1.ResourceRef `json:"clusterRef,omitempty"`
+	ClusterRef *k8sv1alpha1.ResourceRef `json:"clusterRef,omitempty"`
 }
 
 type ScheduleExecutionTemplate struct {
@@ -105,11 +105,11 @@ type ScheduleExecutionTemplate struct {
 
 	/* The service account to use when running the execution. */
 	// +optional
-	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+	ServiceAccountRef *k8sv1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 
 	/* The Vertex AI [Tensorboard] resource to which this execution will upload Tensorboard logs. */
 	// +optional
-	TensorboardRef *v1alpha1.ResourceRef `json:"tensorboardRef,omitempty"`
+	TensorboardRef *k8sv1alpha1.ResourceRef `json:"tensorboardRef,omitempty"`
 
 	/* Parameters used in Vertex AI JobType executions. */
 	// +optional
@@ -123,7 +123,7 @@ type ScheduleVertexAiParameters struct {
 
 	/* The Compute Engine network to which the Job should be peered. */
 	// +optional
-	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+	NetworkRef *k8sv1alpha1.ResourceRef `json:"networkRef,omitempty"`
 }
 
 type NotebooksScheduleSpec struct {
@@ -143,7 +143,7 @@ type NotebooksScheduleSpec struct {
 	Location string `json:"location"`
 
 	/* The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* The NotebooksSchedule name. If not given, the metadata.name will be used. */
 	// +optional
@@ -207,7 +207,7 @@ type ScheduleRecentExecutionsStatus struct {
 type NotebooksScheduleStatus struct {
 	/* Conditions represent the latest available observations of the
 	   NotebooksSchedule's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the NotebooksSchedule resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -78,7 +78,7 @@ type DataplexDataAttributeBindingSpec struct {
 	Paths []DataattributebindingPaths `json:"paths,omitempty"`
 
 	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* The DataplexDataAttributeBinding name. If not given, the metadata.name will be used. */
 	// +optional
@@ -86,7 +86,7 @@ type DataplexDataAttributeBindingSpec struct {
 
 	/* Optional. Immutable. The resource name of the resource that is associated to attributes. Presently, only entity resource is supported in the form: projects/{project}/locations/{location}/lakes/{lake}/zones/{zone}/entities/{entity_id} Must belong in the same project and region as the attribute binding, and there can only exist one active binding for a resource. */
 	// +optional
-	ResourceRef *v1alpha1.ResourceRef `json:"resourceRef,omitempty"`
+	ResourceRef *k8sv1alpha1.ResourceRef `json:"resourceRef,omitempty"`
 }
 
 type DataattributebindingObservedStateStatus struct {
@@ -110,7 +110,7 @@ type DataattributebindingObservedStateStatus struct {
 type DataplexDataAttributeBindingStatus struct {
 	/* Conditions represent the latest available observations of the
 	   DataplexDataAttributeBinding's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the DataplexDataAttributeBinding resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

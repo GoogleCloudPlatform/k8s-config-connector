@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -90,13 +90,13 @@ type MetadatajobProjectRefs struct {
 type MetadatajobScope struct {
 	/* Optional. The aspect types that are in scope for the import job. The job modifies only the aspects that belong to these aspect types. */
 	// +optional
-	AspectTypeRefs []v1alpha1.ResourceRef `json:"aspectTypeRefs,omitempty"`
+	AspectTypeRefs []k8sv1alpha1.ResourceRef `json:"aspectTypeRefs,omitempty"`
 
 	/* Required. The entry group that is in scope for the import job. Must contain exactly one element. The entry group and the job must be in the same location. */
-	EntryGroupRefs []v1alpha1.ResourceRef `json:"entryGroupRefs"`
+	EntryGroupRefs []k8sv1alpha1.ResourceRef `json:"entryGroupRefs"`
 
 	/* Required. The entry types that are in scope for the import job. The job modifies only the entries and aspects that belong to these entry types. */
-	EntryTypeRefs []v1alpha1.ResourceRef `json:"entryTypeRefs"`
+	EntryTypeRefs []k8sv1alpha1.ResourceRef `json:"entryTypeRefs"`
 }
 
 type DataplexMetadataJobSpec struct {
@@ -116,7 +116,7 @@ type DataplexMetadataJobSpec struct {
 	Location string `json:"location"`
 
 	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* The DataplexMetadataJob name. If not given, the metadata.name will be used. */
 	// +optional
@@ -209,7 +209,7 @@ type MetadatajobStatusStatus struct {
 type DataplexMetadataJobStatus struct {
 	/* Conditions represent the latest available observations of the
 	   DataplexMetadataJob's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the DataplexMetadataJob resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -384,7 +384,7 @@ type VertexaitrainingpipelineEncodedBaselines struct {
 type VertexaitrainingpipelineEncryptionSpec struct {
 	/* Required. The Cloud KMS resource identifier of the customer managed encryption key used to protect a resource. Has the form: `projects/my-project/locations/my-region/keyRings/my-kr/cryptoKeys/my-key`. The key needs to be in the same region as where the compute resource is created. */
 	// +optional
-	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+	KmsKeyRef *k8sv1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 }
 
 type VertexaitrainingpipelineEnv struct {
@@ -1095,7 +1095,7 @@ type VertexaitrainingpipelineModelToUpload struct {
 	PredictSchemata *VertexaitrainingpipelinePredictSchemata `json:"predictSchemata,omitempty"`
 
 	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* The AIPlatformModel name. If not given, the metadata.name will be used. */
 	// +optional
@@ -1488,14 +1488,14 @@ type VertexAITrainingPipelineSpec struct {
 
 	/* Optional. When specify this field, the `model_to_upload` will not be uploaded as a new model, instead, it will become a new version of this `parent_model`. */
 	// +optional
-	ModelRef *v1alpha1.ResourceRef `json:"modelRef,omitempty"`
+	ModelRef *k8sv1alpha1.ResourceRef `json:"modelRef,omitempty"`
 
 	/* Describes the Model that may be uploaded by this TrainingPipeline. */
 	// +optional
 	ModelToUpload *VertexaitrainingpipelineModelToUpload `json:"modelToUpload,omitempty"`
 
 	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* The VertexAITrainingPipeline name. If not given, the metadata.name will be used. */
 	// +optional
@@ -1753,7 +1753,7 @@ type VertexaitrainingpipelineTrainingTaskMetadataStatus struct {
 type VertexAITrainingPipelineStatus struct {
 	/* Conditions represent the latest available observations of the
 	   VertexAITrainingPipeline's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the VertexAITrainingPipeline resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

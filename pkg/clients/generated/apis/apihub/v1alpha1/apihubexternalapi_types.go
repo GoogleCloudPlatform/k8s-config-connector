@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -40,7 +40,7 @@ var _ = apiextensionsv1.JSON{}
 
 type ExternalapiAttributeRefs struct {
 	/* Reference to the attribute. */
-	AttributeRef v1alpha1.ResourceRef `json:"attributeRef"`
+	AttributeRef k8sv1alpha1.ResourceRef `json:"attributeRef"`
 
 	/* The value of the attribute. */
 	Values ExternalapiValues `json:"values"`
@@ -125,7 +125,7 @@ type APIHubExternalAPISpec struct {
 	Paths []string `json:"paths,omitempty"`
 
 	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* The APIHubExternalAPI name. If not given, the metadata.name will be used. */
 	// +optional
@@ -145,7 +145,7 @@ type ExternalapiObservedStateStatus struct {
 type APIHubExternalAPIStatus struct {
 	/* Conditions represent the latest available observations of the
 	   APIHubExternalAPI's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the APIHubExternalAPI resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

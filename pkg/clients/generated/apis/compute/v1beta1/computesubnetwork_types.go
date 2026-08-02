@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -70,7 +70,7 @@ type SubnetworkSecondaryIpRange struct {
 
 	/* The reference to the reserved internal range. */
 	// +optional
-	ReservedInternalRangeRef *v1alpha1.ResourceRef `json:"reservedInternalRangeRef,omitempty"`
+	ReservedInternalRangeRef *k8sv1alpha1.ResourceRef `json:"reservedInternalRangeRef,omitempty"`
 }
 
 type ComputeSubnetworkSpec struct {
@@ -91,7 +91,7 @@ type ComputeSubnetworkSpec struct {
 	LogConfig *SubnetworkLogConfig `json:"logConfig,omitempty"`
 
 	/* The network this subnet belongs to. Only networks that are in the distributed mode can have subnetworks. */
-	NetworkRef v1alpha1.ResourceRef `json:"networkRef"`
+	NetworkRef k8sv1alpha1.ResourceRef `json:"networkRef"`
 
 	/* When enabled, VMs in this subnetwork without external IP addresses can access Google APIs and services by using Private Google Access. */
 	// +optional
@@ -110,7 +110,7 @@ type ComputeSubnetworkSpec struct {
 
 	/* Immutable. The reference to the reserved internal range. */
 	// +optional
-	ReservedInternalRangeRef *v1alpha1.ResourceRef `json:"reservedInternalRangeRef,omitempty"`
+	ReservedInternalRangeRef *k8sv1alpha1.ResourceRef `json:"reservedInternalRangeRef,omitempty"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
@@ -131,7 +131,7 @@ type ComputeSubnetworkSpec struct {
 type ComputeSubnetworkStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeSubnetwork's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* Creation timestamp in RFC3339 text format. */
 	// +optional
 	CreationTimestamp *string `json:"creationTimestamp,omitempty"`
