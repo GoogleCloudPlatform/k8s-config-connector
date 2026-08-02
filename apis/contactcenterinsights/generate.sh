@@ -43,7 +43,9 @@ ${CONTROLLERBUILDER} generate-types \
   --resource CCInsightsQAScorecard:QaScorecard \
   --prune-unused-types=false
 
-
+${CONTROLLERBUILDER} generate-mapper \
+  --service google.cloud.contactcenterinsights.v1 \
+  --api-version contactcenterinsights.cnrm.cloud.google.com/v1alpha1
 
 # Format generated code
 

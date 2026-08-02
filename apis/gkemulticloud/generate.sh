@@ -36,6 +36,10 @@ ${CONTROLLERBUILDER} generate-types \
   --api-version gkemulticloud.cnrm.cloud.google.com/v1alpha1 \
   --resource GKEMulticloudAttachedCluster:AttachedCluster
 
+${CONTROLLERBUILDER} generate-mapper \
+  --service google.cloud.gkemulticloud.v1 \
+  --api-version gkemulticloud.cnrm.cloud.google.com/v1alpha1
+
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 
