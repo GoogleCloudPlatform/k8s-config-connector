@@ -34,7 +34,7 @@ COPY mockgcp/ mockgcp/
 COPY operator/ operator/
 COPY third_party/ third_party/
 COPY version/ version/
-COPY scripts/resource-autogen scripts/resource-autogen
+COPY scripts/ scripts/
 
 # Build the binaries from source in parallel. Note: the "-s -w" flags strip the tables
 # needed for debuggers, but not the line numbers for panics, and -trimpath reduces binary size.
