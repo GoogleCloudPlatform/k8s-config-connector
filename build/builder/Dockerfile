@@ -40,7 +40,7 @@ COPY scripts/ scripts/
 # needed for debuggers, but not the line numbers for panics, and -trimpath reduces binary size.
 RUN --mount=type=cache,target=/root/.cache/go-build \
     --mount=type=cache,target=/go/pkg/mod \
-    CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -trimpath -p 4 -ldflags "-s -w -buildid=" -o . \
+    CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -trimpath -p 8 -ldflags "-s -w -buildid=" -o . \
       github.com/GoogleCloudPlatform/k8s-config-connector/cmd/deletiondefender \
       github.com/GoogleCloudPlatform/k8s-config-connector/cmd/webhook \
       github.com/GoogleCloudPlatform/k8s-config-connector/cmd/recorder \
