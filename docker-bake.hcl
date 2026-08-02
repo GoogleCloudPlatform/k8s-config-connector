@@ -115,11 +115,7 @@ target "operator" {
   dockerfile = "operator/Dockerfile"
   context    = "."
   tags       = ["${IMAGE_PREFIX}operator:${IMAGE_TAG}"]
-  contexts = {
-    "builder:${IMAGE_TAG}" = "target:builder"
-  }
   args = {
-    BUILDER_IMG = "builder:${IMAGE_TAG}"
     GKE_DISTROLESS_IMG = "${GKE_DISTROLESS_IMG}"
   }
 }
