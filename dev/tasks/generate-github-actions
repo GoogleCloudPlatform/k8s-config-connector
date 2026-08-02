@@ -484,9 +484,9 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
           go-version-file: 'go.mod'
           cache: true
       - name: golangci-lint
-        uses: golangci/golangci-lint-action@ba0d7d2ec06a0ea1cb5fa41b2e4a3ab91d21278a # v9.3.0
+        uses: golangci/golangci-lint-action@a4f60bb28d35aeee14e6880718e0c85ff1882e64 # v6.0.1
         with:
-          version: v1.64.5
+          version: v2.9.0
           args: --timeout=20m
 EOF
     continue
