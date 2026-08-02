@@ -47,7 +47,7 @@ RUN dev/tasks/generate-channels
 # Build the binary from source
 RUN --mount=type=cache,target=/root/.cache/go-build \
     --mount=type=cache,target=/go/pkg/mod \
-    CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -trimpath -p 2 -ldflags "-s -w -buildid=" -o manager github.com/GoogleCloudPlatform/k8s-config-connector/operator/cmd/manager
+    CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -trimpath -p 4 -ldflags "-s -w -buildid=" -o manager github.com/GoogleCloudPlatform/k8s-config-connector/operator/cmd/manager
 RUN --mount=type=cache,target=/root/.cache/go-build \
     --mount=type=cache,target=/go/pkg/mod \
     CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -o gke_addon_poststart github.com/GoogleCloudPlatform/k8s-config-connector/operator/cmd/gke_addon_poststart
