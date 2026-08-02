@@ -91,6 +91,36 @@ func TestGenerateScripts(t *testing.T) {
 			if !strings.Contains(content, "generate-crds") {
 				t.Errorf("generate.sh script at %s is missing call to dev/tasks/generate-crds", relPath)
 			}
+
+			// 4) If pkg/controller/direct/<service>/mapper.generated.go exists, generate.sh MUST call generate-mapper (or openapi-to-krm)
+			relSlash := filepath.ToSlash(relPath)
+			service := strings.Split(relSlash, "/")[0]
+			mapperPath := filepath.Join("../../pkg/controller/direct", service, "mapper.generated.go")
+			if _, err := os.Stat(mapperPath); err == nil {
+				if !strings.Contains(content, "generate-mapper") && !strings.Contains(content, "openapi-to-krm") {
+					t.Errorf("generate.sh script at %s is missing call to generate-mapper (mapper.generated.go exists at %s)", relPath, mapperPath)
+				}
+			}
+
+			// 5) Check CONTROLLERBUILDER variable header definition
+			if strings.Contains(content, "generate-types") || strings.Contains(content, "generate-mapper") {
+				if !strings.Contains(content, "CONTROLLERBUILDER=") {
+					t.Errorf("generate.sh script at %s is missing CONTROLLERBUILDER header definition.", relPath)
+				}
+			}
+
+			// 6) Disallow 'go run' calls targeting controllerbuilder except the CONTROLLERBUILDER= fallback line
+			for _, line := range strings.Split(content, "\n") {
+				trimmed := strings.TrimSpace(line)
+				if strings.HasPrefix(trimmed, "#") {
+					continue
+				}
+				if strings.Contains(trimmed, "go run") && strings.Contains(trimmed, "controllerbuilder") {
+					if !strings.Contains(trimmed, "CONTROLLERBUILDER=") {
+						t.Errorf("generate.sh script at %s: forbidden 'go run' call to controllerbuilder detected on line: '%s'. Must use ${CONTROLLERBUILDER} instead.", relPath, trimmed)
+					}
+				}
+			}
 		})
 
 		return nil
