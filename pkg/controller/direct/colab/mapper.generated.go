@@ -90,50 +90,6 @@ func ColabRuntimeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ColabR
 	// MISSING: SatisfiesPzi
 	return out
 }
-func ColabRuntimeSpec_FromProto(mapCtx *direct.MapContext, in *pb.NotebookRuntime) *krm.ColabRuntimeSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ColabRuntimeSpec{}
-	// MISSING: Name
-	out.RuntimeUser = direct.LazyPtr(in.GetRuntimeUser())
-	// MISSING: NotebookRuntimeTemplateRef
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.Description = direct.LazyPtr(in.GetDescription())
-	out.Labels = in.Labels
-	// MISSING: MachineSpec
-	// MISSING: DataPersistentDiskSpec
-	// MISSING: NetworkSpec
-	// MISSING: EUCConfig
-	// MISSING: ShieldedVMConfig
-	out.NetworkTags = in.NetworkTags
-	// MISSING: SoftwareConfig
-	// MISSING: SatisfiesPzs
-	// MISSING: SatisfiesPzi
-	return out
-}
-func ColabRuntimeSpec_ToProto(mapCtx *direct.MapContext, in *krm.ColabRuntimeSpec) *pb.NotebookRuntime {
-	if in == nil {
-		return nil
-	}
-	out := &pb.NotebookRuntime{}
-	// MISSING: Name
-	out.RuntimeUser = direct.ValueOf(in.RuntimeUser)
-	// MISSING: NotebookRuntimeTemplateRef
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Description = direct.ValueOf(in.Description)
-	out.Labels = in.Labels
-	// MISSING: MachineSpec
-	// MISSING: DataPersistentDiskSpec
-	// MISSING: NetworkSpec
-	// MISSING: EUCConfig
-	// MISSING: ShieldedVMConfig
-	out.NetworkTags = in.NetworkTags
-	// MISSING: SoftwareConfig
-	// MISSING: SatisfiesPzs
-	// MISSING: SatisfiesPzi
-	return out
-}
 func ColabRuntimeTemplateObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NotebookRuntimeTemplate) *krm.ColabRuntimeTemplateObservedState {
 	if in == nil {
 		return nil
