@@ -48,5 +48,6 @@ RUN --mount=type=cache,target=/root/.cache/go-build \
       github.com/GoogleCloudPlatform/k8s-config-connector/cmd/manager \
       github.com/GoogleCloudPlatform/k8s-config-connector/cmd/config-connector
 
-RUN --mount=type=cache,target=/go/pkg/mod \
-    go run scripts/generate-third-party-licenses/main.go
+RUN go mod vendor -o temp-vendor && \
+    go run scripts/generate-third-party-licenses/main.go && \
+    rm -rf temp-vendor

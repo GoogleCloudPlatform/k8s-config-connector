@@ -53,8 +53,9 @@ RUN --mount=type=cache,target=/root/.cache/go-build \
     CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -o gke_addon_poststart github.com/GoogleCloudPlatform/k8s-config-connector/operator/cmd/gke_addon_poststart
 
 # Generate licenses
-RUN --mount=type=cache,target=/go/pkg/mod \
-    go run scripts/generate-third-party-licenses/main.go
+RUN go mod vendor -o temp-vendor # So we can load license files
+RUN go run scripts/generate-third-party-licenses/main.go
+RUN rm -rf temp-vendor
 
 # Prepare a directory containing the binaries and other artifacts, and
 # configure any required permissions
