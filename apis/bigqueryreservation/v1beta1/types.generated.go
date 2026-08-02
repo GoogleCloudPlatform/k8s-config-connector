@@ -22,10 +22,6 @@
 
 package v1beta1
 
-import (
-	common "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
-)
-
 /* found existing non-generated go type with proto tag "google.cloud.bigquery.reservation.v1.Assignment", skipping
 
 // +kcc:proto=google.cloud.bigquery.reservation.v1.Assignment
