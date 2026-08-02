@@ -35,7 +35,8 @@ COPY operator/ operator/
 COPY third_party/ third_party/
 COPY version/ version/
 COPY scripts/generate-third-party-licenses scripts/generate-third-party-licenses
-COPY scripts/resource-autogen scripts/resource-autogen
+COPY dev/tasks/generate-channels dev/tasks/generate-channels
+RUN dev/tasks/generate-channels
 
 # Build the binaries from source in parallel. Note: the "-s -w" flags strip the tables
 # needed for debuggers, but not the line numbers for panics, and -trimpath reduces binary size.
@@ -47,7 +48,12 @@ RUN --mount=type=cache,target=/root/.cache/go-build \
       github.com/GoogleCloudPlatform/k8s-config-connector/cmd/recorder \
       github.com/GoogleCloudPlatform/k8s-config-connector/cmd/unmanageddetector \
       github.com/GoogleCloudPlatform/k8s-config-connector/cmd/manager \
-      github.com/GoogleCloudPlatform/k8s-config-connector/cmd/config-connector
+      github.com/GoogleCloudPlatform/k8s-config-connector/cmd/config-connector \
+      github.com/GoogleCloudPlatform/k8s-config-connector/operator/cmd/gke_addon_poststart
+
+RUN --mount=type=cache,target=/root/.cache/go-build \
+    --mount=type=cache,target=/go/pkg/mod \
+    CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -trimpath -p 4 -ldflags "-s -w -buildid=" -o operator-manager github.com/GoogleCloudPlatform/k8s-config-connector/operator/cmd/manager
 
 RUN --mount=type=cache,target=/go/pkg/mod \
     go run scripts/generate-third-party-licenses/main.go

@@ -541,7 +541,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
 EOF
     fi
 
-    if [[ "${name}" == "validate-fmt" || "${name}" == "validate-github-actions" || "${name}" == "validate-resource-docs" || "${name}" == "validate-untested-fields" ]]; then
+    if [[ "${name}" == "validate-fmt" || "${name}" == "validate-github-actions" || "${name}" == "validate-resource-docs" || "${name}" == "validate-untested-fields" || "${name}" == "smoketest-with-kind" ]]; then
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
       - uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # v5.3.0
         with:
