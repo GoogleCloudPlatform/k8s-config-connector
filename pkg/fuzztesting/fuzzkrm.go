@@ -18,7 +18,10 @@ import (
 	"fmt"
 	"math/rand"
 	"os"
+	"reflect"
+	"sort"
 	"strconv"
+	"sync"
 	"testing"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -37,6 +40,8 @@ var (
 	fuzzers                  []FuzzFn
 	registeredFuzzers        []any
 	registeredNoProtoFuzzers []any
+	sortFuzzersOnce          sync.Once
+	sortedFuzzers            []FuzzFn
 )
 
 func RegisterKRMFuzzer(fuzzer KRMFuzzer) {
@@ -54,8 +59,46 @@ func RegisterFuzzer(fuzzer FuzzFn) {
 	fuzzers = append(fuzzers, fuzzer)
 }
 
+func getFuzzerName(fuzzer any) string {
+	if pf, ok := fuzzer.(interface{ GetProtoMessage() proto.Message }); ok {
+		return string(proto.MessageName(pf.GetProtoMessage()))
+	}
+	val := reflect.ValueOf(fuzzer)
+	if val.Kind() == reflect.Ptr {
+		val = val.Elem()
+	}
+	if val.Kind() == reflect.Struct {
+		field := val.FieldByName("ProtoType")
+		if field.IsValid() && !field.IsNil() {
+			if pm, ok := field.Interface().(proto.Message); ok {
+				return string(proto.MessageName(pm))
+			}
+		}
+	}
+	return fmt.Sprintf("%T", fuzzer)
+}
+
+func initSortedFuzzers() {
+	sort.Slice(registeredFuzzers, func(i, j int) bool {
+		return getFuzzerName(registeredFuzzers[i]) < getFuzzerName(registeredFuzzers[j])
+	})
+
+	var list []FuzzFn
+	for _, f := range registeredFuzzers {
+		if kf, ok := f.(KRMFuzzer); ok {
+			list = append(list, kf.FuzzSpec, kf.FuzzStatus)
+		}
+	}
+	if len(list) > 0 {
+		sortedFuzzers = list
+	} else {
+		sortedFuzzers = fuzzers
+	}
+}
+
 func ChooseFuzzer(n int64) FuzzFn {
-	all := fuzzers
+	sortFuzzersOnce.Do(initSortedFuzzers)
+	all := sortedFuzzers
 	totalShards := os.Getenv("FUZZ_TOTAL_SHARDS")
 	shardIdxStr := os.Getenv("FUZZ_SHARD_INDEX")
 	if totalShards != "" && shardIdxStr != "" {
@@ -182,7 +225,6 @@ func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) FuzzSpec(t *testing.T, se
 
 func (f *KRMTypedFuzzer[ProtoT, SpecType, StatusType]) FuzzStatus(t *testing.T, seed int64) {
 	if f.StatusFromProto == nil || f.StatusToProto == nil {
-		t.Skip("Status FromProto or ToProto is nil, skipping status fuzz test")
 		return
 	}
 	fuzzer := NewFuzzTest(f.ProtoType, f.StatusFromProto, f.StatusToProto)

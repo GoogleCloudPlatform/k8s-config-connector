@@ -438,8 +438,6 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
         shard: ["1-of-8", "2-of-8", "3-of-8", "4-of-8", "5-of-8", "6-of-8", "7-of-8", "8-of-8"]
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      - name: Free up disk space
-        run: dev/tasks/free-disk-space-on-github-actions-runner
 # zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/fuzz-roundtrippers"
