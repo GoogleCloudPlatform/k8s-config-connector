@@ -4,13 +4,15 @@
   name: dataplex-metadatajob-bucket-max-exp-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: //dataplex.googleapis.com/projects/${projectId}/locations/us-central1/entryGroups/dataplexmetadatajob-eg-max-exp-${uniqueId}
+- caisURL: unknown
+  error: cannot resolve location
   group: dataplex.cnrm.cloud.google.com
   kind: DataplexEntryGroup
   name: dataplexmetadatajob-eg-max-exp-${uniqueId}
   namespace: ${uniqueId}
   version: v1alpha1
-- caisURL: //dataplex.googleapis.com/projects/${projectId}/locations/us-central1/entryTypes/dataplexmetadatajob-et-max-exp-${uniqueId}
+- caisURL: unknown
+  error: cannot resolve resource location
   group: dataplex.cnrm.cloud.google.com
   kind: DataplexEntryType
   name: dataplexmetadatajob-et-max-exp-${uniqueId}
