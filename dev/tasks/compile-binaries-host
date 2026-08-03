@@ -58,6 +58,8 @@ if [[ "${SKIP_LICENSES}" == "0" ]]; then
   rm -rf temp-vendor
 else
   echo "===> [$(date -u +'%Y-%m-%dT%H:%M:%SZ')] Skipping third-party notices (SKIP_LICENSES=1)"
+  mkdir -p THIRD_PARTY_NOTICES MIRRORED_LIBRARY_SOURCE
+  touch THIRD_PARTY_NOTICES/.placeholder MIRRORED_LIBRARY_SOURCE/.placeholder
 fi
 
 echo "===> [$(date -u +'%Y-%m-%dT%H:%M:%SZ')] Generating operator channels..."
