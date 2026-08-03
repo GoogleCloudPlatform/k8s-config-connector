@@ -163,7 +163,7 @@ spec:
         env:
         - name: GOMEMLIMIT
           value: 460MiB
-        image: gcr.io/gke-release/cnrm/controller:1.154.0
+        image: localhost:5001/controller:test
         imagePullPolicy: Always
         name: manager
         ports:
