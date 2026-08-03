@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+cd "${REPO_ROOT}"
+
+echo "===> [$(date -u +'%Y-%m-%dT%H:%M:%SZ')] Compiling Go binaries natively on host..."
+mkdir -p bin/
+
+export CGO_ENABLED=0
+export GOOS=linux
+export GOARCH=amd64
+
+LDFLAGS="-s -w -buildid="
+
+go build -trimpath -ldflags "${LDFLAGS}" -o bin/deletiondefender ./cmd/deletiondefender
+go build -trimpath -ldflags "${LDFLAGS}" -o bin/webhook ./cmd/webhook
+go build -trimpath -ldflags "${LDFLAGS}" -o bin/recorder ./cmd/recorder
+go build -trimpath -ldflags "${LDFLAGS}" -o bin/unmanageddetector ./cmd/unmanageddetector
+go build -trimpath -ldflags "${LDFLAGS}" -o bin/manager ./cmd/manager
+go build -trimpath -ldflags "${LDFLAGS}" -o bin/config-connector ./cmd/config-connector
+go build -trimpath -ldflags "${LDFLAGS}" -o bin/operator ./operator/cmd/manager
+go build -trimpath -ldflags "${LDFLAGS}" -o bin/gke_addon_poststart ./operator/cmd/gke_addon_poststart
+
+echo "===> [$(date -u +'%Y-%m-%dT%H:%M:%SZ')] Generating third-party notices..."
+go mod vendor -o temp-vendor
+go run scripts/generate-third-party-licenses/main.go
+rm -rf temp-vendor
+
+echo "===> [$(date -u +'%Y-%m-%dT%H:%M:%SZ')] Generating operator channels..."
+dev/tasks/generate-channels
+
+echo "===> [$(date -u +'%Y-%m-%dT%H:%M:%SZ')] Native host compilation complete."
