@@ -77,7 +77,7 @@ dev/tasks/generate-channels
 
 echo "===> [$(date -u +'%Y-%m-%dT%H:%M:%SZ')] Trimming historical channel versions for artifact upload..."
 LATEST_VERSION=$(cat version/VERSION)
-for dir in operator/channels/packages/configconnector/*/; do
+for dir in operator/channels/packages/configconnector/*/ operator/autopilot-channels/packages/configconnector/*/; do
   ver=$(basename "${dir}")
   if [[ "${ver}" != "${LATEST_VERSION}" && -d "${dir}" ]]; then
     rm -rf "${dir}"
