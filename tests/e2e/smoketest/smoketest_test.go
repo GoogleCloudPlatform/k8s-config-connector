@@ -93,6 +93,22 @@ func TestSmoketest(t *testing.T) {
 	}
 	regHost := bridgeIP + ":" + regPort
 
+	// Create a custom Buildx builder with http=true / insecure enabled for regHost
+	buildkitConfig := fmt.Sprintf(`[registry."%s"]
+  http = true
+  insecure = true
+[registry."localhost:%s"]
+  http = true
+  insecure = true
+`, regHost, regPort)
+	buildkitConfigFile := filepath.Join(t.TempDir(), "buildkitd.toml")
+	if err := os.WriteFile(buildkitConfigFile, []byte(buildkitConfig), 0644); err == nil {
+		_ = exec.CommandContext(ctx, "docker", "buildx", "create", "--name", "kcc-builder", "--use", "--config", buildkitConfigFile).Run()
+		t.Cleanup(func() {
+			_ = exec.CommandContext(ctx, "docker", "buildx", "rm", "kcc-builder").Run()
+		})
+	}
+
 	kindConfigContent := fmt.Sprintf(`kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
 containerdConfigPatches:
