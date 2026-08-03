@@ -550,6 +550,9 @@ spec:
               vulnerability:
                 description: A note describing a package vulnerability.
                 properties:
+                  advisoryPublishTime:
+                    description: The time this advisory was published by the source.
+                    type: string
                   cvssScore:
                     description: The CVSS score of this vulnerability. CVSS score
                       is on a scale of 0 - 10 where 0 indicates low severity and 10
@@ -559,33 +562,73 @@ spec:
                     description: The full description of the v2 CVSS for this vulnerability.
                     properties:
                       attackComplexity:
+                        description: Attack Complexity (AC). Defined in CVSS v2, v3,
+                          v4.
+                        type: string
+                      attackRequirements:
+                        description: Attack Requirements (AT). Defined in CVSS v4.
                         type: string
                       attackVector:
-                        description: Base Metrics Represents the intrinsic characteristics
-                          of a vulnerability that are constant over time and across
-                          user environments.
+                        description: Attack Vector (AV). Defined in CVSS v2, v3, v4.
                         type: string
                       authentication:
+                        description: Authentication (Au). Defined in CVSS v2.
                         type: string
                       availabilityImpact:
+                        description: Availability Impact (A). Defined in CVSS v2,
+                          v3.
                         type: string
                       baseScore:
                         description: The base score is a function of the base metric
                           scores.
                         type: number
                       confidentialityImpact:
+                        description: Confidentiality Impact (C). Defined in CVSS v2,
+                          v3.
+                        type: string
+                      exploitMaturity:
+                        description: Exploit Maturity (E). Defined in CVSS v4.
                         type: string
                       exploitabilityScore:
                         type: number
                       impactScore:
                         type: number
                       integrityImpact:
+                        description: Integrity Impact (I). Defined in CVSS v2, v3.
                         type: string
                       privilegesRequired:
+                        description: Privileges Required (PR). Defined in CVSS v3,
+                          v4.
                         type: string
                       scope:
+                        description: Scope (S). Defined in CVSS v3.
+                        type: string
+                      subsequentSystemAvailabilityImpact:
+                        description: Subsequent System Availability Impact (SA). Defined
+                          in CVSS v4.
+                        type: string
+                      subsequentSystemConfidentialityImpact:
+                        description: Subsequent System Confidentiality Impact (SC).
+                          Defined in CVSS v4.
+                        type: string
+                      subsequentSystemIntegrityImpact:
+                        description: Subsequent System Integrity Impact (SI). Defined
+                          in CVSS v4.
                         type: string
                       userInteraction:
+                        description: User Interaction (UI). Defined in CVSS v3, v4.
+                        type: string
+                      vulnerableSystemAvailabilityImpact:
+                        description: Vulnerable System Availability Impact (VA). Defined
+                          in CVSS v4.
+                        type: string
+                      vulnerableSystemConfidentialityImpact:
+                        description: Vulnerable System Confidentiality Impact (VC).
+                          Defined in CVSS v4.
+                        type: string
+                      vulnerableSystemIntegrityImpact:
+                        description: Vulnerable System Integrity Impact (VI). Defined
+                          in CVSS v4.
                         type: string
                     type: object
                   cvssV3:
@@ -617,6 +660,79 @@ spec:
                       scope:
                         type: string
                       userInteraction:
+                        type: string
+                    type: object
+                  cvssV4:
+                    description: The full description of the v4 CVSS for this vulnerability.
+                    properties:
+                      attackComplexity:
+                        description: Attack Complexity (AC). Defined in CVSS v2, v3,
+                          v4.
+                        type: string
+                      attackRequirements:
+                        description: Attack Requirements (AT). Defined in CVSS v4.
+                        type: string
+                      attackVector:
+                        description: Attack Vector (AV). Defined in CVSS v2, v3, v4.
+                        type: string
+                      authentication:
+                        description: Authentication (Au). Defined in CVSS v2.
+                        type: string
+                      availabilityImpact:
+                        description: Availability Impact (A). Defined in CVSS v2,
+                          v3.
+                        type: string
+                      baseScore:
+                        description: The base score is a function of the base metric
+                          scores.
+                        type: number
+                      confidentialityImpact:
+                        description: Confidentiality Impact (C). Defined in CVSS v2,
+                          v3.
+                        type: string
+                      exploitMaturity:
+                        description: Exploit Maturity (E). Defined in CVSS v4.
+                        type: string
+                      exploitabilityScore:
+                        type: number
+                      impactScore:
+                        type: number
+                      integrityImpact:
+                        description: Integrity Impact (I). Defined in CVSS v2, v3.
+                        type: string
+                      privilegesRequired:
+                        description: Privileges Required (PR). Defined in CVSS v3,
+                          v4.
+                        type: string
+                      scope:
+                        description: Scope (S). Defined in CVSS v3.
+                        type: string
+                      subsequentSystemAvailabilityImpact:
+                        description: Subsequent System Availability Impact (SA). Defined
+                          in CVSS v4.
+                        type: string
+                      subsequentSystemConfidentialityImpact:
+                        description: Subsequent System Confidentiality Impact (SC).
+                          Defined in CVSS v4.
+                        type: string
+                      subsequentSystemIntegrityImpact:
+                        description: Subsequent System Integrity Impact (SI). Defined
+                          in CVSS v4.
+                        type: string
+                      userInteraction:
+                        description: User Interaction (UI). Defined in CVSS v3, v4.
+                        type: string
+                      vulnerableSystemAvailabilityImpact:
+                        description: Vulnerable System Availability Impact (VA). Defined
+                          in CVSS v4.
+                        type: string
+                      vulnerableSystemConfidentialityImpact:
+                        description: Vulnerable System Confidentiality Impact (VC).
+                          Defined in CVSS v4.
+                        type: string
+                      vulnerableSystemIntegrityImpact:
+                        description: Vulnerable System Integrity Impact (VI). Defined
+                          in CVSS v4.
                         type: string
                     type: object
                   cvssVersion:

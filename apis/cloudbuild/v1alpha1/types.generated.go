@@ -236,6 +236,7 @@ type GitLabConfig struct {
 
 /* unreachable type InstallationState
 // +kcc:proto=google.devtools.cloudbuild.v2.InstallationState
+// +kubebuilder:pruning:PreserveUnknownFields
 type InstallationState struct {
 }
 */

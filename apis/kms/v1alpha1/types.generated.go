@@ -40,6 +40,18 @@ type CryptoKeyVersion struct {
 	//  protection levels.
 	// +kcc:proto:field=google.cloud.kms.v1.CryptoKeyVersion.external_protection_level_options
 	ExternalProtectionLevelOptions *ExternalProtectionLevelOptions `json:"externalProtectionLevelOptions,omitempty"`
+
+	// Immutable. Field indicating that the key may be wrapped by a trusted key.
+	//  This field can be set for all key purposes except
+	//  [ENCRYPT_DECRYPT][google.cloud.kms.v1.CryptoKey.CryptoKeyPurpose.ENCRYPT_DECRYPT],
+	//  and is only valid for keys with protection level
+	//  [HSM_SINGLE_TENANT][google.cloud.kms.v1.ProtectionLevel.HSM_SINGLE_TENANT].
+	//  This field can only be set at creation or import time via
+	//  [CreateCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.CreateCryptoKeyVersion],
+	//  or
+	//  [ImportCryptoKeyVersion][google.cloud.kms.v1.KeyManagementService.ImportCryptoKeyVersion].
+	// +kcc:proto:field=google.cloud.kms.v1.CryptoKeyVersion.trusted_wrapping_enabled
+	TrustedWrappingEnabled *bool `json:"trustedWrappingEnabled,omitempty"`
 }
 */
 
@@ -79,6 +91,16 @@ type ImportJob struct {
 	//  into.
 	// +kcc:proto:field=google.cloud.kms.v1.ImportJob.protection_level
 	ProtectionLevel *string `json:"protectionLevel,omitempty"`
+
+	// Immutable. The resource name of the backend environment where the key
+	//  material for the wrapping key resides and where all related cryptographic
+	//  operations are performed. Currently, this field is only populated for keys
+	//  stored in HSM_SINGLE_TENANT. Note, this list is non-exhaustive and may
+	//  apply to additional [ProtectionLevels][google.cloud.kms.v1.ProtectionLevel]
+	//  in the future. Supported resources:
+	//  * `"projects/* /locations/* /singleTenantHsmInstances/*"`
+	// +kcc:proto:field=google.cloud.kms.v1.ImportJob.crypto_key_backend
+	CryptoKeyBackend *string `json:"cryptoKeyBackend,omitempty"`
 }
 */
 
@@ -91,6 +113,12 @@ type ImportJob_WrappingPublicKey struct {
 	//  Considerations](https://tools.ietf.org/html/rfc7468#section-2) and
 	//  [Textual Encoding of Subject Public Key Info]
 	//  (https://tools.ietf.org/html/rfc7468#section-13).
+	//  This field gets populated by default for RSA-based import methods, if no
+	//  public_key_format is specified in the request.
+	//  If you want to retrieve the wrapping key of an
+	//  [ImportJob][google.cloud.kms.v1.ImportJob] in some other format, use
+	//  [KeyManagementService.GetImportJob][google.cloud.kms.v1.KeyManagementService.GetImportJob]
+	//  and set the public_key_format to the desired public key format.
 	// +kcc:proto:field=google.cloud.kms.v1.ImportJob.WrappingPublicKey.pem
 	Pem *string `json:"pem,omitempty"`
 }
@@ -99,6 +127,7 @@ type ImportJob_WrappingPublicKey struct {
 /* found existing non-generated go type with proto tag "google.cloud.kms.v1.KeyOperationAttestation", skipping
 
 // +kcc:proto=google.cloud.kms.v1.KeyOperationAttestation
+// +kubebuilder:pruning:PreserveUnknownFields
 type KeyOperationAttestation struct {
 }
 */
@@ -215,6 +244,14 @@ type CryptoKeyVersionObservedState struct {
 	//  [ImportCryptoKeyVersionRequest.crypto_key_version][google.cloud.kms.v1.ImportCryptoKeyVersionRequest.crypto_key_version].
 	// +kcc:proto:field=google.cloud.kms.v1.CryptoKeyVersion.reimport_eligible
 	ReimportEligible *bool `json:"reimportEligible,omitempty"`
+
+	// Output only. Field indicating that the key wrapping key is trusted.
+	//  This field is only valid for key purpose
+	//  [AES_256_WRAPPING][CryptoKey.CryptoKeyPurpose.AES_256_WRAPPING], and
+	//  protection level
+	//  [HSM_SINGLE_TENANT][google.cloud.kms.v1.ProtectionLevel.HSM_SINGLE_TENANT].
+	// +kcc:proto:field=google.cloud.kms.v1.CryptoKeyVersion.hsm_trusted
+	HsmTrusted *bool `json:"hsmTrusted,omitempty"`
 }
 */
 
@@ -259,7 +296,15 @@ type ImportJobObservedState struct {
 	//  import. Only returned if [state][google.cloud.kms.v1.ImportJob.state] is
 	//  [ACTIVE][google.cloud.kms.v1.ImportJob.ImportJobState.ACTIVE].
 	// +kcc:proto:field=google.cloud.kms.v1.ImportJob.public_key
-	PublicKey *ImportJob_WrappingPublicKey `json:"publicKey,omitempty"`
+	PublicKey *ImportJob_WrappingPublicKeyObservedState `json:"publicKey,omitempty"`
+
+	// Output only. Specifies the
+	//  [WrappingPublicKey][google.cloud.kms.v1.ImportJob.WrappingPublicKey] format
+	//  provided by the customer in the
+	//  [KeyManagementService.GetImportJob][google.cloud.kms.v1.KeyManagementService.GetImportJob]
+	//  request.
+	// +kcc:proto:field=google.cloud.kms.v1.ImportJob.public_key_format
+	PublicKeyFormat *string `json:"publicKeyFormat,omitempty"`
 
 	// Output only. Statement that was generated and signed by the key creator
 	//  (for example, an HSM) at key creation time. Use this statement to verify
@@ -269,6 +314,34 @@ type ImportJobObservedState struct {
 	//  protection level of [HSM][google.cloud.kms.v1.ProtectionLevel.HSM].
 	// +kcc:proto:field=google.cloud.kms.v1.ImportJob.attestation
 	Attestation *KeyOperationAttestationObservedState `json:"attestation,omitempty"`
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.kms.v1.ImportJob.WrappingPublicKey", skipping
+
+// +kcc:observedstate:proto=google.cloud.kms.v1.ImportJob.WrappingPublicKey
+type ImportJob_WrappingPublicKeyObservedState struct {
+	// The public key, encoded in PEM format. For more information, see the [RFC
+	//  7468](https://tools.ietf.org/html/rfc7468) sections for [General
+	//  Considerations](https://tools.ietf.org/html/rfc7468#section-2) and
+	//  [Textual Encoding of Subject Public Key Info]
+	//  (https://tools.ietf.org/html/rfc7468#section-13).
+	//  This field gets populated by default for RSA-based import methods, if no
+	//  public_key_format is specified in the request.
+	//  If you want to retrieve the wrapping key of an
+	//  [ImportJob][google.cloud.kms.v1.ImportJob] in some other format, use
+	//  [KeyManagementService.GetImportJob][google.cloud.kms.v1.KeyManagementService.GetImportJob]
+	//  and set the public_key_format to the desired public key format.
+	// +kcc:proto:field=google.cloud.kms.v1.ImportJob.WrappingPublicKey.pem
+	Pem *string `json:"pem,omitempty"`
+
+	// Output only. Contains the public key, formatted according to the
+	//  [PublicKey.PublicKeyFormat][google.cloud.kms.v1.PublicKey.PublicKeyFormat]
+	//  specified in the
+	//  [KeyManagementService.GetImportJob][google.cloud.kms.v1.KeyManagementService.GetImportJob]
+	//  request.
+	// +kcc:proto:field=google.cloud.kms.v1.ImportJob.WrappingPublicKey.data
+	Data []byte `json:"data,omitempty"`
 }
 */
 

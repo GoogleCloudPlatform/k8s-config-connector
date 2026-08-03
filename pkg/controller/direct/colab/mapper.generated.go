@@ -196,6 +196,7 @@ func MachineSpec_FromProto(mapCtx *direct.MapContext, in *pb.MachineSpec) *krm.M
 	out.TpuTopology = direct.LazyPtr(in.GetTpuTopology())
 	out.MultihostGpuNodeCount = direct.LazyPtr(in.GetMultihostGpuNodeCount())
 	out.ReservationAffinity = ReservationAffinity_FromProto(mapCtx, in.GetReservationAffinity())
+	out.MinGpuDriverVersion = direct.LazyPtr(in.GetMinGpuDriverVersion())
 	return out
 }
 func MachineSpec_ToProto(mapCtx *direct.MapContext, in *krm.MachineSpec) *pb.MachineSpec {
@@ -210,6 +211,7 @@ func MachineSpec_ToProto(mapCtx *direct.MapContext, in *krm.MachineSpec) *pb.Mac
 	out.TpuTopology = direct.ValueOf(in.TpuTopology)
 	out.MultihostGpuNodeCount = direct.ValueOf(in.MultihostGpuNodeCount)
 	out.ReservationAffinity = ReservationAffinity_ToProto(mapCtx, in.ReservationAffinity)
+	out.MinGpuDriverVersion = direct.ValueOf(in.MinGpuDriverVersion)
 	return out
 }
 func NetworkSpec_FromProto(mapCtx *direct.MapContext, in *pb.NetworkSpec) *krm.NetworkSpec {

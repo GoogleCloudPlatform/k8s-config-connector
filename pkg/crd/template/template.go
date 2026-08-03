@@ -63,6 +63,11 @@ func propsToValue(props apiextensions.JSONSchemaProps) interface{} {
 		return props.Type
 	case "number":
 		return "float"
+	case "":
+		if len(props.Properties) > 0 {
+			return objectToValue(props)
+		}
+		return "schemaless"
 	default:
 		if props.XPreserveUnknownFields != nil && *props.XPreserveUnknownFields {
 			return "schemaless"

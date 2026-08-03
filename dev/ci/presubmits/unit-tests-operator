@@ -29,7 +29,8 @@ cd ${REPO_ROOT}
 . ${REPO_ROOT}/dev/tasks/setup-envtest
 
 # A dummy default project id is required for a few unit test cases
-gcloud config set project foobar --quiet
+export GCP_PROJECT_ID="${GCP_PROJECT_ID:-foobar}"
+gcloud config set project "${GCP_PROJECT_ID}" --quiet 2>/dev/null || true
 
 cd operator
 

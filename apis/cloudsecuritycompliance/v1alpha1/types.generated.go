@@ -298,6 +298,8 @@ type ParameterSpec struct {
 
 	// Optional. ParameterSpec for oneof attributes.
 	// +kcc:proto:field=google.cloud.cloudsecuritycompliance.v1.ParameterSpec.sub_parameters
+	// +kubebuilder:pruning:PreserveUnknownFields
+	// +kubebuilder:validation:Schemaless
 	SubParameters []ParameterSpec `json:"subParameters,omitempty"`
 
 	// Optional. The allowed set of values for the parameter.

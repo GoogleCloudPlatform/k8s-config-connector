@@ -29,7 +29,9 @@ if [[ -z "${CONTROLLERBUILDER}" ]]; then
 fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
-./generate-proto.sh
+PROTO_SHA="1765b559c42386788ff0c6412491277b4791107a"
+PROTO_OUT="${REPO_ROOT}/.build/googleapis-${PROTO_SHA}.pb"
+./generate-proto.sh ${PROTO_SHA} ${PROTO_OUT}
 
 
 ${CONTROLLERBUILDER} generate-types \
@@ -38,12 +40,14 @@ ${CONTROLLERBUILDER} generate-types \
   --include-skipped-output \
   --resource CloudSecurityComplianceCloudControl:CloudControl \
   --resource CloudSecurityComplianceFramework:Framework \
-  --resource CloudSecurityFramework:Framework
+  --resource CloudSecurityFramework:Framework \
+  --proto-source-path ${PROTO_OUT}
 
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.cloudsecuritycompliance.v1 \
   --api-version cloudsecuritycompliance.cnrm.cloud.google.com/v1alpha1 \
-  --include-skipped-output
+  --include-skipped-output \
+  --proto-source-path ${PROTO_OUT}
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

@@ -620,3 +620,21 @@ func map_string_string_ToProto(mapCtx *direct.MapContext, in map[string]string) 
 		Tags: in,
 	}
 }
+
+func RegistryHosts_FromProto(mapCtx *direct.MapContext, in *pb.ContainerdConfig_RegistryHostConfig) *krm.RegistryHosts {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RegistryHosts{}
+	out.Server = direct.LazyPtr(in.GetServer())
+	return out
+}
+
+func RegistryHosts_ToProto(mapCtx *direct.MapContext, in *krm.RegistryHosts) *pb.ContainerdConfig_RegistryHostConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ContainerdConfig_RegistryHostConfig{}
+	out.Server = direct.ValueOf(in.Server)
+	return out
+}

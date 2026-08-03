@@ -37,6 +37,7 @@ type BootDisk struct {
 /* found existing non-generated go type "BucketReference", skipping
 
 // +kcc:proto=google.cloud.hypercomputecluster.v1.BucketReference
+// +kubebuilder:pruning:PreserveUnknownFields
 type BucketReference struct {
 }
 */
@@ -81,6 +82,7 @@ type Cluster struct {
 /* found existing non-generated go type with proto tag "google.cloud.hypercomputecluster.v1.ComputeInstance", skipping
 
 // +kcc:proto=google.cloud.hypercomputecluster.v1.ComputeInstance
+// +kubebuilder:pruning:PreserveUnknownFields
 type ComputeInstance struct {
 }
 */
@@ -196,6 +198,7 @@ type FileShareConfig struct {
 /* found existing non-generated go type "FilestoreReference", skipping
 
 // +kcc:proto=google.cloud.hypercomputecluster.v1.FilestoreReference
+// +kubebuilder:pruning:PreserveUnknownFields
 type FilestoreReference struct {
 }
 */
@@ -221,6 +224,7 @@ type GCSHierarchicalNamespaceConfig struct {
 /* found existing non-generated go type "LustreReference", skipping
 
 // +kcc:proto=google.cloud.hypercomputecluster.v1.LustreReference
+// +kubebuilder:pruning:PreserveUnknownFields
 type LustreReference struct {
 }
 */
@@ -228,6 +232,7 @@ type LustreReference struct {
 /* found existing non-generated go type "NetworkReference", skipping
 
 // +kcc:proto=google.cloud.hypercomputecluster.v1.NetworkReference
+// +kubebuilder:pruning:PreserveUnknownFields
 type NetworkReference struct {
 }
 */

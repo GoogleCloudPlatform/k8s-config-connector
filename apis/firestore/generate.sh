@@ -29,7 +29,9 @@ if [[ -z "${CONTROLLERBUILDER}" ]]; then
 fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
-./generate-proto.sh
+PROTO_SHA="1765b559c42386788ff0c6412491277b4791107a"
+PROTO_OUT="${REPO_ROOT}/.build/googleapis-${PROTO_SHA}.pb"
+./generate-proto.sh ${PROTO_SHA} ${PROTO_OUT}
 
 # --- v1alpha1 ---
 ${CONTROLLERBUILDER} generate-types \
@@ -37,7 +39,8 @@ ${CONTROLLERBUILDER} generate-types \
   --api-version firestore.cnrm.cloud.google.com/v1alpha1  \
   --resource FirestoreDocument:google.firestore.v1.Document \
   --resource FirestoreField:Field \
-  --resource FirestoreBackupSchedule:BackupSchedule
+  --resource FirestoreBackupSchedule:BackupSchedule \
+  --proto-source-path ${PROTO_OUT}
 
 
 
@@ -46,11 +49,13 @@ ${CONTROLLERBUILDER} generate-types \
   --service google.firestore.admin.v1 \
   --api-version firestore.cnrm.cloud.google.com/v1beta1  \
   --resource FirestoreDatabase:Database \
-  --resource FirestoreIndex:Index
+  --resource FirestoreIndex:Index \
+  --proto-source-path ${PROTO_OUT}
 
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.firestore.admin.v1,google.firestore.v1 \
   --api-version "firestore.cnrm.cloud.google.com/v1beta1" \
+  --proto-source-path ${PROTO_OUT} \
   --multiversion
 
 cd ${REPO_ROOT}

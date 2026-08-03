@@ -127,6 +127,14 @@
   							AnyOf: nil,
   							Not:   nil,
   							Properties: map[string]v1.JSONSchemaProps{
++ 								"clientID": {
++ 									Description: "Optional. OAuth 2.0 client ID used in the OAuth flow. This allows for client sharing. The risks of client sharing are outlined h"...,
++ 									Type:        "string",
++ 								},
++ 								"clientSecret": {
++ 									Description: "Optional. Input only. OAuth secret paired with client ID.",
++ 									Type:        "string",
++ 								},
   								"loginHint": {Description: "Domain hint to send as hd=? parameter in OAuth request flow. Ena"..., Type: "string"},
   								"programmaticClients": {
   									ID:     "",

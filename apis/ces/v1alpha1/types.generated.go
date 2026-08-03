@@ -426,6 +426,7 @@ type ConversationLoggingSettings struct {
 /* found existing non-generated go type "DataStoreSettings", skipping
 
 // +kcc:proto=google.cloud.ces.v1beta.DataStoreSettings
+// +kubebuilder:pruning:PreserveUnknownFields
 type DataStoreSettings struct {
 }
 */
@@ -433,6 +434,7 @@ type DataStoreSettings struct {
 /* found existing non-generated go type with proto tag "google.cloud.ces.v1beta.DataStoreSettings.Engine", skipping
 
 // +kcc:proto=google.cloud.ces.v1beta.DataStoreSettings.Engine
+// +kubebuilder:pruning:PreserveUnknownFields
 type DataStoreSettings_Engine struct {
 }
 */
@@ -849,6 +851,8 @@ type Schema struct {
 
 	// Optional. Schema of the elements of Type.ARRAY.
 	// +kcc:proto:field=google.cloud.ces.v1beta.Schema.items
+	// +kubebuilder:pruning:PreserveUnknownFields
+	// +kubebuilder:validation:Schemaless
 	Items *Schema `json:"items,omitempty"`
 
 	// Optional. Indicates if the value may be null.
@@ -862,16 +866,22 @@ type Schema struct {
 
 	// Optional. Schemas of initial elements of Type.ARRAY.
 	// +kcc:proto:field=google.cloud.ces.v1beta.Schema.prefix_items
+	// +kubebuilder:pruning:PreserveUnknownFields
+	// +kubebuilder:validation:Schemaless
 	PrefixItems []Schema `json:"prefixItems,omitempty"`
 
 	// Optional. Can either be a boolean or an object, controls the presence of
 	//  additional properties.
 	// +kcc:proto:field=google.cloud.ces.v1beta.Schema.additional_properties
+	// +kubebuilder:pruning:PreserveUnknownFields
+	// +kubebuilder:validation:Schemaless
 	AdditionalProperties *Schema `json:"additionalProperties,omitempty"`
 
 	// Optional. The value should be validated against any (one or more) of the
 	//  subschemas in the list.
 	// +kcc:proto:field=google.cloud.ces.v1beta.Schema.any_of
+	// +kubebuilder:pruning:PreserveUnknownFields
+	// +kubebuilder:validation:Schemaless
 	AnyOf []Schema `json:"anyOf,omitempty"`
 
 	// Optional. Possible values of the element of primitive type with enum

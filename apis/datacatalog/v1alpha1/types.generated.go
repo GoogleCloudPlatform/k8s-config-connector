@@ -42,6 +42,7 @@ type BigQueryConnectionSpec struct {
 
 /* unreachable type BigQueryDateShardedSpec
 // +kcc:proto=google.cloud.datacatalog.v1.BigQueryDateShardedSpec
+// +kubebuilder:pruning:PreserveUnknownFields
 type BigQueryDateShardedSpec struct {
 }
 */
@@ -176,6 +177,8 @@ type ColumnSchema struct {
 	// Optional. Schema of sub-columns. A column can have zero or more
 	//  sub-columns.
 	// +kcc:proto:field=google.cloud.datacatalog.v1.ColumnSchema.subcolumns
+	// +kubebuilder:pruning:PreserveUnknownFields
+	// +kubebuilder:validation:Schemaless
 	Subcolumns []ColumnSchema `json:"subcolumns,omitempty"`
 
 	// Looker specific column info of this column.
@@ -588,6 +591,7 @@ type EntryOverview struct {
 }
 
 // +kcc:proto=google.cloud.datacatalog.v1.FeatureOnlineStoreSpec
+// +kubebuilder:pruning:PreserveUnknownFields
 type FeatureOnlineStoreSpec struct {
 }
 
@@ -762,14 +766,17 @@ type PhysicalSchema_AvroSchema struct {
 }
 
 // +kcc:proto=google.cloud.datacatalog.v1.PhysicalSchema.CsvSchema
+// +kubebuilder:pruning:PreserveUnknownFields
 type PhysicalSchema_CsvSchema struct {
 }
 
 // +kcc:proto=google.cloud.datacatalog.v1.PhysicalSchema.OrcSchema
+// +kubebuilder:pruning:PreserveUnknownFields
 type PhysicalSchema_OrcSchema struct {
 }
 
 // +kcc:proto=google.cloud.datacatalog.v1.PhysicalSchema.ParquetSchema
+// +kubebuilder:pruning:PreserveUnknownFields
 type PhysicalSchema_ParquetSchema struct {
 }
 
@@ -933,6 +940,7 @@ type SystemTimestamps struct {
 
 /* unreachable type TableSpec
 // +kcc:proto=google.cloud.datacatalog.v1.TableSpec
+// +kubebuilder:pruning:PreserveUnknownFields
 type TableSpec struct {
 }
 */
@@ -1182,6 +1190,7 @@ type VertexModelSpec struct {
 
 /* unreachable type ViewSpec
 // +kcc:proto=google.cloud.datacatalog.v1.ViewSpec
+// +kubebuilder:pruning:PreserveUnknownFields
 type ViewSpec struct {
 }
 */

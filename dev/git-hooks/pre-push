@@ -22,6 +22,8 @@ if [[ "${SKIP_PRE_PUSH_VALIDATION:-0}" == "1" ]]; then
   exit 0
 fi
 
+# Unset GIT_DIR and GIT_WORK_TREE set by git when invoking hooks so child scripts can run git in subdirectories
+unset GIT_DIR GIT_WORK_TREE || true
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd "${REPO_ROOT}"
 

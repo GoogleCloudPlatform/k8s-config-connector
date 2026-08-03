@@ -140,6 +140,7 @@ type MigrationTaskOrchestrationResult struct {
 */
 
 // +kcc:proto=google.cloud.bigquery.migration.v2alpha.TeradataOptions
+// +kubebuilder:pruning:PreserveUnknownFields
 type TeradataOptions struct {
 }
 

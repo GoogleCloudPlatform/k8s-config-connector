@@ -17,6 +17,7 @@ package aiplatform
 import (
 	"encoding/json"
 
+	pb "cloud.google.com/go/aiplatform/apiv1/aiplatformpb"
 	aiplatformpb "cloud.google.com/go/aiplatform/apiv1beta1/aiplatformpb"
 	agentsearchv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/agentsearch/v1alpha1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/aiplatform/v1alpha1"
@@ -45,7 +46,7 @@ func Int32Value_ToProto(mapCtx *direct.MapContext, in *krm.Int32Value) *wrappers
 	return wrapperspb.Int32(*in.Value)
 }
 
-func Schema_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.Schema) *krm.Schema {
+func Schema_FromProto(mapCtx *direct.MapContext, in *pb.Schema) *krm.Schema {
 	if in == nil {
 		return nil
 	}
@@ -99,12 +100,12 @@ func Schema_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.Schema) *krm.S
 	return out
 }
 
-func Schema_ToProto(mapCtx *direct.MapContext, in *krm.Schema) *aiplatformpb.Schema {
+func Schema_ToProto(mapCtx *direct.MapContext, in *krm.Schema) *pb.Schema {
 	if in == nil {
 		return nil
 	}
-	out := &aiplatformpb.Schema{}
-	out.Type = direct.Enum_ToProto[aiplatformpb.Type](mapCtx, in.Type)
+	out := &pb.Schema{}
+	out.Type = direct.Enum_ToProto[pb.Type](mapCtx, in.Type)
 	out.Format = direct.ValueOf(in.Format)
 	out.Title = direct.ValueOf(in.Title)
 	out.Description = direct.ValueOf(in.Description)
@@ -132,7 +133,7 @@ func Schema_ToProto(mapCtx *direct.MapContext, in *krm.Schema) *aiplatformpb.Sch
 	out.Pattern = direct.ValueOf(in.Pattern)
 	out.Example = Value_ToProto(mapCtx, in.Example)
 	if len(in.AnyOf) > 0 {
-		out.AnyOf = make([]*aiplatformpb.Schema, 0, len(in.AnyOf))
+		out.AnyOf = make([]*pb.Schema, 0, len(in.AnyOf))
 		for _, x := range in.AnyOf {
 			var nested krm.Schema
 			if err := json.Unmarshal(x.Raw, &nested); err != nil {
@@ -383,4 +384,44 @@ func RuntimeConfig_ToProto(mapCtx *direct.MapContext, in *krm.RuntimeConfig) *ai
 	}
 	out.DefaultParams = direct.Struct_ToProto(mapCtx, &in.DefaultParams)
 	return out
+}
+
+func ComputationBasedMetricSpec_Type_ToProto(mapCtx *direct.MapContext, in *string) *pb.ComputationBasedMetricSpec_ComputationBasedMetricType {
+	if in == nil {
+		return nil
+	}
+	v := direct.Enum_ToProto[pb.ComputationBasedMetricSpec_ComputationBasedMetricType](mapCtx, in)
+	return &v
+}
+
+func GenerationConfig_MediaResolution_ToProto(mapCtx *direct.MapContext, in *string) *pb.GenerationConfig_MediaResolution {
+	if in == nil {
+		return nil
+	}
+	v := direct.Enum_ToProto[pb.GenerationConfig_MediaResolution](mapCtx, in)
+	return &v
+}
+
+func GenerationConfig_RoutingConfig_AutoRoutingMode_ModelRoutingPreference_ToProto(mapCtx *direct.MapContext, in *string) *pb.GenerationConfig_RoutingConfig_AutoRoutingMode_ModelRoutingPreference {
+	if in == nil {
+		return nil
+	}
+	v := direct.Enum_ToProto[pb.GenerationConfig_RoutingConfig_AutoRoutingMode_ModelRoutingPreference](mapCtx, in)
+	return &v
+}
+
+func GenerationConfig_ThinkingConfig_ThinkingLevel_ToProto(mapCtx *direct.MapContext, in *string) *pb.GenerationConfig_ThinkingConfig_ThinkingLevel {
+	if in == nil {
+		return nil
+	}
+	v := direct.Enum_ToProto[pb.GenerationConfig_ThinkingConfig_ThinkingLevel](mapCtx, in)
+	return &v
+}
+
+func ImageConfig_PersonGeneration_ToProto(mapCtx *direct.MapContext, in *string) *pb.ImageConfig_PersonGeneration {
+	if in == nil {
+		return nil
+	}
+	v := direct.Enum_ToProto[pb.ImageConfig_PersonGeneration](mapCtx, in)
+	return &v
 }

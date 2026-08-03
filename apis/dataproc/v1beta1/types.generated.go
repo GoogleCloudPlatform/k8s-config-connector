@@ -388,6 +388,7 @@ type ClusterMetrics struct {
 /* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.ClusterStatus", skipping
 
 // +kcc:proto=google.cloud.dataproc.v1.ClusterStatus
+// +kubebuilder:pruning:PreserveUnknownFields
 type ClusterStatus struct {
 }
 */
@@ -920,6 +921,7 @@ type InstanceFlexibilityPolicy_InstanceSelection struct {
 
 /* unreachable type InstanceFlexibilityPolicy_InstanceSelectionResult
 // +kcc:proto=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.InstanceSelectionResult
+// +kubebuilder:pruning:PreserveUnknownFields
 type InstanceFlexibilityPolicy_InstanceSelectionResult struct {
 }
 */
@@ -1284,6 +1286,7 @@ type LifecycleConfig struct {
 /* found existing non-generated go type with proto tag "google.cloud.dataproc.v1.ManagedGroupConfig", skipping
 
 // +kcc:proto=google.cloud.dataproc.v1.ManagedGroupConfig
+// +kubebuilder:pruning:PreserveUnknownFields
 type ManagedGroupConfig struct {
 }
 */

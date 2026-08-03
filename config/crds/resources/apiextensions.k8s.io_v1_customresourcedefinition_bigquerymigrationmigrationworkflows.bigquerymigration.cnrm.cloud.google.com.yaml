@@ -269,6 +269,7 @@ spec:
                           description: The Teradata SQL specific settings for the
                             translation task.
                           type: object
+                          x-kubernetes-preserve-unknown-fields: true
                         translationExceptionTable:
                           description: Specifies the exact name of the bigquery table
                             ("dataset.table") to be used for surfacing raw translation

@@ -23,6 +23,7 @@ package v1alpha1
 
 /* unreachable type Connection
 // +kcc:proto=google.cloud.dialogflow.v2beta1.Connection
+// +kubebuilder:pruning:PreserveUnknownFields
 type Connection struct {
 }
 */
@@ -33,6 +34,89 @@ type Connection_ErrorDetails struct {
 
 	// The error message provided from SIP trunking auth service
 	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.Connection.ErrorDetails.error_message
+	ErrorMessage *string `json:"errorMessage,omitempty"`
+}
+*/
+
+/* unreachable type ProbeDetails
+// +kcc:proto=google.cloud.dialogflow.v2beta1.ProbeDetails
+// +kubebuilder:pruning:PreserveUnknownFields
+type ProbeDetails struct {
+}
+*/
+
+/* unreachable type SipHostname
+// +kcc:proto=google.cloud.dialogflow.v2beta1.SipHostname
+type SipHostname struct {
+	// Required. Peer hostname name.
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.SipHostname.peer_hostname
+	PeerHostname *string `json:"peerHostname,omitempty"`
+}
+*/
+
+/* unreachable type SipHostname_HostnameErrorDetails
+// +kcc:proto=google.cloud.dialogflow.v2beta1.SipHostname.HostnameErrorDetails
+// +kubebuilder:pruning:PreserveUnknownFields
+type SipHostname_HostnameErrorDetails struct {
+}
+*/
+
+/* unreachable type ProbeDetailsObservedState
+// +kcc:observedstate:proto=google.cloud.dialogflow.v2beta1.ProbeDetails
+type ProbeDetailsObservedState struct {
+	// Output only. Duration between OPTIONS send and OPTIONS 200 received.
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.ProbeDetails.options_latency
+	OptionsLatency *string `json:"optionsLatency,omitempty"`
+
+	// Output only. Result of the probe.
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.ProbeDetails.probe_status
+	ProbeStatus *string `json:"probeStatus,omitempty"`
+
+	// Output only. When the options probe was started.
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.ProbeDetails.init_time
+	InitTime *string `json:"initTime,omitempty"`
+}
+*/
+
+/* unreachable type SipHostnameObservedState
+// +kcc:observedstate:proto=google.cloud.dialogflow.v2beta1.SipHostname
+type SipHostnameObservedState struct {
+	// Output only. Peer hostname enabled for SIP ping.
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.SipHostname.enabled_sip_ping
+	EnabledSipPing *bool `json:"enabledSipPing,omitempty"`
+
+	// Output only. How often the sip ping should occur.
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.SipHostname.ping_interval
+	PingInterval *string `json:"pingInterval,omitempty"`
+
+	// Output only. The peer_socket address of the partner SBC pinged.
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.SipHostname.peer_socket_address
+	PeerSocketAddress *string `json:"peerSocketAddress,omitempty"`
+
+	// Output only. The details from the options probe.
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.SipHostname.probe_details
+	ProbeDetails *ProbeDetailsObservedState `json:"probeDetails,omitempty"`
+
+	// Output only. State of the connection.
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.SipHostname.connection_state
+	ConnectionState *string `json:"connectionState,omitempty"`
+
+	// Output only. The error details for the connection. Only populated when
+	//  authentication errors occur.
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.SipHostname.error_details
+	ErrorDetails *SipHostname_HostnameErrorDetailsObservedState `json:"errorDetails,omitempty"`
+}
+*/
+
+/* unreachable type SipHostname_HostnameErrorDetailsObservedState
+// +kcc:observedstate:proto=google.cloud.dialogflow.v2beta1.SipHostname.HostnameErrorDetails
+type SipHostname_HostnameErrorDetailsObservedState struct {
+	// Output only. The status of the certificate authentication.
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.SipHostname.HostnameErrorDetails.certificate_state
+	CertificateState *string `json:"certificateState,omitempty"`
+
+	// Output only. The error message provided from SIP trunking auth service
+	// +kcc:proto:field=google.cloud.dialogflow.v2beta1.SipHostname.HostnameErrorDetails.error_message
 	ErrorMessage *string `json:"errorMessage,omitempty"`
 }
 */

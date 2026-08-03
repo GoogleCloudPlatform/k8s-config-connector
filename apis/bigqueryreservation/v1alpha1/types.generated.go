@@ -26,17 +26,18 @@ package v1alpha1
 // +kcc:proto=google.cloud.bigquery.reservation.v1.CapacityCommitment
 type CapacityCommitment struct {
 
-	// Number of slots in this commitment.
+	// Optional. Number of slots in this commitment.
 	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.CapacityCommitment.slot_count
 	SlotCount *int64 `json:"slotCount,omitempty"`
 
-	// Capacity commitment commitment plan.
+	// Optional. Capacity commitment commitment plan.
 	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.CapacityCommitment.plan
 	Plan *string `json:"plan,omitempty"`
 
-	// The plan this capacity commitment is converted to after commitment_end_time
-	//  passes. Once the plan is changed, committed period is extended according to
-	//  commitment plan. Only applicable for ANNUAL and TRIAL commitments.
+	// Optional. The plan this capacity commitment is converted to after
+	//  commitment_end_time passes. Once the plan is changed, committed period is
+	//  extended according to commitment plan. Only applicable for ANNUAL and TRIAL
+	//  commitments.
 	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.CapacityCommitment.renewal_plan
 	RenewalPlan *string `json:"renewalPlan,omitempty"`
 
@@ -52,7 +53,7 @@ type CapacityCommitment struct {
 	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.CapacityCommitment.multi_region_auxiliary
 	MultiRegionAuxiliary *bool `json:"multiRegionAuxiliary,omitempty"`
 
-	// Edition of the capacity commitment.
+	// Optional. Edition of the capacity commitment.
 	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.CapacityCommitment.edition
 	Edition *string `json:"edition,omitempty"`
 }
@@ -83,7 +84,7 @@ type CapacityCommitmentObservedState struct {
 
 	// Output only. The end of the current commitment period. It is applicable
 	//  only for ACTIVE capacity commitments. Note after renewal,
-	//  commitment_end_time is the time the renewed commitment expires. So it would
+	//  commitment_end_time is the time the renewed commitment expires. So itwould
 	//  be at a time after commitment_start_time + committed period, because we
 	//  don't change commitment_start_time ,
 	// +kcc:proto:field=google.cloud.bigquery.reservation.v1.CapacityCommitment.commitment_end_time
