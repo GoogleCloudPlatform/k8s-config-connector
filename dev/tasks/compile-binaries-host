@@ -47,9 +47,9 @@ else
 fi
 
 # Unified single go build invocation to share the apis/ and pkg/ compilation graph
-go build -trimpath -p 6 -ldflags "${LDFLAGS}" -o bin/ "${targets[@]}"
-go build -trimpath -p 6 -ldflags "${LDFLAGS}" -o bin/operator ./operator/cmd/manager
-go build -trimpath -p 6 -ldflags "${LDFLAGS}" -o bin/gke_addon_poststart ./operator/cmd/gke_addon_poststart
+go build -trimpath -p 4 -ldflags "${LDFLAGS}" -o bin/ "${targets[@]}"
+go build -trimpath -p 4 -ldflags "${LDFLAGS}" -o bin/operator ./operator/cmd/manager
+go build -trimpath -p 4 -ldflags "${LDFLAGS}" -o bin/gke_addon_poststart ./operator/cmd/gke_addon_poststart
 
 if [[ "${SKIP_LICENSES}" == "0" ]]; then
   echo "===> [$(date -u +'%Y-%m-%dT%H:%M:%SZ')] Generating third-party notices..."
