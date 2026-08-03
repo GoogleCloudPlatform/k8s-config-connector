@@ -34,7 +34,7 @@ require (
 	cloud.google.com/go/datastream v1.20.0
 	cloud.google.com/go/deploy v1.32.0
 	cloud.google.com/go/dialogflow v1.82.0
-	cloud.google.com/go/discoveryengine v1.22.0
+	cloud.google.com/go/discoveryengine v1.32.0
 	cloud.google.com/go/edgecontainer v1.9.0
 	cloud.google.com/go/edgenetwork v1.8.0
 	cloud.google.com/go/essentialcontacts v1.12.0
