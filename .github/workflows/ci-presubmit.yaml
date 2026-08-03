@@ -54,7 +54,6 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0
-# zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
       - name: Prebuild test binaries
         run: |
@@ -83,7 +82,6 @@ jobs:
           name: prebuilt-go-binaries
           path: bin/
           merge-multiple: true
-# zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/build-images"
         run: |
@@ -102,7 +100,6 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-# zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/capture-pprof"
         run: |
@@ -122,7 +119,6 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-# zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/compile-binaries-host"
         run: |
@@ -144,7 +140,6 @@ jobs:
         shard: ["1-of-8", "2-of-8", "3-of-8", "4-of-8", "5-of-8", "6-of-8", "7-of-8", "8-of-8"]
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-# zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/fuzz-roundtrippers"
         run: |
@@ -192,7 +187,6 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0
-# zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/license-lint"
         run: |
@@ -212,7 +206,6 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-# zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/run-linters"
         run: |
@@ -241,7 +234,6 @@ jobs:
           merge-multiple: true
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@c47758b77c9736f4b2ef4073d4d51994fabfe349 # v3.7.1
-# zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/smoketest-with-kind"
         run: |
@@ -260,7 +252,6 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-# zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/test-fuzz-random-mappers"
         run: |
@@ -280,7 +271,6 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-# zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
       - uses: google-github-actions/setup-gcloud@77e7a554d41e2ee56fc945c52dfd3f33d12def9a # v2.1.4
         with:
@@ -303,7 +293,6 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-# zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/test-pause"
         run: |
@@ -325,7 +314,6 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-# zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
       - name: Download prebuilt test binaries
         uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
@@ -531,7 +519,6 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-# zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-gcptracker"
         run: |
@@ -551,7 +538,6 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-# zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-preview"
         run: |
@@ -615,7 +601,6 @@ jobs:
         shard: ["1-of-4", "2-of-4", "3-of-4", "4-of-4"]
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-# zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
       - uses: google-github-actions/setup-gcloud@77e7a554d41e2ee56fc945c52dfd3f33d12def9a # v2.1.4
         with:
@@ -647,7 +632,6 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-# zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
       - uses: google-github-actions/setup-gcloud@77e7a554d41e2ee56fc945c52dfd3f33d12def9a # v2.1.4
         with:
@@ -670,7 +654,6 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-# zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/validate-ensure"
         run: |
@@ -712,7 +695,6 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-# zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/validate-generated-files"
         run: |
@@ -754,7 +736,6 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-# zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/validate-manifests"
         run: |

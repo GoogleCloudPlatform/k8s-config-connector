@@ -88,7 +88,6 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0
-# zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
       - name: Prebuild test binaries
         run: |
@@ -349,7 +348,6 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-# zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
       - name: Download prebuilt test binaries
         uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
@@ -392,7 +390,6 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
         shard: ["1-of-4", "2-of-4", "3-of-4", "4-of-4"]
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-# zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
       - uses: google-github-actions/setup-gcloud@77e7a554d41e2ee56fc945c52dfd3f33d12def9a # v2.1.4
         with:
@@ -436,7 +433,6 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
         shard: ["1-of-8", "2-of-8", "3-of-8", "4-of-8", "5-of-8", "6-of-8", "7-of-8", "8-of-8"]
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-# zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/fuzz-roundtrippers"
         run: |
@@ -471,7 +467,6 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-# zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/compile-binaries-host"
         run: |
@@ -510,7 +505,6 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
 EOF
       fi
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
-# zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
       - name: "Run ${f}"
         run: |
@@ -563,7 +557,6 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0
-# zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
       - name: "Run ${f}"
         run: |
@@ -614,7 +607,6 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
 EOF
     else
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
-# zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
 EOF
     fi
@@ -747,7 +739,6 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0
-# zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/crd-equivalence-check"
         run: |
@@ -809,7 +800,6 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-# zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
         with:
           go-version: '1.26'
