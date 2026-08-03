@@ -23,16 +23,13 @@ FROM ${BUILDER_IMG} AS builder
 # any required permissions
 FROM alpine:latest AS packager
 WORKDIR /configconnector/
+RUN apk --update add --no-cache libcap
+
 COPY --from=builder /go/src/github.com/GoogleCloudPlatform/k8s-config-connector/webhook .
 COPY --from=builder /go/src/github.com/GoogleCloudPlatform/k8s-config-connector/THIRD_PARTY_NOTICES/ THIRD_PARTY_NOTICES/
 COPY --from=builder /go/src/github.com/GoogleCloudPlatform/k8s-config-connector/MIRRORED_LIBRARY_SOURCE/ MIRRORED_LIBRARY_SOURCE/
 
-# Allow the binary to bind to privileged ports (ports below 1024)
-RUN apk --update add --no-cache libcap
-RUN setcap cap_net_bind_service+eip webhook
-
-# Set user with UID 1000 as the owner of the directory
-RUN chown 1000 /configconnector
+RUN setcap cap_net_bind_service+eip webhook && chown -R 1000 /configconnector
 
 # Copy the directory into a thin, distroless image (go/gke-distroless)
 FROM ${GKE_DISTROLESS_IMG} AS final

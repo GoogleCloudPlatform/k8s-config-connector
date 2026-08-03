@@ -21,7 +21,7 @@ REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd "${REPO_ROOT}"
 
 echo "===> [$(date -u +'%Y-%m-%dT%H:%M:%SZ')] Compiling Go binaries natively on host..."
-mkdir -p bin/
+mkdir -p bin/ THIRD_PARTY_NOTICES/ MIRRORED_LIBRARY_SOURCE/
 
 export CGO_ENABLED=0
 export GOOS=linux
@@ -29,19 +29,36 @@ export GOARCH=amd64
 
 LDFLAGS="-s -w -buildid="
 
-go build -trimpath -ldflags "${LDFLAGS}" -o bin/deletiondefender ./cmd/deletiondefender
-go build -trimpath -ldflags "${LDFLAGS}" -o bin/webhook ./cmd/webhook
-go build -trimpath -ldflags "${LDFLAGS}" -o bin/recorder ./cmd/recorder
-go build -trimpath -ldflags "${LDFLAGS}" -o bin/unmanageddetector ./cmd/unmanageddetector
-go build -trimpath -ldflags "${LDFLAGS}" -o bin/manager ./cmd/manager
-go build -trimpath -ldflags "${LDFLAGS}" -o bin/config-connector ./cmd/config-connector
-go build -trimpath -ldflags "${LDFLAGS}" -o bin/operator ./operator/cmd/manager
-go build -trimpath -ldflags "${LDFLAGS}" -o bin/gke_addon_poststart ./operator/cmd/gke_addon_poststart
+BUILD_CLI="${BUILD_CLI:-1}"
+SKIP_LICENSES="${SKIP_LICENSES:-0}"
 
-echo "===> [$(date -u +'%Y-%m-%dT%H:%M:%SZ')] Generating third-party notices..."
-GOWORK=off go mod vendor -o temp-vendor
-go run scripts/generate-third-party-licenses/main.go
-rm -rf temp-vendor
+targets=(
+  ./cmd/deletiondefender
+  ./cmd/webhook
+  ./cmd/recorder
+  ./cmd/unmanageddetector
+  ./cmd/manager
+)
+
+if [[ "${BUILD_CLI}" != "0" ]]; then
+  targets+=(./cmd/config-connector)
+else
+  touch bin/config-connector
+fi
+
+# Unified single go build invocation to share the apis/ and pkg/ compilation graph
+go build -trimpath -p 2 -ldflags "${LDFLAGS}" -o bin/ "${targets[@]}"
+go build -trimpath -p 2 -ldflags "${LDFLAGS}" -o bin/operator ./operator/cmd/manager
+go build -trimpath -p 2 -ldflags "${LDFLAGS}" -o bin/gke_addon_poststart ./operator/cmd/gke_addon_poststart
+
+if [[ "${SKIP_LICENSES}" == "0" ]]; then
+  echo "===> [$(date -u +'%Y-%m-%dT%H:%M:%SZ')] Generating third-party notices..."
+  GOWORK=off go mod vendor -o temp-vendor
+  go run scripts/generate-third-party-licenses/main.go
+  rm -rf temp-vendor
+else
+  echo "===> [$(date -u +'%Y-%m-%dT%H:%M:%SZ')] Skipping third-party notices (SKIP_LICENSES=1)"
+fi
 
 echo "===> [$(date -u +'%Y-%m-%dT%H:%M:%SZ')] Generating operator channels..."
 dev/tasks/generate-channels
