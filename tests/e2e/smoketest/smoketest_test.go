@@ -82,7 +82,16 @@ func TestSmoketest(t *testing.T) {
 	// Ensure local registry container is running for fast direct pushing/pulling
 	regName := "kind-registry"
 	regPort := "5001"
-	_ = exec.CommandContext(ctx, "docker", "run", "-d", "--restart=always", "-p", "127.0.0.1:"+regPort+":5000", "--network", "bridge", "--name", regName, "registry:2").Run()
+	_ = exec.CommandContext(ctx, "docker", "run", "-d", "--restart=always", "-p", regPort+":5000", "--name", regName, "registry:2").Run()
+
+	// Get docker bridge gateway IP so BuildKit container can reach host registry
+	bridgeIP := "172.17.0.1"
+	if out, err := exec.CommandContext(ctx, "docker", "network", "inspect", "bridge", "--format", "{{(index .IPAM.Config 0).Gateway}}").Output(); err == nil {
+		if ip := strings.TrimSpace(string(out)); ip != "" {
+			bridgeIP = ip
+		}
+	}
+	regHost := bridgeIP + ":" + regPort
 
 	kindConfigContent := fmt.Sprintf(`kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
@@ -90,9 +99,11 @@ containerdConfigPatches:
 - |-
   [plugins."io.containerd.grpc.v1.cri".registry]
     [plugins."io.containerd.grpc.v1.cri".registry.mirrors]
+      [plugins."io.containerd.grpc.v1.cri".registry.mirrors."%s"]
+        endpoint = ["http://%s:5000"]
       [plugins."io.containerd.grpc.v1.cri".registry.mirrors."localhost:%s"]
         endpoint = ["http://%s:5000"]
-`, regPort, regName)
+`, regHost, regName, regPort, regName)
 
 	kindConfigFile := filepath.Join(t.TempDir(), "kind-config.yaml")
 	if err := os.WriteFile(kindConfigFile, []byte(kindConfigContent), 0644); err != nil {
@@ -109,7 +120,7 @@ containerdConfigPatches:
 
 	_ = exec.CommandContext(ctx, "docker", "network", "connect", "kind", regName).Run()
 
-	imagePrefix := fmt.Sprintf("localhost:%s/", regPort)
+	imagePrefix := regHost + "/"
 
 	// Read current stable version to patch manifests
 	stableVersionFile := filepath.Join(root, "operator/channels/stable")
