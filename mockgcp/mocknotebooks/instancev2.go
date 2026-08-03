@@ -144,11 +144,8 @@ func (s *NotebookServiceV2) UpdateInstance(ctx context.Context, req *pb_v2.Updat
 			updated.Labels = req.Instance.Labels
 		}
 		if req.Instance.GetGceSetup() != nil {
-			if req.Instance.GetGceSetup().MachineType != "" {
-				if updated.GetGceSetup() == nil {
-					updated.Infrastructure = &pb_v2.Instance_GceSetup{GceSetup: &pb_v2.GceSetup{}}
-				}
-				updated.GetGceSetup().MachineType = req.Instance.GetGceSetup().MachineType
+			updated.Infrastructure = &pb_v2.Instance_GceSetup{
+				GceSetup: proto.Clone(req.Instance.GetGceSetup()).(*pb_v2.GceSetup),
 			}
 		}
 	} else {

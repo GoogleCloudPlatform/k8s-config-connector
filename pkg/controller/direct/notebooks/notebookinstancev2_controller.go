@@ -81,6 +81,20 @@ func (m *modelInstanceV2) AdapterForObject(ctx context.Context, op *directbase.A
 		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
 
+	// Manually resolve IAMServiceAccountRef
+	if obj.Spec.GCESetup != nil {
+		for i := range obj.Spec.GCESetup.ServiceAccounts {
+			sa := &obj.Spec.GCESetup.ServiceAccounts[i]
+			if sa.ServiceAccountRef != nil {
+				klog.FromContext(ctx).Info("DEBUG: Before resolving", "name", sa.ServiceAccountRef.Name, "external", sa.ServiceAccountRef.External)
+				if err := sa.ServiceAccountRef.Resolve(ctx, reader, obj); err != nil {
+					return nil, fmt.Errorf("resolving serviceAccountRef: %w", err)
+				}
+				klog.FromContext(ctx).Info("DEBUG: After resolving", "name", sa.ServiceAccountRef.Name, "external", sa.ServiceAccountRef.External)
+			}
+		}
+	}
+
 	identityObj, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
@@ -240,9 +254,72 @@ func compareNotebooksV2(ctx context.Context, actual, desired *notebookspb.Instan
 		if desGCE.BootDisk == nil && actGCE.BootDisk != nil {
 			desGCE.BootDisk = actGCE.BootDisk
 		}
+		// Copy/align BootDisk KMS keys if not specified in desired
+		if desGCE.BootDisk != nil && actGCE.BootDisk != nil {
+			if desGCE.BootDisk.KmsKey == "" && actGCE.BootDisk.KmsKey != "" {
+				desGCE.BootDisk.KmsKey = actGCE.BootDisk.KmsKey
+				desGCE.BootDisk.DiskEncryption = actGCE.BootDisk.DiskEncryption
+			}
+		}
+		// Copy/align DataDisks if not specified in desired
+		if len(desGCE.DataDisks) == 0 && len(actGCE.DataDisks) > 0 {
+			desGCE.DataDisks = actGCE.DataDisks
+		}
+		// Copy/align DataDisks KMS keys if not specified in desired
+		if len(desGCE.DataDisks) > 0 && len(actGCE.DataDisks) == len(desGCE.DataDisks) {
+			for i := range desGCE.DataDisks {
+				desDisk := desGCE.DataDisks[i]
+				actDisk := actGCE.DataDisks[i]
+				if desDisk.KmsKey == "" && actDisk.KmsKey != "" {
+					desDisk.KmsKey = actDisk.KmsKey
+					desDisk.DiskEncryption = actDisk.DiskEncryption
+				}
+			}
+		}
 		// Copy/align NetworkInterfaces if not specified in desired
 		if len(desGCE.NetworkInterfaces) == 0 && len(actGCE.NetworkInterfaces) > 0 {
 			desGCE.NetworkInterfaces = actGCE.NetworkInterfaces
+		}
+		// Copy/align Image (VmImage / ContainerImage) if not specified in desired
+		if desGCE.Image == nil && actGCE.Image != nil {
+			desGCE.Image = actGCE.Image
+		}
+		// Copy/align VmImage fields if present on both sides
+		desVM := desGCE.GetVmImage()
+		actVM := actGCE.GetVmImage()
+		if desVM != nil && actVM != nil {
+			if desVM.Project == "" {
+				desVM.Project = actVM.Project
+			}
+			if desVM.GetFamily() == "" && actVM.GetFamily() != "" {
+				desVM.Image = &notebookspb.VmImage_Family{Family: actVM.GetFamily()}
+			}
+			if desVM.GetName() == "" && actVM.GetName() != "" {
+				desVM.Image = &notebookspb.VmImage_Name{Name: actVM.GetName()}
+			}
+		}
+		// Copy/align ContainerImage fields if present on both sides
+		desContainer := desGCE.GetContainerImage()
+		actContainer := actGCE.GetContainerImage()
+		if desContainer != nil && actContainer != nil {
+			if desContainer.Repository == "" {
+				desContainer.Repository = actContainer.Repository
+			}
+			if desContainer.Tag == "" {
+				desContainer.Tag = actContainer.Tag
+			}
+		}
+		// Copy/align GpuDriverConfig, Tags, and Metadata (which are immutable on GCP)
+		desGCE.GpuDriverConfig = actGCE.GpuDriverConfig
+		desGCE.Tags = actGCE.Tags
+		desGCE.Metadata = actGCE.Metadata
+		// Copy/align DisablePublicIp if not specified in desired
+		if !desGCE.DisablePublicIp && actGCE.DisablePublicIp {
+			desGCE.DisablePublicIp = actGCE.DisablePublicIp
+		}
+		// Copy/align EnableIpForwarding if not specified in desired
+		if !desGCE.EnableIpForwarding && actGCE.EnableIpForwarding {
+			desGCE.EnableIpForwarding = actGCE.EnableIpForwarding
 		}
 		// Copy/align ShieldedInstanceConfig defaults
 		if actGCE.ShieldedInstanceConfig == nil {

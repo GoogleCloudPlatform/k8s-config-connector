@@ -1,0 +1,15 @@
+apiVersion: notebooks.cnrm.cloud.google.com/v1alpha1
+kind: NotebooksEnvironment
+metadata:
+  name: ne-full-${uniqueId}
+spec:
+  containerImage:
+    repository: gcr.io/deeplearning-platform-release/base-cpu
+    tag: latest
+  description: A test environment with most fields set
+  displayName: Full Test Environment
+  location: us-central1-a
+  postStartupScript: gs://some-bucket/script.sh
+  projectRef:
+    external: ${projectId}
+  resourceID: ne-full-${uniqueId}

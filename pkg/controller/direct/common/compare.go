@@ -256,6 +256,14 @@ func fieldHasChanged(ctx context.Context, fieldPath string, desired protoreflect
 		// Note: returning nil to indicate no change
 		return nil
 	}
+	fd := actual.Descriptor().Fields().ByName(protoreflect.Name(fieldPath))
+	if fd != nil && fd.Kind() == protoreflect.MessageKind && !fd.IsMap() && !fd.IsList() {
+		if actualValue.IsValid() && desiredValue.IsValid() {
+			if proto.Equal(actualValue.Message().Interface(), desiredValue.Message().Interface()) {
+				return nil
+			}
+		}
+	}
 	return change
 }
 
