@@ -52,7 +52,7 @@ export OPERATOR_IMG=${IMAGE_PREFIX}operator:${IMAGE_TAG}
 
 cd ${REPO_ROOT}
 echo "===> [$(date -u +'%Y-%m-%dT%H:%M:%SZ')] Starting core image builds (docker buildx bake)..."
-IMAGE_PREFIX="${IMAGE_PREFIX}" IMAGE_TAG="${IMAGE_TAG}" docker buildx bake --load --set *.cache-from=type=gha,scope=kcc --set *.cache-to=type=gha,mode=max,scope=kcc
+IMAGE_PREFIX="${IMAGE_PREFIX}" IMAGE_TAG="${IMAGE_TAG}" docker buildx bake ${BAKE_ACTION:---load} --set *.cache-from=type=gha,scope=kcc --set *.cache-to=type=gha,mode=max,scope=kcc
 echo "===> [$(date -u +'%Y-%m-%dT%H:%M:%SZ')] Completed core image builds."
 
 cp config/installbundle/components/manager/base/manager_image_patch_template.yaml config/installbundle/components/manager/base/manager_image_patch.yaml

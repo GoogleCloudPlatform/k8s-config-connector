@@ -79,15 +79,37 @@ func TestSmoketest(t *testing.T) {
 		}
 	})
 
+	// Ensure local registry container is running for fast direct pushing/pulling
+	regName := "kind-registry"
+	regPort := "5001"
+	_ = exec.CommandContext(ctx, "docker", "run", "-d", "--restart=always", "-p", "127.0.0.1:"+regPort+":5000", "--network", "bridge", "--name", regName, "registry:2").Run()
+
+	kindConfigContent := fmt.Sprintf(`kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+containerdConfigPatches:
+- |-
+  [plugins."io.containerd.grpc.v1.cri".registry]
+    [plugins."io.containerd.grpc.v1.cri".registry.mirrors]
+      [plugins."io.containerd.grpc.v1.cri".registry.mirrors."localhost:%s"]
+        endpoint = ["http://%s:5000"]
+`, regPort, regName)
+
+	kindConfigFile := filepath.Join(t.TempDir(), "kind-config.yaml")
+	if err := os.WriteFile(kindConfigFile, []byte(kindConfigContent), 0644); err != nil {
+		t.Fatalf("failed to write kind config: %v", err)
+	}
+
 	t.Logf("[PHASE START] Creating kind cluster %q", clusterName)
 	tKind := time.Now()
-	if err := runCommand(ctx, t, root, "kind", "create", "cluster", "--name", clusterName); err != nil {
+	if err := runCommand(ctx, t, root, "kind", "create", "cluster", "--name", clusterName, "--config", kindConfigFile); err != nil {
 		t.Fatalf("failed to create kind cluster: %v", err)
 	}
 	t.Logf("[PHASE DONE] Kind cluster creation took %v", time.Since(tKind))
 	logDiskUsage("After Kind Creation")
 
-	imagePrefix := "registry.kind/"
+	_ = exec.CommandContext(ctx, "docker", "network", "connect", "kind", regName).Run()
+
+	imagePrefix := fmt.Sprintf("localhost:%s/", regPort)
 
 	// Read current stable version to patch manifests
 	stableVersionFile := filepath.Join(root, "operator/channels/stable")
@@ -181,36 +203,15 @@ func TestSmoketest(t *testing.T) {
 	buildCmd.Env = append(os.Environ(),
 		"IMAGE_TAG="+imageTag,
 		"IMAGE_PREFIX="+imagePrefix,
+		"BAKE_ACTION=--push",
 	)
 	buildCmd.Stdout = os.Stdout
 	buildCmd.Stderr = os.Stderr
 	if err := buildCmd.Run(); err != nil {
 		t.Fatalf("failed to build images: %v", err)
 	}
-	t.Logf("[PHASE DONE] Building images took %v", time.Since(tBuild))
-	logDiskUsage("After Docker Build")
-
-	t.Logf("Loading images into kind")
-	imagesToLoad := []string{
-		"operator",
-		"controller",
-		"recorder",
-		"webhook",
-		"deletiondefender",
-		"unmanageddetector",
-	}
-	kindArgs := []string{"load", "--name", clusterName, "docker-image"}
-	for _, img := range imagesToLoad {
-		fullImage := imagePrefix + img + ":" + imageTag
-		kindArgs = append(kindArgs, fullImage)
-	}
-	t.Logf("[PHASE START] Bulk loading all %d images into kind cluster %q...", len(imagesToLoad), clusterName)
-	tLoad := time.Now()
-	if err := runCommand(ctx, t, root, "kind", kindArgs...); err != nil {
-		t.Fatalf("failed to bulk load images into kind: %v", err)
-	}
-	t.Logf("[PHASE DONE] Bulk loading images took %v", time.Since(tLoad))
-	logDiskUsage("After Kind Image Load")
+	t.Logf("[PHASE DONE] Building and pushing images directly to local registry took %v", time.Since(tBuild))
+	logDiskUsage("After Docker Build & Push")
 
 	t.Logf("Deploying operator to kind")
 	kustomizeCmd := exec.CommandContext(ctx, "kubectl", "kustomize", filepath.Join(root, "operator/config/default"))
