@@ -233,6 +233,7 @@ containerdConfigPatches:
 		"BAKE_ACTION=--push",
 		"SKIP_LICENSES=1",
 		"BUILD_CLI=0",
+		"SKIP_IF_PRESENT=1",
 	)
 	buildCmd.Stdout = os.Stdout
 	buildCmd.Stderr = os.Stderr
