@@ -21,3 +21,7 @@ docs/
 experiments/
 pkg/test/resourcefixture/testdata/
 
+# Test Go source files
+*_test.go
+**/*_test.go
+
