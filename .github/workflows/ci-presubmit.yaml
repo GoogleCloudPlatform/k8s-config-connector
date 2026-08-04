@@ -80,7 +80,7 @@ jobs:
         uses: actions/download-artifact@cc203385981b70ca67e1cc392babf9cc229d5806 # v4.1.9
         with:
           name: prebuilt-go-binaries
-          path: bin/
+          path: ./
           merge-multiple: true
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/build-images"
@@ -233,7 +233,7 @@ jobs:
         uses: actions/download-artifact@cc203385981b70ca67e1cc392babf9cc229d5806 # v4.1.9
         with:
           name: prebuilt-go-binaries
-          path: bin/
+          path: ./
           merge-multiple: true
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@c47758b77c9736f4b2ef4073d4d51994fabfe349 # v3.7.1
