@@ -99,6 +99,132 @@ func BuildInfoObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmr
 	out.SourceLocation = direct.ValueOf(in.SourceLocation)
 	return out
 }
+func CloudRunInstanceObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krmrunv1alpha1.CloudRunInstanceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmrunv1alpha1.CloudRunInstanceObservedState{}
+	// MISSING: Name
+	out.Uid = direct.LazyPtr(in.GetUid())
+	out.Generation = direct.LazyPtr(in.GetGeneration())
+	// MISSING: Labels
+	// MISSING: Annotations
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.DeleteTime = direct.StringTimestamp_FromProto(mapCtx, in.GetDeleteTime())
+	out.ExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpireTime())
+	out.Creator = direct.LazyPtr(in.GetCreator())
+	out.LastModifier = direct.LazyPtr(in.GetLastModifier())
+	// MISSING: VPCAccess
+	out.ObservedGeneration = direct.LazyPtr(in.GetObservedGeneration())
+	// MISSING: LogURI
+	// (near miss): "LogURI" vs "LogUri"
+	out.TerminalCondition = RunCondition_v1alpha1_FromProto(mapCtx, in.GetTerminalCondition())
+	out.Conditions = direct.Slice_FromProto(mapCtx, in.Conditions, RunCondition_v1alpha1_FromProto)
+	out.ContainerStatuses = direct.Slice_FromProto(mapCtx, in.ContainerStatuses, ContainerStatus_v1alpha1_FromProto)
+	out.SatisfiesPzs = direct.LazyPtr(in.GetSatisfiesPzs())
+	out.Urls = in.Urls
+	out.Reconciling = direct.LazyPtr(in.GetReconciling())
+	// MISSING: Etag
+	return out
+}
+func CloudRunInstanceObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmrunv1alpha1.CloudRunInstanceObservedState) *pb.Instance {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Instance{}
+	// MISSING: Name
+	out.Uid = direct.ValueOf(in.Uid)
+	out.Generation = direct.ValueOf(in.Generation)
+	// MISSING: Labels
+	// MISSING: Annotations
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.DeleteTime = direct.StringTimestamp_ToProto(mapCtx, in.DeleteTime)
+	out.ExpireTime = direct.StringTimestamp_ToProto(mapCtx, in.ExpireTime)
+	out.Creator = direct.ValueOf(in.Creator)
+	out.LastModifier = direct.ValueOf(in.LastModifier)
+	// MISSING: VPCAccess
+	out.ObservedGeneration = direct.ValueOf(in.ObservedGeneration)
+	// MISSING: LogURI
+	// (near miss): "LogURI" vs "LogUri"
+	out.TerminalCondition = RunCondition_v1alpha1_ToProto(mapCtx, in.TerminalCondition)
+	out.Conditions = direct.Slice_ToProto(mapCtx, in.Conditions, RunCondition_v1alpha1_ToProto)
+	out.ContainerStatuses = direct.Slice_ToProto(mapCtx, in.ContainerStatuses, ContainerStatus_v1alpha1_ToProto)
+	out.SatisfiesPzs = direct.ValueOf(in.SatisfiesPzs)
+	out.Urls = in.Urls
+	out.Reconciling = direct.ValueOf(in.Reconciling)
+	// MISSING: Etag
+	return out
+}
+func CloudRunInstanceSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Instance) *krmrunv1alpha1.CloudRunInstanceSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmrunv1alpha1.CloudRunInstanceSpec{}
+	// MISSING: Name
+	out.Description = direct.LazyPtr(in.GetDescription())
+	// MISSING: Labels
+	// MISSING: Annotations
+	out.Client = direct.LazyPtr(in.GetClient())
+	out.ClientVersion = direct.LazyPtr(in.GetClientVersion())
+	out.LaunchStage = direct.Enum_FromProto(mapCtx, in.GetLaunchStage())
+	out.BinaryAuthorization = BinaryAuthorization_v1alpha1_FromProto(mapCtx, in.GetBinaryAuthorization())
+	// MISSING: VPCAccess
+	// (near miss): "VPCAccess" vs "VpcAccess"
+	if in.GetServiceAccount() != "" {
+		out.ServiceAccountRef = &refsv1beta1.IAMServiceAccountRef{External: in.GetServiceAccount()}
+	}
+	out.Containers = direct.Slice_FromProto(mapCtx, in.Containers, Container_v1alpha1_FromProto)
+	out.Volumes = direct.Slice_FromProto(mapCtx, in.Volumes, Volume_v1alpha1_FromProto)
+	if in.GetEncryptionKey() != "" {
+		out.EncryptionKeyRef = &refsv1beta1.KMSCryptoKeyRef{External: in.GetEncryptionKey()}
+	}
+	out.EncryptionKeyRevocationAction = direct.Enum_FromProto(mapCtx, in.GetEncryptionKeyRevocationAction())
+	out.EncryptionKeyShutdownDuration = direct.StringDuration_FromProto(mapCtx, in.GetEncryptionKeyShutdownDuration())
+	out.NodeSelector = NodeSelector_v1alpha1_FromProto(mapCtx, in.GetNodeSelector())
+	out.GpuZonalRedundancyDisabled = in.GpuZonalRedundancyDisabled
+	out.Ingress = direct.Enum_FromProto(mapCtx, in.GetIngress())
+	out.InvokerIAMDisabled = direct.LazyPtr(in.GetInvokerIamDisabled())
+	out.IAPEnabled = direct.LazyPtr(in.GetIapEnabled())
+	// MISSING: LogURI
+	// MISSING: Etag
+	return out
+}
+func CloudRunInstanceSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmrunv1alpha1.CloudRunInstanceSpec) *pb.Instance {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Instance{}
+	// MISSING: Name
+	out.Description = direct.ValueOf(in.Description)
+	// MISSING: Labels
+	// MISSING: Annotations
+	out.Client = direct.ValueOf(in.Client)
+	out.ClientVersion = direct.ValueOf(in.ClientVersion)
+	out.LaunchStage = direct.Enum_ToProto[apipb.LaunchStage](mapCtx, in.LaunchStage)
+	out.BinaryAuthorization = BinaryAuthorization_v1alpha1_ToProto(mapCtx, in.BinaryAuthorization)
+	// MISSING: VPCAccess
+	// (near miss): "VPCAccess" vs "VpcAccess"
+	if in.ServiceAccountRef != nil {
+		out.ServiceAccount = in.ServiceAccountRef.External
+	}
+	out.Containers = direct.Slice_ToProto(mapCtx, in.Containers, Container_v1alpha1_ToProto)
+	out.Volumes = direct.Slice_ToProto(mapCtx, in.Volumes, Volume_v1alpha1_ToProto)
+	if in.EncryptionKeyRef != nil {
+		out.EncryptionKey = in.EncryptionKeyRef.External
+	}
+	out.EncryptionKeyRevocationAction = direct.Enum_ToProto[pb.EncryptionKeyRevocationAction](mapCtx, in.EncryptionKeyRevocationAction)
+	out.EncryptionKeyShutdownDuration = direct.StringDuration_ToProto(mapCtx, in.EncryptionKeyShutdownDuration)
+	out.NodeSelector = NodeSelector_v1alpha1_ToProto(mapCtx, in.NodeSelector)
+	out.GpuZonalRedundancyDisabled = in.GpuZonalRedundancyDisabled
+	out.Ingress = direct.Enum_ToProto[pb.IngressTraffic](mapCtx, in.Ingress)
+	out.InvokerIamDisabled = direct.ValueOf(in.InvokerIAMDisabled)
+	out.IapEnabled = direct.ValueOf(in.IAPEnabled)
+	// MISSING: LogURI
+	// MISSING: Etag
+	return out
+}
 func CloudSQLInstance_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.CloudSqlInstance) *krmrunv1alpha1.CloudSQLInstance {
 	if in == nil {
 		return nil
@@ -216,6 +342,7 @@ func Container_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Container) *
 	out := &krmrunv1alpha1.Container{}
 	out.Name = direct.LazyPtr(in.GetName())
 	out.Image = direct.LazyPtr(in.GetImage())
+	// MISSING: SourceCode
 	out.Command = in.Command
 	out.Args = in.Args
 	out.Env = direct.Slice_FromProto(mapCtx, in.Env, EnvVar_v1alpha1_FromProto)
@@ -225,6 +352,7 @@ func Container_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Container) *
 	out.WorkingDir = direct.LazyPtr(in.GetWorkingDir())
 	out.LivenessProbe = Probe_v1alpha1_FromProto(mapCtx, in.GetLivenessProbe())
 	out.StartupProbe = Probe_v1alpha1_FromProto(mapCtx, in.GetStartupProbe())
+	// MISSING: ReadinessProbe
 	out.DependsOn = in.DependsOn
 	out.BaseImageURI = direct.LazyPtr(in.GetBaseImageUri())
 	// MISSING: BuildInfo
@@ -237,6 +365,7 @@ func Container_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmrunv1alpha1.Co
 	out := &pb.Container{}
 	out.Name = direct.ValueOf(in.Name)
 	out.Image = direct.ValueOf(in.Image)
+	// MISSING: SourceCode
 	out.Command = in.Command
 	out.Args = in.Args
 	out.Env = direct.Slice_ToProto(mapCtx, in.Env, EnvVar_v1alpha1_ToProto)
@@ -246,6 +375,7 @@ func Container_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmrunv1alpha1.Co
 	out.WorkingDir = direct.ValueOf(in.WorkingDir)
 	out.LivenessProbe = Probe_v1alpha1_ToProto(mapCtx, in.LivenessProbe)
 	out.StartupProbe = Probe_v1alpha1_ToProto(mapCtx, in.StartupProbe)
+	// MISSING: ReadinessProbe
 	out.DependsOn = in.DependsOn
 	out.BaseImageUri = direct.ValueOf(in.BaseImageURI)
 	// MISSING: BuildInfo
@@ -258,6 +388,7 @@ func Container_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Container) *k
 	out := &krmrunv1beta1.Container{}
 	out.Name = direct.LazyPtr(in.GetName())
 	out.Image = direct.LazyPtr(in.GetImage())
+	// MISSING: SourceCode
 	out.Command = in.Command
 	out.Args = in.Args
 	out.Env = direct.Slice_FromProto(mapCtx, in.Env, EnvVar_v1beta1_FromProto)
@@ -267,6 +398,7 @@ func Container_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Container) *k
 	out.WorkingDir = direct.LazyPtr(in.GetWorkingDir())
 	out.LivenessProbe = Probe_v1beta1_FromProto(mapCtx, in.GetLivenessProbe())
 	out.StartupProbe = Probe_v1beta1_FromProto(mapCtx, in.GetStartupProbe())
+	// MISSING: ReadinessProbe
 	out.DependsOn = in.DependsOn
 	// MISSING: BaseImageURI
 	// MISSING: BuildInfo
@@ -279,6 +411,7 @@ func Container_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmrunv1beta1.Cont
 	out := &pb.Container{}
 	out.Name = direct.ValueOf(in.Name)
 	out.Image = direct.ValueOf(in.Image)
+	// MISSING: SourceCode
 	out.Command = in.Command
 	out.Args = in.Args
 	out.Env = direct.Slice_ToProto(mapCtx, in.Env, EnvVar_v1beta1_ToProto)
@@ -288,6 +421,7 @@ func Container_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmrunv1beta1.Cont
 	out.WorkingDir = direct.ValueOf(in.WorkingDir)
 	out.LivenessProbe = Probe_v1beta1_ToProto(mapCtx, in.LivenessProbe)
 	out.StartupProbe = Probe_v1beta1_ToProto(mapCtx, in.StartupProbe)
+	// MISSING: ReadinessProbe
 	out.DependsOn = in.DependsOn
 	// MISSING: BaseImageURI
 	// MISSING: BuildInfo
@@ -300,6 +434,7 @@ func ContainerObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb
 	out := &krmrunv1alpha1.ContainerObservedState{}
 	// MISSING: Name
 	// MISSING: Image
+	// MISSING: SourceCode
 	// MISSING: Command
 	// MISSING: Args
 	// MISSING: Env
@@ -309,6 +444,7 @@ func ContainerObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb
 	// MISSING: WorkingDir
 	// MISSING: LivenessProbe
 	// MISSING: StartupProbe
+	// MISSING: ReadinessProbe
 	// MISSING: DependsOn
 	// MISSING: BaseImageURI
 	out.BuildInfo = BuildInfoObservedState_v1alpha1_FromProto(mapCtx, in.GetBuildInfo())
@@ -321,6 +457,7 @@ func ContainerObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmr
 	out := &pb.Container{}
 	// MISSING: Name
 	// MISSING: Image
+	// MISSING: SourceCode
 	// MISSING: Command
 	// MISSING: Args
 	// MISSING: Env
@@ -330,6 +467,7 @@ func ContainerObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmr
 	// MISSING: WorkingDir
 	// MISSING: LivenessProbe
 	// MISSING: StartupProbe
+	// MISSING: ReadinessProbe
 	// MISSING: DependsOn
 	// MISSING: BaseImageURI
 	out.BuildInfo = BuildInfoObservedState_v1alpha1_ToProto(mapCtx, in.BuildInfo)
@@ -369,6 +507,24 @@ func ContainerPort_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmrunv1beta1.
 	out := &pb.ContainerPort{}
 	out.Name = direct.ValueOf(in.Name)
 	out.ContainerPort = direct.ValueOf(in.ContainerPort)
+	return out
+}
+func ContainerStatus_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ContainerStatus) *krmrunv1alpha1.ContainerStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krmrunv1alpha1.ContainerStatus{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.ImageDigest = direct.LazyPtr(in.GetImageDigest())
+	return out
+}
+func ContainerStatus_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmrunv1alpha1.ContainerStatus) *pb.ContainerStatus {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ContainerStatus{}
+	out.Name = direct.ValueOf(in.Name)
+	out.ImageDigest = direct.ValueOf(in.ImageDigest)
 	return out
 }
 func EmptyDirVolumeSource_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.EmptyDirVolumeSource) *krmrunv1alpha1.EmptyDirVolumeSource {
@@ -1025,6 +1181,7 @@ func RunWorkerPoolObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *
 	out.LatestReadyRevision = direct.ValueOf(in.LatestReadyRevision)
 	out.LatestCreatedRevision = direct.ValueOf(in.LatestCreatedRevision)
 	out.InstanceSplitStatuses = direct.Slice_ToProto(mapCtx, in.InstanceSplitStatuses, InstanceSplitStatus_v1alpha1_ToProto)
+	// MISSING: ThreatDetectionEnabled
 	out.CustomAudiences = in.CustomAudiences
 	out.SatisfiesPzs = direct.ValueOf(in.SatisfiesPzs)
 	out.Reconciling = direct.ValueOf(in.Reconciling)
@@ -1048,6 +1205,7 @@ func RunWorkerPoolSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Work
 	out.InstanceSplits = direct.Slice_FromProto(mapCtx, in.InstanceSplits, InstanceSplit_v1alpha1_FromProto)
 	out.Scaling = WorkerPoolScaling_v1alpha1_FromProto(mapCtx, in.GetScaling())
 	// MISSING: Conditions
+	// MISSING: ThreatDetectionEnabled
 	out.CustomAudiences = in.CustomAudiences
 	return out
 }
@@ -1464,6 +1622,7 @@ func VolumeMount_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.VolumeMoun
 	out := &krmrunv1alpha1.VolumeMount{}
 	out.Name = direct.LazyPtr(in.GetName())
 	out.MountPath = direct.LazyPtr(in.GetMountPath())
+	out.SubPath = direct.LazyPtr(in.GetSubPath())
 	return out
 }
 func VolumeMount_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmrunv1alpha1.VolumeMount) *pb.VolumeMount {
@@ -1473,6 +1632,7 @@ func VolumeMount_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmrunv1alpha1.
 	out := &pb.VolumeMount{}
 	out.Name = direct.ValueOf(in.Name)
 	out.MountPath = direct.ValueOf(in.MountPath)
+	out.SubPath = direct.ValueOf(in.SubPath)
 	return out
 }
 func VolumeMount_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.VolumeMount) *krmrunv1beta1.VolumeMount {
@@ -1482,6 +1642,7 @@ func VolumeMount_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.VolumeMount
 	out := &krmrunv1beta1.VolumeMount{}
 	out.Name = direct.LazyPtr(in.GetName())
 	out.MountPath = direct.LazyPtr(in.GetMountPath())
+	out.SubPath = direct.LazyPtr(in.GetSubPath())
 	return out
 }
 func VolumeMount_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmrunv1beta1.VolumeMount) *pb.VolumeMount {
@@ -1491,6 +1652,7 @@ func VolumeMount_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmrunv1beta1.Vo
 	out := &pb.VolumeMount{}
 	out.Name = direct.ValueOf(in.Name)
 	out.MountPath = direct.ValueOf(in.MountPath)
+	out.SubPath = direct.ValueOf(in.SubPath)
 	return out
 }
 func WorkerPoolRevisionTemplate_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.WorkerPoolRevisionTemplate) *krmrunv1alpha1.WorkerPoolRevisionTemplate {
@@ -1514,6 +1676,7 @@ func WorkerPoolRevisionTemplate_v1alpha1_FromProto(mapCtx *direct.MapContext, in
 	out.EncryptionKeyRevocationAction = direct.Enum_FromProto(mapCtx, in.GetEncryptionKeyRevocationAction())
 	out.EncryptionKeyShutdownDuration = direct.StringDuration_FromProto(mapCtx, in.GetEncryptionKeyShutdownDuration())
 	out.NodeSelector = NodeSelector_v1alpha1_FromProto(mapCtx, in.GetNodeSelector())
+	// MISSING: GpuZonalRedundancyDisabled
 	return out
 }
 func WorkerPoolRevisionTemplate_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmrunv1alpha1.WorkerPoolRevisionTemplate) *pb.WorkerPoolRevisionTemplate {
@@ -1537,6 +1700,7 @@ func WorkerPoolRevisionTemplate_v1alpha1_ToProto(mapCtx *direct.MapContext, in *
 	out.EncryptionKeyRevocationAction = direct.Enum_ToProto[pb.EncryptionKeyRevocationAction](mapCtx, in.EncryptionKeyRevocationAction)
 	out.EncryptionKeyShutdownDuration = direct.StringDuration_ToProto(mapCtx, in.EncryptionKeyShutdownDuration)
 	out.NodeSelector = NodeSelector_v1alpha1_ToProto(mapCtx, in.NodeSelector)
+	// MISSING: GpuZonalRedundancyDisabled
 	return out
 }
 func WorkerPoolRevisionTemplateObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.WorkerPoolRevisionTemplate) *krmrunv1alpha1.WorkerPoolRevisionTemplateObservedState {
@@ -1556,6 +1720,7 @@ func WorkerPoolRevisionTemplateObservedState_v1alpha1_FromProto(mapCtx *direct.M
 	// MISSING: EncryptionKeyRevocationAction
 	// MISSING: EncryptionKeyShutdownDuration
 	// MISSING: NodeSelector
+	// MISSING: GpuZonalRedundancyDisabled
 	return out
 }
 func WorkerPoolRevisionTemplateObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmrunv1alpha1.WorkerPoolRevisionTemplateObservedState) *pb.WorkerPoolRevisionTemplate {
@@ -1575,6 +1740,7 @@ func WorkerPoolRevisionTemplateObservedState_v1alpha1_ToProto(mapCtx *direct.Map
 	// MISSING: EncryptionKeyRevocationAction
 	// MISSING: EncryptionKeyShutdownDuration
 	// MISSING: NodeSelector
+	// MISSING: GpuZonalRedundancyDisabled
 	return out
 }
 func WorkerPoolScaling_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.WorkerPoolScaling) *krmrunv1alpha1.WorkerPoolScaling {
