@@ -76,6 +76,12 @@ jobs:
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - uses: ./dev/actions/cache-go
+      - name: "Cache Host Binaries"
+        id: cache-host-binaries
+        uses: actions/cache@v4
+        with:
+          path: bin/
+          key: host-binaries-${{ runner.os }}-${{ hashFiles('go.sum', 'apis/**', 'pkg/**', 'operator/**', 'cmd/**') }}
       - name: "Run dev/ci/presubmits/build-images"
         run: |
           ./dev/ci/presubmits/build-images
@@ -237,6 +243,12 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@c47758b77c9736f4b2ef4073d4d51994fabfe349 # v3.7.1
       - uses: ./dev/actions/cache-go
+      - name: "Cache Host Binaries"
+        id: cache-host-binaries
+        uses: actions/cache@v4
+        with:
+          path: bin/
+          key: host-binaries-${{ runner.os }}-${{ hashFiles('go.sum', 'apis/**', 'pkg/**', 'operator/**', 'cmd/**') }}
       - name: "Run dev/ci/presubmits/smoketest-with-kind"
         run: |
           ./dev/ci/presubmits/smoketest-with-kind

@@ -511,6 +511,12 @@ EOF
       fi
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
       - uses: ./dev/actions/cache-go
+      - name: "Cache Host Binaries"
+        id: cache-host-binaries
+        uses: actions/cache@v4
+        with:
+          path: bin/
+          key: host-binaries-\${{ runner.os }}-\${{ hashFiles('go.sum', 'apis/**', 'pkg/**', 'operator/**', 'cmd/**') }}
       - name: "Run ${f}"
         run: |
           ./${f}

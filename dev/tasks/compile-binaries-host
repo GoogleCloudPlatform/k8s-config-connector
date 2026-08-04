@@ -22,7 +22,7 @@ cd "${REPO_ROOT}"
 
 mkdir -p bin/ THIRD_PARTY_NOTICES/ MIRRORED_LIBRARY_SOURCE/
 
-if [[ "${SKIP_IF_PRESENT:-0}" == "1" && -f bin/manager && -f bin/webhook && -f bin/operator && -f bin/deletiondefender && -f bin/recorder && -f bin/unmanageddetector ]]; then
+if [[ "${SKIP_IF_PRESENT:-0}" == "1" && -f bin/manager && -f bin/webhook && -f bin/operator && -f bin/deletiondefender && -f bin/recorder && -f bin/unmanageddetector && -f bin/config-connector && -f bin/gke_addon_poststart ]]; then
   echo "===> [$(date -u +'%Y-%m-%dT%H:%M:%SZ')] Binaries already compiled in bin/, skipping compile."
   if [[ ! -d operator/channels/packages/configconnector ]]; then
     echo "===> [$(date -u +'%Y-%m-%dT%H:%M:%SZ')] Generating operator channels..."
@@ -57,10 +57,9 @@ fi
 # Unified single go build invocation to share the apis/ and pkg/ compilation graph.
 # NOTE: '-p 4' was determined via rigorous 5-iteration zero-cache A/B testing (P=2..10) on 4-vCPU GitHub Actions runners.
 # Do not modify '-p 4' unless a new zero-cache A/B test explicitly demonstrates performance improvements.
-go build -trimpath -buildvcs=false -p 4 -ldflags "${LDFLAGS}" -o bin/ "${targets[@]}" &
-go build -trimpath -buildvcs=false -p 4 -ldflags "${LDFLAGS}" -o bin/operator ./operator/cmd/manager &
-go build -trimpath -buildvcs=false -p 4 -ldflags "${LDFLAGS}" -o bin/gke_addon_poststart ./operator/cmd/gke_addon_poststart &
-wait
+go build -trimpath -buildvcs=false -p 4 -ldflags "${LDFLAGS}" -o bin/ "${targets[@]}"
+go build -trimpath -buildvcs=false -p 4 -ldflags "${LDFLAGS}" -o bin/operator ./operator/cmd/manager
+go build -trimpath -buildvcs=false -p 4 -ldflags "${LDFLAGS}" -o bin/gke_addon_poststart ./operator/cmd/gke_addon_poststart
 
 if [[ "${SKIP_LICENSES}" == "0" ]]; then
   echo "===> [$(date -u +'%Y-%m-%dT%H:%M:%SZ')] Generating third-party notices..."
