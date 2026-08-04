@@ -57,3 +57,4 @@ spec:
         minutes: 0
         seconds: 0
         nanos: 0
+  asyncClusterEndpointsDeletionEnabled: false

@@ -206,6 +206,11 @@ func (r *clusterServer) syncReplication(ctx context.Context, obj *pb.Cluster) er
 }
 
 func (s *clusterServer) populateDefaultsForCluster(ctx context.Context, name *clusterName, obj *pb.Cluster) error {
+	// default value "false" is not included in the response
+	if mocks.ValueOf(obj.AsyncClusterEndpointsDeletionEnabled) == false {
+		obj.AsyncClusterEndpointsDeletionEnabled = nil
+	}
+
 	if obj.AuthorizationMode == pb.AuthorizationMode_AUTH_MODE_UNSPECIFIED {
 		obj.AuthorizationMode = pb.AuthorizationMode_AUTH_MODE_DISABLED
 	}
