@@ -114,6 +114,12 @@ spec:
                 description: Optional. Indicates the sovereignty status of the given
                   workload. Currently meant to be used by Europe/Canada customers.
                 type: boolean
+              location:
+                description: Immutable. The location for the resource.
+                type: string
+                x-kubernetes-validations:
+                - message: Location field is immutable
+                  rule: self == oldSelf
               partner:
                 description: Optional. Compliance Regime associated with this workload.
                 type: string
@@ -146,6 +152,8 @@ spec:
                       type: string
                   type: object
                 type: array
+            required:
+            - location
             type: object
           status:
             description: AssuredWorkloadsWorkloadStatus defines the config connector

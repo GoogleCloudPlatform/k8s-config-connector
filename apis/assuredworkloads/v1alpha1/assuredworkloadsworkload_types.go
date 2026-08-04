@@ -28,6 +28,10 @@ type AssuredWorkloadsWorkloadSpec struct {
 	// The AssuredWorkloadsWorkload name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 
+	// Immutable. The location for the resource.
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Location field is immutable"
+	Location string `json:"location"`
+
 	// Required. The user-assigned display name of the Workload.
 	//  When present it must be between 4 to 30 characters.
 	//  Allowed characters are: lowercase and uppercase letters, numbers,

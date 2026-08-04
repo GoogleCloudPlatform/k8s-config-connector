@@ -130,6 +130,10 @@ func NormalizeDynamicIDs(s string) string {
 		if idx := strings.Index(line, "/alertPolicies/"); idx != -1 {
 			lines[i] = line[:idx+len("/alertPolicies/")]
 		}
+		// Normalize Assured Workloads workload IDs
+		if idx := strings.Index(line, "/workloads/"); idx != -1 {
+			lines[i] = line[:idx+len("/workloads/")]
+		}
 		// Normalize reCAPTCHA Enterprise Key IDs: projects/.../keys/<keyId>
 		if idx := strings.Index(line, "/keys/"); idx != -1 && strings.Contains(line, "recaptchaenterprise") {
 			lines[i] = line[:idx+len("/keys/")] + "${keyID}"

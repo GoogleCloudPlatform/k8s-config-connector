@@ -96,6 +96,9 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		// Artifact Registry
 		"//artifactregistry.googleapis.com/projects/{}/locations/{}/vpcscConfig": true,
 
+		// Assured Workloads
+		"//assuredworkloads.googleapis.com/organizations/{}/locations/{}/workloads/{}": true,
+
 		// AutoML
 		"//automl.googleapis.com/projects/{}/locations/{}/datasets/{}": true,
 

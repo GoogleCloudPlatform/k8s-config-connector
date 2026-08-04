@@ -1,0 +1,6 @@
+- caisURL: //assuredworkloads.googleapis.com/organizations/${TEST_ORG_ID}/locations/us-central1/workloads/123456
+  group: assuredworkloads.cnrm.cloud.google.com
+  kind: AssuredWorkloadsWorkload
+  name: assuredworkloadsworkload-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
