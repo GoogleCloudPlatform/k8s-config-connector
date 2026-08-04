@@ -17,7 +17,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "DataStore projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId} not found.",
+    "message": "DataStore projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId} not found.",
     "status": "NOT_FOUND"
   }
 }
@@ -48,13 +48,13 @@ X-Xss-Protection: 0
 
 {
   "done": true,
-  "name": "projects/${projectNumber}/locations/global/collections/default_collection/operations/${operationID}",
+  "name": "projects/${projectId}/locations/global/collections/default_collection/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.discoveryengine.v1.DataStore",
     "defaultSchemaId": "default_schema",
     "displayName": "My first data store",
     "industryVertical": 1,
-    "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}"
+    "name": "projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}"
   }
 }
 
@@ -81,7 +81,7 @@ X-Xss-Protection: 0
   "defaultSchemaId": "default_schema",
   "displayName": "My first data store",
   "industryVertical": 1,
-  "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}"
+  "name": "projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}"
 }
 
 ---
@@ -162,5 +162,5 @@ X-Xss-Protection: 0
 
 {
   "done": true,
-  "name": "projects/${projectNumber}/locations/global/collections/default_collection/operations/${operationID}"
+  "name": "projects/${projectId}/locations/global/collections/default_collection/operations/${operationID}"
 }

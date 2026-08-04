@@ -62,10 +62,11 @@ func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.M
 func (s *MockService) ExpectedHosts() []string {
 	return []string{"discoveryengine.googleapis.com"}
 }
-
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterDataStoreServiceServer(grpcServer, &dataStoreService{MockService: s})
 	pb.RegisterConversationalSearchServiceServer(grpcServer, &conversationalSearchService{MockService: s})
+	pb.RegisterEngineServiceServer(grpcServer, &engineService{MockService: s})
+	pb.RegisterSiteSearchEngineServiceServer(grpcServer, &siteSearchEngineService{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -76,7 +77,8 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 
 	mux.AddService(pb.NewDataStoreServiceClient(conn))
 	mux.AddService(pb.NewConversationalSearchServiceClient(conn))
-	mux.AddOperationsPath("/v1/{prefix=**}/operations/{name}", conn)
+	mux.AddService(pb.NewEngineServiceClient(conn))
+	mux.AddService(pb.NewSiteSearchEngineServiceClient(conn))
 
 	return mux, nil
 }
