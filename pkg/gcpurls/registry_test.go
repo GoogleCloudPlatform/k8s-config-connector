@@ -71,8 +71,10 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 	// If Cloud Asset Inventory added support for an asset, and we had given it a different "url template":
 	ignoredTemplates := map[string]bool{
 		// AI Platform
-		"//aiplatform.googleapis.com/projects/{}/locations/{}/exampleStores/{}": true,
-		"//aiplatform.googleapis.com/projects/{}/locations/{}/studies/{}":       true,
+		"//aiplatform.googleapis.com/projects/{}/locations/{}/exampleStores/{}":              true,
+		"//aiplatform.googleapis.com/projects/{}/locations/{}/metadataStores/{}/contexts/{}": true,
+		"//aiplatform.googleapis.com/projects/{}/locations/{}/studies/{}":                    true,
+		"//aiplatform.googleapis.com/projects/{}/locations/{}/schedules/{}":                  true,
 
 		// AlloyDB
 		"//alloydb.googleapis.com/projects/{}/locations/{}/clusters/{}/users/{}": true,
@@ -91,9 +93,6 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 
 		// Artifact Registry
 		"//artifactregistry.googleapis.com/projects/{}/locations/{}/vpcscConfig": true,
-
-		// AI Streams
-		"//aistreams.googleapis.com/projects/{}/locations/{}/clusters/{}": true,
 
 		// AutoML
 		"//automl.googleapis.com/projects/{}/locations/{}/datasets/{}": true,
@@ -138,6 +137,9 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		// Config Delivery
 		"//configdelivery.googleapis.com/projects/{}/locations/{}/fleetPackages/{}": true,
 
+		// Config Deployment
+		"//config.googleapis.com/projects/{}/locations/{}/deploymentGroups/{}": true,
+
 		// Connectors
 		"//connectors.googleapis.com/projects/{}/locations/{}/providers/{}": true,
 
@@ -178,11 +180,14 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//devicestreaming.googleapis.com/projects/{}/deviceSessions/{}": true,
 
 		// Discovery Engine
-		"//discoveryengine.googleapis.com/projects/{}/locations/{}/dataStores/{}/controls/{}":           true,
-		"//discoveryengine.googleapis.com/projects/{}/locations/{}/dataStores/{}/conversations/{}":      true,
-		"//discoveryengine.googleapis.com/projects/{}/locations/{}/dataStores/{}/sessions/{}":           true,
-		"//discoveryengine.googleapis.com/projects/{}/locations/{}/identityMappingStores/{}":            true,
-		"//discoveryengine.googleapis.com/projects/{}/locations/{}/sampleQuerySets/{}/sampleQueries/{}": true,
+		"//discoveryengine.googleapis.com/projects/{}/locations/{}/dataStores/{}/controls/{}":                     true,
+		"//discoveryengine.googleapis.com/projects/{}/locations/{}/dataStores/{}/conversations/{}":                true,
+		"//discoveryengine.googleapis.com/projects/{}/locations/{}/dataStores/{}/sessions/{}":                     true,
+		"//discoveryengine.googleapis.com/projects/{}/locations/{}/identityMappingStores/{}":                      true,
+		"//discoveryengine.googleapis.com/projects/{}/locations/{}/licenseConfigs/{}/":                            true,
+		"//discoveryengine.googleapis.com/projects/{}/locations/{}/licenseConfigs/{}":                             true,
+		"//discoveryengine.googleapis.com/projects/{}/locations/{}/sampleQuerySets/{}/sampleQueries/{}":           true,
+		"//discoveryengine.googleapis.com/projects/{}/locations/{}/collections/{}/dataStores/{}/siteSearchEngine": true,
 
 		// DLP
 		"//dlp.googleapis.com/projects/{}/locations/{}/connections/{}": true,
@@ -191,6 +196,9 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//dns.googleapis.com/projects/{}/managedZones/{}/rrsets/{}":    true,
 		"//dns.googleapis.com/projects/{}/responsePolicies/{}":          true,
 		"//dns.googleapis.com/projects/{}/responsePolicies/{}/rules/{}": true,
+
+		// Grafeas Note
+		"//containeranalysis.googleapis.com/projects/{}/notes/{}": true,
 
 		// Firestore
 		"//firestore.googleapis.com/projects/{}/databases/{}/backupSchedules/{}":             true,
@@ -202,6 +210,12 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 
 		// IAP
 		"//iap.googleapis.com/projects/{}/brands/{}": true,
+
+		// Cloud Talent Solution
+		"//jobs.googleapis.com/projects/{}/tenants/{}/companies/{}": true,
+
+		// License Manager
+		"//licensemanager.googleapis.com/projects/{}/locations/{}/configurations/{}": true,
 
 		// Logging
 		"//logging.googleapis.com/billingAccounts/{}/exclusions/{}": true,
@@ -219,7 +233,8 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//migrationcenter.googleapis.com/projects/{}/locations/{}/groups/{}": true,
 
 		// Network Connectivity
-		"//networkconnectivity.googleapis.com/projects/{}/locations/{}/regionalEndpoints/{}": true,
+		"//networkconnectivity.googleapis.com/projects/{}/locations/{}/regionalEndpoints/{}":             true,
+		"//networkconnectivity.googleapis.com/projects/{}/locations/{}/multicloudDataTransferConfigs/{}": true,
 
 		// Network Security
 		"//networksecurity.googleapis.com/projects/{}/locations/{}/backendAuthenticationConfigs/{}": true,
@@ -247,7 +262,8 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//serviceusage.googleapis.com/projects/{}/services/{}/identity": true,
 
 		// Storage
-		"//storage.googleapis.com/projects/{}/buckets/{}": true,
+		"//storage.googleapis.com/projects/{}/buckets/{}":            true,
+		"//storage.googleapis.com/projects/{}/buckets/{}/objects/{}": true,
 
 		// Storage Insights
 		"//storageinsights.googleapis.com/projects/{}/locations/{}/datasetConfigs/{}": true,

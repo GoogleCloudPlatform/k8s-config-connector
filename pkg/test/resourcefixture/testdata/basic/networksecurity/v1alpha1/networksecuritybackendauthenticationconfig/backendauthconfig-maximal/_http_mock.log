@@ -1,0 +1,301 @@
+GRPC /google.cloud.networksecurity.v1.NetworkSecurity/GetBackendAuthenticationConfig
+
+{
+  "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = BackendAuthenticationConfig "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}" not found
+
+{}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.NetworkSecurity/CreateBackendAuthenticationConfig
+
+{
+  "backendAuthenticationConfig": {
+    "description": "Original description of backend auth config",
+    "labels": {
+      "foo": "bar"
+    },
+    "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}",
+    "wellKnownRoots": "PUBLIC_ROOTS"
+  },
+  "backendAuthenticationConfigId": "backendauth-max-${uniqueId}",
+  "parent": "projects/${projectId}/locations/us-central1"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.BackendAuthenticationConfig",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Original description of backend auth config",
+    "etag": "abcdef0123A=",
+    "labels": {
+      "foo": "bar"
+    },
+    "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}",
+    "updateTime": "2024-04-01T12:34:56.123456Z",
+    "wellKnownRoots": "PUBLIC_ROOTS"
+  }
+}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.NetworkSecurity/GetBackendAuthenticationConfig
+
+{
+  "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Original description of backend auth config",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "foo": "bar"
+  },
+  "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "wellKnownRoots": "PUBLIC_ROOTS"
+}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.NetworkSecurity/GetBackendAuthenticationConfig
+
+{
+  "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Original description of backend auth config",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "foo": "bar"
+  },
+  "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "wellKnownRoots": "PUBLIC_ROOTS"
+}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.NetworkSecurity/UpdateBackendAuthenticationConfig
+
+{
+  "backendAuthenticationConfig": {
+    "description": "Updated description of backend auth config",
+    "labels": {
+      "foo": "baz",
+      "new-key": "new-val"
+    },
+    "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}",
+    "wellKnownRoots": "NONE"
+  },
+  "updateMask": "description,labels,wellKnownRoots"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.BackendAuthenticationConfig",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Updated description of backend auth config",
+    "etag": "abcdef0123A=",
+    "labels": {
+      "foo": "baz",
+      "new-key": "new-val"
+    },
+    "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}",
+    "updateTime": "2024-04-01T12:34:56.123456Z",
+    "wellKnownRoots": "NONE"
+  }
+}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.NetworkSecurity/GetBackendAuthenticationConfig
+
+{
+  "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated description of backend auth config",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "foo": "baz",
+    "new-key": "new-val"
+  },
+  "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "wellKnownRoots": "NONE"
+}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.NetworkSecurity/GetBackendAuthenticationConfig
+
+{
+  "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated description of backend auth config",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "foo": "baz",
+    "new-key": "new-val"
+  },
+  "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "wellKnownRoots": "NONE"
+}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.NetworkSecurity/GetBackendAuthenticationConfig
+
+{
+  "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated description of backend auth config",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "foo": "baz",
+    "new-key": "new-val"
+  },
+  "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "wellKnownRoots": "NONE"
+}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.NetworkSecurity/DeleteBackendAuthenticationConfig
+
+{
+  "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.BackendAuthenticationConfig",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Updated description of backend auth config",
+    "etag": "abcdef0123A=",
+    "labels": {
+      "foo": "baz",
+      "new-key": "new-val"
+    },
+    "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-max-${uniqueId}",
+    "updateTime": "2024-04-01T12:34:56.123456Z",
+    "wellKnownRoots": "NONE"
+  }
+}

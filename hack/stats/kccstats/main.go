@@ -310,7 +310,7 @@ func main() {
 				if len(displayAuthor) > 18 {
 					displayAuthor = displayAuthor[:15] + "..."
 				}
-				
+
 				if *showAllCommits {
 					fmt.Printf("  %-18s | %-17s | %-22d | %-13d | %-15d\n", displayAuthor, "-", cStats.CommitCount, cStats.NewRes, cStats.NewFields)
 				} else {

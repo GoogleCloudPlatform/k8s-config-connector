@@ -220,6 +220,10 @@ type NodePoolNodeConfig struct {
 	// +kcc:proto:field=google.container.v1.NodeConfig.kubelet_config
 	KubeletConfig *KubeletConfig `json:"kubeletConfig,omitempty"`
 
+	/* Parameters for containerd customization. */
+	// +kcc:proto:field=google.container.v1.NodeConfig.containerd_config
+	ContainerdConfig *ContainerdConfig `json:"containerdConfig,omitempty"`
+
 	/* Immutable. The map of Kubernetes labels (key/value pairs) to be applied to each node. These will added in addition to any default label(s) that Kubernetes may apply to the node. */
 	// +kcc:proto:field=google.container.v1.NodeConfig.labels
 	Labels map[string]string `json:"labels,omitempty"`
@@ -453,6 +457,136 @@ type ContainerNodePoolList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
 	Items           []ContainerNodePool `json:"items"`
+}
+
+// +kcc:proto=google.container.v1.ContainerdConfig
+type ContainerdConfig struct {
+	/* Parameters for private container registries configuration. */
+	// +kcc:proto:field=google.container.v1.ContainerdConfig.private_registry_access_config
+	PrivateRegistryAccessConfig *PrivateRegistryAccessConfig `json:"privateRegistryAccessConfig,omitempty"`
+
+	/* Parameters for writable cgroups configuration. */
+	// +kcc:proto:field=google.container.v1.ContainerdConfig.writable_cgroups
+	WritableCgroups *WritableCgroups `json:"writableCgroups,omitempty"`
+
+	/* Configures containerd registry host configuration. Each registryHosts entry represents a hosts.toml file. */
+	// +kcc:proto:field=google.container.v1.ContainerdConfig.registry_hosts
+	RegistryHosts []RegistryHosts `json:"registryHosts,omitempty"`
+}
+
+// +kcc:proto=google.container.v1.ContainerdConfig.WritableCgroups
+type WritableCgroups struct {
+	/* Whether writable cgroups are enabled. */
+	// +kcc:proto:field=google.container.v1.ContainerdConfig.WritableCgroups.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+}
+
+// +kcc:proto=google.container.v1.ContainerdConfig.RegistryHost
+type RegistryHosts struct {
+	/* Defines the host name of the registry server. */
+	// +kcc:proto:field=google.container.v1.ContainerdConfig.RegistryHost.server
+	Server *string `json:"server,omitempty"`
+
+	/* Configures a list of host-specific configurations for the server. */
+	// +kcc:proto:field=google.container.v1.ContainerdConfig.RegistryHost.hosts
+	Hosts []RegistryHostsConfig `json:"hosts,omitempty"`
+}
+
+// +kcc:proto=google.container.v1.ContainerdConfig.RegistryHost.Host
+type RegistryHostsConfig struct {
+	/* Configures the registry host/mirror. */
+	// +kcc:proto:field=google.container.v1.ContainerdConfig.RegistryHost.Host.host
+	Host *string `json:"host,omitempty"`
+
+	/* Represent the capabilities of the registry host, specifying what operations a host is capable of performing. */
+	// +kcc:proto:field=google.container.v1.ContainerdConfig.RegistryHost.Host.capabilities
+	Capabilities []string `json:"capabilities,omitempty"`
+
+	/* Indicate the host's API root endpoint is defined in the URL path rather than by the API specification. */
+	// +kcc:proto:field=google.container.v1.ContainerdConfig.RegistryHost.Host.override_path
+	OverridePath *bool `json:"overridePath,omitempty"`
+
+	/* Specifies the maximum duration allowed for a connection attempt to complete. */
+	// +kcc:proto:field=google.container.v1.ContainerdConfig.RegistryHost.Host.dial_timeout
+	DialTimeout *string `json:"dialTimeout,omitempty"`
+
+	/* Configures the registry host headers. */
+	// +kcc:proto:field=google.container.v1.ContainerdConfig.RegistryHost.Host.header
+	Header []RegistryHeader `json:"header,omitempty"`
+
+	/* Configures the registry host certificate. */
+	Ca []RegistryCA `json:"ca,omitempty"`
+
+	/* Configures the registry host client certificate and key. */
+	Client []RegistryClient `json:"client,omitempty"`
+}
+
+// +kcc:proto=google.container.v1.ContainerdConfig.RegistryHost.Header
+type RegistryHeader struct {
+	/* Configures the header key. */
+	Key *string `json:"key,omitempty"`
+
+	/* Configures the header value. */
+	Value []string `json:"value,omitempty"`
+}
+
+// +kcc:proto=google.container.v1.ContainerdConfig.RegistryHost.CA
+type RegistryCA struct {
+	/* Reference to SecretManagerSecretVersion for the CA certificate. */
+	// +kcc:proto:field=google.container.v1.ContainerdConfig.RegistryHost.CA.gcp_secret_manager_secret_uri
+	SecretRef *refsv1beta1.SecretManagerSecretVersionRef `json:"secretRef,omitempty"`
+}
+
+// +kcc:proto=google.container.v1.ContainerdConfig.RegistryHost.Client
+type RegistryClient struct {
+	/* Configures the client certificate. */
+	Cert *RegistryClientCert `json:"cert,omitempty"`
+
+	/* Configures the client private key. */
+	Key *RegistryClientKey `json:"key,omitempty"`
+}
+
+// +kcc:proto=google.container.v1.ContainerdConfig.RegistryHost.ClientCert
+type RegistryClientCert struct {
+	/* Reference to SecretManagerSecretVersion for the client certificate. */
+	// +kcc:proto:field=google.container.v1.ContainerdConfig.RegistryHost.ClientCert.gcp_secret_manager_secret_uri
+	SecretRef *refsv1beta1.SecretManagerSecretVersionRef `json:"secretRef,omitempty"`
+}
+
+// +kcc:proto=google.container.v1.ContainerdConfig.RegistryHost.ClientKey
+type RegistryClientKey struct {
+	/* Reference to SecretManagerSecretVersion for the client key. */
+	// +kcc:proto:field=google.container.v1.ContainerdConfig.RegistryHost.ClientKey.gcp_secret_manager_secret_uri
+	SecretRef *refsv1beta1.SecretManagerSecretVersionRef `json:"secretRef,omitempty"`
+}
+
+// +kcc:proto=google.container.v1.ContainerdConfig.PrivateRegistryAccessConfig
+type PrivateRegistryAccessConfig struct {
+	/* Private registry access is enabled. */
+	// +kcc:proto:field=google.container.v1.ContainerdConfig.PrivateRegistryAccessConfig.enabled
+	Enabled *bool `json:"enabled,omitempty"`
+
+	/* Private registry access configuration. */
+	// +kcc:proto:field=google.container.v1.ContainerdConfig.PrivateRegistryAccessConfig.certificate_authority_domain_config
+	CertificateAuthorityDomainConfig []CertificateAuthorityDomainConfig `json:"certificateAuthorityDomainConfig,omitempty"`
+}
+
+// +kcc:proto=google.container.v1.ContainerdConfig.PrivateRegistryAccessConfig.CertificateAuthorityDomainConfig
+type CertificateAuthorityDomainConfig struct {
+	/* List of fully qualified domain names (FQDN). Specifying port is supported. Wildcards are NOT supported. */
+	// +kcc:proto:field=google.container.v1.ContainerdConfig.PrivateRegistryAccessConfig.CertificateAuthorityDomainConfig.fqdns
+	Fqdns []string `json:"fqdns,omitempty"`
+
+	/* Google Secret Manager (GCP) certificate configuration. */
+	// +kcc:proto:field=google.container.v1.ContainerdConfig.PrivateRegistryAccessConfig.CertificateAuthorityDomainConfig.gcp_secret_manager_certificate_config
+	GCPSecretManagerCertificateConfig *GCPSecretManagerCertificateConfig `json:"gcpSecretManagerCertificateConfig,omitempty"`
+}
+
+// +kcc:proto=google.container.v1.ContainerdConfig.PrivateRegistryAccessConfig.CertificateAuthorityDomainConfig.GCPSecretManagerCertificateConfig
+type GCPSecretManagerCertificateConfig struct {
+	/* SecretRef is a reference to a SecretManagerSecretVersion resource. */
+	// +kcc:proto:field=google.container.v1.ContainerdConfig.PrivateRegistryAccessConfig.CertificateAuthorityDomainConfig.GCPSecretManagerCertificateConfig.secret_uri
+	SecretRef *refsv1beta1.SecretManagerSecretVersionRef `json:"secretRef,omitempty"`
 }
 
 func init() {

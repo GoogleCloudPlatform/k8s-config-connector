@@ -29,7 +29,7 @@ func init() {
 
 func vmwareEngineExternalAccessRuleFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.ExternalAccessRule{},
-		VMwareEngineExternalAccessRuleSpec_FromProto, VMwareEngineExternalAccessRuleSpec_ToProto,
+		VMwareEngineExternalAccessRuleSpec_FromProto, VMwareEngineExternalAccessRuleSpec_v1alpha1_ToProto,
 		VMwareEngineExternalAccessRuleObservedState_FromProto, VMwareEngineExternalAccessRuleObservedState_ToProto,
 	)
 

@@ -52,57 +52,118 @@ done
 
 unique_services=($(echo "${services[@]:-}" | tr ' ' '\n' | sort -u | grep -v '^$' || true))
 
-priority_fixtures=()
-for service in "${unique_services[@]}"; do
-  script="dev/ci/presubmits/tests-e2e-fixtures-${service}"
-  if [[ -f "${script}" ]]; then
-    priority_fixtures+=("${service}")
+shard_service() {
+  local service="$1"
+  case "${service}" in
+    compute)
+      echo "compute-1-of-4"
+      echo "compute-2-of-4"
+      echo "compute-3-of-4"
+      echo "compute-4-of-4"
+      ;;
+    sql)
+      echo "sql-1-of-2"
+      echo "sql-2-of-2"
+      ;;
+    container)
+      echo "container-1-of-2"
+      echo "container-2-of-2"
+      ;;
+    bigquery)
+      echo "bigquery-1-of-2"
+      echo "bigquery-2-of-2"
+      ;;
+    *)
+      echo "${service}"
+      ;;
+  esac
+}
+
+all_fixture_services=()
+for group in $(rgrep --no-filename '^[ ]*group:' config/crds | sort | uniq | awk '{print $2}'); do
+  if [[ "${group}" != *.cnrm.cloud.google.com ]]; then
+    continue
+  fi
+  short=$(echo ${group} | sed s@.cnrm.cloud.google.com@@g)
+  if [[ "${short}" == "blockchainnodeengine" || "${short}" == "videostitcher" ]]; then
+    continue
+  fi
+  all_fixture_services+=("${short}")
+done
+all_fixture_services+=("reconcileintervalannotations")
+all_fixture_services+=("stateabsentinspec")
+
+priority_fixture_targets=()
+for service in "${unique_services[@]:-}"; do
+  if [[ -z "${service}" ]]; then
+    continue
+  fi
+  if [[ " ${all_fixture_services[*]:-} " =~ " ${service} " ]]; then
+    for target in $(shard_service "${service}"); do
+      priority_fixture_targets+=("${target}")
+    done
   fi
 done
 
-remaining_fixtures=()
-for f in $(find dev/ci/presubmits -name "tests-e2e-fixtures-*" -type f | sort); do
-  name=$(basename "${f}")
-  service="${name#tests-e2e-fixtures-}"
-  if [[ " ${priority_fixtures[*]:-} " =~ " ${service} " ]]; then
+remaining_fixture_targets=()
+sharded_fixture_targets=()
+standard_fixture_targets=()
+
+for service in "${all_fixture_services[@]}"; do
+  if [[ " ${unique_services[*]:-} " =~ " ${service} " ]]; then
     echo "Service ${service} marked for priority upfront verification."
   else
-    remaining_fixtures+=("${service}")
+    if [[ "${service}" == "compute" || "${service}" == "sql" || "${service}" == "container" || "${service}" == "bigquery" ]]; then
+      for target in $(shard_service "${service}"); do
+        sharded_fixture_targets+=("${target}")
+      done
+    else
+      for target in $(shard_service "${service}"); do
+        standard_fixture_targets+=("${target}")
+      done
+    fi
   fi
 done
 
-# Discover all sample suites
-sample_services=()
-for f in $(find dev/ci/presubmits -name "tests-e2e-samples-*" -type f | sort); do
-  name=$(basename "${f}")
-  sample_services+=("${name#tests-e2e-samples-}")
-done
+remaining_fixture_targets=()
+if [[ ${#sharded_fixture_targets[@]} -gt 0 ]]; then
+  remaining_fixture_targets+=("${sharded_fixture_targets[@]}")
+fi
+if [[ ${#standard_fixture_targets[@]} -gt 0 ]]; then
+  remaining_fixture_targets+=("${standard_fixture_targets[@]}")
+fi
 
-# Discover all scenario suites
-scenario_suites=()
-for f in $(find dev/ci/presubmits -name "tests-scenarios-*" -type f | sort); do
-  name=$(basename "${f}")
-  scenario_suites+=("${name#tests-scenarios-}")
-done
+# Defined sample services supported by E2E samples suite
+sample_services=("alloydb" "apigateway" "apigee" "bigquery" "bigqueryconnection" "bigquerydatapolicy" "bigquerydatatransfer" "cloudbuild" "cloudidentity" "compute" "dataflow" "dataproc" "gkehub" "iam" "kms" "orgpolicy" "redis" "secretmanager" "spanner" "sql" "storage" "unclassified" "workstations")
+
+# Scenario suites supported by E2E scenarios suite
+scenario_suites=("acquisition" "gkehubfeaturemembership" "powertool" "unclassified")
+
+unit_tests_shards=("1-of-4" "2-of-4" "3-of-4" "4-of-4")
+fuzz_roundtrippers_shards=("1-of-8" "2-of-8" "3-of-8" "4-of-8" "5-of-8" "6-of-8" "7-of-8" "8-of-8")
 
 HAS_PRIORITY="false"
-if [[ ${#priority_fixtures[@]} -gt 0 ]]; then
+if [[ ${#priority_fixture_targets[@]} -gt 0 ]]; then
   HAS_PRIORITY="true"
-  PRIORITY_JSON=$(python3 -c 'import json, sys; print(json.dumps(sys.argv[1:]))' "${priority_fixtures[@]}")
+  PRIORITY_JSON=$(python3 -c 'import json, sys; print(json.dumps(sys.argv[1:]))' "${priority_fixture_targets[@]}")
 else
   # Pass a dummy element so fromJSON() evaluation in GHA doesn't error out on empty arrays when condition is false
   PRIORITY_JSON='["none"]'
 fi
 
-REMAINING_JSON=$(python3 -c 'import json, sys; print(json.dumps(sys.argv[1:]))' "${remaining_fixtures[@]}")
+REMAINING_JSON=$(python3 -c 'import json, sys; print(json.dumps(sys.argv[1:]))' "${remaining_fixture_targets[@]}")
 SAMPLES_JSON=$(python3 -c 'import json, sys; print(json.dumps(sys.argv[1:]))' "${sample_services[@]}")
 SCENARIOS_JSON=$(python3 -c 'import json, sys; print(json.dumps(sys.argv[1:]))' "${scenario_suites[@]}")
+UNIT_TESTS_JSON=$(python3 -c 'import json, sys; print(json.dumps(sys.argv[1:]))' "${unit_tests_shards[@]}")
+FUZZ_ROUNDTRIPPERS_JSON=$(python3 -c 'import json, sys; print(json.dumps(sys.argv[1:]))' "${fuzz_roundtrippers_shards[@]}")
 
 echo "has_priority_tests=${HAS_PRIORITY}"
 echo "priority_fixtures_json=${PRIORITY_JSON}"
 echo "remaining_fixtures_json=${REMAINING_JSON}"
 echo "samples_json=${SAMPLES_JSON}"
 echo "scenarios_json=${SCENARIOS_JSON}"
+echo "unit_tests_json=${UNIT_TESTS_JSON}"
+echo "fuzz_roundtrippers_json=${FUZZ_ROUNDTRIPPERS_JSON}"
 
 if [[ -n "${GITHUB_OUTPUT:-}" && -f "${GITHUB_OUTPUT}" ]]; then
   echo "has_priority_tests=${HAS_PRIORITY}" >> "${GITHUB_OUTPUT}"
@@ -110,4 +171,6 @@ if [[ -n "${GITHUB_OUTPUT:-}" && -f "${GITHUB_OUTPUT}" ]]; then
   echo "remaining_fixtures_json=${REMAINING_JSON}" >> "${GITHUB_OUTPUT}"
   echo "samples_json=${SAMPLES_JSON}" >> "${GITHUB_OUTPUT}"
   echo "scenarios_json=${SCENARIOS_JSON}" >> "${GITHUB_OUTPUT}"
+  echo "unit_tests_json=${UNIT_TESTS_JSON}" >> "${GITHUB_OUTPUT}"
+  echo "fuzz_roundtrippers_json=${FUZZ_ROUNDTRIPPERS_JSON}" >> "${GITHUB_OUTPUT}"
 fi

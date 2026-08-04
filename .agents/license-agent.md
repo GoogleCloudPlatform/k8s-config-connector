@@ -1,7 +1,7 @@
 ---
 name: License Update Scheduler
 description: Checks for new dependencies and creates issues to update license metadata.
-schedule: "0 9 * * 1"
+schedule: "never"
 ---
 
 <!--

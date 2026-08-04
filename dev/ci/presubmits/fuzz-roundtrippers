@@ -25,9 +25,19 @@ trap on_error ERR
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}
 
-export GOMEMLIMIT=2GiB # Avoid OOMs, particularly in github actions
+SHARD_SPEC="${1:-${SHARD_SPEC:-}}"
 
-go test -v ./pkg/fuzztesting/fuzztests/ -fuzz=FuzzAllMappers -fuzztime 600s # fuzz for 10 minutes because we are fuzzing all the registered mappers
+if [[ "${SHARD_SPEC}" =~ ([0-9]+)-of-([0-9]+)$ ]]; then
+  SHARD_NUM="${BASH_REMATCH[1]}"
+  TOTAL_SHARDS="${BASH_REMATCH[2]}"
+  export FUZZ_SHARD_INDEX=$((SHARD_NUM - 1))
+  export FUZZ_TOTAL_SHARDS="${TOTAL_SHARDS}"
+  echo "Running fuzz-roundtrippers (shard ${SHARD_NUM} of ${TOTAL_SHARDS})..."
+else
+  echo "Running fuzz-roundtrippers..."
+fi
+
+go test -v ./pkg/fuzztesting/fuzztests/ -run=^FuzzAllMappers$ -fuzz=FuzzAllMappers -parallel 2 -fuzztime 150s # fuzz for 2.5 minutes per shard
 
 # Please do not add more fuzzers here; register them so they are run with FuzzAllMappers (or a similar approach)
 

@@ -39,8 +39,17 @@ func main() {
 	os.RemoveAll(thirdPartyNoticeDir)
 	os.RemoveAll(mirroredLibrarySourceDir)
 
-	// find all the LICENSE files in the vendor directory
-	err := filepath.Walk(inputDir, func(path string, info os.FileInfo, err error) error {
+	dirToWalk := "temp-vendor"
+	if _, err := os.Stat(dirToWalk); os.IsNotExist(err) {
+		if _, err := os.Stat("vendor"); err == nil {
+			dirToWalk = "vendor"
+		} else if _, err := os.Stat("/go/pkg/mod"); err == nil {
+			dirToWalk = "/go/pkg/mod"
+		}
+	}
+
+	// find all the LICENSE files in the directory
+	err := filepath.Walk(dirToWalk, func(path string, info os.FileInfo, err error) error {
 		if !strings.Contains(path, "LICENSE") && !strings.Contains(path, "LICENCE") {
 			return nil
 		}
@@ -48,18 +57,19 @@ func main() {
 		return nil
 	})
 	if err != nil {
-		fmt.Printf("error walking vendor directory: %v\n", err)
+		fmt.Printf("error walking directory %s: %v\n", dirToWalk, err)
 		os.Exit(1)
 	}
 
 	for _, file := range files {
-		licensePath := strings.TrimPrefix(file, "temp-vendor/")
-		repo, licenseFilename := splitLicensePath(licensePath)
+		licensePath := strings.TrimPrefix(file, dirToWalk+"/")
+		rawRepo, licenseFilename := splitLicensePath(licensePath)
+		repo := strings.Split(rawRepo, "@")[0]
 		licenseURL := repoToLicenseURL(repo, licenseFilename)
 		fmt.Println(licenseURL)
 
-		outputFilename := thirdPartyNoticeDir + "/" + licensePath
 		outputFileDir := thirdPartyNoticeDir + "/" + repo
+		outputFilename := outputFileDir + "/" + licenseFilename
 		input, err := ioutil.ReadFile(file)
 		if err != nil {
 			fmt.Println(err)
@@ -87,7 +97,7 @@ func main() {
 			// need to remove the actual dir so 'cp' works
 			os.Remove(outputSourceDir)
 
-			sourceDir := "temp-vendor/" + repo
+			sourceDir := dirToWalk + "/" + rawRepo
 			cmd := exec.Command("cp", "-r", sourceDir, outputSourceDir)
 			if output, err := cmd.CombinedOutput(); err != nil {
 				fmt.Printf("error copying source code for '%v': %v", sourceDir, string(output))

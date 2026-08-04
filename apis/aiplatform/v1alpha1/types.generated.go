@@ -24,6 +24,7 @@
 // resource: VertexAITuningJob:TuningJob
 // resource: VertexAIStudy:Study
 // resource: VertexAITrainingPipeline:TrainingPipeline
+// resource: VertexAISchedule:Schedule
 
 package v1alpha1
 
@@ -184,17 +185,6 @@ type DeployedModelRef struct {
 	// Immutable. An ID of a DeployedModel in the above Endpoint.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.DeployedModelRef.deployed_model_id
 	DeployedModelID *string `json:"deployedModelID,omitempty"`
-}
-
-// +kcc:proto=google.cloud.aiplatform.v1.EncryptionSpec
-type EncryptionSpec struct {
-	// Required. The Cloud KMS resource identifier of the customer managed
-	//  encryption key used to protect a resource. Has the form:
-	//  `projects/my-project/locations/my-region/keyRings/my-kr/cryptoKeys/my-key`.
-	//  The key needs to be in the same region as where the compute resource is
-	//  created.
-	// +kcc:proto:field=google.cloud.aiplatform.v1.EncryptionSpec.kms_key_name
-	KMSKeyName *string `json:"kmsKeyName,omitempty"`
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1.EnvVar
@@ -793,6 +783,45 @@ type IntegratedGradientsAttribution struct {
 	BlurBaselineConfig *BlurBaselineConfig `json:"blurBaselineConfig,omitempty"`
 }
 
+// +kcc:proto=google.cloud.aiplatform.v1.MachineSpec
+type MachineSpec struct {
+	// Immutable. The type of the machine.
+	//
+	//  See the [list of machine types supported for
+	//  prediction](https://cloud.google.com/vertex-ai/docs/predictions/configure-compute#machine-types)
+	//
+	//  See the [list of machine types supported for custom
+	//  training](https://cloud.google.com/vertex-ai/docs/training/configure-compute#machine-types).
+	//
+	//  For [DeployedModel][google.cloud.aiplatform.v1.DeployedModel] this field is
+	//  optional, and the default value is `n1-standard-2`. For
+	//  [BatchPredictionJob][google.cloud.aiplatform.v1.BatchPredictionJob] or as
+	//  part of [WorkerPoolSpec][google.cloud.aiplatform.v1.WorkerPoolSpec] this
+	//  field is required.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.MachineSpec.machine_type
+	MachineType *string `json:"machineType,omitempty"`
+
+	// Immutable. The type of accelerator(s) that may be attached to the machine
+	//  as per
+	//  [accelerator_count][google.cloud.aiplatform.v1.MachineSpec.accelerator_count].
+	// +kcc:proto:field=google.cloud.aiplatform.v1.MachineSpec.accelerator_type
+	AcceleratorType *string `json:"acceleratorType,omitempty"`
+
+	// The number of accelerators to attach to the machine.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.MachineSpec.accelerator_count
+	AcceleratorCount *int32 `json:"acceleratorCount,omitempty"`
+
+	// Immutable. The topology of the TPUs. Corresponds to the TPU topologies
+	//  available from GKE. (Example: tpu_topology: "2x2x1").
+	// +kcc:proto:field=google.cloud.aiplatform.v1.MachineSpec.tpu_topology
+	TpuTopology *string `json:"tpuTopology,omitempty"`
+
+	// Optional. Immutable. Configuration controlling how this resource pool
+	//  consumes reservation.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.MachineSpec.reservation_affinity
+	ReservationAffinity *ReservationAffinity `json:"reservationAffinity,omitempty"`
+}
+
 // +kcc:proto=google.cloud.aiplatform.v1.Model.BaseModelSource
 type Model_BaseModelSource struct {
 	// Source information of Model Garden models.
@@ -1141,6 +1170,32 @@ type ModelSourceInfo struct {
 	Copy *bool `json:"copy,omitempty"`
 }
 
+// +kcc:proto=google.cloud.aiplatform.v1.NotebookExecutionJob.CustomEnvironmentSpec
+type NotebookExecutionJob_CustomEnvironmentSpec struct {
+	// The specification of a single machine for the execution job.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.CustomEnvironmentSpec.machine_spec
+	MachineSpec *MachineSpec `json:"machineSpec,omitempty"`
+
+	// The specification of a persistent disk to attach for the execution job.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.CustomEnvironmentSpec.persistent_disk_spec
+	PersistentDiskSpec *PersistentDiskSpec `json:"persistentDiskSpec,omitempty"`
+
+	// The network configuration to use for the execution job.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.CustomEnvironmentSpec.network_spec
+	NetworkSpec *NetworkSpec `json:"networkSpec,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.NotebookExecutionJob.DirectNotebookSource
+type NotebookExecutionJob_DirectNotebookSource struct {
+	// The base64-encoded contents of the input notebook file.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.DirectNotebookSource.content
+	Content []byte `json:"content,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.NotebookExecutionJob.WorkbenchRuntime
+type NotebookExecutionJob_WorkbenchRuntime struct {
+}
+
 // +kcc:proto=google.cloud.aiplatform.v1.Part
 type Part struct {
 	// Optional. Text part (can be code).
@@ -1189,6 +1244,21 @@ type Part struct {
 	//  video data is presented in inline_data or file_data.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.Part.video_metadata
 	VideoMetadata *VideoMetadata `json:"videoMetadata,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.PersistentDiskSpec
+type PersistentDiskSpec struct {
+	// Type of the disk (default is "pd-standard").
+	//  Valid values: "pd-ssd" (Persistent Disk Solid State Drive)
+	//  "pd-standard" (Persistent Disk Hard Disk Drive)
+	//  "pd-balanced" (Balanced Persistent Disk)
+	//  "pd-extreme" (Extreme Persistent Disk)
+	// +kcc:proto:field=google.cloud.aiplatform.v1.PersistentDiskSpec.disk_type
+	DiskType *string `json:"diskType,omitempty"`
+
+	// Size in GB of the disk (default is 100GB).
+	// +kcc:proto:field=google.cloud.aiplatform.v1.PersistentDiskSpec.disk_size_gb
+	DiskSizeGB *int64 `json:"diskSizeGB,omitempty"`
 }
 
 /* unreachable type PipelineJob_RuntimeConfig_InputArtifact
@@ -1430,6 +1500,25 @@ type Probe_TCPSocketAction struct {
 	Host *string `json:"host,omitempty"`
 }
 
+// +kcc:proto=google.cloud.aiplatform.v1.ReservationAffinity
+type ReservationAffinity struct {
+	// Required. Specifies the reservation affinity type.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ReservationAffinity.reservation_affinity_type
+	ReservationAffinityType *string `json:"reservationAffinityType,omitempty"`
+
+	// Optional. Corresponds to the label key of a reservation resource. To target
+	//  a SPECIFIC_RESERVATION by name, use
+	//  `compute.googleapis.com/reservation-name` as the key and specify the name
+	//  of your reservation as its value.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ReservationAffinity.key
+	Key *string `json:"key,omitempty"`
+
+	// Optional. Corresponds to the label values of a reservation resource. This
+	//  must be the full resource name of the reservation.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.ReservationAffinity.values
+	Values []string `json:"values,omitempty"`
+}
+
 // +kcc:proto=google.cloud.aiplatform.v1.SampledShapleyAttribution
 type SampledShapleyAttribution struct {
 	// Required. The number of feature permutations to consider when approximating
@@ -1438,6 +1527,17 @@ type SampledShapleyAttribution struct {
 	//  Valid range of its value is [1, 50], inclusively.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.SampledShapleyAttribution.path_count
 	PathCount *int32 `json:"pathCount,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.Schedule.RunResponse
+type Schedule_RunResponse struct {
+	// The scheduled run time based on the user-specified schedule.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Schedule.RunResponse.scheduled_run_time
+	ScheduledRunTime *string `json:"scheduledRunTime,omitempty"`
+
+	// The response of the scheduled run.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.Schedule.RunResponse.run_response
+	RunResponse *string `json:"runResponse,omitempty"`
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1.SmoothGradConfig

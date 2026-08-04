@@ -24,6 +24,7 @@ package compute
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	compute "cloud.google.com/go/compute/apiv1"
 	computepb "cloud.google.com/go/compute/apiv1/computepb"
@@ -39,9 +40,9 @@ import (
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
@@ -337,6 +338,32 @@ func (a *ComputeTargetHTTPSProxyAdapter) get(ctx context.Context) (*computepb.Ta
 	}
 }
 
+func normalizeCertificateManagerLink(link string) string {
+	link = strings.TrimPrefix(link, "https://certificatemanager.googleapis.com/v1/")
+	link = strings.TrimPrefix(link, "//certificatemanager.googleapis.com/")
+	return link
+}
+
+func normalizeComputeLink(link string) string {
+	for _, basePath := range []string{"https://compute.googleapis.com/compute", "https://www.googleapis.com/compute"} {
+		for _, version := range []string{"/beta/", "/v1/"} {
+			prefix := basePath + version
+			if strings.HasPrefix(link, prefix) {
+				return strings.TrimPrefix(link, prefix)
+			}
+		}
+	}
+	return normalizeCertificateManagerLink(link)
+}
+
+func normalizeLinkPtr(link *string) *string {
+	if link == nil {
+		return nil
+	}
+	val := normalizeComputeLink(*link)
+	return &val
+}
+
 func compareComputeTargetHTTPSProxy(ctx context.Context, actual, desired *computepb.TargetHttpsProxy) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
 	maskedActual, err := mappers.OnlySpecFields(actual, ComputeTargetHTTPSProxySpec_v1beta1_FromProto, ComputeTargetHTTPSProxySpec_v1beta1_ToProto)
 	if err != nil {
@@ -347,12 +374,26 @@ func compareComputeTargetHTTPSProxy(ctx context.Context, actual, desired *comput
 	clonedDesired := proto.CloneOf(desired)
 
 	populateDefaults := func(obj *computepb.TargetHttpsProxy) {
-		// Set any server-side default values here if they cause false diffs
+		obj.UrlMap = normalizeLinkPtr(obj.UrlMap)
+		obj.SslPolicy = normalizeLinkPtr(obj.SslPolicy)
+		obj.CertificateMap = normalizeLinkPtr(obj.CertificateMap)
+		obj.ServerTlsPolicy = normalizeLinkPtr(obj.ServerTlsPolicy)
+		for i, cert := range obj.SslCertificates {
+			obj.SslCertificates[i] = normalizeComputeLink(cert)
+		}
+		if obj.QuicOverride == nil || *obj.QuicOverride == "" {
+			obj.QuicOverride = direct.LazyPtr("NONE")
+		}
 	}
 	populateDefaults(maskedActual)
 	populateDefaults(clonedDesired)
 
-	diffs, updateMask, err := tags.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
+	if actual.Region != nil && *actual.Region != "" {
+		maskedActual.QuicOverride = nil
+		clonedDesired.QuicOverride = nil
+	}
+
+	diffs, updateMask, err := common.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
 		return nil, nil, err
 	}

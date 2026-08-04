@@ -163,8 +163,9 @@ func RunGenerateMapper(ctx context.Context, o *GenerateMapperOptions) error {
 		return err
 	}
 
-	goImports := map[string]string{
-		"krm": "github.com/GoogleCloudPlatform/k8s-config-connector/apis/" + strings.TrimSuffix(gv.Group, ".cnrm.cloud.google.com") + "/" + gv.Version,
+	goImports := map[string]string{}
+	if !o.Multiversion {
+		goImports["krm"] = "github.com/GoogleCloudPlatform/k8s-config-connector/apis/" + strings.TrimSuffix(gv.Group, ".cnrm.cloud.google.com") + "/" + gv.Version
 	}
 	if err := mapperGenerator.GenerateMappers(goImports); err != nil {
 		return err

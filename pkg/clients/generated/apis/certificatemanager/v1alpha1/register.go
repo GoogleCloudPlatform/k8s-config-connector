@@ -59,5 +59,11 @@ var (
 		Kind:    reflect.TypeOf(CertificateManagerCertificateIssuanceConfig{}).Name(),
 	}
 
+	CertificateManagerTrustConfigGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(CertificateManagerTrustConfig{}).Name(),
+	}
+
 	certificatemanagerAPIVersion = SchemeGroupVersion.String()
 )

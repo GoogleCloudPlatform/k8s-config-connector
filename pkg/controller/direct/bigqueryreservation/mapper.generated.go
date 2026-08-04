@@ -26,24 +26,24 @@ package bigqueryreservation
 import (
 	pb "cloud.google.com/go/bigquery/reservation/apiv1/reservationpb"
 	krmbigqueryreservationv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryreservation/v1alpha1"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryreservation/v1beta1"
+	krmbigqueryreservationv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryreservation/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
 /*
 found existing non-generated mapping function "AutoscaleObservedState_v1beta1_FromProto", skipping
 
-	func AutoscaleObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Reservation_Autoscale) *krm.AutoscaleObservedState {
+	func AutoscaleObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Reservation_Autoscale) *krmbigqueryreservationv1beta1.AutoscaleObservedState {
 		if in == nil {
 			return nil
 		}
-		out := &krm.AutoscaleObservedState{}
+		out := &krmbigqueryreservationv1beta1.AutoscaleObservedState{}
 		out.CurrentSlots = direct.LazyPtr(in.GetCurrentSlots())
 		// MISSING: MaxSlots
 		return out
 	}
 */
-func AutoscaleObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.AutoscaleObservedState) *pb.Reservation_Autoscale {
+func AutoscaleObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigqueryreservationv1beta1.AutoscaleObservedState) *pb.Reservation_Autoscale {
 	if in == nil {
 		return nil
 	}
@@ -52,17 +52,17 @@ func AutoscaleObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.A
 	// MISSING: MaxSlots
 	return out
 }
-func BigQueryReservationAssignmentObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Assignment) *krm.BigQueryReservationAssignmentObservedState {
+func BigQueryReservationAssignmentObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Assignment) *krmbigqueryreservationv1beta1.BigQueryReservationAssignmentObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.BigQueryReservationAssignmentObservedState{}
+	out := &krmbigqueryreservationv1beta1.BigQueryReservationAssignmentObservedState{}
 	// MISSING: Name
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	// MISSING: EnableGeminiInBigquery
 	return out
 }
-func BigQueryReservationAssignmentObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryReservationAssignmentObservedState) *pb.Assignment {
+func BigQueryReservationAssignmentObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigqueryreservationv1beta1.BigQueryReservationAssignmentObservedState) *pb.Assignment {
 	if in == nil {
 		return nil
 	}
@@ -74,11 +74,11 @@ func BigQueryReservationAssignmentObservedState_v1beta1_ToProto(mapCtx *direct.M
 }
 
 /* found existing non-generated mapping function "BigQueryReservationAssignmentSpec_v1beta1_FromProto", skipping
-func BigQueryReservationAssignmentSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Assignment) *krm.BigQueryReservationAssignmentSpec {
+func BigQueryReservationAssignmentSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Assignment) *krmbigqueryreservationv1beta1.BigQueryReservationAssignmentSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.BigQueryReservationAssignmentSpec{}
+	out := &krmbigqueryreservationv1beta1.BigQueryReservationAssignmentSpec{}
 	// MISSING: Name
 	out.Assignee = direct.LazyPtr(in.GetAssignee())
 	out.JobType = direct.Enum_FromProto(mapCtx, in.GetJobType())
@@ -90,7 +90,7 @@ func BigQueryReservationAssignmentSpec_v1beta1_FromProto(mapCtx *direct.MapConte
 /*
 found existing non-generated mapping function "BigQueryReservationAssignmentSpec_v1beta1_ToProto", skipping
 
-	func BigQueryReservationAssignmentSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryReservationAssignmentSpec) *pb.Assignment {
+	func BigQueryReservationAssignmentSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigqueryreservationv1beta1.BigQueryReservationAssignmentSpec) *pb.Assignment {
 		if in == nil {
 			return nil
 		}
@@ -176,11 +176,11 @@ func BigQueryReservationCapacityCommitmentStatus_v1alpha1_ToProto(mapCtx *direct
 }
 
 /* found existing non-generated mapping function "BigQueryReservationReservationObservedState_v1beta1_FromProto", skipping
-func BigQueryReservationReservationObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Reservation) *krm.BigQueryReservationReservationObservedState {
+func BigQueryReservationReservationObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Reservation) *krmbigqueryreservationv1beta1.BigQueryReservationReservationObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.BigQueryReservationReservationObservedState{}
+	out := &krmbigqueryreservationv1beta1.BigQueryReservationReservationObservedState{}
 	// MISSING: Name
 	out.Autoscale = AutoscaleObservedState_v1beta1_FromProto(mapCtx, in.GetAutoscale())
 	// MISSING: CreationTime
@@ -197,7 +197,7 @@ func BigQueryReservationReservationObservedState_v1beta1_FromProto(mapCtx *direc
 */
 
 /* found existing non-generated mapping function "BigQueryReservationReservationObservedState_v1beta1_ToProto", skipping
-func BigQueryReservationReservationObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryReservationReservationObservedState) *pb.Reservation {
+func BigQueryReservationReservationObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigqueryreservationv1beta1.BigQueryReservationReservationObservedState) *pb.Reservation {
 	if in == nil {
 		return nil
 	}
@@ -218,11 +218,11 @@ func BigQueryReservationReservationObservedState_v1beta1_ToProto(mapCtx *direct.
 */
 
 /* found existing non-generated mapping function "BigQueryReservationReservationSpec_v1beta1_FromProto", skipping
-func BigQueryReservationReservationSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Reservation) *krm.BigQueryReservationReservationSpec {
+func BigQueryReservationReservationSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Reservation) *krmbigqueryreservationv1beta1.BigQueryReservationReservationSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.BigQueryReservationReservationSpec{}
+	out := &krmbigqueryreservationv1beta1.BigQueryReservationReservationSpec{}
 	// MISSING: Name
 	out.SlotCapacity = direct.LazyPtr(in.GetSlotCapacity())
 	out.IgnoreIdleSlots = direct.LazyPtr(in.GetIgnoreIdleSlots())
@@ -243,7 +243,7 @@ func BigQueryReservationReservationSpec_v1beta1_FromProto(mapCtx *direct.MapCont
 */
 
 /* found existing non-generated mapping function "BigQueryReservationReservationSpec_v1beta1_ToProto", skipping
-func BigQueryReservationReservationSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryReservationReservationSpec) *pb.Reservation {
+func BigQueryReservationReservationSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigqueryreservationv1beta1.BigQueryReservationReservationSpec) *pb.Reservation {
 	if in == nil {
 		return nil
 	}

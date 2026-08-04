@@ -29,8 +29,8 @@ func init() {
 
 func KMSCryptoKeyFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.CryptoKey{},
-		KMSCryptoKeySpec_FromProto, KMSCryptoKeySpec_ToProto,
-		KMSCryptoKeyStatus_FromProto, KMSCryptoKeyStatus_ToProto,
+		KMSCryptoKeySpec_v1beta1_FromProto, KMSCryptoKeySpec_v1beta1_ToProto,
+		KMSCryptoKeyStatus_v1beta1_FromProto, KMSCryptoKeyStatus_v1beta1_ToProto,
 	)
 
 	f.SpecField(".purpose")

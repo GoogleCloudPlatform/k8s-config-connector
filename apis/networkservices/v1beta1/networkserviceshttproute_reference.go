@@ -119,3 +119,46 @@ func (r *NetworkServicesHTTPRouteRef) Normalize(ctx context.Context, reader clie
 	}
 	return refsv1beta1.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
 }
+
+var _ refsv1beta1.Ref = &BackendServiceRef{}
+
+func (r *BackendServiceRef) GetGVK() schema.GroupVersionKind {
+	return schema.GroupVersionKind{
+		Group:   "compute.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ComputeBackendService",
+	}
+}
+
+func (r *BackendServiceRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{
+		Name:      r.Name,
+		Namespace: r.Namespace,
+	}
+}
+
+func (r *BackendServiceRef) GetExternal() string {
+	return r.External
+}
+
+func (r *BackendServiceRef) SetExternal(ref string) {
+	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
+}
+
+func (r *BackendServiceRef) ValidateExternal(ref string) error {
+	// Accept any external format for backward compatibility, similar to ComputeBackendServiceRef
+	return nil
+}
+
+func (r *BackendServiceRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	if r.External != "" && r.Name != "" {
+		return fmt.Errorf("cannot specify both name and external on %s reference", r.GetGVK().Kind)
+	}
+	fallback := func(u *unstructured.Unstructured) string {
+		selfLink, _, _ := unstructured.NestedString(u.Object, "status", "selfLink")
+		return selfLink
+	}
+	return refsv1beta1.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
+}

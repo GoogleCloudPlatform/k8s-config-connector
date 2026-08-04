@@ -1,0 +1,166 @@
+GRPC /google.cloud.networksecurity.v1.NetworkSecurity/GetBackendAuthenticationConfig
+
+{
+  "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-min-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = BackendAuthenticationConfig "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-min-${uniqueId}" not found
+
+{}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.NetworkSecurity/CreateBackendAuthenticationConfig
+
+{
+  "backendAuthenticationConfig": {
+    "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-min-${uniqueId}",
+    "wellKnownRoots": "PUBLIC_ROOTS"
+  },
+  "backendAuthenticationConfigId": "backendauth-min-${uniqueId}",
+  "parent": "projects/${projectId}/locations/us-central1"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-min-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-min-${uniqueId}/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-min-${uniqueId}/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-min-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-min-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.BackendAuthenticationConfig",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "etag": "abcdef0123A=",
+    "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-min-${uniqueId}",
+    "updateTime": "2024-04-01T12:34:56.123456Z",
+    "wellKnownRoots": "PUBLIC_ROOTS"
+  }
+}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.NetworkSecurity/GetBackendAuthenticationConfig
+
+{
+  "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-min-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-min-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "wellKnownRoots": "PUBLIC_ROOTS"
+}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.NetworkSecurity/GetBackendAuthenticationConfig
+
+{
+  "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-min-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-min-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "wellKnownRoots": "PUBLIC_ROOTS"
+}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.NetworkSecurity/GetBackendAuthenticationConfig
+
+{
+  "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-min-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-min-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "wellKnownRoots": "PUBLIC_ROOTS"
+}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.NetworkSecurity/DeleteBackendAuthenticationConfig
+
+{
+  "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-min-${uniqueId}"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-min-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-min-${uniqueId}/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-min-${uniqueId}/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-min-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-min-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.BackendAuthenticationConfig",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "etag": "abcdef0123A=",
+    "name": "projects/${projectId}/locations/us-central1/backendAuthenticationConfigs/backendauth-min-${uniqueId}",
+    "updateTime": "2024-04-01T12:34:56.123456Z",
+    "wellKnownRoots": "PUBLIC_ROOTS"
+  }
+}

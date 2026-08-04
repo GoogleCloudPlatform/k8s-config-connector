@@ -31,3 +31,8 @@
 - **Solution**: Updated `Delete` in `networksecurityauthzpolicy_controller.go` to return `true, nil` on `direct.IsNotFound(err)`.
 - **Impact**: Ensures that if the resource is deleted out-of-band or already finalized on GCP, the KCC reconciler treats the deletion as completed and successfully finishes reconciliation without getting stuck in a retry loop.
 
+### [2026-07-02] Implement direct KRM types and Identity for NetworkSecuritySecurityProfileGroup
+- **Context**: Implementing types, CRD, and Identity for `NetworkSecuritySecurityProfileGroup` (Issue #8738).
+- **Problem**: The proto contains reference fields to `SecurityProfile` resource (`threat_prevention_profile`, `custom_mirroring_profile`, `custom_intercept_profile`, `url_filtering_profile`), which must be represented as proper KCC reference fields rather than raw string fields.
+- **Solution**: Mapped all of these fields as `NetworkSecuritySecurityProfileRef` pointers (e.g., `ThreatPreventionProfileRef *NetworkSecuritySecurityProfileRef`), leveraging the existing `NetworkSecuritySecurityProfileRef` type. Scaffolded types, implemented `IdentityV2`, and regenerated clients and CRD schemas.
+- **Impact**: Ensures that `NetworkSecuritySecurityProfileGroup` resources can seamlessly reference their underlying security profiles in an idiomatic KCC manner.

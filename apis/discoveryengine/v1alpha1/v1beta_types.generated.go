@@ -19,6 +19,7 @@
 // proto.service: google.cloud.discoveryengine.v1beta
 // resource: DiscoveryEngineSampleQuerySet:SampleQuerySet
 // resource: DiscoveryEngineSampleQuery:SampleQuery
+// resource: DiscoveryEngineLicenseConfig:LicenseConfig
 
 package v1alpha1
 
@@ -54,4 +55,23 @@ type SampleQuery_QueryEntry_Target struct {
 	// Relevance score of the target.
 	// +kcc:proto:field=google.cloud.discoveryengine.v1beta.SampleQuery.QueryEntry.Target.score
 	Score *float64 `json:"score,omitempty"`
+}
+
+// +kcc:proto=google.type.Date
+type Date struct {
+	// Year of the date. Must be from 1 to 9999, or 0 to specify a date without
+	//  a year.
+	// +kcc:proto:field=google.type.Date.year
+	Year *int32 `json:"year,omitempty"`
+
+	// Month of a year. Must be from 1 to 12, or 0 to specify a year without a
+	//  month and day.
+	// +kcc:proto:field=google.type.Date.month
+	Month *int32 `json:"month,omitempty"`
+
+	// Day of a month. Must be from 1 to 31 and valid for the year and month, or 0
+	//  to specify a year by itself or a year and month where the day isn't
+	//  significant.
+	// +kcc:proto:field=google.type.Date.day
+	Day *int32 `json:"day,omitempty"`
 }

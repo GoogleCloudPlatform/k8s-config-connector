@@ -26,7 +26,7 @@ package datacatalog
 import (
 	pb "cloud.google.com/go/datacatalog/apiv1/datacatalogpb"
 	krmdatacatalogv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/datacatalog/v1alpha1"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/datacatalog/v1beta1"
+	krmdatacatalogv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/datacatalog/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -516,16 +516,16 @@ func DataCatalogEntrySpec_UserSpecifiedSystem_ToProto(mapCtx *direct.MapContext,
 	}
 	return &pb.Entry_UserSpecifiedSystem{UserSpecifiedSystem: *in}
 }
-func DataCatalogPolicyTagObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.PolicyTag) *krm.DataCatalogPolicyTagObservedState {
+func DataCatalogPolicyTagObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.PolicyTag) *krmdatacatalogv1beta1.DataCatalogPolicyTagObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.DataCatalogPolicyTagObservedState{}
+	out := &krmdatacatalogv1beta1.DataCatalogPolicyTagObservedState{}
 	// MISSING: Name
 	// MISSING: ChildPolicyTags
 	return out
 }
-func DataCatalogPolicyTagObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.DataCatalogPolicyTagObservedState) *pb.PolicyTag {
+func DataCatalogPolicyTagObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmdatacatalogv1beta1.DataCatalogPolicyTagObservedState) *pb.PolicyTag {
 	if in == nil {
 		return nil
 	}
@@ -534,21 +534,21 @@ func DataCatalogPolicyTagObservedState_v1beta1_ToProto(mapCtx *direct.MapContext
 	// MISSING: ChildPolicyTags
 	return out
 }
-func DataCatalogPolicyTagSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.PolicyTag) *krm.DataCatalogPolicyTagSpec {
+func DataCatalogPolicyTagSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.PolicyTag) *krmdatacatalogv1beta1.DataCatalogPolicyTagSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.DataCatalogPolicyTagSpec{}
+	out := &krmdatacatalogv1beta1.DataCatalogPolicyTagSpec{}
 	// MISSING: Name
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.Description = direct.LazyPtr(in.GetDescription())
 	if in.GetParentPolicyTag() != "" {
-		out.ParentPolicyTagRef = &krm.PolicyTagRef{External: in.GetParentPolicyTag()}
+		out.ParentPolicyTagRef = &krmdatacatalogv1beta1.PolicyTagRef{External: in.GetParentPolicyTag()}
 	}
 	// MISSING: ChildPolicyTags
 	return out
 }
-func DataCatalogPolicyTagSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.DataCatalogPolicyTagSpec) *pb.PolicyTag {
+func DataCatalogPolicyTagSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmdatacatalogv1beta1.DataCatalogPolicyTagSpec) *pb.PolicyTag {
 	if in == nil {
 		return nil
 	}
@@ -656,11 +656,11 @@ found existing non-generated mapping function "DataCatalogTagTemplateSpec_v1alph
 		return out
 	}
 */
-func DataCatalogTaxonomyObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Taxonomy) *krm.DataCatalogTaxonomyObservedState {
+func DataCatalogTaxonomyObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Taxonomy) *krmdatacatalogv1beta1.DataCatalogTaxonomyObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.DataCatalogTaxonomyObservedState{}
+	out := &krmdatacatalogv1beta1.DataCatalogTaxonomyObservedState{}
 	// MISSING: Name
 	// MISSING: DisplayName
 	// MISSING: Description
@@ -670,7 +670,7 @@ func DataCatalogTaxonomyObservedState_v1beta1_FromProto(mapCtx *direct.MapContex
 	out.Service = Taxonomy_Service_v1beta1_FromProto(mapCtx, in.GetService())
 	return out
 }
-func DataCatalogTaxonomyObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.DataCatalogTaxonomyObservedState) *pb.Taxonomy {
+func DataCatalogTaxonomyObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmdatacatalogv1beta1.DataCatalogTaxonomyObservedState) *pb.Taxonomy {
 	if in == nil {
 		return nil
 	}
@@ -1557,17 +1557,17 @@ func TagTemplateField_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdatacat
 	out.Order = direct.ValueOf(in.Order)
 	return out
 }
-func TaxonomySystemTimestamps_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SystemTimestamps) *krm.TaxonomySystemTimestamps {
+func TaxonomySystemTimestamps_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SystemTimestamps) *krmdatacatalogv1beta1.TaxonomySystemTimestamps {
 	if in == nil {
 		return nil
 	}
-	out := &krm.TaxonomySystemTimestamps{}
+	out := &krmdatacatalogv1beta1.TaxonomySystemTimestamps{}
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	out.ExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpireTime())
 	return out
 }
-func TaxonomySystemTimestamps_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.TaxonomySystemTimestamps) *pb.SystemTimestamps {
+func TaxonomySystemTimestamps_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmdatacatalogv1beta1.TaxonomySystemTimestamps) *pb.SystemTimestamps {
 	if in == nil {
 		return nil
 	}
@@ -1577,16 +1577,16 @@ func TaxonomySystemTimestamps_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm
 	out.ExpireTime = direct.StringTimestamp_ToProto(mapCtx, in.ExpireTime)
 	return out
 }
-func Taxonomy_Service_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Taxonomy_Service) *krm.Taxonomy_Service {
+func Taxonomy_Service_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Taxonomy_Service) *krmdatacatalogv1beta1.Taxonomy_Service {
 	if in == nil {
 		return nil
 	}
-	out := &krm.Taxonomy_Service{}
+	out := &krmdatacatalogv1beta1.Taxonomy_Service{}
 	out.Name = direct.Enum_FromProto(mapCtx, in.GetName())
 	out.Identity = direct.LazyPtr(in.GetIdentity())
 	return out
 }
-func Taxonomy_Service_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Taxonomy_Service) *pb.Taxonomy_Service {
+func Taxonomy_Service_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmdatacatalogv1beta1.Taxonomy_Service) *pb.Taxonomy_Service {
 	if in == nil {
 		return nil
 	}

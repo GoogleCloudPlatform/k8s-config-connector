@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: gkemulticloud.cnrm.cloud.google.com
+  kind: GKEMulticloudAttachedCluster
+  name: attachedcluster-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

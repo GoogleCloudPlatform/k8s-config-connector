@@ -19,6 +19,8 @@ import (
 	"fmt"
 	"time"
 
+	certificatemanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/certificatemanager/v1alpha1"
+
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networksecurity/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/privateca/privatecarefs"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -27,7 +29,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
 	pb "cloud.google.com/go/networksecurity/apiv1/networksecuritypb"
@@ -231,7 +232,7 @@ func compareTlsInspectionPolicy(ctx context.Context, actual, desired *pb.TlsInsp
 	maskedActual.CaPool = actual.CaPool
 	maskedActual.TrustConfig = actual.TrustConfig
 
-	diffs, updateMask, err := tags.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
+	diffs, updateMask, err := common.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
 		return nil, nil, err
 	}
@@ -257,7 +258,7 @@ func (a *tlsInspectionPolicyAdapter) Export(ctx context.Context) (*unstructured.
 		obj.Spec.CaPoolRef = &privatecarefs.PrivateCACAPoolRef{External: a.actual.CaPool}
 	}
 	if a.actual.TrustConfig != "" {
-		obj.Spec.TrustConfigRef = &refsv1beta1.CertificateManagerTrustConfigRef{External: a.actual.TrustConfig}
+		obj.Spec.TrustConfigRef = &certificatemanagerv1alpha1.CertificateManagerTrustConfigRef{External: a.actual.TrustConfig}
 	}
 
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)

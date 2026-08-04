@@ -28,8 +28,8 @@ func init() {
 
 func fuzzDataStore() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.DataStore{},
-		DiscoveryEngineDataStoreSpec_FromProto, DiscoveryEngineDataStoreSpec_ToProto,
-		DiscoveryEngineDataStoreObservedState_FromProto, DiscoveryEngineDataStoreObservedState_ToProto,
+		DiscoveryEngineDataStoreSpec_v1alpha1_FromProto, DiscoveryEngineDataStoreSpec_v1alpha1_ToProto,
+		DiscoveryEngineDataStoreObservedState_v1alpha1_FromProto, DiscoveryEngineDataStoreObservedState_v1alpha1_ToProto,
 	)
 
 	f.UnimplementedFields.Insert(".name")                       // special field
@@ -52,6 +52,7 @@ func fuzzDataStore() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".healthcare_fhir_config")
 	f.Unimplemented_NotYetTriaged(".acl_enabled")
 	f.Unimplemented_NotYetTriaged(".kms_key_name")
+	f.Unimplemented_NotYetTriaged(".natural_language_query_understanding_config")
 
 	return f
 }

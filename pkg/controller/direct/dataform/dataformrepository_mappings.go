@@ -22,15 +22,14 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func DataformRepositorySpec_FromProto(mapCtx *direct.MapContext, in *pb.Repository) *krm.DataformRepositorySpec {
+func DataformRepositorySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Repository) *krm.DataformRepositorySpec {
 	if in == nil {
 		return nil
 	}
 	out := &krm.DataformRepositorySpec{}
-	out.GitRemoteSettings = RepositoryGitRemoteSettings_FromProto(mapCtx, in.GetGitRemoteSettings())
-	out.WorkspaceCompilationOverrides = RepositoryWorkspaceCompilationOverrides_FromProto(mapCtx, in.GetWorkspaceCompilationOverrides())
+	out.GitRemoteSettings = RepositoryGitRemoteSettings_v1beta1_FromProto(mapCtx, in.GetGitRemoteSettings())
+	out.WorkspaceCompilationOverrides = RepositoryWorkspaceCompilationOverrides_v1beta1_FromProto(mapCtx, in.GetWorkspaceCompilationOverrides())
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.GitRemoteSettings = RepositoryGitRemoteSettings_FromProto(mapCtx, in.GetGitRemoteSettings())
 
 	if in.GetNpmrcEnvironmentVariablesSecretVersion() != "" {
 		out.NpmrcEnvironmentVariablesSecretVersionRef = &refs.SecretManagerSecretVersionRef{
@@ -38,8 +37,6 @@ func DataformRepositorySpec_FromProto(mapCtx *direct.MapContext, in *pb.Reposito
 		}
 	}
 
-	out.WorkspaceCompilationOverrides = RepositoryWorkspaceCompilationOverrides_FromProto(mapCtx, in.GetWorkspaceCompilationOverrides())
-	out.WorkspaceCompilationOverrides = RepositoryWorkspaceCompilationOverrides_FromProto(mapCtx, in.GetWorkspaceCompilationOverrides())
 	out.SetAuthenticatedUserAdmin = in.GetSetAuthenticatedUserAdmin()
 
 	if in.GetServiceAccount() != "" {
@@ -51,14 +48,14 @@ func DataformRepositorySpec_FromProto(mapCtx *direct.MapContext, in *pb.Reposito
 	return out
 }
 
-func DataformRepositorySpec_ToProto(mapCtx *direct.MapContext, in *krm.DataformRepositorySpec) *pb.Repository {
+func DataformRepositorySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.DataformRepositorySpec) *pb.Repository {
 	if in == nil {
 		return nil
 	}
 	out := &pb.Repository{}
 	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.GitRemoteSettings = RepositoryGitRemoteSettings_ToProto(mapCtx, in.GitRemoteSettings)
-	out.WorkspaceCompilationOverrides = RepositoryWorkspaceCompilationOverrides_ToProto(mapCtx, in.WorkspaceCompilationOverrides)
+	out.GitRemoteSettings = RepositoryGitRemoteSettings_v1beta1_ToProto(mapCtx, in.GitRemoteSettings)
+	out.WorkspaceCompilationOverrides = RepositoryWorkspaceCompilationOverrides_v1beta1_ToProto(mapCtx, in.WorkspaceCompilationOverrides)
 
 	if in.NpmrcEnvironmentVariablesSecretVersionRef != nil {
 		out.NpmrcEnvironmentVariablesSecretVersion = in.NpmrcEnvironmentVariablesSecretVersionRef.External
@@ -72,7 +69,7 @@ func DataformRepositorySpec_ToProto(mapCtx *direct.MapContext, in *krm.DataformR
 	return out
 }
 
-func RepositoryGitRemoteSettings_FromProto(mapCtx *direct.MapContext, in *pb.Repository_GitRemoteSettings) *krm.RepositoryGitRemoteSettings {
+func RepositoryGitRemoteSettings_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Repository_GitRemoteSettings) *krm.RepositoryGitRemoteSettings {
 	if in == nil {
 		return nil
 	}
@@ -99,7 +96,7 @@ func RepositoryGitRemoteSettings_FromProto(mapCtx *direct.MapContext, in *pb.Rep
 	return out
 }
 
-func RepositoryGitRemoteSettings_ToProto(mapCtx *direct.MapContext, in *krm.RepositoryGitRemoteSettings) *pb.Repository_GitRemoteSettings {
+func RepositoryGitRemoteSettings_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.RepositoryGitRemoteSettings) *pb.Repository_GitRemoteSettings {
 	if in == nil {
 		return nil
 	}
@@ -124,7 +121,7 @@ func RepositoryGitRemoteSettings_ToProto(mapCtx *direct.MapContext, in *krm.Repo
 	return out
 }
 
-func RepositoryWorkspaceCompilationOverrides_FromProto(mapCtx *direct.MapContext, in *pb.Repository_WorkspaceCompilationOverrides) *krm.RepositoryWorkspaceCompilationOverrides {
+func RepositoryWorkspaceCompilationOverrides_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Repository_WorkspaceCompilationOverrides) *krm.RepositoryWorkspaceCompilationOverrides {
 	if in == nil {
 		return nil
 	}
@@ -135,7 +132,7 @@ func RepositoryWorkspaceCompilationOverrides_FromProto(mapCtx *direct.MapContext
 	return out
 }
 
-func RepositoryWorkspaceCompilationOverrides_ToProto(mapCtx *direct.MapContext, in *krm.RepositoryWorkspaceCompilationOverrides) *pb.Repository_WorkspaceCompilationOverrides {
+func RepositoryWorkspaceCompilationOverrides_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.RepositoryWorkspaceCompilationOverrides) *pb.Repository_WorkspaceCompilationOverrides {
 	if in == nil {
 		return nil
 	}

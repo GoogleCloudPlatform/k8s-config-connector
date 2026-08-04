@@ -1,19 +1,20 @@
-Gap Analysis Snapshot - 2026-07-22 00:47:14
-GoogleAPIs SHA: master
-KCC SHA:        LOCAL
+Gap Analysis Snapshot - 2026-07-31 20:12:52
+GoogleAPIs SHA: 73aa1b6
+KCC SHA:        e230bd
 -------------------------------------------------------
 Metric                         | Value     
 -------------------------------------------------------
-Total GCP Resources (Raw)      | 1787      
+Total GCP Resources (Raw)      | 1781      
 Unified (Hierarchical)         | 0         
-Processed Resources (Unified)  | 1743      
-Skipped (Policy)               | 44        
-Implemented in KCC             | 359       
-Missing from KCC               | 1384      
+Processed Resources (Unified)  | 1724      
+Skipped (Policy)               | 57        
+Implemented in KCC             | 457       
+Missing from KCC               | 1267      
 -------------------------------------------------------
-Missing Manageable             | 562       
-Missing Fully Manageable       | 422       
-Missing Next Layer             | 141       
-Missing Next Next Layer        | 32        
+Missing Manageable             | 549       
+Missing Fully Manageable       | 349       
+Missing Next Layer             | 129       
+Missing Next Next Layer        | 30        
 -------------------------------------------------------
-Current Coverage               | 20.60%
+Total API Coverage             | 26.51%
+Manageable Coverage            | 45.43%

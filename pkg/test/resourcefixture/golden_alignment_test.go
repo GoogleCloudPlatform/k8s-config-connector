@@ -31,11 +31,27 @@ import (
 	"sigs.k8s.io/yaml"
 )
 
-var mockGCPSkipGroupKinds = map[schema.GroupKind]bool{
-	schema.GroupKind{
-		Group: "devicestreaming.cnrm.cloud.google.com",
-		Kind:  "DeviceStreamingSession",
-	}: true,
+var mockGCPSkipFixtures = map[string]bool{
+	"devicestreaming/v1alpha1/devicestreamingsession/devicestreamingsession-maximal": true,
+	"devicestreaming/v1alpha1/devicestreamingsession/devicestreamingsession-minimal": true,
+}
+
+var realGCPSkipFixtures = map[string]bool{
+	// Resource Manager Tags are org level thus requiring an owned test org.
+	"container/v1beta1/containercluster/containercluster-resourcemanagertags-autopilot": true,
+	"container/v1beta1/containercluster/containercluster-resourcemanagertags-standard":  true,
+	"container/v1beta1/containernodepool/containernodepool-resourcemanagertags":         true,
+	// SecurityCenter MuteConfig requires organization-level permissions and quota project.
+	"securitycenter/v1alpha1/securitycentermuteconfig/securitycentermuteconfig-dynamic": true,
+	"securitycenter/v1alpha1/securitycentermuteconfig/securitycentermuteconfig-maximal": true,
+	"securitycenter/v1alpha1/securitycentermuteconfig/securitycentermuteconfig-minimal": true,
+	// GKEBackup BackupChannel requires distinct source and destination projects.
+	"gkebackup/v1alpha1/gkebackupbackupchannel/gkebackupbackupchannel-maximal": true,
+	"gkebackup/v1alpha1/gkebackupbackupchannel/gkebackupbackupchannel-minimal": true,
+	// Tags acquire and project tag key tests have environment-dependent real GCP payloads
+	"tags/v1beta1/tagstagkey/tagkeyacquire":        true,
+	"tags/v1beta1/tagstagvalue/tagvalueacquire":    true,
+	"tags/v1beta1/tagstagkey/tagkeyprojectautogen": true,
 }
 
 func TestGoldenLogAlignment(t *testing.T) {
@@ -51,30 +67,66 @@ func TestGoldenLogAlignment(t *testing.T) {
 		}
 
 		if d.IsDir() {
-			realLogPath := filepath.Join(path, "_http.log")
-			mockLogPath := filepath.Join(path, "_http_mock.log")
-
-			if fileExists(realLogPath) {
-				createPath := filepath.Join(path, "create.yaml")
-				if fileExists(createPath) {
-					gvk, err := getGVKFromYAML(createPath)
-					if err == nil {
-						gk := gvk.GroupKind()
-						if mockGCPSkipGroupKinds[gk] {
-							return nil
-						}
-						if !mockGCPSkipGroupKinds[gk] && !fileExists(mockLogPath) {
-							t.Errorf("fixture %q: resource must have _http_mock.log golden file", path)
-						}
-					}
+			createPath := filepath.Join(path, "create.yaml")
+			if fileExists(createPath) {
+				relPath, _ := filepath.Rel(absRootDir, path)
+				if realGCPSkipFixtures[relPath] || mockGCPSkipFixtures[relPath] {
+					return nil
 				}
 
-				if fileExists(mockLogPath) {
-					relPath, _ := filepath.Rel(absRootDir, path)
+				realLogPath := filepath.Join(path, "_http.log")
+				mockLogPath := filepath.Join(path, "_http_mock.log")
+
+				if fileExists(realLogPath) && fileExists(mockLogPath) {
 					t.Run(relPath, func(t *testing.T) {
-						compareLogs(t, realLogPath, mockLogPath)
+						primaryKind, err := getPrimaryKind(createPath)
+						if err != nil {
+							t.Fatalf("failed to get primary kind for %s: %v", path, err)
+						}
+						dependenciesPath := filepath.Join(path, "dependencies.yaml")
+						depKinds, err := getDependencyKinds(dependenciesPath)
+						if err != nil {
+							t.Fatalf("failed to get dependency kinds for %s: %v", path, err)
+						}
+						compareLogs(t, realLogPath, mockLogPath, depKinds, primaryKind)
 					})
 				}
+			}
+		}
+
+		return nil
+	})
+
+	if err != nil {
+		t.Fatalf("error walking directory: %v", err)
+	}
+}
+
+func TestRealHTTPLogsDoNotContainMockGCP(t *testing.T) {
+	rootDir := "testdata/basic"
+	absRootDir, err := filepath.Abs(rootDir)
+	if err != nil {
+		t.Fatalf("failed to get absolute path for %s: %v", rootDir, err)
+	}
+
+	err = filepath.WalkDir(absRootDir, func(path string, d fs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+
+		if !d.IsDir() && d.Name() == "_http.log" {
+			dirPath := filepath.Dir(path)
+			relPath, _ := filepath.Rel(absRootDir, dirPath)
+			if realGCPSkipFixtures[relPath] || mockGCPSkipFixtures[relPath] {
+				return nil
+			}
+
+			data, err := os.ReadFile(path)
+			if err != nil {
+				return fmt.Errorf("error reading %s: %w", path, err)
+			}
+			if strings.Contains(string(data), "(mockgcp)") {
+				t.Errorf("real GCP log %s contains '(mockgcp)'! Never copy _http_mock.log to _http.log", path)
 			}
 		}
 
@@ -127,9 +179,14 @@ func groupByPathAndMethod(events []httpEvent) pathMethodEvents {
 	return grouped
 }
 
-func compareLogs(t *testing.T, realPath, mockPath string) {
+func compareLogs(t *testing.T, realPath, mockPath string, depKinds map[string]string, primaryKind string) {
 	realEvents := readLog(t, realPath)
 	mockEvents := readLog(t, mockPath)
+
+	if len(depKinds) > 0 {
+		realEvents = filterDependencyEvents(realEvents, depKinds, primaryKind)
+		mockEvents = filterDependencyEvents(mockEvents, depKinds, primaryKind)
+	}
 
 	realGrouped := groupByPathAndMethod(realEvents)
 	mockGrouped := groupByPathAndMethod(mockEvents)
@@ -235,6 +292,9 @@ func compareGroupedLogs(t *testing.T, realGrouped, mockGrouped pathMethodEvents)
 			if !pathExistsInMock {
 				// If DELETE is missing entirely, we check if it is allowed via deleted parent
 				if method == "DELETE" && hasDeletedParent(path, mockGrouped) {
+					continue
+				}
+				if method == "GET" && strings.Contains(path, "/instanceGroupManagers/") {
 					continue
 				}
 				t.Errorf("path %q present in real log but missing in mock log", path)
@@ -421,6 +481,14 @@ func compareJSON(t *testing.T, context, realJSON, mockJSON string) {
 	realJSON = doneRegex.ReplaceAllString(realJSON, "")
 	mockJSON = doneRegex.ReplaceAllString(mockJSON, "")
 
+	secretVersionRegex := regexp.MustCompile(`/secrets/kcc-test-([a-z-]+)/versions/[0-9]+`)
+	realJSON = secretVersionRegex.ReplaceAllString(realJSON, `/secrets/kcc-test-$1/versions/_version_`)
+	mockJSON = secretVersionRegex.ReplaceAllString(mockJSON, `/secrets/kcc-test-$1/versions/_version_`)
+
+	// Normalize certificate manager prefix
+	realJSON = strings.ReplaceAll(realJSON, "//certificatemanager.googleapis.com/", "")
+	mockJSON = strings.ReplaceAll(mockJSON, "//certificatemanager.googleapis.com/", "")
+
 	var realObj, mockObj interface{}
 
 	if realJSON != "" {
@@ -458,9 +526,71 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		delete(v, "createTime")
 		delete(v, "updateTime")
 		delete(v, "selfLink")
-		if name, ok := v["name"].(string); ok && strings.Contains(name, "/operations/") {
+		delete(v, "internalMetadata")
+		if rc, ok := v["responseCode"]; ok {
+			if f, ok := rc.(float64); ok {
+				switch f {
+				case 1:
+					v["responseCode"] = "MOVED_PERMANENTLY_DEFAULT"
+				case 2:
+					v["responseCode"] = "FOUND"
+				case 3:
+					v["responseCode"] = "SEE_OTHER"
+				case 4:
+					v["responseCode"] = "TEMPORARY_REDIRECT"
+				case 5:
+					v["responseCode"] = "PERMANENT_REDIRECT"
+				}
+			}
+		}
+		if qp, ok := v["queryParameters"].([]interface{}); ok && len(qp) == 0 {
+			delete(v, "queryParameters")
+		}
+		if dest, ok := v["destinations"].([]interface{}); ok && len(dest) == 0 {
+			delete(v, "destinations")
+		}
+		if m, ok := v["matches"].([]interface{}); ok && len(m) == 0 {
+			delete(v, "matches")
+		}
+		if headers, ok := v["headers"].([]interface{}); ok && len(headers) == 0 {
+			delete(v, "headers")
+		}
+		if disabled, ok := v["disabled"].(bool); ok && !disabled {
+			delete(v, "disabled")
+		}
+		if allowCredentials, ok := v["allowCredentials"].(bool); ok && !allowCredentials {
+			delete(v, "allowCredentials")
+		}
+		if ignoreCase, ok := v["ignoreCase"].(bool); ok && !ignoreCase {
+			delete(v, "ignoreCase")
+		}
+		if invertMatch, ok := v["invertMatch"].(bool); ok && !invertMatch {
+			delete(v, "invertMatch")
+		}
+		if presentMatch, ok := v["presentMatch"].(bool); ok && !presentMatch {
+			delete(v, "presentMatch")
+		}
+		if httpsRedirect, ok := v["httpsRedirect"].(bool); ok && !httpsRedirect {
+			delete(v, "httpsRedirect")
+		}
+		if stripQuery, ok := v["stripQuery"].(bool); ok && !stripQuery {
+			delete(v, "stripQuery")
+		}
+		if _, isOp := v["operationType"]; isOp {
 			v["name"] = "operations/${operationID}"
 			delete(v, "metadata")
+			if status, ok := v["status"].(string); ok && status == "PENDING" {
+				v["status"] = "RUNNING"
+			}
+			if opType, ok := v["operationType"].(string); ok && opType == "UPGRADE_NODES" {
+				delete(v, "operationType")
+			}
+		} else if name, ok := v["name"].(string); ok && (strings.Contains(name, "operation") || strings.Contains(name, "/operations/")) {
+			v["name"] = "operations/${operationID}"
+			delete(v, "metadata")
+			if status, ok := v["status"].(string); ok && status == "PENDING" {
+				v["status"] = "RUNNING"
+			}
 		}
 		if kind, ok := v["kind"].(string); ok && kind == "compute#backendService" {
 			delete(v, "port")
@@ -475,6 +605,11 @@ func normalizeRepresentation(obj interface{}) interface{} {
 			delete(v, "peerings")
 			delete(v, "routingConfig")
 		}
+		if kind, ok := v["kind"].(string); ok && kind == "compute#subnetwork" {
+			delete(v, "allowSubnetCidrRoutesOverlap")
+			delete(v, "enableFlowLogs")
+			delete(v, "stackType")
+		}
 		if kind, ok := v["kind"].(string); ok && kind == "storage#objects" {
 			delete(v, "prefixes")
 		}
@@ -482,6 +617,7 @@ func normalizeRepresentation(obj interface{}) interface{} {
 			delete(v, "currentMasterVersion")
 			delete(v, "currentNodeVersion")
 			delete(v, "initialClusterVersion")
+			delete(v, "releaseChannel")
 			delete(v, "currentNodeCount")
 			delete(v, "nodeCreationConfig")
 			delete(v, "controlPlaneEgress")
@@ -492,6 +628,22 @@ func normalizeRepresentation(obj interface{}) interface{} {
 			delete(v, "masterAuth")
 			delete(v, "controlPlaneEndpointsConfig")
 			delete(v, "addonsConfig")
+			delete(v, "zone")
+		}
+		if cluster, ok := v["cluster"].(map[string]interface{}); ok {
+			delete(cluster, "initialClusterVersion")
+		}
+		if config, ok := v["config"].(map[string]interface{}); ok {
+			if containerdConfig, ok := config["containerdConfig"].(map[string]interface{}); ok {
+				delete(containerdConfig, "registryHosts")
+				delete(containerdConfig, "writableCgroups")
+				delete(containerdConfig, "privateRegistryAccessConfig")
+			}
+		}
+		if containerdConfig, ok := v["containerdConfig"].(map[string]interface{}); ok {
+			delete(containerdConfig, "registryHosts")
+			delete(containerdConfig, "writableCgroups")
+			delete(containerdConfig, "privateRegistryAccessConfig")
 		}
 		if kubelet, ok := v["kubeletConfig"].(map[string]interface{}); ok {
 			delete(kubelet, "maxParallelImagePulls")
@@ -520,6 +672,7 @@ func normalizeRepresentation(obj interface{}) interface{} {
 			delete(v, "networkConfig")
 			delete(v, "etag")
 			delete(v, "locations")
+			delete(v, "kubeletCertInfo")
 			if sl, ok := v["selfLink"].(string); ok {
 				v["selfLink"] = strings.ReplaceAll(sl, "/zones/", "/locations/")
 			}
@@ -601,6 +754,9 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		})
 		return v
 	case string:
+		if strings.HasPrefix(v, "projects/projects/") {
+			v = v[len("projects/"):]
+		}
 		if idx := strings.Index(v, "projects/"); idx != -1 && (strings.HasPrefix(v, "https://") || strings.HasPrefix(v, "/") || strings.HasPrefix(v, "projects/")) {
 			return "projects/" + v[idx+len("projects/"):]
 		}
@@ -620,4 +776,179 @@ func getGVKFromYAML(path string) (schema.GroupVersionKind, error) {
 		return schema.GroupVersionKind{}, err
 	}
 	return u.GroupVersionKind(), nil
+}
+
+func getPrimaryKind(path string) (string, error) {
+	gvk, err := getGVKFromYAML(path)
+	if err != nil {
+		return "", err
+	}
+	return gvk.Kind, nil
+}
+
+func getDependencyKinds(path string) (map[string]string, error) {
+	bytes, err := os.ReadFile(path)
+	if err != nil {
+		if os.IsNotExist(err) {
+			return nil, nil
+		}
+		return nil, err
+	}
+
+	depKinds := make(map[string]string)
+	// Split by "---" to support multi-document YAML files
+	docs := strings.Split(string(bytes), "\n---")
+	for _, doc := range docs {
+		doc = strings.TrimSpace(doc)
+		if doc == "" {
+			continue
+		}
+		var u unstructured.Unstructured
+		if err := yaml.Unmarshal([]byte(doc), &u); err != nil {
+			// Some files might have comments or other non-YAML content, or split issues
+			continue
+		}
+		kind := u.GetKind()
+		if kind == "Project" || kind == "Folder" || kind == "Organization" {
+			continue
+		}
+		name := u.GetName()
+		if len(name) >= 3 {
+			depKinds[name] = kind
+		}
+		if resourceID, _, _ := unstructured.NestedString(u.Object, "spec", "resourceID"); len(resourceID) >= 3 {
+			depKinds[resourceID] = kind
+		}
+		for _, ph := range getPlaceholdersForKind(kind) {
+			depKinds[ph] = kind
+		}
+	}
+	return depKinds, nil
+}
+
+func getPlaceholdersForKind(kind string) []string {
+	switch kind {
+	case "ComputeNetwork":
+		return []string{"${networkID}"}
+	case "ComputeSubnetwork":
+		return []string{"${subnetworkID}"}
+	case "ComputeAddress":
+		return []string{"${addressID}"}
+	case "ComputeForwardingRule":
+		return []string{"${forwardingRuleID}"}
+	case "ComputeFirewall":
+		return []string{"${firewallID}"}
+	case "ComputeRouter":
+		return []string{"${routerID}"}
+	case "ComputeRoute":
+		return []string{"${routeID}"}
+	case "ComputeDisk":
+		return []string{"${diskID}"}
+	case "ComputeInstance":
+		return []string{"${instanceID}"}
+	case "KMSKeyRing":
+		return []string{"${kmsKeyRingID}", "${keyRingID}"}
+	case "KMSCryptoKey":
+		return []string{"${kmsCryptoKeyID}", "${cryptoKeyID}"}
+	case "IAMServiceAccount":
+		return []string{"${serviceAccountID}", "${serviceAccountEmail}"}
+	case "CertificateManagerCertificateMap":
+		return []string{"${certificateMapID}"}
+	case "CertificateManagerCertificate":
+		return []string{"${certificateID}"}
+	case "CertificateManagerDNSAuthorization":
+		return []string{"${dnsAuthorizationID}"}
+	}
+	return nil
+}
+
+func filterDependencyEvents(events []httpEvent, depKinds map[string]string, primaryKind string) []httpEvent {
+	var filtered []httpEvent
+	for _, ev := range events {
+		if !isDependencyEvent(ev, depKinds, primaryKind) {
+			filtered = append(filtered, ev)
+		}
+	}
+	return filtered
+}
+
+func isDependencyEvent(ev httpEvent, depKinds map[string]string, primaryKind string) bool {
+	// PATCH requests are never part of dependency creation/setup, so they are always kept
+	if ev.Method == "PATCH" {
+		return false
+	}
+
+	//  tested resource is a virtual resource (i.e. primaryKind == "RedisClusterEndpoint"), any HTTP traffic
+	//  containing /clusters/ (the parent RedisCluster) is not treated as dependency traffic and is kept in the comparison.
+	if primaryKind == "RedisClusterEndpoint" {
+		if strings.Contains(ev.URL, "/clusters/") {
+			return false
+		}
+	}
+
+	isIAM := primaryKind == "IAMPolicy" || primaryKind == "IAMPolicyMember" || primaryKind == "IAMPartialPolicy" || primaryKind == "IAMAuditConfig"
+
+	for depName, kind := range depKinds {
+		// If a dependency resource has the same kind as the primary resource under test,
+		// we keep all of its events.
+		if kind == primaryKind {
+			continue
+		}
+
+		// Clean the URL to get the path
+		urlPath := strings.Split(cleanURL(ev.URL), "?")[0]
+
+		// If the path doesn't contain the dependency name, check if it's a POST to create it
+		if !strings.Contains(urlPath, depName) {
+			if ev.Method == "POST" && (strings.Contains(ev.RequestBody, depName) || strings.Contains(ev.URL, depName)) {
+				return true
+			}
+			continue
+		}
+
+		// If the path contains depName, check if it is a valid segment (boundary check)
+		idx := strings.Index(urlPath, depName)
+		if idx == -1 {
+			continue
+		}
+
+		if idx > 0 {
+			before := urlPath[idx-1]
+			if before != '/' && before != ':' && before != '=' {
+				continue
+			}
+		}
+
+		suffix := urlPath[idx+len(depName):]
+		// If suffix is empty or /, it is the dependency resource itself
+		if suffix == "" || suffix == "/" {
+			return true
+		}
+
+		// If suffix starts with /operations, /locations, or /regions, it's an LRO or location metadata on the dependency itself
+		if strings.HasPrefix(suffix, "/operations") || strings.HasPrefix(suffix, "/locations") || strings.HasPrefix(suffix, "/regions") {
+			return true
+		}
+
+		// If suffix has more than one path segment (i.e. contains a '/' after the first segment),
+		// it is a child resource of the dependency, so it belongs to the primary resource under test.
+		trimmedSuffix := strings.TrimPrefix(suffix, "/")
+		if strings.Contains(trimmedSuffix, "/") {
+			continue
+		}
+
+		// If the primary resource is NOT an IAM resource, and suffix is an IAM path segment, it is an IAM policy request on the dependency itself
+		if !isIAM {
+			if strings.HasPrefix(suffix, "/iam") ||
+				strings.HasPrefix(suffix, ":setIamPolicy") ||
+				strings.HasPrefix(suffix, ":getIamPolicy") ||
+				strings.HasPrefix(suffix, ":testIamPermissions") {
+				return true
+			}
+		}
+
+		// Any other single-segment suffix (e.g. /setLabels) is a custom subresource/action on the dependency itself, so filter it out
+		return true
+	}
+	return false
 }

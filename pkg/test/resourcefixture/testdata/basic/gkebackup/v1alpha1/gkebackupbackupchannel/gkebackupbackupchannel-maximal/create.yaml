@@ -21,7 +21,7 @@ spec:
     external: ${projectId}
   location: us-central1
   destinationProjectRef:
-    external: projects/${projectId}
+    external: projects/shared-reservations-project
   description: "Initial GKE Backup Channel Description"
   labels:
     foo: bar

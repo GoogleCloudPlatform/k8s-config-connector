@@ -111,7 +111,9 @@ func (c *httpMethodCall) SendResponse(response proto.Message, responseOptions Re
 
 	c.parent.addGCPHeaders(ctx, c.w, response)
 
-	marshalOptions := protojson.MarshalOptions{}
+	marshalOptions := protojson.MarshalOptions{
+		Resolver: &protoResolver{},
+	}
 	responseOptions.populateMarshalOptions(&marshalOptions)
 
 	if c.grpcMethod != nil {

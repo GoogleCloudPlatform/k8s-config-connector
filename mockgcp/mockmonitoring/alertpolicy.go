@@ -136,7 +136,7 @@ func (s *AlertPolicyService) UpdateAlertPolicy(ctx context.Context, req *pb.Upda
 	updated := proto.CloneOf(existing)
 	paths := req.GetUpdateMask().GetPaths()
 	if len(paths) == 0 {
-		paths = []string{"display_name", "enabled", "conditions", "documentation", "combiner", "notification_channels", "severity"}
+		paths = []string{"display_name", "enabled", "conditions", "documentation", "combiner", "notification_channels", "severity", "user_labels"}
 	}
 
 	for _, path := range paths {
@@ -155,6 +155,8 @@ func (s *AlertPolicyService) UpdateAlertPolicy(ctx context.Context, req *pb.Upda
 			updated.NotificationChannels = req.GetAlertPolicy().GetNotificationChannels()
 		case "severity":
 			updated.Severity = req.GetAlertPolicy().GetSeverity()
+		case "userLabels", "user_labels":
+			updated.UserLabels = req.GetAlertPolicy().GetUserLabels()
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not supported by mock (full update_mask=%v)", path, req.GetUpdateMask())
 		}

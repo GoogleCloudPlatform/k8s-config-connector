@@ -1,5 +1,5 @@
-#!/usr/bin/env python3
-# Copyright 2025 Google LLC
+#!/usr/bin/env bash
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,38 +13,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import os
-import subprocess
-import sys
+set -o errexit
+set -o nounset
+set -o pipefail
 
+function on_error() {
+  echo "<hint_for_agent>Run 'make generate' to update generated code.</hint_for_agent>"
+}
+trap on_error ERR
 
-def run_and_verify_no_changes(command):
-    subprocess.run(command, check=True)
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+cd "${REPO_ROOT}"
 
-    # Use subprocess.check_output to check for any changes (tracked or untracked).
-    status_output = subprocess.check_output(["git", "status", "--porcelain"]).decode("utf-8").strip()
-    if status_output:
-        print("Full diff:")
-        # Use subprocess.run to simply execute and print the output of git diff
-        subprocess.run(["git", "--no-pager", "diff"])
-        print("ERROR: Generated files out-of-date. Please run '{}' and update your PR.".format(" ".join(command)))
-        print("<hint_for_agent>Generated files out of date.  Run '{}' to regenerate, and then update your PR.</hint_for_agent>".format(" ".join(command)))
-        print("Affected files:")
-        print(status_output)
-        sys.exit(1)
+make generate
 
-
-def main():
-    """Runs the validation logic."""
-
-    repo_root = subprocess.check_output(["git", "rev-parse", "--show-toplevel"]).strip().decode("utf-8")
-    os.chdir(repo_root)
-
-    run_and_verify_no_changes(["dev/tasks/generate-github-actions"])
-    run_and_verify_no_changes(["dev/tasks/generate-types-and-mappers"])
-    run_and_verify_no_changes(["dev/tasks/generate-crds"])
-    run_and_verify_no_changes(["dev/tasks/generate_static_config.py"])
-    run_and_verify_no_changes(["make", "resource-docs"])
-
-if __name__ == "__main__":
-    main()
+changed_files=$(git diff --name-only)
+if [[ -n "${changed_files}" ]]; then
+  echo "ERROR: Generated code out-of-date. Please run 'make generate' and update your PR."
+  git diff
+  exit 1
+fi

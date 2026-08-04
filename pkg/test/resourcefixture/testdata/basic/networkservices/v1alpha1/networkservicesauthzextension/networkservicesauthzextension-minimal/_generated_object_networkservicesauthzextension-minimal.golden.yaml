@@ -1,0 +1,32 @@
+apiVersion: networkservices.cnrm.cloud.google.com/v1alpha1
+kind: NetworkServicesAuthzExtension
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  labels:
+    cnrm-test: "true"
+  name: authzext-min-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  authority: ext-service.example.com:443
+  backendServiceRef:
+    name: ${backendServiceID}
+  loadBalancingScheme: INTERNAL_MANAGED
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+  timeout: 0.100s
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/authzExtensions/authzext-min-${uniqueId}
+  observedGeneration: 1
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    updateTime: "1970-01-01T00:00:00Z"

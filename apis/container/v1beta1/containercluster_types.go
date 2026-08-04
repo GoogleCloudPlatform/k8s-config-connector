@@ -920,6 +920,10 @@ type NodeConfig struct {
 	// +kcc:proto:field=google.container.v1.NodeConfig.kubelet_config
 	KubeletConfig *KubeletConfig `json:"kubeletConfig,omitempty"`
 
+	/* Parameters for containerd customization. */
+	// +kcc:proto:field=google.container.v1.NodeConfig.containerd_config
+	ContainerdConfig *ContainerdConfig `json:"containerdConfig,omitempty"`
+
 	/* Immutable. The map of Kubernetes labels (key/value pairs) to be applied to each node. These will added in addition to any default label(s) that Kubernetes may apply to the node. */
 	// +kcc:proto:field=google.container.v1.NodeConfig.labels
 	Labels map[string]string `json:"labels,omitempty"`
@@ -1474,6 +1478,10 @@ type ContainerClusterSpec struct {
 	/* Immutable. The number of nodes to create in this cluster's default node pool. In regional or multi-zonal clusters, this is the number of nodes per zone. Must be set if node_pool is not set. If you're using google_container_node_pool objects with no default node pool, you'll need to set this to a value of at least 1, alongside setting remove_default_node_pool to true. */
 	// +kcc:proto:field=google.container.v1.Cluster.initial_node_count
 	InitialNodeCount *int `json:"initialNodeCount,omitempty"`
+
+	/* In-transit encryption options for the cluster. Possible values are IN_TRANSIT_ENCRYPTION_CONFIG_UNSPECIFIED, IN_TRANSIT_ENCRYPTION_DISABLED, IN_TRANSIT_ENCRYPTION_INTER_NODE_TRANSPARENT*/
+	// +kcc:proto:field=google.container.v1.Cluster.network_config.in_transit_encryption_config
+	InTransitEncryptionConfig *string `json:"inTransitEncryptionConfig,omitempty"`
 
 	/* Immutable. Configuration of cluster IP allocation for VPC-native clusters. Adding this block enables IP aliasing, making the cluster VPC-native instead of routes-based. */
 	// +kcc:proto:field=google.container.v1.Cluster.ip_allocation_policy

@@ -239,8 +239,12 @@ func subtractFromBindings(bindings []*cloudresourcemanager.Binding, toRemove ...
 			continue
 		}
 		// Remove all removed members
-		for m := range removeSet {
-			delete(members, m)
+		for mToRemove := range removeSet {
+			for mActual := range members {
+				if iamMemberMatches(mActual, mToRemove) {
+					delete(members, mActual)
+				}
+			}
 		}
 		// Remove role+condition from bindings
 		if len(members) == 0 {
@@ -257,6 +261,20 @@ func iamMemberIsCaseSensitive(member string) bool {
 	return strings.Contains(member, "allAuthenticatedUsers") || strings.Contains(member, "allUsers") ||
 		strings.HasPrefix(member, "principalSet:") || strings.HasPrefix(member, "principal:") ||
 		strings.HasPrefix(member, "principalHierarchy:")
+}
+
+func iamMemberMatches(member, wantMember string) bool {
+	return strings.EqualFold(iamStripTombstone(member), iamStripTombstone(wantMember))
+}
+
+func iamStripTombstone(member string) string {
+	if strings.HasPrefix(strings.ToLower(member), "deleted:") {
+		member = member[len("deleted:"):]
+	}
+	if i := strings.Index(member, "?"); i != -1 {
+		member = member[:i]
+	}
+	return member
 }
 
 // normalizeIamMemberCasing returns the case adjusted value of an iamMember

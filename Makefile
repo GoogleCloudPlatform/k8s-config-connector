@@ -30,9 +30,13 @@ GOLANGCI_LINT_VERSION := v2.9.0
 
 # Use Docker BuildKit when building images to allow usage of 'setcap' in
 # multi-stage builds (https://github.com/moby/moby/issues/38132)
-DOCKER_BUILD := DOCKER_BUILDKIT=1 docker build
+DOCKER_BUILD := docker buildx build --load --cache-from=type=gha,scope=kcc --cache-to=type=gha,mode=max,scope=kcc $(DOCKER_BUILD_FLAGS)
 
-KUSTOMIZE=go run sigs.k8s.io/kustomize/kustomize/v5@v5.3.0
+KUSTOMIZE ?= ./bin/kustomize
+
+bin/kustomize:
+	@mkdir -p bin
+	GOBIN=$(shell pwd)/bin go install sigs.k8s.io/kustomize/kustomize/v5@v5.3.0
 
 GKE_DISTROLESS_IMG := gcr.io/gke-release/gke-distroless/static:gke_distroless_20260207.00_p0
 
@@ -86,13 +90,25 @@ manager: generate fmt vet
 generate-crds:
 	./dev/tasks/generate-crds
 
+bin/generate-crds: ./scripts/generate-crds/*.go
+	@mkdir -p bin
+	go build -o bin/generate-crds ./scripts/generate-crds
+
+bin/generate-cnrm-cluster-roles: ./scripts/generate-cnrm-cluster-roles/*.go
+	@mkdir -p bin
+	go build -o bin/generate-cnrm-cluster-roles ./scripts/generate-cnrm-cluster-roles
+
+bin/generate-gvks: ./scripts/generate-gvks/*.go
+	@mkdir -p bin
+	go build -o bin/generate-gvks ./scripts/generate-gvks
+
 # Generate manifests e.g. CRD, RBAC etc.
 .PHONY: manifests
-manifests: generate
+manifests: bin/kustomize bin/generate-crds bin/generate-cnrm-cluster-roles bin/generate-gvks generate
 	make -C operator manifests
 	rm -rf config/crds/resources
 	rm -rf config/crds/tmp_resources
-	go build -o bin/generate-crds ./scripts/generate-crds && ./bin/generate-crds -output-dir=config/crds/tmp_resources
+	./bin/generate-crds -output-dir=config/crds/tmp_resources
 	# add kustomize patches on all CRDs
 	mkdir config/crds/resources
 	cp config/crds/kustomization.yaml kustomization.yaml
@@ -106,11 +122,11 @@ manifests: generate
 
 	# Generating cnrm cluster roles is dependent on the existence of directory
 	# config/crds/resources with all the freshly generated CRDs.
-	go run ./scripts/generate-cnrm-cluster-roles/main.go
+	./bin/generate-cnrm-cluster-roles
 
 	# Generating list of all supported GVKs is dependent on the existence of directory
 	# config/crds/resources with all the freshly generated CRDs.
-	go run ./scripts/generate-gvks/main.go -output-dir=pkg/gvks/supportedgvks
+	./bin/generate-gvks -output-dir=pkg/gvks/supportedgvks
 
 # Format code
 .PHONY: fmt
@@ -180,10 +196,14 @@ docker-build: docker-build-manager docker-build-recorder docker-build-webhook do
 docker-build-builder:
 	$(DOCKER_BUILD) . -f build/builder/Dockerfile -t ${BUILDER_IMG}
 
+BUILDER_REPO ?= $(shell echo "${BUILDER_IMG}" | cut -d':' -f1)
+
+BUILDER_CONTEXT_FLAG = --build-context $(BUILDER_IMG)=docker-image://$(BUILDER_IMG)
+
 # Build the manager docker image
 .PHONY: docker-build-manager
 docker-build-manager: docker-build-builder
-	$(DOCKER_BUILD) -t ${CONTROLLER_IMG} --build-arg BUILDER_IMG=${BUILDER_IMG} --build-arg GKE_DISTROLESS_IMG=${GKE_DISTROLESS_IMG} - < build/manager/Dockerfile
+	$(DOCKER_BUILD) . -f build/manager/Dockerfile -t ${CONTROLLER_IMG} $(BUILDER_CONTEXT_FLAG) --build-arg BUILDER_IMG=${BUILDER_IMG} --build-arg GKE_DISTROLESS_IMG=${GKE_DISTROLESS_IMG}
 	@echo "updating kustomize image patch file for manager resource"
 	cp config/installbundle/components/manager/base/manager_image_patch_template.yaml config/installbundle/components/manager/base/manager_image_patch.yaml
 	sed -i'' -e 's@image: .*@image: '"${CONTROLLER_IMG}"'@' ./config/installbundle/components/manager/base/manager_image_patch.yaml
@@ -191,7 +211,7 @@ docker-build-manager: docker-build-builder
 # Build the recorder docker image
 .PHONY: docker-build-recorder
 docker-build-recorder: docker-build-builder
-	$(DOCKER_BUILD) -t ${RECORDER_IMG} --build-arg BUILDER_IMG=${BUILDER_IMG} --build-arg GKE_DISTROLESS_IMG=${GKE_DISTROLESS_IMG} - < build/recorder/Dockerfile
+	$(DOCKER_BUILD) . -f build/recorder/Dockerfile -t ${RECORDER_IMG} $(BUILDER_CONTEXT_FLAG) --build-arg BUILDER_IMG=${BUILDER_IMG} --build-arg GKE_DISTROLESS_IMG=${GKE_DISTROLESS_IMG}
 	@echo "updating kustomize image patch file for recorder resource"
 	cp config/installbundle/components/recorder/recorder_image_patch_template.yaml config/installbundle/components/recorder/recorder_image_patch.yaml
 	sed -i'' -e 's@image: .*@image: '"${RECORDER_IMG}"'@' ./config/installbundle/components/recorder/recorder_image_patch.yaml
@@ -199,28 +219,28 @@ docker-build-recorder: docker-build-builder
 # Build the webhook docker image
 .PHONY: docker-build-webhook
 docker-build-webhook: docker-build-builder
-	$(DOCKER_BUILD) -t ${WEBHOOK_IMG} --build-arg BUILDER_IMG=${BUILDER_IMG} --build-arg GKE_DISTROLESS_IMG=${GKE_DISTROLESS_IMG} - < build/webhook/Dockerfile
+	$(DOCKER_BUILD) . -f build/webhook/Dockerfile -t ${WEBHOOK_IMG} $(BUILDER_CONTEXT_FLAG) --build-arg BUILDER_IMG=${BUILDER_IMG} --build-arg GKE_DISTROLESS_IMG=${GKE_DISTROLESS_IMG}
 	@echo "updating kustomize image patch file for webhook resource"
 	cp config/installbundle/components/webhook/webhook_image_patch_template.yaml config/installbundle/components/webhook/webhook_image_patch.yaml
 	sed -i'' -e 's@image: .*@image: '"${WEBHOOK_IMG}"'@' ./config/installbundle/components/webhook/webhook_image_patch.yaml
 
 .PHONY: docker-build-deletiondefender
 docker-build-deletiondefender: docker-build-builder
-	$(DOCKER_BUILD) -t ${DELETION_DEFENDER_IMG} --build-arg BUILDER_IMG=${BUILDER_IMG} --build-arg GKE_DISTROLESS_IMG=${GKE_DISTROLESS_IMG} - < build/deletiondefender/Dockerfile
+	$(DOCKER_BUILD) . -f build/deletiondefender/Dockerfile -t ${DELETION_DEFENDER_IMG} $(BUILDER_CONTEXT_FLAG) --build-arg BUILDER_IMG=${BUILDER_IMG} --build-arg GKE_DISTROLESS_IMG=${GKE_DISTROLESS_IMG}
 	@echo "updating kustomize image patch file for deletion defender resource"
 	cp config/installbundle/components/deletiondefender/deletiondefender_image_patch_template.yaml config/installbundle/components/deletiondefender/deletiondefender_image_patch.yaml
 	sed -i'' -e 's@image: .*@image: '"${DELETION_DEFENDER_IMG}"'@' ./config/installbundle/components/deletiondefender/deletiondefender_image_patch.yaml
 
 .PHONY: docker-build-unmanageddetector
 docker-build-unmanageddetector: docker-build-builder
-	$(DOCKER_BUILD) -t ${UNMANAGED_DETECTOR_IMG} --build-arg BUILDER_IMG=${BUILDER_IMG} --build-arg GKE_DISTROLESS_IMG=${GKE_DISTROLESS_IMG} - < build/unmanageddetector/Dockerfile
+	$(DOCKER_BUILD) . -f build/unmanageddetector/Dockerfile -t ${UNMANAGED_DETECTOR_IMG} $(BUILDER_CONTEXT_FLAG) --build-arg BUILDER_IMG=${BUILDER_IMG} --build-arg GKE_DISTROLESS_IMG=${GKE_DISTROLESS_IMG}
 	@echo "updating kustomize image patch file for unmanaged detector resource"
 	cp config/installbundle/components/unmanageddetector/unmanageddetector_image_patch_template.yaml config/installbundle/components/unmanageddetector/unmanageddetector_image_patch.yaml
 	sed -i'' -e 's@image: .*@image: '"${UNMANAGED_DETECTOR_IMG}"'@' ./config/installbundle/components/unmanageddetector/unmanageddetector_image_patch.yaml
 
 .PHONY: docker-build-config-connector
 docker-build-config-connector: docker-build-builder
-	$(DOCKER_BUILD) -t ${CONFIG_CONNECTOR_IMG} --build-arg BUILDER_IMG=${BUILDER_IMG} --build-arg GKE_DISTROLESS_IMG=${GKE_DISTROLESS_IMG} - < build/config-connector/Dockerfile
+	$(DOCKER_BUILD) . -f build/config-connector/Dockerfile -t ${CONFIG_CONNECTOR_IMG} $(BUILDER_CONTEXT_FLAG) --build-arg BUILDER_IMG=${BUILDER_IMG} --build-arg GKE_DISTROLESS_IMG=${GKE_DISTROLESS_IMG}
 
 # Push the docker image
 .PHONY: docker-push

@@ -1,5 +1,5 @@
-#!/bin/bash
-# Copyright 2025 Google LLC
+#!/usr/bin/env bash
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -25,20 +25,7 @@ trap on_error ERR
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}/
 
-APIGROUPS=(
-    "iam.cnrm.cloud.google.com"
-)
-
 export KCC_USE_DIRECT_RECONCILERS="IAMPartialPolicy"
+export KCC_RECONCILE_FLAG_GATE="USE_DEPENDENCY_TRACKER"
 
-# Running direct tests
-export ONLY_TEST_APIGROUPS=$(IFS=,; echo "${APIGROUPS[*]}")
-${REPO_ROOT}/dev/tasks/run-e2e
-
-# Running direct and tracker tests
-export KCC_RECONCILE_FLAG_GATE=USE_DEPENDENCY_TRACKER
-unset ONLY_TEST_APIGROUPS
-
-echo "Running fixture and sample iam tests with the gcptracker..."
-export RUN_TESTS='TestAllInSeries/samples/iampartialpolicy'
-${REPO_ROOT}/dev/tasks/run-e2e
+exec ${REPO_ROOT}/dev/ci/presubmits/tests-e2e-fixtures-suite iam

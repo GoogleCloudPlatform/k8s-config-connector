@@ -129,7 +129,7 @@ func (a *networkPeeringAdapter) Create(ctx context.Context, createOp *directbase
 
 	mapCtx := &direct.MapContext{}
 	desired := a.desired.DeepCopy()
-	resource := VMwareEngineNetworkPeeringSpec_ToProto(mapCtx, &desired.Spec)
+	resource := VMwareEngineNetworkPeeringSpec_v1alpha1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -168,7 +168,7 @@ func (a *networkPeeringAdapter) Update(ctx context.Context, updateOp *directbase
 
 	mapCtx := &direct.MapContext{}
 	desired := a.desired.DeepCopy()
-	resource := VMwareEngineNetworkPeeringSpec_ToProto(mapCtx, &desired.Spec)
+	resource := VMwareEngineNetworkPeeringSpec_v1alpha1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -256,7 +256,7 @@ func (a *networkPeeringAdapter) Export(ctx context.Context) (*unstructured.Unstr
 
 	obj := &krm.VMwareEngineNetworkPeering{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(VMwareEngineNetworkPeeringSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(VMwareEngineNetworkPeeringSpec_v1alpha1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}

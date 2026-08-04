@@ -27,7 +27,7 @@ import (
 	pb "cloud.google.com/go/networksecurity/apiv1/networksecuritypb"
 	krmcomputev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networksecurity/v1alpha1"
-	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	networksecurityv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networksecurity/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -65,7 +65,7 @@ func NetworkSecurityMirroringDeploymentSpec_FromProto(mapCtx *direct.MapContext,
 		out.ForwardingRuleRef = &krmcomputev1beta1.ForwardingRuleRef{External: in.GetForwardingRule()}
 	}
 	if in.GetMirroringDeploymentGroup() != "" {
-		out.MirroringDeploymentGroupRef = &refsv1beta1.NetworkSecurityMirroringDeploymentGroupRef{External: in.GetMirroringDeploymentGroup()}
+		out.MirroringDeploymentGroupRef = &networksecurityv1alpha1.NetworkSecurityMirroringDeploymentGroupRef{External: in.GetMirroringDeploymentGroup()}
 	}
 	out.Description = direct.LazyPtr(in.GetDescription())
 	return out

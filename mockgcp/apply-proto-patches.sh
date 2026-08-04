@@ -161,3 +161,119 @@ EOF
 
   sed -i 's/^syntax = "proto3";/syntax = "proto2";/' ${API_PROTO}
 fi
+
+# Dataform patches
+
+go run . --file ${REPO_ROOT}/mockgcp/third_party/googleapis/google/cloud/dataform/v1/dataform.proto --service "Dataform" --mode "append" <<EOF
+  // Fetches a single TeamFolder.
+  rpc GetTeamFolder(GetTeamFolderRequest) returns (TeamFolder) {
+    option (google.api.http) = {
+      get: "/v1/{name=projects/*/locations/*/teamFolders/*}"
+    };
+    option (google.api.method_signature) = "name";
+  }
+
+  // Creates a new TeamFolder in a given project and location.
+  rpc CreateTeamFolder(CreateTeamFolderRequest) returns (TeamFolder) {
+    option (google.api.http) = {
+      post: "/v1/{parent=projects/*/locations/*}/teamFolders"
+      body: "team_folder"
+    };
+    option (google.api.method_signature) = "parent,team_folder";
+  }
+
+  // Updates a single TeamFolder.
+  rpc UpdateTeamFolder(UpdateTeamFolderRequest) returns (TeamFolder) {
+    option (google.api.http) = {
+      patch: "/v1/{team_folder.name=projects/*/locations/*/teamFolders/*}"
+      body: "team_folder"
+    };
+    option (google.api.method_signature) = "team_folder,update_mask";
+  }
+
+  // Deletes a single TeamFolder.
+  rpc DeleteTeamFolder(DeleteTeamFolderRequest)
+      returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/v1/{name=projects/*/locations/*/teamFolders/*}"
+    };
+    option (google.api.method_signature) = "name";
+  }
+EOF
+
+cat >> ${REPO_ROOT}/mockgcp/third_party/googleapis/google/cloud/dataform/v1/dataform.proto <<EOF
+
+// \`GetTeamFolder\` request message.
+message GetTeamFolderRequest {
+  // Required. The team folder's name.
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference) = {
+      type: "dataform.googleapis.com/TeamFolder"
+    }
+  ];
+}
+
+// \`CreateTeamFolder\` request message.
+message CreateTeamFolderRequest {
+  // Required. The location in which to create the TeamFolder. Must be in the
+  // format \`projects/*/locations/*\`.
+  string parent = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference) = {
+      type: "locations.googleapis.com/Location"
+    }
+  ];
+
+  // Required. The TeamFolder to create.
+  TeamFolder team_folder = 2 [(google.api.field_behavior) = REQUIRED];
+}
+
+// \`UpdateTeamFolder\` request message.
+message UpdateTeamFolderRequest {
+  // Optional. Specifies the fields to be updated in the Folder. If left unset,
+  // all fields will be updated.
+  google.protobuf.FieldMask update_mask = 1
+      [(google.api.field_behavior) = OPTIONAL];
+
+  // Required. The updated TeamFolder.
+  TeamFolder team_folder = 2 [(google.api.field_behavior) = REQUIRED];
+}
+
+// \`DeleteTeamFolder\` request message.
+message DeleteTeamFolderRequest {
+  // Required. The team folder's name.
+  string name = 1 [
+    (google.api.field_behavior) = REQUIRED,
+    (google.api.resource_reference) = {
+      type: "dataform.googleapis.com/TeamFolder"
+    }
+  ];
+}
+
+// Represents a Dataform team folder.
+message TeamFolder {
+  option (google.api.resource) = {
+    type: "dataform.googleapis.com/TeamFolder"
+    pattern: "projects/{project}/locations/{location}/teamFolders/{team_folder}"
+  };
+
+  // Identifier. The TeamFolder's name.
+  string name = 1 [(google.api.field_behavior) = IDENTIFIER];
+
+  // Required. The TeamFolder's user-friendly name.
+  string display_name = 2 [(google.api.field_behavior) = REQUIRED];
+
+  // Output only. The timestamp of when the TeamFolder was created.
+  google.protobuf.Timestamp create_time = 3 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Output only. The timestamp of when the TeamFolder was last updated.
+  google.protobuf.Timestamp update_time = 4 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Output only. Real-time metadata about the TeamFolder.
+  string internal_metadata = 5 [(google.api.field_behavior) = OUTPUT_ONLY];
+
+  // Output only. The IAM principal of the creator of the TeamFolder.
+  string creator_iam_principal = 6 [(google.api.field_behavior) = OUTPUT_ONLY];
+}
+EOF

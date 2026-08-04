@@ -91,6 +91,10 @@ func (c *FakeNetworksecurityV1alpha1) NetworkSecuritySecurityProfiles(namespace 
 	return newFakeNetworkSecuritySecurityProfiles(c, namespace)
 }
 
+func (c *FakeNetworksecurityV1alpha1) NetworkSecuritySecurityProfileGroups(namespace string) v1alpha1.NetworkSecuritySecurityProfileGroupInterface {
+	return newFakeNetworkSecuritySecurityProfileGroups(c, namespace)
+}
+
 func (c *FakeNetworksecurityV1alpha1) NetworkSecurityTLSInspectionPolicies(namespace string) v1alpha1.NetworkSecurityTLSInspectionPolicyInterface {
 	return newFakeNetworkSecurityTLSInspectionPolicies(c, namespace)
 }

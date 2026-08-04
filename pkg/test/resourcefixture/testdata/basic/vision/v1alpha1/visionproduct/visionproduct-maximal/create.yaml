@@ -1,0 +1,16 @@
+apiVersion: vision.cnrm.cloud.google.com/v1alpha1
+kind: VisionProduct
+metadata:
+  name: visionproduct-max-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-west1
+  displayName: "Maximal Vision Product"
+  description: "A product with all fields specified"
+  productCategory: apparel-v2
+  productLabels:
+    - key: "color"
+      value: "blue"
+    - key: "season"
+      value: "summer"

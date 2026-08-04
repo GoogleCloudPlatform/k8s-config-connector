@@ -1,0 +1,83 @@
+apiVersion: notebooks.cnrm.cloud.google.com/v1alpha1
+kind: NotebookInstanceV2
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: ni2-full-gce-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  disableProxyAccess: false
+  gceSetup:
+    acceleratorConfigs:
+    - coreCount: 1
+      type: NVIDIA_TESLA_T4
+    bootDisk:
+      diskEncryption: CMEK
+      diskSizeGB: 100
+      diskType: PD_SSD
+      kmsKeyRef:
+        name: kms-key-${uniqueId}
+    dataDisks:
+    - diskEncryption: CMEK
+      diskSizeGB: 100
+      diskType: PD_SSD
+      kmsKeyRef:
+        name: kms-key-${uniqueId}
+    disablePublicIP: true
+    enableIPForwarding: true
+    gpuDriverConfig:
+      customGpuDriverPath: gs://some-bucket/driver
+      enableGpuDriver: true
+    machineType: n1-standard-4
+    metadata:
+      enable-os-config: "true"
+      new-metadata: value
+    networkInterfaces:
+    - networkRef:
+        name: ${networkID}
+      nicType: GVNIC
+      subnetRef:
+        name: ${subnetworkID}
+    serviceAccounts:
+    - serviceAccountRef:
+        name: ni2-sa-${uniqueId}
+    shieldedInstanceConfig:
+      enableIntegrityMonitoring: true
+      enableSecureBoot: true
+      enableVTPM: true
+    tags:
+    - full-test
+    - updated
+    vmImage:
+      family: tf-latest-cpu
+      project: deeplearning-platform-release
+  instanceOwners:
+  - ${projectNumber}-compute@developer.gserviceaccount.com
+  labels:
+    test: full-gce
+    updated: "true"
+  location: us-central1-a
+  projectRef:
+    external: ${projectId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1-a/instances/ni2-full-gce-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    creator: someone@somewhere.com
+    gceSetup:
+      serviceAccounts:
+      - {}
+    proxyURI: https://ni2-full-gce-${uniqueId}-dot-us-central1.notebooks.googleusercontent.com
+    state: PROVISIONING
+    updateTime: "1970-01-01T00:00:00Z"

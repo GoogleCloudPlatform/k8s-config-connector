@@ -26,6 +26,12 @@
   4. Implemented `VertexAIStudy` IdentityV2 matching `projects/{project}/locations/{location}/studies/{study}` and verified it via unit tests.
 - **Impact**: Enables full structural representation of complex studies and hyperparameter tuning specs in KRM with 100% Go-compatible schemas, preserving nested and recursive specs natively.
 
+### 2026-07-06 Implementing VertexAISchedule Greenfield Types
+- **Context**: Implementing direct types and IdentityV2 for `VertexAISchedule` under `apis/aiplatform/v1alpha1/` (Issue #9248).
+- **Problem**: Running `validate-prereqs.sh` locally on a branch with uncommitted changes triggers formatting errors because the script checks `git diff --name-only` expecting a committed state.
+- **Solution**: Followed the `send-pr` workflow by committing the scaffolded types, CRD, and Identity files first before executing the PR sending script.
+- **Impact**: Demonstrates that the `generate.sh` script robustly handles multiple direct resources in `aiplatform` without pruned/unreachable type issues when all active types are correctly listed.
+
 ### 2026-07-08 Implementing the Greenfield Direct Controller, Fuzzer, and E2E Fixtures for VertexAIPipelineJob
 - **Context**: Implementing the direct controller, E2E basic test fixtures, and fuzzer for `VertexAIPipelineJob` as part of the Greenfield migration.
 - **Problem**: Greenfield resource implementation requires the creation of a fully-isolated direct controller to manage the reconciliation lifecycle (Adapter interface: Find, Create, Update, Delete, and Export), registration in the static configuration, a KRM fuzzer matching specification/status fields, and minimal/maximal golden test fixtures.

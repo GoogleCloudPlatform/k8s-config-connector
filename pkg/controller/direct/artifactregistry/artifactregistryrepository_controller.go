@@ -27,7 +27,6 @@ import (
 	common "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/export"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
@@ -91,7 +90,7 @@ func (m *modelArtifactRegistryRepository) AdapterForObject(ctx context.Context, 
 	}
 
 	mapCtx := &direct.MapContext{}
-	desiredPb := ArtifactRegistryRepositorySpec_ToProto(mapCtx, &obj.Spec)
+	desiredPb := ArtifactRegistryRepositorySpec_v1beta1_ToProto(mapCtx, &obj.Spec)
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
@@ -206,7 +205,7 @@ func (a *ArtifactRegistryRepositoryAdapter) Update(ctx context.Context, updateOp
 
 func (a *ArtifactRegistryRepositoryAdapter) updateStatus(ctx context.Context, op directbase.Operation, latest *pb.Repository) error {
 	mapCtx := &direct.MapContext{}
-	status := ArtifactRegistryRepositoryStatus_FromProto(mapCtx, latest)
+	status := ArtifactRegistryRepositoryStatus_v1beta1_FromProto(mapCtx, latest)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -233,7 +232,7 @@ func (a *ArtifactRegistryRepositoryAdapter) Export(ctx context.Context) (*unstru
 
 	obj := &krm.ArtifactRegistryRepository{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(ArtifactRegistryRepositorySpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(ArtifactRegistryRepositorySpec_v1beta1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
@@ -278,7 +277,7 @@ func (a *ArtifactRegistryRepositoryAdapter) Delete(ctx context.Context, deleteOp
 }
 
 func compareRepository(ctx context.Context, actual, desired *pb.Repository) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
-	maskedActual, err := mappers.OnlySpecFields(actual, ArtifactRegistryRepositorySpec_FromProto, ArtifactRegistryRepositorySpec_ToProto)
+	maskedActual, err := mappers.OnlySpecFields(actual, ArtifactRegistryRepositorySpec_v1beta1_FromProto, ArtifactRegistryRepositorySpec_v1beta1_ToProto)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -297,7 +296,7 @@ func compareRepository(ctx context.Context, actual, desired *pb.Repository) (*st
 	populateDefaults(desired)
 	populateDefaults(maskedActual)
 
-	diffs, updateMask, err := tags.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
+	diffs, updateMask, err := common.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
 		return nil, nil, err
 	}

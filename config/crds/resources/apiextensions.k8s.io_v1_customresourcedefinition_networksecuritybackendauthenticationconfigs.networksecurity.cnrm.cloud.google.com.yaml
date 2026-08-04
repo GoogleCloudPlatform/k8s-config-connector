@@ -89,7 +89,7 @@ spec:
                 properties:
                   external:
                     description: A reference to an externally managed CertificateManagerCertificate
-                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/certificates/{{certificate}}".
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/certificates/{{certificateID}}".
                     type: string
                   name:
                     description: The name of a CertificateManagerCertificate resource.

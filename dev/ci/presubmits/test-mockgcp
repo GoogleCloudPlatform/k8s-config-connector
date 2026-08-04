@@ -31,4 +31,5 @@ cd ${REPO_ROOT}/mockgcp
 export E2E_GCP_TARGET=mock
 export WRITE_GOLDEN_OUTPUT=1
 
-go test -v ./...
+# Note: -parallel 4 was determined by A/B testing; do not change unless new benchmark tests demonstrate a speedup.
+go test -parallel 4 -v ./...

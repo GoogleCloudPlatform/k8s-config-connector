@@ -42,7 +42,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/export"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
@@ -95,7 +94,7 @@ func (m *kmsCryptoKeyModel) AdapterForObject(ctx context.Context, op *directbase
 	}
 
 	mapCtx := &direct.MapContext{}
-	desired := KMSCryptoKeySpec_ToProto(mapCtx, &obj.Spec)
+	desired := KMSCryptoKeySpec_v1beta1_ToProto(mapCtx, &obj.Spec)
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
@@ -220,7 +219,7 @@ func (a *kmsCryptoKeyAdapter) Export(ctx context.Context) (*unstructured.Unstruc
 
 	obj := &krm.KMSCryptoKey{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(KMSCryptoKeySpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(KMSCryptoKeySpec_v1beta1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
@@ -288,7 +287,7 @@ func (a *kmsCryptoKeyAdapter) Delete(ctx context.Context, deleteOp *directbase.D
 }
 
 func compareCryptoKey(ctx context.Context, actual, desired *kmspb.CryptoKey) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
-	maskedActual, err := mappers.OnlySpecFields(actual, KMSCryptoKeySpec_FromProto, KMSCryptoKeySpec_ToProto)
+	maskedActual, err := mappers.OnlySpecFields(actual, KMSCryptoKeySpec_v1beta1_FromProto, KMSCryptoKeySpec_v1beta1_ToProto)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -305,7 +304,7 @@ func compareCryptoKey(ctx context.Context, actual, desired *kmspb.CryptoKey) (*s
 	populateDefaults(maskedActual)
 	populateDefaults(clonedDesired)
 
-	diffs, updateMask, err := tags.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
+	diffs, updateMask, err := common.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
 		return nil, nil, err
 	}
@@ -314,7 +313,7 @@ func compareCryptoKey(ctx context.Context, actual, desired *kmspb.CryptoKey) (*s
 
 func (a *kmsCryptoKeyAdapter) updateStatus(ctx context.Context, op directbase.Operation, latest *kmspb.CryptoKey) error {
 	mapCtx := &direct.MapContext{}
-	status := KMSCryptoKeyStatus_FromProto(mapCtx, latest)
+	status := KMSCryptoKeyStatus_v1beta1_FromProto(mapCtx, latest)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}

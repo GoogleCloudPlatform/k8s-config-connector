@@ -44,7 +44,7 @@ type NetworkSecurityMirroringEndpointGroupSpec struct {
 	//  `projects/123456789/locations/global/mirroringDeploymentGroups/my-dg`.
 	//  See https://google.aip.dev/124.
 	// +kubebuilder:validation:Required
-	MirroringDeploymentGroupRef *refsv1beta1.NetworkSecurityMirroringDeploymentGroupRef `json:"mirroringDeploymentGroupRef"`
+	MirroringDeploymentGroupRef *NetworkSecurityMirroringDeploymentGroupRef `json:"mirroringDeploymentGroupRef"`
 
 	// Immutable. The type of the endpoint group.
 	//  If left unspecified, defaults to DIRECT.

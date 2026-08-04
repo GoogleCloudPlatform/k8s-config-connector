@@ -27,6 +27,7 @@ import (
 
 	pb "cloud.google.com/go/notebooks/apiv1/notebookspb"
 	pb_v1beta1 "cloud.google.com/go/notebooks/apiv1beta1/notebookspb"
+	pb_v2 "cloud.google.com/go/notebooks/apiv2/notebookspb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httptogrpc"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
@@ -56,6 +57,11 @@ type NotebookServiceV1beta1 struct {
 	pb_v1beta1.UnimplementedNotebookServiceServer
 }
 
+type NotebookServiceV2 struct {
+	*MockService
+	pb_v2.UnimplementedNotebookServiceServer
+}
+
 // New creates a MockService.
 func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.MockService {
 	s := &MockService{
@@ -73,6 +79,7 @@ func (s *MockService) ExpectedHosts() []string {
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterNotebookServiceServer(grpcServer, &NotebookServiceV1{MockService: s})
 	pb_v1beta1.RegisterNotebookServiceServer(grpcServer, &NotebookServiceV1beta1{MockService: s})
+	pb_v2.RegisterNotebookServiceServer(grpcServer, &NotebookServiceV2{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
@@ -83,8 +90,10 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 
 	mux.AddService(pb.NewNotebookServiceClient(conn))
 	mux.AddService(pb_v1beta1.NewNotebookServiceClient(conn))
+	mux.AddService(pb_v2.NewNotebookServiceClient(conn))
 	mux.AddOperationsPath("/v1/{prefix=**}/operations/{name}", conn)
 	mux.AddOperationsPath("/v1beta1/{prefix=**}/operations/{name}", conn)
+	mux.AddOperationsPath("/v2/{prefix=**}/operations/{name}", conn)
 
 	return mux, nil
 }

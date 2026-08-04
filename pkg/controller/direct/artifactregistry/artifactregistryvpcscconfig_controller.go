@@ -112,7 +112,7 @@ func (a *VPCSCConfigAdapter) Find(ctx context.Context) (bool, error) {
 	}
 
 	mapCtx := &direct.MapContext{}
-	observedState := ArtifactRegistryVPCSCConfigObservedState_FromProto(mapCtx, vpCscConfig)
+	observedState := ArtifactRegistryVPCSCConfigObservedState_v1alpha1_FromProto(mapCtx, vpCscConfig)
 	if mapCtx.Err() != nil {
 		return false, mapCtx.Err()
 	}
@@ -126,7 +126,7 @@ func (a *VPCSCConfigAdapter) Create(ctx context.Context, createOp *directbase.Cr
 	log.V(2).Info("creating VPCSCConfig", "name", a.id.String())
 
 	mapCtx := &direct.MapContext{}
-	desiredProto := ArtifactRegistryVPCSCConfigSpec_ToProto(mapCtx, &a.desired.Spec)
+	desiredProto := ArtifactRegistryVPCSCConfigSpec_v1alpha1_ToProto(mapCtx, &a.desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -145,7 +145,7 @@ func (a *VPCSCConfigAdapter) Create(ctx context.Context, createOp *directbase.Cr
 	log.V(2).Info("successfully created VPCSCConfig", "name", a.id.String())
 
 	status := &krm.ArtifactRegistryVPCSCConfigStatus{}
-	status.ObservedState = ArtifactRegistryVPCSCConfigObservedState_FromProto(mapCtx, vpCscConfig)
+	status.ObservedState = ArtifactRegistryVPCSCConfigObservedState_v1alpha1_FromProto(mapCtx, vpCscConfig)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -158,7 +158,7 @@ func (a *VPCSCConfigAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	log.V(2).Info("updating VPCSCConfig", "name", a.id.String())
 
 	mapCtx := &direct.MapContext{}
-	desiredProto := ArtifactRegistryVPCSCConfigSpec_ToProto(mapCtx, &a.desired.Spec)
+	desiredProto := ArtifactRegistryVPCSCConfigSpec_v1alpha1_ToProto(mapCtx, &a.desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -177,7 +177,7 @@ func (a *VPCSCConfigAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	log.V(2).Info("successfully updated VPCSCConfig", "name", a.id.String())
 
 	status := &krm.ArtifactRegistryVPCSCConfigStatus{}
-	status.ObservedState = ArtifactRegistryVPCSCConfigObservedState_FromProto(mapCtx, vpCscConfig)
+	status.ObservedState = ArtifactRegistryVPCSCConfigObservedState_v1alpha1_FromProto(mapCtx, vpCscConfig)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -190,7 +190,7 @@ func (a *VPCSCConfigAdapter) Export(ctx context.Context) (*unstructured.Unstruct
 		return nil, fmt.Errorf("VPCSCConfigAdapter not initialized")
 	}
 	mapCtx := &direct.MapContext{}
-	spec := ArtifactRegistryVPCSCConfigSpec_FromProto(mapCtx, ArtifactRegistryVPCSCConfigSpec_ToProto(mapCtx, &a.desired.Spec))
+	spec := ArtifactRegistryVPCSCConfigSpec_v1alpha1_FromProto(mapCtx, ArtifactRegistryVPCSCConfigSpec_v1alpha1_ToProto(mapCtx, &a.desired.Spec))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}

@@ -916,7 +916,8 @@ type ConfigConnectorConfig struct {
 }
 */
 
-/* unreachable type ContainerdConfig
+/* found existing non-generated go type "ContainerdConfig", skipping
+
 // +kcc:proto=google.container.v1.ContainerdConfig
 type ContainerdConfig struct {
 	// PrivateRegistryAccessConfig is used to configure access configuration
@@ -926,7 +927,8 @@ type ContainerdConfig struct {
 }
 */
 
-/* unreachable type ContainerdConfig_PrivateRegistryAccessConfig
+/* found existing non-generated go type with proto tag "google.container.v1.ContainerdConfig.PrivateRegistryAccessConfig", skipping
+
 // +kcc:proto=google.container.v1.ContainerdConfig.PrivateRegistryAccessConfig
 type ContainerdConfig_PrivateRegistryAccessConfig struct {
 	// Private registry access is enabled.
@@ -939,7 +941,8 @@ type ContainerdConfig_PrivateRegistryAccessConfig struct {
 }
 */
 
-/* unreachable type ContainerdConfig_PrivateRegistryAccessConfig_CertificateAuthorityDomainConfig
+/* found existing non-generated go type with proto tag "google.container.v1.ContainerdConfig.PrivateRegistryAccessConfig.CertificateAuthorityDomainConfig", skipping
+
 // +kcc:proto=google.container.v1.ContainerdConfig.PrivateRegistryAccessConfig.CertificateAuthorityDomainConfig
 type ContainerdConfig_PrivateRegistryAccessConfig_CertificateAuthorityDomainConfig struct {
 	// List of fully qualified domain names (FQDN).
@@ -957,7 +960,8 @@ type ContainerdConfig_PrivateRegistryAccessConfig_CertificateAuthorityDomainConf
 }
 */
 
-/* unreachable type ContainerdConfig_PrivateRegistryAccessConfig_CertificateAuthorityDomainConfig_GcpSecretManagerCertificateConfig
+/* found existing non-generated go type with proto tag "google.container.v1.ContainerdConfig.PrivateRegistryAccessConfig.CertificateAuthorityDomainConfig.GCPSecretManagerCertificateConfig", skipping
+
 // +kcc:proto=google.container.v1.ContainerdConfig.PrivateRegistryAccessConfig.CertificateAuthorityDomainConfig.GCPSecretManagerCertificateConfig
 type ContainerdConfig_PrivateRegistryAccessConfig_CertificateAuthorityDomainConfig_GcpSecretManagerCertificateConfig struct {
 	// Secret URI, in the form

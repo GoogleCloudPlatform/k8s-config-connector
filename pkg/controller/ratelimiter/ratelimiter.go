@@ -37,7 +37,7 @@ func NewRateLimiter() workqueue.TypedRateLimiter[reconcile.Request] {
 	// If we implement b/190097904 we should revisit these values, in particular the max delay could
 	// likely be much higher again.
 	return workqueue.NewTypedMaxOfRateLimiter(
-		workqueue.NewTypedItemExponentialFailureRateLimiter[reconcile.Request](2*time.Second, 120*time.Second),
+		workqueue.NewTypedItemExponentialFailureRateLimiter[reconcile.Request](250*time.Millisecond, 120*time.Second),
 		// 10 qps, 100 bucket size.  This is only for retry speed and its only the overall factor (not per item)
 		&workqueue.TypedBucketRateLimiter[reconcile.Request]{Limiter: rate.NewLimiter(rate.Limit(10), 100)},
 	)

@@ -1,0 +1,12 @@
+apiVersion: networksecurity.cnrm.cloud.google.com/v1alpha1
+kind: NetworkSecurityBackendAuthenticationConfig
+metadata:
+  name: backendauth-max-${uniqueId}
+spec:
+  projectRef:
+    external: "projects/${projectId}"
+  location: us-central1
+  description: "Original description of backend auth config"
+  labels:
+    foo: bar
+  wellKnownRoots: PUBLIC_ROOTS

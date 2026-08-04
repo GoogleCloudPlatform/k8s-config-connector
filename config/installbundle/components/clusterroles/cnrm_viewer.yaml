@@ -23,14 +23,6 @@ rules:
   - list
   - watch
 - apiGroups:
-  - aistreams.cnrm.cloud.google.com
-  resources:
-  - '*'
-  verbs:
-  - get
-  - list
-  - watch
-- apiGroups:
   - alloydb.cnrm.cloud.google.com
   resources:
   - '*'
@@ -767,7 +759,23 @@ rules:
   - list
   - watch
 - apiGroups:
+  - grafeas.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - healthcare.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - hypercomputecluster.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -800,6 +808,14 @@ rules:
   - watch
 - apiGroups:
   - kms.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - licensemanager.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -1000,6 +1016,14 @@ rules:
   - watch
 - apiGroups:
   - pubsublite.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - rapidmigrationassessment.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:

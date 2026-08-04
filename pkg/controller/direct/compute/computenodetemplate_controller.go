@@ -40,7 +40,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
@@ -260,11 +259,17 @@ func compareComputeNodeTemplate(ctx context.Context, actual, desired *computepb.
 				Type: direct.PtrTo("RESTART_NODE_ON_ANY_SERVER"),
 			}
 		}
+		if obj.CpuOvercommitType == nil {
+			obj.CpuOvercommitType = direct.PtrTo("NONE")
+		}
+		if obj.Region != nil {
+			*obj.Region = lastComponent(*obj.Region)
+		}
 	}
 	populateDefaults(maskedActual)
 	populateDefaults(clonedDesired)
 
-	diffs, _, err := tags.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
+	diffs, _, err := common.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
 		return nil, err
 	}

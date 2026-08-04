@@ -1010,6 +1010,11 @@ func isValidPlural(singular, plural string) bool {
 		}
 	}
 
+	// Corpus pluralizes to corpora (e.g. vertexairagcorpus -> vertexairagcorpora)
+	if strings.HasSuffix(singular, "corpus") {
+		return plural == strings.TrimSuffix(singular, "corpus")+"corpora"
+	}
+
 	// Rule 1: If singular ends with 's', 'x', 'z', 'ch', 'sh', add 'es'
 	if strings.HasSuffix(singular, "s") ||
 		strings.HasSuffix(singular, "x") ||
@@ -1046,6 +1051,36 @@ func isVowel(r rune) bool {
 	return r == 'a' || r == 'e' || r == 'i' || r == 'o' || r == 'u'
 }
 
+func TestIsValidPlural(t *testing.T) {
+	tests := []struct {
+		singular string
+		plural   string
+		want     bool
+	}{
+		{singular: "gcpvertexairagcorpus", plural: "gcpvertexairagcorpora", want: true},
+		{singular: "corpus", plural: "corpora", want: true},
+		{singular: "setting", plural: "settings", want: true},
+		{singular: "settings", plural: "settings", want: true},
+		{singular: "metric", plural: "metrics", want: true},
+		{singular: "metrics", plural: "metrics", want: true},
+		{singular: "status", plural: "statuses", want: true},
+		{singular: "gateway", plural: "gateways", want: true},
+		{singular: "proxy", plural: "proxies", want: true},
+		{singular: "shelf", plural: "shelves", want: true},
+		{singular: "knife", plural: "knives", want: true},
+		{singular: "invalid", plural: "invalid_plural", want: false},
+	}
+
+	for _, tc := range tests {
+		t.Run(fmt.Sprintf("%s_%s", tc.singular, tc.plural), func(t *testing.T) {
+			got := isValidPlural(tc.singular, tc.plural)
+			if got != tc.want {
+				t.Errorf("isValidPlural(%q, %q) = %t, want %t", tc.singular, tc.plural, got, tc.want)
+			}
+		})
+	}
+}
+
 func TestCRDObjectTypes(t *testing.T) {
 	t.Parallel()
 	// knownInvalidCRDs is a list of CRDs that currently fail the validation.
@@ -1077,6 +1112,7 @@ func TestCRDObjectTypes(t *testing.T) {
 		"datastreamconnectionprofiles.datastream.cnrm.cloud.google.com":                 true, // spec.staticServiceIPConnectivity is an empty object
 		"discoveryenginecontrols.discoveryengine.cnrm.cloud.google.com":                 true, // status.observedState is an empty object
 		"discoveryengineengines.discoveryengine.cnrm.cloud.google.com":                  true, // status.observedState is an empty object
+		"discoveryenginesearchengines.discoveryengine.cnrm.cloud.google.com":            true, // status.observedState is an empty object
 		"dlpconnections.dlp.cnrm.cloud.google.com":                                      true, // spec.cloudSQL.cloudSQLIAM is an empty object
 		"firestorebackupschedules.firestore.cnrm.cloud.google.com":                      true, // spec.dailyRecurrence is an empty object
 		"firestorefields.firestore.cnrm.cloud.google.com":                               true, // spec.indexConfig.indexes[].fields[].vectorConfig.flat is an empty object
@@ -1090,6 +1126,7 @@ func TestCRDObjectTypes(t *testing.T) {
 		"contentwarehousedocuments.contentwarehouse.cnrm.cloud.google.com":              true, // status.observedState is an empty object
 		"videostitchercdnkeys.videostitcher.cnrm.cloud.google.com":                      true, // status.observedState is an empty object
 		"vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com":                    true, // status.observedState.modelToUpload.originalModelInfo is an empty object
+		"vertexaischedules.aiplatform.cnrm.cloud.google.com":                            true, // spec.createNotebookExecutionJobRequest.notebookExecutionJob.workbenchRuntime is an empty object
 
 	}
 

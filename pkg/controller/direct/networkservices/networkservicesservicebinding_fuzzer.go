@@ -29,8 +29,8 @@ func init() {
 
 func networkServicesServiceBindingFuzzer() fuzztesting.KRMFuzzer {
 	f := fuzztesting.NewKRMTypedFuzzer(&pb.ServiceBinding{},
-		NetworkServicesServiceBindingSpec_FromProto, NetworkServicesServiceBindingSpec_ToProto,
-		NetworkServicesServiceBindingObservedState_FromProto, NetworkServicesServiceBindingObservedState_ToProto,
+		NetworkServicesServiceBindingSpec_v1alpha1_FromProto, NetworkServicesServiceBindingSpec_v1alpha1_ToProto,
+		NetworkServicesServiceBindingObservedState_v1alpha1_FromProto, NetworkServicesServiceBindingObservedState_v1alpha1_ToProto,
 	)
 
 	f.SpecFields.Insert(".description")

@@ -378,6 +378,14 @@ func (s *ClusterManagerV1) UpdateCluster(ctx context.Context, req *pb.UpdateClus
 		update.DesiredDisableL4LbFirewallReconciliation = nil
 	}
 
+	if update.DesiredInTransitEncryptionConfig != nil {
+		if obj.NetworkConfig == nil {
+			obj.NetworkConfig = &pb.NetworkConfig{}
+		}
+		obj.NetworkConfig.InTransitEncryptionConfig = update.DesiredInTransitEncryptionConfig
+		update.DesiredInTransitEncryptionConfig = nil
+	}
+
 	if update.DesiredAdditionalIpRangesConfig != nil {
 		if obj.IpAllocationPolicy == nil {
 			obj.IpAllocationPolicy = &pb.IPAllocationPolicy{}

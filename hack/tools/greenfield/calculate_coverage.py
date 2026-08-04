@@ -73,12 +73,19 @@ def get_gcp_resources(googleapis_dir):
         if pkg not in service_rpcs: continue
         
         all_rpcs = service_rpcs[pkg]
-        create_variants = [f"Create{name}", f"Upsert{name}", f"BatchCreate{name}"]
+        create_variants = [
+            f"Create{name}", f"Upsert{name}", f"BatchCreate{name}", 
+            f"Insert{name}", f"Upload{name}", f"Update{name}", f"Patch{name}"
+        ]
         for v in create_variants:
             if v in all_rpcs:
                 info['ops'].add('CREATE')
                 break
-        delete_variants = [f"Delete{name}", f"Finish{name}", f"Abort{name}", f"Cancel{name}", f"Terminate{name}", f"Destroy{name}"]
+        delete_variants = [
+            f"Delete{name}", f"Finish{name}", f"Abort{name}", 
+            f"Cancel{name}", f"Terminate{name}", f"Destroy{name}", 
+            f"Disable{name}", f"Deactivate{name}"
+        ]
         for v in delete_variants:
             if v in all_rpcs:
                 info['ops'].add('DELETE')
@@ -104,6 +111,33 @@ def get_kcc_resources(kcc_dir):
                     resources.append({'group': group, 'kind': kind})
     return resources
 
+def get_inflight_resources(status_file_path):
+    resources = []
+    if not os.path.exists(status_file_path):
+        return resources
+        
+    with open(status_file_path, 'r') as f:
+        in_table = False
+        for line in f:
+            line = line.strip()
+            if line.startswith('| Resource | Service |'):
+                in_table = True
+                continue
+            if in_table and line.startswith('| :---'):
+                continue
+            if in_table and line.startswith('|'):
+                parts = [p.strip() for p in line.split('|')]
+                if len(parts) >= 6:
+                    resource = parts[1]
+                    service = parts[2]
+                    
+                    if resource and service:
+                        resources.append({
+                            'group': f"{service}.cnrm.cloud.google.com",
+                            'kind': resource
+                        })
+    return resources
+
 def match_resources(gcp_resources, kcc_resources):
     covered = set()
     kcc_map = {}
@@ -126,13 +160,21 @@ def match_resources(gcp_resources, kcc_resources):
         "cloudkms": ["kms"],
         "aiplatform": ["aiplatform", "vertexai"],
         "cloudasset": ["asset"],
+        "batch": ["cloudbatch"],
+    }
+
+    kcc_kind_aliases = {
+        "aiplatform/EntityType": ["VertexAIFeaturestoreEntityType"],
+        "aiplatform/Feature": ["VertexAIFeaturestoreEntityTypeFeature"],
     }
 
     for gcp_type, info in gcp_resources.items():
         gcp_service_base = info['service']
         gcp_name = info['name']
         matched_kcc_service = None
-        if gcp_service_base in kcc_map:
+        if gcp_type == "iam.googleapis.com/AccessPolicy":
+            matched_kcc_service = "accesscontextmanager"
+        elif gcp_service_base in kcc_map:
             matched_kcc_service = gcp_service_base
         elif gcp_service_base.endswith('s') and gcp_service_base[:-1] in kcc_map:
             matched_kcc_service = gcp_service_base[:-1]
@@ -242,15 +284,19 @@ def unify_hierarchies(resources):
     return unified
 
 def main():
+    update_gap = "--update-gap" in sys.argv
+    if update_gap:
+        sys.argv.remove("--update-gap")
+
     if len(sys.argv) < 3:
-        print("Usage: python calculate_coverage.py <googleapis_sha> <kcc_sha> [k]")
+        print("Usage: python calculate_coverage.py <googleapis_sha> <kcc_sha> [k] [--update-gap]")
         sys.exit(1)
         
     googleapis_sha = sys.argv[1]
     kcc_sha = sys.argv[2]
     k = int(sys.argv[3]) if len(sys.argv) > 3 else 10
     
-    temp_dir = "/usr/local/google/home/acpana/.gemini/tmp/k8s-config-connector-11/kcc_coverage"
+    temp_dir = os.path.join(os.environ.get("TMPDIR", "/tmp"), "kcc_coverage")
     os.makedirs(temp_dir, exist_ok=True)
     
     googleapis_dir = os.path.join(temp_dir, "googleapis")
@@ -261,6 +307,15 @@ def main():
         prepare_repo("https://github.com/GoogleCloudPlatform/k8s-config-connector.git", kcc_dir, kcc_sha)
 
     gcp_raw = get_gcp_resources(googleapis_dir)
+    
+    # Hardcode StorageBucketObject due to non-standard googleapis definition in v1/v2
+    gcp_raw["storage.googleapis.com/Object"] = {
+        'service': 'storage',
+        'pkg': 'google.storage.v2',
+        'name': 'Object',
+        'ops': {'CREATE', 'DELETE'},
+        'patterns': ['projects/{project}/buckets/{bucket}/objects/{object}']
+    }
     
     # Apply Skip List before unification
     skip_file = os.path.join(os.path.dirname(__file__), "coverage_skip.json")
@@ -288,6 +343,12 @@ def main():
     all_gcp_raw_count = len(gcp_raw)
 
     kcc_resources = get_kcc_resources(kcc_dir)
+    
+    # Inject in-flight resources
+    status_file = os.path.join(os.path.dirname(__file__), "RESOURCE_STATUS.md")
+    inflight_resources = get_inflight_resources(status_file)
+    kcc_resources.extend(inflight_resources)
+    
     # match_resources needs to work with unified keys now
     covered = set()
     kcc_map = {}
@@ -310,48 +371,70 @@ def main():
         "cloudkms": ["kms"],
         "aiplatform": ["aiplatform", "vertexai"],
         "cloudasset": ["asset"],
+        "batch": ["cloudbatch"],
+    }
+
+    kcc_kind_aliases = {
+        "aiplatform/EntityType": ["VertexAIFeaturestoreEntityType"],
+        "aiplatform/Feature": ["VertexAIFeaturestoreEntityTypeFeature"],
     }
 
     for key, info in gcp_resources.items():
+        if key in kcc_kind_aliases:
+            found_alias = False
+            for alias_kind in kcc_kind_aliases[key]:
+                for service_kinds in kcc_map.values():
+                    if alias_kind in service_kinds:
+                        covered.add(key)
+                        found_alias = True
+                        break
+                if found_alias: break
+            if found_alias: continue
+            
         gcp_service_base = info['service']
         gcp_name = info['name']
-        matched_kcc_service = None
-        if gcp_service_base in kcc_map:
-            matched_kcc_service = gcp_service_base
-        elif gcp_service_base.endswith('s') and gcp_service_base[:-1] in kcc_map:
-            matched_kcc_service = gcp_service_base[:-1]
-        elif gcp_service_base + 's' in kcc_map:
-            matched_kcc_service = gcp_service_base + 's'
+        matched_kcc_services = []
+        if key == "iam/AccessPolicy":
+            matched_kcc_services = ["accesscontextmanager"]
         else:
+            variants = [gcp_service_base]
+            if gcp_service_base.endswith('s'):
+                variants.append(gcp_service_base[:-1])
+            variants.append(gcp_service_base + 's')
+            
             for canonical_name, aliases in service_aliases.items():
                 all_variants = [canonical_name] + aliases
                 if gcp_service_base in all_variants:
-                    for variant in all_variants:
-                        if variant in kcc_map:
-                            matched_kcc_service = variant
-                            break
-                    if matched_kcc_service:
-                        break
+                    variants.extend(all_variants)
+            
+            for v in set(variants):
+                if v in kcc_map:
+                    matched_kcc_services.append(v)
         
-        if not matched_kcc_service: continue
+        if not matched_kcc_services: continue
         name_norm = gcp_name.lower()
-        for kcc_kind in kcc_map[matched_kcc_service]:
-            kind_norm = kcc_kind.lower()
-            prefixes = [matched_kcc_service.replace("-", "").lower(), gcp_service_base.replace("-", "").lower(), "gcp", "google", "cloud", "bigquery", "api"]
-            if kind_norm == name_norm:
-                covered.add(key)
-                break
-            found_prefix_match = False
-            for p in prefixes:
-                if kind_norm.startswith(p) and len(kind_norm) > len(p):
-                    if kind_norm[len(p):] == name_norm:
-                        covered.add(key)
-                        found_prefix_match = True
-                        break
-            if found_prefix_match: break
-            if kind_norm.endswith('s') and kind_norm[:-1] == name_norm:
-                covered.add(key)
-                break
+        
+        all_service_prefixes = [s.replace("-", "").lower() for s in variants]
+        
+        for matched_kcc_service in matched_kcc_services:
+            for kcc_kind in kcc_map[matched_kcc_service]:
+                kind_norm = kcc_kind.lower()
+                prefixes = all_service_prefixes + [gcp_service_base.replace("-", "").lower(), "gcp", "google", "cloud", "bigquery", "api"]
+                if kind_norm == name_norm:
+                    covered.add(key)
+                    break
+                found_prefix_match = False
+                for p in prefixes:
+                    if kind_norm.startswith(p) and len(kind_norm) > len(p):
+                        if kind_norm[len(p):] == name_norm:
+                            covered.add(key)
+                            found_prefix_match = True
+                            break
+                if found_prefix_match: break
+                if kind_norm.endswith('s') and kind_norm[:-1] == name_norm:
+                    covered.add(key)
+                    break
+            if key in covered: break
     
     # Categorization
     all_gcp_keys = set(gcp_resources.keys())
@@ -381,33 +464,39 @@ def main():
     
     # Generate Gap Analysis Table for tracking
     gap_file = os.path.join(os.path.dirname(__file__), "gap_analysis.txt")
-    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     
-    analysis_lines = [
-        f"Gap Analysis Snapshot - {now}",
-        f"GoogleAPIs SHA: {googleapis_sha}",
-        f"KCC SHA:        {kcc_sha}",
-        "-" * 55,
-        f"{'Metric':<30} | {'Value':<10}",
-        "-" * 55,
-        f"{'Total GCP Resources (Raw)':<30} | {all_gcp_raw_count:<10}",
-        f"{'Unified (Hierarchical)':<30} | {unification_count:<10}",
-        f"{'Processed Resources (Unified)':<30} | {len(all_gcp_keys):<10}",
-        f"{'Skipped (Policy)':<30} | {skipped_count:<10}",
-        f"{'Implemented in KCC':<30} | {len(covered):<10}",
-        f"{'Missing from KCC':<30} | {len(missing):<10}",
-        "-" * 55,
-        f"{'Missing Manageable':<30} | {len(missing_manageable):<10}",
-        f"{'Missing Fully Manageable':<30} | {len(missing_fully_manageable):<10}",
-        f"{'Missing Next Layer':<30} | {len(missing_next_layer):<10}",
-        f"{'Missing Next Next Layer':<30} | {len(missing_next_next_layer):<10}",
-        "-" * 55,
-        f"{'Current Coverage':<30} | {len(covered)/max(1, len(all_gcp_keys)):.2%}",
-        ""
-    ]
+    total_manageable = len(covered) + len(missing_manageable)
+    manageable_coverage = len(covered) / max(1, total_manageable)
     
-    with open(gap_file, 'w') as f:
-        f.write("\n".join(analysis_lines))
+    if update_gap:
+        now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        
+        analysis_lines = [
+            f"Gap Analysis Snapshot - {now}",
+            f"GoogleAPIs SHA: {googleapis_sha}",
+            f"KCC SHA:        {kcc_sha}",
+            "-" * 55,
+            f"{'Metric':<30} | {'Value':<10}",
+            "-" * 55,
+            f"{'Total GCP Resources (Raw)':<30} | {all_gcp_raw_count:<10}",
+            f"{'Unified (Hierarchical)':<30} | {unification_count:<10}",
+            f"{'Processed Resources (Unified)':<30} | {len(all_gcp_keys):<10}",
+            f"{'Skipped (Policy)':<30} | {skipped_count:<10}",
+            f"{'Implemented in KCC':<30} | {len(covered):<10}",
+            f"{'Missing from KCC':<30} | {len(missing):<10}",
+            "-" * 55,
+            f"{'Missing Manageable':<30} | {len(missing_manageable):<10}",
+            f"{'Missing Fully Manageable':<30} | {len(missing_fully_manageable):<10}",
+            f"{'Missing Next Layer':<30} | {len(missing_next_layer):<10}",
+            f"{'Missing Next Next Layer':<30} | {len(missing_next_next_layer):<10}",
+            "-" * 55,
+            f"{'Total API Coverage':<30} | {len(covered)/max(1, len(all_gcp_keys)):.2%}",
+            f"{'Manageable Coverage':<30} | {manageable_coverage:.2%}",
+            ""
+        ]
+        
+        with open(gap_file, 'w') as f:
+            f.write("\n".join(analysis_lines))
 
     print("\n--- Coverage Summary ---")
     print(f"Total GCP Resources (Raw): {all_gcp_raw_count}")
@@ -416,7 +505,8 @@ def main():
     print(f"  - Skipped (Policy):     {skipped_count}")
     print(f"  - Implemented in KCC:   {len(covered)}")
     print(f"  - Missing from KCC:     {len(missing)}")
-    print(f"  - Coverage:             {len(covered)/max(1, len(all_gcp_keys)):.2%}")
+    print(f"  - Total API Coverage:   {len(covered)/max(1, len(all_gcp_keys)):.2%}")
+    print(f"  - Manageable Coverage:  {manageable_coverage:.2%}")
     
     print("\n--- Gap Breakdown (Missing Resources) ---")
     print(f"Total Missing:            {len(missing)}")
@@ -425,26 +515,37 @@ def main():
     print(f"  - Next Next Layer:      {len(missing_next_next_layer)} (Fully Manageable + 2 Parents)")
     print(f"  - Next Layer Targets:   {len(missing_next_layer)} (Fully Manageable + 1 Parent)")
     print(f"  - Easy Targets:         {len(missing_easy)} (Fully Manageable + Leaf Pattern)")
-    print(f"\n[SAVED] Gap analysis snapshot written to {gap_file}")
+    if update_gap:
+        print(f"\n[SAVED] Gap analysis snapshot written to {gap_file}")
 
-    print(f"\n--- Next {k} Easiest Resources to Implement ---")
-    print("(Criteria: Easy Targets)")
-    for m in sorted(list(missing_easy))[:k]:
+    print(f"\n--- Top {k} Missing Manageable Resources ---")
+    
+    def sort_key(m):
+        if m in missing_easy: return 0
+        if m in missing_next_layer: return 1
+        if m in missing_next_next_layer: return 2
+        if m in missing_fully_manageable: return 3
+        return 4
+        
+    for m in sorted(list(missing_manageable), key=lambda x: (sort_key(x), x))[:k]:
         patterns = ", ".join(gcp_resources[m]['patterns'])
+        rtypes = ", ".join(gcp_resources[m]['rtypes'])
+        layer = "Unknown"
+        if m in missing_easy:
+            layer = "Easy (Leaf)"
+        elif m in missing_next_layer:
+            layer = "Next Layer (1 Parent)"
+        elif m in missing_next_next_layer:
+            layer = "Next Next Layer (2 Parents)"
+        elif m in missing_fully_manageable:
+            layer = "Fully Manageable (Deeply Nested)"
+        else:
+            layer = "Partially Manageable (Missing Create or Delete)"
+            
         print(f"  - {m}")
         print(f"    Patterns: {patterns}")
-
-    print(f"\n--- Next Layer Targets (1 Parent) ---")
-    for m in sorted(list(missing_next_layer)):
-        patterns = ", ".join(gcp_resources[m]['patterns'])
-        print(f"  - {m}")
-        print(f"    Patterns: {patterns}")
-
-    print(f"\n--- Next Next Layer Targets (2 Parents) ---")
-    for m in sorted(list(missing_next_next_layer)):
-        patterns = ", ".join(gcp_resources[m]['patterns'])
-        print(f"  - {m}")
-        print(f"    Patterns: {patterns}")
+        print(f"    ProtoPath: {rtypes}")
+        print(f"    Layer: {layer}")
 
 if __name__ == "__main__":
     main()

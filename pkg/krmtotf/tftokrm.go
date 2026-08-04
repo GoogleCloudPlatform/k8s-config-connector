@@ -745,9 +745,14 @@ func convertTFReferenceToKCCReference(tfField, specKey string, state map[string]
 // convertTFSetToKCCSet converts a set object in Terraform to a KCC set object
 func convertTFSetToKCCSet(stateVal, prevSpecVal interface{}, schema *tfschema.Schema, rc *corekccv1alpha1.ResourceConfig, prefix string, ignoreOutputOnlySpecFields bool) interface{} {
 	if containsReferenceField(prefix, rc) {
-		// TODO(kcc-eng): Support the case where the hashing function depends on resolved values from
-		//  resource references. For the time being, fall back to the declared state.
-		return prevSpecVal
+		if prevSpecVal != nil {
+			// TODO(kcc-eng): Support the case where the hashing function depends on resolved values from
+			//  resource references. For the time being, fall back to the declared state.
+			return prevSpecVal
+		}
+		// If prevSpecVal is nil (e.g. during a config-connector export or import), we do not have a
+		// previous spec to preserve or fall back to. In this case, we proceed to convert and output the
+		// live state elements directly as external references.
 	}
 	list := stateVal.([]interface{})
 	if len(list) == 0 {

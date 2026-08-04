@@ -1,0 +1,44 @@
+apiVersion: networksecurity.cnrm.cloud.google.com/v1alpha1
+kind: NetworkSecuritySecurityProfile
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: sp-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  description: security profile description updated
+  labels:
+    foo: baz
+  location: global
+  projectRef:
+    external: projects/${projectId}
+  type: URL_FILTERING
+  urlFilteringProfile:
+    urlFilters:
+    - filteringAction: ALLOW
+      priority: 1
+      urls:
+      - '*example.com'
+      - '*about.example.com'
+      - '*help.example.com'
+    - filteringAction: DENY
+      priority: 2
+      urls:
+      - '*restricted.example.com'
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/global/securityProfiles/sp-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    etag: abcdef123456
+    updateTime: "1970-01-01T00:00:00Z"

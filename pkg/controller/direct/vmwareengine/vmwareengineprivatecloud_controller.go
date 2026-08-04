@@ -128,7 +128,7 @@ func (a *privateCloudAdapter) Create(ctx context.Context, createOp *directbase.C
 
 	mapCtx := &direct.MapContext{}
 	desired := a.desired.DeepCopy()
-	resource := VMwareEnginePrivateCloudSpec_ToProto(mapCtx, &desired.Spec)
+	resource := VMwareEnginePrivateCloudSpec_v1alpha1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -149,7 +149,7 @@ func (a *privateCloudAdapter) Create(ctx context.Context, createOp *directbase.C
 	log.V(2).Info("successfully created vmwareengine private cloud in gcp", "name", a.id)
 
 	status := &krm.VMwareEnginePrivateCloudStatus{}
-	status.ObservedState = VMwareEnginePrivateCloudObservedState_FromProto(mapCtx, created)
+	status.ObservedState = VMwareEnginePrivateCloudObservedState_v1alpha1_FromProto(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -167,7 +167,7 @@ func (a *privateCloudAdapter) Update(ctx context.Context, updateOp *directbase.U
 
 	mapCtx := &direct.MapContext{}
 	desired := a.desired.DeepCopy()
-	resource := VMwareEnginePrivateCloudSpec_ToProto(mapCtx, &desired.Spec)
+	resource := VMwareEnginePrivateCloudSpec_v1alpha1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -206,7 +206,7 @@ func (a *privateCloudAdapter) Update(ctx context.Context, updateOp *directbase.U
 	}
 
 	status := &krm.VMwareEnginePrivateCloudStatus{}
-	status.ObservedState = VMwareEnginePrivateCloudObservedState_FromProto(mapCtx, updated)
+	status.ObservedState = VMwareEnginePrivateCloudObservedState_v1alpha1_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -222,7 +222,7 @@ func (a *privateCloudAdapter) Export(ctx context.Context) (*unstructured.Unstruc
 
 	obj := &krm.VMwareEnginePrivateCloud{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(VMwareEnginePrivateCloudSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(VMwareEnginePrivateCloudSpec_v1alpha1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}

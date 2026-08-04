@@ -25,40 +25,34 @@ package networkservices
 
 import (
 	pb "cloud.google.com/go/networkservices/apiv1/networkservicespb"
+	krmcomputev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krmnetworkservicesv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkservices/v1alpha1"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkservices/v1beta1"
+	krmnetworkservicesv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkservices/v1beta1"
 	krmservicedirectoryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/servicedirectory/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-/* found existing non-generated mapping function "ExtensionChain_FromProto", skipping
-func ExtensionChain_FromProto(mapCtx *direct.MapContext, in *pb.ExtensionChain) *krmnetworkservicesv1alpha1.ExtensionChain {
+func ExtensionChain_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ExtensionChain) *krmnetworkservicesv1alpha1.ExtensionChain {
 	if in == nil {
 		return nil
 	}
 	out := &krmnetworkservicesv1alpha1.ExtensionChain{}
 	out.Name = direct.LazyPtr(in.GetName())
-	out.MatchCondition = ExtensionChain_MatchCondition_FromProto(mapCtx, in.GetMatchCondition())
-	out.Extensions = direct.Slice_FromProto(mapCtx, in.Extensions, ExtensionChain_Extension_FromProto)
+	out.MatchCondition = ExtensionChain_MatchCondition_v1alpha1_FromProto(mapCtx, in.GetMatchCondition())
+	out.Extensions = direct.Slice_FromProto(mapCtx, in.Extensions, ExtensionChain_Extension_v1alpha1_FromProto)
 	return out
 }
-*/
-
-/* found existing non-generated mapping function "ExtensionChain_ToProto", skipping
-func ExtensionChain_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1alpha1.ExtensionChain) *pb.ExtensionChain {
+func ExtensionChain_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1alpha1.ExtensionChain) *pb.ExtensionChain {
 	if in == nil {
 		return nil
 	}
 	out := &pb.ExtensionChain{}
 	out.Name = direct.ValueOf(in.Name)
-	out.MatchCondition = ExtensionChain_MatchCondition_ToProto(mapCtx, in.MatchCondition)
-	out.Extensions = direct.Slice_ToProto(mapCtx, in.Extensions, ExtensionChain_Extension_ToProto)
+	out.MatchCondition = ExtensionChain_MatchCondition_v1alpha1_ToProto(mapCtx, in.MatchCondition)
+	out.Extensions = direct.Slice_ToProto(mapCtx, in.Extensions, ExtensionChain_Extension_v1alpha1_ToProto)
 	return out
 }
-*/
-
-/* found existing non-generated mapping function "ExtensionChain_Extension_FromProto", skipping
-func ExtensionChain_Extension_FromProto(mapCtx *direct.MapContext, in *pb.ExtensionChain_Extension) *krmnetworkservicesv1alpha1.ExtensionChain_Extension {
+func ExtensionChain_Extension_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ExtensionChain_Extension) *krmnetworkservicesv1alpha1.ExtensionChain_Extension {
 	if in == nil {
 		return nil
 	}
@@ -73,10 +67,7 @@ func ExtensionChain_Extension_FromProto(mapCtx *direct.MapContext, in *pb.Extens
 	out.Metadata = direct.Struct_FromProto(mapCtx, in.GetMetadata())
 	return out
 }
-*/
-
-/* found existing non-generated mapping function "ExtensionChain_Extension_ToProto", skipping
-func ExtensionChain_Extension_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1alpha1.ExtensionChain_Extension) *pb.ExtensionChain_Extension {
+func ExtensionChain_Extension_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1alpha1.ExtensionChain_Extension) *pb.ExtensionChain_Extension {
 	if in == nil {
 		return nil
 	}
@@ -91,10 +82,7 @@ func ExtensionChain_Extension_ToProto(mapCtx *direct.MapContext, in *krmnetworks
 	out.Metadata = direct.Struct_ToProto(mapCtx, in.Metadata)
 	return out
 }
-*/
-
-/* found existing non-generated mapping function "ExtensionChain_MatchCondition_FromProto", skipping
-func ExtensionChain_MatchCondition_FromProto(mapCtx *direct.MapContext, in *pb.ExtensionChain_MatchCondition) *krmnetworkservicesv1alpha1.ExtensionChain_MatchCondition {
+func ExtensionChain_MatchCondition_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ExtensionChain_MatchCondition) *krmnetworkservicesv1alpha1.ExtensionChain_MatchCondition {
 	if in == nil {
 		return nil
 	}
@@ -102,10 +90,7 @@ func ExtensionChain_MatchCondition_FromProto(mapCtx *direct.MapContext, in *pb.E
 	out.CelExpression = direct.LazyPtr(in.GetCelExpression())
 	return out
 }
-*/
-
-/* found existing non-generated mapping function "ExtensionChain_MatchCondition_ToProto", skipping
-func ExtensionChain_MatchCondition_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1alpha1.ExtensionChain_MatchCondition) *pb.ExtensionChain_MatchCondition {
+func ExtensionChain_MatchCondition_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1alpha1.ExtensionChain_MatchCondition) *pb.ExtensionChain_MatchCondition {
 	if in == nil {
 		return nil
 	}
@@ -113,14 +98,13 @@ func ExtensionChain_MatchCondition_ToProto(mapCtx *direct.MapContext, in *krmnet
 	out.CelExpression = direct.ValueOf(in.CelExpression)
 	return out
 }
-*/
 
-/* found existing non-generated mapping function "HttprouteAbort_FromProto", skipping
-func HttprouteAbort_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_FaultInjectionPolicy_Abort) *krm.HttprouteAbort {
+/* found existing non-generated mapping function "HttprouteAbort_v1beta1_FromProto", skipping
+func HttprouteAbort_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_FaultInjectionPolicy_Abort) *krmnetworkservicesv1beta1.HttprouteAbort {
 	if in == nil {
 		return nil
 	}
-	out := &krm.HttprouteAbort{}
+	out := &krmnetworkservicesv1beta1.HttprouteAbort{}
 	out.HTTPStatus = direct.LazyPtr(in.GetHttpStatus())
 	out.Percentage = direct.LazyPtr(in.GetPercentage())
 	return out
@@ -128,9 +112,9 @@ func HttprouteAbort_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_FaultI
 */
 
 /*
-found existing non-generated mapping function "HttprouteAbort_ToProto", skipping
+found existing non-generated mapping function "HttprouteAbort_v1beta1_ToProto", skipping
 
-	func HttprouteAbort_ToProto(mapCtx *direct.MapContext, in *krm.HttprouteAbort) *pb.HttpRoute_FaultInjectionPolicy_Abort {
+	func HttprouteAbort_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.HttprouteAbort) *pb.HttpRoute_FaultInjectionPolicy_Abort {
 		if in == nil {
 			return nil
 		}
@@ -140,51 +124,51 @@ found existing non-generated mapping function "HttprouteAbort_ToProto", skipping
 		return out
 	}
 */
-func HttprouteAction_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_RouteAction) *krm.HttprouteAction {
+func HttprouteAction_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_RouteAction) *krmnetworkservicesv1beta1.HttprouteAction {
 	if in == nil {
 		return nil
 	}
-	out := &krm.HttprouteAction{}
-	out.Destinations = direct.Slice_FromProto(mapCtx, in.Destinations, HttprouteDestinations_FromProto)
-	out.Redirect = HttprouteRedirect_FromProto(mapCtx, in.GetRedirect())
-	out.FaultInjectionPolicy = HttprouteFaultInjectionPolicy_FromProto(mapCtx, in.GetFaultInjectionPolicy())
-	out.RequestHeaderModifier = HttprouteRequestHeaderModifier_FromProto(mapCtx, in.GetRequestHeaderModifier())
-	out.ResponseHeaderModifier = HttprouteResponseHeaderModifier_FromProto(mapCtx, in.GetResponseHeaderModifier())
-	out.URLRewrite = HttprouteUrlRewrite_FromProto(mapCtx, in.GetUrlRewrite())
+	out := &krmnetworkservicesv1beta1.HttprouteAction{}
+	out.Destinations = direct.Slice_FromProto(mapCtx, in.Destinations, HttprouteDestinations_v1beta1_FromProto)
+	out.Redirect = HttprouteRedirect_v1beta1_FromProto(mapCtx, in.GetRedirect())
+	out.FaultInjectionPolicy = HttprouteFaultInjectionPolicy_v1beta1_FromProto(mapCtx, in.GetFaultInjectionPolicy())
+	out.RequestHeaderModifier = HttprouteRequestHeaderModifier_v1beta1_FromProto(mapCtx, in.GetRequestHeaderModifier())
+	out.ResponseHeaderModifier = HttprouteResponseHeaderModifier_v1beta1_FromProto(mapCtx, in.GetResponseHeaderModifier())
+	out.URLRewrite = HttprouteUrlRewrite_v1beta1_FromProto(mapCtx, in.GetUrlRewrite())
 	out.Timeout = direct.StringDuration_FromProto(mapCtx, in.GetTimeout())
-	out.RetryPolicy = HttprouteRetryPolicy_FromProto(mapCtx, in.GetRetryPolicy())
-	out.RequestMirrorPolicy = HttprouteRequestMirrorPolicy_FromProto(mapCtx, in.GetRequestMirrorPolicy())
-	out.CorsPolicy = HttprouteCorsPolicy_FromProto(mapCtx, in.GetCorsPolicy())
+	out.RetryPolicy = HttprouteRetryPolicy_v1beta1_FromProto(mapCtx, in.GetRetryPolicy())
+	out.RequestMirrorPolicy = HttprouteRequestMirrorPolicy_v1beta1_FromProto(mapCtx, in.GetRequestMirrorPolicy())
+	out.CorsPolicy = HttprouteCorsPolicy_v1beta1_FromProto(mapCtx, in.GetCorsPolicy())
 	// MISSING: StatefulSessionAffinity
 	// MISSING: DirectResponse
 	// MISSING: IdleTimeout
 	return out
 }
-func HttprouteAction_ToProto(mapCtx *direct.MapContext, in *krm.HttprouteAction) *pb.HttpRoute_RouteAction {
+func HttprouteAction_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.HttprouteAction) *pb.HttpRoute_RouteAction {
 	if in == nil {
 		return nil
 	}
 	out := &pb.HttpRoute_RouteAction{}
-	out.Destinations = direct.Slice_ToProto(mapCtx, in.Destinations, HttprouteDestinations_ToProto)
-	out.Redirect = HttprouteRedirect_ToProto(mapCtx, in.Redirect)
-	out.FaultInjectionPolicy = HttprouteFaultInjectionPolicy_ToProto(mapCtx, in.FaultInjectionPolicy)
-	out.RequestHeaderModifier = HttprouteRequestHeaderModifier_ToProto(mapCtx, in.RequestHeaderModifier)
-	out.ResponseHeaderModifier = HttprouteResponseHeaderModifier_ToProto(mapCtx, in.ResponseHeaderModifier)
-	out.UrlRewrite = HttprouteUrlRewrite_ToProto(mapCtx, in.URLRewrite)
+	out.Destinations = direct.Slice_ToProto(mapCtx, in.Destinations, HttprouteDestinations_v1beta1_ToProto)
+	out.Redirect = HttprouteRedirect_v1beta1_ToProto(mapCtx, in.Redirect)
+	out.FaultInjectionPolicy = HttprouteFaultInjectionPolicy_v1beta1_ToProto(mapCtx, in.FaultInjectionPolicy)
+	out.RequestHeaderModifier = HttprouteRequestHeaderModifier_v1beta1_ToProto(mapCtx, in.RequestHeaderModifier)
+	out.ResponseHeaderModifier = HttprouteResponseHeaderModifier_v1beta1_ToProto(mapCtx, in.ResponseHeaderModifier)
+	out.UrlRewrite = HttprouteUrlRewrite_v1beta1_ToProto(mapCtx, in.URLRewrite)
 	out.Timeout = direct.StringDuration_ToProto(mapCtx, in.Timeout)
-	out.RetryPolicy = HttprouteRetryPolicy_ToProto(mapCtx, in.RetryPolicy)
-	out.RequestMirrorPolicy = HttprouteRequestMirrorPolicy_ToProto(mapCtx, in.RequestMirrorPolicy)
-	out.CorsPolicy = HttprouteCorsPolicy_ToProto(mapCtx, in.CorsPolicy)
+	out.RetryPolicy = HttprouteRetryPolicy_v1beta1_ToProto(mapCtx, in.RetryPolicy)
+	out.RequestMirrorPolicy = HttprouteRequestMirrorPolicy_v1beta1_ToProto(mapCtx, in.RequestMirrorPolicy)
+	out.CorsPolicy = HttprouteCorsPolicy_v1beta1_ToProto(mapCtx, in.CorsPolicy)
 	// MISSING: StatefulSessionAffinity
 	// MISSING: DirectResponse
 	// MISSING: IdleTimeout
 	return out
 }
-func HttprouteCorsPolicy_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_CorsPolicy) *krm.HttprouteCorsPolicy {
+func HttprouteCorsPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_CorsPolicy) *krmnetworkservicesv1beta1.HttprouteCorsPolicy {
 	if in == nil {
 		return nil
 	}
-	out := &krm.HttprouteCorsPolicy{}
+	out := &krmnetworkservicesv1beta1.HttprouteCorsPolicy{}
 	out.AllowOrigins = in.AllowOrigins
 	out.AllowOriginRegexes = in.AllowOriginRegexes
 	out.AllowMethods = in.AllowMethods
@@ -195,7 +179,7 @@ func HttprouteCorsPolicy_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_C
 	out.Disabled = direct.LazyPtr(in.GetDisabled())
 	return out
 }
-func HttprouteCorsPolicy_ToProto(mapCtx *direct.MapContext, in *krm.HttprouteCorsPolicy) *pb.HttpRoute_CorsPolicy {
+func HttprouteCorsPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.HttprouteCorsPolicy) *pb.HttpRoute_CorsPolicy {
 	if in == nil {
 		return nil
 	}
@@ -211,20 +195,20 @@ func HttprouteCorsPolicy_ToProto(mapCtx *direct.MapContext, in *krm.HttprouteCor
 	return out
 }
 
-/* found existing non-generated mapping function "HttprouteDelay_FromProto", skipping
-func HttprouteDelay_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_FaultInjectionPolicy_Delay) *krm.HttprouteDelay {
+/* found existing non-generated mapping function "HttprouteDelay_v1beta1_FromProto", skipping
+func HttprouteDelay_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_FaultInjectionPolicy_Delay) *krmnetworkservicesv1beta1.HttprouteDelay {
 	if in == nil {
 		return nil
 	}
-	out := &krm.HttprouteDelay{}
+	out := &krmnetworkservicesv1beta1.HttprouteDelay{}
 	out.FixedDelay = direct.StringDuration_FromProto(mapCtx, in.GetFixedDelay())
 	out.Percentage = direct.LazyPtr(in.GetPercentage())
 	return out
 }
 */
 
-/* found existing non-generated mapping function "HttprouteDelay_ToProto", skipping
-func HttprouteDelay_ToProto(mapCtx *direct.MapContext, in *krm.HttprouteDelay) *pb.HttpRoute_FaultInjectionPolicy_Delay {
+/* found existing non-generated mapping function "HttprouteDelay_v1beta1_ToProto", skipping
+func HttprouteDelay_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.HttprouteDelay) *pb.HttpRoute_FaultInjectionPolicy_Delay {
 	if in == nil {
 		return nil
 	}
@@ -235,12 +219,12 @@ func HttprouteDelay_ToProto(mapCtx *direct.MapContext, in *krm.HttprouteDelay) *
 }
 */
 
-/* found existing non-generated mapping function "HttprouteDestination_FromProto", skipping
-func HttprouteDestination_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_Destination) *krm.HttprouteDestination {
+/* found existing non-generated mapping function "HttprouteDestination_v1beta1_FromProto", skipping
+func HttprouteDestination_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_Destination) *krmnetworkservicesv1beta1.HttprouteDestination {
 	if in == nil {
 		return nil
 	}
-	out := &krm.HttprouteDestination{}
+	out := &krmnetworkservicesv1beta1.HttprouteDestination{}
 	// MISSING: ServiceName
 	out.Weight = direct.LazyPtr(in.GetWeight())
 	// MISSING: RequestHeaderModifier
@@ -249,8 +233,8 @@ func HttprouteDestination_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_
 }
 */
 
-/* found existing non-generated mapping function "HttprouteDestination_ToProto", skipping
-func HttprouteDestination_ToProto(mapCtx *direct.MapContext, in *krm.HttprouteDestination) *pb.HttpRoute_Destination {
+/* found existing non-generated mapping function "HttprouteDestination_v1beta1_ToProto", skipping
+func HttprouteDestination_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.HttprouteDestination) *pb.HttpRoute_Destination {
 	if in == nil {
 		return nil
 	}
@@ -263,12 +247,12 @@ func HttprouteDestination_ToProto(mapCtx *direct.MapContext, in *krm.HttprouteDe
 }
 */
 
-/* found existing non-generated mapping function "HttprouteDestinations_FromProto", skipping
-func HttprouteDestinations_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_Destination) *krm.HttprouteDestinations {
+/* found existing non-generated mapping function "HttprouteDestinations_v1beta1_FromProto", skipping
+func HttprouteDestinations_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_Destination) *krmnetworkservicesv1beta1.HttprouteDestinations {
 	if in == nil {
 		return nil
 	}
-	out := &krm.HttprouteDestinations{}
+	out := &krmnetworkservicesv1beta1.HttprouteDestinations{}
 	// MISSING: ServiceName
 	out.Weight = direct.LazyPtr(in.GetWeight())
 	// MISSING: RequestHeaderModifier
@@ -278,9 +262,9 @@ func HttprouteDestinations_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute
 */
 
 /*
-found existing non-generated mapping function "HttprouteDestinations_ToProto", skipping
+found existing non-generated mapping function "HttprouteDestinations_v1beta1_ToProto", skipping
 
-	func HttprouteDestinations_ToProto(mapCtx *direct.MapContext, in *krm.HttprouteDestinations) *pb.HttpRoute_Destination {
+	func HttprouteDestinations_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.HttprouteDestinations) *pb.HttpRoute_Destination {
 		if in == nil {
 			return nil
 		}
@@ -292,74 +276,66 @@ found existing non-generated mapping function "HttprouteDestinations_ToProto", s
 		return out
 	}
 */
-func HttprouteFaultInjectionPolicy_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_FaultInjectionPolicy) *krm.HttprouteFaultInjectionPolicy {
+func HttprouteFaultInjectionPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_FaultInjectionPolicy) *krmnetworkservicesv1beta1.HttprouteFaultInjectionPolicy {
 	if in == nil {
 		return nil
 	}
-	out := &krm.HttprouteFaultInjectionPolicy{}
-	out.Delay = HttprouteDelay_FromProto(mapCtx, in.GetDelay())
-	out.Abort = HttprouteAbort_FromProto(mapCtx, in.GetAbort())
+	out := &krmnetworkservicesv1beta1.HttprouteFaultInjectionPolicy{}
+	out.Delay = HttprouteDelay_v1beta1_FromProto(mapCtx, in.GetDelay())
+	out.Abort = HttprouteAbort_v1beta1_FromProto(mapCtx, in.GetAbort())
 	return out
 }
-func HttprouteFaultInjectionPolicy_ToProto(mapCtx *direct.MapContext, in *krm.HttprouteFaultInjectionPolicy) *pb.HttpRoute_FaultInjectionPolicy {
+func HttprouteFaultInjectionPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.HttprouteFaultInjectionPolicy) *pb.HttpRoute_FaultInjectionPolicy {
 	if in == nil {
 		return nil
 	}
 	out := &pb.HttpRoute_FaultInjectionPolicy{}
-	out.Delay = HttprouteDelay_ToProto(mapCtx, in.Delay)
-	out.Abort = HttprouteAbort_ToProto(mapCtx, in.Abort)
+	out.Delay = HttprouteDelay_v1beta1_ToProto(mapCtx, in.Delay)
+	out.Abort = HttprouteAbort_v1beta1_ToProto(mapCtx, in.Abort)
 	return out
 }
-
-/* found existing non-generated mapping function "HttprouteHeaders_FromProto", skipping
-func HttprouteHeaders_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_HeaderMatch) *krm.HttprouteHeaders {
+func HttprouteHeaders_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_HeaderMatch) *krmnetworkservicesv1beta1.HttprouteHeaders {
 	if in == nil {
 		return nil
 	}
-	out := &krm.HttprouteHeaders{}
+	out := &krmnetworkservicesv1beta1.HttprouteHeaders{}
 	out.ExactMatch = direct.LazyPtr(in.GetExactMatch())
 	out.RegexMatch = direct.LazyPtr(in.GetRegexMatch())
 	out.PrefixMatch = direct.LazyPtr(in.GetPrefixMatch())
 	out.PresentMatch = direct.LazyPtr(in.GetPresentMatch())
 	out.SuffixMatch = direct.LazyPtr(in.GetSuffixMatch())
-	out.RangeMatch = HttprouteRangeMatch_FromProto(mapCtx, in.GetRangeMatch())
+	out.RangeMatch = HttprouteRangeMatch_v1beta1_FromProto(mapCtx, in.GetRangeMatch())
 	out.Header = direct.LazyPtr(in.GetHeader())
 	out.InvertMatch = direct.LazyPtr(in.GetInvertMatch())
 	return out
 }
-*/
-
-/*
-found existing non-generated mapping function "HttprouteHeaders_ToProto", skipping
-
-	func HttprouteHeaders_ToProto(mapCtx *direct.MapContext, in *krm.HttprouteHeaders) *pb.HttpRoute_HeaderMatch {
-		if in == nil {
-			return nil
-		}
-		out := &pb.HttpRoute_HeaderMatch{}
-		if oneof := HttprouteHeaders_ExactMatch_ToProto(mapCtx, in.ExactMatch); oneof != nil {
-			out.MatchType = oneof
-		}
-		if oneof := HttprouteHeaders_RegexMatch_ToProto(mapCtx, in.RegexMatch); oneof != nil {
-			out.MatchType = oneof
-		}
-		if oneof := HttprouteHeaders_PrefixMatch_ToProto(mapCtx, in.PrefixMatch); oneof != nil {
-			out.MatchType = oneof
-		}
-		if oneof := HttprouteHeaders_PresentMatch_ToProto(mapCtx, in.PresentMatch); oneof != nil {
-			out.MatchType = oneof
-		}
-		if oneof := HttprouteHeaders_SuffixMatch_ToProto(mapCtx, in.SuffixMatch); oneof != nil {
-			out.MatchType = oneof
-		}
-		if oneof := HttprouteRangeMatch_ToProto(mapCtx, in.RangeMatch); oneof != nil {
-			out.MatchType = &pb.HttpRoute_HeaderMatch_RangeMatch{RangeMatch: oneof}
-		}
-		out.Header = direct.ValueOf(in.Header)
-		out.InvertMatch = direct.ValueOf(in.InvertMatch)
-		return out
+func HttprouteHeaders_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.HttprouteHeaders) *pb.HttpRoute_HeaderMatch {
+	if in == nil {
+		return nil
 	}
-*/
+	out := &pb.HttpRoute_HeaderMatch{}
+	if oneof := HttprouteHeaders_ExactMatch_ToProto(mapCtx, in.ExactMatch); oneof != nil {
+		out.MatchType = oneof
+	}
+	if oneof := HttprouteHeaders_RegexMatch_ToProto(mapCtx, in.RegexMatch); oneof != nil {
+		out.MatchType = oneof
+	}
+	if oneof := HttprouteHeaders_PrefixMatch_ToProto(mapCtx, in.PrefixMatch); oneof != nil {
+		out.MatchType = oneof
+	}
+	if oneof := HttprouteHeaders_PresentMatch_ToProto(mapCtx, in.PresentMatch); oneof != nil {
+		out.MatchType = oneof
+	}
+	if oneof := HttprouteHeaders_SuffixMatch_ToProto(mapCtx, in.SuffixMatch); oneof != nil {
+		out.MatchType = oneof
+	}
+	if oneof := HttprouteRangeMatch_v1beta1_ToProto(mapCtx, in.RangeMatch); oneof != nil {
+		out.MatchType = &pb.HttpRoute_HeaderMatch_RangeMatch{RangeMatch: oneof}
+	}
+	out.Header = direct.ValueOf(in.Header)
+	out.InvertMatch = direct.ValueOf(in.InvertMatch)
+	return out
+}
 func HttprouteHeaders_ExactMatch_ToProto(mapCtx *direct.MapContext, in *string) *pb.HttpRoute_HeaderMatch_ExactMatch {
 	if in == nil {
 		return nil
@@ -390,20 +366,20 @@ func HttprouteHeaders_SuffixMatch_ToProto(mapCtx *direct.MapContext, in *string)
 	}
 	return &pb.HttpRoute_HeaderMatch_SuffixMatch{SuffixMatch: *in}
 }
-func HttprouteMatches_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_RouteMatch) *krm.HttprouteMatches {
+func HttprouteMatches_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_RouteMatch) *krmnetworkservicesv1beta1.HttprouteMatches {
 	if in == nil {
 		return nil
 	}
-	out := &krm.HttprouteMatches{}
+	out := &krmnetworkservicesv1beta1.HttprouteMatches{}
 	out.FullPathMatch = direct.LazyPtr(in.GetFullPathMatch())
 	out.PrefixMatch = direct.LazyPtr(in.GetPrefixMatch())
 	out.RegexMatch = direct.LazyPtr(in.GetRegexMatch())
 	out.IgnoreCase = direct.LazyPtr(in.GetIgnoreCase())
-	out.Headers = direct.Slice_FromProto(mapCtx, in.Headers, HttprouteHeaders_FromProto)
-	out.QueryParameters = direct.Slice_FromProto(mapCtx, in.QueryParameters, HttprouteQueryParameters_FromProto)
+	out.Headers = direct.Slice_FromProto(mapCtx, in.Headers, HttprouteHeaders_v1beta1_FromProto)
+	out.QueryParameters = direct.Slice_FromProto(mapCtx, in.QueryParameters, HttprouteQueryParameters_v1beta1_FromProto)
 	return out
 }
-func HttprouteMatches_ToProto(mapCtx *direct.MapContext, in *krm.HttprouteMatches) *pb.HttpRoute_RouteMatch {
+func HttprouteMatches_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.HttprouteMatches) *pb.HttpRoute_RouteMatch {
 	if in == nil {
 		return nil
 	}
@@ -418,8 +394,8 @@ func HttprouteMatches_ToProto(mapCtx *direct.MapContext, in *krm.HttprouteMatche
 		out.PathMatch = oneof
 	}
 	out.IgnoreCase = direct.ValueOf(in.IgnoreCase)
-	out.Headers = direct.Slice_ToProto(mapCtx, in.Headers, HttprouteHeaders_ToProto)
-	out.QueryParameters = direct.Slice_ToProto(mapCtx, in.QueryParameters, HttprouteQueryParameters_ToProto)
+	out.Headers = direct.Slice_ToProto(mapCtx, in.Headers, HttprouteHeaders_v1beta1_ToProto)
+	out.QueryParameters = direct.Slice_ToProto(mapCtx, in.QueryParameters, HttprouteQueryParameters_v1beta1_ToProto)
 	return out
 }
 func HttprouteMatches_FullPathMatch_ToProto(mapCtx *direct.MapContext, in *string) *pb.HttpRoute_RouteMatch_FullPathMatch {
@@ -440,42 +416,34 @@ func HttprouteMatches_RegexMatch_ToProto(mapCtx *direct.MapContext, in *string) 
 	}
 	return &pb.HttpRoute_RouteMatch_RegexMatch{RegexMatch: *in}
 }
-
-/* found existing non-generated mapping function "HttprouteQueryParameters_FromProto", skipping
-func HttprouteQueryParameters_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_QueryParameterMatch) *krm.HttprouteQueryParameters {
+func HttprouteQueryParameters_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_QueryParameterMatch) *krmnetworkservicesv1beta1.HttprouteQueryParameters {
 	if in == nil {
 		return nil
 	}
-	out := &krm.HttprouteQueryParameters{}
+	out := &krmnetworkservicesv1beta1.HttprouteQueryParameters{}
 	out.ExactMatch = direct.LazyPtr(in.GetExactMatch())
 	out.RegexMatch = direct.LazyPtr(in.GetRegexMatch())
 	out.PresentMatch = direct.LazyPtr(in.GetPresentMatch())
 	out.QueryParameter = direct.LazyPtr(in.GetQueryParameter())
 	return out
 }
-*/
-
-/*
-found existing non-generated mapping function "HttprouteQueryParameters_ToProto", skipping
-
-	func HttprouteQueryParameters_ToProto(mapCtx *direct.MapContext, in *krm.HttprouteQueryParameters) *pb.HttpRoute_QueryParameterMatch {
-		if in == nil {
-			return nil
-		}
-		out := &pb.HttpRoute_QueryParameterMatch{}
-		if oneof := HttprouteQueryParameters_ExactMatch_ToProto(mapCtx, in.ExactMatch); oneof != nil {
-			out.MatchType = oneof
-		}
-		if oneof := HttprouteQueryParameters_RegexMatch_ToProto(mapCtx, in.RegexMatch); oneof != nil {
-			out.MatchType = oneof
-		}
-		if oneof := HttprouteQueryParameters_PresentMatch_ToProto(mapCtx, in.PresentMatch); oneof != nil {
-			out.MatchType = oneof
-		}
-		out.QueryParameter = direct.ValueOf(in.QueryParameter)
-		return out
+func HttprouteQueryParameters_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.HttprouteQueryParameters) *pb.HttpRoute_QueryParameterMatch {
+	if in == nil {
+		return nil
 	}
-*/
+	out := &pb.HttpRoute_QueryParameterMatch{}
+	if oneof := HttprouteQueryParameters_ExactMatch_ToProto(mapCtx, in.ExactMatch); oneof != nil {
+		out.MatchType = oneof
+	}
+	if oneof := HttprouteQueryParameters_RegexMatch_ToProto(mapCtx, in.RegexMatch); oneof != nil {
+		out.MatchType = oneof
+	}
+	if oneof := HttprouteQueryParameters_PresentMatch_ToProto(mapCtx, in.PresentMatch); oneof != nil {
+		out.MatchType = oneof
+	}
+	out.QueryParameter = direct.ValueOf(in.QueryParameter)
+	return out
+}
 func HttprouteQueryParameters_ExactMatch_ToProto(mapCtx *direct.MapContext, in *string) *pb.HttpRoute_QueryParameterMatch_ExactMatch {
 	if in == nil {
 		return nil
@@ -495,20 +463,20 @@ func HttprouteQueryParameters_PresentMatch_ToProto(mapCtx *direct.MapContext, in
 	return &pb.HttpRoute_QueryParameterMatch_PresentMatch{PresentMatch: *in}
 }
 
-/* found existing non-generated mapping function "HttprouteRangeMatch_FromProto", skipping
-func HttprouteRangeMatch_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_HeaderMatch_IntegerRange) *krm.HttprouteRangeMatch {
+/* found existing non-generated mapping function "HttprouteRangeMatch_v1beta1_FromProto", skipping
+func HttprouteRangeMatch_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_HeaderMatch_IntegerRange) *krmnetworkservicesv1beta1.HttprouteRangeMatch {
 	if in == nil {
 		return nil
 	}
-	out := &krm.HttprouteRangeMatch{}
+	out := &krmnetworkservicesv1beta1.HttprouteRangeMatch{}
 	out.Start = direct.LazyPtr(in.GetStart())
 	out.End = direct.LazyPtr(in.GetEnd())
 	return out
 }
 */
 
-/* found existing non-generated mapping function "HttprouteRangeMatch_ToProto", skipping
-func HttprouteRangeMatch_ToProto(mapCtx *direct.MapContext, in *krm.HttprouteRangeMatch) *pb.HttpRoute_HeaderMatch_IntegerRange {
+/* found existing non-generated mapping function "HttprouteRangeMatch_v1beta1_ToProto", skipping
+func HttprouteRangeMatch_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.HttprouteRangeMatch) *pb.HttpRoute_HeaderMatch_IntegerRange {
 	if in == nil {
 		return nil
 	}
@@ -519,12 +487,12 @@ func HttprouteRangeMatch_ToProto(mapCtx *direct.MapContext, in *krm.HttprouteRan
 }
 */
 
-/* found existing non-generated mapping function "HttprouteRedirect_FromProto", skipping
-func HttprouteRedirect_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_Redirect) *krm.HttprouteRedirect {
+/* found existing non-generated mapping function "HttprouteRedirect_v1beta1_FromProto", skipping
+func HttprouteRedirect_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_Redirect) *krmnetworkservicesv1beta1.HttprouteRedirect {
 	if in == nil {
 		return nil
 	}
-	out := &krm.HttprouteRedirect{}
+	out := &krmnetworkservicesv1beta1.HttprouteRedirect{}
 	out.HostRedirect = direct.LazyPtr(in.GetHostRedirect())
 	out.PathRedirect = direct.LazyPtr(in.GetPathRedirect())
 	out.PrefixRewrite = direct.LazyPtr(in.GetPrefixRewrite())
@@ -537,9 +505,9 @@ func HttprouteRedirect_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_Red
 */
 
 /*
-found existing non-generated mapping function "HttprouteRedirect_ToProto", skipping
+found existing non-generated mapping function "HttprouteRedirect_v1beta1_ToProto", skipping
 
-	func HttprouteRedirect_ToProto(mapCtx *direct.MapContext, in *krm.HttprouteRedirect) *pb.HttpRoute_Redirect {
+	func HttprouteRedirect_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.HttprouteRedirect) *pb.HttpRoute_Redirect {
 		if in == nil {
 			return nil
 		}
@@ -554,17 +522,17 @@ found existing non-generated mapping function "HttprouteRedirect_ToProto", skipp
 		return out
 	}
 */
-func HttprouteRequestHeaderModifier_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_HeaderModifier) *krm.HttprouteRequestHeaderModifier {
+func HttprouteRequestHeaderModifier_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_HeaderModifier) *krmnetworkservicesv1beta1.HttprouteRequestHeaderModifier {
 	if in == nil {
 		return nil
 	}
-	out := &krm.HttprouteRequestHeaderModifier{}
+	out := &krmnetworkservicesv1beta1.HttprouteRequestHeaderModifier{}
 	out.Set = in.Set
 	out.Add = in.Add
 	out.Remove = in.Remove
 	return out
 }
-func HttprouteRequestHeaderModifier_ToProto(mapCtx *direct.MapContext, in *krm.HttprouteRequestHeaderModifier) *pb.HttpRoute_HeaderModifier {
+func HttprouteRequestHeaderModifier_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.HttprouteRequestHeaderModifier) *pb.HttpRoute_HeaderModifier {
 	if in == nil {
 		return nil
 	}
@@ -574,35 +542,35 @@ func HttprouteRequestHeaderModifier_ToProto(mapCtx *direct.MapContext, in *krm.H
 	out.Remove = in.Remove
 	return out
 }
-func HttprouteRequestMirrorPolicy_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_RequestMirrorPolicy) *krm.HttprouteRequestMirrorPolicy {
+func HttprouteRequestMirrorPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_RequestMirrorPolicy) *krmnetworkservicesv1beta1.HttprouteRequestMirrorPolicy {
 	if in == nil {
 		return nil
 	}
-	out := &krm.HttprouteRequestMirrorPolicy{}
-	out.Destination = HttprouteDestination_FromProto(mapCtx, in.GetDestination())
+	out := &krmnetworkservicesv1beta1.HttprouteRequestMirrorPolicy{}
+	out.Destination = HttprouteDestination_v1beta1_FromProto(mapCtx, in.GetDestination())
 	// MISSING: MirrorPercent
 	return out
 }
-func HttprouteRequestMirrorPolicy_ToProto(mapCtx *direct.MapContext, in *krm.HttprouteRequestMirrorPolicy) *pb.HttpRoute_RequestMirrorPolicy {
+func HttprouteRequestMirrorPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.HttprouteRequestMirrorPolicy) *pb.HttpRoute_RequestMirrorPolicy {
 	if in == nil {
 		return nil
 	}
 	out := &pb.HttpRoute_RequestMirrorPolicy{}
-	out.Destination = HttprouteDestination_ToProto(mapCtx, in.Destination)
+	out.Destination = HttprouteDestination_v1beta1_ToProto(mapCtx, in.Destination)
 	// MISSING: MirrorPercent
 	return out
 }
-func HttprouteResponseHeaderModifier_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_HeaderModifier) *krm.HttprouteResponseHeaderModifier {
+func HttprouteResponseHeaderModifier_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_HeaderModifier) *krmnetworkservicesv1beta1.HttprouteResponseHeaderModifier {
 	if in == nil {
 		return nil
 	}
-	out := &krm.HttprouteResponseHeaderModifier{}
+	out := &krmnetworkservicesv1beta1.HttprouteResponseHeaderModifier{}
 	out.Set = in.Set
 	out.Add = in.Add
 	out.Remove = in.Remove
 	return out
 }
-func HttprouteResponseHeaderModifier_ToProto(mapCtx *direct.MapContext, in *krm.HttprouteResponseHeaderModifier) *pb.HttpRoute_HeaderModifier {
+func HttprouteResponseHeaderModifier_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.HttprouteResponseHeaderModifier) *pb.HttpRoute_HeaderModifier {
 	if in == nil {
 		return nil
 	}
@@ -613,12 +581,12 @@ func HttprouteResponseHeaderModifier_ToProto(mapCtx *direct.MapContext, in *krm.
 	return out
 }
 
-/* found existing non-generated mapping function "HttprouteRetryPolicy_FromProto", skipping
-func HttprouteRetryPolicy_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_RetryPolicy) *krm.HttprouteRetryPolicy {
+/* found existing non-generated mapping function "HttprouteRetryPolicy_v1beta1_FromProto", skipping
+func HttprouteRetryPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_RetryPolicy) *krmnetworkservicesv1beta1.HttprouteRetryPolicy {
 	if in == nil {
 		return nil
 	}
-	out := &krm.HttprouteRetryPolicy{}
+	out := &krmnetworkservicesv1beta1.HttprouteRetryPolicy{}
 	out.RetryConditions = in.RetryConditions
 	out.NumRetries = direct.LazyPtr(in.GetNumRetries())
 	out.PerTryTimeout = direct.StringDuration_FromProto(mapCtx, in.GetPerTryTimeout())
@@ -627,9 +595,9 @@ func HttprouteRetryPolicy_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_
 */
 
 /*
-found existing non-generated mapping function "HttprouteRetryPolicy_ToProto", skipping
+found existing non-generated mapping function "HttprouteRetryPolicy_v1beta1_ToProto", skipping
 
-	func HttprouteRetryPolicy_ToProto(mapCtx *direct.MapContext, in *krm.HttprouteRetryPolicy) *pb.HttpRoute_RetryPolicy {
+	func HttprouteRetryPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.HttprouteRetryPolicy) *pb.HttpRoute_RetryPolicy {
 		if in == nil {
 			return nil
 		}
@@ -640,34 +608,34 @@ found existing non-generated mapping function "HttprouteRetryPolicy_ToProto", sk
 		return out
 	}
 */
-func HttprouteRules_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_RouteRule) *krm.HttprouteRules {
+func HttprouteRules_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_RouteRule) *krmnetworkservicesv1beta1.HttprouteRules {
 	if in == nil {
 		return nil
 	}
-	out := &krm.HttprouteRules{}
-	out.Matches = direct.Slice_FromProto(mapCtx, in.Matches, HttprouteMatches_FromProto)
-	out.Action = HttprouteAction_FromProto(mapCtx, in.GetAction())
+	out := &krmnetworkservicesv1beta1.HttprouteRules{}
+	out.Matches = direct.Slice_FromProto(mapCtx, in.Matches, HttprouteMatches_v1beta1_FromProto)
+	out.Action = HttprouteAction_v1beta1_FromProto(mapCtx, in.GetAction())
 	return out
 }
-func HttprouteRules_ToProto(mapCtx *direct.MapContext, in *krm.HttprouteRules) *pb.HttpRoute_RouteRule {
+func HttprouteRules_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.HttprouteRules) *pb.HttpRoute_RouteRule {
 	if in == nil {
 		return nil
 	}
 	out := &pb.HttpRoute_RouteRule{}
-	out.Matches = direct.Slice_ToProto(mapCtx, in.Matches, HttprouteMatches_ToProto)
-	out.Action = HttprouteAction_ToProto(mapCtx, in.Action)
+	out.Matches = direct.Slice_ToProto(mapCtx, in.Matches, HttprouteMatches_v1beta1_ToProto)
+	out.Action = HttprouteAction_v1beta1_ToProto(mapCtx, in.Action)
 	return out
 }
-func HttprouteUrlRewrite_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_URLRewrite) *krm.HttprouteUrlRewrite {
+func HttprouteUrlRewrite_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute_URLRewrite) *krmnetworkservicesv1beta1.HttprouteUrlRewrite {
 	if in == nil {
 		return nil
 	}
-	out := &krm.HttprouteUrlRewrite{}
+	out := &krmnetworkservicesv1beta1.HttprouteUrlRewrite{}
 	out.PathPrefixRewrite = direct.LazyPtr(in.GetPathPrefixRewrite())
 	out.HostRewrite = direct.LazyPtr(in.GetHostRewrite())
 	return out
 }
-func HttprouteUrlRewrite_ToProto(mapCtx *direct.MapContext, in *krm.HttprouteUrlRewrite) *pb.HttpRoute_URLRewrite {
+func HttprouteUrlRewrite_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.HttprouteUrlRewrite) *pb.HttpRoute_URLRewrite {
 	if in == nil {
 		return nil
 	}
@@ -676,7 +644,7 @@ func HttprouteUrlRewrite_ToProto(mapCtx *direct.MapContext, in *krm.HttprouteUrl
 	out.HostRewrite = direct.ValueOf(in.HostRewrite)
 	return out
 }
-func NetworkServicesAuthzExtensionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AuthzExtension) *krmnetworkservicesv1alpha1.NetworkServicesAuthzExtensionObservedState {
+func NetworkServicesAuthzExtensionObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AuthzExtension) *krmnetworkservicesv1alpha1.NetworkServicesAuthzExtensionObservedState {
 	if in == nil {
 		return nil
 	}
@@ -687,7 +655,7 @@ func NetworkServicesAuthzExtensionObservedState_FromProto(mapCtx *direct.MapCont
 	// MISSING: Service
 	return out
 }
-func NetworkServicesAuthzExtensionObservedState_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1alpha1.NetworkServicesAuthzExtensionObservedState) *pb.AuthzExtension {
+func NetworkServicesAuthzExtensionObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1alpha1.NetworkServicesAuthzExtensionObservedState) *pb.AuthzExtension {
 	if in == nil {
 		return nil
 	}
@@ -698,7 +666,7 @@ func NetworkServicesAuthzExtensionObservedState_ToProto(mapCtx *direct.MapContex
 	// MISSING: Service
 	return out
 }
-func NetworkServicesAuthzExtensionSpec_FromProto(mapCtx *direct.MapContext, in *pb.AuthzExtension) *krmnetworkservicesv1alpha1.NetworkServicesAuthzExtensionSpec {
+func NetworkServicesAuthzExtensionSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.AuthzExtension) *krmnetworkservicesv1alpha1.NetworkServicesAuthzExtensionSpec {
 	if in == nil {
 		return nil
 	}
@@ -716,7 +684,7 @@ func NetworkServicesAuthzExtensionSpec_FromProto(mapCtx *direct.MapContext, in *
 	out.WireFormat = direct.Enum_FromProto(mapCtx, in.GetWireFormat())
 	return out
 }
-func NetworkServicesAuthzExtensionSpec_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1alpha1.NetworkServicesAuthzExtensionSpec) *pb.AuthzExtension {
+func NetworkServicesAuthzExtensionSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1alpha1.NetworkServicesAuthzExtensionSpec) *pb.AuthzExtension {
 	if in == nil {
 		return nil
 	}
@@ -735,12 +703,12 @@ func NetworkServicesAuthzExtensionSpec_ToProto(mapCtx *direct.MapContext, in *kr
 	return out
 }
 
-/* found existing non-generated mapping function "NetworkServicesGatewaySpec_FromProto", skipping
-func NetworkServicesGatewaySpec_FromProto(mapCtx *direct.MapContext, in *pb.Gateway) *krm.NetworkServicesGatewaySpec {
+/* found existing non-generated mapping function "NetworkServicesGatewaySpec_v1beta1_FromProto", skipping
+func NetworkServicesGatewaySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Gateway) *krmnetworkservicesv1beta1.NetworkServicesGatewaySpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.NetworkServicesGatewaySpec{}
+	out := &krmnetworkservicesv1beta1.NetworkServicesGatewaySpec{}
 	// MISSING: Name
 	// MISSING: SelfLink
 	// MISSING: CreateTime
@@ -763,8 +731,8 @@ func NetworkServicesGatewaySpec_FromProto(mapCtx *direct.MapContext, in *pb.Gate
 }
 */
 
-/* found existing non-generated mapping function "NetworkServicesGatewaySpec_ToProto", skipping
-func NetworkServicesGatewaySpec_ToProto(mapCtx *direct.MapContext, in *krm.NetworkServicesGatewaySpec) *pb.Gateway {
+/* found existing non-generated mapping function "NetworkServicesGatewaySpec_v1beta1_ToProto", skipping
+func NetworkServicesGatewaySpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.NetworkServicesGatewaySpec) *pb.Gateway {
 	if in == nil {
 		return nil
 	}
@@ -791,12 +759,12 @@ func NetworkServicesGatewaySpec_ToProto(mapCtx *direct.MapContext, in *krm.Netwo
 }
 */
 
-/* found existing non-generated mapping function "NetworkServicesHTTPRouteSpec_FromProto", skipping
-func NetworkServicesHTTPRouteSpec_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute) *krm.NetworkServicesHTTPRouteSpec {
+/* found existing non-generated mapping function "NetworkServicesHTTPRouteSpec_v1beta1_FromProto", skipping
+func NetworkServicesHTTPRouteSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.HttpRoute) *krmnetworkservicesv1beta1.NetworkServicesHTTPRouteSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.NetworkServicesHTTPRouteSpec{}
+	out := &krmnetworkservicesv1beta1.NetworkServicesHTTPRouteSpec{}
 	// MISSING: Name
 	// MISSING: SelfLink
 	out.Description = direct.LazyPtr(in.GetDescription())
@@ -806,33 +774,33 @@ func NetworkServicesHTTPRouteSpec_FromProto(mapCtx *direct.MapContext, in *pb.Ht
 	out.Meshes = NetworkServicesHTTPRouteSpec_Meshes_FromProto(mapCtx, in.Meshes)
 	out.Gateways = NetworkServicesHTTPRouteSpec_Gateways_FromProto(mapCtx, in.Gateways)
 	// MISSING: Labels
-	out.Rules = direct.Slice_FromProto(mapCtx, in.Rules, HttprouteRules_FromProto)
+	out.Rules = direct.Slice_FromProto(mapCtx, in.Rules, HttprouteRules_v1beta1_FromProto)
 	return out
 }
 */
 
-/* found existing non-generated mapping function "NetworkServicesHTTPRouteSpec_ToProto", skipping
-func NetworkServicesHTTPRouteSpec_ToProto(mapCtx *direct.MapContext, in *krm.NetworkServicesHTTPRouteSpec) *pb.HttpRoute {
-	if in == nil {
-		return nil
+/*
+found existing non-generated mapping function "NetworkServicesHTTPRouteSpec_v1beta1_ToProto", skipping
+
+	func NetworkServicesHTTPRouteSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1beta1.NetworkServicesHTTPRouteSpec) *pb.HttpRoute {
+		if in == nil {
+			return nil
+		}
+		out := &pb.HttpRoute{}
+		// MISSING: Name
+		// MISSING: SelfLink
+		out.Description = direct.ValueOf(in.Description)
+		// MISSING: CreateTime
+		// MISSING: UpdateTime
+		out.Hostnames = in.Hostnames
+		out.Meshes = NetworkServicesHTTPRouteSpec_Meshes_ToProto(mapCtx, in.Meshes)
+		out.Gateways = NetworkServicesHTTPRouteSpec_Gateways_ToProto(mapCtx, in.Gateways)
+		// MISSING: Labels
+		out.Rules = direct.Slice_ToProto(mapCtx, in.Rules, HttprouteRules_v1beta1_ToProto)
+		return out
 	}
-	out := &pb.HttpRoute{}
-	// MISSING: Name
-	// MISSING: SelfLink
-	out.Description = direct.ValueOf(in.Description)
-	// MISSING: CreateTime
-	// MISSING: UpdateTime
-	out.Hostnames = in.Hostnames
-	out.Meshes = NetworkServicesHTTPRouteSpec_Meshes_ToProto(mapCtx, in.Meshes)
-	out.Gateways = NetworkServicesHTTPRouteSpec_Gateways_ToProto(mapCtx, in.Gateways)
-	// MISSING: Labels
-	out.Rules = direct.Slice_ToProto(mapCtx, in.Rules, HttprouteRules_ToProto)
-	return out
-}
 */
-
-/* found existing non-generated mapping function "NetworkServicesLBRouteExtensionObservedState_FromProto", skipping
-func NetworkServicesLBRouteExtensionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.LbRouteExtension) *krmnetworkservicesv1alpha1.NetworkServicesLBRouteExtensionObservedState {
+func NetworkServicesLBRouteExtensionObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.LbRouteExtension) *krmnetworkservicesv1alpha1.NetworkServicesLBRouteExtensionObservedState {
 	if in == nil {
 		return nil
 	}
@@ -844,10 +812,7 @@ func NetworkServicesLBRouteExtensionObservedState_FromProto(mapCtx *direct.MapCo
 	// MISSING: ForwardingRules
 	return out
 }
-*/
-
-/* found existing non-generated mapping function "NetworkServicesLBRouteExtensionObservedState_ToProto", skipping
-func NetworkServicesLBRouteExtensionObservedState_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1alpha1.NetworkServicesLBRouteExtensionObservedState) *pb.LbRouteExtension {
+func NetworkServicesLBRouteExtensionObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1alpha1.NetworkServicesLBRouteExtensionObservedState) *pb.LbRouteExtension {
 	if in == nil {
 		return nil
 	}
@@ -859,10 +824,7 @@ func NetworkServicesLBRouteExtensionObservedState_ToProto(mapCtx *direct.MapCont
 	// MISSING: ForwardingRules
 	return out
 }
-*/
-
-/* found existing non-generated mapping function "NetworkServicesLBRouteExtensionSpec_FromProto", skipping
-func NetworkServicesLBRouteExtensionSpec_FromProto(mapCtx *direct.MapContext, in *pb.LbRouteExtension) *krmnetworkservicesv1alpha1.NetworkServicesLBRouteExtensionSpec {
+func NetworkServicesLBRouteExtensionSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.LbRouteExtension) *krmnetworkservicesv1alpha1.NetworkServicesLBRouteExtensionSpec {
 	if in == nil {
 		return nil
 	}
@@ -871,44 +833,38 @@ func NetworkServicesLBRouteExtensionSpec_FromProto(mapCtx *direct.MapContext, in
 	out.Description = direct.LazyPtr(in.GetDescription())
 	// MISSING: Labels
 
-						if v := in.GetForwardingRules(); len(v) != 0 {
-							for i := range v {
-								out.ForwardingRuleRefs = append(out.ForwardingRuleRefs, &krmcomputev1beta1.ForwardingRuleRef{External: v[i]})
-							}
-						}
+	if v := in.GetForwardingRules(); len(v) != 0 {
+		for i := range v {
+			out.ForwardingRuleRefs = append(out.ForwardingRuleRefs, &krmcomputev1beta1.ForwardingRuleRef{External: v[i]})
+		}
+	}
 
-	out.ExtensionChains = direct.Slice_FromProto(mapCtx, in.ExtensionChains, ExtensionChain_FromProto)
+	out.ExtensionChains = direct.Slice_FromProto(mapCtx, in.ExtensionChains, ExtensionChain_v1alpha1_FromProto)
 	out.LoadBalancingScheme = direct.Enum_FromProto(mapCtx, in.GetLoadBalancingScheme())
 	out.Metadata = direct.Struct_FromProto(mapCtx, in.GetMetadata())
 	return out
 }
-*/
-
-/*
-found existing non-generated mapping function "NetworkServicesLBRouteExtensionSpec_ToProto", skipping
-
-	func NetworkServicesLBRouteExtensionSpec_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1alpha1.NetworkServicesLBRouteExtensionSpec) *pb.LbRouteExtension {
-		if in == nil {
-			return nil
-		}
-		out := &pb.LbRouteExtension{}
-		// MISSING: Name
-		out.Description = direct.ValueOf(in.Description)
-		// MISSING: Labels
-
-							if v := in.ForwardingRuleRefs; len(v) != 0 {
-								for i := range v {
-									out.ForwardingRules = append(out.ForwardingRules, v[i].External)
-								}
-							}
-
-		out.ExtensionChains = direct.Slice_ToProto(mapCtx, in.ExtensionChains, ExtensionChain_ToProto)
-		out.LoadBalancingScheme = direct.Enum_ToProto[pb.LoadBalancingScheme](mapCtx, in.LoadBalancingScheme)
-		out.Metadata = direct.Struct_ToProto(mapCtx, in.Metadata)
-		return out
+func NetworkServicesLBRouteExtensionSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1alpha1.NetworkServicesLBRouteExtensionSpec) *pb.LbRouteExtension {
+	if in == nil {
+		return nil
 	}
-*/
-func NetworkServicesServiceBindingObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ServiceBinding) *krmnetworkservicesv1alpha1.NetworkServicesServiceBindingObservedState {
+	out := &pb.LbRouteExtension{}
+	// MISSING: Name
+	out.Description = direct.ValueOf(in.Description)
+	// MISSING: Labels
+
+	if v := in.ForwardingRuleRefs; len(v) != 0 {
+		for i := range v {
+			out.ForwardingRules = append(out.ForwardingRules, v[i].External)
+		}
+	}
+
+	out.ExtensionChains = direct.Slice_ToProto(mapCtx, in.ExtensionChains, ExtensionChain_v1alpha1_ToProto)
+	out.LoadBalancingScheme = direct.Enum_ToProto[pb.LoadBalancingScheme](mapCtx, in.LoadBalancingScheme)
+	out.Metadata = direct.Struct_ToProto(mapCtx, in.Metadata)
+	return out
+}
+func NetworkServicesServiceBindingObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ServiceBinding) *krmnetworkservicesv1alpha1.NetworkServicesServiceBindingObservedState {
 	if in == nil {
 		return nil
 	}
@@ -919,7 +875,7 @@ func NetworkServicesServiceBindingObservedState_FromProto(mapCtx *direct.MapCont
 	// MISSING: ServiceID
 	return out
 }
-func NetworkServicesServiceBindingObservedState_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1alpha1.NetworkServicesServiceBindingObservedState) *pb.ServiceBinding {
+func NetworkServicesServiceBindingObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1alpha1.NetworkServicesServiceBindingObservedState) *pb.ServiceBinding {
 	if in == nil {
 		return nil
 	}
@@ -930,7 +886,7 @@ func NetworkServicesServiceBindingObservedState_ToProto(mapCtx *direct.MapContex
 	// MISSING: ServiceID
 	return out
 }
-func NetworkServicesServiceBindingSpec_FromProto(mapCtx *direct.MapContext, in *pb.ServiceBinding) *krmnetworkservicesv1alpha1.NetworkServicesServiceBindingSpec {
+func NetworkServicesServiceBindingSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ServiceBinding) *krmnetworkservicesv1alpha1.NetworkServicesServiceBindingSpec {
 	if in == nil {
 		return nil
 	}
@@ -944,7 +900,7 @@ func NetworkServicesServiceBindingSpec_FromProto(mapCtx *direct.MapContext, in *
 	out.Labels = in.Labels
 	return out
 }
-func NetworkServicesServiceBindingSpec_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1alpha1.NetworkServicesServiceBindingSpec) *pb.ServiceBinding {
+func NetworkServicesServiceBindingSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1alpha1.NetworkServicesServiceBindingSpec) *pb.ServiceBinding {
 	if in == nil {
 		return nil
 	}
@@ -959,8 +915,8 @@ func NetworkServicesServiceBindingSpec_ToProto(mapCtx *direct.MapContext, in *kr
 	return out
 }
 
-/* found existing non-generated mapping function "NetworkServicesWasmPluginObservedState_FromProto", skipping
-func NetworkServicesWasmPluginObservedState_FromProto(mapCtx *direct.MapContext, in *pb.WasmPlugin) *krmnetworkservicesv1alpha1.NetworkServicesWasmPluginObservedState {
+/* found existing non-generated mapping function "NetworkServicesWasmPluginObservedState_v1alpha1_FromProto", skipping
+func NetworkServicesWasmPluginObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.WasmPlugin) *krmnetworkservicesv1alpha1.NetworkServicesWasmPluginObservedState {
 	if in == nil {
 		return nil
 	}
@@ -969,13 +925,13 @@ func NetworkServicesWasmPluginObservedState_FromProto(mapCtx *direct.MapContext,
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	// MISSING: Labels
-	out.UsedBy = direct.Slice_FromProto(mapCtx, in.UsedBy, WasmPlugin_UsedByObservedState_FromProto)
+	out.UsedBy = direct.Slice_FromProto(mapCtx, in.UsedBy, WasmPlugin_UsedByObservedState_v1alpha1_FromProto)
 	return out
 }
 */
 
-/* found existing non-generated mapping function "NetworkServicesWasmPluginObservedState_ToProto", skipping
-func NetworkServicesWasmPluginObservedState_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1alpha1.NetworkServicesWasmPluginObservedState) *pb.WasmPlugin {
+/* found existing non-generated mapping function "NetworkServicesWasmPluginObservedState_v1alpha1_ToProto", skipping
+func NetworkServicesWasmPluginObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1alpha1.NetworkServicesWasmPluginObservedState) *pb.WasmPlugin {
 	if in == nil {
 		return nil
 	}
@@ -984,13 +940,13 @@ func NetworkServicesWasmPluginObservedState_ToProto(mapCtx *direct.MapContext, i
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	// MISSING: Labels
-	out.UsedBy = direct.Slice_ToProto(mapCtx, in.UsedBy, WasmPlugin_UsedByObservedState_ToProto)
+	out.UsedBy = direct.Slice_ToProto(mapCtx, in.UsedBy, WasmPlugin_UsedByObservedState_v1alpha1_ToProto)
 	return out
 }
 */
 
-/* found existing non-generated mapping function "NetworkServicesWasmPluginSpec_FromProto", skipping
-func NetworkServicesWasmPluginSpec_FromProto(mapCtx *direct.MapContext, in *pb.WasmPlugin) *krmnetworkservicesv1alpha1.NetworkServicesWasmPluginSpec {
+/* found existing non-generated mapping function "NetworkServicesWasmPluginSpec_v1alpha1_FromProto", skipping
+func NetworkServicesWasmPluginSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.WasmPlugin) *krmnetworkservicesv1alpha1.NetworkServicesWasmPluginSpec {
 	if in == nil {
 		return nil
 	}
@@ -999,16 +955,16 @@ func NetworkServicesWasmPluginSpec_FromProto(mapCtx *direct.MapContext, in *pb.W
 	out.Description = direct.LazyPtr(in.GetDescription())
 	// MISSING: Labels
 	out.MainVersionID = direct.LazyPtr(in.GetMainVersionId())
-	out.LogConfig = WasmPlugin_LogConfig_FromProto(mapCtx, in.GetLogConfig())
+	out.LogConfig = WasmPlugin_LogConfig_v1alpha1_FromProto(mapCtx, in.GetLogConfig())
 	out.Versions = Versions_FromProto(mapCtx, in.Versions)
 	return out
 }
 */
 
 /*
-found existing non-generated mapping function "NetworkServicesWasmPluginSpec_ToProto", skipping
+found existing non-generated mapping function "NetworkServicesWasmPluginSpec_v1alpha1_ToProto", skipping
 
-	func NetworkServicesWasmPluginSpec_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1alpha1.NetworkServicesWasmPluginSpec) *pb.WasmPlugin {
+	func NetworkServicesWasmPluginSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1alpha1.NetworkServicesWasmPluginSpec) *pb.WasmPlugin {
 		if in == nil {
 			return nil
 		}
@@ -1017,12 +973,12 @@ found existing non-generated mapping function "NetworkServicesWasmPluginSpec_ToP
 		out.Description = direct.ValueOf(in.Description)
 		// MISSING: Labels
 		out.MainVersionId = direct.ValueOf(in.MainVersionID)
-		out.LogConfig = WasmPlugin_LogConfig_ToProto(mapCtx, in.LogConfig)
+		out.LogConfig = WasmPlugin_LogConfig_v1alpha1_ToProto(mapCtx, in.LogConfig)
 		out.Versions = Versions_ToProto(mapCtx, in.Versions)
 		return out
 	}
 */
-func WasmPlugin_LogConfig_FromProto(mapCtx *direct.MapContext, in *pb.WasmPlugin_LogConfig) *krmnetworkservicesv1alpha1.WasmPlugin_LogConfig {
+func WasmPlugin_LogConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.WasmPlugin_LogConfig) *krmnetworkservicesv1alpha1.WasmPlugin_LogConfig {
 	if in == nil {
 		return nil
 	}
@@ -1032,7 +988,7 @@ func WasmPlugin_LogConfig_FromProto(mapCtx *direct.MapContext, in *pb.WasmPlugin
 	out.MinLogLevel = direct.Enum_FromProto(mapCtx, in.GetMinLogLevel())
 	return out
 }
-func WasmPlugin_LogConfig_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1alpha1.WasmPlugin_LogConfig) *pb.WasmPlugin_LogConfig {
+func WasmPlugin_LogConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1alpha1.WasmPlugin_LogConfig) *pb.WasmPlugin_LogConfig {
 	if in == nil {
 		return nil
 	}
@@ -1042,7 +998,7 @@ func WasmPlugin_LogConfig_ToProto(mapCtx *direct.MapContext, in *krmnetworkservi
 	out.MinLogLevel = direct.Enum_ToProto[pb.WasmPlugin_LogConfig_LogLevel](mapCtx, in.MinLogLevel)
 	return out
 }
-func WasmPlugin_UsedByObservedState_FromProto(mapCtx *direct.MapContext, in *pb.WasmPlugin_UsedBy) *krmnetworkservicesv1alpha1.WasmPlugin_UsedByObservedState {
+func WasmPlugin_UsedByObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.WasmPlugin_UsedBy) *krmnetworkservicesv1alpha1.WasmPlugin_UsedByObservedState {
 	if in == nil {
 		return nil
 	}
@@ -1050,7 +1006,7 @@ func WasmPlugin_UsedByObservedState_FromProto(mapCtx *direct.MapContext, in *pb.
 	out.Name = direct.LazyPtr(in.GetName())
 	return out
 }
-func WasmPlugin_UsedByObservedState_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1alpha1.WasmPlugin_UsedByObservedState) *pb.WasmPlugin_UsedBy {
+func WasmPlugin_UsedByObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1alpha1.WasmPlugin_UsedByObservedState) *pb.WasmPlugin_UsedBy {
 	if in == nil {
 		return nil
 	}
@@ -1059,8 +1015,8 @@ func WasmPlugin_UsedByObservedState_ToProto(mapCtx *direct.MapContext, in *krmne
 	return out
 }
 
-/* found existing non-generated mapping function "WasmPlugin_VersionDetails_FromProto", skipping
-func WasmPlugin_VersionDetails_FromProto(mapCtx *direct.MapContext, in *pb.WasmPlugin_VersionDetails) *krmnetworkservicesv1alpha1.WasmPlugin_VersionDetails {
+/* found existing non-generated mapping function "WasmPlugin_VersionDetails_v1alpha1_FromProto", skipping
+func WasmPlugin_VersionDetails_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.WasmPlugin_VersionDetails) *krmnetworkservicesv1alpha1.WasmPlugin_VersionDetails {
 	if in == nil {
 		return nil
 	}
@@ -1078,8 +1034,8 @@ func WasmPlugin_VersionDetails_FromProto(mapCtx *direct.MapContext, in *pb.WasmP
 }
 */
 
-/* found existing non-generated mapping function "WasmPlugin_VersionDetails_ToProto", skipping
-func WasmPlugin_VersionDetails_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1alpha1.WasmPlugin_VersionDetails) *pb.WasmPlugin_VersionDetails {
+/* found existing non-generated mapping function "WasmPlugin_VersionDetails_v1alpha1_ToProto", skipping
+func WasmPlugin_VersionDetails_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworkservicesv1alpha1.WasmPlugin_VersionDetails) *pb.WasmPlugin_VersionDetails {
 	if in == nil {
 		return nil
 	}

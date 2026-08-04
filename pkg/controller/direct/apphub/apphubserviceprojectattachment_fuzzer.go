@@ -29,13 +29,13 @@ func appHubServiceProjectAttachmentFuzzer() fuzztesting.KRMFuzzer {
 		AppHubServiceProjectAttachmentObservedState_v1alpha1_FromProto, AppHubServiceProjectAttachmentObservedState_v1alpha1_ToProto,
 	)
 
-	f.UnimplementedFields.Insert(".name") // special field
+	f.Unimplemented_Identity(".name")
 
-	f.SpecFields.Insert(".service_project")
+	f.SpecField(".service_project")
 
-	f.StatusFields.Insert(".create_time")
-	f.StatusFields.Insert(".uid")
-	f.StatusFields.Insert(".state")
+	f.StatusField(".create_time")
+	f.StatusField(".uid")
+	f.StatusField(".state")
 
 	return f
 }

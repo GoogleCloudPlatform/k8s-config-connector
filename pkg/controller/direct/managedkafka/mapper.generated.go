@@ -27,7 +27,7 @@ import (
 	pb "cloud.google.com/go/managedkafka/apiv1/managedkafkapb"
 	krmcomputev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krmmanagedkafkav1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/managedkafka/v1alpha1"
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/managedkafka/v1beta1"
+	krmmanagedkafkav1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/managedkafka/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
@@ -48,15 +48,15 @@ func AccessConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmmanagedkafk
 	out.NetworkConfigs = direct.Slice_ToProto(mapCtx, in.NetworkConfigs, NetworkConfig_v1alpha1_ToProto)
 	return out
 }
-func AccessConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AccessConfig) *krm.AccessConfig {
+func AccessConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AccessConfig) *krmmanagedkafkav1beta1.AccessConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krm.AccessConfig{}
+	out := &krmmanagedkafkav1beta1.AccessConfig{}
 	out.NetworkConfigs = direct.Slice_FromProto(mapCtx, in.NetworkConfigs, NetworkConfig_v1beta1_FromProto)
 	return out
 }
-func AccessConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.AccessConfig) *pb.AccessConfig {
+func AccessConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmmanagedkafkav1beta1.AccessConfig) *pb.AccessConfig {
 	if in == nil {
 		return nil
 	}
@@ -82,16 +82,16 @@ func CapacityConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmmanagedka
 	out.MemoryBytes = direct.ValueOf(in.MemoryBytes)
 	return out
 }
-func CapacityConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.CapacityConfig) *krm.CapacityConfig {
+func CapacityConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.CapacityConfig) *krmmanagedkafkav1beta1.CapacityConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krm.CapacityConfig{}
+	out := &krmmanagedkafkav1beta1.CapacityConfig{}
 	out.VcpuCount = direct.LazyPtr(in.GetVcpuCount())
 	out.MemoryBytes = direct.LazyPtr(in.GetMemoryBytes())
 	return out
 }
-func CapacityConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.CapacityConfig) *pb.CapacityConfig {
+func CapacityConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmmanagedkafkav1beta1.CapacityConfig) *pb.CapacityConfig {
 	if in == nil {
 		return nil
 	}
@@ -194,11 +194,11 @@ func GcpConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmmanagedkafkav1
 }
 
 /* found existing non-generated mapping function "GcpConfig_v1beta1_FromProto", skipping
-func GcpConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.GcpConfig) *krm.GcpConfig {
+func GcpConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.GcpConfig) *krmmanagedkafkav1beta1.GcpConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krm.GcpConfig{}
+	out := &krmmanagedkafkav1beta1.GcpConfig{}
 	out.AccessConfig = AccessConfig_v1beta1_FromProto(mapCtx, in.GetAccessConfig())
 	if in.GetKmsKey() != "" {
 		out.KMSKeyRef = &refsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKey()}
@@ -210,7 +210,7 @@ func GcpConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.GcpConfig) *k
 /*
 found existing non-generated mapping function "GcpConfig_v1beta1_ToProto", skipping
 
-	func GcpConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.GcpConfig) *pb.GcpConfig {
+	func GcpConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmmanagedkafkav1beta1.GcpConfig) *pb.GcpConfig {
 		if in == nil {
 			return nil
 		}
@@ -250,11 +250,11 @@ func ManagedKafkaClusterObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext
 	// MISSING: TLSConfig
 	return out
 }
-func ManagedKafkaClusterObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *krm.ManagedKafkaClusterObservedState {
+func ManagedKafkaClusterObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *krmmanagedkafkav1beta1.ManagedKafkaClusterObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ManagedKafkaClusterObservedState{}
+	out := &krmmanagedkafkav1beta1.ManagedKafkaClusterObservedState{}
 	// MISSING: Name
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
@@ -264,7 +264,7 @@ func ManagedKafkaClusterObservedState_v1beta1_FromProto(mapCtx *direct.MapContex
 	// MISSING: TLSConfig
 	return out
 }
-func ManagedKafkaClusterObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ManagedKafkaClusterObservedState) *pb.Cluster {
+func ManagedKafkaClusterObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmmanagedkafkav1beta1.ManagedKafkaClusterObservedState) *pb.Cluster {
 	if in == nil {
 		return nil
 	}
@@ -310,11 +310,11 @@ func ManagedKafkaClusterSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm
 	// MISSING: TLSConfig
 	return out
 }
-func ManagedKafkaClusterSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *krm.ManagedKafkaClusterSpec {
+func ManagedKafkaClusterSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *krmmanagedkafkav1beta1.ManagedKafkaClusterSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ManagedKafkaClusterSpec{}
+	out := &krmmanagedkafkav1beta1.ManagedKafkaClusterSpec{}
 	out.GcpConfig = GcpConfig_v1beta1_FromProto(mapCtx, in.GetGcpConfig())
 	// MISSING: Name
 	out.Labels = in.Labels
@@ -325,7 +325,7 @@ func ManagedKafkaClusterSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb
 	// MISSING: TLSConfig
 	return out
 }
-func ManagedKafkaClusterSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ManagedKafkaClusterSpec) *pb.Cluster {
+func ManagedKafkaClusterSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmmanagedkafkav1beta1.ManagedKafkaClusterSpec) *pb.Cluster {
 	if in == nil {
 		return nil
 	}
@@ -466,18 +466,18 @@ func ManagedKafkaTopicSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmma
 	out.Configs = in.Configs
 	return out
 }
-func ManagedKafkaTopicSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Topic) *krm.ManagedKafkaTopicSpec {
+func ManagedKafkaTopicSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Topic) *krmmanagedkafkav1beta1.ManagedKafkaTopicSpec {
 	if in == nil {
 		return nil
 	}
-	out := &krm.ManagedKafkaTopicSpec{}
+	out := &krmmanagedkafkav1beta1.ManagedKafkaTopicSpec{}
 	// MISSING: Name
 	out.PartitionCount = direct.LazyPtr(in.GetPartitionCount())
 	out.ReplicationFactor = direct.LazyPtr(in.GetReplicationFactor())
 	out.Configs = in.Configs
 	return out
 }
-func ManagedKafkaTopicSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.ManagedKafkaTopicSpec) *pb.Topic {
+func ManagedKafkaTopicSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmmanagedkafkav1beta1.ManagedKafkaTopicSpec) *pb.Topic {
 	if in == nil {
 		return nil
 	}
@@ -510,11 +510,11 @@ func NetworkConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmmanagedkaf
 }
 
 /* found existing non-generated mapping function "NetworkConfig_v1beta1_FromProto", skipping
-func NetworkConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.NetworkConfig) *krm.NetworkConfig {
+func NetworkConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.NetworkConfig) *krmmanagedkafkav1beta1.NetworkConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krm.NetworkConfig{}
+	out := &krmmanagedkafkav1beta1.NetworkConfig{}
 	if in.GetSubnet() != "" {
 		out.SubnetRef = &krmcomputev1beta1.ComputeSubnetworkRef{External: in.GetSubnet()}
 	}
@@ -525,7 +525,7 @@ func NetworkConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.NetworkCo
 /*
 found existing non-generated mapping function "NetworkConfig_v1beta1_ToProto", skipping
 
-	func NetworkConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConfig) *pb.NetworkConfig {
+	func NetworkConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmmanagedkafkav1beta1.NetworkConfig) *pb.NetworkConfig {
 		if in == nil {
 			return nil
 		}
@@ -552,15 +552,15 @@ func RebalanceConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmmanagedk
 	out.Mode = direct.Enum_ToProto[pb.RebalanceConfig_Mode](mapCtx, in.Mode)
 	return out
 }
-func RebalanceConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.RebalanceConfig) *krm.RebalanceConfig {
+func RebalanceConfig_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.RebalanceConfig) *krmmanagedkafkav1beta1.RebalanceConfig {
 	if in == nil {
 		return nil
 	}
-	out := &krm.RebalanceConfig{}
+	out := &krmmanagedkafkav1beta1.RebalanceConfig{}
 	out.Mode = direct.Enum_FromProto(mapCtx, in.GetMode())
 	return out
 }
-func RebalanceConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.RebalanceConfig) *pb.RebalanceConfig {
+func RebalanceConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmmanagedkafkav1beta1.RebalanceConfig) *pb.RebalanceConfig {
 	if in == nil {
 		return nil
 	}

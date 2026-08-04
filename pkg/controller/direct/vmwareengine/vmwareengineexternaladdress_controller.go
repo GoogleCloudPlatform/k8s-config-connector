@@ -121,7 +121,7 @@ func (a *externalAddressAdapter) Create(ctx context.Context, createOp *directbas
 
 	mapCtx := &direct.MapContext{}
 	desired := a.desired.DeepCopy()
-	resource := VMwareEngineExternalAddressSpec_ToProto(mapCtx, &desired.Spec)
+	resource := VMwareEngineExternalAddressSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -156,7 +156,7 @@ func (a *externalAddressAdapter) Update(ctx context.Context, updateOp *directbas
 
 	mapCtx := &direct.MapContext{}
 	desired := a.desired.DeepCopy()
-	resource := VMwareEngineExternalAddressSpec_ToProto(mapCtx, &desired.Spec)
+	resource := VMwareEngineExternalAddressSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -213,7 +213,7 @@ func (a *externalAddressAdapter) Export(ctx context.Context) (*unstructured.Unst
 
 	obj := &krm.VMwareEngineExternalAddress{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = *VMwareEngineExternalAddressSpec_FromProto(mapCtx, a.actual)
+	obj.Spec = *VMwareEngineExternalAddressSpec_v1beta1_FromProto(mapCtx, a.actual)
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}

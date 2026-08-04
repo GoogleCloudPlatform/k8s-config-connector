@@ -70,6 +70,10 @@ func NetworkConfig_InTransitEncryptionConfig_ToProto(mapCtx *direct.MapContext, 
 	return &v
 }
 
+func NetworkConfig_InTransitEncryptionConfig_FromProto(mapCtx *direct.MapContext, in pb.InTransitEncryptionConfig) *string {
+	return direct.Enum_FromProto[pb.InTransitEncryptionConfig](mapCtx, in)
+}
+
 func NetworkConfig_ClusterNetworkPerformanceConfig_TotalEgressBandwidthTier_ToProto(mapCtx *direct.MapContext, in *string) *pb.NetworkConfig_ClusterNetworkPerformanceConfig_Tier {
 	if in == nil {
 		return nil
@@ -431,6 +435,7 @@ func ContainerClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *
 		out.EnableFQDNNetworkPolicy = direct.LazyPtr(nc.GetEnableFqdnNetworkPolicy())
 		out.EnableMultiNetworking = direct.LazyPtr(nc.GetEnableMultiNetworking())
 		out.DatapathProvider = direct.Enum_FromProto[pb.DatapathProvider](mapCtx, nc.GetDatapathProvider())
+		out.InTransitEncryptionConfig = NetworkConfig_InTransitEncryptionConfig_FromProto(mapCtx, nc.GetInTransitEncryptionConfig())
 	}
 
 	return out
@@ -496,7 +501,7 @@ func ContainerClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm.ContainerCl
 	if in.DefaultMaxPodsPerNode != nil {
 		out.DefaultMaxPodsConstraint = &pb.MaxPodsConstraint{MaxPodsPerNode: int64(direct.ValueOf(in.DefaultMaxPodsPerNode))}
 	}
-	if in.EnableL4ILBSubsetting != nil || in.EnableIntranodeVisibility != nil || in.EnableCiliumClusterwideNetworkPolicy != nil || in.EnableFQDNNetworkPolicy != nil || in.EnableMultiNetworking != nil || in.DatapathProvider != nil {
+	if in.EnableL4ILBSubsetting != nil || in.EnableIntranodeVisibility != nil || in.EnableCiliumClusterwideNetworkPolicy != nil || in.EnableFQDNNetworkPolicy != nil || in.EnableMultiNetworking != nil || in.DatapathProvider != nil || in.InTransitEncryptionConfig != nil {
 		out.NetworkConfig = &pb.NetworkConfig{}
 		out.NetworkConfig.EnableL4IlbSubsetting = direct.ValueOf(in.EnableL4ILBSubsetting)
 		out.NetworkConfig.EnableIntraNodeVisibility = direct.ValueOf(in.EnableIntranodeVisibility)
@@ -504,6 +509,7 @@ func ContainerClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm.ContainerCl
 		out.NetworkConfig.EnableFqdnNetworkPolicy = in.EnableFQDNNetworkPolicy
 		out.NetworkConfig.EnableMultiNetworking = direct.ValueOf(in.EnableMultiNetworking)
 		out.NetworkConfig.DatapathProvider = direct.Enum_ToProto[pb.DatapathProvider](mapCtx, in.DatapathProvider)
+		out.NetworkConfig.InTransitEncryptionConfig = NetworkConfig_InTransitEncryptionConfig_ToProto(mapCtx, in.InTransitEncryptionConfig)
 	}
 
 	return out

@@ -18,18 +18,55 @@ You **must** also apply the standards from the base skill: `.gemini/skills/kcc-d
 ## Workflow
 
 ### 1. Add to generate.sh
-Locate `apis/<service_short>/<api_version>/generate.sh`. If it doesn't exist, create it following the standard KCC template:
+Locate `apis/<service_short>/generate.sh`. If it doesn't exist, create it following the standard KCC template:
 ```bash
 #!/bin/bash
-set -e
-go run ../../../tooling/main.go generate-types \
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+
+CONTROLLERBUILDER="${CONTROLLERBUILDER:-}"
+if [[ -z "${CONTROLLERBUILDER}" ]]; then
+  if [[ -x "${REPO_ROOT}/bin/controllerbuilder" ]]; then
+    CONTROLLERBUILDER="${REPO_ROOT}/bin/controllerbuilder"
+  else
+    CONTROLLERBUILDER="go run ${REPO_ROOT}/dev/tools/controllerbuilder"
+  fi
+fi
+source "${REPO_ROOT}/dev/tools/goimports.sh"
+cd ${REPO_ROOT}/dev/tools/controllerbuilder
+# Note: generate-proto.sh reuses cached .build/googleapis-<SHA>.pb files by default.
+# Pass --force (or FORCE_GENERATE_PROTOS=1) to force re-compiling proto descriptors when testing proto edits:
+./generate-proto.sh
+
+${CONTROLLERBUILDER} generate-types \
   --service <service> \
   --api-version <group>.cnrm.cloud.google.com/<api_version> \
   --resource <resource>
 ```
 
 ### 2. Generate Types
-Run the `generate.sh` script.
+Set executable permissions and run the `generate.sh` script:
+```bash
+chmod +x apis/<service_short>/generate.sh
+./apis/<service_short>/generate.sh
+```
 
 ### 3. Validate and Enhance Output
 Apply the baseline validations from `kcc-direct-base-types-implementer`, plus these greenfield-specific rules:

@@ -26,8 +26,8 @@ func init() {
 func repositoryFuzzer() fuzztesting.KRMFuzzer {
 	fuzzer := fuzztesting.NewKRMTypedSpecFuzzer(
 		&dataformpb.Repository{},
-		DataformRepositorySpec_FromProto,
-		DataformRepositorySpec_ToProto,
+		DataformRepositorySpec_v1beta1_FromProto,
+		DataformRepositorySpec_v1beta1_ToProto,
 	)
 
 	fuzzer.UnimplementedFields.Insert(".name")

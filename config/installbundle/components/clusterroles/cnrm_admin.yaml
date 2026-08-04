@@ -32,18 +32,6 @@ rules:
   - patch
   - delete
 - apiGroups:
-  - aistreams.cnrm.cloud.google.com
-  resources:
-  - '*'
-  verbs:
-  - get
-  - list
-  - watch
-  - create
-  - update
-  - patch
-  - delete
-- apiGroups:
   - alloydb.cnrm.cloud.google.com
   resources:
   - '*'
@@ -1148,7 +1136,31 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - grafeas.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - healthcare.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - hypercomputecluster.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -1197,6 +1209,18 @@ rules:
   - delete
 - apiGroups:
   - kms.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - licensemanager.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
@@ -1497,6 +1521,18 @@ rules:
   - delete
 - apiGroups:
   - pubsublite.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
+  - rapidmigrationassessment.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:

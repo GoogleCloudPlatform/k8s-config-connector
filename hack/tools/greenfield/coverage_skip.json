@@ -15,6 +15,22 @@
     {
       "pattern": ".*cloudasset.*/Feed$",
       "reason": "Already implemented as hierarchical variants (ProjectFeed, FolderFeed, etc.)."
+    },
+    {
+      "pattern": "^aistreams\\.googleapis\\.com/.*",
+      "reason": "AIStreams is a partner API, not a public GCP cloud API."
+    },
+    {
+      "pattern": "^gkemulticloud\\.googleapis\\.com/(Aws|Azure)Cluster$",
+      "reason": "The AwsClusters and AzureClusters services in Anthos are marked as deprecated."
+    },
+    {
+      "pattern": "^datacatalog\\.googleapis\\.com/.*",
+      "reason": "The DataCatalog v1/v1beta1 core services are marked as deprecated (migrate to Dataplex)."
+    },
+    {
+      "pattern": "^bigquerystorage\\.googleapis\\.com/WriteStream$",
+      "reason": "The BigQueryWrite service in v1beta2 is marked as deprecated."
     }
   ]
 }

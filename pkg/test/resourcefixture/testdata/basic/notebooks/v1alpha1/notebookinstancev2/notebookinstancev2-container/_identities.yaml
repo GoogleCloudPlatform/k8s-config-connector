@@ -1,0 +1,6 @@
+- caisURL: //notebooks.googleapis.com/projects/${projectId}/locations/us-central1-a/instances/ni2-container-${uniqueId}
+  group: notebooks.cnrm.cloud.google.com
+  kind: NotebookInstanceV2
+  name: ni2-container-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

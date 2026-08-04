@@ -307,6 +307,26 @@ func BinaryAuthorization_ToProto(mapCtx *direct.MapContext, in *krm.BinaryAuthor
 	out.EvaluationMode = direct.Enum_ToProto[pb.BinaryAuthorization_EvaluationMode](mapCtx, in.EvaluationMode)
 	return out
 }
+func CertificateAuthorityDomainConfig_FromProto(mapCtx *direct.MapContext, in *pb.ContainerdConfig_PrivateRegistryAccessConfig_CertificateAuthorityDomainConfig) *krm.CertificateAuthorityDomainConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CertificateAuthorityDomainConfig{}
+	out.Fqdns = in.Fqdns
+	// MISSING: GcpSecretManagerCertificateConfig
+	// (near miss): "GcpSecretManagerCertificateConfig" vs "GCPSecretManagerCertificateConfig"
+	return out
+}
+func CertificateAuthorityDomainConfig_ToProto(mapCtx *direct.MapContext, in *krm.CertificateAuthorityDomainConfig) *pb.ContainerdConfig_PrivateRegistryAccessConfig_CertificateAuthorityDomainConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ContainerdConfig_PrivateRegistryAccessConfig_CertificateAuthorityDomainConfig{}
+	out.Fqdns = in.Fqdns
+	// MISSING: GcpSecretManagerCertificateConfig
+	// (near miss): "GcpSecretManagerCertificateConfig" vs "GCPSecretManagerCertificateConfig"
+	return out
+}
 func CloudRunConfig_FromProto(mapCtx *direct.MapContext, in *pb.CloudRunConfig) *krm.CloudRunConfig {
 	if in == nil {
 		return nil
@@ -849,6 +869,22 @@ found existing non-generated mapping function "ContainerNodePoolSpec_ToProto", s
 		return out
 	}
 */
+func ContainerdConfig_FromProto(mapCtx *direct.MapContext, in *pb.ContainerdConfig) *krm.ContainerdConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ContainerdConfig{}
+	out.PrivateRegistryAccessConfig = PrivateRegistryAccessConfig_FromProto(mapCtx, in.GetPrivateRegistryAccessConfig())
+	return out
+}
+func ContainerdConfig_ToProto(mapCtx *direct.MapContext, in *krm.ContainerdConfig) *pb.ContainerdConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ContainerdConfig{}
+	out.PrivateRegistryAccessConfig = PrivateRegistryAccessConfig_ToProto(mapCtx, in.PrivateRegistryAccessConfig)
+	return out
+}
 func ControlPlaneEndpointsConfig_FromProto(mapCtx *direct.MapContext, in *pb.ControlPlaneEndpointsConfig) *krm.ControlPlaneEndpointsConfig {
 	if in == nil {
 		return nil
@@ -1127,6 +1163,22 @@ func FastSocket_ToProto(mapCtx *direct.MapContext, in *krm.FastSocket) *pb.FastS
 	}
 	out := &pb.FastSocket{}
 	out.Enabled = direct.ValueOf(in.Enabled)
+	return out
+}
+func GCPSecretManagerCertificateConfig_FromProto(mapCtx *direct.MapContext, in *pb.ContainerdConfig_PrivateRegistryAccessConfig_CertificateAuthorityDomainConfig_GCPSecretManagerCertificateConfig) *krm.GCPSecretManagerCertificateConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.GCPSecretManagerCertificateConfig{}
+	// MISSING: SecretURI
+	return out
+}
+func GCPSecretManagerCertificateConfig_ToProto(mapCtx *direct.MapContext, in *krm.GCPSecretManagerCertificateConfig) *pb.ContainerdConfig_PrivateRegistryAccessConfig_CertificateAuthorityDomainConfig_GCPSecretManagerCertificateConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ContainerdConfig_PrivateRegistryAccessConfig_CertificateAuthorityDomainConfig_GCPSecretManagerCertificateConfig{}
+	// MISSING: SecretURI
 	return out
 }
 
@@ -1788,7 +1840,7 @@ func NodeConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodeConfig) *krm.Nod
 	// MISSING: LocalNvmeSsdBlockConfig
 	out.EphemeralStorageLocalSsdConfig = EphemeralStorageLocalSsdConfig_FromProto(mapCtx, in.GetEphemeralStorageLocalSsdConfig())
 	// MISSING: SoleTenantConfig
-	// MISSING: ContainerdConfig
+	out.ContainerdConfig = ContainerdConfig_FromProto(mapCtx, in.GetContainerdConfig())
 	out.ResourceManagerTags = map_string_string_FromProto(mapCtx, in.GetResourceManagerTags())
 	// MISSING: EnableConfidentialStorage
 	// MISSING: SecondaryBootDisks
@@ -1850,7 +1902,7 @@ found existing non-generated mapping function "NodeConfig_ToProto", skipping
 		// MISSING: LocalNvmeSsdBlockConfig
 		out.EphemeralStorageLocalSsdConfig = EphemeralStorageLocalSsdConfig_ToProto(mapCtx, in.EphemeralStorageLocalSsdConfig)
 		// MISSING: SoleTenantConfig
-		// MISSING: ContainerdConfig
+		out.ContainerdConfig = ContainerdConfig_ToProto(mapCtx, in.ContainerdConfig)
 		out.ResourceManagerTags = map_string_string_ToProto(mapCtx, in.ResourceManagerTags)
 		// MISSING: EnableConfidentialStorage
 		// MISSING: SecondaryBootDisks
@@ -2098,7 +2150,7 @@ func NodePoolNodeConfig_FromProto(mapCtx *direct.MapContext, in *pb.NodeConfig) 
 	// MISSING: LocalNvmeSsdBlockConfig
 	out.EphemeralStorageLocalSsdConfig = EphemeralStorageLocalSsdConfig_FromProto(mapCtx, in.GetEphemeralStorageLocalSsdConfig())
 	// MISSING: SoleTenantConfig
-	// MISSING: ContainerdConfig
+	out.ContainerdConfig = ContainerdConfig_FromProto(mapCtx, in.GetContainerdConfig())
 	out.ResourceManagerTags = map_string_string_FromProto(mapCtx, in.GetResourceManagerTags())
 	// MISSING: EnableConfidentialStorage
 	// MISSING: SecondaryBootDisks
@@ -2155,7 +2207,7 @@ func NodePoolNodeConfig_ToProto(mapCtx *direct.MapContext, in *krm.NodePoolNodeC
 	// MISSING: LocalNvmeSsdBlockConfig
 	out.EphemeralStorageLocalSsdConfig = EphemeralStorageLocalSsdConfig_ToProto(mapCtx, in.EphemeralStorageLocalSsdConfig)
 	// MISSING: SoleTenantConfig
-	// MISSING: ContainerdConfig
+	out.ContainerdConfig = ContainerdConfig_ToProto(mapCtx, in.ContainerdConfig)
 	out.ResourceManagerTags = map_string_string_ToProto(mapCtx, in.ResourceManagerTags)
 	// MISSING: EnableConfidentialStorage
 	// MISSING: SecondaryBootDisks
@@ -2446,6 +2498,24 @@ func PrivateClusterConfigStatus_ToProto(mapCtx *direct.MapContext, in *krm.Priva
 	// MISSING: PeeringName
 	// MISSING: MasterGlobalAccessConfig
 	// MISSING: PrivateEndpointSubnetwork
+	return out
+}
+func PrivateRegistryAccessConfig_FromProto(mapCtx *direct.MapContext, in *pb.ContainerdConfig_PrivateRegistryAccessConfig) *krm.PrivateRegistryAccessConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PrivateRegistryAccessConfig{}
+	out.Enabled = direct.LazyPtr(in.GetEnabled())
+	out.CertificateAuthorityDomainConfig = direct.Slice_FromProto(mapCtx, in.CertificateAuthorityDomainConfig, CertificateAuthorityDomainConfig_FromProto)
+	return out
+}
+func PrivateRegistryAccessConfig_ToProto(mapCtx *direct.MapContext, in *krm.PrivateRegistryAccessConfig) *pb.ContainerdConfig_PrivateRegistryAccessConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ContainerdConfig_PrivateRegistryAccessConfig{}
+	out.Enabled = direct.ValueOf(in.Enabled)
+	out.CertificateAuthorityDomainConfig = direct.Slice_ToProto(mapCtx, in.CertificateAuthorityDomainConfig, CertificateAuthorityDomainConfig_ToProto)
 	return out
 }
 func RangeInfo_FromProto(mapCtx *direct.MapContext, in *pb.RangeInfo) *krm.RangeInfo {

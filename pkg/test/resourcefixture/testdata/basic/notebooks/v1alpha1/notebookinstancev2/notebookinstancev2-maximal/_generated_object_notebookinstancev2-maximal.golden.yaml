@@ -1,0 +1,59 @@
+apiVersion: notebooks.cnrm.cloud.google.com/v1alpha1
+kind: NotebookInstanceV2
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: notebookinstancev2-maximal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  disableProxyAccess: true
+  gceSetup:
+    bootDisk:
+      diskEncryption: GMEK
+      diskSizeGB: 100
+      diskType: PD_SSD
+    containerImage:
+      repository: gcr.io/deeplearning-platform-release/base-cpu
+    dataDisks:
+    - diskEncryption: GMEK
+      diskSizeGB: 100
+      diskType: PD_SSD
+    disablePublicIP: true
+    machineType: n1-standard-2
+    metadata:
+      enable-os-config: "true"
+    shieldedInstanceConfig:
+      enableIntegrityMonitoring: true
+      enableSecureBoot: false
+      enableVTPM: true
+    tags:
+    - tag1
+    - tag2
+  instanceOwners:
+  - ${projectNumber}-compute@developer.gserviceaccount.com
+  labels:
+    environment: staging
+    team: config-connector
+  location: us-central1-a
+  projectRef:
+    external: ${projectId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1-a/instances/notebookinstancev2-maximal-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    creator: someone@somewhere.com
+    gceSetup: {}
+    proxyURI: https://notebookinstancev2-maximal-${uniqueId}-dot-us-central1.notebooks.googleusercontent.com
+    state: PROVISIONING
+    updateTime: "1970-01-01T00:00:00Z"

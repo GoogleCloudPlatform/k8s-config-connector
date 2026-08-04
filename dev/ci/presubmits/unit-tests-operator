@@ -28,7 +28,6 @@ cd ${REPO_ROOT}
 . ${REPO_ROOT}/dev/tasks/install-gcloud
 . ${REPO_ROOT}/dev/tasks/setup-envtest
 
-echo "Running operator unit tests..."
 # A dummy default project id is required for a few unit test cases
 gcloud config set project foobar --quiet
 
@@ -36,4 +35,6 @@ cd operator
 
 make manifests
 
-go test -test.count=1 -v ./pkg/... ./scripts/...
+echo "Running operator unit tests..."
+# Note: -parallel 4 was determined by A/B testing; do not change unless new benchmark tests demonstrate a speedup.
+go test -test.count=1 -parallel 4 -v ./pkg/... ./scripts/...

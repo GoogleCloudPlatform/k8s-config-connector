@@ -43,6 +43,10 @@ func (i *DataformTeamFolderIdentity) String() string {
 	return DataformTeamFolderIdentityFormat.ToString(*i)
 }
 
+func (i *DataformTeamFolderIdentity) ParentString() string {
+	return fmt.Sprintf("projects/%s/locations/%s", i.Project, i.Location)
+}
+
 func (i *DataformTeamFolderIdentity) FromExternal(ref string) error {
 	parsed, match, err := DataformTeamFolderIdentityFormat.Parse(ref)
 	if err != nil {
@@ -99,9 +103,19 @@ func (obj *DataformTeamFolder) GetIdentity(ctx context.Context, reader client.Re
 			return nil, err
 		}
 
-		if statusIdentity.String() != specIdentity.String() {
-			return nil, fmt.Errorf("cannot change DataformTeamFolder identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+		if obj.Spec.ResourceID != nil {
+			if statusIdentity.String() != specIdentity.String() {
+				return nil, fmt.Errorf("cannot change DataformTeamFolder identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+			}
+		} else {
+			if statusIdentity.Project != specIdentity.Project {
+				return nil, fmt.Errorf("cannot change DataformTeamFolder project (old=%q, new=%q)", statusIdentity.Project, specIdentity.Project)
+			}
+			if statusIdentity.Location != specIdentity.Location {
+				return nil, fmt.Errorf("cannot change DataformTeamFolder location (old=%q, new=%q)", statusIdentity.Location, specIdentity.Location)
+			}
 		}
+		return statusIdentity, nil
 	}
 
 	return specIdentity, nil

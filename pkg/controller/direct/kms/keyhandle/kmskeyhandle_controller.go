@@ -27,7 +27,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/kms"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
@@ -98,7 +97,7 @@ func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForO
 	}
 
 	mapCtx := &direct.MapContext{}
-	desired := kms.KMSKeyHandleSpec_ToProto(mapCtx, &obj.Spec)
+	desired := kms.KMSKeyHandleSpec_v1beta1_ToProto(mapCtx, &obj.Spec)
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
@@ -218,7 +217,7 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 
 	obj := &krm.KMSKeyHandle{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(kms.KMSKeyHandleSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(kms.KMSKeyHandleSpec_v1beta1_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
@@ -244,7 +243,7 @@ func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperati
 }
 
 func compareKeyHandle(ctx context.Context, actual, desired *kmspb.KeyHandle) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
-	maskedActual, err := mappers.OnlySpecFields(actual, kms.KMSKeyHandleSpec_FromProto, kms.KMSKeyHandleSpec_ToProto)
+	maskedActual, err := mappers.OnlySpecFields(actual, kms.KMSKeyHandleSpec_v1beta1_FromProto, kms.KMSKeyHandleSpec_v1beta1_ToProto)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -258,7 +257,7 @@ func compareKeyHandle(ctx context.Context, actual, desired *kmspb.KeyHandle) (*s
 	populateDefaults(maskedActual)
 	populateDefaults(clonedDesired)
 
-	diffs, updateMask, err := tags.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
+	diffs, updateMask, err := common.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
 		return nil, nil, err
 	}
@@ -268,7 +267,7 @@ func compareKeyHandle(ctx context.Context, actual, desired *kmspb.KeyHandle) (*s
 func (a *Adapter) updateStatus(ctx context.Context, op directbase.Operation, latest *kmspb.KeyHandle) error {
 	mapCtx := &direct.MapContext{}
 	status := &krm.KMSKeyHandleStatus{}
-	status.ObservedState = kms.KMSKeyHandleObservedState_FromProto(mapCtx, latest)
+	status.ObservedState = kms.KMSKeyHandleObservedState_v1beta1_FromProto(mapCtx, latest)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}

@@ -3,11 +3,10 @@ kind: NetworkServicesHTTPRoute
 metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
-    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 3
+  generation: 2
   labels:
     cnrm-test: "true"
     foo: bar
@@ -27,7 +26,6 @@ spec:
   - name: networkservicesmesh-2-${uniqueId}
   projectRef:
     external: projects/${projectId}
-  resourceID: networkserviceshttproute-${uniqueId}
   rules:
   - action:
       corsPolicy:
@@ -154,6 +152,6 @@ status:
     status: "True"
     type: Ready
   createTime: "1970-01-01T00:00:00Z"
-  observedGeneration: 3
+  observedGeneration: 2
   selfLink: https://networkservices.googleapis.com/v1alpha1/projects/${projectId}/locations/global/httpRoutes/networkserviceshttproute-${uniqueId}
   updateTime: "1970-01-01T00:00:00Z"
