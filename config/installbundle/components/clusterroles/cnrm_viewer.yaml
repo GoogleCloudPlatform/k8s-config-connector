@@ -1095,6 +1095,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - securitycentermanagement.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - servicedirectory.cnrm.cloud.google.com
   resources:
   - '*'
