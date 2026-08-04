@@ -46,7 +46,7 @@ if [[ ! -d "${GCLOUD_DIR}" ]]; then
   rm "${TARBALL}"
 
   # Install alpha and beta components
-  "${GCLOUD_DIR}/bin/gcloud" components install alpha beta --quiet
+  "${GCLOUD_DIR}/bin/gcloud" components install alpha beta --quiet || true
 fi
 
 export PATH="${GCLOUD_DIR}/bin:${PATH}"
