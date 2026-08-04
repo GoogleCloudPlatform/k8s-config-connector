@@ -53,6 +53,7 @@ export OPERATOR_IMG=${IMAGE_PREFIX}operator:${IMAGE_TAG}
 cd ${REPO_ROOT}
 echo "===> [$(date -u +'%Y-%m-%dT%H:%M:%SZ')] Compiling Go binaries natively on host..."
 SKIP_IF_PRESENT="${SKIP_IF_PRESENT:-1}" dev/tasks/compile-binaries-host
+chmod +x bin/* 2>/dev/null || true
 
 echo "===> [$(date -u +'%Y-%m-%dT%H:%M:%SZ')] Starting core image builds (docker buildx bake)..."
 IMAGE_PREFIX="${IMAGE_PREFIX}" IMAGE_TAG="${IMAGE_TAG}" docker buildx bake ${BAKE_ACTION:---load} --set *.cache-from=type=gha,scope=kcc-${IMAGE_TAG} --set *.cache-to=type=gha,mode=max,scope=kcc-${IMAGE_TAG}

@@ -24,8 +24,8 @@ COPY operator/autopilot-channels/ autopilot-channels/
 COPY THIRD_PARTY_NOTICES/ THIRD_PARTY_NOTICES/
 COPY MIRRORED_LIBRARY_SOURCE/ MIRRORED_LIBRARY_SOURCE/
 
-# Set user with UID 1000 as the owner of the directory
-RUN chown 1000 -R /configconnector-operator
+# Set executable permissions and user with UID 1000 as the owner of the directory
+RUN chmod +x manager gke_addon_poststart && chown 1000 -R /configconnector-operator
 
 # Copy the directory into a thin, distroless image (go/gke-distroless)
 FROM ${GKE_DISTROLESS_IMG} AS final
