@@ -418,13 +418,38 @@ EOF
     fi
 
     if [[ "${name}" == "fuzz-roundtrippers" ]]; then
-        jobs_array+=("fuzz-roundtrippers-matrix" "fuzz-roundtrippers")
+        jobs_array+=("fuzz-roundtrippers-compile" "fuzz-roundtrippers-matrix" "fuzz-roundtrippers")
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
+
+  fuzz-roundtrippers-compile:
+    name: "compile-fuzz-binary"
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: ./dev/actions/cache-go
+      - name: "Cache Fuzz Binary"
+        id: cache-fuzz-binary
+        uses: actions/cache@v4
+        with:
+          path: bin/fuzztests
+          key: fuzz-binary-testb-12shards-\${{ runner.os }}-\${{ hashFiles('go.sum', 'apis/**', 'pkg/controller/direct/**', 'pkg/fuzztesting/**') }}
+      - name: "Pre-compile Fuzz Binary (on Cache Miss)"
+        if: \${{ steps.cache-fuzz-binary.outputs.cache-hit != 'true' }}
+        run: |
+          mkdir -p bin/
+          go test -c -fuzz=FuzzAllMappers -o bin/fuzztests ./pkg/fuzztesting/fuzztests/
+      - name: "Upload Fuzz Binary Artifact"
+        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
+        with:
+          name: fuzz-binary
+          path: bin/fuzztests
 
   fuzz-roundtrippers-matrix:
     name: "fuzz-roundtrippers-\${{ matrix.shard }}"
     runs-on: ubuntu-latest
     timeout-minutes: 60
+    needs: fuzz-roundtrippers-compile
     strategy:
       fail-fast: false
       matrix:
@@ -432,6 +457,13 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - uses: ./dev/actions/cache-go
+      - name: "Download Fuzz Binary Artifact"
+        uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
+        with:
+          name: fuzz-binary
+          path: bin/
+      - name: "Make Fuzz Binary Executable"
+        run: chmod +x bin/fuzztests
       - name: "Run dev/ci/presubmits/fuzz-roundtrippers"
         run: |
           ./dev/ci/presubmits/fuzz-roundtrippers "\${{ matrix.shard }}"
