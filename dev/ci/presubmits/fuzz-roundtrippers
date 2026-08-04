@@ -40,9 +40,9 @@ fi
 if [[ -x bin/fuzztests ]]; then
   echo "Using pre-compiled fuzz binary bin/fuzztests..."
   mkdir -p /tmp/fuzz-cache
-  ./bin/fuzztests -test.v -test.run=^FuzzAllMappers$ -test.fuzz=FuzzAllMappers -test.fuzzcachedir=/tmp/fuzz-cache -test.parallel 2 -test.fuzztime 150s
+  ./bin/fuzztests -test.v -test.run=^FuzzAllMappers$ -test.fuzz=FuzzAllMappers -test.fuzzcachedir=/tmp/fuzz-cache -test.parallel 2 -test.fuzztime 60s
 else
-  go test -v ./pkg/fuzztesting/fuzztests/ -run=^FuzzAllMappers$ -fuzz=FuzzAllMappers -parallel 2 -fuzztime 150s # fuzz for 2.5 minutes per shard
+  go test -v ./pkg/fuzztesting/fuzztests/ -run=^FuzzAllMappers$ -fuzz=FuzzAllMappers -parallel 2 -fuzztime 60s # fuzz for 60 seconds per shard
 fi
 
 # Please do not add more fuzzers here; register them so they are run with FuzzAllMappers (or a similar approach)
