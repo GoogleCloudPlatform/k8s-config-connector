@@ -186,8 +186,8 @@ containerdConfigPatches:
 		}
 	}
 
-	patchManifests(filepath.Join(root, "operator/channels/packages/configconnector"))
-	patchManifests(filepath.Join(root, "operator/autopilot-channels/packages/configconnector"))
+	patchManifests(filepath.Join(root, "operator/channels/packages/configconnector", stableVersion))
+	patchManifests(filepath.Join(root, "operator/autopilot-channels/packages/configconnector", stableVersion))
 	patchManifests(filepath.Join(root, "config/installbundle/components"))
 
 	// Revert patches at the end of the test to keep workspace clean
@@ -218,8 +218,8 @@ containerdConfigPatches:
 				t.Errorf("failed to revert manifests in %s: %v", dir, err)
 			}
 		}
-		revertManifests(filepath.Join(root, "operator/channels/packages/configconnector"))
-		revertManifests(filepath.Join(root, "operator/autopilot-channels/packages/configconnector"))
+		revertManifests(filepath.Join(root, "operator/channels/packages/configconnector", stableVersion))
+		revertManifests(filepath.Join(root, "operator/autopilot-channels/packages/configconnector", stableVersion))
 		revertManifests(filepath.Join(root, "config/installbundle/components"))
 	})
 
