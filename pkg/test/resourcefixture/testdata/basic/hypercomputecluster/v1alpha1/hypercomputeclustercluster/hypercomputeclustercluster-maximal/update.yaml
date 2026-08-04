@@ -1,0 +1,29 @@
+apiVersion: hypercomputecluster.cnrm.cloud.google.com/v1alpha1
+kind: HypercomputeClusterCluster
+metadata:
+  name: hcc-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  description: "An updated maximal HypercomputeClusterCluster test resource"
+  labels:
+    env: test-maximal-updated
+  networkResources:
+    net-res-1:
+      network:
+        network: "projects/${projectId}/global/networks/default"
+        subnetwork: "projects/${projectId}/regions/us-central1/subnetworks/default"
+  orchestrator:
+    slurm:
+      loginNodes:
+        count: 1
+        zone: us-central1-a
+        machineType: n2-standard-2
+        enableOSLogin: true
+        enablePublicIPs: false
+        labels:
+          role: login
+        bootDisk:
+          sizeGB: 100
+          type: pd-standard

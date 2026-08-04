@@ -1,0 +1,8 @@
+apiVersion: hypercomputecluster.cnrm.cloud.google.com/v1alpha1
+kind: HypercomputeClusterCluster
+metadata:
+  name: hcc-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1

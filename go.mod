@@ -56,6 +56,7 @@ require (
 	cloud.google.com/go/geminidataanalytics v1.3.0
 	cloud.google.com/go/gkebackup v1.13.0
 	cloud.google.com/go/gkemulticloud v1.11.0
+	cloud.google.com/go/hypercomputecluster v1.1.0
 	cloud.google.com/go/iam v1.11.0
 	cloud.google.com/go/iap v1.17.0
 	cloud.google.com/go/kms v1.31.0
