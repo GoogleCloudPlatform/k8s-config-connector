@@ -29,14 +29,13 @@ if [[ -z "${CONTROLLERBUILDER}" ]]; then
 fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
-./generate-proto.sh
+GOOGLEAPI_VERSION="a6cace4aaf6c983773a62fc998e462512abb285c" ./generate-proto.sh
 
 
 ${CONTROLLERBUILDER} generate-types --service google.cloud.discoveryengine.v1 --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1 \
   --resource DiscoveryEngineControl:Control \
   --resource DiscoveryEngineDataStore:DataStore \
   --resource DiscoveryEngineEngine:Engine \
-  --resource DiscoveryEngineRecommendationEngine:Engine \
   --resource DiscoveryEngineIdentityMappingStore:IdentityMappingStore \
   --resource DiscoveryEngineDataStoreTargetSite:TargetSite \
   --resource DiscoveryEngineConversation:Conversation \

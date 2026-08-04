@@ -39,10 +39,6 @@ type DiscoveryEngineRecommendationEngineSpec struct {
 	// provided as the system will use it for necessary initializations.
 	DataStoreRefs []*DiscoveryEngineDataStoreRef `json:"dataStoreRefs,omitempty"`
 
-	// Required. The solutions of the engine.
-	// +required
-	SolutionType *string `json:"solutionType,omitempty"`
-
 	// The industry vertical that the engine registers.
 	// The restriction of the Engine industry vertical is based on
 	// DataStore: If unspecified, default to `GENERIC`. Vertical on Engine
@@ -51,10 +47,6 @@ type DiscoveryEngineRecommendationEngineSpec struct {
 
 	// Common config spec that specifies the metadata of the engine.
 	CommonConfig *Engine_CommonConfig `json:"commonConfig,omitempty"`
-
-	// Optional. Whether to disable analytics for searches performed on this
-	// engine.
-	DisableAnalytics *bool `json:"disableAnalytics,omitempty"`
 
 	// Configurations for the Media Recommendation Engine. Only applicable if
 	// solution_type is SOLUTION_TYPE_RECOMMENDATION and industry_vertical is MEDIA.
@@ -65,11 +57,11 @@ type DiscoveryEngineRecommendationEngineSpec struct {
 
 	/* Immutable. Location of the resource. */
 	// +required
-	Location string `json:"location"`
+	Location *string `json:"location"`
 
 	// Immutable. The collection for the Engine.
 	// +required
-	Collection string `json:"collection"`
+	Collection *string `json:"collection"`
 
 	// Immutable.
 	// The DiscoveryEngineRecommendationEngine name. If not given, the metadata.name will be used.
@@ -95,6 +87,11 @@ type DiscoveryEngineRecommendationEngineStatus struct {
 // DiscoveryEngineRecommendationEngineObservedState is the state of the DiscoveryEngineRecommendationEngine resource as most recently observed in GCP.
 // +kcc:observedstate:proto=google.cloud.discoveryengine.v1.Engine
 type DiscoveryEngineRecommendationEngineObservedState struct {
+	// Output only. Timestamp the RecommendationEngine was created at.
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. Timestamp the RecommendationEngine was last updated at.
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
 // +genclient

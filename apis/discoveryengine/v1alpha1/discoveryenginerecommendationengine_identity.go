@@ -74,7 +74,7 @@ func getIdentityFromDiscoveryEngineRecommendationEngineSpec(ctx context.Context,
 
 	location, err := refs.GetLocation(obj)
 	if err != nil {
-		return nil, fmt.Errorf("cannot resolve resource ID")
+		return nil, fmt.Errorf("cannot resolve location: %w", err)
 	}
 
 	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
@@ -82,10 +82,10 @@ func getIdentityFromDiscoveryEngineRecommendationEngineSpec(ctx context.Context,
 		return nil, fmt.Errorf("cannot resolve project")
 	}
 
-	collection := obj.Spec.Collection
-	if collection == "" {
-		return nil, fmt.Errorf("cannot resolve collection")
+	if obj.Spec.Collection == nil || *obj.Spec.Collection == "" {
+		return nil, fmt.Errorf("cannot resolve collection: collection is required")
 	}
+	collection := *obj.Spec.Collection
 
 	identity := &DiscoveryEngineRecommendationEngineIdentity{
 		Project:              projectID,

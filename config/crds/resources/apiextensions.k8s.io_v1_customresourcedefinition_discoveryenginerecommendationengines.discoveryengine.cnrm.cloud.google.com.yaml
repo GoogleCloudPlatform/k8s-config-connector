@@ -113,10 +113,6 @@ spec:
                       type: string
                   type: object
                 type: array
-              disableAnalytics:
-                description: Optional. Whether to disable analytics for searches performed
-                  on this engine.
-                type: boolean
               displayName:
                 description: Required. The display name of the engine. Should be human
                   readable. UTF-8 encoded string with limit of 1024 characters.
@@ -260,15 +256,11 @@ spec:
                 description: Immutable. The DiscoveryEngineRecommendationEngine name.
                   If not given, the metadata.name will be used.
                 type: string
-              solutionType:
-                description: Required. The solutions of the engine.
-                type: string
             required:
             - collection
             - displayName
             - location
             - projectRef
-            - solutionType
             type: object
           status:
             description: DiscoveryEngineRecommendationEngineStatus defines the config
@@ -315,6 +307,15 @@ spec:
               observedState:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
+                properties:
+                  createTime:
+                    description: Output only. Timestamp the RecommendationEngine was
+                      created at.
+                    type: string
+                  updateTime:
+                    description: Output only. Timestamp the RecommendationEngine was
+                      last updated at.
+                    type: string
                 type: object
             type: object
         required:
