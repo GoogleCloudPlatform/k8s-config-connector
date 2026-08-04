@@ -41,7 +41,8 @@ ${CONTROLLERBUILDER} generate-types \
     --resource VertexAIExampleStore:ExampleStore \
     --resource VertexAIFeatureGroup:FeatureGroup \
     --resource VertexAIDataLabelingJob:DataLabelingJob \
-    --resource VertexAICustomJob:CustomJob
+    --resource VertexAICustomJob:CustomJob \
+    --resource VertexAITensorboard:Tensorboard
 
 # --- v1beta1 ---
 ${CONTROLLERBUILDER} generate-types \
@@ -58,6 +59,8 @@ ${CONTROLLERBUILDER} generate-mapper \
     --multiversion
 
 cd ${REPO_ROOT}
+sed -i 's/apiextensionsv1.JSON_v1alpha1_/JSON_v1alpha1_/g' "${REPO_ROOT}/pkg/controller/direct/vertexai/mapper.generated.go"
+
 dev/tasks/generate-crds
 
 if [ -d "${REPO_ROOT}/pkg/controller/direct/vertexai" ]; then

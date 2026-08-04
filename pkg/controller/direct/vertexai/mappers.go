@@ -176,6 +176,10 @@ func VertexAIExampleStoreSpec_DisplayName_ToProto(mapCtx *direct.MapContext, in 
 	return in
 }
 
+func VertexAITensorboardSpec_DisplayName_ToProto(mapCtx *direct.MapContext, in string) string {
+	return in
+}
+
 func VertexAIDatasetSpec_FromProto(mapCtx *direct.MapContext, in *pb.Dataset) *krmv1beta1.VertexAIDatasetSpec {
 	return VertexAIDatasetSpec_v1beta1_FromProto(mapCtx, in)
 }
