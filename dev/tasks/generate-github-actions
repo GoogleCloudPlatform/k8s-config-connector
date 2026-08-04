@@ -17,8 +17,6 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-set -x
-
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}
 
@@ -498,7 +496,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
         uses: actions/download-artifact@cc203385981b70ca67e1cc392babf9cc229d5806 # v4.1.9
         with:
           name: prebuilt-go-binaries
-          path: bin/
+          path: ./
           merge-multiple: true
 EOF
       if [[ "${name}" == "smoketest-with-kind" ]]; then
