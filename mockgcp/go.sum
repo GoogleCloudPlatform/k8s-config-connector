@@ -38,8 +38,8 @@ cloud.google.com/go/batch v1.19.0 h1:i4xCFKCvzfkSldUPYWL+DgBpKVTC3N8DSK6E9rFSbqQ
 cloud.google.com/go/batch v1.19.0/go.mod h1:dpWfhLmLQZqsTBAFYjZA3pS04fCY5ttTenZcWmSeILw=
 cloud.google.com/go/beyondcorp v1.7.0 h1:SHAZlC51z6ZO/OZZABnrI/Yk/z3GkhBREQC7qtgTo2I=
 cloud.google.com/go/beyondcorp v1.7.0/go.mod h1:vujdO0wfsBV2y1egrJxGtwKZr5P5V6bIHKWp1phWHBY=
-cloud.google.com/go/bigquery v1.77.0 h1:L5AW3jhzEKpFVg4i0mVHxKpxogrqT7dczWBSr4m9MKU=
-cloud.google.com/go/bigquery v1.77.0/go.mod h1:J4wuqka/1hEpdJxH2oBrUR0vjTD+r7drGkpcA3yqERM=
+cloud.google.com/go/bigquery v1.79.0 h1:+tW6oRuP/4dOgdl/p32on0+3OktVQtU+veOMxhjoOhE=
+cloud.google.com/go/bigquery v1.79.0/go.mod h1:QTt5tgZxqqvZs3dOZKpvriGqy+CdvY9LyetirFZRPOE=
 cloud.google.com/go/bigtable v1.50.0 h1:lihc3U/eVrlIjK55i93K8sol+pKtFozIJ9vooEuNd4I=
 cloud.google.com/go/bigtable v1.50.0/go.mod h1:RTannV5mvoJM8KscLTfRYMPo84u9/j+C3PSyYJGf5Ic=
 cloud.google.com/go/billing v1.26.0 h1:6RRjbRd6iZKZFb7/MgRvmXKq/Ism02ckkZLJazj4CQ0=
@@ -184,8 +184,10 @@ cloud.google.com/go/spanner v1.91.0 h1:XwXfcZ0kc1NT9Uu2IsThFiWtYptB+WgLn/KZEZcyz
 cloud.google.com/go/spanner v1.91.0/go.mod h1:8NB5a7qgwIhGD19Ly+vkpKffPL78vIG9RcrgsuREha0=
 cloud.google.com/go/speech v1.35.0 h1:jxWycO5+PfhBWxqnuJNDjNMi85zRK2Jcb4CVhOz6JcA=
 cloud.google.com/go/speech v1.35.0/go.mod h1:shnf33sZbGnQQZyek1fdLOR5rRKV6D3jsNqpqyijvj8=
-cloud.google.com/go/storage v1.62.0 h1:w2pQJhpUqVerMON45vatE2FpCYsNTf7OHjkn6ux5mMU=
-cloud.google.com/go/storage v1.62.0/go.mod h1:T5hz3qzcpnxZ5LdKc7y8Tw7lh4v9zeeVyrD/cLJAzZU=
+cloud.google.com/go/storage v1.62.3 h1:SZq1t23NCI+e96dH77Dg3PEfsNNEjqO8zE5AnD8gVD0=
+cloud.google.com/go/storage v1.62.3/go.mod h1:cpYz/kRVZ+UQAF1uHeea10/9ewcRbxGoGNKsS9daSXA=
+cloud.google.com/go/talent v1.13.0 h1:/nZYKG20ZHfZDr7ikRuDnssxk8fuaDxGR+KH3iB4gak=
+cloud.google.com/go/talent v1.13.0/go.mod h1:GSwli9V25WQdzeuJDJWH9TlQmA8lPFn7yKsxowdxW9Y=
 cloud.google.com/go/trace v1.16.0 h1:GmQovzFc5F0CNfl0VLgL64aoTtu7xsM0YajW2GlG9+E=
 cloud.google.com/go/trace v1.16.0/go.mod h1:r+bdAn16dKLSV1G2D5v3e58IlQlizfxWrUfjx7kM7X0=
 cloud.google.com/go/video v1.32.0 h1:9Us/tkhNRg3WY9wIrVC3Jcs1P0nXKE4XnS1zYJ3xTTY=

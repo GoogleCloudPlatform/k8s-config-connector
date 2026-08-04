@@ -15,13 +15,20 @@
 package bigquerydataset
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
+	"io"
+	"net/http"
 	"reflect"
+	"sort"
 	"strings"
+	"time"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
@@ -30,8 +37,10 @@ import (
 
 	bigquery "cloud.google.com/go/bigquery"
 	"google.golang.org/api/option"
+	ghttptransport "google.golang.org/api/transport/http"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
@@ -99,6 +108,7 @@ func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForO
 		gcpService: gcpService,
 		desired:    obj,
 		reader:     reader,
+		config:     m.config,
 	}, nil
 }
 
@@ -108,11 +118,13 @@ func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapt
 }
 
 type Adapter struct {
-	id         *krm.DatasetIdentity
-	gcpService *bigquery.Client
-	desired    *krm.BigQueryDataset
-	actual     *bigquery.DatasetMetadata
-	reader     client.Reader
+	id             *krm.DatasetIdentity
+	gcpService     *bigquery.Client
+	desired        *krm.BigQueryDataset
+	actual         *bigquery.DatasetMetadata
+	actualReplicas []krm.DatasetReplicaStatus
+	reader         client.Reader
+	config         config.ControllerConfig
 }
 
 var _ directbase.Adapter = &Adapter{}
@@ -130,6 +142,15 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 		return false, fmt.Errorf("getting BigQueryDataset %q: %w", a.id.String(), err)
 	}
 	a.actual = datasetpb
+
+	// Fetch actual replicas if desired replicas are specified
+	if len(a.desired.Spec.Replicas) > 0 {
+		replicas, err := a.getReplicas(ctx)
+		if err != nil {
+			return true, fmt.Errorf("getting replicas: %w", err)
+		}
+		a.actualReplicas = replicas
+	}
 	return true, nil
 }
 
@@ -161,6 +182,10 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	}
 	log.V(2).Info("successfully created Dataset", "name", a.id.Dataset)
 
+	if err := a.patchReplicas(ctx); err != nil {
+		return fmt.Errorf("Error setting replicas for Dataset %s: %w", a.id.Dataset, err)
+	}
+
 	// The bigquery go client Create() does not return the created dataset.
 	// Fetching the dataset metadata
 	createdMetadata, err := dsHandler.Metadata(ctx)
@@ -176,7 +201,11 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 		return mapCtx.Err()
 	}
 	status.ExternalRef = direct.LazyPtr(a.id.String())
-	if err := createOp.UpdateStatus(ctx, status, nil); err != nil {
+	readyCond, err := a.populateReplicasAndCondition(ctx, status)
+	if err != nil {
+		return fmt.Errorf("error populating replicas and conditions: %w", err)
+	}
+	if err := createOp.UpdateStatus(ctx, status, readyCond); err != nil {
 		return err
 	}
 	// Write resourceID into spec.
@@ -220,6 +249,28 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	// Check for immutable fields
 	if desiredKRM.Spec.Location != nil && !reflect.DeepEqual(desired.Location, resource.Location) {
 		return fmt.Errorf("BigQueryDataset %s/%s location cannot be changed, actual: %s, desired: %s", u.GetNamespace(), u.GetName(), resource.Location, desired.Location)
+	}
+	// Check for immutable replicas field
+	if len(desiredKRM.Spec.Replicas) > 0 {
+		desiredLocations := []string{}
+		for _, r := range desiredKRM.Spec.Replicas {
+			desiredLocations = append(desiredLocations, r.Location)
+		}
+		sort.Strings(desiredLocations)
+
+		actualLocations := []string{}
+		for _, r := range a.actualReplicas {
+			if r.Location != nil {
+				actualLocations = append(actualLocations, *r.Location)
+			}
+		}
+		sort.Strings(actualLocations)
+
+		if !reflect.DeepEqual(desiredLocations, actualLocations) {
+			return fmt.Errorf("BigQueryDataset %s/%s replicas cannot be changed, actual: %v, desired: %v", u.GetNamespace(), u.GetName(), actualLocations, desiredLocations)
+		}
+	} else if len(a.actualReplicas) > 0 {
+		return fmt.Errorf("BigQueryDataset %s/%s replicas cannot be removed, actual replicas exist but spec.replicas is omitted", u.GetNamespace(), u.GetName())
 	}
 	// Find diff
 	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
@@ -278,32 +329,45 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 			resource.Access = append(resource.Access, access)
 		}
 	}
-	if len(updateMask.Paths) == 0 {
-		return nil
-	}
-
-	structuredreporting.ReportDiff(ctx, report)
-
-	// Compute the dataset metadate for update request
-	datasetMetadataToUpdate := BigQueryDataset_ToMetadataToUpdate(mapCtx, resource, updateMask.Paths)
-	for k, v := range a.desired.GetObjectMeta().GetLabels() {
-		datasetMetadataToUpdate.SetLabel(k, v)
-	}
-	datasetMetadataToUpdate.SetLabel("managed-by-cnrm", "true")
-	// Call update
 	dsHandler := a.gcpService.DatasetInProject(a.id.Project, a.id.Dataset)
-	updated, err := dsHandler.Update(ctx, *datasetMetadataToUpdate, "")
-	if err != nil {
-		return fmt.Errorf("updating Dataset %s: %w", a.id.String(), err)
+	var updated *bigquery.DatasetMetadata
+	var err error
+
+	if len(updateMask.Paths) > 0 {
+		structuredreporting.ReportDiff(ctx, report)
+
+		// Compute the dataset metadate for update request
+		datasetMetadataToUpdate := BigQueryDataset_ToMetadataToUpdate(mapCtx, resource, updateMask.Paths)
+		for k, v := range a.desired.GetObjectMeta().GetLabels() {
+			datasetMetadataToUpdate.SetLabel(k, v)
+		}
+		datasetMetadataToUpdate.SetLabel("managed-by-cnrm", "true")
+		updated, err = dsHandler.Update(ctx, *datasetMetadataToUpdate, "")
+		if err != nil {
+			return fmt.Errorf("updating Dataset %s: %w", a.id.String(), err)
+		}
+		log.V(2).Info("successfully updated Dataset", "name", a.id.String())
+	} else {
+		updated, err = dsHandler.Metadata(ctx)
+		if err != nil {
+			return fmt.Errorf("getting Dataset metadata %s: %w", a.id.String(), err)
+		}
 	}
-	log.V(2).Info("successfully updated Dataset", "name", a.id.String())
+
+	if err := a.patchReplicas(ctx); err != nil {
+		return fmt.Errorf("Error updating replicas for Dataset %s: %w", a.id.Dataset, err)
+	}
 
 	status := &krm.BigQueryDatasetStatus{}
 	status = BigQueryDatasetStatus_FromProto(mapCtx, updated)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	return updateOp.UpdateStatus(ctx, status, nil)
+	readyCond, err := a.populateReplicasAndCondition(ctx, status)
+	if err != nil {
+		return fmt.Errorf("error populating replicas and conditions: %w", err)
+	}
+	return updateOp.UpdateStatus(ctx, status, readyCond)
 }
 
 func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
@@ -349,4 +413,162 @@ func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperati
 	log.V(2).Info("successfully deleted Dataset", "name", a.id.Dataset)
 
 	return true, nil
+}
+
+func (a *Adapter) getReplicas(ctx context.Context) ([]krm.DatasetReplicaStatus, error) {
+	opts, err := a.config.RESTClientOptions()
+	if err != nil {
+		return nil, fmt.Errorf("getting REST client options: %w", err)
+	}
+	httpClient, _, err := ghttptransport.NewClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building HTTP client: %w", err)
+	}
+
+	url := fmt.Sprintf("https://bigquery.googleapis.com/bigquery/v2/projects/%s/datasets/%s", a.id.Project, a.id.Dataset)
+	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+	resp, err := httpClient.Do(req)
+	if err != nil {
+		return nil, fmt.Errorf("sending GET request to BigQuery: %w", err)
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode == http.StatusNotFound {
+		return nil, nil
+	}
+	if resp.StatusCode != http.StatusOK {
+		respBody, _ := io.ReadAll(resp.Body)
+		return nil, fmt.Errorf("failed to get dataset raw, status: %s, body: %s", resp.Status, string(respBody))
+	}
+
+	var raw struct {
+		Replicas []struct {
+			ID                              string `json:"id"`
+			Location                        string `json:"location"`
+			PrimaryState                    string `json:"primaryState"`
+			CreationTime                    string `json:"creation_time"`
+			CompletionTime                  string `json:"completion_time"`
+			PrimaryAssignmentTime           string `json:"primary_assignment_time"`
+			PrimaryAssignmentCompletionTime string `json:"primary_assignment_completion_time"`
+			SyncStatus                      []struct {
+				ReplicationTime string `json:"replication_time"`
+			} `json:"sync_status"`
+		} `json:"replicas"`
+	}
+	if err := json.NewDecoder(resp.Body).Decode(&raw); err != nil {
+		return nil, fmt.Errorf("decoding dataset response: %w", err)
+	}
+
+	var replicas []krm.DatasetReplicaStatus
+	for _, r := range raw.Replicas {
+		rep := krm.DatasetReplicaStatus{
+			ID:                              direct.LazyPtr(r.ID),
+			Location:                        direct.LazyPtr(r.Location),
+			PrimaryState:                    direct.LazyPtr(r.PrimaryState),
+			CreationTime:                    direct.LazyPtr(r.CreationTime),
+			CompletionTime:                  direct.LazyPtr(r.CompletionTime),
+			PrimaryAssignmentTime:           direct.LazyPtr(r.PrimaryAssignmentTime),
+			PrimaryAssignmentCompletionTime: direct.LazyPtr(r.PrimaryAssignmentCompletionTime),
+		}
+		for _, s := range r.SyncStatus {
+			rep.SyncStatus = append(rep.SyncStatus, krm.DatasetReplicaSyncStatus{
+				ReplicationTime: direct.LazyPtr(s.ReplicationTime),
+			})
+		}
+		replicas = append(replicas, rep)
+	}
+	return replicas, nil
+}
+
+func (a *Adapter) patchReplicas(ctx context.Context) error {
+	if len(a.desired.Spec.Replicas) == 0 {
+		return nil
+	}
+	opts, err := a.config.RESTClientOptions()
+	if err != nil {
+		return fmt.Errorf("getting REST client options: %w", err)
+	}
+	httpClient, _, err := ghttptransport.NewClient(ctx, opts...)
+	if err != nil {
+		return fmt.Errorf("building HTTP client: %w", err)
+	}
+
+	url := fmt.Sprintf("https://bigquery.googleapis.com/bigquery/v2/projects/%s/datasets/%s", a.id.Project, a.id.Dataset)
+
+	type replicaPayload struct {
+		Location string `json:"location"`
+	}
+	type patchPayload struct {
+		Replicas []replicaPayload `json:"replicas"`
+	}
+
+	payload := patchPayload{}
+	for _, r := range a.desired.Spec.Replicas {
+		payload.Replicas = append(payload.Replicas, replicaPayload{Location: r.Location})
+	}
+
+	bodyBytes, err := json.Marshal(payload)
+	if err != nil {
+		return fmt.Errorf("marshalling patch payload: %w", err)
+	}
+
+	req, err := http.NewRequestWithContext(ctx, "PATCH", url, bytes.NewReader(bodyBytes))
+	if err != nil {
+		return err
+	}
+	req.Header.Set("Content-Type", "application/json")
+
+	resp, err := httpClient.Do(req)
+	if err != nil {
+		return fmt.Errorf("sending PATCH request to BigQuery for replicas: %w", err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		respBody, _ := io.ReadAll(resp.Body)
+		return fmt.Errorf("failed to patch replicas, status: %s, body: %s", resp.Status, string(respBody))
+	}
+	return nil
+}
+
+func (a *Adapter) populateReplicasAndCondition(ctx context.Context, status *krm.BigQueryDatasetStatus) (*v1alpha1.Condition, error) {
+	if len(a.desired.Spec.Replicas) == 0 {
+		return nil, nil
+	}
+	replicas, err := a.getReplicas(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("getting replicas: %w", err)
+	}
+
+	if len(replicas) > 0 {
+		if status.ObservedState == nil {
+			status.ObservedState = &krm.BigQueryDatasetObservedState{}
+		}
+		status.ObservedState.Replicas = replicas
+
+		primaryLocation := ""
+		for _, r := range replicas {
+			if direct.ValueOf(r.PrimaryState) == "PRIMARY" {
+				primaryLocation = direct.ValueOf(r.Location)
+				break
+			}
+		}
+		if primaryLocation != "" {
+			status.PrimaryLocation = direct.LazyPtr(primaryLocation)
+
+			desiredPrimaryLocation := direct.ValueOf(a.desired.Spec.Location)
+			if desiredPrimaryLocation != "" && desiredPrimaryLocation != primaryLocation {
+				return &v1alpha1.Condition{
+					Type:               "Ready",
+					Status:             "False",
+					Reason:             "PrimaryLocationDrifted",
+					Message:            fmt.Sprintf("Primary location has drifted from the desired location %q to %q", desiredPrimaryLocation, primaryLocation),
+					LastTransitionTime: metav1.Now().UTC().Format(time.RFC3339),
+				}, nil
+			}
+		}
+	}
+	return nil, nil
 }

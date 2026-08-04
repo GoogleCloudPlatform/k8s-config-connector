@@ -7,32 +7,621 @@
 < POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets?alt=json
 ---
 > POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets?alt=json&prettyPrint=false
-96,97c95
+96,97c95,201
 < GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
 < Content-Type: application/json
 ---
 > GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
-150c148
+> 
+> 200 OK
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "access": [
+>     {
+>       "role": "OWNER",
+>       "specialGroup": "projectOwners"
+>     },
+>     {
+>       "role": "OWNER",
+>       "userByEmail": "user@google.com"
+>     },
+>     {
+>       "role": "READER",
+>       "specialGroup": "projectReaders"
+>     },
+>     {
+>       "role": "WRITER",
+>       "specialGroup": "projectWriters"
+>     }
+>   ],
+>   "creationTime": "123456789",
+>   "datasetReference": {
+>     "datasetId": "bigquerydatasetsample${uniqueId}",
+>     "projectId": "${projectId}"
+>   },
+>   "etag": "abcdef0123A=",
+>   "friendlyName": "bigquerydataset-sample",
+>   "id": "000000000000000000000",
+>   "kind": "bigquery#dataset",
+>   "labels": {
+>     "cnrm-test": "true",
+>     "managed-by-cnrm": "true"
+>   },
+>   "lastModifiedTime": "123456789",
+>   "location": "us-central1",
+>   "maxTimeTravelHours": "168",
+>   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}",
+>   "type": "DEFAULT"
+> }
+> 
+> ---
+> 
+> GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}
+> 
+> 200 OK
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "access": [
+>     {
+>       "role": "OWNER",
+>       "specialGroup": "projectOwners"
+>     },
+>     {
+>       "role": "OWNER",
+>       "userByEmail": "user@google.com"
+>     },
+>     {
+>       "role": "READER",
+>       "specialGroup": "projectReaders"
+>     },
+>     {
+>       "role": "WRITER",
+>       "specialGroup": "projectWriters"
+>     }
+>   ],
+>   "creationTime": "123456789",
+>   "datasetReference": {
+>     "datasetId": "bigquerydatasetsample${uniqueId}",
+>     "projectId": "${projectId}"
+>   },
+>   "etag": "abcdef0123A=",
+>   "friendlyName": "bigquerydataset-sample",
+>   "id": "000000000000000000000",
+>   "kind": "bigquery#dataset",
+>   "labels": {
+>     "cnrm-test": "true",
+>     "managed-by-cnrm": "true"
+>   },
+>   "lastModifiedTime": "123456789",
+>   "location": "us-central1",
+>   "maxTimeTravelHours": "168",
+>   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}",
+>   "type": "DEFAULT"
+> }
+> 
+> ---
+> 
+> GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
+150c254,519
 < PUT https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
 ---
+> GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}
+> 
+> 200 OK
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "access": [
+>     {
+>       "role": "OWNER",
+>       "specialGroup": "projectOwners"
+>     },
+>     {
+>       "role": "OWNER",
+>       "userByEmail": "user@google.com"
+>     },
+>     {
+>       "role": "READER",
+>       "specialGroup": "projectReaders"
+>     },
+>     {
+>       "role": "WRITER",
+>       "specialGroup": "projectWriters"
+>     }
+>   ],
+>   "creationTime": "123456789",
+>   "datasetReference": {
+>     "datasetId": "bigquerydatasetsample${uniqueId}",
+>     "projectId": "${projectId}"
+>   },
+>   "etag": "abcdef0123A=",
+>   "friendlyName": "bigquerydataset-sample",
+>   "id": "000000000000000000000",
+>   "kind": "bigquery#dataset",
+>   "labels": {
+>     "cnrm-test": "true",
+>     "managed-by-cnrm": "true"
+>   },
+>   "lastModifiedTime": "123456789",
+>   "location": "us-central1",
+>   "maxTimeTravelHours": "168",
+>   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}",
+>   "type": "DEFAULT"
+> }
+> 
+> ---
+> 
+> GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
+> 
+> 200 OK
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "access": [
+>     {
+>       "role": "OWNER",
+>       "specialGroup": "projectOwners"
+>     },
+>     {
+>       "role": "OWNER",
+>       "userByEmail": "user@google.com"
+>     },
+>     {
+>       "role": "READER",
+>       "specialGroup": "projectReaders"
+>     },
+>     {
+>       "role": "WRITER",
+>       "specialGroup": "projectWriters"
+>     }
+>   ],
+>   "creationTime": "123456789",
+>   "datasetReference": {
+>     "datasetId": "bigquerydatasetsample${uniqueId}",
+>     "projectId": "${projectId}"
+>   },
+>   "etag": "abcdef0123A=",
+>   "friendlyName": "bigquerydataset-sample",
+>   "id": "000000000000000000000",
+>   "kind": "bigquery#dataset",
+>   "labels": {
+>     "cnrm-test": "true",
+>     "managed-by-cnrm": "true"
+>   },
+>   "lastModifiedTime": "123456789",
+>   "location": "us-central1",
+>   "maxTimeTravelHours": "168",
+>   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}",
+>   "type": "DEFAULT"
+> }
+> 
+> ---
+> 
+> GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}
+> 
+> 200 OK
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "access": [
+>     {
+>       "role": "OWNER",
+>       "specialGroup": "projectOwners"
+>     },
+>     {
+>       "role": "OWNER",
+>       "userByEmail": "user@google.com"
+>     },
+>     {
+>       "role": "READER",
+>       "specialGroup": "projectReaders"
+>     },
+>     {
+>       "role": "WRITER",
+>       "specialGroup": "projectWriters"
+>     }
+>   ],
+>   "creationTime": "123456789",
+>   "datasetReference": {
+>     "datasetId": "bigquerydatasetsample${uniqueId}",
+>     "projectId": "${projectId}"
+>   },
+>   "etag": "abcdef0123A=",
+>   "friendlyName": "bigquerydataset-sample",
+>   "id": "000000000000000000000",
+>   "kind": "bigquery#dataset",
+>   "labels": {
+>     "cnrm-test": "true",
+>     "managed-by-cnrm": "true"
+>   },
+>   "lastModifiedTime": "123456789",
+>   "location": "us-central1",
+>   "maxTimeTravelHours": "168",
+>   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}",
+>   "type": "DEFAULT"
+> }
+> 
+> ---
+> 
+> GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
+> 
+> 200 OK
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "access": [
+>     {
+>       "role": "OWNER",
+>       "specialGroup": "projectOwners"
+>     },
+>     {
+>       "role": "OWNER",
+>       "userByEmail": "user@google.com"
+>     },
+>     {
+>       "role": "READER",
+>       "specialGroup": "projectReaders"
+>     },
+>     {
+>       "role": "WRITER",
+>       "specialGroup": "projectWriters"
+>     }
+>   ],
+>   "creationTime": "123456789",
+>   "datasetReference": {
+>     "datasetId": "bigquerydatasetsample${uniqueId}",
+>     "projectId": "${projectId}"
+>   },
+>   "etag": "abcdef0123A=",
+>   "friendlyName": "bigquerydataset-sample",
+>   "id": "000000000000000000000",
+>   "kind": "bigquery#dataset",
+>   "labels": {
+>     "cnrm-test": "true",
+>     "managed-by-cnrm": "true"
+>   },
+>   "lastModifiedTime": "123456789",
+>   "location": "us-central1",
+>   "maxTimeTravelHours": "168",
+>   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}",
+>   "type": "DEFAULT"
+> }
+> 
+> ---
+> 
+> GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}
+> 
+> 200 OK
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "access": [
+>     {
+>       "role": "OWNER",
+>       "specialGroup": "projectOwners"
+>     },
+>     {
+>       "role": "OWNER",
+>       "userByEmail": "user@google.com"
+>     },
+>     {
+>       "role": "READER",
+>       "specialGroup": "projectReaders"
+>     },
+>     {
+>       "role": "WRITER",
+>       "specialGroup": "projectWriters"
+>     }
+>   ],
+>   "creationTime": "123456789",
+>   "datasetReference": {
+>     "datasetId": "bigquerydatasetsample${uniqueId}",
+>     "projectId": "${projectId}"
+>   },
+>   "etag": "abcdef0123A=",
+>   "friendlyName": "bigquerydataset-sample",
+>   "id": "000000000000000000000",
+>   "kind": "bigquery#dataset",
+>   "labels": {
+>     "cnrm-test": "true",
+>     "managed-by-cnrm": "true"
+>   },
+>   "lastModifiedTime": "123456789",
+>   "location": "us-central1",
+>   "maxTimeTravelHours": "168",
+>   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}",
+>   "type": "DEFAULT"
+> }
+> 
+> ---
+> 
 > PATCH https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
-172,174d169
-<   "datasetReference": {
+171a541,579
+>   "friendlyName": "bigquerydataset-sample-updated",
+>   "isCaseInsensitive": false,
+>   "labels": {
+>     "cnrm-test": "true",
+>     "managed-by-cnrm": "true"
+>   },
+>   "maxTimeTravelHours": "168"
+> }
+> 
+> 200 OK
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "access": [
+>     {
+>       "role": "OWNER",
+>       "specialGroup": "projectOwners"
+>     },
+>     {
+>       "role": "OWNER",
+>       "userByEmail": "user@google.com"
+>     },
+>     {
+>       "role": "READER",
+>       "specialGroup": "projectReaders"
+>     },
+>     {
+>       "role": "WRITER",
+>       "specialGroup": "projectWriters"
+>     }
+>   ],
+>   "creationTime": "123456789",
+173c581,582
 <     "datasetId": "bigquerydatasetsample${uniqueId}"
-<   },
-175a171
+---
+>     "datasetId": "bigquerydatasetsample${uniqueId}",
+>     "projectId": "${projectId}"
+174a584
+>   "etag": "abcdef0123A=",
+175a586,588
+>   "id": "000000000000000000000",
 >   "isCaseInsensitive": false,
-180d175
-<   "location": "us-central1",
-220a216
+>   "kind": "bigquery#dataset",
+179a593
+>   "lastModifiedTime": "123456789",
+181c595,597
+<   "maxTimeTravelHours": "168"
+---
+>   "maxTimeTravelHours": "168",
+>   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}",
+>   "type": "DEFAULT"
+183a600,603
+> ---
+> 
+> GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}
+> 
+220a641
 >   "isCaseInsensitive": false,
-274a271
+274a696
 >   "isCaseInsensitive": false,
-289,290c286,340
+289,290c711,927
 < DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&deleteContents=false
 < Content-Type: application/json
 ---
 > GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
+> 
+> 200 OK
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "access": [
+>     {
+>       "role": "OWNER",
+>       "specialGroup": "projectOwners"
+>     },
+>     {
+>       "role": "OWNER",
+>       "userByEmail": "user@google.com"
+>     },
+>     {
+>       "role": "READER",
+>       "specialGroup": "projectReaders"
+>     },
+>     {
+>       "role": "WRITER",
+>       "specialGroup": "projectWriters"
+>     }
+>   ],
+>   "creationTime": "123456789",
+>   "datasetReference": {
+>     "datasetId": "bigquerydatasetsample${uniqueId}",
+>     "projectId": "${projectId}"
+>   },
+>   "etag": "abcdef0123A=",
+>   "friendlyName": "bigquerydataset-sample-updated",
+>   "id": "000000000000000000000",
+>   "isCaseInsensitive": false,
+>   "kind": "bigquery#dataset",
+>   "labels": {
+>     "cnrm-test": "true",
+>     "managed-by-cnrm": "true"
+>   },
+>   "lastModifiedTime": "123456789",
+>   "location": "us-central1",
+>   "maxTimeTravelHours": "168",
+>   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}",
+>   "type": "DEFAULT"
+> }
+> 
+> ---
+> 
+> GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}
+> 
+> 200 OK
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "access": [
+>     {
+>       "role": "OWNER",
+>       "specialGroup": "projectOwners"
+>     },
+>     {
+>       "role": "OWNER",
+>       "userByEmail": "user@google.com"
+>     },
+>     {
+>       "role": "READER",
+>       "specialGroup": "projectReaders"
+>     },
+>     {
+>       "role": "WRITER",
+>       "specialGroup": "projectWriters"
+>     }
+>   ],
+>   "creationTime": "123456789",
+>   "datasetReference": {
+>     "datasetId": "bigquerydatasetsample${uniqueId}",
+>     "projectId": "${projectId}"
+>   },
+>   "etag": "abcdef0123A=",
+>   "friendlyName": "bigquerydataset-sample-updated",
+>   "id": "000000000000000000000",
+>   "isCaseInsensitive": false,
+>   "kind": "bigquery#dataset",
+>   "labels": {
+>     "cnrm-test": "true",
+>     "managed-by-cnrm": "true"
+>   },
+>   "lastModifiedTime": "123456789",
+>   "location": "us-central1",
+>   "maxTimeTravelHours": "168",
+>   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}",
+>   "type": "DEFAULT"
+> }
+> 
+> ---
+> 
+> GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
+> 
+> 200 OK
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "access": [
+>     {
+>       "role": "OWNER",
+>       "specialGroup": "projectOwners"
+>     },
+>     {
+>       "role": "OWNER",
+>       "userByEmail": "user@google.com"
+>     },
+>     {
+>       "role": "READER",
+>       "specialGroup": "projectReaders"
+>     },
+>     {
+>       "role": "WRITER",
+>       "specialGroup": "projectWriters"
+>     }
+>   ],
+>   "creationTime": "123456789",
+>   "datasetReference": {
+>     "datasetId": "bigquerydatasetsample${uniqueId}",
+>     "projectId": "${projectId}"
+>   },
+>   "etag": "abcdef0123A=",
+>   "friendlyName": "bigquerydataset-sample-updated",
+>   "id": "000000000000000000000",
+>   "isCaseInsensitive": false,
+>   "kind": "bigquery#dataset",
+>   "labels": {
+>     "cnrm-test": "true",
+>     "managed-by-cnrm": "true"
+>   },
+>   "lastModifiedTime": "123456789",
+>   "location": "us-central1",
+>   "maxTimeTravelHours": "168",
+>   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}",
+>   "type": "DEFAULT"
+> }
+> 
+> ---
+> 
+> GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}
 > 
 > 200 OK
 > Content-Type: application/json; charset=UTF-8

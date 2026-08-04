@@ -23,7 +23,7 @@ require (
 	cloud.google.com/go/backupdr v1.6.0
 	cloud.google.com/go/batch v1.19.0
 	cloud.google.com/go/beyondcorp v1.7.0
-	cloud.google.com/go/bigquery v1.77.0
+	cloud.google.com/go/bigquery v1.79.0
 	cloud.google.com/go/billing v1.26.0
 	cloud.google.com/go/certificatemanager v1.14.0
 	cloud.google.com/go/cloudbuild v1.30.0
@@ -89,7 +89,7 @@ require (
 	cloud.google.com/go/servicedirectory v1.17.0
 	cloud.google.com/go/spanner v1.91.0
 	cloud.google.com/go/speech v1.35.0
-	cloud.google.com/go/storage v1.62.0
+	cloud.google.com/go/storage v1.62.3
 	cloud.google.com/go/talent v1.13.0
 	cloud.google.com/go/translate v1.17.0
 	cloud.google.com/go/video v1.32.0

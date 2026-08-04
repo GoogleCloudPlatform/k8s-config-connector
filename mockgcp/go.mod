@@ -21,7 +21,7 @@ require (
 	cloud.google.com/go/asset v1.27.0
 	cloud.google.com/go/backupdr v1.6.0
 	cloud.google.com/go/batch v1.19.0
-	cloud.google.com/go/bigquery v1.77.0
+	cloud.google.com/go/bigquery v1.79.0
 	cloud.google.com/go/bigtable v1.50.0
 	cloud.google.com/go/billing v1.26.0
 	cloud.google.com/go/certificatemanager v1.14.0
@@ -68,7 +68,7 @@ require (
 	cloud.google.com/go/securesourcemanager v1.4.1
 	cloud.google.com/go/securitycenter v1.44.0
 	cloud.google.com/go/speech v1.35.0
-	cloud.google.com/go/storage v1.62.0
+	cloud.google.com/go/storage v1.62.3
 	cloud.google.com/go/video v1.32.0
 	cloud.google.com/go/vmwareengine v1.8.0
 	cloud.google.com/go/vpcaccess v1.13.0

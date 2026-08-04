@@ -109,6 +109,8 @@ func (s *datasetsServer) InsertDataset(ctx context.Context, req *pb.InsertDatase
 		}
 	}
 
+	populateReplicas(obj)
+
 	obj.SelfLink = PtrTo("https://bigquery.googleapis.com/bigquery/v2/" + name.String())
 
 	sortAccess(obj)
@@ -196,6 +198,9 @@ func (s *datasetsServer) UpdateDataset(ctx context.Context, req *pb.UpdateDatase
 	updated.Kind = PtrTo("bigquery#dataset")
 	updated.Location = existing.Location
 	updated.Type = existing.Type
+
+	populateReplicas(updated)
+
 	updated.SelfLink = PtrTo("https://bigquery.googleapis.com/bigquery/v2/" + name.String())
 
 	sortAccess(updated)
@@ -233,6 +238,9 @@ func (s *datasetsServer) PatchDataset(ctx context.Context, req *pb.PatchDatasetR
 	updated.Kind = PtrTo("bigquery#dataset")
 	updated.Location = existing.Location
 	updated.Type = existing.Type
+
+	populateReplicas(updated)
+
 	updated.SelfLink = PtrTo("https://bigquery.googleapis.com/bigquery/v2/" + name.String())
 
 	sortAccess(updated)
@@ -297,4 +305,50 @@ func (s *MockService) buildDatasetName(projectName string, datasetID string) (*d
 	}
 
 	return name, nil
+}
+
+func populateReplicas(obj *pb.Dataset) {
+	if len(obj.Replicas) == 0 {
+		return
+	}
+	location := ""
+	if obj.Location != nil {
+		location = *obj.Location
+	}
+	// Let's populate each replica
+	for _, replica := range obj.Replicas {
+		if replica.Location == nil {
+			continue
+		}
+		loc := *replica.Location
+		if replica.Id == nil {
+			replica.Id = PtrTo(loc + "-replica")
+		}
+		if replica.PrimaryState == nil {
+			if strings.EqualFold(loc, location) {
+				replica.PrimaryState = PtrTo("PRIMARY")
+			} else {
+				replica.PrimaryState = PtrTo("SECONDARY")
+			}
+		}
+		if replica.CreationTime == nil {
+			replica.CreationTime = PtrTo("2025-11-14T18:30:33Z")
+		}
+		if replica.CompletionTime == nil {
+			replica.CompletionTime = PtrTo("2025-11-14T18:30:33Z")
+		}
+		if replica.PrimaryAssignmentTime == nil {
+			replica.PrimaryAssignmentTime = PtrTo("2025-11-14T18:30:33Z")
+		}
+		if replica.PrimaryAssignmentCompletionTime == nil {
+			replica.PrimaryAssignmentCompletionTime = PtrTo("2025-11-14T18:30:33Z")
+		}
+		if len(replica.SyncStatus) == 0 && *replica.PrimaryState == "SECONDARY" {
+			replica.SyncStatus = []*pb.DatasetReplicaSyncStatus{
+				{
+					ReplicationTime: PtrTo("2025-11-14T18:30:33Z"),
+				},
+			}
+		}
+	}
 }

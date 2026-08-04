@@ -821,6 +821,21 @@ message DatasetTags {
   optional string tag_value = 2 [json_name="tagValue"];
 }
 
+message DatasetReplicaSyncStatus {
+  optional string replication_time = 1 [json_name="replication_time"];
+}
+
+message DatasetReplica {
+  optional string id = 1 [json_name="id"];
+  optional string location = 2 [json_name="location"];
+  optional string primary_state = 3 [json_name="primaryState"];
+  optional string creation_time = 4 [json_name="creation_time"];
+  optional string completion_time = 5 [json_name="completion_time"];
+  optional string primary_assignment_time = 6 [json_name="primary_assignment_time"];
+  optional string primary_assignment_completion_time = 7 [json_name="primary_assignment_completion_time"];
+  repeated DatasetReplicaSyncStatus sync_status = 8 [json_name="sync_status"];
+}
+
 // Represents a BigQuery dataset.
 message Dataset {
   // Optional. An array of objects that define dataset access for one or more entities. You can set this property when inserting or updating a dataset in order to control who is allowed to access the data. If unspecified at dataset creation time, BigQuery adds default dataset access for the following entities: access.specialGroup: projectReaders; access.role: READER; access.specialGroup: projectWriters; access.role: WRITER; access.specialGroup: projectOwners; access.role: OWNER; access.userByEmail: [dataset creator email]; access.role: OWNER; If you patch a dataset, then this field is overwritten by the patched dataset's access field. To add entities, you must supply the entire existing access array in addition to any new entities that you want to add.
@@ -885,6 +900,8 @@ message Dataset {
   repeated DatasetTags tags = 30 [json_name="tags"];
   // Output only. Same as `type` in `ListFormatDataset`. The type of the dataset, one of: * DEFAULT - only accessible by owner and authorized accounts, * PUBLIC - accessible by everyone, * LINKED - linked dataset, * EXTERNAL - dataset with definition in external metadata catalog, * BIGLAKE_ICEBERG - a Biglake dataset accessible through the Iceberg API, * BIGLAKE_HIVE - a Biglake dataset accessible through the Hive API.
   optional string type = 31 [json_name="type"];
+  // Output only. The replicas associated with this dataset.
+  repeated DatasetReplica replicas = 32 [json_name="replicas"];
 }
 
 // Grants all resources of particular types in a particular dataset read access to the current dataset. Similar to how individually authorized views work, updates to any resource granted through its dataset (including creation of new resources) requires read permission to referenced resources, plus write permission to the authorizing dataset.
