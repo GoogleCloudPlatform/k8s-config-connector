@@ -20,10 +20,12 @@ import (
 	"strings"
 
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.ExternalNormalizer = &AgentSearchEngineRef{}
+var _ refsv1beta1.Ref = &AgentSearchEngineRef{}
 
 var AgentSearchEngineGVK = GroupVersion.WithKind("AgentSearchEngine")
 
@@ -41,14 +43,34 @@ type AgentSearchEngineRef struct {
 	// Namespace string `json:"namespace,omitempty"`
 }
 
-func (r *AgentSearchEngineRef) NormalizedExternal(ctx context.Context, reader client.Reader, otherNamespace string) (string, error) {
+func (r *AgentSearchEngineRef) GetGVK() schema.GroupVersionKind {
+	return AgentSearchEngineGVK
+}
+
+func (r *AgentSearchEngineRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{}
+}
+
+func (r *AgentSearchEngineRef) GetExternal() string {
+	return r.External
+}
+
+func (r *AgentSearchEngineRef) SetExternal(ref string) {
+	r.External = ref
+}
+
+func (r *AgentSearchEngineRef) ValidateExternal(ref string) error {
+	if _, err := ParseAgentSearchEngineExternal(ref); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *AgentSearchEngineRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
 	if r.External == "" {
-		return "", fmt.Errorf("external is required for AgentSearchEngine reference")
+		return fmt.Errorf("external reference must be specified for %s", AgentSearchEngineGVK.Kind)
 	}
-	if _, err := ParseAgentSearchEngineExternal(r.External); err != nil {
-		return "", err
-	}
-	return r.External, nil
+	return r.ValidateExternal(r.External)
 }
 
 func ParseAgentSearchEngineExternal(external string) (string, error) {

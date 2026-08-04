@@ -140,67 +140,6 @@ func init() {
 	SchemeBuilder.Register(&VertexAIExtension{}, &VertexAIExtensionList{})
 }
 
-// +kcc:proto=google.cloud.aiplatform.v1beta1.ExtensionManifest
-type ExtensionManifest struct {
-	// Required. Extension name shown to the LLM.
-	// The name can be up to 128 characters long.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ExtensionManifest.name
-	Name *string `json:"name,omitempty"`
-
-	// Required. The natural language description shown to the LLM.
-	// It should describe the usage of the extension, and is essential for the LLM
-	// to perform reasoning. e.g., if the extension is a data store, you can let
-	// the LLM know what data it contains.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ExtensionManifest.description
-	Description *string `json:"description,omitempty"`
-
-	// Required. Immutable. The API specification shown to the LLM.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ExtensionManifest.api_spec
-	APISpec *ExtensionManifest_APISpec `json:"apiSpec,omitempty"`
-
-	// Required. Immutable. Type of auth supported by this extension.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ExtensionManifest.auth_config
-	AuthConfig *AuthConfig `json:"authConfig,omitempty"`
-}
-
-// +kcc:proto=google.cloud.aiplatform.v1beta1.ExtensionManifest.ApiSpec
-type ExtensionManifest_APISpec struct {
-	// The API spec in Open API standard and YAML format.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ExtensionManifest.ApiSpec.open_api_yaml
-	OpenAPIYaml *string `json:"openAPIYaml,omitempty"`
-
-	// Cloud Storage URI pointing to the OpenAPI spec.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ExtensionManifest.ApiSpec.open_api_gcs_uri
-	OpenAPIGCSURI *string `json:"openAPIGCSURI,omitempty"`
-}
-
-// +kcc:proto=google.cloud.aiplatform.v1beta1.AuthConfig
-type AuthConfig struct {
-	// Config for API key auth.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.AuthConfig.api_key_config
-	APIKeyConfig *AuthConfig_APIKeyConfig `json:"apiKeyConfig,omitempty"`
-
-	// Config for HTTP Basic auth.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.AuthConfig.http_basic_auth_config
-	HTTPBasicAuthConfig *AuthConfig_HTTPBasicAuthConfig `json:"httpBasicAuthConfig,omitempty"`
-
-	// Config for Google Service Account auth.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.AuthConfig.google_service_account_config
-	GoogleServiceAccountConfig *AuthConfig_GoogleServiceAccountConfig `json:"googleServiceAccountConfig,omitempty"`
-
-	// Config for user oauth.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.AuthConfig.oauth_config
-	OauthConfig *AuthConfig_OauthConfig `json:"oauthConfig,omitempty"`
-
-	// Config for user OIDC auth.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.AuthConfig.oidc_config
-	OIDCConfig *AuthConfig_OIDCConfig `json:"oidcConfig,omitempty"`
-
-	// Type of auth scheme.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.AuthConfig.auth_type
-	AuthType *string `json:"authType,omitempty"`
-}
-
 // +kcc:proto=google.cloud.aiplatform.v1beta1.AuthConfig.ApiKeyConfig
 type AuthConfig_APIKeyConfig struct {
 	// Required. The parameter name of the API key.
@@ -322,33 +261,36 @@ type FunctionDeclaration struct {
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FunctionDeclaration.description
 	Description *string `json:"description,omitempty"`
 
-	// Optional. Describes the parameters to the function in JSON Schema format.
-	// The schema must describe an object where the properties are the parameters
-	// to the function. For example:
-	//
-	// ```
-	// {
-	// "type": "object",
-	// "properties": {
-	// "name": { "type": "string" },
-	// "age": { "type": "integer" }
-	// },
-	// "additionalProperties": false,
-	// "required": ["name", "age"],
-	// "propertyOrdering": ["name", "age"]
-	// }
-	// ```
-	//
-	// This field is mutually exclusive with `parameters`.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FunctionDeclaration.parameters_json_schema
-	ParametersJsonSchema *Value `json:"parametersJsonSchema,omitempty"`
+	// NOT YET
+	/*
+		// Optional. Describes the parameters to the function in JSON Schema format.
+		// The schema must describe an object where the properties are the parameters
+		// to the function. For example:
+		//
+		// ```
+		// {
+		// "type": "object",
+		// "properties": {
+		// "name": { "type": "string" },
+		// "age": { "type": "integer" }
+		// },
+		// "additionalProperties": false,
+		// "required": ["name", "age"],
+		// "propertyOrdering": ["name", "age"]
+		// }
+		// ```
+		//
+		// This field is mutually exclusive with `parameters`.
+		// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FunctionDeclaration.parameters_json_schema
+		ParametersJsonSchema *Value `json:"parametersJsonSchema,omitempty"`
 
-	// Optional. Describes the output from this function in JSON Schema format.
-	// The value specified by the schema is the response value of the function.
-	//
-	// This field is mutually exclusive with `response`.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FunctionDeclaration.response_json_schema
-	ResponseJsonSchema *Value `json:"responseJsonSchema,omitempty"`
+		// Optional. Describes the output from this function in JSON Schema format.
+		// The value specified by the schema is the response value of the function.
+		//
+		// This field is mutually exclusive with `response`.
+		// +kcc:proto:field=google.cloud.aiplatform.v1beta1.FunctionDeclaration.response_json_schema
+		ResponseJsonSchema *Value `json:"responseJsonSchema,omitempty"`
+	*/
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1beta1.RuntimeConfig
@@ -402,62 +344,4 @@ type RuntimeConfig_VertexAISearchRuntimeConfig struct {
 	// config using the default value to call search API for the user. The
 	// engine_id and serving_config_name cannot both be empty at the same time.
 	EngineRef *agentsearchv1alpha1.AgentSearchEngineRef `json:"engineRef,omitempty"`
-}
-
-// +kcc:proto=google.cloud.aiplatform.v1beta1.ToolUseExample
-type ToolUseExample struct {
-	// Extension operation to call.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ToolUseExample.extension_operation
-	ExtensionOperation *ToolUseExample_ExtensionOperation `json:"extensionOperation,omitempty"`
-
-	// Function name to call.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ToolUseExample.function_name
-	FunctionName *string `json:"functionName,omitempty"`
-
-	// Required. The display name for example.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ToolUseExample.display_name
-	DisplayName *string `json:"displayName,omitempty"`
-
-	// Required. Query that should be routed to this tool.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ToolUseExample.query
-	Query *string `json:"query,omitempty"`
-
-	// Request parameters used for executing this tool.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ToolUseExample.request_params
-	RequestParams apiextensionsv1.JSON `json:"requestParams,omitempty"`
-
-	// Response parameters generated by this tool.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ToolUseExample.response_params
-	ResponseParams apiextensionsv1.JSON `json:"responseParams,omitempty"`
-
-	// Summary of the tool response to the user query.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ToolUseExample.response_summary
-	ResponseSummary *string `json:"responseSummary,omitempty"`
-}
-
-// +kcc:proto=google.cloud.aiplatform.v1beta1.ToolUseExample.ExtensionOperation
-type ToolUseExample_ExtensionOperation struct {
-	// Resource name of the extension.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ToolUseExample.ExtensionOperation.extension
-	Extension *string `json:"extension,omitempty"`
-
-	// Required. Operation ID of the extension.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ToolUseExample.ExtensionOperation.operation_id
-	OperationID *string `json:"operationID,omitempty"`
-}
-
-// +kcc:observedstate:proto=google.cloud.aiplatform.v1beta1.ExtensionOperation
-type ExtensionOperationObservedState struct {
-	// Operation ID that uniquely identifies the operations among the extension.
-	// See: "Operation Object" in https://swagger.io/specification/.
-	//
-	// This field is parsed from the OpenAPI spec. For HTTP extensions, if it does
-	// not exist in the spec, we will generate one from the HTTP method and path.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ExtensionOperation.operation_id
-	OperationID *string `json:"operationID,omitempty"`
-
-	// Output only. Structured representation of a function declaration as defined
-	// by the OpenAPI Spec.
-	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ExtensionOperation.function_declaration
-	FunctionDeclaration *FunctionDeclaration `json:"functionDeclaration,omitempty"`
 }

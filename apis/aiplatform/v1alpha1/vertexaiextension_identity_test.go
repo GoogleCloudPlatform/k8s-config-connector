@@ -60,6 +60,15 @@ func TestVertexAIExtensionIdentity_FromExternal(t *testing.T) {
 			},
 		},
 		{
+			name: "regional URL without API version",
+			ref:  "https://us-central1-aiplatform.googleapis.com/projects/my-project/locations/us-central1/extensions/my-extension",
+			want: &VertexAIExtensionIdentity{
+				Project:   "my-project",
+				Location:  "us-central1",
+				Extension: "my-extension",
+			},
+		},
+		{
 			name: "regional URL with v1",
 			ref:  "https://us-east4-aiplatform.googleapis.com/v1/projects/my-project/locations/us-central1/extensions/my-extension",
 			want: &VertexAIExtensionIdentity{

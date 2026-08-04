@@ -1023,9 +1023,9 @@ func FunctionDeclaration_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.F
 	out.Name = direct.LazyPtr(in.GetName())
 	out.Description = direct.LazyPtr(in.GetDescription())
 	// MISSING: Parameters
-	out.ParametersJsonSchema = Value_FromProto(mapCtx, in.GetParametersJsonSchema())
+	// MISSING: ParametersJsonSchema
 	// MISSING: Response
-	out.ResponseJsonSchema = Value_FromProto(mapCtx, in.GetResponseJsonSchema())
+	// MISSING: ResponseJsonSchema
 	return out
 }
 func FunctionDeclaration_ToProto(mapCtx *direct.MapContext, in *krm.FunctionDeclaration) *aiplatformpb.FunctionDeclaration {
@@ -1036,9 +1036,9 @@ func FunctionDeclaration_ToProto(mapCtx *direct.MapContext, in *krm.FunctionDecl
 	out.Name = direct.ValueOf(in.Name)
 	out.Description = direct.ValueOf(in.Description)
 	// MISSING: Parameters
-	out.ParametersJsonSchema = Value_ToProto(mapCtx, in.ParametersJsonSchema)
+	// MISSING: ParametersJsonSchema
 	// MISSING: Response
-	out.ResponseJsonSchema = Value_ToProto(mapCtx, in.ResponseJsonSchema)
+	// MISSING: ResponseJsonSchema
 	return out
 }
 
