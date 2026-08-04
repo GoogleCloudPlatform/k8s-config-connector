@@ -35,9 +35,11 @@ mkdir -p "${WORKDIR}"
 BIN_DIR="${BUILD_DIR}/bin"
 mkdir -p "${BIN_DIR}"
 
-# Install kustomize v5 locally and ensure it's used
-echo "Installing kustomize v5.3.0..."
-GOBIN=${BIN_DIR}/ go install sigs.k8s.io/kustomize/kustomize/v5@v5.3.0
+# Install kustomize v5 locally if not present
+if [[ ! -x "${BIN_DIR}/kustomize" ]]; then
+  echo "Installing kustomize v5.3.0..."
+  GOBIN=${BIN_DIR}/ go install sigs.k8s.io/kustomize/kustomize/v5@v5.3.0
+fi
 export PATH=${BIN_DIR}/:$PATH
 
 # Build the release bundle
@@ -49,7 +51,7 @@ cd ${WORKDIR}
 tar xzf release-bundle.tar.gz
 
 # Update the operator manifests in the channels / autopilot-channels directory
-echo "Generating channel manifests..."
+echo "Generating channel manifests in parallel..."
 
 for channeldir in channels autopilot-channels; do
   mkdir -p ${REPO_ROOT}/operator/config/${channeldir}/release-bundle
@@ -59,19 +61,18 @@ for channeldir in channels autopilot-channels; do
   cd ${REPO_ROOT}/operator/config/${channeldir}
 
   mkdir -p ${REPO_ROOT}/operator/${channeldir}/packages/configconnector/${VERSION}/cluster/gcp-identity
-  kustomize build --load-restrictor=LoadRestrictionsNone cluster-gcp-identity > ${REPO_ROOT}/operator/${channeldir}/packages/configconnector/${VERSION}/cluster/gcp-identity/0-cnrm-system.yaml
+  kustomize build --load-restrictor=LoadRestrictionsNone cluster-gcp-identity > ${REPO_ROOT}/operator/${channeldir}/packages/configconnector/${VERSION}/cluster/gcp-identity/0-cnrm-system.yaml &
 
   mkdir -p ${REPO_ROOT}/operator/${channeldir}/packages/configconnector/${VERSION}/cluster/workload-identity
-  kustomize build --load-restrictor=LoadRestrictionsNone cluster-workload-identity > ${REPO_ROOT}/operator/${channeldir}/packages/configconnector/${VERSION}/cluster/workload-identity/0-cnrm-system.yaml
+  kustomize build --load-restrictor=LoadRestrictionsNone cluster-workload-identity > ${REPO_ROOT}/operator/${channeldir}/packages/configconnector/${VERSION}/cluster/workload-identity/0-cnrm-system.yaml &
 
   mkdir -p ${REPO_ROOT}/operator/${channeldir}/packages/configconnector/${VERSION}/namespaced
-  kustomize build --load-restrictor=LoadRestrictionsNone namespaced-main > ${REPO_ROOT}/operator/${channeldir}/packages/configconnector/${VERSION}/namespaced/0-cnrm-system.yaml
-  kustomize build --load-restrictor=LoadRestrictionsNone namespaced-per-namespace-components > ${REPO_ROOT}/operator/${channeldir}/packages/configconnector/${VERSION}/namespaced/per-namespace-components.yaml
+  kustomize build --load-restrictor=LoadRestrictionsNone namespaced-main > ${REPO_ROOT}/operator/${channeldir}/packages/configconnector/${VERSION}/namespaced/0-cnrm-system.yaml &
+  kustomize build --load-restrictor=LoadRestrictionsNone namespaced-per-namespace-components > ${REPO_ROOT}/operator/${channeldir}/packages/configconnector/${VERSION}/namespaced/per-namespace-components.yaml &
 
-  kustomize build --load-restrictor=LoadRestrictionsNone  crds > ${REPO_ROOT}/operator/${channeldir}/packages/configconnector/${VERSION}/crds.yaml
-
-  rm -rf ${REPO_ROOT}/operator/config/${channeldir}/release-bundle
+  kustomize build --load-restrictor=LoadRestrictionsNone crds > ${REPO_ROOT}/operator/${channeldir}/packages/configconnector/${VERSION}/crds.yaml &
 done
+wait
 
 # TODO: This is only needed for release bundles that we didn't build with our scripts here (i.e. only needed for release bundles built with the legacy process)
 # Swap container registry
