@@ -111,9 +111,10 @@ func (obj *SecurityCenterManagementEventThreatDetectionCustomModule) GetIdentity
 			return nil, err
 		}
 
-		if statusIdentity.String() != specIdentity.String() {
-			return nil, fmt.Errorf("cannot change SecurityCenterManagementEventThreatDetectionCustomModule identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+		if statusIdentity.Organization != specIdentity.Organization || statusIdentity.Location != specIdentity.Location {
+			return nil, fmt.Errorf("cannot change SecurityCenterManagementEventThreatDetectionCustomModule parent (old parent=%q, new parent=%q)", statusIdentity.ParentString(), specIdentity.ParentString())
 		}
+		return statusIdentity, nil
 	}
 
 	return specIdentity, nil
@@ -124,4 +125,13 @@ func (obj *SecurityCenterManagementEventThreatDetectionCustomModule) ExternalIde
 		return *obj.Status.ExternalRef
 	}
 	return ""
+}
+
+func ParseEventThreatDetectionCustomModuleExternal(ref string) (*SecurityCenterManagementEventThreatDetectionCustomModuleIdentity, bool, error) {
+	i := &SecurityCenterManagementEventThreatDetectionCustomModuleIdentity{}
+	err := i.FromExternal(ref)
+	if err != nil {
+		return nil, false, err
+	}
+	return i, true, nil
 }

@@ -17,7 +17,10 @@
 
 package resourceconfig
 
-import "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	"k8s.io/apimachinery/pkg/runtime/schema"
+)
 
 // ControllerConfigStatic is the static controller configuration for all resources.
 // It is ordered by GroupKind alphabetically.
@@ -258,7 +261,6 @@ var ControllerConfigStatic = ResourcesControllerMap{
 	{Group: "datastream.cnrm.cloud.google.com", Kind: "DatastreamRoute"}:                                        {DefaultController: k8s.ReconcilerTypeDirect, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeDirect}},
 	{Group: "datastream.cnrm.cloud.google.com", Kind: "DatastreamStream"}:                                       {DefaultController: k8s.ReconcilerTypeTerraform, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeTerraform}},
 	{Group: "deploymentmanager.cnrm.cloud.google.com", Kind: "DeploymentManagerDeployment"}:                     {DefaultController: k8s.ReconcilerTypeTerraform, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeTerraform}},
-	{Group: "developerconnect.cnrm.cloud.google.com", Kind: "DevConnectInsightsConfig"}:                         {DefaultController: k8s.ReconcilerTypeDirect, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeDirect}},
 	{Group: "devicestreaming.cnrm.cloud.google.com", Kind: "DeviceStreamingSession"}:                            {DefaultController: k8s.ReconcilerTypeDirect, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeDirect}},
 	{Group: "dialogflow.cnrm.cloud.google.com", Kind: "DialogflowAgent"}:                                        {DefaultController: k8s.ReconcilerTypeTerraform, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeTerraform}},
 	{Group: "dialogflow.cnrm.cloud.google.com", Kind: "DialogflowEntityType"}:                                   {DefaultController: k8s.ReconcilerTypeTerraform, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeTerraform}},
@@ -272,11 +274,7 @@ var ControllerConfigStatic = ResourcesControllerMap{
 	{Group: "dialogflowcx.cnrm.cloud.google.com", Kind: "DialogflowCXPage"}:                                     {DefaultController: k8s.ReconcilerTypeTerraform, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeTerraform}},
 	{Group: "dialogflowcx.cnrm.cloud.google.com", Kind: "DialogflowCXWebhook"}:                                  {DefaultController: k8s.ReconcilerTypeTerraform, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeTerraform}},
 	{Group: "discoveryengine.cnrm.cloud.google.com", Kind: "DiscoveryEngineDataStore"}:                          {DefaultController: k8s.ReconcilerTypeDirect, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeDirect}},
-	{Group: "discoveryengine.cnrm.cloud.google.com", Kind: "DiscoveryEngineConversation"}:                       {DefaultController: k8s.ReconcilerTypeDirect, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeDirect}},
-	{Group: "discoveryengine.cnrm.cloud.google.com", Kind: "DiscoveryEngineEngine"}:                             {DefaultController: k8s.ReconcilerTypeDirect, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeDirect}},
-	{Group: "discoveryengine.cnrm.cloud.google.com", Kind: "DiscoveryEngineLicenseConfig"}:                      {DefaultController: k8s.ReconcilerTypeDirect, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeDirect}},
 	{Group: "discoveryengine.cnrm.cloud.google.com", Kind: "DiscoveryEngineSession"}:                            {DefaultController: k8s.ReconcilerTypeDirect, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeDirect}},
-	{Group: "discoveryengine.cnrm.cloud.google.com", Kind: "DiscoveryEngineUserStore"}:                          {DefaultController: k8s.ReconcilerTypeDirect, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeDirect}},
 	{Group: "dlp.cnrm.cloud.google.com", Kind: "DLPConnection"}:                                                 {DefaultController: k8s.ReconcilerTypeDirect, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeDirect}},
 	{Group: "dlp.cnrm.cloud.google.com", Kind: "DLPDeidentifyTemplate"}:                                         {DefaultController: k8s.ReconcilerTypeDCL, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeDCL}},
 	{Group: "dlp.cnrm.cloud.google.com", Kind: "DLPDiscoveryConfig"}:                                            {DefaultController: k8s.ReconcilerTypeDirect, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeDirect}},
@@ -332,13 +330,11 @@ var ControllerConfigStatic = ResourcesControllerMap{
 	{Group: "gkehub.cnrm.cloud.google.com", Kind: "GKEHubScope"}:                                                {DefaultController: k8s.ReconcilerTypeDirect, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeDirect}},
 	{Group: "gkehub.cnrm.cloud.google.com", Kind: "GKEHubScopeRBACRoleBinding"}:                                 {DefaultController: k8s.ReconcilerTypeDirect, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeDirect}},
 	{Group: "gkemulticloud.cnrm.cloud.google.com", Kind: "GKEMulticloudAttachedCluster"}:                        {DefaultController: k8s.ReconcilerTypeDirect, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeDirect}},
-	{Group: "grafeas.cnrm.cloud.google.com", Kind: "GrafeasNote"}:                                               {DefaultController: k8s.ReconcilerTypeDirect, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeDirect}},
 	{Group: "healthcare.cnrm.cloud.google.com", Kind: "HealthcareConsentStore"}:                                 {DefaultController: k8s.ReconcilerTypeTerraform, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeTerraform}},
 	{Group: "healthcare.cnrm.cloud.google.com", Kind: "HealthcareDICOMStore"}:                                   {DefaultController: k8s.ReconcilerTypeTerraform, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeTerraform}},
 	{Group: "healthcare.cnrm.cloud.google.com", Kind: "HealthcareDataset"}:                                      {DefaultController: k8s.ReconcilerTypeTerraform, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeTerraform}},
 	{Group: "healthcare.cnrm.cloud.google.com", Kind: "HealthcareFHIRStore"}:                                    {DefaultController: k8s.ReconcilerTypeTerraform, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeTerraform}},
 	{Group: "healthcare.cnrm.cloud.google.com", Kind: "HealthcareHL7V2Store"}:                                   {DefaultController: k8s.ReconcilerTypeTerraform, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeTerraform}},
-	{Group: "hypercomputecluster.cnrm.cloud.google.com", Kind: "HypercomputeClusterCluster"}:                    {DefaultController: k8s.ReconcilerTypeDirect, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeDirect}},
 	{Group: "iam.cnrm.cloud.google.com", Kind: "IAMAccessBoundaryPolicy"}:                                       {DefaultController: k8s.ReconcilerTypeTerraform, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeTerraform}},
 	{Group: "iam.cnrm.cloud.google.com", Kind: "IAMAuditConfig"}:                                                {DefaultController: k8s.ReconcilerTypeIAMAuditConfig, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeIAMAuditConfig}},
 	{Group: "iam.cnrm.cloud.google.com", Kind: "IAMCustomRole"}:                                                 {DefaultController: k8s.ReconcilerTypeTerraform, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeTerraform}},
@@ -372,7 +368,6 @@ var ControllerConfigStatic = ResourcesControllerMap{
 	{Group: "kms.cnrm.cloud.google.com", Kind: "KMSKeyRing"}:                                                    {DefaultController: k8s.ReconcilerTypeTerraform, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeDirect, k8s.ReconcilerTypeTerraform}},
 	{Group: "kms.cnrm.cloud.google.com", Kind: "KMSKeyRingImportJob"}:                                           {DefaultController: k8s.ReconcilerTypeTerraform, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeTerraform}},
 	{Group: "kms.cnrm.cloud.google.com", Kind: "KMSSecretCiphertext"}:                                           {DefaultController: k8s.ReconcilerTypeTerraform, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeTerraform}},
-	{Group: "licensemanager.cnrm.cloud.google.com", Kind: "LicenseManagerConfiguration"}:                        {DefaultController: k8s.ReconcilerTypeDirect, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeDirect}},
 	{Group: "logging.cnrm.cloud.google.com", Kind: "LoggingLink"}:                                               {DefaultController: k8s.ReconcilerTypeDirect, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeDirect}},
 	{Group: "logging.cnrm.cloud.google.com", Kind: "LoggingLogBucket"}:                                          {DefaultController: k8s.ReconcilerTypeDCL, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeDCL, k8s.ReconcilerTypeDirect}},
 	{Group: "logging.cnrm.cloud.google.com", Kind: "LoggingLogExclusion"}:                                       {DefaultController: k8s.ReconcilerTypeDCL, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeDCL, k8s.ReconcilerTypeDirect}},
@@ -422,7 +417,6 @@ var ControllerConfigStatic = ResourcesControllerMap{
 	{Group: "networksecurity.cnrm.cloud.google.com", Kind: "NetworkSecuritySecurityProfileGroup"}:               {DefaultController: k8s.ReconcilerTypeDirect, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeDirect}},
 	{Group: "networksecurity.cnrm.cloud.google.com", Kind: "NetworkSecurityServerTLSPolicy"}:                    {DefaultController: k8s.ReconcilerTypeDCL, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeDCL}},
 	{Group: "networksecurity.cnrm.cloud.google.com", Kind: "NetworkSecurityTLSInspectionPolicy"}:                {DefaultController: k8s.ReconcilerTypeDirect, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeDirect}},
-	{Group: "networksecurity.cnrm.cloud.google.com", Kind: "NetworkSecurityURLList"}:                            {DefaultController: k8s.ReconcilerTypeDirect, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeDirect}},
 	{Group: "networkservices.cnrm.cloud.google.com", Kind: "NetworkServicesAuthzExtension"}:                     {DefaultController: k8s.ReconcilerTypeDirect, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeDirect}},
 	{Group: "networkservices.cnrm.cloud.google.com", Kind: "NetworkServicesEdgeCacheKeyset"}:                    {DefaultController: k8s.ReconcilerTypeTerraform, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeTerraform}},
 	{Group: "networkservices.cnrm.cloud.google.com", Kind: "NetworkServicesEdgeCacheOrigin"}:                    {DefaultController: k8s.ReconcilerTypeTerraform, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeTerraform}},
@@ -528,7 +522,6 @@ var ControllerConfigStatic = ResourcesControllerMap{
 	{Group: "vertexai.cnrm.cloud.google.com", Kind: "VertexAIIndexEndpoint"}:                                    {DefaultController: k8s.ReconcilerTypeTerraform, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeTerraform}},
 	{Group: "vertexai.cnrm.cloud.google.com", Kind: "VertexAIMetadataStore"}:                                    {DefaultController: k8s.ReconcilerTypeDirect, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeDirect}},
 	{Group: "vertexai.cnrm.cloud.google.com", Kind: "VertexAITensorboard"}:                                      {DefaultController: k8s.ReconcilerTypeTerraform, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeTerraform}},
-	{Group: "vertexai.cnrm.cloud.google.com", Kind: "VertexAITensorboardExperiment"}:                            {DefaultController: k8s.ReconcilerTypeDirect, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeDirect}},
 	{Group: "videostitcher.cnrm.cloud.google.com", Kind: "VideoStitcherCDNKey"}:                                 {DefaultController: k8s.ReconcilerTypeDirect, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeDirect}},
 	{Group: "vision.cnrm.cloud.google.com", Kind: "VisionProduct"}:                                              {DefaultController: k8s.ReconcilerTypeDirect, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeDirect}},
 	{Group: "vmwareengine.cnrm.cloud.google.com", Kind: "VMwareEngineExternalAccessRule"}:                       {DefaultController: k8s.ReconcilerTypeDirect, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeDirect}},
@@ -545,4 +538,14 @@ var ControllerConfigStatic = ResourcesControllerMap{
 	{Group: "workstations.cnrm.cloud.google.com", Kind: "Workstation"}:                                          {DefaultController: k8s.ReconcilerTypeDirect, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeDirect}},
 	{Group: "workstations.cnrm.cloud.google.com", Kind: "WorkstationCluster"}:                                   {DefaultController: k8s.ReconcilerTypeDirect, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeDirect}},
 	{Group: "workstations.cnrm.cloud.google.com", Kind: "WorkstationConfig"}:                                    {DefaultController: k8s.ReconcilerTypeDirect, SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeDirect}},
+}
+
+func init() {
+	ControllerConfigStatic[schema.GroupKind{
+		Group: "securitycentermanagement.cnrm.cloud.google.com",
+		Kind:  "SecurityCenterManagementEventThreatDetectionCustomModule",
+	}] = ResourceControllerConfig{
+		DefaultController:    k8s.ReconcilerTypeDirect,
+		SupportedControllers: []k8s.ReconcilerType{k8s.ReconcilerTypeDirect},
+	}
 }
