@@ -520,7 +520,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
         uses: actions/cache@v4
         with:
           path: bin/
-          key: ${cache_prefix}-\${{ runner.os }}-\${{ hashFiles('go.sum', 'apis/**', 'pkg/**', 'operator/**', 'cmd/**') }}
+          key: ${cache_prefix}-\${{ runner.os }}-\${{ hashFiles('go.sum', 'apis/**', 'pkg/**', 'operator/**', 'cmd/**', 'dev/tasks/compile-binaries-host') }}
       - name: "Run ${f}"
         run: |
           ./${f}

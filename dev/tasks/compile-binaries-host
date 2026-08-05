@@ -38,8 +38,6 @@ export GOARCH=amd64
 LDFLAGS="-s -w -buildid="
 
 BUILD_CLI="${BUILD_CLI:-1}"
-BUILD_DELETION_DEFENDER="${BUILD_DELETION_DEFENDER:-1}"
-BUILD_UNMANAGED_DETECTOR="${BUILD_UNMANAGED_DETECTOR:-1}"
 BUILD_GKE_ADDON="${BUILD_GKE_ADDON:-1}"
 SKIP_LICENSES="${SKIP_LICENSES:-0}"
 
@@ -47,19 +45,9 @@ targets=(
   ./cmd/webhook
   ./cmd/recorder
   ./cmd/manager
+  ./cmd/deletiondefender
+  ./cmd/unmanageddetector
 )
-
-if [[ "${BUILD_DELETION_DEFENDER}" != "0" ]]; then
-  targets+=(./cmd/deletiondefender)
-else
-  touch bin/deletiondefender
-fi
-
-if [[ "${BUILD_UNMANAGED_DETECTOR}" != "0" ]]; then
-  targets+=(./cmd/unmanageddetector)
-else
-  touch bin/unmanageddetector
-fi
 
 if [[ "${BUILD_CLI}" != "0" ]]; then
   targets+=(./cmd/config-connector)

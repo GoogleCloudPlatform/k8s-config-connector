@@ -106,19 +106,19 @@ bin/generate-gvks: ./scripts/generate-gvks/*.go
 .PHONY: manifests
 manifests: bin/kustomize bin/generate-crds bin/generate-cnrm-cluster-roles bin/generate-gvks generate
 	make -C operator manifests
+	rm -rf config/crds/resources
 	rm -rf config/crds/tmp_resources
 	./bin/generate-crds -output-dir=config/crds/tmp_resources
-	# add kustomize patches on all CRDs (legacy + direct)
+	# add kustomize patches on all CRDs
+	mkdir config/crds/resources
 	cp config/crds/kustomization.yaml kustomization.yaml
 	$(KUSTOMIZE) edit add resource config/crds/tmp_resources/*.yaml
-	$(KUSTOMIZE) edit add resource config/crds/resources/*.yaml
-	rm -rf config/crds/all_resources
-	mkdir -p config/crds/all_resources
-	$(KUSTOMIZE) build -o config/crds/all_resources
-	rm -rf config/crds/resources
-	mv config/crds/all_resources config/crds/resources
+	$(KUSTOMIZE) build -o config/crds/resources
 	rm -rf config/crds/tmp_resources
 	rm kustomization.yaml
+
+	# for direct controllers
+	dev/tasks/generate-crds
 
 	# Generating cnrm cluster roles is dependent on the existence of directory
 	# config/crds/resources with all the freshly generated CRDs.
