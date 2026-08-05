@@ -42,6 +42,12 @@ ${CONTROLLERBUILDER} generate-types \
   --resource HypercomputeClusterCluster:Cluster \
   --proto-source-path ${PROTO_OUT}
 
+${CONTROLLERBUILDER} generate-mapper \
+  --service google.cloud.hypercomputecluster.v1 \
+  --api-version hypercomputecluster.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output \
+  --proto-source-path ${PROTO_OUT}
+
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 

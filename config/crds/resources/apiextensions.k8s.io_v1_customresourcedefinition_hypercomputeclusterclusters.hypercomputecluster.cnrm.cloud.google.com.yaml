@@ -436,7 +436,7 @@ spec:
                                 how users will identify it. Must conform to RFC-1034
                                 (lower-case, alphanumeric, and at most 63 characters).
                               type: string
-                            nodeSetIDs:
+                            nodeSetIds:
                               description: Required. IDs of the nodesets that make
                                 up this partition. Values must match SlurmNodeSet.id.
                               items:

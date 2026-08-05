@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: hypercomputecluster.cnrm.cloud.google.com
+  kind: HypercomputeClusterCluster
+  name: hcc-maximal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

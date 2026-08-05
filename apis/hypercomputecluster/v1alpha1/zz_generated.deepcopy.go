@@ -1161,8 +1161,8 @@ func (in *SlurmPartition) DeepCopyInto(out *SlurmPartition) {
 		*out = new(string)
 		**out = **in
 	}
-	if in.NodeSetIDs != nil {
-		in, out := &in.NodeSetIDs, &out.NodeSetIDs
+	if in.NodeSetIds != nil {
+		in, out := &in.NodeSetIds, &out.NodeSetIds
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}

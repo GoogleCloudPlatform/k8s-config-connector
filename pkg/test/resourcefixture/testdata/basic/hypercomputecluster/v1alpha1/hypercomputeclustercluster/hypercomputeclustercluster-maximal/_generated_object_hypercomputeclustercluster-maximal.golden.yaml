@@ -1,0 +1,73 @@
+apiVersion: hypercomputecluster.cnrm.cloud.google.com/v1alpha1
+kind: HypercomputeClusterCluster
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: hcc-maximal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  computeResources:
+    comp-resource-1:
+      config:
+        newOnDemandInstances:
+          machineType: n2-standard-4
+          zone: us-central1-a
+  description: Updated Maximal Hypercompute Cluster Description
+  labels:
+    foo: bar-updated
+  location: us-central1
+  networkResources:
+    net-resource-1:
+      config:
+        existingNetwork:
+          networkRef:
+            external: projects/${projectId}/global/networks/default
+          subnetworkRef:
+            external: projects/${projectId}/regions/us-central1/subnetworks/default
+  orchestrator:
+    slurm:
+      defaultPartition: partition1
+      loginNodes:
+        count: 1
+        enableOSLogin: true
+        enablePublicIPs: true
+        machineType: e2-standard-4
+        zone: us-central1-a
+      nodeSets:
+      - computeID: comp-resource-1
+        computeInstance:
+          bootDisk:
+            sizeGB: 100
+            type: projects/${projectId}/zones/us-central1-a/diskTypes/pd-standard
+          labels:
+            nodeset-label: test-updated
+          startupScript: |-
+            #!/bin/bash
+            echo hello
+        id: nodeset1
+        staticNodeCount: 1
+      partitions:
+      - id: partition1
+        nodeSetIDs:
+        - nodeset1
+  projectRef:
+    external: ${projectId}
+  resourceID: hccmax
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: "Update call failed: error creating: creating HypercomputeClusterCluster
+      projects/${projectId}/locations/us-central1/clusters/hccmax: googleapi: Error
+      400: The request was invalid: The partition \"partition1\" is invalid because
+      its node_set_ids list is empty. Each partition must be associated with at least
+      one node set. Add one or more valid node set IDs.\nerror details: name = BadRequest
+      field = cluster.orchestrator.slurm.partitions[0].node_set_ids desc = \nerror
+      details: name = RequestInfo id = 8fb3ac4b90874bb8 data ="
+    reason: UpdateFailed
+    status: "False"
+    type: Ready
+  observedGeneration: 2
