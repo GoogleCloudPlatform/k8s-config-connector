@@ -81,7 +81,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: bin/
-          key: host-binaries-p2-${{ runner.os }}-${{ hashFiles('go.sum', 'apis/**', 'pkg/**', 'operator/**', 'cmd/**') }}
+          key: host-binaries-${{ runner.os }}-${{ hashFiles('go.sum', 'apis/**', 'pkg/**', 'operator/**', 'cmd/**') }}
       - name: "Run dev/ci/presubmits/build-images"
         run: |
           ./dev/ci/presubmits/build-images
@@ -248,7 +248,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: bin/
-          key: host-binaries-p2-${{ runner.os }}-${{ hashFiles('go.sum', 'apis/**', 'pkg/**', 'operator/**', 'cmd/**') }}
+          key: host-binaries-${{ runner.os }}-${{ hashFiles('go.sum', 'apis/**', 'pkg/**', 'operator/**', 'cmd/**') }}
       - name: "Run dev/ci/presubmits/smoketest-with-kind"
         run: |
           ./dev/ci/presubmits/smoketest-with-kind
