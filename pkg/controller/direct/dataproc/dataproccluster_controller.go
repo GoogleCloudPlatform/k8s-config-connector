@@ -24,6 +24,7 @@ import (
 	"context"
 	"fmt"
 	"sort"
+	"strings"
 
 	dataproc "cloud.google.com/go/dataproc/v2/apiv1"
 	pb "cloud.google.com/go/dataproc/v2/apiv1/dataprocpb"
@@ -212,14 +213,9 @@ func (a *dataprocClusterAdapter) Update(ctx context.Context, updateOp *directbas
 		a.actual.Config = &pb.ClusterConfig{}
 	}
 
-	// Copy immutable/server-assigned top-level config fields from a.actual to cluster to avoid false diffs
+	// Copy server-assigned config fields from a.actual to cluster to avoid false diffs
 	cluster.Config.ConfigBucket = a.actual.Config.ConfigBucket
 	cluster.Config.TempBucket = a.actual.Config.TempBucket
-	cluster.Config.EncryptionConfig = a.actual.Config.EncryptionConfig
-	cluster.Config.MetastoreConfig = a.actual.Config.MetastoreConfig
-	cluster.Config.DataprocMetricConfig = a.actual.Config.DataprocMetricConfig
-	cluster.Config.LifecycleConfig = a.actual.Config.LifecycleConfig
-	cluster.Config.AutoscalingConfig = a.actual.Config.AutoscalingConfig
 
 	// Only copy EndpointConfig if it is specified in KRM spec. Otherwise, leave it nil.
 	if a.desired.Spec.Config != nil && a.desired.Spec.Config.EndpointConfig != nil {
@@ -248,47 +244,20 @@ func (a *dataprocClusterAdapter) Update(ctx context.Context, updateOp *directbas
 		}
 	}
 
-	// For MasterConfig, it is also immutable:
-	cluster.Config.MasterConfig = a.actual.Config.MasterConfig
-	if cluster.Config.MasterConfig != nil {
-		if cluster.Config.MasterConfig.Accelerators == nil {
-			cluster.Config.MasterConfig.Accelerators = []*pb.AcceleratorConfig{}
-		}
-	}
+	// For MasterConfig, it is immutable
+	cluster.Config.MasterConfig = alignInstanceGroupConfig(cluster.Config.MasterConfig, a.actual.Config.MasterConfig, a.actual.Config.GceClusterConfig.ZoneUri)
 
 	// For WorkerConfig: only NumInstances is mutable, so copy other fields (like MachineTypeUri, DiskConfig, etc.)
-	if cluster.Config.WorkerConfig == nil {
-		cluster.Config.WorkerConfig = a.actual.Config.WorkerConfig
-	} else if a.actual.Config.WorkerConfig != nil {
-		cluster.Config.WorkerConfig.ImageUri = a.actual.Config.WorkerConfig.ImageUri
-		cluster.Config.WorkerConfig.MachineTypeUri = a.actual.Config.WorkerConfig.MachineTypeUri
-		cluster.Config.WorkerConfig.DiskConfig = a.actual.Config.WorkerConfig.DiskConfig
-		cluster.Config.WorkerConfig.Preemptibility = a.actual.Config.WorkerConfig.Preemptibility
-		cluster.Config.WorkerConfig.MinCpuPlatform = a.actual.Config.WorkerConfig.MinCpuPlatform
-		cluster.Config.WorkerConfig.Accelerators = a.actual.Config.WorkerConfig.Accelerators
-		cluster.Config.WorkerConfig.InstanceNames = a.actual.Config.WorkerConfig.InstanceNames
-	}
-	if cluster.Config.WorkerConfig != nil {
-		if cluster.Config.WorkerConfig.Accelerators == nil {
-			cluster.Config.WorkerConfig.Accelerators = []*pb.AcceleratorConfig{}
-		}
-	}
+	cluster.Config.WorkerConfig = alignInstanceGroupConfig(cluster.Config.WorkerConfig, a.actual.Config.WorkerConfig, a.actual.Config.GceClusterConfig.ZoneUri)
 
 	// For SecondaryWorkerConfig: only NumInstances is mutable
-	if cluster.Config.SecondaryWorkerConfig == nil {
-		cluster.Config.SecondaryWorkerConfig = a.actual.Config.SecondaryWorkerConfig
-	} else if a.actual.Config.SecondaryWorkerConfig != nil {
-		cluster.Config.SecondaryWorkerConfig.ImageUri = a.actual.Config.SecondaryWorkerConfig.ImageUri
-		cluster.Config.SecondaryWorkerConfig.MachineTypeUri = a.actual.Config.SecondaryWorkerConfig.MachineTypeUri
-		cluster.Config.SecondaryWorkerConfig.DiskConfig = a.actual.Config.SecondaryWorkerConfig.DiskConfig
-		cluster.Config.SecondaryWorkerConfig.Preemptibility = a.actual.Config.SecondaryWorkerConfig.Preemptibility
-		cluster.Config.SecondaryWorkerConfig.MinCpuPlatform = a.actual.Config.SecondaryWorkerConfig.MinCpuPlatform
-		cluster.Config.SecondaryWorkerConfig.Accelerators = a.actual.Config.SecondaryWorkerConfig.Accelerators
-		cluster.Config.SecondaryWorkerConfig.InstanceNames = a.actual.Config.SecondaryWorkerConfig.InstanceNames
-	}
+	cluster.Config.SecondaryWorkerConfig = alignInstanceGroupConfig(cluster.Config.SecondaryWorkerConfig, a.actual.Config.SecondaryWorkerConfig, a.actual.Config.GceClusterConfig.ZoneUri)
 	if cluster.Config.SecondaryWorkerConfig != nil {
-		if cluster.Config.SecondaryWorkerConfig.Accelerators == nil {
-			cluster.Config.SecondaryWorkerConfig.Accelerators = []*pb.AcceleratorConfig{}
+		if cluster.Config.SecondaryWorkerConfig.IsPreemptible == false {
+			cluster.Config.SecondaryWorkerConfig.IsPreemptible = true
+		}
+		if cluster.Config.SecondaryWorkerConfig.ManagedGroupConfig == nil && a.actual.Config.SecondaryWorkerConfig != nil {
+			cluster.Config.SecondaryWorkerConfig.ManagedGroupConfig = a.actual.Config.SecondaryWorkerConfig.ManagedGroupConfig
 		}
 	}
 
@@ -328,7 +297,7 @@ func (a *dataprocClusterAdapter) Update(ctx context.Context, updateOp *directbas
 
 	for path := range paths {
 		if !allowedPaths[path] {
-			paths.Delete(path)
+			return fmt.Errorf("field %s is immutable", path)
 		}
 	}
 
@@ -442,4 +411,44 @@ func (a *dataprocClusterAdapter) updateStatus(ctx context.Context, op directbase
 	}
 	status.ExternalRef = direct.LazyPtr(krm.DataprocClusterIdentityFormatRelative.ToString(*a.id))
 	return op.UpdateStatus(ctx, status, nil)
+}
+
+func alignInstanceGroupConfig(desired, actual *pb.InstanceGroupConfig, zoneUri string) *pb.InstanceGroupConfig {
+	if desired == nil {
+		return actual
+	}
+	if desired.ImageUri == "" {
+		desired.ImageUri = actual.ImageUri
+	}
+	if desired.MachineTypeUri == "" {
+		desired.MachineTypeUri = actual.MachineTypeUri
+	} else if !strings.HasPrefix(desired.MachineTypeUri, "https://") {
+		desired.MachineTypeUri = fmt.Sprintf("%s/machineTypes/%s", zoneUri, desired.MachineTypeUri)
+	}
+	if desired.DiskConfig == nil {
+		desired.DiskConfig = actual.DiskConfig
+	} else {
+		if desired.DiskConfig.BootDiskSizeGb == 0 {
+			desired.DiskConfig.BootDiskSizeGb = actual.DiskConfig.BootDiskSizeGb
+		}
+		if desired.DiskConfig.BootDiskType == "" {
+			desired.DiskConfig.BootDiskType = actual.DiskConfig.BootDiskType
+		}
+	}
+	if desired.Preemptibility == pb.InstanceGroupConfig_PREEMPTIBILITY_UNSPECIFIED {
+		desired.Preemptibility = actual.Preemptibility
+	}
+	if desired.MinCpuPlatform == "" {
+		desired.MinCpuPlatform = actual.MinCpuPlatform
+	}
+	if desired.Accelerators == nil {
+		desired.Accelerators = actual.Accelerators
+	}
+	if desired.InstanceNames == nil {
+		desired.InstanceNames = actual.InstanceNames
+	}
+	if desired.StartupConfig == nil {
+		desired.StartupConfig = actual.StartupConfig
+	}
+	return desired
 }

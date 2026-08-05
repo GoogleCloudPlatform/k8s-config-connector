@@ -26,6 +26,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocks"
+
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
@@ -219,7 +221,7 @@ func (s *clusterControllerServer) populateLabels(obj *pb.Cluster, name *clusterN
 	obj.Labels["goog-dataproc-drz-resource-uuid"] = "cluster-" + obj.ClusterUuid
 }
 
-func (s *clusterControllerServer) populateInstanceGroupConfig(config *pb.InstanceGroupConfig, name *clusterName, zone string, isMaster bool) *pb.InstanceGroupConfig {
+func (s *clusterControllerServer) populateInstanceGroupConfig(config *pb.InstanceGroupConfig, name *clusterName, zone string, isMaster bool, isSecondary bool) *pb.InstanceGroupConfig {
 	if config == nil {
 		config = &pb.InstanceGroupConfig{}
 	}
@@ -242,7 +244,7 @@ func (s *clusterControllerServer) populateInstanceGroupConfig(config *pb.Instanc
 	}
 
 	if config.DiskConfig.BootDiskType == "" {
-		config.DiskConfig.BootDiskType = "pd-standard"
+		config.DiskConfig.BootDiskType = "hyperdisk-balanced"
 	}
 	if config.ImageUri == "" {
 		config.ImageUri = DefaultImageURI
@@ -259,6 +261,28 @@ func (s *clusterControllerServer) populateInstanceGroupConfig(config *pb.Instanc
 
 	if isMaster {
 		config.InstanceNames = []string{name.ClusterName + "-m"}
+	} else if isSecondary {
+		instanceNames := []string{}
+		for i := int32(0); i < config.NumInstances; i++ {
+			s := fmt.Sprintf("%s-sw-%d", name.ClusterName, i)
+			instanceNames = append(instanceNames, s)
+		}
+		config.InstanceNames = instanceNames
+		if config.StartupConfig == nil {
+			config.StartupConfig = &pb.StartupConfig{}
+			config.StartupConfig.RequiredRegistrationFraction = mocks.PtrTo(0.0001)
+		}
+		if config.IsPreemptible == false {
+			config.IsPreemptible = true
+			config.IsPreemptible = true
+		}
+		if config.ManagedGroupConfig == nil {
+			config.ManagedGroupConfig = &pb.ManagedGroupConfig{}
+			uniqueID := strings.TrimPrefix(name.ClusterName, "dataproccluster-")
+			config.ManagedGroupConfig.InstanceGroupManagerName = fmt.Sprintf("dataproc-goog-reserved-auto-secondary-%s", uniqueID)
+			config.ManagedGroupConfig.InstanceGroupManagerUri = fmt.Sprintf("projects/%s/regions/%s/instanceGroupManagers/dataproc-goog-reserved-auto-secondary-%s", name.Project.ID, name.Region, uniqueID)
+			config.ManagedGroupConfig.InstanceTemplateName = fmt.Sprintf("dataproc-goog-reserved-auto-secondary-%s", uniqueID)
+		}
 	} else {
 		instanceNames := []string{}
 		for i := int32(0); i < config.NumInstances; i++ {
@@ -297,29 +321,10 @@ func (s *clusterControllerServer) populateDefaultsForCluster(obj *pb.Cluster, na
 	if obj.Config.ConfigBucket == "" {
 		obj.Config.ConfigBucket = fmt.Sprintf("dataproc-staging-%s-%d-xxxxxxxx", name.Region, name.Project.Number)
 	}
-	if obj.Config.WorkerConfig == nil {
-		obj.Config.WorkerConfig = &pb.InstanceGroupConfig{}
-	}
-	if obj.Config.WorkerConfig.DiskConfig == nil {
-		obj.Config.WorkerConfig.DiskConfig = &pb.DiskConfig{}
-	}
-	obj.Config.WorkerConfig.DiskConfig.BootDiskSizeGb = 1000
-	obj.Config.WorkerConfig.DiskConfig.BootDiskType = "pd-standard"
-	if obj.Config.WorkerConfig.MachineTypeUri == "" {
-		obj.Config.WorkerConfig.MachineTypeUri = "https://www.googleapis.com/compute/v1/projects/" + name.Project.ID + "/zones/" + zone + "/machineTypes/n2-standard-4"
-	} else if !strings.HasPrefix(obj.Config.WorkerConfig.MachineTypeUri, "https://") {
-		obj.Config.WorkerConfig.MachineTypeUri = "https://www.googleapis.com/compute/v1/projects/" + name.Project.ID + "/zones/" + zone + "/machineTypes/" + obj.Config.WorkerConfig.MachineTypeUri
-	}
-	if obj.Config.WorkerConfig.NumInstances == 0 {
-		obj.Config.WorkerConfig.NumInstances = 2
-	}
-	obj.Config.WorkerConfig.Preemptibility = pb.InstanceGroupConfig_NON_PREEMPTIBLE
-	obj.Config.WorkerConfig.MinCpuPlatform = "AUTOMATIC"
-	obj.Config.WorkerConfig.ImageUri = DefaultImageURI
 
-	obj.Config.MasterConfig = s.populateInstanceGroupConfig(obj.Config.MasterConfig, name, zone, true)
-
-	obj.Config.WorkerConfig = s.populateInstanceGroupConfig(obj.Config.WorkerConfig, name, zone, false)
+	obj.Config.MasterConfig = s.populateInstanceGroupConfig(obj.Config.MasterConfig, name, zone, true, false)
+	obj.Config.WorkerConfig = s.populateInstanceGroupConfig(obj.Config.WorkerConfig, name, zone, false, false)
+	obj.Config.SecondaryWorkerConfig = s.populateInstanceGroupConfig(obj.Config.SecondaryWorkerConfig, name, zone, false, true)
 
 	s.populateSoftwareConfig(obj)
 }
@@ -344,9 +349,12 @@ func (s *clusterControllerServer) UpdateCluster(ctx context.Context, req *pb.Upd
 	updated := proto.CloneOf(obj)
 	for _, field := range req.GetUpdateMask().GetPaths() {
 		switch field {
-		case "config.worker_config.num_instances":
+		case "config.worker_config.num_instances", "config.workerConfig.numInstances":
 			description = "Add 1 workers."
 			updated.Config.WorkerConfig.NumInstances = req.GetCluster().GetConfig().GetWorkerConfig().GetNumInstances()
+		case "config.secondary_worker_config.num_instances", "config.secondaryWorkerConfig.numInstances":
+			description = "Add 1 workers."
+			updated.Config.SecondaryWorkerConfig.NumInstances = req.GetCluster().GetConfig().GetSecondaryWorkerConfig().GetNumInstances()
 		case "config.security_config.identity_config.user_service_account_mapping", "config.securityConfig.identityConfig.userServiceAccountMapping":
 			if updated.Config.SecurityConfig == nil {
 				updated.Config.SecurityConfig = &pb.SecurityConfig{}
