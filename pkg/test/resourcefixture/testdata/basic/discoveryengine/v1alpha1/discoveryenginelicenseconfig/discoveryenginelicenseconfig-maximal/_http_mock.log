@@ -1,0 +1,204 @@
+GET https://discoveryengine.googleapis.com/v1beta/projects/${projectId}/locations/global/licenseConfigs/search?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FlicenseConfigs%2Fsearch
+X-Goog-User-Project: ${projectId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "LicenseConfig projects/${projectNumber}/locations/global/licenseConfigs/search not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://discoveryengine.googleapis.com/v1beta/projects/${projectId}/locations/global/licenseConfigs?%24alt=json%3Benum-encoding%3Dint&licenseConfigId=search
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal
+X-Goog-User-Project: ${projectId}
+
+{
+  "autoRenew": true,
+  "endDate": {
+    "day": 5,
+    "month": 8,
+    "year": 2028
+  },
+  "licenseCount": "10",
+  "name": "projects/${projectId}/locations/global/licenseConfigs/search",
+  "startDate": {
+    "day": 5,
+    "month": 8,
+    "year": 2027
+  },
+  "subscriptionTerm": 2,
+  "subscriptionTier": 1
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "autoRenew": true,
+  "endDate": {
+    "day": 5,
+    "month": 8,
+    "year": 2028
+  },
+  "licenseCount": "10",
+  "name": "projects/${projectNumber}/locations/global/licenseConfigs/search",
+  "startDate": {
+    "day": 5,
+    "month": 8,
+    "year": 2027
+  },
+  "state": 1,
+  "subscriptionTerm": 2,
+  "subscriptionTier": 1
+}
+
+---
+
+GET https://discoveryengine.googleapis.com/v1beta/projects/${projectId}/locations/global/licenseConfigs/search?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FlicenseConfigs%2Fsearch
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "autoRenew": true,
+  "endDate": {
+    "day": 5,
+    "month": 8,
+    "year": 2028
+  },
+  "licenseCount": "10",
+  "name": "projects/${projectNumber}/locations/global/licenseConfigs/search",
+  "startDate": {
+    "day": 5,
+    "month": 8,
+    "year": 2027
+  },
+  "state": 1,
+  "subscriptionTerm": 2,
+  "subscriptionTier": 1
+}
+
+---
+
+PATCH https://discoveryengine.googleapis.com/v1beta/projects/${projectId}/locations/global/licenseConfigs/search?%24alt=json%3Benum-encoding%3Dint&updateMask=autoRenew%2ClicenseCount
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: license_config.name=projects%2F${projectId}%2Flocations%2Fglobal%2FlicenseConfigs%2Fsearch
+X-Goog-User-Project: ${projectId}
+
+{
+  "endDate": {
+    "day": 5,
+    "month": 8,
+    "year": 2028
+  },
+  "licenseCount": "20",
+  "name": "projects/${projectId}/locations/global/licenseConfigs/search",
+  "startDate": {
+    "day": 5,
+    "month": 8,
+    "year": 2027
+  },
+  "subscriptionTerm": 2,
+  "subscriptionTier": 1
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endDate": {
+    "day": 5,
+    "month": 8,
+    "year": 2028
+  },
+  "licenseCount": "20",
+  "name": "projects/${projectNumber}/locations/global/licenseConfigs/search",
+  "startDate": {
+    "day": 5,
+    "month": 8,
+    "year": 2027
+  },
+  "state": 1,
+  "subscriptionTerm": 2,
+  "subscriptionTier": 1
+}
+
+---
+
+GET https://discoveryengine.googleapis.com/v1beta/projects/${projectId}/locations/global/licenseConfigs/search?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FlicenseConfigs%2Fsearch
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endDate": {
+    "day": 5,
+    "month": 8,
+    "year": 2028
+  },
+  "licenseCount": "20",
+  "name": "projects/${projectNumber}/locations/global/licenseConfigs/search",
+  "startDate": {
+    "day": 5,
+    "month": 8,
+    "year": 2027
+  },
+  "state": 1,
+  "subscriptionTerm": 2,
+  "subscriptionTier": 1
+}

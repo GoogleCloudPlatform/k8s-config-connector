@@ -1,0 +1,6 @@
+- caisURL: //discoveryengine.googleapis.com/projects/${projectId}/locations/global/licenseConfigs/search
+  group: discoveryengine.cnrm.cloud.google.com
+  kind: DiscoveryEngineLicenseConfig
+  name: licenseconfig-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
