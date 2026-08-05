@@ -42,17 +42,26 @@ fi
 export SKIP_GENERATE_CRDS=1
 export SKIP_GENERATE_PROTOS=1
 
-for f in $(find apis -name "generate.sh" | sort); do
+run_generate_script() {
+    local f="$1"
     if [[ "${f}" == *"backupdr"* || "${f}" == *"bigquerybiglake"* || "${f}" == *"bigtable"* || "${f}" == *"composer"* || "${f}" == *"contentwarehouse"* || "${f}" == *"datastream"* || "${f}" == *"discoveryengine"* || "${f}" == *"documentai"* || "${f}" == *"edgecontainer"* || "${f}" == *"gkebackup"* || "${f}" == *"orgpolicy"* || "${f}" == *"speech"* || "${f}" == *"tpu"* || "${f}" == *"vertexai"* || "${f}" == *"vmwareengine"* ]]; then
         echo "Skipping ${f}"
-        continue
+        return 0
     fi
     echo "running ${f}"
     (cd "${REPO_ROOT}" && ./"${f}")
-done
+}
+export -f run_generate_script
+export REPO_ROOT
+
+PARALLELISM="${GENERATE_PARALLELISM:-$(nproc 2>/dev/null || echo 4)}"
+echo "Running generate.sh scripts in parallel (P=${PARALLELISM})..."
+find apis -name "generate.sh" | sort | xargs -n 1 -P "${PARALLELISM}" -I {} bash -c 'run_generate_script "$@"' _ {}
 
 # Now we generate CRDs
-unset SKIP_GENERATE_CRDS
-unset SKIP_GENERATE_PROTOS
-echo "Generating CRDs"
-dev/tasks/generate-crds
+if [[ -z "${SKIP_GENERATE_CRDS_AT_END:-}" ]]; then
+  unset SKIP_GENERATE_CRDS
+  unset SKIP_GENERATE_PROTOS
+  echo "Generating CRDs"
+  dev/tasks/generate-crds
+fi
