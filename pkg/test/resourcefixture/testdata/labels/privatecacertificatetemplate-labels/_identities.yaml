@@ -1,0 +1,6 @@
+- caisURL: //privateca.googleapis.com/projects/${projectId}/locations/us-central1/certificateTemplates/privatecacertificatetemplate-${uniqueId}
+  group: privateca.cnrm.cloud.google.com
+  kind: PrivateCACertificateTemplate
+  name: privatecacertificatetemplate-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
