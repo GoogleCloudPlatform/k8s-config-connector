@@ -36,6 +36,8 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/client/config"
 	crlog "sigs.k8s.io/controller-runtime/pkg/log"
+	"sigs.k8s.io/controller-runtime/pkg/manager"
+
 	// Ensure built-in types are registered.
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/register"
 )
