@@ -51,28 +51,10 @@ for f in $(find apis -name "generate.sh" | sort); do
     (cd "${REPO_ROOT}" && ./"${f}")
 done
 
-# Now we generate CRDs (Legacy TF + Direct overlay)
+# Now we generate CRDs
 unset SKIP_GENERATE_CRDS
 unset SKIP_GENERATE_PROTOS
-
-echo "Generating Legacy Terraform CRDs"
-mkdir -p "${REPO_ROOT}/bin"
-if [[ ! -x "${REPO_ROOT}/bin/generate-crds" ]]; then
-  go build -o "${REPO_ROOT}/bin/generate-crds" ./scripts/generate-crds
-fi
-KUSTOMIZE="${REPO_ROOT}/bin/kustomize"
-if [[ ! -x "${KUSTOMIZE}" ]]; then
-  GOBIN="${REPO_ROOT}/bin" go install sigs.k8s.io/kustomize/kustomize/v5@v5.4.3
-fi
-rm -rf config/crds/resources
-rm -rf config/crds/tmp_resources
-"${REPO_ROOT}/bin/generate-crds" -output-dir=config/crds/tmp_resources
-mkdir -p config/crds/resources
-cp config/crds/kustomization.yaml kustomization.yaml
-"${KUSTOMIZE}" edit add resource config/crds/tmp_resources/*.yaml
-"${KUSTOMIZE}" build -o config/crds/resources
-rm -rf config/crds/tmp_resources
-rm -f kustomization.yaml
-
-echo "Generating Direct CRDs"
+echo "Cleaning Go build cache to prevent stale metadata compilation issues"
+go clean -cache
+echo "Generating CRDs"
 dev/tasks/generate-crds
