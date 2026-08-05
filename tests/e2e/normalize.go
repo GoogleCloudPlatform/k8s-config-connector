@@ -137,7 +137,7 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 
 	// Specific to Dataproc
 	if u.GroupVersionKind().Group == "dataproc.cnrm.cloud.google.com" {
-		visitor.ReplacePath(".status.clusterUuid", "${clusterUuid}")
+		visitor.ReplacePath(".status.clusterUuid", "${dataStoreClusterUUID}")
 		visitor.ReplacePath(".status.observedState.uuid", "00000000-0000-0000-0000-000000000001")
 		visitor.ReplacePath(".status.status.stateStartTime", mockgcpregistry.PlaceholderTimestamp)
 		visitor.ReplacePath(".status.statusHistory[].stateStartTime", mockgcpregistry.PlaceholderTimestamp)

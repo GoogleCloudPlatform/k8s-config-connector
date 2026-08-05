@@ -1,0 +1,405 @@
+4981c4981
+< GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json
+---
+> GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+5004c5004
+< POST https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters?alt=json
+---
+> POST https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters?%24alt=json%3Benum-encoding%3Dint
+5033c5033,5034
+<   }
+---
+>   },
+>   "projectId": "${projectId}"
+5055c5056
+<       "state": "PENDING",
+---
+>       "state": 1,
+5069c5070
+< GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json
+---
+> GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
+5094c5095
+<       "innerState": "AWAIT_PRE_DONE_TASKS_COMPLETION",
+---
+>       "innerState": "DONE",
+5136c5137
+<         "zoneUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
+---
+>         "zoneUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f"
+5144c5145
+<         "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n2-standard-2",
+---
+>         "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-2",
+5222c5223
+<         "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/c4-standard-2",
+---
+>         "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/c4-standard-2",
+5231c5232
+<       "goog-dataproc-cluster-create-timestamp": "1785951961",
+---
+>       "goog-dataproc-cluster-create-timestamp": "1785951556",
+5245c5246
+< GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json
+---
+> GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+5278c5279
+<       "zoneUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
+---
+>       "zoneUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f"
+5289c5290
+<       "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n2-standard-2",
+---
+>       "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-2",
+5292c5293
+<       "preemptibility": "NON_PREEMPTIBLE"
+---
+>       "preemptibility": 1
+5301c5302
+<         "dataproccluster-${uniqueId}-sw-s26q"
+---
+>         "dataproccluster-${uniqueId}-sw-h4g4"
+5304c5305
+<       "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/c4-standard-2",
+---
+>       "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/c4-standard-2",
+5306,5308c5307,5309
+<         "instanceGroupManagerName": "dataproc-goog-reserved-auto-secondary-kcvhaqsgo7y3m",
+<         "instanceGroupManagerUri": "projects/${projectId}/regions/us-central1/instanceGroupManagers/dataproc-goog-reserved-auto-secondary-kcvhaqsgo7y3m",
+<         "instanceTemplateName": "dataproc-goog-reserved-auto-secondary-kcvhaqsgo7y3m"
+---
+>         "instanceGroupManagerName": "dataproc-goog-reserved-auto-secondary-5sxjes5hbzgue",
+>         "instanceGroupManagerUri": "projects/${projectId}/regions/us-central1/instanceGroupManagers/dataproc-goog-reserved-auto-secondary-5sxjes5hbzgue",
+>         "instanceTemplateName": "dataproc-goog-reserved-auto-secondary-5sxjes5hbzgue"
+5312c5313
+<       "preemptibility": "PREEMPTIBLE",
+---
+>       "preemptibility": 2,
+5394c5395
+<       "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/c4-standard-2",
+---
+>       "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/c4-standard-2",
+5397c5398
+<       "preemptibility": "NON_PREEMPTIBLE"
+---
+>       "preemptibility": 1
+5403c5404
+<     "goog-dataproc-cluster-create-timestamp": "1785951961",
+---
+>     "goog-dataproc-cluster-create-timestamp": "1785951556",
+5410a5412,5457
+>   "metrics": {
+>     "hdfsMetrics": {
+>       "dfs-blocks-corrupt": "0",
+>       "dfs-blocks-default-replication-factor": "2",
+>       "dfs-blocks-missing": "0",
+>       "dfs-blocks-missing-repl-one": "0",
+>       "dfs-blocks-pending-deletion": "0",
+>       "dfs-blocks-under-replication": "0",
+>       "dfs-capacity-present": 12345,
+>       "dfs-capacity-remaining": 12345,
+>       "dfs-capacity-total": 12345,
+>       "dfs-capacity-used": 12345,
+>       "dfs-nodes-decommissioned": "0",
+>       "dfs-nodes-decommissioning": "0",
+>       "dfs-nodes-running": "2"
+>     },
+>     "yarnMetrics": {
+>       "yarn-apps-completed": "0",
+>       "yarn-apps-failed": "0",
+>       "yarn-apps-killed": "0",
+>       "yarn-apps-pending": "0",
+>       "yarn-apps-running": "0",
+>       "yarn-apps-submitted": "0",
+>       "yarn-containers-allocated": "0",
+>       "yarn-containers-pending": "0",
+>       "yarn-containers-reserved": "0",
+>       "yarn-memory-mb-allocated": "0",
+>       "yarn-memory-mb-available": "17208",
+>       "yarn-memory-mb-pending": "0",
+>       "yarn-memory-mb-reserved": "0",
+>       "yarn-memory-mb-total": "17208",
+>       "yarn-nodes-active": "3",
+>       "yarn-nodes-decommissioned": "0",
+>       "yarn-nodes-decommissioning": "0",
+>       "yarn-nodes-lost": "0",
+>       "yarn-nodes-new": "0",
+>       "yarn-nodes-rebooted": "0",
+>       "yarn-nodes-shutdown": "0",
+>       "yarn-nodes-unhealthy": "0",
+>       "yarn-vcores-allocated": "0",
+>       "yarn-vcores-available": "6",
+>       "yarn-vcores-pending": "0",
+>       "yarn-vcores-reserved": "0",
+>       "yarn-vcores-total": "6"
+>     }
+>   },
+5413c5460
+<     "state": "RUNNING",
+---
+>     "state": 2,
+5418c5465
+<       "state": "CREATING",
+---
+>       "state": 1,
+5426c5473
+< PATCH https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json&updateMask=labels
+---
+> PATCH https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=labels
+5429a5477,5478
+>   "clusterName": "dataproccluster-${uniqueId}",
+>   "clusterUuid": "00000000-0000-0000-0000-000000000001",
+5440c5489
+<       "zoneUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
+---
+>       "zoneUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f"
+5442d5490
+<     "initializationActions": [],
+5444d5491
+<       "accelerators": [],
+5450c5497,5500
+<       "machineTypeUri": "n2-standard-2",
+---
+>       "instanceNames": [
+>         "dataproccluster-${uniqueId}-m"
+>       ],
+>       "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-2",
+5453c5503
+<       "preemptibility": "NON_PREEMPTIBLE"
+---
+>       "preemptibility": 1
+5456d5505
+<       "accelerators": [],
+5462c5511,5520
+<       "machineTypeUri": "c4-standard-2",
+---
+>       "instanceNames": [
+>         "dataproccluster-${uniqueId}-sw-h4g4"
+>       ],
+>       "isPreemptible": true,
+>       "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/c4-standard-2",
+>       "managedGroupConfig": {
+>         "instanceGroupManagerName": "dataproc-goog-reserved-auto-secondary-5sxjes5hbzgue",
+>         "instanceGroupManagerUri": "projects/${projectId}/regions/us-central1/instanceGroupManagers/dataproc-goog-reserved-auto-secondary-5sxjes5hbzgue",
+>         "instanceTemplateName": "dataproc-goog-reserved-auto-secondary-5sxjes5hbzgue"
+>       },
+5465c5523,5526
+<       "preemptibility": "PREEMPTIBLE"
+---
+>       "preemptibility": 2,
+>       "startupConfig": {
+>         "requiredRegistrationFraction": 0.0001
+>       }
+5469d5529
+<       "optionalComponents": [],
+5536d5595
+<       "accelerators": [],
+5542c5601,5605
+<       "machineTypeUri": "c4-standard-2",
+---
+>       "instanceNames": [
+>         "dataproccluster-${uniqueId}-w-0",
+>         "dataproccluster-${uniqueId}-w-1"
+>       ],
+>       "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/c4-standard-2",
+5545c5608
+<       "preemptibility": "NON_PREEMPTIBLE"
+---
+>       "preemptibility": 1
+5552c5615,5672
+<   }
+---
+>   },
+>   "metrics": {
+>     "hdfsMetrics": {
+>       "dfs-blocks-corrupt": "0",
+>       "dfs-blocks-default-replication-factor": "2",
+>       "dfs-blocks-missing": "0",
+>       "dfs-blocks-missing-repl-one": "0",
+>       "dfs-blocks-pending-deletion": "0",
+>       "dfs-blocks-under-replication": "0",
+>       "dfs-capacity-present": 12345,
+>       "dfs-capacity-remaining": 12345,
+>       "dfs-capacity-total": 12345,
+>       "dfs-capacity-used": 12345,
+>       "dfs-nodes-decommissioned": "0",
+>       "dfs-nodes-decommissioning": "0",
+>       "dfs-nodes-running": "2"
+>     },
+>     "yarnMetrics": {
+>       "yarn-apps-completed": "0",
+>       "yarn-apps-failed": "0",
+>       "yarn-apps-killed": "0",
+>       "yarn-apps-pending": "0",
+>       "yarn-apps-running": "0",
+>       "yarn-apps-submitted": "0",
+>       "yarn-containers-allocated": "0",
+>       "yarn-containers-pending": "0",
+>       "yarn-containers-reserved": "0",
+>       "yarn-memory-mb-allocated": "0",
+>       "yarn-memory-mb-available": "17208",
+>       "yarn-memory-mb-pending": "0",
+>       "yarn-memory-mb-reserved": "0",
+>       "yarn-memory-mb-total": "17208",
+>       "yarn-nodes-active": "3",
+>       "yarn-nodes-decommissioned": "0",
+>       "yarn-nodes-decommissioning": "0",
+>       "yarn-nodes-lost": "0",
+>       "yarn-nodes-new": "0",
+>       "yarn-nodes-rebooted": "0",
+>       "yarn-nodes-shutdown": "0",
+>       "yarn-nodes-unhealthy": "0",
+>       "yarn-vcores-allocated": "0",
+>       "yarn-vcores-available": "6",
+>       "yarn-vcores-pending": "0",
+>       "yarn-vcores-reserved": "0",
+>       "yarn-vcores-total": "6"
+>     }
+>   },
+>   "projectId": "${projectId}",
+>   "status": {
+>     "state": 2,
+>     "stateStartTime": "2024-04-01T12:34:56.123456Z"
+>   },
+>   "statusHistory": [
+>     {
+>       "state": 1,
+>       "stateStartTime": "2024-04-01T12:34:56.123456Z"
+>     }
+>   ]
+5573c5693
+<       "state": "PENDING",
+---
+>       "state": 1,
+5582c5702
+< GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json
+---
+> GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
+5640c5760
+<         "zoneUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
+---
+>         "zoneUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f"
+5648c5768
+<         "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n2-standard-2",
+---
+>         "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-2",
+5660c5780
+<         "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/c4-standard-2",
+---
+>         "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/c4-standard-2",
+5662,5664c5782,5784
+<           "instanceGroupManagerName": "dataproc-goog-reserved-auto-secondary-kcvhaqsgo7y3m",
+<           "instanceGroupManagerUri": "projects/${projectId}/regions/us-central1/instanceGroupManagers/dataproc-goog-reserved-auto-secondary-kcvhaqsgo7y3m",
+<           "instanceTemplateName": "dataproc-goog-reserved-auto-secondary-kcvhaqsgo7y3m"
+---
+>           "instanceGroupManagerName": "dataproc-goog-reserved-auto-secondary-5sxjes5hbzgue",
+>           "instanceGroupManagerUri": "projects/${projectId}/regions/us-central1/instanceGroupManagers/dataproc-goog-reserved-auto-secondary-5sxjes5hbzgue",
+>           "instanceTemplateName": "dataproc-goog-reserved-auto-secondary-5sxjes5hbzgue"
+5746c5866
+<         "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/c4-standard-2",
+---
+>         "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/c4-standard-2",
+5755c5875
+<       "goog-dataproc-cluster-create-timestamp": "1785951961",
+---
+>       "goog-dataproc-cluster-create-timestamp": "1785951556",
+5769c5889
+< GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json
+---
+> GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+5802c5922
+<       "zoneUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
+---
+>       "zoneUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f"
+5813c5933
+<       "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n2-standard-2",
+---
+>       "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-2",
+5816c5936
+<       "preemptibility": "NON_PREEMPTIBLE"
+---
+>       "preemptibility": 1
+5825c5945
+<         "dataproccluster-${uniqueId}-sw-s26q"
+---
+>         "dataproccluster-${uniqueId}-sw-h4g4"
+5828c5948
+<       "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/c4-standard-2",
+---
+>       "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/c4-standard-2",
+5830,5832c5950,5952
+<         "instanceGroupManagerName": "dataproc-goog-reserved-auto-secondary-kcvhaqsgo7y3m",
+<         "instanceGroupManagerUri": "projects/${projectId}/regions/us-central1/instanceGroupManagers/dataproc-goog-reserved-auto-secondary-kcvhaqsgo7y3m",
+<         "instanceTemplateName": "dataproc-goog-reserved-auto-secondary-kcvhaqsgo7y3m-drv"
+---
+>         "instanceGroupManagerName": "dataproc-goog-reserved-auto-secondary-5sxjes5hbzgue",
+>         "instanceGroupManagerUri": "projects/${projectId}/regions/us-central1/instanceGroupManagers/dataproc-goog-reserved-auto-secondary-5sxjes5hbzgue",
+>         "instanceTemplateName": "dataproc-goog-reserved-auto-secondary-5sxjes5hbzgue-drv"
+5836c5956
+<       "preemptibility": "PREEMPTIBLE",
+---
+>       "preemptibility": 2,
+5918c6038
+<       "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/c4-standard-2",
+---
+>       "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/c4-standard-2",
+5921c6041
+<       "preemptibility": "NON_PREEMPTIBLE"
+---
+>       "preemptibility": 1
+5927c6047
+<     "goog-dataproc-cluster-create-timestamp": "1785951961",
+---
+>     "goog-dataproc-cluster-create-timestamp": "1785951556",
+5983c6103
+<     "state": "RUNNING",
+---
+>     "state": 2,
+5988c6108
+<       "state": "CREATING",
+---
+>       "state": 1,
+5992c6112
+<       "state": "RUNNING",
+---
+>       "state": 2,
+5996c6116
+<       "state": "UPDATING",
+---
+>       "state": 5,
+6004c6124
+< DELETE https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json
+---
+> DELETE https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+6026c6146
+<       "state": "PENDING",
+---
+>       "state": 1,
+6035c6155
+< GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json
+---
+> GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
+6078,6100d6197
+<   }
+< }
+< 
+< ---
+< 
+< GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json
+< Content-Type: application/json
+< 
+< 404 Not Found
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "error": {
+<     "code": 404,
+<     "message": "Not found: Cluster projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}",
+<     "status": "NOT_FOUND"

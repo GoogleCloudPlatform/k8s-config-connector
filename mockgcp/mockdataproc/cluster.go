@@ -223,6 +223,9 @@ func (s *clusterControllerServer) populateLabels(obj *pb.Cluster, name *clusterN
 
 func (s *clusterControllerServer) populateInstanceGroupConfig(config *pb.InstanceGroupConfig, name *clusterName, zone string, isMaster bool, isSecondary bool) *pb.InstanceGroupConfig {
 	if config == nil {
+		if isSecondary {
+			return nil
+		}
 		config = &pb.InstanceGroupConfig{}
 	}
 	if config.DiskConfig == nil {
@@ -244,7 +247,7 @@ func (s *clusterControllerServer) populateInstanceGroupConfig(config *pb.Instanc
 	}
 
 	if config.DiskConfig.BootDiskType == "" {
-		config.DiskConfig.BootDiskType = "hyperdisk-balanced"
+		config.DiskConfig.BootDiskType = "pd-standard"
 	}
 	if config.ImageUri == "" {
 		config.ImageUri = DefaultImageURI
@@ -255,12 +258,12 @@ func (s *clusterControllerServer) populateInstanceGroupConfig(config *pb.Instanc
 	if config.MinCpuPlatform == "" {
 		config.MinCpuPlatform = "AUTOMATIC"
 	}
-	if config.Preemptibility == pb.InstanceGroupConfig_PREEMPTIBILITY_UNSPECIFIED {
-		config.Preemptibility = pb.InstanceGroupConfig_NON_PREEMPTIBLE
-	}
 
 	if isMaster {
 		config.InstanceNames = []string{name.ClusterName + "-m"}
+		if config.Preemptibility == pb.InstanceGroupConfig_PREEMPTIBILITY_UNSPECIFIED {
+			config.Preemptibility = pb.InstanceGroupConfig_NON_PREEMPTIBLE
+		}
 	} else if isSecondary {
 		instanceNames := []string{}
 		for i := int32(0); i < config.NumInstances; i++ {
@@ -276,6 +279,9 @@ func (s *clusterControllerServer) populateInstanceGroupConfig(config *pb.Instanc
 			config.IsPreemptible = true
 			config.IsPreemptible = true
 		}
+		if config.Preemptibility == pb.InstanceGroupConfig_PREEMPTIBILITY_UNSPECIFIED {
+			config.Preemptibility = pb.InstanceGroupConfig_PREEMPTIBLE
+		}
 		if config.ManagedGroupConfig == nil {
 			config.ManagedGroupConfig = &pb.ManagedGroupConfig{}
 			uniqueID := strings.TrimPrefix(name.ClusterName, "dataproccluster-")
@@ -290,6 +296,9 @@ func (s *clusterControllerServer) populateInstanceGroupConfig(config *pb.Instanc
 			instanceNames = append(instanceNames, s)
 		}
 		config.InstanceNames = instanceNames
+		if config.Preemptibility == pb.InstanceGroupConfig_PREEMPTIBILITY_UNSPECIFIED {
+			config.Preemptibility = pb.InstanceGroupConfig_NON_PREEMPTIBLE
+		}
 	}
 	return config
 }
