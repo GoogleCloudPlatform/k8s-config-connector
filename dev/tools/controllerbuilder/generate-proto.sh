@@ -47,13 +47,9 @@ mkdir -p "${THIRD_PARTY}/"
 
 # Fast-path check: if versioned pb file already exists (and force is not set), exit immediately
 VERSIONED_OUTPUT_PATH="${OUTPUT_PATH%.pb}-${GOOGLEAPI_VERSION}.pb"
-if [[ "${SKIP_GENERATE_PROTOS:-0}" == "1" ]] && [ -f "${VERSIONED_OUTPUT_PATH}" ]; then
-    echo "Skipping generate-proto.sh as requested by SKIP_GENERATE_PROTOS=1 and output file exists: ${VERSIONED_OUTPUT_PATH}"
-    exit 0
-fi
 if [[ "${FORCE_GENERATE}" != "1" ]] && [ -f "${VERSIONED_OUTPUT_PATH}" ]; then
     if [ "${VERSIONED_OUTPUT_PATH}" != "${OUTPUT_PATH}" ]; then
-        cp "${VERSIONED_OUTPUT_PATH}" "${OUTPUT_PATH}.tmp.$$" && mv -f "${OUTPUT_PATH}.tmp.$$" "${OUTPUT_PATH}"
+        cp "${VERSIONED_OUTPUT_PATH}" "${OUTPUT_PATH}"
     fi
     exit 0
 fi
@@ -124,7 +120,7 @@ fi
 if [ -f "${VERSIONED_OUTPUT_PATH}" ]; then
     echo "Using cached googleapis pb file at ${VERSIONED_OUTPUT_PATH}"
     if [ "${VERSIONED_OUTPUT_PATH}" != "${OUTPUT_PATH}" ]; then
-        cp "${VERSIONED_OUTPUT_PATH}" "${OUTPUT_PATH}.tmp.$$" && mv -f "${OUTPUT_PATH}.tmp.$$" "${OUTPUT_PATH}"
+        cp "${VERSIONED_OUTPUT_PATH}" "${OUTPUT_PATH}"
     fi
     exit 0
 fi
@@ -185,5 +181,5 @@ protoc --include_imports --include_source_info \
     -o ${VERSIONED_OUTPUT_PATH} 2> >(grep -v "Import .* is unused" >&2)
 
 if [ "${VERSIONED_OUTPUT_PATH}" != "${OUTPUT_PATH}" ]; then
-    cp "${VERSIONED_OUTPUT_PATH}" "${OUTPUT_PATH}.tmp.$$" && mv -f "${OUTPUT_PATH}.tmp.$$" "${OUTPUT_PATH}"
+    cp "${VERSIONED_OUTPUT_PATH}" "${OUTPUT_PATH}"
 fi

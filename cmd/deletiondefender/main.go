@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// DeletionDefender is deployed by configconnector-operator during cluster mode reconciliation.
 package main
 
 import (

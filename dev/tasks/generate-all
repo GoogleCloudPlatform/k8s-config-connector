@@ -20,6 +20,6 @@ set -o pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}
 
-SKIP_GENERATE_CRDS_AT_END=1 dev/tasks/generate-types-and-mappers
+dev/tasks/generate-types-and-mappers
 # (broken?) dev/tasks/generate-licenses
 dev/tasks/generate-github-actions

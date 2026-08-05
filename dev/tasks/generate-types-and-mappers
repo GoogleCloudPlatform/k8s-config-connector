@@ -52,9 +52,9 @@ for f in $(find apis -name "generate.sh" | sort); do
 done
 
 # Now we generate CRDs
-if [[ -z "${SKIP_GENERATE_CRDS_AT_END:-}" ]]; then
-  unset SKIP_GENERATE_CRDS
-  unset SKIP_GENERATE_PROTOS
-  echo "Generating CRDs"
-  dev/tasks/generate-crds
-fi
+unset SKIP_GENERATE_CRDS
+unset SKIP_GENERATE_PROTOS
+echo "Cleaning Go build cache to prevent stale metadata compilation issues"
+go clean -cache
+echo "Generating CRDs"
+dev/tasks/generate-crds
