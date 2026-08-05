@@ -233,6 +233,9 @@ containerdConfigPatches:
 		"BAKE_ACTION=--push",
 		"SKIP_LICENSES=1",
 		"BUILD_CLI=0",
+		"BUILD_DELETION_DEFENDER=0",
+		"BUILD_UNMANAGED_DETECTOR=0",
+		"BUILD_GKE_ADDON=0",
 		"SKIP_IF_PRESENT=1",
 	)
 	buildCmd.Stdout = os.Stdout
