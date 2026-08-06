@@ -1,0 +1,173 @@
+1c1
+< POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/tensorboards?alt=json
+---
+> GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/tensorboards/${tensorboardID}?%24alt=json%3Benum-encoding%3Dint
+3a4,13
+> 404 Not Found
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+5,9c15,18
+<   "description": "Dashboard version 1",
+<   "displayName": "config-connector v1",
+<   "labels": {
+<     "cnrm-test": "true",
+<     "managed-by-cnrm": "true"
+---
+>   "error": {
+>     "code": 404,
+>     "message": "tensorboard \"projects/${projectNumber}/locations/us-central1/tensorboards/vertexaitensorboard${uniqueId}\" not found",
+>     "status": "NOT_FOUND"
+12a22,31
+> ---
+> 
+> POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/tensorboards?%24alt=json%3Benum-encoding%3Dint
+> Content-Type: application/json
+> 
+> {
+>   "description": "Dashboard version 1",
+>   "displayName": "config-connector v1"
+> }
+> 
+36c55
+< GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}/operations/${operationID}?alt=json
+---
+> GET https://us-central1-aiplatform.googleapis.com/ui/projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}/operations/${operationID}
+63,66d81
+<     "labels": {
+<       "cnrm-test": "true",
+<       "managed-by-cnrm": "true"
+<     },
+73c88
+< GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}?alt=json
+---
+> GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}?%24alt=json%3Benum-encoding%3Dint
+92,95d106
+<   "labels": {
+<     "cnrm-test": "true",
+<     "managed-by-cnrm": "true"
+<   },
+102c113
+< PATCH https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}?alt=json&updateMask=displayName%2Cdescription
+---
+> GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/tensorboards/${tensorboardID}?%24alt=json%3Benum-encoding%3Dint
+104a116,125
+> 404 Not Found
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+106,110c127,130
+<   "description": "Dashboard version 2",
+<   "displayName": "config-connector v2",
+<   "labels": {
+<     "cnrm-test": "true",
+<     "managed-by-cnrm": "true"
+---
+>   "error": {
+>     "code": 404,
+>     "message": "tensorboard \"projects/${projectNumber}/locations/us-central1/tensorboards/vertexaitensorboard${uniqueId}\" not found",
+>     "status": "NOT_FOUND"
+113a134,169
+> ---
+> 
+> POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/tensorboards?%24alt=json%3Benum-encoding%3Dint
+> Content-Type: application/json
+> 
+> {
+>   "description": "Dashboard version 2",
+>   "displayName": "config-connector v2"
+> }
+> 
+> 200 OK
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "metadata": {
+>     "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.CreateTensorboardOperationMetadata",
+>     "genericMetadata": {
+>       "createTime": "2024-04-01T12:34:56.123456Z",
+>       "updateTime": "2024-04-01T12:34:56.123456Z"
+>     }
+>   },
+>   "name": "projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}/operations/${operationID}"
+> }
+> 
+> ---
+> 
+> GET https://us-central1-aiplatform.googleapis.com/ui/projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}/operations/${operationID}
+> Content-Type: application/json
+> 
+127c183
+<     "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.UpdateTensorboardOperationMetadata",
+---
+>     "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.CreateTensorboardOperationMetadata",
+133c189
+<   "name": "projects/${projectNumber}/locations/us-central1/operations/${operationID}",
+---
+>   "name": "projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}/operations/${operationID}",
+136,137d191
+<     "blobStoragePathPrefix": "cloud-ai-platform-00000000-1111-2222-3333-444444444444",
+<     "createTime": "2024-04-01T12:34:56.123456Z",
+140,146c194
+<     "etag": "abcdef0123A=",
+<     "labels": {
+<       "cnrm-test": "true",
+<       "managed-by-cnrm": "true"
+<     },
+<     "name": "projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}",
+<     "updateTime": "2024-04-01T12:34:56.123456Z"
+---
+>     "name": "projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}"
+152c200
+< GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}?alt=json
+---
+> GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}?%24alt=json%3Benum-encoding%3Dint
+171,174d218
+<   "labels": {
+<     "cnrm-test": "true",
+<     "managed-by-cnrm": "true"
+<   },
+181c225
+< DELETE https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}?alt=json
+---
+> GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/tensorboards/${tensorboardID}?%24alt=json%3Benum-encoding%3Dint
+184c228
+< 200 OK
+---
+> 404 Not Found
+195,205c239,242
+<   "done": true,
+<   "metadata": {
+<     "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.DeleteOperationMetadata",
+<     "genericMetadata": {
+<       "createTime": "2024-04-01T12:34:56.123456Z",
+<       "updateTime": "2024-04-01T12:34:56.123456Z"
+<     }
+<   },
+<   "name": "projects/${projectNumber}/locations/us-central1/operations/${operationID}",
+<   "response": {
+<     "@type": "type.googleapis.com/google.protobuf.Empty"
+---
+>   "error": {
+>     "code": 404,
+>     "message": "tensorboard \"projects/${projectNumber}/locations/us-central1/tensorboards/vertexaitensorboard${uniqueId}\" not found",
+>     "status": "NOT_FOUND"

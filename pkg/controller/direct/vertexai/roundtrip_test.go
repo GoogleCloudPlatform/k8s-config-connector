@@ -66,3 +66,47 @@ func FuzzVertexAIMetadataStore(f *testing.F) {
 		}
 	})
 }
+
+func FuzzVertexAITensorboard(f *testing.F) {
+	f.Fuzz(func(t *testing.T, seed int64) {
+		randStream := rand.New(rand.NewSource(seed))
+
+		p1 := &pb.Tensorboard{}
+		fuzz.FillWithRandom(t, randStream, p1)
+
+		// Status fields & non-mapped fields
+		ignoredFields := sets.New(
+			".name",
+			".blob_storage_path_prefix",
+			".run_count",
+			".create_time",
+			".update_time",
+			".etag",
+			".labels",
+			".satisfies_pzs",
+			".satisfies_pzi",
+		)
+
+		clearFields := &fuzz.ClearFields{
+			Paths: ignoredFields,
+		}
+		fuzz.Visit("", p1.ProtoReflect(), nil, clearFields)
+
+		ctx := &direct.MapContext{}
+		k := VertexAITensorboardSpec_v1alpha1_FromProto(ctx, p1)
+		if ctx.Err() != nil {
+			t.Fatalf("error mapping from proto to krm: %v", ctx.Err())
+		}
+
+		p2 := VertexAITensorboardSpec_v1alpha1_ToProto(ctx, k)
+		if ctx.Err() != nil {
+			t.Fatalf("error mapping from krm to proto: %v", ctx.Err())
+		}
+
+		if diff := cmp.Diff(p1, p2, protocmp.Transform()); diff != "" {
+			t.Logf("p1 = %v", prototext.Format(p1))
+			t.Logf("p2 = %v", prototext.Format(p2))
+			t.Errorf("roundtrip failed; diff:\n%s", diff)
+		}
+	})
+}

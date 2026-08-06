@@ -4019,8 +4019,6 @@
 [missing_field] crd=vertexaistudies.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.studySpec.studyStoppingConfig.minimumRuntimeConstraint.endTime" is not set in unstructured objects
 [missing_field] crd=vertexaistudies.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.studySpec.studyStoppingConfig.minimumRuntimeConstraint.maxDuration" is not set in unstructured objects
 [missing_field] crd=vertexaistudies.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.studySpec.studyStoppingConfig.shouldStopAsap" is not set in unstructured objects
-[missing_field] crd=vertexaitensorboards.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.encryptionSpec.kmsKeyRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=vertexaitensorboards.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.isDefault" is not set in unstructured objects
 [missing_field] crd=vertexaitensorboards.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.encryptionSpec.kmsKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.inputDataConfig.annotationSchemaURI" is not set in unstructured objects

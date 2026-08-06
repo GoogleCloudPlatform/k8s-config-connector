@@ -115,6 +115,11 @@ func (obj *VertexAITensorboard) GetIdentity(ctx context.Context, reader client.R
 			return nil, err
 		}
 
+		// If spec.resourceID is empty, the ID is server-generated, so we return the statusIdentity
+		if obj.Spec.ResourceID == nil || *obj.Spec.ResourceID == "" {
+			return statusIdentity, nil
+		}
+
 		if statusIdentity.String() != specIdentity.String() {
 			return nil, fmt.Errorf("cannot change VertexAITensorboard identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
 		}
