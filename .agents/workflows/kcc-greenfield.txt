@@ -113,14 +113,9 @@ Open a GitHub issue to coordinate the implementation of the direct controller an
 *   **Labels:** `overseer`, `greenfield`, `step/controller` `overseer/review`
 *   **Body:**
     ```
-    Please follow the skills:
-    - .gemini/skills/kcc-direct-controller-implementer/SKILL.md
-    - .gemini/skills/kcc-direct-controller-logic-implementer/SKILL.md
-    to implement the direct controller and record/verify E2E fixtures for {kind}.
+    Please follow the skill `.gemini/skills/kcc-direct-controller-logic-greenfield-implementer/SKILL.md` to implement the direct controller and record/verify E2E fixtures for {kind}.
 
-    The direct controller must be implemented to manage reconciliation logic (Adapter: Find, Create, Update, Delete) and E2E fixtures must be created and recorded against real GCP to verify functionality.
-
-    If you find any shortcomings in these skills (that likely apply to other resources), you may update them. Also keep a journal of any less general observations etc. To avoid git merge conflicts, use a file under their respective journal/ folders, named after the kind or a similarly unique name.
+    If you find any shortcomings in this skill (that likely apply to other resources), you may update it. Also keep a journal of any less general observations etc. To avoid git merge conflicts, use a file under its respective journal/ folder, named after the kind or a similarly unique name.
 
     ## Review Instructions
     Use .gemini/skills/reviewgen-greenfield-controller/SKILL.md to conduct the review.
