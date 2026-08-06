@@ -47,6 +47,7 @@ func dataprocClusterFuzzer() fuzztesting.KRMFuzzer {
 
 	// Status fields
 	f.StatusFields.Insert(".config")
+	f.StatusFields.Insert(".config.instance_flexibility_policy.instance_selection_results")
 	f.StatusFields.Insert(".status")
 	f.StatusFields.Insert(".status_history")
 	f.StatusFields.Insert(".cluster_uuid")

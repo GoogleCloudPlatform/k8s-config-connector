@@ -886,7 +886,6 @@ type IdentityConfig struct {
 }
 */
 
-/* unreachable type InstanceFlexibilityPolicy
 // +kcc:proto=google.cloud.dataproc.v1.InstanceFlexibilityPolicy
 type InstanceFlexibilityPolicy struct {
 	// Optional. Defines how the Group selects the provisioning model to ensure
@@ -899,9 +898,7 @@ type InstanceFlexibilityPolicy struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.instance_selection_list
 	InstanceSelectionList []InstanceFlexibilityPolicy_InstanceSelection `json:"instanceSelectionList,omitempty"`
 }
-*/
 
-/* unreachable type InstanceFlexibilityPolicy_InstanceSelection
 // +kcc:proto=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.InstanceSelection
 type InstanceFlexibilityPolicy_InstanceSelection struct {
 	// Optional. Full machine-type names, e.g. "n1-standard-16".
@@ -916,7 +913,6 @@ type InstanceFlexibilityPolicy_InstanceSelection struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.InstanceSelection.rank
 	Rank *int32 `json:"rank,omitempty"`
 }
-*/
 
 /* unreachable type InstanceFlexibilityPolicy_InstanceSelectionResult
 // +kcc:proto=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.InstanceSelectionResult
@@ -924,7 +920,6 @@ type InstanceFlexibilityPolicy_InstanceSelectionResult struct {
 }
 */
 
-/* unreachable type InstanceFlexibilityPolicy_ProvisioningModelMix
 // +kcc:proto=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.ProvisioningModelMix
 type InstanceFlexibilityPolicy_ProvisioningModelMix struct {
 	// Optional. The base capacity that will always use Standard VMs to avoid
@@ -947,7 +942,6 @@ type InstanceFlexibilityPolicy_ProvisioningModelMix struct {
 	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceFlexibilityPolicy.ProvisioningModelMix.standard_capacity_percent_above_base
 	StandardCapacityPercentAboveBase *int32 `json:"standardCapacityPercentAboveBase,omitempty"`
 }
-*/
 
 /* found existing non-generated go type "InstanceGroupAutoscalingPolicyConfig", skipping
 
