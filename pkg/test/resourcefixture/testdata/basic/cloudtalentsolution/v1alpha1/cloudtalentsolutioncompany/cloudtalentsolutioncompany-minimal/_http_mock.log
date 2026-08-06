@@ -52,15 +52,15 @@ Content-Type: application/json
   "derivedInfo": {},
   "displayName": "Minimal Test Company",
   "externalId": "min-ext-id-${uniqueId}",
-  "name": "projects/${projectId}/tenants/mock-default-tenant-id/companies/ctsco-min-${uniqueId}"
+  "name": "projects/${projectId}/tenants/mock-default-tenant-id/companies/mock-company-id-min-ext-id-${uniqueId}"
 }
 
 ---
 
-GET https://jobs.googleapis.com/v4/projects/${projectId}/tenants/mock-default-tenant-id/companies/ctsco-min-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://jobs.googleapis.com/v4/projects/${projectId}/tenants/mock-default-tenant-id/companies/mock-company-id-min-ext-id-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-X-Goog-Request-Params: name=projects%2F${projectId}%2Ftenants%2Fmock-default-tenant-id%2Fcompanies%2Fctsco-min-${uniqueId}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Ftenants%2Fmock-default-tenant-id%2Fcompanies%2Fmock-company-id-min-ext-id-${uniqueId}
 
 200 OK
 Content-Type: application/json
@@ -69,15 +69,15 @@ Content-Type: application/json
   "derivedInfo": {},
   "displayName": "Minimal Test Company",
   "externalId": "min-ext-id-${uniqueId}",
-  "name": "projects/${projectId}/tenants/mock-default-tenant-id/companies/ctsco-min-${uniqueId}"
+  "name": "projects/${projectId}/tenants/mock-default-tenant-id/companies/mock-company-id-min-ext-id-${uniqueId}"
 }
 
 ---
 
-DELETE https://jobs.googleapis.com/v4/projects/${projectId}/tenants/mock-default-tenant-id/companies/ctsco-min-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+DELETE https://jobs.googleapis.com/v4/projects/${projectId}/tenants/mock-default-tenant-id/companies/mock-company-id-min-ext-id-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-X-Goog-Request-Params: name=projects%2F${projectId}%2Ftenants%2Fmock-default-tenant-id%2Fcompanies%2Fctsco-min-${uniqueId}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Ftenants%2Fmock-default-tenant-id%2Fcompanies%2Fmock-company-id-min-ext-id-${uniqueId}
 
 200 OK
 Content-Type: application/json

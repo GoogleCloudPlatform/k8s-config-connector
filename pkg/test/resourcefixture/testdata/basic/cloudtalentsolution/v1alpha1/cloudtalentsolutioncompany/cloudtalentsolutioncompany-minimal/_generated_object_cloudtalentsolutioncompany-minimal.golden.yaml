@@ -22,7 +22,7 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: projects/${projectId}/tenants/mock-default-tenant-id/companies/ctsco-min-${uniqueId}
+  externalRef: projects/${projectId}/tenants/mock-default-tenant-id/companies/mock-company-id-min-ext-id-${uniqueId}
   observedGeneration: 1
   observedState:
     derivedInfo: {}

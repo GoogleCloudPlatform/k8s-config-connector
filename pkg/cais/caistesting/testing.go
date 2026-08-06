@@ -83,6 +83,14 @@ func ReplacePlaceholdersInCAIS(caisYAMLStr string, dir string, createBytes []byt
 func NormalizeDynamicIDs(s string) string {
 	lines := strings.Split(s, "\n")
 	for i, line := range lines {
+		// Normalize CloudTalentSolutionCompany server-generated company IDs
+		if idx := strings.Index(line, "/companies/"); idx != -1 {
+			if strings.Contains(line, "max") {
+				lines[i] = line[:idx+len("/companies/")] + "ctsco-max-${uniqueId}"
+			} else if strings.Contains(line, "min") {
+				lines[i] = line[:idx+len("/companies/")] + "ctsco-min-${uniqueId}"
+			}
+		}
 		// Normalize ComputeFirewallPolicy IDs: locations/global/firewallPolicies/<firewallPolicyId>
 		// Since it has a server-generated ID, we normalize it to unknown to match static unit tests consistently.
 		if idx := strings.Index(line, "/firewallPolicies/"); idx != -1 {
