@@ -1,6 +1,5 @@
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -20,6 +19,56 @@ X-Xss-Protection: 0
   "kind": "compute#network",
   "name": "${networkID}",
   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "peerings": [
+    {
+      "autoCreateRoutes": true,
+      "connectionStatus": {
+        "trafficConfiguration": {
+          "exportCustomRoutesToPeer": true,
+          "exportSubnetRoutesWithPublicIpToPeer": true,
+          "importCustomRoutesFromPeer": true,
+          "importSubnetRoutesWithPublicIpFromPeer": true,
+          "stackType": "IPV4_ONLY"
+        },
+        "updateStrategy": "INDEPENDENT"
+      },
+      "exchangeSubnetRoutes": true,
+      "exportCustomRoutes": true,
+      "exportSubnetRoutesWithPublicIp": true,
+      "importCustomRoutes": true,
+      "importSubnetRoutesWithPublicIp": true,
+      "name": "filestore-peer-205697518936",
+      "network": "https://www.googleapis.com/compute/beta/projects/r839adf9e2adedea3p-tp/global/networks/${networkID}-2309458234058",
+      "stackType": "IPV4_ONLY",
+      "state": "ACTIVE",
+      "stateDetails": "[2026-08-05T19:40:31.806-07:00]: Connected.",
+      "updateStrategy": "INDEPENDENT"
+    },
+    {
+      "autoCreateRoutes": true,
+      "connectionStatus": {
+        "trafficConfiguration": {
+          "exportCustomRoutesToPeer": false,
+          "exportSubnetRoutesWithPublicIpToPeer": true,
+          "importCustomRoutesFromPeer": false,
+          "importSubnetRoutesWithPublicIpFromPeer": true,
+          "stackType": "IPV4_ONLY"
+        },
+        "updateStrategy": "INDEPENDENT"
+      },
+      "exchangeSubnetRoutes": true,
+      "exportCustomRoutes": false,
+      "exportSubnetRoutesWithPublicIp": true,
+      "importCustomRoutes": false,
+      "importSubnetRoutesWithPublicIp": true,
+      "name": "redis-peer-1035741069106",
+      "network": "https://www.googleapis.com/compute/beta/projects/n93e82bfd992400f1p-tp/global/networks/${networkID}-redis-e619463a-57d4-4053-a70d-b8c275ad4d49",
+      "stackType": "IPV4_ONLY",
+      "state": "ACTIVE",
+      "stateDetails": "[2026-06-19T01:48:22.502-07:00]: Connected.",
+      "updateStrategy": "INDEPENDENT"
+    }
+  ],
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "subnetworks": [
@@ -72,7 +121,6 @@ X-Xss-Protection: 0
 
 GET https://file.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -96,7 +144,6 @@ X-Xss-Protection: 0
 
 POST https://file.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-b/instances?alt=json&instanceId=filestoreinstance-${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 {
   "description": "Test instance",
@@ -148,7 +195,6 @@ X-Xss-Protection: 0
 
 GET https://file.googleapis.com/v1/projects/${projectId}/locations/us-central1-b/operations/${operationID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -208,7 +254,6 @@ X-Xss-Protection: 0
 
 GET https://file.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -255,7 +300,6 @@ X-Xss-Protection: 0
 
 PATCH https://file.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}?alt=json&updateMask=fileShares
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 {
   "description": "Test instance",
@@ -297,7 +341,6 @@ X-Xss-Protection: 0
 
 GET https://file.googleapis.com/v1/projects/${projectId}/locations/us-central1-b/operations/${operationID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -357,7 +400,6 @@ X-Xss-Protection: 0
 
 GET https://file.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -404,7 +446,6 @@ X-Xss-Protection: 0
 
 PATCH https://file.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}?alt=json&updateMask=description%2CfileShares%2Clabels
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 {
   "description": "Updated test instance",
@@ -458,7 +499,6 @@ X-Xss-Protection: 0
 
 GET https://file.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-b/operations/${operationID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -533,7 +573,6 @@ X-Xss-Protection: 0
 
 GET https://file.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -595,7 +634,6 @@ X-Xss-Protection: 0
 
 DELETE https://file.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -623,7 +661,6 @@ X-Xss-Protection: 0
 
 GET https://file.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-b/operations/${operationID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -655,7 +692,6 @@ X-Xss-Protection: 0
 
 GET https://file.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8

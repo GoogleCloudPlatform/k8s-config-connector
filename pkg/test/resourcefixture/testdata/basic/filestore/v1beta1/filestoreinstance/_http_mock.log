@@ -246,7 +246,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://file.googleapis.com/v1/projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2CfileShares%2Clabels%2Cnetworks
+PATCH https://file.googleapis.com/v1/projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2CfileShares%2Clabels
 Content-Type: application/json
 
 {
@@ -366,10 +366,14 @@ X-Xss-Protection: 0
     "name": "projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}",
     "networks": [
       {
+        "ipAddresses": [
+          "10.20.30.1"
+        ],
         "modes": [
           "MODE_IPV4"
         ],
-        "network": "${networkID}"
+        "network": "${networkID}",
+        "reservedIpRange": "10.20.30.0/24"
       }
     ],
     "state": "READY",
@@ -424,10 +428,14 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}",
   "networks": [
     {
+      "ipAddresses": [
+        "10.20.30.1"
+      ],
       "modes": [
         1
       ],
-      "network": "${networkID}"
+      "network": "${networkID}",
+      "reservedIpRange": "10.20.30.0/24"
     }
   ],
   "state": 2,

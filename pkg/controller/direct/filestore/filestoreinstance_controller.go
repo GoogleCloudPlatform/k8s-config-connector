@@ -250,6 +250,9 @@ func (a *filestoreInstanceAdapter) Update(ctx context.Context, updateOp *directb
 					if dn.ReservedIpRange == "" {
 						dn.ReservedIpRange = an.ReservedIpRange
 					}
+					if len(dn.IpAddresses) == 0 {
+						dn.IpAddresses = an.IpAddresses
+					}
 					if dn.ConnectMode == pb.NetworkConfig_CONNECT_MODE_UNSPECIFIED {
 						dn.ConnectMode = an.ConnectMode
 					}

@@ -1,45 +1,57 @@
-71c71
+44c44
+<       "stateDetails": "[2026-08-05T19:40:31.806-07:00]: Connected.",
+---
+>       "stateDetails": "[2026-07-22T16:45:47.834-07:00]: Connected.",
+122c122
 < GET https://file.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}?alt=json
 ---
 > GET https://file.googleapis.com/v1/projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-94c94
+145c145
 < POST https://file.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-b/instances?alt=json&instanceId=filestoreinstance-${uniqueId}
 ---
 > POST https://file.googleapis.com/v1/projects/${projectId}/locations/us-central1-b/instances?%24alt=json%3Benum-encoding%3Dint&instanceId=filestoreinstance-${uniqueId}
-101,103c101,102
+152,154c152,153
 <       "capacityGb": 2560,
 <       "name": "my_share",
 <       "nfsExportOptions": []
 ---
 >       "capacityGb": "2560",
 >       "name": "my_share"
-113c112
+164c163
 <         "MODE_IPV4"
 ---
 >         1
-118c117
+169c168
 <   "tier": "PREMIUM"
 ---
 >   "tier": 2
-145c144
+186c185
+<     "apiVersion": "v1beta1",
+---
+>     "apiVersion": "v1",
+196c195
 < GET https://file.googleapis.com/v1/projects/${projectId}/locations/us-central1-b/operations/${operationID}?alt=json
 ---
 > GET https://file.googleapis.com/v1/projects/${projectId}/locations/us-central1-b/operations/${operationID}
-204c203
+213c212
+<     "apiVersion": "v1beta1",
+---
+>     "apiVersion": "v1",
+255c254
 < GET https://file.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}?alt=json
 ---
 > GET https://file.googleapis.com/v1/projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-238c237
+289c288
 <         "MODE_IPV4"
 ---
 >         1
-244,245c243,244
+295,337c294,295
 <   "state": "READY",
 <   "tier": "PREMIUM"
----
->   "state": 2,
->   "tier": 2
-250,396c249
+< }
+< 
+< ---
+< 
 < PATCH https://file.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}?alt=json&updateMask=fileShares
 < Content-Type: application/json
 < 
@@ -77,10 +89,10 @@
 <     "verb": "update"
 <   },
 <   "name": "projects/${projectId}/locations/us-central1-b/operations/${operationID}"
-< }
-< 
-< ---
-< 
+---
+>   "state": 2,
+>   "tier": 2
+342,447c300
 < GET https://file.googleapis.com/v1/projects/${projectId}/locations/us-central1-b/operations/${operationID}?alt=json
 < Content-Type: application/json
 < 
@@ -189,11 +201,11 @@
 < PATCH https://file.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}?alt=json&updateMask=description%2CfileShares%2Clabels
 ---
 > PATCH https://file.googleapis.com/v1/projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2CfileShares%2Clabels
-403c256
+454c307
 <       "capacityGb": 4800,
 ---
 >       "capacityGb": "4800",
-407,409c260,262
+458,460c311,313
 <           "accessMode": "READ_ONLY",
 <           "anonGid": 65534,
 <           "anonUid": 65534,
@@ -201,11 +213,11 @@
 >           "accessMode": 1,
 >           "anonGid": "65534",
 >           "anonUid": "65534",
-413c266
+464c317
 <           "squashMode": "ROOT_SQUASH"
 ---
 >           "squashMode": 2
-422c275,285
+473c326,336
 <   }
 ---
 >   },
@@ -219,41 +231,57 @@
 >     }
 >   ],
 >   "tier": 2
-449c312
+490c353
+<     "apiVersion": "v1beta1",
+---
+>     "apiVersion": "v1",
+500c363
 < GET https://file.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-b/operations/${operationID}?alt=json
 ---
 > GET https://file.googleapis.com/v1/projects/${projectId}/locations/us-central1-b/operations/${operationID}
-523c386
+517c380
+<     "apiVersion": "v1beta1",
+---
+>     "apiVersion": "v1",
+574c437
 < GET https://file.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}?alt=json
 ---
 > GET https://file.googleapis.com/v1/projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-546c409
+597c460
 <           "accessMode": "READ_ONLY",
 ---
 >           "accessMode": 1,
-555c418
+606c469
 <           "squashMode": "ROOT_SQUASH"
 ---
 >           "squashMode": 2
-572c435
+623c486
 <         "MODE_IPV4"
 ---
 >         1
-578,579c441,442
+629,630c492,493
 <   "state": "READY",
 <   "tier": "PREMIUM"
 ---
 >   "state": 2,
 >   "tier": 2
-584c447
+635c498
 < DELETE https://file.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}?alt=json
 ---
 > DELETE https://file.googleapis.com/v1/projects/${projectId}/locations/us-central1-b/instances/filestoreinstance-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-611c474
+652c515
+<     "apiVersion": "v1beta1",
+---
+>     "apiVersion": "v1",
+662c525
 < GET https://file.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-b/operations/${operationID}?alt=json
 ---
 > GET https://file.googleapis.com/v1/projects/${projectId}/locations/us-central1-b/operations/${operationID}
-637,659d499
+679c542
+<     "apiVersion": "v1beta1",
+---
+>     "apiVersion": "v1",
+688,710d550
 <   }
 < }
 < 
