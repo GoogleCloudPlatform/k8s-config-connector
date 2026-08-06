@@ -37,5 +37,14 @@ ${CONTROLLERBUILDER} generate-types \
   --include-skipped-output \
   --resource GrafeasNote:Note
 
+${CONTROLLERBUILDER} generate-mapper \
+  --service grafeas.v1 \
+  --api-version grafeas.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output
+
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
+
+if [ -d "${REPO_ROOT}/pkg/controller/direct/grafeas" ]; then
+  go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w pkg/controller/direct/grafeas/
+fi
