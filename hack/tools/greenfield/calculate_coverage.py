@@ -166,6 +166,8 @@ def match_resources(gcp_resources, kcc_resources):
     kcc_kind_aliases = {
         "aiplatform/EntityType": ["VertexAIFeaturestoreEntityType"],
         "aiplatform/Feature": ["VertexAIFeaturestoreEntityTypeFeature"],
+        "aiplatform/Index": ["VertexAIIndex"],
+        "aiplatform/IndexEndpoint": ["VertexAIIndexEndpoint"],
     }
 
     for gcp_type, info in gcp_resources.items():
@@ -377,6 +379,8 @@ def main():
     kcc_kind_aliases = {
         "aiplatform/EntityType": ["VertexAIFeaturestoreEntityType"],
         "aiplatform/Feature": ["VertexAIFeaturestoreEntityTypeFeature"],
+        "aiplatform/Index": ["VertexAIIndex"],
+        "aiplatform/IndexEndpoint": ["VertexAIIndexEndpoint"],
     }
 
     for key, info in gcp_resources.items():
