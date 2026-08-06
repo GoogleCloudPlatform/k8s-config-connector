@@ -1,0 +1,466 @@
+GET https://hypercomputecluster.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/hccmax?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fclusters%2Fhccmax
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/clusters/hccmax' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://hypercomputecluster.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters?%24alt=json%3Benum-encoding%3Dint&clusterId=hccmax
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "computeResources": {
+    "comp-resource-1": {
+      "config": {
+        "newOnDemandInstances": {
+          "machineType": "n2-standard-4",
+          "zone": "us-central1-a"
+        }
+      }
+    }
+  },
+  "description": "Maximal Hypercompute Cluster Description",
+  "labels": {
+    "foo": "bar"
+  },
+  "name": "projects/${projectId}/locations/us-central1/clusters/hccmax",
+  "networkResources": {
+    "net-resource-1": {
+      "config": {
+        "existingNetwork": {
+          "network": "projects/${projectId}/global/networks/default",
+          "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
+        }
+      }
+    }
+  },
+  "orchestrator": {
+    "slurm": {
+      "defaultPartition": "partition1",
+      "loginNodes": {
+        "count": "1",
+        "enableOsLogin": true,
+        "machineType": "e2-standard-4",
+        "zone": "us-central1-a"
+      },
+      "nodeSets": [
+        {
+          "computeId": "comp-resource-1",
+          "computeInstance": {
+            "bootDisk": {
+              "sizeGb": "100",
+              "type": "projects/${projectId}/zones/us-central1-a/diskTypes/pd-standard"
+            },
+            "labels": {
+              "nodeset-label": "test"
+            },
+            "startupScript": "#!/bin/bash\necho hello"
+          },
+          "id": "nodeset1",
+          "staticNodeCount": "1"
+        }
+      ],
+      "partitions": [
+        {
+          "id": "partition1"
+        }
+      ]
+    }
+  }
+}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "The request was invalid: The partition \"partition1\" is invalid because its node_set_ids list is empty. Each partition must be associated with at least one node set. Add one or more valid node set IDs.",
+    "status": "INVALID_ARGUMENT"
+  }
+}
+
+---
+
+GET https://hypercomputecluster.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/hccmax?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fclusters%2Fhccmax
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/clusters/hccmax' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://hypercomputecluster.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters?%24alt=json%3Benum-encoding%3Dint&clusterId=hccmax
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "computeResources": {
+    "comp-resource-1": {
+      "config": {
+        "newOnDemandInstances": {
+          "machineType": "n2-standard-4",
+          "zone": "us-central1-a"
+        }
+      }
+    }
+  },
+  "description": "Maximal Hypercompute Cluster Description",
+  "labels": {
+    "foo": "bar"
+  },
+  "name": "projects/${projectId}/locations/us-central1/clusters/hccmax",
+  "networkResources": {
+    "net-resource-1": {
+      "config": {
+        "existingNetwork": {
+          "network": "projects/${projectId}/global/networks/default",
+          "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
+        }
+      }
+    }
+  },
+  "orchestrator": {
+    "slurm": {
+      "defaultPartition": "partition1",
+      "loginNodes": {
+        "count": "1",
+        "enableOsLogin": true,
+        "machineType": "e2-standard-4",
+        "zone": "us-central1-a"
+      },
+      "nodeSets": [
+        {
+          "computeId": "comp-resource-1",
+          "computeInstance": {
+            "bootDisk": {
+              "sizeGb": "100",
+              "type": "projects/${projectId}/zones/us-central1-a/diskTypes/pd-standard"
+            },
+            "labels": {
+              "nodeset-label": "test"
+            },
+            "startupScript": "#!/bin/bash\necho hello"
+          },
+          "id": "nodeset1",
+          "staticNodeCount": "1"
+        }
+      ],
+      "partitions": [
+        {
+          "id": "partition1"
+        }
+      ]
+    }
+  }
+}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "The request was invalid: The partition \"partition1\" is invalid because its node_set_ids list is empty. Each partition must be associated with at least one node set. Add one or more valid node set IDs.",
+    "status": "INVALID_ARGUMENT"
+  }
+}
+
+---
+
+GET https://hypercomputecluster.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/hccmax?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fclusters%2Fhccmax
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/clusters/hccmax' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://hypercomputecluster.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters?%24alt=json%3Benum-encoding%3Dint&clusterId=hccmax
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "computeResources": {
+    "comp-resource-1": {
+      "config": {
+        "newOnDemandInstances": {
+          "machineType": "n2-standard-4",
+          "zone": "us-central1-a"
+        }
+      }
+    }
+  },
+  "description": "Updated Maximal Hypercompute Cluster Description",
+  "labels": {
+    "foo": "bar-updated"
+  },
+  "name": "projects/${projectId}/locations/us-central1/clusters/hccmax",
+  "networkResources": {
+    "net-resource-1": {
+      "config": {
+        "existingNetwork": {
+          "network": "projects/${projectId}/global/networks/default",
+          "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
+        }
+      }
+    }
+  },
+  "orchestrator": {
+    "slurm": {
+      "defaultPartition": "partition1",
+      "loginNodes": {
+        "count": "1",
+        "enableOsLogin": true,
+        "machineType": "e2-standard-4",
+        "zone": "us-central1-a"
+      },
+      "nodeSets": [
+        {
+          "computeId": "comp-resource-1",
+          "computeInstance": {
+            "bootDisk": {
+              "sizeGb": "100",
+              "type": "projects/${projectId}/zones/us-central1-a/diskTypes/pd-standard"
+            },
+            "labels": {
+              "nodeset-label": "test-updated"
+            },
+            "startupScript": "#!/bin/bash\necho hello"
+          },
+          "id": "nodeset1",
+          "staticNodeCount": "1"
+        }
+      ],
+      "partitions": [
+        {
+          "id": "partition1"
+        }
+      ]
+    }
+  }
+}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "The request was invalid: The partition \"partition1\" is invalid because its node_set_ids list is empty. Each partition must be associated with at least one node set. Add one or more valid node set IDs.",
+    "status": "INVALID_ARGUMENT"
+  }
+}
+
+---
+
+GET https://hypercomputecluster.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/hccmax?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fclusters%2Fhccmax
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/clusters/hccmax' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://hypercomputecluster.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters?%24alt=json%3Benum-encoding%3Dint&clusterId=hccmax
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "computeResources": {
+    "comp-resource-1": {
+      "config": {
+        "newOnDemandInstances": {
+          "machineType": "n2-standard-4",
+          "zone": "us-central1-a"
+        }
+      }
+    }
+  },
+  "description": "Updated Maximal Hypercompute Cluster Description",
+  "labels": {
+    "foo": "bar-updated"
+  },
+  "name": "projects/${projectId}/locations/us-central1/clusters/hccmax",
+  "networkResources": {
+    "net-resource-1": {
+      "config": {
+        "existingNetwork": {
+          "network": "projects/${projectId}/global/networks/default",
+          "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
+        }
+      }
+    }
+  },
+  "orchestrator": {
+    "slurm": {
+      "defaultPartition": "partition1",
+      "loginNodes": {
+        "count": "1",
+        "enableOsLogin": true,
+        "machineType": "e2-standard-4",
+        "zone": "us-central1-a"
+      },
+      "nodeSets": [
+        {
+          "computeId": "comp-resource-1",
+          "computeInstance": {
+            "bootDisk": {
+              "sizeGb": "100",
+              "type": "projects/${projectId}/zones/us-central1-a/diskTypes/pd-standard"
+            },
+            "labels": {
+              "nodeset-label": "test-updated"
+            },
+            "startupScript": "#!/bin/bash\necho hello"
+          },
+          "id": "nodeset1",
+          "staticNodeCount": "1"
+        }
+      ],
+      "partitions": [
+        {
+          "id": "partition1"
+        }
+      ]
+    }
+  }
+}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "The request was invalid: The partition \"partition1\" is invalid because its node_set_ids list is empty. Each partition must be associated with at least one node set. Add one or more valid node set IDs.",
+    "status": "INVALID_ARGUMENT"
+  }
+}
+
+---
+
+GET https://hypercomputecluster.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/hccmax?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fclusters%2Fhccmax
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/clusters/hccmax' was not found",
+    "status": "NOT_FOUND"
+  }
+}

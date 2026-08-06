@@ -207,6 +207,9 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//firestore.googleapis.com/projects/{}/databases/{}/collectionGroups/{}":            true,
 		"//firestore.googleapis.com/projects/{}/databases/{}/collectionGroups/{}/indexes/{}": true,
 
+		// Hypercompute Cluster
+		"//hypercomputecluster.googleapis.com/projects/{}/locations/{}/clusters/{}": true,
+
 		// IAM
 		"//iam.googleapis.com/policies/{}/denypolicies/{}": true,
 

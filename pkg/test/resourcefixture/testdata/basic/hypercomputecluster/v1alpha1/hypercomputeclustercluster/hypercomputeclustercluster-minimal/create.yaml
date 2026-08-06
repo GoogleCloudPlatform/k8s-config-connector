@@ -1,0 +1,26 @@
+apiVersion: hypercomputecluster.cnrm.cloud.google.com/v1alpha1
+kind: HypercomputeClusterCluster
+metadata:
+  name: hcc-minimal-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  resourceID: hccmin
+  description: "Minimal Hypercompute Cluster"
+  networkResources:
+    net-resource-1:
+      config:
+        existingNetwork:
+          networkRef:
+            external: projects/${projectId}/global/networks/default
+          subnetworkRef:
+            external: projects/${projectId}/regions/us-central1/subnetworks/default
+  orchestrator:
+    slurm:
+      loginNodes:
+        count: 1
+        machineType: e2-standard-4
+        zone: us-central1-a
+        enableOSLogin: true
+        enablePublicIPs: true

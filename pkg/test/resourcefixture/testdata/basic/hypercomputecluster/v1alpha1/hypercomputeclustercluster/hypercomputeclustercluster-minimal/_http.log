@@ -1,0 +1,155 @@
+GET https://hypercomputecluster.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/hccmin?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fclusters%2Fhccmin
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Minimal Hypercompute Cluster",
+  "name": "projects/${projectId}/locations/us-central1/clusters/hccmin",
+  "networkResources": {
+    "net-resource-1": {
+      "config": {
+        "existingNetwork": {
+          "network": "projects/${projectId}/global/networks/default",
+          "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
+        }
+      },
+      "network": {
+        "network": "projects/${projectId}/global/networks/default",
+        "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
+      }
+    }
+  },
+  "orchestrator": {
+    "slurm": {
+      "loginNodes": {
+        "count": "1",
+        "enableOsLogin": true,
+        "instances": [
+          {
+            "instance": "projects/${projectId}/zones/us-central1-a/instances/hccmin-login-001"
+          }
+        ],
+        "machineType": "e2-standard-4",
+        "zone": "us-central1-a"
+      }
+    }
+  },
+  "reconciling": true,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://hypercomputecluster.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/hccmin?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fclusters%2Fhccmin
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.hypercomputecluster.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "progress": {
+      "steps": [
+        {
+          "deleteOrchestrator": {},
+          "state": 2
+        },
+        {
+          "deleteNodeset": {},
+          "state": 3
+        },
+        {
+          "deletePartition": {},
+          "state": 3
+        },
+        {
+          "deleteLoginNode": {},
+          "state": 3
+        }
+      ]
+    },
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/clusters/hccmin",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://hypercomputecluster.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.hypercomputecluster.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "progress": {
+      "steps": [
+        {
+          "deleteOrchestrator": {},
+          "state": "DONE"
+        },
+        {
+          "deleteNodeset": {},
+          "state": "DONE"
+        },
+        {
+          "deletePartition": {},
+          "state": "DONE"
+        },
+        {
+          "deleteLoginNode": {},
+          "state": "DONE"
+        }
+      ]
+    },
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/clusters/hccmin",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}

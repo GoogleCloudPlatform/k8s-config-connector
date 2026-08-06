@@ -271,7 +271,7 @@ type SlurmPartition struct {
 	// Required. IDs of the nodesets that make up this partition. Values must
 	//  match SlurmNodeSet.id.
 	// +kcc:proto:field=google.cloud.hypercomputecluster.v1.SlurmPartition.node_set_ids
-	NodeSetIDs []string `json:"nodeSetIDs,omitempty"`
+	NodeSetIds []string `json:"nodeSetIds,omitempty"`
 }
 
 // +kcc:observedstate:proto=google.cloud.hypercomputecluster.v1.SlurmLoginNodes
