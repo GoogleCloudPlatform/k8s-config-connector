@@ -294,7 +294,33 @@ func (a *engineAdapter) updateStatus(ctx context.Context, op directbase.Operatio
 }
 
 func (a *engineAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
-	return nil, fmt.Errorf("export is not implemented for DiscoveryEngineEngine")
+	log := klog.FromContext(ctx)
+
+	if a.actual == nil {
+		return nil, fmt.Errorf("Find() not called")
+	}
+
+	obj := &krm.DiscoveryEngineEngine{}
+	mapCtx := &direct.MapContext{}
+	obj.Spec = direct.ValueOf(DiscoveryEngineEngineSpec_FromProto(mapCtx, a.actual))
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+	obj.Spec.ProjectRef = &refs.ProjectRef{External: "projects/" + a.id.Parent().ProjectID}
+	obj.Spec.Location = a.id.Parent().Location
+	obj.Spec.Collection = "default_collection"
+
+	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
+	if err != nil {
+		return nil, err
+	}
+
+	u := &unstructured.Unstructured{Object: uObj}
+	u.SetName(a.id.ID())
+	u.SetGroupVersionKind(krm.DiscoveryEngineEngineGVK)
+
+	log.Info("exported object", "obj", u, "gvk", u.GroupVersionKind())
+	return u, nil
 }
 
 // Delete implements the Adapter interface.

@@ -15,6 +15,9 @@
 package discoveryengine
 
 import (
+	"fmt"
+	"strings"
+
 	pb "cloud.google.com/go/discoveryengine/apiv1/discoveryenginepb"
 	discoveryenginepb "cloud.google.com/go/discoveryengine/apiv1beta/discoveryenginepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/discoveryengine/v1alpha1"
@@ -67,8 +70,21 @@ func DiscoveryEngineEngineSpec_FromProto(mapCtx *direct.MapContext, in *pb.Engin
 	out.CommonConfig = Engine_CommonConfig_v1alpha1_FromProto(mapCtx, in.GetCommonConfig())
 	out.DisableAnalytics = direct.LazyPtr(in.GetDisableAnalytics())
 
+	var parentProject, parentLocation, parentCollection string
+	if in.Name != "" {
+		if id, err := krm.ParseDiscoveryEngineEngineExternal(in.Name); err == nil {
+			parentProject = id.ProjectID
+			parentLocation = id.Location
+			parentCollection = id.Collection
+		}
+	}
+
 	for _, dataStoreID := range in.DataStoreIds {
-		out.DataStoreRefs = append(out.DataStoreRefs, &krm.DiscoveryEngineDataStoreRef{External: dataStoreID})
+		external := dataStoreID
+		if parentProject != "" && parentLocation != "" && parentCollection != "" && !strings.Contains(dataStoreID, "/") {
+			external = fmt.Sprintf("projects/%s/locations/%s/collections/%s/dataStores/%s", parentProject, parentLocation, parentCollection, dataStoreID)
+		}
+		out.DataStoreRefs = append(out.DataStoreRefs, &krm.DiscoveryEngineDataStoreRef{External: external})
 	}
 
 	return out
@@ -94,7 +110,18 @@ func DiscoveryEngineEngineSpec_ToProto(mapCtx *direct.MapContext, in *krm.Discov
 	out.DisableAnalytics = direct.ValueOf(in.DisableAnalytics)
 
 	for _, dataStoreRef := range in.DataStoreRefs {
-		out.DataStoreIds = append(out.DataStoreIds, dataStoreRef.External)
+		if dataStoreRef == nil {
+			continue
+		}
+		id := dataStoreRef.External
+		if parsed, err := krm.ParseDiscoveryEngineDataStoreExternal(id); err == nil {
+			id = parsed.DataStore
+		} else {
+			if parts := strings.Split(id, "/"); len(parts) > 0 {
+				id = parts[len(parts)-1]
+			}
+		}
+		out.DataStoreIds = append(out.DataStoreIds, id)
 	}
 
 	return out

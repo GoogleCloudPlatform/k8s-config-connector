@@ -174,6 +174,10 @@ func (p *DiscoveryEngineEngineID) String() string {
 // 	return parent.String() + "/engines/" + resourceID
 // }
 
+func ParseDiscoveryEngineEngineExternal(external string) (*DiscoveryEngineEngineID, error) {
+	return parseDiscoveryEngineEngineExternal(external)
+}
+
 func parseDiscoveryEngineEngineExternal(external string) (*DiscoveryEngineEngineID, error) {
 	s := strings.TrimPrefix(external, "//discoveryengine.googleapis.com/")
 	s = strings.TrimPrefix(s, "/")
