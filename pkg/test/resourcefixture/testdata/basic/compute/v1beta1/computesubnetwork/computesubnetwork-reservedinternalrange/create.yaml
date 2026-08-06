@@ -27,4 +27,4 @@ spec:
     - rangeName: secondary-range
       ipCidrRange: 10.232.0.0/24
       reservedInternalRangeRef:
-        external: projects/mock-project/locations/global/internalRanges/internalrange-sec-${uniqueId}
+        external: projects/${projectId}/locations/global/internalRanges/internalrange-sec-${uniqueId}

@@ -71,6 +71,9 @@ func (r *internalRanges) CreateProjectsLocationsInternalRange(ctx context.Contex
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
+	if obj.Network != "" {
+		obj.Network = expandNetworkLink(obj.Network)
+	}
 	if err := r.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
@@ -130,7 +133,7 @@ func (r *internalRanges) PatchProjectsLocationsInternalRange(ctx context.Context
 			case "description":
 				obj.Description = patch.Description
 			case "network":
-				obj.Network = patch.Network
+				obj.Network = expandNetworkLink(patch.Network)
 			case "peering":
 				obj.Peering = patch.Peering
 			case "target_cidr_range":
@@ -223,4 +226,20 @@ func (r *internalRanges) parseInternalRangeName(name string) (*internalRangeName
 	}
 
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+}
+
+func expandNetworkLink(network string) string {
+	if network == "" {
+		return ""
+	}
+	if strings.HasPrefix(network, "https://") {
+		return network
+	}
+	trimmed := strings.TrimPrefix(network, "networkconnectivity.googleapis.com/")
+	trimmed = strings.TrimPrefix(trimmed, "networkconnectivity.googleapis.com/v1/")
+	trimmed = strings.TrimPrefix(trimmed, "/")
+	if strings.HasPrefix(trimmed, "projects/") {
+		return "https://www.googleapis.com/compute/v1/" + trimmed
+	}
+	return network
 }
