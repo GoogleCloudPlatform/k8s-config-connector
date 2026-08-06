@@ -107,10 +107,16 @@ var (
 		Kind:    reflect.TypeOf(VertexAIIndexEndpoint{}).Name(),
 	}
 
-	VertexAITensorboardGVK = schema.GroupVersionKind{
+	VertexAITensorBoardGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(VertexAITensorboard{}).Name(),
+		Kind:    reflect.TypeOf(VertexAITensorBoard{}).Name(),
+	}
+
+	VertexAITensorboardExperimentGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(VertexAITensorboardExperiment{}).Name(),
 	}
 
 	vertexaiAPIVersion = SchemeGroupVersion.String()

@@ -257,8 +257,8 @@ func SupportsStateIntoSpecMerge(gvk schema.GroupVersionKind) bool {
 
 func OutputOnlyFieldsAreUnderObservedState(gvk schema.GroupVersionKind) bool {
 	if gvk.Version == k8s.KCCAPIVersionV1Alpha1 {
-		// VertexAITensorboard has migrated to direct KRM types with observedState but is still reconciled by the TF controller.
-		if gvk.Kind == "VertexAITensorboard" {
+		// VertexAITensorBoard has migrated to direct KRM types with observedState but is still reconciled by the TF controller.
+		if gvk.Kind == "VertexAITensorBoard" {
 			return true
 		}
 		return false

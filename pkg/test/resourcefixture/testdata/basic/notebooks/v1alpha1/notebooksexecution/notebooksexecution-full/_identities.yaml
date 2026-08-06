@@ -6,7 +6,7 @@
   version: v1beta1
 - caisURL: unknown
   group: vertexai.cnrm.cloud.google.com
-  kind: VertexAITensorboard
+  kind: VertexAITensorBoard
   name: n-exec-tb-${uniqueId}
   namespace: ${uniqueId}
   version: v1alpha1

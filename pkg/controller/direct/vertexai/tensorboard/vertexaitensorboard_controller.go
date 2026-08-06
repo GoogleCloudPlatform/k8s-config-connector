@@ -40,7 +40,7 @@ import (
 )
 
 func init() {
-	registry.RegisterModel(krm.VertexAITensorboardGVK, NewModel)
+	registry.RegisterModel(krm.VertexAITensorBoardGVK, NewModel)
 }
 
 func NewModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
@@ -71,7 +71,7 @@ func (m *model) client(ctx context.Context, location string) (*gcp.TensorboardCl
 func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
 	u := op.GetUnstructured()
 	reader := op.Reader
-	obj := &krm.VertexAITensorboard{}
+	obj := &krm.VertexAITensorBoard{}
 	if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, &obj); err != nil {
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
@@ -80,7 +80,7 @@ func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForO
 	if err != nil {
 		return nil, err
 	}
-	vertexaiID := id.(*krm.VertexAITensorboardIdentity)
+	vertexaiID := id.(*krm.VertexAITensorBoardIdentity)
 
 	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
 		return nil, fmt.Errorf("normalizing references: %w", err)
@@ -93,7 +93,7 @@ func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForO
 	}
 
 	mapCtx := &direct.MapContext{}
-	desired := VertexAITensorboardSpec_ToProto(mapCtx, &obj.Spec)
+	desired := VertexAITensorBoardSpec_ToProto(mapCtx, &obj.Spec)
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
@@ -111,7 +111,7 @@ func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapt
 }
 
 type Adapter struct {
-	id        *krm.VertexAITensorboardIdentity
+	id        *krm.VertexAITensorBoardIdentity
 	gcpClient *gcp.TensorboardClient
 	desired   *pb.Tensorboard
 	actual    *pb.Tensorboard
@@ -121,7 +121,7 @@ var _ directbase.Adapter = &Adapter{}
 
 func (a *Adapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("getting VertexAITensorboard", "name", a.id)
+	log.V(2).Info("getting VertexAITensorBoard", "name", a.id)
 
 	req := &pb.GetTensorboardRequest{
 		Name: a.id.String(),
@@ -131,7 +131,7 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 		if direct.IsNotFound(err) || direct.IsBadRequest(err) {
 			return false, nil
 		}
-		return false, fmt.Errorf("getting VertexAITensorboard %q: %w", a.id, err)
+		return false, fmt.Errorf("getting VertexAITensorBoard %q: %w", a.id, err)
 	}
 
 	a.actual = resp
@@ -140,7 +140,7 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 
 func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("creating VertexAITensorboard", "name", a.id)
+	log.V(2).Info("creating VertexAITensorBoard", "name", a.id)
 
 	req := &pb.CreateTensorboardRequest{
 		Parent:      a.id.ParentString(),
@@ -148,22 +148,22 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	}
 	op, err := a.gcpClient.CreateTensorboard(ctx, req)
 	if err != nil {
-		return fmt.Errorf("creating VertexAITensorboard %s: %w", a.id, err)
+		return fmt.Errorf("creating VertexAITensorBoard %s: %w", a.id, err)
 	}
 
 	created, err := op.Wait(ctx)
 	if err != nil {
-		return fmt.Errorf("waiting creation VertexAITensorboard %s: %w", a.id, err)
+		return fmt.Errorf("waiting creation VertexAITensorBoard %s: %w", a.id, err)
 	}
-	log.V(2).Info("successfully created VertexAITensorboard", "name", a.id)
+	log.V(2).Info("successfully created VertexAITensorBoard", "name", a.id)
 
 	if err := a.id.FromExternal(created.GetName()); err != nil {
-		return fmt.Errorf("parsing created VertexAITensorboard name: %w", err)
+		return fmt.Errorf("parsing created VertexAITensorBoard name: %w", err)
 	}
 
 	actual, err := a.gcpClient.GetTensorboard(ctx, &pb.GetTensorboardRequest{Name: a.id.String()})
 	if err != nil {
-		return fmt.Errorf("getting VertexAITensorboard after creation %s: %w", a.id, err)
+		return fmt.Errorf("getting VertexAITensorBoard after creation %s: %w", a.id, err)
 	}
 
 	return a.updateStatus(ctx, createOp, actual)
@@ -171,7 +171,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 
 func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("updating VertexAITensorboard", "name", a.id)
+	log.V(2).Info("updating VertexAITensorBoard", "name", a.id)
 
 	diffs, updateMask, err := compareResource(ctx, a.actual, a.desired)
 	if err != nil {
@@ -195,17 +195,17 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	}
 	op, err := a.gcpClient.UpdateTensorboard(ctx, req)
 	if err != nil {
-		return fmt.Errorf("updating VertexAITensorboard %s: %w", a.id, err)
+		return fmt.Errorf("updating VertexAITensorBoard %s: %w", a.id, err)
 	}
 
 	_, err = op.Wait(ctx)
 	if err != nil {
-		return fmt.Errorf("waiting update VertexAITensorboard %s: %w", a.id, err)
+		return fmt.Errorf("waiting update VertexAITensorBoard %s: %w", a.id, err)
 	}
 
 	actual, err := a.gcpClient.GetTensorboard(ctx, &pb.GetTensorboardRequest{Name: a.id.String()})
 	if err != nil {
-		return fmt.Errorf("getting VertexAITensorboard after update %s: %w", a.id, err)
+		return fmt.Errorf("getting VertexAITensorBoard after update %s: %w", a.id, err)
 	}
 
 	return a.updateStatus(ctx, updateOp, actual)
@@ -213,22 +213,22 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 
 func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperation) (bool, error) {
 	log := klog.FromContext(ctx)
-	log.V(2).Info("deleting VertexAITensorboard", "name", a.id)
+	log.V(2).Info("deleting VertexAITensorBoard", "name", a.id)
 
 	req := &pb.DeleteTensorboardRequest{Name: a.id.String()}
 	op, err := a.gcpClient.DeleteTensorboard(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
-			log.V(2).Info("skipping delete for non-existent VertexAITensorboard, assuming it was already deleted", "name", a.id)
+			log.V(2).Info("skipping delete for non-existent VertexAITensorBoard, assuming it was already deleted", "name", a.id)
 			return true, nil
 		}
-		return false, fmt.Errorf("deleting VertexAITensorboard %s: %w", a.id, err)
+		return false, fmt.Errorf("deleting VertexAITensorBoard %s: %w", a.id, err)
 	}
-	log.V(2).Info("successfully deleted VertexAITensorboard, waiting for operation to complete", "name", a.id)
+	log.V(2).Info("successfully deleted VertexAITensorBoard, waiting for operation to complete", "name", a.id)
 
 	err = op.Wait(ctx)
 	if err != nil {
-		return false, fmt.Errorf("waiting delete VertexAITensorboard %s: %w", a.id, err)
+		return false, fmt.Errorf("waiting delete VertexAITensorBoard %s: %w", a.id, err)
 	}
 	return true, nil
 }
@@ -239,9 +239,9 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 	}
 	u := &unstructured.Unstructured{}
 
-	obj := &krm.VertexAITensorboard{}
+	obj := &krm.VertexAITensorBoard{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(VertexAITensorboardSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(VertexAITensorBoardSpec_FromProto(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
@@ -253,7 +253,7 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 	}
 
 	u.SetName(a.id.Tensorboard)
-	u.SetGroupVersionKind(krm.VertexAITensorboardGVK)
+	u.SetGroupVersionKind(krm.VertexAITensorBoardGVK)
 
 	u.Object = uObj
 	return u, nil
@@ -261,12 +261,12 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 
 func (a *Adapter) updateStatus(ctx context.Context, op directbase.Operation, latest *pb.Tensorboard) error {
 	mapCtx := &direct.MapContext{}
-	observedState := VertexAITensorboardObservedState_FromProto(mapCtx, latest)
+	observedState := VertexAITensorBoardObservedState_FromProto(mapCtx, latest)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
 
-	status := &krm.VertexAITensorboardStatus{
+	status := &krm.VertexAITensorBoardStatus{
 		ObservedState: observedState,
 		ExternalRef:   direct.LazyPtr(a.id.String()),
 	}

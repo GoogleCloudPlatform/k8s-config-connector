@@ -32,42 +32,42 @@ import (
 	gentype "k8s.io/client-go/gentype"
 )
 
-// VertexAITensorboardsGetter has a method to return a VertexAITensorboardInterface.
+// VertexAITensorBoardsGetter has a method to return a VertexAITensorBoardInterface.
 // A group's client should implement this interface.
-type VertexAITensorboardsGetter interface {
-	VertexAITensorboards(namespace string) VertexAITensorboardInterface
+type VertexAITensorBoardsGetter interface {
+	VertexAITensorBoards(namespace string) VertexAITensorBoardInterface
 }
 
-// VertexAITensorboardInterface has methods to work with VertexAITensorboard resources.
-type VertexAITensorboardInterface interface {
-	Create(ctx context.Context, vertexAITensorboard *vertexaiv1alpha1.VertexAITensorboard, opts v1.CreateOptions) (*vertexaiv1alpha1.VertexAITensorboard, error)
-	Update(ctx context.Context, vertexAITensorboard *vertexaiv1alpha1.VertexAITensorboard, opts v1.UpdateOptions) (*vertexaiv1alpha1.VertexAITensorboard, error)
+// VertexAITensorBoardInterface has methods to work with VertexAITensorBoard resources.
+type VertexAITensorBoardInterface interface {
+	Create(ctx context.Context, vertexAITensorBoard *vertexaiv1alpha1.VertexAITensorBoard, opts v1.CreateOptions) (*vertexaiv1alpha1.VertexAITensorBoard, error)
+	Update(ctx context.Context, vertexAITensorBoard *vertexaiv1alpha1.VertexAITensorBoard, opts v1.UpdateOptions) (*vertexaiv1alpha1.VertexAITensorBoard, error)
 	// Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-	UpdateStatus(ctx context.Context, vertexAITensorboard *vertexaiv1alpha1.VertexAITensorboard, opts v1.UpdateOptions) (*vertexaiv1alpha1.VertexAITensorboard, error)
+	UpdateStatus(ctx context.Context, vertexAITensorBoard *vertexaiv1alpha1.VertexAITensorBoard, opts v1.UpdateOptions) (*vertexaiv1alpha1.VertexAITensorBoard, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*vertexaiv1alpha1.VertexAITensorboard, error)
-	List(ctx context.Context, opts v1.ListOptions) (*vertexaiv1alpha1.VertexAITensorboardList, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*vertexaiv1alpha1.VertexAITensorBoard, error)
+	List(ctx context.Context, opts v1.ListOptions) (*vertexaiv1alpha1.VertexAITensorBoardList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *vertexaiv1alpha1.VertexAITensorboard, err error)
-	VertexAITensorboardExpansion
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *vertexaiv1alpha1.VertexAITensorBoard, err error)
+	VertexAITensorBoardExpansion
 }
 
-// vertexAITensorboards implements VertexAITensorboardInterface
-type vertexAITensorboards struct {
-	*gentype.ClientWithList[*vertexaiv1alpha1.VertexAITensorboard, *vertexaiv1alpha1.VertexAITensorboardList]
+// vertexAITensorBoards implements VertexAITensorBoardInterface
+type vertexAITensorBoards struct {
+	*gentype.ClientWithList[*vertexaiv1alpha1.VertexAITensorBoard, *vertexaiv1alpha1.VertexAITensorBoardList]
 }
 
-// newVertexAITensorboards returns a VertexAITensorboards
-func newVertexAITensorboards(c *VertexaiV1alpha1Client, namespace string) *vertexAITensorboards {
-	return &vertexAITensorboards{
-		gentype.NewClientWithList[*vertexaiv1alpha1.VertexAITensorboard, *vertexaiv1alpha1.VertexAITensorboardList](
+// newVertexAITensorBoards returns a VertexAITensorBoards
+func newVertexAITensorBoards(c *VertexaiV1alpha1Client, namespace string) *vertexAITensorBoards {
+	return &vertexAITensorBoards{
+		gentype.NewClientWithList[*vertexaiv1alpha1.VertexAITensorBoard, *vertexaiv1alpha1.VertexAITensorBoardList](
 			"vertexaitensorboards",
 			c.RESTClient(),
 			scheme.ParameterCodec,
 			namespace,
-			func() *vertexaiv1alpha1.VertexAITensorboard { return &vertexaiv1alpha1.VertexAITensorboard{} },
-			func() *vertexaiv1alpha1.VertexAITensorboardList { return &vertexaiv1alpha1.VertexAITensorboardList{} },
+			func() *vertexaiv1alpha1.VertexAITensorBoard { return &vertexaiv1alpha1.VertexAITensorBoard{} },
+			func() *vertexaiv1alpha1.VertexAITensorBoardList { return &vertexaiv1alpha1.VertexAITensorBoardList{} },
 		),
 	}
 }

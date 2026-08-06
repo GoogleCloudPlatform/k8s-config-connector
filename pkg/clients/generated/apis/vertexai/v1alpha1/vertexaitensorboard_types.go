@@ -43,7 +43,7 @@ type TensorboardEncryptionSpec struct {
 	KmsKeyRef v1alpha1.ResourceRef `json:"kmsKeyRef"`
 }
 
-type VertexAITensorboardSpec struct {
+type VertexAITensorBoardSpec struct {
 	/* Description of this Tensorboard. */
 	// +optional
 	Description *string `json:"description,omitempty"`
@@ -65,7 +65,7 @@ type VertexAITensorboardSpec struct {
 	/* The region of this resource. */
 	Region string `json:"region"`
 
-	/* The VertexAITensorboard ID (which is server-generated). If not given, Config Connector will create a new Tensorboard. If given, Config Connector will acquire the existing Tensorboard with this ID. */
+	/* The VertexAITensorBoard ID (which is server-generated). If not given, Config Connector will create a new Tensorboard. If given, Config Connector will acquire the existing Tensorboard with this ID. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
 }
@@ -100,11 +100,11 @@ type TensorboardObservedStateStatus struct {
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
-type VertexAITensorboardStatus struct {
+type VertexAITensorBoardStatus struct {
 	/* Conditions represent the latest available observations of the
-	   VertexAITensorboard's current state. */
+	   VertexAITensorBoard's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the VertexAITensorboard resource in GCP. */
+	/* A unique specifier for the VertexAITensorBoard resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 
@@ -130,25 +130,25 @@ type VertexAITensorboardStatus struct {
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
-// VertexAITensorboard is the Schema for the vertexai API
+// VertexAITensorBoard is the Schema for the vertexai API
 // +k8s:openapi-gen=true
-type VertexAITensorboard struct {
+type VertexAITensorBoard struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   VertexAITensorboardSpec   `json:"spec,omitempty"`
-	Status VertexAITensorboardStatus `json:"status,omitempty"`
+	Spec   VertexAITensorBoardSpec   `json:"spec,omitempty"`
+	Status VertexAITensorBoardStatus `json:"status,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// VertexAITensorboardList contains a list of VertexAITensorboard
-type VertexAITensorboardList struct {
+// VertexAITensorBoardList contains a list of VertexAITensorBoard
+type VertexAITensorBoardList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []VertexAITensorboard `json:"items"`
+	Items           []VertexAITensorBoard `json:"items"`
 }
 
 func init() {
-	SchemeBuilder.Register(&VertexAITensorboard{}, &VertexAITensorboardList{})
+	SchemeBuilder.Register(&VertexAITensorBoard{}, &VertexAITensorBoardList{})
 }

@@ -78,7 +78,7 @@ func getIdentityFromVertexAITensorboardExperimentSpec(ctx context.Context, reade
 	if err != nil {
 		return nil, err
 	}
-	tensorboardIdentity := tIdentity.(*VertexAITensorboardIdentity)
+	tensorboardIdentity := tIdentity.(*VertexAITensorBoardIdentity)
 
 	resourceID, err := refs.GetResourceID(obj)
 	if err != nil {

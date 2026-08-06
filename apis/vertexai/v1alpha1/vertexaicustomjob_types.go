@@ -246,7 +246,7 @@ type CustomJobSpec struct {
 	//  which this CustomJob will upload Tensorboard logs. Format:
 	//  `projects/{project}/locations/{location}/tensorboards/{tensorboard}`
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.CustomJobSpec.tensorboard
-	TensorboardRef *VertexAITensorboardRef `json:"tensorboardRef,omitempty"`
+	TensorboardRef *VertexAITensorBoardRef `json:"tensorboardRef,omitempty"`
 
 	// Optional. Whether you want Vertex AI to enable [interactive shell
 	//  access](https://cloud.google.com/vertex-ai/docs/training/monitor-debug-interactive-shell)

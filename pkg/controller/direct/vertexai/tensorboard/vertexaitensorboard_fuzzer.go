@@ -25,12 +25,12 @@ func init() {
 }
 
 func fuzzer() fuzztesting.KRMFuzzer {
-	f := fuzztesting.NewKRMTypedFuzzer[*pb.Tensorboard, krm.VertexAITensorboardSpec, krm.VertexAITensorboardObservedState](
+	f := fuzztesting.NewKRMTypedFuzzer[*pb.Tensorboard, krm.VertexAITensorBoardSpec, krm.VertexAITensorBoardObservedState](
 		&pb.Tensorboard{},
-		VertexAITensorboardSpec_FromProto,
-		VertexAITensorboardSpec_ToProto,
-		VertexAITensorboardObservedState_FromProto,
-		VertexAITensorboardObservedState_ToProto,
+		VertexAITensorBoardSpec_FromProto,
+		VertexAITensorBoardSpec_ToProto,
+		VertexAITensorBoardObservedState_FromProto,
+		VertexAITensorBoardObservedState_ToProto,
 	)
 
 	f.SpecField(".display_name")

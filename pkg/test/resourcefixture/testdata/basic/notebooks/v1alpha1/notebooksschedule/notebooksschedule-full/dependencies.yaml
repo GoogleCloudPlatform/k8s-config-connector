@@ -20,7 +20,7 @@ spec:
   routingMode: REGIONAL
 ---
 apiVersion: vertexai.cnrm.cloud.google.com/v1alpha1
-kind: VertexAITensorboard
+kind: VertexAITensorBoard
 metadata:
   name: n-sch-tb-${uniqueId}
 spec:

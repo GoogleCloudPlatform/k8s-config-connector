@@ -35,7 +35,7 @@ type VertexAITensorboardExperimentSpec struct {
 
 	/* The VertexAITensorboard that this resource belongs to. */
 	// +required
-	TensorboardRef *VertexAITensorboardRef `json:"tensorboardRef"`
+	TensorboardRef *VertexAITensorBoardRef `json:"tensorboardRef"`
 
 	// The VertexAITensorboardExperiment name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
