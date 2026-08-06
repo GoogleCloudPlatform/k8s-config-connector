@@ -1441,6 +1441,42 @@ func DiscoveryEngineSearchEngineSpec_v1alpha1_ToProto(mapCtx *direct.MapContext,
 	// MISSING: Name
 	return out
 }
+func DiscoveryEngineServingConfigObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *discoveryenginepb.ServingConfig) *krmdiscoveryenginev1alpha1.DiscoveryEngineServingConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.DiscoveryEngineServingConfigObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: FilterControlIds
+	// MISSING: BoostControlIds
+	// MISSING: RedirectControlIds
+	// MISSING: SynonymsControlIds
+	// MISSING: OnewaySynonymsControlIds
+	// MISSING: DissociateControlIds
+	// MISSING: ReplacementControlIds
+	// MISSING: IgnoreControlIds
+	return out
+}
+func DiscoveryEngineServingConfigObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.DiscoveryEngineServingConfigObservedState) *discoveryenginepb.ServingConfig {
+	if in == nil {
+		return nil
+	}
+	out := &discoveryenginepb.ServingConfig{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: FilterControlIds
+	// MISSING: BoostControlIds
+	// MISSING: RedirectControlIds
+	// MISSING: SynonymsControlIds
+	// MISSING: OnewaySynonymsControlIds
+	// MISSING: DissociateControlIds
+	// MISSING: ReplacementControlIds
+	// MISSING: IgnoreControlIds
+	return out
+}
 func DiscoveryEngineSessionObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Session) *krmdiscoveryenginev1alpha1.DiscoveryEngineSessionObservedState {
 	if in == nil {
 		return nil
@@ -1491,6 +1527,22 @@ func DiscoveryEngineSessionSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *
 	out.Turns = direct.Slice_ToProto(mapCtx, in.Turns, Session_Turn_v1alpha1_ToProto)
 	// MISSING: Labels
 	out.IsPinned = direct.ValueOf(in.IsPinned)
+	return out
+}
+func EmbeddingConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *discoveryenginepb.EmbeddingConfig) *krmdiscoveryenginev1alpha1.EmbeddingConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.EmbeddingConfig{}
+	out.FieldPath = direct.LazyPtr(in.GetFieldPath())
+	return out
+}
+func EmbeddingConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.EmbeddingConfig) *discoveryenginepb.EmbeddingConfig {
+	if in == nil {
+		return nil
+	}
+	out := &discoveryenginepb.EmbeddingConfig{}
+	out.FieldPath = direct.ValueOf(in.FieldPath)
 	return out
 }
 func Engine_ChatEngineConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Engine_ChatEngineConfig) *krmdiscoveryenginev1alpha1.Engine_ChatEngineConfig {
@@ -1718,6 +1770,62 @@ func SearchLinkPromotion_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdisc
 	out.Description = direct.ValueOf(in.Description)
 	out.Enabled = direct.ValueOf(in.Enabled)
 	return out
+}
+func ServingConfig_GenericConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *discoveryenginepb.ServingConfig_GenericConfig) *krmdiscoveryenginev1alpha1.ServingConfig_GenericConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.ServingConfig_GenericConfig{}
+	out.ContentSearchSpec = SearchRequest_ContentSearchSpec_v1alpha1_FromProto(mapCtx, in.GetContentSearchSpec())
+	return out
+}
+func ServingConfig_GenericConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.ServingConfig_GenericConfig) *discoveryenginepb.ServingConfig_GenericConfig {
+	if in == nil {
+		return nil
+	}
+	out := &discoveryenginepb.ServingConfig_GenericConfig{}
+	out.ContentSearchSpec = SearchRequest_ContentSearchSpec_v1alpha1_ToProto(mapCtx, in.ContentSearchSpec)
+	return out
+}
+func ServingConfig_MediaConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *discoveryenginepb.ServingConfig_MediaConfig) *krmdiscoveryenginev1alpha1.ServingConfig_MediaConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.ServingConfig_MediaConfig{}
+	out.ContentWatchedPercentageThreshold = direct.LazyPtr(in.GetContentWatchedPercentageThreshold())
+	out.ContentWatchedSecondsThreshold = direct.LazyPtr(in.GetContentWatchedSecondsThreshold())
+	out.DemotionEventType = direct.LazyPtr(in.GetDemotionEventType())
+	out.DemoteContentWatchedPastDays = direct.LazyPtr(in.GetDemoteContentWatchedPastDays())
+	out.ContentFreshnessCutoffDays = direct.LazyPtr(in.GetContentFreshnessCutoffDays())
+	return out
+}
+func ServingConfig_MediaConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.ServingConfig_MediaConfig) *discoveryenginepb.ServingConfig_MediaConfig {
+	if in == nil {
+		return nil
+	}
+	out := &discoveryenginepb.ServingConfig_MediaConfig{}
+	if oneof := ServingConfig_MediaConfig_ContentWatchedPercentageThreshold_ToProto(mapCtx, in.ContentWatchedPercentageThreshold); oneof != nil {
+		out.DemoteContentWatched = oneof
+	}
+	if oneof := ServingConfig_MediaConfig_ContentWatchedSecondsThreshold_ToProto(mapCtx, in.ContentWatchedSecondsThreshold); oneof != nil {
+		out.DemoteContentWatched = oneof
+	}
+	out.DemotionEventType = direct.ValueOf(in.DemotionEventType)
+	out.DemoteContentWatchedPastDays = direct.ValueOf(in.DemoteContentWatchedPastDays)
+	out.ContentFreshnessCutoffDays = direct.ValueOf(in.ContentFreshnessCutoffDays)
+	return out
+}
+func ServingConfig_MediaConfig_ContentWatchedPercentageThreshold_ToProto(mapCtx *direct.MapContext, in *float32) *discoveryenginepb.ServingConfig_MediaConfig_ContentWatchedPercentageThreshold {
+	if in == nil {
+		return nil
+	}
+	return &discoveryenginepb.ServingConfig_MediaConfig_ContentWatchedPercentageThreshold{ContentWatchedPercentageThreshold: *in}
+}
+func ServingConfig_MediaConfig_ContentWatchedSecondsThreshold_ToProto(mapCtx *direct.MapContext, in *float32) *discoveryenginepb.ServingConfig_MediaConfig_ContentWatchedSecondsThreshold {
+	if in == nil {
+		return nil
+	}
+	return &discoveryenginepb.ServingConfig_MediaConfig_ContentWatchedSecondsThreshold{ContentWatchedSecondsThreshold: *in}
 }
 func Session_Turn_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Session_Turn) *krmdiscoveryenginev1alpha1.Session_Turn {
 	if in == nil {

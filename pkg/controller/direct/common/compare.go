@@ -16,13 +16,17 @@ package common
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
+	"reflect"
 	"slices"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"google.golang.org/genproto/googleapis/api/annotations"
+	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/types/known/durationpb"
@@ -294,4 +298,159 @@ func valToAny(v protoreflect.Value) any {
 		return nil
 	}
 	return v.Interface()
+}
+
+// MergeUnsetFields recursively copies non-nil values from actual into desired for any pointer/slice fields where desired is nil.
+func MergeUnsetFields(desired, actual reflect.Value) {
+	if !desired.IsValid() || !actual.IsValid() {
+		return
+	}
+
+	switch desired.Kind() {
+	case reflect.Ptr:
+		if desired.IsNil() && !actual.IsNil() {
+			desired.Set(actual)
+		} else if !desired.IsNil() && !actual.IsNil() {
+			MergeUnsetFields(desired.Elem(), actual.Elem())
+		}
+
+	case reflect.Struct:
+		for i := 0; i < desired.NumField(); i++ {
+			field := desired.Type().Field(i)
+			if field.IsExported() {
+				MergeUnsetFields(desired.Field(i), actual.Field(i))
+			}
+		}
+
+	case reflect.Slice, reflect.Map:
+		if desired.IsNil() && !actual.IsNil() {
+			desired.Set(actual)
+		}
+	}
+}
+
+var deterministicJSON = protojson.MarshalOptions{}
+
+// SortRepeatedFields recursively traverses populated list fields in a proto message and sorts them deterministically.
+func SortRepeatedFields(msg protoreflect.Message) {
+	if msg == nil || !msg.IsValid() {
+		return
+	}
+	msg.Range(func(fd protoreflect.FieldDescriptor, val protoreflect.Value) bool {
+		if fd.IsList() {
+			sortProtoReflectList(val.List())
+		} else if fd.IsMap() {
+			val.Map().Range(func(k protoreflect.MapKey, v protoreflect.Value) bool {
+				if msg, ok := v.Interface().(protoreflect.Message); ok {
+					SortRepeatedFields(msg)
+				}
+				return true
+			})
+		} else if fd.Kind() == protoreflect.MessageKind {
+			SortRepeatedFields(val.Message())
+		}
+		return true
+	})
+}
+
+func sortProtoReflectList(list protoreflect.List) {
+	n := list.Len()
+	if n <= 1 {
+		return
+	}
+
+	type itemKey struct {
+		val protoreflect.Value
+		key string
+	}
+
+	items := make([]itemKey, n)
+	for i := 0; i < n; i++ {
+		val := list.Get(i)
+		var key string
+		if msgVal, ok := val.Interface().(protoreflect.Message); ok {
+			SortRepeatedFields(msgVal)
+			if pb, ok := msgVal.Interface().(proto.Message); ok {
+				bytes, err := deterministicJSON.Marshal(pb)
+				if err == nil {
+					key = string(bytes)
+				}
+			}
+			if key == "" {
+				key = fmt.Sprintf("%+v", msgVal.Interface())
+			}
+		} else {
+			key = fmt.Sprintf("%+v", val.Interface())
+		}
+		items[i] = itemKey{val: val, key: key}
+	}
+
+	slices.SortFunc(items, func(a, b itemKey) int {
+		return strings.Compare(a.key, b.key)
+	})
+
+	for i := 0; i < n; i++ {
+		list.Set(i, items[i].val)
+	}
+}
+
+// CompareBrownfieldSpec executes the 5-step brownfield spec comparison pipeline.
+func CompareBrownfieldSpec[SpecType any, ProtoT interface {
+	proto.Message
+}](
+	ctx context.Context,
+	desiredKRM *SpecType,
+	actualProto ProtoT,
+	specFromProto func(mapCtx *direct.MapContext, in ProtoT) *SpecType,
+	specToProto func(mapCtx *direct.MapContext, in *SpecType) ProtoT,
+	normalize func(ctx context.Context, pb ProtoT) error,
+) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
+	mapCtx := &direct.MapContext{}
+
+	// Step 1: actualProto -> actualKRM (Spec_FromProto)
+	actualKRM := specFromProto(mapCtx, actualProto)
+	if err := mapCtx.Err(); err != nil {
+		return nil, nil, err
+	}
+
+	// Step 2: Merge Unspecified Fields (MergeUnsetFields)
+	// Deep copy desiredKRM via JSON to avoid mutating caller state, then merge unspecified fields from actualKRM.
+	var clonedDesiredKRM *SpecType
+	if desiredKRM != nil {
+		bytes, err := json.Marshal(desiredKRM)
+		if err != nil {
+			return nil, nil, fmt.Errorf("cloning desiredKRM: %w", err)
+		}
+		clonedDesiredKRM = new(SpecType)
+		if err := json.Unmarshal(bytes, clonedDesiredKRM); err != nil {
+			return nil, nil, fmt.Errorf("cloning desiredKRM: %w", err)
+		}
+	}
+	MergeUnsetFields(reflect.ValueOf(clonedDesiredKRM), reflect.ValueOf(actualKRM))
+
+	// Step 3: Convert KRM Specs to Protos (Spec_ToProto)
+	desiredProtoMasked := specToProto(mapCtx, clonedDesiredKRM)
+	if err := mapCtx.Err(); err != nil {
+		return nil, nil, err
+	}
+
+	actualProtoMasked := specToProto(mapCtx, actualKRM)
+	if err := mapCtx.Err(); err != nil {
+		return nil, nil, err
+	}
+
+	// Step 4: Normalization & Slice Sorting (normalize & SortRepeatedFields)
+	if normalize != nil {
+		if err := normalize(ctx, desiredProtoMasked); err != nil {
+			return nil, nil, err
+		}
+		if err := normalize(ctx, actualProtoMasked); err != nil {
+			return nil, nil, err
+		}
+	}
+	SortRepeatedFields(proto.Message(desiredProtoMasked).ProtoReflect())
+	SortRepeatedFields(proto.Message(actualProtoMasked).ProtoReflect())
+
+	// Step 5: Top-Level Diff & FieldMask Generation (DiffForTopLevelFields)
+	return DiffForTopLevelFields(ctx, proto.Message(desiredProtoMasked).ProtoReflect(), proto.Message(actualProtoMasked).ProtoReflect())
 }

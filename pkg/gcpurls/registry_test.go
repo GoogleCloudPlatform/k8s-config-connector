@@ -75,6 +75,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//aiplatform.googleapis.com/projects/{}/locations/{}/metadataStores/{}/contexts/{}": true,
 		"//aiplatform.googleapis.com/projects/{}/locations/{}/studies/{}":                    true,
 		"//aiplatform.googleapis.com/projects/{}/locations/{}/schedules/{}":                  true,
+		"//aiplatform.googleapis.com/projects/{}/locations/{}/extensions/{}":                 true,
 
 		// AlloyDB
 		"//alloydb.googleapis.com/projects/{}/locations/{}/clusters/{}/users/{}": true,
@@ -180,6 +181,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//devicestreaming.googleapis.com/projects/{}/deviceSessions/{}": true,
 
 		// Discovery Engine
+		"//discoveryengine.googleapis.com/projects/{}/locations/{}/collections/{}/engines/{}/servingConfigs/{}":   true,
 		"//discoveryengine.googleapis.com/projects/{}/locations/{}/dataStores/{}/controls/{}":                     true,
 		"//discoveryengine.googleapis.com/projects/{}/locations/{}/dataStores/{}/conversations/{}":                true,
 		"//discoveryengine.googleapis.com/projects/{}/locations/{}/dataStores/{}/sessions/{}":                     true,

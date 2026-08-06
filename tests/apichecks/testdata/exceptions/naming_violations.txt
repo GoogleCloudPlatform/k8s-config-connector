@@ -1,3 +1,5 @@
+[naming_violation] file=apis/agentsearch/v1alpha1/agentsearchengine_reference.go prefix=agentsearchengine (expected a valid resource kind prefix)
+[naming_violation] file=apis/agentsearch/v1alpha1/agentsearchservingconfig_reference.go prefix=agentsearchservingconfig (expected a valid resource kind prefix)
 [naming_violation] file=apis/aiplatform/v1alpha1/recursive_types.go prefix=recursive (expected a valid resource kind prefix)
 [naming_violation] file=apis/cloudbuild/v1beta1/repository_reference.go prefix=repository (expected a valid resource kind prefix)
 [naming_violation] file=apis/clouddms/v1alpha1/connectionprofile_identity.go prefix=connectionprofile (expected a valid resource kind prefix)

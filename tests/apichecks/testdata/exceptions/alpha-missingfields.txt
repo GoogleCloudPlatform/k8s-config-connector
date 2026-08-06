@@ -2445,6 +2445,50 @@
 [missing_field] crd=discoveryenginesamplequerysets.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=discoveryenginesamplequerysets.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=discoveryenginesearchengines.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataStoreRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=discoveryengineservingconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.boostControlIDs[]" is not set in unstructured objects
+[missing_field] crd=discoveryengineservingconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
+[missing_field] crd=discoveryengineservingconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.dissociateControlIDs[]" is not set in unstructured objects
+[missing_field] crd=discoveryengineservingconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.diversityLevel" is not set in unstructured objects
+[missing_field] crd=discoveryengineservingconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.embeddingConfig.fieldPath" is not set in unstructured objects
+[missing_field] crd=discoveryengineservingconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.engineRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=discoveryengineservingconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.filterControlIDs[]" is not set in unstructured objects
+[missing_field] crd=discoveryengineservingconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.genericConfig.contentSearchSpec.chunkSpec.numNextChunks" is not set in unstructured objects
+[missing_field] crd=discoveryengineservingconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.genericConfig.contentSearchSpec.chunkSpec.numPreviousChunks" is not set in unstructured objects
+[missing_field] crd=discoveryengineservingconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.genericConfig.contentSearchSpec.extractiveContentSpec.maxExtractiveAnswerCount" is not set in unstructured objects
+[missing_field] crd=discoveryengineservingconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.genericConfig.contentSearchSpec.extractiveContentSpec.maxExtractiveSegmentCount" is not set in unstructured objects
+[missing_field] crd=discoveryengineservingconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.genericConfig.contentSearchSpec.extractiveContentSpec.numNextSegments" is not set in unstructured objects
+[missing_field] crd=discoveryengineservingconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.genericConfig.contentSearchSpec.extractiveContentSpec.numPreviousSegments" is not set in unstructured objects
+[missing_field] crd=discoveryengineservingconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.genericConfig.contentSearchSpec.extractiveContentSpec.returnExtractiveSegmentScore" is not set in unstructured objects
+[missing_field] crd=discoveryengineservingconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.genericConfig.contentSearchSpec.searchResultMode" is not set in unstructured objects
+[missing_field] crd=discoveryengineservingconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.genericConfig.contentSearchSpec.snippetSpec.maxSnippetCount" is not set in unstructured objects
+[missing_field] crd=discoveryengineservingconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.genericConfig.contentSearchSpec.snippetSpec.referenceOnly" is not set in unstructured objects
+[missing_field] crd=discoveryengineservingconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.genericConfig.contentSearchSpec.snippetSpec.returnSnippet" is not set in unstructured objects
+[missing_field] crd=discoveryengineservingconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.genericConfig.contentSearchSpec.summarySpec.ignoreAdversarialQuery" is not set in unstructured objects
+[missing_field] crd=discoveryengineservingconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.genericConfig.contentSearchSpec.summarySpec.ignoreJailBreakingQuery" is not set in unstructured objects
+[missing_field] crd=discoveryengineservingconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.genericConfig.contentSearchSpec.summarySpec.ignoreLowRelevantContent" is not set in unstructured objects
+[missing_field] crd=discoveryengineservingconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.genericConfig.contentSearchSpec.summarySpec.ignoreNonSummarySeekingQuery" is not set in unstructured objects
+[missing_field] crd=discoveryengineservingconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.genericConfig.contentSearchSpec.summarySpec.includeCitations" is not set in unstructured objects
+[missing_field] crd=discoveryengineservingconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.genericConfig.contentSearchSpec.summarySpec.languageCode" is not set in unstructured objects
+[missing_field] crd=discoveryengineservingconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.genericConfig.contentSearchSpec.summarySpec.modelPromptSpec.preamble" is not set in unstructured objects
+[missing_field] crd=discoveryengineservingconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.genericConfig.contentSearchSpec.summarySpec.modelSpec.version" is not set in unstructured objects
+[missing_field] crd=discoveryengineservingconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.genericConfig.contentSearchSpec.summarySpec.summaryResultCount" is not set in unstructured objects
+[missing_field] crd=discoveryengineservingconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.genericConfig.contentSearchSpec.summarySpec.useSemanticChunks" is not set in unstructured objects
+[missing_field] crd=discoveryengineservingconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.ignoreControlIDs[]" is not set in unstructured objects
+[missing_field] crd=discoveryengineservingconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=discoveryengineservingconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.mediaConfig.contentFreshnessCutoffDays" is not set in unstructured objects
+[missing_field] crd=discoveryengineservingconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.mediaConfig.contentWatchedPercentageThreshold" is not set in unstructured objects
+[missing_field] crd=discoveryengineservingconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.mediaConfig.contentWatchedSecondsThreshold" is not set in unstructured objects
+[missing_field] crd=discoveryengineservingconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.mediaConfig.demoteContentWatchedPastDays" is not set in unstructured objects
+[missing_field] crd=discoveryengineservingconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.mediaConfig.demotionEventType" is not set in unstructured objects
+[missing_field] crd=discoveryengineservingconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.modelID" is not set in unstructured objects
+[missing_field] crd=discoveryengineservingconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.onewaySynonymsControlIDs[]" is not set in unstructured objects
+[missing_field] crd=discoveryengineservingconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.personalizationSpec.mode" is not set in unstructured objects
+[missing_field] crd=discoveryengineservingconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=discoveryengineservingconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.rankingExpression" is not set in unstructured objects
+[missing_field] crd=discoveryengineservingconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.redirectControlIDs[]" is not set in unstructured objects
+[missing_field] crd=discoveryengineservingconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.replacementControlIDs[]" is not set in unstructured objects
+[missing_field] crd=discoveryengineservingconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.solutionType" is not set in unstructured objects
+[missing_field] crd=discoveryengineservingconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.synonymsControlIDs[]" is not set in unstructured objects
 [missing_field] crd=discoveryenginesessions.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.isPinned" is not set in unstructured objects
 [missing_field] crd=discoveryenginesessions.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.state" is not set in unstructured objects
 [missing_field] crd=discoveryenginesessions.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.turns[].answer" is not set in unstructured objects
@@ -3789,6 +3833,38 @@
 [missing_field] crd=vertexaideploymentresourcepools.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.dedicatedResources.spot" is not set in unstructured objects
 [missing_field] crd=vertexaideploymentresourcepools.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.encryptionSpec.kmsKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vertexaideploymentresourcepools.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceAccountRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=vertexaiextensions.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
+[missing_field] crd=vertexaiextensions.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
+[missing_field] crd=vertexaiextensions.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=vertexaiextensions.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.manifest.apiSpec.openAPIGCSURI" is not set in unstructured objects
+[missing_field] crd=vertexaiextensions.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.manifest.apiSpec.openAPIYaml" is not set in unstructured objects
+[missing_field] crd=vertexaiextensions.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.manifest.authConfig.apiKeyConfig.apiKeySecretRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=vertexaiextensions.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.manifest.authConfig.apiKeyConfig.httpElementLocation" is not set in unstructured objects
+[missing_field] crd=vertexaiextensions.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.manifest.authConfig.apiKeyConfig.name" is not set in unstructured objects
+[missing_field] crd=vertexaiextensions.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.manifest.authConfig.authType" is not set in unstructured objects
+[missing_field] crd=vertexaiextensions.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.manifest.authConfig.googleServiceAccountConfig.serviceAccountRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=vertexaiextensions.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.manifest.authConfig.httpBasicAuthConfig.credentialSecretRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=vertexaiextensions.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.manifest.authConfig.oauthConfig.accessToken" is not set in unstructured objects
+[missing_field] crd=vertexaiextensions.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.manifest.authConfig.oauthConfig.serviceAccountRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=vertexaiextensions.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.manifest.authConfig.oidcConfig.idToken" is not set in unstructured objects
+[missing_field] crd=vertexaiextensions.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.manifest.authConfig.oidcConfig.serviceAccountRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=vertexaiextensions.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.manifest.description" is not set in unstructured objects
+[missing_field] crd=vertexaiextensions.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.manifest.name" is not set in unstructured objects
+[missing_field] crd=vertexaiextensions.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.privateServiceConnectConfig.serviceDirectoryRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=vertexaiextensions.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=vertexaiextensions.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.runtimeConfig.codeInterpreterRuntimeConfig.fileInputGCSBucketRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=vertexaiextensions.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.runtimeConfig.codeInterpreterRuntimeConfig.fileOutputGCSBucketRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=vertexaiextensions.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.runtimeConfig.defaultParams" is not set in unstructured objects
+[missing_field] crd=vertexaiextensions.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.runtimeConfig.vertexAISearchRuntimeConfig.engineRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=vertexaiextensions.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.runtimeConfig.vertexAISearchRuntimeConfig.servingConfigRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=vertexaiextensions.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.toolUseExamples[].displayName" is not set in unstructured objects
+[missing_field] crd=vertexaiextensions.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.toolUseExamples[].extensionOperation.extension" is not set in unstructured objects
+[missing_field] crd=vertexaiextensions.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.toolUseExamples[].extensionOperation.operationID" is not set in unstructured objects
+[missing_field] crd=vertexaiextensions.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.toolUseExamples[].functionName" is not set in unstructured objects
+[missing_field] crd=vertexaiextensions.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.toolUseExamples[].query" is not set in unstructured objects
+[missing_field] crd=vertexaiextensions.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.toolUseExamples[].requestParams" is not set in unstructured objects
+[missing_field] crd=vertexaiextensions.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.toolUseExamples[].responseParams" is not set in unstructured objects
+[missing_field] crd=vertexaiextensions.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.toolUseExamples[].responseSummary" is not set in unstructured objects
 [missing_field] crd=vertexaifeaturegroups.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.bigQuery.bigQuerySource.inputURI" is not set in unstructured objects
 [missing_field] crd=vertexaifeaturegroups.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.bigQuery.dense" is not set in unstructured objects
 [missing_field] crd=vertexaifeaturegroups.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.bigQuery.entityIDColumns[]" is not set in unstructured objects
