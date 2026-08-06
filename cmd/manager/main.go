@@ -42,6 +42,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client/config"
 	crlog "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
+	metricsserver "sigs.k8s.io/controller-runtime/pkg/metrics/server"
 
 	// Ensure built-in types are registered.
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/register"
@@ -63,6 +64,7 @@ func main() {
 		leaderElectionMode  string
 		skipNameValidation  bool
 		syncingMode         string
+		metricsBindAddress  string
 	)
 	// metricsOptions controls standard controller-runtime metrics versus OpenCensus/Default metrics.
 	// This is configured via the METRICS_VERSION=v2 environment variable.
@@ -70,6 +72,7 @@ func main() {
 	metricsOptions.ServeControllerRuntimeMetrics = (os.Getenv("METRICS_VERSION") == "v2")
 
 	flag.StringVar(&metricsOptions.Addr, "prometheus-scrape-endpoint", ":8888", "configure the Prometheus scrape endpoint; :8888 as default")
+	flag.StringVar(&metricsBindAddress, "metrics-bind-address", metricsserver.DefaultBindAddress, "address the controller-runtime manager's built-in metrics server binds to; \"0\" disables it, which is safe when controller-runtime metrics are already served on --prometheus-scrape-endpoint")
 	flag.BoolVar(&controllermetrics.ResourceNameLabel, "resource-name-label", false, "option to enable the resource name label on some Prometheus metrics; false by default")
 	flag.BoolVar(&userProjectOverride, "user-project-override", false, "option to use the resource project for preconditions, quota, and billing, instead of the project the credentials belong to; false by default")
 	flag.StringVar(&billingProject, "billing-project", "", "project to use for preconditions, quota, and billing if --user-project-override is enabled; empty by default; if this is left empty but --user-project-override is enabled, the resource's project will be used")
@@ -139,7 +142,7 @@ func main() {
 	// Set client site rate limiter to optimize the configconnector re-reconciliation performance.
 	ratelimiter.SetMasterRateLimiter(restCfg, rateLimitQps, rateLimitBurst)
 	logger.Info("Creating the manager")
-	mgr, err := newManager(ctx, restCfg, scopedNamespace, userProjectOverride, billingProject, multiClusterElection, skipNameValidation, enableSyncing)
+	mgr, err := newManager(ctx, restCfg, scopedNamespace, userProjectOverride, billingProject, multiClusterElection, skipNameValidation, enableSyncing, metricsBindAddress)
 	if err != nil {
 		logging.Fatal(err, "error creating the manager")
 	}
@@ -195,10 +198,12 @@ func main() {
 	logging.ExitInfo("main.go finished execution; exiting ...")
 }
 
-func newManager(ctx context.Context, restCfg *rest.Config, scopedNamespace string, userProjectOverride bool, billingProject string, multiclusterlease bool, skipNameValidation bool, enableSyncing bool) (manager.Manager, error) {
+func newManager(ctx context.Context, restCfg *rest.Config, scopedNamespace string, userProjectOverride bool, billingProject string, multiclusterlease bool, skipNameValidation bool, enableSyncing bool, metricsBindAddress string) (manager.Manager, error) {
 	krmtotf.SetUserAgentForTerraformProvider()
 
-	opts := manager.Options{}
+	opts := manager.Options{
+		Metrics: metricsserver.Options{BindAddress: metricsBindAddress},
+	}
 	if scopedNamespace != "" {
 		opts.Cache = cache.Options{
 			DefaultNamespaces: map[string]cache.Config{
