@@ -34,18 +34,4 @@ spec:
   location: global
   usage: FOR_VPC
   peering: FOR_SELF
-  ipCIDRRange: 10.128.0.0/20
----
-apiVersion: networkconnectivity.cnrm.cloud.google.com/v1alpha1
-kind: NetworkConnectivityInternalRange
-metadata:
-  name: internalrange-sec-${uniqueId}
-spec:
-  projectRef:
-    external: ${projectId}
-  networkRef:
-    name: computenetwork-${uniqueId}
-  location: global
-  usage: FOR_VPC
-  peering: FOR_SELF
-  ipCIDRRange: 10.129.0.0/24
+  ipCIDRRange: 10.231.0.0/20

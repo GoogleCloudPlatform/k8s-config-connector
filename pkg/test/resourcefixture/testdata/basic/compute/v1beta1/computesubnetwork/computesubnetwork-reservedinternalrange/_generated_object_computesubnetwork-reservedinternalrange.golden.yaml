@@ -22,10 +22,10 @@ spec:
     name: internalrange-${uniqueId}
   resourceID: ${subnetworkID}
   secondaryIpRange:
-  - ipCidrRange: 10.129.0.0/24
+  - ipCidrRange: 10.232.0.0/24
     rangeName: secondary-range
     reservedInternalRangeRef:
-      name: internalrange-sec-${uniqueId}
+      external: projects/${projectId}/locations/global/internalRanges/internalrange-sec-${uniqueId}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
