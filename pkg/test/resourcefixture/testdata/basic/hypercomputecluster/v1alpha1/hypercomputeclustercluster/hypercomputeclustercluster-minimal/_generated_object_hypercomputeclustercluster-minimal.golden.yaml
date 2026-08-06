@@ -47,4 +47,5 @@ status:
         loginNodes:
           instances:
           - instance: projects/${projectId}/zones/us-central1-a/instances/hccmin-login-001
+    reconciling: true
     updateTime: "1970-01-01T00:00:00Z"
