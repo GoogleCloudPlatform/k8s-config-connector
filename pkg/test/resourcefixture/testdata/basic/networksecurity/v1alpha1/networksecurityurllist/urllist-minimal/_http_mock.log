@@ -1,0 +1,153 @@
+GRPC /google.cloud.networksecurity.v1.NetworkSecurity/GetUrlList
+
+{
+  "name": "projects/${projectId}/locations/us-central1/urlLists/urllist-min-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = UrlList "projects/${projectId}/locations/us-central1/urlLists/urllist-min-${uniqueId}" not found
+
+{}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.NetworkSecurity/CreateUrlList
+
+{
+  "parent": "projects/${projectId}/locations/us-central1",
+  "urlList": {
+    "values": [
+      "google.com"
+    ]
+  },
+  "urlListId": "urllist-min-${uniqueId}"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/urlLists/urllist-min-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/urlLists/urllist-min-${uniqueId}/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/urlLists/urllist-min-${uniqueId}/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/urlLists/urllist-min-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/urlLists/urllist-min-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.UrlList",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "name": "projects/${projectId}/locations/us-central1/urlLists/urllist-min-${uniqueId}",
+    "updateTime": "2024-04-01T12:34:56.123456Z",
+    "values": [
+      "google.com"
+    ]
+  }
+}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.NetworkSecurity/GetUrlList
+
+{
+  "name": "projects/${projectId}/locations/us-central1/urlLists/urllist-min-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/urlLists/urllist-min-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "values": [
+    "google.com"
+  ]
+}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.NetworkSecurity/GetUrlList
+
+{
+  "name": "projects/${projectId}/locations/us-central1/urlLists/urllist-min-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/urlLists/urllist-min-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "values": [
+    "google.com"
+  ]
+}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.NetworkSecurity/DeleteUrlList
+
+{
+  "name": "projects/${projectId}/locations/us-central1/urlLists/urllist-min-${uniqueId}"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/urlLists/urllist-min-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/urlLists/urllist-min-${uniqueId}/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/urlLists/urllist-min-${uniqueId}/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/urlLists/urllist-min-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/urlLists/urllist-min-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.UrlList",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "name": "projects/${projectId}/locations/us-central1/urlLists/urllist-min-${uniqueId}",
+    "updateTime": "2024-04-01T12:34:56.123456Z",
+    "values": [
+      "google.com"
+    ]
+  }
+}

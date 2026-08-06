@@ -29,6 +29,7 @@ if [[ -z "${CONTROLLERBUILDER}" ]]; then
 fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
+
 ./generate-proto.sh
 
 ${CONTROLLERBUILDER} generate-types \
@@ -38,3 +39,7 @@ ${CONTROLLERBUILDER} generate-types \
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
+
+if [ -d "${REPO_ROOT}/pkg/controller/direct/securitycentermanagement" ]; then
+  go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w pkg/controller/direct/securitycentermanagement/
+fi
