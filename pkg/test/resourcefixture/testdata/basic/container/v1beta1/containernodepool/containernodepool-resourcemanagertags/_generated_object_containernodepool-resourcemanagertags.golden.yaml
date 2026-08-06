@@ -8,7 +8,7 @@ metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 2
+  generation: 3
   labels:
     cnrm-test: "true"
   name: containernodepool-${uniqueId}
@@ -21,25 +21,18 @@ spec:
     machineType: e2-medium
     resourceManagerTags:
       tagKeys/123: tagValues/789
+  resourceID: containernodepool-${uniqueId}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
-    message: |-
-      Update call failed: error applying desired state: summary: error creating NodePool: googleapi: Error 403: Permission denied: for service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com on TagKey "tagKeys/123" (or it may not exist).
-      Details:
-      [
-        {
-          "@type": "type.googleapis.com/google.rpc.RequestInfo",
-          "requestId": "0xc32dc37bf0668566"
-        },
-        {
-          "@type": "type.googleapis.com/google.rpc.ErrorInfo",
-          "domain": "container.googleapis.com",
-          "reason": "GCE_PERMISSION_DENIED"
-        }
-      ]
-      , forbidden
-    reason: UpdateFailed
-    status: "False"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
     type: Ready
-  observedGeneration: 2
+  instanceGroupUrls:
+  - https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-containernodepool-${uniqueId}-grp
+  managedInstanceGroupUrls:
+  - https://www.googleapis.com/compute/v1beta1/projects/${projectId}/zones/us-central1-a/instanceGroups/gke-containercluster-abcdef-containernodepool-${uniqueId}-grp
+  observedGeneration: 3
+  observedState:
+    version: 1.30.5-gke.1014001
