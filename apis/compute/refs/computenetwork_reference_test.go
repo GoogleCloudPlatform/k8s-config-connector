@@ -17,6 +17,9 @@ package computerefs
 import (
 	"context"
 	"testing"
+	"time"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/projects"
 
 	"github.com/google/go-cmp/cmp"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -88,6 +91,77 @@ func TestComputeNetworkRefNormalize(t *testing.T) {
 
 			if diff := cmp.Diff(tc.ref, tc.want); diff != "" {
 				t.Errorf("Normalize() mismatch (-got +want):\n%s", diff)
+			}
+		})
+	}
+}
+
+func TestCanonicalizeNetworkValue(t *testing.T) {
+	tests := []struct {
+		name            string
+		val             string
+		parentProjectID string
+		want            string
+	}{
+		{
+			name: "empty string",
+			val:  "",
+			want: "",
+		},
+		{
+			name:            "short network name with parent project",
+			val:             "default",
+			parentProjectID: "my-project",
+			want:            "projects/my-project/global/networks/default",
+		},
+		{
+			name:            "short network name without parent project",
+			val:             "default",
+			parentProjectID: "",
+			want:            "default",
+		},
+		{
+			name:            "relative resource path",
+			val:             "projects/my-project/global/networks/my-vpc",
+			parentProjectID: "other-project",
+			want:            "projects/my-project/global/networks/my-vpc",
+		},
+		{
+			name:            "full HTTPS URI",
+			val:             "https://www.googleapis.com/compute/v1/projects/my-project/global/networks/my-vpc",
+			parentProjectID: "other-project",
+			want:            "projects/my-project/global/networks/my-vpc",
+		},
+		{
+			name:            "invalid external format",
+			val:             "projects/my-project/invalid/path",
+			parentProjectID: "my-project",
+			want:            "projects/my-project/invalid/path",
+		},
+		{
+			name:            "project number present in mapper cache",
+			val:             "projects/12345/global/networks/my-vpc",
+			parentProjectID: "",
+			want:            "projects/my-project/global/networks/my-vpc",
+		},
+		{
+			name:            "project number not in mapper cache",
+			val:             "projects/99999/global/networks/my-vpc",
+			parentProjectID: "",
+			want:            "projects/99999/global/networks/my-vpc",
+		},
+	}
+
+	cache := projects.NewProjectCache(nil, time.Hour)
+	cache.InsertForTest("my-project", 12345)
+	projectMapper := projects.NewProjectMapper(cache)
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			ctx := context.TODO()
+			got := CanonicalizeNetworkValue(ctx, tc.val, tc.parentProjectID, projectMapper)
+			if got != tc.want {
+				t.Errorf("CanonicalizeNetworkValue(%q, %q) = %q, want %q", tc.val, tc.parentProjectID, got, tc.want)
 			}
 		})
 	}
