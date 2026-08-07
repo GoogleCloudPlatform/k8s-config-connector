@@ -20,7 +20,6 @@ import (
 	dataformv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataform/v1beta1"
 	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	storagev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1alpha1"
 	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -421,13 +420,13 @@ type NotebookExecutionJob_GCSNotebookSource struct {
 	// The Cloud Storage url pointing to the ipynb file. Format:
 	//  `gs://bucket/notebook_file.ipynb`
 	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.GcsNotebookSource.uri
-	URIRef *storagev1alpha1.StorageBucketObjectRef `json:"uriRef,omitempty"`
+	URI *string `json:"uri,omitempty"`
 
 	// The version of the Cloud Storage object to read. If unset, the current
 	//  version of the object is read. See
 	//  https://cloud.google.com/storage/docs/metadata#generation-number.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.NotebookExecutionJob.GcsNotebookSource.generation
-	GenerationRef *storagev1alpha1.StorageBucketObjectRef `json:"generationRef,omitempty"`
+	Generation *string `json:"generation,omitempty"`
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1.EncryptionSpec
