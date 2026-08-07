@@ -106,6 +106,16 @@ type BigQueryDatasetSpec struct {
 
 	// Optional. Updates storage_billing_model for the dataset.
 	StorageBillingModel *string `json:"storageBillingModel,omitempty"`
+
+	// (Immutable, Optional) This block declaratively defines ALL desired replicas.
+	// One replica's location MUST match spec.location.
+	// If omitted, a standard, non-replicated dataset is created.
+	Replicas []DatasetReplica `json:"replicas,omitempty"`
+}
+
+type DatasetReplica struct {
+	// Immutable. The geographic location where the dataset replica should reside.
+	Location string `json:"location"`
 }
 
 // BigQueryDatasetStatus defines the config connector machine state of BigQueryDataset
@@ -136,6 +146,9 @@ type BigQueryDatasetStatus struct {
 	//  use this URL in Get or Update requests to the resource.
 	SelfLink *string `json:"selfLink,omitempty"`
 
+	// The actual primary location as observed from the GCP API.
+	PrimaryLocation *string `json:"primaryLocation,omitempty"`
+
 	// ObservedState is the state of the resource as most recently observed in GCP.
 	ObservedState *BigQueryDatasetObservedState `json:"observedState,omitempty"`
 }
@@ -146,6 +159,24 @@ type BigQueryDatasetObservedState struct {
 
 	// Optional. If the location is not specified in the spec, the GCP server defaults to a location and will be captured here.
 	Location *string `json:"location,omitempty"`
+
+	// A detailed, live view of all replicas from the GCP API.
+	Replicas []DatasetReplicaStatus `json:"replicas,omitempty"`
+}
+
+type DatasetReplicaStatus struct {
+	ID                              *string                    `json:"id,omitempty"`
+	Location                        *string                    `json:"location,omitempty"`
+	PrimaryState                    *string                    `json:"primaryState,omitempty"`
+	CreationTime                    *string                    `json:"creation_time,omitempty"`
+	CompletionTime                  *string                    `json:"completion_time,omitempty"`
+	PrimaryAssignmentTime           *string                    `json:"primary_assignment_time,omitempty"`
+	PrimaryAssignmentCompletionTime *string                    `json:"primary_assignment_completion_time,omitempty"`
+	SyncStatus                      []DatasetReplicaSyncStatus `json:"sync_status,omitempty"`
+}
+
+type DatasetReplicaSyncStatus struct {
+	ReplicationTime *string `json:"replication_time,omitempty"`
 }
 
 // +genclient

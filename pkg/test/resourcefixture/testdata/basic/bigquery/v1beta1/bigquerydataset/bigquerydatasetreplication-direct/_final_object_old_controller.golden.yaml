@@ -1,0 +1,56 @@
+apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
+kind: BigQueryDataset
+metadata:
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: direct
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 3
+  labels:
+    cnrm-test: "true"
+  name: bqreplica${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  friendlyName: bqreplica-sample-updated
+  location: us
+  projectRef:
+    external: ${projectId}
+  replicas:
+  - location: us
+  - location: eu
+  resourceID: bqreplica${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  creationTime: "1970-01-01T00:00:00Z"
+  etag: abcdef123456
+  externalRef: projects/${projectId}/datasets/bqreplica${uniqueId}
+  lastModifiedTime: "1970-01-01T00:00:00Z"
+  observedGeneration: 3
+  observedState:
+    location: us
+    replicas:
+    - completion_time: "2025-11-14T18:30:33Z"
+      creation_time: "2025-11-14T18:30:33Z"
+      id: us-replica
+      location: us
+      primary_assignment_completion_time: "2025-11-14T18:30:33Z"
+      primary_assignment_time: "2025-11-14T18:30:33Z"
+      primaryState: PRIMARY
+    - completion_time: "2025-11-14T18:30:33Z"
+      creation_time: "2025-11-14T18:30:33Z"
+      id: eu-replica
+      location: eu
+      primary_assignment_completion_time: "2025-11-14T18:30:33Z"
+      primary_assignment_time: "2025-11-14T18:30:33Z"
+      primaryState: SECONDARY
+      sync_status:
+      - replication_time: "2025-11-14T18:30:33Z"
+  primaryLocation: us
+  selfLink: https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bqreplica${uniqueId}

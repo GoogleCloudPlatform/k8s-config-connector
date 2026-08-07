@@ -1,0 +1,6 @@
+- caisURL: //bigquery.googleapis.com/projects/${projectId}/datasets/bqreplica${uniqueId}
+  group: bigquery.cnrm.cloud.google.com
+  kind: BigQueryDataset
+  name: bqreplica${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

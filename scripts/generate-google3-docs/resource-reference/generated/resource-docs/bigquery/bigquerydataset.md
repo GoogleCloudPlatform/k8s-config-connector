@@ -122,6 +122,8 @@ projectRef:
   kind: string
   name: string
   namespace: string
+replicas:
+- location: string
 resourceID: string
 storageBillingModel: string
 ```
@@ -571,6 +573,36 @@ storageBillingModel: string
     </tr>
     <tr>
         <td>
+            <p><code>replicas</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>(Immutable, Optional) This block declaratively defines ALL desired replicas. One replica's location MUST match spec.location. If omitted, a standard, non-replicated dataset is created.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>replicas[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>replicas[].location</code></p>
+            <p><i>Required*</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Immutable. The geographic location where the dataset replica should reside.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>resourceID</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -610,6 +642,17 @@ lastModifiedTime: integer
 observedGeneration: integer
 observedState:
   location: string
+  replicas:
+  - completion_time: string
+    creation_time: string
+    id: string
+    location: string
+    primary_assignment_completion_time: string
+    primary_assignment_time: string
+    primaryState: string
+    sync_status:
+    - replication_time: string
+primaryLocation: string
 selfLink: string
 ```
 
@@ -716,6 +759,97 @@ selfLink: string
         <td>
             <p><code class="apitype">string</code></p>
             <p>Optional. If the location is not specified in the spec, the GCP server defaults to a location and will be captured here.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.replicas</code></td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p>A detailed, live view of all replicas from the GCP API.</p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.replicas[]</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.replicas[].completion_time</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.replicas[].creation_time</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.replicas[].id</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.replicas[].location</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.replicas[].primaryState</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.replicas[].primary_assignment_completion_time</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.replicas[].primary_assignment_time</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.replicas[].sync_status</code></td>
+        <td>
+            <p><code class="apitype">list (object)</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.replicas[].sync_status[]</code></td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>observedState.replicas[].sync_status[].replication_time</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td><code>primaryLocation</code></td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The actual primary location as observed from the GCP API.</p>
         </td>
     </tr>
     <tr>

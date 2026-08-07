@@ -337,6 +337,20 @@ spec:
                     description: The `namespace` field of a `Project` resource.
                     type: string
                 type: object
+              replicas:
+                description: (Immutable, Optional) This block declaratively defines
+                  ALL desired replicas. One replica's location MUST match spec.location.
+                  If omitted, a standard, non-replicated dataset is created.
+                items:
+                  properties:
+                    location:
+                      description: Immutable. The geographic location where the dataset
+                        replica should reside.
+                      type: string
+                  required:
+                  - location
+                  type: object
+                type: array
               resourceID:
                 description: The BigQueryDataset name. If not given, the metadata.name
                   will be used.
@@ -409,7 +423,39 @@ spec:
                       spec, the GCP server defaults to a location and will be captured
                       here.
                     type: string
+                  replicas:
+                    description: A detailed, live view of all replicas from the GCP
+                      API.
+                    items:
+                      properties:
+                        completion_time:
+                          type: string
+                        creation_time:
+                          type: string
+                        id:
+                          type: string
+                        location:
+                          type: string
+                        primary_assignment_completion_time:
+                          type: string
+                        primary_assignment_time:
+                          type: string
+                        primaryState:
+                          type: string
+                        sync_status:
+                          items:
+                            properties:
+                              replication_time:
+                                type: string
+                            type: object
+                          type: array
+                      type: object
+                    type: array
                 type: object
+              primaryLocation:
+                description: The actual primary location as observed from the GCP
+                  API.
+                type: string
               selfLink:
                 description: Output only. A URL that can be used to access the resource
                   again. You can use this URL in Get or Update requests to the resource.
