@@ -37,6 +37,7 @@ func dataprocClusterFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".project_id")
 	f.UnimplementedFields.Insert(".cluster_name")
 	f.UnimplementedFields.Insert(".labels")
+	f.UnimplementedFields.Insert(".config.instance_flexibility_policy.instance_selection_results")
 
 	// Kubernetes cluster config is not fully triaged or fuzzed
 	f.Unimplemented_NotYetTriaged(".virtual_cluster_config.kubernetes_cluster_config")
@@ -47,7 +48,6 @@ func dataprocClusterFuzzer() fuzztesting.KRMFuzzer {
 
 	// Status fields
 	f.StatusFields.Insert(".config")
-	f.StatusFields.Insert(".config.instance_flexibility_policy.instance_selection_results")
 	f.StatusFields.Insert(".status")
 	f.StatusFields.Insert(".status_history")
 	f.StatusFields.Insert(".cluster_uuid")

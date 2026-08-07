@@ -787,8 +787,13 @@ func normalizeRepresentation(obj interface{}) interface{} {
 				normalizeDataprocWorkerConfig(config["workerConfig"])
 				normalizeDataprocWorkerConfig(config["secondaryWorkerConfig"])
 				if swc, ok := config["secondaryWorkerConfig"].(map[string]interface{}); ok {
-					// output-only field
+					// output-only or unsupported fields
 					delete(swc, "managedGroupConfig")
+					delete(swc, "startupConfig")
+					if ifp, ok := swc["instanceFlexibilityPolicy"].(map[string]interface{}); ok {
+						delete(ifp, "instanceMachineTypes")
+						delete(ifp, "instanceSelectionResults")
+					}
 				}
 			}
 		}
