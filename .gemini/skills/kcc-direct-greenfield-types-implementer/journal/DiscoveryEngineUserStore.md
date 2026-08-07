@@ -1,0 +1,18 @@
+# DiscoveryEngineUserStore Greenfield Types Implementation Journal
+
+## Observations & Design Choices
+
+1. **Service/version mismatch vs. the issue text**:
+   - Issue #12023 says the service is `google.cloud.discoveryengine.v1`, matching most other resources in `apis/discoveryengine/generate.sh`. This is incorrect for `UserStore`: the proto (`user_store.proto`, `user_store_service.proto`) only exists under `google.cloud.discoveryengine.v1beta` upstream (verified against the `googleapis/googleapis` proto tree and `discoveryengine_v1.yaml`'s API list, which has no `UserStoreService`).
+   - It also postdates the googleapis SHA currently pinned in `apis/git.versions`. We added a dedicated `generate-types` invocation in `generate.sh` that fetches a newer SHA just for this resource (`./generate-proto.sh "<sha>" ".../googleapis-discoveryengine-userstore.pb"` + `--proto-source-path`), following the precedent in `apis/gkehub/generate.sh`. See `.gemini/journals/discoveryengine.md` for the full detail (also noted there because it's relevant to any future DiscoveryEngine resource, not just this one).
+   - Mapper generation was intentionally skipped for this resource (marked `NOTYET` in `generate.sh`), same precedent as `apis/gkehub/generate.sh` for its SHA-overridden resource, since there is no controller yet.
+
+2. **Schema Design**:
+   - `UserStore` has 5 proto fields: `name` (immutable resource name, used for identity, not exposed as a spec field — standard KCC convention), `display_name`, `default_license_config` (a `resource_reference` to `LicenseConfig`), `enable_license_auto_register`, `enable_expired_license_auto_update`.
+   - Per the base skill's reference-field rule, `default_license_config` (annotated `(google.api.resource_reference) = { type: "discoveryengine.googleapis.com/LicenseConfig" }` in the proto) became `DefaultLicenseConfigRef *DiscoveryEngineLicenseConfigRef` rather than a raw string, reusing the existing `DiscoveryEngineLicenseConfigRef` type from `discoveryenginelicenseconfig_reference.go`.
+   - All 4 non-identity fields are optional per the proto's `field_behavior` annotations (or have no annotation at all, e.g. `display_name`), so `DiscoveryEngineUserStoreObservedState` ended up empty — none of `UserStore`'s fields are server-generated read-only output; they're all settable via `UpdateUserStore`.
+   - Unlike most other DiscoveryEngine resources, `UserStore`'s proto only exposes `GetUserStore`/`UpdateUserStore` RPCs — no `Create`/`Delete`. This is a strong signal that a `UserStore` is implicitly provisioned (likely alongside project/collection setup) rather than created by callers. No controller was implemented as part of this issue (types/identity/generate.sh only, matching the sibling `DiscoveryEngineLicenseConfig`/`ServingConfig`/`SearchEngine`/`SampleQuery(Set)` resources, none of which have controllers or e2e fixtures either); a future controller for this resource would need to special-case "create" (e.g., adopt-only via Get) and likely block/no-op "delete".
+
+3. **Identity & Reference Pattern**:
+   - Followed the canonical `IdentityV2` pattern (`DiscoveryEngineLicenseConfigIdentity` as the template). URL format: `projects/{project}/locations/{location}/userStores/{userStore}`, host `discoveryengine.googleapis.com` — taken directly from the proto's `(google.api.resource)` annotation, since `UserStore` is not present in `docs/ai/metadata/cloudassetinventory_names.jsonl` (added the exception to `pkg/gcpurls/registry_test.go` alongside the existing DiscoveryEngine entries).
+   - Reference file follows `DiscoveryEngineLicenseConfigRef` exactly, delegating `Normalize` to `refs.Normalize` (not a legacy fallback), since this resource supports `status.externalRef`.

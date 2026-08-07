@@ -50,9 +50,28 @@ ${CONTROLLERBUILDER} generate-types --service google.cloud.discoveryengine.v1bet
   --resource DiscoveryEngineServingConfig:ServingConfig
 mv ../../../apis/discoveryengine/v1alpha1/types.generated.go ../../../apis/discoveryengine/v1alpha1/v1beta_types.generated.go
 
+# --- DiscoveryEngineUserStore (v1beta) ---
+# UserStore (google/cloud/discoveryengine/v1beta/user_store.proto and
+# user_store_service.proto) is not present at the googleapis SHA pinned in
+# apis/git.versions -- it was added upstream after that pin. It also does not
+# exist at all under google.cloud.discoveryengine.v1 (only v1beta), so this
+# resource must be generated from the v1beta package.
+# We therefore fetch a newer googleapis SHA just for this resource, following
+# the same pattern used in apis/gkehub/generate.sh.
+if [[ -n ${SKIP_GENERATE_PROTOS:-} ]]; then
+  unset SKIP_GENERATE_PROTOS
+fi
+./generate-proto.sh "befe6dc01ccbe4fc0292c5966efca2ad1fafc2e6" "${REPO_ROOT}/.build/googleapis-discoveryengine-userstore.pb"
 
+${CONTROLLERBUILDER} generate-types \
+  --proto-source-path "${REPO_ROOT}/.build/googleapis-discoveryengine-userstore.pb" \
+  --service google.cloud.discoveryengine.v1beta --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1 \
+  --resource DiscoveryEngineUserStore:UserStore
+mv ../../../apis/discoveryengine/v1alpha1/types.generated.go ../../../apis/discoveryengine/v1alpha1/v1beta_userstore_types.generated.go
 
-
+# NOTYET - mapper generation for DiscoveryEngineUserStore would need
+# --proto-source-path pointed at the newer SHA above; skip until a controller
+# is implemented for this resource (see apis/gkehub/generate.sh for precedent).
 
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.discoveryengine.v1,google.cloud.discoveryengine.v1beta \
