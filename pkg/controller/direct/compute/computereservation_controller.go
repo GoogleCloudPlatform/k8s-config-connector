@@ -430,7 +430,10 @@ func (a *ReservationAdapter) assignGCPDefaults(desired *computepb.Reservation, a
 		actual.GetShareSettings().GetShareType() == "LOCAL" {
 		desired.ShareSettings = actual.ShareSettings
 	}
-	if desired.SpecificReservation != nil && desired.SpecificReservation.AssuredCount == nil {
-		desired.SpecificReservation.AssuredCount = actual.SpecificReservation.AssuredCount
+	if desired.SpecificReservation != nil && actual.SpecificReservation != nil {
+		if desired.SpecificReservation.AssuredCount == nil {
+			desired.SpecificReservation.AssuredCount = actual.SpecificReservation.AssuredCount
+		}
+		desired.SpecificReservation.InUseCount = actual.SpecificReservation.InUseCount
 	}
 }

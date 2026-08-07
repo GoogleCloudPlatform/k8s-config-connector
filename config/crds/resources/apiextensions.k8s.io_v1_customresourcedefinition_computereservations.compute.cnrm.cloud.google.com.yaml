@@ -167,7 +167,8 @@ spec:
                     format: int64
                     type: integer
                   inUseCount:
-                    description: How many instances are in use.
+                    description: Output only. Setting this field has no effect. How
+                      many instances are in use.
                     format: int64
                     type: integer
                   instanceProperties:

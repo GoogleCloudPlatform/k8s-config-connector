@@ -317,7 +317,7 @@ zone: string
         </td>
         <td>
             <p><code class="apitype">integer</code></p>
-            <p>How many instances are in use.</p>
+            <p>Output only. Setting this field has no effect. How many instances are in use.</p>
         </td>
     </tr>
     <tr>
