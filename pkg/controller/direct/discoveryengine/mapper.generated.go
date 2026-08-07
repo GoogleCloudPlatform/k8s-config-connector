@@ -1409,38 +1409,6 @@ func DiscoveryEngineSampleQuerySpec_v1alpha1_ToProto(mapCtx *direct.MapContext, 
 	// MISSING: Name
 	return out
 }
-func DiscoveryEngineSearchEngineObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SiteSearchEngine) *krmdiscoveryenginev1alpha1.DiscoveryEngineSearchEngineObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krmdiscoveryenginev1alpha1.DiscoveryEngineSearchEngineObservedState{}
-	// MISSING: Name
-	return out
-}
-func DiscoveryEngineSearchEngineObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.DiscoveryEngineSearchEngineObservedState) *pb.SiteSearchEngine {
-	if in == nil {
-		return nil
-	}
-	out := &pb.SiteSearchEngine{}
-	// MISSING: Name
-	return out
-}
-func DiscoveryEngineSearchEngineSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SiteSearchEngine) *krmdiscoveryenginev1alpha1.DiscoveryEngineSearchEngineSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krmdiscoveryenginev1alpha1.DiscoveryEngineSearchEngineSpec{}
-	// MISSING: Name
-	return out
-}
-func DiscoveryEngineSearchEngineSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.DiscoveryEngineSearchEngineSpec) *pb.SiteSearchEngine {
-	if in == nil {
-		return nil
-	}
-	out := &pb.SiteSearchEngine{}
-	// MISSING: Name
-	return out
-}
 func DiscoveryEngineServingConfigObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *discoveryenginepb.ServingConfig) *krmdiscoveryenginev1alpha1.DiscoveryEngineServingConfigObservedState {
 	if in == nil {
 		return nil

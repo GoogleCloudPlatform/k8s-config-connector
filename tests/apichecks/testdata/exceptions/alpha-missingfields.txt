@@ -2421,7 +2421,6 @@
 [missing_field] crd=discoveryenginesamplequerysets.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
 [missing_field] crd=discoveryenginesamplequerysets.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=discoveryenginesamplequerysets.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=discoveryenginesearchengines.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataStoreRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=discoveryengineservingconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.boostControlIDs[]" is not set in unstructured objects
 [missing_field] crd=discoveryengineservingconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
 [missing_field] crd=discoveryengineservingconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.dissociateControlIDs[]" is not set in unstructured objects
