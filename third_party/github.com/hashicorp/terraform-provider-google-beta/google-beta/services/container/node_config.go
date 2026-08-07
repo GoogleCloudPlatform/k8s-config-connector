@@ -1210,8 +1210,14 @@ func expandSwapConfig(cfg map[string]interface{}) *container.SwapConfig {
 	}
 	m := ls[0].(map[string]interface{})
 
+	enabled, _ := m["enabled"].(bool)
 	swapConfig := &container.SwapConfig{
-		Enabled: m["enabled"].(bool),
+		Enabled: enabled,
+	}
+	swapConfig.ForceSendFields = append(swapConfig.ForceSendFields, "Enabled")
+
+	if !enabled {
+		return swapConfig
 	}
 
 	if v, ok := m["boot_disk_profile"]; ok && len(v.([]interface{})) > 0 && v.([]interface{})[0] != nil {
@@ -1242,6 +1248,7 @@ func expandSwapConfig(cfg map[string]interface{}) *container.SwapConfig {
 		swapConfig.EncryptionConfig = &container.EncryptionConfig{
 			Disabled: p["disabled"].(bool),
 		}
+		swapConfig.EncryptionConfig.ForceSendFields = append(swapConfig.EncryptionConfig.ForceSendFields, "Disabled")
 	}
 
 	return swapConfig
