@@ -1,0 +1,15 @@
+apiVersion: grafeas.cnrm.cloud.google.com/v1alpha1
+kind: GrafeasNote
+metadata:
+  name: grafeasnote-maximal-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  shortDescription: "Maximal Grafeas Note"
+  longDescription: "A detailed description of the maximal Grafeas Note"
+  relatedURL:
+    - label: "Google Cloud"
+      url: "https://cloud.google.com"
+  attestation:
+    hint:
+      humanReadableName: "qa"

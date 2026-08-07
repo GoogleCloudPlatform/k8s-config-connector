@@ -1,0 +1,203 @@
+GRPC /grafeas.v1.Grafeas/GetNote
+
+{
+  "name": "projects/${projectId}/notes/grafeasnote-maximal-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = Requested entity was not found
+
+{}
+
+---
+
+GRPC /grafeas.v1.Grafeas/CreateNote
+
+{
+  "note": {
+    "attestation": {
+      "hint": {
+        "humanReadableName": "qa"
+      }
+    },
+    "longDescription": "A detailed description of the maximal Grafeas Note",
+    "relatedUrl": [
+      {
+        "label": "Google Cloud",
+        "url": "https://cloud.google.com"
+      }
+    ],
+    "shortDescription": "Maximal Grafeas Note"
+  },
+  "noteId": "grafeasnote-maximal-${uniqueId}",
+  "parent": "projects/${projectId}"
+}
+
+OK
+
+{
+  "attestation": {
+    "hint": {
+      "humanReadableName": "qa"
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "ATTESTATION",
+  "longDescription": "A detailed description of the maximal Grafeas Note",
+  "name": "projects/${projectId}/notes/grafeasnote-maximal-${uniqueId}",
+  "relatedUrl": [
+    {
+      "label": "Google Cloud",
+      "url": "https://cloud.google.com"
+    }
+  ],
+  "shortDescription": "Maximal Grafeas Note",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /grafeas.v1.Grafeas/GetNote
+
+{
+  "name": "projects/${projectId}/notes/grafeasnote-maximal-${uniqueId}"
+}
+
+OK
+
+{
+  "attestation": {
+    "hint": {
+      "humanReadableName": "qa"
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "ATTESTATION",
+  "longDescription": "A detailed description of the maximal Grafeas Note",
+  "name": "projects/${projectId}/notes/grafeasnote-maximal-${uniqueId}",
+  "relatedUrl": [
+    {
+      "label": "Google Cloud",
+      "url": "https://cloud.google.com"
+    }
+  ],
+  "shortDescription": "Maximal Grafeas Note",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /grafeas.v1.Grafeas/UpdateNote
+
+{
+  "name": "projects/${projectId}/notes/grafeasnote-maximal-${uniqueId}",
+  "note": {
+    "attestation": {
+      "hint": {
+        "humanReadableName": "prod"
+      }
+    },
+    "longDescription": "An updated detailed description of the maximal Grafeas Note",
+    "relatedUrl": [
+      {
+        "label": "Google Cloud Update",
+        "url": "https://cloud.google.com/update"
+      }
+    ],
+    "shortDescription": "Updated Maximal Grafeas Note"
+  },
+  "updateMask": "attestation,longDescription,relatedUrl,shortDescription"
+}
+
+OK
+
+{
+  "attestation": {
+    "hint": {
+      "humanReadableName": "prod"
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "ATTESTATION",
+  "longDescription": "An updated detailed description of the maximal Grafeas Note",
+  "name": "projects/${projectId}/notes/grafeasnote-maximal-${uniqueId}",
+  "relatedUrl": [
+    {
+      "label": "Google Cloud Update",
+      "url": "https://cloud.google.com/update"
+    }
+  ],
+  "shortDescription": "Updated Maximal Grafeas Note",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /grafeas.v1.Grafeas/GetNote
+
+{
+  "name": "projects/${projectId}/notes/grafeasnote-maximal-${uniqueId}"
+}
+
+OK
+
+{
+  "attestation": {
+    "hint": {
+      "humanReadableName": "prod"
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "ATTESTATION",
+  "longDescription": "An updated detailed description of the maximal Grafeas Note",
+  "name": "projects/${projectId}/notes/grafeasnote-maximal-${uniqueId}",
+  "relatedUrl": [
+    {
+      "label": "Google Cloud Update",
+      "url": "https://cloud.google.com/update"
+    }
+  ],
+  "shortDescription": "Updated Maximal Grafeas Note",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /grafeas.v1.Grafeas/GetNote
+
+{
+  "name": "projects/${projectId}/notes/grafeasnote-maximal-${uniqueId}"
+}
+
+OK
+
+{
+  "attestation": {
+    "hint": {
+      "humanReadableName": "prod"
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "ATTESTATION",
+  "longDescription": "An updated detailed description of the maximal Grafeas Note",
+  "name": "projects/${projectId}/notes/grafeasnote-maximal-${uniqueId}",
+  "relatedUrl": [
+    {
+      "label": "Google Cloud Update",
+      "url": "https://cloud.google.com/update"
+    }
+  ],
+  "shortDescription": "Updated Maximal Grafeas Note",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /grafeas.v1.Grafeas/DeleteNote
+
+{
+  "name": "projects/${projectId}/notes/grafeasnote-maximal-${uniqueId}"
+}
+
+OK
+
+{}

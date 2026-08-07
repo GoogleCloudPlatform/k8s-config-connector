@@ -122,7 +122,7 @@ func (s *ContainerAnalysisV1) UpdateNote(ctx context.Context, req *pb.UpdateNote
 			obj.LongDescription = req.Note.GetLongDescription()
 		case "related_url":
 			obj.RelatedUrl = req.Note.GetRelatedUrl()
-		case "attestation.hint.human_readable_name":
+		case "attestation", "attestation.hint.human_readable_name":
 			obj.Type = req.Note.GetType()
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
