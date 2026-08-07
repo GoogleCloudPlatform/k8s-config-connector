@@ -58,6 +58,7 @@ type ReservationSpecificReservation struct {
 	// +kcc:proto:field=google.cloud.compute.v1.AllocationSpecificSKUReservation.count
 	Count *int64 `json:"count"`
 
+	// Output only. Setting this field has no effect.
 	// How many instances are in use.
 	// +kcc:proto:field=google.cloud.compute.v1.AllocationSpecificSKUReservation.in_use_count
 	InUseCount *int64 `json:"inUseCount,omitempty"`
