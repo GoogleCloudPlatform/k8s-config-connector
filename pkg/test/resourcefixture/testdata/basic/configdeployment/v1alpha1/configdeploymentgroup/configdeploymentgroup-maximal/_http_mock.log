@@ -100,9 +100,6 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.config.v1.DeploymentGroup",
-    "annotations": {
-      "client": "custom-client"
-    },
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deploymentUnits": [
       {
@@ -115,9 +112,6 @@ X-Xss-Protection: 0
         "id": "unit2"
       }
     ],
-    "labels": {
-      "env": "test-create"
-    },
     "name": "projects/${projectId}/locations/us-central1/deploymentGroups/configdeploymentgroup-${uniqueId}",
     "state": "ACTIVE",
     "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -244,9 +238,6 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.config.v1.DeploymentGroup",
-    "annotations": {
-      "client": "custom-client-updated"
-    },
     "createTime": "2024-04-01T12:34:56.123456Z",
     "deploymentUnits": [
       {
@@ -259,9 +250,6 @@ X-Xss-Protection: 0
         "id": "unit3"
       }
     ],
-    "labels": {
-      "env": "test-update"
-    },
     "name": "projects/${projectId}/locations/us-central1/deploymentGroups/configdeploymentgroup-${uniqueId}",
     "state": "ACTIVE",
     "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -367,9 +355,6 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.config.v1.DeploymentGroup",
-    "annotations": {
-      "client": "custom-client-updated"
-    },
     "deploymentUnits": [
       {
         "id": "unit1"
@@ -381,9 +366,6 @@ X-Xss-Protection: 0
         "id": "unit3"
       }
     ],
-    "labels": {
-      "env": "test-update"
-    },
     "name": "projects/${projectId}/locations/us-central1/deploymentGroups/configdeploymentgroup-${uniqueId}",
     "state": "DELETED"
   }
