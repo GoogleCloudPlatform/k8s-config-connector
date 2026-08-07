@@ -105,8 +105,6 @@ BLOCKED_KINDS=(
     "ApigeeRegistryAPI"
     "BigQueryAnalyticsHubDataExchange"
     "VertexAIModelDeploymentMonitoringJob"
-    "VertexAIIndexEndpoint"
-    "VertexAIIndex"
     "VertexAIHyperparameterTuningJob"
     "VertexAIFeatureOnlineStore"
     "VertexAIFeatureGroup"

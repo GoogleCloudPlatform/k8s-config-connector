@@ -152,8 +152,6 @@ This file tracks the progress of new "Direct" resource implementations.
 | VertexAIFeatureGroup | aiplatform | [#8414](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8414) | - | - | 3 | OPEN | - |
 | VertexAIFeatureOnlineStore | aiplatform | [#8408](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8408) | - | - | 3 | OPEN | - |
 | VertexAIHyperparameterTuningJob | aiplatform | [#8415](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8415) | - | - | 1 | OPEN | - |
-| VertexAIIndex | aiplatform | [#8421](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8421) | - | - | 3 | CLOSED | - |
-| VertexAIIndexEndpoint | aiplatform | [#8422](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8422) | - | - | 1 | OPEN | - |
 | VertexAIModelDeploymentMonitoringJob | aiplatform | [#8425](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/8425) | - | - | 1 | OPEN | - |
 | VertexAIPersistentResource | aiplatform | [#9296](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9296) | - | - | 1 | OPEN | - |
 | VertexAIPipelineJob | aiplatform | [#9457](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9457) | - | - | 3 | OPEN | - |
