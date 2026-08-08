@@ -24,144 +24,6 @@ Vary: X-Origin
 
 ---
 
-GRPC /google.cloud.aiplatform.v1.PipelineService/GetPipelineJob
-
-{
-  "name": "projects/${projectId}/locations/us-central1/pipelineJobs/vertexaipipelinejob-maximal-${uniqueId}"
-}
-
-error: rpc error: code = NotFound desc = pipelineJob "projects/${projectNumber}/locations/us-central1/pipelineJobs/vertexaipipelinejob-maximal-${uniqueId}" not found
-
-{}
-
----
-
-GRPC /google.cloud.aiplatform.v1.PipelineService/CreatePipelineJob
-
-{
-  "parent": "projects/${projectId}/locations/us-central1",
-  "pipelineJob": {
-    "displayName": "Maximal Pipeline Job",
-    "labels": {
-      "baz": "qux",
-      "foo": "bar"
-    },
-    "pipelineSpec": {
-      "components": {
-        "hello-world-component": {
-          "executorLabel": "hello-world-executor"
-        }
-      },
-      "deploymentConfig": {
-        "@type": "type.googleapis.com/ml_pipelines.PipelineDeploymentConfig",
-        "executors": {
-          "hello-world-executor": {
-            "container": {
-              "command": [
-                "echo",
-                "Hello World"
-              ],
-              "image": "alpine:latest"
-            }
-          }
-        }
-      },
-      "pipelineInfo": {
-        "name": "hello-world-pipeline"
-      },
-      "root": {
-        "dag": {
-          "tasks": {
-            "hello-world-task": {
-              "cachingOptions": {
-                "enableCache": true
-              },
-              "componentRef": {
-                "name": "hello-world-component"
-              },
-              "taskInfo": {
-                "name": "hello-world-task"
-              }
-            }
-          }
-        }
-      },
-      "schemaVersion": "2.1.0"
-    },
-    "preflightValidations": true,
-    "runtimeConfig": {
-      "failurePolicy": "PIPELINE_FAILURE_POLICY_FAIL_FAST",
-      "gcsOutputDirectory": "gs://vertexai-pipelinejob-bucket-${uniqueId}/output"
-    }
-  },
-  "pipelineJobId": "vertexaipipelinejob-maximal-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "displayName": "Maximal Pipeline Job",
-  "endTime": "2024-04-01T12:34:56.123456Z",
-  "labels": {
-    "baz": "qux",
-    "foo": "bar"
-  },
-  "name": "projects/${projectNumber}/locations/us-central1/pipelineJobs/vertexaipipelinejob-maximal-${uniqueId}",
-  "pipelineSpec": {
-    "components": {
-      "hello-world-component": {
-        "executorLabel": "hello-world-executor"
-      }
-    },
-    "deploymentConfig": {
-      "@type": "type.googleapis.com/ml_pipelines.PipelineDeploymentConfig",
-      "executors": {
-        "hello-world-executor": {
-          "container": {
-            "command": [
-              "echo",
-              "Hello World"
-            ],
-            "image": "alpine:latest"
-          }
-        }
-      }
-    },
-    "pipelineInfo": {
-      "name": "hello-world-pipeline"
-    },
-    "root": {
-      "dag": {
-        "tasks": {
-          "hello-world-task": {
-            "cachingOptions": {
-              "enableCache": true
-            },
-            "componentRef": {
-              "name": "hello-world-component"
-            },
-            "taskInfo": {
-              "name": "hello-world-task"
-            }
-          }
-        }
-      }
-    },
-    "schemaVersion": "2.1.0"
-  },
-  "preflightValidations": true,
-  "runtimeConfig": {
-    "failurePolicy": "PIPELINE_FAILURE_POLICY_FAIL_FAST",
-    "gcsOutputDirectory": "gs://vertexai-pipelinejob-bucket-${uniqueId}/output"
-  },
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "state": "PIPELINE_STATE_SUCCEEDED",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
 POST https://storage.googleapis.com/storage/v1/b?alt=json&prettyPrint=false&project=${projectId}
 Content-Type: application/json
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -281,15 +143,83 @@ GRPC /google.cloud.aiplatform.v1.PipelineService/GetPipelineJob
   "name": "projects/${projectId}/locations/us-central1/pipelineJobs/vertexaipipelinejob-maximal-${uniqueId}"
 }
 
+error: rpc error: code = NotFound desc = The PipelineJob does not exist.
+
+{}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.PipelineService/CreatePipelineJob
+
+{
+  "parent": "projects/${projectId}/locations/us-central1",
+  "pipelineJob": {
+    "displayName": "Maximal Pipeline Job",
+    "labels": {
+      "baz": "qux",
+      "foo": "bar"
+    },
+    "pipelineSpec": {
+      "components": {
+        "hello-world-component": {
+          "executorLabel": "hello-world-executor"
+        }
+      },
+      "deploymentConfig": {
+        "@type": "type.googleapis.com/ml_pipelines.PipelineDeploymentConfig"
+      },
+      "deploymentSpec": {
+        "executors": {
+          "hello-world-executor": {
+            "container": {
+              "command": [
+                "echo",
+                "Hello World"
+              ],
+              "image": "alpine:latest"
+            }
+          }
+        }
+      },
+      "pipelineInfo": {
+        "name": "hello-world-pipeline"
+      },
+      "root": {
+        "dag": {
+          "tasks": {
+            "hello-world-task": {
+              "cachingOptions": {
+                "enableCache": true
+              },
+              "componentRef": {
+                "name": "hello-world-component"
+              },
+              "taskInfo": {
+                "name": "hello-world-task"
+              }
+            }
+          }
+        }
+      },
+      "schemaVersion": "2.1.0"
+    },
+    "runtimeConfig": {
+      "failurePolicy": "PIPELINE_FAILURE_POLICY_FAIL_FAST",
+      "gcsOutputDirectory": "gs://vertexai-pipelinejob-bucket-${uniqueId}/output"
+    }
+  },
+  "pipelineJobId": "vertexaipipelinejob-maximal-${uniqueId}"
+}
+
 OK
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "displayName": "Maximal Pipeline Job",
-  "endTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
     "baz": "qux",
-    "foo": "bar"
+    "foo": "bar",
+    "vertex-ai-pipelines-run-billing-id": "619702208161644544"
   },
   "name": "projects/${projectNumber}/locations/us-central1/pipelineJobs/vertexaipipelinejob-maximal-${uniqueId}",
   "pipelineSpec": {
@@ -299,7 +229,9 @@ OK
       }
     },
     "deploymentConfig": {
-      "@type": "type.googleapis.com/ml_pipelines.PipelineDeploymentConfig",
+      "@type": "type.googleapis.com/ml_pipelines.PipelineDeploymentConfig"
+    },
+    "deploymentSpec": {
       "executors": {
         "hello-world-executor": {
           "container": {
@@ -334,13 +266,12 @@ OK
     },
     "schemaVersion": "2.1.0"
   },
-  "preflightValidations": true,
   "runtimeConfig": {
     "failurePolicy": "PIPELINE_FAILURE_POLICY_FAIL_FAST",
     "gcsOutputDirectory": "gs://vertexai-pipelinejob-bucket-${uniqueId}/output"
   },
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "state": "PIPELINE_STATE_SUCCEEDED",
+  "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+  "state": "PIPELINE_STATE_PENDING",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
@@ -357,10 +288,11 @@ OK
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "displayName": "Maximal Pipeline Job",
-  "endTime": "2024-04-01T12:34:56.123456Z",
+  "jobDetail": {},
   "labels": {
     "baz": "qux",
-    "foo": "bar"
+    "foo": "bar",
+    "vertex-ai-pipelines-run-billing-id": "619702208161644544"
   },
   "name": "projects/${projectNumber}/locations/us-central1/pipelineJobs/vertexaipipelinejob-maximal-${uniqueId}",
   "pipelineSpec": {
@@ -370,7 +302,9 @@ OK
       }
     },
     "deploymentConfig": {
-      "@type": "type.googleapis.com/ml_pipelines.PipelineDeploymentConfig",
+      "@type": "type.googleapis.com/ml_pipelines.PipelineDeploymentConfig"
+    },
+    "deploymentSpec": {
       "executors": {
         "hello-world-executor": {
           "container": {
@@ -405,13 +339,268 @@ OK
     },
     "schemaVersion": "2.1.0"
   },
-  "preflightValidations": true,
   "runtimeConfig": {
     "failurePolicy": "PIPELINE_FAILURE_POLICY_FAIL_FAST",
     "gcsOutputDirectory": "gs://vertexai-pipelinejob-bucket-${uniqueId}/output"
   },
-  "startTime": "2024-04-01T12:34:56.123456Z",
-  "state": "PIPELINE_STATE_SUCCEEDED",
+  "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+  "state": "PIPELINE_STATE_PENDING",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.PipelineService/GetPipelineJob
+
+{
+  "name": "projects/${projectId}/locations/us-central1/pipelineJobs/vertexaipipelinejob-maximal-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Maximal Pipeline Job",
+  "jobDetail": {},
+  "labels": {
+    "baz": "qux",
+    "foo": "bar",
+    "vertex-ai-pipelines-run-billing-id": "619702208161644544"
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/pipelineJobs/vertexaipipelinejob-maximal-${uniqueId}",
+  "pipelineSpec": {
+    "components": {
+      "hello-world-component": {
+        "executorLabel": "hello-world-executor"
+      }
+    },
+    "deploymentConfig": {
+      "@type": "type.googleapis.com/ml_pipelines.PipelineDeploymentConfig"
+    },
+    "deploymentSpec": {
+      "executors": {
+        "hello-world-executor": {
+          "container": {
+            "command": [
+              "echo",
+              "Hello World"
+            ],
+            "image": "alpine:latest"
+          }
+        }
+      }
+    },
+    "pipelineInfo": {
+      "name": "hello-world-pipeline"
+    },
+    "root": {
+      "dag": {
+        "tasks": {
+          "hello-world-task": {
+            "cachingOptions": {
+              "enableCache": true
+            },
+            "componentRef": {
+              "name": "hello-world-component"
+            },
+            "taskInfo": {
+              "name": "hello-world-task"
+            }
+          }
+        }
+      }
+    },
+    "schemaVersion": "2.1.0"
+  },
+  "runtimeConfig": {
+    "failurePolicy": "PIPELINE_FAILURE_POLICY_FAIL_FAST",
+    "gcsOutputDirectory": "gs://vertexai-pipelinejob-bucket-${uniqueId}/output"
+  },
+  "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+  "state": "PIPELINE_STATE_PENDING",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.PipelineService/GetPipelineJob
+
+{
+  "name": "projects/${projectId}/locations/us-central1/pipelineJobs/vertexaipipelinejob-maximal-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Maximal Pipeline Job",
+  "jobDetail": {},
+  "labels": {
+    "baz": "qux",
+    "foo": "bar",
+    "vertex-ai-pipelines-run-billing-id": "619702208161644544"
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/pipelineJobs/vertexaipipelinejob-maximal-${uniqueId}",
+  "pipelineSpec": {
+    "components": {
+      "hello-world-component": {
+        "executorLabel": "hello-world-executor"
+      }
+    },
+    "deploymentConfig": {
+      "@type": "type.googleapis.com/ml_pipelines.PipelineDeploymentConfig"
+    },
+    "deploymentSpec": {
+      "executors": {
+        "hello-world-executor": {
+          "container": {
+            "command": [
+              "echo",
+              "Hello World"
+            ],
+            "image": "alpine:latest"
+          }
+        }
+      }
+    },
+    "pipelineInfo": {
+      "name": "hello-world-pipeline"
+    },
+    "root": {
+      "dag": {
+        "tasks": {
+          "hello-world-task": {
+            "cachingOptions": {
+              "enableCache": true
+            },
+            "componentRef": {
+              "name": "hello-world-component"
+            },
+            "taskInfo": {
+              "name": "hello-world-task"
+            }
+          }
+        }
+      }
+    },
+    "schemaVersion": "2.1.0"
+  },
+  "runtimeConfig": {
+    "failurePolicy": "PIPELINE_FAILURE_POLICY_FAIL_FAST",
+    "gcsOutputDirectory": "gs://vertexai-pipelinejob-bucket-${uniqueId}/output"
+  },
+  "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+  "state": "PIPELINE_STATE_PENDING",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.PipelineService/CancelPipelineJob
+
+{
+  "name": "projects/${projectId}/locations/us-central1/pipelineJobs/vertexaipipelinejob-maximal-${uniqueId}"
+}
+
+OK
+
+{}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.PipelineService/GetPipelineJob
+
+{
+  "name": "projects/${projectId}/locations/us-central1/pipelineJobs/vertexaipipelinejob-maximal-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Maximal Pipeline Job",
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "jobDetail": {
+    "pipelineContext": {
+      "createTime": "2026-07-23T09:10:49.314Z",
+      "displayName": "hello-world-pipeline",
+      "etag": "1784802675203",
+      "metadata": {},
+      "name": "projects/${projectNumber}/locations/us-central1/metadataStores/default/contexts/hello-world-pipeline",
+      "schemaTitle": "system.Pipeline",
+      "schemaVersion": "0.0.1",
+      "updateTime": "2026-07-23T10:31:15.203Z"
+    },
+    "pipelineRunContext": {
+      "createTime": "2026-07-23T10:31:15.295Z",
+      "displayName": "vertexaipipelinejob-maximal-${uniqueId}",
+      "etag": "1784802675295",
+      "metadata": {},
+      "name": "projects/${projectNumber}/locations/us-central1/metadataStores/default/contexts/vertexaipipelinejob-maximal-${uniqueId}",
+      "parentContexts": [
+        "projects/${projectNumber}/locations/us-central1/metadataStores/default/contexts/hello-world-pipeline"
+      ],
+      "schemaTitle": "system.PipelineRun",
+      "schemaVersion": "0.0.1",
+      "updateTime": "2026-07-23T10:31:15.295Z"
+    }
+  },
+  "labels": {
+    "baz": "qux",
+    "foo": "bar",
+    "vertex-ai-pipelines-run-billing-id": "619702208161644544"
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/pipelineJobs/vertexaipipelinejob-maximal-${uniqueId}",
+  "pipelineSpec": {
+    "components": {
+      "hello-world-component": {
+        "executorLabel": "hello-world-executor"
+      }
+    },
+    "deploymentConfig": {
+      "@type": "type.googleapis.com/ml_pipelines.PipelineDeploymentConfig"
+    },
+    "deploymentSpec": {
+      "executors": {
+        "hello-world-executor": {
+          "container": {
+            "command": [
+              "echo",
+              "Hello World"
+            ],
+            "image": "alpine:latest"
+          }
+        }
+      }
+    },
+    "pipelineInfo": {
+      "name": "hello-world-pipeline"
+    },
+    "root": {
+      "dag": {
+        "tasks": {
+          "hello-world-task": {
+            "cachingOptions": {
+              "enableCache": true
+            },
+            "componentRef": {
+              "name": "hello-world-component"
+            },
+            "taskInfo": {
+              "name": "hello-world-task"
+            }
+          }
+        }
+      }
+    },
+    "schemaVersion": "2.1.0"
+  },
+  "runtimeConfig": {
+    "failurePolicy": "PIPELINE_FAILURE_POLICY_FAIL_FAST",
+    "gcsOutputDirectory": "gs://vertexai-pipelinejob-bucket-${uniqueId}/output"
+  },
+  "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+  "state": "PIPELINE_STATE_CANCELLED",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
@@ -428,7 +617,7 @@ OK
 {
   "done": true,
   "metadata": {
-    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.DeleteOperationMetadata",
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1.DeleteOperationMetadata",
     "genericMetadata": {
       "createTime": "2024-04-01T12:34:56.123456Z",
       "updateTime": "2024-04-01T12:34:56.123456Z"
@@ -497,11 +686,7 @@ Vary: Origin
 Vary: X-Origin
 
 {
-  "kind": "storage#objects",
-  "prefixes": [
-    "testfolder",
-    "testmanagedfolder"
-  ]
+  "kind": "storage#objects"
 }
 
 ---
