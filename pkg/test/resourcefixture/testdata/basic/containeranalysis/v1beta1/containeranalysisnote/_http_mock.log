@@ -1,6 +1,6 @@
 GET https://containeranalysis.googleapis.com/v1/projects/${projectId}/notes/containeranalysisnote-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1 (mockgcp)
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -15,7 +15,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Requested entity was not found",
+    "message": "note with ID \"containeranalysisnote-${uniqueId}\" for project \"${projectId}\" does not exist",
     "status": "NOT_FOUND"
   }
 }
@@ -24,7 +24,7 @@ X-Xss-Protection: 0
 
 POST https://containeranalysis.googleapis.com/v1/projects/${projectId}/notes?alt=json&noteId=containeranalysisnote-${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1 (mockgcp)
 
 {
   "attestation": {
@@ -85,7 +85,7 @@ X-Xss-Protection: 0
 
 GET https://containeranalysis.googleapis.com/v1/projects/${projectId}/notes/containeranalysisnote-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1 (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -125,7 +125,7 @@ X-Xss-Protection: 0
 
 PATCH https://containeranalysis.googleapis.com/v1/projects/${projectId}/notes/containeranalysisnote-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1 (mockgcp)
 
 {
   "attestation": {
@@ -177,7 +177,7 @@ X-Xss-Protection: 0
 
 GET https://containeranalysis.googleapis.com/v1/projects/${projectId}/notes/containeranalysisnote-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1 (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -213,7 +213,7 @@ X-Xss-Protection: 0
 
 DELETE https://containeranalysis.googleapis.com/v1/projects/${projectId}/notes/containeranalysisnote-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1 (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -231,7 +231,7 @@ X-Xss-Protection: 0
 
 GET https://containeranalysis.googleapis.com/v1/projects/${projectId}/notes/containeranalysisnote-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1 (mockgcp)
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -246,7 +246,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Requested entity was not found",
+    "message": "note with ID \"containeranalysisnote-${uniqueId}\" for project \"${projectId}\" does not exist",
     "status": "NOT_FOUND"
   }
 }

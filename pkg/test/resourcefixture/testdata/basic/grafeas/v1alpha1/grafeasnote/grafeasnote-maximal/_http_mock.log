@@ -4,7 +4,7 @@ GRPC /grafeas.v1.Grafeas/GetNote
   "name": "projects/${projectId}/notes/grafeasnote-maximal-${uniqueId}"
 }
 
-error: rpc error: code = NotFound desc = Requested entity was not found
+error: rpc error: code = NotFound desc = note with ID "grafeasnote-maximal-${uniqueId}" for project "${projectId}" does not exist
 
 {}
 

@@ -51,7 +51,7 @@ func (s *ContainerAnalysisV1) GetNote(ctx context.Context, req *pb.GetNoteReques
 	obj := &pb.Note{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "Requested entity was not found")
+			return nil, status.Errorf(codes.NotFound, "note with ID %q for project %q does not exist", name.NoteName, name.Project.ID)
 		}
 		return nil, err
 	}
@@ -94,7 +94,7 @@ func (s *ContainerAnalysisV1) UpdateNote(ctx context.Context, req *pb.UpdateNote
 	obj := &pb.Note{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "Requested entity was not found")
+			return nil, status.Errorf(codes.NotFound, "note with ID %q for project %q does not exist", name.NoteName, name.Project.ID)
 		}
 		return nil, err
 	}
@@ -147,7 +147,7 @@ func (s *ContainerAnalysisV1) DeleteNote(ctx context.Context, req *pb.DeleteNote
 	oldObj := &pb.Note{}
 	if err := s.storage.Delete(ctx, fqn, oldObj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "Requested entity was not found")
+			return nil, status.Errorf(codes.NotFound, "note with ID %q for project %q does not exist", name.NoteName, name.Project.ID)
 		}
 		return nil, err
 	}
