@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: apihub.cnrm.cloud.google.com
+  kind: APIHubDeployment
+  name: dep-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
