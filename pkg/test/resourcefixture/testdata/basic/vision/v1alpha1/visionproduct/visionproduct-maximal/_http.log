@@ -1,0 +1,217 @@
+GET https://vision.googleapis.com/v1/projects/${projectId}/locations/us-west1/products/visionproduct-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west1%2Fproducts%2Fvisionproduct-max-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "product \"projects/${projectId}/locations/us-west1/products/visionproduct-max-${uniqueId}\" not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "product \"projects/${projectId}/locations/us-west1/products/visionproduct-max-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://vision.googleapis.com/v1/projects/${projectId}/locations/us-west1/products?%24alt=json%3Benum-encoding%3Dint&productId=visionproduct-max-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-west1
+
+{
+  "description": "A product with all fields specified",
+  "displayName": "Maximal Vision Product",
+  "productCategory": "apparel-v2",
+  "productLabels": [
+    {
+      "key": "color",
+      "value": "blue"
+    },
+    {
+      "key": "season",
+      "value": "summer"
+    }
+  ]
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "description": "A product with all fields specified",
+  "displayName": "Maximal Vision Product",
+  "name": "projects/${projectId}/locations/us-west1/products/visionproduct-max-${uniqueId}",
+  "productCategory": "apparel-v2",
+  "productLabels": [
+    {
+      "key": "color",
+      "value": "blue"
+    },
+    {
+      "key": "season",
+      "value": "summer"
+    }
+  ]
+}
+
+---
+
+GET https://vision.googleapis.com/v1/projects/${projectId}/locations/us-west1/products/visionproduct-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west1%2Fproducts%2Fvisionproduct-max-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "description": "A product with all fields specified",
+  "displayName": "Maximal Vision Product",
+  "name": "projects/${projectId}/locations/us-west1/products/visionproduct-max-${uniqueId}",
+  "productCategory": "apparel-v2",
+  "productLabels": [
+    {
+      "key": "color",
+      "value": "blue"
+    },
+    {
+      "key": "season",
+      "value": "summer"
+    }
+  ]
+}
+
+---
+
+PATCH https://vision.googleapis.com/v1/projects/${projectId}/locations/us-west1/products/visionproduct-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2CdisplayName%2CproductLabels
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: product.name=projects%2F${projectId}%2Flocations%2Fus-west1%2Fproducts%2Fvisionproduct-max-${uniqueId}
+
+{
+  "description": "An updated description for maximal product",
+  "displayName": "Maximal Vision Product Updated",
+  "name": "projects/${projectId}/locations/us-west1/products/visionproduct-max-${uniqueId}",
+  "productCategory": "apparel-v2",
+  "productLabels": [
+    {
+      "key": "color",
+      "value": "red"
+    },
+    {
+      "key": "season",
+      "value": "autumn"
+    }
+  ]
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "description": "An updated description for maximal product",
+  "displayName": "Maximal Vision Product Updated",
+  "name": "projects/${projectId}/locations/us-west1/products/visionproduct-max-${uniqueId}",
+  "productCategory": "apparel-v2",
+  "productLabels": [
+    {
+      "key": "color",
+      "value": "red"
+    },
+    {
+      "key": "season",
+      "value": "autumn"
+    }
+  ]
+}
+
+---
+
+GET https://vision.googleapis.com/v1/projects/${projectId}/locations/us-west1/products/visionproduct-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west1%2Fproducts%2Fvisionproduct-max-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "description": "An updated description for maximal product",
+  "displayName": "Maximal Vision Product Updated",
+  "name": "projects/${projectId}/locations/us-west1/products/visionproduct-max-${uniqueId}",
+  "productCategory": "apparel-v2",
+  "productLabels": [
+    {
+      "key": "color",
+      "value": "red"
+    },
+    {
+      "key": "season",
+      "value": "autumn"
+    }
+  ]
+}
+
+---
+
+DELETE https://vision.googleapis.com/v1/projects/${projectId}/locations/us-west1/products/visionproduct-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-west1%2Fproducts%2Fvisionproduct-max-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

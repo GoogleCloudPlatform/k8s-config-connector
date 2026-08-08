@@ -13,7 +13,7 @@ import (
 	"io"
 	"net/http"
 
-	iampb_0 "cloud.google.com/go/iam/apiv1/iampb"
+	extIampb "cloud.google.com/go/iam/apiv1/iampb"
 	extSecuritycenterpb "cloud.google.com/go/securitycenter/apiv1/securitycenterpb"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/utilities"
@@ -2254,7 +2254,7 @@ func local_request_SecurityCenter_GetBigQueryExport_2(ctx context.Context, marsh
 }
 
 func request_SecurityCenter_GetIamPolicy_0(ctx context.Context, marshaler runtime.Marshaler, client extSecuritycenterpb.SecurityCenterClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq iampb_0.GetIamPolicyRequest
+	var protoReq extIampb.GetIamPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -2288,7 +2288,7 @@ func request_SecurityCenter_GetIamPolicy_0(ctx context.Context, marshaler runtim
 }
 
 func local_request_SecurityCenter_GetIamPolicy_0(ctx context.Context, marshaler runtime.Marshaler, server extSecuritycenterpb.SecurityCenterServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq iampb_0.GetIamPolicyRequest
+	var protoReq extIampb.GetIamPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -5980,7 +5980,7 @@ func local_request_SecurityCenter_SetMute_2(ctx context.Context, marshaler runti
 }
 
 func request_SecurityCenter_SetIamPolicy_0(ctx context.Context, marshaler runtime.Marshaler, client extSecuritycenterpb.SecurityCenterClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq iampb_0.SetIamPolicyRequest
+	var protoReq extIampb.SetIamPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -6014,7 +6014,7 @@ func request_SecurityCenter_SetIamPolicy_0(ctx context.Context, marshaler runtim
 }
 
 func local_request_SecurityCenter_SetIamPolicy_0(ctx context.Context, marshaler runtime.Marshaler, server extSecuritycenterpb.SecurityCenterServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq iampb_0.SetIamPolicyRequest
+	var protoReq extIampb.SetIamPolicyRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -6048,7 +6048,7 @@ func local_request_SecurityCenter_SetIamPolicy_0(ctx context.Context, marshaler 
 }
 
 func request_SecurityCenter_TestIamPermissions_0(ctx context.Context, marshaler runtime.Marshaler, client extSecuritycenterpb.SecurityCenterClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq iampb_0.TestIamPermissionsRequest
+	var protoReq extIampb.TestIamPermissionsRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
@@ -6082,7 +6082,7 @@ func request_SecurityCenter_TestIamPermissions_0(ctx context.Context, marshaler 
 }
 
 func local_request_SecurityCenter_TestIamPermissions_0(ctx context.Context, marshaler runtime.Marshaler, server extSecuritycenterpb.SecurityCenterServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq iampb_0.TestIamPermissionsRequest
+	var protoReq extIampb.TestIamPermissionsRequest
 	var metadata runtime.ServerMetadata
 
 	newReader, berr := utilities.IOReaderFactory(req.Body)
