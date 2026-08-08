@@ -173,7 +173,7 @@ transitEncryptionMode: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Allowed value: The `selfLink` field of a `ComputeNetwork` resource.</p>
+            <p>A reference to an externally managed ComputeNetwork resource. Should be in the format "projects/{{projectID}}/global/networks/{{networkID}}".</p>
         </td>
     </tr>
     <tr>
@@ -183,7 +183,7 @@ transitEncryptionMode: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names</p>
+            <p>The name of a ComputeNetwork resource.</p>
         </td>
     </tr>
     <tr>
@@ -193,7 +193,7 @@ transitEncryptionMode: string
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/</p>
+            <p>The namespace of a ComputeNetwork resource.</p>
         </td>
     </tr>
     <tr>

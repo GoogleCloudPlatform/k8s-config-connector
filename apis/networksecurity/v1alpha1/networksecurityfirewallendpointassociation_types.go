@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -43,7 +44,7 @@ type NetworkSecurityFirewallEndpointAssociationSpec struct {
 
 	// Required. The URL of the network that is being associated.
 	// +required
-	NetworkRef *NetworkRef `json:"networkRef"`
+	NetworkRef *computerefs.ComputeNetworkRef `json:"networkRef"`
 
 	// Required. The URL of the FirewallEndpoint that is being associated.
 	// +required
@@ -57,15 +58,6 @@ type NetworkSecurityFirewallEndpointAssociationSpec struct {
 	// True indicates that traffic won't be intercepted
 	// +optional
 	Disabled *bool `json:"disabled,omitempty"`
-}
-
-type NetworkRef struct {
-	/* The network selflink of form "projects/{{project}}/global/networks/{{name}}", when not managed by Config Connector. */
-	External string `json:"external,omitempty"`
-	/* The `name` field of a `ComputeNetwork` resource. */
-	Name string `json:"name,omitempty"`
-	/* The `namespace` field of a `ComputeNetwork` resource. */
-	Namespace string `json:"namespace,omitempty"`
 }
 
 // FirewallEndpointRef is moved to networksecurityfirewallendpoint_reference.go

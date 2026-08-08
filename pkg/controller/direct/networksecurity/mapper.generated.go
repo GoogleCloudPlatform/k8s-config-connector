@@ -1014,7 +1014,7 @@ func NetworkSecurityFirewallEndpointAssociationSpec_v1alpha1_FromProto(mapCtx *d
 	// MISSING: Name
 	out.Labels = in.Labels
 	if in.GetNetwork() != "" {
-		out.NetworkRef = &krmnetworksecurityv1alpha1.NetworkRef{External: in.GetNetwork()}
+		out.NetworkRef = &krmcomputerefs.ComputeNetworkRef{External: in.GetNetwork()}
 	}
 	if in.GetFirewallEndpoint() != "" {
 		out.FirewallEndpointRef = &krmnetworksecurityv1alpha1.FirewallEndpointRef{External: in.GetFirewallEndpoint()}
