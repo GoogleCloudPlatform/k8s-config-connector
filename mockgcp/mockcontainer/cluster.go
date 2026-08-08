@@ -399,7 +399,11 @@ func (s *ClusterManagerV1) UpdateCluster(ctx context.Context, req *pb.UpdateClus
 			obj.DatabaseEncryption = &pb.DatabaseEncryption{}
 		}
 		if update.DesiredDatabaseEncryption.State != pb.DatabaseEncryption_UNKNOWN {
-			obj.DatabaseEncryption.State = update.DesiredDatabaseEncryption.State
+			if update.DesiredDatabaseEncryption.State == pb.DatabaseEncryption_ALL_OBJECTS_ENCRYPTION_ENABLED {
+				obj.DatabaseEncryption.State = pb.DatabaseEncryption_ENCRYPTED
+			} else {
+				obj.DatabaseEncryption.State = update.DesiredDatabaseEncryption.State
+			}
 		}
 		if update.DesiredDatabaseEncryption.KeyName != "" {
 			obj.DatabaseEncryption.KeyName = update.DesiredDatabaseEncryption.KeyName
@@ -724,7 +728,7 @@ func (s *ClusterManagerV1) populateClusterDefaults(project *projects.ProjectData
 		// here, this error shows up in the test log:
 		//   Error when reading or editing Container Cluster \"cl-dball-7anl5sn4tkp33jq\": json: cannot unmarshal number
 		//   into Go struct field DatabaseEncryption.databaseEncryption.state of type string
-		if obj.DatabaseEncryption.State == pb.DatabaseEncryption_UNKNOWN {
+		if obj.DatabaseEncryption.State == pb.DatabaseEncryption_UNKNOWN || obj.DatabaseEncryption.State == pb.DatabaseEncryption_ALL_OBJECTS_ENCRYPTION_ENABLED {
 			obj.DatabaseEncryption.State = pb.DatabaseEncryption_ENCRYPTED
 		}
 	}
