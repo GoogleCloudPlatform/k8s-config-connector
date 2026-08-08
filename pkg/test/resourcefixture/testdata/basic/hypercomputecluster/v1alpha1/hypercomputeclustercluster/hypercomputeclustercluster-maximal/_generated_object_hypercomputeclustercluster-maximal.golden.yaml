@@ -52,7 +52,7 @@ spec:
         staticNodeCount: 1
       partitions:
       - id: partition1
-        nodeSetIDs:
+        nodeSetIds:
         - nodeset1
   projectRef:
     external: ${projectId}
@@ -60,14 +60,16 @@ spec:
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
-    message: "Update call failed: error creating: creating HypercomputeClusterCluster
-      projects/${projectId}/locations/us-central1/clusters/hccmax: googleapi: Error
-      400: The request was invalid: The partition \"partition1\" is invalid because
-      its node_set_ids list is empty. Each partition must be associated with at least
-      one node set. Add one or more valid node set IDs.\nerror details: name = BadRequest
-      field = cluster.orchestrator.slurm.partitions[0].node_set_ids desc = \nerror
-      details: name = RequestInfo id = 8fb3ac4b90874bb8 data ="
-    reason: UpdateFailed
-    status: "False"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
     type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/clusters/hccmax
   observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    orchestrator:
+      slurm:
+        loginNodes: {}
+    reconciling: true
+    updateTime: "1970-01-01T00:00:00Z"

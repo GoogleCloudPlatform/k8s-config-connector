@@ -110,6 +110,8 @@ cloud.google.com/go/gkebackup v1.13.0 h1:QyeJc4XPqV0hzoAcAQIi8YMveT8eRI21oOK16qK
 cloud.google.com/go/gkebackup v1.13.0/go.mod h1:D2MDbHW4V/uKCmS9TnT8hNKX2tPkE/pWp9nSm0TQ9hY=
 cloud.google.com/go/gkemulticloud v1.11.0 h1:MTqEPjiNVY9bcliSfQR23HHaTPlfFinDh+4ARB5Gn14=
 cloud.google.com/go/gkemulticloud v1.11.0/go.mod h1:OtfHtgqOgDrXfcdFw8eUkCUI154Q51vvdqZYZV4c4qM=
+cloud.google.com/go/hypercomputecluster v1.1.0 h1:IHWk/MfToCxdht2poItU8Bb7FgEJapd6bQbWTJqOl/Y=
+cloud.google.com/go/hypercomputecluster v1.1.0/go.mod h1:wH9UAcIpCfC7/HndxKKvsaPL3V8+sQX5BGinSnwirmI=
 cloud.google.com/go/iam v1.11.0 h1:KieQ9Pb+LLPak1O3Rv3GgCxhnmkYf7Xyh0P5HfF1jFM=
 cloud.google.com/go/iam v1.11.0/go.mod h1:KP+nKGugNJW4LcLx1uEZcq1ok5sQHFaQehQNl4QDgV4=
 cloud.google.com/go/iap v1.17.0 h1:BDAVJy+juq7cMRumIx9toc4pt1K7zXoZdAI3lDD6D3g=
@@ -186,6 +188,8 @@ cloud.google.com/go/speech v1.35.0 h1:jxWycO5+PfhBWxqnuJNDjNMi85zRK2Jcb4CVhOz6Jc
 cloud.google.com/go/speech v1.35.0/go.mod h1:shnf33sZbGnQQZyek1fdLOR5rRKV6D3jsNqpqyijvj8=
 cloud.google.com/go/storage v1.62.0 h1:w2pQJhpUqVerMON45vatE2FpCYsNTf7OHjkn6ux5mMU=
 cloud.google.com/go/storage v1.62.0/go.mod h1:T5hz3qzcpnxZ5LdKc7y8Tw7lh4v9zeeVyrD/cLJAzZU=
+cloud.google.com/go/talent v1.13.0 h1:/nZYKG20ZHfZDr7ikRuDnssxk8fuaDxGR+KH3iB4gak=
+cloud.google.com/go/talent v1.13.0/go.mod h1:GSwli9V25WQdzeuJDJWH9TlQmA8lPFn7yKsxowdxW9Y=
 cloud.google.com/go/trace v1.16.0 h1:GmQovzFc5F0CNfl0VLgL64aoTtu7xsM0YajW2GlG9+E=
 cloud.google.com/go/trace v1.16.0/go.mod h1:r+bdAn16dKLSV1G2D5v3e58IlQlizfxWrUfjx7kM7X0=
 cloud.google.com/go/video v1.32.0 h1:9Us/tkhNRg3WY9wIrVC3Jcs1P0nXKE4XnS1zYJ3xTTY=
