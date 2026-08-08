@@ -86,9 +86,9 @@ func (r *ComputeNetworkRef) SetExternal(ref string) {
 	r.Namespace = ""
 }
 
-// CanonicalizeNetworkValue transforms any raw network string (full URI, short name, or relative path with project number)
+// canonicalizeNetworkValue transforms any raw network string (full URI, short name, or relative path with project number)
 // into a canonical relative path: "projects/{projectID}/global/networks/{network}".
-func CanonicalizeNetworkValue(ctx context.Context, val string, parentProjectID string, projectMapper *projects.ProjectMapper) string {
+func canonicalizeNetworkValue(ctx context.Context, val string, parentProjectID string, projectMapper *projects.ProjectMapper) string {
 	if val == "" {
 		return ""
 	}
@@ -142,6 +142,7 @@ func (r *ComputeNetworkRef) ParseExternalToIdentity() (identity.Identity, error)
 	return id, nil
 }
 
+// Normalize resolves internal Kubernetes references or normalizes the external reference format.
 func (r *ComputeNetworkRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
 	if r.External != "" {
 		r.External = apirefs.TrimComputeURIPrefix(r.External)
@@ -156,6 +157,16 @@ func (r *ComputeNetworkRef) Normalize(ctx context.Context, reader client.Reader,
 		return ""
 	}
 	return refsv1beta1.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
+}
+
+// CanonicalizeAndNormalize canonicalizes raw network formats (such as short names or full HTTPS URIs)
+// and normalizes Kubernetes/external references in a single step.
+func (r *ComputeNetworkRef) CanonicalizeAndNormalize(ctx context.Context, reader client.Reader, defaultNamespace string, parentProjectID string, projectMapper *projects.ProjectMapper) error {
+	if r == nil {
+		return nil
+	}
+	r.External = canonicalizeNetworkValue(ctx, r.External, parentProjectID, projectMapper)
+	return r.Normalize(ctx, reader, defaultNamespace)
 }
 
 func (id *ComputeNetworkIdentity) ConvertToProjectNumber(ctx context.Context, projectMapper *projects.ProjectMapper) error {
