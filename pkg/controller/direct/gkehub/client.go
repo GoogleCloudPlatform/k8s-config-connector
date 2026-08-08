@@ -42,6 +42,7 @@ type gkeHubClient struct {
 	membershipBindingClientV1    *gkehubv1.ProjectsLocationsMembershipsBindingsService
 	scopeRBACRoleBindingClientV1 *gkehubv1.ProjectsLocationsScopesRbacrolebindingsService
 	operationClientV1            *gkehubv1.ProjectsLocationsOperationsService
+	fleetClientV1                *gkehubv1.ProjectsLocationsFleetsService
 }
 
 func (m *gcpClient) newGkeHubClient(ctx context.Context) (*gkeHubClient, error) {
@@ -65,5 +66,6 @@ func (m *gcpClient) newGkeHubClient(ctx context.Context) (*gkeHubClient, error) 
 		membershipBindingClientV1:    gkehubv1.NewProjectsLocationsMembershipsBindingsService(serviceV1),
 		scopeRBACRoleBindingClientV1: gkehubv1.NewProjectsLocationsScopesRbacrolebindingsService(serviceV1),
 		operationClientV1:            gkehubv1.NewProjectsLocationsOperationsService(serviceV1),
+		fleetClientV1:                gkehubv1.NewProjectsLocationsFleetsService(serviceV1),
 	}, nil
 }

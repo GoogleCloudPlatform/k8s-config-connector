@@ -1,0 +1,42 @@
+apiVersion: gkehub.cnrm.cloud.google.com/v1alpha1
+kind: GKEHubFleet
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: gkehubfleet-maximal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  defaultClusterConfig:
+    binaryAuthorizationConfig:
+      evaluationMode: DISABLED
+    compliancePostureConfig:
+      mode: DISABLED
+    securityPostureConfig:
+      mode: DISABLED
+      vulnerabilityMode: VULNERABILITY_DISABLED
+  displayName: Maximal Fleet Updated
+  labels:
+    test-label: maximal-updated
+  location: global
+  projectRef:
+    external: projects/${projectId}
+  resourceID: default
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/global/fleets/default
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    state:
+      code: READY
+    uid: 0123456789abcdef
+    updateTime: "1970-01-01T00:00:00Z"
