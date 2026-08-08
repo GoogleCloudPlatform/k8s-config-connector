@@ -1,0 +1,339 @@
+GET https://saasservicemgmt.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/releases/saasservicemgmtrelease-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Freleases%2Fsaasservicemgmtrelease-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "release \"projects/${projectId}/locations/us-central1/releases/saasservicemgmtrelease-${uniqueId}\" not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "release \"projects/${projectId}/locations/us-central1/releases/saasservicemgmtrelease-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://saasservicemgmt.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/releases?%24alt=json%3Benum-encoding%3Dint&releaseId=saasservicemgmtrelease-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "blueprint": {
+    "package": "us-docker.pkg.dev/my-project/my-repo/my-blueprint:v1"
+  },
+  "inputVariableDefaults": [
+    {
+      "type": 1,
+      "value": "default-val",
+      "variable": "my-var"
+    }
+  ],
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "releaseRequirements": {
+    "upgradeableFromReleases": [
+      "projects/${projectId}/locations/us-central1/releases/old-release"
+    ]
+  },
+  "unitKind": "my-unit-kind-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "blueprint": {
+    "engine": "mock-engine",
+    "package": "us-docker.pkg.dev/my-project/my-repo/my-blueprint:v1",
+    "version": "mock-version"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "inputVariableDefaults": [
+    {
+      "type": 1,
+      "value": "default-val",
+      "variable": "my-var"
+    }
+  ],
+  "inputVariables": [
+    {
+      "type": 1,
+      "value": "mock-input-val",
+      "variable": "my-var"
+    }
+  ],
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/releases/saasservicemgmtrelease-${uniqueId}",
+  "outputVariables": [
+    {
+      "type": 1,
+      "value": "mock-output-val",
+      "variable": "my-output-var"
+    }
+  ],
+  "releaseRequirements": {
+    "upgradeableFromReleases": [
+      "projects/${projectId}/locations/us-central1/releases/old-release"
+    ]
+  },
+  "uid": "111111111111111111111",
+  "unitKind": "my-unit-kind-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://saasservicemgmt.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/releases/saasservicemgmtrelease-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Freleases%2Fsaasservicemgmtrelease-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "blueprint": {
+    "engine": "mock-engine",
+    "package": "us-docker.pkg.dev/my-project/my-repo/my-blueprint:v1",
+    "version": "mock-version"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "inputVariableDefaults": [
+    {
+      "type": 1,
+      "value": "default-val",
+      "variable": "my-var"
+    }
+  ],
+  "inputVariables": [
+    {
+      "type": 1,
+      "value": "mock-input-val",
+      "variable": "my-var"
+    }
+  ],
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/releases/saasservicemgmtrelease-${uniqueId}",
+  "outputVariables": [
+    {
+      "type": 1,
+      "value": "mock-output-val",
+      "variable": "my-output-var"
+    }
+  ],
+  "releaseRequirements": {
+    "upgradeableFromReleases": [
+      "projects/${projectId}/locations/us-central1/releases/old-release"
+    ]
+  },
+  "uid": "111111111111111111111",
+  "unitKind": "my-unit-kind-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://saasservicemgmt.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/releases/saasservicemgmtrelease-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=blueprint%2CinputVariableDefaults%2CreleaseRequirements
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: release.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Freleases%2Fsaasservicemgmtrelease-${uniqueId}
+
+{
+  "blueprint": {
+    "package": "us-docker.pkg.dev/my-project/my-repo/my-blueprint:v2"
+  },
+  "inputVariableDefaults": [
+    {
+      "type": 1,
+      "value": "updated-val",
+      "variable": "my-var"
+    }
+  ],
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/releases/saasservicemgmtrelease-${uniqueId}",
+  "releaseRequirements": {
+    "upgradeableFromReleases": [
+      "projects/${projectId}/locations/us-central1/releases/old-release-v2"
+    ]
+  },
+  "unitKind": "my-unit-kind-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "blueprint": {
+    "engine": "mock-engine",
+    "package": "us-docker.pkg.dev/my-project/my-repo/my-blueprint:v2",
+    "version": "mock-version"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "inputVariableDefaults": [
+    {
+      "type": 1,
+      "value": "updated-val",
+      "variable": "my-var"
+    }
+  ],
+  "inputVariables": [
+    {
+      "type": 1,
+      "value": "mock-input-val",
+      "variable": "my-var"
+    }
+  ],
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/releases/saasservicemgmtrelease-${uniqueId}",
+  "outputVariables": [
+    {
+      "type": 1,
+      "value": "mock-output-val",
+      "variable": "my-output-var"
+    }
+  ],
+  "releaseRequirements": {
+    "upgradeableFromReleases": [
+      "projects/${projectId}/locations/us-central1/releases/old-release-v2"
+    ]
+  },
+  "uid": "111111111111111111111",
+  "unitKind": "my-unit-kind-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://saasservicemgmt.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/releases/saasservicemgmtrelease-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Freleases%2Fsaasservicemgmtrelease-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "blueprint": {
+    "engine": "mock-engine",
+    "package": "us-docker.pkg.dev/my-project/my-repo/my-blueprint:v2",
+    "version": "mock-version"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "inputVariableDefaults": [
+    {
+      "type": 1,
+      "value": "updated-val",
+      "variable": "my-var"
+    }
+  ],
+  "inputVariables": [
+    {
+      "type": 1,
+      "value": "mock-input-val",
+      "variable": "my-var"
+    }
+  ],
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/releases/saasservicemgmtrelease-${uniqueId}",
+  "outputVariables": [
+    {
+      "type": 1,
+      "value": "mock-output-val",
+      "variable": "my-output-var"
+    }
+  ],
+  "releaseRequirements": {
+    "upgradeableFromReleases": [
+      "projects/${projectId}/locations/us-central1/releases/old-release-v2"
+    ]
+  },
+  "uid": "111111111111111111111",
+  "unitKind": "my-unit-kind-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://saasservicemgmt.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/releases/saasservicemgmtrelease-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Freleases%2Fsaasservicemgmtrelease-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

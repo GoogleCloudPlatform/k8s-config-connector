@@ -1,0 +1,50 @@
+apiVersion: saasservicemgmt.cnrm.cloud.google.com/v1alpha1
+kind: SaasServiceMgmtRelease
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: saasservicemgmtrelease-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  blueprint:
+    package: us-docker.pkg.dev/my-project/my-repo/my-blueprint:v2
+  inputVariableDefaults:
+  - type: string
+    value: updated-val
+    variable: my-var
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+  releaseRequirements:
+    upgradeableFromReleases:
+    - projects/${projectId}/locations/us-central1/releases/old-release-v2
+  unitKind: my-unit-kind-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/releases/saasservicemgmtrelease-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    blueprint:
+      engine: mock-engine
+      version: mock-version
+    createTime: "1970-01-01T00:00:00Z"
+    etag: abcdef123456
+    inputVariables:
+    - type: STRING
+      value: mock-input-val
+      variable: my-var
+    outputVariables:
+    - type: STRING
+      value: mock-output-val
+      variable: my-output-var
+    uid: 0123456789abcdef
+    updateTime: "1970-01-01T00:00:00Z"
