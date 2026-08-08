@@ -34,4 +34,5 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 	if !strings.Contains(event.URL(), "hypercomputecluster.googleapis.com") {
 		return
 	}
+	// MockGCP and RealGCP for HypercomputeClusterCluster are fully aligned.
 }
