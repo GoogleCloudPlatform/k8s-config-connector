@@ -159,10 +159,107 @@ func TestCanonicalizeNetworkValue(t *testing.T) {
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
 			ctx := context.TODO()
-			got := CanonicalizeNetworkValue(ctx, tc.val, tc.parentProjectID, projectMapper)
+			got := canonicalizeNetworkValue(ctx, tc.val, tc.parentProjectID, projectMapper)
 			if got != tc.want {
-				t.Errorf("CanonicalizeNetworkValue(%q, %q) = %q, want %q", tc.val, tc.parentProjectID, got, tc.want)
+				t.Errorf("canonicalizeNetworkValue(%q, %q) = %q, want %q", tc.val, tc.parentProjectID, got, tc.want)
 			}
 		})
 	}
 }
+
+func TestCanonicalizeAndNormalize(t *testing.T) {
+	cache := projects.NewProjectCache(nil, time.Hour)
+	cache.InsertForTest("my-project", 12345)
+	projectMapper := projects.NewProjectMapper(cache)
+
+	tests := []struct {
+		name            string
+		ref             *ComputeNetworkRef
+		unstructured    *unstructured.Unstructured
+		parentProjectID string
+		want            *ComputeNetworkRef
+	}{
+		{
+			name: "nil ref",
+			ref:  nil,
+			want: nil,
+		},
+		{
+			name: "short name with parent project",
+			ref: &ComputeNetworkRef{
+				External: "default",
+			},
+			parentProjectID: "my-project",
+			want: &ComputeNetworkRef{
+				External: "projects/my-project/global/networks/default",
+			},
+		},
+		{
+			name: "full HTTPS URI",
+			ref: &ComputeNetworkRef{
+				External: "https://www.googleapis.com/compute/v1/projects/my-project/global/networks/my-vpc",
+			},
+			parentProjectID: "other-project",
+			want: &ComputeNetworkRef{
+				External: "projects/my-project/global/networks/my-vpc",
+			},
+		},
+		{
+			name: "project number in external resolved to project ID",
+			ref: &ComputeNetworkRef{
+				External: "projects/12345/global/networks/my-vpc",
+			},
+			want: &ComputeNetworkRef{
+				External: "projects/my-project/global/networks/my-vpc",
+			},
+		},
+		{
+			name: "k8s object reference",
+			ref: &ComputeNetworkRef{
+				Name:      "n1",
+				Namespace: "ns1",
+			},
+			unstructured: &unstructured.Unstructured{
+				Object: map[string]interface{}{
+					"status": map[string]interface{}{
+						"selfLink": "https://www.googleapis.com/compute/v1/projects/p1/global/networks/n1",
+					},
+				},
+			},
+			parentProjectID: "other-project",
+			want: &ComputeNetworkRef{
+				External: "projects/p1/global/networks/n1",
+			},
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			ctx := context.TODO()
+
+			var objs []unstructured.Unstructured
+			if tc.unstructured != nil && tc.ref != nil {
+				tc.unstructured.SetName(tc.ref.Name)
+				tc.unstructured.SetNamespace(tc.ref.Namespace)
+				tc.unstructured.SetGroupVersionKind(ComputeNetworkGVK)
+				objs = append(objs, *tc.unstructured)
+			}
+
+			s := fake.NewClientBuilder().WithLists(&unstructured.UnstructuredList{Items: objs}).Build()
+
+			defaultNamespace := ""
+			if tc.ref != nil {
+				defaultNamespace = tc.ref.Namespace
+			}
+
+			if err := tc.ref.CanonicalizeAndNormalize(ctx, s, defaultNamespace, tc.parentProjectID, projectMapper); err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
+
+			if diff := cmp.Diff(tc.ref, tc.want); diff != "" {
+				t.Errorf("CanonicalizeAndNormalize() mismatch (-got +want):\n%s", diff)
+			}
+		})
+	}
+}
+
