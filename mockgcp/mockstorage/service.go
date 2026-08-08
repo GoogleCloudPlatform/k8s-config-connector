@@ -133,6 +133,19 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 			}
 			return
 		}
+		if error.Code == http.StatusConflict {
+			if strings.Contains(error.Message, "not empty") {
+				error.Status = ""
+				error.Errors = []httpmux.ErrorResponseDetails{
+					{
+						Domain:  "global",
+						Reason:  "conflict",
+						Message: "The bucket you tried to delete is not empty.",
+					},
+				}
+			}
+			return
+		}
 	}
 
 	return httpmux.FilterBodyOn204(mux)

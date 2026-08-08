@@ -213,7 +213,7 @@ OK
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "metageneration": "1",
-  "name": "projects/_/buckets/bucket-${uniqueId}/managedFolders/custom-folder-${uniqueId}",
+  "name": "projects/_/buckets/bucket-${uniqueId}/managedFolders/custom-folder-${uniqueId}/",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
@@ -231,7 +231,7 @@ OK
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "metageneration": "1",
-  "name": "projects/_/buckets/bucket-${uniqueId}/managedFolders/custom-folder-${uniqueId}",
+  "name": "projects/_/buckets/bucket-${uniqueId}/managedFolders/custom-folder-${uniqueId}/",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
@@ -249,7 +249,7 @@ OK
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "metageneration": "1",
-  "name": "projects/_/buckets/bucket-${uniqueId}/managedFolders/custom-folder-${uniqueId}",
+  "name": "projects/_/buckets/bucket-${uniqueId}/managedFolders/custom-folder-${uniqueId}/",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
