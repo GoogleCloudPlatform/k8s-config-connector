@@ -1,0 +1,6 @@
+- caisURL: //discoveryengine.googleapis.com/projects/${projectId}/locations/global/licenseConfigs/notebook-lm
+  group: discoveryengine.cnrm.cloud.google.com
+  kind: DiscoveryEngineLicenseConfig
+  name: discoveryenginelicenseconfig-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
