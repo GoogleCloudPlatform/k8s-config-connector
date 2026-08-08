@@ -37,6 +37,10 @@ ${CONTROLLERBUILDER} generate-types \
   --api-version storageinsights.cnrm.cloud.google.com/v1alpha1  \
   --resource StorageInsightsDatasetConfig:DatasetConfig
 
+${CONTROLLERBUILDER} generate-mapper \
+  --service google.cloud.storageinsights.v1 \
+  --api-version storageinsights.cnrm.cloud.google.com/v1alpha1
+
 # Change back to the repo root
 cd ${REPO_ROOT}
 

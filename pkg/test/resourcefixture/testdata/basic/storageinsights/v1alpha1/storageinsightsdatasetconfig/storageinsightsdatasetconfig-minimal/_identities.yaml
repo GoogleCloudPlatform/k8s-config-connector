@@ -1,0 +1,12 @@
+- caisURL: //storage.googleapis.com/projects/${projectId}/buckets/storageinsights-min-dep-${uniqueId}
+  group: storage.cnrm.cloud.google.com
+  kind: StorageBucket
+  name: storageinsights-min-dep-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: //storageinsights.googleapis.com/projects/${projectId}/locations/us-central1/datasetConfigs/datasetconfigmin${uniqueId}
+  group: storageinsights.cnrm.cloud.google.com
+  kind: StorageInsightsDatasetConfig
+  name: datasetconfigmin${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

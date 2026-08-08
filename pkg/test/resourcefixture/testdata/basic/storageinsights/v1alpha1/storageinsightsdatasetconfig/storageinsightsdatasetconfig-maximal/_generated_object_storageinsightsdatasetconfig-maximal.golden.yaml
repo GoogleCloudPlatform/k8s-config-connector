@@ -1,0 +1,54 @@
+apiVersion: storageinsights.cnrm.cloud.google.com/v1alpha1
+kind: StorageInsightsDatasetConfig
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: datasetconfigmax${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  description: Updated Maximal Storage Insights Dataset Config
+  identity:
+    type: IDENTITY_TYPE_PER_CONFIG
+  includeCloudStorageBuckets:
+    cloudStorageBuckets:
+    - bucketRef:
+        name: storageinsights-max-dep-${uniqueId}
+  includeCloudStorageLocations:
+    locations:
+    - us-central1
+  includeNewlyCreatedBuckets: false
+  labels:
+    foo: baz
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+  retentionPeriodDays: 14
+  skipVerificationAndIngest: true
+  sourceProjects:
+    projectNumbers:
+    - 600845353393
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: 'Update call failed: error updating: updating StorageInsightsDatasetConfig
+      projects/${projectId}/locations/us-central1/datasetConfigs/datasetconfigmax${uniqueId}:
+      googleapi: Error 400: Dataset config must be in the same organization as the
+      destination project. Invalid Organization number: 0'
+    reason: UpdateFailed
+    status: "False"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/datasetConfigs/datasetconfigmax${uniqueId}
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    datasetConfigState: CONFIG_STATE_ACTIVE
+    identity:
+      name: p${projectNumber}-87a989273c14489@gcp-sa-storageinsights.iam.gserviceaccount.com
+    link:
+      dataset: datasetconfigmax${uniqueId}_87a98927_3c14_489c_ba94_9c9345678bc3
+    uid: 0123456789abcdef
+    updateTime: "1970-01-01T00:00:00Z"

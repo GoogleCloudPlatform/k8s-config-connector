@@ -1,0 +1,26 @@
+apiVersion: storageinsights.cnrm.cloud.google.com/v1alpha1
+kind: StorageInsightsDatasetConfig
+metadata:
+  name: datasetconfigmax${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  description: "Maximal Storage Insights Dataset Config"
+  labels:
+    foo: bar
+  sourceProjects:
+    projectNumbers:
+      - ${projectNumber}
+  includeCloudStorageLocations:
+    locations:
+      - us-central1
+  includeCloudStorageBuckets:
+    cloudStorageBuckets:
+      - bucketRef:
+          name: storageinsights-max-dep-${uniqueId}
+  includeNewlyCreatedBuckets: true
+  skipVerificationAndIngest: true
+  retentionPeriodDays: 30
+  identity:
+    type: IDENTITY_TYPE_PER_CONFIG
