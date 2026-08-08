@@ -270,6 +270,9 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//privilegedaccessmanager.googleapis.com/organizations/{}/locations/{}/entitlements/{}": true,
 		"//privilegedaccessmanager.googleapis.com/projects/{}/locations/{}/entitlements/{}":      true,
 
+		// Rapid Migration Assessment
+		"//rapidmigrationassessment.googleapis.com/projects/{}/locations/{}/collectors/{}": true,
+
 		// Service Usage
 		"//serviceusage.googleapis.com/projects/{}/services/{}/identity": true,
 

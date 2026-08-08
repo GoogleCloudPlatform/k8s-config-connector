@@ -38,6 +38,11 @@ ${CONTROLLERBUILDER} generate-types \
   --include-skipped-output \
   --resource RapidMigrationAssessmentCollector:Collector
 
+${CONTROLLERBUILDER} generate-mapper \
+  --service google.cloud.rapidmigrationassessment.v1 \
+  --api-version rapidmigrationassessment.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output
+
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 

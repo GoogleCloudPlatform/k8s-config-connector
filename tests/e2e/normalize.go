@@ -706,6 +706,13 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 		})
 	}
 
+	// Specific to RapidMigrationAssessment
+	if u.GroupVersionKind().Group == "rapidmigrationassessment.cnrm.cloud.google.com" {
+		visitor.ReplacePath(".status.observedState.bucket", "normalized-bucket")
+		visitor.ReplacePath(".status.observedState.guestOSScan.coreSource", "projects/${projectNumber}/locations/us-central1/sources/normalized-guest-os-scan-source")
+		visitor.ReplacePath(".status.observedState.vsphereScan.coreSource", "projects/${projectNumber}/locations/us-central1/sources/normalized-vsphere-scan-source")
+	}
+
 	return visitor
 }
 
