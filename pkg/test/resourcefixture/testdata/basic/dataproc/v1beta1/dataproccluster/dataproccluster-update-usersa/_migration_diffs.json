@@ -1,0 +1,128 @@
+[
+  {
+    "controller": "dcl",
+    "isNewObject": true,
+    "resource": "DataprocCluster/dataproccluster-${uniqueId}"
+  },
+  {
+    "controller": "iampolicymember",
+    "isNewObject": true,
+    "resource": "IAMPolicyMember/",
+    "fields": [
+      {
+        "id": "etag",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "member",
+        "old": "",
+        "new": "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "projects/${projectId}"
+      },
+      {
+        "id": "role",
+        "old": "",
+        "new": "roles/dataproc.worker"
+      }
+    ]
+  },
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "IAMServiceAccount/usersa1-${uniqueId}",
+    "fields": [
+      {
+        "id": "account_id",
+        "old": "",
+        "new": "usersa1-${uniqueId}"
+      },
+      {
+        "id": "disabled",
+        "old": "",
+        "new": "false"
+      },
+      {
+        "id": "display_name",
+        "old": "",
+        "new": "User Service Account 1"
+      },
+      {
+        "id": "email",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "member",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "unique_id",
+        "old": "",
+        "new": ""
+      }
+    ]
+  },
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "IAMServiceAccount/usersa2-${uniqueId}",
+    "fields": [
+      {
+        "id": "account_id",
+        "old": "",
+        "new": "usersa2-${uniqueId}"
+      },
+      {
+        "id": "disabled",
+        "old": "",
+        "new": "false"
+      },
+      {
+        "id": "display_name",
+        "old": "",
+        "new": "User Service Account 2"
+      },
+      {
+        "id": "email",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "member",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "unique_id",
+        "old": "",
+        "new": ""
+      }
+    ]
+  }
+]
