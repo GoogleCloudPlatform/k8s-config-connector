@@ -113,7 +113,10 @@ func (s *ConfigV1) CreateDeploymentGroup(ctx context.Context, req *pb.CreateDepl
 	opPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	return s.operations.StartLRO(ctx, opPrefix, opMetadata, func() (proto.Message, error) {
 		opMetadata.EndTime = timestamppb.Now()
-		return obj, nil
+		lroResponse := proto.Clone(obj).(*pb.DeploymentGroup)
+		lroResponse.Labels = nil
+		lroResponse.Annotations = nil
+		return lroResponse, nil
 	})
 }
 
@@ -163,7 +166,10 @@ func (s *ConfigV1) UpdateDeploymentGroup(ctx context.Context, req *pb.UpdateDepl
 	opPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	return s.operations.StartLRO(ctx, opPrefix, opMetadata, func() (proto.Message, error) {
 		opMetadata.EndTime = timestamppb.Now()
-		return obj, nil
+		lroResponse := proto.Clone(obj).(*pb.DeploymentGroup)
+		lroResponse.Labels = nil
+		lroResponse.Annotations = nil
+		return lroResponse, nil
 	})
 }
 
@@ -186,6 +192,8 @@ func (s *ConfigV1) DeleteDeploymentGroup(ctx context.Context, req *pb.DeleteDepl
 	responseObj.State = pb.DeploymentGroup_DELETED
 	responseObj.CreateTime = nil
 	responseObj.UpdateTime = nil
+	responseObj.Labels = nil
+	responseObj.Annotations = nil
 
 	opMetadata := &pb.OperationMetadata{
 		ApiVersion:            "v1",
