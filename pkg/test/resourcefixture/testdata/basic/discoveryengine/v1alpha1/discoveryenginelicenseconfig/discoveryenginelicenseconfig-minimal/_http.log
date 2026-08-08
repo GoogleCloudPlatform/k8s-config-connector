@@ -1,0 +1,34 @@
+GET https://discoveryengine.googleapis.com/v1beta/projects/${projectId}/locations/global/licenseConfigs/notebook-lm?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FlicenseConfigs%2Fnotebook-lm
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "earlyTerminationDate": {},
+  "endDate": {
+    "day": 15,
+    "month": 9,
+    "year": 2026
+  },
+  "licenseCount": "15",
+  "name": "projects/${projectNumber}/locations/global/licenseConfigs/notebook-lm",
+  "startDate": {
+    "day": 15,
+    "month": 8,
+    "year": 2026
+  },
+  "state": 1,
+  "subscriptionTerm": 1,
+  "subscriptionTier": 3
+}

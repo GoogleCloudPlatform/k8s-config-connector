@@ -2420,19 +2420,9 @@
 [missing_field] crd=discoveryengineidentitymappingstores.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.kmsKeyName" is not set in unstructured objects
 [missing_field] crd=discoveryengineidentitymappingstores.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=discoveryengineidentitymappingstores.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=discoveryenginelicenseconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.autoRenew" is not set in unstructured objects
 [missing_field] crd=discoveryenginelicenseconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.endDate.day" is not set in unstructured objects
 [missing_field] crd=discoveryenginelicenseconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.endDate.month" is not set in unstructured objects
 [missing_field] crd=discoveryenginelicenseconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.endDate.year" is not set in unstructured objects
-[missing_field] crd=discoveryenginelicenseconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.freeTrial" is not set in unstructured objects
-[missing_field] crd=discoveryenginelicenseconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.licenseCount" is not set in unstructured objects
-[missing_field] crd=discoveryenginelicenseconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
-[missing_field] crd=discoveryenginelicenseconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=discoveryenginelicenseconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.startDate.day" is not set in unstructured objects
-[missing_field] crd=discoveryenginelicenseconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.startDate.month" is not set in unstructured objects
-[missing_field] crd=discoveryenginelicenseconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.startDate.year" is not set in unstructured objects
-[missing_field] crd=discoveryenginelicenseconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.subscriptionTerm" is not set in unstructured objects
-[missing_field] crd=discoveryenginelicenseconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.subscriptionTier" is not set in unstructured objects
 [missing_field] crd=discoveryenginesamplequeries.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=discoveryenginesamplequeries.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=discoveryenginesamplequeries.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.queryEntry.query" is not set in unstructured objects
