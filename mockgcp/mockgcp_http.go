@@ -24,6 +24,7 @@ import (
 	"log"
 	"net"
 	"net/http"
+	"os"
 	"regexp"
 	"strings"
 	"testing"
@@ -72,6 +73,12 @@ type SupportsTestCommands interface {
 }
 
 func NewMockRoundTripperForTest(t *testing.T, k8sClient client.Client, storage storage.Storage) Interface {
+	oldTestName := os.Getenv("MOCKGCP_TEST_NAME")
+	os.Setenv("MOCKGCP_TEST_NAME", t.Name())
+	t.Cleanup(func() {
+		os.Setenv("MOCKGCP_TEST_NAME", oldTestName)
+	})
+
 	ctx := context.Background()
 
 	ctx, cancel := context.WithCancel(ctx)
