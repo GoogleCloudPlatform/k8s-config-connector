@@ -262,4 +262,3 @@ func TestCanonicalizeAndNormalize(t *testing.T) {
 		})
 	}
 }
-
