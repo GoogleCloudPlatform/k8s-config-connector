@@ -183,6 +183,11 @@ func (a *conversationAdapter) Create(ctx context.Context, createOp *directbase.C
 	}
 	log.V(2).Info("successfully created discoveryengine conversation in gcp", "name", a.id)
 
+	parts := strings.Split(created.GetName(), "/")
+	if len(parts) > 0 {
+		a.id.Conversation = parts[len(parts)-1]
+	}
+
 	return a.updateStatus(ctx, createOp, created)
 }
 

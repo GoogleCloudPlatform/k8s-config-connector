@@ -17,6 +17,7 @@ package v1alpha1
 import (
 	"context"
 	"fmt"
+	"unicode"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
@@ -97,6 +98,14 @@ func getIdentityFromDiscoveryEngineConversationSpec(ctx context.Context, reader 
 		return nil, fmt.Errorf("parsing dataStoreRef.external=%q: %w", normalizedExternal, err)
 	}
 
+	// Validation checks: parent's project/location should match conversation's project/location
+	if !IsProjectIDMatch(dataStoreLink.ProjectID, projectID) {
+		return nil, fmt.Errorf("resolved spec.dataStoreRef project %q does not match spec.projectRef %q", dataStoreLink.ProjectID, projectID)
+	}
+	if dataStoreLink.Location != location {
+		return nil, fmt.Errorf("resolved spec.dataStoreRef location %q does not match spec.location %q", dataStoreLink.Location, location)
+	}
+
 	identity := &DiscoveryEngineConversationIdentity{
 		Project:      projectID,
 		Location:     location,
@@ -135,4 +144,32 @@ func (obj *DiscoveryEngineConversation) GetIdentity(ctx context.Context, reader 
 
 func (obj *DiscoveryEngineConversation) ExternalIdentifier() *string {
 	return obj.Status.ExternalRef
+}
+
+// IsProjectIDMatch returns true if two project identifiers are considered matching,
+// or if we can't reliably compare them because one is an alphanumeric project ID
+// and the other is a numeric project number.
+func IsProjectIDMatch(p1, p2 string) bool {
+	if p1 == p2 {
+		return true
+	}
+	if p1 == "" || p2 == "" {
+		return false
+	}
+	p1IsNumeric := isNumeric(p1)
+	p2IsNumeric := isNumeric(p2)
+	if p1IsNumeric != p2IsNumeric {
+		// Skip strict matching if one is project ID (alphanumeric) and the other is project number (numeric).
+		return true
+	}
+	return p1 == p2
+}
+
+func isNumeric(s string) bool {
+	for _, r := range s {
+		if !unicode.IsDigit(r) {
+			return false
+		}
+	}
+	return true
 }

@@ -100,10 +100,13 @@ func (m *engineModel) AdapterForObject(ctx context.Context, op *directbase.Adapt
 	}
 
 	mapCtx := &direct.MapContext{}
-	desired := DiscoveryEngineEngineSpec_v1alpha1_ToProto(mapCtx, &obj.Spec)
+	desired := DiscoveryEngineEngineSpec_ToProto(mapCtx, &obj.Spec)
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
+
+	// Clear the raw/fully-qualified DataStoreIds since we will parse and append the short IDs
+	desired.DataStoreIds = nil
 
 	// Manually resolve and map the DataStoreRefs to DataStoreIds
 	for _, ref := range obj.Spec.DataStoreRefs {
@@ -114,6 +117,12 @@ func (m *engineModel) AdapterForObject(ctx context.Context, op *directbase.Adapt
 		dsLink, err := krm.ParseDiscoveryEngineDataStoreExternal(normalized)
 		if err != nil {
 			return nil, fmt.Errorf("parsing dataStoreRef: %w", err)
+		}
+		if !krm.IsProjectIDMatch(dsLink.ProjectID, id.Parent().ProjectID) {
+			return nil, fmt.Errorf("resolved spec.dataStoreRefs project %q does not match spec.projectRef %q", dsLink.ProjectID, id.Parent().ProjectID)
+		}
+		if dsLink.Location != id.Parent().Location {
+			return nil, fmt.Errorf("resolved spec.dataStoreRefs location %q does not match spec.location %q", dsLink.Location, id.Parent().Location)
 		}
 		desired.DataStoreIds = append(desired.DataStoreIds, dsLink.DataStore)
 	}
@@ -252,7 +261,7 @@ func (a *engineAdapter) Update(ctx context.Context, updateOp *directbase.UpdateO
 }
 
 func compareEngine(ctx context.Context, actual, desired *pb.Engine) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
-	maskedActual, err := mappers.OnlySpecFields(actual, DiscoveryEngineEngineSpec_v1alpha1_FromProto, DiscoveryEngineEngineSpec_v1alpha1_ToProto)
+	maskedActual, err := mappers.OnlySpecFields(actual, DiscoveryEngineEngineSpec_FromProto, DiscoveryEngineEngineSpec_ToProto)
 	if err != nil {
 		return nil, nil, err
 	}
