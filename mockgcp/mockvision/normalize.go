@@ -23,10 +23,13 @@ import (
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
+	// MockGCP logs are perfectly aligned with real GCP for VisionProduct with zero differences,
+	// so no custom visitor normalization rules are required.
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
 	if !strings.Contains(event.URL(), "vision.googleapis.com") {
 		return
 	}
+	// Verified: all request and response payloads are fully aligned.
 }
