@@ -38,6 +38,11 @@ ${CONTROLLERBUILDER} generate-types \
   --include-skipped-output \
   --resource LicenseManagerConfiguration:Configuration
 
+${CONTROLLERBUILDER} generate-mapper \
+  --service google.cloud.licensemanager.v1 \
+  --api-version licensemanager.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output
+
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 

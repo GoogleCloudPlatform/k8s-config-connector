@@ -61,6 +61,7 @@ require (
 	cloud.google.com/go/iam v1.11.0
 	cloud.google.com/go/iap v1.17.0
 	cloud.google.com/go/kms v1.31.0
+	cloud.google.com/go/licensemanager v1.1.0
 	cloud.google.com/go/logging v1.18.0
 	cloud.google.com/go/managedkafka v0.8.1
 	cloud.google.com/go/memorystore v0.9.0

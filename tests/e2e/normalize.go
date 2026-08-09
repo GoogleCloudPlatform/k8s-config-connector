@@ -110,6 +110,10 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".status.observedState.oauth2ClientID"] = "888888888888888888888"
 	visitor.replacePaths[".status.observedState.deleteLockExpireTime"] = mockgcpregistry.PlaceholderTime
 
+	// LicenseManager
+	visitor.replacePaths[".status.observedState.currentBillingInfo.startTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".status.observedState.nextBillingInfo.startTime"] = mockgcpregistry.PlaceholderTimestamp
+
 	// Apigee
 	visitor.replacePaths[".status.expiresAt"] = strconv.FormatInt(time.Date(2024, 4, 1, 12, 34, 56, 123456, time.UTC).Unix(), 10)
 	visitor.replacePaths[".status.createdAt"] = strconv.FormatInt(time.Date(2024, 4, 1, 12, 34, 56, 123456, time.UTC).Unix(), 10)
@@ -1428,6 +1432,12 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 		visitor.ReplacePath(".reachabilityDetails.traces[].endpointInfo.sourcePort", "12345")
 		visitor.ReplacePath(".response.reachabilityDetails.traces[].endpointInfo.sourcePort", "12345")
 	}
+
+	// LicenseManager
+	visitor.replacePaths[".currentBillingInfo.startTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".nextBillingInfo.startTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".response.currentBillingInfo.startTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".response.nextBillingInfo.startTime"] = mockgcpregistry.PlaceholderTimestamp
 
 	// Dataplex
 	visitor.replacePaths[".response.status.updateTime"] = mockgcpregistry.PlaceholderTimestamp
