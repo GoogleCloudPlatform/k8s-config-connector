@@ -29,9 +29,9 @@ OK
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.datalabeling.v1beta1.CreateInstructionMetadata",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "instruction": "projects/${projectId}/instructions/instruction-36622590"
+    "instruction": "projects/${projectId}/instructions/${instructionId}"
   },
-  "name": "projects/${projectId}/instructions/instruction-36622590/operations/${operationID}"
+  "name": "projects/${projectId}/instructions/${instructionId}/operations/${operationID}"
 }
 
 ---
@@ -39,7 +39,7 @@ OK
 GRPC /google.longrunning.Operations/GetOperation
 
 {
-  "name": "projects/${projectId}/instructions/instruction-36622590/operations/${operationID}"
+  "name": "projects/${projectId}/instructions/${instructionId}/operations/${operationID}"
 }
 
 OK
@@ -49,15 +49,15 @@ OK
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.datalabeling.v1beta1.CreateInstructionMetadata",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "instruction": "projects/${projectId}/instructions/instruction-36622590"
+    "instruction": "projects/${projectId}/instructions/${instructionId}"
   },
-  "name": "projects/${projectId}/instructions/instruction-36622590/operations/${operationID}",
+  "name": "projects/${projectId}/instructions/${instructionId}/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.datalabeling.v1beta1.Instruction",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "dataType": "IMAGE",
     "displayName": "Minimal Instruction ${uniqueId}",
-    "name": "projects/${projectId}/instructions/instruction-36622590",
+    "name": "projects/${projectId}/instructions/${instructionId}",
     "pdfInstruction": {
       "gcsFileUri": "gs://mock-bucket-${uniqueId}/instructions.pdf"
     },
@@ -70,7 +70,7 @@ OK
 GRPC /google.cloud.datalabeling.v1beta1.DataLabelingService/GetInstruction
 
 {
-  "name": "projects/${projectId}/instructions/instruction-36622590"
+  "name": "projects/${projectId}/instructions/${instructionId}"
 }
 
 OK
@@ -79,7 +79,7 @@ OK
   "createTime": "2024-04-01T12:34:56.123456Z",
   "dataType": "IMAGE",
   "displayName": "Minimal Instruction ${uniqueId}",
-  "name": "projects/${projectId}/instructions/instruction-36622590",
+  "name": "projects/${projectId}/instructions/${instructionId}",
   "pdfInstruction": {
     "gcsFileUri": "gs://mock-bucket-${uniqueId}/instructions.pdf"
   },
@@ -91,7 +91,7 @@ OK
 GRPC /google.cloud.datalabeling.v1beta1.DataLabelingService/GetInstruction
 
 {
-  "name": "projects/${projectId}/instructions/instruction-36622590"
+  "name": "projects/${projectId}/instructions/${instructionId}"
 }
 
 OK
@@ -100,7 +100,7 @@ OK
   "createTime": "2024-04-01T12:34:56.123456Z",
   "dataType": "IMAGE",
   "displayName": "Minimal Instruction ${uniqueId}",
-  "name": "projects/${projectId}/instructions/instruction-36622590",
+  "name": "projects/${projectId}/instructions/${instructionId}",
   "pdfInstruction": {
     "gcsFileUri": "gs://mock-bucket-${uniqueId}/instructions.pdf"
   },
@@ -112,7 +112,7 @@ OK
 GRPC /google.cloud.datalabeling.v1beta1.DataLabelingService/DeleteInstruction
 
 {
-  "name": "projects/${projectId}/instructions/instruction-36622590"
+  "name": "projects/${projectId}/instructions/${instructionId}"
 }
 
 OK

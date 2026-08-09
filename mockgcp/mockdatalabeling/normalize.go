@@ -23,6 +23,9 @@ import (
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
+	if !strings.Contains(url, "datalabeling") {
+		return
+	}
 	replacements.ReplacePath(".createTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".updateTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".response.createTime", mockgcpregistry.PlaceholderTimestamp)
@@ -31,7 +34,17 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
-	if !strings.Contains(event.URL(), "datalabeling.googleapis.com") {
+	if !strings.Contains(event.URL(), "datalabeling") {
 		return
 	}
+	event.VisitResponseStringValues(func(path string, value string) {
+		if strings.Contains(value, "/instructions/") {
+			tokens := strings.Split(value, "/")
+			for i := 0; i < len(tokens)-1; i++ {
+				if tokens[i] == "instructions" {
+					replacements.ReplaceStringValue(tokens[i+1], "${instructionId}")
+				}
+			}
+		}
+	})
 }

@@ -30,9 +30,9 @@ OK
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.datalabeling.v1beta1.CreateInstructionMetadata",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "instruction": "projects/${projectId}/instructions/instruction-5f7cd99e"
+    "instruction": "projects/${projectId}/instructions/${instructionId}"
   },
-  "name": "projects/${projectId}/instructions/instruction-5f7cd99e/operations/${operationID}"
+  "name": "projects/${projectId}/instructions/${instructionId}/operations/${operationID}"
 }
 
 ---
@@ -40,7 +40,7 @@ OK
 GRPC /google.longrunning.Operations/GetOperation
 
 {
-  "name": "projects/${projectId}/instructions/instruction-5f7cd99e/operations/${operationID}"
+  "name": "projects/${projectId}/instructions/${instructionId}/operations/${operationID}"
 }
 
 OK
@@ -50,16 +50,16 @@ OK
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.datalabeling.v1beta1.CreateInstructionMetadata",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "instruction": "projects/${projectId}/instructions/instruction-5f7cd99e"
+    "instruction": "projects/${projectId}/instructions/${instructionId}"
   },
-  "name": "projects/${projectId}/instructions/instruction-5f7cd99e/operations/${operationID}",
+  "name": "projects/${projectId}/instructions/${instructionId}/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.datalabeling.v1beta1.Instruction",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "dataType": "IMAGE",
     "description": "This is a detailed description of the instruction for labeling images ${uniqueId}",
     "displayName": "Maximal Instruction ${uniqueId}",
-    "name": "projects/${projectId}/instructions/instruction-5f7cd99e",
+    "name": "projects/${projectId}/instructions/${instructionId}",
     "pdfInstruction": {
       "gcsFileUri": "gs://mock-bucket-${uniqueId}/instructions.pdf"
     },
@@ -72,7 +72,7 @@ OK
 GRPC /google.cloud.datalabeling.v1beta1.DataLabelingService/GetInstruction
 
 {
-  "name": "projects/${projectId}/instructions/instruction-5f7cd99e"
+  "name": "projects/${projectId}/instructions/${instructionId}"
 }
 
 OK
@@ -82,7 +82,7 @@ OK
   "dataType": "IMAGE",
   "description": "This is a detailed description of the instruction for labeling images ${uniqueId}",
   "displayName": "Maximal Instruction ${uniqueId}",
-  "name": "projects/${projectId}/instructions/instruction-5f7cd99e",
+  "name": "projects/${projectId}/instructions/${instructionId}",
   "pdfInstruction": {
     "gcsFileUri": "gs://mock-bucket-${uniqueId}/instructions.pdf"
   },
@@ -94,7 +94,7 @@ OK
 GRPC /google.cloud.datalabeling.v1beta1.DataLabelingService/GetInstruction
 
 {
-  "name": "projects/${projectId}/instructions/instruction-5f7cd99e"
+  "name": "projects/${projectId}/instructions/${instructionId}"
 }
 
 OK
@@ -104,7 +104,7 @@ OK
   "dataType": "IMAGE",
   "description": "This is a detailed description of the instruction for labeling images ${uniqueId}",
   "displayName": "Maximal Instruction ${uniqueId}",
-  "name": "projects/${projectId}/instructions/instruction-5f7cd99e",
+  "name": "projects/${projectId}/instructions/${instructionId}",
   "pdfInstruction": {
     "gcsFileUri": "gs://mock-bucket-${uniqueId}/instructions.pdf"
   },
@@ -116,7 +116,7 @@ OK
 GRPC /google.cloud.datalabeling.v1beta1.DataLabelingService/DeleteInstruction
 
 {
-  "name": "projects/${projectId}/instructions/instruction-5f7cd99e"
+  "name": "projects/${projectId}/instructions/${instructionId}"
 }
 
 OK
