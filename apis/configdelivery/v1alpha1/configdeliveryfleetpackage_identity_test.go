@@ -16,6 +16,8 @@ package v1alpha1
 
 import (
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestConfigDeliveryFleetPackageIdentity_FromExternal(t *testing.T) {
@@ -66,8 +68,8 @@ func TestConfigDeliveryFleetPackageIdentity_FromExternal(t *testing.T) {
 			if err != nil {
 				t.Fatalf("unexpected error: %v", err)
 			}
-			if id.Project != tc.expected.Project || id.Location != tc.expected.Location || id.FleetPackage != tc.expected.FleetPackage {
-				t.Fatalf("expected %+v, got %+v", tc.expected, id)
+			if diff := cmp.Diff(tc.expected, id); diff != "" {
+				t.Errorf("unexpected difference (-want +got):\n%s", diff)
 			}
 		})
 	}
