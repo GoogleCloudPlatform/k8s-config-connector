@@ -38,8 +38,8 @@ type MockService struct {
 }
 
 type NotificationSettings struct {
-	Name                 string   `json:"name,omitempty"`
-	NotificationChannels []string `json:"notificationChannels,omitempty"`
+	Name                    string   `json:"name,omitempty"`
+	NotificationChannels    []string `json:"notificationChannels,omitempty"`
 	VersionSkewReportDelays []string `json:"versionSkewReportDelays,omitempty"`
 }
 
