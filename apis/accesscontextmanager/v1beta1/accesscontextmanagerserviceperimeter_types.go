@@ -163,6 +163,10 @@ type AccessContextManagerServicePerimeterIdentity struct {
 	// +optional
 	ServiceAccountRef *refsv1beta1.IAMServiceAccountRef `json:"serviceAccountRef,omitempty"`
 
+	/* A Google group identity, in the format of a Google Groups email address. */
+	// +optional
+	Group *string `json:"group,omitempty"`
+
 	/* A user identity, should represent individual user or service account only. */
 	// +optional
 	User *string `json:"user,omitempty"`

@@ -191,8 +191,14 @@ spec:
                                 - required:
                                   - serviceAccountRef
                                 - required:
+                                  - group
+                                - required:
                                   - user
                                 properties:
+                                  group:
+                                    description: A Google group identity, in the format
+                                      of a Google Groups email address.
+                                    type: string
                                   serviceAccountRef:
                                     description: A reference to an IAMServiceAccount
                                       resource.
@@ -357,8 +363,14 @@ spec:
                                 - required:
                                   - serviceAccountRef
                                 - required:
+                                  - group
+                                - required:
                                   - user
                                 properties:
+                                  group:
+                                    description: A Google group identity, in the format
+                                      of a Google Groups email address.
+                                    type: string
                                   serviceAccountRef:
                                     description: A reference to an IAMServiceAccount
                                       resource.
@@ -703,8 +715,14 @@ spec:
                                 - required:
                                   - serviceAccountRef
                                 - required:
+                                  - group
+                                - required:
                                   - user
                                 properties:
+                                  group:
+                                    description: A Google group identity, in the format
+                                      of a Google Groups email address.
+                                    type: string
                                   serviceAccountRef:
                                     description: A reference to an IAMServiceAccount
                                       resource.
@@ -869,8 +887,14 @@ spec:
                                 - required:
                                   - serviceAccountRef
                                 - required:
+                                  - group
+                                - required:
                                   - user
                                 properties:
+                                  group:
+                                    description: A Google group identity, in the format
+                                      of a Google Groups email address.
+                                    type: string
                                   serviceAccountRef:
                                     description: A reference to an IAMServiceAccount
                                       resource.
