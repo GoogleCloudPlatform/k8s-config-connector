@@ -53,6 +53,8 @@ func dialogflowGeneratorFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".toolset_tools")
 	f.Unimplemented_NotYetTriaged(".ces_tool_specs")
 	f.Unimplemented_NotYetTriaged(".ces_app_specs")
+	f.Unimplemented_NotYetTriaged(".summarization_context.few_shot_examples[].output.agent_coaching_suggestion")
+	f.Unimplemented_NotYetTriaged(".summarization_context.few_shot_examples[].output.tool_call_info")
 
 	return f
 }
