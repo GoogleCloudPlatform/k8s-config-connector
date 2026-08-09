@@ -38,6 +38,10 @@ func conversationFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecField(".user_pseudo_id")
 	f.SpecField(".messages")
 
+	f.Unimplemented_NotYetTriaged(".messages[].create_time")
+	f.Unimplemented_NotYetTriaged(".messages[].reply.summary.safety_attributes")
+	f.Unimplemented_NotYetTriaged(".messages[].reply.summary.summary_with_metadata")
+
 	f.StatusField(".start_time")
 	f.StatusField(".end_time")
 
