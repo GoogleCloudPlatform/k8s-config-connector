@@ -412,6 +412,7 @@
 | metastore.cnrm.cloud.google.com               | MetastoreService                                | True         | False       | False  | Direct     | True        |
 | migrationcenter.cnrm.cloud.google.com         | MigrationCenterGroup                            | True         | False       | False  | Direct     | True        |
 | mlengine.cnrm.cloud.google.com                | MLEngineModel                                   | True         | False       | False  | Terraform  | False       |
+| modelarmor.cnrm.cloud.google.com              | ModelArmorFloorSetting                          | True         | False       | False  | Direct     | True        |
 | modelarmor.cnrm.cloud.google.com              | ModelArmorTemplate                              | True         | False       | False  | Direct     | True        |
 | monitoring.cnrm.cloud.google.com              | MonitoringAlertPolicy                           | False        | True        | False  | Terraform  | True        |
 | monitoring.cnrm.cloud.google.com              | MonitoringDashboard                             | False        | True        | False  | Direct     | True        |

@@ -1,14 +1,12 @@
 apiVersion: modelarmor.cnrm.cloud.google.com/v1alpha1
-kind: ModelArmorTemplate
+kind: ModelArmorFloorSetting
 metadata:
-  name: modelarmortemplatefull-${unique_id}
+  name: floor-setting-${uniqueId}
 spec:
   projectRef:
     external: ${PROJECT_ID}
   location: us-central1
-  resourceID: modelarmortemplatefull-${unique_id}
-  labels:
-    foo: bar
+  resourceID: floor-setting-${uniqueId}
   filterConfig:
     piAndJailbreakFilterSettings:
       filterEnforcement: ENFORCED
@@ -17,19 +15,17 @@ spec:
       raiFilters:
       - filterType: SEXUALLY_EXPLICIT
         confidenceLevel: LOW
-    maliciousUriFilterSettings:
+    maliciousURIFilterSettings:
       filterEnforcement: ENFORCED
     sdpSettings:
       basicConfig:
         filterEnforcement: ENFORCED
-  templateMetadata:
-    ignorePartialInvocationFailures: true
-    customPromptSafetyErrorCode: 400
-    customPromptSafetyErrorMessage: "blocked prompt"
-    customLlmResponseSafetyErrorCode: 401
-    customLlmResponseSafetyErrorMessage: "blocked response"
-    logTemplateOperations: true
-    logSanitizeOperations: true
-    enforcementType: ENFORCED
+  enableFloorSettingEnforcement: true
+  integratedServices:
+  - SERVICE_1
+  aiPlatformFloorSetting:
+    inspectOnly: true
+    enableCloudLogging: true
+  floorSettingMetadata:
     multiLanguageDetection:
       enableMultiLanguageDetection: true
