@@ -41,6 +41,7 @@ spec:
           identities:
           - serviceAccountRef:
               name: gsa-${uniqueId}
+          - group: kcc-eng@google.com
       - egressTo:
           resources:
           - projectRef:
