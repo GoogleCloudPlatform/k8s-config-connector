@@ -30,18 +30,23 @@ var (
 	_ identity.Resource   = &DiscoveryEngineConversation{}
 )
 
-var DiscoveryEngineConversationIdentityFormat = gcpurls.Template[DiscoveryEngineConversationIdentity]("discoveryengine.googleapis.com", "projects/{project}/locations/{location}/dataStores/{dataStore}/conversations/{conversation}")
+var DiscoveryEngineConversationIdentityFormat = gcpurls.Template[DiscoveryEngineConversationIdentity]("discoveryengine.googleapis.com", "projects/{project}/locations/{location}/collections/{collection}/dataStores/{dataStore}/conversations/{conversation}")
 
 // +k8s:deepcopy-gen=false
 type DiscoveryEngineConversationIdentity struct {
 	Project      string
 	Location     string
+	Collection   string
 	DataStore    string
 	Conversation string
 }
 
 func (i *DiscoveryEngineConversationIdentity) String() string {
 	return DiscoveryEngineConversationIdentityFormat.ToString(*i)
+}
+
+func (i *DiscoveryEngineConversationIdentity) ParentString() string {
+	return fmt.Sprintf("projects/%s/locations/%s/collections/%s/dataStores/%s", i.Project, i.Location, i.Collection, i.DataStore)
 }
 
 func (i *DiscoveryEngineConversationIdentity) FromExternal(ref string) error {
@@ -95,6 +100,7 @@ func getIdentityFromDiscoveryEngineConversationSpec(ctx context.Context, reader 
 	identity := &DiscoveryEngineConversationIdentity{
 		Project:      projectID,
 		Location:     location,
+		Collection:   dataStoreLink.Collection,
 		DataStore:    dataStoreLink.DataStore,
 		Conversation: resourceID,
 	}
@@ -116,9 +122,12 @@ func (obj *DiscoveryEngineConversation) GetIdentity(ctx context.Context, reader 
 			return nil, err
 		}
 
-		if statusIdentity.String() != specIdentity.String() {
-			return nil, fmt.Errorf("cannot change DiscoveryEngineConversation identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+		if statusIdentity.Location != specIdentity.Location || statusIdentity.Collection != specIdentity.Collection || statusIdentity.DataStore != specIdentity.DataStore {
+			return nil, fmt.Errorf("cannot change DiscoveryEngineConversation parent identity (old=%q, new parent=%s/%s/%s/%s)", statusIdentity.String(), specIdentity.Project, specIdentity.Location, specIdentity.Collection, specIdentity.DataStore)
 		}
+
+		specIdentity.Project = statusIdentity.Project
+		specIdentity.Conversation = statusIdentity.Conversation
 	}
 
 	return specIdentity, nil
