@@ -37,6 +37,10 @@ ${CONTROLLERBUILDER} generate-types \
     --api-version "modelarmor.cnrm.cloud.google.com/v1alpha1" \
     --resource ModelArmorTemplate:Template
 
+${CONTROLLERBUILDER} generate-mapper \
+    --service google.cloud.modelarmor.v1 \
+    --api-version "modelarmor.cnrm.cloud.google.com/v1alpha1"
+
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
 

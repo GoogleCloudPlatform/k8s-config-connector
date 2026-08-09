@@ -1,0 +1,99 @@
+GRPC /google.cloud.modelarmor.v1.ModelArmor/GetTemplate
+
+{
+  "name": "projects/${projectId}/locations/us-central1/templates/modelarmortemplate-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = Resource 'projects/${projectId}/locations/us-central1/templates/modelarmortemplate-${uniqueId}' was not found
+
+{}
+
+---
+
+GRPC /google.cloud.modelarmor.v1.ModelArmor/CreateTemplate
+
+{
+  "parent": "projects/${projectId}/locations/us-central1",
+  "template": {
+    "filterConfig": {
+      "piAndJailbreakFilterSettings": {
+        "confidenceLevel": "LOW_AND_ABOVE",
+        "filterEnforcement": "ENABLED"
+      }
+    }
+  },
+  "templateId": "modelarmortemplate-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "filterConfig": {
+    "piAndJailbreakFilterSettings": {
+      "confidenceLevel": "LOW_AND_ABOVE",
+      "filterEnforcement": "ENABLED"
+    }
+  },
+  "name": "projects/${projectId}/locations/us-central1/templates/modelarmortemplate-${uniqueId}",
+  "templateMetadata": {},
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.modelarmor.v1.ModelArmor/GetTemplate
+
+{
+  "name": "projects/${projectId}/locations/us-central1/templates/modelarmortemplate-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "filterConfig": {
+    "piAndJailbreakFilterSettings": {
+      "confidenceLevel": "LOW_AND_ABOVE",
+      "filterEnforcement": "ENABLED"
+    }
+  },
+  "name": "projects/${projectId}/locations/us-central1/templates/modelarmortemplate-${uniqueId}",
+  "templateMetadata": {},
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.modelarmor.v1.ModelArmor/GetTemplate
+
+{
+  "name": "projects/${projectId}/locations/us-central1/templates/modelarmortemplate-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "filterConfig": {
+    "piAndJailbreakFilterSettings": {
+      "confidenceLevel": "LOW_AND_ABOVE",
+      "filterEnforcement": "ENABLED"
+    }
+  },
+  "name": "projects/${projectId}/locations/us-central1/templates/modelarmortemplate-${uniqueId}",
+  "templateMetadata": {},
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.modelarmor.v1.ModelArmor/DeleteTemplate
+
+{
+  "name": "projects/${projectId}/locations/us-central1/templates/modelarmortemplate-${uniqueId}"
+}
+
+OK
+
+{}
