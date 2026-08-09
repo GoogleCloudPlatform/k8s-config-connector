@@ -1,0 +1,6 @@
+- caisURL: //dialogflow.googleapis.com/projects/${projectId}/locations/global/generators/dialogflowgenerator-maximal-${uniqueId}
+  group: dialogflow.cnrm.cloud.google.com
+  kind: DialogflowGenerator
+  name: dialogflowgenerator-maximal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
