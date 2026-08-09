@@ -102,7 +102,7 @@ func (m *redisClusterModel) AdapterForObject(ctx context.Context, op *directbase
 		return nil, err
 	}
 
-	if err := common.NormalizeReferences(ctx, kube, obj, nil); err != nil {
+	if err := common.NormalizeReferences(ctx, kube, obj, nil, nil); err != nil {
 		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
 

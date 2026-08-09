@@ -86,7 +86,7 @@ func (m *gatewaySecurityPolicyModel) AdapterForObject(ctx context.Context, op *d
 		return nil, err
 	}
 
-	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+	if err := common.NormalizeReferences(ctx, reader, obj, nil, nil); err != nil {
 		return nil, err
 	}
 	if obj.Spec.TLSInspectionPolicyRef != nil {

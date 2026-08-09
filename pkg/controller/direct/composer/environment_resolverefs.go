@@ -25,7 +25,7 @@ import (
 
 func ResolveEnvironmentRefs(ctx context.Context, kube client.Reader, obj *krm.ComposerEnvironment) error {
 	var err error
-	if err := common.NormalizeReferences(ctx, kube, obj, nil); err != nil {
+	if err := common.NormalizeReferences(ctx, kube, obj, nil, nil); err != nil {
 		return err
 	}
 

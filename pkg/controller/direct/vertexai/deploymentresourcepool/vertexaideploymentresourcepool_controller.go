@@ -84,7 +84,7 @@ func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForO
 	}
 	id := idRaw.(*krm.VertexAIDeploymentResourcePoolIdentity)
 
-	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+	if err := common.NormalizeReferences(ctx, reader, obj, nil, nil); err != nil {
 		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
 

@@ -83,7 +83,7 @@ func (m *authzPolicyModel) AdapterForObject(ctx context.Context, op *directbase.
 		return nil, err
 	}
 
-	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+	if err := common.NormalizeReferences(ctx, reader, obj, nil, nil); err != nil {
 		return nil, err
 	}
 	mapCtx := &direct.MapContext{}

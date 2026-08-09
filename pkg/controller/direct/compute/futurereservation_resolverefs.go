@@ -32,7 +32,7 @@ func ResolveComputeFutureReservationRefs(ctx context.Context, reader client.Read
 		return nil
 	}
 
-	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+	if err := common.NormalizeReferences(ctx, reader, obj, nil, nil); err != nil {
 		return err
 	}
 
