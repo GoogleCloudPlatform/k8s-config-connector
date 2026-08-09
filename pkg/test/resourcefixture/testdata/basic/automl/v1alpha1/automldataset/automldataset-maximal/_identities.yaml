@@ -1,4 +1,4 @@
-- caisURL: unknown
+- caisURL: //automl.googleapis.com/projects/${projectId}/locations/us-central1/datasets/ds-max-${uniqueId}
   group: automl.cnrm.cloud.google.com
   kind: AutoMLDataset
   name: automldataset-max-${uniqueId}
