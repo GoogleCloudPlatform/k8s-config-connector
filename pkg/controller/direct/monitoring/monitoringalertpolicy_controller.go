@@ -29,6 +29,7 @@ import (
 	"k8s.io/klog/v2"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/monitoring/v1beta1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
@@ -86,12 +87,14 @@ func (m *alertPolicyModel) AdapterForObject(ctx context.Context, op *directbase.
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	if err := common.NormalizeReferences(ctx, kube, obj, nil); err != nil {
-		return nil, err
-	}
-
 	id, err := obj.GetIdentity(ctx, kube)
 	if err != nil {
+		return nil, err
+	}
+	identity := id.(*krm.MonitoringAlertPolicyIdentity)
+	projectRef := &refs.ProjectIdentity{ProjectID: identity.Project}
+
+	if err := common.NormalizeReferences(ctx, kube, obj, projectRef, m.config.ProjectMapper); err != nil {
 		return nil, err
 	}
 

@@ -34,6 +34,7 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dataproc/v1beta1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
@@ -73,11 +74,6 @@ func (m *dataprocClusterModel) AdapterForObject(ctx context.Context, op *directb
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	// Always call common.NormalizeReferences to resolve any resource references:
-	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
-		return nil, fmt.Errorf("normalizing references: %w", err)
-	}
-
 	id, err := krm.GetIdentity(ctx, reader, obj)
 	if err != nil {
 		return nil, err
@@ -85,6 +81,12 @@ func (m *dataprocClusterModel) AdapterForObject(ctx context.Context, op *directb
 	clusterID, ok := id.(*krm.DataprocClusterIdentity)
 	if !ok {
 		return nil, fmt.Errorf("unexpected identity type: %T", id)
+	}
+	projectRef := &refs.ProjectIdentity{ProjectID: clusterID.Project}
+
+	// Always call common.NormalizeReferences to resolve any resource references:
+	if err := common.NormalizeReferences(ctx, reader, obj, projectRef, m.config.ProjectMapper); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
 
 	gcpClient, err := m.client(ctx)

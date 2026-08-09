@@ -29,6 +29,7 @@ import (
 	gcp "cloud.google.com/go/redis/apiv1"
 	redispb "cloud.google.com/go/redis/apiv1/redispb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/redis/v1beta1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
@@ -97,8 +98,10 @@ func (m *redisInstanceModel) AdapterForObject(ctx context.Context, op *directbas
 	if err != nil {
 		return nil, err
 	}
+	identity := id.(*krm.RedisInstanceIdentity)
+	projectRef := &refs.ProjectIdentity{ProjectID: identity.Project}
 
-	if err := common.NormalizeReferences(ctx, kube, obj, nil); err != nil {
+	if err := common.NormalizeReferences(ctx, kube, obj, projectRef, m.config.ProjectMapper); err != nil {
 		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
 
@@ -109,7 +112,7 @@ func (m *redisInstanceModel) AdapterForObject(ctx context.Context, op *directbas
 	}
 
 	return &redisInstanceAdapter{
-		id:      id.(*krm.RedisInstanceIdentity),
+		id:      identity,
 		desired: desired,
 		client:  gcpClient,
 	}, nil

@@ -125,7 +125,7 @@ func (m *dataFlowJobModel) AdapterForObject(ctx context.Context, op *directbase.
 
 	jobID := direct.ValueOf(obj.Status.JobId)
 
-	if err := common.NormalizeReferences(ctx, kube, obj, nil); err != nil {
+	if err := common.NormalizeReferences(ctx, kube, obj, projectRef, m.config.ProjectMapper); err != nil {
 		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
 

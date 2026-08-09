@@ -21,6 +21,7 @@ import (
 	gcp "cloud.google.com/go/bigquery/reservation/apiv1"
 	pb "cloud.google.com/go/bigquery/reservation/apiv1/reservationpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigqueryreservation/v1alpha1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
@@ -71,15 +72,16 @@ func (m *modelCapacityCommitment) AdapterForObject(ctx context.Context, op *dire
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
-		return nil, fmt.Errorf("normalizing references: %w", err)
-	}
-
 	idInterface, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
 	id := idInterface.(*krm.BigQueryReservationCapacityCommitmentIdentity)
+	projectRef := &refs.ProjectIdentity{ProjectID: id.Project}
+
+	if err := common.NormalizeReferences(ctx, reader, obj, projectRef, m.config.ProjectMapper); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
 
 	mapCtx := &direct.MapContext{}
 	desiredPb := BigQueryReservationCapacityCommitmentSpec_v1alpha1_ToProto(mapCtx, &obj.Spec)

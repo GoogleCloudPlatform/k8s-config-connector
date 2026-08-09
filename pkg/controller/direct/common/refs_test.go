@@ -90,14 +90,20 @@ func TestAllBrownfieldControllersPassRequiredArguments(t *testing.T) {
 					return true
 				}
 
-				if ident, ok := call.Args[3].(*ast.Ident); ok && ident.Name == "nil" {
-					pos := fset.Position(call.Pos())
-					errs = append(errs, fmt.Sprintf("%s: NormalizeReferences called with nil projectRef; pass projectRef instead", pos))
-				}
-
-				if ident, ok := call.Args[4].(*ast.Ident); ok && ident.Name == "nil" {
-					pos := fset.Position(call.Pos())
-					errs = append(errs, fmt.Sprintf("%s: NormalizeReferences called with nil projectMapper; pass m.config.ProjectMapper instead", pos))
+				// Resources without project-scoped identities (e.g. Tags resources, organization/folder-scoped ComputeFirewallPolicy, billing account-scoped BillingBudgetsBudget)
+				// do not have project context, so projectRef and projectMapper are not required.
+				isNonProjectScoped := strings.HasPrefix(strings.ToLower(baseName), "tags") ||
+					strings.ToLower(baseName) == "computefirewallpolicy" ||
+					strings.ToLower(baseName) == "billingbudgetsbudget"
+				if !isNonProjectScoped {
+					if ident, ok := call.Args[3].(*ast.Ident); ok && ident.Name == "nil" {
+						pos := fset.Position(call.Pos())
+						errs = append(errs, fmt.Sprintf("%s: NormalizeReferences called with nil projectRef; pass projectRef instead", pos))
+					}
+					if ident, ok := call.Args[4].(*ast.Ident); ok && ident.Name == "nil" {
+						pos := fset.Position(call.Pos())
+						errs = append(errs, fmt.Sprintf("%s: NormalizeReferences called with nil projectMapper; pass m.config.ProjectMapper instead", pos))
+					}
 				}
 			}
 			return true

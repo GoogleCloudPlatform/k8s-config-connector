@@ -21,6 +21,7 @@ import (
 
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/dns/v1alpha1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
@@ -73,11 +74,6 @@ func (m *responsePolicyModel) AdapterForObject(ctx context.Context, op *directba
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	// Always call common.NormalizeReferences to resolve references
-	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
-		return nil, fmt.Errorf("normalizing references: %w", err)
-	}
-
 	idVal, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
@@ -85,6 +81,13 @@ func (m *responsePolicyModel) AdapterForObject(ctx context.Context, op *directba
 	id, ok := idVal.(*krm.DNSResponsePolicyIdentity)
 	if !ok {
 		return nil, fmt.Errorf("unexpected identity type: %T", idVal)
+	}
+
+	projectRef := &refs.ProjectIdentity{ProjectID: id.Project}
+
+	// Always call common.NormalizeReferences to resolve references
+	if err := common.NormalizeReferences(ctx, reader, obj, projectRef, m.config.ProjectMapper); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
 
 	// Convert the KRM spec to API format here, so we follow the pattern in the skill.
