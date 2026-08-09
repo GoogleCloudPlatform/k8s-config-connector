@@ -10,7 +10,7 @@
   name: arrepository-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: unknown
+- caisURL: //developerconnect.googleapis.com/projects/${projectId}/locations/us-central1/insightsConfigs/devconnectinsightsconfig-maximal-${uniqueId}
   group: developerconnect.cnrm.cloud.google.com
   kind: DevConnectInsightsConfig
   name: devconnectinsightsconfig-maximal-${uniqueId}

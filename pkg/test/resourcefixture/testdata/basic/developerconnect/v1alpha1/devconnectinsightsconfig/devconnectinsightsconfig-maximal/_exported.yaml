@@ -1,0 +1,20 @@
+apiVersion: developerconnect.cnrm.cloud.google.com/v1alpha1
+kind: DevConnectInsightsConfig
+metadata:
+  labels:
+    cnrm-test: "true"
+    managed-by-cnrm: "true"
+  name: devconnectinsightsconfig-maximal-${uniqueId}
+spec:
+  appHubApplicationRef:
+    external: //apphub.googleapis.com/projects/${projectNumber}/locations/us-central1/applications/apphubapp-maximal-${uniqueId}
+  artifactConfigs:
+  - googleArtifactAnalysis:
+      projectID: ${projectId}
+    googleArtifactRegistry:
+      artifactRegistryPackage: my-image-updated
+      projectID: ${projectId}
+    uri: us-central1-docker.pkg.dev/${projectId}/arrepository-${uniqueId}/my-image-updated
+  location: us-central1
+  projectRef:
+    external: ${projectId}

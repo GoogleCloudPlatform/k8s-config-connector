@@ -28,6 +28,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/export"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"google.golang.org/api/option"
@@ -39,10 +40,10 @@ import (
 )
 
 func init() {
-	registry.RegisterModel(krm.DevConnectInsightsConfigGVK, NewModel)
+	registry.RegisterModel(krm.DevConnectInsightsConfigGVK, NewInsightsConfigModel)
 }
 
-func NewModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
+func NewInsightsConfigModel(ctx context.Context, config *config.ControllerConfig) (directbase.Model, error) {
 	return &model{config: *config}, nil
 }
 
@@ -123,7 +124,25 @@ func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForO
 }
 
 func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	return nil, nil
+	id := &krm.DevConnectInsightsConfigIdentity{}
+	if err := id.FromExternal(url); err != nil {
+		// Not recognized
+		return nil, nil
+	}
+
+	gcpClient, err := m.client(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	desired := &pb.InsightsConfig{}
+	desired.Name = id.String()
+
+	return &Adapter{
+		id:        id,
+		gcpClient: gcpClient,
+		desired:   desired,
+	}, nil
 }
 
 type Adapter struct {
@@ -189,7 +208,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating InsightsConfig", "name", a.id)
 
-	diffs, err := compareResource(ctx, a.actual, a.desired, a.id.Project)
+	diffs, err := compareInsightsConfigResource(ctx, a.actual, a.desired, a.id.Project)
 	if err != nil {
 		return err
 	}
@@ -263,10 +282,14 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 
 	obj := &krm.DevConnectInsightsConfig{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(DevConnectInsightsConfigSpec_FromProto(mapCtx, a.actual))
+	spec := DevConnectInsightsConfigSpec_FromProto(mapCtx, a.actual)
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
+	if spec == nil {
+		spec = &krm.DevConnectInsightsConfigSpec{}
+	}
+	obj.Spec = *spec
 
 	obj.Spec.ProjectRef = &refsv1beta1.ProjectRef{External: a.id.Project}
 	obj.Spec.Location = &a.id.Location
@@ -276,10 +299,12 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 		return nil, err
 	}
 
+	u.Object = uObj
 	u.SetName(a.id.Insights_config)
 	u.SetGroupVersionKind(krm.DevConnectInsightsConfigGVK)
 
-	u.Object = uObj
+	export.SetLabels(u, a.actual.Labels)
+
 	return u, nil
 }
 
@@ -297,7 +322,7 @@ func (a *Adapter) updateStatus(ctx context.Context, op directbase.Operation, lat
 	return op.UpdateStatus(ctx, status, nil)
 }
 
-func compareResource(ctx context.Context, actual, desired *pb.InsightsConfig, projectID string) (*structuredreporting.Diff, error) {
+func compareInsightsConfigResource(ctx context.Context, actual, desired *pb.InsightsConfig, projectID string) (*structuredreporting.Diff, error) {
 	mapCtx := &direct.MapContext{}
 	maskedActualSpec := DevConnectInsightsConfigSpec_FromProto(mapCtx, actual)
 	if mapCtx.Err() != nil {

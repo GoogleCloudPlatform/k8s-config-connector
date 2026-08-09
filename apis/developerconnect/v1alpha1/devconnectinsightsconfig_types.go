@@ -17,6 +17,7 @@ package v1alpha1
 import (
 	apphubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apphub/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/kccscheme"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -133,4 +134,5 @@ type DevConnectInsightsConfigList struct {
 
 func init() {
 	SchemeBuilder.Register(&DevConnectInsightsConfig{}, &DevConnectInsightsConfigList{})
+	kccscheme.RegisterType(DevConnectInsightsConfigGVK, &DevConnectInsightsConfig{})
 }

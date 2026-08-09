@@ -234,32 +234,6 @@ func DevConnectAccountConnectorObservedState_ToProto(mapCtx *direct.MapContext, 
 	out.OauthStartUri = direct.ValueOf(in.OauthStartURI)
 	return out
 }
-func DevConnectAccountConnectorSpec_FromProto(mapCtx *direct.MapContext, in *pb.AccountConnector) *krm.DevConnectAccountConnectorSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DevConnectAccountConnectorSpec{}
-	out.ProviderOauthConfig = ProviderOAuthConfig_FromProto(mapCtx, in.GetProviderOauthConfig())
-	// MISSING: Name
-	out.Annotations = in.Annotations
-	// MISSING: Etag
-	out.Labels = in.Labels
-	return out
-}
-func DevConnectAccountConnectorSpec_ToProto(mapCtx *direct.MapContext, in *krm.DevConnectAccountConnectorSpec) *pb.AccountConnector {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AccountConnector{}
-	if oneof := ProviderOAuthConfig_ToProto(mapCtx, in.ProviderOauthConfig); oneof != nil {
-		out.AccountConnectorConfig = &pb.AccountConnector_ProviderOauthConfig{ProviderOauthConfig: oneof}
-	}
-	// MISSING: Name
-	out.Annotations = in.Annotations
-	// MISSING: Etag
-	out.Labels = in.Labels
-	return out
-}
 func DevConnectConnectionObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Connection) *krm.DevConnectConnectionObservedState {
 	if in == nil {
 		return nil
@@ -712,26 +686,6 @@ func OAuthCredentialObservedState_ToProto(mapCtx *direct.MapContext, in *krm.OAu
 	out := &pb.OAuthCredential{}
 	// MISSING: OauthTokenSecretVersion
 	out.Username = direct.ValueOf(in.Username)
-	return out
-}
-func ProviderOAuthConfig_FromProto(mapCtx *direct.MapContext, in *pb.ProviderOAuthConfig) *krm.ProviderOAuthConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.ProviderOAuthConfig{}
-	out.SystemProviderID = direct.Enum_FromProto(mapCtx, in.GetSystemProviderId())
-	out.Scopes = in.Scopes
-	return out
-}
-func ProviderOAuthConfig_ToProto(mapCtx *direct.MapContext, in *krm.ProviderOAuthConfig) *pb.ProviderOAuthConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.ProviderOAuthConfig{}
-	if oneof := ProviderOAuthConfig_SystemProviderId_ToProto(mapCtx, in.SystemProviderID); oneof != nil {
-		out.OauthProviderId = oneof
-	}
-	out.Scopes = in.Scopes
 	return out
 }
 func ProviderOAuthConfig_SystemProviderId_ToProto(mapCtx *direct.MapContext, in *string) *pb.ProviderOAuthConfig_SystemProviderId {

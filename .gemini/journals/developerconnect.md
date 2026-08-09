@@ -27,3 +27,9 @@
   1. In `AdapterForObject`, we check if `AppHubApplicationRef` is nil/empty, and fallback to defaulting the `Projects` context to track the current project (`id.Project`).
   2. In the `Update` method, we clone the desired payload and set the `InsightsConfigContext = nil` if it is a `Projects` context, omitting it from the PATCH payload entirely. In `compareResource`, we normalize both actual and clonedDesired context to prevent false diffs.
 - **Impact**: Ensures seamless single-project `DevConnectInsightsConfig` reconciliation in Config Connector while complying with GCP API immutability rules.
+
+### [2026-08-09] DevConnectAccountConnector Direct Controller & Fuzz Testing
+- **Context**: Implementing DevConnectAccountConnector direct controller and fuzzer.
+- **Problem**: When running KRM mapper fuzzer roundtrip checks, the test failed on output-only fields like `.name` and default enum fields like `.provider_oauth_config.system_provider_id` (since `SYSTEM_PROVIDER_UNSPECIFIED` is value 0, and isn't user-facing).
+- **Solution**: Used the fuzzer's fluent API `f.Unimplemented_NotYetTriaged(".name")` and `f.Unimplemented_NotYetTriaged(".provider_oauth_config.system_provider_id")` to mark these fields as triaged/ignored in roundtrip checks.
+- **Impact**: When writing fuzzers for Direct controllers, run `go test -v ./pkg/fuzztesting/fuzztests/... -run TestSomeMappers` to quickly capture any proto field mismatches, and resolve them using the fluent `f.Unimplemented_NotYetTriaged` helper.

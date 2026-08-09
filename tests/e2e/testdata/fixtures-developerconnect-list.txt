@@ -1,0 +1,4 @@
+pkg/test/resourcefixture/testdata/basic/developerconnect/v1alpha1/devconnectaccountconnector/devconnectaccountconnector-maximal
+pkg/test/resourcefixture/testdata/basic/developerconnect/v1alpha1/devconnectaccountconnector/devconnectaccountconnector-minimal
+pkg/test/resourcefixture/testdata/basic/developerconnect/v1alpha1/devconnectinsightsconfig/devconnectinsightsconfig-maximal
+pkg/test/resourcefixture/testdata/basic/developerconnect/v1alpha1/devconnectinsightsconfig/devconnectinsightsconfig-minimal

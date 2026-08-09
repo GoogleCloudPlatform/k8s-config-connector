@@ -1,0 +1,12 @@
+apiVersion: developerconnect.cnrm.cloud.google.com/v1alpha1
+kind: DevConnectInsightsConfig
+metadata:
+  labels:
+    cnrm-test: "true"
+    managed-by-cnrm: "true"
+    test-label: updated-val
+  name: default
+spec:
+  location: us-central1
+  projectRef:
+    external: ${projectId}
