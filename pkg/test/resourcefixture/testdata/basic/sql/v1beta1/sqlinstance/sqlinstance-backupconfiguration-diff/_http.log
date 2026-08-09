@@ -45,11 +45,14 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
         "retainedBackups": 30,
         "retentionUnit": "COUNT"
       },
+      "binaryLogEnabled": false,
       "enabled": true,
       "kind": "sql#backupConfiguration",
-      "pointInTimeRecoveryEnabled": true
+      "pointInTimeRecoveryEnabled": true,
+      "transactionLogRetentionDays": 0
     },
     "connectorEnforcement": "NOT_REQUIRED",
+    "crashSafeReplicationEnabled": false,
     "dataDiskSizeGb": "10",
     "dataDiskType": "PD_SSD",
     "databaseFlags": [
@@ -62,7 +65,10 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "edition": "ENTERPRISE",
     "insightsConfig": {
       "queryInsightsEnabled": true,
-      "queryPlansPerMinute": 5
+      "queryPlansPerMinute": 5,
+      "queryStringLength": 0,
+      "recordApplicationTags": false,
+      "recordClientAddress": false
     },
     "ipConfiguration": {
       "enablePrivatePathForGoogleCloudServices": false,
@@ -74,6 +80,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "pricingPlan": "PER_USE",
     "replicationType": "SYNCHRONOUS",
     "storageAutoResize": true,
+    "storageAutoResizeLimit": "0",
     "tier": "db-g1-small",
     "userLabels": {
       "cnrm-test": "true",
@@ -208,10 +215,11 @@ X-Xss-Protection: 0
       "pointInTimeRecoveryEnabled": true,
       "replicationLogArchivingEnabled": false,
       "startTime": "12:00",
-      "transactionLogRetentionDays": 7,
+      "transactionLogRetentionDays": 0,
       "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
     },
     "connectorEnforcement": "NOT_REQUIRED",
+    "crashSafeReplicationEnabled": false,
     "dataDiskSizeGb": "10",
     "dataDiskType": "PD_SSD",
     "databaseFlags": [
@@ -224,7 +232,8 @@ X-Xss-Protection: 0
     "edition": "ENTERPRISE",
     "insightsConfig": {
       "queryInsightsEnabled": true,
-      "queryPlansPerMinute": 5
+      "queryPlansPerMinute": 5,
+      "queryStringLength": 0
     },
     "ipConfiguration": {
       "authorizedNetworks": [],
@@ -359,10 +368,11 @@ X-Xss-Protection: 0
       "pointInTimeRecoveryEnabled": true,
       "replicationLogArchivingEnabled": false,
       "startTime": "12:00",
-      "transactionLogRetentionDays": 7,
+      "transactionLogRetentionDays": 0,
       "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
     },
     "connectorEnforcement": "NOT_REQUIRED",
+    "crashSafeReplicationEnabled": false,
     "dataDiskSizeGb": "10",
     "dataDiskType": "PD_SSD",
     "databaseFlags": [
@@ -375,7 +385,8 @@ X-Xss-Protection: 0
     "edition": "ENTERPRISE",
     "insightsConfig": {
       "queryInsightsEnabled": true,
-      "queryPlansPerMinute": 5
+      "queryPlansPerMinute": 5,
+      "queryStringLength": 0
     },
     "ipConfiguration": {
       "authorizedNetworks": [],
