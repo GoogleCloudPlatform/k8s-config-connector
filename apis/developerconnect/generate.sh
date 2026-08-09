@@ -40,7 +40,9 @@ ${CONTROLLERBUILDER} generate-types \
   --resource DevConnectAccountConnector:AccountConnector \
   --prune-unused-types=false
 
-
+${CONTROLLERBUILDER} generate-mapper \
+  --service google.cloud.developerconnect.v1 \
+  --api-version developerconnect.cnrm.cloud.google.com/v1alpha1
 
 # Format generated code
 

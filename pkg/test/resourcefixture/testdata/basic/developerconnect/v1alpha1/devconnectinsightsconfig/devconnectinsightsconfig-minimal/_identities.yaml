@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: developerconnect.cnrm.cloud.google.com
+  kind: DevConnectInsightsConfig
+  name: devconnectinsightsconfig-min-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

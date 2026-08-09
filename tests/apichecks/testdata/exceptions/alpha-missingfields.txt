@@ -2035,13 +2035,6 @@
 [missing_field] crd=devconnectconnections.developerconnect.cnrm.cloud.google.com version=v1alpha1: field ".spec.gitlabEnterpriseConfig.webhookSecretSecretVersion" is not set in unstructured objects
 [missing_field] crd=devconnectconnections.developerconnect.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=devconnectconnections.developerconnect.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=devconnectinsightsconfigs.developerconnect.cnrm.cloud.google.com version=v1alpha1: field ".spec.appHubApplicationRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=devconnectinsightsconfigs.developerconnect.cnrm.cloud.google.com version=v1alpha1: field ".spec.artifactConfigs[].googleArtifactAnalysis.projectID" is not set in unstructured objects
-[missing_field] crd=devconnectinsightsconfigs.developerconnect.cnrm.cloud.google.com version=v1alpha1: field ".spec.artifactConfigs[].googleArtifactRegistry.artifactRegistryPackage" is not set in unstructured objects
-[missing_field] crd=devconnectinsightsconfigs.developerconnect.cnrm.cloud.google.com version=v1alpha1: field ".spec.artifactConfigs[].googleArtifactRegistry.projectID" is not set in unstructured objects
-[missing_field] crd=devconnectinsightsconfigs.developerconnect.cnrm.cloud.google.com version=v1alpha1: field ".spec.artifactConfigs[].uri" is not set in unstructured objects
-[missing_field] crd=devconnectinsightsconfigs.developerconnect.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
-[missing_field] crd=devconnectinsightsconfigs.developerconnect.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=devicestreamingsessions.devicestreaming.cnrm.cloud.google.com version=v1alpha1: field ".spec.androidDevice.locale" is not set in unstructured objects
 [missing_field] crd=devicestreamingsessions.devicestreaming.cnrm.cloud.google.com version=v1alpha1: field ".spec.androidDevice.orientation" is not set in unstructured objects
 [missing_field] crd=devicestreamingsessions.devicestreaming.cnrm.cloud.google.com version=v1alpha1: field ".spec.expireTime" is not set in unstructured objects
