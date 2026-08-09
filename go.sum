@@ -871,6 +871,8 @@ cloud.google.com/go/language v1.11.1/go.mod h1:Xyid9MG9WOX3utvDbpX7j3tXDmmDooMyM
 cloud.google.com/go/language v1.12.1/go.mod h1:zQhalE2QlQIxbKIZt54IASBzmZpN/aDASea5zl1l+J4=
 cloud.google.com/go/language v1.12.2/go.mod h1:9idWapzr/JKXBBQ4lWqVX/hcadxB194ry20m/bTrhWc=
 cloud.google.com/go/language v1.12.3/go.mod h1:evFX9wECX6mksEva8RbRnr/4wi/vKGYnAJrTRXU8+f8=
+cloud.google.com/go/licensemanager v1.1.0 h1:qbp9bikJRHgvO3gixNT8ul1cIhs7dVk+TNcm6v2XZow=
+cloud.google.com/go/licensemanager v1.1.0/go.mod h1:akt6geWWeRA6iolLZ111rJHgiCqV0E2u2z9jh2JQnks=
 cloud.google.com/go/lifesciences v0.5.0/go.mod h1:3oIKy8ycWGPUyZDR/8RNnTOYevhaMLqh5vLUXs9zvT8=
 cloud.google.com/go/lifesciences v0.6.0/go.mod h1:ddj6tSX/7BOnhxCSd3ZcETvtNr8NZ6t/iPhY2Tyfu08=
 cloud.google.com/go/lifesciences v0.8.0/go.mod h1:lFxiEOMqII6XggGbOnKiyZ7IBwoIqA84ClvoezaA/bo=

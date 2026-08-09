@@ -243,6 +243,12 @@ func (x *Normalizer) Render(events test.LogEntries) string {
 	addReplacement("response.serviceRevision.createTime", "2024-04-01T12:34:56.123456Z")
 	addReplacement("response.serviceRevision.updateTime", "2024-04-01T12:34:56.123456Z")
 
+	// Specific to LicenseManager
+	addSetStringReplacement(".currentBillingInfo.startTime", "2024-04-01T12:34:56.123456Z")
+	addSetStringReplacement(".nextBillingInfo.startTime", "2024-04-01T12:34:56.123456Z")
+	addSetStringReplacement(".response.currentBillingInfo.startTime", "2024-04-01T12:34:56.123456Z")
+	addSetStringReplacement(".response.nextBillingInfo.startTime", "2024-04-01T12:34:56.123456Z")
+
 	// Replace any empty values in LROs; this is surprisingly difficult to fix in mockgcp
 	//
 	//     "response": {
