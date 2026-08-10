@@ -131,4 +131,3 @@ func isNormalizeReferencesCall(call *ast.CallExpr) bool {
 	}
 	return false
 }
-
