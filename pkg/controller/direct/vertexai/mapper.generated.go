@@ -1219,6 +1219,52 @@ func VertexAIMetadataStoreSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *kr
 	out.DataplexConfig = MetadataStore_DataplexConfig_v1beta1_ToProto(mapCtx, in.DataplexConfig)
 	return out
 }
+func VertexAITensorboardExperimentObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.TensorboardExperiment) *krmvertexaiv1alpha1.VertexAITensorboardExperimentObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.VertexAITensorboardExperimentObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Etag
+	return out
+}
+func VertexAITensorboardExperimentObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.VertexAITensorboardExperimentObservedState) *pb.TensorboardExperiment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TensorboardExperiment{}
+	out.Name = direct.ValueOf(in.Name)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Etag
+	return out
+}
+func VertexAITensorboardExperimentSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.TensorboardExperiment) *krmvertexaiv1alpha1.VertexAITensorboardExperimentSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.VertexAITensorboardExperimentSpec{}
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Labels = in.Labels
+	// MISSING: Etag
+	out.Source = direct.LazyPtr(in.GetSource())
+	return out
+}
+func VertexAITensorboardExperimentSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.VertexAITensorboardExperimentSpec) *pb.TensorboardExperiment {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TensorboardExperiment{}
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	out.Labels = in.Labels
+	// MISSING: Etag
+	out.Source = direct.ValueOf(in.Source)
+	return out
+}
 func VertexAITensorboardObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Tensorboard) *krmvertexaiv1alpha1.VertexAITensorboardObservedState {
 	if in == nil {
 		return nil
