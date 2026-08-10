@@ -34,14 +34,42 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 		return
 	}
 
-	event.VisitResponseStringValues(func(path string, value string) {
-		if path == ".name" || strings.HasSuffix(path, ".name") {
+	normalizeID := func(path string, value string) {
+		if path == ".name" || strings.HasSuffix(path, ".name") || path == "name" {
 			tokens := strings.Split(value, "/")
 			if len(tokens) >= 10 && tokens[len(tokens)-2] == "sessions" {
 				sessionID := tokens[len(tokens)-1]
-				// Normalize any generated numeric session ID to the expected test format
 				replacements.ReplaceStringValue(sessionID, "session-${uniqueId}")
 			}
+			if len(tokens) >= 10 && tokens[len(tokens)-2] == "conversations" {
+				conversationID := tokens[len(tokens)-1]
+				replacements.ReplaceStringValue(conversationID, "conversation-${uniqueId}")
+			}
 		}
-	})
+	}
+
+	event.VisitResponseStringValues(normalizeID)
+	event.VisitRequestStringValues(normalizeID)
+
+	// Normalize numeric IDs in the URL if we haven't seen them in a "name" field yet
+	url := event.URL()
+	if idx := strings.Index(url, "?"); idx != -1 {
+		url = url[:idx]
+	}
+	tokens := strings.Split(url, "/")
+	for i := range tokens {
+		if i > 0 && i < len(tokens)-1 {
+			if tokens[i] == "sessions" || tokens[i] == "conversations" {
+				id := tokens[i+1]
+				// Basic check for numeric-ish ID
+				if len(id) > 10 {
+					if tokens[i] == "sessions" {
+						replacements.ReplaceStringValue(id, "session-${uniqueId}")
+					} else {
+						replacements.ReplaceStringValue(id, "conversation-${uniqueId}")
+					}
+				}
+			}
+		}
+	}
 }
