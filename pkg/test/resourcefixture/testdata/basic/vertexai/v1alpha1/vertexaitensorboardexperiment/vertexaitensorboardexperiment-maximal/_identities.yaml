@@ -1,0 +1,12 @@
+- caisURL: unknown
+  group: vertexai.cnrm.cloud.google.com
+  kind: VertexAITensorboard
+  name: dep-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
+- caisURL: unknown
+  group: vertexai.cnrm.cloud.google.com
+  kind: VertexAITensorboardExperiment
+  name: vertexaitenexp-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
