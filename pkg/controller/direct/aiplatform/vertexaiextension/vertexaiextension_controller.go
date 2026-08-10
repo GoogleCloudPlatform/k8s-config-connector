@@ -201,6 +201,11 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		return a.updateStatus(ctx, updateOp, a.actual)
 	}
 
+	if len(updateMask.Paths) == 0 {
+		log.V(2).Info("no mutable field needs update", "name", a.id.String())
+		return a.updateStatus(ctx, updateOp, a.actual)
+	}
+
 	structuredreporting.ReportDiff(ctx, diffs)
 
 	req := &pb.UpdateExtensionRequest{
