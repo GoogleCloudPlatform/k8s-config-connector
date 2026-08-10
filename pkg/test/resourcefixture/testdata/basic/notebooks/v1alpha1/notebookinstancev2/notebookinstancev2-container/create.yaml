@@ -21,6 +21,10 @@ spec:
     external: ${projectId}
   location: us-central1-a
   gceSetup:
+    metadata:
+      notebook-disable-downloads: "true"
+      notebook-disable-root: "true"
+    disablePublicIP: true
     machineType: n1-standard-1
     containerImage:
       repository: gcr.io/deeplearning-platform-release/base-cpu

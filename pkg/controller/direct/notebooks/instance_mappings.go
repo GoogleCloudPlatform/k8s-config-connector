@@ -37,6 +37,37 @@ func VMImage_ImageFamily_ToProto(mapCtx *direct.MapContext, in *string) *pb.VmIm
 	return &pb.VmImage_ImageFamily{ImageFamily: direct.ValueOf(in)}
 }
 
+func InstanceBootDisk_v1alpha1_FromProto(mapCtx *direct.MapContext, in *notebookspb.BootDisk) *krmnotebooksv1alpha1.InstanceBootDisk {
+	if in == nil {
+		return nil
+	}
+	out := &krmnotebooksv1alpha1.InstanceBootDisk{}
+	out.DiskSizeGB = direct.LazyPtr(in.GetDiskSizeGb())
+	out.DiskType = direct.Enum_FromProto(mapCtx, in.GetDiskType())
+	out.DiskEncryption = direct.Enum_FromProto(mapCtx, in.GetDiskEncryption())
+	if in.GetDiskEncryption() == notebookspb.DiskEncryption_CMEK {
+		if in.GetKmsKey() != "" {
+			out.KmsKeyRef = &kmsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKey()}
+		}
+	}
+	return out
+}
+
+func InstanceBootDisk_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnotebooksv1alpha1.InstanceBootDisk) *notebookspb.BootDisk {
+	if in == nil {
+		return nil
+	}
+	out := &notebookspb.BootDisk{}
+	out.DiskSizeGb = direct.ValueOf(in.DiskSizeGB)
+	out.DiskType = direct.Enum_ToProto[notebookspb.DiskType](mapCtx, in.DiskType)
+	out.DiskEncryption = direct.Enum_ToProto[notebookspb.DiskEncryption](mapCtx, in.DiskEncryption)
+	if in.KmsKeyRef != nil {
+		out.KmsKey = in.KmsKeyRef.External
+		out.DiskEncryption = notebookspb.DiskEncryption_CMEK
+	}
+	return out
+}
+
 func InstanceDataDisk_v1alpha1_FromProto(mapCtx *direct.MapContext, in *notebookspb.DataDisk) *krmnotebooksv1alpha1.InstanceDataDisk {
 	if in == nil {
 		return nil

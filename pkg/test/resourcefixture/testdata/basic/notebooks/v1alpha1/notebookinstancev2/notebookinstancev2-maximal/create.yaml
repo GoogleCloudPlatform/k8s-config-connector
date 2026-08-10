@@ -42,6 +42,8 @@ spec:
       - tag2
     metadata:
       enable-os-config: "true"
+      notebook-disable-downloads: "true"
+      notebook-disable-root: "true"
   instanceOwners: 
     - ${projectNumber}-compute@developer.gserviceaccount.com
   disableProxyAccess: true

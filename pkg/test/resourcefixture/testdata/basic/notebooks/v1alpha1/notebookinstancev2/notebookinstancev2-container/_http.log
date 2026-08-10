@@ -1,0 +1,401 @@
+GRPC /google.cloud.notebooks.v2.NotebookService/GetInstance
+
+{
+  "name": "projects/${projectId}/locations/us-central1-a/instances/ni2-container-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = Resource 'projects/${projectId}/locations/us-central1-a/instances/ni2-container-${uniqueId}' was not found
+
+{}
+
+---
+
+GRPC /google.cloud.notebooks.v2.NotebookService/CreateInstance
+
+{
+  "instance": {
+    "gceSetup": {
+      "containerImage": {
+        "repository": "gcr.io/deeplearning-platform-release/base-cpu",
+        "tag": "latest"
+      },
+      "disablePublicIp": true,
+      "machineType": "n1-standard-1",
+      "metadata": {
+        "notebook-disable-downloads": "true",
+        "notebook-disable-root": "true"
+      }
+    },
+    "labels": {
+      "cnrm-test": "true"
+    }
+  },
+  "instanceId": "ni2-container-${uniqueId}",
+  "parent": "projects/${projectId}/locations/us-central1-a"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.notebooks.v2.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endpoint": "CreateInstance",
+    "target": "projects/${projectId}/locations/us-central1-a/instances/ni2-container-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.notebooks.v2.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "endpoint": "CreateInstance",
+    "target": "projects/${projectId}/locations/us-central1-a/instances/ni2-container-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.notebooks.v2.Instance",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "creator": "acpana@google.com",
+    "gceSetup": {
+      "bootDisk": {
+        "diskEncryption": "GMEK",
+        "diskSizeGb": "150",
+        "diskType": "PD_STANDARD"
+      },
+      "containerImage": {
+        "repository": "gcr.io/deeplearning-platform-release/base-cpu",
+        "tag": "latest"
+      },
+      "dataDisks": [
+        {
+          "diskEncryption": "GMEK",
+          "diskSizeGb": "100",
+          "diskType": "PD_STANDARD"
+        }
+      ],
+      "disablePublicIp": true,
+      "gpuDriverConfig": {},
+      "machineType": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n1-standard-1",
+      "metadata": {
+        "cos-update-strategy": "update_disabled",
+        "custom-container-image": "true",
+        "custom-container-payload": "gcr.io/deeplearning-platform-release/base-cpu:latest",
+        "disable-swap-binaries": "true",
+        "enable-guest-attributes": "TRUE",
+        "enable-jupyterlab4": "true",
+        "enable-oslogin": "TRUE",
+        "google-logging-enabled": "true",
+        "instance-region": "us-central1",
+        "new-proxy-agent-enabled": "true",
+        "notebook-disable-downloads": "true",
+        "notebook-disable-root": "true",
+        "notebooks-api": "PROD",
+        "notebooks-api-version": "v2",
+        "proxy-backend-id": "2880efa476d8ba24",
+        "proxy-mode": "service_account",
+        "proxy-registration-url": "https://us-central1.notebooks.cloud.google.com/tun/m/4592f092208ecc84946b8f8f8016274df1b36a14",
+        "proxy-url": "2880efa476d8ba24-dot-us-central1.notebooks.googleusercontent.com",
+        "report-event-url": "https://notebooks.googleapis.com/v2/projects/${projectId}/locations/us-central1-a/instances/ni2-container-${uniqueId}:reportInfoSystem",
+        "resource-url": "https://notebooks.googleapis.com/v2/projects/${projectId}/locations/us-central1-a/instances/ni2-container-${uniqueId}",
+        "serial-port-logging-enable": "true",
+        "service-account-mode": "true",
+        "shutdown-script": "/opt/deeplearning/bin/shutdown_script.sh",
+        "user-data": "#include file:///mnt/stateful_partition/workbench/cloud-config.yaml"
+      },
+      "networkInterfaces": [
+        {
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+          "subnet": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/default"
+        }
+      ],
+      "serviceAccounts": [
+        {
+          "email": "${projectNumber}-compute@developer.gserviceaccount.com",
+          "scopes": [
+            "https://www.googleapis.com/auth/cloud-platform",
+            "https://www.googleapis.com/auth/userinfo.email"
+          ]
+        }
+      ],
+      "shieldedInstanceConfig": {
+        "enableIntegrityMonitoring": true,
+        "enableVtpm": true
+      },
+      "tags": [
+        "deeplearning-vm",
+        "notebook-instance"
+      ]
+    },
+    "id": "000000000000000000000",
+    "labels": {
+      "cnrm-test": "true",
+      "consumer-project-id": "${projectId}",
+      "consumer-project-number": "${projectNumber}",
+      "notebooks-product": "workbench-instances",
+      "resource-name": "ni2-container-${uniqueId}"
+    },
+    "name": "projects/${projectId}/locations/us-central1-a/instances/ni2-container-${uniqueId}",
+    "proxyUri": "2880efa476d8ba24-dot-us-central1.notebooks.googleusercontent.com",
+    "state": "PROVISIONING",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GRPC /google.cloud.notebooks.v2.NotebookService/GetInstance
+
+{
+  "name": "projects/${projectId}/locations/us-central1-a/instances/ni2-container-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "creator": "${creatorID}",
+  "gceSetup": {
+    "bootDisk": {
+      "diskEncryption": "GMEK",
+      "diskSizeGb": "150",
+      "diskType": "PD_STANDARD"
+    },
+    "containerImage": {
+      "repository": "gcr.io/deeplearning-platform-release/base-cpu",
+      "tag": "latest"
+    },
+    "dataDisks": [
+      {
+        "diskEncryption": "GMEK",
+        "diskSizeGb": "100",
+        "diskType": "PD_STANDARD"
+      }
+    ],
+    "disablePublicIp": true,
+    "gpuDriverConfig": {},
+    "machineType": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n1-standard-1",
+    "metadata": {
+      "cos-update-strategy": "update_disabled",
+      "custom-container-image": "true",
+      "custom-container-payload": "gcr.io/deeplearning-platform-release/base-cpu:latest",
+      "disable-swap-binaries": "true",
+      "enable-guest-attributes": "TRUE",
+      "enable-jupyterlab4": "true",
+      "enable-oslogin": "TRUE",
+      "google-logging-enabled": "true",
+      "instance-region": "us-central1",
+      "new-proxy-agent-enabled": "true",
+      "notebook-disable-downloads": "true",
+      "notebook-disable-root": "true",
+      "notebooks-api": "PROD",
+      "notebooks-api-version": "v2",
+      "proxy-backend-id": "2880efa476d8ba24",
+      "proxy-mode": "service_account",
+      "proxy-registration-url": "https://us-central1.notebooks.cloud.google.com/tun/m/4592f092208ecc84946b8f8f8016274df1b36a14",
+      "proxy-url": "2880efa476d8ba24-dot-us-central1.notebooks.googleusercontent.com",
+      "report-event-url": "https://notebooks.googleapis.com/v2/projects/${projectId}/locations/us-central1-a/instances/ni2-container-${uniqueId}:reportInfoSystem",
+      "resource-url": "https://notebooks.googleapis.com/v2/projects/${projectId}/locations/us-central1-a/instances/ni2-container-${uniqueId}",
+      "serial-port-logging-enable": "true",
+      "service-account-mode": "true",
+      "shutdown-script": "/opt/deeplearning/bin/shutdown_script.sh",
+      "user-data": "#include file:///mnt/stateful_partition/workbench/cloud-config.yaml",
+      "version": "20260802-2230-rc0\n"
+    },
+    "networkInterfaces": [
+      {
+        "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+        "subnet": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/default"
+      }
+    ],
+    "serviceAccounts": [
+      {
+        "email": "${projectNumber}-compute@developer.gserviceaccount.com",
+        "scopes": [
+          "https://www.googleapis.com/auth/cloud-platform",
+          "https://www.googleapis.com/auth/userinfo.email"
+        ]
+      }
+    ],
+    "shieldedInstanceConfig": {
+      "enableIntegrityMonitoring": true,
+      "enableVtpm": true
+    },
+    "tags": [
+      "deeplearning-vm",
+      "notebook-instance"
+    ]
+  },
+  "id": "000000000000000000000",
+  "labels": {
+    "cnrm-test": "true",
+    "consumer-project-id": "${projectId}",
+    "consumer-project-number": "${projectNumber}",
+    "notebooks-product": "workbench-instances",
+    "resource-name": "ni2-container-${uniqueId}"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/instances/ni2-container-${uniqueId}",
+  "proxyUri": "2880efa476d8ba24-dot-us-central1.notebooks.googleusercontent.com",
+  "state": "PROVISIONING",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.notebooks.v2.NotebookService/GetInstance
+
+{
+  "name": "projects/${projectId}/locations/us-central1-a/instances/ni2-container-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "creator": "${creatorID}",
+  "gceSetup": {
+    "bootDisk": {
+      "diskEncryption": "GMEK",
+      "diskSizeGb": "150",
+      "diskType": "PD_STANDARD"
+    },
+    "containerImage": {
+      "repository": "gcr.io/deeplearning-platform-release/base-cpu",
+      "tag": "latest"
+    },
+    "dataDisks": [
+      {
+        "diskEncryption": "GMEK",
+        "diskSizeGb": "100",
+        "diskType": "PD_STANDARD"
+      }
+    ],
+    "disablePublicIp": true,
+    "gpuDriverConfig": {},
+    "machineType": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n1-standard-1",
+    "metadata": {
+      "cos-update-strategy": "update_disabled",
+      "custom-container-image": "true",
+      "custom-container-payload": "gcr.io/deeplearning-platform-release/base-cpu:latest",
+      "disable-swap-binaries": "true",
+      "enable-guest-attributes": "TRUE",
+      "enable-jupyterlab4": "true",
+      "enable-oslogin": "TRUE",
+      "google-logging-enabled": "true",
+      "instance-region": "us-central1",
+      "new-proxy-agent-enabled": "true",
+      "notebook-disable-downloads": "true",
+      "notebook-disable-root": "true",
+      "notebooks-api": "PROD",
+      "notebooks-api-version": "v2",
+      "proxy-backend-id": "2880efa476d8ba24",
+      "proxy-mode": "service_account",
+      "proxy-registration-url": "https://us-central1.notebooks.cloud.google.com/tun/m/4592f092208ecc84946b8f8f8016274df1b36a14",
+      "proxy-url": "2880efa476d8ba24-dot-us-central1.notebooks.googleusercontent.com",
+      "report-event-url": "https://notebooks.googleapis.com/v2/projects/${projectId}/locations/us-central1-a/instances/ni2-container-${uniqueId}:reportInfoSystem",
+      "resource-url": "https://notebooks.googleapis.com/v2/projects/${projectId}/locations/us-central1-a/instances/ni2-container-${uniqueId}",
+      "serial-port-logging-enable": "true",
+      "service-account-mode": "true",
+      "shutdown-script": "/opt/deeplearning/bin/shutdown_script.sh",
+      "user-data": "#include file:///mnt/stateful_partition/workbench/cloud-config.yaml",
+      "version": "20260802-2230-rc0\n"
+    },
+    "networkInterfaces": [
+      {
+        "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+        "subnet": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/default"
+      }
+    ],
+    "serviceAccounts": [
+      {
+        "email": "${projectNumber}-compute@developer.gserviceaccount.com",
+        "scopes": [
+          "https://www.googleapis.com/auth/cloud-platform",
+          "https://www.googleapis.com/auth/userinfo.email"
+        ]
+      }
+    ],
+    "shieldedInstanceConfig": {
+      "enableIntegrityMonitoring": true,
+      "enableVtpm": true
+    },
+    "tags": [
+      "deeplearning-vm",
+      "notebook-instance"
+    ]
+  },
+  "id": "000000000000000000000",
+  "labels": {
+    "cnrm-test": "true",
+    "consumer-project-id": "${projectId}",
+    "consumer-project-number": "${projectNumber}",
+    "notebooks-product": "workbench-instances",
+    "resource-name": "ni2-container-${uniqueId}"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/instances/ni2-container-${uniqueId}",
+  "proxyUri": "2880efa476d8ba24-dot-us-central1.notebooks.googleusercontent.com",
+  "state": "PROVISIONING",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.notebooks.v2.NotebookService/DeleteInstance
+
+{
+  "name": "projects/${projectId}/locations/us-central1-a/instances/ni2-container-${uniqueId}"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.notebooks.v2.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endpoint": "DeleteInstance",
+    "target": "projects/${projectId}/locations/us-central1-a/instances/ni2-container-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.notebooks.v2.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "endpoint": "DeleteInstance",
+    "target": "projects/${projectId}/locations/us-central1-a/instances/ni2-container-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
