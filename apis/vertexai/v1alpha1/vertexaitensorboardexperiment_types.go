@@ -31,7 +31,7 @@ type VertexAITensorboardExperimentSpec struct {
 
 	// The location of this resource.
 	// +required
-	Location string `json:"location"`
+	Location *string `json:"location"`
 
 	/* The VertexAITensorboard that this resource belongs to. */
 	// +required

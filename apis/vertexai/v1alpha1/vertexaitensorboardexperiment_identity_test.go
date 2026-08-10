@@ -84,7 +84,7 @@ func TestGetIdentityFromVertexAITensorboardExperimentSpec(t *testing.T) {
 			name: "valid external references",
 			obj: &VertexAITensorboardExperiment{
 				Spec: VertexAITensorboardExperimentSpec{
-					Location: "us-central1",
+					Location: common.LazyPtr("us-central1"),
 					TensorboardRef: &VertexAITensorboardRef{
 						External: "projects/my-project/locations/us-central1/tensorboards/my-tensorboard",
 					},
@@ -97,6 +97,31 @@ func TestGetIdentityFromVertexAITensorboardExperimentSpec(t *testing.T) {
 				Tensorboard: "my-tensorboard",
 				Experiment:  "my-experiment",
 			},
+		},
+		{
+			name: "missing location",
+			obj: &VertexAITensorboardExperiment{
+				Spec: VertexAITensorboardExperimentSpec{
+					TensorboardRef: &VertexAITensorboardRef{
+						External: "projects/my-project/locations/us-central1/tensorboards/my-tensorboard",
+					},
+					ResourceID: common.LazyPtr("my-experiment"),
+				},
+			},
+			wantErr: true,
+		},
+		{
+			name: "mismatched location",
+			obj: &VertexAITensorboardExperiment{
+				Spec: VertexAITensorboardExperimentSpec{
+					Location: common.LazyPtr("us-east1"),
+					TensorboardRef: &VertexAITensorboardRef{
+						External: "projects/my-project/locations/us-central1/tensorboards/my-tensorboard",
+					},
+					ResourceID: common.LazyPtr("my-experiment"),
+				},
+			},
+			wantErr: true,
 		},
 	}
 

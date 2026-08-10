@@ -85,6 +85,13 @@ func getIdentityFromVertexAITensorboardExperimentSpec(ctx context.Context, reade
 		return nil, err
 	}
 
+	if obj.Spec.Location == nil || *obj.Spec.Location == "" {
+		return nil, fmt.Errorf("spec.location is required")
+	}
+	if *obj.Spec.Location != tensorboardIdentity.Location {
+		return nil, fmt.Errorf("spec.location (%s) does not match parent's location (%s)", *obj.Spec.Location, tensorboardIdentity.Location)
+	}
+
 	identity := &VertexAITensorboardExperimentIdentity{
 		Project:     tensorboardIdentity.Project,
 		Location:    tensorboardIdentity.Location,
