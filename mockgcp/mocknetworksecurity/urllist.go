@@ -16,6 +16,7 @@ package mocknetworksecurity
 
 import (
 	"context"
+	"strings"
 	"time"
 
 	pbv1 "cloud.google.com/go/networksecurity/apiv1/networksecuritypb"
@@ -45,9 +46,10 @@ func (s *NetworkSecurityV1Server) CreateUrlList(ctx context.Context, req *pbv1.C
 		CreateTime: obj.CreateTime,
 		Target:     fqn,
 		Verb:       "create",
+		ApiVersion: "v1",
 	}
 
-	return s.operations.StartLRO(ctx, fqn, metadata, func() (proto.Message, error) {
+	return s.operations.StartLRO(ctx, req.Parent, metadata, func() (proto.Message, error) {
 		return obj, nil
 	})
 }
@@ -93,13 +95,16 @@ func (s *NetworkSecurityV1Server) UpdateUrlList(ctx context.Context, req *pbv1.U
 		return nil, err
 	}
 
+	lroPrefix, _, _ := strings.Cut(fqn, "/urlLists/")
+
 	metadata := &pbv1.OperationMetadata{
 		CreateTime: obj.UpdateTime,
 		Target:     fqn,
 		Verb:       "update",
+		ApiVersion: "v1",
 	}
 
-	return s.operations.StartLRO(ctx, fqn, metadata, func() (proto.Message, error) {
+	return s.operations.StartLRO(ctx, lroPrefix, metadata, func() (proto.Message, error) {
 		return obj, nil
 	})
 }
@@ -117,13 +122,16 @@ func (s *NetworkSecurityV1Server) DeleteUrlList(ctx context.Context, req *pbv1.D
 		return nil, err
 	}
 
+	lroPrefix, _, _ := strings.Cut(fqn, "/urlLists/")
+
 	metadata := &pbv1.OperationMetadata{
 		CreateTime: timestamppb.New(time.Now()),
 		Target:     fqn,
 		Verb:       "delete",
+		ApiVersion: "v1",
 	}
 
-	return s.operations.StartLRO(ctx, fqn, metadata, func() (proto.Message, error) {
+	return s.operations.StartLRO(ctx, lroPrefix, metadata, func() (proto.Message, error) {
 		return deleted, nil
 	})
 }

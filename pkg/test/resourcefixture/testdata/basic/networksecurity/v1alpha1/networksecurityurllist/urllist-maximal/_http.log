@@ -4,7 +4,7 @@ GRPC /google.cloud.networksecurity.v1.NetworkSecurity/GetUrlList
   "name": "projects/${projectId}/locations/us-central1/urlLists/urllist-max-${uniqueId}"
 }
 
-error: rpc error: code = NotFound desc = UrlList "projects/${projectId}/locations/us-central1/urlLists/urllist-max-${uniqueId}" not found
+error: rpc error: code = NotFound desc = Resource 'projects/${projectId}/locations/us-central1/urlLists/urllist-max-${uniqueId}' was not found
 
 {}
 
@@ -53,6 +53,7 @@ OK
     "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/us-central1/urlLists/urllist-max-${uniqueId}",
     "verb": "create"
   },
@@ -137,6 +138,7 @@ OK
     "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/us-central1/urlLists/urllist-max-${uniqueId}",
     "verb": "update"
   },
@@ -236,20 +238,12 @@ OK
     "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/us-central1/urlLists/urllist-max-${uniqueId}",
     "verb": "delete"
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.UrlList",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "description": "An updated URL list maximal test",
-    "name": "projects/${projectId}/locations/us-central1/urlLists/urllist-max-${uniqueId}",
-    "updateTime": "2024-04-01T12:34:56.123456Z",
-    "values": [
-      "google.com",
-      "github.com",
-      "gitlab.com"
-    ]
+    "@type": "type.googleapis.com/google.protobuf.Empty"
   }
 }
