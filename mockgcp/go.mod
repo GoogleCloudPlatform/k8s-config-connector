@@ -29,6 +29,7 @@ require (
 	cloud.google.com/go/cloudquotas v1.11.0
 	cloud.google.com/go/cloudsecuritycompliance v1.0.0
 	cloud.google.com/go/compute v1.63.0
+	cloud.google.com/go/dataform v1.0.0
 	cloud.google.com/go/dataplex v1.34.0
 	cloud.google.com/go/dataproc/v2 v2.22.0
 	cloud.google.com/go/datastream v1.20.0
@@ -42,9 +43,11 @@ require (
 	cloud.google.com/go/firestore v1.22.0
 	cloud.google.com/go/geminidataanalytics v1.3.0
 	cloud.google.com/go/gkemulticloud v1.11.0
+	cloud.google.com/go/hypercomputecluster v1.1.0
 	cloud.google.com/go/iam v1.11.0
 	cloud.google.com/go/iap v1.17.0
 	cloud.google.com/go/kms v1.31.0
+	cloud.google.com/go/licensemanager v1.1.0
 	cloud.google.com/go/logging v1.18.0
 	cloud.google.com/go/longrunning v1.2.0
 	cloud.google.com/go/managedkafka v0.8.1
@@ -70,6 +73,7 @@ require (
 	cloud.google.com/go/speech v1.35.0
 	cloud.google.com/go/storage v1.62.0
 	cloud.google.com/go/video v1.32.0
+	cloud.google.com/go/vision/v2 v2.15.0
 	cloud.google.com/go/vmwareengine v1.8.0
 	cloud.google.com/go/vpcaccess v1.13.0
 	cloud.google.com/go/workflows v1.19.0
@@ -221,14 +225,14 @@ require (
 	go.uber.org/zap v1.27.0 // indirect
 	go.yaml.in/yaml/v2 v2.4.2 // indirect
 	golang.org/x/crypto v0.53.0 // indirect
-	golang.org/x/mod v0.36.0 // indirect
+	golang.org/x/mod v0.37.0 // indirect
 	golang.org/x/net v0.56.0 // indirect
 	golang.org/x/sync v0.21.0 // indirect
 	golang.org/x/sys v0.46.0 // indirect
 	golang.org/x/term v0.44.0 // indirect
-	golang.org/x/text v0.38.0 // indirect
+	golang.org/x/text v0.39.0 // indirect
 	golang.org/x/time v0.15.0 // indirect
-	golang.org/x/tools v0.45.0 // indirect
+	golang.org/x/tools v0.47.0 // indirect
 	gomodules.xyz/jsonpatch/v2 v2.4.0 // indirect
 	google.golang.org/appengine v1.6.8 // indirect
 	gopkg.in/dnaeon/go-vcr.v3 v3.2.0 // indirect
