@@ -101,6 +101,30 @@ func ResourceBigtableTable() *schema.Resource {
 				ValidateFunc: verify.ValidateDuration(),
 				Description:  `Duration to retain change stream data for the table. Set to 0 to disable. Must be between 1 and 7 days.`,
 			},
+
+			"automated_backup_policy": {
+				Type:        schema.TypeList,
+				Optional:    true,
+				Computed:    true,
+				MaxItems:    1,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"retention_period": {
+							Type:         schema.TypeString,
+							Required:     true,
+							ValidateFunc: verify.ValidateDuration(),
+							Description:  `How long the automated backups should be retained.`,
+						},
+						"frequency": {
+							Type:         schema.TypeString,
+							Required:     true,
+							ValidateFunc: verify.ValidateDuration(),
+							Description:  `How frequently automated backups should occur.`,
+						},
+					},
+				},
+				Description: `Defines an automated backup policy for a table.`,
+			},
 		},
 		UseJSONNumber: true,
 	}
@@ -153,6 +177,31 @@ func resourceBigtableTableCreate(d *schema.ResourceData, meta interface{}) error
 	// Set the split keys if given.
 	if v, ok := d.GetOk("split_keys"); ok {
 		tblConf.SplitKeys = tpgresource.ConvertStringArr(v.([]interface{}))
+	}
+
+	if automatedBackupPolicyField, ok := d.GetOk("automated_backup_policy"); ok {
+		automatedBackupPolicyElements := automatedBackupPolicyField.([]interface{})
+		if len(automatedBackupPolicyElements) > 0 && automatedBackupPolicyElements[0] != nil {
+			automatedBackupPolicy := automatedBackupPolicyElements[0].(map[string]interface{})
+			retentionPeriodStr := automatedBackupPolicy["retention_period"].(string)
+			frequencyStr := automatedBackupPolicy["frequency"].(string)
+
+			abpRetentionPeriod, err := time.ParseDuration(retentionPeriodStr)
+			if err != nil {
+				return fmt.Errorf("Error parsing automated_backup_policy retention_period: %s", err)
+			}
+			abpFrequency, err := time.ParseDuration(frequencyStr)
+			if err != nil {
+				return fmt.Errorf("Error parsing automated_backup_policy frequency: %s", err)
+			}
+
+			if abpFrequency != 0 && abpRetentionPeriod != 0 {
+				tblConf.AutomatedBackupConfig = &bigtable.TableAutomatedBackupPolicy{
+					RetentionPeriod: abpRetentionPeriod,
+					Frequency:       abpFrequency,
+				}
+			}
+		}
 	}
 
 	// Set the column families if given.
@@ -249,6 +298,29 @@ func resourceBigtableTableRead(d *schema.ResourceData, meta interface{}) error {
 		}
 	}
 
+	automatedBackupConfig := table.AutomatedBackupConfig
+	if automatedBackupConfig != nil {
+		if tableAbp, ok := automatedBackupConfig.(*bigtable.TableAutomatedBackupPolicy); ok {
+			var retentionPeriodStr string
+			if tableAbp.RetentionPeriod != nil {
+				retentionPeriodStr = tableAbp.RetentionPeriod.(time.Duration).String()
+			}
+			var frequencyStr string
+			if tableAbp.Frequency != nil {
+				frequencyStr = tableAbp.Frequency.(time.Duration).String()
+			}
+			abp := []interface{}{
+				map[string]interface{}{
+					"retention_period": retentionPeriodStr,
+					"frequency":        frequencyStr,
+				},
+			}
+			if err := d.Set("automated_backup_policy", abp); err != nil {
+				return fmt.Errorf("Error setting automated_backup_policy: %s", err)
+			}
+		}
+	}
+
 	return nil
 }
 
@@ -329,6 +401,42 @@ func resourceBigtableTableUpdate(d *schema.ResourceData, meta interface{}) error
 		} else {
 			if err := c.UpdateTableWithChangeStream(ctxWithTimeout, name, changeStream); err != nil {
 				return fmt.Errorf("Error updating change stream retention in table %v: %s", name, err)
+			}
+		}
+	}
+
+	if d.HasChange("automated_backup_policy") {
+		automatedBackupPolicyField := d.Get("automated_backup_policy").([]interface{})
+		if len(automatedBackupPolicyField) > 0 && automatedBackupPolicyField[0] != nil {
+			automatedBackupPolicy := automatedBackupPolicyField[0].(map[string]interface{})
+			retentionPeriodStr := automatedBackupPolicy["retention_period"].(string)
+			frequencyStr := automatedBackupPolicy["frequency"].(string)
+
+			abpRetentionPeriod, err := time.ParseDuration(retentionPeriodStr)
+			if err != nil {
+				return fmt.Errorf("Error parsing automated_backup_policy retention_period: %s", err)
+			}
+			abpFrequency, err := time.ParseDuration(frequencyStr)
+			if err != nil {
+				return fmt.Errorf("Error parsing automated_backup_policy frequency: %s", err)
+			}
+
+			if abpFrequency == 0 && abpRetentionPeriod == 0 {
+				if err := c.UpdateTableDisableAutomatedBackupPolicy(ctxWithTimeout, name); err != nil {
+					return fmt.Errorf("Error disabling automated backup policy in table %v: %s", name, err)
+				}
+			} else {
+				abp := bigtable.TableAutomatedBackupPolicy{
+					RetentionPeriod: abpRetentionPeriod,
+					Frequency:       abpFrequency,
+				}
+				if err := c.UpdateTableWithAutomatedBackupPolicy(ctxWithTimeout, name, abp); err != nil {
+					return fmt.Errorf("Error updating automated backup policy in table %v: %s", name, err)
+				}
+			}
+		} else {
+			if err := c.UpdateTableDisableAutomatedBackupPolicy(ctxWithTimeout, name); err != nil {
+				return fmt.Errorf("Error disabling automated backup policy in table %v: %s", name, err)
 			}
 		}
 	}

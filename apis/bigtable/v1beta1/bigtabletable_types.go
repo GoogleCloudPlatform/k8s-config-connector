@@ -67,10 +67,9 @@ type BigtableTableSpec struct {
 	// Note one can still delete the data stored in the table through Data APIs.
 	DeletionProtection *string `json:"deletionProtection,omitempty"`
 
-	// NOTYET
 	// If specified, automated backups are enabled for this table.
 	// Otherwise, automated backups are disabled.
-	// *Table_AutomatedBackupPolicy `json:"automatedBackupPolicy,omitempty"`
+	AutomatedBackupPolicy *Table_AutomatedBackupPolicy `json:"automatedBackupPolicy,omitempty"`
 }
 
 // +kcc:proto=google.bigtable.admin.v2.ColumnFamily

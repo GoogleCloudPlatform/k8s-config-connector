@@ -103,7 +103,6 @@ type RestoreInfo struct {
 	BackupInfo *BackupInfo `json:"backupInfo,omitempty"`
 }
 
-/* unreachable type Table_AutomatedBackupPolicy
 // +kcc:proto=google.bigtable.admin.v2.Table.AutomatedBackupPolicy
 type Table_AutomatedBackupPolicy struct {
 	// Required. How long the automated backups should be retained. The only
@@ -116,7 +115,6 @@ type Table_AutomatedBackupPolicy struct {
 	// +kcc:proto:field=google.bigtable.admin.v2.Table.AutomatedBackupPolicy.frequency
 	Frequency *string `json:"frequency,omitempty"`
 }
-*/
 
 // +kcc:proto=google.bigtable.admin.v2.Table.ClusterState
 type Table_ClusterState struct {

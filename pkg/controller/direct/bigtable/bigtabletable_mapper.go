@@ -50,8 +50,9 @@ func BigtableTableSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Table
 	s := strconv.FormatBool(in.GetDeletionProtection())
 	out.DeletionProtection = &s
 
+	out.AutomatedBackupPolicy = Table_AutomatedBackupPolicy_v1beta1_FromProto(mapCtx, in.GetAutomatedBackupPolicy())
+
 	// MISSING: Granularity
-	// MISSING: AutomatedBackupPolicy
 	// MISSING: RowKeySchema
 	return out
 }
@@ -82,8 +83,13 @@ func BigtableTableSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krm.Bigtab
 	// Note: KRM-based DeletionProtection is a string, but the proto-based DeletionProtection is a bool.
 	out.DeletionProtection, _ = strconv.ParseBool(direct.ValueOf(in.DeletionProtection))
 
+	if in.AutomatedBackupPolicy != nil {
+		out.AutomatedBackupConfig = &pb.Table_AutomatedBackupPolicy_{
+			AutomatedBackupPolicy: Table_AutomatedBackupPolicy_v1beta1_ToProto(mapCtx, in.AutomatedBackupPolicy),
+		}
+	}
+
 	// MISSING: Granularity
-	// MISSING: AutomatedBackupPolicy
 	// MISSING: RowKeySchema
 	return out
 }

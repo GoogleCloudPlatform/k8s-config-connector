@@ -348,6 +348,26 @@ OK
 
 ---
 
+GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetTable
+
+{
+  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-${uniqueId}",
+  "view": "SCHEMA_VIEW"
+}
+
+OK
+
+{
+  "columnFamilies": {
+    "family1": {},
+    "family2": {}
+  },
+  "granularity": "MILLIS",
+  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-${uniqueId}"
+}
+
+---
+
 GRPC /google.bigtable.admin.v2.BigtableTableAdmin/ModifyColumnFamilies
 
 {
@@ -399,22 +419,45 @@ OK
 
 ---
 
-GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetTable
+GRPC /google.bigtable.admin.v2.BigtableTableAdmin/UpdateTable
 
 {
-  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-${uniqueId}",
-  "view": "SCHEMA_VIEW"
+  "table": {
+    "automatedBackupPolicy": {
+      "frequency": "86400s",
+      "retentionPeriod": "259200s"
+    },
+    "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-${uniqueId}"
+  },
+  "updateMask": "automatedBackupPolicy.retentionPeriod,automatedBackupPolicy.frequency"
 }
 
 OK
 
 {
-  "columnFamilies": {
-    "family2": {},
-    "family3": {}
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.UpdateTableMetadata",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-${uniqueId}",
+    "startTime": "2024-04-01T12:34:56.123456Z"
   },
-  "granularity": "MILLIS",
-  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-${uniqueId}"
+  "name": "operations/projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-${uniqueId}/locations/us-east1-c/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.Table",
+    "automatedBackupPolicy": {
+      "frequency": "86400s",
+      "retentionPeriod": "259200s"
+    },
+    "columnFamilies": {
+      "family2": {
+        "gcRule": {}
+      },
+      "family3": {}
+    },
+    "granularity": "MILLIS",
+    "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-${uniqueId}"
+  }
 }
 
 ---
@@ -429,6 +472,10 @@ GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetTable
 OK
 
 {
+  "automatedBackupPolicy": {
+    "frequency": "86400s",
+    "retentionPeriod": "259200s"
+  },
   "columnFamilies": {
     "family2": {},
     "family3": {}
@@ -436,18 +483,6 @@ OK
   "granularity": "MILLIS",
   "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-${uniqueId}"
 }
-
----
-
-GRPC /google.bigtable.admin.v2.BigtableTableAdmin/DeleteTable
-
-{
-  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-${uniqueId}"
-}
-
-OK
-
-{}
 
 ---
 
@@ -506,10 +541,46 @@ OK
 
 ---
 
+GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetTable
+
+{
+  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-${uniqueId}",
+  "view": "SCHEMA_VIEW"
+}
+
+OK
+
+{
+  "automatedBackupPolicy": {
+    "frequency": "86400s",
+    "retentionPeriod": "259200s"
+  },
+  "columnFamilies": {
+    "family2": {},
+    "family3": {}
+  },
+  "granularity": "MILLIS",
+  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-${uniqueId}"
+}
+
+---
+
 GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/DeleteInstance
 
 {
   "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}"
+}
+
+OK
+
+{}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableTableAdmin/DeleteTable
+
+{
+  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-${uniqueId}"
 }
 
 OK

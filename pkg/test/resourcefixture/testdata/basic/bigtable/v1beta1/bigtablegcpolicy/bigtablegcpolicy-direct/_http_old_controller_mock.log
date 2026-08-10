@@ -1,3 +1,48 @@
+GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetTable
+
+{
+  "name": "projects/${projectId}/instances/gcpolicy-dep-${uniqueId}/tables/gcpolicy-dep-${uniqueId}",
+  "view": "SCHEMA_VIEW"
+}
+
+error: rpc error: code = NotFound desc = Not found: projects/${projectId}/instances/gcpolicy-dep-${uniqueId}/tables/gcpolicy-dep-${uniqueId}
+
+{}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableTableAdmin/ModifyColumnFamilies
+
+{
+  "modifications": [
+    {
+      "id": "family1",
+      "update": {
+        "gcRule": {
+          "union": {
+            "rules": [
+              {
+                "maxAge": "54000s"
+              },
+              {
+                "maxNumVersions": 2
+              }
+            ]
+          }
+        }
+      },
+      "updateMask": "gcRule"
+    }
+  ],
+  "name": "projects/${projectId}/instances/gcpolicy-dep-${uniqueId}/tables/gcpolicy-dep-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = table "projects/${projectId}/instances/gcpolicy-dep-${uniqueId}/tables/gcpolicy-dep-${uniqueId}" not found
+
+{}
+
+---
+
 GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/ListInstances
 
 {
@@ -223,6 +268,51 @@ error: rpc error: code = NotFound desc = Not found: projects/${projectId}/instan
 
 ---
 
+GRPC /google.bigtable.admin.v2.BigtableTableAdmin/ModifyColumnFamilies
+
+{
+  "modifications": [
+    {
+      "id": "family1",
+      "update": {
+        "gcRule": {
+          "union": {
+            "rules": [
+              {
+                "maxAge": "54000s"
+              },
+              {
+                "maxNumVersions": 2
+              }
+            ]
+          }
+        }
+      },
+      "updateMask": "gcRule"
+    }
+  ],
+  "name": "projects/${projectId}/instances/gcpolicy-dep-${uniqueId}/tables/gcpolicy-dep-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = table "projects/${projectId}/instances/gcpolicy-dep-${uniqueId}/tables/gcpolicy-dep-${uniqueId}" not found
+
+{}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetTable
+
+{
+  "name": "projects/${projectId}/instances/gcpolicy-dep-${uniqueId}/tables/gcpolicy-dep-${uniqueId}",
+  "view": "SCHEMA_VIEW"
+}
+
+error: rpc error: code = NotFound desc = Not found: projects/${projectId}/instances/gcpolicy-dep-${uniqueId}/tables/gcpolicy-dep-${uniqueId}
+
+{}
+
+---
+
 GRPC /google.bigtable.admin.v2.BigtableTableAdmin/CreateTable
 
 {
@@ -243,6 +333,26 @@ GRPC /google.bigtable.admin.v2.BigtableTableAdmin/CreateTable
     }
   },
   "tableId": "gcpolicy-dep-${uniqueId}"
+}
+
+OK
+
+{
+  "columnFamilies": {
+    "family1": {},
+    "family2": {}
+  },
+  "granularity": "MILLIS",
+  "name": "projects/${projectId}/instances/gcpolicy-dep-${uniqueId}/tables/gcpolicy-dep-${uniqueId}"
+}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetTable
+
+{
+  "name": "projects/${projectId}/instances/gcpolicy-dep-${uniqueId}/tables/gcpolicy-dep-${uniqueId}",
+  "view": "SCHEMA_VIEW"
 }
 
 OK
@@ -582,38 +692,6 @@ OK
   "granularity": "MILLIS",
   "name": "projects/${projectId}/instances/gcpolicy-dep-${uniqueId}/tables/gcpolicy-dep-${uniqueId}"
 }
-
----
-
-GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetTable
-
-{
-  "name": "projects/${projectId}/instances/gcpolicy-dep-${uniqueId}/tables/gcpolicy-dep-${uniqueId}",
-  "view": "SCHEMA_VIEW"
-}
-
-OK
-
-{
-  "columnFamilies": {
-    "family1": {},
-    "family2": {}
-  },
-  "granularity": "MILLIS",
-  "name": "projects/${projectId}/instances/gcpolicy-dep-${uniqueId}/tables/gcpolicy-dep-${uniqueId}"
-}
-
----
-
-GRPC /google.bigtable.admin.v2.BigtableTableAdmin/DeleteTable
-
-{
-  "name": "projects/${projectId}/instances/gcpolicy-dep-${uniqueId}/tables/gcpolicy-dep-${uniqueId}"
-}
-
-OK
-
-{}
 
 ---
 

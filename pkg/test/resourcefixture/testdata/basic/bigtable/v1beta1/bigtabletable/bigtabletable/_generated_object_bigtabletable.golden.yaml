@@ -14,6 +14,9 @@ metadata:
   name: bigtabletable-${uniqueId}
   namespace: ${uniqueId}
 spec:
+  automatedBackupPolicy:
+    frequency: 24h
+    retentionPeriod: 72h
   columnFamily:
   - family: family3
   - family: family2

@@ -15,10 +15,12 @@
 package bigtable
 
 import (
+	"strconv"
 	"testing"
 
 	gcp "cloud.google.com/go/bigtable"
 	pb "cloud.google.com/go/bigtable/admin/apiv2/adminpb"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
 )
 
 func TestBigtableMaterializedViewInfo_ToBigtableMaterializedView(t *testing.T) {
@@ -120,4 +122,13 @@ func TestBigtableMaterializedView_ToBigtableMaterializedViewInfo(t *testing.T) {
 			t.Errorf("MaterializedViewID mismatch: got %v, want %v", got.MaterializedViewID, in.Name)
 		}
 	})
+}
+
+func TestBigtableTableFuzzer(t *testing.T) {
+	var fuzzer fuzztesting.KRMFuzzer = bigtableTableFuzzer()
+	for i := int64(0); i < 500; i++ {
+		t.Run(strconv.FormatInt(i, 10), func(t *testing.T) {
+			fuzzer.FuzzSpec(t, i)
+		})
+	}
 }
