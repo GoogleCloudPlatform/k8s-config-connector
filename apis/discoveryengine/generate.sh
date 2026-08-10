@@ -29,7 +29,7 @@ if [[ -z "${CONTROLLERBUILDER}" ]]; then
 fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
-./generate-proto.sh
+./generate-proto.sh HEAD
 
 
 ${CONTROLLERBUILDER} generate-types --service google.cloud.discoveryengine.v1 --api-version discoveryengine.cnrm.cloud.google.com/v1alpha1 \
@@ -47,7 +47,8 @@ ${CONTROLLERBUILDER} generate-types --service google.cloud.discoveryengine.v1bet
   --resource DiscoveryEngineSampleQuerySet:SampleQuerySet \
   --resource DiscoveryEngineSampleQuery:SampleQuery \
   --resource DiscoveryEngineLicenseConfig:LicenseConfig \
-  --resource DiscoveryEngineServingConfig:ServingConfig
+  --resource DiscoveryEngineServingConfig:ServingConfig \
+  --resource DiscoveryEngineUserStore:UserStore
 mv ../../../apis/discoveryengine/v1alpha1/types.generated.go ../../../apis/discoveryengine/v1alpha1/v1beta_types.generated.go
 
 
