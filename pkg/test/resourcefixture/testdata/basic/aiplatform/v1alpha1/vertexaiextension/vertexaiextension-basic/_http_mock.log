@@ -4,7 +4,7 @@ GRPC /google.cloud.aiplatform.v1beta1.ExtensionRegistryService/GetExtension
   "name": "projects/${projectId}/locations/us-central1/extensions/vertexaiextension-${uniqueId}"
 }
 
-error: rpc error: code = NotFound desc = extension "projects/${projectNumber}/locations/us-central1/extensions/vertexaiextension-${uniqueId}" not found
+error: rpc error: code = NotFound desc = extension "projects/${projectId}/locations/us-central1/extensions/vertexaiextension-${uniqueId}" not found
 
 {}
 
@@ -25,8 +25,7 @@ GRPC /google.cloud.aiplatform.v1beta1.ExtensionRegistryService/ImportExtension
       },
       "description": "A web search extension",
       "name": "web-search-extension"
-    },
-    "name": "projects/${projectId}/locations/us-central1/extensions/vertexaiextension-${uniqueId}"
+    }
   },
   "parent": "projects/${projectId}/locations/us-central1"
 }
@@ -41,7 +40,7 @@ OK
       "updateTime": "2024-04-01T12:34:56.123456Z"
     }
   },
-  "name": "projects/${projectNumber}/locations/us-central1/extensions/vertexaiextension-${uniqueId}/operations/${operationID}"
+  "name": "projects/${projectId}/locations/us-central1/extensions/1234567890123456789/operations/${operationID}"
 }
 
 ---
@@ -49,7 +48,7 @@ OK
 GRPC /google.longrunning.Operations/GetOperation
 
 {
-  "name": "projects/${projectNumber}/locations/us-central1/extensions/vertexaiextension-${uniqueId}/operations/${operationID}"
+  "name": "projects/${projectId}/locations/us-central1/extensions/1234567890123456789/operations/${operationID}"
 }
 
 OK
@@ -63,7 +62,7 @@ OK
       "updateTime": "2024-04-01T12:34:56.123456Z"
     }
   },
-  "name": "projects/${projectNumber}/locations/us-central1/extensions/vertexaiextension-${uniqueId}/operations/${operationID}",
+  "name": "projects/${projectId}/locations/us-central1/extensions/1234567890123456789/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.Extension",
     "createTime": "2024-04-01T12:34:56.123456Z",
@@ -89,7 +88,7 @@ OK
       "description": "A web search extension",
       "name": "web-search-extension"
     },
-    "name": "projects/${projectNumber}/locations/us-central1/extensions/vertexaiextension-${uniqueId}",
+    "name": "projects/${projectId}/locations/us-central1/extensions/1234567890123456789",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
@@ -99,7 +98,7 @@ OK
 GRPC /google.cloud.aiplatform.v1beta1.ExtensionRegistryService/GetExtension
 
 {
-  "name": "projects/${projectId}/locations/us-central1/extensions/vertexaiextension-${uniqueId}"
+  "name": "projects/${projectId}/locations/us-central1/extensions/1234567890123456789"
 }
 
 OK
@@ -128,7 +127,7 @@ OK
     "description": "A web search extension",
     "name": "web-search-extension"
   },
-  "name": "projects/${projectNumber}/locations/us-central1/extensions/vertexaiextension-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/extensions/1234567890123456789",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
@@ -137,7 +136,7 @@ OK
 GRPC /google.cloud.aiplatform.v1beta1.ExtensionRegistryService/GetExtension
 
 {
-  "name": "projects/${projectId}/locations/us-central1/extensions/vertexaiextension-${uniqueId}"
+  "name": "projects/${projectId}/locations/us-central1/extensions/1234567890123456789"
 }
 
 OK
@@ -166,7 +165,7 @@ OK
     "description": "A web search extension",
     "name": "web-search-extension"
   },
-  "name": "projects/${projectNumber}/locations/us-central1/extensions/vertexaiextension-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/extensions/1234567890123456789",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
@@ -188,7 +187,7 @@ GRPC /google.cloud.aiplatform.v1beta1.ExtensionRegistryService/UpdateExtension
       "description": "An updated web search extension",
       "name": "web-search-extension"
     },
-    "name": "projects/${projectId}/locations/us-central1/extensions/vertexaiextension-${uniqueId}"
+    "name": "projects/${projectId}/locations/us-central1/extensions/1234567890123456789"
   },
   "updateMask": "description,displayName,manifest.description"
 }
@@ -219,7 +218,7 @@ OK
     "description": "An updated web search extension",
     "name": "web-search-extension"
   },
-  "name": "projects/${projectNumber}/locations/us-central1/extensions/vertexaiextension-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/extensions/1234567890123456789",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
@@ -228,7 +227,7 @@ OK
 GRPC /google.cloud.aiplatform.v1beta1.ExtensionRegistryService/GetExtension
 
 {
-  "name": "projects/${projectId}/locations/us-central1/extensions/vertexaiextension-${uniqueId}"
+  "name": "projects/${projectId}/locations/us-central1/extensions/1234567890123456789"
 }
 
 OK
@@ -257,7 +256,7 @@ OK
     "description": "An updated web search extension",
     "name": "web-search-extension"
   },
-  "name": "projects/${projectNumber}/locations/us-central1/extensions/vertexaiextension-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/extensions/1234567890123456789",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
@@ -266,7 +265,7 @@ OK
 GRPC /google.cloud.aiplatform.v1beta1.ExtensionRegistryService/GetExtension
 
 {
-  "name": "projects/${projectId}/locations/us-central1/extensions/vertexaiextension-${uniqueId}"
+  "name": "projects/${projectId}/locations/us-central1/extensions/1234567890123456789"
 }
 
 OK
@@ -295,7 +294,7 @@ OK
     "description": "An updated web search extension",
     "name": "web-search-extension"
   },
-  "name": "projects/${projectNumber}/locations/us-central1/extensions/vertexaiextension-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/extensions/1234567890123456789",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
@@ -304,7 +303,7 @@ OK
 GRPC /google.cloud.aiplatform.v1beta1.ExtensionRegistryService/GetExtension
 
 {
-  "name": "projects/${projectId}/locations/us-central1/extensions/vertexaiextension-${uniqueId}"
+  "name": "projects/${projectId}/locations/us-central1/extensions/1234567890123456789"
 }
 
 OK
@@ -333,7 +332,7 @@ OK
     "description": "An updated web search extension",
     "name": "web-search-extension"
   },
-  "name": "projects/${projectNumber}/locations/us-central1/extensions/vertexaiextension-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/extensions/1234567890123456789",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
@@ -342,7 +341,7 @@ OK
 GRPC /google.cloud.aiplatform.v1beta1.ExtensionRegistryService/DeleteExtension
 
 {
-  "name": "projects/${projectId}/locations/us-central1/extensions/vertexaiextension-${uniqueId}"
+  "name": "projects/${projectId}/locations/us-central1/extensions/1234567890123456789"
 }
 
 OK
@@ -356,7 +355,7 @@ OK
       "updateTime": "2024-04-01T12:34:56.123456Z"
     }
   },
-  "name": "projects/${projectNumber}/locations/us-central1/operations/${operationID}",
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.protobuf.Empty"
   }

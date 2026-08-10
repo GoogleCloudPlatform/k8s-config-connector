@@ -1,4 +1,4 @@
-- caisURL: //aiplatform.googleapis.com/projects/${projectId}/locations/us-central1/extensions/vertexaiextension-maximal-${uniqueId}
+- caisURL: unknown
   group: aiplatform.cnrm.cloud.google.com
   kind: VertexAIExtension
   name: vertexaiextension-maximal-${uniqueId}

@@ -53,9 +53,34 @@ func (s *extensionRegistryService) GetExtension(ctx context.Context, req *pb.Get
 }
 
 func (s *extensionRegistryService) ImportExtension(ctx context.Context, req *pb.ImportExtensionRequest) (*longrunning.Operation, error) {
-	name, err := s.parseExtensionName(req.GetExtension().GetName())
-	if err != nil {
-		return nil, err
+	var name *ExtensionName
+	var err error
+	reqName := req.GetExtension().GetName()
+	if reqName != "" {
+		name, err = s.parseExtensionName(reqName)
+		if err != nil {
+			return nil, err
+		}
+	} else {
+		parent := req.GetParent()
+		tokens := strings.Split(parent, "/")
+		if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "locations" {
+			projectName, err := projects.ParseProjectName(tokens[0] + "/" + tokens[1])
+			if err != nil {
+				return nil, err
+			}
+			project, err := s.Projects.GetProject(projectName)
+			if err != nil {
+				return nil, err
+			}
+			name = &ExtensionName{
+				Project:     project,
+				Location:    tokens[3],
+				ExtensionID: "1234567890123456789",
+			}
+		} else {
+			return nil, status.Errorf(codes.InvalidArgument, "parent %q is not valid", parent)
+		}
 	}
 
 	fqn := name.String()
@@ -163,7 +188,7 @@ func (s *extensionRegistryService) DeleteExtension(ctx context.Context, req *pb.
 		CreateTime: timestamppb.New(now),
 		UpdateTime: timestamppb.New(now),
 	}
-	opPrefix := fmt.Sprintf("projects/%d/locations/%s", name.Project.Number, name.Location)
+	opPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	return s.operations.DoneLRO(ctx, opPrefix, op, &emptypb.Empty{})
 }
 
@@ -174,7 +199,7 @@ type ExtensionName struct {
 }
 
 func (n *ExtensionName) String() string {
-	return fmt.Sprintf("projects/%d/locations/%s/extensions/%s", n.Project.Number, n.Location, n.ExtensionID)
+	return fmt.Sprintf("projects/%s/locations/%s/extensions/%s", n.Project.ID, n.Location, n.ExtensionID)
 }
 
 func (s *MockService) parseExtensionName(name string) (*ExtensionName, error) {

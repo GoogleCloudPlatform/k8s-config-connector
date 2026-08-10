@@ -153,7 +153,11 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	if mapCtx.Err() != nil {
 		return fmt.Errorf("mapping from spec to proto: %w", mapCtx.Err())
 	}
-	extensionpb.Name = a.id.String()
+	if isNumeric(a.id.Extension) {
+		extensionpb.Name = a.id.String()
+	} else {
+		extensionpb.Name = ""
+	}
 
 	req := &pb.ImportExtensionRequest{
 		Parent:    a.id.ParentString(),
@@ -165,16 +169,16 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 		return fmt.Errorf("creating VertexAIExtension %q: %w", a.id.String(), err)
 	}
 
-	_, err = op.Wait(ctx)
+	created, err := op.Wait(ctx)
 	if err != nil {
 		return fmt.Errorf("waiting for create VertexAIExtension %q: %w", a.id.String(), err)
 	}
-	log.V(2).Info("successfully created VertexAIExtension", "name", a.id.String())
+	log.V(2).Info("successfully created VertexAIExtension", "name", created.Name)
 
 	// Perform a GET operation to fetch the fully-populated resource
-	latest, err := a.gcpClient.GetExtension(ctx, &pb.GetExtensionRequest{Name: a.id.String()})
+	latest, err := a.gcpClient.GetExtension(ctx, &pb.GetExtensionRequest{Name: created.Name})
 	if err != nil {
-		return fmt.Errorf("getting VertexAIExtension after create %q: %w", a.id.String(), err)
+		return fmt.Errorf("getting VertexAIExtension after create %q: %w", created.Name, err)
 	}
 
 	return a.updateStatus(ctx, createOp, latest)
@@ -271,7 +275,7 @@ func (a *Adapter) updateStatus(ctx context.Context, op directbase.Operation, lat
 	if mapCtx.Err() != nil {
 		return fmt.Errorf("mapping status: %w", mapCtx.Err())
 	}
-	status.ExternalRef = direct.LazyPtr(a.id.String())
+	status.ExternalRef = direct.LazyPtr(latest.GetName())
 	return op.UpdateStatus(ctx, status, nil)
 }
 
@@ -321,4 +325,13 @@ func compareExtension(ctx context.Context, actual, desired *pb.Extension) (*stru
 	updateMask.Paths = allowedPaths
 
 	return diffs, updateMask, nil
+}
+
+func isNumeric(s string) bool {
+	for _, c := range s {
+		if c < '0' || c > '9' {
+			return false
+		}
+	}
+	return len(s) > 0
 }

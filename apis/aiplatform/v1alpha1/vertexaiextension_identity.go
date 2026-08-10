@@ -121,9 +121,13 @@ func (obj *VertexAIExtension) GetIdentity(ctx context.Context, reader client.Rea
 			return nil, err
 		}
 
-		if statusIdentity.String() != specIdentity.String() {
-			return nil, fmt.Errorf("cannot change VertexAIExtension identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+		if statusIdentity.Project != specIdentity.Project {
+			return nil, fmt.Errorf("cannot change VertexAIExtension project (old=%q, new=%q)", statusIdentity.Project, specIdentity.Project)
 		}
+		if statusIdentity.Location != specIdentity.Location {
+			return nil, fmt.Errorf("cannot change VertexAIExtension location (old=%q, new=%q)", statusIdentity.Location, specIdentity.Location)
+		}
+		return statusIdentity, nil
 	}
 
 	return specIdentity, nil
