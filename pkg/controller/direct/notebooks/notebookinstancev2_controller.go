@@ -112,6 +112,7 @@ func (m *modelInstanceV2) AdapterForObject(ctx context.Context, op *directbase.A
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
+	desired.Labels = obj.Labels
 
 	return &InstanceV2Adapter{
 		id:        id,
@@ -235,105 +236,28 @@ func compareNotebooksV2(ctx context.Context, actual, desired *notebookspb.Instan
 	clonedDesired := proto.Clone(desired).(*notebookspb.Instance)
 
 	populateDefaults := func(act, des *notebookspb.Instance) {
-		actGCE := act.GetGceSetup()
-		desGCE := des.GetGceSetup()
-		if desGCE == nil {
-			desGCE = &notebookspb.GceSetup{}
-			des.Infrastructure = &notebookspb.Instance_GceSetup{GceSetup: desGCE}
-		}
-		if actGCE == nil {
-			actGCE = &notebookspb.GceSetup{}
-			act.Infrastructure = &notebookspb.Instance_GceSetup{GceSetup: actGCE}
-		}
+		// GCE setup is completely immutable on GCP for Notebooks V2 instances and cannot be updated.
+		// Align it completely to avoid generating unsupported field masks during update.
+		des.Infrastructure = act.Infrastructure
+		act.InstanceOwners = nil
+		des.InstanceOwners = nil
 
-		// Copy/align ServiceAccounts if not specified in desired
-		if len(desGCE.ServiceAccounts) == 0 && len(actGCE.ServiceAccounts) > 0 {
-			desGCE.ServiceAccounts = actGCE.ServiceAccounts
+		// GCP Notebooks V2 API injects several system labels on creation.
+		// We copy these to desired to prevent continuous diffs on labels.
+		if des.Labels == nil {
+			des.Labels = make(map[string]string)
 		}
-		// Copy/align BootDisk if not specified in desired
-		if desGCE.BootDisk == nil && actGCE.BootDisk != nil {
-			desGCE.BootDisk = actGCE.BootDisk
-		}
-		// Copy/align BootDisk KMS keys if not specified in desired
-		if desGCE.BootDisk != nil && actGCE.BootDisk != nil {
-			if desGCE.BootDisk.KmsKey == "" && actGCE.BootDisk.KmsKey != "" {
-				desGCE.BootDisk.KmsKey = actGCE.BootDisk.KmsKey
-				desGCE.BootDisk.DiskEncryption = actGCE.BootDisk.DiskEncryption
+		if act.Labels != nil {
+			systemLabels := []string{
+				"consumer-project-id",
+				"consumer-project-number",
+				"notebooks-product",
+				"resource-name",
 			}
-		}
-		// Copy/align DataDisks if not specified in desired
-		if len(desGCE.DataDisks) == 0 && len(actGCE.DataDisks) > 0 {
-			desGCE.DataDisks = actGCE.DataDisks
-		}
-		// Copy/align DataDisks KMS keys if not specified in desired
-		if len(desGCE.DataDisks) > 0 && len(actGCE.DataDisks) == len(desGCE.DataDisks) {
-			for i := range desGCE.DataDisks {
-				desDisk := desGCE.DataDisks[i]
-				actDisk := actGCE.DataDisks[i]
-				if desDisk.KmsKey == "" && actDisk.KmsKey != "" {
-					desDisk.KmsKey = actDisk.KmsKey
-					desDisk.DiskEncryption = actDisk.DiskEncryption
+			for _, key := range systemLabels {
+				if v, ok := act.Labels[key]; ok {
+					des.Labels[key] = v
 				}
-			}
-		}
-		// Copy/align NetworkInterfaces if not specified in desired
-		if len(desGCE.NetworkInterfaces) == 0 && len(actGCE.NetworkInterfaces) > 0 {
-			desGCE.NetworkInterfaces = actGCE.NetworkInterfaces
-		}
-		// Copy/align Image (VmImage / ContainerImage) if not specified in desired
-		if desGCE.Image == nil && actGCE.Image != nil {
-			desGCE.Image = actGCE.Image
-		}
-		// Copy/align VmImage fields if present on both sides
-		desVM := desGCE.GetVmImage()
-		actVM := actGCE.GetVmImage()
-		if desVM != nil && actVM != nil {
-			if desVM.Project == "" {
-				desVM.Project = actVM.Project
-			}
-			if desVM.GetFamily() == "" && actVM.GetFamily() != "" {
-				desVM.Image = &notebookspb.VmImage_Family{Family: actVM.GetFamily()}
-			}
-			if desVM.GetName() == "" && actVM.GetName() != "" {
-				desVM.Image = &notebookspb.VmImage_Name{Name: actVM.GetName()}
-			}
-		}
-		// Copy/align ContainerImage fields if present on both sides
-		desContainer := desGCE.GetContainerImage()
-		actContainer := actGCE.GetContainerImage()
-		if desContainer != nil && actContainer != nil {
-			if desContainer.Repository == "" {
-				desContainer.Repository = actContainer.Repository
-			}
-			if desContainer.Tag == "" {
-				desContainer.Tag = actContainer.Tag
-			}
-		}
-		// Copy/align GpuDriverConfig, Tags, and Metadata (which are immutable on GCP)
-		desGCE.GpuDriverConfig = actGCE.GpuDriverConfig
-		desGCE.Tags = actGCE.Tags
-		desGCE.Metadata = actGCE.Metadata
-		// Copy/align DisablePublicIp if not specified in desired
-		if !desGCE.DisablePublicIp && actGCE.DisablePublicIp {
-			desGCE.DisablePublicIp = actGCE.DisablePublicIp
-		}
-		// Copy/align EnableIpForwarding if not specified in desired
-		if !desGCE.EnableIpForwarding && actGCE.EnableIpForwarding {
-			desGCE.EnableIpForwarding = actGCE.EnableIpForwarding
-		}
-		// Copy/align ShieldedInstanceConfig defaults
-		if actGCE.ShieldedInstanceConfig == nil {
-			actGCE.ShieldedInstanceConfig = &notebookspb.ShieldedInstanceConfig{
-				EnableSecureBoot:          false,
-				EnableVtpm:                true,
-				EnableIntegrityMonitoring: true,
-			}
-		}
-		if desGCE.ShieldedInstanceConfig == nil {
-			desGCE.ShieldedInstanceConfig = &notebookspb.ShieldedInstanceConfig{
-				EnableSecureBoot:          false,
-				EnableVtpm:                true,
-				EnableIntegrityMonitoring: true,
 			}
 		}
 	}

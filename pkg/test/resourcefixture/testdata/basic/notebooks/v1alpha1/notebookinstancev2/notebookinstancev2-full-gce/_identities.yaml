@@ -40,6 +40,12 @@
   name: ni2-cmek-binding-compute-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
+- caisURL: unknown
+  group: iam.cnrm.cloud.google.com
+  kind: IAMPolicyMember
+  name: ni2-sa-compute-actas-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
 - caisURL: //notebooks.googleapis.com/projects/${projectId}/locations/us-central1-a/instances/ni2-full-gce-${uniqueId}
   group: notebooks.cnrm.cloud.google.com
   kind: NotebookInstanceV2

@@ -207,6 +207,7 @@ func InstanceAcceleratorConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *k
 	out.CoreCount = direct.ValueOf(in.CoreCount)
 	return out
 }
+/* found existing non-generated mapping function "InstanceBootDisk_v1alpha1_FromProto", skipping
 func InstanceBootDisk_v1alpha1_FromProto(mapCtx *direct.MapContext, in *notebookspb.BootDisk) *krmnotebooksv1alpha1.InstanceBootDisk {
 	if in == nil {
 		return nil
@@ -218,6 +219,9 @@ func InstanceBootDisk_v1alpha1_FromProto(mapCtx *direct.MapContext, in *notebook
 	// MISSING: KMSKey
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "InstanceBootDisk_v1alpha1_ToProto", skipping
 func InstanceBootDisk_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnotebooksv1alpha1.InstanceBootDisk) *notebookspb.BootDisk {
 	if in == nil {
 		return nil
@@ -229,6 +233,7 @@ func InstanceBootDisk_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnoteboo
 	// MISSING: KMSKey
 	return out
 }
+*/
 func InstanceContainerImage_v1alpha1_FromProto(mapCtx *direct.MapContext, in *notebookspb.ContainerImage) *krmnotebooksv1alpha1.InstanceContainerImage {
 	if in == nil {
 		return nil
