@@ -144,6 +144,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/vertexai/deploymentresourcepool"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/vertexai/examplestore"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/vertexai/featuregroup"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/vertexai/tensorboardexperiment"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/videostitcher"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/vision"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/vmwareengine"
