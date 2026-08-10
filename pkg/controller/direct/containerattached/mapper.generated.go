@@ -90,7 +90,7 @@ found existing non-generated mapping function "AttachedOidcConfig_ToProto", skip
 			return nil
 		}
 		out := &pb.AttachedOidcConfig{}
-		out.IssuerURL = AttachedOidcConfig_IssuerUrl_ToProto(mapCtx, in.IssuerURL)
+		out.IssuerUrl = in.IssuerURL
 		out.Jwks = in.Jwks
 		return out
 	}
@@ -173,8 +173,8 @@ func ContainerAttachedClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm.Con
 	out.Description = direct.ValueOf(in.Description)
 	// MISSING: OIDCConfig
 	// (near miss): "OIDCConfig" vs "OidcConfig"
-	out.PlatformVersion = ContainerAttachedClusterSpec_PlatformVersion_ToProto(mapCtx, in.PlatformVersion)
-	out.Distribution = ContainerAttachedClusterSpec_Distribution_ToProto(mapCtx, in.Distribution)
+	out.PlatformVersion = in.PlatformVersion
+	out.Distribution = in.Distribution
 	// MISSING: ClusterRegion
 	out.Fleet = Fleet_ToProto(mapCtx, in.Fleet)
 	// MISSING: State

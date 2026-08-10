@@ -1020,7 +1020,7 @@ func VertexAIExampleStoreSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *kr
 	}
 	out := &pb.ExampleStore{}
 	// MISSING: Name
-	out.DisplayName = VertexAIExampleStoreSpec_DisplayName_ToProto(mapCtx, in.DisplayName)
+	out.DisplayName = in.DisplayName
 	out.Description = direct.ValueOf(in.Description)
 	out.ExampleStoreConfig = ExampleStoreConfig_v1alpha1_ToProto(mapCtx, in.ExampleStoreConfig)
 	return out
@@ -1251,6 +1251,50 @@ func VertexAITensorboardObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext
 	out.SatisfiesPzi = direct.ValueOf(in.SatisfiesPzi)
 	return out
 }
+func VertexAITensorboardRunObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.TensorboardRun) *krmvertexaiv1alpha1.VertexAITensorboardRunObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.VertexAITensorboardRunObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Etag
+	return out
+}
+func VertexAITensorboardRunObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.VertexAITensorboardRunObservedState) *pb.TensorboardRun {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TensorboardRun{}
+	out.Name = direct.ValueOf(in.Name)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Etag
+	return out
+}
+func VertexAITensorboardRunSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.TensorboardRun) *krmvertexaiv1alpha1.VertexAITensorboardRunSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.VertexAITensorboardRunSpec{}
+	out.DisplayName = in.GetDisplayName()
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Labels = in.Labels
+	// MISSING: Etag
+	return out
+}
+func VertexAITensorboardRunSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.VertexAITensorboardRunSpec) *pb.TensorboardRun {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TensorboardRun{}
+	out.DisplayName = in.DisplayName
+	out.Description = direct.ValueOf(in.Description)
+	out.Labels = in.Labels
+	// MISSING: Etag
+	return out
+}
 func VertexAITensorboardSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Tensorboard) *krmvertexaiv1alpha1.VertexAITensorboardSpec {
 	if in == nil {
 		return nil
@@ -1269,7 +1313,7 @@ func VertexAITensorboardSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm
 		return nil
 	}
 	out := &pb.Tensorboard{}
-	out.DisplayName = VertexAITensorboardSpec_DisplayName_ToProto(mapCtx, in.DisplayName)
+	out.DisplayName = in.DisplayName
 	out.Description = direct.ValueOf(in.Description)
 	out.EncryptionSpec = EncryptionSpec_v1alpha1_ToProto(mapCtx, in.EncryptionSpec)
 	// MISSING: Labels

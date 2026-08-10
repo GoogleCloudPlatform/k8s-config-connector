@@ -154,7 +154,7 @@ found existing non-generated mapping function "LoggingLogExclusionSpec_ToProto",
 		out := &pb.LogExclusion{}
 		// MISSING: Name
 		out.Description = direct.ValueOf(in.Description)
-		out.Filter = LoggingLogExclusionSpec_Filter_ToProto(mapCtx, in.Filter)
+		out.Filter = in.Filter
 		out.Disabled = direct.ValueOf(in.Disabled)
 		// MISSING: CreateTime
 		// MISSING: UpdateTime
@@ -225,7 +225,7 @@ func LoggingLogMetricSpec_ToProto(mapCtx *direct.MapContext, in *krm.LoggingLogM
 	out := &pb.LogMetric{}
 	// MISSING: Name
 	out.Description = direct.ValueOf(in.Description)
-	out.Filter = LoggingLogMetricSpec_Filter_ToProto(mapCtx, in.Filter)
+	out.Filter = in.Filter
 	// MISSING: BucketName
 	out.Disabled = direct.ValueOf(in.Disabled)
 	out.MetricDescriptor = LogmetricMetricDescriptor_ToProto(mapCtx, in.MetricDescriptor)

@@ -514,6 +514,9 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				krmTypeName = strings.TrimPrefix(krmTypeName, "*")
 
 				functionName := krmTypeName + versionSpecifier + "_FromProto"
+				if strings.HasPrefix(functionName, "apiextensionsv1.JSON") {
+					functionName = strings.TrimPrefix(functionName, "apiextensionsv1.")
+				}
 				switch krmTypeName {
 				case "string":
 					functionName = string(msg.Name()) + "_" + krmFieldName + "_FromProto"
@@ -819,6 +822,9 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 				krmTypeName = strings.TrimPrefix(krmTypeName, "*")
 
 				functionName := krmTypeName + versionSpecifier + "_ToProto"
+				if strings.HasPrefix(functionName, "apiextensionsv1.JSON") {
+					functionName = strings.TrimPrefix(functionName, "apiextensionsv1.")
+				}
 				switch krmTypeName {
 				case "string":
 					functionName = string(msg.Name()) + "_" + krmFieldName + "_ToProto"
@@ -906,7 +912,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 
 				switch protoField.Kind() {
 				case protoreflect.StringKind:
-					if krmField.Type != "*string" {
+					if krmField.Type != "*string" && krmField.Type != "string" {
 						useCustomMethod = fmt.Sprintf("%s_%s_ToProto", goTypeName, protoFieldName)
 					}
 				}
@@ -941,10 +947,17 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 						krmFieldName,
 					)
 				} else {
-					fmt.Fprintf(out, "\tout.%s = direct.ValueOf(in.%s)\n",
-						protoFieldName,
-						krmFieldName,
-					)
+					if strings.HasPrefix(krmField.Type, "*") {
+						fmt.Fprintf(out, "\tout.%s = direct.ValueOf(in.%s)\n",
+							protoFieldName,
+							krmFieldName,
+						)
+					} else {
+						fmt.Fprintf(out, "\tout.%s = in.%s\n",
+							protoFieldName,
+							krmFieldName,
+						)
+					}
 				}
 
 			default:
