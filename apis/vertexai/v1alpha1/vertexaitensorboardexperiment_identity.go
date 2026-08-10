@@ -85,6 +85,14 @@ func getIdentityFromVertexAITensorboardExperimentSpec(ctx context.Context, reade
 		return nil, err
 	}
 
+	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
+	if err != nil {
+		return nil, fmt.Errorf("cannot resolve project: %w", err)
+	}
+	if projectID != tensorboardIdentity.Project {
+		return nil, fmt.Errorf("spec.projectRef (%s) does not match parent's project (%s)", projectID, tensorboardIdentity.Project)
+	}
+
 	if obj.Spec.Location == nil || *obj.Spec.Location == "" {
 		return nil, fmt.Errorf("spec.location is required")
 	}
