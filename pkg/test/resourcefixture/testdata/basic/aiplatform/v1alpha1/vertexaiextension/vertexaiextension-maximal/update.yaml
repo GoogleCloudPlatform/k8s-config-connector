@@ -1,0 +1,76 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: aiplatform.cnrm.cloud.google.com/v1alpha1
+kind: VertexAIExtension
+metadata:
+  name: vertexaiextension-maximal-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  displayName: "My Updated Maximal Web Extension"
+  description: "A super comprehensive web search extension"
+  manifest:
+    name: "web-search-extension"
+    description: "An updated comprehensive web search extension"
+    apiSpec:
+      openAPIYaml: |
+        openapi: 3.0.0
+        info:
+          title: My API
+          version: 1.0.0
+        servers:
+          - url: http://example.com
+        paths:
+          /search:
+            get:
+              operationId: search
+              responses:
+                '200':
+                  description: Successful
+    authConfig:
+      authType: "API_KEY_AUTH"
+      apiKeyConfig:
+        name: "api_key"
+        apiKeySecretRef:
+          external: "projects/mock-project/secrets/my-api-key/versions/1"
+        httpElementLocation: "HTTP_IN_HEADER"
+  runtimeConfig:
+    codeInterpreterRuntimeConfig:
+      fileInputGCSBucketRef:
+        external: "projects/${projectId}/buckets/my-input-bucket-${uniqueId}"
+      fileOutputGCSBucketRef:
+        external: "projects/${projectId}/buckets/my-output-bucket-${uniqueId}"
+    vertexAISearchRuntimeConfig:
+      servingConfigRef:
+        external: "projects/mock-project/locations/global/collections/default_collection/engines/mock-engine/servingConfigs/default_serving_config"
+      engineRef:
+        external: "projects/mock-project/locations/global/collections/default_collection/engines/mock-engine"
+    defaultParams:
+      foo: baz
+  toolUseExamples:
+    - extensionOperation:
+        extension: "projects/${projectId}/locations/us-central1/extensions/vertexaiextension-maximal-${uniqueId}"
+        operationID: "search"
+      displayName: "Search Example Updated"
+      query: "find some updated cool things"
+      requestParams:
+        query: "updated cool things"
+      responseParams:
+        results: "here are some updated cool things"
+      responseSummary: "Successfully found updated cool things"
+  privateServiceConnectConfig:
+    serviceDirectoryRef:
+      external: "projects/mock-project/locations/us-central1/namespaces/mock-namespace/services/mock-service"

@@ -1,0 +1,6 @@
+- caisURL: //aiplatform.googleapis.com/projects/${projectId}/locations/us-central1/extensions/vertexaiextension-maximal-${uniqueId}
+  group: aiplatform.cnrm.cloud.google.com
+  kind: VertexAIExtension
+  name: vertexaiextension-maximal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

@@ -1,0 +1,87 @@
+apiVersion: aiplatform.cnrm.cloud.google.com/v1alpha1
+kind: VertexAIExtension
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: vertexaiextension-maximal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  description: A super comprehensive web search extension
+  displayName: My Updated Maximal Web Extension
+  location: us-central1
+  manifest:
+    apiSpec:
+      openAPIYaml: |
+        openapi: 3.0.0
+        info:
+          title: My API
+          version: 1.0.0
+        servers:
+          - url: http://example.com
+        paths:
+          /search:
+            get:
+              operationId: search
+              responses:
+                '200':
+                  description: Successful
+    authConfig:
+      apiKeyConfig:
+        apiKeySecretRef:
+          external: projects/${projectId}/secrets/my-api-key/versions/1
+        httpElementLocation: HTTP_IN_HEADER
+        name: api_key
+      authType: API_KEY_AUTH
+    description: An updated comprehensive web search extension
+    name: web-search-extension
+  privateServiceConnectConfig:
+    serviceDirectoryRef:
+      external: projects/${projectId}/locations/us-central1/namespaces/mock-namespace/services/mock-service
+  projectRef:
+    external: ${projectId}
+  runtimeConfig:
+    codeInterpreterRuntimeConfig:
+      fileInputGCSBucketRef:
+        external: projects/${projectId}/buckets/my-input-bucket-${uniqueId}
+      fileOutputGCSBucketRef:
+        external: projects/${projectId}/buckets/my-output-bucket-${uniqueId}
+    defaultParams:
+      foo: baz
+    vertexAISearchRuntimeConfig:
+      engineRef:
+        external: projects/${projectId}/locations/global/collections/default_collection/engines/mock-engine
+      servingConfigRef:
+        external: projects/${projectId}/locations/global/collections/default_collection/engines/mock-engine/servingConfigs/default_serving_config
+  toolUseExamples:
+  - displayName: Search Example Updated
+    extensionOperation:
+      extension: projects/${projectId}/locations/us-central1/extensions/vertexaiextension-maximal-${uniqueId}
+      operationID: search
+    query: find some updated cool things
+    requestParams:
+      query: updated cool things
+    responseParams:
+      results: here are some updated cool things
+    responseSummary: Successfully found updated cool things
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/extensions/vertexaiextension-maximal-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    etag: abcdef123456
+    extensionOperations:
+    - functionDeclaration:
+        description: A mock function parsed from OpenAPI spec.
+        name: mockFunction
+      operationID: mock-operation
+    updateTime: "1970-01-01T00:00:00Z"
