@@ -66,6 +66,13 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.licensemanager.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/configurations/licensemanagerconfiguration-maximal-${uniqueId}",
+    "verb": "create"
+  },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
 }
 
@@ -88,6 +95,14 @@ X-Xss-Protection: 0
 
 {
   "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.licensemanager.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/configurations/licensemanagerconfiguration-maximal-${uniqueId}",
+    "verb": "create"
+  },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.licensemanager.v1.Configuration",
@@ -199,6 +214,13 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.licensemanager.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/configurations/licensemanagerconfiguration-maximal-${uniqueId}",
+    "verb": "update"
+  },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
 }
 
@@ -221,6 +243,14 @@ X-Xss-Protection: 0
 
 {
   "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.licensemanager.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/configurations/licensemanagerconfiguration-maximal-${uniqueId}",
+    "verb": "update"
+  },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.licensemanager.v1.Configuration",
@@ -311,6 +341,13 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.licensemanager.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/configurations/licensemanagerconfiguration-maximal-${uniqueId}",
+    "verb": "delete"
+  },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
 }
 
@@ -333,6 +370,14 @@ X-Xss-Protection: 0
 
 {
   "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.licensemanager.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/configurations/licensemanagerconfiguration-maximal-${uniqueId}",
+    "verb": "delete"
+  },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.protobuf.Empty"

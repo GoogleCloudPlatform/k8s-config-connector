@@ -20,9 +20,12 @@ import (
 	"time"
 
 	"google.golang.org/genproto/googleapis/longrunning"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
 
 	pb "cloud.google.com/go/licensemanager/apiv1/licensemanagerpb"
 )
@@ -41,6 +44,9 @@ func (s *LicenseManagerServer) GetConfiguration(ctx context.Context, req *pb.Get
 	fqn := name.String()
 	obj := &pb.Configuration{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if apierrors.IsNotFound(err) {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
@@ -74,8 +80,16 @@ func (s *LicenseManagerServer) CreateConfiguration(ctx context.Context, req *pb.
 		return nil, err
 	}
 
+	lroMetadata := &pb.OperationMetadata{
+		ApiVersion: "v1",
+		CreateTime: timestamppb.New(now),
+		Target:     fqn,
+		Verb:       "create",
+	}
+
 	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
-	return s.operations.StartLRO(ctx, prefix, nil, func() (proto.Message, error) {
+	return s.operations.StartLRO(ctx, prefix, lroMetadata, func() (proto.Message, error) {
+		lroMetadata.EndTime = timestamppb.New(time.Now())
 		return obj, nil
 	})
 }
@@ -91,6 +105,9 @@ func (s *LicenseManagerServer) UpdateConfiguration(ctx context.Context, req *pb.
 
 	existing := &pb.Configuration{}
 	if err := s.storage.Get(ctx, fqn, existing); err != nil {
+		if apierrors.IsNotFound(err) {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
@@ -112,8 +129,16 @@ func (s *LicenseManagerServer) UpdateConfiguration(ctx context.Context, req *pb.
 		return nil, err
 	}
 
+	lroMetadata := &pb.OperationMetadata{
+		ApiVersion: "v1",
+		CreateTime: timestamppb.New(now),
+		Target:     fqn,
+		Verb:       "update",
+	}
+
 	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
-	return s.operations.StartLRO(ctx, prefix, nil, func() (proto.Message, error) {
+	return s.operations.StartLRO(ctx, prefix, lroMetadata, func() (proto.Message, error) {
+		lroMetadata.EndTime = timestamppb.New(time.Now())
 		return updated, nil
 	})
 }
@@ -127,11 +152,23 @@ func (s *LicenseManagerServer) DeleteConfiguration(ctx context.Context, req *pb.
 	fqn := name.String()
 	oldObj := &pb.Configuration{}
 	if err := s.storage.Delete(ctx, fqn, oldObj); err != nil {
+		if apierrors.IsNotFound(err) {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
+	now := time.Now()
+	lroMetadata := &pb.OperationMetadata{
+		ApiVersion: "v1",
+		CreateTime: timestamppb.New(now),
+		Target:     fqn,
+		Verb:       "delete",
+	}
+
 	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
-	return s.operations.StartLRO(ctx, prefix, nil, func() (proto.Message, error) {
+	return s.operations.StartLRO(ctx, prefix, lroMetadata, func() (proto.Message, error) {
+		lroMetadata.EndTime = timestamppb.New(time.Now())
 		return &emptypb.Empty{}, nil
 	})
 }
