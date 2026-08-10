@@ -46,6 +46,9 @@ func (r *TeamFolderV1) GetTeamFolder(ctx context.Context, request *gw_v1.GetTeam
 	fqn := name.String()
 	obj := &gw_v1.TeamFolder{}
 	if err := r.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
@@ -88,6 +91,9 @@ func (r *TeamFolderV1) UpdateTeamFolder(ctx context.Context, request *gw_v1.Upda
 
 	obj := &gw_v1.TeamFolder{}
 	if err := r.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
@@ -118,6 +124,9 @@ func (r *TeamFolderV1) DeleteTeamFolder(ctx context.Context, request *gw_v1.Dele
 
 	deleted := &gw_v1.TeamFolder{}
 	if err := r.storage.Delete(ctx, fqn, deleted); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
