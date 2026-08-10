@@ -343,6 +343,14 @@ spec:
                                       lifecycle](https://cloud.google.com/generative-ai-app-builder/docs/answer-generation-models).
                                 type: string
                             type: object
+                          multimodalSpec:
+                            description: Optional. Multimodal specification.
+                            properties:
+                              imageSource:
+                                description: Optional. Source of image returned in
+                                  the answer.
+                                type: string
+                            type: object
                           summaryResultCount:
                             description: |-
                               The number of top results to generate the summary from. If the number

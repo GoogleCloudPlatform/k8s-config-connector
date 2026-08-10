@@ -1457,6 +1457,8 @@ func DiscoveryEngineServingConfigObservedState_v1alpha1_FromProto(mapCtx *direct
 	// MISSING: DissociateControlIds
 	// MISSING: ReplacementControlIds
 	// MISSING: IgnoreControlIds
+	// MISSING: PromoteControlIds
+	// MISSING: AnswerGenerationSpec
 	return out
 }
 func DiscoveryEngineServingConfigObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.DiscoveryEngineServingConfigObservedState) *discoveryenginepb.ServingConfig {
@@ -1475,6 +1477,8 @@ func DiscoveryEngineServingConfigObservedState_v1alpha1_ToProto(mapCtx *direct.M
 	// MISSING: DissociateControlIds
 	// MISSING: ReplacementControlIds
 	// MISSING: IgnoreControlIds
+	// MISSING: PromoteControlIds
+	// MISSING: AnswerGenerationSpec
 	return out
 }
 func DiscoveryEngineSessionObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Session) *krmdiscoveryenginev1alpha1.DiscoveryEngineSessionObservedState {
@@ -1527,6 +1531,50 @@ func DiscoveryEngineSessionSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *
 	out.Turns = direct.Slice_ToProto(mapCtx, in.Turns, Session_Turn_v1alpha1_ToProto)
 	// MISSING: Labels
 	out.IsPinned = direct.ValueOf(in.IsPinned)
+	return out
+}
+func DiscoveryEngineUserStoreObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *discoveryenginepb.UserStore) *krmdiscoveryenginev1alpha1.DiscoveryEngineUserStoreObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.DiscoveryEngineUserStoreObservedState{}
+	// MISSING: Name
+	return out
+}
+func DiscoveryEngineUserStoreObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.DiscoveryEngineUserStoreObservedState) *discoveryenginepb.UserStore {
+	if in == nil {
+		return nil
+	}
+	out := &discoveryenginepb.UserStore{}
+	// MISSING: Name
+	return out
+}
+func DiscoveryEngineUserStoreSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *discoveryenginepb.UserStore) *krmdiscoveryenginev1alpha1.DiscoveryEngineUserStoreSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.DiscoveryEngineUserStoreSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	if in.GetDefaultLicenseConfig() != "" {
+		out.DefaultLicenseConfigRef = &krmdiscoveryenginev1alpha1.DiscoveryEngineLicenseConfigRef{External: in.GetDefaultLicenseConfig()}
+	}
+	out.EnableLicenseAutoRegister = direct.LazyPtr(in.GetEnableLicenseAutoRegister())
+	out.EnableExpiredLicenseAutoUpdate = direct.LazyPtr(in.GetEnableExpiredLicenseAutoUpdate())
+	return out
+}
+func DiscoveryEngineUserStoreSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.DiscoveryEngineUserStoreSpec) *discoveryenginepb.UserStore {
+	if in == nil {
+		return nil
+	}
+	out := &discoveryenginepb.UserStore{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	if in.DefaultLicenseConfigRef != nil {
+		out.DefaultLicenseConfig = in.DefaultLicenseConfigRef.External
+	}
+	out.EnableLicenseAutoRegister = direct.ValueOf(in.EnableLicenseAutoRegister)
+	out.EnableExpiredLicenseAutoUpdate = direct.ValueOf(in.EnableExpiredLicenseAutoUpdate)
 	return out
 }
 func EmbeddingConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *discoveryenginepb.EmbeddingConfig) *krmdiscoveryenginev1alpha1.EmbeddingConfig {

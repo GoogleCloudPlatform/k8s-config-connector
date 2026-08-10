@@ -2461,6 +2461,7 @@
 [missing_field] crd=discoveryengineservingconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.genericConfig.contentSearchSpec.summarySpec.languageCode" is not set in unstructured objects
 [missing_field] crd=discoveryengineservingconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.genericConfig.contentSearchSpec.summarySpec.modelPromptSpec.preamble" is not set in unstructured objects
 [missing_field] crd=discoveryengineservingconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.genericConfig.contentSearchSpec.summarySpec.modelSpec.version" is not set in unstructured objects
+[missing_field] crd=discoveryengineservingconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.genericConfig.contentSearchSpec.summarySpec.multimodalSpec.imageSource" is not set in unstructured objects
 [missing_field] crd=discoveryengineservingconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.genericConfig.contentSearchSpec.summarySpec.summaryResultCount" is not set in unstructured objects
 [missing_field] crd=discoveryengineservingconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.genericConfig.contentSearchSpec.summarySpec.useSemanticChunks" is not set in unstructured objects
 [missing_field] crd=discoveryengineservingconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.ignoreControlIDs[]" is not set in unstructured objects
@@ -2484,6 +2485,12 @@
 [missing_field] crd=discoveryenginesessions.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.turns[].answer" is not set in unstructured objects
 [missing_field] crd=discoveryenginesessions.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.turns[].query.text" is not set in unstructured objects
 [missing_field] crd=discoveryenginesessions.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.turns[].queryConfig" is not set in unstructured objects
+[missing_field] crd=discoveryengineuserstores.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.defaultLicenseConfigRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=discoveryengineuserstores.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
+[missing_field] crd=discoveryengineuserstores.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.enableExpiredLicenseAutoUpdate" is not set in unstructured objects
+[missing_field] crd=discoveryengineuserstores.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.enableLicenseAutoRegister" is not set in unstructured objects
+[missing_field] crd=discoveryengineuserstores.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=discoveryengineuserstores.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dlpdiscoveryconfigs.dlp.cnrm.cloud.google.com version=v1alpha1: field ".spec.actions[].exportData.profileTable.datasetID" is not set in unstructured objects
 [missing_field] crd=dlpdiscoveryconfigs.dlp.cnrm.cloud.google.com version=v1alpha1: field ".spec.actions[].exportData.profileTable.projectID" is not set in unstructured objects
 [missing_field] crd=dlpdiscoveryconfigs.dlp.cnrm.cloud.google.com version=v1alpha1: field ".spec.actions[].exportData.profileTable.tableID" is not set in unstructured objects
