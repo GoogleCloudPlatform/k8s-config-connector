@@ -31,7 +31,7 @@ type DiscoveryEngineUserStoreSpec struct {
 
 	// Immutable. The location of this resource.
 	// +required
-	Location string `json:"location"`
+	Location *string `json:"location"`
 
 	// The DiscoveryEngineUserStore name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
