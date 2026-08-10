@@ -18,6 +18,7 @@ import (
 	pb "cloud.google.com/go/discoveryengine/apiv1/discoveryenginepb"
 	discoveryenginepb "cloud.google.com/go/discoveryengine/apiv1beta/discoveryenginepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/discoveryengine/v1alpha1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	datepb "google.golang.org/genproto/googleapis/type/date"
 	"google.golang.org/protobuf/types/known/structpb"
@@ -471,5 +472,97 @@ func DiscoveryEngineServingConfigSpec_v1alpha1_ToProto(mapCtx *direct.MapContext
 	out.ReplacementControlIds = in.ReplacementControlIDs
 	out.IgnoreControlIds = in.IgnoreControlIDs
 	out.PersonalizationSpec = SearchRequest_PersonalizationSpec_v1alpha1_ToProto(mapCtx, in.PersonalizationSpec)
+	return out
+}
+
+func DiscoveryEngineCMEKConfigSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.CmekConfig) *krm.DiscoveryEngineCMEKConfigSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DiscoveryEngineCMEKConfigSpec{}
+	if in.GetKmsKey() != "" {
+		out.KmsKeyRef = &refsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKey()}
+	}
+	out.SingleRegionKeys = direct.Slice_FromProto(mapCtx, in.SingleRegionKeys, SingleRegionKey_v1alpha1_FromProto)
+	return out
+}
+
+func DiscoveryEngineCMEKConfigSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.DiscoveryEngineCMEKConfigSpec) *pb.CmekConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CmekConfig{}
+	if in.KmsKeyRef != nil {
+		out.KmsKey = in.KmsKeyRef.External
+	}
+	out.SingleRegionKeys = direct.Slice_ToProto(mapCtx, in.SingleRegionKeys, SingleRegionKey_v1alpha1_ToProto)
+	return out
+}
+
+func DiscoveryEngineCMEKConfigObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.CmekConfig) *krm.DiscoveryEngineCMEKConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DiscoveryEngineCMEKConfigObservedState{}
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.IsDefault = direct.LazyPtr(in.GetIsDefault())
+	out.LastRotationTimestampMicros = direct.LazyPtr(in.GetLastRotationTimestampMicros())
+	out.SingleRegionKeys = direct.Slice_FromProto(mapCtx, in.SingleRegionKeys, SingleRegionKeyObservedState_v1alpha1_FromProto)
+	out.NotebooklmState = direct.Enum_FromProto(mapCtx, in.GetNotebooklmState())
+	out.KmsKeyVersion = direct.LazyPtr(in.GetKmsKeyVersion())
+	return out
+}
+
+func DiscoveryEngineCMEKConfigObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.DiscoveryEngineCMEKConfigObservedState) *pb.CmekConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CmekConfig{}
+	out.State = direct.Enum_ToProto[pb.CmekConfig_State](mapCtx, in.State)
+	out.IsDefault = direct.ValueOf(in.IsDefault)
+	out.LastRotationTimestampMicros = direct.ValueOf(in.LastRotationTimestampMicros)
+	out.SingleRegionKeys = direct.Slice_ToProto(mapCtx, in.SingleRegionKeys, SingleRegionKeyObservedState_v1alpha1_ToProto)
+	out.NotebooklmState = direct.Enum_ToProto[pb.CmekConfig_NotebookLMState](mapCtx, in.NotebooklmState)
+	out.KmsKeyVersion = direct.ValueOf(in.KmsKeyVersion)
+	return out
+}
+
+func SingleRegionKey_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SingleRegionKey) *krm.SingleRegionKey {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SingleRegionKey{}
+	if in.GetKmsKey() != "" {
+		out.KmsKeyRef = &refsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKey()}
+	}
+	return out
+}
+
+func SingleRegionKey_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.SingleRegionKey) *pb.SingleRegionKey {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SingleRegionKey{}
+	if in.KmsKeyRef != nil {
+		out.KmsKey = in.KmsKeyRef.External
+	}
+	return out
+}
+
+func SingleRegionKeyObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SingleRegionKey) *krm.SingleRegionKeyObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SingleRegionKeyObservedState{}
+	out.KmsKey = direct.LazyPtr(in.GetKmsKey())
+	return out
+}
+
+func SingleRegionKeyObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm.SingleRegionKeyObservedState) *pb.SingleRegionKey {
+	if in == nil {
+		return nil
+	}
+	out := &pb.SingleRegionKey{}
+	out.KmsKey = direct.ValueOf(in.KmsKey)
 	return out
 }
