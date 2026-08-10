@@ -79,15 +79,64 @@ func TestSmoketest(t *testing.T) {
 		}
 	})
 
+	// Ensure local registry container is running for fast direct pushing/pulling
+	regName := "kind-registry"
+	regPort := "5001"
+	_ = exec.CommandContext(ctx, "docker", "run", "-d", "--restart=always", "-p", regPort+":5000", "--name", regName, "registry:2").Run()
+
+	// Get docker bridge gateway IP so BuildKit container can reach host registry
+	bridgeIP := "172.17.0.1"
+	if out, err := exec.CommandContext(ctx, "docker", "network", "inspect", "bridge", "--format", "{{(index .IPAM.Config 0).Gateway}}").Output(); err == nil {
+		if ip := strings.TrimSpace(string(out)); ip != "" {
+			bridgeIP = ip
+		}
+	}
+	regHost := bridgeIP + ":" + regPort
+
+	// Create a custom Buildx builder with http=true / insecure enabled for regHost
+	buildkitConfig := fmt.Sprintf(`[registry."%s"]
+  http = true
+  insecure = true
+[registry."localhost:%s"]
+  http = true
+  insecure = true
+`, regHost, regPort)
+	buildkitConfigFile := filepath.Join(t.TempDir(), "buildkitd.toml")
+	if err := os.WriteFile(buildkitConfigFile, []byte(buildkitConfig), 0644); err == nil {
+		_ = exec.CommandContext(ctx, "docker", "buildx", "create", "--name", "kcc-builder", "--use", "--config", buildkitConfigFile).Run()
+		t.Cleanup(func() {
+			_ = exec.CommandContext(ctx, "docker", "buildx", "rm", "kcc-builder").Run()
+		})
+	}
+
+	kindConfigContent := fmt.Sprintf(`kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+containerdConfigPatches:
+- |-
+  [plugins."io.containerd.grpc.v1.cri".registry]
+    [plugins."io.containerd.grpc.v1.cri".registry.mirrors]
+      [plugins."io.containerd.grpc.v1.cri".registry.mirrors."%s"]
+        endpoint = ["http://%s:5000"]
+      [plugins."io.containerd.grpc.v1.cri".registry.mirrors."localhost:%s"]
+        endpoint = ["http://%s:5000"]
+`, regHost, regName, regPort, regName)
+
+	kindConfigFile := filepath.Join(t.TempDir(), "kind-config.yaml")
+	if err := os.WriteFile(kindConfigFile, []byte(kindConfigContent), 0644); err != nil {
+		t.Fatalf("failed to write kind config: %v", err)
+	}
+
 	t.Logf("[PHASE START] Creating kind cluster %q", clusterName)
 	tKind := time.Now()
-	if err := runCommand(ctx, t, root, "kind", "create", "cluster", "--name", clusterName); err != nil {
+	if err := runCommand(ctx, t, root, "kind", "create", "cluster", "--name", clusterName, "--config", kindConfigFile); err != nil {
 		t.Fatalf("failed to create kind cluster: %v", err)
 	}
 	t.Logf("[PHASE DONE] Kind cluster creation took %v", time.Since(tKind))
 	logDiskUsage("After Kind Creation")
 
-	imagePrefix := "registry.kind/"
+	_ = exec.CommandContext(ctx, "docker", "network", "connect", "kind", regName).Run()
+
+	imagePrefix := regHost + "/"
 
 	// Read current stable version to patch manifests
 	stableVersionFile := filepath.Join(root, "operator/channels/stable")
@@ -137,8 +186,8 @@ func TestSmoketest(t *testing.T) {
 		}
 	}
 
-	patchManifests(filepath.Join(root, "operator/channels/packages/configconnector"))
-	patchManifests(filepath.Join(root, "operator/autopilot-channels/packages/configconnector"))
+	patchManifests(filepath.Join(root, "operator/channels/packages/configconnector", stableVersion))
+	patchManifests(filepath.Join(root, "operator/autopilot-channels/packages/configconnector", stableVersion))
 	patchManifests(filepath.Join(root, "config/installbundle/components"))
 
 	// Revert patches at the end of the test to keep workspace clean
@@ -169,8 +218,8 @@ func TestSmoketest(t *testing.T) {
 				t.Errorf("failed to revert manifests in %s: %v", dir, err)
 			}
 		}
-		revertManifests(filepath.Join(root, "operator/channels/packages/configconnector"))
-		revertManifests(filepath.Join(root, "operator/autopilot-channels/packages/configconnector"))
+		revertManifests(filepath.Join(root, "operator/channels/packages/configconnector", stableVersion))
+		revertManifests(filepath.Join(root, "operator/autopilot-channels/packages/configconnector", stableVersion))
 		revertManifests(filepath.Join(root, "config/installbundle/components"))
 	})
 
@@ -181,36 +230,19 @@ func TestSmoketest(t *testing.T) {
 	buildCmd.Env = append(os.Environ(),
 		"IMAGE_TAG="+imageTag,
 		"IMAGE_PREFIX="+imagePrefix,
+		"BAKE_ACTION=--push",
+		"SKIP_LICENSES=1",
+		"BUILD_CLI=0",
+		"BUILD_GKE_ADDON=0",
+		"SKIP_IF_PRESENT=1",
 	)
 	buildCmd.Stdout = os.Stdout
 	buildCmd.Stderr = os.Stderr
 	if err := buildCmd.Run(); err != nil {
 		t.Fatalf("failed to build images: %v", err)
 	}
-	t.Logf("[PHASE DONE] Building images took %v", time.Since(tBuild))
-	logDiskUsage("After Docker Build")
-
-	t.Logf("Loading images into kind")
-	imagesToLoad := []string{
-		"operator",
-		"controller",
-		"recorder",
-		"webhook",
-		"deletiondefender",
-		"unmanageddetector",
-	}
-	kindArgs := []string{"load", "--name", clusterName, "docker-image"}
-	for _, img := range imagesToLoad {
-		fullImage := imagePrefix + img + ":" + imageTag
-		kindArgs = append(kindArgs, fullImage)
-	}
-	t.Logf("[PHASE START] Bulk loading all %d images into kind cluster %q...", len(imagesToLoad), clusterName)
-	tLoad := time.Now()
-	if err := runCommand(ctx, t, root, "kind", kindArgs...); err != nil {
-		t.Fatalf("failed to bulk load images into kind: %v", err)
-	}
-	t.Logf("[PHASE DONE] Bulk loading images took %v", time.Since(tLoad))
-	logDiskUsage("After Kind Image Load")
+	t.Logf("[PHASE DONE] Building and pushing images directly to local registry took %v", time.Since(tBuild))
+	logDiskUsage("After Docker Build & Push")
 
 	t.Logf("Deploying operator to kind")
 	kustomizeCmd := exec.CommandContext(ctx, "kubectl", "kustomize", filepath.Join(root, "operator/config/default"))

@@ -12,6 +12,42 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-bin/
-#third_party/
+# Dot files and directories (.git, .github, .gemini, .build, etc.)
+.*
+!.dockerignore
+
+# Build and test output directories
+.build/
+artifactz/
+dist/
+
+# Source code and packages non-essential to container builds.
+# NOTE: All container images in this repository (controller, operator, webhook, recorder, deletiondefender, unmanageddetector)
+# use host-precompiled Go binaries copied from bin/, THIRD_PARTY_NOTICES/, and operator/channels/.
+# Excluding unneeded source code reduces the Docker build context transfer size from ~740 MB down to < 1 MB.
+apis/
+cmd/
+config/
+dev/
+docs/
+experiments/
+mockgcp/
+pkg/
+scripts/
+tests/
+third_party/
+vendor/
+
+# Operator source code (only operator/channels/ and operator/autopilot-channels/ are needed by operator/Dockerfile)
+operator/api/
+operator/bin/
+operator/cmd/
+operator/config/
+operator/controllers/
+operator/pkg/
+operator/*.go
+
+# Test Go source files
+*_test.go
+**/*_test.go
 

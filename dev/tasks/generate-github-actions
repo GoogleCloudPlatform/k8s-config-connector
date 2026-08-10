@@ -17,8 +17,6 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-set -x
-
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}
 
@@ -88,7 +86,6 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0
-# zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
       - name: Prebuild test binaries
         run: |
@@ -349,7 +346,6 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-# zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
       - name: Download prebuilt test binaries
         uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
@@ -392,9 +388,6 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
         shard: ["1-of-4", "2-of-4", "3-of-4", "4-of-4"]
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      - name: Free up disk space
-        run: dev/tasks/free-disk-space-on-github-actions-runner
-# zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
       - uses: google-github-actions/setup-gcloud@77e7a554d41e2ee56fc945c52dfd3f33d12def9a # v2.1.4
         with:
@@ -425,23 +418,52 @@ EOF
     fi
 
     if [[ "${name}" == "fuzz-roundtrippers" ]]; then
-        jobs_array+=("fuzz-roundtrippers-matrix" "fuzz-roundtrippers")
+        jobs_array+=("fuzz-roundtrippers-compile" "fuzz-roundtrippers-matrix" "fuzz-roundtrippers")
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
+
+  fuzz-roundtrippers-compile:
+    name: "compile-fuzz-binary"
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: ./dev/actions/cache-go
+      - name: "Cache Fuzz Binary"
+        id: cache-fuzz-binary
+        uses: actions/cache@v4
+        with:
+          path: bin/fuzztests
+          key: fuzz-binary-\${{ runner.os }}-\${{ hashFiles('go.sum', 'apis/**', 'pkg/controller/direct/**', 'pkg/fuzztesting/**') }}
+      - name: "Pre-compile Fuzz Binary (on Cache Miss)"
+        if: \${{ steps.cache-fuzz-binary.outputs.cache-hit != 'true' }}
+        run: |
+          mkdir -p bin/
+          go test -c -fuzz=FuzzAllMappers -o bin/fuzztests ./pkg/fuzztesting/fuzztests/
+      - name: "Upload Fuzz Binary Artifact"
+        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
+        with:
+          name: fuzz-binary
+          path: bin/fuzztests
 
   fuzz-roundtrippers-matrix:
     name: "fuzz-roundtrippers-\${{ matrix.shard }}"
     runs-on: ubuntu-latest
     timeout-minutes: 60
+    needs: fuzz-roundtrippers-compile
     strategy:
       fail-fast: false
       matrix:
-        shard: ["1-of-8", "2-of-8", "3-of-8", "4-of-8", "5-of-8", "6-of-8", "7-of-8", "8-of-8"]
+        shard: ["1-of-12", "2-of-12", "3-of-12", "4-of-12", "5-of-12", "6-of-12", "7-of-12", "8-of-12", "9-of-12", "10-of-12", "11-of-12", "12-of-12"]
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      - name: Free up disk space
-        run: dev/tasks/free-disk-space-on-github-actions-runner
-# zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
+      - name: "Download Fuzz Binary Artifact"
+        uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
+        with:
+          name: fuzz-binary
+          path: bin/
+      - name: "Make Fuzz Binary Executable"
+        run: chmod +x bin/fuzztests
       - name: "Run dev/ci/presubmits/fuzz-roundtrippers"
         run: |
           ./dev/ci/presubmits/fuzz-roundtrippers "\${{ matrix.shard }}"
@@ -467,6 +489,53 @@ EOF
         continue
     fi
 
+    if [[ "${name}" == "compile-binaries-host" ]]; then
+      continue
+    fi
+
+    if [[ "${name}" == "smoketest-with-kind" || "${name}" == "build-images" ]]; then
+      jobs_array+=("${name}")
+cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
+
+  ${name}:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+EOF
+      if [[ "${name}" == "smoketest-with-kind" ]]; then
+cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@c47758b77c9736f4b2ef4073d4d51994fabfe349 # v3.7.1
+EOF
+      fi
+      cache_prefix="host-binaries"
+      if [[ "${name}" == "smoketest-with-kind" ]]; then
+        cache_prefix="smoketest-binaries"
+      fi
+cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
+      - uses: ./dev/actions/cache-go
+      - name: "Cache Host Binaries"
+        id: cache-host-binaries
+        uses: actions/cache@v4
+        with:
+          path: bin/
+          key: ${cache_prefix}-\${{ runner.os }}-\${{ hashFiles('go.sum', 'apis/**', 'pkg/**', 'operator/**', 'cmd/**', 'dev/tasks/compile-binaries-host') }}
+      - name: "Run ${f}"
+        run: |
+          ./${f}
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
+        if: \${{ !cancelled() }}
+        with:
+          name: artifacts-${name}
+          path: /tmp/artifacts/
+EOF
+      continue
+    fi
+
     # Emit all other standalone checks right in exact preserved structure and alphabetical placement
     jobs_array+=("${name}")
 
@@ -483,12 +552,10 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0
-      - name: Free up disk space
-        run: dev/tasks/free-disk-space-on-github-actions-runner
       - uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # v5.3.0
         with:
           go-version-file: 'go.mod'
-          cache: false
+          cache: true
       - name: golangci-lint
         uses: golangci/golangci-lint-action@a4f60bb28d35aeee14e6880718e0c85ff1882e64 # v6.0.1
         with:
@@ -505,7 +572,6 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0
-# zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
       - name: "Run ${f}"
         run: |
@@ -547,7 +613,7 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
 EOF
     fi
 
-    if [[ "${name}" == "validate-fmt" || "${name}" == "validate-github-actions" || "${name}" == "validate-resource-docs" || "${name}" == "validate-untested-fields" || "${name}" == "smoketest-with-kind" ]]; then
+    if [[ "${name}" == "validate-fmt" || "${name}" == "validate-github-actions" || "${name}" == "validate-resource-docs" || "${name}" == "validate-untested-fields" ]]; then
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
       - uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # v5.3.0
         with:
@@ -556,7 +622,6 @@ cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
 EOF
     else
 cat >> ${REPO_ROOT}/.github/workflows/ci-presubmit.yaml <<EOF
-# zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
 EOF
     fi
@@ -689,7 +754,6 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0
-# zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/crd-equivalence-check"
         run: |
@@ -751,7 +815,6 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-# zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
         with:
           go-version: '1.26'

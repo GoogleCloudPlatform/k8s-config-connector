@@ -1,4 +1,5 @@
-# Copyright 2022 Google LLC
+#!/usr/bin/env bash
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,16 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Lightweight builder stage that uses host-compiled Go binaries
-FROM alpine:latest AS builder
+set -o errexit
+set -o nounset
+set -o pipefail
 
-WORKDIR /go/src/github.com/GoogleCloudPlatform/k8s-config-connector
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+cd "${REPO_ROOT}"
 
-COPY bin/deletiondefender deletiondefender
-COPY bin/webhook webhook
-COPY bin/recorder recorder
-COPY bin/unmanageddetector unmanageddetector
-COPY bin/manager manager
-COPY bin/config-connector config-connector
-COPY THIRD_PARTY_NOTICES/ THIRD_PARTY_NOTICES/
-COPY MIRRORED_LIBRARY_SOURCE/ MIRRORED_LIBRARY_SOURCE/
+exec dev/tasks/build-images "$@"

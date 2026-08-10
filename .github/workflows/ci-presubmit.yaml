@@ -54,7 +54,6 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0
-# zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
       - name: Prebuild test binaries
         run: |
@@ -71,12 +70,35 @@ jobs:
         id: split
         run: ./dev/tasks/split-test-matrix
 
+  build-images:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: ./dev/actions/cache-go
+      - name: "Cache Host Binaries"
+        id: cache-host-binaries
+        uses: actions/cache@v4
+        with:
+          path: bin/
+          key: host-binaries-${{ runner.os }}-${{ hashFiles('go.sum', 'apis/**', 'pkg/**', 'operator/**', 'cmd/**', 'dev/tasks/compile-binaries-host') }}
+      - name: "Run dev/ci/presubmits/build-images"
+        run: |
+          ./dev/ci/presubmits/build-images
+        env:
+          ARTIFACTS: /tmp/artifacts
+      - name: "Upload artifacts"
+        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
+        if: ${{ !cancelled() }}
+        with:
+          name: artifacts-build-images
+          path: /tmp/artifacts/
+
   capture-pprof:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-# zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/capture-pprof"
         run: |
@@ -91,20 +113,49 @@ jobs:
           path: /tmp/artifacts/
 
 
+  fuzz-roundtrippers-compile:
+    name: "compile-fuzz-binary"
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: ./dev/actions/cache-go
+      - name: "Cache Fuzz Binary"
+        id: cache-fuzz-binary
+        uses: actions/cache@v4
+        with:
+          path: bin/fuzztests
+          key: fuzz-binary-${{ runner.os }}-${{ hashFiles('go.sum', 'apis/**', 'pkg/controller/direct/**', 'pkg/fuzztesting/**') }}
+      - name: "Pre-compile Fuzz Binary (on Cache Miss)"
+        if: ${{ steps.cache-fuzz-binary.outputs.cache-hit != 'true' }}
+        run: |
+          mkdir -p bin/
+          go test -c -fuzz=FuzzAllMappers -o bin/fuzztests ./pkg/fuzztesting/fuzztests/
+      - name: "Upload Fuzz Binary Artifact"
+        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 # v4.6.1
+        with:
+          name: fuzz-binary
+          path: bin/fuzztests
+
   fuzz-roundtrippers-matrix:
     name: "fuzz-roundtrippers-${{ matrix.shard }}"
     runs-on: ubuntu-latest
     timeout-minutes: 60
+    needs: fuzz-roundtrippers-compile
     strategy:
       fail-fast: false
       matrix:
-        shard: ["1-of-8", "2-of-8", "3-of-8", "4-of-8", "5-of-8", "6-of-8", "7-of-8", "8-of-8"]
+        shard: ["1-of-12", "2-of-12", "3-of-12", "4-of-12", "5-of-12", "6-of-12", "7-of-12", "8-of-12", "9-of-12", "10-of-12", "11-of-12", "12-of-12"]
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      - name: Free up disk space
-        run: dev/tasks/free-disk-space-on-github-actions-runner
-# zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
+      - name: "Download Fuzz Binary Artifact"
+        uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
+        with:
+          name: fuzz-binary
+          path: bin/
+      - name: "Make Fuzz Binary Executable"
+        run: chmod +x bin/fuzztests
       - name: "Run dev/ci/presubmits/fuzz-roundtrippers"
         run: |
           ./dev/ci/presubmits/fuzz-roundtrippers "${{ matrix.shard }}"
@@ -134,12 +185,10 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0
-      - name: Free up disk space
-        run: dev/tasks/free-disk-space-on-github-actions-runner
       - uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # v5.3.0
         with:
           go-version-file: 'go.mod'
-          cache: false
+          cache: true
       - name: golangci-lint
         uses: golangci/golangci-lint-action@a4f60bb28d35aeee14e6880718e0c85ff1882e64 # v6.0.1
         with:
@@ -153,7 +202,6 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 0
-# zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/license-lint"
         run: |
@@ -173,7 +221,6 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-# zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/run-linters"
         run: |
@@ -195,10 +242,13 @@ jobs:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@c47758b77c9736f4b2ef4073d4d51994fabfe349 # v3.7.1
-      - uses: actions/setup-go@f111f3307d8850f501ac008e886eec1fd1932a34 # v5.3.0
+      - uses: ./dev/actions/cache-go
+      - name: "Cache Host Binaries"
+        id: cache-host-binaries
+        uses: actions/cache@v4
         with:
-          go-version-file: 'go.mod'
-          cache: false
+          path: bin/
+          key: smoketest-binaries-${{ runner.os }}-${{ hashFiles('go.sum', 'apis/**', 'pkg/**', 'operator/**', 'cmd/**', 'dev/tasks/compile-binaries-host') }}
       - name: "Run dev/ci/presubmits/smoketest-with-kind"
         run: |
           ./dev/ci/presubmits/smoketest-with-kind
@@ -211,13 +261,11 @@ jobs:
           name: artifacts-smoketest-with-kind
           path: /tmp/artifacts/
 
-
   test-fuzz-random-mappers:
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-# zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/test-fuzz-random-mappers"
         run: |
@@ -237,7 +285,6 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-# zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
       - uses: google-github-actions/setup-gcloud@77e7a554d41e2ee56fc945c52dfd3f33d12def9a # v2.1.4
         with:
@@ -260,7 +307,6 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-# zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/test-pause"
         run: |
@@ -282,7 +328,6 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-# zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
       - name: Download prebuilt test binaries
         uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
@@ -488,7 +533,6 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-# zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-gcptracker"
         run: |
@@ -508,7 +552,6 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-# zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/tests-preview"
         run: |
@@ -572,9 +615,6 @@ jobs:
         shard: ["1-of-4", "2-of-4", "3-of-4", "4-of-4"]
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      - name: Free up disk space
-        run: dev/tasks/free-disk-space-on-github-actions-runner
-# zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
       - uses: google-github-actions/setup-gcloud@77e7a554d41e2ee56fc945c52dfd3f33d12def9a # v2.1.4
         with:
@@ -606,7 +646,6 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-# zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
       - uses: google-github-actions/setup-gcloud@77e7a554d41e2ee56fc945c52dfd3f33d12def9a # v2.1.4
         with:
@@ -629,7 +668,6 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-# zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/validate-ensure"
         run: |
@@ -671,7 +709,6 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-# zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/validate-generated-files"
         run: |
@@ -713,7 +750,6 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-# zizmor: ignore[unpinned-uses]
       - uses: ./dev/actions/cache-go
       - name: "Run dev/ci/presubmits/validate-manifests"
         run: |
@@ -780,7 +816,9 @@ jobs:
     name: presubmit-gatekeeper
     needs:
       - prepare-test-matrix
+      - build-images
       - capture-pprof
+      - fuzz-roundtrippers-compile
       - fuzz-roundtrippers-matrix
       - fuzz-roundtrippers
       - golangci-lint
