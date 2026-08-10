@@ -1,0 +1,340 @@
+GET https://licensemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/configurations/licensemanagerconfiguration-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconfigurations%2Flicensemanagerconfiguration-maximal-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "configuration \"projects/${projectId}/locations/us-central1/configurations/licensemanagerconfiguration-maximal-${uniqueId}\" not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "configuration \"projects/${projectId}/locations/us-central1/configurations/licensemanagerconfiguration-maximal-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://licensemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/configurations?%24alt=json%3Benum-encoding%3Dint&configurationId=licensemanagerconfiguration-maximal-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "currentBillingInfo": {
+    "userCountBilling": {
+      "userCount": 10
+    }
+  },
+  "displayName": "maximal-license-manager-config",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "licenseType": 1,
+  "nextBillingInfo": {
+    "userCountBilling": {
+      "userCount": 10
+    }
+  },
+  "product": "projects/${projectId}/locations/us-central1/products/Office2021ProfessionalPlus"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://licensemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.licensemanager.v1.Configuration",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "currentBillingInfo": {
+      "startTime": "2024-04-01T12:34:56.123456Z",
+      "userCountBilling": {
+        "userCount": 10
+      }
+    },
+    "displayName": "maximal-license-manager-config",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "licenseType": "LICENSE_TYPE_PER_MONTH_PER_USER",
+    "name": "projects/${projectId}/locations/us-central1/configurations/licensemanagerconfiguration-maximal-${uniqueId}",
+    "nextBillingInfo": {
+      "startTime": "2024-04-01T12:34:56.123456Z",
+      "userCountBilling": {
+        "userCount": 10
+      }
+    },
+    "product": "projects/${projectId}/locations/us-central1/products/Office2021ProfessionalPlus",
+    "state": "STATE_ACTIVE",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://licensemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/configurations/licensemanagerconfiguration-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconfigurations%2Flicensemanagerconfiguration-maximal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "currentBillingInfo": {
+    "startTime": "2024-04-01T12:34:56.123456Z",
+    "userCountBilling": {
+      "userCount": 10
+    }
+  },
+  "displayName": "maximal-license-manager-config",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "licenseType": 1,
+  "name": "projects/${projectId}/locations/us-central1/configurations/licensemanagerconfiguration-maximal-${uniqueId}",
+  "nextBillingInfo": {
+    "startTime": "2024-04-01T12:34:56.123456Z",
+    "userCountBilling": {
+      "userCount": 10
+    }
+  },
+  "product": "projects/${projectId}/locations/us-central1/products/Office2021ProfessionalPlus",
+  "state": 1,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://licensemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/configurations/licensemanagerconfiguration-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=currentBillingInfo%2CdisplayName%2CnextBillingInfo
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: configuration.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconfigurations%2Flicensemanagerconfiguration-maximal-${uniqueId}
+
+{
+  "currentBillingInfo": {
+    "userCountBilling": {
+      "userCount": 15
+    }
+  },
+  "displayName": "maximal-license-manager-config-updated",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "licenseType": 1,
+  "name": "projects/${projectId}/locations/us-central1/configurations/licensemanagerconfiguration-maximal-${uniqueId}",
+  "nextBillingInfo": {
+    "userCountBilling": {
+      "userCount": 15
+    }
+  },
+  "product": "projects/${projectId}/locations/us-central1/products/Office2021ProfessionalPlus"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://licensemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.licensemanager.v1.Configuration",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "currentBillingInfo": {
+      "startTime": "2024-04-01T12:34:56.123456Z",
+      "userCountBilling": {
+        "userCount": 15
+      }
+    },
+    "displayName": "maximal-license-manager-config-updated",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "licenseType": "LICENSE_TYPE_PER_MONTH_PER_USER",
+    "name": "projects/${projectId}/locations/us-central1/configurations/licensemanagerconfiguration-maximal-${uniqueId}",
+    "nextBillingInfo": {
+      "startTime": "2024-04-01T12:34:56.123456Z",
+      "userCountBilling": {
+        "userCount": 15
+      }
+    },
+    "product": "projects/${projectId}/locations/us-central1/products/Office2021ProfessionalPlus",
+    "state": "STATE_ACTIVE",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://licensemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/configurations/licensemanagerconfiguration-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconfigurations%2Flicensemanagerconfiguration-maximal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "currentBillingInfo": {
+    "startTime": "2024-04-01T12:34:56.123456Z",
+    "userCountBilling": {
+      "userCount": 15
+    }
+  },
+  "displayName": "maximal-license-manager-config-updated",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "licenseType": 1,
+  "name": "projects/${projectId}/locations/us-central1/configurations/licensemanagerconfiguration-maximal-${uniqueId}",
+  "nextBillingInfo": {
+    "startTime": "2024-04-01T12:34:56.123456Z",
+    "userCountBilling": {
+      "userCount": 15
+    }
+  },
+  "product": "projects/${projectId}/locations/us-central1/products/Office2021ProfessionalPlus",
+  "state": 1,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://licensemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/configurations/licensemanagerconfiguration-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fconfigurations%2Flicensemanagerconfiguration-maximal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://licensemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
