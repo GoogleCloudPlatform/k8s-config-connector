@@ -17,3 +17,13 @@
 - **Problem**: `generate-types` initially left all the `*Config` fields (e.g., `GithubConfig`) in `types.generated.go` as `unreachable` because they weren't explicitly added to the scaffolded `DevConnectConnectionSpec` in `connection_types.go`. Also, `Location` was generated as `string` instead of a pointer primitive `*string`.
 - **Solution**: Manually copied the missing fields from `types.generated.go` into `DevConnectConnectionSpec` and `DevConnectConnectionObservedState` in `connection_types.go`. Changed `Location` to `*string` and added `+kubebuilder:validation:Required` as per KRM conventions. Re-running `./apis/developerconnect/v1alpha1/generate.sh` automatically uncommented the reachable child types in `types.generated.go`.
 - **Impact**: Future agents implementing `developerconnect` or similar resources should remember to migrate missing fields from the generated `types.generated.go` (if they are commented out as unreachable) to their `_types.go` file, verify the primitives are pointers, and then re-run `generate.sh`.
+
+### 2026-08-09 DevConnectInsightsConfig Controller Implementation
+- **Context**: Implementing the direct controller, E2E fixtures, and fuzzer for `DevConnectInsightsConfig` in the `developerconnect` group.
+- **Problem**: 
+  1. The Developer Connect API requires that either `AppHubApplication` or `Projects` context be set on the `InsightsConfig` resource. Since the KRM Spec does not expose `projects` to users, trying to create it without setting the context results in a GCP `InvalidArgument` bad request error.
+  2. The `Projects` context is immutable in GCP, but KRM updates to labels/annotations trigger standard PATCH requests. If we include `projects` in the update payload, GCP rejects the request with `Projects cannot be updated`.
+- **Solution**: 
+  1. In `AdapterForObject`, we check if `AppHubApplicationRef` is nil/empty, and fallback to defaulting the `Projects` context to track the current project (`id.Project`).
+  2. In the `Update` method, we clone the desired payload and set the `InsightsConfigContext = nil` if it is a `Projects` context, omitting it from the PATCH payload entirely. In `compareResource`, we normalize both actual and clonedDesired context to prevent false diffs.
+- **Impact**: Ensures seamless single-project `DevConnectInsightsConfig` reconciliation in Config Connector while complying with GCP API immutability rules.

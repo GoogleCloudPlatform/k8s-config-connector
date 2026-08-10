@@ -1,0 +1,11 @@
+apiVersion: developerconnect.cnrm.cloud.google.com/v1alpha1
+kind: DevConnectInsightsConfig
+metadata:
+  name: devconnectinsightsconfig-min-${uniqueId}
+  labels:
+    test-label: updated-val
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  resourceID: default

@@ -1,0 +1,18 @@
+apiVersion: apphub.cnrm.cloud.google.com/v1beta1
+kind: AppHubApplication
+metadata:
+  name: apphubapp-maximal-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  scope:
+    type: REGIONAL
+---
+apiVersion: artifactregistry.cnrm.cloud.google.com/v1beta1
+kind: ArtifactRegistryRepository
+metadata:
+  name: arrepository-${uniqueId}
+spec:
+  format: DOCKER
+  location: us-central1

@@ -1,0 +1,17 @@
+apiVersion: developerconnect.cnrm.cloud.google.com/v1alpha1
+kind: DevConnectInsightsConfig
+metadata:
+  name: devconnectinsightsconfig-maximal-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  appHubApplicationRef:
+    name: apphubapp-maximal-${uniqueId}
+  artifactConfigs:
+    - uri: "us-central1-docker.pkg.dev/${projectId}/arrepository-${uniqueId}/my-image-updated"
+      googleArtifactRegistry:
+        projectID: "${projectId}"
+        artifactRegistryPackage: "my-image-updated"
+      googleArtifactAnalysis:
+        projectID: "${projectId}"

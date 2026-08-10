@@ -181,6 +181,10 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		// Device Streaming
 		"//devicestreaming.googleapis.com/projects/{}/deviceSessions/{}": true,
 
+		// Developer Connect
+		"//developerconnect.googleapis.com/projects/{}/locations/{}/accountConnectors/{}": true,
+		"//developerconnect.googleapis.com/projects/{}/locations/{}/insightsConfigs/{}":   true,
+
 		// Discovery Engine
 		"//discoveryengine.googleapis.com/projects/{}/locations/{}/collections/{}/engines/{}/servingConfigs/{}":   true,
 		"//discoveryengine.googleapis.com/projects/{}/locations/{}/dataStores/{}/controls/{}":                     true,
