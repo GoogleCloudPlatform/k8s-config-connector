@@ -21,4 +21,6 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
+  externalRef: projects/${projectId}/locations/global/userStores/default_user_store
   observedGeneration: 1
+  observedState: {}

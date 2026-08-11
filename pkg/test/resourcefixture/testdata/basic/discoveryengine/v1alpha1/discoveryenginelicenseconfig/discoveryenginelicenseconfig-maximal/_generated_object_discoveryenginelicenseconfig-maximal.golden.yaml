@@ -30,6 +30,7 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
+  externalRef: projects/${projectId}/locations/global/licenseConfigs/notebook-lm
   observedGeneration: 2
   observedState:
     earlyTerminationDate: {}

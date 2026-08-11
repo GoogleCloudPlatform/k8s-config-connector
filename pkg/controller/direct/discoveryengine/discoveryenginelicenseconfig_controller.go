@@ -230,6 +230,7 @@ func (a *licenseConfigAdapter) Update(ctx context.Context, updateOp *directbase.
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+	status.ExternalRef = direct.PtrTo(a.id.String())
 	return updateOp.UpdateStatus(ctx, status, nil)
 }
 
