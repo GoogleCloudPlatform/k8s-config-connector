@@ -18,11 +18,15 @@ import (
 	"context"
 	"fmt"
 	"strings"
+	"time"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/emptypb"
+	"google.golang.org/protobuf/types/known/timestamppb"
+
+	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 
@@ -116,6 +120,62 @@ func (s *tableAdminServer) CreateTable(ctx context.Context, req *pb.CreateTableR
 	}
 
 	return returnView(obj, pb.Table_VIEW_UNSPECIFIED), nil
+}
+
+func (s *tableAdminServer) UpdateTable(ctx context.Context, req *pb.UpdateTableRequest) (*longrunningpb.Operation, error) {
+	reqTable := req.GetTable()
+	if reqTable == nil {
+		return nil, status.Errorf(codes.InvalidArgument, "table must be specified")
+	}
+
+	tableName, err := s.parseTableName(reqTable.GetName())
+	if err != nil {
+		return nil, err
+	}
+
+	tableFQN := tableName.String()
+
+	obj := &pb.Table{}
+	if err := s.storage.Get(ctx, tableFQN, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Not found: %v", tableFQN)
+		}
+		return nil, err
+	}
+
+	mask := req.GetUpdateMask()
+	if mask == nil {
+		return nil, status.Errorf(codes.InvalidArgument, "update_mask must be specified")
+	}
+
+	for _, path := range mask.GetPaths() {
+		if strings.HasPrefix(path, "automated_backup_config") || strings.HasPrefix(path, "automated_backup_policy") {
+			obj.AutomatedBackupConfig = reqTable.GetAutomatedBackupConfig()
+			continue
+		}
+
+		switch path {
+		case "change_stream_config":
+			obj.ChangeStreamConfig = reqTable.GetChangeStreamConfig()
+		case "deletion_protection":
+			obj.DeletionProtection = reqTable.GetDeletionProtection()
+		default:
+			return nil, status.Errorf(codes.InvalidArgument, "field %q not supported for update", path)
+		}
+	}
+
+	if err := s.storage.Update(ctx, tableFQN, obj); err != nil {
+		return nil, err
+	}
+
+	// Set up the operation metadata.
+	metadata := &pb.UpdateTableMetadata{
+		Name:      tableFQN,
+		StartTime: timestamppb.Now(),
+		EndTime:   timestamppb.New(time.Now().Add(5 * time.Minute)),
+	}
+	prefix := fmt.Sprintf("operations/%s/locations/%s", tableName.String(), "us-east1-c")
+	return s.operations.DoneLRO(ctx, prefix, metadata, obj)
 }
 
 func (s *tableAdminServer) ModifyColumnFamilies(ctx context.Context, req *pb.ModifyColumnFamiliesRequest) (*pb.Table, error) {

@@ -272,6 +272,22 @@ OK
 
 ---
 
+GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetTable
+
+{
+  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-dep-${uniqueId}",
+  "view": "SCHEMA_VIEW"
+}
+
+OK
+
+{
+  "granularity": "MILLIS",
+  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-dep-${uniqueId}"
+}
+
+---
+
 GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetBackup
 
 {

@@ -287,6 +287,25 @@ OK
 
 ---
 
+GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetTable
+
+{
+  "name": "projects/${projectId}/instances/mvdep${uniqueId}/tables/table-${uniqueId}",
+  "view": "SCHEMA_VIEW"
+}
+
+OK
+
+{
+  "columnFamilies": {
+    "cf1": {}
+  },
+  "granularity": "MILLIS",
+  "name": "projects/${projectId}/instances/mvdep${uniqueId}/tables/table-${uniqueId}"
+}
+
+---
+
 GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/GetMaterializedView
 
 {

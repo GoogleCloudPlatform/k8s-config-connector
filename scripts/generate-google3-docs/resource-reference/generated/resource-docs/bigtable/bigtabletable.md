@@ -88,6 +88,9 @@ title: "BigtableTable"
 ### Spec
 #### Schema
 ```yaml
+automatedBackupPolicy:
+  frequency: string
+  retentionPeriod: string
 changeStreamRetention: string
 columnFamily:
 - family: string
@@ -108,6 +111,36 @@ splitKeys:
     </tr>
 </thead>
 <tbody>
+    <tr>
+        <td>
+            <p><code>automatedBackupPolicy</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>If specified, automated backups are enabled for this table. Otherwise, automated backups are disabled.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>automatedBackupPolicy.frequency</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Required. How frequently automated backups should occur. The only supported value at this time is 24 hours.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>automatedBackupPolicy.retentionPeriod</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Required. How long the automated backups should be retained. The only supported value at this time is 3 days.</p>
+        </td>
+    </tr>
     <tr>
         <td>
             <p><code>changeStreamRetention</code></p>

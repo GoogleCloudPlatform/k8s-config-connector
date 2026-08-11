@@ -571,6 +571,24 @@ func TableColumnFamily_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtabl
 	// MISSING: ValueType
 	return out
 }
+func Table_AutomatedBackupPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Table_AutomatedBackupPolicy) *krmbigtablev1beta1.Table_AutomatedBackupPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krmbigtablev1beta1.Table_AutomatedBackupPolicy{}
+	out.RetentionPeriod = direct.StringDuration_FromProto(mapCtx, in.GetRetentionPeriod())
+	out.Frequency = direct.StringDuration_FromProto(mapCtx, in.GetFrequency())
+	return out
+}
+func Table_AutomatedBackupPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.Table_AutomatedBackupPolicy) *pb.Table_AutomatedBackupPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Table_AutomatedBackupPolicy{}
+	out.RetentionPeriod = direct.StringDuration_ToProto(mapCtx, in.RetentionPeriod)
+	out.Frequency = direct.StringDuration_ToProto(mapCtx, in.Frequency)
+	return out
+}
 func Table_ClusterState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Table_ClusterState) *krmbigtablev1beta1.Table_ClusterState {
 	if in == nil {
 		return nil

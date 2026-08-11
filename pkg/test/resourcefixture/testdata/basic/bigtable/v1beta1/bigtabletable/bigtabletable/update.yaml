@@ -24,3 +24,6 @@ spec:
     name: bigtable-dep-${uniqueId}
   splitKeys:
   - a
+  automatedBackupPolicy:
+    retentionPeriod: 72h
+    frequency: 24h
