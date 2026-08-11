@@ -27,6 +27,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	pb "cloud.google.com/go/discoveryengine/apiv1/discoveryenginepb"
@@ -74,7 +75,7 @@ func (s *dataStoreService) DeleteDataStore(ctx context.Context, req *pb.DeleteDa
 	}
 
 	prefix := fmt.Sprintf("projects/%d/locations/%s/collections/%s", name.Project.Number, name.Location, name.Collection)
-	return s.operations.DoneLRO(ctx, prefix, nil, nil)
+	return s.operations.DoneLRO(ctx, prefix, nil, &emptypb.Empty{})
 }
 
 func (s *dataStoreService) UpdateDataStore(ctx context.Context, req *pb.UpdateDataStoreRequest) (*pb.DataStore, error) {
@@ -144,7 +145,7 @@ func (s *MockService) parseDataStoreName(name string) (*dataStoreName, error) {
 	tokens := strings.Split(name, "/")
 	if len(tokens) == 8 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "collections" && tokens[6] == "dataStores" {
 
-		project, err := s.Projects.GetProjectByID(tokens[1])
+		project, err := s.Projects.GetProjectByIDOrNumber(tokens[1])
 		if err != nil {
 			return nil, err
 		}
