@@ -3682,6 +3682,34 @@ func ComputeNetworkFirewallPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in 
 	// MISSING: ShortName
 	return out
 }
+func ComputeNetworkFirewallPolicyAssociationSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicyAssociation) *krmcomputev1beta1.ComputeNetworkFirewallPolicyAssociationSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmcomputev1beta1.ComputeNetworkFirewallPolicyAssociationSpec{}
+	if in.GetAttachmentTarget() != "" {
+		out.AttachmentTargetRef = &krmcomputev1beta1.ComputeNetworkRef{External: in.GetAttachmentTarget()}
+	}
+	// MISSING: DisplayName
+	// MISSING: FirewallPolicyID
+	// MISSING: Name
+	// MISSING: ShortName
+	return out
+}
+func ComputeNetworkFirewallPolicyAssociationSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmcomputev1beta1.ComputeNetworkFirewallPolicyAssociationSpec) *pb.FirewallPolicyAssociation {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FirewallPolicyAssociation{}
+	if in.AttachmentTargetRef != nil {
+		out.AttachmentTarget = &in.AttachmentTargetRef.External
+	}
+	// MISSING: DisplayName
+	// MISSING: FirewallPolicyID
+	// MISSING: Name
+	// MISSING: ShortName
+	return out
+}
 func ComputeNetworkFirewallPolicySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.FirewallPolicy) *krmcomputev1beta1.ComputeNetworkFirewallPolicySpec {
 	if in == nil {
 		return nil
