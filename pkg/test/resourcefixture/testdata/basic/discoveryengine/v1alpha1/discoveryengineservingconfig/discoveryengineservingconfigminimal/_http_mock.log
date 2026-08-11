@@ -246,5 +246,8 @@ X-Xss-Protection: 0
 
 {
   "done": true,
-  "name": "projects/${projectNumber}/locations/global/collections/default_collection/operations/${operationID}"
+  "name": "projects/${projectNumber}/locations/global/collections/default_collection/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
 }
