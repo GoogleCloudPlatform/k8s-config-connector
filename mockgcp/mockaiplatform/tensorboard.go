@@ -48,6 +48,9 @@ func (s *tensorboardService) GetTensorboard(ctx context.Context, req *pb.GetTens
 
 	obj := &pb.Tensorboard{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Tensorboard %s is not found.", req.Name)
+		}
 		return nil, err
 	}
 
@@ -176,6 +179,9 @@ func (s *tensorboardService) GetTensorboardExperiment(ctx context.Context, req *
 
 	obj := &pb.TensorboardExperiment{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "TensorboardExperiment %s is not found.", req.Name)
+		}
 		return nil, err
 	}
 
@@ -271,7 +277,7 @@ func (s *tensorboardService) DeleteTensorboardExperiment(ctx context.Context, re
 		CreateTime: timestamppb.New(now),
 		UpdateTime: timestamppb.New(now),
 	}
-	opPrefix := fmt.Sprintf("projects/%d/locations/%s", name.Project.Number, name.Location)
+	opPrefix := fmt.Sprintf("projects/%d/locations/%s/tensorboards/%s", name.Project.Number, name.Location, name.TensorboardID)
 	return s.operations.DoneLRO(ctx, opPrefix, op, &emptypb.Empty{})
 }
 
