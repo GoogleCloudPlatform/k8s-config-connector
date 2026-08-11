@@ -801,7 +801,7 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	},
 	{
 		Group:   "compute.cnrm.cloud.google.com",
-		Version: "v1beta1",
+		Version: "v1alpha1",
 		Kind:    "ComputeManagedSSLCertificate",
 	}: {
 		Terraform:   true,
@@ -810,7 +810,7 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	},
 	{
 		Group:   "compute.cnrm.cloud.google.com",
-		Version: "v1alpha1",
+		Version: "v1beta1",
 		Kind:    "ComputeManagedSSLCertificate",
 	}: {
 		Terraform:   true,
