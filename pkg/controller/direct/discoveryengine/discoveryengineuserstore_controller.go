@@ -200,7 +200,7 @@ func (a *userStoreAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 
 	if !diffs.HasDiff() {
 		log.V(2).Info("no field needs update", "name", a.id)
-		return nil
+		return a.updateStatus(ctx, updateOp, a.actual)
 	}
 
 	structuredreporting.ReportDiff(ctx, diffs)
@@ -223,7 +223,7 @@ func normalizeLicenseConfig(projectID, val string) string {
 		return ""
 	}
 	tokens := strings.Split(val, "/")
-	if len(tokens) > 0 && tokens[len(tokens)-2] == "licenseConfigs" {
+	if len(tokens) >= 2 && tokens[len(tokens)-2] == "licenseConfigs" {
 		return fmt.Sprintf("projects/%s/locations/global/licenseConfigs/%s", projectID, tokens[len(tokens)-1])
 	}
 	return val

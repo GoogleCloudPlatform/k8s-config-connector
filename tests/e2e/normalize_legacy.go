@@ -653,7 +653,7 @@ func LegacyNormalize(t *testing.T, h *create.Harness, project testgcp.GCPProject
 			// Normalize defaultLicenseConfig to a placeholder to prevent diff failures across test runs
 			if val, ok := obj["defaultLicenseConfig"].(string); ok {
 				tokens := strings.Split(val, "/")
-				if len(tokens) > 0 && tokens[len(tokens)-2] == "licenseConfigs" {
+				if len(tokens) >= 2 && tokens[len(tokens)-2] == "licenseConfigs" {
 					tokens[len(tokens)-1] = "lic-${uniqueId}"
 					obj["defaultLicenseConfig"] = strings.Join(tokens, "/")
 				}
