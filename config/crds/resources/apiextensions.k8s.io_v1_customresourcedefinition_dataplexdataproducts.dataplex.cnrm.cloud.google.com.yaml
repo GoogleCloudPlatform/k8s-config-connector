@@ -8,20 +8,21 @@ metadata:
   creationTimestamp: null
   labels:
     cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/stability-level: alpha
     cnrm.cloud.google.com/system: "true"
-  name: dataplexentrytypes.dataplex.cnrm.cloud.google.com
+  name: dataplexdataproducts.dataplex.cnrm.cloud.google.com
 spec:
   group: dataplex.cnrm.cloud.google.com
   names:
     categories:
     - gcp
-    kind: DataplexEntryType
-    listKind: DataplexEntryTypeList
-    plural: dataplexentrytypes
+    kind: DataplexDataProduct
+    listKind: DataplexDataProductList
+    plural: dataplexdataproducts
     shortNames:
-    - gcpdataplexentrytype
-    - gcpdataplexentrytypes
-    singular: dataplexentrytype
+    - gcpdataplexdataproduct
+    - gcpdataplexdataproducts
+    singular: dataplexdataproduct
   preserveUnknownFields: false
   scope: Namespaced
   versions:
@@ -44,7 +45,8 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: DataplexEntryType is the Schema for the DataplexEntryType API
+        description: DataplexDataProduct is the Schema for the DataplexDataProduct
+          API
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -59,37 +61,51 @@ spec:
           metadata:
             type: object
           spec:
-            description: DataplexEntryTypeSpec defines the desired state of DataplexEntryType
+            description: DataplexDataProductSpec defines the desired state of DataplexDataProduct
             properties:
-              authorization:
-                description: Authorization contains constraints on the visibility
-                  of Entries that conform to the EntryType.
+              accessApprovalConfig:
+                description: Optional. Configuration for access approval for the data
+                  product.
                 properties:
-                  alternateUsePermission:
-                    description: Immutable. The IAM permission grantable on the Entry
-                      Group to allow access to instantiate Entries of Dataplex Universal
-                      Catalog owned Entry Types, only settable for Dataplex Universal
-                      Catalog owned Types.
-                    type: string
+                  approverEmails:
+                    description: Optional. Specifies the email addresses of users
+                      who are potential approvers and are notified when an access
+                      request is made for the data product. The maximum number of
+                      emails allowed is 10.
+                    items:
+                      type: string
+                    type: array
                 type: object
               description:
-                description: Optional. Description of the EntryType.
+                description: Optional. Description of the data product.
                 type: string
               displayName:
-                description: Optional. User friendly display name.
+                description: Required. User-friendly display name of the data product.
                 type: string
+              icon:
+                description: 'Optional. Base64 encoded image representing the data
+                  product. Max Size: 3.0MiB Expected image dimensions are 512x512
+                  pixels, however the API only performs validation on size of the
+                  encoded data. Note: For byte fields, the content of the fields are
+                  base64-encoded (which increases the size of the data by 33-36%)
+                  when using JSON on the wire.'
+                format: byte
+                type: string
+              labels:
+                additionalProperties:
+                  type: string
+                description: Optional. User-defined labels for the data product.
+                type: object
               location:
-                description: The location that this resource belongs to.
+                description: The location of this resource.
                 type: string
-                x-kubernetes-validations:
-                - message: Location is immutable.
-                  rule: self == oldSelf
-              platform:
-                description: Optional. The platform that Entries of this type belongs
-                  to.
-                type: string
+              ownerEmails:
+                description: Required. Emails of the data product owners.
+                items:
+                  type: string
+                type: array
               projectRef:
-                description: The Project that this resource belongs to.
+                description: The project that this resource belongs to.
                 oneOf:
                 - not:
                     required:
@@ -120,64 +136,19 @@ spec:
                     description: The `namespace` field of a `Project` resource.
                     type: string
                 type: object
-              requiredAspects:
-                description: AspectInfo contains overriding configuration for aspects.
-                items:
-                  properties:
-                    typeRef:
-                      description: A reference to an externally managed DataplexAspectType
-                        resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/aspectTypes/{{aspecttypeID}}".
-                      oneOf:
-                      - not:
-                          required:
-                          - external
-                        required:
-                        - name
-                      - not:
-                          anyOf:
-                          - required:
-                            - name
-                          - required:
-                            - namespace
-                        required:
-                        - external
-                      properties:
-                        external:
-                          description: A reference to an externally managed DataplexAspectType
-                            resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/aspectTypes/{{aspecttypeID}}".
-                          type: string
-                        name:
-                          description: The name of a DataplexAspectType resource.
-                          type: string
-                        namespace:
-                          description: The namespace of a DataplexAspectType resource.
-                          type: string
-                      type: object
-                  required:
-                  - typeRef
-                  type: object
-                type: array
               resourceID:
-                description: The DataplexEntryType name. If not given, the metadata.name
+                description: The DataplexDataProduct name. If not given, the metadata.name
                   will be used.
                 type: string
-              system:
-                description: Optional. The system that Entries of this type belongs
-                  to. Examples include CloudSQL, MariaDB etc
-                type: string
-              typeAliases:
-                description: Optional. Indicates the classes this Entry Type belongs
-                  to, for example, TABLE, DATABASE, MODEL.
-                items:
-                  type: string
-                type: array
             required:
+            - displayName
             - location
+            - ownerEmails
             - projectRef
             type: object
           status:
-            description: DataplexEntryTypeStatus defines the config connector machine
-              state of DataplexEntryType
+            description: DataplexDataProductStatus defines the config connector machine
+              state of DataplexDataProduct
             properties:
               conditions:
                 description: Conditions represent the latest available observations
@@ -206,7 +177,7 @@ spec:
                   type: object
                 type: array
               externalRef:
-                description: A unique specifier for the DataplexEntryType resource
+                description: A unique specifier for the DataplexDataProduct resource
                   in GCP.
                 type: string
               observedGeneration:
@@ -221,22 +192,23 @@ spec:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
                 properties:
+                  assetCount:
+                    description: Output only. Number of data assets associated with
+                      this data product.
+                    format: int32
+                    type: integer
                   createTime:
-                    description: Output only. The time when the EntryType was created.
-                    type: string
-                  etag:
-                    description: Optional. This checksum is computed by the service,
-                      and might be sent on update and delete requests to ensure the
-                      client has an up-to-date value before proceeding.
+                    description: Output only. The time at which the data product was
+                      created.
                     type: string
                   uid:
-                    description: Output only. System generated globally unique ID
-                      for the EntryType. This ID will be different if the EntryType
-                      is deleted and re-created with the same name.
+                    description: Output only. System generated unique ID for the data
+                      product. This ID will be different if the data product is deleted
+                      and re-created with the same name.
                     type: string
                   updateTime:
-                    description: Output only. The time when the EntryType was last
-                      updated.
+                    description: Output only. The time at which the data product was
+                      last updated.
                     type: string
                 type: object
             type: object
