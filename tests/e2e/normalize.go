@@ -529,6 +529,12 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 					return strings.ReplaceAll(s, id, "${tensorboardId}")
 				})
 			}
+			if typeName == "experiments" && len(tokens) >= 4 && tokens[len(tokens)-4] == "tensorboards" {
+				tensorboardID := tokens[len(tokens)-3]
+				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+					return strings.ReplaceAll(s, tensorboardID, "${tensorboardId}")
+				})
+			}
 			if typeName == "notificationChannels" {
 				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 					return strings.ReplaceAll(s, id, "${notificationChannelID}")

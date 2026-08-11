@@ -166,6 +166,153 @@ func (s *tensorboardService) DeleteTensorboard(ctx context.Context, req *pb.Dele
 	return s.operations.DoneLRO(ctx, opPrefix, op, &emptypb.Empty{})
 }
 
+func (s *tensorboardService) GetTensorboardExperiment(ctx context.Context, req *pb.GetTensorboardExperimentRequest) (*pb.TensorboardExperiment, error) {
+	name, err := s.parseTensorboardExperimentName(req.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := &pb.TensorboardExperiment{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	return obj, nil
+}
+
+func (s *tensorboardService) CreateTensorboardExperiment(ctx context.Context, req *pb.CreateTensorboardExperimentRequest) (*pb.TensorboardExperiment, error) {
+	parentName, err := s.parseTensorboardName(req.Parent)
+	if err != nil {
+		return nil, err
+	}
+
+	id := req.TensorboardExperimentId
+	if id == "" {
+		id = fmt.Sprintf("%d", time.Now().UnixNano())
+	}
+
+	fqn := parentName.String() + "/experiments/" + id
+	if _, err := s.parseTensorboardExperimentName(fqn); err != nil {
+		return nil, err
+	}
+
+	now := time.Now()
+
+	obj := proto.Clone(req.TensorboardExperiment).(*pb.TensorboardExperiment)
+	obj.Name = fqn
+	obj.CreateTime = timestamppb.New(now)
+	obj.UpdateTime = timestamppb.New(now)
+	obj.Etag = computeEtag(obj)
+
+	if err := s.storage.Create(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	return obj, nil
+}
+
+func (s *tensorboardService) UpdateTensorboardExperiment(ctx context.Context, req *pb.UpdateTensorboardExperimentRequest) (*pb.TensorboardExperiment, error) {
+	name, err := s.parseTensorboardExperimentName(req.GetTensorboardExperiment().GetName())
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	now := time.Now()
+
+	obj := &pb.TensorboardExperiment{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	// Apply the update mask
+	paths := req.GetUpdateMask().GetPaths()
+	for _, path := range paths {
+		switch path {
+		case "displayName":
+			obj.DisplayName = req.GetTensorboardExperiment().GetDisplayName()
+		case "description":
+			obj.Description = req.GetTensorboardExperiment().GetDescription()
+		case "labels":
+			obj.Labels = req.GetTensorboardExperiment().GetLabels()
+		default:
+			return nil, status.Errorf(codes.InvalidArgument, "field %q is not yet handled in mock", path)
+		}
+	}
+
+	obj.UpdateTime = timestamppb.New(now)
+	obj.Etag = computeEtag(obj)
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	return obj, nil
+}
+
+func (s *tensorboardService) DeleteTensorboardExperiment(ctx context.Context, req *pb.DeleteTensorboardExperimentRequest) (*longrunning.Operation, error) {
+	name, err := s.parseTensorboardExperimentName(req.GetName())
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	now := time.Now()
+
+	deleted := &pb.TensorboardExperiment{}
+	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
+		return nil, err
+	}
+
+	op := &pb.DeleteOperationMetadata{}
+	op.GenericMetadata = &pb.GenericOperationMetadata{
+		CreateTime: timestamppb.New(now),
+		UpdateTime: timestamppb.New(now),
+	}
+	opPrefix := fmt.Sprintf("projects/%d/locations/%s", name.Project.Number, name.Location)
+	return s.operations.DoneLRO(ctx, opPrefix, op, &emptypb.Empty{})
+}
+
+type TensorboardExperimentName struct {
+	Project                 *projects.ProjectData
+	Location                string
+	TensorboardID           string
+	TensorboardExperimentID string
+}
+
+func (n *TensorboardExperimentName) String() string {
+	return fmt.Sprintf("projects/%d/locations/%s/tensorboards/%s/experiments/%s", n.Project.Number, n.Location, n.TensorboardID, n.TensorboardExperimentID)
+}
+
+// parseTensorboardExperimentName parses a string into a TensorboardExperimentName.
+func (s *MockService) parseTensorboardExperimentName(name string) (*TensorboardExperimentName, error) {
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 8 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "tensorboards" && tokens[6] == "experiments" {
+		projectName, err := projects.ParseProjectName(tokens[0] + "/" + tokens[1])
+		if err != nil {
+			return nil, err
+		}
+		project, err := s.Projects.GetProject(projectName)
+		if err != nil {
+			return nil, err
+		}
+
+		name := &TensorboardExperimentName{
+			Project:                 project,
+			Location:                tokens[3],
+			TensorboardID:           tokens[5],
+			TensorboardExperimentID: tokens[7],
+		}
+
+		return name, nil
+	} else {
+		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+	}
+}
+
 type TensorboardName struct {
 	Project       *projects.ProjectData
 	Location      string

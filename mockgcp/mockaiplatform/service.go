@@ -52,7 +52,7 @@ func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.M
 }
 
 func (s *MockService) ExpectedHosts() []string {
-	return []string{"{region}-aiplatform.googleapis.com"}
+	return []string{"{region}-aiplatform.googleapis.com", "{region}-aiplatform.googleapis.com:443"}
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
