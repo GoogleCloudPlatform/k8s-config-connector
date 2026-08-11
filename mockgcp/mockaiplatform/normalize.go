@@ -26,15 +26,21 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
-	if !strings.Contains(event.URL(), "PipelineService") && !strings.Contains(event.URL(), "pipelineJobs") {
+	if !strings.Contains(event.URL(), "aiplatform.googleapis.com") {
 		return
 	}
 
-	replacements.ReplaceStringValue("type.googleapis.com/google.cloud.aiplatform.v1beta1.DeleteOperationMetadata", "type.googleapis.com/google.cloud.aiplatform.v1.DeleteOperationMetadata")
+	if strings.Contains(event.URL(), "PipelineService") || strings.Contains(event.URL(), "pipelineJobs") {
+		replacements.ReplaceStringValue("type.googleapis.com/google.cloud.aiplatform.v1beta1.DeleteOperationMetadata", "type.googleapis.com/google.cloud.aiplatform.v1.DeleteOperationMetadata")
 
-	event.VisitResponseStringValues(func(path string, value string) {
-		if strings.HasSuffix(path, `["vertex-ai-pipelines-run-billing-id"]`) || strings.HasSuffix(path, `.vertex-ai-pipelines-run-billing-id`) {
-			replacements.ReplaceStringValue(value, "619702208161644544")
-		}
-	})
+		event.VisitResponseStringValues(func(path string, value string) {
+			if strings.HasSuffix(path, `["vertex-ai-pipelines-run-billing-id"]`) || strings.HasSuffix(path, `.vertex-ai-pipelines-run-billing-id`) {
+				replacements.ReplaceStringValue(value, "619702208161644544")
+			}
+		})
+	}
+
+	if strings.Contains(event.URL(), "tensorboards") && strings.Contains(event.URL(), "experiments") {
+		replacements.ReplaceStringValue("updateMask=description%2CdisplayName%2Clabels%2Csource", "updateMask=description%2CdisplayName%2Clabels")
+	}
 }

@@ -120,7 +120,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "tensorboardExperiment \"projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}/experiments/vertexaitenexp-${uniqueId}\" not found",
+    "message": "TensorboardExperiment projects/${projectId}/locations/us-central1/tensorboards/${tensorboardID}/experiments/vertexaitenexp-${uniqueId} is not found.",
     "status": "NOT_FOUND"
   }
 }
@@ -290,7 +290,7 @@ X-Xss-Protection: 0
       "updateTime": "2024-04-01T12:34:56.123456Z"
     }
   },
-  "name": "projects/${projectNumber}/locations/us-central1/operations/${operationID}",
+  "name": "projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.protobuf.Empty"
   }
