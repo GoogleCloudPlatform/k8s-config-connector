@@ -114,6 +114,10 @@ spec:
                 description: The FirestoreDatabase name. If not given, the metadata.name
                   will be used.
                 type: string
+              type:
+                description: The type of the database. See https://cloud.google.com/datastore/docs/firestore-or-datastore
+                  for information about how to choose.
+                type: string
             required:
             - projectRef
             type: object
@@ -311,6 +315,10 @@ spec:
               resourceID:
                 description: The FirestoreDatabase name. If not given, the metadata.name
                   will be used.
+                type: string
+              type:
+                description: The type of the database. See https://cloud.google.com/datastore/docs/firestore-or-datastore
+                  for information about how to choose.
                 type: string
             required:
             - projectRef

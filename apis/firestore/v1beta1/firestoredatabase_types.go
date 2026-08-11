@@ -47,12 +47,12 @@ type FirestoreDatabaseSpec struct {
 	// +kcc:proto:field=google.firestore.admin.v1.Database.delete_protection_state
 	DeleteProtectionState *string `json:"deleteProtectionState,omitempty"`
 
-	// NOTYET(PENDING)
-	// // The type of the database.
-	// //  See https://cloud.google.com/datastore/docs/firestore-or-datastore for
-	// //  information about how to choose.
-	// // +kcc:proto:field=google.firestore.admin.v1.Database.type
-	// Type *string `json:"type,omitempty"`
+	// The type of the database. See
+	// https://cloud.google.com/datastore/docs/firestore-or-datastore for
+	// information about how to choose.
+	// +kcc:proto:field=google.firestore.admin.v1.Database.type
+	// +optional
+	Type *string `json:"type,omitempty"`
 
 	// // The concurrency control mode to use for this database.
 	// // +kcc:proto:field=google.firestore.admin.v1.Database.concurrency_mode
