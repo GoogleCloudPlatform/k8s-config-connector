@@ -172,9 +172,9 @@ func (in *ParallelstoreInstanceSpec) DeepCopyInto(out *ParallelstoreInstanceSpec
 		**out = **in
 	}
 	out.ProjectRef = in.ProjectRef
-	if in.ReservedIPRange != nil {
-		in, out := &in.ReservedIPRange, &out.ReservedIPRange
-		*out = new(string)
+	if in.ReservedIPRangeRef != nil {
+		in, out := &in.ReservedIPRangeRef, &out.ReservedIPRangeRef
+		*out = new(k8sv1alpha1.ResourceRef)
 		**out = **in
 	}
 	if in.ResourceID != nil {

@@ -91,7 +91,7 @@ type ParallelstoreInstanceSpec struct {
 
 	/* Optional. Immutable. The ID of the IP address range being used by the instance's VPC network. See [Configure a VPC network](https://cloud.google.com/parallelstore/docs/vpc#create_and_configure_the_vpc). If no ID is provided, all ranges are considered. */
 	// +optional
-	ReservedIPRange *string `json:"reservedIPRange,omitempty"`
+	ReservedIPRangeRef *v1alpha1.ResourceRef `json:"reservedIPRangeRef,omitempty"`
 
 	/* The ParallelstoreInstance name. If not given, the metadata.name will be used. */
 	// +optional

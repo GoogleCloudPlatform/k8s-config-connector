@@ -16,6 +16,7 @@ package v1alpha1
 
 import (
 	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -67,7 +68,7 @@ type ParallelstoreInstanceSpec struct {
 	// network](https://cloud.google.com/parallelstore/docs/vpc#create_and_configure_the_vpc).
 	// If no ID is provided, all ranges are considered.
 	// +optional
-	ReservedIPRange *string `json:"reservedIPRange,omitempty"`
+	ReservedIPRangeRef *computev1beta1.ComputeAddressRef `json:"reservedIPRangeRef,omitempty"`
 
 	// Optional. Immutable. Stripe level for files. Allowed values are:
 	//

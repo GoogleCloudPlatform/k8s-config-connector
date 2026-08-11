@@ -20,6 +20,7 @@ package v1alpha1
 
 import (
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
@@ -169,9 +170,9 @@ func (in *ParallelstoreInstanceSpec) DeepCopyInto(out *ParallelstoreInstanceSpec
 		*out = new(refs.ComputeNetworkRef)
 		**out = **in
 	}
-	if in.ReservedIPRange != nil {
-		in, out := &in.ReservedIPRange, &out.ReservedIPRange
-		*out = new(string)
+	if in.ReservedIPRangeRef != nil {
+		in, out := &in.ReservedIPRangeRef, &out.ReservedIPRangeRef
+		*out = new(computev1beta1.ComputeAddressRef)
 		**out = **in
 	}
 	if in.FileStripeLevel != nil {

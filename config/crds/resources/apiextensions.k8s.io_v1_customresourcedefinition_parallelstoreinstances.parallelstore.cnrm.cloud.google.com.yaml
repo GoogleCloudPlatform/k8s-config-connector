@@ -190,11 +190,37 @@ spec:
                     description: The `namespace` field of a `Project` resource.
                     type: string
                 type: object
-              reservedIPRange:
+              reservedIPRangeRef:
                 description: Optional. Immutable. The ID of the IP address range being
                   used by the instance's VPC network. See [Configure a VPC network](https://cloud.google.com/parallelstore/docs/vpc#create_and_configure_the_vpc).
                   If no ID is provided, all ranges are considered.
-                type: string
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: A reference to an externally managed ComputeAddress
+                      resource. Should be in the format "projects/{{projectID}}/global/addresses/{{addressID}}"
+                      or "projects/{{projectID}}/regions/{{region}}/addresses/{{addressID}}".
+                    type: string
+                  name:
+                    description: The name of a ComputeAddress resource.
+                    type: string
+                  namespace:
+                    description: The namespace of a ComputeAddress resource.
+                    type: string
+                type: object
               resourceID:
                 description: The ParallelstoreInstance name. If not given, the metadata.name
                   will be used.

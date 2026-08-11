@@ -1,0 +1,189 @@
+﻿2026-08-11T22:52:20.8938091Z Current runner version: '2.336.0'
+2026-08-11T22:52:20.8964017Z ##[group]Runner Image Provisioner
+2026-08-11T22:52:20.8964907Z Hosted Compute Agent
+2026-08-11T22:52:20.8965640Z Version: 20260707.563
+2026-08-11T22:52:20.8966286Z Commit: 02667638d2b423fbc733a8e32a88b44996a3ba6e
+2026-08-11T22:52:20.8967049Z Build Date: 2026-07-07T19:33:50Z
+2026-08-11T22:52:20.8967762Z Worker ID: {e936f218-de79-4d11-95de-336af8a62e09}
+2026-08-11T22:52:20.8968532Z Azure Region: westcentralus
+2026-08-11T22:52:20.8969203Z ##[endgroup]
+2026-08-11T22:52:20.8970499Z ##[group]Operating System
+2026-08-11T22:52:20.8971115Z Ubuntu
+2026-08-11T22:52:20.8971733Z 24.04.4
+2026-08-11T22:52:20.8972482Z LTS
+2026-08-11T22:52:20.8973050Z ##[endgroup]
+2026-08-11T22:52:20.8973629Z ##[group]Runner Image
+2026-08-11T22:52:20.8974244Z Image: ubuntu-24.04
+2026-08-11T22:52:20.8974877Z Version: 20260720.247.2
+2026-08-11T22:52:20.8976257Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260720.247/images/ubuntu/Ubuntu2404-Readme.md
+2026-08-11T22:52:20.8977829Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260720.247
+2026-08-11T22:52:20.8978796Z ##[endgroup]
+2026-08-11T22:52:20.8979955Z ##[group]GITHUB_TOKEN Permissions
+2026-08-11T22:52:20.8982214Z Contents: read
+2026-08-11T22:52:20.8983014Z Metadata: read
+2026-08-11T22:52:20.8983594Z ##[endgroup]
+2026-08-11T22:52:20.8985746Z Secret source: None
+2026-08-11T22:52:20.8986920Z Prepare workflow directory
+2026-08-11T22:52:20.9325408Z Prepare all required actions
+2026-08-11T22:52:20.9426798Z Complete job name: presubmit-gatekeeper
+2026-08-11T22:52:21.0212460Z ##[group]Run echo "Analyzing job results..."
+2026-08-11T22:52:21.0213544Z [36;1mecho "Analyzing job results..."[0m
+2026-08-11T22:52:21.0214280Z [36;1m[0m
+2026-08-11T22:52:21.0215171Z [36;1m# Find any job whose result is 'failure' or 'cancelled' (ignoring 'success' and 'skipped')[0m
+2026-08-11T22:52:21.0216752Z [36;1mfailures=$(echo "$NEEDS_RESULTS" | jq '[to_entries[] | select(.value.result == "failure" or .value.result == "cancelled")]')[0m
+2026-08-11T22:52:21.0218049Z [36;1m[0m
+2026-08-11T22:52:21.0218700Z [36;1mif [ "$(echo "$failures" | jq '. | length')" -ne 0 ]; then[0m
+2026-08-11T22:52:21.0332798Z [36;1m  echo "ERROR: One or more checks failed or were cancelled:"[0m
+2026-08-11T22:52:21.0334196Z [36;1m  echo "$failures" | jq '.[] | {job: .key, result: .value.result}'[0m
+2026-08-11T22:52:21.0335320Z [36;1m  exit 1[0m
+2026-08-11T22:52:21.0335955Z [36;1mfi[0m
+2026-08-11T22:52:21.0336997Z [36;1mecho "All checks completed successfully or were skipped safely!"[0m
+2026-08-11T22:52:21.1023147Z shell: /usr/bin/bash -e {0}
+2026-08-11T22:52:21.1024477Z env:
+2026-08-11T22:52:21.1076493Z   NEEDS_RESULTS: {
+  "prepare-test-matrix": {
+    "result": "success",
+    "outputs": {
+      "scenarios_json": "[\"acquisition\", \"gkehubfeaturemembership\", \"powertool\", \"unclassified\"]",
+      "unit_tests_json": "[\"1-of-4\", \"2-of-4\", \"3-of-4\", \"4-of-4\"]",
+      "fuzz_roundtrippers_json": "[\"1-of-8\", \"2-of-8\", \"3-of-8\", \"4-of-8\", \"5-of-8\", \"6-of-8\", \"7-of-8\", \"8-of-8\"]",
+      "has_priority_tests": "true",
+      "priority_fixtures_json": "[\"parallelstore\"]",
+      "remaining_fixtures_json": "[\"bigquery-1-of-2\", \"bigquery-2-of-2\", \"compute-1-of-4\", \"compute-2-of-4\", \"compute-3-of-4\", \"compute-4-of-4\", \"container-1-of-2\", \"container-2-of-2\", \"sql-1-of-2\", \"sql-2-of-2\", \"accesscontextmanager\", \"aiplatform\", \"alloydb\", \"analytics\", \"apigateway\", \"apigee\", \"apigeeregistry\", \"apihub\", \"apikeys\", \"appengine\", \"apphub\", \"appoptimize\", \"artifactregistry\", \"asset\", \"assuredworkloads\", \"automl\", \"backupdr\", \"batch\", \"beyondcorp\", \"bigqueryanalyticshub\", \"bigquerybiglake\", \"bigqueryconnection\", \"bigquerydatapolicy\", \"bigquerydatatransfer\", \"bigquerymigration\", \"bigqueryreservation\", \"bigtable\", \"billing\", \"billingbudgets\", \"binaryauthorization\", \"certificatemanager\", \"ces\", \"cloudasset\", \"cloudbuild\", \"clouddeploy\", \"clouddms\", \"cloudfunctions\", \"cloudfunctions2\", \"cloudidentity\", \"cloudids\", \"cloudiot\", \"cloudquota\", \"cloudscheduler\", \"cloudsecuritycompliance\", \"cloudtalentsolution\", \"cloudtasks\", \"colab\", \"composer\", \"configcontroller\", \"configdelivery\", \"configdeployment\", \"connectors\", \"contactcenterinsights\", \"containeranalysis\", \"containerattached\", \"contentwarehouse\", \"datacatalog\", \"dataflow\", \"dataform\", \"datafusion\", \"datalabeling\", \"datalineage\", \"datamigration\", \"dataplex\", \"dataproc\", \"datastore\", \"datastream\", \"deploymentmanager\", \"developerconnect\", \"devicestreaming\", \"dialogflow\", \"dialogflowcx\", \"discoveryengine\", \"dlp\", \"dns\", \"documentai\", \"edgecontainer\", \"edgenetwork\", \"essentialcontacts\", \"eventarc\", \"filestore\", \"firebase\", \"firebasedatabase\", \"firebasehosting\", \"firebasestorage\", \"firestore\", \"geminidataanalytics\", \"gkebackup\", \"gkehub\", \"gkemulticloud\", \"grafeas\", \"healthcare\", \"hypercomputecluster\", \"iam\", \"iap\", \"identityplatform\", \"kms\", \"licensemanager\", \"livestream\", \"logging\", \"managedkafka\", \"mapmanagement\", \"memcache\", \"memorystore\", \"metastore\", \"migrationcenter\", \"mlengine\", \"modelarmor\", \"monitoring\", \"netapp\", \"networkconnectivity\", \"networkmanagement\", \"networksecurity\", \"networkservices\", \"notebooks\", \"orgpolicy\", \"osconfig\", \"oslogin\", \"parametermanager\", \"privateca\", \"privilegedaccessmanager\", \"pubsub\", \"pubsublite\", \"rapidmigrationassessment\", \"recaptchaenterprise\", \"redis\", \"resourcemanager\", \"run\", \"saasservicemgmt\", \"secretmanager\", \"securesourcemanager\", \"securitycenter\", \"securitycentermanagement\", \"servicedirectory\", \"servicenetworking\", \"serviceusage\", \"sourcerepo\", \"spanner\", \"speech\", \"sqladmin\", \"storage\", \"storageinsights\", \"storagetransfer\", \"tags\", \"testing\", \"tpu\", \"transcoder\", \"translate\", \"vectorsearch\", \"vertexai\", \"vision\", \"visionai\", \"vmwareengine\", \"vpcaccess\", \"workflowexecutions\", \"workflows\", \"workloadmanager\", \"workstations\", \"reconcileintervalannotations\", \"stateabsentinspec\"]",
+      "samples_json": "[\"alloydb\", \"apigateway\", \"apigee\", \"bigquery\", \"bigqueryconnection\", \"bigquerydatapolicy\", \"bigquerydatatransfer\", \"cloudbuild\", \"cloudidentity\", \"compute\", \"dataflow\", \"dataproc\", \"gkehub\", \"iam\", \"kms\", \"orgpolicy\", \"redis\", \"secretmanager\", \"spanner\", \"sql\", \"storage\", \"unclassified\", \"workstations\"]"
+    }
+  },
+  "capture-pprof": {
+    "result": "success",
+    "outputs": {}
+  },
+  "fuzz-roundtrippers-matrix": {
+    "result": "success",
+    "outputs": {}
+  },
+  "fuzz-roundtrippers": {
+    "result": "success",
+    "outputs": {}
+  },
+  "golangci-lint": {
+    "result": "success",
+    "outputs": {}
+  },
+  "license-lint": {
+    "result": "success",
+    "outputs": {}
+  },
+  "run-linters": {
+    "result": "success",
+    "outputs": {}
+  },
+  "smoketest-with-kind": {
+    "result": "success",
+    "outputs": {}
+  },
+  "test-fuzz-random-mappers": {
+    "result": "success",
+    "outputs": {}
+  },
+  "test-mockgcp": {
+    "result": "success",
+    "outputs": {}
+  },
+  "test-pause": {
+    "result": "success",
+    "outputs": {}
+  },
+  "tests-e2e-direct-iam": {
+    "result": "success",
+    "outputs": {}
+  },
+  "priority-e2e-fixtures": {
+    "result": "success",
+    "outputs": {}
+  },
+  "tests-e2e-fixtures-matrix": {
+    "result": "failure",
+    "outputs": {}
+  },
+  "tests-e2e-fixtures-compute": {
+    "result": "skipped",
+    "outputs": {}
+  },
+  "tests-e2e-fixtures-sql": {
+    "result": "skipped",
+    "outputs": {}
+  },
+  "tests-e2e-fixtures-container": {
+    "result": "skipped",
+    "outputs": {}
+  },
+  "tests-e2e-fixtures-bigquery": {
+    "result": "skipped",
+    "outputs": {}
+  },
+  "tests-e2e-samples-matrix": {
+    "result": "success",
+    "outputs": {}
+  },
+  "tests-gcptracker": {
+    "result": "success",
+    "outputs": {}
+  },
+  "tests-preview": {
+    "result": "success",
+    "outputs": {}
+  },
+  "tests-scenarios-matrix": {
+    "result": "success",
+    "outputs": {}
+  },
+  "unit-tests-matrix": {
+    "result": "success",
+    "outputs": {}
+  },
+  "unit-tests": {
+    "result": "success",
+    "outputs": {}
+  },
+  "unit-tests-operator": {
+    "result": "success",
+    "outputs": {}
+  },
+  "validate-ensure": {
+    "result": "success",
+    "outputs": {}
+  },
+  "validate-fmt": {
+    "result": "success",
+    "outputs": {}
+  },
+  "validate-generated-files": {
+    "result": "success",
+    "outputs": {}
+  },
+  "validate-github-actions": {
+    "result": "success",
+    "outputs": {}
+  },
+  "validate-manifests": {
+    "result": "success",
+    "outputs": {}
+  },
+  "validate-resource-docs": {
+    "result": "success",
+    "outputs": {}
+  },
+  "validate-untested-fields": {
+    "result": "success",
+    "outputs": {}
+  }
+}
+2026-08-11T22:52:21.1145901Z ##[endgroup]
+2026-08-11T22:52:21.1436240Z Analyzing job results...
+2026-08-11T22:52:21.1496329Z ERROR: One or more checks failed or were cancelled:
+2026-08-11T22:52:21.1527309Z {
+2026-08-11T22:52:21.1528544Z   "job": "tests-e2e-fixtures-matrix",
+2026-08-11T22:52:21.1529534Z   "result": "failure"
+2026-08-11T22:52:21.1530258Z }
+2026-08-11T22:52:21.1555607Z ##[error]Process completed with exit code 1.
+2026-08-11T22:52:21.1713822Z Cleaning up orphan processes
