@@ -150,7 +150,7 @@ func (n *sessionName) String() string {
 func (s *MockService) parseSessionName(name string) (*sessionName, error) {
 	tokens := strings.Split(name, "/")
 	if len(tokens) == 10 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "collections" && tokens[6] == "dataStores" && tokens[8] == "sessions" {
-		project, err := s.Projects.GetProjectByID(tokens[1])
+		project, err := s.Projects.GetProjectByIDOrNumber(tokens[1])
 		if err != nil {
 			return nil, err
 		}
