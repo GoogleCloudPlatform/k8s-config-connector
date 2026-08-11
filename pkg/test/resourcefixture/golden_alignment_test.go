@@ -749,19 +749,30 @@ func normalizeRepresentation(obj interface{}) interface{} {
 			delete(v, "hdfsMetrics")
 			delete(v, "yarnMetrics")
 			if labels, ok := v["labels"].(map[string]interface{}); ok {
+				// todo: handle service default Labels in direct controller
 				delete(labels, "goog-dataproc-cluster-create-timestamp")
 			}
 			if config, ok := v["config"].(map[string]interface{}); ok {
 				if gce, ok := config["gceClusterConfig"].(map[string]interface{}); ok {
+					// todo: resourceManagerTags does not exist in proto, but `Tags` exist. Are they the same?
 					delete(gce, "resourceManagerTags")
+					// zone(i.e., us-central1-a) is auto assigned when not specified
+					delete(gce, "zoneUri")
 				}
 				if software, ok := config["softwareConfig"].(map[string]interface{}); ok {
+					// some properties are service generated
 					delete(software, "properties")
+					// different resources have different component imageVersion in addition to the main version
+					// todo: normalize imageVersion
 					delete(software, "imageVersion")
 				}
 				normalizeDataprocWorkerConfig(config["masterConfig"])
 				normalizeDataprocWorkerConfig(config["workerConfig"])
 				normalizeDataprocWorkerConfig(config["secondaryWorkerConfig"])
+				if swc, ok := config["secondaryWorkerConfig"].(map[string]interface{}); ok {
+					// output-only field
+					delete(swc, "managedGroupConfig")
+				}
 			}
 		}
 		for k, val := range v {
@@ -809,6 +820,10 @@ func normalizeDataprocWorkerConfig(cfg interface{}) {
 		if _, ok := disk["bootDiskType"]; ok {
 			disk["bootDiskType"] = "pd-standard"
 		}
+	}
+	// zone(i.e., us-central1-a) is auto assigned when not specified
+	if _, ok := m["machineTypeUri"]; ok {
+		delete(m, "machineTypeUri")
 	}
 }
 
@@ -959,7 +974,7 @@ func isDependencyEvent(ev httpEvent, depKinds map[string]string, primaryKind str
 
 		// If the path doesn't contain the dependency name, check if it's a POST to create it
 		if !strings.Contains(urlPath, depName) {
-			if ev.Method == "POST" && (strings.Contains(ev.RequestBody, depName) || strings.Contains(ev.URL, depName)) {
+			if ev.Method == "POST" && (strings.Contains(ev.RequestBody, depName) || strings.Contains(ev.ResponseBody, depName) || strings.Contains(ev.URL, depName)) {
 				return true
 			}
 			continue

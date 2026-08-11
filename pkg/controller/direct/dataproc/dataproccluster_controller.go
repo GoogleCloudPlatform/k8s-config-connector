@@ -217,6 +217,9 @@ func (a *dataprocClusterAdapter) Update(ctx context.Context, updateOp *directbas
 		if cluster.Config.GceClusterConfig == nil {
 			cluster.Config.GceClusterConfig = a.actual.Config.GceClusterConfig
 		} else {
+			if cluster.Config.GceClusterConfig.Metadata == nil {
+				cluster.Config.GceClusterConfig.Metadata = a.actual.Config.GceClusterConfig.Metadata
+			}
 			if cluster.Config.GceClusterConfig.ServiceAccountScopes == nil {
 				cluster.Config.GceClusterConfig.ServiceAccountScopes = a.actual.Config.GceClusterConfig.ServiceAccountScopes
 			}
@@ -245,8 +248,16 @@ func (a *dataprocClusterAdapter) Update(ctx context.Context, updateOp *directbas
 			if cluster.Config.SoftwareConfig.OptionalComponents == nil {
 				cluster.Config.SoftwareConfig.OptionalComponents = []pb.Component{}
 			}
+			if cluster.Config.SoftwareConfig.ImageVersion == "" {
+				cluster.Config.SoftwareConfig.ImageVersion = a.actual.Config.SoftwareConfig.ImageVersion
+			}
 			if cluster.Config.SoftwareConfig.Properties == nil {
 				cluster.Config.SoftwareConfig.Properties = a.actual.Config.SoftwareConfig.Properties
+			} else {
+				// Merge user-specified values and service defaults.
+				for key, value := range a.actual.Config.SoftwareConfig.Properties {
+					cluster.Config.SoftwareConfig.Properties[key] = value
+				}
 			}
 		}
 		// For MasterConfig, it is immutable

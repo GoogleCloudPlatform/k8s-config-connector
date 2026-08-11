@@ -24,7 +24,7 @@ spec:
         bootDiskType: pd-standard
       machineType: n2-standard-2
       numInstances: 1
-  location: us-central1
+  location: us-east1
   projectRef:
     external: projects/${projectId}
 status:
@@ -44,7 +44,7 @@ status:
       instanceNames:
       - dataproccluster-${uniqueId}-w-0
       - dataproccluster-${uniqueId}-w-1
-  externalRef: projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}
+  externalRef: projects/${projectId}/regions/us-east1/clusters/dataproccluster-${uniqueId}
   metrics:
     hdfsMetrics:
       dfs-blocks-corrupt: "0"

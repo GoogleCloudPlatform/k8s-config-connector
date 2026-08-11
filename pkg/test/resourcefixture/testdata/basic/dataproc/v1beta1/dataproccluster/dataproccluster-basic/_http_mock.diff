@@ -1,15 +1,15 @@
 368c368
-< GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json
+< GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-east1/clusters/dataproccluster-${uniqueId}?alt=json
 ---
-> GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+> GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-east1/clusters/dataproccluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 391c391
-< POST https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters?alt=json
+< POST https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-east1/clusters?alt=json
 ---
-> POST https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters?%24alt=json%3Benum-encoding%3Dint
+> POST https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-east1/clusters?%24alt=json%3Benum-encoding%3Dint
 398c398
-<       "policyUri": "projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}"
+<       "policyUri": "projects/${projectId}/locations/us-east1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}"
 ---
->       "policyUri": "projects/${projectId}/regions/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}"
+>       "policyUri": "projects/${projectId}/regions/us-east1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}"
 415c415,416
 <   }
 ---
@@ -20,21 +20,21 @@
 ---
 >       "state": 1,
 451c452
-< GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json
+< GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-east1/operations/${operationID}?alt=json
 ---
-> GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
+> GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-east1/operations/${operationID}
 500c501
-<         "policyUri": "projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}"
+<         "policyUri": "projects/${projectId}/locations/us-east1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}"
 ---
->         "policyUri": "projects/${projectId}/regions/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}"
+>         "policyUri": "projects/${projectId}/regions/us-east1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}"
 622c623
-< GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json
+< GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-east1/clusters/dataproccluster-${uniqueId}?alt=json
 ---
-> GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+> GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-east1/clusters/dataproccluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 640c641
-<       "policyUri": "projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}"
+<       "policyUri": "projects/${projectId}/locations/us-east1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}"
 ---
->       "policyUri": "projects/${projectId}/regions/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}"
+>       "policyUri": "projects/${projectId}/regions/us-east1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}"
 669c670
 <       "preemptibility": "NON_PREEMPTIBLE"
 ---
@@ -52,45 +52,49 @@
 ---
 >       "state": 1,
 778c779
-< PATCH https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json&updateMask=labels
+< PATCH https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-east1/clusters/dataproccluster-${uniqueId}?alt=json&updateMask=labels
 ---
-> PATCH https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=labels
+> PATCH https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-east1/clusters/dataproccluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=labels
 781a783,784
 >   "clusterName": "dataproccluster-${uniqueId}",
 >   "clusterUuid": "${dataStoreClusterUUID}",
 784c787
-<       "policyUri": "projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}"
+<       "policyUri": "projects/${projectId}/locations/us-east1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}"
 ---
->       "policyUri": "projects/${projectId}/regions/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}"
-797d799
+>       "policyUri": "projects/${projectId}/regions/us-east1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}"
+789a793,795
+>       "serviceAccountScopes": [
+>         "https://www.googleapis.com/auth/cloud-platform"
+>       ],
+797d802
 <     "initializationActions": [],
-799d800
+799d803
 <       "accelerators": [],
-805c806,809
+805c809,812
 <       "machineTypeUri": "n2-standard-2",
 ---
 >       "instanceNames": [
 >         "dataproccluster-${uniqueId}-m"
 >       ],
->       "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-2",
-808c812
+>       "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-east1-f/machineTypes/n2-standard-2",
+808c815
 <       "preemptibility": "NON_PREEMPTIBLE"
 ---
 >       "preemptibility": 1
-812d815
+812d818
 <       "optionalComponents": [],
-878d880
+878d883
 <       "accelerators": [],
-883a886,889
+883a889,892
 >       "instanceNames": [
 >         "dataproccluster-${uniqueId}-w-0",
 >         "dataproccluster-${uniqueId}-w-1"
 >       ],
-887c893
+887c896
 <       "preemptibility": "NON_PREEMPTIBLE"
 ---
 >       "preemptibility": 1
-894c900,911
+894c903,914
 <   }
 ---
 >   },
@@ -105,69 +109,69 @@
 >       "stateStartTime": "2024-04-01T12:34:56.123456Z"
 >     }
 >   ]
-915c932
+915c935
 <       "state": "PENDING",
 ---
 >       "state": 1,
-924c941
-< GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json
+924c944
+< GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-east1/operations/${operationID}?alt=json
 ---
-> GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
-967c984
-<         "policyUri": "projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}"
+> GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-east1/operations/${operationID}
+967c987
+<         "policyUri": "projects/${projectId}/locations/us-east1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}"
 ---
->         "policyUri": "projects/${projectId}/regions/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}"
-1089c1106
-< GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json
+>         "policyUri": "projects/${projectId}/regions/us-east1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}"
+1089c1109
+< GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-east1/clusters/dataproccluster-${uniqueId}?alt=json
 ---
-> GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-1107c1124
-<       "policyUri": "projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}"
+> GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-east1/clusters/dataproccluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+1107c1127
+<       "policyUri": "projects/${projectId}/locations/us-east1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}"
 ---
->       "policyUri": "projects/${projectId}/regions/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}"
-1136c1153
+>       "policyUri": "projects/${projectId}/regions/us-east1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}"
+1136c1156
 <       "preemptibility": "NON_PREEMPTIBLE"
 ---
 >       "preemptibility": 1
-1217c1234
+1217c1237
 <       "preemptibility": "NON_PREEMPTIBLE"
 ---
 >       "preemptibility": 1
-1278c1295
+1278c1298
 <     "state": "RUNNING",
 ---
 >     "state": 2,
-1283c1300
+1283c1303
 <       "state": "CREATING",
 ---
 >       "state": 1,
-1287c1304
+1287c1307
 <       "state": "RUNNING",
 ---
 >       "state": 2,
-1291c1308
+1291c1311
 <       "state": "UPDATING",
 ---
 >       "state": 5,
-1299c1316
-< DELETE https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json
+1299c1319
+< DELETE https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-east1/clusters/dataproccluster-${uniqueId}?alt=json
 ---
-> DELETE https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-1321c1338
+> DELETE https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-east1/clusters/dataproccluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+1321c1341
 <       "state": "PENDING",
 ---
 >       "state": 1,
-1330c1347
-< GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json
+1330c1350
+< GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-east1/operations/${operationID}?alt=json
 ---
-> GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
-1370,1392d1386
+> GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-east1/operations/${operationID}
+1370,1392d1389
 <   }
 < }
 < 
 < ---
 < 
-< GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json
+< GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-east1/clusters/dataproccluster-${uniqueId}?alt=json
 < Content-Type: application/json
 < 
 < 404 Not Found
@@ -183,5 +187,5 @@
 < {
 <   "error": {
 <     "code": 404,
-<     "message": "Not found: Cluster projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}",
+<     "message": "Not found: Cluster projects/${projectId}/regions/us-east1/clusters/dataproccluster-${uniqueId}",
 <     "status": "NOT_FOUND"

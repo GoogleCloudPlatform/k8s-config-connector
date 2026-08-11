@@ -50,8 +50,8 @@ status:
       - dataproccluster-${uniqueId}-sw-0
       isPreemptible: true
       managedGroupConfig:
-        instanceGroupManagerName: dataproc-goog-reserved-auto-secondary-${uniqueId}
-        instanceTemplateName: dataproc-goog-reserved-auto-secondary-${uniqueId}
+        instanceGroupManagerName: dataproc-goog-reserved-auto-secondary-abcdefg
+        instanceTemplateName: dataproc-goog-reserved-auto-secondary-abcdefg
     workerConfig:
       instanceNames:
       - dataproccluster-${uniqueId}-w-0
