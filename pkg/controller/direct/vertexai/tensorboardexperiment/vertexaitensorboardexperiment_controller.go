@@ -175,7 +175,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 
 	if !diffs.HasDiff() {
 		log.V(2).Info("no diff detected, skipping update", "name", a.id)
-		return nil
+		return a.updateStatus(ctx, updateOp, a.actual)
 	}
 
 	diffs.Object = updateOp.GetUnstructured()
