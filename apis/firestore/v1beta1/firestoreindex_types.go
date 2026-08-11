@@ -39,6 +39,11 @@ type IndexFields struct {
 // FirestoreIndexSpec defines the desired state of FirestoreIndex
 // +kcc:spec:proto=google.firestore.admin.v1.Index
 type FirestoreIndexSpec struct {
+	/* Immutable. The API scope at which a query is run. Default value: "ANY_API" Possible values: ["ANY_API", "DATASTORE_MODE_API", "MONGODB_COMPATIBLE_API"]. */
+	// +kcc:proto:field=google.firestore.admin.v1.Index.api_scope
+	// +optional
+	APIScope *string `json:"apiScope,omitempty"`
+
 	/* Immutable. The collection being indexed. */
 	Collection string `json:"collection"`
 
@@ -54,7 +59,7 @@ type FirestoreIndexSpec struct {
 	ordered '"ASCENDING"' (unless explicitly specified otherwise). */
 	Fields []IndexFields `json:"fields"`
 
-	/* Immutable. The scope at which a query is run. Default value: "COLLECTION" Possible values: ["COLLECTION", "COLLECTION_GROUP"]. */
+	/* Immutable. The scope at which a query is run. Default value: "COLLECTION" Possible values: ["COLLECTION", "COLLECTION_GROUP", "COLLECTION_RECURSIVE"]. */
 	// +optional
 	QueryScope *string `json:"queryScope,omitempty"`
 }

@@ -308,7 +308,7 @@ func FirestoreIndexSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Inde
 	out := &krmfirestorev1beta1.FirestoreIndexSpec{}
 	// MISSING: Name
 	out.QueryScope = direct.Enum_FromProto(mapCtx, in.GetQueryScope())
-	// MISSING: APIScope
+	out.APIScope = direct.Enum_FromProto(mapCtx, in.GetApiScope())
 	out.Fields = direct.Slice_FromProto(mapCtx, in.Fields, IndexFields_v1beta1_FromProto)
 	// MISSING: State
 	// MISSING: Density
@@ -323,7 +323,7 @@ func FirestoreIndexSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmfirest
 	out := &pb.Index{}
 	// MISSING: Name
 	out.QueryScope = direct.Enum_ToProto[pb.Index_QueryScope](mapCtx, in.QueryScope)
-	// MISSING: APIScope
+	out.ApiScope = direct.Enum_ToProto[pb.Index_ApiScope](mapCtx, in.APIScope)
 	out.Fields = direct.Slice_ToProto(mapCtx, in.Fields, IndexFields_v1beta1_ToProto)
 	// MISSING: State
 	// MISSING: Density
