@@ -50,24 +50,28 @@
 714a716,717
 >   "clusterName": "dataproccluster-${uniqueId}",
 >   "clusterUuid": "${dataStoreClusterUUID}",
-727d729
+719a723,725
+>       "serviceAccountScopes": [
+>         "https://www.googleapis.com/auth/cloud-platform"
+>       ],
+727d732
 <     "initializationActions": [],
-729d730
+729d733
 <       "accelerators": [],
-735c736,739
+735c739,742
 <       "machineTypeUri": "n2-standard-2",
 ---
 >       "instanceNames": [
 >         "dataproccluster-${uniqueId}-m"
 >       ],
 >       "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-2",
-738c742
+738c745
 <       "preemptibility": "NON_PREEMPTIBLE"
 ---
 >       "preemptibility": 1
-741d744
+741d747
 <       "accelerators": [],
-747c750,759
+747c753,762
 <       "machineTypeUri": "c4-standard-2",
 ---
 >       "instanceNames": [
@@ -80,18 +84,18 @@
 >         "instanceGroupManagerUri": "projects/${projectId}/regions/us-central1/instanceGroupManagers/dataproc-goog-reserved-auto-secondary-${uniqueId}",
 >         "instanceTemplateName": "dataproc-goog-reserved-auto-secondary-${uniqueId}"
 >       },
-750c762,765
+750c765,768
 <       "preemptibility": "PREEMPTIBLE"
 ---
 >       "preemptibility": 2,
 >       "startupConfig": {
 >         "requiredRegistrationFraction": 0.0001
 >       }
-754d768
+754d771
 <       "optionalComponents": [],
-820d833
+820d836
 <       "accelerators": [],
-826c839,843
+826c842,846
 <       "machineTypeUri": "c4-standard-2",
 ---
 >       "instanceNames": [
@@ -99,11 +103,11 @@
 >         "dataproccluster-${uniqueId}-w-1"
 >       ],
 >       "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/c4-standard-2",
-829c846
+829c849
 <       "preemptibility": "NON_PREEMPTIBLE"
 ---
 >       "preemptibility": 1
-836c853,864
+836c856,867
 <   }
 ---
 >   },
@@ -118,59 +122,59 @@
 >       "stateStartTime": "2024-04-01T12:34:56.123456Z"
 >     }
 >   ]
-857c885
+857c888
 <       "state": "PENDING",
 ---
 >       "state": 1,
-866c894
+866c897
 < GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json
 ---
 > GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
-1051c1079
+1051c1082
 < GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json
 ---
 > GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-1095c1123
+1095c1126
 <       "preemptibility": "NON_PREEMPTIBLE"
 ---
 >       "preemptibility": 1
-1115c1143
+1115c1146
 <       "preemptibility": "PREEMPTIBLE",
 ---
 >       "preemptibility": 2,
-1199c1227
+1199c1230
 <       "preemptibility": "NON_PREEMPTIBLE"
 ---
 >       "preemptibility": 1
-1260c1288
+1260c1291
 <     "state": "RUNNING",
 ---
 >     "state": 2,
-1265c1293
+1265c1296
 <       "state": "CREATING",
 ---
 >       "state": 1,
-1269c1297
+1269c1300
 <       "state": "RUNNING",
 ---
 >       "state": 2,
-1273c1301
+1273c1304
 <       "state": "UPDATING",
 ---
 >       "state": 5,
-1281c1309
+1281c1312
 < DELETE https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json
 ---
 > DELETE https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-1303c1331
+1303c1334
 <       "state": "PENDING",
 ---
 >       "state": 1,
-1312c1340
+1312c1343
 < GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json
 ---
 > GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
-1352,1374d1379
+1352,1374d1382
 <   }
 < }
 < 

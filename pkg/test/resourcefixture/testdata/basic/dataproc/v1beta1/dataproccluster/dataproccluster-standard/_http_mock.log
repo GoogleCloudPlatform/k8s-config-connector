@@ -337,7 +337,7 @@ X-Xss-Protection: 0
       "No image specified. Using the default image version. It is recommended to select a specific image version in production, as the default image version may change at any time."
     ]
   },
-  "name": "projects/${projectId}/regions/us-central1/operations/${operationID}"
+  "name": "projects/${projectId}/regions/us-central1/operations/00000000-0000-0000-0000-000000000001"
 }
 
 ---
@@ -384,7 +384,7 @@ X-Xss-Protection: 0
       "No image specified. Using the default image version. It is recommended to select a specific image version in production, as the default image version may change at any time."
     ]
   },
-  "name": "projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "name": "projects/${projectId}/regions/us-central1/operations/00000000-0000-0000-0000-000000000001",
   "response": {
     "@type": "type.googleapis.com/google.cloud.dataproc.v1.Cluster",
     "clusterName": "dataproccluster-${uniqueId}",
@@ -720,6 +720,9 @@ Content-Type: application/json
     "gceClusterConfig": {
       "internalIpOnly": false,
       "networkUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+      "serviceAccountScopes": [
+        "https://www.googleapis.com/auth/cloud-platform"
+      ],
       "shieldedInstanceConfig": {
         "enableIntegrityMonitoring": true,
         "enableSecureBoot": true,
@@ -886,7 +889,7 @@ X-Xss-Protection: 0
       "stateStartTime": "2024-04-01T12:34:56.123456Z"
     }
   },
-  "name": "projects/${projectId}/regions/us-central1/operations/${operationID}"
+  "name": "projects/${projectId}/regions/us-central1/operations/00000000-0000-0000-0000-000000000001"
 }
 
 ---
@@ -927,7 +930,7 @@ X-Xss-Protection: 0
       }
     ]
   },
-  "name": "projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "name": "projects/${projectId}/regions/us-central1/operations/00000000-0000-0000-0000-000000000001",
   "response": {
     "@type": "type.googleapis.com/google.cloud.dataproc.v1.Cluster",
     "clusterName": "dataproccluster-${uniqueId}",
@@ -1332,7 +1335,7 @@ X-Xss-Protection: 0
       "stateStartTime": "2024-04-01T12:34:56.123456Z"
     }
   },
-  "name": "projects/${projectId}/regions/us-central1/operations/${operationID}"
+  "name": "projects/${projectId}/regions/us-central1/operations/00000000-0000-0000-0000-000000000001"
 }
 
 ---
@@ -1374,7 +1377,7 @@ X-Xss-Protection: 0
       }
     ]
   },
-  "name": "projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "name": "projects/${projectId}/regions/us-central1/operations/00000000-0000-0000-0000-000000000001",
   "response": {
     "@type": "type.googleapis.com/google.protobuf.Empty"
   }

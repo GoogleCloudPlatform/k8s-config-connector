@@ -204,68 +204,71 @@ func (a *dataprocClusterAdapter) Update(ctx context.Context, updateOp *directbas
 	}
 	cluster.Labels["managed-by-cnrm"] = "true"
 
-	// Since GCP might have added default values or read-only/immutable fields in a.actual,
-	// we copy/preserve them in our desired 'cluster' before comparison so that they don't produce false diffs.
+	// Populate defaults to avoid false drift
 	if cluster.Config == nil {
-		cluster.Config = &pb.ClusterConfig{}
-	}
-	if a.actual.Config == nil {
-		a.actual.Config = &pb.ClusterConfig{}
-	}
-
-	// Copy server-assigned config fields from a.actual to cluster to avoid false diffs
-	cluster.Config.ConfigBucket = a.actual.Config.ConfigBucket
-	cluster.Config.TempBucket = a.actual.Config.TempBucket
-
-	// Only copy EndpointConfig if it is specified in KRM spec. Otherwise, leave it nil.
-	if a.desired.Spec.Config != nil && a.desired.Spec.Config.EndpointConfig != nil {
-		cluster.Config.EndpointConfig = a.actual.Config.EndpointConfig
+		cluster.Config = a.actual.Config
 	} else {
-		cluster.Config.EndpointConfig = nil
-	}
-
-	cluster.Config.GceClusterConfig = a.actual.Config.GceClusterConfig
-	// If serviceAccountScopes was not specified in the KRM spec, set it to nil to omit from payload.
-	if cluster.Config.GceClusterConfig != nil {
-		if a.desired.Spec.Config == nil || a.desired.Spec.Config.GceClusterConfig == nil || len(a.desired.Spec.Config.GceClusterConfig.ServiceAccountScopes) == 0 {
-			cluster.Config.GceClusterConfig.ServiceAccountScopes = nil
+		if cluster.Config.ConfigBucket == "" {
+			cluster.Config.ConfigBucket = a.actual.Config.ConfigBucket
 		}
-	}
-
-	cluster.Config.InitializationActions = a.actual.Config.InitializationActions
-	if cluster.Config.InitializationActions == nil {
-		cluster.Config.InitializationActions = []*pb.NodeInitializationAction{}
-	}
-
-	cluster.Config.SoftwareConfig = a.actual.Config.SoftwareConfig
-	if cluster.Config.SoftwareConfig != nil {
-		if cluster.Config.SoftwareConfig.OptionalComponents == nil {
-			cluster.Config.SoftwareConfig.OptionalComponents = []pb.Component{}
+		if cluster.Config.TempBucket == "" {
+			cluster.Config.TempBucket = a.actual.Config.TempBucket
 		}
-	}
-
-	// For MasterConfig, it is immutable
-	cluster.Config.MasterConfig = alignInstanceGroupConfig(cluster.Config.MasterConfig, a.actual.Config.MasterConfig, a.actual.Config.GceClusterConfig.ZoneUri)
-
-	// For WorkerConfig: only NumInstances is mutable, so copy other fields (like MachineTypeUri, DiskConfig, etc.)
-	cluster.Config.WorkerConfig = alignInstanceGroupConfig(cluster.Config.WorkerConfig, a.actual.Config.WorkerConfig, a.actual.Config.GceClusterConfig.ZoneUri)
-
-	// For SecondaryWorkerConfig: only NumInstances is mutable
-	cluster.Config.SecondaryWorkerConfig = alignInstanceGroupConfig(cluster.Config.SecondaryWorkerConfig, a.actual.Config.SecondaryWorkerConfig, a.actual.Config.GceClusterConfig.ZoneUri)
-	if cluster.Config.SecondaryWorkerConfig != nil {
-		if cluster.Config.SecondaryWorkerConfig.IsPreemptible == false {
-			cluster.Config.SecondaryWorkerConfig.IsPreemptible = true
+		if cluster.Config.GceClusterConfig == nil {
+			cluster.Config.GceClusterConfig = a.actual.Config.GceClusterConfig
+		} else {
+			if cluster.Config.GceClusterConfig.ServiceAccountScopes == nil {
+				cluster.Config.GceClusterConfig.ServiceAccountScopes = a.actual.Config.GceClusterConfig.ServiceAccountScopes
+			}
+			if cluster.Config.GceClusterConfig.NetworkUri == "" {
+				cluster.Config.GceClusterConfig.NetworkUri = a.actual.Config.GceClusterConfig.NetworkUri
+			}
+			if cluster.Config.GceClusterConfig.ShieldedInstanceConfig == nil {
+				cluster.Config.GceClusterConfig.ShieldedInstanceConfig = a.actual.Config.GceClusterConfig.ShieldedInstanceConfig
+			}
+			if cluster.Config.GceClusterConfig.InternalIpOnly == nil {
+				cluster.Config.GceClusterConfig.InternalIpOnly = a.actual.Config.GceClusterConfig.InternalIpOnly
+			}
+			if cluster.Config.GceClusterConfig.ZoneUri == "" {
+				cluster.Config.GceClusterConfig.ZoneUri = a.actual.Config.GceClusterConfig.ZoneUri
+			} else {
+				// Convert Zone to ZoneUri
+				cluster.Config.GceClusterConfig.ZoneUri = fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/zones/%s", a.id.Project, direct.ValueOf(a.desired.Spec.Config.GceClusterConfig.Zone))
+			}
 		}
-		if cluster.Config.SecondaryWorkerConfig.ManagedGroupConfig == nil && a.actual.Config.SecondaryWorkerConfig != nil {
-			cluster.Config.SecondaryWorkerConfig.ManagedGroupConfig = a.actual.Config.SecondaryWorkerConfig.ManagedGroupConfig
+		if cluster.Config.InitializationActions == nil {
+			cluster.Config.InitializationActions = a.actual.Config.InitializationActions
 		}
-	}
+		if cluster.Config.SoftwareConfig == nil {
+			cluster.Config.SoftwareConfig = a.actual.Config.SoftwareConfig
+		} else {
+			if cluster.Config.SoftwareConfig.OptionalComponents == nil {
+				cluster.Config.SoftwareConfig.OptionalComponents = []pb.Component{}
+			}
+			if cluster.Config.SoftwareConfig.Properties == nil {
+				cluster.Config.SoftwareConfig.Properties = a.actual.Config.SoftwareConfig.Properties
+			}
+		}
+		// For MasterConfig, it is immutable
+		cluster.Config.MasterConfig = alignInstanceGroupConfig(cluster.Config.MasterConfig, a.actual.Config.MasterConfig, a.actual.Config.GceClusterConfig.ZoneUri)
 
-	// For SecurityConfig: only UserServiceAccountMapping is mutable
-	if cluster.Config.SecurityConfig == nil {
-		cluster.Config.SecurityConfig = a.actual.Config.SecurityConfig
-	} else if a.actual.Config.SecurityConfig != nil {
-		if cluster.Config.SecurityConfig.IdentityConfig == nil {
+		// For WorkerConfig: only NumInstances is mutable, so copy other fields (like MachineTypeUri, DiskConfig, etc.)
+		cluster.Config.WorkerConfig = alignInstanceGroupConfig(cluster.Config.WorkerConfig, a.actual.Config.WorkerConfig, a.actual.Config.GceClusterConfig.ZoneUri)
+
+		// For SecondaryWorkerConfig: only NumInstances is mutable
+		cluster.Config.SecondaryWorkerConfig = alignInstanceGroupConfig(cluster.Config.SecondaryWorkerConfig, a.actual.Config.SecondaryWorkerConfig, a.actual.Config.GceClusterConfig.ZoneUri)
+		if cluster.Config.SecondaryWorkerConfig != nil {
+			if cluster.Config.SecondaryWorkerConfig.IsPreemptible == false {
+				cluster.Config.SecondaryWorkerConfig.IsPreemptible = true
+			}
+			if cluster.Config.SecondaryWorkerConfig.ManagedGroupConfig == nil && a.actual.Config.SecondaryWorkerConfig != nil {
+				cluster.Config.SecondaryWorkerConfig.ManagedGroupConfig = a.actual.Config.SecondaryWorkerConfig.ManagedGroupConfig
+			}
+		}
+		// For SecurityConfig: only UserServiceAccountMapping is mutable
+		if cluster.Config.SecurityConfig == nil {
+			cluster.Config.SecurityConfig = a.actual.Config.SecurityConfig
+		} else if cluster.Config.SecurityConfig.IdentityConfig == nil {
 			cluster.Config.SecurityConfig.IdentityConfig = a.actual.Config.SecurityConfig.IdentityConfig
 		}
 	}
@@ -276,6 +279,7 @@ func (a *dataprocClusterAdapter) Update(ctx context.Context, updateOp *directbas
 	cluster.ClusterUuid = a.actual.ClusterUuid
 	cluster.Metrics = a.actual.Metrics
 
+	// todo: replace CompareProtoMessageStructuredDiff with CompareBrownfieldSpec
 	// Compute the diff using common.CompareProtoMessageStructuredDiff
 	paths, diffs, err := common.CompareProtoMessageStructuredDiff(cluster, a.actual, common.BasicDiff)
 	if err != nil {
