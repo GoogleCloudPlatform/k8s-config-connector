@@ -1,0 +1,14 @@
+apiVersion: discoveryengine.cnrm.cloud.google.com/v1alpha1
+kind: DiscoveryEngineUserStore
+metadata:
+  name: userstore-max-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: global
+  resourceID: default_user_store
+  displayName: "My User Store"
+  enableLicenseAutoRegister: true
+  enableExpiredLicenseAutoUpdate: true
+  defaultLicenseConfigRef:
+    name: licenseconfig-${uniqueId}
