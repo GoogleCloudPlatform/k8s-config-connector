@@ -17,6 +17,7 @@ package composer
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	gcp "cloud.google.com/go/orchestration/airflow/service/apiv1"
 	composerpb "cloud.google.com/go/orchestration/airflow/service/apiv1/servicepb"
@@ -183,12 +184,13 @@ func (a *EnvironmentAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		return mapCtx.Err()
 	}
 	desiredPb.Name = a.id.String()
-	populateDefaultsForEnvironment(desiredPb, a.actual)
+	populateDefaultsForEnvironment(desiredPb, a.actual, desired)
 
 	paths, err := common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
 	if err != nil {
 		return err
 	}
+	paths = collapsePaths(paths)
 
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
@@ -283,7 +285,7 @@ func (a *EnvironmentAdapter) Delete(ctx context.Context, deleteOp *directbase.De
 	return true, nil
 }
 
-func populateDefaultsForEnvironment(desired, actual *composerpb.Environment) {
+func populateDefaultsForEnvironment(desired, actual *composerpb.Environment, desiredKRM *krm.ComposerEnvironment) {
 	if actual == nil {
 		return
 	}
@@ -301,10 +303,14 @@ func populateDefaultsForEnvironment(desired, actual *composerpb.Environment) {
 	if desired.Config == nil && actual.Config != nil {
 		desired.Config = &composerpb.EnvironmentConfig{}
 	}
-	populateDefaultsForEnvironmentConfig(desired.Config, actual.Config)
+	var desiredConfigKRM *krm.EnvironmentConfig
+	if desiredKRM != nil {
+		desiredConfigKRM = desiredKRM.Spec.Config
+	}
+	populateDefaultsForEnvironmentConfig(desired.Config, actual.Config, desiredConfigKRM)
 }
 
-func populateDefaultsForEnvironmentConfig(desired, actual *composerpb.EnvironmentConfig) {
+func populateDefaultsForEnvironmentConfig(desired, actual *composerpb.EnvironmentConfig, desiredKRM *krm.EnvironmentConfig) {
 	if actual == nil {
 		return // If actual is nil, nothing to populate from.
 	}
@@ -339,21 +345,6 @@ func populateDefaultsForEnvironmentConfig(desired, actual *composerpb.Environmen
 			}
 		}
 	}
-
-	//if actual.DatabaseConfig != nil {
-	//	if desired.DatabaseConfig == nil {
-	//		desired.DatabaseConfig = &pb.DatabaseConfig{}
-	//	}
-	//	if desired.DatabaseConfig.MachineType == "" && actual.DatabaseConfig.MachineType != "" {
-	//		desired.DatabaseConfig.MachineType = actual.DatabaseConfig.MachineType
-	//	}
-	//}
-
-	//if actual.EncryptionConfig != nil {
-	//	if desired.EncryptionConfig == nil {
-	//		desired.EncryptionConfig = &pb.EncryptionConfig{}
-	//	}
-	//}
 
 	if desired.EnvironmentSize == composerpb.EnvironmentConfig_ENVIRONMENT_SIZE_UNSPECIFIED {
 		desired.EnvironmentSize = actual.EnvironmentSize
@@ -447,7 +438,114 @@ func populateDefaultsForEnvironmentConfig(desired, actual *composerpb.Environmen
 	if desired.WebServerNetworkAccessControl == nil {
 		desired.WebServerNetworkAccessControl = actual.WebServerNetworkAccessControl
 	}
-	if desired.WorkloadsConfig == nil {
+
+	if desired.WorkloadsConfig == nil && actual.WorkloadsConfig != nil {
 		desired.WorkloadsConfig = actual.WorkloadsConfig
+	} else if desired.WorkloadsConfig != nil && actual.WorkloadsConfig != nil {
+		var desiredWorkloadsKRM *krm.WorkloadsConfig
+		if desiredKRM != nil {
+			desiredWorkloadsKRM = desiredKRM.WorkloadsConfig
+		}
+		populateDefaultsForWorkloadsConfig(desired.WorkloadsConfig, actual.WorkloadsConfig, desiredWorkloadsKRM)
 	}
+}
+
+func populateDefaultsForWorkloadsConfig(desired, actual *composerpb.WorkloadsConfig, desiredKRM *krm.WorkloadsConfig) {
+	if actual == nil {
+		return
+	}
+
+	if desired.Scheduler == nil && actual.Scheduler != nil {
+		desired.Scheduler = proto.Clone(actual.Scheduler).(*composerpb.WorkloadsConfig_SchedulerResource)
+	} else if desired.Scheduler != nil && actual.Scheduler != nil && desiredKRM != nil && desiredKRM.Scheduler != nil {
+		if desiredKRM.Scheduler.CPU == nil {
+			desired.Scheduler.Cpu = actual.Scheduler.Cpu
+		}
+		if desiredKRM.Scheduler.MemoryGB == nil {
+			desired.Scheduler.MemoryGb = actual.Scheduler.MemoryGb
+		}
+		if desiredKRM.Scheduler.StorageGB == nil {
+			desired.Scheduler.StorageGb = actual.Scheduler.StorageGb
+		}
+		if desiredKRM.Scheduler.Count == nil {
+			desired.Scheduler.Count = actual.Scheduler.Count
+		}
+	}
+
+	if desired.WebServer == nil && actual.WebServer != nil {
+		desired.WebServer = proto.Clone(actual.WebServer).(*composerpb.WorkloadsConfig_WebServerResource)
+	} else if desired.WebServer != nil && actual.WebServer != nil && desiredKRM != nil && desiredKRM.WebServer != nil {
+		if desiredKRM.WebServer.CPU == nil {
+			desired.WebServer.Cpu = actual.WebServer.Cpu
+		}
+		if desiredKRM.WebServer.MemoryGB == nil {
+			desired.WebServer.MemoryGb = actual.WebServer.MemoryGb
+		}
+		if desiredKRM.WebServer.StorageGB == nil {
+			desired.WebServer.StorageGb = actual.WebServer.StorageGb
+		}
+	}
+
+	if desired.Worker == nil && actual.Worker != nil {
+		desired.Worker = proto.Clone(actual.Worker).(*composerpb.WorkloadsConfig_WorkerResource)
+	} else if desired.Worker != nil && actual.Worker != nil && desiredKRM != nil && desiredKRM.Worker != nil {
+		if desiredKRM.Worker.CPU == nil {
+			desired.Worker.Cpu = actual.Worker.Cpu
+		}
+		if desiredKRM.Worker.MemoryGB == nil {
+			desired.Worker.MemoryGb = actual.Worker.MemoryGb
+		}
+		if desiredKRM.Worker.StorageGB == nil {
+			desired.Worker.StorageGb = actual.Worker.StorageGb
+		}
+		if desiredKRM.Worker.MinCount == nil {
+			desired.Worker.MinCount = actual.Worker.MinCount
+		}
+		if desiredKRM.Worker.MaxCount == nil {
+			desired.Worker.MaxCount = actual.Worker.MaxCount
+		}
+	}
+
+	if desired.Triggerer == nil && actual.Triggerer != nil {
+		desired.Triggerer = proto.Clone(actual.Triggerer).(*composerpb.WorkloadsConfig_TriggererResource)
+	} else if desired.Triggerer != nil && actual.Triggerer != nil && desiredKRM != nil && desiredKRM.Triggerer != nil {
+		if desiredKRM.Triggerer.CPU == nil {
+			desired.Triggerer.Cpu = actual.Triggerer.Cpu
+		}
+		if desiredKRM.Triggerer.MemoryGB == nil {
+			desired.Triggerer.MemoryGb = actual.Triggerer.MemoryGb
+		}
+		if desiredKRM.Triggerer.Count == nil {
+			desired.Triggerer.Count = actual.Triggerer.Count
+		}
+	}
+
+	if desired.DagProcessor == nil && actual.DagProcessor != nil {
+		desired.DagProcessor = proto.Clone(actual.DagProcessor).(*composerpb.WorkloadsConfig_DagProcessorResource)
+	} else if desired.DagProcessor != nil && actual.DagProcessor != nil && desiredKRM != nil && desiredKRM.DagProcessor != nil {
+		if desiredKRM.DagProcessor.CPU == nil {
+			desired.DagProcessor.Cpu = actual.DagProcessor.Cpu
+		}
+		if desiredKRM.DagProcessor.MemoryGB == nil {
+			desired.DagProcessor.MemoryGb = actual.DagProcessor.MemoryGb
+		}
+		if desiredKRM.DagProcessor.StorageGB == nil {
+			desired.DagProcessor.StorageGb = actual.DagProcessor.StorageGb
+		}
+		if desiredKRM.DagProcessor.Count == nil {
+			desired.DagProcessor.Count = actual.DagProcessor.Count
+		}
+	}
+}
+
+func collapsePaths(paths sets.Set[string]) sets.Set[string] {
+	collapsed := sets.New[string]()
+	for path := range paths {
+		if strings.HasPrefix(path, "config.recovery_config.scheduled_snapshots_config.") {
+			collapsed.Insert("config.recovery_config.scheduled_snapshots_config")
+		} else {
+			collapsed.Insert(path)
+		}
+	}
+	return collapsed
 }

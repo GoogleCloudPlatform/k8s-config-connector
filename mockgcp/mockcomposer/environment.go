@@ -132,10 +132,43 @@ func (s *ComposerV1) UpdateEnvironment(ctx context.Context, req *pb.UpdateEnviro
 		switch tokens[0] {
 		case "labels":
 			updated.Labels = req.GetEnvironment().GetLabels()
+		case "config":
+			if len(tokens) < 2 {
+				return nil, status.Errorf(codes.InvalidArgument, "invalid config path %q", path)
+			}
+			if updated.Config == nil {
+				updated.Config = &pb.EnvironmentConfig{}
+			}
+			switch tokens[1] {
+			case "recoveryConfig":
+				if len(tokens) == 3 && tokens[2] == "scheduledSnapshotsConfig" {
+					if updated.Config.RecoveryConfig == nil {
+						updated.Config.RecoveryConfig = &pb.RecoveryConfig{}
+					}
+					updated.Config.RecoveryConfig.ScheduledSnapshotsConfig = req.GetEnvironment().GetConfig().GetRecoveryConfig().GetScheduledSnapshotsConfig()
+				} else {
+					return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not supported in mock", path)
+				}
+			case "workloadsConfig":
+				if len(tokens) == 4 && tokens[2] == "triggerer" && tokens[3] == "count" {
+					if updated.Config.WorkloadsConfig == nil {
+						updated.Config.WorkloadsConfig = &pb.WorkloadsConfig{}
+					}
+					if updated.Config.WorkloadsConfig.Triggerer == nil {
+						updated.Config.WorkloadsConfig.Triggerer = &pb.WorkloadsConfig_TriggererResource{}
+					}
+					updated.Config.WorkloadsConfig.Triggerer.Count = req.GetEnvironment().GetConfig().GetWorkloadsConfig().GetTriggerer().GetCount()
+				} else {
+					return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not supported in mock", path)
+				}
+			default:
+				return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not supported in mock", path)
+			}
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
 		}
 	}
+
 	updated.UpdateTime = timestamppb.New(now)
 	if err := s.storage.Update(ctx, fqn, updated); err != nil {
 		return nil, err
