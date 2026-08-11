@@ -122,7 +122,11 @@ func (obj *VertexAIExtension) GetIdentity(ctx context.Context, reader client.Rea
 		}
 
 		if statusIdentity.Project != specIdentity.Project {
-			return nil, fmt.Errorf("cannot change VertexAIExtension project (old=%q, new=%q)", statusIdentity.Project, specIdentity.Project)
+			// If one is a project ID and the other is a project number, skip checking project equality because the service-generated externalRef uses project number.
+			if !(isNumeric(statusIdentity.Project) && !isNumeric(specIdentity.Project)) &&
+				!(isNumeric(specIdentity.Project) && !isNumeric(statusIdentity.Project)) {
+				return nil, fmt.Errorf("cannot change VertexAIExtension project (old=%q, new=%q)", statusIdentity.Project, specIdentity.Project)
+			}
 		}
 		if statusIdentity.Location != specIdentity.Location {
 			return nil, fmt.Errorf("cannot change VertexAIExtension location (old=%q, new=%q)", statusIdentity.Location, specIdentity.Location)
@@ -131,4 +135,13 @@ func (obj *VertexAIExtension) GetIdentity(ctx context.Context, reader client.Rea
 	}
 
 	return specIdentity, nil
+}
+
+func isNumeric(s string) bool {
+	for _, c := range s {
+		if c < '0' || c > '9' {
+			return false
+		}
+	}
+	return len(s) > 0
 }

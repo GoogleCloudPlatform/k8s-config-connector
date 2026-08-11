@@ -32,7 +32,7 @@ spec:
     authConfig:
       apiKeyConfig:
         apiKeySecretRef:
-          external: projects/${projectId}/secrets/my-api-key/versions/1
+          external: projects/mock-project/secrets/my-api-key/versions/1
         httpElementLocation: HTTP_IN_HEADER
         name: api_key
       authType: API_KEY_AUTH
@@ -40,7 +40,7 @@ spec:
     name: web-search-extension
   privateServiceConnectConfig:
     serviceDirectoryRef:
-      external: projects/${projectId}/locations/us-central1/namespaces/mock-namespace/services/mock-service
+      external: projects/mock-project/locations/us-central1/namespaces/mock-namespace/services/mock-service
   projectRef:
     external: ${projectId}
   runtimeConfig:
@@ -53,9 +53,9 @@ spec:
       foo: baz
     vertexAISearchRuntimeConfig:
       engineRef:
-        external: projects/${projectId}/locations/global/collections/default_collection/engines/mock-engine
+        external: projects/mock-project/locations/global/collections/default_collection/engines/mock-engine
       servingConfigRef:
-        external: projects/${projectId}/locations/global/collections/default_collection/engines/mock-engine/servingConfigs/default_serving_config
+        external: projects/mock-project/locations/global/collections/default_collection/engines/mock-engine/servingConfigs/default_serving_config
   toolUseExamples:
   - displayName: Search Example Updated
     extensionOperation:
@@ -74,14 +74,15 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: projects/${projectId}/locations/us-central1/extensions/vertexaiextension-maximal-${uniqueId}
+  externalRef: projects/${projectNumber}/locations/us-central1/extensions/${extensionID}
   observedGeneration: 2
   observedState:
     createTime: "1970-01-01T00:00:00Z"
-    etag: abcdef123456
     extensionOperations:
     - functionDeclaration:
-        description: A mock function parsed from OpenAPI spec.
-        name: mockFunction
-      operationID: mock-operation
+        description: |+
+          An updated comprehensive web search extension
+
+        name: search
+      operationID: search
     updateTime: "1970-01-01T00:00:00Z"

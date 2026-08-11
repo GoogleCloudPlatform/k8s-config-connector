@@ -176,6 +176,8 @@ func (r *Replacements) placeholderForGCPResource(resource string, name string) s
 			return ""
 		}
 		return "${instanceGroupID}"
+	case "extensions":
+		return "${extensionID}"
 	default:
 		return ""
 	}

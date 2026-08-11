@@ -42,14 +42,15 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: projects/${projectId}/locations/us-central1/extensions/1234567890123456789
+  externalRef: projects/${projectNumber}/locations/us-central1/extensions/${extensionID}
   observedGeneration: 2
   observedState:
     createTime: "1970-01-01T00:00:00Z"
-    etag: abcdef123456
     extensionOperations:
     - functionDeclaration:
-        description: A mock function parsed from OpenAPI spec.
-        name: mockFunction
-      operationID: mock-operation
+        description: |+
+          An updated web search extension
+
+        name: search
+      operationID: search
     updateTime: "1970-01-01T00:00:00Z"

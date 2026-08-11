@@ -1,0 +1,347 @@
+GRPC /google.cloud.aiplatform.v1beta1.ExtensionRegistryService/GetExtension
+
+{
+  "name": "projects/${projectId}/locations/us-central1/extensions/vertexaiextension-${uniqueId}"
+}
+
+error: rpc error: code = InvalidArgument desc = List of found errors:	1.Field: name; Message: Invalid Extension resource name.	
+
+{}
+
+---
+
+GRPC /google.cloud.aiplatform.v1beta1.ExtensionRegistryService/ImportExtension
+
+{
+  "extension": {
+    "description": "A web search extension",
+    "displayName": "My Web Extension",
+    "manifest": {
+      "apiSpec": {
+        "openApiYaml": "openapi: 3.0.0\ninfo:\n  title: My API\n  version: 1.0.0\nservers:\n  - url: http://example.com\npaths:\n  /search:\n    get:\n      operationId: search\n      responses:\n        '200':\n          description: Successful\n"
+      },
+      "authConfig": {
+        "authType": "NO_AUTH"
+      },
+      "description": "A web search extension",
+      "name": "web-search-extension"
+    }
+  },
+  "parent": "projects/${projectId}/locations/us-central1"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.ImportExtensionOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/extensions/${extensionID}/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/extensions/${extensionID}/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.ImportExtensionOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/extensions/${extensionID}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.Extension",
+    "name": "projects/${projectNumber}/locations/us-central1/extensions/${extensionID}"
+  }
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1beta1.ExtensionRegistryService/GetExtension
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/extensions/${extensionID}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "A web search extension",
+  "displayName": "My Web Extension",
+  "extensionOperations": [
+    {
+      "functionDeclaration": {
+        "description": "A web search extension\n\n",
+        "name": "search",
+        "parameters": {
+          "type": "OBJECT"
+        }
+      },
+      "operationId": "search"
+    }
+  ],
+  "manifest": {
+    "apiSpec": {
+      "openApiYaml": "openapi: 3.0.0\ninfo:\n  title: My API\n  version: 1.0.0\nservers:\n  - url: http://example.com\npaths:\n  /search:\n    get:\n      operationId: search\n      responses:\n        '200':\n          description: Successful\n"
+    },
+    "authConfig": {
+      "authType": "NO_AUTH"
+    },
+    "description": "A web search extension",
+    "name": "web-search-extension"
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/extensions/${extensionID}",
+  "privateServiceConnectConfig": {},
+  "runtimeConfig": {},
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1beta1.ExtensionRegistryService/GetExtension
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/extensions/${extensionID}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "A web search extension",
+  "displayName": "My Web Extension",
+  "extensionOperations": [
+    {
+      "functionDeclaration": {
+        "description": "A web search extension\n\n",
+        "name": "search",
+        "parameters": {
+          "type": "OBJECT"
+        }
+      },
+      "operationId": "search"
+    }
+  ],
+  "manifest": {
+    "apiSpec": {
+      "openApiYaml": "openapi: 3.0.0\ninfo:\n  title: My API\n  version: 1.0.0\nservers:\n  - url: http://example.com\npaths:\n  /search:\n    get:\n      operationId: search\n      responses:\n        '200':\n          description: Successful\n"
+    },
+    "authConfig": {
+      "authType": "NO_AUTH"
+    },
+    "description": "A web search extension",
+    "name": "web-search-extension"
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/extensions/${extensionID}",
+  "privateServiceConnectConfig": {},
+  "runtimeConfig": {},
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1beta1.ExtensionRegistryService/UpdateExtension
+
+{
+  "extension": {
+    "description": "A super awesome web search extension",
+    "displayName": "My Updated Web Extension",
+    "manifest": {
+      "apiSpec": {
+        "openApiYaml": "openapi: 3.0.0\ninfo:\n  title: My API\n  version: 1.0.0\nservers:\n  - url: http://example.com\npaths:\n  /search:\n    get:\n      operationId: search\n      responses:\n        '200':\n          description: Successful\n"
+      },
+      "authConfig": {
+        "authType": "NO_AUTH"
+      },
+      "description": "An updated web search extension",
+      "name": "web-search-extension"
+    },
+    "name": "projects/${projectNumber}/locations/us-central1/extensions/${extensionID}"
+  },
+  "updateMask": "description,displayName,manifest.description"
+}
+
+OK
+
+{
+  "description": "A super awesome web search extension",
+  "displayName": "My Updated Web Extension",
+  "manifest": {
+    "apiSpec": {
+      "openApiYaml": "openapi: 3.0.0\ninfo:\n  title: My API\n  version: 1.0.0\nservers:\n  - url: http://example.com\npaths:\n  /search:\n    get:\n      operationId: search\n      responses:\n        '200':\n          description: Successful\n"
+    },
+    "authConfig": {
+      "authType": "NO_AUTH"
+    },
+    "description": "An updated web search extension",
+    "name": "web-search-extension"
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/extensions/${extensionID}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1beta1.ExtensionRegistryService/GetExtension
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/extensions/${extensionID}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "A super awesome web search extension",
+  "displayName": "My Updated Web Extension",
+  "extensionOperations": [
+    {
+      "functionDeclaration": {
+        "description": "An updated web search extension\n\n",
+        "name": "search",
+        "parameters": {
+          "type": "OBJECT"
+        }
+      },
+      "operationId": "search"
+    }
+  ],
+  "manifest": {
+    "apiSpec": {
+      "openApiYaml": "openapi: 3.0.0\ninfo:\n  title: My API\n  version: 1.0.0\nservers:\n  - url: http://example.com\npaths:\n  /search:\n    get:\n      operationId: search\n      responses:\n        '200':\n          description: Successful\n"
+    },
+    "authConfig": {
+      "authType": "NO_AUTH"
+    },
+    "description": "An updated web search extension",
+    "name": "web-search-extension"
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/extensions/${extensionID}",
+  "privateServiceConnectConfig": {},
+  "runtimeConfig": {},
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1beta1.ExtensionRegistryService/GetExtension
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/extensions/${extensionID}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "A super awesome web search extension",
+  "displayName": "My Updated Web Extension",
+  "extensionOperations": [
+    {
+      "functionDeclaration": {
+        "description": "An updated web search extension\n\n",
+        "name": "search",
+        "parameters": {
+          "type": "OBJECT"
+        }
+      },
+      "operationId": "search"
+    }
+  ],
+  "manifest": {
+    "apiSpec": {
+      "openApiYaml": "openapi: 3.0.0\ninfo:\n  title: My API\n  version: 1.0.0\nservers:\n  - url: http://example.com\npaths:\n  /search:\n    get:\n      operationId: search\n      responses:\n        '200':\n          description: Successful\n"
+    },
+    "authConfig": {
+      "authType": "NO_AUTH"
+    },
+    "description": "An updated web search extension",
+    "name": "web-search-extension"
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/extensions/${extensionID}",
+  "privateServiceConnectConfig": {},
+  "runtimeConfig": {},
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1beta1.ExtensionRegistryService/GetExtension
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/extensions/${extensionID}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "A super awesome web search extension",
+  "displayName": "My Updated Web Extension",
+  "extensionOperations": [
+    {
+      "functionDeclaration": {
+        "description": "An updated web search extension\n\n",
+        "name": "search",
+        "parameters": {
+          "type": "OBJECT"
+        }
+      },
+      "operationId": "search"
+    }
+  ],
+  "manifest": {
+    "apiSpec": {
+      "openApiYaml": "openapi: 3.0.0\ninfo:\n  title: My API\n  version: 1.0.0\nservers:\n  - url: http://example.com\npaths:\n  /search:\n    get:\n      operationId: search\n      responses:\n        '200':\n          description: Successful\n"
+    },
+    "authConfig": {
+      "authType": "NO_AUTH"
+    },
+    "description": "An updated web search extension",
+    "name": "web-search-extension"
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/extensions/${extensionID}",
+  "privateServiceConnectConfig": {},
+  "runtimeConfig": {},
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1beta1.ExtensionRegistryService/DeleteExtension
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/extensions/${extensionID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.DeleteOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
