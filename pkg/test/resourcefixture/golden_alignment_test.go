@@ -359,6 +359,13 @@ func compareGroupedLogs(t *testing.T, realGrouped, mockGrouped pathMethodEvents)
 				if method == "GET" && strings.Contains(realEvs[i].Status, "404") && strings.Contains(mockEvs[i].Status, "404") {
 					continue // Both real and mock confirm resource does not exist right before create / after delete
 				}
+				if method == "GET" && strings.Contains(path, "/conversations/") {
+					// DiscoveryEngine Conversation GET can return 500 on real GCP but 404 on mock when conversation does not exist.
+					if (strings.Contains(realEvs[i].Status, "500") || strings.Contains(realEvs[i].Status, "404")) &&
+						(strings.Contains(mockEvs[i].Status, "500") || strings.Contains(mockEvs[i].Status, "404")) {
+						continue
+					}
+				}
 				compareJSON(t, fmt.Sprintf("path %s, method %s, call %d request body", path, method, i), realEvs[i].RequestBody, mockEvs[i].RequestBody)
 				compareJSON(t, fmt.Sprintf("path %s, method %s, call %d response body", path, method, i), realEvs[i].ResponseBody, mockEvs[i].ResponseBody)
 			}
@@ -529,6 +536,12 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		delete(v, "statusMessage")
 		delete(v, "createTime")
 		delete(v, "updateTime")
+		// Normalize empty LRO response payloads (e.g., from mock Delete operations returning Empty, but real returns nothing)
+		if resp, ok := v["response"].(map[string]interface{}); ok {
+			if len(resp) == 0 || (len(resp) == 1 && resp["@type"] == "type.googleapis.com/google.protobuf.Empty") {
+				delete(v, "response")
+			}
+		}
 		delete(v, "selfLink")
 		delete(v, "internalMetadata")
 		if rc, ok := v["responseCode"]; ok {
