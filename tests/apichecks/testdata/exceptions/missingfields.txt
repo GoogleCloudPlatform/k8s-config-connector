@@ -347,7 +347,6 @@
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.dataRetentionConfig.taskLogsRetentionConfig.storageMode" is not set in unstructured objects
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.databaseConfig.machineType" is not set in unstructured objects
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.databaseConfig.zone" is not set in unstructured objects
-[missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.environmentSize" is not set in unstructured objects
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.maintenanceWindow.endTime" is not set in unstructured objects
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.maintenanceWindow.recurrence" is not set in unstructured objects
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.maintenanceWindow.startTime" is not set in unstructured objects
@@ -375,10 +374,6 @@
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.privateEnvironmentConfig.privateClusterConfig.enablePrivateEndpoint" is not set in unstructured objects
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.privateEnvironmentConfig.privateClusterConfig.masterIPV4CIDRBlock" is not set in unstructured objects
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.privateEnvironmentConfig.webServerIPv4CIDRBlock" is not set in unstructured objects
-[missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.recoveryConfig.scheduledSnapshotsConfig.enabled" is not set in unstructured objects
-[missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.recoveryConfig.scheduledSnapshotsConfig.snapshotCreationSchedule" is not set in unstructured objects
-[missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.recoveryConfig.scheduledSnapshotsConfig.snapshotLocation" is not set in unstructured objects
-[missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.recoveryConfig.scheduledSnapshotsConfig.timeZone" is not set in unstructured objects
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.resilienceMode" is not set in unstructured objects
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.softwareConfig.airflowConfigOverrides" is not set in unstructured objects
 [missing_field] crd=composerenvironments.composer.cnrm.cloud.google.com version=v1beta1: field ".spec.config.softwareConfig.cloudDataLineageIntegration.enabled" is not set in unstructured objects
