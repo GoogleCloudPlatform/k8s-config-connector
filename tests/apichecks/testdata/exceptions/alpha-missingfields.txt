@@ -1090,7 +1090,7 @@
 [missing_field] crd=computeglobalnetworkendpointgroups.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.networkEndpointType" is not set in unstructured objects
 [missing_field] crd=computeglobalnetworkendpointgroups.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computeglobalnetworkendpoints.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.fqdn" is not set in unstructured objects
-[missing_field] crd=computeglobalnetworkendpoints.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.globalNetworkEndpointGroup" is not set in unstructured objects
+[missing_field] crd=computeglobalnetworkendpoints.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.globalNetworkEndpointGroupRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computeglobalnetworkendpoints.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.ipAddress" is not set in unstructured objects
 [missing_field] crd=computeglobalnetworkendpoints.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=computeinstancegroupnamedports.compute.cnrm.cloud.google.com version=v1alpha1: field ".spec.groupRef" is not set; neither 'external' nor 'name' are set
