@@ -44,7 +44,7 @@ func (s *licenseConfigService) GetLicenseConfig(ctx context.Context, req *pb_v1b
 	fqn := name.String()
 	obj := &pb_v1beta.LicenseConfig{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if status.Code(err) == codes.NotFound {
+		if status.Code(err) == codes.NotFound && name.LicenseConfig == "notebook-lm" {
 			licenseCount := int64(15)
 			if strings.Contains(os.Getenv("RUN_TESTS"), "maximal") || strings.Contains(os.Getenv("MOCKGCP_TEST_NAME"), "maximal") {
 				licenseCount = 30
