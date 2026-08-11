@@ -25,6 +25,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
@@ -50,6 +51,7 @@ func (s *NetworkSecurityV1Server) CreateUrlList(ctx context.Context, req *pbv1.C
 	}
 
 	return s.operations.StartLRO(ctx, req.Parent, metadata, func() (proto.Message, error) {
+		metadata.EndTime = timestamppb.New(time.Now())
 		return obj, nil
 	})
 }
@@ -60,7 +62,7 @@ func (s *NetworkSecurityV1Server) GetUrlList(ctx context.Context, req *pbv1.GetU
 	obj := &pbv1.UrlList{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "UrlList %q not found", fqn)
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
 		}
 		return nil, err
 	}
@@ -105,6 +107,7 @@ func (s *NetworkSecurityV1Server) UpdateUrlList(ctx context.Context, req *pbv1.U
 	}
 
 	return s.operations.StartLRO(ctx, lroPrefix, metadata, func() (proto.Message, error) {
+		metadata.EndTime = timestamppb.New(time.Now())
 		return obj, nil
 	})
 }
@@ -132,6 +135,7 @@ func (s *NetworkSecurityV1Server) DeleteUrlList(ctx context.Context, req *pbv1.D
 	}
 
 	return s.operations.StartLRO(ctx, lroPrefix, metadata, func() (proto.Message, error) {
-		return deleted, nil
+		metadata.EndTime = timestamppb.New(time.Now())
+		return &emptypb.Empty{}, nil
 	})
 }
