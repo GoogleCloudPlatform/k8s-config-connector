@@ -64,6 +64,8 @@ accessSettings:
     tenantIDs:
     - string
   oauthSettings:
+    clientID: string
+    clientSecret: string
     loginHint: string
     programmaticClients:
     - string
@@ -252,6 +254,26 @@ resourceID: string
         <td>
             <p><code class="apitype">object</code></p>
             <p>Optional. Settings to configure IAP's OAuth behavior.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>accessSettings.oauthSettings.clientID</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Optional. OAuth 2.0 client ID used in the OAuth flow. This allows for client sharing. The risks of client sharing are outlined here: https://cloud.google.com/iap/docs/sharing-oauth-clients#risks.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>accessSettings.oauthSettings.clientSecret</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Optional. Input only. OAuth secret paired with client ID.</p>
         </td>
     </tr>
     <tr>

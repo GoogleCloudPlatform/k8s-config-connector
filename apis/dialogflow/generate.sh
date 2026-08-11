@@ -65,6 +65,10 @@ ${CONTROLLERBUILDER} generate-types \
   --resource DialogflowGenerator:Generator \
   --resource DialogflowConversationDataset:ConversationDataset
 
+if [ -d "${REPO_ROOT}/apis/dialogflow" ]; then
+  go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w ${REPO_ROOT}/apis/dialogflow/
+fi
+
 # Generate mapper for Dialogflow CX v3 service
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.dialogflow.cx.v3 \
@@ -82,6 +86,10 @@ rmdir "${REPO_ROOT}/pkg/controller/direct/dialogflow/siptrunk/dialogflow/" || tr
 sed -i 's/package dialogflow/package siptrunk/g' "${REPO_ROOT}/pkg/controller/direct/dialogflow/siptrunk/mapper.generated.go"
 
 cd ${REPO_ROOT}
+if [ -d "${REPO_ROOT}/apis/dialogflow" ]; then
+  go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w apis/dialogflow/
+fi
+
 dev/tasks/generate-crds
 
 if [ -d "${REPO_ROOT}/pkg/controller/direct/dialogflow" ]; then

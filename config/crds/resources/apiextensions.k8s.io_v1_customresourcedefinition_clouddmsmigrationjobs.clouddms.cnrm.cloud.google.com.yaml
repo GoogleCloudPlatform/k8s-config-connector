@@ -344,6 +344,7 @@ spec:
                 description: static ip connectivity data (default, no additional details
                   needed).
                 type: object
+                x-kubernetes-preserve-unknown-fields: true
               type:
                 description: Required. The migration job type.
                 type: string

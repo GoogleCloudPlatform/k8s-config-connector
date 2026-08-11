@@ -249,6 +249,17 @@ type OAuthSettings struct {
 	// +kcc:proto:field=google.cloud.iap.v1.OAuthSettings.login_hint
 	LoginHint *string `json:"loginHint,omitempty"`
 
+	// Optional. OAuth 2.0 client ID used in the OAuth flow.
+	//  This allows for client sharing. The risks of client sharing
+	//  are outlined here:
+	//  https://cloud.google.com/iap/docs/sharing-oauth-clients#risks.
+	// +kcc:proto:field=google.cloud.iap.v1.OAuthSettings.client_id
+	ClientID *string `json:"clientID,omitempty"`
+
+	// Optional. Input only. OAuth secret paired with client ID.
+	// +kcc:proto:field=google.cloud.iap.v1.OAuthSettings.client_secret
+	ClientSecret *string `json:"clientSecret,omitempty"`
+
 	// Optional. List of client ids allowed to use IAP programmatically.
 	// +kcc:proto:field=google.cloud.iap.v1.OAuthSettings.programmatic_clients
 	ProgrammaticClients []string `json:"programmaticClients,omitempty"`
@@ -290,6 +301,10 @@ type WorkforceIdentitySettings struct {
 
 // +kcc:observedstate:proto=google.cloud.iap.v1.AccessSettings
 type AccessSettingsObservedState struct {
+	// Optional. Settings to configure IAP's OAuth behavior.
+	// +kcc:proto:field=google.cloud.iap.v1.AccessSettings.oauth_settings
+	OauthSettings *OAuthSettingsObservedState `json:"oauthSettings,omitempty"`
+
 	// Optional. Settings to configure the workforce identity federation,
 	//  including workforce pools and OAuth 2.0 settings.
 	// +kcc:proto:field=google.cloud.iap.v1.AccessSettings.workforce_identity_settings
@@ -330,6 +345,15 @@ type OAuth2ObservedState struct {
 	// Output only. SHA256 hash value for the client secret. This field is
 	//  returned by IAP when the settings are retrieved.
 	// +kcc:proto:field=google.cloud.iap.v1.OAuth2.client_secret_sha256
+	ClientSecretSha256 *string `json:"clientSecretSha256,omitempty"`
+}
+*/
+
+/* unreachable type OAuthSettingsObservedState
+// +kcc:observedstate:proto=google.cloud.iap.v1.OAuthSettings
+type OAuthSettingsObservedState struct {
+	// Output only. OAuth secret SHA256 paired with client ID.
+	// +kcc:proto:field=google.cloud.iap.v1.OAuthSettings.client_secret_sha256
 	ClientSecretSha256 *string `json:"clientSecretSha256,omitempty"`
 }
 */

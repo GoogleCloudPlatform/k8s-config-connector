@@ -138,6 +138,7 @@ func ImportJob_WrappingPublicKeyObservedState_v1beta1_FromProto(mapCtx *direct.M
 	}
 	out := &krmkmsv1beta1.ImportJob_WrappingPublicKeyObservedState{}
 	out.Pem = direct.LazyPtr(in.GetPem())
+	// MISSING: Data
 	return out
 }
 func ImportJob_WrappingPublicKeyObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmkmsv1beta1.ImportJob_WrappingPublicKeyObservedState) *pb.ImportJob_WrappingPublicKey {
@@ -146,6 +147,7 @@ func ImportJob_WrappingPublicKeyObservedState_v1beta1_ToProto(mapCtx *direct.Map
 	}
 	out := &pb.ImportJob_WrappingPublicKey{}
 	out.Pem = direct.ValueOf(in.Pem)
+	// MISSING: Data
 	return out
 }
 func KMSAutokeyConfigObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.AutokeyConfig) *krmkmsv1beta1.KMSAutokeyConfigObservedState {
@@ -178,6 +180,7 @@ func KMSAutokeyConfigSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Au
 		out.KeyProjectRef = &refsv1beta1.ProjectRef{External: in.GetKeyProject()}
 	}
 	// MISSING: Etag
+	out.KeyProjectResolutionMode = direct.Enum_FromProto(mapCtx, in.GetKeyProjectResolutionMode())
 	return out
 }
 func KMSAutokeyConfigSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmkmsv1beta1.KMSAutokeyConfigSpec) *pb.AutokeyConfig {
@@ -190,6 +193,7 @@ func KMSAutokeyConfigSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmkmsv
 		out.KeyProject = in.KeyProjectRef.External
 	}
 	// MISSING: Etag
+	out.KeyProjectResolutionMode = direct.Enum_ToProto[pb.AutokeyConfig_KeyProjectResolutionMode](mapCtx, in.KeyProjectResolutionMode)
 	return out
 }
 func KMSCryptoKeySpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.CryptoKey) *krmkmsv1beta1.KMSCryptoKeySpec {
@@ -291,6 +295,8 @@ func KMSCryptoKeyVersionSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *p
 	// MISSING: ExternalDestructionFailureReason
 	// MISSING: ExternalProtectionLevelOptions
 	// MISSING: ReimportEligible
+	// MISSING: TrustedWrappingEnabled
+	// MISSING: HsmTrusted
 	return out
 }
 func KMSCryptoKeyVersionSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmkmsv1alpha1.KMSCryptoKeyVersionSpec) *pb.CryptoKeyVersion {
@@ -314,6 +320,8 @@ func KMSCryptoKeyVersionSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm
 	// MISSING: ExternalDestructionFailureReason
 	// MISSING: ExternalProtectionLevelOptions
 	// MISSING: ReimportEligible
+	// MISSING: TrustedWrappingEnabled
+	// MISSING: HsmTrusted
 	return out
 }
 
@@ -341,6 +349,8 @@ func KMSCryptoKeyVersionStatus_v1alpha1_FromProto(mapCtx *direct.MapContext, in 
 	// MISSING: ExternalDestructionFailureReason
 	// MISSING: ExternalProtectionLevelOptions
 	// MISSING: ReimportEligible
+	// MISSING: TrustedWrappingEnabled
+	// MISSING: HsmTrusted
 	return out
 }
 */
@@ -371,6 +381,8 @@ found existing non-generated mapping function "KMSCryptoKeyVersionStatus_v1alpha
 		// MISSING: ExternalDestructionFailureReason
 		// MISSING: ExternalProtectionLevelOptions
 		// MISSING: ReimportEligible
+		// MISSING: TrustedWrappingEnabled
+		// MISSING: HsmTrusted
 		return out
 	}
 */
@@ -386,7 +398,9 @@ func KMSImportJobObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *
 	out.ExpireEventTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpireEventTime())
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.PublicKey = ImportJob_WrappingPublicKeyObservedState_v1beta1_FromProto(mapCtx, in.GetPublicKey())
+	// MISSING: PublicKeyFormat
 	out.Attestation = KeyOperationAttestationObservedState_v1beta1_FromProto(mapCtx, in.GetAttestation())
+	// MISSING: CryptoKeyBackend
 	return out
 }
 func KMSImportJobObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmkmsv1beta1.KMSImportJobObservedState) *pb.ImportJob {
@@ -401,7 +415,9 @@ func KMSImportJobObservedState_v1beta1_ToProto(mapCtx *direct.MapContext, in *kr
 	out.ExpireEventTime = direct.StringTimestamp_ToProto(mapCtx, in.ExpireEventTime)
 	out.State = direct.Enum_ToProto[pb.ImportJob_ImportJobState](mapCtx, in.State)
 	out.PublicKey = ImportJob_WrappingPublicKeyObservedState_v1beta1_ToProto(mapCtx, in.PublicKey)
+	// MISSING: PublicKeyFormat
 	out.Attestation = KeyOperationAttestationObservedState_v1beta1_ToProto(mapCtx, in.Attestation)
+	// MISSING: CryptoKeyBackend
 	return out
 }
 func KMSImportJobSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.ImportJob) *krmkmsv1beta1.KMSImportJobSpec {
@@ -412,6 +428,8 @@ func KMSImportJobSpec_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Import
 	// MISSING: Name
 	out.ImportMethod = direct.Enum_FromProto(mapCtx, in.GetImportMethod())
 	out.ProtectionLevel = direct.Enum_FromProto(mapCtx, in.GetProtectionLevel())
+	// MISSING: PublicKeyFormat
+	// MISSING: CryptoKeyBackend
 	return out
 }
 func KMSImportJobSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmkmsv1beta1.KMSImportJobSpec) *pb.ImportJob {
@@ -422,6 +440,8 @@ func KMSImportJobSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmkmsv1bet
 	// MISSING: Name
 	out.ImportMethod = direct.Enum_ToProto[pb.ImportJob_ImportMethod](mapCtx, in.ImportMethod)
 	out.ProtectionLevel = direct.Enum_ToProto[pb.ProtectionLevel](mapCtx, in.ProtectionLevel)
+	// MISSING: PublicKeyFormat
+	// MISSING: CryptoKeyBackend
 	return out
 }
 func KMSKeyHandleObservedState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.KeyHandle) *krmkmsv1beta1.KMSKeyHandleObservedState {
@@ -476,7 +496,9 @@ func KMSKeyRingImportJobSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *p
 	// MISSING: ExpireEventTime
 	// MISSING: State
 	// MISSING: PublicKey
+	// MISSING: PublicKeyFormat
 	// MISSING: Attestation
+	// MISSING: CryptoKeyBackend
 	return out
 }
 */
@@ -496,7 +518,9 @@ func KMSKeyRingImportJobSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm
 	// MISSING: ExpireEventTime
 	// MISSING: State
 	// MISSING: PublicKey
+	// MISSING: PublicKeyFormat
 	// MISSING: Attestation
+	// MISSING: CryptoKeyBackend
 	return out
 }
 */
@@ -518,9 +542,11 @@ func KMSKeyRingImportJobStatus_v1alpha1_FromProto(mapCtx *direct.MapContext, in 
 	if v := in.GetPublicKey(); v != nil {
 		out.PublicKey = []krmkmsv1alpha1.KeyringimportjobPublicKeyStatus{KeyringimportjobPublicKeyStatus_v1alpha1_FromProto(mapCtx, v)}
 	}
+	// MISSING: PublicKeyFormat
 	if v := in.GetAttestation(); v != nil {
 		out.Attestation = []krmkmsv1alpha1.KeyringimportjobAttestationStatus{KeyringimportjobAttestationStatus_v1alpha1_FromProto(mapCtx, v)}
 	}
+	// MISSING: CryptoKeyBackend
 	return out
 }
 */
@@ -544,9 +570,11 @@ found existing non-generated mapping function "KMSKeyRingImportJobStatus_v1alpha
 		if len(in.PublicKey) > 0 && in.PublicKey[0] != nil {
 			out.PublicKey = KeyringimportjobPublicKeyStatus_v1alpha1_ToProto(mapCtx, in.PublicKey[0])
 		}
+		// MISSING: PublicKeyFormat
 		if len(in.Attestation) > 0 && in.Attestation[0] != nil {
 			out.Attestation = KeyringimportjobAttestationStatus_v1alpha1_ToProto(mapCtx, in.Attestation[0])
 		}
+		// MISSING: CryptoKeyBackend
 		return out
 	}
 */
@@ -660,6 +688,7 @@ func KeyringimportjobPublicKeyStatus_v1alpha1_FromProto(mapCtx *direct.MapContex
 	}
 	out := &krmkmsv1alpha1.KeyringimportjobPublicKeyStatus{}
 	out.Pem = direct.LazyPtr(in.GetPem())
+	// MISSING: Data
 	return out
 }
 func KeyringimportjobPublicKeyStatus_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmkmsv1alpha1.KeyringimportjobPublicKeyStatus) *pb.ImportJob_WrappingPublicKey {
@@ -668,5 +697,6 @@ func KeyringimportjobPublicKeyStatus_v1alpha1_ToProto(mapCtx *direct.MapContext,
 	}
 	out := &pb.ImportJob_WrappingPublicKey{}
 	out.Pem = direct.ValueOf(in.Pem)
+	// MISSING: Data
 	return out
 }

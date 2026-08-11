@@ -153,6 +153,9 @@ type SecuritySettings_AudioExportSettings struct {
 	GCSBucket *string `json:"gcsBucket,omitempty"`
 
 	// Filename pattern for exported audio.
+	//  {conversation} and {timestamp} are placeholders that will be replaced
+	//  with the conversation ID and epoch micros of the conversation.
+	//  For example, "{conversation}/recording_{timestamp}.mulaw".
 	// +kcc:proto:field=google.cloud.dialogflow.cx.v3.SecuritySettings.AudioExportSettings.audio_export_pattern
 	AudioExportPattern *string `json:"audioExportPattern,omitempty"`
 

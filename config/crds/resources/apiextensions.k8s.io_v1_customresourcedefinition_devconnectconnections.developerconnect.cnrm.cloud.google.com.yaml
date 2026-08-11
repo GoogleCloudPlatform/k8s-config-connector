@@ -82,7 +82,8 @@ spec:
                       userTokenSecretVersion:
                         description: 'Required. A SecretManager resource containing
                           the user token that authorizes the Developer Connect connection.
-                          Format: `projects/*/secrets/*/versions/*`.'
+                          Format: `projects/*/secrets/*/versions/*` or `projects/*/locations/*/secrets/*/versions/*`
+                          (if regional secrets are supported in that location).'
                         type: string
                     type: object
                   readAuthorizerCredential:
@@ -94,14 +95,16 @@ spec:
                       userTokenSecretVersion:
                         description: 'Required. A SecretManager resource containing
                           the user token that authorizes the Developer Connect connection.
-                          Format: `projects/*/secrets/*/versions/*`.'
+                          Format: `projects/*/secrets/*/versions/*` or `projects/*/locations/*/secrets/*/versions/*`
+                          (if regional secrets are supported in that location).'
                         type: string
                     type: object
                   webhookSecretSecretVersion:
                     description: Required. Immutable. SecretManager resource containing
                       the webhook secret used to verify webhook events, formatted
-                      as `projects/*/secrets/*/versions/*`. This is used to validate
-                      and create webhooks.
+                      as `projects/*/secrets/*/versions/*` or `projects/*/locations/*/secrets/*/versions/*`
+                      (if regional secrets are supported in that location). This is
+                      used to validate and create webhooks.
                     type: string
                   workspace:
                     description: Required. The Bitbucket Cloud Workspace ID to be
@@ -120,7 +123,8 @@ spec:
                       userTokenSecretVersion:
                         description: 'Required. A SecretManager resource containing
                           the user token that authorizes the Developer Connect connection.
-                          Format: `projects/*/secrets/*/versions/*`.'
+                          Format: `projects/*/secrets/*/versions/*` or `projects/*/locations/*/secrets/*/versions/*`
+                          (if regional secrets are supported in that location).'
                         type: string
                     type: object
                   hostURI:
@@ -135,7 +139,8 @@ spec:
                       userTokenSecretVersion:
                         description: 'Required. A SecretManager resource containing
                           the user token that authorizes the Developer Connect connection.
-                          Format: `projects/*/secrets/*/versions/*`.'
+                          Format: `projects/*/secrets/*/versions/*` or `projects/*/locations/*/secrets/*/versions/*`
+                          (if regional secrets are supported in that location).'
                         type: string
                     type: object
                   serviceDirectoryConfig:
@@ -182,8 +187,9 @@ spec:
                   webhookSecretSecretVersion:
                     description: Required. Immutable. SecretManager resource containing
                       the webhook secret used to verify webhook events, formatted
-                      as `projects/*/secrets/*/versions/*`. This is used to validate
-                      webhooks.
+                      as `projects/*/secrets/*/versions/*` or `projects/*/locations/*/secrets/*/versions/*`
+                      (if regional secrets are supported in that location). This is
+                      used to validate webhooks.
                     type: string
                 type: object
               cryptoKeyConfig:
@@ -228,7 +234,8 @@ spec:
                       oauthTokenSecretVersion:
                         description: 'Required. A SecretManager resource containing
                           the OAuth token that authorizes the connection. Format:
-                          `projects/*/secrets/*/versions/*`.'
+                          `projects/*/secrets/*/versions/*` or `projects/*/locations/*/secrets/*/versions/*`
+                          (if regional secrets are supported in that location).'
                         type: string
                     type: object
                   githubApp:
@@ -252,9 +259,15 @@ spec:
                     description: Required. The URI of the GitHub Enterprise host this
                       connection is for.
                     type: string
+                  organization:
+                    description: Optional. Immutable. GitHub Enterprise organization
+                      in which the GitHub App is created.
+                    type: string
                   privateKeySecretVersion:
                     description: Optional. SecretManager resource containing the private
-                      key of the GitHub App, formatted as `projects/*/secrets/*/versions/*`.
+                      key of the GitHub App, formatted as `projects/*/secrets/*/versions/*`
+                      or `projects/*/locations/*/secrets/*/versions/*` (if regional
+                      secrets are supported in that location).
                     type: string
                   serviceDirectoryConfig:
                     description: Optional. Configuration for using Service Directory
@@ -299,7 +312,9 @@ spec:
                     type: string
                   webhookSecretSecretVersion:
                     description: Optional. SecretManager resource containing the webhook
-                      secret of the GitHub App, formatted as `projects/*/secrets/*/versions/*`.
+                      secret of the GitHub App, formatted as `projects/*/secrets/*/versions/*`
+                      or `projects/*/locations/*/secrets/*/versions/*` (if regional
+                      secrets are supported in that location).
                     type: string
                 type: object
               gitlabConfig:
@@ -314,7 +329,8 @@ spec:
                       userTokenSecretVersion:
                         description: 'Required. A SecretManager resource containing
                           the user token that authorizes the Developer Connect connection.
-                          Format: `projects/*/secrets/*/versions/*`.'
+                          Format: `projects/*/secrets/*/versions/*` or `projects/*/locations/*/secrets/*/versions/*`
+                          (if regional secrets are supported in that location).'
                         type: string
                     type: object
                   readAuthorizerCredential:
@@ -326,13 +342,16 @@ spec:
                       userTokenSecretVersion:
                         description: 'Required. A SecretManager resource containing
                           the user token that authorizes the Developer Connect connection.
-                          Format: `projects/*/secrets/*/versions/*`.'
+                          Format: `projects/*/secrets/*/versions/*` or `projects/*/locations/*/secrets/*/versions/*`
+                          (if regional secrets are supported in that location).'
                         type: string
                     type: object
                   webhookSecretSecretVersion:
                     description: Required. Immutable. SecretManager resource containing
-                      the webhook secret of a GitLab project, formatted as `projects/*/secrets/*/versions/*`.
-                      This is used to validate webhooks.
+                      the webhook secret of a GitLab project, formatted as `projects/*/secrets/*/versions/*`
+                      or `projects/*/locations/*/secrets/*/versions/*` (if regional
+                      secrets are supported in that location). This is used to validate
+                      webhooks.
                     type: string
                 type: object
               gitlabEnterpriseConfig:
@@ -348,7 +367,8 @@ spec:
                       userTokenSecretVersion:
                         description: 'Required. A SecretManager resource containing
                           the user token that authorizes the Developer Connect connection.
-                          Format: `projects/*/secrets/*/versions/*`.'
+                          Format: `projects/*/secrets/*/versions/*` or `projects/*/locations/*/secrets/*/versions/*`
+                          (if regional secrets are supported in that location).'
                         type: string
                     type: object
                   hostURI:
@@ -364,7 +384,8 @@ spec:
                       userTokenSecretVersion:
                         description: 'Required. A SecretManager resource containing
                           the user token that authorizes the Developer Connect connection.
-                          Format: `projects/*/secrets/*/versions/*`.'
+                          Format: `projects/*/secrets/*/versions/*` or `projects/*/locations/*/secrets/*/versions/*`
+                          (if regional secrets are supported in that location).'
                         type: string
                     type: object
                   serviceDirectoryConfig:
@@ -410,8 +431,10 @@ spec:
                     type: string
                   webhookSecretSecretVersion:
                     description: Required. Immutable. SecretManager resource containing
-                      the webhook secret of a GitLab project, formatted as `projects/*/secrets/*/versions/*`.
-                      This is used to validate webhooks.
+                      the webhook secret of a GitLab project, formatted as `projects/*/secrets/*/versions/*`
+                      or `projects/*/locations/*/secrets/*/versions/*` (if regional
+                      secrets are supported in that location). This is used to validate
+                      webhooks.
                     type: string
                 type: object
               location:

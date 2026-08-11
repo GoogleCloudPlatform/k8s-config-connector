@@ -30,11 +30,7 @@ fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
-# We need a newer googleapis to get BackendAuthenticationConfig, AuthzPolicy, and TLSInspectionPolicy
-PROTO_SHA="cdc919ff596e263f2cc55a9780d2f74633da1ced"
-PROTO_OUT="${REPO_ROOT}/.build/googleapis-${PROTO_SHA}.pb"
-
-./generate-proto.sh ${PROTO_SHA} ${PROTO_OUT}
+./generate-proto.sh
 
 # --- v1alpha1 ---
 
@@ -58,8 +54,7 @@ ${CONTROLLERBUILDER} generate-types \
   --resource NetworkSecurityAuthzPolicy:AuthzPolicy \
   --resource NetworkSecurityFirewallEndpoint:FirewallEndpoint \
   --resource NetworkSecurityDNSThreatDetector:DnsThreatDetector \
-  --resource NetworkSecurityURLList:UrlList \
-  --proto-source-path ${PROTO_OUT}
+  --resource NetworkSecurityURLList:UrlList
 
 # Run for google.cloud.networksecurity.v1alpha1 resources (PartnerSSERealm)
 ${CONTROLLERBUILDER} generate-types \
@@ -67,8 +62,7 @@ ${CONTROLLERBUILDER} generate-types \
   --api-version networksecurity.cnrm.cloud.google.com/v1alpha1 \
   --resource NetworkSecurityPartnerSSERealm:PartnerSSERealm \
   --resource NetworkSecurityPartnerSSEGateway:PartnerSSEGateway \
-  --resource NetworkSecurityTLSInspectionPolicy:TlsInspectionPolicy \
-  --proto-source-path ${PROTO_OUT}
+  --resource NetworkSecurityTLSInspectionPolicy:TlsInspectionPolicy
 
 # Generate mappers for networksecurity v1alpha1
 
@@ -80,13 +74,11 @@ ${CONTROLLERBUILDER} generate-types \
     --service google.cloud.networksecurity.v1beta1 \
     --api-version networksecurity.cnrm.cloud.google.com/v1beta1 \
     --resource NetworkSecurityAuthorizationPolicy:AuthorizationPolicy \
-    --resource NetworkSecurityClientTLSPolicy:ClientTlsPolicy \
-    --proto-source-path ${PROTO_OUT}
+    --resource NetworkSecurityClientTLSPolicy:ClientTlsPolicy
 
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.networksecurity.v1,google.cloud.networksecurity.v1beta1 \
   --api-version "networksecurity.cnrm.cloud.google.com/v1beta1" \
-  --proto-source-path ${PROTO_OUT} \
   --multiversion
 
 

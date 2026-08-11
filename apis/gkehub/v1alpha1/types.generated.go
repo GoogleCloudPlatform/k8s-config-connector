@@ -69,6 +69,7 @@ type DefaultClusterConfig struct {
 
 /* unreachable type FleetLifecycleState
 // +kcc:proto=google.cloud.gkehub.v1.FleetLifecycleState
+// +kubebuilder:pruning:PreserveUnknownFields
 type FleetLifecycleState struct {
 }
 */

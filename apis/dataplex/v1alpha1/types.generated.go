@@ -115,6 +115,7 @@ type AssetStatus struct {
 
 /* unreachable type DataDiscoveryResult
 // +kcc:proto=google.cloud.dataplex.v1.DataDiscoveryResult
+// +kubebuilder:pruning:PreserveUnknownFields
 type DataDiscoveryResult struct {
 }
 */
@@ -257,6 +258,7 @@ type DataProfileResult struct {
 
 /* unreachable type DataProfileResult_PostScanActionsResult_BigQueryExportResult
 // +kcc:proto=google.cloud.dataplex.v1.DataProfileResult.PostScanActionsResult.BigQueryExportResult
+// +kubebuilder:pruning:PreserveUnknownFields
 type DataProfileResult_PostScanActionsResult_BigQueryExportResult struct {
 }
 */
@@ -507,12 +509,14 @@ type DataQualityDimension struct {
 
 /* unreachable type DataQualityResult
 // +kcc:proto=google.cloud.dataplex.v1.DataQualityResult
+// +kubebuilder:pruning:PreserveUnknownFields
 type DataQualityResult struct {
 }
 */
 
 /* unreachable type DataQualityResult_PostScanActionsResult_BigQueryExportResult
 // +kcc:proto=google.cloud.dataplex.v1.DataQualityResult.PostScanActionsResult.BigQueryExportResult
+// +kubebuilder:pruning:PreserveUnknownFields
 type DataQualityResult_PostScanActionsResult_BigQueryExportResult struct {
 }
 */

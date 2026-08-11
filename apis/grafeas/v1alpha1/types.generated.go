@@ -55,35 +55,73 @@ type Cvss struct {
 	// +kcc:proto:field=grafeas.v1.CVSS.impact_score
 	ImpactScore *float32 `json:"impactScore,omitempty"`
 
-	// Base Metrics
-	//  Represents the intrinsic characteristics of a vulnerability that are
-	//  constant over time and across user environments.
+	// Attack Vector (AV). Defined in CVSS v2, v3, v4.
 	// +kcc:proto:field=grafeas.v1.CVSS.attack_vector
 	AttackVector *string `json:"attackVector,omitempty"`
 
+	// Attack Complexity (AC). Defined in CVSS v2, v3, v4.
 	// +kcc:proto:field=grafeas.v1.CVSS.attack_complexity
 	AttackComplexity *string `json:"attackComplexity,omitempty"`
 
+	// Authentication (Au). Defined in CVSS v2.
 	// +kcc:proto:field=grafeas.v1.CVSS.authentication
 	Authentication *string `json:"authentication,omitempty"`
 
+	// Privileges Required (PR). Defined in CVSS v3, v4.
 	// +kcc:proto:field=grafeas.v1.CVSS.privileges_required
 	PrivilegesRequired *string `json:"privilegesRequired,omitempty"`
 
+	// User Interaction (UI). Defined in CVSS v3, v4.
 	// +kcc:proto:field=grafeas.v1.CVSS.user_interaction
 	UserInteraction *string `json:"userInteraction,omitempty"`
 
+	// Scope (S). Defined in CVSS v3.
 	// +kcc:proto:field=grafeas.v1.CVSS.scope
 	Scope *string `json:"scope,omitempty"`
 
+	// Confidentiality Impact (C). Defined in CVSS v2, v3.
 	// +kcc:proto:field=grafeas.v1.CVSS.confidentiality_impact
 	ConfidentialityImpact *string `json:"confidentialityImpact,omitempty"`
 
+	// Integrity Impact (I). Defined in CVSS v2, v3.
 	// +kcc:proto:field=grafeas.v1.CVSS.integrity_impact
 	IntegrityImpact *string `json:"integrityImpact,omitempty"`
 
+	// Availability Impact (A). Defined in CVSS v2, v3.
 	// +kcc:proto:field=grafeas.v1.CVSS.availability_impact
 	AvailabilityImpact *string `json:"availabilityImpact,omitempty"`
+
+	// Attack Requirements (AT). Defined in CVSS v4.
+	// +kcc:proto:field=grafeas.v1.CVSS.attack_requirements
+	AttackRequirements *string `json:"attackRequirements,omitempty"`
+
+	// Vulnerable System Confidentiality Impact (VC). Defined in CVSS v4.
+	// +kcc:proto:field=grafeas.v1.CVSS.vulnerable_system_confidentiality_impact
+	VulnerableSystemConfidentialityImpact *string `json:"vulnerableSystemConfidentialityImpact,omitempty"`
+
+	// Vulnerable System Integrity Impact (VI). Defined in CVSS v4.
+	// +kcc:proto:field=grafeas.v1.CVSS.vulnerable_system_integrity_impact
+	VulnerableSystemIntegrityImpact *string `json:"vulnerableSystemIntegrityImpact,omitempty"`
+
+	// Vulnerable System Availability Impact (VA). Defined in CVSS v4.
+	// +kcc:proto:field=grafeas.v1.CVSS.vulnerable_system_availability_impact
+	VulnerableSystemAvailabilityImpact *string `json:"vulnerableSystemAvailabilityImpact,omitempty"`
+
+	// Subsequent System Confidentiality Impact (SC). Defined in CVSS v4.
+	// +kcc:proto:field=grafeas.v1.CVSS.subsequent_system_confidentiality_impact
+	SubsequentSystemConfidentialityImpact *string `json:"subsequentSystemConfidentialityImpact,omitempty"`
+
+	// Subsequent System Integrity Impact (SI). Defined in CVSS v4.
+	// +kcc:proto:field=grafeas.v1.CVSS.subsequent_system_integrity_impact
+	SubsequentSystemIntegrityImpact *string `json:"subsequentSystemIntegrityImpact,omitempty"`
+
+	// Subsequent System Availability Impact (SA). Defined in CVSS v4.
+	// +kcc:proto:field=grafeas.v1.CVSS.subsequent_system_availability_impact
+	SubsequentSystemAvailabilityImpact *string `json:"subsequentSystemAvailabilityImpact,omitempty"`
+
+	// Exploit Maturity (E). Defined in CVSS v4.
+	// +kcc:proto:field=grafeas.v1.CVSS.exploit_maturity
+	ExploitMaturity *string `json:"exploitMaturity,omitempty"`
 }
 
 // +kcc:proto=grafeas.v1.CVSSv3
@@ -477,6 +515,7 @@ type SbomReferenceNote struct {
 
 /* unreachable type SecretNote
 // +kcc:proto=grafeas.v1.SecretNote
+// +kubebuilder:pruning:PreserveUnknownFields
 type SecretNote struct {
 }
 */
@@ -745,6 +784,14 @@ type VulnerabilityNote struct {
 	// The full description of the v2 CVSS for this vulnerability.
 	// +kcc:proto:field=grafeas.v1.VulnerabilityNote.cvss_v2
 	CvssV2 *Cvss `json:"cvssV2,omitempty"`
+
+	// The time this advisory was published by the source.
+	// +kcc:proto:field=grafeas.v1.VulnerabilityNote.advisory_publish_time
+	AdvisoryPublishTime *string `json:"advisoryPublishTime,omitempty"`
+
+	// The full description of the v4 CVSS for this vulnerability.
+	// +kcc:proto:field=grafeas.v1.VulnerabilityNote.cvss_v4
+	CvssV4 *Cvss `json:"cvssV4,omitempty"`
 }
 
 // +kcc:proto=grafeas.v1.VulnerabilityNote.Detail

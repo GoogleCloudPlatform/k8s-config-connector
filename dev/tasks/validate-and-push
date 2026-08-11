@@ -52,6 +52,8 @@ if [[ "${VALIDATE_ONLY}" == "1" ]]; then
   exit 0
 fi
 
+export SKIP_PRE_PUSH_VALIDATION=1
+
 if [[ $# -gt 0 ]]; then
   echo "Pushing changes: git push $*"
   git push "$@"

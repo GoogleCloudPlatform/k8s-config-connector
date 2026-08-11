@@ -430,6 +430,7 @@ type DiskEncryptionStatus struct {
 }
 
 // +kcc:proto=google.cloud.sql.v1beta4.GeminiInstanceConfig
+// +kubebuilder:pruning:PreserveUnknownFields
 type GeminiInstanceConfig struct {
 }
 

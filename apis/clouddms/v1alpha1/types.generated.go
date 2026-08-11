@@ -82,5 +82,6 @@ type MigrationJob_PerformanceConfig struct {
 }
 
 // +kcc:proto=google.cloud.clouddms.v1.StaticIpConnectivity
+// +kubebuilder:pruning:PreserveUnknownFields
 type StaticIPConnectivity struct {
 }
