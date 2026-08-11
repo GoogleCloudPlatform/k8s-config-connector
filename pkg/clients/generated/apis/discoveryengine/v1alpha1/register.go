@@ -89,6 +89,12 @@ var (
 		Kind:    reflect.TypeOf(DiscoveryEngineIdentityMappingStore{}).Name(),
 	}
 
+	DiscoveryEngineLicenseConfigGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(DiscoveryEngineLicenseConfig{}).Name(),
+	}
+
 	DiscoveryEngineSampleQueryGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
@@ -99,6 +105,18 @@ var (
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
 		Kind:    reflect.TypeOf(DiscoveryEngineSampleQuerySet{}).Name(),
+	}
+
+	DiscoveryEngineSearchEngineGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(DiscoveryEngineSearchEngine{}).Name(),
+	}
+
+	DiscoveryEngineServingConfigGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(DiscoveryEngineServingConfig{}).Name(),
 	}
 
 	DiscoveryEngineSessionGVK = schema.GroupVersionKind{

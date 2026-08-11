@@ -94,7 +94,7 @@ type ReservationSpecificReservation struct {
 	/* The number of resources that are allocated. */
 	Count int64 `json:"count"`
 
-	/* How many instances are in use. */
+	/* Output only. Setting this field has no effect. How many instances are in use. */
 	// +optional
 	InUseCount *int64 `json:"inUseCount,omitempty"`
 

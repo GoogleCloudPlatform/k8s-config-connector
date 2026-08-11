@@ -54,3 +54,5 @@ type NetworkSecuritySecurityProfileExpansion interface{}
 type NetworkSecuritySecurityProfileGroupExpansion interface{}
 
 type NetworkSecurityTLSInspectionPolicyExpansion interface{}
+
+type NetworkSecurityURLListExpansion interface{}

@@ -198,6 +198,28 @@ type ClusterBlueGreenSettings struct {
 	StandardRolloutPolicy *ClusterStandardRolloutPolicy `json:"standardRolloutPolicy,omitempty"`
 }
 
+type ClusterCa struct {
+	/* Reference to SecretManagerSecretVersion for the CA certificate. */
+	// +optional
+	SecretRef *v1alpha1.ResourceRef `json:"secretRef,omitempty"`
+}
+
+type ClusterCert struct {
+	/* Reference to SecretManagerSecretVersion for the client certificate. */
+	// +optional
+	SecretRef *v1alpha1.ResourceRef `json:"secretRef,omitempty"`
+}
+
+type ClusterCertificateAuthorityDomainConfig struct {
+	/* List of fully qualified domain names (FQDN). Specifying port is supported. Wildcards are NOT supported. */
+	// +optional
+	Fqdns []string `json:"fqdns,omitempty"`
+
+	/* Google Secret Manager (GCP) certificate configuration. */
+	// +optional
+	GcpSecretManagerCertificateConfig *ClusterGcpSecretManagerCertificateConfig `json:"gcpSecretManagerCertificateConfig,omitempty"`
+}
+
 type ClusterCidrBlocks struct {
 	/* External network that can access Kubernetes master through HTTPS. Must be specified in CIDR notation. */
 	CidrBlock string `json:"cidrBlock"`
@@ -205,6 +227,16 @@ type ClusterCidrBlocks struct {
 	/* Field for users to identify CIDR blocks. */
 	// +optional
 	DisplayName *string `json:"displayName,omitempty"`
+}
+
+type ClusterClient struct {
+	/* Configures the client certificate. */
+	// +optional
+	Cert *ClusterCert `json:"cert,omitempty"`
+
+	/* Configures the client private key. */
+	// +optional
+	Key *ClusterKey `json:"key,omitempty"`
 }
 
 type ClusterClientCertificateConfig struct {
@@ -257,6 +289,20 @@ type ClusterConfidentialNodes struct {
 
 type ClusterConfigConnectorConfig struct {
 	Enabled bool `json:"enabled"`
+}
+
+type ClusterContainerdConfig struct {
+	/* Parameters for private container registries configuration. */
+	// +optional
+	PrivateRegistryAccessConfig *ClusterPrivateRegistryAccessConfig `json:"privateRegistryAccessConfig,omitempty"`
+
+	/* Configures containerd registry host configuration. Each registryHosts entry represents a hosts.toml file. */
+	// +optional
+	RegistryHosts []ClusterRegistryHosts `json:"registryHosts,omitempty"`
+
+	/* Parameters for writable cgroups configuration. */
+	// +optional
+	WritableCgroups *ClusterWritableCgroups `json:"writableCgroups,omitempty"`
 }
 
 type ClusterControlPlaneEndpointsConfig struct {
@@ -380,6 +426,12 @@ type ClusterGcpFilestoreCsiDriverConfig struct {
 	Enabled bool `json:"enabled"`
 }
 
+type ClusterGcpSecretManagerCertificateConfig struct {
+	/* SecretRef is a reference to a SecretManagerSecretVersion resource. */
+	// +optional
+	SecretRef *v1alpha1.ResourceRef `json:"secretRef,omitempty"`
+}
+
 type ClusterGcsFuseCsiDriverConfig struct {
 	Enabled bool `json:"enabled"`
 }
@@ -426,6 +478,16 @@ type ClusterGvnic struct {
 	Enabled bool `json:"enabled"`
 }
 
+type ClusterHeader struct {
+	/* Configures the header key. */
+	// +optional
+	Key *string `json:"key,omitempty"`
+
+	/* Configures the header value. */
+	// +optional
+	Value []string `json:"value,omitempty"`
+}
+
 type ClusterHorizontalPodAutoscaling struct {
 	Disabled bool `json:"disabled"`
 }
@@ -433,6 +495,36 @@ type ClusterHorizontalPodAutoscaling struct {
 type ClusterHostMaintenancePolicy struct {
 	/* Immutable. . */
 	MaintenanceInterval string `json:"maintenanceInterval"`
+}
+
+type ClusterHosts struct {
+	/* Configures the registry host certificate. */
+	// +optional
+	Ca []ClusterCa `json:"ca,omitempty"`
+
+	/* Represent the capabilities of the registry host, specifying what operations a host is capable of performing. */
+	// +optional
+	Capabilities []string `json:"capabilities,omitempty"`
+
+	/* Configures the registry host client certificate and key. */
+	// +optional
+	Client []ClusterClient `json:"client,omitempty"`
+
+	/* Specifies the maximum duration allowed for a connection attempt to complete. */
+	// +optional
+	DialTimeout *string `json:"dialTimeout,omitempty"`
+
+	/* Configures the registry host headers. */
+	// +optional
+	Header []ClusterHeader `json:"header,omitempty"`
+
+	/* Configures the registry host/mirror. */
+	// +optional
+	Host *string `json:"host,omitempty"`
+
+	/* Indicate the host's API root endpoint is defined in the URL path rather than by the API specification. */
+	// +optional
+	OverridePath *bool `json:"overridePath,omitempty"`
 }
 
 type ClusterHttpLoadBalancing struct {
@@ -496,6 +588,12 @@ type ClusterIstioConfig struct {
 
 type ClusterKalmConfig struct {
 	Enabled bool `json:"enabled"`
+}
+
+type ClusterKey struct {
+	/* Reference to SecretManagerSecretVersion for the client key. */
+	// +optional
+	SecretRef *v1alpha1.ResourceRef `json:"secretRef,omitempty"`
 }
 
 type ClusterKubeletConfig struct {
@@ -697,6 +795,10 @@ type ClusterNodeConfig struct {
 	/* Immutable. Configuration for the confidential nodes feature, which makes nodes run on confidential VMs. Warning: This configuration can't be changed (or added/removed) after pool creation without deleting and recreating the entire pool. */
 	// +optional
 	ConfidentialNodes *ClusterConfidentialNodes `json:"confidentialNodes,omitempty"`
+
+	/* Parameters for containerd customization. */
+	// +optional
+	ContainerdConfig *ClusterContainerdConfig `json:"containerdConfig,omitempty"`
 
 	/* Immutable. Size of the disk attached to each node, specified in GB. The smallest allowed disk size is 10GB. */
 	// +optional
@@ -918,6 +1020,16 @@ type ClusterPrivateClusterConfig struct {
 	PublicEndpoint *string `json:"publicEndpoint,omitempty"`
 }
 
+type ClusterPrivateRegistryAccessConfig struct {
+	/* Private registry access configuration. */
+	// +optional
+	CertificateAuthorityDomainConfig []ClusterCertificateAuthorityDomainConfig `json:"certificateAuthorityDomainConfig,omitempty"`
+
+	/* Private registry access is enabled. */
+	// +optional
+	Enabled *bool `json:"enabled,omitempty"`
+}
+
 type ClusterProtectConfig struct {
 	/* WorkloadConfig defines which actions are enabled for a cluster's workload configurations. */
 	// +optional
@@ -947,6 +1059,16 @@ type ClusterRecurringWindow struct {
 	Recurrence string `json:"recurrence"`
 
 	StartTime string `json:"startTime"`
+}
+
+type ClusterRegistryHosts struct {
+	/* Configures a list of host-specific configurations for the server. */
+	// +optional
+	Hosts []ClusterHosts `json:"hosts,omitempty"`
+
+	/* Defines the host name of the registry server. */
+	// +optional
+	Server *string `json:"server,omitempty"`
 }
 
 type ClusterReleaseChannel struct {
@@ -1117,6 +1239,12 @@ type ClusterWorkloadMetadataConfig struct {
 	NodeMetadata *string `json:"nodeMetadata,omitempty"`
 }
 
+type ClusterWritableCgroups struct {
+	/* Whether writable cgroups are enabled. */
+	// +optional
+	Enabled *bool `json:"enabled,omitempty"`
+}
+
 type ContainerClusterSpec struct {
 	/* The configuration for addons supported by GKE. */
 	// +optional
@@ -1242,7 +1370,7 @@ type ContainerClusterSpec struct {
 	// +optional
 	IdentityServiceConfig *ClusterIdentityServiceConfig `json:"identityServiceConfig,omitempty"`
 
-	/* In-transit encryption options for the cluster. Options are IN_TRANSIT_ENCRYPTION_CONFIG_UNSPECIFIED, IN_TRANSIT_ENCRYPTION_DISABLED, IN_TRANSIT_ENCRYPTION_INTER_NODE_TRANSPARENT */
+	/* In-transit encryption options for the cluster. Possible values are IN_TRANSIT_ENCRYPTION_CONFIG_UNSPECIFIED, IN_TRANSIT_ENCRYPTION_DISABLED, IN_TRANSIT_ENCRYPTION_INTER_NODE_TRANSPARENT */
 	// +optional
 	InTransitEncryptionConfig *string `json:"inTransitEncryptionConfig,omitempty"`
 

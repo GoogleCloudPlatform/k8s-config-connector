@@ -148,6 +148,7 @@ import (
 	gkemulticloudv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/gkemulticloud/v1alpha1"
 	grafeasv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/grafeas/v1alpha1"
 	healthcarev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/healthcare/v1alpha1"
+	hypercomputeclusterv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/hypercomputecluster/v1alpha1"
 	iamv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/iam/v1alpha1"
 	iamv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/iam/v1beta1"
 	iapv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/iap/v1beta1"
@@ -156,6 +157,7 @@ import (
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/k8s/v1alpha1"
 	kmsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/kms/v1alpha1"
 	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/kms/v1beta1"
+	licensemanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/licensemanager/v1alpha1"
 	livestreamv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/livestream/v1alpha1"
 	loggingv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/logging/v1beta1"
 	managedkafkav1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/managedkafka/v1alpha1"
@@ -202,6 +204,7 @@ import (
 	secretmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/secretmanager/v1beta1"
 	securesourcemanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/securesourcemanager/v1beta1"
 	securitycenterv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/securitycenter/v1alpha1"
+	securitycentermanagementv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/securitycentermanagement/v1alpha1"
 	servicedirectoryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/servicedirectory/v1beta1"
 	servicenetworkingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/servicenetworking/v1alpha1"
 	servicenetworkingv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/servicenetworking/v1beta1"
@@ -221,6 +224,7 @@ import (
 	tagsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/tags/v1beta1"
 	testingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/testing/v1alpha1"
 	tpuv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/tpu/v1alpha1"
+	transcoderv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/transcoder/v1alpha1"
 	translatev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/translate/v1alpha1"
 	vectorsearchv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vectorsearch/v1alpha1"
 	vertexaiv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/vertexai/v1alpha1"
@@ -365,6 +369,7 @@ type Interface interface {
 	GkemulticloudV1alpha1() gkemulticloudv1alpha1.GkemulticloudV1alpha1Interface
 	GrafeasV1alpha1() grafeasv1alpha1.GrafeasV1alpha1Interface
 	HealthcareV1alpha1() healthcarev1alpha1.HealthcareV1alpha1Interface
+	HypercomputeclusterV1alpha1() hypercomputeclusterv1alpha1.HypercomputeclusterV1alpha1Interface
 	IamV1alpha1() iamv1alpha1.IamV1alpha1Interface
 	IamV1beta1() iamv1beta1.IamV1beta1Interface
 	IapV1beta1() iapv1beta1.IapV1beta1Interface
@@ -373,6 +378,7 @@ type Interface interface {
 	K8sV1alpha1() k8sv1alpha1.K8sV1alpha1Interface
 	KmsV1alpha1() kmsv1alpha1.KmsV1alpha1Interface
 	KmsV1beta1() kmsv1beta1.KmsV1beta1Interface
+	LicensemanagerV1alpha1() licensemanagerv1alpha1.LicensemanagerV1alpha1Interface
 	LivestreamV1alpha1() livestreamv1alpha1.LivestreamV1alpha1Interface
 	LoggingV1beta1() loggingv1beta1.LoggingV1beta1Interface
 	ManagedkafkaV1alpha1() managedkafkav1alpha1.ManagedkafkaV1alpha1Interface
@@ -419,6 +425,7 @@ type Interface interface {
 	SecretmanagerV1beta1() secretmanagerv1beta1.SecretmanagerV1beta1Interface
 	SecuresourcemanagerV1beta1() securesourcemanagerv1beta1.SecuresourcemanagerV1beta1Interface
 	SecuritycenterV1alpha1() securitycenterv1alpha1.SecuritycenterV1alpha1Interface
+	SecuritycentermanagementV1alpha1() securitycentermanagementv1alpha1.SecuritycentermanagementV1alpha1Interface
 	ServicedirectoryV1beta1() servicedirectoryv1beta1.ServicedirectoryV1beta1Interface
 	ServicenetworkingV1alpha1() servicenetworkingv1alpha1.ServicenetworkingV1alpha1Interface
 	ServicenetworkingV1beta1() servicenetworkingv1beta1.ServicenetworkingV1beta1Interface
@@ -438,6 +445,7 @@ type Interface interface {
 	TagsV1beta1() tagsv1beta1.TagsV1beta1Interface
 	TestingV1alpha1() testingv1alpha1.TestingV1alpha1Interface
 	TpuV1alpha1() tpuv1alpha1.TpuV1alpha1Interface
+	TranscoderV1alpha1() transcoderv1alpha1.TranscoderV1alpha1Interface
 	TranslateV1alpha1() translatev1alpha1.TranslateV1alpha1Interface
 	VectorsearchV1alpha1() vectorsearchv1alpha1.VectorsearchV1alpha1Interface
 	VertexaiV1alpha1() vertexaiv1alpha1.VertexaiV1alpha1Interface
@@ -580,6 +588,7 @@ type Clientset struct {
 	gkemulticloudV1alpha1            *gkemulticloudv1alpha1.GkemulticloudV1alpha1Client
 	grafeasV1alpha1                  *grafeasv1alpha1.GrafeasV1alpha1Client
 	healthcareV1alpha1               *healthcarev1alpha1.HealthcareV1alpha1Client
+	hypercomputeclusterV1alpha1      *hypercomputeclusterv1alpha1.HypercomputeclusterV1alpha1Client
 	iamV1alpha1                      *iamv1alpha1.IamV1alpha1Client
 	iamV1beta1                       *iamv1beta1.IamV1beta1Client
 	iapV1beta1                       *iapv1beta1.IapV1beta1Client
@@ -588,6 +597,7 @@ type Clientset struct {
 	k8sV1alpha1                      *k8sv1alpha1.K8sV1alpha1Client
 	kmsV1alpha1                      *kmsv1alpha1.KmsV1alpha1Client
 	kmsV1beta1                       *kmsv1beta1.KmsV1beta1Client
+	licensemanagerV1alpha1           *licensemanagerv1alpha1.LicensemanagerV1alpha1Client
 	livestreamV1alpha1               *livestreamv1alpha1.LivestreamV1alpha1Client
 	loggingV1beta1                   *loggingv1beta1.LoggingV1beta1Client
 	managedkafkaV1alpha1             *managedkafkav1alpha1.ManagedkafkaV1alpha1Client
@@ -634,6 +644,7 @@ type Clientset struct {
 	secretmanagerV1beta1             *secretmanagerv1beta1.SecretmanagerV1beta1Client
 	securesourcemanagerV1beta1       *securesourcemanagerv1beta1.SecuresourcemanagerV1beta1Client
 	securitycenterV1alpha1           *securitycenterv1alpha1.SecuritycenterV1alpha1Client
+	securitycentermanagementV1alpha1 *securitycentermanagementv1alpha1.SecuritycentermanagementV1alpha1Client
 	servicedirectoryV1beta1          *servicedirectoryv1beta1.ServicedirectoryV1beta1Client
 	servicenetworkingV1alpha1        *servicenetworkingv1alpha1.ServicenetworkingV1alpha1Client
 	servicenetworkingV1beta1         *servicenetworkingv1beta1.ServicenetworkingV1beta1Client
@@ -653,6 +664,7 @@ type Clientset struct {
 	tagsV1beta1                      *tagsv1beta1.TagsV1beta1Client
 	testingV1alpha1                  *testingv1alpha1.TestingV1alpha1Client
 	tpuV1alpha1                      *tpuv1alpha1.TpuV1alpha1Client
+	transcoderV1alpha1               *transcoderv1alpha1.TranscoderV1alpha1Client
 	translateV1alpha1                *translatev1alpha1.TranslateV1alpha1Client
 	vectorsearchV1alpha1             *vectorsearchv1alpha1.VectorsearchV1alpha1Client
 	vertexaiV1alpha1                 *vertexaiv1alpha1.VertexaiV1alpha1Client
@@ -1284,6 +1296,11 @@ func (c *Clientset) HealthcareV1alpha1() healthcarev1alpha1.HealthcareV1alpha1In
 	return c.healthcareV1alpha1
 }
 
+// HypercomputeclusterV1alpha1 retrieves the HypercomputeclusterV1alpha1Client
+func (c *Clientset) HypercomputeclusterV1alpha1() hypercomputeclusterv1alpha1.HypercomputeclusterV1alpha1Interface {
+	return c.hypercomputeclusterV1alpha1
+}
+
 // IamV1alpha1 retrieves the IamV1alpha1Client
 func (c *Clientset) IamV1alpha1() iamv1alpha1.IamV1alpha1Interface {
 	return c.iamV1alpha1
@@ -1322,6 +1339,11 @@ func (c *Clientset) KmsV1alpha1() kmsv1alpha1.KmsV1alpha1Interface {
 // KmsV1beta1 retrieves the KmsV1beta1Client
 func (c *Clientset) KmsV1beta1() kmsv1beta1.KmsV1beta1Interface {
 	return c.kmsV1beta1
+}
+
+// LicensemanagerV1alpha1 retrieves the LicensemanagerV1alpha1Client
+func (c *Clientset) LicensemanagerV1alpha1() licensemanagerv1alpha1.LicensemanagerV1alpha1Interface {
+	return c.licensemanagerV1alpha1
 }
 
 // LivestreamV1alpha1 retrieves the LivestreamV1alpha1Client
@@ -1554,6 +1576,11 @@ func (c *Clientset) SecuritycenterV1alpha1() securitycenterv1alpha1.Securitycent
 	return c.securitycenterV1alpha1
 }
 
+// SecuritycentermanagementV1alpha1 retrieves the SecuritycentermanagementV1alpha1Client
+func (c *Clientset) SecuritycentermanagementV1alpha1() securitycentermanagementv1alpha1.SecuritycentermanagementV1alpha1Interface {
+	return c.securitycentermanagementV1alpha1
+}
+
 // ServicedirectoryV1beta1 retrieves the ServicedirectoryV1beta1Client
 func (c *Clientset) ServicedirectoryV1beta1() servicedirectoryv1beta1.ServicedirectoryV1beta1Interface {
 	return c.servicedirectoryV1beta1
@@ -1647,6 +1674,11 @@ func (c *Clientset) TestingV1alpha1() testingv1alpha1.TestingV1alpha1Interface {
 // TpuV1alpha1 retrieves the TpuV1alpha1Client
 func (c *Clientset) TpuV1alpha1() tpuv1alpha1.TpuV1alpha1Interface {
 	return c.tpuV1alpha1
+}
+
+// TranscoderV1alpha1 retrieves the TranscoderV1alpha1Client
+func (c *Clientset) TranscoderV1alpha1() transcoderv1alpha1.TranscoderV1alpha1Interface {
+	return c.transcoderV1alpha1
 }
 
 // TranslateV1alpha1 retrieves the TranslateV1alpha1Client
@@ -2255,6 +2287,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.hypercomputeclusterV1alpha1, err = hypercomputeclusterv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.iamV1alpha1, err = iamv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -2284,6 +2320,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 		return nil, err
 	}
 	cs.kmsV1beta1, err = kmsv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
+	cs.licensemanagerV1alpha1, err = licensemanagerv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
@@ -2471,6 +2511,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.securitycentermanagementV1alpha1, err = securitycentermanagementv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.servicedirectoryV1beta1, err = servicedirectoryv1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -2544,6 +2588,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 		return nil, err
 	}
 	cs.tpuV1alpha1, err = tpuv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
+	cs.transcoderV1alpha1, err = transcoderv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
 	}
@@ -2747,6 +2795,7 @@ func New(c rest.Interface) *Clientset {
 	cs.gkemulticloudV1alpha1 = gkemulticloudv1alpha1.New(c)
 	cs.grafeasV1alpha1 = grafeasv1alpha1.New(c)
 	cs.healthcareV1alpha1 = healthcarev1alpha1.New(c)
+	cs.hypercomputeclusterV1alpha1 = hypercomputeclusterv1alpha1.New(c)
 	cs.iamV1alpha1 = iamv1alpha1.New(c)
 	cs.iamV1beta1 = iamv1beta1.New(c)
 	cs.iapV1beta1 = iapv1beta1.New(c)
@@ -2755,6 +2804,7 @@ func New(c rest.Interface) *Clientset {
 	cs.k8sV1alpha1 = k8sv1alpha1.New(c)
 	cs.kmsV1alpha1 = kmsv1alpha1.New(c)
 	cs.kmsV1beta1 = kmsv1beta1.New(c)
+	cs.licensemanagerV1alpha1 = licensemanagerv1alpha1.New(c)
 	cs.livestreamV1alpha1 = livestreamv1alpha1.New(c)
 	cs.loggingV1beta1 = loggingv1beta1.New(c)
 	cs.managedkafkaV1alpha1 = managedkafkav1alpha1.New(c)
@@ -2801,6 +2851,7 @@ func New(c rest.Interface) *Clientset {
 	cs.secretmanagerV1beta1 = secretmanagerv1beta1.New(c)
 	cs.securesourcemanagerV1beta1 = securesourcemanagerv1beta1.New(c)
 	cs.securitycenterV1alpha1 = securitycenterv1alpha1.New(c)
+	cs.securitycentermanagementV1alpha1 = securitycentermanagementv1alpha1.New(c)
 	cs.servicedirectoryV1beta1 = servicedirectoryv1beta1.New(c)
 	cs.servicenetworkingV1alpha1 = servicenetworkingv1alpha1.New(c)
 	cs.servicenetworkingV1beta1 = servicenetworkingv1beta1.New(c)
@@ -2820,6 +2871,7 @@ func New(c rest.Interface) *Clientset {
 	cs.tagsV1beta1 = tagsv1beta1.New(c)
 	cs.testingV1alpha1 = testingv1alpha1.New(c)
 	cs.tpuV1alpha1 = tpuv1alpha1.New(c)
+	cs.transcoderV1alpha1 = transcoderv1alpha1.New(c)
 	cs.translateV1alpha1 = translatev1alpha1.New(c)
 	cs.vectorsearchV1alpha1 = vectorsearchv1alpha1.New(c)
 	cs.vertexaiV1alpha1 = vertexaiv1alpha1.New(c)

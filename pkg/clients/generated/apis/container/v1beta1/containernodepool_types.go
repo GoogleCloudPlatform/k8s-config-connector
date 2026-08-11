@@ -103,6 +103,38 @@ type NodepoolBlueGreenSettings struct {
 	StandardRolloutPolicy NodepoolStandardRolloutPolicy `json:"standardRolloutPolicy"`
 }
 
+type NodepoolCa struct {
+	/* Reference to SecretManagerSecretVersion for the CA certificate. */
+	// +optional
+	SecretRef *v1alpha1.ResourceRef `json:"secretRef,omitempty"`
+}
+
+type NodepoolCert struct {
+	/* Reference to SecretManagerSecretVersion for the client certificate. */
+	// +optional
+	SecretRef *v1alpha1.ResourceRef `json:"secretRef,omitempty"`
+}
+
+type NodepoolCertificateAuthorityDomainConfig struct {
+	/* List of fully qualified domain names (FQDN). Specifying port is supported. Wildcards are NOT supported. */
+	// +optional
+	Fqdns []string `json:"fqdns,omitempty"`
+
+	/* Google Secret Manager (GCP) certificate configuration. */
+	// +optional
+	GcpSecretManagerCertificateConfig *NodepoolGcpSecretManagerCertificateConfig `json:"gcpSecretManagerCertificateConfig,omitempty"`
+}
+
+type NodepoolClient struct {
+	/* Configures the client certificate. */
+	// +optional
+	Cert *NodepoolCert `json:"cert,omitempty"`
+
+	/* Configures the client private key. */
+	// +optional
+	Key *NodepoolKey `json:"key,omitempty"`
+}
+
 type NodepoolConfidentialNodes struct {
 	/* Immutable. Defines the type of technology used by the confidential node. */
 	// +optional
@@ -110,6 +142,20 @@ type NodepoolConfidentialNodes struct {
 
 	/* Immutable. Whether Confidential Nodes feature is enabled for all nodes in this pool. */
 	Enabled bool `json:"enabled"`
+}
+
+type NodepoolContainerdConfig struct {
+	/* Parameters for private container registries configuration. */
+	// +optional
+	PrivateRegistryAccessConfig *NodepoolPrivateRegistryAccessConfig `json:"privateRegistryAccessConfig,omitempty"`
+
+	/* Configures containerd registry host configuration. Each registryHosts entry represents a hosts.toml file. */
+	// +optional
+	RegistryHosts []NodepoolRegistryHosts `json:"registryHosts,omitempty"`
+
+	/* Parameters for writable cgroups configuration. */
+	// +optional
+	WritableCgroups *NodepoolWritableCgroups `json:"writableCgroups,omitempty"`
 }
 
 type NodepoolEphemeralStorageConfig struct {
@@ -134,6 +180,12 @@ type NodepoolFastSocket struct {
 type NodepoolGcfsConfig struct {
 	/* Whether or not GCFS is enabled. */
 	Enabled bool `json:"enabled"`
+}
+
+type NodepoolGcpSecretManagerCertificateConfig struct {
+	/* SecretRef is a reference to a SecretManagerSecretVersion resource. */
+	// +optional
+	SecretRef *v1alpha1.ResourceRef `json:"secretRef,omitempty"`
 }
 
 type NodepoolGpuDriverInstallationConfig struct {
@@ -174,9 +226,55 @@ type NodepoolGvnic struct {
 	Enabled bool `json:"enabled"`
 }
 
+type NodepoolHeader struct {
+	/* Configures the header key. */
+	// +optional
+	Key *string `json:"key,omitempty"`
+
+	/* Configures the header value. */
+	// +optional
+	Value []string `json:"value,omitempty"`
+}
+
 type NodepoolHostMaintenancePolicy struct {
 	/* Immutable. . */
 	MaintenanceInterval string `json:"maintenanceInterval"`
+}
+
+type NodepoolHosts struct {
+	/* Configures the registry host certificate. */
+	// +optional
+	Ca []NodepoolCa `json:"ca,omitempty"`
+
+	/* Represent the capabilities of the registry host, specifying what operations a host is capable of performing. */
+	// +optional
+	Capabilities []string `json:"capabilities,omitempty"`
+
+	/* Configures the registry host client certificate and key. */
+	// +optional
+	Client []NodepoolClient `json:"client,omitempty"`
+
+	/* Specifies the maximum duration allowed for a connection attempt to complete. */
+	// +optional
+	DialTimeout *string `json:"dialTimeout,omitempty"`
+
+	/* Configures the registry host headers. */
+	// +optional
+	Header []NodepoolHeader `json:"header,omitempty"`
+
+	/* Configures the registry host/mirror. */
+	// +optional
+	Host *string `json:"host,omitempty"`
+
+	/* Indicate the host's API root endpoint is defined in the URL path rather than by the API specification. */
+	// +optional
+	OverridePath *bool `json:"overridePath,omitempty"`
+}
+
+type NodepoolKey struct {
+	/* Reference to SecretManagerSecretVersion for the client key. */
+	// +optional
+	SecretRef *v1alpha1.ResourceRef `json:"secretRef,omitempty"`
 }
 
 type NodepoolKubeletConfig struct {
@@ -294,6 +392,10 @@ type NodepoolNodeConfig struct {
 	/* Immutable. Configuration for the confidential nodes feature, which makes nodes run on confidential VMs. Warning: This configuration can't be changed (or added/removed) after pool creation without deleting and recreating the entire pool. */
 	// +optional
 	ConfidentialNodes *NodepoolConfidentialNodes `json:"confidentialNodes,omitempty"`
+
+	/* Parameters for containerd customization. */
+	// +optional
+	ContainerdConfig *NodepoolContainerdConfig `json:"containerdConfig,omitempty"`
 
 	/* Immutable. Size of the disk attached to each node, specified in GB. The smallest allowed disk size is 10GB. */
 	// +optional
@@ -448,10 +550,30 @@ type NodepoolPodCidrOverprovisionConfig struct {
 	Disabled bool `json:"disabled"`
 }
 
+type NodepoolPrivateRegistryAccessConfig struct {
+	/* Private registry access configuration. */
+	// +optional
+	CertificateAuthorityDomainConfig []NodepoolCertificateAuthorityDomainConfig `json:"certificateAuthorityDomainConfig,omitempty"`
+
+	/* Private registry access is enabled. */
+	// +optional
+	Enabled *bool `json:"enabled,omitempty"`
+}
+
 type NodepoolQueuedProvisioning struct {
 	/* Immutable. Denotes that this node pool is QRM specific, meaning nodes can be only obtained through queuing via the Cluster Autoscaler ProvisioningRequest API. */
 	// +optional
 	Enabled *bool `json:"enabled,omitempty"`
+}
+
+type NodepoolRegistryHosts struct {
+	/* Configures a list of host-specific configurations for the server. */
+	// +optional
+	Hosts []NodepoolHosts `json:"hosts,omitempty"`
+
+	/* Defines the host name of the registry server. */
+	// +optional
+	Server *string `json:"server,omitempty"`
 }
 
 type NodepoolReservationAffinity struct {
@@ -544,6 +666,12 @@ type NodepoolWorkloadMetadataConfig struct {
 	/* DEPRECATED. Deprecated in favor of mode. NodeMetadata is the configuration for how to expose metadata to the workloads running on the node. */
 	// +optional
 	NodeMetadata *string `json:"nodeMetadata,omitempty"`
+}
+
+type NodepoolWritableCgroups struct {
+	/* Whether writable cgroups are enabled. */
+	// +optional
+	Enabled *bool `json:"enabled,omitempty"`
 }
 
 type ContainerNodePoolSpec struct {
