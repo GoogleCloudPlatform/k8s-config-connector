@@ -22,9 +22,9 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: projects/${projectId}/locations/us-central1/tensorboards/971917701419106304/experiments/vertexaitenexp-${uniqueId}
+  externalRef: projects/${projectId}/locations/us-central1/tensorboards/${tensorboardId}/experiments/vertexaitenexp-${uniqueId}
   observedGeneration: 1
   observedState:
     createTime: "1970-01-01T00:00:00Z"
-    name: projects/${projectNumber}/locations/us-central1/tensorboards/971917701419106304/experiments/vertexaitenexp-${uniqueId}
+    name: projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardId}/experiments/vertexaitenexp-${uniqueId}
     updateTime: "1970-01-01T00:00:00Z"
