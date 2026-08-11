@@ -34,6 +34,7 @@ func firestoreIndexFuzzer() fuzztesting.KRMFuzzer {
 	)
 
 	f.SpecField(".query_scope")
+	f.SpecField(".api_scope")
 	f.SpecField(".fields")
 
 	f.StatusField(".name")
@@ -41,7 +42,6 @@ func firestoreIndexFuzzer() fuzztesting.KRMFuzzer {
 	f.IdentityField(".database")
 	f.IdentityField(".collection")
 
-	f.Unimplemented_NotYetTriaged(".api_scope")
 	f.Unimplemented_NotYetTriaged(".state")
 	f.Unimplemented_NotYetTriaged(".fields[].order")
 	f.Unimplemented_NotYetTriaged(".fields[].vector_config")
