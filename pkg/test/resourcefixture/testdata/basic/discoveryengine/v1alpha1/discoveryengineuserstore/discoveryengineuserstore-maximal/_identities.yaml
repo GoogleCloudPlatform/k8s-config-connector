@@ -1,0 +1,12 @@
+- caisURL: //discoveryengine.googleapis.com/projects/${projectId}/locations/global/licenseConfigs/lic-${uniqueId}
+  group: discoveryengine.cnrm.cloud.google.com
+  kind: DiscoveryEngineLicenseConfig
+  name: licenseconfig-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
+- caisURL: //discoveryengine.googleapis.com/projects/${projectId}/locations/global/userStores/default_user_store
+  group: discoveryengine.cnrm.cloud.google.com
+  kind: DiscoveryEngineUserStore
+  name: userstore-max-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

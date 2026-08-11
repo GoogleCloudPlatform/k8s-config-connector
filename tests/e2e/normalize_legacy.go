@@ -647,6 +647,20 @@ func LegacyNormalize(t *testing.T, h *create.Harness, project testgcp.GCPProject
 	addReplacement("destroyTime", "2024-04-01T12:34:56.123456Z")
 	addReplacement("generateTime", "2024-04-01T12:34:56.123456Z")
 
+	// Specific to DiscoveryEngineUserStore
+	jsonMutators = append(jsonMutators, func(requestURL string, obj map[string]any) {
+		if strings.Contains(requestURL, "/userStores/default_user_store") {
+			// Normalize defaultLicenseConfig to a placeholder to prevent diff failures across test runs
+			if val, ok := obj["defaultLicenseConfig"].(string); ok {
+				tokens := strings.Split(val, "/")
+				if len(tokens) >= 2 && tokens[len(tokens)-2] == "licenseConfigs" {
+					tokens[len(tokens)-1] = "lic-${uniqueId}"
+					obj["defaultLicenseConfig"] = strings.Join(tokens, "/")
+				}
+			}
+		}
+	})
+
 	// Specific to KMS AutokeyConfig
 	jsonMutators = append(jsonMutators, func(requestURL string, obj map[string]any) {
 		if strings.Contains(requestURL, "/autokeyConfig") {
