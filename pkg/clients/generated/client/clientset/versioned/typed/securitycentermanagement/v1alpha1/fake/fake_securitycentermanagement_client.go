@@ -35,6 +35,10 @@ func (c *FakeSecuritycentermanagementV1alpha1) SecurityCenterManagementEventThre
 	return newFakeSecurityCenterManagementEventThreatDetectionCustomModules(c, namespace)
 }
 
+func (c *FakeSecuritycentermanagementV1alpha1) SecurityCenterManagementSecurityHealthAnalyticsCustomModules(namespace string) v1alpha1.SecurityCenterManagementSecurityHealthAnalyticsCustomModuleInterface {
+	return newFakeSecurityCenterManagementSecurityHealthAnalyticsCustomModules(c, namespace)
+}
+
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
 func (c *FakeSecuritycentermanagementV1alpha1) RESTClient() rest.Interface {

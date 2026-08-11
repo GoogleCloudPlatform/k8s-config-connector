@@ -32,6 +32,7 @@ import (
 type SecuritycentermanagementV1alpha1Interface interface {
 	RESTClient() rest.Interface
 	SecurityCenterManagementEventThreatDetectionCustomModulesGetter
+	SecurityCenterManagementSecurityHealthAnalyticsCustomModulesGetter
 }
 
 // SecuritycentermanagementV1alpha1Client is used to interact with features provided by the securitycentermanagement.cnrm.cloud.google.com group.
@@ -41,6 +42,10 @@ type SecuritycentermanagementV1alpha1Client struct {
 
 func (c *SecuritycentermanagementV1alpha1Client) SecurityCenterManagementEventThreatDetectionCustomModules(namespace string) SecurityCenterManagementEventThreatDetectionCustomModuleInterface {
 	return newSecurityCenterManagementEventThreatDetectionCustomModules(c, namespace)
+}
+
+func (c *SecuritycentermanagementV1alpha1Client) SecurityCenterManagementSecurityHealthAnalyticsCustomModules(namespace string) SecurityCenterManagementSecurityHealthAnalyticsCustomModuleInterface {
+	return newSecurityCenterManagementSecurityHealthAnalyticsCustomModules(c, namespace)
 }
 
 // NewForConfig creates a new SecuritycentermanagementV1alpha1Client for the given config.

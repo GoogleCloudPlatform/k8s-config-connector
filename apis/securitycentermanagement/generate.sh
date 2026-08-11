@@ -27,6 +27,7 @@ if [[ -z "${CONTROLLERBUILDER}" ]]; then
     CONTROLLERBUILDER="go run ${REPO_ROOT}/dev/tools/controllerbuilder"
   fi
 fi
+
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
@@ -35,7 +36,14 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.securitycentermanagement.v1 \
   --api-version securitycentermanagement.cnrm.cloud.google.com/v1alpha1 \
-  --resource SecurityCenterManagementEventThreatDetectionCustomModule:EventThreatDetectionCustomModule
+  --include-skipped-output \
+  --resource SecurityCenterManagementEventThreatDetectionCustomModule:EventThreatDetectionCustomModule \
+  --resource SecurityCenterManagementSecurityHealthAnalyticsCustomModule:SecurityHealthAnalyticsCustomModule
+
+${CONTROLLERBUILDER} generate-mapper \
+  --service google.cloud.securitycentermanagement.v1 \
+  --api-version securitycentermanagement.cnrm.cloud.google.com/v1alpha1 \
+  --include-skipped-output
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds

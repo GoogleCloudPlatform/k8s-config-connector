@@ -15,5 +15,5 @@
 // +k8s:openapi-gen=true
 // +k8s:deepcopy-gen=package,register
 // +groupName=securitycentermanagement.cnrm.cloud.google.com
-
+// +kcc:proto=google.cloud.securitycentermanagement.v1
 package v1alpha1
