@@ -17,6 +17,7 @@ package vertexaiextension
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/aiplatform/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
@@ -294,6 +295,10 @@ func compareExtension(ctx context.Context, actual, desired *pb.Extension) (*stru
 	populateDefaults(maskedActual)
 	populateDefaults(clonedDesired)
 
+	// Normalize project IDs/numbers in references to prevent unexpected diffs
+	normalizeReferences(maskedActual)
+	normalizeReferences(clonedDesired)
+
 	diffs, updateMask, err := common.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
 		return nil, nil, err
@@ -334,4 +339,39 @@ func isNumeric(s string) bool {
 		}
 	}
 	return len(s) > 0
+}
+
+func normalizeReferences(obj *pb.Extension) {
+	replaceProj := func(val string) string {
+		tokens := strings.Split(val, "/")
+		if len(tokens) > 1 && tokens[0] == "projects" {
+			tokens[1] = "dummy-project"
+			return strings.Join(tokens, "/")
+		}
+		return val
+	}
+
+	if obj.GetPrivateServiceConnectConfig() != nil {
+		sd := obj.GetPrivateServiceConnectConfig().GetServiceDirectory()
+		if sd != "" {
+			obj.PrivateServiceConnectConfig.ServiceDirectory = replaceProj(sd)
+		}
+	}
+	for _, example := range obj.GetToolUseExamples() {
+		if op := example.GetExtensionOperation(); op != nil {
+			ext := op.GetExtension()
+			if ext != "" {
+				op.Extension = replaceProj(ext)
+			}
+		}
+	}
+	if obj.GetRuntimeConfig() != nil && obj.GetRuntimeConfig().GetVertexAiSearchRuntimeConfig() != nil {
+		config := obj.GetRuntimeConfig().GetVertexAiSearchRuntimeConfig()
+		if config.GetEngineId() != "" {
+			config.EngineId = replaceProj(config.GetEngineId())
+		}
+		if config.GetServingConfigName() != "" {
+			config.ServingConfigName = replaceProj(config.GetServingConfigName())
+		}
+	}
 }

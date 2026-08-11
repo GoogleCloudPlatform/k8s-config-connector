@@ -15,6 +15,8 @@
 package mockaiplatform
 
 import (
+	"strings"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 )
 
@@ -24,4 +26,9 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
+	event.VisitResponseStringValues(func(path string, value string) {
+		if strings.Contains(value, "1234567890123456789") {
+			replacements.ReplaceStringValue("1234567890123456789", "${extensionID}")
+		}
+	})
 }

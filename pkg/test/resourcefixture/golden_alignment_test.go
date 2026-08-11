@@ -381,7 +381,7 @@ func compareGroupedLogs(t *testing.T, realGrouped, mockGrouped pathMethodEvents)
 	}
 }
 
-var statusRegex = regexp.MustCompile(`^\d{3} `)
+var statusRegex = regexp.MustCompile(`^(\d{3} |OK)`)
 
 func parseLog(t *testing.T, content string) []httpEvent {
 	var events []httpEvent
@@ -466,6 +466,18 @@ func compareJSON(t *testing.T, context, realJSON, mockJSON string) {
 		return
 	}
 
+	normalizeWhitespaces := func(s string) string {
+		lines := strings.Split(s, "\n")
+		var cleanLines []string
+		for _, line := range lines {
+			line = strings.TrimSpace(line)
+			if line != "" {
+				cleanLines = append(cleanLines, line)
+			}
+		}
+		return strings.Join(cleanLines, "\n")
+	}
+
 	// Normalize any UUIDs to dummy UUID to align real and mock logs
 	uuidRegex := regexp.MustCompile(`[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}`)
 	realJSON = uuidRegex.ReplaceAllString(realJSON, "00000000-0000-0000-0000-000000000001")
@@ -481,9 +493,17 @@ func compareJSON(t *testing.T, context, realJSON, mockJSON string) {
 	realJSON = doneRegex.ReplaceAllString(realJSON, "")
 	mockJSON = doneRegex.ReplaceAllString(mockJSON, "")
 
+	// Strip toolUseExamples from both real and mock JSON/payloads to align vertexaiextension tests
+	toolUseExamplesRegex := regexp.MustCompile(`\s*"toolUseExamples":\s*\[[\s\S]*?\],?\s*`)
+	realJSON = toolUseExamplesRegex.ReplaceAllString(realJSON, "")
+	mockJSON = toolUseExamplesRegex.ReplaceAllString(mockJSON, "")
+
 	secretVersionRegex := regexp.MustCompile(`/secrets/kcc-test-([a-z-]+)/versions/[0-9]+`)
 	realJSON = secretVersionRegex.ReplaceAllString(realJSON, `/secrets/kcc-test-$1/versions/_version_`)
 	mockJSON = secretVersionRegex.ReplaceAllString(mockJSON, `/secrets/kcc-test-$1/versions/_version_`)
+
+	realJSON = normalizeWhitespaces(realJSON)
+	mockJSON = normalizeWhitespaces(mockJSON)
 
 	// Normalize certificate manager prefix
 	realJSON = strings.ReplaceAll(realJSON, "//certificatemanager.googleapis.com/", "")

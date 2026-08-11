@@ -92,22 +92,45 @@ func (s *extensionRegistryService) ImportExtension(ctx context.Context, req *pb.
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
 
-	obj.Etag = computeEtag(obj)
-
 	// Set extension operations and other output-only fields if needed
 	// In the real GCP, extension operations are populated based on OpenAPI spec.
-	// For simplicity, we can populate a mock extension operation so that it returns something in E2E tests.
-	if len(obj.ExtensionOperations) == 0 {
+	if len(obj.ExtensionOperations) == 0 && obj.GetManifest() != nil {
+		operationID := "search"
+		openAPIYaml := obj.GetManifest().GetApiSpec().GetOpenApiYaml()
+		if openAPIYaml != "" {
+			lines := strings.Split(openAPIYaml, "\n")
+			for _, line := range lines {
+				line = strings.TrimSpace(line)
+				if strings.HasPrefix(line, "operationId:") {
+					opID := strings.TrimSpace(strings.TrimPrefix(line, "operationId:"))
+					opID = strings.Trim(opID, "\"'")
+					if opID != "" {
+						operationID = opID
+						break
+					}
+				}
+			}
+		}
+
+		desc := obj.GetManifest().GetDescription()
+		if desc != "" {
+			desc = desc + "\n\n"
+		} else {
+			desc = "A mock function parsed from OpenAPI spec."
+		}
+
 		obj.ExtensionOperations = []*pb.ExtensionOperation{
 			{
-				OperationId: "mock-operation",
+				OperationId: operationID,
 				FunctionDeclaration: &pb.FunctionDeclaration{
-					Name:        "mockFunction",
-					Description: "A mock function parsed from OpenAPI spec.",
+					Name:        operationID,
+					Description: desc,
 				},
 			},
 		}
 	}
+
+	normalizeProjectIDs(s.MockService, obj)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -160,13 +183,56 @@ func (s *extensionRegistryService) UpdateExtension(ctx context.Context, req *pb.
 	}
 
 	obj.UpdateTime = timestamppb.New(now)
-	obj.Etag = computeEtag(obj)
+
+	// Always update/regenerate ExtensionOperations based on the updated manifest
+	if obj.GetManifest() != nil {
+		operationID := "search"
+		openAPIYaml := obj.GetManifest().GetApiSpec().GetOpenApiYaml()
+		if openAPIYaml != "" {
+			lines := strings.Split(openAPIYaml, "\n")
+			for _, line := range lines {
+				line = strings.TrimSpace(line)
+				if strings.HasPrefix(line, "operationId:") {
+					opID := strings.TrimSpace(strings.TrimPrefix(line, "operationId:"))
+					opID = strings.Trim(opID, "\"'")
+					if opID != "" {
+						operationID = opID
+						break
+					}
+				}
+			}
+		}
+
+		desc := obj.GetManifest().GetDescription()
+		if desc != "" {
+			desc = desc + "\n\n"
+		} else {
+			desc = "A mock function parsed from OpenAPI spec."
+		}
+
+		obj.ExtensionOperations = []*pb.ExtensionOperation{
+			{
+				OperationId: operationID,
+				FunctionDeclaration: &pb.FunctionDeclaration{
+					Name:        operationID,
+					Description: desc,
+				},
+			},
+		}
+	}
+
+	normalizeProjectIDs(s.MockService, obj)
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	return obj, nil
+	response := proto.Clone(obj).(*pb.Extension)
+	response.CreateTime = nil
+	response.ExtensionOperations = nil
+	response.PrivateServiceConnectConfig = nil
+	response.ToolUseExamples = nil
+	return response, nil
 }
 
 func (s *extensionRegistryService) DeleteExtension(ctx context.Context, req *pb.DeleteExtensionRequest) (*longrunning.Operation, error) {
@@ -188,7 +254,7 @@ func (s *extensionRegistryService) DeleteExtension(ctx context.Context, req *pb.
 		CreateTime: timestamppb.New(now),
 		UpdateTime: timestamppb.New(now),
 	}
-	opPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
+	opPrefix := fmt.Sprintf("projects/%d/locations/%s", name.Project.Number, name.Location)
 	return s.operations.DoneLRO(ctx, opPrefix, op, &emptypb.Empty{})
 }
 
@@ -199,7 +265,7 @@ type ExtensionName struct {
 }
 
 func (n *ExtensionName) String() string {
-	return fmt.Sprintf("projects/%s/locations/%s/extensions/%s", n.Project.ID, n.Location, n.ExtensionID)
+	return fmt.Sprintf("projects/%d/locations/%s/extensions/%s", n.Project.Number, n.Location, n.ExtensionID)
 }
 
 func (s *MockService) parseExtensionName(name string) (*ExtensionName, error) {
@@ -226,4 +292,44 @@ func (s *MockService) parseExtensionName(name string) (*ExtensionName, error) {
 	} else {
 		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 	}
+}
+
+func normalizeProjectIDs(s *MockService, obj *pb.Extension) {
+	if obj.GetPrivateServiceConnectConfig() != nil {
+		sd := obj.GetPrivateServiceConnectConfig().GetServiceDirectory()
+		if sd != "" {
+			obj.PrivateServiceConnectConfig.ServiceDirectory = replaceProjectIDWithNumber(s, sd)
+		}
+	}
+	for _, example := range obj.GetToolUseExamples() {
+		if op := example.GetExtensionOperation(); op != nil {
+			if op.GetExtension() != "" {
+				op.Extension = replaceProjectIDWithNumber(s, op.GetExtension())
+			}
+		}
+	}
+	if obj.GetRuntimeConfig() != nil && obj.GetRuntimeConfig().GetVertexAiSearchRuntimeConfig() != nil {
+		config := obj.GetRuntimeConfig().GetVertexAiSearchRuntimeConfig()
+		if config.GetEngineId() != "" {
+			config.EngineId = replaceProjectIDWithNumber(s, config.GetEngineId())
+		}
+		if config.GetServingConfigName() != "" {
+			config.ServingConfigName = replaceProjectIDWithNumber(s, config.GetServingConfigName())
+		}
+	}
+}
+
+func replaceProjectIDWithNumber(s *MockService, val string) string {
+	tokens := strings.Split(val, "/")
+	if len(tokens) > 1 && tokens[0] == "projects" {
+		projectName, err := projects.ParseProjectName("projects/" + tokens[1])
+		if err == nil {
+			project, err := s.Projects.GetProject(projectName)
+			if err == nil {
+				tokens[1] = fmt.Sprintf("%d", project.Number)
+				return strings.Join(tokens, "/")
+			}
+		}
+	}
+	return val
 }

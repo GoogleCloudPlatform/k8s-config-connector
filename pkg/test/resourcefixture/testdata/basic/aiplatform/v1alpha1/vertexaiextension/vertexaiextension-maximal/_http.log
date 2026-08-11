@@ -22,7 +22,7 @@ GRPC /google.cloud.aiplatform.v1beta1.ExtensionRegistryService/ImportExtension
       },
       "authConfig": {
         "apiKeyConfig": {
-          "apiKeySecret": "projects/mock-project/secrets/my-api-key/versions/1",
+          "apiKeySecret": "projects/external-project/secrets/my-api-key/versions/1",
           "httpElementLocation": "HTTP_IN_HEADER",
           "name": "api_key"
         },
@@ -32,15 +32,15 @@ GRPC /google.cloud.aiplatform.v1beta1.ExtensionRegistryService/ImportExtension
       "name": "web-search-extension"
     },
     "privateServiceConnectConfig": {
-      "serviceDirectory": "projects/mock-project/locations/us-central1/namespaces/mock-namespace/services/mock-service"
+      "serviceDirectory": "projects/external-project/locations/us-central1/namespaces/mock-namespace/services/mock-service"
     },
     "runtimeConfig": {
       "defaultParams": {
         "foo": "bar"
       },
       "vertexAiSearchRuntimeConfig": {
-        "engineId": "projects/mock-project/locations/global/collections/default_collection/engines/mock-engine",
-        "servingConfigName": "projects/mock-project/locations/global/collections/default_collection/engines/mock-engine/servingConfigs/default_serving_config"
+        "engineId": "projects/external-project/locations/global/collections/default_collection/engines/mock-engine",
+        "servingConfigName": "projects/external-project/locations/global/collections/default_collection/engines/mock-engine/servingConfigs/default_serving_config"
       }
     },
     "toolUseExamples": [
@@ -135,7 +135,7 @@ OK
     },
     "authConfig": {
       "apiKeyConfig": {
-        "apiKeySecret": "projects/mock-project/secrets/my-api-key/versions/1",
+        "apiKeySecret": "projects/external-project/secrets/my-api-key/versions/1",
         "httpElementLocation": "HTTP_IN_HEADER",
         "name": "api_key"
       },
@@ -146,15 +146,15 @@ OK
   },
   "name": "projects/${projectNumber}/locations/us-central1/extensions/${extensionID}",
   "privateServiceConnectConfig": {
-    "serviceDirectory": "projects/mock-project/locations/us-central1/namespaces/mock-namespace/services/mock-service"
+    "serviceDirectory": "projects/external-project/locations/us-central1/namespaces/mock-namespace/services/mock-service"
   },
   "runtimeConfig": {
     "defaultParams": {
       "foo": "bar"
     },
     "vertexAiSearchRuntimeConfig": {
-      "engineId": "projects/mock-project/locations/global/collections/default_collection/engines/mock-engine",
-      "servingConfigName": "projects/mock-project/locations/global/collections/default_collection/engines/mock-engine/servingConfigs/default_serving_config"
+      "engineId": "projects/external-project/locations/global/collections/default_collection/engines/mock-engine",
+      "servingConfigName": "projects/external-project/locations/global/collections/default_collection/engines/mock-engine/servingConfigs/default_serving_config"
     }
   },
   "toolUseExamples": [
@@ -209,7 +209,7 @@ OK
     },
     "authConfig": {
       "apiKeyConfig": {
-        "apiKeySecret": "projects/mock-project/secrets/my-api-key/versions/1",
+        "apiKeySecret": "projects/external-project/secrets/my-api-key/versions/1",
         "httpElementLocation": "HTTP_IN_HEADER",
         "name": "api_key"
       },
@@ -220,15 +220,15 @@ OK
   },
   "name": "projects/${projectNumber}/locations/us-central1/extensions/${extensionID}",
   "privateServiceConnectConfig": {
-    "serviceDirectory": "projects/mock-project/locations/us-central1/namespaces/mock-namespace/services/mock-service"
+    "serviceDirectory": "projects/external-project/locations/us-central1/namespaces/mock-namespace/services/mock-service"
   },
   "runtimeConfig": {
     "defaultParams": {
       "foo": "bar"
     },
     "vertexAiSearchRuntimeConfig": {
-      "engineId": "projects/mock-project/locations/global/collections/default_collection/engines/mock-engine",
-      "servingConfigName": "projects/mock-project/locations/global/collections/default_collection/engines/mock-engine/servingConfigs/default_serving_config"
+      "engineId": "projects/external-project/locations/global/collections/default_collection/engines/mock-engine",
+      "servingConfigName": "projects/external-project/locations/global/collections/default_collection/engines/mock-engine/servingConfigs/default_serving_config"
     }
   },
   "toolUseExamples": [
@@ -265,7 +265,7 @@ GRPC /google.cloud.aiplatform.v1beta1.ExtensionRegistryService/UpdateExtension
       },
       "authConfig": {
         "apiKeyConfig": {
-          "apiKeySecret": "projects/mock-project/secrets/my-api-key/versions/1",
+          "apiKeySecret": "projects/external-project/secrets/my-api-key/versions/1",
           "httpElementLocation": "HTTP_IN_HEADER",
           "name": "api_key"
         },
@@ -276,15 +276,15 @@ GRPC /google.cloud.aiplatform.v1beta1.ExtensionRegistryService/UpdateExtension
     },
     "name": "projects/${projectNumber}/locations/us-central1/extensions/${extensionID}",
     "privateServiceConnectConfig": {
-      "serviceDirectory": "projects/mock-project/locations/us-central1/namespaces/mock-namespace/services/mock-service"
+      "serviceDirectory": "projects/external-project/locations/us-central1/namespaces/mock-namespace/services/mock-service"
     },
     "runtimeConfig": {
       "defaultParams": {
         "foo": "baz"
       },
       "vertexAiSearchRuntimeConfig": {
-        "engineId": "projects/mock-project/locations/global/collections/default_collection/engines/mock-engine",
-        "servingConfigName": "projects/mock-project/locations/global/collections/default_collection/engines/mock-engine/servingConfigs/default_serving_config"
+        "engineId": "projects/external-project/locations/global/collections/default_collection/engines/mock-engine",
+        "servingConfigName": "projects/external-project/locations/global/collections/default_collection/engines/mock-engine/servingConfigs/default_serving_config"
       }
     },
     "toolUseExamples": [
@@ -319,7 +319,7 @@ OK
     },
     "authConfig": {
       "apiKeyConfig": {
-        "apiKeySecret": "projects/mock-project/secrets/my-api-key/versions/1",
+        "apiKeySecret": "projects/external-project/secrets/my-api-key/versions/1",
         "httpElementLocation": "HTTP_IN_HEADER",
         "name": "api_key"
       },
@@ -334,8 +334,8 @@ OK
       "foo": "baz"
     },
     "vertexAiSearchRuntimeConfig": {
-      "engineId": "projects/mock-project/locations/global/collections/default_collection/engines/mock-engine",
-      "servingConfigName": "projects/mock-project/locations/global/collections/default_collection/engines/mock-engine/servingConfigs/default_serving_config"
+      "engineId": "projects/external-project/locations/global/collections/default_collection/engines/mock-engine",
+      "servingConfigName": "projects/external-project/locations/global/collections/default_collection/engines/mock-engine/servingConfigs/default_serving_config"
     }
   },
   "toolUseExamples": [
@@ -390,7 +390,7 @@ OK
     },
     "authConfig": {
       "apiKeyConfig": {
-        "apiKeySecret": "projects/mock-project/secrets/my-api-key/versions/1",
+        "apiKeySecret": "projects/external-project/secrets/my-api-key/versions/1",
         "httpElementLocation": "HTTP_IN_HEADER",
         "name": "api_key"
       },
@@ -401,15 +401,15 @@ OK
   },
   "name": "projects/${projectNumber}/locations/us-central1/extensions/${extensionID}",
   "privateServiceConnectConfig": {
-    "serviceDirectory": "projects/mock-project/locations/us-central1/namespaces/mock-namespace/services/mock-service"
+    "serviceDirectory": "projects/external-project/locations/us-central1/namespaces/mock-namespace/services/mock-service"
   },
   "runtimeConfig": {
     "defaultParams": {
       "foo": "baz"
     },
     "vertexAiSearchRuntimeConfig": {
-      "engineId": "projects/mock-project/locations/global/collections/default_collection/engines/mock-engine",
-      "servingConfigName": "projects/mock-project/locations/global/collections/default_collection/engines/mock-engine/servingConfigs/default_serving_config"
+      "engineId": "projects/external-project/locations/global/collections/default_collection/engines/mock-engine",
+      "servingConfigName": "projects/external-project/locations/global/collections/default_collection/engines/mock-engine/servingConfigs/default_serving_config"
     }
   },
   "toolUseExamples": [
@@ -464,7 +464,7 @@ OK
     },
     "authConfig": {
       "apiKeyConfig": {
-        "apiKeySecret": "projects/mock-project/secrets/my-api-key/versions/1",
+        "apiKeySecret": "projects/external-project/secrets/my-api-key/versions/1",
         "httpElementLocation": "HTTP_IN_HEADER",
         "name": "api_key"
       },
@@ -475,15 +475,15 @@ OK
   },
   "name": "projects/${projectNumber}/locations/us-central1/extensions/${extensionID}",
   "privateServiceConnectConfig": {
-    "serviceDirectory": "projects/mock-project/locations/us-central1/namespaces/mock-namespace/services/mock-service"
+    "serviceDirectory": "projects/external-project/locations/us-central1/namespaces/mock-namespace/services/mock-service"
   },
   "runtimeConfig": {
     "defaultParams": {
       "foo": "baz"
     },
     "vertexAiSearchRuntimeConfig": {
-      "engineId": "projects/mock-project/locations/global/collections/default_collection/engines/mock-engine",
-      "servingConfigName": "projects/mock-project/locations/global/collections/default_collection/engines/mock-engine/servingConfigs/default_serving_config"
+      "engineId": "projects/external-project/locations/global/collections/default_collection/engines/mock-engine",
+      "servingConfigName": "projects/external-project/locations/global/collections/default_collection/engines/mock-engine/servingConfigs/default_serving_config"
     }
   },
   "toolUseExamples": [
@@ -538,7 +538,7 @@ OK
     },
     "authConfig": {
       "apiKeyConfig": {
-        "apiKeySecret": "projects/mock-project/secrets/my-api-key/versions/1",
+        "apiKeySecret": "projects/external-project/secrets/my-api-key/versions/1",
         "httpElementLocation": "HTTP_IN_HEADER",
         "name": "api_key"
       },
@@ -549,15 +549,15 @@ OK
   },
   "name": "projects/${projectNumber}/locations/us-central1/extensions/${extensionID}",
   "privateServiceConnectConfig": {
-    "serviceDirectory": "projects/mock-project/locations/us-central1/namespaces/mock-namespace/services/mock-service"
+    "serviceDirectory": "projects/external-project/locations/us-central1/namespaces/mock-namespace/services/mock-service"
   },
   "runtimeConfig": {
     "defaultParams": {
       "foo": "baz"
     },
     "vertexAiSearchRuntimeConfig": {
-      "engineId": "projects/mock-project/locations/global/collections/default_collection/engines/mock-engine",
-      "servingConfigName": "projects/mock-project/locations/global/collections/default_collection/engines/mock-engine/servingConfigs/default_serving_config"
+      "engineId": "projects/external-project/locations/global/collections/default_collection/engines/mock-engine",
+      "servingConfigName": "projects/external-project/locations/global/collections/default_collection/engines/mock-engine/servingConfigs/default_serving_config"
     }
   },
   "toolUseExamples": [

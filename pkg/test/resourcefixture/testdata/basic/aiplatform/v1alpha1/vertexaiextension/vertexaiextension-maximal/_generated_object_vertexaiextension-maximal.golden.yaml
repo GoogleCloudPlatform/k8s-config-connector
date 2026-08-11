@@ -32,7 +32,7 @@ spec:
     authConfig:
       apiKeyConfig:
         apiKeySecretRef:
-          external: projects/mock-project/secrets/my-api-key/versions/1
+          external: projects/external-project/secrets/my-api-key/versions/1
         httpElementLocation: HTTP_IN_HEADER
         name: api_key
       authType: API_KEY_AUTH
@@ -40,7 +40,7 @@ spec:
     name: web-search-extension
   privateServiceConnectConfig:
     serviceDirectoryRef:
-      external: projects/mock-project/locations/us-central1/namespaces/mock-namespace/services/mock-service
+      external: projects/external-project/locations/us-central1/namespaces/mock-namespace/services/mock-service
   projectRef:
     external: ${projectId}
   runtimeConfig:
@@ -53,9 +53,9 @@ spec:
       foo: baz
     vertexAISearchRuntimeConfig:
       engineRef:
-        external: projects/mock-project/locations/global/collections/default_collection/engines/mock-engine
+        external: projects/external-project/locations/global/collections/default_collection/engines/mock-engine
       servingConfigRef:
-        external: projects/mock-project/locations/global/collections/default_collection/engines/mock-engine/servingConfigs/default_serving_config
+        external: projects/external-project/locations/global/collections/default_collection/engines/mock-engine/servingConfigs/default_serving_config
   toolUseExamples:
   - displayName: Search Example Updated
     extensionOperation:

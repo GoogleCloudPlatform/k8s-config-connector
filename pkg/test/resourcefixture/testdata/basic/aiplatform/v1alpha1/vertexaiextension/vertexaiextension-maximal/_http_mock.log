@@ -22,7 +22,7 @@ GRPC /google.cloud.aiplatform.v1beta1.ExtensionRegistryService/ImportExtension
       },
       "authConfig": {
         "apiKeyConfig": {
-          "apiKeySecret": "projects/${projectId}/secrets/my-api-key/versions/1",
+          "apiKeySecret": "projects/external-project/secrets/my-api-key/versions/1",
           "httpElementLocation": "HTTP_IN_HEADER",
           "name": "api_key"
         },
@@ -31,17 +31,16 @@ GRPC /google.cloud.aiplatform.v1beta1.ExtensionRegistryService/ImportExtension
       "description": "A comprehensive web search extension",
       "name": "web-search-extension"
     },
-    "name": "projects/${projectId}/locations/us-central1/extensions/vertexaiextension-maximal-${uniqueId}",
     "privateServiceConnectConfig": {
-      "serviceDirectory": "projects/${projectId}/locations/us-central1/namespaces/mock-namespace/services/mock-service"
+      "serviceDirectory": "projects/external-project/locations/us-central1/namespaces/mock-namespace/services/mock-service"
     },
     "runtimeConfig": {
       "defaultParams": {
         "foo": "bar"
       },
       "vertexAiSearchRuntimeConfig": {
-        "engineId": "projects/${projectId}/locations/global/collections/default_collection/engines/mock-engine",
-        "servingConfigName": "projects/${projectId}/locations/global/collections/default_collection/engines/mock-engine/servingConfigs/default_serving_config"
+        "engineId": "projects/external-project/locations/global/collections/default_collection/engines/mock-engine",
+        "servingConfigName": "projects/external-project/locations/global/collections/default_collection/engines/mock-engine/servingConfigs/default_serving_config"
       }
     },
     "toolUseExamples": [
@@ -75,7 +74,7 @@ OK
       "updateTime": "2024-04-01T12:34:56.123456Z"
     }
   },
-  "name": "projects/${projectNumber}/locations/us-central1/extensions/vertexaiextension-maximal-${uniqueId}/operations/${operationID}"
+  "name": "projects/${projectNumber}/locations/us-central1/extensions/${extensionID}/operations/${operationID}"
 }
 
 ---
@@ -83,7 +82,7 @@ OK
 GRPC /google.longrunning.Operations/GetOperation
 
 {
-  "name": "projects/${projectNumber}/locations/us-central1/extensions/vertexaiextension-maximal-${uniqueId}/operations/${operationID}"
+  "name": "projects/${projectNumber}/locations/us-central1/extensions/${extensionID}/operations/${operationID}"
 }
 
 OK
@@ -97,20 +96,19 @@ OK
       "updateTime": "2024-04-01T12:34:56.123456Z"
     }
   },
-  "name": "projects/${projectNumber}/locations/us-central1/extensions/vertexaiextension-maximal-${uniqueId}/operations/${operationID}",
+  "name": "projects/${projectNumber}/locations/us-central1/extensions/${extensionID}/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.Extension",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "A comprehensive web search extension",
     "displayName": "My Maximal Web Extension",
-    "etag": "abcdef0123A=",
     "extensionOperations": [
       {
         "functionDeclaration": {
-          "description": "A mock function parsed from OpenAPI spec.",
-          "name": "mockFunction"
+          "description": "A comprehensive web search extension\n\n",
+          "name": "search"
         },
-        "operationId": "mock-operation"
+        "operationId": "search"
       }
     ],
     "manifest": {
@@ -119,7 +117,7 @@ OK
       },
       "authConfig": {
         "apiKeyConfig": {
-          "apiKeySecret": "projects/${projectId}/secrets/my-api-key/versions/1",
+          "apiKeySecret": "projects/external-project/secrets/my-api-key/versions/1",
           "httpElementLocation": "HTTP_IN_HEADER",
           "name": "api_key"
         },
@@ -128,24 +126,24 @@ OK
       "description": "A comprehensive web search extension",
       "name": "web-search-extension"
     },
-    "name": "projects/${projectNumber}/locations/us-central1/extensions/vertexaiextension-maximal-${uniqueId}",
+    "name": "projects/${projectNumber}/locations/us-central1/extensions/${extensionID}",
     "privateServiceConnectConfig": {
-      "serviceDirectory": "projects/${projectId}/locations/us-central1/namespaces/mock-namespace/services/mock-service"
+      "serviceDirectory": "projects/external-project/locations/us-central1/namespaces/mock-namespace/services/mock-service"
     },
     "runtimeConfig": {
       "defaultParams": {
         "foo": "bar"
       },
       "vertexAiSearchRuntimeConfig": {
-        "engineId": "projects/${projectId}/locations/global/collections/default_collection/engines/mock-engine",
-        "servingConfigName": "projects/${projectId}/locations/global/collections/default_collection/engines/mock-engine/servingConfigs/default_serving_config"
+        "engineId": "projects/external-project/locations/global/collections/default_collection/engines/mock-engine",
+        "servingConfigName": "projects/external-project/locations/global/collections/default_collection/engines/mock-engine/servingConfigs/default_serving_config"
       }
     },
     "toolUseExamples": [
       {
         "displayName": "Search Example",
         "extensionOperation": {
-          "extension": "projects/${projectId}/locations/us-central1/extensions/vertexaiextension-maximal-${uniqueId}",
+          "extension": "projects/${projectNumber}/locations/us-central1/extensions/vertexaiextension-maximal-${uniqueId}",
           "operationId": "search"
         },
         "query": "find some cool things",
@@ -167,7 +165,7 @@ OK
 GRPC /google.cloud.aiplatform.v1beta1.ExtensionRegistryService/GetExtension
 
 {
-  "name": "projects/${projectId}/locations/us-central1/extensions/vertexaiextension-maximal-${uniqueId}"
+  "name": "projects/${projectNumber}/locations/us-central1/extensions/${extensionID}"
 }
 
 OK
@@ -176,14 +174,13 @@ OK
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "A comprehensive web search extension",
   "displayName": "My Maximal Web Extension",
-  "etag": "abcdef0123A=",
   "extensionOperations": [
     {
       "functionDeclaration": {
-        "description": "A mock function parsed from OpenAPI spec.",
-        "name": "mockFunction"
+        "description": "A comprehensive web search extension\n\n",
+        "name": "search"
       },
-      "operationId": "mock-operation"
+      "operationId": "search"
     }
   ],
   "manifest": {
@@ -192,7 +189,7 @@ OK
     },
     "authConfig": {
       "apiKeyConfig": {
-        "apiKeySecret": "projects/${projectId}/secrets/my-api-key/versions/1",
+        "apiKeySecret": "projects/external-project/secrets/my-api-key/versions/1",
         "httpElementLocation": "HTTP_IN_HEADER",
         "name": "api_key"
       },
@@ -201,24 +198,24 @@ OK
     "description": "A comprehensive web search extension",
     "name": "web-search-extension"
   },
-  "name": "projects/${projectNumber}/locations/us-central1/extensions/vertexaiextension-maximal-${uniqueId}",
+  "name": "projects/${projectNumber}/locations/us-central1/extensions/${extensionID}",
   "privateServiceConnectConfig": {
-    "serviceDirectory": "projects/${projectId}/locations/us-central1/namespaces/mock-namespace/services/mock-service"
+    "serviceDirectory": "projects/external-project/locations/us-central1/namespaces/mock-namespace/services/mock-service"
   },
   "runtimeConfig": {
     "defaultParams": {
       "foo": "bar"
     },
     "vertexAiSearchRuntimeConfig": {
-      "engineId": "projects/${projectId}/locations/global/collections/default_collection/engines/mock-engine",
-      "servingConfigName": "projects/${projectId}/locations/global/collections/default_collection/engines/mock-engine/servingConfigs/default_serving_config"
+      "engineId": "projects/external-project/locations/global/collections/default_collection/engines/mock-engine",
+      "servingConfigName": "projects/external-project/locations/global/collections/default_collection/engines/mock-engine/servingConfigs/default_serving_config"
     }
   },
   "toolUseExamples": [
     {
       "displayName": "Search Example",
       "extensionOperation": {
-        "extension": "projects/${projectId}/locations/us-central1/extensions/vertexaiextension-maximal-${uniqueId}",
+        "extension": "projects/${projectNumber}/locations/us-central1/extensions/vertexaiextension-maximal-${uniqueId}",
         "operationId": "search"
       },
       "query": "find some cool things",
@@ -239,7 +236,7 @@ OK
 GRPC /google.cloud.aiplatform.v1beta1.ExtensionRegistryService/GetExtension
 
 {
-  "name": "projects/${projectId}/locations/us-central1/extensions/vertexaiextension-maximal-${uniqueId}"
+  "name": "projects/${projectNumber}/locations/us-central1/extensions/${extensionID}"
 }
 
 OK
@@ -248,14 +245,13 @@ OK
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "A comprehensive web search extension",
   "displayName": "My Maximal Web Extension",
-  "etag": "abcdef0123A=",
   "extensionOperations": [
     {
       "functionDeclaration": {
-        "description": "A mock function parsed from OpenAPI spec.",
-        "name": "mockFunction"
+        "description": "A comprehensive web search extension\n\n",
+        "name": "search"
       },
-      "operationId": "mock-operation"
+      "operationId": "search"
     }
   ],
   "manifest": {
@@ -264,7 +260,7 @@ OK
     },
     "authConfig": {
       "apiKeyConfig": {
-        "apiKeySecret": "projects/${projectId}/secrets/my-api-key/versions/1",
+        "apiKeySecret": "projects/external-project/secrets/my-api-key/versions/1",
         "httpElementLocation": "HTTP_IN_HEADER",
         "name": "api_key"
       },
@@ -273,24 +269,24 @@ OK
     "description": "A comprehensive web search extension",
     "name": "web-search-extension"
   },
-  "name": "projects/${projectNumber}/locations/us-central1/extensions/vertexaiextension-maximal-${uniqueId}",
+  "name": "projects/${projectNumber}/locations/us-central1/extensions/${extensionID}",
   "privateServiceConnectConfig": {
-    "serviceDirectory": "projects/${projectId}/locations/us-central1/namespaces/mock-namespace/services/mock-service"
+    "serviceDirectory": "projects/external-project/locations/us-central1/namespaces/mock-namespace/services/mock-service"
   },
   "runtimeConfig": {
     "defaultParams": {
       "foo": "bar"
     },
     "vertexAiSearchRuntimeConfig": {
-      "engineId": "projects/${projectId}/locations/global/collections/default_collection/engines/mock-engine",
-      "servingConfigName": "projects/${projectId}/locations/global/collections/default_collection/engines/mock-engine/servingConfigs/default_serving_config"
+      "engineId": "projects/external-project/locations/global/collections/default_collection/engines/mock-engine",
+      "servingConfigName": "projects/external-project/locations/global/collections/default_collection/engines/mock-engine/servingConfigs/default_serving_config"
     }
   },
   "toolUseExamples": [
     {
       "displayName": "Search Example",
       "extensionOperation": {
-        "extension": "projects/${projectId}/locations/us-central1/extensions/vertexaiextension-maximal-${uniqueId}",
+        "extension": "projects/${projectNumber}/locations/us-central1/extensions/vertexaiextension-maximal-${uniqueId}",
         "operationId": "search"
       },
       "query": "find some cool things",
@@ -320,7 +316,7 @@ GRPC /google.cloud.aiplatform.v1beta1.ExtensionRegistryService/UpdateExtension
       },
       "authConfig": {
         "apiKeyConfig": {
-          "apiKeySecret": "projects/${projectId}/secrets/my-api-key/versions/1",
+          "apiKeySecret": "projects/external-project/secrets/my-api-key/versions/1",
           "httpElementLocation": "HTTP_IN_HEADER",
           "name": "api_key"
         },
@@ -329,17 +325,17 @@ GRPC /google.cloud.aiplatform.v1beta1.ExtensionRegistryService/UpdateExtension
       "description": "An updated comprehensive web search extension",
       "name": "web-search-extension"
     },
-    "name": "projects/${projectId}/locations/us-central1/extensions/vertexaiextension-maximal-${uniqueId}",
+    "name": "projects/${projectNumber}/locations/us-central1/extensions/${extensionID}",
     "privateServiceConnectConfig": {
-      "serviceDirectory": "projects/${projectId}/locations/us-central1/namespaces/mock-namespace/services/mock-service"
+      "serviceDirectory": "projects/external-project/locations/us-central1/namespaces/mock-namespace/services/mock-service"
     },
     "runtimeConfig": {
       "defaultParams": {
         "foo": "baz"
       },
       "vertexAiSearchRuntimeConfig": {
-        "engineId": "projects/${projectId}/locations/global/collections/default_collection/engines/mock-engine",
-        "servingConfigName": "projects/${projectId}/locations/global/collections/default_collection/engines/mock-engine/servingConfigs/default_serving_config"
+        "engineId": "projects/external-project/locations/global/collections/default_collection/engines/mock-engine",
+        "servingConfigName": "projects/external-project/locations/global/collections/default_collection/engines/mock-engine/servingConfigs/default_serving_config"
       }
     },
     "toolUseExamples": [
@@ -366,26 +362,15 @@ GRPC /google.cloud.aiplatform.v1beta1.ExtensionRegistryService/UpdateExtension
 OK
 
 {
-  "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "A super comprehensive web search extension",
   "displayName": "My Updated Maximal Web Extension",
-  "etag": "abcdef0123A=",
-  "extensionOperations": [
-    {
-      "functionDeclaration": {
-        "description": "A mock function parsed from OpenAPI spec.",
-        "name": "mockFunction"
-      },
-      "operationId": "mock-operation"
-    }
-  ],
   "manifest": {
     "apiSpec": {
       "openApiYaml": "openapi: 3.0.0\ninfo:\n  title: My API\n  version: 1.0.0\nservers:\n  - url: http://example.com\npaths:\n  /search:\n    get:\n      operationId: search\n      responses:\n        '200':\n          description: Successful\n"
     },
     "authConfig": {
       "apiKeyConfig": {
-        "apiKeySecret": "projects/${projectId}/secrets/my-api-key/versions/1",
+        "apiKeySecret": "projects/external-project/secrets/my-api-key/versions/1",
         "httpElementLocation": "HTTP_IN_HEADER",
         "name": "api_key"
       },
@@ -394,24 +379,75 @@ OK
     "description": "An updated comprehensive web search extension",
     "name": "web-search-extension"
   },
-  "name": "projects/${projectNumber}/locations/us-central1/extensions/vertexaiextension-maximal-${uniqueId}",
+  "name": "projects/${projectNumber}/locations/us-central1/extensions/${extensionID}",
+  "runtimeConfig": {
+    "defaultParams": {
+      "foo": "baz"
+    },
+    "vertexAiSearchRuntimeConfig": {
+      "engineId": "projects/external-project/locations/global/collections/default_collection/engines/mock-engine",
+      "servingConfigName": "projects/external-project/locations/global/collections/default_collection/engines/mock-engine/servingConfigs/default_serving_config"
+    }
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1beta1.ExtensionRegistryService/GetExtension
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/extensions/${extensionID}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "A super comprehensive web search extension",
+  "displayName": "My Updated Maximal Web Extension",
+  "extensionOperations": [
+    {
+      "functionDeclaration": {
+        "description": "An updated comprehensive web search extension\n\n",
+        "name": "search"
+      },
+      "operationId": "search"
+    }
+  ],
+  "manifest": {
+    "apiSpec": {
+      "openApiYaml": "openapi: 3.0.0\ninfo:\n  title: My API\n  version: 1.0.0\nservers:\n  - url: http://example.com\npaths:\n  /search:\n    get:\n      operationId: search\n      responses:\n        '200':\n          description: Successful\n"
+    },
+    "authConfig": {
+      "apiKeyConfig": {
+        "apiKeySecret": "projects/external-project/secrets/my-api-key/versions/1",
+        "httpElementLocation": "HTTP_IN_HEADER",
+        "name": "api_key"
+      },
+      "authType": "API_KEY_AUTH"
+    },
+    "description": "An updated comprehensive web search extension",
+    "name": "web-search-extension"
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/extensions/${extensionID}",
   "privateServiceConnectConfig": {
-    "serviceDirectory": "projects/${projectId}/locations/us-central1/namespaces/mock-namespace/services/mock-service"
+    "serviceDirectory": "projects/external-project/locations/us-central1/namespaces/mock-namespace/services/mock-service"
   },
   "runtimeConfig": {
     "defaultParams": {
       "foo": "baz"
     },
     "vertexAiSearchRuntimeConfig": {
-      "engineId": "projects/${projectId}/locations/global/collections/default_collection/engines/mock-engine",
-      "servingConfigName": "projects/${projectId}/locations/global/collections/default_collection/engines/mock-engine/servingConfigs/default_serving_config"
+      "engineId": "projects/external-project/locations/global/collections/default_collection/engines/mock-engine",
+      "servingConfigName": "projects/external-project/locations/global/collections/default_collection/engines/mock-engine/servingConfigs/default_serving_config"
     }
   },
   "toolUseExamples": [
     {
       "displayName": "Search Example Updated",
       "extensionOperation": {
-        "extension": "projects/${projectId}/locations/us-central1/extensions/vertexaiextension-maximal-${uniqueId}",
+        "extension": "projects/${projectNumber}/locations/us-central1/extensions/vertexaiextension-maximal-${uniqueId}",
         "operationId": "search"
       },
       "query": "find some updated cool things",
@@ -432,7 +468,7 @@ OK
 GRPC /google.cloud.aiplatform.v1beta1.ExtensionRegistryService/GetExtension
 
 {
-  "name": "projects/${projectId}/locations/us-central1/extensions/vertexaiextension-maximal-${uniqueId}"
+  "name": "projects/${projectNumber}/locations/us-central1/extensions/${extensionID}"
 }
 
 OK
@@ -441,14 +477,13 @@ OK
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "A super comprehensive web search extension",
   "displayName": "My Updated Maximal Web Extension",
-  "etag": "abcdef0123A=",
   "extensionOperations": [
     {
       "functionDeclaration": {
-        "description": "A mock function parsed from OpenAPI spec.",
-        "name": "mockFunction"
+        "description": "An updated comprehensive web search extension\n\n",
+        "name": "search"
       },
-      "operationId": "mock-operation"
+      "operationId": "search"
     }
   ],
   "manifest": {
@@ -457,7 +492,7 @@ OK
     },
     "authConfig": {
       "apiKeyConfig": {
-        "apiKeySecret": "projects/${projectId}/secrets/my-api-key/versions/1",
+        "apiKeySecret": "projects/external-project/secrets/my-api-key/versions/1",
         "httpElementLocation": "HTTP_IN_HEADER",
         "name": "api_key"
       },
@@ -466,24 +501,24 @@ OK
     "description": "An updated comprehensive web search extension",
     "name": "web-search-extension"
   },
-  "name": "projects/${projectNumber}/locations/us-central1/extensions/vertexaiextension-maximal-${uniqueId}",
+  "name": "projects/${projectNumber}/locations/us-central1/extensions/${extensionID}",
   "privateServiceConnectConfig": {
-    "serviceDirectory": "projects/${projectId}/locations/us-central1/namespaces/mock-namespace/services/mock-service"
+    "serviceDirectory": "projects/external-project/locations/us-central1/namespaces/mock-namespace/services/mock-service"
   },
   "runtimeConfig": {
     "defaultParams": {
       "foo": "baz"
     },
     "vertexAiSearchRuntimeConfig": {
-      "engineId": "projects/${projectId}/locations/global/collections/default_collection/engines/mock-engine",
-      "servingConfigName": "projects/${projectId}/locations/global/collections/default_collection/engines/mock-engine/servingConfigs/default_serving_config"
+      "engineId": "projects/external-project/locations/global/collections/default_collection/engines/mock-engine",
+      "servingConfigName": "projects/external-project/locations/global/collections/default_collection/engines/mock-engine/servingConfigs/default_serving_config"
     }
   },
   "toolUseExamples": [
     {
       "displayName": "Search Example Updated",
       "extensionOperation": {
-        "extension": "projects/${projectId}/locations/us-central1/extensions/vertexaiextension-maximal-${uniqueId}",
+        "extension": "projects/${projectNumber}/locations/us-central1/extensions/vertexaiextension-maximal-${uniqueId}",
         "operationId": "search"
       },
       "query": "find some updated cool things",
@@ -504,7 +539,7 @@ OK
 GRPC /google.cloud.aiplatform.v1beta1.ExtensionRegistryService/GetExtension
 
 {
-  "name": "projects/${projectId}/locations/us-central1/extensions/vertexaiextension-maximal-${uniqueId}"
+  "name": "projects/${projectNumber}/locations/us-central1/extensions/${extensionID}"
 }
 
 OK
@@ -513,14 +548,13 @@ OK
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "A super comprehensive web search extension",
   "displayName": "My Updated Maximal Web Extension",
-  "etag": "abcdef0123A=",
   "extensionOperations": [
     {
       "functionDeclaration": {
-        "description": "A mock function parsed from OpenAPI spec.",
-        "name": "mockFunction"
+        "description": "An updated comprehensive web search extension\n\n",
+        "name": "search"
       },
-      "operationId": "mock-operation"
+      "operationId": "search"
     }
   ],
   "manifest": {
@@ -529,7 +563,7 @@ OK
     },
     "authConfig": {
       "apiKeyConfig": {
-        "apiKeySecret": "projects/${projectId}/secrets/my-api-key/versions/1",
+        "apiKeySecret": "projects/external-project/secrets/my-api-key/versions/1",
         "httpElementLocation": "HTTP_IN_HEADER",
         "name": "api_key"
       },
@@ -538,96 +572,24 @@ OK
     "description": "An updated comprehensive web search extension",
     "name": "web-search-extension"
   },
-  "name": "projects/${projectNumber}/locations/us-central1/extensions/vertexaiextension-maximal-${uniqueId}",
+  "name": "projects/${projectNumber}/locations/us-central1/extensions/${extensionID}",
   "privateServiceConnectConfig": {
-    "serviceDirectory": "projects/${projectId}/locations/us-central1/namespaces/mock-namespace/services/mock-service"
+    "serviceDirectory": "projects/external-project/locations/us-central1/namespaces/mock-namespace/services/mock-service"
   },
   "runtimeConfig": {
     "defaultParams": {
       "foo": "baz"
     },
     "vertexAiSearchRuntimeConfig": {
-      "engineId": "projects/${projectId}/locations/global/collections/default_collection/engines/mock-engine",
-      "servingConfigName": "projects/${projectId}/locations/global/collections/default_collection/engines/mock-engine/servingConfigs/default_serving_config"
+      "engineId": "projects/external-project/locations/global/collections/default_collection/engines/mock-engine",
+      "servingConfigName": "projects/external-project/locations/global/collections/default_collection/engines/mock-engine/servingConfigs/default_serving_config"
     }
   },
   "toolUseExamples": [
     {
       "displayName": "Search Example Updated",
       "extensionOperation": {
-        "extension": "projects/${projectId}/locations/us-central1/extensions/vertexaiextension-maximal-${uniqueId}",
-        "operationId": "search"
-      },
-      "query": "find some updated cool things",
-      "requestParams": {
-        "query": "updated cool things"
-      },
-      "responseParams": {
-        "results": "here are some updated cool things"
-      },
-      "responseSummary": "Successfully found updated cool things"
-    }
-  ],
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GRPC /google.cloud.aiplatform.v1beta1.ExtensionRegistryService/GetExtension
-
-{
-  "name": "projects/${projectId}/locations/us-central1/extensions/vertexaiextension-maximal-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "A super comprehensive web search extension",
-  "displayName": "My Updated Maximal Web Extension",
-  "etag": "abcdef0123A=",
-  "extensionOperations": [
-    {
-      "functionDeclaration": {
-        "description": "A mock function parsed from OpenAPI spec.",
-        "name": "mockFunction"
-      },
-      "operationId": "mock-operation"
-    }
-  ],
-  "manifest": {
-    "apiSpec": {
-      "openApiYaml": "openapi: 3.0.0\ninfo:\n  title: My API\n  version: 1.0.0\nservers:\n  - url: http://example.com\npaths:\n  /search:\n    get:\n      operationId: search\n      responses:\n        '200':\n          description: Successful\n"
-    },
-    "authConfig": {
-      "apiKeyConfig": {
-        "apiKeySecret": "projects/${projectId}/secrets/my-api-key/versions/1",
-        "httpElementLocation": "HTTP_IN_HEADER",
-        "name": "api_key"
-      },
-      "authType": "API_KEY_AUTH"
-    },
-    "description": "An updated comprehensive web search extension",
-    "name": "web-search-extension"
-  },
-  "name": "projects/${projectNumber}/locations/us-central1/extensions/vertexaiextension-maximal-${uniqueId}",
-  "privateServiceConnectConfig": {
-    "serviceDirectory": "projects/${projectId}/locations/us-central1/namespaces/mock-namespace/services/mock-service"
-  },
-  "runtimeConfig": {
-    "defaultParams": {
-      "foo": "baz"
-    },
-    "vertexAiSearchRuntimeConfig": {
-      "engineId": "projects/${projectId}/locations/global/collections/default_collection/engines/mock-engine",
-      "servingConfigName": "projects/${projectId}/locations/global/collections/default_collection/engines/mock-engine/servingConfigs/default_serving_config"
-    }
-  },
-  "toolUseExamples": [
-    {
-      "displayName": "Search Example Updated",
-      "extensionOperation": {
-        "extension": "projects/${projectId}/locations/us-central1/extensions/vertexaiextension-maximal-${uniqueId}",
+        "extension": "projects/${projectNumber}/locations/us-central1/extensions/vertexaiextension-maximal-${uniqueId}",
         "operationId": "search"
       },
       "query": "find some updated cool things",
@@ -648,7 +610,7 @@ OK
 GRPC /google.cloud.aiplatform.v1beta1.ExtensionRegistryService/DeleteExtension
 
 {
-  "name": "projects/${projectId}/locations/us-central1/extensions/vertexaiextension-maximal-${uniqueId}"
+  "name": "projects/${projectNumber}/locations/us-central1/extensions/${extensionID}"
 }
 
 OK
