@@ -35,6 +35,7 @@ func bigtableTableFuzzer() fuzztesting.KRMFuzzer {
 
 	f.SpecFields.Insert(".deletion_protection")
 	f.SpecFields.Insert(".row_key_schema")
+	f.SpecFields.Insert(".automated_backup_policy")
 
 	f.UnimplementedFields.Insert(".name")
 	f.UnimplementedFields.Insert(".granularity")
