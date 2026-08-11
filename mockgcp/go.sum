@@ -84,6 +84,8 @@ cloud.google.com/go/datastream v1.20.0 h1:/Xv8hdolIN5SpMgxiiuDc8AncfEuXU9TWRhvQk
 cloud.google.com/go/datastream v1.20.0/go.mod h1:uoWTtfP20W8MXuV2DPcl5zqnVsxQ9QEmmBHX858oYTQ=
 cloud.google.com/go/deploy v1.32.0 h1:vA9yH8EEXOsq1caJpvkJl9wJYA9VU8xuU45V7iC9XHk=
 cloud.google.com/go/deploy v1.32.0/go.mod h1:lUG7maG/NkoTXmQ8G1mtcVymnbizfDJh6ER7vljVa/U=
+cloud.google.com/go/developerconnect v1.1.0 h1:R+IbcxBslrVx1aka0r7fQ8UhO7oZ3JvYwg3Mk6tFnXU=
+cloud.google.com/go/developerconnect v1.1.0/go.mod h1:SkX3Bac/5LUJ4BT7WYSqk7ju9YoU2iHpWm3I0JqmMcQ=
 cloud.google.com/go/devicestreaming v1.0.0 h1:+yVSFN0uTmhUFd5U8nu6MSLpkNd4DFGHDVIQLmTTx1I=
 cloud.google.com/go/devicestreaming v1.0.0/go.mod h1:9qJYACHii1+4yiv9TewXrFpsX4jc77ZAqcEuapi7lJ4=
 cloud.google.com/go/dialogflow v1.82.0 h1:PKC7h47s036UsW4YxTV2aRCTOChEzMzioczRdlKSApk=
@@ -872,8 +874,8 @@ google.golang.org/grpc v1.25.1/go.mod h1:c3i+UQWmh7LiEpx4sFZnkU36qjEYZ0imhYfXVyQ
 google.golang.org/grpc v1.27.0/go.mod h1:qbnxyOmOxrQa7FizSgH+ReBfzJrCY1pSN7KXBS8abTk=
 google.golang.org/grpc v1.29.1/go.mod h1:itym6AZVZYACWQqET3MqgPpjcuV5QH3BxFS3IjizoKk=
 google.golang.org/grpc v1.33.2/go.mod h1:JMHMWHQWaTccqQQlmk3MJZS+GWXOdAesneDmEnv2fbc=
-google.golang.org/grpc v1.82.0 h1:vguDnZUPjE26w09A63VoxZPnvPjB5Riyc0mkXPFmAIU=
-google.golang.org/grpc v1.82.0/go.mod h1:yzTZ1TB1Z3SG+LIYaI+WiE8D5+PZ3ArnrSp8zF3+/ZA=
+google.golang.org/grpc v1.82.1 h1:NnAxzGRA0677vCa4BUkOAnO5+FfQqVl9iUXeD0IqcGE=
+google.golang.org/grpc v1.82.1/go.mod h1:yzTZ1TB1Z3SG+LIYaI+WiE8D5+PZ3ArnrSp8zF3+/ZA=
 google.golang.org/protobuf v0.0.0-20200109180630-ec00e32a8dfd/go.mod h1:DFci5gLYBciE7Vtevhsrf46CRTquxDuWsQurQQe4oz8=
 google.golang.org/protobuf v0.0.0-20200221191635-4d8936d0db64/go.mod h1:kwYJMbMJ01Woi6D6+Kah6886xMZcty6N08ah7+eCXa0=
 google.golang.org/protobuf v0.0.0-20200228230310-ab0ca4ff8a60/go.mod h1:cfTl7dwQJ+fmap5saPgwCLgHXTUD7jkjRqWcaiX5VyM=
