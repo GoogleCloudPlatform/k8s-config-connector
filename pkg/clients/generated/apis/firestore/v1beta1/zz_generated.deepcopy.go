@@ -170,6 +170,11 @@ func (in *FirestoreDatabaseSpec) DeepCopyInto(out *FirestoreDatabaseSpec) {
 		*out = new(string)
 		**out = **in
 	}
+	if in.Type != nil {
+		in, out := &in.Type, &out.Type
+		*out = new(string)
+		**out = **in
+	}
 	return
 }
 
