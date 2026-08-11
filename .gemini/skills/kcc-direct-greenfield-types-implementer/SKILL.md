@@ -79,5 +79,40 @@ Apply the baseline validations from `kcc-direct-base-types-implementer`, plus th
   - Use `*string` for the Go type of proto enum fields (do NOT use custom wrapped string types).
   - Use `// +kubebuilder:validation:Enum=VALUE1;VALUE2` to provide validation in the CRD while keeping the Go type simple.
 
-### 4. Journaling
+### 4. Reference Fields (do not skip)
+Fields that point at another GCP resource **must** be implemented as KCC reference fields
+(`Ref` suffix, e.g. `refsv1beta1.ProjectRef`, `pubsubv1beta1.PubSubTopicRef`), per
+`.gemini/skills/kcc-direct-base-types-implementer/SKILL.md`.
+
+**You MUST NOT add entries to `tests/apichecks/testdata/exceptions/missingrefs.txt`.**
+That file is a shrink-only ratchet: new entries fail CI and cannot be regenerated away,
+including under `WRITE_GOLDEN_OUTPUT=1`. If the check flags a field, implement the
+reference - do not suppress it.
+
+**Primary signal - check the proto, not the description.** GCP protos annotate reference
+fields with `(google.api.resource_reference)`, which names the exact target type:
+
+```proto
+optional string service_account = 16 [
+  (google.api.field_behavior) = REQUIRED,
+  (google.api.resource_reference) = { type: "iam.googleapis.com/ServiceAccount" }
+];
+```
+
+Inspect the source `.proto` for this annotation on every string field before deciding it is
+a plain string. It is authoritative where present, but coverage is uneven (~15% of string
+fields overall, 0% in compute), so its absence proves nothing.
+
+**Secondary signals** (used when the annotation is missing):
+- Description contains a path template: `projects/`, `locations/{`, `folders/{`, `organizations/{`
+- A Cloud Storage **bucket** name -> `StorageBucketRef`
+- KMS keys, service accounts, networks/subnetworks, Pub/Sub topics, Secret Manager secrets
+
+**Not every URI is a reference.** Cloud Storage *object paths* (`gs://bucket/path/*`) cannot
+be modeled as refs today: `StorageBucketIdentity.FromExternal` accepts only the bare
+`gs://<bucket>` form. `bq://` is not a GCP resource name at all. These are recorded in
+`tests/apichecks/testdata/exceptions/refs_not_representable.txt` with a reason, and should
+be left as strings rather than forced into a ref.
+
+### 5. Journaling
 Append any quirks about the proto-to-struct mapping (e.g., field name collisions) to `.gemini/journals/<service>.md` using the format described in the `kcc-agentic-journaler` skill.

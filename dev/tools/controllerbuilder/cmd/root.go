@@ -18,6 +18,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/commands/analyzerefs"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/commands/apply"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/commands/generatecontroller"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/commands/generatedirectreconciler"
@@ -45,6 +46,7 @@ func Execute() {
 	rootCmd.AddCommand(apply.BuildCommand(&generateOptions))
 	rootCmd.AddCommand(generatefuzzer.BuildCommand(&generateOptions))
 	rootCmd.AddCommand(prunetypes.BuildCommand(&generateOptions))
+	rootCmd.AddCommand(analyzerefs.BuildCommand(&generateOptions))
 
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Fprintf(os.Stderr, "%v\n", err)
