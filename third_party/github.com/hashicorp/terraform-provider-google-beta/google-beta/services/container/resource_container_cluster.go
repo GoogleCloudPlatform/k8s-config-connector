@@ -3810,6 +3810,40 @@ func resourceContainerClusterUpdate(d *schema.ResourceData, meta interface{}) er
 
 			log.Printf("[INFO] GKE cluster %s: default node pool resource manager tags have been updated", d.Id())
 		}
+
+		if d.HasChange("node_config.0.linux_node_config") {
+			req := &container.UpdateNodePoolRequest{
+				Name: "default-pool",
+				LinuxNodeConfig: expandLinuxNodeConfig(
+					d.Get("node_config.0.linux_node_config")),
+			}
+			if req.LinuxNodeConfig == nil {
+				req.ForceSendFields = []string{"LinuxNodeConfig"}
+			}
+
+			updateF := func() error {
+				name := containerClusterFullName(project, location, clusterName)
+				nodePoolName := name + "/nodePools/default-pool"
+				clusterNodePoolsUpdateCall := config.NewContainerClient(userAgent).Projects.Locations.Clusters.NodePools.Update(nodePoolName, req)
+				if config.UserProjectOverride {
+					clusterNodePoolsUpdateCall.Header().Add("X-Goog-User-Project", project)
+				}
+				op, err := clusterNodePoolsUpdateCall.Do()
+				if err != nil {
+					return err
+				}
+
+				// Wait until it's updated
+				return ContainerOperationWait(config, op, project, location, "updating GKE default node pool linux_node_config", userAgent, d.Timeout(schema.TimeoutUpdate))
+			}
+
+			// Call update serially.
+			if err := transport_tpg.LockedCall(lockKey, updateF); err != nil {
+				return err
+			}
+
+			log.Printf("[INFO] GKE cluster %s: default node pool linux_node_config has been updated", d.Id())
+		}
 	}
 
 	if d.HasChange("notification_config") {
