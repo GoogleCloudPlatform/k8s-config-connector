@@ -37,6 +37,22 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.ReplacePath(".metadata.endTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".response.createTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".response.updateTime", mockgcpregistry.PlaceholderTimestamp)
+
+	replacements.RemovePath(".response.labels")
+
+	replacements.TransformObject(".error", func(m map[string]any) {
+		delete(m, "errors")
+	})
+	replacements.TransformObject("", func(m map[string]any) {
+		if val, found := m["done"]; found && val == false {
+			delete(m, "done")
+		}
+	})
+	replacements.TransformObject(".metadata", func(m map[string]any) {
+		if val, found := m["requestedCancellation"]; found && val == false {
+			delete(m, "requestedCancellation")
+		}
+	})
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {

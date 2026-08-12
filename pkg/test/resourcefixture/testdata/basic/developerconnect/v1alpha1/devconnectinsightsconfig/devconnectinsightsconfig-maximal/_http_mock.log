@@ -178,10 +178,6 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.devtools.artifactregistry.v1.Repository",
     "format": "DOCKER",
-    "labels": {
-      "cnrm-test": "true",
-      "managed-by-cnrm": "true"
-    },
     "mode": "STANDARD_REPOSITORY",
     "name": "projects/${projectId}/locations/us-central1/repositories/arrepository-${uniqueId}",
     "satisfiesPzi": true,
@@ -248,14 +244,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "insightsConfig \"projects/${projectId}/locations/us-central1/insightsConfigs/devconnectinsightsconfig-maximal-${uniqueId}\" not found",
-        "reason": "notFound"
-      }
-    ],
-    "message": "insightsConfig \"projects/${projectId}/locations/us-central1/insightsConfigs/devconnectinsightsconfig-maximal-${uniqueId}\" not found",
+    "message": "Resource 'projects/${projectId}/locations/us-central1/insightsConfigs/devconnectinsightsconfig-maximal-${uniqueId}' was not found",
     "status": "NOT_FOUND"
   }
 }
@@ -489,10 +478,6 @@ X-Xss-Protection: 0
       }
     ],
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "labels": {
-      "cnrm-test": "true",
-      "managed-by-cnrm": "true"
-    },
     "name": "projects/${projectId}/locations/us-central1/insightsConfigs/devconnectinsightsconfig-maximal-${uniqueId}",
     "state": "PENDING",
     "updateTime": "2024-04-01T12:34:56.123456Z"

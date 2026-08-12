@@ -45,6 +45,9 @@ func (s *InsightsConfigServer) GetInsightsConfig(ctx context.Context, req *pb.Ge
 
 	obj := &pb.InsightsConfig{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
@@ -94,6 +97,9 @@ func (s *InsightsConfigServer) UpdateInsightsConfig(ctx context.Context, req *pb
 
 	obj := &pb.InsightsConfig{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
@@ -130,6 +136,9 @@ func (s *InsightsConfigServer) DeleteInsightsConfig(ctx context.Context, req *pb
 
 	obj := &pb.InsightsConfig{}
 	if err := s.storage.Delete(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 

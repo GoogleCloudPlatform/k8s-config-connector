@@ -16,14 +16,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "insightsConfig \"projects/${projectId}/locations/us-central1/insightsConfigs/default\" not found",
-        "reason": "notFound"
-      }
-    ],
-    "message": "insightsConfig \"projects/${projectId}/locations/us-central1/insightsConfigs/default\" not found",
+    "message": "Resource 'projects/${projectId}/locations/us-central1/insightsConfigs/default' was not found",
     "status": "NOT_FOUND"
   }
 }
@@ -208,11 +201,6 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.developerconnect.v1.InsightsConfig",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "labels": {
-      "cnrm-test": "true",
-      "managed-by-cnrm": "true",
-      "test-label": "updated-val"
-    },
     "name": "projects/${projectId}/locations/us-central1/insightsConfigs/default",
     "projects": {
       "projectIds": [
