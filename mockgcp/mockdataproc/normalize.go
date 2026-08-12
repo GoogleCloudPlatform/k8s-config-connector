@@ -64,16 +64,29 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 
 	event.VisitResponseStringValues(func(path string, value string) {
 		for _, match := range opIDRegex.FindAllString(value, -1) {
-			replacements.ReplaceStringValue(match, "${operationID}")
+			replacements.ReplaceStringValue(match, "00000000-0000-0000-0000-000000000001")
 		}
 	})
 
+	// First find the cluster UUID if present in any of the clusterUuid fields
+	var clusterUUID string
 	event.VisitResponseStringValues(func(path string, value string) {
-		// Cluster UUID is already handled and normalized to ${dataStoreClusterUUID}, so don't overwrite it if it's clusterUuid
-		if path == ".clusterUuid" || path == ".response.clusterUuid" {
-			return
+		if strings.HasSuffix(path, "clusterUuid") {
+			clusterUUID = value
 		}
+	})
+
+	// If cluster UUID is found, replace it with ${dataStoreClusterUUID} globally
+	if clusterUUID != "" {
+		replacements.ReplaceStringValue(clusterUUID, "${dataStoreClusterUUID}")
+	}
+
+	event.VisitResponseStringValues(func(path string, value string) {
 		for _, match := range uuidRegex.FindAllString(value, -1) {
+			// Skip the cluster UUID since it is already mapped to ${dataStoreClusterUUID}
+			if match == clusterUUID {
+				continue
+			}
 			replacements.ReplaceStringValue(match, "00000000-0000-0000-0000-000000000001")
 		}
 	})
@@ -84,8 +97,6 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 			replacements.ReplaceStringValue(value, "${dataStoreConfigBucketPath}")
 		case ".config.tempBucket":
 			replacements.ReplaceStringValue(value, "${dataStoreTempBucketPath}")
-		case ".clusterUuid":
-			replacements.ReplaceStringValue(value, "${dataStoreClusterUUID}")
 		}
 	})
 }

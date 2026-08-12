@@ -70,7 +70,7 @@ X-Xss-Protection: 0
     "session": "projects/${projectId}/locations/us-central1/sessions/dataprocsession-minimal-${uniqueId}",
     "sessionUuid": "00000000-0000-0000-0000-000000000001"
   },
-  "name": "projects/${projectId}/regions/us-central1/operations/${operationID}"
+  "name": "projects/${projectId}/regions/us-central1/operations/00000000-0000-0000-0000-000000000001"
 }
 
 ---
@@ -78,7 +78,7 @@ X-Xss-Protection: 0
 GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-X-Goog-Request-Params: name=projects%2F${projectId}%2Fregions%2Fus-central1%2Foperations%2F${operationID}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fregions%2Fus-central1%2Foperations%2F00000000-0000-0000-0000-000000000001
 X-Goog-User-Project: ${projectId}
 
 200 OK
@@ -110,7 +110,7 @@ X-Xss-Protection: 0
     "session": "projects/${projectId}/locations/us-central1/sessions/dataprocsession-minimal-${uniqueId}",
     "sessionUuid": "00000000-0000-0000-0000-000000000001"
   },
-  "name": "projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "name": "projects/${projectId}/regions/us-central1/operations/00000000-0000-0000-0000-000000000001",
   "response": {
     "@type": "type.googleapis.com/google.cloud.dataproc.v1.Session",
     "createTime": "2024-04-01T12:34:56.123456Z",
@@ -273,7 +273,7 @@ X-Xss-Protection: 0
     "session": "projects/${projectId}/locations/us-central1/sessions/dataprocsession-minimal-${uniqueId}",
     "sessionUuid": "00000000-0000-0000-0000-000000000001"
   },
-  "name": "projects/${projectId}/regions/us-central1/operations/${operationID}"
+  "name": "projects/${projectId}/regions/us-central1/operations/00000000-0000-0000-0000-000000000001"
 }
 
 ---
@@ -281,7 +281,7 @@ X-Xss-Protection: 0
 GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-X-Goog-Request-Params: name=projects%2F${projectId}%2Fregions%2Fus-central1%2Foperations%2F${operationID}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Fregions%2Fus-central1%2Foperations%2F00000000-0000-0000-0000-000000000001
 X-Goog-User-Project: ${projectId}
 
 200 OK
@@ -313,7 +313,7 @@ X-Xss-Protection: 0
     "session": "projects/${projectId}/locations/us-central1/sessions/dataprocsession-minimal-${uniqueId}",
     "sessionUuid": "00000000-0000-0000-0000-000000000001"
   },
-  "name": "projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "name": "projects/${projectId}/regions/us-central1/operations/00000000-0000-0000-0000-000000000001",
   "response": {
     "@type": "type.googleapis.com/google.cloud.dataproc.v1.Session",
     "createTime": "2024-04-01T12:34:56.123456Z",
