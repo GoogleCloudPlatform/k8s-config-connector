@@ -500,6 +500,11 @@ func compareJSON(t *testing.T, context, realJSON, mockJSON string) {
 	realJSON = strings.ReplaceAll(realJSON, "//certificatemanager.googleapis.com/", "")
 	mockJSON = strings.ReplaceAll(mockJSON, "//certificatemanager.googleapis.com/", "")
 
+	// Normalize Dataproc image versions/dates in image URIs
+	imageUriRegex := regexp.MustCompile(`dataproc-\d+-\d+-deb\d+-\d+-\d+-[a-zA-Z0-9]+`)
+	realJSON = imageUriRegex.ReplaceAllString(realJSON, "dataproc-0-0-deb12-19700101-12345-abcd")
+	mockJSON = imageUriRegex.ReplaceAllString(mockJSON, "dataproc-0-0-deb12-19700101-12345-abcd")
+
 	var realObj, mockObj interface{}
 
 	if realJSON != "" {
@@ -756,6 +761,37 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		if rangeStr, ok := v["internalIpv6Range"].(string); ok && strings.HasPrefix(rangeStr, "fd") {
 			v["internalIpv6Range"] = "fd00:0000:0000:0:0:0:0:0/48"
 		}
+		if _, isDataprocCluster := v["clusterName"]; isDataprocCluster {
+			delete(v, "metrics")
+			delete(v, "hdfsMetrics")
+			delete(v, "yarnMetrics")
+			if labels, ok := v["labels"].(map[string]interface{}); ok {
+				// todo: handle service default Labels in direct controller
+				delete(labels, "goog-dataproc-cluster-create-timestamp")
+			}
+			if config, ok := v["config"].(map[string]interface{}); ok {
+				if gce, ok := config["gceClusterConfig"].(map[string]interface{}); ok {
+					// todo: resourceManagerTags does not exist in proto, but `Tags` exist. Are they the same?
+					delete(gce, "resourceManagerTags")
+					// zone(i.e., us-central1-a) is auto assigned when not specified
+					delete(gce, "zoneUri")
+				}
+				if software, ok := config["softwareConfig"].(map[string]interface{}); ok {
+					// some properties are service generated
+					delete(software, "properties")
+					// different resources have different component imageVersion in addition to the main version
+					// todo: normalize imageVersion
+					delete(software, "imageVersion")
+				}
+				normalizeDataprocWorkerConfig(config["masterConfig"])
+				normalizeDataprocWorkerConfig(config["workerConfig"])
+				normalizeDataprocWorkerConfig(config["secondaryWorkerConfig"])
+				if swc, ok := config["secondaryWorkerConfig"].(map[string]interface{}); ok {
+					// output-only field
+					delete(swc, "managedGroupConfig")
+				}
+			}
+		}
 		for k, val := range v {
 			v[k] = normalizeRepresentation(val)
 		}
@@ -780,6 +816,31 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		return v
 	default:
 		return obj
+	}
+}
+
+func normalizeDataprocWorkerConfig(cfg interface{}) {
+	m, ok := cfg.(map[string]interface{})
+	if !ok {
+		return
+	}
+	if names, ok := m["instanceNames"].([]interface{}); ok {
+		for i, name := range names {
+			if s, ok := name.(string); ok {
+				if strings.Contains(s, "-sw-") {
+					names[i] = "dataproccluster-${uniqueId}-sw-0"
+				}
+			}
+		}
+	}
+	if disk, ok := m["diskConfig"].(map[string]interface{}); ok {
+		if _, ok := disk["bootDiskType"]; ok {
+			disk["bootDiskType"] = "pd-standard"
+		}
+	}
+	// zone(i.e., us-central1-a) is auto assigned when not specified
+	if _, ok := m["machineTypeUri"]; ok {
+		delete(m, "machineTypeUri")
 	}
 }
 
@@ -905,6 +966,19 @@ func isDependencyEvent(ev httpEvent, depKinds map[string]string, primaryKind str
 
 	isIAM := primaryKind == "IAMPolicy" || primaryKind == "IAMPolicyMember" || primaryKind == "IAMPartialPolicy" || primaryKind == "IAMAuditConfig"
 
+	if !isIAM {
+		urlPath := strings.Split(cleanURL(ev.URL), "?")[0]
+		segments := strings.Split(urlPath, "/")
+		if len(segments) == 3 && (segments[1] == "projects" || segments[1] == "folders" || segments[1] == "organizations" || segments[1] == "billingAccounts") {
+			last := segments[2]
+			if strings.Contains(last, ":setIamPolicy") ||
+				strings.Contains(last, ":getIamPolicy") ||
+				strings.Contains(last, ":testIamPermissions") {
+				return true
+			}
+		}
+	}
+
 	for depName, kind := range depKinds {
 		// If a dependency resource has the same kind as the primary resource under test,
 		// we keep all of its events.
@@ -917,7 +991,7 @@ func isDependencyEvent(ev httpEvent, depKinds map[string]string, primaryKind str
 
 		// If the path doesn't contain the dependency name, check if it's a POST to create it
 		if !strings.Contains(urlPath, depName) {
-			if ev.Method == "POST" && (strings.Contains(ev.RequestBody, depName) || strings.Contains(ev.URL, depName)) {
+			if ev.Method == "POST" && (strings.Contains(ev.RequestBody, depName) || strings.Contains(ev.ResponseBody, depName) || strings.Contains(ev.URL, depName)) {
 				return true
 			}
 			continue

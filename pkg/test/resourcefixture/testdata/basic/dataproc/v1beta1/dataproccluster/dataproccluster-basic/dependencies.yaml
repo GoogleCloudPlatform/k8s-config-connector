@@ -35,7 +35,7 @@ metadata:
 spec:
   projectRef:
     external: projects/${projectId}
-  location: "us-central1"
+  location: "us-east1"
   workerConfig:
     maxInstances: 2
   secondaryWorkerConfig:

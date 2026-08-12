@@ -1,4 +1,4 @@
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -31,5 +31,9 @@ spec:
       machineType: "n2-standard-2"
       numInstances: 1
     workerConfig:
-      machineType: "n2-standard-4"
+      machineType: "c4-standard-2"
       numInstances: 2
+    secondaryWorkerConfig:
+      # Must match primary worker unless using Instance Flexibility
+      machineType: "c4-standard-2"
+      numInstances: 1

@@ -253,7 +253,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 
 404 Not Found
@@ -276,7 +276,7 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters?alt=json
+POST https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 
 {
@@ -291,13 +291,22 @@ Content-Type: application/json
       },
       "machineTypeUri": "n2-standard-2",
       "numInstances": 1
+    },
+    "secondaryWorkerConfig": {
+      "machineTypeUri": "c4-standard-2",
+      "numInstances": 1
+    },
+    "workerConfig": {
+      "machineTypeUri": "c4-standard-2",
+      "numInstances": 2
     }
   },
   "labels": {
     "cnrm-test": "true",
     "label-one": "value-one",
     "managed-by-cnrm": "true"
-  }
+  },
+  "projectId": "${projectId}"
 }
 
 200 OK
@@ -319,7 +328,7 @@ X-Xss-Protection: 0
     "operationType": "CREATE",
     "status": {
       "innerState": "PENDING",
-      "state": "PENDING",
+      "state": 1,
       "stateStartTime": "2024-04-01T12:34:56.123456Z"
     },
     "warnings": [
@@ -328,12 +337,12 @@ X-Xss-Protection: 0
       "No image specified. Using the default image version. It is recommended to select a specific image version in production, as the default image version may change at any time."
     ]
   },
-  "name": "projects/${projectId}/regions/us-central1/operations/${operationID}"
+  "name": "projects/${projectId}/regions/us-central1/operations/00000000-0000-0000-0000-000000000001"
 }
 
 ---
 
-GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
 Content-Type: application/json
 
 200 OK
@@ -375,7 +384,7 @@ X-Xss-Protection: 0
       "No image specified. Using the default image version. It is recommended to select a specific image version in production, as the default image version may change at any time."
     ]
   },
-  "name": "projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "name": "projects/${projectId}/regions/us-central1/operations/00000000-0000-0000-0000-000000000001",
   "response": {
     "@type": "type.googleapis.com/google.cloud.dataproc.v1.Cluster",
     "clusterName": "dataproccluster-${uniqueId}",
@@ -406,6 +415,29 @@ X-Xss-Protection: 0
         "minCpuPlatform": "AUTOMATIC",
         "numInstances": 1,
         "preemptibility": "NON_PREEMPTIBLE"
+      },
+      "secondaryWorkerConfig": {
+        "diskConfig": {
+          "bootDiskSizeGb": 1000,
+          "bootDiskType": "pd-standard"
+        },
+        "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250817-165100-rc01",
+        "instanceNames": [
+          "dataproccluster-${uniqueId}-sw-0"
+        ],
+        "isPreemptible": true,
+        "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/c4-standard-2",
+        "managedGroupConfig": {
+          "instanceGroupManagerName": "dataproc-goog-reserved-auto-secondary-abcdefg",
+          "instanceGroupManagerUri": "projects/${projectId}/regions/us-central1/instanceGroupManagers/dataproc-goog-reserved-auto-secondary-abcdefg",
+          "instanceTemplateName": "dataproc-goog-reserved-auto-secondary-abcdefg"
+        },
+        "minCpuPlatform": "AUTOMATIC",
+        "numInstances": 1,
+        "preemptibility": "PREEMPTIBLE",
+        "startupConfig": {
+          "requiredRegistrationFraction": 0.0001
+        }
       },
       "softwareConfig": {
         "imageVersion": "2.2.63-debian12",
@@ -479,7 +511,7 @@ X-Xss-Protection: 0
           "bootDiskType": "pd-standard"
         },
         "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250817-165100-rc01",
-        "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-4",
+        "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/c4-standard-2",
         "minCpuPlatform": "AUTOMATIC",
         "numInstances": 2,
         "preemptibility": "NON_PREEMPTIBLE"
@@ -501,7 +533,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 
 200 OK
@@ -545,7 +577,30 @@ X-Xss-Protection: 0
       "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-2",
       "minCpuPlatform": "AUTOMATIC",
       "numInstances": 1,
-      "preemptibility": "NON_PREEMPTIBLE"
+      "preemptibility": 1
+    },
+    "secondaryWorkerConfig": {
+      "diskConfig": {
+        "bootDiskSizeGb": 1000,
+        "bootDiskType": "pd-standard"
+      },
+      "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250817-165100-rc01",
+      "instanceNames": [
+        "dataproccluster-${uniqueId}-sw-0"
+      ],
+      "isPreemptible": true,
+      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/c4-standard-2",
+      "managedGroupConfig": {
+        "instanceGroupManagerName": "dataproc-goog-reserved-auto-secondary-abcdefg",
+        "instanceGroupManagerUri": "projects/${projectId}/regions/us-central1/instanceGroupManagers/dataproc-goog-reserved-auto-secondary-abcdefg",
+        "instanceTemplateName": "dataproc-goog-reserved-auto-secondary-abcdefg"
+      },
+      "minCpuPlatform": "AUTOMATIC",
+      "numInstances": 1,
+      "preemptibility": 2,
+      "startupConfig": {
+        "requiredRegistrationFraction": 0.0001
+      }
     },
     "softwareConfig": {
       "imageVersion": "2.2.63-debian12",
@@ -623,10 +678,10 @@ X-Xss-Protection: 0
         "dataproccluster-${uniqueId}-w-0",
         "dataproccluster-${uniqueId}-w-1"
       ],
-      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-4",
+      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/c4-standard-2",
       "minCpuPlatform": "AUTOMATIC",
       "numInstances": 2,
-      "preemptibility": "NON_PREEMPTIBLE"
+      "preemptibility": 1
     }
   },
   "labels": {
@@ -641,12 +696,12 @@ X-Xss-Protection: 0
   },
   "projectId": "${projectId}",
   "status": {
-    "state": "RUNNING",
+    "state": 2,
     "stateStartTime": "2024-04-01T12:34:56.123456Z"
   },
   "statusHistory": [
     {
-      "state": "CREATING",
+      "state": 1,
       "stateStartTime": "2024-04-01T12:34:56.123456Z"
     }
   ]
@@ -654,15 +709,20 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json&updateMask=labels
+PATCH https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=labels
 Content-Type: application/json
 
 {
+  "clusterName": "dataproccluster-${uniqueId}",
+  "clusterUuid": "${dataStoreClusterUUID}",
   "config": {
     "configBucket": "${dataStoreConfigBucketPath}",
     "gceClusterConfig": {
       "internalIpOnly": false,
       "networkUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+      "serviceAccountScopes": [
+        "https://www.googleapis.com/auth/cloud-platform"
+      ],
       "shieldedInstanceConfig": {
         "enableIntegrityMonitoring": true,
         "enableSecureBoot": true,
@@ -670,22 +730,45 @@ Content-Type: application/json
       },
       "zoneUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f"
     },
-    "initializationActions": [],
     "masterConfig": {
-      "accelerators": [],
       "diskConfig": {
         "bootDiskSizeGb": 1000,
         "bootDiskType": "pd-standard"
       },
       "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250817-165100-rc01",
-      "machineTypeUri": "n2-standard-2",
+      "instanceNames": [
+        "dataproccluster-${uniqueId}-m"
+      ],
+      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-2",
       "minCpuPlatform": "AUTOMATIC",
       "numInstances": 1,
-      "preemptibility": "NON_PREEMPTIBLE"
+      "preemptibility": 1
+    },
+    "secondaryWorkerConfig": {
+      "diskConfig": {
+        "bootDiskSizeGb": 1000,
+        "bootDiskType": "pd-standard"
+      },
+      "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250817-165100-rc01",
+      "instanceNames": [
+        "dataproccluster-${uniqueId}-sw-0"
+      ],
+      "isPreemptible": true,
+      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/c4-standard-2",
+      "managedGroupConfig": {
+        "instanceGroupManagerName": "dataproc-goog-reserved-auto-secondary-abcdefg",
+        "instanceGroupManagerUri": "projects/${projectId}/regions/us-central1/instanceGroupManagers/dataproc-goog-reserved-auto-secondary-abcdefg",
+        "instanceTemplateName": "dataproc-goog-reserved-auto-secondary-abcdefg"
+      },
+      "minCpuPlatform": "AUTOMATIC",
+      "numInstances": 1,
+      "preemptibility": 2,
+      "startupConfig": {
+        "requiredRegistrationFraction": 0.0001
+      }
     },
     "softwareConfig": {
       "imageVersion": "2.2.63-debian12",
-      "optionalComponents": [],
       "properties": {
         "capacity-scheduler:yarn.scheduler.capacity.resource-calculator": "org.apache.hadoop.yarn.util.resource.DominantResourceCalculator",
         "capacity-scheduler:yarn.scheduler.capacity.root.default.ordering-policy": "fair",
@@ -751,23 +834,37 @@ Content-Type: application/json
     },
     "tempBucket": "${dataStoreTempBucketPath}",
     "workerConfig": {
-      "accelerators": [],
       "diskConfig": {
         "bootDiskSizeGb": 1000,
         "bootDiskType": "pd-standard"
       },
       "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250817-165100-rc01",
-      "machineTypeUri": "n2-standard-4",
+      "instanceNames": [
+        "dataproccluster-${uniqueId}-w-0",
+        "dataproccluster-${uniqueId}-w-1"
+      ],
+      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/c4-standard-2",
       "minCpuPlatform": "AUTOMATIC",
       "numInstances": 2,
-      "preemptibility": "NON_PREEMPTIBLE"
+      "preemptibility": 1
     }
   },
   "labels": {
     "cnrm-test": "true",
     "label-one": "new-value",
     "managed-by-cnrm": "true"
-  }
+  },
+  "projectId": "${projectId}",
+  "status": {
+    "state": 2,
+    "stateStartTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "statusHistory": [
+    {
+      "state": 1,
+      "stateStartTime": "2024-04-01T12:34:56.123456Z"
+    }
+  ]
 }
 
 200 OK
@@ -788,16 +885,16 @@ X-Xss-Protection: 0
     "operationType": "UPDATE",
     "status": {
       "innerState": "PENDING",
-      "state": "PENDING",
+      "state": 1,
       "stateStartTime": "2024-04-01T12:34:56.123456Z"
     }
   },
-  "name": "projects/${projectId}/regions/us-central1/operations/${operationID}"
+  "name": "projects/${projectId}/regions/us-central1/operations/00000000-0000-0000-0000-000000000001"
 }
 
 ---
 
-GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
 Content-Type: application/json
 
 200 OK
@@ -833,7 +930,7 @@ X-Xss-Protection: 0
       }
     ]
   },
-  "name": "projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "name": "projects/${projectId}/regions/us-central1/operations/00000000-0000-0000-0000-000000000001",
   "response": {
     "@type": "type.googleapis.com/google.cloud.dataproc.v1.Cluster",
     "clusterName": "dataproccluster-${uniqueId}",
@@ -864,6 +961,29 @@ X-Xss-Protection: 0
         "minCpuPlatform": "AUTOMATIC",
         "numInstances": 1,
         "preemptibility": "NON_PREEMPTIBLE"
+      },
+      "secondaryWorkerConfig": {
+        "diskConfig": {
+          "bootDiskSizeGb": 1000,
+          "bootDiskType": "pd-standard"
+        },
+        "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250817-165100-rc01",
+        "instanceNames": [
+          "dataproccluster-${uniqueId}-sw-0"
+        ],
+        "isPreemptible": true,
+        "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/c4-standard-2",
+        "managedGroupConfig": {
+          "instanceGroupManagerName": "dataproc-goog-reserved-auto-secondary-abcdefg",
+          "instanceGroupManagerUri": "projects/${projectId}/regions/us-central1/instanceGroupManagers/dataproc-goog-reserved-auto-secondary-abcdefg",
+          "instanceTemplateName": "dataproc-goog-reserved-auto-secondary-abcdefg"
+        },
+        "minCpuPlatform": "AUTOMATIC",
+        "numInstances": 1,
+        "preemptibility": "PREEMPTIBLE",
+        "startupConfig": {
+          "requiredRegistrationFraction": 0.0001
+        }
       },
       "softwareConfig": {
         "imageVersion": "2.2.63-debian12",
@@ -937,7 +1057,7 @@ X-Xss-Protection: 0
           "bootDiskType": "pd-standard"
         },
         "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250817-165100-rc01",
-        "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-4",
+        "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/c4-standard-2",
         "minCpuPlatform": "AUTOMATIC",
         "numInstances": 2,
         "preemptibility": "NON_PREEMPTIBLE"
@@ -959,7 +1079,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 
 200 OK
@@ -1003,7 +1123,30 @@ X-Xss-Protection: 0
       "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-2",
       "minCpuPlatform": "AUTOMATIC",
       "numInstances": 1,
-      "preemptibility": "NON_PREEMPTIBLE"
+      "preemptibility": 1
+    },
+    "secondaryWorkerConfig": {
+      "diskConfig": {
+        "bootDiskSizeGb": 1000,
+        "bootDiskType": "pd-standard"
+      },
+      "imageUri": "https://www.googleapis.com/compute/v1/projects/cloud-dataproc/global/images/dataproc-2-2-deb12-20250817-165100-rc01",
+      "instanceNames": [
+        "dataproccluster-${uniqueId}-sw-0"
+      ],
+      "isPreemptible": true,
+      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/c4-standard-2",
+      "managedGroupConfig": {
+        "instanceGroupManagerName": "dataproc-goog-reserved-auto-secondary-abcdefg",
+        "instanceGroupManagerUri": "projects/${projectId}/regions/us-central1/instanceGroupManagers/dataproc-goog-reserved-auto-secondary-abcdefg",
+        "instanceTemplateName": "dataproc-goog-reserved-auto-secondary-abcdefg"
+      },
+      "minCpuPlatform": "AUTOMATIC",
+      "numInstances": 1,
+      "preemptibility": 2,
+      "startupConfig": {
+        "requiredRegistrationFraction": 0.0001
+      }
     },
     "softwareConfig": {
       "imageVersion": "2.2.63-debian12",
@@ -1081,10 +1224,10 @@ X-Xss-Protection: 0
         "dataproccluster-${uniqueId}-w-0",
         "dataproccluster-${uniqueId}-w-1"
       ],
-      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-4",
+      "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/c4-standard-2",
       "minCpuPlatform": "AUTOMATIC",
       "numInstances": 2,
-      "preemptibility": "NON_PREEMPTIBLE"
+      "preemptibility": 1
     }
   },
   "labels": {
@@ -1145,20 +1288,20 @@ X-Xss-Protection: 0
   },
   "projectId": "${projectId}",
   "status": {
-    "state": "RUNNING",
+    "state": 2,
     "stateStartTime": "2024-04-01T12:34:56.123456Z"
   },
   "statusHistory": [
     {
-      "state": "CREATING",
+      "state": 1,
       "stateStartTime": "2024-04-01T12:34:56.123456Z"
     },
     {
-      "state": "RUNNING",
+      "state": 2,
       "stateStartTime": "2024-04-01T12:34:56.123456Z"
     },
     {
-      "state": "UPDATING",
+      "state": 5,
       "stateStartTime": "2024-04-01T12:34:56.123456Z"
     }
   ]
@@ -1166,7 +1309,7 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json
+DELETE https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 
 200 OK
@@ -1188,16 +1331,16 @@ X-Xss-Protection: 0
     "operationType": "DELETE",
     "status": {
       "innerState": "PENDING",
-      "state": "PENDING",
+      "state": 1,
       "stateStartTime": "2024-04-01T12:34:56.123456Z"
     }
   },
-  "name": "projects/${projectId}/regions/us-central1/operations/${operationID}"
+  "name": "projects/${projectId}/regions/us-central1/operations/00000000-0000-0000-0000-000000000001"
 }
 
 ---
 
-GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
 Content-Type: application/json
 
 200 OK
@@ -1234,32 +1377,9 @@ X-Xss-Protection: 0
       }
     ]
   },
-  "name": "projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "name": "projects/${projectId}/regions/us-central1/operations/00000000-0000-0000-0000-000000000001",
   "response": {
     "@type": "type.googleapis.com/google.protobuf.Empty"
-  }
-}
-
----
-
-GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json
-Content-Type: application/json
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 404,
-    "message": "Not found: Cluster projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}",
-    "status": "NOT_FOUND"
   }
 }
 

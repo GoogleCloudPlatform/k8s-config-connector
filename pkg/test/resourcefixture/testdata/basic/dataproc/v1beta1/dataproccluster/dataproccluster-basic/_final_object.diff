@@ -10,7 +10,7 @@
 41a39
 >     endpointConfig: {}
 48a47
->   externalRef: projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}
+>   externalRef: projects/${projectId}/regions/us-east1/clusters/dataproccluster-${uniqueId}
 92c91
 <   observedGeneration: 2
 ---

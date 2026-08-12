@@ -6,78 +6,108 @@
 < POST https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters?alt=json
 ---
 > POST https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters?%24alt=json%3Benum-encoding%3Dint
-300c300,301
+308c308,309
 <   }
 ---
 >   },
 >   "projectId": "${projectId}"
-322c323
+330c331
 <       "state": "PENDING",
 ---
 >       "state": 1,
-336c337
+344c345
 < GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json
 ---
 > GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
-504c505
+535c536
 < GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json
 ---
 > GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-548c549
+579c580
 <       "preemptibility": "NON_PREEMPTIBLE"
 ---
 >       "preemptibility": 1
-629c630
+599c600
+<       "preemptibility": "PREEMPTIBLE",
+---
+>       "preemptibility": 2,
+683c684
 <       "preemptibility": "NON_PREEMPTIBLE"
 ---
 >       "preemptibility": 1
-644c645
+698c699
 <     "state": "RUNNING",
 ---
 >     "state": 2,
-649c650
+703c704
 <       "state": "CREATING",
 ---
 >       "state": 1,
-657c658
+711c712
 < PATCH https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json&updateMask=labels
 ---
 > PATCH https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=labels
-660a662,663
+714a716,717
 >   "clusterName": "dataproccluster-${uniqueId}",
 >   "clusterUuid": "${dataStoreClusterUUID}",
-673d675
+719a723,725
+>       "serviceAccountScopes": [
+>         "https://www.googleapis.com/auth/cloud-platform"
+>       ],
+727d732
 <     "initializationActions": [],
-675d676
+729d733
 <       "accelerators": [],
-681c682,685
+735c739,742
 <       "machineTypeUri": "n2-standard-2",
 ---
 >       "instanceNames": [
 >         "dataproccluster-${uniqueId}-m"
 >       ],
 >       "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-2",
-684c688
+738c745
 <       "preemptibility": "NON_PREEMPTIBLE"
 ---
 >       "preemptibility": 1
-688d691
-<       "optionalComponents": [],
-754d756
+741d747
 <       "accelerators": [],
-760c762,766
-<       "machineTypeUri": "n2-standard-4",
+747c753,762
+<       "machineTypeUri": "c4-standard-2",
+---
+>       "instanceNames": [
+>         "dataproccluster-${uniqueId}-sw-0"
+>       ],
+>       "isPreemptible": true,
+>       "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/c4-standard-2",
+>       "managedGroupConfig": {
+>         "instanceGroupManagerName": "dataproc-goog-reserved-auto-secondary-abcdefg",
+>         "instanceGroupManagerUri": "projects/${projectId}/regions/us-central1/instanceGroupManagers/dataproc-goog-reserved-auto-secondary-abcdefg",
+>         "instanceTemplateName": "dataproc-goog-reserved-auto-secondary-abcdefg"
+>       },
+750c765,768
+<       "preemptibility": "PREEMPTIBLE"
+---
+>       "preemptibility": 2,
+>       "startupConfig": {
+>         "requiredRegistrationFraction": 0.0001
+>       }
+754d771
+<       "optionalComponents": [],
+820d836
+<       "accelerators": [],
+826c842,846
+<       "machineTypeUri": "c4-standard-2",
 ---
 >       "instanceNames": [
 >         "dataproccluster-${uniqueId}-w-0",
 >         "dataproccluster-${uniqueId}-w-1"
 >       ],
->       "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-4",
-763c769
+>       "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/c4-standard-2",
+829c849
 <       "preemptibility": "NON_PREEMPTIBLE"
 ---
 >       "preemptibility": 1
-770c776,787
+836c856,867
 <   }
 ---
 >   },
@@ -92,55 +122,59 @@
 >       "stateStartTime": "2024-04-01T12:34:56.123456Z"
 >     }
 >   ]
-791c808
+857c888
 <       "state": "PENDING",
 ---
 >       "state": 1,
-800c817
+866c897
 < GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json
 ---
 > GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
-962c979
+1051c1082
 < GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json
 ---
 > GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-1006c1023
+1095c1126
 <       "preemptibility": "NON_PREEMPTIBLE"
 ---
 >       "preemptibility": 1
-1087c1104
+1115c1146
+<       "preemptibility": "PREEMPTIBLE",
+---
+>       "preemptibility": 2,
+1199c1230
 <       "preemptibility": "NON_PREEMPTIBLE"
 ---
 >       "preemptibility": 1
-1148c1165
+1260c1291
 <     "state": "RUNNING",
 ---
 >     "state": 2,
-1153c1170
+1265c1296
 <       "state": "CREATING",
 ---
 >       "state": 1,
-1157c1174
+1269c1300
 <       "state": "RUNNING",
 ---
 >       "state": 2,
-1161c1178
+1273c1304
 <       "state": "UPDATING",
 ---
 >       "state": 5,
-1169c1186
+1281c1312
 < DELETE https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json
 ---
 > DELETE https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-1191c1208
+1303c1334
 <       "state": "PENDING",
 ---
 >       "state": 1,
-1200c1217
+1312c1343
 < GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json
 ---
 > GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
-1240,1262d1256
+1352,1374d1382
 <   }
 < }
 < 

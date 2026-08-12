@@ -8,7 +8,7 @@ metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 3
+  generation: 2
   labels:
     cnrm-test: "true"
     label-one: new-value
@@ -23,15 +23,18 @@ spec:
         bootDiskType: pd-standard
       machineType: n2-standard-2
       numInstances: 1
+    secondaryWorkerConfig:
+      machineType: c4-standard-2
+      numInstances: 1
     workerConfig:
-      machineType: n2-standard-4
+      machineType: c4-standard-2
       numInstances: 2
   location: us-central1
   projectRef:
     external: projects/${projectId}
   resourceID: dataproccluster-${uniqueId}
 status:
-  clusterUuid: ${clusterUuid}
+  clusterUuid: ${dataStoreClusterUUID}
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
     message: The resource is up to date
@@ -42,6 +45,13 @@ status:
     masterConfig:
       instanceNames:
       - dataproccluster-${uniqueId}-m
+    secondaryWorkerConfig:
+      instanceNames:
+      - dataproccluster-${uniqueId}-sw-0
+      isPreemptible: true
+      managedGroupConfig:
+        instanceGroupManagerName: dataproc-goog-reserved-auto-secondary-abcdefg
+        instanceTemplateName: dataproc-goog-reserved-auto-secondary-abcdefg
     workerConfig:
       instanceNames:
       - dataproccluster-${uniqueId}-w-0
@@ -89,7 +99,7 @@ status:
       yarn-vcores-pending: "0"
       yarn-vcores-reserved: "0"
       yarn-vcores-total: "8"
-  observedGeneration: 3
+  observedGeneration: 2
   status:
     state: RUNNING
     stateStartTime: "2024-04-01T12:34:56.123456Z"
