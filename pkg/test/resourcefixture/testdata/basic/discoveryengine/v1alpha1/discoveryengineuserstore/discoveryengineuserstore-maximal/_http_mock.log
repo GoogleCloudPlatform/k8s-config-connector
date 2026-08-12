@@ -17,7 +17,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "licenseConfig \"projects/${projectNumber}/locations/global/licenseConfigs/lic-${uniqueId}\" not found",
+    "message": "License config projects/${projectNumber}/locations/global/licenseConfigs/lic-${uniqueId} does not exist.",
     "status": "NOT_FOUND"
   }
 }
