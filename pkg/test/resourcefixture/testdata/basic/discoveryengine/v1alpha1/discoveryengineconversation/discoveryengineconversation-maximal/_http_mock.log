@@ -149,7 +149,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Fcollections%2Fdefault_collection%2FdataStores%2Fdatastore-${uniqueId}%2Fconversations%2Fconversation-${uniqueId}
 X-Goog-User-Project: ${projectId}
 
-404 Not Found
+500 Internal Server Error
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -161,9 +161,9 @@ X-Xss-Protection: 0
 
 {
   "error": {
-    "code": 404,
-    "message": "Conversation with name \"projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}/conversations/conversation-${uniqueId}\" does not exist.",
-    "status": "NOT_FOUND"
+    "code": 500,
+    "message": "Internal error encountered. Please try again. If the issue persists, please contact our support team.",
+    "status": "INTERNAL"
   }
 }
 
