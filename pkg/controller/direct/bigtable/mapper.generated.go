@@ -578,6 +578,7 @@ func Table_AutomatedBackupPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in
 	out := &krmbigtablev1beta1.Table_AutomatedBackupPolicy{}
 	out.RetentionPeriod = direct.StringDuration_FromProto(mapCtx, in.GetRetentionPeriod())
 	out.Frequency = direct.StringDuration_FromProto(mapCtx, in.GetFrequency())
+	out.Locations = in.Locations
 	return out
 }
 func Table_AutomatedBackupPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1beta1.Table_AutomatedBackupPolicy) *pb.Table_AutomatedBackupPolicy {
@@ -587,6 +588,7 @@ func Table_AutomatedBackupPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *
 	out := &pb.Table_AutomatedBackupPolicy{}
 	out.RetentionPeriod = direct.StringDuration_ToProto(mapCtx, in.RetentionPeriod)
 	out.Frequency = direct.StringDuration_ToProto(mapCtx, in.Frequency)
+	out.Locations = in.Locations
 	return out
 }
 func Table_ClusterState_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.Table_ClusterState) *krmbigtablev1beta1.Table_ClusterState {
