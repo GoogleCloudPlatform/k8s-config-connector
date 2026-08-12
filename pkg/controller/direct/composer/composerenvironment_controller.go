@@ -17,6 +17,9 @@ package composer
 import (
 	"context"
 	"fmt"
+	"reflect"
+	"sort"
+	"strings"
 
 	gcp "cloud.google.com/go/orchestration/airflow/service/apiv1"
 	composerpb "cloud.google.com/go/orchestration/airflow/service/apiv1/servicepb"
@@ -34,7 +37,6 @@ import (
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
-	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -182,52 +184,378 @@ func (a *EnvironmentAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	desiredPb.Name = a.id.String()
-	populateDefaultsForEnvironment(desiredPb, a.actual)
 
-	paths, err := common.CompareProtoMessage(desiredPb, a.actual, common.BasicDiff)
-	if err != nil {
+	if err := validateUpdatableFields(desiredPb, a.actual); err != nil {
 		return err
 	}
 
-	if len(paths) == 0 {
-		log.V(2).Info("no field needs update", "name", a.id)
-		return nil
-	}
+	var latest *composerpb.Environment
+	latest = a.actual
 
 	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
-	for path := range paths {
-		report.AddField(path, nil, nil)
-	}
-	structuredreporting.ReportDiff(ctx, report)
+	hasUpdate := false
 
-	updateMask := &fieldmaskpb.FieldMask{
-		Paths: sets.List(paths),
+	// Cloud Composer does not support updating multiple different field types in a single request's
+	// updateMask (e.g. labels and workloads_config cannot be combined in one request). Therefore,
+	// we iterate through fieldUpdaters to issue individual patch calls one field at a time.
+	for _, u := range fieldUpdaters {
+		patch := u.build(desired, desiredPb, a.actual)
+		if patch == nil {
+			continue
+		}
+		hasUpdate = true
+		report.AddField(u.mask, nil, nil)
+		patch.Name = a.id.String()
+
+		log.V(2).Info("updating Environment field", "name", a.id, "mask", u.mask)
+		req := &composerpb.UpdateEnvironmentRequest{
+			Name: a.id.String(),
+			UpdateMask: &fieldmaskpb.FieldMask{
+				Paths: []string{u.mask},
+			},
+			Environment: patch,
+		}
+		op, err := a.gcpClient.UpdateEnvironment(ctx, req)
+		if err != nil {
+			return fmt.Errorf("updating Environment %s (%s): %w", a.id, u.mask, err)
+		}
+		updated, err := op.Wait(ctx)
+		if err != nil {
+			return fmt.Errorf("Environment %s waiting update (%s): %w", a.id, u.mask, err)
+		}
+		latest = updated
 	}
 
-	// Composer Environments service uses UpdateEnvironment function to fulfill
-	// the PATCH request.
-	req := &composerpb.UpdateEnvironmentRequest{
-		Name:        a.id.String(),
-		UpdateMask:  updateMask,
-		Environment: desiredPb,
+	if !hasUpdate {
+		log.V(2).Info("no field needs update", "name", a.id)
+	} else {
+		structuredreporting.ReportDiff(ctx, report)
+		log.V(2).Info("successfully updated Environment", "name", a.id)
 	}
-	op, err := a.gcpClient.UpdateEnvironment(ctx, req)
-	if err != nil {
-		return fmt.Errorf("updating Environment %s: %w", a.id, err)
-	}
-	updated, err := op.Wait(ctx)
-	if err != nil {
-		return fmt.Errorf("Environment %s waiting update: %w", a.id, err)
-	}
-	log.V(2).Info("successfully updated Environment", "name", a.id)
 
 	status := &krm.ComposerEnvironmentStatus{}
-	status.ObservedState = ComposerEnvironmentObservedState_FromProto(mapCtx, updated)
+	status.ObservedState = ComposerEnvironmentObservedState_FromProto(mapCtx, latest)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
+	status.ExternalRef = direct.LazyPtr(a.id.String())
 	return updateOp.UpdateStatus(ctx, status, nil)
+}
+
+// isValidUpdatePrefix checks whether a modified field path matches any registered update mask prefix.
+func isValidUpdatePrefix(path string) bool {
+	for _, u := range fieldUpdaters {
+		if path == u.mask || strings.HasPrefix(path, u.mask+".") {
+			return true
+		}
+	}
+	return false
+}
+
+// validateUpdatableFields checks whether any detected drift in desiredPb against actualPb
+// modifies fields that are not supported for updates, and returns an aggregated error.
+func validateUpdatableFields(desiredPb, actualPb *composerpb.Environment) error {
+	if desiredPb == nil || actualPb == nil {
+		return nil
+	}
+	paths, err := common.CompareProtoMessage(desiredPb, actualPb, common.BasicDiff)
+	if err != nil {
+		return err
+	}
+	var unsupported []string
+	for path := range paths {
+		if !isValidUpdatePrefix(path) {
+			unsupported = append(unsupported, path)
+		}
+	}
+	if len(unsupported) > 0 {
+		sort.Strings(unsupported)
+		return fmt.Errorf("updating field(s) %v is not supported", unsupported)
+	}
+	return nil
+}
+
+// fieldUpdater defines a declarative updater for a specific mutable field mask.
+// It serves as the single source of truth for both executing updates in findPendingUpdates
+// and validating allowed field mutations in validateUpdatableFields.
+type fieldUpdater struct {
+	// mask is the GCP UpdateEnvironment field mask path (e.g. "config.node_count").
+	mask string
+
+	// build constructs the minimal patch protobuf message if the field changed, or returns nil if unchanged.
+	build func(desired *krm.ComposerEnvironment, desiredPb, actualPb *composerpb.Environment) *composerpb.Environment
+}
+
+// fieldUpdaters defines all supported field mutations for ComposerEnvironment.
+var fieldUpdaters = []fieldUpdater{
+	// 1. labels
+	{
+		mask: "labels",
+		build: func(desired *krm.ComposerEnvironment, desiredPb, actualPb *composerpb.Environment) *composerpb.Environment {
+			if desired.Spec.Labels != nil && !reflect.DeepEqual(desiredPb.Labels, actualPb.Labels) {
+				return &composerpb.Environment{
+					Labels: desiredPb.Labels,
+				}
+			}
+			return nil
+		},
+	},
+	// 2. config.node_count
+	{
+		mask: "config.node_count",
+		build: func(desired *krm.ComposerEnvironment, desiredPb, actualPb *composerpb.Environment) *composerpb.Environment {
+			if desired.Spec.Config != nil && desired.Spec.Config.NodeCount != nil && desiredPb.GetConfig().GetNodeCount() != actualPb.GetConfig().GetNodeCount() {
+				return &composerpb.Environment{
+					Config: &composerpb.EnvironmentConfig{
+						NodeCount: desiredPb.GetConfig().GetNodeCount(),
+					},
+				}
+			}
+			return nil
+		},
+	},
+	// 3. config.software_config.image_version
+	{
+		mask: "config.software_config.image_version",
+		build: func(desired *krm.ComposerEnvironment, desiredPb, actualPb *composerpb.Environment) *composerpb.Environment {
+			if desired.Spec.Config != nil && desired.Spec.Config.SoftwareConfig != nil && desired.Spec.Config.SoftwareConfig.ImageVersion != nil && desiredPb.GetConfig().GetSoftwareConfig().GetImageVersion() != actualPb.GetConfig().GetSoftwareConfig().GetImageVersion() {
+				return &composerpb.Environment{
+					Config: &composerpb.EnvironmentConfig{
+						SoftwareConfig: &composerpb.SoftwareConfig{
+							ImageVersion: desiredPb.GetConfig().GetSoftwareConfig().GetImageVersion(),
+						},
+					},
+				}
+			}
+			return nil
+		},
+	},
+	// 4. config.software_config.scheduler_count
+	{
+		mask: "config.software_config.scheduler_count",
+		build: func(desired *krm.ComposerEnvironment, desiredPb, actualPb *composerpb.Environment) *composerpb.Environment {
+			if desired.Spec.Config != nil && desired.Spec.Config.SoftwareConfig != nil && desired.Spec.Config.SoftwareConfig.SchedulerCount != nil && desiredPb.GetConfig().GetSoftwareConfig().GetSchedulerCount() != actualPb.GetConfig().GetSoftwareConfig().GetSchedulerCount() {
+				return &composerpb.Environment{
+					Config: &composerpb.EnvironmentConfig{
+						SoftwareConfig: &composerpb.SoftwareConfig{
+							SchedulerCount: desiredPb.GetConfig().GetSoftwareConfig().GetSchedulerCount(),
+						},
+					},
+				}
+			}
+			return nil
+		},
+	},
+	// 5. config.software_config.cloud_data_lineage_integration
+	{
+		mask: "config.software_config.cloud_data_lineage_integration",
+		build: func(desired *krm.ComposerEnvironment, desiredPb, actualPb *composerpb.Environment) *composerpb.Environment {
+			if desired.Spec.Config != nil && desired.Spec.Config.SoftwareConfig != nil && desired.Spec.Config.SoftwareConfig.CloudDataLineageIntegration != nil && !proto.Equal(desiredPb.GetConfig().GetSoftwareConfig().GetCloudDataLineageIntegration(), actualPb.GetConfig().GetSoftwareConfig().GetCloudDataLineageIntegration()) {
+				return &composerpb.Environment{
+					Config: &composerpb.EnvironmentConfig{
+						SoftwareConfig: &composerpb.SoftwareConfig{
+							CloudDataLineageIntegration: desiredPb.GetConfig().GetSoftwareConfig().GetCloudDataLineageIntegration(),
+						},
+					},
+				}
+			}
+			return nil
+		},
+	},
+	// 6. config.software_config.airflow_config_overrides
+	{
+		mask: "config.software_config.airflow_config_overrides",
+		build: func(desired *krm.ComposerEnvironment, desiredPb, actualPb *composerpb.Environment) *composerpb.Environment {
+			if desired.Spec.Config != nil && desired.Spec.Config.SoftwareConfig != nil && desired.Spec.Config.SoftwareConfig.AirflowConfigOverrides != nil && !reflect.DeepEqual(desiredPb.GetConfig().GetSoftwareConfig().GetAirflowConfigOverrides(), actualPb.GetConfig().GetSoftwareConfig().GetAirflowConfigOverrides()) {
+				return &composerpb.Environment{
+					Config: &composerpb.EnvironmentConfig{
+						SoftwareConfig: &composerpb.SoftwareConfig{
+							AirflowConfigOverrides: desiredPb.GetConfig().GetSoftwareConfig().GetAirflowConfigOverrides(),
+						},
+					},
+				}
+			}
+			return nil
+		},
+	},
+	// 7. config.software_config.env_variables
+	{
+		mask: "config.software_config.env_variables",
+		build: func(desired *krm.ComposerEnvironment, desiredPb, actualPb *composerpb.Environment) *composerpb.Environment {
+			if desired.Spec.Config != nil && desired.Spec.Config.SoftwareConfig != nil && desired.Spec.Config.SoftwareConfig.EnvVariables != nil && !reflect.DeepEqual(desiredPb.GetConfig().GetSoftwareConfig().GetEnvVariables(), actualPb.GetConfig().GetSoftwareConfig().GetEnvVariables()) {
+				return &composerpb.Environment{
+					Config: &composerpb.EnvironmentConfig{
+						SoftwareConfig: &composerpb.SoftwareConfig{
+							EnvVariables: desiredPb.GetConfig().GetSoftwareConfig().GetEnvVariables(),
+						},
+					},
+				}
+			}
+			return nil
+		},
+	},
+	// 8. config.software_config.pypi_packages
+	{
+		mask: "config.software_config.pypi_packages",
+		build: func(desired *krm.ComposerEnvironment, desiredPb, actualPb *composerpb.Environment) *composerpb.Environment {
+			if desired.Spec.Config != nil && desired.Spec.Config.SoftwareConfig != nil && desired.Spec.Config.SoftwareConfig.PypiPackages != nil && !reflect.DeepEqual(desiredPb.GetConfig().GetSoftwareConfig().GetPypiPackages(), actualPb.GetConfig().GetSoftwareConfig().GetPypiPackages()) {
+				return &composerpb.Environment{
+					Config: &composerpb.EnvironmentConfig{
+						SoftwareConfig: &composerpb.SoftwareConfig{
+							PypiPackages: desiredPb.GetConfig().GetSoftwareConfig().GetPypiPackages(),
+						},
+					},
+				}
+			}
+			return nil
+		},
+	},
+	// 9. config.web_server_network_access_control
+	{
+		mask: "config.web_server_network_access_control",
+		build: func(desired *krm.ComposerEnvironment, desiredPb, actualPb *composerpb.Environment) *composerpb.Environment {
+			if desired.Spec.Config != nil && desired.Spec.Config.WebServerNetworkAccessControl != nil && !proto.Equal(desiredPb.GetConfig().GetWebServerNetworkAccessControl(), actualPb.GetConfig().GetWebServerNetworkAccessControl()) {
+				return &composerpb.Environment{
+					Config: &composerpb.EnvironmentConfig{
+						WebServerNetworkAccessControl: desiredPb.GetConfig().GetWebServerNetworkAccessControl(),
+					},
+				}
+			}
+			return nil
+		},
+	},
+	// 10. config.database_config.machine_type
+	{
+		mask: "config.database_config.machine_type",
+		build: func(desired *krm.ComposerEnvironment, desiredPb, actualPb *composerpb.Environment) *composerpb.Environment {
+			if desired.Spec.Config != nil && desired.Spec.Config.DatabaseConfig != nil && desired.Spec.Config.DatabaseConfig.MachineType != nil && desiredPb.GetConfig().GetDatabaseConfig().GetMachineType() != actualPb.GetConfig().GetDatabaseConfig().GetMachineType() {
+				return &composerpb.Environment{
+					Config: &composerpb.EnvironmentConfig{
+						DatabaseConfig: &composerpb.DatabaseConfig{
+							MachineType: desiredPb.GetConfig().GetDatabaseConfig().GetMachineType(),
+						},
+					},
+				}
+			}
+			return nil
+		},
+	},
+	// 11. config.web_server_config.machine_type
+	{
+		mask: "config.web_server_config.machine_type",
+		build: func(desired *krm.ComposerEnvironment, desiredPb, actualPb *composerpb.Environment) *composerpb.Environment {
+			if desired.Spec.Config != nil && desired.Spec.Config.WebServerConfig != nil && desired.Spec.Config.WebServerConfig.MachineType != nil && desiredPb.GetConfig().GetWebServerConfig().GetMachineType() != actualPb.GetConfig().GetWebServerConfig().GetMachineType() {
+				return &composerpb.Environment{
+					Config: &composerpb.EnvironmentConfig{
+						WebServerConfig: &composerpb.WebServerConfig{
+							MachineType: desiredPb.GetConfig().GetWebServerConfig().GetMachineType(),
+						},
+					},
+				}
+			}
+			return nil
+		},
+	},
+	// 12. config.maintenance_window
+	{
+		mask: "config.maintenance_window",
+		build: func(desired *krm.ComposerEnvironment, desiredPb, actualPb *composerpb.Environment) *composerpb.Environment {
+			if desired.Spec.Config != nil && desired.Spec.Config.MaintenanceWindow != nil && !proto.Equal(desiredPb.GetConfig().GetMaintenanceWindow(), actualPb.GetConfig().GetMaintenanceWindow()) {
+				return &composerpb.Environment{
+					Config: &composerpb.EnvironmentConfig{
+						MaintenanceWindow: desiredPb.GetConfig().GetMaintenanceWindow(),
+					},
+				}
+			}
+			return nil
+		},
+	},
+	// 13. config.workloads_config
+	{
+		mask: "config.workloads_config",
+		build: func(desired *krm.ComposerEnvironment, desiredPb, actualPb *composerpb.Environment) *composerpb.Environment {
+			if desired.Spec.Config != nil && desired.Spec.Config.WorkloadsConfig != nil && !proto.Equal(desiredPb.GetConfig().GetWorkloadsConfig(), actualPb.GetConfig().GetWorkloadsConfig()) {
+				return &composerpb.Environment{
+					Config: &composerpb.EnvironmentConfig{
+						WorkloadsConfig: desiredPb.GetConfig().GetWorkloadsConfig(),
+					},
+				}
+			}
+			return nil
+		},
+	},
+	// 14. config.recovery_config.scheduled_snapshots_config
+	{
+		mask: "config.recovery_config.scheduled_snapshots_config",
+		build: func(desired *krm.ComposerEnvironment, desiredPb, actualPb *composerpb.Environment) *composerpb.Environment {
+			if desired.Spec.Config != nil && desired.Spec.Config.RecoveryConfig != nil && desired.Spec.Config.RecoveryConfig.ScheduledSnapshotsConfig != nil && !proto.Equal(desiredPb.GetConfig().GetRecoveryConfig().GetScheduledSnapshotsConfig(), actualPb.GetConfig().GetRecoveryConfig().GetScheduledSnapshotsConfig()) {
+				return &composerpb.Environment{
+					Config: &composerpb.EnvironmentConfig{
+						RecoveryConfig: &composerpb.RecoveryConfig{
+							ScheduledSnapshotsConfig: desiredPb.GetConfig().GetRecoveryConfig().GetScheduledSnapshotsConfig(),
+						},
+					},
+				}
+			}
+			return nil
+		},
+	},
+	// 15. config.environment_size
+	{
+		mask: "config.environment_size",
+		build: func(desired *krm.ComposerEnvironment, desiredPb, actualPb *composerpb.Environment) *composerpb.Environment {
+			if desired.Spec.Config != nil && desired.Spec.Config.EnvironmentSize != nil && desiredPb.GetConfig().GetEnvironmentSize() != actualPb.GetConfig().GetEnvironmentSize() {
+				return &composerpb.Environment{
+					Config: &composerpb.EnvironmentConfig{
+						EnvironmentSize: desiredPb.GetConfig().GetEnvironmentSize(),
+					},
+				}
+			}
+			return nil
+		},
+	},
+	// 16. config.resilience_mode
+	{
+		mask: "config.resilience_mode",
+		build: func(desired *krm.ComposerEnvironment, desiredPb, actualPb *composerpb.Environment) *composerpb.Environment {
+			if desired.Spec.Config != nil && desired.Spec.Config.ResilienceMode != nil && desiredPb.GetConfig().GetResilienceMode() != actualPb.GetConfig().GetResilienceMode() {
+				return &composerpb.Environment{
+					Config: &composerpb.EnvironmentConfig{
+						ResilienceMode: desiredPb.GetConfig().GetResilienceMode(),
+					},
+				}
+			}
+			return nil
+		},
+	},
+	// 17. config.master_authorized_networks_config
+	{
+		mask: "config.master_authorized_networks_config",
+		build: func(desired *krm.ComposerEnvironment, desiredPb, actualPb *composerpb.Environment) *composerpb.Environment {
+			if desired.Spec.Config != nil && desired.Spec.Config.MasterAuthorizedNetworksConfig != nil && !proto.Equal(desiredPb.GetConfig().GetMasterAuthorizedNetworksConfig(), actualPb.GetConfig().GetMasterAuthorizedNetworksConfig()) {
+				return &composerpb.Environment{
+					Config: &composerpb.EnvironmentConfig{
+						MasterAuthorizedNetworksConfig: desiredPb.GetConfig().GetMasterAuthorizedNetworksConfig(),
+					},
+				}
+			}
+			return nil
+		},
+	},
+	// 18. config.data_retention_config
+	{
+		mask: "config.data_retention_config",
+		build: func(desired *krm.ComposerEnvironment, desiredPb, actualPb *composerpb.Environment) *composerpb.Environment {
+			if desired.Spec.Config != nil && desired.Spec.Config.DataRetentionConfig != nil && !proto.Equal(desiredPb.GetConfig().GetDataRetentionConfig(), actualPb.GetConfig().GetDataRetentionConfig()) {
+				return &composerpb.Environment{
+					Config: &composerpb.EnvironmentConfig{
+						DataRetentionConfig: desiredPb.GetConfig().GetDataRetentionConfig(),
+					},
+				}
+			}
+			return nil
+		},
+	},
 }
 
 // Export maps the GCP object to a Config Connector resource `spec`.
@@ -281,173 +609,4 @@ func (a *EnvironmentAdapter) Delete(ctx context.Context, deleteOp *directbase.De
 		return false, fmt.Errorf("waiting delete Environment %s: %w", a.id, err)
 	}
 	return true, nil
-}
-
-func populateDefaultsForEnvironment(desired, actual *composerpb.Environment) {
-	if actual == nil {
-		return
-	}
-
-	// Populate output-only fields.
-	desired.Uuid = actual.Uuid
-	desired.State = actual.State
-	desired.CreateTime = actual.CreateTime
-	desired.UpdateTime = actual.UpdateTime
-
-	// Handle other fields.
-	if desired.StorageConfig == nil && actual.StorageConfig != nil {
-		desired.StorageConfig = actual.StorageConfig
-	}
-	if desired.Config == nil && actual.Config != nil {
-		desired.Config = &composerpb.EnvironmentConfig{}
-	}
-	populateDefaultsForEnvironmentConfig(desired.Config, actual.Config)
-}
-
-func populateDefaultsForEnvironmentConfig(desired, actual *composerpb.EnvironmentConfig) {
-	if actual == nil {
-		return // If actual is nil, nothing to populate from.
-	}
-
-	// Populate output-only fields
-	if desired.AirflowByoidUri == "" && actual.AirflowByoidUri != "" {
-		desired.AirflowByoidUri = actual.AirflowByoidUri
-	}
-	if desired.AirflowUri == "" && actual.AirflowUri != "" {
-		desired.AirflowUri = actual.AirflowUri
-	}
-	if desired.DagGcsPrefix == "" && actual.DagGcsPrefix != "" {
-		desired.DagGcsPrefix = actual.DagGcsPrefix
-	}
-	if desired.GkeCluster == "" && actual.GkeCluster != "" {
-		desired.GkeCluster = actual.GkeCluster
-	}
-
-	// Handle other fields.
-	if actual.DataRetentionConfig != nil {
-		if desired.DataRetentionConfig == nil {
-			desired.DataRetentionConfig = actual.DataRetentionConfig
-		}
-		if actual.DataRetentionConfig.AirflowMetadataRetentionConfig != nil {
-			if desired.DataRetentionConfig.AirflowMetadataRetentionConfig == nil {
-				desired.DataRetentionConfig.AirflowMetadataRetentionConfig = actual.DataRetentionConfig.AirflowMetadataRetentionConfig
-			}
-		}
-		if actual.DataRetentionConfig.TaskLogsRetentionConfig != nil {
-			if desired.DataRetentionConfig.TaskLogsRetentionConfig == nil {
-				desired.DataRetentionConfig.TaskLogsRetentionConfig = actual.DataRetentionConfig.TaskLogsRetentionConfig
-			}
-		}
-	}
-
-	//if actual.DatabaseConfig != nil {
-	//	if desired.DatabaseConfig == nil {
-	//		desired.DatabaseConfig = &pb.DatabaseConfig{}
-	//	}
-	//	if desired.DatabaseConfig.MachineType == "" && actual.DatabaseConfig.MachineType != "" {
-	//		desired.DatabaseConfig.MachineType = actual.DatabaseConfig.MachineType
-	//	}
-	//}
-
-	//if actual.EncryptionConfig != nil {
-	//	if desired.EncryptionConfig == nil {
-	//		desired.EncryptionConfig = &pb.EncryptionConfig{}
-	//	}
-	//}
-
-	if desired.EnvironmentSize == composerpb.EnvironmentConfig_ENVIRONMENT_SIZE_UNSPECIFIED {
-		desired.EnvironmentSize = actual.EnvironmentSize
-	}
-	if desired.MaintenanceWindow == nil {
-		desired.MaintenanceWindow = actual.MaintenanceWindow
-	}
-
-	if desired.NodeConfig == nil && actual.NodeConfig != nil {
-		desired.NodeConfig = proto.CloneOf(actual.NodeConfig)
-	} else if desired.NodeConfig != nil && actual.NodeConfig != nil {
-		// Preserve immutable, server-assigned fields.
-		// These fields are not sent in update requests (see NodeConfig_ToProto),
-		// but we need to match them in the desired state so CompareProtoMessage
-		// doesn't flag them as changed (drift).
-		if desired.NodeConfig.ComposerInternalIpv4CidrBlock == "" {
-			desired.NodeConfig.ComposerInternalIpv4CidrBlock = actual.NodeConfig.ComposerInternalIpv4CidrBlock
-		}
-		if desired.NodeConfig.ComposerNetworkAttachment == "" {
-			desired.NodeConfig.ComposerNetworkAttachment = actual.NodeConfig.ComposerNetworkAttachment
-		}
-		if desired.NodeConfig.ServiceAccount == "" {
-			desired.NodeConfig.ServiceAccount = actual.NodeConfig.ServiceAccount
-		}
-		if desired.NodeConfig.Network == "" {
-			desired.NodeConfig.Network = actual.NodeConfig.Network
-		}
-		if desired.NodeConfig.Subnetwork == "" {
-			desired.NodeConfig.Subnetwork = actual.NodeConfig.Subnetwork
-		}
-		if desired.NodeConfig.IpAllocationPolicy == nil && actual.NodeConfig.IpAllocationPolicy != nil {
-			desired.NodeConfig.IpAllocationPolicy = proto.CloneOf(actual.NodeConfig.IpAllocationPolicy)
-		}
-		if desired.NodeConfig.MachineType == "" {
-			desired.NodeConfig.MachineType = actual.NodeConfig.MachineType
-		}
-		if desired.NodeConfig.DiskSizeGb == 0 {
-			desired.NodeConfig.DiskSizeGb = actual.NodeConfig.DiskSizeGb
-		}
-		if desired.NodeConfig.Location == "" {
-			desired.NodeConfig.Location = actual.NodeConfig.Location
-		}
-	}
-
-	if actual.PrivateEnvironmentConfig != nil {
-		if desired.PrivateEnvironmentConfig == nil {
-			desired.PrivateEnvironmentConfig = actual.PrivateEnvironmentConfig
-		} else {
-			if desired.PrivateEnvironmentConfig.CloudComposerNetworkIpv4CidrBlock == "" {
-				desired.PrivateEnvironmentConfig.CloudComposerNetworkIpv4CidrBlock = actual.PrivateEnvironmentConfig.CloudComposerNetworkIpv4CidrBlock
-			}
-			if desired.PrivateEnvironmentConfig.WebServerIpv4CidrBlock == "" {
-				desired.PrivateEnvironmentConfig.WebServerIpv4CidrBlock = actual.PrivateEnvironmentConfig.WebServerIpv4CidrBlock
-			}
-			if desired.PrivateEnvironmentConfig.CloudSqlIpv4CidrBlock == "" {
-				desired.PrivateEnvironmentConfig.CloudSqlIpv4CidrBlock = actual.PrivateEnvironmentConfig.CloudSqlIpv4CidrBlock
-			}
-			if desired.PrivateEnvironmentConfig.CloudComposerNetworkIpv4ReservedRange == "" {
-				desired.PrivateEnvironmentConfig.CloudComposerNetworkIpv4ReservedRange = actual.PrivateEnvironmentConfig.CloudComposerNetworkIpv4ReservedRange
-			}
-			if desired.PrivateEnvironmentConfig.WebServerIpv4ReservedRange == "" {
-				desired.PrivateEnvironmentConfig.WebServerIpv4ReservedRange = actual.PrivateEnvironmentConfig.WebServerIpv4ReservedRange
-			}
-		}
-		if actual.PrivateEnvironmentConfig.PrivateClusterConfig != nil {
-			if desired.PrivateEnvironmentConfig.PrivateClusterConfig == nil {
-				desired.PrivateEnvironmentConfig.PrivateClusterConfig = actual.PrivateEnvironmentConfig.PrivateClusterConfig
-			} else {
-				if desired.PrivateEnvironmentConfig.PrivateClusterConfig.MasterIpv4CidrBlock == "" {
-					desired.PrivateEnvironmentConfig.PrivateClusterConfig.MasterIpv4CidrBlock = actual.PrivateEnvironmentConfig.PrivateClusterConfig.MasterIpv4CidrBlock
-				}
-				if desired.PrivateEnvironmentConfig.PrivateClusterConfig.MasterIpv4ReservedRange == "" {
-					desired.PrivateEnvironmentConfig.PrivateClusterConfig.MasterIpv4ReservedRange = actual.PrivateEnvironmentConfig.PrivateClusterConfig.MasterIpv4ReservedRange
-				}
-			}
-		}
-	}
-
-	if actual.SoftwareConfig != nil {
-		if desired.SoftwareConfig == nil {
-			desired.SoftwareConfig = actual.SoftwareConfig
-		}
-		if desired.SoftwareConfig.CloudDataLineageIntegration == nil {
-			desired.SoftwareConfig.CloudDataLineageIntegration = &composerpb.CloudDataLineageIntegration{}
-		}
-		if desired.SoftwareConfig.ImageVersion == "" {
-			desired.SoftwareConfig.ImageVersion = actual.SoftwareConfig.ImageVersion
-		}
-	}
-
-	if desired.WebServerNetworkAccessControl == nil {
-		desired.WebServerNetworkAccessControl = actual.WebServerNetworkAccessControl
-	}
-	if desired.WorkloadsConfig == nil {
-		desired.WorkloadsConfig = actual.WorkloadsConfig
-	}
 }

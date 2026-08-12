@@ -1,0 +1,564 @@
+// Copyright 2026 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package composer
+
+import (
+	"go/ast"
+	"go/build"
+	"go/doc"
+	"go/parser"
+	"go/token"
+	"regexp"
+	"slices"
+	"strings"
+	"testing"
+	"unicode"
+
+	composerpb "cloud.google.com/go/orchestration/airflow/service/apiv1/servicepb"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/composer/v1beta1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"google.golang.org/protobuf/types/known/timestamppb"
+)
+
+// buildPatches is a test helper that evaluates fieldUpdaters against desired and actual,
+// collecting the generated patch protos keyed by update mask.
+func buildPatches(desired *krm.ComposerEnvironment, desiredPb, actualPb *composerpb.Environment) map[string]*composerpb.Environment {
+	updates := make(map[string]*composerpb.Environment)
+	for _, u := range fieldUpdaters {
+		if patch := u.build(desired, desiredPb, actualPb); patch != nil {
+			updates[u.mask] = patch
+		}
+	}
+	return updates
+}
+
+func TestFieldUpdatersBuild(t *testing.T) {
+	t.Run("no diff when desired matches actual", func(t *testing.T) {
+		desired := &krm.ComposerEnvironment{
+			Spec: krm.ComposerEnvironmentSpec{
+				Labels: map[string]string{"env": "prod"},
+				Config: &krm.EnvironmentConfig{
+					EnvironmentSize: direct.LazyPtr("ENVIRONMENT_SIZE_SMALL"),
+				},
+			},
+		}
+		actual := &composerpb.Environment{
+			Labels: map[string]string{"env": "prod"},
+			Config: &composerpb.EnvironmentConfig{
+				EnvironmentSize: composerpb.EnvironmentConfig_ENVIRONMENT_SIZE_SMALL,
+			},
+		}
+		mapCtx := &direct.MapContext{}
+		desiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+		if mapCtx.Err() != nil {
+			t.Fatalf("unexpected error converting desired spec: %v", mapCtx.Err())
+		}
+
+		updates := buildPatches(desired, desiredPb, actual)
+		if len(updates) != 0 {
+			t.Errorf("expected 0 pending updates, got %d", len(updates))
+		}
+	})
+
+	t.Run("detects scheduled snapshots config update", func(t *testing.T) {
+		desired := &krm.ComposerEnvironment{
+			Spec: krm.ComposerEnvironmentSpec{
+				Config: &krm.EnvironmentConfig{
+					RecoveryConfig: &krm.RecoveryConfig{
+						ScheduledSnapshotsConfig: &krm.ScheduledSnapshotsConfig{
+							Enabled:                  direct.LazyPtr(true),
+							SnapshotCreationSchedule: direct.LazyPtr("20 15 * * *"),
+							SnapshotLocation:         direct.LazyPtr("gs://my-bucket/snapshots"),
+							TimeZone:                 direct.LazyPtr("UTC"),
+						},
+					},
+				},
+			},
+		}
+		actual := &composerpb.Environment{
+			Config: &composerpb.EnvironmentConfig{
+				RecoveryConfig: &composerpb.RecoveryConfig{
+					ScheduledSnapshotsConfig: &composerpb.ScheduledSnapshotsConfig{
+						Enabled: false,
+					},
+				},
+			},
+		}
+		mapCtx := &direct.MapContext{}
+		desiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+		if mapCtx.Err() != nil {
+			t.Fatalf("unexpected error converting desired spec: %v", mapCtx.Err())
+		}
+
+		updates := buildPatches(desired, desiredPb, actual)
+		if len(updates) != 1 {
+			t.Fatalf("expected 1 pending update, got %d", len(updates))
+		}
+		patch, ok := updates["config.recovery_config.scheduled_snapshots_config"]
+		if !ok {
+			t.Fatalf("expected update for 'config.recovery_config.scheduled_snapshots_config', but was missing")
+		}
+		if !patch.GetConfig().GetRecoveryConfig().GetScheduledSnapshotsConfig().GetEnabled() {
+			t.Errorf("expected enabled to be true in patch")
+		}
+		if patch.GetConfig().GetRecoveryConfig().GetScheduledSnapshotsConfig().GetSnapshotCreationSchedule() != "20 15 * * *" {
+			t.Errorf("expected schedule to be '20 15 * * *', got %q", patch.GetConfig().GetRecoveryConfig().GetScheduledSnapshotsConfig().GetSnapshotCreationSchedule())
+		}
+	})
+
+	t.Run("detects workloads config update", func(t *testing.T) {
+		desired := &krm.ComposerEnvironment{
+			Spec: krm.ComposerEnvironmentSpec{
+				Config: &krm.EnvironmentConfig{
+					WorkloadsConfig: &krm.WorkloadsConfig{
+						Triggerer: &krm.WorkloadsConfig_TriggererResource{
+							Count: direct.LazyPtr(int32(2)),
+						},
+					},
+				},
+			},
+		}
+		actual := &composerpb.Environment{
+			Config: &composerpb.EnvironmentConfig{
+				WorkloadsConfig: &composerpb.WorkloadsConfig{
+					Triggerer: &composerpb.WorkloadsConfig_TriggererResource{
+						Count: 1,
+					},
+				},
+			},
+		}
+		mapCtx := &direct.MapContext{}
+		desiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+		if mapCtx.Err() != nil {
+			t.Fatalf("unexpected error converting desired spec: %v", mapCtx.Err())
+		}
+
+		updates := buildPatches(desired, desiredPb, actual)
+		if len(updates) != 1 {
+			t.Fatalf("expected 1 pending update, got %d", len(updates))
+		}
+		patch, ok := updates["config.workloads_config"]
+		if !ok {
+			t.Fatalf("expected update for 'config.workloads_config', but was missing")
+		}
+		if patch.GetConfig().GetWorkloadsConfig().GetTriggerer().GetCount() != 2 {
+			t.Errorf("expected triggerer count to be 2, got %d", patch.GetConfig().GetWorkloadsConfig().GetTriggerer().GetCount())
+		}
+	})
+
+	t.Run("detects labels and maintenance window updates simultaneously", func(t *testing.T) {
+		desired := &krm.ComposerEnvironment{
+			Spec: krm.ComposerEnvironmentSpec{
+				Labels: map[string]string{"env": "staging"},
+				Config: &krm.EnvironmentConfig{
+					MaintenanceWindow: &krm.MaintenanceWindow{
+						Recurrence: direct.LazyPtr("FREQ=WEEKLY;BYDAY=SA,SU"),
+					},
+				},
+			},
+		}
+		actual := &composerpb.Environment{
+			Labels: map[string]string{"env": "prod"},
+			Config: &composerpb.EnvironmentConfig{
+				MaintenanceWindow: &composerpb.MaintenanceWindow{
+					Recurrence: "FREQ=WEEKLY;BYDAY=FR,SA,SU",
+					StartTime:  timestamppb.Now(),
+				},
+			},
+		}
+		mapCtx := &direct.MapContext{}
+		desiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+		if mapCtx.Err() != nil {
+			t.Fatalf("unexpected error converting desired spec: %v", mapCtx.Err())
+		}
+
+		updates := buildPatches(desired, desiredPb, actual)
+		expected := []string{"labels", "config.maintenance_window"}
+		if len(updates) != len(expected) {
+			t.Fatalf("expected %d updates, got %d", len(expected), len(updates))
+		}
+		for _, m := range expected {
+			if _, ok := updates[m]; !ok {
+				t.Errorf("expected update for mask %q, but was missing", m)
+			}
+		}
+	})
+
+	t.Run("ignores unset spec fields against actual state", func(t *testing.T) {
+		desired := &krm.ComposerEnvironment{
+			Spec: krm.ComposerEnvironmentSpec{
+				// No labels or config specified
+			},
+		}
+		actual := &composerpb.Environment{
+			Labels: map[string]string{"default-label": "val"},
+			Config: &composerpb.EnvironmentConfig{
+				EnvironmentSize: composerpb.EnvironmentConfig_ENVIRONMENT_SIZE_SMALL,
+				WorkloadsConfig: &composerpb.WorkloadsConfig{
+					Scheduler: &composerpb.WorkloadsConfig_SchedulerResource{
+						Count: 1,
+					},
+				},
+			},
+		}
+		mapCtx := &direct.MapContext{}
+		desiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+		if mapCtx.Err() != nil {
+			t.Fatalf("unexpected error converting desired spec: %v", mapCtx.Err())
+		}
+
+		updates := buildPatches(desired, desiredPb, actual)
+		if len(updates) != 0 {
+			t.Errorf("expected 0 pending updates for unset spec, got %d", len(updates))
+		}
+	})
+}
+
+func TestValidateUpdatableFields(t *testing.T) {
+	t.Run("returns nil for valid updates on mutable fields", func(t *testing.T) {
+		desired := &krm.ComposerEnvironment{
+			Spec: krm.ComposerEnvironmentSpec{
+				Labels: map[string]string{"env": "prod"},
+				Config: &krm.EnvironmentConfig{
+					EnvironmentSize: direct.LazyPtr("ENVIRONMENT_SIZE_SMALL"),
+				},
+			},
+		}
+		actual := &composerpb.Environment{
+			Labels: map[string]string{"env": "dev"},
+			Config: &composerpb.EnvironmentConfig{
+				EnvironmentSize: composerpb.EnvironmentConfig_ENVIRONMENT_SIZE_MEDIUM,
+			},
+		}
+		mapCtx := &direct.MapContext{}
+		desiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+		if mapCtx.Err() != nil {
+			t.Fatalf("unexpected error converting desired spec: %v", mapCtx.Err())
+		}
+
+		err := validateUpdatableFields(desiredPb, actual)
+		if err != nil {
+			t.Errorf("expected nil error, got %v", err)
+		}
+	})
+
+	t.Run("fails on nodeConfig.machineType modification", func(t *testing.T) {
+		desired := &krm.ComposerEnvironment{
+			Spec: krm.ComposerEnvironmentSpec{
+				Config: &krm.EnvironmentConfig{
+					NodeConfig: &krm.NodeConfig{
+						MachineType: direct.LazyPtr("n1-standard-4"),
+					},
+				},
+			},
+		}
+		actual := &composerpb.Environment{
+			Config: &composerpb.EnvironmentConfig{
+				NodeConfig: &composerpb.NodeConfig{
+					MachineType: "n1-standard-1",
+				},
+			},
+		}
+		mapCtx := &direct.MapContext{}
+		desiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+		if mapCtx.Err() != nil {
+			t.Fatalf("unexpected error converting desired spec: %v", mapCtx.Err())
+		}
+
+		err := validateUpdatableFields(desiredPb, actual)
+		if err == nil {
+			t.Fatalf("expected error for unsupported machineType modification, got nil")
+		}
+		expectedMsg := `updating field(s) [config.node_config.machine_type] is not supported`
+		if err.Error() != expectedMsg {
+			t.Errorf("expected error message %q, got %q", expectedMsg, err.Error())
+		}
+	})
+
+	t.Run("fails on storageConfig.bucketRef modification", func(t *testing.T) {
+		desired := &krm.ComposerEnvironment{
+			Spec: krm.ComposerEnvironmentSpec{
+				StorageConfig: &krm.StorageConfig{
+					BucketRef: &storagev1beta1.StorageBucketRef{
+						External: "projects/p1/buckets/new-bucket",
+					},
+				},
+			},
+		}
+		actual := &composerpb.Environment{
+			StorageConfig: &composerpb.StorageConfig{
+				Bucket: "projects/p1/buckets/old-bucket",
+			},
+		}
+		mapCtx := &direct.MapContext{}
+		desiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+		if mapCtx.Err() != nil {
+			t.Fatalf("unexpected error converting desired spec: %v", mapCtx.Err())
+		}
+
+		err := validateUpdatableFields(desiredPb, actual)
+		if err == nil {
+			t.Fatalf("expected error for unsupported bucket modification, got nil")
+		}
+		expectedMsg := `updating field(s) [storage_config.bucket] is not supported`
+		if err.Error() != expectedMsg {
+			t.Errorf("expected error message %q, got %q", expectedMsg, err.Error())
+		}
+	})
+
+	t.Run("fails on encryptionConfig.kmsKeyRef modification", func(t *testing.T) {
+		desired := &krm.ComposerEnvironment{
+			Spec: krm.ComposerEnvironmentSpec{
+				Config: &krm.EnvironmentConfig{
+					EncryptionConfig: &krm.EncryptionConfig{
+						KMSKeyRef: &refs.KMSCryptoKeyRef{
+							External: "projects/p1/locations/l1/keyRings/r1/cryptoKeys/k2",
+						},
+					},
+				},
+			},
+		}
+		actual := &composerpb.Environment{
+			Config: &composerpb.EnvironmentConfig{
+				EncryptionConfig: &composerpb.EncryptionConfig{
+					KmsKeyName: "projects/p1/locations/l1/keyRings/r1/cryptoKeys/k1",
+				},
+			},
+		}
+		mapCtx := &direct.MapContext{}
+		desiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+		if mapCtx.Err() != nil {
+			t.Fatalf("unexpected error converting desired spec: %v", mapCtx.Err())
+		}
+
+		err := validateUpdatableFields(desiredPb, actual)
+		if err == nil {
+			t.Fatalf("expected error for unsupported KMS key modification, got nil")
+		}
+		expectedMsg := `updating field(s) [config.encryption_config.kms_key_name] is not supported`
+		if err.Error() != expectedMsg {
+			t.Errorf("expected error message %q, got %q", expectedMsg, err.Error())
+		}
+	})
+
+	t.Run("fails on databaseConfig.zone modification", func(t *testing.T) {
+		desired := &krm.ComposerEnvironment{
+			Spec: krm.ComposerEnvironmentSpec{
+				Config: &krm.EnvironmentConfig{
+					DatabaseConfig: &krm.DatabaseConfig{
+						Zone: direct.LazyPtr("us-central1-b"),
+					},
+				},
+			},
+		}
+		actual := &composerpb.Environment{
+			Config: &composerpb.EnvironmentConfig{
+				DatabaseConfig: &composerpb.DatabaseConfig{
+					Zone: "us-central1-a",
+				},
+			},
+		}
+		mapCtx := &direct.MapContext{}
+		desiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+		if mapCtx.Err() != nil {
+			t.Fatalf("unexpected error converting desired spec: %v", mapCtx.Err())
+		}
+
+		err := validateUpdatableFields(desiredPb, actual)
+		if err == nil {
+			t.Fatalf("expected error for unsupported databaseConfig.zone modification, got nil")
+		}
+		expectedMsg := `updating field(s) [config.database_config.zone] is not supported`
+		if err.Error() != expectedMsg {
+			t.Errorf("expected error message %q, got %q", expectedMsg, err.Error())
+		}
+	})
+
+	t.Run("fails on multiple unsupported field modifications", func(t *testing.T) {
+		desired := &krm.ComposerEnvironment{
+			Spec: krm.ComposerEnvironmentSpec{
+				StorageConfig: &krm.StorageConfig{
+					BucketRef: &storagev1beta1.StorageBucketRef{
+						External: "projects/p1/buckets/new-bucket",
+					},
+				},
+				Config: &krm.EnvironmentConfig{
+					DatabaseConfig: &krm.DatabaseConfig{
+						Zone: direct.LazyPtr("us-central1-b"),
+					},
+					NodeConfig: &krm.NodeConfig{
+						MachineType: direct.LazyPtr("n1-standard-4"),
+					},
+				},
+			},
+		}
+		actual := &composerpb.Environment{
+			StorageConfig: &composerpb.StorageConfig{
+				Bucket: "projects/p1/buckets/old-bucket",
+			},
+			Config: &composerpb.EnvironmentConfig{
+				DatabaseConfig: &composerpb.DatabaseConfig{
+					Zone: "us-central1-a",
+				},
+				NodeConfig: &composerpb.NodeConfig{
+					MachineType: "n1-standard-1",
+				},
+			},
+		}
+		mapCtx := &direct.MapContext{}
+		desiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+		if mapCtx.Err() != nil {
+			t.Fatalf("unexpected error converting desired spec: %v", mapCtx.Err())
+		}
+
+		err := validateUpdatableFields(desiredPb, actual)
+		if err == nil {
+			t.Fatalf("expected error for multiple unsupported field modifications, got nil")
+		}
+		expectedMsg := `updating field(s) [config.database_config.zone config.node_config.machine_type storage_config.bucket] is not supported`
+		if err.Error() != expectedMsg {
+			t.Errorf("expected error message %q, got %q", expectedMsg, err.Error())
+		}
+	})
+}
+
+func TestFieldUpdatersConsistency(t *testing.T) {
+	seenMasks := make(map[string]bool)
+	for _, u := range fieldUpdaters {
+		if u.mask == "" {
+			t.Errorf("fieldUpdater with empty mask found")
+		}
+		if seenMasks[u.mask] {
+			t.Errorf("duplicate mask %q in fieldUpdaters", u.mask)
+		}
+		seenMasks[u.mask] = true
+
+		if !isValidUpdatePrefix(u.mask) {
+			t.Errorf("isValidUpdatePrefix(%q) returned false for registered fieldUpdater", u.mask)
+		}
+	}
+}
+
+// TestProtoUpdatableFieldCoverageViaGoDoc verifies that our fieldUpdaters registry covers
+// all updatable field paths documented by Google in the Cloud Composer Go client library.
+//
+// Instead of reading raw .proto files from disk, this test uses Go's standard library
+// (go/build, go/parser, and go/doc) to parse the Go package documentation of
+// cloud.google.com/go/orchestration/airflow/service/apiv1/servicepb.
+func TestProtoUpdatableFieldCoverageViaGoDoc(t *testing.T) {
+	// Step 1: Locate the compiled Go package on the local system using standard Go build tooling.
+	pkg, err := build.Import("cloud.google.com/go/orchestration/airflow/service/apiv1/servicepb", "", 0)
+	if err != nil {
+		t.Fatalf("failed to import servicepb package: %v", err)
+	}
+
+	// Step 2: Parse all Go source files in the package directory into an Abstract Syntax Tree (AST)
+	// while preserving code comments (parser.ParseComments).
+	fset := token.NewFileSet()
+	pkgs, err := parser.ParseDir(fset, pkg.Dir, nil, parser.ParseComments)
+	if err != nil {
+		t.Fatalf("failed to parse servicepb directory: %v", err)
+	}
+
+	astPkg, ok := pkgs[pkg.Name]
+	if !ok {
+		t.Fatalf("package %q not found in parsed packages", pkg.Name)
+	}
+
+	// Step 3: Extract structured Go package documentation from the AST.
+	docPkg := doc.New(astPkg, pkg.ImportPath, doc.AllDecls)
+
+	// Step 4: Find the 'UpdateEnvironmentRequest' struct and retrieve docstrings from the 'UpdateMask' field.
+	// Google's protobuf compiler places the list of supported update masks in the docstring of UpdateMask.
+	var reqDoc string
+	for _, typ := range docPkg.Types {
+		if typ.Name == "UpdateEnvironmentRequest" {
+			reqDoc = typ.Doc
+			if ts, ok := typ.Decl.Specs[0].(*ast.TypeSpec); ok {
+				if st, ok := ts.Type.(*ast.StructType); ok {
+					for _, f := range st.Fields.List {
+						for _, name := range f.Names {
+							if name.Name == "UpdateMask" && f.Doc != nil {
+								reqDoc += "\n" + f.Doc.Text()
+							}
+						}
+					}
+				}
+			}
+			break
+		}
+	}
+	if reqDoc == "" {
+		t.Fatalf("doc comments for UpdateEnvironmentRequest not found in package %s", pkg.ImportPath)
+	}
+
+	// Step 5: Extract all documented update paths using regular expressions.
+	// Google formats bullet points like: `* `config.softwareConfig.imageVersion`` or `* `labels``
+	re := regexp.MustCompile(`\* ` + "`" + `([a-zA-Z0-9\._]+)` + "`")
+	matches := re.FindAllStringSubmatch(reqDoc, -1)
+	if len(matches) == 0 {
+		// Fallback for plain-text bullet points without backticks
+		re = regexp.MustCompile(`\*\s+([a-zA-Z0-9\._]+)`)
+		matches = re.FindAllStringSubmatch(reqDoc, -1)
+	}
+	if len(matches) == 0 {
+		t.Fatalf("no updatable fields extracted from UpdateEnvironmentRequest doc: %s", reqDoc)
+	}
+
+	// Step 6: Convert each extracted camelCase path to snake_case and collect unique mutable paths from Go doc.
+	mutablePathsInGoDocSet := make(map[string]bool)
+	for _, m := range matches {
+		rawPath := strings.TrimSuffix(m[1], ".")
+		snakePath := camelToSnake(rawPath)
+		mutablePathsInGoDocSet[snakePath] = true
+	}
+
+	var mutablePathsInGoDoc []string
+	for p := range mutablePathsInGoDocSet {
+		mutablePathsInGoDoc = append(mutablePathsInGoDoc, p)
+	}
+	slices.Sort(mutablePathsInGoDoc)
+
+	// Step 8: Subset validation.
+	// Note: The docstring in cloud.google.com/go/orchestration/airflow/service/apiv1/servicepb reflects
+	// the legacy Composer 1 baseline and was not updated by Google to list newer Composer 2/3 features
+	// (e.g. workloads_config, environment_size, maintenance_window, data_retention_config, etc.) that
+	// are supported by the live GCP v1 backend.
+	// Therefore, the documented paths in Go doc must at least be a strict subset of our registered fieldUpdaters.
+	for _, docPath := range mutablePathsInGoDoc {
+		if !isValidUpdatePrefix(docPath) {
+			t.Errorf("Go package documents updatable path %q, but it is missing from fieldUpdaters / isValidUpdatePrefix", docPath)
+		}
+	}
+}
+
+// camelToSnake converts proto camelCase field names to snake_case.
+// For example: "config.softwareConfig.imageVersion" -> "config.software_config.image_version"
+func camelToSnake(s string) string {
+	var result []rune
+	for i, r := range s {
+		if unicode.IsUpper(r) {
+			if i > 0 && s[i-1] != '.' && !unicode.IsUpper(rune(s[i-1])) {
+				result = append(result, '_')
+			}
+			result = append(result, unicode.ToLower(r))
+		} else {
+			result = append(result, r)
+		}
+	}
+	return string(result)
+}
