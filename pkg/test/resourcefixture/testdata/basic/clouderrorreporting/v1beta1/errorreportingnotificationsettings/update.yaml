@@ -1,0 +1,11 @@
+apiVersion: clouderrorreporting.cnrm.cloud.google.com/v1beta1
+kind: ErrorReportingNotificationSettings
+metadata:
+  name: errorreportingnotificationsettings-${uniqueId}
+spec:
+  projectRef:
+    external: ${project_id}
+  notificationChannels:
+    - external: projects/${project_id}/notificationChannels/1234567890
+  versionSkewReportDelays:
+    - 3600s

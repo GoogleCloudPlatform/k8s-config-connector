@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: clouderrorreporting.cnrm.cloud.google.com
+  kind: ErrorReportingNotificationSettings
+  name: errorreportingnotificationsettings-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
