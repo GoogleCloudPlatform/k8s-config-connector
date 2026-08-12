@@ -1,0 +1,253 @@
+GRPC /google.cloud.networksecurity.v1.FirewallActivation/GetFirewallEndpoint
+
+{
+  "name": "organizations/${organizationID}/locations/us-central1-a/firewallEndpoints/fwe-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = Resource 'organizations/123450001/locations/us-central1-a/firewallEndpoints/fwe-${uniqueId}' was not found
+
+{}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.FirewallActivation/CreateFirewallEndpoint
+
+{
+  "firewallEndpoint": {
+    "billingProjectId": "${projectId}",
+    "description": "An org firewall endpoint for testing direct controller",
+    "endpointSettings": {
+      "jumboFramesEnabled": true
+    },
+    "labels": {
+      "foo": "bar"
+    },
+    "name": "organizations/${organizationID}/locations/us-central1-a/firewallEndpoints/fwe-${uniqueId}"
+  },
+  "firewallEndpointId": "fwe-${uniqueId}",
+  "parent": "organizations/${organizationID}/locations/us-central1-a"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "organizations/${organizationID}/locations/us-central1-a/firewallEndpoints/fwe-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "organizations/${organizationID}/locations/us-central1-a/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "organizations/${organizationID}/locations/us-central1-a/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "organizations/${organizationID}/locations/us-central1-a/firewallEndpoints/fwe-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "organizations/${organizationID}/locations/us-central1-a/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.FirewallEndpoint",
+    "billingProjectId": "${projectId}",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endpointSettings": {
+      "jumboFramesEnabled": true
+    },
+    "labels": {
+      "foo": "bar"
+    },
+    "name": "organizations/${organizationID}/locations/us-central1-a/firewallEndpoints/fwe-${uniqueId}",
+    "state": "ACTIVE",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.FirewallActivation/GetFirewallEndpoint
+
+{
+  "name": "organizations/${organizationID}/locations/us-central1-a/firewallEndpoints/fwe-${uniqueId}"
+}
+
+OK
+
+{
+  "billingProjectId": "${projectId}",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "endpointSettings": {
+    "jumboFramesEnabled": true
+  },
+  "labels": {
+    "foo": "bar"
+  },
+  "name": "organizations/${organizationID}/locations/us-central1-a/firewallEndpoints/fwe-${uniqueId}",
+  "state": "ACTIVE",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.FirewallActivation/UpdateFirewallEndpoint
+
+{
+  "firewallEndpoint": {
+    "billingProjectId": "${projectId}",
+    "endpointSettings": {
+      "jumboFramesEnabled": true
+    },
+    "labels": {
+      "foo": "baz"
+    },
+    "name": "organizations/${organizationID}/locations/us-central1-a/firewallEndpoints/fwe-${uniqueId}"
+  },
+  "updateMask": "labels"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "organizations/${organizationID}/locations/us-central1-a/firewallEndpoints/fwe-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "organizations/${organizationID}/locations/us-central1-a/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "organizations/${organizationID}/locations/us-central1-a/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "organizations/${organizationID}/locations/us-central1-a/firewallEndpoints/fwe-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "organizations/${organizationID}/locations/us-central1-a/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.FirewallEndpoint",
+    "billingProjectId": "${projectId}",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endpointSettings": {
+      "jumboFramesEnabled": true
+    },
+    "labels": {
+      "foo": "baz"
+    },
+    "name": "organizations/${organizationID}/locations/us-central1-a/firewallEndpoints/fwe-${uniqueId}",
+    "state": "ACTIVE",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.FirewallActivation/GetFirewallEndpoint
+
+{
+  "name": "organizations/${organizationID}/locations/us-central1-a/firewallEndpoints/fwe-${uniqueId}"
+}
+
+OK
+
+{
+  "billingProjectId": "${projectId}",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "endpointSettings": {
+    "jumboFramesEnabled": true
+  },
+  "labels": {
+    "foo": "baz"
+  },
+  "name": "organizations/${organizationID}/locations/us-central1-a/firewallEndpoints/fwe-${uniqueId}",
+  "state": "ACTIVE",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.FirewallActivation/DeleteFirewallEndpoint
+
+{
+  "name": "organizations/${organizationID}/locations/us-central1-a/firewallEndpoints/fwe-${uniqueId}"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "organizations/${organizationID}/locations/us-central1-a/firewallEndpoints/fwe-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "organizations/${organizationID}/locations/us-central1-a/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "organizations/${organizationID}/locations/us-central1-a/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "organizations/${organizationID}/locations/us-central1-a/firewallEndpoints/fwe-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "organizations/${organizationID}/locations/us-central1-a/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.FirewallEndpoint",
+    "billingProjectId": "${projectId}",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endpointSettings": {
+      "jumboFramesEnabled": true
+    },
+    "labels": {
+      "foo": "baz"
+    },
+    "name": "organizations/${organizationID}/locations/us-central1-a/firewallEndpoints/fwe-${uniqueId}",
+    "state": "ACTIVE",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}

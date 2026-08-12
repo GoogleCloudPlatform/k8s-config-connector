@@ -1,0 +1,14 @@
+apiVersion: networksecurity.cnrm.cloud.google.com/v1alpha1
+kind: NetworkSecurityFirewallEndpoint
+metadata:
+  name: fwe-${uniqueId}
+spec:
+  organizationRef:
+    external: "organizations/${TEST_ORG_ID}"
+  billingProjectID: "${projectId}"
+  location: us-central1-a
+  description: "An org firewall endpoint for testing direct controller"
+  labels:
+    foo: baz
+  endpointSettings:
+    jumboFramesEnabled: true

@@ -17,7 +17,6 @@ package networksecurity
 import (
 	"context"
 	"fmt"
-	"time"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networksecurity/v1alpha1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -28,10 +27,9 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
+	networksecurity "cloud.google.com/go/networksecurity/apiv1"
 	pb "cloud.google.com/go/networksecurity/apiv1/networksecuritypb"
 	"google.golang.org/api/option"
-	"google.golang.org/api/transport/grpc"
-	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -53,18 +51,18 @@ type firewallEndpointModel struct {
 	config config.ControllerConfig
 }
 
-func (m *firewallEndpointModel) client(ctx context.Context) (pb.FirewallActivationClient, longrunningpb.OperationsClient, error) {
+func (m *firewallEndpointModel) client(ctx context.Context) (*networksecurity.FirewallActivationClient, error) {
 	var opts []option.ClientOption
 	opts, err := m.config.GRPCClientOptions()
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
-	opts = append(opts, option.WithEndpoint("networksecurity.googleapis.com:443"))
-	conn, err := grpc.Dial(ctx, opts...)
+
+	gcpClient, err := networksecurity.NewFirewallActivationClient(ctx, opts...)
 	if err != nil {
-		return nil, nil, fmt.Errorf("dialing networksecurity service: %w", err)
+		return nil, fmt.Errorf("building NetworkSecurity client: %w", err)
 	}
-	return pb.NewFirewallActivationClient(conn), longrunningpb.NewOperationsClient(conn), nil
+	return gcpClient, nil
 }
 
 func (m *firewallEndpointModel) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
@@ -84,7 +82,7 @@ func (m *firewallEndpointModel) AdapterForObject(ctx context.Context, op *direct
 		return nil, err
 	}
 
-	gcpClient, operationsClient, err := m.client(ctx)
+	gcpClient, err := m.client(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -98,10 +96,9 @@ func (m *firewallEndpointModel) AdapterForObject(ctx context.Context, op *direct
 	desired.Name = id.(*krm.NetworkSecurityFirewallEndpointIdentity).String()
 
 	return &firewallEndpointAdapter{
-		id:               id.(*krm.NetworkSecurityFirewallEndpointIdentity),
-		gcpClient:        gcpClient,
-		operationsClient: operationsClient,
-		desired:          desired,
+		id:        id.(*krm.NetworkSecurityFirewallEndpointIdentity),
+		gcpClient: gcpClient,
+		desired:   desired,
 	}, nil
 }
 
@@ -110,11 +107,10 @@ func (m *firewallEndpointModel) AdapterForURL(ctx context.Context, url string) (
 }
 
 type firewallEndpointAdapter struct {
-	id               *krm.NetworkSecurityFirewallEndpointIdentity
-	gcpClient        pb.FirewallActivationClient
-	operationsClient longrunningpb.OperationsClient
-	desired          *pb.FirewallEndpoint
-	actual           *pb.FirewallEndpoint
+	id        *krm.NetworkSecurityFirewallEndpointIdentity
+	gcpClient *networksecurity.FirewallActivationClient
+	desired   *pb.FirewallEndpoint
+	actual    *pb.FirewallEndpoint
 }
 
 var _ directbase.Adapter = &firewallEndpointAdapter{}
@@ -148,16 +144,17 @@ func (a *firewallEndpointAdapter) Create(ctx context.Context, createOp *directba
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating FirewallEndpoint", "name", a.id)
 
-	var op *longrunningpb.Operation
+	var projctOp *networksecurity.CreateProjectFirewallEndpointOperation
+	var op *networksecurity.CreateFirewallEndpointOperation
 	var err error
 	req := &pb.CreateFirewallEndpointRequest{
 		Parent:             a.id.ParentString(),
-		FirewallEndpointId: a.id.Firewallendpoint,
+		FirewallEndpointId: a.id.FirewallEndpoint,
 		FirewallEndpoint:   a.desired,
 	}
 
 	if a.id.Project != "" {
-		op, err = a.gcpClient.CreateProjectFirewallEndpoint(ctx, req)
+		projctOp, err = a.gcpClient.CreateProjectFirewallEndpoint(ctx, req)
 	} else {
 		op, err = a.gcpClient.CreateFirewallEndpoint(ctx, req)
 	}
@@ -166,25 +163,20 @@ func (a *firewallEndpointAdapter) Create(ctx context.Context, createOp *directba
 		return fmt.Errorf("creating FirewallEndpoint %s: %w", a.id, err)
 	}
 
-	err = a.waitForOperation(ctx, op)
-	if err != nil {
-		return fmt.Errorf("FirewallEndpoint %s waiting creation: %w", a.id, err)
+	var created *pb.FirewallEndpoint
+	if a.id.Project != "" {
+		created, err = projctOp.Wait(ctx)
+	} else {
+		created, err = op.Wait(ctx)
 	}
 
-	getReq := &pb.GetFirewallEndpointRequest{Name: a.id.String()}
-	var latest *pb.FirewallEndpoint
-	if a.id.Project != "" {
-		latest, err = a.gcpClient.GetProjectFirewallEndpoint(ctx, getReq)
-	} else {
-		latest, err = a.gcpClient.GetFirewallEndpoint(ctx, getReq)
-	}
 	if err != nil {
-		return fmt.Errorf("getting FirewallEndpoint after creation: %w", err)
+		return fmt.Errorf("creating FirewallEndpoint %s: %w", a.id, err)
 	}
 
 	log.V(2).Info("successfully created FirewallEndpoint", "name", a.id)
 
-	return a.updateStatus(ctx, createOp, latest)
+	return a.updateStatus(ctx, createOp, created)
 }
 
 func (a *firewallEndpointAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
@@ -206,7 +198,8 @@ func (a *firewallEndpointAdapter) Update(ctx context.Context, updateOp *directba
 
 	log.V(2).Info("fields need update", "name", a.id, "updateMask", updateMask)
 
-	var op *longrunningpb.Operation
+	var projctOp *networksecurity.UpdateProjectFirewallEndpointOperation
+	var op *networksecurity.UpdateFirewallEndpointOperation
 	req := &pb.UpdateFirewallEndpointRequest{
 		UpdateMask:       updateMask,
 		FirewallEndpoint: a.desired,
@@ -214,7 +207,7 @@ func (a *firewallEndpointAdapter) Update(ctx context.Context, updateOp *directba
 	req.FirewallEndpoint.Name = a.id.String()
 
 	if a.id.Project != "" {
-		op, err = a.gcpClient.UpdateProjectFirewallEndpoint(ctx, req)
+		projctOp, err = a.gcpClient.UpdateProjectFirewallEndpoint(ctx, req)
 	} else {
 		op, err = a.gcpClient.UpdateFirewallEndpoint(ctx, req)
 	}
@@ -222,25 +215,19 @@ func (a *firewallEndpointAdapter) Update(ctx context.Context, updateOp *directba
 	if err != nil {
 		return fmt.Errorf("updating FirewallEndpoint %s: %w", a.id, err)
 	}
-	err = a.waitForOperation(ctx, op)
+	var updated *pb.FirewallEndpoint
+	if a.id.Project != "" {
+		updated, err = projctOp.Wait(ctx)
+	} else {
+		updated, err = op.Wait(ctx)
+	}
 	if err != nil {
 		return fmt.Errorf("FirewallEndpoint %s waiting update: %w", a.id, err)
 	}
 
-	getReq := &pb.GetFirewallEndpointRequest{Name: a.id.String()}
-	var latest *pb.FirewallEndpoint
-	if a.id.Project != "" {
-		latest, err = a.gcpClient.GetProjectFirewallEndpoint(ctx, getReq)
-	} else {
-		latest, err = a.gcpClient.GetFirewallEndpoint(ctx, getReq)
-	}
-	if err != nil {
-		return fmt.Errorf("getting FirewallEndpoint after update: %w", err)
-	}
-
 	log.V(2).Info("successfully updated FirewallEndpoint", "name", a.id)
 
-	return a.updateStatus(ctx, updateOp, latest)
+	return a.updateStatus(ctx, updateOp, updated)
 }
 
 func compareFirewallEndpoint(ctx context.Context, actual, desired *pb.FirewallEndpoint) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
@@ -254,6 +241,15 @@ func compareFirewallEndpoint(ctx context.Context, actual, desired *pb.FirewallEn
 		return nil, nil, mapCtx.Err()
 	}
 	maskedActual.Name = desired.Name
+
+	// BillingProjectId is required for organization-scoped endpoints.
+	// For project-scoped endpoints, it is optional but must match the endpoint's project if specified.
+	// Populate endpoint's project if unspecified to avoid false drift.
+	if desired.BillingProjectId == "" {
+		desired.BillingProjectId = actual.BillingProjectId
+	}
+	// Description is not populated in the actual state
+	desired.Description = ""
 
 	diffs, updateMask, err := common.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
@@ -282,7 +278,7 @@ func (a *firewallEndpointAdapter) Export(ctx context.Context) (*unstructured.Uns
 		return nil, err
 	}
 
-	u.SetName(a.id.Firewallendpoint)
+	u.SetName(a.id.FirewallEndpoint)
 	u.SetGroupVersionKind(krm.NetworkSecurityFirewallEndpointGVK)
 
 	u.Object = uObj
@@ -293,12 +289,13 @@ func (a *firewallEndpointAdapter) Delete(ctx context.Context, deleteOp *directba
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting FirewallEndpoint", "name", a.id)
 
-	var op *longrunningpb.Operation
+	var projctOp *networksecurity.DeleteProjectFirewallEndpointOperation
+	var op *networksecurity.DeleteFirewallEndpointOperation
 	var err error
 	req := &pb.DeleteFirewallEndpointRequest{Name: a.id.String()}
 
 	if a.id.Project != "" {
-		op, err = a.gcpClient.DeleteProjectFirewallEndpoint(ctx, req)
+		projctOp, err = a.gcpClient.DeleteProjectFirewallEndpoint(ctx, req)
 	} else {
 		op, err = a.gcpClient.DeleteFirewallEndpoint(ctx, req)
 	}
@@ -311,7 +308,11 @@ func (a *firewallEndpointAdapter) Delete(ctx context.Context, deleteOp *directba
 		return false, fmt.Errorf("deleting FirewallEndpoint %s: %w", a.id, err)
 	}
 
-	err = a.waitForOperation(ctx, op)
+	if a.id.Project != "" {
+		err = projctOp.Wait(ctx)
+	} else {
+		err = op.Wait(ctx)
+	}
 	if err != nil {
 		return false, fmt.Errorf("waiting delete FirewallEndpoint %s: %w", a.id, err)
 	}
@@ -329,27 +330,4 @@ func (a *firewallEndpointAdapter) updateStatus(ctx context.Context, op directbas
 	}
 	status.ExternalRef = direct.LazyPtr(a.id.String())
 	return op.UpdateStatus(ctx, status, nil)
-}
-
-func (a *firewallEndpointAdapter) waitForOperation(ctx context.Context, op *longrunningpb.Operation) error {
-	for {
-		req := &longrunningpb.GetOperationRequest{
-			Name: op.GetName(),
-		}
-		current, err := a.operationsClient.GetOperation(ctx, req)
-		if err != nil {
-			return fmt.Errorf("getting operation %q: %w", op.GetName(), err)
-		}
-		if current.GetDone() {
-			if current.GetError() != nil {
-				return fmt.Errorf("operation failed: %s", current.GetError().GetMessage())
-			}
-			return nil
-		}
-		select {
-		case <-ctx.Done():
-			return ctx.Err()
-		case <-time.After(1 * time.Second):
-		}
-	}
 }

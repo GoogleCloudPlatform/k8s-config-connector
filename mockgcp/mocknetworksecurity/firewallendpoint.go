@@ -58,6 +58,12 @@ func (s *FirewallActivationServer) createFirewallEndpoint(ctx context.Context, r
 	obj.CreateTime = timestamppb.New(time.Now())
 	obj.UpdateTime = timestamppb.New(time.Now())
 	obj.State = pbv1.FirewallEndpoint_ACTIVE
+	// Cleanup description, not populated in realGCP
+	parsed, _ := s.parseFirewallEndpointName(name)
+	obj.Description = ""
+	if obj.BillingProjectId == "" {
+		obj.BillingProjectId = parsed.Project.ID
+	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -134,17 +140,13 @@ func (s *FirewallActivationServer) updateFirewallEndpoint(ctx context.Context, r
 	// Apply field mask updates
 	paths := req.GetUpdateMask().GetPaths()
 	if len(paths) == 0 {
-		paths = []string{"labels", "description", "billing_project_id"}
+		paths = []string{"labels"}
 	}
 
 	for _, path := range paths {
 		switch path {
 		case "labels":
 			updated.Labels = req.GetFirewallEndpoint().GetLabels()
-		case "description":
-			updated.Description = req.GetFirewallEndpoint().GetDescription()
-		case "billingProjectId", "billing_project_id":
-			updated.BillingProjectId = req.GetFirewallEndpoint().GetBillingProjectId()
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "field %q is not updateable", path)
 		}

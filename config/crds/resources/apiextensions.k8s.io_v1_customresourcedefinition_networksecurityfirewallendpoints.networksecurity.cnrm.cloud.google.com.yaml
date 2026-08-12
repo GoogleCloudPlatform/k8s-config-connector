@@ -87,8 +87,20 @@ spec:
               location:
                 description: The location of this resource.
                 type: string
+              organizationRef:
+                description: The organization that this resource belongs to. Only
+                  one of organizationRef or projectRef may be specified.
+                properties:
+                  external:
+                    description: The 'name' field of an organization, when not managed
+                      by Config Connector.
+                    type: string
+                required:
+                - external
+                type: object
               projectRef:
-                description: The project that this resource belongs to.
+                description: The project that this resource belongs to. Only one of
+                  organizationRef or projectRef may be specified.
                 oneOf:
                 - not:
                     required:
@@ -125,7 +137,6 @@ spec:
                 type: string
             required:
             - location
-            - projectRef
             type: object
           status:
             description: NetworkSecurityFirewallEndpointStatus defines the config

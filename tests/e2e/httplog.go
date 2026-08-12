@@ -59,7 +59,7 @@ func RemoveExtraEvents(events test.LogEntries) test.LogEntries {
 			if r.Method == "GRPC" {
 				methodName := lastComponent(r.URL)
 				switch methodName {
-				case "GetAppProfile":
+				case "GetAppProfile", "GetFirewallEndpoint", "GetProjectFirewallEndpoint":
 					return true
 				}
 			}
