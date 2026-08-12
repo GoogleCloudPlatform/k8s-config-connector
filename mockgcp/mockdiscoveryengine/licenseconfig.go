@@ -44,38 +44,41 @@ func (s *licenseConfigService) GetLicenseConfig(ctx context.Context, req *pb_v1b
 	fqn := name.String()
 	obj := &pb_v1beta.LicenseConfig{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if status.Code(err) == codes.NotFound && name.LicenseConfig == "notebook-lm" {
-			licenseCount := int64(15)
-			if strings.Contains(os.Getenv("RUN_TESTS"), "maximal") || strings.Contains(os.Getenv("MOCKGCP_TEST_NAME"), "maximal") {
-				licenseCount = 30
-			}
+		if status.Code(err) == codes.NotFound {
+			if name.LicenseConfig == "notebook-lm" {
+				licenseCount := int64(15)
+				if strings.Contains(os.Getenv("RUN_TESTS"), "maximal") || strings.Contains(os.Getenv("MOCKGCP_TEST_NAME"), "maximal") {
+					licenseCount = 30
+				}
 
-			// On real GCP, the license configuration (e.g., notebook-lm) exists by default.
-			// Let's seed it automatically with reasonable defaults matching real GCP behavior.
-			obj = &pb_v1beta.LicenseConfig{
-				Name:         fqn,
-				LicenseCount: licenseCount,
-				StartDate: &date.Date{
-					Year:  2026,
-					Month: 8,
-					Day:   15,
-				},
-				EndDate: &date.Date{
-					Year:  2026,
-					Month: 9,
-					Day:   15,
-				},
-				SubscriptionTerm:     pb_v1beta.SubscriptionTerm_SUBSCRIPTION_TERM_ONE_MONTH,
-				SubscriptionTier:     pb_v1beta.SubscriptionTier_SUBSCRIPTION_TIER_NOTEBOOK_LM,
-				State:                pb_v1beta.LicenseConfig_ACTIVE,
-				EarlyTerminationDate: &date.Date{},
+				// On real GCP, the license configuration (e.g., notebook-lm) exists by default.
+				// Let's seed it automatically with reasonable defaults matching real GCP behavior.
+				obj = &pb_v1beta.LicenseConfig{
+					Name:         fqn,
+					LicenseCount: licenseCount,
+					StartDate: &date.Date{
+						Year:  2026,
+						Month: 8,
+						Day:   15,
+					},
+					EndDate: &date.Date{
+						Year:  2026,
+						Month: 9,
+						Day:   15,
+					},
+					SubscriptionTerm:     pb_v1beta.SubscriptionTerm_SUBSCRIPTION_TERM_ONE_MONTH,
+					SubscriptionTier:     pb_v1beta.SubscriptionTier_SUBSCRIPTION_TIER_NOTEBOOK_LM,
+					State:                pb_v1beta.LicenseConfig_ACTIVE,
+					EarlyTerminationDate: &date.Date{},
+				}
+				if err := s.storage.Create(ctx, fqn, obj); err != nil {
+					return nil, err
+				}
+				return obj, nil
 			}
-			if err := s.storage.Create(ctx, fqn, obj); err != nil {
-				return nil, err
-			}
-		} else {
-			return nil, err
+			return nil, status.Errorf(codes.NotFound, "License config %s does not exist.", fqn)
 		}
+		return nil, err
 	}
 	return obj, nil
 }
@@ -122,7 +125,7 @@ func (s *licenseConfigService) UpdateLicenseConfig(ctx context.Context, req *pb_
 
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "licenseConfig %q not found", name)
+			return nil, status.Errorf(codes.NotFound, "License config %s does not exist.", fqn)
 		}
 		return nil, err
 	}
