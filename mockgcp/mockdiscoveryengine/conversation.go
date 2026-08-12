@@ -125,7 +125,7 @@ func (s *conversationalSearchService) GetConversation(ctx context.Context, req *
 	obj := &pb.Conversation{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "Conversation with name %q does not exist.", req.GetName())
+			return nil, status.Errorf(codes.Internal, "Internal error encountered. Please try again. If the issue persists, please contact our support team.")
 		}
 		return nil, err
 	}

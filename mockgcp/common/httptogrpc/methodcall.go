@@ -55,6 +55,9 @@ func (c *httpMethodCall) SendErrorResponse(err error) {
 		case codes.NotFound:
 			httpErrorResponse.Error.Code = http.StatusNotFound
 			httpErrorResponse.Error.Status = "NOT_FOUND"
+		case codes.Internal:
+			httpErrorResponse.Error.Code = http.StatusInternalServerError
+			httpErrorResponse.Error.Status = "INTERNAL"
 		}
 
 		body, err := json.Marshal(httpErrorResponse)
