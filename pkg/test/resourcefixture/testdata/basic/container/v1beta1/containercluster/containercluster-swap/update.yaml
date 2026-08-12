@@ -20,15 +20,12 @@ metadata:
   name: containercluster-${uniqueId}
 spec:
   location: us-central1-a
-  networkRef:
-    name: computenetwork-${uniqueId}
-  subnetworkRef:
-    name: computesubnetwork-${uniqueId}
   initialNodeCount: 1
-  ipAllocationPolicy: {}
   nodeConfig:
     machineType: e2-medium
     linuxNodeConfig:
       cgroupMode: CGROUP_MODE_V2
       swapConfig:
         enabled: false
+  loggingService: logging.googleapis.com/kubernetes
+  monitoringService: monitoring.googleapis.com/kubernetes
