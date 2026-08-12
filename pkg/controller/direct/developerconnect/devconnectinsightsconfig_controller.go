@@ -205,6 +205,9 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	if a.actual.InsightsConfigContext != nil {
 		updateDesired.InsightsConfigContext = a.actual.InsightsConfigContext
 	}
+	if a.actual.GetProjects() != nil {
+		updateDesired.InsightsConfigContext = nil
+	}
 
 	req := &pb.UpdateInsightsConfigRequest{
 		InsightsConfig: updateDesired,
