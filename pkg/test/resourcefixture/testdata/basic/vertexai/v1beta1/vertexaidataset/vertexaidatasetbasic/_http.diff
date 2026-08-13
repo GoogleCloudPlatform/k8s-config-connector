@@ -1,0 +1,111 @@
+1c1,24
+< POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/datasets?alt=json
+---
+> GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/datasets/${datasetID}?%24alt=json%3Benum-encoding%3Dint
+> Content-Type: application/json
+> 
+> 404 Not Found
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "error": {
+>     "code": 404,
+>     "message": "dataset \"projects/${projectNumber}/locations/us-central1/datasets/vertexaidataset-${uniqueId}\" not found",
+>     "status": "NOT_FOUND"
+>   }
+> }
+> 
+> ---
+> 
+> POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/datasets?%24alt=json%3Benum-encoding%3Dint
+32c55
+< GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/datasets/${datasetID}/operations/${operationID}?alt=json
+---
+> GET https://us-central1-aiplatform.googleapis.com/ui/projects/${projectNumber}/locations/us-central1/datasets/${datasetID}/operations/${operationID}
+71c94
+< GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/datasets/${datasetID}?alt=json
+---
+> GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/datasets/${datasetID}?%24alt=json%3Benum-encoding%3Dint
+100c123
+< GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/datasets/${datasetID}?alt=json
+---
+> PATCH https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/datasets/${datasetID}?%24alt=json%3Benum-encoding%3Dint&updateMask=displayName
+103,112d125
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+114,147d126
+<   "createTime": "2024-04-01T12:34:56.123456Z",
+<   "displayName": "a basic vertex AI dataset",
+<   "etag": "abcdef0123A=",
+<   "metadata": {
+<     "dataItemSchemaUri": "gs://google-cloud-aiplatform/schema/dataset/dataitem/image_1.0.0.yaml",
+<     "gcsBucket": "cloud-ai-platform-${bucketId}"
+<   },
+<   "metadataArtifact": "projects/${projectNumber}/locations/us-central1/metadataStores/default/artifacts/${artifactId}",
+<   "metadataSchemaUri": "gs://google-cloud-aiplatform/schema/dataset/metadata/image_1.0.0.yaml",
+<   "name": "projects/${projectNumber}/locations/us-central1/datasets/${datasetID}",
+<   "updateTime": "2024-04-01T12:34:56.123456Z"
+< }
+< 
+< ---
+< 
+< PATCH https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/datasets/${datasetID}?alt=json&updateMask=displayName
+< Content-Type: application/json
+< 
+< {
+<   "displayName": "a basic vertex AI dataset with updated name"
+< }
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "createTime": "2024-04-01T12:34:56.123456Z",
+149,154d127
+<   "etag": "abcdef0123A=",
+<   "metadata": {
+<     "dataItemSchemaUri": "gs://google-cloud-aiplatform/schema/dataset/dataitem/image_1.0.0.yaml",
+<     "gcsBucket": "cloud-ai-platform-${bucketId}"
+<   },
+<   "metadataArtifact": "projects/${projectNumber}/locations/us-central1/metadataStores/default/artifacts/${artifactId}",
+156,157c129
+<   "name": "projects/${projectNumber}/locations/us-central1/datasets/${datasetID}",
+<   "updateTime": "2024-04-01T12:34:56.123456Z"
+---
+>   "name": "projects/${projectNumber}/locations/us-central1/datasets/${datasetID}"
+160,164d131
+< ---
+< 
+< GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/datasets/${datasetID}?alt=json
+< Content-Type: application/json
+< 
+191c158
+< GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/datasets/${datasetID}?alt=json
+---
+> GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/datasets/${datasetID}?%24alt=json%3Benum-encoding%3Dint
+220c187
+< DELETE https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/datasets/${datasetID}?alt=json
+---
+> DELETE https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/datasets/${datasetID}?%24alt=json%3Benum-encoding%3Dint

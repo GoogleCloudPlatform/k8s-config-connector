@@ -1,6 +1,5 @@
 POST https://serviceusage.googleapis.com/v1beta1/projects/${projectId}/services/aiplatform.googleapis.com:generateServiceIdentity?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -26,7 +25,6 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "options": {
@@ -52,7 +50,6 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "options": {
@@ -78,7 +75,6 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "options": {
@@ -104,7 +100,6 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:setIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "policy": {
@@ -149,7 +144,6 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "options": {
@@ -184,7 +178,6 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "options": {
@@ -219,7 +212,6 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "options": {
@@ -254,7 +246,6 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "options": {
@@ -289,7 +280,6 @@ X-Xss-Protection: 0
 
 GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -313,7 +303,6 @@ X-Xss-Protection: 0
 
 POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings?alt=json&keyRingId=kmskeyring-${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -334,7 +323,6 @@ X-Xss-Protection: 0
 
 GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -355,7 +343,6 @@ X-Xss-Protection: 0
 
 GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -379,7 +366,6 @@ X-Xss-Protection: 0
 
 POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys?alt=json&cryptoKeyId=kmscryptokey-${uniqueId}&skipInitialVersionCreation=false
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "labels": {
@@ -426,7 +412,6 @@ X-Xss-Protection: 0
 
 GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -463,15 +448,35 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/datasets?alt=json
+GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/datasets/${datasetID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "dataset \"projects/${projectNumber}/locations/us-central1/datasets/vertexaidataset-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/datasets?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
 
 {
   "displayName": "an encrypted vertex AI dataset",
-  "encryptionSpec": {
-    "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
-  },
+  "encryptionSpec": {},
   "metadataSchemaUri": "gs://google-cloud-aiplatform/schema/dataset/metadata/image_1.0.0.yaml"
 }
 
@@ -498,9 +503,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/datasets/${datasetID}/operations/${operationID}?alt=json
+GET https://us-central1-aiplatform.googleapis.com/ui/projects/${projectNumber}/locations/us-central1/datasets/${datasetID}/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -525,9 +529,7 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.Dataset",
     "displayName": "an encrypted vertex AI dataset",
-    "encryptionSpec": {
-      "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
-    },
+    "encryptionSpec": {},
     "labels": {
       "aiplatform.googleapis.com/dataset_metadata_schema": "IMAGE"
     },
@@ -541,9 +543,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/datasets/${datasetID}?alt=json
+GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/datasets/${datasetID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -558,9 +559,7 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "displayName": "an encrypted vertex AI dataset",
-  "encryptionSpec": {
-    "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
-  },
+  "encryptionSpec": {},
   "etag": "abcdef0123A=",
   "metadata": {
     "dataItemSchemaUri": "gs://google-cloud-aiplatform/schema/dataset/dataitem/image_1.0.0.yaml",
@@ -574,45 +573,14 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/datasets/${datasetID}?alt=json
+PATCH https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/datasets/${datasetID}?%24alt=json%3Benum-encoding%3Dint&updateMask=displayName
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
 
 {
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "displayName": "an encrypted vertex AI dataset",
-  "encryptionSpec": {
-    "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
-  },
-  "etag": "abcdef0123A=",
-  "metadata": {
-    "dataItemSchemaUri": "gs://google-cloud-aiplatform/schema/dataset/dataitem/image_1.0.0.yaml",
-    "gcsBucket": "cloud-ai-platform-${bucketId}"
-  },
-  "metadataArtifact": "projects/${projectNumber}/locations/us-central1/metadataStores/default/artifacts/${artifactId}",
+  "displayName": "an encrypted vertex AI dataset with updated name",
+  "encryptionSpec": {},
   "metadataSchemaUri": "gs://google-cloud-aiplatform/schema/dataset/metadata/image_1.0.0.yaml",
-  "name": "projects/${projectNumber}/locations/us-central1/datasets/${datasetID}",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-PATCH https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/datasets/${datasetID}?alt=json&updateMask=displayName
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
-  "displayName": "an encrypted vertex AI dataset with updated name"
+  "name": "projects/${projectNumber}/locations/us-central1/datasets/${datasetID}"
 }
 
 200 OK
@@ -628,9 +596,7 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "displayName": "an encrypted vertex AI dataset with updated name",
-  "encryptionSpec": {
-    "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
-  },
+  "encryptionSpec": {},
   "etag": "abcdef0123A=",
   "metadata": {
     "dataItemSchemaUri": "gs://google-cloud-aiplatform/schema/dataset/dataitem/image_1.0.0.yaml",
@@ -644,9 +610,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/datasets/${datasetID}?alt=json
+GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/datasets/${datasetID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -661,9 +626,7 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "displayName": "an encrypted vertex AI dataset with updated name",
-  "encryptionSpec": {
-    "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
-  },
+  "encryptionSpec": {},
   "etag": "abcdef0123A=",
   "metadata": {
     "dataItemSchemaUri": "gs://google-cloud-aiplatform/schema/dataset/dataitem/image_1.0.0.yaml",
@@ -677,42 +640,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/datasets/${datasetID}?alt=json
+DELETE https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/datasets/${datasetID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "displayName": "an encrypted vertex AI dataset with updated name",
-  "encryptionSpec": {
-    "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
-  },
-  "etag": "abcdef0123A=",
-  "metadata": {
-    "dataItemSchemaUri": "gs://google-cloud-aiplatform/schema/dataset/dataitem/image_1.0.0.yaml",
-    "gcsBucket": "cloud-ai-platform-${bucketId}"
-  },
-  "metadataArtifact": "projects/${projectNumber}/locations/us-central1/metadataStores/default/artifacts/${artifactId}",
-  "metadataSchemaUri": "gs://google-cloud-aiplatform/schema/dataset/metadata/image_1.0.0.yaml",
-  "name": "projects/${projectNumber}/locations/us-central1/datasets/${datasetID}",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-DELETE https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/datasets/${datasetID}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -743,7 +672,6 @@ X-Xss-Protection: 0
 
 GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -781,7 +709,6 @@ X-Xss-Protection: 0
 ---
 
 GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -811,7 +738,6 @@ X-Xss-Protection: 0
 
 POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1:destroy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {}
 
@@ -839,7 +765,6 @@ X-Xss-Protection: 0
 
 GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -860,7 +785,6 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "options": {
@@ -895,7 +819,6 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "options": {
@@ -930,7 +853,6 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:setIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "policy": {
@@ -959,7 +881,6 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "options": {
@@ -986,7 +907,6 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "options": {
@@ -1013,7 +933,6 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "options": {
@@ -1040,7 +959,6 @@ X-Xss-Protection: 0
 
 POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "options": {
