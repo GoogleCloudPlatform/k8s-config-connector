@@ -81,9 +81,8 @@ func BigQueryDatasetSpec_FromProto(mapCtx *direct.MapContext, in *pb.DatasetMeta
 	out.MaxTimeTravelHours = direct.LazyPtr(maxTimeInHours)
 	out.IsCaseInsensitive = direct.LazyPtr(in.IsCaseInsensitive)
 	out.StorageBillingModel = direct.LazyPtr(in.StorageBillingModel)
-	tokens := strings.Split(in.FullID, ":")
-	if len(tokens) == 2 {
-		out.ResourceID = direct.LazyPtr(tokens[1])
+	if _, datasetID, ok := parseDatasetFullID(in.FullID); ok {
+		out.ResourceID = direct.LazyPtr(datasetID)
 	}
 	return out
 }
@@ -96,9 +95,8 @@ func BigQueryDatasetStatus_FromProto(mapCtx *direct.MapContext, in *pb.DatasetMe
 	out.CreationTime = direct.LazyPtr(in.CreationTime.UnixMilli())
 	out.LastModifiedTime = direct.LazyPtr(in.LastModifiedTime.UnixMilli())
 	// The full dataset ID in the form projectID:datasetID
-	tokens := strings.Split(in.FullID, ":")
-	if len(tokens) == 2 {
-		out.SelfLink = direct.LazyPtr(fmt.Sprintf("https://bigquery.googleapis.com/bigquery/v2/projects/%s/datasets/%s", tokens[0], tokens[1]))
+	if projectID, datasetID, ok := parseDatasetFullID(in.FullID); ok {
+		out.SelfLink = direct.LazyPtr(fmt.Sprintf("https://bigquery.googleapis.com/bigquery/v2/projects/%s/datasets/%s", projectID, datasetID))
 	}
 	out.ObservedState = &krm.BigQueryDatasetObservedState{Location: direct.LazyPtr(in.Location)}
 	return out
