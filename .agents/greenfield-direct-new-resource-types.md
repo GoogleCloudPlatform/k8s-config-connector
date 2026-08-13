@@ -89,5 +89,10 @@ To ensure stability and reproducibility, this task is pinned to the following re
    - pass the issue labels to the `send-pr.sh` script using the `--labels` flag (e.g. `--labels "overseer,area/direct,priority/medium,step/gen-types,greenfield,chore/ai"`).
    - include a link to the chore file (`.agents/greenfield-direct-new-resource-types.md`) in the PR description.
    - include `Fixes #<issue-number>` in the PR description.
+   - include the release note block set to `NONE` in the PR description:
+     ```release-note
+     NONE
+     ```
 
 ---
+

@@ -86,4 +86,8 @@ Your task is to implement Phase 3 (MockGCP and Alignment) for the `<ResourceKind
    - Apply the same labels to the PR as are on this issue.
    - Include a link to the chore file (`.agents/greenfield-mockgcp.md`) in the PR description.
    - Include `Fixes #<issue-number>` in the PR description.
+   - Include the release note block in the PR description:
+     ```release-note
+     New Alpha Resources (Direct Reconciler): `<ResourceKind>`
+     ```
 ------------ END ISSUE BODY TEMPLATE ------------
