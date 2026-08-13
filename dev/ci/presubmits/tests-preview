@@ -30,6 +30,6 @@ cd "${REPO_ROOT}"
 
 echo "Running preview CLI tests..."
 # A dummy default project id is required for a few unit test cases
-gcloud config set project foobar --quiet
+export CLOUDSDK_CORE_PROJECT=foobar
 
 go test -test.count=1 -parallel 1 -v ./pkg/cli/preview/...

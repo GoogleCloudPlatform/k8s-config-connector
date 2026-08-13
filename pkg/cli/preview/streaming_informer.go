@@ -276,7 +276,7 @@ func (i *streamingInformer) AddEventHandlerWithResyncPeriod(handler toolscache.R
 	i.mutex.Lock()
 	defer i.mutex.Unlock()
 
-	registration := &eventHandlerRegistration{handler: handler, resyncPeriod: resyncPeriod}
+	registration := &eventHandlerRegistration{informer: i, handler: handler, resyncPeriod: resyncPeriod}
 
 	// TODO: Propagate correctly to ListWatch
 	i.eventHandlerRegistrations = append(i.eventHandlerRegistrations, registration)
