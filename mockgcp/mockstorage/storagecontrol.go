@@ -232,6 +232,9 @@ func (s *StorageControlService) GetFolder(ctx context.Context, req *pb.GetFolder
 
 	ret := &pb.Folder{}
 	if err := s.storage.Get(ctx, fqn, ret); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "The specified folder does not exist.")
+		}
 		return nil, err
 	}
 	if !strings.HasSuffix(ret.Name, "/") {
@@ -281,6 +284,9 @@ func (s *StorageControlService) DeleteFolder(ctx context.Context, req *pb.Delete
 
 	deleted := &pb.Folder{}
 	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "The specified folder does not exist.")
+		}
 		return nil, err
 	}
 	return &emptypb.Empty{}, nil
@@ -298,6 +304,9 @@ func (s *StorageControlService) GetManagedFolder(ctx context.Context, req *pb.Ge
 
 	ret := &pb.ManagedFolder{}
 	if err := s.storage.Get(ctx, fqn, ret); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "The specified managed folder does not exist.")
+		}
 		return nil, err
 	}
 	if !strings.HasSuffix(ret.Name, "/") {
@@ -347,6 +356,9 @@ func (s *StorageControlService) DeleteManagedFolder(ctx context.Context, req *pb
 
 	deleted := &pb.ManagedFolder{}
 	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "The specified managed folder does not exist.")
+		}
 		return nil, err
 	}
 	return &emptypb.Empty{}, nil

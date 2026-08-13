@@ -193,7 +193,7 @@ GRPC /google.storage.control.v2.StorageControl/GetManagedFolder
   "requestId": "1234"
 }
 
-error: rpc error: code = NotFound desc = managedFolder "projects/_/buckets/bucket-${uniqueId}/managedFolders/custom-folder-${uniqueId}" not found
+error: rpc error: code = NotFound desc = The specified managed folder does not exist.
 
 {}
 
