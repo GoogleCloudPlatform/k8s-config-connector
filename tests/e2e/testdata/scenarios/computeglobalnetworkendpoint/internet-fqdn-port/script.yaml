@@ -1,0 +1,38 @@
+# Copyright 2025 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Test scenario: Create a ComputeGlobalNetworkEndpoint with INTERNET_FQDN_PORT NEG
+# using only fqdn (no ipAddress). This tests fix for issue #4541 where the TF2CRD
+# controller would fail with "unable to resolve missing value: ip_address".
+---
+apiVersion: compute.cnrm.cloud.google.com/v1alpha1
+kind: ComputeGlobalNetworkEndpointGroup
+metadata:
+  name: computeneggroup-${uniqueId}
+spec:
+  projectRef:
+    external: ${TEST_PROJECT_ID}
+  networkEndpointType: INTERNET_FQDN_PORT
+  defaultPort: 443
+---
+apiVersion: compute.cnrm.cloud.google.com/v1alpha1
+kind: ComputeGlobalNetworkEndpoint
+metadata:
+  name: computeglobalnetworkendpoint-${uniqueId}
+spec:
+  projectRef:
+    external: ${TEST_PROJECT_ID}
+  globalNetworkEndpointGroup: computeneggroup-${uniqueId}
+  port: 443
+  fqdn: "example.com"
