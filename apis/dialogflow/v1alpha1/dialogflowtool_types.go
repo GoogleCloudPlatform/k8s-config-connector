@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	aiplatformv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/aiplatform/v1alpha1"
 	discoveryenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/discoveryengine/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
@@ -155,5 +156,5 @@ type DataStoreConnection struct {
 // +kcc:proto=google.cloud.dialogflow.cx.v3beta1.Tool.ExtensionTool
 type Tool_ExtensionTool struct {
 	// The referenced VertexAIExtension resource.
-	ExtensionRef *VertexAIExtensionRef `json:"extensionRef,omitempty"`
+	ExtensionRef *aiplatformv1alpha1.VertexAIExtensionRef `json:"extensionRef,omitempty"`
 }
