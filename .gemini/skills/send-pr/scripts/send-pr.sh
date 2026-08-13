@@ -63,6 +63,20 @@ if [[ ! -f "$BODY_FILE" ]]; then
   exit 1
 fi
 
+# Ensure the release-note block is present in the PR body, defaulting to empty if not specified
+if ! grep -q '```release-note' "$BODY_FILE"; then
+  cat << 'EOF' >> "$BODY_FILE"
+
+<!--
+If no release note is needed, write "NONE" in the release-note block below.
+Otherwise, enter the release note description.
+-->
+```release-note
+
+```
+EOF
+fi
+
 if git ls-files --error-unmatch pr-body.txt >/dev/null 2>&1; then
   echo "Error: pr-body.txt is checked into git."
   echo "Please remove it (e.g., git rm pr-body.txt) and commit the removal before sending a PR."

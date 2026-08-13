@@ -176,6 +176,12 @@ The direct controller must be implemented to manage reconciliation logic (Adapte
     *(Adjust the search terms, e.g., replacing `<service_name>` with the actual service/API name such as `discoveryengine` or `vertexai` to filter for correct audit entries.)*
     After creating the PR, add these retrieved audit logs as a separate comment on the PR to serve as proof of real-GCP testing.
 
+10. **Create PR**:
+    Create the PR using the `send-pr` skill with `--labels "overseer,greenfield,step/controller,overseer/review"`. Include the release note block set to `NONE`:
+    ```release-note
+    NONE
+    ```
+
 ## Journaling
 Append any reconciliation hurdles, GCP SDK quirks, or other controller issues to `.gemini/journals/<service_name>.md` using the format described in the `kcc-agentic-journaler` skill.
 

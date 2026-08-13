@@ -85,8 +85,12 @@ If you find any shortcomings in the skills, you may update their respective `SKI
 
 4. **Create PR**:
    - create a Pull Request with your changes using the `send-pr` skill.
-   - pass the issue labels to the `send-pr.sh` script using the `--labels` flag (e.g. `--labels "overseer,area/direct,priority/medium,step/gen-types,greenfield,chore/ai"`).
+   - pass the issue labels to the `send-pr.sh` script using the `--labels` flag (e.g. `--labels "overseer,area/direct,priority/medium,step/controller,greenfield,chore/ai"`).
    - apply the same labels to the PR as are on this issue.
    - include a link to the chore file (`.agents/greenfield-direct-controller.md`) in the PR description.
    - include `Fixes #<issue-number>` in the PR description.
+   - include the release note block set to `NONE` in the PR description:
+     ```release-note
+     NONE
+     ```
 ------------ END ISSUE BODY TEMPLATE ------------
