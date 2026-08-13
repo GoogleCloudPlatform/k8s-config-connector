@@ -31,7 +31,7 @@ type DiscoveryEngineWidgetConfigSpec struct {
 
 	// Immutable. The location of this resource.
 	// +required
-	Location string `json:"location"`
+	Location *string `json:"location"`
 
 	// Immutable. The collection ID. If not specified, it defaults to "default_collection".
 	// +optional

@@ -3862,6 +3862,11 @@ func (in *DiscoveryEngineWidgetConfigSpec) DeepCopyInto(out *DiscoveryEngineWidg
 		*out = new(v1beta1.ProjectRef)
 		**out = **in
 	}
+	if in.Location != nil {
+		in, out := &in.Location, &out.Location
+		*out = new(string)
+		**out = **in
+	}
 	if in.CollectionID != nil {
 		in, out := &in.CollectionID, &out.CollectionID
 		*out = new(string)
