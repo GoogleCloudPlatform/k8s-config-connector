@@ -260,7 +260,11 @@ func (a *gkeHubFleetAdapter) waitForOp(ctx context.Context, op *gkehubv1.Operati
 		if time.Now().After(timeoutAt) {
 			return fmt.Errorf("operation timed out waiting for LRO after %s", timeoutDuration.String())
 		}
-		time.Sleep(retryPeriod)
+		select {
+		case <-ctx.Done():
+			return ctx.Err()
+		case <-time.After(retryPeriod):
+		}
 		if retryPeriod < 30*time.Second {
 			retryPeriod = retryPeriod * 2
 		}

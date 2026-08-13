@@ -95,6 +95,9 @@ func GKEHubFleetCompliancePostureConfig_FromAPI(mapCtx *direct.MapContext, in *g
 	out := &krm.CompliancePostureConfig{}
 	out.Mode = direct.LazyPtr(in.Mode)
 	for _, cs := range in.ComplianceStandards {
+		if cs == nil {
+			continue
+		}
 		out.ComplianceStandards = append(out.ComplianceStandards, krm.CompliancePostureConfig_ComplianceStandard{
 			Standard: direct.LazyPtr(cs.Standard),
 		})
@@ -140,9 +143,17 @@ func GKEHubFleetSpec_FromAPI(mapCtx *direct.MapContext, in *gkehubv1.Fleet, id *
 		return nil
 	}
 	out := &krm.GKEHubFleetSpec{}
-	out.ProjectRef = &refs.ProjectRef{External: "projects/" + id.ProjectID}
-	out.Location = direct.LazyPtr(id.Location)
-	out.ResourceID = direct.LazyPtr(id.FleetID)
+	if id == nil && in.Name != "" {
+		id = &krm.GKEHubFleetIdentity{}
+		if err := id.FromExternal(in.Name); err != nil {
+			mapCtx.Errorf("parsing GKEHubFleet resource name %q: %v", in.Name, err)
+		}
+	}
+	if id != nil {
+		out.ProjectRef = &refs.ProjectRef{External: "projects/" + id.ProjectID}
+		out.Location = direct.LazyPtr(id.Location)
+		out.ResourceID = direct.LazyPtr(id.FleetID)
+	}
 	out.DisplayName = direct.LazyPtr(in.DisplayName)
 	out.Labels = in.Labels
 	out.DefaultClusterConfig = GKEHubFleetDefaultClusterConfig_FromAPI(mapCtx, in.DefaultClusterConfig)
