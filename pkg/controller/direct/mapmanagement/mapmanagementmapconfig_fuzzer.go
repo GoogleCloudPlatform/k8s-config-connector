@@ -35,5 +35,10 @@ func fuzzMapManagementMapConfig() fuzztesting.KRMFuzzer {
 	f.Unimplemented_Identity(".create_time")
 	f.Unimplemented_Identity(".update_time")
 
+	f.SpecField(".display_name")
+	f.SpecField(".description")
+	f.SpecField(".map_features")
+	f.SpecField(".map_type")
+
 	return f
 }
