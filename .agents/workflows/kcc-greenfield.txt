@@ -99,6 +99,11 @@ Open a GitHub issue to coordinate the implementation of direct KRM types, identi
 
     If you find any shortcomings in the skill (that likely apply to other resources), you may update SKILL.md. Also keep a journal of any less general observations etc. To avoid git merge conflicts, use a file under .gemini/skills/kcc-direct-greenfield-types-implementer/journal/, named after the kind or a similarly unique name. You may grep journal entries to identify learnings from other resources; if you find an important pattern by doing that you may also update the SKILL.md itself.
 
+    When creating the PR, include the release note block set to NONE:
+    ```release-note
+    NONE
+    ```
+
     ## Review Instructions
     Use .gemini/skills/reviewgen-greenfield-new-types/SKILL.md to conduct the review.
     ```
@@ -117,6 +122,11 @@ Open a GitHub issue to coordinate the implementation of the direct controller an
 
     If you find any shortcomings in this skill (that likely apply to other resources), you may update it. Also keep a journal of any less general observations etc. To avoid git merge conflicts, use a file under its respective journal/ folder, named after the kind or a similarly unique name.
 
+    When creating the PR, include the release note block set to NONE:
+    ```release-note
+    NONE
+    ```
+
     ## Review Instructions
     Use .gemini/skills/reviewgen-greenfield-controller/SKILL.md to conduct the review.
     ```
@@ -132,6 +142,11 @@ Open a GitHub issue to coordinate the implementation of the mockGCP for a specif
 *   **Body:**
     ```
     Please follow the skill `.gemini/skills/kcc-direct-mockgcp-implementer/SKILL.md` to implement Phase 3 (MockGCP and Alignment) for {kind} to verify behavioral correctness against the simulated GCP services.
+
+    When creating the PR, include the release note block for adding new alpha resources:
+    ```release-note
+    New Alpha Resources (Direct Reconciler): `{kind}`
+    ```
     ```
 
 ### Step 4: MockGCP Alignment with RealGCP
@@ -145,4 +160,10 @@ Open a GitHub issue to coordinate the alignment of MockGCP logs with RealGCP out
 *   **Body:**
     ```
     Please follow the skill `.gemini/skills/match-mockgcp-with-realgcp/SKILL.md` to align the MockGCP logs with the RealGCP output for {kind}.
+
+    When creating the PR, include the release note block set to NONE:
+    ```release-note
+    NONE
     ```
+    ```
+

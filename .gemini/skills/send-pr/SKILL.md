@@ -24,11 +24,19 @@ Alternatively, or in environments where hooks are not configured, explicitly pus
 `validate-and-push` sequentially runs all presubmits and will only execute `git push` if all checks exit cleanly (`0`).
 
 1. **Write the PR Body**:
-   Create a temporary markdown file containing the body/description of your PR. Make sure to reference the issue you are solving (e.g., `Fixes #1234`).
+   Create a temporary markdown file containing the body/description of your PR. Make sure to reference the issue you are solving (e.g., `Fixes #1234`) and include the `release-note` block (default to empty if not specified).
    **CRITICAL**: Do NOT check in this file. It is recommended to use the project's temporary directory to avoid accidentally committing it.
    ```bash
    cat << 'EOF' > /root/.gemini/tmp/k8s-config-connector/pr-body.txt
    Description of the PR.
+
+   <!--
+   If no release note is needed, write "NONE" in the release-note block below.
+   Otherwise, enter the release note description.
+   -->
+   ```release-note
+
+   ```
 
    Fixes #1234
    EOF

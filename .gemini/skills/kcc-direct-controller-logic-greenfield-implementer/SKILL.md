@@ -150,6 +150,12 @@ The direct controller must be implemented to manage reconciliation logic (Adapte
     - Runs `make fmt` and `make vet`.
     YOU MUST COMMIT ALL RESULTING CHANGES.
 
+10. **Create PR**:
+    Create the PR using the `send-pr` skill with `--labels "overseer,greenfield,step/controller,overseer/review"`. Include the release note block set to `NONE`:
+    ```release-note
+    NONE
+    ```
+
 ## Journaling
 Append any reconciliation hurdles, GCP SDK quirks, or other controller issues to `.gemini/journals/<service_name>.md` using the format described in the `kcc-agentic-journaler` skill.
 
