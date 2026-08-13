@@ -31,6 +31,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/proto"
@@ -185,6 +186,11 @@ func (a *EnvironmentAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		return mapCtx.Err()
 	}
 
+	// 1. Populate deterministic static defaults based on defaultEnvironmentPb.
+	a.populateDesiredWithDefaults(desired, desiredPb)
+	// 2. Populate dynamic/server-computed values by copying from actual state for omitted fields.
+	a.populateDesiredWithActualIfComputed(desired, desiredPb, a.actual)
+
 	if err := validateUpdatableFields(desiredPb, a.actual); err != nil {
 		return err
 	}
@@ -258,7 +264,11 @@ func validateUpdatableFields(desiredPb, actualPb *composerpb.Environment) error 
 	if desiredPb == nil || actualPb == nil {
 		return nil
 	}
-	paths, err := common.CompareProtoMessage(desiredPb, actualPb, common.BasicDiff)
+	maskedActual, err := mappers.OnlySpecFields(actualPb, ComposerEnvironmentSpec_FromProto, ComposerEnvironmentSpec_ToProto)
+	if err != nil {
+		return err
+	}
+	paths, err := common.CompareProtoMessage(desiredPb, maskedActual, common.BasicDiff)
 	if err != nil {
 		return err
 	}

@@ -15,6 +15,8 @@
 package composer
 
 import (
+	"strings"
+
 	pb "cloud.google.com/go/orchestration/airflow/service/apiv1/servicepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/composer/v1beta1"
 	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
@@ -391,8 +393,16 @@ func StorageConfig_FromProto(mapCtx *direct.MapContext, in *pb.StorageConfig) *k
 	}
 	out := &krm.StorageConfig{}
 	if in.GetBucket() != "" {
+		bucket := in.GetBucket()
+		if strings.HasPrefix(bucket, "gs://") {
+			bucket = strings.TrimPrefix(bucket, "gs://")
+		} else if strings.HasPrefix(bucket, "projects/") {
+			if idx := strings.LastIndex(bucket, "/buckets/"); idx != -1 {
+				bucket = bucket[idx+len("/buckets/"):]
+			}
+		}
 		out.BucketRef = &storagev1beta1.StorageBucketRef{
-			External: "gs://" + in.GetBucket(),
+			External: "gs://" + bucket,
 		}
 	}
 	return out

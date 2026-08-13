@@ -28,6 +28,9 @@ import (
 
 	composerpb "cloud.google.com/go/orchestration/airflow/service/apiv1/servicepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/composer/v1beta1"
+	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
+	computev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1alpha1"
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -436,6 +439,331 @@ func TestValidateUpdatableFields(t *testing.T) {
 	})
 }
 
+func TestPopulateDefaults(t *testing.T) {
+	envID := &krm.EnvironmentIdentity{}
+	if err := envID.FromExternal("projects/p1/locations/us-central1/environments/env1"); err != nil {
+		t.Fatalf("failed to parse environment identity: %v", err)
+	}
+	adapter := &EnvironmentAdapter{
+		id: envID,
+	}
+
+	t.Run("populates server defaults for omitted fields without diff", func(t *testing.T) {
+		desired := &krm.ComposerEnvironment{
+			Spec: krm.ComposerEnvironmentSpec{
+				Config: &krm.EnvironmentConfig{
+					NodeConfig: &krm.NodeConfig{
+						ServiceAccountRef: &refs.IAMServiceAccountRef{External: "sa@p1.iam.gserviceaccount.com"},
+					},
+				},
+			},
+		}
+		actual := &composerpb.Environment{
+			Name:       "projects/p1/locations/us-central1/environments/env1",
+			Uuid:       "test-uuid",
+			State:      composerpb.Environment_RUNNING,
+			CreateTime: direct.StringTimestamp_ToProto(&direct.MapContext{}, direct.LazyPtr("2024-04-01T12:34:56.123456Z")),
+			UpdateTime: direct.StringTimestamp_ToProto(&direct.MapContext{}, direct.LazyPtr("2024-04-01T12:34:56.123456Z")),
+			StorageConfig: &composerpb.StorageConfig{
+				Bucket: "us-central1-auto-bucket",
+			},
+			Config: &composerpb.EnvironmentConfig{
+				AirflowUri:      "https://test.composer.googleusercontent.com",
+				AirflowByoidUri: "https://test.composer.byoid.googleusercontent.com",
+				DagGcsPrefix:    "gs://us-central1-auto-bucket/dags",
+				EnvironmentSize: composerpb.EnvironmentConfig_ENVIRONMENT_SIZE_SMALL,
+				NodeConfig: &composerpb.NodeConfig{
+					ServiceAccount:               "sa@p1.iam.gserviceaccount.com",
+					ComposerInternalIpv4CidrBlock: "100.64.128.0/20",
+					Network:                      "projects/p1/global/networks/default",
+					MachineType:                  "n1-standard-1",
+					DiskSizeGb:                   100,
+				},
+				SoftwareConfig: &composerpb.SoftwareConfig{
+					ImageVersion:         "composer-3-airflow-2.11.1-build.14",
+					WebServerPluginsMode: composerpb.SoftwareConfig_PLUGINS_ENABLED,
+					PythonVersion:        "3",
+					SchedulerCount:       1,
+				},
+				WebServerNetworkAccessControl: &composerpb.WebServerNetworkAccessControl{
+					AllowedIpRanges: []*composerpb.WebServerNetworkAccessControl_AllowedIpRange{
+						{
+							Value:       "0.0.0.0/0",
+							Description: "Allows access from all IPv4 addresses (default value)",
+						},
+						{
+							Value:       "::0/0",
+							Description: "Allows access from all IPv6 addresses (default value)",
+						},
+					},
+				},
+				DatabaseConfig: &composerpb.DatabaseConfig{
+					MachineType: "db-custom-2-7680",
+				},
+				MaintenanceWindow: &composerpb.MaintenanceWindow{
+					Recurrence: "FREQ=WEEKLY;BYDAY=FR,SA,SU",
+				},
+				PrivateEnvironmentConfig: &composerpb.PrivateEnvironmentConfig{
+					NetworkingConfig: &composerpb.NetworkingConfig{
+						ConnectionType: composerpb.NetworkingConfig_CONNECTION_TYPE_UNSPECIFIED,
+					},
+				},
+				WorkloadsConfig: &composerpb.WorkloadsConfig{
+					Scheduler: &composerpb.WorkloadsConfig_SchedulerResource{
+						Count:     1,
+						Cpu:       0.5,
+						MemoryGb:  2,
+						StorageGb: 1,
+					},
+				},
+				DataRetentionConfig: &composerpb.DataRetentionConfig{
+					AirflowMetadataRetentionConfig: &composerpb.AirflowMetadataRetentionPolicyConfig{
+						RetentionDays: 60,
+						RetentionMode: composerpb.AirflowMetadataRetentionPolicyConfig_RETENTION_MODE_ENABLED,
+					},
+				},
+			},
+		}
+
+		mapCtx := &direct.MapContext{}
+		desiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+		if mapCtx.Err() != nil {
+			t.Fatalf("unexpected error: %v", mapCtx.Err())
+		}
+
+		adapter.populateDesiredWithDefaults(desired, desiredPb)
+		adapter.populateDesiredWithActualIfComputed(desired, desiredPb, actual)
+
+		err := validateUpdatableFields(desiredPb, actual)
+		if err != nil {
+			t.Errorf("expected nil error after populating defaults, got %v", err)
+		}
+	})
+
+	t.Run("preserves explicit desired modifications on immutable fields", func(t *testing.T) {
+		desired := &krm.ComposerEnvironment{
+			Spec: krm.ComposerEnvironmentSpec{
+				Config: &krm.EnvironmentConfig{
+					NodeConfig: &krm.NodeConfig{
+						MachineType: direct.LazyPtr("n1-standard-4"),
+					},
+				},
+			},
+		}
+		actual := adapter.defaultEnvironmentPb()
+		actual.Name = "projects/p1/locations/us-central1/environments/env1"
+		actual.Config.NodeConfig = &composerpb.NodeConfig{
+			MachineType: "n1-standard-1",
+		}
+
+		mapCtx := &direct.MapContext{}
+		desiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+		if mapCtx.Err() != nil {
+			t.Fatalf("unexpected error: %v", mapCtx.Err())
+		}
+
+		adapter.populateDesiredWithDefaults(desired, desiredPb)
+		adapter.populateDesiredWithActualIfComputed(desired, desiredPb, actual)
+
+		err := validateUpdatableFields(desiredPb, actual)
+		if err == nil {
+			t.Fatalf("expected error for machineType modification, got nil")
+		}
+		expectedMsg := `updating field(s) [config.node_config.machine_type] is not supported`
+		if err.Error() != expectedMsg {
+			t.Errorf("expected error message %q, got %q", expectedMsg, err.Error())
+		}
+	})
+
+	t.Run("defaultEnvironmentPb returns static defaults", func(t *testing.T) {
+		defPb := defaultEnvironmentPb()
+		cfg := defPb.GetConfig()
+		if cfg.GetEnvironmentSize() != composerpb.EnvironmentConfig_ENVIRONMENT_SIZE_SMALL {
+			t.Errorf("expected environment size small, got %v", cfg.GetEnvironmentSize())
+		}
+		if cfg.GetMaintenanceWindow().GetRecurrence() != "FREQ=WEEKLY;BYDAY=FR,SA,SU" {
+			t.Errorf("expected weekly recurrence, got %v", cfg.GetMaintenanceWindow().GetRecurrence())
+		}
+		if cfg.GetWorkloadsConfig().GetScheduler().GetCount() != 1 {
+			t.Errorf("expected scheduler count 1, got %v", cfg.GetWorkloadsConfig().GetScheduler().GetCount())
+		}
+		if len(cfg.GetWebServerNetworkAccessControl().GetAllowedIpRanges()) != 2 {
+			t.Errorf("expected 2 allowed IP ranges, got %v", len(cfg.GetWebServerNetworkAccessControl().GetAllowedIpRanges()))
+		}
+	})
+
+	t.Run("populateDesiredWithDefaults sets universal static defaults only", func(t *testing.T) {
+		desired := &krm.ComposerEnvironment{
+			Spec: krm.ComposerEnvironmentSpec{},
+		}
+		desiredPb := &composerpb.Environment{}
+		adapter.populateDesiredWithDefaults(desired, desiredPb)
+
+		cfg := desiredPb.GetConfig()
+		if cfg.GetEnvironmentSize() != composerpb.EnvironmentConfig_ENVIRONMENT_SIZE_SMALL {
+			t.Errorf("expected environment size small, got %v", cfg.GetEnvironmentSize())
+		}
+		if cfg.GetWorkloadsConfig().GetScheduler().GetCount() != 1 {
+			t.Errorf("expected scheduler count 1, got %v", cfg.GetWorkloadsConfig().GetScheduler().GetCount())
+		}
+		if len(cfg.GetWebServerNetworkAccessControl().GetAllowedIpRanges()) != 2 {
+			t.Errorf("expected 2 allowed IP ranges, got %v", len(cfg.GetWebServerNetworkAccessControl().GetAllowedIpRanges()))
+		}
+		if cfg.GetMaintenanceWindow().GetRecurrence() != "FREQ=WEEKLY;BYDAY=FR,SA,SU" {
+			t.Errorf("expected weekly recurrence, got %v", cfg.GetMaintenanceWindow().GetRecurrence())
+		}
+		// Dynamic fields should NOT be set by populateDesiredWithDefaults
+		if cfg.GetNodeConfig().GetNetwork() != "" {
+			t.Errorf("expected empty network in desiredPb, got %v", cfg.GetNodeConfig().GetNetwork())
+		}
+		if cfg.GetNodeConfig().GetMachineType() != "" {
+			t.Errorf("expected empty machineType in desiredPb, got %v", cfg.GetNodeConfig().GetMachineType())
+		}
+		if cfg.GetNodeConfig().GetDiskSizeGb() != 0 {
+			t.Errorf("expected 0 diskSizeGb in desiredPb, got %v", cfg.GetNodeConfig().GetDiskSizeGb())
+		}
+		if cfg.GetSoftwareConfig().GetPythonVersion() != "" {
+			t.Errorf("expected empty pythonVersion in desiredPb, got %v", cfg.GetSoftwareConfig().GetPythonVersion())
+		}
+		if cfg.GetNodeConfig().GetComposerInternalIpv4CidrBlock() != "" {
+			t.Errorf("expected empty CIDR block in desired, got %v", cfg.GetNodeConfig().GetComposerInternalIpv4CidrBlock())
+		}
+		if desiredPb.GetStorageConfig().GetBucket() != "" {
+			t.Errorf("expected empty bucket in desired, got %v", desiredPb.GetStorageConfig().GetBucket())
+		}
+	})
+
+	t.Run("populateDesiredWithActualIfComputed copies dynamic defaults", func(t *testing.T) {
+		desired := &krm.ComposerEnvironment{
+			Spec: krm.ComposerEnvironmentSpec{},
+		}
+		desiredPb := &composerpb.Environment{}
+		actual := &composerpb.Environment{
+			StorageConfig: &composerpb.StorageConfig{
+				Bucket: "auto-bucket-123",
+			},
+			Config: &composerpb.EnvironmentConfig{
+				NodeConfig: &composerpb.NodeConfig{
+					ComposerInternalIpv4CidrBlock: "100.64.128.0/20",
+					Network:                       "projects/p1/global/networks/default",
+					MachineType:                   "n1-standard-1",
+					DiskSizeGb:                    100,
+				},
+				SoftwareConfig: &composerpb.SoftwareConfig{
+					ImageVersion:         "composer-2.11.3-airflow-2.10.2",
+					PythonVersion:        "3",
+					SchedulerCount:       1,
+					WebServerPluginsMode: composerpb.SoftwareConfig_PLUGINS_ENABLED,
+				},
+				DatabaseConfig: &composerpb.DatabaseConfig{
+					MachineType: "db-custom-2-7680",
+					Zone:        "us-central1-a",
+				},
+				DataRetentionConfig: &composerpb.DataRetentionConfig{
+					AirflowMetadataRetentionConfig: &composerpb.AirflowMetadataRetentionPolicyConfig{
+						RetentionDays: 60,
+						RetentionMode: composerpb.AirflowMetadataRetentionPolicyConfig_RETENTION_MODE_ENABLED,
+					},
+				},
+			},
+		}
+
+		adapter.populateDesiredWithActualIfComputed(desired, desiredPb, actual)
+
+		if desiredPb.GetStorageConfig().GetBucket() != "auto-bucket-123" {
+			t.Errorf("expected bucket auto-bucket-123, got %v", desiredPb.GetStorageConfig().GetBucket())
+		}
+		if desiredPb.GetConfig().GetNodeConfig().GetComposerInternalIpv4CidrBlock() != "100.64.128.0/20" {
+			t.Errorf("expected CIDR 100.64.128.0/20, got %v", desiredPb.GetConfig().GetNodeConfig().GetComposerInternalIpv4CidrBlock())
+		}
+		if desiredPb.GetConfig().GetNodeConfig().GetNetwork() != "projects/p1/global/networks/default" {
+			t.Errorf("expected default network, got %v", desiredPb.GetConfig().GetNodeConfig().GetNetwork())
+		}
+		if desiredPb.GetConfig().GetNodeConfig().GetMachineType() != "n1-standard-1" {
+			t.Errorf("expected machineType n1-standard-1, got %v", desiredPb.GetConfig().GetNodeConfig().GetMachineType())
+		}
+		if desiredPb.GetConfig().GetNodeConfig().GetDiskSizeGb() != 100 {
+			t.Errorf("expected diskSizeGb 100, got %v", desiredPb.GetConfig().GetNodeConfig().GetDiskSizeGb())
+		}
+		if desiredPb.GetConfig().GetSoftwareConfig().GetImageVersion() != "composer-2.11.3-airflow-2.10.2" {
+			t.Errorf("expected imageVersion composer-2.11.3-airflow-2.10.2, got %v", desiredPb.GetConfig().GetSoftwareConfig().GetImageVersion())
+		}
+		if desiredPb.GetConfig().GetSoftwareConfig().GetPythonVersion() != "3" {
+			t.Errorf("expected pythonVersion 3, got %v", desiredPb.GetConfig().GetSoftwareConfig().GetPythonVersion())
+		}
+		if desiredPb.GetConfig().GetSoftwareConfig().GetSchedulerCount() != 1 {
+			t.Errorf("expected schedulerCount 1, got %v", desiredPb.GetConfig().GetSoftwareConfig().GetSchedulerCount())
+		}
+		if desiredPb.GetConfig().GetDatabaseConfig().GetMachineType() != "db-custom-2-7680" {
+			t.Errorf("expected machineType db-custom-2-7680, got %v", desiredPb.GetConfig().GetDatabaseConfig().GetMachineType())
+		}
+		if desiredPb.GetConfig().GetDataRetentionConfig().GetAirflowMetadataRetentionConfig().GetRetentionDays() != 60 {
+			t.Errorf("expected retention days 60, got %v", desiredPb.GetConfig().GetDataRetentionConfig().GetAirflowMetadataRetentionConfig().GetRetentionDays())
+		}
+	})
+
+	t.Run("populateDesiredWithActualIfComputed preserves explicit user values for dynamic fields", func(t *testing.T) {
+		desired := &krm.ComposerEnvironment{
+			Spec: krm.ComposerEnvironmentSpec{
+				StorageConfig: &krm.StorageConfig{
+					BucketRef: &storagev1beta1.StorageBucketRef{
+						External: "gs://my-custom-bucket",
+					},
+				},
+				Config: &krm.EnvironmentConfig{
+					DatabaseConfig: &krm.DatabaseConfig{
+						Zone: direct.LazyPtr("us-central1-c"),
+					},
+					WorkloadsConfig: &krm.WorkloadsConfig{
+						DagProcessor: &krm.WorkloadsConfig_DagProcessorResource{
+							CPU: direct.LazyPtr("1.5"),
+						},
+					},
+				},
+			},
+		}
+		mapCtx := &direct.MapContext{}
+		desiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+		if mapCtx.Err() != nil {
+			t.Fatalf("unexpected error converting desired spec: %v", mapCtx.Err())
+		}
+
+		actual := &composerpb.Environment{
+			StorageConfig: &composerpb.StorageConfig{
+				Bucket: "auto-bucket",
+			},
+			Config: &composerpb.EnvironmentConfig{
+				DatabaseConfig: &composerpb.DatabaseConfig{
+					Zone: "us-central1-a",
+				},
+				WorkloadsConfig: &composerpb.WorkloadsConfig{
+					DagProcessor: &composerpb.WorkloadsConfig_DagProcessorResource{
+						Cpu: 0.5,
+					},
+					Worker: &composerpb.WorkloadsConfig_WorkerResource{
+						Cpu: 1.0,
+					},
+				},
+			},
+		}
+
+		adapter.populateDesiredWithActualIfComputed(desired, desiredPb, actual)
+
+		if desiredPb.GetStorageConfig().GetBucket() != "my-custom-bucket" {
+			t.Errorf("expected bucket my-custom-bucket, got %v", desiredPb.GetStorageConfig().GetBucket())
+		}
+		if desiredPb.GetConfig().GetDatabaseConfig().GetZone() != "us-central1-c" {
+			t.Errorf("expected database zone us-central1-c, got %v", desiredPb.GetConfig().GetDatabaseConfig().GetZone())
+		}
+		if desiredPb.GetConfig().GetWorkloadsConfig().GetDagProcessor().GetCpu() != 1.5 {
+			t.Errorf("expected DagProcessor CPU 1.5, got %v", desiredPb.GetConfig().GetWorkloadsConfig().GetDagProcessor().GetCpu())
+		}
+		if desiredPb.GetConfig().GetWorkloadsConfig().GetWorker().GetCpu() != 1.0 {
+			t.Errorf("expected Worker CPU 1.0 from actual, got %v", desiredPb.GetConfig().GetWorkloadsConfig().GetWorker().GetCpu())
+		}
+	})
+}
+
 func TestFieldUpdatersConsistency(t *testing.T) {
 	seenMasks := make(map[string]bool)
 	for _, u := range fieldUpdaters {
@@ -562,3 +890,352 @@ func camelToSnake(s string) string {
 	}
 	return string(result)
 }
+
+func TestMaximumComposerEnvironment(t *testing.T) {
+	createSpec := &krm.ComposerEnvironment{
+		Spec: krm.ComposerEnvironmentSpec{
+			Labels: map[string]string{
+				"env":        "staging",
+				"department": "platform",
+			},
+			StorageConfig: &krm.StorageConfig{
+				BucketRef: &storagev1beta1.StorageBucketRef{
+					External: "gs://bucket-12345",
+				},
+			},
+			Config: &krm.EnvironmentConfig{
+				EnvironmentSize: direct.LazyPtr("ENVIRONMENT_SIZE_MEDIUM"),
+				ResilienceMode:  direct.LazyPtr("HIGH_RESILIENCE"),
+				EncryptionConfig: &krm.EncryptionConfig{
+					KMSKeyRef: &refs.KMSCryptoKeyRef{
+						External: "projects/p1/locations/us-central1/keyRings/r1/cryptoKeys/k1",
+					},
+				},
+				MaintenanceWindow: &krm.MaintenanceWindow{
+					StartTime:  direct.LazyPtr("2026-01-01T04:00:00Z"),
+					EndTime:    direct.LazyPtr("2026-01-01T08:00:00Z"),
+					Recurrence: direct.LazyPtr("FREQ=WEEKLY;BYDAY=TU,WE,TH"),
+				},
+				SoftwareConfig: &krm.SoftwareConfig{
+					ImageVersion: direct.LazyPtr("composer-3-airflow-3.1.7-build.5"),
+					AirflowConfigOverrides: map[string]string{
+						"core-dags_are_paused_at_creation": "true",
+						"webserver-navbar_color":           "#112233",
+					},
+					PypiPackages: map[string]string{
+						"scipy": "==1.11.4",
+					},
+					EnvVariables: map[string]string{
+						"TEST_ENV": "value1",
+					},
+					SchedulerCount:       direct.LazyPtr(int32(2)),
+					WebServerPluginsMode: direct.LazyPtr("PLUGINS_DISABLED"),
+				},
+				NodeConfig: &krm.NodeConfig{
+					NetworkRef: &computerefs.ComputeNetworkRef{
+						External: "projects/p1/global/networks/network-12345",
+					},
+					SubnetworkRef: &computev1beta1.ComputeSubnetworkRef{
+						External: "projects/p1/regions/us-central1/subnetworks/subnet-12345",
+					},
+					ServiceAccountRef: &refs.IAMServiceAccountRef{
+						External: "sa-12345@p1.iam.gserviceaccount.com",
+					},
+					MachineType: direct.LazyPtr("n1-standard-2"),
+					DiskSizeGB:  direct.LazyPtr(int32(120)),
+					ComposerNetworkAttachmentRef: &computev1alpha1.ComputeNetworkAttachmentRef{
+						External: "projects/p1/regions/us-central1/networkAttachments/attachment-12345",
+					},
+					ComposerInternalIPv4CIDRBlock: direct.LazyPtr("100.64.0.0/20"),
+					Tags:                         []string{"composer-node", "data-platform"},
+					EnableIPMasqAgent:            direct.LazyPtr(false),
+					IPAllocationPolicy: &krm.IPAllocationPolicy{
+						UseIPAliases:               direct.LazyPtr(true),
+						ClusterSecondaryRangeName:  direct.LazyPtr("pods"),
+						ServicesSecondaryRangeName: direct.LazyPtr("services"),
+					},
+				},
+				PrivateEnvironmentConfig: &krm.PrivateEnvironmentConfig{
+					EnablePrivateEnvironment: direct.LazyPtr(true),
+					EnablePrivateBuildsOnly:  direct.LazyPtr(true),
+					CloudComposerConnectionSubnetworkRef: &computev1beta1.ComputeSubnetworkRef{
+						External: "projects/p1/regions/us-central1/subnetworks/subnetwork-private-12345",
+					},
+					EnablePrivatelyUsedPublicIPs: direct.LazyPtr(false),
+					CloudComposerNetworkIPv4CIDRBlock: direct.LazyPtr("172.31.248.0/24"),
+					CloudSQLIPv4CIDRBlock:            direct.LazyPtr("10.0.0.0/24"),
+					WebServerIPv4CIDRBlock:           direct.LazyPtr("10.0.1.0/24"),
+					PrivateClusterConfig: &krm.PrivateClusterConfig{
+						EnablePrivateEndpoint: direct.LazyPtr(true),
+						MasterIPV4CIDRBlock:   direct.LazyPtr("172.16.0.0/28"),
+					},
+					NetworkingConfig: &krm.NetworkingConfig{
+						ConnectionType: direct.LazyPtr("PRIVATE_SERVICE_CONNECT"),
+					},
+				},
+				WebServerNetworkAccessControl: &krm.WebServerNetworkAccessControl{
+					AllowedIPRanges: []krm.WebServerNetworkAccessControl_AllowedIPRange{
+						{
+							Value:       direct.LazyPtr("192.168.1.0/24"),
+							Description: direct.LazyPtr("Corporate VPN"),
+						},
+						{
+							Value:       direct.LazyPtr("10.0.0.0/8"),
+							Description: direct.LazyPtr("Internal VPC"),
+						},
+					},
+				},
+				DatabaseConfig: &krm.DatabaseConfig{
+					MachineType: direct.LazyPtr("db-custom-4-15360"),
+					Zone:        direct.LazyPtr("us-central1-a"),
+				},
+				WorkloadsConfig: &krm.WorkloadsConfig{
+					Scheduler: &krm.WorkloadsConfig_SchedulerResource{
+						CPU:       direct.LazyPtr("1.0"),
+						MemoryGB:  direct.LazyPtr("4"),
+						StorageGB: direct.LazyPtr("2"),
+						Count:     direct.LazyPtr(int32(2)),
+					},
+					WebServer: &krm.WorkloadsConfig_WebServerResource{
+						CPU:       direct.LazyPtr("1.0"),
+						MemoryGB:  direct.LazyPtr("4"),
+						StorageGB: direct.LazyPtr("2"),
+					},
+					Worker: &krm.WorkloadsConfig_WorkerResource{
+						CPU:       direct.LazyPtr("1.0"),
+						MemoryGB:  direct.LazyPtr("4"),
+						StorageGB: direct.LazyPtr("2"),
+						MinCount:  direct.LazyPtr(int32(2)),
+						MaxCount:  direct.LazyPtr(int32(6)),
+					},
+					Triggerer: &krm.WorkloadsConfig_TriggererResource{
+						CPU:      direct.LazyPtr("1.0"),
+						MemoryGB: direct.LazyPtr("2"),
+						Count:    direct.LazyPtr(int32(2)),
+					},
+					DagProcessor: &krm.WorkloadsConfig_DagProcessorResource{
+						CPU:       direct.LazyPtr("1.0"),
+						MemoryGB:  direct.LazyPtr("4"),
+						StorageGB: direct.LazyPtr("2"),
+						Count:     direct.LazyPtr(int32(2)),
+					},
+				},
+				MasterAuthorizedNetworksConfig: &krm.MasterAuthorizedNetworksConfig{
+					Enabled: direct.LazyPtr(true),
+					CIDRBlocks: []krm.MasterAuthorizedNetworksConfig_CIDRBlock{
+						{
+							CIDRBlock:   direct.LazyPtr("192.168.1.0/24"),
+							DisplayName: direct.LazyPtr("Admin Subnet"),
+						},
+					},
+				},
+				RecoveryConfig: &krm.RecoveryConfig{
+					ScheduledSnapshotsConfig: &krm.ScheduledSnapshotsConfig{
+						Enabled:                  direct.LazyPtr(true),
+						SnapshotCreationSchedule: direct.LazyPtr("0 4 * * *"),
+						SnapshotLocation:         direct.LazyPtr("gs://bucket-12345/snapshots"),
+						TimeZone:                 direct.LazyPtr("America/New_York"),
+					},
+				},
+				DataRetentionConfig: &krm.DataRetentionConfig{
+					AirflowMetadataRetentionConfig: &krm.AirflowMetadataRetentionPolicyConfig{
+						RetentionMode: direct.LazyPtr("RETENTION_MODE_ENABLED"),
+						RetentionDays: direct.LazyPtr(int32(45)),
+					},
+				},
+			},
+		},
+	}
+
+	mapCtx := &direct.MapContext{}
+	createPb := ComposerEnvironmentSpec_ToProto(mapCtx, &createSpec.Spec)
+	if mapCtx.Err() != nil {
+		t.Fatalf("failed to convert maximum createSpec to proto: %v", mapCtx.Err())
+	}
+
+	// Verify non-default proto fields are populated
+	if createPb.GetStorageConfig().GetBucket() != "bucket-12345" {
+		t.Errorf("expected bucket-12345, got %v", createPb.GetStorageConfig().GetBucket())
+	}
+	if createPb.GetConfig().GetEnvironmentSize() != composerpb.EnvironmentConfig_ENVIRONMENT_SIZE_MEDIUM {
+		t.Errorf("expected size medium, got %v", createPb.GetConfig().GetEnvironmentSize())
+	}
+	if createPb.GetConfig().GetWorkloadsConfig().GetWorker().GetMaxCount() != 6 {
+		t.Errorf("expected worker max count 6, got %v", createPb.GetConfig().GetWorkloadsConfig().GetWorker().GetMaxCount())
+	}
+	if createPb.GetConfig().GetRecoveryConfig().GetScheduledSnapshotsConfig().GetSnapshotCreationSchedule() != "0 4 * * *" {
+		t.Errorf("expected schedule '0 4 * * *', got %v", createPb.GetConfig().GetRecoveryConfig().GetScheduledSnapshotsConfig().GetSnapshotCreationSchedule())
+	}
+	if createPb.GetConfig().GetNodeConfig().GetDiskSizeGb() != 120 {
+		t.Errorf("expected disk size 120, got %v", createPb.GetConfig().GetNodeConfig().GetDiskSizeGb())
+	}
+	if createPb.GetConfig().GetNodeConfig().GetComposerInternalIpv4CidrBlock() != "100.64.0.0/20" {
+		t.Errorf("expected CIDR '100.64.0.0/20', got %v", createPb.GetConfig().GetNodeConfig().GetComposerInternalIpv4CidrBlock())
+	}
+	if createPb.GetConfig().GetDataRetentionConfig().GetAirflowMetadataRetentionConfig().GetRetentionDays() != 45 {
+		t.Errorf("expected retention days 45, got %v", createPb.GetConfig().GetDataRetentionConfig().GetAirflowMetadataRetentionConfig().GetRetentionDays())
+	}
+
+	// Verify roundtrip Spec_FromProto
+	roundtripSpec := ComposerEnvironmentSpec_FromProto(mapCtx, createPb)
+	if mapCtx.Err() != nil {
+		t.Fatalf("failed to convert proto back to Spec: %v", mapCtx.Err())
+	}
+	if *roundtripSpec.Config.EnvironmentSize != "ENVIRONMENT_SIZE_MEDIUM" {
+		t.Errorf("expected roundtrip environmentSize ENVIRONMENT_SIZE_MEDIUM, got %v", *roundtripSpec.Config.EnvironmentSize)
+	}
+
+	// Construct updated spec with distinct non-default values
+	updateSpec := &krm.ComposerEnvironment{
+		Spec: krm.ComposerEnvironmentSpec{
+			Labels: map[string]string{
+				"env":        "production",
+				"department": "platform",
+				"updated":    "true",
+			},
+			StorageConfig: createSpec.Spec.StorageConfig,
+			Config: &krm.EnvironmentConfig{
+				EnvironmentSize:  direct.LazyPtr("ENVIRONMENT_SIZE_LARGE"),
+				ResilienceMode:   createSpec.Spec.Config.ResilienceMode,
+				EncryptionConfig: createSpec.Spec.Config.EncryptionConfig,
+				MaintenanceWindow: &krm.MaintenanceWindow{
+					StartTime:  direct.LazyPtr("2026-01-01T08:00:00Z"),
+					EndTime:    direct.LazyPtr("2026-01-01T12:00:00Z"),
+					Recurrence: direct.LazyPtr("FREQ=WEEKLY;BYDAY=MO,TU,WE"),
+				},
+				SoftwareConfig: &krm.SoftwareConfig{
+					ImageVersion: createSpec.Spec.Config.SoftwareConfig.ImageVersion,
+					AirflowConfigOverrides: map[string]string{
+						"core-dags_are_paused_at_creation": "true",
+						"webserver-navbar_color":           "#445566",
+					},
+					PypiPackages: map[string]string{
+						"scipy":  "==1.11.4",
+						"numpy":  "==1.26.4",
+						"pandas": "==2.2.0",
+					},
+					EnvVariables: map[string]string{
+						"TEST_ENV":  "value_updated",
+						"EXTRA_VAR": "true",
+					},
+					SchedulerCount:       direct.LazyPtr(int32(2)),
+					WebServerPluginsMode: direct.LazyPtr("PLUGINS_DISABLED"),
+				},
+				NodeConfig:               createSpec.Spec.Config.NodeConfig,
+				PrivateEnvironmentConfig: createSpec.Spec.Config.PrivateEnvironmentConfig,
+				WebServerNetworkAccessControl: &krm.WebServerNetworkAccessControl{
+					AllowedIPRanges: []krm.WebServerNetworkAccessControl_AllowedIPRange{
+						{
+							Value:       direct.LazyPtr("192.168.1.0/24"),
+							Description: direct.LazyPtr("Corporate VPN"),
+						},
+						{
+							Value:       direct.LazyPtr("10.0.0.0/8"),
+							Description: direct.LazyPtr("Internal VPC"),
+						},
+						{
+							Value:       direct.LazyPtr("172.16.0.0/12"),
+							Description: direct.LazyPtr("Branch Office"),
+						},
+					},
+				},
+				DatabaseConfig: &krm.DatabaseConfig{
+					MachineType: direct.LazyPtr("db-custom-8-30720"),
+					Zone:        direct.LazyPtr("us-central1-a"),
+				},
+				WorkloadsConfig: &krm.WorkloadsConfig{
+					Scheduler: &krm.WorkloadsConfig_SchedulerResource{
+						CPU:       direct.LazyPtr("1.5"),
+						MemoryGB:  direct.LazyPtr("6"),
+						StorageGB: direct.LazyPtr("3"),
+						Count:     direct.LazyPtr(int32(3)),
+					},
+					WebServer: &krm.WorkloadsConfig_WebServerResource{
+						CPU:       direct.LazyPtr("1.5"),
+						MemoryGB:  direct.LazyPtr("6"),
+						StorageGB: direct.LazyPtr("3"),
+					},
+					Worker: &krm.WorkloadsConfig_WorkerResource{
+						CPU:       direct.LazyPtr("1.5"),
+						MemoryGB:  direct.LazyPtr("6"),
+						StorageGB: direct.LazyPtr("3"),
+						MinCount:  direct.LazyPtr(int32(3)),
+						MaxCount:  direct.LazyPtr(int32(10)),
+					},
+					Triggerer: &krm.WorkloadsConfig_TriggererResource{
+						CPU:      direct.LazyPtr("1.5"),
+						MemoryGB: direct.LazyPtr("3"),
+						Count:    direct.LazyPtr(int32(3)),
+					},
+					DagProcessor: &krm.WorkloadsConfig_DagProcessorResource{
+						CPU:       direct.LazyPtr("1.5"),
+						MemoryGB:  direct.LazyPtr("6"),
+						StorageGB: direct.LazyPtr("3"),
+						Count:     direct.LazyPtr(int32(3)),
+					},
+				},
+				MasterAuthorizedNetworksConfig: &krm.MasterAuthorizedNetworksConfig{
+					Enabled: direct.LazyPtr(true),
+					CIDRBlocks: []krm.MasterAuthorizedNetworksConfig_CIDRBlock{
+						{
+							CIDRBlock:   direct.LazyPtr("192.168.1.0/24"),
+							DisplayName: direct.LazyPtr("Admin Subnet"),
+						},
+						{
+							CIDRBlock:   direct.LazyPtr("10.0.0.0/16"),
+							DisplayName: direct.LazyPtr("Dev Subnet"),
+						},
+					},
+				},
+				RecoveryConfig: &krm.RecoveryConfig{
+					ScheduledSnapshotsConfig: &krm.ScheduledSnapshotsConfig{
+						Enabled:                  direct.LazyPtr(true),
+						SnapshotCreationSchedule: direct.LazyPtr("0 8 * * *"),
+						SnapshotLocation:         direct.LazyPtr("gs://bucket-12345/snapshots"),
+						TimeZone:                 direct.LazyPtr("America/Chicago"),
+					},
+				},
+				DataRetentionConfig: &krm.DataRetentionConfig{
+					AirflowMetadataRetentionConfig: &krm.AirflowMetadataRetentionPolicyConfig{
+						RetentionMode: direct.LazyPtr("RETENTION_MODE_ENABLED"),
+						RetentionDays: direct.LazyPtr(int32(90)),
+					},
+				},
+			},
+		},
+	}
+
+	updatePb := ComposerEnvironmentSpec_ToProto(mapCtx, &updateSpec.Spec)
+	if mapCtx.Err() != nil {
+		t.Fatalf("failed to convert updateSpec to proto: %v", mapCtx.Err())
+	}
+
+	// Validate updatability of maximum spec transition
+	if err := validateUpdatableFields(updatePb, createPb); err != nil {
+		t.Fatalf("unexpected validation error during maximum update transition: %v", err)
+	}
+
+	// Verify buildPatches generates expected individual patches
+	patches := buildPatches(updateSpec, updatePb, createPb)
+	expectedMasks := []string{
+		"labels",
+		"config.environment_size",
+		"config.maintenance_window",
+		"config.software_config.airflow_config_overrides",
+		"config.software_config.pypi_packages",
+		"config.software_config.env_variables",
+		"config.web_server_network_access_control",
+		"config.database_config.machine_type",
+		"config.workloads_config",
+		"config.master_authorized_networks_config",
+		"config.recovery_config.scheduled_snapshots_config",
+		"config.data_retention_config",
+	}
+
+	for _, mask := range expectedMasks {
+		if _, ok := patches[mask]; !ok {
+			t.Errorf("expected update mask %q to be built, but was missing", mask)
+		}
+	}
+}
+
