@@ -21,7 +21,6 @@
 // resource: BigtableBackup:Backup
 // resource: BigtableCluster:Cluster
 // resource: BigtableLogicalView:LogicalView
-// resource: BigtableMaterializedView:MaterializedView
 
 package v1alpha1
 

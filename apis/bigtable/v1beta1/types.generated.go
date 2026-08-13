@@ -20,6 +20,7 @@
 // resource: BigtableAppProfile:AppProfile
 // resource: BigtableTable:Table
 // resource: BigtableGCPolicy:GcRule
+// resource: BigtableMaterializedView:MaterializedView
 
 package v1beta1
 
@@ -119,6 +120,26 @@ type Table_AutomatedBackupPolicy struct {
 // +kcc:proto=google.bigtable.admin.v2.Table.ClusterState
 type Table_ClusterState struct {
 }
+
+/* unreachable type TieredStorageConfig
+// +kcc:proto=google.bigtable.admin.v2.TieredStorageConfig
+type TieredStorageConfig struct {
+	// Rule to specify what data is stored in the infrequent access(IA) tier.
+	//  The IA tier allows storing more data per node with reduced performance.
+	// +kcc:proto:field=google.bigtable.admin.v2.TieredStorageConfig.infrequent_access
+	InfrequentAccess *TieredStorageRule `json:"infrequentAccess,omitempty"`
+}
+*/
+
+/* unreachable type TieredStorageRule
+// +kcc:proto=google.bigtable.admin.v2.TieredStorageRule
+type TieredStorageRule struct {
+	// Include cells older than the given age.
+	//  For the infrequent access tier, this value must be at least 30 days.
+	// +kcc:proto:field=google.bigtable.admin.v2.TieredStorageRule.include_if_older_than
+	IncludeIfOlderThan *string `json:"includeIfOlderThan,omitempty"`
+}
+*/
 
 /* unreachable type Type
 // +kcc:proto=google.bigtable.admin.v2.Type

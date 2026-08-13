@@ -173,6 +173,10 @@ issues for {{product_name_short}}.
 </tr>
 <tr>
   <td><a href="/bigtable/docs/">{{bigtable_name}}</a></td>
+  <td><a href="/config-connector/docs/reference/resource-docs/bigtable/bigtablematerializedview.md">BigtableMaterializedView</a></td>
+</tr>
+<tr>
+  <td><a href="/bigtable/docs/">{{bigtable_name}}</a></td>
   <td><a href="/config-connector/docs/reference/resource-docs/bigtable/bigtabletable.md">BigtableTable</a></td>
 </tr>
 <tr>

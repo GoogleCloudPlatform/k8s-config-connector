@@ -19,8 +19,7 @@ import (
 	"fmt"
 	"slices"
 
-	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1alpha1"
-	krmv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1beta1"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
@@ -137,7 +136,7 @@ func (a *MaterializedViewAdapter) Create(ctx context.Context, createOp *directba
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	mv := BigtableMaterializedViewSpec_v1alpha1_ToProto(mapCtx, &desired.Spec)
+	mv := BigtableMaterializedViewSpec_v1beta1_ToProto(mapCtx, &desired.Spec)
 	mv.Name = a.id.ID()
 	materializedViewInfo := BigtableMaterializedView_ToBigtableMaterializedViewInfo(mv)
 
@@ -161,7 +160,11 @@ func (a *MaterializedViewAdapter) Update(ctx context.Context, updateOp *directba
 	updateMask := &fieldmaskpb.FieldMask{}
 	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
 
-	if (spec.DeletionProtection != nil) && (*spec.DeletionProtection != a.actual.DeletionProtection) {
+	if spec.DeletionProtection == nil && a.actual.DeletionProtection != false ||
+		spec.DeletionProtection != nil && *spec.DeletionProtection != a.actual.DeletionProtection {
+		if spec.DeletionProtection == nil {
+			spec.DeletionProtection = direct.LazyPtr(false)
+		}
 		report.AddField("deletion_protection", a.actual.DeletionProtection, spec.DeletionProtection)
 		updateMask.Paths = append(updateMask.Paths, "deletion_protection")
 	}
@@ -172,7 +175,6 @@ func (a *MaterializedViewAdapter) Update(ctx context.Context, updateOp *directba
 		log.V(2).Info("fields need update", "name", a.id, "paths", updateMask.Paths)
 		structuredreporting.ReportDiff(ctx, report)
 
-		spec := a.desired.Spec
 		spec.Query = &a.actual.Query // immutable
 		if !slices.Contains(updateMask.Paths, "deletion_protection") {
 			spec.DeletionProtection = &a.actual.DeletionProtection
@@ -182,7 +184,7 @@ func (a *MaterializedViewAdapter) Update(ctx context.Context, updateOp *directba
 		if mapCtx.Err() != nil {
 			return mapCtx.Err()
 		}
-		mv := BigtableMaterializedViewSpec_v1alpha1_ToProto(mapCtx, &spec)
+		mv := BigtableMaterializedViewSpec_v1beta1_ToProto(mapCtx, &spec)
 		mv.Name = a.id.ID()
 		desiredmaterializedviewinfo := BigtableMaterializedView_ToBigtableMaterializedViewInfo(mv)
 
@@ -207,12 +209,12 @@ func (a *MaterializedViewAdapter) Export(ctx context.Context) (*unstructured.Uns
 
 	obj := &krm.BigtableMaterializedView{}
 	mapCtx := &direct.MapContext{}
-	spec := BigtableMaterializedViewSpec_v1alpha1_FromProto(mapCtx, a.actual)
+	spec := BigtableMaterializedViewSpec_v1beta1_FromProto(mapCtx, a.actual)
 	obj.Spec = direct.ValueOf(spec)
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	obj.Spec.InstanceRef = &krmv1beta1.InstanceRef{External: a.id.ParentInstanceIdString()}
+	obj.Spec.InstanceRef = &krm.InstanceRef{External: a.id.ParentInstanceIdString()}
 
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
