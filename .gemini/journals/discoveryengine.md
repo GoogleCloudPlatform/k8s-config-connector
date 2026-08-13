@@ -39,3 +39,13 @@
 - **Problem**: `DiscoveryEngineUserStore` has a `defaultLicenseConfig` field pointing to a `DiscoveryEngineLicenseConfig` resource. Since the DiscoveryEngine API returns project numbers instead of project IDs in FQN responses, the `compare` function detected a false diff between the desired state (using project ID) and actual state (using project number returned by GCP), which triggered unnecessary reconciliations (PATCH requests) during re-reconciliation, failing the E2E tests. Additionally, the test runner's service account lacked `discoveryengine.userStores.update` permission by default in `roles/editor`, causing a `403 Forbidden` error.
 - **Solution**: Added the `roles/discoveryengine.admin` role to the test runner's service account. Implemented a path normalization helper in the controller's `compare` function to map project numbers to the canonical project ID for `defaultLicenseConfig` paths before running the top-level field diff comparison. Added custom E2E JSON log normalization for `defaultLicenseConfig` to prevent dynamic ID diff failures.
 - **Impact**: Resolves project ID vs project number false diffs for license config references and ensures clean, repeatable E2E test runs with zero unexpected HTTP traffic.
+
+### [2026-08-13] DiscoveryEngineEngine Direct Controller and Field Immutability
+- **Context**: Implementing direct controller, E2E fixtures, and fuzzer for `DiscoveryEngineEngine`.
+- **Problem**:
+  1. The GCP REST Client returns `unsupported result type <nil>: <nil>` on `DeleteEngine` LRO's `op.Wait(ctx)` because the REST API returns an empty response body on delete, and the client's generated wait method expects a non-nil result.
+  2. The `disable_analytics` field is immutable according to the GCP API, and specifying it in `updateMask` during a `PATCH` request causes a `400 Bad Request` with `Field "updateMask" contains an immutable path "disable_analytics"`.
+- **Solution**:
+  1. Modified `Delete` in `discoveryengineengine_controller.go` to ignore the `unsupported result type <nil>: <nil>` error when waiting for deletion.
+  2. Kept `disableAnalytics: false` unchanged between `create.yaml` and `update.yaml` so that it doesn't trigger a diff and isn't included in the update mask.
+- **Impact**: Ensures that deletion is correctly reported as a success, and updates run successfully against real GCP without encountering immutable field update mask errors.
