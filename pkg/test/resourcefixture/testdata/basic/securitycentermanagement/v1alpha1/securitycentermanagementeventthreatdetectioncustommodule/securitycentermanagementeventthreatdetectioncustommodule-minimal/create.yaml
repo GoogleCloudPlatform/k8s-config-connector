@@ -1,0 +1,16 @@
+apiVersion: securitycentermanagement.cnrm.cloud.google.com/v1alpha1
+kind: SecurityCenterManagementEventThreatDetectionCustomModule
+metadata:
+  name: sccetdcm-min-${uniqueId}
+spec:
+  organizationRef:
+    external: organizations/${TEST_ORG_ID}
+  location: global
+  displayName: "Minimal Event Threat Detection Custom Module"
+  enablementState: ENABLED
+  type: CONFIGURABLE_BAD_IP
+  config:
+    metadata:
+      name: CONFIGURABLE_BAD_IP
+    ips:
+      - 1.2.3.4
