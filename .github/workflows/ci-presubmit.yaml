@@ -37,6 +37,8 @@ on:
       - '**'
       - '!experiments/**'
 
+permissions:
+  contents: read
 
 jobs:
 

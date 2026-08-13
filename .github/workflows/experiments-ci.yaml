@@ -34,6 +34,9 @@ on:
     paths:
       - 'experiments/**'
 
+permissions:
+  contents: read
+
 jobs:
   test:
     runs-on: ubuntu-latest
