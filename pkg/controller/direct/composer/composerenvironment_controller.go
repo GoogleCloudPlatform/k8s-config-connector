@@ -26,6 +26,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/composer/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
@@ -36,6 +37,7 @@ import (
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
+	v1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
@@ -176,6 +178,23 @@ func (a *EnvironmentAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating Environment", "name", a.id)
 	mapCtx := &direct.MapContext{}
+
+	if a.actual != nil && a.actual.State != composerpb.Environment_RUNNING {
+		log.V(2).Info("Environment is not in RUNNING state, skipping update and requesting requeue", "name", a.id, "state", a.actual.State)
+		status := &krm.ComposerEnvironmentStatus{}
+		status.ObservedState = ComposerEnvironmentObservedState_FromProto(mapCtx, a.actual)
+		if mapCtx.Err() != nil {
+			return mapCtx.Err()
+		}
+		readyCondition := &v1alpha1.Condition{
+			Type:    v1alpha1.ReadyConditionType,
+			Status:  v1.ConditionFalse,
+			Reason:  "Updating",
+			Message: fmt.Sprintf("Environment is in state %s", a.actual.State),
+		}
+		updateOp.RequestRequeue()
+		return updateOp.UpdateStatus(ctx, status, readyCondition)
+	}
 
 	desired := a.desired.DeepCopy()
 	if err := ResolveEnvironmentRefs(ctx, a.k8sClient, desired); err != nil {
