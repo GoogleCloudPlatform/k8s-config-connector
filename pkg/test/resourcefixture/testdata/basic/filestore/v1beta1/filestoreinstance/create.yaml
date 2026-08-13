@@ -28,3 +28,8 @@ spec:
       name: default
     modes:
     - MODE_IPV4
+    reservedIPRange: 10.1.2.0/29
+    ipAddresses:
+    - 10.1.2.1
+  projectRef:
+    external: ${projectId}

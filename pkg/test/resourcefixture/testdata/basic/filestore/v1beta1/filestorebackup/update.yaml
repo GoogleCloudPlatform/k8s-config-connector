@@ -24,3 +24,5 @@ spec:
   sourceFileShare: my_share
   sourceInstanceRef:
     name: filestoreinstance-${uniqueId}
+  projectRef:
+    external: ${projectId}

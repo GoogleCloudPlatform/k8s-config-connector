@@ -2088,11 +2088,6 @@
 [missing_field] crd=eventarctriggers.eventarc.cnrm.cloud.google.com version=v1beta1: field ".spec.destination.workflowRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=eventarctriggers.eventarc.cnrm.cloud.google.com version=v1beta1: field ".spec.eventDataContentType" is not set in unstructured objects
 [missing_field] crd=eventarctriggers.eventarc.cnrm.cloud.google.com version=v1beta1: field ".spec.matchingCriteria[].operator" is not set in unstructured objects
-[missing_field] crd=filestorebackups.filestore.cnrm.cloud.google.com version=v1beta1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=filestoreinstances.filestore.cnrm.cloud.google.com version=v1beta1: field ".spec.fileShares[].sourceBackupRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=filestoreinstances.filestore.cnrm.cloud.google.com version=v1beta1: field ".spec.networks[].ipAddresses[]" is not set in unstructured objects
-[missing_field] crd=filestoreinstances.filestore.cnrm.cloud.google.com version=v1beta1: field ".spec.networks[].reservedIPRange" is not set in unstructured objects
-[missing_field] crd=filestoreinstances.filestore.cnrm.cloud.google.com version=v1beta1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=firestoreindexes.firestore.cnrm.cloud.google.com version=v1beta1: field ".spec.fields[].arrayConfig" is not set in unstructured objects
 [missing_field] crd=firestoreindexes.firestore.cnrm.cloud.google.com version=v1beta1: field ".spec.queryScope" is not set in unstructured objects
 [missing_field] crd=gkehubfeaturememberships.gkehub.cnrm.cloud.google.com version=v1beta1: field ".spec.configmanagement.binauthz.enabled" is not set in unstructured objects

@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,14 +13,33 @@
 # limitations under the License.
 
 apiVersion: filestore.cnrm.cloud.google.com/v1beta1
+kind: FilestoreInstance
+metadata:
+  name: filestoresrc-${uniqueId}
+spec:
+  description: "Source instance for backup"
+  location: us-central1-b
+  tier: PREMIUM
+  fileShares:
+  - capacityGb: 2560
+    name: my_share
+  networks:
+  - networkRef:
+      name: default
+    modes:
+    - MODE_IPV4
+  projectRef:
+    external: ${projectId}
+---
+apiVersion: filestore.cnrm.cloud.google.com/v1beta1
 kind: FilestoreBackup
 metadata:
   name: filestorebackup-${uniqueId}
 spec:
-  description: "A sample backup"
+  description: "Backup for restore"
   location: us-central1
   sourceFileShare: my_share
   sourceInstanceRef:
-    name: filestoreinstance-${uniqueId}
+    name: filestoresrc-${uniqueId}
   projectRef:
     external: ${projectId}

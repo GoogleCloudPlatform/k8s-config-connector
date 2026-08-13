@@ -43,9 +43,6 @@
 [schema_violation] file=basic/edgenetwork/v1beta1/edgenetworksubnet gvk=edgenetwork.cnrm.cloud.google.com/v1beta1, Kind=EdgeNetworkNetwork: [].spec.projectRef: Required value
 [schema_violation] file=basic/edgenetwork/v1beta1/edgenetworksubnet gvk=edgenetwork.cnrm.cloud.google.com/v1beta1, Kind=EdgeNetworkSubnet: [].spec.projectRef: Required value
 [schema_violation] file=basic/eventarc/v1alpha1/eventarcchannel/eventarcchannel-minimal gvk=kms.cnrm.cloud.google.com/v1beta1, Kind=KMSCryptoKey: [].spec: Invalid value: "location": spec.location in body is a forbidden property
-[schema_violation] file=basic/filestore/v1beta1/filestorebackup gvk=filestore.cnrm.cloud.google.com/v1beta1, Kind=FilestoreBackup: [].spec.projectRef: Required value
-[schema_violation] file=basic/filestore/v1beta1/filestorebackup gvk=filestore.cnrm.cloud.google.com/v1beta1, Kind=FilestoreInstance: [].spec.projectRef: Required value
-[schema_violation] file=basic/filestore/v1beta1/filestoreinstance gvk=filestore.cnrm.cloud.google.com/v1beta1, Kind=FilestoreInstance: [].spec.projectRef: Required value
 [schema_violation] file=basic/iam/v1beta1/iamworkforcepool gvk=iam.cnrm.cloud.google.com/v1beta1, Kind=IAMWorkforcePool: [].spec: Invalid value: "state": spec.state in body is a forbidden property
 [schema_violation] file=basic/iam/v1beta1/iamworkforcepoolprovider/oidcworkforcepoolprovider gvk=iam.cnrm.cloud.google.com/v1beta1, Kind=IAMWorkforcePool: [].spec: Invalid value: "state": spec.state in body is a forbidden property
 [schema_violation] file=basic/iam/v1beta1/iamworkforcepoolprovider/samlworkforcepoolprovider gvk=iam.cnrm.cloud.google.com/v1beta1, Kind=IAMWorkforcePool: [].spec: Invalid value: "state": spec.state in body is a forbidden property
