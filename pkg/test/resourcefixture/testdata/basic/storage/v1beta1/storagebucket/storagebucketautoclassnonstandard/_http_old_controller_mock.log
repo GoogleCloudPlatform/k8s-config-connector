@@ -1,4 +1,4 @@
-GET https://storage.googleapis.com/storage/v1/b/storagebucket-acdefault-${uniqueId}?alt=json&prettyPrint=false
+GET https://storage.googleapis.com/storage/v1/b/storagebucket-autoclass-ns-${uniqueId}?alt=json&prettyPrint=false
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -28,7 +28,8 @@ Content-Type: application/json
 
 {
   "autoclass": {
-    "enabled": true
+    "enabled": true,
+    "terminalStorageClass": "NEARLINE"
   },
   "iamConfiguration": {
     "uniformBucketLevelAccess": {
@@ -40,8 +41,12 @@ Content-Type: application/json
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
+  "lifecycle": {
+    "rule": []
+  },
   "location": "US",
-  "name": "storagebucket-acdefault-${uniqueId}"
+  "name": "storagebucket-autoclass-ns-${uniqueId}",
+  "storageClass": "NEARLINE"
 }
 
 200 OK
@@ -81,10 +86,10 @@ Vary: X-Origin
   "location": "US",
   "locationType": "multi-region",
   "metageneration": "1",
-  "name": "storagebucket-acdefault-${uniqueId}",
+  "name": "storagebucket-autoclass-ns-${uniqueId}",
   "projectNumber": "${projectNumber}",
   "rpo": "DEFAULT",
-  "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-acdefault-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-autoclass-ns-${uniqueId}",
   "softDeletePolicy": {
     "effectiveTime": "2024-04-01T12:34:56.123456Z",
     "retentionDurationSeconds": "604800"
@@ -96,7 +101,7 @@ Vary: X-Origin
 
 ---
 
-GET https://storage.googleapis.com/storage/v1/b/storagebucket-acdefault-${uniqueId}?alt=json&prettyPrint=false
+GET https://storage.googleapis.com/storage/v1/b/storagebucket-autoclass-ns-${uniqueId}?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -134,10 +139,10 @@ Vary: X-Origin
   "location": "US",
   "locationType": "multi-region",
   "metageneration": "1",
-  "name": "storagebucket-acdefault-${uniqueId}",
+  "name": "storagebucket-autoclass-ns-${uniqueId}",
   "projectNumber": "${projectNumber}",
   "rpo": "DEFAULT",
-  "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-acdefault-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-autoclass-ns-${uniqueId}",
   "softDeletePolicy": {
     "effectiveTime": "2024-04-01T12:34:56.123456Z",
     "retentionDurationSeconds": "604800"
@@ -149,26 +154,20 @@ Vary: X-Origin
 
 ---
 
-PATCH https://storage.googleapis.com/storage/v1/b/storagebucket-acdefault-${uniqueId}?alt=json&prettyPrint=false
+PATCH https://storage.googleapis.com/storage/v1/b/storagebucket-autoclass-ns-${uniqueId}?alt=json&prettyPrint=false
 Content-Type: application/json
 
 {
   "autoclass": {
-    "enabled": true
-  },
-  "iamConfiguration": {
-    "uniformBucketLevelAccess": {
-      "enabled": true
-    }
+    "enabled": true,
+    "terminalStorageClass": "ARCHIVE"
   },
   "labels": {
     "cnrm-test": "true",
     "label-one": "value-one",
     "label-two": "value-two",
     "managed-by-cnrm": "true"
-  },
-  "location": "US",
-  "name": "storagebucket-acdefault-${uniqueId}"
+  }
 }
 
 200 OK
@@ -181,7 +180,7 @@ Vary: X-Origin
 {
   "autoclass": {
     "enabled": true,
-    "terminalStorageClass": "NEARLINE",
+    "terminalStorageClass": "ARCHIVE",
     "terminalStorageClassUpdateTime": "2024-04-01T12:34:56.123456Z",
     "toggleTime": "2024-04-01T12:34:56.123456Z"
   },
@@ -209,10 +208,10 @@ Vary: X-Origin
   "location": "US",
   "locationType": "multi-region",
   "metageneration": "2",
-  "name": "storagebucket-acdefault-${uniqueId}",
+  "name": "storagebucket-autoclass-ns-${uniqueId}",
   "projectNumber": "${projectNumber}",
   "rpo": "DEFAULT",
-  "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-acdefault-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-autoclass-ns-${uniqueId}",
   "softDeletePolicy": {
     "effectiveTime": "2024-04-01T12:34:56.123456Z",
     "retentionDurationSeconds": "604800"
@@ -224,7 +223,7 @@ Vary: X-Origin
 
 ---
 
-GET https://storage.googleapis.com/storage/v1/b/storagebucket-acdefault-${uniqueId}?alt=json&prettyPrint=false
+GET https://storage.googleapis.com/storage/v1/b/storagebucket-autoclass-ns-${uniqueId}?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -235,7 +234,7 @@ Vary: X-Origin
 {
   "autoclass": {
     "enabled": true,
-    "terminalStorageClass": "NEARLINE",
+    "terminalStorageClass": "ARCHIVE",
     "terminalStorageClassUpdateTime": "2024-04-01T12:34:56.123456Z",
     "toggleTime": "2024-04-01T12:34:56.123456Z"
   },
@@ -263,10 +262,10 @@ Vary: X-Origin
   "location": "US",
   "locationType": "multi-region",
   "metageneration": "2",
-  "name": "storagebucket-acdefault-${uniqueId}",
+  "name": "storagebucket-autoclass-ns-${uniqueId}",
   "projectNumber": "${projectNumber}",
   "rpo": "DEFAULT",
-  "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-acdefault-${uniqueId}",
+  "selfLink": "https://www.googleapis.com/storage/v1/b/storagebucket-autoclass-ns-${uniqueId}",
   "softDeletePolicy": {
     "effectiveTime": "2024-04-01T12:34:56.123456Z",
     "retentionDurationSeconds": "604800"
@@ -278,7 +277,25 @@ Vary: X-Origin
 
 ---
 
-DELETE https://storage.googleapis.com/storage/v1/b/storagebucket-acdefault-${uniqueId}?alt=json&prettyPrint=false
+GET https://storage.googleapis.com/storage/v1/b/storagebucket-autoclass-ns-${uniqueId}/o?alt=json&prettyPrint=false&versions=true
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "kind": "storage#objects",
+  "prefixes": [
+    "testfolder",
+    "testmanagedfolder"
+  ]
+}
+
+---
+
+DELETE https://storage.googleapis.com/storage/v1/b/storagebucket-autoclass-ns-${uniqueId}?alt=json&prettyPrint=false
 
 204 No Content
 Content-Type: application/json

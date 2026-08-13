@@ -1,0 +1,14 @@
+7d6
+<     cnrm.cloud.google.com/state-into-spec: absent
+11c10
+<   generation: 2
+---
+>   generation: 1
+23d21
+<   resourceID: storagebucket-acdisabled-${uniqueId}
+32c30
+<   observedGeneration: 2
+---
+>   observedGeneration: 1
+37d34
+<     storageClass: STANDARD

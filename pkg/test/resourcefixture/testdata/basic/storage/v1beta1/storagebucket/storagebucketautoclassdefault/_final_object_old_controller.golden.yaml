@@ -4,6 +4,7 @@ metadata:
   annotations:
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
     cnrm.cloud.google.com/project-id: ${projectId}
+    cnrm.cloud.google.com/state-into-spec: absent
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
@@ -12,14 +13,13 @@ metadata:
     cnrm-test: "true"
     label-one: value-one
     label-two: value-two
-  name: storagebucket-autoclass-ns-${uniqueId}
+  name: storagebucket-acdefault-${uniqueId}
   namespace: ${uniqueId}
 spec:
   autoclass:
     enabled: true
-    terminalStorageClass: ARCHIVE
   location: US
-  storageClass: NEARLINE
+  resourceID: storagebucket-acdefault-${uniqueId}
   uniformBucketLevelAccess: true
 status:
   conditions:
@@ -33,5 +33,6 @@ status:
     softDeletePolicy:
       effectiveTime: "1970-01-01T00:00:00Z"
       retentionDurationSeconds: 604800
-  selfLink: https://www.googleapis.com/storage/v1/b/storagebucket-autoclass-ns-${uniqueId}
-  url: gs://storagebucket-autoclass-ns-${uniqueId}
+    storageClass: STANDARD
+  selfLink: https://www.googleapis.com/storage/v1/b/storagebucket-acdefault-${uniqueId}
+  url: gs://storagebucket-acdefault-${uniqueId}

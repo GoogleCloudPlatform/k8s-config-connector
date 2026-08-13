@@ -430,7 +430,7 @@ Vary: X-Origin
   },
   "location": "US",
   "locationType": "multi-region",
-  "metageneration": "2",
+  "metageneration": "1",
   "name": "storagebucket-sample-${uniqueId}",
   "owner": {
     "entity": "project-owners-${projectNumber}"
@@ -491,7 +491,7 @@ Vary: X-Origin
   },
   "location": "US",
   "locationType": "multi-region",
-  "metageneration": "2",
+  "metageneration": "1",
   "name": "storagebucket-sample-${uniqueId}",
   "projectNumber": "${projectNumber}",
   "rpo": "DEFAULT",

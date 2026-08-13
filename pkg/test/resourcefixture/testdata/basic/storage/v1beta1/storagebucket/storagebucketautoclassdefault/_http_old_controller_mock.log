@@ -40,8 +40,12 @@ Content-Type: application/json
     "label-one": "value-one",
     "managed-by-cnrm": "true"
   },
+  "lifecycle": {
+    "rule": []
+  },
   "location": "US",
-  "name": "storagebucket-acdefault-${uniqueId}"
+  "name": "storagebucket-acdefault-${uniqueId}",
+  "storageClass": "STANDARD"
 }
 
 200 OK
@@ -153,22 +157,12 @@ PATCH https://storage.googleapis.com/storage/v1/b/storagebucket-acdefault-${uniq
 Content-Type: application/json
 
 {
-  "autoclass": {
-    "enabled": true
-  },
-  "iamConfiguration": {
-    "uniformBucketLevelAccess": {
-      "enabled": true
-    }
-  },
   "labels": {
     "cnrm-test": "true",
     "label-one": "value-one",
     "label-two": "value-two",
     "managed-by-cnrm": "true"
-  },
-  "location": "US",
-  "name": "storagebucket-acdefault-${uniqueId}"
+  }
 }
 
 200 OK
@@ -274,6 +268,24 @@ Vary: X-Origin
   "storageClass": "STANDARD",
   "timeCreated": "2024-04-01T12:34:56.123456Z",
   "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/storagebucket-acdefault-${uniqueId}/o?alt=json&prettyPrint=false&versions=true
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "kind": "storage#objects",
+  "prefixes": [
+    "testfolder",
+    "testmanagedfolder"
+  ]
 }
 
 ---
