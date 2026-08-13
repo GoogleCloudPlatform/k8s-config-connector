@@ -341,6 +341,10 @@ func (a *storageBucketAdapter) updateStatus(ctx context.Context, op directbase.O
 
 	status.ObservedState = &krm.StorageBucketObservedState{}
 
+	if latest.GetStorageClass() != "" {
+		status.ObservedState.StorageClass = direct.PtrTo(latest.GetStorageClass())
+	}
+
 	if a.actualRest != nil && a.actualRest.SoftDeletePolicy != nil {
 		status.ObservedState.SoftDeletePolicy = &krm.StorageBucketSoftDeletePolicyObservedState{
 			RetentionDurationSeconds: direct.PtrTo(a.actualRest.SoftDeletePolicy.RetentionDurationSeconds),
