@@ -29,9 +29,10 @@ type BigQueryReservationReservationGroupSpec struct {
 	// +required
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
 
-	// The location of this resource.
+	// +kubebuilder:validation:XValidation:rule="self == oldSelf",message="Location field is immutable"
+	// Immutable. The location of this resource.
 	// +required
-	Location string `json:"location"`
+	Location *string `json:"location"`
 
 	// The BigQueryReservationReservationGroup name. If not given, the metadata.name will be used.
 	// +optional

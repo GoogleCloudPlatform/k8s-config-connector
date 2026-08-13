@@ -65,8 +65,11 @@ spec:
               state of BigQueryReservationReservationGroup
             properties:
               location:
-                description: The location of this resource.
+                description: Immutable. The location of this resource.
                 type: string
+                x-kubernetes-validations:
+                - message: Location field is immutable
+                  rule: self == oldSelf
               projectRef:
                 description: The project that this resource belongs to.
                 oneOf:

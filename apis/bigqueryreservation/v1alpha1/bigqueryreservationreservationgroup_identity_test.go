@@ -102,7 +102,7 @@ func TestBigQueryReservationReservationGroup_GetIdentity(t *testing.T) {
 					ProjectRef: &refs.ProjectRef{
 						External: "my-project",
 					},
-					Location:   "us-central1",
+					Location:   common.LazyPtr("us-central1"),
 					ResourceID: common.LazyPtr("my-group"),
 				},
 			},
@@ -122,7 +122,7 @@ func TestBigQueryReservationReservationGroup_GetIdentity(t *testing.T) {
 					ProjectRef: &refs.ProjectRef{
 						External: "my-project",
 					},
-					Location: "us-central1",
+					Location: common.LazyPtr("us-central1"),
 				},
 			},
 			want: &BigQueryReservationReservationGroupIdentity{
@@ -141,7 +141,7 @@ func TestBigQueryReservationReservationGroup_GetIdentity(t *testing.T) {
 					ProjectRef: &refs.ProjectRef{
 						External: "my-project",
 					},
-					Location:   "us-central1",
+					Location:   common.LazyPtr("us-central1"),
 					ResourceID: common.LazyPtr("my-group"),
 				},
 				Status: BigQueryReservationReservationGroupStatus{

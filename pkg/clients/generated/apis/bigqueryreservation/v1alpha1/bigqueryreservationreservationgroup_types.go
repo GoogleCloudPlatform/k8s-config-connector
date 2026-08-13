@@ -39,7 +39,7 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type BigQueryReservationReservationGroupSpec struct {
-	/* The location of this resource. */
+	/* Immutable. The location of this resource. */
 	Location string `json:"location"`
 
 	/* The project that this resource belongs to. */
