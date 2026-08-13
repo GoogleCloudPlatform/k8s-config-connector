@@ -40,7 +40,7 @@ require (
 	cloud.google.com/go/dataflow v0.16.0
 	cloud.google.com/go/dataform v1.0.0
 	cloud.google.com/go/datalabeling v0.14.0
-	cloud.google.com/go/dataplex v1.34.0
+	cloud.google.com/go/dataplex v1.36.0
 	cloud.google.com/go/dataproc/v2 v2.22.0
 	cloud.google.com/go/datastream v1.20.0
 	cloud.google.com/go/deploy v1.32.0
