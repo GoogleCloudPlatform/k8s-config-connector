@@ -18,6 +18,7 @@ import (
 	"testing"
 
 	pb "cloud.google.com/go/bigquery"
+	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -66,6 +67,56 @@ func TestBigQueryDatasetStatus_FromProto_selfLink(t *testing.T) {
 			}
 			if got != tc.expected {
 				t.Errorf("SelfLink = %q, want %q", got, tc.expected)
+			}
+		})
+	}
+}
+
+// TestBigQueryDatasetStatus_ToProto_fullID checks the inverse conversion.
+//
+// This previously used strings.Trim to strip the URL prefix. Trim takes a
+// cutset rather than a prefix, so it ate characters from both ends of the
+// link — "…/projects/my-project/datasets/my_dataset" became
+// "jects/my-project/datasets/my_d" — the "projects" guard never matched, and
+// FullID was silently never set.
+func TestBigQueryDatasetStatus_ToProto_fullID(t *testing.T) {
+	tests := []struct {
+		name     string
+		selfLink string
+		expected string
+	}{
+		{
+			name:     "plainProjectID",
+			selfLink: "https://bigquery.googleapis.com/bigquery/v2/projects/my-project/datasets/my_dataset",
+			expected: "my-project:my_dataset",
+		},
+		{
+			name:     "universeQualifiedProjectID",
+			selfLink: "https://bigquery.googleapis.com/bigquery/v2/projects/my-universe:my-project/datasets/my_dataset",
+			expected: "my-universe:my-project:my_dataset",
+		},
+		{
+			name:     "domainScopedProjectID",
+			selfLink: "https://bigquery.googleapis.com/bigquery/v2/projects/example.com:my-project/datasets/my_dataset",
+			expected: "example.com:my-project:my_dataset",
+		},
+		{
+			name:     "unexpectedShape_noFullID",
+			selfLink: "https://bigquery.googleapis.com/bigquery/v2/projects/my-project",
+			expected: "",
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			mapCtx := &direct.MapContext{}
+			selfLink := tc.selfLink
+			out := BigQueryDatasetStatus_ToProto(mapCtx, &krm.BigQueryDatasetStatus{SelfLink: &selfLink})
+			if err := mapCtx.Err(); err != nil {
+				t.Fatalf("BigQueryDatasetStatus_ToProto returned error: %v", err)
+			}
+			if out.FullID != tc.expected {
+				t.Errorf("FullID = %q, want %q", out.FullID, tc.expected)
 			}
 		})
 	}
