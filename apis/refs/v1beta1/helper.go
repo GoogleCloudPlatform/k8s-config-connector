@@ -22,6 +22,20 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 )
 
+func cleanUnstructured(u *unstructured.Unstructured) {
+	spec, found, _ := unstructured.NestedMap(u.Object, "spec")
+	if !found {
+		return
+	}
+	for _, parentKey := range []string{"ParentRef", "parentRef"} {
+		if parentMap, ok := spec[parentKey].(map[string]any); ok {
+			for k, v := range parentMap {
+				spec[k] = v
+			}
+		}
+	}
+}
+
 func GetResourceID(obj runtime.Object) (string, error) {
 	u, ok := obj.(*unstructured.Unstructured)
 	if !ok {
@@ -30,6 +44,7 @@ func GetResourceID(obj runtime.Object) (string, error) {
 			return "", fmt.Errorf("expected an Unstructured object but got %T; additionally, failed to convert to unstructured: %w", obj, err)
 		}
 		u = &unstructured.Unstructured{Object: m}
+		cleanUnstructured(u)
 	}
 
 	resourceID, _, err := unstructured.NestedString(u.Object, "spec", "resourceID")
@@ -50,6 +65,7 @@ func GetLocation(obj runtime.Object) (string, error) {
 			return "", fmt.Errorf("expected an Unstructured object but got %T; additionally, failed to convert to unstructured: %w", obj, err)
 		}
 		u = &unstructured.Unstructured{Object: m}
+		cleanUnstructured(u)
 	}
 
 	location, _, err := unstructured.NestedString(u.Object, "spec", "location")
@@ -57,6 +73,12 @@ func GetLocation(obj runtime.Object) (string, error) {
 		return "", fmt.Errorf("reading spec.location from %v %v/%v: %w", u.GroupVersionKind().Kind, u.GetNamespace(), u.GetName(), err)
 	}
 	if location == "" {
+		if loc, _, _ := unstructured.NestedString(u.Object, "spec", "parentRef", "location"); loc != "" {
+			return loc, nil
+		}
+		if loc, _, _ := unstructured.NestedString(u.Object, "spec", "ParentRef", "location"); loc != "" {
+			return loc, nil
+		}
 		return "", fmt.Errorf("spec.location not set in %v %v/%v: %w", u.GroupVersionKind().Kind, u.GetNamespace(), u.GetName(), err)
 	}
 	return location, nil
