@@ -1,4 +1,5 @@
-- caisURL: //dataplex.googleapis.com/projects/${projectId}/locations/us-central1/entryTypes/dataplexentrytype-minimal-${uniqueId}
+- caisURL: unknown
+  error: cannot resolve resource location
   group: dataplex.cnrm.cloud.google.com
   kind: DataplexEntryType
   name: dataplexentrytype-minimal-${uniqueId}

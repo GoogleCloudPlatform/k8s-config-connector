@@ -1,4 +1,5 @@
-- caisURL: //dataplex.googleapis.com/projects/${projectId}/locations/us-central1/lakes/dataplexlake-${uniqueId}
+- caisURL: unknown
+  error: cannot resolve location
   group: dataplex.cnrm.cloud.google.com
   kind: DataplexLake
   name: dataplexlake-${uniqueId}
