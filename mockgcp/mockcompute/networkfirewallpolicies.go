@@ -135,7 +135,7 @@ func (s *NetworkFirewallPoliciesV1) Insert(ctx context.Context, req *pb.InsertNe
 	}
 
 	if obj.Rules == nil {
-		populateDefaultRules(obj)
+		populateDefaultRules(obj, false)
 	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
@@ -295,7 +295,7 @@ func (s *NetworkFirewallPoliciesV1) RemoveRule(ctx context.Context, req *pb.Remo
 	}
 
 	if len(rules) == 0 {
-		populateDefaultRules(obj)
+		populateDefaultRules(obj, false)
 	} else {
 		obj.Rules = rules
 	}
