@@ -43,6 +43,10 @@ func (i *ModelArmorTemplateIdentity) String() string {
 	return ModelArmorTemplateIdentityFormat.ToString(*i)
 }
 
+func (i *ModelArmorTemplateIdentity) ParentString() string {
+	return fmt.Sprintf("projects/%s/locations/%s", i.Project, i.Location)
+}
+
 func (i *ModelArmorTemplateIdentity) FromExternal(ref string) error {
 	parsed, match, err := ModelArmorTemplateIdentityFormat.Parse(ref)
 	if err != nil {

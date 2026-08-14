@@ -1,0 +1,56 @@
+apiVersion: modelarmor.cnrm.cloud.google.com/v1alpha1
+kind: ModelArmorTemplate
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: modelarmortemplate-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  filterConfig:
+    maliciousURIFilterSettings:
+      filterEnforcement: ENABLED
+    piAndJailbreakFilterSettings:
+      confidenceLevel: MEDIUM_AND_ABOVE
+      filterEnforcement: ENABLED
+    raiSettings:
+      raiFilters:
+      - confidenceLevel: LOW_AND_ABOVE
+        filterType: HATE_SPEECH
+      - confidenceLevel: LOW_AND_ABOVE
+        filterType: HARASSMENT
+    sdpSettings:
+      basicConfig:
+        filterEnforcement: ENABLED
+  labels:
+    foo: updated-bar
+    new-key: new-value
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+  templateMetadata:
+    customLlmResponseSafetyErrorCode: 456
+    customLlmResponseSafetyErrorMessage: Blocked response
+    customPromptSafetyErrorCode: 789
+    customPromptSafetyErrorMessage: Blocked prompt updated
+    enforcementType: INSPECT_AND_BLOCK
+    ignorePartialInvocationFailures: true
+    logSanitizeOperations: true
+    logTemplateOperations: true
+    multiLanguageDetection:
+      enableMultiLanguageDetection: true
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/templates/modelarmortemplate-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    updateTime: "1970-01-01T00:00:00Z"
