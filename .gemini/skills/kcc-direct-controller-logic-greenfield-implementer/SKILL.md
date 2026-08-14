@@ -153,6 +153,18 @@ The direct controller must be implemented to manage reconciliation logic (Adapte
     **GCP RECORDING PR REPORTING REQUIREMENT**:
     In the created PR description, you MUST explicitly document whether `record-gcp` was successfully run against real GCP. If it was run, state the GCP project used. If it was not run (e.g., due to disabled APIs, missing permissions, or rate limits), you must document the specific command run, the full error message encountered, and the fallback approach you used to generate/align the HTTP logs.
 
+    **AUDIT LOG REPORTING REQUIREMENT**:
+    As part of the final verification of development testing, you MUST retrieve Google Cloud audit logs demonstrating that the resource API was exercised.
+    Use the `gcloud logging read` command to fetch the relevant audit entries to prove that the controller successfully hit the real GCP endpoint.
+    
+    For example:
+    ```bash
+    gcloud logging read 'logName:"audit" AND "<service_name>"' --freshness=3h --limit=50
+    ```
+    *(Adjust the search terms, e.g., replacing `<service_name>` with the actual service/API name such as `discoveryengine` or `vertexai` to filter for correct audit entries.)*
+
+    After creating the PR, add these retrieved audit logs as a separate comment on the PR to serve as proof of real-GCP testing.
+
 ## Journaling
 Append any reconciliation hurdles, GCP SDK quirks, or other controller issues to `.gemini/journals/<service_name>.md` using the format described in the `kcc-agentic-journaler` skill.
 
