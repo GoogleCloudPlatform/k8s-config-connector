@@ -150,6 +150,9 @@ The direct controller must be implemented to manage reconciliation logic (Adapte
     - Runs `make fmt` and `make vet`.
     YOU MUST COMMIT ALL RESULTING CHANGES.
 
+    **GCP RECORDING PR REPORTING REQUIREMENT**:
+    In the created PR description, you MUST explicitly document whether `record-gcp` was successfully run against real GCP. If it was run, state the GCP project used. If it was not run (e.g., due to disabled APIs, missing permissions, or rate limits), you must document the specific command run, the full error message encountered, and the fallback approach you used to generate/align the HTTP logs.
+
 ## Journaling
 Append any reconciliation hurdles, GCP SDK quirks, or other controller issues to `.gemini/journals/<service_name>.md` using the format described in the `kcc-agentic-journaler` skill.
 
