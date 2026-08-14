@@ -65,7 +65,7 @@ func (i *CCInsightsViewIdentity) Host() string {
 	return CCInsightsViewIdentityFormat.Host()
 }
 
-func getIdentityFromCCInsightsViewSpec(ctx context.Context, reader client.Reader, obj client.Object) (*CCInsightsViewIdentity, error) {
+func getIdentityFromCCInsightsViewSpec(ctx context.Context, reader client.Reader, obj *CCInsightsView) (*CCInsightsViewIdentity, error) {
 	resourceID, err := refs.GetResourceID(obj)
 	if err != nil {
 		return nil, fmt.Errorf("cannot resolve resource ID: %w", err)
