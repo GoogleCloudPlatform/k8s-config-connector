@@ -31,7 +31,7 @@ type DataplexMetadataFeedSpec struct {
 
 	// The location of this resource.
 	// +kubebuilder:validation:Required
-	Location string `json:"location"`
+	Location *string `json:"location"`
 
 	// The DataplexMetadataFeed name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
