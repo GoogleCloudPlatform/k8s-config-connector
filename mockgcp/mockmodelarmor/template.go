@@ -31,6 +31,8 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	pb "cloud.google.com/go/modelarmor/apiv1/modelarmorpb"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 )
 
 type ModelArmorV1 struct {
@@ -77,7 +79,10 @@ func (s *ModelArmorV1) CreateTemplate(ctx context.Context, req *pb.CreateTemplat
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
-	return obj, nil
+	// CreateTemplate response should not contain labels
+	response := proto.CloneOf(obj)
+	response.Labels = nil
+	return response, nil
 }
 
 func (s *ModelArmorV1) populateDefaultsForTemplate(obj *pb.Template) {
@@ -96,13 +101,24 @@ func (s *ModelArmorV1) UpdateTemplate(ctx context.Context, req *pb.UpdateTemplat
 		return nil, err
 	}
 
-	proto.Merge(obj, req.Template)
+	paths := req.GetUpdateMask().GetPaths()
+	if len(paths) == 0 {
+		proto.Merge(obj, req.GetTemplate())
+	} else {
+		if err := fields.UpdateByFieldMask(obj, req.GetTemplate(), paths); err != nil {
+			return nil, err
+		}
+	}
+
 	obj.UpdateTime = timestamppb.New(time.Now())
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
-	return obj, nil
+	// UpdateTemplate response should not contain labels
+	response := proto.CloneOf(obj)
+	response.Labels = nil
+	return response, nil
 }
 
 func (s *ModelArmorV1) DeleteTemplate(ctx context.Context, req *pb.DeleteTemplateRequest) (*emptypb.Empty, error) {

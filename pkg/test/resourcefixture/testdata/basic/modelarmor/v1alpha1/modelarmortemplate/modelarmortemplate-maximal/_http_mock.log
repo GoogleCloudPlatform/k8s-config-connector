@@ -1,0 +1,400 @@
+GRPC /google.cloud.modelarmor.v1.ModelArmor/GetTemplate
+
+{
+  "name": "projects/${projectId}/locations/us-central1/templates/modelarmortemplate-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = template "projects/${projectId}/locations/us-central1/templates/modelarmortemplate-${uniqueId}" not found
+
+{}
+
+---
+
+GRPC /google.cloud.modelarmor.v1.ModelArmor/CreateTemplate
+
+{
+  "parent": "projects/${projectId}/locations/us-central1",
+  "template": {
+    "filterConfig": {
+      "maliciousUriFilterSettings": {
+        "filterEnforcement": "ENABLED"
+      },
+      "piAndJailbreakFilterSettings": {
+        "confidenceLevel": "LOW_AND_ABOVE",
+        "filterEnforcement": "ENABLED"
+      },
+      "raiSettings": {
+        "raiFilters": [
+          {
+            "confidenceLevel": "LOW_AND_ABOVE",
+            "filterType": "HATE_SPEECH"
+          },
+          {
+            "confidenceLevel": "LOW_AND_ABOVE",
+            "filterType": "HARASSMENT"
+          }
+        ]
+      },
+      "sdpSettings": {
+        "basicConfig": {
+          "filterEnforcement": "ENABLED"
+        }
+      }
+    },
+    "labels": {
+      "foo": "bar",
+      "key": "value"
+    },
+    "templateMetadata": {
+      "customLlmResponseSafetyErrorCode": 456,
+      "customLlmResponseSafetyErrorMessage": "Blocked response",
+      "customPromptSafetyErrorCode": 123,
+      "customPromptSafetyErrorMessage": "Blocked prompt",
+      "enforcementType": "INSPECT_AND_BLOCK",
+      "ignorePartialInvocationFailures": true,
+      "logSanitizeOperations": true,
+      "logTemplateOperations": true,
+      "multiLanguageDetection": {
+        "enableMultiLanguageDetection": true
+      }
+    }
+  },
+  "templateId": "modelarmortemplate-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "filterConfig": {
+    "maliciousUriFilterSettings": {
+      "filterEnforcement": "ENABLED"
+    },
+    "piAndJailbreakFilterSettings": {
+      "confidenceLevel": "LOW_AND_ABOVE",
+      "filterEnforcement": "ENABLED"
+    },
+    "raiSettings": {
+      "raiFilters": [
+        {
+          "confidenceLevel": "LOW_AND_ABOVE",
+          "filterType": "HATE_SPEECH"
+        },
+        {
+          "confidenceLevel": "LOW_AND_ABOVE",
+          "filterType": "HARASSMENT"
+        }
+      ]
+    },
+    "sdpSettings": {
+      "basicConfig": {
+        "filterEnforcement": "ENABLED"
+      }
+    }
+  },
+  "name": "projects/${projectId}/locations/us-central1/templates/modelarmortemplate-${uniqueId}",
+  "templateMetadata": {
+    "customLlmResponseSafetyErrorCode": 456,
+    "customLlmResponseSafetyErrorMessage": "Blocked response",
+    "customPromptSafetyErrorCode": 123,
+    "customPromptSafetyErrorMessage": "Blocked prompt",
+    "enforcementType": "INSPECT_AND_BLOCK",
+    "ignorePartialInvocationFailures": true,
+    "logSanitizeOperations": true,
+    "logTemplateOperations": true,
+    "multiLanguageDetection": {
+      "enableMultiLanguageDetection": true
+    }
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.modelarmor.v1.ModelArmor/GetTemplate
+
+{
+  "name": "projects/${projectId}/locations/us-central1/templates/modelarmortemplate-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "filterConfig": {
+    "maliciousUriFilterSettings": {
+      "filterEnforcement": "ENABLED"
+    },
+    "piAndJailbreakFilterSettings": {
+      "confidenceLevel": "LOW_AND_ABOVE",
+      "filterEnforcement": "ENABLED"
+    },
+    "raiSettings": {
+      "raiFilters": [
+        {
+          "confidenceLevel": "LOW_AND_ABOVE",
+          "filterType": "HATE_SPEECH"
+        },
+        {
+          "confidenceLevel": "LOW_AND_ABOVE",
+          "filterType": "HARASSMENT"
+        }
+      ]
+    },
+    "sdpSettings": {
+      "basicConfig": {
+        "filterEnforcement": "ENABLED"
+      }
+    }
+  },
+  "labels": {
+    "foo": "bar",
+    "key": "value"
+  },
+  "name": "projects/${projectId}/locations/us-central1/templates/modelarmortemplate-${uniqueId}",
+  "templateMetadata": {
+    "customLlmResponseSafetyErrorCode": 456,
+    "customLlmResponseSafetyErrorMessage": "Blocked response",
+    "customPromptSafetyErrorCode": 123,
+    "customPromptSafetyErrorMessage": "Blocked prompt",
+    "enforcementType": "INSPECT_AND_BLOCK",
+    "ignorePartialInvocationFailures": true,
+    "logSanitizeOperations": true,
+    "logTemplateOperations": true,
+    "multiLanguageDetection": {
+      "enableMultiLanguageDetection": true
+    }
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.modelarmor.v1.ModelArmor/UpdateTemplate
+
+{
+  "template": {
+    "filterConfig": {
+      "maliciousUriFilterSettings": {
+        "filterEnforcement": "ENABLED"
+      },
+      "piAndJailbreakFilterSettings": {
+        "confidenceLevel": "MEDIUM_AND_ABOVE",
+        "filterEnforcement": "ENABLED"
+      },
+      "raiSettings": {
+        "raiFilters": [
+          {
+            "confidenceLevel": "LOW_AND_ABOVE",
+            "filterType": "HATE_SPEECH"
+          },
+          {
+            "confidenceLevel": "LOW_AND_ABOVE",
+            "filterType": "HARASSMENT"
+          }
+        ]
+      },
+      "sdpSettings": {
+        "basicConfig": {
+          "filterEnforcement": "ENABLED"
+        }
+      }
+    },
+    "labels": {
+      "foo": "updated-bar",
+      "new-key": "new-value"
+    },
+    "name": "projects/${projectId}/locations/us-central1/templates/modelarmortemplate-${uniqueId}",
+    "templateMetadata": {
+      "customLlmResponseSafetyErrorCode": 456,
+      "customLlmResponseSafetyErrorMessage": "Blocked response",
+      "customPromptSafetyErrorCode": 789,
+      "customPromptSafetyErrorMessage": "Blocked prompt updated",
+      "enforcementType": "INSPECT_AND_BLOCK",
+      "ignorePartialInvocationFailures": true,
+      "logSanitizeOperations": true,
+      "logTemplateOperations": true,
+      "multiLanguageDetection": {
+        "enableMultiLanguageDetection": true
+      }
+    }
+  },
+  "updateMask": "filterConfig,labels,templateMetadata"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "filterConfig": {
+    "maliciousUriFilterSettings": {
+      "filterEnforcement": "ENABLED"
+    },
+    "piAndJailbreakFilterSettings": {
+      "confidenceLevel": "MEDIUM_AND_ABOVE",
+      "filterEnforcement": "ENABLED"
+    },
+    "raiSettings": {
+      "raiFilters": [
+        {
+          "confidenceLevel": "LOW_AND_ABOVE",
+          "filterType": "HATE_SPEECH"
+        },
+        {
+          "confidenceLevel": "LOW_AND_ABOVE",
+          "filterType": "HARASSMENT"
+        }
+      ]
+    },
+    "sdpSettings": {
+      "basicConfig": {
+        "filterEnforcement": "ENABLED"
+      }
+    }
+  },
+  "name": "projects/${projectId}/locations/us-central1/templates/modelarmortemplate-${uniqueId}",
+  "templateMetadata": {
+    "customLlmResponseSafetyErrorCode": 456,
+    "customLlmResponseSafetyErrorMessage": "Blocked response",
+    "customPromptSafetyErrorCode": 789,
+    "customPromptSafetyErrorMessage": "Blocked prompt updated",
+    "enforcementType": "INSPECT_AND_BLOCK",
+    "ignorePartialInvocationFailures": true,
+    "logSanitizeOperations": true,
+    "logTemplateOperations": true,
+    "multiLanguageDetection": {
+      "enableMultiLanguageDetection": true
+    }
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.modelarmor.v1.ModelArmor/GetTemplate
+
+{
+  "name": "projects/${projectId}/locations/us-central1/templates/modelarmortemplate-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "filterConfig": {
+    "maliciousUriFilterSettings": {
+      "filterEnforcement": "ENABLED"
+    },
+    "piAndJailbreakFilterSettings": {
+      "confidenceLevel": "MEDIUM_AND_ABOVE",
+      "filterEnforcement": "ENABLED"
+    },
+    "raiSettings": {
+      "raiFilters": [
+        {
+          "confidenceLevel": "LOW_AND_ABOVE",
+          "filterType": "HATE_SPEECH"
+        },
+        {
+          "confidenceLevel": "LOW_AND_ABOVE",
+          "filterType": "HARASSMENT"
+        }
+      ]
+    },
+    "sdpSettings": {
+      "basicConfig": {
+        "filterEnforcement": "ENABLED"
+      }
+    }
+  },
+  "labels": {
+    "foo": "updated-bar",
+    "new-key": "new-value"
+  },
+  "name": "projects/${projectId}/locations/us-central1/templates/modelarmortemplate-${uniqueId}",
+  "templateMetadata": {
+    "customLlmResponseSafetyErrorCode": 456,
+    "customLlmResponseSafetyErrorMessage": "Blocked response",
+    "customPromptSafetyErrorCode": 789,
+    "customPromptSafetyErrorMessage": "Blocked prompt updated",
+    "enforcementType": "INSPECT_AND_BLOCK",
+    "ignorePartialInvocationFailures": true,
+    "logSanitizeOperations": true,
+    "logTemplateOperations": true,
+    "multiLanguageDetection": {
+      "enableMultiLanguageDetection": true
+    }
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.modelarmor.v1.ModelArmor/GetTemplate
+
+{
+  "name": "projects/${projectId}/locations/us-central1/templates/modelarmortemplate-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "filterConfig": {
+    "maliciousUriFilterSettings": {
+      "filterEnforcement": "ENABLED"
+    },
+    "piAndJailbreakFilterSettings": {
+      "confidenceLevel": "MEDIUM_AND_ABOVE",
+      "filterEnforcement": "ENABLED"
+    },
+    "raiSettings": {
+      "raiFilters": [
+        {
+          "confidenceLevel": "LOW_AND_ABOVE",
+          "filterType": "HATE_SPEECH"
+        },
+        {
+          "confidenceLevel": "LOW_AND_ABOVE",
+          "filterType": "HARASSMENT"
+        }
+      ]
+    },
+    "sdpSettings": {
+      "basicConfig": {
+        "filterEnforcement": "ENABLED"
+      }
+    }
+  },
+  "labels": {
+    "foo": "updated-bar",
+    "new-key": "new-value"
+  },
+  "name": "projects/${projectId}/locations/us-central1/templates/modelarmortemplate-${uniqueId}",
+  "templateMetadata": {
+    "customLlmResponseSafetyErrorCode": 456,
+    "customLlmResponseSafetyErrorMessage": "Blocked response",
+    "customPromptSafetyErrorCode": 789,
+    "customPromptSafetyErrorMessage": "Blocked prompt updated",
+    "enforcementType": "INSPECT_AND_BLOCK",
+    "ignorePartialInvocationFailures": true,
+    "logSanitizeOperations": true,
+    "logTemplateOperations": true,
+    "multiLanguageDetection": {
+      "enableMultiLanguageDetection": true
+    }
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.modelarmor.v1.ModelArmor/DeleteTemplate
+
+{
+  "name": "projects/${projectId}/locations/us-central1/templates/modelarmortemplate-${uniqueId}"
+}
+
+OK
+
+{}
