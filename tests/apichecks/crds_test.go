@@ -121,9 +121,11 @@ func TestMissingRefs(t *testing.T) {
 				if isRef {
 					// We don't require refs for zones or regions, nor for instanceTypes
 					switch {
-					case strings.HasSuffix(fieldPath, ".zone"):
+					case strings.HasSuffix(fieldPath, ".zone"), strings.HasSuffix(fieldPath, ".zones"):
 						// ok
-					case strings.HasSuffix(fieldPath, ".location"):
+					case strings.HasSuffix(fieldPath, ".region"), strings.HasSuffix(fieldPath, ".regions"):
+						// ok
+					case strings.HasSuffix(fieldPath, ".location"), strings.HasSuffix(fieldPath, ".locations"):
 						// ok
 					case strings.HasSuffix(fieldPath, ".machineType"):
 						// ok
