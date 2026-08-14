@@ -73,5 +73,8 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	if err != nil {
 		return nil, err
 	}
+	mux.RewriteError = func(ctx context.Context, errorResponse *httpmux.ErrorResponse) {
+		errorResponse.Errors = nil
+	}
 	return mux, nil
 }

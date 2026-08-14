@@ -16,14 +16,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "Collector \"projects/${projectId}/locations/us-central1/collectors/rmacollector-max-${uniqueId}\" not found",
-        "reason": "notFound"
-      }
-    ],
-    "message": "Collector \"projects/${projectId}/locations/us-central1/collectors/rmacollector-max-${uniqueId}\" not found",
+    "message": "Resource 'projects/${projectId}/locations/us-central1/collectors/rmacollector-max-${uniqueId}' was not found",
     "status": "NOT_FOUND"
   }
 }
@@ -108,10 +101,6 @@ X-Xss-Protection: 0
     "expectedAssetCount": "100",
     "guestOsScan": {
       "coreSource": "projects/${projectNumber}/locations/us-central1/sources/normalized-guest-os-scan-source"
-    },
-    "labels": {
-      "key1": "val1",
-      "key2": "val2"
     },
     "name": "projects/${projectId}/locations/us-central1/collectors/rmacollector-max-${uniqueId}",
     "serviceAccount": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
@@ -246,10 +235,6 @@ X-Xss-Protection: 0
     "guestOsScan": {
       "coreSource": "projects/${projectNumber}/locations/us-central1/sources/normalized-guest-os-scan-source"
     },
-    "labels": {
-      "key1": "val1",
-      "key2": "val2"
-    },
     "name": "projects/${projectId}/locations/us-central1/collectors/rmacollector-max-${uniqueId}",
     "serviceAccount": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
     "state": "STATE_READY_TO_USE",
@@ -324,7 +309,7 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/us-central1/collectors/rmacollector-max-${uniqueId}",
-    "verb": "delete"
+    "verb": "update"
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
 }
@@ -354,7 +339,7 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/us-central1/collectors/rmacollector-max-${uniqueId}",
-    "verb": "delete"
+    "verb": "update"
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
@@ -368,10 +353,6 @@ X-Xss-Protection: 0
     "expectedAssetCount": "200",
     "guestOsScan": {
       "coreSource": "projects/${projectNumber}/locations/us-central1/sources/normalized-guest-os-scan-source"
-    },
-    "labels": {
-      "key1": "val1",
-      "key2": "val2"
     },
     "name": "projects/${projectId}/locations/us-central1/collectors/rmacollector-max-${uniqueId}",
     "serviceAccount": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
