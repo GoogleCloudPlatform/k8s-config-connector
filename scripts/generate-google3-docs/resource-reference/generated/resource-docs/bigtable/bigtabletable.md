@@ -90,6 +90,8 @@ title: "BigtableTable"
 ```yaml
 automatedBackupPolicy:
   frequency: string
+  locations:
+  - string
   retentionPeriod: string
 changeStreamRetention: string
 columnFamily:
@@ -128,7 +130,27 @@ splitKeys:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Required. How frequently automated backups should occur. The only supported value at this time is 24 hours.</p>
+            <p>How frequently automated backups should occur. The only supported value at this time is 24 hours. An undefined frequency is treated as 24 hours.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>automatedBackupPolicy.locations</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>Optional. A list of Cloud Bigtable zones where automated backups are allowed to be created. If empty, automated backups will be created in all zones of the instance. Locations are in the format `projects/{project}/locations/{zone}`. This field can only set for tables in Enterprise Plus instances.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>automatedBackupPolicy.locations[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p></p>
         </td>
     </tr>
     <tr>
@@ -138,7 +160,7 @@ splitKeys:
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Required. How long the automated backups should be retained. The only supported value at this time is 3 days.</p>
+            <p>Required. How long the automated backups should be retained. Values must be at least 3 days and at most 90 days.</p>
         </td>
     </tr>
     <tr>

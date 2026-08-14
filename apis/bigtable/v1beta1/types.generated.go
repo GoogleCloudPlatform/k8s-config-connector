@@ -105,20 +105,48 @@ type RestoreInfo struct {
 
 // +kcc:proto=google.bigtable.admin.v2.Table.AutomatedBackupPolicy
 type Table_AutomatedBackupPolicy struct {
-	// Required. How long the automated backups should be retained. The only
-	//  supported value at this time is 3 days.
+	// Required. How long the automated backups should be retained. Values must
+	//  be at least 3 days and at most 90 days.
 	// +kcc:proto:field=google.bigtable.admin.v2.Table.AutomatedBackupPolicy.retention_period
 	RetentionPeriod *string `json:"retentionPeriod,omitempty"`
 
-	// Required. How frequently automated backups should occur. The only
-	//  supported value at this time is 24 hours.
+	// How frequently automated backups should occur. The only supported value
+	//  at this time is 24 hours. An undefined frequency is treated as 24 hours.
 	// +kcc:proto:field=google.bigtable.admin.v2.Table.AutomatedBackupPolicy.frequency
 	Frequency *string `json:"frequency,omitempty"`
+
+	// Optional. A list of Cloud Bigtable zones where automated backups are
+	//  allowed to be created. If empty, automated backups will be created in all
+	//  zones of the instance. Locations are in the format
+	//  `projects/{project}/locations/{zone}`.
+	//  This field can only set for tables in Enterprise Plus instances.
+	// +kcc:proto:field=google.bigtable.admin.v2.Table.AutomatedBackupPolicy.locations
+	Locations []string `json:"locations,omitempty"`
 }
 
 // +kcc:proto=google.bigtable.admin.v2.Table.ClusterState
 type Table_ClusterState struct {
 }
+
+/* unreachable type TieredStorageConfig
+// +kcc:proto=google.bigtable.admin.v2.TieredStorageConfig
+type TieredStorageConfig struct {
+	// Rule to specify what data is stored in the infrequent access(IA) tier.
+	//  The IA tier allows storing more data per node with reduced performance.
+	// +kcc:proto:field=google.bigtable.admin.v2.TieredStorageConfig.infrequent_access
+	InfrequentAccess *TieredStorageRule `json:"infrequentAccess,omitempty"`
+}
+*/
+
+/* unreachable type TieredStorageRule
+// +kcc:proto=google.bigtable.admin.v2.TieredStorageRule
+type TieredStorageRule struct {
+	// Include cells older than the given age.
+	//  For the infrequent access tier, this value must be at least 30 days.
+	// +kcc:proto:field=google.bigtable.admin.v2.TieredStorageRule.include_if_older_than
+	IncludeIfOlderThan *string `json:"includeIfOlderThan,omitempty"`
+}
+*/
 
 /* unreachable type Type
 // +kcc:proto=google.bigtable.admin.v2.Type

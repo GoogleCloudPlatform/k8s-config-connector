@@ -29,7 +29,11 @@ if [[ -z "${CONTROLLERBUILDER}" ]]; then
 fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
-./generate-proto.sh
+# Pin a googleapis SHA that contains the google.bigtable.admin.v2 service definition
+PROTO_SHA="5993bc685e72fbda796378c146533f7ef6e95d8a"
+PROTO_OUT="${REPO_ROOT}/.build/googleapis-${PROTO_SHA}.pb"
+
+./generate-proto.sh ${PROTO_SHA} ${PROTO_OUT}
 
 # --- v1alpha1 ---
 ${CONTROLLERBUILDER} generate-types \
@@ -39,9 +43,8 @@ ${CONTROLLERBUILDER} generate-types \
   --resource BigtableBackup:Backup \
   --resource BigtableCluster:Cluster \
   --resource BigtableLogicalView:LogicalView \
-  --resource BigtableMaterializedView:MaterializedView
-
-
+  --resource BigtableMaterializedView:MaterializedView \
+  --proto-source-path ${PROTO_OUT}
 
 # --- v1beta1 ---
 ${CONTROLLERBUILDER} generate-types \
@@ -49,12 +52,14 @@ ${CONTROLLERBUILDER} generate-types \
   --api-version bigtable.cnrm.cloud.google.com/v1beta1  \
   --resource BigtableAppProfile:AppProfile \
   --resource BigtableTable:Table \
-  --resource BigtableGCPolicy:GcRule
+  --resource BigtableGCPolicy:GcRule \
+  --proto-source-path ${PROTO_OUT}
 
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.bigtable.admin.v2 \
   --api-version "bigtable.cnrm.cloud.google.com/v1beta1" \
-  --multiversion
+  --multiversion \
+  --proto-source-path ${PROTO_OUT}
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
