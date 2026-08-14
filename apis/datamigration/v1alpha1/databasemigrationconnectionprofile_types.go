@@ -103,6 +103,7 @@ type CloudSQLSettings struct {
 	SourceID *string `json:"sourceID,omitempty"`
 
 	// Input only. Initial root password.
+	// TODO: Migrate to Secret reference (such as refsv1beta1secret.Legacy) before promoting this resource to v1beta1.
 	// +kcc:proto:field=google.cloud.clouddms.v1.CloudSqlSettings.root_password
 	RootPassword *string `json:"rootPassword,omitempty"`
 
@@ -134,6 +135,7 @@ type AlloyDbSettings_UserPassword struct {
 	User *string `json:"user,omitempty"`
 
 	// The initial password for the user.
+	// TODO: Migrate to Secret reference (such as refsv1beta1secret.Legacy) before promoting this resource to v1beta1.
 	// +kcc:proto:field=google.cloud.clouddms.v1.AlloyDbSettings.UserPassword.password
 	Password *string `json:"password,omitempty"`
 }
@@ -200,8 +202,7 @@ type AlloyDbSettings struct {
 
 // +kcc:observedstate:proto=google.cloud.clouddms.v1.AlloyDbSettings
 type AlloyDbSettingsObservedState struct {
-	// Required. Input only. Initial user to setup during cluster creation.
-	//  Required.
+	// Output only. The initial user setup during cluster creation, as observed in GCP.
 	// +kcc:proto:field=google.cloud.clouddms.v1.AlloyDbSettings.initial_user
 	InitialUser *AlloyDbSettings_UserPasswordObservedState `json:"initialUser,omitempty"`
 

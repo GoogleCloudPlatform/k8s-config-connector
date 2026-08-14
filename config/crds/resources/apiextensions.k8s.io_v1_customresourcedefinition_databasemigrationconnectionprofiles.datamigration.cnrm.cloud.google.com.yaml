@@ -685,8 +685,8 @@ spec:
                           AlloyDB cluster.
                         properties:
                           initialUser:
-                            description: Required. Input only. Initial user to setup
-                              during cluster creation. Required.
+                            description: Output only. The initial user setup during
+                              cluster creation, as observed in GCP.
                             properties:
                               passwordSet:
                                 description: Output only. Indicates if the initial_user.password
