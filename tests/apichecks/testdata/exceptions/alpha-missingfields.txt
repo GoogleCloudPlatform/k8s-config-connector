@@ -1428,7 +1428,7 @@
 [missing_field] crd=databasemigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.postgresql.host" is not set in unstructured objects
 [missing_field] crd=databasemigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.postgresql.password" is not set in unstructured objects
 [missing_field] crd=databasemigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.postgresql.port" is not set in unstructured objects
-[missing_field] crd=databasemigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.postgresql.privateServiceConnectConnectivity.serviceAttachment" is not set in unstructured objects
+[missing_field] crd=databasemigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.postgresql.privateServiceConnectConnectivity.serviceAttachmentRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=databasemigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.postgresql.ssl.caCertificate" is not set in unstructured objects
 [missing_field] crd=databasemigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.postgresql.ssl.clientCertificate" is not set in unstructured objects
 [missing_field] crd=databasemigrationconnectionprofiles.datamigration.cnrm.cloud.google.com version=v1alpha1: field ".spec.postgresql.ssl.clientKey" is not set in unstructured objects

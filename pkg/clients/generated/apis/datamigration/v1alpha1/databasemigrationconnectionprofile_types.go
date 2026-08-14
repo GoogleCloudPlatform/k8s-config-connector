@@ -258,7 +258,7 @@ type DatabasemigrationconnectionprofilePrivateConnectivity struct {
 type DatabasemigrationconnectionprofilePrivateServiceConnectConnectivity struct {
 	/* Required. A service attachment that exposes a database, and has the following format: projects/{project}/regions/{region}/serviceAttachments/{service_attachment_name} */
 	// +optional
-	ServiceAttachment *string `json:"serviceAttachment,omitempty"`
+	ServiceAttachmentRef *v1alpha1.ResourceRef `json:"serviceAttachmentRef,omitempty"`
 }
 
 type DatabasemigrationconnectionprofileSettings struct {

@@ -1045,7 +1045,9 @@ func PrivateServiceConnectConnectivity_FromProto(mapCtx *direct.MapContext, in *
 		return nil
 	}
 	out := &krm.PrivateServiceConnectConnectivity{}
-	out.ServiceAttachment = direct.LazyPtr(in.GetServiceAttachment())
+	if in.GetServiceAttachment() != "" {
+		out.ServiceAttachmentRef = &refsv1beta1.ComputeServiceAttachmentRef{External: in.GetServiceAttachment()}
+	}
 	return out
 }
 func PrivateServiceConnectConnectivity_ToProto(mapCtx *direct.MapContext, in *krm.PrivateServiceConnectConnectivity) *pb.PrivateServiceConnectConnectivity {
@@ -1053,7 +1055,9 @@ func PrivateServiceConnectConnectivity_ToProto(mapCtx *direct.MapContext, in *kr
 		return nil
 	}
 	out := &pb.PrivateServiceConnectConnectivity{}
-	out.ServiceAttachment = direct.ValueOf(in.ServiceAttachment)
+	if in.ServiceAttachmentRef != nil {
+		out.ServiceAttachment = in.ServiceAttachmentRef.External
+	}
 	return out
 }
 func ReverseSSHConnectivity_FromProto(mapCtx *direct.MapContext, in *pb.ReverseSshConnectivity) *krm.ReverseSSHConnectivity {

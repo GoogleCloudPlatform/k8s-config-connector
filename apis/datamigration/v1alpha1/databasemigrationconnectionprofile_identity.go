@@ -81,12 +81,12 @@ func getIdentityFromDatabaseMigrationConnectionProfileSpec(ctx context.Context, 
 		return nil, err
 	}
 
-	identity := &DatabaseMigrationConnectionProfileIdentity{
+	specIdentity := &DatabaseMigrationConnectionProfileIdentity{
 		Project:           projectID,
 		Location:          location,
 		ConnectionProfile: resourceID,
 	}
-	return identity, nil
+	return specIdentity, nil
 }
 
 func (obj *DatabaseMigrationConnectionProfile) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {

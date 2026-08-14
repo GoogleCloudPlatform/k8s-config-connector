@@ -31,6 +31,15 @@ type PrivateConnectivity struct {
 	PrivateConnectionRef *DatabaseMigrationPrivateConnectionRef `json:"privateConnectionRef,omitempty"`
 }
 
+// +kcc:proto=google.cloud.clouddms.v1.PrivateServiceConnectConnectivity
+type PrivateServiceConnectConnectivity struct {
+	// Required. A service attachment that exposes a database, and has the
+	//  following format:
+	//  projects/{project}/regions/{region}/serviceAttachments/{service_attachment_name}
+	// +kcc:proto:field=google.cloud.clouddms.v1.PrivateServiceConnectConnectivity.service_attachment
+	ServiceAttachmentRef *refsv1beta1.ComputeServiceAttachmentRef `json:"serviceAttachmentRef,omitempty"`
+}
+
 // +kcc:proto=google.cloud.clouddms.v1.CloudSqlSettings
 type CloudSQLSettings struct {
 	// The database engine type and version.

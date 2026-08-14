@@ -677,6 +677,8 @@ type PrivateConnectivity struct {
 }
 */
 
+/* found existing non-generated go type "PrivateServiceConnectConnectivity", skipping
+
 // +kcc:proto=google.cloud.clouddms.v1.PrivateServiceConnectConnectivity
 type PrivateServiceConnectConnectivity struct {
 	// Required. A service attachment that exposes a database, and has the
@@ -685,6 +687,7 @@ type PrivateServiceConnectConnectivity struct {
 	// +kcc:proto:field=google.cloud.clouddms.v1.PrivateServiceConnectConnectivity.service_attachment
 	ServiceAttachment *string `json:"serviceAttachment,omitempty"`
 }
+*/
 
 /* found existing non-generated go type "ReverseSSHConnectivity", skipping
 

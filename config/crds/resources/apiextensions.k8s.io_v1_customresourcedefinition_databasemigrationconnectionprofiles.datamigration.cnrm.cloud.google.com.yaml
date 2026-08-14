@@ -549,10 +549,38 @@ spec:
                   privateServiceConnectConnectivity:
                     description: Private service connect connectivity.
                     properties:
-                      serviceAttachment:
+                      serviceAttachmentRef:
                         description: 'Required. A service attachment that exposes
                           a database, and has the following format: projects/{project}/regions/{region}/serviceAttachments/{service_attachment_name}'
-                        type: string
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: The ComputeServiceAttachment selflink in
+                              the form "projects/{{project}}/regions/{{region}}/serviceAttachments/{{name}}"
+                              when not managed by Config Connector.
+                            type: string
+                          name:
+                            description: The `name` field of a `ComputeServiceAttachment`
+                              resource.
+                            type: string
+                          namespace:
+                            description: The `namespace` field of a `ComputeServiceAttachment`
+                              resource.
+                            type: string
+                        type: object
                     type: object
                   ssl:
                     description: SSL configuration for the destination to connect
