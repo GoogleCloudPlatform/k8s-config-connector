@@ -15,6 +15,7 @@
 package v1alpha1
 
 import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/kccscheme"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	servicedirectoryv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/servicedirectory/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
@@ -167,4 +168,5 @@ type DevConnectConnectionList struct {
 
 func init() {
 	SchemeBuilder.Register(&DevConnectConnection{}, &DevConnectConnectionList{})
+	kccscheme.RegisterType(DevConnectConnectionGVK, &DevConnectConnection{})
 }

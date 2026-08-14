@@ -242,5 +242,18 @@ go run . generate-mapper \
    --service google.cloud.alloydb.v1beta  \
    --api-version alloydb.cnrm.cloud.google.com/v1alpha1
 
+# DeveloperConnect
+go run . generate-types \
+     --service google.cloud.developerconnect.v1 \
+     --api-version developerconnect.cnrm.cloud.google.com/v1alpha1 \
+     --resource DevConnectConnection:Connection \
+     --resource DevConnectInsightsConfig:InsightsConfig \
+     --resource DevConnectAccountConnector:AccountConnector \
+     --prune-unused-types=false
+
+go run . generate-mapper \
+     --service google.cloud.developerconnect.v1 \
+     --api-version developerconnect.cnrm.cloud.google.com/v1alpha1
+
 # Fix up formatting
 ${REPO_ROOT}/dev/tasks/fix-gofmt

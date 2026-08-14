@@ -43,6 +43,14 @@ func (i *DevConnectAccountConnectorIdentity) String() string {
 	return DevConnectAccountConnectorIdentityFormat.ToString(*i)
 }
 
+func (i *DevConnectAccountConnectorIdentity) ParentString() string {
+	return fmt.Sprintf("projects/%s/locations/%s", i.Project, i.Location)
+}
+
+func (i *DevConnectAccountConnectorIdentity) ID() string {
+	return i.Account_connector
+}
+
 func (i *DevConnectAccountConnectorIdentity) FromExternal(ref string) error {
 	parsed, match, err := DevConnectAccountConnectorIdentityFormat.Parse(ref)
 	if err != nil {

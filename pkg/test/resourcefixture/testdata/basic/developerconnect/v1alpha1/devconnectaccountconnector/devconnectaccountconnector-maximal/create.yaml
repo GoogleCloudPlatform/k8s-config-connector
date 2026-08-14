@@ -1,0 +1,19 @@
+apiVersion: developerconnect.cnrm.cloud.google.com/v1alpha1
+kind: DevConnectAccountConnector
+metadata:
+  name: devconnectaccountconnector-${uniqueId}
+  labels:
+    foo: bar
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  providerOauthConfig:
+    systemProviderID: GITHUB
+    scopes:
+      - "user:email"
+      - "read:user"
+  labels:
+    my-label: my-value
+  annotations:
+    my-annotation: my-annotation-value
