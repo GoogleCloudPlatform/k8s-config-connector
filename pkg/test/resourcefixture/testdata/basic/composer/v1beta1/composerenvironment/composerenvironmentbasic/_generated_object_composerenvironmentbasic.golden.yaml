@@ -1,0 +1,39 @@
+apiVersion: composer.cnrm.cloud.google.com/v1beta1
+kind: ComposerEnvironment
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: composerenvironment-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  config:
+    nodeConfig:
+      serviceAccountRef:
+        name: sa-${uniqueId}
+  labels:
+    test: "true"
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    config:
+      airflowBYOIDURI: https://7eca3d3d2b50473ab91fbf106a0deb91-dot-us-central1.composer.byoid.googleusercontent.com
+      airflowURI: https://7eca3d3d2b50473ab91fbf106a0deb91-dot-us-central1.composer.googleusercontent.com
+      dagGCSPrefix: gs://us-central1-composerenviron-cd7334a9-bucket/dags
+      privateEnvironmentConfig: {}
+    createTime: "1970-01-01T00:00:00Z"
+    updateTime: "1970-01-01T00:00:00Z"
+    uuid: 7eca3d3d-2b50-473a-b91f-bf106a0deb91

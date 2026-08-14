@@ -20,3 +20,9 @@ spec:
   location: us-central1
   projectRef:
     external: ${projectId}
+  config:
+    nodeConfig:
+      serviceAccountRef:
+        name: sa-${uniqueId}
+  labels:
+    test: "true"
