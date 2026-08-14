@@ -226,6 +226,9 @@ func TestCertificateManagerTrustConfigRef_Normalize(t *testing.T) {
 			Location:   ptr.To("global"),
 			ResourceID: func() *string { s := "my-trust-config-id"; return &s }(),
 		},
+		Status: CertificateManagerTrustConfigStatus{
+			ExternalRef: ptr.To("projects/my-project/locations/global/trustConfigs/my-trust-config-id"),
+		},
 	}
 
 	reader := fake.NewClientBuilder().WithScheme(s).WithObjects(config).Build()
