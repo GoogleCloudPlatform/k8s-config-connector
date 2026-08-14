@@ -437,12 +437,20 @@ universe-derived endpoint, exactly as in hadoop-connectors#1752.
 
 Unlike the Java client, Go's `checkDirectPathEndPoint` (`transport/grpc/dial.go:488`) does
 **not** gate DirectPath on the endpoint being `googleapis.com`. DirectPath is opt-in per
-client and additionally requires `metadata.OnGCE()`, so it is unlikely to trigger for KCC's
-control-plane clients — but "unlikely" is not "verified".
+client and additionally requires `metadata.OnGCE()`, so it was unlikely to trigger for KCC's
+control-plane clients — but "unlikely" is not "verified", so it was audited.
 
-Action: audit whether any client KCC constructs enables DirectPath; if so, set
-`GOOGLE_CLOUD_DISABLE_DIRECT_PATH=true` when a non-default universe is configured. This
-mirrors what hadoop-connectors#1752 had to do explicitly on the gRPC path.
+**Audited: no exposure, no change needed.**
+
+*   KCC never sets `internaloption.EnableDirectPath` or any DirectPath-related dial option.
+*   The two client libraries that enable DirectPath by default — Bigtable and Spanner — are
+    dependencies, but KCC constructs only their **admin** clients (`admin/apiv2`). DirectPath
+    is a data-plane feature of the Bigtable data client and the Spanner data client, neither
+    of which KCC uses.
+
+If a data-plane client is ever introduced, set `GOOGLE_CLOUD_DISABLE_DIRECT_PATH=true` when a
+non-default universe is configured, mirroring what hadoop-connectors#1752 had to do
+explicitly on its gRPC path.
 
 ## 7. Workstream B: project-ID prefixing
 
