@@ -1,0 +1,374 @@
+GET https://rapidmigrationassessment.googleapis.com/v1/projects/${projectId}/locations/us-central1/collectors/rmacollector-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fcollectors%2Frmacollector-max-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/collectors/rmacollector-max-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://rapidmigrationassessment.googleapis.com/v1/projects/${projectId}/locations/us-central1/collectors?%24alt=json%3Benum-encoding%3Dint&collectorId=rmacollector-max-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "collectionDays": 30,
+  "description": "This is an initial maximal collector description",
+  "displayName": "Initial Maximal Collector",
+  "eulaUri": "https://www.google.com",
+  "expectedAssetCount": "100",
+  "labels": {
+    "key1": "val1",
+    "key2": "val2"
+  },
+  "serviceAccount": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.rapidmigrationassessment.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/collectors/rmacollector-max-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://rapidmigrationassessment.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.rapidmigrationassessment.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/collectors/rmacollector-max-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.rapidmigrationassessment.v1main.Collector",
+    "bucket": "normalized-bucket",
+    "collectionDays": 30,
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "This is an initial maximal collector description",
+    "displayName": "Initial Maximal Collector",
+    "eulaUri": "https://www.google.com",
+    "expectedAssetCount": "100",
+    "guestOsScan": {
+      "coreSource": "projects/${projectNumber}/locations/us-central1/sources/normalized-guest-os-scan-source"
+    },
+    "name": "projects/${projectId}/locations/us-central1/collectors/rmacollector-max-${uniqueId}",
+    "serviceAccount": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
+    "state": "STATE_READY_TO_USE",
+    "updateTime": "2024-04-01T12:34:56.123456Z",
+    "vsphereScan": {
+      "coreSource": "projects/${projectNumber}/locations/us-central1/sources/normalized-vsphere-scan-source"
+    }
+  }
+}
+
+---
+
+GET https://rapidmigrationassessment.googleapis.com/v1/projects/${projectId}/locations/us-central1/collectors/rmacollector-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fcollectors%2Frmacollector-max-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bucket": "normalized-bucket",
+  "collectionDays": 30,
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "This is an initial maximal collector description",
+  "displayName": "Initial Maximal Collector",
+  "eulaUri": "https://www.google.com",
+  "expectedAssetCount": "100",
+  "guestOsScan": {
+    "coreSource": "projects/${projectNumber}/locations/us-central1/sources/normalized-guest-os-scan-source"
+  },
+  "labels": {
+    "key1": "val1",
+    "key2": "val2"
+  },
+  "name": "projects/${projectId}/locations/us-central1/collectors/rmacollector-max-${uniqueId}",
+  "serviceAccount": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
+  "state": 2,
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "vsphereScan": {
+    "coreSource": "projects/${projectNumber}/locations/us-central1/sources/normalized-vsphere-scan-source"
+  }
+}
+
+---
+
+PATCH https://rapidmigrationassessment.googleapis.com/v1/projects/${projectId}/locations/us-central1/collectors/rmacollector-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=collectionDays%2Cdescription%2CdisplayName%2CeulaUri%2CexpectedAssetCount
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: collector.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fcollectors%2Frmacollector-max-${uniqueId}
+
+{
+  "collectionDays": 60,
+  "description": "This is an updated maximal collector description",
+  "displayName": "Updated Maximal Collector",
+  "eulaUri": "https://www.google.com/updated",
+  "expectedAssetCount": "200",
+  "labels": {
+    "key1": "val1",
+    "key2": "val2"
+  },
+  "name": "projects/${projectId}/locations/us-central1/collectors/rmacollector-max-${uniqueId}",
+  "serviceAccount": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.rapidmigrationassessment.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/collectors/rmacollector-max-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://rapidmigrationassessment.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.rapidmigrationassessment.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/collectors/rmacollector-max-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.rapidmigrationassessment.v1main.Collector",
+    "bucket": "normalized-bucket",
+    "collectionDays": 60,
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "This is an updated maximal collector description",
+    "displayName": "Updated Maximal Collector",
+    "eulaUri": "https://www.google.com/updated",
+    "expectedAssetCount": "200",
+    "guestOsScan": {
+      "coreSource": "projects/${projectNumber}/locations/us-central1/sources/normalized-guest-os-scan-source"
+    },
+    "name": "projects/${projectId}/locations/us-central1/collectors/rmacollector-max-${uniqueId}",
+    "serviceAccount": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
+    "state": "STATE_READY_TO_USE",
+    "updateTime": "2024-04-01T12:34:56.123456Z",
+    "vsphereScan": {
+      "coreSource": "projects/${projectNumber}/locations/us-central1/sources/normalized-vsphere-scan-source"
+    }
+  }
+}
+
+---
+
+GET https://rapidmigrationassessment.googleapis.com/v1/projects/${projectId}/locations/us-central1/collectors/rmacollector-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fcollectors%2Frmacollector-max-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bucket": "normalized-bucket",
+  "collectionDays": 60,
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "This is an updated maximal collector description",
+  "displayName": "Updated Maximal Collector",
+  "eulaUri": "https://www.google.com/updated",
+  "expectedAssetCount": "200",
+  "guestOsScan": {
+    "coreSource": "projects/${projectNumber}/locations/us-central1/sources/normalized-guest-os-scan-source"
+  },
+  "labels": {
+    "key1": "val1",
+    "key2": "val2"
+  },
+  "name": "projects/${projectId}/locations/us-central1/collectors/rmacollector-max-${uniqueId}",
+  "serviceAccount": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
+  "state": 2,
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "vsphereScan": {
+    "coreSource": "projects/${projectNumber}/locations/us-central1/sources/normalized-vsphere-scan-source"
+  }
+}
+
+---
+
+DELETE https://rapidmigrationassessment.googleapis.com/v1/projects/${projectId}/locations/us-central1/collectors/rmacollector-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fcollectors%2Frmacollector-max-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.rapidmigrationassessment.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/collectors/rmacollector-max-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://rapidmigrationassessment.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.rapidmigrationassessment.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "requestedCancellation": false,
+    "target": "projects/${projectId}/locations/us-central1/collectors/rmacollector-max-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.rapidmigrationassessment.v1main.Collector",
+    "bucket": "normalized-bucket",
+    "collectionDays": 60,
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "This is an updated maximal collector description",
+    "displayName": "Updated Maximal Collector",
+    "eulaUri": "https://www.google.com/updated",
+    "expectedAssetCount": "200",
+    "guestOsScan": {
+      "coreSource": "projects/${projectNumber}/locations/us-central1/sources/normalized-guest-os-scan-source"
+    },
+    "name": "projects/${projectId}/locations/us-central1/collectors/rmacollector-max-${uniqueId}",
+    "serviceAccount": "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com",
+    "state": "STATE_READY_TO_USE",
+    "updateTime": "2024-04-01T12:34:56.123456Z",
+    "vsphereScan": {
+      "coreSource": "projects/${projectNumber}/locations/us-central1/sources/normalized-vsphere-scan-source"
+    }
+  }
+}

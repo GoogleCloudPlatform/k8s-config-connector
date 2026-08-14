@@ -1,0 +1,10 @@
+apiVersion: rapidmigrationassessment.cnrm.cloud.google.com/v1alpha1
+kind: RapidMigrationAssessmentCollector
+metadata:
+  name: rmacollector-min-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  serviceAccountRef:
+    external: overseer-kcc-tester@${projectId}.iam.gserviceaccount.com

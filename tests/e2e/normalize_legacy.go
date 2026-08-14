@@ -896,6 +896,46 @@ func LegacyNormalize(t *testing.T, h *create.Harness, project testgcp.GCPProject
 			delete(responseMap, "details")
 		}
 	})
+
+	// Specific to RapidMigrationAssessment
+	jsonMutators = append(jsonMutators, func(requestURL string, obj map[string]any) {
+		if strings.Contains(requestURL, "/locations/us-central1/collectors/") || strings.Contains(requestURL, "/locations/us-central1/operations/") {
+			if bucket, found, _ := unstructured.NestedString(obj, "bucket"); found && bucket != "" {
+				obj["bucket"] = "normalized-bucket"
+			}
+			if guestOSScan, found, _ := unstructured.NestedMap(obj, "guestOsScan"); found {
+				if _, ok := guestOSScan["coreSource"]; ok {
+					guestOSScan["coreSource"] = "projects/${projectNumber}/locations/us-central1/sources/normalized-guest-os-scan-source"
+					_ = unstructured.SetNestedMap(obj, guestOSScan, "guestOsScan")
+				}
+			}
+			if vsphereScan, found, _ := unstructured.NestedMap(obj, "vsphereScan"); found {
+				if _, ok := vsphereScan["coreSource"]; ok {
+					vsphereScan["coreSource"] = "projects/${projectNumber}/locations/us-central1/sources/normalized-vsphere-scan-source"
+					_ = unstructured.SetNestedMap(obj, vsphereScan, "vsphereScan")
+				}
+			}
+			if response, found, _ := unstructured.NestedMap(obj, "response"); found {
+				if bucket, ok := response["bucket"].(string); ok && bucket != "" {
+					response["bucket"] = "normalized-bucket"
+				}
+				if guestOSScan, found, _ := unstructured.NestedMap(response, "guestOsScan"); found {
+					if _, ok := guestOSScan["coreSource"]; ok {
+						guestOSScan["coreSource"] = "projects/${projectNumber}/locations/us-central1/sources/normalized-guest-os-scan-source"
+						_ = unstructured.SetNestedMap(response, guestOSScan, "guestOsScan")
+					}
+				}
+				if vsphereScan, found, _ := unstructured.NestedMap(response, "vsphereScan"); found {
+					if _, ok := vsphereScan["coreSource"]; ok {
+						vsphereScan["coreSource"] = "projects/${projectNumber}/locations/us-central1/sources/normalized-vsphere-scan-source"
+						_ = unstructured.SetNestedMap(response, vsphereScan, "vsphereScan")
+					}
+				}
+				_ = unstructured.SetNestedMap(obj, response, "response")
+			}
+		}
+	})
+
 	addReplacement("creationTime", "123456789")
 	addReplacement("lastModifiedTime", "123456789")
 

@@ -82,6 +82,7 @@ require (
 	cloud.google.com/go/privilegedaccessmanager v0.3.1
 	cloud.google.com/go/profiler v0.4.3
 	cloud.google.com/go/pubsub/v2 v2.5.1
+	cloud.google.com/go/rapidmigrationassessment v1.7.0
 	cloud.google.com/go/recaptchaenterprise/v2 v2.26.0
 	cloud.google.com/go/redis v1.23.0
 	cloud.google.com/go/resourcemanager v1.15.0
