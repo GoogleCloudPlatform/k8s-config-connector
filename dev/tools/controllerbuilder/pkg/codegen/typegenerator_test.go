@@ -252,8 +252,8 @@ func TestGoFieldName(t *testing.T) {
 			continue
 		}
 
-		if got := GoFieldName(field); got != tt.expected {
-			t.Errorf("GoFieldName(%q) = %q, want %q", tt.fieldName, got, tt.expected)
+		if got := goFieldName(field); got != tt.expected {
+			t.Errorf("goFieldName(%q) = %q, want %q", tt.fieldName, got, tt.expected)
 		}
 	}
 }
