@@ -10,5 +10,7 @@
 <   observedGeneration: 3
 ---
 >   observedGeneration: 2
-38d35
+38c36
 <     storageClass: NEARLINE
+---
+>     storageClass: STANDARD

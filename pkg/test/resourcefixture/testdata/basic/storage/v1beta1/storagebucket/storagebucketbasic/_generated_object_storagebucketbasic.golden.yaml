@@ -32,5 +32,6 @@ status:
   observedState:
     softDeletePolicy:
       retentionDurationSeconds: 0
+    storageClass: STANDARD
   selfLink: https://www.googleapis.com/storage/v1/b/storagebucket-sample-${uniqueId}
   url: gs://storagebucket-sample-${uniqueId}
