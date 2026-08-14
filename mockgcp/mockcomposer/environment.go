@@ -342,9 +342,9 @@ func (s *ComposerV1) populateDefaultsForEnvironmentConfig(config *pb.Environment
 	if config.NodeConfig.IpAllocationPolicy == nil {
 		config.NodeConfig.IpAllocationPolicy = &pb.IPAllocationPolicy{}
 	}
-	if config.NodeConfig.ServiceAccount == "" && name != nil {
-		config.NodeConfig.ServiceAccount = fmt.Sprintf("sa-${uniqueId}@%s.iam.gserviceaccount.com", name.Project.ID)
-	}
+	// if config.NodeConfig.ServiceAccount == "" && name != nil {
+	// 	config.NodeConfig.ServiceAccount = fmt.Sprintf("sa-${uniqueId}@%s.iam.gserviceaccount.com", name.Project.ID)
+	// }
 
 	if config.PrivateEnvironmentConfig == nil {
 		config.PrivateEnvironmentConfig = &pb.PrivateEnvironmentConfig{}

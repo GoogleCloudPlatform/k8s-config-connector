@@ -48,13 +48,10 @@ status:
   observedGeneration: 2
   observedState:
     config:
-      airflowBYOIDURI: https://123456qwert-dot-us-central1.composer.byoid.googleusercontent.com
-      airflowURI: https://123456qwert-dot-us-central1.composer.googleusercontent.com
-      dagGCSPrefix: gs://us-central1-test-123456-asdfg-bucket/dags
-      gkeCluster: projects/${projectId}/locations/us-central1/clusters/us-central1-test-123456-asdfg-gke
-      privateEnvironmentConfig:
-        privateClusterConfig: {}
+      airflowBYOIDURI: https://7eca3d3d2b50473ab91fbf106a0deb91-dot-us-central1.composer.byoid.googleusercontent.com
+      airflowURI: https://7eca3d3d2b50473ab91fbf106a0deb91-dot-us-central1.composer.googleusercontent.com
+      dagGCSPrefix: gs://bucket-${uniqueId}/dags
+      privateEnvironmentConfig: {}
     createTime: "1970-01-01T00:00:00Z"
-    state: RUNNING
     updateTime: "1970-01-01T00:00:00Z"
-    uuid: test-uuid
+    uuid: 7eca3d3d-2b50-473a-b91f-bf106a0deb91
