@@ -19,7 +19,6 @@ import (
 
 	composerpb "cloud.google.com/go/orchestration/airflow/service/apiv1/servicepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/composer/v1beta1"
-	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codegen"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"k8s.io/apimachinery/pkg/util/sets"
@@ -226,12 +225,12 @@ func buildParentMap(desiredPb, actualPb *composerpb.Environment) map[string]pare
 }
 
 // findProtoField matches a KRM leaf field name to its corresponding proto field descriptor
-// using the canonical KCC code-generation acronym rules.
+// by comparing the field's JSONName against the KRM field name (ignoring case).
 func findProtoField(desc protoreflect.MessageDescriptor, krmLeaf string) protoreflect.FieldDescriptor {
 	krmName := strings.TrimSuffix(krmLeaf, "Ref")
 	for i := 0; i < desc.Fields().Len(); i++ {
 		fd := desc.Fields().Get(i)
-		if strings.EqualFold(codegen.GoFieldName(fd), krmName) {
+		if strings.EqualFold(fd.JSONName(), krmName) {
 			return fd
 		}
 	}

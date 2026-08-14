@@ -36,10 +36,10 @@ status:
   observedGeneration: 2
   observedState:
     config:
-      airflowBYOIDURI: https://7eca3d3d2b50473ab91fbf106a0deb91-dot-us-central1.composer.byoid.googleusercontent.com
-      airflowURI: https://7eca3d3d2b50473ab91fbf106a0deb91-dot-us-central1.composer.googleusercontent.com
-      dagGCSPrefix: gs://us-central1-composerenviron-cd7334a9-bucket/dags
+      airflowBYOIDURI: https://1234abcd1234abcd1234abcd1234abcd-dot-us-central1.composer.byoid.googleusercontent.com
+      airflowURI: https://1234abcd1234abcd1234abcd1234abcd-dot-us-central1.composer.googleusercontent.com
+      dagGCSPrefix: gs://us-central1-composerenviron-1234abcd-bucket/dags
       privateEnvironmentConfig: {}
     createTime: "1970-01-01T00:00:00Z"
     updateTime: "1970-01-01T00:00:00Z"
-    uuid: 7eca3d3d-2b50-473a-b91f-bf106a0deb91
+    uuid: 1234abcd-1234-abcd-1234-abcd1234abcd

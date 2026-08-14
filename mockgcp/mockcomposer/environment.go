@@ -80,7 +80,7 @@ func (s *ComposerV1) CreateEnvironment(ctx context.Context, req *pb.CreateEnviro
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
 	obj.State = pb.Environment_RUNNING
-	obj.Uuid = "7eca3d3d-2b50-473a-b91f-bf106a0deb91"
+	obj.Uuid = "1234abcd-1234-abcd-1234-abcd1234abcd"
 	s.populateDefaultsForEnvironment(obj, name)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
@@ -302,7 +302,7 @@ func (s *ComposerV1) populateDefaultsForEnvironment(obj *pb.Environment, name *e
 		obj.StorageConfig = &pb.StorageConfig{}
 	}
 	if obj.StorageConfig.Bucket == "" {
-		obj.StorageConfig.Bucket = "us-central1-composerenviron-cd7334a9-bucket"
+		obj.StorageConfig.Bucket = "us-central1-composerenviron-1234abcd-bucket"
 	}
 	if obj.Config == nil {
 		obj.Config = &pb.EnvironmentConfig{}
@@ -312,8 +312,8 @@ func (s *ComposerV1) populateDefaultsForEnvironment(obj *pb.Environment, name *e
 }
 
 func (s *ComposerV1) populateDefaultsForEnvironmentConfig(config *pb.EnvironmentConfig, bucket string, name *environmentName) {
-	config.AirflowByoidUri = "https://7eca3d3d2b50473ab91fbf106a0deb91-dot-us-central1.composer.byoid.googleusercontent.com"
-	config.AirflowUri = "https://7eca3d3d2b50473ab91fbf106a0deb91-dot-us-central1.composer.googleusercontent.com"
+	config.AirflowByoidUri = "https://1234abcd1234abcd1234abcd1234abcd-dot-us-central1.composer.byoid.googleusercontent.com"
+	config.AirflowUri = "https://1234abcd1234abcd1234abcd1234abcd-dot-us-central1.composer.googleusercontent.com"
 	config.DagGcsPrefix = fmt.Sprintf("gs://%s/dags", bucket)
 
 	if config.DataRetentionConfig == nil {
@@ -465,4 +465,3 @@ func normalizeField(s string) string {
 	s = strings.ReplaceAll(s, "_", "")
 	return strings.ToLower(s)
 }
-

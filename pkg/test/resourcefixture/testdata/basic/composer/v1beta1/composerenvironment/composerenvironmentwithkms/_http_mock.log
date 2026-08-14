@@ -229,7 +229,7 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "operationType": 1,
     "resource": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
-    "resourceUuid": "7eca3d3d-2b50-473a-b91f-bf106a0deb91",
+    "resourceUuid": "1234abcd-1234-abcd-1234-abcd1234abcd",
     "state": 1
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
@@ -260,16 +260,16 @@ X-Xss-Protection: 0
     "endTime": "2024-04-01T12:34:56.123456Z",
     "operationType": "CREATE",
     "resource": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
-    "resourceUuid": "7eca3d3d-2b50-473a-b91f-bf106a0deb91",
+    "resourceUuid": "1234abcd-1234-abcd-1234-abcd1234abcd",
     "state": "SUCCEEDED"
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.orchestration.airflow.service.v1.Environment",
     "config": {
-      "airflowByoidUri": "https://7eca3d3d2b50473ab91fbf106a0deb91-dot-us-central1.composer.byoid.googleusercontent.com",
-      "airflowUri": "https://7eca3d3d2b50473ab91fbf106a0deb91-dot-us-central1.composer.googleusercontent.com",
-      "dagGcsPrefix": "gs://us-central1-composerenviron-cd7334a9-bucket/dags",
+      "airflowByoidUri": "https://1234abcd1234abcd1234abcd1234abcd-dot-us-central1.composer.byoid.googleusercontent.com",
+      "airflowUri": "https://1234abcd1234abcd1234abcd1234abcd-dot-us-central1.composer.googleusercontent.com",
+      "dagGcsPrefix": "gs://us-central1-composerenviron-1234abcd-bucket/dags",
       "dataRetentionConfig": {
         "airflowMetadataRetentionConfig": {
           "retentionDays": 60,
@@ -339,10 +339,10 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
     "storageConfig": {
-      "bucket": "us-central1-composerenviron-cd7334a9-bucket"
+      "bucket": "us-central1-composerenviron-1234abcd-bucket"
     },
     "updateTime": "2024-04-01T12:34:56.123456Z",
-    "uuid": "7eca3d3d-2b50-473a-b91f-bf106a0deb91"
+    "uuid": "1234abcd-1234-abcd-1234-abcd1234abcd"
   }
 }
 
@@ -365,9 +365,9 @@ X-Xss-Protection: 0
 
 {
   "config": {
-    "airflowByoidUri": "https://7eca3d3d2b50473ab91fbf106a0deb91-dot-us-central1.composer.byoid.googleusercontent.com",
-    "airflowUri": "https://7eca3d3d2b50473ab91fbf106a0deb91-dot-us-central1.composer.googleusercontent.com",
-    "dagGcsPrefix": "gs://us-central1-composerenviron-cd7334a9-bucket/dags",
+    "airflowByoidUri": "https://1234abcd1234abcd1234abcd1234abcd-dot-us-central1.composer.byoid.googleusercontent.com",
+    "airflowUri": "https://1234abcd1234abcd1234abcd1234abcd-dot-us-central1.composer.googleusercontent.com",
+    "dagGcsPrefix": "gs://us-central1-composerenviron-1234abcd-bucket/dags",
     "dataRetentionConfig": {
       "airflowMetadataRetentionConfig": {
         "retentionDays": 60,
@@ -440,10 +440,10 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
   "state": 2,
   "storageConfig": {
-    "bucket": "us-central1-composerenviron-cd7334a9-bucket"
+    "bucket": "us-central1-composerenviron-1234abcd-bucket"
   },
   "updateTime": "2024-04-01T12:34:56.123456Z",
-  "uuid": "7eca3d3d-2b50-473a-b91f-bf106a0deb91"
+  "uuid": "1234abcd-1234-abcd-1234-abcd1234abcd"
 }
 
 ---
@@ -476,7 +476,7 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "operationType": 3,
     "resource": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
-    "resourceUuid": "7eca3d3d-2b50-473a-b91f-bf106a0deb91",
+    "resourceUuid": "1234abcd-1234-abcd-1234-abcd1234abcd",
     "state": 1
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
@@ -507,16 +507,16 @@ X-Xss-Protection: 0
     "endTime": "2024-04-01T12:34:56.123456Z",
     "operationType": "UPDATE",
     "resource": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
-    "resourceUuid": "7eca3d3d-2b50-473a-b91f-bf106a0deb91",
+    "resourceUuid": "1234abcd-1234-abcd-1234-abcd1234abcd",
     "state": "SUCCEEDED"
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.orchestration.airflow.service.v1.Environment",
     "config": {
-      "airflowByoidUri": "https://7eca3d3d2b50473ab91fbf106a0deb91-dot-us-central1.composer.byoid.googleusercontent.com",
-      "airflowUri": "https://7eca3d3d2b50473ab91fbf106a0deb91-dot-us-central1.composer.googleusercontent.com",
-      "dagGcsPrefix": "gs://us-central1-composerenviron-cd7334a9-bucket/dags",
+      "airflowByoidUri": "https://1234abcd1234abcd1234abcd1234abcd-dot-us-central1.composer.byoid.googleusercontent.com",
+      "airflowUri": "https://1234abcd1234abcd1234abcd1234abcd-dot-us-central1.composer.googleusercontent.com",
+      "dagGcsPrefix": "gs://us-central1-composerenviron-1234abcd-bucket/dags",
       "dataRetentionConfig": {
         "airflowMetadataRetentionConfig": {
           "retentionDays": 60,
@@ -589,10 +589,10 @@ X-Xss-Protection: 0
     },
     "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
     "storageConfig": {
-      "bucket": "us-central1-composerenviron-cd7334a9-bucket"
+      "bucket": "us-central1-composerenviron-1234abcd-bucket"
     },
     "updateTime": "2024-04-01T12:34:56.123456Z",
-    "uuid": "7eca3d3d-2b50-473a-b91f-bf106a0deb91"
+    "uuid": "1234abcd-1234-abcd-1234-abcd1234abcd"
   }
 }
 
@@ -615,9 +615,9 @@ X-Xss-Protection: 0
 
 {
   "config": {
-    "airflowByoidUri": "https://7eca3d3d2b50473ab91fbf106a0deb91-dot-us-central1.composer.byoid.googleusercontent.com",
-    "airflowUri": "https://7eca3d3d2b50473ab91fbf106a0deb91-dot-us-central1.composer.googleusercontent.com",
-    "dagGcsPrefix": "gs://us-central1-composerenviron-cd7334a9-bucket/dags",
+    "airflowByoidUri": "https://1234abcd1234abcd1234abcd1234abcd-dot-us-central1.composer.byoid.googleusercontent.com",
+    "airflowUri": "https://1234abcd1234abcd1234abcd1234abcd-dot-us-central1.composer.googleusercontent.com",
+    "dagGcsPrefix": "gs://us-central1-composerenviron-1234abcd-bucket/dags",
     "dataRetentionConfig": {
       "airflowMetadataRetentionConfig": {
         "retentionDays": 60,
@@ -693,10 +693,10 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
   "state": 2,
   "storageConfig": {
-    "bucket": "us-central1-composerenviron-cd7334a9-bucket"
+    "bucket": "us-central1-composerenviron-1234abcd-bucket"
   },
   "updateTime": "2024-04-01T12:34:56.123456Z",
-  "uuid": "7eca3d3d-2b50-473a-b91f-bf106a0deb91"
+  "uuid": "1234abcd-1234-abcd-1234-abcd1234abcd"
 }
 
 ---
@@ -722,7 +722,7 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "operationType": 2,
     "resource": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
-    "resourceUuid": "7eca3d3d-2b50-473a-b91f-bf106a0deb91",
+    "resourceUuid": "1234abcd-1234-abcd-1234-abcd1234abcd",
     "state": 1
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
@@ -753,7 +753,7 @@ X-Xss-Protection: 0
     "endTime": "2024-04-01T12:34:56.123456Z",
     "operationType": "DELETE",
     "resource": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
-    "resourceUuid": "7eca3d3d-2b50-473a-b91f-bf106a0deb91",
+    "resourceUuid": "1234abcd-1234-abcd-1234-abcd1234abcd",
     "state": "SUCCEEDED"
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",

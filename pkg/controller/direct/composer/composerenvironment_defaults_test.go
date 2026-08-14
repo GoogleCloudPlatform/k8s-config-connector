@@ -20,9 +20,10 @@ import (
 
 	composerpb "cloud.google.com/go/orchestration/airflow/service/apiv1/servicepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/composer/v1beta1"
-	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
 func TestPopulateDefaults(t *testing.T) {
@@ -51,11 +52,11 @@ func TestPopulateDefaults(t *testing.T) {
 				DagGcsPrefix:    "gs://us-central1-auto-bucket/dags",
 				EnvironmentSize: composerpb.EnvironmentConfig_ENVIRONMENT_SIZE_SMALL,
 				NodeConfig: &composerpb.NodeConfig{
-					ServiceAccount:               "sa@p1.iam.gserviceaccount.com",
+					ServiceAccount:                "sa@p1.iam.gserviceaccount.com",
 					ComposerInternalIpv4CidrBlock: "100.64.128.0/20",
-					Network:                      "projects/p1/global/networks/default",
-					MachineType:                  "n1-standard-1",
-					DiskSizeGb:                   100,
+					Network:                       "projects/p1/global/networks/default",
+					MachineType:                   "n1-standard-1",
+					DiskSizeGb:                    100,
 				},
 				SoftwareConfig: &composerpb.SoftwareConfig{
 					ImageVersion:         "composer-3-airflow-2.11.1-build.14",
@@ -412,7 +413,7 @@ func TestPopulateDefaults(t *testing.T) {
 				PrivateEnvironmentConfig: &composerpb.PrivateEnvironmentConfig{
 					CloudComposerNetworkIpv4CidrBlock: "172.31.245.0/24",
 					CloudSqlIpv4CidrBlock:             "10.0.0.0/12",
-					WebServerIpv4CidrBlock:             "172.31.250.0/24",
+					WebServerIpv4CidrBlock:            "172.31.250.0/24",
 				},
 				WorkloadsConfig: &composerpb.WorkloadsConfig{
 					DagProcessor: &composerpb.WorkloadsConfig_DagProcessorResource{
@@ -492,5 +493,48 @@ func TestComputedFieldPathsValidity(t *testing.T) {
 		if fd == nil {
 			t.Fatalf("path %q: field %q does not exist on proto message %s", path, leafName, pair.actual.Descriptor().FullName())
 		}
+	}
+}
+
+func TestFindProtoField(t *testing.T) {
+	nodeDesc := (&composerpb.NodeConfig{}).ProtoReflect().Descriptor()
+	privDesc := (&composerpb.PrivateEnvironmentConfig{}).ProtoReflect().Descriptor()
+	workloadDesc := (&composerpb.WorkloadsConfig_DagProcessorResource{}).ProtoReflect().Descriptor()
+
+	tests := []struct {
+		desc      protoreflect.MessageDescriptor
+		krmLeaf   string
+		wantField protoreflect.Name
+	}{
+		{nodeDesc, "serviceAccountRef", "service_account"},
+		{nodeDesc, "serviceAccount", "service_account"},
+		{nodeDesc, "ComposerInternalIPv4CIDRBlock", "composer_internal_ipv4_cidr_block"},
+		{nodeDesc, "composerInternalIpv4CidrBlock", "composer_internal_ipv4_cidr_block"},
+		{nodeDesc, "diskSizeGb", "disk_size_gb"},
+		{nodeDesc, "DiskSizeGB", "disk_size_gb"},
+		{privDesc, "CloudComposerNetworkIPv4CIDRBlock", "cloud_composer_network_ipv4_cidr_block"},
+		{privDesc, "CloudSQLIPv4CIDRBlock", "cloud_sql_ipv4_cidr_block"},
+		{privDesc, "WebServerIPv4CIDRBlock", "web_server_ipv4_cidr_block"},
+		{privDesc, "CloudComposerConnectionSubnetworkRef", "cloud_composer_connection_subnetwork"},
+		{workloadDesc, "cpu", "cpu"},
+		{workloadDesc, "CPU", "cpu"},
+		{workloadDesc, "memoryGb", "memory_gb"},
+		{workloadDesc, "storageGb", "storage_gb"},
+	}
+
+	for _, tc := range tests {
+		fd := findProtoField(tc.desc, tc.krmLeaf)
+		if fd == nil {
+			t.Errorf("findProtoField(%s, %q) = nil, want %q", tc.desc.FullName(), tc.krmLeaf, tc.wantField)
+			continue
+		}
+		if fd.Name() != tc.wantField {
+			t.Errorf("findProtoField(%s, %q) = %q, want %q", tc.desc.FullName(), tc.krmLeaf, fd.Name(), tc.wantField)
+		}
+	}
+
+	// Non-existent field should return nil
+	if fd := findProtoField(nodeDesc, "nonExistentField"); fd != nil {
+		t.Errorf("expected nil for nonExistentField, got %q", fd.Name())
 	}
 }

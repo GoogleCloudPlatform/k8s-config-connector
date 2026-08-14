@@ -732,8 +732,8 @@ func TestMaximumComposerEnvironment(t *testing.T) {
 						External: "projects/p1/regions/us-central1/networkAttachments/attachment-12345",
 					},
 					ComposerInternalIPv4CIDRBlock: direct.LazyPtr("100.64.0.0/20"),
-					Tags:                         []string{"composer-node", "data-platform"},
-					EnableIPMasqAgent:            direct.LazyPtr(false),
+					Tags:                          []string{"composer-node", "data-platform"},
+					EnableIPMasqAgent:             direct.LazyPtr(false),
 					IPAllocationPolicy: &krm.IPAllocationPolicy{
 						UseIPAliases:               direct.LazyPtr(true),
 						ClusterSecondaryRangeName:  direct.LazyPtr("pods"),
@@ -746,10 +746,10 @@ func TestMaximumComposerEnvironment(t *testing.T) {
 					CloudComposerConnectionSubnetworkRef: &computev1beta1.ComputeSubnetworkRef{
 						External: "projects/p1/regions/us-central1/subnetworks/subnetwork-private-12345",
 					},
-					EnablePrivatelyUsedPublicIPs: direct.LazyPtr(false),
+					EnablePrivatelyUsedPublicIPs:      direct.LazyPtr(false),
 					CloudComposerNetworkIPv4CIDRBlock: direct.LazyPtr("172.31.248.0/24"),
-					CloudSQLIPv4CIDRBlock:            direct.LazyPtr("10.0.0.0/24"),
-					WebServerIPv4CIDRBlock:           direct.LazyPtr("10.0.1.0/24"),
+					CloudSQLIPv4CIDRBlock:             direct.LazyPtr("10.0.0.0/24"),
+					WebServerIPv4CIDRBlock:            direct.LazyPtr("10.0.1.0/24"),
 					PrivateClusterConfig: &krm.PrivateClusterConfig{
 						EnablePrivateEndpoint: direct.LazyPtr(true),
 						MasterIPV4CIDRBlock:   direct.LazyPtr("172.16.0.0/28"),
@@ -1023,4 +1023,3 @@ func TestMaximumComposerEnvironment(t *testing.T) {
 		}
 	}
 }
-
