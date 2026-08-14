@@ -438,7 +438,7 @@ func WriteField(out io.Writer, field protoreflect.FieldDescriptor, msg protorefl
 	sourceLocations := msg.ParentFile().SourceLocations().ByDescriptor(field)
 
 	jsonName := GetJSONForKRM(field)
-	GoFieldName := goFieldName(field)
+	GoFieldName := GoFieldName(field)
 
 	goType, err := GoTypeForField(field, isTransitiveOutput)
 	if err != nil {
@@ -611,9 +611,9 @@ func GetJSONForKRM(protoField protoreflect.FieldDescriptor) string {
 	return strings.Join(tokens, "")
 }
 
-// goFieldName returns the KRM go name for the field,
+// GoFieldName returns the KRM go name for the field,
 // honoring KRM conventions
-func goFieldName(protoField protoreflect.FieldDescriptor) string {
+func GoFieldName(protoField protoreflect.FieldDescriptor) string {
 	tokens := strings.Split(string(protoField.Name()), "_")
 	for i, token := range tokens {
 		if IsAcronym(token) {

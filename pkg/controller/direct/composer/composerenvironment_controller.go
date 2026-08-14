@@ -187,9 +187,9 @@ func (a *EnvironmentAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	}
 
 	// 1. Populate deterministic static defaults based on defaultEnvironmentPb.
-	a.populateDesiredWithDefaults(desired, desiredPb)
+	populateDesiredWithDefaults(desired, desiredPb)
 	// 2. Populate dynamic/server-computed values by copying from actual state for omitted fields.
-	a.populateDesiredWithActualIfComputed(desired, desiredPb, a.actual)
+	populateDesiredWithActualIfComputed(desired, desiredPb, a.actual)
 
 	if err := validateUpdatableFields(desiredPb, a.actual); err != nil {
 		return err

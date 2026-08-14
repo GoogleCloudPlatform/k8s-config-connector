@@ -282,7 +282,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 			protoFieldName := protoNameForField(protoField)
 			protoAccessor := "Get" + protoFieldName + "()"
 
-			krmFieldName := goFieldName(protoField)
+			krmFieldName := GoFieldName(protoField)
 			krmField := goFields[krmFieldName]
 			if krmField == nil {
 				// Support refs
@@ -607,7 +607,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 			protoFieldName := protoNameForField(protoField)
 			protoFieldPackage := v.goPackageForProto(protoField.ParentFile())
 
-			krmFieldName := goFieldName(protoField)
+			krmFieldName := GoFieldName(protoField)
 			krmField := goFields[krmFieldName]
 			if krmField == nil {
 				// Support refs
@@ -975,7 +975,7 @@ func (v *MapperGenerator) writeMapFunctionsForPair(out io.Writer, srcDir string,
 			klog.V(1).Infof("found existing non-generated mapping function %q, won't generate", functionName)
 		}
 
-		krmFieldName := goFieldName(protoField)
+		krmFieldName := GoFieldName(protoField)
 		krmField, ok := goFields[krmFieldName]
 		if !ok {
 			// This can happen if the field is not in the KRM struct (e.g. output-only).

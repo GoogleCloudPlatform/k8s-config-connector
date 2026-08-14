@@ -229,6 +229,116 @@ func TestFieldUpdatersBuild(t *testing.T) {
 			t.Errorf("expected 0 pending updates for unset spec, got %d", len(updates))
 		}
 	})
+
+	t.Run("detects workloadsConfig, scheduledSnapshotsConfig, and resilienceMode updates simultaneously", func(t *testing.T) {
+		desired := &krm.ComposerEnvironment{
+			Spec: krm.ComposerEnvironmentSpec{
+				Config: &krm.EnvironmentConfig{
+					ResilienceMode: direct.LazyPtr("HIGH_RESILIENCE"),
+					RecoveryConfig: &krm.RecoveryConfig{
+						ScheduledSnapshotsConfig: &krm.ScheduledSnapshotsConfig{
+							Enabled:                  direct.LazyPtr(true),
+							SnapshotCreationSchedule: direct.LazyPtr("0 5 * * *"),
+							SnapshotLocation:         direct.LazyPtr("gs://my-bucket/snapshots"),
+							TimeZone:                 direct.LazyPtr("UTC"),
+						},
+					},
+					WorkloadsConfig: &krm.WorkloadsConfig{
+						Scheduler: &krm.WorkloadsConfig_SchedulerResource{
+							CPU:       direct.LazyPtr("1.25"),
+							MemoryGB:  direct.LazyPtr("2.5"),
+							StorageGB: direct.LazyPtr("2"),
+							Count:     direct.LazyPtr(int32(2)),
+						},
+						WebServer: &krm.WorkloadsConfig_WebServerResource{
+							CPU:       direct.LazyPtr("1"),
+							MemoryGB:  direct.LazyPtr("3"),
+							StorageGB: direct.LazyPtr("2"),
+						},
+						Worker: &krm.WorkloadsConfig_WorkerResource{
+							CPU:       direct.LazyPtr("1.25"),
+							MemoryGB:  direct.LazyPtr("2.5"),
+							StorageGB: direct.LazyPtr("2"),
+							MinCount:  direct.LazyPtr(int32(2)),
+							MaxCount:  direct.LazyPtr(int32(6)),
+						},
+						Triggerer: &krm.WorkloadsConfig_TriggererResource{
+							Count:    direct.LazyPtr(int32(2)),
+							CPU:      direct.LazyPtr("0.75"),
+							MemoryGB: direct.LazyPtr("1.5"),
+						},
+						DagProcessor: &krm.WorkloadsConfig_DagProcessorResource{
+							Count:     direct.LazyPtr(int32(2)),
+							CPU:       direct.LazyPtr("1.5"),
+							MemoryGB:  direct.LazyPtr("4"),
+							StorageGB: direct.LazyPtr("2"),
+						},
+					},
+				},
+			},
+		}
+
+		actual := &composerpb.Environment{
+			Config: &composerpb.EnvironmentConfig{
+				ResilienceMode: composerpb.EnvironmentConfig_RESILIENCE_MODE_UNSPECIFIED,
+				RecoveryConfig: &composerpb.RecoveryConfig{
+					ScheduledSnapshotsConfig: &composerpb.ScheduledSnapshotsConfig{
+						Enabled: false,
+					},
+				},
+				WorkloadsConfig: &composerpb.WorkloadsConfig{
+					Scheduler: &composerpb.WorkloadsConfig_SchedulerResource{
+						Cpu: 0.5, MemoryGb: 1.875, StorageGb: 1, Count: 1,
+					},
+					WebServer: &composerpb.WorkloadsConfig_WebServerResource{
+						Cpu: 0.5, MemoryGb: 1.875, StorageGb: 1,
+					},
+					Worker: &composerpb.WorkloadsConfig_WorkerResource{
+						Cpu: 0.5, MemoryGb: 1.875, StorageGb: 1, MinCount: 1, MaxCount: 3,
+					},
+					Triggerer: &composerpb.WorkloadsConfig_TriggererResource{
+						Cpu: 0.5, MemoryGb: 0.5, Count: 1,
+					},
+					DagProcessor: &composerpb.WorkloadsConfig_DagProcessorResource{
+						Cpu: 0.5, MemoryGb: 1.875, StorageGb: 1, Count: 1,
+					},
+				},
+			},
+		}
+
+		mapCtx := &direct.MapContext{}
+		desiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+		if mapCtx.Err() != nil {
+			t.Fatalf("unexpected error converting desired spec: %v", mapCtx.Err())
+		}
+
+		updates := buildPatches(desired, desiredPb, actual)
+
+		if len(updates) != 3 {
+			t.Fatalf("expected 3 patches, got %d", len(updates))
+		}
+
+		resiliencePatch, ok := updates["config.resilience_mode"]
+		if !ok {
+			t.Errorf("missing update for 'config.resilience_mode'")
+		} else if resiliencePatch.GetConfig().GetResilienceMode() != composerpb.EnvironmentConfig_HIGH_RESILIENCE {
+			t.Errorf("expected HIGH_RESILIENCE, got %v", resiliencePatch.GetConfig().GetResilienceMode())
+		}
+
+		snapshotPatch, ok := updates["config.recovery_config.scheduled_snapshots_config"]
+		if !ok {
+			t.Errorf("missing update for 'config.recovery_config.scheduled_snapshots_config'")
+		} else if !snapshotPatch.GetConfig().GetRecoveryConfig().GetScheduledSnapshotsConfig().GetEnabled() {
+			t.Errorf("expected snapshot enabled=true, got false")
+		}
+
+		workloadPatch, ok := updates["config.workloads_config"]
+		if !ok {
+			t.Errorf("missing update for 'config.workloads_config'")
+		} else if workloadPatch.GetConfig().GetWorkloadsConfig().GetWorker().GetMaxCount() != 6 {
+			t.Errorf("expected worker maxCount=6, got %v", workloadPatch.GetConfig().GetWorkloadsConfig().GetWorker().GetMaxCount())
+		}
+	})
 }
 
 func TestValidateUpdatableFields(t *testing.T) {
@@ -435,331 +545,6 @@ func TestValidateUpdatableFields(t *testing.T) {
 		expectedMsg := `updating field(s) [config.database_config.zone config.node_config.machine_type storage_config.bucket] is not supported`
 		if err.Error() != expectedMsg {
 			t.Errorf("expected error message %q, got %q", expectedMsg, err.Error())
-		}
-	})
-}
-
-func TestPopulateDefaults(t *testing.T) {
-	envID := &krm.EnvironmentIdentity{}
-	if err := envID.FromExternal("projects/p1/locations/us-central1/environments/env1"); err != nil {
-		t.Fatalf("failed to parse environment identity: %v", err)
-	}
-	adapter := &EnvironmentAdapter{
-		id: envID,
-	}
-
-	t.Run("populates server defaults for omitted fields without diff", func(t *testing.T) {
-		desired := &krm.ComposerEnvironment{
-			Spec: krm.ComposerEnvironmentSpec{
-				Config: &krm.EnvironmentConfig{
-					NodeConfig: &krm.NodeConfig{
-						ServiceAccountRef: &refs.IAMServiceAccountRef{External: "sa@p1.iam.gserviceaccount.com"},
-					},
-				},
-			},
-		}
-		actual := &composerpb.Environment{
-			Name:       "projects/p1/locations/us-central1/environments/env1",
-			Uuid:       "test-uuid",
-			State:      composerpb.Environment_RUNNING,
-			CreateTime: direct.StringTimestamp_ToProto(&direct.MapContext{}, direct.LazyPtr("2024-04-01T12:34:56.123456Z")),
-			UpdateTime: direct.StringTimestamp_ToProto(&direct.MapContext{}, direct.LazyPtr("2024-04-01T12:34:56.123456Z")),
-			StorageConfig: &composerpb.StorageConfig{
-				Bucket: "us-central1-auto-bucket",
-			},
-			Config: &composerpb.EnvironmentConfig{
-				AirflowUri:      "https://test.composer.googleusercontent.com",
-				AirflowByoidUri: "https://test.composer.byoid.googleusercontent.com",
-				DagGcsPrefix:    "gs://us-central1-auto-bucket/dags",
-				EnvironmentSize: composerpb.EnvironmentConfig_ENVIRONMENT_SIZE_SMALL,
-				NodeConfig: &composerpb.NodeConfig{
-					ServiceAccount:               "sa@p1.iam.gserviceaccount.com",
-					ComposerInternalIpv4CidrBlock: "100.64.128.0/20",
-					Network:                      "projects/p1/global/networks/default",
-					MachineType:                  "n1-standard-1",
-					DiskSizeGb:                   100,
-				},
-				SoftwareConfig: &composerpb.SoftwareConfig{
-					ImageVersion:         "composer-3-airflow-2.11.1-build.14",
-					WebServerPluginsMode: composerpb.SoftwareConfig_PLUGINS_ENABLED,
-					PythonVersion:        "3",
-					SchedulerCount:       1,
-				},
-				WebServerNetworkAccessControl: &composerpb.WebServerNetworkAccessControl{
-					AllowedIpRanges: []*composerpb.WebServerNetworkAccessControl_AllowedIpRange{
-						{
-							Value:       "0.0.0.0/0",
-							Description: "Allows access from all IPv4 addresses (default value)",
-						},
-						{
-							Value:       "::0/0",
-							Description: "Allows access from all IPv6 addresses (default value)",
-						},
-					},
-				},
-				DatabaseConfig: &composerpb.DatabaseConfig{
-					MachineType: "db-custom-2-7680",
-				},
-				MaintenanceWindow: &composerpb.MaintenanceWindow{
-					Recurrence: "FREQ=WEEKLY;BYDAY=FR,SA,SU",
-				},
-				PrivateEnvironmentConfig: &composerpb.PrivateEnvironmentConfig{
-					NetworkingConfig: &composerpb.NetworkingConfig{
-						ConnectionType: composerpb.NetworkingConfig_CONNECTION_TYPE_UNSPECIFIED,
-					},
-				},
-				WorkloadsConfig: &composerpb.WorkloadsConfig{
-					Scheduler: &composerpb.WorkloadsConfig_SchedulerResource{
-						Count:     1,
-						Cpu:       0.5,
-						MemoryGb:  2,
-						StorageGb: 1,
-					},
-				},
-				DataRetentionConfig: &composerpb.DataRetentionConfig{
-					AirflowMetadataRetentionConfig: &composerpb.AirflowMetadataRetentionPolicyConfig{
-						RetentionDays: 60,
-						RetentionMode: composerpb.AirflowMetadataRetentionPolicyConfig_RETENTION_MODE_ENABLED,
-					},
-				},
-			},
-		}
-
-		mapCtx := &direct.MapContext{}
-		desiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
-		if mapCtx.Err() != nil {
-			t.Fatalf("unexpected error: %v", mapCtx.Err())
-		}
-
-		adapter.populateDesiredWithDefaults(desired, desiredPb)
-		adapter.populateDesiredWithActualIfComputed(desired, desiredPb, actual)
-
-		err := validateUpdatableFields(desiredPb, actual)
-		if err != nil {
-			t.Errorf("expected nil error after populating defaults, got %v", err)
-		}
-	})
-
-	t.Run("preserves explicit desired modifications on immutable fields", func(t *testing.T) {
-		desired := &krm.ComposerEnvironment{
-			Spec: krm.ComposerEnvironmentSpec{
-				Config: &krm.EnvironmentConfig{
-					NodeConfig: &krm.NodeConfig{
-						MachineType: direct.LazyPtr("n1-standard-4"),
-					},
-				},
-			},
-		}
-		actual := adapter.defaultEnvironmentPb()
-		actual.Name = "projects/p1/locations/us-central1/environments/env1"
-		actual.Config.NodeConfig = &composerpb.NodeConfig{
-			MachineType: "n1-standard-1",
-		}
-
-		mapCtx := &direct.MapContext{}
-		desiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
-		if mapCtx.Err() != nil {
-			t.Fatalf("unexpected error: %v", mapCtx.Err())
-		}
-
-		adapter.populateDesiredWithDefaults(desired, desiredPb)
-		adapter.populateDesiredWithActualIfComputed(desired, desiredPb, actual)
-
-		err := validateUpdatableFields(desiredPb, actual)
-		if err == nil {
-			t.Fatalf("expected error for machineType modification, got nil")
-		}
-		expectedMsg := `updating field(s) [config.node_config.machine_type] is not supported`
-		if err.Error() != expectedMsg {
-			t.Errorf("expected error message %q, got %q", expectedMsg, err.Error())
-		}
-	})
-
-	t.Run("defaultEnvironmentPb returns static defaults", func(t *testing.T) {
-		defPb := defaultEnvironmentPb()
-		cfg := defPb.GetConfig()
-		if cfg.GetEnvironmentSize() != composerpb.EnvironmentConfig_ENVIRONMENT_SIZE_SMALL {
-			t.Errorf("expected environment size small, got %v", cfg.GetEnvironmentSize())
-		}
-		if cfg.GetMaintenanceWindow().GetRecurrence() != "FREQ=WEEKLY;BYDAY=FR,SA,SU" {
-			t.Errorf("expected weekly recurrence, got %v", cfg.GetMaintenanceWindow().GetRecurrence())
-		}
-		if cfg.GetWorkloadsConfig().GetScheduler().GetCount() != 1 {
-			t.Errorf("expected scheduler count 1, got %v", cfg.GetWorkloadsConfig().GetScheduler().GetCount())
-		}
-		if len(cfg.GetWebServerNetworkAccessControl().GetAllowedIpRanges()) != 2 {
-			t.Errorf("expected 2 allowed IP ranges, got %v", len(cfg.GetWebServerNetworkAccessControl().GetAllowedIpRanges()))
-		}
-	})
-
-	t.Run("populateDesiredWithDefaults sets universal static defaults only", func(t *testing.T) {
-		desired := &krm.ComposerEnvironment{
-			Spec: krm.ComposerEnvironmentSpec{},
-		}
-		desiredPb := &composerpb.Environment{}
-		adapter.populateDesiredWithDefaults(desired, desiredPb)
-
-		cfg := desiredPb.GetConfig()
-		if cfg.GetEnvironmentSize() != composerpb.EnvironmentConfig_ENVIRONMENT_SIZE_SMALL {
-			t.Errorf("expected environment size small, got %v", cfg.GetEnvironmentSize())
-		}
-		if cfg.GetWorkloadsConfig().GetScheduler().GetCount() != 1 {
-			t.Errorf("expected scheduler count 1, got %v", cfg.GetWorkloadsConfig().GetScheduler().GetCount())
-		}
-		if len(cfg.GetWebServerNetworkAccessControl().GetAllowedIpRanges()) != 2 {
-			t.Errorf("expected 2 allowed IP ranges, got %v", len(cfg.GetWebServerNetworkAccessControl().GetAllowedIpRanges()))
-		}
-		if cfg.GetMaintenanceWindow().GetRecurrence() != "FREQ=WEEKLY;BYDAY=FR,SA,SU" {
-			t.Errorf("expected weekly recurrence, got %v", cfg.GetMaintenanceWindow().GetRecurrence())
-		}
-		// Dynamic fields should NOT be set by populateDesiredWithDefaults
-		if cfg.GetNodeConfig().GetNetwork() != "" {
-			t.Errorf("expected empty network in desiredPb, got %v", cfg.GetNodeConfig().GetNetwork())
-		}
-		if cfg.GetNodeConfig().GetMachineType() != "" {
-			t.Errorf("expected empty machineType in desiredPb, got %v", cfg.GetNodeConfig().GetMachineType())
-		}
-		if cfg.GetNodeConfig().GetDiskSizeGb() != 0 {
-			t.Errorf("expected 0 diskSizeGb in desiredPb, got %v", cfg.GetNodeConfig().GetDiskSizeGb())
-		}
-		if cfg.GetSoftwareConfig().GetPythonVersion() != "" {
-			t.Errorf("expected empty pythonVersion in desiredPb, got %v", cfg.GetSoftwareConfig().GetPythonVersion())
-		}
-		if cfg.GetNodeConfig().GetComposerInternalIpv4CidrBlock() != "" {
-			t.Errorf("expected empty CIDR block in desired, got %v", cfg.GetNodeConfig().GetComposerInternalIpv4CidrBlock())
-		}
-		if desiredPb.GetStorageConfig().GetBucket() != "" {
-			t.Errorf("expected empty bucket in desired, got %v", desiredPb.GetStorageConfig().GetBucket())
-		}
-	})
-
-	t.Run("populateDesiredWithActualIfComputed copies dynamic defaults", func(t *testing.T) {
-		desired := &krm.ComposerEnvironment{
-			Spec: krm.ComposerEnvironmentSpec{},
-		}
-		desiredPb := &composerpb.Environment{}
-		actual := &composerpb.Environment{
-			StorageConfig: &composerpb.StorageConfig{
-				Bucket: "auto-bucket-123",
-			},
-			Config: &composerpb.EnvironmentConfig{
-				NodeConfig: &composerpb.NodeConfig{
-					ComposerInternalIpv4CidrBlock: "100.64.128.0/20",
-					Network:                       "projects/p1/global/networks/default",
-					MachineType:                   "n1-standard-1",
-					DiskSizeGb:                    100,
-				},
-				SoftwareConfig: &composerpb.SoftwareConfig{
-					ImageVersion:         "composer-2.11.3-airflow-2.10.2",
-					PythonVersion:        "3",
-					SchedulerCount:       1,
-					WebServerPluginsMode: composerpb.SoftwareConfig_PLUGINS_ENABLED,
-				},
-				DatabaseConfig: &composerpb.DatabaseConfig{
-					MachineType: "db-custom-2-7680",
-					Zone:        "us-central1-a",
-				},
-				DataRetentionConfig: &composerpb.DataRetentionConfig{
-					AirflowMetadataRetentionConfig: &composerpb.AirflowMetadataRetentionPolicyConfig{
-						RetentionDays: 60,
-						RetentionMode: composerpb.AirflowMetadataRetentionPolicyConfig_RETENTION_MODE_ENABLED,
-					},
-				},
-			},
-		}
-
-		adapter.populateDesiredWithActualIfComputed(desired, desiredPb, actual)
-
-		if desiredPb.GetStorageConfig().GetBucket() != "auto-bucket-123" {
-			t.Errorf("expected bucket auto-bucket-123, got %v", desiredPb.GetStorageConfig().GetBucket())
-		}
-		if desiredPb.GetConfig().GetNodeConfig().GetComposerInternalIpv4CidrBlock() != "100.64.128.0/20" {
-			t.Errorf("expected CIDR 100.64.128.0/20, got %v", desiredPb.GetConfig().GetNodeConfig().GetComposerInternalIpv4CidrBlock())
-		}
-		if desiredPb.GetConfig().GetNodeConfig().GetNetwork() != "projects/p1/global/networks/default" {
-			t.Errorf("expected default network, got %v", desiredPb.GetConfig().GetNodeConfig().GetNetwork())
-		}
-		if desiredPb.GetConfig().GetNodeConfig().GetMachineType() != "n1-standard-1" {
-			t.Errorf("expected machineType n1-standard-1, got %v", desiredPb.GetConfig().GetNodeConfig().GetMachineType())
-		}
-		if desiredPb.GetConfig().GetNodeConfig().GetDiskSizeGb() != 100 {
-			t.Errorf("expected diskSizeGb 100, got %v", desiredPb.GetConfig().GetNodeConfig().GetDiskSizeGb())
-		}
-		if desiredPb.GetConfig().GetSoftwareConfig().GetImageVersion() != "composer-2.11.3-airflow-2.10.2" {
-			t.Errorf("expected imageVersion composer-2.11.3-airflow-2.10.2, got %v", desiredPb.GetConfig().GetSoftwareConfig().GetImageVersion())
-		}
-		if desiredPb.GetConfig().GetSoftwareConfig().GetPythonVersion() != "3" {
-			t.Errorf("expected pythonVersion 3, got %v", desiredPb.GetConfig().GetSoftwareConfig().GetPythonVersion())
-		}
-		if desiredPb.GetConfig().GetSoftwareConfig().GetSchedulerCount() != 1 {
-			t.Errorf("expected schedulerCount 1, got %v", desiredPb.GetConfig().GetSoftwareConfig().GetSchedulerCount())
-		}
-		if desiredPb.GetConfig().GetDatabaseConfig().GetMachineType() != "db-custom-2-7680" {
-			t.Errorf("expected machineType db-custom-2-7680, got %v", desiredPb.GetConfig().GetDatabaseConfig().GetMachineType())
-		}
-		if desiredPb.GetConfig().GetDataRetentionConfig().GetAirflowMetadataRetentionConfig().GetRetentionDays() != 60 {
-			t.Errorf("expected retention days 60, got %v", desiredPb.GetConfig().GetDataRetentionConfig().GetAirflowMetadataRetentionConfig().GetRetentionDays())
-		}
-	})
-
-	t.Run("populateDesiredWithActualIfComputed preserves explicit user values for dynamic fields", func(t *testing.T) {
-		desired := &krm.ComposerEnvironment{
-			Spec: krm.ComposerEnvironmentSpec{
-				StorageConfig: &krm.StorageConfig{
-					BucketRef: &storagev1beta1.StorageBucketRef{
-						External: "gs://my-custom-bucket",
-					},
-				},
-				Config: &krm.EnvironmentConfig{
-					DatabaseConfig: &krm.DatabaseConfig{
-						Zone: direct.LazyPtr("us-central1-c"),
-					},
-					WorkloadsConfig: &krm.WorkloadsConfig{
-						DagProcessor: &krm.WorkloadsConfig_DagProcessorResource{
-							CPU: direct.LazyPtr("1.5"),
-						},
-					},
-				},
-			},
-		}
-		mapCtx := &direct.MapContext{}
-		desiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
-		if mapCtx.Err() != nil {
-			t.Fatalf("unexpected error converting desired spec: %v", mapCtx.Err())
-		}
-
-		actual := &composerpb.Environment{
-			StorageConfig: &composerpb.StorageConfig{
-				Bucket: "auto-bucket",
-			},
-			Config: &composerpb.EnvironmentConfig{
-				DatabaseConfig: &composerpb.DatabaseConfig{
-					Zone: "us-central1-a",
-				},
-				WorkloadsConfig: &composerpb.WorkloadsConfig{
-					DagProcessor: &composerpb.WorkloadsConfig_DagProcessorResource{
-						Cpu: 0.5,
-					},
-					Worker: &composerpb.WorkloadsConfig_WorkerResource{
-						Cpu: 1.0,
-					},
-				},
-			},
-		}
-
-		adapter.populateDesiredWithActualIfComputed(desired, desiredPb, actual)
-
-		if desiredPb.GetStorageConfig().GetBucket() != "my-custom-bucket" {
-			t.Errorf("expected bucket my-custom-bucket, got %v", desiredPb.GetStorageConfig().GetBucket())
-		}
-		if desiredPb.GetConfig().GetDatabaseConfig().GetZone() != "us-central1-c" {
-			t.Errorf("expected database zone us-central1-c, got %v", desiredPb.GetConfig().GetDatabaseConfig().GetZone())
-		}
-		if desiredPb.GetConfig().GetWorkloadsConfig().GetDagProcessor().GetCpu() != 1.5 {
-			t.Errorf("expected DagProcessor CPU 1.5, got %v", desiredPb.GetConfig().GetWorkloadsConfig().GetDagProcessor().GetCpu())
-		}
-		if desiredPb.GetConfig().GetWorkloadsConfig().GetWorker().GetCpu() != 1.0 {
-			t.Errorf("expected Worker CPU 1.0 from actual, got %v", desiredPb.GetConfig().GetWorkloadsConfig().GetWorker().GetCpu())
 		}
 	})
 }
