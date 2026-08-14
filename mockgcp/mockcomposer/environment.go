@@ -132,54 +132,54 @@ func (s *ComposerV1) UpdateEnvironment(ctx context.Context, req *pb.UpdateEnviro
 	// TODO: Some sort of helper for fieldmask?
 	for _, path := range paths {
 		tokens := strings.Split(path, ".")
-		switch tokens[0] {
+		switch normalizeField(tokens[0]) {
 		case "labels":
 			updated.Labels = req.GetEnvironment().GetLabels()
 		case "config":
 			if len(tokens) > 1 {
-				switch tokens[1] {
-				case "node_count":
+				switch normalizeField(tokens[1]) {
+				case "nodecount":
 					if updated.Config == nil {
 						updated.Config = &pb.EnvironmentConfig{}
 					}
 					updated.Config.NodeCount = req.GetEnvironment().GetConfig().GetNodeCount()
-				case "environment_size":
+				case "environmentsize":
 					if updated.Config == nil {
 						updated.Config = &pb.EnvironmentConfig{}
 					}
 					updated.Config.EnvironmentSize = req.GetEnvironment().GetConfig().GetEnvironmentSize()
-				case "workloads_config":
+				case "workloadsconfig":
 					if updated.Config == nil {
 						updated.Config = &pb.EnvironmentConfig{}
 					}
 					updated.Config.WorkloadsConfig = req.GetEnvironment().GetConfig().GetWorkloadsConfig()
-				case "maintenance_window":
+				case "maintenancewindow":
 					if updated.Config == nil {
 						updated.Config = &pb.EnvironmentConfig{}
 					}
 					updated.Config.MaintenanceWindow = req.GetEnvironment().GetConfig().GetMaintenanceWindow()
-				case "software_config":
+				case "softwareconfig":
 					if updated.Config == nil {
 						updated.Config = &pb.EnvironmentConfig{}
 					}
 					if len(tokens) > 2 {
-						switch tokens[2] {
-						case "image_version":
+						switch normalizeField(tokens[2]) {
+						case "imageversion":
 							if updated.Config.SoftwareConfig == nil {
 								updated.Config.SoftwareConfig = &pb.SoftwareConfig{}
 							}
 							updated.Config.SoftwareConfig.ImageVersion = req.GetEnvironment().GetConfig().GetSoftwareConfig().GetImageVersion()
-						case "pypi_packages":
+						case "pypipackages":
 							if updated.Config.SoftwareConfig == nil {
 								updated.Config.SoftwareConfig = &pb.SoftwareConfig{}
 							}
 							updated.Config.SoftwareConfig.PypiPackages = req.GetEnvironment().GetConfig().GetSoftwareConfig().GetPypiPackages()
-						case "airflow_config_overrides":
+						case "airflowconfigoverrides":
 							if updated.Config.SoftwareConfig == nil {
 								updated.Config.SoftwareConfig = &pb.SoftwareConfig{}
 							}
 							updated.Config.SoftwareConfig.AirflowConfigOverrides = req.GetEnvironment().GetConfig().GetSoftwareConfig().GetAirflowConfigOverrides()
-						case "env_variables":
+						case "envvariables":
 							if updated.Config.SoftwareConfig == nil {
 								updated.Config.SoftwareConfig = &pb.SoftwareConfig{}
 							}
@@ -190,37 +190,49 @@ func (s *ComposerV1) UpdateEnvironment(ctx context.Context, req *pb.UpdateEnviro
 					} else {
 						updated.Config.SoftwareConfig = req.GetEnvironment().GetConfig().GetSoftwareConfig()
 					}
-				case "web_server_network_access_control":
+				case "webservernetworkaccesscontrol":
 					if updated.Config == nil {
 						updated.Config = &pb.EnvironmentConfig{}
 					}
 					updated.Config.WebServerNetworkAccessControl = req.GetEnvironment().GetConfig().GetWebServerNetworkAccessControl()
-				case "database_config":
+				case "databaseconfig":
 					if updated.Config == nil {
 						updated.Config = &pb.EnvironmentConfig{}
 					}
 					updated.Config.DatabaseConfig = req.GetEnvironment().GetConfig().GetDatabaseConfig()
-				case "web_server_config":
+				case "webserverconfig":
 					if updated.Config == nil {
 						updated.Config = &pb.EnvironmentConfig{}
 					}
 					updated.Config.WebServerConfig = req.GetEnvironment().GetConfig().GetWebServerConfig()
-				case "recovery_config":
+				case "recoveryconfig":
 					if updated.Config == nil {
 						updated.Config = &pb.EnvironmentConfig{}
 					}
-					updated.Config.RecoveryConfig = req.GetEnvironment().GetConfig().GetRecoveryConfig()
-				case "resilience_mode":
+					if updated.Config.RecoveryConfig == nil {
+						updated.Config.RecoveryConfig = &pb.RecoveryConfig{}
+					}
+					if len(tokens) > 2 {
+						switch normalizeField(tokens[2]) {
+						case "scheduledsnapshotsconfig":
+							updated.Config.RecoveryConfig.ScheduledSnapshotsConfig = req.GetEnvironment().GetConfig().GetRecoveryConfig().GetScheduledSnapshotsConfig()
+						default:
+							updated.Config.RecoveryConfig = req.GetEnvironment().GetConfig().GetRecoveryConfig()
+						}
+					} else {
+						updated.Config.RecoveryConfig = req.GetEnvironment().GetConfig().GetRecoveryConfig()
+					}
+				case "resiliencemode":
 					if updated.Config == nil {
 						updated.Config = &pb.EnvironmentConfig{}
 					}
 					updated.Config.ResilienceMode = req.GetEnvironment().GetConfig().GetResilienceMode()
-				case "master_authorized_networks_config":
+				case "masterauthorizednetworksconfig":
 					if updated.Config == nil {
 						updated.Config = &pb.EnvironmentConfig{}
 					}
 					updated.Config.MasterAuthorizedNetworksConfig = req.GetEnvironment().GetConfig().GetMasterAuthorizedNetworksConfig()
-				case "data_retention_config":
+				case "dataretentionconfig":
 					if updated.Config == nil {
 						updated.Config = &pb.EnvironmentConfig{}
 					}
@@ -335,10 +347,13 @@ func (s *ComposerV1) populateDefaultsForEnvironmentConfig(config *pb.Environment
 	}
 
 	if config.PrivateEnvironmentConfig == nil {
-		config.PrivateEnvironmentConfig = &pb.PrivateEnvironmentConfig{
-			NetworkingConfig: &pb.NetworkingConfig{},
-			NetworkingType:   pb.PrivateEnvironmentConfig_PUBLIC,
-		}
+		config.PrivateEnvironmentConfig = &pb.PrivateEnvironmentConfig{}
+	}
+	if config.PrivateEnvironmentConfig.NetworkingConfig == nil {
+		config.PrivateEnvironmentConfig.NetworkingConfig = &pb.NetworkingConfig{}
+	}
+	if config.PrivateEnvironmentConfig.NetworkingType == pb.PrivateEnvironmentConfig_NETWORKING_TYPE_UNSPECIFIED {
+		config.PrivateEnvironmentConfig.NetworkingType = pb.PrivateEnvironmentConfig_PUBLIC
 	}
 
 	if config.SoftwareConfig == nil {
@@ -445,3 +460,9 @@ func (s *MockService) parseEnvironmentName(name string) (*environmentName, error
 	}
 	return nil, status.Errorf(codes.InvalidArgument, "invalid name %q", name)
 }
+
+func normalizeField(s string) string {
+	s = strings.ReplaceAll(s, "_", "")
+	return strings.ToLower(s)
+}
+

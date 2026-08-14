@@ -1,0 +1,69 @@
+apiVersion: composer.cnrm.cloud.google.com/v1beta1
+kind: ComposerEnvironment
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: composerenvironment-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  config:
+    nodeConfig:
+      serviceAccountRef:
+        name: sa-${uniqueId}
+    recoveryConfig:
+      scheduledSnapshotsConfig:
+        enabled: true
+        snapshotCreationSchedule: 0 5 * * *
+        snapshotLocation: gs://bucket-${uniqueId}/snapshots
+        timeZone: UTC
+    resilienceMode: HIGH_RESILIENCE
+    workloadsConfig:
+      dagProcessor:
+        count: 2
+        cpu: "1"
+        memoryGB: "4"
+        storageGB: "2"
+      scheduler:
+        count: 2
+        cpu: "1"
+        memoryGB: "2.5"
+        storageGB: "2"
+      triggerer:
+        count: 2
+        cpu: "1"
+        memoryGB: "1.5"
+      webServer:
+        cpu: "1"
+        memoryGB: "3"
+        storageGB: "2"
+      worker:
+        cpu: "1"
+        maxCount: 6
+        memoryGB: "2.5"
+        minCount: 2
+        storageGB: "2"
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    config:
+      airflowBYOIDURI: https://7eca3d3d2b50473ab91fbf106a0deb91-dot-us-central1.composer.byoid.googleusercontent.com
+      airflowURI: https://7eca3d3d2b50473ab91fbf106a0deb91-dot-us-central1.composer.googleusercontent.com
+      dagGCSPrefix: gs://us-central1-composerenviron-cd7334a9-bucket/dags
+      privateEnvironmentConfig: {}
+    createTime: "1970-01-01T00:00:00Z"
+    updateTime: "1970-01-01T00:00:00Z"
+    uuid: 7eca3d3d-2b50-473a-b91f-bf106a0deb91
