@@ -70,5 +70,8 @@ func dataprocJobFuzzer() fuzztesting.KRMFuzzer {
 	f.UnimplementedFields.Insert(".trino_job.logging_config")
 	f.UnimplementedFields.Insert(".flink_job.logging_config")
 
+	f.Unimplemented_NotYetTriaged(".yarn_applications[].vcore_seconds")
+	f.Unimplemented_NotYetTriaged(".yarn_applications[].memory_mb_seconds")
+
 	return f
 }

@@ -126,6 +126,8 @@ func containerNodePoolFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".network_config.additional_pod_network_configs[].max_pods_per_node")
 
 	// Unimplemented upgrade settings strategy and management options
+	f.Unimplemented_NotYetTriaged(".config.node_image_config")
+	f.Unimplemented_NotYetTriaged(".config.node_image_config.image")
 	f.Unimplemented_NotYetTriaged(".upgrade_settings.strategy")
 	f.Unimplemented_NotYetTriaged(".upgrade_settings.blue_green_settings.autoscaled_rollout_policy")
 	f.Unimplemented_NotYetTriaged(".management.upgrade_options")

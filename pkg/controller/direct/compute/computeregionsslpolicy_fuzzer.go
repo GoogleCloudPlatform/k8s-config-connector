@@ -53,6 +53,7 @@ func computeRegionSSLPolicyFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".kind")
 	f.Unimplemented_NotYetTriaged(".self_link_with_id")
 	f.Unimplemented_NotYetTriaged(".warnings")
+	f.Unimplemented_NotYetTriaged(".post_quantum_key_exchange")
 
 	return f
 }

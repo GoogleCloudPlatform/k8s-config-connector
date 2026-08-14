@@ -170,6 +170,21 @@ func NetworkManagementConnectivityTestFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".reachability_details.traces[].steps[].gke_pod")
 	f.Unimplemented_NotYetTriaged(".return_reachability_details.traces[].steps[].gke_pod")
 
+	f.Unimplemented_NotYetTriaged(".reachability_details.traces[].steps[].dms_private_connection")
+	f.Unimplemented_NotYetTriaged(".return_reachability_details.traces[].steps[].dms_private_connection")
+
+	f.Unimplemented_NotYetTriaged(".reachability_details.traces[].steps[].dms_private_connection.display_name")
+	f.Unimplemented_NotYetTriaged(".reachability_details.traces[].steps[].dms_private_connection.uri")
+	f.Unimplemented_NotYetTriaged(".return_reachability_details.traces[].steps[].dms_private_connection.display_name")
+	f.Unimplemented_NotYetTriaged(".return_reachability_details.traces[].steps[].dms_private_connection.uri")
+
+	f.Unimplemented_NotYetTriaged(".reachability_details.traces[].steps[].cloud_run_job")
+	f.Unimplemented_NotYetTriaged(".reachability_details.traces[].steps[].cloud_run_job.display_name")
+	f.Unimplemented_NotYetTriaged(".reachability_details.traces[].steps[].cloud_run_job.uri")
+	f.Unimplemented_NotYetTriaged(".return_reachability_details.traces[].steps[].cloud_run_job")
+	f.Unimplemented_NotYetTriaged(".return_reachability_details.traces[].steps[].cloud_run_job.display_name")
+	f.Unimplemented_NotYetTriaged(".return_reachability_details.traces[].steps[].cloud_run_job.uri")
+
 	f.Unimplemented_NotYetTriaged(".reachability_details.traces[].steps[].ip_masquerading_skipped")
 	f.Unimplemented_NotYetTriaged(".return_reachability_details.traces[].steps[].ip_masquerading_skipped")
 

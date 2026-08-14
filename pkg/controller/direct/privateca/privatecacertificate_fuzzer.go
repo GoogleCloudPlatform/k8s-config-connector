@@ -239,5 +239,9 @@ func PrivateCACertificateFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_NotYetTriaged(".certificate_description.x509_description.name_constraints")
 	f.Unimplemented_NotYetTriaged(".certificate_description.tbs_certificate_digest")
 
+	f.Unimplemented_NotYetTriaged(".requested_not_before_time")
+	f.Unimplemented_NotYetTriaged(".requested_not_before_time.seconds")
+	f.Unimplemented_NotYetTriaged(".requested_not_before_time.nanos")
+
 	return f
 }

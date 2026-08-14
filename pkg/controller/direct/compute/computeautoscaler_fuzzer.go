@@ -94,5 +94,7 @@ func computeAutoscalerFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_Internal(".scaling_schedule_status")
 	f.Unimplemented_Internal(".autoscaling_policy.scale_in_control.max_scaled_in_replicas.calculated")
 
+	f.Unimplemented_NotYetTriaged(".autoscaling_policy.stabilization_period_sec")
+
 	return f
 }
