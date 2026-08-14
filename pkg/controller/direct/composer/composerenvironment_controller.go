@@ -17,6 +17,7 @@ package composer
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	gcp "cloud.google.com/go/orchestration/airflow/service/apiv1"
 	composerpb "cloud.google.com/go/orchestration/airflow/service/apiv1/servicepb"
@@ -189,6 +190,7 @@ func (a *EnvironmentAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	if err != nil {
 		return err
 	}
+	paths = collapsePaths(paths)
 
 	if len(paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
@@ -340,21 +342,6 @@ func populateDefaultsForEnvironmentConfig(desired, actual *composerpb.Environmen
 		}
 	}
 
-	//if actual.DatabaseConfig != nil {
-	//	if desired.DatabaseConfig == nil {
-	//		desired.DatabaseConfig = &pb.DatabaseConfig{}
-	//	}
-	//	if desired.DatabaseConfig.MachineType == "" && actual.DatabaseConfig.MachineType != "" {
-	//		desired.DatabaseConfig.MachineType = actual.DatabaseConfig.MachineType
-	//	}
-	//}
-
-	//if actual.EncryptionConfig != nil {
-	//	if desired.EncryptionConfig == nil {
-	//		desired.EncryptionConfig = &pb.EncryptionConfig{}
-	//	}
-	//}
-
 	if desired.EnvironmentSize == composerpb.EnvironmentConfig_ENVIRONMENT_SIZE_UNSPECIFIED {
 		desired.EnvironmentSize = actual.EnvironmentSize
 	}
@@ -450,4 +437,16 @@ func populateDefaultsForEnvironmentConfig(desired, actual *composerpb.Environmen
 	if desired.WorkloadsConfig == nil {
 		desired.WorkloadsConfig = actual.WorkloadsConfig
 	}
+}
+
+func collapsePaths(paths sets.Set[string]) sets.Set[string] {
+	collapsed := sets.New[string]()
+	for path := range paths {
+		if strings.HasPrefix(path, "config.recovery_config.scheduled_snapshots_config.") {
+			collapsed.Insert("config.recovery_config.scheduled_snapshots_config")
+		} else {
+			collapsed.Insert(path)
+		}
+	}
+	return collapsed
 }
