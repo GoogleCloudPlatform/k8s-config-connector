@@ -61,7 +61,7 @@ func (m *model) client(ctx context.Context, location string) (*gcp.DeploymentRes
 	if err != nil {
 		return nil, err
 	}
-	endpoint := fmt.Sprintf("https://%s-aiplatform.googleapis.com", location)
+	endpoint := m.config.Endpoint(fmt.Sprintf("https://%s-aiplatform.googleapis.com", location))
 	opts = append(opts, option.WithEndpoint(endpoint))
 	gcpClient, err := gcp.NewDeploymentResourcePoolRESTClient(ctx, opts...)
 	if err != nil {

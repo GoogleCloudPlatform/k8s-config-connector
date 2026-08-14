@@ -65,7 +65,7 @@ func newLocationTagBindingsClient(ctx context.Context, config *config.Controller
 	if err != nil {
 		return nil, err
 	}
-	endpoint := location + "-cloudresourcemanager.googleapis.com"
+	endpoint := config.Endpoint(location + "-cloudresourcemanager.googleapis.com")
 
 	opts = append(opts, option.WithEndpoint(endpoint))
 

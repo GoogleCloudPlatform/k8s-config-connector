@@ -67,7 +67,7 @@ func (m *model) client(ctx context.Context) (pb.BatchServiceClient, error) {
 		return nil, err
 	}
 
-	opts = append(opts, option.WithEndpoint("batch.googleapis.com:443"))
+	opts = append(opts, option.WithEndpoint(config.Endpoint("batch.googleapis.com:443")))
 
 	conn, err := grpc.Dial(ctx, opts...)
 	if err != nil {

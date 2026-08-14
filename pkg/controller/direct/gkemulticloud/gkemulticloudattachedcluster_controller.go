@@ -60,7 +60,7 @@ func (m *model) client(ctx context.Context, location string) (*gcp.AttachedClust
 	if err != nil {
 		return nil, err
 	}
-	endpoint := fmt.Sprintf("%s-gkemulticloud.googleapis.com:443", location)
+	endpoint := m.config.Endpoint(fmt.Sprintf("%s-gkemulticloud.googleapis.com:443", location))
 	opts = append(opts, option.WithEndpoint(endpoint))
 	gcpClient, err := gcp.NewAttachedClustersClient(ctx, opts...)
 	if err != nil {

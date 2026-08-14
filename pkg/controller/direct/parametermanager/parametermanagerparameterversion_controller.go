@@ -59,7 +59,7 @@ func (m *modelParameterVersion) client(ctx context.Context, location string) (*g
 
 	// Add regional endpoint if region is specified
 	if location != "" && location != "global" {
-		endpoint := fmt.Sprintf("parametermanager.%s.rep.googleapis.com:443", location)
+		endpoint := m.config.Endpoint(fmt.Sprintf("parametermanager.%s.rep.googleapis.com:443", location))
 		opts = append(opts, option.WithEndpoint(endpoint))
 	}
 

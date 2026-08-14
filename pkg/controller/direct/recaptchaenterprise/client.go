@@ -39,7 +39,7 @@ func newReCAPTCHAEnterpriseClient(ctx context.Context, config *config.Controller
 	if err != nil {
 		return nil, err
 	}
-	opts = append(opts, option.WithEndpoint("public-preview-recaptchaenterprise.googleapis.com:443"))
+	opts = append(opts, option.WithEndpoint(gcpClient.config.Endpoint("public-preview-recaptchaenterprise.googleapis.com:443")))
 
 	grpcClient, err := api.NewClient(ctx, opts...)
 	if err != nil {

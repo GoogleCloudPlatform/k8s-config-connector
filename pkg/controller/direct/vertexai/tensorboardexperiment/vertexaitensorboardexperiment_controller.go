@@ -58,7 +58,7 @@ func (m *model) client(ctx context.Context, location string) (*gcp.TensorboardCl
 	if err != nil {
 		return nil, err
 	}
-	endpoint := fmt.Sprintf("https://%s-aiplatform.googleapis.com:443", location)
+	endpoint := m.config.Endpoint(fmt.Sprintf("https://%s-aiplatform.googleapis.com:443", location))
 	opts = append(opts, option.WithEndpoint(endpoint))
 	gcpClient, err := gcp.NewTensorboardRESTClient(ctx, opts...)
 	if err != nil {

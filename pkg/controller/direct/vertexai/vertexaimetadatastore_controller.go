@@ -57,7 +57,7 @@ func (m *modelMetadataStore) client(ctx context.Context, location string) (*gcp.
 	if err != nil {
 		return nil, err
 	}
-	aiplatformurl := fmt.Sprintf("https://%s-aiplatform.googleapis.com", location)
+	aiplatformurl := m.config.Endpoint(fmt.Sprintf("https://%s-aiplatform.googleapis.com", location))
 	opts = append(opts, option.WithEndpoint(aiplatformurl))
 	gcpClient, err := gcp.NewMetadataRESTClient(ctx, opts...)
 	if err != nil {

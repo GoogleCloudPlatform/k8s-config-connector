@@ -64,7 +64,7 @@ func (m *runtimeModel) client(ctx context.Context, location string) (*gcp.Notebo
 		return nil, err
 	}
 
-	endpoint := fmt.Sprintf("https://%s-aiplatform.googleapis.com", location)
+	endpoint := config.Endpoint(fmt.Sprintf("https://%s-aiplatform.googleapis.com", location))
 	opts = append(opts, option.WithEndpoint(endpoint))
 	gcpClient, err := gcp.NewNotebookRESTClient(ctx, opts...)
 	if err != nil {

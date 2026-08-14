@@ -60,7 +60,7 @@ func (m *authzPolicyModel) client(ctx context.Context) (pb.NetworkSecurityClient
 		return nil, nil, err
 	}
 
-	opts = append(opts, option.WithEndpoint("networksecurity.googleapis.com:443"))
+	opts = append(opts, option.WithEndpoint(config.Endpoint("networksecurity.googleapis.com:443")))
 
 	conn, err := grpc.Dial(ctx, opts...)
 	if err != nil {

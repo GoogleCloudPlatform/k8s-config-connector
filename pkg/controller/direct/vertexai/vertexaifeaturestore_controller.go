@@ -58,7 +58,7 @@ func (m *modelFeaturestore) client(ctx context.Context, location string) (*gcp.F
 	if err != nil {
 		return nil, err
 	}
-	endpoint := fmt.Sprintf("https://%s-aiplatform.googleapis.com", location)
+	endpoint := m.config.Endpoint(fmt.Sprintf("https://%s-aiplatform.googleapis.com", location))
 	opts = append(opts, option.WithEndpoint(endpoint))
 	gcpClient, err := gcp.NewFeaturestoreRESTClient(ctx, opts...)
 	if err != nil {

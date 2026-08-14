@@ -59,7 +59,7 @@ func (m *modelExampleStore) client(ctx context.Context, location string) (*gcp.E
 	if err != nil {
 		return nil, err
 	}
-	aiplatformurl := fmt.Sprintf("https://%s-aiplatform.googleapis.com", location)
+	aiplatformurl := m.config.Endpoint(fmt.Sprintf("https://%s-aiplatform.googleapis.com", location))
 	opts = append(opts, option.WithEndpoint(aiplatformurl))
 	gcpClient, err := gcp.NewExampleStoreRESTClient(ctx, opts...)
 	if err != nil {
