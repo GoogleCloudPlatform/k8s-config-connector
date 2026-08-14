@@ -1305,6 +1305,17 @@ func (o *MapperGenerator) goPackageForProto(parentFile protoreflect.FileDescript
 		}
 	}
 
+	if aliasIsUsed(importAlias) {
+		baseAlias := importAlias
+		for i := 2; ; i++ {
+			candidate := fmt.Sprintf("%s%d", baseAlias, i)
+			if !aliasIsUsed(candidate) {
+				importAlias = candidate
+				break
+			}
+		}
+	}
+
 	o.AddGoImportAlias(protoGoPackage, importAlias)
 	return importAlias
 }

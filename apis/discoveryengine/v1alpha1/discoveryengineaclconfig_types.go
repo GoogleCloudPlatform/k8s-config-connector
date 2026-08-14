@@ -31,7 +31,7 @@ type DiscoveryEngineACLConfigSpec struct {
 
 	// Immutable. The location of this resource.
 	// +required
-	Location string `json:"location"`
+	Location *string `json:"location"`
 
 	// The DiscoveryEngineACLConfig name. If not given, the metadata.name will be used.
 	// +optional

@@ -61,7 +61,7 @@ func (i *DiscoveryEngineACLConfigIdentity) Host() string {
 }
 
 func getIdentityFromDiscoveryEngineACLConfigSpec(ctx context.Context, reader client.Reader, obj *DiscoveryEngineACLConfig) (*DiscoveryEngineACLConfigIdentity, error) {
-	location := obj.Spec.Location
+	location := common.ValueOf(obj.Spec.Location)
 	if location == "" {
 		return nil, fmt.Errorf("cannot resolve location")
 	}
