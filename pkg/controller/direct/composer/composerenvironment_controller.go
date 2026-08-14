@@ -32,6 +32,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"google.golang.org/api/option"
@@ -180,19 +181,39 @@ func (a *EnvironmentAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	mapCtx := &direct.MapContext{}
 
 	if a.actual != nil && a.actual.State != composerpb.Environment_RUNNING {
-		log.V(2).Info("Environment is not in RUNNING state, skipping update and requesting requeue", "name", a.id, "state", a.actual.State)
 		status := &krm.ComposerEnvironmentStatus{}
 		status.ObservedState = ComposerEnvironmentObservedState_FromProto(mapCtx, a.actual)
 		if mapCtx.Err() != nil {
 			return mapCtx.Err()
 		}
-		readyCondition := &v1alpha1.Condition{
-			Type:    v1alpha1.ReadyConditionType,
-			Status:  v1.ConditionFalse,
-			Reason:  "Updating",
-			Message: fmt.Sprintf("Environment is in state %s", a.actual.State),
+		var readyCondition *v1alpha1.Condition
+		switch a.actual.State {
+		case composerpb.Environment_ERROR:
+			log.V(2).Info("Environment is in terminal state, skipping update without requeue", "name", a.id, "state", a.actual.State)
+			readyCondition = &v1alpha1.Condition{
+				Type:    v1alpha1.ReadyConditionType,
+				Status:  v1.ConditionFalse,
+				Reason:  k8s.UpToDate,
+				Message: fmt.Sprintf("Environment is in error(current state: %s), update is not applied", a.actual.State),
+			}
+		case composerpb.Environment_DELETING:
+			log.V(2).Info("Environment is being deleted, skipping update without requeue", "name", a.id, "state", a.actual.State)
+			readyCondition = &v1alpha1.Condition{
+				Type:    v1alpha1.ReadyConditionType,
+				Status:  v1.ConditionFalse,
+				Reason:  k8s.Updating,
+				Message: fmt.Sprintf("Environment is deing deleted(current state: %s), update is not applied", a.actual.State),
+			}
+		default:
+			log.V(2).Info("Environment is in transient state, skipping update and requesting requeue", "name", a.id, "state", a.actual.State)
+			readyCondition = &v1alpha1.Condition{
+				Type:    v1alpha1.ReadyConditionType,
+				Status:  v1.ConditionFalse,
+				Reason:  k8s.Updating,
+				Message: fmt.Sprintf("Waiting for Environment to transition to RUNNING state before applying updates (current state: %s)", a.actual.State),
+			}
+			updateOp.RequestRequeue()
 		}
-		updateOp.RequestRequeue()
 		return updateOp.UpdateStatus(ctx, status, readyCondition)
 	}
 
