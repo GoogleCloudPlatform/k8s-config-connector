@@ -20,14 +20,13 @@ import (
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 var (
-	_ identity.IdentityV2 = &CloudIdentityDeviceIdentity{}
-	_ identity.Resource   = &CloudIdentityDevice{}
+	_ identity.ServerGeneratedIdentity = &CloudIdentityDeviceIdentity{}
+	_ identity.Resource                = &CloudIdentityDevice{}
 )
 
 var CloudIdentityDeviceIdentityFormat = gcpurls.Template[CloudIdentityDeviceIdentity]("cloudidentity.googleapis.com", "devices/{device}")
@@ -36,6 +35,10 @@ var CloudIdentityDeviceIdentityFormat = gcpurls.Template[CloudIdentityDeviceIden
 // +k8s:deepcopy-gen=false
 type CloudIdentityDeviceIdentity struct {
 	Device string
+}
+
+func (i *CloudIdentityDeviceIdentity) HasIdentitySpecified() bool {
+	return i.Device != ""
 }
 
 func (i *CloudIdentityDeviceIdentity) String() string {
@@ -64,10 +67,7 @@ func (i *CloudIdentityDeviceIdentity) ParentString() string {
 }
 
 func getIdentityFromCloudIdentityDeviceSpec(ctx context.Context, reader client.Reader, obj *CloudIdentityDevice) (*CloudIdentityDeviceIdentity, error) {
-	resourceID, err := refs.GetResourceID(obj)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve resource ID")
-	}
+	resourceID := common.ValueOf(obj.Spec.ResourceID)
 
 	identity := &CloudIdentityDeviceIdentity{
 		Device: resourceID,
@@ -89,9 +89,8 @@ func (obj *CloudIdentityDevice) GetIdentity(ctx context.Context, reader client.R
 			return nil, err
 		}
 
-		if statusIdentity.String() != specIdentity.String() {
-			return nil, fmt.Errorf("cannot change CloudIdentityDevice identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
-		}
+		// Since Device ID is server-generated, we adopt the server-generated ID if present in status.
+		specIdentity.Device = statusIdentity.Device
 	}
 
 	return specIdentity, nil
