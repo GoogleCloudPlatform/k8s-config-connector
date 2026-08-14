@@ -201,9 +201,9 @@ func (a *EnvironmentAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
 	hasUpdate := false
 
-	// Cloud Composer does not support updating multiple different field types in a single request's
-	// updateMask (e.g. labels and workloads_config cannot be combined in one request). Therefore,
-	// we iterate through fieldUpdaters to issue individual patch calls one field at a time.
+	// Cloud Composer does not support more than one path in a single PATCH request's updateMask
+	// (e.g. labels and workloads_config cannot be combined in one request). Therefore, we
+	// iterate through fieldUpdaters to issue individual patch calls one field at a time.
 	for _, u := range fieldUpdaters {
 		patch := u.build(desired, desiredPb, a.actual)
 		if patch == nil {
@@ -285,7 +285,7 @@ func validateUpdatableFields(desiredPb, actualPb *composerpb.Environment) error 
 	return nil
 }
 
-// fieldUpdater defines a declarative updater for a specific mutable field mask.
+// fieldUpdater defines a declarative updater for a specific field mask.
 // It serves as the single source of truth for both executing updates in findPendingUpdates
 // and validating allowed field mutations in validateUpdatableFields.
 type fieldUpdater struct {
