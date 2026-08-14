@@ -45,7 +45,8 @@ type MockService struct {
 
 	operations *operations.Operations
 
-	insightsConfigServer *InsightsConfigServer
+	insightsConfigServer   *InsightsConfigServer
+	developerConnectServer *DeveloperConnectServer
 }
 
 // New creates a MockService.
@@ -56,20 +57,29 @@ func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.M
 		operations:      operations.NewOperationsService(storage),
 	}
 	s.insightsConfigServer = &InsightsConfigServer{MockService: s}
+	s.developerConnectServer = &DeveloperConnectServer{MockService: s}
 	return s
 }
 
 func (s *MockService) ExpectedHosts() []string {
-	return []string{"developerconnect.googleapis.com"}
+	return []string{
+		"developerconnect.googleapis.com",
+		"developerconnect.{location}.rep.googleapis.com",
+		"developerconnect.{location}.rep.googleapis.com:443",
+		"developerconnect.{location}.googleapis.com",
+		"developerconnect.{location}.googleapis.com:443",
+	}
 }
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterInsightsConfigServiceServer(grpcServer, s.insightsConfigServer)
+	pb.RegisterDeveloperConnectServer(grpcServer, s.developerConnectServer)
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
 	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
 		pbhttp.RegisterInsightsConfigServiceHandler,
+		pbhttp.RegisterDeveloperConnectHandler,
 		s.operations.RegisterOperationsPath("/v1/{prefix=**}/operations/{name}"))
 	if err != nil {
 		return nil, err

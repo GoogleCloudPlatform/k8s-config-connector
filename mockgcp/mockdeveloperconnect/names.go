@@ -32,6 +32,16 @@ func (n *insightsConfigName) String() string {
 	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/insightsConfigs/" + n.InsightsConfig
 }
 
+type accountConnectorName struct {
+	Project          *projects.ProjectData
+	Location         string
+	AccountConnector string
+}
+
+func (n *accountConnectorName) String() string {
+	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/accountConnectors/" + n.AccountConnector
+}
+
 // parseInsightsConfigName parses a string into an insightsConfigName.
 // The expected form is projects/<projectID>/locations/<location>/insightsConfigs/<insightsConfig>
 func (s *MockService) parseInsightsConfigName(name string) (*insightsConfigName, error) {
@@ -47,6 +57,27 @@ func (s *MockService) parseInsightsConfigName(name string) (*insightsConfigName,
 			Project:        project,
 			Location:       tokens[3],
 			InsightsConfig: tokens[5],
+		}, nil
+	} else {
+		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+	}
+}
+
+// parseAccountConnectorName parses a string into an accountConnectorName.
+// The expected form is projects/<projectID>/locations/<location>/accountConnectors/<accountConnector>
+func (s *MockService) parseAccountConnectorName(name string) (*accountConnectorName, error) {
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "accountConnectors" {
+		project, err := s.Projects.GetProjectByID(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		return &accountConnectorName{
+			Project:          project,
+			Location:         tokens[3],
+			AccountConnector: tokens[5],
 		}, nil
 	} else {
 		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
