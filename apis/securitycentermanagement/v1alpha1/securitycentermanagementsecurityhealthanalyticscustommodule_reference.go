@@ -17,10 +17,8 @@ package v1alpha1
 import (
 	"context"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -85,15 +83,5 @@ func (r *SecurityCenterManagementSecurityHealthAnalyticsCustomModuleRef) ParseEx
 }
 
 func (r *SecurityCenterManagementSecurityHealthAnalyticsCustomModuleRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
-	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, func(u *unstructured.Unstructured) string {
-		typed, err := common.ToStructuredType[*SecurityCenterManagementSecurityHealthAnalyticsCustomModule](u)
-		if err != nil {
-			return ""
-		}
-		id, err := getIdentityFromSecurityCenterManagementSecurityHealthAnalyticsCustomModuleSpec(ctx, reader, typed)
-		if err != nil {
-			return ""
-		}
-		return id.String()
-	})
+	return refs.Normalize(ctx, reader, r, defaultNamespace)
 }
