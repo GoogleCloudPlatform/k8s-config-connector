@@ -68,10 +68,7 @@ func (r *SecurityCenterManagementSecurityHealthAnalyticsCustomModuleRef) SetExte
 
 func (r *SecurityCenterManagementSecurityHealthAnalyticsCustomModuleRef) ValidateExternal(external string) error {
 	id := &SecurityCenterManagementSecurityHealthAnalyticsCustomModuleIdentity{}
-	if err := id.FromExternal(external); err != nil {
-		return err
-	}
-	return nil
+	return id.FromExternal(external)
 }
 
 func (r *SecurityCenterManagementSecurityHealthAnalyticsCustomModuleRef) ParseExternalToIdentity() (identity.Identity, error) {
