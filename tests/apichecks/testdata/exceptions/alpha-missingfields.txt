@@ -1553,18 +1553,27 @@
 [missing_field] crd=dataplexdatascans.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataDiscoverySpec.storageConfig.includePatterns[]" is not set in unstructured objects
 [missing_field] crd=dataplexdatascans.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataDiscoverySpec.storageConfig.jsonOptions.encoding" is not set in unstructured objects
 [missing_field] crd=dataplexdatascans.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataDiscoverySpec.storageConfig.jsonOptions.typeInferenceDisabled" is not set in unstructured objects
+[missing_field] crd=dataplexdatascans.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataDiscoverySpec.storageConfig.unstructuredDataOptions.semanticInferenceEnabled" is not set in unstructured objects
+[missing_field] crd=dataplexdatascans.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataProfileSpec.catalogPublishingEnabled" is not set in unstructured objects
 [missing_field] crd=dataplexdatascans.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataProfileSpec.excludeFields.fieldNames[]" is not set in unstructured objects
 [missing_field] crd=dataplexdatascans.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataProfileSpec.includeFields.fieldNames[]" is not set in unstructured objects
+[missing_field] crd=dataplexdatascans.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataProfileSpec.mode" is not set in unstructured objects
 [missing_field] crd=dataplexdatascans.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataProfileSpec.postScanActions.bigqueryExport.resultsTableRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dataplexdatascans.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataProfileSpec.rowFilter" is not set in unstructured objects
 [missing_field] crd=dataplexdatascans.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataProfileSpec.samplingPercent" is not set in unstructured objects
+[missing_field] crd=dataplexdatascans.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataQualitySpec.catalogPublishingEnabled" is not set in unstructured objects
+[missing_field] crd=dataplexdatascans.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataQualitySpec.enableCatalogBasedRules" is not set in unstructured objects
+[missing_field] crd=dataplexdatascans.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataQualitySpec.filter" is not set in unstructured objects
 [missing_field] crd=dataplexdatascans.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataQualitySpec.postScanActions.bigqueryExport.resultsTableRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dataplexdatascans.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataQualitySpec.postScanActions.notificationReport.jobEndTrigger" is not set in unstructured objects
 [missing_field] crd=dataplexdatascans.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataQualitySpec.postScanActions.notificationReport.jobFailureTrigger" is not set in unstructured objects
 [missing_field] crd=dataplexdatascans.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataQualitySpec.postScanActions.notificationReport.recipients.emails[]" is not set in unstructured objects
 [missing_field] crd=dataplexdatascans.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataQualitySpec.postScanActions.notificationReport.scoreThresholdTrigger.scoreThreshold" is not set in unstructured objects
 [missing_field] crd=dataplexdatascans.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataQualitySpec.rowFilter" is not set in unstructured objects
+[missing_field] crd=dataplexdatascans.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataQualitySpec.rules[].attributes" is not set in unstructured objects
 [missing_field] crd=dataplexdatascans.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataQualitySpec.rules[].column" is not set in unstructured objects
+[missing_field] crd=dataplexdatascans.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataQualitySpec.rules[].debugQueries[].description" is not set in unstructured objects
+[missing_field] crd=dataplexdatascans.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataQualitySpec.rules[].debugQueries[].sqlStatement" is not set in unstructured objects
 [missing_field] crd=dataplexdatascans.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataQualitySpec.rules[].description" is not set in unstructured objects
 [missing_field] crd=dataplexdatascans.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataQualitySpec.rules[].dimension" is not set in unstructured objects
 [missing_field] crd=dataplexdatascans.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataQualitySpec.rules[].ignoreNull" is not set in unstructured objects
@@ -1585,6 +1594,7 @@
 [missing_field] crd=dataplexdatascans.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataQualitySpec.rules[].statisticRangeExpectation.strictMinEnabled" is not set in unstructured objects
 [missing_field] crd=dataplexdatascans.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataQualitySpec.rules[].suspended" is not set in unstructured objects
 [missing_field] crd=dataplexdatascans.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataQualitySpec.rules[].tableConditionExpectation.sqlExpression" is not set in unstructured objects
+[missing_field] crd=dataplexdatascans.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataQualitySpec.rules[].templateReference.name" is not set in unstructured objects
 [missing_field] crd=dataplexdatascans.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataQualitySpec.rules[].threshold" is not set in unstructured objects
 [missing_field] crd=dataplexdatascans.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataQualitySpec.rules[].uniquenessExpectation" is not set in unstructured objects
 [missing_field] crd=dataplexdatascans.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.dataQualitySpec.samplingPercent" is not set in unstructured objects
@@ -1592,6 +1602,7 @@
 [missing_field] crd=dataplexdatascans.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
 [missing_field] crd=dataplexdatascans.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.executionSpec.field" is not set in unstructured objects
 [missing_field] crd=dataplexdatascans.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.executionSpec.trigger.onDemand" is not set in unstructured objects
+[missing_field] crd=dataplexdatascans.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.executionSpec.trigger.oneTime.ttlAfterScanCompletion" is not set in unstructured objects
 [missing_field] crd=dataplexdatascans.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.executionSpec.trigger.schedule.cron" is not set in unstructured objects
 [missing_field] crd=dataplexdatascans.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
 [missing_field] crd=dataplexdatascans.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
@@ -1614,6 +1625,16 @@
 [missing_field] crd=dataplexglossaries.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dataplexlakes.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
 [missing_field] crd=dataplexlakes.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.metastore.serviceRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=dataplexmetadatafeeds.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.filters.aspectTypeRefs[]" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=dataplexmetadatafeeds.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.filters.changeTypes[]" is not set in unstructured objects
+[missing_field] crd=dataplexmetadatafeeds.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.filters.entryTypeRefs[]" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=dataplexmetadatafeeds.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.labels" is not set in unstructured objects
+[missing_field] crd=dataplexmetadatafeeds.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
+[missing_field] crd=dataplexmetadatafeeds.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=dataplexmetadatafeeds.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.pubsubTopicRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=dataplexmetadatafeeds.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.scope.entryGroupRefs[]" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=dataplexmetadatafeeds.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.scope.organizationLevel" is not set in unstructured objects
+[missing_field] crd=dataplexmetadatafeeds.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.scope.projectRefs[]" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=dataplextasks.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
 [missing_field] crd=dataplextasks.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.executionSpec.args" is not set in unstructured objects
 [missing_field] crd=dataplextasks.dataplex.cnrm.cloud.google.com version=v1alpha1: field ".spec.executionSpec.kmsKeyRef" is not set; neither 'external' nor 'name' are set
