@@ -1,0 +1,4731 @@
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Unknown service account",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Unknown service account",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "accountId": "sa-${uniqueId}",
+  "serviceAccount": {}
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "email": "sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "email": "sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Service account projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com does not exist.",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Service account projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com does not exist.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "email": "sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Service account projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com does not exist.",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Service account projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com does not exist.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "accountId": "sa-${uniqueId}",
+  "serviceAccount": {}
+}
+
+409 Conflict
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 409,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Service account sa-${uniqueId} already exists within project projects/${projectId}.",
+        "reason": "alreadyExists"
+      }
+    ],
+    "message": "Service account sa-${uniqueId} already exists within project projects/${projectId}.",
+    "status": "ALREADY_EXISTS"
+  }
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Service account projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com does not exist.",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Service account projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com does not exist.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "accountId": "sa-${uniqueId}",
+  "serviceAccount": {}
+}
+
+409 Conflict
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 409,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Service account sa-${uniqueId} already exists within project projects/${projectId}.",
+        "reason": "alreadyExists"
+      }
+    ],
+    "message": "Service account sa-${uniqueId} already exists within project projects/${projectId}.",
+    "status": "ALREADY_EXISTS"
+  }
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Service account projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com does not exist.",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Service account projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com does not exist.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "accountId": "sa-${uniqueId}",
+  "serviceAccount": {}
+}
+
+409 Conflict
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 409,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Service account sa-${uniqueId} already exists within project projects/${projectId}.",
+        "reason": "alreadyExists"
+      }
+    ],
+    "message": "Service account sa-${uniqueId} already exists within project projects/${projectId}.",
+    "status": "ALREADY_EXISTS"
+  }
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "email": "sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "auditConfigs": [
+    {
+      "auditLogConfigs": [
+        {
+          "logType": "ADMIN_READ"
+        },
+        {
+          "logType": "DATA_READ"
+        },
+        {
+          "logType": "DATA_WRITE"
+        }
+      ],
+      "service": "container.googleapis.com"
+    }
+  ],
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:test-182c312e5f6dab7b@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:test-maqiuyu-20250312@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.colabEnterpriseUser"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-vertex-nb.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.colabServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform-cc.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.customCodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform-vm.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.notebookServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-alloydb.iam.gserviceaccount.com"
+      ],
+      "role": "roles/alloydb.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-apigee.iam.gserviceaccount.com"
+      ],
+      "role": "roles/apigee.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-apihub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/apihub.runtimeProjectServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:cloud-kubernetes-security-validation-server@system.gserviceaccount.com",
+        "user:wpanther@google.com"
+      ],
+      "role": "roles/artifactregistry.reader"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-artifactregistry.iam.gserviceaccount.com"
+      ],
+      "role": "roles/artifactregistry.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-bms.iam.gserviceaccount.com"
+      ],
+      "role": "roles/baremetalsolution.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/bigquery.dataEditor"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/bigquery.metadataViewer"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloudaicompanion.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudaicompanion.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}@cloudbuild.gserviceaccount.com"
+      ],
+      "role": "roles/cloudbuild.builds.builder"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloudbuild.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudbuild.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:test-cloud-identity@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudfunctions.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcf-admin-robot.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudfunctions.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/cloudkms.autokeyUser"
+    },
+    {
+      "members": [
+        "serviceAccount:service-707226307554@compute-system.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloudscheduler.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudscheduler.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@cloudcomposer-accounts.iam.gserviceaccount.com"
+      ],
+      "role": "roles/composer.serviceAgent"
+    },
+    {
+      "members": [
+        "deleted:serviceAccount:sa-ulpzmj22am62wyi@${projectId}.iam.gserviceaccount.com?uid=112011146970661392355",
+        "serviceAccount:sa-basic@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:sa-ksf5jrjguiyec5a@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/composer.worker"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com"
+      ],
+      "role": "roles/compute.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-staging-gkenode.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.defaultNodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.nodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@container-engine-robot-staging.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@container-analysis.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containeranalysis.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@containerregistry.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containerregistry.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@dataflow-service-producer-prod.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dataflow.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-dataform.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dataform.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@dataproc-accounts.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dataproc.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-dialogflow.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dialogflow.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@dlp-api.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dlp.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com",
+        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:gsa-5iicx3d2mown45i@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:gsa-jzmjqzjfg2qqz5q@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:${projectId}@appspot.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@cloudcomposer-accounts.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
+        "serviceAccount:test-cloud-identity@${projectId}.iam.gserviceaccount.com",
+        "user:tlenarcik@google.com"
+      ],
+      "role": "roles/editor"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@firebase-rules.iam.gserviceaccount.com"
+      ],
+      "role": "roles/firebaserules.system"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkeonprem.iam.gserviceaccount.com"
+      ],
+      "role": "roles/gkeonprem.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@cloudcomposer-accounts.iam.gserviceaccount.com"
+      ],
+      "role": "roles/iam.serviceAccountAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/iam.serviceAccountUser"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-staging-krmapihosting.iam.gserviceaccount.com"
+      ],
+      "role": "roles/krmapihosting.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-logging.iam.gserviceaccount.com"
+      ],
+      "role": "roles/logging.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/monitoring.metricWriter"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-monitoring-notification.iam.gserviceaccount.com"
+      ],
+      "role": "roles/monitoring.notificationServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-networkconnectivity.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networkconnectivity.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-networkmanagement.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networkmanagement.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:cnrm-system@maqiuyu-kcc-test.iam.gserviceaccount.com",
+        "serviceAccount:config-controller-test-sa@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-staging-yakima.iam.gserviceaccount.com",
+        "user:maqiuyu@google.com"
+      ],
+      "role": "roles/owner"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-parallelstore.iam.gserviceaccount.com"
+      ],
+      "role": "roles/parallelstore.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:test-cloud-identity@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/privilegedaccessmanager.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-org-${organizationID}@gcp-sa-pam.iam.gserviceaccount.com"
+      ],
+      "role": "roles/privilegedaccessmanager.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/pubsub.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com"
+      ],
+      "role": "roles/redis.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@serverless-robot-prod.iam.gserviceaccount.com"
+      ],
+      "role": "roles/run.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@service-networking.iam.gserviceaccount.com"
+      ],
+      "role": "roles/servicenetworking.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
+        "serviceAccount:test-182c312e5f6dab7b@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:test-maqiuyu-20250312@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/storage.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:cloud-kubernetes-security-validation-server@system.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-artifactregistry.iam.gserviceaccount.com"
+      ],
+      "role": "roles/storage.objectViewer"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-stream.iam.gserviceaccount.com"
+      ],
+      "role": "roles/stream.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-vpcaccess.iam.gserviceaccount.com"
+      ],
+      "role": "roles/vpcaccess.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-websecurityscanner.iam.gserviceaccount.com"
+      ],
+      "role": "roles/websecurityscanner.serviceAgent"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "auditConfigs": [
+    {
+      "auditLogConfigs": [
+        {
+          "logType": "ADMIN_READ"
+        },
+        {
+          "logType": "DATA_READ"
+        },
+        {
+          "logType": "DATA_WRITE"
+        }
+      ],
+      "service": "container.googleapis.com"
+    }
+  ],
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:test-182c312e5f6dab7b@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:test-maqiuyu-20250312@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.colabEnterpriseUser"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-vertex-nb.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.colabServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform-cc.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.customCodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform-vm.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.notebookServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-alloydb.iam.gserviceaccount.com"
+      ],
+      "role": "roles/alloydb.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-apigee.iam.gserviceaccount.com"
+      ],
+      "role": "roles/apigee.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-apihub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/apihub.runtimeProjectServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:cloud-kubernetes-security-validation-server@system.gserviceaccount.com",
+        "user:wpanther@google.com"
+      ],
+      "role": "roles/artifactregistry.reader"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-artifactregistry.iam.gserviceaccount.com"
+      ],
+      "role": "roles/artifactregistry.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-bms.iam.gserviceaccount.com"
+      ],
+      "role": "roles/baremetalsolution.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/bigquery.dataEditor"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/bigquery.metadataViewer"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloudaicompanion.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudaicompanion.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}@cloudbuild.gserviceaccount.com"
+      ],
+      "role": "roles/cloudbuild.builds.builder"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloudbuild.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudbuild.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:test-cloud-identity@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudfunctions.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcf-admin-robot.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudfunctions.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/cloudkms.autokeyUser"
+    },
+    {
+      "members": [
+        "serviceAccount:service-707226307554@compute-system.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloudscheduler.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudscheduler.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@cloudcomposer-accounts.iam.gserviceaccount.com"
+      ],
+      "role": "roles/composer.serviceAgent"
+    },
+    {
+      "members": [
+        "deleted:serviceAccount:sa-ulpzmj22am62wyi@${projectId}.iam.gserviceaccount.com?uid=112011146970661392355",
+        "serviceAccount:sa-basic@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:sa-ksf5jrjguiyec5a@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/composer.worker"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com"
+      ],
+      "role": "roles/compute.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-staging-gkenode.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.defaultNodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.nodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@container-engine-robot-staging.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@container-analysis.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containeranalysis.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@containerregistry.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containerregistry.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@dataflow-service-producer-prod.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dataflow.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-dataform.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dataform.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@dataproc-accounts.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dataproc.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-dialogflow.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dialogflow.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@dlp-api.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dlp.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com",
+        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:gsa-5iicx3d2mown45i@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:gsa-jzmjqzjfg2qqz5q@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:${projectId}@appspot.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@cloudcomposer-accounts.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
+        "serviceAccount:test-cloud-identity@${projectId}.iam.gserviceaccount.com",
+        "user:tlenarcik@google.com"
+      ],
+      "role": "roles/editor"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@firebase-rules.iam.gserviceaccount.com"
+      ],
+      "role": "roles/firebaserules.system"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkeonprem.iam.gserviceaccount.com"
+      ],
+      "role": "roles/gkeonprem.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@cloudcomposer-accounts.iam.gserviceaccount.com"
+      ],
+      "role": "roles/iam.serviceAccountAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/iam.serviceAccountUser"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-staging-krmapihosting.iam.gserviceaccount.com"
+      ],
+      "role": "roles/krmapihosting.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-logging.iam.gserviceaccount.com"
+      ],
+      "role": "roles/logging.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/monitoring.metricWriter"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-monitoring-notification.iam.gserviceaccount.com"
+      ],
+      "role": "roles/monitoring.notificationServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-networkconnectivity.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networkconnectivity.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-networkmanagement.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networkmanagement.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:cnrm-system@maqiuyu-kcc-test.iam.gserviceaccount.com",
+        "serviceAccount:config-controller-test-sa@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-staging-yakima.iam.gserviceaccount.com",
+        "user:maqiuyu@google.com"
+      ],
+      "role": "roles/owner"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-parallelstore.iam.gserviceaccount.com"
+      ],
+      "role": "roles/parallelstore.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:test-cloud-identity@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/privilegedaccessmanager.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-org-${organizationID}@gcp-sa-pam.iam.gserviceaccount.com"
+      ],
+      "role": "roles/privilegedaccessmanager.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/pubsub.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com"
+      ],
+      "role": "roles/redis.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@serverless-robot-prod.iam.gserviceaccount.com"
+      ],
+      "role": "roles/run.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@service-networking.iam.gserviceaccount.com"
+      ],
+      "role": "roles/servicenetworking.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
+        "serviceAccount:test-182c312e5f6dab7b@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:test-maqiuyu-20250312@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/storage.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:cloud-kubernetes-security-validation-server@system.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-artifactregistry.iam.gserviceaccount.com"
+      ],
+      "role": "roles/storage.objectViewer"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-stream.iam.gserviceaccount.com"
+      ],
+      "role": "roles/stream.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-vpcaccess.iam.gserviceaccount.com"
+      ],
+      "role": "roles/vpcaccess.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-websecurityscanner.iam.gserviceaccount.com"
+      ],
+      "role": "roles/websecurityscanner.serviceAgent"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "auditConfigs": [
+    {
+      "auditLogConfigs": [
+        {
+          "logType": "ADMIN_READ"
+        },
+        {
+          "logType": "DATA_READ"
+        },
+        {
+          "logType": "DATA_WRITE"
+        }
+      ],
+      "service": "container.googleapis.com"
+    }
+  ],
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:test-182c312e5f6dab7b@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:test-maqiuyu-20250312@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.colabEnterpriseUser"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-vertex-nb.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.colabServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform-cc.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.customCodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform-vm.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.notebookServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-alloydb.iam.gserviceaccount.com"
+      ],
+      "role": "roles/alloydb.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-apigee.iam.gserviceaccount.com"
+      ],
+      "role": "roles/apigee.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-apihub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/apihub.runtimeProjectServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:cloud-kubernetes-security-validation-server@system.gserviceaccount.com",
+        "user:wpanther@google.com"
+      ],
+      "role": "roles/artifactregistry.reader"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-artifactregistry.iam.gserviceaccount.com"
+      ],
+      "role": "roles/artifactregistry.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-bms.iam.gserviceaccount.com"
+      ],
+      "role": "roles/baremetalsolution.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/bigquery.dataEditor"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/bigquery.metadataViewer"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloudaicompanion.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudaicompanion.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}@cloudbuild.gserviceaccount.com"
+      ],
+      "role": "roles/cloudbuild.builds.builder"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloudbuild.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudbuild.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:test-cloud-identity@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudfunctions.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcf-admin-robot.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudfunctions.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/cloudkms.autokeyUser"
+    },
+    {
+      "members": [
+        "serviceAccount:service-707226307554@compute-system.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloudscheduler.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudscheduler.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@cloudcomposer-accounts.iam.gserviceaccount.com"
+      ],
+      "role": "roles/composer.serviceAgent"
+    },
+    {
+      "members": [
+        "deleted:serviceAccount:sa-ulpzmj22am62wyi@${projectId}.iam.gserviceaccount.com?uid=112011146970661392355",
+        "serviceAccount:sa-basic@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:sa-ksf5jrjguiyec5a@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/composer.worker"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com"
+      ],
+      "role": "roles/compute.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-staging-gkenode.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.defaultNodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.nodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@container-engine-robot-staging.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@container-analysis.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containeranalysis.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@containerregistry.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containerregistry.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@dataflow-service-producer-prod.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dataflow.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-dataform.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dataform.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@dataproc-accounts.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dataproc.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-dialogflow.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dialogflow.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@dlp-api.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dlp.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com",
+        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:gsa-5iicx3d2mown45i@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:gsa-jzmjqzjfg2qqz5q@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:${projectId}@appspot.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@cloudcomposer-accounts.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
+        "serviceAccount:test-cloud-identity@${projectId}.iam.gserviceaccount.com",
+        "user:tlenarcik@google.com"
+      ],
+      "role": "roles/editor"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@firebase-rules.iam.gserviceaccount.com"
+      ],
+      "role": "roles/firebaserules.system"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkeonprem.iam.gserviceaccount.com"
+      ],
+      "role": "roles/gkeonprem.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@cloudcomposer-accounts.iam.gserviceaccount.com"
+      ],
+      "role": "roles/iam.serviceAccountAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/iam.serviceAccountUser"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-staging-krmapihosting.iam.gserviceaccount.com"
+      ],
+      "role": "roles/krmapihosting.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-logging.iam.gserviceaccount.com"
+      ],
+      "role": "roles/logging.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/monitoring.metricWriter"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-monitoring-notification.iam.gserviceaccount.com"
+      ],
+      "role": "roles/monitoring.notificationServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-networkconnectivity.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networkconnectivity.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-networkmanagement.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networkmanagement.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:cnrm-system@maqiuyu-kcc-test.iam.gserviceaccount.com",
+        "serviceAccount:config-controller-test-sa@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-staging-yakima.iam.gserviceaccount.com",
+        "user:maqiuyu@google.com"
+      ],
+      "role": "roles/owner"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-parallelstore.iam.gserviceaccount.com"
+      ],
+      "role": "roles/parallelstore.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:test-cloud-identity@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/privilegedaccessmanager.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-org-${organizationID}@gcp-sa-pam.iam.gserviceaccount.com"
+      ],
+      "role": "roles/privilegedaccessmanager.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/pubsub.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com"
+      ],
+      "role": "roles/redis.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@serverless-robot-prod.iam.gserviceaccount.com"
+      ],
+      "role": "roles/run.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@service-networking.iam.gserviceaccount.com"
+      ],
+      "role": "roles/servicenetworking.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
+        "serviceAccount:test-182c312e5f6dab7b@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:test-maqiuyu-20250312@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/storage.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:cloud-kubernetes-security-validation-server@system.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-artifactregistry.iam.gserviceaccount.com"
+      ],
+      "role": "roles/storage.objectViewer"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-stream.iam.gserviceaccount.com"
+      ],
+      "role": "roles/stream.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-vpcaccess.iam.gserviceaccount.com"
+      ],
+      "role": "roles/vpcaccess.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-websecurityscanner.iam.gserviceaccount.com"
+      ],
+      "role": "roles/websecurityscanner.serviceAgent"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:setIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "policy": {
+    "auditConfigs": [
+      {
+        "auditLogConfigs": [
+          {
+            "logType": "ADMIN_READ"
+          },
+          {
+            "logType": "DATA_READ"
+          },
+          {
+            "logType": "DATA_WRITE"
+          }
+        ],
+        "service": "container.googleapis.com"
+      }
+    ],
+    "bindings": [
+      {
+        "members": [
+          "serviceAccount:test-182c312e5f6dab7b@${projectId}.iam.gserviceaccount.com",
+          "serviceAccount:test-maqiuyu-20250312@${projectId}.iam.gserviceaccount.com"
+        ],
+        "role": "roles/aiplatform.colabEnterpriseUser"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-vertex-nb.iam.gserviceaccount.com"
+        ],
+        "role": "roles/aiplatform.colabServiceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform-cc.iam.gserviceaccount.com"
+        ],
+        "role": "roles/aiplatform.customCodeServiceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform-vm.iam.gserviceaccount.com"
+        ],
+        "role": "roles/aiplatform.notebookServiceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform.iam.gserviceaccount.com"
+        ],
+        "role": "roles/aiplatform.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-alloydb.iam.gserviceaccount.com"
+        ],
+        "role": "roles/alloydb.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-apigee.iam.gserviceaccount.com"
+        ],
+        "role": "roles/apigee.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-apihub.iam.gserviceaccount.com"
+        ],
+        "role": "roles/apihub.runtimeProjectServiceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:cloud-kubernetes-security-validation-server@system.gserviceaccount.com",
+          "user:wpanther@google.com"
+        ],
+        "role": "roles/artifactregistry.reader"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-artifactregistry.iam.gserviceaccount.com"
+        ],
+        "role": "roles/artifactregistry.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-bms.iam.gserviceaccount.com"
+        ],
+        "role": "roles/baremetalsolution.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+        ],
+        "role": "roles/bigquery.dataEditor"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+        ],
+        "role": "roles/bigquery.metadataViewer"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-cloudaicompanion.iam.gserviceaccount.com"
+        ],
+        "role": "roles/cloudaicompanion.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:${projectNumber}@cloudbuild.gserviceaccount.com"
+        ],
+        "role": "roles/cloudbuild.builds.builder"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-cloudbuild.iam.gserviceaccount.com"
+        ],
+        "role": "roles/cloudbuild.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:test-cloud-identity@${projectId}.iam.gserviceaccount.com"
+        ],
+        "role": "roles/cloudfunctions.admin"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcf-admin-robot.iam.gserviceaccount.com"
+        ],
+        "role": "roles/cloudfunctions.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+        ],
+        "role": "roles/cloudkms.autokeyUser"
+      },
+      {
+        "members": [
+          "serviceAccount:service-707226307554@compute-system.iam.gserviceaccount.com",
+          "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com",
+          "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform.iam.gserviceaccount.com"
+        ],
+        "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-cloudscheduler.iam.gserviceaccount.com"
+        ],
+        "role": "roles/cloudscheduler.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@cloudcomposer-accounts.iam.gserviceaccount.com"
+        ],
+        "role": "roles/composer.serviceAgent"
+      },
+      {
+        "members": [
+          "deleted:serviceAccount:sa-ulpzmj22am62wyi@${projectId}.iam.gserviceaccount.com?uid=112011146970661392355",
+          "serviceAccount:sa-basic@${projectId}.iam.gserviceaccount.com",
+          "serviceAccount:sa-ksf5jrjguiyec5a@${projectId}.iam.gserviceaccount.com",
+          "serviceAccount:sa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+        ],
+        "role": "roles/composer.worker"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com"
+        ],
+        "role": "roles/compute.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com",
+          "serviceAccount:service-${projectNumber}@gcp-sa-staging-gkenode.iam.gserviceaccount.com"
+        ],
+        "role": "roles/container.defaultNodeServiceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com"
+        ],
+        "role": "roles/container.nodeServiceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@container-engine-robot-staging.iam.gserviceaccount.com",
+          "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com"
+        ],
+        "role": "roles/container.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@container-analysis.iam.gserviceaccount.com"
+        ],
+        "role": "roles/containeranalysis.ServiceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@containerregistry.iam.gserviceaccount.com"
+        ],
+        "role": "roles/containerregistry.ServiceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@dataflow-service-producer-prod.iam.gserviceaccount.com"
+        ],
+        "role": "roles/dataflow.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-dataform.iam.gserviceaccount.com"
+        ],
+        "role": "roles/dataform.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@dataproc-accounts.iam.gserviceaccount.com"
+        ],
+        "role": "roles/dataproc.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-dialogflow.iam.gserviceaccount.com"
+        ],
+        "role": "roles/dialogflow.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@dlp-api.iam.gserviceaccount.com"
+        ],
+        "role": "roles/dlp.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com",
+          "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
+          "serviceAccount:gsa-5iicx3d2mown45i@${projectId}.iam.gserviceaccount.com",
+          "serviceAccount:gsa-jzmjqzjfg2qqz5q@${projectId}.iam.gserviceaccount.com",
+          "serviceAccount:${projectId}@appspot.gserviceaccount.com",
+          "serviceAccount:service-${projectNumber}@cloudcomposer-accounts.iam.gserviceaccount.com",
+          "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
+          "serviceAccount:test-cloud-identity@${projectId}.iam.gserviceaccount.com",
+          "user:tlenarcik@google.com"
+        ],
+        "role": "roles/editor"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@firebase-rules.iam.gserviceaccount.com"
+        ],
+        "role": "roles/firebaserules.system"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-gkeonprem.iam.gserviceaccount.com"
+        ],
+        "role": "roles/gkeonprem.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@cloudcomposer-accounts.iam.gserviceaccount.com"
+        ],
+        "role": "roles/iam.serviceAccountAdmin"
+      },
+      {
+        "members": [
+          "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com"
+        ],
+        "role": "roles/iam.serviceAccountUser"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com",
+          "serviceAccount:service-${projectNumber}@gcp-sa-staging-krmapihosting.iam.gserviceaccount.com"
+        ],
+        "role": "roles/krmapihosting.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-logging.iam.gserviceaccount.com"
+        ],
+        "role": "roles/logging.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com"
+        ],
+        "role": "roles/monitoring.metricWriter"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-monitoring-notification.iam.gserviceaccount.com"
+        ],
+        "role": "roles/monitoring.notificationServiceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-networkconnectivity.iam.gserviceaccount.com"
+        ],
+        "role": "roles/networkconnectivity.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-networkmanagement.iam.gserviceaccount.com"
+        ],
+        "role": "roles/networkmanagement.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
+          "serviceAccount:cnrm-system@maqiuyu-kcc-test.iam.gserviceaccount.com",
+          "serviceAccount:config-controller-test-sa@${projectId}.iam.gserviceaccount.com",
+          "serviceAccount:service-${projectNumber}@gcp-sa-staging-yakima.iam.gserviceaccount.com",
+          "user:maqiuyu@google.com"
+        ],
+        "role": "roles/owner"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-parallelstore.iam.gserviceaccount.com"
+        ],
+        "role": "roles/parallelstore.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:test-cloud-identity@${projectId}.iam.gserviceaccount.com"
+        ],
+        "role": "roles/privilegedaccessmanager.admin"
+      },
+      {
+        "members": [
+          "serviceAccount:service-org-${organizationID}@gcp-sa-pam.iam.gserviceaccount.com"
+        ],
+        "role": "roles/privilegedaccessmanager.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+        ],
+        "role": "roles/pubsub.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com"
+        ],
+        "role": "roles/redis.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@serverless-robot-prod.iam.gserviceaccount.com"
+        ],
+        "role": "roles/run.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@service-networking.iam.gserviceaccount.com"
+        ],
+        "role": "roles/servicenetworking.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com",
+          "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
+          "serviceAccount:test-182c312e5f6dab7b@${projectId}.iam.gserviceaccount.com",
+          "serviceAccount:test-maqiuyu-20250312@${projectId}.iam.gserviceaccount.com"
+        ],
+        "role": "roles/storage.admin"
+      },
+      {
+        "members": [
+          "serviceAccount:cloud-kubernetes-security-validation-server@system.gserviceaccount.com",
+          "serviceAccount:service-${projectNumber}@gcp-sa-artifactregistry.iam.gserviceaccount.com"
+        ],
+        "role": "roles/storage.objectViewer"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-stream.iam.gserviceaccount.com"
+        ],
+        "role": "roles/stream.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-vpcaccess.iam.gserviceaccount.com"
+        ],
+        "role": "roles/vpcaccess.serviceAgent"
+      },
+      {
+        "members": [
+          "serviceAccount:service-${projectNumber}@gcp-sa-websecurityscanner.iam.gserviceaccount.com"
+        ],
+        "role": "roles/websecurityscanner.serviceAgent"
+      }
+    ],
+    "etag": "abcdef0123A=",
+    "version": 3
+  },
+  "updateMask": "bindings,etag,auditConfigs"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "auditConfigs": [
+    {
+      "auditLogConfigs": [
+        {
+          "logType": "ADMIN_READ"
+        },
+        {
+          "logType": "DATA_READ"
+        },
+        {
+          "logType": "DATA_WRITE"
+        }
+      ],
+      "service": "container.googleapis.com"
+    }
+  ],
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:test-182c312e5f6dab7b@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:test-maqiuyu-20250312@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.colabEnterpriseUser"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-vertex-nb.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.colabServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform-cc.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.customCodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform-vm.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.notebookServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-alloydb.iam.gserviceaccount.com"
+      ],
+      "role": "roles/alloydb.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-apigee.iam.gserviceaccount.com"
+      ],
+      "role": "roles/apigee.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-apihub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/apihub.runtimeProjectServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:cloud-kubernetes-security-validation-server@system.gserviceaccount.com",
+        "user:wpanther@google.com"
+      ],
+      "role": "roles/artifactregistry.reader"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-artifactregistry.iam.gserviceaccount.com"
+      ],
+      "role": "roles/artifactregistry.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-bms.iam.gserviceaccount.com"
+      ],
+      "role": "roles/baremetalsolution.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/bigquery.dataEditor"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/bigquery.metadataViewer"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloudaicompanion.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudaicompanion.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}@cloudbuild.gserviceaccount.com"
+      ],
+      "role": "roles/cloudbuild.builds.builder"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloudbuild.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudbuild.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:test-cloud-identity@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudfunctions.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcf-admin-robot.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudfunctions.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/cloudkms.autokeyUser"
+    },
+    {
+      "members": [
+        "serviceAccount:service-707226307554@compute-system.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloudscheduler.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudscheduler.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@cloudcomposer-accounts.iam.gserviceaccount.com"
+      ],
+      "role": "roles/composer.serviceAgent"
+    },
+    {
+      "members": [
+        "deleted:serviceAccount:sa-ulpzmj22am62wyi@${projectId}.iam.gserviceaccount.com?uid=112011146970661392355",
+        "serviceAccount:sa-basic@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:sa-ksf5jrjguiyec5a@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:sa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/composer.worker"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com"
+      ],
+      "role": "roles/compute.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-staging-gkenode.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.defaultNodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.nodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@container-engine-robot-staging.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@container-analysis.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containeranalysis.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@containerregistry.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containerregistry.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@dataflow-service-producer-prod.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dataflow.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-dataform.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dataform.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@dataproc-accounts.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dataproc.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-dialogflow.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dialogflow.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@dlp-api.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dlp.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com",
+        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:gsa-5iicx3d2mown45i@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:gsa-jzmjqzjfg2qqz5q@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:${projectId}@appspot.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@cloudcomposer-accounts.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
+        "serviceAccount:test-cloud-identity@${projectId}.iam.gserviceaccount.com",
+        "user:tlenarcik@google.com"
+      ],
+      "role": "roles/editor"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@firebase-rules.iam.gserviceaccount.com"
+      ],
+      "role": "roles/firebaserules.system"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkeonprem.iam.gserviceaccount.com"
+      ],
+      "role": "roles/gkeonprem.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@cloudcomposer-accounts.iam.gserviceaccount.com"
+      ],
+      "role": "roles/iam.serviceAccountAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/iam.serviceAccountUser"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-staging-krmapihosting.iam.gserviceaccount.com"
+      ],
+      "role": "roles/krmapihosting.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-logging.iam.gserviceaccount.com"
+      ],
+      "role": "roles/logging.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/monitoring.metricWriter"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-monitoring-notification.iam.gserviceaccount.com"
+      ],
+      "role": "roles/monitoring.notificationServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-networkconnectivity.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networkconnectivity.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-networkmanagement.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networkmanagement.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:cnrm-system@maqiuyu-kcc-test.iam.gserviceaccount.com",
+        "serviceAccount:config-controller-test-sa@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-staging-yakima.iam.gserviceaccount.com",
+        "user:maqiuyu@google.com"
+      ],
+      "role": "roles/owner"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-parallelstore.iam.gserviceaccount.com"
+      ],
+      "role": "roles/parallelstore.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:test-cloud-identity@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/privilegedaccessmanager.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-org-${organizationID}@gcp-sa-pam.iam.gserviceaccount.com"
+      ],
+      "role": "roles/privilegedaccessmanager.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/pubsub.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com"
+      ],
+      "role": "roles/redis.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@serverless-robot-prod.iam.gserviceaccount.com"
+      ],
+      "role": "roles/run.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@service-networking.iam.gserviceaccount.com"
+      ],
+      "role": "roles/servicenetworking.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
+        "serviceAccount:test-182c312e5f6dab7b@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:test-maqiuyu-20250312@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/storage.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:cloud-kubernetes-security-validation-server@system.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-artifactregistry.iam.gserviceaccount.com"
+      ],
+      "role": "roles/storage.objectViewer"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-stream.iam.gserviceaccount.com"
+      ],
+      "role": "roles/stream.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-vpcaccess.iam.gserviceaccount.com"
+      ],
+      "role": "roles/vpcaccess.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-websecurityscanner.iam.gserviceaccount.com"
+      ],
+      "role": "roles/websecurityscanner.serviceAgent"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "auditConfigs": [
+    {
+      "auditLogConfigs": [
+        {
+          "logType": "ADMIN_READ"
+        },
+        {
+          "logType": "DATA_READ"
+        },
+        {
+          "logType": "DATA_WRITE"
+        }
+      ],
+      "service": "container.googleapis.com"
+    }
+  ],
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:test-182c312e5f6dab7b@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:test-maqiuyu-20250312@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.colabEnterpriseUser"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-vertex-nb.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.colabServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform-cc.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.customCodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform-vm.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.notebookServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-alloydb.iam.gserviceaccount.com"
+      ],
+      "role": "roles/alloydb.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-apigee.iam.gserviceaccount.com"
+      ],
+      "role": "roles/apigee.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-apihub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/apihub.runtimeProjectServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:cloud-kubernetes-security-validation-server@system.gserviceaccount.com",
+        "user:wpanther@google.com"
+      ],
+      "role": "roles/artifactregistry.reader"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-artifactregistry.iam.gserviceaccount.com"
+      ],
+      "role": "roles/artifactregistry.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-bms.iam.gserviceaccount.com"
+      ],
+      "role": "roles/baremetalsolution.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/bigquery.dataEditor"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/bigquery.metadataViewer"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloudaicompanion.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudaicompanion.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}@cloudbuild.gserviceaccount.com"
+      ],
+      "role": "roles/cloudbuild.builds.builder"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloudbuild.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudbuild.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:test-cloud-identity@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudfunctions.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcf-admin-robot.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudfunctions.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/cloudkms.autokeyUser"
+    },
+    {
+      "members": [
+        "serviceAccount:service-707226307554@compute-system.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloudscheduler.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudscheduler.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@cloudcomposer-accounts.iam.gserviceaccount.com"
+      ],
+      "role": "roles/composer.serviceAgent"
+    },
+    {
+      "members": [
+        "deleted:serviceAccount:sa-ulpzmj22am62wyi@${projectId}.iam.gserviceaccount.com?uid=112011146970661392355",
+        "serviceAccount:sa-basic@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:sa-ksf5jrjguiyec5a@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:sa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/composer.worker"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com"
+      ],
+      "role": "roles/compute.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-staging-gkenode.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.defaultNodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.nodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@container-engine-robot-staging.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@container-analysis.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containeranalysis.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@containerregistry.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containerregistry.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@dataflow-service-producer-prod.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dataflow.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-dataform.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dataform.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@dataproc-accounts.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dataproc.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-dialogflow.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dialogflow.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@dlp-api.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dlp.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com",
+        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:gsa-5iicx3d2mown45i@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:gsa-jzmjqzjfg2qqz5q@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:${projectId}@appspot.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@cloudcomposer-accounts.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
+        "serviceAccount:test-cloud-identity@${projectId}.iam.gserviceaccount.com",
+        "user:tlenarcik@google.com"
+      ],
+      "role": "roles/editor"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@firebase-rules.iam.gserviceaccount.com"
+      ],
+      "role": "roles/firebaserules.system"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkeonprem.iam.gserviceaccount.com"
+      ],
+      "role": "roles/gkeonprem.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@cloudcomposer-accounts.iam.gserviceaccount.com"
+      ],
+      "role": "roles/iam.serviceAccountAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/iam.serviceAccountUser"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-staging-krmapihosting.iam.gserviceaccount.com"
+      ],
+      "role": "roles/krmapihosting.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-logging.iam.gserviceaccount.com"
+      ],
+      "role": "roles/logging.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/monitoring.metricWriter"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-monitoring-notification.iam.gserviceaccount.com"
+      ],
+      "role": "roles/monitoring.notificationServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-networkconnectivity.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networkconnectivity.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-networkmanagement.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networkmanagement.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:cnrm-system@maqiuyu-kcc-test.iam.gserviceaccount.com",
+        "serviceAccount:config-controller-test-sa@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-staging-yakima.iam.gserviceaccount.com",
+        "user:maqiuyu@google.com"
+      ],
+      "role": "roles/owner"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-parallelstore.iam.gserviceaccount.com"
+      ],
+      "role": "roles/parallelstore.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:test-cloud-identity@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/privilegedaccessmanager.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-org-${organizationID}@gcp-sa-pam.iam.gserviceaccount.com"
+      ],
+      "role": "roles/privilegedaccessmanager.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/pubsub.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com"
+      ],
+      "role": "roles/redis.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@serverless-robot-prod.iam.gserviceaccount.com"
+      ],
+      "role": "roles/run.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@service-networking.iam.gserviceaccount.com"
+      ],
+      "role": "roles/servicenetworking.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
+        "serviceAccount:test-182c312e5f6dab7b@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:test-maqiuyu-20250312@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/storage.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:cloud-kubernetes-security-validation-server@system.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-artifactregistry.iam.gserviceaccount.com"
+      ],
+      "role": "roles/storage.objectViewer"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-stream.iam.gserviceaccount.com"
+      ],
+      "role": "roles/stream.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-vpcaccess.iam.gserviceaccount.com"
+      ],
+      "role": "roles/vpcaccess.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-websecurityscanner.iam.gserviceaccount.com"
+      ],
+      "role": "roles/websecurityscanner.serviceAgent"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "auditConfigs": [
+    {
+      "auditLogConfigs": [
+        {
+          "logType": "ADMIN_READ"
+        },
+        {
+          "logType": "DATA_READ"
+        },
+        {
+          "logType": "DATA_WRITE"
+        }
+      ],
+      "service": "container.googleapis.com"
+    }
+  ],
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:test-182c312e5f6dab7b@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:test-maqiuyu-20250312@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.colabEnterpriseUser"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-vertex-nb.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.colabServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform-cc.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.customCodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform-vm.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.notebookServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-alloydb.iam.gserviceaccount.com"
+      ],
+      "role": "roles/alloydb.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-apigee.iam.gserviceaccount.com"
+      ],
+      "role": "roles/apigee.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-apihub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/apihub.runtimeProjectServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:cloud-kubernetes-security-validation-server@system.gserviceaccount.com",
+        "user:wpanther@google.com"
+      ],
+      "role": "roles/artifactregistry.reader"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-artifactregistry.iam.gserviceaccount.com"
+      ],
+      "role": "roles/artifactregistry.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-bms.iam.gserviceaccount.com"
+      ],
+      "role": "roles/baremetalsolution.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/bigquery.dataEditor"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/bigquery.metadataViewer"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloudaicompanion.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudaicompanion.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}@cloudbuild.gserviceaccount.com"
+      ],
+      "role": "roles/cloudbuild.builds.builder"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloudbuild.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudbuild.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:test-cloud-identity@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudfunctions.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcf-admin-robot.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudfunctions.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/cloudkms.autokeyUser"
+    },
+    {
+      "members": [
+        "serviceAccount:service-707226307554@compute-system.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloudscheduler.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudscheduler.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@cloudcomposer-accounts.iam.gserviceaccount.com"
+      ],
+      "role": "roles/composer.serviceAgent"
+    },
+    {
+      "members": [
+        "deleted:serviceAccount:sa-ulpzmj22am62wyi@${projectId}.iam.gserviceaccount.com?uid=112011146970661392355",
+        "serviceAccount:sa-basic@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:sa-ksf5jrjguiyec5a@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:sa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/composer.worker"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com"
+      ],
+      "role": "roles/compute.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-staging-gkenode.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.defaultNodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.nodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@container-engine-robot-staging.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@container-analysis.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containeranalysis.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@containerregistry.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containerregistry.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@dataflow-service-producer-prod.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dataflow.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-dataform.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dataform.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@dataproc-accounts.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dataproc.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-dialogflow.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dialogflow.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@dlp-api.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dlp.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com",
+        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:gsa-5iicx3d2mown45i@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:gsa-jzmjqzjfg2qqz5q@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:${projectId}@appspot.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@cloudcomposer-accounts.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
+        "serviceAccount:test-cloud-identity@${projectId}.iam.gserviceaccount.com",
+        "user:tlenarcik@google.com"
+      ],
+      "role": "roles/editor"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@firebase-rules.iam.gserviceaccount.com"
+      ],
+      "role": "roles/firebaserules.system"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkeonprem.iam.gserviceaccount.com"
+      ],
+      "role": "roles/gkeonprem.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@cloudcomposer-accounts.iam.gserviceaccount.com"
+      ],
+      "role": "roles/iam.serviceAccountAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/iam.serviceAccountUser"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-staging-krmapihosting.iam.gserviceaccount.com"
+      ],
+      "role": "roles/krmapihosting.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-logging.iam.gserviceaccount.com"
+      ],
+      "role": "roles/logging.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/monitoring.metricWriter"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-monitoring-notification.iam.gserviceaccount.com"
+      ],
+      "role": "roles/monitoring.notificationServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-networkconnectivity.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networkconnectivity.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-networkmanagement.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networkmanagement.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:cnrm-system@maqiuyu-kcc-test.iam.gserviceaccount.com",
+        "serviceAccount:config-controller-test-sa@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-staging-yakima.iam.gserviceaccount.com",
+        "user:maqiuyu@google.com"
+      ],
+      "role": "roles/owner"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-parallelstore.iam.gserviceaccount.com"
+      ],
+      "role": "roles/parallelstore.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:test-cloud-identity@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/privilegedaccessmanager.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-org-${organizationID}@gcp-sa-pam.iam.gserviceaccount.com"
+      ],
+      "role": "roles/privilegedaccessmanager.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/pubsub.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com"
+      ],
+      "role": "roles/redis.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@serverless-robot-prod.iam.gserviceaccount.com"
+      ],
+      "role": "roles/run.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@service-networking.iam.gserviceaccount.com"
+      ],
+      "role": "roles/servicenetworking.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
+        "serviceAccount:test-182c312e5f6dab7b@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:test-maqiuyu-20250312@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/storage.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:cloud-kubernetes-security-validation-server@system.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-artifactregistry.iam.gserviceaccount.com"
+      ],
+      "role": "roles/storage.objectViewer"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-stream.iam.gserviceaccount.com"
+      ],
+      "role": "roles/stream.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-vpcaccess.iam.gserviceaccount.com"
+      ],
+      "role": "roles/vpcaccess.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-websecurityscanner.iam.gserviceaccount.com"
+      ],
+      "role": "roles/websecurityscanner.serviceAgent"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "auditConfigs": [
+    {
+      "auditLogConfigs": [
+        {
+          "logType": "ADMIN_READ"
+        },
+        {
+          "logType": "DATA_READ"
+        },
+        {
+          "logType": "DATA_WRITE"
+        }
+      ],
+      "service": "container.googleapis.com"
+    }
+  ],
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:test-182c312e5f6dab7b@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:test-maqiuyu-20250312@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.colabEnterpriseUser"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-vertex-nb.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.colabServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform-cc.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.customCodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform-vm.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.notebookServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-alloydb.iam.gserviceaccount.com"
+      ],
+      "role": "roles/alloydb.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-apigee.iam.gserviceaccount.com"
+      ],
+      "role": "roles/apigee.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-apihub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/apihub.runtimeProjectServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:cloud-kubernetes-security-validation-server@system.gserviceaccount.com",
+        "user:wpanther@google.com"
+      ],
+      "role": "roles/artifactregistry.reader"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-artifactregistry.iam.gserviceaccount.com"
+      ],
+      "role": "roles/artifactregistry.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-bms.iam.gserviceaccount.com"
+      ],
+      "role": "roles/baremetalsolution.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/bigquery.dataEditor"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/bigquery.metadataViewer"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloudaicompanion.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudaicompanion.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}@cloudbuild.gserviceaccount.com"
+      ],
+      "role": "roles/cloudbuild.builds.builder"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloudbuild.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudbuild.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:test-cloud-identity@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudfunctions.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcf-admin-robot.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudfunctions.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/cloudkms.autokeyUser"
+    },
+    {
+      "members": [
+        "serviceAccount:service-707226307554@compute-system.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloudscheduler.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudscheduler.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@cloudcomposer-accounts.iam.gserviceaccount.com"
+      ],
+      "role": "roles/composer.serviceAgent"
+    },
+    {
+      "members": [
+        "deleted:serviceAccount:sa-ulpzmj22am62wyi@${projectId}.iam.gserviceaccount.com?uid=112011146970661392355",
+        "serviceAccount:sa-basic@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:sa-ksf5jrjguiyec5a@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:sa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/composer.worker"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com"
+      ],
+      "role": "roles/compute.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-staging-gkenode.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.defaultNodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.nodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@container-engine-robot-staging.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@container-analysis.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containeranalysis.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@containerregistry.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containerregistry.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@dataflow-service-producer-prod.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dataflow.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-dataform.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dataform.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@dataproc-accounts.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dataproc.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-dialogflow.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dialogflow.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@dlp-api.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dlp.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com",
+        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:gsa-5iicx3d2mown45i@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:gsa-jzmjqzjfg2qqz5q@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:${projectId}@appspot.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@cloudcomposer-accounts.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
+        "serviceAccount:test-cloud-identity@${projectId}.iam.gserviceaccount.com",
+        "user:tlenarcik@google.com"
+      ],
+      "role": "roles/editor"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@firebase-rules.iam.gserviceaccount.com"
+      ],
+      "role": "roles/firebaserules.system"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkeonprem.iam.gserviceaccount.com"
+      ],
+      "role": "roles/gkeonprem.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@cloudcomposer-accounts.iam.gserviceaccount.com"
+      ],
+      "role": "roles/iam.serviceAccountAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/iam.serviceAccountUser"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-staging-krmapihosting.iam.gserviceaccount.com"
+      ],
+      "role": "roles/krmapihosting.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-logging.iam.gserviceaccount.com"
+      ],
+      "role": "roles/logging.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/monitoring.metricWriter"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-monitoring-notification.iam.gserviceaccount.com"
+      ],
+      "role": "roles/monitoring.notificationServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-networkconnectivity.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networkconnectivity.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-networkmanagement.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networkmanagement.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:cnrm-system@maqiuyu-kcc-test.iam.gserviceaccount.com",
+        "serviceAccount:config-controller-test-sa@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-staging-yakima.iam.gserviceaccount.com",
+        "user:maqiuyu@google.com"
+      ],
+      "role": "roles/owner"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-parallelstore.iam.gserviceaccount.com"
+      ],
+      "role": "roles/parallelstore.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:test-cloud-identity@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/privilegedaccessmanager.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-org-${organizationID}@gcp-sa-pam.iam.gserviceaccount.com"
+      ],
+      "role": "roles/privilegedaccessmanager.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/pubsub.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com"
+      ],
+      "role": "roles/redis.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@serverless-robot-prod.iam.gserviceaccount.com"
+      ],
+      "role": "roles/run.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@service-networking.iam.gserviceaccount.com"
+      ],
+      "role": "roles/servicenetworking.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
+        "serviceAccount:test-182c312e5f6dab7b@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:test-maqiuyu-20250312@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/storage.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:cloud-kubernetes-security-validation-server@system.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-artifactregistry.iam.gserviceaccount.com"
+      ],
+      "role": "roles/storage.objectViewer"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-stream.iam.gserviceaccount.com"
+      ],
+      "role": "roles/stream.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-vpcaccess.iam.gserviceaccount.com"
+      ],
+      "role": "roles/vpcaccess.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-websecurityscanner.iam.gserviceaccount.com"
+      ],
+      "role": "roles/websecurityscanner.serviceAgent"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "auditConfigs": [
+    {
+      "auditLogConfigs": [
+        {
+          "logType": "ADMIN_READ"
+        },
+        {
+          "logType": "DATA_READ"
+        },
+        {
+          "logType": "DATA_WRITE"
+        }
+      ],
+      "service": "container.googleapis.com"
+    }
+  ],
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:test-182c312e5f6dab7b@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:test-maqiuyu-20250312@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.colabEnterpriseUser"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-vertex-nb.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.colabServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform-cc.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.customCodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform-vm.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.notebookServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform.iam.gserviceaccount.com"
+      ],
+      "role": "roles/aiplatform.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-alloydb.iam.gserviceaccount.com"
+      ],
+      "role": "roles/alloydb.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-apigee.iam.gserviceaccount.com"
+      ],
+      "role": "roles/apigee.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-apihub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/apihub.runtimeProjectServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:cloud-kubernetes-security-validation-server@system.gserviceaccount.com",
+        "user:wpanther@google.com"
+      ],
+      "role": "roles/artifactregistry.reader"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-artifactregistry.iam.gserviceaccount.com"
+      ],
+      "role": "roles/artifactregistry.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-bms.iam.gserviceaccount.com"
+      ],
+      "role": "roles/baremetalsolution.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/bigquery.dataEditor"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/bigquery.metadataViewer"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloudaicompanion.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudaicompanion.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}@cloudbuild.gserviceaccount.com"
+      ],
+      "role": "roles/cloudbuild.builds.builder"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloudbuild.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudbuild.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:test-cloud-identity@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudfunctions.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcf-admin-robot.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudfunctions.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/cloudkms.autokeyUser"
+    },
+    {
+      "members": [
+        "serviceAccount:service-707226307554@compute-system.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-aiplatform.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-cloudscheduler.iam.gserviceaccount.com"
+      ],
+      "role": "roles/cloudscheduler.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@cloudcomposer-accounts.iam.gserviceaccount.com"
+      ],
+      "role": "roles/composer.serviceAgent"
+    },
+    {
+      "members": [
+        "deleted:serviceAccount:sa-ulpzmj22am62wyi@${projectId}.iam.gserviceaccount.com?uid=112011146970661392355",
+        "serviceAccount:sa-basic@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:sa-ksf5jrjguiyec5a@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:sa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/composer.worker"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com"
+      ],
+      "role": "roles/compute.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-staging-gkenode.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.defaultNodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkenode.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.nodeServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@container-engine-robot-staging.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com"
+      ],
+      "role": "roles/container.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@container-analysis.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containeranalysis.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@containerregistry.iam.gserviceaccount.com"
+      ],
+      "role": "roles/containerregistry.ServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@dataflow-service-producer-prod.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dataflow.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-dataform.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dataform.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@dataproc-accounts.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dataproc.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-dialogflow.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dialogflow.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@dlp-api.iam.gserviceaccount.com"
+      ],
+      "role": "roles/dlp.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:${projectNumber}@cloudservices.gserviceaccount.com",
+        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:gsa-5iicx3d2mown45i@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:gsa-jzmjqzjfg2qqz5q@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:${projectId}@appspot.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@cloudcomposer-accounts.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
+        "serviceAccount:test-cloud-identity@${projectId}.iam.gserviceaccount.com",
+        "user:tlenarcik@google.com"
+      ],
+      "role": "roles/editor"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@firebase-rules.iam.gserviceaccount.com"
+      ],
+      "role": "roles/firebaserules.system"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-gkeonprem.iam.gserviceaccount.com"
+      ],
+      "role": "roles/gkeonprem.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@cloudcomposer-accounts.iam.gserviceaccount.com"
+      ],
+      "role": "roles/iam.serviceAccountAdmin"
+    },
+    {
+      "members": [
+        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/iam.serviceAccountUser"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-krmapihosting.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-staging-krmapihosting.iam.gserviceaccount.com"
+      ],
+      "role": "roles/krmapihosting.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-logging.iam.gserviceaccount.com"
+      ],
+      "role": "roles/logging.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/monitoring.metricWriter"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-monitoring-notification.iam.gserviceaccount.com"
+      ],
+      "role": "roles/monitoring.notificationServiceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-networkconnectivity.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networkconnectivity.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-networkmanagement.iam.gserviceaccount.com"
+      ],
+      "role": "roles/networkmanagement.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:cnrm-system@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:cnrm-system@maqiuyu-kcc-test.iam.gserviceaccount.com",
+        "serviceAccount:config-controller-test-sa@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-staging-yakima.iam.gserviceaccount.com",
+        "user:maqiuyu@google.com"
+      ],
+      "role": "roles/owner"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-parallelstore.iam.gserviceaccount.com"
+      ],
+      "role": "roles/parallelstore.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:test-cloud-identity@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/privilegedaccessmanager.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:service-org-${organizationID}@gcp-sa-pam.iam.gserviceaccount.com"
+      ],
+      "role": "roles/privilegedaccessmanager.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
+      ],
+      "role": "roles/pubsub.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com"
+      ],
+      "role": "roles/redis.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@serverless-robot-prod.iam.gserviceaccount.com"
+      ],
+      "role": "roles/run.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@service-networking.iam.gserviceaccount.com"
+      ],
+      "role": "roles/servicenetworking.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-yakima.iam.gserviceaccount.com",
+        "serviceAccount:test-182c312e5f6dab7b@${projectId}.iam.gserviceaccount.com",
+        "serviceAccount:test-maqiuyu-20250312@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/storage.admin"
+    },
+    {
+      "members": [
+        "serviceAccount:cloud-kubernetes-security-validation-server@system.gserviceaccount.com",
+        "serviceAccount:service-${projectNumber}@gcp-sa-artifactregistry.iam.gserviceaccount.com"
+      ],
+      "role": "roles/storage.objectViewer"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-stream.iam.gserviceaccount.com"
+      ],
+      "role": "roles/stream.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-vpcaccess.iam.gserviceaccount.com"
+      ],
+      "role": "roles/vpcaccess.serviceAgent"
+    },
+    {
+      "members": [
+        "serviceAccount:service-${projectNumber}@gcp-sa-websecurityscanner.iam.gserviceaccount.com"
+      ],
+      "role": "roles/websecurityscanner.serviceAgent"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+GET https://composer.googleapis.com/v1/projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fenvironments%2Fcomposerenvironment-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "No such environment found: projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://composer.googleapis.com/v1/projects/${projectId}/locations/us-central1/environments?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "config": {
+    "nodeConfig": {
+      "serviceAccount": "sa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+    }
+  },
+  "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.orchestration.airflow.service.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "operationType": 1,
+    "resource": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
+    "resourceUuid": "7eca3d3d-2b50-473a-b91f-bf106a0deb91",
+    "state": 1
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://composer.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.orchestration.airflow.service.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "operationType": "CREATE",
+    "resource": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
+    "resourceUuid": "7eca3d3d-2b50-473a-b91f-bf106a0deb91",
+    "state": "SUCCEEDED"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.orchestration.airflow.service.v1.Environment",
+    "config": {
+      "airflowByoidUri": "https://7eca3d3d2b50473ab91fbf106a0deb91-dot-us-central1.composer.byoid.googleusercontent.com",
+      "airflowUri": "https://7eca3d3d2b50473ab91fbf106a0deb91-dot-us-central1.composer.googleusercontent.com",
+      "dagGcsPrefix": "gs://us-central1-composerenviron-cd7334a9-bucket/dags",
+      "dataRetentionConfig": {
+        "airflowMetadataRetentionConfig": {
+          "retentionDays": 60,
+          "retentionMode": "RETENTION_MODE_ENABLED"
+        }
+      },
+      "encryptionConfig": {},
+      "environmentSize": "ENVIRONMENT_SIZE_SMALL",
+      "nodeConfig": {
+        "composerInternalIpv4CidrBlock": "100.64.128.0/20",
+        "ipAllocationPolicy": {},
+        "serviceAccount": "sa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+      },
+      "privateEnvironmentConfig": {
+        "networkingConfig": {},
+        "networkingType": "PUBLIC"
+      },
+      "softwareConfig": {
+        "auditLogsReplicationMode": "AUDIT_LOGS_REPLICATION_DISABLED",
+        "cloudDataLineageIntegration": {},
+        "imageVersion": "composer-3-airflow-2.11.1-build.14",
+        "webServerPluginsMode": "PLUGINS_ENABLED"
+      },
+      "webServerNetworkAccessControl": {
+        "allowedIpRanges": [
+          {
+            "description": "Allows access from all IPv4 addresses (default value)",
+            "value": "0.0.0.0/0"
+          },
+          {
+            "description": "Allows access from all IPv6 addresses (default value)",
+            "value": "::0/0"
+          }
+        ]
+      },
+      "workloadsConfig": {
+        "dagProcessor": {
+          "count": 1,
+          "cpu": 1,
+          "memoryGb": 4,
+          "storageGb": 1
+        },
+        "scheduler": {
+          "count": 1,
+          "cpu": 0.5,
+          "memoryGb": 2,
+          "storageGb": 1
+        },
+        "triggerer": {
+          "count": 1,
+          "cpu": 1,
+          "memoryGb": 2
+        },
+        "webServer": {
+          "cpu": 1,
+          "memoryGb": 4,
+          "storageGb": 1
+        },
+        "worker": {
+          "cpu": 0.5,
+          "maxCount": 3,
+          "memoryGb": 2,
+          "minCount": 1,
+          "storageGb": 10
+        }
+      }
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
+    "storageConfig": {
+      "bucket": "us-central1-composerenviron-cd7334a9-bucket"
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z",
+    "uuid": "7eca3d3d-2b50-473a-b91f-bf106a0deb91"
+  }
+}
+
+---
+
+GET https://composer.googleapis.com/v1/projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fenvironments%2Fcomposerenvironment-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "config": {
+    "airflowByoidUri": "https://7eca3d3d2b50473ab91fbf106a0deb91-dot-us-central1.composer.byoid.googleusercontent.com",
+    "airflowUri": "https://7eca3d3d2b50473ab91fbf106a0deb91-dot-us-central1.composer.googleusercontent.com",
+    "dagGcsPrefix": "gs://us-central1-composerenviron-cd7334a9-bucket/dags",
+    "dataRetentionConfig": {
+      "airflowMetadataRetentionConfig": {
+        "retentionDays": 60,
+        "retentionMode": 1
+      }
+    },
+    "encryptionConfig": {},
+    "environmentSize": 1,
+    "nodeConfig": {
+      "composerInternalIpv4CidrBlock": "100.64.128.0/20",
+      "ipAllocationPolicy": {},
+      "serviceAccount": "sa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+    },
+    "privateEnvironmentConfig": {
+      "networkingConfig": {},
+      "networkingType": 2
+    },
+    "softwareConfig": {
+      "auditLogsReplicationMode": 1,
+      "cloudDataLineageIntegration": {},
+      "imageVersion": "composer-3-airflow-2.11.1-build.14",
+      "webServerPluginsMode": 2
+    },
+    "webServerNetworkAccessControl": {
+      "allowedIpRanges": [
+        {
+          "description": "Allows access from all IPv4 addresses (default value)",
+          "value": "0.0.0.0/0"
+        },
+        {
+          "description": "Allows access from all IPv6 addresses (default value)",
+          "value": "::0/0"
+        }
+      ]
+    },
+    "workloadsConfig": {
+      "dagProcessor": {
+        "count": 1,
+        "cpu": 1,
+        "memoryGb": 4,
+        "storageGb": 1
+      },
+      "scheduler": {
+        "count": 1,
+        "cpu": 0.5,
+        "memoryGb": 2,
+        "storageGb": 1
+      },
+      "triggerer": {
+        "count": 1,
+        "cpu": 1,
+        "memoryGb": 2
+      },
+      "webServer": {
+        "cpu": 1,
+        "memoryGb": 4,
+        "storageGb": 1
+      },
+      "worker": {
+        "cpu": 0.5,
+        "maxCount": 3,
+        "memoryGb": 2,
+        "minCount": 1,
+        "storageGb": 10
+      }
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
+  "state": 2,
+  "storageConfig": {
+    "bucket": "us-central1-composerenviron-cd7334a9-bucket"
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "uuid": "7eca3d3d-2b50-473a-b91f-bf106a0deb91"
+}
+
+---
+
+PATCH https://composer.googleapis.com/v1/projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=labels
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fenvironments%2Fcomposerenvironment-${uniqueId}
+
+{
+  "labels": {
+    "test": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.orchestration.airflow.service.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "operationType": 3,
+    "resource": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
+    "resourceUuid": "7eca3d3d-2b50-473a-b91f-bf106a0deb91",
+    "state": 1
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://composer.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.orchestration.airflow.service.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "operationType": "UPDATE",
+    "resource": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
+    "resourceUuid": "7eca3d3d-2b50-473a-b91f-bf106a0deb91",
+    "state": "SUCCEEDED"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.orchestration.airflow.service.v1.Environment",
+    "config": {
+      "airflowByoidUri": "https://7eca3d3d2b50473ab91fbf106a0deb91-dot-us-central1.composer.byoid.googleusercontent.com",
+      "airflowUri": "https://7eca3d3d2b50473ab91fbf106a0deb91-dot-us-central1.composer.googleusercontent.com",
+      "dagGcsPrefix": "gs://us-central1-composerenviron-cd7334a9-bucket/dags",
+      "dataRetentionConfig": {
+        "airflowMetadataRetentionConfig": {
+          "retentionDays": 60,
+          "retentionMode": "RETENTION_MODE_ENABLED"
+        }
+      },
+      "encryptionConfig": {},
+      "environmentSize": "ENVIRONMENT_SIZE_SMALL",
+      "nodeConfig": {
+        "composerInternalIpv4CidrBlock": "100.64.128.0/20",
+        "ipAllocationPolicy": {},
+        "serviceAccount": "sa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+      },
+      "privateEnvironmentConfig": {
+        "networkingConfig": {},
+        "networkingType": "PUBLIC"
+      },
+      "softwareConfig": {
+        "auditLogsReplicationMode": "AUDIT_LOGS_REPLICATION_DISABLED",
+        "cloudDataLineageIntegration": {},
+        "imageVersion": "composer-3-airflow-2.11.1-build.14",
+        "webServerPluginsMode": "PLUGINS_ENABLED"
+      },
+      "webServerNetworkAccessControl": {
+        "allowedIpRanges": [
+          {
+            "description": "Allows access from all IPv4 addresses (default value)",
+            "value": "0.0.0.0/0"
+          },
+          {
+            "description": "Allows access from all IPv6 addresses (default value)",
+            "value": "::0/0"
+          }
+        ]
+      },
+      "workloadsConfig": {
+        "dagProcessor": {
+          "count": 1,
+          "cpu": 1,
+          "memoryGb": 4,
+          "storageGb": 1
+        },
+        "scheduler": {
+          "count": 1,
+          "cpu": 0.5,
+          "memoryGb": 2,
+          "storageGb": 1
+        },
+        "triggerer": {
+          "count": 1,
+          "cpu": 1,
+          "memoryGb": 2
+        },
+        "webServer": {
+          "cpu": 1,
+          "memoryGb": 4,
+          "storageGb": 1
+        },
+        "worker": {
+          "cpu": 0.5,
+          "maxCount": 3,
+          "memoryGb": 2,
+          "minCount": 1,
+          "storageGb": 10
+        }
+      }
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "labels": {
+      "test": "true"
+    },
+    "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
+    "storageConfig": {
+      "bucket": "us-central1-composerenviron-cd7334a9-bucket"
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z",
+    "uuid": "7eca3d3d-2b50-473a-b91f-bf106a0deb91"
+  }
+}
+
+---
+
+GET https://composer.googleapis.com/v1/projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fenvironments%2Fcomposerenvironment-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "config": {
+    "airflowByoidUri": "https://7eca3d3d2b50473ab91fbf106a0deb91-dot-us-central1.composer.byoid.googleusercontent.com",
+    "airflowUri": "https://7eca3d3d2b50473ab91fbf106a0deb91-dot-us-central1.composer.googleusercontent.com",
+    "dagGcsPrefix": "gs://us-central1-composerenviron-cd7334a9-bucket/dags",
+    "dataRetentionConfig": {
+      "airflowMetadataRetentionConfig": {
+        "retentionDays": 60,
+        "retentionMode": 1
+      }
+    },
+    "encryptionConfig": {},
+    "environmentSize": 1,
+    "nodeConfig": {
+      "composerInternalIpv4CidrBlock": "100.64.128.0/20",
+      "ipAllocationPolicy": {},
+      "serviceAccount": "sa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+    },
+    "privateEnvironmentConfig": {
+      "networkingConfig": {},
+      "networkingType": 2
+    },
+    "softwareConfig": {
+      "auditLogsReplicationMode": 1,
+      "cloudDataLineageIntegration": {},
+      "imageVersion": "composer-3-airflow-2.11.1-build.14",
+      "webServerPluginsMode": 2
+    },
+    "webServerNetworkAccessControl": {
+      "allowedIpRanges": [
+        {
+          "description": "Allows access from all IPv4 addresses (default value)",
+          "value": "0.0.0.0/0"
+        },
+        {
+          "description": "Allows access from all IPv6 addresses (default value)",
+          "value": "::0/0"
+        }
+      ]
+    },
+    "workloadsConfig": {
+      "dagProcessor": {
+        "count": 1,
+        "cpu": 1,
+        "memoryGb": 4,
+        "storageGb": 1
+      },
+      "scheduler": {
+        "count": 1,
+        "cpu": 0.5,
+        "memoryGb": 2,
+        "storageGb": 1
+      },
+      "triggerer": {
+        "count": 1,
+        "cpu": 1,
+        "memoryGb": 2
+      },
+      "webServer": {
+        "cpu": 1,
+        "memoryGb": 4,
+        "storageGb": 1
+      },
+      "worker": {
+        "cpu": 0.5,
+        "maxCount": 3,
+        "memoryGb": 2,
+        "minCount": 1,
+        "storageGb": 10
+      }
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "test": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
+  "state": 2,
+  "storageConfig": {
+    "bucket": "us-central1-composerenviron-cd7334a9-bucket"
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "uuid": "7eca3d3d-2b50-473a-b91f-bf106a0deb91"
+}
+
+---
+
+DELETE https://composer.googleapis.com/v1/projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fenvironments%2Fcomposerenvironment-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.orchestration.airflow.service.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "operationType": 2,
+    "resource": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
+    "resourceUuid": "7eca3d3d-2b50-473a-b91f-bf106a0deb91",
+    "state": 1
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://composer.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.orchestration.airflow.service.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "operationType": "DELETE",
+    "resource": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
+    "resourceUuid": "7eca3d3d-2b50-473a-b91f-bf106a0deb91",
+    "state": "SUCCEEDED"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "email": "sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+DELETE https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

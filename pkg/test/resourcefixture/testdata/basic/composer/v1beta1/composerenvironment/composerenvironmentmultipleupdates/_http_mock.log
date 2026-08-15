@@ -1,0 +1,1570 @@
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Unknown service account",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Unknown service account",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{
+  "accountId": "sa-${uniqueId}",
+  "serviceAccount": {}
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "email": "sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "email": "sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A="
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A="
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A="
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:setIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{
+  "policy": {
+    "bindings": [
+      {
+        "members": [
+          "serviceAccount:sa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+        ],
+        "role": "roles/composer.worker"
+      }
+    ],
+    "etag": "abcdef0123A=",
+    "version": 3
+  },
+  "updateMask": "bindings,etag,auditConfigs"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:sa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/composer.worker"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:sa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/composer.worker"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:sa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/composer.worker"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:sa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/composer.worker"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:sa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/composer.worker"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/bucket-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The specified bucket does not exist.",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The specified bucket does not exist."
+  }
+}
+
+---
+
+POST https://storage.googleapis.com/storage/v1/b?alt=json&prettyPrint=false&project=${projectId}
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{
+  "iamConfiguration": {
+    "uniformBucketLevelAccess": {
+      "enabled": true
+    }
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lifecycle": {
+    "rule": []
+  },
+  "location": "us-central1",
+  "name": "bucket-${uniqueId}",
+  "storageClass": "STANDARD"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US-CENTRAL1",
+  "locationType": "region",
+  "metageneration": "1",
+  "name": "bucket-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "satisfiesPZI": true,
+  "selfLink": "https://www.googleapis.com/storage/v1/b/bucket-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/bucket-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US-CENTRAL1",
+  "locationType": "region",
+  "metageneration": "1",
+  "name": "bucket-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "satisfiesPZI": true,
+  "selfLink": "https://www.googleapis.com/storage/v1/b/bucket-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://composer.googleapis.com/v1/projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fenvironments%2Fcomposerenvironment-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "No such environment found: projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://composer.googleapis.com/v1/projects/${projectId}/locations/us-central1/environments?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "config": {
+    "nodeConfig": {
+      "serviceAccount": "sa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+    },
+    "workloadsConfig": {
+      "dagProcessor": {
+        "count": 1,
+        "cpu": 0.5,
+        "memoryGb": 2,
+        "storageGb": 1
+      },
+      "scheduler": {
+        "count": 1,
+        "cpu": 0.5,
+        "memoryGb": 2,
+        "storageGb": 1
+      },
+      "triggerer": {
+        "count": 1,
+        "cpu": 0.5,
+        "memoryGb": 1
+      },
+      "webServer": {
+        "cpu": 0.5,
+        "memoryGb": 2,
+        "storageGb": 1
+      },
+      "worker": {
+        "cpu": 0.5,
+        "maxCount": 3,
+        "memoryGb": 2,
+        "minCount": 1,
+        "storageGb": 1
+      }
+    }
+  },
+  "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.orchestration.airflow.service.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "operationType": 1,
+    "resource": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
+    "resourceUuid": "1234abcd-1234-abcd-1234-abcd1234abcd",
+    "state": 1
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://composer.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.orchestration.airflow.service.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "operationType": "CREATE",
+    "resource": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
+    "resourceUuid": "1234abcd-1234-abcd-1234-abcd1234abcd",
+    "state": "SUCCEEDED"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.orchestration.airflow.service.v1.Environment",
+    "config": {
+      "airflowByoidUri": "https://1234abcd1234abcd1234abcd1234abcd-dot-us-central1.composer.byoid.googleusercontent.com",
+      "airflowUri": "https://1234abcd1234abcd1234abcd1234abcd-dot-us-central1.composer.googleusercontent.com",
+      "dagGcsPrefix": "gs://us-central1-composerenviron-1234abcd-bucket/dags",
+      "dataRetentionConfig": {
+        "airflowMetadataRetentionConfig": {
+          "retentionDays": 60,
+          "retentionMode": "RETENTION_MODE_ENABLED"
+        }
+      },
+      "encryptionConfig": {},
+      "environmentSize": "ENVIRONMENT_SIZE_SMALL",
+      "nodeConfig": {
+        "composerInternalIpv4CidrBlock": "100.64.128.0/20",
+        "ipAllocationPolicy": {},
+        "serviceAccount": "sa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+      },
+      "privateEnvironmentConfig": {
+        "networkingConfig": {}
+      },
+      "softwareConfig": {
+        "cloudDataLineageIntegration": {},
+        "imageVersion": "composer-3-airflow-2.11.1-build.14",
+        "webServerPluginsMode": "PLUGINS_ENABLED"
+      },
+      "webServerNetworkAccessControl": {
+        "allowedIpRanges": [
+          {
+            "description": "Allows access from all IPv4 addresses (default value)",
+            "value": "0.0.0.0/0"
+          },
+          {
+            "description": "Allows access from all IPv6 addresses (default value)",
+            "value": "::0/0"
+          }
+        ]
+      },
+      "workloadsConfig": {
+        "dagProcessor": {
+          "count": 1,
+          "cpu": 0.5,
+          "memoryGb": 2,
+          "storageGb": 1
+        },
+        "scheduler": {
+          "count": 1,
+          "cpu": 0.5,
+          "memoryGb": 2,
+          "storageGb": 1
+        },
+        "triggerer": {
+          "count": 1,
+          "cpu": 0.5,
+          "memoryGb": 1
+        },
+        "webServer": {
+          "cpu": 0.5,
+          "memoryGb": 2,
+          "storageGb": 1
+        },
+        "worker": {
+          "cpu": 0.5,
+          "maxCount": 3,
+          "memoryGb": 2,
+          "minCount": 1,
+          "storageGb": 1
+        }
+      }
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
+    "storageConfig": {
+      "bucket": "us-central1-composerenviron-1234abcd-bucket"
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z",
+    "uuid": "1234abcd-1234-abcd-1234-abcd1234abcd"
+  }
+}
+
+---
+
+GET https://composer.googleapis.com/v1/projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fenvironments%2Fcomposerenvironment-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "config": {
+    "airflowByoidUri": "https://1234abcd1234abcd1234abcd1234abcd-dot-us-central1.composer.byoid.googleusercontent.com",
+    "airflowUri": "https://1234abcd1234abcd1234abcd1234abcd-dot-us-central1.composer.googleusercontent.com",
+    "dagGcsPrefix": "gs://us-central1-composerenviron-1234abcd-bucket/dags",
+    "dataRetentionConfig": {
+      "airflowMetadataRetentionConfig": {
+        "retentionDays": 60,
+        "retentionMode": 1
+      }
+    },
+    "encryptionConfig": {},
+    "environmentSize": 1,
+    "nodeConfig": {
+      "composerInternalIpv4CidrBlock": "100.64.128.0/20",
+      "ipAllocationPolicy": {},
+      "serviceAccount": "sa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+    },
+    "privateEnvironmentConfig": {
+      "networkingConfig": {},
+      "networkingType": 2
+    },
+    "softwareConfig": {
+      "auditLogsReplicationMode": 1,
+      "cloudDataLineageIntegration": {},
+      "imageVersion": "composer-3-airflow-2.11.1-build.14",
+      "webServerPluginsMode": 2
+    },
+    "webServerNetworkAccessControl": {
+      "allowedIpRanges": [
+        {
+          "description": "Allows access from all IPv4 addresses (default value)",
+          "value": "0.0.0.0/0"
+        },
+        {
+          "description": "Allows access from all IPv6 addresses (default value)",
+          "value": "::0/0"
+        }
+      ]
+    },
+    "workloadsConfig": {
+      "dagProcessor": {
+        "count": 1,
+        "cpu": 0.5,
+        "memoryGb": 2,
+        "storageGb": 1
+      },
+      "scheduler": {
+        "count": 1,
+        "cpu": 0.5,
+        "memoryGb": 2,
+        "storageGb": 1
+      },
+      "triggerer": {
+        "count": 1,
+        "cpu": 0.5,
+        "memoryGb": 1
+      },
+      "webServer": {
+        "cpu": 0.5,
+        "memoryGb": 2,
+        "storageGb": 1
+      },
+      "worker": {
+        "cpu": 0.5,
+        "maxCount": 3,
+        "memoryGb": 2,
+        "minCount": 1,
+        "storageGb": 1
+      }
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
+  "state": 2,
+  "storageConfig": {
+    "bucket": "us-central1-composerenviron-1234abcd-bucket"
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "uuid": "1234abcd-1234-abcd-1234-abcd1234abcd"
+}
+
+---
+
+PATCH https://composer.googleapis.com/v1/projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=config.workloadsConfig
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fenvironments%2Fcomposerenvironment-${uniqueId}
+
+{
+  "config": {
+    "workloadsConfig": {
+      "dagProcessor": {
+        "count": 2,
+        "cpu": 1,
+        "memoryGb": 4,
+        "storageGb": 2
+      },
+      "scheduler": {
+        "count": 2,
+        "cpu": 1,
+        "memoryGb": 2.5,
+        "storageGb": 2
+      },
+      "triggerer": {
+        "count": 2,
+        "cpu": 1,
+        "memoryGb": 1.5
+      },
+      "webServer": {
+        "cpu": 1,
+        "memoryGb": 3,
+        "storageGb": 2
+      },
+      "worker": {
+        "cpu": 1,
+        "maxCount": 6,
+        "memoryGb": 2.5,
+        "minCount": 2,
+        "storageGb": 2
+      }
+    }
+  },
+  "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.orchestration.airflow.service.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "operationType": 3,
+    "resource": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
+    "resourceUuid": "1234abcd-1234-abcd-1234-abcd1234abcd",
+    "state": 1
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://composer.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.orchestration.airflow.service.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "operationType": "UPDATE",
+    "resource": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
+    "resourceUuid": "1234abcd-1234-abcd-1234-abcd1234abcd",
+    "state": "SUCCEEDED"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.orchestration.airflow.service.v1.Environment",
+    "config": {
+      "airflowByoidUri": "https://1234abcd1234abcd1234abcd1234abcd-dot-us-central1.composer.byoid.googleusercontent.com",
+      "airflowUri": "https://1234abcd1234abcd1234abcd1234abcd-dot-us-central1.composer.googleusercontent.com",
+      "dagGcsPrefix": "gs://us-central1-composerenviron-1234abcd-bucket/dags",
+      "dataRetentionConfig": {
+        "airflowMetadataRetentionConfig": {
+          "retentionDays": 60,
+          "retentionMode": "RETENTION_MODE_ENABLED"
+        }
+      },
+      "encryptionConfig": {},
+      "environmentSize": "ENVIRONMENT_SIZE_SMALL",
+      "nodeConfig": {
+        "composerInternalIpv4CidrBlock": "100.64.128.0/20",
+        "ipAllocationPolicy": {},
+        "serviceAccount": "sa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+      },
+      "privateEnvironmentConfig": {
+        "networkingConfig": {}
+      },
+      "softwareConfig": {
+        "cloudDataLineageIntegration": {},
+        "imageVersion": "composer-3-airflow-2.11.1-build.14",
+        "webServerPluginsMode": "PLUGINS_ENABLED"
+      },
+      "webServerNetworkAccessControl": {
+        "allowedIpRanges": [
+          {
+            "description": "Allows access from all IPv4 addresses (default value)",
+            "value": "0.0.0.0/0"
+          },
+          {
+            "description": "Allows access from all IPv6 addresses (default value)",
+            "value": "::0/0"
+          }
+        ]
+      },
+      "workloadsConfig": {
+        "dagProcessor": {
+          "count": 2,
+          "cpu": 1,
+          "memoryGb": 4,
+          "storageGb": 2
+        },
+        "scheduler": {
+          "count": 2,
+          "cpu": 1,
+          "memoryGb": 2.5,
+          "storageGb": 2
+        },
+        "triggerer": {
+          "count": 2,
+          "cpu": 1,
+          "memoryGb": 1.5
+        },
+        "webServer": {
+          "cpu": 1,
+          "memoryGb": 3,
+          "storageGb": 2
+        },
+        "worker": {
+          "cpu": 1,
+          "maxCount": 6,
+          "memoryGb": 2.5,
+          "minCount": 2,
+          "storageGb": 2
+        }
+      }
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
+    "storageConfig": {
+      "bucket": "us-central1-composerenviron-1234abcd-bucket"
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z",
+    "uuid": "1234abcd-1234-abcd-1234-abcd1234abcd"
+  }
+}
+
+---
+
+PATCH https://composer.googleapis.com/v1/projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=config.recoveryConfig.scheduledSnapshotsConfig
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fenvironments%2Fcomposerenvironment-${uniqueId}
+
+{
+  "config": {
+    "recoveryConfig": {
+      "scheduledSnapshotsConfig": {
+        "enabled": true,
+        "snapshotCreationSchedule": "0 5 * * *",
+        "snapshotLocation": "gs://bucket-${uniqueId}/snapshots",
+        "timeZone": "UTC"
+      }
+    }
+  },
+  "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.orchestration.airflow.service.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "operationType": 3,
+    "resource": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
+    "resourceUuid": "1234abcd-1234-abcd-1234-abcd1234abcd",
+    "state": 1
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://composer.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.orchestration.airflow.service.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "operationType": "UPDATE",
+    "resource": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
+    "resourceUuid": "1234abcd-1234-abcd-1234-abcd1234abcd",
+    "state": "SUCCEEDED"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.orchestration.airflow.service.v1.Environment",
+    "config": {
+      "airflowByoidUri": "https://1234abcd1234abcd1234abcd1234abcd-dot-us-central1.composer.byoid.googleusercontent.com",
+      "airflowUri": "https://1234abcd1234abcd1234abcd1234abcd-dot-us-central1.composer.googleusercontent.com",
+      "dagGcsPrefix": "gs://us-central1-composerenviron-1234abcd-bucket/dags",
+      "dataRetentionConfig": {
+        "airflowMetadataRetentionConfig": {
+          "retentionDays": 60,
+          "retentionMode": "RETENTION_MODE_ENABLED"
+        }
+      },
+      "encryptionConfig": {},
+      "environmentSize": "ENVIRONMENT_SIZE_SMALL",
+      "nodeConfig": {
+        "composerInternalIpv4CidrBlock": "100.64.128.0/20",
+        "ipAllocationPolicy": {},
+        "serviceAccount": "sa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+      },
+      "privateEnvironmentConfig": {
+        "networkingConfig": {}
+      },
+      "recoveryConfig": {
+        "scheduledSnapshotsConfig": {
+          "enabled": true,
+          "snapshotCreationSchedule": "0 5 * * *",
+          "snapshotLocation": "gs://bucket-${uniqueId}/snapshots",
+          "timeZone": "UTC"
+        }
+      },
+      "softwareConfig": {
+        "cloudDataLineageIntegration": {},
+        "imageVersion": "composer-3-airflow-2.11.1-build.14",
+        "webServerPluginsMode": "PLUGINS_ENABLED"
+      },
+      "webServerNetworkAccessControl": {
+        "allowedIpRanges": [
+          {
+            "description": "Allows access from all IPv4 addresses (default value)",
+            "value": "0.0.0.0/0"
+          },
+          {
+            "description": "Allows access from all IPv6 addresses (default value)",
+            "value": "::0/0"
+          }
+        ]
+      },
+      "workloadsConfig": {
+        "dagProcessor": {
+          "count": 2,
+          "cpu": 1,
+          "memoryGb": 4,
+          "storageGb": 2
+        },
+        "scheduler": {
+          "count": 2,
+          "cpu": 1,
+          "memoryGb": 2.5,
+          "storageGb": 2
+        },
+        "triggerer": {
+          "count": 2,
+          "cpu": 1,
+          "memoryGb": 1.5
+        },
+        "webServer": {
+          "cpu": 1,
+          "memoryGb": 3,
+          "storageGb": 2
+        },
+        "worker": {
+          "cpu": 1,
+          "maxCount": 6,
+          "memoryGb": 2.5,
+          "minCount": 2,
+          "storageGb": 2
+        }
+      }
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
+    "storageConfig": {
+      "bucket": "us-central1-composerenviron-1234abcd-bucket"
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z",
+    "uuid": "1234abcd-1234-abcd-1234-abcd1234abcd"
+  }
+}
+
+---
+
+PATCH https://composer.googleapis.com/v1/projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=config.resilienceMode
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fenvironments%2Fcomposerenvironment-${uniqueId}
+
+{
+  "config": {
+    "resilienceMode": 1
+  },
+  "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.orchestration.airflow.service.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "operationType": 3,
+    "resource": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
+    "resourceUuid": "1234abcd-1234-abcd-1234-abcd1234abcd",
+    "state": 1
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://composer.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.orchestration.airflow.service.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "operationType": "UPDATE",
+    "resource": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
+    "resourceUuid": "1234abcd-1234-abcd-1234-abcd1234abcd",
+    "state": "SUCCEEDED"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.orchestration.airflow.service.v1.Environment",
+    "config": {
+      "airflowByoidUri": "https://1234abcd1234abcd1234abcd1234abcd-dot-us-central1.composer.byoid.googleusercontent.com",
+      "airflowUri": "https://1234abcd1234abcd1234abcd1234abcd-dot-us-central1.composer.googleusercontent.com",
+      "dagGcsPrefix": "gs://us-central1-composerenviron-1234abcd-bucket/dags",
+      "dataRetentionConfig": {
+        "airflowMetadataRetentionConfig": {
+          "retentionDays": 60,
+          "retentionMode": "RETENTION_MODE_ENABLED"
+        }
+      },
+      "encryptionConfig": {},
+      "environmentSize": "ENVIRONMENT_SIZE_SMALL",
+      "nodeConfig": {
+        "composerInternalIpv4CidrBlock": "100.64.128.0/20",
+        "ipAllocationPolicy": {},
+        "serviceAccount": "sa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+      },
+      "privateEnvironmentConfig": {
+        "networkingConfig": {}
+      },
+      "recoveryConfig": {
+        "scheduledSnapshotsConfig": {
+          "enabled": true,
+          "snapshotCreationSchedule": "0 5 * * *",
+          "snapshotLocation": "gs://bucket-${uniqueId}/snapshots",
+          "timeZone": "UTC"
+        }
+      },
+      "resilienceMode": "HIGH_RESILIENCE",
+      "softwareConfig": {
+        "cloudDataLineageIntegration": {},
+        "imageVersion": "composer-3-airflow-2.11.1-build.14",
+        "webServerPluginsMode": "PLUGINS_ENABLED"
+      },
+      "webServerNetworkAccessControl": {
+        "allowedIpRanges": [
+          {
+            "description": "Allows access from all IPv4 addresses (default value)",
+            "value": "0.0.0.0/0"
+          },
+          {
+            "description": "Allows access from all IPv6 addresses (default value)",
+            "value": "::0/0"
+          }
+        ]
+      },
+      "workloadsConfig": {
+        "dagProcessor": {
+          "count": 2,
+          "cpu": 1,
+          "memoryGb": 4,
+          "storageGb": 2
+        },
+        "scheduler": {
+          "count": 2,
+          "cpu": 1,
+          "memoryGb": 2.5,
+          "storageGb": 2
+        },
+        "triggerer": {
+          "count": 2,
+          "cpu": 1,
+          "memoryGb": 1.5
+        },
+        "webServer": {
+          "cpu": 1,
+          "memoryGb": 3,
+          "storageGb": 2
+        },
+        "worker": {
+          "cpu": 1,
+          "maxCount": 6,
+          "memoryGb": 2.5,
+          "minCount": 2,
+          "storageGb": 2
+        }
+      }
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
+    "storageConfig": {
+      "bucket": "us-central1-composerenviron-1234abcd-bucket"
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z",
+    "uuid": "1234abcd-1234-abcd-1234-abcd1234abcd"
+  }
+}
+
+---
+
+GET https://composer.googleapis.com/v1/projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fenvironments%2Fcomposerenvironment-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "config": {
+    "airflowByoidUri": "https://1234abcd1234abcd1234abcd1234abcd-dot-us-central1.composer.byoid.googleusercontent.com",
+    "airflowUri": "https://1234abcd1234abcd1234abcd1234abcd-dot-us-central1.composer.googleusercontent.com",
+    "dagGcsPrefix": "gs://us-central1-composerenviron-1234abcd-bucket/dags",
+    "dataRetentionConfig": {
+      "airflowMetadataRetentionConfig": {
+        "retentionDays": 60,
+        "retentionMode": 1
+      }
+    },
+    "encryptionConfig": {},
+    "environmentSize": 1,
+    "nodeConfig": {
+      "composerInternalIpv4CidrBlock": "100.64.128.0/20",
+      "ipAllocationPolicy": {},
+      "serviceAccount": "sa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+    },
+    "privateEnvironmentConfig": {
+      "networkingConfig": {},
+      "networkingType": 2
+    },
+    "recoveryConfig": {
+      "scheduledSnapshotsConfig": {
+        "enabled": true,
+        "snapshotCreationSchedule": "0 5 * * *",
+        "snapshotLocation": "gs://bucket-${uniqueId}/snapshots",
+        "timeZone": "UTC"
+      }
+    },
+    "resilienceMode": 1,
+    "softwareConfig": {
+      "auditLogsReplicationMode": 1,
+      "cloudDataLineageIntegration": {},
+      "imageVersion": "composer-3-airflow-2.11.1-build.14",
+      "webServerPluginsMode": 2
+    },
+    "webServerNetworkAccessControl": {
+      "allowedIpRanges": [
+        {
+          "description": "Allows access from all IPv4 addresses (default value)",
+          "value": "0.0.0.0/0"
+        },
+        {
+          "description": "Allows access from all IPv6 addresses (default value)",
+          "value": "::0/0"
+        }
+      ]
+    },
+    "workloadsConfig": {
+      "dagProcessor": {
+        "count": 2,
+        "cpu": 1,
+        "memoryGb": 4,
+        "storageGb": 2
+      },
+      "scheduler": {
+        "count": 2,
+        "cpu": 1,
+        "memoryGb": 2.5,
+        "storageGb": 2
+      },
+      "triggerer": {
+        "count": 2,
+        "cpu": 1,
+        "memoryGb": 1.5
+      },
+      "webServer": {
+        "cpu": 1,
+        "memoryGb": 3,
+        "storageGb": 2
+      },
+      "worker": {
+        "cpu": 1,
+        "maxCount": 6,
+        "memoryGb": 2.5,
+        "minCount": 2,
+        "storageGb": 2
+      }
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
+  "state": 2,
+  "storageConfig": {
+    "bucket": "us-central1-composerenviron-1234abcd-bucket"
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "uuid": "1234abcd-1234-abcd-1234-abcd1234abcd"
+}
+
+---
+
+DELETE https://composer.googleapis.com/v1/projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fenvironments%2Fcomposerenvironment-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.orchestration.airflow.service.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "operationType": 2,
+    "resource": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
+    "resourceUuid": "1234abcd-1234-abcd-1234-abcd1234abcd",
+    "state": 1
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://composer.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.orchestration.airflow.service.v1.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "operationType": "DELETE",
+    "resource": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}",
+    "resourceUuid": "1234abcd-1234-abcd-1234-abcd1234abcd",
+    "state": "SUCCEEDED"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/bucket-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": true,
+      "lockedTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US-CENTRAL1",
+  "locationType": "region",
+  "metageneration": "1",
+  "name": "bucket-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "satisfiesPZI": true,
+  "selfLink": "https://www.googleapis.com/storage/v1/b/bucket-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/bucket-${uniqueId}/o?alt=json&prettyPrint=false&versions=true
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "kind": "storage#objects",
+  "prefixes": [
+    "testfolder",
+    "testmanagedfolder"
+  ]
+}
+
+---
+
+DELETE https://storage.googleapis.com/storage/v1/b/bucket-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+204 No Content
+Content-Type: application/json
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "email": "sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+DELETE https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

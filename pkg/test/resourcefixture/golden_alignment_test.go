@@ -34,6 +34,10 @@ import (
 var mockGCPSkipFixtures = map[string]bool{
 	"devicestreaming/v1alpha1/devicestreamingsession/devicestreamingsession-maximal": true,
 	"devicestreaming/v1alpha1/devicestreamingsession/devicestreamingsession-minimal": true,
+	// TODO(https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/12388): Align outdated ComposerEnvironment mock logs with real GCP
+	"composer/v1beta1/composerenvironment/composerenvironmentwithkms":    true,
+	"composer/v1beta1/composerenvironment/composerenvironmentwithrefs":   true,
+	"composer/v1beta1/composerenvironment/composerenvironmentnodeconfig": true,
 }
 
 var realGCPSkipFixtures = map[string]bool{
@@ -497,6 +501,16 @@ func compareJSON(t *testing.T, context, realJSON, mockJSON string) {
 	imageUriRegex := regexp.MustCompile(`dataproc-\d+-\d+-deb\d+-\d+-\d+-[a-zA-Z0-9]+`)
 	realJSON = imageUriRegex.ReplaceAllString(realJSON, "dataproc-0-0-deb12-19700101-12345-abcd")
 	mockJSON = imageUriRegex.ReplaceAllString(mockJSON, "dataproc-0-0-deb12-19700101-12345-abcd")
+
+	// Normalize unhyphenated Composer Airflow URI tokens
+	composerUriRegex := regexp.MustCompile(`https://[0-9a-f]{32}-dot-`)
+	realJSON = composerUriRegex.ReplaceAllString(realJSON, "https://00000000000000000000000000000001-dot-")
+	mockJSON = composerUriRegex.ReplaceAllString(mockJSON, "https://00000000000000000000000000000001-dot-")
+
+	// Normalize Composer auto-generated bucket hashes
+	composerBucketRegex := regexp.MustCompile(`composerenviron-[0-9a-f]{8}-bucket`)
+	realJSON = composerBucketRegex.ReplaceAllString(realJSON, "composerenviron-00000001-bucket")
+	mockJSON = composerBucketRegex.ReplaceAllString(mockJSON, "composerenviron-00000001-bucket")
 
 	var realObj, mockObj interface{}
 

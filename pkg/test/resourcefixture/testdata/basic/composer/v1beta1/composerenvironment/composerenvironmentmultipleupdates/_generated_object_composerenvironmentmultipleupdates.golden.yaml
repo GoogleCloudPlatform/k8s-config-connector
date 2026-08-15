@@ -11,11 +11,41 @@ metadata:
   namespace: ${uniqueId}
 spec:
   config:
-    encryptionConfig:
-      kmsKeyRef:
-        external: projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}
-  labels:
-    test: "true"
+    nodeConfig:
+      serviceAccountRef:
+        name: sa-${uniqueId}
+    recoveryConfig:
+      scheduledSnapshotsConfig:
+        enabled: true
+        snapshotCreationSchedule: 0 5 * * *
+        snapshotLocation: gs://bucket-${uniqueId}/snapshots
+        timeZone: UTC
+    resilienceMode: HIGH_RESILIENCE
+    workloadsConfig:
+      dagProcessor:
+        count: 2
+        cpu: "1"
+        memoryGB: "4"
+        storageGB: "2"
+      scheduler:
+        count: 2
+        cpu: "1"
+        memoryGB: "2.5"
+        storageGB: "2"
+      triggerer:
+        count: 2
+        cpu: "1"
+        memoryGB: "1.5"
+      webServer:
+        cpu: "1"
+        memoryGB: "3"
+        storageGB: "2"
+      worker:
+        cpu: "1"
+        maxCount: 6
+        memoryGB: "2.5"
+        minCount: 2
+        storageGB: "2"
   location: us-central1
   projectRef:
     external: ${projectId}

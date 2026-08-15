@@ -10,6 +10,10 @@ metadata:
   name: composerenvironment-${uniqueId}
   namespace: ${uniqueId}
 spec:
+  config:
+    nodeConfig:
+      serviceAccountRef:
+        name: sa-${uniqueId}
   labels:
     test: "true"
   location: us-central1
@@ -26,13 +30,10 @@ status:
   observedGeneration: 2
   observedState:
     config:
-      airflowBYOIDURI: https://123456qwert-dot-us-central1.composer.byoid.googleusercontent.com
-      airflowURI: https://123456qwert-dot-us-central1.composer.googleusercontent.com
-      dagGCSPrefix: gs://us-central1-test-123456-asdfg-bucket/dags
-      gkeCluster: projects/${projectId}/locations/us-central1/clusters/us-central1-test-123456-asdfg-gke
-      privateEnvironmentConfig:
-        privateClusterConfig: {}
+      airflowBYOIDURI: https://1234abcd1234abcd1234abcd1234abcd-dot-us-central1.composer.byoid.googleusercontent.com
+      airflowURI: https://1234abcd1234abcd1234abcd1234abcd-dot-us-central1.composer.googleusercontent.com
+      dagGCSPrefix: gs://us-central1-composerenviron-1234abcd-bucket/dags
+      privateEnvironmentConfig: {}
     createTime: "1970-01-01T00:00:00Z"
-    state: RUNNING
     updateTime: "1970-01-01T00:00:00Z"
-    uuid: test-uuid
+    uuid: 1234abcd-1234-abcd-1234-abcd1234abcd
