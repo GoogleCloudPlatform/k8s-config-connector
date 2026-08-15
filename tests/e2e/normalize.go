@@ -713,6 +713,16 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 		visitor.ReplacePath(".status.observedState.vsphereScan.coreSource", "projects/${projectNumber}/locations/us-central1/sources/normalized-vsphere-scan-source")
 	}
 
+	// Specific to StorageInsights
+	if u.GroupVersionKind().Group == "storageinsights.cnrm.cloud.google.com" {
+		visitor.sliceTransforms = append(visitor.sliceTransforms, func(path string, a []any) []any {
+			if path == ".spec.sourceProjects.projectNumbers[]" {
+				return []any{float64(project.ProjectNumber)}
+			}
+			return a
+		})
+	}
+
 	return visitor
 }
 
