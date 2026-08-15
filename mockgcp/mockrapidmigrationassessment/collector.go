@@ -67,7 +67,7 @@ func (s *RapidMigrationAssessmentV1) GetCollector(ctx context.Context, req *pb.G
 	obj := &pb.Collector{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "Collector %q not found", fqn)
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
 		}
 		return nil, err
 	}
@@ -113,7 +113,9 @@ func (s *RapidMigrationAssessmentV1) CreateCollector(ctx context.Context, req *p
 	}
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
 		lroMetadata.EndTime = timestamppb.Now()
-		return obj, nil
+		responseObj := proto.Clone(obj).(*pb.Collector)
+		responseObj.Labels = nil
+		return responseObj, nil
 	})
 }
 
@@ -126,6 +128,9 @@ func (s *RapidMigrationAssessmentV1) UpdateCollector(ctx context.Context, req *p
 
 	obj := &pb.Collector{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 	now := time.Now()
@@ -166,7 +171,9 @@ func (s *RapidMigrationAssessmentV1) UpdateCollector(ctx context.Context, req *p
 	}
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
 		lroMetadata.EndTime = timestamppb.Now()
-		return obj, nil
+		responseObj := proto.Clone(obj).(*pb.Collector)
+		responseObj.Labels = nil
+		return responseObj, nil
 	})
 }
 
@@ -180,7 +187,7 @@ func (s *RapidMigrationAssessmentV1) DeleteCollector(ctx context.Context, req *p
 	obj := &pb.Collector{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "Collector %q not found", fqn)
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
 		}
 		return nil, err
 	}
@@ -194,11 +201,13 @@ func (s *RapidMigrationAssessmentV1) DeleteCollector(ctx context.Context, req *p
 	lroMetadata := &pb.OperationMetadata{
 		CreateTime: timestamppb.New(now),
 		Target:     name.String(),
-		Verb:       "delete",
+		Verb:       "update", // Real GCP has verb "update" for delete operations
 		ApiVersion: "v1",
 	}
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
 		lroMetadata.EndTime = timestamppb.Now()
-		return obj, nil
+		responseObj := proto.Clone(obj).(*pb.Collector)
+		responseObj.Labels = nil
+		return responseObj, nil
 	})
 }

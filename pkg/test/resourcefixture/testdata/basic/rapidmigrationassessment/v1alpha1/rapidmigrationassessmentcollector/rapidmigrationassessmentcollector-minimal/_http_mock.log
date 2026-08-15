@@ -16,14 +16,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "Collector \"projects/${projectId}/locations/us-central1/collectors/rmacollector-min-${uniqueId}\" not found",
-        "reason": "notFound"
-      }
-    ],
-    "message": "Collector \"projects/${projectId}/locations/us-central1/collectors/rmacollector-min-${uniqueId}\" not found",
+    "message": "Resource 'projects/${projectId}/locations/us-central1/collectors/rmacollector-min-${uniqueId}' was not found",
     "status": "NOT_FOUND"
   }
 }
@@ -166,7 +159,7 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/us-central1/collectors/rmacollector-min-${uniqueId}",
-    "verb": "delete"
+    "verb": "update"
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
 }
@@ -196,7 +189,7 @@ X-Xss-Protection: 0
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/us-central1/collectors/rmacollector-min-${uniqueId}",
-    "verb": "delete"
+    "verb": "update"
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {

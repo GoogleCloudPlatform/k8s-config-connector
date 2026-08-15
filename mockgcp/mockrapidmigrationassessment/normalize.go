@@ -35,6 +35,18 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 		if val, found := m["done"]; found && val == false {
 			delete(m, "done")
 		}
+		if val, found := m["@type"]; found {
+			if str, ok := val.(string); ok && str == "type.googleapis.com/google.cloud.rapidmigrationassessment.v1main.Collector" {
+				m["@type"] = "type.googleapis.com/google.cloud.rapidmigrationassessment.v1.Collector"
+			}
+		}
+	})
+	replacements.TransformObject(".response", func(m map[string]any) {
+		if val, found := m["@type"]; found {
+			if str, ok := val.(string); ok && str == "type.googleapis.com/google.cloud.rapidmigrationassessment.v1main.Collector" {
+				m["@type"] = "type.googleapis.com/google.cloud.rapidmigrationassessment.v1.Collector"
+			}
+		}
 	})
 	replacements.TransformObject(".metadata", func(m map[string]any) {
 		if val, found := m["requestedCancellation"]; found && val == false {
