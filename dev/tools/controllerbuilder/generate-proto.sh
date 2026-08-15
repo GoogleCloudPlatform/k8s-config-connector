@@ -101,6 +101,12 @@ git reset --hard ${GOOGLEAPI_VERSION}
 mkdir -p google/cloud/config/v1
 cp ${REPO_ROOT}/mockgcp/apis/google/cloud/config/v1/config.proto google/cloud/config/v1/config.proto
 
+# Overwrite monitoring dashboard protos with the updated version that has OpsAnalyticsQuery
+mkdir -p google/monitoring/dashboard/v1
+cp ${REPO_ROOT}/mockgcp/apis/google/monitoring/dashboard/v1/*.proto google/monitoring/dashboard/v1/
+
+
+
 
 if (which protoc); then
     echo "Found protoc version $(protoc --version)"
@@ -117,7 +123,7 @@ else
 fi
 
 
-if [ -f "${VERSIONED_OUTPUT_PATH}" ]; then
+if [[ "${FORCE_GENERATE}" != "1" ]] && [ -f "${VERSIONED_OUTPUT_PATH}" ]; then
     echo "Using cached googleapis pb file at ${VERSIONED_OUTPUT_PATH}"
     if [ "${VERSIONED_OUTPUT_PATH}" != "${OUTPUT_PATH}" ]; then
         cp "${VERSIONED_OUTPUT_PATH}" "${OUTPUT_PATH}"
