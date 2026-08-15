@@ -1,0 +1,218 @@
+GRPC /google.cloud.aiplatform.v1beta1.ExtensionRegistryService/GetExtension
+
+{
+  "name": "projects/${projectId}/locations/us-central1/extensions/extension-min-${uniqueId}"
+}
+
+error: rpc error: code = InvalidArgument desc = List of found errors:	1.Field: name; Message: Invalid Extension resource name.	
+
+{}
+
+---
+
+GRPC /google.cloud.aiplatform.v1beta1.ExtensionRegistryService/ImportExtension
+
+{
+  "extension": {
+    "displayName": "Minimal Extension",
+    "manifest": {
+      "apiSpec": {
+        "openApiYaml": "openapi: 3.0.0\ninfo:\n  title: Minimal API\n  version: 1.0.0\nservers:\n  - url: https://example.com\npaths:\n  /hello:\n    get:\n      summary: Says hello\n      operationId: sayHello\n      responses:\n        '200':\n          description: A successful response\n"
+      },
+      "authConfig": {
+        "authType": "NO_AUTH"
+      },
+      "description": "A minimal extension for testing",
+      "name": "minimal_extension"
+    },
+    "name": "projects/${projectId}/locations/us-central1/extensions/extension-min-${uniqueId}"
+  },
+  "parent": "projects/${projectId}/locations/us-central1"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.ImportExtensionOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/extensions/4624723305755049984/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/extensions/4624723305755049984/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.ImportExtensionOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/extensions/4624723305755049984/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.Extension",
+    "name": "projects/${projectNumber}/locations/us-central1/extensions/4624723305755049984"
+  }
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1beta1.ExtensionRegistryService/GetExtension
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/extensions/4624723305755049984"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Minimal Extension",
+  "extensionOperations": [
+    {
+      "functionDeclaration": {
+        "description": "A minimal extension for testing\n\nSays hello",
+        "name": "sayHello",
+        "parameters": {
+          "type": "OBJECT"
+        }
+      },
+      "operationId": "sayHello"
+    }
+  ],
+  "manifest": {
+    "apiSpec": {
+      "openApiYaml": "openapi: 3.0.0\ninfo:\n  title: Minimal API\n  version: 1.0.0\nservers:\n  - url: https://example.com\npaths:\n  /hello:\n    get:\n      summary: Says hello\n      operationId: sayHello\n      responses:\n        '200':\n          description: A successful response\n"
+    },
+    "authConfig": {
+      "authType": "NO_AUTH"
+    },
+    "description": "A minimal extension for testing",
+    "name": "minimal_extension"
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/extensions/4624723305755049984",
+  "privateServiceConnectConfig": {},
+  "runtimeConfig": {},
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1beta1.ExtensionRegistryService/GetExtension
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/extensions/4624723305755049984"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Minimal Extension",
+  "extensionOperations": [
+    {
+      "functionDeclaration": {
+        "description": "A minimal extension for testing\n\nSays hello",
+        "name": "sayHello",
+        "parameters": {
+          "type": "OBJECT"
+        }
+      },
+      "operationId": "sayHello"
+    }
+  ],
+  "manifest": {
+    "apiSpec": {
+      "openApiYaml": "openapi: 3.0.0\ninfo:\n  title: Minimal API\n  version: 1.0.0\nservers:\n  - url: https://example.com\npaths:\n  /hello:\n    get:\n      summary: Says hello\n      operationId: sayHello\n      responses:\n        '200':\n          description: A successful response\n"
+    },
+    "authConfig": {
+      "authType": "NO_AUTH"
+    },
+    "description": "A minimal extension for testing",
+    "name": "minimal_extension"
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/extensions/4624723305755049984",
+  "privateServiceConnectConfig": {},
+  "runtimeConfig": {},
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1beta1.ExtensionRegistryService/GetExtension
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/extensions/4624723305755049984"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Minimal Extension",
+  "extensionOperations": [
+    {
+      "functionDeclaration": {
+        "description": "A minimal extension for testing\n\nSays hello",
+        "name": "sayHello",
+        "parameters": {
+          "type": "OBJECT"
+        }
+      },
+      "operationId": "sayHello"
+    }
+  ],
+  "manifest": {
+    "apiSpec": {
+      "openApiYaml": "openapi: 3.0.0\ninfo:\n  title: Minimal API\n  version: 1.0.0\nservers:\n  - url: https://example.com\npaths:\n  /hello:\n    get:\n      summary: Says hello\n      operationId: sayHello\n      responses:\n        '200':\n          description: A successful response\n"
+    },
+    "authConfig": {
+      "authType": "NO_AUTH"
+    },
+    "description": "A minimal extension for testing",
+    "name": "minimal_extension"
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/extensions/4624723305755049984",
+  "privateServiceConnectConfig": {},
+  "runtimeConfig": {},
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1beta1.ExtensionRegistryService/DeleteExtension
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/extensions/4624723305755049984"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.DeleteOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}

@@ -37,7 +37,7 @@ type VertexAIExtensionSpec struct {
 	// +required
 	Location *string `json:"location"`
 
-	// The VertexAIExtension name. If not given, the metadata.name will be used.
+	// Immutable. Optional. The service-generated name of the resource. Format: extensions/{extensionID} or {extensionID}. Used for acquisition only. Leave unset to create a new resource.
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// Required. The display name of the Extension.

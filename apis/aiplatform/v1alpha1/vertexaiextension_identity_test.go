@@ -95,3 +95,47 @@ func TestVertexAIExtensionIdentity_FromExternal(t *testing.T) {
 		})
 	}
 }
+
+func TestGetServiceGeneratedResourceID(t *testing.T) {
+	tests := []struct {
+		name string
+		spec *VertexAIExtensionSpec
+		want string
+	}{
+		{
+			name: "resourceID set",
+			spec: &VertexAIExtensionSpec{
+				ResourceID: ptrTo("my-id"),
+			},
+			want: "my-id",
+		},
+		{
+			name: "resourceID set with prefix",
+			spec: &VertexAIExtensionSpec{
+				ResourceID: ptrTo("extensions/my-id"),
+			},
+			want: "my-id",
+		},
+		{
+			name: "resourceID unset",
+			spec: &VertexAIExtensionSpec{},
+			want: "",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			obj := &VertexAIExtension{
+				Spec: *tt.spec,
+			}
+			got := GetServiceGeneratedResourceID(obj)
+			if got != tt.want {
+				t.Errorf("GetServiceGeneratedResourceID() = %q, want %q", got, tt.want)
+			}
+		})
+	}
+}
+
+func ptrTo[T any](v T) *T {
+	return &v
+}

@@ -409,8 +409,9 @@ spec:
                     type: string
                 type: object
               resourceID:
-                description: The VertexAIExtension name. If not given, the metadata.name
-                  will be used.
+                description: 'Immutable. Optional. The service-generated name of the
+                  resource. Format: extensions/{extensionID} or {extensionID}. Used
+                  for acquisition only. Leave unset to create a new resource.'
                 type: string
               runtimeConfig:
                 description: Optional. Runtime config of the Extension.

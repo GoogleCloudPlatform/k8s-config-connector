@@ -83,20 +83,29 @@ func (i *VertexAIExtensionIdentity) ParentString() string {
 	return "projects/" + i.Project + "/locations/" + i.Location
 }
 
-func getIdentityFromVertexAIExtensionSpec(ctx context.Context, reader client.Reader, obj *VertexAIExtension) (*VertexAIExtensionIdentity, error) {
-	resourceID, err := refs.GetResourceID(obj)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve resource ID")
+// TODO: Extract this into a canonical shared helper (refs.GetServiceGeneratedResourceID) in apis/refs/v1beta1 in a follow-up.
+// GetServiceGeneratedResourceID returns the service-generated resource ID of the resource.
+// Unlike refs.GetResourceID, it does not default to metadata.name when spec.resourceID is not set.
+func GetServiceGeneratedResourceID(obj *VertexAIExtension) string {
+	if obj.Spec.ResourceID != nil {
+		s := *obj.Spec.ResourceID
+		s = strings.TrimPrefix(s, "extensions/")
+		return s
 	}
+	return ""
+}
+
+func getIdentityFromVertexAIExtensionSpec(ctx context.Context, reader client.Reader, obj *VertexAIExtension) (*VertexAIExtensionIdentity, error) {
+	resourceID := GetServiceGeneratedResourceID(obj)
 
 	location, err := refs.GetLocation(obj)
 	if err != nil {
-		return nil, fmt.Errorf("cannot resolve location")
+		return nil, fmt.Errorf("cannot resolve location: %w", err)
 	}
 
 	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
 	if err != nil {
-		return nil, fmt.Errorf("cannot resolve project")
+		return nil, fmt.Errorf("cannot resolve project: %w", err)
 	}
 
 	identity := &VertexAIExtensionIdentity{
@@ -121,9 +130,17 @@ func (obj *VertexAIExtension) GetIdentity(ctx context.Context, reader client.Rea
 			return nil, err
 		}
 
-		if statusIdentity.String() != specIdentity.String() {
-			return nil, fmt.Errorf("cannot change VertexAIExtension identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+		if statusIdentity.Project != specIdentity.Project || statusIdentity.Location != specIdentity.Location {
+			return nil, fmt.Errorf("cannot change VertexAIExtension project or location (old=%q/%q, new=%q/%q)", statusIdentity.Project, statusIdentity.Location, specIdentity.Project, specIdentity.Location)
 		}
+
+		if GetServiceGeneratedResourceID(obj) != "" {
+			if statusIdentity.Extension != specIdentity.Extension {
+				return nil, fmt.Errorf("cannot change VertexAIExtension identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+			}
+		}
+
+		return statusIdentity, nil
 	}
 
 	return specIdentity, nil
