@@ -86,3 +86,36 @@ func (s *MockService) parseFeatureName(name string) (*featureName, error) {
 		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 	}
 }
+
+type fleetName struct {
+	Project  *projects.ProjectData
+	Location string
+	Fleet    string
+}
+
+func (n *fleetName) String() string {
+	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/fleets/" + n.Fleet
+}
+
+// parseFleetName parses a string into a fleetName.
+// The expected form is projects/<projectID>/locations/<region>/fleets/<fleetName>
+func (s *MockService) parseFleetName(name string) (*fleetName, error) {
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "fleets" {
+		project, err := s.Projects.GetProjectByID(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		name := &fleetName{
+			Project:  project,
+			Location: tokens[3],
+			Fleet:    tokens[5],
+		}
+
+		return name, nil
+	} else {
+		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+	}
+}

@@ -69,6 +69,7 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/cloud/filestore/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/functions/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/migrationcenter/v1/*.proto \
+		./apis/mockgcp/cloud/gkehub/v1/*.proto \
 		./apis/mockgcp/cloud/gkehub/v1beta/*.proto \
 		./apis/mockgcp/cloud/gkehub/policycontroller/v1beta/*.proto \
 		./apis/mockgcp/cloud/gkehub/v1beta/configmanagement/*.proto \
