@@ -1,7 +1,5 @@
-# GKEHub Service Journal
-
-### [2026-07-02] GKEHubFleet Type Generation and Google APIs Pinning
-- **Context**: Implementing direct types for `GKEHubFleet` (`v1alpha1`) in KCC.
-- **Problem**: The previously pinned Google APIs commit (`1765b559c4`) did not include `google/cloud/gkehub/v1/fleet.proto`. Attempts to generate the types failed with `failed to find the proto message google.cloud.gkehub.v1.Fleet`.
-- **Solution**: We searched the history and updated `apis/git.versions` to pin googleapis to the newer commit `0fcabfc28371e7bab8107402eb06ad58134ee383`. After pinning this commit, the protobuf compiler and the controllerbuilder successfully compiled the proto and generated all of the required types (including `DefaultClusterConfig`, `FleetLifecycleStateObservedState`, and sub-structs) automatically since they were marked as reachable in `gkehubfleet_types.go`.
-- **Impact**: Ensures that future developments or regenerations of GKEHub resources have the correct proto source files fully accessible and aligned.
+### [2026-08-08] Implementing Direct Controller for GKEHubFleet
+- **Context**: Implementing Greenfield direct controller, E2E fixtures, and fuzzer for GKEHubFleet under Issue #12254.
+- **Problem**: GKEHub Fleet is a project-scoped resource in GCP that can have at most one instance per project, which must always be named "default". If we hardcode "default" as the metadata name, parallel tests can conflict and it restricts Kubernetes configurations.
+- **Solution**: We utilized KCC's `resourceID` override field in KRM. In the E2E fixtures, we set the metadata name to `gkehubfleet-minimal-${uniqueId}` (for minimal) or `gkehubfleet-maximal-${uniqueId}` (for maximal) to ensure parallel test isolation, but configured `spec.resourceID: default`. In the identity logic, this resolved the `FleetID` to "default", satisfying Google Cloud API's strict requirement while keeping Kubernetes resources distinct.
+- **Impact**: Ensures that developers can use unique metadata names in Config Connector for GKEHubFleet resources, while successfully mapping them to the single, required "default" fleet name in GCP.

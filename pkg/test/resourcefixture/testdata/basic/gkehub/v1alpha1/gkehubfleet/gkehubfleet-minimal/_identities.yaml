@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: gkehub.cnrm.cloud.google.com
+  kind: GKEHubFleet
+  name: gkehubfleet-minimal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

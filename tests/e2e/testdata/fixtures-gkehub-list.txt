@@ -1,3 +1,5 @@
+pkg/test/resourcefixture/testdata/basic/gkehub/v1alpha1/gkehubfleet/gkehubfleet-maximal
+pkg/test/resourcefixture/testdata/basic/gkehub/v1alpha1/gkehubfleet/gkehubfleet-minimal
 pkg/test/resourcefixture/testdata/basic/gkehub/v1alpha1/gkehubmembershipbinding/gkehubmembershipbinding-maximal
 pkg/test/resourcefixture/testdata/basic/gkehub/v1alpha1/gkehubmembershipbinding/gkehubmembershipbinding-minimal
 pkg/test/resourcefixture/testdata/basic/gkehub/v1alpha1/gkehubnamespace/gkehubnamespace-maximal
