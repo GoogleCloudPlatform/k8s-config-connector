@@ -97,6 +97,8 @@ spec:
                 description: Immutable. The port number, which can be a value between
                   1 and 65535.
                 format: int64
+                maximum: 65535
+                minimum: 1
                 type: integer
               projectRef:
                 description: The project that this resource belongs to.

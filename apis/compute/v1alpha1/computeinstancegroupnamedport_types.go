@@ -31,6 +31,8 @@ type ComputeInstanceGroupNamedPortSpec struct {
 
 	// Immutable. The port number, which can be a value between 1 and 65535.
 	// +required
+	// +kubebuilder:validation:Minimum=1
+	// +kubebuilder:validation:Maximum=65535
 	Port int64 `json:"port"`
 
 	// The project that this resource belongs to.
