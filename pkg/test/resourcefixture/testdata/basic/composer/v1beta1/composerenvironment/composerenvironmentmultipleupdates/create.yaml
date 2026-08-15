@@ -1,4 +1,4 @@
-# Copyright 2025 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,3 +20,33 @@ spec:
   location: us-central1
   projectRef:
     external: ${projectId}
+  config:
+    nodeConfig:
+      serviceAccountRef:
+        name: sa-${uniqueId}
+    resilienceMode: RESILIENCE_MODE_UNSPECIFIED
+    workloadsConfig:
+      scheduler:
+        cpu: "0.5"
+        memoryGB: "2"
+        storageGB: "1"
+        count: 1
+      webServer:
+        cpu: "0.5"
+        memoryGB: "2"
+        storageGB: "1"
+      worker:
+        cpu: "0.5"
+        memoryGB: "2"
+        storageGB: "1"
+        minCount: 1
+        maxCount: 3
+      triggerer:
+        count: 1
+        cpu: "0.5"
+        memoryGB: "1"
+      dagProcessor:
+        count: 1
+        cpu: "0.5"
+        memoryGB: "2"
+        storageGB: "1"

@@ -52,19 +52,13 @@ func (s *ComposerV1) GetEnvironment(ctx context.Context, req *pb.GetEnvironmentR
 
 	obj := &pb.Environment{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "No such environment found: %s", fqn)
+		}
 		return nil, err
 	}
 
-	if obj.Config.DatabaseConfig.MachineType == "db-custom-2-7680" {
-		obj.Config.DatabaseConfig.MachineType = ""
-	}
-	if obj.Config.NodeConfig.IpAllocationPolicy.UseIpAliases {
-		obj.Config.NodeConfig.IpAllocationPolicy.UseIpAliases = false
-	}
-	if obj.Config.SoftwareConfig.PythonVersion == "3" {
-		obj.Config.SoftwareConfig.PythonVersion = ""
-	}
-	return obj, nil
+	return proto.CloneOf(obj), nil
 }
 
 func (s *ComposerV1) CreateEnvironment(ctx context.Context, req *pb.CreateEnvironmentRequest) (*longrunningpb.Operation, error) {
@@ -86,8 +80,8 @@ func (s *ComposerV1) CreateEnvironment(ctx context.Context, req *pb.CreateEnviro
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
 	obj.State = pb.Environment_RUNNING
-	obj.Uuid = "test-uuid" // TODO: real value
-	s.populateDefaultsForEnvironment(obj)
+	obj.Uuid = "1234abcd-1234-abcd-1234-abcd1234abcd"
+	s.populateDefaultsForEnvironment(obj, name)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -100,13 +94,15 @@ func (s *ComposerV1) CreateEnvironment(ctx context.Context, req *pb.CreateEnviro
 		CreateTime:    timestamppb.New(now),
 		Resource:      name.String(),
 		State:         pb.OperationMetadata_PENDING,
-		ResourceUuid:  "test-uuid",
+		ResourceUuid:  obj.Uuid,
 	}
 
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
 		lroMetadata.EndTime = timestamppb.Now()
 		lroMetadata.State = pb.OperationMetadata_SUCCEEDED
-		return obj, nil
+		resp := proto.CloneOf(obj)
+		resp.State = pb.Environment_STATE_UNSPECIFIED
+		return resp, nil
 	})
 }
 
@@ -136,9 +132,115 @@ func (s *ComposerV1) UpdateEnvironment(ctx context.Context, req *pb.UpdateEnviro
 	// TODO: Some sort of helper for fieldmask?
 	for _, path := range paths {
 		tokens := strings.Split(path, ".")
-		switch tokens[0] {
+		switch normalizeField(tokens[0]) {
 		case "labels":
 			updated.Labels = req.GetEnvironment().GetLabels()
+		case "config":
+			if len(tokens) > 1 {
+				switch normalizeField(tokens[1]) {
+				case "nodecount":
+					if updated.Config == nil {
+						updated.Config = &pb.EnvironmentConfig{}
+					}
+					updated.Config.NodeCount = req.GetEnvironment().GetConfig().GetNodeCount()
+				case "environmentsize":
+					if updated.Config == nil {
+						updated.Config = &pb.EnvironmentConfig{}
+					}
+					updated.Config.EnvironmentSize = req.GetEnvironment().GetConfig().GetEnvironmentSize()
+				case "workloadsconfig":
+					if updated.Config == nil {
+						updated.Config = &pb.EnvironmentConfig{}
+					}
+					updated.Config.WorkloadsConfig = req.GetEnvironment().GetConfig().GetWorkloadsConfig()
+				case "maintenancewindow":
+					if updated.Config == nil {
+						updated.Config = &pb.EnvironmentConfig{}
+					}
+					updated.Config.MaintenanceWindow = req.GetEnvironment().GetConfig().GetMaintenanceWindow()
+				case "softwareconfig":
+					if updated.Config == nil {
+						updated.Config = &pb.EnvironmentConfig{}
+					}
+					if len(tokens) > 2 {
+						switch normalizeField(tokens[2]) {
+						case "imageversion":
+							if updated.Config.SoftwareConfig == nil {
+								updated.Config.SoftwareConfig = &pb.SoftwareConfig{}
+							}
+							updated.Config.SoftwareConfig.ImageVersion = req.GetEnvironment().GetConfig().GetSoftwareConfig().GetImageVersion()
+						case "pypipackages":
+							if updated.Config.SoftwareConfig == nil {
+								updated.Config.SoftwareConfig = &pb.SoftwareConfig{}
+							}
+							updated.Config.SoftwareConfig.PypiPackages = req.GetEnvironment().GetConfig().GetSoftwareConfig().GetPypiPackages()
+						case "airflowconfigoverrides":
+							if updated.Config.SoftwareConfig == nil {
+								updated.Config.SoftwareConfig = &pb.SoftwareConfig{}
+							}
+							updated.Config.SoftwareConfig.AirflowConfigOverrides = req.GetEnvironment().GetConfig().GetSoftwareConfig().GetAirflowConfigOverrides()
+						case "envvariables":
+							if updated.Config.SoftwareConfig == nil {
+								updated.Config.SoftwareConfig = &pb.SoftwareConfig{}
+							}
+							updated.Config.SoftwareConfig.EnvVariables = req.GetEnvironment().GetConfig().GetSoftwareConfig().GetEnvVariables()
+						default:
+							updated.Config.SoftwareConfig = req.GetEnvironment().GetConfig().GetSoftwareConfig()
+						}
+					} else {
+						updated.Config.SoftwareConfig = req.GetEnvironment().GetConfig().GetSoftwareConfig()
+					}
+				case "webservernetworkaccesscontrol":
+					if updated.Config == nil {
+						updated.Config = &pb.EnvironmentConfig{}
+					}
+					updated.Config.WebServerNetworkAccessControl = req.GetEnvironment().GetConfig().GetWebServerNetworkAccessControl()
+				case "databaseconfig":
+					if updated.Config == nil {
+						updated.Config = &pb.EnvironmentConfig{}
+					}
+					updated.Config.DatabaseConfig = req.GetEnvironment().GetConfig().GetDatabaseConfig()
+				case "webserverconfig":
+					if updated.Config == nil {
+						updated.Config = &pb.EnvironmentConfig{}
+					}
+					updated.Config.WebServerConfig = req.GetEnvironment().GetConfig().GetWebServerConfig()
+				case "recoveryconfig":
+					if updated.Config == nil {
+						updated.Config = &pb.EnvironmentConfig{}
+					}
+					if updated.Config.RecoveryConfig == nil {
+						updated.Config.RecoveryConfig = &pb.RecoveryConfig{}
+					}
+					if len(tokens) > 2 {
+						switch normalizeField(tokens[2]) {
+						case "scheduledsnapshotsconfig":
+							updated.Config.RecoveryConfig.ScheduledSnapshotsConfig = req.GetEnvironment().GetConfig().GetRecoveryConfig().GetScheduledSnapshotsConfig()
+						default:
+							updated.Config.RecoveryConfig = req.GetEnvironment().GetConfig().GetRecoveryConfig()
+						}
+					} else {
+						updated.Config.RecoveryConfig = req.GetEnvironment().GetConfig().GetRecoveryConfig()
+					}
+				case "resiliencemode":
+					if updated.Config == nil {
+						updated.Config = &pb.EnvironmentConfig{}
+					}
+					updated.Config.ResilienceMode = req.GetEnvironment().GetConfig().GetResilienceMode()
+				case "masterauthorizednetworksconfig":
+					if updated.Config == nil {
+						updated.Config = &pb.EnvironmentConfig{}
+					}
+					updated.Config.MasterAuthorizedNetworksConfig = req.GetEnvironment().GetConfig().GetMasterAuthorizedNetworksConfig()
+				case "dataretentionconfig":
+					if updated.Config == nil {
+						updated.Config = &pb.EnvironmentConfig{}
+					}
+					updated.Config.DataRetentionConfig = req.GetEnvironment().GetConfig().GetDataRetentionConfig()
+				default:
+					return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
+				}
+			}
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
 		}
@@ -149,22 +251,19 @@ func (s *ComposerV1) UpdateEnvironment(ctx context.Context, req *pb.UpdateEnviro
 	}
 
 	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
-	// // Returns with no createTime
-	// lroRet := proto.CloneOf(obj)
-	// lroRet.CreateTime = nil
-	// lroRet.UpdateTime = nil
-	// lroRet.RevisionCreateTime = nil
 	lroMetadata := &pb.OperationMetadata{
 		OperationType: pb.OperationMetadata_UPDATE,
 		CreateTime:    timestamppb.New(now),
 		Resource:      name.String(),
 		State:         pb.OperationMetadata_PENDING,
-		ResourceUuid:  "test-uuid", // TODO: Real values
+		ResourceUuid:  updated.Uuid,
 	}
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
 		lroMetadata.EndTime = timestamppb.Now()
 		lroMetadata.State = pb.OperationMetadata_SUCCEEDED
-		return updated, nil
+		resp := proto.CloneOf(updated)
+		resp.State = pb.Environment_STATE_UNSPECIFIED
+		return resp, nil
 	})
 }
 
@@ -188,6 +287,7 @@ func (s *ComposerV1) DeleteEnvironment(ctx context.Context, req *pb.DeleteEnviro
 		CreateTime:    timestamppb.Now(),
 		Resource:      name.String(),
 		State:         pb.OperationMetadata_PENDING,
+		ResourceUuid:  deleted.Uuid,
 	}
 
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (proto.Message, error) {
@@ -197,114 +297,79 @@ func (s *ComposerV1) DeleteEnvironment(ctx context.Context, req *pb.DeleteEnviro
 	})
 }
 
-func (s *ComposerV1) populateDefaultsForEnvironment(obj *pb.Environment) {
+func (s *ComposerV1) populateDefaultsForEnvironment(obj *pb.Environment, name *environmentName) {
 	if obj.StorageConfig == nil {
 		obj.StorageConfig = &pb.StorageConfig{}
 	}
 	if obj.StorageConfig.Bucket == "" {
-		obj.StorageConfig.Bucket = "us-central1-test-123456-asdfg-bucket"
+		obj.StorageConfig.Bucket = "us-central1-composerenviron-1234abcd-bucket"
 	}
 	if obj.Config == nil {
 		obj.Config = &pb.EnvironmentConfig{}
 	}
 
-	s.populateDefaultsForEnvironmentConfig(obj.Config)
+	s.populateDefaultsForEnvironmentConfig(obj.Config, obj.StorageConfig.Bucket, name)
 }
 
-func (s *ComposerV1) populateDefaultsForEnvironmentConfig(config *pb.EnvironmentConfig) {
-	config.AirflowByoidUri = "https://123456qwert-dot-us-central1.composer.byoid.googleusercontent.com"
-	config.AirflowUri = "https://123456qwert-dot-us-central1.composer.googleusercontent.com"
-	config.DagGcsPrefix = "gs://us-central1-test-123456-asdfg-bucket/dags"
-	config.GkeCluster = "projects/${projectId}/locations/us-central1/clusters/us-central1-test-123456-asdfg-gke"
+func (s *ComposerV1) populateDefaultsForEnvironmentConfig(config *pb.EnvironmentConfig, bucket string, name *environmentName) {
+	config.AirflowByoidUri = "https://1234abcd1234abcd1234abcd1234abcd-dot-us-central1.composer.byoid.googleusercontent.com"
+	config.AirflowUri = "https://1234abcd1234abcd1234abcd1234abcd-dot-us-central1.composer.googleusercontent.com"
+	config.DagGcsPrefix = fmt.Sprintf("gs://%s/dags", bucket)
+
 	if config.DataRetentionConfig == nil {
 		config.DataRetentionConfig = &pb.DataRetentionConfig{}
 	}
 	if config.DataRetentionConfig.AirflowMetadataRetentionConfig == nil {
-		config.DataRetentionConfig.AirflowMetadataRetentionConfig = &pb.AirflowMetadataRetentionPolicyConfig{}
+		config.DataRetentionConfig.AirflowMetadataRetentionConfig = &pb.AirflowMetadataRetentionPolicyConfig{
+			RetentionMode: pb.AirflowMetadataRetentionPolicyConfig_RETENTION_MODE_ENABLED,
+			RetentionDays: 60,
+		}
 	}
-	if config.DataRetentionConfig.AirflowMetadataRetentionConfig.RetentionMode == pb.AirflowMetadataRetentionPolicyConfig_RETENTION_MODE_UNSPECIFIED {
-		config.DataRetentionConfig.AirflowMetadataRetentionConfig.RetentionMode = pb.AirflowMetadataRetentionPolicyConfig_RETENTION_MODE_DISABLED
-	}
-	if config.DataRetentionConfig.TaskLogsRetentionConfig == nil {
-		config.DataRetentionConfig.TaskLogsRetentionConfig = &pb.TaskLogsRetentionConfig{}
-	}
-	if config.DataRetentionConfig.TaskLogsRetentionConfig.StorageMode == pb.TaskLogsRetentionConfig_TASK_LOGS_STORAGE_MODE_UNSPECIFIED {
-		config.DataRetentionConfig.TaskLogsRetentionConfig.StorageMode = pb.TaskLogsRetentionConfig_CLOUD_LOGGING_ONLY
-	}
-	if config.DatabaseConfig == nil {
-		config.DatabaseConfig = &pb.DatabaseConfig{}
-	}
-	if config.DatabaseConfig.MachineType == "" {
-		config.DatabaseConfig.MachineType = "db-custom-2-7680"
-	}
+
 	if config.EncryptionConfig == nil {
 		config.EncryptionConfig = &pb.EncryptionConfig{}
 	}
 	if config.EnvironmentSize == pb.EnvironmentConfig_ENVIRONMENT_SIZE_UNSPECIFIED {
 		config.EnvironmentSize = pb.EnvironmentConfig_ENVIRONMENT_SIZE_SMALL
 	}
-	if config.MaintenanceWindow == nil {
-		config.MaintenanceWindow = &pb.MaintenanceWindow{}
-	}
-	if config.MaintenanceWindow.StartTime == nil {
-		config.MaintenanceWindow.StartTime = timestamppb.New(time.Unix(0, 0)) // "1970-01-01T00:00:00Z"
-	}
-	if config.MaintenanceWindow.EndTime == nil {
-		config.MaintenanceWindow.EndTime = timestamppb.New(time.Unix(14400, 0)) // "1970-01-01T04:00:00Z"
-	}
-	if config.MaintenanceWindow.Recurrence == "" {
-		config.MaintenanceWindow.Recurrence = "FREQ=WEEKLY;BYDAY=FR,SA,SU"
-	}
 
 	if config.NodeConfig == nil {
 		config.NodeConfig = &pb.NodeConfig{}
 	}
+	if config.NodeConfig.ComposerInternalIpv4CidrBlock == "" {
+		config.NodeConfig.ComposerInternalIpv4CidrBlock = "100.64.128.0/20"
+	}
 	if config.NodeConfig.IpAllocationPolicy == nil {
 		config.NodeConfig.IpAllocationPolicy = &pb.IPAllocationPolicy{}
 	}
-	if !config.NodeConfig.IpAllocationPolicy.UseIpAliases {
-		config.NodeConfig.IpAllocationPolicy.UseIpAliases = true
-	}
-	if config.NodeConfig.Network == "" {
-		config.NodeConfig.Network = "projects/${projectId}/global/networks/default"
-	}
-	if config.NodeConfig.ServiceAccount == "" {
-		config.NodeConfig.ServiceAccount = "${projectNumber}-compute@developer.gserviceaccount.com"
-	}
-	if config.NodeConfig.ComposerInternalIpv4CidrBlock == "" {
-		config.NodeConfig.ComposerInternalIpv4CidrBlock = DefaultComposerInternalIpv4CidrBlock
-	}
-	if config.NodeConfig.ComposerNetworkAttachment == "" {
-		config.NodeConfig.ComposerNetworkAttachment = DefaultComposerNetworkAttachment
-	}
+	// if config.NodeConfig.ServiceAccount == "" && name != nil {
+	// 	config.NodeConfig.ServiceAccount = fmt.Sprintf("sa-${uniqueId}@%s.iam.gserviceaccount.com", name.Project.ID)
+	// }
 
 	if config.PrivateEnvironmentConfig == nil {
 		config.PrivateEnvironmentConfig = &pb.PrivateEnvironmentConfig{}
 	}
-	if config.PrivateEnvironmentConfig.CloudComposerNetworkIpv4CidrBlock == "" {
-		config.PrivateEnvironmentConfig.CloudComposerNetworkIpv4CidrBlock = "172.31.245.0/24"
+	if config.PrivateEnvironmentConfig.NetworkingConfig == nil {
+		config.PrivateEnvironmentConfig.NetworkingConfig = &pb.NetworkingConfig{}
 	}
-	if config.PrivateEnvironmentConfig.CloudSqlIpv4CidrBlock == "" {
-		config.PrivateEnvironmentConfig.CloudSqlIpv4CidrBlock = "10.0.0.0/12"
-	}
-	if config.PrivateEnvironmentConfig.PrivateClusterConfig == nil {
-		config.PrivateEnvironmentConfig.PrivateClusterConfig = &pb.PrivateClusterConfig{}
+	if config.PrivateEnvironmentConfig.NetworkingType == pb.PrivateEnvironmentConfig_NETWORKING_TYPE_UNSPECIFIED {
+		config.PrivateEnvironmentConfig.NetworkingType = pb.PrivateEnvironmentConfig_PUBLIC
 	}
 
 	if config.SoftwareConfig == nil {
 		config.SoftwareConfig = &pb.SoftwareConfig{}
 	}
+	if config.SoftwareConfig.AuditLogsReplicationMode == pb.SoftwareConfig_AUDIT_LOGS_REPLICATION_MODE_UNSPECIFIED {
+		config.SoftwareConfig.AuditLogsReplicationMode = pb.SoftwareConfig_AUDIT_LOGS_REPLICATION_DISABLED
+	}
 	if config.SoftwareConfig.CloudDataLineageIntegration == nil {
 		config.SoftwareConfig.CloudDataLineageIntegration = &pb.CloudDataLineageIntegration{}
 	}
-	if config.SoftwareConfig.PythonVersion == "" {
-		config.SoftwareConfig.PythonVersion = "3"
-	}
-
-	// While 'imageVersion' is unlikely to be unset, the following handles it anyway for completeness.
-	// Note:  Consider using a proper default if unset, instead of the value below.
 	if config.SoftwareConfig.ImageVersion == "" {
-		config.SoftwareConfig.ImageVersion = "composer-2.11.3-airflow-2.10.2"
+		config.SoftwareConfig.ImageVersion = "composer-3-airflow-2.11.1-build.14"
+	}
+	if config.SoftwareConfig.WebServerPluginsMode == pb.SoftwareConfig_WEB_SERVER_PLUGINS_MODE_UNSPECIFIED {
+		config.SoftwareConfig.WebServerPluginsMode = pb.SoftwareConfig_PLUGINS_ENABLED
 	}
 
 	if config.WebServerNetworkAccessControl == nil {
@@ -326,57 +391,44 @@ func (s *ComposerV1) populateDefaultsForEnvironmentConfig(config *pb.Environment
 	if config.WorkloadsConfig == nil {
 		config.WorkloadsConfig = &pb.WorkloadsConfig{}
 	}
-
+	if config.WorkloadsConfig.DagProcessor == nil {
+		config.WorkloadsConfig.DagProcessor = &pb.WorkloadsConfig_DagProcessorResource{
+			Count:     1,
+			Cpu:       1,
+			MemoryGb:  4,
+			StorageGb: 1,
+		}
+	}
 	if config.WorkloadsConfig.Scheduler == nil {
-		config.WorkloadsConfig.Scheduler = &pb.WorkloadsConfig_SchedulerResource{}
+		config.WorkloadsConfig.Scheduler = &pb.WorkloadsConfig_SchedulerResource{
+			Count:     1,
+			Cpu:       0.5,
+			MemoryGb:  2,
+			StorageGb: 1,
+		}
 	}
-	if config.WorkloadsConfig.Scheduler.Count == 0 {
-		config.WorkloadsConfig.Scheduler.Count = 1
+	if config.WorkloadsConfig.Triggerer == nil {
+		config.WorkloadsConfig.Triggerer = &pb.WorkloadsConfig_TriggererResource{
+			Count:    1,
+			Cpu:      1,
+			MemoryGb: 2,
+		}
 	}
-	if config.WorkloadsConfig.Scheduler.Cpu == 0 {
-		config.WorkloadsConfig.Scheduler.Cpu = 0.5
-	}
-	if config.WorkloadsConfig.Scheduler.MemoryGb == 0 {
-		config.WorkloadsConfig.Scheduler.MemoryGb = 2
-	}
-	if config.WorkloadsConfig.Scheduler.StorageGb == 0 {
-		config.WorkloadsConfig.Scheduler.StorageGb = 1
-	}
-
 	if config.WorkloadsConfig.WebServer == nil {
-		config.WorkloadsConfig.WebServer = &pb.WorkloadsConfig_WebServerResource{}
+		config.WorkloadsConfig.WebServer = &pb.WorkloadsConfig_WebServerResource{
+			Cpu:       1,
+			MemoryGb:  4,
+			StorageGb: 1,
+		}
 	}
-	if config.WorkloadsConfig.WebServer.Cpu == 0 {
-		config.WorkloadsConfig.WebServer.Cpu = 0.5
-	}
-	if config.WorkloadsConfig.WebServer.MemoryGb == 0 {
-		config.WorkloadsConfig.WebServer.MemoryGb = 2
-	}
-	if config.WorkloadsConfig.WebServer.StorageGb == 0 {
-		config.WorkloadsConfig.WebServer.StorageGb = 1
-	}
-
 	if config.WorkloadsConfig.Worker == nil {
-		config.WorkloadsConfig.Worker = &pb.WorkloadsConfig_WorkerResource{}
-	}
-	if config.WorkloadsConfig.Worker.Cpu == 0 {
-		config.WorkloadsConfig.Worker.Cpu = 0.5
-	}
-	if config.WorkloadsConfig.Worker.MaxCount == 0 {
-		config.WorkloadsConfig.Worker.MaxCount = 3
-	}
-	if config.WorkloadsConfig.Worker.MemoryGb == 0 {
-		config.WorkloadsConfig.Worker.MemoryGb = 2
-	}
-	if config.WorkloadsConfig.Worker.MinCount == 0 {
-		config.WorkloadsConfig.Worker.MinCount = 1
-	}
-	if config.WorkloadsConfig.Worker.StorageGb == 0 {
-		config.WorkloadsConfig.Worker.StorageGb = 1
-	}
-
-	if config.PrivateEnvironmentConfig == nil {
-		config.PrivateEnvironmentConfig = &pb.PrivateEnvironmentConfig{}
+		config.WorkloadsConfig.Worker = &pb.WorkloadsConfig_WorkerResource{
+			Cpu:       0.5,
+			MemoryGb:  2,
+			MinCount:  1,
+			MaxCount:  3,
+			StorageGb: 10,
+		}
 	}
 }
 
@@ -407,4 +459,9 @@ func (s *MockService) parseEnvironmentName(name string) (*environmentName, error
 		return n, nil
 	}
 	return nil, status.Errorf(codes.InvalidArgument, "invalid name %q", name)
+}
+
+func normalizeField(s string) string {
+	s = strings.ReplaceAll(s, "_", "")
+	return strings.ToLower(s)
 }

@@ -1,6 +1,5 @@
-GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -15,16 +14,28 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "KeyRing projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId} not found.",
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Unknown service account",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Unknown service account",
     "status": "NOT_FOUND"
   }
 }
 
 ---
 
-POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings?alt=json&keyRingId=kmskeyring-${uniqueId}
+POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{
+  "accountId": "sa-${uniqueId}",
+  "serviceAccount": {}
+}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -37,15 +48,18 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}"
+  "email": "sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
 }
 
 ---
 
-GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -58,46 +72,50 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}"
+  "email": "sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
 }
 
 ---
 
-GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}?alt=json
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-
-404 Not Found
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 {
-  "error": {
-    "code": 404,
-    "message": "CryptoKey projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId} not found.",
-    "status": "NOT_FOUND"
+  "options": {
+    "requestedPolicyVersion": 3
   }
 }
 
----
-
-POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys?alt=json&cryptoKeyId=kmscryptokey-${uniqueId}&skipInitialVersionCreation=false
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "purpose": "ENCRYPT_DECRYPT"
+  "etag": "abcdef0123A="
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
 }
 
 200 OK
@@ -111,33 +129,20 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "destroyScheduledDuration": "2592000s",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
-  "primary": {
-    "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "generateTime": "2024-04-01T12:34:56.123456Z",
-    "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
-    "protectionLevel": "SOFTWARE",
-    "state": "ENABLED"
-  },
-  "purpose": "ENCRYPT_DECRYPT",
-  "versionTemplate": {
-    "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
-    "protectionLevel": "SOFTWARE"
-  }
+  "etag": "abcdef0123A="
 }
 
 ---
 
-GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}?alt=json
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -150,26 +155,192 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "destroyScheduledDuration": "2592000s",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
+  "etag": "abcdef0123A="
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:setIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{
+  "policy": {
+    "bindings": [
+      {
+        "members": [
+          "serviceAccount:sa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+        ],
+        "role": "roles/composer.worker"
+      }
+    ],
+    "etag": "abcdef0123A=",
+    "version": 3
   },
-  "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
-  "primary": {
-    "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "generateTime": "2024-04-01T12:34:56.123456Z",
-    "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
-    "protectionLevel": "SOFTWARE",
-    "state": "ENABLED"
-  },
-  "purpose": "ENCRYPT_DECRYPT",
-  "versionTemplate": {
-    "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
-    "protectionLevel": "SOFTWARE"
+  "updateMask": "bindings,etag,auditConfigs"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:sa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/composer.worker"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
   }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:sa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/composer.worker"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:sa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/composer.worker"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:sa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/composer.worker"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:sa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+      ],
+      "role": "roles/composer.worker"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
 }
 
 ---
@@ -206,8 +377,8 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
 {
   "config": {
-    "encryptionConfig": {
-      "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
+    "nodeConfig": {
+      "serviceAccount": "sa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
     }
   },
   "name": "projects/${projectId}/locations/us-central1/environments/composerenvironment-${uniqueId}"
@@ -276,13 +447,12 @@ X-Xss-Protection: 0
           "retentionMode": "RETENTION_MODE_ENABLED"
         }
       },
-      "encryptionConfig": {
-        "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
-      },
+      "encryptionConfig": {},
       "environmentSize": "ENVIRONMENT_SIZE_SMALL",
       "nodeConfig": {
         "composerInternalIpv4CidrBlock": "100.64.128.0/20",
-        "ipAllocationPolicy": {}
+        "ipAllocationPolicy": {},
+        "serviceAccount": "sa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
       },
       "privateEnvironmentConfig": {
         "networkingConfig": {}
@@ -374,13 +544,12 @@ X-Xss-Protection: 0
         "retentionMode": 1
       }
     },
-    "encryptionConfig": {
-      "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
-    },
+    "encryptionConfig": {},
     "environmentSize": 1,
     "nodeConfig": {
       "composerInternalIpv4CidrBlock": "100.64.128.0/20",
-      "ipAllocationPolicy": {}
+      "ipAllocationPolicy": {},
+      "serviceAccount": "sa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
     },
     "privateEnvironmentConfig": {
       "networkingConfig": {},
@@ -523,13 +692,12 @@ X-Xss-Protection: 0
           "retentionMode": "RETENTION_MODE_ENABLED"
         }
       },
-      "encryptionConfig": {
-        "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
-      },
+      "encryptionConfig": {},
       "environmentSize": "ENVIRONMENT_SIZE_SMALL",
       "nodeConfig": {
         "composerInternalIpv4CidrBlock": "100.64.128.0/20",
-        "ipAllocationPolicy": {}
+        "ipAllocationPolicy": {},
+        "serviceAccount": "sa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
       },
       "privateEnvironmentConfig": {
         "networkingConfig": {}
@@ -624,13 +792,12 @@ X-Xss-Protection: 0
         "retentionMode": 1
       }
     },
-    "encryptionConfig": {
-      "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
-    },
+    "encryptionConfig": {},
     "environmentSize": 1,
     "nodeConfig": {
       "composerInternalIpv4CidrBlock": "100.64.128.0/20",
-      "ipAllocationPolicy": {}
+      "ipAllocationPolicy": {},
+      "serviceAccount": "sa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
     },
     "privateEnvironmentConfig": {
       "networkingConfig": {},
@@ -764,46 +931,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "destroyScheduledDuration": "2592000s",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
-  "primary": {
-    "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "generateTime": "2024-04-01T12:34:56.123456Z",
-    "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
-    "protectionLevel": "SOFTWARE",
-    "state": "ENABLED"
-  },
-  "purpose": "ENCRYPT_DECRYPT",
-  "versionTemplate": {
-    "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
-    "protectionLevel": "SOFTWARE"
-  }
-}
-
----
-
-GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions?alt=json&prettyPrint=false
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
@@ -817,64 +945,27 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "cryptoKeyVersions": [
-    {
-      "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
-      "createTime": "2024-04-01T12:34:56.123456Z",
-      "generateTime": "2024-04-01T12:34:56.123456Z",
-      "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
-      "protectionLevel": "SOFTWARE",
-      "state": "ENABLED"
-    }
-  ],
-  "totalSize": 1
+  "email": "sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
 }
 
 ---
 
-POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1:destroy?alt=json&prettyPrint=false
-Content-Type: application/json
+DELETE https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "destroyTime": "2024-04-01T12:34:56.123456Z",
-  "generateTime": "2024-04-01T12:34:56.123456Z",
-  "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
-  "protectionLevel": "SOFTWARE",
-  "state": "DESTROY_SCHEDULED"
-}
-
----
-
-GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}"
-}
