@@ -92,7 +92,6 @@ X-Xss-Protection: 0
       "type": "REGIONAL"
     },
     "state": "ACTIVE",
-    "uid": "111111111111111111111",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
@@ -695,7 +694,6 @@ X-Xss-Protection: 0
     "type": 1
   },
   "state": 2,
-  "uid": "111111111111111111111",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
