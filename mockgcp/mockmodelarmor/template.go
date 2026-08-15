@@ -50,6 +50,9 @@ func (s *ModelArmorV1) GetTemplate(ctx context.Context, req *pb.GetTemplateReque
 
 	obj := &pb.Template{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
@@ -98,6 +101,9 @@ func (s *ModelArmorV1) UpdateTemplate(ctx context.Context, req *pb.UpdateTemplat
 
 	obj := &pb.Template{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
@@ -131,6 +137,9 @@ func (s *ModelArmorV1) DeleteTemplate(ctx context.Context, req *pb.DeleteTemplat
 
 	deleted := &pb.Template{}
 	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 

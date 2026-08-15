@@ -4,7 +4,7 @@ GRPC /google.cloud.modelarmor.v1.ModelArmor/GetTemplate
   "name": "projects/${projectId}/locations/us-central1/templates/modelarmortemplate-${uniqueId}"
 }
 
-error: rpc error: code = NotFound desc = template "projects/${projectId}/locations/us-central1/templates/modelarmortemplate-${uniqueId}" not found
+error: rpc error: code = NotFound desc = Resource 'projects/${projectId}/locations/us-central1/templates/modelarmortemplate-${uniqueId}' was not found
 
 {}
 
