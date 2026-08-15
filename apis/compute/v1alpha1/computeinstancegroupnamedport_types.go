@@ -25,7 +25,7 @@ var ComputeInstanceGroupNamedPortGVK = GroupVersion.WithKind("ComputeInstanceGro
 
 // ComputeInstanceGroupNamedPortSpec defines the desired state of ComputeInstanceGroupNamedPort
 type ComputeInstanceGroupNamedPortSpec struct {
-	// The ComputeInstanceGroup resource.
+	// Immutable. The ComputeInstanceGroup resource.
 	// +required
 	GroupRef *computev1beta1.ComputeInstanceGroupRef `json:"groupRef"`
 
