@@ -90,6 +90,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocksourcerepo"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocksql"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockstorage"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockstorageinsights"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocktpu"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockvectorsearch"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockvideostitcher"
