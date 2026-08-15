@@ -26,16 +26,19 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/composer/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
+	v1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
@@ -176,6 +179,35 @@ func (a *EnvironmentAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating Environment", "name", a.id)
 	mapCtx := &direct.MapContext{}
+
+	if a.actual != nil && a.actual.State != composerpb.Environment_RUNNING {
+		status := &krm.ComposerEnvironmentStatus{}
+		status.ObservedState = ComposerEnvironmentObservedState_FromProto(mapCtx, a.actual)
+		if mapCtx.Err() != nil {
+			return mapCtx.Err()
+		}
+		var logMsg, condMsg string
+		switch a.actual.State {
+		case composerpb.Environment_ERROR:
+			logMsg = "Environment is in error state, skipping update without requeue"
+			condMsg = fmt.Sprintf("Environment is in error (current state: %s), update is not applied", a.actual.State)
+		case composerpb.Environment_DELETING:
+			logMsg = "Environment is being deleted, skipping update without requeue"
+			condMsg = fmt.Sprintf("Environment is being deleted (current state: %s), update is not applied", a.actual.State)
+		default:
+			logMsg = "Environment is in transient state, skipping update and requesting requeue"
+			condMsg = fmt.Sprintf("Waiting for Environment to transition to RUNNING state before applying updates (current state: %s)", a.actual.State)
+			updateOp.RequestRequeue()
+		}
+		log.V(2).Info(logMsg, "name", a.id, "state", a.actual.State)
+		readyCondition := &v1alpha1.Condition{
+			Type:    v1alpha1.ReadyConditionType,
+			Status:  v1.ConditionFalse,
+			Reason:  k8s.Updating,
+			Message: condMsg,
+		}
+		return updateOp.UpdateStatus(ctx, status, readyCondition)
+	}
 
 	desired := a.desired.DeepCopy()
 	if err := ResolveEnvironmentRefs(ctx, a.k8sClient, desired); err != nil {
