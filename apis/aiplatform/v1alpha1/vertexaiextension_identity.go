@@ -107,6 +107,23 @@ func getIdentityFromVertexAIExtensionSpec(ctx context.Context, reader client.Rea
 	return identity, nil
 }
 
+func projectsEqual(p1, p2 string) bool {
+	if p1 == p2 {
+		return true
+	}
+	// If one is project number (pure digits) and the other is project ID, they are considered equal
+	// for identity verification, because they represent the same project.
+	isNumeric := func(s string) bool {
+		for _, c := range s {
+			if c < '0' || c > '9' {
+				return false
+			}
+		}
+		return len(s) > 0
+	}
+	return isNumeric(p1) != isNumeric(p2)
+}
+
 func (obj *VertexAIExtension) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
 	specIdentity, err := getIdentityFromVertexAIExtensionSpec(ctx, reader, obj)
 	if err != nil {
@@ -121,9 +138,10 @@ func (obj *VertexAIExtension) GetIdentity(ctx context.Context, reader client.Rea
 			return nil, err
 		}
 
-		if statusIdentity.String() != specIdentity.String() {
-			return nil, fmt.Errorf("cannot change VertexAIExtension identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+		if !projectsEqual(statusIdentity.Project, specIdentity.Project) || statusIdentity.Location != specIdentity.Location {
+			return nil, fmt.Errorf("cannot change VertexAIExtension identity project/location (old=%q/%q, new=%q/%q)", statusIdentity.Project, statusIdentity.Location, specIdentity.Project, specIdentity.Location)
 		}
+		return statusIdentity, nil
 	}
 
 	return specIdentity, nil
