@@ -50,12 +50,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.developerconnect.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/accountConnectors/devconnectaccountconnector-${uniqueId}",
     "verb": "create"
   },
@@ -85,7 +83,6 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/accountConnectors/devconnectaccountconnector-${uniqueId}",
     "verb": "create"
   },
@@ -93,10 +90,6 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.developerconnect.v1.AccountConnector",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "labels": {
-      "cnrm-test": "true",
-      "managed-by-cnrm": "true"
-    },
     "name": "projects/${projectId}/locations/us-central1/accountConnectors/devconnectaccountconnector-${uniqueId}",
     "oauthStartUri": "https://console.cloud.google.com/developer-connect/start-oauth/us-central1/devconnectaccountconnector-${uniqueId}?project=${projectId}",
     "providerOauthConfig": {
@@ -105,7 +98,6 @@ X-Xss-Protection: 0
       ],
       "systemProviderId": "GITHUB"
     },
-    "uid": "111111111111111111111",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
@@ -140,7 +132,6 @@ X-Xss-Protection: 0
     ],
     "systemProviderId": 1
   },
-  "uid": "111111111111111111111",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
@@ -161,12 +152,10 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": false,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.developerconnect.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/accountConnectors/devconnectaccountconnector-${uniqueId}",
     "verb": "delete"
   },
@@ -196,7 +185,6 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "requestedCancellation": false,
     "target": "projects/${projectId}/locations/us-central1/accountConnectors/devconnectaccountconnector-${uniqueId}",
     "verb": "delete"
   },
