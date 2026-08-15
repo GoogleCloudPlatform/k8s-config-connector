@@ -1,0 +1,9 @@
+GET https://kube-apiserver/api/v1
+Accept: application/json, */*
+
+
+200 OK
+Cache-Control: no-cache, private
+Content-Type: application/json
+
+// discovery response removed for length

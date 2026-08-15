@@ -166,6 +166,10 @@ func (c *singleResourceClient) Patch(_ context.Context, obj client.Object, _ cli
 	return fmt.Errorf("unexpected call to client.Patch(...) for object with kind %v", obj.GetObjectKind())
 }
 
+func (c *singleResourceClient) Apply(_ context.Context, obj runtime.ApplyConfiguration, _ ...client.ApplyOption) error {
+	return fmt.Errorf("unexpected call to client.Apply(...) for object %v", obj)
+}
+
 func (c *singleResourceClient) Status() client.SubResourceWriter {
 	panic("unexpected call to client.Status(...)")
 }

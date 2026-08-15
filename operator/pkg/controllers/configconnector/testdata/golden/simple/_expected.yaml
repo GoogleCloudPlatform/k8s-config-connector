@@ -2183,7 +2183,6 @@ kind: ClusterRole
 metadata:
   annotations:
     cnrm.cloud.google.com/version: '{{stable.latest}}'
-  creationTimestamp: null
   labels:
     cnrm.cloud.google.com/system: "true"
     core.cnrm.cloud.google.com/configconnector: configconnector.core.cnrm.cloud.google.com
@@ -4370,7 +4369,6 @@ kind: ClusterRole
 metadata:
   annotations:
     cnrm.cloud.google.com/version: '{{stable.latest}}'
-  creationTimestamp: null
   labels:
     cnrm.cloud.google.com/system: "true"
     core.cnrm.cloud.google.com/configconnector: configconnector.core.cnrm.cloud.google.com

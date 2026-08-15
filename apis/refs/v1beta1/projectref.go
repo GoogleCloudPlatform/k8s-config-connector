@@ -283,6 +283,7 @@ func ResolveProjectID(ctx context.Context, reader client.Reader, obj runtime.Obj
 			return "", fmt.Errorf("cannot convert to unstructured: %w", err)
 		}
 		u = &unstructured.Unstructured{Object: m}
+		cleanUnstructured(u)
 	}
 
 	projectRefExternal, _, _ := unstructured.NestedString(u.Object, "spec", "projectRef", "external")

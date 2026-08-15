@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: ces.cnrm.cloud.google.com
+  kind: CESApp
+  name: cesapp-basic
+  namespace: ${uniqueId}
+  version: v1alpha1

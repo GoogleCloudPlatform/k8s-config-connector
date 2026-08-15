@@ -59,6 +59,35 @@ var unsupportedKinds = map[schema.GroupKind]bool{
 	{Group: "container.cnrm.cloud.google.com", Kind: "ContainerCluster"}:                      true,
 }
 
+func prepareUnstructured(u *unstructured.Unstructured) {
+	specRaw, ok := u.Object["spec"]
+	if !ok {
+		return
+	}
+	spec, ok := specRaw.(map[string]any)
+	if !ok {
+		return
+	}
+
+	parentRefMap := make(map[string]any)
+	hasParentFields := false
+
+	if loc, ok := spec["location"]; ok {
+		parentRefMap["location"] = loc
+		hasParentFields = true
+	}
+	if proj, ok := spec["projectRef"]; ok {
+		parentRefMap["projectRef"] = proj
+		hasParentFields = true
+	}
+
+	if hasParentFields {
+		spec["parentRef"] = parentRefMap
+		spec["ParentRef"] = parentRefMap
+		u.Object["spec"] = spec
+	}
+}
+
 func GetCAISIdentities(ctx context.Context, scheme *runtime.Scheme, reader client.Reader, objectsList []*unstructured.Unstructured) ([]CAISIdentityResult, error) {
 	var results []CAISIdentityResult
 
@@ -88,7 +117,11 @@ func GetCAISIdentities(ctx context.Context, scheme *runtime.Scheme, reader clien
 			continue
 		}
 
-		if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, obj); err != nil {
+		// Prepare a copy of the unstructured object for conversion to avoid modifying original
+		uCopy := u.DeepCopy()
+		prepareUnstructured(uCopy)
+
+		if err := runtime.DefaultUnstructuredConverter.FromUnstructured(uCopy.Object, obj); err != nil {
 			res.Error = fmt.Sprintf("failed to convert unstructured object to %T: %s", obj, err.Error())
 			results = append(results, res)
 			continue

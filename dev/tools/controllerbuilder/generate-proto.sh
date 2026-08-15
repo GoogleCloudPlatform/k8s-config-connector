@@ -117,7 +117,7 @@ else
 fi
 
 
-if [ -f "${VERSIONED_OUTPUT_PATH}" ]; then
+if [[ "${FORCE_GENERATE}" != "1" ]] && [ -f "${VERSIONED_OUTPUT_PATH}" ]; then
     echo "Using cached googleapis pb file at ${VERSIONED_OUTPUT_PATH}"
     if [ "${VERSIONED_OUTPUT_PATH}" != "${OUTPUT_PATH}" ]; then
         cp "${VERSIONED_OUTPUT_PATH}" "${OUTPUT_PATH}"
