@@ -1,0 +1,147 @@
+// Copyright 2026 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+package mockgcp.cloud.gkehub.v1;
+
+import "google/api/annotations.proto";
+import "google/api/client.proto";
+import "google/api/field_behavior.proto";
+import "google/longrunning/operations.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option go_package = "cloud.google.com/go/gkehub/apiv1/gkehubpb;gkehubpb";
+option java_multiple_files = true;
+option java_outer_classname = "ServiceProto";
+option java_package = "com.mockgcp.cloud.gkehub.v1";
+
+service GkeHub {
+  option (google.api.default_host) = "gkehub.googleapis.com";
+  option (google.api.oauth_scopes) = "https://www.googleapis.com/auth/cloud-platform";
+
+  rpc GetFleet(GetFleetRequest) returns (Fleet) {
+    option (google.api.http) = {
+      get: "/v1/{name=projects/*/locations/*/fleets/*}"
+    };
+  }
+
+  rpc CreateFleet(CreateFleetRequest) returns (google.longrunning.Operation) {
+    option (google.api.http) = {
+      post: "/v1/{parent=projects/*/locations/*}/fleets"
+      body: "resource"
+    };
+    option (google.longrunning.operation_info) = {
+      response_type: "Fleet"
+      metadata_type: "OperationMetadata"
+    };
+  }
+
+  rpc UpdateFleet(UpdateFleetRequest) returns (google.longrunning.Operation) {
+    option (google.api.http) = {
+      patch: "/v1/{name=projects/*/locations/*/fleets/*}"
+      body: "resource"
+    };
+    option (google.longrunning.operation_info) = {
+      response_type: "Fleet"
+      metadata_type: "OperationMetadata"
+    };
+  }
+
+  rpc DeleteFleet(DeleteFleetRequest) returns (google.longrunning.Operation) {
+    option (google.api.http) = {
+      delete: "/v1/{name=projects/*/locations/*/fleets/*}"
+    };
+    option (google.longrunning.operation_info) = {
+      response_type: "google.protobuf.Empty"
+      metadata_type: "OperationMetadata"
+    };
+  }
+}
+
+message Fleet {
+  string name = 1;
+  string display_name = 2;
+  map<string, string> labels = 3;
+  DefaultClusterConfig default_cluster_config = 4;
+  google.protobuf.Timestamp create_time = 5;
+  google.protobuf.Timestamp update_time = 6;
+  google.protobuf.Timestamp delete_time = 7;
+  string uid = 8;
+  FleetLifecycleState state = 9;
+}
+
+message DefaultClusterConfig {
+  SecurityPostureConfig security_posture_config = 1;
+  BinaryAuthorizationConfig binary_authorization_config = 2;
+  CompliancePostureConfig compliance_posture_config = 3;
+}
+
+message SecurityPostureConfig {
+  string mode = 1;
+  string vulnerability_mode = 2;
+}
+
+message BinaryAuthorizationConfig {
+  string evaluation_mode = 1;
+  repeated PolicyBinding policy_bindings = 2;
+}
+
+message PolicyBinding {
+  string name = 1;
+}
+
+message CompliancePostureConfig {
+  string mode = 1;
+  repeated ComplianceStandard compliance_standards = 2;
+}
+
+message ComplianceStandard {
+  string standard = 1;
+}
+
+message FleetLifecycleState {
+  string code = 1;
+}
+
+message GetFleetRequest {
+  string name = 1;
+}
+
+message CreateFleetRequest {
+  string parent = 2;
+  Fleet resource = 3;
+}
+
+message UpdateFleetRequest {
+  string name = 1;
+  google.protobuf.FieldMask update_mask = 2;
+  Fleet resource = 3;
+}
+
+message DeleteFleetRequest {
+  string name = 1;
+}
+
+// Represents the metadata of the long-running operation.
+message OperationMetadata {
+  google.protobuf.Timestamp create_time = 1;
+  google.protobuf.Timestamp end_time = 2;
+  string target = 3;
+  string verb = 4;
+  string status_detail = 5;
+  bool cancel_requested = 6;
+  string api_version = 7;
+}
