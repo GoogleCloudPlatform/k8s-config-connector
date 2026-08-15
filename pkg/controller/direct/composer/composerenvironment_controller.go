@@ -186,33 +186,25 @@ func (a *EnvironmentAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		if mapCtx.Err() != nil {
 			return mapCtx.Err()
 		}
-		var readyCondition *v1alpha1.Condition
+		var logMsg, condMsg string
 		switch a.actual.State {
 		case composerpb.Environment_ERROR:
-			log.V(2).Info("Environment is in terminal state, skipping update without requeue", "name", a.id, "state", a.actual.State)
-			readyCondition = &v1alpha1.Condition{
-				Type:    v1alpha1.ReadyConditionType,
-				Status:  v1.ConditionFalse,
-				Reason:  k8s.UpToDate,
-				Message: fmt.Sprintf("Environment is in error(current state: %s), update is not applied", a.actual.State),
-			}
+			logMsg = "Environment is in error state, skipping update without requeue"
+			condMsg = fmt.Sprintf("Environment is in error (current state: %s), update is not applied", a.actual.State)
 		case composerpb.Environment_DELETING:
-			log.V(2).Info("Environment is being deleted, skipping update without requeue", "name", a.id, "state", a.actual.State)
-			readyCondition = &v1alpha1.Condition{
-				Type:    v1alpha1.ReadyConditionType,
-				Status:  v1.ConditionFalse,
-				Reason:  k8s.Updating,
-				Message: fmt.Sprintf("Environment is deing deleted(current state: %s), update is not applied", a.actual.State),
-			}
+			logMsg = "Environment is being deleted, skipping update without requeue"
+			condMsg = fmt.Sprintf("Environment is being deleted (current state: %s), update is not applied", a.actual.State)
 		default:
-			log.V(2).Info("Environment is in transient state, skipping update and requesting requeue", "name", a.id, "state", a.actual.State)
-			readyCondition = &v1alpha1.Condition{
-				Type:    v1alpha1.ReadyConditionType,
-				Status:  v1.ConditionFalse,
-				Reason:  k8s.Updating,
-				Message: fmt.Sprintf("Waiting for Environment to transition to RUNNING state before applying updates (current state: %s)", a.actual.State),
-			}
+			logMsg = "Environment is in transient state, skipping update and requesting requeue"
+			condMsg = fmt.Sprintf("Waiting for Environment to transition to RUNNING state before applying updates (current state: %s)", a.actual.State)
 			updateOp.RequestRequeue()
+		}
+		log.V(2).Info(logMsg, "name", a.id, "state", a.actual.State)
+		readyCondition := &v1alpha1.Condition{
+			Type:    v1alpha1.ReadyConditionType,
+			Status:  v1.ConditionFalse,
+			Reason:  k8s.Updating,
+			Message: condMsg,
 		}
 		return updateOp.UpdateStatus(ctx, status, readyCondition)
 	}
