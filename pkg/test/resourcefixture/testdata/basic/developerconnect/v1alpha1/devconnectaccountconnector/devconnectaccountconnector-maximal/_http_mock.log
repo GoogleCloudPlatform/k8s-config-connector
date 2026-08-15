@@ -16,13 +16,6 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "Resource 'projects/${projectId}/locations/us-central1/accountConnectors/devconnectaccountconnector-${uniqueId}' was not found",
-        "reason": "notFound"
-      }
-    ],
     "message": "Resource 'projects/${projectId}/locations/us-central1/accountConnectors/devconnectaccountconnector-${uniqueId}' was not found",
     "status": "NOT_FOUND"
   }
@@ -109,12 +102,6 @@ X-Xss-Protection: 0
       "my-annotation": "my-annotation-value"
     },
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "labels": {
-      "cnrm-test": "true",
-      "foo": "bar",
-      "managed-by-cnrm": "true",
-      "my-label": "my-value"
-    },
     "name": "projects/${projectId}/locations/us-central1/accountConnectors/devconnectaccountconnector-${uniqueId}",
     "oauthStartUri": "https://console.cloud.google.com/developer-connect/start-oauth/us-central1/devconnectaccountconnector-${uniqueId}?project=${projectId}",
     "providerOauthConfig": {
@@ -251,12 +238,6 @@ X-Xss-Protection: 0
       "my-annotation": "updated-annotation-value"
     },
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "labels": {
-      "cnrm-test": "true",
-      "foo": "baz",
-      "managed-by-cnrm": "true",
-      "my-label": "updated-value"
-    },
     "name": "projects/${projectId}/locations/us-central1/accountConnectors/devconnectaccountconnector-${uniqueId}",
     "oauthStartUri": "https://console.cloud.google.com/developer-connect/start-oauth/us-central1/devconnectaccountconnector-${uniqueId}?project=${projectId}",
     "providerOauthConfig": {

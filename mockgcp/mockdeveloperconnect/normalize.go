@@ -23,7 +23,7 @@ import (
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
-	if !strings.Contains(url, "developerconnect.googleapis.com") {
+	if !strings.Contains(url, "developerconnect") {
 		return
 	}
 
@@ -39,6 +39,10 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.ReplacePath(".response.updateTime", mockgcpregistry.PlaceholderTimestamp)
 
 	replacements.RemovePath(".response.labels")
+	replacements.RemovePath(".uid")
+	replacements.RemovePath(".response.uid")
+	replacements.RemovePath(".accountConnectors[].uid")
+	replacements.RemovePath(".response.accountConnectors[].uid")
 
 	replacements.TransformObject(".error", func(m map[string]any) {
 		delete(m, "errors")
