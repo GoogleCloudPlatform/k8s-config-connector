@@ -1,6 +1,32 @@
-POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/tensorboards?alt=json
+GET https://us-central1-aiplatform.googleapis.com:443/v1beta1/projects/${projectId}/locations/us-central1/tensorboards/${tensorboardID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Ftensorboards%2Fdep-${uniqueId}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "List of found errors:\t1.Field: name; Message: Invalid Tensorboard resource name.\t",
+    "status": "INVALID_ARGUMENT"
+  }
+}
+
+---
+
+POST https://us-central1-aiplatform.googleapis.com:443/v1beta1/projects/${projectId}/locations/us-central1/tensorboards?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
 {
   "description": "Parent dashboard for tests",
@@ -34,9 +60,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}/operations/${operationID}?alt=json
+GET https://us-central1-aiplatform.googleapis.com:443/ui/projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}/operations/${operationID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2Flocations%2Fus-central1%2Ftensorboards%2F${tensorboardID}%2Foperations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -72,9 +99,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}?alt=json
+GET https://us-central1-aiplatform.googleapis.com:443/v1beta1/projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2Flocations%2Fus-central1%2Ftensorboards%2F${tensorboardID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -102,10 +130,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://us-central1-aiplatform.googleapis.com:443/v1beta1/projects/${projectId}/locations/us-central1/tensorboards/${tensorboardID}/experiments/vertexaitenexp-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://us-central1-aiplatform.googleapis.com:443/v1beta1/projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}/experiments/vertexaitenexp-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Ftensorboards%2F${tensorboardID}%2Fexperiments%2Fvertexaitenexp-${uniqueId}
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2Flocations%2Fus-central1%2Ftensorboards%2F${tensorboardID}%2Fexperiments%2Fvertexaitenexp-${uniqueId}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -120,17 +148,17 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "TensorboardExperiment projects/${projectId}/locations/us-central1/tensorboards/${tensorboardID}/experiments/vertexaitenexp-${uniqueId} is not found.",
+    "message": "TensorboardExperiment projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}/experiments/vertexaitenexp-${uniqueId} is not found.",
     "status": "NOT_FOUND"
   }
 }
 
 ---
 
-POST https://us-central1-aiplatform.googleapis.com:443/v1beta1/projects/${projectId}/locations/us-central1/tensorboards/${tensorboardID}/experiments?%24alt=json%3Benum-encoding%3Dint&tensorboardExperimentId=vertexaitenexp-${uniqueId}
+POST https://us-central1-aiplatform.googleapis.com:443/v1beta1/projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}/experiments?%24alt=json%3Benum-encoding%3Dint&tensorboardExperimentId=vertexaitenexp-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1%2Ftensorboards%2F${tensorboardID}
+X-Goog-Request-Params: parent=projects%2F${projectNumber}%2Flocations%2Fus-central1%2Ftensorboards%2F${tensorboardID}
 
 {
   "description": "This is a maximal test experiment",
@@ -166,10 +194,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://us-central1-aiplatform.googleapis.com:443/v1beta1/projects/${projectId}/locations/us-central1/tensorboards/${tensorboardID}/experiments/vertexaitenexp-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://us-central1-aiplatform.googleapis.com:443/v1beta1/projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}/experiments/vertexaitenexp-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Ftensorboards%2F${tensorboardID}%2Fexperiments%2Fvertexaitenexp-${uniqueId}
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2Flocations%2Fus-central1%2Ftensorboards%2F${tensorboardID}%2Fexperiments%2Fvertexaitenexp-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -196,10 +224,10 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://us-central1-aiplatform.googleapis.com:443/v1beta1/projects/${projectId}/locations/us-central1/tensorboards/${tensorboardID}/experiments/vertexaitenexp-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2CdisplayName%2Clabels
+PATCH https://us-central1-aiplatform.googleapis.com:443/v1beta1/projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}/experiments/vertexaitenexp-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2CdisplayName%2Clabels
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-X-Goog-Request-Params: tensorboard_experiment.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Ftensorboards%2F${tensorboardID}%2Fexperiments%2Fvertexaitenexp-${uniqueId}
+X-Goog-Request-Params: tensorboard_experiment.name=projects%2F${projectNumber}%2Flocations%2Fus-central1%2Ftensorboards%2F${tensorboardID}%2Fexperiments%2Fvertexaitenexp-${uniqueId}
 
 {
   "description": "This is an updated maximal test experiment",
@@ -207,7 +235,7 @@ X-Goog-Request-Params: tensorboard_experiment.name=projects%2F${projectId}%2Floc
   "labels": {
     "gcp-label-key": "gcp-label-value-updated"
   },
-  "name": "projects/${projectId}/locations/us-central1/tensorboards/${tensorboardID}/experiments/vertexaitenexp-${uniqueId}",
+  "name": "projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}/experiments/vertexaitenexp-${uniqueId}",
   "source": "custom-job-1"
 }
 
@@ -236,10 +264,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://us-central1-aiplatform.googleapis.com:443/v1beta1/projects/${projectId}/locations/us-central1/tensorboards/${tensorboardID}/experiments/vertexaitenexp-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://us-central1-aiplatform.googleapis.com:443/v1beta1/projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}/experiments/vertexaitenexp-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Ftensorboards%2F${tensorboardID}%2Fexperiments%2Fvertexaitenexp-${uniqueId}
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2Flocations%2Fus-central1%2Ftensorboards%2F${tensorboardID}%2Fexperiments%2Fvertexaitenexp-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -266,10 +294,10 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://us-central1-aiplatform.googleapis.com:443/v1beta1/projects/${projectId}/locations/us-central1/tensorboards/${tensorboardID}/experiments/vertexaitenexp-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+DELETE https://us-central1-aiplatform.googleapis.com:443/v1beta1/projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}/experiments/vertexaitenexp-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Ftensorboards%2F${tensorboardID}%2Fexperiments%2Fvertexaitenexp-${uniqueId}
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2Flocations%2Fus-central1%2Ftensorboards%2F${tensorboardID}%2Fexperiments%2Fvertexaitenexp-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -298,9 +326,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}?alt=json
+GET https://us-central1-aiplatform.googleapis.com:443/v1beta1/projects/${projectId}/locations/us-central1/tensorboards/${tensorboardID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Ftensorboards%2F${tensorboardID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -328,9 +357,10 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}?alt=json
+DELETE https://us-central1-aiplatform.googleapis.com:443/v1beta1/projects/${projectId}/locations/us-central1/tensorboards/${tensorboardID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Ftensorboards%2F${tensorboardID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
