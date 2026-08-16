@@ -89,6 +89,11 @@ func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForO
 		return nil, err
 	}
 
+	k8sName, err := refs.GetResourceID(u)
+	if err != nil {
+		return nil, err
+	}
+
 	mapCtx := &direct.MapContext{}
 	desired := TranscoderJobSpec_ToProto(mapCtx, &obj.Spec)
 	if mapCtx.Err() != nil {
@@ -101,13 +106,13 @@ func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForO
 	for k, v := range label.NewGCPLabelsFromK8sLabels(u.GetLabels()) {
 		desired.Labels[k] = v
 	}
-	desired.Labels["cnrm-resource-id"] = id.Job
+	desired.Labels["cnrm-resource-id"] = k8sName
 
 	return &Adapter{
 		id:        id,
 		gcpClient: gcpClient,
 		desired:   desired,
-		k8sName:   id.Job,
+		k8sName:   k8sName,
 		model:     m,
 	}, nil
 }
@@ -127,7 +132,7 @@ func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapt
 	return &Adapter{
 		id:        id,
 		gcpClient: gcpClient,
-		k8sName:   id.Job,
+		k8sName:   "",
 		model:     m,
 	}, nil
 }
