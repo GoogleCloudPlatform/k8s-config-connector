@@ -103,9 +103,13 @@ func (obj *VertexAICustomJob) GetIdentity(ctx context.Context, reader client.Rea
 			return nil, err
 		}
 
-		if statusIdentity.String() != specIdentity.String() {
-			return nil, fmt.Errorf("cannot change VertexAICustomJob identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+		if statusIdentity.Project != specIdentity.Project {
+			return nil, fmt.Errorf("cannot change VertexAICustomJob project (old=%q, new=%q)", statusIdentity.Project, specIdentity.Project)
 		}
+		if statusIdentity.Location != specIdentity.Location {
+			return nil, fmt.Errorf("cannot change VertexAICustomJob location (old=%q, new=%q)", statusIdentity.Location, specIdentity.Location)
+		}
+		return statusIdentity, nil
 	}
 
 	return specIdentity, nil

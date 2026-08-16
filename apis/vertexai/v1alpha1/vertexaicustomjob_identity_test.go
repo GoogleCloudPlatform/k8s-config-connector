@@ -15,8 +15,10 @@
 package v1alpha1
 
 import (
+	"context"
 	"testing"
 
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/google/go-cmp/cmp"
 )
 
@@ -92,5 +94,118 @@ func TestVertexAIExperimentRunRef_ValidateExternal(t *testing.T) {
 	invalidRef := "invalid/format"
 	if err := ref.ValidateExternal(invalidRef); err == nil {
 		t.Errorf("ValidateExternal(%q) expected error, got nil", invalidRef)
+	}
+}
+
+func TestVertexAICustomJob_GetIdentity(t *testing.T) {
+	ctx := context.Background()
+
+	tests := []struct {
+		name        string
+		obj         *VertexAICustomJob
+		expected    string
+		expectError bool
+	}{
+		{
+			name: "resolved identity without externalRef",
+			obj: &VertexAICustomJob{
+				Spec: VertexAICustomJobSpec{
+					ProjectRef: &refs.ProjectRef{
+						External: "my-project",
+					},
+					Location:   func() *string { s := "us-central1"; return &s }(),
+					ResourceID: func() *string { s := "my-custom-job"; return &s }(),
+				},
+			},
+			expected: "projects/my-project/locations/us-central1/customJobs/my-custom-job",
+		},
+		{
+			name: "resolved identity matching project/location with server-assigned externalRef name",
+			obj: &VertexAICustomJob{
+				Spec: VertexAICustomJobSpec{
+					ProjectRef: &refs.ProjectRef{
+						External: "my-project",
+					},
+					Location:   func() *string { s := "us-central1"; return &s }(),
+					ResourceID: func() *string { s := "my-custom-job"; return &s }(),
+				},
+				Status: VertexAICustomJobStatus{
+					ExternalRef: func() *string {
+						s := "projects/my-project/locations/us-central1/customJobs/3877150412133892096"
+						return &s
+					}(),
+				},
+			},
+			expected: "projects/my-project/locations/us-central1/customJobs/3877150412133892096",
+		},
+		{
+			name: "mismatched project in externalRef",
+			obj: &VertexAICustomJob{
+				Spec: VertexAICustomJobSpec{
+					ProjectRef: &refs.ProjectRef{
+						External: "my-project",
+					},
+					Location:   func() *string { s := "us-central1"; return &s }(),
+					ResourceID: func() *string { s := "my-custom-job"; return &s }(),
+				},
+				Status: VertexAICustomJobStatus{
+					ExternalRef: func() *string {
+						s := "projects/other-project/locations/us-central1/customJobs/3877150412133892096"
+						return &s
+					}(),
+				},
+			},
+			expectError: true,
+		},
+		{
+			name: "mismatched location in externalRef",
+			obj: &VertexAICustomJob{
+				Spec: VertexAICustomJobSpec{
+					ProjectRef: &refs.ProjectRef{
+						External: "my-project",
+					},
+					Location:   func() *string { s := "us-central1"; return &s }(),
+					ResourceID: func() *string { s := "my-custom-job"; return &s }(),
+				},
+				Status: VertexAICustomJobStatus{
+					ExternalRef: func() *string {
+						s := "projects/my-project/locations/us-east1/customJobs/3877150412133892096"
+						return &s
+					}(),
+				},
+			},
+			expectError: true,
+		},
+		{
+			name: "invalid externalRef format",
+			obj: &VertexAICustomJob{
+				Spec: VertexAICustomJobSpec{
+					ProjectRef: &refs.ProjectRef{
+						External: "my-project",
+					},
+					Location:   func() *string { s := "us-central1"; return &s }(),
+					ResourceID: func() *string { s := "my-custom-job"; return &s }(),
+				},
+				Status: VertexAICustomJobStatus{
+					ExternalRef: func() *string { s := "invalid-ref"; return &s }(),
+				},
+			},
+			expectError: true,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := tt.obj.GetIdentity(ctx, nil)
+			if (err != nil) != tt.expectError {
+				t.Errorf("GetIdentity() error = %v, expectError %v", err, tt.expectError)
+				return
+			}
+			if !tt.expectError {
+				if got.String() != tt.expected {
+					t.Errorf("GetIdentity() = %q, expected %q", got.String(), tt.expected)
+				}
+			}
+		})
 	}
 }
