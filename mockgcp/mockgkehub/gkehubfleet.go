@@ -17,7 +17,6 @@ package mockgkehub
 import (
 	"context"
 
-	"cloud.google.com/go/longrunning/autogen/longrunningpb"
 	"google.golang.org/genproto/googleapis/longrunning"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -43,6 +42,9 @@ func (s *GKEHubFleet) GetFleet(ctx context.Context, req *pb.GetFleetRequest) (*p
 
 	obj := &pb.Fleet{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
@@ -70,12 +72,15 @@ func (s *GKEHubFleet) CreateFleet(ctx context.Context, req *pb.CreateFleetReques
 		return nil, err
 	}
 
+	opName := "projects/" + name.Project.ID + "/locations/" + name.Location + "/operations/{{operationID}}"
 	metadata := &pb.OperationMetadata{
 		Target:     fqn,
 		CreateTime: now,
 		EndTime:    now,
+		ApiVersion: "v1",
+		Verb:       "create",
 	}
-	return s.operations.StartLRO(ctx, name.String(), metadata, func() (proto.Message, error) {
+	return s.operations.StartLRO(ctx, opName, metadata, func() (proto.Message, error) {
 		result := proto.Clone(obj).(*pb.Fleet)
 		result.CreateTime = now
 		result.UpdateTime = now
@@ -95,6 +100,9 @@ func (s *GKEHubFleet) UpdateFleet(ctx context.Context, req *pb.UpdateFleetReques
 	fqn := name.String()
 	obj := &pb.Fleet{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
@@ -120,12 +128,15 @@ func (s *GKEHubFleet) UpdateFleet(ctx context.Context, req *pb.UpdateFleetReques
 		return nil, err
 	}
 
+	opName := "projects/" + name.Project.ID + "/locations/" + name.Location + "/operations/{{operationID}}"
 	metadata := &pb.OperationMetadata{
 		Target:     fqn,
 		CreateTime: now,
 		EndTime:    now,
+		ApiVersion: "v1",
+		Verb:       "update",
 	}
-	return s.operations.StartLRO(ctx, name.String(), metadata, func() (proto.Message, error) {
+	return s.operations.StartLRO(ctx, opName, metadata, func() (proto.Message, error) {
 		result := proto.Clone(obj).(*pb.Fleet)
 		result.UpdateTime = now
 		result.State = &pb.FleetLifecycleState{Code: "READY"}
@@ -144,15 +155,20 @@ func (s *GKEHubFleet) DeleteFleet(ctx context.Context, req *pb.DeleteFleetReques
 	oldObj := &pb.Fleet{}
 	if err := s.storage.Delete(ctx, fqn, oldObj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return s.operations.NewLRO(ctx)
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
 		}
-		return &longrunningpb.Operation{}, err
+		return nil, err
 	}
 
+	opName := "projects/" + name.Project.ID + "/locations/" + name.Location + "/operations/{{operationID}}"
 	metadata := &pb.OperationMetadata{
 		Target:     fqn,
 		CreateTime: now,
 		EndTime:    now,
+		ApiVersion: "v1",
+		Verb:       "delete",
 	}
-	return s.operations.DoneLRO(ctx, name.String(), metadata, &emptypb.Empty{})
+	return s.operations.StartLRO(ctx, opName, metadata, func() (proto.Message, error) {
+		return &emptypb.Empty{}, nil
+	})
 }

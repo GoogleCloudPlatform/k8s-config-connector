@@ -14,7 +14,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "fleet \"projects/${projectId}/locations/global/fleets/default\" not found",
+    "message": "Resource 'projects/${projectId}/locations/global/fleets/default' was not found",
     "status": "NOT_FOUND"
   }
 }
@@ -40,16 +40,18 @@ X-Xss-Protection: 0
 {
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.gkehub.v1.OperationMetadata",
+    "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/global/fleets/default"
+    "target": "projects/${projectId}/locations/global/fleets/default",
+    "verb": "create"
   },
-  "name": "projects/${projectId}/locations/global/fleets/default/operations/${operationID}"
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
 }
 
 ---
 
-GET https://gkehub.googleapis.com/v1/projects/${projectId}/locations/global/fleets/default/operations/${operationID}?alt=json&prettyPrint=false
+GET https://gkehub.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json&prettyPrint=false
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
@@ -66,11 +68,13 @@ X-Xss-Protection: 0
   "done": true,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.gkehub.v1.OperationMetadata",
+    "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/global/fleets/default"
+    "target": "projects/${projectId}/locations/global/fleets/default",
+    "verb": "create"
   },
-  "name": "projects/${projectId}/locations/global/fleets/default/operations/${operationID}",
+  "name": "projects/${projectId}/locations/global/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.gkehub.v1.Fleet",
     "createTime": "2024-04-01T12:34:56.123456Z",
@@ -131,16 +135,18 @@ X-Xss-Protection: 0
 {
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.gkehub.v1.OperationMetadata",
+    "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/global/fleets/default"
+    "target": "projects/${projectId}/locations/global/fleets/default",
+    "verb": "update"
   },
-  "name": "projects/${projectId}/locations/global/fleets/default/operations/${operationID}"
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
 }
 
 ---
 
-GET https://gkehub.googleapis.com/v1/projects/${projectId}/locations/global/fleets/default/operations/${operationID}?alt=json&prettyPrint=false
+GET https://gkehub.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json&prettyPrint=false
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
@@ -157,11 +163,13 @@ X-Xss-Protection: 0
   "done": true,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.gkehub.v1.OperationMetadata",
+    "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/global/fleets/default"
+    "target": "projects/${projectId}/locations/global/fleets/default",
+    "verb": "update"
   },
-  "name": "projects/${projectId}/locations/global/fleets/default/operations/${operationID}",
+  "name": "projects/${projectId}/locations/global/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.gkehub.v1.Fleet",
     "createTime": "2024-04-01T12:34:56.123456Z",
@@ -217,22 +225,20 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "done": true,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.gkehub.v1.OperationMetadata",
+    "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/global/fleets/default"
+    "target": "projects/${projectId}/locations/global/fleets/default",
+    "verb": "delete"
   },
-  "name": "projects/${projectId}/locations/global/fleets/default/operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.protobuf.Empty"
-  }
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
 }
 
 ---
 
-GET https://gkehub.googleapis.com/v1/projects/${projectId}/locations/global/fleets/default/operations/${operationID}?alt=json&prettyPrint=false
+GET https://gkehub.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json&prettyPrint=false
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
@@ -249,11 +255,13 @@ X-Xss-Protection: 0
   "done": true,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.gkehub.v1.OperationMetadata",
+    "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/global/fleets/default"
+    "target": "projects/${projectId}/locations/global/fleets/default",
+    "verb": "delete"
   },
-  "name": "projects/${projectId}/locations/global/fleets/default/operations/${operationID}",
+  "name": "projects/${projectId}/locations/global/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.protobuf.Empty"
   }
