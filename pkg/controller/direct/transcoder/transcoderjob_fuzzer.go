@@ -57,6 +57,7 @@ func transcoderJobFuzzer() fuzztesting.KRMFuzzer {
 
 	// Unimplemented fields
 	f.Unimplemented_NotYetTriaged(".error.details")
+	f.Unimplemented_NotYetTriaged(".config.inputs[].attributes.track_definitions[].detected_languages")
 
 	return f
 }

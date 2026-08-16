@@ -139,7 +139,7 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 		})
 		for {
 			resp, err := it.Next()
-			if err == iterator.Done {
+			if errors.Is(err, iterator.Done) {
 				break
 			}
 			if err != nil {
