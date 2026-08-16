@@ -42,6 +42,10 @@ func (i *MapManagementMapConfigIdentity) String() string {
 	return MapManagementMapConfigIdentityFormat.ToString(*i)
 }
 
+func (i *MapManagementMapConfigIdentity) ParentString() string {
+	return "projects/" + i.Project
+}
+
 func (i *MapManagementMapConfigIdentity) FromExternal(ref string) error {
 	parsed, match, err := MapManagementMapConfigIdentityFormat.Parse(ref)
 	if err != nil {
@@ -78,26 +82,17 @@ func getIdentityFromMapManagementMapConfigSpec(ctx context.Context, reader clien
 }
 
 func (obj *MapManagementMapConfig) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
-	specIdentity, err := getIdentityFromMapManagementMapConfigSpec(ctx, reader, obj)
-	if err != nil {
-		return nil, err
-	}
-
-	// Cross-check the identity against the status value, if present.
+	// If the resource has already been reconciled, use the server-assigned identity.
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
-		// Validate desired with actual
 		statusIdentity := &MapManagementMapConfigIdentity{}
 		if err := statusIdentity.FromExternal(externalRef); err != nil {
 			return nil, err
 		}
-
-		if statusIdentity.String() != specIdentity.String() {
-			return nil, fmt.Errorf("cannot change MapManagementMapConfig identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
-		}
+		return statusIdentity, nil
 	}
 
-	return specIdentity, nil
+	return getIdentityFromMapManagementMapConfigSpec(ctx, reader, obj)
 }
 
 // ExternalIdentifier returns the GCP external identifier (the GCP URL).
