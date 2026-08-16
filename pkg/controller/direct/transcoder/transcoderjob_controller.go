@@ -16,6 +16,7 @@ package transcoder
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	gcp "cloud.google.com/go/video/transcoder/apiv1"
