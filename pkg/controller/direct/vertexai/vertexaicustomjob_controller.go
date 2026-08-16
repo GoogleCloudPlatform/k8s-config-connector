@@ -86,6 +86,12 @@ func (m *modelCustomJob) AdapterForObject(ctx context.Context, op *directbase.Ad
 		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
 
+	if obj.Spec.JobSpec != nil && obj.Spec.JobSpec.ServiceAccountRef != nil {
+		if err := obj.Spec.JobSpec.ServiceAccountRef.Resolve(ctx, reader, obj); err != nil {
+			return nil, fmt.Errorf("resolving serviceAccountRef: %w", err)
+		}
+	}
+
 	// Get vertexai GCP client
 	gcpClient, err := m.client(ctx, id.Location)
 	if err != nil {
@@ -183,7 +189,6 @@ func (a *CustomJobAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 	if diffs.HasDiff() {
 		diffs.Object = updateOp.GetUnstructured()
 		structuredreporting.ReportDiff(ctx, diffs)
-		return fmt.Errorf("VertexAICustomJob %s is immutable and cannot be updated", a.id)
 	}
 
 	// Fetch fully-populated resource to preserve latest status
