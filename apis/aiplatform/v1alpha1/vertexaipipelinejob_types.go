@@ -19,6 +19,7 @@ import (
 	computev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1alpha1"
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -91,10 +92,10 @@ type VertexAIPipelineJobSpec struct {
 
 // +kcc:proto=google.cloud.aiplatform.v1.PipelineJob.RuntimeConfig
 type PipelineJobRuntimeConfig struct {
-	// Required. A path in a Cloud Storage bucket, which will be treated as the
+	// Required. Reference to a GCS bucket, which will be treated as the
 	//  root output directory of the pipeline.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.PipelineJob.RuntimeConfig.gcs_output_directory
-	GCSOutputDirectory *string `json:"gcsOutputDirectory,omitempty"`
+	GCSOutputDirectoryRef *storagev1beta1.StorageBucketRef `json:"gcsOutputDirectoryRef,omitempty"`
 
 	// Represents the failure policy of a pipeline.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.PipelineJob.RuntimeConfig.failure_policy

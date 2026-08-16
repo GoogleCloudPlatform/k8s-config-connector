@@ -103,9 +103,21 @@ func (obj *VertexAISchedule) GetIdentity(ctx context.Context, reader client.Read
 			return nil, err
 		}
 
-		if statusIdentity.String() != specIdentity.String() {
-			return nil, fmt.Errorf("cannot change VertexAISchedule identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+		isNumeric := func(s string) bool {
+			for _, r := range s {
+				if r < '0' || r > '9' {
+					return false
+				}
+			}
+			return true
 		}
+
+		projectMatch := statusIdentity.Project == specIdentity.Project || isNumeric(statusIdentity.Project)
+		if !projectMatch || statusIdentity.Location != specIdentity.Location {
+			return nil, fmt.Errorf("cannot change VertexAISchedule identity (old project/location=%s/%s, new project/location=%s/%s)",
+				statusIdentity.Project, statusIdentity.Location, specIdentity.Project, specIdentity.Location)
+		}
+		return statusIdentity, nil
 	}
 
 	return specIdentity, nil

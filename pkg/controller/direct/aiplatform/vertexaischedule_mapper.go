@@ -190,6 +190,7 @@ func CreateNotebookExecutionJobRequest_FromProto(mapCtx *direct.MapContext, in *
 		return nil
 	}
 	out := &krm.CreateNotebookExecutionJobRequest{}
+	out.Parent = direct.LazyPtr(in.GetParent())
 	out.NotebookExecutionJob = NotebookExecutionJob_FromProto(mapCtx, in.GetNotebookExecutionJob())
 	out.NotebookExecutionJobID = direct.LazyPtr(in.GetNotebookExecutionJobId())
 	return out
@@ -200,6 +201,7 @@ func CreateNotebookExecutionJobRequest_ToProto(mapCtx *direct.MapContext, in *kr
 		return nil
 	}
 	out := &pb.CreateNotebookExecutionJobRequest{}
+	out.Parent = direct.ValueOf(in.Parent)
 	out.NotebookExecutionJob = NotebookExecutionJob_ToProto(mapCtx, in.NotebookExecutionJob)
 	out.NotebookExecutionJobId = direct.ValueOf(in.NotebookExecutionJobID)
 	return out
