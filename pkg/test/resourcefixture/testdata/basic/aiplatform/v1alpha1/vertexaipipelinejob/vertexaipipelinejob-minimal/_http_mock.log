@@ -200,7 +200,7 @@ GRPC /google.cloud.aiplatform.v1.PipelineService/CreatePipelineJob
       "schemaVersion": "2.1.0"
     },
     "runtimeConfig": {
-      "gcsOutputDirectory": "gs://vertexai-pipelinejob-bucket-${uniqueId}/output"
+      "gcsOutputDirectory": "gs://vertexai-pipelinejob-bucket-${uniqueId}"
     }
   },
   "pipelineJobId": "vertexaipipelinejob-minimal-${uniqueId}"
@@ -260,7 +260,7 @@ OK
     "schemaVersion": "2.1.0"
   },
   "runtimeConfig": {
-    "gcsOutputDirectory": "gs://vertexai-pipelinejob-bucket-${uniqueId}/output"
+    "gcsOutputDirectory": "gs://vertexai-pipelinejob-bucket-${uniqueId}"
   },
   "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
   "state": "PIPELINE_STATE_PENDING",
@@ -329,7 +329,7 @@ OK
     "schemaVersion": "2.1.0"
   },
   "runtimeConfig": {
-    "gcsOutputDirectory": "gs://vertexai-pipelinejob-bucket-${uniqueId}/output"
+    "gcsOutputDirectory": "gs://vertexai-pipelinejob-bucket-${uniqueId}"
   },
   "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
   "state": "PIPELINE_STATE_PENDING",
@@ -398,7 +398,7 @@ OK
     "schemaVersion": "2.1.0"
   },
   "runtimeConfig": {
-    "gcsOutputDirectory": "gs://vertexai-pipelinejob-bucket-${uniqueId}/output"
+    "gcsOutputDirectory": "gs://vertexai-pipelinejob-bucket-${uniqueId}"
   },
   "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
   "state": "PIPELINE_STATE_PENDING",
@@ -467,7 +467,7 @@ OK
     "schemaVersion": "2.1.0"
   },
   "runtimeConfig": {
-    "gcsOutputDirectory": "gs://vertexai-pipelinejob-bucket-${uniqueId}/output"
+    "gcsOutputDirectory": "gs://vertexai-pipelinejob-bucket-${uniqueId}"
   },
   "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
   "state": "PIPELINE_STATE_PENDING",
@@ -548,7 +548,7 @@ OK
     "schemaVersion": "2.1.0"
   },
   "runtimeConfig": {
-    "gcsOutputDirectory": "gs://vertexai-pipelinejob-bucket-${uniqueId}/output"
+    "gcsOutputDirectory": "gs://vertexai-pipelinejob-bucket-${uniqueId}"
   },
   "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
   "state": "PIPELINE_STATE_CANCELLED",
@@ -617,7 +617,7 @@ OK
     "schemaVersion": "2.1.0"
   },
   "runtimeConfig": {
-    "gcsOutputDirectory": "gs://vertexai-pipelinejob-bucket-${uniqueId}/output"
+    "gcsOutputDirectory": "gs://vertexai-pipelinejob-bucket-${uniqueId}"
   },
   "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
   "state": "PIPELINE_STATE_CANCELLED",

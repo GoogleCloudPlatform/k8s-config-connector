@@ -1,0 +1,12 @@
+- caisURL: //storage.googleapis.com/projects/${projectId}/buckets/vertexai-schedule-bucket-${uniqueId}
+  group: storage.cnrm.cloud.google.com
+  kind: StorageBucket
+  name: vertexai-schedule-bucket-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: //aiplatform.googleapis.com/projects/${projectNumber}/locations/us-central1/schedules/14143703553298638269
+  group: aiplatform.cnrm.cloud.google.com
+  kind: VertexAISchedule
+  name: vertexaischedule-minimal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
