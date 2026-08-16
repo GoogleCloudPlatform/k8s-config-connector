@@ -17,7 +17,6 @@ package vectorsearch
 import (
 	"context"
 	"fmt"
-	"reflect"
 
 	gcp "cloud.google.com/go/vectorsearch/apiv1"
 	pb "cloud.google.com/go/vectorsearch/apiv1/vectorsearchpb"
@@ -35,6 +34,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 )
 
@@ -168,46 +168,47 @@ func (a *CollectionAdapter) Create(ctx context.Context, createOp *directbase.Cre
 	return a.updateStatus(ctx, createOp, latest)
 }
 
+func compareCollection(ctx context.Context, actual, desired *pb.Collection) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
+	maskedActual, err := mappers.OnlySpecFields(actual, VectorSearchCollectionSpec_FromProto, VectorSearchCollectionSpec_ToProto)
+	if err != nil {
+		return nil, nil, fmt.Errorf("masking actual Collection: %w", err)
+	}
+
+	clonedDesired := proto.Clone(desired).(*pb.Collection)
+
+	diffs, updateMask, err := common.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
+	if err != nil {
+		return nil, nil, err
+	}
+	return diffs, updateMask, nil
+}
+
 // Update updates the resource in GCP based on `spec` and update the Config Connector object `status` based on the GCP response.
 func (a *CollectionAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating Collection", "name", a.id)
 
-	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
-	updateMask := &fieldmaskpb.FieldMask{}
-
-	// DisplayName
-	if !reflect.DeepEqual(a.desired.DisplayName, a.actual.DisplayName) {
-		report.AddField("display_name", a.actual.DisplayName, a.desired.DisplayName)
-		updateMask.Paths = append(updateMask.Paths, "display_name")
+	diffs, updateMask, err := compareCollection(ctx, a.actual, a.desired)
+	if err != nil {
+		return err
 	}
 
-	// Description
-	if !reflect.DeepEqual(a.desired.Description, a.actual.Description) {
-		report.AddField("description", a.actual.Description, a.desired.Description)
-		updateMask.Paths = append(updateMask.Paths, "description")
-	}
-
-	// Labels
-	if !reflect.DeepEqual(a.desired.Labels, a.actual.Labels) {
-		report.AddField("labels", a.actual.Labels, a.desired.Labels)
-		updateMask.Paths = append(updateMask.Paths, "labels")
-	}
-
-	// Immutable fields: VectorSchema, DataSchema
-	if !equalVectorSchema(a.desired.VectorSchema, a.actual.VectorSchema) {
-		return fmt.Errorf("VectorSchema is immutable and cannot be updated")
-	}
-	if !proto.Equal(a.desired.DataSchema, a.actual.DataSchema) {
-		return fmt.Errorf("DataSchema is immutable and cannot be updated")
+	for _, path := range updateMask.Paths {
+		if path == "vector_schema" {
+			return fmt.Errorf("VectorSchema is immutable and cannot be updated")
+		}
+		if path == "data_schema" {
+			return fmt.Errorf("DataSchema is immutable and cannot be updated")
+		}
 	}
 
 	if len(updateMask.Paths) == 0 {
 		log.V(2).Info("no field needs update", "name", a.id)
-		return nil
+		return a.updateStatus(ctx, updateOp, a.actual)
 	}
 
-	structuredreporting.ReportDiff(ctx, report)
+	diffs.Object = updateOp.GetUnstructured()
+	structuredreporting.ReportDiff(ctx, diffs)
 
 	req := &pb.UpdateCollectionRequest{
 		UpdateMask: updateMask,
@@ -293,20 +294,4 @@ func (a *CollectionAdapter) Delete(ctx context.Context, deleteOp *directbase.Del
 		return false, fmt.Errorf("waiting delete Collection %s: %w", a.id, err)
 	}
 	return true, nil
-}
-
-func equalVectorSchema(a, b map[string]*pb.VectorField) bool {
-	if len(a) != len(b) {
-		return false
-	}
-	for k, v := range a {
-		v2, ok := b[k]
-		if !ok {
-			return false
-		}
-		if !proto.Equal(v, v2) {
-			return false
-		}
-	}
-	return true
 }
