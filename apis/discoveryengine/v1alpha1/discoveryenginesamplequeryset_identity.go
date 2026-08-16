@@ -43,6 +43,10 @@ func (i *SampleQuerySetIdentity) Parent() *SampleQuerySetParent {
 	return i.parent
 }
 
+func (i *SampleQuerySetIdentity) ParentString() string {
+	return i.parent.String()
+}
+
 type SampleQuerySetParent struct {
 	ProjectID string
 	Location  string
@@ -114,4 +118,15 @@ func ParseSampleQuerySetExternal(external string) (parent *SampleQuerySetParent,
 	}
 	resourceID = tokens[5]
 	return parent, resourceID, nil
+}
+
+func NewSampleQuerySetIdentityFromExternal(external string) (*SampleQuerySetIdentity, error) {
+	parent, id, err := ParseSampleQuerySetExternal(external)
+	if err != nil {
+		return nil, err
+	}
+	return &SampleQuerySetIdentity{
+		parent: parent,
+		id:     id,
+	}, nil
 }
