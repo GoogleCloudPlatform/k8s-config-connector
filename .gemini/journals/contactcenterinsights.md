@@ -42,3 +42,15 @@
 - **Solution**: Set the full resource name (including the user-provided ID) on the `PhraseMatcher.Name` field in the `Create` request.
 - **Impact**: Other resources in `contactcenterinsights` (like `View`) likely follow this same pattern.
 
+### [2026-08-16] CCInsightsQaScorecard Direct Controller, Fuzzer, and E2E Fixtures
+- **Context**: Implementing the direct controller, KRM fuzzer, and recording golden fixtures for CCInsightsQaScorecard (mapped to `google.cloud.contactcenterinsights.v1.QaScorecard`).
+- **Problem**: CCInsightsQaScorecard is an alpha resource without an existing direct controller. We needed to set up the controller package `ccinsightsqascorecard`, manual/generated mappers, a KRM fuzzer, and minimal/maximal fixtures, and record traffic on real GCP.
+- **Solution**:
+  1. Implemented `mapper.go` translating between Spec, Status, ObservedState, and the GCP Proto (`pb.QaScorecard`).
+  2. Implemented the direct controller (`ccinsightsqascorecard_controller.go`) utilizing `common.DiffForTopLevelFields` for clean diff comparison.
+  3. Created `ccinsightsqascorecard_fuzzer.go` and verified its correctness using the focused fuzzing test suite `TestFocusedMappers`.
+  4. Registered CCInsightsQAScorecard as a direct controller in `static_config.go` and imported the package in `register.go`.
+  5. Configured and successfully ran `hack/record-gcp` for both minimal and maximal fixtures against real GCP.
+- **Impact**: Provides full lifecycle reconciliation for CCInsightsQaScorecard resources, fully verified with passing E2E golden HTTP and KRM tests.
+
+
