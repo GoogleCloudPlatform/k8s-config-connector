@@ -61,6 +61,10 @@ func (i *DiscoveryEngineSampleQueryIdentity) Host() string {
 	return DiscoveryEngineSampleQueryIdentityFormat.Host()
 }
 
+func (i *DiscoveryEngineSampleQueryIdentity) ParentString() string {
+	return fmt.Sprintf("projects/%s/locations/%s/sampleQuerySets/%s", i.Project, i.Location, i.SampleQuerySet)
+}
+
 func getIdentityFromDiscoveryEngineSampleQuerySpec(ctx context.Context, reader client.Reader, obj client.Object) (*DiscoveryEngineSampleQueryIdentity, error) {
 	sampleQuery, ok := obj.(*DiscoveryEngineSampleQuery)
 	if !ok {
