@@ -3775,14 +3775,6 @@
 [missing_field] crd=transcoderjobs.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.spriteSheets[].startTimeOffset" is not set in unstructured objects
 [missing_field] crd=transcoderjobs.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.config.spriteSheets[].totalCount" is not set in unstructured objects
 [missing_field] crd=transcoderjobs.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.fillContentGaps" is not set in unstructured objects
-[missing_field] crd=transcoderjobs.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.inputURI" is not set in unstructured objects
-[missing_field] crd=transcoderjobs.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
-[missing_field] crd=transcoderjobs.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.mode" is not set in unstructured objects
-[missing_field] crd=transcoderjobs.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.optimization" is not set in unstructured objects
-[missing_field] crd=transcoderjobs.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.outputURI" is not set in unstructured objects
-[missing_field] crd=transcoderjobs.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=transcoderjobs.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.templateID" is not set in unstructured objects
-[missing_field] crd=transcoderjobs.transcoder.cnrm.cloud.google.com version=v1alpha1: field ".spec.ttlAfterCompletionDays" is not set in unstructured objects
 [missing_field] crd=translateadaptivemtdatasets.translate.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
 [missing_field] crd=translateadaptivemtdatasets.translate.cnrm.cloud.google.com version=v1alpha1: field ".spec.exampleCount" is not set in unstructured objects
 [missing_field] crd=translateadaptivemtdatasets.translate.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects

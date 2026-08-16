@@ -104,9 +104,10 @@ func (obj *TranscoderJob) GetIdentity(ctx context.Context, reader client.Reader)
 			return nil, err
 		}
 
-		if statusIdentity.String() != specIdentity.String() {
-			return nil, fmt.Errorf("cannot change TranscoderJob identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+		if statusIdentity.Project != specIdentity.Project || statusIdentity.Location != specIdentity.Location {
+			return nil, fmt.Errorf("cannot change TranscoderJob parent project or location (old project=%q/location=%q, new project=%q/location=%q)", statusIdentity.Project, statusIdentity.Location, specIdentity.Project, specIdentity.Location)
 		}
+		return statusIdentity, nil
 	}
 
 	return specIdentity, nil
