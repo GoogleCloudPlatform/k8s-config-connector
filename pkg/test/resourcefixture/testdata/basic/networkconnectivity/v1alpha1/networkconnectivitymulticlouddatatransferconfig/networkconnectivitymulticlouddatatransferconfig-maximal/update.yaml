@@ -1,0 +1,11 @@
+apiVersion: networkconnectivity.cnrm.cloud.google.com/v1alpha1
+kind: NetworkConnectivityMulticloudDataTransferConfig
+metadata:
+  name: nc-mcdt-${uniqueId}
+spec:
+  projectRef:
+    external: projects/${projectId}
+  location: europe-west1
+  description: "Maximal multicloud config description updated"
+  labels:
+    foo: baz
