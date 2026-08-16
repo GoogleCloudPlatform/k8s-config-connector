@@ -188,7 +188,7 @@ func (a *adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 
 	if !diffs.HasDiff() {
 		log.V(2).Info("no field needs update", "name", a.id.String())
-		return nil
+		return a.updateStatus(ctx, updateOp, a.actual)
 	}
 
 	// Since TranslateAdaptiveMtDataset is completely immutable on GCP, any differences in mutable spec fields
