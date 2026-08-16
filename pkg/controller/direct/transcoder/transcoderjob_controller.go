@@ -113,7 +113,23 @@ func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForO
 }
 
 func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	return nil, nil
+	id := &krm.TranscoderJobIdentity{}
+	if err := id.FromExternal(url); err != nil {
+		// Not recognized
+		return nil, nil
+	}
+
+	gcpClient, err := m.client(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &Adapter{
+		id:        id,
+		gcpClient: gcpClient,
+		k8sName:   id.Job,
+		model:     m,
+	}, nil
 }
 
 type Adapter struct {
