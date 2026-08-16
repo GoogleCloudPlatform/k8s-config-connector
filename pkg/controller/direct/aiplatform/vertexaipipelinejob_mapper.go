@@ -15,8 +15,11 @@
 package aiplatform
 
 import (
+	"strings"
+
 	pb "cloud.google.com/go/aiplatform/apiv1/aiplatformpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/aiplatform/v1alpha1"
+	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -36,4 +39,45 @@ func PipelineTemplateMetadata_ToProto(mapCtx *direct.MapContext, in *krm.Pipelin
 	out := &pb.PipelineTemplateMetadata{}
 	out.Version = direct.ValueOf(in.Version)
 	return out
+}
+
+func PipelineJobRuntimeConfig_FromProto(mapCtx *direct.MapContext, in *pb.PipelineJob_RuntimeConfig) *krm.PipelineJobRuntimeConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PipelineJobRuntimeConfig{}
+	if in.GetGcsOutputDirectory() != "" {
+		out.GCSOutputDirectoryRef = &storagev1beta1.StorageBucketRef{
+			External: in.GetGcsOutputDirectory(),
+		}
+	}
+	out.FailurePolicy = direct.Enum_FromProto(mapCtx, in.GetFailurePolicy())
+	return out
+}
+
+func PipelineJobRuntimeConfig_ToProto(mapCtx *direct.MapContext, in *krm.PipelineJobRuntimeConfig) *pb.PipelineJob_RuntimeConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PipelineJob_RuntimeConfig{}
+	if in.GCSOutputDirectoryRef != nil {
+		out.GcsOutputDirectory = gcsOutputDirectoryToProto(mapCtx, in.GCSOutputDirectoryRef)
+	}
+	out.FailurePolicy = direct.Enum_ToProto[pb.PipelineFailurePolicy](mapCtx, in.FailurePolicy)
+	return out
+}
+
+func gcsOutputDirectoryToProto(mapCtx *direct.MapContext, ref *storagev1beta1.StorageBucketRef) string {
+	if ref == nil {
+		return ""
+	}
+	if strings.HasPrefix(ref.External, "gs://") {
+		return ref.External
+	}
+	id := &storagev1beta1.StorageBucketIdentity{}
+	if err := id.FromExternal(ref.External); err == nil {
+		return "gs://" + id.Bucket
+	}
+	// Fallback/identity for fuzzer or unparsed raw values: keep exactly as-is to ensure perfect roundtrip
+	return ref.External
 }

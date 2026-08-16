@@ -41,7 +41,8 @@ spec:
   projectRef:
     external: ${projectId}
   runtimeConfig:
-    gcsOutputDirectory: gs://vertexai-pipelinejob-bucket-${uniqueId}/output
+    gcsOutputDirectoryRef:
+      name: vertexai-pipelinejob-bucket-${uniqueId}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"

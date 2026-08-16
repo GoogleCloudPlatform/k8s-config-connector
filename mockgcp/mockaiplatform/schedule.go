@@ -21,6 +21,7 @@ package mockaiplatform
 import (
 	"context"
 	"fmt"
+	"hash/fnv"
 	"strings"
 	"time"
 
@@ -85,7 +86,11 @@ func (s *scheduleService) ListSchedules(ctx context.Context, req *pb.ListSchedul
 }
 
 func (s *scheduleService) CreateSchedule(ctx context.Context, req *pb.CreateScheduleRequest) (*pb.Schedule, error) {
-	reqName := req.Parent + "/schedules/" + req.Schedule.DisplayName
+	h := fnv.New64a()
+	h.Write([]byte(req.Schedule.DisplayName))
+	id := fmt.Sprintf("%d", h.Sum64())
+
+	reqName := req.Parent + "/schedules/" + id
 	name, err := s.parseScheduleName(reqName)
 	if err != nil {
 		return nil, err
@@ -98,7 +103,9 @@ func (s *scheduleService) CreateSchedule(ctx context.Context, req *pb.CreateSche
 	obj.CreateTime = timestamppb.New(time.Now())
 	obj.UpdateTime = timestamppb.New(time.Now())
 	obj.NextRunTime = timestamppb.New(time.Now())
-	obj.StartTime = timestamppb.New(time.Now())
+	if obj.StartTime == nil {
+		obj.StartTime = timestamppb.New(time.Now())
+	}
 	obj.State = pb.Schedule_ACTIVE
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
@@ -149,6 +156,7 @@ func (s *scheduleService) UpdateSchedule(ctx context.Context, req *pb.UpdateSche
 		return nil, err
 	}
 
+	obj.Name = strings.Replace(obj.Name, name.Project.ID, fmt.Sprintf("%v", name.Project.Number), -1)
 	return obj, nil
 }
 
@@ -227,7 +235,7 @@ func (n *scheduleName) String() string {
 func (s *MockService) parseScheduleName(name string) (*scheduleName, error) {
 	tokens := strings.Split(name, "/")
 	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "schedules" {
-		project, err := s.Projects.GetProjectByID(tokens[1])
+		project, err := s.Projects.GetProjectByIDOrNumber(tokens[1])
 		if err != nil {
 			return nil, err
 		}

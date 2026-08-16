@@ -1,0 +1,12 @@
+- caisURL: //storage.googleapis.com/projects/${projectId}/buckets/vertexai-schedmax-bucket-${uniqueId}
+  group: storage.cnrm.cloud.google.com
+  kind: StorageBucket
+  name: vertexai-schedmax-bucket-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: //aiplatform.googleapis.com/projects/${projectNumber}/locations/us-central1/schedules/10982031432294162491
+  group: aiplatform.cnrm.cloud.google.com
+  kind: VertexAISchedule
+  name: vertexaischedule-maximal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
