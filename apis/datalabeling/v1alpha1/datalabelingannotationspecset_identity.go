@@ -42,6 +42,10 @@ func (i *DataLabelingAnnotationSpecSetIdentity) String() string {
 	return DataLabelingAnnotationSpecSetIdentityFormat.ToString(*i)
 }
 
+func (i *DataLabelingAnnotationSpecSetIdentity) ParentString() string {
+	return "projects/" + i.Project
+}
+
 func (i *DataLabelingAnnotationSpecSetIdentity) FromExternal(ref string) error {
 	parsed, match, err := DataLabelingAnnotationSpecSetIdentityFormat.Parse(ref)
 	if err != nil {
