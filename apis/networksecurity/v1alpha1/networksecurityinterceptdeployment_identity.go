@@ -43,6 +43,10 @@ func (i *NetworkSecurityInterceptDeploymentIdentity) String() string {
 	return NetworkSecurityInterceptDeploymentIdentityFormat.ToString(*i)
 }
 
+func (i *NetworkSecurityInterceptDeploymentIdentity) ParentString() string {
+	return fmt.Sprintf("projects/%s/locations/%s", i.Project, i.Location)
+}
+
 func (i *NetworkSecurityInterceptDeploymentIdentity) FromExternal(ref string) error {
 	parsed, match, err := NetworkSecurityInterceptDeploymentIdentityFormat.Parse(ref)
 	if err != nil {
@@ -103,4 +107,12 @@ func (obj *NetworkSecurityInterceptDeployment) GetIdentity(ctx context.Context, 
 	}
 
 	return specIdentity, nil
+}
+
+// ExternalIdentifier returns the GCP external identifier (the GCP URL).
+func (obj *NetworkSecurityInterceptDeployment) ExternalIdentifier() *string {
+	if obj.Status.ExternalRef != nil {
+		return obj.Status.ExternalRef
+	}
+	return nil
 }
