@@ -1,0 +1,6 @@
+- caisURL: //cloudsecuritycompliance.googleapis.com/organizations/${TEST_ORG_ID}/locations/global/frameworks/csframework-mini-${uniqueId}
+  group: cloudsecuritycompliance.cnrm.cloud.google.com
+  kind: CloudSecurityFramework
+  name: csframework-mini-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
