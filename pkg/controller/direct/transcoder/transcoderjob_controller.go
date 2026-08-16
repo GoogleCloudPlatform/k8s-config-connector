@@ -260,7 +260,7 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 
 	obj.Spec.ProjectRef = &refs.ProjectRef{Name: a.id.Project}
 	obj.Spec.Location = a.id.Location
-	obj.Spec.ResourceID = &a.k8sName
+	obj.Spec.ResourceID = &a.id.Job
 
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
@@ -268,7 +268,7 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 	}
 
 	u.Object = uObj
-	u.SetName(a.k8sName)
+	u.SetName(a.id.Job)
 	u.SetGroupVersionKind(krm.TranscoderJobGVK)
 
 	return u, nil
