@@ -190,7 +190,7 @@ func (a *AssuredWorkloadsWorkloadAdapter) Update(ctx context.Context, updateOp *
 
 	if !diffs.HasDiff() {
 		log.V(2).Info("no field needs update", "name", a.id)
-		return nil
+		return a.updateStatus(ctx, updateOp, a.actual)
 	}
 
 	structuredreporting.ReportDiff(ctx, diffs)
