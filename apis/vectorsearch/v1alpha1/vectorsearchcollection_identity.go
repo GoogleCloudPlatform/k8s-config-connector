@@ -64,6 +64,17 @@ func (i *VectorSearchCollectionIdentity) ParentString() string {
 	return fmt.Sprintf("projects/%s/locations/%s", i.Project, i.Location)
 }
 
+func ParseCollectionExternal(ref string) (parent string, resourceID string, err error) {
+	parsed, match, err := VectorSearchCollectionIdentityFormat.Parse(ref)
+	if err != nil {
+		return "", "", fmt.Errorf("format of VectorSearchCollection external=%q was not known (use %s): %w", ref, VectorSearchCollectionIdentityFormat.CanonicalForm(), err)
+	}
+	if !match {
+		return "", "", fmt.Errorf("format of VectorSearchCollection external=%q was not known (use %s)", ref, VectorSearchCollectionIdentityFormat.CanonicalForm())
+	}
+	return parsed.ParentString(), parsed.Collection, nil
+}
+
 func getIdentityFromVectorSearchCollectionSpec(ctx context.Context, reader client.Reader, obj client.Object) (*VectorSearchCollectionIdentity, error) {
 	resourceID, err := refs.GetResourceID(obj)
 	if err != nil {

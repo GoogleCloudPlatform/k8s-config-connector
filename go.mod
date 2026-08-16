@@ -176,6 +176,7 @@ require (
 	cloud.google.com/go/memcache v1.16.0 // indirect
 	cloud.google.com/go/pubsub v1.50.2 // indirect
 	cloud.google.com/go/pubsublite v1.8.2 // indirect
+	cloud.google.com/go/vectorsearch v1.3.0 // indirect
 	cloud.google.com/go/vpcaccess v1.13.0 // indirect
 	github.com/GoogleCloudPlatform/opentelemetry-operations-go/detectors/gcp v1.32.0 // indirect
 	github.com/GoogleCloudPlatform/opentelemetry-operations-go/exporter/metric v0.57.0 // indirect

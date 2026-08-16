@@ -1,0 +1,27 @@
+apiVersion: vectorsearch.cnrm.cloud.google.com/v1alpha1
+kind: VectorSearchCollection
+metadata:
+  name: collection-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  displayName: "Maximal Vector Search Collection"
+  description: "A description of the maximal collection."
+  labels:
+    env: test
+  vectorSchema:
+    my-vector:
+      denseVector:
+        dimensions: 128
+        vertexEmbeddingConfig:
+          modelID: publishers/google/models/text-embedding-004
+          textTemplate: "{title} {plot}"
+          taskType: RETRIEVAL_DOCUMENT
+  dataSchema:
+    type: object
+    properties:
+      title:
+        type: string
+      plot:
+        type: string
