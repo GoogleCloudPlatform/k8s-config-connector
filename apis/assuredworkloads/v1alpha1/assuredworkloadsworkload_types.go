@@ -25,6 +25,9 @@ var AssuredWorkloadsWorkloadGVK = GroupVersion.WithKind("AssuredWorkloadsWorkloa
 // AssuredWorkloadsWorkloadSpec defines the desired state of AssuredWorkloadsWorkload
 // +kcc:spec:proto=google.cloud.assuredworkloads.v1.Workload
 type AssuredWorkloadsWorkloadSpec struct {
+	// Immutable. The location of this resource.
+	Location string `json:"location"`
+
 	// The AssuredWorkloadsWorkload name. If not given, the metadata.name will be used.
 	ResourceID *string `json:"resourceID,omitempty"`
 

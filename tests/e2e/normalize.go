@@ -1221,6 +1221,8 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 		s = re2.ReplaceAllString(s, "built on 20231010")
 		reRollout := regexp.MustCompile(`rollouts/rollout-\d{8}-\d{6}`)
 		s = reRollout.ReplaceAllString(s, "rollouts/rollout-placeholder")
+		re3 := regexp.MustCompile(`summary;errorId=[a-zA-Z0-9\-]+`)
+		s = re3.ReplaceAllString(s, "summary;errorId=normalized-error-id")
 		return s
 	})
 

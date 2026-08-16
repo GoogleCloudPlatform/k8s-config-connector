@@ -81,6 +81,9 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		// AlloyDB
 		"//alloydb.googleapis.com/projects/{}/locations/{}/clusters/{}/users/{}": true,
 
+		// Assured Workloads
+		"//assuredworkloads.googleapis.com/organizations/{}/locations/{}/workloads/{}": true,
+
 		// Apigee Registry
 		"//apigeeregistry.googleapis.com/projects/{}/locations/{}/apis/{}":      true,
 		"//apigeeregistry.googleapis.com/projects/{}/locations/{}/artifacts/{}": true,
