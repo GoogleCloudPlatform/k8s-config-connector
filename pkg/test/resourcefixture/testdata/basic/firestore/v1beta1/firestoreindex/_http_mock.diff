@@ -2,53 +2,59 @@
 < POST https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/sample-collection-${uniqueId}/indexes?alt=json
 ---
 > POST https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/sample-collection-${uniqueId}/indexes?%24alt=json%3Benum-encoding%3Dint
-151c151
+148c148
+<   "apiScope": "DATASTORE_MODE_API",
+---
+>   "apiScope": 1,
+152c152
 <       "order": "ASCENDING"
 ---
 >       "order": 1
-155c155
+156c156
 <       "order": "DESCENDING"
 ---
 >       "order": 2
-158c158
-<   "queryScope": "COLLECTION"
+159c159
+<   "queryScope": "COLLECTION_RECURSIVE"
 ---
->   "queryScope": 1
-176c176
+>   "queryScope": 3
+177c177
 <     "state": "INITIALIZING"
 ---
 >     "state": 1
-183c183
+184c184
 < GET https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/operations/${operationID}?alt=json
 ---
 > GET https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/operations/${operationID}
-232c232
+234c234
 < GET https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/sample-collection-${uniqueId}/indexes/${indexID}?alt=json
 ---
 > GET https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/sample-collection-${uniqueId}/indexes/${indexID}?%24alt=json%3Benum-encoding%3Dint
-246c246
+248,249c248,249
+<   "apiScope": "DATASTORE_MODE_API",
 <   "density": "SPARSE_ALL",
 ---
+>   "apiScope": 1,
 >   "density": 1,
-250c250
+253c253
 <       "order": "ASCENDING"
 ---
 >       "order": 1
-254c254
+257c257
 <       "order": "DESCENDING"
 ---
 >       "order": 2
-258c258
+261c261
 <       "order": "DESCENDING"
 ---
 >       "order": 2
-262,263c262,263
-<   "queryScope": "COLLECTION",
+265,266c265,266
+<   "queryScope": "COLLECTION_RECURSIVE",
 <   "state": "READY"
 ---
->   "queryScope": 1,
+>   "queryScope": 3,
 >   "state": 2
-268c268
+271c271
 < DELETE https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/sample-collection-${uniqueId}/indexes/${indexID}?alt=json
 ---
 > DELETE https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/sample-collection-${uniqueId}/indexes/${indexID}?%24alt=json%3Benum-encoding%3Dint
