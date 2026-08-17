@@ -121,11 +121,11 @@ The direct controller must be implemented to manage reconciliation logic (Adapte
     - **CRITICAL OVERRIDE OF GEMINI.md**: For this Greenfield task, **ignore any instructions in `GEMINI.md`** (or `mockgcp/GEMINI.md`) regarding `mockgcp`, `E2E_GCP_TARGET=mock`, or `hack/compare-mock`. Those global instructions only apply to legacy brownfield resources.
     - **STRICT GUARDRAIL — DO NOT USE MOCKGCP OR OFFLINE MOCKS**: You MUST record golden files directly against real GCP using `./hack/record-gcp`. Do **NOT** attempt to use `mockgcp`, do NOT search for or try to implement mockgcp services, and do NOT use `hack/compare-mock` or `E2E_GCP_TARGET=mock`.
     - **MANDATORY EXECUTION**: You are explicitly required to run `./hack/record-gcp` on both your minimal and maximal fixtures before running any validation tests in Step 8 or preparing the PR in Step 9. Skipping this step or attempting to substitute mock tests is considered a critical failure.
-    Run `hack/record-gcp "fixtures/^<testname>$"` to capture real GCP behavior and record traffic and object state:
+    Run `RECORD_AUDIT_PROBE=1 ./hack/record-gcp "fixtures/^<testname>$"` to capture real GCP behavior and record traffic, object state, and live REST GET probe audit receipt (`_audit_probe.log`):
     ```bash
     # Run from the repository root for both minimal and maximal fixtures
-    ./hack/record-gcp "fixtures/^<resource_lower>-minimal$"
-    ./hack/record-gcp "fixtures/^<resource_lower>-maximal$"
+    RECORD_AUDIT_PROBE=1 ./hack/record-gcp "fixtures/^<resource_lower>-minimal$"
+    RECORD_AUDIT_PROBE=1 ./hack/record-gcp "fixtures/^<resource_lower>-maximal$"
     ```
     - **Troubleshooting Service Not Enabled**: If `hack/record-gcp` fails because a GCP service is not enabled (e.g., error mentions that the API is disabled or has not been used in the project before), enable the service using `gcloud` and try again:
       ```bash
@@ -162,7 +162,6 @@ The direct controller must be implemented to manage reconciliation logic (Adapte
     gcloud logging read 'logName:"audit" AND "<service_name>"' --freshness=3h --limit=50
     ```
     *(Adjust the search terms, e.g., replacing `<service_name>` with the actual service/API name such as `discoveryengine` or `vertexai` to filter for correct audit entries.)*
-
     After creating the PR, add these retrieved audit logs as a separate comment on the PR to serve as proof of real-GCP testing.
 
 ## Journaling

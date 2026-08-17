@@ -832,6 +832,10 @@ func runScenario(ctx context.Context, t *testing.T, options ScenarioOptions, fix
 					h.Events.Resume()
 				}
 
+				if !options.TestPause && os.Getenv("E2E_GCP_TARGET") == "real" && os.Getenv("RECORD_AUDIT_PROBE") != "" {
+					runAutoRESTProbe(ctx, t, h, fixture, project, uniqueID, opt)
+				}
+
 				create.DeleteResources(h, opt)
 
 				// Verify kube events
