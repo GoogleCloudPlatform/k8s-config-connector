@@ -1014,13 +1014,13 @@ func NetworkSecurityFirewallEndpointAssociationSpec_v1alpha1_FromProto(mapCtx *d
 	// MISSING: Name
 	out.Labels = in.Labels
 	if in.GetNetwork() != "" {
-		out.NetworkRef = &krmcomputerefs.ComputeNetworkRef{External: in.GetNetwork()}
+		out.NetworkRef = &krmcomputev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
 	}
 	if in.GetFirewallEndpoint() != "" {
 		out.FirewallEndpointRef = &krmnetworksecurityv1alpha1.FirewallEndpointRef{External: in.GetFirewallEndpoint()}
 	}
 	if in.GetTlsInspectionPolicy() != "" {
-		out.TLSInspectionPolicyRef = &krmnetworksecurityv1alpha1.TLSInspectionPolicyRef{External: in.GetTlsInspectionPolicy()}
+		out.TLSInspectionPolicyRef = &krmnetworksecurityv1alpha1.NetworkSecurityTLSInspectionPolicyRef{External: in.GetTlsInspectionPolicy()}
 	}
 	out.Disabled = direct.LazyPtr(in.GetDisabled())
 	return out
@@ -1132,7 +1132,7 @@ func NetworkSecurityGatewaySecurityPolicySpec_v1alpha1_FromProto(mapCtx *direct.
 	// MISSING: Name
 	out.Description = direct.LazyPtr(in.GetDescription())
 	if in.GetTlsInspectionPolicy() != "" {
-		out.TLSInspectionPolicyRef = &krmnetworksecurityv1alpha1.TLSInspectionPolicyRef{External: in.GetTlsInspectionPolicy()}
+		out.TLSInspectionPolicyRef = &krmnetworksecurityv1alpha1.NetworkSecurityTLSInspectionPolicyRef{External: in.GetTlsInspectionPolicy()}
 	}
 	return out
 }

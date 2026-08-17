@@ -44,7 +44,11 @@ func (s *FirewallActivationServer) CreateFirewallEndpointAssociation(ctx context
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(time.Now())
 	obj.UpdateTime = timestamppb.New(time.Now())
-	obj.State = pbv1.FirewallEndpointAssociation_ACTIVE
+	if obj.Disabled == true {
+		obj.State = pbv1.FirewallEndpointAssociation_INACTIVE
+	} else {
+		obj.State = pbv1.FirewallEndpointAssociation_ACTIVE
+	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -114,6 +118,12 @@ func (s *FirewallActivationServer) UpdateFirewallEndpointAssociation(ctx context
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "field %q is not updateable", path)
 		}
+	}
+
+	if updated.Disabled == true {
+		updated.State = pbv1.FirewallEndpointAssociation_INACTIVE
+	} else {
+		updated.State = pbv1.FirewallEndpointAssociation_ACTIVE
 	}
 
 	if err := s.storage.Update(ctx, name.String(), updated); err != nil {

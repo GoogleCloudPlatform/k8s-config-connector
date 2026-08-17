@@ -15,7 +15,7 @@
 package v1alpha1
 
 import (
-	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -44,7 +44,7 @@ type NetworkSecurityFirewallEndpointAssociationSpec struct {
 
 	// Required. The URL of the network that is being associated.
 	// +required
-	NetworkRef *computerefs.ComputeNetworkRef `json:"networkRef"`
+	NetworkRef *computev1beta1.ComputeNetworkRef `json:"networkRef"`
 
 	// Required. The URL of the FirewallEndpoint that is being associated.
 	// +required
@@ -52,23 +52,12 @@ type NetworkSecurityFirewallEndpointAssociationSpec struct {
 
 	// Optional. The URL of the TlsInspectionPolicy that is being associated.
 	// +optional
-	TLSInspectionPolicyRef *TLSInspectionPolicyRef `json:"tlsInspectionPolicyRef,omitempty"`
+	TLSInspectionPolicyRef *NetworkSecurityTLSInspectionPolicyRef `json:"tlsInspectionPolicyRef,omitempty"`
 
 	// Optional. Whether the association is disabled.
 	// True indicates that traffic won't be intercepted
 	// +optional
 	Disabled *bool `json:"disabled,omitempty"`
-}
-
-// FirewallEndpointRef is moved to networksecurityfirewallendpoint_reference.go
-
-type TLSInspectionPolicyRef struct {
-	/* The TLS inspection policy selflink, when not managed by Config Connector. */
-	External string `json:"external,omitempty"`
-	/* The `name` field of a `NetworkSecurityTLSInspectionPolicy` resource. */
-	Name string `json:"name,omitempty"`
-	/* The `namespace` field of a `NetworkSecurityTLSInspectionPolicy` resource. */
-	Namespace string `json:"namespace,omitempty"`
 }
 
 // NetworkSecurityFirewallEndpointAssociationStatus defines the config connector machine state of NetworkSecurityFirewallEndpointAssociation
