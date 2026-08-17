@@ -29,6 +29,8 @@ spec:
   collection: sample-collection-${uniqueId}
   # TODO: Should be databaseRef, but FirestoreIndex CRD is not updated yet.
   database: firestoredatabase-${uniqueId}
+  apiScope: DATASTORE_MODE_API
+  queryScope: COLLECTION_RECURSIVE
   fields:
   - fieldPath: field1
     order: ASCENDING
