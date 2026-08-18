@@ -1,0 +1,50 @@
+266c266
+< POST https://cloudresourcemanager.googleapis.com/v3/tagBindings?alt=json
+---
+> POST https://cloudresourcemanager.googleapis.com/v3/tagBindings?%24alt=json%3Benum-encoding%3Dint
+297c297
+< GET https://cloudresourcemanager.googleapis.com/v3/tagBindings/?alt=json&pageSize=300&parent=%2F%2Fsecretmanager.googleapis.com%2Fprojects%2F${projectNumber}%2Fsecrets%2Fsecretmanagersecret-${uniqueId}
+---
+> GET https://cloudresourcemanager.googleapis.com/v3/projects/${projectNumber}?%24alt=json%3Benum-encoding%3Dint
+310a311,347
+>   "createTime": "2024-04-01T12:34:56.123456Z",
+>   "displayName": "${projectId}",
+>   "etag": "abcdef0123A=",
+>   "labels": {
+>     "business_unit": "helix",
+>     "goog-terraform-provisioned": "true",
+>     "nc-contains-user-data": "false",
+>     "nc-data-description": "none",
+>     "nc-env-type": "dev",
+>     "nc-has-pii": "false",
+>     "nc-individual-owner-uname": "pthomson",
+>     "nc-repo": "helix-foundations",
+>     "region": "au"
+>   },
+>   "name": "projects/${projectNumber}",
+>   "parent": "folders/${folderID}",
+>   "projectId": "${projectId}",
+>   "state": 1,
+>   "updateTime": "2024-04-01T12:34:56.123456Z"
+> }
+> 
+> ---
+> 
+> GET https://cloudresourcemanager.googleapis.com/v3/tagBindings?%24alt=json%3Benum-encoding%3Dint&parent=%2F%2Fsecretmanager.googleapis.com%2Fprojects%2F${projectNumber}%2Fsecrets%2Fsecretmanagersecret-${uniqueId}
+> Content-Type: application/json
+> 
+> 200 OK
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+323c360
+< DELETE https://cloudresourcemanager.googleapis.com/v3/tagBindings/%2F%2Fsecretmanager.googleapis.com%2Fprojects%2F${projectNumber}%2Fsecrets%2Fsecretmanagersecret-${uniqueId}/tagValues/${tagValueID}?alt=json
+---
+> DELETE https://cloudresourcemanager.googleapis.com/v3/tagBindings/%252F%252Fsecretmanager.googleapis.com%252Fprojects%252F${projectNumber}%252Fsecrets%252Fsecretmanagersecret-${uniqueId}/tagValues/${tagValueID}?%24alt=json%3Benum-encoding%3Dint
