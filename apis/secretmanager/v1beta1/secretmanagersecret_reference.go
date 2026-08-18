@@ -19,20 +19,25 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refsv1beta1.ExternalNormalizer = &SecretRef{}
+var (
+	_ refsv1beta1.ExternalNormalizer = &SecretRef{}
+	_ refsv1beta1.ExternalRef        = &SecretRef{}
+)
 
 // SecretRef is a reference to a SecretManagerSecret.
 type SecretRef struct {
 	// A reference to an externally managed SecretManagerSecret resource.
-	// Should be in the format "projects/{{projectID}}/locations/{{location}}/secrets/{{secretID}}".
+	// Should be in the format "projects/{{projectID}}/secrets/{{secretID}}".
 	External string `json:"external,omitempty"`
 
 	// The name of a SecretManagerSecret resource.
@@ -40,6 +45,46 @@ type SecretRef struct {
 
 	// The namespace of a SecretManagerSecret resource.
 	Namespace string `json:"namespace,omitempty"`
+}
+
+func init() {
+	refsv1beta1.Register(&SecretRef{}, &SecretManagerSecret{})
+}
+
+func (r *SecretRef) GetGVK() schema.GroupVersionKind {
+	return SecretManagerSecretGVK
+}
+
+func (r *SecretRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{Name: r.Name, Namespace: r.Namespace}
+}
+
+func (r *SecretRef) GetExternal() string {
+	return r.External
+}
+
+func (r *SecretRef) SetExternal(ref string) {
+	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
+}
+
+func (r *SecretRef) ValidateExternal(ref string) error {
+	_, err := ParseSecretExternal(ref)
+	return err
+}
+
+func (r *SecretRef) ParseExternalToIdentity() (identity.Identity, error) {
+	return ParseSecretExternal(r.External)
+}
+
+func (r *SecretRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	external, err := r.NormalizedExternal(ctx, reader, defaultNamespace)
+	if err != nil {
+		return err
+	}
+	r.SetExternal(external)
+	return r.ValidateExternal(external)
 }
 
 // NormalizedExternal provision the "External" value for other resource that depends on SecretManagerSecret.
@@ -91,6 +136,7 @@ func ParseSecretExternal(external string) (*SecretIdentity, error) {
 	if external == "" {
 		return nil, fmt.Errorf("missing external value")
 	}
+	external = identity.StripReferencePrefixes(external, "secretmanager.googleapis.com")
 	external = strings.TrimPrefix(external, "/")
 	tokens := strings.Split(external, "/")
 	if len(tokens) != 4 || tokens[0] != "projects" || tokens[2] != "secrets" {
