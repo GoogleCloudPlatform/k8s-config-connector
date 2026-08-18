@@ -27,7 +27,7 @@ Please respect the following review criteria and invariants when reviewing.
 *   Check for appropriate edge-case testing if any complex logic exists in the controller (e.g., dependencies on other resources, complex identity mapping).
 
 ## 6. General Controller Structure & Client Creation
-*   **Client Creation Preference**: Verify that the controller uses an official GAPIC Go client library (e.g., `cloud.google.com/go/<service>/apivX` via `NewFooClient` or `NewFooRESTClient`) instead of manually calling `grpc.Dial` with raw protobuf gRPC client interfaces (`pb.New...Client`), unless no Go client struct exists for the API.
+*   **Client Creation Preference**: Verify that the controller uses an official GAPIC Go client library REST constructor (e.g., `cloud.google.com/go/<service>/apivX` via `NewFooRESTClient`) instead of `NewFooClient` (gRPC) or manually calling `grpc.Dial` with raw protobuf client interfaces (`pb.New...Client`), unless REST is unavailable or fails.
 *   **Reference Implementation:** The canonical reference controller implementation is [`workerpool_controller.go`](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/d5ce0db71838fcb63ea99de8be8fd53fa90bf597/pkg/controller/direct/cloudbuild/workerpool_controller.go) (Note: it predates `IdentityV2` and does not handle it correctly, so ensure new controllers implement `IdentityV2` properly).
 *   The controller must implement the `directbase.Model` and `directbase.Adapter` interfaces.
 *   It should contain appropriate dependency resolution (`resolveDependencies`).

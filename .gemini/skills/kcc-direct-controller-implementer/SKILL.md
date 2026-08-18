@@ -33,23 +33,26 @@ This skill guides the implementation of the controller, mappers, and fuzzer for 
       ```
     - **Identity Parent Paths**: Create a `ParentString()` method on the resource's identity type (e.g., `KMSCryptoKeyIdentity`) instead of constructing formatting string patterns manually inside the controller. This keeps parent paths canonical and reusable.
     - **Client Creation Options & Go Client Preference**:
-      * **Prefer Official Go Client Libraries (`go-client`)**: When building the GCP client in `m.client(ctx)`, ALWAYS prefer using the official Google Cloud Go client library (GAPIC client, e.g., `cloud.google.com/go/<service>/apivX`, or discovery client `google.golang.org/api/...`) over raw protobuf gRPC client interfaces (`pb.FooClient` in `apivX/foopb` dialed with raw `grpc.Dial`).
-      * Why: GAPIC Go clients (`*service.FooClient` or `*service.FooRESTClient`) automatically handle authentication, OAuth scopes, retry logic, and wrap Long-Running Operations (LROs) into clean operation structs (`*service.FooOperation`), avoiding authentication errors and manual LRO polling.
-      * **Client Construction Example**: Retrieve configuration options using `m.config.RESTClientOptions()` (when constructing a REST client variant, e.g., `NewFooRESTClient`) or `m.config.GRPCClientOptions()` (when constructing a gRPC client variant, e.g., `NewFooClient`):
+      * **Prefer GAPIC REST Client over gRPC (`go-client`)**: When building the GCP client in `m.client(ctx)`, ALWAYS prefer using the official Google Cloud Go client library (GAPIC client, e.g., `cloud.google.com/go/<service>/apivX`, or discovery client `google.golang.org/api/...`). Many GAPIC libraries provide both REST (`NewFooRESTClient`) and gRPC (`NewFooClient`) constructors. **You MUST prefer the REST variant (`NewFooRESTClient`)** initialized with `m.config.RESTClientOptions()`.
+      * Why: REST GAPIC clients integrate cleanly with HTTP golden traffic recording (`_http.log`), mock layer HTTP alignment, and avoid gRPC transport/auth quirks, while still automatically wrapping Long-Running Operations (`*service.FooOperation`), OAuth scopes, and retry logic.
+      * **Client Construction Example (GAPIC REST Primary Choice)**: Retrieve configuration options using `m.config.RESTClientOptions()` and construct the REST client:
         ```go
         var opts []option.ClientOption
-        opts, err := m.config.RESTClientOptions() // or m.config.GRPCClientOptions() for gRPC variant
+        opts, err := m.config.RESTClientOptions()
         if err != nil {
             return nil, err
         }
-        // Prefer GAPIC Go client constructors over manual grpc.Dial with pb clients
-        gcpClient, err := gcp.NewMyResourceRESTClient(ctx, opts...) // or gcp.NewMyResourceClient(ctx, opts...)
+        // Always prefer GAPIC New*RESTClient over New*Client (gRPC) or raw pb clients
+        gcpClient, err := gcp.NewMyResourceRESTClient(ctx, opts...)
         if err != nil {
-            return nil, fmt.Errorf("building MyResource client: %w", err)
+            return nil, fmt.Errorf("building MyResource REST client: %w", err)
         }
         ```
-      * **Protobuf Fallback (`pb.`)**: Only fall back to raw protobuf gRPC clients (`pb.NewFooClient(conn)` with `grpc.Dial`) if a GAPIC Go client library struct/constructor does not exist for the API.
-      * **Try Different Client Variants on Issues During Testing**: When testing the controller (e.g. running `./hack/record-gcp` or API checks) and you face authentication issues, 403/404/500 errors, or connection problems, **try switching to the different client variant**. If `NewFooClient` (gRPC) fails or has auth/LRO issues, try switching to `NewFooRESTClient` (REST) with `RESTClientOptions()`, or vice versa. Some GCP endpoints/services only support REST or have issues with gRPC authentication.
+      * **Fallback Order & Troubleshooting**:
+        1. **GAPIC REST Client (`NewFooRESTClient`)**: Primary preference.
+        2. **GAPIC gRPC Client (`NewFooClient`)**: Try with `m.config.GRPCClientOptions()` if the REST constructor is missing or fails during live GCP testing.
+        3. **Raw Protobuf gRPC (`pb.NewFooClient(conn)`)**: Only fall back to dialing raw gRPC conns (`grpc.Dial`) if no GAPIC Go client library struct/constructor exists for the API.
+      * **Try Different Client Variants on Issues During Testing**: When testing against real GCP (`./hack/record-gcp` or API checks) and encountering `403 Forbidden`, `404 Not Found`, or LRO polling errors, actively switch between the client variants (REST vs gRPC) to find the working transport.
     - **Diff Comparison & Structured Diff (`tags.DiffForTopLevelFields`)**: Always prefer using top-level field tags-based diff comparison via `tags.DiffForTopLevelFields` over recursive/magical comparison functions (such as `common.CompareProtoMessageStructuredDiff` or `common.CompareProtoMessage` which are deprecated/discouraged due to unpredictable behaviors in `BasicDiff`).
       ```go
       func compareResource(ctx context.Context, actual, desired *pb.MyResource) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
