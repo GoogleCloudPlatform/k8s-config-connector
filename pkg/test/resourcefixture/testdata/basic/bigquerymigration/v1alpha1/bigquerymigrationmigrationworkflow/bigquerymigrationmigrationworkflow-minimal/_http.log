@@ -1,0 +1,144 @@
+GET https://bigquerymigration.googleapis.com/v2alpha/projects/${projectId}/locations/us/workflows/${workflowID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus%2Fworkflows%2Fbigquerymigrationmigrationworkflow-minimal-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Requested entity was not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://bigquerymigration.googleapis.com/v2alpha/projects/${projectId}/locations/us/workflows
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus
+
+{
+  "displayName": "Minimal Migration Workflow ${uniqueId}",
+  "tasks": {
+    "task-1": {
+      "type": "Translation_Teradata2BQ"
+    }
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "Minimal Migration Workflow ${uniqueId}",
+  "name": "projects/${projectNumber}/locations/us/workflows/${workflowID}",
+  "state": "RUNNING",
+  "tasks": {
+    "task-1": {
+      "id": "00000000-0000-0000-0000-000000000000",
+      "type": "Translation_Teradata2BQ"
+    }
+  }
+}
+
+---
+
+GET https://bigquerymigration.googleapis.com/v2alpha/projects/${projectId}/locations/us/workflows/${workflowID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus%2Fworkflows%2F${workflowID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "1970-01-01T00:00:00.000000Z",
+  "displayName": "Minimal Migration Workflow ${uniqueId}",
+  "lastUpdateTime": "1970-01-01T00:00:00.000000Z",
+  "name": "projects/${projectNumber}/locations/us/workflows/${workflowID}",
+  "state": "COMPLETED",
+  "tasks": {
+    "task-1": {
+      "createTime": "1970-01-01T00:00:00.000000Z",
+      "id": "00000000-0000-0000-0000-000000000000",
+      "lastUpdateTime": "1970-01-01T00:00:00.000000Z",
+      "metrics": [
+        {
+          "metric": "ROOT_CAUSE",
+          "points": [
+            {
+              "value": {
+                "stringValue": "No GCS source path found."
+              }
+            }
+          ],
+          "valueType": "STRING"
+        },
+        {
+          "metric": "CAUSE",
+          "points": [
+            {
+              "value": {
+                "stringValue": "No GCS source path found."
+              }
+            }
+          ],
+          "valueType": "STRING"
+        }
+      ],
+      "processingError": {
+        "metadata": {
+          "ERROR_SOURCE": "USER"
+        },
+        "reason": "No GCS source path found."
+      },
+      "state": "FAILED",
+      "totalProcessingErrorCount": 1,
+      "type": "Translation_Teradata2BQ"
+    }
+  }
+}
+
+---
+
+DELETE https://bigquerymigration.googleapis.com/v2alpha/projects/${projectId}/locations/us/workflows/${workflowID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus%2Fworkflows%2F${workflowID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
