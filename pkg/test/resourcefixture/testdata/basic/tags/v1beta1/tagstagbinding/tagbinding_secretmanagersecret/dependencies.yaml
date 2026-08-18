@@ -20,7 +20,7 @@ metadata:
   name: tagstagkey-${uniqueId}
 spec:
   description: Tag key for a Secret Manager secret.
-  parent: projects/${projectId}
+  parent: projects/${projectNumber}
   shortName: secrettag${uniqueId}
 ---
 apiVersion: tags.cnrm.cloud.google.com/v1beta1
