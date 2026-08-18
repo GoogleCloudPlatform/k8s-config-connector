@@ -1,0 +1,36 @@
+apiVersion: securitycentermanagement.cnrm.cloud.google.com/v1alpha1
+kind: SecurityCenterManagementEventThreatDetectionCustomModule
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: sccetdcm-min-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  config:
+    ips:
+    - 1.2.3.4
+    metadata:
+      name: CONFIGURABLE_BAD_IP
+  displayName: Updated Minimal Event Threat Detection Custom Module
+  enablementState: ENABLED
+  location: global
+  organizationRef:
+    external: organizations/${folderID}
+  type: CONFIGURABLE_BAD_IP
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: organizations/${folderID}/locations/global/eventThreatDetectionCustomModules/sccetdcm-min-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    ancestorModule: organizations/${folderID}/locations/global/eventThreatDetectionCustomModules/sccetdcm-min-${uniqueId}
+    lastEditor: kcc-controller@cnrm-barni-4.iam.gserviceaccount.com
+    updateTime: "2026-08-18T15:38:24.123456789Z"

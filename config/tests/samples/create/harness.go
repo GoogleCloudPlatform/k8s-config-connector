@@ -1448,6 +1448,7 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 		case "privatecacapool":
 
 		case "projectinorg":
+		case "securitycentermanagementeventthreatdetectioncustommodule-minimal", "securitycentermanagementeventthreatdetectioncustommodule-maximal":
 		default:
 			t.Skipf("test %v not suppported by vcr; skipping", testKey)
 		}
