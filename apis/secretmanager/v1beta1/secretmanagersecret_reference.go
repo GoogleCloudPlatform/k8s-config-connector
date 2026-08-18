@@ -150,6 +150,7 @@ func ParseSecretExternal(external string) (*SecretIdentity, error) {
 	if external == "" {
 		return nil, fmt.Errorf("missing external value")
 	}
+	external = identity.StripReferencePrefixes(external, "secretmanager.googleapis.com")
 	external = strings.TrimPrefix(external, "/")
 	tokens := strings.Split(external, "/")
 	if len(tokens) != 4 || tokens[0] != "projects" || tokens[2] != "secrets" {

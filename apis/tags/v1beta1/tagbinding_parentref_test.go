@@ -19,8 +19,12 @@ import (
 	"strings"
 	"testing"
 
+	secretmanagerv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
+	"sigs.k8s.io/controller-runtime/pkg/client/fake"
 )
 
 func TestTagsTagBindingParentRef_Normalize(t *testing.T) {
@@ -68,6 +72,30 @@ func TestTagsTagBindingParentRef_Normalize(t *testing.T) {
 				External: "projects/my-project/buckets/my-bucket",
 			},
 			expectedExternal: "//storage.googleapis.com/projects/my-project/buckets/my-bucket",
+		},
+		{
+			name: "External: projects/{project}/secrets/{secret} with kind=SecretManagerSecret",
+			initial: TagsTagBindingParentRef{
+				Kind:     "SecretManagerSecret",
+				External: "projects/my-project/secrets/my-secret",
+			},
+			expectedExternal: "//secretmanager.googleapis.com/projects/my-project/secrets/my-secret",
+		},
+		{
+			name: "External: /projects/{project}/secrets/{secret} with kind=SecretManagerSecret",
+			initial: TagsTagBindingParentRef{
+				Kind:     "SecretManagerSecret",
+				External: "/projects/my-project/secrets/my-secret",
+			},
+			expectedExternal: "//secretmanager.googleapis.com/projects/my-project/secrets/my-secret",
+		},
+		{
+			name: "External: //secretmanager.googleapis.com/projects/{project}/secrets/{secret} with kind=SecretManagerSecret",
+			initial: TagsTagBindingParentRef{
+				Kind:     "SecretManagerSecret",
+				External: "//secretmanager.googleapis.com/projects/my-project/secrets/my-secret",
+			},
+			expectedExternal: "//secretmanager.googleapis.com/projects/my-project/secrets/my-secret",
 		},
 		{
 			name: "External: //storage.googleapis.com/projects/{project}/buckets/{bucket} with kind=StorageBucket",
@@ -191,6 +219,59 @@ func TestTagsTagBindingParentRef_Normalize(t *testing.T) {
 			}
 			if !tt.wantErr && r.External != tt.expectedExternal {
 				t.Errorf("Normalize() external = %v, want %v", r.External, tt.expectedExternal)
+			}
+		})
+	}
+}
+
+func TestTagsTagBindingParentRef_NormalizeSecretManagerSecretByName(t *testing.T) {
+	tests := []struct {
+		name                string
+		statusExternalRef   string
+		expectedExternalRef string
+	}{
+		{
+			name:                "unqualified status external reference",
+			statusExternalRef:   "projects/my-project/secrets/my-secret",
+			expectedExternalRef: "//secretmanager.googleapis.com/projects/my-project/secrets/my-secret",
+		},
+		{
+			name:                "host-qualified status external reference",
+			statusExternalRef:   "//secretmanager.googleapis.com/projects/my-project/secrets/my-secret",
+			expectedExternalRef: "//secretmanager.googleapis.com/projects/my-project/secrets/my-secret",
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			scheme := runtime.NewScheme()
+			scheme.AddKnownTypeWithName(secretmanagerv1beta1.SecretManagerSecretGVK, &unstructured.Unstructured{})
+
+			secret := &unstructured.Unstructured{Object: map[string]any{
+				"apiVersion": "secretmanager.cnrm.cloud.google.com/v1beta1",
+				"kind":       "SecretManagerSecret",
+				"metadata": map[string]any{
+					"name":      "my-secret",
+					"namespace": "default",
+				},
+				"status": map[string]any{
+					"externalRef": tc.statusExternalRef,
+				},
+			}}
+			reader := fake.NewClientBuilder().WithScheme(scheme).WithObjects(secret).Build()
+
+			ref := &TagsTagBindingParentRef{Kind: "SecretManagerSecret", Name: "my-secret"}
+			if err := ref.Normalize(context.Background(), reader, "default"); err != nil {
+				t.Fatalf("Normalize() returned error: %v", err)
+			}
+			if got := ref.External; got != tc.expectedExternalRef {
+				t.Errorf("Normalize() external = %q, want %q", got, tc.expectedExternalRef)
+			}
+			if ref.Name != "" || ref.Namespace != "" {
+				t.Errorf("Normalize() did not clear name reference: name=%q namespace=%q", ref.Name, ref.Namespace)
+			}
+			if err := ref.Normalize(context.Background(), reader, "default"); err != nil {
+				t.Fatalf("second Normalize() returned error: %v", err)
 			}
 		})
 	}
