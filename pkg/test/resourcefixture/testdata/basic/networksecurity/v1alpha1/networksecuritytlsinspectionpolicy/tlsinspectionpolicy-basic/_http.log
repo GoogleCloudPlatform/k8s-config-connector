@@ -4,7 +4,7 @@ GRPC /google.cloud.networksecurity.v1.NetworkSecurity/GetTlsInspectionPolicy
   "name": "projects/${projectId}/locations/us-central1/tlsInspectionPolicies/tlsinspection-${uniqueId}"
 }
 
-error: rpc error: code = NotFound desc = TlsInspectionPolicy "projects/${projectId}/locations/us-central1/tlsInspectionPolicies/tlsinspection-${uniqueId}" not found
+error: rpc error: code = NotFound desc = Resource 'projects/${projectId}/locations/us-central1/tlsInspectionPolicies/tlsinspection-${uniqueId}' was not found
 
 {}
 
@@ -54,6 +54,7 @@ OK
     "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/us-central1/tlsInspectionPolicies/tlsinspection-${uniqueId}",
     "verb": "create"
   },
@@ -137,6 +138,7 @@ OK
     "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/us-central1/tlsInspectionPolicies/tlsinspection-${uniqueId}",
     "verb": "update"
   },
@@ -233,19 +235,12 @@ OK
     "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/us-central1/tlsInspectionPolicies/tlsinspection-${uniqueId}",
     "verb": "delete"
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.TlsInspectionPolicy",
-    "caPool": "projects/${projectId}/locations/us-central1/caPools/capool-dep-2",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "description": "An updated TLS Inspection Policy to decrypt traffic",
-    "excludePublicCaSet": true,
-    "minTlsVersion": "TLS_1_2",
-    "name": "projects/${projectId}/locations/us-central1/tlsInspectionPolicies/tlsinspection-${uniqueId}",
-    "tlsFeatureProfile": "PROFILE_COMPATIBLE",
-    "updateTime": "2024-04-01T12:34:56.123456Z"
+    "@type": "type.googleapis.com/google.protobuf.Empty"
   }
 }
