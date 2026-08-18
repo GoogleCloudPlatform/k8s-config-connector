@@ -11,7 +11,7 @@ metadata:
   namespace: ${uniqueId}
 spec:
   caPoolRef:
-    name: capool-${uniqueId}
+    external: projects/${projectId}/locations/us-central1/caPools/capool-dep-2
   description: An updated TLS Inspection Policy to decrypt traffic
   excludePublicCASet: true
   location: us-central1

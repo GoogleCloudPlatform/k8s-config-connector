@@ -8,7 +8,9 @@ spec:
   location: us-central1
   description: "An updated TLS Inspection Policy to decrypt traffic"
   caPoolRef:
-    name: capool-${uniqueId}
+    # Use external reference only. A CA pool with enabled CA is required.
+    # Once b/294109268 is fixed, we can support reference to a KCC managed CA pool.
+    external: projects/${projectId}/locations/us-central1/caPools/capool-dep-2
   excludePublicCASet: true
   minTLSVersion: TLS_1_2
   tlsFeatureProfile: PROFILE_COMPATIBLE

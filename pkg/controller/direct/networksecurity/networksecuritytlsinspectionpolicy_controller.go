@@ -17,7 +17,6 @@ package networksecurity
 import (
 	"context"
 	"fmt"
-	"time"
 
 	certificatemanagerv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/certificatemanager/v1alpha1"
 
@@ -31,10 +30,9 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
+	networksecurity "cloud.google.com/go/networksecurity/apiv1"
 	pb "cloud.google.com/go/networksecurity/apiv1/networksecuritypb"
 	"google.golang.org/api/option"
-	"google.golang.org/api/transport/grpc"
-	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -56,18 +54,19 @@ type tlsInspectionPolicyModel struct {
 	config config.ControllerConfig
 }
 
-func (m *tlsInspectionPolicyModel) client(ctx context.Context) (pb.NetworkSecurityClient, longrunningpb.OperationsClient, error) {
+func (m *tlsInspectionPolicyModel) client(ctx context.Context) (*networksecurity.Client, error) {
 	var opts []option.ClientOption
 	opts, err := m.config.GRPCClientOptions()
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
-	opts = append(opts, option.WithEndpoint("networksecurity.googleapis.com:443"))
-	conn, err := grpc.Dial(ctx, opts...)
+
+	gcpClient, err := networksecurity.NewClient(ctx, opts...)
 	if err != nil {
-		return nil, nil, fmt.Errorf("dialing networksecurity service: %w", err)
+		return nil, fmt.Errorf("building NetworkSecurity client: %w", err)
 	}
-	return pb.NewNetworkSecurityClient(conn), longrunningpb.NewOperationsClient(conn), nil
+
+	return gcpClient, nil
 }
 
 func (m *tlsInspectionPolicyModel) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
@@ -87,7 +86,7 @@ func (m *tlsInspectionPolicyModel) AdapterForObject(ctx context.Context, op *dir
 		return nil, err
 	}
 
-	gcpClient, operationsClient, err := m.client(ctx)
+	gcpClient, err := m.client(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -99,18 +98,11 @@ func (m *tlsInspectionPolicyModel) AdapterForObject(ctx context.Context, op *dir
 	}
 
 	desired.Name = id.(*krm.NetworkSecurityTLSInspectionPolicyIdentity).String()
-	if obj.Spec.CaPoolRef != nil {
-		desired.CaPool = obj.Spec.CaPoolRef.External
-	}
-	if obj.Spec.TrustConfigRef != nil {
-		desired.TrustConfig = obj.Spec.TrustConfigRef.External
-	}
 
 	return &tlsInspectionPolicyAdapter{
-		id:               id.(*krm.NetworkSecurityTLSInspectionPolicyIdentity),
-		gcpClient:        gcpClient,
-		operationsClient: operationsClient,
-		desired:          desired,
+		id:        id.(*krm.NetworkSecurityTLSInspectionPolicyIdentity),
+		gcpClient: gcpClient,
+		desired:   desired,
 	}, nil
 }
 
@@ -119,11 +111,10 @@ func (m *tlsInspectionPolicyModel) AdapterForURL(ctx context.Context, url string
 }
 
 type tlsInspectionPolicyAdapter struct {
-	id               *krm.NetworkSecurityTLSInspectionPolicyIdentity
-	gcpClient        pb.NetworkSecurityClient
-	operationsClient longrunningpb.OperationsClient
-	desired          *pb.TlsInspectionPolicy
-	actual           *pb.TlsInspectionPolicy
+	id        *krm.NetworkSecurityTLSInspectionPolicyIdentity
+	gcpClient *networksecurity.Client
+	desired   *pb.TlsInspectionPolicy
+	actual    *pb.TlsInspectionPolicy
 }
 
 var _ directbase.Adapter = &tlsInspectionPolicyAdapter{}
@@ -159,19 +150,13 @@ func (a *tlsInspectionPolicyAdapter) Create(ctx context.Context, createOp *direc
 		return fmt.Errorf("creating TlsInspectionPolicy %s: %w", a.id, err)
 	}
 
-	err = a.waitForOperation(ctx, op)
+	created, err := op.Wait(ctx)
 	if err != nil {
-		return fmt.Errorf("TlsInspectionPolicy %s waiting creation: %w", a.id, err)
+		return fmt.Errorf("creating TlsInspectionPolicy %s: %w", a.id, err)
 	}
-
-	latest, err := a.gcpClient.GetTlsInspectionPolicy(ctx, &pb.GetTlsInspectionPolicyRequest{Name: a.id.String()})
-	if err != nil {
-		return fmt.Errorf("getting TlsInspectionPolicy after creation: %w", err)
-	}
-
 	log.V(2).Info("successfully created TlsInspectionPolicy", "name", a.id)
 
-	return a.updateStatus(ctx, createOp, latest)
+	return a.updateStatus(ctx, createOp, created)
 }
 
 func (a *tlsInspectionPolicyAdapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
@@ -186,36 +171,29 @@ func (a *tlsInspectionPolicyAdapter) Update(ctx context.Context, updateOp *direc
 	diffs.Object = updateOp.GetUnstructured()
 	structuredreporting.ReportDiff(ctx, diffs)
 
+	updated := a.actual
 	if !diffs.HasDiff() {
 		log.V(2).Info("no field needs update", "name", a.id)
-		return nil
+	} else {
+		log.V(2).Info("fields need update", "name", a.id, "updateMask", updateMask)
+		req := &pb.UpdateTlsInspectionPolicyRequest{
+			UpdateMask:          updateMask,
+			TlsInspectionPolicy: a.desired,
+		}
+		req.TlsInspectionPolicy.Name = a.id.String()
+
+		op, err := a.gcpClient.UpdateTlsInspectionPolicy(ctx, req)
+		if err != nil {
+			return fmt.Errorf("updating TlsInspectionPolicy %s: %w", a.id, err)
+		}
+		updated, err = op.Wait(ctx)
+		if err != nil {
+			return fmt.Errorf("creating TlsInspectionPolicy %s: %w", a.id, err)
+		}
+		log.V(2).Info("successfully updated TlsInspectionPolicy", "name", a.id)
 	}
 
-	log.V(2).Info("fields need update", "name", a.id, "updateMask", updateMask)
-
-	req := &pb.UpdateTlsInspectionPolicyRequest{
-		UpdateMask:          updateMask,
-		TlsInspectionPolicy: a.desired,
-	}
-	req.TlsInspectionPolicy.Name = a.id.String()
-
-	op, err := a.gcpClient.UpdateTlsInspectionPolicy(ctx, req)
-	if err != nil {
-		return fmt.Errorf("updating TlsInspectionPolicy %s: %w", a.id, err)
-	}
-	err = a.waitForOperation(ctx, op)
-	if err != nil {
-		return fmt.Errorf("TlsInspectionPolicy %s waiting update: %w", a.id, err)
-	}
-
-	latest, err := a.gcpClient.GetTlsInspectionPolicy(ctx, &pb.GetTlsInspectionPolicyRequest{Name: a.id.String()})
-	if err != nil {
-		return fmt.Errorf("getting TlsInspectionPolicy after update: %w", err)
-	}
-
-	log.V(2).Info("successfully updated TlsInspectionPolicy", "name", a.id)
-
-	return a.updateStatus(ctx, updateOp, latest)
+	return a.updateStatus(ctx, updateOp, updated)
 }
 
 func compareTlsInspectionPolicy(ctx context.Context, actual, desired *pb.TlsInspectionPolicy) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
@@ -229,8 +207,6 @@ func compareTlsInspectionPolicy(ctx context.Context, actual, desired *pb.TlsInsp
 		return nil, nil, mapCtx.Err()
 	}
 	maskedActual.Name = desired.Name
-	maskedActual.CaPool = actual.CaPool
-	maskedActual.TrustConfig = actual.TrustConfig
 
 	diffs, updateMask, err := common.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
@@ -287,7 +263,7 @@ func (a *tlsInspectionPolicyAdapter) Delete(ctx context.Context, deleteOp *direc
 		return false, fmt.Errorf("deleting TlsInspectionPolicy %s: %w", a.id, err)
 	}
 
-	err = a.waitForOperation(ctx, op)
+	err = op.Wait(ctx)
 	if err != nil {
 		return false, fmt.Errorf("waiting delete TlsInspectionPolicy %s: %w", a.id, err)
 	}
@@ -305,27 +281,4 @@ func (a *tlsInspectionPolicyAdapter) updateStatus(ctx context.Context, op direct
 	}
 	status.ExternalRef = direct.LazyPtr(a.id.String())
 	return op.UpdateStatus(ctx, status, nil)
-}
-
-func (a *tlsInspectionPolicyAdapter) waitForOperation(ctx context.Context, op *longrunningpb.Operation) error {
-	for {
-		req := &longrunningpb.GetOperationRequest{
-			Name: op.GetName(),
-		}
-		current, err := a.operationsClient.GetOperation(ctx, req)
-		if err != nil {
-			return fmt.Errorf("getting operation %q: %w", op.GetName(), err)
-		}
-		if current.GetDone() {
-			if current.GetError() != nil {
-				return fmt.Errorf("operation failed: %s", current.GetError().GetMessage())
-			}
-			return nil
-		}
-		select {
-		case <-ctx.Done():
-			return ctx.Err()
-		case <-time.After(1 * time.Second):
-		}
-	}
 }

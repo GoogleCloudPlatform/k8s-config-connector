@@ -1524,40 +1524,6 @@ func NetworkSecurityTLSInspectionPolicyObservedState_v1alpha1_ToProto(mapCtx *di
 	// MISSING: CAPool
 	return out
 }
-func NetworkSecurityTLSInspectionPolicySpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.TlsInspectionPolicy) *krmnetworksecurityv1alpha1.NetworkSecurityTLSInspectionPolicySpec {
-	if in == nil {
-		return nil
-	}
-	out := &krmnetworksecurityv1alpha1.NetworkSecurityTLSInspectionPolicySpec{}
-	// MISSING: Name
-	out.Description = direct.LazyPtr(in.GetDescription())
-	// MISSING: CAPool
-	if in.GetTrustConfig() != "" {
-		out.TrustConfigRef = &krmcertificatemanagerv1alpha1.CertificateManagerTrustConfigRef{External: in.GetTrustConfig()}
-	}
-	out.ExcludePublicCASet = in.ExcludePublicCaSet
-	out.MinTLSVersion = direct.Enum_FromProto(mapCtx, in.GetMinTlsVersion())
-	out.TLSFeatureProfile = direct.Enum_FromProto(mapCtx, in.GetTlsFeatureProfile())
-	out.CustomTLSFeatures = in.CustomTlsFeatures
-	return out
-}
-func NetworkSecurityTLSInspectionPolicySpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.NetworkSecurityTLSInspectionPolicySpec) *pb.TlsInspectionPolicy {
-	if in == nil {
-		return nil
-	}
-	out := &pb.TlsInspectionPolicy{}
-	// MISSING: Name
-	out.Description = direct.ValueOf(in.Description)
-	// MISSING: CAPool
-	if in.TrustConfigRef != nil {
-		out.TrustConfig = in.TrustConfigRef.External
-	}
-	out.ExcludePublicCaSet = in.ExcludePublicCASet
-	out.MinTlsVersion = direct.Enum_ToProto[pb.TlsInspectionPolicy_TlsVersion](mapCtx, in.MinTLSVersion)
-	out.TlsFeatureProfile = direct.Enum_ToProto[pb.TlsInspectionPolicy_Profile](mapCtx, in.TLSFeatureProfile)
-	out.CustomTlsFeatures = in.CustomTLSFeatures
-	return out
-}
 func NetworkSecurityURLListObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.UrlList) *krmnetworksecurityv1alpha1.NetworkSecurityURLListObservedState {
 	if in == nil {
 		return nil
