@@ -10,7 +10,7 @@ metadata:
   name: fwe-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  billingProjectID: ${projectId}
+  billingProjectID: ${projectId}-2
   description: An org firewall endpoint for testing direct controller
   endpointSettings:
     jumboFramesEnabled: true

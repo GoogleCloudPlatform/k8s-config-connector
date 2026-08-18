@@ -147,6 +147,8 @@ func (s *FirewallActivationServer) updateFirewallEndpoint(ctx context.Context, r
 		switch path {
 		case "labels":
 			updated.Labels = req.GetFirewallEndpoint().GetLabels()
+		case "billingProjectId", "billing_project_id":
+			updated.BillingProjectId = req.GetFirewallEndpoint().GetBillingProjectId()
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "field %q is not updateable", path)
 		}

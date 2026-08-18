@@ -5,7 +5,7 @@ metadata:
 spec:
   organizationRef:
     external: "organizations/${TEST_ORG_ID}"
-  billingProjectID: "${projectId}"
+  billingProjectID: "${projectId}-2"
   location: us-central1-a
   description: "An org firewall endpoint for testing direct controller"
   labels:

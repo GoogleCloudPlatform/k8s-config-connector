@@ -108,7 +108,7 @@ GRPC /google.cloud.networksecurity.v1.FirewallActivation/UpdateFirewallEndpoint
 
 {
   "firewallEndpoint": {
-    "billingProjectId": "${projectId}",
+    "billingProjectId": "${projectId}-2",
     "endpointSettings": {
       "jumboFramesEnabled": true
     },
@@ -117,7 +117,7 @@ GRPC /google.cloud.networksecurity.v1.FirewallActivation/UpdateFirewallEndpoint
     },
     "name": "organizations/${organizationID}/locations/us-central1-a/firewallEndpoints/fwe-${uniqueId}"
   },
-  "updateMask": "labels"
+  "updateMask": "billingProjectId,labels"
 }
 
 OK
@@ -156,7 +156,7 @@ OK
   "name": "organizations/${organizationID}/locations/us-central1-a/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.networksecurity.v1.FirewallEndpoint",
-    "billingProjectId": "${projectId}",
+    "billingProjectId": "${projectId}-2",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endpointSettings": {
       "jumboFramesEnabled": true
@@ -181,7 +181,7 @@ GRPC /google.cloud.networksecurity.v1.FirewallActivation/GetFirewallEndpoint
 OK
 
 {
-  "billingProjectId": "${projectId}",
+  "billingProjectId": "${projectId}-2",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "endpointSettings": {
     "jumboFramesEnabled": true
@@ -238,7 +238,7 @@ OK
   "name": "organizations/${organizationID}/locations/us-central1-a/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.networksecurity.v1.FirewallEndpoint",
-    "billingProjectId": "${projectId}",
+    "billingProjectId": "${projectId}-2",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endpointSettings": {
       "jumboFramesEnabled": true
