@@ -279,8 +279,13 @@ func (s *clusterControllerServer) populateInstanceGroupConfig(config *pb.Instanc
 			config.IsPreemptible = true
 			config.IsPreemptible = true
 		}
+
 		if config.Preemptibility == pb.InstanceGroupConfig_PREEMPTIBILITY_UNSPECIFIED {
-			config.Preemptibility = pb.InstanceGroupConfig_PREEMPTIBLE
+			if config.InstanceFlexibilityPolicy != nil {
+				config.Preemptibility = pb.InstanceGroupConfig_SPOT
+			} else {
+				config.Preemptibility = pb.InstanceGroupConfig_PREEMPTIBLE
+			}
 		}
 		if config.ManagedGroupConfig == nil {
 			config.ManagedGroupConfig = &pb.ManagedGroupConfig{}

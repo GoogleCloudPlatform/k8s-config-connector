@@ -1152,7 +1152,7 @@ func ClusterSecondaryWorkerConfig_v1beta1_FromProto(mapCtx *direct.MapContext, i
 	// MISSING: MinCPUPlatform
 	// (near miss): "MinCPUPlatform" vs "MinCpuPlatform"
 	// MISSING: MinNumInstances
-	// MISSING: InstanceFlexibilityPolicy
+	out.InstanceFlexibilityPolicy = InstanceFlexibilityPolicy_v1beta1_FromProto(mapCtx, in.GetInstanceFlexibilityPolicy())
 	// MISSING: StartupConfig
 	return out
 }
@@ -1177,7 +1177,7 @@ func ClusterSecondaryWorkerConfig_v1beta1_ToProto(mapCtx *direct.MapContext, in 
 	// MISSING: MinCPUPlatform
 	// (near miss): "MinCPUPlatform" vs "MinCpuPlatform"
 	// MISSING: MinNumInstances
-	// MISSING: InstanceFlexibilityPolicy
+	out.InstanceFlexibilityPolicy = InstanceFlexibilityPolicy_v1beta1_ToProto(mapCtx, in.InstanceFlexibilityPolicy)
 	// MISSING: StartupConfig
 	return out
 }
@@ -2282,6 +2282,26 @@ func InstanceFlexibilityPolicy_v1alpha1_ToProto(mapCtx *direct.MapContext, in *k
 	// MISSING: InstanceSelectionResults
 	return out
 }
+func InstanceFlexibilityPolicy_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceFlexibilityPolicy) *krmdataprocv1beta1.InstanceFlexibilityPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &krmdataprocv1beta1.InstanceFlexibilityPolicy{}
+	out.ProvisioningModelMix = InstanceFlexibilityPolicy_ProvisioningModelMix_v1beta1_FromProto(mapCtx, in.GetProvisioningModelMix())
+	out.InstanceSelectionList = direct.Slice_FromProto(mapCtx, in.InstanceSelectionList, InstanceFlexibilityPolicy_InstanceSelection_v1beta1_FromProto)
+	// MISSING: InstanceSelectionResults
+	return out
+}
+func InstanceFlexibilityPolicy_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1beta1.InstanceFlexibilityPolicy) *pb.InstanceFlexibilityPolicy {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InstanceFlexibilityPolicy{}
+	out.ProvisioningModelMix = InstanceFlexibilityPolicy_ProvisioningModelMix_v1beta1_ToProto(mapCtx, in.ProvisioningModelMix)
+	out.InstanceSelectionList = direct.Slice_ToProto(mapCtx, in.InstanceSelectionList, InstanceFlexibilityPolicy_InstanceSelection_v1beta1_ToProto)
+	// MISSING: InstanceSelectionResults
+	return out
+}
 func InstanceFlexibilityPolicyObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceFlexibilityPolicy) *krmdataprocv1alpha1.InstanceFlexibilityPolicyObservedState {
 	if in == nil {
 		return nil
@@ -2320,6 +2340,24 @@ func InstanceFlexibilityPolicy_InstanceSelection_v1alpha1_ToProto(mapCtx *direct
 	out.Rank = direct.ValueOf(in.Rank)
 	return out
 }
+func InstanceFlexibilityPolicy_InstanceSelection_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceFlexibilityPolicy_InstanceSelection) *krmdataprocv1beta1.InstanceFlexibilityPolicy_InstanceSelection {
+	if in == nil {
+		return nil
+	}
+	out := &krmdataprocv1beta1.InstanceFlexibilityPolicy_InstanceSelection{}
+	out.MachineTypes = in.MachineTypes
+	out.Rank = direct.LazyPtr(in.GetRank())
+	return out
+}
+func InstanceFlexibilityPolicy_InstanceSelection_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1beta1.InstanceFlexibilityPolicy_InstanceSelection) *pb.InstanceFlexibilityPolicy_InstanceSelection {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InstanceFlexibilityPolicy_InstanceSelection{}
+	out.MachineTypes = in.MachineTypes
+	out.Rank = direct.ValueOf(in.Rank)
+	return out
+}
 func InstanceFlexibilityPolicy_InstanceSelectionResultObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceFlexibilityPolicy_InstanceSelectionResult) *krmdataprocv1alpha1.InstanceFlexibilityPolicy_InstanceSelectionResultObservedState {
 	if in == nil {
 		return nil
@@ -2348,6 +2386,24 @@ func InstanceFlexibilityPolicy_ProvisioningModelMix_v1alpha1_FromProto(mapCtx *d
 	return out
 }
 func InstanceFlexibilityPolicy_ProvisioningModelMix_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1alpha1.InstanceFlexibilityPolicy_ProvisioningModelMix) *pb.InstanceFlexibilityPolicy_ProvisioningModelMix {
+	if in == nil {
+		return nil
+	}
+	out := &pb.InstanceFlexibilityPolicy_ProvisioningModelMix{}
+	out.StandardCapacityBase = in.StandardCapacityBase
+	out.StandardCapacityPercentAboveBase = in.StandardCapacityPercentAboveBase
+	return out
+}
+func InstanceFlexibilityPolicy_ProvisioningModelMix_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.InstanceFlexibilityPolicy_ProvisioningModelMix) *krmdataprocv1beta1.InstanceFlexibilityPolicy_ProvisioningModelMix {
+	if in == nil {
+		return nil
+	}
+	out := &krmdataprocv1beta1.InstanceFlexibilityPolicy_ProvisioningModelMix{}
+	out.StandardCapacityBase = in.StandardCapacityBase
+	out.StandardCapacityPercentAboveBase = in.StandardCapacityPercentAboveBase
+	return out
+}
+func InstanceFlexibilityPolicy_ProvisioningModelMix_v1beta1_ToProto(mapCtx *direct.MapContext, in *krmdataprocv1beta1.InstanceFlexibilityPolicy_ProvisioningModelMix) *pb.InstanceFlexibilityPolicy_ProvisioningModelMix {
 	if in == nil {
 		return nil
 	}
