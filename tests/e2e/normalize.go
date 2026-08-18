@@ -717,9 +717,6 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 	if u.GroupVersionKind().Group == "bigquerymigration.cnrm.cloud.google.com" {
 		visitor.ReplacePath(".status.externalRef", "projects/${projectId}/locations/us/workflows/${workflowID}")
 		visitor.ReplacePath(".status.observedState.name", "projects/${projectNumber}/locations/us/workflows/${workflowID}")
-		visitor.ReplacePath(".status.observedState.tasks.task-1.id", "${taskID}")
-		visitor.ReplacePath(".status.observedState.tasks.task-1.createTime", "2026-08-18T01:42:13.919410Z")
-		visitor.ReplacePath(".status.observedState.tasks.task-1.lastUpdateTime", "2026-08-18T01:42:14.776644Z")
 	}
 
 	return visitor
