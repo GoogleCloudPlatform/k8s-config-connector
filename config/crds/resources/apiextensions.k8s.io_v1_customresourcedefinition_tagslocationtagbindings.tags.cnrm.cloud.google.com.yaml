@@ -86,8 +86,8 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: string of the format `//cloudresourcemanager.googleapis.com/projects/{{value}}`,
-                      where {{value}} is the `number` field of a `Project` resource.'
+                    description: The external identifier of the resource to which
+                      the tag is bound. Supported formats depend on Kind.
                     type: string
                   kind:
                     description: Kind to which we are binding the tag.  Defaults to
@@ -249,8 +249,8 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: string of the format `//cloudresourcemanager.googleapis.com/projects/{{value}}`,
-                      where {{value}} is the `number` field of a `Project` resource.'
+                    description: The external identifier of the resource to which
+                      the tag is bound. Supported formats depend on Kind.
                     type: string
                   kind:
                     description: Kind to which we are binding the tag.  Defaults to
