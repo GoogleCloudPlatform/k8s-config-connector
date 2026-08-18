@@ -277,3 +277,44 @@ message TeamFolder {
   string creator_iam_principal = 6 [(google.api.field_behavior) = OUTPUT_ONLY];
 }
 EOF
+
+# Composer patches
+
+go run . --file ${REPO_ROOT}/mockgcp/third_party/googleapis/google/cloud/orchestration/airflow/service/v1/environments.proto --message SoftwareConfig --mode append <<EOF
+
+  // Audit logs replication mode of the Cloud Composer environment.
+  enum AuditLogsReplicationMode {
+    // Default mode.
+    AUDIT_LOGS_REPLICATION_MODE_UNSPECIFIED = 0;
+
+    // Audit logs replication is disabled.
+    AUDIT_LOGS_REPLICATION_DISABLED = 1;
+
+    // Audit logs replication is enabled.
+    AUDIT_LOGS_REPLICATION_ENABLED = 2;
+  }
+
+  // Optional. Whether or not audit logs are replicated to Cloud Logging.
+  AuditLogsReplicationMode audit_logs_replication_mode = 11 [(google.api.field_behavior) = OPTIONAL];
+
+EOF
+
+go run . --file ${REPO_ROOT}/mockgcp/third_party/googleapis/google/cloud/orchestration/airflow/service/v1/environments.proto --message PrivateEnvironmentConfig --mode append <<EOF
+
+  // Represents the networking type of the environment.
+  enum NetworkingType {
+    // Default mode.
+    NETWORKING_TYPE_UNSPECIFIED = 0;
+
+    // Private Service Connect.
+    PRIVATE_SERVICE_CONNECT = 1;
+
+    // Public IP.
+    PUBLIC = 2;
+  }
+
+  // Optional. The networking type of the environment.
+  NetworkingType networking_type = 12 [(google.api.field_behavior) = OPTIONAL];
+
+EOF
+
