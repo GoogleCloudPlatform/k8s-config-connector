@@ -26,7 +26,8 @@ Please respect the following review criteria and invariants when reviewing.
 *   **Reference Example:** A good example of minimal and maximal test suites can be found here: [`gkehubscope`](https://github.com/GoogleCloudPlatform/k8s-config-connector/tree/d5ce0db71838fcb63ea99de8be8fd53fa90bf597/pkg/test/resourcefixture/testdata/basic/gkehub/v1alpha1/gkehubscope).
 *   Check for appropriate edge-case testing if any complex logic exists in the controller (e.g., dependencies on other resources, complex identity mapping).
 
-## 6. General Controller Structure
+## 6. General Controller Structure & Client Creation
+*   **Client Creation Preference**: Verify that the controller uses an official GAPIC Go client library REST constructor (e.g., `cloud.google.com/go/<service>/apivX` via `NewFooRESTClient`) instead of `NewFooClient` (gRPC) or manually calling `grpc.Dial` with raw protobuf client interfaces (`pb.New...Client`), unless REST is unavailable or fails.
 *   **Reference Implementation:** The canonical reference controller implementation is [`workerpool_controller.go`](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/d5ce0db71838fcb63ea99de8be8fd53fa90bf597/pkg/controller/direct/cloudbuild/workerpool_controller.go) (Note: it predates `IdentityV2` and does not handle it correctly, so ensure new controllers implement `IdentityV2` properly).
 *   The controller must implement the `directbase.Model` and `directbase.Adapter` interfaces.
 *   It should contain appropriate dependency resolution (`resolveDependencies`).
@@ -37,6 +38,7 @@ When proposing changes or stating LGTM, format the review description as follows
 ```markdown
 ### KCC Auto-Review Results
 * **Trigger criteria matched**: [Yes/No]
+* **Client Creation**: [Pass/Fail] - (List if raw pb/grpc.Dial is used instead of GAPIC go-client)
 * **Proto Diffs & Update Mask**: [Pass/Fail] - (List any issues with diff calculation)
 * **Structured Reporting**: [Pass/Fail] - (List if structured reporting is missing)
 * **KRM Status Updates**: [Pass/Fail] - (List if status update is skipped on no-op updates)
