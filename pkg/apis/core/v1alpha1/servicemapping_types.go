@@ -287,6 +287,10 @@ type ReferenceConfig struct {
 	// Types is the supported types this resource reference supports. Must not
 	// be specified if the inlined TypeConfig is filled out.
 	//
+	// Types with keys represent a union of nested reference fields. Types
+	// without keys represent one reference field discriminated by its "kind"
+	// field; the ReferenceConfig's inlined Key names that field.
+	//
 	// If the value for the reference is not specified in the KRM spec, it is
 	// possible that a default value may be set by GCP. This default reference
 	// value will be populated in the KRM resource's spec. In cases where a
