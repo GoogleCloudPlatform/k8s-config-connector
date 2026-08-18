@@ -61,6 +61,7 @@ func (m *authzPolicyModel) client(ctx context.Context) (pb.NetworkSecurityClient
 	}
 
 	opts = append(opts, option.WithEndpoint("networksecurity.googleapis.com:443"))
+	opts = append(opts, option.WithScopes("https://www.googleapis.com/auth/cloud-platform"))
 
 	conn, err := grpc.Dial(ctx, opts...)
 	if err != nil {

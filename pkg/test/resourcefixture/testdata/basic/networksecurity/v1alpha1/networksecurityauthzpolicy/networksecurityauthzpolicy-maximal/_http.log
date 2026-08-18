@@ -1,0 +1,773 @@
+GRPC /google.cloud.networksecurity.v1.NetworkSecurity/GetAuthzPolicy
+
+{
+  "name": "projects/${projectId}/locations/us-central1/authzPolicies/authzpolicy-max-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = Resource 'projects/${projectId}/locations/us-central1/authzPolicies/authzpolicy-max-${uniqueId}' was not found
+
+{}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.NetworkSecurity/CreateAuthzPolicy
+
+{
+  "authzPolicy": {
+    "action": "ALLOW",
+    "description": "Maximal test authorization policy",
+    "httpRules": [
+      {
+        "from": {
+          "sources": [
+            {
+              "ipBlocks": [
+                {
+                  "length": 24,
+                  "prefix": "10.0.0.0"
+                }
+              ],
+              "principals": [
+                {
+                  "principal": {
+                    "exact": "spiffe://myproject.svc.id.goog/ns/default/sa/mysa"
+                  },
+                  "principalSelector": "CLIENT_CERT_URI_SAN"
+                }
+              ]
+            }
+          ]
+        },
+        "to": {
+          "operations": [
+            {
+              "hosts": [
+                {
+                  "exact": "example.com",
+                  "ignoreCase": true
+                }
+              ],
+              "methods": [
+                "GET",
+                "POST"
+              ],
+              "paths": [
+                {
+                  "prefix": "/api"
+                }
+              ]
+            }
+          ]
+        },
+        "when": "request.time \u003c timestamp('2026-12-31T23:59:59Z')"
+      }
+    ],
+    "labels": {
+      "cnrm-test": "true",
+      "gcp-label": "original-value"
+    },
+    "policyProfile": "REQUEST_AUTHZ",
+    "target": {
+      "loadBalancingScheme": "INTERNAL_MANAGED",
+      "resources": [
+        "projects/${projectId}/regions/us-central1/forwardingRules/non-existent-rule"
+      ]
+    }
+  },
+  "authzPolicyId": "authzpolicy-max-${uniqueId}",
+  "parent": "projects/${projectId}/locations/us-central1"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/authzPolicies/authzpolicy-max-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/authzPolicies/authzpolicy-max-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.AuthzPolicy",
+    "action": "ALLOW",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Maximal test authorization policy",
+    "httpRules": [
+      {
+        "from": {
+          "sources": [
+            {
+              "ipBlocks": [
+                {
+                  "length": 24,
+                  "prefix": "10.0.0.0"
+                }
+              ],
+              "principals": [
+                {
+                  "principal": {
+                    "exact": "spiffe://myproject.svc.id.goog/ns/default/sa/mysa"
+                  },
+                  "principalSelector": "CLIENT_CERT_URI_SAN"
+                }
+              ]
+            }
+          ]
+        },
+        "to": {
+          "operations": [
+            {
+              "hosts": [
+                {
+                  "exact": "example.com",
+                  "ignoreCase": true
+                }
+              ],
+              "methods": [
+                "GET",
+                "POST"
+              ],
+              "paths": [
+                {
+                  "prefix": "/api"
+                }
+              ]
+            }
+          ]
+        },
+        "when": "request.time \u003c timestamp('2026-12-31T23:59:59Z')"
+      }
+    ],
+    "labels": {
+      "cnrm-test": "true",
+      "gcp-label": "original-value"
+    },
+    "name": "projects/${projectId}/locations/us-central1/authzPolicies/authzpolicy-max-${uniqueId}",
+    "policyProfile": "REQUEST_AUTHZ",
+    "target": {
+      "loadBalancingScheme": "INTERNAL_MANAGED",
+      "resources": [
+        "projects/${projectId}/regions/us-central1/forwardingRules/non-existent-rule"
+      ]
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.NetworkSecurity/GetAuthzPolicy
+
+{
+  "name": "projects/${projectId}/locations/us-central1/authzPolicies/authzpolicy-max-${uniqueId}"
+}
+
+OK
+
+{
+  "action": "ALLOW",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Maximal test authorization policy",
+  "httpRules": [
+    {
+      "from": {
+        "sources": [
+          {
+            "ipBlocks": [
+              {
+                "length": 24,
+                "prefix": "10.0.0.0"
+              }
+            ],
+            "principals": [
+              {
+                "principal": {
+                  "exact": "spiffe://myproject.svc.id.goog/ns/default/sa/mysa"
+                },
+                "principalSelector": "CLIENT_CERT_URI_SAN"
+              }
+            ]
+          }
+        ]
+      },
+      "to": {
+        "operations": [
+          {
+            "hosts": [
+              {
+                "exact": "example.com",
+                "ignoreCase": true
+              }
+            ],
+            "methods": [
+              "GET",
+              "POST"
+            ],
+            "paths": [
+              {
+                "prefix": "/api"
+              }
+            ]
+          }
+        ]
+      },
+      "when": "request.time \u003c timestamp('2026-12-31T23:59:59Z')"
+    }
+  ],
+  "labels": {
+    "cnrm-test": "true",
+    "gcp-label": "original-value"
+  },
+  "name": "projects/${projectId}/locations/us-central1/authzPolicies/authzpolicy-max-${uniqueId}",
+  "policyProfile": "REQUEST_AUTHZ",
+  "target": {
+    "loadBalancingScheme": "INTERNAL_MANAGED",
+    "resources": [
+      "projects/${projectId}/regions/us-central1/forwardingRules/non-existent-rule"
+    ]
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.NetworkSecurity/GetAuthzPolicy
+
+{
+  "name": "projects/${projectId}/locations/us-central1/authzPolicies/authzpolicy-max-${uniqueId}"
+}
+
+OK
+
+{
+  "action": "ALLOW",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Maximal test authorization policy",
+  "httpRules": [
+    {
+      "from": {
+        "sources": [
+          {
+            "ipBlocks": [
+              {
+                "length": 24,
+                "prefix": "10.0.0.0"
+              }
+            ],
+            "principals": [
+              {
+                "principal": {
+                  "exact": "spiffe://myproject.svc.id.goog/ns/default/sa/mysa"
+                },
+                "principalSelector": "CLIENT_CERT_URI_SAN"
+              }
+            ]
+          }
+        ]
+      },
+      "to": {
+        "operations": [
+          {
+            "hosts": [
+              {
+                "exact": "example.com",
+                "ignoreCase": true
+              }
+            ],
+            "methods": [
+              "GET",
+              "POST"
+            ],
+            "paths": [
+              {
+                "prefix": "/api"
+              }
+            ]
+          }
+        ]
+      },
+      "when": "request.time \u003c timestamp('2026-12-31T23:59:59Z')"
+    }
+  ],
+  "labels": {
+    "cnrm-test": "true",
+    "gcp-label": "original-value"
+  },
+  "name": "projects/${projectId}/locations/us-central1/authzPolicies/authzpolicy-max-${uniqueId}",
+  "policyProfile": "REQUEST_AUTHZ",
+  "target": {
+    "loadBalancingScheme": "INTERNAL_MANAGED",
+    "resources": [
+      "projects/${projectId}/regions/us-central1/forwardingRules/non-existent-rule"
+    ]
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.NetworkSecurity/UpdateAuthzPolicy
+
+{
+  "authzPolicy": {
+    "action": "ALLOW",
+    "description": "Updated test authorization policy",
+    "httpRules": [
+      {
+        "from": {
+          "sources": [
+            {
+              "ipBlocks": [
+                {
+                  "length": 24,
+                  "prefix": "10.0.0.0"
+                }
+              ],
+              "principals": [
+                {
+                  "principal": {
+                    "exact": "spiffe://myproject.svc.id.goog/ns/default/sa/mysa"
+                  },
+                  "principalSelector": "CLIENT_CERT_URI_SAN"
+                }
+              ]
+            }
+          ]
+        },
+        "to": {
+          "operations": [
+            {
+              "hosts": [
+                {
+                  "exact": "example.com",
+                  "ignoreCase": true
+                }
+              ],
+              "methods": [
+                "GET",
+                "POST"
+              ],
+              "paths": [
+                {
+                  "prefix": "/v2"
+                }
+              ]
+            }
+          ]
+        },
+        "when": "request.time \u003c timestamp('2026-12-31T23:59:59Z')"
+      }
+    ],
+    "labels": {
+      "cnrm-test": "true",
+      "gcp-label": "updated-value"
+    },
+    "name": "projects/${projectId}/locations/us-central1/authzPolicies/authzpolicy-max-${uniqueId}",
+    "policyProfile": "REQUEST_AUTHZ",
+    "target": {
+      "loadBalancingScheme": "INTERNAL_MANAGED",
+      "resources": [
+        "projects/${projectId}/regions/us-central1/forwardingRules/non-existent-rule"
+      ]
+    }
+  },
+  "updateMask": "description,httpRules,labels"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/authzPolicies/authzpolicy-max-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/authzPolicies/authzpolicy-max-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.AuthzPolicy",
+    "action": "ALLOW",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Updated test authorization policy",
+    "httpRules": [
+      {
+        "from": {
+          "sources": [
+            {
+              "ipBlocks": [
+                {
+                  "length": 24,
+                  "prefix": "10.0.0.0"
+                }
+              ],
+              "principals": [
+                {
+                  "principal": {
+                    "exact": "spiffe://myproject.svc.id.goog/ns/default/sa/mysa"
+                  },
+                  "principalSelector": "CLIENT_CERT_URI_SAN"
+                }
+              ]
+            }
+          ]
+        },
+        "to": {
+          "operations": [
+            {
+              "hosts": [
+                {
+                  "exact": "example.com",
+                  "ignoreCase": true
+                }
+              ],
+              "methods": [
+                "GET",
+                "POST"
+              ],
+              "paths": [
+                {
+                  "prefix": "/v2"
+                }
+              ]
+            }
+          ]
+        },
+        "when": "request.time \u003c timestamp('2026-12-31T23:59:59Z')"
+      }
+    ],
+    "labels": {
+      "cnrm-test": "true",
+      "gcp-label": "updated-value"
+    },
+    "name": "projects/${projectId}/locations/us-central1/authzPolicies/authzpolicy-max-${uniqueId}",
+    "policyProfile": "REQUEST_AUTHZ",
+    "target": {
+      "loadBalancingScheme": "INTERNAL_MANAGED",
+      "resources": [
+        "projects/${projectId}/regions/us-central1/forwardingRules/non-existent-rule"
+      ]
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.NetworkSecurity/GetAuthzPolicy
+
+{
+  "name": "projects/${projectId}/locations/us-central1/authzPolicies/authzpolicy-max-${uniqueId}"
+}
+
+OK
+
+{
+  "action": "ALLOW",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated test authorization policy",
+  "httpRules": [
+    {
+      "from": {
+        "sources": [
+          {
+            "ipBlocks": [
+              {
+                "length": 24,
+                "prefix": "10.0.0.0"
+              }
+            ],
+            "principals": [
+              {
+                "principal": {
+                  "exact": "spiffe://myproject.svc.id.goog/ns/default/sa/mysa"
+                },
+                "principalSelector": "CLIENT_CERT_URI_SAN"
+              }
+            ]
+          }
+        ]
+      },
+      "to": {
+        "operations": [
+          {
+            "hosts": [
+              {
+                "exact": "example.com",
+                "ignoreCase": true
+              }
+            ],
+            "methods": [
+              "GET",
+              "POST"
+            ],
+            "paths": [
+              {
+                "prefix": "/v2"
+              }
+            ]
+          }
+        ]
+      },
+      "when": "request.time \u003c timestamp('2026-12-31T23:59:59Z')"
+    }
+  ],
+  "labels": {
+    "cnrm-test": "true",
+    "gcp-label": "updated-value"
+  },
+  "name": "projects/${projectId}/locations/us-central1/authzPolicies/authzpolicy-max-${uniqueId}",
+  "policyProfile": "REQUEST_AUTHZ",
+  "target": {
+    "loadBalancingScheme": "INTERNAL_MANAGED",
+    "resources": [
+      "projects/${projectId}/regions/us-central1/forwardingRules/non-existent-rule"
+    ]
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.NetworkSecurity/GetAuthzPolicy
+
+{
+  "name": "projects/${projectId}/locations/us-central1/authzPolicies/authzpolicy-max-${uniqueId}"
+}
+
+OK
+
+{
+  "action": "ALLOW",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated test authorization policy",
+  "httpRules": [
+    {
+      "from": {
+        "sources": [
+          {
+            "ipBlocks": [
+              {
+                "length": 24,
+                "prefix": "10.0.0.0"
+              }
+            ],
+            "principals": [
+              {
+                "principal": {
+                  "exact": "spiffe://myproject.svc.id.goog/ns/default/sa/mysa"
+                },
+                "principalSelector": "CLIENT_CERT_URI_SAN"
+              }
+            ]
+          }
+        ]
+      },
+      "to": {
+        "operations": [
+          {
+            "hosts": [
+              {
+                "exact": "example.com",
+                "ignoreCase": true
+              }
+            ],
+            "methods": [
+              "GET",
+              "POST"
+            ],
+            "paths": [
+              {
+                "prefix": "/v2"
+              }
+            ]
+          }
+        ]
+      },
+      "when": "request.time \u003c timestamp('2026-12-31T23:59:59Z')"
+    }
+  ],
+  "labels": {
+    "cnrm-test": "true",
+    "gcp-label": "updated-value"
+  },
+  "name": "projects/${projectId}/locations/us-central1/authzPolicies/authzpolicy-max-${uniqueId}",
+  "policyProfile": "REQUEST_AUTHZ",
+  "target": {
+    "loadBalancingScheme": "INTERNAL_MANAGED",
+    "resources": [
+      "projects/${projectId}/regions/us-central1/forwardingRules/non-existent-rule"
+    ]
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.NetworkSecurity/GetAuthzPolicy
+
+{
+  "name": "projects/${projectId}/locations/us-central1/authzPolicies/authzpolicy-max-${uniqueId}"
+}
+
+OK
+
+{
+  "action": "ALLOW",
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated test authorization policy",
+  "httpRules": [
+    {
+      "from": {
+        "sources": [
+          {
+            "ipBlocks": [
+              {
+                "length": 24,
+                "prefix": "10.0.0.0"
+              }
+            ],
+            "principals": [
+              {
+                "principal": {
+                  "exact": "spiffe://myproject.svc.id.goog/ns/default/sa/mysa"
+                },
+                "principalSelector": "CLIENT_CERT_URI_SAN"
+              }
+            ]
+          }
+        ]
+      },
+      "to": {
+        "operations": [
+          {
+            "hosts": [
+              {
+                "exact": "example.com",
+                "ignoreCase": true
+              }
+            ],
+            "methods": [
+              "GET",
+              "POST"
+            ],
+            "paths": [
+              {
+                "prefix": "/v2"
+              }
+            ]
+          }
+        ]
+      },
+      "when": "request.time \u003c timestamp('2026-12-31T23:59:59Z')"
+    }
+  ],
+  "labels": {
+    "cnrm-test": "true",
+    "gcp-label": "updated-value"
+  },
+  "name": "projects/${projectId}/locations/us-central1/authzPolicies/authzpolicy-max-${uniqueId}",
+  "policyProfile": "REQUEST_AUTHZ",
+  "target": {
+    "loadBalancingScheme": "INTERNAL_MANAGED",
+    "resources": [
+      "projects/${projectId}/regions/us-central1/forwardingRules/non-existent-rule"
+    ]
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.NetworkSecurity/DeleteAuthzPolicy
+
+{
+  "name": "projects/${projectId}/locations/us-central1/authzPolicies/authzpolicy-max-${uniqueId}"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/authzPolicies/authzpolicy-max-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/authzPolicies/authzpolicy-max-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
