@@ -31,7 +31,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"google.golang.org/api/option"
-	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -113,7 +112,21 @@ func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForO
 }
 
 func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapter, error) {
-	return nil, nil
+	id := &krm.BigQueryMigrationMigrationWorkflowIdentity{}
+	if err := id.FromExternal(url); err != nil {
+		// Not recognized
+		return nil, nil
+	}
+
+	gcpClient, err := m.client(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &Adapter{
+		id:        id,
+		gcpClient: gcpClient,
+	}, nil
 }
 
 type Adapter struct {
@@ -177,6 +190,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	}
 
 	if diffs.HasDiff() {
+		structuredreporting.ReportDiff(ctx, diffs)
 		return fmt.Errorf("BigQueryMigrationMigrationWorkflow is immutable and cannot be updated")
 	}
 
@@ -256,9 +270,7 @@ func compareResource(ctx context.Context, actual, desired *pb.MigrationWorkflow)
 		return nil, nil, err
 	}
 
-	clonedDesired := proto.CloneOf(desired)
-
-	diffs, updateMask, err := common.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
+	diffs, updateMask, err := common.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
 		return nil, nil, err
 	}
