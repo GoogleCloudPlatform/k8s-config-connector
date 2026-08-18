@@ -483,6 +483,11 @@ type ClusterSecondaryWorkerConfig struct {
 	/* Immutable. Optional. Specifies the preemptibility of the instance group. The default value for master and worker groups is `NON_PREEMPTIBLE`. This default cannot be changed. The default value for secondary instances is `PREEMPTIBLE`. Possible values: PREEMPTIBILITY_UNSPECIFIED, NON_PREEMPTIBLE, PREEMPTIBLE */
 	// +optional
 	Preemptibility *string `json:"preemptibility,omitempty"`
+
+	// Optional. Instance flexibility Policy allowing a mixture of VM shapes and
+	//  provisioning models.
+	// +kcc:proto:field=google.cloud.dataproc.v1.InstanceGroupConfig.instance_flexibility_policy
+	InstanceFlexibilityPolicy *InstanceFlexibilityPolicy `json:"instanceFlexibilityPolicy,omitempty"`
 }
 
 // +kcc:proto=google.cloud.dataproc.v1.SecurityConfig

@@ -1466,6 +1466,8 @@
 [missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.config.secondaryWorkerConfig.diskConfig.localSsdInterface" is not set in unstructured objects
 [missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.config.secondaryWorkerConfig.diskConfig.numLocalSsds" is not set in unstructured objects
 [missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.config.secondaryWorkerConfig.imageRef" is not set; neither 'external' nor 'name' are set
+[missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.config.secondaryWorkerConfig.instanceFlexibilityPolicy.provisioningModelMix.standardCapacityBase" is not set in unstructured objects
+[missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.config.secondaryWorkerConfig.instanceFlexibilityPolicy.provisioningModelMix.standardCapacityPercentAboveBase" is not set in unstructured objects
 [missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.config.secondaryWorkerConfig.minCpuPlatform" is not set in unstructured objects
 [missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.config.secondaryWorkerConfig.preemptibility" is not set in unstructured objects
 [missing_field] crd=dataprocclusters.dataproc.cnrm.cloud.google.com version=v1beta1: field ".spec.config.securityConfig.kerberosConfig.crossRealmTrustAdminServer" is not set in unstructured objects
