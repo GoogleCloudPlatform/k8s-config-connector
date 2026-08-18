@@ -3,7 +3,7 @@ Content-Type: application/json
 
 {
   "description": "Tag key for a Secret Manager secret.",
-  "parent": "projects/${projectId}",
+  "parent": "projects/${projectNumber}",
   "shortName": "secrettag${uniqueId}"
 }
 

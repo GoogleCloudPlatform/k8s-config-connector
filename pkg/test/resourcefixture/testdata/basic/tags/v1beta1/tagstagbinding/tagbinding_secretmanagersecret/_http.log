@@ -3,7 +3,7 @@ Content-Type: application/json
 
 {
   "description": "Tag key for a Secret Manager secret.",
-  "parent": "projects/${projectId}",
+  "parent": "projects/${projectNumber}",
   "shortName": "secrettag${uniqueId}"
 }
 
@@ -290,43 +290,6 @@ X-Xss-Protection: 0
     "tagValue": "tagValues/${tagValueID}",
     "tagValueNamespacedName": "${projectId}/secrettag${uniqueId}/enabled"
   }
-}
-
----
-
-GET https://cloudresourcemanager.googleapis.com/v3/projects/${projectNumber}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "displayName": "${projectId}",
-  "etag": "abcdef0123A=",
-  "labels": {
-    "business_unit": "helix",
-    "goog-terraform-provisioned": "true",
-    "nc-contains-user-data": "false",
-    "nc-data-description": "none",
-    "nc-env-type": "dev",
-    "nc-has-pii": "false",
-    "nc-individual-owner-uname": "pthomson",
-    "nc-repo": "helix-foundations",
-    "region": "au"
-  },
-  "name": "projects/${projectNumber}",
-  "parent": "folders/${folderID}",
-  "projectId": "${projectId}",
-  "state": 1,
-  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
