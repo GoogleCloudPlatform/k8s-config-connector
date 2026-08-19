@@ -542,6 +542,7 @@ func compareJSON(t *testing.T, context, realJSON, mockJSON string) {
 func normalizeRepresentation(obj interface{}) interface{} {
 	switch v := obj.(type) {
 	case map[string]interface{}:
+		delete(v, "policyProfile")
 		delete(v, "done")
 		delete(v, "requestedCancellation")
 		delete(v, "endTime")
@@ -820,6 +821,11 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		})
 		return v
 	case string:
+		v = strings.ReplaceAll(v, "${projectNumber}", "${projectId}")
+		if strings.Contains(v, "/forwardingRules/") {
+			re := regexp.MustCompile(`/forwardingRules/[^/]+`)
+			v = re.ReplaceAllString(v, "/forwardingRules/${forwardingRuleID}")
+		}
 		if strings.HasPrefix(v, "projects/projects/") {
 			v = v[len("projects/"):]
 		}
@@ -937,6 +943,14 @@ func getPlaceholdersForKind(kind string) []string {
 		return []string{"${diskID}"}
 	case "ComputeInstance":
 		return []string{"${instanceID}"}
+	case "ComputeHealthCheck":
+		return []string{"${healthCheckID}"}
+	case "ComputeBackendService":
+		return []string{"${backendServiceID}"}
+	case "ComputeURLMap":
+		return []string{"${urlMapID}"}
+	case "ComputeTargetHTTPProxy":
+		return []string{"${targetHttpProxyID}"}
 	case "KMSKeyRing":
 		return []string{"${kmsKeyRingID}", "${keyRingID}"}
 	case "KMSCryptoKey":

@@ -17,12 +17,10 @@ package networksecurity
 import (
 	"context"
 	"fmt"
-	"time"
 
+	gcp "cloud.google.com/go/networksecurity/apiv1"
 	pb "cloud.google.com/go/networksecurity/apiv1/networksecuritypb"
 	"google.golang.org/api/option"
-	"google.golang.org/api/transport/grpc"
-	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networksecurity/v1alpha1"
@@ -51,23 +49,21 @@ type authzPolicyModel struct {
 	config config.ControllerConfig
 }
 
-func (m *authzPolicyModel) client(ctx context.Context) (pb.NetworkSecurityClient, longrunningpb.OperationsClient, error) {
+func (m *authzPolicyModel) client(ctx context.Context) (*gcp.Client, error) {
 	var opts []option.ClientOption
 
 	config := m.config
-	opts, err := config.GRPCClientOptions()
+	opts, err := config.RESTClientOptions()
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 
-	opts = append(opts, option.WithEndpoint("networksecurity.googleapis.com:443"))
-
-	conn, err := grpc.Dial(ctx, opts...)
+	gcpClient, err := gcp.NewRESTClient(ctx, opts...)
 	if err != nil {
-		return nil, nil, fmt.Errorf("dialing networksecurity service: %w", err)
+		return nil, fmt.Errorf("building networksecurity REST client: %w", err)
 	}
 
-	return pb.NewNetworkSecurityClient(conn), longrunningpb.NewOperationsClient(conn), nil
+	return gcpClient, nil
 }
 
 func (m *authzPolicyModel) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
@@ -95,16 +91,15 @@ func (m *authzPolicyModel) AdapterForObject(ctx context.Context, op *directbase.
 	// Propagating KRM Metadata Labels
 	desired.Labels = obj.GetLabels()
 
-	gcpClient, operationsClient, err := m.client(ctx)
+	gcpClient, err := m.client(ctx)
 	if err != nil {
 		return nil, err
 	}
 
 	return &authzPolicyAdapter{
-		gcpClient:        gcpClient,
-		operationsClient: operationsClient,
-		id:               id.(*krm.NetworkSecurityAuthzPolicyIdentity),
-		desired:          desired,
+		gcpClient: gcpClient,
+		id:        id.(*krm.NetworkSecurityAuthzPolicyIdentity),
+		desired:   desired,
 	}, nil
 }
 
@@ -113,11 +108,10 @@ func (m *authzPolicyModel) AdapterForURL(ctx context.Context, url string) (direc
 }
 
 type authzPolicyAdapter struct {
-	gcpClient        pb.NetworkSecurityClient
-	operationsClient longrunningpb.OperationsClient
-	id               *krm.NetworkSecurityAuthzPolicyIdentity
-	desired          *pb.AuthzPolicy
-	actual           *pb.AuthzPolicy
+	gcpClient *gcp.Client
+	id        *krm.NetworkSecurityAuthzPolicyIdentity
+	desired   *pb.AuthzPolicy
+	actual    *pb.AuthzPolicy
 }
 
 var _ directbase.Adapter = &authzPolicyAdapter{}
@@ -154,7 +148,7 @@ func (a *authzPolicyAdapter) Create(ctx context.Context, createOp *directbase.Cr
 		return fmt.Errorf("creating networksecurity authz policy %s: %w", a.id.String(), err)
 	}
 
-	err = a.waitForOperation(ctx, op)
+	_, err = op.Wait(ctx)
 	if err != nil {
 		return fmt.Errorf("networksecurity authz policy %s waiting for creation: %w", a.id.String(), err)
 	}
@@ -198,7 +192,7 @@ func (a *authzPolicyAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	if err != nil {
 		return fmt.Errorf("updating networksecurity authz policy %s: %w", a.id, err)
 	}
-	err = a.waitForOperation(ctx, op)
+	_, err = op.Wait(ctx)
 	if err != nil {
 		return fmt.Errorf("networksecurity authz policy %s waiting update: %w", a.id, err)
 	}
@@ -270,37 +264,13 @@ func (a *authzPolicyAdapter) Delete(ctx context.Context, deleteOp *directbase.De
 		return false, fmt.Errorf("deleting networksecurity authz policy %s: %w", a.id.String(), err)
 	}
 
-	err = a.waitForOperation(ctx, op)
+	err = op.Wait(ctx)
 	if err != nil {
+		if direct.IsNotFound(err) {
+			return true, nil
+		}
 		return false, fmt.Errorf("networksecurity authz policy %s waiting for deletion: %w", a.id.String(), err)
 	}
 
 	return true, nil
-}
-
-func (a *authzPolicyAdapter) waitForOperation(ctx context.Context, op *longrunningpb.Operation) error {
-	if op.Done {
-		if op.GetError() != nil {
-			return fmt.Errorf("operation failed: %s", op.GetError().GetMessage())
-		}
-		return nil
-	}
-
-	for {
-		select {
-		case <-ctx.Done():
-			return ctx.Err()
-		case <-time.After(5 * time.Second):
-			current, err := a.operationsClient.GetOperation(ctx, &longrunningpb.GetOperationRequest{Name: op.Name})
-			if err != nil {
-				return fmt.Errorf("getting operation %q: %w", op.Name, err)
-			}
-			if current.Done {
-				if current.GetError() != nil {
-					return fmt.Errorf("operation failed: %s", current.GetError().GetMessage())
-				}
-				return nil
-			}
-		}
-	}
 }
