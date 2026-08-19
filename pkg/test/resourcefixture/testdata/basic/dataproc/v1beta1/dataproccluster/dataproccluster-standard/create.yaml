@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,19 +17,23 @@ kind: DataprocCluster
 metadata:
   name: dataproccluster-${uniqueId}
   labels:
-    label-one: "new-value"
+    label-one: "value-one"
 spec:
   projectRef:
     external: projects/${projectId}
-  location: "us-east1"
+  location: "us-central1"
   config:
-    autoscalingConfig:
-      policyRef:
-        name: dataprocautoscalingpolicy-${uniqueId}
     gceClusterConfig:
       internalIPOnly: false
     masterConfig:
       diskConfig:
         bootDiskType: pd-standard
       machineType: "n2-standard-2"
+      numInstances: 1
+    workerConfig:
+      machineType: "c4-standard-2"
+      numInstances: 2
+    secondaryWorkerConfig:
+      # Must match primary worker unless using Instance Flexibility
+      machineType: "c4-standard-2"
       numInstances: 1

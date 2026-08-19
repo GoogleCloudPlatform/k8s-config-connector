@@ -8,29 +8,26 @@ metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 3
+  generation: 2
   labels:
     cnrm-test: "true"
+    label-one: new-value
   name: dataproccluster-${uniqueId}
   namespace: ${uniqueId}
 spec:
   config:
     gceClusterConfig:
-      zone: us-central1-a
+      internalIPOnly: false
     masterConfig:
+      diskConfig:
+        bootDiskType: pd-standard
       machineType: n2-standard-2
       numInstances: 1
-    securityConfig:
-      identityConfig:
-        userServiceAccountMapping:
-          user1@example.com: usersa1-${uniqueId}@${projectId}.iam.gserviceaccount.com
-          user2@example.com: usersa2-${uniqueId}@${projectId}.iam.gserviceaccount.com
-    softwareConfig:
-      imageVersion: 2.2.81-debian12
-      properties:
-        dataproc:dataproc.dynamic.multi.tenancy.enabled: "true"
+    secondaryWorkerConfig:
+      machineType: c4-standard-2
+      numInstances: 1
     workerConfig:
-      machineType: n2-standard-2
+      machineType: c4-standard-2
       numInstances: 2
   location: us-central1
   projectRef:
@@ -48,6 +45,13 @@ status:
     masterConfig:
       instanceNames:
       - dataproccluster-${uniqueId}-m
+    secondaryWorkerConfig:
+      instanceNames:
+      - dataproccluster-${uniqueId}-sw-0
+      isPreemptible: true
+      managedGroupConfig:
+        instanceGroupManagerName: dataproc-goog-reserved-auto-secondary-abcdefg
+        instanceTemplateName: dataproc-goog-reserved-auto-secondary-abcdefg
     workerConfig:
       instanceNames:
       - dataproccluster-${uniqueId}-w-0
@@ -95,7 +99,7 @@ status:
       yarn-vcores-pending: "0"
       yarn-vcores-reserved: "0"
       yarn-vcores-total: "8"
-  observedGeneration: 3
+  observedGeneration: 2
   status:
     state: RUNNING
     stateStartTime: "2024-04-01T12:34:56.123456Z"

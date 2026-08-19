@@ -26,6 +26,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocks"
+
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
@@ -219,8 +221,11 @@ func (s *clusterControllerServer) populateLabels(obj *pb.Cluster, name *clusterN
 	obj.Labels["goog-dataproc-drz-resource-uuid"] = "cluster-" + obj.ClusterUuid
 }
 
-func (s *clusterControllerServer) populateInstanceGroupConfig(config *pb.InstanceGroupConfig, name *clusterName, zone string, isMaster bool) *pb.InstanceGroupConfig {
+func (s *clusterControllerServer) populateInstanceGroupConfig(config *pb.InstanceGroupConfig, name *clusterName, zone string, isMaster bool, isSecondary bool) *pb.InstanceGroupConfig {
 	if config == nil {
+		if isSecondary {
+			return nil
+		}
 		config = &pb.InstanceGroupConfig{}
 	}
 	if config.DiskConfig == nil {
@@ -253,12 +258,41 @@ func (s *clusterControllerServer) populateInstanceGroupConfig(config *pb.Instanc
 	if config.MinCpuPlatform == "" {
 		config.MinCpuPlatform = "AUTOMATIC"
 	}
-	if config.Preemptibility == pb.InstanceGroupConfig_PREEMPTIBILITY_UNSPECIFIED {
-		config.Preemptibility = pb.InstanceGroupConfig_NON_PREEMPTIBLE
-	}
 
 	if isMaster {
 		config.InstanceNames = []string{name.ClusterName + "-m"}
+		if config.Preemptibility == pb.InstanceGroupConfig_PREEMPTIBILITY_UNSPECIFIED {
+			config.Preemptibility = pb.InstanceGroupConfig_NON_PREEMPTIBLE
+		}
+	} else if isSecondary {
+		instanceNames := []string{}
+		for i := int32(0); i < config.NumInstances; i++ {
+			s := fmt.Sprintf("%s-sw-%d", name.ClusterName, i)
+			instanceNames = append(instanceNames, s)
+		}
+		config.InstanceNames = instanceNames
+		if config.StartupConfig == nil {
+			config.StartupConfig = &pb.StartupConfig{}
+			config.StartupConfig.RequiredRegistrationFraction = mocks.PtrTo(0.0001)
+		}
+		if config.IsPreemptible == false {
+			config.IsPreemptible = true
+			config.IsPreemptible = true
+		}
+
+		if config.Preemptibility == pb.InstanceGroupConfig_PREEMPTIBILITY_UNSPECIFIED {
+			if config.InstanceFlexibilityPolicy != nil {
+				config.Preemptibility = pb.InstanceGroupConfig_SPOT
+			} else {
+				config.Preemptibility = pb.InstanceGroupConfig_PREEMPTIBLE
+			}
+		}
+		if config.ManagedGroupConfig == nil {
+			config.ManagedGroupConfig = &pb.ManagedGroupConfig{}
+			config.ManagedGroupConfig.InstanceGroupManagerName = fmt.Sprintf("dataproc-goog-reserved-auto-secondary-abcdefg")
+			config.ManagedGroupConfig.InstanceGroupManagerUri = fmt.Sprintf("projects/%s/regions/%s/instanceGroupManagers/dataproc-goog-reserved-auto-secondary-abcdefg", name.Project.ID, name.Region)
+			config.ManagedGroupConfig.InstanceTemplateName = fmt.Sprintf("dataproc-goog-reserved-auto-secondary-abcdefg")
+		}
 	} else {
 		instanceNames := []string{}
 		for i := int32(0); i < config.NumInstances; i++ {
@@ -266,6 +300,9 @@ func (s *clusterControllerServer) populateInstanceGroupConfig(config *pb.Instanc
 			instanceNames = append(instanceNames, s)
 		}
 		config.InstanceNames = instanceNames
+		if config.Preemptibility == pb.InstanceGroupConfig_PREEMPTIBILITY_UNSPECIFIED {
+			config.Preemptibility = pb.InstanceGroupConfig_NON_PREEMPTIBLE
+		}
 	}
 	return config
 }
@@ -297,29 +334,10 @@ func (s *clusterControllerServer) populateDefaultsForCluster(obj *pb.Cluster, na
 	if obj.Config.ConfigBucket == "" {
 		obj.Config.ConfigBucket = fmt.Sprintf("dataproc-staging-%s-%d-xxxxxxxx", name.Region, name.Project.Number)
 	}
-	if obj.Config.WorkerConfig == nil {
-		obj.Config.WorkerConfig = &pb.InstanceGroupConfig{}
-	}
-	if obj.Config.WorkerConfig.DiskConfig == nil {
-		obj.Config.WorkerConfig.DiskConfig = &pb.DiskConfig{}
-	}
-	obj.Config.WorkerConfig.DiskConfig.BootDiskSizeGb = 1000
-	obj.Config.WorkerConfig.DiskConfig.BootDiskType = "pd-standard"
-	if obj.Config.WorkerConfig.MachineTypeUri == "" {
-		obj.Config.WorkerConfig.MachineTypeUri = "https://www.googleapis.com/compute/v1/projects/" + name.Project.ID + "/zones/" + zone + "/machineTypes/n2-standard-4"
-	} else if !strings.HasPrefix(obj.Config.WorkerConfig.MachineTypeUri, "https://") {
-		obj.Config.WorkerConfig.MachineTypeUri = "https://www.googleapis.com/compute/v1/projects/" + name.Project.ID + "/zones/" + zone + "/machineTypes/" + obj.Config.WorkerConfig.MachineTypeUri
-	}
-	if obj.Config.WorkerConfig.NumInstances == 0 {
-		obj.Config.WorkerConfig.NumInstances = 2
-	}
-	obj.Config.WorkerConfig.Preemptibility = pb.InstanceGroupConfig_NON_PREEMPTIBLE
-	obj.Config.WorkerConfig.MinCpuPlatform = "AUTOMATIC"
-	obj.Config.WorkerConfig.ImageUri = DefaultImageURI
 
-	obj.Config.MasterConfig = s.populateInstanceGroupConfig(obj.Config.MasterConfig, name, zone, true)
-
-	obj.Config.WorkerConfig = s.populateInstanceGroupConfig(obj.Config.WorkerConfig, name, zone, false)
+	obj.Config.MasterConfig = s.populateInstanceGroupConfig(obj.Config.MasterConfig, name, zone, true, false)
+	obj.Config.WorkerConfig = s.populateInstanceGroupConfig(obj.Config.WorkerConfig, name, zone, false, false)
+	obj.Config.SecondaryWorkerConfig = s.populateInstanceGroupConfig(obj.Config.SecondaryWorkerConfig, name, zone, false, true)
 
 	s.populateSoftwareConfig(obj)
 }
@@ -344,9 +362,12 @@ func (s *clusterControllerServer) UpdateCluster(ctx context.Context, req *pb.Upd
 	updated := proto.CloneOf(obj)
 	for _, field := range req.GetUpdateMask().GetPaths() {
 		switch field {
-		case "config.worker_config.num_instances":
+		case "config.worker_config.num_instances", "config.workerConfig.numInstances":
 			description = "Add 1 workers."
 			updated.Config.WorkerConfig.NumInstances = req.GetCluster().GetConfig().GetWorkerConfig().GetNumInstances()
+		case "config.secondary_worker_config.num_instances", "config.secondaryWorkerConfig.numInstances":
+			description = "Add 1 workers."
+			updated.Config.SecondaryWorkerConfig.NumInstances = req.GetCluster().GetConfig().GetSecondaryWorkerConfig().GetNumInstances()
 		case "config.security_config.identity_config.user_service_account_mapping", "config.securityConfig.identityConfig.userServiceAccountMapping":
 			if updated.Config.SecurityConfig == nil {
 				updated.Config.SecurityConfig = &pb.SecurityConfig{}
@@ -511,85 +532,89 @@ func (s *clusterControllerServer) populateSoftwareConfig(obj *pb.Cluster) {
 	}
 
 	if obj.Config.SoftwareConfig.Properties == nil {
-		// Match some of the properties
+		obj.Config.SoftwareConfig.Properties = make(map[string]string)
+	}
+	// Match some of the properties
 
-		// Would be better to look this up in a list of GCE machine types, but we don't have it yet
-		masterMemory := 4 * 1024
-		if strings.HasSuffix(obj.GetConfig().GetMasterConfig().GetMachineTypeUri(), "n2-standard-2") {
-			masterMemory = 8 * 1024
-		}
-		if strings.HasSuffix(obj.GetConfig().GetMasterConfig().GetMachineTypeUri(), "n2-standard-4") {
-			masterMemory = 16 * 1024
-		}
-		hadoopJobHistoryHeapSize := min(4000, masterMemory/4)
-		sparkDaemonMemory := min(4000, masterMemory/4)
-		yarnResourceManagerHeapSize := min(4000, masterMemory/4)
-		yarmTimelineserverHeapSize := min(4000, masterMemory/4)
-		sparkDriverMemory := masterMemory / 4
-		sparkDriverMaxResultSize := masterMemory / 8
+	// Would be better to look this up in a list of GCE machine types, but we don't have it yet
+	masterMemory := 4 * 1024
+	if strings.HasSuffix(obj.GetConfig().GetMasterConfig().GetMachineTypeUri(), "n2-standard-2") {
+		masterMemory = 8 * 1024
+	}
+	if strings.HasSuffix(obj.GetConfig().GetMasterConfig().GetMachineTypeUri(), "n2-standard-4") {
+		masterMemory = 16 * 1024
+	}
+	hadoopJobHistoryHeapSize := min(4000, masterMemory/4)
+	sparkDaemonMemory := min(4000, masterMemory/4)
+	yarnResourceManagerHeapSize := min(4000, masterMemory/4)
+	yarmTimelineserverHeapSize := min(4000, masterMemory/4)
+	sparkDriverMemory := masterMemory / 4
+	sparkDriverMaxResultSize := masterMemory / 8
 
-		obj.Config.SoftwareConfig.Properties = map[string]string{
-			"capacity-scheduler:yarn.scheduler.capacity.resource-calculator":          "org.apache.hadoop.yarn.util.resource.DominantResourceCalculator",
-			"capacity-scheduler:yarn.scheduler.capacity.root.default.ordering-policy": "fair",
-			"core:fs.gs.block.size":                                              "134217728",
-			"core:fs.gs.metadata.cache.enable":                                   "false",
-			"core:hadoop.ssl.enabled.protocols":                                  "TLSv1,TLSv1.1,TLSv1.2",
-			"distcp:mapreduce.map.java.opts":                                     "-Xmx768m",
-			"distcp:mapreduce.map.memory.mb":                                     "1024",
-			"distcp:mapreduce.reduce.java.opts":                                  "-Xmx768m",
-			"distcp:mapreduce.reduce.memory.mb":                                  "1024",
-			"hadoop-env:HADOOP_DATANODE_OPTS":                                    "-Xmx512m",
-			"hdfs:dfs.datanode.address":                                          "0.0.0.0:9866",
-			"hdfs:dfs.datanode.http.address":                                     "0.0.0.0:9864",
-			"hdfs:dfs.datanode.https.address":                                    "0.0.0.0:9865",
-			"hdfs:dfs.datanode.ipc.address":                                      "0.0.0.0:9867",
-			"hdfs:dfs.namenode.handler.count":                                    "20",
-			"hdfs:dfs.namenode.http-address":                                     "0.0.0.0:9870",
-			"hdfs:dfs.namenode.https-address":                                    "0.0.0.0:9871",
-			"hdfs:dfs.namenode.lifeline.rpc-address":                             obj.ClusterName + "-m:8050",
-			"hdfs:dfs.namenode.secondary.http-address":                           "0.0.0.0:9868",
-			"hdfs:dfs.namenode.secondary.https-address":                          "0.0.0.0:9869",
-			"hdfs:dfs.namenode.service.handler.count":                            "10",
-			"hdfs:dfs.namenode.servicerpc-address":                               obj.ClusterName + "-m:8051",
-			"mapred-env:HADOOP_JOB_HISTORYSERVER_HEAPSIZE":                       strconv.Itoa(hadoopJobHistoryHeapSize),
-			"mapred:mapreduce.job.maps":                                          "21",
-			"mapred:mapreduce.job.reduce.slowstart.completedmaps":                "0.95",
-			"mapred:mapreduce.job.reduces":                                       "7",
-			"mapred:mapreduce.jobhistory.recovery.store.class":                   "org.apache.hadoop.mapreduce.v2.hs.HistoryServerLeveldbStateStoreService",
-			"mapred:mapreduce.map.cpu.vcores":                                    "1",
-			"mapred:mapreduce.map.java.opts":                                     "-Xmx2708m",
-			"mapred:mapreduce.map.memory.mb":                                     "3386",
-			"mapred:mapreduce.reduce.cpu.vcores":                                 "1",
-			"mapred:mapreduce.reduce.java.opts":                                  "-Xmx2708m",
-			"mapred:mapreduce.reduce.memory.mb":                                  "3386",
-			"mapred:mapreduce.task.io.sort.mb":                                   "256",
-			"mapred:yarn.app.mapreduce.am.command-opts":                          "-Xmx2708m",
-			"mapred:yarn.app.mapreduce.am.resource.cpu-vcores":                   "1",
-			"mapred:yarn.app.mapreduce.am.resource.mb":                           "3386",
-			"spark-env:SPARK_DAEMON_MEMORY":                                      strconv.Itoa(sparkDaemonMemory) + "m",
-			"spark:spark.driver.maxResultSize":                                   strconv.Itoa(sparkDriverMaxResultSize) + "m",
-			"spark:spark.driver.memory":                                          strconv.Itoa(sparkDriverMemory) + "m",
-			"spark:spark.executor.cores":                                         "2",
-			"spark:spark.executor.instances":                                     "2",
-			"spark:spark.executor.memory":                                        "6157m",
-			"spark:spark.executorEnv.OPENBLAS_NUM_THREADS":                       "1",
-			"spark:spark.plugins.defaultList":                                    "com.google.cloud.dataproc.DataprocSparkPlugin",
-			"spark:spark.scheduler.mode":                                         "FAIR",
-			"spark:spark.sql.cbo.enabled":                                        "true",
-			"spark:spark.sql.optimizer.runtime.bloomFilter.join.pattern.enabled": "true",
-			"spark:spark.ui.port":                                                "0",
-			"spark:spark.yarn.am.memory":                                         "640m",
-			"yarn-env:YARN_NODEMANAGER_HEAPSIZE":                                 "1638",
-			"yarn-env:YARN_RESOURCEMANAGER_HEAPSIZE":                             strconv.Itoa(yarnResourceManagerHeapSize),
-			"yarn-env:YARN_TIMELINESERVER_HEAPSIZE":                              strconv.Itoa(yarmTimelineserverHeapSize),
-			"yarn:yarn.nodemanager.address":                                      "0.0.0.0:8026",
-			"yarn:yarn.nodemanager.resource.cpu-vcores":                          "4",
-			"yarn:yarn.nodemanager.resource.memory-mb":                           "13544",
-			"yarn:yarn.resourcemanager.decommissioning-nodes-watcher.decommission-if-no-shuffle-data": "true",
-			"yarn:yarn.resourcemanager.nodemanager-graceful-decommission-timeout-secs":                "86400",
-			"yarn:yarn.scheduler.maximum-allocation-mb":                                               "13544",
-			"yarn:yarn.scheduler.minimum-allocation-mb":                                               "1",
-		}
+	defaultProperties := map[string]string{
+		"capacity-scheduler:yarn.scheduler.capacity.resource-calculator":          "org.apache.hadoop.yarn.util.resource.DominantResourceCalculator",
+		"capacity-scheduler:yarn.scheduler.capacity.root.default.ordering-policy": "fair",
+		"core:fs.gs.block.size":                                              "134217728",
+		"core:fs.gs.metadata.cache.enable":                                   "false",
+		"core:hadoop.ssl.enabled.protocols":                                  "TLSv1,TLSv1.1,TLSv1.2",
+		"distcp:mapreduce.map.java.opts":                                     "-Xmx768m",
+		"distcp:mapreduce.map.memory.mb":                                     "1024",
+		"distcp:mapreduce.reduce.java.opts":                                  "-Xmx768m",
+		"distcp:mapreduce.reduce.memory.mb":                                  "1024",
+		"hadoop-env:HADOOP_DATANODE_OPTS":                                    "-Xmx512m",
+		"hdfs:dfs.datanode.address":                                          "0.0.0.0:9866",
+		"hdfs:dfs.datanode.http.address":                                     "0.0.0.0:9864",
+		"hdfs:dfs.datanode.https.address":                                    "0.0.0.0:9865",
+		"hdfs:dfs.datanode.ipc.address":                                      "0.0.0.0:9867",
+		"hdfs:dfs.namenode.handler.count":                                    "20",
+		"hdfs:dfs.namenode.http-address":                                     "0.0.0.0:9870",
+		"hdfs:dfs.namenode.https-address":                                    "0.0.0.0:9871",
+		"hdfs:dfs.namenode.lifeline.rpc-address":                             obj.ClusterName + "-m:8050",
+		"hdfs:dfs.namenode.secondary.http-address":                           "0.0.0.0:9868",
+		"hdfs:dfs.namenode.secondary.https-address":                          "0.0.0.0:9869",
+		"hdfs:dfs.namenode.service.handler.count":                            "10",
+		"hdfs:dfs.namenode.servicerpc-address":                               obj.ClusterName + "-m:8051",
+		"mapred-env:HADOOP_JOB_HISTORYSERVER_HEAPSIZE":                       strconv.Itoa(hadoopJobHistoryHeapSize),
+		"mapred:mapreduce.job.maps":                                          "21",
+		"mapred:mapreduce.job.reduce.slowstart.completedmaps":                "0.95",
+		"mapred:mapreduce.job.reduces":                                       "7",
+		"mapred:mapreduce.jobhistory.recovery.store.class":                   "org.apache.hadoop.mapreduce.v2.hs.HistoryServerLeveldbStateStoreService",
+		"mapred:mapreduce.map.cpu.vcores":                                    "1",
+		"mapred:mapreduce.map.java.opts":                                     "-Xmx2708m",
+		"mapred:mapreduce.map.memory.mb":                                     "3386",
+		"mapred:mapreduce.reduce.cpu.vcores":                                 "1",
+		"mapred:mapreduce.reduce.java.opts":                                  "-Xmx2708m",
+		"mapred:mapreduce.reduce.memory.mb":                                  "3386",
+		"mapred:mapreduce.task.io.sort.mb":                                   "256",
+		"mapred:yarn.app.mapreduce.am.command-opts":                          "-Xmx2708m",
+		"mapred:yarn.app.mapreduce.am.resource.cpu-vcores":                   "1",
+		"mapred:yarn.app.mapreduce.am.resource.mb":                           "3386",
+		"spark-env:SPARK_DAEMON_MEMORY":                                      strconv.Itoa(sparkDaemonMemory) + "m",
+		"spark:spark.driver.maxResultSize":                                   strconv.Itoa(sparkDriverMaxResultSize) + "m",
+		"spark:spark.driver.memory":                                          strconv.Itoa(sparkDriverMemory) + "m",
+		"spark:spark.executor.cores":                                         "2",
+		"spark:spark.executor.instances":                                     "2",
+		"spark:spark.executor.memory":                                        "6157m",
+		"spark:spark.executorEnv.OPENBLAS_NUM_THREADS":                       "1",
+		"spark:spark.plugins.defaultList":                                    "com.google.cloud.dataproc.DataprocSparkPlugin",
+		"spark:spark.scheduler.mode":                                         "FAIR",
+		"spark:spark.sql.cbo.enabled":                                        "true",
+		"spark:spark.sql.optimizer.runtime.bloomFilter.join.pattern.enabled": "true",
+		"spark:spark.ui.port":                                                "0",
+		"spark:spark.yarn.am.memory":                                         "640m",
+		"yarn-env:YARN_NODEMANAGER_HEAPSIZE":                                 "1638",
+		"yarn-env:YARN_RESOURCEMANAGER_HEAPSIZE":                             strconv.Itoa(yarnResourceManagerHeapSize),
+		"yarn-env:YARN_TIMELINESERVER_HEAPSIZE":                              strconv.Itoa(yarmTimelineserverHeapSize),
+		"yarn:yarn.nodemanager.address":                                      "0.0.0.0:8026",
+		"yarn:yarn.nodemanager.resource.cpu-vcores":                          "4",
+		"yarn:yarn.nodemanager.resource.memory-mb":                           "13544",
+		"yarn:yarn.resourcemanager.decommissioning-nodes-watcher.decommission-if-no-shuffle-data": "true",
+		"yarn:yarn.resourcemanager.nodemanager-graceful-decommission-timeout-secs":                "86400",
+		"yarn:yarn.scheduler.maximum-allocation-mb":                                               "13544",
+		"yarn:yarn.scheduler.minimum-allocation-mb":                                               "1",
+	}
+	for key, value := range defaultProperties {
+		obj.Config.SoftwareConfig.Properties[key] = value
 	}
 }
 
