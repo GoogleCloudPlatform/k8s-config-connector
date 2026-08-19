@@ -3,7 +3,7 @@ name: reviewgen-greenfield-controller
 description: Provides provides clear review criteria for reviewing PRs that add controllers for KCC Greenfield resources.
 ---
 
-# Review guide for KCC Greenfield new types PRs
+# Review guide for KCC Greenfield controller
 Please respect the following review criteria and invariants when reviewing.
 
 ## 1. Proto Diffs and Field Masks

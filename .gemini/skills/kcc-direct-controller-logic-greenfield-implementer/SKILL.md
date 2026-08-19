@@ -139,11 +139,11 @@ The direct controller must be implemented to manage reconciliation logic (Adapte
     RECORD_AUDIT_PROBE=1 ./hack/record-gcp "fixtures/^<resource_lower>-minimal$"
     RECORD_AUDIT_PROBE=1 ./hack/record-gcp "fixtures/^<resource_lower>-maximal$"
     ```
-    - **Troubleshooting Service Not Enabled**: If `hack/record-gcp` fails because a GCP service is not enabled (e.g., error mentions that the API is disabled or has not been used in the project before), enable the service using `gcloud` and try again:
-      ```bash
-      gcloud services enable <service-name>.googleapis.com
-      ```
-      *(For example: `gcloud services enable compute.googleapis.com` or `gcloud services enable run.googleapis.com`)*
+    - **Troubleshooting Real GCP Errors (Do Not Give Up / No Mock Fallback)**:
+      * **Missing Dependent Resources**: If real GCP returns an error indicating that a referenced resource does not exist (e.g., `ForwardingRule non-existent-rule does not exist`, `Network default does not exist`, `ServiceAccount not found`), you MUST create that prerequisite resource in `dependencies.yaml` (e.g. a `ComputeForwardingRule`, `ComputeNetwork`, `IAMServiceAccount`, etc.) so the test harness provisions it in GCP before testing your resource.
+      * **Invalid Parameters / Constraint Violations**: If real GCP returns `The request was invalid`, `InvalidArgument`, or `an internal error has occurred` due to invalid or conflicting spec fields, inspect the GCP API reference, fix `create.yaml` or `update.yaml` to specify valid configuration, and re-run.
+      * **Disabled GCP APIs**: If `hack/record-gcp` fails because a GCP service is not enabled, enable the service using `gcloud services enable <service-name>.googleapis.com` and try again.
+      * **Strict Rule**: NEVER fall back to `compare-mock` or mock logs. Assume mocks do not exist. Iterate on `dependencies.yaml`, `create.yaml`, `update.yaml`, and controller code until `./hack/record-gcp` passes cleanly against real GCP.
 
     - Using the `hack/record-gcp` wrapper ensures a sufficient timeout (e.g., 30-60 minutes) is already configured, automatically handling slow GCP resource creation. There is no need to specify additional timeout flags when using this helper.
 
@@ -163,7 +163,7 @@ The direct controller must be implemented to manage reconciliation logic (Adapte
     YOU MUST COMMIT ALL RESULTING CHANGES.
 
     **GCP RECORDING PR REPORTING REQUIREMENT**:
-    In the created PR description, you MUST explicitly document whether `record-gcp` was successfully run against real GCP. If it was run, state the GCP project used. If it was not run (e.g., due to disabled APIs, missing permissions, or rate limits), you must document the specific command run, the full error message encountered, and the fallback approach you used to generate/align the HTTP logs.
+    In the created PR description, you MUST explicitly document that `record-gcp` was successfully run against real GCP and state the GCP project used. Mock logs (`_http_mock.log`) and mock fallback modes are strictly prohibited for greenfield PRs.
 
     **AUDIT LOG REPORTING REQUIREMENT**:
     As part of the final verification of development testing, you MUST retrieve Google Cloud audit logs demonstrating that the resource API was exercised.
