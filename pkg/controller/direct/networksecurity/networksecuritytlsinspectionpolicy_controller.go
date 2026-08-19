@@ -56,12 +56,12 @@ type tlsInspectionPolicyModel struct {
 
 func (m *tlsInspectionPolicyModel) client(ctx context.Context) (*networksecurity.Client, error) {
 	var opts []option.ClientOption
-	opts, err := m.config.GRPCClientOptions()
+	opts, err := m.config.RESTClientOptions()
 	if err != nil {
 		return nil, err
 	}
 
-	gcpClient, err := networksecurity.NewClient(ctx, opts...)
+	gcpClient, err := networksecurity.NewRESTClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building NetworkSecurity client: %w", err)
 	}

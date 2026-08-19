@@ -1,31 +1,51 @@
-GRPC /google.cloud.networksecurity.v1.NetworkSecurity/GetTlsInspectionPolicy
+GET https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1/tlsInspectionPolicies/tlsinspection-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FtlsInspectionPolicies%2Ftlsinspection-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "name": "projects/${projectId}/locations/us-central1/tlsInspectionPolicies/tlsinspection-${uniqueId}"
+  "error": {
+    "code": 404,
+    "message": "TlsInspectionPolicy \"projects/${projectId}/locations/us-central1/tlsInspectionPolicies/tlsinspection-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
 }
-
-error: rpc error: code = NotFound desc = TlsInspectionPolicy "projects/${projectId}/locations/us-central1/tlsInspectionPolicies/tlsinspection-${uniqueId}" not found
-
-{}
 
 ---
 
-GRPC /google.cloud.networksecurity.v1.NetworkSecurity/CreateTlsInspectionPolicy
+POST https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1/tlsInspectionPolicies?%24alt=json%3Benum-encoding%3Dint&tlsInspectionPolicyId=tlsinspection-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
 {
-  "parent": "projects/${projectId}/locations/us-central1",
-  "tlsInspectionPolicy": {
-    "caPool": "projects/${projectId}/locations/us-central1/caPools/capool-dep-1",
-    "description": "A TLS Inspection Policy to decrypt traffic",
-    "excludePublicCaSet": true,
-    "minTlsVersion": "TLS_1_2",
-    "name": "projects/${projectId}/locations/us-central1/tlsInspectionPolicies/tlsinspection-${uniqueId}",
-    "tlsFeatureProfile": "PROFILE_COMPATIBLE"
-  },
-  "tlsInspectionPolicyId": "tlsinspection-${uniqueId}"
+  "caPool": "projects/${projectId}/locations/us-central1/caPools/capool-dep-1",
+  "description": "A TLS Inspection Policy to decrypt traffic",
+  "excludePublicCaSet": true,
+  "minTlsVersion": 3,
+  "name": "projects/${projectId}/locations/us-central1/tlsInspectionPolicies/tlsinspection-${uniqueId}",
+  "tlsFeatureProfile": 1
 }
 
-OK
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "metadata": {
@@ -40,13 +60,20 @@ OK
 
 ---
 
-GRPC /google.longrunning.Operations/GetOperation
+GET https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
 
-{
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
-}
-
-OK
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
@@ -73,42 +100,57 @@ OK
 
 ---
 
-GRPC /google.cloud.networksecurity.v1.NetworkSecurity/GetTlsInspectionPolicy
+GET https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1/tlsInspectionPolicies/tlsinspection-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FtlsInspectionPolicies%2Ftlsinspection-${uniqueId}
 
-{
-  "name": "projects/${projectId}/locations/us-central1/tlsInspectionPolicies/tlsinspection-${uniqueId}"
-}
-
-OK
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "caPool": "projects/${projectId}/locations/us-central1/caPools/capool-dep-1",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "A TLS Inspection Policy to decrypt traffic",
   "excludePublicCaSet": true,
-  "minTlsVersion": "TLS_1_2",
+  "minTlsVersion": 3,
   "name": "projects/${projectId}/locations/us-central1/tlsInspectionPolicies/tlsinspection-${uniqueId}",
-  "tlsFeatureProfile": "PROFILE_COMPATIBLE",
+  "tlsFeatureProfile": 1,
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-GRPC /google.cloud.networksecurity.v1.NetworkSecurity/UpdateTlsInspectionPolicy
+PATCH https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1/tlsInspectionPolicies/tlsinspection-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=caPool%2Cdescription
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: tls_inspection_policy.name=projects%2F${projectId}%2Flocations%2Fus-central1%2FtlsInspectionPolicies%2Ftlsinspection-${uniqueId}
 
 {
-  "tlsInspectionPolicy": {
-    "caPool": "projects/${projectId}/locations/us-central1/caPools/capool-dep-2",
-    "description": "An updated TLS Inspection Policy to decrypt traffic",
-    "excludePublicCaSet": true,
-    "minTlsVersion": "TLS_1_2",
-    "name": "projects/${projectId}/locations/us-central1/tlsInspectionPolicies/tlsinspection-${uniqueId}",
-    "tlsFeatureProfile": "PROFILE_COMPATIBLE"
-  },
-  "updateMask": "caPool,description"
+  "caPool": "projects/${projectId}/locations/us-central1/caPools/capool-dep-2",
+  "description": "An updated TLS Inspection Policy to decrypt traffic",
+  "excludePublicCaSet": true,
+  "minTlsVersion": 3,
+  "name": "projects/${projectId}/locations/us-central1/tlsInspectionPolicies/tlsinspection-${uniqueId}",
+  "tlsFeatureProfile": 1
 }
 
-OK
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "metadata": {
@@ -123,13 +165,20 @@ OK
 
 ---
 
-GRPC /google.longrunning.Operations/GetOperation
+GET https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
 
-{
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
-}
-
-OK
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
@@ -156,55 +205,48 @@ OK
 
 ---
 
-GRPC /google.cloud.networksecurity.v1.NetworkSecurity/GetTlsInspectionPolicy
+GET https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1/tlsInspectionPolicies/tlsinspection-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FtlsInspectionPolicies%2Ftlsinspection-${uniqueId}
 
-{
-  "name": "projects/${projectId}/locations/us-central1/tlsInspectionPolicies/tlsinspection-${uniqueId}"
-}
-
-OK
-
-{
-  "caPool": "projects/${projectId}/locations/us-central1/caPools/capool-dep-2",
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "An updated TLS Inspection Policy to decrypt traffic",
-  "excludePublicCaSet": true,
-  "minTlsVersion": "TLS_1_2",
-  "name": "projects/${projectId}/locations/us-central1/tlsInspectionPolicies/tlsinspection-${uniqueId}",
-  "tlsFeatureProfile": "PROFILE_COMPATIBLE",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GRPC /google.cloud.networksecurity.v1.NetworkSecurity/GetTlsInspectionPolicy
-
-{
-  "name": "projects/${projectId}/locations/us-central1/tlsInspectionPolicies/tlsinspection-${uniqueId}"
-}
-
-OK
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "caPool": "projects/${projectId}/locations/us-central1/caPools/capool-dep-2",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "An updated TLS Inspection Policy to decrypt traffic",
   "excludePublicCaSet": true,
-  "minTlsVersion": "TLS_1_2",
+  "minTlsVersion": 3,
   "name": "projects/${projectId}/locations/us-central1/tlsInspectionPolicies/tlsinspection-${uniqueId}",
-  "tlsFeatureProfile": "PROFILE_COMPATIBLE",
+  "tlsFeatureProfile": 1,
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-GRPC /google.cloud.networksecurity.v1.NetworkSecurity/DeleteTlsInspectionPolicy
+DELETE https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1/tlsInspectionPolicies/tlsinspection-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FtlsInspectionPolicies%2Ftlsinspection-${uniqueId}
 
-{
-  "name": "projects/${projectId}/locations/us-central1/tlsInspectionPolicies/tlsinspection-${uniqueId}"
-}
-
-OK
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "metadata": {
@@ -219,13 +261,20 @@ OK
 
 ---
 
-GRPC /google.longrunning.Operations/GetOperation
+GET https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
 
-{
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
-}
-
-OK
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
