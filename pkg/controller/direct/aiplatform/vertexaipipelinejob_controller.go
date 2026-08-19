@@ -57,7 +57,7 @@ func (m *pipelineJobModel) client(ctx context.Context, location string) (*gcp.Pi
 	if err != nil {
 		return nil, err
 	}
-	endpoint := fmt.Sprintf("%s-aiplatform.googleapis.com:443", location)
+	endpoint := m.config.Endpoint(fmt.Sprintf("%s-aiplatform.googleapis.com:443", location))
 	opts = append(opts, option.WithEndpoint(endpoint))
 	gcpClient, err := gcp.NewPipelineClient(ctx, opts...)
 	if err != nil {

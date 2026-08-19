@@ -59,7 +59,7 @@ func (m *sacRealmModel) client(ctx context.Context) (pb.SSERealmServiceClient, l
 		return nil, nil, err
 	}
 
-	opts = append(opts, option.WithEndpoint("networksecurity.googleapis.com:443"))
+	opts = append(opts, option.WithEndpoint(config.Endpoint("networksecurity.googleapis.com:443")))
 
 	conn, err := grpc.Dial(ctx, opts...)
 	if err != nil {

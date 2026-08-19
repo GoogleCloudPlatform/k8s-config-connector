@@ -58,7 +58,7 @@ func (m *model) client(ctx context.Context, location string) (*gcp.FeatureRegist
 	if err != nil {
 		return nil, err
 	}
-	endpoint := fmt.Sprintf("%s-aiplatform.googleapis.com:443", location)
+	endpoint := m.config.Endpoint(fmt.Sprintf("%s-aiplatform.googleapis.com:443", location))
 	opts = append(opts, option.WithEndpoint(endpoint))
 	gcpClient, err := gcp.NewFeatureRegistryClient(ctx, opts...)
 	if err != nil {

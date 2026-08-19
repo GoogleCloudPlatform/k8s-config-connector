@@ -69,7 +69,7 @@ func (m *model) client(ctx context.Context) (*grafeas.Client, error) {
 	if err != nil {
 		return nil, err
 	}
-	opts = append(opts, option.WithEndpoint("containeranalysis.googleapis.com:443"))
+	opts = append(opts, option.WithEndpoint(m.config.Endpoint("containeranalysis.googleapis.com:443")))
 	opts = append(opts, option.WithScopes("https://www.googleapis.com/auth/cloud-platform"))
 	gcpClient, err := grafeas.NewClient(ctx, opts...)
 	if err != nil {
