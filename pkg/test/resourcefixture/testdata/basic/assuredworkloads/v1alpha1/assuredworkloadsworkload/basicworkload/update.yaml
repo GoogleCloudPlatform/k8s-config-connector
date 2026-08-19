@@ -1,0 +1,14 @@
+apiVersion: assuredworkloads.cnrm.cloud.google.com/v1alpha1
+kind: AssuredWorkloadsWorkload
+metadata:
+  name: assuredworkloadsworkload-${uniqueId}
+spec:
+  displayName: My Updated Workload ${uniqueId}
+  complianceRegime: FEDRAMP_HIGH
+  organizationRef:
+    external: ${TEST_ORG_ID}
+  location: us-central1
+  billingAccountRef:
+    external: ${TEST_BILLING_ACCOUNT_ID}
+  labels:
+    foo: bar
