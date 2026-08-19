@@ -1,137 +1,212 @@
 # Interacting with Overseer: A Developer's Guide to AI-Assisted Engineering in KCC
 
-Welcome! This guide is written for software engineers contributing to the `k8s-config-connector` repository where **Overseer** is active.
+This guide explains how software engineers working on the `k8s-config-connector` repository interact with **Overseer**, our automation and agentic engineering system running in Kubernetes.
 
-Overseer is an autonomous agentic system running continuously in our Kubernetes infrastructure. Rather than acting as a passive CI linter, think of Overseer as an asynchronous AI engineering partner capable of investigating one-off bugs, writing MockGCP fixtures, generating native reconciler loops, and conducting automated code reviews.
+Overseer helps contributors triage issues, fix bugs, generate MockGCP test fixtures, build direct controllers, and iterate on pull request reviews.
 
-### What Overseer Can Help You With:
-1. **One-Off Bug Fixing & Targeted Troubleshooting**: Assign individual bug reports, test drift failures, or parameter adjustments directly to the bot for automated triage and repair without requiring elaborate workflow structures. For real-world examples, see how Overseer adopted and generated fixes for [Issue #10460](https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/10460) and [Issue #11946](https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/11946).
-2. **Brownfield Migrations**: Migrating existing Terraform/DCL wrapped resources to native Kubernetes controller-runtime SDK reconcilers (the **Direct approach**) via staged pipelines.
-3. **Greenfield Development**: Scaffolding brand-new Google Cloud Platform (GCP) custom resource type definitions, mock tests, and direct controllers from scratch.
+### What Overseer Can Help With
+1. **Bug Fixing and Troubleshooting**: Triage and resolve individual bug reports, test drift failures, and parameter adjustments. Examples: [Issue #10460](https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/10460) and [Issue #11946](https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/11946).
+2. **Brownfield Migrations**: Migrate existing Terraform/DCL resources to native Kubernetes controller-runtime reconcilers (the **Direct approach**) using staged pipelines.
+3. **Greenfield Development**: Scaffold new Google Cloud Platform (GCP) custom resource definitions (CRDs), mock tests, and direct controllers.
 
 ---
 
-## 1. Meet the Bot Team
+## 1. Bot Accounts and Roles
 
-Overseer operates through a specialized roster of robot GitHub accounts, clearly separated by responsibilities (configured in `overseer/examples/kcc.yaml`):
-- **Watcher Bot (`argus-watcher-bot`)**: The central supervisor and scheduler. It scans Issues, PRs, and `.agents/` chore specifications, assigns tasks to worker sandboxes, and tracks state on the `overseer` git branch.
-- **Coder Bots (`hopper-coder-bot`, `ada-coder-bot`, `neumann-coder-bot`, `lovelace-coder-bot`)**: The hands-on developers. When an issue is picked up, one of these accounts clones the repo inside an isolated Kubernetes sandbox, generates code, runs presubmit checks (`make fmt`, `go test`), and pushes Pull Requests.
-- **Reviewer Bot (`reviewbot-robot`)**: Dedicated automated PR reviewer and feedback assistant.
-- **Agent Bots (`daedalus-agent-bot`, `feynman-agent-bot`, `walle-agent-bot`)**: Worker accounts dedicated to executing multi-step resource workflows and recurring maintenance chores (`.agents/`).
+Overseer uses dedicated GitHub bot accounts with distinct responsibilities (configured in `overseer/examples/kcc.yaml`):
+
+| Bot Role | Accounts | Primary Responsibility |
+| :--- | :--- | :--- |
+| **Watcher Bot** | `argus-watcher-bot` | Central supervisor and scheduler. Scans issues, PRs, and `.agents/` chore configs, assigns work to sandboxes, and coordinates workflows. |
+| **Coder Bots** | `hopper-coder-bot`, `ada-coder-bot`, `neumann-coder-bot`, `lovelace-coder-bot` | Hands-on code development. Clones the repo in a Kubernetes sandbox, writes code, runs presubmits (`make fmt`, `go test`), and opens/updates PRs. |
+| **Reviewer Bot** | `reviewbot-robot` | Automated PR reviewer that evaluates diffs and provides structural feedback. |
+| **Agent Bots** | `daedalus-agent-bot`, `feynman-agent-bot`, `walle-agent-bot` | Orchestrators for multi-step workflows (e.g. greenfield/migration pipelines) and repository maintenance chores (`.agents/`). |
+
+### Why Coder Bots and Agent Bots are Separated
+- **Coder Bots** are tightly scoped to a single branch and PR. They make code modifications, run builds/tests, and push git commits. They do not make widespread GitHub API calls across the repository.
+- **Agent Bots** coordinate work across multiple issues and PRs (e.g., decomposing a master workflow issue into sub-issues and tracking milestone progress). They rarely push code directly (except for specific chores like release bumps) and are GitHub API-heavy.
+- **Isolation**: Separating these roles prevents GitHub API rate limits or temporary token throttling encountered during repository-wide coordination from affecting Coder Bots actively pushing PR updates.
 
 ---
 
 ## 2. Engaging via Issues: Labels and Assignees
 
-To hand off a task or initiate an automated coding job on an issue, you interact with Overseer via **Labels** and **Assignees**.
+You can trigger Overseer on an issue using either labels or direct assignment.
 
 ### How to Trigger Overseer on an Issue
-Whether you are initiating a major resource migration or delegating a targeted one-off bug fix, you can trigger Overseer using either of these methods:
-1. **Apply the Label**: Add the `overseer` label to your GitHub issue.
-   - This is the recommended trigger for most use-cases.
-   - Latency is higher but this is good for batch processing.
-2. **Assign the Watcher Bot**: Assign the issue strictly to our dedicated watcher account, **`argus-watcher-bot`**.
-   - *Note: Do not assign directly to coder or agent bots—always assign to the watcher bot so it can properly schedule and route the task!*
-   - Latency is lower.
 
-**Is it an either/or trigger?** 
-Yes! You only need to perform **one** of these actions—either apply the label OR assign the watcher bot. 
-- **Automatic Labeling on Adoption**: If you assign `argus-watcher-bot` without applying the `overseer` label, the supervisor loop automatically stamps the `overseer` label onto your issue upon adopting it.
-- **PR Label Inheritance**: When the assigned Coder Bot subsequently submits a Pull Request to resolve your issue, it automatically attaches the `overseer` label to the PR along with any other labels present on your original tracking issue.
+You only need to perform **one** of the following actions:
 
-*Important Note on Ticket Filtering: To protect against processing legacy backlog items, Overseer ignores issues and PRs numbered below `9000` (`minNumber: 9000`). Make sure your ticket number is above this threshold!*
+1. **Apply the Label**: Add the `overseer` label to the GitHub issue.
+   - *Expected latency*: ~30 mins-1 hour (picked up during the next periodic polling cycle).
+2. **Assign the Watcher Bot**: Assign the issue to **`argus-watcher-bot`**.
+   - *Expected latency*: ~20 mins (faster pickup).
+   - *Important*: Do **not** assign issues directly to Coder Bots (`hopper-coder-bot`, etc.) or Agent Bots. Coder bots do not poll issues directly and require `argus-watcher-bot` to schedule and provision the sandbox task. Assigning a coder bot directly will bypass the scheduler and fail to run.
 
-### What to Expect After Triggering
-Once labeled or assigned:
-1. **Adoption**: Within the next polling cycle, `argus-watcher-bot` registers the issue and enqueues a work task.
-2. **Sandbox Provisioning**: A dedicated Kubernetes worker pod (e.g., `kcc-issue-10945`) spins up using a pre-warmed Go compiler container image (`factory-golang:latest`). If the task requires testing against real Google Cloud APIs, the sandbox is securely mounted with test project credentials (`cnrm-barni-4` via the `projectaccess` secret).
-3. **Code Generation & PR Submission**: An available Coder Bot (such as `hopper-coder-bot`) analyzes your issue description, modifies the codebase, runs unit and e2e sample tests, and submits a new Pull Request back to the repo linking to your tracking issue (`Fixes #10945`).
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Dev as Developer
+    participant Issue as GitHub Issue
+    participant Watcher as argus-watcher-bot
+    participant Sandbox as K8s Sandbox Pod
+    participant Coder as Coder Bot
+    participant PR as GitHub PR
+
+    Dev->>Issue: Add 'overseer' label OR assign 'argus-watcher-bot'
+    Watcher->>Issue: Detects issue and registers task
+    Watcher->>Issue: Applies 'overseer' label (if not present)
+    Watcher->>Sandbox: Provisions container sandbox (factory-golang)
+    Sandbox->>Coder: Runs agent with issue context and tools
+    Coder->>Sandbox: Edits code, runs 'make fmt' and 'go test'
+    Coder->>PR: Opens Pull Request linked to issue ("Fixes #...")
+```
+
+### Expected Turnaround Times
+
+| Phase | Expected Time | Notes |
+| :--- | :--- | :--- |
+| **Issue Detection** | ~20 min (assigned) / ~30 min–1 hour (labeled) | `argus-watcher-bot` enqueues the task. |
+| **Sandbox Provisioning** | 1–2 min | Worker pod spins up with pre-warmed Go tooling and test credentials. |
+| **Code Generation & Testing** | 15–30 min | Agent develops code, runs local tests (`make fmt`, unit tests, e2e samples). |
+| **PR Opened** | Immediately after tests pass | A Coder Bot opens a PR with the `overseer` label and links to the issue. |
+
+> **Note on Issue Filtering**: Overseer ignores issues numbered below `9000` (`minNumber: 9000`) to avoid processing legacy backlog items. Ensure your issue number is 9000 or higher.
+
+### Recommended Issue Structure
+
+To get the best results from Overseer, provide clear context in the issue description:
+
+#### For Bug Reports & Fixes
+```markdown
+### Summary
+Brief description of the issue or bug.
+
+### Affected Resource
+- Kind: `StorageBucket` (or GVK)
+- API Version: `storage.cnrm.cloud.google.com/v1beta1`
+
+### Steps to Reproduce / Resource YAML
+```yaml
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageBucket
+metadata:
+  name: sample-bucket
+spec:
+  # ...
+```
+
+### Expected vs Actual Behavior
+- **Expected**: Resource reconciles to Ready.
+- **Actual**: Reconciler fails with error: `...`
+
+### References / Links
+- Link to relevant GCP API docs or error logs.
+```
 
 ---
 
 ## 3. Engaging via Pull Requests: Review and Iteration
 
-When a Pull Request is opened in KCC, Overseer interacts with developers to maintain code quality, enforce architectural patterns, and iterate on feedback.
+Once a PR is opened by a Coder Bot (or an existing PR is labeled with `overseer`), Overseer monitors the PR to run validations, fix test failures, and address code review comments.
 
-### What to Expect on a PR
-When an automated agent opens a Pull Request or monitors an existing PR marked with `overseer`, you can expect the following active interventions:
-- **Automated Validation**: Automated agents inspect PR diffs for compliance with KCC standards, including 2026 Apache 2 copyright headers, `make fmt` formatting, and adherence to the `direct` reconciler architecture.
-- **Automated Test Failure Resolution**: When presubmit CI checks or unit tests fail on a monitored PR, Overseer inspects the failure logs, wakes up the worker sandbox, and attempts to automatically debug and fix the code (protected by loop guardrails that halt automation if failures persist across repeated retries).
-- **Automated Conflict Resolution**: If updates to `master` introduce git merge conflicts on the PR branch, Overseer attempts to automatically rebase the working branch and resolve conflicts cleanly.
-- **Automated Code Review (Selective)**: For select pull requests (based on configuration rules and label targets, not all PRs), dedicated reviewer accounts (`reviewbot-robot`) automatically evaluate code diffs and leave structural review feedback.
-- **Human Handover (`ready-for-human`) [Planned]**: Once automated test resolution and initial validations succeed, AI agents will attach the `ready-for-human` label, signaling to our automated chore system to route the PR to a human engineer on the `k8s-config-connector-team` for thorough final review.
+### Automated Actions on PRs
+- **Automated Test Failure Resolution**: If presubmit CI checks or unit tests fail, Overseer inspects the failure logs, spins up the worker sandbox, and pushes fixes.
+- **Automated Conflict Resolution**: If updates to `master` cause merge conflicts, Overseer rebases the branch and resolves standard conflicts.
+- **Automated Code Review (Selective)**: For select PRs based on configuration, `reviewbot-robot` provides initial feedback aligned with KCC review skills in `.gemini/skills/` (such as `reviewgen-greenfield-controller` and `reviewgen-brownfield-new-types`).
+- **Human Handover (`ready-for-human`) [Planned]**: Once automated validations pass, the bot applies the `ready-for-human` label to route the PR to a maintainer on the `k8s-config-connector-team`.
 
-### How to Make the Bot Address Review Comments
-When you review a Pull Request opened by a Coder Bot and request adjustments (e.g., tweaking error handling or updating MockGCP test data), simply posting a comment on the PR—whether as an inline code review or a regular discussion reply—is sufficient for the bot to read and ingest your feedback.
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Reviewer as Reviewer (Human / Bot)
+    participant PR as GitHub PR
+    participant Watcher as argus-watcher-bot
+    participant Coder as Authoring Coder Bot
+    
+    Reviewer->>PR: Leaves review comments or requested changes
+    PR->>Watcher: Detects new review comments
+    Watcher->>Coder: Wakes up PR sandbox (kcc-pr-<number>)
+    Coder->>Coder: Ingests review comments, updates code, runs tests
+    Coder->>PR: Pushes updated commit / force-pushes branch
+```
 
-To instruct Overseer to process your review feedback and update the PR, use either of these trigger methods:
-1. **Apply the Label**: Ensure the `overseer` label is present on the PR.
-2. **Assign the Authoring Coder Bot**: Assign the PR to the Coder Bot account that created the PR.
-   - *Critical Rule: Assign ONLY to the Coder Bot that authored the PR (e.g., if `hopper-coder-bot` opened the PR, assign it strictly back to `hopper-coder-bot`). Do NOT assign to a different coder bot, watcher bot, or agent bot, as they lack git push permissions to the PR branch!*
+### How to Request Changes on a PR
 
-During the next supervision cycle, the authoring Coder Bot reads the entire review discussion thread, wakes up its sandbox (`kcc-pr-<number>`), applies your requested adjustments, re-verifies tests, and force-pushes a new commit to the PR branch.
+When reviewing a PR opened by a Coder Bot:
 
-**What if the review comments are not addressed ?**
+1. **Leave your review comments** directly on the PR (inline comments or general review comments).
+2. **Trigger the bot** using either:
+   - **Label**: Ensure the `overseer` label is present on the PR.
+   - **Assignee**: Assign the PR back to the **authoring Coder Bot** (e.g. if `hopper-coder-bot` opened the PR, assign it to `hopper-coder-bot`).
+   - *Important*: Only assign the authoring Coder Bot. Do not assign a different coder bot or agent bot, as only the authoring account has push permissions to that PR branch.
 
-Overseer triggers a address comments tasks if it sees any new comments on the PR since last commit.
-In some cases there may be another push to the PR since the user leaves a review comment. The push could have been addressing a test failure or rebase etc. In such cases the review comments may not be addressed. To fix this, you can simply leave a new comment on the PR asking the authoring Coder bot to address the open review comments.
+### Expected PR Turnaround Times
 
+| Action | Expected Time | Notes |
+| :--- | :--- | :--- |
+| **Review Detection** | 5–15 min | Triggered by new comments posted after the latest commit. |
+| **Code Updates & Verification** | 10–25 min | The bot applies requested changes, runs `make fmt`, and runs relevant test suites. |
+| **PR Push** | Immediately after tests pass | New commit pushed to the PR branch. |
 
-### Some Tips
-If you've applied the label or assigned the bot and Overseer isn't responding, it may indicate a backlog.
-In some cases it could take a while for the bot to pick up the task. Check the overseer dashboard (admins only) task Queue.
+### Troubleshooting PRs
 
-- **Forcing a commit/rebase**: If you want to force a rebase, you can comment directly on the PR instructing the bot to rebase. This would trigger a rebase and re run all the presubmit tests.
-- **Prevent overseer from iterating**: If overseer keeps iterating on a PR and you want it to stop, you can add the label `overseer/stop` on the PR or issue.
-- **Abandon PRs**: Sometimes a PR may end up in a state which needs to be abandoned. This could be due to complex merge conflicts or other reasons. Just close the PR and the system would create a new PR as long as the issue is open and has no other PRs attached to it.
+- **Review comments not being addressed**: Overseer triggers a review task when it detects comments posted *after* the latest commit. If an automated push (such as a CI fix or rebase) occurred after your review comment, the bot may not recognize pending comments. Simply post a brief follow-up comment asking the bot to address the open review comments.
+- **Forcing a rebase**: Leave a comment with `rebase` on the PR to trigger a rebase against `master` and rerun presubmit validations.
+- **Stopping automation on a PR**: Add the `overseer/stop` label to the PR or issue to pause all Overseer activity.
+- **Abandoning a stuck PR**: If a PR is stuck in unresolvable conflicts, close the PR. As long as the parent issue remains open and labeled `overseer`, a fresh PR will be generated in the next cycle.
 
 ---
 
 ## 4. Multi-Step Workflows: Greenfield & Brownfield Migrations
 
-While one-off bugs can be resolved in a single PR, building a brand-new resource (**Greenfield**) or migrating an older Terraform/DCL wrapper to a native Go client SDK reconciler (**Brownfield / Direct approach**) requires careful multi-phase engineering. Attempting to generate thousands of lines of CRDs, mocks, controllers, and tests in a single prompt can cause instability. 
+Building a new resource (**Greenfield**) or migrating an existing Terraform/DCL controller to direct reconcilers (**Brownfield**) involves multiple phases (scaffolding types, mappers, mock tests, controllers, and golden logs). Overseer handles this through **Staged Workflows**.
 
-Overseer solves this using **Staged Workflows**.
+```mermaid
+flowchart TD
+    Master[Master Tracking Issue<br/>workflow/greenfield or workflow/migrate] --> Agent[Agent Bot assigned<br/>e.g. daedalus-agent-bot]
+    Agent --> Stage1[Sub-Issue / PR: Types & CRD Scaffolding]
+    Stage1 --> Stage2[Sub-Issue / PR: Mappers & Fuzzers]
+    Stage2 --> Stage3[Sub-Issue / PR: MockGCP & Fixtures]
+    Stage3 --> Stage4[Sub-Issue / PR: Direct Controller Logic]
+    Stage4 --> Complete[Master Issue Closed & Token Rollup]
+```
 
 ### Triggering a Workflow
-To initiate a structured resource pipeline, create a master tracking issue that attaches the appropriate workflow in the issue body. Then label the issue `overseer` and optionally assign it to `argus-watcher-bot`. The watcher bot would assign an appropriate agent bot to work on it.
 
-Tag the issue with appropriate label for tracking purposes. 
-- **[workflow/greenfield](https://github.com/GoogleCloudPlatform/k8s-config-connector/issues?q=state%3Aopen%20label%3A%22workflow%2Fgreenfield%22)**: For scaffolding brand-new GCP resource APIs from scratch.
-- **[workflow/migrate](https://github.com/GoogleCloudPlatform/k8s-config-connector/issues?q=state%3Aopen%20label%3A%22workflow%2Fmigrate%22)**: For migrating existing brownfield resources to direct reconcilers without breaking customer YAML contracts.
+1. Create a master tracking issue describing the target GCP resource.
+2. Apply the `overseer` label and the appropriate workflow label:
+   - **`workflow/greenfield`**: For new GCP resource APIs.
+   - **`workflow/migrate`**: For migrating existing resources to direct controllers.
+3. Optionally assign to `argus-watcher-bot`.
 
-Example workflows:
-* https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/10694
-* https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/11228
+Example workflow tracking issues:
+- [Issue #10694](https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/10694)
+- [Issue #11228](https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/11228)
 
-
-### How Workflows Progress
-When Overseer processes a workflow tracking issue, it decomposes the overarching goal into sequential, manageable sub-issues and phased Pull Requests.
-
-### State Persistence & Usage Reporting
-- **Progress Journaling**: Because multi-phase migrations can span days or weeks, Overseer records its decision history and milestone checklist in an immutable Markdown progress journal (e.g., `session-spanner-migration.md`) committed directly to the `overseer` tracking branch of the robot's fork.
-- **Token Usage Rollup on Closure**: When all stages successfully merge and the master workflow issue is closed on GitHub, the telemetry Token Usage Daemon posts a final summary comment to the issue detailing total Gemini LLM token usage, cost attribution, and task iteration metrics before terminating the worker sandbox.
+### How Progress is Tracked
+- **GitHub Issue Updates**: Progress is tracked directly on the master tracking issue via checklist items, sub-issues, and status comments.
+- **Branch Journaling**: For multi-day workflows, Overseer records milestone checkpoints in a progress journal (e.g., `session-<resource>-migration.md`) committed to the `overseer` branch.
+- **Token Usage Summary**: When all stages merge and the master issue is closed, a summary comment is posted with total token usage and iteration metrics.
 
 ---
 
 ## 5. Background Maintenance Chores (`.agents/*.md`)
 
-In addition to interactive ticket collaboration, Overseer continuously scans the `.agents/` directory in our repository for automated maintenance routines called **Chores**. Chores run autonomously on background recurring timer schedules:
+Overseer also runs background maintenance routines defined in `.agents/`:
 
-- **Review Assigner (`.agents/review-assigner.md`)**: Executes every 30 minutes to balance code review workload across the `k8s-config-connector-team`. It intelligently checks for **Workflow Affinity**, ensuring that if you reviewed Stage 1 of a migration, subsequent sub-PRs from that workflow are automatically assigned to you for continuity.
-- **KCC Release Engine (`.agents/kcc-release.md`)**: Monitors git version milestone tags (`v1.x.x`), automating version bump pull requests and generating comparative release notes.
-
-Disabled Chores:
-- **Mock Drift Correction (`.agents/mock-drift-correction.md` & `mock-realhttplog-drift-correction.md`)**: Regularly reconciles MockGCP test behavior against live Google Cloud HTTP traffic logs. If a GCP service introduces subtle API behavioral drift, the chore automatically creates a low-priority issue tagged `overseer`, `priority/medium`, `step/mockgcp` to recalibrate our mocks.
-
-- **Dependency & License Audits (`.agents/dependency-agent.md`, `license-agent.md`)**: Periodically updates module dependencies (`go mod tidy`) and verifies that new source files contain proper 2026 copyright banners.
+- **Review Assigner (`.agents/review-assigner.md`)**: Runs every 30 minutes to balance review load among `k8s-config-connector-team` members, matching reviewers based on workflow continuity.
+- **KCC Release Engine (`.agents/kcc-release.md`)**: Watches version milestone tags (`v1.x.x`) to automate version bump PRs and release notes.
+- **Mock Drift Correction (`.agents/mock-drift-correction.md`)** *(periodic/disabled)*: Identifies drift between MockGCP and live GCP API traffic logs.
+- **Dependency & License Audits (`.agents/dependency-agent.md`, `license-agent.md`)**: Updates Go dependencies and validates license headers.
 
 ---
 
-## 6. Summary Checklist for Engineers
+## 6. Quick Reference Checklist
 
-- [ ] **Ensure Ticket ID `>= 9000`**: Overseer only supervises tickets numbered 9000 or above.
-- [ ] **Tag to Activate**: Apply `overseer` or assign strictly to `argus-watcher-bot` to start automation on either one-off bug reports or multi-step migrations.
-- [ ] **Comment directly for PR Feedback**: Leave inline reviews or comments (no need to `@tag`) and ensure the PR is labeled `overseer` or assigned back to its original authoring Coder Bot.
-- [ ] **Use Staged Workflow Labels**: Apply `workflow/greenfield` or `workflow/migrate` for complex multi-PR development pipelines.
-- [ ] **Monitor via Dashboard (Admins Only)**: Jump into running worker sandboxes via the Review UI for live terminal SSH debugging when complex merge conflicts arise.
+- [ ] **Issue ID `>= 9000`**: Check that the GitHub issue number is 9000 or higher.
+- [ ] **Trigger Automation**: Add the `overseer` label OR assign `argus-watcher-bot`.
+- [ ] **Address PR Reviews**: Add review comments and ensure the PR is labeled `overseer` or assigned to the authoring Coder Bot.
+- [ ] **Workflows**: Use `workflow/greenfield` or `workflow/migrate` for multi-stage resource development.
+- [ ] **Pause Automation**: Add `overseer/stop` if you want Overseer to halt work on an issue or PR.
+
