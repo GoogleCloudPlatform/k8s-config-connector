@@ -1,6 +1,6 @@
 POST https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 {
   "combiner": "AND_WITH_MATCHING_RESOURCE",
@@ -98,7 +98,7 @@ X-Xss-Protection: 0
 
 GET https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies/${alertPolicyID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -158,10 +158,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/${dashboardID}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Fdashboards%2F${dashboardID}
+GET https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/${dashboardID}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -183,10 +181,9 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards?%24alt=json%3Benum-encoding%3Dint
+POST https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: parent=projects%2F${projectId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 {
   "columnLayout": {
@@ -199,12 +196,12 @@ X-Goog-Request-Params: parent=projects%2F${projectId}
             "xyChart": {
               "dataSets": [
                 {
-                  "plotType": 1,
-                  "targetAxis": 2,
+                  "plotType": "LINE",
+                  "targetAxis": "Y2",
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
-                        "perSeriesAligner": 2
+                        "perSeriesAligner": "ALIGN_RATE"
                       },
                       "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\""
                     },
@@ -215,26 +212,26 @@ X-Goog-Request-Params: parent=projects%2F${projectId}
               "timeshiftDuration": "600.500s",
               "y2Axis": {
                 "label": "y2Axis",
-                "scale": 2
+                "scale": "LOG10"
               },
               "yAxis": {
                 "label": "y1Axis",
-                "scale": 1
+                "scale": "LINEAR"
               }
             }
           },
           {
             "text": {
               "content": "Widget 2",
-              "format": 1,
+              "format": "MARKDOWN",
               "style": {
                 "backgroundColor": "#000",
-                "fontSize": 4,
-                "horizontalAlignment": 2,
-                "padding": 3,
-                "pointerLocation": 5,
+                "fontSize": "FS_LARGE",
+                "horizontalAlignment": "H_CENTER",
+                "padding": "P_MEDIUM",
+                "pointerLocation": "PL_TOP_LEFT",
                 "textColor": "#fff",
-                "verticalAlignment": 2
+                "verticalAlignment": "V_CENTER"
               }
             }
           },
@@ -244,11 +241,11 @@ X-Goog-Request-Params: parent=projects%2F${projectId}
             "xyChart": {
               "dataSets": [
                 {
-                  "plotType": 3,
+                  "plotType": "STACKED_BAR",
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
-                        "perSeriesAligner": 2
+                        "perSeriesAligner": "ALIGN_RATE"
                       },
                       "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\""
                     },
@@ -259,13 +256,13 @@ X-Goog-Request-Params: parent=projects%2F${projectId}
               "thresholds": [
                 {
                   "label": "Important",
-                  "targetAxis": 1,
+                  "targetAxis": "Y1",
                   "value": 1.2
                 }
               ],
               "yAxis": {
                 "label": "y1Axis",
-                "scale": 1
+                "scale": "LINEAR"
               }
             }
           },
@@ -296,7 +293,7 @@ X-Goog-Request-Params: parent=projects%2F${projectId}
           },
           {
             "pieChart": {
-              "chartType": 2,
+              "chartType": "DONUT",
               "dataSets": [
                 {
                   "minAlignmentPeriod": "60s",
@@ -305,12 +302,12 @@ X-Goog-Request-Params: parent=projects%2F${projectId}
                     "timeSeriesFilter": {
                       "aggregation": {
                         "alignmentPeriod": "60s",
-                        "perSeriesAligner": 2
+                        "perSeriesAligner": "ALIGN_RATE"
                       },
                       "filter": "metric.type=\"compute.googleapis.com/instance/disk/read_bytes_count\" resource.type=\"gce_instance\"",
                       "secondaryAggregation": {
                         "alignmentPeriod": "60s",
-                        "perSeriesAligner": 12
+                        "perSeriesAligner": "ALIGN_MEAN"
                       }
                     }
                   }
@@ -354,14 +351,14 @@ X-Goog-Request-Params: parent=projects%2F${projectId}
                     "timeSeriesFilter": {
                       "aggregation": {
                         "alignmentPeriod": "60s",
-                        "perSeriesAligner": 2
+                        "perSeriesAligner": "ALIGN_RATE"
                       },
                       "filter": "metric.type=\"compute.googleapis.com/instance/disk/read_bytes_count\" resource.type=\"gce_instance\""
                     }
                   }
                 }
               ],
-              "metricVisualization": 1
+              "metricVisualization": "NUMBER"
             },
             "title": "TimeSeriesTable Widget"
           },
@@ -389,13 +386,13 @@ X-Goog-Request-Params: parent=projects%2F${projectId}
   },
   "dashboardFilters": [
     {
-      "filterType": 1,
+      "filterType": "RESOURCE_LABEL",
       "labelKey": "instance_id",
       "stringValue": "3133577226154888113",
       "templateVariable": "iid"
     },
     {
-      "filterType": 1,
+      "filterType": "RESOURCE_LABEL",
       "labelKey": "zone"
     }
   ],
@@ -424,12 +421,12 @@ X-Xss-Protection: 0
             "xyChart": {
               "dataSets": [
                 {
-                  "plotType": 1,
-                  "targetAxis": 2,
+                  "plotType": "LINE",
+                  "targetAxis": "Y2",
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
-                        "perSeriesAligner": 2
+                        "perSeriesAligner": "ALIGN_RATE"
                       },
                       "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\""
                     },
@@ -440,26 +437,26 @@ X-Xss-Protection: 0
               "timeshiftDuration": "600.500s",
               "y2Axis": {
                 "label": "y2Axis",
-                "scale": 2
+                "scale": "LOG10"
               },
               "yAxis": {
                 "label": "y1Axis",
-                "scale": 1
+                "scale": "LINEAR"
               }
             }
           },
           {
             "text": {
               "content": "Widget 2",
-              "format": 1,
+              "format": "MARKDOWN",
               "style": {
                 "backgroundColor": "#000",
-                "fontSize": 4,
-                "horizontalAlignment": 2,
-                "padding": 3,
-                "pointerLocation": 5,
+                "fontSize": "FS_LARGE",
+                "horizontalAlignment": "H_CENTER",
+                "padding": "P_MEDIUM",
+                "pointerLocation": "PL_TOP_LEFT",
                 "textColor": "#fff",
-                "verticalAlignment": 2
+                "verticalAlignment": "V_CENTER"
               }
             }
           },
@@ -469,12 +466,12 @@ X-Xss-Protection: 0
             "xyChart": {
               "dataSets": [
                 {
-                  "plotType": 3,
-                  "targetAxis": 1,
+                  "plotType": "STACKED_BAR",
+                  "targetAxis": "Y1",
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
-                        "perSeriesAligner": 2
+                        "perSeriesAligner": "ALIGN_RATE"
                       },
                       "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\""
                     },
@@ -485,13 +482,13 @@ X-Xss-Protection: 0
               "thresholds": [
                 {
                   "label": "Important",
-                  "targetAxis": 1,
+                  "targetAxis": "Y1",
                   "value": 1.2
                 }
               ],
               "yAxis": {
                 "label": "y1Axis",
-                "scale": 1
+                "scale": "LINEAR"
               }
             }
           },
@@ -522,7 +519,7 @@ X-Xss-Protection: 0
           },
           {
             "pieChart": {
-              "chartType": 2,
+              "chartType": "DONUT",
               "dataSets": [
                 {
                   "minAlignmentPeriod": "60s",
@@ -531,12 +528,12 @@ X-Xss-Protection: 0
                     "timeSeriesFilter": {
                       "aggregation": {
                         "alignmentPeriod": "60s",
-                        "perSeriesAligner": 2
+                        "perSeriesAligner": "ALIGN_RATE"
                       },
                       "filter": "metric.type=\"compute.googleapis.com/instance/disk/read_bytes_count\" resource.type=\"gce_instance\"",
                       "secondaryAggregation": {
                         "alignmentPeriod": "60s",
-                        "perSeriesAligner": 12
+                        "perSeriesAligner": "ALIGN_MEAN"
                       }
                     }
                   }
@@ -581,14 +578,14 @@ X-Xss-Protection: 0
                     "timeSeriesFilter": {
                       "aggregation": {
                         "alignmentPeriod": "60s",
-                        "perSeriesAligner": 2
+                        "perSeriesAligner": "ALIGN_RATE"
                       },
                       "filter": "metric.type=\"compute.googleapis.com/instance/disk/read_bytes_count\" resource.type=\"gce_instance\""
                     }
                   }
                 }
               ],
-              "metricVisualization": 1
+              "metricVisualization": "NUMBER"
             },
             "title": "TimeSeriesTable Widget"
           },
@@ -616,13 +613,13 @@ X-Xss-Protection: 0
   },
   "dashboardFilters": [
     {
-      "filterType": 1,
+      "filterType": "RESOURCE_LABEL",
       "labelKey": "instance_id",
       "stringValue": "3133577226154888113",
       "templateVariable": "iid"
     },
     {
-      "filterType": 1,
+      "filterType": "RESOURCE_LABEL",
       "labelKey": "zone"
     }
   ],
@@ -633,10 +630,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/${dashboardID}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Fdashboards%2F${dashboardID}
+GET https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/${dashboardID}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -659,12 +654,12 @@ X-Xss-Protection: 0
             "xyChart": {
               "dataSets": [
                 {
-                  "plotType": 1,
-                  "targetAxis": 2,
+                  "plotType": "LINE",
+                  "targetAxis": "Y2",
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
-                        "perSeriesAligner": 2
+                        "perSeriesAligner": "ALIGN_RATE"
                       },
                       "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\""
                     },
@@ -675,26 +670,26 @@ X-Xss-Protection: 0
               "timeshiftDuration": "600.500s",
               "y2Axis": {
                 "label": "y2Axis",
-                "scale": 2
+                "scale": "LOG10"
               },
               "yAxis": {
                 "label": "y1Axis",
-                "scale": 1
+                "scale": "LINEAR"
               }
             }
           },
           {
             "text": {
               "content": "Widget 2",
-              "format": 1,
+              "format": "MARKDOWN",
               "style": {
                 "backgroundColor": "#000",
-                "fontSize": 4,
-                "horizontalAlignment": 2,
-                "padding": 3,
-                "pointerLocation": 5,
+                "fontSize": "FS_LARGE",
+                "horizontalAlignment": "H_CENTER",
+                "padding": "P_MEDIUM",
+                "pointerLocation": "PL_TOP_LEFT",
                 "textColor": "#fff",
-                "verticalAlignment": 2
+                "verticalAlignment": "V_CENTER"
               }
             }
           },
@@ -704,12 +699,12 @@ X-Xss-Protection: 0
             "xyChart": {
               "dataSets": [
                 {
-                  "plotType": 3,
-                  "targetAxis": 1,
+                  "plotType": "STACKED_BAR",
+                  "targetAxis": "Y1",
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
-                        "perSeriesAligner": 2
+                        "perSeriesAligner": "ALIGN_RATE"
                       },
                       "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\""
                     },
@@ -720,13 +715,13 @@ X-Xss-Protection: 0
               "thresholds": [
                 {
                   "label": "Important",
-                  "targetAxis": 1,
+                  "targetAxis": "Y1",
                   "value": 1.2
                 }
               ],
               "yAxis": {
                 "label": "y1Axis",
-                "scale": 1
+                "scale": "LINEAR"
               }
             }
           },
@@ -757,7 +752,7 @@ X-Xss-Protection: 0
           },
           {
             "pieChart": {
-              "chartType": 2,
+              "chartType": "DONUT",
               "dataSets": [
                 {
                   "minAlignmentPeriod": "60s",
@@ -766,12 +761,12 @@ X-Xss-Protection: 0
                     "timeSeriesFilter": {
                       "aggregation": {
                         "alignmentPeriod": "60s",
-                        "perSeriesAligner": 2
+                        "perSeriesAligner": "ALIGN_RATE"
                       },
                       "filter": "metric.type=\"compute.googleapis.com/instance/disk/read_bytes_count\" resource.type=\"gce_instance\"",
                       "secondaryAggregation": {
                         "alignmentPeriod": "60s",
-                        "perSeriesAligner": 12
+                        "perSeriesAligner": "ALIGN_MEAN"
                       }
                     }
                   }
@@ -816,14 +811,14 @@ X-Xss-Protection: 0
                     "timeSeriesFilter": {
                       "aggregation": {
                         "alignmentPeriod": "60s",
-                        "perSeriesAligner": 2
+                        "perSeriesAligner": "ALIGN_RATE"
                       },
                       "filter": "metric.type=\"compute.googleapis.com/instance/disk/read_bytes_count\" resource.type=\"gce_instance\""
                     }
                   }
                 }
               ],
-              "metricVisualization": 1
+              "metricVisualization": "NUMBER"
             },
             "title": "TimeSeriesTable Widget"
           },
@@ -851,13 +846,13 @@ X-Xss-Protection: 0
   },
   "dashboardFilters": [
     {
-      "filterType": 1,
+      "filterType": "RESOURCE_LABEL",
       "labelKey": "instance_id",
       "stringValue": "3133577226154888113",
       "templateVariable": "iid"
     },
     {
-      "filterType": 1,
+      "filterType": "RESOURCE_LABEL",
       "labelKey": "zone"
     }
   ],
@@ -868,10 +863,9 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/${dashboardID}?%24alt=json%3Benum-encoding%3Dint
+PATCH https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/${dashboardID}?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: dashboard.name=projects%2F${projectId}%2Fdashboards%2F${dashboardID}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 {
   "columnLayout": {
@@ -884,12 +878,12 @@ X-Goog-Request-Params: dashboard.name=projects%2F${projectId}%2Fdashboards%2F${d
             "xyChart": {
               "dataSets": [
                 {
-                  "plotType": 1,
-                  "targetAxis": 2,
+                  "plotType": "LINE",
+                  "targetAxis": "Y2",
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
-                        "perSeriesAligner": 2
+                        "perSeriesAligner": "ALIGN_RATE"
                       },
                       "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\""
                     },
@@ -900,26 +894,26 @@ X-Goog-Request-Params: dashboard.name=projects%2F${projectId}%2Fdashboards%2F${d
               "timeshiftDuration": "600.500s",
               "y2Axis": {
                 "label": "y2Axis",
-                "scale": 2
+                "scale": "LOG10"
               },
               "yAxis": {
                 "label": "y1Axis",
-                "scale": 1
+                "scale": "LINEAR"
               }
             }
           },
           {
             "text": {
               "content": "Widget 2",
-              "format": 1,
+              "format": "MARKDOWN",
               "style": {
                 "backgroundColor": "#000",
-                "fontSize": 4,
-                "horizontalAlignment": 2,
-                "padding": 3,
-                "pointerLocation": 5,
+                "fontSize": "FS_LARGE",
+                "horizontalAlignment": "H_CENTER",
+                "padding": "P_MEDIUM",
+                "pointerLocation": "PL_TOP_LEFT",
                 "textColor": "#fff",
-                "verticalAlignment": 2
+                "verticalAlignment": "V_CENTER"
               }
             }
           },
@@ -929,11 +923,11 @@ X-Goog-Request-Params: dashboard.name=projects%2F${projectId}%2Fdashboards%2F${d
             "xyChart": {
               "dataSets": [
                 {
-                  "plotType": 3,
+                  "plotType": "STACKED_BAR",
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
-                        "perSeriesAligner": 2
+                        "perSeriesAligner": "ALIGN_RATE"
                       },
                       "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\""
                     },
@@ -944,13 +938,13 @@ X-Goog-Request-Params: dashboard.name=projects%2F${projectId}%2Fdashboards%2F${d
               "thresholds": [
                 {
                   "label": "Important",
-                  "targetAxis": 1,
+                  "targetAxis": "Y1",
                   "value": 1.2
                 }
               ],
               "yAxis": {
                 "label": "y1Axis",
-                "scale": 1
+                "scale": "LINEAR"
               }
             }
           },
@@ -981,7 +975,7 @@ X-Goog-Request-Params: dashboard.name=projects%2F${projectId}%2Fdashboards%2F${d
           },
           {
             "pieChart": {
-              "chartType": 2,
+              "chartType": "DONUT",
               "dataSets": [
                 {
                   "minAlignmentPeriod": "60s",
@@ -990,12 +984,12 @@ X-Goog-Request-Params: dashboard.name=projects%2F${projectId}%2Fdashboards%2F${d
                     "timeSeriesFilter": {
                       "aggregation": {
                         "alignmentPeriod": "60s",
-                        "perSeriesAligner": 2
+                        "perSeriesAligner": "ALIGN_RATE"
                       },
                       "filter": "metric.type=\"compute.googleapis.com/instance/disk/read_bytes_count\" resource.type=\"gce_instance\"",
                       "secondaryAggregation": {
                         "alignmentPeriod": "60s",
-                        "perSeriesAligner": 12
+                        "perSeriesAligner": "ALIGN_MEAN"
                       }
                     }
                   }
@@ -1039,14 +1033,14 @@ X-Goog-Request-Params: dashboard.name=projects%2F${projectId}%2Fdashboards%2F${d
                     "timeSeriesFilter": {
                       "aggregation": {
                         "alignmentPeriod": "60s",
-                        "perSeriesAligner": 2
+                        "perSeriesAligner": "ALIGN_RATE"
                       },
                       "filter": "metric.type=\"compute.googleapis.com/instance/disk/read_bytes_count\" resource.type=\"gce_instance\""
                     }
                   }
                 }
               ],
-              "metricVisualization": 1
+              "metricVisualization": "NUMBER"
             },
             "title": "TimeSeriesTable Widget"
           },
@@ -1074,13 +1068,13 @@ X-Goog-Request-Params: dashboard.name=projects%2F${projectId}%2Fdashboards%2F${d
   },
   "dashboardFilters": [
     {
-      "filterType": 1,
+      "filterType": "RESOURCE_LABEL",
       "labelKey": "instance_id",
       "stringValue": "3133577226154888113",
       "templateVariable": "iid"
     },
     {
-      "filterType": 1,
+      "filterType": "RESOURCE_LABEL",
       "labelKey": "zone"
     }
   ],
@@ -1110,12 +1104,12 @@ X-Xss-Protection: 0
             "xyChart": {
               "dataSets": [
                 {
-                  "plotType": 1,
-                  "targetAxis": 2,
+                  "plotType": "LINE",
+                  "targetAxis": "Y2",
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
-                        "perSeriesAligner": 2
+                        "perSeriesAligner": "ALIGN_RATE"
                       },
                       "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\""
                     },
@@ -1126,26 +1120,26 @@ X-Xss-Protection: 0
               "timeshiftDuration": "600.500s",
               "y2Axis": {
                 "label": "y2Axis",
-                "scale": 2
+                "scale": "LOG10"
               },
               "yAxis": {
                 "label": "y1Axis",
-                "scale": 1
+                "scale": "LINEAR"
               }
             }
           },
           {
             "text": {
               "content": "Widget 2",
-              "format": 1,
+              "format": "MARKDOWN",
               "style": {
                 "backgroundColor": "#000",
-                "fontSize": 4,
-                "horizontalAlignment": 2,
-                "padding": 3,
-                "pointerLocation": 5,
+                "fontSize": "FS_LARGE",
+                "horizontalAlignment": "H_CENTER",
+                "padding": "P_MEDIUM",
+                "pointerLocation": "PL_TOP_LEFT",
                 "textColor": "#fff",
-                "verticalAlignment": 2
+                "verticalAlignment": "V_CENTER"
               }
             }
           },
@@ -1155,12 +1149,12 @@ X-Xss-Protection: 0
             "xyChart": {
               "dataSets": [
                 {
-                  "plotType": 3,
-                  "targetAxis": 1,
+                  "plotType": "STACKED_BAR",
+                  "targetAxis": "Y1",
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
-                        "perSeriesAligner": 2
+                        "perSeriesAligner": "ALIGN_RATE"
                       },
                       "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\""
                     },
@@ -1171,13 +1165,13 @@ X-Xss-Protection: 0
               "thresholds": [
                 {
                   "label": "Important",
-                  "targetAxis": 1,
+                  "targetAxis": "Y1",
                   "value": 1.2
                 }
               ],
               "yAxis": {
                 "label": "y1Axis",
-                "scale": 1
+                "scale": "LINEAR"
               }
             }
           },
@@ -1208,7 +1202,7 @@ X-Xss-Protection: 0
           },
           {
             "pieChart": {
-              "chartType": 2,
+              "chartType": "DONUT",
               "dataSets": [
                 {
                   "minAlignmentPeriod": "60s",
@@ -1217,12 +1211,12 @@ X-Xss-Protection: 0
                     "timeSeriesFilter": {
                       "aggregation": {
                         "alignmentPeriod": "60s",
-                        "perSeriesAligner": 2
+                        "perSeriesAligner": "ALIGN_RATE"
                       },
                       "filter": "metric.type=\"compute.googleapis.com/instance/disk/read_bytes_count\" resource.type=\"gce_instance\"",
                       "secondaryAggregation": {
                         "alignmentPeriod": "60s",
-                        "perSeriesAligner": 12
+                        "perSeriesAligner": "ALIGN_MEAN"
                       }
                     }
                   }
@@ -1267,14 +1261,14 @@ X-Xss-Protection: 0
                     "timeSeriesFilter": {
                       "aggregation": {
                         "alignmentPeriod": "60s",
-                        "perSeriesAligner": 2
+                        "perSeriesAligner": "ALIGN_RATE"
                       },
                       "filter": "metric.type=\"compute.googleapis.com/instance/disk/read_bytes_count\" resource.type=\"gce_instance\""
                     }
                   }
                 }
               ],
-              "metricVisualization": 1
+              "metricVisualization": "NUMBER"
             },
             "title": "TimeSeriesTable Widget"
           },
@@ -1302,13 +1296,13 @@ X-Xss-Protection: 0
   },
   "dashboardFilters": [
     {
-      "filterType": 1,
+      "filterType": "RESOURCE_LABEL",
       "labelKey": "instance_id",
       "stringValue": "3133577226154888113",
       "templateVariable": "iid"
     },
     {
-      "filterType": 1,
+      "filterType": "RESOURCE_LABEL",
       "labelKey": "zone"
     }
   ],
@@ -1319,10 +1313,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/${dashboardID}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Fdashboards%2F${dashboardID}
+GET https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/${dashboardID}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1345,12 +1337,12 @@ X-Xss-Protection: 0
             "xyChart": {
               "dataSets": [
                 {
-                  "plotType": 1,
-                  "targetAxis": 2,
+                  "plotType": "LINE",
+                  "targetAxis": "Y2",
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
-                        "perSeriesAligner": 2
+                        "perSeriesAligner": "ALIGN_RATE"
                       },
                       "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\""
                     },
@@ -1361,26 +1353,26 @@ X-Xss-Protection: 0
               "timeshiftDuration": "600.500s",
               "y2Axis": {
                 "label": "y2Axis",
-                "scale": 2
+                "scale": "LOG10"
               },
               "yAxis": {
                 "label": "y1Axis",
-                "scale": 1
+                "scale": "LINEAR"
               }
             }
           },
           {
             "text": {
               "content": "Widget 2",
-              "format": 1,
+              "format": "MARKDOWN",
               "style": {
                 "backgroundColor": "#000",
-                "fontSize": 4,
-                "horizontalAlignment": 2,
-                "padding": 3,
-                "pointerLocation": 5,
+                "fontSize": "FS_LARGE",
+                "horizontalAlignment": "H_CENTER",
+                "padding": "P_MEDIUM",
+                "pointerLocation": "PL_TOP_LEFT",
                 "textColor": "#fff",
-                "verticalAlignment": 2
+                "verticalAlignment": "V_CENTER"
               }
             }
           },
@@ -1390,12 +1382,12 @@ X-Xss-Protection: 0
             "xyChart": {
               "dataSets": [
                 {
-                  "plotType": 3,
-                  "targetAxis": 1,
+                  "plotType": "STACKED_BAR",
+                  "targetAxis": "Y1",
                   "timeSeriesQuery": {
                     "timeSeriesFilter": {
                       "aggregation": {
-                        "perSeriesAligner": 2
+                        "perSeriesAligner": "ALIGN_RATE"
                       },
                       "filter": "metric.type=\"agent.googleapis.com/nginx/connections/accepted_count\""
                     },
@@ -1406,13 +1398,13 @@ X-Xss-Protection: 0
               "thresholds": [
                 {
                   "label": "Important",
-                  "targetAxis": 1,
+                  "targetAxis": "Y1",
                   "value": 1.2
                 }
               ],
               "yAxis": {
                 "label": "y1Axis",
-                "scale": 1
+                "scale": "LINEAR"
               }
             }
           },
@@ -1443,7 +1435,7 @@ X-Xss-Protection: 0
           },
           {
             "pieChart": {
-              "chartType": 2,
+              "chartType": "DONUT",
               "dataSets": [
                 {
                   "minAlignmentPeriod": "60s",
@@ -1452,12 +1444,12 @@ X-Xss-Protection: 0
                     "timeSeriesFilter": {
                       "aggregation": {
                         "alignmentPeriod": "60s",
-                        "perSeriesAligner": 2
+                        "perSeriesAligner": "ALIGN_RATE"
                       },
                       "filter": "metric.type=\"compute.googleapis.com/instance/disk/read_bytes_count\" resource.type=\"gce_instance\"",
                       "secondaryAggregation": {
                         "alignmentPeriod": "60s",
-                        "perSeriesAligner": 12
+                        "perSeriesAligner": "ALIGN_MEAN"
                       }
                     }
                   }
@@ -1502,14 +1494,14 @@ X-Xss-Protection: 0
                     "timeSeriesFilter": {
                       "aggregation": {
                         "alignmentPeriod": "60s",
-                        "perSeriesAligner": 2
+                        "perSeriesAligner": "ALIGN_RATE"
                       },
                       "filter": "metric.type=\"compute.googleapis.com/instance/disk/read_bytes_count\" resource.type=\"gce_instance\""
                     }
                   }
                 }
               ],
-              "metricVisualization": 1
+              "metricVisualization": "NUMBER"
             },
             "title": "TimeSeriesTable Widget"
           },
@@ -1537,13 +1529,13 @@ X-Xss-Protection: 0
   },
   "dashboardFilters": [
     {
-      "filterType": 1,
+      "filterType": "RESOURCE_LABEL",
       "labelKey": "instance_id",
       "stringValue": "3133577226154888113",
       "templateVariable": "iid"
     },
     {
-      "filterType": 1,
+      "filterType": "RESOURCE_LABEL",
       "labelKey": "zone"
     }
   ],
@@ -1554,10 +1546,8 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/${dashboardID}?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Fdashboards%2F${dashboardID}
+DELETE https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/${dashboardID}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1575,7 +1565,7 @@ X-Xss-Protection: 0
 
 GET https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies/${alertPolicyID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1637,7 +1627,7 @@ X-Xss-Protection: 0
 
 DELETE https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies/${alertPolicyID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
