@@ -23,7 +23,7 @@ import (
 var NetworkConnectivityMulticloudDataTransferConfigGVK = GroupVersion.WithKind("NetworkConnectivityMulticloudDataTransferConfig")
 
 // NetworkConnectivityMulticloudDataTransferConfigSpec defines the desired state of NetworkConnectivityMulticloudDataTransferConfig
-// +kcc:spec:proto=mockgcp.cloud.networkconnectivity.v1.MulticloudDataTransferConfig
+// +kcc:spec:proto=google.cloud.networkconnectivity.v1.MulticloudDataTransferConfig
 type NetworkConnectivityMulticloudDataTransferConfigSpec struct {
 	// The project that this resource belongs to.
 	// +kubebuilder:validation:Required
@@ -39,12 +39,12 @@ type NetworkConnectivityMulticloudDataTransferConfigSpec struct {
 
 	// Optional. A description of this resource.
 	// +kubebuilder:validation:Optional
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.MulticloudDataTransferConfig.description
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.MulticloudDataTransferConfig.description
 	Description *string `json:"description,omitempty"`
 
 	// Optional. User-defined labels.
 	// +kubebuilder:validation:Optional
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.MulticloudDataTransferConfig.labels
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.MulticloudDataTransferConfig.labels
 	Labels map[string]string `json:"labels,omitempty"`
 }
 
@@ -65,48 +65,48 @@ type NetworkConnectivityMulticloudDataTransferConfigStatus struct {
 }
 
 // NetworkConnectivityMulticloudDataTransferConfigObservedState is the state of the NetworkConnectivityMulticloudDataTransferConfig resource as most recently observed in GCP.
-// +kcc:observedstate:proto=mockgcp.cloud.networkconnectivity.v1.MulticloudDataTransferConfig
+// +kcc:observedstate:proto=google.cloud.networkconnectivity.v1.MulticloudDataTransferConfig
 type NetworkConnectivityMulticloudDataTransferConfigObservedState struct {
 	// Output only. Time when the `MulticloudDataTransferConfig` resource was created.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.MulticloudDataTransferConfig.create_time
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.MulticloudDataTransferConfig.create_time
 	CreateTime *string `json:"createTime,omitempty"`
 
 	// Output only. The number of `Destination` resources in use with the `MulticloudDataTransferConfig` resource.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.MulticloudDataTransferConfig.destinations_active_count
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.MulticloudDataTransferConfig.destinations_active_count
 	DestinationsActiveCount *int32 `json:"destinationsActiveCount,omitempty"`
 
 	// Output only. The number of `Destination` resources configured for the `MulticloudDataTransferConfig` resource.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.MulticloudDataTransferConfig.destinations_count
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.MulticloudDataTransferConfig.destinations_count
 	DestinationsCount *int32 `json:"destinationsCount,omitempty"`
 
 	// Output only. Maps services to their current or planned states. Service names are keys, and the associated values describe the state of the service.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.MulticloudDataTransferConfig.services
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.MulticloudDataTransferConfig.services
 	Services map[string]StateTimeline `json:"services,omitempty"`
 
 	// Output only. The Google-generated unique ID for the `MulticloudDataTransferConfig` resource.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.MulticloudDataTransferConfig.uid
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.MulticloudDataTransferConfig.uid
 	Uid *string `json:"uid,omitempty"`
 
 	// Output only. Time when the `MulticloudDataTransferConfig` resource was updated.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.MulticloudDataTransferConfig.update_time
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.MulticloudDataTransferConfig.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
-// +kcc:proto=mockgcp.cloud.networkconnectivity.v1.StateTimeline
+// +kcc:proto=google.cloud.networkconnectivity.v1.StateTimeline
 type StateTimeline struct {
 	// Output only. The state and activation time details of the resource state.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.StateTimeline.states
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.StateTimeline.states
 	States []StateMetadata `json:"states,omitempty"`
 }
 
-// +kcc:proto=mockgcp.cloud.networkconnectivity.v1.StateMetadata
+// +kcc:proto=google.cloud.networkconnectivity.v1.StateTimeline.StateMetadata
 type StateMetadata struct {
 	// Output only. Accompanies only the transient states, which include `ADDING`, `DELETING`, and `SUSPENDING`, to denote the time until which the transient state of the resource will be effective. For instance, if the state is `ADDING`, this field shows the time when the resource state transitions to `ACTIVE`.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.StateMetadata.effective_time
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.StateTimeline.StateMetadata.effective_time
 	EffectiveTime *string `json:"effectiveTime,omitempty"`
 
 	// Output only. The state of the resource.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.StateMetadata.state
+	// +kcc:proto:field=google.cloud.networkconnectivity.v1.StateTimeline.StateMetadata.state
 	State *string `json:"state,omitempty"`
 }
 

@@ -256,7 +256,6 @@ X-Xss-Protection: 0
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-south1/subnetworks/${subnetworkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/${subnetworkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west2/subnetworks/${subnetworkID}",
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/subnetworks/computesubnetwork-vaupjtfxfog545a",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/subnetworks/${subnetworkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west4/subnetworks/${subnetworkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west8/subnetworks/${subnetworkID}"
@@ -590,7 +589,7 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true",
     "network-type": "subnetwork"
   },
-  "lastStartTimestamp": "2026-07-28T15:58:13.600-07:00",
+  "lastStartTimestamp": "2026-08-18T17:21:16.395-07:00",
   "machineType": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/machineTypes/n1-standard-1",
   "metadata": {
     "fingerprint": "hZF3BRENe3o=",
@@ -603,12 +602,12 @@ X-Xss-Protection: 0
         {
           "kind": "compute#accessConfig",
           "name": "external-nat",
-          "natIP": "136.113.72.115",
+          "natIP": "104.197.129.117",
           "networkTier": "PREMIUM",
           "type": "ONE_TO_ONE_NAT"
         }
       ],
-      "fingerprint": "b72hGpQfc7M=",
+      "fingerprint": "TwX9RuUkCTM=",
       "kind": "compute#networkInterface",
       "name": "nic0",
       "network": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/${subnetworkID}",
@@ -686,7 +685,7 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "compute#disk",
   "labelFingerprint": "abcdef0123A=",
-  "lastAttachTimestamp": "2026-07-28T15:58:05.938-07:00",
+  "lastAttachTimestamp": "2026-08-18T17:21:09.004-07:00",
   "licenseCodes": [
     "3853522013536123851"
   ],
@@ -697,7 +696,7 @@ X-Xss-Protection: 0
   "physicalBlockSizeBytes": "4096",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${instanceID}",
   "sourceImage": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010",
-  "sourceImageId": "6403343414377215198",
+  "sourceImageId": "6473106611105614466",
   "status": "READY",
   "type": "projects/${projectId}/zones/us-central1-a/diskTypes/pd-standard",
   "users": [
@@ -765,7 +764,7 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true",
     "network-type": "subnetwork"
   },
-  "lastStartTimestamp": "2026-07-28T15:58:13.600-07:00",
+  "lastStartTimestamp": "2026-08-18T17:21:16.395-07:00",
   "machineType": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/machineTypes/n1-standard-1",
   "metadata": {
     "fingerprint": "hZF3BRENe3o=",
@@ -778,12 +777,12 @@ X-Xss-Protection: 0
         {
           "kind": "compute#accessConfig",
           "name": "external-nat",
-          "natIP": "136.113.72.115",
+          "natIP": "104.197.129.117",
           "networkTier": "PREMIUM",
           "type": "ONE_TO_ONE_NAT"
         }
       ],
-      "fingerprint": "b72hGpQfc7M=",
+      "fingerprint": "TwX9RuUkCTM=",
       "kind": "compute#networkInterface",
       "name": "nic0",
       "network": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/${subnetworkID}",
@@ -861,7 +860,7 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "compute#disk",
   "labelFingerprint": "abcdef0123A=",
-  "lastAttachTimestamp": "2026-07-28T15:58:05.938-07:00",
+  "lastAttachTimestamp": "2026-08-18T17:21:09.004-07:00",
   "licenseCodes": [
     "3853522013536123851"
   ],
@@ -872,7 +871,7 @@ X-Xss-Protection: 0
   "physicalBlockSizeBytes": "4096",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${instanceID}",
   "sourceImage": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010",
-  "sourceImageId": "6403343414377215198",
+  "sourceImageId": "6473106611105614466",
   "status": "READY",
   "type": "projects/${projectId}/zones/us-central1-a/diskTypes/pd-standard",
   "users": [
@@ -1324,7 +1323,7 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true",
     "network-type": "subnetwork"
   },
-  "lastStartTimestamp": "2026-07-28T15:58:13.600-07:00",
+  "lastStartTimestamp": "2026-08-18T17:21:16.395-07:00",
   "machineType": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/machineTypes/n1-standard-1",
   "metadata": {
     "fingerprint": "hZF3BRENe3o=",
@@ -1337,12 +1336,12 @@ X-Xss-Protection: 0
         {
           "kind": "compute#accessConfig",
           "name": "external-nat",
-          "natIP": "136.113.72.115",
+          "natIP": "104.197.129.117",
           "networkTier": "PREMIUM",
           "type": "ONE_TO_ONE_NAT"
         }
       ],
-      "fingerprint": "b72hGpQfc7M=",
+      "fingerprint": "TwX9RuUkCTM=",
       "kind": "compute#networkInterface",
       "name": "nic0",
       "network": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/${subnetworkID}",
@@ -1420,7 +1419,7 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "compute#disk",
   "labelFingerprint": "abcdef0123A=",
-  "lastAttachTimestamp": "2026-07-28T15:58:05.938-07:00",
+  "lastAttachTimestamp": "2026-08-18T17:21:09.004-07:00",
   "licenseCodes": [
     "3853522013536123851"
   ],
@@ -1431,7 +1430,7 @@ X-Xss-Protection: 0
   "physicalBlockSizeBytes": "4096",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${instanceID}",
   "sourceImage": "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images/debian-11-bullseye-v20231010",
-  "sourceImageId": "6403343414377215198",
+  "sourceImageId": "6473106611105614466",
   "status": "READY",
   "type": "projects/${projectId}/zones/us-central1-a/diskTypes/pd-standard",
   "users": [
