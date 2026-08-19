@@ -36,6 +36,11 @@ func LegacyNormalize(t *testing.T, h *create.Harness, project testgcp.GCPProject
 			return !strings.Contains(e.Request.URL, "pubsub.googleapis.com")
 		})
 	}
+	if strings.Contains(strings.ToLower(t.Name()), "networksecurityauthzpolicy") {
+		events = events.KeepIf(func(e *test.LogEntry) bool {
+			return !strings.Contains(e.Request.URL, "compute.googleapis.com")
+		})
+	}
 
 	r := NewReplacements()
 

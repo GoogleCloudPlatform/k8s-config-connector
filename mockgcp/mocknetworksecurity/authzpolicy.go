@@ -105,13 +105,13 @@ func (s *NetworkSecurityV1Server) UpdateAuthzPolicy(ctx context.Context, req *pb
 				updated.Description = req.GetAuthzPolicy().GetDescription()
 			case "target":
 				updated.Target = req.GetAuthzPolicy().GetTarget()
-			case "http_rules":
+			case "http_rules", "httpRules":
 				updated.HttpRules = req.GetAuthzPolicy().GetHttpRules()
-			case "network_rules":
+			case "network_rules", "networkRules":
 				updated.NetworkRules = req.GetAuthzPolicy().GetNetworkRules()
 			case "action":
 				updated.Action = req.GetAuthzPolicy().GetAction()
-			case "custom_provider":
+			case "custom_provider", "customProvider":
 				updated.CustomProvider = req.GetAuthzPolicy().GetCustomProvider()
 			case "labels":
 				updated.Labels = req.GetAuthzPolicy().GetLabels()
