@@ -16,8 +16,8 @@ name: review-reminder
 
 on:
   schedule:
-    # Run twice daily at 9:00 AM and 2:00 PM UTC
-    - cron: '0 9,14 * * *'
+    # 9:00 AM & 1:00 PM PST / 10:00 AM & 2:00 PM PDT (Mon-Fri)
+    - cron: '0 17,21 * * 1-5'
   workflow_dispatch:
 
 permissions:
