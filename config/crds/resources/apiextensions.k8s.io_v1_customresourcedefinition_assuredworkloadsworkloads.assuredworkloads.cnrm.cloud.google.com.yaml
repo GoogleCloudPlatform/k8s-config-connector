@@ -113,8 +113,39 @@ spec:
                 description: Optional. Indicates the sovereignty status of the given
                   workload. Currently meant to be used by Europe/Canada customers.
                 type: boolean
+              etag:
+                description: Optional. ETag of the workload, it is calculated on the
+                  basis of the Workload contents. It will be used in Update & Delete
+                  operations.
+                type: string
+              labels:
+                additionalProperties:
+                  type: string
+                description: Optional. Labels applied to the workload.
+                type: object
+              location:
+                description: Required. Immutable. The location that the workload belongs
+                  to.
+                type: string
+              organizationRef:
+                description: Required. The organization that the workload belongs
+                  to.
+                properties:
+                  external:
+                    description: The 'name' field of an organization, when not managed
+                      by Config Connector.
+                    type: string
+                required:
+                - external
+                type: object
               partner:
                 description: Optional. Compliance Regime associated with this workload.
+                type: string
+              provisionedResourcesParent:
+                description: 'Input only. The parent resource for the resources managed
+                  by this Assured Workload. May be either empty or a folder resource
+                  which is a child of the Workload parent. If not specified all resources
+                  are created under the parent organization. Format: folders/{folder_id}'
                 type: string
               resourceID:
                 description: The AssuredWorkloadsWorkload name. If not given, the

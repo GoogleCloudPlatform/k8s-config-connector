@@ -35,9 +35,6 @@ func AssuredWorkloadsWorkloadObservedState_FromProto(mapCtx *direct.MapContext, 
 	// MISSING: Name
 	out.Resources = direct.Slice_FromProto(mapCtx, in.Resources, Workload_ResourceInfo_FromProto)
 	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	// MISSING: Etag
-	// MISSING: Labels
-	// MISSING: ProvisionedResourcesParent
 	// MISSING: KMSSettings
 	out.KajEnrollmentState = direct.Enum_FromProto(mapCtx, in.GetKajEnrollmentState())
 	out.SaaEnrollmentResponse = Workload_SaaEnrollmentResponse_FromProto(mapCtx, in.GetSaaEnrollmentResponse())
@@ -52,9 +49,6 @@ func AssuredWorkloadsWorkloadObservedState_ToProto(mapCtx *direct.MapContext, in
 	// MISSING: Name
 	out.Resources = direct.Slice_ToProto(mapCtx, in.Resources, Workload_ResourceInfo_ToProto)
 	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	// MISSING: Etag
-	// MISSING: Labels
-	// MISSING: ProvisionedResourcesParent
 	// MISSING: KMSSettings
 	out.KajEnrollmentState = direct.Enum_ToProto[pb.Workload_KajEnrollmentState](mapCtx, in.KajEnrollmentState)
 	out.SaaEnrollmentResponse = Workload_SaaEnrollmentResponse_ToProto(mapCtx, in.SaaEnrollmentResponse)
@@ -72,9 +66,9 @@ func AssuredWorkloadsWorkloadSpec_FromProto(mapCtx *direct.MapContext, in *pb.Wo
 	if in.GetBillingAccount() != "" {
 		out.BillingAccountRef = &krmbillingv1alpha1.BillingAccountRef{External: in.GetBillingAccount()}
 	}
-	// MISSING: Etag
-	// MISSING: Labels
-	// MISSING: ProvisionedResourcesParent
+	out.Etag = direct.LazyPtr(in.GetEtag())
+	out.Labels = in.Labels
+	out.ProvisionedResourcesParent = direct.LazyPtr(in.GetProvisionedResourcesParent())
 	// MISSING: KMSSettings
 	out.ResourceSettings = direct.Slice_FromProto(mapCtx, in.ResourceSettings, Workload_ResourceSettings_FromProto)
 	out.EnableSovereignControls = direct.LazyPtr(in.GetEnableSovereignControls())
@@ -92,9 +86,9 @@ func AssuredWorkloadsWorkloadSpec_ToProto(mapCtx *direct.MapContext, in *krm.Ass
 	if in.BillingAccountRef != nil {
 		out.BillingAccount = in.BillingAccountRef.External
 	}
-	// MISSING: Etag
-	// MISSING: Labels
-	// MISSING: ProvisionedResourcesParent
+	out.Etag = direct.ValueOf(in.Etag)
+	out.Labels = in.Labels
+	out.ProvisionedResourcesParent = direct.ValueOf(in.ProvisionedResourcesParent)
 	// MISSING: KMSSettings
 	out.ResourceSettings = direct.Slice_ToProto(mapCtx, in.ResourceSettings, Workload_ResourceSettings_ToProto)
 	out.EnableSovereignControls = direct.ValueOf(in.EnableSovereignControls)

@@ -55,3 +55,13 @@ func Workload_SaaEnrollmentResponse_ToProto(mapCtx *direct.MapContext, in *krm.W
 	out.SetupStatus = direct.LazyPtr(pb.Workload_SaaEnrollmentResponse_SetupState(setupState))
 	return out
 }
+
+func AssuredWorkloadsWorkloadStatus_FromProto(mapCtx *direct.MapContext, in *pb.Workload) *krm.AssuredWorkloadsWorkloadStatus {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AssuredWorkloadsWorkloadStatus{}
+	out.ExternalRef = direct.LazyPtr(in.GetName())
+	out.ObservedState = AssuredWorkloadsWorkloadObservedState_FromProto(mapCtx, in)
+	return out
+}

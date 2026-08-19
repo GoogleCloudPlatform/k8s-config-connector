@@ -15,9 +15,15 @@
 package v1alpha1
 
 import (
+	"context"
+	"fmt"
+
 	billingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/billing/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 var AssuredWorkloadsWorkloadGVK = GroupVersion.WithKind("AssuredWorkloadsWorkload")
@@ -37,6 +43,12 @@ type AssuredWorkloadsWorkloadSpec struct {
 	// +kcc:proto:field=google.cloud.assuredworkloads.v1.Workload.display_name
 	DisplayName *string `json:"displayName,omitempty"`
 
+	// Required. The organization that the workload belongs to.
+	OrganizationRef *refs.OrganizationRef `json:"organizationRef,omitempty"`
+
+	// Required. Immutable. The location that the workload belongs to.
+	Location string `json:"location,omitempty"`
+
 	// Required. Immutable. Compliance Regime associated with this workload.
 	// +kcc:proto:field=google.cloud.assuredworkloads.v1.Workload.compliance_regime
 	ComplianceRegime *string `json:"complianceRegime,omitempty"`
@@ -55,11 +67,11 @@ type AssuredWorkloadsWorkloadSpec struct {
 	// Optional. ETag of the workload, it is calculated on the basis
 	//  of the Workload contents. It will be used in Update & Delete operations.
 	// +kcc:proto:field=google.cloud.assuredworkloads.v1.Workload.etag
-	// Etag *string `json:"etag,omitempty"`
+	Etag *string `json:"etag,omitempty"`
 
 	// Optional. Labels applied to the workload.
 	// +kcc:proto:field=google.cloud.assuredworkloads.v1.Workload.labels
-	// Labels map[string]string `json:"labels,omitempty"`
+	Labels map[string]string `json:"labels,omitempty"`
 
 	// Input only. The parent resource for the resources managed by this Assured Workload. May
 	//  be either empty or a folder resource which is a child of the
@@ -68,7 +80,7 @@ type AssuredWorkloadsWorkloadSpec struct {
 	//  Format:
 	//  folders/{folder_id}
 	// +kcc:proto:field=google.cloud.assuredworkloads.v1.Workload.provisioned_resources_parent
-	// ProvisionedResourcesParent *string `json:"provisionedResourcesParent,omitempty"`
+	ProvisionedResourcesParent *string `json:"provisionedResourcesParent,omitempty"`
 
 	// DEPRECATED
 	// Input only. Settings used to create a CMEK crypto key. When set, a project with a KMS
@@ -163,6 +175,26 @@ type AssuredWorkloadsWorkload struct {
 	// +required
 	Spec   AssuredWorkloadsWorkloadSpec   `json:"spec,omitempty"`
 	Status AssuredWorkloadsWorkloadStatus `json:"status,omitempty"`
+}
+
+func (obj *AssuredWorkloadsWorkload) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	specIdentity, err := getIdentityFromAssuredWorkloadsWorkloadSpec(ctx, reader, obj)
+	if err != nil {
+		return nil, err
+	}
+
+	// Use approved External
+	if obj.Status.ExternalRef != nil {
+		// Validate desired with actual
+		statusIdentity := &AssuredWorkloadsWorkloadIdentity{}
+		if err := statusIdentity.FromExternal(*obj.Status.ExternalRef); err != nil {
+			return nil, err
+		}
+		if statusIdentity.String() != specIdentity.String() {
+			return nil, fmt.Errorf("cannot change AssuredWorkloadsWorkload identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+		}
+	}
+	return specIdentity, nil
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object

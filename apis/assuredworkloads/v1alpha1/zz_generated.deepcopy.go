@@ -20,6 +20,7 @@ package v1alpha1
 
 import (
 	billingv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/billing/v1alpha1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
@@ -138,6 +139,11 @@ func (in *AssuredWorkloadsWorkloadSpec) DeepCopyInto(out *AssuredWorkloadsWorklo
 		*out = new(string)
 		**out = **in
 	}
+	if in.OrganizationRef != nil {
+		in, out := &in.OrganizationRef, &out.OrganizationRef
+		*out = new(v1beta1.OrganizationRef)
+		**out = **in
+	}
 	if in.ComplianceRegime != nil {
 		in, out := &in.ComplianceRegime, &out.ComplianceRegime
 		*out = new(string)
@@ -146,6 +152,23 @@ func (in *AssuredWorkloadsWorkloadSpec) DeepCopyInto(out *AssuredWorkloadsWorklo
 	if in.BillingAccountRef != nil {
 		in, out := &in.BillingAccountRef, &out.BillingAccountRef
 		*out = new(billingv1alpha1.BillingAccountRef)
+		**out = **in
+	}
+	if in.Etag != nil {
+		in, out := &in.Etag, &out.Etag
+		*out = new(string)
+		**out = **in
+	}
+	if in.Labels != nil {
+		in, out := &in.Labels, &out.Labels
+		*out = make(map[string]string, len(*in))
+		for key, val := range *in {
+			(*out)[key] = val
+		}
+	}
+	if in.ProvisionedResourcesParent != nil {
+		in, out := &in.ProvisionedResourcesParent, &out.ProvisionedResourcesParent
+		*out = new(string)
 		**out = **in
 	}
 	if in.ResourceSettings != nil {
