@@ -74,17 +74,30 @@ def get_gcp_resources(googleapis_dir):
         
         all_rpcs = service_rpcs[pkg]
         create_variants = [
-            f"Create{name}", f"Upsert{name}", f"BatchCreate{name}", 
-            f"Insert{name}", f"Upload{name}", f"Update{name}", f"Patch{name}"
+            f"Create{name}", f"Insert{name}", f"BatchCreate{name}", f"Upload{name}", f"Upsert{name}"
         ]
         for v in create_variants:
             if v in all_rpcs:
                 info['ops'].add('CREATE')
                 break
+        read_variants = [
+            f"Get{name}", f"Describe{name}", f"Read{name}", f"BatchGet{name}"
+        ]
+        for v in read_variants:
+            if v in all_rpcs:
+                info['ops'].add('READ')
+                break
+        update_variants = [
+            f"Update{name}", f"Patch{name}", f"BatchUpdate{name}", f"Upsert{name}"
+        ]
+        for v in update_variants:
+            if v in all_rpcs:
+                info['ops'].add('UPDATE')
+                break
         delete_variants = [
             f"Delete{name}", f"Finish{name}", f"Abort{name}", 
             f"Cancel{name}", f"Terminate{name}", f"Destroy{name}", 
-            f"Disable{name}", f"Deactivate{name}"
+            f"Disable{name}", f"Deactivate{name}", f"Remove{name}"
         ]
         for v in delete_variants:
             if v in all_rpcs:
@@ -247,6 +260,48 @@ def is_next_next_layer(patterns):
                 return True
     return False
 
+def get_layer(patterns, ops):
+    has_create = 'CREATE' in ops
+    has_delete = 'DELETE' in ops
+
+    if has_create and has_delete:
+        if is_leaf(patterns):
+            return "Easy (Leaf)"
+        elif is_next_layer(patterns):
+            return "Next Layer (1 Parent)"
+        elif is_next_next_layer(patterns):
+            return "Next Next Layer (2 Parents)"
+        else:
+            return "Deeply Nested"
+
+    if len(ops) > 0:
+        if not has_create:
+            return "Adoptable"
+        else:
+            return "Partially Manageable"
+
+    return "Not Manageable"
+
+def load_service_prefixes():
+    prefixes_file = os.path.join(os.path.dirname(__file__), "service_prefixes.json")
+    if os.path.exists(prefixes_file):
+        with open(prefixes_file, 'r') as f:
+            return json.load(f)
+    return {}
+
+service_prefixes = load_service_prefixes()
+
+def get_predicted_kcc_kind(service, gcp_name):
+    prefix = service_prefixes.get(service)
+    if not prefix:
+        parts = re.split(r'[-_]', service)
+        prefix = "".join(p.capitalize() for p in parts)
+
+    # Standardize names that start with a lowercase prefix to their proper CamelCase prefix
+    if gcp_name.lower().startswith(prefix.lower()):
+        return prefix + gcp_name[len(prefix):]
+    return f"{prefix}{gcp_name}"
+
 def prepare_repo(repo_url, target_dir, sha):
     if not os.path.exists(target_dir):
         run_shell(f"git clone --depth 100 {repo_url} {target_dir}")
@@ -282,7 +337,10 @@ def unify_hierarchies(resources):
         unified[key]['ops'].update(info['ops'])
         unified[key]['patterns'].extend(info['patterns'])
         unified[key]['rtypes'].append(rtype)
-        
+
+    for key in unified:
+        unified[key]['patterns'] = list(dict.fromkeys(unified[key]['patterns']))
+
     return unified
 
 def main():
@@ -290,8 +348,12 @@ def main():
     if update_gap:
         sys.argv.remove("--update-gap")
 
+    resources_list = "--resources-list" in sys.argv
+    if resources_list:
+        sys.argv.remove("--resources-list")
+
     if len(sys.argv) < 3:
-        print("Usage: python calculate_coverage.py <googleapis_sha> <kcc_sha> [k] [--update-gap]")
+        print("Usage: python calculate_coverage.py <googleapis_sha> <kcc_sha> [k] [--update-gap] [--resources-list]")
         sys.exit(1)
         
     googleapis_sha = sys.argv[1]
@@ -315,7 +377,7 @@ def main():
         'service': 'storage',
         'pkg': 'google.storage.v2',
         'name': 'Object',
-        'ops': {'CREATE', 'DELETE'},
+        'ops': {'CREATE', 'READ', 'UPDATE', 'DELETE'},
         'patterns': ['projects/{project}/buckets/{bucket}/objects/{object}']
     }
     
@@ -353,6 +415,7 @@ def main():
     
     # match_resources needs to work with unified keys now
     covered = set()
+    key_to_kcc_kind = {}
     kcc_map = {}
     for res in kcc_resources:
         service = res['group'].replace(".cnrm.cloud.google.com", "")
@@ -390,6 +453,7 @@ def main():
                 for service_kinds in kcc_map.values():
                     if alias_kind in service_kinds:
                         covered.add(key)
+                        key_to_kcc_kind[key] = alias_kind
                         found_alias = True
                         break
                 if found_alias: break
@@ -426,17 +490,20 @@ def main():
                 prefixes = all_service_prefixes + [gcp_service_base.replace("-", "").lower(), "gcp", "google", "cloud", "bigquery", "api"]
                 if kind_norm == name_norm:
                     covered.add(key)
+                    key_to_kcc_kind[key] = kcc_kind
                     break
                 found_prefix_match = False
                 for p in prefixes:
                     if kind_norm.startswith(p) and len(kind_norm) > len(p):
                         if kind_norm[len(p):] == name_norm:
                             covered.add(key)
+                            key_to_kcc_kind[key] = kcc_kind
                             found_prefix_match = True
                             break
                 if found_prefix_match: break
                 if kind_norm.endswith('s') and kind_norm[:-1] == name_norm:
                     covered.add(key)
+                    key_to_kcc_kind[key] = kcc_kind
                     break
             if key in covered: break
     
@@ -449,13 +516,21 @@ def main():
     total_raw_rtypes = sum(len(info['rtypes']) for info in gcp_resources.values())
     unification_count = total_raw_rtypes - len(gcp_resources)
 
-    # Manageable = Has Create OR Delete
-    manageable_gcp = {key for key, info in gcp_resources.items() if 'CREATE' in info['ops'] or 'DELETE' in info['ops']}
+    # Manageable = Has at least one CRUD function
+    manageable_gcp = {key for key, info in gcp_resources.items() if len(info['ops']) > 0}
     missing_manageable = manageable_gcp - covered
 
-    # Fully Manageable = Has Create AND Delete
+    # Fully Manageable = Has both CREATE and DELETE functions
     fully_manageable_gcp = {key for key, info in gcp_resources.items() if 'CREATE' in info['ops'] and 'DELETE' in info['ops']}
     missing_fully_manageable = fully_manageable_gcp - covered
+
+    # Partially Manageable = Has CREATE but lacks DELETE
+    partially_manageable_gcp = {key for key, info in gcp_resources.items() if 'CREATE' in info['ops'] and 'DELETE' not in info['ops']}
+    missing_partially_manageable = partially_manageable_gcp - covered
+
+    # Adoptable = Has no CREATE but has at least one other CRUD function
+    adoptable_gcp = {key for key, info in gcp_resources.items() if 'CREATE' not in info['ops'] and len(info['ops']) > 0}
+    missing_adoptable = adoptable_gcp - covered
 
     # Easy = Fully Manageable AND Leaf pattern
     missing_easy = {key for key in missing_fully_manageable if is_leaf(gcp_resources[key]['patterns'])}
@@ -468,13 +543,17 @@ def main():
     
     # Generate Gap Analysis Table for tracking
     gap_file = os.path.join(os.path.dirname(__file__), "gap_analysis.txt")
-    
+    list_file = os.path.join(os.path.dirname(__file__), "resources_list.json")
+
     total_manageable = len(covered) + len(missing_manageable)
     manageable_coverage = len(covered) / max(1, total_manageable)
     
     if update_gap:
         now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        
+
+        missing_non_manageable = len(missing - missing_manageable)
+        missing_deeply_nested = len(missing_fully_manageable - missing_easy - missing_next_layer - missing_next_next_layer)
+
         analysis_lines = [
             f"Gap Analysis Snapshot - {now}",
             f"GoogleAPIs SHA: {googleapis_sha}",
@@ -483,16 +562,21 @@ def main():
             f"{'Metric':<30} | {'Value':<10}",
             "-" * 55,
             f"{'Total GCP Resources (Raw)':<30} | {all_gcp_raw_count:<10}",
-            f"{'Unified (Hierarchical)':<30} | {unification_count:<10}",
-            f"{'Processed Resources (Unified)':<30} | {len(all_gcp_keys):<10}",
-            f"{'Skipped (Policy)':<30} | {skipped_count:<10}",
+            f"{'  ├── Processed (Unified)':<30} | {len(all_gcp_keys):<10}",
+            f"{'  ├── Skipped Resources':<30} | {skipped_count:<10}",
+            f"{'  └── Unified (Hierarchical)':<30} | {unification_count:<10}",
+            "-" * 55,
             f"{'Implemented in KCC':<30} | {len(covered):<10}",
             f"{'Missing from KCC':<30} | {len(missing):<10}",
-            "-" * 55,
-            f"{'Missing Manageable':<30} | {len(missing_manageable):<10}",
-            f"{'Missing Fully Manageable':<30} | {len(missing_fully_manageable):<10}",
-            f"{'Missing Next Layer':<30} | {len(missing_next_layer):<10}",
-            f"{'Missing Next Next Layer':<30} | {len(missing_next_next_layer):<10}",
+            f"{'  ├── Unmanageable':<30} | {missing_non_manageable:<10}",
+            f"{'  └── Manageable':<30} | {len(missing_manageable):<10}",
+            f"{'        ├── Adoptable':<30} | {len(missing_adoptable):<10}",
+            f"{'        ├── Partially Manageable':<30} | {len(missing_partially_manageable):<10}",
+            f"{'        └── Fully Manageable':<30} | {len(missing_fully_manageable):<10}",
+            f"{'              ├── Easy (Leaf)':<30} | {len(missing_easy):<10}",
+            f"{'              ├── Next Layer':<30} | {len(missing_next_layer):<10}",
+            f"{'              ├── Next Next Layer':<30} | {len(missing_next_next_layer):<10}",
+            f"{'              └── Deeply Nested':<30} | {missing_deeply_nested:<10}",
             "-" * 55,
             f"{'Total API Coverage':<30} | {len(covered)/max(1, len(all_gcp_keys)):.2%}",
             f"{'Manageable Coverage':<30} | {manageable_coverage:.2%}",
@@ -502,25 +586,37 @@ def main():
         with open(gap_file, 'w') as f:
             f.write("\n".join(analysis_lines))
 
-    print("\n--- Coverage Summary ---")
-    print(f"Total GCP Resources (Raw): {all_gcp_raw_count}")
-    print(f"  - Unified:              {unification_count}")
-    print(f"  - Processed (Unified):  {len(all_gcp_keys)}")
-    print(f"  - Skipped (Policy):     {skipped_count}")
-    print(f"  - Implemented in KCC:   {len(covered)}")
-    print(f"  - Missing from KCC:     {len(missing)}")
-    print(f"  - Total API Coverage:   {len(covered)/max(1, len(all_gcp_keys)):.2%}")
-    print(f"  - Manageable Coverage:  {manageable_coverage:.2%}")
-    
-    print("\n--- Gap Breakdown (Missing Resources) ---")
-    print(f"Total Missing:            {len(missing)}")
-    print(f"  - Manageable:           {len(missing_manageable)} (Has Create OR Delete)")
-    print(f"  - Fully Manageable:     {len(missing_fully_manageable)} (Has Create AND Delete)")
-    print(f"  - Next Next Layer:      {len(missing_next_next_layer)} (Fully Manageable + 2 Parents)")
-    print(f"  - Next Layer Targets:   {len(missing_next_layer)} (Fully Manageable + 1 Parent)")
-    print(f"  - Easy Targets:         {len(missing_easy)} (Fully Manageable + Leaf Pattern)")
+    if resources_list:
+        coverage_list = []
+        for key, info in sorted(gcp_resources.items()):
+            available_ops = sorted(list(info['ops']))
+            missing_ops = sorted(list({'CREATE', 'READ', 'UPDATE', 'DELETE'} - info['ops']))
+            layer = get_layer(info['patterns'], info['ops'])
+            status = "implemented" if key in covered else "missing"
+
+            if key in key_to_kcc_kind:
+                kcc_kind = key_to_kcc_kind[key]
+            else:
+                kcc_kind = get_predicted_kcc_kind(info['service'], info['name'])
+
+            coverage_list.append({
+                "resource": key,
+                "service": info['service'],
+                "kind": kcc_kind,
+                "patterns": info['patterns'],
+                "layer": layer,
+                "available_ops": available_ops,
+                "missing_ops": missing_ops,
+                "status": status
+            })
+
+        with open(list_file, 'w') as f:
+            json.dump(coverage_list, f, indent=2)
+
     if update_gap:
         print(f"\n[SAVED] Gap analysis snapshot written to {gap_file}")
+    if resources_list:
+        print(f"[SAVED] All resources coverage list written to {list_file}")
 
     print(f"\n--- Top {k} Missing Manageable Resources ---")
     
@@ -542,14 +638,20 @@ def main():
         elif m in missing_next_next_layer:
             layer = "Next Next Layer (2 Parents)"
         elif m in missing_fully_manageable:
-            layer = "Fully Manageable (Deeply Nested)"
+            layer = "Deeply Nested"
+        elif m in missing_adoptable:
+            layer = "Adoptable"
         else:
-            layer = "Partially Manageable (Missing Create or Delete)"
-            
+            layer = "Partially Manageable"
+
+        available_ops = gcp_resources[m]['ops']
+        missing_ops = {'CREATE', 'READ', 'UPDATE', 'DELETE'} - available_ops
         print(f"  - {m}")
-        print(f"    Patterns: {patterns}")
-        print(f"    ProtoPath: {rtypes}")
-        print(f"    Layer: {layer}")
+        print(f"    Patterns:      {patterns}")
+        print(f"    ProtoPath:     {rtypes}")
+        print(f"    Layer:         {layer}")
+        print(f"    Available Ops: {sorted(list(available_ops)) if available_ops else 'None'}")
+        print(f"    Missing Ops:   {sorted(list(missing_ops)) if missing_ops else 'None'}")
 
 if __name__ == "__main__":
     main()
