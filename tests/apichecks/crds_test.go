@@ -1114,6 +1114,7 @@ func TestCRDObjectTypes(t *testing.T) {
 		"datastreamconnectionprofiles.datastream.cnrm.cloud.google.com":                 true, // spec.staticServiceIPConnectivity is an empty object
 		"discoveryenginecontrols.discoveryengine.cnrm.cloud.google.com":                 true, // status.observedState is an empty object
 		"discoveryengineengines.discoveryengine.cnrm.cloud.google.com":                  true, // status.observedState is an empty object
+		"discoveryengineschemas.discoveryengine.cnrm.cloud.google.com":                  true, // status.observedState is an empty object
 		"discoveryenginesearchengines.discoveryengine.cnrm.cloud.google.com":            true, // status.observedState is an empty object
 		"dlpconnections.dlp.cnrm.cloud.google.com":                                      true, // spec.cloudSQL.cloudSQLIAM is an empty object
 		"firestorebackupschedules.firestore.cnrm.cloud.google.com":                      true, // spec.dailyRecurrence is an empty object
