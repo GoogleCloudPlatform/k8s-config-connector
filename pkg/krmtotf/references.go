@@ -170,7 +170,16 @@ func ResolveReferenceObject(resourceRefValRaw map[string]interface{},
 	// external resource reference, the 'external' field is used to specify a
 	// string identifier for the referenced resource.
 	if resourceRef.External != "" {
-		return resourceRef.External, nil
+		externalVal := resourceRef.External
+		// If reference is to ComputeRouter, and targetField is not "self_link" (so it expects only the name),
+		// and the external reference is a full path/URL, extract only the router name.
+		if typeConfig.GVK.Kind == "ComputeRouter" && (typeConfig.TargetField == "" || typeConfig.TargetField == "name") {
+			if strings.Contains(externalVal, "/") {
+				parts := strings.Split(externalVal, "/")
+				return parts[len(parts)-1], nil
+			}
+		}
+		return externalVal, nil
 	}
 
 	// Deletions do some limited config expansion in order to preset immutable fields before the read

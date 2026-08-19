@@ -440,6 +440,79 @@ func TestResolveResourceReferenceToTFResource(t *testing.T) {
 			},
 		},
 		{
+			name: "external reference to ComputeRouter with full path (targetField empty)",
+			config: map[string]interface{}{
+				"key1": "val1",
+				"routerRef": map[string]interface{}{
+					"external": "projects/my-project/regions/us-central1/routers/my-router",
+				},
+			},
+			refConfig: v1alpha1.ReferenceConfig{
+				TFField: "router",
+				TypeConfig: v1alpha1.TypeConfig{
+					Key: "routerRef",
+					GVK: schema.GroupVersionKind{
+						Group:   "compute.cnrm.cloud.google.com",
+						Version: "v1beta1",
+						Kind:    "ComputeRouter",
+					},
+				},
+			},
+			expectedFinalConfig: map[string]interface{}{
+				"key1":   "val1",
+				"router": "my-router",
+			},
+		},
+		{
+			name: "external reference to ComputeRouter with full URL (targetField empty)",
+			config: map[string]interface{}{
+				"key1": "val1",
+				"routerRef": map[string]interface{}{
+					"external": "https://www.googleapis.com/compute/v1/projects/my-project/regions/us-central1/routers/my-router",
+				},
+			},
+			refConfig: v1alpha1.ReferenceConfig{
+				TFField: "router",
+				TypeConfig: v1alpha1.TypeConfig{
+					Key: "routerRef",
+					GVK: schema.GroupVersionKind{
+						Group:   "compute.cnrm.cloud.google.com",
+						Version: "v1beta1",
+						Kind:    "ComputeRouter",
+					},
+				},
+			},
+			expectedFinalConfig: map[string]interface{}{
+				"key1":   "val1",
+				"router": "my-router",
+			},
+		},
+		{
+			name: "external reference to ComputeRouter (targetField self_link)",
+			config: map[string]interface{}{
+				"key1": "val1",
+				"routerRef": map[string]interface{}{
+					"external": "projects/my-project/regions/us-central1/routers/my-router",
+				},
+			},
+			refConfig: v1alpha1.ReferenceConfig{
+				TFField: "router",
+				TypeConfig: v1alpha1.TypeConfig{
+					Key:         "routerRef",
+					TargetField: "self_link",
+					GVK: schema.GroupVersionKind{
+						Group:   "compute.cnrm.cloud.google.com",
+						Version: "v1beta1",
+						Kind:    "ComputeRouter",
+					},
+				},
+			},
+			expectedFinalConfig: map[string]interface{}{
+				"key1":   "val1",
+				"router": "projects/my-project/regions/us-central1/routers/my-router",
+			},
+		},
+		{
 			name: "list of objects with external references",
 			config: map[string]interface{}{
 				"key1": "val1",
