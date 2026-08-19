@@ -1,84 +1,104 @@
-GRPC /google.cloud.networksecurity.v1.NetworkSecurity/GetAuthzPolicy
+GET https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1/authzPolicies/authzpolicy-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FauthzPolicies%2Fauthzpolicy-max-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "name": "projects/${projectId}/locations/us-central1/authzPolicies/authzpolicy-max-${uniqueId}"
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/authzPolicies/authzpolicy-max-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
 }
-
-error: rpc error: code = NotFound desc = Resource 'projects/${projectId}/locations/us-central1/authzPolicies/authzpolicy-max-${uniqueId}' was not found
-
-{}
 
 ---
 
-GRPC /google.cloud.networksecurity.v1.NetworkSecurity/CreateAuthzPolicy
+POST https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1/authzPolicies?%24alt=json%3Benum-encoding%3Dint&authzPolicyId=authzpolicy-max-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
 {
-  "authzPolicy": {
-    "action": "ALLOW",
-    "description": "Maximal test authorization policy",
-    "httpRules": [
-      {
-        "from": {
-          "sources": [
-            {
-              "ipBlocks": [
-                {
-                  "length": 24,
-                  "prefix": "10.0.0.0"
-                }
-              ],
-              "principals": [
-                {
-                  "principal": {
-                    "exact": "spiffe://myproject.svc.id.goog/ns/default/sa/mysa"
-                  },
-                  "principalSelector": "CLIENT_CERT_URI_SAN"
-                }
-              ]
-            }
-          ]
-        },
-        "to": {
-          "operations": [
-            {
-              "hosts": [
-                {
-                  "exact": "example.com",
-                  "ignoreCase": true
-                }
-              ],
-              "methods": [
-                "GET",
-                "POST"
-              ],
-              "paths": [
-                {
-                  "prefix": "/api"
-                }
-              ]
-            }
-          ]
-        },
-        "when": "request.time \u003c timestamp('2026-12-31T23:59:59Z')"
-      }
-    ],
-    "labels": {
-      "cnrm-test": "true",
-      "gcp-label": "original-value"
-    },
-    "policyProfile": "REQUEST_AUTHZ",
-    "target": {
-      "loadBalancingScheme": "INTERNAL_MANAGED",
-      "resources": [
-        "projects/${projectId}/regions/us-central1/forwardingRules/non-existent-rule"
-      ]
+  "action": 1,
+  "description": "Maximal test authorization policy",
+  "httpRules": [
+    {
+      "from": {
+        "sources": [
+          {
+            "ipBlocks": [
+              {
+                "length": 24,
+                "prefix": "10.0.0.0"
+              }
+            ],
+            "principals": [
+              {
+                "principal": {
+                  "exact": "spiffe://myproject.svc.id.goog/ns/default/sa/mysa"
+                },
+                "principalSelector": 1
+              }
+            ]
+          }
+        ]
+      },
+      "to": {
+        "operations": [
+          {
+            "hosts": [
+              {
+                "exact": "example.com",
+                "ignoreCase": true
+              }
+            ],
+            "methods": [
+              "GET",
+              "POST"
+            ],
+            "paths": [
+              {
+                "prefix": "/api"
+              }
+            ]
+          }
+        ]
+      },
+      "when": "request.time \u003c timestamp('2026-12-31T23:59:59Z')"
     }
+  ],
+  "labels": {
+    "cnrm-test": "true",
+    "gcp-label": "original-value"
   },
-  "authzPolicyId": "authzpolicy-max-${uniqueId}",
-  "parent": "projects/${projectId}/locations/us-central1"
+  "policyProfile": 1,
+  "target": {
+    "loadBalancingScheme": 1,
+    "resources": [
+      "projects/${projectId}/regions/us-central1/forwardingRules/non-existent-rule"
+    ]
+  }
 }
 
-OK
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "metadata": {
@@ -93,13 +113,20 @@ OK
 
 ---
 
-GRPC /google.longrunning.Operations/GetOperation
+GET https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
 
-{
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
-}
-
-OK
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
@@ -181,16 +208,23 @@ OK
 
 ---
 
-GRPC /google.cloud.networksecurity.v1.NetworkSecurity/GetAuthzPolicy
+GET https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1/authzPolicies/authzpolicy-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FauthzPolicies%2Fauthzpolicy-max-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "name": "projects/${projectId}/locations/us-central1/authzPolicies/authzpolicy-max-${uniqueId}"
-}
-
-OK
-
-{
-  "action": "ALLOW",
+  "action": 1,
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "Maximal test authorization policy",
   "httpRules": [
@@ -209,7 +243,7 @@ OK
                 "principal": {
                   "exact": "spiffe://myproject.svc.id.goog/ns/default/sa/mysa"
                 },
-                "principalSelector": "CLIENT_CERT_URI_SAN"
+                "principalSelector": 1
               }
             ]
           }
@@ -244,9 +278,9 @@ OK
     "gcp-label": "original-value"
   },
   "name": "projects/${projectId}/locations/us-central1/authzPolicies/authzpolicy-max-${uniqueId}",
-  "policyProfile": "REQUEST_AUTHZ",
+  "policyProfile": 1,
   "target": {
-    "loadBalancingScheme": "INTERNAL_MANAGED",
+    "loadBalancingScheme": 1,
     "resources": [
       "projects/${projectId}/regions/us-central1/forwardingRules/non-existent-rule"
     ]
@@ -256,18 +290,14 @@ OK
 
 ---
 
-GRPC /google.cloud.networksecurity.v1.NetworkSecurity/GetAuthzPolicy
+PATCH https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1/authzPolicies/authzpolicy-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2ChttpRules%2Clabels
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: authz_policy.name=projects%2F${projectId}%2Flocations%2Fus-central1%2FauthzPolicies%2Fauthzpolicy-max-${uniqueId}
 
 {
-  "name": "projects/${projectId}/locations/us-central1/authzPolicies/authzpolicy-max-${uniqueId}"
-}
-
-OK
-
-{
-  "action": "ALLOW",
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "Maximal test authorization policy",
+  "action": 1,
+  "description": "Updated test authorization policy",
   "httpRules": [
     {
       "from": {
@@ -284,7 +314,7 @@ OK
                 "principal": {
                   "exact": "spiffe://myproject.svc.id.goog/ns/default/sa/mysa"
                 },
-                "principalSelector": "CLIENT_CERT_URI_SAN"
+                "principalSelector": 1
               }
             ]
           }
@@ -305,7 +335,7 @@ OK
             ],
             "paths": [
               {
-                "prefix": "/api"
+                "prefix": "/v2"
               }
             ]
           }
@@ -316,90 +346,27 @@ OK
   ],
   "labels": {
     "cnrm-test": "true",
-    "gcp-label": "original-value"
+    "gcp-label": "updated-value"
   },
   "name": "projects/${projectId}/locations/us-central1/authzPolicies/authzpolicy-max-${uniqueId}",
-  "policyProfile": "REQUEST_AUTHZ",
+  "policyProfile": 1,
   "target": {
-    "loadBalancingScheme": "INTERNAL_MANAGED",
+    "loadBalancingScheme": 1,
     "resources": [
       "projects/${projectId}/regions/us-central1/forwardingRules/non-existent-rule"
     ]
-  },
-  "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
 }
 
----
-
-GRPC /google.cloud.networksecurity.v1.NetworkSecurity/UpdateAuthzPolicy
-
-{
-  "authzPolicy": {
-    "action": "ALLOW",
-    "description": "Updated test authorization policy",
-    "httpRules": [
-      {
-        "from": {
-          "sources": [
-            {
-              "ipBlocks": [
-                {
-                  "length": 24,
-                  "prefix": "10.0.0.0"
-                }
-              ],
-              "principals": [
-                {
-                  "principal": {
-                    "exact": "spiffe://myproject.svc.id.goog/ns/default/sa/mysa"
-                  },
-                  "principalSelector": "CLIENT_CERT_URI_SAN"
-                }
-              ]
-            }
-          ]
-        },
-        "to": {
-          "operations": [
-            {
-              "hosts": [
-                {
-                  "exact": "example.com",
-                  "ignoreCase": true
-                }
-              ],
-              "methods": [
-                "GET",
-                "POST"
-              ],
-              "paths": [
-                {
-                  "prefix": "/v2"
-                }
-              ]
-            }
-          ]
-        },
-        "when": "request.time \u003c timestamp('2026-12-31T23:59:59Z')"
-      }
-    ],
-    "labels": {
-      "cnrm-test": "true",
-      "gcp-label": "updated-value"
-    },
-    "name": "projects/${projectId}/locations/us-central1/authzPolicies/authzpolicy-max-${uniqueId}",
-    "policyProfile": "REQUEST_AUTHZ",
-    "target": {
-      "loadBalancingScheme": "INTERNAL_MANAGED",
-      "resources": [
-        "projects/${projectId}/regions/us-central1/forwardingRules/non-existent-rule"
-      ]
-    }
-  },
-  "updateMask": "description,httpRules,labels"
-}
-
-OK
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "metadata": {
@@ -414,13 +381,20 @@ OK
 
 ---
 
-GRPC /google.longrunning.Operations/GetOperation
+GET https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
 
-{
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
-}
-
-OK
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
@@ -502,16 +476,23 @@ OK
 
 ---
 
-GRPC /google.cloud.networksecurity.v1.NetworkSecurity/GetAuthzPolicy
+GET https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1/authzPolicies/authzpolicy-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FauthzPolicies%2Fauthzpolicy-max-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "name": "projects/${projectId}/locations/us-central1/authzPolicies/authzpolicy-max-${uniqueId}"
-}
-
-OK
-
-{
-  "action": "ALLOW",
+  "action": 1,
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "Updated test authorization policy",
   "httpRules": [
@@ -530,7 +511,7 @@ OK
                 "principal": {
                   "exact": "spiffe://myproject.svc.id.goog/ns/default/sa/mysa"
                 },
-                "principalSelector": "CLIENT_CERT_URI_SAN"
+                "principalSelector": 1
               }
             ]
           }
@@ -565,9 +546,9 @@ OK
     "gcp-label": "updated-value"
   },
   "name": "projects/${projectId}/locations/us-central1/authzPolicies/authzpolicy-max-${uniqueId}",
-  "policyProfile": "REQUEST_AUTHZ",
+  "policyProfile": 1,
   "target": {
-    "loadBalancingScheme": "INTERNAL_MANAGED",
+    "loadBalancingScheme": 1,
     "resources": [
       "projects/${projectId}/regions/us-central1/forwardingRules/non-existent-rule"
     ]
@@ -577,163 +558,20 @@ OK
 
 ---
 
-GRPC /google.cloud.networksecurity.v1.NetworkSecurity/GetAuthzPolicy
+DELETE https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1/authzPolicies/authzpolicy-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FauthzPolicies%2Fauthzpolicy-max-${uniqueId}
 
-{
-  "name": "projects/${projectId}/locations/us-central1/authzPolicies/authzpolicy-max-${uniqueId}"
-}
-
-OK
-
-{
-  "action": "ALLOW",
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "Updated test authorization policy",
-  "httpRules": [
-    {
-      "from": {
-        "sources": [
-          {
-            "ipBlocks": [
-              {
-                "length": 24,
-                "prefix": "10.0.0.0"
-              }
-            ],
-            "principals": [
-              {
-                "principal": {
-                  "exact": "spiffe://myproject.svc.id.goog/ns/default/sa/mysa"
-                },
-                "principalSelector": "CLIENT_CERT_URI_SAN"
-              }
-            ]
-          }
-        ]
-      },
-      "to": {
-        "operations": [
-          {
-            "hosts": [
-              {
-                "exact": "example.com",
-                "ignoreCase": true
-              }
-            ],
-            "methods": [
-              "GET",
-              "POST"
-            ],
-            "paths": [
-              {
-                "prefix": "/v2"
-              }
-            ]
-          }
-        ]
-      },
-      "when": "request.time \u003c timestamp('2026-12-31T23:59:59Z')"
-    }
-  ],
-  "labels": {
-    "cnrm-test": "true",
-    "gcp-label": "updated-value"
-  },
-  "name": "projects/${projectId}/locations/us-central1/authzPolicies/authzpolicy-max-${uniqueId}",
-  "policyProfile": "REQUEST_AUTHZ",
-  "target": {
-    "loadBalancingScheme": "INTERNAL_MANAGED",
-    "resources": [
-      "projects/${projectId}/regions/us-central1/forwardingRules/non-existent-rule"
-    ]
-  },
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GRPC /google.cloud.networksecurity.v1.NetworkSecurity/GetAuthzPolicy
-
-{
-  "name": "projects/${projectId}/locations/us-central1/authzPolicies/authzpolicy-max-${uniqueId}"
-}
-
-OK
-
-{
-  "action": "ALLOW",
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "Updated test authorization policy",
-  "httpRules": [
-    {
-      "from": {
-        "sources": [
-          {
-            "ipBlocks": [
-              {
-                "length": 24,
-                "prefix": "10.0.0.0"
-              }
-            ],
-            "principals": [
-              {
-                "principal": {
-                  "exact": "spiffe://myproject.svc.id.goog/ns/default/sa/mysa"
-                },
-                "principalSelector": "CLIENT_CERT_URI_SAN"
-              }
-            ]
-          }
-        ]
-      },
-      "to": {
-        "operations": [
-          {
-            "hosts": [
-              {
-                "exact": "example.com",
-                "ignoreCase": true
-              }
-            ],
-            "methods": [
-              "GET",
-              "POST"
-            ],
-            "paths": [
-              {
-                "prefix": "/v2"
-              }
-            ]
-          }
-        ]
-      },
-      "when": "request.time \u003c timestamp('2026-12-31T23:59:59Z')"
-    }
-  ],
-  "labels": {
-    "cnrm-test": "true",
-    "gcp-label": "updated-value"
-  },
-  "name": "projects/${projectId}/locations/us-central1/authzPolicies/authzpolicy-max-${uniqueId}",
-  "policyProfile": "REQUEST_AUTHZ",
-  "target": {
-    "loadBalancingScheme": "INTERNAL_MANAGED",
-    "resources": [
-      "projects/${projectId}/regions/us-central1/forwardingRules/non-existent-rule"
-    ]
-  },
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GRPC /google.cloud.networksecurity.v1.NetworkSecurity/DeleteAuthzPolicy
-
-{
-  "name": "projects/${projectId}/locations/us-central1/authzPolicies/authzpolicy-max-${uniqueId}"
-}
-
-OK
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "metadata": {
@@ -748,13 +586,20 @@ OK
 
 ---
 
-GRPC /google.longrunning.Operations/GetOperation
+GET https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
 
-{
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
-}
-
-OK
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
