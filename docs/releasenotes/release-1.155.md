@@ -80,11 +80,14 @@ support (and we list some of the issues that this fixes):
 *   [`CloudFunctions2Function`](https://cloud.google.com/config-connector/docs/reference/resource-docs/cloudfunctions/cloudfunctions2function)
     *   Declared source fields mutable-but-unreadable to avoid spurious diffs.
 
-*   [`Export` tool]
-    *   Allowed exporting resource sets containing nested resource references.
+## Changes in 1.155.1
 
-*   [`setup-envtest` tool]
-    *   Added check to verify that `KUBEBUILDER_ASSETS` directory exists.
+### Reconciliation Improvements:
 
-*   [`GcsObject` resource]
-    *   Removed `GCSObject` identity and reference.
+*   [`ComposerEnvironment`](https://cloud.google.com/config-connector/docs/reference/resource-docs/composer/composerenvironment)
+    *   Improved reconciliation, diffing, and update logic for `ComposerEnvironment` in the direct controller. (#12364)
+
+### Bug Fixes:
+
+*   [`ComposerEnvironment`](https://cloud.google.com/config-connector/docs/reference/resource-docs/composer/composerenvironment)
+    *   Skip the update of a ComposerEnvironment when the state of the underlying GCP Composer environment is not RUNNING. (#12365)
