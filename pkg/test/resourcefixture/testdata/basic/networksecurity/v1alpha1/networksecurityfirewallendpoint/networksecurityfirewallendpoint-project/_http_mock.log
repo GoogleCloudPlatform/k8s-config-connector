@@ -1,33 +1,53 @@
-GRPC /google.cloud.networksecurity.v1.FirewallActivation/GetProjectFirewallEndpoint
+GET https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/firewallEndpoints/fwe-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1-a%2FfirewallEndpoints%2Ffwe-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
-  "name": "projects/${projectId}/locations/us-central1-a/firewallEndpoints/fwe-${uniqueId}"
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1-a/firewallEndpoints/fwe-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
 }
-
-error: rpc error: code = NotFound desc = Resource 'projects/${projectId}/locations/us-central1-a/firewallEndpoints/fwe-${uniqueId}' was not found
-
-{}
 
 ---
 
-GRPC /google.cloud.networksecurity.v1.FirewallActivation/CreateProjectFirewallEndpoint
+POST https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/firewallEndpoints?%24alt=json%3Benum-encoding%3Dint&firewallEndpointId=fwe-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1-a
 
 {
-  "firewallEndpoint": {
-    "description": "A project firewall endpoint for testing direct controller",
-    "endpointSettings": {
-      "jumboFramesEnabled": true
-    },
-    "labels": {
-      "foo": "bar"
-    },
-    "name": "projects/${projectId}/locations/us-central1-a/firewallEndpoints/fwe-${uniqueId}"
+  "description": "A project firewall endpoint for testing direct controller",
+  "endpointSettings": {
+    "jumboFramesEnabled": true
   },
-  "firewallEndpointId": "fwe-${uniqueId}",
-  "parent": "projects/${projectId}/locations/us-central1-a"
+  "labels": {
+    "foo": "bar"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/firewallEndpoints/fwe-${uniqueId}"
 }
 
-OK
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "metadata": {
@@ -42,13 +62,20 @@ OK
 
 ---
 
-GRPC /google.longrunning.Operations/GetOperation
+GET https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1-a%2Foperations%2F${operationID}
 
-{
-  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
-}
-
-OK
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
@@ -79,13 +106,20 @@ OK
 
 ---
 
-GRPC /google.cloud.networksecurity.v1.FirewallActivation/GetProjectFirewallEndpoint
+GET https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/firewallEndpoints/fwe-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1-a%2FfirewallEndpoints%2Ffwe-${uniqueId}
 
-{
-  "name": "projects/${projectId}/locations/us-central1-a/firewallEndpoints/fwe-${uniqueId}"
-}
-
-OK
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "billingProjectId": "${projectId}",
@@ -97,29 +131,37 @@ OK
     "foo": "bar"
   },
   "name": "projects/${projectId}/locations/us-central1-a/firewallEndpoints/fwe-${uniqueId}",
-  "state": "ACTIVE",
+  "state": 2,
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-GRPC /google.cloud.networksecurity.v1.FirewallActivation/UpdateProjectFirewallEndpoint
+PATCH https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/firewallEndpoints/fwe-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=labels
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: firewall_endpoint.name=projects%2F${projectId}%2Flocations%2Fus-central1-a%2FfirewallEndpoints%2Ffwe-${uniqueId}
 
 {
-  "firewallEndpoint": {
-    "billingProjectId": "${projectId}",
-    "endpointSettings": {
-      "jumboFramesEnabled": true
-    },
-    "labels": {
-      "foo": "baz"
-    },
-    "name": "projects/${projectId}/locations/us-central1-a/firewallEndpoints/fwe-${uniqueId}"
+  "billingProjectId": "${projectId}",
+  "endpointSettings": {
+    "jumboFramesEnabled": true
   },
-  "updateMask": "labels"
+  "labels": {
+    "foo": "baz"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/firewallEndpoints/fwe-${uniqueId}"
 }
 
-OK
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "metadata": {
@@ -134,13 +176,20 @@ OK
 
 ---
 
-GRPC /google.longrunning.Operations/GetOperation
+GET https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1-a%2Foperations%2F${operationID}
 
-{
-  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
-}
-
-OK
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,
@@ -171,13 +220,20 @@ OK
 
 ---
 
-GRPC /google.cloud.networksecurity.v1.FirewallActivation/GetProjectFirewallEndpoint
+GET https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/firewallEndpoints/fwe-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1-a%2FfirewallEndpoints%2Ffwe-${uniqueId}
 
-{
-  "name": "projects/${projectId}/locations/us-central1-a/firewallEndpoints/fwe-${uniqueId}"
-}
-
-OK
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "billingProjectId": "${projectId}",
@@ -189,19 +245,26 @@ OK
     "foo": "baz"
   },
   "name": "projects/${projectId}/locations/us-central1-a/firewallEndpoints/fwe-${uniqueId}",
-  "state": "ACTIVE",
+  "state": 2,
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-GRPC /google.cloud.networksecurity.v1.FirewallActivation/DeleteProjectFirewallEndpoint
+DELETE https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/firewallEndpoints/fwe-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1-a%2FfirewallEndpoints%2Ffwe-${uniqueId}
 
-{
-  "name": "projects/${projectId}/locations/us-central1-a/firewallEndpoints/fwe-${uniqueId}"
-}
-
-OK
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "metadata": {
@@ -216,13 +279,20 @@ OK
 
 ---
 
-GRPC /google.longrunning.Operations/GetOperation
+GET https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1-a/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1-a%2Foperations%2F${operationID}
 
-{
-  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
-}
-
-OK
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
 
 {
   "done": true,

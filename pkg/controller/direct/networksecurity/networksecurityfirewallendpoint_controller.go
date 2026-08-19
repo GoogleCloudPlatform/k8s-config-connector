@@ -51,14 +51,14 @@ type firewallEndpointModel struct {
 	config config.ControllerConfig
 }
 
-func (m *firewallEndpointModel) client(ctx context.Context) (*networksecurity.FirewallActivationClient, error) {
+func (m *firewallEndpointModel) client(ctx context.Context, project string) (*networksecurity.FirewallActivationClient, error) {
 	var opts []option.ClientOption
-	opts, err := m.config.GRPCClientOptions()
+	opts, err := m.config.RESTClientOptions(config.WithDefaultQuotaProject(project))
 	if err != nil {
 		return nil, err
 	}
 
-	gcpClient, err := networksecurity.NewFirewallActivationClient(ctx, opts...)
+	gcpClient, err := networksecurity.NewFirewallActivationRESTClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building NetworkSecurity client: %w", err)
 	}
@@ -82,7 +82,7 @@ func (m *firewallEndpointModel) AdapterForObject(ctx context.Context, op *direct
 		return nil, err
 	}
 
-	gcpClient, err := m.client(ctx)
+	gcpClient, err := m.client(ctx, direct.ValueOf(obj.Spec.BillingProjectID))
 	if err != nil {
 		return nil, err
 	}
