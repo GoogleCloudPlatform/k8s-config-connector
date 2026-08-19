@@ -13,6 +13,14 @@
       "reason": "Locations are read-only metadata containers."
     },
     {
+      "pattern": "^.*/.*Zone$",
+      "reason": "Zones are read-only metadata containers."
+    },
+    {
+      "pattern": "^.*/.*Region$",
+      "reason": "Regions are read-only metadata containers."
+    },
+    {
       "pattern": ".*cloudasset.*/Feed$",
       "reason": "Already implemented as hierarchical variants (ProjectFeed, FolderFeed, etc.)."
     },
