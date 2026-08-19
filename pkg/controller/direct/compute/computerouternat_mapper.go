@@ -179,7 +179,7 @@ func ComputeRouterNATSpec_FromProto(mapCtx *direct.MapContext, in *pb.RouterNat)
 		val := int64(*in.MinPortsPerVm)
 		out.MinPortsPerVm = &val
 	}
-	out.NatIpAllocateOption = direct.ValueOf(in.NatIpAllocateOption)
+	out.NatIpAllocateOption = in.NatIpAllocateOption
 	for _, ip := range in.NatIps {
 		out.NatIps = append(out.NatIps, krm.ComputeAddressRef{External: ip})
 	}
@@ -233,9 +233,7 @@ func ComputeRouterNATSpec_ToProto(mapCtx *direct.MapContext, in *krm.ComputeRout
 		val32 := int32(*in.MinPortsPerVm)
 		out.MinPortsPerVm = &val32
 	}
-	if in.NatIpAllocateOption != "" {
-		out.NatIpAllocateOption = direct.LazyPtr(in.NatIpAllocateOption)
-	}
+	out.NatIpAllocateOption = in.NatIpAllocateOption
 	for _, ref := range in.NatIps {
 		if ref.External != "" {
 			out.NatIps = append(out.NatIps, ref.External)
