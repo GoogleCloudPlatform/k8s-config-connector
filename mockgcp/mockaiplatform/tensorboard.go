@@ -124,6 +124,12 @@ func (s *tensorboardService) UpdateTensorboard(ctx context.Context, req *pb.Upda
 		case "description":
 			obj.Description = req.GetTensorboard().GetDescription()
 
+		case "isDefault":
+			obj.IsDefault = req.GetTensorboard().GetIsDefault()
+
+		case "labels":
+			obj.Labels = req.GetTensorboard().GetLabels()
+
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "field %q is not yet handled in mock", path)
 		}
@@ -344,16 +350,33 @@ func (s *MockService) parseTensorboardName(name string) (*TensorboardName, error
 			return nil, err
 		}
 
+		tensorboardID := tokens[5]
+		if !isNumeric(tensorboardID) {
+			return nil, status.Errorf(codes.InvalidArgument, "List of found errors:\t1.Field: name; Message: Invalid Tensorboard resource name.\t")
+		}
+
 		name := &TensorboardName{
 			Project:       project,
 			Location:      tokens[3],
-			TensorboardID: tokens[5],
+			TensorboardID: tensorboardID,
 		}
 
 		return name, nil
 	} else {
 		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 	}
+}
+
+func isNumeric(s string) bool {
+	if len(s) == 0 {
+		return false
+	}
+	for _, c := range s {
+		if c < '0' || c > '9' {
+			return false
+		}
+	}
+	return true
 }
 
 func computeEtag(obj proto.Message) string {

@@ -21,6 +21,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/google/go-cmp/cmp"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 func TestVertexAITensorboardIdentity_FromExternal(t *testing.T) {
@@ -125,6 +126,53 @@ func TestGetIdentityFromVertexAITensorboardSpec(t *testing.T) {
 			if !tt.wantErr {
 				if diff := cmp.Diff(tt.want, got); diff != "" {
 					t.Errorf("getIdentityFromVertexAITensorboardSpec() mismatch (-want +got):\n%s", diff)
+				}
+			}
+		})
+	}
+}
+
+func TestVertexAITensorboard_GetIdentity(t *testing.T) {
+	tests := []struct {
+		name    string
+		obj     *VertexAITensorboard
+		want    *VertexAITensorboardIdentity
+		wantErr bool
+	}{
+		{
+			name: "resourceID is nil, externalRef exists",
+			obj: &VertexAITensorboard{
+				ObjectMeta: metav1.ObjectMeta{
+					Name: "my-tensorboard-krm",
+				},
+				Spec: VertexAITensorboardSpec{
+					Region: "us-central1",
+					ProjectRef: &refsv1beta1.ProjectRef{
+						External: "my-project",
+					},
+				},
+				Status: VertexAITensorboardStatus{
+					ExternalRef: common.LazyPtr("projects/my-project/locations/us-central1/tensorboards/123456789"),
+				},
+			},
+			want: &VertexAITensorboardIdentity{
+				Project:     "my-project",
+				Location:    "us-central1",
+				Tensorboard: "123456789",
+			},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := tt.obj.GetIdentity(context.Background(), nil)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("GetIdentity() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !tt.wantErr {
+				if diff := cmp.Diff(tt.want, got); diff != "" {
+					t.Errorf("GetIdentity() mismatch (-want +got):\n%s", diff)
 				}
 			}
 		})
