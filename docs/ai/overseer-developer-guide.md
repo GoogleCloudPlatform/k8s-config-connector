@@ -13,7 +13,7 @@ Overseer helps contributors triage issues, fix bugs, generate MockGCP test fixtu
 
 ## 1. Bot Accounts and Roles
 
-Overseer uses dedicated GitHub bot accounts with distinct responsibilities (configured in `overseer/examples/kcc.yaml`):
+Overseer uses dedicated GitHub bot accounts with distinct responsibilities (configured in [overseer/examples/kcc.yaml](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/overseer/examples/kcc.yaml)):
 
 | Bot Role | Accounts | Primary Responsibility |
 | :--- | :--- | :--- |
@@ -38,7 +38,7 @@ You can trigger Overseer on an issue using either labels or direct assignment.
 You only need to perform **one** of the following actions:
 
 1. **Apply the Label**: Add the `overseer` label to the GitHub issue.
-   - *Expected latency*: ~30 mins-1 hour (picked up during the next periodic polling cycle).
+   - *Expected latency*: ~30 mins–1 hour (picked up during the periodic polling cycle).
 2. **Assign the Watcher Bot**: Assign the issue to **`argus-watcher-bot`**.
    - *Expected latency*: ~20 mins (faster pickup).
    - *Important*: Do **not** assign issues directly to Coder Bots (`hopper-coder-bot`, etc.) or Agent Bots. Coder bots do not poll issues directly and require `argus-watcher-bot` to schedule and provision the sandbox task. Assigning a coder bot directly will bypass the scheduler and fail to run.
@@ -49,17 +49,17 @@ sequenceDiagram
     actor Dev as Developer
     participant Issue as GitHub Issue
     participant Watcher as argus-watcher-bot
-    participant Sandbox as K8s Sandbox Pod
+    participant Sandbox as Sandbox Pod
     participant Coder as Coder Bot
     participant PR as GitHub PR
 
-    Dev->>Issue: Add 'overseer' label OR assign 'argus-watcher-bot'
+    Dev->>Issue: Add overseer label or assign argus-watcher-bot
     Watcher->>Issue: Detects issue and registers task
-    Watcher->>Issue: Applies 'overseer' label (if not present)
-    Watcher->>Sandbox: Provisions container sandbox (factory-golang)
-    Sandbox->>Coder: Runs agent with issue context and tools
-    Coder->>Sandbox: Edits code, runs 'make fmt' and 'go test'
-    Coder->>PR: Opens Pull Request linked to issue ("Fixes #...")
+    Watcher->>Issue: Applies overseer label if missing
+    Watcher->>Sandbox: Provisions container sandbox
+    Sandbox->>Coder: Runs agent with issue context
+    Coder->>Sandbox: Edits code and runs tests
+    Coder->>PR: Opens Pull Request linked to issue
 ```
 
 ### Expected Turnaround Times
@@ -75,9 +75,11 @@ sequenceDiagram
 
 ### Recommended Issue Structure
 
-To get the best results from Overseer, provide clear context in the issue description:
+Structuring your issue clearly helps Overseer identify the scope, locate relevant code, and generate accurate fixes quickly.
 
-#### For Bug Reports & Fixes
+#### Bug Reports & Targeted Fixes
+*Real-world examples: [Issue #10460](https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/10460), [Issue #11946](https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/11946)*
+
 ```markdown
 ### Summary
 Brief description of the issue or bug.
@@ -104,6 +106,23 @@ spec:
 - Link to relevant GCP API docs or error logs.
 ```
 
+#### Workflow & Resource Migration Requests
+*Real-world examples: [Issue #10694](https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/10694), [Issue #11228](https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/11228)*
+
+```markdown
+### Resource
+- GCP Service: `spanner`
+- Resource Kind: `SpannerBackupSchedule`
+- Target API Version: `v1beta1`
+
+### Objective
+Migrate the resource from legacy TF/DCL to direct reconciler (or scaffold greenfield resource).
+
+### References
+- GCP API Documentation: https://cloud.google.com/spanner/docs/...
+- Upstream Proto / REST API reference.
+```
+
 ---
 
 ## 3. Engaging via Pull Requests: Review and Iteration
@@ -114,32 +133,31 @@ Once a PR is opened by a Coder Bot (or an existing PR is labeled with `overseer`
 - **Automated Test Failure Resolution**: If presubmit CI checks or unit tests fail, Overseer inspects the failure logs, spins up the worker sandbox, and pushes fixes.
 - **Automated Conflict Resolution**: If updates to `master` cause merge conflicts, Overseer rebases the branch and resolves standard conflicts.
 - **Automated Code Review (Selective)**: For select PRs based on configuration, `reviewbot-robot` provides initial feedback aligned with KCC review skills in `.gemini/skills/` (such as `reviewgen-greenfield-controller` and `reviewgen-brownfield-new-types`).
-- **Human Handover (`ready-for-human`) [Planned]**: Once automated validations pass, the bot applies the `ready-for-human` label to route the PR to a maintainer on the `k8s-config-connector-team`.
+- **Human Handover (`ready-for-human`)**: Once automated validations pass, the bot applies the `ready-for-human` label. The automated review assigner chore ([.agents/review-assigner.md](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/.agents/review-assigner.md)) periodically balances and assigns these PRs to maintainers on the `k8s-config-connector-team`.
 
 ```mermaid
 sequenceDiagram
     autonumber
-    actor Reviewer as Reviewer (Human / Bot)
+    actor Reviewer as Reviewer
     participant PR as GitHub PR
     participant Watcher as argus-watcher-bot
-    participant Coder as Authoring Coder Bot
+    participant Coder as Coder Bot
     
     Reviewer->>PR: Leaves review comments or requested changes
     PR->>Watcher: Detects new review comments
-    Watcher->>Coder: Wakes up PR sandbox (kcc-pr-<number>)
+    Watcher->>Coder: Wakes up PR worker sandbox
     Coder->>Coder: Ingests review comments, updates code, runs tests
-    Coder->>PR: Pushes updated commit / force-pushes branch
+    Coder->>PR: Pushes updated commit to PR branch
 ```
 
 ### How to Request Changes on a PR
 
 When reviewing a PR opened by a Coder Bot:
 
-1. **Leave your review comments** directly on the PR (inline comments or general review comments).
-2. **Trigger the bot** using either:
-   - **Label**: Ensure the `overseer` label is present on the PR.
-   - **Assignee**: Assign the PR back to the **authoring Coder Bot** (e.g. if `hopper-coder-bot` opened the PR, assign it to `hopper-coder-bot`).
-   - *Important*: Only assign the authoring Coder Bot. Do not assign a different coder bot or agent bot, as only the authoring account has push permissions to that PR branch.
+1. **Leave your review comments** directly on the PR (inline code review comments or general discussion comments).
+2. **Ensure the `overseer` label is present** on the PR (Coder Bots automatically attach this label when opening the PR).
+
+> **Note on Assignees**: Applying the `overseer` label is the primary and recommended trigger. If you prefer using assignees, assign strictly back to the **authoring Coder Bot** that created the PR (e.g. `hopper-coder-bot`), as other accounts lack git push permissions to the PR branch.
 
 ### Expected PR Turnaround Times
 
@@ -178,7 +196,8 @@ flowchart TD
 2. Apply the `overseer` label and the appropriate workflow label:
    - **`workflow/greenfield`**: For new GCP resource APIs.
    - **`workflow/migrate`**: For migrating existing resources to direct controllers.
-3. Optionally assign to `argus-watcher-bot`.
+
+`argus-watcher-bot` automatically discovers the issue and schedules an agent bot to begin the staged pipeline.
 
 Example workflow tracking issues:
 - [Issue #10694](https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/10694)
@@ -206,7 +225,7 @@ Overseer also runs background maintenance routines defined in `.agents/`:
 
 - [ ] **Issue ID `>= 9000`**: Check that the GitHub issue number is 9000 or higher.
 - [ ] **Trigger Automation**: Add the `overseer` label OR assign `argus-watcher-bot`.
-- [ ] **Address PR Reviews**: Add review comments and ensure the PR is labeled `overseer` or assigned to the authoring Coder Bot.
+- [ ] **Address PR Reviews**: Add review comments and ensure the PR is labeled `overseer` (or assigned to the authoring Coder Bot).
 - [ ] **Workflows**: Use `workflow/greenfield` or `workflow/migrate` for multi-stage resource development.
 - [ ] **Pause Automation**: Add `overseer/stop` if you want Overseer to halt work on an issue or PR.
 
