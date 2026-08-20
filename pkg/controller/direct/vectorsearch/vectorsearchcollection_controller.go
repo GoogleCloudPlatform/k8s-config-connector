@@ -173,6 +173,7 @@ func compareCollection(ctx context.Context, actual, desired *pb.Collection) (*st
 	if err != nil {
 		return nil, nil, fmt.Errorf("masking actual Collection: %w", err)
 	}
+	maskedActual.Name = desired.Name
 
 	clonedDesired := proto.Clone(desired).(*pb.Collection)
 
