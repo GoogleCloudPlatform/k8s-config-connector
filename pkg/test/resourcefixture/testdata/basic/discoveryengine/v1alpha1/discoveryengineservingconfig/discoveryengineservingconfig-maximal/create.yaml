@@ -10,6 +10,6 @@ spec:
     name: engine-${uniqueId}
   displayName: "Maximal Serving Config"
   solutionType: SOLUTION_TYPE_SEARCH
-  rankingExpression: "double * relevance_score"
+  rankingExpression: "1.5 * relevance_score"
   personalizationSpec:
     mode: "AUTO"

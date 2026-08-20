@@ -26,4 +26,6 @@ status:
     type: Ready
   externalRef: projects/${projectId}/locations/global/collections/default_collection/engines/engine-${uniqueId}/servingConfigs/servingconfig-${uniqueId}
   observedGeneration: 1
-  observedState: {}
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    updateTime: "1970-01-01T00:00:00Z"
