@@ -288,11 +288,11 @@ func (a *CollectionAdapter) Delete(ctx context.Context, deleteOp *directbase.Del
 		}
 		return false, fmt.Errorf("deleting Collection %s: %w", a.id, err)
 	}
-	log.V(2).Info("successfully deleted Collection", "name", a.id)
 
 	err = op.Wait(ctx)
 	if err != nil {
 		return false, fmt.Errorf("waiting delete Collection %s: %w", a.id, err)
 	}
+	log.V(2).Info("successfully deleted Collection", "name", a.id)
 	return true, nil
 }
