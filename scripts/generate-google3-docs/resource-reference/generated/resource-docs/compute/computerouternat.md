@@ -299,7 +299,7 @@ Mutually exclusive with enableEndpointIndependentMapping.</p>
     <tr>
         <td>
             <p><code>natIpAllocateOption</code></p>
-            <p><i>Required</i></p>
+            <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>

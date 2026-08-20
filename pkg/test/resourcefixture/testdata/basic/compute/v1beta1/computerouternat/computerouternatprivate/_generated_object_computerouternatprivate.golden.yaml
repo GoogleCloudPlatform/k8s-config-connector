@@ -16,7 +16,6 @@ spec:
   enableEndpointIndependentMapping: false
   endpointTypes:
   - ENDPOINT_TYPE_VM
-  natIpAllocateOption: USE_SHARED_RANGES
   region: us-central1
   routerRef:
     name: ${routerID}
