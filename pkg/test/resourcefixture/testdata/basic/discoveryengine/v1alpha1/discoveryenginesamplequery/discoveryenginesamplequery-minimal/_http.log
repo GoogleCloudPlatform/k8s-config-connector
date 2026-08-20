@@ -17,7 +17,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "SampleQuerySet projects/${projectNumber}/locations/global/sampleQuerySets/set-${uniqueId} not found.",
+    "message": "SampleQuerySet projects/${projectNumber}/locations/global/sampleQuerySets/set-${uniqueId} does not exist.",
     "status": "NOT_FOUND"
   }
 }
@@ -47,7 +47,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "My Query Set Description",
   "displayName": "My Query Set",
   "name": "projects/${projectNumber}/locations/global/sampleQuerySets/set-${uniqueId}"
@@ -74,7 +73,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "SampleQuery projects/${projectNumber}/locations/global/sampleQuerySets/set-${uniqueId}/sampleQueries/query-${uniqueId} not found.",
+    "message": "SampleQuery projects/${projectNumber}/locations/global/sampleQuerySets/set-${uniqueId}/sampleQueries/query-${uniqueId} does not exist.",
     "status": "NOT_FOUND"
   }
 }
@@ -130,7 +129,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "createTime": "2024-04-01T12:34:56.123456Z",
   "name": "projects/${projectNumber}/locations/global/sampleQuerySets/set-${uniqueId}/sampleQueries/query-${uniqueId}",
   "queryEntry": {
     "query": "what is KCC?"
@@ -176,7 +174,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "My Query Set Description",
   "displayName": "My Query Set",
   "name": "projects/${projectNumber}/locations/global/sampleQuerySets/set-${uniqueId}"

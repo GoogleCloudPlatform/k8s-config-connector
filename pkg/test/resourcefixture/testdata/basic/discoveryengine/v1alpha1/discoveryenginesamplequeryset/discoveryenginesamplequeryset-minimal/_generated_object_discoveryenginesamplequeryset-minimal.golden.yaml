@@ -1,29 +1,19 @@
 apiVersion: discoveryengine.cnrm.cloud.google.com/v1alpha1
-kind: DiscoveryEngineSampleQuery
+kind: DiscoveryEngineSampleQuerySet
 metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 2
+  generation: 1
   labels:
     cnrm-test: "true"
-  name: query-${uniqueId}
+  name: sqset-min-${uniqueId}
   namespace: ${uniqueId}
 spec:
+  displayName: Minimal Sample Query Set
   location: global
   projectRef:
     external: projects/${projectId}
-  queryEntry:
-    query: what is Kubernetes Config Connector?
-    targets:
-    - pageNumbers:
-      - 1
-      - 2
-      - 3
-      score: 0.98
-      uri: https://example.com/abc
-  sampleQuerySetRef:
-    name: set-${uniqueId}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -31,6 +21,6 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: projects/${projectId}/locations/global/sampleQuerySets/set-${uniqueId}/sampleQueries/query-${uniqueId}
-  observedGeneration: 2
+  externalRef: projects/${projectId}/locations/global/sampleQuerySets/sqset-min-${uniqueId}
+  observedGeneration: 1
   observedState: {}
