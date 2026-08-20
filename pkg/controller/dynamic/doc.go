@@ -12,5 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// This package provides old integration tests for the legacy controllers.
+// Package dynamic provides old integration tests for the legacy controllers.
+// This is a dummy update to test the repository's presubmit health checking.
 package dynamic
