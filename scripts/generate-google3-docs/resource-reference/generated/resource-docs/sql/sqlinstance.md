@@ -176,6 +176,8 @@ settings:
     - expirationTime: string
       name: string
       value: string
+    customSubjectAlternativeNames:
+    - string
     enablePrivatePathForGoogleCloudServices: boolean
     ipv4Enabled: boolean
     privateNetworkRef:
@@ -187,6 +189,11 @@ settings:
       - string
       pscEnabled: boolean
     requireSsl: boolean
+    serverCaMode: string
+    serverCaPoolRef:
+      external: string
+      name: string
+      namespace: string
     sslMode: string
   locationPreference:
     followGaeApplication: string
@@ -1255,6 +1262,26 @@ settings:
     </tr>
     <tr>
         <td>
+            <p><code>settings.ipConfiguration.customSubjectAlternativeNames</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">list (string)</code></p>
+            <p>List of custom Subject Alternative Names (SANs) for the server certificate.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>settings.ipConfiguration.customSubjectAlternativeNames[]</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <p><code>settings.ipConfiguration.enablePrivatePathForGoogleCloudServices</code></p>
             <p><i>Optional</i></p>
         </td>
@@ -1371,6 +1398,56 @@ settings:
         <td>
             <p><code class="apitype">boolean</code></p>
             <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>settings.ipConfiguration.serverCaMode</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The CA mode for the server certificate. Enum: GOOGLE_MANAGED_INTERNAL_CA, GOOGLE_MANAGED_CAS_CA, CUSTOMER_MANAGED_CAS_CA.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>settings.ipConfiguration.serverCaPoolRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>The CA pool resource for the server certificate when serverCaMode is CUSTOMER_MANAGED_CAS_CA.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>settings.ipConfiguration.serverCaPoolRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>A reference to an externally managed PrivateCACAPool resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/caPools/{{caPoolID}}".</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>settings.ipConfiguration.serverCaPoolRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The name of a PrivateCACAPool resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>settings.ipConfiguration.serverCaPoolRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The namespace of a PrivateCACAPool resource.</p>
         </td>
     </tr>
     <tr>
@@ -2004,6 +2081,25 @@ spec:
       requireSsl: true
     locationPreference:
         zone: us-central1-a
+```
+
+### Postgres SQL Instance Custom Ca
+```yaml
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLInstance
+metadata:
+  name: sqlinstance-sample-custom-ca
+spec:
+  databaseVersion: POSTGRES_15
+  region: us-central1
+  settings:
+    tier: db-custom-2-7680
+    ipConfiguration:
+      serverCaMode: CUSTOMER_MANAGED_CAS_CA
+      serverCaPoolRef:
+        name: sqlinstance-ca-pool-sample
+      customSubjectAlternativeNames:
+        - "db.internal.example.com"
 ```
 
 ### Postgres SQL Instance High Availability
