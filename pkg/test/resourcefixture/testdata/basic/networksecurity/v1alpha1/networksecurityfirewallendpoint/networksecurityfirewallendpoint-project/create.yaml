@@ -5,12 +5,9 @@ metadata:
 spec:
   projectRef:
     external: "projects/${projectId}"
-  location: us-central1
-  resourceID: fwe-${uniqueId}
-  description: "An updated maximal firewall endpoint"
+  location: us-central1-a
+  description: "A project firewall endpoint for testing direct controller"
   labels:
-    foo: baz
-    newkey: value
-  billingProjectID: "${projectId}"
+    foo: bar
   endpointSettings:
     jumboFramesEnabled: true
