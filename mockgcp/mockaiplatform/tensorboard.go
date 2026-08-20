@@ -33,6 +33,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 )
 
+// tensorboardService implements the mock GCP service for Vertex AI Tensorboard.
 type tensorboardService struct {
 	*MockService
 	pb.UnimplementedTensorboardServiceServer
