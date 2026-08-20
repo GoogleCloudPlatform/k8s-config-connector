@@ -19,6 +19,7 @@ import (
 
 	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	kmsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/privateca/privatecarefs"
 
 	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
 
@@ -172,6 +173,18 @@ type InstanceIpConfiguration struct {
 	/* Specify how SSL connection should be enforced in DB connections. This field provides more SSL enforcment options compared to requireSsl. To change this field, also set the correspoding value in requireSsl if it has been set. */
 	// +optional
 	SslMode *string `json:"sslMode,omitempty"`
+
+	/* List of custom Subject Alternative Names (SANs) for the server certificate. */
+	// +optional
+	CustomSubjectAlternativeNames []string `json:"customSubjectAlternativeNames,omitempty"`
+
+	/* The CA mode for the server certificate. Enum: GOOGLE_MANAGED_INTERNAL_CA, GOOGLE_MANAGED_CAS_CA, CUSTOMER_MANAGED_CAS_CA. */
+	// +optional
+	ServerCaMode *string `json:"serverCaMode,omitempty"`
+
+	/* The CA pool resource for the server certificate when serverCaMode is CUSTOMER_MANAGED_CAS_CA. */
+	// +optional
+	ServerCaPoolRef *privatecarefs.PrivateCACAPoolRef `json:"serverCaPoolRef,omitempty"`
 }
 
 type InstanceLocationPreference struct {
