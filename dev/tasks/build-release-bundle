@@ -210,7 +210,6 @@ BLOCKED_KINDS=(
     "NetworkSecurityMirroringEndpointGroupAssociation"
     "NetworkSecurityPartnerSSEGateway"
     "NetworkSecurityPartnerSSERealm"
-    "NetworkSecurityTlsInspectionPolicy"
     "NetworkSecurityUrlList"
     "NetworkServicesAuthzExtension"
     "NotebookRuntime"
