@@ -63,6 +63,9 @@ func getOrganizationNumber() int64 {
 }
 
 func (s *StorageInsightsServer) GetDatasetConfig(ctx context.Context, req *pb.GetDatasetConfigRequest) (*pb.DatasetConfig, error) {
+	if req == nil {
+		return nil, status.Errorf(codes.InvalidArgument, "request must be non-nil")
+	}
 	name, err := s.parseDatasetConfigName(req.Name)
 	if err != nil {
 		return nil, err
@@ -82,6 +85,10 @@ func (s *StorageInsightsServer) GetDatasetConfig(ctx context.Context, req *pb.Ge
 }
 
 func (s *StorageInsightsServer) CreateDatasetConfig(ctx context.Context, req *pb.CreateDatasetConfigRequest) (*longrunning.Operation, error) {
+	if req == nil || req.DatasetConfig == nil {
+		return nil, status.Errorf(codes.InvalidArgument, "request and dataset config must be non-nil")
+	}
+
 	reqName := req.Parent + "/datasetConfigs/" + req.DatasetConfigId
 	name, err := s.parseDatasetConfigName(reqName)
 	if err != nil {
@@ -143,6 +150,10 @@ func (s *StorageInsightsServer) CreateDatasetConfig(ctx context.Context, req *pb
 }
 
 func (s *StorageInsightsServer) UpdateDatasetConfig(ctx context.Context, req *pb.UpdateDatasetConfigRequest) (*longrunning.Operation, error) {
+	if req == nil || req.DatasetConfig == nil {
+		return nil, status.Errorf(codes.InvalidArgument, "request and dataset config must be non-nil")
+	}
+
 	name, err := s.parseDatasetConfigName(req.DatasetConfig.Name)
 	if err != nil {
 		return nil, err
@@ -190,6 +201,9 @@ func (s *StorageInsightsServer) UpdateDatasetConfig(ctx context.Context, req *pb
 }
 
 func (s *StorageInsightsServer) DeleteDatasetConfig(ctx context.Context, req *pb.DeleteDatasetConfigRequest) (*longrunning.Operation, error) {
+	if req == nil {
+		return nil, status.Errorf(codes.InvalidArgument, "request must be non-nil")
+	}
 	name, err := s.parseDatasetConfigName(req.Name)
 	if err != nil {
 		return nil, err
@@ -220,6 +234,9 @@ func (s *StorageInsightsServer) DeleteDatasetConfig(ctx context.Context, req *pb
 }
 
 func (s *StorageInsightsServer) ListDatasetConfigs(ctx context.Context, req *pb.ListDatasetConfigsRequest) (*pb.ListDatasetConfigsResponse, error) {
+	if req == nil {
+		return nil, status.Errorf(codes.InvalidArgument, "request must be non-nil")
+	}
 	tokens := strings.Split(req.Parent, "/")
 	if len(tokens) != 4 || tokens[0] != "projects" || tokens[2] != "locations" {
 		return nil, status.Errorf(codes.InvalidArgument, "parent %q is not valid", req.Parent)

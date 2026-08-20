@@ -731,7 +731,7 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 						matches = (v == strconv.FormatInt(project.ProjectNumber, 10))
 					}
 					if matches {
-						res[i] = float64(project.ProjectNumber)
+						res[i] = "${projectNumber}"
 					} else {
 						res[i] = elem
 					}

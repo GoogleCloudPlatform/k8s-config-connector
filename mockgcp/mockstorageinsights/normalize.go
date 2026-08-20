@@ -46,6 +46,8 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
+	// Previsit is intentionally left blank because no custom previsit normalization
+	// or placeholder extraction is currently required for storageinsights.
 	if !strings.Contains(event.URL(), "storageinsights.googleapis.com") {
 		return
 	}
