@@ -22,6 +22,29 @@ spec:
   routingMode: REGIONAL
   autoCreateSubnetworks: false
 ---
+apiVersion: networkconnectivity.cnrm.cloud.google.com/v1beta1
+kind: NetworkConnectivityHub
+metadata:
+  name: networkconnectivityhub-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  description: "A hub for private NAT test"
+---
+apiVersion: networkconnectivity.cnrm.cloud.google.com/v1beta1
+kind: NetworkConnectivitySpoke
+metadata:
+  name: networkconnectivityspoke-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: global
+  hubRef:
+    name: networkconnectivityhub-${uniqueId}
+  linkedVPCNetwork:
+    uriRef:
+      name: computenetwork-${uniqueId}
+---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeSubnetwork
 metadata:
@@ -48,18 +71,6 @@ spec:
   purpose: PRIVATE_NAT
 ---
 apiVersion: compute.cnrm.cloud.google.com/v1beta1
-kind: ComputeRouter
-metadata:
-  annotations:
-    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
-  name: computerouter-${uniqueId}
-spec:
-  description: example router description
-  region: us-central1
-  networkRef:
-    name: computenetwork-${uniqueId}
----
-apiVersion: compute.cnrm.cloud.google.com/v1beta1
 kind: ComputeSubnetwork
 metadata:
   annotations:
@@ -72,25 +83,14 @@ spec:
     name: computenetwork-${uniqueId}
   purpose: PRIVATE_NAT
 ---
-apiVersion: networkconnectivity.cnrm.cloud.google.com/v1beta1
-kind: NetworkConnectivityHub
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeRouter
 metadata:
-  name: networkconnectivityhub-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: computerouter-${uniqueId}
 spec:
-  projectRef:
-    external: ${projectId}
-  description: "A hub for private NAT test"
----
-apiVersion: networkconnectivity.cnrm.cloud.google.com/v1beta1
-kind: NetworkConnectivitySpoke
-metadata:
-  name: networkconnectivityspoke-${uniqueId}
-spec:
-  projectRef:
-    external: ${projectId}
-  location: global
-  hubRef:
-    name: networkconnectivityhub-${uniqueId}
-  linkedVPCNetwork:
-    uriRef:
-      name: computenetwork-${uniqueId}
+  description: example router description
+  region: us-central1
+  networkRef:
+    name: computenetwork-${uniqueId}

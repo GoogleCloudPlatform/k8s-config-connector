@@ -4,6 +4,18 @@
   name: computenetwork-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
+- caisURL: unknown
+  group: networkconnectivity.cnrm.cloud.google.com
+  kind: NetworkConnectivityHub
+  name: networkconnectivityhub-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: unknown
+  group: networkconnectivity.cnrm.cloud.google.com
+  kind: NetworkConnectivitySpoke
+  name: networkconnectivityspoke-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
 - caisURL: //compute.googleapis.com/projects/${projectId}/regions/us-central1/subnetworks/computesubnetwork-${uniqueId}
   group: compute.cnrm.cloud.google.com
   kind: ComputeSubnetwork
@@ -16,28 +28,16 @@
   name: computesubnetworkprivate-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: //compute.googleapis.com/projects/${projectId}/regions/us-central1/routers/computerouter-${uniqueId}
-  group: compute.cnrm.cloud.google.com
-  kind: ComputeRouter
-  name: computerouter-${uniqueId}
-  namespace: ${uniqueId}
-  version: v1beta1
 - caisURL: //compute.googleapis.com/projects/${projectId}/regions/us-central1/subnetworks/computesubnetworkprivate2-${uniqueId}
   group: compute.cnrm.cloud.google.com
   kind: ComputeSubnetwork
   name: computesubnetworkprivate2-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: unknown
-  group: networkconnectivity.cnrm.cloud.google.com
-  kind: NetworkConnectivityHub
-  name: networkconnectivityhub-${uniqueId}
-  namespace: ${uniqueId}
-  version: v1beta1
-- caisURL: unknown
-  group: networkconnectivity.cnrm.cloud.google.com
-  kind: NetworkConnectivitySpoke
-  name: networkconnectivityspoke-${uniqueId}
+- caisURL: //compute.googleapis.com/projects/${projectId}/regions/us-central1/routers/computerouter-${uniqueId}
+  group: compute.cnrm.cloud.google.com
+  kind: ComputeRouter
+  name: computerouter-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
 - caisURL: //compute.googleapis.com/projects/${projectId}/regions/us-central1/routers/computerouter-${uniqueId}/computerouternat-${uniqueId}
