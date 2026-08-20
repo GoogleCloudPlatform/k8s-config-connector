@@ -89,10 +89,6 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.Tensorboard",
     "description": "Dashboard version 1",
     "displayName": "config-connector v1",
-    "labels": {
-      "cnrm-test": "true",
-      "managed-by-cnrm": "true"
-    },
     "name": "projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}"
   }
 }

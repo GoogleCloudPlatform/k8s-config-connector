@@ -89,10 +89,6 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.Tensorboard",
     "description": "Parent dashboard for tests",
     "displayName": "parent-tensorboard-${uniqueId}",
-    "labels": {
-      "cnrm-test": "true",
-      "managed-by-cnrm": "true"
-    },
     "name": "projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}"
   }
 }

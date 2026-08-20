@@ -262,10 +262,6 @@ X-Xss-Protection: 0
   "response": {
     "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.Tensorboard",
     "displayName": "Test Tensorboard",
-    "labels": {
-      "cnrm-test": "true",
-      "managed-by-cnrm": "true"
-    },
     "name": "projects/${projectNumber}/locations/us-central1/tensorboards/${tensorboardID}"
   }
 }

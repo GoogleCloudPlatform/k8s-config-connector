@@ -96,6 +96,7 @@ func (s *tensorboardService) CreateTensorboard(ctx context.Context, req *pb.Crea
 		result.CreateTime = nil
 		result.UpdateTime = nil
 		result.Etag = ""
+		result.Labels = nil
 
 		return result, nil
 	})
