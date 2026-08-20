@@ -24,6 +24,7 @@ After running the generator (via `generate.sh`), you must verify and enforce the
     * Service accounts should be references to `IAMServiceAccount`.
     * Cloud Storage buckets should be references to `StorageBucket`.
     * Service Directory configurations should be references to `ServiceDirectoryService`.
+- **Immutable fields**: Fields which are immutable should enforce immutability using a CEL validation rule on the CRD.
 - **Implement a New Reference Types**:
 
   * When a field is a reference to another resource, and that reference resource does not have full KCC support yet, we should support it as external-only reference.
