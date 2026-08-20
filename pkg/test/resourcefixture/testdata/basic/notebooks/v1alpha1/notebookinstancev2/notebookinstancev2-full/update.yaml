@@ -15,11 +15,13 @@
 apiVersion: notebooks.cnrm.cloud.google.com/v1alpha1
 kind: NotebookInstanceV2
 metadata:
-  name: ni2-full-gce-${uniqueId}
+  name: ni2-full-${uniqueId}
 spec:
   projectRef:
     external: ${projectId}
   location: us-central1-a
+  # instance in state must be stopped before updating one of the following:
+  # [accelerator_configs machine_type shielded_instance_config reservation_affinity container_image disable_public_ip disable_proxy_access]
   gceSetup:
     machineType: n1-standard-4
     vmImage:
@@ -42,8 +44,8 @@ spec:
           name: kms-key-${uniqueId}
     enableIPForwarding: true
     gpuDriverConfig:
-      enableGpuDriver: true
-      customGpuDriverPath: "gs://some-bucket/driver"
+      enableGpuDriver: false
+      customGpuDriverPath: "gs://updated-bucket/driver"
     networkInterfaces:
       - networkRef:
           name: ni2-net-${uniqueId}
@@ -65,7 +67,7 @@ spec:
       enable-os-config: "true"
       notebook-disable-downloads: "true"
       notebook-disable-root: "true"
-      new-metadata: "value"
+      notebook-updated-metadata: "true"
   instanceOwners: 
     - ${projectNumber}-compute@developer.gserviceaccount.com
   disableProxyAccess: false

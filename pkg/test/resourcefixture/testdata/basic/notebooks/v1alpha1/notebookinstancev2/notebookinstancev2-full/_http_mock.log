@@ -744,13 +744,226 @@ X-Xss-Protection: 0
 
 ---
 
+POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/ni2-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com:getIamPolicy?alt=json&options.requestedPolicyVersion=3&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A="
+}
+
+---
+
+POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/ni2-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com:getIamPolicy?alt=json&options.requestedPolicyVersion=3&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A="
+}
+
+---
+
+POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/ni2-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com:getIamPolicy?alt=json&options.requestedPolicyVersion=3&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A="
+}
+
+---
+
+POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/ni2-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com:setIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{
+  "policy": {
+    "bindings": [
+      {
+        "members": [
+          "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+        ],
+        "role": "roles/iam.serviceAccountUser"
+      }
+    ],
+    "etag": "abcdef0123A=",
+    "version": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/iam.serviceAccountUser"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/ni2-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com:getIamPolicy?alt=json&options.requestedPolicyVersion=3&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/iam.serviceAccountUser"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/ni2-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com:getIamPolicy?alt=json&options.requestedPolicyVersion=3&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/iam.serviceAccountUser"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/ni2-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com:getIamPolicy?alt=json&options.requestedPolicyVersion=3&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/iam.serviceAccountUser"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/ni2-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com:getIamPolicy?alt=json&options.requestedPolicyVersion=3&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/iam.serviceAccountUser"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
 GRPC /google.cloud.notebooks.v2.NotebookService/GetInstance
 
 {
-  "name": "projects/${projectId}/locations/us-central1-a/instances/ni2-full-gce-${uniqueId}"
+  "name": "projects/${projectId}/locations/us-central1-a/instances/ni2-full-${uniqueId}"
 }
 
-error: rpc error: code = NotFound desc = instance "projects/${projectId}/locations/us-central1-a/instances/ni2-full-gce-${uniqueId}" not found
+error: rpc error: code = NotFound desc = instance "projects/${projectId}/locations/us-central1-a/instances/ni2-full-${uniqueId}" not found
 
 {}
 
@@ -770,7 +983,8 @@ GRPC /google.cloud.notebooks.v2.NotebookService/CreateInstance
       "bootDisk": {
         "diskEncryption": "CMEK",
         "diskSizeGb": "100",
-        "diskType": "PD_SSD"
+        "diskType": "PD_SSD",
+        "kmsKey": "projects/${projectId}/locations/us-central1/keyRings/ni2-ring-${uniqueId}/cryptoKeys/kms-key-${uniqueId}"
       },
       "dataDisks": [
         {
@@ -787,7 +1001,9 @@ GRPC /google.cloud.notebooks.v2.NotebookService/CreateInstance
       },
       "machineType": "n1-standard-4",
       "metadata": {
-        "enable-os-config": "true"
+        "enable-os-config": "true",
+        "notebook-disable-downloads": "true",
+        "notebook-disable-root": "true"
       },
       "networkInterfaces": [
         {
@@ -810,18 +1026,18 @@ GRPC /google.cloud.notebooks.v2.NotebookService/CreateInstance
         "full-test"
       ],
       "vmImage": {
-        "family": "tf-latest-cpu",
-        "project": "deeplearning-platform-release"
+        "family": "debian-11",
+        "project": "debian-cloud"
       }
     },
     "instanceOwners": [
       "${projectNumber}-compute@developer.gserviceaccount.com"
     ],
     "labels": {
-      "test": "full-gce"
+      "cnrm-test": "true"
     }
   },
-  "instanceId": "ni2-full-gce-${uniqueId}",
+  "instanceId": "ni2-full-${uniqueId}",
   "parent": "projects/${projectId}/locations/us-central1-a"
 }
 
@@ -832,7 +1048,7 @@ OK
     "@type": "type.googleapis.com/google.cloud.notebooks.v2.OperationMetadata",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endpoint": "CreateInstance",
-    "target": "projects/${projectId}/locations/us-central1-a/instances/ni2-full-gce-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-central1-a/instances/ni2-full-${uniqueId}",
     "verb": "create"
   },
   "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
@@ -855,7 +1071,7 @@ OK
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
     "endpoint": "CreateInstance",
-    "target": "projects/${projectId}/locations/us-central1-a/instances/ni2-full-gce-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-central1-a/instances/ni2-full-${uniqueId}",
     "verb": "create"
   },
   "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}",
@@ -873,7 +1089,8 @@ OK
       "bootDisk": {
         "diskEncryption": "CMEK",
         "diskSizeGb": "100",
-        "diskType": "PD_SSD"
+        "diskType": "PD_SSD",
+        "kmsKey": "projects/${projectId}/locations/us-central1/keyRings/ni2-ring-${uniqueId}/cryptoKeys/kms-key-${uniqueId}"
       },
       "dataDisks": [
         {
@@ -890,18 +1107,24 @@ OK
       },
       "machineType": "n1-standard-4",
       "metadata": {
-        "enable-os-config": "true"
+        "enable-os-config": "true",
+        "notebook-disable-downloads": "true",
+        "notebook-disable-root": "true"
       },
       "networkInterfaces": [
         {
-          "network": "projects/${projectId}/global/networks/${networkID}",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "nicType": "GVNIC",
-          "subnet": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+          "subnet": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
         }
       ],
       "serviceAccounts": [
         {
-          "email": "ni2-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+          "email": "ni2-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+          "scopes": [
+            "https://www.googleapis.com/auth/cloud-platform",
+            "https://www.googleapis.com/auth/userinfo.email"
+          ]
         }
       ],
       "shieldedInstanceConfig": {
@@ -913,8 +1136,8 @@ OK
         "full-test"
       ],
       "vmImage": {
-        "family": "tf-latest-cpu",
-        "project": "deeplearning-platform-release"
+        "family": "debian-11",
+        "project": "debian-cloud"
       }
     },
     "healthState": "HEALTHY",
@@ -922,10 +1145,10 @@ OK
       "${projectNumber}-compute@developer.gserviceaccount.com"
     ],
     "labels": {
-      "test": "full-gce"
+      "cnrm-test": "true"
     },
-    "name": "projects/${projectId}/locations/us-central1-a/instances/ni2-full-gce-${uniqueId}",
-    "proxyUri": "https://ni2-full-gce-${uniqueId}-dot-us-central1.notebooks.googleusercontent.com",
+    "name": "projects/${projectId}/locations/us-central1-a/instances/ni2-full-${uniqueId}",
+    "proxyUri": "https://ni2-full-${uniqueId}-dot-us-central1.notebooks.googleusercontent.com",
     "state": "ACTIVE",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -936,7 +1159,7 @@ OK
 GRPC /google.cloud.notebooks.v2.NotebookService/GetInstance
 
 {
-  "name": "projects/${projectId}/locations/us-central1-a/instances/ni2-full-gce-${uniqueId}"
+  "name": "projects/${projectId}/locations/us-central1-a/instances/ni2-full-${uniqueId}"
 }
 
 OK
@@ -954,7 +1177,8 @@ OK
     "bootDisk": {
       "diskEncryption": "CMEK",
       "diskSizeGb": "100",
-      "diskType": "PD_SSD"
+      "diskType": "PD_SSD",
+      "kmsKey": "projects/${projectId}/locations/us-central1/keyRings/ni2-ring-${uniqueId}/cryptoKeys/kms-key-${uniqueId}"
     },
     "dataDisks": [
       {
@@ -971,18 +1195,24 @@ OK
     },
     "machineType": "n1-standard-4",
     "metadata": {
-      "enable-os-config": "true"
+      "enable-os-config": "true",
+      "notebook-disable-downloads": "true",
+      "notebook-disable-root": "true"
     },
     "networkInterfaces": [
       {
-        "network": "projects/${projectId}/global/networks/${networkID}",
+        "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
         "nicType": "GVNIC",
-        "subnet": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+        "subnet": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
       }
     ],
     "serviceAccounts": [
       {
-        "email": "ni2-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+        "email": "ni2-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+        "scopes": [
+          "https://www.googleapis.com/auth/cloud-platform",
+          "https://www.googleapis.com/auth/userinfo.email"
+        ]
       }
     ],
     "shieldedInstanceConfig": {
@@ -994,20 +1224,19 @@ OK
       "full-test"
     ],
     "vmImage": {
-      "family": "tf-latest-cpu",
-      "project": "deeplearning-platform-release"
+      "family": "debian-11",
+      "project": "debian-cloud"
     }
   },
-  "healthState": "HEALTHY",
   "instanceOwners": [
     "${projectNumber}-compute@developer.gserviceaccount.com"
   ],
   "labels": {
-    "test": "full-gce"
+    "cnrm-test": "true"
   },
-  "name": "projects/${projectId}/locations/us-central1-a/instances/ni2-full-gce-${uniqueId}",
-  "proxyUri": "https://ni2-full-gce-${uniqueId}-dot-us-central1.notebooks.googleusercontent.com",
-  "state": "ACTIVE",
+  "name": "projects/${projectId}/locations/us-central1-a/instances/ni2-full-${uniqueId}",
+  "proxyUri": "https://ni2-full-${uniqueId}-dot-us-central1.notebooks.googleusercontent.com",
+  "state": "PROVISIONING",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
@@ -1027,7 +1256,8 @@ GRPC /google.cloud.notebooks.v2.NotebookService/UpdateInstance
       "bootDisk": {
         "diskEncryption": "CMEK",
         "diskSizeGb": "100",
-        "diskType": "PD_SSD"
+        "diskType": "PD_SSD",
+        "kmsKey": "projects/${projectId}/locations/us-central1/keyRings/ni2-ring-${uniqueId}/cryptoKeys/kms-key-${uniqueId}"
       },
       "dataDisks": [
         {
@@ -1040,19 +1270,20 @@ GRPC /google.cloud.notebooks.v2.NotebookService/UpdateInstance
       "disablePublicIp": true,
       "enableIpForwarding": true,
       "gpuDriverConfig": {
-        "customGpuDriverPath": "gs://some-bucket/driver",
-        "enableGpuDriver": true
+        "customGpuDriverPath": "gs://updated-bucket/driver"
       },
       "machineType": "n1-standard-4",
       "metadata": {
         "enable-os-config": "true",
-        "new-metadata": "value"
+        "notebook-disable-downloads": "true",
+        "notebook-disable-root": "true",
+        "notebook-updated-metadata": "true"
       },
       "networkInterfaces": [
         {
-          "network": "projects/${projectId}/global/networks/${networkID}",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "nicType": "GVNIC",
-          "subnet": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+          "subnet": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
         }
       ],
       "serviceAccounts": [
@@ -1070,20 +1301,16 @@ GRPC /google.cloud.notebooks.v2.NotebookService/UpdateInstance
         "updated"
       ],
       "vmImage": {
-        "family": "tf-latest-cpu",
-        "project": "deeplearning-platform-release"
+        "family": "debian-11",
+        "project": "debian-cloud"
       }
     },
-    "instanceOwners": [
-      "${projectNumber}-compute@developer.gserviceaccount.com"
-    ],
     "labels": {
-      "test": "full-gce",
-      "updated": "true"
+      "cnrm-test": "true"
     },
-    "name": "projects/${projectId}/locations/us-central1-a/instances/ni2-full-gce-${uniqueId}"
+    "name": "projects/${projectId}/locations/us-central1-a/instances/ni2-full-${uniqueId}"
   },
-  "updateMask": "labels"
+  "updateMask": "gceSetup.gpuDriverConfig.customGpuDriverPath,gceSetup.gpuDriverConfig.enableGpuDriver,gceSetup.metadata,gceSetup.tags"
 }
 
 OK
@@ -1093,7 +1320,7 @@ OK
     "@type": "type.googleapis.com/google.cloud.notebooks.v2.OperationMetadata",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endpoint": "UpdateInstance",
-    "target": "projects/${projectId}/locations/us-central1-a/instances/ni2-full-gce-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-central1-a/instances/ni2-full-${uniqueId}",
     "verb": "update"
   },
   "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
@@ -1116,7 +1343,7 @@ OK
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
     "endpoint": "UpdateInstance",
-    "target": "projects/${projectId}/locations/us-central1-a/instances/ni2-full-gce-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-central1-a/instances/ni2-full-${uniqueId}",
     "verb": "update"
   },
   "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}",
@@ -1134,7 +1361,8 @@ OK
       "bootDisk": {
         "diskEncryption": "CMEK",
         "diskSizeGb": "100",
-        "diskType": "PD_SSD"
+        "diskType": "PD_SSD",
+        "kmsKey": "projects/${projectId}/locations/us-central1/keyRings/ni2-ring-${uniqueId}/cryptoKeys/kms-key-${uniqueId}"
       },
       "dataDisks": [
         {
@@ -1147,24 +1375,29 @@ OK
       "disablePublicIp": true,
       "enableIpForwarding": true,
       "gpuDriverConfig": {
-        "customGpuDriverPath": "gs://some-bucket/driver",
-        "enableGpuDriver": true
+        "customGpuDriverPath": "gs://updated-bucket/driver"
       },
       "machineType": "n1-standard-4",
       "metadata": {
         "enable-os-config": "true",
-        "new-metadata": "value"
+        "notebook-disable-downloads": "true",
+        "notebook-disable-root": "true",
+        "notebook-updated-metadata": "true"
       },
       "networkInterfaces": [
         {
-          "network": "projects/${projectId}/global/networks/${networkID}",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
           "nicType": "GVNIC",
-          "subnet": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+          "subnet": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
         }
       ],
       "serviceAccounts": [
         {
-          "email": "ni2-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+          "email": "ni2-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+          "scopes": [
+            "https://www.googleapis.com/auth/cloud-platform",
+            "https://www.googleapis.com/auth/userinfo.email"
+          ]
         }
       ],
       "shieldedInstanceConfig": {
@@ -1177,19 +1410,18 @@ OK
         "updated"
       ],
       "vmImage": {
-        "family": "tf-latest-cpu",
-        "project": "deeplearning-platform-release"
+        "family": "debian-11",
+        "project": "debian-cloud"
       }
     },
     "instanceOwners": [
       "${projectNumber}-compute@developer.gserviceaccount.com"
     ],
     "labels": {
-      "test": "full-gce",
-      "updated": "true"
+      "cnrm-test": "true"
     },
-    "name": "projects/${projectId}/locations/us-central1-a/instances/ni2-full-gce-${uniqueId}",
-    "proxyUri": "https://ni2-full-gce-${uniqueId}-dot-us-central1.notebooks.googleusercontent.com",
+    "name": "projects/${projectId}/locations/us-central1-a/instances/ni2-full-${uniqueId}",
+    "proxyUri": "https://ni2-full-${uniqueId}-dot-us-central1.notebooks.googleusercontent.com",
     "state": "PROVISIONING",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -1200,7 +1432,7 @@ OK
 GRPC /google.cloud.notebooks.v2.NotebookService/GetInstance
 
 {
-  "name": "projects/${projectId}/locations/us-central1-a/instances/ni2-full-gce-${uniqueId}"
+  "name": "projects/${projectId}/locations/us-central1-a/instances/ni2-full-${uniqueId}"
 }
 
 OK
@@ -1218,7 +1450,8 @@ OK
     "bootDisk": {
       "diskEncryption": "CMEK",
       "diskSizeGb": "100",
-      "diskType": "PD_SSD"
+      "diskType": "PD_SSD",
+      "kmsKey": "projects/${projectId}/locations/us-central1/keyRings/ni2-ring-${uniqueId}/cryptoKeys/kms-key-${uniqueId}"
     },
     "dataDisks": [
       {
@@ -1231,24 +1464,29 @@ OK
     "disablePublicIp": true,
     "enableIpForwarding": true,
     "gpuDriverConfig": {
-      "customGpuDriverPath": "gs://some-bucket/driver",
-      "enableGpuDriver": true
+      "customGpuDriverPath": "gs://updated-bucket/driver"
     },
     "machineType": "n1-standard-4",
     "metadata": {
       "enable-os-config": "true",
-      "new-metadata": "value"
+      "notebook-disable-downloads": "true",
+      "notebook-disable-root": "true",
+      "notebook-updated-metadata": "true"
     },
     "networkInterfaces": [
       {
-        "network": "projects/${projectId}/global/networks/${networkID}",
+        "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
         "nicType": "GVNIC",
-        "subnet": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+        "subnet": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
       }
     ],
     "serviceAccounts": [
       {
-        "email": "ni2-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
+        "email": "ni2-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+        "scopes": [
+          "https://www.googleapis.com/auth/cloud-platform",
+          "https://www.googleapis.com/auth/userinfo.email"
+        ]
       }
     ],
     "shieldedInstanceConfig": {
@@ -1261,105 +1499,19 @@ OK
       "updated"
     ],
     "vmImage": {
-      "family": "tf-latest-cpu",
-      "project": "deeplearning-platform-release"
+      "family": "debian-11",
+      "project": "debian-cloud"
     }
   },
-  "healthState": "HEALTHY",
   "instanceOwners": [
     "${projectNumber}-compute@developer.gserviceaccount.com"
   ],
   "labels": {
-    "test": "full-gce",
-    "updated": "true"
+    "cnrm-test": "true"
   },
-  "name": "projects/${projectId}/locations/us-central1-a/instances/ni2-full-gce-${uniqueId}",
-  "proxyUri": "https://ni2-full-gce-${uniqueId}-dot-us-central1.notebooks.googleusercontent.com",
-  "state": "ACTIVE",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
-GRPC /google.cloud.notebooks.v2.NotebookService/GetInstance
-
-{
-  "name": "projects/${projectId}/locations/us-central1-a/instances/ni2-full-gce-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "creator": "${creatorID}",
-  "gceSetup": {
-    "acceleratorConfigs": [
-      {
-        "coreCount": "1",
-        "type": "NVIDIA_TESLA_T4"
-      }
-    ],
-    "bootDisk": {
-      "diskEncryption": "CMEK",
-      "diskSizeGb": "100",
-      "diskType": "PD_SSD"
-    },
-    "dataDisks": [
-      {
-        "diskEncryption": "CMEK",
-        "diskSizeGb": "100",
-        "diskType": "PD_SSD",
-        "kmsKey": "projects/${projectId}/locations/us-central1/keyRings/ni2-ring-${uniqueId}/cryptoKeys/kms-key-${uniqueId}"
-      }
-    ],
-    "disablePublicIp": true,
-    "enableIpForwarding": true,
-    "gpuDriverConfig": {
-      "customGpuDriverPath": "gs://some-bucket/driver",
-      "enableGpuDriver": true
-    },
-    "machineType": "n1-standard-4",
-    "metadata": {
-      "enable-os-config": "true",
-      "new-metadata": "value"
-    },
-    "networkInterfaces": [
-      {
-        "network": "projects/${projectId}/global/networks/${networkID}",
-        "nicType": "GVNIC",
-        "subnet": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
-      }
-    ],
-    "serviceAccounts": [
-      {
-        "email": "ni2-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com"
-      }
-    ],
-    "shieldedInstanceConfig": {
-      "enableIntegrityMonitoring": true,
-      "enableSecureBoot": true,
-      "enableVtpm": true
-    },
-    "tags": [
-      "full-test",
-      "updated"
-    ],
-    "vmImage": {
-      "family": "tf-latest-cpu",
-      "project": "deeplearning-platform-release"
-    }
-  },
-  "healthState": "HEALTHY",
-  "instanceOwners": [
-    "${projectNumber}-compute@developer.gserviceaccount.com"
-  ],
-  "labels": {
-    "test": "full-gce",
-    "updated": "true"
-  },
-  "name": "projects/${projectId}/locations/us-central1-a/instances/ni2-full-gce-${uniqueId}",
-  "proxyUri": "https://ni2-full-gce-${uniqueId}-dot-us-central1.notebooks.googleusercontent.com",
-  "state": "ACTIVE",
+  "name": "projects/${projectId}/locations/us-central1-a/instances/ni2-full-${uniqueId}",
+  "proxyUri": "https://ni2-full-${uniqueId}-dot-us-central1.notebooks.googleusercontent.com",
+  "state": "PROVISIONING",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
@@ -1368,7 +1520,7 @@ OK
 GRPC /google.cloud.notebooks.v2.NotebookService/DeleteInstance
 
 {
-  "name": "projects/${projectId}/locations/us-central1-a/instances/ni2-full-gce-${uniqueId}"
+  "name": "projects/${projectId}/locations/us-central1-a/instances/ni2-full-${uniqueId}"
 }
 
 OK
@@ -1378,7 +1530,7 @@ OK
     "@type": "type.googleapis.com/google.cloud.notebooks.v2.OperationMetadata",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endpoint": "DeleteInstance",
-    "target": "projects/${projectId}/locations/us-central1-a/instances/ni2-full-gce-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-central1-a/instances/ni2-full-${uniqueId}",
     "verb": "delete"
   },
   "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
@@ -1401,13 +1553,177 @@ OK
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
     "endpoint": "DeleteInstance",
-    "target": "projects/${projectId}/locations/us-central1-a/instances/ni2-full-gce-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-central1-a/instances/ni2-full-${uniqueId}",
     "verb": "delete"
   },
   "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.protobuf.Empty"
   }
+}
+
+---
+
+POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/ni2-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com:getIamPolicy?alt=json&options.requestedPolicyVersion=3&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/iam.serviceAccountUser"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/ni2-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com:getIamPolicy?alt=json&options.requestedPolicyVersion=3&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/iam.serviceAccountUser"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/ni2-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com:setIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+{
+  "policy": {
+    "etag": "abcdef0123A=",
+    "version": 1
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/ni2-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com:getIamPolicy?alt=json&options.requestedPolicyVersion=3&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/ni2-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com:getIamPolicy?alt=json&options.requestedPolicyVersion=3&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/ni2-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com:getIamPolicy?alt=json&options.requestedPolicyVersion=3&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/ni2-sa-${uniqueId}@${projectId}.iam.gserviceaccount.com:getIamPolicy?alt=json&options.requestedPolicyVersion=3&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A=",
+  "version": 1
 }
 
 ---

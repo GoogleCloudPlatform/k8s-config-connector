@@ -13,8 +13,8 @@ spec:
   gceSetup:
     machineType: n1-standard-1
     vmImage:
-      name: common-cpu-m116
-      project: deeplearning-platform-release
+      name: workbench-instances-v20230404-debian-11-py310
+      project: cloud-notebooks-managed
   location: us-central1-a
   projectRef:
     external: ${projectId}
@@ -30,7 +30,11 @@ status:
   observedState:
     createTime: "1970-01-01T00:00:00Z"
     creator: someone@somewhere.com
-    gceSetup: {}
+    gceSetup:
+      serviceAccounts:
+      - scopes:
+        - https://www.googleapis.com/auth/cloud-platform
+        - https://www.googleapis.com/auth/userinfo.email
     healthState: HEALTHY
     proxyURI: https://ni2-vm-name-${uniqueId}-dot-us-central1.notebooks.googleusercontent.com
     state: ACTIVE
