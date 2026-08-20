@@ -82,9 +82,10 @@ X-Xss-Protection: 0
     "accessType": "GLOBAL",
     "address": "10.128.0.2",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "ipAddress": "10.1.2.3",
     "name": "projects/${projectId}/locations/us-central1/regionalEndpoints/regionalendpoint-${uniqueId}",
-    "pscForwardingRule": "//compute.googleapis.com/projects/${projectId}/regions/us-central1/forwardingRules/rep-regionalendpoint-${uniqueId}",
+    "network": "projects/${projectId}/global/networks/default",
+    "pscForwardingRule": "//compute.googleapis.com/projects/${projectId}/regions/us-central1/forwardingRules/rep-autogen-fr-regionalendpoint-${uniqueId}",
+    "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default",
     "targetGoogleApi": "cloudkms.us-central1.p.rep.googleapis.com",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -109,9 +110,10 @@ X-Xss-Protection: 0
   "accessType": "GLOBAL",
   "address": "10.128.0.2",
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "ipAddress": "10.1.2.3",
   "name": "projects/${projectId}/locations/us-central1/regionalEndpoints/regionalendpoint-${uniqueId}",
-  "pscForwardingRule": "//compute.googleapis.com/projects/${projectId}/regions/us-central1/forwardingRules/rep-regionalendpoint-${uniqueId}",
+  "network": "projects/${projectId}/global/networks/default",
+  "pscForwardingRule": "//compute.googleapis.com/projects/${projectId}/regions/us-central1/forwardingRules/rep-autogen-fr-regionalendpoint-${uniqueId}",
+  "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default",
   "targetGoogleApi": "cloudkms.us-central1.p.rep.googleapis.com",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }

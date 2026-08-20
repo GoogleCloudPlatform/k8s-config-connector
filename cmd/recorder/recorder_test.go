@@ -264,7 +264,7 @@ func TestProfileRecorderFootprint(t *testing.T) {
 	env = append(env, "KUBECONFIG="+kubeconfigPath)
 	env = append(env, "GODEBUG=memprofilerate=1") // Enable memory profiling for every allocation
 
-	cmd := exec.Command(recorderBinary, "--enable-pprof")
+	cmd := exec.Command(recorderBinary, "--enable-pprof", "--metric-interval=2")
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	cmd.Env = env

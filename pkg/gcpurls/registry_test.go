@@ -250,6 +250,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		// Network Connectivity
 		"//networkconnectivity.googleapis.com/projects/{}/locations/{}/regionalEndpoints/{}":             true,
 		"//networkconnectivity.googleapis.com/projects/{}/locations/{}/multicloudDataTransferConfigs/{}": true,
+		"//networkconnectivity.googleapis.com/projects/{}/locations/{}/serviceConnectionPolicies/{}":     true,
 
 		// Network Security
 		"//networksecurity.googleapis.com/projects/{}/locations/{}/backendAuthenticationConfigs/{}": true,

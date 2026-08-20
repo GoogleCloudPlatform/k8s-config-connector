@@ -74,6 +74,12 @@ func (r *regionalEndpoints) CreateProjectsLocationsRegionalEndpoint(ctx context.
 	if obj.Address == "" {
 		obj.Address = "10.128.0.2"
 	}
+	if obj.Network == "" {
+		obj.Network = fmt.Sprintf("projects/%s/global/networks/default", name.Project.ID)
+		obj.Subnetwork = fmt.Sprintf("projects/%s/regions/%s/subnetworks/default", name.Project.ID, name.Location)
+	} else {
+		obj.Subnetwork = ""
+	}
 	if err := r.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
