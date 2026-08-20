@@ -96,6 +96,11 @@ func (s *StorageInsightsServer) CreateDatasetConfig(ctx context.Context, req *pb
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
 
+	// Real GCP does not return skipVerificationAndIngest in GET responses after creation,
+	// even if it was requested as true during POST. However, it is returned if set via PATCH.
+	// We mimic this behavior by clearing it on creation.
+	obj.SkipVerificationAndIngest = false
+
 	// Populate output-only/dynamic fields
 	uuidVal := getUUID(name.DatasetConfig)
 	saPrefix := strings.ReplaceAll(uuidVal, "-", "")[:15]
