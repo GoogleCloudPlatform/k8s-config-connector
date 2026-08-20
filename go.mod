@@ -100,6 +100,7 @@ require (
 	cloud.google.com/go/storageinsights v1.8.0
 	cloud.google.com/go/talent v1.13.0
 	cloud.google.com/go/translate v1.17.0
+	cloud.google.com/go/vectorsearch v1.3.0
 	cloud.google.com/go/video v1.32.0
 	cloud.google.com/go/vision/v2 v2.15.0
 	cloud.google.com/go/vmwareengine v1.8.0
