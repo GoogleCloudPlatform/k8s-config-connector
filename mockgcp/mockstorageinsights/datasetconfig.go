@@ -29,6 +29,7 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 
 	pb "cloud.google.com/go/storageinsights/apiv1/storageinsightspb"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
 	"google.golang.org/genproto/googleapis/longrunning"
@@ -101,16 +102,22 @@ func (s *StorageInsightsServer) CreateDatasetConfig(ctx context.Context, req *pb
 
 	obj.Uid = "0123456789abcdef"
 	obj.DatasetConfigState = pb.DatasetConfig_CONFIG_STATE_ACTIVE
+
+	identityType := pb.Identity_IDENTITY_TYPE_PER_CONFIG
+	if req.DatasetConfig.Identity != nil && req.DatasetConfig.Identity.Type != pb.Identity_IDENTITY_TYPE_UNSPECIFIED {
+		identityType = req.DatasetConfig.Identity.Type
+	}
 	obj.Identity = &pb.Identity{
 		Name: fmt.Sprintf("p%d-%s@gcp-sa-storageinsights.iam.gserviceaccount.com", name.Project.Number, saPrefix),
-		Type: pb.Identity_IDENTITY_TYPE_PER_CONFIG,
+		Type: identityType,
 	}
 	datasetSuffix := strings.ReplaceAll(uuidVal, "-", "_")
 	obj.Link = &pb.DatasetConfig_Link{
 		Dataset: fmt.Sprintf("%s_%s", name.DatasetConfig, datasetSuffix),
 	}
-	obj.OrganizationNumber = getOrganizationNumber()
-	obj.SkipVerificationAndIngest = false
+	if obj.OrganizationNumber == 0 {
+		obj.OrganizationNumber = getOrganizationNumber()
+	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -153,13 +160,10 @@ func (s *StorageInsightsServer) UpdateDatasetConfig(ctx context.Context, req *pb
 	}
 
 	updated := proto.Clone(existing).(*pb.DatasetConfig)
-	updated.Description = req.DatasetConfig.Description
-	updated.Labels = req.DatasetConfig.Labels
-	updated.RetentionPeriodDays = req.DatasetConfig.RetentionPeriodDays
-	updated.SkipVerificationAndIngest = req.DatasetConfig.SkipVerificationAndIngest
-	updated.IncludeNewlyCreatedBuckets = req.DatasetConfig.IncludeNewlyCreatedBuckets
-	updated.CloudStorageLocations = req.DatasetConfig.CloudStorageLocations
-	updated.CloudStorageBuckets = req.DatasetConfig.CloudStorageBuckets
+	paths := req.GetUpdateMask().GetPaths()
+	if err := fields.UpdateByFieldMask(updated, req.DatasetConfig, paths); err != nil {
+		return nil, status.Errorf(codes.Internal, "error updating fields: %v", err)
+	}
 	updated.UpdateTime = timestamppb.New(now)
 
 	if err := s.storage.Update(ctx, fqn, updated); err != nil {
