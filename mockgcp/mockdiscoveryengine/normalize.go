@@ -56,16 +56,6 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 
 	replacements.TransformObject("", transformFunc)
 	replacements.TransformObject(".response", transformFunc)
-
-	// Since we got review feedback not to change common HTTP error mapping files,
-	// we normalize the error response for discoveryengine here!
-	replacements.TransformObject(".error", func(m map[string]any) {
-		if _, exists := m["status"]; !exists {
-			if code, ok := m["code"].(float64); ok && code == 500 {
-				m["status"] = "INTERNAL"
-			}
-		}
-	})
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
