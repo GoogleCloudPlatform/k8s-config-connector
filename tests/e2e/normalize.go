@@ -717,7 +717,26 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 	if u.GroupVersionKind().Group == "storageinsights.cnrm.cloud.google.com" {
 		visitor.sliceTransforms = append(visitor.sliceTransforms, func(path string, a []any) []any {
 			if path == ".spec.sourceProjects.projectNumbers[]" {
-				return []any{float64(project.ProjectNumber)}
+				res := make([]any, len(a))
+				for i, elem := range a {
+					var matches bool
+					switch v := elem.(type) {
+					case float64:
+						matches = (int64(v) == project.ProjectNumber)
+					case int64:
+						matches = (v == project.ProjectNumber)
+					case int:
+						matches = (int64(v) == project.ProjectNumber)
+					case string:
+						matches = (v == strconv.FormatInt(project.ProjectNumber, 10))
+					}
+					if matches {
+						res[i] = float64(project.ProjectNumber)
+					} else {
+						res[i] = elem
+					}
+				}
+				return res
 			}
 			return a
 		})
