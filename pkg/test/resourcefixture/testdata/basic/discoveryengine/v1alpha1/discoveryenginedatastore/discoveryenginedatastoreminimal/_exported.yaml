@@ -9,3 +9,5 @@ spec:
   location: global
   projectRef:
     external: ${projectId}
+  solutionTypes:
+  - SOLUTION_TYPE_SEARCH

@@ -49,15 +49,20 @@ func (s *dataStoreService) CreateDataStore(ctx context.Context, req *pb.CreateDa
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.DefaultSchemaId = "default_schema"
+	obj.NaturalLanguageQueryUnderstandingConfig = &pb.NaturalLanguageQueryUnderstandingConfig{
+		Mode: pb.NaturalLanguageQueryUnderstandingConfig_Mode(2),
+	}
+	obj.SolutionTypes = []pb.SolutionType{pb.SolutionType(2)}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
 	prefix := fmt.Sprintf("projects/%d/locations/%s/collections/%s", name.Project.Number, name.Location, name.Collection)
-	// Returns with no createTime
+	// Returns with no createTime and no solutionTypes
 	lroRet := proto.CloneOf(obj)
 	lroRet.CreateTime = nil
+	lroRet.SolutionTypes = nil
 	return s.operations.DoneLRO(ctx, prefix, nil, lroRet)
 }
 

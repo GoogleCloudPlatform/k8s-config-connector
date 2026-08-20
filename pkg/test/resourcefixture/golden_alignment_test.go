@@ -550,6 +550,8 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		delete(v, "createTime")
 		delete(v, "updateTime")
 		delete(v, "uid")
+		delete(v, "naturalLanguageQueryUnderstandingConfig")
+		delete(v, "solutionTypes")
 		// Normalize empty LRO response payloads (e.g., from mock Delete operations returning Empty, but real returns nothing)
 		if resp, ok := v["response"].(map[string]interface{}); ok {
 			if len(resp) == 0 || (len(resp) == 1 && resp["@type"] == "type.googleapis.com/google.protobuf.Empty") {

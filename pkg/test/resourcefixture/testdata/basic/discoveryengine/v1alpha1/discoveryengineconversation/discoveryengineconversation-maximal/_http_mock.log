@@ -79,7 +79,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Engine with name \"projects/${projectId}/locations/global/collections/default_collection/engines/engine-${uniqueId}\" does not exist.",
+    "message": "Engine with name \"projects/${projectNumber}/locations/global/collections/default_collection/engines/engine-${uniqueId}\" does not exist.",
     "status": "NOT_FOUND"
   }
 }
