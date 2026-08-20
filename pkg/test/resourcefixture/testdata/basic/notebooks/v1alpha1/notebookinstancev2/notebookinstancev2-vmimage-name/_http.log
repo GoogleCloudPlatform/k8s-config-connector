@@ -4,7 +4,7 @@ GRPC /google.cloud.notebooks.v2.NotebookService/GetInstance
   "name": "projects/${projectId}/locations/us-central1-a/instances/ni2-vm-name-${uniqueId}"
 }
 
-error: rpc error: code = NotFound desc = instance "projects/${projectId}/locations/us-central1-a/instances/ni2-vm-name-${uniqueId}" not found
+error: rpc error: code = NotFound desc = Resource 'projects/${projectId}/locations/us-central1-a/instances/ni2-vm-name-${uniqueId}' was not found
 
 {}
 
@@ -66,18 +66,44 @@ OK
   "response": {
     "@type": "type.googleapis.com/google.cloud.notebooks.v2.Instance",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "creator": "someone@somewhere.com",
+    "creator": "yuhou@google.com",
     "gceSetup": {
       "bootDisk": {
         "diskEncryption": "GMEK",
         "diskSizeGb": "150",
         "diskType": "PD_STANDARD"
       },
+      "dataDisks": [
+        {
+          "diskEncryption": "GMEK",
+          "diskSizeGb": "100",
+          "diskType": "PD_STANDARD"
+        }
+      ],
+      "gpuDriverConfig": {},
       "machineType": "n1-standard-1",
+      "metadata": {
+        "disable-swap-binaries": "true",
+        "enable-guest-attributes": "TRUE",
+        "enable-jupyterlab4": "true",
+        "enable-oslogin": "TRUE",
+        "instance-region": "us-central1",
+        "new-proxy-agent-enabled": "true",
+        "notebooks-api": "PROD",
+        "notebooks-api-version": "v2",
+        "proxy-backend-id": "3d6e4b6f79d90294",
+        "proxy-mode": "service_account",
+        "proxy-registration-url": "https://us-central1.notebooks.cloud.google.com/tun/m/4592f092208ecc84946b8f8f8016274df1b36a14",
+        "proxy-url": "3d6e4b6f79d90294-dot-us-central1.notebooks.googleusercontent.com",
+        "report-event-url": "https://notebooks.googleapis.com/v2/projects/${projectId}/locations/us-central1-a/instances/ni2-vm-name-${uniqueId}:reportInfoSystem",
+        "resource-url": "https://notebooks.googleapis.com/v2/projects/${projectId}/locations/us-central1-a/instances/ni2-vm-name-${uniqueId}",
+        "serial-port-logging-enable": "true",
+        "shutdown-script": "/opt/deeplearning/bin/shutdown_script.sh"
+      },
       "networkInterfaces": [
         {
-          "network": "projects/${projectId}/global/networks/default",
-          "subnet": "projects/${projectId}/regions/us-central1/subnetworks/default"
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+          "subnet": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/default"
         }
       ],
       "serviceAccounts": [
@@ -89,18 +115,30 @@ OK
           ]
         }
       ],
+      "shieldedInstanceConfig": {
+        "enableIntegrityMonitoring": true,
+        "enableVtpm": true
+      },
+      "tags": [
+        "deeplearning-vm",
+        "notebook-instance"
+      ],
       "vmImage": {
-        "name": "workbench-instances-v20230404-debian-11-py310",
+        "family": "workbench-instances",
         "project": "cloud-notebooks-managed"
       }
     },
-    "healthState": "HEALTHY",
+    "id": "000000000000000000000",
     "labels": {
-      "cnrm-test": "true"
+      "cnrm-test": "true",
+      "consumer-project-id": "${projectId}",
+      "consumer-project-number": "${projectNumber}",
+      "notebooks-product": "workbench-instances",
+      "resource-name": "ni2-vm-name-${uniqueId}"
     },
     "name": "projects/${projectId}/locations/us-central1-a/instances/ni2-vm-name-${uniqueId}",
-    "proxyUri": "https://ni2-vm-name-${uniqueId}-dot-us-central1.notebooks.googleusercontent.com",
-    "state": "ACTIVE",
+    "proxyUri": "3d6e4b6f79d90294-dot-us-central1.notebooks.googleusercontent.com",
+    "state": "PROVISIONING",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
@@ -124,11 +162,37 @@ OK
       "diskSizeGb": "150",
       "diskType": "PD_STANDARD"
     },
+    "dataDisks": [
+      {
+        "diskEncryption": "GMEK",
+        "diskSizeGb": "100",
+        "diskType": "PD_STANDARD"
+      }
+    ],
+    "gpuDriverConfig": {},
     "machineType": "n1-standard-1",
+    "metadata": {
+      "disable-swap-binaries": "true",
+      "enable-guest-attributes": "TRUE",
+      "enable-jupyterlab4": "true",
+      "enable-oslogin": "TRUE",
+      "instance-region": "us-central1",
+      "new-proxy-agent-enabled": "true",
+      "notebooks-api": "PROD",
+      "notebooks-api-version": "v2",
+      "proxy-backend-id": "3d6e4b6f79d90294",
+      "proxy-mode": "service_account",
+      "proxy-registration-url": "https://us-central1.notebooks.cloud.google.com/tun/m/4592f092208ecc84946b8f8f8016274df1b36a14",
+      "proxy-url": "3d6e4b6f79d90294-dot-us-central1.notebooks.googleusercontent.com",
+      "report-event-url": "https://notebooks.googleapis.com/v2/projects/${projectId}/locations/us-central1-a/instances/ni2-vm-name-${uniqueId}:reportInfoSystem",
+      "resource-url": "https://notebooks.googleapis.com/v2/projects/${projectId}/locations/us-central1-a/instances/ni2-vm-name-${uniqueId}",
+      "serial-port-logging-enable": "true",
+      "shutdown-script": "/opt/deeplearning/bin/shutdown_script.sh"
+    },
     "networkInterfaces": [
       {
-        "network": "projects/${projectId}/global/networks/default",
-        "subnet": "projects/${projectId}/regions/us-central1/subnetworks/default"
+        "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+        "subnet": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/default"
       }
     ],
     "serviceAccounts": [
@@ -140,16 +204,29 @@ OK
         ]
       }
     ],
+    "shieldedInstanceConfig": {
+      "enableIntegrityMonitoring": true,
+      "enableVtpm": true
+    },
+    "tags": [
+      "deeplearning-vm",
+      "notebook-instance"
+    ],
     "vmImage": {
-      "name": "workbench-instances-v20230404-debian-11-py310",
+      "family": "workbench-instances",
       "project": "cloud-notebooks-managed"
     }
   },
+  "id": "000000000000000000000",
   "labels": {
-    "cnrm-test": "true"
+    "cnrm-test": "true",
+    "consumer-project-id": "${projectId}",
+    "consumer-project-number": "${projectNumber}",
+    "notebooks-product": "workbench-instances",
+    "resource-name": "ni2-vm-name-${uniqueId}"
   },
   "name": "projects/${projectId}/locations/us-central1-a/instances/ni2-vm-name-${uniqueId}",
-  "proxyUri": "https://ni2-vm-name-${uniqueId}-dot-us-central1.notebooks.googleusercontent.com",
+  "proxyUri": "3d6e4b6f79d90294-dot-us-central1.notebooks.googleusercontent.com",
   "state": "PROVISIONING",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }

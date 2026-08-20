@@ -15,7 +15,7 @@
 apiVersion: notebooks.cnrm.cloud.google.com/v1alpha1
 kind: NotebookInstanceV2
 metadata:
-  name: ni2-full-gce-${uniqueId}
+  name: ni2-full-${uniqueId}
 spec:
   projectRef:
     external: ${projectId}

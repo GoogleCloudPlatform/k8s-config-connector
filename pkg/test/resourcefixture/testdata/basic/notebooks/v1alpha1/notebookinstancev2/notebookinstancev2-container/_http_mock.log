@@ -19,7 +19,15 @@ GRPC /google.cloud.notebooks.v2.NotebookService/CreateInstance
         "repository": "gcr.io/deeplearning-platform-release/base-cpu",
         "tag": "latest"
       },
-      "machineType": "n1-standard-1"
+      "disablePublicIp": true,
+      "machineType": "n1-standard-1",
+      "metadata": {
+        "notebook-disable-downloads": "true",
+        "notebook-disable-root": "true"
+      }
+    },
+    "labels": {
+      "cnrm-test": "true"
     }
   },
   "instanceId": "ni2-container-${uniqueId}",
@@ -65,13 +73,56 @@ OK
     "createTime": "2024-04-01T12:34:56.123456Z",
     "creator": "someone@somewhere.com",
     "gceSetup": {
+      "bootDisk": {
+        "diskEncryption": "GMEK",
+        "diskSizeGb": "150",
+        "diskType": "PD_STANDARD"
+      },
       "containerImage": {
         "repository": "gcr.io/deeplearning-platform-release/base-cpu",
         "tag": "latest"
       },
-      "machineType": "n1-standard-1"
+      "dataDisks": [
+        {
+          "diskEncryption": "GMEK",
+          "diskSizeGb": "100",
+          "diskType": "PD_STANDARD"
+        }
+      ],
+      "disablePublicIp": true,
+      "machineType": "n1-standard-1",
+      "metadata": {
+        "notebook-disable-downloads": "true",
+        "notebook-disable-root": "true"
+      },
+      "networkInterfaces": [
+        {
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+          "subnet": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/default"
+        }
+      ],
+      "serviceAccounts": [
+        {
+          "email": "${projectNumber}-compute@developer.gserviceaccount.com",
+          "scopes": [
+            "https://www.googleapis.com/auth/cloud-platform",
+            "https://www.googleapis.com/auth/userinfo.email"
+          ]
+        }
+      ],
+      "shieldedInstanceConfig": {
+        "enableIntegrityMonitoring": true,
+        "enableVtpm": true
+      },
+      "tags": [
+        "deeplearning-vm",
+        "notebook-instance"
+      ]
     },
     "healthState": "HEALTHY",
+    "labels": {
+      "cnrm-test": "true"
+    },
     "name": "projects/${projectId}/locations/us-central1-a/instances/ni2-container-${uniqueId}",
     "proxyUri": "https://ni2-container-${uniqueId}-dot-us-central1.notebooks.googleusercontent.com",
     "state": "ACTIVE",
@@ -102,24 +153,204 @@ OK
       "repository": "gcr.io/deeplearning-platform-release/base-cpu",
       "tag": "latest"
     },
+    "dataDisks": [
+      {
+        "diskEncryption": "GMEK",
+        "diskSizeGb": "100",
+        "diskType": "PD_STANDARD"
+      }
+    ],
+    "disablePublicIp": true,
     "machineType": "n1-standard-1",
+    "metadata": {
+      "notebook-disable-downloads": "true",
+      "notebook-disable-root": "true"
+    },
     "networkInterfaces": [
       {
-        "network": "projects/${projectId}/global/networks/default",
-        "subnet": "projects/${projectId}/regions/us-central1/subnetworks/default"
+        "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+        "subnet": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/default"
       }
     ],
     "serviceAccounts": [
       {
-        "email": "${projectNumber}-compute@developer.gserviceaccount.com"
+        "email": "${projectNumber}-compute@developer.gserviceaccount.com",
+        "scopes": [
+          "https://www.googleapis.com/auth/cloud-platform",
+          "https://www.googleapis.com/auth/userinfo.email"
+        ]
       }
+    ],
+    "shieldedInstanceConfig": {
+      "enableIntegrityMonitoring": true,
+      "enableVtpm": true
+    },
+    "tags": [
+      "deeplearning-vm",
+      "notebook-instance"
     ]
   },
-  "healthState": "HEALTHY",
+  "labels": {
+    "cnrm-test": "true"
+  },
   "name": "projects/${projectId}/locations/us-central1-a/instances/ni2-container-${uniqueId}",
   "proxyUri": "https://ni2-container-${uniqueId}-dot-us-central1.notebooks.googleusercontent.com",
-  "state": "ACTIVE",
+  "state": "PROVISIONING",
   "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.notebooks.v2.NotebookService/UpdateInstance
+
+{
+  "instance": {
+    "gceSetup": {
+      "bootDisk": {
+        "diskEncryption": "GMEK",
+        "diskSizeGb": "150",
+        "diskType": "PD_STANDARD"
+      },
+      "containerImage": {
+        "repository": "gcr.io/deeplearning-platform-release/base-cpu",
+        "tag": "latest"
+      },
+      "dataDisks": [
+        {
+          "diskEncryption": "GMEK",
+          "diskSizeGb": "100",
+          "diskType": "PD_STANDARD"
+        }
+      ],
+      "disablePublicIp": true,
+      "machineType": "n1-standard-1",
+      "metadata": {
+        "notebook-disable-downloads": "true",
+        "notebook-disable-root": "true",
+        "notebook-updated-metadata": "true"
+      },
+      "networkInterfaces": [
+        {
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+          "subnet": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/default"
+        }
+      ],
+      "serviceAccounts": [
+        {
+          "email": "${projectNumber}-compute@developer.gserviceaccount.com"
+        }
+      ],
+      "shieldedInstanceConfig": {
+        "enableIntegrityMonitoring": true,
+        "enableVtpm": true
+      },
+      "tags": [
+        "deeplearning-vm",
+        "notebook-instance"
+      ]
+    },
+    "labels": {
+      "cnrm-test": "true"
+    },
+    "name": "projects/${projectId}/locations/us-central1-a/instances/ni2-container-${uniqueId}"
+  },
+  "updateMask": "gceSetup.metadata"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.notebooks.v2.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endpoint": "UpdateInstance",
+    "target": "projects/${projectId}/locations/us-central1-a/instances/ni2-container-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.notebooks.v2.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "endpoint": "UpdateInstance",
+    "target": "projects/${projectId}/locations/us-central1-a/instances/ni2-container-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.notebooks.v2.Instance",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "creator": "someone@somewhere.com",
+    "gceSetup": {
+      "bootDisk": {
+        "diskEncryption": "GMEK",
+        "diskSizeGb": "150",
+        "diskType": "PD_STANDARD"
+      },
+      "containerImage": {
+        "repository": "gcr.io/deeplearning-platform-release/base-cpu",
+        "tag": "latest"
+      },
+      "dataDisks": [
+        {
+          "diskEncryption": "GMEK",
+          "diskSizeGb": "100",
+          "diskType": "PD_STANDARD"
+        }
+      ],
+      "disablePublicIp": true,
+      "machineType": "n1-standard-1",
+      "metadata": {
+        "notebook-disable-downloads": "true",
+        "notebook-disable-root": "true",
+        "notebook-updated-metadata": "true"
+      },
+      "networkInterfaces": [
+        {
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+          "subnet": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/default"
+        }
+      ],
+      "serviceAccounts": [
+        {
+          "email": "${projectNumber}-compute@developer.gserviceaccount.com",
+          "scopes": [
+            "https://www.googleapis.com/auth/cloud-platform",
+            "https://www.googleapis.com/auth/userinfo.email"
+          ]
+        }
+      ],
+      "shieldedInstanceConfig": {
+        "enableIntegrityMonitoring": true,
+        "enableVtpm": true
+      },
+      "tags": [
+        "deeplearning-vm",
+        "notebook-instance"
+      ]
+    },
+    "labels": {
+      "cnrm-test": "true"
+    },
+    "name": "projects/${projectId}/locations/us-central1-a/instances/ni2-container-${uniqueId}",
+    "proxyUri": "https://ni2-container-${uniqueId}-dot-us-central1.notebooks.googleusercontent.com",
+    "state": "PROVISIONING",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
 }
 
 ---
@@ -145,23 +376,50 @@ OK
       "repository": "gcr.io/deeplearning-platform-release/base-cpu",
       "tag": "latest"
     },
+    "dataDisks": [
+      {
+        "diskEncryption": "GMEK",
+        "diskSizeGb": "100",
+        "diskType": "PD_STANDARD"
+      }
+    ],
+    "disablePublicIp": true,
     "machineType": "n1-standard-1",
+    "metadata": {
+      "notebook-disable-downloads": "true",
+      "notebook-disable-root": "true",
+      "notebook-updated-metadata": "true"
+    },
     "networkInterfaces": [
       {
-        "network": "projects/${projectId}/global/networks/default",
-        "subnet": "projects/${projectId}/regions/us-central1/subnetworks/default"
+        "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+        "subnet": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/default"
       }
     ],
     "serviceAccounts": [
       {
-        "email": "${projectNumber}-compute@developer.gserviceaccount.com"
+        "email": "${projectNumber}-compute@developer.gserviceaccount.com",
+        "scopes": [
+          "https://www.googleapis.com/auth/cloud-platform",
+          "https://www.googleapis.com/auth/userinfo.email"
+        ]
       }
+    ],
+    "shieldedInstanceConfig": {
+      "enableIntegrityMonitoring": true,
+      "enableVtpm": true
+    },
+    "tags": [
+      "deeplearning-vm",
+      "notebook-instance"
     ]
   },
-  "healthState": "HEALTHY",
+  "labels": {
+    "cnrm-test": "true"
+  },
   "name": "projects/${projectId}/locations/us-central1-a/instances/ni2-container-${uniqueId}",
   "proxyUri": "https://ni2-container-${uniqueId}-dot-us-central1.notebooks.googleusercontent.com",
-  "state": "ACTIVE",
+  "state": "PROVISIONING",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 

@@ -17,6 +17,9 @@ package notebooks
 import (
 	"context"
 	"fmt"
+	"slices"
+
+	"k8s.io/apimachinery/pkg/util/sets"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/notebooks/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -196,7 +199,7 @@ func (a *InstanceV2Adapter) Update(ctx context.Context, updateOp *directbase.Upd
 
 	a.desired.Name = a.id.String()
 
-	diffs, updateMask, err := compareNotebooksV2(ctx, a.actual, a.desired)
+	clonedDesired, diffs, updateMask, err := compareNotebooksV2(ctx, a.actual, a.desired)
 	if err != nil {
 		return err
 	}
@@ -209,7 +212,7 @@ func (a *InstanceV2Adapter) Update(ctx context.Context, updateOp *directbase.Upd
 	structuredreporting.ReportDiff(ctx, diffs)
 
 	req := &notebookspb.UpdateInstanceRequest{
-		Instance:   a.desired,
+		Instance:   clonedDesired,
 		UpdateMask: updateMask,
 	}
 	op, err := a.gcpClient.UpdateInstance(ctx, req)
@@ -225,20 +228,16 @@ func (a *InstanceV2Adapter) Update(ctx context.Context, updateOp *directbase.Upd
 
 	return a.updateStatus(ctx, updateOp, updated)
 }
-
-func compareNotebooksV2(ctx context.Context, actual, desired *notebookspb.Instance) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
+func compareNotebooksV2(ctx context.Context, actual, desired *notebookspb.Instance) (*notebookspb.Instance, *structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
 	maskedActual, err := mappers.OnlySpecFields(actual, NotebookInstanceV2Spec_v1alpha1_FromProto, NotebookInstanceV2Spec_v1alpha1_ToProto)
 	if err != nil {
-		return nil, nil, err
+		return nil, nil, nil, err
 	}
 	maskedActual.Name = desired.Name
 
 	clonedDesired := proto.Clone(desired).(*notebookspb.Instance)
 
 	populateDefaults := func(act, des *notebookspb.Instance) {
-		// GCE setup is completely immutable on GCP for Notebooks V2 instances and cannot be updated.
-		// Align it completely to avoid generating unsupported field masks during update.
-		des.Infrastructure = act.Infrastructure
 		act.InstanceOwners = nil
 		des.InstanceOwners = nil
 
@@ -260,14 +259,99 @@ func compareNotebooksV2(ctx context.Context, actual, desired *notebookspb.Instan
 				}
 			}
 		}
+
+		// Handle GceSetup (Infrastructure) fields
+		actGce := act.GetGceSetup()
+		desGce := des.GetGceSetup()
+
+		// Align immutable fields under GceSetup from actual to desired.
+		// This ensures we do not generate false diffs for fields that can never be updated.
+		if desGce == nil {
+			des.Infrastructure = act.Infrastructure
+		} else {
+			desGce.BootDisk = actGce.BootDisk
+			desGce.DataDisks = actGce.DataDisks
+			desGce.NetworkInterfaces = actGce.NetworkInterfaces
+			desGce.ServiceAccounts = actGce.ServiceAccounts
+			desGce.EnableIpForwarding = actGce.EnableIpForwarding
+			if desGce.Tags == nil {
+				desGce.Tags = actGce.Tags
+			}
+			if desGce.GetContainerImage() == nil {
+				desGce.Image = &notebookspb.GceSetup_VmImage{VmImage: actGce.GetVmImage()}
+			}
+			if desGce.ShieldedInstanceConfig == nil {
+				desGce.ShieldedInstanceConfig = actGce.ShieldedInstanceConfig
+			} else {
+				if desGce.ShieldedInstanceConfig.EnableVtpm == true {
+					desGce.ShieldedInstanceConfig = actGce.ShieldedInstanceConfig
+				}
+				if desGce.ShieldedInstanceConfig.EnableIntegrityMonitoring == true {
+					desGce.ShieldedInstanceConfig = actGce.ShieldedInstanceConfig
+				}
+			}
+
+			// Ensure all desired metadata exist in actual; otherwise it is changed
+			metadataChanged := false
+			for k, desVal := range desGce.Metadata {
+				actVal, ok := actGce.Metadata[k]
+				if !ok || desVal != actVal {
+					metadataChanged = true
+					break
+				}
+			}
+			if !metadataChanged {
+				desGce.Metadata = actGce.Metadata
+			}
+		}
 	}
 	populateDefaults(maskedActual, clonedDesired)
 
-	diffs, updateMask, err := common.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
+	// Validate immutable fields and get fine-grained update mask
+	diffPaths, diffs, err := common.CompareProtoMessageStructuredDiff(clonedDesired, maskedActual, common.BasicDiff)
 	if err != nil {
-		return nil, nil, err
+		return nil, nil, nil, err
 	}
-	return diffs, updateMask, nil
+
+	// See https://docs.cloud.google.com/gemini-enterprise-agent-platform/notebooks/workbench/reference/rest/v2/projects.locations.instances/patch#query-parameters
+	allowedMutablePaths := sets.New(
+		"labels",
+		"disable_proxy_access",
+		"gce_setup.min_cpu_platform",
+		"gce_setup.metadata",
+		"gce_setup.machine_type",
+		"gce_setup.accelerator_configs",
+		"gce_setup.accelerator_configs.type",
+		"gce_setup.accelerator_configs.core_count",
+		"gce_setup.gpu_driver_config",
+		"gce_setup.gpu_driver_config.enable_gpu_driver",
+		"gce_setup.gpu_driver_config.custom_gpu_driver_path",
+		"gce_setup.shielded_instance_config",
+		"gce_setup.shielded_instance_config.enable_secure_boot",
+		"gce_setup.shielded_instance_config.enable_vtpm",
+		"gce_setup.shielded_instance_config.enable_integrity_monitoring",
+		"gce_setup.reservation_affinity",
+		"gce_setup.reservation_affinity.consume_reservation_type",
+		"gce_setup.reservation_affinity.key",
+		"gce_setup.reservation_affinity.values",
+		"gce_setup.tags",
+		"gce_setup.container_image",
+		"gce_setup.container_image.repository",
+		"gce_setup.container_image.tag",
+		"gce_setup.disable_public_ip",
+	)
+
+	for path := range diffPaths {
+		if !allowedMutablePaths.Has(path) {
+			return nil, nil, nil, fmt.Errorf("field %q is immutable", path)
+		}
+	}
+
+	paths := diffPaths.UnsortedList()
+	slices.Sort(paths)
+	updateMask := &fieldmaskpb.FieldMask{Paths: paths}
+
+	return clonedDesired, diffs, updateMask, nil
 }
 
 func (a *InstanceV2Adapter) updateStatus(ctx context.Context, op directbase.Operation, latest *notebookspb.Instance) error {
