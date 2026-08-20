@@ -117,6 +117,9 @@ spec:
               location:
                 description: Immutable. The location of this resource.
                 type: string
+                x-kubernetes-validations:
+                - message: Location field is immutable
+                  rule: self == oldSelf
               partner:
                 description: Optional. Compliance Regime associated with this workload.
                 type: string
