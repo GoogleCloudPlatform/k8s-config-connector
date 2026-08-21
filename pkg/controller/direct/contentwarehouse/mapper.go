@@ -87,6 +87,13 @@ func PropertyDefinition_ToProto(mapCtx *direct.MapContext, in *krm.PropertyDefin
 	if in == nil {
 		return nil
 	}
+	if in.RetrievalImportance != nil {
+		mapCtx.Errorf("field retrievalImportance is not supported by the underlying direct reconciler/proto client library")
+	}
+	if len(in.SchemaSources) > 0 {
+		mapCtx.Errorf("field schemaSources is not supported by the underlying direct reconciler/proto client library")
+	}
+
 	out := &pb.PropertyDefinition{}
 	out.Name = direct.ValueOf(in.Name)
 	out.DisplayName = direct.ValueOf(in.DisplayName)

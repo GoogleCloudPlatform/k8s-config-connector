@@ -186,12 +186,16 @@ spec:
                       - propertyDefinitions
                       type: object
                     retrievalImportance:
-                      description: The retrieval importance of the property during
-                        search.
+                      description: 'The retrieval importance of the property during
+                        search. Note: This field is not currently supported by the
+                        underlying direct reconciler/proto client library and specifying
+                        it will result in a validation error.'
                       type: string
                     schemaSources:
-                      description: The mapping information between this property to
-                        another schema source.
+                      description: 'The mapping information between this property
+                        to another schema source. Note: This field is not currently
+                        supported by the underlying direct reconciler/proto client
+                        library and specifying it will result in a validation error.'
                       items:
                         properties:
                           name:

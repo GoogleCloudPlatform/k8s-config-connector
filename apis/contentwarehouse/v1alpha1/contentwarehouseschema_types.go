@@ -190,7 +190,7 @@ type PropertyDefinition struct {
 	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.is_required
 	IsRequired *bool `json:"isRequired,omitempty"`
 
-	// The retrieval importance of the property during search.
+	// The retrieval importance of the property during search. Note: This field is not currently supported by the underlying direct reconciler/proto client library and specifying it will result in a validation error.
 	RetrievalImportance *string `json:"retrievalImportance,omitempty"`
 
 	// Integer property.
@@ -227,7 +227,7 @@ type PropertyDefinition struct {
 	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.timestamp_type_options
 	TimestampTypeOptions *TimestampTypeOptions `json:"timestampTypeOptions,omitempty"`
 
-	// The mapping information between this property to another schema source.
+	// The mapping information between this property to another schema source. Note: This field is not currently supported by the underlying direct reconciler/proto client library and specifying it will result in a validation error.
 	SchemaSources []PropertyDefinition_SchemaSource `json:"schemaSources,omitempty"`
 }
 
