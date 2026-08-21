@@ -1,0 +1,38 @@
+POST https://contentwarehouse.googleapis.com/v1/projects/${projectNumber}/locations/us/documentSchemas?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+
+{
+  "name": "projects/${projectNumber}/locations/us/documentSchemas/cws-${uniqueId}",
+  "displayName": "Minimal Schema ${uniqueId}"
+}
+---
+GET https://contentwarehouse.googleapis.com/v1/projects/${projectNumber}/locations/us/documentSchemas/cws-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+
+{
+  "name": "projects/${projectNumber}/locations/us/documentSchemas/cws-${uniqueId}",
+  "displayName": "Minimal Schema ${uniqueId}"
+}
+---
+DELETE https://contentwarehouse.googleapis.com/v1/projects/${projectNumber}/locations/us/documentSchemas/cws-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+
+{}

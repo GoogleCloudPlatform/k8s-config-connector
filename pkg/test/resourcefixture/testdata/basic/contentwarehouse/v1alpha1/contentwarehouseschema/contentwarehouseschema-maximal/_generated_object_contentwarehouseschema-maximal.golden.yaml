@@ -1,0 +1,57 @@
+apiVersion: contentwarehouse.cnrm.cloud.google.com/v1alpha1
+kind: ContentWarehouseSchema
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: cws-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  description: An updated comprehensive document schema
+  displayName: Maximal Schema Updated ${uniqueId}
+  documentIsFolder: false
+  location: us
+  projectRef:
+    external: ${projectId}
+  propertyDefinitions:
+  - displayName: Integer Property Updated
+    integerTypeOptions: {}
+    isFilterable: true
+    isMetadata: true
+    isRepeatable: false
+    isRequired: false
+    isSearchable: true
+    name: prop_int
+  - displayName: Text Property Updated
+    isFilterable: true
+    isMetadata: true
+    isRepeatable: true
+    isRequired: true
+    isSearchable: true
+    name: prop_text
+    textTypeOptions: {}
+  - displayName: Enum Property Updated
+    enumTypeOptions:
+      possibleValues:
+      - VALUE_A
+      - VALUE_B
+      - VALUE_C
+      validationCheckDisabled: true
+    isFilterable: true
+    isMetadata: true
+    isRepeatable: false
+    isRequired: false
+    isSearchable: true
+    name: prop_enum
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectNumber}/locations/us/documentSchemas/cws-${uniqueId}
+  observedGeneration: 2

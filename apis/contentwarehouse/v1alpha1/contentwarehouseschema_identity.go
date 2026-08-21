@@ -43,6 +43,10 @@ func (i *ContentWarehouseSchemaIdentity) String() string {
 	return ContentWarehouseSchemaIdentityFormat.ToString(*i)
 }
 
+func (i *ContentWarehouseSchemaIdentity) ParentString() string {
+	return fmt.Sprintf("projects/%s/locations/%s", i.Project, i.Location)
+}
+
 func (i *ContentWarehouseSchemaIdentity) FromExternal(ref string) error {
 	parsed, match, err := ContentWarehouseSchemaIdentityFormat.Parse(ref)
 	if err != nil {

@@ -1,0 +1,41 @@
+apiVersion: contentwarehouse.cnrm.cloud.google.com/v1alpha1
+kind: ContentWarehouseSchema
+metadata:
+  name: cws-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us
+  displayName: "Maximal Schema Updated ${uniqueId}"
+  description: "An updated comprehensive document schema"
+  documentIsFolder: false
+  propertyDefinitions:
+    - name: "prop_int"
+      displayName: "Integer Property Updated"
+      isRepeatable: false
+      isFilterable: true
+      isSearchable: true
+      isMetadata: true
+      isRequired: false
+      integerTypeOptions: {}
+    - name: "prop_text"
+      displayName: "Text Property Updated"
+      isRepeatable: true
+      isFilterable: true
+      isSearchable: true
+      isMetadata: true
+      isRequired: true
+      textTypeOptions: {}
+    - name: "prop_enum"
+      displayName: "Enum Property Updated"
+      isRepeatable: false
+      isFilterable: true
+      isSearchable: true
+      isMetadata: true
+      isRequired: false
+      enumTypeOptions:
+        possibleValues:
+          - "VALUE_A"
+          - "VALUE_B"
+          - "VALUE_C"
+        validationCheckDisabled: true
