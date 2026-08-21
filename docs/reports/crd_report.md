@@ -311,6 +311,7 @@
 | discoveryengine.cnrm.cloud.google.com          | DiscoveryEngineSearchEngine                              | True         | False       | False  | Direct     | True        |
 | discoveryengine.cnrm.cloud.google.com          | DiscoveryEngineServingConfig                             | True         | False       | False  | Direct     | True        |
 | discoveryengine.cnrm.cloud.google.com          | DiscoveryEngineSession                                   | True         | False       | False  | Direct     | True        |
+| discoveryengine.cnrm.cloud.google.com          | DiscoveryEngineUserStore                                 | True         | False       | False  | Direct     | True        |
 | dlp.cnrm.cloud.google.com                      | DLPConnection                                            | True         | False       | False  | Direct     | True        |
 | dlp.cnrm.cloud.google.com                      | DLPDeidentifyTemplate                                    | False        | True        | False  | DCL        | False       |
 | dlp.cnrm.cloud.google.com                      | DLPDiscoveryConfig                                       | True         | False       | False  | Direct     | True        |
@@ -331,6 +332,7 @@
 | edgecontainer.cnrm.cloud.google.com            | EdgeContainerVpnConnection                               | False        | True        | False  | Terraform  | False       |
 | edgenetwork.cnrm.cloud.google.com              | EdgeNetworkNetwork                                       | False        | True        | False  | Terraform  | False       |
 | edgenetwork.cnrm.cloud.google.com              | EdgeNetworkSubnet                                        | False        | True        | False  | Terraform  | False       |
+| enterpriseknowledgegraph.cnrm.cloud.google.com | EnterpriseKnowledgeGraphEntityReconciliationJob          | True         | False       | False  | Direct     | True        |
 | essentialcontacts.cnrm.cloud.google.com        | EssentialContactsContact                                 | True         | True        | False  | Direct     | True        |
 | eventarc.cnrm.cloud.google.com                 | EventarcChannelConnection                                | True         | False       | False  | Direct     | True        |
 | eventarc.cnrm.cloud.google.com                 | EventarcChannel                                          | True         | False       | False  | Direct     | True        |
@@ -594,6 +596,7 @@
 | aiplatform.cnrm.cloud.google.com               | VertexAISchedule                                         | True         | False       | False  | Direct     | True        |
 | aiplatform.cnrm.cloud.google.com               | VertexAISpecialistPool                                   | True         | False       | False  | Direct     | True        |
 | aiplatform.cnrm.cloud.google.com               | VertexAIStudy                                            | True         | False       | False  | Direct     | True        |
+| vertexai.cnrm.cloud.google.com                 | VertexAITensorboardExperiment                            | True         | False       | False  | Direct     | True        |
 | vertexai.cnrm.cloud.google.com                 | VertexAITensorboard                                      | True         | False       | False  | Terraform  | True        |
 | aiplatform.cnrm.cloud.google.com               | VertexAITrainingPipeline                                 | True         | False       | False  | Direct     | True        |
 | aiplatform.cnrm.cloud.google.com               | VertexAITuningJob                                        | True         | False       | False  | Direct     | True        |

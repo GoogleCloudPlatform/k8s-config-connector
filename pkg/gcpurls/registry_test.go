@@ -206,13 +206,16 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//dns.googleapis.com/projects/{}/responsePolicies/{}":          true,
 		"//dns.googleapis.com/projects/{}/responsePolicies/{}/rules/{}": true,
 
-		// Grafeas Note
-		"//containeranalysis.googleapis.com/projects/{}/notes/{}": true,
+		// Enterprise Knowledge Graph
+		"//enterpriseknowledgegraph.googleapis.com/projects/{}/locations/{}/entityReconciliationJobs/{}": true,
 
 		// Firestore
 		"//firestore.googleapis.com/projects/{}/databases/{}/backupSchedules/{}":             true,
 		"//firestore.googleapis.com/projects/{}/databases/{}/collectionGroups/{}":            true,
 		"//firestore.googleapis.com/projects/{}/databases/{}/collectionGroups/{}/indexes/{}": true,
+
+		// Grafeas Note
+		"//containeranalysis.googleapis.com/projects/{}/notes/{}": true,
 
 		// Hypercompute Cluster
 		"//hypercomputecluster.googleapis.com/projects/{}/locations/{}/clusters/{}": true,

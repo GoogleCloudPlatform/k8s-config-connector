@@ -265,7 +265,13 @@ func PruneTypes(ctx context.Context, o *PruneTypesOptions) error {
 			return fmt.Errorf("reading %s: %w", targetFile, err)
 		}
 
+		processedDecls := make(map[*ast.GenDecl]bool)
 		for _, item := range toPrune {
+			if processedDecls[item.decl] {
+				continue
+			}
+			processedDecls[item.decl] = true
+
 			startPos := item.decl.Pos()
 			if item.decl.Doc != nil {
 				startPos = item.decl.Doc.Pos()
