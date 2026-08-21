@@ -10,10 +10,10 @@ metadata:
   name: ${uniqueId}
   namespace: ${uniqueId}
 spec:
-  resourceID: "minimal"
   location: us
   projectRef:
     external: ${projectId}
+  resourceID: minimal
   synonyms:
   - words:
     - sale
@@ -27,3 +27,4 @@ status:
     type: Ready
   externalRef: projects/${projectNumber}/locations/us/synonymSets/minimal
   observedGeneration: 1
+  observedState: {}
