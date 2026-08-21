@@ -311,6 +311,7 @@
 | discoveryengine.cnrm.cloud.google.com          | DiscoveryEngineSearchEngine                              | True         | False       | False  | Direct     | True        |
 | discoveryengine.cnrm.cloud.google.com          | DiscoveryEngineServingConfig                             | True         | False       | False  | Direct     | True        |
 | discoveryengine.cnrm.cloud.google.com          | DiscoveryEngineSession                                   | True         | False       | False  | Direct     | True        |
+| discoveryengine.cnrm.cloud.google.com          | DiscoveryEngineUserStore                                 | True         | False       | False  | Direct     | True        |
 | dlp.cnrm.cloud.google.com                      | DLPConnection                                            | True         | False       | False  | Direct     | True        |
 | dlp.cnrm.cloud.google.com                      | DLPDeidentifyTemplate                                    | False        | True        | False  | DCL        | False       |
 | dlp.cnrm.cloud.google.com                      | DLPDiscoveryConfig                                       | True         | False       | False  | Direct     | True        |
@@ -422,6 +423,7 @@
 | managedkafka.cnrm.cloud.google.com             | ManagedKafkaConsumerGroup                                | True         | False       | False  | Direct     | True        |
 | managedkafka.cnrm.cloud.google.com             | ManagedKafkaTopic                                        | True         | True        | False  | Direct     | True        |
 | mapmanagement.cnrm.cloud.google.com            | MapManagementMapConfig                                   | True         | False       | False  | Direct     | True        |
+| marketingplatformadmin.cnrm.cloud.google.com   | MarketingPlatformAdminAnalyticsAccountLink               | True         | False       | False  | Direct     | True        |
 | memcache.cnrm.cloud.google.com                 | MemcacheInstance                                         | False        | True        | False  | Terraform  | False       |
 | memorystore.cnrm.cloud.google.com              | MemorystoreInstanceEndpoint                              | True         | False       | False  | Direct     | True        |
 | memorystore.cnrm.cloud.google.com              | MemorystoreInstance                                      | True         | True        | False  | Direct     | True        |
@@ -594,6 +596,7 @@
 | aiplatform.cnrm.cloud.google.com               | VertexAISchedule                                         | True         | False       | False  | Direct     | True        |
 | aiplatform.cnrm.cloud.google.com               | VertexAISpecialistPool                                   | True         | False       | False  | Direct     | True        |
 | aiplatform.cnrm.cloud.google.com               | VertexAIStudy                                            | True         | False       | False  | Direct     | True        |
+| vertexai.cnrm.cloud.google.com                 | VertexAITensorboardExperiment                            | True         | False       | False  | Direct     | True        |
 | vertexai.cnrm.cloud.google.com                 | VertexAITensorboard                                      | True         | False       | False  | Terraform  | True        |
 | aiplatform.cnrm.cloud.google.com               | VertexAITrainingPipeline                                 | True         | False       | False  | Direct     | True        |
 | aiplatform.cnrm.cloud.google.com               | VertexAITuningJob                                        | True         | False       | False  | Direct     | True        |

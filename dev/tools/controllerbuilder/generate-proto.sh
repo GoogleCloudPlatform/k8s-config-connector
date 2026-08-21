@@ -137,6 +137,8 @@ PROTO_FILES=(
     ${REPO_ROOT}/mockgcp/apis/google/cloud/binaryauthorization/*/*.proto
     ${VERSION_DIR}/google/*/*.proto
     ${VERSION_DIR}/google/analytics/*/*/*.proto
+    ${VERSION_DIR}/google/partner/aistreams/*/*.proto
+    ${VERSION_DIR}/google/marketingplatform/admin/*/*.proto
     ${VERSION_DIR}/google/privacy/dlp/v2/*.proto
     ${VERSION_DIR}/google/api/*.proto
     ${VERSION_DIR}/google/api/*/*/*.proto

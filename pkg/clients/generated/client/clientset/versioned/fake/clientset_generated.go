@@ -299,6 +299,8 @@ import (
 	fakemanagedkafkav1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/managedkafka/v1beta1/fake"
 	mapmanagementv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/mapmanagement/v1alpha1"
 	fakemapmanagementv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/mapmanagement/v1alpha1/fake"
+	marketingplatformadminv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/marketingplatformadmin/v1alpha1"
+	fakemarketingplatformadminv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/marketingplatformadmin/v1alpha1/fake"
 	memcachev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/memcache/v1beta1"
 	fakememcachev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/memcache/v1beta1/fake"
 	memorystorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/memorystore/v1alpha1"
@@ -1212,6 +1214,11 @@ func (c *Clientset) ManagedkafkaV1beta1() managedkafkav1beta1.ManagedkafkaV1beta
 // MapmanagementV1alpha1 retrieves the MapmanagementV1alpha1Client
 func (c *Clientset) MapmanagementV1alpha1() mapmanagementv1alpha1.MapmanagementV1alpha1Interface {
 	return &fakemapmanagementv1alpha1.FakeMapmanagementV1alpha1{Fake: &c.Fake}
+}
+
+// MarketingplatformadminV1alpha1 retrieves the MarketingplatformadminV1alpha1Client
+func (c *Clientset) MarketingplatformadminV1alpha1() marketingplatformadminv1alpha1.MarketingplatformadminV1alpha1Interface {
+	return &fakemarketingplatformadminv1alpha1.FakeMarketingplatformadminV1alpha1{Fake: &c.Fake}
 }
 
 // MemcacheV1beta1 retrieves the MemcacheV1beta1Client
