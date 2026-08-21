@@ -41,6 +41,7 @@ type VertexaiV1alpha1Interface interface {
 	VertexAIFeaturestoreEntityTypeFeaturesGetter
 	VertexAIIndexEndpointsGetter
 	VertexAITensorboardsGetter
+	VertexAITensorboardExperimentsGetter
 }
 
 // VertexaiV1alpha1Client is used to interact with features provided by the vertexai.cnrm.cloud.google.com group.
@@ -86,6 +87,10 @@ func (c *VertexaiV1alpha1Client) VertexAIIndexEndpoints(namespace string) Vertex
 
 func (c *VertexaiV1alpha1Client) VertexAITensorboards(namespace string) VertexAITensorboardInterface {
 	return newVertexAITensorboards(c, namespace)
+}
+
+func (c *VertexaiV1alpha1Client) VertexAITensorboardExperiments(namespace string) VertexAITensorboardExperimentInterface {
+	return newVertexAITensorboardExperiments(c, namespace)
 }
 
 // NewForConfig creates a new VertexaiV1alpha1Client for the given config.

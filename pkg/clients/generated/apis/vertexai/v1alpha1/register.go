@@ -113,5 +113,11 @@ var (
 		Kind:    reflect.TypeOf(VertexAITensorboard{}).Name(),
 	}
 
+	VertexAITensorboardExperimentGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(VertexAITensorboardExperiment{}).Name(),
+	}
+
 	vertexaiAPIVersion = SchemeGroupVersion.String()
 )
