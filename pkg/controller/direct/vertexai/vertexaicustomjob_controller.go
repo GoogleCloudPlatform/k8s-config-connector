@@ -125,7 +125,7 @@ func (a *CustomJobAdapter) Find(ctx context.Context) (bool, error) {
 	req := &pb.GetCustomJobRequest{Name: a.id.String()}
 	customJob, err := a.gcpClient.GetCustomJob(ctx, req)
 	if err != nil {
-		if direct.IsNotFound(err) {
+		if direct.IsNotFound(err) || direct.IsBadRequest(err) {
 			return false, nil
 		}
 		return false, fmt.Errorf("getting CustomJob %q: %w", a.id, err)
@@ -251,7 +251,7 @@ func (a *CustomJobAdapter) Delete(ctx context.Context, deleteOp *directbase.Dele
 	req := &pb.DeleteCustomJobRequest{Name: a.id.String()}
 	op, err := a.gcpClient.DeleteCustomJob(ctx, req)
 	if err != nil {
-		if direct.IsNotFound(err) {
+		if direct.IsNotFound(err) || direct.IsBadRequest(err) {
 			log.V(2).Info("skipping delete for non-existent CustomJob, assuming it was already deleted", "name", a.id.String())
 			return true, nil
 		}
