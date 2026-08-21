@@ -79,7 +79,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Engine with name \"projects/${projectId}/locations/global/collections/default_collection/engines/engine-${uniqueId}\" does not exist.",
+    "message": "Engine with name \"projects/${projectNumber}/locations/global/collections/default_collection/engines/engine-${uniqueId}\" does not exist.",
     "status": "NOT_FOUND"
   }
 }
@@ -124,6 +124,9 @@ X-Xss-Protection: 0
     "displayName": "My Engine for ServingConfig",
     "industryVertical": 1,
     "name": "projects/${projectNumber}/locations/global/collections/default_collection/engines/engine-${uniqueId}",
+    "searchEngineConfig": {
+      "searchTier": 1
+    },
     "solutionType": 2,
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
@@ -150,7 +153,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "ServingConfig with name \"projects/${projectId}/locations/global/collections/default_collection/engines/engine-${uniqueId}/servingConfigs/servingconfig-${uniqueId}\" does not exist.",
+    "message": "ServingConfig with name \"projects/${projectNumber}/locations/global/collections/default_collection/engines/engine-${uniqueId}/servingConfigs/servingconfig-${uniqueId}\" does not exist.",
     "status": "NOT_FOUND"
   }
 }
@@ -259,6 +262,9 @@ X-Xss-Protection: 0
   "displayName": "My Engine for ServingConfig",
   "industryVertical": 1,
   "name": "projects/${projectNumber}/locations/global/collections/default_collection/engines/engine-${uniqueId}",
+  "searchEngineConfig": {
+    "searchTier": 1
+  },
   "solutionType": 2,
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }

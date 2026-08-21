@@ -71,7 +71,7 @@ func (s *servingConfigService) GetServingConfig(ctx context.Context, req *pb_v1b
 	obj := &pb_v1beta.ServingConfig{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "ServingConfig with name %q does not exist.", req.GetName())
+			return nil, status.Errorf(codes.NotFound, "ServingConfig with name %q does not exist.", fqn)
 		}
 		return nil, err
 	}

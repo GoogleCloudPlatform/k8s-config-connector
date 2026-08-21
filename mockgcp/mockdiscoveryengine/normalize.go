@@ -23,10 +23,21 @@ import (
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
+	if !strings.Contains(url, "discoveryengine.googleapis.com") {
+		return
+	}
 	replacements.ReplacePath(".startTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".endTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.RemovePath(".servingConfigDataStore")
 	replacements.RemovePath(".response.servingConfigDataStore")
+	replacements.RemovePath(".marketplaceAgentVisibility")
+	replacements.RemovePath(".response.marketplaceAgentVisibility")
+	replacements.RemovePath(".observabilityConfig")
+	replacements.RemovePath(".response.observabilityConfig")
+	replacements.RemovePath(".naturalLanguageQueryUnderstandingConfig")
+	replacements.RemovePath(".response.naturalLanguageQueryUnderstandingConfig")
+	replacements.RemovePath(".solutionTypes")
+	replacements.RemovePath(".response.solutionTypes")
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {

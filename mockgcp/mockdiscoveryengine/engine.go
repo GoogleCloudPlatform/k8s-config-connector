@@ -55,6 +55,14 @@ func (s *engineService) CreateEngine(ctx context.Context, req *pb.CreateEngineRe
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
 
+	if obj.EngineConfig == nil {
+		obj.EngineConfig = &pb.Engine_SearchEngineConfig_{
+			SearchEngineConfig: &pb.Engine_SearchEngineConfig{
+				SearchTier: pb.SearchTier(1),
+			},
+		}
+	}
+
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
@@ -73,7 +81,7 @@ func (s *engineService) GetEngine(ctx context.Context, req *pb.GetEngineRequest)
 	obj := &pb.Engine{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "Engine with name %q does not exist.", req.GetName())
+			return nil, status.Errorf(codes.NotFound, "Engine with name %q does not exist.", fqn)
 		}
 		return nil, err
 	}
