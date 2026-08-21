@@ -576,6 +576,284 @@ func normalizeRepresentation(obj interface{}) interface{} {
 				}
 			}
 		}
+		if val, ok := v["crossSeriesReducer"]; ok {
+			if f, ok := val.(float64); ok {
+				switch f {
+				case 1:
+					v["crossSeriesReducer"] = "REDUCE_NONE"
+				case 2:
+					v["crossSeriesReducer"] = "REDUCE_MEAN"
+				case 3:
+					v["crossSeriesReducer"] = "REDUCE_STDDEV"
+				case 4:
+					v["crossSeriesReducer"] = "REDUCE_SUM"
+				case 5:
+					v["crossSeriesReducer"] = "REDUCE_BOTTOM"
+				case 6:
+					v["crossSeriesReducer"] = "REDUCE_TOP"
+				case 7:
+					v["crossSeriesReducer"] = "REDUCE_PERCENTILE_99"
+				case 8:
+					v["crossSeriesReducer"] = "REDUCE_PERCENTILE_95"
+				case 9:
+					v["crossSeriesReducer"] = "REDUCE_PERCENTILE_50"
+				case 10:
+					v["crossSeriesReducer"] = "REDUCE_PERCENTILE_05"
+				case 11:
+					v["crossSeriesReducer"] = "REDUCE_FRACTION_TRUE"
+				case 12:
+					v["crossSeriesReducer"] = "REDUCE_MIN"
+				case 13:
+					v["crossSeriesReducer"] = "REDUCE_MAX"
+				case 14:
+					v["crossSeriesReducer"] = "REDUCE_COUNT"
+				}
+			}
+		}
+		if val, ok := v["perSeriesAligner"]; ok {
+			if f, ok := val.(float64); ok {
+				switch f {
+				case 1:
+					v["perSeriesAligner"] = "ALIGN_DELTA"
+				case 2:
+					v["perSeriesAligner"] = "ALIGN_RATE"
+				case 3:
+					v["perSeriesAligner"] = "ALIGN_INTERPOLATE"
+				case 4:
+					v["perSeriesAligner"] = "ALIGN_NEXT_OLDER"
+				case 10:
+					v["perSeriesAligner"] = "ALIGN_MIN"
+				case 11:
+					v["perSeriesAligner"] = "ALIGN_MAX"
+				case 12:
+					v["perSeriesAligner"] = "ALIGN_MEAN"
+				case 13:
+					v["perSeriesAligner"] = "ALIGN_COUNT"
+				case 14:
+					v["perSeriesAligner"] = "ALIGN_SUM"
+				case 15:
+					v["perSeriesAligner"] = "ALIGN_STDDEV"
+				case 16:
+					v["perSeriesAligner"] = "ALIGN_COUNT_TRUE"
+				case 17:
+					v["perSeriesAligner"] = "ALIGN_FRACTION_TRUE"
+				case 18:
+					v["perSeriesAligner"] = "ALIGN_PERCENTILE_99"
+				case 19:
+					v["perSeriesAligner"] = "ALIGN_PERCENTILE_95"
+				case 20:
+					v["perSeriesAligner"] = "ALIGN_PERCENTILE_50"
+				case 21:
+					v["perSeriesAligner"] = "ALIGN_PERCENTILE_05"
+				case 23:
+					v["perSeriesAligner"] = "ALIGN_PERCENT_CHANGE"
+				case 24:
+					v["perSeriesAligner"] = "ALIGN_COUNT_FALSE"
+				}
+			}
+		}
+		if val, ok := v["direction"]; ok {
+			if f, ok := val.(float64); ok {
+				switch f {
+				case 1:
+					v["direction"] = "TOP"
+				case 2:
+					v["direction"] = "BOTTOM"
+				}
+			}
+		}
+		if val, ok := v["rankingMethod"]; ok {
+			if f, ok := val.(float64); ok {
+				switch f {
+				case 1:
+					v["rankingMethod"] = "METHOD_MEAN"
+				case 2:
+					v["rankingMethod"] = "METHOD_MAX"
+				case 3:
+					v["rankingMethod"] = "METHOD_MIN"
+				case 4:
+					v["rankingMethod"] = "METHOD_SUM"
+				case 5:
+					v["rankingMethod"] = "METHOD_LATEST"
+				}
+			}
+		}
+		if val, ok := v["plotType"]; ok {
+			if f, ok := val.(float64); ok {
+				switch f {
+				case 1:
+					v["plotType"] = "LINE"
+				case 2:
+					v["plotType"] = "STACKED_AREA"
+				case 3:
+					v["plotType"] = "STACKED_BAR"
+				case 4:
+					v["plotType"] = "HEATMAP"
+				}
+			}
+		}
+		if val, ok := v["scale"]; ok {
+			if f, ok := val.(float64); ok {
+				switch f {
+				case 1:
+					v["scale"] = "LINEAR"
+				case 2:
+					v["scale"] = "LOG10"
+				}
+			}
+		}
+		if val, ok := v["format"]; ok {
+			if f, ok := val.(float64); ok {
+				switch f {
+				case 1:
+					v["format"] = "MARKDOWN"
+				case 2:
+					v["format"] = "RAW"
+				}
+			}
+		}
+		if val, ok := v["horizontalAlignment"]; ok {
+			if f, ok := val.(float64); ok {
+				switch f {
+				case 1:
+					v["horizontalAlignment"] = "H_LEFT"
+				case 2:
+					v["horizontalAlignment"] = "H_CENTER"
+				case 3:
+					v["horizontalAlignment"] = "H_RIGHT"
+				}
+			}
+		}
+		if val, ok := v["verticalAlignment"]; ok {
+			if f, ok := val.(float64); ok {
+				switch f {
+				case 1:
+					v["verticalAlignment"] = "V_TOP"
+				case 2:
+					v["verticalAlignment"] = "V_CENTER"
+				case 3:
+					v["verticalAlignment"] = "V_BOTTOM"
+				}
+			}
+		}
+		if val, ok := v["padding"]; ok {
+			if f, ok := val.(float64); ok {
+				switch f {
+				case 1:
+					v["padding"] = "P_EXTRA_SMALL"
+				case 2:
+					v["padding"] = "P_SMALL"
+				case 3:
+					v["padding"] = "P_MEDIUM"
+				case 4:
+					v["padding"] = "P_LARGE"
+				case 5:
+					v["padding"] = "P_EXTRA_LARGE"
+				}
+			}
+		}
+		if val, ok := v["fontSize"]; ok {
+			if f, ok := val.(float64); ok {
+				switch f {
+				case 1:
+					v["fontSize"] = "FS_EXTRA_SMALL"
+				case 2:
+					v["fontSize"] = "FS_SMALL"
+				case 3:
+					v["fontSize"] = "FS_MEDIUM"
+				case 4:
+					v["fontSize"] = "FS_LARGE"
+				case 5:
+					v["fontSize"] = "FS_EXTRA_LARGE"
+				}
+			}
+		}
+		if val, ok := v["pointerLocation"]; ok {
+			if f, ok := val.(float64); ok {
+				switch f {
+				case 1:
+					v["pointerLocation"] = "PL_TOP"
+				case 2:
+					v["pointerLocation"] = "PL_RIGHT"
+				case 3:
+					v["pointerLocation"] = "PL_BOTTOM"
+				case 4:
+					v["pointerLocation"] = "PL_LEFT"
+				case 5:
+					v["pointerLocation"] = "PL_TOP_LEFT"
+				case 6:
+					v["pointerLocation"] = "PL_TOP_RIGHT"
+				case 7:
+					v["pointerLocation"] = "PL_RIGHT_TOP"
+				case 8:
+					v["pointerLocation"] = "PL_RIGHT_BOTTOM"
+				case 9:
+					v["pointerLocation"] = "PL_BOTTOM_RIGHT"
+				case 10:
+					v["pointerLocation"] = "PL_BOTTOM_LEFT"
+				case 11:
+					v["pointerLocation"] = "PL_LEFT_BOTTOM"
+				case 12:
+					v["pointerLocation"] = "PL_LEFT_TOP"
+				}
+			}
+		}
+		if val, ok := v["metricVisualization"]; ok {
+			if f, ok := val.(float64); ok {
+				switch f {
+				case 1:
+					v["metricVisualization"] = "NUMBER"
+				case 2:
+					v["metricVisualization"] = "BAR"
+				}
+			}
+		}
+		if val, ok := v["targetAxis"]; ok {
+			if f, ok := val.(float64); ok {
+				switch f {
+				case 1:
+					v["targetAxis"] = "Y1"
+				case 2:
+					v["targetAxis"] = "Y2"
+				}
+			}
+		}
+		if val, ok := v["chartType"]; ok {
+			if f, ok := val.(float64); ok {
+				switch f {
+				case 1:
+					v["chartType"] = "PIE"
+				case 2:
+					v["chartType"] = "DONUT"
+				}
+			}
+		}
+		if val, ok := v["filterType"]; ok {
+			if f, ok := val.(float64); ok {
+				switch f {
+				case 1:
+					v["filterType"] = "RESOURCE_LABEL"
+				case 2:
+					v["filterType"] = "METRIC_LABEL"
+				case 3:
+					v["filterType"] = "USER_METADATA"
+				case 4:
+					v["filterType"] = "SYSTEM_METADATA"
+				case 5:
+					v["filterType"] = "GROUP"
+				}
+			}
+		}
+		if val, ok := v["sparkChartType"]; ok {
+			if f, ok := val.(float64); ok {
+				switch f {
+				case 1:
+					v["sparkChartType"] = "SPARK_LINE"
+				case 2:
+					v["sparkChartType"] = "SPARK_BAR"
+				}
+			}
+		}
 		if qp, ok := v["queryParameters"].([]interface{}); ok && len(qp) == 0 {
 			delete(v, "queryParameters")
 		}

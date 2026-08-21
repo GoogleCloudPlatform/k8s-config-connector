@@ -55,6 +55,6 @@ done
 unset SKIP_GENERATE_CRDS
 unset SKIP_GENERATE_PROTOS
 echo "Cleaning Go build cache to prevent stale metadata compilation issues"
-go clean -cache
+go clean -cache || true
 echo "Generating CRDs"
 dev/tasks/generate-crds

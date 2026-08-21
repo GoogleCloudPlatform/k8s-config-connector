@@ -492,6 +492,10 @@ type TimeSeriesQuery struct {
 	// A query used to fetch time series with PromQL.
 	PrometheusQuery *string `json:"prometheusQuery,omitempty"`
 
+	// Preview: A query used to fetch a time series, category series, or
+	// numeric series with SQL.
+	OpsAnalyticsQuery *OpsAnalyticsQuery `json:"opsAnalyticsQuery,omitempty"`
+
 	// The unit of data contained in fetched time series. If non-empty, this
 	//  unit will override any unit that accompanies fetched data. The format is
 	//  the same as the
@@ -502,6 +506,12 @@ type TimeSeriesQuery struct {
 	// Optional. If set, Cloud Monitoring will treat the full query duration as
 	//  the alignment period so that there will be only 1 output value.
 	OutputFullDuration *bool `json:"outputFullDuration,omitempty"`
+}
+
+// +kcc:proto=google.monitoring.dashboard.v1.OpsAnalyticsQuery
+type OpsAnalyticsQuery struct {
+	// A SQL query to fetch time series, category series, or numeric series data.
+	SQL *string `json:"sql,omitempty"`
 }
 
 // +kcc:proto=google.monitoring.dashboard.v1.IncidentList

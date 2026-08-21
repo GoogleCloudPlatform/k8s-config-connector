@@ -27,8 +27,8 @@ import (
 	"google.golang.org/grpc"
 
 	monitoringpb "cloud.google.com/go/monitoring/apiv3/v2/monitoringpb"
-	dashboardpb "cloud.google.com/go/monitoring/dashboard/apiv1/dashboardpb"
 	metricsscopepb "cloud.google.com/go/monitoring/metricsscope/apiv1/metricsscopepb"
+	dashboardpb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/monitoring/dashboard/v1"
 )
 
 func init() {
