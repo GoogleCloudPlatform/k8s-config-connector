@@ -15,19 +15,40 @@
 package mockvectorsearch
 
 import (
+	"strings"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 )
 
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
+	if !strings.Contains(url, "vectorsearch.googleapis.com") {
+		return
+	}
+
 	replacements.ReplacePath(".createTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".response.createTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".updateTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".response.updateTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".metadata.createTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".metadata.endTime", mockgcpregistry.PlaceholderTimestamp)
+
+	replacements.TransformObject(".metadata", func(m map[string]any) {
+		if val, found := m["requestedCancellation"]; found && val == false {
+			delete(m, "requestedCancellation")
+		}
+		if val, found := m["endTime"]; found && val == nil {
+			delete(m, "endTime")
+		}
+		if val, found := m["statusMessage"]; found && val == "" {
+			delete(m, "statusMessage")
+		}
+	})
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
+	if !strings.Contains(event.URL(), "vectorsearch.googleapis.com") {
+		return
+	}
 }
