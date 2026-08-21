@@ -105,7 +105,7 @@ func Enum_ToProto[U ProtoEnum](mapCtx *MapContext, in *string) U {
 	n := descriptor.Values().Len()
 	for i := 0; i < n; i++ {
 		value := descriptor.Values().Get(i)
-		if string(value.Name()) == inValue {
+		if strings.EqualFold(string(value.Name()), inValue) {
 			v := U(value.Number())
 			return v
 		}

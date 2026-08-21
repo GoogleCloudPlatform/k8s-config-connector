@@ -17,6 +17,7 @@ package saasservicemgmt
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	gcp "cloud.google.com/go/saasplatform/saasservicemgmt/apiv1beta1"
 	pb "cloud.google.com/go/saasplatform/saasservicemgmt/apiv1beta1/saasservicemgmtpb"
@@ -95,7 +96,7 @@ func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForO
 	}
 
 	desired.Labels = label.NewGCPLabelsFromK8sLabels(obj.GetLabels())
-	desired.Annotations = obj.GetAnnotations()
+	desired.Annotations = filterKCCAnnotations(obj.GetAnnotations())
 
 	gcpClient, err := m.client(ctx)
 	if err != nil {
@@ -269,5 +270,22 @@ func SaasServiceMgmtReleaseStatus_FromProto(mapCtx *direct.MapContext, in *pb.Re
 		out.ExternalRef = &in.Name
 	}
 	out.ObservedState = SaasServiceMgmtReleaseObservedState_FromProto(mapCtx, in)
+	return out
+}
+
+func filterKCCAnnotations(in map[string]string) map[string]string {
+	if in == nil {
+		return nil
+	}
+	out := make(map[string]string)
+	for k, v := range in {
+		if strings.Contains(k, "cnrm.cloud.google.com") {
+			continue
+		}
+		out[k] = v
+	}
+	if len(out) == 0 {
+		return nil
+	}
 	return out
 }
