@@ -1342,6 +1342,8 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 
 			case schema.GroupKind{Group: "configdeployment.cnrm.cloud.google.com", Kind: "ConfigDeploymentGroup"}:
 
+			case schema.GroupKind{Group: "contactcenterinsights.cnrm.cloud.google.com", Kind: "CCInsightsQAScorecard"}:
+
 			case schema.GroupKind{Group: "developerconnect.cnrm.cloud.google.com", Kind: "DevConnectInsightsConfig"}:
 			case schema.GroupKind{Group: "developerconnect.cnrm.cloud.google.com", Kind: "DevConnectAccountConnector"}:
 
