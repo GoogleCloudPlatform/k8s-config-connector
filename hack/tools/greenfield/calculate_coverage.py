@@ -124,33 +124,6 @@ def get_kcc_resources(kcc_dir):
                     resources.append({'group': group, 'kind': kind})
     return resources
 
-def get_inflight_resources(status_file_path):
-    resources = []
-    if not os.path.exists(status_file_path):
-        return resources
-        
-    with open(status_file_path, 'r') as f:
-        in_table = False
-        for line in f:
-            line = line.strip()
-            if line.startswith('| Resource | Service |'):
-                in_table = True
-                continue
-            if in_table and line.startswith('| :---'):
-                continue
-            if in_table and line.startswith('|'):
-                parts = [p.strip() for p in line.split('|')]
-                if len(parts) >= 6:
-                    resource = parts[1]
-                    service = parts[2]
-                    
-                    if resource and service:
-                        resources.append({
-                            'group': f"{service}.cnrm.cloud.google.com",
-                            'kind': resource
-                        })
-    return resources
-
 def match_resources(gcp_resources, kcc_resources):
     covered = set()
     kcc_map = {}
@@ -407,12 +380,7 @@ def main():
     all_gcp_raw_count = len(gcp_raw)
 
     kcc_resources = get_kcc_resources(kcc_dir)
-    
-    # Inject in-flight resources
-    status_file = os.path.join(os.path.dirname(__file__), "RESOURCE_STATUS.md")
-    inflight_resources = get_inflight_resources(status_file)
-    kcc_resources.extend(inflight_resources)
-    
+
     # match_resources needs to work with unified keys now
     covered = set()
     key_to_kcc_kind = {}
