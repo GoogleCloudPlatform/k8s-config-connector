@@ -1,0 +1,29 @@
+apiVersion: livestream.cnrm.cloud.google.com/v1alpha1
+kind: LiveStreamAsset
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  labels:
+    cnrm-test: "true"
+  name: livestreamasset-minimal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+  video:
+    uri: gs://cloud-samples-data/video/cat.mp4
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: |-
+      Update call failed: error creating: creating LiveStreamAsset projects/${projectId}/locations/us-central1/assets/livestreamasset-minimal-${uniqueId}: googleapi: Error 403: Live Stream API has not been used in project ${projectId} before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/livestream.googleapis.com/overview?project=${projectId} then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.
+      error details: name = ErrorInfo reason = SERVICE_DISABLED domain = googleapis.com metadata = map[activationUrl:https://console.developers.google.com/apis/api/livestream.googleapis.com/overview?project=${projectId} consumer:projects/${projectId} containerInfo:${projectId} service:livestream.googleapis.com serviceTitle:Live Stream API]
+      error details: name = Help desc = Google developers console API activation url = https://console.developers.google.com/apis/api/livestream.googleapis.com/overview?project=${projectId}
+      error details: name = LocalizedMessage locale = en-US msg = Live Stream API has not been used in project ${projectId} before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/livestream.googleapis.com/overview?project=${projectId} then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.
+    reason: UpdateFailed
+    status: "False"
+    type: Ready
+  observedGeneration: 1
