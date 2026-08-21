@@ -189,15 +189,10 @@ func (a *CustomJobAdapter) Update(ctx context.Context, updateOp *directbase.Upda
 	if diffs.HasDiff() {
 		diffs.Object = updateOp.GetUnstructured()
 		structuredreporting.ReportDiff(ctx, diffs)
+		return fmt.Errorf("VertexAICustomJob is immutable and cannot be updated. Field(s) changed: %v", diffs.FieldIDs())
 	}
 
-	// Fetch fully-populated resource to preserve latest status
-	latest, err := a.gcpClient.GetCustomJob(ctx, &pb.GetCustomJobRequest{Name: a.id.String()})
-	if err != nil {
-		return fmt.Errorf("getting CustomJob %s during update: %w", a.id, err)
-	}
-
-	return a.updateStatus(ctx, updateOp, latest)
+	return a.updateStatus(ctx, updateOp, a.actual)
 }
 
 func (a *CustomJobAdapter) compare(ctx context.Context, actual, desired *pb.CustomJob) (*structuredreporting.Diff, error) {
