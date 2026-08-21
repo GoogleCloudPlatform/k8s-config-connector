@@ -12,12 +12,12 @@ metadata:
 spec:
   disabled: true
   firewallEndpointRef:
-    external: projects/${projectId}/locations/us-central1/firewallEndpoints/endpoint-${uniqueId}
+    name: fwe-${uniqueId}
   labels:
     foo: baz
-  location: us-central1
+  location: us-central1-a
   networkRef:
-    external: projects/${projectId}/global/networks/network-${uniqueId}
+    name: ${networkID}
   projectRef:
     external: projects/${projectId}
 status:

@@ -21,6 +21,9 @@ import (
 	"strings"
 	"time"
 
+	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
+
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networksecurity/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -69,16 +72,8 @@ func (m *firewallEndpointAssociationModel) AdapterForObject(ctx context.Context,
 		return nil, err
 	}
 
-	if err := obj.Spec.NetworkRef.Normalize(ctx, op.Reader, obj.GetNamespace()); err != nil {
-		return nil, fmt.Errorf("normalizing NetworkRef: %w", err)
-	}
-	if err := obj.Spec.FirewallEndpointRef.Normalize(ctx, op.Reader, obj.GetNamespace()); err != nil {
-		return nil, fmt.Errorf("normalizing FirewallEndpointRef: %w", err)
-	}
-	if obj.Spec.TLSInspectionPolicyRef != nil {
-		if err := obj.Spec.TLSInspectionPolicyRef.Normalize(ctx, op.Reader, obj.GetNamespace()); err != nil {
-			return nil, fmt.Errorf("normalizing TLSInspectionPolicyRef: %w", err)
-		}
+	if err := common.NormalizeReferences(ctx, op.Reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
 
 	gcpClient, err := m.client(ctx)
@@ -276,10 +271,10 @@ func (a *firewallEndpointAssociationAdapter) Export(ctx context.Context) (*unstr
 		return nil, mapCtx.Err()
 	}
 
-	spec.NetworkRef = &krm.NetworkRef{External: association.Network}
+	spec.NetworkRef = &computev1beta1.ComputeNetworkRef{External: association.Network}
 	spec.FirewallEndpointRef = &krm.FirewallEndpointRef{External: association.FirewallEndpoint}
 	if association.TlsInspectionPolicy != "" {
-		spec.TLSInspectionPolicyRef = &krm.TLSInspectionPolicyRef{External: association.TlsInspectionPolicy}
+		spec.TLSInspectionPolicyRef = &krm.NetworkSecurityTLSInspectionPolicyRef{External: association.TlsInspectionPolicy}
 	}
 
 	obj := &krm.NetworkSecurityFirewallEndpointAssociation{

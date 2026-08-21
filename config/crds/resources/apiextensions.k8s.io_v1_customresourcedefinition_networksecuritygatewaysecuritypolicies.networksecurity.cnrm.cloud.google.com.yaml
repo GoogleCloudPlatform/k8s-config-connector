@@ -126,15 +126,15 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The TLS inspection policy selflink, when not managed
-                      by Config Connector.
+                    description: A reference to an externally managed NetworkSecurityTLSInspectionPolicy
+                      resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/tlsInspectionPolicies/{{tlsInspectionPolicyID}}".
                     type: string
                   name:
-                    description: The `name` field of a `NetworkSecurityTLSInspectionPolicy`
+                    description: The name of a NetworkSecurityTLSInspectionPolicy
                       resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of a `NetworkSecurityTLSInspectionPolicy`
+                    description: The namespace of a NetworkSecurityTLSInspectionPolicy
                       resource.
                     type: string
                 type: object
