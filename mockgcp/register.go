@@ -46,6 +46,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdataform"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdataproc"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdeveloperconnect"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdevicestreaming"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdialogflow"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdiscoveryengine"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdns"
