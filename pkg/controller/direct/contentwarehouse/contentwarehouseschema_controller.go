@@ -20,6 +20,7 @@ import (
 	"strconv"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/contentwarehouse/v1alpha1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
@@ -28,7 +29,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 
-	resourcemanager "google.golang.org/api/cloudresourcemanager/v1"
 	"google.golang.org/api/option"
 	"google.golang.org/api/transport/grpc"
 	pb "google.golang.org/genproto/googleapis/cloud/contentwarehouse/v1"
@@ -79,23 +79,16 @@ func (m *modelContentWarehouseSchema) getProjectNumber(ctx context.Context, proj
 		return projectID, nil
 	}
 
-	var opts []option.ClientOption
-	opts, err := m.config.RESTClientOptions()
-	if err != nil {
-		return "", err
+	if m.config.ProjectMapper == nil {
+		return "", fmt.Errorf("project mapper not initialized in ControllerConfig")
 	}
 
-	rmService, err := resourcemanager.NewService(ctx, opts...)
+	projectNumber, err := m.config.ProjectMapper.LookupProjectNumber(ctx, projectID)
 	if err != nil {
-		return "", fmt.Errorf("creating ResourceManager client: %w", err)
+		return "", fmt.Errorf("resolving project number for %s: %w", projectID, err)
 	}
 
-	project, err := rmService.Projects.Get(projectID).Context(ctx).Do()
-	if err != nil {
-		return "", fmt.Errorf("getting project %s: %w", projectID, err)
-	}
-
-	return fmt.Sprintf("%d", project.ProjectNumber), nil
+	return fmt.Sprintf("%d", projectNumber), nil
 }
 
 func (m *modelContentWarehouseSchema) AdapterForObject(ctx context.Context, op *directbase.AdapterForObjectOperation) (directbase.Adapter, error) {
@@ -110,23 +103,26 @@ func (m *modelContentWarehouseSchema) AdapterForObject(ctx context.Context, op *
 		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
 
+	// Resolve alphanumeric project ID to its numeric project number early to avoid identity mismatch in GetIdentity
+	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
+	if err != nil {
+		return nil, fmt.Errorf("resolving project ID: %w", err)
+	}
+	projectNumber, err := m.getProjectNumber(ctx, projectID)
+	if err != nil {
+		return nil, fmt.Errorf("resolving project number for %s: %w", projectID, err)
+	}
+	if obj.Spec.ProjectRef == nil {
+		obj.Spec.ProjectRef = &refs.ProjectRef{}
+	}
+	obj.Spec.ProjectRef.External = projectNumber
+
 	id, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
 
-	// Resolve the alphanumeric project ID to its numeric project number
-	origIdentity := id.(*krm.ContentWarehouseSchemaIdentity)
-	projectNumber, err := m.getProjectNumber(ctx, origIdentity.Project)
-	if err != nil {
-		return nil, fmt.Errorf("resolving project number for %s: %w", origIdentity.Project, err)
-	}
-
-	resolvedIdentity := &krm.ContentWarehouseSchemaIdentity{
-		Project:        projectNumber,
-		Location:       origIdentity.Location,
-		DocumentSchema: origIdentity.DocumentSchema,
-	}
+	resolvedIdentity := id.(*krm.ContentWarehouseSchemaIdentity)
 
 	gcpClient, err := m.client(ctx)
 	if err != nil {
