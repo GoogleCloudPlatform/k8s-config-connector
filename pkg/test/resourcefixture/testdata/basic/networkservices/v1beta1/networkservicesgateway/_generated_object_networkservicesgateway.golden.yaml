@@ -1,0 +1,37 @@
+apiVersion: networkservices.cnrm.cloud.google.com/v1beta1
+kind: NetworkServicesGateway
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+    foo: bar
+    foo1: bar1
+  name: networkservicesgateway-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  description: An updated test Gateway
+  location: global
+  ports:
+  - 81
+  projectRef:
+    external: projects/${projectId}
+  scope: ${uniqueId}
+  serverTlsPolicyRef:
+    name: networksecurityservertlspolicy-2-${uniqueId}
+  type: OPEN_MESH
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  createTime: "1970-01-01T00:00:00Z"
+  observedGeneration: 2
+  selfLink: https://networkservices.googleapis.com/v1alpha1/projects/${projectId}/locations/global/gateways/networkservicesgateway-${uniqueId}
+  updateTime: "1970-01-01T00:00:00Z"

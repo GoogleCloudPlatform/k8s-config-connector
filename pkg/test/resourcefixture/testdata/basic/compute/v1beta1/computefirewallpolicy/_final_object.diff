@@ -1,0 +1,18 @@
+6d5
+<     cnrm.cloud.google.com/state-into-spec: absent
+10c9
+<   generation: 3
+---
+>   generation: 2
+19d17
+<   resourceID: ${firewallPolicyID}
+31c29
+<   observedGeneration: 3
+---
+>   observedGeneration: 2
+33,34c31,32
+<   selfLink: https://www.googleapis.com/compute/beta/locations/global/firewallPolicies/${firewallPolicyID}
+<   selfLinkWithId: https://www.googleapis.com/compute/beta/locations/global/firewallPolicies/${firewallPolicyID}/${firewallPolicyID}
+---
+>   selfLink: https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}
+>   selfLinkWithId: https://www.googleapis.com/compute/v1/locations/global/firewallPolicies/${firewallPolicyID}/${firewallPolicyID}

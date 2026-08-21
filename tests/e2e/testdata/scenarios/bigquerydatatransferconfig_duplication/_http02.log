@@ -1,0 +1,50 @@
+POST https://bigquerydatatransfer.googleapis.com/v1/projects/${projectId}/locations/us/transferConfigs?%24alt=json%3Benum-encoding%3Dint&serviceAccountName=dependency-sa%40${projectId}.iam.gserviceaccount.com
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus
+
+{
+  "dataSourceId": "scheduled_query",
+  "displayName": "duplication test",
+  "params": {
+    "destination_table_name_template": "my_table",
+    "query": "SELECT 1",
+    "write_disposition": "WRITE_APPEND"
+  },
+  "schedule": "every day 05:00"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "dataSourceId": "scheduled_query",
+  "datasetRegion": "us",
+  "displayName": "duplication test",
+  "encryptionConfiguration": {},
+  "name": "projects/${projectNumber}/locations/us/transferConfigs/${transferConfigID}",
+  "nextRunTime": "2024-04-01T12:34:56.123456Z",
+  "ownerInfo": {
+    "email": "user@google.com"
+  },
+  "params": {
+    "destination_table_name_template": "my_table",
+    "query": "SELECT 1",
+    "write_disposition": "WRITE_APPEND"
+  },
+  "schedule": "every day 05:00",
+  "scheduleOptionsV2": {
+    "timeBasedSchedule": {
+      "schedule": "every day 05:00"
+    }
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "userId": "123"
+}

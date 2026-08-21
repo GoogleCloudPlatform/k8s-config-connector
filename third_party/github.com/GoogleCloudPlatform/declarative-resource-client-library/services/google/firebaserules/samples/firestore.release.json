@@ -1,0 +1,5 @@
+{
+  "name": "cloud.firestore",
+  "project": "{{project}}",
+  "rulesetName":"{{ref:basic.ruleset.json:name}}"
+}

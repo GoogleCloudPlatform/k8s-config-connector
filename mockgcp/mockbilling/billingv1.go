@@ -1,0 +1,217 @@
+// Copyright 2023 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package mockbilling
+
+import (
+	"context"
+
+	"cloud.google.com/go/iam/apiv1/iampb"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/proto"
+
+	pb "cloud.google.com/go/billing/apiv1/billingpb"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
+)
+
+type BillingV1 struct {
+	*MockService
+	pb.UnimplementedCloudBillingServer
+}
+
+func (s *BillingV1) TestIamPermissions(ctx context.Context, req *iampb.TestIamPermissionsRequest) (*iampb.TestIamPermissionsResponse, error) {
+	response := &iampb.TestIamPermissionsResponse{}
+	// HACK: assume all permissions
+	for _, permission := range req.Permissions {
+		response.Permissions = append(response.Permissions, permission)
+	}
+	return response, nil
+}
+
+func (s *BillingV1) GetIamPolicy(ctx context.Context, req *iampb.GetIamPolicyRequest) (*iampb.Policy, error) {
+	return &iampb.Policy{}, nil
+}
+
+func (s *BillingV1) SetIamPolicy(ctx context.Context, req *iampb.SetIamPolicyRequest) (*iampb.Policy, error) {
+	return req.GetPolicy(), nil
+}
+
+func (s *BillingV1) GetBillingAccount(ctx context.Context, req *pb.GetBillingAccountRequest) (*pb.BillingAccount, error) {
+	name, err := s.parseBillingAccountName(req.GetName())
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := &pb.BillingAccount{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	return obj, nil
+}
+
+func (s *BillingV1) CreateBillingAccount(ctx context.Context, req *pb.CreateBillingAccountRequest) (*pb.BillingAccount, error) {
+	obj := proto.CloneOf(req.GetBillingAccount())
+
+	// Generate a name if not set
+	if obj.Name == "" {
+		obj.Name = "billingAccounts/000000-000000-000000" // Should generate something better
+	}
+
+	name, err := s.parseBillingAccountName(obj.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	obj.Name = fqn
+	obj.Open = true
+
+	if err := s.storage.Create(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	return obj, nil
+}
+
+func (s *BillingV1) UpdateBillingAccount(ctx context.Context, req *pb.UpdateBillingAccountRequest) (*pb.BillingAccount, error) {
+	name, err := s.parseBillingAccountName(req.GetName())
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := &pb.BillingAccount{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	// Currently the only field that can be edited is `display_name`.
+	obj.DisplayName = req.GetAccount().GetDisplayName()
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	return obj, nil
+}
+
+func (s *BillingV1) GetProjectBillingInfo(ctx context.Context, req *pb.GetProjectBillingInfoRequest) (*pb.ProjectBillingInfo, error) {
+	projectName, err := projects.ParseProjectName(req.GetName())
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := projectName.String() + "/billingInfo"
+
+	obj := &pb.ProjectBillingInfo{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			// Expected if billing info has not yet been set
+			obj.Name = fqn
+			obj.BillingEnabled = false
+			obj.ProjectId = projectName.ProjectID
+		} else {
+			return nil, err
+		}
+	}
+
+	return obj, nil
+}
+
+func (s *BillingV1) UpdateProjectBillingInfo(ctx context.Context, req *pb.UpdateProjectBillingInfoRequest) (*pb.ProjectBillingInfo, error) {
+	projectName, err := projects.ParseProjectName(req.GetName())
+	if err != nil {
+		return nil, err
+	}
+
+	billingAccountName, err := s.parseBillingAccountName(req.GetProjectBillingInfo().GetBillingAccountName())
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := projectName.String() + "/billingInfo"
+
+	obj := proto.CloneOf(req.GetProjectBillingInfo())
+	obj.BillingAccountName = billingAccountName.String()
+	obj.Name = fqn
+	obj.BillingEnabled = true
+	obj.ProjectId = projectName.ProjectID
+
+	if err := s.storage.Create(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	return obj, nil
+}
+
+func (s *BillingV1) ListBillingAccounts(ctx context.Context, req *pb.ListBillingAccountsRequest) (*pb.ListBillingAccountsResponse, error) {
+	var billingAccounts []*pb.BillingAccount
+
+	kind := (&pb.BillingAccount{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, kind, storage.ListOptions{}, func(obj proto.Message) error {
+		billingAccounts = append(billingAccounts, obj.(*pb.BillingAccount))
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	if len(billingAccounts) == 0 {
+		// For now, return a dummy billing account if none are found.
+		dummyAccount := &pb.BillingAccount{
+			Name:         "billingAccounts/000000-123456-000000",
+			Open:         true,
+			DisplayName:  "Mock Billing Account",
+			CurrencyCode: "USD",
+			Parent:       "organizations/12345678",
+		}
+		billingAccounts = append(billingAccounts, dummyAccount)
+	}
+
+	response := &pb.ListBillingAccountsResponse{
+		BillingAccounts: billingAccounts,
+	}
+	return response, nil
+}
+
+func (s *BillingV1) ListProjectBillingInfo(ctx context.Context, req *pb.ListProjectBillingInfoRequest) (*pb.ListProjectBillingInfoResponse, error) {
+	return &pb.ListProjectBillingInfoResponse{}, nil
+}
+
+func (s *BillingV1) MoveBillingAccount(ctx context.Context, req *pb.MoveBillingAccountRequest) (*pb.BillingAccount, error) {
+	name, err := s.parseBillingAccountName(req.GetName())
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := &pb.BillingAccount{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	obj.Parent = req.GetDestinationParent()
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	return obj, nil
+}

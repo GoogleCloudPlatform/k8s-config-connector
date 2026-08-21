@@ -1,0 +1,14 @@
+label: Config Connector ServiceNetworkingConnection
+markdownDescription: Creates yaml for a ServiceNetworkingConnection resource
+insertText: |
+  apiVersion: servicenetworking.cnrm.cloud.google.com/v1beta1
+  kind: ServiceNetworkingConnection
+  metadata:
+    name: \${1:servicenetworkingconnection-name}
+  spec:
+    networkRef:
+      name: \${2:servicenetworkingconnection-dep}
+    reservedPeeringRanges:
+    - name: \${3:servicenetworkingconnection-dep1}
+    - name: \${4:servicenetworkingconnection-dep2}
+    service: \${5:servicenetworking.googleapis.com}

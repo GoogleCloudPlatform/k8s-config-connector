@@ -1,0 +1,143 @@
+1c1
+< GET https://redis.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}?alt=json
+---
+> GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+24c24
+< POST https://redis.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/instances?alt=json&instanceId=redisinstances-${uniqueId}
+---
+> POST https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances?%24alt=json%3Benum-encoding%3Dint&instanceId=redisinstances-${uniqueId}
+28c28
+<   "connectMode": "DIRECT_PEERING",
+---
+>   "connectMode": 1,
+30,34d29
+<   "labels": {
+<     "cnrm-test": "true",
+<     "label-one": "value-one",
+<     "managed-by-cnrm": "true"
+<   },
+36d30
+<   "name": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
+38,39c32
+<   "tier": "STANDARD_HA",
+<   "transitEncryptionMode": "DISABLED"
+---
+>   "tier": 3
+65c58
+< GET https://redis.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+---
+> GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+90c83
+<     "@type": "type.googleapis.com/google.cloud.redis.v1beta1.Instance",
+---
+>     "@type": "type.googleapis.com/google.cloud.redis.v1.Instance",
+98,102d90
+<     "labels": {
+<       "cnrm-test": "true",
+<       "label-one": "value-one",
+<       "managed-by-cnrm": "true"
+<     },
+129c117
+< GET https://redis.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}?alt=json
+---
+> GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+145c133
+<   "connectMode": "DIRECT_PEERING",
+---
+>   "connectMode": 1,
+150,154d137
+<   "labels": {
+<     "cnrm-test": "true",
+<     "label-one": "value-one",
+<     "managed-by-cnrm": "true"
+<   },
+165c148
+<     "persistenceMode": "DISABLED"
+---
+>     "persistenceMode": 1
+169c152
+<   "readReplicasMode": "READ_REPLICAS_DISABLED",
+---
+>   "readReplicasMode": 1,
+173,175c156,158
+<   "state": "READY",
+<   "tier": "STANDARD_HA",
+<   "transitEncryptionMode": "DISABLED"
+---
+>   "state": 2,
+>   "tier": 3,
+>   "transitEncryptionMode": 2
+180c163
+< PATCH https://redis.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}?alt=json&updateMask=displayName
+---
+> PATCH https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=displayName
+183a167
+>   "connectMode": 1,
+185,189d168
+<   "labels": {
+<     "cnrm-test": "true",
+<     "label-one": "value-one",
+<     "managed-by-cnrm": "true"
+<   },
+191,195c170,172
+<   "persistenceConfig": {
+<     "persistenceMode": "DISABLED"
+<   },
+<   "readReplicasMode": "READ_REPLICAS_DISABLED",
+<   "secondaryIpRange": "10.20.30.16/28"
+---
+>   "name": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
+>   "secondaryIpRange": "auto",
+>   "tier": 3
+221c198
+< GET https://redis.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+---
+> GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+246c223
+<     "@type": "type.googleapis.com/google.cloud.redis.v1beta1.Instance",
+---
+>     "@type": "type.googleapis.com/google.cloud.redis.v1.Instance",
+254,258d230
+<     "labels": {
+<       "cnrm-test": "true",
+<       "label-one": "value-one",
+<       "managed-by-cnrm": "true"
+<     },
+285c257
+< GET https://redis.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}?alt=json
+---
+> GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+301c273
+<   "connectMode": "DIRECT_PEERING",
+---
+>   "connectMode": 1,
+306,310d277
+<   "labels": {
+<     "cnrm-test": "true",
+<     "label-one": "value-one",
+<     "managed-by-cnrm": "true"
+<   },
+321c288
+<     "persistenceMode": "DISABLED"
+---
+>     "persistenceMode": 1
+325c292
+<   "readReplicasMode": "READ_REPLICAS_DISABLED",
+---
+>   "readReplicasMode": 1,
+329,331c296,298
+<   "state": "READY",
+<   "tier": "STANDARD_HA",
+<   "transitEncryptionMode": "DISABLED"
+---
+>   "state": 2,
+>   "tier": 3,
+>   "transitEncryptionMode": 2
+336c303
+< DELETE https://redis.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}?alt=json
+---
+> DELETE https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+362c329
+< GET https://redis.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+---
+> GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}

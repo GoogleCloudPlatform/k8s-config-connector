@@ -1,0 +1,30 @@
+apiVersion: vertexai.cnrm.cloud.google.com/v1alpha1
+kind: VertexAIExampleStore
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  labels:
+    cnrm-test: "true"
+  name: examplestore-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  displayName: Minimal Example Store
+  exampleStoreConfig:
+    vertexEmbeddingModel: publishers/google/models/textembedding-gecko@001
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/exampleStores/examplestore-${uniqueId}
+  observedGeneration: 1
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    updateTime: "1970-01-01T00:00:00Z"

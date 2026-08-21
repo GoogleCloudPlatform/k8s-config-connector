@@ -1,0 +1,3 @@
+```release-note:bug
+sql: fixed bug where `google_sql_database_instance` would fail if a replica was created, with an encryption key, in a different region than the master instance.
+```

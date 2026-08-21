@@ -1,0 +1,210 @@
+POST https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets?alt=json&bucketId=bucket${uniqueId}
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "analyticsEnabled": true
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "analyticsEnabled": true,
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "lifecycleState": "ACTIVE",
+  "name": "projects/${projectId}/locations/global/buckets/bucket${uniqueId}",
+  "retentionDays": 30,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+POST https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/bucket${uniqueId}/links?alt=json&linkId=link${uniqueId}
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.logging.v2.LinkMetadata",
+    "createLinkRequest": {
+      "linkId": "link${uniqueId}",
+      "parent": "projects/${projectId}/locations/global/buckets/bucket${uniqueId}"
+    },
+    "startTime": "2024-04-01T12:34:56.123456Z",
+    "state": "OPERATION_STATE_SCHEDULED"
+  },
+  "name": "projects/${projectNumber}/locations/global/operations/${operationID}"
+}
+
+---
+
+GET https://logging.googleapis.com/v2/projects/${projectNumber}/locations/global/operations/${operationID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.logging.v2.LinkMetadata",
+    "createLinkRequest": {
+      "linkId": "link${uniqueId}",
+      "parent": "projects/${projectId}/locations/global/buckets/bucket${uniqueId}"
+    },
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "startTime": "2024-04-01T12:34:56.123456Z",
+    "state": "OPERATION_STATE_SUCCEEDED"
+  },
+  "name": "projects/${projectNumber}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.logging.v2.Link",
+    "bigqueryDataset": {
+      "datasetId": "bigquery.googleapis.com/projects/${projectId}/datasets/link${uniqueId}"
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "lifecycleState": "ACTIVE",
+    "name": "projects/${projectId}/locations/global/buckets/bucket${uniqueId}/links/link${uniqueId}"
+  }
+}
+
+---
+
+GET https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/bucket${uniqueId}/links/link${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bigqueryDataset": {
+    "datasetId": "bigquery.googleapis.com/projects/${projectId}/datasets/link${uniqueId}"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "lifecycleState": "ACTIVE",
+  "name": "projects/${projectId}/locations/global/buckets/bucket${uniqueId}/links/link${uniqueId}"
+}
+
+---
+
+DELETE https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/bucket${uniqueId}/links/link${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.logging.v2.LinkMetadata",
+    "deleteLinkRequest": {
+      "name": "projects/${projectId}/locations/global/buckets/bucket${uniqueId}/links/link${uniqueId}"
+    },
+    "startTime": "2024-04-01T12:34:56.123456Z",
+    "state": "OPERATION_STATE_SCHEDULED"
+  },
+  "name": "projects/${projectNumber}/locations/global/operations/${operationID}"
+}
+
+---
+
+GET https://logging.googleapis.com/v2/projects/${projectNumber}/locations/global/operations/${operationID}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.logging.v2.LinkMetadata",
+    "deleteLinkRequest": {
+      "name": "projects/${projectId}/locations/global/buckets/bucket${uniqueId}/links/link${uniqueId}"
+    },
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "startTime": "2024-04-01T12:34:56.123456Z",
+    "state": "OPERATION_STATE_SUCCEEDED"
+  },
+  "name": "projects/${projectNumber}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+DELETE https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/bucket${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

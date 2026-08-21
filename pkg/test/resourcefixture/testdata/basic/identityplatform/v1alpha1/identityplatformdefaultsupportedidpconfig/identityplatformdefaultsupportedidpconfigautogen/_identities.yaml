@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: identityplatform.cnrm.cloud.google.com
+  kind: IdentityPlatformDefaultSupportedIDPConfig
+  name: identityplatformdefaultsupportedidpconfig-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

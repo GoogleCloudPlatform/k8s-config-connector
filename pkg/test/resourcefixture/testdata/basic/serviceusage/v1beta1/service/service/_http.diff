@@ -1,0 +1,35 @@
+272c272
+< GET https://serviceusage.googleapis.com/v1/projects/project-${uniqueId}/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&prettyPrint=false
+---
+> GET https://serviceusage.googleapis.com/v1/projects/project-${uniqueId}/services/runtimeconfig.googleapis.com?alt=json&prettyPrint=false
+284c284,287
+< {}
+---
+> {
+>   "name": "projects/${projectNumber}/services/runtimeconfig.googleapis.com",
+>   "state": "DISABLED"
+> }
+309,310c312
+< GET https://serviceusage.googleapis.com/v1beta1/operations/${operationID}?alt=json
+< Content-Type: application/json
+---
+> GET https://serviceusage.googleapis.com/v1/operations/${operationID}?alt=json&prettyPrint=false
+341c343
+< GET https://serviceusage.googleapis.com/v1/projects/project-${uniqueId}/services?alt=json&fields=services%2Fname%2CnextPageToken&filter=state%3AENABLED&prettyPrint=false
+---
+> GET https://serviceusage.googleapis.com/v1/projects/project-${uniqueId}/services/runtimeconfig.googleapis.com?alt=json&prettyPrint=false
+354,358c356,358
+<   "services": [
+<     {
+<       "name": "projects/${projectNumber}/services/runtimeconfig.googleapis.com"
+<     }
+<   ]
+---
+>   "name": "projects/${projectNumber}/services/runtimeconfig.googleapis.com",
+>   "parent": "projects/${projectNumber}",
+>   "state": "ENABLED"
+388,389c388
+< GET https://serviceusage.googleapis.com/v1beta1/operations/${operationID}?alt=json
+< Content-Type: application/json
+---
+> GET https://serviceusage.googleapis.com/v1/operations/${operationID}?alt=json&prettyPrint=false

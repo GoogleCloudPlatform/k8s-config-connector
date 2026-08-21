@@ -1,0 +1,19 @@
+apiVersion: spanner.cnrm.cloud.google.com/v1beta1
+kind: SpannerInstance
+metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: spannerinstance-${uniqueId}
+spec:
+  config: regional-us-central1
+  displayName: Test Spanner Instance
+---
+apiVersion: spanner.cnrm.cloud.google.com/v1beta1
+kind: SpannerDatabase
+metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: db-${uniqueId}
+spec:
+  instanceRef:
+    name: spannerinstance-${uniqueId}

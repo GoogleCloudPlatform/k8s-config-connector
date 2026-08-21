@@ -1,0 +1,256 @@
+---
+name: test-terraform-fields
+description: Guides through validating, testing, generating golden files (HTTP logs and KRM objects), running tests against mockgcp or real GCP, and aligning mock behavior.
+---
+
+# KCC Test Terraform Fields (Agentic-Friendly Guide)
+
+This skill guides an automated agent or developer through testing, validating, and generating golden test assets (HTTP logs and KRM object configurations) when adding or modifying fields on Config Connector resources. It covers running tests against real GCP, recording the baseline behavior, running against MockGCP, and resolving mock discrepancies.
+
+---
+
+## 1. Structure of Resource Fixture Tests
+
+KCC uses a golden file testing strategy for end-to-end (E2E) validation. The tests are defined under `pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind>/<testname>/`.
+
+A complete test fixture directory contains:
+- **`create.yaml`**: The primary KRM resource definition (what gets created first). Ensure the resource has unique labels/names.
+- **`dependencies.yaml` (optional)**: Supporting resources (e.g. IAM policies, networks, service accounts) that the primary resource depends on.
+- **`update.yaml` (strongly recommended)**: The KRM resource definition with updates applied after initial creation. While structurally optional, it is **highly recommended** (and mandatory for new mutable fields) to include an `update.yaml` to ensure the controller can successfully reconcile in-place updates.
+- **`_http.log`**: Golden HTTP/gRPC request/response traffic log generated during E2E reconciliation.
+- **`_generated_object_[testname].golden.yaml`**: Golden file representing the final KRM object status/spec in the Kube API server.
+- **`_exported.yaml` (optional)**: Golden exported KRM representation.
+
+---
+
+## 2. Setting Up Test Cases
+
+1. **Create Directory**: Create the directory `pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind>/<testname>/`.
+2. **Define KRM files**: Add `create.yaml`, and `update.yaml` (highly recommended to verify update reconciliation), and optionally `dependencies.yaml`.
+
+3. **Verify Yaml Validation**: Ensure YAML files are valid Kubernetes manifests. Avoid any hardcoded project IDs or dynamic IDs (use placeholders if necessary, but KCC test runner resolves them).
+
+---
+
+## 3. Recording Ground Truth against Real GCP (CRITICAL MANDATORY STEP)
+
+> [!IMPORTANT]
+> **YOU MUST NEVER SKIP OR BYPASS THIS STEP.** 
+> Generating mock-only golden logs via `compare-mock` or `go test` without first recording live traffic against real GCP is strictly prohibited.
+> If the environment does not have a pre-configured GCP project ID, or if running `hack/record-gcp` fails due to authentication/project ID errors, you **MUST STOP IMMEDIATELY** and ask the user to provide a valid GCP Project ID. Do not try to bypass this requirement.
+
+> [!WARNING]
+> **Do not run `go test` directly**: When running or recording E2E tests, always prefer using `./dev/tasks/run-e2e` (or scripts like `hack/record-gcp` and `hack/compare-mock` that wrap it) instead of running `go test` directly in the shell or IDE. Running `go test` directly may bypass `KUBEBUILDER_ASSETS` configuration and fall back to an older global version of `kube-apiserver` (such as a legacy `/usr/local/kubebuilder/bin/` copy), leading to incorrect fields like `metadata.selfLink` being generated in the golden files.
+
+To establish a baseline or update golden logs, you must run the tests against a real GCP project. This records actual HTTP/gRPC API interactions into the `_http.log` file.
+
+### A. Authentication and Credentials
+1. **Application Default Credentials (ADC)**:
+   Ensure your local environment is authenticated with Google Cloud:
+   ```bash
+   gcloud auth application-default login
+   ```
+2. **IAM Privileges**:
+   The active credentials must have sufficient privileges in the target GCP project. Depending on the resource type, permissions like `Project Owner`, `Storage Admin`, `DNS Administrator`, or custom resource-specific roles are required.
+3. **Resource Quotas**:
+   Verify that your target project has sufficient quota remaining for the resources you intend to create (e.g., compute CPUs, IP addresses, database instances).
+
+### B. Environment Variables Configuration
+Configure the following environment variables to control project routing, billing, and resource scopes:
+
+| Environment Variable | Description | Default / Fallback |
+| :--- | :--- | :--- |
+| `GCP_PROJECT_ID` | The target GCP project to provision resources in. | Output of `gcloud config get-value project` |
+| `TEST_BILLING_ACCOUNT_ID` | The billing account to associate with billing resources or projects created during E2E. | Dynamically queried from `GCP_PROJECT_ID` billing config |
+| `TEST_FOLDER_ID` | The folder ID under which to run folder-level resource tests. | Parent folder ID of `GCP_PROJECT_ID` |
+| `TEST_ORG_ID` | The organization ID under which organization-level tests run. | Ancestor organization of `GCP_PROJECT_ID` |
+
+> [!NOTE]
+> KCC tests dynamically substitute namespace project references with the actual target GCP project specified by these variables during execution.
+
+### C. Running E2E Fixture Test Recordings
+For standard E2E fixture tests under `pkg/test/resourcefixture/testdata/basic/`, use the `hack/record-gcp` script:
+1. Run the script passing either the test name suffix or the package path:
+   - **Using test name suffix**:
+     ```bash
+     hack/record-gcp <test_name>
+     ```
+   - **Using full test package path**:
+     ```bash
+     hack/record-gcp pkg/test/resourcefixture/testdata/basic/dns/v1beta1/<test_name>
+     ```
+     - **Example: Using test name suffix**:
+     ```bash
+     hack/record-gcp fixtures/dnsrecordsetbasic
+     ```
+   - **Example: Using full test package path**:
+     ```bash
+     hack/record-gcp pkg/test/resourcefixture/testdata/basic/dns/v1beta1/dnsrecordset
+     ```
+2. The script executes the tests with `E2E_GCP_TARGET=real`, `WRITE_GOLDEN_OUTPUT=1`, and records the traffic to `_http.log`.
+3. **If the script fails** (e.g. due to permissions or an invalid/missing default project ID), you **MUST NOT** skip this step. Ask the user for a valid GCP project ID to test against, and then run:
+   ```bash
+   GCP_PROJECT_ID=<project-id> hack/record-gcp <test_name>
+   ```
+
+
+### D. Running MockGCP Script Test Recordings
+For MockGCP-specific script tests (located under `mockgcp/mockgcptests/`), use the python recording task:
+1. Run the task specifying the mock test path:
+   ```bash
+   mockgcp/dev/tasks/record-gcp mocksql/testdata/instance/dr-replica
+   ```
+2. This runs the mock tests targeting real GCP to refresh golden script logs.
+
+### E. Committing E2E Baseline (MANDATORY BEFORE MOCK RUN)
+To prevent `_http.log` and golden files from introducing undue/mixed changes between real GCP and MockGCP runs, you **MUST** commit the real GCP baseline **after the real GCP run and before running against MockGCP**:
+
+1. Stage and commit the generated `_http.log` and `_generated_object_*.golden.yaml` files:
+   ```bash
+   git add pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind>/<testname>/
+   git commit -m "Establish clean GCP golden logs for <testname>"
+   ```
+
+---
+
+## 4. Running against MockGCP and Checking Diffs
+
+> [!WARNING]
+> **Do not run `go test` directly**: Ensure you run tests via `hack/compare-mock` or `./dev/tasks/run-e2e` to guarantee the test uses the correct modern `envtest` control plane version (v1.36+). Direct execution of `go test` can result in false test failures due to `selfLink` or other deprecated metadata field mismatches.
+
+To verify the mock implementation matches real GCP behavior:
+
+> [!IMPORTANT]
+> **Prerequisite**: You must have committed the real GCP baseline (from Section 3.E) before starting this section. Running against MockGCP without committing the real GCP baseline first can mix up different modifications in the `_http.log` files and make diff analysis impossible.
+
+1. **Run Mock Test**:
+   - Run `hack/compare-mock <testname>`. 
+     - **Example:** `hack/compare-mock tests-e2e-sql`
+   - The test will execute using the MockGCP control plane.
+2. **Check for Differences**:
+   - Check if the command fails or if `git status` shows modifications to the golden files.
+   - Run `git diff pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind>/<testname>/`.
+3. **Commit the Baseline Updates**:
+   - If there are any differences (such as `selfLink` removal or minor formatting alignment), stage and commit these updates:
+     ```bash
+     git add pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind>/<testname>/
+     git commit -m "Update golden logs for <testname> after mock comparison"
+     ```
+
+---
+
+## 5. Aligning MockGCP with Real GCP (Troubleshooting & Alignment)
+
+If the mock test fails or produces a diff against the baseline golden logs, apply the following strategies:
+
+### A. Enum Mismatch (e.g., Short vs. Proto Enum Names)
+- **Problem**: GCP REST API returns short enum values (e.g., `"OS_2022"`), but MockGCP protobuf definition expects full enum values (e.g., `"OS_VERSION_LTSC2022"`).
+- **Solution**: Intercept the request and response bodies in the mock HTTP Mux (`mockgcp/mock<service>/service.go`) to translate these names.
+- **Example in `mockgcp/mockcontainer/service.go`**:
+  ```go
+  // Intercept Request Body: OS_2022 -> OS_VERSION_LTSC2022
+  if r.Body != nil {
+      bodyBytes, err := io.ReadAll(r.Body)
+      if err == nil {
+          bodyBytes = bytes.ReplaceAll(bodyBytes, []byte(`"OS_2022"`), []byte(`"OS_VERSION_LTSC2022"`))
+          r.Body = io.NopCloser(bytes.NewReader(bodyBytes))
+          r.ContentLength = int64(len(bodyBytes))
+      }
+  }
+  ```
+
+### B. Output-Only or Server-Generated Fields
+- **Problem**: Fields generated by real GCP (e.g. project numbers, server-assigned IDs, URLs) differ in the mock response.
+- **Solution**: Implement default value generation in the mock service CRUD handlers (`mockgcp/mock<service>/<resource>.go`). Ensure values match patterns expected by KCC (e.g., `projects/<project-id>/locations/<location>/...`).
+
+### C. Normalizing Volatile Fields (timestamps, UUIDs, IPs)
+- **Problem**: Dynamic values change on every execution.
+- **Solution**: Add normalization rules in `mockgcp/mock<service>/normalize.go`.
+- **CRITICAL**: The `Previsit` normalizer runs globally. To prevent corrupting golden files of unrelated services, **always scope the normalization rule to the specific service domain**:
+  ```go
+  func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
+      if !strings.Contains(event.URL(), "myservice.googleapis.com") {
+          return
+      }
+      // Apply replacements here...
+      // e.g. replacements.Replace(uuidRegex, "uuid-placeholder")
+  }
+  ```
+
+### D. Duplicate Normalization Conflict (Zeros Placeholder Conflict)
+- **Problem**: When running legacy E2E tests, the test runner applies a global normalizer that replaces server-generated identifiers in JSON response bodies with a string of zeros (e.g., `"000000000000000000000"`). If the per-service normalizer (`Previsit`) tries to match or replace this path, it can cause conflict errors or map multiple distinct resources to the same zeros placeholder.
+- **Solution**:
+  1. In the mock service's `normalize.go`, guard your `ReplaceStringValue` calls to ignore the placeholder:
+     ```go
+     if val == "000000000000000000000" {
+         return
+     }
+     ```
+  2. Extract resource IDs from the request URL path (e.g. matching `/changes/<id>`) instead of response bodies, as URL paths are not mutated by the legacy normalizer.
+
+---
+
+## 6. Pre-Submit Checks
+
+Before finishing the task or proposing a PR, the agent must run formatting, generation, static analysis, and full CI validation checks locally to ensure zero CI/CD failures:
+
+1. **Prepare PR and Regenerate Code**:
+   - Run `make ready-pr` and `make resource-docs` to ensure all manifests, Go client types, documentation, and code formatting are up to date:
+     ```bash
+     make ready-pr
+     make resource-docs
+     ```
+2. **Mandatory CI/CD Presubmit Verification (CRITICAL)**:
+   - To guarantee generated PRs pass GitHub Actions CI/CD checks cleanly, execute the resource docs generation and the primary validation scripts locally:
+     ```bash
+     make resource-docs
+     dev/ci/presubmits/validate-generated-files
+     scripts/validate-prereqs.sh
+     ```
+   - *(Note: `validate-generated-files` runs GitHub Actions workflow codegen, static config generation, CRDs, mappers, and resource docs. `validate-prereqs.sh` validates formatting and generation).*
+3. **Go Vet**:
+   ```bash
+   go vet ./...
+   ```
+4. **Verify Local Control Plane Webhooks**:
+   - If envtest webhook startup fails with validation errors under new Kubernetes control plane versions, ensure `admissionReviewVersions` in `pkg/webhook/manifests.go` includes both `"v1"` and `"v1beta1"`.
+5. **Verify CRD Field Coverage Checks**:
+   - Run the API checks tests to ensure all new fields are either tested in the fixture tests. WARNING: New fields, in the vast majority of cases, should not be added to the  the exceptions list; this is verified by KCC testing as well. If a field needs to be added to the exceptions list you **must** provide a clear explanation as to why this is the case:
+     - For **Beta** resources:
+       ```bash
+       WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks/... -run TestCRDFieldPresenceInTests
+       ```
+     - For **Alpha** resources:
+       ```bash
+       WRITE_GOLDEN_OUTPUT=1 go test ./tests/apichecks/... -run TestCRDFieldPresenceInTestsForAlpha
+       ```
+6. **Verify Acronym Casing Compliance**:
+   - KCC enforces strict naming rules for acronyms in field names (e.g. using `IP` instead of `Ip`, `VPC` instead of `Vpc`). If the generated fields use non-standard casing (e.g. they were generated directly from Terraform's snake_case schema which maps `allow_cross_org_vpcs` -> `allowCrossOrgVpcs`), the API checks test `TestCRDsAcronyms` will fail.
+   - Run this test locally before submitting:
+     ```bash
+     go test ./tests/apichecks/... -run TestCRDsAcronyms
+     ```
+   - If the test fails, you **MUST** add the reported non-standard casing exceptions in alphabetical order to the exceptions file:
+     `tests/apichecks/testdata/exceptions/acronyms.txt`
+7. **Run CI/CD Group Presubmit Tests Locally (MANDATORY)**:
+   - > [!WARNING]
+     > Modifying a resource type (e.g., adding fields to a CRD, or registering new fields under `observedFields` in mapping configs) will implicitly affect **ALL** existing test cases for that resource type. The controller will begin populating the new fields in the status or `observedState` of all existing instances, causing their golden object manifests (`_generated_object_*.golden.yaml`) to change.
+   - To prevent PR/CI pipeline failures, you **MUST** run the full group presubmit test script under `dev/ci/presubmits/` (e.g. `dev/ci/presubmits/tests-e2e-fixtures-container` for `container.cnrm.cloud.google.com` resources) to ensure you capture and update the golden files of all related tests.
+   - After the run, check `git status` for any modified golden files, verify they are correct, and commit them:
+     ```bash
+     dev/ci/presubmits/tests-e2e-fixtures-<service_name>
+     ```
+8. **Commit All Updated Artifacts and Generated Changes**:
+   - Verify if any generated files (such as `mapper.generated.go`, GitHub Actions YAMLs, CRDs, Go clients, or exceptions) are modified using `git status` or `git diff`. Stage and commit them:
+     ```bash
+     git add -A
+     git commit -m "chore: ensure pristine generated state and formatting to pass CI/CD presubmits"
+     ```
+8. **CI/CD & Golden File Traps (Gotchas)**:
+   - **Accidental Binary Profile Artifacts (`heap.prof`)**: When running recorder or memory profile footprint tests (e.g., `TestProfileRecorderFootprint`), binary profile outputs like `heap.prof` may be written to the test directory (`cmd/recorder/pprof/.../heap.prof`). Always ensure these binary files are deleted and never committed to git.
+   - **Selective Presubmit Harness & `WRITE_GOLDEN_OUTPUT=1` Trap**: Running specialized presubmit subsets (e.g., `test-pause`) with `WRITE_GOLDEN_OUTPUT=1` can inadvertently delete golden files belonging to skipped phases (e.g., `_exported.yaml`). Ensure you only regenerate golden files using the appropriate comprehensive test scope, or inspect git diffs to revert unintended deletions.
+   - **Accidental Staging of Unrelated Logs**: When E2E fixture tests run locally (via `hack/record-gcp`, `hack/compare-mock`, or direct `go test`), other fixtures in the same compute/service package may produce local differences in their `_http_old_controller.log` or `_http.diff` logs. **Never commit changes or `.diff` files for unrelated fixtures.** Inspect `git diff` before staging and revert them.
+   - **Missing `_identities.yaml`**: Newly created E2E fixtures dynamically generate a `_identities.yaml` identity registry file when run. Ensure this file is staged and committed along with your E2E fixture, or the CI presubmits will fail.
+
+
+

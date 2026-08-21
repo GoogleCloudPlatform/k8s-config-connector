@@ -1,0 +1,135 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum GkehubBetaMembershipStateCodeEnum {
+  GkehubBetaMembershipStateCodeEnumNO_VALUE_DO_NOT_USE = 0;
+  GkehubBetaMembershipStateCodeEnumCODE_UNSPECIFIED = 1;
+  GkehubBetaMembershipStateCodeEnumCREATING = 2;
+  GkehubBetaMembershipStateCodeEnumREADY = 3;
+  GkehubBetaMembershipStateCodeEnumDELETING = 4;
+  GkehubBetaMembershipStateCodeEnumUPDATING = 5;
+  GkehubBetaMembershipStateCodeEnumSERVICE_UPDATING = 6;
+}
+
+enum GkehubBetaMembershipInfrastructureTypeEnum {
+  GkehubBetaMembershipInfrastructureTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  GkehubBetaMembershipInfrastructureTypeEnumINFRASTRUCTURE_TYPE_UNSPECIFIED = 1;
+  GkehubBetaMembershipInfrastructureTypeEnumON_PREM = 2;
+  GkehubBetaMembershipInfrastructureTypeEnumMULTI_CLOUD = 3;
+}
+
+message GkehubBetaMembership {
+  GkehubBetaMembershipEndpoint endpoint = 1;
+  string name = 2;
+  map<string, string> labels = 3;
+  string description = 4;
+  GkehubBetaMembershipState state = 5;
+  string create_time = 6;
+  string update_time = 7;
+  string delete_time = 8;
+  string external_id = 9;
+  string last_connection_time = 10;
+  string unique_id = 11;
+  GkehubBetaMembershipAuthority authority = 12;
+  GkehubBetaMembershipInfrastructureTypeEnum infrastructure_type = 13;
+  string project = 14;
+  string location = 15;
+}
+
+message GkehubBetaMembershipEndpoint {
+  GkehubBetaMembershipEndpointGkeCluster gke_cluster = 1;
+  GkehubBetaMembershipEndpointKubernetesMetadata kubernetes_metadata = 2;
+  GkehubBetaMembershipEndpointKubernetesResource kubernetes_resource = 3;
+}
+
+message GkehubBetaMembershipEndpointGkeCluster {
+  string resource_link = 1;
+}
+
+message GkehubBetaMembershipEndpointKubernetesMetadata {
+  string kubernetes_api_server_version = 1;
+  string node_provider_id = 2;
+  int64 node_count = 3;
+  int64 vcpu_count = 4;
+  int64 memory_mb = 5;
+  string update_time = 6;
+}
+
+message GkehubBetaMembershipEndpointKubernetesResource {
+  string membership_cr_manifest = 1;
+  repeated GkehubBetaMembershipEndpointKubernetesResourceMembershipResources membership_resources = 2;
+  repeated GkehubBetaMembershipEndpointKubernetesResourceConnectResources connect_resources = 3;
+  GkehubBetaMembershipEndpointKubernetesResourceResourceOptions resource_options = 4;
+}
+
+message GkehubBetaMembershipEndpointKubernetesResourceMembershipResources {
+  string manifest = 1;
+  bool cluster_scoped = 2;
+}
+
+message GkehubBetaMembershipEndpointKubernetesResourceConnectResources {
+  string manifest = 1;
+  bool cluster_scoped = 2;
+}
+
+message GkehubBetaMembershipEndpointKubernetesResourceResourceOptions {
+  string connect_version = 1;
+  bool v1beta1_crd = 2;
+}
+
+message GkehubBetaMembershipState {
+  GkehubBetaMembershipStateCodeEnum code = 1;
+}
+
+message GkehubBetaMembershipAuthority {
+  string issuer = 1;
+  string workload_identity_pool = 2;
+  string identity_provider = 3;
+}
+
+message ApplyGkehubBetaMembershipRequest {
+  GkehubBetaMembership resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteGkehubBetaMembershipRequest {
+  string service_account_file = 1;
+  GkehubBetaMembership resource = 2;
+}
+
+message ListGkehubBetaMembershipRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListGkehubBetaMembershipResponse {
+  repeated GkehubBetaMembership items = 1;
+}
+
+service GkehubBetaMembershipService {
+  rpc ApplyGkehubBetaMembership(ApplyGkehubBetaMembershipRequest) returns (GkehubBetaMembership);
+  rpc DeleteGkehubBetaMembership(DeleteGkehubBetaMembershipRequest) returns (google.protobuf.Empty);
+  rpc ListGkehubBetaMembership(ListGkehubBetaMembershipRequest) returns (ListGkehubBetaMembershipResponse);
+}

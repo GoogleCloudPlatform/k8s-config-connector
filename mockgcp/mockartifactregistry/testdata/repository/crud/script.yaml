@@ -1,0 +1,6 @@
+# Test for gcloud artifacts repositories
+- exec: gcloud artifacts repositories create test-${uniqueId} --repository-format=docker --location=us-central1 --project=${projectId}
+- exec: gcloud artifacts repositories describe test-${uniqueId} --location=us-central1 --project=${projectId}
+- exec: gcloud artifacts repositories update test-${uniqueId} --description="updated description" --location=us-central1 --project=${projectId}
+- exec: gcloud artifacts repositories describe test-${uniqueId} --location=us-central1 --project=${projectId}
+- exec: gcloud artifacts repositories delete test-${uniqueId} --location=us-central1 --project=${projectId} --quiet

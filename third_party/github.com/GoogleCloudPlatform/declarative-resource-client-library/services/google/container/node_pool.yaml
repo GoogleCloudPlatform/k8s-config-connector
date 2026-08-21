@@ -1,0 +1,538 @@
+# Copyright 2024 Google LLC. All Rights Reserved.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+info:
+  title: Container/NodePool
+  description: The Container NodePool resource
+  x-dcl-struct-name: NodePool
+  x-dcl-has-iam: false
+paths:
+  get:
+    description: The function used to get information about a NodePool
+    parameters:
+    - name: nodePool
+      required: true
+      description: A full instance of a NodePool
+  apply:
+    description: The function used to apply information about a NodePool
+    parameters:
+    - name: nodePool
+      required: true
+      description: A full instance of a NodePool
+  delete:
+    description: The function used to delete a NodePool
+    parameters:
+    - name: nodePool
+      required: true
+      description: A full instance of a NodePool
+  deleteAll:
+    description: The function used to delete all NodePool
+    parameters:
+    - name: project
+      required: true
+      schema:
+        type: string
+    - name: location
+      required: true
+      schema:
+        type: string
+    - name: cluster
+      required: true
+      schema:
+        type: string
+  list:
+    description: The function used to list information about many NodePool
+    parameters:
+    - name: project
+      required: true
+      schema:
+        type: string
+    - name: location
+      required: true
+      schema:
+        type: string
+    - name: cluster
+      required: true
+      schema:
+        type: string
+components:
+  schemas:
+    NodePool:
+      title: NodePool
+      x-dcl-id: projects/{{project}}/locations/{{location}}/clusters/{{cluster}}/nodePools/{{name}}
+      x-dcl-parent-container: project
+      x-dcl-labels: config.labels
+      x-dcl-has-create: true
+      x-dcl-has-iam: false
+      x-dcl-read-timeout: 0
+      x-dcl-apply-timeout: 0
+      x-dcl-delete-timeout: 0
+      type: object
+      required:
+      - name
+      - cluster
+      - project
+      - location
+      properties:
+        autoscaling:
+          type: object
+          x-dcl-go-name: Autoscaling
+          x-dcl-go-type: NodePoolAutoscaling
+          description: 'Autoscaler configuration for this NodePool. Autoscaler is
+            enabled only if a valid configuration is present. '
+          x-dcl-conflicts:
+          - nodeCount
+          properties:
+            autoprovisioned:
+              type: boolean
+              x-dcl-go-name: Autoprovisioned
+              description: Can this node pool be automatically deleted.
+            enabled:
+              type: boolean
+              x-dcl-go-name: Enabled
+              description: Is autoscaling enabled for this node pool.
+            maxNodeCount:
+              type: integer
+              format: int64
+              x-dcl-go-name: MaxNodeCount
+              description: 'Maximum number of nodes in the NodePool. Must be >= minNodeCount.
+                There has to enough quota to scale up the cluster. '
+            minNodeCount:
+              type: integer
+              format: int64
+              x-dcl-go-name: MinNodeCount
+              description: 'Minimum number of nodes in the NodePool. Must be >= 1
+                and <= maxNodeCount. '
+        cluster:
+          type: string
+          x-dcl-go-name: Cluster
+          description: The cluster this node pool belongs to.
+          x-kubernetes-immutable: true
+          x-dcl-references:
+          - resource: Container/Cluster
+            field: name
+            parent: true
+        conditions:
+          type: array
+          x-dcl-go-name: Conditions
+          readOnly: true
+          description: Which conditions caused the current node pool state.
+          x-kubernetes-immutable: true
+          x-dcl-list-type: list
+          items:
+            type: object
+            x-dcl-go-type: NodePoolConditions
+            properties:
+              code:
+                type: string
+                x-dcl-go-name: Code
+                x-dcl-go-type: NodePoolConditionsCodeEnum
+                readOnly: true
+                description: 'Machine-friendly representation of the condition Possible
+                  values: UNKNOWN, GCE_STOCKOUT, GKE_SERVICE_ACCOUNT_DELETED, GCE_QUOTA_EXCEEDED,
+                  SET_BY_OPERATOR'
+                x-kubernetes-immutable: true
+                enum:
+                - UNKNOWN
+                - GCE_STOCKOUT
+                - GKE_SERVICE_ACCOUNT_DELETED
+                - GCE_QUOTA_EXCEEDED
+                - SET_BY_OPERATOR
+              message:
+                type: string
+                x-dcl-go-name: Message
+                readOnly: true
+                description: Human-friendly representation of the condition
+                x-kubernetes-immutable: true
+        config:
+          type: object
+          x-dcl-go-name: Config
+          x-dcl-go-type: NodePoolConfig
+          description: The node configuration of the pool.
+          properties:
+            accelerators:
+              type: array
+              x-dcl-go-name: Accelerators
+              description: A list of hardware accelerators to be attached to each
+                node
+              x-kubernetes-immutable: true
+              x-dcl-send-empty: true
+              x-dcl-list-type: list
+              items:
+                type: object
+                x-dcl-go-type: NodePoolConfigAccelerators
+                properties:
+                  acceleratorCount:
+                    type: integer
+                    format: int64
+                    x-dcl-go-name: AcceleratorCount
+                    description: The number of the accelerator cards exposed to an
+                      instance.
+                    x-kubernetes-immutable: true
+                  acceleratorType:
+                    type: string
+                    x-dcl-go-name: AcceleratorType
+                    description: The accelerator type resource name
+                    x-kubernetes-immutable: true
+            diskSizeGb:
+              type: integer
+              format: int64
+              x-dcl-go-name: DiskSizeGb
+              description: 'Size of the disk attached to each node, specified in GB.
+                The smallest allowed disk size is 10GB. If unspecified, the default
+                disk size is 100GB. '
+              x-kubernetes-immutable: true
+            diskType:
+              type: string
+              x-dcl-go-name: DiskType
+              description: 'Type of the disk attached to each node (e.g. ''pd-standard''
+                or ''pd-ssd'')  If unspecified, the default disk type is ''pd-standard'' '
+              x-kubernetes-immutable: true
+            imageType:
+              type: string
+              x-dcl-go-name: ImageType
+              description: 'The image type to use for this node.  Note that for a
+                given image type, the latest version of it will be used. '
+            labels:
+              type: object
+              additionalProperties:
+                type: string
+              x-dcl-go-name: Labels
+              description: 'The map of Kubernetes labels (key/value pairs) to be applied
+                to each node. These will added in addition to any default label(s)
+                that Kubernetes may apply to the node. In case of conflict in label
+                keys, the applied set may differ depending on the Kubernetes version
+                -- it''s best to assume the behavior is undefined and conflicts should
+                be avoided. For more information, including usage and the valid values,
+                see:   http://kubernetes.io/v1.1/docs/user-guide/labels.html  An object
+                containing a list of "key": value pairs. Example: { "name": "wrench",
+                "mass": "1.3kg", "count": "3" }. '
+              x-kubernetes-immutable: true
+            localSsdCount:
+              type: integer
+              format: int64
+              x-dcl-go-name: LocalSsdCount
+              description: 'The number of local SSD disks to be attached to the node.  The
+                limit for this value is dependant upon the maximum number of disks
+                available on a machine per zone. See:  https://cloud.google.com/compute/docs/disks/local-ssd#local_ssd_limits  for
+                more information. '
+              x-kubernetes-immutable: true
+            machineType:
+              type: string
+              x-dcl-go-name: MachineType
+              description: 'The name of a Google Compute Engine machine type (e.g.
+                n1-standard-1).  If unspecified, the default machine type is n1-standard-1. '
+              x-kubernetes-immutable: true
+            metadata:
+              type: object
+              additionalProperties:
+                type: string
+              x-dcl-go-name: Metadata
+              description: 'The metadata key/value pairs assigned to instances in
+                the cluster.  Keys must conform to the regexp [a-zA-Z0-9-_]+ and be
+                less than 128 bytes in length. These are reflected as part of a URL
+                in the metadata server. Additionally, to avoid ambiguity, keys must
+                not conflict with any other metadata keys for the project or be one
+                of the four reserved keys: "instance-template", "kube-env", "startup-script",
+                and "user-data"  Values are free-form strings, and only have meaning
+                as interpreted by the image running in the instance. The only restriction
+                placed on them is that each value''s size must be less than or equal
+                to 32 KB.  The total size of all keys and values must be less than
+                512 KB.  An object containing a list of "key": value pairs. Example:
+                { "name": "wrench", "mass": "1.3kg", "count": "3" }. '
+              x-kubernetes-immutable: true
+            minCpuPlatform:
+              type: string
+              x-dcl-go-name: MinCpuPlatform
+              description: 'Minimum CPU platform to be used by this instance. The
+                instance may be scheduled on the specified or newer CPU platform '
+              x-kubernetes-immutable: true
+            oauthScopes:
+              type: array
+              x-dcl-go-name: OAuthScopes
+              description: 'The set of Google API scopes to be made available on all
+                of the node VMs under the "default" service account.  The following
+                scopes are recommended, but not required, and by default are not included:  https://www.googleapis.com/auth/compute
+                is required for mounting persistent storage on your nodes. https://www.googleapis.com/auth/devstorage.read_only
+                is required for communicating with gcr.io (the Google Container Registry).  If
+                unspecified, no scopes are added, unless Cloud Logging or Cloud Monitoring
+                are enabled, in which case their required scopes will be added. '
+              x-kubernetes-immutable: true
+              x-dcl-send-empty: true
+              x-dcl-list-type: list
+              items:
+                type: string
+                x-dcl-go-type: string
+            preemptible:
+              type: boolean
+              x-dcl-go-name: Preemptible
+              description: 'Whether the nodes are created as preemptible VM instances.
+                See: https://cloud.google.com/compute/docs/instances/preemptible for
+                more information about preemptible VM instances. '
+              x-kubernetes-immutable: true
+            reservationAffinity:
+              type: object
+              x-dcl-go-name: ReservationAffinity
+              x-dcl-go-type: NodePoolConfigReservationAffinity
+              description: The optional reservation affinity. Setting this field will
+                apply the specified Zonal Compute Reservation to this node pool.
+              x-kubernetes-immutable: true
+              properties:
+                consumeReservationType:
+                  type: string
+                  x-dcl-go-name: ConsumeReservationType
+                  x-dcl-go-type: NodePoolConfigReservationAffinityConsumeReservationTypeEnum
+                  description: 'Corresponds to the type of reservation consumption.
+                    Possible values: NO_RESERVATION, ANY_RESERVATION, SPECIFIC_RESERVATION'
+                  x-kubernetes-immutable: true
+                  enum:
+                  - NO_RESERVATION
+                  - ANY_RESERVATION
+                  - SPECIFIC_RESERVATION
+                key:
+                  type: string
+                  x-dcl-go-name: Key
+                  description: Corresponds to the label key of reservation resource.
+                  x-kubernetes-immutable: true
+                values:
+                  type: array
+                  x-dcl-go-name: Values
+                  description: Corresponds to the label value(s) of reservation resource(s).
+                  x-kubernetes-immutable: true
+                  x-dcl-send-empty: true
+                  x-dcl-list-type: list
+                  items:
+                    type: string
+                    x-dcl-go-type: string
+            sandboxConfig:
+              type: object
+              x-dcl-go-name: SandboxConfig
+              x-dcl-go-type: NodePoolConfigSandboxConfig
+              description: Sandbox configuration for this node.
+              x-kubernetes-immutable: true
+              properties:
+                type:
+                  type: string
+                  x-dcl-go-name: Type
+                  x-dcl-go-type: NodePoolConfigSandboxConfigTypeEnum
+                  description: 'Type of the sandbox to use for the node Possible values:
+                    GVISOR'
+                  x-kubernetes-immutable: true
+                  enum:
+                  - GVISOR
+            serviceAccount:
+              type: string
+              x-dcl-go-name: ServiceAccount
+              description: 'The Google Cloud Platform Service Account to be used by
+                the node VMs.  If no Service Account is specified, the "default" service
+                account is used. '
+              x-kubernetes-immutable: true
+            shieldedInstanceConfig:
+              type: object
+              x-dcl-go-name: ShieldedInstanceConfig
+              x-dcl-go-type: NodePoolConfigShieldedInstanceConfig
+              description: A set of Shielded Instance options.
+              x-kubernetes-immutable: true
+              properties:
+                enableIntegrityMonitoring:
+                  type: boolean
+                  x-dcl-go-name: EnableIntegrityMonitoring
+                  description: Defines whether the instance has integrity monitoring
+                    enabled. Enables monitoring and attestation of the boot integrity
+                    of the instance. The attestation is performed against the integrity
+                    policy baseline. This baseline is initially derived from the implicitly
+                    trusted boot image when the instance is created.
+                  x-kubernetes-immutable: true
+                enableSecureBoot:
+                  type: boolean
+                  x-dcl-go-name: EnableSecureBoot
+                  description: Defines whether the instance has Secure Boot enabled.
+                    Secure Boot helps ensure that the system only runs authentic software
+                    by verifying the digital signature of all boot components, and
+                    halting the boot process if signature verification fails.
+                  x-kubernetes-immutable: true
+            tags:
+              type: array
+              x-dcl-go-name: Tags
+              description: 'The list of instance tags applied to all nodes. Tags are
+                used to identify valid sources or targets for network firewalls and
+                are specified by the client during cluster or node pool creation.
+                Each tag within the list must comply with RFC1035. '
+              x-kubernetes-immutable: true
+              x-dcl-send-empty: true
+              x-dcl-list-type: list
+              items:
+                type: string
+                x-dcl-go-type: string
+            taints:
+              type: array
+              x-dcl-go-name: Taints
+              description: List of kubernetes taints to be applied to each node.
+              x-kubernetes-immutable: true
+              x-dcl-send-empty: true
+              x-dcl-list-type: list
+              items:
+                type: object
+                x-dcl-go-type: NodePoolConfigTaints
+                properties:
+                  effect:
+                    type: string
+                    x-dcl-go-name: Effect
+                    description: Effect for taint
+                    x-kubernetes-immutable: true
+                  key:
+                    type: string
+                    x-dcl-go-name: Key
+                    description: Key for taint
+                    x-kubernetes-immutable: true
+                  value:
+                    type: string
+                    x-dcl-go-name: Value
+                    description: Value for taint
+                    x-kubernetes-immutable: true
+        location:
+          type: string
+          x-dcl-go-name: Location
+          description: The location where the node pool is deployed
+          x-kubernetes-immutable: true
+        locations:
+          type: array
+          x-dcl-go-name: Locations
+          description: The location where the node pool is deployed
+          x-dcl-send-empty: true
+          x-dcl-list-type: list
+          items:
+            type: string
+            x-dcl-go-type: string
+        management:
+          type: object
+          x-dcl-go-name: Management
+          x-dcl-go-type: NodePoolManagement
+          description: Management configuration for this NodePool.
+          properties:
+            autoRepair:
+              type: boolean
+              x-dcl-go-name: AutoRepair
+              description: 'A flag that specifies whether the node auto-repair is
+                enabled for the node pool. If enabled, the nodes in this node pool
+                will be monitored and, if they fail health checks too many times,
+                an automatic repair action will be triggered. '
+            autoUpgrade:
+              type: boolean
+              x-dcl-go-name: AutoUpgrade
+              description: 'A flag that specifies whether node auto-upgrade is enabled
+                for the node pool. If enabled, node auto-upgrade helps keep the nodes
+                in your node pool up to date with the latest release version of Kubernetes. '
+            upgradeOptions:
+              type: object
+              x-dcl-go-name: UpgradeOptions
+              x-dcl-go-type: NodePoolManagementUpgradeOptions
+              description: Specifies the Auto Upgrade knobs for the node pool.
+              properties:
+                autoUpgradeStartTime:
+                  type: string
+                  format: date-time
+                  x-dcl-go-name: AutoUpgradeStartTime
+                  readOnly: true
+                  description: 'This field is set when upgrades are about to commence
+                    with the approximate start time for the upgrades, in RFC3339 text
+                    format. '
+                description:
+                  type: string
+                  x-dcl-go-name: Description
+                  readOnly: true
+                  description: 'This field is set when upgrades are about to commence
+                    with the description of the upgrade. '
+        maxPodsConstraint:
+          type: object
+          x-dcl-go-name: MaxPodsConstraint
+          x-dcl-go-type: NodePoolMaxPodsConstraint
+          description: 'The constraint on the maximum number of pods that can be run
+            simultaneously on a node in the node pool. '
+          x-kubernetes-immutable: true
+          properties:
+            maxPodsPerNode:
+              type: integer
+              format: int64
+              x-dcl-go-name: MaxPodsPerNode
+              description: Constraint enforced on the max num of pods per node.
+              x-kubernetes-immutable: true
+        name:
+          type: string
+          x-dcl-go-name: Name
+          description: The name of the node pool.
+          x-kubernetes-immutable: true
+        nodeCount:
+          type: integer
+          format: int64
+          x-dcl-go-name: NodeCount
+          description: 'The node count for the pool. You must ensure that your Compute
+            Engine resource quota is sufficient for this number of instances. You
+            must also have available firewall and routes quota. '
+          x-dcl-conflicts:
+          - autoscaling
+        podIPv4CidrSize:
+          type: integer
+          format: int64
+          x-dcl-go-name: PodIPv4CidrSize
+          readOnly: true
+          description: The pod CIDR block size per node in this node pool.
+          x-kubernetes-immutable: true
+        project:
+          type: string
+          x-dcl-go-name: Project
+          description: The project id of the resource.
+          x-kubernetes-immutable: true
+          x-dcl-references:
+          - resource: Cloudresourcemanager/Project
+            field: name
+            parent: true
+        status:
+          type: string
+          x-dcl-go-name: Status
+          readOnly: true
+          description: The current status of this cluster.
+          x-kubernetes-immutable: true
+        statusMessage:
+          type: string
+          x-dcl-go-name: StatusMessage
+          readOnly: true
+          description: Any message associated with the current status of this cluster
+          x-kubernetes-immutable: true
+        upgradeSettings:
+          type: object
+          x-dcl-go-name: UpgradeSettings
+          x-dcl-go-type: NodePoolUpgradeSettings
+          description: Upgrade settings control disruption and speed of the upgrade.
+          x-kubernetes-immutable: true
+          properties:
+            maxSurge:
+              type: integer
+              format: int64
+              x-dcl-go-name: MaxSurge
+              description: The maximum number of nodes that can be created beyond
+                the current size of the node pool during the upgrade process.
+              x-kubernetes-immutable: true
+            maxUnavailable:
+              type: integer
+              format: int64
+              x-dcl-go-name: MaxUnavailable
+              description: The maximum number of nodes that can be simultaneously
+                unavailable during the upgrade process. A node is considered available
+                if its status is Ready.
+              x-kubernetes-immutable: true
+        version:
+          type: string
+          x-dcl-go-name: Version
+          description: The version of the Kubernetes of this node.
+          x-kubernetes-immutable: true

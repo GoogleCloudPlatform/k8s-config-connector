@@ -1,0 +1,12 @@
+label: Config Connector SpannerDatabase
+markdownDescription: Creates yaml for a SpannerDatabase resource
+insertText: |
+  apiVersion: spanner.cnrm.cloud.google.com/v1beta1
+  kind: SpannerDatabase
+  metadata:
+    name: \${1:spannerdatabase-name}
+  spec:
+    instanceRef:
+      name: \${2:spannerdatabase-dep}
+    ddl:
+    - \${3:CREATE TABLE t1 (t1 INT64 NOT NULL,) PRIMARY KEY(t1)}

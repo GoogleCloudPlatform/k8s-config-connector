@@ -1,0 +1,9 @@
+apiVersion: firestore.cnrm.cloud.google.com/v1alpha1
+kind: FirestoreBackupSchedule
+metadata:
+  name: firestorebackupschedule-maximal-${uniqueId}
+spec:
+  databaseRef:
+    name: firestoredatabase-dep-${uniqueId}
+  retention: "1209600s"
+  dailyRecurrence: {}

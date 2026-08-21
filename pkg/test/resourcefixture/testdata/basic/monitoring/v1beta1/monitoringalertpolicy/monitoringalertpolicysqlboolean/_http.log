@@ -1,0 +1,637 @@
+GET https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}?alt=json
+Content-Type: application/json
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Bucket `logginglogbucket-${uniqueId}` in location `global` does not exist",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets?alt=json&bucketId=logginglogbucket-${uniqueId}
+Content-Type: application/json
+
+{
+  "analyticsEnabled": true,
+  "name": "projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "analyticsEnabled": true,
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "lifecycleState": "ACTIVE",
+  "name": "projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}",
+  "retentionDays": 30,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}?alt=json
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "analyticsEnabled": true,
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "lifecycleState": "ACTIVE",
+  "name": "projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}",
+  "retentionDays": 30,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}/links/logginglink${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}/links/logginglink${uniqueId} does not exist",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}/links?%24alt=json%3Benum-encoding%3Dint&linkId=logginglink${uniqueId}
+Content-Type: application/json
+
+{}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.logging.v2.LinkMetadata",
+    "createLinkRequest": {
+      "linkId": "logginglink${uniqueId}",
+      "parent": "projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}"
+    },
+    "startTime": "2024-04-01T12:34:56.123456Z",
+    "state": 1
+  },
+  "name": "projects/${projectNumber}/locations/global/operations/${operationID}"
+}
+
+---
+
+GET https://logging.googleapis.com/v2/projects/${projectNumber}/locations/global/operations/${operationID}
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.logging.v2.LinkMetadata",
+    "createLinkRequest": {
+      "linkId": "logginglink${uniqueId}",
+      "parent": "projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}"
+    },
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "startTime": "2024-04-01T12:34:56.123456Z",
+    "state": "OPERATION_STATE_SUCCEEDED"
+  },
+  "name": "projects/${projectNumber}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.logging.v2.Link",
+    "bigqueryDataset": {
+      "datasetId": "bigquery.googleapis.com/projects/${projectId}/datasets/logginglink${uniqueId}"
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "lifecycleState": "ACTIVE",
+    "name": "projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}/links/logginglink${uniqueId}"
+  }
+}
+
+---
+
+GRPC /google.monitoring.v3.AlertPolicyService/CreateAlertPolicy
+
+{
+  "alertPolicy": {
+    "combiner": "OR",
+    "conditions": [
+      {
+        "conditionSql": {
+          "booleanTest": {
+            "column": "has_error"
+          },
+          "daily": {
+            "executionTime": {
+              "hours": 12
+            },
+            "periodicity": 1
+          },
+          "query": "SELECT\n  timestamp, log_name, severity, (severity = 'ERROR') AS has_error\nFROM\n  `${projectId}.global.logginglogbucket-${uniqueId}._AllLogs`\nLIMIT 10"
+        },
+        "displayName": "SQL Log Alert Condition Daily Boolean"
+      }
+    ],
+    "displayName": "Test SQL Alert Policy Daily Boolean",
+    "enabled": true,
+    "userLabels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    }
+  },
+  "name": "projects/${projectId}"
+}
+
+OK
+
+{
+  "combiner": "OR",
+  "conditions": [
+    {
+      "conditionSql": {
+        "booleanTest": {
+          "column": "has_error"
+        },
+        "daily": {
+          "executionTime": {
+            "hours": 12
+          },
+          "periodicity": 1
+        },
+        "query": "SELECT\n  timestamp, log_name, severity, (severity = 'ERROR') AS has_error\nFROM\n  `${projectId}.global.logginglogbucket-${uniqueId}._AllLogs`\nLIMIT 10"
+      },
+      "displayName": "SQL Log Alert Condition Daily Boolean",
+      "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+    }
+  ],
+  "creationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z",
+    "mutatedBy": "user@example.com"
+  },
+  "displayName": "Test SQL Alert Policy Daily Boolean",
+  "enabled": true,
+  "mutationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z",
+    "mutatedBy": "user@example.com"
+  },
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+---
+
+GRPC /google.monitoring.v3.AlertPolicyService/GetAlertPolicy
+
+{
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}"
+}
+
+OK
+
+{
+  "combiner": "OR",
+  "conditions": [
+    {
+      "conditionSql": {
+        "booleanTest": {
+          "column": "has_error"
+        },
+        "daily": {
+          "executionTime": {
+            "hours": 12
+          },
+          "periodicity": 1
+        },
+        "query": "SELECT\n  timestamp, log_name, severity, (severity = 'ERROR') AS has_error\nFROM\n  `${projectId}.global.logginglogbucket-${uniqueId}._AllLogs`\nLIMIT 10"
+      },
+      "displayName": "SQL Log Alert Condition Daily Boolean",
+      "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+    }
+  ],
+  "creationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z",
+    "mutatedBy": "user@example.com"
+  },
+  "displayName": "Test SQL Alert Policy Daily Boolean",
+  "enabled": true,
+  "mutationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z",
+    "mutatedBy": "user@example.com"
+  },
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+---
+
+GRPC /google.monitoring.v3.AlertPolicyService/UpdateAlertPolicy
+
+{
+  "alertPolicy": {
+    "combiner": "OR",
+    "conditions": [
+      {
+        "conditionSql": {
+          "booleanTest": {
+            "column": "has_error"
+          },
+          "daily": {
+            "executionTime": {
+              "hours": 15,
+              "minutes": 30
+            },
+            "periodicity": 2
+          },
+          "query": "SELECT\n  timestamp, log_name, severity, (severity = 'ERROR') AS has_error\nFROM\n  `${projectId}.global.logginglogbucket-${uniqueId}._AllLogs`\nLIMIT 20"
+        },
+        "displayName": "SQL Log Alert Condition Daily Boolean"
+      }
+    ],
+    "displayName": "Test SQL Alert Policy Daily Boolean",
+    "enabled": true,
+    "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+    "userLabels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    }
+  },
+  "updateMask": "conditions"
+}
+
+OK
+
+{
+  "combiner": "OR",
+  "conditions": [
+    {
+      "conditionSql": {
+        "booleanTest": {
+          "column": "has_error"
+        },
+        "daily": {
+          "executionTime": {
+            "hours": 15,
+            "minutes": 30
+          },
+          "periodicity": 2
+        },
+        "query": "SELECT\n  timestamp, log_name, severity, (severity = 'ERROR') AS has_error\nFROM\n  `${projectId}.global.logginglogbucket-${uniqueId}._AllLogs`\nLIMIT 20"
+      },
+      "displayName": "SQL Log Alert Condition Daily Boolean"
+    }
+  ],
+  "creationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z",
+    "mutatedBy": "user@example.com"
+  },
+  "displayName": "Test SQL Alert Policy Daily Boolean",
+  "enabled": true,
+  "mutationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z",
+    "mutatedBy": "user@example.com"
+  },
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+---
+
+GRPC /google.monitoring.v3.AlertPolicyService/GetAlertPolicy
+
+{
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}"
+}
+
+OK
+
+{
+  "combiner": "OR",
+  "conditions": [
+    {
+      "conditionSql": {
+        "booleanTest": {
+          "column": "has_error"
+        },
+        "daily": {
+          "executionTime": {
+            "hours": 15,
+            "minutes": 30
+          },
+          "periodicity": 2
+        },
+        "query": "SELECT\n  timestamp, log_name, severity, (severity = 'ERROR') AS has_error\nFROM\n  `${projectId}.global.logginglogbucket-${uniqueId}._AllLogs`\nLIMIT 20"
+      },
+      "displayName": "SQL Log Alert Condition Daily Boolean"
+    }
+  ],
+  "creationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z",
+    "mutatedBy": "user@example.com"
+  },
+  "displayName": "Test SQL Alert Policy Daily Boolean",
+  "enabled": true,
+  "mutationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z",
+    "mutatedBy": "user@example.com"
+  },
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+---
+
+GRPC /google.monitoring.v3.AlertPolicyService/GetAlertPolicy
+
+{
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}"
+}
+
+OK
+
+{
+  "combiner": "OR",
+  "conditions": [
+    {
+      "conditionSql": {
+        "booleanTest": {
+          "column": "has_error"
+        },
+        "daily": {
+          "executionTime": {
+            "hours": 15,
+            "minutes": 30
+          },
+          "periodicity": 2
+        },
+        "query": "SELECT\n  timestamp, log_name, severity, (severity = 'ERROR') AS has_error\nFROM\n  `${projectId}.global.logginglogbucket-${uniqueId}._AllLogs`\nLIMIT 20"
+      },
+      "displayName": "SQL Log Alert Condition Daily Boolean"
+    }
+  ],
+  "creationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z",
+    "mutatedBy": "user@example.com"
+  },
+  "displayName": "Test SQL Alert Policy Daily Boolean",
+  "enabled": true,
+  "mutationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z",
+    "mutatedBy": "user@example.com"
+  },
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+---
+
+GRPC /google.monitoring.v3.AlertPolicyService/GetAlertPolicy
+
+{
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}"
+}
+
+OK
+
+{
+  "combiner": "OR",
+  "conditions": [
+    {
+      "conditionSql": {
+        "booleanTest": {
+          "column": "has_error"
+        },
+        "daily": {
+          "executionTime": {
+            "hours": 15,
+            "minutes": 30
+          },
+          "periodicity": 2
+        },
+        "query": "SELECT\n  timestamp, log_name, severity, (severity = 'ERROR') AS has_error\nFROM\n  `${projectId}.global.logginglogbucket-${uniqueId}._AllLogs`\nLIMIT 20"
+      },
+      "displayName": "SQL Log Alert Condition Daily Boolean"
+    }
+  ],
+  "creationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z",
+    "mutatedBy": "user@example.com"
+  },
+  "displayName": "Test SQL Alert Policy Daily Boolean",
+  "enabled": true,
+  "mutationRecord": {
+    "mutateTime": "2024-04-01T12:34:56.123456Z",
+    "mutatedBy": "user@example.com"
+  },
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+  "userLabels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  }
+}
+
+---
+
+GRPC /google.monitoring.v3.AlertPolicyService/DeleteAlertPolicy
+
+{
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}"
+}
+
+OK
+
+{}
+
+---
+
+GET https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}/links/logginglink${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bigqueryDataset": {
+    "datasetId": "bigquery.googleapis.com/projects/${projectId}/datasets/logginglink${uniqueId}"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "lifecycleState": 1,
+  "name": "projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}/links/logginglink${uniqueId}"
+}
+
+---
+
+DELETE https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}/links/logginglink${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.logging.v2.LinkMetadata",
+    "deleteLinkRequest": {
+      "name": "projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}/links/logginglink${uniqueId}"
+    },
+    "startTime": "2024-04-01T12:34:56.123456Z",
+    "state": 1
+  },
+  "name": "projects/${projectNumber}/locations/global/operations/${operationID}"
+}
+
+---
+
+GET https://logging.googleapis.com/v2/projects/${projectNumber}/locations/global/operations/${operationID}
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.logging.v2.LinkMetadata",
+    "deleteLinkRequest": {
+      "name": "projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}/links/logginglink${uniqueId}"
+    },
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "startTime": "2024-04-01T12:34:56.123456Z",
+    "state": "OPERATION_STATE_SUCCEEDED"
+  },
+  "name": "projects/${projectNumber}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}?alt=json
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "analyticsEnabled": true,
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "lifecycleState": "ACTIVE",
+  "name": "projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}",
+  "retentionDays": 30,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}?alt=json
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

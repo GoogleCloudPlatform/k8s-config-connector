@@ -1,0 +1,59 @@
+{{template "headercomment.tmpl" .}}
+
+{% extends "config-connector/_base.html" %}
+
+{% block page_title %}{{ .Kind}}{% endblock %}
+{% block body %}
+{{template "alphadisclaimer.tmpl" .}}
+
+<table>
+<thead>
+<tr>
+<th><strong>Property</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>{{"{{gcp_name_short}}"}} Service Name</td>
+<td>Secure Source Manager</td>
+</tr>
+<tr>
+<td>{{"{{gcp_name_short}}"}} Service Documentation</td>
+<td><a href="/secure-source-manager/docs/">/secure-source-manager/docs/</a></td>
+</tr>
+<tr>
+<td>{{"{{gcp_name_short}}"}} REST Resource Name</td>
+<td>v1.projects.locations.repositories</td>
+</tr>
+<tr>
+<td>{{"{{gcp_name_short}}"}} REST Resource Documentation</td>
+<td><a href="/secure-source-manager/docs/reference/rest/v1/projects.locations.repositories">/secure-source-manager/docs/reference/rest/v1/projects.locations.repositories</a></td>
+</tr>
+<tr>
+<td>{{"{{product_name_short}}"}} Resource Short Names</td>
+<td>{{ .ShortNames}}</td>
+</tr>
+<tr>
+<td>{{"{{product_name_short}}"}} Service Name</td>
+<td>securesourcemanager.googleapis.com</td>
+</tr>
+<tr>
+<td>{{"{{product_name_short}}"}} Resource Fully Qualified Name</td>
+<td>{{ .FullyQualifiedName}}</td>
+</tr>
+{{template "iamsupport.tmpl" .}}
+<tr>
+<td>{{"{{product_name_short}}"}} Default Average Reconcile Interval In Seconds</td>
+<td>{{ .DefaultReconcileInterval}}</td>
+</tr>
+</tbody>
+</table>
+
+## Prerequisites
+
+Secure Source Manager is generally available (GA) by invitation only. To use Secure Source Manager, contact your Google Account team.
+
+{{template "resource.tmpl" .}}
+{{template "endnote.tmpl" .}}
+{% endblock %}

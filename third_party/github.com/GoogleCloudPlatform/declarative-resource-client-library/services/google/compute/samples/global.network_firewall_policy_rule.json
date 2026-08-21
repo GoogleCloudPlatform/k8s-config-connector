@@ -1,0 +1,26 @@
+{
+  "priority": 9000,
+  "project": "{{project}}",
+  "location": "global",
+  "firewallPolicy": "projects/{{project}}/global/firewallPolicies/{{ref:global.network_firewall_policy.json:name}}",
+  "description": "sample global policy rule",
+  "ruleName": "rule9000-allow-probe",
+  "match": {
+    "layer4Configs": [
+      {
+        "ipProtocol": "tcp",
+        "ports": ["123"]
+      }
+    ],
+    "destIPRanges": ["10.100.0.1/32"],
+    "destFqdns": ["wikipedia.org"],
+    "destRegionCodes": ["US"],
+    "destThreatIntelligences": ["iplist-known-malicious-ips"],
+    "destAddressGroups": ["projects/{{project}}/locations/global/addressGroups/{{ref:global.networksecurity.address_group.json:name}}"]
+  },
+  "enableLogging" : false,
+  "targetSecureTags": [{"name": "tagValues/{{ref:second.cloudresourcemanager.tag_value.json:name}}"}],
+  "action": "deny",
+  "direction": "EGRESS",
+  "disabled" : false
+}

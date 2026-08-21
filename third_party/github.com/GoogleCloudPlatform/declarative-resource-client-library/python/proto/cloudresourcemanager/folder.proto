@@ -1,0 +1,66 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum CloudresourcemanagerFolderStateEnum {
+  CloudresourcemanagerFolderStateEnumNO_VALUE_DO_NOT_USE = 0;
+  CloudresourcemanagerFolderStateEnumLIFECYCLE_STATE_UNSPECIFIED = 1;
+  CloudresourcemanagerFolderStateEnumACTIVE = 2;
+  CloudresourcemanagerFolderStateEnumDELETE_REQUESTED = 3;
+}
+
+message CloudresourcemanagerFolder {
+  string name = 1;
+  string parent = 2;
+  string display_name = 3;
+  CloudresourcemanagerFolderStateEnum state = 4;
+  string create_time = 5;
+  string update_time = 6;
+  string delete_time = 7;
+  string etag = 8;
+}
+
+message ApplyCloudresourcemanagerFolderRequest {
+  CloudresourcemanagerFolder resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteCloudresourcemanagerFolderRequest {
+  string service_account_file = 1;
+  CloudresourcemanagerFolder resource = 2;
+}
+
+message ListCloudresourcemanagerFolderRequest {
+  string service_account_file = 1;
+  string Parent = 2;
+}
+
+message ListCloudresourcemanagerFolderResponse {
+  repeated CloudresourcemanagerFolder items = 1;
+}
+
+service CloudresourcemanagerFolderService {
+  rpc ApplyCloudresourcemanagerFolder(ApplyCloudresourcemanagerFolderRequest) returns (CloudresourcemanagerFolder);
+  rpc DeleteCloudresourcemanagerFolder(DeleteCloudresourcemanagerFolderRequest) returns (google.protobuf.Empty);
+  rpc ListCloudresourcemanagerFolder(ListCloudresourcemanagerFolderRequest) returns (ListCloudresourcemanagerFolderResponse);
+}

@@ -1,0 +1,6 @@
+{
+  "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter",
+  "members": ["serviceAccount:service-{{project_number}}@gcp-sa-eventarc.iam.gserviceaccount.com"],
+  "resource": "{{ref:second.cloudkms.crypto_key.json:__resource__}}"
+}
+

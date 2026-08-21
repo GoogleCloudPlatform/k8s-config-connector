@@ -1,0 +1,58 @@
+// Copyright 2026 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package cloudidentity
+
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting"
+	api "google.golang.org/api/cloudidentity/v1beta1"
+)
+
+func init() {
+	fuzztesting.RegisterKRMFuzzer_NoProto(groupFuzzer())
+}
+
+func groupFuzzer() fuzztesting.KRMFuzzer_NoProto {
+	f := fuzztesting.NewKRMTypedFuzzer_NoProto(&api.Group{},
+		CloudIdentityGroupSpec_FromAPI, CloudIdentityGroupSpec_ToAPI,
+		CloudIdentityGroupStatus_FromAPI, CloudIdentityGroupStatus_ToAPI,
+	)
+
+	f.SpecField(".Description")
+	f.SpecField(".DisplayName")
+	f.SpecField(".GroupKey")
+	f.SpecField(".Labels")
+	f.SpecField(".Parent")
+
+	f.StatusField(".AdditionalGroupKeys")
+	f.StatusField(".CreateTime")
+	f.StatusField(".UpdateTime")
+
+	f.IdentityField(".Name")
+
+	f.Unimplemented_NotYetTriaged(".DynamicGroupMetadata")
+	f.Unimplemented_NotYetTriaged(".PosixGroups")
+
+	f.Ignore_JSONBookkeeping(".ForceSendFields")
+	f.Ignore_JSONBookkeeping(".NullFields")
+	f.Ignore_JSONBookkeeping(".ServerResponse")
+
+	f.Ignore_JSONBookkeeping(".GroupKey.ForceSendFields")
+	f.Ignore_JSONBookkeeping(".GroupKey.NullFields")
+
+	f.Ignore_JSONBookkeeping(".AdditionalGroupKeys.ForceSendFields")
+	f.Ignore_JSONBookkeeping(".AdditionalGroupKeys.NullFields")
+
+	return f
+}

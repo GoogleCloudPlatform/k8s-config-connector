@@ -1,0 +1,12 @@
+- caisURL: //storage.googleapis.com/projects/${projectId}/buckets/dataplex-metadatajob-bucket-${uniqueId}
+  group: storage.cnrm.cloud.google.com
+  kind: StorageBucket
+  name: dataplex-metadatajob-bucket-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: unknown
+  group: dataplex.cnrm.cloud.google.com
+  kind: DataplexMetadataJob
+  name: dataplexmetadatajob-minimal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

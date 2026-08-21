@@ -1,0 +1,27 @@
+- caisURL: unknown
+  error: not yet supported
+  group: monitoring.cnrm.cloud.google.com
+  kind: MonitoringNotificationChannel
+  name: monitoringnotificationchannel1-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: unknown
+  error: not yet supported
+  group: monitoring.cnrm.cloud.google.com
+  kind: MonitoringNotificationChannel
+  name: monitoringnotificationchannel2-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: unknown
+  error: not yet supported
+  group: monitoring.cnrm.cloud.google.com
+  kind: MonitoringNotificationChannel
+  name: monitoringnotificationchannel3-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: //monitoring.googleapis.com/projects/${projectId}/alertPolicies/1783081159946240433
+  group: monitoring.cnrm.cloud.google.com
+  kind: MonitoringAlertPolicy
+  name: monitoringalertpolicy-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

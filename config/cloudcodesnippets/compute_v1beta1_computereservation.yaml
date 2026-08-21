@@ -1,0 +1,23 @@
+label: Config Connector ComputeReservation
+markdownDescription: Creates yaml for a ComputeReservation resource
+insertText: |
+  apiVersion: compute.cnrm.cloud.google.com/v1beta1
+  kind: ComputeReservation
+  metadata:
+    name: \${1:computereservation-name}
+  spec:
+    description: \${2:Reservation for a single tricked out machine that can only be
+      consumed by a VM instance that references this reservation.}
+    zone: \${3:us-central1-a}
+    specificReservationRequired: \${4:true}
+    specificReservation:
+      count: \${5:1}
+      instanceProperties:
+        machineType: \${6:n1-highmem-8}
+        minCpuPlatform: \${7:Intel Skylake}
+        guestAccelerators:
+        - acceleratorCount: \${8:1}
+          acceleratorType: \${9:nvidia-tesla-v100}
+        localSsds:
+        - interface: \${10:NVME}
+          diskSizeGb: \${11:375}

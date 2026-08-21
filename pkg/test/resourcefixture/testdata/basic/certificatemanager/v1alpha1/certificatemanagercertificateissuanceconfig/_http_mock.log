@@ -1,0 +1,532 @@
+GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-dep-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/caPools/privatecacapool-dep-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools?alt=json&caPoolId=privatecacapool-dep-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+{
+  "issuancePolicy": {
+    "allowedIssuanceModes": {
+      "allowConfigBasedIssuance": false,
+      "allowCsrBasedIssuance": true
+    },
+    "allowedKeyTypes": [
+      {
+        "rsa": {
+          "maxModulusSize": 4096,
+          "minModulusSize": 2048
+        }
+      }
+    ],
+    "baselineValues": {
+      "keyUsage": {
+        "baseKeyUsage": {
+          "digitalSignature": true,
+          "keyEncipherment": true
+        }
+      }
+    },
+    "maximumLifetime": "86400s"
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/caPools/privatecacapool-dep-${uniqueId}",
+  "tier": "ENTERPRISE"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.security.privateca.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/caPools/privatecacapool-dep-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.security.privateca.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/caPools/privatecacapool-dep-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.security.privateca.v1.CaPool",
+    "issuancePolicy": {
+      "allowedIssuanceModes": {
+        "allowCsrBasedIssuance": true
+      },
+      "allowedKeyTypes": [
+        {
+          "rsa": {
+            "maxModulusSize": "4096",
+            "minModulusSize": "2048"
+          }
+        }
+      ],
+      "baselineValues": {
+        "keyUsage": {
+          "baseKeyUsage": {
+            "digitalSignature": true,
+            "keyEncipherment": true
+          }
+        }
+      },
+      "maximumLifetime": "86400s"
+    },
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "name": "projects/${projectId}/locations/us-central1/caPools/privatecacapool-dep-${uniqueId}",
+    "tier": "ENTERPRISE"
+  }
+}
+
+---
+
+GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-dep-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "issuancePolicy": {
+    "allowedIssuanceModes": {
+      "allowCsrBasedIssuance": true
+    },
+    "allowedKeyTypes": [
+      {
+        "rsa": {
+          "maxModulusSize": "4096",
+          "minModulusSize": "2048"
+        }
+      }
+    ],
+    "baselineValues": {
+      "keyUsage": {
+        "baseKeyUsage": {
+          "digitalSignature": true,
+          "keyEncipherment": true
+        }
+      }
+    },
+    "maximumLifetime": "86400s"
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/caPools/privatecacapool-dep-${uniqueId}",
+  "tier": "ENTERPRISE"
+}
+
+---
+
+GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/certificateIssuanceConfigs/certissuanceconfig-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FcertificateIssuanceConfigs%2Fcertissuanceconfig-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "certificateIssuanceConfig \"projects/${projectId}/locations/us-central1/certificateIssuanceConfigs/certissuanceconfig-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/certificateIssuanceConfigs?%24alt=json%3Benum-encoding%3Dint&certificateIssuanceConfigId=certissuanceconfig-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "certificateAuthorityConfig": {
+    "certificateAuthorityServiceConfig": {
+      "caPool": "projects/${projectId}/locations/us-central1/caPools/privatecacapool-dep-${uniqueId}"
+    }
+  },
+  "description": "sample certificate issuance config",
+  "keyAlgorithm": 1,
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lifetime": "86400s",
+  "rotationWindowPercentage": 10
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/certificateIssuanceConfigs/certissuanceconfig-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/certificateIssuanceConfigs/certissuanceconfig-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.CertificateIssuanceConfig",
+    "certificateAuthorityConfig": {
+      "certificateAuthorityServiceConfig": {
+        "caPool": "projects/${projectNumber}/locations/us-central1/caPools/privatecacapool-dep-${uniqueId}"
+      }
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "sample certificate issuance config",
+    "keyAlgorithm": "RSA_2048",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "lifetime": "86400s",
+    "name": "projects/${projectId}/locations/us-central1/certificateIssuanceConfigs/certissuanceconfig-${uniqueId}",
+    "rotationWindowPercentage": 10,
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/certificateIssuanceConfigs/certissuanceconfig-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FcertificateIssuanceConfigs%2Fcertissuanceconfig-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "certificateAuthorityConfig": {
+    "certificateAuthorityServiceConfig": {
+      "caPool": "projects/${projectNumber}/locations/us-central1/caPools/privatecacapool-dep-${uniqueId}"
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "sample certificate issuance config",
+  "keyAlgorithm": 1,
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lifetime": "86400s",
+  "name": "projects/${projectId}/locations/us-central1/certificateIssuanceConfigs/certissuanceconfig-${uniqueId}",
+  "rotationWindowPercentage": 10,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/certificateIssuanceConfigs/certissuanceconfig-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FcertificateIssuanceConfigs%2Fcertissuanceconfig-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/certificateIssuanceConfigs/certissuanceconfig-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/certificateIssuanceConfigs/certissuanceconfig-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-dep-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "issuancePolicy": {
+    "allowedIssuanceModes": {
+      "allowCsrBasedIssuance": true
+    },
+    "allowedKeyTypes": [
+      {
+        "rsa": {
+          "maxModulusSize": "4096",
+          "minModulusSize": "2048"
+        }
+      }
+    ],
+    "baselineValues": {
+      "keyUsage": {
+        "baseKeyUsage": {
+          "digitalSignature": true,
+          "keyEncipherment": true
+        }
+      }
+    },
+    "maximumLifetime": "86400s"
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/caPools/privatecacapool-dep-${uniqueId}",
+  "tier": "ENTERPRISE"
+}
+
+---
+
+DELETE https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-dep-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.security.privateca.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/caPools/privatecacapool-dep-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.security.privateca.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/caPools/privatecacapool-dep-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}
+
+---
+
+GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-dep-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/caPools/privatecacapool-dep-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}

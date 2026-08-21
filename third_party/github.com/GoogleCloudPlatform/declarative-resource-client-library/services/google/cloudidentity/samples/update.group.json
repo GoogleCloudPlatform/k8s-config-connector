@@ -1,0 +1,18 @@
+{
+  "name": "{{ref:__state__:name}}",
+  "groupKey": {
+    "id": "{{group_name}}@mmv2testingorg.joonix.net"
+  },
+  "additionalGroupKeys": [
+    {
+      "id": "{{group_name}}2@mmv2testingorg.joonix.net"
+    }
+  ],
+  "parent": "customers/C04ha9my8",
+  "labels": {
+    "cloudidentity.googleapis.com/groups.discussion_forum": "",
+    "cloudidentity.googleapis.com/groups.security": ""
+  },
+  "displayName": "NewTestName",
+  "description": "Altered test description"
+}

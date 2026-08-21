@@ -1,0 +1,110 @@
+POST https://parametermanager.googleapis.com/v1/projects/${projectId}/locations/global/parameters/test-pm-${uniqueId}/versions?alt=json&parameterVersionId=test-${uniqueId}
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "payload": {
+    "data": "eyJrZXkiOiJ2YWx1ZSJ9"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/global/parameters/test-pm-${uniqueId}/versions/test-${uniqueId}",
+  "payload": {
+    "data": "eyJrZXkiOiJ2YWx1ZSJ9"
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://parametermanager.googleapis.com/v1/projects/${projectId}/locations/global/parameters/test-pm-${uniqueId}/versions/test-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "name": "projects/${projectId}/locations/global/parameters/test-pm-${uniqueId}/versions/test-${uniqueId}",
+  "payload": {
+    "data": "eyJrZXkiOiJ2YWx1ZSJ9"
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://parametermanager.googleapis.com/v1/projects/${projectId}/locations/global/parameters/test-pm-${uniqueId}/versions/test-${uniqueId}?alt=json&updateMask=disabled
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "disabled": true,
+  "name": "projects/${projectId}/locations/global/parameters/test-pm-${uniqueId}/versions/test-${uniqueId}",
+  "payload": {
+    "data": "eyJrZXkiOiJ2YWx1ZSJ9"
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "disabled": true,
+  "name": "projects/${projectId}/locations/global/parameters/test-pm-${uniqueId}/versions/test-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://parametermanager.googleapis.com/v1/projects/${projectId}/locations/global/parameters/test-pm-${uniqueId}/versions/test-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

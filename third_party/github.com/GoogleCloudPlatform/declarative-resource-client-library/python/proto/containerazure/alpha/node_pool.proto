@@ -1,0 +1,118 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum ContainerazureAlphaNodePoolStateEnum {
+  ContainerazureAlphaNodePoolStateEnumNO_VALUE_DO_NOT_USE = 0;
+  ContainerazureAlphaNodePoolStateEnumSTATE_UNSPECIFIED = 1;
+  ContainerazureAlphaNodePoolStateEnumPROVISIONING = 2;
+  ContainerazureAlphaNodePoolStateEnumRUNNING = 3;
+  ContainerazureAlphaNodePoolStateEnumRECONCILING = 4;
+  ContainerazureAlphaNodePoolStateEnumSTOPPING = 5;
+  ContainerazureAlphaNodePoolStateEnumERROR = 6;
+  ContainerazureAlphaNodePoolStateEnumDEGRADED = 7;
+}
+
+message ContainerazureAlphaNodePool {
+  string name = 1;
+  string version = 2;
+  ContainerazureAlphaNodePoolConfig config = 3;
+  string subnet_id = 4;
+  ContainerazureAlphaNodePoolAutoscaling autoscaling = 5;
+  ContainerazureAlphaNodePoolStateEnum state = 6;
+  string uid = 7;
+  bool reconciling = 8;
+  string create_time = 9;
+  string update_time = 10;
+  string etag = 11;
+  map<string, string> annotations = 12;
+  ContainerazureAlphaNodePoolMaxPodsConstraint max_pods_constraint = 13;
+  ContainerazureAlphaNodePoolManagement management = 14;
+  string azure_availability_zone = 15;
+  string project = 16;
+  string location = 17;
+  string cluster = 18;
+}
+
+message ContainerazureAlphaNodePoolConfig {
+  string vm_size = 1;
+  ContainerazureAlphaNodePoolConfigRootVolume root_volume = 2;
+  map<string, string> tags = 3;
+  map<string, string> labels = 4;
+  ContainerazureAlphaNodePoolConfigSshConfig ssh_config = 5;
+  string image_type = 6;
+  ContainerazureAlphaNodePoolConfigProxyConfig proxy_config = 7;
+}
+
+message ContainerazureAlphaNodePoolConfigRootVolume {
+  int64 size_gib = 1;
+}
+
+message ContainerazureAlphaNodePoolConfigSshConfig {
+  string authorized_key = 1;
+}
+
+message ContainerazureAlphaNodePoolConfigProxyConfig {
+  string resource_group_id = 1;
+  string secret_id = 2;
+}
+
+message ContainerazureAlphaNodePoolAutoscaling {
+  int64 min_node_count = 1;
+  int64 max_node_count = 2;
+}
+
+message ContainerazureAlphaNodePoolMaxPodsConstraint {
+  int64 max_pods_per_node = 1;
+}
+
+message ContainerazureAlphaNodePoolManagement {
+  bool auto_repair = 1;
+}
+
+message ApplyContainerazureAlphaNodePoolRequest {
+  ContainerazureAlphaNodePool resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteContainerazureAlphaNodePoolRequest {
+  string service_account_file = 1;
+  ContainerazureAlphaNodePool resource = 2;
+}
+
+message ListContainerazureAlphaNodePoolRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+  string Cluster = 4;
+}
+
+message ListContainerazureAlphaNodePoolResponse {
+  repeated ContainerazureAlphaNodePool items = 1;
+}
+
+service ContainerazureAlphaNodePoolService {
+  rpc ApplyContainerazureAlphaNodePool(ApplyContainerazureAlphaNodePoolRequest) returns (ContainerazureAlphaNodePool);
+  rpc DeleteContainerazureAlphaNodePool(DeleteContainerazureAlphaNodePoolRequest) returns (google.protobuf.Empty);
+  rpc ListContainerazureAlphaNodePool(ListContainerazureAlphaNodePoolRequest) returns (ListContainerazureAlphaNodePoolResponse);
+}

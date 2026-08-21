@@ -1,0 +1,32 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: dlp.cnrm.cloud.google.com/v1alpha1
+kind: DLPConnection
+metadata:
+  name: dlpconnection-${uniqueId}
+spec:
+  projectRef:
+    external: "projects/${PROJECT_ID}"
+  location: "us-central1"
+  state: "CONNECTION_STATE_UNSPECIFIED"
+  cloudSQL:
+    connectionName: "${PROJECT_ID}:us-central1:sql-instance"
+    databaseEngine: "MYSQL"
+    maxConnections: 5
+    usernamePassword:
+      username: "my-user"
+      secretRef:
+        external: "projects/${PROJECT_ID}/secrets/my-secret/versions/1"
+    cloudSQLIAM: {}

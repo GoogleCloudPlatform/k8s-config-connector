@@ -1,0 +1,4 @@
+{
+  "name": "{{view}}",
+  "bucket": "organizations/{{org_id}}/locations/global/buckets/{{ref:organization.log_bucket.json:name}}"
+}

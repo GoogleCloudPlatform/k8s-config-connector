@@ -1,0 +1,281 @@
+# Copyright 2023 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: core.cnrm.cloud.google.com/v1alpha1
+kind: ServiceMapping
+metadata:
+  name: run.cnrm.cloud.google.com
+  namespace: cnrm-system
+spec:
+  name: Run
+  version: v1beta1
+  serviceHostName: "run.googleapis.com"
+  resources:
+  - name: google_cloud_run_v2_job
+    kind: RunJob
+    ignoredFields:
+      - conditions
+      - generation
+      - observed_generation
+      - labels
+      - template.labels
+    iamConfig:
+      policyName: google_cloud_run_v2_job_iam_policy
+      policyMemberName: google_cloud_run_v2_job_iam_member
+      referenceField:
+        name: name
+        type: name
+      supportsConditions: false
+    idTemplate: "projects/{{project}}/locations/{{location}}/jobs/{{name}}"
+    idTemplateCanBeUsedToMatchResourceName: false
+    metadataMapping:
+      name: name
+    resourceID:
+      targetField: name
+    resourceAvailableInAssetInventory: false
+    hierarchicalReferences:
+    - type: project
+      key: projectRef
+    resourceReferences:
+    - tfField: project
+      key: projectRef
+      description: |-
+        The project that this resource belongs to.
+      gvk:
+        kind: Project
+        version: v1beta1
+        group: resourcemanager.cnrm.cloud.google.com
+    - tfField: template.template.containers.env.value_source.secret_key_ref.secret
+      description: |-
+        The name of the secret in Cloud Secret Manager. Format: {secretName} if the secret is in the same project. projects/{project}/secrets/{secretName} if the secret is in a different project.
+      key: secretRef
+      targetField: name
+      gvk:
+        kind: SecretManagerSecret
+        version: v1beta1
+        group: secretmanager.cnrm.cloud.google.com
+    - tfField: template.template.containers.env.value_source.secret_key_ref.version
+      description: |-
+          The Cloud Secret Manager secret version. Can be 'latest' for the latest value or an integer for a specific version.
+      key: versionRef
+      targetField: version
+      gvk:
+        kind: SecretManagerSecretVersion
+        version: v1beta1
+        group: secretmanager.cnrm.cloud.google.com
+    - tfField: template.template.service_account
+      description: |-
+        Email address of the IAM service account associated with the revision of the service. The service account represents the identity of the running revision, and determines what permissions the revision has. If not provided, the revision will use the project's default service account.
+      key: serviceAccountRef
+      targetField: email
+      gvk:
+        kind: IAMServiceAccount
+        version: v1beta1
+        group: iam.cnrm.cloud.google.com
+    - tfField: template.template.volumes.cloud_sql_instance.instances
+      description: |-
+        The Cloud SQL instance connection names, as can be found in https://console.cloud.google.com/sql/instances. Visit https://cloud.google.com/sql/docs/mysql/connect-run for more information on how to connect Cloud SQL and Cloud Run. Format: {project}:{location}:{instance}
+      key: instanceRefs
+      targetField: connection_name
+      gvk:
+        kind: SQLInstance
+        version: v1beta1
+        group: sql.cnrm.cloud.google.com
+    - tfField: template.template.volumes.secret.secret
+      description: |-
+        The name of the secret in Cloud Secret Manager. Format: {secret} if the secret is in the same project. projects/{project}/secrets/{secret} if the secret is in a different project.
+      key: secretRef
+      targetField: name
+      gvk:
+        kind: SecretManagerSecret
+        version: v1beta1
+        group: secretmanager.cnrm.cloud.google.com
+    - tfField: template.template.volumes.secret.items.version
+      description: |-
+        The Cloud Secret Manager secret version. Can be 'latest' for the latest value or an integer for a specific version
+      key: versionRef
+      targetField: version
+      gvk:
+        kind: SecretManagerSecretVersion
+        version: v1beta1
+        group: secretmanager.cnrm.cloud.google.com
+    - tfField: template.template.vpc_access.connector
+      description: |-
+        VPC Access connector name. Format: projects/{project}/locations/{location}/connectors/{connector}, where {project} can be project id or number.
+      key: connectorRef
+      targetField: self_link
+      gvk:
+        kind: VPCAccessConnector
+        version: v1beta1
+        group: vpcaccess.cnrm.cloud.google.com
+    - tfField: template.template.encryption_key
+      description: |-
+        A reference to a customer managed encryption key (CMEK) to use to encrypt this container image. For more information, go to https://cloud.google.com/run/docs/securing/using-cmek
+      key: encryptionKeyRef
+      targetField: self_link
+      gvk:
+        kind: KMSCryptoKey
+        version: v1beta1
+        group: kms.cnrm.cloud.google.com
+    - tfField: template.template.vpc_access.network_interfaces.network
+      description: |-
+        The VPC network that the Cloud Run resource will be able to send traffic to. At least one of network or subnetwork must be specified. If both
+        network and subnetwork are specified, the given VPC subnetwork must belong to the given VPC network. If network is not specified, it will be
+        looked up from the subnetwork.
+      key: networkRef
+      gvk:
+        kind: ComputeNetwork
+        version: v1beta1
+        group: compute.cnrm.cloud.google.com
+      targetField: self_link
+    - tfField: template.template.vpc_access.network_interfaces.subnetwork
+      description: |-
+        The VPC subnetwork that the Cloud Run resource will get IPs from. At least one of network or subnetwork must be specified. If both
+        network and subnetwork are specified, the given VPC subnetwork must belong to the given VPC network. If subnetwork is not specified, the
+        subnetwork with the same name with the network will be used.
+      key: subnetworkRef
+      gvk:
+        kind: ComputeSubnetwork
+        version: v1beta1
+        group: compute.cnrm.cloud.google.com
+      targetField: self_link
+  - name: google_cloud_run_v2_service
+    kind: RunService
+    idTemplate: "projects/{{project}}/locations/{{location}}/services/{{name}}"
+    idTemplateCanBeUsedToMatchResourceName: false
+    resourceAvailableInAssetInventory: false
+    resourceID:
+      targetField: name
+    metadataMapping:
+      name: name
+      labels: labels
+    ignoredFields:
+      - conditions
+      - generation
+      - observed_generation
+      - terminal_condition.execution_reason
+      - template.containers.liveness_probe.tcp_socket
+    iamConfig:
+      policyName: "google_cloud_run_v2_service_iam_policy"
+      policyMemberName: "google_cloud_run_v2_service_iam_member"
+      referenceField:
+        name: name
+        type: name
+      supportsConditions: false
+    resourceReferences:
+      - tfField: project
+        key: projectRef
+        description: |-
+          The project that this resource belongs to.
+        gvk:
+          kind: Project
+          version: v1beta1
+          group: resourcemanager.cnrm.cloud.google.com
+      - tfField: template.containers.env.value_source.secret_key_ref.secret
+        description: |-
+          The name of the secret in Cloud Secret Manager. Format: {secretName} if the secret is in the same project. projects/{project}/secrets/{secretName} if the secret is in a different project.
+        key: secretRef
+        targetField: name
+        gvk:
+          kind: SecretManagerSecret
+          version: v1beta1
+          group: secretmanager.cnrm.cloud.google.com
+      - tfField: template.containers.env.value_source.secret_key_ref.version
+        description: |-
+          The Cloud Secret Manager secret version. Can be 'latest' for the latest value or an integer for a specific version.
+        key: versionRef
+        targetField: version
+        gvk:
+          kind: SecretManagerSecretVersion
+          version: v1beta1
+          group: secretmanager.cnrm.cloud.google.com
+      - tfField: template.service_account
+        description: |-
+          Email address of the IAM service account associated with the revision of the service. The service account represents the identity of the running revision, and determines what permissions the revision has. If not provided, the revision will use the project's default service account.
+        key: serviceAccountRef
+        targetField: email
+        gvk:
+          kind: IAMServiceAccount
+          version: v1beta1
+          group: iam.cnrm.cloud.google.com
+      - tfField: template.volumes.cloud_sql_instance.instances
+        description: |-
+          The Cloud SQL instance connection names, as can be found in https://console.cloud.google.com/sql/instances. Visit https://cloud.google.com/sql/docs/mysql/connect-run for more information on how to connect Cloud SQL and Cloud Run. Format: {project}:{location}:{instance}
+        key: instances
+        targetField: connection_name
+        gvk:
+          kind: SQLInstance
+          version: v1beta1
+          group: sql.cnrm.cloud.google.com
+      - tfField: template.volumes.secret.secret
+        description: |-
+          The name of the secret in Cloud Secret Manager. Format: {secret} if the secret is in the same project. projects/{project}/secrets/{secret} if the secret is in a different project.
+        key: secretRef
+        targetField: name
+        gvk:
+          kind: SecretManagerSecret
+          version: v1beta1
+          group: secretmanager.cnrm.cloud.google.com
+      - tfField: template.volumes.secret.items.version
+        description: |-
+          The Cloud Secret Manager secret version. Can be 'latest' for the latest value or an integer for a specific version
+        key: versionRef
+        targetField: version
+        gvk:
+          kind: SecretManagerSecretVersion
+          version: v1beta1
+          group: secretmanager.cnrm.cloud.google.com
+      - tfField: template.vpc_access.connector
+        description: |-
+          VPC Access connector name. Format: projects/{project}/locations/{location}/connectors/{connector}, where {project} can be project id or number.
+        key: connectorRef
+        targetField: self_link
+        gvk:
+          kind: VPCAccessConnector
+          version: v1beta1
+          group: vpcaccess.cnrm.cloud.google.com
+      - tfField: template.encryption_key
+        description: |-
+          A reference to a customer managed encryption key (CMEK) to use to encrypt this container image. For more information, go to https://cloud.google.com/run/docs/securing/using-cmek
+        key: encryptionKeyRef
+        targetField: self_link
+        gvk:
+          kind: KMSCryptoKey
+          version: v1beta1
+          group: kms.cnrm.cloud.google.com
+      - tfField: template.vpc_access.network_interfaces.network
+        description: |-
+          The VPC network that the Cloud Run resource will be able to send traffic to. At least one of network or subnetwork must be specified. If both
+          network and subnetwork are specified, the given VPC subnetwork must belong to the given VPC network. If network is not specified, it will be
+          looked up from the subnetwork.
+        key: networkRef
+        gvk:
+          kind: ComputeNetwork
+          version: v1beta1
+          group: compute.cnrm.cloud.google.com
+        targetField: self_link
+      - tfField: template.vpc_access.network_interfaces.subnetwork
+        description: |-
+          The VPC subnetwork that the Cloud Run resource will get IPs from. At least one of network or subnetwork must be specified. If both
+          network and subnetwork are specified, the given VPC subnetwork must belong to the given VPC network. If subnetwork is not specified, the
+          subnetwork with the same name with the network will be used.
+        key: subnetworkRef
+        gvk:
+          kind: ComputeSubnetwork
+          version: v1beta1
+          group: compute.cnrm.cloud.google.com
+        targetField: self_link
+    hierarchicalReferences:
+      - type: project
+        key: projectRef

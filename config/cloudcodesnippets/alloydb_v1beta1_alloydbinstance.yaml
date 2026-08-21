@@ -1,0 +1,23 @@
+label: Config Connector AlloyDBInstance
+markdownDescription: Creates yaml for a AlloyDBInstance resource
+insertText: |
+  apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
+  kind: AlloyDBInstance
+  metadata:
+    name: \${1:alloydbinstance-name}
+  spec:
+    clusterRef:
+      name: \${2:alloydbinstance-dep-primary}
+    instanceTypeRef:
+      name: \${3:alloydbinstance-dep-primary}
+    databaseFlags:
+      enable_google_adaptive_autovacuum: \${4:off}
+      password.enforce_complexity: \${5:on}
+    machineConfig:
+      cpuCount: \${6:2}
+    networkConfig:
+      enablePublicIp: \${7:true}
+      enableOutboundPublicIp: \${8:true}
+      authorizedExternalNetworks:
+      - cidrRange: \${9:8.8.8.8/30}
+      - cidrRange: \${10:8.8.4.4/30}

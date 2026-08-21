@@ -1,0 +1,55 @@
+429c429
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}?alt=json
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}
+458c458
+< POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies?alt=json
+---
+> POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies
+464c464
+<   "service": "projects/${projectId}/global/backendServices/${backendServiceID}"
+---
+>   "service": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}"
+494c494,495
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
+> Content-Type: application/json
+524c525
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}?alt=json
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}
+544c545
+<   "service": "projects/${projectId}/global/backendServices/${backendServiceID}"
+---
+>   "service": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}"
+549c550
+< POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}/setBackendService?alt=json
+---
+> POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}/setBackendService
+553c554
+<   "service": "projects/${projectId}/global/backendServices/${backendServiceID}"
+---
+>   "service": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}"
+583c584,585
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
+> Content-Type: application/json
+613c615
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}?alt=json
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}
+633c635
+<   "service": "projects/${projectId}/global/backendServices/${backendServiceID}"
+---
+>   "service": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}"
+638c640
+< DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}?alt=json
+---
+> DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetTcpProxies/${targetTcpProxyID}
+668c670,671
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
+> Content-Type: application/json

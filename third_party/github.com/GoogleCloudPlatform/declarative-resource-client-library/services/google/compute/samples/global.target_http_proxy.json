@@ -1,0 +1,5 @@
+{
+  "project": "{{project}}",
+  "name": "{{proxy}}",
+  "urlMap": "{{ref:first_global.url_map.json:selfLink}}"
+}

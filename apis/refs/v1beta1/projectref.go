@@ -1,0 +1,355 @@
+// Copyright 2024 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package v1beta1
+
+import (
+	"context"
+	"fmt"
+	"strings"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcpurls"
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/apimachinery/pkg/types"
+	"sigs.k8s.io/controller-runtime/pkg/client"
+
+	deprecatedrefs "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+)
+
+var ProjectGVK = schema.GroupVersionKind{
+	Group:   "resourcemanager.cnrm.cloud.google.com",
+	Version: "v1beta1",
+	Kind:    "Project",
+}
+
+func init() {
+	Register(&ProjectRef{}, nil)
+}
+
+// The Project that this resource belongs to.
+type ProjectRef struct {
+	/* The `projectID` field of a project, when not managed by Config Connector. */
+	External string `json:"external,omitempty"`
+	/* The `name` field of a `Project` resource. */
+	Name string `json:"name,omitempty"`
+	/* The `namespace` field of a `Project` resource. */
+	Namespace string `json:"namespace,omitempty"`
+	// The kind of the Project resource; optional but must be `Project` if provided.
+	// +optional
+	Kind string `json:"kind,omitempty"`
+}
+
+func (r *ProjectRef) GetGVK() schema.GroupVersionKind {
+	return ProjectGVK
+}
+
+func (r *ProjectRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{
+		Name:      r.Name,
+		Namespace: r.Namespace,
+	}
+}
+
+func (r *ProjectRef) GetExternal() string {
+	return r.External
+}
+
+func (r *ProjectRef) SetExternal(ref string) {
+	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
+}
+
+// AsProjectRef converts a generic ResourceRef into a ProjectRef
+func AsProjectRef(in *deprecatedrefs.ResourceRef) *ProjectRef {
+	if in == nil {
+		return nil
+	}
+	return &ProjectRef{
+		Namespace: in.Namespace,
+		Name:      in.Name,
+		External:  in.External,
+		Kind:      in.Kind,
+	}
+}
+
+// The resource reference that defaults to Project if Kind is not specified.
+type ExtendedProjectRef struct {
+	// Kind of the referenced resource
+	Kind      string `json:"kind,omitempty"`
+	Namespace string `json:"namespace,omitempty"`
+	Name      string `json:"name,omitempty"`
+	// APIVersion of the referenced resource
+	APIVersion string `json:"apiVersion,omitempty"`
+	// The external name of the referenced resource
+	External string `json:"external,omitempty"`
+}
+
+func (r *ExtendedProjectRef) GetGVK() schema.GroupVersionKind {
+	// If Kind is not specified, default to "Project"
+	if r.Kind == "" {
+		return ProjectGVK
+	}
+	return schema.FromAPIVersionAndKind(r.APIVersion, r.Kind)
+}
+
+func (r *ExtendedProjectRef) GetNamespacedName() types.NamespacedName {
+	return types.NamespacedName{
+		Name:      r.Name,
+		Namespace: r.Namespace,
+	}
+}
+
+func (r *ExtendedProjectRef) GroupVersionKind() schema.GroupVersionKind {
+	return r.GetGVK()
+}
+
+func (r *ExtendedProjectRef) SetGroupVersionKind(gvk schema.GroupVersionKind) {
+	r.APIVersion, r.Kind = gvk.ToAPIVersionAndKind()
+}
+
+func (r *ExtendedProjectRef) GetExternal() string {
+	return r.External
+}
+
+func (r *ExtendedProjectRef) SetExternal(ref string) {
+	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
+}
+
+func (r *ExtendedProjectRef) ValidateExternal(ref string) error {
+	// If Kind is not specified, default to "Project"
+	if r.Kind == "" || r.Kind == "Project" {
+		id := &ProjectIdentity{}
+		if err := id.FromExternal(ref); err != nil {
+			return err
+		}
+		return nil
+	}
+	return nil
+}
+
+func (r *ExtendedProjectRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	// If Kind is not specified, default to "Project"
+	if r.Kind == "" || r.Kind == "Project" {
+		projectRef := &ProjectRef{
+			External:  r.External,
+			Name:      r.Name,
+			Namespace: r.Namespace,
+		}
+		if err := projectRef.Normalize(ctx, reader, defaultNamespace); err != nil {
+			return err
+		}
+		r.External = projectRef.External
+		r.Name = ""
+		r.Namespace = ""
+		return nil
+	}
+	return Normalize(ctx, reader, r, defaultNamespace)
+}
+
+type ProjectIdentity struct {
+	ProjectID string
+}
+
+var _ identity.Identity = &ProjectIdentity{}
+
+var ProjectFormat = gcpurls.Template[ProjectIdentity]("cloudresourcemanager.googleapis.com", "projects/{projectID}")
+
+func (p *ProjectIdentity) Host() string {
+	return ProjectFormat.Host()
+}
+
+func (p *ProjectIdentity) String() string {
+	return ProjectFormat.ToString(*p)
+}
+
+func (p *ProjectIdentity) FromExternal(ref string) error {
+	if ref == "" {
+		return fmt.Errorf("project external reference cannot be empty")
+	}
+	// Fallback to "short" format (projectID only) if there are no slashes.
+	if !strings.Contains(ref, "/") {
+		p.ProjectID = ref
+		return nil
+	}
+
+	parsed, match, err := ProjectFormat.Parse(ref)
+	if err != nil {
+		return fmt.Errorf("format of Project external=%q was not known (use %s): %w", ref, ProjectFormat.CanonicalForm(), err)
+	}
+	if !match {
+		return fmt.Errorf("format of Project external=%q was not known (use %s)", ref, ProjectFormat.CanonicalForm())
+	}
+	*p = *parsed
+	return nil
+}
+
+// ResolveProjectFromAnnotation resolves the projectID to use for a resource,
+// it should be used for resources which do not have a projectRef
+func ResolveProjectFromAnnotation(ctx context.Context, reader client.Reader, src client.Object) (*ProjectIdentity, error) {
+	if projectID := src.GetAnnotations()["cnrm.cloud.google.com/project-id"]; projectID != "" {
+		return &ProjectIdentity{ProjectID: projectID}, nil
+	}
+
+	return nil, fmt.Errorf("project-id annotation not set on resource")
+}
+
+// ResolveProject will resolve a ProjectRef to a Project, with the ProjectID.
+func ResolveProject(ctx context.Context, reader client.Reader, otherNamespace string, ref *ProjectRef) (*ProjectIdentity, error) {
+	if ref == nil {
+		return nil, nil
+	}
+
+	if ref.Kind != "" {
+		if ref.Kind != "Project" {
+			return nil, fmt.Errorf("kind is optional on project reference, but must be \"Project\" if provided")
+		}
+	}
+
+	if ref.External != "" {
+		if ref.Name != "" {
+			return nil, fmt.Errorf("cannot specify both name and external on project reference")
+		}
+
+		external := ref.External
+		external = strings.TrimPrefix(external, "//cloudresourcemanager.googleapis.com/")
+		tokens := strings.Split(external, "/")
+		if len(tokens) == 1 {
+			return &ProjectIdentity{ProjectID: tokens[0]}, nil
+		}
+		if len(tokens) == 2 && tokens[0] == "projects" {
+			return &ProjectIdentity{ProjectID: tokens[1]}, nil
+		}
+		return nil, fmt.Errorf("format of project external=%q was not known (use projects/<projectId> or <projectId>)", ref.External)
+	}
+
+	if ref.Name == "" {
+		return nil, fmt.Errorf("must specify either name or external on project reference")
+	}
+
+	key := types.NamespacedName{
+		Namespace: ref.Namespace,
+		Name:      ref.Name,
+	}
+	if key.Namespace == "" {
+		key.Namespace = otherNamespace
+	}
+
+	project := &unstructured.Unstructured{}
+	project.SetGroupVersionKind(schema.GroupVersionKind{
+		Group:   "resourcemanager.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "Project",
+	})
+	if err := reader.Get(ctx, key, project); err != nil {
+		if apierrors.IsNotFound(err) {
+			return nil, fmt.Errorf("referenced Project %v not found", key)
+		}
+		return nil, fmt.Errorf("error reading referenced Project %v: %w", key, err)
+	}
+
+	projectID, err := GetResourceID(project)
+	if err != nil {
+		return nil, err
+	}
+
+	return &ProjectIdentity{
+		ProjectID: projectID,
+	}, nil
+}
+
+func ResolveProjectID(ctx context.Context, reader client.Reader, obj runtime.Object) (string, error) {
+	u, ok := obj.(*unstructured.Unstructured)
+	if !ok {
+		m, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
+		if err != nil {
+			return "", fmt.Errorf("cannot convert to unstructured: %w", err)
+		}
+		u = &unstructured.Unstructured{Object: m}
+	}
+
+	projectRefExternal, _, _ := unstructured.NestedString(u.Object, "spec", "projectRef", "external")
+	if projectRefExternal != "" {
+		projectRef := ProjectRef{
+			External: projectRefExternal,
+		}
+
+		project, err := ResolveProject(ctx, reader, u.GetNamespace(), &projectRef)
+		if err != nil {
+			return "", fmt.Errorf("cannot parse projectRef.external %q in %v %v/%v: %w", projectRefExternal, u.GetKind(), u.GetNamespace(), u.GetName(), err)
+		}
+		return project.ProjectID, nil
+	}
+
+	projectRefName, _, _ := unstructured.NestedString(u.Object, "spec", "projectRef", "name")
+	if projectRefName != "" {
+		projectRefNamespace, _, _ := unstructured.NestedString(u.Object, "spec", "projectRef", "namespace")
+
+		projectRef := ProjectRef{
+			Name:      projectRefName,
+			Namespace: projectRefNamespace,
+		}
+		if projectRef.Namespace == "" {
+			projectRef.Namespace = u.GetNamespace()
+		}
+
+		project, err := ResolveProject(ctx, reader, u.GetNamespace(), &projectRef)
+		if err != nil {
+			return "", fmt.Errorf("cannot parse projectRef in %v %v/%v: %w", u.GetKind(), u.GetNamespace(), u.GetName(), err)
+		}
+		return project.ProjectID, nil
+	}
+
+	if projectID := u.GetAnnotations()["cnrm.cloud.google.com/project-id"]; projectID != "" {
+		return projectID, nil
+	}
+
+	return "", fmt.Errorf("cannot find project id for %v %v/%v", u.GetKind(), u.GetNamespace(), u.GetName())
+}
+
+func (r *ProjectRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
+	// No status.externalRef, so can't use default method
+	// return Normalize(ctx, reader, r, defaultNamespace)
+
+	project, err := ResolveProject(ctx, reader, defaultNamespace, r)
+	if err != nil {
+		return err
+	}
+
+	r.External = "projects/" + project.ProjectID
+	return nil
+}
+
+// ValidateExternal validates that the provided external reference is valid.
+func (r *ProjectRef) ValidateExternal(ref string) error {
+	id := &ProjectIdentity{}
+	if err := id.FromExternal(ref); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *ProjectRef) ParseExternalToIdentity() (identity.Identity, error) {
+	id := &ProjectIdentity{}
+	if err := id.FromExternal(r.External); err != nil {
+		return nil, err
+	}
+	return id, nil
+}

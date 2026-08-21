@@ -1,0 +1,12 @@
+- caisURL: //compute.googleapis.com/projects/${projectId}/global/networks/default
+  group: compute.cnrm.cloud.google.com
+  kind: ComputeNetwork
+  name: default
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: //dns.googleapis.com/projects/${projectId}/locations/global/responsePolicies/dnsresponsepolicy-test-${uniqueId}
+  group: dns.cnrm.cloud.google.com
+  kind: DNSResponsePolicy
+  name: dnsresponsepolicy-test-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

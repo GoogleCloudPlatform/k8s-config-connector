@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: bigtable.cnrm.cloud.google.com
+  kind: BigtableInstance
+  name: bigtableinstance
+  namespace: ${uniqueId}
+  version: v1beta1

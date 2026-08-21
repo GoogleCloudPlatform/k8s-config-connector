@@ -1,0 +1,34 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: network-${uniqueId}
+spec:
+  description: Test network for regional endpoint
+  autoCreateSubnetworks: false
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSubnetwork
+metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: subnet-${uniqueId}
+spec:
+  ipCidrRange: 10.128.0.0/20
+  region: us-central1
+  networkRef:
+    external: projects/${projectId}/global/networks/network-${uniqueId}
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeAddress
+metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: address-${uniqueId}
+spec:
+  addressType: INTERNAL
+  description: Test address for regionalendpoint
+  location: us-central1
+  subnetworkRef:
+    name: subnet-${uniqueId}

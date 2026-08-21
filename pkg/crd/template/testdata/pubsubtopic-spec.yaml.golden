@@ -1,0 +1,16 @@
+kmsKeyRef:
+  external: string
+  name: string
+  namespace: string
+messageRetentionDuration: string
+messageStoragePolicy:
+  allowedPersistenceRegions:
+  - string
+  enforceInTransit: boolean
+resourceID: string
+schemaSettings:
+  encoding: string
+  schemaRef:
+    external: string
+    name: string
+    namespace: string

@@ -1,0 +1,19 @@
+{
+  "name": "{{connection}}",
+  "gitlabConfig": {
+    "hostUri": "https://gle-us.gle-us-private.com",
+    "serviceDirectoryConfig": {
+      "service": "projects/407304063574/locations/us-west1/namespaces/private-conn/services/gitlab-private"
+    },
+    "sslCa": "-----BEGIN CERTIFICATE-----\nMIIDcTCCAlmgAwIBAgIUbxJ3jxaRf5IPcUiQWRPRqpLL4s4wDQYJKoZIhvcNAQEL\nBQAwTjELMAkGA1UEBhMCVVMxGzAZBgNVBAoMEkdvb2dsZSBDbG91ZCBCdWlsZDEi\nMCAGA1UEAwwZZ2xlLXVzLmdsZS11cy1wcml2YXRlLmNvbTAeFw0yMzEwMjAxNjQ3\nNDJaFw0yNDEwMTkxNjQ3NDJaME4xCzAJBgNVBAYTAlVTMRswGQYDVQQKDBJHb29n\nbGUgQ2xvdWQgQnVpbGQxIjAgBgNVBAMMGWdsZS11cy5nbGUtdXMtcHJpdmF0ZS5j\nb20wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDRE84wKcuzc+beQ323\nIsNVVOF1+WZ975LvXpIt8Mw1bcYeYUcvgBXSXAByHGMtef8OBb9BUvLOVZdT3Xow\nCUbhCiK3zQy29pCn0rsneIvzGUXQgQRXK/Zap1N/hif4E7CIgjuvCN0Mn6BfDV/H\nXFm6EV3YUJrRPBr1rZik7doaYYwaJshCSTBtZxXZdvsG/OBuAXbJ9GB0B62EiTBz\n5g6yRdATut+PbgfzaWlPsgL3TTH+HPNCMO+ULnFupfZwRCtV+dJng76QYGs8fmFo\ntiWeElcsU8W7aqmjOkKRWcFsHpxPNXp8GG+jsZrVAnMOR3QeRLvowysSQD99IrGH\nAhwlAgMBAAGjRzBFMCQGA1UdEQQdMBuCGWdsZS11cy5nbGUtdXMtcHJpdmF0ZS5j\nb20wHQYDVR0OBBYEFKCIp5BruT4fpeDFQ2bKgdUvpfbWMA0GCSqGSIb3DQEBCwUA\nA4IBAQAQ4pUQmmd7eNIu9MQGna9lHYRFL0/G3mrK6Dcfm2As9qdcRw3dph8/iute\nxKDdBsnt6jDHrsjN0Na7Eq0040oBJrxG/NtqGX0zHNdpAT61bQ6j9reAT+KOrHys\nDJXH2lPuFW183AU7mmvcbXTEwkKex1i+DNoEdGYUbBfnWWeuhGzFog+/f9mtjoHL\nplcmx0VWHBQ5KO9Aq4OR/86DSg5QRPk76W9k3cM2ShXMm3TmTBZ+taJFfjZo5jP+\n7PLt2z9grSvFSXh2jnMyAs2yP4c+WezOXZLijqROr378AGBaksQK0CP+CYjZRpn1\nvndr1njLbvSjIypwKgZROb4P6XVa\n-----END CERTIFICATE-----\n",
+    "authorizerCredential": {
+      "userTokenSecretVersion": "projects/407304063574/secrets/gle-private-api/versions/1"
+    },
+    "readAuthorizerCredential": {
+      "userTokenSecretVersion": "projects/407304063574/secrets/gle-private-read-token/versions/1"
+    },
+    "webhookSecretSecretVersion":"projects/407304063574/secrets/gle-webhook-secret/versions/latest"
+  },
+  "project": "{{project}}",
+  "location": "us-west1"
+}

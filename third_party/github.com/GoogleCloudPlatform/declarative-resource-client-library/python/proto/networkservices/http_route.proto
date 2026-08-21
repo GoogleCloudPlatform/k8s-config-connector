@@ -1,0 +1,196 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum NetworkservicesHttpRouteRulesActionRedirectResponseCodeEnum {
+  NetworkservicesHttpRouteRulesActionRedirectResponseCodeEnumNO_VALUE_DO_NOT_USE = 0;
+  NetworkservicesHttpRouteRulesActionRedirectResponseCodeEnumMOVED_PERMANENTLY_DEFAULT = 1;
+  NetworkservicesHttpRouteRulesActionRedirectResponseCodeEnumFOUND = 2;
+  NetworkservicesHttpRouteRulesActionRedirectResponseCodeEnumSEE_OTHER = 3;
+  NetworkservicesHttpRouteRulesActionRedirectResponseCodeEnumTEMPORARY_REDIRECT = 4;
+  NetworkservicesHttpRouteRulesActionRedirectResponseCodeEnumPERMANENT_REDIRECT = 5;
+}
+
+message NetworkservicesHttpRoute {
+  string name = 1;
+  string description = 2;
+  string create_time = 3;
+  string update_time = 4;
+  repeated string hostnames = 5;
+  repeated string meshes = 6;
+  repeated string gateways = 7;
+  map<string, string> labels = 8;
+  repeated NetworkservicesHttpRouteRules rules = 9;
+  string project = 10;
+  string location = 11;
+  string self_link = 12;
+}
+
+message NetworkservicesHttpRouteRules {
+  repeated NetworkservicesHttpRouteRulesMatches matches = 1;
+  NetworkservicesHttpRouteRulesAction action = 2;
+}
+
+message NetworkservicesHttpRouteRulesMatches {
+  string full_path_match = 1;
+  string prefix_match = 2;
+  string regex_match = 3;
+  bool ignore_case = 4;
+  repeated NetworkservicesHttpRouteRulesMatchesHeaders headers = 5;
+  repeated NetworkservicesHttpRouteRulesMatchesQueryParameters query_parameters = 6;
+}
+
+message NetworkservicesHttpRouteRulesMatchesHeaders {
+  string header = 1;
+  string exact_match = 2;
+  string regex_match = 3;
+  string prefix_match = 4;
+  bool present_match = 5;
+  string suffix_match = 6;
+  NetworkservicesHttpRouteRulesMatchesHeadersRangeMatch range_match = 7;
+  bool invert_match = 8;
+}
+
+message NetworkservicesHttpRouteRulesMatchesHeadersRangeMatch {
+  int64 start = 1;
+  int64 end = 2;
+}
+
+message NetworkservicesHttpRouteRulesMatchesQueryParameters {
+  string query_parameter = 1;
+  string exact_match = 2;
+  string regex_match = 3;
+  bool present_match = 4;
+}
+
+message NetworkservicesHttpRouteRulesAction {
+  repeated NetworkservicesHttpRouteRulesActionDestinations destinations = 1;
+  NetworkservicesHttpRouteRulesActionRedirect redirect = 2;
+  NetworkservicesHttpRouteRulesActionFaultInjectionPolicy fault_injection_policy = 3;
+  NetworkservicesHttpRouteRulesActionRequestHeaderModifier request_header_modifier = 4;
+  NetworkservicesHttpRouteRulesActionResponseHeaderModifier response_header_modifier = 5;
+  NetworkservicesHttpRouteRulesActionUrlRewrite url_rewrite = 6;
+  string timeout = 7;
+  NetworkservicesHttpRouteRulesActionRetryPolicy retry_policy = 8;
+  NetworkservicesHttpRouteRulesActionRequestMirrorPolicy request_mirror_policy = 9;
+  NetworkservicesHttpRouteRulesActionCorsPolicy cors_policy = 10;
+}
+
+message NetworkservicesHttpRouteRulesActionDestinations {
+  int64 weight = 1;
+  string service_name = 2;
+}
+
+message NetworkservicesHttpRouteRulesActionRedirect {
+  string host_redirect = 1;
+  string path_redirect = 2;
+  string prefix_rewrite = 3;
+  NetworkservicesHttpRouteRulesActionRedirectResponseCodeEnum response_code = 4;
+  bool https_redirect = 5;
+  bool strip_query = 6;
+  int64 port_redirect = 7;
+}
+
+message NetworkservicesHttpRouteRulesActionFaultInjectionPolicy {
+  NetworkservicesHttpRouteRulesActionFaultInjectionPolicyDelay delay = 1;
+  NetworkservicesHttpRouteRulesActionFaultInjectionPolicyAbort abort = 2;
+}
+
+message NetworkservicesHttpRouteRulesActionFaultInjectionPolicyDelay {
+  string fixed_delay = 1;
+  int64 percentage = 2;
+}
+
+message NetworkservicesHttpRouteRulesActionFaultInjectionPolicyAbort {
+  int64 http_status = 1;
+  int64 percentage = 2;
+}
+
+message NetworkservicesHttpRouteRulesActionRequestHeaderModifier {
+  map<string, string> set = 1;
+  map<string, string> add = 2;
+  repeated string remove = 3;
+}
+
+message NetworkservicesHttpRouteRulesActionResponseHeaderModifier {
+  map<string, string> set = 1;
+  map<string, string> add = 2;
+  repeated string remove = 3;
+}
+
+message NetworkservicesHttpRouteRulesActionUrlRewrite {
+  string path_prefix_rewrite = 1;
+  string host_rewrite = 2;
+}
+
+message NetworkservicesHttpRouteRulesActionRetryPolicy {
+  repeated string retry_conditions = 1;
+  int64 num_retries = 2;
+  string per_try_timeout = 3;
+}
+
+message NetworkservicesHttpRouteRulesActionRequestMirrorPolicy {
+  NetworkservicesHttpRouteRulesActionRequestMirrorPolicyDestination destination = 1;
+}
+
+message NetworkservicesHttpRouteRulesActionRequestMirrorPolicyDestination {
+  int64 weight = 1;
+  string service_name = 2;
+}
+
+message NetworkservicesHttpRouteRulesActionCorsPolicy {
+  repeated string allow_origins = 1;
+  repeated string allow_origin_regexes = 2;
+  repeated string allow_methods = 3;
+  repeated string allow_headers = 4;
+  repeated string expose_headers = 5;
+  string max_age = 6;
+  bool allow_credentials = 7;
+  bool disabled = 8;
+}
+
+message ApplyNetworkservicesHttpRouteRequest {
+  NetworkservicesHttpRoute resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteNetworkservicesHttpRouteRequest {
+  string service_account_file = 1;
+  NetworkservicesHttpRoute resource = 2;
+}
+
+message ListNetworkservicesHttpRouteRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListNetworkservicesHttpRouteResponse {
+  repeated NetworkservicesHttpRoute items = 1;
+}
+
+service NetworkservicesHttpRouteService {
+  rpc ApplyNetworkservicesHttpRoute(ApplyNetworkservicesHttpRouteRequest) returns (NetworkservicesHttpRoute);
+  rpc DeleteNetworkservicesHttpRoute(DeleteNetworkservicesHttpRouteRequest) returns (google.protobuf.Empty);
+  rpc ListNetworkservicesHttpRoute(ListNetworkservicesHttpRouteRequest) returns (ListNetworkservicesHttpRouteResponse);
+}

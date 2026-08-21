@@ -1,0 +1,289 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: core.cnrm.cloud.google.com/v1alpha1
+kind: ServiceMapping
+metadata:
+  name: container.cnrm.cloud.google.com
+  namespace: cnrm-system
+spec:
+  name: Container
+  version: v1beta1
+  serviceHostName: "container.googleapis.com"
+  resources:
+    - name: google_container_cluster
+      kind: ContainerCluster
+      idTemplate: "{{project}}/{{location}}/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: true
+      ignoredFields:
+        - node_pool
+        # TODO(b/258864199): Remove disk_type field from ignoredFields.
+        - cluster_autoscaling.auto_provisioning_defaults.disk_type
+      metadataMapping:
+        name: name
+        labels: resource_labels
+      resourceID:
+        targetField: name
+      directives:
+        - remove_default_node_pool
+      mutableButUnreadableFields:
+        - min_master_version
+      ignoredOutputOnlySpecFields:
+        - control_plane_endpoints_config.dns_endpoint_config.endpoint
+      observedFields:
+        - control_plane_endpoints_config.dns_endpoint_config.endpoint
+        - master_auth.client_certificate
+        - master_auth.cluster_ca_certificate
+        - private_cluster_config.private_endpoint
+        - private_cluster_config.public_endpoint
+      containers:
+        - type: project
+          tfField: project
+      resourceReferences:
+        - tfField: cluster_autoscaling.auto_provisioning_defaults.service_account
+          key: serviceAccountRef
+          gvk:
+            kind: IAMServiceAccount
+            version: v1beta1
+            group: iam.cnrm.cloud.google.com
+          targetField: email
+        - tfField: network
+          key: networkRef
+          gvk:
+            kind: ComputeNetwork
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - tfField: subnetwork
+          key: subnetworkRef
+          gvk:
+            kind: ComputeSubnetwork
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - tfField: node_config.service_account
+          key: serviceAccountRef
+          gvk:
+            kind: IAMServiceAccount
+            version: v1beta1
+            group: iam.cnrm.cloud.google.com
+          targetField: email
+        - tfField: node_config.boot_disk_kms_key
+          key: bootDiskKMSCryptoKeyRef
+          gvk:
+            kind: KMSCryptoKey
+            version: v1beta1
+            group: kms.cnrm.cloud.google.com
+          targetField: self_link
+        - tfField: notification_config.pubsub.topic
+          description: |-
+            The PubSubTopic to send the notification to.
+          key: topicRef
+          gvk:
+            kind: PubSubTopic
+            version: v1beta1
+            group: pubsub.cnrm.cloud.google.com
+          valueTemplate: "projects/{{project}}/topics/{{value}}"
+        - tfField: node_config.node_group
+          description: |-
+            Immutable. Setting this field will assign instances
+            of this pool to run on the specified node group. This is useful
+            for running workloads on sole tenant nodes.
+          key: nodeGroupRef
+          gvk:
+            kind: ComputeNodeGroup
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+        - tfField: cluster_autoscaling.auto_provisioning_defaults.boot_disk_kms_key
+          key: bootDiskKMSKeyRef
+          description: |-
+            The Customer Managed Encryption Key used to encrypt the
+            boot disk attached to each node in the node pool.
+          gvk:
+            kind: KMSCryptoKey
+            version: v1beta1
+            group: kms.cnrm.cloud.google.com
+          targetField: self_link
+        - tfField: private_cluster_config.private_endpoint_subnetwork
+          key: privateEndpointSubnetworkRef
+          description: |-
+            Immutable. Subnetwork in cluster's network where master's endpoint
+            will be provisioned.
+          gvk:
+            kind: ComputeSubnetwork
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - tfField: ip_allocation_policy.additional_ip_ranges_configs.subnetwork
+          description: |-
+            The subnetwork path for the additional IP range. Format: projects/{project}/regions/{region}/subnetworks/{subnetwork}.
+          key: subnetworkRef
+          gvk:
+            kind: ComputeSubnetwork
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - tfField: node_config.containerd_config.private_registry_access_config.certificate_authority_domain_config.gcp_secret_manager_certificate_config.secret_uri
+          key: secretRef
+          gvk:
+            kind: SecretManagerSecretVersion
+            version: v1beta1
+            group: secretmanager.cnrm.cloud.google.com
+          targetField: name
+        - tfField: node_config.containerd_config.registry_hosts.hosts.ca.gcp_secret_manager_secret_uri
+          key: secretRef
+          gvk:
+            kind: SecretManagerSecretVersion
+            version: v1beta1
+            group: secretmanager.cnrm.cloud.google.com
+          targetField: name
+        - tfField: node_config.containerd_config.registry_hosts.hosts.client.cert.gcp_secret_manager_secret_uri
+          key: secretRef
+          gvk:
+            kind: SecretManagerSecretVersion
+            version: v1beta1
+            group: secretmanager.cnrm.cloud.google.com
+          targetField: name
+        - tfField: node_config.containerd_config.registry_hosts.hosts.client.key.gcp_secret_manager_secret_uri
+          key: secretRef
+          gvk:
+            kind: SecretManagerSecretVersion
+            version: v1beta1
+            group: secretmanager.cnrm.cloud.google.com
+          targetField: name
+    - name: google_container_node_pool
+      kind: ContainerNodePool
+      idTemplate: "{{project}}/{{location}}/{{cluster}}/{{name}}"
+      # doesn't import correctly
+      idTemplateCanBeUsedToMatchResourceName: false
+      resourceAvailableInAssetInventory: true
+      metadataMapping:
+        name: name
+      resourceID:
+        targetField: name
+      observedFields:
+        - version
+        - node_config.taint
+
+      resourceReferences:
+        - key: clusterRef
+          tfField: cluster
+          gvk:
+            kind: ContainerCluster
+            version: v1beta1
+            group: container.cnrm.cloud.google.com
+          parent: true
+        - tfField: node_config.service_account
+          key: serviceAccountRef
+          gvk:
+            kind: IAMServiceAccount
+            version: v1beta1
+            group: iam.cnrm.cloud.google.com
+          targetField: email
+        - tfField: node_config.boot_disk_kms_key
+          key: bootDiskKMSCryptoKeyRef
+          gvk:
+            kind: KMSCryptoKey
+            version: v1beta1
+            group: kms.cnrm.cloud.google.com
+          targetField: self_link
+        - tfField: node_config.node_group
+          description: |-
+            Immutable. Setting this field will assign instances
+            of this pool to run on the specified node group. This is useful
+            for running workloads on sole tenant nodes.
+          key: nodeGroupRef
+          gvk:
+            kind: ComputeNodeGroup
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+        - tfField: network_config.subnetwork
+          description: |-
+            Immutable. The subnetwork path for the node pool. Format: projects/{project}/regions/{region}/subnetworks/{subnetwork}. If not set, the provider/API will choose the subnetwork (e.g. based on IP utilization) and report it here.
+          key: subnetworkRef
+          gvk:
+            kind: ComputeSubnetwork
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - tfField: network_config.additional_node_network_configs.network
+          description: Immutable. Name of the VPC where the additional
+            interface belongs.
+          key: networkRef
+          gvk:
+            kind: ComputeNetwork
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - tfField: network_config.additional_node_network_configs.subnetwork
+          description: Immutable. Name of the subnetwork where the
+            additional interface belongs.
+          key: subnetworkRef
+          gvk:
+            kind: ComputeSubnetwork
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - tfField: network_config.additional_pod_network_configs.subnetwork
+          description: Immutable. Name of the subnetwork where the
+            additional pod network belongs.
+          key: subnetworkRef
+          gvk:
+            kind: ComputeSubnetwork
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - tfField: placement_policy.policy_name
+          description: Immutable. If set, refers to the name of a custom
+            resource policy supplied by the user. The resource policy must
+            be in the same project and region as the node pool. If not found,
+            InvalidArgument error is returned.
+          key: policyNameRef
+          gvk:
+            kind: ComputeResourcePolicy
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: self_link
+        - tfField: node_config.containerd_config.private_registry_access_config.certificate_authority_domain_config.gcp_secret_manager_certificate_config.secret_uri
+          key: secretRef
+          gvk:
+            kind: SecretManagerSecretVersion
+            version: v1beta1
+            group: secretmanager.cnrm.cloud.google.com
+          targetField: name
+        - tfField: node_config.containerd_config.registry_hosts.hosts.ca.gcp_secret_manager_secret_uri
+          key: secretRef
+          gvk:
+            kind: SecretManagerSecretVersion
+            version: v1beta1
+            group: secretmanager.cnrm.cloud.google.com
+          targetField: name
+        - tfField: node_config.containerd_config.registry_hosts.hosts.client.cert.gcp_secret_manager_secret_uri
+          key: secretRef
+          gvk:
+            kind: SecretManagerSecretVersion
+            version: v1beta1
+            group: secretmanager.cnrm.cloud.google.com
+          targetField: name
+        - tfField: node_config.containerd_config.registry_hosts.hosts.client.key.gcp_secret_manager_secret_uri
+          key: secretRef
+          gvk:
+            kind: SecretManagerSecretVersion
+            version: v1beta1
+            group: secretmanager.cnrm.cloud.google.com
+          targetField: name
+      containers:
+        - type: project
+          tfField: project

@@ -1,0 +1,10 @@
+apiVersion: vertexai.cnrm.cloud.google.com/v1alpha1
+kind: VertexAITensorboard
+metadata:
+  name: dep-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  description: Parent dashboard for tests
+  displayName: parent-tensorboard-${uniqueId}
+  region: us-central1

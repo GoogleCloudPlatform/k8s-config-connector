@@ -1,0 +1,13 @@
+label: Config Connector ComputeBackendBucket
+markdownDescription: Creates yaml for a ComputeBackendBucket resource
+insertText: |
+  apiVersion: compute.cnrm.cloud.google.com/v1beta1
+  kind: ComputeBackendBucket
+  metadata:
+    labels:
+      \${1:label-one}: \${2:value-one}
+    name: \${3:computebackendbucket-name}
+  spec:
+    bucketRef:
+      name: \${4:[PROJECT_ID?]-backendbucket-dep-basic}
+    description: \${5:contains a reference to a bucket for use with HTTP(S) load-balancing}

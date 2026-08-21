@@ -1,0 +1,19 @@
+label: Config Connector ComputeInterconnectAttachment
+markdownDescription: Creates yaml for a ComputeInterconnectAttachment resource
+insertText: |
+  apiVersion: compute.cnrm.cloud.google.com/v1beta1
+  kind: ComputeInterconnectAttachment
+  metadata:
+    name: \${1:computeinterconnectattachment-name}
+  spec:
+    description: \${2:example interconnect attachment description}
+    interconnect: \${3:https://www.googleapis.com/compute/v1/projects/my-project/global/interconnects/my-interconnect}
+    adminEnabled: \${4:true}
+    bandwidth: \${5:BPS_50M}
+    type: \${6:DEDICATED}
+    candidateSubnets:
+    - \${7:169.254.0.0/16}
+    region: \${8:us-west1}
+    vlanTag8021q: \${9:1024}
+    routerRef:
+      name: \${10:computeinterconnectattachment-dep}

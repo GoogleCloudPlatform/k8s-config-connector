@@ -1,0 +1,68 @@
+{{template "headercomment.tmpl" .}}
+
+{% extends "config-connector/_base.html" %}
+
+{% block page_title %}{{ .Kind}}{% endblock %}
+{% block body %}
+{{template "alphadisclaimer.tmpl" .}}
+
+Caution: After
+[v1.118.1](https://github.com/GoogleCloudPlatform/k8s-config-connector/releases/tag/v1.118.1),
+`cnrm.cloud.google.com/state-into-spec` annotation is no longer used during
+{{.Kind}} resource reconciliation, and [externally-managed
+fields](/config-connector/docs/concepts/managing-fields-externally) in the
+existing {{.Kind}} resources are considered managed, i.e. the Kubernetes
+object is the source of truth for the underlying {{"{{gcp_name_short}}"}}
+resource.
+
+<table>
+<thead>
+<tr>
+<th><strong>Property</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>{{"{{gcp_name_short}}"}} Service Name</td>
+<td>Cloud Logging</td>
+</tr>
+<tr>
+<td>{{"{{gcp_name_short}}"}} Service Documentation</td>
+<td><a href="/logging/docs/">/logging/docs/</a></td>
+</tr>
+<tr>
+<td>{{"{{gcp_name_short}}"}} REST Resource Name</td>
+<td>
+<pre>v2.projects.metrics</pre>
+</td>
+</tr>
+<tr>
+<td>{{"{{gcp_name_short}}"}} REST Resource Documentation</td>
+<td>
+<pre><a href="/logging/docs/reference/v2/rest/v2/projects.metrics">/logging/docs/reference/v2/rest/v2/projects.metrics</a></pre>
+</td>
+</tr>
+<tr>
+<td>{{"{{product_name_short}}"}} Resource Short Names</td>
+<td>{{ .ShortNames}}</td>
+</tr>
+<tr>
+<td>{{"{{product_name_short}}"}} Service Name</td>
+<td>logging.googleapis.com</td>
+</tr>
+<tr>
+<td>{{"{{product_name_short}}"}} Resource Fully Qualified Name</td>
+<td>{{ .FullyQualifiedName}}</td>
+</tr>
+{{template "iamsupport.tmpl" .}}
+<tr>
+<td>{{"{{product_name_short}}"}} Default Average Reconcile Interval In Seconds</td>
+<td>{{ .DefaultReconcileInterval}}</td>
+</tr>
+</tbody>
+</table>
+
+{{template "resource.tmpl" .}}
+{{template "endnote.tmpl" .}}
+{% endblock %}

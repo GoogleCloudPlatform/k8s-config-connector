@@ -1,0 +1,4 @@
+7d6
+<     cnrm.cloud.google.com/state-into-spec: absent
+29a29
+>   externalRef: projects/${projectId}/datasets/bigquerydataset_resourceid_${uniqueId}/tables/bigquerytable_resourceid_${uniqueId}

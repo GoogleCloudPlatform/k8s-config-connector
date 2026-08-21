@@ -1,0 +1,1200 @@
+// Copyright 2024 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package mockcontainer
+
+import (
+	"context"
+	"fmt"
+	"strings"
+	"time"
+
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/encoding/prototext"
+	"google.golang.org/protobuf/proto"
+	"k8s.io/klog/v2"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/container/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
+)
+
+type ClusterManagerV1 struct {
+	*MockService
+	pb.UnimplementedClusterManagerServer
+}
+
+func (s *ClusterManagerV1) populateNodePools(ctx context.Context, clusterFqn string, obj *pb.Cluster) error {
+	var nodePools []*pb.NodePool
+	nodePoolKind := (&pb.NodePool{}).ProtoReflect().Descriptor()
+	err := s.storage.List(ctx, nodePoolKind, storage.ListOptions{
+		Prefix: clusterFqn + "/nodePools/",
+	}, func(msg proto.Message) error {
+		np := msg.(*pb.NodePool)
+		nodePools = append(nodePools, np)
+		return nil
+	})
+	if err != nil {
+		return err
+	}
+	if len(nodePools) > 0 {
+		obj.NodePools = nodePools
+	}
+	return nil
+}
+
+func (s *ClusterManagerV1) GetCluster(ctx context.Context, req *pb.GetClusterRequest) (*pb.Cluster, error) {
+	name, err := s.parseClusterName(req.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := &pb.Cluster{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Not found: %s.", AsZonalLink(fqn))
+		}
+		return nil, err
+	}
+
+	if err := s.populateNodePools(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	return obj, nil
+}
+
+func (s *ClusterManagerV1) CreateCluster(ctx context.Context, req *pb.CreateClusterRequest) (*pb.Operation, error) {
+	reqName := req.GetParent() + "/clusters/" + req.GetCluster().GetName()
+	name, err := s.parseClusterName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := proto.CloneOf(req.Cluster)
+
+	obj.Status = pb.Cluster_RUNNING
+
+	now := time.Now().UTC()
+	obj.CreateTime = now.Format(time.RFC3339Nano)
+
+	region, err := locationToRegion(name.Location)
+	if err != nil {
+		return nil, err
+	}
+
+	obj.Location = name.Location
+
+	if len(obj.Locations) == 0 {
+		// We probably need to expand this to zones, but we can wait for a test
+		obj.Locations = []string{name.Location}
+	}
+
+	obj.SelfLink = buildSelfLink(ctx, fmt.Sprintf("projects/%s/locations/%s/clusters/%s", name.Project.ID, name.Location, name.Cluster))
+	obj.SelfLink = AsZonalLink(obj.SelfLink)
+
+	if obj.NetworkConfig == nil {
+		obj.NetworkConfig = &pb.NetworkConfig{}
+	}
+	if obj.Network == "" && obj.NetworkConfig.Network == "" {
+		obj.Network = "default"
+		obj.NetworkConfig.Network = "default"
+	} else if obj.Network != "" && obj.NetworkConfig.Network == "" {
+		obj.NetworkConfig.Network = obj.Network
+	}
+	if obj.Subnetwork == "" && obj.NetworkConfig.Subnetwork == "" {
+		obj.Subnetwork = "default"
+		obj.NetworkConfig.Subnetwork = fmt.Sprintf("projects/%s/regions/%s/subnetworks/%s", name.Project.ID, region, obj.Subnetwork)
+	} else if obj.Subnetwork != "" && obj.NetworkConfig.Subnetwork == "" {
+		if strings.Contains(obj.Subnetwork, "projects/") {
+			obj.NetworkConfig.Subnetwork = obj.Subnetwork
+		} else {
+			obj.NetworkConfig.Subnetwork = fmt.Sprintf("projects/%s/regions/%s/subnetworks/%s", name.Project.ID, region, obj.Subnetwork)
+		}
+	}
+
+	if obj.NetworkConfig.ServiceExternalIpsConfig == nil {
+		obj.NetworkConfig.ServiceExternalIpsConfig = &pb.ServiceExternalIPsConfig{}
+	}
+	obj.NetworkConfig.Subnetwork = strings.TrimPrefix(obj.NetworkConfig.Subnetwork, "https://www.googleapis.com/compute/v1/")
+
+	// On output, Network and Subnetwork show the ID instead of the full name
+	obj.Network = lastComponent(obj.Network)
+	obj.Subnetwork = lastComponent(obj.Subnetwork)
+
+	if isZone(obj.Location) {
+		obj.Zone = obj.Location
+	}
+
+	obj.ServicesIpv4Cidr = "34.118.224.0/20"
+
+	if err := s.populateClusterDefaults(name.Project, obj, true); err != nil {
+		return nil, err
+	}
+
+	if len(obj.NodePools) == 0 {
+		defaultNodePool := &pb.NodePool{
+			Name:      "default-pool",
+			Status:    pb.NodePool_RUNNING,
+			Locations: []string{name.Location},
+			Config:    obj.NodeConfig,
+		}
+		obj.NodePools = append(obj.NodePools, defaultNodePool)
+	}
+
+	for i, nodePool := range obj.NodePools {
+		nodePoolObj := proto.CloneOf(nodePool)
+		if err := s.populateNodePoolDefaults(name.Project, obj, nodePoolObj); err != nil {
+			return nil, err
+		}
+		obj.NodePools[i] = nodePoolObj
+	}
+
+	if obj.Autoscaling != nil && obj.Autoscaling.AutoprovisioningNodePoolDefaults != nil &&
+		obj.Autoscaling.AutoprovisioningNodePoolDefaults.UpgradeSettings != nil {
+		upgradeSettings := obj.Autoscaling.AutoprovisioningNodePoolDefaults.UpgradeSettings
+		if *upgradeSettings.Strategy == pb.NodePoolUpdateStrategy_SURGE && upgradeSettings.MaxSurge > 0 {
+			obj.Autoscaling.AutoprovisioningNodePoolDefaults.UpgradeSettings.BlueGreenSettings = nil
+		}
+	}
+
+	if err := s.storage.Create(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	if err := s.createMockIGM(ctx, name.Project, obj.InstanceGroupUrls, obj.CurrentNodeCount); err != nil {
+		klog.Errorf("failed to create mock IGM: %v", err)
+	}
+
+	for _, nodePool := range obj.NodePools {
+		nodePoolFqn := name.String() + "/nodePools/" + nodePool.GetName()
+		if err := s.storage.Create(ctx, nodePoolFqn, nodePool); err != nil {
+			return nil, err
+		}
+		if err := s.createMockIGM(ctx, name.Project, nodePool.InstanceGroupUrls, nodePool.InitialNodeCount); err != nil {
+			klog.Errorf("failed to create mock IGM: %v", err)
+		}
+	}
+
+	op := &pb.Operation{
+		Zone:          name.Location,
+		OperationType: pb.Operation_CREATE_CLUSTER,
+		TargetLink:    buildTargetLink(ctx, name),
+	}
+	return s.startLRO(ctx, name.Project, op, func() (proto.Message, error) {
+		op.Progress = &pb.OperationProgress{
+			Metrics: []*pb.OperationProgress_Metric{
+				{Name: "CLUSTER_CONFIGURING", Value: &pb.OperationProgress_Metric_IntValue{IntValue: 8}},
+				{Name: "CLUSTER_CONFIGURING_TOTAL", Value: &pb.OperationProgress_Metric_IntValue{IntValue: 8}},
+				{Name: "CLUSTER_DEPLOYING", Value: &pb.OperationProgress_Metric_IntValue{IntValue: 12}},
+				{Name: "CLUSTER_DEPLOYING_TOTAL", Value: &pb.OperationProgress_Metric_IntValue{IntValue: 12}},
+				{Name: "CLUSTER_HEALTHCHECKING", Value: &pb.OperationProgress_Metric_IntValue{IntValue: 1}},
+				{Name: "CLUSTER_HEALTHCHECKING_TOTAL", Value: &pb.OperationProgress_Metric_IntValue{IntValue: 2}},
+			},
+		}
+		return obj, nil
+	})
+}
+
+func locationToRegion(location string) (string, error) {
+	tokens := strings.Split(location, "-")
+	if len(tokens) == 2 {
+		return location, nil
+	}
+	if len(tokens) == 3 {
+		return fmt.Sprintf("%s-%s", tokens[0], tokens[1]), nil
+	}
+	return "", fmt.Errorf("incorrect location: %v", location)
+}
+
+func locationToZone(location string) (string, error) {
+	tokens := strings.Split(location, "-")
+	if len(tokens) == 3 {
+		return location, nil
+	}
+	if len(tokens) == 2 {
+		return fmt.Sprintf("%s-a", location), nil
+	}
+	return "", fmt.Errorf("incorrect location: %v", location)
+}
+
+func (s *ClusterManagerV1) UpdateCluster(ctx context.Context, req *pb.UpdateClusterRequest) (*pb.Operation, error) {
+	if req.GetUpdate() == nil || proto.Equal(req.GetUpdate(), &pb.ClusterUpdate{}) {
+		return nil, status.Errorf(codes.InvalidArgument, "must specify a field to update")
+	}
+	reqName := req.GetName()
+
+	name, err := s.parseClusterName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	obj := &pb.Cluster{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	klog.Infof("UpdateCluster %v", prototext.Format(req))
+
+	update := proto.CloneOf(req.GetUpdate())
+
+	// We clear each field of the update as we go, so we know if we've missed one!
+
+	if update.DesiredClusterAutoscaling != nil {
+		obj.Autoscaling = update.DesiredClusterAutoscaling
+		update.DesiredClusterAutoscaling = nil
+		if obj.Autoscaling.AutoprovisioningNodePoolDefaults != nil &&
+			obj.Autoscaling.AutoprovisioningNodePoolDefaults.UpgradeSettings != nil &&
+			obj.Autoscaling.AutoprovisioningNodePoolDefaults.UpgradeSettings.BlueGreenSettings != nil &&
+			obj.Autoscaling.AutoprovisioningNodePoolDefaults.UpgradeSettings.BlueGreenSettings.String() == "" {
+			obj.Autoscaling.AutoprovisioningNodePoolDefaults.UpgradeSettings.BlueGreenSettings = nil
+		}
+	}
+
+	if update.DesiredLoggingService != "" {
+		obj.LoggingService = update.DesiredLoggingService
+		update.DesiredLoggingService = ""
+	}
+
+	if update.DesiredMonitoringService != "" {
+		obj.MonitoringService = update.DesiredMonitoringService
+		update.DesiredMonitoringService = ""
+	}
+
+	if update.DesiredNodePoolAutoscaling != nil {
+		nodePoolID := update.GetDesiredNodePoolId()
+		if nodePoolID == "" {
+			return nil, status.Errorf(codes.InvalidArgument, "desiredNodePoolId must be specified")
+		}
+
+		nodePoolName := name.NodePool(nodePoolID)
+
+		nodePool := &pb.NodePool{}
+		if err := s.storage.Get(ctx, nodePoolName.String(), nodePool); err != nil {
+			return nil, err
+		}
+
+		nodePool.Autoscaling = update.DesiredNodePoolAutoscaling
+		update.DesiredNodePoolAutoscaling = nil
+
+		if err := s.storage.Update(ctx, nodePoolName.String(), nodePool); err != nil {
+			return nil, err
+		}
+
+		update.DesiredNodePoolAutoscaling = nil
+		update.DesiredNodePoolId = ""
+	}
+
+	if update.DesiredAddonsConfig != nil {
+		obj.AddonsConfig = update.DesiredAddonsConfig
+		update.DesiredAddonsConfig = nil
+	}
+
+	if update.DesiredNodePoolAutoConfigNetworkTags != nil {
+		if obj.NodePoolAutoConfig == nil {
+			obj.NodePoolAutoConfig = &pb.NodePoolAutoConfig{}
+		}
+		obj.NodePoolAutoConfig.NetworkTags = update.DesiredNodePoolAutoConfigNetworkTags
+		update.DesiredNodePoolAutoConfigNetworkTags = nil
+	}
+
+	if update.DesiredNodePoolAutoConfigResourceManagerTags != nil {
+		if obj.NodePoolAutoConfig == nil {
+			obj.NodePoolAutoConfig = &pb.NodePoolAutoConfig{}
+		}
+		obj.NodePoolAutoConfig.ResourceManagerTags = update.DesiredNodePoolAutoConfigResourceManagerTags
+		update.DesiredNodePoolAutoConfigResourceManagerTags = nil
+	}
+
+	if update.DesiredMasterAuthorizedNetworksConfig != nil {
+		obj.MasterAuthorizedNetworksConfig = update.DesiredMasterAuthorizedNetworksConfig
+		update.DesiredMasterAuthorizedNetworksConfig = nil
+	}
+
+	if update.DesiredPrivateClusterConfig != nil {
+		obj.PrivateClusterConfig = update.DesiredPrivateClusterConfig
+		update.DesiredPrivateClusterConfig = nil
+	}
+
+	if update.DesiredEnablePrivateEndpoint != nil {
+		if obj.PrivateClusterConfig == nil {
+			obj.PrivateClusterConfig = &pb.PrivateClusterConfig{}
+		}
+		obj.PrivateClusterConfig.EnablePrivateEndpoint = *update.DesiredEnablePrivateEndpoint
+		update.DesiredEnablePrivateEndpoint = nil
+	}
+
+	if update.DesiredControlPlaneEndpointsConfig != nil {
+		obj.ControlPlaneEndpointsConfig = update.DesiredControlPlaneEndpointsConfig
+
+		if update.DesiredControlPlaneEndpointsConfig.IpEndpointsConfig != nil {
+			if update.DesiredControlPlaneEndpointsConfig.IpEndpointsConfig.EnablePublicEndpoint != nil {
+				obj.PrivateClusterConfig.EnablePrivateEndpoint = !*update.DesiredControlPlaneEndpointsConfig.IpEndpointsConfig.EnablePublicEndpoint
+			}
+			if update.DesiredControlPlaneEndpointsConfig.IpEndpointsConfig.AuthorizedNetworksConfig != nil {
+				obj.MasterAuthorizedNetworksConfig = update.DesiredControlPlaneEndpointsConfig.IpEndpointsConfig.AuthorizedNetworksConfig
+			}
+		}
+
+		update.DesiredControlPlaneEndpointsConfig = nil
+
+	}
+
+	if update.DesiredDefaultEnablePrivateNodes != nil {
+		obj.NetworkConfig.DefaultEnablePrivateNodes = update.DesiredDefaultEnablePrivateNodes
+		update.DesiredDefaultEnablePrivateNodes = nil
+	}
+
+	if update.DesiredEnableCiliumClusterwideNetworkPolicy != nil {
+		if obj.NetworkConfig == nil {
+			obj.NetworkConfig = &pb.NetworkConfig{}
+		}
+		obj.NetworkConfig.EnableCiliumClusterwideNetworkPolicy = update.DesiredEnableCiliumClusterwideNetworkPolicy
+		update.DesiredEnableCiliumClusterwideNetworkPolicy = nil
+	}
+
+	if update.DesiredDisableL4LbFirewallReconciliation != nil {
+		if obj.NetworkConfig == nil {
+			obj.NetworkConfig = &pb.NetworkConfig{}
+		}
+		obj.NetworkConfig.DisableL4LbFirewallReconciliation = update.DesiredDisableL4LbFirewallReconciliation
+		update.DesiredDisableL4LbFirewallReconciliation = nil
+	}
+
+	if update.DesiredInTransitEncryptionConfig != nil {
+		if obj.NetworkConfig == nil {
+			obj.NetworkConfig = &pb.NetworkConfig{}
+		}
+		obj.NetworkConfig.InTransitEncryptionConfig = update.DesiredInTransitEncryptionConfig
+		update.DesiredInTransitEncryptionConfig = nil
+	}
+
+	if update.DesiredAdditionalIpRangesConfig != nil {
+		if obj.IpAllocationPolicy == nil {
+			obj.IpAllocationPolicy = &pb.IPAllocationPolicy{}
+		}
+		obj.IpAllocationPolicy.AdditionalIpRangesConfigs = update.DesiredAdditionalIpRangesConfig.AdditionalIpRangesConfigs
+		update.DesiredAdditionalIpRangesConfig = nil
+	}
+
+	if update.DesiredDatabaseEncryption != nil {
+		if obj.DatabaseEncryption == nil {
+			obj.DatabaseEncryption = &pb.DatabaseEncryption{}
+		}
+		if update.DesiredDatabaseEncryption.State != pb.DatabaseEncryption_UNKNOWN {
+			if update.DesiredDatabaseEncryption.State == pb.DatabaseEncryption_ALL_OBJECTS_ENCRYPTION_ENABLED {
+				obj.DatabaseEncryption.State = pb.DatabaseEncryption_ENCRYPTED
+			} else {
+				obj.DatabaseEncryption.State = update.DesiredDatabaseEncryption.State
+			}
+		}
+		if update.DesiredDatabaseEncryption.KeyName != "" {
+			obj.DatabaseEncryption.KeyName = update.DesiredDatabaseEncryption.KeyName
+		}
+		obj.DatabaseEncryption.CurrentState = nil
+		update.DesiredDatabaseEncryption = nil
+	}
+
+	if !proto.Equal(update, &pb.ClusterUpdate{}) {
+
+		return nil, status.Errorf(codes.InvalidArgument, "update was not fully implemented ClusterUpdate=%v", prototext.Format(update))
+	}
+
+	if err := s.populateClusterDefaults(name.Project, obj, false); err != nil {
+
+		return nil, err
+	}
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	op := &pb.Operation{
+		Zone:          name.Location,
+		OperationType: pb.Operation_UPDATE_CLUSTER,
+		TargetLink:    buildTargetLink(ctx, name),
+	}
+	return s.startLRO(ctx, name.Project, op, func() (proto.Message, error) {
+		return obj, nil
+	})
+}
+
+func (s *ClusterManagerV1) SetLabels(ctx context.Context, req *pb.SetLabelsRequest) (*pb.Operation, error) {
+	reqName := req.GetName()
+
+	name, err := s.parseClusterName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	existing := &pb.Cluster{}
+	if err := s.storage.Get(ctx, fqn, existing); err != nil {
+		return nil, err
+	}
+
+	klog.Infof("SetLabels %v", prototext.Format(req))
+
+	if existing.GetLabelFingerprint() != req.GetLabelFingerprint() {
+		return nil, status.Errorf(codes.FailedPrecondition, "label fingerprint does not match")
+	}
+
+	update := proto.CloneOf(existing)
+	update.ResourceLabels = req.ResourceLabels
+
+	if err := s.storage.Update(ctx, fqn, update); err != nil {
+		return nil, err
+	}
+
+	op := &pb.Operation{
+		Zone:          name.Location,
+		OperationType: pb.Operation_SET_LABELS,
+		TargetLink:    existing.SelfLink,
+	}
+	return s.startLRO(ctx, name.Project, op, func() (proto.Message, error) {
+		return existing, nil
+	})
+}
+
+func (s *ClusterManagerV1) SetMaintenancePolicy(ctx context.Context, req *pb.SetMaintenancePolicyRequest) (*pb.Operation, error) {
+	name, err := s.parseClusterName(req.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	obj := &pb.Cluster{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	obj.MaintenancePolicy = req.MaintenancePolicy
+	if obj.MaintenancePolicy != nil && obj.MaintenancePolicy.GetWindow() != nil &&
+		obj.MaintenancePolicy.GetWindow().GetDailyMaintenanceWindow() != nil {
+
+		obj.MaintenancePolicy.Window.GetDailyMaintenanceWindow().Duration = "PT4H0M0S"
+	}
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	op := &pb.Operation{
+		Zone:          name.Location,
+		OperationType: pb.Operation_UPDATE_CLUSTER,
+		TargetLink:    buildTargetLink(ctx, name),
+	}
+	return s.startLRO(ctx, name.Project, op, func() (proto.Message, error) {
+		return obj, nil
+	})
+}
+
+func (s *ClusterManagerV1) DeleteCluster(ctx context.Context, req *pb.DeleteClusterRequest) (*pb.Operation, error) {
+	name, err := s.parseClusterName(req.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	oldObj := &pb.Cluster{}
+	if err := s.storage.Delete(ctx, fqn, oldObj); err != nil {
+		return nil, err
+	}
+
+	op := &pb.Operation{
+		Zone:          name.Location,
+		OperationType: pb.Operation_DELETE_CLUSTER,
+		TargetLink:    buildTargetLink(ctx, name),
+	}
+	return s.startLRO(ctx, name.Project, op, func() (proto.Message, error) {
+		return oldObj, nil
+	})
+}
+
+func (s *ClusterManagerV1) populateClusterDefaults(project *projects.ProjectData, obj *pb.Cluster, isCreate bool) error {
+	hasDefaultPool := false
+	for _, np := range obj.NodePools {
+		if np.Name == "default-pool" {
+			hasDefaultPool = true
+			break
+		}
+	}
+	if isCreate && len(obj.NodePools) == 0 {
+		hasDefaultPool = true
+	}
+
+	if obj.ConfidentialNodes != nil {
+		if obj.ConfidentialNodes.Enabled &&
+			obj.ConfidentialNodes.ConfidentialInstanceType == pb.ConfidentialNodes_CONFIDENTIAL_INSTANCE_TYPE_UNSPECIFIED {
+			obj.ConfidentialNodes.ConfidentialInstanceType = pb.ConfidentialNodes_SEV
+		}
+	}
+
+	if hasDefaultPool {
+		if obj.NodeConfig == nil {
+			obj.NodeConfig = &pb.NodeConfig{}
+		}
+		if obj.ConfidentialNodes != nil && obj.ConfidentialNodes.Enabled {
+			if obj.NodeConfig.ConfidentialNodes == nil {
+				obj.NodeConfig.ConfidentialNodes = &pb.ConfidentialNodes{}
+			}
+			obj.NodeConfig.ConfidentialNodes.Enabled = true
+			obj.NodeConfig.ConfidentialNodes.ConfidentialInstanceType = obj.ConfidentialNodes.ConfidentialInstanceType
+		}
+		if err := s.populateNodeConfig(obj.NodeConfig); err != nil {
+			return err
+		}
+	} else {
+		obj.NodeConfig = nil
+	}
+
+	// Populate new fields based on deprecated fields
+	if privateClusterConfig := obj.PrivateClusterConfig; privateClusterConfig != nil {
+		if privateClusterConfig.GetEnablePrivateNodes() {
+			if obj.NetworkConfig == nil {
+				obj.NetworkConfig = &pb.NetworkConfig{}
+			}
+			if obj.NetworkConfig.DefaultEnablePrivateNodes == nil {
+				obj.NetworkConfig.DefaultEnablePrivateNodes = PtrTo(true)
+			}
+		}
+	}
+
+	if controlPlaneEndpointsConfig := obj.ControlPlaneEndpointsConfig; controlPlaneEndpointsConfig != nil {
+		if ipEndpointsConfig := controlPlaneEndpointsConfig.GetIpEndpointsConfig(); ipEndpointsConfig != nil {
+			if ipEndpointsConfig.Enabled != nil && ipEndpointsConfig.GetEnabled() == false {
+				obj.PrivateCluster = true
+			}
+		}
+	}
+
+	// InitialClusterVersion
+	if obj.InitialClusterVersion == "" {
+		obj.InitialClusterVersion = "1.30.5-gke.1014001"
+	}
+
+	if obj.AddonsConfig == nil {
+		obj.AddonsConfig = &pb.AddonsConfig{}
+	}
+	if obj.AddonsConfig.CloudRunConfig != nil &&
+		obj.AddonsConfig.CloudRunConfig.LoadBalancerType == pb.CloudRunConfig_LOAD_BALANCER_TYPE_UNSPECIFIED {
+		obj.AddonsConfig.CloudRunConfig.LoadBalancerType = pb.CloudRunConfig_LOAD_BALANCER_TYPE_EXTERNAL
+	}
+	if obj.AddonsConfig.GcePersistentDiskCsiDriverConfig == nil {
+		obj.AddonsConfig.GcePersistentDiskCsiDriverConfig = &pb.GcePersistentDiskCsiDriverConfig{}
+	}
+	// Weird behavior:
+	// Even if `.AddonsConfig.GcePersistentDiskCsiDriverConfig.Enabled` is set to
+	// `false` in request, the returned value is still `true`.
+	obj.AddonsConfig.GcePersistentDiskCsiDriverConfig.Enabled = true
+
+	if obj.AddonsConfig.KubernetesDashboard == nil {
+		obj.AddonsConfig.KubernetesDashboard = &pb.KubernetesDashboard{
+			Disabled: true,
+		}
+	}
+	if obj.AddonsConfig.NetworkPolicyConfig == nil {
+		obj.AddonsConfig.NetworkPolicyConfig = &pb.NetworkPolicyConfig{
+			Disabled: true,
+		}
+	}
+
+	// AnonymousAuthenticationConfig
+	if obj.AnonymousAuthenticationConfig == nil {
+		obj.AnonymousAuthenticationConfig = &pb.AnonymousAuthenticationConfig{}
+	}
+	if obj.AnonymousAuthenticationConfig.Mode == pb.AnonymousAuthenticationConfig_MODE_UNSPECIFIED {
+		obj.AnonymousAuthenticationConfig.Mode = pb.AnonymousAuthenticationConfig_ENABLED
+	}
+
+	// Autopilot
+	if obj.Autopilot == nil {
+		obj.Autopilot = &pb.Autopilot{}
+	}
+
+	// Autoscaling
+	if obj.Autoscaling == nil {
+		obj.Autoscaling = &pb.ClusterAutoscaling{}
+	}
+	if obj.Autoscaling.AutoscalingProfile == pb.ClusterAutoscaling_PROFILE_UNSPECIFIED {
+		obj.Autoscaling.AutoscalingProfile = pb.ClusterAutoscaling_BALANCED
+	}
+	if obj.Autoscaling.EnableNodeAutoprovisioning {
+		if obj.Autoscaling.AutoprovisioningNodePoolDefaults == nil {
+			obj.Autoscaling.AutoprovisioningNodePoolDefaults = &pb.AutoprovisioningNodePoolDefaults{}
+		}
+
+		if err := s.populateAutoprovisioningNodePoolDefaults(obj.Autoscaling.AutoprovisioningNodePoolDefaults); err != nil {
+			return err
+		}
+	}
+
+	if upgradeSettings := obj.GetAutoscaling().GetAutoprovisioningNodePoolDefaults().GetUpgradeSettings(); upgradeSettings != nil {
+		if upgradeSettings.Strategy == nil {
+			upgradeSettings.Strategy = PtrTo(pb.NodePoolUpdateStrategy_SURGE)
+		}
+	}
+
+	if obj.Autoscaling.AutoprovisioningNodePoolDefaults == nil {
+		obj.Autoscaling.AutoprovisioningNodePoolDefaults = &pb.AutoprovisioningNodePoolDefaults{}
+	}
+	if obj.Autoscaling.AutoprovisioningNodePoolDefaults.ImageType == "" {
+		obj.Autoscaling.AutoprovisioningNodePoolDefaults.ImageType = "COS_CONTAINERD"
+	}
+
+	if obj.Autoscaling.AutoprovisioningNodePoolDefaults.Management == nil {
+		obj.Autoscaling.AutoprovisioningNodePoolDefaults.Management = &pb.NodeManagement{
+			AutoUpgrade: true,
+			AutoRepair:  true,
+		}
+	}
+
+	if obj.Autoscaling.AutoprovisioningNodePoolDefaults.OauthScopes == nil {
+		obj.Autoscaling.AutoprovisioningNodePoolDefaults.OauthScopes = []string{
+			"https://www.googleapis.com/auth/devstorage.read_only",
+			"https://www.googleapis.com/auth/logging.write",
+			"https://www.googleapis.com/auth/monitoring",
+			"https://www.googleapis.com/auth/service.management.readonly",
+			"https://www.googleapis.com/auth/servicecontrol",
+			"https://www.googleapis.com/auth/trace.append",
+		}
+	}
+	if obj.Autoscaling.AutoprovisioningNodePoolDefaults.ServiceAccount == "" {
+		obj.Autoscaling.AutoprovisioningNodePoolDefaults.ServiceAccount = "default"
+	}
+
+	// BinaryAuthorization
+	// (no longer populated)
+	// if obj.BinaryAuthorization == nil {
+	// 	obj.BinaryAuthorization = &pb.BinaryAuthorization{}
+	// }
+
+	if obj.ClusterIpv4Cidr == "" {
+		obj.ClusterIpv4Cidr = "10.92.0.0/14"
+	}
+
+	// ClusterTelemetry
+	if obj.ClusterTelemetry == nil {
+		obj.ClusterTelemetry = &pb.ClusterTelemetry{}
+	}
+
+	if obj.ClusterTelemetry.Type == pb.ClusterTelemetry_UNSPECIFIED {
+		obj.ClusterTelemetry.Type = pb.ClusterTelemetry_ENABLED
+	}
+
+	if obj.CurrentMasterVersion == "" {
+		obj.CurrentMasterVersion = obj.InitialClusterVersion
+	}
+	if obj.CurrentNodeVersion == "" {
+		obj.CurrentNodeVersion = obj.InitialClusterVersion
+	}
+
+	if obj.CurrentNodeCount == 0 {
+		obj.CurrentNodeCount = 1
+	}
+
+	// If databaseEncryption field doesn't exist and databaseEncryption.state is UNKNOWN, then it should be defaulted to
+	// DECRYPTED with no key.
+	// Otherwise, UNKNOWN actually represents ALL_OBJECTS_ENCRYPTION_ENABLED (more details see the comments below), and
+	// we will update it to ENCRYPTED.
+	if obj.DatabaseEncryption == nil {
+		obj.DatabaseEncryption = &pb.DatabaseEncryption{
+			State: pb.DatabaseEncryption_DECRYPTED,
+		}
+	} else {
+		// Possibly because mockgcp is using an older version of the proto,
+		// when the requested state is pb.DatabaseEncryption_ALL_OBJECTS_ENCRYPTION_ENABLED,
+		// it's dropped in the received request, and then got parsed to pb.DatabaseEncryption_UNKNOWN.
+		//
+		// Besides, if I explicitly do `obj.DatabaseEncryption.State = pb.DatabaseEncryption_ALL_OBJECTS_ENCRYPTION_ENABLED`
+		// here, this error shows up in the test log:
+		//   Error when reading or editing Container Cluster \"cl-dball-7anl5sn4tkp33jq\": json: cannot unmarshal number
+		//   into Go struct field DatabaseEncryption.databaseEncryption.state of type string
+		if obj.DatabaseEncryption.State == pb.DatabaseEncryption_UNKNOWN || obj.DatabaseEncryption.State == pb.DatabaseEncryption_ALL_OBJECTS_ENCRYPTION_ENABLED {
+			obj.DatabaseEncryption.State = pb.DatabaseEncryption_ENCRYPTED
+		}
+	}
+
+	if obj.DatabaseEncryption.CurrentState == nil {
+		switch obj.DatabaseEncryption.State {
+		case pb.DatabaseEncryption_DECRYPTED:
+			obj.DatabaseEncryption.CurrentState = PtrTo(pb.DatabaseEncryption_CURRENT_STATE_DECRYPTED)
+			if obj.DatabaseEncryption.KeyName != "" {
+				obj.DatabaseEncryption.DecryptionKeys = []string{obj.DatabaseEncryption.KeyName}
+				obj.DatabaseEncryption.KeyName = ""
+			}
+		case pb.DatabaseEncryption_ENCRYPTED:
+			// The real GCP service decided to return `ALL_OBJECTS_ENCRYPTION_ENABLED` when the input is `ENCRYPTED`
+			// for the latest version (1.35 and above).
+			// However, if I explicitly do `obj.DatabaseEncryption.State = pb.DatabaseEncryption_ALL_OBJECTS_ENCRYPTION_ENABLED`
+			// here, this error shows up in the test log:
+			//   Error when reading or editing Container Cluster \"cl-dball-7anl5sn4tkp33jq\": json: cannot unmarshal number
+			//   into Go struct field DatabaseEncryption.databaseEncryption.state of type string
+			obj.DatabaseEncryption.CurrentState = PtrTo(pb.DatabaseEncryption_CURRENT_STATE_ENCRYPTED)
+		case pb.DatabaseEncryption_ALL_OBJECTS_ENCRYPTION_ENABLED:
+			// CURRENT_STATE_ALL_OBJECTS_ENCRYPTION_ENABLED value is not yet supported in googleapis library.
+			obj.DatabaseEncryption.CurrentState = PtrTo(pb.DatabaseEncryption_CURRENT_STATE_ENCRYPTED)
+		default:
+			obj.DatabaseEncryption.CurrentState = PtrTo(pb.DatabaseEncryption_CURRENT_STATE_DECRYPTED)
+		}
+	}
+
+	// defaultMaxPodsConstraint
+	if obj.DefaultMaxPodsConstraint == nil {
+		obj.DefaultMaxPodsConstraint = &pb.MaxPodsConstraint{}
+	}
+	if obj.DefaultMaxPodsConstraint.MaxPodsPerNode == 0 {
+		obj.DefaultMaxPodsConstraint.MaxPodsPerNode = 110
+	}
+
+	// enterpriseConfig
+	if obj.EnterpriseConfig == nil {
+		obj.EnterpriseConfig = &pb.EnterpriseConfig{}
+	}
+
+	if obj.EnterpriseConfig.ClusterTier == pb.EnterpriseConfig_CLUSTER_TIER_UNSPECIFIED {
+		obj.EnterpriseConfig.ClusterTier = pb.EnterpriseConfig_STANDARD
+	}
+
+	if obj.Etag == "" {
+		obj.Etag = "abcdef0123A="
+	}
+
+	if obj.Id == "" {
+		obj.Id = "000000000000000000000"
+	}
+
+	zone, err := locationToZone(obj.Location)
+	if err != nil {
+		return err
+	}
+
+	if obj.InstanceGroupUrls == nil {
+		obj.InstanceGroupUrls = []string{
+			fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/zones/%s/instanceGroupManagers/gke-containercluster-abcdef", project.ID, zone),
+		}
+	}
+
+	// IpAllocationPolicy
+	if obj.IpAllocationPolicy == nil {
+		obj.IpAllocationPolicy = &pb.IPAllocationPolicy{}
+	}
+	ipAllocationPolicy := obj.IpAllocationPolicy
+	{
+		if ipAllocationPolicy.StackType == pb.IPAllocationPolicy_STACK_TYPE_UNSPECIFIED {
+			ipAllocationPolicy.StackType = pb.IPAllocationPolicy_IPV4
+		}
+		ipAllocationPolicy.UseIpAliases = true
+		if ipAllocationPolicy.PodCidrOverprovisionConfig == nil {
+			ipAllocationPolicy.PodCidrOverprovisionConfig = &pb.PodCIDROverprovisionConfig{}
+		}
+		// if ipAllocationPolicy.NetworkTierConfig == nil {
+		// 	ipAllocationPolicy.NetworkTierConfig = &pb.NetworkTierConfig{}
+		// }
+		// if ipAllocationPolicy.NetworkTierConfig.Tier == pb.NetworkTierConfig_TIER_UNSPECIFIED {
+		// 	ipAllocationPolicy.NetworkTierConfig.Tier = pb.NetworkTierConfig_PREMIUM
+		// }
+		if ipAllocationPolicy.ClusterIpv4CidrBlock == "" {
+			ipAllocationPolicy.ClusterIpv4CidrBlock = obj.ClusterIpv4Cidr
+		}
+		ipAllocationPolicy.ClusterIpv4Cidr = ipAllocationPolicy.ClusterIpv4CidrBlock
+		if ipAllocationPolicy.ServicesIpv4CidrBlock == "" {
+			ipAllocationPolicy.ServicesIpv4CidrBlock = obj.ServicesIpv4Cidr
+		}
+		ipAllocationPolicy.ServicesIpv4Cidr = ipAllocationPolicy.ServicesIpv4CidrBlock
+	}
+
+	if obj.LabelFingerprint == "" {
+		obj.LabelFingerprint = "abcdef0123A="
+	}
+
+	if obj.LegacyAbac == nil {
+		obj.LegacyAbac = &pb.LegacyAbac{}
+	}
+
+	if obj.LoggingConfig == nil {
+		obj.LoggingConfig = &pb.LoggingConfig{}
+	}
+
+	if obj.LoggingConfig.ComponentConfig == nil {
+		obj.LoggingConfig.ComponentConfig = &pb.LoggingComponentConfig{}
+	}
+
+	if obj.LoggingConfig.ComponentConfig.EnableComponents == nil {
+		obj.LoggingConfig.ComponentConfig.EnableComponents = []pb.LoggingComponentConfig_Component{
+			pb.LoggingComponentConfig_SYSTEM_COMPONENTS,
+			pb.LoggingComponentConfig_WORKLOADS,
+		}
+	}
+
+	if obj.LoggingService == "" {
+		obj.LoggingService = "logging.googleapis.com/kubernetes"
+	}
+
+	// MaintenancePolicy
+	if obj.MaintenancePolicy == nil {
+		obj.MaintenancePolicy = &pb.MaintenancePolicy{}
+	}
+
+	if maintenancePolicy := obj.MaintenancePolicy; maintenancePolicy != nil {
+		if maintenancePolicy.GetWindow() != nil {
+			window := maintenancePolicy.GetWindow()
+			if len(window.MaintenanceExclusions) == 0 && window.Policy == nil {
+				maintenancePolicy.Window = nil
+			} else {
+				if maintenancePolicy.Window.GetDailyMaintenanceWindow() != nil {
+					maintenancePolicy.Window.GetDailyMaintenanceWindow().Duration = "PT4H0M0S"
+				}
+				for _, exclusion := range maintenancePolicy.Window.GetMaintenanceExclusions() {
+					if exclusion.GetOptions() == nil {
+						exclusion.Options = &pb.TimeWindow_MaintenanceExclusionOptions{}
+					}
+				}
+			}
+		}
+
+		if maintenancePolicy.ResourceVersion == "" {
+			maintenancePolicy.ResourceVersion = "1234abcd"
+		}
+	}
+
+	// if obj.Master == nil {
+	// 	obj.Master = &pb.Master{}
+	// }
+
+	if obj.MasterAuth == nil {
+		obj.MasterAuth = &pb.MasterAuth{
+			ClientCertificateConfig: &pb.ClientCertificateConfig{},
+			ClusterCaCertificate:    "1234567890abcdefghijklmn",
+		}
+	}
+
+	if obj.MasterAuthorizedNetworksConfig == nil {
+		obj.MasterAuthorizedNetworksConfig = &pb.MasterAuthorizedNetworksConfig{}
+	}
+
+	if obj.MonitoringConfig == nil {
+		obj.MonitoringConfig = &pb.MonitoringConfig{}
+	}
+
+	if obj.MonitoringConfig.AdvancedDatapathObservabilityConfig == nil {
+		obj.MonitoringConfig.AdvancedDatapathObservabilityConfig = &pb.AdvancedDatapathObservabilityConfig{}
+	}
+
+	if obj.MonitoringConfig.ComponentConfig == nil {
+		obj.MonitoringConfig.ComponentConfig = &pb.MonitoringComponentConfig{}
+	}
+
+	if obj.MonitoringConfig.ComponentConfig.EnableComponents == nil {
+		// obj.MonitoringConfig.ComponentConfig.EnableComponents = []pb.MonitoringComponentConfig_Component{
+		// 	pb.MonitoringComponentConfig_SYSTEM_COMPONENTS,
+		// }
+
+		obj.MonitoringConfig.ComponentConfig.EnableComponents = []pb.MonitoringComponentConfig_Component{
+			pb.MonitoringComponentConfig_SYSTEM_COMPONENTS,
+			pb.MonitoringComponentConfig_DAEMONSET,
+			pb.MonitoringComponentConfig_DEPLOYMENT,
+			pb.MonitoringComponentConfig_STATEFULSET,
+			pb.MonitoringComponentConfig_JOBSET,
+			pb.MonitoringComponentConfig_STORAGE,
+			pb.MonitoringComponentConfig_HPA,
+			pb.MonitoringComponentConfig_POD,
+			pb.MonitoringComponentConfig_CADVISOR,
+			pb.MonitoringComponentConfig_KUBELET,
+			pb.MonitoringComponentConfig_DCGM,
+		}
+	}
+
+	if obj.MonitoringConfig.ManagedPrometheusConfig == nil {
+		obj.MonitoringConfig.ManagedPrometheusConfig = &pb.ManagedPrometheusConfig{
+			Enabled: true,
+		}
+	}
+
+	if obj.MonitoringService == "" {
+		obj.MonitoringService = "monitoring.googleapis.com/kubernetes"
+	}
+
+	if obj.NetworkPolicy != nil && obj.NetworkPolicy.String() == "" {
+		obj.NetworkPolicy = nil
+	}
+
+	// NodePoolAutoConfig
+	if obj.NodePoolAutoConfig == nil {
+		obj.NodePoolAutoConfig = &pb.NodePoolAutoConfig{}
+	}
+	if obj.NodePoolAutoConfig.NodeKubeletConfig == nil {
+		obj.NodePoolAutoConfig.NodeKubeletConfig = &pb.NodeKubeletConfig{}
+	}
+	if obj.NodePoolAutoConfig.NodeKubeletConfig.InsecureKubeletReadonlyPortEnabled == nil {
+		obj.NodePoolAutoConfig.NodeKubeletConfig.InsecureKubeletReadonlyPortEnabled = PtrTo(false)
+	}
+
+	// NodePoolDefaults
+	if obj.NodePoolDefaults == nil {
+		obj.NodePoolDefaults = &pb.NodePoolDefaults{}
+	}
+	nodePoolDefaults := obj.NodePoolDefaults
+	if nodePoolDefaults.NodeConfigDefaults == nil {
+		nodePoolDefaults.NodeConfigDefaults = &pb.NodeConfigDefaults{}
+	}
+	if nodeConfigDefaults := nodePoolDefaults.NodeConfigDefaults; nodeConfigDefaults != nil {
+		if nodeConfigDefaults.LoggingConfig == nil {
+			nodeConfigDefaults.LoggingConfig = &pb.NodePoolLoggingConfig{}
+		}
+		if nodeConfigDefaults.LoggingConfig.VariantConfig == nil {
+			nodeConfigDefaults.LoggingConfig.VariantConfig = &pb.LoggingVariantConfig{}
+		}
+		if nodeConfigDefaults.LoggingConfig.VariantConfig.Variant == pb.LoggingVariantConfig_VARIANT_UNSPECIFIED {
+			nodeConfigDefaults.LoggingConfig.VariantConfig.Variant = pb.LoggingVariantConfig_DEFAULT
+		}
+
+		if nodeConfigDefaults.NodeKubeletConfig == nil {
+			nodeConfigDefaults.NodeKubeletConfig = &pb.NodeKubeletConfig{}
+		}
+		if nodeConfigDefaults.NodeKubeletConfig.InsecureKubeletReadonlyPortEnabled == nil {
+			nodeConfigDefaults.NodeKubeletConfig.InsecureKubeletReadonlyPortEnabled = PtrTo(false)
+		}
+	}
+
+	// NotificationConfig
+	if obj.NotificationConfig == nil {
+		obj.NotificationConfig = &pb.NotificationConfig{}
+	}
+	if obj.NotificationConfig.Pubsub == nil {
+		obj.NotificationConfig.Pubsub = &pb.NotificationConfig_PubSub{}
+	}
+
+	if obj.PodAutoscaling == nil {
+		obj.PodAutoscaling = &pb.PodAutoscaling{}
+	}
+	if obj.PodAutoscaling.HpaProfile == nil {
+		obj.PodAutoscaling.HpaProfile = PtrTo(pb.PodAutoscaling_PERFORMANCE)
+	}
+
+	// NetworkConfig
+	if networkConfig := obj.NetworkConfig; networkConfig != nil {
+
+	}
+
+	if obj.ControlPlaneEndpointsConfig == nil {
+		obj.ControlPlaneEndpointsConfig = &pb.ControlPlaneEndpointsConfig{}
+	}
+	controlPlaneEndpointsConfig := obj.ControlPlaneEndpointsConfig
+
+	if controlPlaneEndpointsConfig.IpEndpointsConfig == nil {
+		controlPlaneEndpointsConfig.IpEndpointsConfig = &pb.ControlPlaneEndpointsConfig_IPEndpointsConfig{}
+	}
+	ipEndpointsConfig := controlPlaneEndpointsConfig.IpEndpointsConfig
+	{
+		if ipEndpointsConfig.Enabled == nil {
+			ipEndpointsConfig.Enabled = PtrTo(true)
+		}
+
+		if ipEndpointsConfig.GetEnabled() {
+			if ipEndpointsConfig.PrivateEndpoint == "" {
+				ipEndpointsConfig.PrivateEndpoint = "10.128.0.2"
+			}
+
+			if ipEndpointsConfig.EnablePublicEndpoint == nil {
+				ipEndpointsConfig.EnablePublicEndpoint = PtrTo(true)
+			}
+
+			if getWithDefault(ipEndpointsConfig.EnablePublicEndpoint, true) {
+				if ipEndpointsConfig.PublicEndpoint == "" {
+					ipEndpointsConfig.PublicEndpoint = "8.8.8.8"
+				}
+			}
+
+			if ipEndpointsConfig.AuthorizedNetworksConfig == nil {
+				ipEndpointsConfig.AuthorizedNetworksConfig = &pb.MasterAuthorizedNetworksConfig{}
+			}
+
+			if ipEndpointsConfig.AuthorizedNetworksConfig.GcpPublicCidrsAccessEnabled == nil {
+				ipEndpointsConfig.AuthorizedNetworksConfig.GcpPublicCidrsAccessEnabled = PtrTo(true)
+			}
+		}
+	}
+
+	if controlPlaneEndpointsConfig.DnsEndpointConfig == nil {
+		controlPlaneEndpointsConfig.DnsEndpointConfig = &pb.ControlPlaneEndpointsConfig_DNSEndpointConfig{}
+	}
+	dnsEndpointConfig := controlPlaneEndpointsConfig.DnsEndpointConfig
+	{
+		if dnsEndpointConfig.AllowExternalTraffic == nil {
+			dnsEndpointConfig.AllowExternalTraffic = PtrTo(false)
+		}
+		if dnsEndpointConfig.EnableK8STokensViaDns == nil {
+			dnsEndpointConfig.EnableK8STokensViaDns = PtrTo(false)
+		}
+		dnsEndpointConfig.Endpoint = fmt.Sprintf("gke-12345trewq-${projectNumber}.%s.gke.goog", obj.Location)
+	}
+
+	if obj.ProtectConfig == nil {
+		obj.ProtectConfig = &pb.ProtectConfig{}
+	}
+	if obj.ProtectConfig.WorkloadConfig == nil {
+		obj.ProtectConfig.WorkloadConfig = &pb.WorkloadConfig{}
+	}
+	if obj.ProtectConfig.WorkloadConfig.AuditMode == nil {
+		obj.ProtectConfig.WorkloadConfig.AuditMode = PtrTo(pb.WorkloadConfig_BASIC)
+	}
+	if obj.ProtectConfig.WorkloadVulnerabilityMode == nil {
+		obj.ProtectConfig.WorkloadVulnerabilityMode = PtrTo(pb.ProtectConfig_WORKLOAD_VULNERABILITY_MODE_UNSPECIFIED)
+	}
+
+	if obj.RbacBindingConfig == nil {
+		obj.RbacBindingConfig = &pb.RBACBindingConfig{}
+	}
+	if obj.RbacBindingConfig.EnableInsecureBindingSystemAuthenticated == nil {
+		obj.RbacBindingConfig.EnableInsecureBindingSystemAuthenticated = PtrTo(true)
+	}
+	if obj.RbacBindingConfig.EnableInsecureBindingSystemUnauthenticated == nil {
+		obj.RbacBindingConfig.EnableInsecureBindingSystemUnauthenticated = PtrTo(true)
+	}
+
+	if obj.ReleaseChannel == nil {
+		obj.ReleaseChannel = &pb.ReleaseChannel{
+			Channel: pb.ReleaseChannel_REGULAR,
+		}
+	}
+
+	if obj.SecurityPostureConfig == nil {
+		obj.SecurityPostureConfig = &pb.SecurityPostureConfig{}
+	}
+
+	if obj.SecurityPostureConfig.Mode == nil {
+		obj.SecurityPostureConfig.Mode = PtrTo(pb.SecurityPostureConfig_BASIC)
+	}
+
+	if obj.SecurityPostureConfig.VulnerabilityMode == nil {
+		obj.SecurityPostureConfig.VulnerabilityMode = PtrTo(pb.SecurityPostureConfig_VULNERABILITY_MODE_UNSPECIFIED)
+	}
+
+	if obj.ShieldedNodes == nil {
+		obj.ShieldedNodes = &pb.ShieldedNodes{
+			Enabled: true,
+		}
+	}
+
+	if obj.UserManagedKeysConfig == nil {
+		obj.UserManagedKeysConfig = &pb.UserManagedKeysConfig{}
+	}
+
+	// PrivateClusterConfig endpoints are deprecated, but mirror the values in ControlPlaneEndpointsConfig.
+	if obj.PrivateClusterConfig == nil {
+		obj.PrivateClusterConfig = &pb.PrivateClusterConfig{}
+	}
+	if obj.PrivateClusterConfig.PublicEndpoint == "" {
+		obj.PrivateClusterConfig.PublicEndpoint = obj.GetControlPlaneEndpointsConfig().GetIpEndpointsConfig().GetPublicEndpoint()
+	}
+	if obj.PrivateClusterConfig.PrivateEndpoint == "" {
+		obj.PrivateClusterConfig.PrivateEndpoint = obj.GetControlPlaneEndpointsConfig().GetIpEndpointsConfig().GetPrivateEndpoint()
+	}
+	obj.PrivateClusterConfig.EnablePrivateNodes = obj.GetNetworkConfig().GetDefaultEnablePrivateNodes()
+
+	// MasterAuthorizedNetworksConfig is deprecated, but mirror the values in ControlPlaneEndpointsConfig.
+	if obj.MasterAuthorizedNetworksConfig == nil {
+		obj.MasterAuthorizedNetworksConfig = &pb.MasterAuthorizedNetworksConfig{}
+	}
+	if authorizedNetworksConfig := obj.GetControlPlaneEndpointsConfig().GetIpEndpointsConfig().GetAuthorizedNetworksConfig(); authorizedNetworksConfig != nil {
+		obj.MasterAuthorizedNetworksConfig.GcpPublicCidrsAccessEnabled = authorizedNetworksConfig.GcpPublicCidrsAccessEnabled
+		obj.MasterAuthorizedNetworksConfig.Enabled = authorizedNetworksConfig.Enabled
+		obj.MasterAuthorizedNetworksConfig.PrivateEndpointEnforcementEnabled = authorizedNetworksConfig.PrivateEndpointEnforcementEnabled
+	}
+
+	// Endpoint reflects the Control plane config
+	if getWithDefault(obj.GetControlPlaneEndpointsConfig().GetIpEndpointsConfig().EnablePublicEndpoint, true) {
+		obj.Endpoint = obj.GetControlPlaneEndpointsConfig().GetIpEndpointsConfig().GetPublicEndpoint()
+		obj.PrivateCluster = false
+	} else {
+		obj.Endpoint = obj.GetControlPlaneEndpointsConfig().GetIpEndpointsConfig().GetPrivateEndpoint()
+		obj.PrivateCluster = true
+	}
+	if obj.Endpoint == "" {
+		obj.Endpoint = obj.GetControlPlaneEndpointsConfig().GetDnsEndpointConfig().GetEndpoint()
+	}
+
+	return nil
+}
+
+type clusterName struct {
+	Project  *projects.ProjectData
+	Location string
+	Cluster  string
+}
+
+func (n *clusterName) String() string {
+	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/clusters/" + n.Cluster
+}
+
+func (n *clusterName) LinkWithNumber() string {
+	return fmt.Sprintf("projects/%d/locations/%s/clusters/%s", n.Project.Number, n.Location, n.Cluster)
+}
+
+func (n *clusterName) NodePool(nodePool string) *nodePoolName {
+	return &nodePoolName{
+		Project:  n.Project,
+		Location: n.Location,
+		Cluster:  n.Cluster,
+		NodePool: nodePool,
+	}
+}
+
+// parseClusterName parses a string into a clusterName.
+// The expected form is `projects/*/locations/*/clusters/*`.
+func (s *MockService) parseClusterName(name string) (*clusterName, error) {
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "clusters" {
+		project, err := s.Projects.GetProjectByID(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		name := &clusterName{
+			Project:  project,
+			Location: tokens[3],
+			Cluster:  tokens[5],
+		}
+
+		return name, nil
+	} else {
+		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+	}
+}
+
+func buildTargetLink(ctx context.Context, name *clusterName) string {
+	return buildSelfLink(ctx, AsZonalLink(name.LinkWithNumber()))
+}
+
+func lastComponent(s string) string {
+	return s[strings.LastIndex(s, "/")+1:]
+}
+
+// getWithDefault returns the value pointed to by ptr if ptr is non-nil.
+// If ptr is nil, it returns defaultValue.
+func getWithDefault[T any](ptr *T, defaultValue T) T {
+	if ptr != nil {
+		return *ptr
+	}
+	return defaultValue
+}

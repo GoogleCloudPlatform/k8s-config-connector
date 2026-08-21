@@ -1,0 +1,134 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum ComputeInterconnectLinkTypeEnum {
+  ComputeInterconnectLinkTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeInterconnectLinkTypeEnumLINK_TYPE_ETHERNET_10G_LR = 1;
+  ComputeInterconnectLinkTypeEnumLINK_TYPE_ETHERNET_100G_LR = 2;
+}
+
+enum ComputeInterconnectInterconnectTypeEnum {
+  ComputeInterconnectInterconnectTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeInterconnectInterconnectTypeEnumIT_PRIVATE = 1;
+  ComputeInterconnectInterconnectTypeEnumPARTNER = 2;
+  ComputeInterconnectInterconnectTypeEnumDEDICATED = 3;
+}
+
+enum ComputeInterconnectOperationalStatusEnum {
+  ComputeInterconnectOperationalStatusEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeInterconnectOperationalStatusEnumOS_ACTIVE = 1;
+  ComputeInterconnectOperationalStatusEnumOS_UNPROVISIONED = 2;
+  ComputeInterconnectOperationalStatusEnumOS_UNDER_MAINTENANCE = 3;
+}
+
+enum ComputeInterconnectExpectedOutagesSourceEnum {
+  ComputeInterconnectExpectedOutagesSourceEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeInterconnectExpectedOutagesSourceEnumGOOGLE = 1;
+}
+
+enum ComputeInterconnectExpectedOutagesStateEnum {
+  ComputeInterconnectExpectedOutagesStateEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeInterconnectExpectedOutagesStateEnumACTIVE = 1;
+  ComputeInterconnectExpectedOutagesStateEnumCANCELLED = 2;
+}
+
+enum ComputeInterconnectExpectedOutagesIssueTypeEnum {
+  ComputeInterconnectExpectedOutagesIssueTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeInterconnectExpectedOutagesIssueTypeEnumOUTAGE = 1;
+  ComputeInterconnectExpectedOutagesIssueTypeEnumPARTIAL_OUTAGE = 2;
+}
+
+enum ComputeInterconnectStateEnum {
+  ComputeInterconnectStateEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeInterconnectStateEnumDEPRECATED = 1;
+  ComputeInterconnectStateEnumOBSOLETE = 2;
+  ComputeInterconnectStateEnumDELETED = 3;
+  ComputeInterconnectStateEnumACTIVE = 4;
+}
+
+message ComputeInterconnect {
+  string description = 1;
+  string self_link = 2;
+  int64 id = 3;
+  string name = 4;
+  string location = 5;
+  ComputeInterconnectLinkTypeEnum link_type = 6;
+  int64 requested_link_count = 7;
+  ComputeInterconnectInterconnectTypeEnum interconnect_type = 8;
+  bool admin_enabled = 9;
+  string noc_contact_email = 10;
+  string customer_name = 11;
+  ComputeInterconnectOperationalStatusEnum operational_status = 12;
+  int64 provisioned_link_count = 13;
+  repeated string interconnect_attachments = 14;
+  string peer_ip_address = 15;
+  string google_ip_address = 16;
+  string google_reference_id = 17;
+  repeated ComputeInterconnectExpectedOutages expected_outages = 18;
+  repeated ComputeInterconnectCircuitInfos circuit_infos = 19;
+  ComputeInterconnectStateEnum state = 20;
+  string project = 21;
+}
+
+message ComputeInterconnectExpectedOutages {
+  string name = 1;
+  string description = 2;
+  ComputeInterconnectExpectedOutagesSourceEnum source = 3;
+  ComputeInterconnectExpectedOutagesStateEnum state = 4;
+  ComputeInterconnectExpectedOutagesIssueTypeEnum issue_type = 5;
+  repeated string affected_circuits = 6;
+  int64 start_time = 7;
+  int64 end_time = 8;
+}
+
+message ComputeInterconnectCircuitInfos {
+  string google_circuit_id = 1;
+  string google_demarc_id = 2;
+  string customer_demarc_id = 3;
+}
+
+message ApplyComputeInterconnectRequest {
+  ComputeInterconnect resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteComputeInterconnectRequest {
+  string service_account_file = 1;
+  ComputeInterconnect resource = 2;
+}
+
+message ListComputeInterconnectRequest {
+  string service_account_file = 1;
+  string Project = 2;
+}
+
+message ListComputeInterconnectResponse {
+  repeated ComputeInterconnect items = 1;
+}
+
+service ComputeInterconnectService {
+  rpc ApplyComputeInterconnect(ApplyComputeInterconnectRequest) returns (ComputeInterconnect);
+  rpc DeleteComputeInterconnect(DeleteComputeInterconnectRequest) returns (google.protobuf.Empty);
+  rpc ListComputeInterconnect(ListComputeInterconnectRequest) returns (ListComputeInterconnectResponse);
+}

@@ -1,0 +1,5 @@
+{
+  "project": "{{project}}",
+  "applicationTitle": "{{application}}",
+  "supportEmail": "{{test_service_account}}"
+}

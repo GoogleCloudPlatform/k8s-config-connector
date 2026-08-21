@@ -1,0 +1,12 @@
+{
+  "project": "{{project}}",
+  "displayName": "tcp-uptime-check",
+  "timeout": "30s",
+  "resourceGroup": {
+    "groupId": "{{ref:basic.group.json:name}}",
+    "resourceType": "INSTANCE"
+  },
+  "tcpCheck": {
+    "port": 80
+  }
+}

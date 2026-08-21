@@ -1,0 +1,25 @@
+- caisURL: unknown
+  error: not yet supported
+  group: container.cnrm.cloud.google.com
+  kind: ContainerCluster
+  name: containercluster-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: unknown
+  group: gkehub.cnrm.cloud.google.com
+  kind: GKEHubMembership
+  name: gkehubmembership-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: unknown
+  group: gkehub.cnrm.cloud.google.com
+  kind: GKEHubScope
+  name: gkehubscope-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
+- caisURL: //gkehub.googleapis.com/projects/${projectId}/locations/global/memberships/gkehubmembership-${uniqueId}/bindings/gkehubmembershipbinding-${uniqueId}
+  group: gkehub.cnrm.cloud.google.com
+  kind: GKEHubMembershipBinding
+  name: gkehubmembershipbinding-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

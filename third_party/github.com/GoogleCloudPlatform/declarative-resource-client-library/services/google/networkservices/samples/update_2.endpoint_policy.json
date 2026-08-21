@@ -1,0 +1,25 @@
+{
+  "name": "{{selector}}",
+  "project": "{{project}}",
+  "location": "global",
+  "labels": {
+    "label-one": "value-one",
+    "label-two": "value-two"
+  },
+  "type": "GRPC_SERVER",
+  "endpointMatcher": {
+    "metadataLabelMatcher": {
+      "metadataLabelMatchCriteria": "MATCH_ALL",
+      "metadataLabels": [
+        {
+          "labelName": "filter-update",
+          "labelValue": "false"
+        }
+      ]
+    }
+  },
+  "trafficPortSelector": {
+    "ports": ["8082"]
+  },
+  "description": "An updated sample endpoint policy"
+}

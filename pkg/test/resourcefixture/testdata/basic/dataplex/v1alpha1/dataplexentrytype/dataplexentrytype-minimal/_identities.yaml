@@ -1,0 +1,6 @@
+- caisURL: //dataplex.googleapis.com/projects/${projectId}/locations/us-central1/entryTypes/dataplexentrytype-minimal-${uniqueId}
+  group: dataplex.cnrm.cloud.google.com
+  kind: DataplexEntryType
+  name: dataplexentrytype-minimal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

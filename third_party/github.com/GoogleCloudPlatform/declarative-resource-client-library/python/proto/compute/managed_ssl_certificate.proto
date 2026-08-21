@@ -1,0 +1,90 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+enum ComputeManagedSslCertificateManagedStatusEnum {
+  ComputeManagedSslCertificateManagedStatusEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeManagedSslCertificateManagedStatusEnumACTIVE = 1;
+  ComputeManagedSslCertificateManagedStatusEnumMANAGED_CERTIFICATE_STATUS_UNSPECIFIED = 2;
+  ComputeManagedSslCertificateManagedStatusEnumPROVISIONING = 3;
+  ComputeManagedSslCertificateManagedStatusEnumPROVISIONING_FAILED = 4;
+  ComputeManagedSslCertificateManagedStatusEnumPROVISIONING_FAILED_PERMANENTLY = 5;
+  ComputeManagedSslCertificateManagedStatusEnumRENEWAL_FAILED = 6;
+}
+
+enum ComputeManagedSslCertificateManagedDomainStatusEnum {
+  ComputeManagedSslCertificateManagedDomainStatusEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeManagedSslCertificateManagedDomainStatusEnumACTIVE = 1;
+  ComputeManagedSslCertificateManagedDomainStatusEnumDOMAIN_STATUS_UNSPECIFIED = 2;
+  ComputeManagedSslCertificateManagedDomainStatusEnumFAILED_CAA_CHECKING = 3;
+  ComputeManagedSslCertificateManagedDomainStatusEnumFAILED_CAA_FORBIDDEN = 4;
+  ComputeManagedSslCertificateManagedDomainStatusEnumFAILED_NOT_VISIBLE = 5;
+  ComputeManagedSslCertificateManagedDomainStatusEnumFAILED_RATE_LIMITED = 6;
+  ComputeManagedSslCertificateManagedDomainStatusEnumPROVISIONING = 7;
+}
+
+enum ComputeManagedSslCertificateTypeEnum {
+  ComputeManagedSslCertificateTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeManagedSslCertificateTypeEnumMANAGED = 1;
+}
+
+message ComputeManagedSslCertificate {
+  string name = 1;
+  int64 id = 2;
+  string creation_timestamp = 3;
+  string description = 4;
+  string self_link = 5;
+  ComputeManagedSslCertificateManaged managed = 6;
+  ComputeManagedSslCertificateTypeEnum type = 7;
+  repeated string subject_alternative_names = 8;
+  string expire_time = 9;
+  string project = 10;
+}
+
+message ComputeManagedSslCertificateManaged {
+  repeated string domains = 1;
+  ComputeManagedSslCertificateManagedStatusEnum status = 2;
+  map<string, ComputeManagedSslCertificateManagedDomainStatusEnum> domain_status = 3;
+}
+
+message ApplyComputeManagedSslCertificateRequest {
+  ComputeManagedSslCertificate resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteComputeManagedSslCertificateRequest {
+  string service_account_file = 1;
+  ComputeManagedSslCertificate resource = 2;
+}
+
+message ListComputeManagedSslCertificateRequest {
+  string service_account_file = 1;
+  string Project = 2;
+}
+
+message ListComputeManagedSslCertificateResponse {
+  repeated ComputeManagedSslCertificate items = 1;
+}
+
+service ComputeManagedSslCertificateService {
+  rpc ApplyComputeManagedSslCertificate(ApplyComputeManagedSslCertificateRequest) returns (ComputeManagedSslCertificate);
+  rpc DeleteComputeManagedSslCertificate(DeleteComputeManagedSslCertificateRequest) returns (google.protobuf.Empty);
+  rpc ListComputeManagedSslCertificate(ListComputeManagedSslCertificateRequest) returns (ListComputeManagedSslCertificateResponse);
+}

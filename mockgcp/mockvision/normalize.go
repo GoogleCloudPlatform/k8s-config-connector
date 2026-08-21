@@ -1,0 +1,35 @@
+// Copyright 2026 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package mockvision
+
+import (
+	"strings"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
+)
+
+var _ mockgcpregistry.SupportsNormalization = &MockService{}
+
+func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
+	// MockGCP logs are perfectly aligned with real GCP for VisionProduct with zero differences,
+	// so no custom visitor normalization rules are required.
+}
+
+func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
+	if !strings.Contains(event.URL(), "vision.googleapis.com") {
+		return
+	}
+	// Verified: all request and response payloads are fully aligned.
+}

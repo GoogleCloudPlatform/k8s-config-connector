@@ -1,0 +1,12 @@
+- caisURL: unknown
+  group: edgenetwork.cnrm.cloud.google.com
+  kind: EdgeNetworkNetwork
+  name: edgenetworknetwork-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: unknown
+  group: edgenetwork.cnrm.cloud.google.com
+  kind: EdgeNetworkSubnet
+  name: edgenetworksubnet-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

@@ -1,0 +1,5 @@
+# Opt-in to Strict Testing - Observations
+
+* When regenerating golden output by running the `dev/ci/presubmits/tests-e2e-fixtures-<servicename>` script with `WRITE_GOLDEN_OUTPUT=1`, the test framework may still report a `FAIL` for the tests. This happens because it evaluates the test assertion against the original golden files before (or while) overwriting them with the updated output. It's necessary to re-run the tests a second time without `WRITE_GOLDEN_OUTPUT=1` to ensure they genuinely pass.
+* The change in `_generated_object_*.golden.yaml` typically includes the removal of some explicitly managed fields that were defaulted differently, or re-ordering due to server-side apply.
+* The `_http.log` changes because server-side apply can change how the patch requests are formulated, or due to updated requests generated in the re-reconciliation phases.

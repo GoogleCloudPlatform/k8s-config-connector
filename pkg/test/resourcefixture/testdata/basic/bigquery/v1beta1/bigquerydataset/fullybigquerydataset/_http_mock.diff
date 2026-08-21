@@ -1,0 +1,124 @@
+367,368c367
+< GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
+< Content-Type: application/json
+---
+> GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
+397c396
+< POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets?alt=json
+---
+> POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets?alt=json&prettyPrint=false
+414,415c413,414
+<   "defaultPartitionExpirationMs": 3600000,
+<   "defaultTableExpirationMs": 3600000,
+---
+>   "defaultPartitionExpirationMs": "3600000",
+>   "defaultTableExpirationMs": "3600000",
+474,475c473
+< GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
+< Content-Type: application/json
+---
+> GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
+524c522
+< PUT https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
+---
+> PATCH https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
+538a537,540
+>       "specialGroup": "projectOwners"
+>     },
+>     {
+>       "role": "OWNER",
+542,544d543
+<   "datasetReference": {
+<     "datasetId": "bigquerydataset${uniqueId}"
+<   },
+549,550c548,549
+<   "defaultPartitionExpirationMs": 3800000,
+<   "defaultTableExpirationMs": 3800000,
+---
+>   "defaultPartitionExpirationMs": "3800000",
+>   "defaultTableExpirationMs": "3800000",
+552a552
+>   "isCaseInsensitive": false,
+557d556
+<   "location": "US",
+583a583,586
+>       "specialGroup": "projectOwners"
+>     },
+>     {
+>       "role": "OWNER",
+601a605
+>   "isCaseInsensitive": false,
+641a646,649
+>       "specialGroup": "projectOwners"
+>     },
+>     {
+>       "role": "OWNER",
+659a668
+>   "isCaseInsensitive": false,
+675,676c684,746
+< DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&deleteContents=false
+< Content-Type: application/json
+---
+> GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
+> 
+> 200 OK
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "access": [
+>     {
+>       "domain": "google.com",
+>       "role": "READER"
+>     },
+>     {
+>       "role": "OWNER",
+>       "specialGroup": "projectOwners"
+>     },
+>     {
+>       "role": "OWNER",
+>       "specialGroup": "projectOwners"
+>     },
+>     {
+>       "role": "OWNER",
+>       "userByEmail": "user@google.com"
+>     }
+>   ],
+>   "creationTime": "123456789",
+>   "datasetReference": {
+>     "datasetId": "bigquerydataset${uniqueId}",
+>     "projectId": "${projectId}"
+>   },
+>   "defaultCollation": "und:ci",
+>   "defaultEncryptionConfiguration": {
+>     "kmsKeyName": "projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
+>   },
+>   "defaultPartitionExpirationMs": "3800000",
+>   "defaultTableExpirationMs": "3800000",
+>   "description": "Fully Configured BigQuery Dataset updated",
+>   "etag": "abcdef0123A=",
+>   "friendlyName": "bigquerydataset-fullyconfigured-updated",
+>   "id": "000000000000000000000",
+>   "isCaseInsensitive": false,
+>   "kind": "bigquery#dataset",
+>   "labels": {
+>     "cnrm-test": "true",
+>     "managed-by-cnrm": "true"
+>   },
+>   "lastModifiedTime": "123456789",
+>   "location": "US",
+>   "maxTimeTravelHours": "96",
+>   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}",
+>   "storageBillingModel": "LOGICAL",
+>   "type": "DEFAULT"
+> }
+> 
+> ---
+> 
+> DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&deleteContents=false&prettyPrint=false

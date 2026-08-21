@@ -1,0 +1,7 @@
+- caisURL: unknown
+  error: not yet supported
+  group: bigqueryconnection.cnrm.cloud.google.com
+  kind: BigQueryConnectionConnection
+  name: bigqueryconnectionconnection-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

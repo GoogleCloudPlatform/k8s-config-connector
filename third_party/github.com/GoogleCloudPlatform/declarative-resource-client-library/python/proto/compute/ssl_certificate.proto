@@ -1,0 +1,71 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+enum ComputeSslCertificateTypeEnum {
+  ComputeSslCertificateTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeSslCertificateTypeEnumSELF_MANAGED = 1;
+}
+
+message ComputeSslCertificate {
+  string name = 1;
+  int64 id = 2;
+  string creation_timestamp = 3;
+  string description = 4;
+  string self_link = 5;
+  ComputeSslCertificateSelfManaged self_managed = 6;
+  ComputeSslCertificateTypeEnum type = 7;
+  repeated string subject_alternative_names = 8;
+  string expire_time = 9;
+  string region = 10;
+  string project = 11;
+  string location = 12;
+}
+
+message ComputeSslCertificateSelfManaged {
+  string certificate = 1;
+  string private_key = 2;
+}
+
+message ApplyComputeSslCertificateRequest {
+  ComputeSslCertificate resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteComputeSslCertificateRequest {
+  string service_account_file = 1;
+  ComputeSslCertificate resource = 2;
+}
+
+message ListComputeSslCertificateRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListComputeSslCertificateResponse {
+  repeated ComputeSslCertificate items = 1;
+}
+
+service ComputeSslCertificateService {
+  rpc ApplyComputeSslCertificate(ApplyComputeSslCertificateRequest) returns (ComputeSslCertificate);
+  rpc DeleteComputeSslCertificate(DeleteComputeSslCertificateRequest) returns (google.protobuf.Empty);
+  rpc ListComputeSslCertificate(ListComputeSslCertificateRequest) returns (ListComputeSslCertificateResponse);
+}

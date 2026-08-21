@@ -1,0 +1,30 @@
+apiVersion: plan.cnrm.cloud.google.cnrm/v1alpha1
+kind: Plan
+spec:
+  actions:
+  - action: ApplyChanges
+    apiVersion: v1
+    diff:
+      fields:
+      - newValue: bar2
+        oldValue: bar1
+        path: data.foo
+      oldObject:
+        apiVersion: v1
+        data:
+          foo: bar1
+        kind: ConfigMap
+        metadata:
+          name: cm1
+          namespace: default
+    kind: ConfigMap
+    name: cm1
+    namespace: default
+    object:
+      apiVersion: v1
+      data:
+        foo: bar2
+      kind: ConfigMap
+      metadata:
+        name: cm1
+        namespace: default

@@ -1,0 +1,35 @@
+279c279,280
+< GET https://logging.googleapis.com/v2/folders/${folderID}/sinks/foldersink-${uniqueId}?alt=json&prettyPrint=false
+---
+> GET https://logging.googleapis.com/v2/folders/${folderID}/sinks/foldersink-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+> Content-Type: application/json
+301c302
+< POST https://logging.googleapis.com/v2/folders/${folderID}/sinks?alt=json&prettyPrint=false&uniqueWriterIdentity=true
+---
+> POST https://logging.googleapis.com/v2/folders/${folderID}/sinks?%24alt=json%3Benum-encoding%3Dint
+333c334,335
+< GET https://logging.googleapis.com/v2/folders/${folderID}/sinks/foldersink-${uniqueId}?alt=json&prettyPrint=false
+---
+> GET https://logging.googleapis.com/v2/folders/${folderID}/sinks/foldersink-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+> Content-Type: application/json
+357c359
+< PATCH https://logging.googleapis.com/v2/folders/${folderID}/sinks/foldersink-${uniqueId}?alt=json&prettyPrint=false&uniqueWriterIdentity=true&updateMask=filter
+---
+> PUT https://logging.googleapis.com/v2/folders/${folderID}/sinks/foldersink-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=filter
+362d363
+<   "disabled": false,
+364c365,366
+<   "includeChildren": true
+---
+>   "includeChildren": true,
+>   "name": "foldersink-${uniqueId}"
+389c391,392
+< GET https://logging.googleapis.com/v2/folders/${folderID}/sinks/foldersink-${uniqueId}?alt=json&prettyPrint=false
+---
+> GET https://logging.googleapis.com/v2/folders/${folderID}/sinks/foldersink-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+> Content-Type: application/json
+413c416,417
+< DELETE https://logging.googleapis.com/v2/folders/${folderID}/sinks/foldersink-${uniqueId}?alt=json&prettyPrint=false
+---
+> DELETE https://logging.googleapis.com/v2/folders/${folderID}/sinks/foldersink-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+> Content-Type: application/json

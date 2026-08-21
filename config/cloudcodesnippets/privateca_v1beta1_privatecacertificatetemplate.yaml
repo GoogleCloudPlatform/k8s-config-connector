@@ -1,0 +1,68 @@
+label: Config Connector PrivateCACertificateTemplate
+markdownDescription: Creates yaml for a PrivateCACertificateTemplate resource
+insertText: |
+  apiVersion: privateca.cnrm.cloud.google.com/v1beta1
+  kind: PrivateCACertificateTemplate
+  metadata:
+    labels:
+      \${1:label-two}: \${2:value-two}
+    name: \${3:privatecacertificatetemplate-name}
+  spec:
+    projectRef:
+      external: \${4:projects/[PROJECT_ID?]}
+    location: \${5:us-central1}
+    predefinedValues:
+      keyUsage:
+        baseKeyUsage:
+          digitalSignature: \${6:true}
+          contentCommitment: \${7:true}
+          keyEncipherment: \${8:true}
+          dataEncipherment: \${9:true}
+          keyAgreement: \${10:true}
+          certSign: \${11:false}
+          crlSign: \${12:false}
+          encipherOnly: \${13:true}
+          decipherOnly: \${14:true}
+        extendedKeyUsage:
+          serverAuth: \${15:true}
+          clientAuth: \${16:true}
+          codeSigning: \${17:true}
+          emailProtection: \${18:true}
+          timeStamping: \${19:true}
+          ocspSigning: \${20:true}
+        unknownExtendedKeyUsages:
+        - objectIdPath:
+          - \${21:1}
+          - \${22:6}
+      caOptions:
+        isCa: \${23:false}
+        maxIssuerPathLength: \${24:6}
+      policyIds:
+      - objectIdPath:
+        - \${25:1}
+        - \${26:6}
+      aiaOcspServers:
+      - \${27:string}
+      additionalExtensions:
+      - objectId:
+          objectIdPath:
+          - \${28:1}
+          - \${29:6}
+        critical: \${30:true}
+        value: \${31:c3RyaW5nCg==}
+    identityConstraints:
+      celExpression:
+        title: \${32:Sample expression}
+        description: \${33:Always true}
+        expression: \${34:true}
+        location: \${35:any.file.anywhere}
+      allowSubjectPassthrough: \${36:true}
+      allowSubjectAltNamesPassthrough: \${37:true}
+    passthroughExtensions:
+      knownExtensions:
+      - \${38:EXTENDED_KEY_USAGE}
+      additionalExtensions:
+      - objectIdPath:
+        - \${39:1}
+        - \${40:6}
+    description: \${41:An basic sample certificate template}

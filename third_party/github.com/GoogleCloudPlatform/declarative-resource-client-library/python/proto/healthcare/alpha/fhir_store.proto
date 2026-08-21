@@ -1,0 +1,118 @@
+// Copyright 2022 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum HealthcareAlphaFhirStoreVersionEnum {
+  HealthcareAlphaFhirStoreVersionEnumNO_VALUE_DO_NOT_USE = 0;
+  HealthcareAlphaFhirStoreVersionEnumVERSION_UNSPECIFIED = 1;
+  HealthcareAlphaFhirStoreVersionEnumDSTU2 = 2;
+  HealthcareAlphaFhirStoreVersionEnumSTU3 = 3;
+  HealthcareAlphaFhirStoreVersionEnumR4 = 4;
+}
+
+enum HealthcareAlphaFhirStoreStreamConfigsBigqueryDestinationSchemaConfigSchemaTypeEnum {
+  HealthcareAlphaFhirStoreStreamConfigsBigqueryDestinationSchemaConfigSchemaTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  HealthcareAlphaFhirStoreStreamConfigsBigqueryDestinationSchemaConfigSchemaTypeEnumSCHEMA_TYPE_UNSPECIFIED = 1;
+  HealthcareAlphaFhirStoreStreamConfigsBigqueryDestinationSchemaConfigSchemaTypeEnumLOSSLESS = 2;
+  HealthcareAlphaFhirStoreStreamConfigsBigqueryDestinationSchemaConfigSchemaTypeEnumANALYTICS = 3;
+  HealthcareAlphaFhirStoreStreamConfigsBigqueryDestinationSchemaConfigSchemaTypeEnumANALYTICS_V2 = 4;
+}
+
+enum HealthcareAlphaFhirStoreComplexDataTypeReferenceParsingEnum {
+  HealthcareAlphaFhirStoreComplexDataTypeReferenceParsingEnumNO_VALUE_DO_NOT_USE = 0;
+  HealthcareAlphaFhirStoreComplexDataTypeReferenceParsingEnumCOMPLEX_DATA_TYPE_REFERENCE_PARSING_UNSPECIFIED = 1;
+  HealthcareAlphaFhirStoreComplexDataTypeReferenceParsingEnumDISABLED = 2;
+  HealthcareAlphaFhirStoreComplexDataTypeReferenceParsingEnumENABLED = 3;
+}
+
+message HealthcareAlphaFhirStore {
+  string name = 1;
+  bool enable_update_create = 2;
+  HealthcareAlphaFhirStoreNotificationConfig notification_config = 3;
+  bool disable_referential_integrity = 4;
+  int64 shard_num = 5;
+  bool disable_resource_versioning = 6;
+  map<string, string> labels = 7;
+  HealthcareAlphaFhirStoreVersionEnum version = 8;
+  repeated HealthcareAlphaFhirStoreStreamConfigs stream_configs = 9;
+  HealthcareAlphaFhirStoreValidationConfig validation_config = 10;
+  bool default_search_handling_strict = 11;
+  HealthcareAlphaFhirStoreComplexDataTypeReferenceParsingEnum complex_data_type_reference_parsing = 12;
+  string project = 13;
+  string location = 14;
+  string dataset = 15;
+}
+
+message HealthcareAlphaFhirStoreNotificationConfig {
+  string pubsub_topic = 1;
+}
+
+message HealthcareAlphaFhirStoreStreamConfigs {
+  repeated string resource_types = 1;
+  HealthcareAlphaFhirStoreStreamConfigsBigqueryDestination bigquery_destination = 2;
+}
+
+message HealthcareAlphaFhirStoreStreamConfigsBigqueryDestination {
+  string dataset_uri = 1;
+  HealthcareAlphaFhirStoreStreamConfigsBigqueryDestinationSchemaConfig schema_config = 2;
+}
+
+message HealthcareAlphaFhirStoreStreamConfigsBigqueryDestinationSchemaConfig {
+  HealthcareAlphaFhirStoreStreamConfigsBigqueryDestinationSchemaConfigSchemaTypeEnum schema_type = 1;
+  int64 recursive_structure_depth = 2;
+}
+
+message HealthcareAlphaFhirStoreValidationConfig {
+  bool disable_profile_validation = 1;
+  repeated string enabled_implementation_guides = 2;
+  bool disable_required_field_validation = 3;
+  bool disable_reference_type_validation = 4;
+  bool disable_fhirpath_validation = 5;
+}
+
+message ApplyHealthcareAlphaFhirStoreRequest {
+  HealthcareAlphaFhirStore resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteHealthcareAlphaFhirStoreRequest {
+  string service_account_file = 1;
+  HealthcareAlphaFhirStore resource = 2;
+}
+
+message ListHealthcareAlphaFhirStoreRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+  string Dataset = 4;
+}
+
+message ListHealthcareAlphaFhirStoreResponse {
+  repeated HealthcareAlphaFhirStore items = 1;
+}
+
+service HealthcareAlphaFhirStoreService {
+  rpc ApplyHealthcareAlphaFhirStore(ApplyHealthcareAlphaFhirStoreRequest) returns (HealthcareAlphaFhirStore);
+  rpc DeleteHealthcareAlphaFhirStore(DeleteHealthcareAlphaFhirStoreRequest) returns (google.protobuf.Empty);
+  rpc ListHealthcareAlphaFhirStore(ListHealthcareAlphaFhirStoreRequest) returns (ListHealthcareAlphaFhirStoreResponse);
+}

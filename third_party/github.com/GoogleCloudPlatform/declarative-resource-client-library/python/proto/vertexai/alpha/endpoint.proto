@@ -1,0 +1,127 @@
+// Copyright 2022 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum VertexaiAlphaEndpointDeployedModelsDedicatedResourcesMachineSpecAcceleratorTypeEnum {
+  VertexaiAlphaEndpointDeployedModelsDedicatedResourcesMachineSpecAcceleratorTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  VertexaiAlphaEndpointDeployedModelsDedicatedResourcesMachineSpecAcceleratorTypeEnumACCELERATOR_TYPE_UNSPECIFIED = 1;
+  VertexaiAlphaEndpointDeployedModelsDedicatedResourcesMachineSpecAcceleratorTypeEnumNVIDIA_TESLA_K80 = 2;
+  VertexaiAlphaEndpointDeployedModelsDedicatedResourcesMachineSpecAcceleratorTypeEnumNVIDIA_TESLA_P100 = 3;
+  VertexaiAlphaEndpointDeployedModelsDedicatedResourcesMachineSpecAcceleratorTypeEnumNVIDIA_TESLA_V100 = 4;
+  VertexaiAlphaEndpointDeployedModelsDedicatedResourcesMachineSpecAcceleratorTypeEnumNVIDIA_TESLA_P4 = 5;
+  VertexaiAlphaEndpointDeployedModelsDedicatedResourcesMachineSpecAcceleratorTypeEnumNVIDIA_TESLA_T4 = 6;
+  VertexaiAlphaEndpointDeployedModelsDedicatedResourcesMachineSpecAcceleratorTypeEnumNVIDIA_TESLA_A100 = 7;
+  VertexaiAlphaEndpointDeployedModelsDedicatedResourcesMachineSpecAcceleratorTypeEnumTPU_V2 = 8;
+  VertexaiAlphaEndpointDeployedModelsDedicatedResourcesMachineSpecAcceleratorTypeEnumTPU_V3 = 9;
+}
+
+message VertexaiAlphaEndpoint {
+  string name = 1;
+  string display_name = 2;
+  string description = 3;
+  repeated VertexaiAlphaEndpointDeployedModels deployed_models = 4;
+  string etag = 5;
+  map<string, string> labels = 6;
+  string create_time = 7;
+  string update_time = 8;
+  VertexaiAlphaEndpointEncryptionSpec encryption_spec = 9;
+  string network = 10;
+  string model_deployment_monitoring_job = 11;
+  string project = 12;
+  string location = 13;
+}
+
+message VertexaiAlphaEndpointDeployedModels {
+  VertexaiAlphaEndpointDeployedModelsDedicatedResources dedicated_resources = 1;
+  VertexaiAlphaEndpointDeployedModelsAutomaticResources automatic_resources = 2;
+  string id = 3;
+  string model = 4;
+  string model_version_id = 5;
+  string display_name = 6;
+  string create_time = 7;
+  string service_account = 8;
+  bool enable_access_logging = 9;
+  VertexaiAlphaEndpointDeployedModelsPrivateEndpoints private_endpoints = 10;
+  string shared_resources = 11;
+  bool enable_container_logging = 12;
+}
+
+message VertexaiAlphaEndpointDeployedModelsDedicatedResources {
+  VertexaiAlphaEndpointDeployedModelsDedicatedResourcesMachineSpec machine_spec = 1;
+  int64 min_replica_count = 2;
+  int64 max_replica_count = 3;
+  repeated VertexaiAlphaEndpointDeployedModelsDedicatedResourcesAutoscalingMetricSpecs autoscaling_metric_specs = 4;
+}
+
+message VertexaiAlphaEndpointDeployedModelsDedicatedResourcesMachineSpec {
+  string machine_type = 1;
+  VertexaiAlphaEndpointDeployedModelsDedicatedResourcesMachineSpecAcceleratorTypeEnum accelerator_type = 2;
+  int64 accelerator_count = 3;
+}
+
+message VertexaiAlphaEndpointDeployedModelsDedicatedResourcesAutoscalingMetricSpecs {
+  string metric_name = 1;
+  int64 target = 2;
+}
+
+message VertexaiAlphaEndpointDeployedModelsAutomaticResources {
+  int64 min_replica_count = 1;
+  int64 max_replica_count = 2;
+}
+
+message VertexaiAlphaEndpointDeployedModelsPrivateEndpoints {
+  string predict_http_uri = 1;
+  string explain_http_uri = 2;
+  string health_http_uri = 3;
+  string service_attachment = 4;
+}
+
+message VertexaiAlphaEndpointEncryptionSpec {
+  string kms_key_name = 1;
+}
+
+message ApplyVertexaiAlphaEndpointRequest {
+  VertexaiAlphaEndpoint resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteVertexaiAlphaEndpointRequest {
+  string service_account_file = 1;
+  VertexaiAlphaEndpoint resource = 2;
+}
+
+message ListVertexaiAlphaEndpointRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListVertexaiAlphaEndpointResponse {
+  repeated VertexaiAlphaEndpoint items = 1;
+}
+
+service VertexaiAlphaEndpointService {
+  rpc ApplyVertexaiAlphaEndpoint(ApplyVertexaiAlphaEndpointRequest) returns (VertexaiAlphaEndpoint);
+  rpc DeleteVertexaiAlphaEndpoint(DeleteVertexaiAlphaEndpointRequest) returns (google.protobuf.Empty);
+  rpc ListVertexaiAlphaEndpoint(ListVertexaiAlphaEndpointRequest) returns (ListVertexaiAlphaEndpointResponse);
+}

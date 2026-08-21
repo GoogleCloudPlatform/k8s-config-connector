@@ -1,0 +1,330 @@
+// Copyright 2022 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum RunBetaServiceIngressEnum {
+  RunBetaServiceIngressEnumNO_VALUE_DO_NOT_USE = 0;
+  RunBetaServiceIngressEnumINGRESS_TRAFFIC_UNSPECIFIED = 1;
+  RunBetaServiceIngressEnumINGRESS_TRAFFIC_ALL = 2;
+  RunBetaServiceIngressEnumINGRESS_TRAFFIC_INTERNAL_ONLY = 3;
+  RunBetaServiceIngressEnumINGRESS_TRAFFIC_INTERNAL_LOAD_BALANCER = 4;
+}
+
+enum RunBetaServiceLaunchStageEnum {
+  RunBetaServiceLaunchStageEnumNO_VALUE_DO_NOT_USE = 0;
+  RunBetaServiceLaunchStageEnumLAUNCH_STAGE_UNSPECIFIED = 1;
+  RunBetaServiceLaunchStageEnumUNIMPLEMENTED = 2;
+  RunBetaServiceLaunchStageEnumPRELAUNCH = 3;
+  RunBetaServiceLaunchStageEnumEARLY_ACCESS = 4;
+  RunBetaServiceLaunchStageEnumALPHA = 5;
+  RunBetaServiceLaunchStageEnumBETA = 6;
+  RunBetaServiceLaunchStageEnumGA = 7;
+  RunBetaServiceLaunchStageEnumDEPRECATED = 8;
+}
+
+enum RunBetaServiceTemplateVPCAccessEgressEnum {
+  RunBetaServiceTemplateVPCAccessEgressEnumNO_VALUE_DO_NOT_USE = 0;
+  RunBetaServiceTemplateVPCAccessEgressEnumVPC_EGRESS_UNSPECIFIED = 1;
+  RunBetaServiceTemplateVPCAccessEgressEnumALL_TRAFFIC = 2;
+  RunBetaServiceTemplateVPCAccessEgressEnumPRIVATE_RANGES_ONLY = 3;
+}
+
+enum RunBetaServiceTemplateExecutionEnvironmentEnum {
+  RunBetaServiceTemplateExecutionEnvironmentEnumNO_VALUE_DO_NOT_USE = 0;
+  RunBetaServiceTemplateExecutionEnvironmentEnumEXECUTION_ENVIRONMENT_UNSPECIFIED = 1;
+  RunBetaServiceTemplateExecutionEnvironmentEnumEXECUTION_ENVIRONMENT_DEFAULT = 2;
+  RunBetaServiceTemplateExecutionEnvironmentEnumEXECUTION_ENVIRONMENT_GEN2 = 3;
+}
+
+enum RunBetaServiceTrafficTypeEnum {
+  RunBetaServiceTrafficTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  RunBetaServiceTrafficTypeEnumTRAFFIC_TARGET_ALLOCATION_TYPE_UNSPECIFIED = 1;
+  RunBetaServiceTrafficTypeEnumTRAFFIC_TARGET_ALLOCATION_TYPE_LATEST = 2;
+  RunBetaServiceTrafficTypeEnumTRAFFIC_TARGET_ALLOCATION_TYPE_REVISION = 3;
+}
+
+enum RunBetaServiceTerminalConditionStateEnum {
+  RunBetaServiceTerminalConditionStateEnumNO_VALUE_DO_NOT_USE = 0;
+  RunBetaServiceTerminalConditionStateEnumSTATE_UNSPECIFIED = 1;
+  RunBetaServiceTerminalConditionStateEnumCONDITION_PENDING = 2;
+  RunBetaServiceTerminalConditionStateEnumCONDITION_RECONCILING = 3;
+  RunBetaServiceTerminalConditionStateEnumCONDITION_FAILED = 4;
+  RunBetaServiceTerminalConditionStateEnumCONDITION_SUCCEEDED = 5;
+}
+
+enum RunBetaServiceTerminalConditionSeverityEnum {
+  RunBetaServiceTerminalConditionSeverityEnumNO_VALUE_DO_NOT_USE = 0;
+  RunBetaServiceTerminalConditionSeverityEnumSEVERITY_UNSPECIFIED = 1;
+  RunBetaServiceTerminalConditionSeverityEnumERROR = 2;
+  RunBetaServiceTerminalConditionSeverityEnumWARNING = 3;
+  RunBetaServiceTerminalConditionSeverityEnumINFO = 4;
+}
+
+enum RunBetaServiceTerminalConditionReasonEnum {
+  RunBetaServiceTerminalConditionReasonEnumNO_VALUE_DO_NOT_USE = 0;
+  RunBetaServiceTerminalConditionReasonEnumCOMMON_REASON_UNDEFINED = 1;
+  RunBetaServiceTerminalConditionReasonEnumUNKNOWN = 2;
+  RunBetaServiceTerminalConditionReasonEnumROUTE_MISSING = 3;
+  RunBetaServiceTerminalConditionReasonEnumREVISION_FAILED = 4;
+  RunBetaServiceTerminalConditionReasonEnumPROGRESS_DEADLINE_EXCEEDED = 5;
+  RunBetaServiceTerminalConditionReasonEnumBUILD_STEP_FAILED = 6;
+  RunBetaServiceTerminalConditionReasonEnumCONTAINER_MISSING = 7;
+  RunBetaServiceTerminalConditionReasonEnumCONTAINER_PERMISSION_DENIED = 8;
+  RunBetaServiceTerminalConditionReasonEnumCONTAINER_IMAGE_UNAUTHORIZED = 9;
+  RunBetaServiceTerminalConditionReasonEnumCONTAINER_IMAGE_AUTHORIZATION_CHECK_FAILED = 10;
+  RunBetaServiceTerminalConditionReasonEnumENCRYPTION_KEY_PERMISSION_DENIED = 11;
+  RunBetaServiceTerminalConditionReasonEnumENCRYPTION_KEY_CHECK_FAILED = 12;
+  RunBetaServiceTerminalConditionReasonEnumSECRETS_ACCESS_CHECK_FAILED = 13;
+  RunBetaServiceTerminalConditionReasonEnumWAITING_FOR_OPERATION = 14;
+  RunBetaServiceTerminalConditionReasonEnumIMMEDIATE_RETRY = 15;
+  RunBetaServiceTerminalConditionReasonEnumPOSTPONED_RETRY = 16;
+}
+
+enum RunBetaServiceTerminalConditionInternalReasonEnum {
+  RunBetaServiceTerminalConditionInternalReasonEnumNO_VALUE_DO_NOT_USE = 0;
+  RunBetaServiceTerminalConditionInternalReasonEnumINTERNAL_REASON_UNDEFINED = 1;
+  RunBetaServiceTerminalConditionInternalReasonEnumCONFLICTING_REVISION_NAME = 2;
+  RunBetaServiceTerminalConditionInternalReasonEnumREVISION_MISSING = 3;
+  RunBetaServiceTerminalConditionInternalReasonEnumCONFIGURATION_MISSING = 4;
+  RunBetaServiceTerminalConditionInternalReasonEnumASSIGNING_TRAFFIC = 5;
+  RunBetaServiceTerminalConditionInternalReasonEnumUPDATING_INGRESS_TRAFFIC_ALLOWED = 6;
+  RunBetaServiceTerminalConditionInternalReasonEnumREVISION_ORG_POLICY_VIOLATION = 7;
+  RunBetaServiceTerminalConditionInternalReasonEnumENABLING_GCFV2_URI_SUPPORT = 8;
+}
+
+enum RunBetaServiceTerminalConditionDomainMappingReasonEnum {
+  RunBetaServiceTerminalConditionDomainMappingReasonEnumNO_VALUE_DO_NOT_USE = 0;
+  RunBetaServiceTerminalConditionDomainMappingReasonEnumDOMAIN_MAPPING_REASON_UNDEFINED = 1;
+  RunBetaServiceTerminalConditionDomainMappingReasonEnumROUTE_NOT_READY = 2;
+  RunBetaServiceTerminalConditionDomainMappingReasonEnumPERMISSION_DENIED = 3;
+  RunBetaServiceTerminalConditionDomainMappingReasonEnumCERTIFICATE_ALREADY_EXISTS = 4;
+  RunBetaServiceTerminalConditionDomainMappingReasonEnumMAPPING_ALREADY_EXISTS = 5;
+  RunBetaServiceTerminalConditionDomainMappingReasonEnumCERTIFICATE_PENDING = 6;
+  RunBetaServiceTerminalConditionDomainMappingReasonEnumCERTIFICATE_FAILED = 7;
+}
+
+enum RunBetaServiceTerminalConditionRevisionReasonEnum {
+  RunBetaServiceTerminalConditionRevisionReasonEnumNO_VALUE_DO_NOT_USE = 0;
+  RunBetaServiceTerminalConditionRevisionReasonEnumREVISION_REASON_UNDEFINED = 1;
+  RunBetaServiceTerminalConditionRevisionReasonEnumPENDING = 2;
+  RunBetaServiceTerminalConditionRevisionReasonEnumRESERVE = 3;
+  RunBetaServiceTerminalConditionRevisionReasonEnumRETIRED = 4;
+  RunBetaServiceTerminalConditionRevisionReasonEnumRETIRING = 5;
+  RunBetaServiceTerminalConditionRevisionReasonEnumRECREATING = 6;
+  RunBetaServiceTerminalConditionRevisionReasonEnumHEALTH_CHECK_CONTAINER_ERROR = 7;
+  RunBetaServiceTerminalConditionRevisionReasonEnumCUSTOMIZED_PATH_RESPONSE_PENDING = 8;
+  RunBetaServiceTerminalConditionRevisionReasonEnumMIN_INSTANCES_NOT_PROVISIONED = 9;
+  RunBetaServiceTerminalConditionRevisionReasonEnumACTIVE_REVISION_LIMIT_REACHED = 10;
+  RunBetaServiceTerminalConditionRevisionReasonEnumNO_DEPLOYMENT = 11;
+}
+
+enum RunBetaServiceTerminalConditionJobReasonEnum {
+  RunBetaServiceTerminalConditionJobReasonEnumNO_VALUE_DO_NOT_USE = 0;
+  RunBetaServiceTerminalConditionJobReasonEnumJOB_REASON_UNDEFINED = 1;
+  RunBetaServiceTerminalConditionJobReasonEnumJOB_STATUS_SERVICE_POLLING_ERROR = 2;
+}
+
+enum RunBetaServiceTrafficStatusesTypeEnum {
+  RunBetaServiceTrafficStatusesTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  RunBetaServiceTrafficStatusesTypeEnumTRAFFIC_TARGET_ALLOCATION_TYPE_UNSPECIFIED = 1;
+  RunBetaServiceTrafficStatusesTypeEnumTRAFFIC_TARGET_ALLOCATION_TYPE_LATEST = 2;
+  RunBetaServiceTrafficStatusesTypeEnumTRAFFIC_TARGET_ALLOCATION_TYPE_REVISION = 3;
+}
+
+message RunBetaService {
+  string name = 1;
+  string description = 2;
+  string uid = 3;
+  int64 generation = 4;
+  map<string, string> labels = 5;
+  map<string, string> annotations = 6;
+  string create_time = 7;
+  string update_time = 8;
+  string delete_time = 9;
+  string expire_time = 10;
+  string creator = 11;
+  string last_modifier = 12;
+  string client = 13;
+  string client_version = 14;
+  RunBetaServiceIngressEnum ingress = 15;
+  RunBetaServiceLaunchStageEnum launch_stage = 16;
+  RunBetaServiceBinaryAuthorization binary_authorization = 17;
+  RunBetaServiceTemplate template = 18;
+  repeated RunBetaServiceTraffic traffic = 19;
+  RunBetaServiceTerminalCondition terminal_condition = 20;
+  string latest_ready_revision = 21;
+  string latest_created_revision = 22;
+  repeated RunBetaServiceTrafficStatuses traffic_statuses = 23;
+  string uri = 24;
+  bool reconciling = 25;
+  string etag = 26;
+  string project = 27;
+  string location = 28;
+}
+
+message RunBetaServiceBinaryAuthorization {
+  bool use_default = 1;
+  string breakglass_justification = 2;
+}
+
+message RunBetaServiceTemplate {
+  string revision = 1;
+  map<string, string> labels = 2;
+  map<string, string> annotations = 3;
+  RunBetaServiceTemplateScaling scaling = 4;
+  RunBetaServiceTemplateVPCAccess vpc_access = 5;
+  int64 container_concurrency = 6;
+  string timeout = 7;
+  string service_account = 8;
+  repeated RunBetaServiceTemplateContainers containers = 9;
+  repeated RunBetaServiceTemplateVolumes volumes = 10;
+  bool confidential = 11;
+  RunBetaServiceTemplateExecutionEnvironmentEnum execution_environment = 12;
+}
+
+message RunBetaServiceTemplateScaling {
+  int64 min_instance_count = 1;
+  int64 max_instance_count = 2;
+}
+
+message RunBetaServiceTemplateVPCAccess {
+  string connector = 1;
+  RunBetaServiceTemplateVPCAccessEgressEnum egress = 2;
+}
+
+message RunBetaServiceTemplateContainers {
+  string name = 1;
+  string image = 2;
+  repeated string command = 3;
+  repeated string args = 4;
+  repeated RunBetaServiceTemplateContainersEnv env = 5;
+  RunBetaServiceTemplateContainersResources resources = 6;
+  repeated RunBetaServiceTemplateContainersPorts ports = 7;
+  repeated RunBetaServiceTemplateContainersVolumeMounts volume_mounts = 8;
+}
+
+message RunBetaServiceTemplateContainersEnv {
+  string name = 1;
+  string value = 2;
+  RunBetaServiceTemplateContainersEnvValueSource value_source = 3;
+}
+
+message RunBetaServiceTemplateContainersEnvValueSource {
+  RunBetaServiceTemplateContainersEnvValueSourceSecretKeyRef secret_key_ref = 1;
+}
+
+message RunBetaServiceTemplateContainersEnvValueSourceSecretKeyRef {
+  string secret = 1;
+  string version = 2;
+}
+
+message RunBetaServiceTemplateContainersResources {
+  map<string, string> limits = 1;
+  bool cpu_idle = 2;
+}
+
+message RunBetaServiceTemplateContainersPorts {
+  string name = 1;
+  int64 container_port = 2;
+}
+
+message RunBetaServiceTemplateContainersVolumeMounts {
+  string name = 1;
+  string mount_path = 2;
+}
+
+message RunBetaServiceTemplateVolumes {
+  string name = 1;
+  RunBetaServiceTemplateVolumesSecret secret = 2;
+  RunBetaServiceTemplateVolumesCloudSqlInstance cloud_sql_instance = 3;
+}
+
+message RunBetaServiceTemplateVolumesSecret {
+  string secret = 1;
+  repeated RunBetaServiceTemplateVolumesSecretItems items = 2;
+  int64 default_mode = 3;
+}
+
+message RunBetaServiceTemplateVolumesSecretItems {
+  string path = 1;
+  string version = 2;
+  int64 mode = 3;
+}
+
+message RunBetaServiceTemplateVolumesCloudSqlInstance {
+  repeated string connections = 1;
+}
+
+message RunBetaServiceTraffic {
+  RunBetaServiceTrafficTypeEnum type = 1;
+  string revision = 2;
+  int64 percent = 3;
+  string tag = 4;
+}
+
+message RunBetaServiceTerminalCondition {
+  string type = 1;
+  RunBetaServiceTerminalConditionStateEnum state = 2;
+  string message = 3;
+  string last_transition_time = 4;
+  RunBetaServiceTerminalConditionSeverityEnum severity = 5;
+  RunBetaServiceTerminalConditionReasonEnum reason = 6;
+  RunBetaServiceTerminalConditionInternalReasonEnum internal_reason = 7;
+  RunBetaServiceTerminalConditionDomainMappingReasonEnum domain_mapping_reason = 8;
+  RunBetaServiceTerminalConditionRevisionReasonEnum revision_reason = 9;
+  RunBetaServiceTerminalConditionJobReasonEnum job_reason = 10;
+}
+
+message RunBetaServiceTrafficStatuses {
+  RunBetaServiceTrafficStatusesTypeEnum type = 1;
+  string revision = 2;
+  int64 percent = 3;
+  string tag = 4;
+  string uri = 5;
+}
+
+message ApplyRunBetaServiceRequest {
+  RunBetaService resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteRunBetaServiceRequest {
+  string service_account_file = 1;
+  RunBetaService resource = 2;
+}
+
+message ListRunBetaServiceRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListRunBetaServiceResponse {
+  repeated RunBetaService items = 1;
+}
+
+service RunBetaServiceService {
+  rpc ApplyRunBetaService(ApplyRunBetaServiceRequest) returns (RunBetaService);
+  rpc DeleteRunBetaService(DeleteRunBetaServiceRequest) returns (google.protobuf.Empty);
+  rpc ListRunBetaService(ListRunBetaServiceRequest) returns (ListRunBetaServiceResponse);
+}

@@ -1,0 +1,51 @@
+{
+  "name": "{{instance_group_manager}}",
+  "project": "{{project}}",
+  "location": "{{region}}",
+  "description": "A sample regional instance group manager.",
+  "distributionPolicy": {
+    "zones": [
+      {
+        "zone": "projects/{{project}}/zones/{{zone}}"
+      }
+    ],
+    "targetShape": "ANY"
+  },
+  "instanceTemplate": "{{ref:first.instance_template.json:selfLink}}",
+  "targetPools": ["{{ref:first.target_pool.json:selfLink}}"],
+  "baseInstanceName": "dcl",
+  "targetSize": 3,
+  "autoHealingPolicies": [
+    {
+      "healthCheck": "{{ref:https.health_check.json:selfLink}}",
+      "initialDelaySec": 300
+    }
+  ],
+  "updatePolicy": {
+    "type": "PROACTIVE",
+    "instanceRedistributionType": "NONE",
+    "minimalAction": "RESTART",
+    "maxSurge": {
+      "fixed": 0
+    },
+    "maxUnavailable": {
+      "fixed": 3
+    },
+    "replacementMethod": "RECREATE"
+  },
+  "namedPorts": [
+    {
+      "name": "sample-port",
+      "port": 6667
+    }
+  ],
+  "statefulPolicy": {
+    "preservedState": {
+      "disks": {
+        "sample-disk": {
+          "autoDelete": "ON_PERMANENT_INSTANCE_DELETION"
+        }
+      }
+    }
+  }
+}

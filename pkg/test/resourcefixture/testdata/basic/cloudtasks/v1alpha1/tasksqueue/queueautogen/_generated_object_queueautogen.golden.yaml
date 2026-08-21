@@ -1,0 +1,30 @@
+apiVersion: cloudtasks.cnrm.cloud.google.com/v1alpha1
+kind: TasksQueue
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: cloudtasksqueue-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+  rateLimits:
+    maxBurstSize: 100
+    maxConcurrentDispatches: 500
+    maxDispatchesPerSecond: 500
+  resourceID: cloudtasksqueue${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/queues/cloudtasksqueue${uniqueId}
+  observedGeneration: 2
+  observedState: {}

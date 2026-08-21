@@ -1,0 +1,83 @@
+// Copyright 2022 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package parameters
+
+import (
+	"context"
+	"net/http"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/cli/cmd/commonparams"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gcp"
+	transport_tpg "github.com/hashicorp/terraform-provider-google-beta/google-beta/transport"
+	"golang.org/x/oauth2"
+	"google.golang.org/grpc"
+)
+
+type Parameters struct {
+	IAMFormat               string
+	FilterDeletedIAMMembers bool
+
+	// GCPAccessToken is the (optional) static authentication token to use for GCP authentication.
+	GCPAccessToken string
+
+	Output         string
+	ResourceFormat string
+	URI            string
+	Verbose        bool
+
+	// HTTPClient allows for overriding the default HTTP Client
+	HTTPClient *http.Client
+
+	// DisableDirectExport can be set to true to bypass direct-reconciliation exporters.
+	DisableDirectExport bool
+
+	// GRPCUnaryClientInterceptor allows for overriding the default GRPC Unary Interceptor
+	GRPCUnaryClientInterceptor grpc.UnaryClientInterceptor
+}
+
+func (p *Parameters) NewControllerConfig(ctx context.Context) (*config.ControllerConfig, error) {
+	c := &config.ControllerConfig{
+		HTTPClient:                 p.HTTPClient,
+		UserAgent:                  gcp.KCCUserAgent(),
+		GRPCUnaryClientInterceptor: p.GRPCUnaryClientInterceptor,
+	}
+	if p.GCPAccessToken != "" {
+		c.GCPTokenSource = oauth2.StaticTokenSource(
+			&oauth2.Token{AccessToken: p.GCPAccessToken},
+		)
+	}
+
+	if p.GRPCUnaryClientInterceptor != nil {
+		c.GRPCUnaryClientInterceptor = p.GRPCUnaryClientInterceptor
+	}
+
+	if c.GRPCUnaryClientInterceptor != nil {
+		transport_tpg.GRPCUnaryClientInterceptor = c.GRPCUnaryClientInterceptor
+	}
+
+	if err := c.Init(ctx); err != nil {
+		return nil, err
+	}
+	return c, nil
+}
+
+func Validate(p *Parameters) error {
+	if err := commonparams.ValidateIAMFormat(p.IAMFormat); err != nil {
+		return err
+	}
+
+	return commonparams.ValidateResourceFormat(p.ResourceFormat, p.IAMFormat)
+}

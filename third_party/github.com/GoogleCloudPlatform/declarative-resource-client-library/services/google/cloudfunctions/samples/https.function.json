@@ -1,0 +1,11 @@
+{
+  "name": "{{function}}",
+  "project": "{{project}}",
+  "region": "{{region}}",
+  "runtime": "nodejs20",
+  "sourceArchiveUrl": "gs://aaa-dont-delete-dcl-cloud-functions-testing/http_trigger.zip",
+  "entryPoint": "helloGET",
+  "httpsTrigger": {
+    "securityLevel": "SECURE_OPTIONAL"
+  }
+}

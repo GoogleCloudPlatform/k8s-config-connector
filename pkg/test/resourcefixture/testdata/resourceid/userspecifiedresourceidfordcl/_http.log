@@ -1,0 +1,252 @@
+GET https://containeranalysis.googleapis.com/v1/projects/${projectId}/notes/containeranalysisnote-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Requested entity was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://containeranalysis.googleapis.com/v1/projects/${projectId}/notes?alt=json&noteId=containeranalysisnote-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+{
+  "attestation": {
+    "hint": {
+      "humanReadableName": "Attestor Note1"
+    }
+  },
+  "longDescription": "long description",
+  "name": "projects/${projectId}/notes/containeranalysisnote-${uniqueId}",
+  "relatedUrl": [
+    {
+      "label": "test",
+      "url": "some.url"
+    },
+    {
+      "label": "google",
+      "url": "google.com"
+    }
+  ],
+  "shortDescription": "short description"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "attestation": {
+    "hint": {
+      "humanReadableName": "Attestor Note1"
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "ATTESTATION",
+  "longDescription": "long description",
+  "name": "projects/${projectId}/notes/containeranalysisnote-${uniqueId}",
+  "relatedUrl": [
+    {
+      "label": "test",
+      "url": "some.url"
+    },
+    {
+      "label": "google",
+      "url": "google.com"
+    }
+  ],
+  "shortDescription": "short description",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://containeranalysis.googleapis.com/v1/projects/${projectId}/notes/containeranalysisnote-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "attestation": {
+    "hint": {
+      "humanReadableName": "Attestor Note1"
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "ATTESTATION",
+  "longDescription": "long description",
+  "name": "projects/${projectId}/notes/containeranalysisnote-${uniqueId}",
+  "relatedUrl": [
+    {
+      "label": "test",
+      "url": "some.url"
+    },
+    {
+      "label": "google",
+      "url": "google.com"
+    }
+  ],
+  "shortDescription": "short description",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://containeranalysis.googleapis.com/v1/projects/${projectId}/notes/containeranalysisnote-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+{
+  "attestation": {
+    "hint": {
+      "humanReadableName": "Attestor Note2"
+    }
+  },
+  "longDescription": "new long description",
+  "relatedUrl": [
+    {
+      "label": "test",
+      "url": "some.url"
+    }
+  ],
+  "shortDescription": "short description"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "attestation": {
+    "hint": {
+      "humanReadableName": "Attestor Note2"
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "ATTESTATION",
+  "longDescription": "new long description",
+  "name": "projects/${projectId}/notes/containeranalysisnote-${uniqueId}",
+  "relatedUrl": [
+    {
+      "label": "test",
+      "url": "some.url"
+    }
+  ],
+  "shortDescription": "short description",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://containeranalysis.googleapis.com/v1/projects/${projectId}/notes/containeranalysisnote-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "attestation": {
+    "hint": {
+      "humanReadableName": "Attestor Note2"
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "ATTESTATION",
+  "longDescription": "new long description",
+  "name": "projects/${projectId}/notes/containeranalysisnote-${uniqueId}",
+  "relatedUrl": [
+    {
+      "label": "test",
+      "url": "some.url"
+    }
+  ],
+  "shortDescription": "short description",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://containeranalysis.googleapis.com/v1/projects/${projectId}/notes/containeranalysisnote-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://containeranalysis.googleapis.com/v1/projects/${projectId}/notes/containeranalysisnote-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Requested entity was not found",
+    "status": "NOT_FOUND"
+  }
+}

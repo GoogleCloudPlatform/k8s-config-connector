@@ -1,0 +1,84 @@
+// Copyright 2022 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum ApigeeAlphaInstancePeeringCidrRangeEnum {
+  ApigeeAlphaInstancePeeringCidrRangeEnumNO_VALUE_DO_NOT_USE = 0;
+  ApigeeAlphaInstancePeeringCidrRangeEnumCIDR_RANGE_UNSPECIFIED = 1;
+  ApigeeAlphaInstancePeeringCidrRangeEnumSLASH_16 = 2;
+  ApigeeAlphaInstancePeeringCidrRangeEnumSLASH_17 = 3;
+  ApigeeAlphaInstancePeeringCidrRangeEnumSLASH_18 = 4;
+  ApigeeAlphaInstancePeeringCidrRangeEnumSLASH_19 = 5;
+  ApigeeAlphaInstancePeeringCidrRangeEnumSLASH_20 = 6;
+  ApigeeAlphaInstancePeeringCidrRangeEnumSLASH_23 = 7;
+}
+
+enum ApigeeAlphaInstanceStateEnum {
+  ApigeeAlphaInstanceStateEnumNO_VALUE_DO_NOT_USE = 0;
+  ApigeeAlphaInstanceStateEnumSNAPSHOT_STATE_UNSPECIFIED = 1;
+  ApigeeAlphaInstanceStateEnumMISSING = 2;
+  ApigeeAlphaInstanceStateEnumOK_DOCSTORE = 3;
+  ApigeeAlphaInstanceStateEnumOK_SUBMITTED = 4;
+  ApigeeAlphaInstanceStateEnumOK_EXTERNAL = 5;
+  ApigeeAlphaInstanceStateEnumDELETED = 6;
+}
+
+message ApigeeAlphaInstance {
+  string name = 1;
+  string location = 2;
+  ApigeeAlphaInstancePeeringCidrRangeEnum peering_cidr_range = 3;
+  string host = 4;
+  string port = 5;
+  string description = 6;
+  string display_name = 7;
+  int64 created_at = 8;
+  int64 last_modified_at = 9;
+  string disk_encryption_key_name = 10;
+  ApigeeAlphaInstanceStateEnum state = 11;
+  string apigee_organization = 12;
+}
+
+message ApplyApigeeAlphaInstanceRequest {
+  ApigeeAlphaInstance resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteApigeeAlphaInstanceRequest {
+  string service_account_file = 1;
+  ApigeeAlphaInstance resource = 2;
+}
+
+message ListApigeeAlphaInstanceRequest {
+  string service_account_file = 1;
+  string ApigeeOrganization = 2;
+}
+
+message ListApigeeAlphaInstanceResponse {
+  repeated ApigeeAlphaInstance items = 1;
+}
+
+service ApigeeAlphaInstanceService {
+  rpc ApplyApigeeAlphaInstance(ApplyApigeeAlphaInstanceRequest) returns (ApigeeAlphaInstance);
+  rpc DeleteApigeeAlphaInstance(DeleteApigeeAlphaInstanceRequest) returns (google.protobuf.Empty);
+  rpc ListApigeeAlphaInstance(ListApigeeAlphaInstanceRequest) returns (ListApigeeAlphaInstanceResponse);
+}

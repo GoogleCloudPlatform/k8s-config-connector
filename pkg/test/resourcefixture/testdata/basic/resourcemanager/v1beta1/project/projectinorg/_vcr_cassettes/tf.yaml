@@ -1,0 +1,636 @@
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+version: 2
+interactions:
+    - id: 0
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: cloudresourcemanager.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.22.1 gdcl/0.160.0
+        url: https://cloudresourcemanager.googleapis.com/v1/projects/project-2r0ydlvdt0yby?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            Server-Timing:
+                - gfet4t7; dur=153
+        status: 403 Forbidden
+        code: 403
+        duration: 230.267853ms
+    - id: 1
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 187
+        transfer_encoding: []
+        trailer: {}
+        host: cloudresourcemanager.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: |
+            {"labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"name":"KCC 2r0ydlvdt0yby","parent":{"id":"123450001","type":"organization"},"projectId":"project-2r0ydlvdt0yby"}
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+            X-Goog-Api-Client:
+                - gl-go/1.22.1 gdcl/0.160.0
+        url: https://cloudresourcemanager.googleapis.com/v1/projects?alt=json&prettyPrint=false
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"name":"operations/cp.5604738089330105044"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            Server-Timing:
+                - gfet4t7; dur=297
+        status: 200 OK
+        code: 200
+        duration: 299.063623ms
+    - id: 2
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: cloudresourcemanager.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://cloudresourcemanager.googleapis.com/v1/operations/cp.5604738089330105044?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "operations/cp.5604738089330105044",
+              "metadata": {
+                "@type": "type.googleapis.com/google.cloudresourcemanager.v1.ProjectCreationStatus",
+                "gettable": true,
+                "ready": true
+              },
+              "done": true,
+              "response": {
+                "@type": "type.googleapis.com/google.cloudresourcemanager.v1.Project",
+                "projectNumber": "473324289142",
+                "projectId": "project-2r0ydlvdt0yby",
+                "lifecycleState": "ACTIVE",
+                "name": "KCC 2r0ydlvdt0yby",
+                "labels": {
+                  "cnrm-test": "true",
+                  "managed-by-cnrm": "true"
+                },
+                "createTime": "2024-04-30T17:16:39.043644Z",
+                "parent": {
+                  "type": "organization",
+                  "id": "123450001"
+                }
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            Server-Timing:
+                - gfet4t7; dur=244
+        status: 200 OK
+        code: 200
+        duration: 249.443688ms
+    - id: 3
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: cloudresourcemanager.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.22.1 gdcl/0.160.0
+        url: https://cloudresourcemanager.googleapis.com/v1/projects/project-2r0ydlvdt0yby?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"projectNumber":"473324289142","projectId":"project-2r0ydlvdt0yby","lifecycleState":"ACTIVE","name":"KCC 2r0ydlvdt0yby","labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"createTime":"2024-04-30T17:16:39.043644Z","parent":{"type":"organization","id":"123450001"}}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            Server-Timing:
+                - gfet4t7; dur=517
+        status: 200 OK
+        code: 200
+        duration: 520.546567ms
+    - id: 4
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: cloudbilling.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.22.1 gdcl/0.160.0
+        url: https://cloudbilling.googleapis.com/v1/projects/project-2r0ydlvdt0yby/billingInfo?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"name":"projects/project-2r0ydlvdt0yby/billingInfo","projectId":"project-2r0ydlvdt0yby","billingAccountName":"","billingEnabled":false}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 436.012212ms
+    - id: 5
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: cloudresourcemanager.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.22.1 gdcl/0.160.0
+        url: https://cloudresourcemanager.googleapis.com/v1/projects/project-2r0ydlvdt0yby?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"projectNumber":"473324289142","projectId":"project-2r0ydlvdt0yby","lifecycleState":"ACTIVE","name":"KCC 2r0ydlvdt0yby","labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"createTime":"2024-04-30T17:16:39.043644Z","parent":{"type":"organization","id":"123450001"}}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            Server-Timing:
+                - gfet4t7; dur=488
+        status: 200 OK
+        code: 200
+        duration: 489.900066ms
+    - id: 6
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: cloudbilling.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.22.1 gdcl/0.160.0
+        url: https://cloudbilling.googleapis.com/v1/projects/project-2r0ydlvdt0yby/billingInfo?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"name":"projects/project-2r0ydlvdt0yby/billingInfo","projectId":"project-2r0ydlvdt0yby","billingAccountName":"","billingEnabled":false}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 469.872062ms
+    - id: 7
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: cloudresourcemanager.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.22.1 gdcl/0.160.0
+        url: https://cloudresourcemanager.googleapis.com/v1/projects/project-2r0ydlvdt0yby?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"projectNumber":"473324289142","projectId":"project-2r0ydlvdt0yby","lifecycleState":"ACTIVE","name":"KCC 2r0ydlvdt0yby","labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"createTime":"2024-04-30T17:16:39.043644Z","parent":{"type":"organization","id":"123450001"}}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            Server-Timing:
+                - gfet4t7; dur=419
+        status: 200 OK
+        code: 200
+        duration: 421.229906ms
+    - id: 8
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: cloudbilling.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.22.1 gdcl/0.160.0
+        url: https://cloudbilling.googleapis.com/v1/projects/project-2r0ydlvdt0yby/billingInfo?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"name":"projects/project-2r0ydlvdt0yby/billingInfo","projectId":"project-2r0ydlvdt0yby","billingAccountName":"","billingEnabled":false}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 445.3729ms
+    - id: 9
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: cloudresourcemanager.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.22.1 gdcl/0.160.0
+        url: https://cloudresourcemanager.googleapis.com/v1/projects/project-2r0ydlvdt0yby?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"projectNumber":"473324289142","projectId":"project-2r0ydlvdt0yby","lifecycleState":"ACTIVE","name":"KCC 2r0ydlvdt0yby","labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"createTime":"2024-04-30T17:16:39.043644Z","parent":{"type":"organization","id":"123450001"}}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            Server-Timing:
+                - gfet4t7; dur=474
+        status: 200 OK
+        code: 200
+        duration: 475.89555ms
+    - id: 10
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 289
+        transfer_encoding: []
+        trailer: {}
+        host: cloudresourcemanager.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: |
+            {"createTime":"2024-04-30T17:16:39.043644Z","labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"lifecycleState":"ACTIVE","name":"KCC-2 2r0ydlvdt0yby","parent":{"id":"123450001","type":"organization"},"projectId":"project-2r0ydlvdt0yby","projectNumber":"473324289142"}
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+            X-Goog-Api-Client:
+                - gl-go/1.22.1 gdcl/0.160.0
+        url: https://cloudresourcemanager.googleapis.com/v1/projects/project-2r0ydlvdt0yby?alt=json&prettyPrint=false
+        method: PUT
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"projectNumber":"473324289142","projectId":"project-2r0ydlvdt0yby","lifecycleState":"ACTIVE","name":"KCC-2 2r0ydlvdt0yby","labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"createTime":"2024-04-30T17:16:39.043644Z","parent":{"type":"organization","id":"123450001"}}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            Server-Timing:
+                - gfet4t7; dur=1537
+        status: 200 OK
+        code: 200
+        duration: 1.538658848s
+    - id: 11
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 313
+        transfer_encoding: []
+        trailer: {}
+        host: cloudresourcemanager.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: |
+            {"createTime":"2024-04-30T17:16:39.043644Z","labels":{"cnrm-test":"true","label-one":"value-one","managed-by-cnrm":"true"},"lifecycleState":"ACTIVE","name":"KCC-2 2r0ydlvdt0yby","parent":{"id":"123450001","type":"organization"},"projectId":"project-2r0ydlvdt0yby","projectNumber":"473324289142"}
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+            X-Goog-Api-Client:
+                - gl-go/1.22.1 gdcl/0.160.0
+        url: https://cloudresourcemanager.googleapis.com/v1/projects/project-2r0ydlvdt0yby?alt=json&prettyPrint=false
+        method: PUT
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"projectNumber":"473324289142","projectId":"project-2r0ydlvdt0yby","lifecycleState":"ACTIVE","name":"KCC-2 2r0ydlvdt0yby","labels":{"cnrm-test":"true","label-one":"value-one","managed-by-cnrm":"true"},"createTime":"2024-04-30T17:16:39.043644Z","parent":{"type":"organization","id":"123450001"}}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            Server-Timing:
+                - gfet4t7; dur=1816
+        status: 200 OK
+        code: 200
+        duration: 1.818042654s
+    - id: 12
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: cloudresourcemanager.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.22.1 gdcl/0.160.0
+        url: https://cloudresourcemanager.googleapis.com/v1/projects/project-2r0ydlvdt0yby?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"projectNumber":"473324289142","projectId":"project-2r0ydlvdt0yby","lifecycleState":"ACTIVE","name":"KCC-2 2r0ydlvdt0yby","labels":{"cnrm-test":"true","label-one":"value-one","managed-by-cnrm":"true"},"createTime":"2024-04-30T17:16:39.043644Z","parent":{"type":"organization","id":"123450001"}}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            Server-Timing:
+                - gfet4t7; dur=514
+        status: 200 OK
+        code: 200
+        duration: 515.851468ms
+    - id: 13
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: cloudbilling.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.22.1 gdcl/0.160.0
+        url: https://cloudbilling.googleapis.com/v1/projects/project-2r0ydlvdt0yby/billingInfo?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"name":"projects/project-2r0ydlvdt0yby/billingInfo","projectId":"project-2r0ydlvdt0yby","billingAccountName":"","billingEnabled":false}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 353.274526ms
+    - id: 14
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: cloudresourcemanager.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.22.1 gdcl/0.160.0
+        url: https://cloudresourcemanager.googleapis.com/v1/projects/project-2r0ydlvdt0yby?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"projectNumber":"473324289142","projectId":"project-2r0ydlvdt0yby","lifecycleState":"ACTIVE","name":"KCC-2 2r0ydlvdt0yby","labels":{"cnrm-test":"true","label-one":"value-one","managed-by-cnrm":"true"},"createTime":"2024-04-30T17:16:39.043644Z","parent":{"type":"organization","id":"123450001"}}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            Server-Timing:
+                - gfet4t7; dur=493
+        status: 200 OK
+        code: 200
+        duration: 495.586583ms
+    - id: 15
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: cloudbilling.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.22.1 gdcl/0.160.0
+        url: https://cloudbilling.googleapis.com/v1/projects/project-2r0ydlvdt0yby/billingInfo?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"name":"projects/project-2r0ydlvdt0yby/billingInfo","projectId":"project-2r0ydlvdt0yby","billingAccountName":"","billingEnabled":false}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 259.443493ms
+    - id: 16
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: cloudresourcemanager.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.22.1 gdcl/0.160.0
+        url: https://cloudresourcemanager.googleapis.com/v1/projects/project-2r0ydlvdt0yby?alt=json&prettyPrint=false
+        method: DELETE
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+            Server-Timing:
+                - gfet4t7; dur=4233
+        status: 200 OK
+        code: 200
+        duration: 4.235231585s

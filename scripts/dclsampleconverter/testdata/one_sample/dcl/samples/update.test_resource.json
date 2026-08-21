@@ -1,0 +1,15 @@
+{
+  "name": "{{resource}}",
+  "project": "{{ref:basic.cloudresourcemanager.project.json:name}}",
+  "location": "{{region}}",
+  "description": "An updated sample resource to be converted by the sample converter",
+  "labels": {
+    "label-two": "value-two"
+  },
+  "dependencyId": "{{ref:third.dependencyservice.dependency.json:name}}",
+  "nestedObject": {
+    "stringSubfield": "value",
+    "intSubfield": 1,
+    "boolSubfield": true
+  }
+}

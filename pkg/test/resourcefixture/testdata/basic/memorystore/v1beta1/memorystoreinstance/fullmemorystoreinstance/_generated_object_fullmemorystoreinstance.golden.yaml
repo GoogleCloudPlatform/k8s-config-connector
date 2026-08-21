@@ -1,0 +1,108 @@
+apiVersion: memorystore.cnrm.cloud.google.com/v1beta1
+kind: MemorystoreInstance
+metadata:
+  annotations:
+    cnrm.cloud.google.com/last-changed-cookie: normalized-cookie
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: memorystore-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  authorizationMode: IAM_AUTH
+  automatedBackupConfig:
+    automatedBackupMode: ENABLED
+    fixedFrequencySchedule:
+      startTime:
+        hours: 3
+        minutes: 0
+        nanos: 0
+        seconds: 0
+    retention: 432000s
+  deletionProtectionEnabled: false
+  endpoints:
+  - connections:
+    - pscAutoConnection:
+        networkRef:
+          external: projects/${projectId}/global/networks/${networkID}
+        projectRef:
+          external: ${projectId}
+  engineConfigs:
+    maxclients: "10000"
+    maxmemory-policy: volatile-ttl
+  engineVersion: VALKEY_7_2
+  kmsKeyRef:
+    name: key-${uniqueId}
+  labels:
+    keyx: valx
+  location: us-central1
+  maintenancePolicy:
+    weeklyMaintenanceWindow:
+    - day: WEDNESDAY
+      startTime:
+        hours: 6
+        minutes: 0
+        nanos: 0
+        seconds: 0
+  mode: CLUSTER
+  nodeType: STANDARD_SMALL
+  persistenceConfig:
+    mode: RDB
+    rdbConfig:
+      rdbSnapshotPeriod: ONE_HOUR
+      rdbSnapshotStartTime: "2029-10-02T15:01:23Z"
+  projectRef:
+    external: ${projectId}
+  replicaCount: 1
+  shardCount: 12
+  transitEncryptionMode: SERVER_AUTHENTICATION
+  zoneDistributionConfig:
+    mode: SINGLE_ZONE
+    zone: us-central1-b
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/instances/memorystore-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    availableMaintenanceVersions:
+    - MEMORYSTORE_20260313_01_02
+    - MEMORYSTORE_20260313_01_03
+    createTime: "1970-01-01T00:00:00Z"
+    effectiveMaintenanceVersion: MEMORYSTORE_20260313_01_02
+    encryptionInfo:
+      encryptionType: CUSTOMER_MANAGED_ENCRYPTION
+      kmsKeyPrimaryState: ENABLED
+      kmsKeyVersions:
+      - projects/${projectId}/locations/us-central1/keyRings/keyring-${uniqueId}/cryptoKeys/key-${uniqueId}/cryptoKeyVersions/1
+    endpoints:
+    - connections:
+      - pscAutoConnection:
+          connectionType: CONNECTION_TYPE_DISCOVERY
+          forwardingRule: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}
+          ipAddress: ${ipAddress}
+          port: 6379
+          pscConnectionID: ${pscConnectionId}
+          serviceAttachment: projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}
+      - pscAutoConnection:
+          forwardingRule: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRule}
+          ipAddress: ${ipAddress}-2
+          pscConnectionID: ${pscConnectionId}
+          serviceAttachment: projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2
+    maintenancePolicy: {}
+    nodeConfig:
+      sizeGB: 6.5
+    pscAttachmentDetails:
+    - connectionType: CONNECTION_TYPE_DISCOVERY
+      serviceAttachment: projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}
+    - serviceAttachment: projects/${pscProjectNumber}/regions/us-central1/serviceAttachments/${pscServiceAttachment}-2
+    state: ACTIVE
+    uid: 0123456789abcdef
+    updateTime: "1970-01-01T00:00:00Z"

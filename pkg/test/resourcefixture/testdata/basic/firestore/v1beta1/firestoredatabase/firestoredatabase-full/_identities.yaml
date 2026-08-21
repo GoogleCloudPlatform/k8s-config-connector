@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: firestore.cnrm.cloud.google.com
+  kind: FirestoreDatabase
+  name: firestoredatabase-full-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

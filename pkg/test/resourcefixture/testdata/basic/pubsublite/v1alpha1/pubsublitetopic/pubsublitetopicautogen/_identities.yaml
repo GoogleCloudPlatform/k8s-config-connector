@@ -1,0 +1,12 @@
+- caisURL: unknown
+  group: pubsublite.cnrm.cloud.google.com
+  kind: PubSubLiteReservation
+  name: pubsublitereservation-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: unknown
+  group: pubsublite.cnrm.cloud.google.com
+  kind: PubSubLiteTopic
+  name: pubsublitetopic-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

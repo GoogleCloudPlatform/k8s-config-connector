@@ -1,0 +1,99 @@
+1c1
+< GET https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}?alt=json
+---
+> GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+17c17
+<     "message": "autoscalingPolicy \"projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}\" not found",
+---
+>     "message": "autoscalingPolicy \"projects/${projectId}/regions/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}\" not found",
+24c24
+< POST https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/autoscalingPolicies?alt=json
+---
+> POST https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/autoscalingPolicies?%24alt=json%3Benum-encoding%3Dint
+66c66
+<   "name": "projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}",
+---
+>   "name": "projects/${projectId}/regions/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}",
+77c77
+< GET https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}?alt=json
+---
+> GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+102c102
+<   "name": "projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}",
+---
+>   "name": "projects/${projectId}/regions/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}",
+113c113
+< PUT https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}?alt=json
+---
+> PUT https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+118d117
+<     "cooldownPeriod": "120s",
+122,124c121
+<       "scaleDownMinWorkerFraction": 1,
+<       "scaleUpFactor": 0.5,
+<       "scaleUpMinWorkerFraction": 0.5
+---
+>       "scaleUpFactor": 0.5
+127a125
+>   "name": "projects/${projectId}/regions/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}",
+148d145
+<     "cooldownPeriod": "120s",
+152,154c149
+<       "scaleDownMinWorkerFraction": 1,
+<       "scaleUpFactor": 0.5,
+<       "scaleUpMinWorkerFraction": 0.5
+---
+>       "scaleUpFactor": 0.5
+158c153
+<   "name": "projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}",
+---
+>   "name": "projects/${projectId}/regions/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}",
+169c164
+< GET https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}?alt=json
+---
+> GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+184d178
+<     "cooldownPeriod": "120s",
+188,190c182
+<       "scaleDownMinWorkerFraction": 1,
+<       "scaleUpFactor": 0.5,
+<       "scaleUpMinWorkerFraction": 0.5
+---
+>       "scaleUpFactor": 0.5
+194c186
+<   "name": "projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}",
+---
+>   "name": "projects/${projectId}/regions/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}",
+205c197
+< DELETE https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}?alt=json
+---
+> DELETE https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+218,241c210
+< {}
+< 
+< ---
+< 
+< GET https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}?alt=json
+< Content-Type: application/json
+< 
+< 404 Not Found
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "error": {
+<     "code": 404,
+<     "message": "autoscalingPolicy \"projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}\" not found",
+<     "status": "NOT_FOUND"
+<   }
+< }
+\ No newline at end of file
+---
+> {}
+\ No newline at end of file

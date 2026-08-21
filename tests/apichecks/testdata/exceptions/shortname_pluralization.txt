@@ -1,0 +1,1 @@
+[shortname_plural] crd=computeprojectmetadatas.compute.cnrm.cloud.google.com version=v1beta1: plural shortName "gcpcomputeprojectmetadatas" appears to have incorrect pluralization of "gcpcomputeprojectmetadata"

@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+if [[ "${SKIP_PRE_PUSH_VALIDATION:-0}" == "1" ]]; then
+  echo "WARNING: SKIP_PRE_PUSH_VALIDATION=1 is set; skipping pre-push validation hook."
+  exit 0
+fi
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+cd "${REPO_ROOT}"
+
+echo "========================================================================"
+echo " [pre-push hook] Running pre-push presubmit validation..."
+echo "========================================================================"
+
+if ! ./dev/tasks/validate-and-push --validate-only; then
+  echo ""
+  echo "========================================================================"
+  echo " ERROR: Pre-push presubmit validation failed!"
+  echo "========================================================================"
+  echo "To protect repository health and CI pipelines, your git push has been aborted."
+  echo "Please inspect and resolve the errors above before pushing."
+  echo ""
+  echo "If you explicitly need to bypass this pre-push check (e.g. saving WIP branch), run:"
+  echo "  SKIP_PRE_PUSH_VALIDATION=1 git push ..."
+  echo "========================================================================"
+  exit 1
+fi

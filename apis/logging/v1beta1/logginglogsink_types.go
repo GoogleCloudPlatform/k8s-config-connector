@@ -1,0 +1,161 @@
+// Copyright 2026 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package v1beta1
+
+import (
+	bigqueryv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigquery/v1beta1"
+	pubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
+	storagev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/storage/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+)
+
+var LoggingLogSinkGVK = GroupVersion.WithKind("LoggingLogSink")
+
+type LogSinkBigQueryOptions struct {
+	/* Whether to use BigQuery's partition tables. By default, Logging creates dated tables based on the log entries' timestamps, e.g. syslog_20170523. With partitioned tables the date suffix is no longer present and special query syntax has to be used instead. In both cases, tables are sharded based on UTC timezone. */
+	UsePartitionedTables bool `json:"usePartitionedTables"`
+}
+
+type LogSinkDestination struct {
+	// +optional
+	BigQueryDatasetRef *bigqueryv1beta1.DatasetRef `json:"bigQueryDatasetRef,omitempty"`
+
+	// +optional
+	LoggingLogBucketRef *LoggingLogBucketRef `json:"loggingLogBucketRef,omitempty"`
+
+	// +optional
+	PubSubTopicRef *pubsubv1beta1.PubSubTopicRef `json:"pubSubTopicRef,omitempty"`
+
+	// +optional
+	StorageBucketRef *storagev1beta1.StorageBucketRef `json:"storageBucketRef,omitempty"`
+}
+
+type LogSinkExclusions struct {
+	/* A description of this exclusion. */
+	// +optional
+	Description *string `json:"description,omitempty"`
+
+	/* If set to True, then this exclusion is disabled and it does not exclude any log entries. */
+	// +optional
+	Disabled *bool `json:"disabled,omitempty"`
+
+	/* An advanced logs filter that matches the log entries to be excluded. By using the sample function, you can exclude less than 100% of the matching log entries. */
+	Filter string `json:"filter"`
+
+	/* A client-assigned identifier, such as "load-balancer-exclusion". Identifiers are limited to 100 characters and can include only letters, digits, underscores, hyphens, and periods. First character has to be alphanumeric. */
+	Name string `json:"name"`
+}
+
+// LoggingLogSinkSpec defines the desired state of LoggingLogSink
+// +kcc:spec:proto=google.logging.v2.LogSink
+type LoggingLogSinkSpec struct {
+	// +optional
+	BigqueryOptions *LogSinkBigQueryOptions `json:"bigqueryOptions,omitempty"`
+
+	/* A description of this sink. The maximum length of the description is 8000 characters. */
+	// +optional
+	Description *string `json:"description,omitempty"`
+
+	Destination LogSinkDestination `json:"destination"`
+
+	/* If set to True, then this sink is disabled and it does not export any log entries. */
+	// +optional
+	Disabled *bool `json:"disabled,omitempty"`
+
+	/* Log entries that match any of the exclusion filters will not be exported. If a log entry is matched by both filter and one of exclusion's filters, it will not be exported. */
+	// +optional
+	Exclusions []LogSinkExclusions `json:"exclusions,omitempty"`
+
+	/* The filter to apply when exporting logs. Only log entries that match the filter are exported. */
+	// +optional
+	Filter *string `json:"filter,omitempty"`
+
+	/* Immutable. The folder in which to create the sink. Only one of projectRef, folderRef, or organizationRef may be specified. */
+	// +optional
+	FolderRef *refs.FolderRef `json:"folderRef,omitempty"`
+
+	/* Immutable. Whether or not to include children organizations in the sink export. If true, logs associated with child projects are also exported; otherwise only logs relating to the provided organization are included. */
+	// +optional
+	IncludeChildren *bool `json:"includeChildren,omitempty"`
+
+	/* Immutable. The organization in which to create the sink. Only one of projectRef, folderRef, or organizationRef may be specified. */
+	// +optional
+	OrganizationRef *refs.OrganizationRef `json:"organizationRef,omitempty"`
+
+	/* Immutable. The project in which to create the sink. Only one of projectRef, folderRef, or organizationRef may be specified. */
+	// +optional
+	ProjectRef *refs.ProjectRef `json:"projectRef,omitempty"`
+
+	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
+
+	/* Whether or not to create a unique identity associated with this sink. If false (the default), then the writer_identity used is serviceAccount:cloud-logs@system.gserviceaccount.com. If true, then a unique service account is created and used for this sink. If you wish to publish logs across projects, you must set unique_writer_identity to true. */
+	// +optional
+	UniqueWriterIdentity *bool `json:"uniqueWriterIdentity,omitempty"`
+}
+
+// LoggingLogSinkStatus defines the config connector machine state of LoggingLogSink
+type LoggingLogSinkStatus struct {
+	/* Conditions represent the latest available observations of the
+	   object's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+
+	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
+	// +optional
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+
+	/* The identity associated with this sink. This identity must be granted write access to the configured destination. */
+	// +optional
+	WriterIdentity *string `json:"writerIdentity,omitempty"`
+}
+
+// +genclient
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcplogginglogsink;gcplogginglogsinks
+// +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/tf2crd=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=stable"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
+
+// LoggingLogSink is the Schema for the LoggingLogSink API
+// +k8s:openapi-gen=true
+type LoggingLogSink struct {
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
+
+	// +required
+	Spec   LoggingLogSinkSpec   `json:"spec,omitempty"`
+	Status LoggingLogSinkStatus `json:"status,omitempty"`
+}
+
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// LoggingLogSinkList contains a list of LoggingLogSink
+type LoggingLogSinkList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []LoggingLogSink `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&LoggingLogSink{}, &LoggingLogSinkList{})
+}

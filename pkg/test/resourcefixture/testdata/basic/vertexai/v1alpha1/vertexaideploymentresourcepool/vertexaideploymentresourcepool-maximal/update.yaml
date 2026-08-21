@@ -1,0 +1,14 @@
+apiVersion: vertexai.cnrm.cloud.google.com/v1alpha1
+kind: VertexAIDeploymentResourcePool
+metadata:
+  name: pool-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  disableContainerLogging: false
+  dedicatedResources:
+    machineSpec:
+      machineType: n1-standard-2
+    minReplicaCount: 2
+    maxReplicaCount: 3

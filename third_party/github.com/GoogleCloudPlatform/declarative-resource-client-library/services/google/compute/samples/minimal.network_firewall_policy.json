@@ -1,0 +1,4 @@
+{
+  "name": "{{policy}}-create",
+  "project": "{{project}}"
+}

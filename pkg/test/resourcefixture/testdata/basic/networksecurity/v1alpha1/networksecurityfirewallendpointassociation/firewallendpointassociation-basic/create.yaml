@@ -1,0 +1,15 @@
+apiVersion: networksecurity.cnrm.cloud.google.com/v1alpha1
+kind: NetworkSecurityFirewallEndpointAssociation
+metadata:
+  name: fwea-${uniqueId}
+spec:
+  projectRef:
+    external: "projects/${projectId}"
+  location: us-central1
+  networkRef:
+    external: "projects/${projectId}/global/networks/network-${uniqueId}"
+  firewallEndpointRef:
+    external: "projects/${projectId}/locations/us-central1/firewallEndpoints/endpoint-${uniqueId}"
+  disabled: false
+  labels:
+    foo: bar

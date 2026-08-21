@@ -1,0 +1,8 @@
+
+
+    StorageBucket ${projectID}/storagebucket-${uniqueId}:
+      spec:
+        location: US -> EU
+
+
+applying changes

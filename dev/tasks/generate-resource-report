@@ -1,0 +1,198 @@
+#!/usr/bin/env python3
+
+import csv
+import glob
+import yaml
+import os
+import subprocess
+import re
+
+def get_go_types():
+    """
+    Scans the apis/ directory to identify resources that have Go types defined.
+
+    Returns:
+        A set of (group, kind) tuples.
+    """
+    go_types = set()
+    try:
+        # Use grep to find all files with the specific annotation
+        output = subprocess.check_output(['grep', '-r', '-l', '+kubebuilder:resource:categories=gcp', 'apis/']).strip().decode('utf-8')
+        if not output:
+            return go_types
+        files = output.split('\n')
+    except subprocess.CalledProcessError:
+        return go_types
+
+    group_cache = {} # dir_path -> group_name
+
+    for f in files:
+        if not f.endswith('.go'):
+            continue
+
+        dir_path = os.path.dirname(f)
+        if dir_path not in group_cache:
+            group = None
+            for file_in_dir in os.listdir(dir_path):
+                if file_in_dir.endswith('.go'):
+                    with open(os.path.join(dir_path, file_in_dir), 'r') as gvf:
+                        content = gvf.read()
+                        match = re.search(r'\+groupName=([^\s]+)', content)
+                        if match:
+                            group = match.group(1).strip()
+                            break
+            group_cache[dir_path] = group
+
+        group = group_cache[dir_path]
+        if not group:
+            continue
+
+        with open(f, 'r') as gof:
+            content = gof.read()
+            # Split by the annotation to handle multiple resources in one file
+            blocks = content.split('// +kubebuilder:resource:categories=gcp')
+            for block in blocks[1:]:
+                # Look for the struct definition that follows the annotation
+                match = re.search(r'type\s+([A-Za-z0-9]+)\s+struct', block)
+                if match:
+                    kind = match.group(1)
+                    go_types.add((group, kind))
+
+    return go_types
+
+def analyze_crd(file_path, go_types):
+    """
+    Analyzes a single CRD file to extract relevant information.
+
+    Args:
+        file_path: The path to the CRD YAML file.
+        go_types: A set of (group, kind) tuples that have Go types.
+
+    Returns:
+        A dictionary containing the extracted information, or None if the file
+        cannot be parsed.
+    """
+    with open(file_path, 'r') as f:
+        try:
+            crd = yaml.safe_load(f)
+        except yaml.YAMLError as e:
+            print(f"Error parsing YAML file {file_path}: {e}")
+            return None
+
+    if not crd or 'spec' not in crd:
+        return None
+
+    spec = crd.get('spec', {})
+    metadata = crd.get('metadata', {})
+    labels = metadata.get('labels', {})
+    names = spec.get('names', {})
+
+    group = spec.get('group', '')
+    kind = names.get('kind', '')
+
+    versions = [v['name'] for v in spec.get('versions', [])]
+    has_v1alpha1 = 'v1alpha1' in versions
+    has_v1beta1 = 'v1beta1' in versions
+    has_v1 = 'v1' in versions
+
+    reconciler = 'Direct'
+    if labels.get('cnrm.cloud.google.com/tf2crd') == 'true':
+        reconciler = 'Terraform'
+    elif labels.get('cnrm.cloud.google.com/dcl2crd') == 'true':
+        reconciler = 'DCL'
+
+    has_go_type = (group, kind) in go_types
+
+    return {
+        'group': group,
+        'kind': kind,
+        'has_v1alpha1': has_v1alpha1,
+        'has_v1beta1': has_v1beta1,
+        'has_v1': has_v1,
+        'reconciler': reconciler,
+        'has_go_type': has_go_type,
+    }
+
+def write_csv_report(results, fieldnames, file_path):
+    """
+    Writes the analysis results to a CSV file.
+
+    Args:
+        results: A list of dictionaries containing the analysis results.
+        fieldnames: the names of the fields to write to the CSV file.
+        file_path: The path to the output CSV file.
+    """
+    with open(file_path, 'w', newline='') as csvfile:
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(results)
+
+def write_markdown_report(results, fieldnames, mdfile):
+    """
+    Writes the analysis results to a Markdown file.
+
+    Args:
+        results: A list of dictionaries containing the analysis results.
+        fieldnames: the names of the fields to write to the CSV file.
+        mdfile: The file to write to
+    """
+    col_widths = {h: len(h) for h in fieldnames}
+    for res in results:
+        for h in fieldnames:
+            col_widths[h] = max(col_widths[h], len(str(res[h])))
+
+    header_line = "| " + " | ".join([h.ljust(col_widths[h]) for h in fieldnames]) + " |"
+    mdfile.write(header_line + '\n')
+
+    separator_line = "|-" + "-|-".join([ "-" * col_widths[h] for h in fieldnames]) + "-|"
+    mdfile.write(separator_line + '\n')
+
+    for res in results:
+        row_line = "| " + " | ".join([str(res[h]).ljust(col_widths[h]) for h in fieldnames]) + " |"
+        mdfile.write(row_line + '\n')
+
+def switch_to_repo_root():
+    """
+    Changes the current working directory to the root of the git repository.
+    """
+    repo_root = subprocess.check_output(['git', 'rev-parse', '--show-toplevel']).strip().decode('utf-8')
+    os.chdir(repo_root)
+
+def main():
+    """
+    Main function to find CRD files, analyze them, and write reports.
+    """
+    switch_to_repo_root()
+
+    go_types = get_go_types()
+
+    crd_files = glob.glob('config/crds/resources/*.yaml')
+    if not crd_files:
+        print("No CRD files found in config/crds/resources/")
+        return
+
+    results = []
+    for file_path in sorted(crd_files):
+        data = analyze_crd(file_path, go_types)
+        if data:
+            results.append(data)
+
+    output_dir = 'docs/reports'
+    os.makedirs(output_dir, exist_ok=True)
+
+    csv_path = os.path.join(output_dir, 'crd_report.csv')
+    md_path = os.path.join(output_dir, 'crd_report.md')
+
+    fieldnames = ['group', 'kind', 'has_v1alpha1', 'has_v1beta1', 'has_v1', 'reconciler', 'has_go_type']
+
+    write_csv_report(results, fieldnames, csv_path)
+    print(f"Generated {csv_path}")
+
+    with open(md_path, 'w') as mdfile:
+      mdfile.write('# CRD Analysis Report\n\n')
+
+      write_markdown_report(results, fieldnames, mdfile)
+    print(f"Generated {md_path}")
+
+if __name__ == '__main__':
+    main()

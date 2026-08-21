@@ -1,0 +1,136 @@
+566c566
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}?alt=json
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}
+595c595
+< POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies?alt=json
+---
+> POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies
+599c599
+<   "certificateMap": "//certificatemanager.googleapis.com/projects/${projectId}/locations/global/certificateMaps/certificatemap-${uniqueId}",
+---
+>   "certificateMap": "projects/${projectId}/locations/global/certificateMaps/certificatemap-${uniqueId}",
+633c633,634
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
+> Content-Type: application/json
+663c664
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}?alt=json
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}
+677c678
+<   "certificateMap": "//certificatemanager.googleapis.com/projects/${projectId}/locations/global/certificateMaps/certificatemap-${uniqueId}",
+---
+>   "certificateMap": "projects/${projectId}/locations/global/certificateMaps/certificatemap-${uniqueId}",
+687,751c688
+<   "urlMap": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}"
+< }
+< 
+< ---
+< 
+< POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}/setQuicOverride?alt=json
+< Content-Type: application/json
+< 
+< {
+<   "quicOverride": "ENABLE"
+< }
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "id": "000000000000000000000",
+<   "insertTime": "2024-04-01T12:34:56.123456Z",
+<   "kind": "compute#operation",
+<   "name": "${operationID}",
+<   "operationType": "compute.targetHttpsProxies.setQuicOverride",
+<   "progress": 0,
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+<   "startTime": "2024-04-01T12:34:56.123456Z",
+<   "status": "RUNNING",
+<   "targetId": "${targetHttpsProxyID}",
+<   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}",
+<   "user": "user@example.com"
+< }
+< 
+< ---
+< 
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "endTime": "2024-04-01T12:34:56.123456Z",
+<   "id": "000000000000000000000",
+<   "insertTime": "2024-04-01T12:34:56.123456Z",
+<   "kind": "compute#operation",
+<   "name": "${operationID}",
+<   "operationType": "compute.targetHttpsProxies.setQuicOverride",
+<   "progress": 100,
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+<   "startTime": "2024-04-01T12:34:56.123456Z",
+<   "status": "DONE",
+<   "targetId": "${targetHttpsProxyID}",
+<   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}",
+<   "user": "user@example.com"
+---
+>   "urlMap": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}"
+756c693
+< POST https://compute.googleapis.com/compute/v1/projects/${projectId}/targetHttpsProxies/${targetHttpsProxyID}/setUrlMap?alt=json
+---
+> PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}
+759a697,700
+>   "certificateMap": "projects/${projectId}/locations/global/certificateMaps/certificatemap-${uniqueId}",
+>   "description": "test description",
+>   "name": "${targetHttpsProxyID}",
+>   "quicOverride": "ENABLE",
+778c719
+<   "operationType": "SetUrlMap",
+---
+>   "operationType": "patch",
+790c731,732
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
+> Content-Type: application/json
+808c750
+<   "operationType": "SetUrlMap",
+---
+>   "operationType": "patch",
+820c762
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}?alt=json
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}
+834c776
+<   "certificateMap": "//certificatemanager.googleapis.com/projects/${projectId}/locations/global/certificateMaps/certificatemap-${uniqueId}",
+---
+>   "certificateMap": "projects/${projectId}/locations/global/certificateMaps/certificatemap-${uniqueId}",
+844c786
+<   "urlMap": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/urlMaps/computeurlmap-2-${uniqueId}"
+---
+>   "urlMap": "projects/${projectId}/global/urlMaps/computeurlmap-2-${uniqueId}"
+849c791
+< DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}?alt=json
+---
+> DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}
+879c821,822
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
+> Content-Type: application/json

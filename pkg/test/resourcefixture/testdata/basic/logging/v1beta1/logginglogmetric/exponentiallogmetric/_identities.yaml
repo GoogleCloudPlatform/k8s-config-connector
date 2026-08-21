@@ -1,0 +1,6 @@
+- caisURL: //logging.googleapis.com/projects/${projectId}/metrics/logginglogmetric-${uniqueId}
+  group: logging.cnrm.cloud.google.com
+  kind: LoggingLogMetric
+  name: logginglogmetric-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

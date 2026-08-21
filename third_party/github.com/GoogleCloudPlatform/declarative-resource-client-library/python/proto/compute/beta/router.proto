@@ -1,0 +1,162 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+enum ComputeBetaRouterNatsLogConfigFilterEnum {
+  ComputeBetaRouterNatsLogConfigFilterEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaRouterNatsLogConfigFilterEnumERRORS_ONLY = 1;
+  ComputeBetaRouterNatsLogConfigFilterEnumTRANSLATIONS_ONLY = 2;
+  ComputeBetaRouterNatsLogConfigFilterEnumALL = 3;
+}
+
+enum ComputeBetaRouterNatsSourceSubnetworkIPRangesToNatEnum {
+  ComputeBetaRouterNatsSourceSubnetworkIPRangesToNatEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaRouterNatsSourceSubnetworkIPRangesToNatEnumALL_SUBNETWORKS_ALL_IP_RANGES = 1;
+  ComputeBetaRouterNatsSourceSubnetworkIPRangesToNatEnumALL_SUBNETWORKS_ALL_PRIMARY_IP_RANGES = 2;
+  ComputeBetaRouterNatsSourceSubnetworkIPRangesToNatEnumLIST_OF_SUBNETWORKS = 3;
+}
+
+enum ComputeBetaRouterNatsNatIPAllocateOptionEnum {
+  ComputeBetaRouterNatsNatIPAllocateOptionEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaRouterNatsNatIPAllocateOptionEnumMANUAL_ONLY = 1;
+  ComputeBetaRouterNatsNatIPAllocateOptionEnumAUTO_ONLY = 2;
+}
+
+enum ComputeBetaRouterInterfacesManagementTypeEnum {
+  ComputeBetaRouterInterfacesManagementTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaRouterInterfacesManagementTypeEnumMANAGED_BY_USER = 1;
+  ComputeBetaRouterInterfacesManagementTypeEnumMANAGED_BY_ATTACHMENT = 2;
+}
+
+enum ComputeBetaRouterBgpPeersAdvertisedGroupsEnum {
+  ComputeBetaRouterBgpPeersAdvertisedGroupsEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaRouterBgpPeersAdvertisedGroupsEnumALL_SUBNETS = 1;
+  ComputeBetaRouterBgpPeersAdvertisedGroupsEnumALL_VPC_SUBNETS = 2;
+  ComputeBetaRouterBgpPeersAdvertisedGroupsEnumALL_PEER_VPC_SUBNETS = 3;
+}
+
+enum ComputeBetaRouterBgpAdvertiseModeEnum {
+  ComputeBetaRouterBgpAdvertiseModeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaRouterBgpAdvertiseModeEnumDEFAULT = 1;
+  ComputeBetaRouterBgpAdvertiseModeEnumCUSTOM = 2;
+}
+
+message ComputeBetaRouter {
+  string creation_timestamp = 1;
+  repeated ComputeBetaRouterNats nats = 2;
+  string name = 3;
+  string network = 4;
+  repeated ComputeBetaRouterInterfaces interfaces = 5;
+  string description = 6;
+  repeated ComputeBetaRouterBgpPeers bgp_peers = 7;
+  ComputeBetaRouterBgp bgp = 8;
+  string region = 9;
+  string project = 10;
+  string self_link = 11;
+}
+
+message ComputeBetaRouterNats {
+  string name = 1;
+  ComputeBetaRouterNatsLogConfig log_config = 2;
+  ComputeBetaRouterNatsSourceSubnetworkIPRangesToNatEnum source_subnetwork_ip_ranges_to_nat = 3;
+  repeated string nat_ips = 4;
+  repeated string drain_nat_ips = 5;
+  repeated ComputeBetaRouterNatsNatIPAllocateOptionEnum nat_ip_allocate_option = 6;
+  int64 min_ports_per_vm = 7;
+  int64 udp_idle_timeout_sec = 8;
+  int64 icmp_idle_timeout_sec = 9;
+  int64 tcp_established_idle_timeout_sec = 10;
+  int64 tcp_transitory_idle_timeout_sec = 11;
+  repeated ComputeBetaRouterNatsSubnetworks subnetworks = 12;
+}
+
+message ComputeBetaRouterNatsLogConfig {
+  bool enable = 1;
+  ComputeBetaRouterNatsLogConfigFilterEnum filter = 2;
+}
+
+message ComputeBetaRouterNatsSubnetworks {
+  string name = 1;
+  string source_ip_ranges_to_nat = 2;
+  string secondary_ip_range_names = 3;
+}
+
+message ComputeBetaRouterInterfaces {
+  string name = 1;
+  string linked_vpn_tunnel = 2;
+  string ip_range = 3;
+  ComputeBetaRouterInterfacesManagementTypeEnum management_type = 4;
+}
+
+message ComputeBetaRouterBgpPeers {
+  string name = 1;
+  string interface_name = 2;
+  string ip_address = 3;
+  string peer_ip_address = 4;
+  int64 peer_asn = 5;
+  int64 advertised_route_priority = 6;
+  string advertise_mode = 7;
+  string management_type = 8;
+  repeated ComputeBetaRouterBgpPeersAdvertisedGroupsEnum advertised_groups = 9;
+  repeated ComputeBetaRouterBgpPeersAdvertisedIPRanges advertised_ip_ranges = 10;
+}
+
+message ComputeBetaRouterBgpPeersAdvertisedIPRanges {
+  string range = 1;
+  string description = 2;
+}
+
+message ComputeBetaRouterBgp {
+  int64 asn = 1;
+  ComputeBetaRouterBgpAdvertiseModeEnum advertise_mode = 2;
+  repeated string advertised_groups = 3;
+  repeated ComputeBetaRouterBgpAdvertisedIPRanges advertised_ip_ranges = 4;
+}
+
+message ComputeBetaRouterBgpAdvertisedIPRanges {
+  string range = 1;
+  string description = 2;
+}
+
+message ApplyComputeBetaRouterRequest {
+  ComputeBetaRouter resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteComputeBetaRouterRequest {
+  string service_account_file = 1;
+  ComputeBetaRouter resource = 2;
+}
+
+message ListComputeBetaRouterRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Region = 3;
+}
+
+message ListComputeBetaRouterResponse {
+  repeated ComputeBetaRouter items = 1;
+}
+
+service ComputeBetaRouterService {
+  rpc ApplyComputeBetaRouter(ApplyComputeBetaRouterRequest) returns (ComputeBetaRouter);
+  rpc DeleteComputeBetaRouter(DeleteComputeBetaRouterRequest) returns (google.protobuf.Empty);
+  rpc ListComputeBetaRouter(ListComputeBetaRouterRequest) returns (ListComputeBetaRouterResponse);
+}

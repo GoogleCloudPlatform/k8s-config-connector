@@ -1,0 +1,15 @@
+{
+  "name": "{{connection}}",
+  "gitlabConfig": {
+    "hostUri": "https://gle-us-central1.gcb-test.com",
+    "authorizerCredential": {
+      "userTokenSecretVersion": "projects/407304063574/secrets/gle-api-token/versions/latest"
+    },
+    "readAuthorizerCredential": {
+      "userTokenSecretVersion": "projects/407304063574/secrets/gle-read-token/versions/latest"
+    },
+    "webhookSecretSecretVersion":"projects/407304063574/secrets/gle-webhook-secret/versions/latest"
+  },
+  "project": "{{project}}",
+  "location": "us-west1"
+}

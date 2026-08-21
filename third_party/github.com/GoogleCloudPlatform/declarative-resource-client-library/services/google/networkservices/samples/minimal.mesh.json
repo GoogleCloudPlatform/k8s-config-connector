@@ -1,0 +1,5 @@
+{
+  "name": "{{resource_name}}",
+  "project": "{{project}}",
+  "location": "global"
+}

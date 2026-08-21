@@ -1,0 +1,12 @@
+7d6
+<     cnrm.cloud.google.com/state-into-spec: absent
+11c10
+<   generation: 2
+---
+>   generation: 1
+20d18
+<   resourceID: ${sslPolicyID}
+41c39
+<   observedGeneration: 2
+---
+>   observedGeneration: 1

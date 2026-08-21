@@ -1,0 +1,28 @@
+label: Config Connector ComputeResourcePolicy
+markdownDescription: Creates yaml for a ComputeResourcePolicy resource
+insertText: |
+  apiVersion: compute.cnrm.cloud.google.com/v1beta1
+  kind: ComputeResourcePolicy
+  metadata:
+    name: \${1:computeresourcepolicy-name}
+  spec:
+    region: \${2:us-central1}
+    snapshotSchedulePolicy:
+      schedule:
+        weeklySchedule:
+          dayOfWeeks:
+          - startTime: \${3:08:00}
+            day: \${4:MONDAY}
+          - startTime: \${5:15:00}
+            day: \${6:WEDNESDAY}
+          - startTime: \${7:23:00}
+            day: \${8:FRIDAY}
+      retentionPolicy:
+        maxRetentionDays: \${9:12}
+      snapshotProperties:
+        storageLocations:
+        - \${10:us}
+        guestFlush: \${11:false}
+        labels:
+          autodeleted: \${12:false}
+          interval: \${13:weekly}

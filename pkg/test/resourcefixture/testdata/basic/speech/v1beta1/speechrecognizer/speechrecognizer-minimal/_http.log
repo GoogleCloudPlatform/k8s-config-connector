@@ -1,0 +1,306 @@
+GET https://speech.googleapis.com/v2/projects/${projectId}/locations/global/recognizers/speechrecognizer-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Frecognizers%2Fspeechrecognizer-minimal-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Unable to find Recognizer speechrecognizer-minimal-${uniqueId} from project ${projectNumber}.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://speech.googleapis.com/v2/projects/${projectId}/locations/global/recognizers?%24alt=json%3Benum-encoding%3Dint&recognizerId=speechrecognizer-minimal-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal
+
+{
+  "defaultRecognitionConfig": {
+    "languageCodes": [
+      "en-US"
+    ],
+    "model": "long"
+  },
+  "displayName": "Initial description"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.speech.v2.OperationMetadata",
+    "createRecognizerRequest": {
+      "parent": "projects/${projectNumber}/locations/global",
+      "recognizer": {
+        "defaultRecognitionConfig": {
+          "languageCodes": [
+            "en-US"
+          ],
+          "model": "long"
+        },
+        "displayName": "Initial description"
+      },
+      "recognizerId": "speechrecognizer-minimal-${uniqueId}"
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "method": "google.cloud.speech.v2.Speech.CreateRecognizer",
+    "progressPercent": 100,
+    "resource": "projects/${projectNumber}/locations/global/recognizers/speechrecognizer-minimal-${uniqueId}",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "projects/${projectNumber}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.speech.v2.Recognizer",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "defaultRecognitionConfig": {
+      "languageCodes": [
+        "en-US"
+      ],
+      "model": "long"
+    },
+    "displayName": "Initial description",
+    "etag": "abcdef0123A=",
+    "languageCodes": [
+      "en-US"
+    ],
+    "model": "long",
+    "name": "projects/${projectNumber}/locations/global/recognizers/speechrecognizer-minimal-${uniqueId}",
+    "state": 2,
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://speech.googleapis.com/v2/projects/${projectId}/locations/global/recognizers/speechrecognizer-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Frecognizers%2Fspeechrecognizer-minimal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "defaultRecognitionConfig": {
+    "languageCodes": [
+      "en-US"
+    ],
+    "model": "long"
+  },
+  "displayName": "Initial description",
+  "etag": "abcdef0123A=",
+  "languageCodes": [
+    "en-US"
+  ],
+  "model": "long",
+  "name": "projects/${projectNumber}/locations/global/recognizers/speechrecognizer-minimal-${uniqueId}",
+  "state": 2,
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://speech.googleapis.com/v2/projects/${projectId}/locations/global/recognizers/speechrecognizer-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=displayName%2CdefaultRecognitionConfig
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: recognizer.name=projects%2F${projectId}%2Flocations%2Fglobal%2Frecognizers%2Fspeechrecognizer-minimal-${uniqueId}
+
+{
+  "defaultRecognitionConfig": {
+    "languageCodes": [
+      "en-US",
+      "fr-FR"
+    ],
+    "model": "chirp"
+  },
+  "displayName": "Updated description",
+  "name": "projects/${projectId}/locations/global/recognizers/speechrecognizer-minimal-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.speech.v2.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "method": "google.cloud.speech.v2.Speech.UpdateRecognizer",
+    "progressPercent": 100,
+    "resource": "projects/${projectNumber}/locations/global/recognizers/speechrecognizer-minimal-${uniqueId}",
+    "updateRecognizerRequest": {
+      "recognizer": {
+        "defaultRecognitionConfig": {
+          "languageCodes": [
+            "en-US",
+            "fr-FR"
+          ],
+          "model": "chirp"
+        },
+        "displayName": "Updated description",
+        "name": "projects/${projectNumber}/locations/global/recognizers/speechrecognizer-minimal-${uniqueId}"
+      },
+      "updateMask": "displayName,defaultRecognitionConfig"
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "projects/${projectNumber}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.speech.v2.Recognizer",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "defaultRecognitionConfig": {
+      "languageCodes": [
+        "en-US",
+        "fr-FR"
+      ],
+      "model": "chirp"
+    },
+    "displayName": "Updated description",
+    "etag": "abcdef0123A=",
+    "languageCodes": [
+      "en-US",
+      "fr-FR"
+    ],
+    "model": "chirp",
+    "name": "projects/${projectNumber}/locations/global/recognizers/speechrecognizer-minimal-${uniqueId}",
+    "state": 2,
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://speech.googleapis.com/v2/projects/${projectId}/locations/global/recognizers/speechrecognizer-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Frecognizers%2Fspeechrecognizer-minimal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "defaultRecognitionConfig": {
+    "languageCodes": [
+      "en-US",
+      "fr-FR"
+    ],
+    "model": "chirp"
+  },
+  "displayName": "Updated description",
+  "etag": "abcdef0123A=",
+  "languageCodes": [
+    "en-US",
+    "fr-FR"
+  ],
+  "model": "chirp",
+  "name": "projects/${projectNumber}/locations/global/recognizers/speechrecognizer-minimal-${uniqueId}",
+  "state": 2,
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://speech.googleapis.com/v2/projects/${projectId}/locations/global/recognizers/speechrecognizer-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Frecognizers%2Fspeechrecognizer-minimal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.speech.v2.OperationMetadata",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "deleteRecognizerRequest": {
+      "name": "projects/${projectNumber}/locations/global/recognizers/speechrecognizer-minimal-${uniqueId}"
+    },
+    "method": "google.cloud.speech.v2.Speech.DeleteRecognizer",
+    "progressPercent": 100,
+    "resource": "projects/${projectNumber}/locations/global/recognizers/speechrecognizer-minimal-${uniqueId}",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "projects/${projectNumber}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.speech.v2.Recognizer",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "defaultRecognitionConfig": {
+      "languageCodes": [
+        "en-US",
+        "fr-FR"
+      ],
+      "model": "chirp"
+    },
+    "deleteTime": "2024-04-01T12:34:56.123456Z",
+    "displayName": "Updated description",
+    "etag": "abcdef0123A=",
+    "expireTime": "2024-04-01T12:34:56.123456Z",
+    "languageCodes": [
+      "en-US",
+      "fr-FR"
+    ],
+    "model": "chirp",
+    "name": "projects/${projectNumber}/locations/global/recognizers/speechrecognizer-minimal-${uniqueId}",
+    "state": 4,
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}

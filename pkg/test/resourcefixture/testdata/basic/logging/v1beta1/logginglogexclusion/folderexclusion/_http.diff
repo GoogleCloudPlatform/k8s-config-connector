@@ -1,0 +1,53 @@
+124c124
+< GET https://logging.googleapis.com/v2/folders/${folderID}/exclusions/${exclusionID}?alt=json
+---
+> GET https://logging.googleapis.com/v2/folders/${folderID}/exclusions/${exclusionID}?%24alt=json%3Benum-encoding%3Dint
+147c147
+< POST https://logging.googleapis.com/v2/folders/${folderID}/exclusions?alt=json
+---
+> POST https://logging.googleapis.com/v2/folders/${folderID}/exclusions?%24alt=json%3Benum-encoding%3Dint
+176c176
+< GET https://logging.googleapis.com/v2/folders/${folderID}/exclusions/${exclusionID}?alt=json
+---
+> GET https://logging.googleapis.com/v2/folders/${folderID}/exclusions/${exclusionID}?%24alt=json%3Benum-encoding%3Dint
+199c199
+< PATCH https://logging.googleapis.com/v2/folders/${folderID}/exclusions/${exclusionID}?alt=json&updateMask=description%2Cdisabled%2Cfilter
+---
+> PATCH https://logging.googleapis.com/v2/folders/${folderID}/exclusions/${exclusionID}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2Cdisabled%2Cfilter
+205c205,206
+<   "filter": "resource.type=gcs_bucket severity\u003c=ERROR sample(insertId, 0.99)"
+---
+>   "filter": "resource.type=gcs_bucket severity\u003c=ERROR sample(insertId, 0.99)",
+>   "name": "folders/${folderID}/exclusions/exclusion-${uniqueId}"
+229c230
+< GET https://logging.googleapis.com/v2/folders/${folderID}/exclusions/${exclusionID}?alt=json
+---
+> GET https://logging.googleapis.com/v2/folders/${folderID}/exclusions/${exclusionID}?%24alt=json%3Benum-encoding%3Dint
+253c254
+< DELETE https://logging.googleapis.com/v2/folders/${folderID}/exclusions/${exclusionID}?alt=json
+---
+> DELETE https://logging.googleapis.com/v2/folders/${folderID}/exclusions/${exclusionID}?%24alt=json%3Benum-encoding%3Dint
+267,289d267
+< 
+< ---
+< 
+< GET https://logging.googleapis.com/v2/folders/${folderID}/exclusions/${exclusionID}?alt=json
+< Content-Type: application/json
+< 
+< 404 Not Found
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "error": {
+<     "code": 404,
+<     "message": "Exclusion folders/${folderID}/exclusions/exclusion-${uniqueId} does not exist",
+<     "status": "NOT_FOUND"
+<   }
+< }

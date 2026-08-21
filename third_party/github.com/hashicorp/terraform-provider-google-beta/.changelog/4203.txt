@@ -1,0 +1,3 @@
+```release-note:bug
+datacatalog: fixed an issue in `google_data_catalog_taxonomy` and `google_data_catalog_policy_tag` where importing would fail
+```

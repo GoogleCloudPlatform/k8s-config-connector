@@ -1,0 +1,109 @@
+// Copyright 2026 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//    http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package v1alpha1
+
+import (
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+)
+
+var EventarcChannelConnectionGVK = GroupVersion.WithKind("EventarcChannelConnection")
+
+// EventarcChannelConnectionSpec defines the desired state of EventarcChannelConnection
+// +kcc:spec:proto=google.cloud.eventarc.v1.ChannelConnection
+type EventarcChannelConnectionSpec struct {
+	Parent `json:",inline"`
+
+	// The EventarcChannelConnection name. If not given, the metadata.name will be used.
+	ResourceID *string `json:"resourceID,omitempty"`
+
+	// Required. Reference to the connected subscriber Channel.
+	// +kcc:proto:field=google.cloud.eventarc.v1.ChannelConnection.channel
+	ChannelRef *ChannelRef `json:"channelRef"`
+
+	// Input only. Activation token for the channel. The token will be used
+	// during the creation of ChannelConnection to bind the channel with the
+	// provider project. This field will not be stored in the provider resource.
+	// +kcc:proto:field=google.cloud.eventarc.v1.ChannelConnection.activation_token
+	ActivationToken *string `json:"activationToken,omitempty"`
+}
+
+// EventarcChannelConnectionStatus defines the config connector machine state of EventarcChannelConnection
+type EventarcChannelConnectionStatus struct {
+	/* Conditions represent the latest available observations of the
+	   object's current state. */
+	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+
+	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
+	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+
+	// A unique specifier for the EventarcChannelConnection resource in GCP.
+	ExternalRef *string `json:"externalRef,omitempty"`
+
+	// ObservedState is the state of the resource as most recently observed in GCP.
+	ObservedState *EventarcChannelConnectionObservedState `json:"observedState,omitempty"`
+}
+
+// EventarcChannelConnectionObservedState is the state of the EventarcChannelConnection resource as most recently observed in GCP.
+// +kcc:observedstate:proto=google.cloud.eventarc.v1.ChannelConnection
+type EventarcChannelConnectionObservedState struct {
+	// Output only. Server assigned ID of the resource.
+	// The server guarantees uniqueness and immutability until deleted.
+	// +kcc:proto:field=google.cloud.eventarc.v1.ChannelConnection.uid
+	Uid *string `json:"uid,omitempty"`
+
+	// Output only. The creation time.
+	// +kcc:proto:field=google.cloud.eventarc.v1.ChannelConnection.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The last-modified time.
+	// +kcc:proto:field=google.cloud.eventarc.v1.ChannelConnection.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
+}
+
+// +genclient
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// +kubebuilder:resource:categories=gcp,shortName=gcpeventarcchannelconnection;gcpeventarcchannelconnections
+// +kubebuilder:subresource:status
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
+// +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
+// +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
+// +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
+// +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
+
+// EventarcChannelConnection is the Schema for the EventarcChannelConnection API
+// +k8s:openapi-gen=true
+type EventarcChannelConnection struct {
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
+
+	// +required
+	Spec   EventarcChannelConnectionSpec   `json:"spec,omitempty"`
+	Status EventarcChannelConnectionStatus `json:"status,omitempty"`
+}
+
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+// EventarcChannelConnectionList contains a list of EventarcChannelConnection
+type EventarcChannelConnectionList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []EventarcChannelConnection `json:"items"`
+}
+
+func init() {
+	SchemeBuilder.Register(&EventarcChannelConnection{}, &EventarcChannelConnectionList{})
+}

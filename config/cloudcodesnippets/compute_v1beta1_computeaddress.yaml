@@ -1,0 +1,18 @@
+label: Config Connector ComputeAddress
+markdownDescription: Creates yaml for a ComputeAddress resource
+insertText: |
+  apiVersion: compute.cnrm.cloud.google.com/v1beta1
+  kind: ComputeAddress
+  metadata:
+    labels:
+      \${1:label-one}: \${2:value-one}
+    name: \${3:computeaddress-name}
+  spec:
+    addressType: \${4:INTERNAL}
+    description: \${5:a test global address}
+    location: \${6:global}
+    ipVersion: \${7:IPV4}
+    purpose: \${8:VPC_PEERING}
+    prefixLength: \${9:16}
+    networkRef:
+      name: \${10:computeaddress-dep-global}

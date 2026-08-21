@@ -1,0 +1,75 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+enum StorageDefaultObjectAccessControlProjectTeamTeamEnum {
+  StorageDefaultObjectAccessControlProjectTeamTeamEnumNO_VALUE_DO_NOT_USE = 0;
+  StorageDefaultObjectAccessControlProjectTeamTeamEnumeditors = 1;
+  StorageDefaultObjectAccessControlProjectTeamTeamEnumowners = 2;
+  StorageDefaultObjectAccessControlProjectTeamTeamEnumviewers = 3;
+}
+
+enum StorageDefaultObjectAccessControlRoleEnum {
+  StorageDefaultObjectAccessControlRoleEnumNO_VALUE_DO_NOT_USE = 0;
+  StorageDefaultObjectAccessControlRoleEnumOWNER = 1;
+  StorageDefaultObjectAccessControlRoleEnumREADER = 2;
+}
+
+message StorageDefaultObjectAccessControl {
+  string project = 1;
+  string bucket = 2;
+  string domain = 3;
+  string email = 4;
+  string entity = 5;
+  string entity_id = 6;
+  StorageDefaultObjectAccessControlProjectTeam project_team = 7;
+  StorageDefaultObjectAccessControlRoleEnum role = 8;
+}
+
+message StorageDefaultObjectAccessControlProjectTeam {
+  string project_number = 1;
+  StorageDefaultObjectAccessControlProjectTeamTeamEnum team = 2;
+}
+
+message ApplyStorageDefaultObjectAccessControlRequest {
+  StorageDefaultObjectAccessControl resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteStorageDefaultObjectAccessControlRequest {
+  string service_account_file = 1;
+  StorageDefaultObjectAccessControl resource = 2;
+}
+
+message ListStorageDefaultObjectAccessControlRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Bucket = 3;
+}
+
+message ListStorageDefaultObjectAccessControlResponse {
+  repeated StorageDefaultObjectAccessControl items = 1;
+}
+
+service StorageDefaultObjectAccessControlService {
+  rpc ApplyStorageDefaultObjectAccessControl(ApplyStorageDefaultObjectAccessControlRequest) returns (StorageDefaultObjectAccessControl);
+  rpc DeleteStorageDefaultObjectAccessControl(DeleteStorageDefaultObjectAccessControlRequest) returns (google.protobuf.Empty);
+  rpc ListStorageDefaultObjectAccessControl(ListStorageDefaultObjectAccessControlRequest) returns (ListStorageDefaultObjectAccessControlResponse);
+}

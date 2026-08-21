@@ -1,0 +1,15 @@
+{
+  "name": "{{ref:__state__:name}}",
+  "project": "{{project}}",
+  "displayName": "myUpdatedTenant1",
+  "allowPasswordSignup": true,
+  "enableAnonymousUser": true,
+  "mfaConfig": {
+    "state": "ENABLED",
+    "enabledProviders": ["PHONE_SMS"]
+  },
+  "testPhoneNumbers": {
+    "+16505551234": "145678",
+    "+16505550000": "123456"
+  }
+}

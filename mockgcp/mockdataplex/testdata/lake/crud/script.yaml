@@ -1,0 +1,6 @@
+
+- exec: gcloud dataplex lakes create test-${uniqueId} --location=us-central1 --project=${projectId}
+- exec: gcloud dataplex lakes describe test-${uniqueId} --location=us-central1 --project=${projectId}
+- exec: gcloud dataplex lakes list --location=us-central1 --project=${projectId}
+- exec: gcloud dataplex lakes update test-${uniqueId} --location=us-central1 --project=${projectId} --description="New description"
+- exec: gcloud dataplex lakes delete test-${uniqueId} --location=us-central1 --project=${projectId} --async --quiet

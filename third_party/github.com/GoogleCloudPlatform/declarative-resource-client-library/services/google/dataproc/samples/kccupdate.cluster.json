@@ -1,0 +1,21 @@
+{
+  "name": "{{cluster_name}}",
+  "location": "{{region}}",
+  "project": "{{ref:dataproc.serviceusage.service.json:project}}",
+  "labels": {
+   "label-one": "new-value"
+  },
+  "config": {
+   "autoscalingConfig": {
+     "policy": "projects/{{ref:dataproc.serviceusage.service.json:project}}/locations/{{region}}/autoscalingPolicies/{{ref:basic.autoscaling_policy.json:name}}"
+   },
+   "masterConfig": {
+    "diskConfig": {
+     "bootDiskSizeGb": 50,
+     "bootDiskType": "pd-standard"
+    },
+    "machineType": "n2-standard-2",
+    "numInstances": 1
+   }
+  }
+}

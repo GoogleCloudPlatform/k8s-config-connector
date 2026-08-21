@@ -1,0 +1,12 @@
+- caisURL: unknown
+  group: bigtable.cnrm.cloud.google.com
+  kind: BigtableInstance
+  name: lvdep${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: unknown
+  group: bigtable.cnrm.cloud.google.com
+  kind: BigtableLogicalView
+  name: lv-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

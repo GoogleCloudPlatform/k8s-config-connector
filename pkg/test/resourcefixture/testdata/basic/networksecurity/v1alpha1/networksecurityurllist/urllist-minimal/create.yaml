@@ -1,0 +1,10 @@
+apiVersion: networksecurity.cnrm.cloud.google.com/v1alpha1
+kind: NetworkSecurityURLList
+metadata:
+  name: urllist-min-${uniqueId}
+spec:
+  projectRef:
+    external: "projects/${projectId}"
+  location: us-central1
+  values:
+    - "google.com"

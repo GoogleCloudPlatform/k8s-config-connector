@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: containeranalysis.cnrm.cloud.google.com
+  kind: ContainerAnalysisNote
+  name: containeranalysisnote-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

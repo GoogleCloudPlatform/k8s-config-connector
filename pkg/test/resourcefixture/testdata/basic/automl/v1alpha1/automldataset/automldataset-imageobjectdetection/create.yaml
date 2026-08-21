@@ -1,0 +1,10 @@
+apiVersion: automl.cnrm.cloud.google.com/v1alpha1
+kind: AutoMLDataset
+metadata:
+  name: automldataset-iod-${uniqueId}
+spec:
+  displayName: "ds_iod_${uniqueId}"
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+  imageObjectDetectionDatasetMetadata: {}

@@ -1,0 +1,27 @@
+apiVersion: backupdr.cnrm.cloud.google.com/v1beta1
+kind: BackupDRBackupVault
+metadata:
+  name: backupdrbackupvault-full-${uniqueId}
+  annotations:
+    key1: value1
+  labels:
+    label-key: label-value
+    app.kubernetes.io/name: "mock-app"
+    app.kubernetes.io/instance: "mock-instance"
+    app.kubernetes.io/version: "v1.0.0"
+    app.kubernetes.io/component: "mock-component"
+    app.kubernetes.io/part-of: "mock-part-of"
+    app.kubernetes.io/managed-by: "configmanagement.gke.io"
+    applyset.kubernetes.io/id: mock-applyset-id
+    configmanagement.gke.io/sync-name: mock-sync-name
+    configmanagement.gke.io/sync-namespace: mock-sync-namespace
+    custom-label: "foo" # valid label
+spec:
+  description: "This is a full backup vault"
+  location: "us-central1"
+  projectRef:
+    external: "${projectId}"
+  backupMinimumEnforcedRetentionDuration: "86400s"
+  accessRestriction: "WITHIN_ORGANIZATION"
+  ignoreInactiveDatasources: true
+  effectiveTime: "2025-08-17T10:00:00Z"

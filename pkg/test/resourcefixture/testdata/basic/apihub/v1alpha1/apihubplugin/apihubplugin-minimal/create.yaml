@@ -1,0 +1,13 @@
+apiVersion: apihub.cnrm.cloud.google.com/v1alpha1
+kind: APIHubPlugin
+metadata:
+  name: apihubplugin-minimal-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  displayName: "Minimal Plugin"
+  type:
+    enumValues:
+      values:
+        - id: system-plugin-type

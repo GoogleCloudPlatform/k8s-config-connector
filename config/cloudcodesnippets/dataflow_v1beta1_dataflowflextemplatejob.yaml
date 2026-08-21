@@ -1,0 +1,16 @@
+label: Config Connector DataflowFlexTemplateJob
+markdownDescription: Creates yaml for a DataflowFlexTemplateJob resource
+insertText: |
+  apiVersion: dataflow.cnrm.cloud.google.com/v1beta1
+  kind: DataflowFlexTemplateJob
+  metadata:
+    name: \${1:dataflowflextemplatejob-name}
+  spec:
+    region: \${2:us-central1}
+    containerSpecGcsPath: \${3:gs://dataflow-templates/2020-08-31-00_RC00/flex/PubSub_Avro_to_BigQuery}
+    parameters:
+      schemaPath: \${4:gs://config-connector-samples/dataflowflextemplate/numbers.avsc}
+      inputSubscription: \${5:projects/[PROJECT_ID?]/subscriptions/dataflowflextemplatejob-dep-streaming}
+      outputTopic: \${6:projects/[PROJECT_ID?]/topics/dataflowflextemplatejob-dep1-streaming}
+      outputTableSpec: \${7:[PROJECT_ID?]:dataflowflextemplatejobdepstreaming.dataflowflextemplatejobdepstreaming}
+      createDisposition: \${8:CREATE_NEVER}

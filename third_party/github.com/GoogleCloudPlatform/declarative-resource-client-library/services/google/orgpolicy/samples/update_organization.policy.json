@@ -1,0 +1,12 @@
+{
+  "name": "organizations/{{org_id}}/policies/gcp.detailedAuditLoggingMode",
+  "parent": "organizations/{{org_id}}",
+  "spec": {
+    "rules": [
+      {
+          "enforce": true
+      }
+    ],
+    "reset": false
+  }
+}

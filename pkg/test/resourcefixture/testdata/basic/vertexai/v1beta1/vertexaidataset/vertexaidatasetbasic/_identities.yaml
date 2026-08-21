@@ -1,0 +1,7 @@
+- caisURL: unknown
+  error: not yet supported
+  group: vertexai.cnrm.cloud.google.com
+  kind: VertexAIDataset
+  name: vertexaidataset-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

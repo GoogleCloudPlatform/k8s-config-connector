@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+function on_error() {
+  echo "<hint_for_agent>Run 'dev/ci/presubmits/test-mockgcp' to fix.</hint_for_agent>"
+}
+trap on_error ERR
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+
+. ${REPO_ROOT}/dev/tasks/install-gcloud
+
+cd ${REPO_ROOT}/mockgcp
+
+export E2E_GCP_TARGET=mock
+export WRITE_GOLDEN_OUTPUT=1
+
+# Note: -parallel 4 was determined by A/B testing; do not change unless new benchmark tests demonstrate a speedup.
+go test -parallel 4 -v ./...

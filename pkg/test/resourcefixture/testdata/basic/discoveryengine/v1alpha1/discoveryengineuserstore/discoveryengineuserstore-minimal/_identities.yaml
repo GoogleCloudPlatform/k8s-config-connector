@@ -1,0 +1,6 @@
+- caisURL: //discoveryengine.googleapis.com/projects/${projectId}/locations/global/userStores/default_user_store
+  group: discoveryengine.cnrm.cloud.google.com
+  kind: DiscoveryEngineUserStore
+  name: userstore-min-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

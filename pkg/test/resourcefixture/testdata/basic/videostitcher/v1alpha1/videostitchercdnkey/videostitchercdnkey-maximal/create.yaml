@@ -1,0 +1,12 @@
+apiVersion: videostitcher.cnrm.cloud.google.com/v1alpha1
+kind: VideoStitcherCDNKey
+metadata:
+  name: videostitchercdnkey-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  hostname: test-hostname-${uniqueId}.com
+  googleCDNKey:
+    keyName: test-key-name
+    privateKey: c2VjcmV0

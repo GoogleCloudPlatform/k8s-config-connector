@@ -1,0 +1,57 @@
+label: Config Connector NetworkServicesGRPCRoute
+markdownDescription: Creates yaml for a NetworkServicesGRPCRoute resource
+insertText: |
+  apiVersion: networkservices.cnrm.cloud.google.com/v1beta1
+  kind: NetworkServicesGRPCRoute
+  metadata:
+    labels:
+      \${1:foo}: \${2:bar}
+    name: \${3:networkservicesgrpcroute-name}
+  spec:
+    description: \${4:A test GrpcRoute}
+    meshes:
+    - name: \${5:networkservicesgrpcroute-dep}
+    gateways:
+    - name: \${6:networkservicesgrpcroute-dep}
+    location: \${7:global}
+    hostnames:
+    - \${8:test1}
+    - \${9:test2}
+    rules:
+    - matches:
+      - method:
+          type: \${10:EXACT}
+          grpcService: \${11:helloworld.Greeter}
+          grpcMethod: \${12:SayHello}
+          caseSensitive: \${13:false}
+        headers:
+        - type: \${14:EXACT}
+          key: \${15:foo}
+          value: \${16:bar}
+      action:
+        destinations:
+        - serviceRef:
+            name: \${17:networkservicesgrpcroute-dep}
+          weight: \${18:50}
+        - serviceRef:
+            name: \${19:networkservicesgrpcroute-dep}
+          weight: \${20:50}
+        faultInjectionPolicy:
+          abort:
+            httpStatus: \${21:501}
+            percentage: \${22:1}
+          delay:
+            fixedDelay: \${23:10s}
+            percentage: \${24:2}
+        retryPolicy:
+          numRetries: \${25:3}
+          retryConditions:
+          - \${26:refused-stream}
+          - \${27:cancelled}
+        timeout: \${28:30s}
+    - action:
+        destinations:
+        - serviceRef:
+            name: \${29:networkservicesgrpcroute-dep}
+    projectRef:
+      external: \${30:projects/[PROJECT_ID?]}

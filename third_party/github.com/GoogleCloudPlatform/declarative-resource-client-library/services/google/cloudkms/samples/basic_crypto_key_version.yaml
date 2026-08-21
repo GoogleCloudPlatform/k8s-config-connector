@@ -1,0 +1,39 @@
+# Copyright 2024 Google LLC. All Rights Reserved.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+name: basic_crypto_key_version
+description: An example of a basic crypto_key_version
+type: crypto_key_version
+versions:
+- ga
+resource: samples/basic.crypto_key_version.json
+dependencies:
+- samples/minimal.crypto_key.json
+- samples/basic.key_ring.json
+- samples/cloudkms_admin.iam.member.json
+- samples/cloudkms.serviceusage.service.json
+- samples/basic.cloudbilling.project_billing_info.json
+- samples/basic.cloudresourcemanager.project.json
+variables:
+- name: billing_account
+  type: billing_account
+- name: id
+  type: resource_name
+- name: key
+  type: resource_name
+- name: org_id
+  type: org_id
+- name: ring
+  type: resource_name
+- name: test_service_account
+  type: test_service_account

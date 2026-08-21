@@ -1,0 +1,12 @@
+label: Config Connector ComputeTargetPool
+markdownDescription: Creates yaml for a ComputeTargetPool resource
+insertText: |
+  apiVersion: compute.cnrm.cloud.google.com/v1beta1
+  kind: ComputeTargetPool
+  metadata:
+    name: \${1:computetargetpool-name}
+  spec:
+    region: \${2:us-central1}
+    instances:
+    - name: \${3:computetargetpool-dep3}
+    - name: \${4:computetargetpool-dep4}

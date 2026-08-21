@@ -1,0 +1,6 @@
+# Note: this test needs roles/iam.denyAdmin permission
+# Note also that the policies should be formatted according to https://cloud.google.com/iam/docs/deny-permissions-support
+- exec: gcloud iam policies create test-${uniqueId} --attachment-point=cloudresourcemanager.googleapis.com/projects/${projectId} --kind=denypolicies --policy-file=policy.json
+- exec: gcloud iam policies list --attachment-point=cloudresourcemanager.googleapis.com/projects/${projectId} --kind=denypolicies
+- exec: gcloud iam policies get test-${uniqueId} --attachment-point=cloudresourcemanager.googleapis.com/projects/${projectId} --kind=denypolicies
+- exec: gcloud iam policies delete test-${uniqueId} --attachment-point=cloudresourcemanager.googleapis.com/projects/${projectId} --kind=denypolicies

@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: bigquerybiglake.cnrm.cloud.google.com
+  kind: BigLakeDatabase
+  name: biglakedatabase-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

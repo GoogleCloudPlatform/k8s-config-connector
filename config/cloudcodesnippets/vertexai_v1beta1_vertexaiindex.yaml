@@ -1,0 +1,27 @@
+label: Config Connector VertexAIIndex
+markdownDescription: Creates yaml for a VertexAIIndex resource
+insertText: |
+  apiVersion: vertexai.cnrm.cloud.google.com/v1beta1
+  kind: VertexAIIndex
+  metadata:
+    labels:
+      \${1:label-one}: \${2:value-one}
+    name: \${3:vertexaiindex-name}
+  spec:
+    displayName: \${4:vertex AI index}
+    region: \${5:us-central1}
+    description: \${6:an example vertex AI index}
+    metadata:
+      contentsDeltaUri: \${7:[KCC_VERTEX_AI_INDEX_TEST_DATA_URI?]}
+      config:
+        dimensions: \${8:2}
+        approximateNeighborsCount: \${9:150}
+        shardSize: \${10:SHARD_SIZE_SMALL}
+        distanceMeasureType: \${11:DOT_PRODUCT_DISTANCE}
+        algorithmConfig:
+          treeAhConfig:
+            leafNodeEmbeddingCount: \${12:500}
+            leafNodesToSearchPercent: \${13:7}
+    indexUpdateMethod: \${14:BATCH_UPDATE}
+    projectRef:
+      external: \${15:[PROJECT_ID?]}

@@ -1,0 +1,3 @@
+```release-note:enhancement
+container: added `tpu_config` to `google_container_cluster` (beta only)
+```

@@ -1,0 +1,5 @@
+{
+  "name": "{{service}}2",
+  "project": "{{project}}",
+  "loadBalancingScheme": "INTERNAL_SELF_MANAGED"
+}

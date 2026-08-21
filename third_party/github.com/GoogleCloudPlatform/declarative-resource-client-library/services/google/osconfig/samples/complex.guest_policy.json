@@ -1,0 +1,119 @@
+{
+  "name": "{{policy}}",
+  "project": "{{project}}",
+  "assignment": {
+    "groupLabels": [
+      {
+        "labels": {
+          "env": "prod",
+          "app": "old"
+        }
+      }
+     ],
+    "instances": ["{{ref:basic.compute.instance.json:selfLink}}"],
+    "zones": ["{{zone}}"],
+    "osTypes": [
+      {
+        "osArchitecture": "x86_64",
+        "osShortName": "debian",
+        "osVersion": "10"
+      },
+      {
+        "osArchitecture": "x86_64",
+        "osShortName": "windows",
+        "osVersion": "10.0.14393"
+
+      }
+    ]
+  },
+  "packageRepositories": [
+    {
+      "apt": {
+        "archiveType": "DEB",
+        "distribution": "aiy-debian-buster",
+        "components": ["main"],
+        "uri": "https://packages.cloud.google.com/apt",
+        "gpgKey": "https://packages.cloud.google.com/apt/dists/aiy-debian-buster/Release.gpg"
+      }
+    },
+    {
+      "yum": {
+        "id": "liamtest",
+        "displayName": "Liam Test",
+        "baseUrl": "https://packages.cloud.google.com/yum/repos/liamtest",
+        "gpgKeys": [
+          "https://packages.cloud.google.com/yum/doc/yum-key.gpg",
+          "https://packages.cloud.google.com/yum/doc/rpm-pkg-key.gpg"
+         ]
+      }
+    }
+  ],
+  "packages": [
+    {
+      "desiredState": "INSTALLED",
+      "manager": "APT",
+      "name": "add-apt-key"
+    },
+    {
+      "desiredState": "REMOVED",
+      "manager": "YUM",
+      "name": "ssl"
+    },
+    {
+      "desiredState": "UPDATED",
+      "manager": "ANY",
+      "name": "ansible-doc"
+    }
+  ],
+  "recipes": [
+    {
+      "name": "newest-ansible",
+      "version": "2.5.27",
+      "artifacts": [
+        {
+          "id": "ansible",
+          "remote": {
+            "uri": "https://releases.ansible.com/ansible-tower/setup/ansible-tower-3.8.2.1.tar.gz",
+            "checksum": "761d468faf7bf6eacf7bfa00f03de64dbadec3e08f8e9fb39966cbcc78ddb2c2"
+          },
+          "allowInsecure": false
+        }
+        ],
+        "desiredState": "INSTALLED",
+        "installSteps": [
+          {
+            "fileCopy": {
+             "artifactId": "ansible",
+             "destination": "/installbackups/ansible",
+             "overwrite": true,
+             "permissions": "555"
+            }
+          },
+          {
+            "fileExec": {
+              "localPath": "/installbackups/ansible",
+              "allowedExitCodes": [0, 572],
+              "args": ["prodcompile"]
+            }
+          }
+        ],
+        "updateSteps": [
+          {
+            "fileCopy": {
+             "artifactId": "ansible",
+             "destination": "/installbackups/ansible",
+             "overwrite": true,
+             "permissions": "555"
+            }
+          },
+          {
+            "fileExec": {
+              "localPath": "/installbackups/ansible",
+              "allowedExitCodes": [0, 572],
+              "args": ["updatecompile"]
+            }
+          }
+        ]
+    }
+  ]
+}

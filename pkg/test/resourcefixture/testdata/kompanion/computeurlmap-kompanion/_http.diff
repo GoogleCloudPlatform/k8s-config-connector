@@ -1,0 +1,80 @@
+439c439
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}?alt=json
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}
+468c468
+< POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps?alt=json
+---
+> POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps
+472d471
+<   "defaultService": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+475,480d473
+<       "hosts": [
+<         "svc.gcp.anz"
+<       ],
+<       "pathMatcher": "computeurlmap-kompanion-default"
+<     },
+<     {
+491,492c484,485
+<         "chaosmonkeymulti.cloudnetworks.x.gcpnp.anz:*",
+<         "chaosmonkeymulti.cloudnetworks.x.gcpnp.anz"
+---
+>         "chaosmonkeymulti.cloudnetworks.x.gcpnp.anz",
+>         "chaosmonkeymulti.cloudnetworks.x.gcpnp.anz:*"
+494a488,493
+>     },
+>     {
+>       "hosts": [
+>         "svc.gcp.anz"
+>       ],
+>       "pathMatcher": "computeurlmap-kompanion-default"
+500d498
+<       "defaultService": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+513d510
+<                 "backendService": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+522d518
+<       "defaultService": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+535d530
+<                 "backendService": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+544d538
+<       "defaultService": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+573c567
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}?alt=json
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}
+588d581
+<   "defaultService": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/backendServices/${backendServiceID}",
+591,596d583
+<       "hosts": [
+<         "svc.gcp.anz"
+<       ],
+<       "pathMatcher": "computeurlmap-kompanion-default"
+<     },
+<     {
+607,608c594,595
+<         "chaosmonkeymulti.cloudnetworks.x.gcpnp.anz:*",
+<         "chaosmonkeymulti.cloudnetworks.x.gcpnp.anz"
+---
+>         "chaosmonkeymulti.cloudnetworks.x.gcpnp.anz",
+>         "chaosmonkeymulti.cloudnetworks.x.gcpnp.anz:*"
+610a598,603
+>     },
+>     {
+>       "hosts": [
+>         "svc.gcp.anz"
+>       ],
+>       "pathMatcher": "computeurlmap-kompanion-default"
+618d610
+<       "defaultService": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/backendServices/${backendServiceID}",
+631d622
+<                 "backendService": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+640d630
+<       "defaultService": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/backendServices/${backendServiceID}",
+653d642
+<                 "backendService": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/backendServices/${backendServiceID}",
+662d650
+<       "defaultService": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/backendServices/${backendServiceID}",
+671c659
+< DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}?alt=json
+---
+> DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/${urlMapID}

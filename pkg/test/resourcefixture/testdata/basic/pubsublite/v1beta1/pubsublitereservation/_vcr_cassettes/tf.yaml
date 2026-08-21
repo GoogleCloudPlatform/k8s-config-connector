@@ -1,0 +1,345 @@
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+version: 2
+interactions:
+  - id: 0
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: us-central1-pubsublite.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://us-central1-pubsublite.googleapis.com/v1/admin/projects/example-project/locations/us-central1/reservations/pubsublitereservation-2vfu6r1ihvibl?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 300.521264ms
+  - id: 1
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 25
+      transfer_encoding: []
+      trailer: {}
+      host: us-central1-pubsublite.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: |
+        {"throughputCapacity":2}
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://us-central1-pubsublite.googleapis.com/v1/admin/projects/example-project/locations/us-central1/reservations?alt=json&reservationId=pubsublitereservation-2vfu6r1ihvibl
+      method: POST
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/123456789/locations/us-central1/reservations/pubsublitereservation-2vfu6r1ihvibl",
+          "throughputCapacity": "2"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 379.536383ms
+  - id: 2
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: us-central1-pubsublite.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://us-central1-pubsublite.googleapis.com/v1/admin/projects/example-project/locations/us-central1/reservations/pubsublitereservation-2vfu6r1ihvibl?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/123456789/locations/us-central1/reservations/pubsublitereservation-2vfu6r1ihvibl",
+          "throughputCapacity": "2"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 264.438558ms
+  - id: 3
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: us-central1-pubsublite.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://us-central1-pubsublite.googleapis.com/v1/admin/projects/example-project/locations/us-central1/reservations/pubsublitereservation-2vfu6r1ihvibl?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/123456789/locations/us-central1/reservations/pubsublitereservation-2vfu6r1ihvibl",
+          "throughputCapacity": "2"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 250.17698ms
+  - id: 4
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: us-central1-pubsublite.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://us-central1-pubsublite.googleapis.com/v1/admin/projects/example-project/locations/us-central1/reservations/pubsublitereservation-2vfu6r1ihvibl?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/123456789/locations/us-central1/reservations/pubsublitereservation-2vfu6r1ihvibl",
+          "throughputCapacity": "2"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 262.484218ms
+  - id: 5
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 25
+      transfer_encoding: []
+      trailer: {}
+      host: us-central1-pubsublite.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: |
+        {"throughputCapacity":3}
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://us-central1-pubsublite.googleapis.com/v1/admin/projects/example-project/locations/us-central1/reservations/pubsublitereservation-2vfu6r1ihvibl?alt=json&updateMask=throughputCapacity
+      method: PATCH
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/123456789/locations/us-central1/reservations/pubsublitereservation-2vfu6r1ihvibl",
+          "throughputCapacity": "3"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 320.251974ms
+  - id: 6
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: us-central1-pubsublite.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://us-central1-pubsublite.googleapis.com/v1/admin/projects/example-project/locations/us-central1/reservations/pubsublitereservation-2vfu6r1ihvibl?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/123456789/locations/us-central1/reservations/pubsublitereservation-2vfu6r1ihvibl",
+          "throughputCapacity": "3"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 264.495587ms
+  - id: 7
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: us-central1-pubsublite.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://us-central1-pubsublite.googleapis.com/v1/admin/projects/example-project/locations/us-central1/reservations/pubsublitereservation-2vfu6r1ihvibl?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/123456789/locations/us-central1/reservations/pubsublitereservation-2vfu6r1ihvibl",
+          "throughputCapacity": "3"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 240.68775ms
+  - id: 8
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: us-central1-pubsublite.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://us-central1-pubsublite.googleapis.com/v1/admin/projects/example-project/locations/us-central1/reservations/pubsublitereservation-2vfu6r1ihvibl?alt=json
+      method: DELETE
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {}
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 310.818911ms

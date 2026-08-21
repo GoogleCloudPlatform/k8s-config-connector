@@ -1,0 +1,438 @@
+// Copyright 2024 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+// This program parses CRDs found in a given YAML file and outputs them onto
+// individual CRD files.
+
+package main
+
+import (
+	"bytes"
+	"context"
+	"flag"
+	"fmt"
+	"io/fs"
+	"os"
+	"path/filepath"
+	"slices"
+	"strings"
+
+	kccyaml "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/yaml"
+
+	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	"k8s.io/apimachinery/pkg/util/sets"
+	"k8s.io/klog/v2"
+	"sigs.k8s.io/yaml"
+)
+
+func main() {
+	err := run(context.Background())
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%v\n", err)
+		os.Exit(1)
+	}
+}
+
+func run(ctx context.Context) error {
+	var dir string
+	flag.StringVar(&dir, "dir", "", "Directory to process")
+	flag.Parse()
+
+	if dir == "" {
+		return fmt.Errorf("--dir is required")
+	}
+
+	if err := filepath.WalkDir(dir, func(p string, d fs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+
+		if d.IsDir() {
+			return nil
+		}
+
+		if filepath.Ext(p) != ".yaml" {
+			return nil
+		}
+
+		if err := processFile(ctx, p); err != nil {
+			return fmt.Errorf("processing file %q: %w", p, err)
+		}
+		return nil
+	}); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func processFile(ctx context.Context, p string) error {
+	b, err := os.ReadFile(p)
+	if err != nil {
+		return fmt.Errorf("error reading file %q: %w", p, err)
+	}
+
+	var out bytes.Buffer
+
+	// We preserve the yaml header (copyright, typically)
+	for _, line := range bytes.Split(b, []byte("\n")) {
+		if len(line) == 0 || line[0] == '#' {
+			out.Write(line)
+			out.WriteString("\n")
+		} else {
+			break
+		}
+	}
+
+	yamls, err := kccyaml.SplitYAML(b)
+	if err != nil {
+		return fmt.Errorf("error splitting bytes into YAMLs: %w", err)
+	}
+	crds := make([]*apiextensions.CustomResourceDefinition, 0)
+	for _, y := range yamls {
+		var crd apiextensions.CustomResourceDefinition
+		if err := yaml.Unmarshal(y, &crd); err != nil {
+			return fmt.Errorf("error unmarshalling bytes into CRD: %w", err)
+		}
+		crds = append(crds, &crd)
+	}
+
+	for _, crd := range crds {
+		if err := addRefsToCRD(crd); err != nil {
+			return err
+		}
+	}
+
+	for i, crd := range crds {
+		b, err := yaml.Marshal(crd)
+		if err != nil {
+			return fmt.Errorf("error marshalling CRD into bytes: %w", err)
+		}
+		out.Write(b)
+		if i != 0 {
+			out.WriteString("\n---\n")
+		}
+	}
+
+	if err := os.WriteFile(p, out.Bytes(), 0644); err != nil {
+		return fmt.Errorf("error writing file %q: %w", p, err)
+	}
+	return nil
+}
+
+func addRefsToCRD(crd *apiextensions.CustomResourceDefinition) error {
+	if crd.Spec.Names.Kind == "IAMAuditConfig" {
+		// no refs here
+		return nil
+	}
+	for _, v := range crd.Spec.Versions {
+		if err := addRefsToProps(crd.Spec.Names.Kind, "", v.Schema.OpenAPIV3Schema); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func addRefsToProps(kind string, fieldPath string, props *apiextensions.JSONSchemaProps) error {
+	// Descend into arrays
+	if props.Items != nil {
+		if props.Items.Schema != nil {
+			if err := addRefsToProps(kind, fieldPath+"[]", props.Items.Schema); err != nil {
+				return err
+			}
+		}
+		for i := range props.Items.JSONSchemas {
+			if err := addRefsToProps(kind, fieldPath+"[]", &props.Items.JSONSchemas[i]); err != nil {
+				return err
+			}
+		}
+	}
+
+	// Descend into objects
+	for k := range props.Properties {
+		v := props.Properties[k]
+		if err := addRefsToProps(kind, fieldPath+"."+k, &v); err != nil {
+			return err
+		}
+		props.Properties[k] = v
+	}
+
+	if err := addValidationToRefs(kind, fieldPath, props); err != nil {
+		return err
+	}
+	return nil
+}
+
+const refRuleWithoutKind = `
+oneOf:
+- not:
+    required:
+    - external
+  required:
+  - name
+- not:
+    anyOf:
+    - required:
+      - name
+    - required:
+      - namespace
+  required:
+  - external
+`
+
+const refRuleWithKind = `
+oneOf:
+- not:
+    required:
+    - external
+  required:
+  - name
+  - kind
+- not:
+    anyOf:
+    - required:
+      - name
+    - required:
+      - namespace
+    - required:
+      - kind
+  required:
+  - external
+`
+
+const refRuleWithOptionalKind = `
+oneOf:
+- not:
+    required:
+    - external
+  required:
+  - name
+- not:
+    anyOf:
+    - required:
+      - name
+    - required:
+      - namespace
+  required:
+  - external
+`
+
+const resourceRefRuleWithOnlyKind = `
+oneOf:
+  - not:
+      required:
+        - external
+    required:
+      - name
+  - not:
+      anyOf:
+        - required:
+            - name
+        - required:
+            - namespace
+    required:
+      - external
+  - not:
+      anyOf:
+        - required:
+            - name
+        - required:
+            - namespace
+        - required:
+            - apiVersion
+        - required:
+            - external
+`
+
+const legacyRefRule = `
+oneOf:
+- not:
+    required:
+    - valueFrom
+  required:
+  - value
+- not:
+    required:
+    - value
+  required:
+  - valueFrom
+`
+
+func addValidationToRefs(kind string, fieldPath string, props *apiextensions.JSONSchemaProps) error {
+	// Is this a ref?
+	if props.Type != "object" {
+		return nil
+	}
+
+	var ruleYAML string
+	if fieldPath == ".spec.bindings[].members[]" {
+		ruleYAML = `
+oneOf:
+  - required:
+    - member
+  - required:
+    - memberFrom
+`
+	} else if fieldPath == ".spec.bindings[].members[].memberFrom" || fieldPath == ".spec.memberFrom" {
+		ruleYAML = `
+oneOf:
+  - required:
+      - bigQueryConnectionConnectionRef
+  - required:
+      - logSinkRef
+  - required:
+      - serviceAccountRef
+  - required:
+      - serviceIdentityRef
+  - required:
+      - sqlInstanceRef
+`
+	} else {
+		fields := sets.New[string]()
+		for k := range props.Properties {
+			fields.Insert(k)
+		}
+		signature := strings.Join(sets.List(fields), ",")
+		if strings.HasPrefix(signature, "condition,member,memberFrom") && fieldPath == ".spec" { // IAMPolicyMember
+			ruleYAML = `
+oneOf:
+  - required:
+    - member
+  - required:
+    - memberFrom
+`
+		} else if signature == "apiVersion,external,kind,name,namespace" {
+			// hack for IAMPolicy.spec.resourceRef for backwards compat
+			if fieldPath == ".spec.resourceRef" {
+				ruleYAML = resourceRefRuleWithOnlyKind
+				// hack for Compute spec.shareSettings.projectMap[].keyRef, support multi-kind reference and default kind is "Project"
+			} else if strings.HasSuffix(fieldPath, ".projectMap[].keyRef") {
+				ruleYAML = refRuleWithOptionalKind
+			} else {
+				ruleYAML = refRuleWithKind
+			}
+		} else if signature == "serviceAccountRef,user" && kind == "AccessContextManagerServicePerimeter" {
+			ruleYAML = `
+oneOf:
+  - required: [serviceAccountRef]
+  - required: [user]
+`
+		} else if signature == "billingAccountRef,folderRef,name,organizationRef,resourceID" && kind == "Project" {
+			// Project allows either folderRef or organizationRef (or neither).
+			// This oneOf is necessary for backwards compatibility with the existing CRD.
+			ruleYAML = `
+oneOf:
+- required: [folderRef]
+- required: [organizationRef]
+- not:
+    anyOf:
+    - required: [folderRef]
+    - required: [organizationRef]
+`
+		} else if signature == "displayName,folderRef,organizationRef,resourceID" && kind == "Folder" {
+			// Folder allows either folderRef or organizationRef (or neither).
+			// This oneOf is necessary for backwards compatibility with the existing CRD.
+			ruleYAML = `
+oneOf:
+- required: [folderRef]
+- required: [organizationRef]
+- not:
+    anyOf:
+    - required: [folderRef]
+    - required: [organizationRef]
+`
+		} else if (kind == "LoggingLogView" || kind == "LoggingLogBucket" || kind == "LoggingLogExclusion") && fieldPath == ".spec" {
+			ruleYAML = `
+oneOf:
+- required: [billingAccountRef]
+- required: [folderRef]
+- required: [organizationRef]
+- required: [projectRef]
+`
+		} else if kind == "ComputeFirewallPolicy" && fieldPath == ".spec" {
+			ruleYAML = `
+oneOf:
+- required: [folderRef]
+- required: [organizationRef]
+`
+		} else if kind == "ComputeInstance" && fieldPath == ".spec" {
+			ruleYAML = `
+anyOf:
+- required:
+  - bootDisk
+  - machineType
+  - networkInterface
+  - zone
+- required:
+  - instanceTemplateRef
+  - zone
+`
+		} else if signature == "bigQueryDatasetRef,loggingLogBucketRef,pubSubTopicRef,storageBucketRef" && kind == "LoggingLogSink" {
+			ruleYAML = `
+oneOf:
+- required: [bigQueryDatasetRef]
+- required: [loggingLogBucketRef]
+- required: [pubSubTopicRef]
+- required: [storageBucketRef]
+`
+		} else if signature == "external,kind,name,namespace" {
+			ruleYAML = refRuleWithKind
+			// kind is optional for projectRef (and maybe in future other well-known ref types)
+			// fieldPath is the best mechanism we have today (?)
+			// TODO: We should remove the hard-coded isProjectPath and requiredAccessLevels logic
+			// and rely entirely on whether kind is required in the underlying type.
+			if isProjectPath(fieldPath) || strings.HasSuffix(fieldPath, ".requiredAccessLevels[]") || !slices.Contains(props.Required, "kind") {
+				ruleYAML = refRuleWithOptionalKind
+			}
+		} else if signature == "external,name,namespace" {
+			ruleYAML = refRuleWithoutKind
+		} else if signature == "instanceGroupRef,networkEndpointGroupRef" && kind == "ComputeBackendService" {
+			ruleYAML = `
+oneOf:
+- required: [instanceGroupRef]
+- required: [networkEndpointGroupRef]
+`
+		} else if signature == "healthCheckRef,httpHealthCheckRef" && kind == "ComputeBackendService" {
+			ruleYAML = `
+oneOf:
+- required: [healthCheckRef]
+- required: [httpHealthCheckRef]
+`
+		} else if signature == "value,valueFrom" && (kind == "AlloyDBUser" || kind == "ComputeInstance" || kind == "ComputeDisk" || kind == "ComputeSnapshot" || kind == "ContainerCluster" || kind == "MonitoringUptimeCheckConfig" || kind == "ComputeBackendServiceSignedURLKey" || kind == "KMSSecretCiphertext" || kind == "ComputeSSLCertificate" || kind == "ComputeBackendService") {
+			ruleYAML = legacyRefRule
+		} else {
+			if strings.HasPrefix(signature, "external,") {
+				klog.Warningf("unknown signature %q", signature)
+			}
+			if strings.HasPrefix(signature, "apiVersion,external,") {
+				klog.Warningf("unknown signature %q", signature)
+			}
+			return nil
+		}
+	}
+
+	rule := &apiextensions.JSONSchemaProps{}
+	if err := yaml.Unmarshal([]byte(ruleYAML), &rule); err != nil {
+		return err
+	}
+	props.OneOf = rule.OneOf
+	props.AnyOf = rule.AnyOf
+
+	return nil
+}
+
+// isProjectPath checks if the given fieldPath defines a Project reference resource.
+func isProjectPath(fieldPath string) bool {
+	return strings.HasSuffix(fieldPath, ".projectRef") || strings.HasSuffix(fieldPath, ".projectRefs[]") || strings.HasSuffix(fieldPath, ".project") || strings.HasSuffix(fieldPath, ".projects[]")
+}

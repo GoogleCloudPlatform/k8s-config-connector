@@ -1,0 +1,149 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum ComputeAlphaForwardingRuleIPProtocolEnum {
+  ComputeAlphaForwardingRuleIPProtocolEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeAlphaForwardingRuleIPProtocolEnumTCP = 1;
+  ComputeAlphaForwardingRuleIPProtocolEnumUDP = 2;
+  ComputeAlphaForwardingRuleIPProtocolEnumESP = 3;
+  ComputeAlphaForwardingRuleIPProtocolEnumAH = 4;
+  ComputeAlphaForwardingRuleIPProtocolEnumSCTP = 5;
+  ComputeAlphaForwardingRuleIPProtocolEnumICMP = 6;
+  ComputeAlphaForwardingRuleIPProtocolEnumL3_DEFAULT = 7;
+}
+
+enum ComputeAlphaForwardingRuleIPVersionEnum {
+  ComputeAlphaForwardingRuleIPVersionEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeAlphaForwardingRuleIPVersionEnumUNSPECIFIED_VERSION = 1;
+  ComputeAlphaForwardingRuleIPVersionEnumIPV4 = 2;
+  ComputeAlphaForwardingRuleIPVersionEnumIPV6 = 3;
+}
+
+enum ComputeAlphaForwardingRuleLoadBalancingSchemeEnum {
+  ComputeAlphaForwardingRuleLoadBalancingSchemeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeAlphaForwardingRuleLoadBalancingSchemeEnumINVALID = 1;
+  ComputeAlphaForwardingRuleLoadBalancingSchemeEnumINTERNAL = 2;
+  ComputeAlphaForwardingRuleLoadBalancingSchemeEnumINTERNAL_MANAGED = 3;
+  ComputeAlphaForwardingRuleLoadBalancingSchemeEnumINTERNAL_SELF_MANAGED = 4;
+  ComputeAlphaForwardingRuleLoadBalancingSchemeEnumEXTERNAL = 5;
+  ComputeAlphaForwardingRuleLoadBalancingSchemeEnumEXTERNAL_MANAGED = 6;
+}
+
+enum ComputeAlphaForwardingRuleMetadataFilterFilterMatchCriteriaEnum {
+  ComputeAlphaForwardingRuleMetadataFilterFilterMatchCriteriaEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeAlphaForwardingRuleMetadataFilterFilterMatchCriteriaEnumNOT_SET = 1;
+  ComputeAlphaForwardingRuleMetadataFilterFilterMatchCriteriaEnumMATCH_ALL = 2;
+  ComputeAlphaForwardingRuleMetadataFilterFilterMatchCriteriaEnumMATCH_ANY = 3;
+}
+
+enum ComputeAlphaForwardingRuleNetworkTierEnum {
+  ComputeAlphaForwardingRuleNetworkTierEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeAlphaForwardingRuleNetworkTierEnumPREMIUM = 1;
+  ComputeAlphaForwardingRuleNetworkTierEnumSTANDARD = 2;
+}
+
+enum ComputeAlphaForwardingRulePscConnectionStatusEnum {
+  ComputeAlphaForwardingRulePscConnectionStatusEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeAlphaForwardingRulePscConnectionStatusEnumSTATUS_UNSPECIFIED = 1;
+  ComputeAlphaForwardingRulePscConnectionStatusEnumPENDING = 2;
+  ComputeAlphaForwardingRulePscConnectionStatusEnumACCEPTED = 3;
+  ComputeAlphaForwardingRulePscConnectionStatusEnumREJECTED = 4;
+  ComputeAlphaForwardingRulePscConnectionStatusEnumCLOSED = 5;
+}
+
+message ComputeAlphaForwardingRule {
+  map<string, string> labels = 1;
+  bool all_ports = 2;
+  bool allow_global_access = 3;
+  string label_fingerprint = 4;
+  string backend_service = 5;
+  string creation_timestamp = 6;
+  string description = 7;
+  string ip_address = 8;
+  ComputeAlphaForwardingRuleIPProtocolEnum ip_protocol = 9;
+  ComputeAlphaForwardingRuleIPVersionEnum ip_version = 10;
+  bool is_mirroring_collector = 11;
+  ComputeAlphaForwardingRuleLoadBalancingSchemeEnum load_balancing_scheme = 12;
+  repeated ComputeAlphaForwardingRuleMetadataFilter metadata_filter = 13;
+  string name = 14;
+  string network = 15;
+  ComputeAlphaForwardingRuleNetworkTierEnum network_tier = 16;
+  string port_range = 17;
+  repeated string ports = 18;
+  string region = 19;
+  string self_link = 20;
+  string service_label = 21;
+  string service_name = 22;
+  string subnetwork = 23;
+  string target = 24;
+  string project = 25;
+  string location = 26;
+  repeated ComputeAlphaForwardingRuleServiceDirectoryRegistrations service_directory_registrations = 27;
+  string psc_connection_id = 28;
+  ComputeAlphaForwardingRulePscConnectionStatusEnum psc_connection_status = 29;
+  repeated string source_ip_ranges = 30;
+  string base_forwarding_rule = 31;
+  bool allow_psc_global_access = 32;
+}
+
+message ComputeAlphaForwardingRuleMetadataFilter {
+  ComputeAlphaForwardingRuleMetadataFilterFilterMatchCriteriaEnum filter_match_criteria = 1;
+  repeated ComputeAlphaForwardingRuleMetadataFilterFilterLabel filter_label = 2;
+}
+
+message ComputeAlphaForwardingRuleMetadataFilterFilterLabel {
+  string name = 1;
+  string value = 2;
+}
+
+message ComputeAlphaForwardingRuleServiceDirectoryRegistrations {
+  string namespace = 1;
+  string service = 2;
+}
+
+message ApplyComputeAlphaForwardingRuleRequest {
+  ComputeAlphaForwardingRule resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteComputeAlphaForwardingRuleRequest {
+  string service_account_file = 1;
+  ComputeAlphaForwardingRule resource = 2;
+}
+
+message ListComputeAlphaForwardingRuleRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListComputeAlphaForwardingRuleResponse {
+  repeated ComputeAlphaForwardingRule items = 1;
+}
+
+service ComputeAlphaForwardingRuleService {
+  rpc ApplyComputeAlphaForwardingRule(ApplyComputeAlphaForwardingRuleRequest) returns (ComputeAlphaForwardingRule);
+  rpc DeleteComputeAlphaForwardingRule(DeleteComputeAlphaForwardingRuleRequest) returns (google.protobuf.Empty);
+  rpc ListComputeAlphaForwardingRule(ListComputeAlphaForwardingRuleRequest) returns (ListComputeAlphaForwardingRuleResponse);
+}

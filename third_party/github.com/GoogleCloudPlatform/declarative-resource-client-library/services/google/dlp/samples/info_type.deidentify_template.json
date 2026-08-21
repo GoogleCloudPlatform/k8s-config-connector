@@ -1,0 +1,335 @@
+{
+  "parent": "projects/{{project}}",
+  "displayName": "sample-template",
+  "description": "A sample deidentify template",
+  "deidentifyConfig": {
+    "infoTypeTransformations": {
+      "transformations": [
+        {
+          "infoTypes": [
+            {
+              "name": "PHONE_NUMBER"
+            },
+            {
+              "name": "AGE"
+            }
+          ],
+          "primitiveTransformation": {
+            "replaceConfig": {
+              "newValue": {
+                "integerValue": 9
+              }
+            }
+          }
+        },
+        {
+          "infoTypes": [
+            {
+              "name": "SALARY"
+            }
+          ],
+          "primitiveTransformation": {
+            "replaceConfig": {
+              "newValue": {
+                "floatValue": 192168.01
+              }
+            }
+          }
+        },
+        {
+          "infoTypes": [
+            {
+              "name": "HOME_PAGE"
+            }
+          ],
+          "primitiveTransformation": {
+            "replaceConfig": {
+              "newValue": {
+                "stringValue": "https://www.example.com/"
+              }
+            }
+          }
+        },
+        {
+          "infoTypes": [
+            {
+              "name": "RETIRED"
+            }
+          ],
+          "primitiveTransformation": {
+            "replaceConfig": {
+              "newValue": {
+                "booleanValue": true
+              }
+            }
+          }
+        },
+        {
+          "infoTypes": [
+            {
+              "name": "LAST_LOGIN"
+            }
+          ],
+          "primitiveTransformation": {
+            "replaceConfig": {
+              "newValue": {
+                "timestampValue": "2014-10-02T15:01:23Z"
+              }
+            }
+          }
+        },
+        {
+          "infoTypes": [
+            {
+              "name": "START_TIME"
+            }
+          ],
+          "primitiveTransformation": {
+            "replaceConfig": {
+              "newValue": {
+                "timeValue": {
+                  "hours": 9,
+                  "minutes": 30,
+                  "seconds": 0,
+                  "nanos": 0
+                }
+              }
+            }
+          }
+        },
+        {
+          "infoTypes": [
+            {
+              "name": "DATE_OF_BIRTH"
+            }
+          ],
+          "primitiveTransformation": {
+            "replaceConfig": {
+              "newValue": {
+                "dateValue": {
+                  "year": 2020,
+                  "month": 1,
+                  "day": 1
+                }
+              }
+            }
+          }
+        },
+        {
+          "infoTypes": [
+            {
+              "name": "PAYDAY"
+            }
+          ],
+          "primitiveTransformation": {
+            "replaceConfig": {
+              "newValue": {
+                "dayOfWeekValue": "FRIDAY"
+              }
+            }
+          }
+        },
+        {
+          "infoTypes": [
+            {
+              "name": "HEIGHT"
+            }
+          ],
+          "primitiveTransformation": {
+            "redactConfig": {}
+          }
+        },
+        {
+          "infoTypes": [
+            {
+              "name": "EMAIL_ADDRESS"
+            },
+            {
+              "name": "LAST_NAME"
+            }
+          ],
+          "primitiveTransformation": {
+            "characterMaskConfig": {
+              "maskingCharacter": "X",
+              "numberToMask": 4,
+              "reverseOrder": true,
+              "charactersToIgnore": [
+                {
+                  "charactersToSkip": "#"
+                },
+                {
+                  "commonCharactersToIgnore": "PUNCTUATION"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "infoTypes": [
+            {
+              "name": "HOME_ADDRESS"
+            }
+          ],
+          "primitiveTransformation": {
+            "cryptoReplaceFfxFpeConfig": {
+              "context": {
+                "name": "sometweak"
+              },
+              "cryptoKey": {
+                "transient": {
+                  "name": "beep"
+                }
+              },
+              "surrogateInfoType": {
+                "name": "abc"
+              },
+              "commonAlphabet": "NUMERIC"
+            }
+          }
+        },
+        {
+          "infoTypes": [
+            {
+              "name": "BANK_ACCOUNT_NUMBER"
+            }
+          ],
+          "primitiveTransformation": {
+            "cryptoReplaceFfxFpeConfig": {
+              "cryptoKey": {
+                "unwrapped": {
+                  "key": "vJZQm1FyV4BdF99nlcUYNA=="
+                }
+              },
+              "customAlphabet": "~`!@#$%^&*()_-+={[}]|:;\"'<,>.?/"
+            }
+          }
+        },
+        {
+          "infoTypes": [
+            {
+              "name": "BILLING_ADDRESS"
+            }
+          ],
+          "primitiveTransformation": {
+            "cryptoReplaceFfxFpeConfig": {
+              "cryptoKey": {
+                "kmsWrapped": {
+                  "wrappedKey": "vJZQm1FyV4BdF99nlcUYNA==",
+                  "cryptoKeyName": "projects/{{project}}/locations/global/keyRings/{{ring}}/cryptoKeys/{{key1}}"
+                }
+              },
+              "radix": 4
+            }
+          }
+        },
+        {
+          "infoTypes": [
+            {
+              "name": "FIRST_NAME"
+            }
+          ],
+          "primitiveTransformation": {
+            "fixedSizeBucketingConfig": {
+              "lowerBound": {
+                "integerValue": 7
+              },
+              "upperBound": {
+                "integerValue": 9
+              },
+              "bucketSize": 2.5
+            }
+          }
+        },
+        {
+          "infoTypes": [
+            {
+              "name": "MIDDLE_NAME"
+            }
+          ],
+          "primitiveTransformation": {
+            "bucketingConfig": {
+              "buckets": [
+                {
+                  "min": {
+                    "integerValue": 7
+                  },
+                  "max": {
+                    "integerValue": 9
+                  },
+                  "replacementValue": {
+                    "integerValue": 6
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "infoTypes": [
+            {
+              "name": "EYE_COLOR"
+            }
+          ],
+          "primitiveTransformation": {
+            "replaceWithInfoTypeConfig": {}
+          }
+        },
+        {
+          "infoTypes": [
+            {
+              "name": "START_DATE"
+            }
+          ],
+          "primitiveTransformation": {
+            "timePartConfig": {
+              "partToExtract": "YEAR"
+            }
+          }
+        },
+        {
+          "infoTypes": [
+            {
+              "name": "CREDIT_CARD_NUMBER"
+            }
+          ],
+          "primitiveTransformation": {
+            "cryptoDeterministicConfig": {
+              "context": {
+                "name": "sometweak"
+              },
+              "cryptoKey": {
+                "transient": {
+                  "name": "beep"
+                }
+              },
+              "surrogateInfoType": {
+                "name": "abc"
+              }
+            }
+          }
+        },
+        {
+          "infoTypes": [
+            {
+              "name": "LAST_VACATION"
+            }
+          ],
+          "primitiveTransformation": {
+            "dateShiftConfig": {
+              "upperBoundDays": 3,
+              "lowerBoundDays": 2,
+              "context": {
+                "name": "def"
+              },
+              "cryptoKey": {
+                "transient": {
+                  "name": "beep"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,86 @@
+// Copyright 2023 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum ComputeAlphaRouteWarningCodeEnum {
+  ComputeAlphaRouteWarningCodeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeAlphaRouteWarningCodeEnumBAD_REQUEST = 1;
+  ComputeAlphaRouteWarningCodeEnumFORBIDDEN = 2;
+  ComputeAlphaRouteWarningCodeEnumNOT_FOUND = 3;
+  ComputeAlphaRouteWarningCodeEnumCONFLICT = 4;
+  ComputeAlphaRouteWarningCodeEnumGONE = 5;
+  ComputeAlphaRouteWarningCodeEnumPRECONDITION_FAILED = 6;
+  ComputeAlphaRouteWarningCodeEnumINTERNAL_ERROR = 7;
+  ComputeAlphaRouteWarningCodeEnumSERVICE_UNAVAILABLE = 8;
+}
+
+message ComputeAlphaRoute {
+  int64 id = 1;
+  string name = 2;
+  string description = 3;
+  string network = 4;
+  repeated string tag = 5;
+  string dest_range = 6;
+  int64 priority = 7;
+  string next_hop_instance = 8;
+  string next_hop_ip = 9;
+  string next_hop_network = 10;
+  string next_hop_gateway = 11;
+  string next_hop_peering = 12;
+  string next_hop_ilb = 13;
+  repeated ComputeAlphaRouteWarning warning = 14;
+  string next_hop_vpn_tunnel = 15;
+  string self_link = 16;
+  string project = 17;
+}
+
+message ComputeAlphaRouteWarning {
+  ComputeAlphaRouteWarningCodeEnum code = 1;
+  string message = 2;
+  map<string, string> data = 3;
+}
+
+message ApplyComputeAlphaRouteRequest {
+  ComputeAlphaRoute resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteComputeAlphaRouteRequest {
+  string service_account_file = 1;
+  ComputeAlphaRoute resource = 2;
+}
+
+message ListComputeAlphaRouteRequest {
+  string service_account_file = 1;
+  string Project = 2;
+}
+
+message ListComputeAlphaRouteResponse {
+  repeated ComputeAlphaRoute items = 1;
+}
+
+service ComputeAlphaRouteService {
+  rpc ApplyComputeAlphaRoute(ApplyComputeAlphaRouteRequest) returns (ComputeAlphaRoute);
+  rpc DeleteComputeAlphaRoute(DeleteComputeAlphaRouteRequest) returns (google.protobuf.Empty);
+  rpc ListComputeAlphaRoute(ListComputeAlphaRouteRequest) returns (ListComputeAlphaRouteResponse);
+}

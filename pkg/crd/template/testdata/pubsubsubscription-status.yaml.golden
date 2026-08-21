@@ -1,0 +1,7 @@
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+observedGeneration: integer

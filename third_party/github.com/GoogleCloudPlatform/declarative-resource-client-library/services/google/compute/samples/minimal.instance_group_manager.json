@@ -1,0 +1,7 @@
+{
+  "name": "{{manager}}",
+  "project": "{{project}}",
+  "location": "{{region}}",
+  "targetSize": 1,
+  "instanceTemplate": "{{ref:first.instance_template.json:selfLink}}"
+}

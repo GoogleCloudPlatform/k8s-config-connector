@@ -1,0 +1,37 @@
+apiVersion: networksecurity.cnrm.cloud.google.com/v1beta1
+kind: NetworkSecurityAuthorizationPolicy
+metadata:
+  name: networksecurityauthorizationpolicy-full-${uniqueId}
+  labels:
+    app.kubernetes.io/name: "mock-app"
+    app.kubernetes.io/instance: "mock-instance"
+    app.kubernetes.io/version: "v1.0.0"
+    app.kubernetes.io/component: "mock-component"
+    app.kubernetes.io/part-of: "mock-part-of"
+    app.kubernetes.io/managed-by: "configmanagement.gke.io"
+    applyset.kubernetes.io/id: mock-applyset-id
+    configmanagement.gke.io/sync-name: mock-sync-name
+    configmanagement.gke.io/sync-namespace: mock-sync-namespace
+    custom-label: "foo" # valid label
+spec:
+  description: "A full authorization policy for testing"
+  action: "ALLOW"
+  location: "global"
+  projectRef:
+    external: "${projectId}"
+  rules:
+    - sources:
+        - principals:
+            - "spiffe://foo.bar/ns/default/sa/default"
+          ipBlocks:
+            - "1.2.3.4/32"
+      destinations:
+        - hosts:
+            - "example.com"
+          ports:
+            - 8080
+          methods:
+            - "GET"
+          httpHeaderMatch:
+            headerName: "X-Test-Header"
+            regexMatch: ".*"

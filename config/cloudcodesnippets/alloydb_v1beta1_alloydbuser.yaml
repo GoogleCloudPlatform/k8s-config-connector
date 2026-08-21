@@ -1,0 +1,16 @@
+label: Config Connector AlloyDBUser
+markdownDescription: Creates yaml for a AlloyDBUser resource
+insertText: |
+  apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
+  kind: AlloyDBUser
+  metadata:
+    name: \${1:alloydbuser-name}
+  spec:
+    clusterRef:
+      name: \${2:alloydbuser-dep-database}
+    databaseRoles:
+    - \${3:pg_monitor}
+    - \${4:pg_signal_backend}
+    userType: \${5:ALLOYDB_BUILT_IN}
+    password:
+      value: \${6:pg-built-in}

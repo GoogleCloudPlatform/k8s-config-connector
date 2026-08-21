@@ -1,0 +1,9 @@
+{
+  "exclude_update_coverage": [
+    "networkConfig.managementCidr",
+    "networkConfig.vmwareEngineNetwork",
+    "managementCluster.clusterId",
+    "managementCluster.nodeTypeConfigs.nodeCount",
+    "managementCluster.nodeTypeConfigs.customCoreCount"
+  ]
+}

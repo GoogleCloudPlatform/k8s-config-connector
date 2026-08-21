@@ -1,0 +1,25 @@
+apiVersion: firestore.cnrm.cloud.google.com/v1alpha1
+kind: FirestoreDocument
+metadata:
+  name: document1
+spec:
+  collection: collection1
+  databaseRef:
+    external: projects/${projectId}/databases/firestoredatabase-${uniqueId}
+  fields:
+    arrayField:
+    - false
+    - 1
+    - 2
+    - three (3)
+    - 4
+    - 5
+    - six (6)
+    - 7
+    boolField: true
+    doubleField: 3.1415
+    intField: 123
+    objectField:
+      baz: bat2
+      foo: bar2
+    stringField: foo2

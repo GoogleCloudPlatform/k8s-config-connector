@@ -1,0 +1,8 @@
+{
+  "name": "{{name}}",
+  "project": "{{project}}",
+  "destRange": "0.0.0.0/0",
+  "network": "{{ref:basic.subnetwork.json:network}}",
+  "nextHopIP": "192.168.10.3",
+  "priority": 100
+}

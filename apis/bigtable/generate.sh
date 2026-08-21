@@ -1,0 +1,69 @@
+#!/bin/bash
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+
+CONTROLLERBUILDER="${CONTROLLERBUILDER:-}"
+if [[ -z "${CONTROLLERBUILDER}" ]]; then
+  if [[ -x "${REPO_ROOT}/bin/controllerbuilder" ]]; then
+    CONTROLLERBUILDER="${REPO_ROOT}/bin/controllerbuilder"
+  else
+    CONTROLLERBUILDER="go run ${REPO_ROOT}/dev/tools/controllerbuilder"
+  fi
+fi
+source "${REPO_ROOT}/dev/tools/goimports.sh"
+cd ${REPO_ROOT}/dev/tools/controllerbuilder
+# Pin a googleapis SHA that contains the google.bigtable.admin.v2 service definition
+PROTO_SHA="5993bc685e72fbda796378c146533f7ef6e95d8a"
+PROTO_OUT="${REPO_ROOT}/.build/googleapis-${PROTO_SHA}.pb"
+
+./generate-proto.sh ${PROTO_SHA} ${PROTO_OUT}
+
+# --- v1alpha1 ---
+${CONTROLLERBUILDER} generate-types \
+  --service google.bigtable.admin.v2 \
+  --api-version bigtable.cnrm.cloud.google.com/v1alpha1  \
+  --resource BigtableAuthorizedView:AuthorizedView \
+  --resource BigtableBackup:Backup \
+  --resource BigtableCluster:Cluster \
+  --resource BigtableLogicalView:LogicalView \
+  --resource BigtableMaterializedView:MaterializedView \
+  --proto-source-path ${PROTO_OUT}
+
+# --- v1beta1 ---
+${CONTROLLERBUILDER} generate-types \
+  --service google.bigtable.admin.v2 \
+  --api-version bigtable.cnrm.cloud.google.com/v1beta1  \
+  --resource BigtableAppProfile:AppProfile \
+  --resource BigtableTable:Table \
+  --resource BigtableGCPolicy:GcRule \
+  --proto-source-path ${PROTO_OUT}
+
+${CONTROLLERBUILDER} generate-mapper \
+  --service google.bigtable.admin.v2 \
+  --api-version "bigtable.cnrm.cloud.google.com/v1beta1" \
+  --multiversion \
+  --proto-source-path ${PROTO_OUT}
+
+cd ${REPO_ROOT}
+dev/tasks/generate-crds
+
+if [ -d "${REPO_ROOT}/pkg/controller/direct/bigtable" ]; then
+  go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w pkg/controller/direct/bigtable/
+fi

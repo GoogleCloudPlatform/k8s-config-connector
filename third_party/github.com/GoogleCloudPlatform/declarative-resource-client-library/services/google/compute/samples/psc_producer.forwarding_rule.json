@@ -1,0 +1,10 @@
+{
+  "name": "{{rule1}}",
+  "project": "{{project}}",
+  "location": "{{region}}",
+  "network": "{{ref:psc_producer.network.json:selfLink}}",
+  "subnetwork": "{{ref:psc_producer.subnetwork.json:selfLink}}",
+  "loadBalancingScheme": "INTERNAL",
+  "backendService": "{{ref:psc.backend_service.json:selfLink}}",
+  "allPorts": true
+}

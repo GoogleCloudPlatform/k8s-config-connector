@@ -1,0 +1,26 @@
+label: Config Connector ComputeInstanceGroupManager
+markdownDescription: Creates yaml for a ComputeInstanceGroupManager resource
+insertText: |
+  apiVersion: compute.cnrm.cloud.google.com/v1beta1
+  kind: ComputeInstanceGroupManager
+  metadata:
+    name: \${1:computeinstancegroupmanager-name}
+  spec:
+    projectRef:
+      external: \${2:projects/[PROJECT_ID?]}
+    location: \${3:us-central1}
+    baseInstanceName: \${4:app}
+    autoHealingPolicies:
+    - healthCheckRef:
+        name: \${5:computeinstancegroupmanager-dep-regional}
+      initialDelaySec: \${6:300}
+    targetSize: \${7:3}
+    instanceTemplateRef:
+      name: \${8:computeinstancegroupmanager-dep-regional}
+    updatePolicy:
+      instanceRedistributionType: \${9:PROACTIVE}
+      minimalAction: \${10:RESTART}
+      maxSurge:
+        fixed: \${11:3}
+      maxUnavailable:
+        fixed: \${12:3}

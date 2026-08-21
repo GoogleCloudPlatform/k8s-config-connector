@@ -1,0 +1,128 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum CloudidentityBetaGroupDynamicGroupMetadataQueriesResourceTypeEnum {
+  CloudidentityBetaGroupDynamicGroupMetadataQueriesResourceTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  CloudidentityBetaGroupDynamicGroupMetadataQueriesResourceTypeEnumRESOURCE_TYPE_UNSPECIFIED = 1;
+  CloudidentityBetaGroupDynamicGroupMetadataQueriesResourceTypeEnumUSER = 2;
+}
+
+enum CloudidentityBetaGroupDynamicGroupMetadataStatusStatusEnum {
+  CloudidentityBetaGroupDynamicGroupMetadataStatusStatusEnumNO_VALUE_DO_NOT_USE = 0;
+  CloudidentityBetaGroupDynamicGroupMetadataStatusStatusEnumSTATUS_UNSPECIFIED = 1;
+  CloudidentityBetaGroupDynamicGroupMetadataStatusStatusEnumUP_TO_DATE = 2;
+  CloudidentityBetaGroupDynamicGroupMetadataStatusStatusEnumUPDATING_MEMBERSHIPS = 3;
+  CloudidentityBetaGroupDynamicGroupMetadataStatusStatusEnumINVALID_QUERY = 4;
+}
+
+enum CloudidentityBetaGroupInitialGroupConfigEnum {
+  CloudidentityBetaGroupInitialGroupConfigEnumNO_VALUE_DO_NOT_USE = 0;
+  CloudidentityBetaGroupInitialGroupConfigEnumINITIAL_GROUP_CONFIG_UNSPECIFIED = 1;
+  CloudidentityBetaGroupInitialGroupConfigEnumWITH_INITIAL_OWNER = 2;
+  CloudidentityBetaGroupInitialGroupConfigEnumEMPTY = 3;
+}
+
+message CloudidentityBetaGroup {
+  string name = 1;
+  CloudidentityBetaGroupGroupKey group_key = 2;
+  repeated CloudidentityBetaGroupAdditionalGroupKeys additional_group_keys = 3;
+  string parent = 4;
+  string display_name = 5;
+  string description = 6;
+  string create_time = 7;
+  string update_time = 8;
+  map<string, string> labels = 9;
+  int64 direct_member_count = 10;
+  CloudidentityBetaGroupDirectMemberCountPerType direct_member_count_per_type = 11;
+  repeated CloudidentityBetaGroupDerivedAliases derived_aliases = 12;
+  CloudidentityBetaGroupDynamicGroupMetadata dynamic_group_metadata = 13;
+  repeated CloudidentityBetaGroupPosixGroups posix_groups = 14;
+  CloudidentityBetaGroupInitialGroupConfigEnum initial_group_config = 15;
+}
+
+message CloudidentityBetaGroupGroupKey {
+  string id = 1;
+  string namespace = 2;
+}
+
+message CloudidentityBetaGroupAdditionalGroupKeys {
+  string id = 1;
+  string namespace = 2;
+}
+
+message CloudidentityBetaGroupDirectMemberCountPerType {
+  int64 user_count = 1;
+  int64 group_count = 2;
+}
+
+message CloudidentityBetaGroupDerivedAliases {
+  string id = 1;
+  string namespace = 2;
+}
+
+message CloudidentityBetaGroupDynamicGroupMetadata {
+  repeated CloudidentityBetaGroupDynamicGroupMetadataQueries queries = 1;
+  CloudidentityBetaGroupDynamicGroupMetadataStatus status = 2;
+}
+
+message CloudidentityBetaGroupDynamicGroupMetadataQueries {
+  CloudidentityBetaGroupDynamicGroupMetadataQueriesResourceTypeEnum resource_type = 1;
+  string query = 2;
+}
+
+message CloudidentityBetaGroupDynamicGroupMetadataStatus {
+  CloudidentityBetaGroupDynamicGroupMetadataStatusStatusEnum status = 1;
+  string status_time = 2;
+}
+
+message CloudidentityBetaGroupPosixGroups {
+  string name = 1;
+  string gid = 2;
+  string system_id = 3;
+}
+
+message ApplyCloudidentityBetaGroupRequest {
+  CloudidentityBetaGroup resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteCloudidentityBetaGroupRequest {
+  string service_account_file = 1;
+  CloudidentityBetaGroup resource = 2;
+}
+
+message ListCloudidentityBetaGroupRequest {
+  string service_account_file = 1;
+  string Parent = 2;
+}
+
+message ListCloudidentityBetaGroupResponse {
+  repeated CloudidentityBetaGroup items = 1;
+}
+
+service CloudidentityBetaGroupService {
+  rpc ApplyCloudidentityBetaGroup(ApplyCloudidentityBetaGroupRequest) returns (CloudidentityBetaGroup);
+  rpc DeleteCloudidentityBetaGroup(DeleteCloudidentityBetaGroupRequest) returns (google.protobuf.Empty);
+  rpc ListCloudidentityBetaGroup(ListCloudidentityBetaGroupRequest) returns (ListCloudidentityBetaGroupResponse);
+}

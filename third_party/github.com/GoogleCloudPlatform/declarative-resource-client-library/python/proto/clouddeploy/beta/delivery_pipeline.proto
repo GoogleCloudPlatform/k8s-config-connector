@@ -1,0 +1,195 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+message ClouddeployBetaDeliveryPipeline {
+  string name = 1;
+  string uid = 2;
+  string description = 3;
+  map<string, string> annotations = 4;
+  map<string, string> labels = 5;
+  string create_time = 6;
+  string update_time = 7;
+  ClouddeployBetaDeliveryPipelineSerialPipeline serial_pipeline = 8;
+  ClouddeployBetaDeliveryPipelineCondition condition = 9;
+  string etag = 10;
+  string project = 11;
+  string location = 12;
+  bool suspended = 13;
+}
+
+message ClouddeployBetaDeliveryPipelineSerialPipeline {
+  repeated ClouddeployBetaDeliveryPipelineSerialPipelineStages stages = 1;
+}
+
+message ClouddeployBetaDeliveryPipelineSerialPipelineStages {
+  string target_id = 1;
+  repeated string profiles = 2;
+  ClouddeployBetaDeliveryPipelineSerialPipelineStagesStrategy strategy = 3;
+  repeated ClouddeployBetaDeliveryPipelineSerialPipelineStagesDeployParameters deploy_parameters = 4;
+}
+
+message ClouddeployBetaDeliveryPipelineSerialPipelineStagesStrategy {
+  ClouddeployBetaDeliveryPipelineSerialPipelineStagesStrategyStandard standard = 1;
+  ClouddeployBetaDeliveryPipelineSerialPipelineStagesStrategyCanary canary = 2;
+}
+
+message ClouddeployBetaDeliveryPipelineSerialPipelineStagesStrategyStandard {
+  bool verify = 1;
+  ClouddeployBetaDeliveryPipelineSerialPipelineStagesStrategyStandardPredeploy predeploy = 2;
+  ClouddeployBetaDeliveryPipelineSerialPipelineStagesStrategyStandardPostdeploy postdeploy = 3;
+}
+
+message ClouddeployBetaDeliveryPipelineSerialPipelineStagesStrategyStandardPredeploy {
+  repeated string actions = 1;
+}
+
+message ClouddeployBetaDeliveryPipelineSerialPipelineStagesStrategyStandardPostdeploy {
+  repeated string actions = 1;
+}
+
+message ClouddeployBetaDeliveryPipelineSerialPipelineStagesStrategyCanary {
+  ClouddeployBetaDeliveryPipelineSerialPipelineStagesStrategyCanaryRuntimeConfig runtime_config = 1;
+  ClouddeployBetaDeliveryPipelineSerialPipelineStagesStrategyCanaryCanaryDeployment canary_deployment = 2;
+  ClouddeployBetaDeliveryPipelineSerialPipelineStagesStrategyCanaryCustomCanaryDeployment custom_canary_deployment = 3;
+}
+
+message ClouddeployBetaDeliveryPipelineSerialPipelineStagesStrategyCanaryRuntimeConfig {
+  ClouddeployBetaDeliveryPipelineSerialPipelineStagesStrategyCanaryRuntimeConfigKubernetes kubernetes = 1;
+  ClouddeployBetaDeliveryPipelineSerialPipelineStagesStrategyCanaryRuntimeConfigCloudRun cloud_run = 2;
+}
+
+message ClouddeployBetaDeliveryPipelineSerialPipelineStagesStrategyCanaryRuntimeConfigKubernetes {
+  ClouddeployBetaDeliveryPipelineSerialPipelineStagesStrategyCanaryRuntimeConfigKubernetesGatewayServiceMesh gateway_service_mesh = 1;
+  ClouddeployBetaDeliveryPipelineSerialPipelineStagesStrategyCanaryRuntimeConfigKubernetesServiceNetworking service_networking = 2;
+}
+
+message ClouddeployBetaDeliveryPipelineSerialPipelineStagesStrategyCanaryRuntimeConfigKubernetesGatewayServiceMesh {
+  string http_route = 1;
+  string service = 2;
+  string deployment = 3;
+  string route_update_wait_time = 4;
+  string stable_cutback_duration = 5;
+}
+
+message ClouddeployBetaDeliveryPipelineSerialPipelineStagesStrategyCanaryRuntimeConfigKubernetesServiceNetworking {
+  string service = 1;
+  string deployment = 2;
+  bool disable_pod_overprovisioning = 3;
+}
+
+message ClouddeployBetaDeliveryPipelineSerialPipelineStagesStrategyCanaryRuntimeConfigCloudRun {
+  bool automatic_traffic_control = 1;
+  repeated string canary_revision_tags = 2;
+  repeated string prior_revision_tags = 3;
+  repeated string stable_revision_tags = 4;
+}
+
+message ClouddeployBetaDeliveryPipelineSerialPipelineStagesStrategyCanaryCanaryDeployment {
+  repeated int64 percentages = 1;
+  bool verify = 2;
+  ClouddeployBetaDeliveryPipelineSerialPipelineStagesStrategyCanaryCanaryDeploymentPredeploy predeploy = 3;
+  ClouddeployBetaDeliveryPipelineSerialPipelineStagesStrategyCanaryCanaryDeploymentPostdeploy postdeploy = 4;
+}
+
+message ClouddeployBetaDeliveryPipelineSerialPipelineStagesStrategyCanaryCanaryDeploymentPredeploy {
+  repeated string actions = 1;
+}
+
+message ClouddeployBetaDeliveryPipelineSerialPipelineStagesStrategyCanaryCanaryDeploymentPostdeploy {
+  repeated string actions = 1;
+}
+
+message ClouddeployBetaDeliveryPipelineSerialPipelineStagesStrategyCanaryCustomCanaryDeployment {
+  repeated ClouddeployBetaDeliveryPipelineSerialPipelineStagesStrategyCanaryCustomCanaryDeploymentPhaseConfigs phase_configs = 1;
+}
+
+message ClouddeployBetaDeliveryPipelineSerialPipelineStagesStrategyCanaryCustomCanaryDeploymentPhaseConfigs {
+  string phase_id = 1;
+  int64 percentage = 2;
+  repeated string profiles = 3;
+  bool verify = 4;
+  ClouddeployBetaDeliveryPipelineSerialPipelineStagesStrategyCanaryCustomCanaryDeploymentPhaseConfigsPredeploy predeploy = 5;
+  ClouddeployBetaDeliveryPipelineSerialPipelineStagesStrategyCanaryCustomCanaryDeploymentPhaseConfigsPostdeploy postdeploy = 6;
+}
+
+message ClouddeployBetaDeliveryPipelineSerialPipelineStagesStrategyCanaryCustomCanaryDeploymentPhaseConfigsPredeploy {
+  repeated string actions = 1;
+}
+
+message ClouddeployBetaDeliveryPipelineSerialPipelineStagesStrategyCanaryCustomCanaryDeploymentPhaseConfigsPostdeploy {
+  repeated string actions = 1;
+}
+
+message ClouddeployBetaDeliveryPipelineSerialPipelineStagesDeployParameters {
+  map<string, string> values = 1;
+  map<string, string> match_target_labels = 2;
+}
+
+message ClouddeployBetaDeliveryPipelineCondition {
+  ClouddeployBetaDeliveryPipelineConditionPipelineReadyCondition pipeline_ready_condition = 1;
+  ClouddeployBetaDeliveryPipelineConditionTargetsPresentCondition targets_present_condition = 2;
+  ClouddeployBetaDeliveryPipelineConditionTargetsTypeCondition targets_type_condition = 3;
+}
+
+message ClouddeployBetaDeliveryPipelineConditionPipelineReadyCondition {
+  bool status = 1;
+  string update_time = 2;
+}
+
+message ClouddeployBetaDeliveryPipelineConditionTargetsPresentCondition {
+  bool status = 1;
+  repeated string missing_targets = 2;
+  string update_time = 3;
+}
+
+message ClouddeployBetaDeliveryPipelineConditionTargetsTypeCondition {
+  bool status = 1;
+  string error_details = 2;
+}
+
+message ApplyClouddeployBetaDeliveryPipelineRequest {
+  ClouddeployBetaDeliveryPipeline resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteClouddeployBetaDeliveryPipelineRequest {
+  string service_account_file = 1;
+  ClouddeployBetaDeliveryPipeline resource = 2;
+}
+
+message ListClouddeployBetaDeliveryPipelineRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListClouddeployBetaDeliveryPipelineResponse {
+  repeated ClouddeployBetaDeliveryPipeline items = 1;
+}
+
+service ClouddeployBetaDeliveryPipelineService {
+  rpc ApplyClouddeployBetaDeliveryPipeline(ApplyClouddeployBetaDeliveryPipelineRequest) returns (ClouddeployBetaDeliveryPipeline);
+  rpc DeleteClouddeployBetaDeliveryPipeline(DeleteClouddeployBetaDeliveryPipelineRequest) returns (google.protobuf.Empty);
+  rpc ListClouddeployBetaDeliveryPipeline(ListClouddeployBetaDeliveryPipelineRequest) returns (ListClouddeployBetaDeliveryPipelineResponse);
+}

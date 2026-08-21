@@ -1,0 +1,17 @@
+apiVersion: networksecurity.cnrm.cloud.google.com/v1alpha1
+kind: NetworkSecuritySecurityProfileGroup
+metadata:
+  name: spg-max-${uniqueId}
+spec:
+  projectRef:
+    external: "projects/${projectId}"
+  location: global
+  description: "Maximal security profile group"
+  labels:
+    foo: bar
+  # found incompatible profiles:
+  # [THREAT_PREVENTION and CUSTOM_MIRRORING THREAT_PREVENTION and CUSTOM_INTERCEPT URL_FILTERING and CUSTOM_MIRRORING URL_FILTERING and CUSTOM_INTERCEPT CUSTOM_MIRRORING and CUSTOM_INTERCEPT]
+  threatPreventionProfileRef:
+    name: sp-dep-${uniqueId}-tp
+  urlFilteringProfileRef:
+    name: sp-dep-${uniqueId}-uf

@@ -1,0 +1,4 @@
+```release-note:bug
+compute: fixed the failure when `min_required_replicas` is set to 0 on `google_compute_autoscaler `
+compute: fixed the failure when `min_required_replicas` is set to 0 on `google_compute_region_autoscaler`
+```

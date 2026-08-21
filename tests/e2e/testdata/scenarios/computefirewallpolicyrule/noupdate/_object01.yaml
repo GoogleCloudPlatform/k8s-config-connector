@@ -1,0 +1,33 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeFirewallPolicyRule
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${projectId}
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  name: firewallpolicyrule-${uniqueId}
+  namespace: ${projectId}
+spec:
+  action: deny
+  direction: INGRESS
+  firewallPolicyRef:
+    name: firewallpolicy-${uniqueId}
+  match:
+    layer4Configs:
+    - ipProtocol: tcp
+    srcIPRanges:
+    - 10.100.0.1/32
+  priority: 9000
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: locations/global/firewallPolicies/${firewallPolicyID}/rules/9000
+  kind: compute#firewallPolicyRule
+  observedGeneration: 1
+  ruleTupleCount: 2

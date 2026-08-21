@@ -1,0 +1,16 @@
+label: Config Connector CloudIdentityGroup
+markdownDescription: Creates yaml for a CloudIdentityGroup resource
+insertText: |
+  apiVersion: cloudidentity.cnrm.cloud.google.com/v1beta1
+  kind: CloudIdentityGroup
+  metadata:
+    name: \${1:cloudidentitygroup-name}
+  spec:
+    displayName: \${2:Cloud Identity Group Name}
+    description: \${3:This is a test CloudIdentityGroup. It should be modified before
+      use as a sample.}
+    groupKey:
+      id: \${4:example.com}
+    parent: \${5:customers/C00qzcxfe}
+    labels:
+      cloudidentity.googleapis.com/groups.discussion_forum: \${6:}

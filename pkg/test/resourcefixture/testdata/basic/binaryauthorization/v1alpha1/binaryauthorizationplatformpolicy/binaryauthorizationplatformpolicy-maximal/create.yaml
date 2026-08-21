@@ -1,0 +1,21 @@
+apiVersion: binaryauthorization.cnrm.cloud.google.com/v1alpha1
+kind: BinaryAuthorizationPlatformPolicy
+metadata:
+  name: binauthz-maximal-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  platform: gke
+  description: "A maximal platform policy"
+  gkePolicy:
+    imageAllowlist:
+      allowPattern:
+        - "gcr.io/my-project/*"
+    checkSets:
+      - displayName: "allow-all-checkset"
+        imageAllowlist:
+          allowPattern:
+            - "gcr.io/my-project/*"
+        checks:
+          - displayName: "always-deny-check"
+            alwaysDeny: true

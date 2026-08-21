@@ -1,0 +1,64 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- Ancestors:
+  - projects/1234567890
+  - organizations/1234567890
+  Name: //bigquery.googleapis.com/projects/cli-test-project/datasets/bigquerydatasetsamplec99k2khjhfu8dfrt53mr
+  asset_type: bigquery.googleapis.com/Dataset
+- Ancestors:
+  - projects/1234567890
+  - organizations/1234567890
+  Name: //cloudkms.googleapis.com/projects/cli-test-project/locations/us-central1/keyRings/key-ring-4dln90vis0b1c6f1jja9
+  asset_type: cloudkms.googleapis.com/KeyRing
+- Ancestors:
+  - projects/1234567890
+  - organizations/1234567890
+  Name: //cloudsql.googleapis.com/projects/cli-test-project/instances/sqluser-dep-7olc12tp9tdancsggr6s
+  asset_type: sqladmin.googleapis.com/Instance
+- Ancestors:
+  - projects/1234567890
+  - organizations/1234567890
+  Name: //compute.googleapis.com/projects/cli-test-project/global/backendServices/computebackendservice-8034p172pirpg3bg31te
+  asset_type: compute.googleapis.com/BackendService
+- Ancestors:
+  - projects/1234567890
+  - organizations/1234567890
+  Name: //compute.googleapis.com/projects/cli-test-project/zones/us-central1-a/disks/computedisk-39kl1g908j6npdp7pa9f
+  asset_type: compute.googleapis.com/Disk
+- Ancestors:
+  - projects/1234567890
+  - organizations/1234567890
+  Name: //compute.googleapis.com/projects/cli-test-project/regions/us-central1/forwardingRules/computeforwardingrule1-1j26msq4eebfv63n6sil
+  asset_type: compute.googleapis.com/ForwardingRule
+- Ancestors:
+  - projects/1234567890
+  - organizations/1234567890
+  Name: //compute.googleapis.com/projects/cli-test-project/global/httpsHealthChecks/computehttpshealthcheck-a47jlrshb6gd936e4ldp
+  asset_type: compute.googleapis.com/HttpsHealthCheck
+- Ancestors:
+  - projects/1234567890
+  - organizations/1234567890
+  Name: //compute.googleapis.com/projects/cli-test-project/global/networks/computenetwork-f1r6mrivuob8ir3e0ddn
+  asset_type: compute.googleapis.com/Network
+- Ancestors:
+  - projects/1234567890
+  - organizations/1234567890
+  Name: //compute.googleapis.com/projects/cli-test-project/regions/southamerica-east1/subnetworks/computenetwork-5c4l43579mb0sbvi5pn9
+  asset_type: compute.googleapis.com/Subnetwork
+- Ancestors:
+  - projects/1234567890
+  - organizations/1234567890
+  Name: //storage.googleapis.com/storagebucket-sample-696uso65hngc4js48ic9
+  asset_type: storage.googleapis.com/Bucket

@@ -1,0 +1,5065 @@
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+version: 2
+interactions:
+  - id: 0
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/meshes/networkservicesmesh-1-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 328.033817ms
+  - id: 1
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/meshes/networkservicesmesh-2-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 333.858825ms
+  - id: 2
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/gateways/networkservicesgateway-1-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 350.247514ms
+  - id: 3
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/gateways/networkservicesgateway-2-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 399.031829ms
+  - id: 4
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/meshes/networkservicesmesh-1-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 272.713693ms
+  - id: 5
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/meshes/networkservicesmesh-2-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 302.341912ms
+  - id: 6
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/gateways/networkservicesgateway-1-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 275.238611ms
+  - id: 7
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/gateways/networkservicesgateway-2-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 301.132964ms
+  - id: 8
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/meshes/networkservicesmesh-1-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 130.081202ms
+  - id: 9
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/gateways/networkservicesgateway-1-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 126.249953ms
+  - id: 10
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/gateways/networkservicesgateway-2-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 133.230073ms
+  - id: 11
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/meshes/networkservicesmesh-2-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 267.021787ms
+  - id: 12
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 161
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: '{"labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"name":"projects/example-project/locations/global/meshes/networkservicesmesh-2-3elfauhbt8s3t"}'
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/meshes?alt=json&meshId=networkservicesmesh-2-3elfauhbt8s3t
+      method: POST
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/operations/operation-1714009937984-616e2097ebd66-4fdf99f2-ee37e804",
+          "metadata": {
+            "@type": "type.googleapis.com/google.cloud.networkservices.v1.OperationMetadata",
+            "createTime": "2024-04-25T01:52:19.143431280Z",
+            "target": "projects/example-project/locations/global/meshes/networkservicesmesh-2-3elfauhbt8s3t",
+            "verb": "create",
+            "requestedCancellation": false,
+            "apiVersion": "v1"
+          },
+          "done": false
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 1.39129961s
+  - id: 13
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 230
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: '{"labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"name":"projects/example-project/locations/global/gateways/networkservicesgateway-2-3elfauhbt8s3t","ports":[80,443],"scope":"s-3elfauhbt8s3t-2","type":"OPEN_MESH"}'
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/gateways?alt=json&gatewayId=networkservicesgateway-2-3elfauhbt8s3t
+      method: POST
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/operations/operation-1714009938044-616e2097fa567-195383e0-f07bc337",
+          "metadata": {
+            "@type": "type.googleapis.com/google.cloud.networkservices.v1.OperationMetadata",
+            "createTime": "2024-04-25T01:52:19.177739702Z",
+            "target": "projects/example-project/locations/global/gateways/networkservicesgateway-2-3elfauhbt8s3t",
+            "verb": "create",
+            "requestedCancellation": false,
+            "apiVersion": "v1"
+          },
+          "done": false
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 1.71642859s
+  - id: 14
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 228
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: '{"labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"name":"projects/example-project/locations/global/gateways/networkservicesgateway-1-3elfauhbt8s3t","ports":[80,443],"scope":"s-3elfauhbt8s3t","type":"OPEN_MESH"}'
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/gateways?alt=json&gatewayId=networkservicesgateway-1-3elfauhbt8s3t
+      method: POST
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/operations/operation-1714009937876-616e2097d16e2-f1be42d6-cc586fdc",
+          "metadata": {
+            "@type": "type.googleapis.com/google.cloud.networkservices.v1.OperationMetadata",
+            "createTime": "2024-04-25T01:52:19.372611493Z",
+            "target": "projects/example-project/locations/global/gateways/networkservicesgateway-1-3elfauhbt8s3t",
+            "verb": "create",
+            "requestedCancellation": false,
+            "apiVersion": "v1"
+          },
+          "done": false
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 1.897498346s
+  - id: 15
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 161
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: '{"labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"name":"projects/example-project/locations/global/meshes/networkservicesmesh-1-3elfauhbt8s3t"}'
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/meshes?alt=json&meshId=networkservicesmesh-1-3elfauhbt8s3t
+      method: POST
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/operations/operation-1714009937832-616e2097c6ab3-b6839bfe-47480c03",
+          "metadata": {
+            "@type": "type.googleapis.com/google.cloud.networkservices.v1.OperationMetadata",
+            "createTime": "2024-04-25T01:52:20.132894388Z",
+            "target": "projects/example-project/locations/global/meshes/networkservicesmesh-1-3elfauhbt8s3t",
+            "verb": "create",
+            "requestedCancellation": false,
+            "apiVersion": "v1"
+          },
+          "done": false
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 2.821581113s
+  - id: 16
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/operations/operation-1714009938044-616e2097fa567-195383e0-f07bc337?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/operations/operation-1714009938044-616e2097fa567-195383e0-f07bc337",
+          "metadata": {
+            "@type": "type.googleapis.com/google.cloud.networkservices.v1.OperationMetadata",
+            "createTime": "2024-04-25T01:52:19.177739702Z",
+            "endTime": "2024-04-25T01:52:22.728063785Z",
+            "target": "projects/example-project/locations/global/gateways/networkservicesgateway-2-3elfauhbt8s3t",
+            "verb": "create",
+            "requestedCancellation": false,
+            "apiVersion": "v1"
+          },
+          "done": true,
+          "response": {
+            "@type": "type.googleapis.com/google.cloud.networkservices.v1.Gateway",
+            "name": "projects/example-project/locations/global/gateways/networkservicesgateway-2-3elfauhbt8s3t",
+            "createTime": "2024-04-25T01:52:19.130328246Z",
+            "updateTime": "2024-04-25T01:52:19.130328246Z",
+            "labels": {
+              "cnrm-test": "true",
+              "managed-by-cnrm": "true"
+            },
+            "type": "OPEN_MESH",
+            "scope": "s-3elfauhbt8s3t-2",
+            "ports": [
+              80,
+              443
+            ]
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 273.320517ms
+  - id: 17
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/gateways/networkservicesgateway-2-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/gateways/networkservicesgateway-2-3elfauhbt8s3t",
+          "createTime": "2024-04-25T01:52:19.130328246Z",
+          "updateTime": "2024-04-25T01:52:22.885873183Z",
+          "labels": {
+            "cnrm-test": "true",
+            "managed-by-cnrm": "true"
+          },
+          "type": "OPEN_MESH",
+          "scope": "s-3elfauhbt8s3t-2",
+          "ports": [
+            80,
+            443
+          ],
+          "selfLink": "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/gateways/networkservicesgateway-2-3elfauhbt8s3t"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 305.67826ms
+  - id: 18
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/operations/operation-1714009937984-616e2097ebd66-4fdf99f2-ee37e804?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/operations/operation-1714009937984-616e2097ebd66-4fdf99f2-ee37e804",
+          "metadata": {
+            "@type": "type.googleapis.com/google.cloud.networkservices.v1.OperationMetadata",
+            "createTime": "2024-04-25T01:52:19.143431280Z",
+            "endTime": "2024-04-25T01:52:22.607058872Z",
+            "target": "projects/example-project/locations/global/meshes/networkservicesmesh-2-3elfauhbt8s3t",
+            "verb": "create",
+            "requestedCancellation": false,
+            "apiVersion": "v1"
+          },
+          "done": true,
+          "response": {
+            "@type": "type.googleapis.com/google.cloud.networkservices.v1.Mesh",
+            "name": "projects/example-project/locations/global/meshes/networkservicesmesh-2-3elfauhbt8s3t",
+            "createTime": "2024-04-25T01:52:19.095897946Z",
+            "updateTime": "2024-04-25T01:52:19.095897946Z",
+            "labels": {
+              "cnrm-test": "true",
+              "managed-by-cnrm": "true"
+            }
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 301.778525ms
+  - id: 19
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/operations/operation-1714009937876-616e2097d16e2-f1be42d6-cc586fdc?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/operations/operation-1714009937876-616e2097d16e2-f1be42d6-cc586fdc",
+          "metadata": {
+            "@type": "type.googleapis.com/google.cloud.networkservices.v1.OperationMetadata",
+            "createTime": "2024-04-25T01:52:19.372611493Z",
+            "endTime": "2024-04-25T01:52:22.964756367Z",
+            "target": "projects/example-project/locations/global/gateways/networkservicesgateway-1-3elfauhbt8s3t",
+            "verb": "create",
+            "requestedCancellation": false,
+            "apiVersion": "v1"
+          },
+          "done": true,
+          "response": {
+            "@type": "type.googleapis.com/google.cloud.networkservices.v1.Gateway",
+            "name": "projects/example-project/locations/global/gateways/networkservicesgateway-1-3elfauhbt8s3t",
+            "createTime": "2024-04-25T01:52:19.326576237Z",
+            "updateTime": "2024-04-25T01:52:19.326576237Z",
+            "labels": {
+              "cnrm-test": "true",
+              "managed-by-cnrm": "true"
+            },
+            "type": "OPEN_MESH",
+            "scope": "s-3elfauhbt8s3t",
+            "ports": [
+              80,
+              443
+            ]
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 303.579422ms
+  - id: 20
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/gateways/networkservicesgateway-2-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/gateways/networkservicesgateway-2-3elfauhbt8s3t",
+          "createTime": "2024-04-25T01:52:19.130328246Z",
+          "updateTime": "2024-04-25T01:52:22.885873183Z",
+          "labels": {
+            "cnrm-test": "true",
+            "managed-by-cnrm": "true"
+          },
+          "type": "OPEN_MESH",
+          "scope": "s-3elfauhbt8s3t-2",
+          "ports": [
+            80,
+            443
+          ],
+          "selfLink": "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/gateways/networkservicesgateway-2-3elfauhbt8s3t"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 278.80294ms
+  - id: 21
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/operations/operation-1714009937832-616e2097c6ab3-b6839bfe-47480c03?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/operations/operation-1714009937832-616e2097c6ab3-b6839bfe-47480c03",
+          "metadata": {
+            "@type": "type.googleapis.com/google.cloud.networkservices.v1.OperationMetadata",
+            "createTime": "2024-04-25T01:52:20.132894388Z",
+            "endTime": "2024-04-25T01:52:23.547490313Z",
+            "target": "projects/example-project/locations/global/meshes/networkservicesmesh-1-3elfauhbt8s3t",
+            "verb": "create",
+            "requestedCancellation": false,
+            "apiVersion": "v1"
+          },
+          "done": true,
+          "response": {
+            "@type": "type.googleapis.com/google.cloud.networkservices.v1.Mesh",
+            "name": "projects/example-project/locations/global/meshes/networkservicesmesh-1-3elfauhbt8s3t",
+            "createTime": "2024-04-25T01:52:20.085168090Z",
+            "updateTime": "2024-04-25T01:52:20.085168090Z",
+            "labels": {
+              "cnrm-test": "true",
+              "managed-by-cnrm": "true"
+            }
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 240.574781ms
+  - id: 22
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/gateways/networkservicesgateway-1-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/gateways/networkservicesgateway-1-3elfauhbt8s3t",
+          "createTime": "2024-04-25T01:52:19.326576237Z",
+          "updateTime": "2024-04-25T01:52:23.122573185Z",
+          "labels": {
+            "cnrm-test": "true",
+            "managed-by-cnrm": "true"
+          },
+          "type": "OPEN_MESH",
+          "scope": "s-3elfauhbt8s3t",
+          "ports": [
+            80,
+            443
+          ],
+          "selfLink": "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/gateways/networkservicesgateway-1-3elfauhbt8s3t"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 132.636394ms
+  - id: 23
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/meshes/networkservicesmesh-2-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/meshes/networkservicesmesh-2-3elfauhbt8s3t",
+          "createTime": "2024-04-25T01:52:19.095897946Z",
+          "updateTime": "2024-04-25T01:52:22.770423234Z",
+          "labels": {
+            "cnrm-test": "true",
+            "managed-by-cnrm": "true"
+          },
+          "selfLink": "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/meshes/networkservicesmesh-2-3elfauhbt8s3t"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 274.164814ms
+  - id: 24
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/gateways/networkservicesgateway-2-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/gateways/networkservicesgateway-2-3elfauhbt8s3t",
+          "createTime": "2024-04-25T01:52:19.130328246Z",
+          "updateTime": "2024-04-25T01:52:22.885873183Z",
+          "labels": {
+            "cnrm-test": "true",
+            "managed-by-cnrm": "true"
+          },
+          "type": "OPEN_MESH",
+          "scope": "s-3elfauhbt8s3t-2",
+          "ports": [
+            80,
+            443
+          ],
+          "selfLink": "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/gateways/networkservicesgateway-2-3elfauhbt8s3t"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 282.49488ms
+  - id: 25
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/meshes/networkservicesmesh-1-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/meshes/networkservicesmesh-1-3elfauhbt8s3t",
+          "createTime": "2024-04-25T01:52:20.085168090Z",
+          "updateTime": "2024-04-25T01:52:23.707441159Z",
+          "labels": {
+            "cnrm-test": "true",
+            "managed-by-cnrm": "true"
+          },
+          "selfLink": "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/meshes/networkservicesmesh-1-3elfauhbt8s3t"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 282.13924ms
+  - id: 26
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/gateways/networkservicesgateway-1-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/gateways/networkservicesgateway-1-3elfauhbt8s3t",
+          "createTime": "2024-04-25T01:52:19.326576237Z",
+          "updateTime": "2024-04-25T01:52:23.122573185Z",
+          "labels": {
+            "cnrm-test": "true",
+            "managed-by-cnrm": "true"
+          },
+          "type": "OPEN_MESH",
+          "scope": "s-3elfauhbt8s3t",
+          "ports": [
+            80,
+            443
+          ],
+          "selfLink": "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/gateways/networkservicesgateway-1-3elfauhbt8s3t"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 306.225606ms
+  - id: 27
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/meshes/networkservicesmesh-2-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/meshes/networkservicesmesh-2-3elfauhbt8s3t",
+          "createTime": "2024-04-25T01:52:19.095897946Z",
+          "updateTime": "2024-04-25T01:52:22.770423234Z",
+          "labels": {
+            "cnrm-test": "true",
+            "managed-by-cnrm": "true"
+          },
+          "selfLink": "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/meshes/networkservicesmesh-2-3elfauhbt8s3t"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 90.39433ms
+  - id: 28
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/meshes/networkservicesmesh-2-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/meshes/networkservicesmesh-2-3elfauhbt8s3t",
+          "createTime": "2024-04-25T01:52:19.095897946Z",
+          "updateTime": "2024-04-25T01:52:22.770423234Z",
+          "labels": {
+            "cnrm-test": "true",
+            "managed-by-cnrm": "true"
+          },
+          "selfLink": "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/meshes/networkservicesmesh-2-3elfauhbt8s3t"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 111.138376ms
+  - id: 29
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/gateways/networkservicesgateway-1-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/gateways/networkservicesgateway-1-3elfauhbt8s3t",
+          "createTime": "2024-04-25T01:52:19.326576237Z",
+          "updateTime": "2024-04-25T01:52:23.122573185Z",
+          "labels": {
+            "managed-by-cnrm": "true",
+            "cnrm-test": "true"
+          },
+          "type": "OPEN_MESH",
+          "scope": "s-3elfauhbt8s3t",
+          "ports": [
+            80,
+            443
+          ],
+          "selfLink": "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/gateways/networkservicesgateway-1-3elfauhbt8s3t"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 110.704761ms
+  - id: 30
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/gateways/networkservicesgateway-2-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/gateways/networkservicesgateway-2-3elfauhbt8s3t",
+          "createTime": "2024-04-25T01:52:19.130328246Z",
+          "updateTime": "2024-04-25T01:52:22.885873183Z",
+          "labels": {
+            "cnrm-test": "true",
+            "managed-by-cnrm": "true"
+          },
+          "type": "OPEN_MESH",
+          "scope": "s-3elfauhbt8s3t-2",
+          "ports": [
+            80,
+            443
+          ],
+          "selfLink": "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/gateways/networkservicesgateway-2-3elfauhbt8s3t"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 341.862064ms
+  - id: 31
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/meshes/networkservicesmesh-1-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/meshes/networkservicesmesh-1-3elfauhbt8s3t",
+          "createTime": "2024-04-25T01:52:20.085168090Z",
+          "updateTime": "2024-04-25T01:52:23.707441159Z",
+          "labels": {
+            "cnrm-test": "true",
+            "managed-by-cnrm": "true"
+          },
+          "selfLink": "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/meshes/networkservicesmesh-1-3elfauhbt8s3t"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 264.897175ms
+  - id: 32
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/gateways/networkservicesgateway-1-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/gateways/networkservicesgateway-1-3elfauhbt8s3t",
+          "createTime": "2024-04-25T01:52:19.326576237Z",
+          "updateTime": "2024-04-25T01:52:23.122573185Z",
+          "labels": {
+            "cnrm-test": "true",
+            "managed-by-cnrm": "true"
+          },
+          "type": "OPEN_MESH",
+          "scope": "s-3elfauhbt8s3t",
+          "ports": [
+            80,
+            443
+          ],
+          "selfLink": "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/gateways/networkservicesgateway-1-3elfauhbt8s3t"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 85.657693ms
+  - id: 33
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/meshes/networkservicesmesh-2-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/meshes/networkservicesmesh-2-3elfauhbt8s3t",
+          "createTime": "2024-04-25T01:52:19.095897946Z",
+          "updateTime": "2024-04-25T01:52:22.770423234Z",
+          "labels": {
+            "managed-by-cnrm": "true",
+            "cnrm-test": "true"
+          },
+          "selfLink": "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/meshes/networkservicesmesh-2-3elfauhbt8s3t"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 288.877838ms
+  - id: 34
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/gateways/networkservicesgateway-1-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/gateways/networkservicesgateway-1-3elfauhbt8s3t",
+          "createTime": "2024-04-25T01:52:19.326576237Z",
+          "updateTime": "2024-04-25T01:52:23.122573185Z",
+          "labels": {
+            "cnrm-test": "true",
+            "managed-by-cnrm": "true"
+          },
+          "type": "OPEN_MESH",
+          "scope": "s-3elfauhbt8s3t",
+          "ports": [
+            80,
+            443
+          ],
+          "selfLink": "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/gateways/networkservicesgateway-1-3elfauhbt8s3t"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 112.650822ms
+  - id: 35
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/meshes/networkservicesmesh-1-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/meshes/networkservicesmesh-1-3elfauhbt8s3t",
+          "createTime": "2024-04-25T01:52:20.085168090Z",
+          "updateTime": "2024-04-25T01:52:23.707441159Z",
+          "labels": {
+            "cnrm-test": "true",
+            "managed-by-cnrm": "true"
+          },
+          "selfLink": "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/meshes/networkservicesmesh-1-3elfauhbt8s3t"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 97.175611ms
+  - id: 36
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/gateways/networkservicesgateway-2-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/gateways/networkservicesgateway-2-3elfauhbt8s3t",
+          "createTime": "2024-04-25T01:52:19.130328246Z",
+          "updateTime": "2024-04-25T01:52:22.885873183Z",
+          "labels": {
+            "cnrm-test": "true",
+            "managed-by-cnrm": "true"
+          },
+          "type": "OPEN_MESH",
+          "scope": "s-3elfauhbt8s3t-2",
+          "ports": [
+            80,
+            443
+          ],
+          "selfLink": "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/gateways/networkservicesgateway-2-3elfauhbt8s3t"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 327.99177ms
+  - id: 37
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/meshes/networkservicesmesh-2-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/meshes/networkservicesmesh-2-3elfauhbt8s3t",
+          "createTime": "2024-04-25T01:52:19.095897946Z",
+          "updateTime": "2024-04-25T01:52:22.770423234Z",
+          "labels": {
+            "cnrm-test": "true",
+            "managed-by-cnrm": "true"
+          },
+          "selfLink": "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/meshes/networkservicesmesh-2-3elfauhbt8s3t"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 282.275522ms
+  - id: 38
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/meshes/networkservicesmesh-1-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/meshes/networkservicesmesh-1-3elfauhbt8s3t",
+          "createTime": "2024-04-25T01:52:20.085168090Z",
+          "updateTime": "2024-04-25T01:52:23.707441159Z",
+          "labels": {
+            "cnrm-test": "true",
+            "managed-by-cnrm": "true"
+          },
+          "selfLink": "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/meshes/networkservicesmesh-1-3elfauhbt8s3t"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 269.565788ms
+  - id: 39
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/meshes/networkservicesmesh-1-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/meshes/networkservicesmesh-1-3elfauhbt8s3t",
+          "createTime": "2024-04-25T01:52:20.085168090Z",
+          "updateTime": "2024-04-25T01:52:23.707441159Z",
+          "labels": {
+            "cnrm-test": "true",
+            "managed-by-cnrm": "true"
+          },
+          "selfLink": "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/meshes/networkservicesmesh-1-3elfauhbt8s3t"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 282.785174ms
+  - id: 40
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/grpcRoutes/networkservicesgrpcroute-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 74.21864ms
+  - id: 41
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/grpcRoutes/networkservicesgrpcroute-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 309.277373ms
+  - id: 42
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/grpcRoutes/networkservicesgrpcroute-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 95.417485ms
+  - id: 43
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 1386
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: '{"description":"A test GrpcRoute","gateways":["https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/gateways/networkservicesgateway-1-3elfauhbt8s3t"],"hostnames":["test1","test2"],"labels":{"cnrm-test":"true","foo":"bar","managed-by-cnrm":"true"},"meshes":["https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/meshes/networkservicesmesh-1-3elfauhbt8s3t"],"name":"projects/example-project/locations/global/grpcRoutes/networkservicesgrpcroute-3elfauhbt8s3t","rules":[{"action":{"destinations":[{"serviceName":"projects/example-project/global/backendServices/computebackendservice-1-3elfauhbt8s3t","weight":50},{"serviceName":"projects/example-project/global/backendServices/computebackendservice-1-3elfauhbt8s3t","weight":50}],"faultInjectionPolicy":{"abort":{"httpStatus":501,"percentage":1},"delay":{"fixedDelay":"10s","percentage":2}},"retryPolicy":{"numRetries":3,"retryConditions":["refused-stream","cancelled"]},"timeout":"30s"},"matches":[{"headers":[{"key":"foo","type":"EXACT","value":"bar"}],"method":{"caseSensitive":false,"grpcMethod":"SayHello","grpcService":"helloworld.Greeter","type":"EXACT"}}]},{"action":{"destinations":[{"serviceName":"projects/example-project/global/backendServices/computebackendservice-1-3elfauhbt8s3t"}]}}]}'
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/grpcRoutes?alt=json&grpcRouteId=networkservicesgrpcroute-3elfauhbt8s3t
+      method: POST
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/operations/operation-1714009960578-616e20ad77f05-f356a5ba-29f009e9",
+          "metadata": {
+            "@type": "type.googleapis.com/google.cloud.networkservices.v1.OperationMetadata",
+            "createTime": "2024-04-25T01:52:40.684949893Z",
+            "target": "projects/example-project/locations/global/grpcRoutes/networkservicesgrpcroute-3elfauhbt8s3t",
+            "verb": "create",
+            "requestedCancellation": false,
+            "apiVersion": "v1"
+          },
+          "done": false
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 340.832131ms
+  - id: 44
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/operations/operation-1714009960578-616e20ad77f05-f356a5ba-29f009e9?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/operations/operation-1714009960578-616e20ad77f05-f356a5ba-29f009e9",
+          "metadata": {
+            "@type": "type.googleapis.com/google.cloud.networkservices.v1.OperationMetadata",
+            "createTime": "2024-04-25T01:52:40.684949893Z",
+            "endTime": "2024-04-25T01:52:45.999617055Z",
+            "target": "projects/example-project/locations/global/grpcRoutes/networkservicesgrpcroute-3elfauhbt8s3t",
+            "verb": "create",
+            "requestedCancellation": false,
+            "apiVersion": "v1"
+          },
+          "done": true,
+          "response": {
+            "@type": "type.googleapis.com/google.cloud.networkservices.v1.GrpcRoute",
+            "name": "projects/example-project/locations/global/grpcRoutes/networkservicesgrpcroute-3elfauhbt8s3t",
+            "createTime": "2024-04-25T01:52:40.636406944Z",
+            "updateTime": "2024-04-25T01:52:40.636406944Z",
+            "labels": {
+              "managed-by-cnrm": "true",
+              "cnrm-test": "true",
+              "foo": "bar"
+            },
+            "description": "A test GrpcRoute",
+            "hostnames": [
+              "test1",
+              "test2"
+            ],
+            "rules": [
+              {
+                "matches": [
+                  {
+                    "method": {
+                      "type": "EXACT",
+                      "grpcService": "helloworld.Greeter",
+                      "grpcMethod": "SayHello",
+                      "caseSensitive": false
+                    },
+                    "headers": [
+                      {
+                        "type": "EXACT",
+                        "key": "foo",
+                        "value": "bar"
+                      }
+                    ]
+                  }
+                ],
+                "action": {
+                  "destinations": [
+                    {
+                      "serviceName": "projects/example-project/global/backendServices/computebackendservice-1-3elfauhbt8s3t",
+                      "weight": 50
+                    },
+                    {
+                      "serviceName": "projects/example-project/global/backendServices/computebackendservice-1-3elfauhbt8s3t",
+                      "weight": 50
+                    }
+                  ],
+                  "faultInjectionPolicy": {
+                    "delay": {
+                      "fixedDelay": "10s",
+                      "percentage": 2
+                    },
+                    "abort": {
+                      "httpStatus": 501,
+                      "percentage": 1
+                    }
+                  },
+                  "timeout": "30s",
+                  "retryPolicy": {
+                    "retryConditions": [
+                      "refused-stream",
+                      "cancelled"
+                    ],
+                    "numRetries": 3
+                  }
+                }
+              },
+              {
+                "action": {
+                  "destinations": [
+                    {
+                      "serviceName": "projects/example-project/global/backendServices/computebackendservice-1-3elfauhbt8s3t"
+                    }
+                  ]
+                }
+              }
+            ],
+            "meshes": [
+              "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/meshes/networkservicesmesh-1-3elfauhbt8s3t"
+            ],
+            "gateways": [
+              "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/gateways/networkservicesgateway-1-3elfauhbt8s3t"
+            ]
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 244.157997ms
+  - id: 45
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/grpcRoutes/networkservicesgrpcroute-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/grpcRoutes/networkservicesgrpcroute-3elfauhbt8s3t",
+          "createTime": "2024-04-25T01:52:40.636406944Z",
+          "updateTime": "2024-04-25T01:52:46.164573916Z",
+          "labels": {
+            "foo": "bar",
+            "managed-by-cnrm": "true",
+            "cnrm-test": "true"
+          },
+          "description": "A test GrpcRoute",
+          "hostnames": [
+            "test1",
+            "test2"
+          ],
+          "rules": [
+            {
+              "matches": [
+                {
+                  "method": {
+                    "type": "EXACT",
+                    "grpcService": "helloworld.Greeter",
+                    "grpcMethod": "SayHello",
+                    "caseSensitive": false
+                  },
+                  "headers": [
+                    {
+                      "type": "EXACT",
+                      "key": "foo",
+                      "value": "bar"
+                    }
+                  ]
+                }
+              ],
+              "action": {
+                "destinations": [
+                  {
+                    "serviceName": "projects/example-project/global/backendServices/computebackendservice-1-3elfauhbt8s3t",
+                    "weight": 50
+                  },
+                  {
+                    "serviceName": "projects/example-project/global/backendServices/computebackendservice-1-3elfauhbt8s3t",
+                    "weight": 50
+                  }
+                ],
+                "faultInjectionPolicy": {
+                  "delay": {
+                    "fixedDelay": "10s",
+                    "percentage": 2
+                  },
+                  "abort": {
+                    "httpStatus": 501,
+                    "percentage": 1
+                  }
+                },
+                "timeout": "30s",
+                "retryPolicy": {
+                  "retryConditions": [
+                    "refused-stream",
+                    "cancelled"
+                  ],
+                  "numRetries": 3
+                }
+              }
+            },
+            {
+              "action": {
+                "destinations": [
+                  {
+                    "serviceName": "projects/example-project/global/backendServices/computebackendservice-1-3elfauhbt8s3t"
+                  }
+                ]
+              }
+            }
+          ],
+          "meshes": [
+            "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/meshes/networkservicesmesh-1-3elfauhbt8s3t"
+          ],
+          "gateways": [
+            "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/gateways/networkservicesgateway-1-3elfauhbt8s3t"
+          ],
+          "selfLink": "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/grpcRoutes/networkservicesgrpcroute-3elfauhbt8s3t"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 110.578097ms
+  - id: 46
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/grpcRoutes/networkservicesgrpcroute-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/grpcRoutes/networkservicesgrpcroute-3elfauhbt8s3t",
+          "createTime": "2024-04-25T01:52:40.636406944Z",
+          "updateTime": "2024-04-25T01:52:46.164573916Z",
+          "labels": {
+            "cnrm-test": "true",
+            "foo": "bar",
+            "managed-by-cnrm": "true"
+          },
+          "description": "A test GrpcRoute",
+          "hostnames": [
+            "test1",
+            "test2"
+          ],
+          "rules": [
+            {
+              "matches": [
+                {
+                  "method": {
+                    "type": "EXACT",
+                    "grpcService": "helloworld.Greeter",
+                    "grpcMethod": "SayHello",
+                    "caseSensitive": false
+                  },
+                  "headers": [
+                    {
+                      "type": "EXACT",
+                      "key": "foo",
+                      "value": "bar"
+                    }
+                  ]
+                }
+              ],
+              "action": {
+                "destinations": [
+                  {
+                    "serviceName": "projects/example-project/global/backendServices/computebackendservice-1-3elfauhbt8s3t",
+                    "weight": 50
+                  },
+                  {
+                    "serviceName": "projects/example-project/global/backendServices/computebackendservice-1-3elfauhbt8s3t",
+                    "weight": 50
+                  }
+                ],
+                "faultInjectionPolicy": {
+                  "delay": {
+                    "fixedDelay": "10s",
+                    "percentage": 2
+                  },
+                  "abort": {
+                    "httpStatus": 501,
+                    "percentage": 1
+                  }
+                },
+                "timeout": "30s",
+                "retryPolicy": {
+                  "retryConditions": [
+                    "refused-stream",
+                    "cancelled"
+                  ],
+                  "numRetries": 3
+                }
+              }
+            },
+            {
+              "action": {
+                "destinations": [
+                  {
+                    "serviceName": "projects/example-project/global/backendServices/computebackendservice-1-3elfauhbt8s3t"
+                  }
+                ]
+              }
+            }
+          ],
+          "meshes": [
+            "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/meshes/networkservicesmesh-1-3elfauhbt8s3t"
+          ],
+          "gateways": [
+            "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/gateways/networkservicesgateway-1-3elfauhbt8s3t"
+          ],
+          "selfLink": "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/grpcRoutes/networkservicesgrpcroute-3elfauhbt8s3t"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 139.70148ms
+  - id: 47
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/grpcRoutes/networkservicesgrpcroute-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/grpcRoutes/networkservicesgrpcroute-3elfauhbt8s3t",
+          "createTime": "2024-04-25T01:52:40.636406944Z",
+          "updateTime": "2024-04-25T01:52:46.164573916Z",
+          "labels": {
+            "foo": "bar",
+            "managed-by-cnrm": "true",
+            "cnrm-test": "true"
+          },
+          "description": "A test GrpcRoute",
+          "hostnames": [
+            "test1",
+            "test2"
+          ],
+          "rules": [
+            {
+              "matches": [
+                {
+                  "method": {
+                    "type": "EXACT",
+                    "grpcService": "helloworld.Greeter",
+                    "grpcMethod": "SayHello",
+                    "caseSensitive": false
+                  },
+                  "headers": [
+                    {
+                      "type": "EXACT",
+                      "key": "foo",
+                      "value": "bar"
+                    }
+                  ]
+                }
+              ],
+              "action": {
+                "destinations": [
+                  {
+                    "serviceName": "projects/example-project/global/backendServices/computebackendservice-1-3elfauhbt8s3t",
+                    "weight": 50
+                  },
+                  {
+                    "serviceName": "projects/example-project/global/backendServices/computebackendservice-1-3elfauhbt8s3t",
+                    "weight": 50
+                  }
+                ],
+                "faultInjectionPolicy": {
+                  "delay": {
+                    "fixedDelay": "10s",
+                    "percentage": 2
+                  },
+                  "abort": {
+                    "httpStatus": 501,
+                    "percentage": 1
+                  }
+                },
+                "timeout": "30s",
+                "retryPolicy": {
+                  "retryConditions": [
+                    "refused-stream",
+                    "cancelled"
+                  ],
+                  "numRetries": 3
+                }
+              }
+            },
+            {
+              "action": {
+                "destinations": [
+                  {
+                    "serviceName": "projects/example-project/global/backendServices/computebackendservice-1-3elfauhbt8s3t"
+                  }
+                ]
+              }
+            }
+          ],
+          "meshes": [
+            "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/meshes/networkservicesmesh-1-3elfauhbt8s3t"
+          ],
+          "gateways": [
+            "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/gateways/networkservicesgateway-1-3elfauhbt8s3t"
+          ],
+          "selfLink": "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/grpcRoutes/networkservicesgrpcroute-3elfauhbt8s3t"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 81.51528ms
+  - id: 48
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/grpcRoutes/networkservicesgrpcroute-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/grpcRoutes/networkservicesgrpcroute-3elfauhbt8s3t",
+          "createTime": "2024-04-25T01:52:40.636406944Z",
+          "updateTime": "2024-04-25T01:52:46.164573916Z",
+          "labels": {
+            "cnrm-test": "true",
+            "foo": "bar",
+            "managed-by-cnrm": "true"
+          },
+          "description": "A test GrpcRoute",
+          "hostnames": [
+            "test1",
+            "test2"
+          ],
+          "rules": [
+            {
+              "matches": [
+                {
+                  "method": {
+                    "type": "EXACT",
+                    "grpcService": "helloworld.Greeter",
+                    "grpcMethod": "SayHello",
+                    "caseSensitive": false
+                  },
+                  "headers": [
+                    {
+                      "type": "EXACT",
+                      "key": "foo",
+                      "value": "bar"
+                    }
+                  ]
+                }
+              ],
+              "action": {
+                "destinations": [
+                  {
+                    "serviceName": "projects/example-project/global/backendServices/computebackendservice-1-3elfauhbt8s3t",
+                    "weight": 50
+                  },
+                  {
+                    "serviceName": "projects/example-project/global/backendServices/computebackendservice-1-3elfauhbt8s3t",
+                    "weight": 50
+                  }
+                ],
+                "faultInjectionPolicy": {
+                  "delay": {
+                    "fixedDelay": "10s",
+                    "percentage": 2
+                  },
+                  "abort": {
+                    "httpStatus": 501,
+                    "percentage": 1
+                  }
+                },
+                "timeout": "30s",
+                "retryPolicy": {
+                  "retryConditions": [
+                    "refused-stream",
+                    "cancelled"
+                  ],
+                  "numRetries": 3
+                }
+              }
+            },
+            {
+              "action": {
+                "destinations": [
+                  {
+                    "serviceName": "projects/example-project/global/backendServices/computebackendservice-1-3elfauhbt8s3t"
+                  }
+                ]
+              }
+            }
+          ],
+          "meshes": [
+            "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/meshes/networkservicesmesh-1-3elfauhbt8s3t"
+          ],
+          "gateways": [
+            "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/gateways/networkservicesgateway-1-3elfauhbt8s3t"
+          ],
+          "selfLink": "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/grpcRoutes/networkservicesgrpcroute-3elfauhbt8s3t"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 76.456671ms
+  - id: 49
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/grpcRoutes/networkservicesgrpcroute-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/grpcRoutes/networkservicesgrpcroute-3elfauhbt8s3t",
+          "createTime": "2024-04-25T01:52:40.636406944Z",
+          "updateTime": "2024-04-25T01:52:46.164573916Z",
+          "labels": {
+            "managed-by-cnrm": "true",
+            "cnrm-test": "true",
+            "foo": "bar"
+          },
+          "description": "A test GrpcRoute",
+          "hostnames": [
+            "test1",
+            "test2"
+          ],
+          "rules": [
+            {
+              "matches": [
+                {
+                  "method": {
+                    "type": "EXACT",
+                    "grpcService": "helloworld.Greeter",
+                    "grpcMethod": "SayHello",
+                    "caseSensitive": false
+                  },
+                  "headers": [
+                    {
+                      "type": "EXACT",
+                      "key": "foo",
+                      "value": "bar"
+                    }
+                  ]
+                }
+              ],
+              "action": {
+                "destinations": [
+                  {
+                    "serviceName": "projects/example-project/global/backendServices/computebackendservice-1-3elfauhbt8s3t",
+                    "weight": 50
+                  },
+                  {
+                    "serviceName": "projects/example-project/global/backendServices/computebackendservice-1-3elfauhbt8s3t",
+                    "weight": 50
+                  }
+                ],
+                "faultInjectionPolicy": {
+                  "delay": {
+                    "fixedDelay": "10s",
+                    "percentage": 2
+                  },
+                  "abort": {
+                    "httpStatus": 501,
+                    "percentage": 1
+                  }
+                },
+                "timeout": "30s",
+                "retryPolicy": {
+                  "retryConditions": [
+                    "refused-stream",
+                    "cancelled"
+                  ],
+                  "numRetries": 3
+                }
+              }
+            },
+            {
+              "action": {
+                "destinations": [
+                  {
+                    "serviceName": "projects/example-project/global/backendServices/computebackendservice-1-3elfauhbt8s3t"
+                  }
+                ]
+              }
+            }
+          ],
+          "meshes": [
+            "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/meshes/networkservicesmesh-1-3elfauhbt8s3t"
+          ],
+          "gateways": [
+            "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/gateways/networkservicesgateway-1-3elfauhbt8s3t"
+          ],
+          "selfLink": "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/grpcRoutes/networkservicesgrpcroute-3elfauhbt8s3t"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 112.260201ms
+  - id: 50
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/grpcRoutes/networkservicesgrpcroute-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/grpcRoutes/networkservicesgrpcroute-3elfauhbt8s3t",
+          "createTime": "2024-04-25T01:52:40.636406944Z",
+          "updateTime": "2024-04-25T01:52:46.164573916Z",
+          "labels": {
+            "cnrm-test": "true",
+            "foo": "bar",
+            "managed-by-cnrm": "true"
+          },
+          "description": "A test GrpcRoute",
+          "hostnames": [
+            "test1",
+            "test2"
+          ],
+          "rules": [
+            {
+              "matches": [
+                {
+                  "method": {
+                    "type": "EXACT",
+                    "grpcService": "helloworld.Greeter",
+                    "grpcMethod": "SayHello",
+                    "caseSensitive": false
+                  },
+                  "headers": [
+                    {
+                      "type": "EXACT",
+                      "key": "foo",
+                      "value": "bar"
+                    }
+                  ]
+                }
+              ],
+              "action": {
+                "destinations": [
+                  {
+                    "serviceName": "projects/example-project/global/backendServices/computebackendservice-1-3elfauhbt8s3t",
+                    "weight": 50
+                  },
+                  {
+                    "serviceName": "projects/example-project/global/backendServices/computebackendservice-1-3elfauhbt8s3t",
+                    "weight": 50
+                  }
+                ],
+                "faultInjectionPolicy": {
+                  "delay": {
+                    "fixedDelay": "10s",
+                    "percentage": 2
+                  },
+                  "abort": {
+                    "httpStatus": 501,
+                    "percentage": 1
+                  }
+                },
+                "timeout": "30s",
+                "retryPolicy": {
+                  "retryConditions": [
+                    "refused-stream",
+                    "cancelled"
+                  ],
+                  "numRetries": 3
+                }
+              }
+            },
+            {
+              "action": {
+                "destinations": [
+                  {
+                    "serviceName": "projects/example-project/global/backendServices/computebackendservice-1-3elfauhbt8s3t"
+                  }
+                ]
+              }
+            }
+          ],
+          "meshes": [
+            "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/meshes/networkservicesmesh-1-3elfauhbt8s3t"
+          ],
+          "gateways": [
+            "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/gateways/networkservicesgateway-1-3elfauhbt8s3t"
+          ],
+          "selfLink": "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/grpcRoutes/networkservicesgrpcroute-3elfauhbt8s3t"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 114.896345ms
+  - id: 51
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/grpcRoutes/networkservicesgrpcroute-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/grpcRoutes/networkservicesgrpcroute-3elfauhbt8s3t",
+          "createTime": "2024-04-25T01:52:40.636406944Z",
+          "updateTime": "2024-04-25T01:52:46.164573916Z",
+          "labels": {
+            "cnrm-test": "true",
+            "foo": "bar",
+            "managed-by-cnrm": "true"
+          },
+          "description": "A test GrpcRoute",
+          "hostnames": [
+            "test1",
+            "test2"
+          ],
+          "rules": [
+            {
+              "matches": [
+                {
+                  "method": {
+                    "type": "EXACT",
+                    "grpcService": "helloworld.Greeter",
+                    "grpcMethod": "SayHello",
+                    "caseSensitive": false
+                  },
+                  "headers": [
+                    {
+                      "type": "EXACT",
+                      "key": "foo",
+                      "value": "bar"
+                    }
+                  ]
+                }
+              ],
+              "action": {
+                "destinations": [
+                  {
+                    "serviceName": "projects/example-project/global/backendServices/computebackendservice-1-3elfauhbt8s3t",
+                    "weight": 50
+                  },
+                  {
+                    "serviceName": "projects/example-project/global/backendServices/computebackendservice-1-3elfauhbt8s3t",
+                    "weight": 50
+                  }
+                ],
+                "faultInjectionPolicy": {
+                  "delay": {
+                    "fixedDelay": "10s",
+                    "percentage": 2
+                  },
+                  "abort": {
+                    "httpStatus": 501,
+                    "percentage": 1
+                  }
+                },
+                "timeout": "30s",
+                "retryPolicy": {
+                  "retryConditions": [
+                    "refused-stream",
+                    "cancelled"
+                  ],
+                  "numRetries": 3
+                }
+              }
+            },
+            {
+              "action": {
+                "destinations": [
+                  {
+                    "serviceName": "projects/example-project/global/backendServices/computebackendservice-1-3elfauhbt8s3t"
+                  }
+                ]
+              }
+            }
+          ],
+          "meshes": [
+            "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/meshes/networkservicesmesh-1-3elfauhbt8s3t"
+          ],
+          "gateways": [
+            "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/gateways/networkservicesgateway-1-3elfauhbt8s3t"
+          ],
+          "selfLink": "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/grpcRoutes/networkservicesgrpcroute-3elfauhbt8s3t"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 273.986012ms
+  - id: 52
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/grpcRoutes/networkservicesgrpcroute-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/grpcRoutes/networkservicesgrpcroute-3elfauhbt8s3t",
+          "createTime": "2024-04-25T01:52:40.636406944Z",
+          "updateTime": "2024-04-25T01:52:46.164573916Z",
+          "labels": {
+            "cnrm-test": "true",
+            "foo": "bar",
+            "managed-by-cnrm": "true"
+          },
+          "description": "A test GrpcRoute",
+          "hostnames": [
+            "test1",
+            "test2"
+          ],
+          "rules": [
+            {
+              "matches": [
+                {
+                  "method": {
+                    "type": "EXACT",
+                    "grpcService": "helloworld.Greeter",
+                    "grpcMethod": "SayHello",
+                    "caseSensitive": false
+                  },
+                  "headers": [
+                    {
+                      "type": "EXACT",
+                      "key": "foo",
+                      "value": "bar"
+                    }
+                  ]
+                }
+              ],
+              "action": {
+                "destinations": [
+                  {
+                    "serviceName": "projects/example-project/global/backendServices/computebackendservice-1-3elfauhbt8s3t",
+                    "weight": 50
+                  },
+                  {
+                    "serviceName": "projects/example-project/global/backendServices/computebackendservice-1-3elfauhbt8s3t",
+                    "weight": 50
+                  }
+                ],
+                "faultInjectionPolicy": {
+                  "delay": {
+                    "fixedDelay": "10s",
+                    "percentage": 2
+                  },
+                  "abort": {
+                    "httpStatus": 501,
+                    "percentage": 1
+                  }
+                },
+                "timeout": "30s",
+                "retryPolicy": {
+                  "retryConditions": [
+                    "refused-stream",
+                    "cancelled"
+                  ],
+                  "numRetries": 3
+                }
+              }
+            },
+            {
+              "action": {
+                "destinations": [
+                  {
+                    "serviceName": "projects/example-project/global/backendServices/computebackendservice-1-3elfauhbt8s3t"
+                  }
+                ]
+              }
+            }
+          ],
+          "meshes": [
+            "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/meshes/networkservicesmesh-1-3elfauhbt8s3t"
+          ],
+          "gateways": [
+            "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/gateways/networkservicesgateway-1-3elfauhbt8s3t"
+          ],
+          "selfLink": "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/grpcRoutes/networkservicesgrpcroute-3elfauhbt8s3t"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 163.580227ms
+  - id: 53
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/grpcRoutes/networkservicesgrpcroute-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/grpcRoutes/networkservicesgrpcroute-3elfauhbt8s3t",
+          "createTime": "2024-04-25T01:52:40.636406944Z",
+          "updateTime": "2024-04-25T01:52:46.164573916Z",
+          "labels": {
+            "cnrm-test": "true",
+            "foo": "bar",
+            "managed-by-cnrm": "true"
+          },
+          "description": "A test GrpcRoute",
+          "hostnames": [
+            "test1",
+            "test2"
+          ],
+          "rules": [
+            {
+              "matches": [
+                {
+                  "method": {
+                    "type": "EXACT",
+                    "grpcService": "helloworld.Greeter",
+                    "grpcMethod": "SayHello",
+                    "caseSensitive": false
+                  },
+                  "headers": [
+                    {
+                      "type": "EXACT",
+                      "key": "foo",
+                      "value": "bar"
+                    }
+                  ]
+                }
+              ],
+              "action": {
+                "destinations": [
+                  {
+                    "serviceName": "projects/example-project/global/backendServices/computebackendservice-1-3elfauhbt8s3t",
+                    "weight": 50
+                  },
+                  {
+                    "serviceName": "projects/example-project/global/backendServices/computebackendservice-1-3elfauhbt8s3t",
+                    "weight": 50
+                  }
+                ],
+                "faultInjectionPolicy": {
+                  "delay": {
+                    "fixedDelay": "10s",
+                    "percentage": 2
+                  },
+                  "abort": {
+                    "httpStatus": 501,
+                    "percentage": 1
+                  }
+                },
+                "timeout": "30s",
+                "retryPolicy": {
+                  "retryConditions": [
+                    "refused-stream",
+                    "cancelled"
+                  ],
+                  "numRetries": 3
+                }
+              }
+            },
+            {
+              "action": {
+                "destinations": [
+                  {
+                    "serviceName": "projects/example-project/global/backendServices/computebackendservice-1-3elfauhbt8s3t"
+                  }
+                ]
+              }
+            }
+          ],
+          "meshes": [
+            "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/meshes/networkservicesmesh-1-3elfauhbt8s3t"
+          ],
+          "gateways": [
+            "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/gateways/networkservicesgateway-1-3elfauhbt8s3t"
+          ],
+          "selfLink": "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/grpcRoutes/networkservicesgrpcroute-3elfauhbt8s3t"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 99.246335ms
+  - id: 54
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 1328
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: '{"description":"An updated test GrpcRoute","gateways":["https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/gateways/networkservicesgateway-2-3elfauhbt8s3t"],"hostnames":["test1","test2","newhost"],"labels":{"bar":"baz","cnrm-test":"true","foo":"bar","managed-by-cnrm":"true"},"meshes":["https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/meshes/networkservicesmesh-2-3elfauhbt8s3t"],"name":"projects/projects/example-project/locations/global/grpcRoutes/networkservicesgrpcroute-3elfauhbt8s3t","rules":[{"action":{"destinations":[{"serviceName":"projects/example-project/global/backendServices/computebackendservice-2-3elfauhbt8s3t","weight":100}],"faultInjectionPolicy":{"abort":{"httpStatus":502,"percentage":2},"delay":{"fixedDelay":"11s","percentage":3}},"retryPolicy":{"numRetries":4,"retryConditions":["refused-stream"]},"timeout":"40s"},"matches":[{"headers":[{"key":"bar","type":"REGULAR_EXPRESSION","value":"foo"}],"method":{"caseSensitive":true,"grpcMethod":"SayHello2","grpcService":"helloworld.Greeter2","type":"REGULAR_EXPRESSION"}}]},{"action":{"destinations":[{"serviceName":"projects/example-project/global/backendServices/computebackendservice-2-3elfauhbt8s3t"}]},"matches":[]}]}'
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/grpcRoutes/networkservicesgrpcroute-3elfauhbt8s3t?alt=json&updateMask=description%2Cgateways%2Chostnames%2Clabels%2Cmeshes%2Crules
+      method: PATCH
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/operations/operation-1714009969601-616e20b612b04-a969fe6b-4b60103a",
+          "metadata": {
+            "@type": "type.googleapis.com/google.cloud.networkservices.v1.OperationMetadata",
+            "createTime": "2024-04-25T01:52:49.657387370Z",
+            "target": "projects/example-project/locations/global/grpcRoutes/networkservicesgrpcroute-3elfauhbt8s3t",
+            "verb": "update",
+            "requestedCancellation": false,
+            "apiVersion": "v1"
+          },
+          "done": false
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 352.118529ms
+  - id: 55
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/operations/operation-1714009969601-616e20b612b04-a969fe6b-4b60103a?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/operations/operation-1714009969601-616e20b612b04-a969fe6b-4b60103a",
+          "metadata": {
+            "@type": "type.googleapis.com/google.cloud.networkservices.v1.OperationMetadata",
+            "createTime": "2024-04-25T01:52:49.657387370Z",
+            "endTime": "2024-04-25T01:52:56.737511558Z",
+            "target": "projects/example-project/locations/global/grpcRoutes/networkservicesgrpcroute-3elfauhbt8s3t",
+            "verb": "update",
+            "requestedCancellation": false,
+            "apiVersion": "v1"
+          },
+          "done": true,
+          "response": {
+            "@type": "type.googleapis.com/google.cloud.networkservices.v1.GrpcRoute",
+            "name": "projects/example-project/locations/global/grpcRoutes/networkservicesgrpcroute-3elfauhbt8s3t",
+            "createTime": "2024-04-25T01:52:40.636406944Z",
+            "updateTime": "2024-04-25T01:52:49.695458625Z",
+            "labels": {
+              "foo": "bar",
+              "managed-by-cnrm": "true",
+              "bar": "baz",
+              "cnrm-test": "true"
+            },
+            "description": "An updated test GrpcRoute",
+            "hostnames": [
+              "test1",
+              "test2",
+              "newhost"
+            ],
+            "rules": [
+              {
+                "matches": [
+                  {
+                    "method": {
+                      "type": "REGULAR_EXPRESSION",
+                      "grpcService": "helloworld.Greeter2",
+                      "grpcMethod": "SayHello2",
+                      "caseSensitive": true
+                    },
+                    "headers": [
+                      {
+                        "type": "REGULAR_EXPRESSION",
+                        "key": "bar",
+                        "value": "foo"
+                      }
+                    ]
+                  }
+                ],
+                "action": {
+                  "destinations": [
+                    {
+                      "serviceName": "projects/example-project/global/backendServices/computebackendservice-2-3elfauhbt8s3t",
+                      "weight": 100
+                    }
+                  ],
+                  "faultInjectionPolicy": {
+                    "delay": {
+                      "fixedDelay": "11s",
+                      "percentage": 3
+                    },
+                    "abort": {
+                      "httpStatus": 502,
+                      "percentage": 2
+                    }
+                  },
+                  "timeout": "40s",
+                  "retryPolicy": {
+                    "retryConditions": [
+                      "refused-stream"
+                    ],
+                    "numRetries": 4
+                  }
+                }
+              },
+              {
+                "action": {
+                  "destinations": [
+                    {
+                      "serviceName": "projects/example-project/global/backendServices/computebackendservice-2-3elfauhbt8s3t"
+                    }
+                  ]
+                }
+              }
+            ],
+            "meshes": [
+              "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/meshes/networkservicesmesh-2-3elfauhbt8s3t"
+            ],
+            "gateways": [
+              "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/gateways/networkservicesgateway-2-3elfauhbt8s3t"
+            ]
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 240.50255ms
+  - id: 56
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/grpcRoutes/networkservicesgrpcroute-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/grpcRoutes/networkservicesgrpcroute-3elfauhbt8s3t",
+          "createTime": "2024-04-25T01:52:40.636406944Z",
+          "updateTime": "2024-04-25T01:52:56.908664059Z",
+          "labels": {
+            "cnrm-test": "true",
+            "foo": "bar",
+            "managed-by-cnrm": "true",
+            "bar": "baz"
+          },
+          "description": "An updated test GrpcRoute",
+          "hostnames": [
+            "test1",
+            "test2",
+            "newhost"
+          ],
+          "rules": [
+            {
+              "matches": [
+                {
+                  "method": {
+                    "type": "REGULAR_EXPRESSION",
+                    "grpcService": "helloworld.Greeter2",
+                    "grpcMethod": "SayHello2",
+                    "caseSensitive": true
+                  },
+                  "headers": [
+                    {
+                      "type": "REGULAR_EXPRESSION",
+                      "key": "bar",
+                      "value": "foo"
+                    }
+                  ]
+                }
+              ],
+              "action": {
+                "destinations": [
+                  {
+                    "serviceName": "projects/example-project/global/backendServices/computebackendservice-2-3elfauhbt8s3t",
+                    "weight": 100
+                  }
+                ],
+                "faultInjectionPolicy": {
+                  "delay": {
+                    "fixedDelay": "11s",
+                    "percentage": 3
+                  },
+                  "abort": {
+                    "httpStatus": 502,
+                    "percentage": 2
+                  }
+                },
+                "timeout": "40s",
+                "retryPolicy": {
+                  "retryConditions": [
+                    "refused-stream"
+                  ],
+                  "numRetries": 4
+                }
+              }
+            },
+            {
+              "action": {
+                "destinations": [
+                  {
+                    "serviceName": "projects/example-project/global/backendServices/computebackendservice-2-3elfauhbt8s3t"
+                  }
+                ]
+              }
+            }
+          ],
+          "meshes": [
+            "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/meshes/networkservicesmesh-2-3elfauhbt8s3t"
+          ],
+          "gateways": [
+            "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/gateways/networkservicesgateway-2-3elfauhbt8s3t"
+          ],
+          "selfLink": "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/grpcRoutes/networkservicesgrpcroute-3elfauhbt8s3t"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 97.826022ms
+  - id: 57
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/gateways/networkservicesgateway-1-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/gateways/networkservicesgateway-1-3elfauhbt8s3t",
+          "createTime": "2024-04-25T01:52:19.326576237Z",
+          "updateTime": "2024-04-25T01:52:23.122573185Z",
+          "labels": {
+            "cnrm-test": "true",
+            "managed-by-cnrm": "true"
+          },
+          "type": "OPEN_MESH",
+          "scope": "s-3elfauhbt8s3t",
+          "ports": [
+            80,
+            443
+          ],
+          "selfLink": "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/gateways/networkservicesgateway-1-3elfauhbt8s3t"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 84.88756ms
+  - id: 58
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/meshes/networkservicesmesh-2-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/meshes/networkservicesmesh-2-3elfauhbt8s3t",
+          "createTime": "2024-04-25T01:52:19.095897946Z",
+          "updateTime": "2024-04-25T01:52:22.770423234Z",
+          "labels": {
+            "cnrm-test": "true",
+            "managed-by-cnrm": "true"
+          },
+          "selfLink": "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/meshes/networkservicesmesh-2-3elfauhbt8s3t"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 258.454286ms
+  - id: 59
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/grpcRoutes/networkservicesgrpcroute-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/grpcRoutes/networkservicesgrpcroute-3elfauhbt8s3t",
+          "createTime": "2024-04-25T01:52:40.636406944Z",
+          "updateTime": "2024-04-25T01:52:56.908664059Z",
+          "labels": {
+            "bar": "baz",
+            "cnrm-test": "true",
+            "foo": "bar",
+            "managed-by-cnrm": "true"
+          },
+          "description": "An updated test GrpcRoute",
+          "hostnames": [
+            "test1",
+            "test2",
+            "newhost"
+          ],
+          "rules": [
+            {
+              "matches": [
+                {
+                  "method": {
+                    "type": "REGULAR_EXPRESSION",
+                    "grpcService": "helloworld.Greeter2",
+                    "grpcMethod": "SayHello2",
+                    "caseSensitive": true
+                  },
+                  "headers": [
+                    {
+                      "type": "REGULAR_EXPRESSION",
+                      "key": "bar",
+                      "value": "foo"
+                    }
+                  ]
+                }
+              ],
+              "action": {
+                "destinations": [
+                  {
+                    "serviceName": "projects/example-project/global/backendServices/computebackendservice-2-3elfauhbt8s3t",
+                    "weight": 100
+                  }
+                ],
+                "faultInjectionPolicy": {
+                  "delay": {
+                    "fixedDelay": "11s",
+                    "percentage": 3
+                  },
+                  "abort": {
+                    "httpStatus": 502,
+                    "percentage": 2
+                  }
+                },
+                "timeout": "40s",
+                "retryPolicy": {
+                  "retryConditions": [
+                    "refused-stream"
+                  ],
+                  "numRetries": 4
+                }
+              }
+            },
+            {
+              "action": {
+                "destinations": [
+                  {
+                    "serviceName": "projects/example-project/global/backendServices/computebackendservice-2-3elfauhbt8s3t"
+                  }
+                ]
+              }
+            }
+          ],
+          "meshes": [
+            "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/meshes/networkservicesmesh-2-3elfauhbt8s3t"
+          ],
+          "gateways": [
+            "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/gateways/networkservicesgateway-2-3elfauhbt8s3t"
+          ],
+          "selfLink": "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/grpcRoutes/networkservicesgrpcroute-3elfauhbt8s3t"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 294.876959ms
+  - id: 60
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/gateways/networkservicesgateway-2-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/gateways/networkservicesgateway-2-3elfauhbt8s3t",
+          "createTime": "2024-04-25T01:52:19.130328246Z",
+          "updateTime": "2024-04-25T01:52:22.885873183Z",
+          "labels": {
+            "cnrm-test": "true",
+            "managed-by-cnrm": "true"
+          },
+          "type": "OPEN_MESH",
+          "scope": "s-3elfauhbt8s3t-2",
+          "ports": [
+            80,
+            443
+          ],
+          "selfLink": "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/gateways/networkservicesgateway-2-3elfauhbt8s3t"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 288.473438ms
+  - id: 61
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/meshes/networkservicesmesh-1-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/meshes/networkservicesmesh-1-3elfauhbt8s3t",
+          "createTime": "2024-04-25T01:52:20.085168090Z",
+          "updateTime": "2024-04-25T01:52:23.707441159Z",
+          "labels": {
+            "cnrm-test": "true",
+            "managed-by-cnrm": "true"
+          },
+          "selfLink": "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/meshes/networkservicesmesh-1-3elfauhbt8s3t"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 282.128165ms
+  - id: 62
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/gateways/networkservicesgateway-1-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/gateways/networkservicesgateway-1-3elfauhbt8s3t",
+          "createTime": "2024-04-25T01:52:19.326576237Z",
+          "updateTime": "2024-04-25T01:52:23.122573185Z",
+          "labels": {
+            "cnrm-test": "true",
+            "managed-by-cnrm": "true"
+          },
+          "type": "OPEN_MESH",
+          "scope": "s-3elfauhbt8s3t",
+          "ports": [
+            80,
+            443
+          ],
+          "selfLink": "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/gateways/networkservicesgateway-1-3elfauhbt8s3t"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 326.990816ms
+  - id: 63
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/grpcRoutes/networkservicesgrpcroute-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/grpcRoutes/networkservicesgrpcroute-3elfauhbt8s3t",
+          "createTime": "2024-04-25T01:52:40.636406944Z",
+          "updateTime": "2024-04-25T01:52:56.908664059Z",
+          "labels": {
+            "cnrm-test": "true",
+            "foo": "bar",
+            "managed-by-cnrm": "true",
+            "bar": "baz"
+          },
+          "description": "An updated test GrpcRoute",
+          "hostnames": [
+            "test1",
+            "test2",
+            "newhost"
+          ],
+          "rules": [
+            {
+              "matches": [
+                {
+                  "method": {
+                    "type": "REGULAR_EXPRESSION",
+                    "grpcService": "helloworld.Greeter2",
+                    "grpcMethod": "SayHello2",
+                    "caseSensitive": true
+                  },
+                  "headers": [
+                    {
+                      "type": "REGULAR_EXPRESSION",
+                      "key": "bar",
+                      "value": "foo"
+                    }
+                  ]
+                }
+              ],
+              "action": {
+                "destinations": [
+                  {
+                    "serviceName": "projects/example-project/global/backendServices/computebackendservice-2-3elfauhbt8s3t",
+                    "weight": 100
+                  }
+                ],
+                "faultInjectionPolicy": {
+                  "delay": {
+                    "fixedDelay": "11s",
+                    "percentage": 3
+                  },
+                  "abort": {
+                    "httpStatus": 502,
+                    "percentage": 2
+                  }
+                },
+                "timeout": "40s",
+                "retryPolicy": {
+                  "retryConditions": [
+                    "refused-stream"
+                  ],
+                  "numRetries": 4
+                }
+              }
+            },
+            {
+              "action": {
+                "destinations": [
+                  {
+                    "serviceName": "projects/example-project/global/backendServices/computebackendservice-2-3elfauhbt8s3t"
+                  }
+                ]
+              }
+            }
+          ],
+          "meshes": [
+            "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/meshes/networkservicesmesh-2-3elfauhbt8s3t"
+          ],
+          "gateways": [
+            "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/gateways/networkservicesgateway-2-3elfauhbt8s3t"
+          ],
+          "selfLink": "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/grpcRoutes/networkservicesgrpcroute-3elfauhbt8s3t"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 86.336336ms
+  - id: 64
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/gateways/networkservicesgateway-2-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/gateways/networkservicesgateway-2-3elfauhbt8s3t",
+          "createTime": "2024-04-25T01:52:19.130328246Z",
+          "updateTime": "2024-04-25T01:52:22.885873183Z",
+          "labels": {
+            "cnrm-test": "true",
+            "managed-by-cnrm": "true"
+          },
+          "type": "OPEN_MESH",
+          "scope": "s-3elfauhbt8s3t-2",
+          "ports": [
+            80,
+            443
+          ],
+          "selfLink": "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/gateways/networkservicesgateway-2-3elfauhbt8s3t"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 118.081045ms
+  - id: 65
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/meshes/networkservicesmesh-1-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/meshes/networkservicesmesh-1-3elfauhbt8s3t",
+          "createTime": "2024-04-25T01:52:20.085168090Z",
+          "updateTime": "2024-04-25T01:52:23.707441159Z",
+          "labels": {
+            "cnrm-test": "true",
+            "managed-by-cnrm": "true"
+          },
+          "selfLink": "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/meshes/networkservicesmesh-1-3elfauhbt8s3t"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 138.445938ms
+  - id: 66
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/meshes/networkservicesmesh-2-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/meshes/networkservicesmesh-2-3elfauhbt8s3t",
+          "createTime": "2024-04-25T01:52:19.095897946Z",
+          "updateTime": "2024-04-25T01:52:22.770423234Z",
+          "labels": {
+            "cnrm-test": "true",
+            "managed-by-cnrm": "true"
+          },
+          "selfLink": "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/meshes/networkservicesmesh-2-3elfauhbt8s3t"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 281.532424ms
+  - id: 67
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/gateways/networkservicesgateway-2-3elfauhbt8s3t?alt=json
+      method: DELETE
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 400 Bad Request
+      code: 400
+      duration: 225.979843ms
+  - id: 68
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/meshes/networkservicesmesh-1-3elfauhbt8s3t?alt=json
+      method: DELETE
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/operations/operation-1714009981186-616e20c11f32f-07d4197c-4dee2993",
+          "metadata": {
+            "@type": "type.googleapis.com/google.cloud.networkservices.v1.OperationMetadata",
+            "createTime": "2024-04-25T01:53:01.238921806Z",
+            "target": "projects/example-project/locations/global/meshes/networkservicesmesh-1-3elfauhbt8s3t",
+            "verb": "delete",
+            "requestedCancellation": false,
+            "apiVersion": "v1"
+          },
+          "done": false
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 334.235533ms
+  - id: 69
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/meshes/networkservicesmesh-2-3elfauhbt8s3t?alt=json
+      method: DELETE
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 400 Bad Request
+      code: 400
+      duration: 196.604328ms
+  - id: 70
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/gateways/networkservicesgateway-1-3elfauhbt8s3t?alt=json
+      method: DELETE
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/operations/operation-1714009981341-616e20c144ef3-b735e49d-120ed0f8",
+          "metadata": {
+            "@type": "type.googleapis.com/google.cloud.networkservices.v1.OperationMetadata",
+            "createTime": "2024-04-25T01:53:01.392716884Z",
+            "target": "projects/example-project/locations/global/gateways/networkservicesgateway-1-3elfauhbt8s3t",
+            "verb": "delete",
+            "requestedCancellation": false,
+            "apiVersion": "v1"
+          },
+          "done": false
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 512.293919ms
+  - id: 71
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/grpcRoutes/networkservicesgrpcroute-3elfauhbt8s3t?alt=json
+      method: DELETE
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/operations/operation-1714009981399-616e20c1531b8-b4b05d77-cd7cbaf3",
+          "metadata": {
+            "@type": "type.googleapis.com/google.cloud.networkservices.v1.OperationMetadata",
+            "createTime": "2024-04-25T01:53:01.453915599Z",
+            "target": "projects/example-project/locations/global/grpcRoutes/networkservicesgrpcroute-3elfauhbt8s3t",
+            "verb": "delete",
+            "requestedCancellation": false,
+            "apiVersion": "v1"
+          },
+          "done": false
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 652.314319ms
+  - id: 72
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/gateways/networkservicesgateway-2-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/gateways/networkservicesgateway-2-3elfauhbt8s3t",
+          "createTime": "2024-04-25T01:52:19.130328246Z",
+          "updateTime": "2024-04-25T01:52:22.885873183Z",
+          "labels": {
+            "cnrm-test": "true",
+            "managed-by-cnrm": "true"
+          },
+          "type": "OPEN_MESH",
+          "scope": "s-3elfauhbt8s3t-2",
+          "ports": [
+            80,
+            443
+          ],
+          "selfLink": "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/gateways/networkservicesgateway-2-3elfauhbt8s3t"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 94.327551ms
+  - id: 73
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/meshes/networkservicesmesh-2-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/meshes/networkservicesmesh-2-3elfauhbt8s3t",
+          "createTime": "2024-04-25T01:52:19.095897946Z",
+          "updateTime": "2024-04-25T01:52:22.770423234Z",
+          "labels": {
+            "managed-by-cnrm": "true",
+            "cnrm-test": "true"
+          },
+          "selfLink": "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/meshes/networkservicesmesh-2-3elfauhbt8s3t"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 283.241574ms
+  - id: 74
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/gateways/networkservicesgateway-2-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/gateways/networkservicesgateway-2-3elfauhbt8s3t",
+          "createTime": "2024-04-25T01:52:19.130328246Z",
+          "updateTime": "2024-04-25T01:52:22.885873183Z",
+          "labels": {
+            "managed-by-cnrm": "true",
+            "cnrm-test": "true"
+          },
+          "type": "OPEN_MESH",
+          "scope": "s-3elfauhbt8s3t-2",
+          "ports": [
+            80,
+            443
+          ],
+          "selfLink": "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/gateways/networkservicesgateway-2-3elfauhbt8s3t"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 154.220622ms
+  - id: 75
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/meshes/networkservicesmesh-2-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/meshes/networkservicesmesh-2-3elfauhbt8s3t",
+          "createTime": "2024-04-25T01:52:19.095897946Z",
+          "updateTime": "2024-04-25T01:52:22.770423234Z",
+          "labels": {
+            "cnrm-test": "true",
+            "managed-by-cnrm": "true"
+          },
+          "selfLink": "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/meshes/networkservicesmesh-2-3elfauhbt8s3t"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 80.640517ms
+  - id: 76
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/gateways/networkservicesgateway-2-3elfauhbt8s3t?alt=json
+      method: DELETE
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 400 Bad Request
+      code: 400
+      duration: 201.637618ms
+  - id: 77
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/meshes/networkservicesmesh-2-3elfauhbt8s3t?alt=json
+      method: DELETE
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 400 Bad Request
+      code: 400
+      duration: 185.242692ms
+  - id: 78
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/operations/operation-1714009981341-616e20c144ef3-b735e49d-120ed0f8?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/operations/operation-1714009981341-616e20c144ef3-b735e49d-120ed0f8",
+          "metadata": {
+            "@type": "type.googleapis.com/google.cloud.networkservices.v1.OperationMetadata",
+            "createTime": "2024-04-25T01:53:01.392716884Z",
+            "endTime": "2024-04-25T01:53:04.797995706Z",
+            "target": "projects/example-project/locations/global/gateways/networkservicesgateway-1-3elfauhbt8s3t",
+            "verb": "delete",
+            "requestedCancellation": false,
+            "apiVersion": "v1"
+          },
+          "done": true,
+          "response": {
+            "@type": "type.googleapis.com/google.protobuf.Empty"
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 75.292794ms
+  - id: 79
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/operations/operation-1714009981186-616e20c11f32f-07d4197c-4dee2993?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/operations/operation-1714009981186-616e20c11f32f-07d4197c-4dee2993",
+          "metadata": {
+            "@type": "type.googleapis.com/google.cloud.networkservices.v1.OperationMetadata",
+            "createTime": "2024-04-25T01:53:01.238921806Z",
+            "endTime": "2024-04-25T01:53:04.564207436Z",
+            "target": "projects/example-project/locations/global/meshes/networkservicesmesh-1-3elfauhbt8s3t",
+            "verb": "delete",
+            "requestedCancellation": false,
+            "apiVersion": "v1"
+          },
+          "done": true,
+          "response": {
+            "@type": "type.googleapis.com/google.protobuf.Empty"
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 67.533873ms
+  - id: 80
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/gateways/networkservicesgateway-1-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 279.574042ms
+  - id: 81
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/meshes/networkservicesmesh-1-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 264.970742ms
+  - id: 82
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/operations/operation-1714009981399-616e20c1531b8-b4b05d77-cd7cbaf3?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/operations/operation-1714009981399-616e20c1531b8-b4b05d77-cd7cbaf3",
+          "metadata": {
+            "@type": "type.googleapis.com/google.cloud.networkservices.v1.OperationMetadata",
+            "createTime": "2024-04-25T01:53:01.453915599Z",
+            "endTime": "2024-04-25T01:53:06.430939587Z",
+            "target": "projects/example-project/locations/global/grpcRoutes/networkservicesgrpcroute-3elfauhbt8s3t",
+            "verb": "delete",
+            "requestedCancellation": false,
+            "apiVersion": "v1"
+          },
+          "done": true,
+          "response": {
+            "@type": "type.googleapis.com/google.protobuf.Empty"
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 95.649454ms
+  - id: 83
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/grpcRoutes/networkservicesgrpcroute-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 95.709708ms
+  - id: 84
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/gateways/networkservicesgateway-2-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/gateways/networkservicesgateway-2-3elfauhbt8s3t",
+          "createTime": "2024-04-25T01:52:19.130328246Z",
+          "updateTime": "2024-04-25T01:52:22.885873183Z",
+          "labels": {
+            "cnrm-test": "true",
+            "managed-by-cnrm": "true"
+          },
+          "type": "OPEN_MESH",
+          "scope": "s-3elfauhbt8s3t-2",
+          "ports": [
+            80,
+            443
+          ],
+          "selfLink": "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/gateways/networkservicesgateway-2-3elfauhbt8s3t"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 106.660358ms
+  - id: 85
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/gateways/networkservicesgateway-2-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/gateways/networkservicesgateway-2-3elfauhbt8s3t",
+          "createTime": "2024-04-25T01:52:19.130328246Z",
+          "updateTime": "2024-04-25T01:52:22.885873183Z",
+          "labels": {
+            "cnrm-test": "true",
+            "managed-by-cnrm": "true"
+          },
+          "type": "OPEN_MESH",
+          "scope": "s-3elfauhbt8s3t-2",
+          "ports": [
+            80,
+            443
+          ],
+          "selfLink": "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/gateways/networkservicesgateway-2-3elfauhbt8s3t"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 96.58594ms
+  - id: 86
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/meshes/networkservicesmesh-2-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/meshes/networkservicesmesh-2-3elfauhbt8s3t",
+          "createTime": "2024-04-25T01:52:19.095897946Z",
+          "updateTime": "2024-04-25T01:52:22.770423234Z",
+          "labels": {
+            "cnrm-test": "true",
+            "managed-by-cnrm": "true"
+          },
+          "selfLink": "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/meshes/networkservicesmesh-2-3elfauhbt8s3t"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 262.865353ms
+  - id: 87
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/gateways/networkservicesgateway-2-3elfauhbt8s3t?alt=json
+      method: DELETE
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/operations/operation-1714009991878-616e20cb518d0-ce662d4b-1398e5d0",
+          "metadata": {
+            "@type": "type.googleapis.com/google.cloud.networkservices.v1.OperationMetadata",
+            "createTime": "2024-04-25T01:53:11.929537419Z",
+            "target": "projects/example-project/locations/global/gateways/networkservicesgateway-2-3elfauhbt8s3t",
+            "verb": "delete",
+            "requestedCancellation": false,
+            "apiVersion": "v1"
+          },
+          "done": false
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 545.104313ms
+  - id: 88
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/meshes/networkservicesmesh-2-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/meshes/networkservicesmesh-2-3elfauhbt8s3t",
+          "createTime": "2024-04-25T01:52:19.095897946Z",
+          "updateTime": "2024-04-25T01:52:22.770423234Z",
+          "labels": {
+            "cnrm-test": "true",
+            "managed-by-cnrm": "true"
+          },
+          "selfLink": "https://networkservices.googleapis.com/v1alpha1/projects/example-project/locations/global/meshes/networkservicesmesh-2-3elfauhbt8s3t"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 313.296488ms
+  - id: 89
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/meshes/networkservicesmesh-2-3elfauhbt8s3t?alt=json
+      method: DELETE
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/operations/operation-1714009992762-616e20cc295a4-fef2cb9f-3f702f79",
+          "metadata": {
+            "@type": "type.googleapis.com/google.cloud.networkservices.v1.OperationMetadata",
+            "createTime": "2024-04-25T01:53:12.813333426Z",
+            "target": "projects/example-project/locations/global/meshes/networkservicesmesh-2-3elfauhbt8s3t",
+            "verb": "delete",
+            "requestedCancellation": false,
+            "apiVersion": "v1"
+          },
+          "done": false
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 478.106021ms
+  - id: 90
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/operations/operation-1714009991878-616e20cb518d0-ce662d4b-1398e5d0?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/operations/operation-1714009991878-616e20cb518d0-ce662d4b-1398e5d0",
+          "metadata": {
+            "@type": "type.googleapis.com/google.cloud.networkservices.v1.OperationMetadata",
+            "createTime": "2024-04-25T01:53:11.929537419Z",
+            "endTime": "2024-04-25T01:53:15.323879837Z",
+            "target": "projects/example-project/locations/global/gateways/networkservicesgateway-2-3elfauhbt8s3t",
+            "verb": "delete",
+            "requestedCancellation": false,
+            "apiVersion": "v1"
+          },
+          "done": true,
+          "response": {
+            "@type": "type.googleapis.com/google.protobuf.Empty"
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 279.94412ms
+  - id: 91
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/gateways/networkservicesgateway-2-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 286.801899ms
+  - id: 92
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/operations/operation-1714009992762-616e20cc295a4-fef2cb9f-3f702f79?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/operations/operation-1714009992762-616e20cc295a4-fef2cb9f-3f702f79",
+          "metadata": {
+            "@type": "type.googleapis.com/google.cloud.networkservices.v1.OperationMetadata",
+            "createTime": "2024-04-25T01:53:12.813333426Z",
+            "endTime": "2024-04-25T01:53:16.211516330Z",
+            "target": "projects/example-project/locations/global/meshes/networkservicesmesh-2-3elfauhbt8s3t",
+            "verb": "delete",
+            "requestedCancellation": false,
+            "apiVersion": "v1"
+          },
+          "done": true,
+          "response": {
+            "@type": "type.googleapis.com/google.protobuf.Empty"
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 67.904186ms
+  - id: 93
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkservices.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkservices.googleapis.com/v1/projects/example-project/locations/global/meshes/networkservicesmesh-2-3elfauhbt8s3t?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 94.812016ms

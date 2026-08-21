@@ -1,0 +1,10 @@
+apiVersion: gkehub.cnrm.cloud.google.com/v1alpha1
+kind: GKEHubScopeRBACRoleBinding
+metadata:
+  name: gkh-rb-group-${uniqueId}
+spec:
+  scopeRef:
+    name: gkh-rb-group-dep-${uniqueId}
+  role:
+    predefinedRole: VIEW
+  group: groups1@example.com

@@ -1,0 +1,12 @@
+- caisURL: //pubsub.googleapis.com/projects/${projectId}/topics/logsink-${uniqueId}
+  group: pubsub.cnrm.cloud.google.com
+  kind: PubSubTopic
+  name: logsink-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: //logging.googleapis.com/projects/${projectId}/sinks/logsink-${uniqueId}
+  group: logging.cnrm.cloud.google.com
+  kind: LoggingLogSink
+  name: logsink-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

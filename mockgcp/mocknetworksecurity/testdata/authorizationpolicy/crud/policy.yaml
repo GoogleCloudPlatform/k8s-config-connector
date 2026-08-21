@@ -1,0 +1,19 @@
+name: test-${uniqueId}
+action: ALLOW
+description: A test authorization policy
+rules:
+- sources:
+  - principals:
+    - "spiffe://foo.bar/ns/default/sa/default"
+    ipBlocks:
+    - "1.2.3.4/32"
+  destinations:
+  - hosts:
+    - "example.com"
+    ports:
+    - 8080
+    methods:
+    - "GET"
+    httpHeaderMatch:
+      headerName: "X-Test-Header"
+      regexMatch: ".*"

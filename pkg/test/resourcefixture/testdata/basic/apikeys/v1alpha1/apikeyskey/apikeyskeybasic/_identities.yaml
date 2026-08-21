@@ -1,0 +1,6 @@
+- caisURL: //apikeys.googleapis.com/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}
+  group: apikeys.cnrm.cloud.google.com
+  kind: APIKeysKey
+  name: apikeyskey-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

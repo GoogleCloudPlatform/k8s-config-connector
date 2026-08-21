@@ -1,0 +1,129 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum Cloudbuildv2ConnectionInstallationStateStageEnum {
+  Cloudbuildv2ConnectionInstallationStateStageEnumNO_VALUE_DO_NOT_USE = 0;
+  Cloudbuildv2ConnectionInstallationStateStageEnumSTAGE_UNSPECIFIED = 1;
+  Cloudbuildv2ConnectionInstallationStateStageEnumPENDING_CREATE_APP = 2;
+  Cloudbuildv2ConnectionInstallationStateStageEnumPENDING_USER_OAUTH = 3;
+  Cloudbuildv2ConnectionInstallationStateStageEnumPENDING_INSTALL_APP = 4;
+  Cloudbuildv2ConnectionInstallationStateStageEnumCOMPLETE = 5;
+}
+
+message Cloudbuildv2Connection {
+  string name = 1;
+  string create_time = 2;
+  string update_time = 3;
+  Cloudbuildv2ConnectionGithubConfig github_config = 4;
+  Cloudbuildv2ConnectionGithubEnterpriseConfig github_enterprise_config = 5;
+  Cloudbuildv2ConnectionGitlabConfig gitlab_config = 6;
+  Cloudbuildv2ConnectionInstallationState installation_state = 7;
+  bool disabled = 8;
+  bool reconciling = 9;
+  map<string, string> annotations = 10;
+  string etag = 11;
+  string project = 12;
+  string location = 13;
+}
+
+message Cloudbuildv2ConnectionGithubConfig {
+  Cloudbuildv2ConnectionGithubConfigAuthorizerCredential authorizer_credential = 1;
+  int64 app_installation_id = 2;
+}
+
+message Cloudbuildv2ConnectionGithubConfigAuthorizerCredential {
+  string oauth_token_secret_version = 1;
+  string username = 2;
+}
+
+message Cloudbuildv2ConnectionGithubEnterpriseConfig {
+  string host_uri = 1;
+  int64 app_id = 2;
+  string app_slug = 3;
+  string private_key_secret_version = 4;
+  string webhook_secret_secret_version = 5;
+  int64 app_installation_id = 6;
+  Cloudbuildv2ConnectionGithubEnterpriseConfigServiceDirectoryConfig service_directory_config = 7;
+  string ssl_ca = 8;
+}
+
+message Cloudbuildv2ConnectionGithubEnterpriseConfigServiceDirectoryConfig {
+  string service = 1;
+}
+
+message Cloudbuildv2ConnectionGitlabConfig {
+  string host_uri = 1;
+  string webhook_secret_secret_version = 2;
+  Cloudbuildv2ConnectionGitlabConfigReadAuthorizerCredential read_authorizer_credential = 3;
+  Cloudbuildv2ConnectionGitlabConfigAuthorizerCredential authorizer_credential = 4;
+  Cloudbuildv2ConnectionGitlabConfigServiceDirectoryConfig service_directory_config = 5;
+  string ssl_ca = 6;
+  string server_version = 7;
+}
+
+message Cloudbuildv2ConnectionGitlabConfigReadAuthorizerCredential {
+  string user_token_secret_version = 1;
+  string username = 2;
+}
+
+message Cloudbuildv2ConnectionGitlabConfigAuthorizerCredential {
+  string user_token_secret_version = 1;
+  string username = 2;
+}
+
+message Cloudbuildv2ConnectionGitlabConfigServiceDirectoryConfig {
+  string service = 1;
+}
+
+message Cloudbuildv2ConnectionInstallationState {
+  Cloudbuildv2ConnectionInstallationStateStageEnum stage = 1;
+  string message = 2;
+  string action_uri = 3;
+}
+
+message ApplyCloudbuildv2ConnectionRequest {
+  Cloudbuildv2Connection resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteCloudbuildv2ConnectionRequest {
+  string service_account_file = 1;
+  Cloudbuildv2Connection resource = 2;
+}
+
+message ListCloudbuildv2ConnectionRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListCloudbuildv2ConnectionResponse {
+  repeated Cloudbuildv2Connection items = 1;
+}
+
+service Cloudbuildv2ConnectionService {
+  rpc ApplyCloudbuildv2Connection(ApplyCloudbuildv2ConnectionRequest) returns (Cloudbuildv2Connection);
+  rpc DeleteCloudbuildv2Connection(DeleteCloudbuildv2ConnectionRequest) returns (google.protobuf.Empty);
+  rpc ListCloudbuildv2Connection(ListCloudbuildv2ConnectionRequest) returns (ListCloudbuildv2ConnectionResponse);
+}

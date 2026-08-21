@@ -1,0 +1,3 @@
+```release-note:bug
+firebase: fixed permadiff on the field `deletion_policy` of `google_firebase_apple_app`
+```

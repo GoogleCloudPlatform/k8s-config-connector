@@ -1,0 +1,19 @@
+- caisURL: //spanner.googleapis.com/projects/${projectId}/instances/spannerinstance-${uniqueId}
+  group: spanner.cnrm.cloud.google.com
+  kind: SpannerInstance
+  name: spannerinstance-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: unknown
+  group: spanner.cnrm.cloud.google.com
+  kind: SpannerDatabase
+  name: spannerdb-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: unknown
+  error: not yet supported
+  group: bigqueryconnection.cnrm.cloud.google.com
+  kind: BigQueryConnectionConnection
+  name: bigqueryconnectionconnection-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

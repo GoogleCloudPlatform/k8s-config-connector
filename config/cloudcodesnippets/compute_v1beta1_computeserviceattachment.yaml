@@ -1,0 +1,24 @@
+label: Config Connector ComputeServiceAttachment
+markdownDescription: Creates yaml for a ComputeServiceAttachment resource
+insertText: |
+  apiVersion: compute.cnrm.cloud.google.com/v1beta1
+  kind: ComputeServiceAttachment
+  metadata:
+    name: \${1:computeserviceattachment-name}
+  spec:
+    projectRef:
+      external: \${2:projects/[PROJECT_ID?]}
+    location: \${3:us-west2}
+    description: \${4:A sample service attachment}
+    targetServiceRef:
+      name: \${5:computeserviceattachment-dep}
+    connectionPreference: \${6:ACCEPT_MANUAL}
+    natSubnets:
+    - name: \${7:computeserviceattachment-dep1}
+    enableProxyProtocol: \${8:false}
+    consumerRejectLists:
+    - name: \${9:computeserviceattachment-dep1}
+    consumerAcceptLists:
+    - projectRef:
+        name: \${10:computeserviceattachment-dep2}
+      connectionLimit: \${11:2}

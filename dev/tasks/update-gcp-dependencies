@@ -1,0 +1,41 @@
+#!/bin/bash
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+REPO_ROOT=$(git rev-parse --show-toplevel)
+cd ${REPO_ROOT}
+
+# Newer client libraries
+for dep in $(grep cloud.google.com/go go.mod | awk '{print $1}'); do
+  dev/tasks/update-dependency ${dep}
+done
+for dep in $(grep cloud.google.com/go mockgcp/go.mod | awk '{print $1}'); do
+  dev/tasks/update-dependency ${dep}
+done
+
+# Older client libraries
+dev/tasks/update-dependency google.golang.org/api
+
+# Find latest git SHAs
+GOOGLEAPIS_SHA=$(git ls-remote --exit-code https://github.com/googleapis/googleapis refs/heads/master | awk '{print $1}' )
+
+# Update git version markers
+cat > apis/git.versions <<EOF
+# This file is generated - DO NOT EDIT
+#
+# This file holds the pinned SHAs for our APIs
+# It is generated using dev/tasks/update-gcp-dependencies
+#
+https://github.com/googleapis/googleapis ${GOOGLEAPIS_SHA}
+EOF
+
+dev/tasks/generate-types-and-mappers
+
+
+# Ensure everything in go.work is synced up
+cd ${REPO_ROOT}
+go work sync
+# Hack to update go.work.sum
+make ready-pr

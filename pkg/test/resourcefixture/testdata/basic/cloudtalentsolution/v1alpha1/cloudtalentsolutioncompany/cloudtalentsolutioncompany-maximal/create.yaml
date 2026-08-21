@@ -1,0 +1,20 @@
+apiVersion: cloudtalentsolution.cnrm.cloud.google.com/v1alpha1
+kind: CloudTalentSolutionCompany
+metadata:
+  name: ctsco-max-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  tenant: default
+  displayName: "Maximal Test Company"
+  externalID: "max-ext-id-${uniqueId}"
+  size: SMALL
+  headquartersAddress: "1600 Amphitheatre Parkway, Mountain View, CA 94043"
+  hiringAgency: true
+  eeoText: "Equal Opportunity Employer"
+  websiteURI: "https://example.com"
+  careerSiteURI: "https://example.com/careers"
+  imageURI: "https://example.com/logo.png"
+  keywordSearchableJobCustomAttributes:
+    - "attribute1"
+    - "attribute2"

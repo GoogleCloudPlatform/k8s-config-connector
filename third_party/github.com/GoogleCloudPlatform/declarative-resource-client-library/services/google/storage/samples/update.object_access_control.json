@@ -1,0 +1,11 @@
+{
+  "project": "{{project}}",
+  "bucket": "{{ref:basic.bucket.json:name}}",
+  "object": "{{ref:basic.object.json:name}}",
+  "entity": "group-magic-modules-eng@google.com",
+  "projectTeam": {
+    "projectNumber": "{{project_number}}",
+    "team": "owners"
+  },
+  "role": "READER"
+}

@@ -1,0 +1,113 @@
+384c384
+< GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}?alt=json
+---
+> GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+407c407
+< POST https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities?alt=json&certificateAuthorityId=privatecacertificateauthority-${uniqueId}
+---
+> POST https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities?%24alt=json%3Benum-encoding%3Dint&certificateAuthorityId=privatecacertificateauthority-${uniqueId}
+439c439
+<     "algorithm": "RSA_PKCS1_4096_SHA256"
+---
+>     "algorithm": 8
+447,448c447
+<   "name": "projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}",
+<   "type": "SELF_SIGNED"
+---
+>   "type": 1
+474c473
+< GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+---
+> GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+597c596
+< GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}?alt=json
+---
+> GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+686c685
+<     "algorithm": "RSA_PKCS1_4096_SHA256"
+---
+>     "algorithm": 8
+699,701c698,700
+<   "state": "STAGED",
+<   "tier": "ENTERPRISE",
+<   "type": "SELF_SIGNED",
+---
+>   "state": 3,
+>   "tier": 1,
+>   "type": 1,
+707c706
+< PATCH https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}?alt=json&updateMask=labels
+---
+> PATCH https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=labels
+710a710,739
+>   "config": {
+>     "subjectConfig": {
+>       "subject": {
+>         "commonName": "my-certificate-authority",
+>         "organization": "Example"
+>       },
+>       "subjectAltName": {
+>         "dnsNames": [
+>           "example.com"
+>         ]
+>       }
+>     },
+>     "x509Config": {
+>       "caOptions": {
+>         "isCa": true
+>       },
+>       "keyUsage": {
+>         "baseKeyUsage": {
+>           "certSign": true,
+>           "crlSign": true
+>         },
+>         "extendedKeyUsage": {
+>           "serverAuth": true
+>         }
+>       }
+>     }
+>   },
+>   "keySpec": {
+>     "algorithm": 8
+>   },
+716c745,748
+<   }
+---
+>   },
+>   "lifetime": "86400s",
+>   "name": "projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}",
+>   "type": 1
+742c774
+< GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+---
+> GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+821a854
+>             "example.com",
+866c899
+< GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}?alt=json
+---
+> GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+933a967
+>           "example.com",
+955c989
+<     "algorithm": "RSA_PKCS1_4096_SHA256"
+---
+>     "algorithm": 8
+969,971c1003,1005
+<   "state": "STAGED",
+<   "tier": "ENTERPRISE",
+<   "type": "SELF_SIGNED",
+---
+>   "state": 3,
+>   "tier": 1,
+>   "type": 1,
+977c1011
+< DELETE https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}?alt=json&ignoreActiveCertificates=true
+---
+> DELETE https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}/certificateAuthorities/privatecacertificateauthority-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&ignoreActiveCertificates=true
+1003c1037
+< GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+---
+> GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+1082a1117
+>             "example.com",

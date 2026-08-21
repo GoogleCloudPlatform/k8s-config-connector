@@ -1,0 +1,92 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+message NetworksecurityBetaServerTlsPolicy {
+  string name = 1;
+  string description = 2;
+  string create_time = 3;
+  string update_time = 4;
+  map<string, string> labels = 5;
+  bool allow_open = 6;
+  NetworksecurityBetaServerTlsPolicyServerCertificate server_certificate = 7;
+  NetworksecurityBetaServerTlsPolicyMtlsPolicy mtls_policy = 8;
+  string project = 9;
+  string location = 10;
+}
+
+message NetworksecurityBetaServerTlsPolicyServerCertificate {
+  NetworksecurityBetaServerTlsPolicyServerCertificateGrpcEndpoint grpc_endpoint = 1;
+  NetworksecurityBetaServerTlsPolicyServerCertificateCertificateProviderInstance certificate_provider_instance = 2;
+}
+
+message NetworksecurityBetaServerTlsPolicyServerCertificateGrpcEndpoint {
+  string target_uri = 1;
+}
+
+message NetworksecurityBetaServerTlsPolicyServerCertificateCertificateProviderInstance {
+  string plugin_instance = 1;
+}
+
+message NetworksecurityBetaServerTlsPolicyMtlsPolicy {
+  repeated NetworksecurityBetaServerTlsPolicyMtlsPolicyClientValidationCa client_validation_ca = 1;
+}
+
+message NetworksecurityBetaServerTlsPolicyMtlsPolicyClientValidationCa {
+  NetworksecurityBetaServerTlsPolicyMtlsPolicyClientValidationCaGrpcEndpoint grpc_endpoint = 1;
+  NetworksecurityBetaServerTlsPolicyMtlsPolicyClientValidationCaCertificateProviderInstance certificate_provider_instance = 2;
+}
+
+message NetworksecurityBetaServerTlsPolicyMtlsPolicyClientValidationCaGrpcEndpoint {
+  string target_uri = 1;
+}
+
+message NetworksecurityBetaServerTlsPolicyMtlsPolicyClientValidationCaCertificateProviderInstance {
+  string plugin_instance = 1;
+}
+
+message ApplyNetworksecurityBetaServerTlsPolicyRequest {
+  NetworksecurityBetaServerTlsPolicy resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteNetworksecurityBetaServerTlsPolicyRequest {
+  string service_account_file = 1;
+  NetworksecurityBetaServerTlsPolicy resource = 2;
+}
+
+message ListNetworksecurityBetaServerTlsPolicyRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListNetworksecurityBetaServerTlsPolicyResponse {
+  repeated NetworksecurityBetaServerTlsPolicy items = 1;
+}
+
+service NetworksecurityBetaServerTlsPolicyService {
+  rpc ApplyNetworksecurityBetaServerTlsPolicy(ApplyNetworksecurityBetaServerTlsPolicyRequest) returns (NetworksecurityBetaServerTlsPolicy);
+  rpc DeleteNetworksecurityBetaServerTlsPolicy(DeleteNetworksecurityBetaServerTlsPolicyRequest) returns (google.protobuf.Empty);
+  rpc ListNetworksecurityBetaServerTlsPolicy(ListNetworksecurityBetaServerTlsPolicyRequest) returns (ListNetworksecurityBetaServerTlsPolicyResponse);
+}

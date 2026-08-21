@@ -1,0 +1,10 @@
+{
+  "project": "{{project}}",
+  "location": "us-west1",
+  "connection": "{{ref:bbc.connection.json:name}}",
+  "name": "{{repository}}",
+  "remoteUri": "https://bitbucket.org/proctor-test/terraform-testing.git",
+  "annotations": {
+    "some-key": "some-value"
+  }
+}

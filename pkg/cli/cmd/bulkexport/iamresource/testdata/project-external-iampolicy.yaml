@@ -1,0 +1,52 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicy
+metadata:
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+  name: iampolicy-sample-projectlevel
+spec:
+  resourceRef:
+    apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+    kind: Project
+    external: projects/project-id
+  bindings:
+    - members:
+        - serviceAccount:service-123456789@compute-system.iam.gserviceaccount.com
+      role: roles/compute.serviceAgent
+    - members:
+        - serviceAccount:service-123456789@container-engine-robot.iam.gserviceaccount.com
+      role: roles/container.serviceAgent
+    - members:
+        - serviceAccount:123456789-compute@developer.gserviceaccount.com
+        - serviceAccount:123456789@cloudservices.gserviceaccount.com
+        - serviceAccount:cnrm-application-demo@project-id.iam.gserviceaccount.com
+        - serviceAccount:service-123456789@containerregistry.iam.gserviceaccount.com
+      role: roles/editor
+    - members:
+        - serviceAccount:cnrm-system@project-id.iam.gserviceaccount.com
+        - user:project-id
+      role: roles/owner
+    - members:
+        - serviceAccount:service-123456789@cloud-redis.iam.gserviceaccount.com
+      role: roles/redis.serviceAgent
+    - members:
+        - serviceAccount:cnrm-system@project-id.iam.gserviceaccount.com
+      role: roles/storage.admin
+      condition:
+        description: Expires at midnight of 2030-01-01
+        expression: request.time < timestamp("2030-01-01T00:00:00Z")
+        title: expires_after_2030_01_01

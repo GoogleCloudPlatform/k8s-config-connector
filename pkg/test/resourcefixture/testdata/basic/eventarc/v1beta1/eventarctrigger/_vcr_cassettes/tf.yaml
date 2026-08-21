@@ -1,0 +1,3260 @@
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+version: 2
+interactions:
+  - id: 0
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: pubsub.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://pubsub.googleapis.com/v1/projects/example-project/topics/pubsubtopic-2ubz1ejdpwb22?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 151.962669ms
+  - id: 1
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: iam.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        X-Goog-Api-Client:
+          - gl-go/1.21.5 gdcl/0.160.0
+      url: https://iam.googleapis.com/v1/projects/example-project/serviceAccounts/gsa-2ubz1ejdpwb22@example-project.iam.gserviceaccount.com?alt=json&prettyPrint=false
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 303.263946ms
+  - id: 2
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: run.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://run.googleapis.com/v2/projects/example-project/locations/us-central1/services/runservice-1-2ubz1ejdpwb22?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 358.79005ms
+  - id: 3
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: run.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://run.googleapis.com/v2/projects/example-project/locations/us-central1/services/runservice-2-2ubz1ejdpwb22?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 390.794667ms
+  - id: 4
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 316
+      transfer_encoding: []
+      trailer: {}
+      host: run.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: |
+        {"ingress":"INGRESS_TRAFFIC_ALL","labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"launchStage":"GA","template":{"containers":[{"env":[{"name":"FOO","value":"bar]"}],"image":"gcr.io/cloudrun/hello"}],"scaling":{"maxInstanceCount":2}},"traffic":[{"percent":100,"type":"TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST"}]}
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://run.googleapis.com/v2/projects/example-project/locations/us-central1/services?alt=json&serviceId=runservice-1-2ubz1ejdpwb22
+      method: POST
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-central1/operations/84881b39-6af9-4dd7-8ea9-10ecac5a1a6c",
+          "metadata": {
+            "@type": "type.googleapis.com/google.cloud.run.v2.Service",
+            "name": "projects/example-project/locations/us-central1/services/runservice-1-2ubz1ejdpwb22",
+            "uid": "092ae477-b30f-4bc4-80db-c24ebea0286c",
+            "generation": "1",
+            "labels": {
+              "cnrm-test": "true",
+              "managed-by-cnrm": "true"
+            },
+            "createTime": "2024-04-25T01:37:16.528777Z",
+            "updateTime": "2024-04-25T01:37:16.528777Z",
+            "creator": "integration-test@example-project.iam.gserviceaccount.com",
+            "lastModifier": "integration-test@example-project.iam.gserviceaccount.com",
+            "launchStage": "GA",
+            "template": {
+              "scaling": {
+                "maxInstanceCount": 2
+              },
+              "timeout": "300s",
+              "serviceAccount": "123456789-compute@developer.gserviceaccount.com",
+              "containers": [
+                {
+                  "image": "gcr.io/cloudrun/hello",
+                  "env": [
+                    {
+                      "name": "FOO",
+                      "value": "bar]"
+                    }
+                  ],
+                  "resources": {
+                    "limits": {
+                      "memory": "512Mi",
+                      "cpu": "1000m"
+                    },
+                    "cpuIdle": true
+                  },
+                  "ports": [
+                    {
+                      "name": "http1",
+                      "containerPort": 8080
+                    }
+                  ],
+                  "startupProbe": {
+                    "timeoutSeconds": 240,
+                    "periodSeconds": 240,
+                    "failureThreshold": 1,
+                    "tcpSocket": {
+                      "port": 8080
+                    }
+                  }
+                }
+              ],
+              "maxInstanceRequestConcurrency": 80
+            },
+            "traffic": [
+              {
+                "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+                "percent": 100
+              }
+            ],
+            "terminalCondition": {
+              "state": "CONDITION_PENDING"
+            },
+            "reconciling": true,
+            "etag": "\"CMznprEGEKj-kfwB/cHJvamVjdHMvY25ybS10ZXN0LTF2a3hzOWJoanYweG85OHEvbG9jYXRpb25zL3VzLWNlbnRyYWwxL3NlcnZpY2VzL3J1bnNlcnZpY2UtMS0ydWJ6MWVqZHB3YjIy\""
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 467.435447ms
+  - id: 5
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 80
+      transfer_encoding: []
+      trailer: {}
+      host: iam.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: |
+        {"accountId":"gsa-2ubz1ejdpwb22","serviceAccount":{"displayName":"ExampleGSA"}}
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+        X-Goog-Api-Client:
+          - gl-go/1.21.5 gdcl/0.160.0
+      url: https://iam.googleapis.com/v1/projects/example-project/serviceAccounts?alt=json&prettyPrint=false
+      method: POST
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: '{"name":"projects/example-project/serviceAccounts/gsa-2ubz1ejdpwb22@example-project.iam.gserviceaccount.com","projectId":"example-project","uniqueId":"100745114897948025258","email":"gsa-2ubz1ejdpwb22@example-project.iam.gserviceaccount.com","displayName":"ExampleGSA","etag":"MDEwMjE5MjA=","oauth2ClientId":"100745114897948025258"}'
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 605.520464ms
+  - id: 6
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 315
+      transfer_encoding: []
+      trailer: {}
+      host: run.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: |
+        {"ingress":"INGRESS_TRAFFIC_ALL","labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"launchStage":"GA","template":{"containers":[{"env":[{"name":"FOO","value":"bar"}],"image":"gcr.io/cloudrun/hello"}],"scaling":{"maxInstanceCount":2}},"traffic":[{"percent":100,"type":"TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST"}]}
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://run.googleapis.com/v2/projects/example-project/locations/us-central1/services?alt=json&serviceId=runservice-2-2ubz1ejdpwb22
+      method: POST
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-central1/operations/0f1e5ceb-6291-4954-82d0-9139a94817c9",
+          "metadata": {
+            "@type": "type.googleapis.com/google.cloud.run.v2.Service",
+            "name": "projects/example-project/locations/us-central1/services/runservice-2-2ubz1ejdpwb22",
+            "uid": "4f9067c9-463a-4bef-abde-09e11d5955a4",
+            "generation": "1",
+            "labels": {
+              "cnrm-test": "true",
+              "managed-by-cnrm": "true"
+            },
+            "createTime": "2024-04-25T01:37:16.779466Z",
+            "updateTime": "2024-04-25T01:37:16.779466Z",
+            "creator": "integration-test@example-project.iam.gserviceaccount.com",
+            "lastModifier": "integration-test@example-project.iam.gserviceaccount.com",
+            "launchStage": "GA",
+            "template": {
+              "scaling": {
+                "maxInstanceCount": 2
+              },
+              "timeout": "300s",
+              "serviceAccount": "123456789-compute@developer.gserviceaccount.com",
+              "containers": [
+                {
+                  "image": "gcr.io/cloudrun/hello",
+                  "env": [
+                    {
+                      "name": "FOO",
+                      "value": "bar"
+                    }
+                  ],
+                  "resources": {
+                    "limits": {
+                      "memory": "512Mi",
+                      "cpu": "1000m"
+                    },
+                    "cpuIdle": true
+                  },
+                  "ports": [
+                    {
+                      "name": "http1",
+                      "containerPort": 8080
+                    }
+                  ],
+                  "startupProbe": {
+                    "timeoutSeconds": 240,
+                    "periodSeconds": 240,
+                    "failureThreshold": 1,
+                    "tcpSocket": {
+                      "port": 8080
+                    }
+                  }
+                }
+              ],
+              "maxInstanceRequestConcurrency": 80
+            },
+            "traffic": [
+              {
+                "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+                "percent": 100
+              }
+            ],
+            "terminalCondition": {
+              "state": "CONDITION_PENDING"
+            },
+            "reconciling": true,
+            "etag": "\"CMznprEGEJDq1vMC/cHJvamVjdHMvY25ybS10ZXN0LTF2a3hzOWJoanYweG85OHEvbG9jYXRpb25zL3VzLWNlbnRyYWwxL3NlcnZpY2VzL3J1bnNlcnZpY2UtMi0ydWJ6MWVqZHB3YjIy\""
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 627.159047ms
+  - id: 7
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: iam.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        X-Goog-Api-Client:
+          - gl-go/1.21.5 gdcl/0.160.0
+      url: https://iam.googleapis.com/v1/projects/example-project/serviceAccounts/gsa-2ubz1ejdpwb22@example-project.iam.gserviceaccount.com?alt=json&prettyPrint=false
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: '{"name":"projects/example-project/serviceAccounts/gsa-2ubz1ejdpwb22@example-project.iam.gserviceaccount.com","projectId":"example-project","uniqueId":"100745114897948025258","email":"gsa-2ubz1ejdpwb22@example-project.iam.gserviceaccount.com","displayName":"ExampleGSA","etag":"MDEwMjE5MjA=","oauth2ClientId":"100745114897948025258"}'
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 93.644173ms
+  - id: 8
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: iam.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        X-Goog-Api-Client:
+          - gl-go/1.21.5 gdcl/0.160.0
+      url: https://iam.googleapis.com/v1/projects/example-project/serviceAccounts/gsa-2ubz1ejdpwb22@example-project.iam.gserviceaccount.com?alt=json&prettyPrint=false
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: '{"name":"projects/example-project/serviceAccounts/gsa-2ubz1ejdpwb22@example-project.iam.gserviceaccount.com","projectId":"example-project","uniqueId":"100745114897948025258","email":"gsa-2ubz1ejdpwb22@example-project.iam.gserviceaccount.com","displayName":"ExampleGSA","etag":"MDEwMjE5MjA=","oauth2ClientId":"100745114897948025258"}'
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 80.357247ms
+  - id: 9
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: iam.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        X-Goog-Api-Client:
+          - gl-go/1.21.5 gdcl/0.160.0
+      url: https://iam.googleapis.com/v1/projects/example-project/serviceAccounts/gsa-2ubz1ejdpwb22@example-project.iam.gserviceaccount.com?alt=json&prettyPrint=false
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: '{"name":"projects/example-project/serviceAccounts/gsa-2ubz1ejdpwb22@example-project.iam.gserviceaccount.com","projectId":"example-project","uniqueId":"100745114897948025258","email":"gsa-2ubz1ejdpwb22@example-project.iam.gserviceaccount.com","displayName":"ExampleGSA","etag":"MDEwMjE5MjA=","oauth2ClientId":"100745114897948025258"}'
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 118.137653ms
+  - id: 10
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: iam.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        X-Goog-Api-Client:
+          - gl-go/1.21.5 gdcl/0.160.0
+      url: https://iam.googleapis.com/v1/projects/example-project/serviceAccounts/gsa-2ubz1ejdpwb22@example-project.iam.gserviceaccount.com?alt=json&prettyPrint=false
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: '{"name":"projects/example-project/serviceAccounts/gsa-2ubz1ejdpwb22@example-project.iam.gserviceaccount.com","projectId":"example-project","uniqueId":"100745114897948025258","email":"gsa-2ubz1ejdpwb22@example-project.iam.gserviceaccount.com","displayName":"ExampleGSA","etag":"MDEwMjE5MjA=","oauth2ClientId":"100745114897948025258"}'
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 66.886302ms
+  - id: 11
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 41
+      transfer_encoding: []
+      trailer: {}
+      host: cloudresourcemanager.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: |
+        {"options":{"requestedPolicyVersion":3}}
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+        X-Goog-Api-Client:
+          - gl-go/1.21.5 gdcl/0.160.0
+      url: https://cloudresourcemanager.googleapis.com/v1/projects/example-project:getIamPolicy?alt=json&prettyPrint=false
+      method: POST
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: '{"version":1,"etag":"BwYW4c5j91M=","bindings":[{"role":"roles/alloydb.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-alloydb.iam.gserviceaccount.com"]},{"role":"roles/appengine.serviceAgent","members":["serviceAccount:service-123456789@gcp-gae-service.iam.gserviceaccount.com"]},{"role":"roles/artifactregistry.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-artifactregistry.iam.gserviceaccount.com"]},{"role":"roles/binaryauthorization.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-binaryauthorization.iam.gserviceaccount.com"]},{"role":"roles/cloudbuild.builds.builder","members":["serviceAccount:123456789@cloudbuild.gserviceaccount.com"]},{"role":"roles/cloudbuild.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-cloudbuild.iam.gserviceaccount.com"]},{"role":"roles/cloudfunctions.serviceAgent","members":["serviceAccount:service-123456789@gcf-admin-robot.iam.gserviceaccount.com"]},{"role":"roles/cloudscheduler.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-cloudscheduler.iam.gserviceaccount.com"]},{"role":"roles/compute.serviceAgent","members":["serviceAccount:service-123456789@compute-system.iam.gserviceaccount.com"]},{"role":"roles/container.serviceAgent","members":["serviceAccount:service-123456789@container-engine-robot.iam.gserviceaccount.com"]},{"role":"roles/containeranalysis.ServiceAgent","members":["serviceAccount:service-123456789@container-analysis.iam.gserviceaccount.com"]},{"role":"roles/containerregistry.ServiceAgent","members":["serviceAccount:service-123456789@containerregistry.iam.gserviceaccount.com"]},{"role":"roles/dataflow.serviceAgent","members":["serviceAccount:service-123456789@dataflow-service-producer-prod.iam.gserviceaccount.com"]},{"role":"roles/datafusion.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-datafusion.iam.gserviceaccount.com"]},{"role":"roles/dataproc.serviceAgent","members":["serviceAccount:service-123456789@dataproc-accounts.iam.gserviceaccount.com"]},{"role":"roles/dlp.serviceAgent","members":["serviceAccount:service-123456789@dlp-api.iam.gserviceaccount.com"]},{"role":"roles/editor","members":["serviceAccount:123456789-compute@developer.gserviceaccount.com","serviceAccount:123456789@cloudservices.gserviceaccount.com","serviceAccount:example-project@appspot.gserviceaccount.com"]},{"role":"roles/file.serviceAgent","members":["serviceAccount:service-123456789@cloud-filer.iam.gserviceaccount.com"]},{"role":"roles/firestore.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-firestore.iam.gserviceaccount.com"]},{"role":"roles/memcache.serviceAgent","members":["serviceAccount:service-123456789@cloud-memcache-sa.iam.gserviceaccount.com"]},{"role":"roles/owner","members":["serviceAccount:cnrm-eap-prow@cnrm-eap.iam.gserviceaccount.com","serviceAccount:integration-test@example-project.iam.gserviceaccount.com"]},{"role":"roles/pubsub.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-pubsub.iam.gserviceaccount.com"]},{"role":"roles/run.serviceAgent","members":["serviceAccount:service-123456789@serverless-robot-prod.iam.gserviceaccount.com"]},{"role":"roles/vpcaccess.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-vpcaccess.iam.gserviceaccount.com"]}]}'
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+        Server-Timing:
+          - gfet4t7; dur=167
+      status: 200 OK
+      code: 200
+      duration: 199.137377ms
+  - id: 12
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 41
+      transfer_encoding: []
+      trailer: {}
+      host: cloudresourcemanager.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: |
+        {"options":{"requestedPolicyVersion":3}}
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+        X-Goog-Api-Client:
+          - gl-go/1.21.5 gdcl/0.160.0
+      url: https://cloudresourcemanager.googleapis.com/v1/projects/example-project:getIamPolicy?alt=json&prettyPrint=false
+      method: POST
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: '{"version":1,"etag":"BwYW4c5j91M=","bindings":[{"role":"roles/alloydb.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-alloydb.iam.gserviceaccount.com"]},{"role":"roles/appengine.serviceAgent","members":["serviceAccount:service-123456789@gcp-gae-service.iam.gserviceaccount.com"]},{"role":"roles/artifactregistry.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-artifactregistry.iam.gserviceaccount.com"]},{"role":"roles/binaryauthorization.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-binaryauthorization.iam.gserviceaccount.com"]},{"role":"roles/cloudbuild.builds.builder","members":["serviceAccount:123456789@cloudbuild.gserviceaccount.com"]},{"role":"roles/cloudbuild.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-cloudbuild.iam.gserviceaccount.com"]},{"role":"roles/cloudfunctions.serviceAgent","members":["serviceAccount:service-123456789@gcf-admin-robot.iam.gserviceaccount.com"]},{"role":"roles/cloudscheduler.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-cloudscheduler.iam.gserviceaccount.com"]},{"role":"roles/compute.serviceAgent","members":["serviceAccount:service-123456789@compute-system.iam.gserviceaccount.com"]},{"role":"roles/container.serviceAgent","members":["serviceAccount:service-123456789@container-engine-robot.iam.gserviceaccount.com"]},{"role":"roles/containeranalysis.ServiceAgent","members":["serviceAccount:service-123456789@container-analysis.iam.gserviceaccount.com"]},{"role":"roles/containerregistry.ServiceAgent","members":["serviceAccount:service-123456789@containerregistry.iam.gserviceaccount.com"]},{"role":"roles/dataflow.serviceAgent","members":["serviceAccount:service-123456789@dataflow-service-producer-prod.iam.gserviceaccount.com"]},{"role":"roles/datafusion.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-datafusion.iam.gserviceaccount.com"]},{"role":"roles/dataproc.serviceAgent","members":["serviceAccount:service-123456789@dataproc-accounts.iam.gserviceaccount.com"]},{"role":"roles/dlp.serviceAgent","members":["serviceAccount:service-123456789@dlp-api.iam.gserviceaccount.com"]},{"role":"roles/editor","members":["serviceAccount:123456789-compute@developer.gserviceaccount.com","serviceAccount:123456789@cloudservices.gserviceaccount.com","serviceAccount:example-project@appspot.gserviceaccount.com"]},{"role":"roles/file.serviceAgent","members":["serviceAccount:service-123456789@cloud-filer.iam.gserviceaccount.com"]},{"role":"roles/firestore.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-firestore.iam.gserviceaccount.com"]},{"role":"roles/memcache.serviceAgent","members":["serviceAccount:service-123456789@cloud-memcache-sa.iam.gserviceaccount.com"]},{"role":"roles/owner","members":["serviceAccount:cnrm-eap-prow@cnrm-eap.iam.gserviceaccount.com","serviceAccount:integration-test@example-project.iam.gserviceaccount.com"]},{"role":"roles/pubsub.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-pubsub.iam.gserviceaccount.com"]},{"role":"roles/run.serviceAgent","members":["serviceAccount:service-123456789@serverless-robot-prod.iam.gserviceaccount.com"]},{"role":"roles/vpcaccess.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-vpcaccess.iam.gserviceaccount.com"]}]}'
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+        Server-Timing:
+          - gfet4t7; dur=175
+      status: 200 OK
+      code: 200
+      duration: 176.316342ms
+  - id: 13
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 57
+      transfer_encoding: []
+      trailer: {}
+      host: pubsub.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: |
+        {"labels":{"cnrm-test":"true","managed-by-cnrm":"true"}}
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://pubsub.googleapis.com/v1/projects/example-project/topics/pubsubtopic-2ubz1ejdpwb22?alt=json
+      method: PUT
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/topics/pubsubtopic-2ubz1ejdpwb22",
+          "labels": {
+            "cnrm-test": "true",
+            "managed-by-cnrm": "true"
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 4.704152305s
+  - id: 14
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 41
+      transfer_encoding: []
+      trailer: {}
+      host: cloudresourcemanager.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: |
+        {"options":{"requestedPolicyVersion":3}}
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+        X-Goog-Api-Client:
+          - gl-go/1.21.5 gdcl/0.160.0
+      url: https://cloudresourcemanager.googleapis.com/v1/projects/example-project:getIamPolicy?alt=json&prettyPrint=false
+      method: POST
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: '{"version":1,"etag":"BwYW4c5j91M=","bindings":[{"role":"roles/alloydb.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-alloydb.iam.gserviceaccount.com"]},{"role":"roles/appengine.serviceAgent","members":["serviceAccount:service-123456789@gcp-gae-service.iam.gserviceaccount.com"]},{"role":"roles/artifactregistry.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-artifactregistry.iam.gserviceaccount.com"]},{"role":"roles/binaryauthorization.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-binaryauthorization.iam.gserviceaccount.com"]},{"role":"roles/cloudbuild.builds.builder","members":["serviceAccount:123456789@cloudbuild.gserviceaccount.com"]},{"role":"roles/cloudbuild.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-cloudbuild.iam.gserviceaccount.com"]},{"role":"roles/cloudfunctions.serviceAgent","members":["serviceAccount:service-123456789@gcf-admin-robot.iam.gserviceaccount.com"]},{"role":"roles/cloudscheduler.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-cloudscheduler.iam.gserviceaccount.com"]},{"role":"roles/compute.serviceAgent","members":["serviceAccount:service-123456789@compute-system.iam.gserviceaccount.com"]},{"role":"roles/container.serviceAgent","members":["serviceAccount:service-123456789@container-engine-robot.iam.gserviceaccount.com"]},{"role":"roles/containeranalysis.ServiceAgent","members":["serviceAccount:service-123456789@container-analysis.iam.gserviceaccount.com"]},{"role":"roles/containerregistry.ServiceAgent","members":["serviceAccount:service-123456789@containerregistry.iam.gserviceaccount.com"]},{"role":"roles/dataflow.serviceAgent","members":["serviceAccount:service-123456789@dataflow-service-producer-prod.iam.gserviceaccount.com"]},{"role":"roles/datafusion.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-datafusion.iam.gserviceaccount.com"]},{"role":"roles/dataproc.serviceAgent","members":["serviceAccount:service-123456789@dataproc-accounts.iam.gserviceaccount.com"]},{"role":"roles/dlp.serviceAgent","members":["serviceAccount:service-123456789@dlp-api.iam.gserviceaccount.com"]},{"role":"roles/editor","members":["serviceAccount:123456789-compute@developer.gserviceaccount.com","serviceAccount:123456789@cloudservices.gserviceaccount.com","serviceAccount:example-project@appspot.gserviceaccount.com"]},{"role":"roles/file.serviceAgent","members":["serviceAccount:service-123456789@cloud-filer.iam.gserviceaccount.com"]},{"role":"roles/firestore.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-firestore.iam.gserviceaccount.com"]},{"role":"roles/memcache.serviceAgent","members":["serviceAccount:service-123456789@cloud-memcache-sa.iam.gserviceaccount.com"]},{"role":"roles/owner","members":["serviceAccount:cnrm-eap-prow@cnrm-eap.iam.gserviceaccount.com","serviceAccount:integration-test@example-project.iam.gserviceaccount.com"]},{"role":"roles/pubsub.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-pubsub.iam.gserviceaccount.com"]},{"role":"roles/run.serviceAgent","members":["serviceAccount:service-123456789@serverless-robot-prod.iam.gserviceaccount.com"]},{"role":"roles/vpcaccess.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-vpcaccess.iam.gserviceaccount.com"]}]}'
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+        Server-Timing:
+          - gfet4t7; dur=217
+      status: 200 OK
+      code: 200
+      duration: 218.556396ms
+  - id: 15
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 3548
+      transfer_encoding: []
+      trailer: {}
+      host: cloudresourcemanager.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: |
+        {"policy":{"bindings":[{"members":["serviceAccount:service-123456789@gcp-sa-alloydb.iam.gserviceaccount.com"],"role":"roles/alloydb.serviceAgent"},{"members":["serviceAccount:service-123456789@gcp-gae-service.iam.gserviceaccount.com"],"role":"roles/appengine.serviceAgent"},{"members":["serviceAccount:service-123456789@gcp-sa-artifactregistry.iam.gserviceaccount.com"],"role":"roles/artifactregistry.serviceAgent"},{"members":["serviceAccount:service-123456789@gcp-sa-binaryauthorization.iam.gserviceaccount.com"],"role":"roles/binaryauthorization.serviceAgent"},{"members":["serviceAccount:123456789@cloudbuild.gserviceaccount.com"],"role":"roles/cloudbuild.builds.builder"},{"members":["serviceAccount:service-123456789@gcp-sa-cloudbuild.iam.gserviceaccount.com"],"role":"roles/cloudbuild.serviceAgent"},{"members":["serviceAccount:service-123456789@gcf-admin-robot.iam.gserviceaccount.com"],"role":"roles/cloudfunctions.serviceAgent"},{"members":["serviceAccount:service-123456789@gcp-sa-cloudscheduler.iam.gserviceaccount.com"],"role":"roles/cloudscheduler.serviceAgent"},{"members":["serviceAccount:service-123456789@compute-system.iam.gserviceaccount.com"],"role":"roles/compute.serviceAgent"},{"members":["serviceAccount:service-123456789@container-engine-robot.iam.gserviceaccount.com"],"role":"roles/container.serviceAgent"},{"members":["serviceAccount:service-123456789@container-analysis.iam.gserviceaccount.com"],"role":"roles/containeranalysis.ServiceAgent"},{"members":["serviceAccount:service-123456789@containerregistry.iam.gserviceaccount.com"],"role":"roles/containerregistry.ServiceAgent"},{"members":["serviceAccount:service-123456789@dataflow-service-producer-prod.iam.gserviceaccount.com"],"role":"roles/dataflow.serviceAgent"},{"members":["serviceAccount:service-123456789@gcp-sa-datafusion.iam.gserviceaccount.com"],"role":"roles/datafusion.serviceAgent"},{"members":["serviceAccount:service-123456789@dataproc-accounts.iam.gserviceaccount.com"],"role":"roles/dataproc.serviceAgent"},{"members":["serviceAccount:service-123456789@dlp-api.iam.gserviceaccount.com"],"role":"roles/dlp.serviceAgent"},{"members":["serviceAccount:123456789-compute@developer.gserviceaccount.com","serviceAccount:123456789@cloudservices.gserviceaccount.com","serviceAccount:example-project@appspot.gserviceaccount.com"],"role":"roles/editor"},{"members":["serviceAccount:gsa-2ubz1ejdpwb22@example-project.iam.gserviceaccount.com"],"role":"roles/eventarc.admin"},{"members":["serviceAccount:service-123456789@cloud-filer.iam.gserviceaccount.com"],"role":"roles/file.serviceAgent"},{"members":["serviceAccount:service-123456789@gcp-sa-firestore.iam.gserviceaccount.com"],"role":"roles/firestore.serviceAgent"},{"members":["serviceAccount:service-123456789@cloud-memcache-sa.iam.gserviceaccount.com"],"role":"roles/memcache.serviceAgent"},{"members":["serviceAccount:cnrm-eap-prow@cnrm-eap.iam.gserviceaccount.com","serviceAccount:integration-test@example-project.iam.gserviceaccount.com"],"role":"roles/owner"},{"members":["serviceAccount:service-123456789@gcp-sa-pubsub.iam.gserviceaccount.com"],"role":"roles/pubsub.serviceAgent"},{"members":["serviceAccount:service-123456789@serverless-robot-prod.iam.gserviceaccount.com"],"role":"roles/run.serviceAgent"},{"members":["serviceAccount:service-123456789@gcp-sa-vpcaccess.iam.gserviceaccount.com"],"role":"roles/vpcaccess.serviceAgent"}],"etag":"BwYW4c5j91M=","version":3},"updateMask":"bindings,etag,auditConfigs"}
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+        X-Goog-Api-Client:
+          - gl-go/1.21.5 gdcl/0.160.0
+      url: https://cloudresourcemanager.googleapis.com/v1/projects/example-project:setIamPolicy?alt=json&prettyPrint=false
+      method: POST
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: '{"version":1,"etag":"BwYW4dQnheA=","bindings":[{"role":"roles/alloydb.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-alloydb.iam.gserviceaccount.com"]},{"role":"roles/appengine.serviceAgent","members":["serviceAccount:service-123456789@gcp-gae-service.iam.gserviceaccount.com"]},{"role":"roles/artifactregistry.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-artifactregistry.iam.gserviceaccount.com"]},{"role":"roles/binaryauthorization.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-binaryauthorization.iam.gserviceaccount.com"]},{"role":"roles/cloudbuild.builds.builder","members":["serviceAccount:123456789@cloudbuild.gserviceaccount.com"]},{"role":"roles/cloudbuild.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-cloudbuild.iam.gserviceaccount.com"]},{"role":"roles/cloudfunctions.serviceAgent","members":["serviceAccount:service-123456789@gcf-admin-robot.iam.gserviceaccount.com"]},{"role":"roles/cloudscheduler.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-cloudscheduler.iam.gserviceaccount.com"]},{"role":"roles/compute.serviceAgent","members":["serviceAccount:service-123456789@compute-system.iam.gserviceaccount.com"]},{"role":"roles/container.serviceAgent","members":["serviceAccount:service-123456789@container-engine-robot.iam.gserviceaccount.com"]},{"role":"roles/containeranalysis.ServiceAgent","members":["serviceAccount:service-123456789@container-analysis.iam.gserviceaccount.com"]},{"role":"roles/containerregistry.ServiceAgent","members":["serviceAccount:service-123456789@containerregistry.iam.gserviceaccount.com"]},{"role":"roles/dataflow.serviceAgent","members":["serviceAccount:service-123456789@dataflow-service-producer-prod.iam.gserviceaccount.com"]},{"role":"roles/datafusion.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-datafusion.iam.gserviceaccount.com"]},{"role":"roles/dataproc.serviceAgent","members":["serviceAccount:service-123456789@dataproc-accounts.iam.gserviceaccount.com"]},{"role":"roles/dlp.serviceAgent","members":["serviceAccount:service-123456789@dlp-api.iam.gserviceaccount.com"]},{"role":"roles/editor","members":["serviceAccount:123456789-compute@developer.gserviceaccount.com","serviceAccount:123456789@cloudservices.gserviceaccount.com","serviceAccount:example-project@appspot.gserviceaccount.com"]},{"role":"roles/eventarc.admin","members":["serviceAccount:gsa-2ubz1ejdpwb22@example-project.iam.gserviceaccount.com"]},{"role":"roles/file.serviceAgent","members":["serviceAccount:service-123456789@cloud-filer.iam.gserviceaccount.com"]},{"role":"roles/firestore.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-firestore.iam.gserviceaccount.com"]},{"role":"roles/memcache.serviceAgent","members":["serviceAccount:service-123456789@cloud-memcache-sa.iam.gserviceaccount.com"]},{"role":"roles/owner","members":["serviceAccount:cnrm-eap-prow@cnrm-eap.iam.gserviceaccount.com","serviceAccount:integration-test@example-project.iam.gserviceaccount.com"]},{"role":"roles/pubsub.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-pubsub.iam.gserviceaccount.com"]},{"role":"roles/run.serviceAgent","members":["serviceAccount:service-123456789@serverless-robot-prod.iam.gserviceaccount.com"]},{"role":"roles/vpcaccess.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-vpcaccess.iam.gserviceaccount.com"]}]}'
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+        Server-Timing:
+          - gfet4t7; dur=825
+      status: 200 OK
+      code: 200
+      duration: 826.970426ms
+  - id: 16
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 41
+      transfer_encoding: []
+      trailer: {}
+      host: cloudresourcemanager.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: |
+        {"options":{"requestedPolicyVersion":3}}
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+        X-Goog-Api-Client:
+          - gl-go/1.21.5 gdcl/0.160.0
+      url: https://cloudresourcemanager.googleapis.com/v1/projects/example-project:getIamPolicy?alt=json&prettyPrint=false
+      method: POST
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: '{"version":1,"etag":"BwYW4dQnheA=","bindings":[{"role":"roles/alloydb.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-alloydb.iam.gserviceaccount.com"]},{"role":"roles/appengine.serviceAgent","members":["serviceAccount:service-123456789@gcp-gae-service.iam.gserviceaccount.com"]},{"role":"roles/artifactregistry.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-artifactregistry.iam.gserviceaccount.com"]},{"role":"roles/binaryauthorization.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-binaryauthorization.iam.gserviceaccount.com"]},{"role":"roles/cloudbuild.builds.builder","members":["serviceAccount:123456789@cloudbuild.gserviceaccount.com"]},{"role":"roles/cloudbuild.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-cloudbuild.iam.gserviceaccount.com"]},{"role":"roles/cloudfunctions.serviceAgent","members":["serviceAccount:service-123456789@gcf-admin-robot.iam.gserviceaccount.com"]},{"role":"roles/cloudscheduler.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-cloudscheduler.iam.gserviceaccount.com"]},{"role":"roles/compute.serviceAgent","members":["serviceAccount:service-123456789@compute-system.iam.gserviceaccount.com"]},{"role":"roles/container.serviceAgent","members":["serviceAccount:service-123456789@container-engine-robot.iam.gserviceaccount.com"]},{"role":"roles/containeranalysis.ServiceAgent","members":["serviceAccount:service-123456789@container-analysis.iam.gserviceaccount.com"]},{"role":"roles/containerregistry.ServiceAgent","members":["serviceAccount:service-123456789@containerregistry.iam.gserviceaccount.com"]},{"role":"roles/dataflow.serviceAgent","members":["serviceAccount:service-123456789@dataflow-service-producer-prod.iam.gserviceaccount.com"]},{"role":"roles/datafusion.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-datafusion.iam.gserviceaccount.com"]},{"role":"roles/dataproc.serviceAgent","members":["serviceAccount:service-123456789@dataproc-accounts.iam.gserviceaccount.com"]},{"role":"roles/dlp.serviceAgent","members":["serviceAccount:service-123456789@dlp-api.iam.gserviceaccount.com"]},{"role":"roles/editor","members":["serviceAccount:123456789-compute@developer.gserviceaccount.com","serviceAccount:123456789@cloudservices.gserviceaccount.com","serviceAccount:example-project@appspot.gserviceaccount.com"]},{"role":"roles/eventarc.admin","members":["serviceAccount:gsa-2ubz1ejdpwb22@example-project.iam.gserviceaccount.com"]},{"role":"roles/file.serviceAgent","members":["serviceAccount:service-123456789@cloud-filer.iam.gserviceaccount.com"]},{"role":"roles/firestore.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-firestore.iam.gserviceaccount.com"]},{"role":"roles/memcache.serviceAgent","members":["serviceAccount:service-123456789@cloud-memcache-sa.iam.gserviceaccount.com"]},{"role":"roles/owner","members":["serviceAccount:cnrm-eap-prow@cnrm-eap.iam.gserviceaccount.com","serviceAccount:integration-test@example-project.iam.gserviceaccount.com"]},{"role":"roles/pubsub.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-pubsub.iam.gserviceaccount.com"]},{"role":"roles/run.serviceAgent","members":["serviceAccount:service-123456789@serverless-robot-prod.iam.gserviceaccount.com"]},{"role":"roles/vpcaccess.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-vpcaccess.iam.gserviceaccount.com"]}]}'
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+        Server-Timing:
+          - gfet4t7; dur=130
+      status: 200 OK
+      code: 200
+      duration: 131.450727ms
+  - id: 17
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: pubsub.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://pubsub.googleapis.com/v1/projects/example-project/topics/pubsubtopic-2ubz1ejdpwb22?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/topics/pubsubtopic-2ubz1ejdpwb22",
+          "labels": {
+            "cnrm-test": "true",
+            "managed-by-cnrm": "true"
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 59.865507ms
+  - id: 18
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: pubsub.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://pubsub.googleapis.com/v1/projects/example-project/topics/pubsubtopic-2ubz1ejdpwb22?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/topics/pubsubtopic-2ubz1ejdpwb22",
+          "labels": {
+            "cnrm-test": "true",
+            "managed-by-cnrm": "true"
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 63.716022ms
+  - id: 19
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: pubsub.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://pubsub.googleapis.com/v1/projects/example-project/topics/pubsubtopic-2ubz1ejdpwb22?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/topics/pubsubtopic-2ubz1ejdpwb22",
+          "labels": {
+            "managed-by-cnrm": "true",
+            "cnrm-test": "true"
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 51.851092ms
+  - id: 20
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 41
+      transfer_encoding: []
+      trailer: {}
+      host: cloudresourcemanager.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: |
+        {"options":{"requestedPolicyVersion":3}}
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+        X-Goog-Api-Client:
+          - gl-go/1.21.5 gdcl/0.160.0
+      url: https://cloudresourcemanager.googleapis.com/v1/projects/example-project:getIamPolicy?alt=json&prettyPrint=false
+      method: POST
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: '{"version":1,"etag":"BwYW4dQnheA=","bindings":[{"role":"roles/alloydb.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-alloydb.iam.gserviceaccount.com"]},{"role":"roles/appengine.serviceAgent","members":["serviceAccount:service-123456789@gcp-gae-service.iam.gserviceaccount.com"]},{"role":"roles/artifactregistry.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-artifactregistry.iam.gserviceaccount.com"]},{"role":"roles/binaryauthorization.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-binaryauthorization.iam.gserviceaccount.com"]},{"role":"roles/cloudbuild.builds.builder","members":["serviceAccount:123456789@cloudbuild.gserviceaccount.com"]},{"role":"roles/cloudbuild.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-cloudbuild.iam.gserviceaccount.com"]},{"role":"roles/cloudfunctions.serviceAgent","members":["serviceAccount:service-123456789@gcf-admin-robot.iam.gserviceaccount.com"]},{"role":"roles/cloudscheduler.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-cloudscheduler.iam.gserviceaccount.com"]},{"role":"roles/compute.serviceAgent","members":["serviceAccount:service-123456789@compute-system.iam.gserviceaccount.com"]},{"role":"roles/container.serviceAgent","members":["serviceAccount:service-123456789@container-engine-robot.iam.gserviceaccount.com"]},{"role":"roles/containeranalysis.ServiceAgent","members":["serviceAccount:service-123456789@container-analysis.iam.gserviceaccount.com"]},{"role":"roles/containerregistry.ServiceAgent","members":["serviceAccount:service-123456789@containerregistry.iam.gserviceaccount.com"]},{"role":"roles/dataflow.serviceAgent","members":["serviceAccount:service-123456789@dataflow-service-producer-prod.iam.gserviceaccount.com"]},{"role":"roles/datafusion.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-datafusion.iam.gserviceaccount.com"]},{"role":"roles/dataproc.serviceAgent","members":["serviceAccount:service-123456789@dataproc-accounts.iam.gserviceaccount.com"]},{"role":"roles/dlp.serviceAgent","members":["serviceAccount:service-123456789@dlp-api.iam.gserviceaccount.com"]},{"role":"roles/editor","members":["serviceAccount:123456789-compute@developer.gserviceaccount.com","serviceAccount:123456789@cloudservices.gserviceaccount.com","serviceAccount:example-project@appspot.gserviceaccount.com"]},{"role":"roles/eventarc.admin","members":["serviceAccount:gsa-2ubz1ejdpwb22@example-project.iam.gserviceaccount.com"]},{"role":"roles/file.serviceAgent","members":["serviceAccount:service-123456789@cloud-filer.iam.gserviceaccount.com"]},{"role":"roles/firestore.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-firestore.iam.gserviceaccount.com"]},{"role":"roles/memcache.serviceAgent","members":["serviceAccount:service-123456789@cloud-memcache-sa.iam.gserviceaccount.com"]},{"role":"roles/owner","members":["serviceAccount:cnrm-eap-prow@cnrm-eap.iam.gserviceaccount.com","serviceAccount:integration-test@example-project.iam.gserviceaccount.com"]},{"role":"roles/pubsub.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-pubsub.iam.gserviceaccount.com"]},{"role":"roles/run.serviceAgent","members":["serviceAccount:service-123456789@serverless-robot-prod.iam.gserviceaccount.com"]},{"role":"roles/vpcaccess.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-vpcaccess.iam.gserviceaccount.com"]}]}'
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+        Server-Timing:
+          - gfet4t7; dur=157
+      status: 200 OK
+      code: 200
+      duration: 158.494158ms
+  - id: 21
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 41
+      transfer_encoding: []
+      trailer: {}
+      host: cloudresourcemanager.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: |
+        {"options":{"requestedPolicyVersion":3}}
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+        X-Goog-Api-Client:
+          - gl-go/1.21.5 gdcl/0.160.0
+      url: https://cloudresourcemanager.googleapis.com/v1/projects/example-project:getIamPolicy?alt=json&prettyPrint=false
+      method: POST
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: '{"version":1,"etag":"BwYW4dQnheA=","bindings":[{"role":"roles/alloydb.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-alloydb.iam.gserviceaccount.com"]},{"role":"roles/appengine.serviceAgent","members":["serviceAccount:service-123456789@gcp-gae-service.iam.gserviceaccount.com"]},{"role":"roles/artifactregistry.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-artifactregistry.iam.gserviceaccount.com"]},{"role":"roles/binaryauthorization.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-binaryauthorization.iam.gserviceaccount.com"]},{"role":"roles/cloudbuild.builds.builder","members":["serviceAccount:123456789@cloudbuild.gserviceaccount.com"]},{"role":"roles/cloudbuild.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-cloudbuild.iam.gserviceaccount.com"]},{"role":"roles/cloudfunctions.serviceAgent","members":["serviceAccount:service-123456789@gcf-admin-robot.iam.gserviceaccount.com"]},{"role":"roles/cloudscheduler.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-cloudscheduler.iam.gserviceaccount.com"]},{"role":"roles/compute.serviceAgent","members":["serviceAccount:service-123456789@compute-system.iam.gserviceaccount.com"]},{"role":"roles/container.serviceAgent","members":["serviceAccount:service-123456789@container-engine-robot.iam.gserviceaccount.com"]},{"role":"roles/containeranalysis.ServiceAgent","members":["serviceAccount:service-123456789@container-analysis.iam.gserviceaccount.com"]},{"role":"roles/containerregistry.ServiceAgent","members":["serviceAccount:service-123456789@containerregistry.iam.gserviceaccount.com"]},{"role":"roles/dataflow.serviceAgent","members":["serviceAccount:service-123456789@dataflow-service-producer-prod.iam.gserviceaccount.com"]},{"role":"roles/datafusion.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-datafusion.iam.gserviceaccount.com"]},{"role":"roles/dataproc.serviceAgent","members":["serviceAccount:service-123456789@dataproc-accounts.iam.gserviceaccount.com"]},{"role":"roles/dlp.serviceAgent","members":["serviceAccount:service-123456789@dlp-api.iam.gserviceaccount.com"]},{"role":"roles/editor","members":["serviceAccount:123456789-compute@developer.gserviceaccount.com","serviceAccount:123456789@cloudservices.gserviceaccount.com","serviceAccount:example-project@appspot.gserviceaccount.com"]},{"role":"roles/eventarc.admin","members":["serviceAccount:gsa-2ubz1ejdpwb22@example-project.iam.gserviceaccount.com"]},{"role":"roles/file.serviceAgent","members":["serviceAccount:service-123456789@cloud-filer.iam.gserviceaccount.com"]},{"role":"roles/firestore.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-firestore.iam.gserviceaccount.com"]},{"role":"roles/memcache.serviceAgent","members":["serviceAccount:service-123456789@cloud-memcache-sa.iam.gserviceaccount.com"]},{"role":"roles/owner","members":["serviceAccount:cnrm-eap-prow@cnrm-eap.iam.gserviceaccount.com","serviceAccount:integration-test@example-project.iam.gserviceaccount.com"]},{"role":"roles/pubsub.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-pubsub.iam.gserviceaccount.com"]},{"role":"roles/run.serviceAgent","members":["serviceAccount:service-123456789@serverless-robot-prod.iam.gserviceaccount.com"]},{"role":"roles/vpcaccess.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-vpcaccess.iam.gserviceaccount.com"]}]}'
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+        Server-Timing:
+          - gfet4t7; dur=132
+      status: 200 OK
+      code: 200
+      duration: 133.668205ms
+  - id: 22
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 41
+      transfer_encoding: []
+      trailer: {}
+      host: cloudresourcemanager.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: |
+        {"options":{"requestedPolicyVersion":3}}
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+        X-Goog-Api-Client:
+          - gl-go/1.21.5 gdcl/0.160.0
+      url: https://cloudresourcemanager.googleapis.com/v1/projects/example-project:getIamPolicy?alt=json&prettyPrint=false
+      method: POST
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: '{"version":1,"etag":"BwYW4dQnheA=","bindings":[{"role":"roles/alloydb.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-alloydb.iam.gserviceaccount.com"]},{"role":"roles/appengine.serviceAgent","members":["serviceAccount:service-123456789@gcp-gae-service.iam.gserviceaccount.com"]},{"role":"roles/artifactregistry.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-artifactregistry.iam.gserviceaccount.com"]},{"role":"roles/binaryauthorization.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-binaryauthorization.iam.gserviceaccount.com"]},{"role":"roles/cloudbuild.builds.builder","members":["serviceAccount:123456789@cloudbuild.gserviceaccount.com"]},{"role":"roles/cloudbuild.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-cloudbuild.iam.gserviceaccount.com"]},{"role":"roles/cloudfunctions.serviceAgent","members":["serviceAccount:service-123456789@gcf-admin-robot.iam.gserviceaccount.com"]},{"role":"roles/cloudscheduler.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-cloudscheduler.iam.gserviceaccount.com"]},{"role":"roles/compute.serviceAgent","members":["serviceAccount:service-123456789@compute-system.iam.gserviceaccount.com"]},{"role":"roles/container.serviceAgent","members":["serviceAccount:service-123456789@container-engine-robot.iam.gserviceaccount.com"]},{"role":"roles/containeranalysis.ServiceAgent","members":["serviceAccount:service-123456789@container-analysis.iam.gserviceaccount.com"]},{"role":"roles/containerregistry.ServiceAgent","members":["serviceAccount:service-123456789@containerregistry.iam.gserviceaccount.com"]},{"role":"roles/dataflow.serviceAgent","members":["serviceAccount:service-123456789@dataflow-service-producer-prod.iam.gserviceaccount.com"]},{"role":"roles/datafusion.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-datafusion.iam.gserviceaccount.com"]},{"role":"roles/dataproc.serviceAgent","members":["serviceAccount:service-123456789@dataproc-accounts.iam.gserviceaccount.com"]},{"role":"roles/dlp.serviceAgent","members":["serviceAccount:service-123456789@dlp-api.iam.gserviceaccount.com"]},{"role":"roles/editor","members":["serviceAccount:123456789-compute@developer.gserviceaccount.com","serviceAccount:123456789@cloudservices.gserviceaccount.com","serviceAccount:example-project@appspot.gserviceaccount.com"]},{"role":"roles/eventarc.admin","members":["serviceAccount:gsa-2ubz1ejdpwb22@example-project.iam.gserviceaccount.com"]},{"role":"roles/file.serviceAgent","members":["serviceAccount:service-123456789@cloud-filer.iam.gserviceaccount.com"]},{"role":"roles/firestore.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-firestore.iam.gserviceaccount.com"]},{"role":"roles/memcache.serviceAgent","members":["serviceAccount:service-123456789@cloud-memcache-sa.iam.gserviceaccount.com"]},{"role":"roles/owner","members":["serviceAccount:cnrm-eap-prow@cnrm-eap.iam.gserviceaccount.com","serviceAccount:integration-test@example-project.iam.gserviceaccount.com"]},{"role":"roles/pubsub.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-pubsub.iam.gserviceaccount.com"]},{"role":"roles/run.serviceAgent","members":["serviceAccount:service-123456789@serverless-robot-prod.iam.gserviceaccount.com"]},{"role":"roles/vpcaccess.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-vpcaccess.iam.gserviceaccount.com"]}]}'
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+        Server-Timing:
+          - gfet4t7; dur=174
+      status: 200 OK
+      code: 200
+      duration: 175.923576ms
+  - id: 23
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: run.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://run.googleapis.com/v2/projects/example-project/locations/us-central1/operations/0f1e5ceb-6291-4954-82d0-9139a94817c9?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-central1/operations/0f1e5ceb-6291-4954-82d0-9139a94817c9",
+          "metadata": {
+            "@type": "type.googleapis.com/google.cloud.run.v2.Service",
+            "name": "projects/example-project/locations/us-central1/services/runservice-2-2ubz1ejdpwb22",
+            "uid": "4f9067c9-463a-4bef-abde-09e11d5955a4",
+            "generation": "1",
+            "labels": {
+              "cnrm-test": "true",
+              "managed-by-cnrm": "true"
+            },
+            "createTime": "2024-04-25T01:37:16.779466Z",
+            "updateTime": "2024-04-25T01:37:16.779466Z",
+            "creator": "integration-test@example-project.iam.gserviceaccount.com",
+            "lastModifier": "integration-test@example-project.iam.gserviceaccount.com",
+            "ingress": "INGRESS_TRAFFIC_ALL",
+            "launchStage": "GA",
+            "template": {
+              "scaling": {
+                "maxInstanceCount": 2
+              },
+              "timeout": "300s",
+              "serviceAccount": "123456789-compute@developer.gserviceaccount.com",
+              "containers": [
+                {
+                  "image": "gcr.io/cloudrun/hello",
+                  "env": [
+                    {
+                      "name": "FOO",
+                      "value": "bar"
+                    }
+                  ],
+                  "resources": {
+                    "limits": {
+                      "memory": "512Mi",
+                      "cpu": "1000m"
+                    },
+                    "cpuIdle": true
+                  },
+                  "ports": [
+                    {
+                      "name": "http1",
+                      "containerPort": 8080
+                    }
+                  ],
+                  "startupProbe": {
+                    "timeoutSeconds": 240,
+                    "periodSeconds": 240,
+                    "failureThreshold": 1,
+                    "tcpSocket": {
+                      "port": 8080
+                    }
+                  }
+                }
+              ],
+              "maxInstanceRequestConcurrency": 80
+            },
+            "traffic": [
+              {
+                "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+                "percent": 100
+              }
+            ],
+            "observedGeneration": "1",
+            "terminalCondition": {
+              "type": "Ready",
+              "state": "CONDITION_SUCCEEDED",
+              "lastTransitionTime": "2024-04-25T01:38:08.315755Z"
+            },
+            "conditions": [
+              {
+                "type": "RoutesReady",
+                "state": "CONDITION_SUCCEEDED",
+                "lastTransitionTime": "2024-04-25T01:38:08.277009Z"
+              },
+              {
+                "type": "ConfigurationsReady",
+                "state": "CONDITION_SUCCEEDED",
+                "lastTransitionTime": "2024-04-25T01:37:17.083252Z"
+              }
+            ],
+            "latestReadyRevision": "projects/example-project/locations/us-central1/services/runservice-2-2ubz1ejdpwb22/revisions/runservice-2-2ubz1ejdpwb22-00001-c2n",
+            "latestCreatedRevision": "projects/example-project/locations/us-central1/services/runservice-2-2ubz1ejdpwb22/revisions/runservice-2-2ubz1ejdpwb22-00001-c2n",
+            "trafficStatuses": [
+              {
+                "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+                "percent": 100
+              }
+            ],
+            "uri": "https://runservice-2-2ubz1ejdpwb22-7id3oidh4q-uc.a.run.app",
+            "etag": "\"CMznprEGEJDq1vMC/cHJvamVjdHMvY25ybS10ZXN0LTF2a3hzOWJoanYweG85OHEvbG9jYXRpb25zL3VzLWNlbnRyYWwxL3NlcnZpY2VzL3J1bnNlcnZpY2UtMi0ydWJ6MWVqZHB3YjIy\""
+          },
+          "done": true,
+          "response": {
+            "@type": "type.googleapis.com/google.cloud.run.v2.Service",
+            "name": "projects/example-project/locations/us-central1/services/runservice-2-2ubz1ejdpwb22",
+            "uid": "4f9067c9-463a-4bef-abde-09e11d5955a4",
+            "generation": "1",
+            "labels": {
+              "cnrm-test": "true",
+              "managed-by-cnrm": "true"
+            },
+            "createTime": "2024-04-25T01:37:16.779466Z",
+            "updateTime": "2024-04-25T01:37:16.779466Z",
+            "creator": "integration-test@example-project.iam.gserviceaccount.com",
+            "lastModifier": "integration-test@example-project.iam.gserviceaccount.com",
+            "ingress": "INGRESS_TRAFFIC_ALL",
+            "launchStage": "GA",
+            "template": {
+              "scaling": {
+                "maxInstanceCount": 2
+              },
+              "timeout": "300s",
+              "serviceAccount": "123456789-compute@developer.gserviceaccount.com",
+              "containers": [
+                {
+                  "image": "gcr.io/cloudrun/hello",
+                  "env": [
+                    {
+                      "name": "FOO",
+                      "value": "bar"
+                    }
+                  ],
+                  "resources": {
+                    "limits": {
+                      "memory": "512Mi",
+                      "cpu": "1000m"
+                    },
+                    "cpuIdle": true
+                  },
+                  "ports": [
+                    {
+                      "name": "http1",
+                      "containerPort": 8080
+                    }
+                  ],
+                  "startupProbe": {
+                    "timeoutSeconds": 240,
+                    "periodSeconds": 240,
+                    "failureThreshold": 1,
+                    "tcpSocket": {
+                      "port": 8080
+                    }
+                  }
+                }
+              ],
+              "maxInstanceRequestConcurrency": 80
+            },
+            "traffic": [
+              {
+                "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+                "percent": 100
+              }
+            ],
+            "observedGeneration": "1",
+            "terminalCondition": {
+              "type": "Ready",
+              "state": "CONDITION_SUCCEEDED",
+              "lastTransitionTime": "2024-04-25T01:38:08.315755Z"
+            },
+            "conditions": [
+              {
+                "type": "RoutesReady",
+                "state": "CONDITION_SUCCEEDED",
+                "lastTransitionTime": "2024-04-25T01:38:08.277009Z"
+              },
+              {
+                "type": "ConfigurationsReady",
+                "state": "CONDITION_SUCCEEDED",
+                "lastTransitionTime": "2024-04-25T01:37:17.083252Z"
+              }
+            ],
+            "latestReadyRevision": "projects/example-project/locations/us-central1/services/runservice-2-2ubz1ejdpwb22/revisions/runservice-2-2ubz1ejdpwb22-00001-c2n",
+            "latestCreatedRevision": "projects/example-project/locations/us-central1/services/runservice-2-2ubz1ejdpwb22/revisions/runservice-2-2ubz1ejdpwb22-00001-c2n",
+            "trafficStatuses": [
+              {
+                "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+                "percent": 100
+              }
+            ],
+            "uri": "https://runservice-2-2ubz1ejdpwb22-7id3oidh4q-uc.a.run.app",
+            "etag": "\"CMznprEGEJDq1vMC/cHJvamVjdHMvY25ybS10ZXN0LTF2a3hzOWJoanYweG85OHEvbG9jYXRpb25zL3VzLWNlbnRyYWwxL3NlcnZpY2VzL3J1bnNlcnZpY2UtMi0ydWJ6MWVqZHB3YjIy\""
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 114.642988ms
+  - id: 24
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: run.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://run.googleapis.com/v2/projects/example-project/locations/us-central1/services/runservice-2-2ubz1ejdpwb22?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-central1/services/runservice-2-2ubz1ejdpwb22",
+          "uid": "4f9067c9-463a-4bef-abde-09e11d5955a4",
+          "generation": "1",
+          "labels": {
+            "cnrm-test": "true",
+            "managed-by-cnrm": "true"
+          },
+          "createTime": "2024-04-25T01:37:16.779466Z",
+          "updateTime": "2024-04-25T01:37:16.779466Z",
+          "creator": "integration-test@example-project.iam.gserviceaccount.com",
+          "lastModifier": "integration-test@example-project.iam.gserviceaccount.com",
+          "ingress": "INGRESS_TRAFFIC_ALL",
+          "launchStage": "GA",
+          "template": {
+            "scaling": {
+              "maxInstanceCount": 2
+            },
+            "timeout": "300s",
+            "serviceAccount": "123456789-compute@developer.gserviceaccount.com",
+            "containers": [
+              {
+                "image": "gcr.io/cloudrun/hello",
+                "env": [
+                  {
+                    "name": "FOO",
+                    "value": "bar"
+                  }
+                ],
+                "resources": {
+                  "limits": {
+                    "memory": "512Mi",
+                    "cpu": "1000m"
+                  },
+                  "cpuIdle": true
+                },
+                "ports": [
+                  {
+                    "name": "http1",
+                    "containerPort": 8080
+                  }
+                ],
+                "startupProbe": {
+                  "timeoutSeconds": 240,
+                  "periodSeconds": 240,
+                  "failureThreshold": 1,
+                  "tcpSocket": {
+                    "port": 8080
+                  }
+                }
+              }
+            ],
+            "maxInstanceRequestConcurrency": 80
+          },
+          "traffic": [
+            {
+              "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+              "percent": 100
+            }
+          ],
+          "observedGeneration": "1",
+          "terminalCondition": {
+            "type": "Ready",
+            "state": "CONDITION_SUCCEEDED",
+            "lastTransitionTime": "2024-04-25T01:38:08.315755Z"
+          },
+          "conditions": [
+            {
+              "type": "RoutesReady",
+              "state": "CONDITION_SUCCEEDED",
+              "lastTransitionTime": "2024-04-25T01:38:08.277009Z"
+            },
+            {
+              "type": "ConfigurationsReady",
+              "state": "CONDITION_SUCCEEDED",
+              "lastTransitionTime": "2024-04-25T01:37:17.083252Z"
+            }
+          ],
+          "latestReadyRevision": "projects/example-project/locations/us-central1/services/runservice-2-2ubz1ejdpwb22/revisions/runservice-2-2ubz1ejdpwb22-00001-c2n",
+          "latestCreatedRevision": "projects/example-project/locations/us-central1/services/runservice-2-2ubz1ejdpwb22/revisions/runservice-2-2ubz1ejdpwb22-00001-c2n",
+          "trafficStatuses": [
+            {
+              "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+              "percent": 100
+            }
+          ],
+          "uri": "https://runservice-2-2ubz1ejdpwb22-7id3oidh4q-uc.a.run.app",
+          "etag": "\"CMznprEGEJDq1vMC/cHJvamVjdHMvY25ybS10ZXN0LTF2a3hzOWJoanYweG85OHEvbG9jYXRpb25zL3VzLWNlbnRyYWwxL3NlcnZpY2VzL3J1bnNlcnZpY2UtMi0ydWJ6MWVqZHB3YjIy\""
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 100.250387ms
+  - id: 25
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: run.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://run.googleapis.com/v2/projects/example-project/locations/us-central1/services/runservice-2-2ubz1ejdpwb22?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-central1/services/runservice-2-2ubz1ejdpwb22",
+          "uid": "4f9067c9-463a-4bef-abde-09e11d5955a4",
+          "generation": "1",
+          "labels": {
+            "cnrm-test": "true",
+            "managed-by-cnrm": "true"
+          },
+          "createTime": "2024-04-25T01:37:16.779466Z",
+          "updateTime": "2024-04-25T01:37:16.779466Z",
+          "creator": "integration-test@example-project.iam.gserviceaccount.com",
+          "lastModifier": "integration-test@example-project.iam.gserviceaccount.com",
+          "ingress": "INGRESS_TRAFFIC_ALL",
+          "launchStage": "GA",
+          "template": {
+            "scaling": {
+              "maxInstanceCount": 2
+            },
+            "timeout": "300s",
+            "serviceAccount": "123456789-compute@developer.gserviceaccount.com",
+            "containers": [
+              {
+                "image": "gcr.io/cloudrun/hello",
+                "env": [
+                  {
+                    "name": "FOO",
+                    "value": "bar"
+                  }
+                ],
+                "resources": {
+                  "limits": {
+                    "memory": "512Mi",
+                    "cpu": "1000m"
+                  },
+                  "cpuIdle": true
+                },
+                "ports": [
+                  {
+                    "name": "http1",
+                    "containerPort": 8080
+                  }
+                ],
+                "startupProbe": {
+                  "timeoutSeconds": 240,
+                  "periodSeconds": 240,
+                  "failureThreshold": 1,
+                  "tcpSocket": {
+                    "port": 8080
+                  }
+                }
+              }
+            ],
+            "maxInstanceRequestConcurrency": 80
+          },
+          "traffic": [
+            {
+              "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+              "percent": 100
+            }
+          ],
+          "observedGeneration": "1",
+          "terminalCondition": {
+            "type": "Ready",
+            "state": "CONDITION_SUCCEEDED",
+            "lastTransitionTime": "2024-04-25T01:38:08.315755Z"
+          },
+          "conditions": [
+            {
+              "type": "RoutesReady",
+              "state": "CONDITION_SUCCEEDED",
+              "lastTransitionTime": "2024-04-25T01:38:08.277009Z"
+            },
+            {
+              "type": "ConfigurationsReady",
+              "state": "CONDITION_SUCCEEDED",
+              "lastTransitionTime": "2024-04-25T01:37:17.083252Z"
+            }
+          ],
+          "latestReadyRevision": "projects/example-project/locations/us-central1/services/runservice-2-2ubz1ejdpwb22/revisions/runservice-2-2ubz1ejdpwb22-00001-c2n",
+          "latestCreatedRevision": "projects/example-project/locations/us-central1/services/runservice-2-2ubz1ejdpwb22/revisions/runservice-2-2ubz1ejdpwb22-00001-c2n",
+          "trafficStatuses": [
+            {
+              "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+              "percent": 100
+            }
+          ],
+          "uri": "https://runservice-2-2ubz1ejdpwb22-7id3oidh4q-uc.a.run.app",
+          "etag": "\"CMznprEGEJDq1vMC/cHJvamVjdHMvY25ybS10ZXN0LTF2a3hzOWJoanYweG85OHEvbG9jYXRpb25zL3VzLWNlbnRyYWwxL3NlcnZpY2VzL3J1bnNlcnZpY2UtMi0ydWJ6MWVqZHB3YjIy\""
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 106.802235ms
+  - id: 26
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: run.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://run.googleapis.com/v2/projects/example-project/locations/us-central1/operations/84881b39-6af9-4dd7-8ea9-10ecac5a1a6c?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-central1/operations/84881b39-6af9-4dd7-8ea9-10ecac5a1a6c",
+          "metadata": {
+            "@type": "type.googleapis.com/google.cloud.run.v2.Service",
+            "name": "projects/example-project/locations/us-central1/services/runservice-1-2ubz1ejdpwb22",
+            "uid": "092ae477-b30f-4bc4-80db-c24ebea0286c",
+            "generation": "1",
+            "labels": {
+              "cnrm-test": "true",
+              "managed-by-cnrm": "true"
+            },
+            "createTime": "2024-04-25T01:37:16.528777Z",
+            "updateTime": "2024-04-25T01:37:16.528777Z",
+            "creator": "integration-test@example-project.iam.gserviceaccount.com",
+            "lastModifier": "integration-test@example-project.iam.gserviceaccount.com",
+            "ingress": "INGRESS_TRAFFIC_ALL",
+            "launchStage": "GA",
+            "template": {
+              "scaling": {
+                "maxInstanceCount": 2
+              },
+              "timeout": "300s",
+              "serviceAccount": "123456789-compute@developer.gserviceaccount.com",
+              "containers": [
+                {
+                  "image": "gcr.io/cloudrun/hello",
+                  "env": [
+                    {
+                      "name": "FOO",
+                      "value": "bar]"
+                    }
+                  ],
+                  "resources": {
+                    "limits": {
+                      "memory": "512Mi",
+                      "cpu": "1000m"
+                    },
+                    "cpuIdle": true
+                  },
+                  "ports": [
+                    {
+                      "name": "http1",
+                      "containerPort": 8080
+                    }
+                  ],
+                  "startupProbe": {
+                    "timeoutSeconds": 240,
+                    "periodSeconds": 240,
+                    "failureThreshold": 1,
+                    "tcpSocket": {
+                      "port": 8080
+                    }
+                  }
+                }
+              ],
+              "maxInstanceRequestConcurrency": 80
+            },
+            "traffic": [
+              {
+                "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+                "percent": 100
+              }
+            ],
+            "observedGeneration": "1",
+            "terminalCondition": {
+              "type": "Ready",
+              "state": "CONDITION_SUCCEEDED",
+              "lastTransitionTime": "2024-04-25T01:38:09.588101Z"
+            },
+            "conditions": [
+              {
+                "type": "RoutesReady",
+                "state": "CONDITION_SUCCEEDED",
+                "lastTransitionTime": "2024-04-25T01:38:09.547920Z"
+              },
+              {
+                "type": "ConfigurationsReady",
+                "state": "CONDITION_SUCCEEDED",
+                "lastTransitionTime": "2024-04-25T01:37:16.962634Z"
+              }
+            ],
+            "latestReadyRevision": "projects/example-project/locations/us-central1/services/runservice-1-2ubz1ejdpwb22/revisions/runservice-1-2ubz1ejdpwb22-00001-5r2",
+            "latestCreatedRevision": "projects/example-project/locations/us-central1/services/runservice-1-2ubz1ejdpwb22/revisions/runservice-1-2ubz1ejdpwb22-00001-5r2",
+            "trafficStatuses": [
+              {
+                "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+                "percent": 100
+              }
+            ],
+            "uri": "https://runservice-1-2ubz1ejdpwb22-7id3oidh4q-uc.a.run.app",
+            "etag": "\"CMznprEGEKj-kfwB/cHJvamVjdHMvY25ybS10ZXN0LTF2a3hzOWJoanYweG85OHEvbG9jYXRpb25zL3VzLWNlbnRyYWwxL3NlcnZpY2VzL3J1bnNlcnZpY2UtMS0ydWJ6MWVqZHB3YjIy\""
+          },
+          "done": true,
+          "response": {
+            "@type": "type.googleapis.com/google.cloud.run.v2.Service",
+            "name": "projects/example-project/locations/us-central1/services/runservice-1-2ubz1ejdpwb22",
+            "uid": "092ae477-b30f-4bc4-80db-c24ebea0286c",
+            "generation": "1",
+            "labels": {
+              "cnrm-test": "true",
+              "managed-by-cnrm": "true"
+            },
+            "createTime": "2024-04-25T01:37:16.528777Z",
+            "updateTime": "2024-04-25T01:37:16.528777Z",
+            "creator": "integration-test@example-project.iam.gserviceaccount.com",
+            "lastModifier": "integration-test@example-project.iam.gserviceaccount.com",
+            "ingress": "INGRESS_TRAFFIC_ALL",
+            "launchStage": "GA",
+            "template": {
+              "scaling": {
+                "maxInstanceCount": 2
+              },
+              "timeout": "300s",
+              "serviceAccount": "123456789-compute@developer.gserviceaccount.com",
+              "containers": [
+                {
+                  "image": "gcr.io/cloudrun/hello",
+                  "env": [
+                    {
+                      "name": "FOO",
+                      "value": "bar]"
+                    }
+                  ],
+                  "resources": {
+                    "limits": {
+                      "memory": "512Mi",
+                      "cpu": "1000m"
+                    },
+                    "cpuIdle": true
+                  },
+                  "ports": [
+                    {
+                      "name": "http1",
+                      "containerPort": 8080
+                    }
+                  ],
+                  "startupProbe": {
+                    "timeoutSeconds": 240,
+                    "periodSeconds": 240,
+                    "failureThreshold": 1,
+                    "tcpSocket": {
+                      "port": 8080
+                    }
+                  }
+                }
+              ],
+              "maxInstanceRequestConcurrency": 80
+            },
+            "traffic": [
+              {
+                "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+                "percent": 100
+              }
+            ],
+            "observedGeneration": "1",
+            "terminalCondition": {
+              "type": "Ready",
+              "state": "CONDITION_SUCCEEDED",
+              "lastTransitionTime": "2024-04-25T01:38:09.588101Z"
+            },
+            "conditions": [
+              {
+                "type": "RoutesReady",
+                "state": "CONDITION_SUCCEEDED",
+                "lastTransitionTime": "2024-04-25T01:38:09.547920Z"
+              },
+              {
+                "type": "ConfigurationsReady",
+                "state": "CONDITION_SUCCEEDED",
+                "lastTransitionTime": "2024-04-25T01:37:16.962634Z"
+              }
+            ],
+            "latestReadyRevision": "projects/example-project/locations/us-central1/services/runservice-1-2ubz1ejdpwb22/revisions/runservice-1-2ubz1ejdpwb22-00001-5r2",
+            "latestCreatedRevision": "projects/example-project/locations/us-central1/services/runservice-1-2ubz1ejdpwb22/revisions/runservice-1-2ubz1ejdpwb22-00001-5r2",
+            "trafficStatuses": [
+              {
+                "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+                "percent": 100
+              }
+            ],
+            "uri": "https://runservice-1-2ubz1ejdpwb22-7id3oidh4q-uc.a.run.app",
+            "etag": "\"CMznprEGEKj-kfwB/cHJvamVjdHMvY25ybS10ZXN0LTF2a3hzOWJoanYweG85OHEvbG9jYXRpb25zL3VzLWNlbnRyYWwxL3NlcnZpY2VzL3J1bnNlcnZpY2UtMS0ydWJ6MWVqZHB3YjIy\""
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 113.971855ms
+  - id: 27
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: run.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://run.googleapis.com/v2/projects/example-project/locations/us-central1/services/runservice-1-2ubz1ejdpwb22?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-central1/services/runservice-1-2ubz1ejdpwb22",
+          "uid": "092ae477-b30f-4bc4-80db-c24ebea0286c",
+          "generation": "1",
+          "labels": {
+            "cnrm-test": "true",
+            "managed-by-cnrm": "true"
+          },
+          "createTime": "2024-04-25T01:37:16.528777Z",
+          "updateTime": "2024-04-25T01:37:16.528777Z",
+          "creator": "integration-test@example-project.iam.gserviceaccount.com",
+          "lastModifier": "integration-test@example-project.iam.gserviceaccount.com",
+          "ingress": "INGRESS_TRAFFIC_ALL",
+          "launchStage": "GA",
+          "template": {
+            "scaling": {
+              "maxInstanceCount": 2
+            },
+            "timeout": "300s",
+            "serviceAccount": "123456789-compute@developer.gserviceaccount.com",
+            "containers": [
+              {
+                "image": "gcr.io/cloudrun/hello",
+                "env": [
+                  {
+                    "name": "FOO",
+                    "value": "bar]"
+                  }
+                ],
+                "resources": {
+                  "limits": {
+                    "memory": "512Mi",
+                    "cpu": "1000m"
+                  },
+                  "cpuIdle": true
+                },
+                "ports": [
+                  {
+                    "name": "http1",
+                    "containerPort": 8080
+                  }
+                ],
+                "startupProbe": {
+                  "timeoutSeconds": 240,
+                  "periodSeconds": 240,
+                  "failureThreshold": 1,
+                  "tcpSocket": {
+                    "port": 8080
+                  }
+                }
+              }
+            ],
+            "maxInstanceRequestConcurrency": 80
+          },
+          "traffic": [
+            {
+              "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+              "percent": 100
+            }
+          ],
+          "observedGeneration": "1",
+          "terminalCondition": {
+            "type": "Ready",
+            "state": "CONDITION_SUCCEEDED",
+            "lastTransitionTime": "2024-04-25T01:38:09.588101Z"
+          },
+          "conditions": [
+            {
+              "type": "RoutesReady",
+              "state": "CONDITION_SUCCEEDED",
+              "lastTransitionTime": "2024-04-25T01:38:09.547920Z"
+            },
+            {
+              "type": "ConfigurationsReady",
+              "state": "CONDITION_SUCCEEDED",
+              "lastTransitionTime": "2024-04-25T01:37:16.962634Z"
+            }
+          ],
+          "latestReadyRevision": "projects/example-project/locations/us-central1/services/runservice-1-2ubz1ejdpwb22/revisions/runservice-1-2ubz1ejdpwb22-00001-5r2",
+          "latestCreatedRevision": "projects/example-project/locations/us-central1/services/runservice-1-2ubz1ejdpwb22/revisions/runservice-1-2ubz1ejdpwb22-00001-5r2",
+          "trafficStatuses": [
+            {
+              "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+              "percent": 100
+            }
+          ],
+          "uri": "https://runservice-1-2ubz1ejdpwb22-7id3oidh4q-uc.a.run.app",
+          "etag": "\"CMznprEGEKj-kfwB/cHJvamVjdHMvY25ybS10ZXN0LTF2a3hzOWJoanYweG85OHEvbG9jYXRpb25zL3VzLWNlbnRyYWwxL3NlcnZpY2VzL3J1bnNlcnZpY2UtMS0ydWJ6MWVqZHB3YjIy\""
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 126.686979ms
+  - id: 28
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: run.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://run.googleapis.com/v2/projects/example-project/locations/us-central1/services/runservice-1-2ubz1ejdpwb22?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-central1/services/runservice-1-2ubz1ejdpwb22",
+          "uid": "092ae477-b30f-4bc4-80db-c24ebea0286c",
+          "generation": "1",
+          "labels": {
+            "cnrm-test": "true",
+            "managed-by-cnrm": "true"
+          },
+          "createTime": "2024-04-25T01:37:16.528777Z",
+          "updateTime": "2024-04-25T01:37:16.528777Z",
+          "creator": "integration-test@example-project.iam.gserviceaccount.com",
+          "lastModifier": "integration-test@example-project.iam.gserviceaccount.com",
+          "ingress": "INGRESS_TRAFFIC_ALL",
+          "launchStage": "GA",
+          "template": {
+            "scaling": {
+              "maxInstanceCount": 2
+            },
+            "timeout": "300s",
+            "serviceAccount": "123456789-compute@developer.gserviceaccount.com",
+            "containers": [
+              {
+                "image": "gcr.io/cloudrun/hello",
+                "env": [
+                  {
+                    "name": "FOO",
+                    "value": "bar]"
+                  }
+                ],
+                "resources": {
+                  "limits": {
+                    "memory": "512Mi",
+                    "cpu": "1000m"
+                  },
+                  "cpuIdle": true
+                },
+                "ports": [
+                  {
+                    "name": "http1",
+                    "containerPort": 8080
+                  }
+                ],
+                "startupProbe": {
+                  "timeoutSeconds": 240,
+                  "periodSeconds": 240,
+                  "failureThreshold": 1,
+                  "tcpSocket": {
+                    "port": 8080
+                  }
+                }
+              }
+            ],
+            "maxInstanceRequestConcurrency": 80
+          },
+          "traffic": [
+            {
+              "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+              "percent": 100
+            }
+          ],
+          "observedGeneration": "1",
+          "terminalCondition": {
+            "type": "Ready",
+            "state": "CONDITION_SUCCEEDED",
+            "lastTransitionTime": "2024-04-25T01:38:09.588101Z"
+          },
+          "conditions": [
+            {
+              "type": "RoutesReady",
+              "state": "CONDITION_SUCCEEDED",
+              "lastTransitionTime": "2024-04-25T01:38:09.547920Z"
+            },
+            {
+              "type": "ConfigurationsReady",
+              "state": "CONDITION_SUCCEEDED",
+              "lastTransitionTime": "2024-04-25T01:37:16.962634Z"
+            }
+          ],
+          "latestReadyRevision": "projects/example-project/locations/us-central1/services/runservice-1-2ubz1ejdpwb22/revisions/runservice-1-2ubz1ejdpwb22-00001-5r2",
+          "latestCreatedRevision": "projects/example-project/locations/us-central1/services/runservice-1-2ubz1ejdpwb22/revisions/runservice-1-2ubz1ejdpwb22-00001-5r2",
+          "trafficStatuses": [
+            {
+              "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+              "percent": 100
+            }
+          ],
+          "uri": "https://runservice-1-2ubz1ejdpwb22-7id3oidh4q-uc.a.run.app",
+          "etag": "\"CMznprEGEKj-kfwB/cHJvamVjdHMvY25ybS10ZXN0LTF2a3hzOWJoanYweG85OHEvbG9jYXRpb25zL3VzLWNlbnRyYWwxL3NlcnZpY2VzL3J1bnNlcnZpY2UtMS0ydWJ6MWVqZHB3YjIy\""
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 97.050255ms
+  - id: 29
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: pubsub.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://pubsub.googleapis.com/v1/projects/example-project/topics/pubsubtopic-2ubz1ejdpwb22?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/topics/pubsubtopic-2ubz1ejdpwb22",
+          "labels": {
+            "cnrm-test": "true",
+            "managed-by-cnrm": "true"
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 76.37243ms
+  - id: 30
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: run.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://run.googleapis.com/v2/projects/example-project/locations/us-central1/services/runservice-1-2ubz1ejdpwb22?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-central1/services/runservice-1-2ubz1ejdpwb22",
+          "uid": "092ae477-b30f-4bc4-80db-c24ebea0286c",
+          "generation": "1",
+          "labels": {
+            "cnrm-test": "true",
+            "managed-by-cnrm": "true"
+          },
+          "createTime": "2024-04-25T01:37:16.528777Z",
+          "updateTime": "2024-04-25T01:37:16.528777Z",
+          "creator": "integration-test@example-project.iam.gserviceaccount.com",
+          "lastModifier": "integration-test@example-project.iam.gserviceaccount.com",
+          "ingress": "INGRESS_TRAFFIC_ALL",
+          "launchStage": "GA",
+          "template": {
+            "scaling": {
+              "maxInstanceCount": 2
+            },
+            "timeout": "300s",
+            "serviceAccount": "123456789-compute@developer.gserviceaccount.com",
+            "containers": [
+              {
+                "image": "gcr.io/cloudrun/hello",
+                "env": [
+                  {
+                    "name": "FOO",
+                    "value": "bar]"
+                  }
+                ],
+                "resources": {
+                  "limits": {
+                    "memory": "512Mi",
+                    "cpu": "1000m"
+                  },
+                  "cpuIdle": true
+                },
+                "ports": [
+                  {
+                    "name": "http1",
+                    "containerPort": 8080
+                  }
+                ],
+                "startupProbe": {
+                  "timeoutSeconds": 240,
+                  "periodSeconds": 240,
+                  "failureThreshold": 1,
+                  "tcpSocket": {
+                    "port": 8080
+                  }
+                }
+              }
+            ],
+            "maxInstanceRequestConcurrency": 80
+          },
+          "traffic": [
+            {
+              "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+              "percent": 100
+            }
+          ],
+          "observedGeneration": "1",
+          "terminalCondition": {
+            "type": "Ready",
+            "state": "CONDITION_SUCCEEDED",
+            "lastTransitionTime": "2024-04-25T01:38:09.588101Z"
+          },
+          "conditions": [
+            {
+              "type": "RoutesReady",
+              "state": "CONDITION_SUCCEEDED",
+              "lastTransitionTime": "2024-04-25T01:38:09.547920Z"
+            },
+            {
+              "type": "ConfigurationsReady",
+              "state": "CONDITION_SUCCEEDED",
+              "lastTransitionTime": "2024-04-25T01:37:16.962634Z"
+            }
+          ],
+          "latestReadyRevision": "projects/example-project/locations/us-central1/services/runservice-1-2ubz1ejdpwb22/revisions/runservice-1-2ubz1ejdpwb22-00001-5r2",
+          "latestCreatedRevision": "projects/example-project/locations/us-central1/services/runservice-1-2ubz1ejdpwb22/revisions/runservice-1-2ubz1ejdpwb22-00001-5r2",
+          "trafficStatuses": [
+            {
+              "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+              "percent": 100
+            }
+          ],
+          "uri": "https://runservice-1-2ubz1ejdpwb22-7id3oidh4q-uc.a.run.app",
+          "etag": "\"CMznprEGEKj-kfwB/cHJvamVjdHMvY25ybS10ZXN0LTF2a3hzOWJoanYweG85OHEvbG9jYXRpb25zL3VzLWNlbnRyYWwxL3NlcnZpY2VzL3J1bnNlcnZpY2UtMS0ydWJ6MWVqZHB3YjIy\""
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 60.813079ms
+  - id: 31
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: run.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://run.googleapis.com/v2/projects/example-project/locations/us-central1/services/runservice-2-2ubz1ejdpwb22?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-central1/services/runservice-2-2ubz1ejdpwb22",
+          "uid": "4f9067c9-463a-4bef-abde-09e11d5955a4",
+          "generation": "1",
+          "labels": {
+            "cnrm-test": "true",
+            "managed-by-cnrm": "true"
+          },
+          "createTime": "2024-04-25T01:37:16.779466Z",
+          "updateTime": "2024-04-25T01:37:16.779466Z",
+          "creator": "integration-test@example-project.iam.gserviceaccount.com",
+          "lastModifier": "integration-test@example-project.iam.gserviceaccount.com",
+          "ingress": "INGRESS_TRAFFIC_ALL",
+          "launchStage": "GA",
+          "template": {
+            "scaling": {
+              "maxInstanceCount": 2
+            },
+            "timeout": "300s",
+            "serviceAccount": "123456789-compute@developer.gserviceaccount.com",
+            "containers": [
+              {
+                "image": "gcr.io/cloudrun/hello",
+                "env": [
+                  {
+                    "name": "FOO",
+                    "value": "bar"
+                  }
+                ],
+                "resources": {
+                  "limits": {
+                    "memory": "512Mi",
+                    "cpu": "1000m"
+                  },
+                  "cpuIdle": true
+                },
+                "ports": [
+                  {
+                    "name": "http1",
+                    "containerPort": 8080
+                  }
+                ],
+                "startupProbe": {
+                  "timeoutSeconds": 240,
+                  "periodSeconds": 240,
+                  "failureThreshold": 1,
+                  "tcpSocket": {
+                    "port": 8080
+                  }
+                }
+              }
+            ],
+            "maxInstanceRequestConcurrency": 80
+          },
+          "traffic": [
+            {
+              "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+              "percent": 100
+            }
+          ],
+          "observedGeneration": "1",
+          "terminalCondition": {
+            "type": "Ready",
+            "state": "CONDITION_SUCCEEDED",
+            "lastTransitionTime": "2024-04-25T01:38:08.315755Z"
+          },
+          "conditions": [
+            {
+              "type": "RoutesReady",
+              "state": "CONDITION_SUCCEEDED",
+              "lastTransitionTime": "2024-04-25T01:38:08.277009Z"
+            },
+            {
+              "type": "ConfigurationsReady",
+              "state": "CONDITION_SUCCEEDED",
+              "lastTransitionTime": "2024-04-25T01:37:17.083252Z"
+            }
+          ],
+          "latestReadyRevision": "projects/example-project/locations/us-central1/services/runservice-2-2ubz1ejdpwb22/revisions/runservice-2-2ubz1ejdpwb22-00001-c2n",
+          "latestCreatedRevision": "projects/example-project/locations/us-central1/services/runservice-2-2ubz1ejdpwb22/revisions/runservice-2-2ubz1ejdpwb22-00001-c2n",
+          "trafficStatuses": [
+            {
+              "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+              "percent": 100
+            }
+          ],
+          "uri": "https://runservice-2-2ubz1ejdpwb22-7id3oidh4q-uc.a.run.app",
+          "etag": "\"CMznprEGEJDq1vMC/cHJvamVjdHMvY25ybS10ZXN0LTF2a3hzOWJoanYweG85OHEvbG9jYXRpb25zL3VzLWNlbnRyYWwxL3NlcnZpY2VzL3J1bnNlcnZpY2UtMi0ydWJ6MWVqZHB3YjIy\""
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 102.482638ms
+  - id: 32
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: iam.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        X-Goog-Api-Client:
+          - gl-go/1.21.5 gdcl/0.160.0
+      url: https://iam.googleapis.com/v1/projects/example-project/serviceAccounts/gsa-2ubz1ejdpwb22@example-project.iam.gserviceaccount.com?alt=json&prettyPrint=false
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: '{"name":"projects/example-project/serviceAccounts/gsa-2ubz1ejdpwb22@example-project.iam.gserviceaccount.com","projectId":"example-project","uniqueId":"100745114897948025258","email":"gsa-2ubz1ejdpwb22@example-project.iam.gserviceaccount.com","displayName":"ExampleGSA","etag":"MDEwMjE5MjA=","oauth2ClientId":"100745114897948025258"}'
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 94.358222ms
+  - id: 33
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 41
+      transfer_encoding: []
+      trailer: {}
+      host: cloudresourcemanager.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: |
+        {"options":{"requestedPolicyVersion":3}}
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+        X-Goog-Api-Client:
+          - gl-go/1.21.5 gdcl/0.160.0
+      url: https://cloudresourcemanager.googleapis.com/v1/projects/example-project:getIamPolicy?alt=json&prettyPrint=false
+      method: POST
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: '{"version":1,"etag":"BwYW4dR9OuU=","bindings":[{"role":"roles/alloydb.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-alloydb.iam.gserviceaccount.com"]},{"role":"roles/appengine.serviceAgent","members":["serviceAccount:service-123456789@gcp-gae-service.iam.gserviceaccount.com"]},{"role":"roles/artifactregistry.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-artifactregistry.iam.gserviceaccount.com"]},{"role":"roles/binaryauthorization.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-binaryauthorization.iam.gserviceaccount.com"]},{"role":"roles/cloudbuild.builds.builder","members":["serviceAccount:123456789@cloudbuild.gserviceaccount.com"]},{"role":"roles/cloudbuild.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-cloudbuild.iam.gserviceaccount.com"]},{"role":"roles/cloudfunctions.serviceAgent","members":["serviceAccount:service-123456789@gcf-admin-robot.iam.gserviceaccount.com"]},{"role":"roles/cloudscheduler.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-cloudscheduler.iam.gserviceaccount.com"]},{"role":"roles/compute.serviceAgent","members":["serviceAccount:service-123456789@compute-system.iam.gserviceaccount.com"]},{"role":"roles/container.serviceAgent","members":["serviceAccount:service-123456789@container-engine-robot.iam.gserviceaccount.com"]},{"role":"roles/containeranalysis.ServiceAgent","members":["serviceAccount:service-123456789@container-analysis.iam.gserviceaccount.com"]},{"role":"roles/containerregistry.ServiceAgent","members":["serviceAccount:service-123456789@containerregistry.iam.gserviceaccount.com"]},{"role":"roles/dataflow.serviceAgent","members":["serviceAccount:service-123456789@dataflow-service-producer-prod.iam.gserviceaccount.com"]},{"role":"roles/datafusion.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-datafusion.iam.gserviceaccount.com"]},{"role":"roles/dataproc.serviceAgent","members":["serviceAccount:service-123456789@dataproc-accounts.iam.gserviceaccount.com"]},{"role":"roles/dlp.serviceAgent","members":["serviceAccount:service-123456789@dlp-api.iam.gserviceaccount.com"]},{"role":"roles/editor","members":["serviceAccount:123456789-compute@developer.gserviceaccount.com","serviceAccount:123456789@cloudservices.gserviceaccount.com","serviceAccount:example-project@appspot.gserviceaccount.com"]},{"role":"roles/eventarc.admin","members":["serviceAccount:gsa-2ubz1ejdpwb22@example-project.iam.gserviceaccount.com"]},{"role":"roles/eventarc.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-eventarc.iam.gserviceaccount.com"]},{"role":"roles/file.serviceAgent","members":["serviceAccount:service-123456789@cloud-filer.iam.gserviceaccount.com"]},{"role":"roles/firestore.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-firestore.iam.gserviceaccount.com"]},{"role":"roles/memcache.serviceAgent","members":["serviceAccount:service-123456789@cloud-memcache-sa.iam.gserviceaccount.com"]},{"role":"roles/owner","members":["serviceAccount:cnrm-eap-prow@cnrm-eap.iam.gserviceaccount.com","serviceAccount:integration-test@example-project.iam.gserviceaccount.com"]},{"role":"roles/pubsub.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-pubsub.iam.gserviceaccount.com"]},{"role":"roles/run.serviceAgent","members":["serviceAccount:service-123456789@serverless-robot-prod.iam.gserviceaccount.com"]},{"role":"roles/vpcaccess.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-vpcaccess.iam.gserviceaccount.com"]}]}'
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+        Server-Timing:
+          - gfet4t7; dur=198
+      status: 200 OK
+      code: 200
+      duration: 199.102391ms
+  - id: 34
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: run.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://run.googleapis.com/v2/projects/example-project/locations/us-central1/services/runservice-1-2ubz1ejdpwb22?alt=json
+      method: DELETE
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-central1/operations/20b7ca9b-5086-402f-8f8b-3258063740e0",
+          "metadata": {
+            "@type": "type.googleapis.com/google.cloud.run.v2.Service",
+            "name": "projects/example-project/locations/us-central1/services/runservice-1-2ubz1ejdpwb22",
+            "uid": "092ae477-b30f-4bc4-80db-c24ebea0286c",
+            "generation": "2",
+            "labels": {
+              "cnrm-test": "true",
+              "managed-by-cnrm": "true"
+            },
+            "createTime": "2024-04-25T01:37:16.528777Z",
+            "updateTime": "2024-04-25T01:38:33.873883Z",
+            "deleteTime": "2024-04-25T01:38:33.873883Z",
+            "expireTime": "2024-05-25T01:38:33.873883Z",
+            "creator": "integration-test@example-project.iam.gserviceaccount.com",
+            "lastModifier": "integration-test@example-project.iam.gserviceaccount.com",
+            "ingress": "INGRESS_TRAFFIC_ALL",
+            "launchStage": "GA",
+            "template": {
+              "scaling": {
+                "maxInstanceCount": 2
+              },
+              "timeout": "300s",
+              "serviceAccount": "123456789-compute@developer.gserviceaccount.com",
+              "containers": [
+                {
+                  "image": "gcr.io/cloudrun/hello",
+                  "env": [
+                    {
+                      "name": "FOO",
+                      "value": "bar]"
+                    }
+                  ],
+                  "resources": {
+                    "limits": {
+                      "memory": "512Mi",
+                      "cpu": "1000m"
+                    },
+                    "cpuIdle": true
+                  },
+                  "ports": [
+                    {
+                      "name": "http1",
+                      "containerPort": 8080
+                    }
+                  ],
+                  "startupProbe": {
+                    "timeoutSeconds": 240,
+                    "periodSeconds": 240,
+                    "failureThreshold": 1,
+                    "tcpSocket": {
+                      "port": 8080
+                    }
+                  }
+                }
+              ],
+              "maxInstanceRequestConcurrency": 80
+            },
+            "traffic": [
+              {
+                "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+                "percent": 100
+              }
+            ],
+            "observedGeneration": "1",
+            "terminalCondition": {
+              "type": "Ready",
+              "state": "CONDITION_PENDING",
+              "lastTransitionTime": "2024-04-25T01:38:09.588101Z"
+            },
+            "conditions": [
+              {
+                "type": "RoutesReady",
+                "state": "CONDITION_SUCCEEDED",
+                "lastTransitionTime": "2024-04-25T01:38:09.547920Z"
+              },
+              {
+                "type": "ConfigurationsReady",
+                "state": "CONDITION_SUCCEEDED",
+                "lastTransitionTime": "2024-04-25T01:37:16.962634Z"
+              }
+            ],
+            "latestReadyRevision": "projects/example-project/locations/us-central1/services/runservice-1-2ubz1ejdpwb22/revisions/runservice-1-2ubz1ejdpwb22-00001-5r2",
+            "latestCreatedRevision": "projects/example-project/locations/us-central1/services/runservice-1-2ubz1ejdpwb22/revisions/runservice-1-2ubz1ejdpwb22-00001-5r2",
+            "trafficStatuses": [
+              {
+                "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+                "percent": 100
+              }
+            ],
+            "uri": "https://runservice-1-2ubz1ejdpwb22-7id3oidh4q-uc.a.run.app",
+            "reconciling": true,
+            "etag": "\"CJnoprEGEPjK2aAD/cHJvamVjdHMvY25ybS10ZXN0LTF2a3hzOWJoanYweG85OHEvbG9jYXRpb25zL3VzLWNlbnRyYWwxL3NlcnZpY2VzL3J1bnNlcnZpY2UtMS0ydWJ6MWVqZHB3YjIy\""
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 123.54109ms
+  - id: 35
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: run.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://run.googleapis.com/v2/projects/example-project/locations/us-central1/services/runservice-2-2ubz1ejdpwb22?alt=json
+      method: DELETE
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-central1/operations/63616f63-4cc2-4c60-ba52-0a962002cc47",
+          "metadata": {
+            "@type": "type.googleapis.com/google.cloud.run.v2.Service",
+            "name": "projects/example-project/locations/us-central1/services/runservice-2-2ubz1ejdpwb22",
+            "uid": "4f9067c9-463a-4bef-abde-09e11d5955a4",
+            "generation": "2",
+            "labels": {
+              "cnrm-test": "true",
+              "managed-by-cnrm": "true"
+            },
+            "createTime": "2024-04-25T01:37:16.779466Z",
+            "updateTime": "2024-04-25T01:38:33.959055Z",
+            "deleteTime": "2024-04-25T01:38:33.959055Z",
+            "expireTime": "2024-05-25T01:38:33.959055Z",
+            "creator": "integration-test@example-project.iam.gserviceaccount.com",
+            "lastModifier": "integration-test@example-project.iam.gserviceaccount.com",
+            "ingress": "INGRESS_TRAFFIC_ALL",
+            "launchStage": "GA",
+            "template": {
+              "scaling": {
+                "maxInstanceCount": 2
+              },
+              "timeout": "300s",
+              "serviceAccount": "123456789-compute@developer.gserviceaccount.com",
+              "containers": [
+                {
+                  "image": "gcr.io/cloudrun/hello",
+                  "env": [
+                    {
+                      "name": "FOO",
+                      "value": "bar"
+                    }
+                  ],
+                  "resources": {
+                    "limits": {
+                      "memory": "512Mi",
+                      "cpu": "1000m"
+                    },
+                    "cpuIdle": true
+                  },
+                  "ports": [
+                    {
+                      "name": "http1",
+                      "containerPort": 8080
+                    }
+                  ],
+                  "startupProbe": {
+                    "timeoutSeconds": 240,
+                    "periodSeconds": 240,
+                    "failureThreshold": 1,
+                    "tcpSocket": {
+                      "port": 8080
+                    }
+                  }
+                }
+              ],
+              "maxInstanceRequestConcurrency": 80
+            },
+            "traffic": [
+              {
+                "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+                "percent": 100
+              }
+            ],
+            "observedGeneration": "1",
+            "terminalCondition": {
+              "type": "Ready",
+              "state": "CONDITION_PENDING",
+              "lastTransitionTime": "2024-04-25T01:38:08.315755Z"
+            },
+            "conditions": [
+              {
+                "type": "RoutesReady",
+                "state": "CONDITION_SUCCEEDED",
+                "lastTransitionTime": "2024-04-25T01:38:08.277009Z"
+              },
+              {
+                "type": "ConfigurationsReady",
+                "state": "CONDITION_SUCCEEDED",
+                "lastTransitionTime": "2024-04-25T01:37:17.083252Z"
+              }
+            ],
+            "latestReadyRevision": "projects/example-project/locations/us-central1/services/runservice-2-2ubz1ejdpwb22/revisions/runservice-2-2ubz1ejdpwb22-00001-c2n",
+            "latestCreatedRevision": "projects/example-project/locations/us-central1/services/runservice-2-2ubz1ejdpwb22/revisions/runservice-2-2ubz1ejdpwb22-00001-c2n",
+            "trafficStatuses": [
+              {
+                "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+                "percent": 100
+              }
+            ],
+            "uri": "https://runservice-2-2ubz1ejdpwb22-7id3oidh4q-uc.a.run.app",
+            "reconciling": true,
+            "etag": "\"CJnoprEGEJiJqMkD/cHJvamVjdHMvY25ybS10ZXN0LTF2a3hzOWJoanYweG85OHEvbG9jYXRpb25zL3VzLWNlbnRyYWwxL3NlcnZpY2VzL3J1bnNlcnZpY2UtMi0ydWJ6MWVqZHB3YjIy\""
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 130.88536ms
+  - id: 36
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: iam.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        X-Goog-Api-Client:
+          - gl-go/1.21.5 gdcl/0.160.0
+      url: https://iam.googleapis.com/v1/projects/example-project/serviceAccounts/gsa-2ubz1ejdpwb22@example-project.iam.gserviceaccount.com?alt=json&prettyPrint=false
+      method: DELETE
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: '{}'
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 212.671191ms
+  - id: 37
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: pubsub.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://pubsub.googleapis.com/v1/projects/example-project/topics/pubsubtopic-2ubz1ejdpwb22?alt=json
+      method: DELETE
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {}
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 883.601554ms
+  - id: 38
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 41
+      transfer_encoding: []
+      trailer: {}
+      host: cloudresourcemanager.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: |
+        {"options":{"requestedPolicyVersion":3}}
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+        X-Goog-Api-Client:
+          - gl-go/1.21.5 gdcl/0.160.0
+      url: https://cloudresourcemanager.googleapis.com/v1/projects/example-project:getIamPolicy?alt=json&prettyPrint=false
+      method: POST
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: '{"version":1,"etag":"BwYW4dR9OuU=","bindings":[{"role":"roles/alloydb.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-alloydb.iam.gserviceaccount.com"]},{"role":"roles/appengine.serviceAgent","members":["serviceAccount:service-123456789@gcp-gae-service.iam.gserviceaccount.com"]},{"role":"roles/artifactregistry.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-artifactregistry.iam.gserviceaccount.com"]},{"role":"roles/binaryauthorization.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-binaryauthorization.iam.gserviceaccount.com"]},{"role":"roles/cloudbuild.builds.builder","members":["serviceAccount:123456789@cloudbuild.gserviceaccount.com"]},{"role":"roles/cloudbuild.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-cloudbuild.iam.gserviceaccount.com"]},{"role":"roles/cloudfunctions.serviceAgent","members":["serviceAccount:service-123456789@gcf-admin-robot.iam.gserviceaccount.com"]},{"role":"roles/cloudscheduler.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-cloudscheduler.iam.gserviceaccount.com"]},{"role":"roles/compute.serviceAgent","members":["serviceAccount:service-123456789@compute-system.iam.gserviceaccount.com"]},{"role":"roles/container.serviceAgent","members":["serviceAccount:service-123456789@container-engine-robot.iam.gserviceaccount.com"]},{"role":"roles/containeranalysis.ServiceAgent","members":["serviceAccount:service-123456789@container-analysis.iam.gserviceaccount.com"]},{"role":"roles/containerregistry.ServiceAgent","members":["serviceAccount:service-123456789@containerregistry.iam.gserviceaccount.com"]},{"role":"roles/dataflow.serviceAgent","members":["serviceAccount:service-123456789@dataflow-service-producer-prod.iam.gserviceaccount.com"]},{"role":"roles/datafusion.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-datafusion.iam.gserviceaccount.com"]},{"role":"roles/dataproc.serviceAgent","members":["serviceAccount:service-123456789@dataproc-accounts.iam.gserviceaccount.com"]},{"role":"roles/dlp.serviceAgent","members":["serviceAccount:service-123456789@dlp-api.iam.gserviceaccount.com"]},{"role":"roles/editor","members":["serviceAccount:123456789-compute@developer.gserviceaccount.com","serviceAccount:123456789@cloudservices.gserviceaccount.com","serviceAccount:example-project@appspot.gserviceaccount.com"]},{"role":"roles/eventarc.admin","members":["deleted:serviceAccount:gsa-2ubz1ejdpwb22@example-project.iam.gserviceaccount.com?uid=100745114897948025258"]},{"role":"roles/eventarc.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-eventarc.iam.gserviceaccount.com"]},{"role":"roles/file.serviceAgent","members":["serviceAccount:service-123456789@cloud-filer.iam.gserviceaccount.com"]},{"role":"roles/firestore.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-firestore.iam.gserviceaccount.com"]},{"role":"roles/memcache.serviceAgent","members":["serviceAccount:service-123456789@cloud-memcache-sa.iam.gserviceaccount.com"]},{"role":"roles/owner","members":["serviceAccount:cnrm-eap-prow@cnrm-eap.iam.gserviceaccount.com","serviceAccount:integration-test@example-project.iam.gserviceaccount.com"]},{"role":"roles/pubsub.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-pubsub.iam.gserviceaccount.com"]},{"role":"roles/run.serviceAgent","members":["serviceAccount:service-123456789@serverless-robot-prod.iam.gserviceaccount.com"]},{"role":"roles/vpcaccess.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-vpcaccess.iam.gserviceaccount.com"]}]}'
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+        Server-Timing:
+          - gfet4t7; dur=245
+      status: 200 OK
+      code: 200
+      duration: 246.57204ms
+  - id: 39
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 3710
+      transfer_encoding: []
+      trailer: {}
+      host: cloudresourcemanager.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: |
+        {"policy":{"bindings":[{"members":["serviceAccount:service-123456789@gcp-sa-alloydb.iam.gserviceaccount.com"],"role":"roles/alloydb.serviceAgent"},{"members":["serviceAccount:service-123456789@gcp-gae-service.iam.gserviceaccount.com"],"role":"roles/appengine.serviceAgent"},{"members":["serviceAccount:service-123456789@gcp-sa-artifactregistry.iam.gserviceaccount.com"],"role":"roles/artifactregistry.serviceAgent"},{"members":["serviceAccount:service-123456789@gcp-sa-binaryauthorization.iam.gserviceaccount.com"],"role":"roles/binaryauthorization.serviceAgent"},{"members":["serviceAccount:123456789@cloudbuild.gserviceaccount.com"],"role":"roles/cloudbuild.builds.builder"},{"members":["serviceAccount:service-123456789@gcp-sa-cloudbuild.iam.gserviceaccount.com"],"role":"roles/cloudbuild.serviceAgent"},{"members":["serviceAccount:service-123456789@gcf-admin-robot.iam.gserviceaccount.com"],"role":"roles/cloudfunctions.serviceAgent"},{"members":["serviceAccount:service-123456789@gcp-sa-cloudscheduler.iam.gserviceaccount.com"],"role":"roles/cloudscheduler.serviceAgent"},{"members":["serviceAccount:service-123456789@compute-system.iam.gserviceaccount.com"],"role":"roles/compute.serviceAgent"},{"members":["serviceAccount:service-123456789@container-engine-robot.iam.gserviceaccount.com"],"role":"roles/container.serviceAgent"},{"members":["serviceAccount:service-123456789@container-analysis.iam.gserviceaccount.com"],"role":"roles/containeranalysis.ServiceAgent"},{"members":["serviceAccount:service-123456789@containerregistry.iam.gserviceaccount.com"],"role":"roles/containerregistry.ServiceAgent"},{"members":["serviceAccount:service-123456789@dataflow-service-producer-prod.iam.gserviceaccount.com"],"role":"roles/dataflow.serviceAgent"},{"members":["serviceAccount:service-123456789@gcp-sa-datafusion.iam.gserviceaccount.com"],"role":"roles/datafusion.serviceAgent"},{"members":["serviceAccount:service-123456789@dataproc-accounts.iam.gserviceaccount.com"],"role":"roles/dataproc.serviceAgent"},{"members":["serviceAccount:service-123456789@dlp-api.iam.gserviceaccount.com"],"role":"roles/dlp.serviceAgent"},{"members":["serviceAccount:123456789-compute@developer.gserviceaccount.com","serviceAccount:123456789@cloudservices.gserviceaccount.com","serviceAccount:example-project@appspot.gserviceaccount.com"],"role":"roles/editor"},{"members":["deleted:serviceAccount:gsa-2ubz1ejdpwb22@example-project.iam.gserviceaccount.com?uid=100745114897948025258"],"role":"roles/eventarc.admin"},{"members":["serviceAccount:service-123456789@gcp-sa-eventarc.iam.gserviceaccount.com"],"role":"roles/eventarc.serviceAgent"},{"members":["serviceAccount:service-123456789@cloud-filer.iam.gserviceaccount.com"],"role":"roles/file.serviceAgent"},{"members":["serviceAccount:service-123456789@gcp-sa-firestore.iam.gserviceaccount.com"],"role":"roles/firestore.serviceAgent"},{"members":["serviceAccount:service-123456789@cloud-memcache-sa.iam.gserviceaccount.com"],"role":"roles/memcache.serviceAgent"},{"members":["serviceAccount:cnrm-eap-prow@cnrm-eap.iam.gserviceaccount.com","serviceAccount:integration-test@example-project.iam.gserviceaccount.com"],"role":"roles/owner"},{"members":["serviceAccount:service-123456789@gcp-sa-pubsub.iam.gserviceaccount.com"],"role":"roles/pubsub.serviceAgent"},{"members":["serviceAccount:service-123456789@serverless-robot-prod.iam.gserviceaccount.com"],"role":"roles/run.serviceAgent"},{"members":["serviceAccount:service-123456789@gcp-sa-vpcaccess.iam.gserviceaccount.com"],"role":"roles/vpcaccess.serviceAgent"}],"etag":"BwYW4dR9OuU=","version":1},"updateMask":"bindings,etag,auditConfigs"}
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+        X-Goog-Api-Client:
+          - gl-go/1.21.5 gdcl/0.160.0
+      url: https://cloudresourcemanager.googleapis.com/v1/projects/example-project:setIamPolicy?alt=json&prettyPrint=false
+      method: POST
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: '{"version":1,"etag":"BwYW4diizTA=","bindings":[{"role":"roles/alloydb.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-alloydb.iam.gserviceaccount.com"]},{"role":"roles/appengine.serviceAgent","members":["serviceAccount:service-123456789@gcp-gae-service.iam.gserviceaccount.com"]},{"role":"roles/artifactregistry.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-artifactregistry.iam.gserviceaccount.com"]},{"role":"roles/binaryauthorization.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-binaryauthorization.iam.gserviceaccount.com"]},{"role":"roles/cloudbuild.builds.builder","members":["serviceAccount:123456789@cloudbuild.gserviceaccount.com"]},{"role":"roles/cloudbuild.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-cloudbuild.iam.gserviceaccount.com"]},{"role":"roles/cloudfunctions.serviceAgent","members":["serviceAccount:service-123456789@gcf-admin-robot.iam.gserviceaccount.com"]},{"role":"roles/cloudscheduler.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-cloudscheduler.iam.gserviceaccount.com"]},{"role":"roles/compute.serviceAgent","members":["serviceAccount:service-123456789@compute-system.iam.gserviceaccount.com"]},{"role":"roles/container.serviceAgent","members":["serviceAccount:service-123456789@container-engine-robot.iam.gserviceaccount.com"]},{"role":"roles/containeranalysis.ServiceAgent","members":["serviceAccount:service-123456789@container-analysis.iam.gserviceaccount.com"]},{"role":"roles/containerregistry.ServiceAgent","members":["serviceAccount:service-123456789@containerregistry.iam.gserviceaccount.com"]},{"role":"roles/dataflow.serviceAgent","members":["serviceAccount:service-123456789@dataflow-service-producer-prod.iam.gserviceaccount.com"]},{"role":"roles/datafusion.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-datafusion.iam.gserviceaccount.com"]},{"role":"roles/dataproc.serviceAgent","members":["serviceAccount:service-123456789@dataproc-accounts.iam.gserviceaccount.com"]},{"role":"roles/dlp.serviceAgent","members":["serviceAccount:service-123456789@dlp-api.iam.gserviceaccount.com"]},{"role":"roles/editor","members":["serviceAccount:123456789-compute@developer.gserviceaccount.com","serviceAccount:123456789@cloudservices.gserviceaccount.com","serviceAccount:example-project@appspot.gserviceaccount.com"]},{"role":"roles/eventarc.admin","members":["deleted:serviceAccount:gsa-2ubz1ejdpwb22@example-project.iam.gserviceaccount.com?uid=100745114897948025258"]},{"role":"roles/eventarc.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-eventarc.iam.gserviceaccount.com"]},{"role":"roles/file.serviceAgent","members":["serviceAccount:service-123456789@cloud-filer.iam.gserviceaccount.com"]},{"role":"roles/firestore.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-firestore.iam.gserviceaccount.com"]},{"role":"roles/memcache.serviceAgent","members":["serviceAccount:service-123456789@cloud-memcache-sa.iam.gserviceaccount.com"]},{"role":"roles/owner","members":["serviceAccount:cnrm-eap-prow@cnrm-eap.iam.gserviceaccount.com","serviceAccount:integration-test@example-project.iam.gserviceaccount.com"]},{"role":"roles/pubsub.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-pubsub.iam.gserviceaccount.com"]},{"role":"roles/run.serviceAgent","members":["serviceAccount:service-123456789@serverless-robot-prod.iam.gserviceaccount.com"]},{"role":"roles/vpcaccess.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-vpcaccess.iam.gserviceaccount.com"]}]}'
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+        Server-Timing:
+          - gfet4t7; dur=745
+      status: 200 OK
+      code: 200
+      duration: 745.792725ms
+  - id: 40
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 41
+      transfer_encoding: []
+      trailer: {}
+      host: cloudresourcemanager.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: |
+        {"options":{"requestedPolicyVersion":3}}
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+        X-Goog-Api-Client:
+          - gl-go/1.21.5 gdcl/0.160.0
+      url: https://cloudresourcemanager.googleapis.com/v1/projects/example-project:getIamPolicy?alt=json&prettyPrint=false
+      method: POST
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: '{"version":1,"etag":"BwYW4diizTA=","bindings":[{"role":"roles/alloydb.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-alloydb.iam.gserviceaccount.com"]},{"role":"roles/appengine.serviceAgent","members":["serviceAccount:service-123456789@gcp-gae-service.iam.gserviceaccount.com"]},{"role":"roles/artifactregistry.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-artifactregistry.iam.gserviceaccount.com"]},{"role":"roles/binaryauthorization.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-binaryauthorization.iam.gserviceaccount.com"]},{"role":"roles/cloudbuild.builds.builder","members":["serviceAccount:123456789@cloudbuild.gserviceaccount.com"]},{"role":"roles/cloudbuild.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-cloudbuild.iam.gserviceaccount.com"]},{"role":"roles/cloudfunctions.serviceAgent","members":["serviceAccount:service-123456789@gcf-admin-robot.iam.gserviceaccount.com"]},{"role":"roles/cloudscheduler.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-cloudscheduler.iam.gserviceaccount.com"]},{"role":"roles/compute.serviceAgent","members":["serviceAccount:service-123456789@compute-system.iam.gserviceaccount.com"]},{"role":"roles/container.serviceAgent","members":["serviceAccount:service-123456789@container-engine-robot.iam.gserviceaccount.com"]},{"role":"roles/containeranalysis.ServiceAgent","members":["serviceAccount:service-123456789@container-analysis.iam.gserviceaccount.com"]},{"role":"roles/containerregistry.ServiceAgent","members":["serviceAccount:service-123456789@containerregistry.iam.gserviceaccount.com"]},{"role":"roles/dataflow.serviceAgent","members":["serviceAccount:service-123456789@dataflow-service-producer-prod.iam.gserviceaccount.com"]},{"role":"roles/datafusion.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-datafusion.iam.gserviceaccount.com"]},{"role":"roles/dataproc.serviceAgent","members":["serviceAccount:service-123456789@dataproc-accounts.iam.gserviceaccount.com"]},{"role":"roles/dlp.serviceAgent","members":["serviceAccount:service-123456789@dlp-api.iam.gserviceaccount.com"]},{"role":"roles/editor","members":["serviceAccount:123456789-compute@developer.gserviceaccount.com","serviceAccount:123456789@cloudservices.gserviceaccount.com","serviceAccount:example-project@appspot.gserviceaccount.com"]},{"role":"roles/eventarc.admin","members":["deleted:serviceAccount:gsa-2ubz1ejdpwb22@example-project.iam.gserviceaccount.com?uid=100745114897948025258"]},{"role":"roles/eventarc.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-eventarc.iam.gserviceaccount.com"]},{"role":"roles/file.serviceAgent","members":["serviceAccount:service-123456789@cloud-filer.iam.gserviceaccount.com"]},{"role":"roles/firestore.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-firestore.iam.gserviceaccount.com"]},{"role":"roles/memcache.serviceAgent","members":["serviceAccount:service-123456789@cloud-memcache-sa.iam.gserviceaccount.com"]},{"role":"roles/owner","members":["serviceAccount:cnrm-eap-prow@cnrm-eap.iam.gserviceaccount.com","serviceAccount:integration-test@example-project.iam.gserviceaccount.com"]},{"role":"roles/pubsub.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-pubsub.iam.gserviceaccount.com"]},{"role":"roles/run.serviceAgent","members":["serviceAccount:service-123456789@serverless-robot-prod.iam.gserviceaccount.com"]},{"role":"roles/vpcaccess.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-vpcaccess.iam.gserviceaccount.com"]}]}'
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+        Server-Timing:
+          - gfet4t7; dur=217
+      status: 200 OK
+      code: 200
+      duration: 218.583668ms
+  - id: 41
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 41
+      transfer_encoding: []
+      trailer: {}
+      host: cloudresourcemanager.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: |
+        {"options":{"requestedPolicyVersion":3}}
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+        X-Goog-Api-Client:
+          - gl-go/1.21.5 gdcl/0.160.0
+      url: https://cloudresourcemanager.googleapis.com/v1/projects/example-project:getIamPolicy?alt=json&prettyPrint=false
+      method: POST
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: '{"version":1,"etag":"BwYW4diizTA=","bindings":[{"role":"roles/alloydb.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-alloydb.iam.gserviceaccount.com"]},{"role":"roles/appengine.serviceAgent","members":["serviceAccount:service-123456789@gcp-gae-service.iam.gserviceaccount.com"]},{"role":"roles/artifactregistry.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-artifactregistry.iam.gserviceaccount.com"]},{"role":"roles/binaryauthorization.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-binaryauthorization.iam.gserviceaccount.com"]},{"role":"roles/cloudbuild.builds.builder","members":["serviceAccount:123456789@cloudbuild.gserviceaccount.com"]},{"role":"roles/cloudbuild.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-cloudbuild.iam.gserviceaccount.com"]},{"role":"roles/cloudfunctions.serviceAgent","members":["serviceAccount:service-123456789@gcf-admin-robot.iam.gserviceaccount.com"]},{"role":"roles/cloudscheduler.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-cloudscheduler.iam.gserviceaccount.com"]},{"role":"roles/compute.serviceAgent","members":["serviceAccount:service-123456789@compute-system.iam.gserviceaccount.com"]},{"role":"roles/container.serviceAgent","members":["serviceAccount:service-123456789@container-engine-robot.iam.gserviceaccount.com"]},{"role":"roles/containeranalysis.ServiceAgent","members":["serviceAccount:service-123456789@container-analysis.iam.gserviceaccount.com"]},{"role":"roles/containerregistry.ServiceAgent","members":["serviceAccount:service-123456789@containerregistry.iam.gserviceaccount.com"]},{"role":"roles/dataflow.serviceAgent","members":["serviceAccount:service-123456789@dataflow-service-producer-prod.iam.gserviceaccount.com"]},{"role":"roles/datafusion.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-datafusion.iam.gserviceaccount.com"]},{"role":"roles/dataproc.serviceAgent","members":["serviceAccount:service-123456789@dataproc-accounts.iam.gserviceaccount.com"]},{"role":"roles/dlp.serviceAgent","members":["serviceAccount:service-123456789@dlp-api.iam.gserviceaccount.com"]},{"role":"roles/editor","members":["serviceAccount:123456789-compute@developer.gserviceaccount.com","serviceAccount:123456789@cloudservices.gserviceaccount.com","serviceAccount:example-project@appspot.gserviceaccount.com"]},{"role":"roles/eventarc.admin","members":["deleted:serviceAccount:gsa-2ubz1ejdpwb22@example-project.iam.gserviceaccount.com?uid=100745114897948025258"]},{"role":"roles/eventarc.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-eventarc.iam.gserviceaccount.com"]},{"role":"roles/file.serviceAgent","members":["serviceAccount:service-123456789@cloud-filer.iam.gserviceaccount.com"]},{"role":"roles/firestore.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-firestore.iam.gserviceaccount.com"]},{"role":"roles/memcache.serviceAgent","members":["serviceAccount:service-123456789@cloud-memcache-sa.iam.gserviceaccount.com"]},{"role":"roles/owner","members":["serviceAccount:cnrm-eap-prow@cnrm-eap.iam.gserviceaccount.com","serviceAccount:integration-test@example-project.iam.gserviceaccount.com"]},{"role":"roles/pubsub.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-pubsub.iam.gserviceaccount.com"]},{"role":"roles/run.serviceAgent","members":["serviceAccount:service-123456789@serverless-robot-prod.iam.gserviceaccount.com"]},{"role":"roles/vpcaccess.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-vpcaccess.iam.gserviceaccount.com"]}]}'
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+        Server-Timing:
+          - gfet4t7; dur=172
+      status: 200 OK
+      code: 200
+      duration: 173.346876ms
+  - id: 42
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 41
+      transfer_encoding: []
+      trailer: {}
+      host: cloudresourcemanager.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: |
+        {"options":{"requestedPolicyVersion":3}}
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+        X-Goog-Api-Client:
+          - gl-go/1.21.5 gdcl/0.160.0
+      url: https://cloudresourcemanager.googleapis.com/v1/projects/example-project:getIamPolicy?alt=json&prettyPrint=false
+      method: POST
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: '{"version":1,"etag":"BwYW4diizTA=","bindings":[{"role":"roles/alloydb.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-alloydb.iam.gserviceaccount.com"]},{"role":"roles/appengine.serviceAgent","members":["serviceAccount:service-123456789@gcp-gae-service.iam.gserviceaccount.com"]},{"role":"roles/artifactregistry.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-artifactregistry.iam.gserviceaccount.com"]},{"role":"roles/binaryauthorization.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-binaryauthorization.iam.gserviceaccount.com"]},{"role":"roles/cloudbuild.builds.builder","members":["serviceAccount:123456789@cloudbuild.gserviceaccount.com"]},{"role":"roles/cloudbuild.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-cloudbuild.iam.gserviceaccount.com"]},{"role":"roles/cloudfunctions.serviceAgent","members":["serviceAccount:service-123456789@gcf-admin-robot.iam.gserviceaccount.com"]},{"role":"roles/cloudscheduler.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-cloudscheduler.iam.gserviceaccount.com"]},{"role":"roles/compute.serviceAgent","members":["serviceAccount:service-123456789@compute-system.iam.gserviceaccount.com"]},{"role":"roles/container.serviceAgent","members":["serviceAccount:service-123456789@container-engine-robot.iam.gserviceaccount.com"]},{"role":"roles/containeranalysis.ServiceAgent","members":["serviceAccount:service-123456789@container-analysis.iam.gserviceaccount.com"]},{"role":"roles/containerregistry.ServiceAgent","members":["serviceAccount:service-123456789@containerregistry.iam.gserviceaccount.com"]},{"role":"roles/dataflow.serviceAgent","members":["serviceAccount:service-123456789@dataflow-service-producer-prod.iam.gserviceaccount.com"]},{"role":"roles/datafusion.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-datafusion.iam.gserviceaccount.com"]},{"role":"roles/dataproc.serviceAgent","members":["serviceAccount:service-123456789@dataproc-accounts.iam.gserviceaccount.com"]},{"role":"roles/dlp.serviceAgent","members":["serviceAccount:service-123456789@dlp-api.iam.gserviceaccount.com"]},{"role":"roles/editor","members":["serviceAccount:123456789-compute@developer.gserviceaccount.com","serviceAccount:123456789@cloudservices.gserviceaccount.com","serviceAccount:example-project@appspot.gserviceaccount.com"]},{"role":"roles/eventarc.admin","members":["deleted:serviceAccount:gsa-2ubz1ejdpwb22@example-project.iam.gserviceaccount.com?uid=100745114897948025258"]},{"role":"roles/eventarc.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-eventarc.iam.gserviceaccount.com"]},{"role":"roles/file.serviceAgent","members":["serviceAccount:service-123456789@cloud-filer.iam.gserviceaccount.com"]},{"role":"roles/firestore.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-firestore.iam.gserviceaccount.com"]},{"role":"roles/memcache.serviceAgent","members":["serviceAccount:service-123456789@cloud-memcache-sa.iam.gserviceaccount.com"]},{"role":"roles/owner","members":["serviceAccount:cnrm-eap-prow@cnrm-eap.iam.gserviceaccount.com","serviceAccount:integration-test@example-project.iam.gserviceaccount.com"]},{"role":"roles/pubsub.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-pubsub.iam.gserviceaccount.com"]},{"role":"roles/run.serviceAgent","members":["serviceAccount:service-123456789@serverless-robot-prod.iam.gserviceaccount.com"]},{"role":"roles/vpcaccess.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-vpcaccess.iam.gserviceaccount.com"]}]}'
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+        Server-Timing:
+          - gfet4t7; dur=180
+      status: 200 OK
+      code: 200
+      duration: 182.399073ms
+  - id: 43
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 41
+      transfer_encoding: []
+      trailer: {}
+      host: cloudresourcemanager.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: |
+        {"options":{"requestedPolicyVersion":3}}
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+        X-Goog-Api-Client:
+          - gl-go/1.21.5 gdcl/0.160.0
+      url: https://cloudresourcemanager.googleapis.com/v1/projects/example-project:getIamPolicy?alt=json&prettyPrint=false
+      method: POST
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: '{"version":1,"etag":"BwYW4diizTA=","bindings":[{"role":"roles/alloydb.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-alloydb.iam.gserviceaccount.com"]},{"role":"roles/appengine.serviceAgent","members":["serviceAccount:service-123456789@gcp-gae-service.iam.gserviceaccount.com"]},{"role":"roles/artifactregistry.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-artifactregistry.iam.gserviceaccount.com"]},{"role":"roles/binaryauthorization.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-binaryauthorization.iam.gserviceaccount.com"]},{"role":"roles/cloudbuild.builds.builder","members":["serviceAccount:123456789@cloudbuild.gserviceaccount.com"]},{"role":"roles/cloudbuild.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-cloudbuild.iam.gserviceaccount.com"]},{"role":"roles/cloudfunctions.serviceAgent","members":["serviceAccount:service-123456789@gcf-admin-robot.iam.gserviceaccount.com"]},{"role":"roles/cloudscheduler.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-cloudscheduler.iam.gserviceaccount.com"]},{"role":"roles/compute.serviceAgent","members":["serviceAccount:service-123456789@compute-system.iam.gserviceaccount.com"]},{"role":"roles/container.serviceAgent","members":["serviceAccount:service-123456789@container-engine-robot.iam.gserviceaccount.com"]},{"role":"roles/containeranalysis.ServiceAgent","members":["serviceAccount:service-123456789@container-analysis.iam.gserviceaccount.com"]},{"role":"roles/containerregistry.ServiceAgent","members":["serviceAccount:service-123456789@containerregistry.iam.gserviceaccount.com"]},{"role":"roles/dataflow.serviceAgent","members":["serviceAccount:service-123456789@dataflow-service-producer-prod.iam.gserviceaccount.com"]},{"role":"roles/datafusion.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-datafusion.iam.gserviceaccount.com"]},{"role":"roles/dataproc.serviceAgent","members":["serviceAccount:service-123456789@dataproc-accounts.iam.gserviceaccount.com"]},{"role":"roles/dlp.serviceAgent","members":["serviceAccount:service-123456789@dlp-api.iam.gserviceaccount.com"]},{"role":"roles/editor","members":["serviceAccount:123456789-compute@developer.gserviceaccount.com","serviceAccount:123456789@cloudservices.gserviceaccount.com","serviceAccount:example-project@appspot.gserviceaccount.com"]},{"role":"roles/eventarc.admin","members":["deleted:serviceAccount:gsa-2ubz1ejdpwb22@example-project.iam.gserviceaccount.com?uid=100745114897948025258"]},{"role":"roles/eventarc.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-eventarc.iam.gserviceaccount.com"]},{"role":"roles/file.serviceAgent","members":["serviceAccount:service-123456789@cloud-filer.iam.gserviceaccount.com"]},{"role":"roles/firestore.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-firestore.iam.gserviceaccount.com"]},{"role":"roles/memcache.serviceAgent","members":["serviceAccount:service-123456789@cloud-memcache-sa.iam.gserviceaccount.com"]},{"role":"roles/owner","members":["serviceAccount:cnrm-eap-prow@cnrm-eap.iam.gserviceaccount.com","serviceAccount:integration-test@example-project.iam.gserviceaccount.com"]},{"role":"roles/pubsub.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-pubsub.iam.gserviceaccount.com"]},{"role":"roles/run.serviceAgent","members":["serviceAccount:service-123456789@serverless-robot-prod.iam.gserviceaccount.com"]},{"role":"roles/vpcaccess.serviceAgent","members":["serviceAccount:service-123456789@gcp-sa-vpcaccess.iam.gserviceaccount.com"]}]}'
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+        Server-Timing:
+          - gfet4t7; dur=153
+      status: 200 OK
+      code: 200
+      duration: 154.417929ms
+  - id: 44
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: run.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://run.googleapis.com/v2/projects/example-project/locations/us-central1/operations/20b7ca9b-5086-402f-8f8b-3258063740e0?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-central1/operations/20b7ca9b-5086-402f-8f8b-3258063740e0",
+          "metadata": {
+            "@type": "type.googleapis.com/google.cloud.run.v2.Service",
+            "name": "projects/example-project/locations/us-central1/services/runservice-1-2ubz1ejdpwb22",
+            "uid": "092ae477-b30f-4bc4-80db-c24ebea0286c",
+            "generation": "2",
+            "labels": {
+              "cnrm-test": "true",
+              "managed-by-cnrm": "true"
+            },
+            "createTime": "2024-04-25T01:37:16.528777Z",
+            "updateTime": "2024-04-25T01:38:34.505511Z",
+            "deleteTime": "2024-04-25T01:38:33.873883Z",
+            "expireTime": "2024-05-25T01:38:33.873883Z",
+            "creator": "integration-test@example-project.iam.gserviceaccount.com",
+            "lastModifier": "integration-test@example-project.iam.gserviceaccount.com",
+            "ingress": "INGRESS_TRAFFIC_ALL",
+            "launchStage": "GA",
+            "template": {
+              "scaling": {
+                "maxInstanceCount": 2
+              },
+              "timeout": "300s",
+              "serviceAccount": "123456789-compute@developer.gserviceaccount.com",
+              "containers": [
+                {
+                  "image": "gcr.io/cloudrun/hello",
+                  "env": [
+                    {
+                      "name": "FOO",
+                      "value": "bar]"
+                    }
+                  ],
+                  "resources": {
+                    "limits": {
+                      "memory": "512Mi",
+                      "cpu": "1000m"
+                    },
+                    "cpuIdle": true
+                  },
+                  "ports": [
+                    {
+                      "name": "http1",
+                      "containerPort": 8080
+                    }
+                  ],
+                  "startupProbe": {
+                    "timeoutSeconds": 240,
+                    "periodSeconds": 240,
+                    "failureThreshold": 1,
+                    "tcpSocket": {
+                      "port": 8080
+                    }
+                  }
+                }
+              ],
+              "maxInstanceRequestConcurrency": 80
+            },
+            "traffic": [
+              {
+                "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+                "percent": 100
+              }
+            ],
+            "observedGeneration": "2",
+            "terminalCondition": {
+              "type": "Ready",
+              "state": "CONDITION_SUCCEEDED",
+              "lastTransitionTime": "2024-04-25T01:38:34.505511Z"
+            },
+            "conditions": [
+              {
+                "type": "RoutesReady",
+                "state": "CONDITION_SUCCEEDED",
+                "lastTransitionTime": "2024-04-25T01:38:09.547920Z"
+              },
+              {
+                "type": "ConfigurationsReady",
+                "state": "CONDITION_SUCCEEDED",
+                "lastTransitionTime": "2024-04-25T01:37:16.962634Z"
+              }
+            ],
+            "latestReadyRevision": "projects/example-project/locations/us-central1/services/runservice-1-2ubz1ejdpwb22/revisions/runservice-1-2ubz1ejdpwb22-00001-5r2",
+            "latestCreatedRevision": "projects/example-project/locations/us-central1/services/runservice-1-2ubz1ejdpwb22/revisions/runservice-1-2ubz1ejdpwb22-00001-5r2",
+            "trafficStatuses": [
+              {
+                "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+                "percent": 100
+              }
+            ],
+            "uri": "https://runservice-1-2ubz1ejdpwb22-7id3oidh4q-uc.a.run.app",
+            "etag": "\"CJroprEGENj4hfEB/cHJvamVjdHMvY25ybS10ZXN0LTF2a3hzOWJoanYweG85OHEvbG9jYXRpb25zL3VzLWNlbnRyYWwxL3NlcnZpY2VzL3J1bnNlcnZpY2UtMS0ydWJ6MWVqZHB3YjIy\""
+          },
+          "done": true,
+          "response": {
+            "@type": "type.googleapis.com/google.cloud.run.v2.Service",
+            "name": "projects/example-project/locations/us-central1/services/runservice-1-2ubz1ejdpwb22",
+            "uid": "092ae477-b30f-4bc4-80db-c24ebea0286c",
+            "generation": "2",
+            "labels": {
+              "cnrm-test": "true",
+              "managed-by-cnrm": "true"
+            },
+            "createTime": "2024-04-25T01:37:16.528777Z",
+            "updateTime": "2024-04-25T01:38:34.505511Z",
+            "deleteTime": "2024-04-25T01:38:33.873883Z",
+            "expireTime": "2024-05-25T01:38:33.873883Z",
+            "creator": "integration-test@example-project.iam.gserviceaccount.com",
+            "lastModifier": "integration-test@example-project.iam.gserviceaccount.com",
+            "ingress": "INGRESS_TRAFFIC_ALL",
+            "launchStage": "GA",
+            "template": {
+              "scaling": {
+                "maxInstanceCount": 2
+              },
+              "timeout": "300s",
+              "serviceAccount": "123456789-compute@developer.gserviceaccount.com",
+              "containers": [
+                {
+                  "image": "gcr.io/cloudrun/hello",
+                  "env": [
+                    {
+                      "name": "FOO",
+                      "value": "bar]"
+                    }
+                  ],
+                  "resources": {
+                    "limits": {
+                      "memory": "512Mi",
+                      "cpu": "1000m"
+                    },
+                    "cpuIdle": true
+                  },
+                  "ports": [
+                    {
+                      "name": "http1",
+                      "containerPort": 8080
+                    }
+                  ],
+                  "startupProbe": {
+                    "timeoutSeconds": 240,
+                    "periodSeconds": 240,
+                    "failureThreshold": 1,
+                    "tcpSocket": {
+                      "port": 8080
+                    }
+                  }
+                }
+              ],
+              "maxInstanceRequestConcurrency": 80
+            },
+            "traffic": [
+              {
+                "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+                "percent": 100
+              }
+            ],
+            "observedGeneration": "2",
+            "terminalCondition": {
+              "type": "Ready",
+              "state": "CONDITION_SUCCEEDED",
+              "lastTransitionTime": "2024-04-25T01:38:34.505511Z"
+            },
+            "conditions": [
+              {
+                "type": "RoutesReady",
+                "state": "CONDITION_SUCCEEDED",
+                "lastTransitionTime": "2024-04-25T01:38:09.547920Z"
+              },
+              {
+                "type": "ConfigurationsReady",
+                "state": "CONDITION_SUCCEEDED",
+                "lastTransitionTime": "2024-04-25T01:37:16.962634Z"
+              }
+            ],
+            "latestReadyRevision": "projects/example-project/locations/us-central1/services/runservice-1-2ubz1ejdpwb22/revisions/runservice-1-2ubz1ejdpwb22-00001-5r2",
+            "latestCreatedRevision": "projects/example-project/locations/us-central1/services/runservice-1-2ubz1ejdpwb22/revisions/runservice-1-2ubz1ejdpwb22-00001-5r2",
+            "trafficStatuses": [
+              {
+                "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+                "percent": 100
+              }
+            ],
+            "uri": "https://runservice-1-2ubz1ejdpwb22-7id3oidh4q-uc.a.run.app",
+            "etag": "\"CJroprEGENj4hfEB/cHJvamVjdHMvY25ybS10ZXN0LTF2a3hzOWJoanYweG85OHEvbG9jYXRpb25zL3VzLWNlbnRyYWwxL3NlcnZpY2VzL3J1bnNlcnZpY2UtMS0ydWJ6MWVqZHB3YjIy\""
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 115.997512ms
+  - id: 45
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: run.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://run.googleapis.com/v2/projects/example-project/locations/us-central1/operations/63616f63-4cc2-4c60-ba52-0a962002cc47?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-central1/operations/63616f63-4cc2-4c60-ba52-0a962002cc47",
+          "metadata": {
+            "@type": "type.googleapis.com/google.cloud.run.v2.Service",
+            "name": "projects/example-project/locations/us-central1/services/runservice-2-2ubz1ejdpwb22",
+            "uid": "4f9067c9-463a-4bef-abde-09e11d5955a4",
+            "generation": "2",
+            "labels": {
+              "cnrm-test": "true",
+              "managed-by-cnrm": "true"
+            },
+            "createTime": "2024-04-25T01:37:16.779466Z",
+            "updateTime": "2024-04-25T01:38:34.705151Z",
+            "deleteTime": "2024-04-25T01:38:33.959055Z",
+            "expireTime": "2024-05-25T01:38:33.959055Z",
+            "creator": "integration-test@example-project.iam.gserviceaccount.com",
+            "lastModifier": "integration-test@example-project.iam.gserviceaccount.com",
+            "ingress": "INGRESS_TRAFFIC_ALL",
+            "launchStage": "GA",
+            "template": {
+              "scaling": {
+                "maxInstanceCount": 2
+              },
+              "timeout": "300s",
+              "serviceAccount": "123456789-compute@developer.gserviceaccount.com",
+              "containers": [
+                {
+                  "image": "gcr.io/cloudrun/hello",
+                  "env": [
+                    {
+                      "name": "FOO",
+                      "value": "bar"
+                    }
+                  ],
+                  "resources": {
+                    "limits": {
+                      "memory": "512Mi",
+                      "cpu": "1000m"
+                    },
+                    "cpuIdle": true
+                  },
+                  "ports": [
+                    {
+                      "name": "http1",
+                      "containerPort": 8080
+                    }
+                  ],
+                  "startupProbe": {
+                    "timeoutSeconds": 240,
+                    "periodSeconds": 240,
+                    "failureThreshold": 1,
+                    "tcpSocket": {
+                      "port": 8080
+                    }
+                  }
+                }
+              ],
+              "maxInstanceRequestConcurrency": 80
+            },
+            "traffic": [
+              {
+                "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+                "percent": 100
+              }
+            ],
+            "observedGeneration": "2",
+            "terminalCondition": {
+              "type": "Ready",
+              "state": "CONDITION_SUCCEEDED",
+              "lastTransitionTime": "2024-04-25T01:38:34.705151Z"
+            },
+            "conditions": [
+              {
+                "type": "RoutesReady",
+                "state": "CONDITION_SUCCEEDED",
+                "lastTransitionTime": "2024-04-25T01:38:08.277009Z"
+              },
+              {
+                "type": "ConfigurationsReady",
+                "state": "CONDITION_SUCCEEDED",
+                "lastTransitionTime": "2024-04-25T01:37:17.083252Z"
+              }
+            ],
+            "latestReadyRevision": "projects/example-project/locations/us-central1/services/runservice-2-2ubz1ejdpwb22/revisions/runservice-2-2ubz1ejdpwb22-00001-c2n",
+            "latestCreatedRevision": "projects/example-project/locations/us-central1/services/runservice-2-2ubz1ejdpwb22/revisions/runservice-2-2ubz1ejdpwb22-00001-c2n",
+            "trafficStatuses": [
+              {
+                "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+                "percent": 100
+              }
+            ],
+            "uri": "https://runservice-2-2ubz1ejdpwb22-7id3oidh4q-uc.a.run.app",
+            "etag": "\"CJroprEGEJiAn9AC/cHJvamVjdHMvY25ybS10ZXN0LTF2a3hzOWJoanYweG85OHEvbG9jYXRpb25zL3VzLWNlbnRyYWwxL3NlcnZpY2VzL3J1bnNlcnZpY2UtMi0ydWJ6MWVqZHB3YjIy\""
+          },
+          "done": true,
+          "response": {
+            "@type": "type.googleapis.com/google.cloud.run.v2.Service",
+            "name": "projects/example-project/locations/us-central1/services/runservice-2-2ubz1ejdpwb22",
+            "uid": "4f9067c9-463a-4bef-abde-09e11d5955a4",
+            "generation": "2",
+            "labels": {
+              "cnrm-test": "true",
+              "managed-by-cnrm": "true"
+            },
+            "createTime": "2024-04-25T01:37:16.779466Z",
+            "updateTime": "2024-04-25T01:38:34.705151Z",
+            "deleteTime": "2024-04-25T01:38:33.959055Z",
+            "expireTime": "2024-05-25T01:38:33.959055Z",
+            "creator": "integration-test@example-project.iam.gserviceaccount.com",
+            "lastModifier": "integration-test@example-project.iam.gserviceaccount.com",
+            "ingress": "INGRESS_TRAFFIC_ALL",
+            "launchStage": "GA",
+            "template": {
+              "scaling": {
+                "maxInstanceCount": 2
+              },
+              "timeout": "300s",
+              "serviceAccount": "123456789-compute@developer.gserviceaccount.com",
+              "containers": [
+                {
+                  "image": "gcr.io/cloudrun/hello",
+                  "env": [
+                    {
+                      "name": "FOO",
+                      "value": "bar"
+                    }
+                  ],
+                  "resources": {
+                    "limits": {
+                      "memory": "512Mi",
+                      "cpu": "1000m"
+                    },
+                    "cpuIdle": true
+                  },
+                  "ports": [
+                    {
+                      "name": "http1",
+                      "containerPort": 8080
+                    }
+                  ],
+                  "startupProbe": {
+                    "timeoutSeconds": 240,
+                    "periodSeconds": 240,
+                    "failureThreshold": 1,
+                    "tcpSocket": {
+                      "port": 8080
+                    }
+                  }
+                }
+              ],
+              "maxInstanceRequestConcurrency": 80
+            },
+            "traffic": [
+              {
+                "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+                "percent": 100
+              }
+            ],
+            "observedGeneration": "2",
+            "terminalCondition": {
+              "type": "Ready",
+              "state": "CONDITION_SUCCEEDED",
+              "lastTransitionTime": "2024-04-25T01:38:34.705151Z"
+            },
+            "conditions": [
+              {
+                "type": "RoutesReady",
+                "state": "CONDITION_SUCCEEDED",
+                "lastTransitionTime": "2024-04-25T01:38:08.277009Z"
+              },
+              {
+                "type": "ConfigurationsReady",
+                "state": "CONDITION_SUCCEEDED",
+                "lastTransitionTime": "2024-04-25T01:37:17.083252Z"
+              }
+            ],
+            "latestReadyRevision": "projects/example-project/locations/us-central1/services/runservice-2-2ubz1ejdpwb22/revisions/runservice-2-2ubz1ejdpwb22-00001-c2n",
+            "latestCreatedRevision": "projects/example-project/locations/us-central1/services/runservice-2-2ubz1ejdpwb22/revisions/runservice-2-2ubz1ejdpwb22-00001-c2n",
+            "trafficStatuses": [
+              {
+                "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+                "percent": 100
+              }
+            ],
+            "uri": "https://runservice-2-2ubz1ejdpwb22-7id3oidh4q-uc.a.run.app",
+            "etag": "\"CJroprEGEJiAn9AC/cHJvamVjdHMvY25ybS10ZXN0LTF2a3hzOWJoanYweG85OHEvbG9jYXRpb25zL3VzLWNlbnRyYWwxL3NlcnZpY2VzL3J1bnNlcnZpY2UtMi0ydWJ6MWVqZHB3YjIy\""
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 115.290435ms

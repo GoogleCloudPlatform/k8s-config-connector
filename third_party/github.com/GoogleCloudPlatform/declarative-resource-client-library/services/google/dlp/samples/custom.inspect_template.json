@@ -1,0 +1,168 @@
+{
+  "parent": "projects/{{project}}",
+  "location": "{{region}}",
+  "displayName": "sample-template",
+  "description": "A sample dlp inspect template",
+  "inspectConfig": {
+    "infoTypes": [
+      {
+        "name": "AGE"
+      }
+    ],
+    "minLikelihood": "POSSIBLE",
+    "limits": {
+      "maxFindingsPerItem": 7,
+      "maxFindingsPerRequest": 7,
+      "maxFindingsPerInfoType": [
+        {
+          "infoType": {
+            "name": "AGE"
+          },
+          "maxFindings": 7
+        }
+      ]
+    },
+    "includeQuote": false,
+    "excludeInfoTypes": false,
+    "customInfoTypes": [
+      {
+        "infoType": {
+          "name": "PHONE_NUMBER"
+        },
+        "likelihood": "POSSIBLE",
+        "dictionary": {
+          "wordList": {
+            "words": ["911"]
+          }
+        }
+      },
+      {
+        "infoType": {
+          "name": "AGE"
+        },
+        "dictionary": {
+          "cloudStoragePath": {
+            "path": "gs://aaa-dont-delete-dcl-dlp-testing/dictionary-1"
+          }
+        }
+      },
+      {
+        "infoType": {
+          "name": "HOME_ADDRESS"
+        },
+        "storedType": {
+          "name": "projects/{{project}}/locations/global/storedInfoTypes/{{ref:minimal.stored_info_type.json:name}}"
+        }
+      },
+      {
+        "infoType": {
+          "name": "SALARY"
+        },
+        "exclusionType": "EXCLUSION_TYPE_EXCLUDE",
+        "regex": {
+          "pattern": "(\\$)(\\d*)",
+          "groupIndexes": [1, 2]
+        }
+      },
+      {
+        "infoType": {
+          "name": "HEIGHT"
+        },
+        "regex": { "pattern": "\\d'\\d{2}\""
+        },
+        "surrogateType": {}
+      }
+    ],
+    "contentOptions": ["CONTENT_TEXT"],
+    "ruleSet": [
+      {
+        "infoTypes": [
+          {
+            "name": "AGE"
+          }
+        ],
+        "rules": [
+          {
+            "exclusionRule": {
+              "matchingType": "MATCHING_TYPE_FULL_MATCH",
+              "dictionary": {
+                "wordList": {
+                  "words": ["911"]
+                }
+              }
+            }
+          },
+          {
+            "exclusionRule": {
+              "matchingType": "MATCHING_TYPE_FULL_MATCH",
+              "dictionary": {
+                "cloudStoragePath": {
+                  "path": "gs://aaa-dont-delete-dcl-dlp-testing/dictionary-1"
+                }
+              }
+            }
+          },
+          {
+            "exclusionRule": {
+              "matchingType": "MATCHING_TYPE_FULL_MATCH",
+              "regex": {
+                "pattern": "([12])(\\d{1,2})",
+                "groupIndexes": [1, 2]
+              }
+            }
+          },
+          {
+            "exclusionRule": {
+              "matchingType": "MATCHING_TYPE_FULL_MATCH",
+              "excludeInfoTypes": {
+                "infoTypes": [
+                  {
+                    "name": "PHONE_NUMBER"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      },
+      {
+        "infoTypes": [
+          {
+            "name": "PHONE_NUMBER"
+          }
+        ],
+        "rules": [
+          {
+            "hotwordRule": {
+              "hotwordRegex": {
+                "pattern": "\\(([0-9]{3})\\) ?[0-9]{3}-[0-9]{4}",
+                "groupIndexes": [0, 1]
+              },
+              "proximity": {
+                "windowBefore": 2,
+                "windowAfter": 3
+              },
+              "likelihoodAdjustment": {
+                "fixedLikelihood": "LIKELY"
+              }
+            }
+          },
+          {
+            "hotwordRule": {
+              "hotwordRegex": {
+                "pattern": "\\+?[0-9]*"
+              },
+              "proximity": {
+                "windowBefore": 2,
+                "windowAfter": 3
+              },
+              "likelihoodAdjustment": {
+                "relativeLikelihood": 1
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

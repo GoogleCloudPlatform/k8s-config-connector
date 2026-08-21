@@ -1,0 +1,19 @@
+{
+  "name": "{{_table}}",
+  "project": "{{project}}",
+  "dataset": "{{ref:minimal.dataset.json:name}}",
+  "description": "BigQuery Sample Table",
+  "friendlyName": "bigquerytable-sample",
+  "expirationTime": 2634324705260,
+  "externalDataConfiguration": {
+    "autodetect": true,
+    "compression": "NONE",
+    "ignoreUnknownValues": false,
+    "maxBadRecords": 10,
+    "sourceFormat": "CSV",
+    "sourceUris": [
+      "gs://gcp-public-data-landsat/LC08/01/044/034/LC08_L1GT_044034_20130330_20170310_01_T2/LC08_L1GT_044034_20130330_20170310_01_T2_ANG.txt",
+      "gs://gcp-public-data-landsat/LC08/01/044/034/LC08_L1GT_044034_20130330_20180201_01_T2/LC08_L1GT_044034_20130330_20180201_01_T2_ANG.txt"
+    ]
+  }
+}

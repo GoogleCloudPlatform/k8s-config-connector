@@ -1,0 +1,472 @@
+// Copyright 2023 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package mockstorage
+
+import (
+	"context"
+	"fmt"
+	"net/http"
+	"strings"
+	"time"
+
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/timestamppb"
+	"k8s.io/klog/v2"
+
+	grpcpb "cloud.google.com/go/storage/control/apiv2/controlpb"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/storage/v1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
+	"github.com/golang/protobuf/ptypes/empty"
+)
+
+type buckets struct {
+	*MockService
+	pb.UnimplementedBucketsServerServer
+}
+
+func (s *buckets) GetBucket(ctx context.Context, req *pb.GetBucketRequest) (*pb.Bucket, error) {
+	name, err := s.parseBucketName("buckets/" + req.GetName())
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := &pb.Bucket{}
+
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+	ret := proto.CloneOf(obj)
+
+	projection := req.GetProjection()
+	if projection == "" {
+		projection = "noAcl"
+	}
+	switch projection {
+	case "full":
+	// full: Include all properties.
+	// TODO: Verify storage.buckets.getIamPolicy permission (one day!)
+	case "noAcl":
+		// noAcl: Omit owner, acl, and defaultObjectAcl properties.
+		ret.Acl = nil
+		ret.DefaultObjectAcl = nil
+		ret.Owner = nil
+	default:
+		return nil, status.Errorf(codes.InvalidArgument, "invalid projection: %s", projection)
+	}
+
+	if uniform := ret.GetIamConfiguration().GetUniformBucketLevelAccess().GetEnabled(); uniform {
+		ret.Acl = nil
+		ret.DefaultObjectAcl = nil
+		ret.Owner = nil
+	}
+
+	httpmux.SetExpiresHeader(ctx, time.Now())
+
+	return ret, nil
+}
+
+func (s *buckets) ListBuckets(ctx context.Context, req *pb.ListBucketsRequest) (*pb.Buckets, error) {
+	project, err := s.Projects.GetProjectByID(req.GetProject())
+	if err != nil {
+		return nil, err
+	}
+
+	var buckets []*pb.Bucket
+
+	bucketKind := (&pb.Bucket{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, bucketKind, storage.ListOptions{}, func(obj proto.Message) error {
+		bucket := obj.(*pb.Bucket)
+
+		// TODO: Some form of ACL?
+
+		if bucket.GetProjectNumber() != uint64(project.Number) {
+			return nil
+		}
+
+		buckets = append(buckets, bucket)
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	httpmux.SetExpiresHeader(ctx, time.Now())
+
+	return &pb.Buckets{
+		Items:         buckets,
+		NextPageToken: nil,
+		Kind:          PtrTo("storage#buckets"),
+	}, nil
+}
+
+func (s *buckets) InsertBucket(ctx context.Context, req *pb.InsertBucketRequest) (*pb.Bucket, error) {
+	name, err := s.parseBucketName("buckets/" + req.GetBucket().GetName())
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	if req.GetProject() == "" {
+		return nil, status.Errorf(codes.InvalidArgument, "project is required")
+	}
+	project, err := s.Projects.GetProjectByID(req.GetProject())
+	if err != nil {
+		return nil, err
+	}
+	now := timestamppb.Now()
+
+	obj := proto.CloneOf(req.GetBucket())
+	obj.Id = PtrTo(name.Bucket)
+	obj.Kind = PtrTo("storage#bucket")
+	obj.Name = PtrTo(name.Bucket)
+	obj.ProjectNumber = PtrTo(uint64(project.Number))
+
+	if obj.Location == nil {
+		obj.Location = PtrTo("US")
+	}
+
+	switch obj.GetLocation() {
+	case "ASIA1", "EUR4", "EUR5", "EUR7", "EUR8", "NAM4":
+		obj.LocationType = PtrTo("dual-region")
+		obj.Rpo = PtrTo("DEFAULT")
+	case "EU", "US", "ASIA":
+		obj.LocationType = PtrTo("multi-region")
+		obj.Rpo = PtrTo("DEFAULT")
+	default:
+		obj.Location = PtrTo(strings.ToUpper(obj.GetLocation()))
+		obj.LocationType = PtrTo("region")
+		obj.Rpo = nil
+		obj.SatisfiesPZI = PtrTo(true)
+	}
+
+	obj.SelfLink = PtrTo(fmt.Sprintf("https://www.googleapis.com/storage/v1/b/%s", name.Bucket))
+	obj.StorageClass = PtrTo("STANDARD")
+	obj.TimeCreated = now
+	obj.Updated = now
+	obj.Metageneration = PtrTo(int64(1))
+
+	obj.Generation = PtrTo(time.Now().UnixNano())
+
+	if obj.Autoclass != nil && obj.Autoclass.GetEnabled() {
+		if obj.Autoclass.TerminalStorageClass == nil {
+			obj.Autoclass.TerminalStorageClass = PtrTo("NEARLINE")
+		}
+		obj.Autoclass.TerminalStorageClassUpdateTime = now
+		obj.Autoclass.ToggleTime = now
+	}
+
+	obj.Etag = PtrTo(computeEtag(obj))
+	if obj.Lifecycle != nil && proto.Equal(obj.Lifecycle, &pb.BucketLifecycle{}) {
+		obj.Lifecycle = nil
+	}
+
+	iamConfiguration := obj.IamConfiguration
+	if iamConfiguration == nil {
+		iamConfiguration = &pb.BucketIamConfiguration{}
+		obj.IamConfiguration = iamConfiguration
+	}
+	if iamConfiguration.PublicAccessPrevention == nil {
+		iamConfiguration.PublicAccessPrevention = PtrTo("inherited")
+	}
+
+	if iamConfiguration.UniformBucketLevelAccess == nil {
+		iamConfiguration.UniformBucketLevelAccess = &pb.UniformBucketLevelAccess{
+			Enabled: PtrTo(false),
+		}
+	}
+	if iamConfiguration.UniformBucketLevelAccess.GetEnabled() {
+		iamConfiguration.UniformBucketLevelAccess.LockedTime = now
+	}
+
+	// Copy uniformBucketLevelAccess to bucketPolicyOnly for legacy clients.
+	// iamConfiguration also includes the bucketPolicyOnly field, which uses a legacy name but has the same functionality as the uniformBucketLevelAccess field.
+	if iamConfiguration.BucketPolicyOnly == nil {
+		iamConfiguration.BucketPolicyOnly = &pb.BucketPolicyOnly{}
+	}
+	iamConfiguration.BucketPolicyOnly.Enabled = iamConfiguration.UniformBucketLevelAccess.Enabled
+	iamConfiguration.BucketPolicyOnly.LockedTime = iamConfiguration.UniformBucketLevelAccess.LockedTime
+
+	softDeletePolicy := obj.SoftDeletePolicy
+	if softDeletePolicy == nil {
+		softDeletePolicy = &pb.BucketSoftDeletePolicy{}
+		obj.SoftDeletePolicy = softDeletePolicy
+	}
+	if softDeletePolicy.RetentionDurationSeconds == nil {
+		defaultRetention := time.Hour * 7 * 24
+		softDeletePolicy.RetentionDurationSeconds = PtrTo(int64(defaultRetention.Seconds()))
+	}
+	softDeletePolicy.EffectiveTime = now
+
+	if err := s.populateDefaults(ctx, project, obj); err != nil {
+		return nil, err
+	}
+
+	if err := s.storage.Create(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	retObj := proto.CloneOf(obj)
+	projection := req.GetProjection()
+	uniform := obj.GetIamConfiguration().GetUniformBucketLevelAccess().GetEnabled()
+	if uniform || projection == "" || projection == "noAcl" {
+		retObj.Acl = nil
+		retObj.DefaultObjectAcl = nil
+		retObj.Owner = nil
+	}
+
+	return retObj, nil
+}
+
+func (s *buckets) populateDefaults(ctx context.Context, project *projects.ProjectData, obj *pb.Bucket) error {
+	owner := obj.Owner
+	if owner == nil {
+		owner = &pb.BucketOwner{}
+		obj.Owner = owner
+	}
+	if owner.Entity == nil {
+		owner.Entity = PtrTo(fmt.Sprintf("project-owners-%d", project.Number))
+	}
+
+	if len(obj.Acl) == 0 {
+		obj.Acl = append(obj.Acl, buildBucketACL(ctx, project, obj, "OWNER", "owners"))
+		obj.Acl = append(obj.Acl, buildBucketACL(ctx, project, obj, "OWNER", "editors"))
+		obj.Acl = append(obj.Acl, buildBucketACL(ctx, project, obj, "READER", "viewers"))
+	}
+	if len(obj.DefaultObjectAcl) == 0 {
+		obj.DefaultObjectAcl = append(obj.DefaultObjectAcl, buildObjectACL(ctx, project, obj, "OWNER", "owners"))
+		obj.DefaultObjectAcl = append(obj.DefaultObjectAcl, buildObjectACL(ctx, project, obj, "OWNER", "editors"))
+		obj.DefaultObjectAcl = append(obj.DefaultObjectAcl, buildObjectACL(ctx, project, obj, "READER", "viewers"))
+	}
+	return nil
+}
+
+func buildBucketACL(ctx context.Context, project *projects.ProjectData, obj *pb.Bucket, role string, team string) *pb.BucketAccessControl {
+	acl := &pb.BucketAccessControl{}
+	acl.Bucket = PtrTo(obj.GetName())
+	acl.Entity = PtrTo(fmt.Sprintf("project-%s-%d", team, project.Number))
+	acl.Role = PtrTo(role)
+	acl.Id = PtrTo(acl.GetBucket() + "/" + acl.GetEntity())
+	acl.Kind = PtrTo("storage#bucketAccessControl")
+	acl.SelfLink = PtrTo(fmt.Sprintf("https://www.googleapis.com/storage/v1/b/%s/acl/%s", obj.GetName(), acl.GetEntity()))
+	acl.ProjectTeam = &pb.BucketAccessControlProjectTeam{
+		ProjectNumber: PtrTo(fmt.Sprintf("%d", project.Number)),
+		Team:          PtrTo(team),
+	}
+	acl.Etag = PtrTo(computeEtag(obj))
+	return acl
+}
+
+func buildObjectACL(ctx context.Context, project *projects.ProjectData, obj *pb.Bucket, role string, team string) *pb.ObjectAccessControl {
+	acl := &pb.ObjectAccessControl{}
+	acl.Entity = PtrTo(fmt.Sprintf("project-%s-%d", team, project.Number))
+	acl.Role = PtrTo(role)
+	acl.Kind = PtrTo("storage#objectAccessControl")
+	acl.ProjectTeam = &pb.ObjectAccessControlProjectTeam{
+		ProjectNumber: PtrTo(fmt.Sprintf("%d", project.Number)),
+		Team:          PtrTo(team),
+	}
+	acl.Etag = PtrTo(computeEtag(obj))
+	return acl
+}
+
+func (s *buckets) PatchBucket(ctx context.Context, req *pb.PatchBucketRequest) (*pb.Bucket, error) {
+	name, err := s.parseBucketName("buckets/" + req.GetName())
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := &pb.Bucket{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	objBefore := proto.CloneOf(obj)
+	project, err := s.Projects.GetProjectByNumber(fmt.Sprintf("%d", obj.GetProjectNumber()))
+	if err != nil {
+		return nil, err
+	}
+	now := timestamppb.Now()
+
+	if patch := req.Bucket; patch != nil {
+		if patch.Labels != nil {
+			obj.Labels = patch.Labels
+		}
+		if patch.Lifecycle != nil {
+			obj.Lifecycle = patch.Lifecycle
+		}
+		if patch.Versioning != nil {
+			obj.Versioning = patch.Versioning
+		}
+		if patch.IpFilter != nil {
+			obj.IpFilter = patch.IpFilter
+		}
+
+		if patch.SoftDeletePolicy != nil {
+			if patch.SoftDeletePolicy.RetentionDurationSeconds != nil {
+				if obj.SoftDeletePolicy == nil {
+					obj.SoftDeletePolicy = &pb.BucketSoftDeletePolicy{}
+				}
+				obj.SoftDeletePolicy.RetentionDurationSeconds = patch.SoftDeletePolicy.RetentionDurationSeconds
+
+				// If the value is zero, we clear the effectiveTime (apparently)
+				if obj.GetSoftDeletePolicy().GetRetentionDurationSeconds() == 0 {
+					obj.SoftDeletePolicy.EffectiveTime = nil
+				}
+			}
+		}
+		if patch.Autoclass != nil {
+			if obj.Autoclass == nil {
+				obj.Autoclass = &pb.BucketAutoclass{}
+			}
+			if patch.Autoclass.Enabled != nil {
+				if obj.Autoclass.GetEnabled() != patch.Autoclass.GetEnabled() {
+					obj.Autoclass.Enabled = patch.Autoclass.Enabled
+					obj.Autoclass.ToggleTime = now
+				}
+			}
+			if patch.Autoclass.TerminalStorageClass != nil {
+				if obj.Autoclass.GetTerminalStorageClass() != patch.Autoclass.GetTerminalStorageClass() {
+					obj.Autoclass.TerminalStorageClass = patch.Autoclass.TerminalStorageClass
+					obj.Autoclass.TerminalStorageClassUpdateTime = now
+				}
+			}
+		}
+	}
+
+	// Remove empty lifecycle (no rules)
+	if obj.Lifecycle != nil && proto.Equal(obj.Lifecycle, &pb.BucketLifecycle{}) {
+		obj.Lifecycle = nil
+	}
+
+	if obj.Autoclass != nil && obj.Autoclass.GetEnabled() {
+		if obj.Autoclass.TerminalStorageClass == nil {
+			obj.Autoclass.TerminalStorageClass = PtrTo("NEARLINE")
+		}
+		if obj.Autoclass.TerminalStorageClassUpdateTime == nil {
+			obj.Autoclass.TerminalStorageClassUpdateTime = now
+		}
+		if obj.Autoclass.ToggleTime == nil {
+			obj.Autoclass.ToggleTime = now
+		}
+	}
+
+	if !proto.Equal(objBefore, obj) {
+		obj.Metageneration = PtrTo(int64(obj.GetMetageneration() + 1))
+	}
+
+	if err := s.populateDefaults(ctx, project, obj); err != nil {
+		return nil, err
+	}
+
+	obj.Etag = PtrTo(computeEtag(obj))
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	retObj := proto.CloneOf(obj)
+	projection := req.GetProjection()
+	uniform := obj.GetIamConfiguration().GetUniformBucketLevelAccess().GetEnabled()
+	emptyPatch := req.GetBucket() == nil || proto.Equal(req.GetBucket(), &pb.Bucket{})
+	stripAcl := projection == "noAcl" ||
+		(uniform && emptyPatch) ||
+		(uniform && len(req.GetBucket().GetLabels()) > 0) ||
+		(uniform && req.GetBucket().GetAutoclass() != nil && !req.GetBucket().GetAutoclass().GetEnabled())
+	if stripAcl {
+		retObj.Acl = nil
+		retObj.DefaultObjectAcl = nil
+		retObj.Owner = nil
+	}
+
+	return retObj, nil
+}
+
+func (s *buckets) DeleteBucket(ctx context.Context, req *pb.DeleteBucketRequest) (*empty.Empty, error) {
+	name, err := s.parseBucketName("buckets/" + req.GetName())
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	// Check if there are any folders inside the bucket
+	hasFolders := false
+	folderKind := (&grpcpb.Folder{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, folderKind, storage.ListOptions{
+		Prefix: fmt.Sprintf("projects/_/buckets/%s/folders/", name.Bucket),
+	}, func(obj proto.Message) error {
+		hasFolders = true
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	// Check if there are any managed folders inside the bucket
+	hasManagedFolders := false
+	managedFolderKind := (&grpcpb.ManagedFolder{}).ProtoReflect().Descriptor()
+	if err := s.storage.List(ctx, managedFolderKind, storage.ListOptions{
+		Prefix: fmt.Sprintf("projects/_/buckets/%s/managedFolders/", name.Bucket),
+	}, func(obj proto.Message) error {
+		hasManagedFolders = true
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	if hasFolders || hasManagedFolders {
+		return nil, status.Errorf(codes.AlreadyExists, "The bucket you tried to delete is not empty.")
+	}
+
+	deletedObj := &pb.Bucket{}
+	if err := s.storage.Delete(ctx, fqn, deletedObj); err != nil {
+		return nil, err
+	}
+	httpmux.SetStatusCode(ctx, http.StatusNoContent)
+
+	return &empty.Empty{}, nil
+}
+
+type bucketName struct {
+	Bucket string
+}
+
+func (n *bucketName) String() string {
+	return fmt.Sprintf("buckets/%s", n.Bucket)
+}
+
+// parseBucketName parses a string into a bucketName.
+// The expected form is `buckets/*`.
+func (s *MockService) parseBucketName(name string) (*bucketName, error) {
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 2 && tokens[0] == "buckets" {
+		name := &bucketName{
+			Bucket: tokens[1],
+		}
+
+		return name, nil
+	}
+
+	klog.Infof("Invalid bucket name: %q", name)
+	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid (expected format: buckets/*)", name)
+}

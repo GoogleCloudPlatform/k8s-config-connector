@@ -1,0 +1,5 @@
+{
+  "role": "roles/bigquery.admin",
+  "member": "serviceAccount:service-{{project_number}}@dlp-api.iam.gserviceaccount.com",
+  "resource": "{{ref:basic.cloudresourcemanager.project.json:__resource__}}"
+}

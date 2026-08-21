@@ -1,0 +1,9 @@
+{
+  "name": "{{ref:__state__:name}}",
+  "parent": "projects/{{project}}/locations/{{region}}",
+  "dictionary": {
+    "wordList": {
+      "words": ["si", "no"]
+    }
+  }
+}

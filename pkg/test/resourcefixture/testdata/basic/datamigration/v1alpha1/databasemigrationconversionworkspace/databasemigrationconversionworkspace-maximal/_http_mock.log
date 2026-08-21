@@ -1,0 +1,359 @@
+GRPC /google.cloud.clouddms.v1.DataMigrationService/GetConversionWorkspace
+
+{
+  "name": "projects/${projectId}/locations/us-central1/conversionWorkspaces/db-mw-max-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = ConversionWorkspace "projects/${projectId}/locations/us-central1/conversionWorkspaces/db-mw-max-${uniqueId}" not found
+
+{}
+
+---
+
+GRPC /google.cloud.clouddms.v1.DataMigrationService/CreateConversionWorkspace
+
+{
+  "conversionWorkspace": {
+    "destination": {
+      "engine": "POSTGRESQL",
+      "version": "14"
+    },
+    "displayName": "Maximal Conversion Workspace",
+    "globalSettings": {
+      "convert_foreign_key_to_interleave": "true",
+      "skip_triggers": "false"
+    },
+    "source": {
+      "engine": "MYSQL",
+      "version": "5.7"
+    }
+  },
+  "conversionWorkspaceId": "db-mw-max-${uniqueId}",
+  "parent": "projects/${projectId}/locations/us-central1"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.clouddms.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/conversionWorkspaces/db-mw-max-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.clouddms.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/conversionWorkspaces/db-mw-max-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.clouddms.v1.ConversionWorkspace",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "destination": {
+      "engine": "POSTGRESQL",
+      "version": "14"
+    },
+    "displayName": "Maximal Conversion Workspace",
+    "globalSettings": {
+      "convert_foreign_key_to_interleave": "true",
+      "skip_triggers": "false"
+    },
+    "name": "projects/${projectId}/locations/us-central1/conversionWorkspaces/db-mw-max-${uniqueId}",
+    "source": {
+      "engine": "MYSQL",
+      "version": "5.7"
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GRPC /google.cloud.clouddms.v1.DataMigrationService/GetConversionWorkspace
+
+{
+  "name": "projects/${projectId}/locations/us-central1/conversionWorkspaces/db-mw-max-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "destination": {
+    "engine": "POSTGRESQL",
+    "version": "14"
+  },
+  "displayName": "Maximal Conversion Workspace",
+  "globalSettings": {
+    "convert_foreign_key_to_interleave": "true",
+    "skip_triggers": "false"
+  },
+  "name": "projects/${projectId}/locations/us-central1/conversionWorkspaces/db-mw-max-${uniqueId}",
+  "source": {
+    "engine": "MYSQL",
+    "version": "5.7"
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.clouddms.v1.DataMigrationService/GetConversionWorkspace
+
+{
+  "name": "projects/${projectId}/locations/us-central1/conversionWorkspaces/db-mw-max-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "destination": {
+    "engine": "POSTGRESQL",
+    "version": "14"
+  },
+  "displayName": "Maximal Conversion Workspace",
+  "globalSettings": {
+    "convert_foreign_key_to_interleave": "true",
+    "skip_triggers": "false"
+  },
+  "name": "projects/${projectId}/locations/us-central1/conversionWorkspaces/db-mw-max-${uniqueId}",
+  "source": {
+    "engine": "MYSQL",
+    "version": "5.7"
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.clouddms.v1.DataMigrationService/UpdateConversionWorkspace
+
+{
+  "conversionWorkspace": {
+    "destination": {
+      "engine": "POSTGRESQL",
+      "version": "14"
+    },
+    "displayName": "Maximal Conversion Workspace Updated",
+    "globalSettings": {
+      "convert_foreign_key_to_interleave": "false",
+      "skip_triggers": "true"
+    },
+    "name": "projects/${projectId}/locations/us-central1/conversionWorkspaces/db-mw-max-${uniqueId}",
+    "source": {
+      "engine": "MYSQL",
+      "version": "5.7"
+    }
+  },
+  "updateMask": "displayName,globalSettings"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.clouddms.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/conversionWorkspaces/db-mw-max-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.clouddms.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/conversionWorkspaces/db-mw-max-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.clouddms.v1.ConversionWorkspace",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "destination": {
+      "engine": "POSTGRESQL",
+      "version": "14"
+    },
+    "displayName": "Maximal Conversion Workspace Updated",
+    "globalSettings": {
+      "convert_foreign_key_to_interleave": "false",
+      "skip_triggers": "true"
+    },
+    "name": "projects/${projectId}/locations/us-central1/conversionWorkspaces/db-mw-max-${uniqueId}",
+    "source": {
+      "engine": "MYSQL",
+      "version": "5.7"
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GRPC /google.cloud.clouddms.v1.DataMigrationService/GetConversionWorkspace
+
+{
+  "name": "projects/${projectId}/locations/us-central1/conversionWorkspaces/db-mw-max-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "destination": {
+    "engine": "POSTGRESQL",
+    "version": "14"
+  },
+  "displayName": "Maximal Conversion Workspace Updated",
+  "globalSettings": {
+    "convert_foreign_key_to_interleave": "false",
+    "skip_triggers": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/conversionWorkspaces/db-mw-max-${uniqueId}",
+  "source": {
+    "engine": "MYSQL",
+    "version": "5.7"
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.clouddms.v1.DataMigrationService/GetConversionWorkspace
+
+{
+  "name": "projects/${projectId}/locations/us-central1/conversionWorkspaces/db-mw-max-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "destination": {
+    "engine": "POSTGRESQL",
+    "version": "14"
+  },
+  "displayName": "Maximal Conversion Workspace Updated",
+  "globalSettings": {
+    "convert_foreign_key_to_interleave": "false",
+    "skip_triggers": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/conversionWorkspaces/db-mw-max-${uniqueId}",
+  "source": {
+    "engine": "MYSQL",
+    "version": "5.7"
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.clouddms.v1.DataMigrationService/GetConversionWorkspace
+
+{
+  "name": "projects/${projectId}/locations/us-central1/conversionWorkspaces/db-mw-max-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "destination": {
+    "engine": "POSTGRESQL",
+    "version": "14"
+  },
+  "displayName": "Maximal Conversion Workspace Updated",
+  "globalSettings": {
+    "convert_foreign_key_to_interleave": "false",
+    "skip_triggers": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/conversionWorkspaces/db-mw-max-${uniqueId}",
+  "source": {
+    "engine": "MYSQL",
+    "version": "5.7"
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.clouddms.v1.DataMigrationService/DeleteConversionWorkspace
+
+{
+  "name": "projects/${projectId}/locations/us-central1/conversionWorkspaces/db-mw-max-${uniqueId}"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.clouddms.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/conversionWorkspaces/db-mw-max-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.clouddms.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/conversionWorkspaces/db-mw-max-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}

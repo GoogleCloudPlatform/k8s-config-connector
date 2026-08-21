@@ -1,0 +1,137 @@
+---
+steps:
+    # We need to configure git since creating the merge commit is
+    # technically a commit.
+    - name: 'gcr.io/cloud-builders/git'
+      args:
+          - config
+          - --global
+          - user.email
+          - magic-modules+differ@google.com
+    - name: 'gcr.io/cloud-builders/git'
+      args:
+          - config
+          - --global
+          - user.name
+          - "Modular Magician Diff Process"
+
+    - name: 'gcr.io/cloud-builders/git'
+      args:
+          - fetch
+          - origin
+
+    - name: 'gcr.io/cloud-builders/git'
+      args:
+          - checkout
+          - $BRANCH_NAME
+
+    - name: 'gcr.io/cloud-builders/git'
+      args:
+          - clone
+          - https://github.com/GoogleCloudPlatform/magic-modules
+          - /workspace/mm-workdir
+
+      # none of the builtins are guaranteed to have gnu make.
+      # so we just reuse this container which we already have
+      # downloaded.  No big deal.
+    - name: 'gcr.io/graphite-docker-images/downstream-builder'
+      entrypoint: make
+      dir: /workspace/mm-workdir
+      args:
+        - upgrade-dcl
+        - FORCE_DCL=$COMMIT_SHA
+
+    - name: 'gcr.io/cloud-builders/git'
+      dir: /workspace/mm-workdir
+      args:
+          - diff
+
+    - name: 'gcr.io/cloud-builders/git'
+      dir: /workspace/mm-workdir
+      id: commit
+      args:
+          - commit
+          - -a
+          - -m
+          - "upgrade DCL version"
+
+    - name: 'gcr.io/graphite-docker-images/downstream-builder'
+      secretEnv: ["GITHUB_TOKEN"]
+      id: tpgb-head
+      waitFor: ['commit']
+      dir: /workspace/mm-workdir
+      args:
+          - 'head'
+          - 'terraform'
+          - 'beta'
+          - "dcl-$BRANCH_NAME"
+
+    - name: 'gcr.io/graphite-docker-images/downstream-builder'
+      secretEnv: ["GITHUB_TOKEN"]
+      id: tpgb-base
+      waitFor: ['commit']
+      dir: /workspace/mm-workdir
+      args:
+          - 'base'
+          - 'terraform'
+          - 'beta'
+          - "dcl-$BRANCH_NAME"
+
+    - name: 'gcr.io/graphite-docker-images/terraform-tester'
+      id: tpgb-test
+      dir: /workspace/mm-workdir
+      secretEnv: ["GITHUB_TOKEN"]
+      waitFor: ["tpgb-head", "tpgb-base"]
+      args:
+          - 'beta'
+          - "dcl-$BRANCH_NAME"
+          - $COMMIT_SHA
+          - $BUILD_ID
+          - $PROJECT_ID
+          - GoogleCloudPlatform/declarative-resource-client-library
+          - "9"  # Build step
+
+    - name: 'gcr.io/graphite-docker-images/terraform-vcr-tester'
+      id: tpg-vcr-test
+      dir: /workspace/mm-workdir
+      secretEnv: ["TEAMCITY_TOKEN", "GITHUB_TOKEN"]
+      waitFor: ["tpgb-test"]
+      timeout: 12000s
+      args:
+          - $BRANCH_NAME
+          - $COMMIT_SHA
+
+    - name: 'gcr.io/cloud-builders/git'
+      args:
+          - rebase
+          - -X
+          - theirs
+          - origin/main
+
+    - name: 'gcr.io/cloud-builders/git'
+      entrypoint: bash
+      secretEnv: ["GITHUB_TOKEN"]
+      args:
+          - -c
+          - "git push https://modular-magician:$$GITHUB_TOKEN@github.com/GoogleCloudPlatform/declarative-resource-client-library $BRANCH_NAME:main"
+
+    - name: 'gcr.io/cloud-builders/git'
+      entrypoint: bash
+      secretEnv: ["GITHUB_TOKEN"]
+      args:
+          - -c
+          - "git push https://modular-magician:$$GITHUB_TOKEN@github.com/GoogleCloudPlatform/declarative-resource-client-library --delete $BRANCH_NAME"
+
+
+# Long timeout to enable waiting on VCR test
+timeout: 20000s
+options:
+    machineType: 'N1_HIGHCPU_32'
+
+secrets:
+    - kmsKeyName: projects/graphite-docker-images/locations/global/keyRings/token-keyring/cryptoKeys/github-token
+      secretEnv:
+          GITHUB_TOKEN: CiQADkR4Nt6nHLI52Kc1W55OwpLdc4vjBfVR0SGQNzm6VSVj9lUSUQBfF82vVhn43A1jNYOv8ScoWgrZONwNrUabHfGjkvl+IZxcii0JlOVUawbscs4OJga0eitNNlagAOruLs6C926X20ZZPqWtH97ui6CKNvxgkQ==
+    - kmsKeyName: projects/graphite-docker-images/locations/global/keyRings/token-keyring/cryptoKeys/teamcity-token
+      secretEnv:
+          TEAMCITY_TOKEN: CiQAth83aSgKrb5ASI5XwE+yv62KbNtNG+O9gKXJzoflm65H7fESkwEASc1NF0oM3pHb5cUBAHcXZqFjEJrF4eGowPycUpKDmEncuQQSkm8v+dswSNXTXnX2C/reLpw9uGTw7G+K1kqA0sVrzYG3sTdDf/IcS//uloAerUff2wVIlV5rxV357PMkBl5dGyybnKMybgrXGl+CcW9PDLAwqfELWrr5zTSHy799dAhJZi1Wb5KbImmvvU5Z46g=

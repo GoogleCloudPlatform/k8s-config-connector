@@ -1,0 +1,40 @@
+{
+  "project": "{{ref:gkehub.serviceusage.service.json:project}}",
+  "location": "global",
+  "feature": "projects/{{ref:acm.feature.json:project}}/locations/{{ref:acm.feature.json:location}}/features/{{ref:acm.feature.json:name}}",
+  "membership": "{{ref:first.membership.json:name}}",
+  "membershipLocation": "global",
+  "configmanagement": {
+    "configSync": {
+      "oci": {
+        "syncRepo": "us-central1-docker.pkg.dev/sample-project/config-repo/config-sync-gke:latest",
+        "policyDir": "config-connector",
+        "syncWaitSecs": "20",
+        "secretType": "gcpserviceaccount",
+        "gcpServiceAccountEmail": "{{ref:first.iam.service_account.json:email}}"
+      },
+      "sourceFormat": "unstructured",
+      "preventDrift": true
+    },
+    "policyController": {
+      "enabled": true,
+      "exemptableNamespaces": ["sample-namespace"],
+      "referentialRulesEnabled": true,
+      "logDeniesEnabled": true,
+      "mutationEnabled": true,
+      "monitoring": {
+        "backends": ["PROMETHEUS"]
+      },
+      "templateLibraryInstalled": true,
+      "auditIntervalSeconds": "10"
+    },
+    "binauthz": {
+      "enabled": false
+    },
+    "hierarchyController": {
+      "enabled": false,
+      "enablePodTreeLabels": false,
+      "enableHierarchicalResourceQuota": false
+    }
+  }
+}

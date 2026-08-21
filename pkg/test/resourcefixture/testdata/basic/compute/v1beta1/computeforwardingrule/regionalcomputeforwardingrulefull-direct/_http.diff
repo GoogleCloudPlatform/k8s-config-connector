@@ -1,0 +1,91 @@
+956,1045d955
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}?alt=json
+< Content-Type: application/json
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "IPAddress": "8.8.8.8",
+<   "IPProtocol": "TCP",
+<   "allPorts": true,
+<   "backendService": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
+<   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+<   "description": "A regional forwarding rule",
+<   "fingerprint": "abcdef0123A=",
+<   "id": "000000000000000000000",
+<   "ipVersion": "IPV4",
+<   "isMirroringCollector": true,
+<   "kind": "compute#forwardingRule",
+<   "labelFingerprint": "abcdef0123A=",
+<   "labels": {
+<     "cnrm-test": "true",
+<     "label-one": "value-two",
+<     "managed-by-cnrm": "true"
+<   },
+<   "loadBalancingScheme": "INTERNAL",
+<   "name": "${forwardingRuleID}",
+<   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+<   "networkTier": "PREMIUM",
+<   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+<   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+<   "serviceLabel": "label",
+<   "serviceName": "label.${forwardingRuleID}.il4.us-central1.lb.${projectId}.internal",
+<   "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+< }
+< 
+< ---
+< 
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}
+< Content-Type: application/json
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "IPAddress": "8.8.8.8",
+<   "IPProtocol": "TCP",
+<   "allPorts": true,
+<   "backendService": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/${backendServiceID}",
+<   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+<   "description": "A regional forwarding rule",
+<   "fingerprint": "abcdef0123A=",
+<   "id": "000000000000000000000",
+<   "ipVersion": "IPV4",
+<   "isMirroringCollector": true,
+<   "kind": "compute#forwardingRule",
+<   "labelFingerprint": "abcdef0123A=",
+<   "labels": {
+<     "cnrm-test": "true",
+<     "label-one": "value-two",
+<     "managed-by-cnrm": "true"
+<   },
+<   "loadBalancingScheme": "INTERNAL",
+<   "name": "${forwardingRuleID}",
+<   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+<   "networkTier": "PREMIUM",
+<   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+<   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+<   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+<   "serviceLabel": "label",
+<   "serviceName": "label.${forwardingRuleID}.il4.us-central1.lb.${projectId}.internal",
+<   "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+< }
+< 
+< ---
+< 

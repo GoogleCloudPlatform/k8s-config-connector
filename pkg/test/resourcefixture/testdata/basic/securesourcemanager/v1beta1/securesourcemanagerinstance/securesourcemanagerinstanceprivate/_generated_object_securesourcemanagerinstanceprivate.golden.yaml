@@ -1,0 +1,40 @@
+apiVersion: securesourcemanager.cnrm.cloud.google.com/v1beta1
+kind: SecureSourceManagerInstance
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  labels:
+    cnrm-test: "true"
+  name: ssminstance-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  location: us-central1
+  privateConfig:
+    caPoolRef:
+      name: privatecacapool-${uniqueId}
+    isPrivate: true
+  projectRef:
+    external: ${projectId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/instances/ssminstance-${uniqueId}
+  observedGeneration: 1
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    hostConfig:
+      api: ssminstance-${uniqueId}-${projectNumber}-api.us-central1.p.sourcemanager.dev
+      gitHTTP: ssminstance-${uniqueId}-${projectNumber}-git.us-central1.p.sourcemanager.dev
+      gitSSH: ssminstance-${uniqueId}-${projectNumber}-ssh.us-central1.p.sourcemanager.dev
+      html: ssminstance-${uniqueId}-${projectNumber}.us-central1.p.sourcemanager.dev
+    privateConfig:
+      httpServiceAttachment: projects/tenant-tp/regions/us-central1/serviceAttachments/http-psc
+      sshServiceAttachment: projects/tenant-tp/regions/us-central1/serviceAttachments/ssh-psc
+    state: ACTIVE
+    updateTime: "1970-01-01T00:00:00Z"

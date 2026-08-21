@@ -1,0 +1,10 @@
+{
+  "parent": "projects/{{project}}",
+  "location": "{{region}}",
+  "displayName": "sample-type",
+  "description": "A sample regex-based stored info type",
+  "regex": {
+    "pattern": "([a-z]*)(.+)",
+    "groupIndexes": [0, 1]
+  }
+}

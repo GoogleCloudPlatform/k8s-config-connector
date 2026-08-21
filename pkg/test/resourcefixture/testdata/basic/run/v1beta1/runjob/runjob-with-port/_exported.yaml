@@ -1,0 +1,31 @@
+apiVersion: run.cnrm.cloud.google.com/v1beta1
+kind: RunJob
+metadata:
+  name: runjob-with-port-${uniqueId}
+spec:
+  launchStage: GA
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+  template:
+    taskCount: 1
+    template:
+      containers:
+      - image: us-docker.pkg.dev/cloudrun/container/hello
+        name: hello
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 512Mi
+        startupProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /
+            port: 8081
+          periodSeconds: 10
+          timeoutSeconds: 1
+      executionEnvironment: EXECUTION_ENVIRONMENT_GEN2
+      maxRetries: 3
+      serviceAccountRef:
+        external: ${projectNumber}-compute@developer.gserviceaccount.com
+      timeout: 10m0s

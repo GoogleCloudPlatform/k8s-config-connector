@@ -1,0 +1,7 @@
+{{if .IsAlphaResource}}
+<aside class="caution"><strong>Caution:</strong> This resource is currently in alpha and may change without notice.
+<p>
+Before you upgrade Config Connector to a later version, we recommended that you abandon all existing Kubernetes objects based on alpha-stage resources from the cluster. Objects should be adjusted to reflect the CRD schema of the new version, and reapplied after the upgrade.
+</p>
+</aside>
+{{end}}

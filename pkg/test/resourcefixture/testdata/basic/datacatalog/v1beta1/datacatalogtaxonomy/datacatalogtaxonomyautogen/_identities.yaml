@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: datacatalog.cnrm.cloud.google.com
+  kind: DataCatalogTaxonomy
+  name: datacatalogtaxonomy-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

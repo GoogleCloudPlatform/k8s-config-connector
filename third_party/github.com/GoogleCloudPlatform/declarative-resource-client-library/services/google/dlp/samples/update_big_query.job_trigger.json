@@ -1,0 +1,54 @@
+{
+  "name": "{{ref:__state__:name}}",
+  "parent": "projects/{{project}}",
+  "triggers": [
+    {
+      "schedule": {
+        "recurrencePeriodDuration": "172800s"
+      }
+    }
+  ],
+  "status": "HEALTHY",
+  "inspectJob": {
+    "storageConfig": {
+      "bigQueryOptions": {
+        "tableReference": {
+          "projectId": "{{ref:basic.cloudresourcemanager.project.json:name}}",
+          "datasetId": "{{ref:second.bigquery.dataset.json:name}}",
+          "tableId": "{{ref:second.bigquery.table.json:name}}"
+        },
+        "identifyingFields": [
+          {
+            "name": "new-sample-field"
+          }
+        ],
+        "rowsLimit": 2,
+        "sampleMethod": "RANDOM_START",
+        "excludedFields": [
+          {
+            "name": "new-excluded-field"
+          }
+        ]
+      }
+    },
+    "actions": [
+      {
+        "saveFindings": {
+          "outputConfig": {
+            "outputSchema": "GCS_COLUMNS",
+            "table": {
+              "projectId": "{{ref:basic.cloudresourcemanager.project.json:name}}",
+              "datasetId": "{{ref:second.bigquery.dataset.json:name}}",
+              "tableId": "{{ref:second.bigquery.table.json:name}}"
+            }
+          }
+        }
+      },
+      {
+        "pubSub": {
+          "topic": "projects/{{project}}/topics/{{ref:second.pubsub.topic.json:name}}"
+        }
+      }
+    ]
+  }
+}

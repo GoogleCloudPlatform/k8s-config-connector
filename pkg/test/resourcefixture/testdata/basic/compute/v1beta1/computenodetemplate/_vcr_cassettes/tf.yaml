@@ -1,0 +1,381 @@
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+version: 2
+interactions:
+    - id: 0
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/regions/us-central1/nodeTemplates/computenodetemplate-2avqvi66hp2d?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 404 Not Found
+        code: 404
+        duration: 404.347543ms
+    - id: 1
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 409
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: |
+            {"cpuOvercommitType":"NONE","description":"Node template for sole tenant nodes running in us-central1, with 96vCPUs and any amount of memory on any machine type.","name":"computenodetemplate-2avqvi66hp2d","nodeAffinityLabels":{"cnrm-test":"true","managed-by-cnrm":"true","memory_guarantee":"false"},"nodeTypeFlexibility":{"cpus":"96","memory":"any"},"region":"projects/example-project/global/regions/us-central1"}
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/regions/us-central1/nodeTemplates?alt=json
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "kind": "compute#operation",
+              "id": "9036898522900281691",
+              "name": "operation-1712621492192-6159ec3ad43f0-4e35f562-990c93c2",
+              "operationType": "compute.nodeTemplates.insert",
+              "targetLink": "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-central1/nodeTemplates/computenodetemplate-2avqvi66hp2d",
+              "targetId": "640607960279103835",
+              "status": "RUNNING",
+              "user": "user@google.com",
+              "progress": 0,
+              "insertTime": "2024-04-08T17:11:32.450-07:00",
+              "startTime": "2024-04-08T17:11:32.491-07:00",
+              "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-central1/operations/operation-1712621492192-6159ec3ad43f0-4e35f562-990c93c2",
+              "region": "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-central1"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 431.808087ms
+    - id: 2
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.22.1 gdcl/0.160.0
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/regions/us-central1/operations/operation-1712621492192-6159ec3ad43f0-4e35f562-990c93c2?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"compute#operation","id":"9036898522900281691","name":"operation-1712621492192-6159ec3ad43f0-4e35f562-990c93c2","operationType":"compute.nodeTemplates.insert","targetLink":"https://www.googleapis.com/compute/beta/projects/example-project/regions/us-central1/nodeTemplates/computenodetemplate-2avqvi66hp2d","targetId":"640607960279103835","status":"DONE","user":"user@google.com","progress":100,"insertTime":"2024-04-08T17:11:32.450-07:00","startTime":"2024-04-08T17:11:32.491-07:00","endTime":"2024-04-08T17:11:32.803-07:00","selfLink":"https://www.googleapis.com/compute/beta/projects/example-project/regions/us-central1/operations/operation-1712621492192-6159ec3ad43f0-4e35f562-990c93c2","region":"https://www.googleapis.com/compute/beta/projects/example-project/regions/us-central1"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 324.935084ms
+    - id: 3
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/regions/us-central1/nodeTemplates/computenodetemplate-2avqvi66hp2d?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "kind": "compute#nodeTemplate",
+              "id": "640607960279103835",
+              "creationTimestamp": "2024-04-08T17:11:32.459-07:00",
+              "name": "computenodetemplate-2avqvi66hp2d",
+              "description": "Node template for sole tenant nodes running in us-central1, with 96vCPUs and any amount of memory on any machine type.",
+              "nodeAffinityLabels": {
+                "memory_guarantee": "false",
+                "cnrm-test": "true",
+                "managed-by-cnrm": "true"
+              },
+              "status": "READY",
+              "region": "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-central1",
+              "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-central1/nodeTemplates/computenodetemplate-2avqvi66hp2d",
+              "nodeTypeFlexibility": {
+                "cpus": "96",
+                "memory": "any"
+              },
+              "serverBinding": {
+                "type": "RESTART_NODE_ON_ANY_SERVER"
+              },
+              "cpuOvercommitType": "NONE"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 322.173105ms
+    - id: 4
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/regions/us-central1/nodeTemplates/computenodetemplate-2avqvi66hp2d?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "kind": "compute#nodeTemplate",
+              "id": "640607960279103835",
+              "creationTimestamp": "2024-04-08T17:11:32.459-07:00",
+              "name": "computenodetemplate-2avqvi66hp2d",
+              "description": "Node template for sole tenant nodes running in us-central1, with 96vCPUs and any amount of memory on any machine type.",
+              "nodeAffinityLabels": {
+                "managed-by-cnrm": "true",
+                "cnrm-test": "true",
+                "memory_guarantee": "false"
+              },
+              "status": "READY",
+              "region": "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-central1",
+              "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-central1/nodeTemplates/computenodetemplate-2avqvi66hp2d",
+              "nodeTypeFlexibility": {
+                "cpus": "96",
+                "memory": "any"
+              },
+              "serverBinding": {
+                "type": "RESTART_NODE_ON_ANY_SERVER"
+              },
+              "cpuOvercommitType": "NONE"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 305.83258ms
+    - id: 5
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/regions/us-central1/nodeTemplates/computenodetemplate-2avqvi66hp2d?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "kind": "compute#nodeTemplate",
+              "id": "640607960279103835",
+              "creationTimestamp": "2024-04-08T17:11:32.459-07:00",
+              "name": "computenodetemplate-2avqvi66hp2d",
+              "description": "Node template for sole tenant nodes running in us-central1, with 96vCPUs and any amount of memory on any machine type.",
+              "nodeAffinityLabels": {
+                "memory_guarantee": "false",
+                "cnrm-test": "true",
+                "managed-by-cnrm": "true"
+              },
+              "status": "READY",
+              "region": "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-central1",
+              "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-central1/nodeTemplates/computenodetemplate-2avqvi66hp2d",
+              "nodeTypeFlexibility": {
+                "cpus": "96",
+                "memory": "any"
+              },
+              "serverBinding": {
+                "type": "RESTART_NODE_ON_ANY_SERVER"
+              },
+              "cpuOvercommitType": "NONE"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 148.545921ms
+    - id: 6
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/regions/us-central1/nodeTemplates/computenodetemplate-2avqvi66hp2d?alt=json
+        method: DELETE
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "kind": "compute#operation",
+              "id": "7912875203233397080",
+              "name": "operation-1712621495291-6159ec3dc8fc8-6892be2e-e6ed0d67",
+              "operationType": "compute.nodeTemplates.delete",
+              "targetLink": "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-central1/nodeTemplates/computenodetemplate-2avqvi66hp2d",
+              "targetId": "640607960279103835",
+              "status": "RUNNING",
+              "user": "user@google.com",
+              "progress": 0,
+              "insertTime": "2024-04-08T17:11:35.533-07:00",
+              "startTime": "2024-04-08T17:11:35.557-07:00",
+              "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-central1/operations/operation-1712621495291-6159ec3dc8fc8-6892be2e-e6ed0d67",
+              "region": "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-central1"
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 385.899219ms
+    - id: 7
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: compute.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            X-Goog-Api-Client:
+                - gl-go/1.22.1 gdcl/0.160.0
+        url: https://compute.googleapis.com/compute/beta/projects/example-project/regions/us-central1/operations/operation-1712621495291-6159ec3dc8fc8-6892be2e-e6ed0d67?alt=json&prettyPrint=false
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: '{"kind":"compute#operation","id":"7912875203233397080","name":"operation-1712621495291-6159ec3dc8fc8-6892be2e-e6ed0d67","operationType":"compute.nodeTemplates.delete","targetLink":"https://www.googleapis.com/compute/beta/projects/example-project/regions/us-central1/nodeTemplates/computenodetemplate-2avqvi66hp2d","targetId":"640607960279103835","status":"DONE","user":"user@google.com","progress":100,"insertTime":"2024-04-08T17:11:35.533-07:00","startTime":"2024-04-08T17:11:35.557-07:00","endTime":"2024-04-08T17:11:35.861-07:00","selfLink":"https://www.googleapis.com/compute/beta/projects/example-project/regions/us-central1/operations/operation-1712621495291-6159ec3dc8fc8-6892be2e-e6ed0d67","region":"https://www.googleapis.com/compute/beta/projects/example-project/regions/us-central1"}'
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 150.91417ms

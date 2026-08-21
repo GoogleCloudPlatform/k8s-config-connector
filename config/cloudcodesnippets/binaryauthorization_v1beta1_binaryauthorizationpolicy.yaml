@@ -1,0 +1,26 @@
+label: Config Connector BinaryAuthorizationPolicy
+markdownDescription: Creates yaml for a BinaryAuthorizationPolicy resource
+insertText: |
+  apiVersion: binaryauthorization.cnrm.cloud.google.com/v1beta1
+  kind: BinaryAuthorizationPolicy
+  metadata:
+    name: \${1:binaryauthorizationpolicy-name}
+  spec:
+    projectRef:
+      name: \${2:binauthzpolicy-dep-cluster}
+    admissionWhitelistPatterns:
+    - namePattern: \${3:gcr.io/*}
+    clusterAdmissionRules:
+      us-west1-a.test-cluster:
+        evaluationMode: \${4:REQUIRE_ATTESTATION}
+        requireAttestationsBy:
+        - name: \${5:binaryauthorizationpolicy-dep-cluster}
+        enforcementMode: \${6:ENFORCED_BLOCK_AND_AUDIT_LOG}
+    defaultAdmissionRule:
+      evaluationMode: \${7:REQUIRE_ATTESTATION}
+      requireAttestationsBy:
+      - name: \${8:binaryauthorizationpolicy-dep-cluster}
+      enforcementMode: \${9:ENFORCED_BLOCK_AND_AUDIT_LOG}
+    description: \${10:A sample Binary Authorization policy with a cluster admission
+      rule}
+    globalPolicyEvaluationMode: \${11:DISABLE}

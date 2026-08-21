@@ -1,0 +1,144 @@
+// Copyright 2023 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package mockresourcemanager
+
+import (
+	"context"
+	"net/http"
+	"strings"
+
+	"google.golang.org/grpc"
+	"google.golang.org/protobuf/proto"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/operations"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
+	pb_v1 "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/resourcemanager/v1"
+	pb_v3 "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/resourcemanager/v3"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
+)
+
+func init() {
+	mockgcpregistry.Register(New)
+}
+
+// MockService represents a mocked privateca service.
+type MockService struct {
+	*common.MockEnvironment
+	storage storage.Storage
+
+	operations *operations.Operations
+
+	projectsInternal *ProjectsInternal
+	projectsV1       *ProjectsV1
+	projectsV3       *ProjectsV3
+
+	tagKeys     *TagKeys
+	tagValues   *TagValues
+	tagBindings *TagBindingsServer
+}
+
+type TagKeys struct {
+	*MockService
+	pb_v3.UnimplementedTagKeysServer
+}
+
+type TagValues struct {
+	*MockService
+	pb_v3.UnimplementedTagValuesServer
+}
+
+type TagBindingsServer struct {
+	*MockService
+	pb_v3.UnimplementedTagBindingsServer
+}
+
+func NewProjectStore(storage storage.Storage) projects.ProjectStore {
+	return &ProjectsInternal{storage: storage}
+}
+
+// New creates a MockService.
+func New(env *common.MockEnvironment, storage storage.Storage) mockgcpregistry.MockService {
+	s := &MockService{
+		MockEnvironment: env,
+		storage:         storage,
+		operations:      operations.NewOperationsService(storage),
+	}
+	s.projectsInternal = env.Projects.(*ProjectsInternal)
+	s.projectsV1 = &ProjectsV1{MockService: s}
+	s.projectsV3 = &ProjectsV3{MockService: s}
+	s.tagKeys = &TagKeys{MockService: s}
+	s.tagValues = &TagValues{MockService: s}
+	s.tagBindings = &TagBindingsServer{MockService: s}
+
+	env.Projects = s.projectsInternal
+
+	return s
+}
+
+func (s *MockService) GetProjectStore() projects.ProjectStore {
+	return s.projectsInternal
+}
+
+func (s *MockService) ExpectedHosts() []string {
+	return []string{"cloudresourcemanager.googleapis.com", "{region}-cloudresourcemanager.googleapis.com"}
+}
+
+func (s *MockService) Register(grpcServer *grpc.Server) {
+	pb_v1.RegisterProjectsServerServer(grpcServer, s.projectsV1)
+	pb_v3.RegisterProjectsServer(grpcServer, s.projectsV3)
+	pb_v3.RegisterFoldersServer(grpcServer, &Folders{MockService: s})
+	pb_v3.RegisterTagKeysServer(grpcServer, s.tagKeys)
+	pb_v3.RegisterTagValuesServer(grpcServer, s.tagValues)
+	pb_v3.RegisterTagBindingsServer(grpcServer, s.tagBindings)
+}
+
+func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
+	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
+		pb_v1.RegisterProjectsServerHandler,
+		pb_v3.RegisterProjectsHandler,
+		pb_v3.RegisterFoldersHandler,
+		pb_v3.RegisterTagKeysHandler,
+		pb_v3.RegisterTagValuesHandler,
+		pb_v3.RegisterTagBindingsHandler,
+		s.operations.RegisterOperationsPath("/v1/operations/{name}"),
+		s.operations.RegisterOperationsPath("/v3/operations/{name}"))
+	if err != nil {
+		return nil, err
+	}
+
+	mux.RewriteHeaders = func(ctx context.Context, response http.ResponseWriter, payload proto.Message) {
+		response.Header().Del("Cache-Control")
+	}
+
+	return &stripTrailingSlashHandler{mux}, nil
+}
+
+// stripTrailingSlashHandler is a middleware that removes trailing slashes from
+// the request URL path. This is necessary because the grpc-gateway mux performs
+// strict path matching, and clients (like gcloud) may inconsistently send
+// requests with a trailing slash. For example, this ensures that a request for
+// `/v3/tagBindings/` is correctly routed to the handler registered for
+// `/v3/tagBindings`.
+type stripTrailingSlashHandler struct {
+	handler http.Handler
+}
+
+func (h *stripTrailingSlashHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	r.URL.Path = strings.TrimSuffix(r.URL.Path, "/")
+	h.handler.ServeHTTP(w, r)
+}

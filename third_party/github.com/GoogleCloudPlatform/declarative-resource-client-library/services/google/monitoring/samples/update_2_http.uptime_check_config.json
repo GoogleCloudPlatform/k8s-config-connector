@@ -1,0 +1,41 @@
+{
+  "project": "{{project}}",
+  "displayName": "updated-http-uptime-check",
+  "period": "300s",
+  "timeout": "30s",
+  "contentMatchers": [
+    {
+      "content": "<html>",
+      "matcher": "CONTAINS_STRING"
+    }
+  ],
+  "selectedRegions": [
+    "EUROPE",
+    "SOUTH_AMERICA",
+    "ASIA_PACIFIC"
+  ],
+  "monitoredResource": {
+    "type": "uptime_url",
+    "filterLabels": {
+      "host":    "192.168.1.1",
+      "project_id": "{{project}}"
+    }
+  },
+  "httpCheck": {
+    "requestMethod": "POST",
+    "useSsl": false,
+    "path": "/other",
+    "port": 81,
+    "authInfo": {
+      "username": "new-name",
+      "password": "password7"
+    },
+    "maskHeaders": true,
+    "headers": {
+      "header-two": "value-two"
+    },
+    "contentType": "URL_ENCODED",
+    "validateSsl": false,
+    "body": "bmV3LXN0cmluZwo="
+  }
+}

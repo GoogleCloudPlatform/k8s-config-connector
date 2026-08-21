@@ -1,0 +1,23 @@
+label: Config Connector DataFusionInstance
+markdownDescription: Creates yaml for a DataFusionInstance resource
+insertText: |
+  apiVersion: datafusion.cnrm.cloud.google.com/v1beta1
+  kind: DataFusionInstance
+  metadata:
+    labels:
+      \${1:label-one}: \${2:value-one}
+    name: \${3:datafusioninstance-name}
+  spec:
+    description: \${4:A sample DataFusion instance.}
+    displayName: \${5:Sample DataFusion Instance}
+    location: \${6:us-central1}
+    type: \${7:BASIC}
+    enableStackdriverMonitoring: \${8:true}
+    enableStackdriverLogging: \${9:true}
+    privateInstance: \${10:true}
+    networkConfig:
+      networkRef:
+        name: \${11:datafusioninstance-dep}
+      ipAllocation: \${12:10.89.48.0/22}
+    dataprocServiceAccountRef:
+      name: \${13:datafusioninstance-dep}

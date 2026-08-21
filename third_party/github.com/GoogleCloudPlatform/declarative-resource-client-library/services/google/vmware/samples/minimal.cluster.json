@@ -1,0 +1,11 @@
+{
+  "name": "{{cluster}}",
+  "project": "{{project}}",
+  "location": "{{zone}}",
+  "privateCloud": "{{ref:minimal.private_cloud.json:name}}",
+  "nodeTypeConfigs": {
+    "standard-72": {
+      "nodeCount": 3
+    }
+  }
+}

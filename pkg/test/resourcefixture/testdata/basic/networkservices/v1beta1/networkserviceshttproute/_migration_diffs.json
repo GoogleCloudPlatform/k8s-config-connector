@@ -1,0 +1,191 @@
+[
+  {
+    "controller": "dcl",
+    "isNewObject": true,
+    "resource": "NetworkServicesGateway/networkservicesgateway-2-${uniqueId}"
+  },
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "ComputeBackendService/computebackendservice-2-${uniqueId}",
+    "fields": [
+      {
+        "id": "backend.#",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "cdn_policy.#",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "connection_draining_timeout_sec",
+        "old": "",
+        "new": "300"
+      },
+      {
+        "id": "creation_timestamp",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "fingerprint",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "generated_id",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "load_balancing_scheme",
+        "old": "",
+        "new": "INTERNAL_SELF_MANAGED"
+      },
+      {
+        "id": "log_config.#",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": "computebackendservice-2-${uniqueId}"
+      },
+      {
+        "id": "port_name",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "protocol",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "self_link",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "session_affinity",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "timeout_sec",
+        "old": "",
+        "new": ""
+      }
+    ]
+  },
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "ComputeBackendService/computebackendservice-1-${uniqueId}",
+    "fields": [
+      {
+        "id": "backend.#",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "cdn_policy.#",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "connection_draining_timeout_sec",
+        "old": "",
+        "new": "300"
+      },
+      {
+        "id": "creation_timestamp",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "fingerprint",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "generated_id",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "load_balancing_scheme",
+        "old": "",
+        "new": "INTERNAL_SELF_MANAGED"
+      },
+      {
+        "id": "log_config.#",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": "computebackendservice-1-${uniqueId}"
+      },
+      {
+        "id": "port_name",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "protocol",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "self_link",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "session_affinity",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "timeout_sec",
+        "old": "",
+        "new": ""
+      }
+    ]
+  },
+  {
+    "controller": "dcl",
+    "isNewObject": true,
+    "resource": "NetworkServicesMesh/networkservicesmesh-2-${uniqueId}"
+  },
+  {
+    "controller": "dcl",
+    "isNewObject": true,
+    "resource": "NetworkServicesGateway/networkservicesgateway-1-${uniqueId}"
+  },
+  {
+    "controller": "dcl",
+    "isNewObject": true,
+    "resource": "NetworkServicesMesh/networkservicesmesh-1-${uniqueId}"
+  },
+  {
+    "controller": "dcl",
+    "isNewObject": true,
+    "resource": "NetworkServicesHTTPRoute/networkserviceshttproute-${uniqueId}"
+  }
+]

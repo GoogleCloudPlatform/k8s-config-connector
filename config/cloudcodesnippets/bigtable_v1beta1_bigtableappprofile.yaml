@@ -1,0 +1,16 @@
+label: Config Connector BigtableAppProfile
+markdownDescription: Creates yaml for a BigtableAppProfile resource
+insertText: |
+  apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
+  kind: BigtableAppProfile
+  metadata:
+    name: \${1:bigtableappprofile-name}
+  spec:
+    description: \${2:Automatically routes requests to the nearest available cluster
+      in an instance.}
+    instanceRef:
+      name: \${3:bigtableappprofile-dep-multi}
+    multiClusterRoutingUseAny: \${4:true}
+    multiClusterRoutingClusterIds:
+    - \${5:bigtableappprofile-dep1-multi}
+    - \${6:bigtableappprofile-dep2-multi}

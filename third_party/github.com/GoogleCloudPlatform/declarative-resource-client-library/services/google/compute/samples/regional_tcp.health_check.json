@@ -1,0 +1,11 @@
+{
+  "name": "{{hc}}",
+  "project": "{{project}}",
+  "location": "{{region}}",
+  "checkIntervalSec": 1,
+  "timeoutSec": 1,
+  "type": "TCP",
+  "tcpHealthCheck": {
+    "port": 80
+  }
+}

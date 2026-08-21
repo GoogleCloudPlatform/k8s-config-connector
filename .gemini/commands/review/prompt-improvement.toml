@@ -1,0 +1,36 @@
+# In: ~/.gemini/commands/review/prompt-improvement.toml
+# Invoked via: /review:prompt-improvement pr_number="4840" reviewer_github_login="maqiuyujoyce"
+# Gemini custom command docs can be found at https://github.com/google-gemini/gemini-cli/blob/main/docs/cli/commands.md#toml-file-format-v1
+
+description = "Improve the AI review prompt based on a specific PR and reviewer."
+
+prompt = """
+Please refine the Gemini AI pull request review prompt for the Config Connector project based on insights gained from
+analyzing pull requests and reviewer feedback.
+
+## Steps of the Gemini AI Review Prompt Improvement Process
+
+### 1. Analyze Existing Pull Requests
+Begin by analyzing comments and discussions within a pull request PR {{args.pr_number}} at both issue level and code
+block level (e.g. via command `curl -s -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/GoogleCloudPlatform/k8s-config-connector/pulls/{{args.pr_number}}/comments`).
+This initial analysis is crucial for understanding the types of subtle, domain-specific issues that human reviewers
+ (e.g., {{args.reviewer_github_login}} if provided) catch, which the AI could be trained to look for.
+
+### 2. Read Current Review Prompt
+Read the content of the `.gemini/commands/review/main.toml` file to understand the current review prompt.
+
+### 3. Identify Key Review Themes from Reviewer Feedback
+Identify recurring, high-value feedback themes from reviewer comments at both issue level and code block level.
+
+### 4. Synthesize Prompt Improvements
+Translate the identified review themes into specific, actionable instructions for the AI assistant.
+
+### 5. Isolate Changes in a Git Branch
+To follow best practices, the local `master` branch is first synced with the `upstream/master` repository. A new
+development branch (e.g., `feat/improve-review-prompt`) is then created out of the latest master branch to isolate the
+changes to the prompt.
+
+### 6. Apply and Commit Changes
+The refined prompt is written to the `.gemini/commands/review/main.toml` file. The changes are then committed with a
+detailed message explaining the purpose and content of the prompt enhancements.
+"""

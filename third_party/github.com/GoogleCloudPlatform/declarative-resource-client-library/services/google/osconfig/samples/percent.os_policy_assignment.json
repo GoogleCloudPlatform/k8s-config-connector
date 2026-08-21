@@ -1,0 +1,218 @@
+{
+  "name": "{{assignment}}",
+  "project": "{{project}}",
+  "location": "{{zone}}",
+  "description": "A test os policy assignment",
+  "osPolicies": [
+    {
+      "id": "policy",
+      "mode": "VALIDATION",
+      "resourceGroups": [
+        {
+          "resources": [
+            {
+              "id": "apt-to-yum",
+              "repository": {
+                "apt": {
+                  "archiveType": "DEB",
+                  "uri": "https://atl.mirrors.clouvider.net/debian",
+                  "distribution": "debian",
+                  "components": ["doc"],
+                  "gpgKey": ".gnupg/pubring.kbx"
+                }
+              }
+            },
+            {
+              "id": "yum",
+              "repository": {
+                "yum": {
+                  "id": "yum",
+                  "displayName": "yum",
+                  "baseUrl": "http://centos.s.uw.edu/centos/",
+                  "gpgKeys": ["RPM-GPG-KEY-CentOS-7"]
+                }
+              }
+            },
+            {
+              "id": "zypper",
+              "repository": {
+                "zypper": {
+                  "id": "zypper",
+                  "displayName": "zypper",
+                  "baseUrl": "http://mirror.dal10.us.leaseweb.net/opensuse",
+                  "gpgKeys": ["sample-key-uri"]
+                }
+              }
+            },
+            {
+              "id": "goo",
+              "repository": {
+                "goo": {
+                  "name": "goo",
+                  "url": "https://foo.com/googet/bar"
+                }
+              }
+            },
+            {
+              "id": "exec1",
+              "exec": {
+                "validate": {
+                  "args": ["arg1"],
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out",
+                  "file": {
+                    "localPath": "$HOME/script.sh"
+                  }
+                },
+                "enforce": {
+                  "args": ["arg1"],
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out",
+                  "file": {
+                    "allowInsecure": true,
+                    "remote": {
+                      "uri": "https://www.example.com/script.sh",
+                      "sha256Checksum": "c7938fed83afdccbb0e86a2a2e4cad7d5035012ca3214b4a61268393635c3063"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "id": "exec2",
+              "exec": {
+                "validate": {
+                  "args": ["arg1"],
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out",
+                  "file": {
+                    "allowInsecure": true,
+                    "remote": {
+                      "uri": "https://www.example.com/script.sh",
+                      "sha256Checksum": "c7938fed83afdccbb0e86a2a2e4cad7d5035012ca3214b4a61268393635c3063"
+                    }
+                  }
+                },
+                "enforce": {
+                  "args": ["arg1"],
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out",
+                  "file": {
+                    "localPath": "$HOME/script.sh"
+                  }
+                }
+              }
+            },
+            {
+              "id": "exec3",
+              "exec": {
+                "validate": {
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out",
+                  "file": {
+                    "allowInsecure": true,
+                    "gcs": {
+                      "bucket": "test-bucket",
+                      "object": "test-object",
+                      "generation": 1
+                    }
+                  }
+                },
+                "enforce": {
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out",
+                  "script": "pwd"
+                }
+              }
+            },
+            {
+              "id": "exec4",
+              "exec": {
+                "validate": {
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out",
+                  "script": "pwd"
+                },
+                "enforce": {
+                  "interpreter": "SHELL",
+                  "outputFilePath": "$HOME/out",
+                  "file": {
+                    "allowInsecure": true,
+                    "gcs": {
+                      "bucket": "test-bucket",
+                      "object": "test-object",
+                      "generation": 1
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "id": "file1",
+              "file": {
+                "path": "$HOME/file",
+                "state": "PRESENT",
+                "file": {
+                  "localPath": "$HOME/file"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "resources": [
+            {
+              "id": "file2",
+              "file": {
+                "path": "$HOME/file",
+                "state": "PRESENT",
+                "permissions": "755",
+                "file": {
+                  "allowInsecure": true,
+                  "remote": {
+                    "uri": "https://www.example.com/file",
+                    "sha256Checksum": "c7938fed83afdccbb0e86a2a2e4cad7d5035012ca3214b4a61268393635c3063"
+                  }
+                }
+              }
+            },
+            {
+              "id": "file3",
+              "file": {
+                "path": "$HOME/file",
+                "state": "PRESENT",
+                "file": {
+                  "gcs": {
+                    "bucket": "test-bucket",
+                    "object": "test-object",
+                    "generation": 1
+                  }
+                }
+              }
+            },
+            {
+              "id": "file4",
+              "file": {
+                "path": "$HOME/file",
+                "state": "PRESENT",
+                "content": "sample-content"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "instanceFilter": {
+    "all": true,
+    "inclusionLabels": [],
+    "exclusionLabels": [],
+    "inventories": []
+  },
+  "rollout": {
+    "disruptionBudget": {
+      "percent": 1
+    },
+    "minWaitDuration": "3.5s"
+  }
+}

@@ -1,0 +1,30 @@
+label: Config Connector NetworkServicesEndpointPolicy
+markdownDescription: Creates yaml for a NetworkServicesEndpointPolicy resource
+insertText: |
+  apiVersion: networkservices.cnrm.cloud.google.com/v1beta1
+  kind: NetworkServicesEndpointPolicy
+  metadata:
+    labels:
+      \${1:key-one}: \${2:value-one}
+    name: \${3:networkservicesendpointpolicy-name}
+  spec:
+    projectRef:
+      external: \${4:projects/[PROJECT_ID?]}
+    location: \${5:global}
+    type: \${6:SIDECAR_PROXY}
+    authorizationPolicyRef:
+      name: \${7:networksecurityauthorizationpolicy-sample}
+    endpointMatcher:
+      metadataLabelMatcher:
+        metadataLabelMatchCriteria: \${8:MATCH_ANY}
+        metadataLabels:
+        - labelName: \${9:filter-test}
+          labelValue: \${10:true}
+    trafficPortSelector:
+      ports:
+      - \${11:6767}
+    description: \${12:A sample endpoint policy}
+    serverTlsPolicyRef:
+      name: \${13:networksecurityservertlspolicy-sample}
+    clientTlsPolicyRef:
+      name: \${14:networksecurityclienttlspolicy-sample}

@@ -1,0 +1,59 @@
+# gcloud service-extensions lb-route-extensions doesn't support create and update commands; we use import for both.
+- exec: gcloud compute networks create test-vpc-${uniqueId} --subnet-mode=custom --project=${projectId}
+- exec: gcloud compute networks subnets create test-subnet-${uniqueId} --network=test-vpc-${uniqueId} --range=10.0.0.0/24 --region=us-central1 --project=${projectId}
+- exec: gcloud compute networks subnets create test-proxy-subnet-${uniqueId} --network=test-vpc-${uniqueId} --range=10.129.0.0/23 --region=us-central1 --purpose=REGIONAL_MANAGED_PROXY --role=ACTIVE --project=${projectId}
+- exec: gcloud compute health-checks create http test-hc-${uniqueId} --region=us-central1 --project=${projectId}
+- exec: gcloud compute backend-services create test-bs-${uniqueId} --load-balancing-scheme=EXTERNAL_MANAGED --protocol=HTTP2 --health-checks=test-hc-${uniqueId} --health-checks-region=us-central1 --region=us-central1 --project=${projectId}
+- exec: gcloud compute backend-services create test-main-bs-${uniqueId} --load-balancing-scheme=EXTERNAL_MANAGED --protocol=HTTP2 --health-checks=test-hc-${uniqueId} --health-checks-region=us-central1 --region=us-central1 --project=${projectId}
+- exec: gcloud compute url-maps create test-um-${uniqueId} --default-service=test-main-bs-${uniqueId} --region=us-central1 --project=${projectId}
+- exec: gcloud compute target-http-proxies create test-tp-${uniqueId} --url-map=test-um-${uniqueId} --region=us-central1 --project=${projectId}
+- exec: gcloud compute forwarding-rules create test-fr-${uniqueId} --load-balancing-scheme=EXTERNAL_MANAGED --network=test-vpc-${uniqueId} --target-http-proxy=test-tp-${uniqueId} --target-http-proxy-region=us-central1 --region=us-central1 --ports=80 --project=${projectId}
+- exec: |
+    cat <<EOF > route-extension.yaml
+    name: projects/${projectId}/locations/us-central1/lbRouteExtensions/test-${uniqueId}
+    loadBalancingScheme: EXTERNAL_MANAGED
+    forwardingRules:
+    - https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/test-fr-${uniqueId}
+    extensionChains:
+    - name: chain1
+      matchCondition:
+        celExpression: "request.host == 'example.com'"
+      extensions:
+      - name: ext1
+        authority: ext1.com
+        service: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/test-bs-${uniqueId}
+        timeout: 0.1s
+    EOF
+- exec: gcloud service-extensions lb-route-extensions import test-${uniqueId} --source=route-extension.yaml --location=us-central1 --project=${projectId}
+- exec: gcloud service-extensions lb-route-extensions describe test-${uniqueId} --location=us-central1 --project=${projectId}
+- exec: |
+    cat <<EOF > route-extension-update.yaml
+    name: projects/${projectId}/locations/us-central1/lbRouteExtensions/test-${uniqueId}
+    description: updated description
+    loadBalancingScheme: EXTERNAL_MANAGED
+    forwardingRules:
+    - https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/test-fr-${uniqueId}
+    extensionChains:
+    - name: chain1
+      matchCondition:
+        celExpression: "request.host == 'example.com'"
+      extensions:
+      - name: ext1
+        authority: ext1.com
+        service: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/backendServices/test-bs-${uniqueId}
+        timeout: 0.1s
+    EOF
+- exec: gcloud service-extensions lb-route-extensions import test-${uniqueId} --source=route-extension-update.yaml --location=us-central1 --project=${projectId}
+- exec: gcloud service-extensions lb-route-extensions describe test-${uniqueId} --location=us-central1 --project=${projectId}
+- exec: gcloud service-extensions lb-route-extensions list --location=us-central1 --project=${projectId}
+- exec: gcloud service-extensions lb-route-extensions delete test-${uniqueId} --location=us-central1 --project=${projectId} --quiet
+- exec: rm route-extension.yaml route-extension-update.yaml
+- exec: gcloud compute forwarding-rules delete test-fr-${uniqueId} --region=us-central1 --project=${projectId} --quiet
+- exec: gcloud compute target-http-proxies delete test-tp-${uniqueId} --region=us-central1 --project=${projectId} --quiet
+- exec: gcloud compute url-maps delete test-um-${uniqueId} --region=us-central1 --project=${projectId} --quiet
+- exec: gcloud compute backend-services delete test-main-bs-${uniqueId} --region=us-central1 --project=${projectId} --quiet
+- exec: gcloud compute backend-services delete test-bs-${uniqueId} --region=us-central1 --project=${projectId} --quiet
+- exec: gcloud compute health-checks delete test-hc-${uniqueId} --region=us-central1 --project=${projectId} --quiet
+- exec: gcloud compute networks subnets delete test-proxy-subnet-${uniqueId} --region=us-central1 --project=${projectId} --quiet
+- exec: gcloud compute networks subnets delete test-subnet-${uniqueId} --region=us-central1 --project=${projectId} --quiet
+- exec: gcloud compute networks delete test-vpc-${uniqueId} --project=${projectId} --quiet

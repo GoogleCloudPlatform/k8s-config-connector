@@ -1,0 +1,20 @@
+label: Config Connector ComputeSubnetwork
+markdownDescription: Creates yaml for a ComputeSubnetwork resource
+insertText: |
+  apiVersion: compute.cnrm.cloud.google.com/v1beta1
+  kind: ComputeSubnetwork
+  metadata:
+    labels:
+      \${1:label-one}: \${2:value-one}
+    name: \${3:computesubnetwork-name}
+  spec:
+    ipCidrRange: \${4:10.2.0.0/16}
+    region: \${5:us-central1}
+    description: \${6:My subnet}
+    privateIpGoogleAccess: \${7:false}
+    networkRef:
+      name: \${8:computesubnetwork-dep}
+    logConfig:
+      aggregationInterval: \${9:INTERVAL_10_MIN}
+      flowSampling: \${10:0.5}
+      metadata: \${11:INCLUDE_ALL_METADATA}

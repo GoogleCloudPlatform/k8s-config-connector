@@ -1,0 +1,350 @@
+POST https://monitoring.googleapis.com/v3/projects/${projectId}/uptimeCheckConfigs?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+{
+  "contentMatchers": [
+    {
+      "content": ".*",
+      "matcher": "MATCHES_REGEX"
+    }
+  ],
+  "displayName": "http-uptime-check",
+  "httpCheck": {
+    "authInfo": {
+      "password": "testABC",
+      "username": "name"
+    },
+    "body": "c3RyaW5nCg==",
+    "contentType": "URL_ENCODED",
+    "headers": {
+      "header-one": "value-one"
+    },
+    "maskHeaders": true,
+    "path": "/main",
+    "port": 80,
+    "requestMethod": "POST",
+    "useSsl": true,
+    "validateSsl": false
+  },
+  "monitoredResource": {
+    "labels": {
+      "host": "192.168.1.1",
+      "project_id": "${projectId}"
+    },
+    "type": "uptime_url"
+  },
+  "period": "60s",
+  "selectedRegions": [
+    "USA"
+  ],
+  "timeout": "30s"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "checkerType": "STATIC_IP_CHECKERS",
+  "contentMatchers": [
+    {
+      "content": ".*",
+      "matcher": "MATCHES_REGEX"
+    }
+  ],
+  "displayName": "http-uptime-check",
+  "httpCheck": {
+    "authInfo": {
+      "password": "******",
+      "username": "name"
+    },
+    "body": "c3RyaW5nCg==",
+    "contentType": "URL_ENCODED",
+    "headers": {
+      "Content-Length": "******",
+      "header-one": "******"
+    },
+    "maskHeaders": true,
+    "path": "/main",
+    "port": 80,
+    "requestMethod": "POST",
+    "useSsl": true
+  },
+  "monitoredResource": {
+    "labels": {
+      "host": "192.168.1.1",
+      "project_id": "${projectId}"
+    },
+    "type": "uptime_url"
+  },
+  "name": "projects/${projectId}/uptimeCheckConfigs/${uptimeCheckConfigID}",
+  "period": "60s",
+  "selectedRegions": [
+    "USA"
+  ],
+  "timeout": "30s"
+}
+
+---
+
+GET https://monitoring.googleapis.com/v3/projects/${projectId}/uptimeCheckConfigs/${uptimeCheckConfigID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "checkerType": "STATIC_IP_CHECKERS",
+  "contentMatchers": [
+    {
+      "content": ".*",
+      "matcher": "MATCHES_REGEX"
+    }
+  ],
+  "displayName": "http-uptime-check",
+  "httpCheck": {
+    "authInfo": {
+      "password": "******",
+      "username": "name"
+    },
+    "body": "c3RyaW5nCg==",
+    "contentType": "URL_ENCODED",
+    "headers": {
+      "Content-Length": "******",
+      "header-one": "******"
+    },
+    "maskHeaders": true,
+    "path": "/main",
+    "port": 80,
+    "requestMethod": "POST",
+    "useSsl": true
+  },
+  "monitoredResource": {
+    "labels": {
+      "host": "192.168.1.1",
+      "project_id": "${projectId}"
+    },
+    "type": "uptime_url"
+  },
+  "name": "projects/${projectId}/uptimeCheckConfigs/${uptimeCheckConfigID}",
+  "period": "60s",
+  "selectedRegions": [
+    "USA"
+  ],
+  "timeout": "30s"
+}
+
+---
+
+PATCH https://monitoring.googleapis.com/v3/projects/${projectId}/uptimeCheckConfigs/${uptimeCheckConfigID}?alt=json&updateMask=displayName%2ChttpCheck.authInfo.password%2ChttpCheck.authInfo.username%2ChttpCheck.body%2ChttpCheck.headers%2ChttpCheck.path%2ChttpCheck.port%2ChttpCheck.validateSsl%2Cperiod%2CselectedRegions
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+{
+  "contentMatchers": [
+    {
+      "content": ".*",
+      "matcher": "MATCHES_REGEX"
+    }
+  ],
+  "displayName": "updated-http-uptime-check",
+  "httpCheck": {
+    "authInfo": {
+      "password": "testXYZ",
+      "username": "new-name"
+    },
+    "body": "bmV3LXN0cmluZwo=",
+    "contentType": "URL_ENCODED",
+    "headers": {
+      "header-one": "value-one",
+      "header-two": "value-two"
+    },
+    "maskHeaders": true,
+    "path": "/other",
+    "port": 81,
+    "requestMethod": "POST",
+    "useSsl": true,
+    "validateSsl": true
+  },
+  "name": "projects/projects/${projectId}/uptimeCheckConfigs/${uptimeCheckConfigID}",
+  "period": "300s",
+  "selectedRegions": [
+    "EUROPE",
+    "SOUTH_AMERICA",
+    "ASIA_PACIFIC"
+  ],
+  "timeout": "30s"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "checkerType": "STATIC_IP_CHECKERS",
+  "contentMatchers": [
+    {
+      "content": ".*",
+      "matcher": "MATCHES_REGEX"
+    }
+  ],
+  "displayName": "updated-http-uptime-check",
+  "httpCheck": {
+    "authInfo": {
+      "password": "******",
+      "username": "new-name"
+    },
+    "body": "bmV3LXN0cmluZwo=",
+    "contentType": "URL_ENCODED",
+    "headers": {
+      "Content-Length": "******",
+      "header-one": "******",
+      "header-two": "******"
+    },
+    "maskHeaders": true,
+    "path": "/other",
+    "port": 81,
+    "requestMethod": "POST",
+    "useSsl": true,
+    "validateSsl": true
+  },
+  "monitoredResource": {
+    "labels": {
+      "host": "192.168.1.1",
+      "project_id": "${projectId}"
+    },
+    "type": "uptime_url"
+  },
+  "name": "projects/${projectId}/uptimeCheckConfigs/${uptimeCheckConfigID}",
+  "period": "300s",
+  "selectedRegions": [
+    "EUROPE",
+    "SOUTH_AMERICA",
+    "ASIA_PACIFIC"
+  ],
+  "timeout": "30s"
+}
+
+---
+
+GET https://monitoring.googleapis.com/v3/projects/${projectId}/uptimeCheckConfigs/${uptimeCheckConfigID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "checkerType": "STATIC_IP_CHECKERS",
+  "contentMatchers": [
+    {
+      "content": ".*",
+      "matcher": "MATCHES_REGEX"
+    }
+  ],
+  "displayName": "updated-http-uptime-check",
+  "httpCheck": {
+    "authInfo": {
+      "password": "******",
+      "username": "new-name"
+    },
+    "body": "bmV3LXN0cmluZwo=",
+    "contentType": "URL_ENCODED",
+    "headers": {
+      "Content-Length": "******",
+      "header-one": "******",
+      "header-two": "******"
+    },
+    "maskHeaders": true,
+    "path": "/other",
+    "port": 81,
+    "requestMethod": "POST",
+    "useSsl": true,
+    "validateSsl": true
+  },
+  "monitoredResource": {
+    "labels": {
+      "host": "192.168.1.1",
+      "project_id": "${projectId}"
+    },
+    "type": "uptime_url"
+  },
+  "name": "projects/${projectId}/uptimeCheckConfigs/${uptimeCheckConfigID}",
+  "period": "300s",
+  "selectedRegions": [
+    "EUROPE",
+    "SOUTH_AMERICA",
+    "ASIA_PACIFIC"
+  ],
+  "timeout": "30s"
+}
+
+---
+
+DELETE https://monitoring.googleapis.com/v3/projects/${projectId}/uptimeCheckConfigs/${uptimeCheckConfigID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://monitoring.googleapis.com/v3/projects/${projectId}/uptimeCheckConfigs/${uptimeCheckConfigID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Config not found for check ${uptimeCheckConfigID} in project ${projectId}",
+    "status": "NOT_FOUND"
+  }
+}

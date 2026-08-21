@@ -1,0 +1,12 @@
+label: Config Connector LoggingLogExclusion
+markdownDescription: Creates yaml for a LoggingLogExclusion resource
+insertText: |
+  apiVersion: logging.cnrm.cloud.google.com/v1beta1
+  kind: LoggingLogExclusion
+  metadata:
+    name: \${1:logginglogexclusion-name}
+  spec:
+    projectRef:
+      name: \${2:logginglogexclusion-dep-proj}
+    description: \${3:A project log exclusion}
+    filter: \${4:resource.type=gcs_bucket severity<ERROR sample(insertId, 0.99)}

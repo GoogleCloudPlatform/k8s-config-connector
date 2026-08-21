@@ -1,0 +1,10 @@
+apiVersion: v1
+data:
+  password: Y2hsb2UK
+kind: Secret
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${projectId}
+  name: mysecret
+  namespace: ${projectId}
+type: Opaque

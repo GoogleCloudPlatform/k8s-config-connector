@@ -1,0 +1,5 @@
+- exec: gcloud access-context-manager policies create --organization=${organizationId} --title="test-policy-${uniqueId}" --format="value(name)"
+  setEnv: POLICY_ID
+- exec: gcloud access-context-manager policies list --organization=${organizationId}
+- exec: gcloud access-context-manager policies describe ${POLICY_ID}
+- exec: gcloud access-context-manager policies delete ${POLICY_ID} --quiet

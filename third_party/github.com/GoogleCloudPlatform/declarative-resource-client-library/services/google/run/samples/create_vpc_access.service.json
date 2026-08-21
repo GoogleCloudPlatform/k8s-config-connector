@@ -1,0 +1,17 @@
+{
+  "name": "{{name}}",
+  "project": "run-v2-deploy-e2e",
+  "location": "{{region}}",
+  "launchStage": "GA",
+  "template": {
+    "containers": [
+      {
+        "image": "gcr.io/cloudrun/hello"
+      }
+    ],
+    "vpcAccess": {
+      "connector": "projects/run-v2-deploy-e2e/locations/{{region}}/connectors/dcltest",
+      "egress": "ALL_TRAFFIC"
+    }
+  }
+}

@@ -1,0 +1,13 @@
+- caisURL: unknown
+  group: monitoring.cnrm.cloud.google.com
+  kind: MonitoringGroup
+  name: monitoringgroup-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: unknown
+  error: not yet supported
+  group: monitoring.cnrm.cloud.google.com
+  kind: MonitoringUptimeCheckConfig
+  name: monitoringuptimecheckconfig-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

@@ -1,0 +1,16 @@
+{
+  "name": "{{resource_name}}",
+  "project": "{{project}}",
+  "location": "global",
+  "rules": [
+    {
+      "action": {
+        "destinations": [
+          {
+            "serviceName": "projects/{{project}}/locations/global/backendServices/{{ref:minimaltcp.compute.backend_service.json:name}}"
+          }
+        ]
+      }
+    }
+  ]
+}

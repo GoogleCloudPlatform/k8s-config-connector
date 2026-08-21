@@ -1,0 +1,10 @@
+{
+  "project": "{{project}}",
+  "location": "{{region}}",
+  "connection": "{{ref:ghe_complete.connection.json:name}}",
+  "name": "{{repository}}",
+  "remoteUri": "https://ghe.proctor-staging-test.com/proctorteam/regional_test.git",
+  "annotations": {
+    "some-key": "some-value"
+  }
+}

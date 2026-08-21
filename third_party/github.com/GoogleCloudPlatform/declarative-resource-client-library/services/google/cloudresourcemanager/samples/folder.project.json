@@ -1,0 +1,4 @@
+{
+  "name": "{{id}}",
+  "parent": "folders/{{ref:organization.folder.json:name}}"
+}

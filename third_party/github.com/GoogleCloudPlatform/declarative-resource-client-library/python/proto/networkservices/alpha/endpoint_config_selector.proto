@@ -1,0 +1,98 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+enum NetworkservicesAlphaEndpointConfigSelectorTypeEnum {
+  NetworkservicesAlphaEndpointConfigSelectorTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  NetworkservicesAlphaEndpointConfigSelectorTypeEnumENDPOINT_CONFIG_SELECTOR_TYPE_UNSPECIFIED = 1;
+  NetworkservicesAlphaEndpointConfigSelectorTypeEnumSIDECAR_PROXY = 2;
+  NetworkservicesAlphaEndpointConfigSelectorTypeEnumGRPC_SERVER = 3;
+}
+
+enum NetworkservicesAlphaEndpointConfigSelectorEndpointMatcherMetadataLabelMatcherMetadataLabelMatchCriteriaEnum {
+  NetworkservicesAlphaEndpointConfigSelectorEndpointMatcherMetadataLabelMatcherMetadataLabelMatchCriteriaEnumNO_VALUE_DO_NOT_USE = 0;
+  NetworkservicesAlphaEndpointConfigSelectorEndpointMatcherMetadataLabelMatcherMetadataLabelMatchCriteriaEnumMETADATA_LABEL_MATCH_CRITERIA_UNSPECIFIED = 1;
+  NetworkservicesAlphaEndpointConfigSelectorEndpointMatcherMetadataLabelMatcherMetadataLabelMatchCriteriaEnumMATCH_ANY = 2;
+  NetworkservicesAlphaEndpointConfigSelectorEndpointMatcherMetadataLabelMatcherMetadataLabelMatchCriteriaEnumMATCH_ALL = 3;
+}
+
+message NetworkservicesAlphaEndpointConfigSelector {
+  string name = 1;
+  string create_time = 2;
+  string update_time = 3;
+  map<string, string> labels = 4;
+  NetworkservicesAlphaEndpointConfigSelectorTypeEnum type = 5;
+  string authorization_policy = 6;
+  NetworkservicesAlphaEndpointConfigSelectorHttpFilters http_filters = 7;
+  NetworkservicesAlphaEndpointConfigSelectorEndpointMatcher endpoint_matcher = 8;
+  NetworkservicesAlphaEndpointConfigSelectorTrafficPortSelector traffic_port_selector = 9;
+  string description = 10;
+  string server_tls_policy = 11;
+  string client_tls_policy = 12;
+  string project = 13;
+  string location = 14;
+}
+
+message NetworkservicesAlphaEndpointConfigSelectorHttpFilters {
+  repeated string http_filters = 1;
+}
+
+message NetworkservicesAlphaEndpointConfigSelectorEndpointMatcher {
+  NetworkservicesAlphaEndpointConfigSelectorEndpointMatcherMetadataLabelMatcher metadata_label_matcher = 1;
+}
+
+message NetworkservicesAlphaEndpointConfigSelectorEndpointMatcherMetadataLabelMatcher {
+  NetworkservicesAlphaEndpointConfigSelectorEndpointMatcherMetadataLabelMatcherMetadataLabelMatchCriteriaEnum metadata_label_match_criteria = 1;
+  repeated NetworkservicesAlphaEndpointConfigSelectorEndpointMatcherMetadataLabelMatcherMetadataLabels metadata_labels = 2;
+}
+
+message NetworkservicesAlphaEndpointConfigSelectorEndpointMatcherMetadataLabelMatcherMetadataLabels {
+  string label_name = 1;
+  string label_value = 2;
+}
+
+message NetworkservicesAlphaEndpointConfigSelectorTrafficPortSelector {
+  repeated string ports = 1;
+}
+
+message ApplyNetworkservicesAlphaEndpointConfigSelectorRequest {
+  NetworkservicesAlphaEndpointConfigSelector resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteNetworkservicesAlphaEndpointConfigSelectorRequest {
+  string service_account_file = 1;
+  NetworkservicesAlphaEndpointConfigSelector resource = 2;
+}
+
+message ListNetworkservicesAlphaEndpointConfigSelectorRequest {
+  string service_account_file = 1;
+	NetworkservicesAlphaEndpointConfigSelector resource = 2;
+}
+
+message ListNetworkservicesAlphaEndpointConfigSelectorResponse {
+  repeated NetworkservicesAlphaEndpointConfigSelector items = 1;
+}
+
+service NetworkservicesAlphaEndpointConfigSelectorService {
+  rpc ApplyNetworkservicesAlphaEndpointConfigSelector(ApplyNetworkservicesAlphaEndpointConfigSelectorRequest) returns (NetworkservicesAlphaEndpointConfigSelector);
+  rpc DeleteNetworkservicesAlphaEndpointConfigSelector(DeleteNetworkservicesAlphaEndpointConfigSelectorRequest) returns (google.protobuf.Empty);
+  rpc ListNetworkservicesAlphaEndpointConfigSelector(ListNetworkservicesAlphaEndpointConfigSelectorRequest) returns (ListNetworkservicesAlphaEndpointConfigSelectorResponse);
+}

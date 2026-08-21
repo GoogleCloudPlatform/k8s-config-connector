@@ -1,0 +1,67 @@
+{{template "headercomment.tmpl" .}}
+
+{% extends "config-connector/_base.html" %}
+
+{% block page_title %}{{ .Kind}}{% endblock %}
+{% block body %}
+{{template "alphadisclaimer.tmpl" .}}
+
+Note: The {{ .Kind}} annotation can include
+<a href="/config-connector/docs/concepts/resources#object_metadata">directives</a>.
+If set to <code>true</code>, the <code>remove-default-node-pool</code> directive
+removes the default node pool created during cluster creation.
+
+Note: In <code>maintenancePolicy</code>, specify <code>startTime</code> and
+<code>endTime</code> in RFC3339 Zulu date format. Specify <code>recurrence</code>
+in RFC5545 RRULE format. GKE may accept other formats, but will return values in UTC,
+causing a permanent diff. For more details on how to debug and fix an issue which
+could lead to a permanent diff, please refer to the
+<a href="/config-connector/docs/troubleshooting#resource_keeps_updating_every_5-15_mins">Config Connector Troubleshooting page</a>
+
+<table>
+<thead>
+<tr>
+<th><strong>Property</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>{{"{{gcp_name_short}}"}} Service Name</td>
+<td>Kubernetes Engine</td>
+</tr>
+<tr>
+<td>{{"{{gcp_name_short}}"}} Service Documentation</td>
+<td><a href="/kubernetes-engine/docs/">/kubernetes-engine/docs/</a></td>
+</tr>
+<tr>
+<td>{{"{{gcp_name_short}}"}} REST Resource Name</td>
+<td>v1.projects.locations.clusters</td>
+</tr>
+<tr>
+<td>{{"{{gcp_name_short}}"}} REST Resource Documentation</td>
+<td><a href="/kubernetes-engine/docs/reference/rest/v1/projects.locations.clusters">/kubernetes-engine/docs/reference/rest/v1/projects.locations.clusters</a></td>
+</tr>
+<tr>
+<td>{{"{{product_name_short}}"}} Resource Short Names</td>
+<td>{{ .ShortNames}}</td>
+</tr>
+<tr>
+<td>{{"{{product_name_short}}"}} Service Name</td>
+<td>container.googleapis.com</td>
+</tr>
+<tr>
+<td>{{"{{product_name_short}}"}} Resource Fully Qualified Name</td>
+<td>{{ .FullyQualifiedName}}</td>
+</tr>
+{{template "iamsupport.tmpl" .}}
+<tr>
+<td>{{"{{product_name_short}}"}} Default Average Reconcile Interval In Seconds</td>
+<td>{{ .DefaultReconcileInterval}}</td>
+</tr>
+</tbody>
+</table>
+
+{{template "resource.tmpl" .}}
+{{template "endnote.tmpl" .}}
+{% endblock %}

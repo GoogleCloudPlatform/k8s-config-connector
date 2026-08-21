@@ -1,0 +1,34 @@
+277c277,278
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/routers/${routerID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/routers/${routerID}
+> Content-Type: application/json
+317c318
+< PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/routers/${routerID}?alt=json&prettyPrint=false
+---
+> PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/routers/${routerID}
+357c358,359
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/operations/${operationID}
+> Content-Type: application/json
+388c390,391
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/routers/${routerID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/routers/${routerID}
+> Content-Type: application/json
+435c438
+< PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/routers/${routerID}?alt=json&prettyPrint=false
+---
+> PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/routers/${routerID}
+438,440c441
+< {
+<   "interfaces": []
+< }
+---
+> {}
+470c471,472
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/operations/${operationID}
+> Content-Type: application/json

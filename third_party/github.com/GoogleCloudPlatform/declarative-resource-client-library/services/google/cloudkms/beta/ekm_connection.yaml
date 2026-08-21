@@ -1,0 +1,202 @@
+# Copyright 2024 Google LLC. All Rights Reserved.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+info:
+  title: Cloudkms/EkmConnection
+  description: The Cloudkms EkmConnection resource
+  x-dcl-struct-name: EkmConnection
+  x-dcl-has-iam: true
+paths:
+  get:
+    description: The function used to get information about a EkmConnection
+    parameters:
+    - name: ekmConnection
+      required: true
+      description: A full instance of a EkmConnection
+  apply:
+    description: The function used to apply information about a EkmConnection
+    parameters:
+    - name: ekmConnection
+      required: true
+      description: A full instance of a EkmConnection
+  list:
+    description: The function used to list information about many EkmConnection
+    parameters:
+    - name: project
+      required: true
+      schema:
+        type: string
+    - name: location
+      required: true
+      schema:
+        type: string
+components:
+  schemas:
+    EkmConnection:
+      title: EkmConnection
+      x-dcl-id: projects/{{project}}/locations/{{location}}/ekmConnections/{{name}}
+      x-dcl-parent-container: project
+      x-dcl-has-create: true
+      x-dcl-has-iam: true
+      x-dcl-read-timeout: 0
+      x-dcl-apply-timeout: 0
+      x-dcl-delete-timeout: 0
+      type: object
+      required:
+      - name
+      - serviceResolvers
+      - project
+      - location
+      properties:
+        createTime:
+          type: string
+          format: date-time
+          x-dcl-go-name: CreateTime
+          readOnly: true
+          description: Output only. The time at which the EkmConnection was created.
+          x-kubernetes-immutable: true
+        etag:
+          type: string
+          x-dcl-go-name: Etag
+          readOnly: true
+          description: Optional. This checksum is computed by the server based on
+            the value of other fields, and may be sent on update requests to ensure
+            the client has an up-to-date value before proceeding.
+          x-kubernetes-immutable: true
+        location:
+          type: string
+          x-dcl-go-name: Location
+          description: The location for the resource
+          x-kubernetes-immutable: true
+        name:
+          type: string
+          x-dcl-go-name: Name
+          description: The resource name for the EkmConnection in the format `projects/*/locations/*/ekmConnections/*`.
+        project:
+          type: string
+          x-dcl-go-name: Project
+          description: The project for the resource
+          x-kubernetes-immutable: true
+          x-dcl-references:
+          - resource: Cloudresourcemanager/Project
+            field: name
+            parent: true
+        serviceResolvers:
+          type: array
+          x-dcl-go-name: ServiceResolvers
+          description: A list of ServiceResolvers where the EKM can be reached. There
+            should be one ServiceResolver per EKM replica. Currently, only a single
+            ServiceResolver is supported.
+          x-dcl-send-empty: true
+          x-dcl-list-type: list
+          items:
+            type: object
+            x-dcl-go-type: EkmConnectionServiceResolvers
+            required:
+            - serviceDirectoryService
+            - hostname
+            - serverCertificates
+            properties:
+              endpointFilter:
+                type: string
+                x-dcl-go-name: EndpointFilter
+                description: Optional. The filter applied to the endpoints of the
+                  resolved service. If no filter is specified, all endpoints will
+                  be considered. An endpoint will be chosen arbitrarily from the filtered
+                  list for each request. For endpoint filter syntax and examples,
+                  see https://cloud.google.com/service-directory/docs/reference/rpc/google.cloud.servicedirectory.v1#resolveservicerequest.
+              hostname:
+                type: string
+                x-dcl-go-name: Hostname
+                description: Required. The hostname of the EKM replica used at TLS
+                  and HTTP layers.
+              serverCertificates:
+                type: array
+                x-dcl-go-name: ServerCertificates
+                description: Required. A list of leaf server certificates used to
+                  authenticate HTTPS connections to the EKM replica. Currently, a
+                  maximum of 10 Certificate is supported.
+                x-dcl-send-empty: true
+                x-dcl-list-type: list
+                items:
+                  type: object
+                  x-dcl-go-type: EkmConnectionServiceResolversServerCertificates
+                  required:
+                  - rawDer
+                  properties:
+                    issuer:
+                      type: string
+                      x-dcl-go-name: Issuer
+                      readOnly: true
+                      description: Output only. The issuer distinguished name in RFC
+                        2253 format. Only present if parsed is true.
+                    notAfterTime:
+                      type: string
+                      format: date-time
+                      x-dcl-go-name: NotAfterTime
+                      readOnly: true
+                      description: Output only. The certificate is not valid after
+                        this time. Only present if parsed is true.
+                    notBeforeTime:
+                      type: string
+                      format: date-time
+                      x-dcl-go-name: NotBeforeTime
+                      readOnly: true
+                      description: Output only. The certificate is not valid before
+                        this time. Only present if parsed is true.
+                    parsed:
+                      type: boolean
+                      x-dcl-go-name: Parsed
+                      readOnly: true
+                      description: Output only. True if the certificate was parsed
+                        successfully.
+                    rawDer:
+                      type: string
+                      x-dcl-go-name: RawDer
+                      description: Required. The raw certificate bytes in DER format.
+                    serialNumber:
+                      type: string
+                      x-dcl-go-name: SerialNumber
+                      readOnly: true
+                      description: Output only. The certificate serial number as a
+                        hex string. Only present if parsed is true.
+                    sha256Fingerprint:
+                      type: string
+                      x-dcl-go-name: Sha256Fingerprint
+                      readOnly: true
+                      description: Output only. The SHA-256 certificate fingerprint
+                        as a hex string. Only present if parsed is true.
+                    subject:
+                      type: string
+                      x-dcl-go-name: Subject
+                      readOnly: true
+                      description: Output only. The subject distinguished name in
+                        RFC 2253 format. Only present if parsed is true.
+                    subjectAlternativeDnsNames:
+                      type: array
+                      x-dcl-go-name: SubjectAlternativeDnsNames
+                      readOnly: true
+                      description: Output only. The subject Alternative DNS names.
+                        Only present if parsed is true.
+                      x-dcl-list-type: list
+                      items:
+                        type: string
+                        x-dcl-go-type: string
+              serviceDirectoryService:
+                type: string
+                x-dcl-go-name: ServiceDirectoryService
+                description: Required. The resource name of the Service Directory
+                  service pointing to an EKM replica, in the format `projects/*/locations/*/namespaces/*/services/*`.
+                x-dcl-references:
+                - resource: Servicedirectory/Service
+                  field: name

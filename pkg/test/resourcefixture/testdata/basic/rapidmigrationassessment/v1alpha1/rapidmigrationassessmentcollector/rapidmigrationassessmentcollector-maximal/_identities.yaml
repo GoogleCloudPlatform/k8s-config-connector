@@ -1,0 +1,6 @@
+- caisURL: //rapidmigrationassessment.googleapis.com/projects/${projectId}/locations/us-central1/collectors/rmacollector-max-${uniqueId}
+  group: rapidmigrationassessment.cnrm.cloud.google.com
+  kind: RapidMigrationAssessmentCollector
+  name: rmacollector-max-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

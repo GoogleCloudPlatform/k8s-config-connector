@@ -1,0 +1,24 @@
+label: Config Connector ComputeNetworkFirewallPolicyRule
+markdownDescription: Creates yaml for a ComputeNetworkFirewallPolicyRule resource
+insertText: |
+  apiVersion: compute.cnrm.cloud.google.com/v1alpha1
+  kind: ComputeNetworkFirewallPolicyRule
+  metadata:
+    name: \${1:computenetworkfirewallpolicyrule-name}
+  spec:
+    action: \${2:deny}
+    description: \${3:A Firewall Policy Rule}
+    direction: \${4:INGRESS}
+    disabled: \${5:false}
+    enableLogging: \${6:false}
+    firewallPolicyRef:
+      name: \${7:firewallpolicyrule-dep}
+    match:
+      layer4Configs:
+      - ipProtocol: \${8:tcp}
+      srcIpRanges:
+      - \${9:10.100.0.1/32}
+    targetServiceAccountRefs:
+    - name: \${10:firewallpolicyrule-dep1}
+    - name: \${11:firewallpolicyrule-dep2}
+    resourceID: \${12:1000}

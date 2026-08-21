@@ -1,0 +1,16 @@
+# In: ~/.gemini/commands/fix/findlabels.toml
+# This command will be invoked via: /fix:findlabels
+
+description = "Asks the model to find direct controllers not sanitizing labels."
+
+prompt = """
+You are a golang, Google Cloud and Config Connector (KCC) expert.
+Please find the set of resources whose Direct Controllers do not use the NewGCPLabelsFromK8sLabels method to sanitize their labels.
+An example of Pull Request which added the sanitization to a Direct Controller is https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/4981.
+
+Then make a plan before finding the resources.
+Prioritize Correctness.
+
+Your response should include:
+1. The name of the resource and the direct controller file missing the call to NewGCPLabelsFromK8sLabels.
+"""

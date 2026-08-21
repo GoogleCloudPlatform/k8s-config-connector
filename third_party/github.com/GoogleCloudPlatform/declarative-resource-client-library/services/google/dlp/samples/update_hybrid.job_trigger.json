@@ -1,0 +1,28 @@
+{
+  "name": "{{ref:__state__:name}}",
+  "parent": "projects/{{project}}",
+  "triggers": [
+    {
+      "manual": {}
+    }
+  ],
+  "status": "HEALTHY",
+  "inspectJob": {
+    "storageConfig": {
+      "hybridOptions": {
+        "description": "An updated sample data source outside GCP",
+        "requiredFindingLabelKeys": ["label-one", "label-three"],
+        "labels": {
+          "label-two": "value-two"
+        },
+        "tableOptions": {
+          "identifyingFields": [
+            {
+              "name": "new-sample-field"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

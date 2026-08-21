@@ -1,0 +1,150 @@
+134c134
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/images/${imageID}?alt=json
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/images/${imageID}
+163c163
+< POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/images?alt=json
+---
+> POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/images
+202c202,203
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
+> Content-Type: application/json
+232c233
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/images/${imageID}?alt=json
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/images/${imageID}
+268c269
+< POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/images/${imageID}/setLabels?alt=json
+---
+> PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/global/images/${imageID}
+272c273
+<   "labelFingerprint": "abcdef0123A=",
+---
+>   "diskSizeGb": "500",
+276a278,348
+>   },
+>   "name": "${imageID}",
+>   "sourceDisk": "projects/${projectId}/zones/us-central1-a/disks/${diskID}"
+> }
+> 
+> 200 OK
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "id": "000000000000000000000",
+>   "insertTime": "2024-04-01T12:34:56.123456Z",
+>   "kind": "compute#operation",
+>   "name": "${operationID}",
+>   "operationType": "patch",
+>   "progress": 0,
+>   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+>   "startTime": "2024-04-01T12:34:56.123456Z",
+>   "status": "RUNNING",
+>   "targetId": "${imageID}",
+>   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/images/${imageID}",
+>   "user": "user@example.com"
+> }
+> 
+> ---
+> 
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
+> Content-Type: application/json
+> 
+> 200 OK
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "endTime": "2024-04-01T12:34:56.123456Z",
+>   "id": "000000000000000000000",
+>   "insertTime": "2024-04-01T12:34:56.123456Z",
+>   "kind": "compute#operation",
+>   "name": "${operationID}",
+>   "operationType": "patch",
+>   "progress": 100,
+>   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+>   "startTime": "2024-04-01T12:34:56.123456Z",
+>   "status": "DONE",
+>   "targetId": "${imageID}",
+>   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/images/${imageID}",
+>   "user": "user@example.com"
+> }
+> 
+> ---
+> 
+> POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/images/${imageID}/setLabels
+> Content-Type: application/json
+> 
+> {
+>   "labelFingerprint": "abcdef0123A=",
+>   "labels": {
+>     "cnrm-test": "true",
+>     "label-one": "value-one"
+308c380,411
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/images/${imageID}?alt=json
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
+> Content-Type: application/json
+> 
+> 200 OK
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "endTime": "2024-04-01T12:34:56.123456Z",
+>   "id": "000000000000000000000",
+>   "insertTime": "2024-04-01T12:34:56.123456Z",
+>   "kind": "compute#operation",
+>   "name": "${operationID}",
+>   "operationType": "setLabels",
+>   "progress": 100,
+>   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}",
+>   "startTime": "2024-04-01T12:34:56.123456Z",
+>   "status": "DONE",
+>   "targetId": "${imageID}",
+>   "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/images/${imageID}",
+>   "user": "user@example.com"
+> }
+> 
+> ---
+> 
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/images/${imageID}
+344c447
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/images/${imageID}?alt=json
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/images/${imageID}
+365,366c468
+<     "label-one": "value-one",
+<     "managed-by-cnrm": "true"
+---
+>     "label-one": "value-one"
+381c483
+< DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/images/${imageID}?alt=json
+---
+> DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/images/${imageID}
+411c513,514
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
+> Content-Type: application/json

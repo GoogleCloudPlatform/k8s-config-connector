@@ -1,0 +1,6 @@
+- caisURL: //networkservices.googleapis.com/projects/${projectId}/locations/global/gateways/networkservicesgateway-${uniqueId}
+  group: networkservices.cnrm.cloud.google.com
+  kind: NetworkServicesGateway
+  name: networkservicesgateway-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

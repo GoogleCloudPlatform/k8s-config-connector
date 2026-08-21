@@ -1,0 +1,15 @@
+{
+  "name": "{{zone_name}}",
+  "displayName": "Zone for DCL",
+  "location": "{{region}}",
+  "project": "{{project}}",
+  "lake": "{{ref:basic.lake.json:name}}",
+  "description": "Zone for DCL",
+  "type": "RAW",
+  "discoverySpec": {
+    "enabled": false
+  },
+  "resourceSpec": {
+    "locationType": "MULTI_REGION"
+  }
+}

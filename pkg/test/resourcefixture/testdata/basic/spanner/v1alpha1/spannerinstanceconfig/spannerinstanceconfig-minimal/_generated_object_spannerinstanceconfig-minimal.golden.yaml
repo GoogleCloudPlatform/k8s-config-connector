@@ -1,0 +1,41 @@
+apiVersion: spanner.cnrm.cloud.google.com/v1alpha1
+kind: SpannerInstanceConfig
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: custom-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  baseConfigRef:
+    external: projects/${projectId}/instanceConfigs/nam11
+  displayName: Updated name
+  projectRef:
+    external: ${projectId}
+  replicas:
+  - defaultLeaderLocation: true
+    location: us-central1
+    type: READ_WRITE
+  - location: us-central1
+    type: READ_WRITE
+  - location: us-east1
+    type: READ_WRITE
+  - location: us-east1
+    type: READ_WRITE
+  - location: us-central2
+    type: WITNESS
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/instanceConfigs/custom-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    configType: USER_MANAGED
+    state: READY

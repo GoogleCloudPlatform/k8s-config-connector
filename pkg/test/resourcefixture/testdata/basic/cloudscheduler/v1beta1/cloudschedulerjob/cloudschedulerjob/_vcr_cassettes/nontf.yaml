@@ -1,0 +1,816 @@
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+version: 2
+interactions:
+  - id: 0
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: cloudscheduler.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://cloudscheduler.googleapis.com/v1/projects/example-project/locations/us-west2/jobs/cloudschedulerjob-2228w5hqy9utr?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 260.265609ms
+  - id: 1
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: cloudscheduler.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://cloudscheduler.googleapis.com/v1/projects/example-project/locations/us-west2/jobs/cloudschedulerjob-2228w5hqy9utr?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 222.327967ms
+  - id: 2
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: cloudscheduler.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://cloudscheduler.googleapis.com/v1/projects/example-project/locations/us-west2/jobs/cloudschedulerjob-2228w5hqy9utr?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 154.729722ms
+  - id: 3
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 318
+      transfer_encoding: []
+      trailer: {}
+      host: cloudscheduler.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: '{"description":"scheduler-pubsub-target-job","name":"projects/example-project/locations/us-west2/jobs/cloudschedulerjob-2228w5hqy9utr","pubsubTarget":{"data":"dGVzdCBtZXNzYWdlCg==","topicName":"projects/example-project/topics/pubsubtopic-2228w5hqy9utr"},"schedule":"*/2 * * * *","timeZone":"EST"}'
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://cloudscheduler.googleapis.com/v1/projects/example-project/locations/us-west2/jobs?alt=json
+      method: POST
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-west2/jobs/cloudschedulerjob-2228w5hqy9utr",
+          "description": "scheduler-pubsub-target-job",
+          "pubsubTarget": {
+            "topicName": "projects/example-project/topics/pubsubtopic-2228w5hqy9utr",
+            "data": "dGVzdCBtZXNzYWdlCg=="
+          },
+          "userUpdateTime": "2024-04-25T01:23:19Z",
+          "state": "ENABLED",
+          "schedule": "*/2 * * * *",
+          "timeZone": "EST"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 5.48142235s
+  - id: 4
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: cloudscheduler.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://cloudscheduler.googleapis.com/v1/projects/example-project/locations/us-west2/jobs/cloudschedulerjob-2228w5hqy9utr?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-west2/jobs/cloudschedulerjob-2228w5hqy9utr",
+          "description": "scheduler-pubsub-target-job",
+          "pubsubTarget": {
+            "topicName": "projects/example-project/topics/pubsubtopic-2228w5hqy9utr",
+            "data": "dGVzdCBtZXNzYWdlCg=="
+          },
+          "userUpdateTime": "2024-04-25T01:23:19Z",
+          "state": "ENABLED",
+          "schedule": "*/2 * * * *",
+          "timeZone": "EST"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 157.296554ms
+  - id: 5
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: cloudscheduler.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://cloudscheduler.googleapis.com/v1/projects/example-project/locations/us-west2/jobs/cloudschedulerjob-2228w5hqy9utr?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-west2/jobs/cloudschedulerjob-2228w5hqy9utr",
+          "description": "scheduler-pubsub-target-job",
+          "pubsubTarget": {
+            "topicName": "projects/example-project/topics/pubsubtopic-2228w5hqy9utr",
+            "data": "dGVzdCBtZXNzYWdlCg=="
+          },
+          "userUpdateTime": "2024-04-25T01:23:19Z",
+          "state": "ENABLED",
+          "schedule": "*/2 * * * *",
+          "timeZone": "EST"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 232.66471ms
+  - id: 6
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: cloudscheduler.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://cloudscheduler.googleapis.com/v1/projects/example-project/locations/us-west2/jobs/cloudschedulerjob-2228w5hqy9utr?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-west2/jobs/cloudschedulerjob-2228w5hqy9utr",
+          "description": "scheduler-pubsub-target-job",
+          "pubsubTarget": {
+            "topicName": "projects/example-project/topics/pubsubtopic-2228w5hqy9utr",
+            "data": "dGVzdCBtZXNzYWdlCg=="
+          },
+          "userUpdateTime": "2024-04-25T01:23:19Z",
+          "state": "ENABLED",
+          "schedule": "*/2 * * * *",
+          "timeZone": "EST"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 57.373657ms
+  - id: 7
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: cloudscheduler.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://cloudscheduler.googleapis.com/v1/projects/example-project/locations/us-west2/jobs/cloudschedulerjob-2228w5hqy9utr?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-west2/jobs/cloudschedulerjob-2228w5hqy9utr",
+          "description": "scheduler-pubsub-target-job",
+          "pubsubTarget": {
+            "topicName": "projects/example-project/topics/pubsubtopic-2228w5hqy9utr",
+            "data": "dGVzdCBtZXNzYWdlCg=="
+          },
+          "userUpdateTime": "2024-04-25T01:23:19Z",
+          "state": "ENABLED",
+          "schedule": "*/2 * * * *",
+          "timeZone": "EST"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 153.930549ms
+  - id: 8
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: cloudscheduler.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://cloudscheduler.googleapis.com/v1/projects/example-project/locations/us-west2/jobs/cloudschedulerjob-2228w5hqy9utr?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-west2/jobs/cloudschedulerjob-2228w5hqy9utr",
+          "description": "scheduler-pubsub-target-job",
+          "pubsubTarget": {
+            "topicName": "projects/example-project/topics/pubsubtopic-2228w5hqy9utr",
+            "data": "dGVzdCBtZXNzYWdlCg=="
+          },
+          "userUpdateTime": "2024-04-25T01:23:19Z",
+          "state": "ENABLED",
+          "schedule": "*/2 * * * *",
+          "timeZone": "EST"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 203.327659ms
+  - id: 9
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: cloudscheduler.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://cloudscheduler.googleapis.com/v1/projects/example-project/locations/us-west2/jobs/cloudschedulerjob-2228w5hqy9utr?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-west2/jobs/cloudschedulerjob-2228w5hqy9utr",
+          "description": "scheduler-pubsub-target-job",
+          "pubsubTarget": {
+            "topicName": "projects/example-project/topics/pubsubtopic-2228w5hqy9utr",
+            "data": "dGVzdCBtZXNzYWdlCg=="
+          },
+          "userUpdateTime": "2024-04-25T01:23:19Z",
+          "state": "ENABLED",
+          "schedule": "*/2 * * * *",
+          "timeZone": "EST"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 210.234379ms
+  - id: 10
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: cloudscheduler.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://cloudscheduler.googleapis.com/v1/projects/example-project/locations/us-west2/jobs/cloudschedulerjob-2228w5hqy9utr?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-west2/jobs/cloudschedulerjob-2228w5hqy9utr",
+          "description": "scheduler-pubsub-target-job",
+          "pubsubTarget": {
+            "topicName": "projects/example-project/topics/pubsubtopic-2228w5hqy9utr",
+            "data": "dGVzdCBtZXNzYWdlCg=="
+          },
+          "userUpdateTime": "2024-04-25T01:23:19Z",
+          "state": "ENABLED",
+          "schedule": "*/2 * * * *",
+          "timeZone": "EST"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 154.992623ms
+  - id: 11
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: cloudscheduler.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://cloudscheduler.googleapis.com/v1/projects/example-project/locations/us-west2/jobs/cloudschedulerjob-2228w5hqy9utr?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-west2/jobs/cloudschedulerjob-2228w5hqy9utr",
+          "description": "scheduler-pubsub-target-job",
+          "pubsubTarget": {
+            "topicName": "projects/example-project/topics/pubsubtopic-2228w5hqy9utr",
+            "data": "dGVzdCBtZXNzYWdlCg=="
+          },
+          "userUpdateTime": "2024-04-25T01:23:19Z",
+          "state": "ENABLED",
+          "schedule": "*/2 * * * *",
+          "timeZone": "EST"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 154.959104ms
+  - id: 12
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: cloudscheduler.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://cloudscheduler.googleapis.com/v1/projects/example-project/locations/us-west2/jobs/cloudschedulerjob-2228w5hqy9utr?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-west2/jobs/cloudschedulerjob-2228w5hqy9utr",
+          "description": "scheduler-pubsub-target-job",
+          "pubsubTarget": {
+            "topicName": "projects/example-project/topics/pubsubtopic-2228w5hqy9utr",
+            "data": "dGVzdCBtZXNzYWdlCg=="
+          },
+          "userUpdateTime": "2024-04-25T01:23:19Z",
+          "state": "ENABLED",
+          "schedule": "*/2 * * * *",
+          "timeZone": "EST"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 33.198307ms
+  - id: 13
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 318
+      transfer_encoding: []
+      trailer: {}
+      host: cloudscheduler.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: '{"description":"scheduler-pubsub-target-job","name":"projects/example-project/locations/us-west2/jobs/cloudschedulerjob-2228w5hqy9utr","pubsubTarget":{"data":"dGVzdCBtZXNzYWdlCg==","topicName":"projects/example-project/topics/pubsubtopic-2228w5hqy9utr"},"schedule":"*/5 * * * *","timeZone":"EST"}'
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://cloudscheduler.googleapis.com/v1/projects/example-project/locations/us-west2/jobs/cloudschedulerjob-2228w5hqy9utr?alt=json
+      method: PATCH
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-west2/jobs/cloudschedulerjob-2228w5hqy9utr",
+          "description": "scheduler-pubsub-target-job",
+          "pubsubTarget": {
+            "topicName": "projects/example-project/topics/pubsubtopic-2228w5hqy9utr",
+            "data": "dGVzdCBtZXNzYWdlCg=="
+          },
+          "userUpdateTime": "2024-04-25T01:23:33Z",
+          "state": "ENABLED",
+          "schedule": "*/5 * * * *",
+          "timeZone": "EST"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 2.65258s
+  - id: 14
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: cloudscheduler.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://cloudscheduler.googleapis.com/v1/projects/example-project/locations/us-west2/jobs/cloudschedulerjob-2228w5hqy9utr?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-west2/jobs/cloudschedulerjob-2228w5hqy9utr",
+          "description": "scheduler-pubsub-target-job",
+          "pubsubTarget": {
+            "topicName": "projects/example-project/topics/pubsubtopic-2228w5hqy9utr",
+            "data": "dGVzdCBtZXNzYWdlCg=="
+          },
+          "userUpdateTime": "2024-04-25T01:23:33Z",
+          "state": "ENABLED",
+          "scheduleTime": "2024-04-25T01:25:00.532168Z",
+          "schedule": "*/5 * * * *",
+          "timeZone": "EST"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 201.344976ms
+  - id: 15
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: cloudscheduler.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://cloudscheduler.googleapis.com/v1/projects/example-project/locations/us-west2/jobs/cloudschedulerjob-2228w5hqy9utr?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-west2/jobs/cloudschedulerjob-2228w5hqy9utr",
+          "description": "scheduler-pubsub-target-job",
+          "pubsubTarget": {
+            "topicName": "projects/example-project/topics/pubsubtopic-2228w5hqy9utr",
+            "data": "dGVzdCBtZXNzYWdlCg=="
+          },
+          "userUpdateTime": "2024-04-25T01:23:33Z",
+          "state": "ENABLED",
+          "scheduleTime": "2024-04-25T01:25:00.532168Z",
+          "schedule": "*/5 * * * *",
+          "timeZone": "EST"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 158.563833ms
+  - id: 16
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: cloudscheduler.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://cloudscheduler.googleapis.com/v1/projects/example-project/locations/us-west2/jobs/cloudschedulerjob-2228w5hqy9utr?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-west2/jobs/cloudschedulerjob-2228w5hqy9utr",
+          "description": "scheduler-pubsub-target-job",
+          "pubsubTarget": {
+            "topicName": "projects/example-project/topics/pubsubtopic-2228w5hqy9utr",
+            "data": "dGVzdCBtZXNzYWdlCg=="
+          },
+          "userUpdateTime": "2024-04-25T01:23:33Z",
+          "state": "ENABLED",
+          "scheduleTime": "2024-04-25T01:25:00.532168Z",
+          "schedule": "*/5 * * * *",
+          "timeZone": "EST"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 155.680208ms
+  - id: 17
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: cloudscheduler.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://cloudscheduler.googleapis.com/v1/projects/example-project/locations/us-west2/jobs/cloudschedulerjob-2228w5hqy9utr?alt=json
+      method: DELETE
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {}
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 6.723317252s
+  - id: 18
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: cloudscheduler.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://cloudscheduler.googleapis.com/v1/projects/example-project/locations/us-west2/jobs/cloudschedulerjob-2228w5hqy9utr?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 33.53607ms

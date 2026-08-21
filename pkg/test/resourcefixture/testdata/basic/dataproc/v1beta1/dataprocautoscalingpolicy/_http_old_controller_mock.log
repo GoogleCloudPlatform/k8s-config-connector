@@ -1,0 +1,241 @@
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}?alt=json
+Content-Type: application/json
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "autoscalingPolicy \"projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/autoscalingPolicies?alt=json
+Content-Type: application/json
+
+{
+  "basicAlgorithm": {
+    "yarnConfig": {
+      "gracefulDecommissionTimeout": "120s",
+      "scaleDownFactor": 0.5,
+      "scaleUpFactor": 0.4
+    }
+  },
+  "id": "000000000000000000000",
+  "secondaryWorkerConfig": {
+    "maxInstances": 3
+  },
+  "workerConfig": {
+    "maxInstances": 2
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "basicAlgorithm": {
+    "cooldownPeriod": "120s",
+    "yarnConfig": {
+      "gracefulDecommissionTimeout": "120s",
+      "scaleDownFactor": 0.5,
+      "scaleDownMinWorkerFraction": 1,
+      "scaleUpFactor": 0.4,
+      "scaleUpMinWorkerFraction": 0.5
+    }
+  },
+  "id": "000000000000000000000",
+  "name": "projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}",
+  "secondaryWorkerConfig": {
+    "maxInstances": 3
+  },
+  "workerConfig": {
+    "maxInstances": 2
+  }
+}
+
+---
+
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}?alt=json
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "basicAlgorithm": {
+    "cooldownPeriod": "120s",
+    "yarnConfig": {
+      "gracefulDecommissionTimeout": "120s",
+      "scaleDownFactor": 0.5,
+      "scaleDownMinWorkerFraction": 1,
+      "scaleUpFactor": 0.4,
+      "scaleUpMinWorkerFraction": 0.5
+    }
+  },
+  "id": "000000000000000000000",
+  "name": "projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}",
+  "secondaryWorkerConfig": {
+    "maxInstances": 3
+  },
+  "workerConfig": {
+    "maxInstances": 2
+  }
+}
+
+---
+
+PUT https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}?alt=json
+Content-Type: application/json
+
+{
+  "basicAlgorithm": {
+    "cooldownPeriod": "120s",
+    "yarnConfig": {
+      "gracefulDecommissionTimeout": "60s",
+      "scaleDownFactor": 0.5,
+      "scaleDownMinWorkerFraction": 1,
+      "scaleUpFactor": 0.5,
+      "scaleUpMinWorkerFraction": 0.5
+    }
+  },
+  "id": "000000000000000000000",
+  "secondaryWorkerConfig": {
+    "maxInstances": 2
+  },
+  "workerConfig": {
+    "maxInstances": 2
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "basicAlgorithm": {
+    "cooldownPeriod": "120s",
+    "yarnConfig": {
+      "gracefulDecommissionTimeout": "60s",
+      "scaleDownFactor": 0.5,
+      "scaleDownMinWorkerFraction": 1,
+      "scaleUpFactor": 0.5,
+      "scaleUpMinWorkerFraction": 0.5
+    }
+  },
+  "id": "000000000000000000000",
+  "name": "projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}",
+  "secondaryWorkerConfig": {
+    "maxInstances": 2
+  },
+  "workerConfig": {
+    "maxInstances": 2
+  }
+}
+
+---
+
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}?alt=json
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "basicAlgorithm": {
+    "cooldownPeriod": "120s",
+    "yarnConfig": {
+      "gracefulDecommissionTimeout": "60s",
+      "scaleDownFactor": 0.5,
+      "scaleDownMinWorkerFraction": 1,
+      "scaleUpFactor": 0.5,
+      "scaleUpMinWorkerFraction": 0.5
+    }
+  },
+  "id": "000000000000000000000",
+  "name": "projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}",
+  "secondaryWorkerConfig": {
+    "maxInstances": 2
+  },
+  "workerConfig": {
+    "maxInstances": 2
+  }
+}
+
+---
+
+DELETE https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}?alt=json
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://dataproc.googleapis.com/v1/projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}?alt=json
+Content-Type: application/json
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "autoscalingPolicy \"projects/${projectId}/locations/us-central1/autoscalingPolicies/dataprocautoscalingpolicy-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
+}

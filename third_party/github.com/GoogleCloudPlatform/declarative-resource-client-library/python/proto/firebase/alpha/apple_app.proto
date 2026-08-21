@@ -1,0 +1,60 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+message FirebaseAlphaAppleApp {
+  string name = 1;
+  string app_id = 2;
+  string display_name = 3;
+  string project_id = 4;
+  string bundle_id = 5;
+  string app_store_id = 6;
+  string team_id = 7;
+  string api_key_id = 8;
+  string project = 9;
+}
+
+message ApplyFirebaseAlphaAppleAppRequest {
+  FirebaseAlphaAppleApp resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteFirebaseAlphaAppleAppRequest {
+  string service_account_file = 1;
+  FirebaseAlphaAppleApp resource = 2;
+}
+
+message ListFirebaseAlphaAppleAppRequest {
+  string service_account_file = 1;
+  string Project = 2;
+}
+
+message ListFirebaseAlphaAppleAppResponse {
+  repeated FirebaseAlphaAppleApp items = 1;
+}
+
+service FirebaseAlphaAppleAppService {
+  rpc ApplyFirebaseAlphaAppleApp(ApplyFirebaseAlphaAppleAppRequest) returns (FirebaseAlphaAppleApp);
+  rpc DeleteFirebaseAlphaAppleApp(DeleteFirebaseAlphaAppleAppRequest) returns (google.protobuf.Empty);
+  rpc ListFirebaseAlphaAppleApp(ListFirebaseAlphaAppleAppRequest) returns (ListFirebaseAlphaAppleAppResponse);
+}

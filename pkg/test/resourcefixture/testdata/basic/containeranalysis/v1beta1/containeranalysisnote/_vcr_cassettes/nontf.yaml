@@ -1,0 +1,951 @@
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+version: 2
+interactions:
+  - id: 0
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: containeranalysis.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://containeranalysis.googleapis.com/v1/projects/example-project/notes/containeranalysisnote-23autmju0gk27?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 14.892727168s
+  - id: 1
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: containeranalysis.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://containeranalysis.googleapis.com/v1/projects/example-project/notes/containeranalysisnote-23autmju0gk27?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 79.632028ms
+  - id: 2
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: containeranalysis.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://containeranalysis.googleapis.com/v1/projects/example-project/notes/containeranalysisnote-23autmju0gk27?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 87.616225ms
+  - id: 3
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 313
+      transfer_encoding: []
+      trailer: {}
+      host: containeranalysis.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: '{"attestation":{"hint":{"humanReadableName":"Attestor Note1"}},"longDescription":"long description","name":"projects/example-project/notes/containeranalysisnote-23autmju0gk27","relatedUrl":[{"label":"test","url":"some.url"},{"label":"google","url":"google.com"}],"shortDescription":"short description"}'
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://containeranalysis.googleapis.com/v1/projects/example-project/notes?alt=json&noteId=containeranalysisnote-23autmju0gk27
+      method: POST
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/notes/containeranalysisnote-23autmju0gk27",
+          "shortDescription": "short description",
+          "longDescription": "long description",
+          "kind": "ATTESTATION",
+          "relatedUrl": [
+            {
+              "url": "some.url",
+              "label": "test"
+            },
+            {
+              "url": "google.com",
+              "label": "google"
+            }
+          ],
+          "createTime": "2024-04-25T01:30:43.686737Z",
+          "updateTime": "2024-04-25T01:30:43.686737Z",
+          "attestation": {
+            "hint": {
+              "humanReadableName": "Attestor Note1"
+            }
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 786.760585ms
+  - id: 4
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: containeranalysis.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://containeranalysis.googleapis.com/v1/projects/example-project/notes/containeranalysisnote-23autmju0gk27?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/notes/containeranalysisnote-23autmju0gk27",
+          "shortDescription": "short description",
+          "longDescription": "long description",
+          "kind": "ATTESTATION",
+          "relatedUrl": [
+            {
+              "url": "some.url",
+              "label": "test"
+            },
+            {
+              "url": "google.com",
+              "label": "google"
+            }
+          ],
+          "createTime": "2024-04-25T01:30:43.686737Z",
+          "updateTime": "2024-04-25T01:30:43.686737Z",
+          "attestation": {
+            "hint": {
+              "humanReadableName": "Attestor Note1"
+            }
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 78.914886ms
+  - id: 5
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: containeranalysis.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://containeranalysis.googleapis.com/v1/projects/example-project/notes/containeranalysisnote-23autmju0gk27?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/notes/containeranalysisnote-23autmju0gk27",
+          "shortDescription": "short description",
+          "longDescription": "long description",
+          "kind": "ATTESTATION",
+          "relatedUrl": [
+            {
+              "url": "some.url",
+              "label": "test"
+            },
+            {
+              "url": "google.com",
+              "label": "google"
+            }
+          ],
+          "createTime": "2024-04-25T01:30:43.686737Z",
+          "updateTime": "2024-04-25T01:30:43.686737Z",
+          "attestation": {
+            "hint": {
+              "humanReadableName": "Attestor Note1"
+            }
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 79.146474ms
+  - id: 6
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: containeranalysis.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://containeranalysis.googleapis.com/v1/projects/example-project/notes/containeranalysisnote-23autmju0gk27?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/notes/containeranalysisnote-23autmju0gk27",
+          "shortDescription": "short description",
+          "longDescription": "long description",
+          "kind": "ATTESTATION",
+          "relatedUrl": [
+            {
+              "url": "some.url",
+              "label": "test"
+            },
+            {
+              "url": "google.com",
+              "label": "google"
+            }
+          ],
+          "createTime": "2024-04-25T01:30:43.686737Z",
+          "updateTime": "2024-04-25T01:30:43.686737Z",
+          "attestation": {
+            "hint": {
+              "humanReadableName": "Attestor Note1"
+            }
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 54.725473ms
+  - id: 7
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: containeranalysis.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://containeranalysis.googleapis.com/v1/projects/example-project/notes/containeranalysisnote-23autmju0gk27?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/notes/containeranalysisnote-23autmju0gk27",
+          "shortDescription": "short description",
+          "longDescription": "long description",
+          "kind": "ATTESTATION",
+          "relatedUrl": [
+            {
+              "url": "some.url",
+              "label": "test"
+            },
+            {
+              "url": "google.com",
+              "label": "google"
+            }
+          ],
+          "createTime": "2024-04-25T01:30:43.686737Z",
+          "updateTime": "2024-04-25T01:30:43.686737Z",
+          "attestation": {
+            "hint": {
+              "humanReadableName": "Attestor Note1"
+            }
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 43.769013ms
+  - id: 8
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: containeranalysis.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://containeranalysis.googleapis.com/v1/projects/example-project/notes/containeranalysisnote-23autmju0gk27?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/notes/containeranalysisnote-23autmju0gk27",
+          "shortDescription": "short description",
+          "longDescription": "long description",
+          "kind": "ATTESTATION",
+          "relatedUrl": [
+            {
+              "url": "some.url",
+              "label": "test"
+            },
+            {
+              "url": "google.com",
+              "label": "google"
+            }
+          ],
+          "createTime": "2024-04-25T01:30:43.686737Z",
+          "updateTime": "2024-04-25T01:30:43.686737Z",
+          "attestation": {
+            "hint": {
+              "humanReadableName": "Attestor Note1"
+            }
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 42.332316ms
+  - id: 9
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: containeranalysis.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://containeranalysis.googleapis.com/v1/projects/example-project/notes/containeranalysisnote-23autmju0gk27?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/notes/containeranalysisnote-23autmju0gk27",
+          "shortDescription": "short description",
+          "longDescription": "long description",
+          "kind": "ATTESTATION",
+          "relatedUrl": [
+            {
+              "url": "some.url",
+              "label": "test"
+            },
+            {
+              "url": "google.com",
+              "label": "google"
+            }
+          ],
+          "createTime": "2024-04-25T01:30:43.686737Z",
+          "updateTime": "2024-04-25T01:30:43.686737Z",
+          "attestation": {
+            "hint": {
+              "humanReadableName": "Attestor Note1"
+            }
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 79.772672ms
+  - id: 10
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: containeranalysis.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://containeranalysis.googleapis.com/v1/projects/example-project/notes/containeranalysisnote-23autmju0gk27?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/notes/containeranalysisnote-23autmju0gk27",
+          "shortDescription": "short description",
+          "longDescription": "long description",
+          "kind": "ATTESTATION",
+          "relatedUrl": [
+            {
+              "url": "some.url",
+              "label": "test"
+            },
+            {
+              "url": "google.com",
+              "label": "google"
+            }
+          ],
+          "createTime": "2024-04-25T01:30:43.686737Z",
+          "updateTime": "2024-04-25T01:30:43.686737Z",
+          "attestation": {
+            "hint": {
+              "humanReadableName": "Attestor Note1"
+            }
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 80.955944ms
+  - id: 11
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: containeranalysis.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://containeranalysis.googleapis.com/v1/projects/example-project/notes/containeranalysisnote-23autmju0gk27?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/notes/containeranalysisnote-23autmju0gk27",
+          "shortDescription": "short description",
+          "longDescription": "long description",
+          "kind": "ATTESTATION",
+          "relatedUrl": [
+            {
+              "url": "some.url",
+              "label": "test"
+            },
+            {
+              "url": "google.com",
+              "label": "google"
+            }
+          ],
+          "createTime": "2024-04-25T01:30:43.686737Z",
+          "updateTime": "2024-04-25T01:30:43.686737Z",
+          "attestation": {
+            "hint": {
+              "humanReadableName": "Attestor Note1"
+            }
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 43.515257ms
+  - id: 12
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: containeranalysis.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://containeranalysis.googleapis.com/v1/projects/example-project/notes/containeranalysisnote-23autmju0gk27?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/notes/containeranalysisnote-23autmju0gk27",
+          "shortDescription": "short description",
+          "longDescription": "long description",
+          "kind": "ATTESTATION",
+          "relatedUrl": [
+            {
+              "url": "some.url",
+              "label": "test"
+            },
+            {
+              "url": "google.com",
+              "label": "google"
+            }
+          ],
+          "createTime": "2024-04-25T01:30:43.686737Z",
+          "updateTime": "2024-04-25T01:30:43.686737Z",
+          "attestation": {
+            "hint": {
+              "humanReadableName": "Attestor Note1"
+            }
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 41.959853ms
+  - id: 13
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 192
+      transfer_encoding: []
+      trailer: {}
+      host: containeranalysis.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: '{"attestation":{"hint":{"humanReadableName":"Attestor Note2"}},"longDescription":"new long description","relatedUrl":[{"label":"test","url":"some.url"}],"shortDescription":"short description"}'
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://containeranalysis.googleapis.com/v1/projects/example-project/notes/containeranalysisnote-23autmju0gk27?alt=json
+      method: PATCH
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/notes/containeranalysisnote-23autmju0gk27",
+          "shortDescription": "short description",
+          "longDescription": "new long description",
+          "kind": "ATTESTATION",
+          "relatedUrl": [
+            {
+              "url": "some.url",
+              "label": "test"
+            }
+          ],
+          "createTime": "2024-04-25T01:30:43.686737Z",
+          "updateTime": "2024-04-25T01:30:46.927486Z",
+          "attestation": {
+            "hint": {
+              "humanReadableName": "Attestor Note2"
+            }
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 926.605289ms
+  - id: 14
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: containeranalysis.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://containeranalysis.googleapis.com/v1/projects/example-project/notes/containeranalysisnote-23autmju0gk27?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/notes/containeranalysisnote-23autmju0gk27",
+          "shortDescription": "short description",
+          "longDescription": "new long description",
+          "kind": "ATTESTATION",
+          "relatedUrl": [
+            {
+              "url": "some.url",
+              "label": "test"
+            }
+          ],
+          "createTime": "2024-04-25T01:30:43.686737Z",
+          "updateTime": "2024-04-25T01:30:46.927486Z",
+          "attestation": {
+            "hint": {
+              "humanReadableName": "Attestor Note2"
+            }
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 42.549415ms
+  - id: 15
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: containeranalysis.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://containeranalysis.googleapis.com/v1/projects/example-project/notes/containeranalysisnote-23autmju0gk27?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/notes/containeranalysisnote-23autmju0gk27",
+          "shortDescription": "short description",
+          "longDescription": "new long description",
+          "kind": "ATTESTATION",
+          "relatedUrl": [
+            {
+              "url": "some.url",
+              "label": "test"
+            }
+          ],
+          "createTime": "2024-04-25T01:30:43.686737Z",
+          "updateTime": "2024-04-25T01:30:46.927486Z",
+          "attestation": {
+            "hint": {
+              "humanReadableName": "Attestor Note2"
+            }
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 46.129084ms
+  - id: 16
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: containeranalysis.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://containeranalysis.googleapis.com/v1/projects/example-project/notes/containeranalysisnote-23autmju0gk27?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/notes/containeranalysisnote-23autmju0gk27",
+          "shortDescription": "short description",
+          "longDescription": "new long description",
+          "kind": "ATTESTATION",
+          "relatedUrl": [
+            {
+              "url": "some.url",
+              "label": "test"
+            }
+          ],
+          "createTime": "2024-04-25T01:30:43.686737Z",
+          "updateTime": "2024-04-25T01:30:46.927486Z",
+          "attestation": {
+            "hint": {
+              "humanReadableName": "Attestor Note2"
+            }
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 104.406961ms
+  - id: 17
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: containeranalysis.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://containeranalysis.googleapis.com/v1/projects/example-project/notes/containeranalysisnote-23autmju0gk27?alt=json
+      method: DELETE
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {}
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 477.244246ms
+  - id: 18
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: containeranalysis.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://containeranalysis.googleapis.com/v1/projects/example-project/notes/containeranalysisnote-23autmju0gk27?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 44.645491ms

@@ -1,0 +1,38 @@
+label: Config Connector LoggingLogMetric
+markdownDescription: Creates yaml for a LoggingLogMetric resource
+insertText: |
+  apiVersion: logging.cnrm.cloud.google.com/v1beta1
+  kind: LoggingLogMetric
+  metadata:
+    name: \${1:logginglogmetric-name}
+  spec:
+    description: \${2:A sample log metric}
+    filter: \${3:resource.type=gae_app AND severity<=ERROR}
+    disabled: \${4:false}
+    metricDescriptor:
+      labels:
+      - key: \${5:mass}
+        valueType: \${6:STRING}
+        description: \${7:amount of matter}
+      - key: \${8:sku}
+        valueType: \${9:INT64}
+        description: \${10:identifying number for item}
+      metricKind: \${11:DELTA}
+      valueType: \${12:DISTRIBUTION}
+      unit: \${13:bit}
+      displayName: \${14:sample-descriptor}
+      metadata:
+        samplePeriod: \${15:5s}
+        ingestDelay: \${16:2s}
+      launchStage: \${17:UNIMPLEMENTED}
+    valueExtractor: \${18:EXTRACT(jsonPayload.request)}
+    labelExtractors:
+      mass: \${19:EXTRACT(jsonPayload.request)}
+      sku: \${20:EXTRACT(jsonPayload.id)}
+    bucketOptions:
+      linearBuckets:
+        numFiniteBuckets: \${21:3}
+        width: \${22:3.5}
+        offset: \${23:1.5}
+    projectRef:
+      external: \${24:projects/[PROJECT_ID?]}

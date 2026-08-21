@@ -1,0 +1,8 @@
+- exec: gcloud essential-contacts create --email=test-${uniqueId}@example.com --notification-categories=technical,billing --language=en --project=${projectId}
+- exec: |
+    rm -f /tmp/contactid
+    gcloud essential-contacts list --project=${projectId} | grep  "name: " | tail -n1 | cut -f4 -d/ > /tmp/contactid
+- exec: gcloud essential-contacts describe $(cat /tmp/contactid) --project=${projectId}
+- exec: gcloud essential-contacts update $(cat /tmp/contactid) --notification-categories=security --project=${projectId}
+- exec: gcloud essential-contacts describe $(cat /tmp/contactid) --project=${projectId}
+- exec: gcloud essential-contacts delete $(cat /tmp/contactid) --project=${projectId}

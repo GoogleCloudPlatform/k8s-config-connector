@@ -1,0 +1,8 @@
+{
+  "name": "{{group}}",
+  "project": "{{project}}",
+  "network": "projects/{{project}}/global/networks/default",
+  "networkEndpointType": "GCE_VM_IP",
+  "subnetwork": "regions/{{region}}/subnetworks/default",
+  "location": "{{zone}}"
+}

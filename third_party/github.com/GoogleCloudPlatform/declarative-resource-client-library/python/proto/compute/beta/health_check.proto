@@ -1,0 +1,188 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+enum ComputeBetaHealthCheckHttp2HealthCheckPortSpecificationEnum {
+  ComputeBetaHealthCheckHttp2HealthCheckPortSpecificationEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaHealthCheckHttp2HealthCheckPortSpecificationEnumUSE_FIXED_PORT = 1;
+  ComputeBetaHealthCheckHttp2HealthCheckPortSpecificationEnumUSE_NAMED_PORT = 2;
+  ComputeBetaHealthCheckHttp2HealthCheckPortSpecificationEnumUSE_SERVING_PORT = 3;
+}
+
+enum ComputeBetaHealthCheckHttp2HealthCheckProxyHeaderEnum {
+  ComputeBetaHealthCheckHttp2HealthCheckProxyHeaderEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaHealthCheckHttp2HealthCheckProxyHeaderEnumNONE = 1;
+  ComputeBetaHealthCheckHttp2HealthCheckProxyHeaderEnumPROXY_V1 = 2;
+}
+
+enum ComputeBetaHealthCheckHttpHealthCheckPortSpecificationEnum {
+  ComputeBetaHealthCheckHttpHealthCheckPortSpecificationEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaHealthCheckHttpHealthCheckPortSpecificationEnumUSE_FIXED_PORT = 1;
+  ComputeBetaHealthCheckHttpHealthCheckPortSpecificationEnumUSE_NAMED_PORT = 2;
+  ComputeBetaHealthCheckHttpHealthCheckPortSpecificationEnumUSE_SERVING_PORT = 3;
+}
+
+enum ComputeBetaHealthCheckHttpHealthCheckProxyHeaderEnum {
+  ComputeBetaHealthCheckHttpHealthCheckProxyHeaderEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaHealthCheckHttpHealthCheckProxyHeaderEnumNONE = 1;
+  ComputeBetaHealthCheckHttpHealthCheckProxyHeaderEnumPROXY_V1 = 2;
+}
+
+enum ComputeBetaHealthCheckHttpsHealthCheckPortSpecificationEnum {
+  ComputeBetaHealthCheckHttpsHealthCheckPortSpecificationEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaHealthCheckHttpsHealthCheckPortSpecificationEnumUSE_FIXED_PORT = 1;
+  ComputeBetaHealthCheckHttpsHealthCheckPortSpecificationEnumUSE_NAMED_PORT = 2;
+  ComputeBetaHealthCheckHttpsHealthCheckPortSpecificationEnumUSE_SERVING_PORT = 3;
+}
+
+enum ComputeBetaHealthCheckHttpsHealthCheckProxyHeaderEnum {
+  ComputeBetaHealthCheckHttpsHealthCheckProxyHeaderEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaHealthCheckHttpsHealthCheckProxyHeaderEnumNONE = 1;
+  ComputeBetaHealthCheckHttpsHealthCheckProxyHeaderEnumPROXY_V1 = 2;
+}
+
+enum ComputeBetaHealthCheckSslHealthCheckPortSpecificationEnum {
+  ComputeBetaHealthCheckSslHealthCheckPortSpecificationEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaHealthCheckSslHealthCheckPortSpecificationEnumUSE_FIXED_PORT = 1;
+  ComputeBetaHealthCheckSslHealthCheckPortSpecificationEnumUSE_NAMED_PORT = 2;
+  ComputeBetaHealthCheckSslHealthCheckPortSpecificationEnumUSE_SERVING_PORT = 3;
+}
+
+enum ComputeBetaHealthCheckSslHealthCheckProxyHeaderEnum {
+  ComputeBetaHealthCheckSslHealthCheckProxyHeaderEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaHealthCheckSslHealthCheckProxyHeaderEnumNONE = 1;
+  ComputeBetaHealthCheckSslHealthCheckProxyHeaderEnumPROXY_V1 = 2;
+}
+
+enum ComputeBetaHealthCheckTcpHealthCheckPortSpecificationEnum {
+  ComputeBetaHealthCheckTcpHealthCheckPortSpecificationEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaHealthCheckTcpHealthCheckPortSpecificationEnumUSE_FIXED_PORT = 1;
+  ComputeBetaHealthCheckTcpHealthCheckPortSpecificationEnumUSE_NAMED_PORT = 2;
+  ComputeBetaHealthCheckTcpHealthCheckPortSpecificationEnumUSE_SERVING_PORT = 3;
+}
+
+enum ComputeBetaHealthCheckTcpHealthCheckProxyHeaderEnum {
+  ComputeBetaHealthCheckTcpHealthCheckProxyHeaderEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaHealthCheckTcpHealthCheckProxyHeaderEnumNONE = 1;
+  ComputeBetaHealthCheckTcpHealthCheckProxyHeaderEnumPROXY_V1 = 2;
+}
+
+enum ComputeBetaHealthCheckTypeEnum {
+  ComputeBetaHealthCheckTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaHealthCheckTypeEnumHTTP = 1;
+  ComputeBetaHealthCheckTypeEnumHTTPS = 2;
+  ComputeBetaHealthCheckTypeEnumHTTP2 = 3;
+  ComputeBetaHealthCheckTypeEnumTCP = 4;
+  ComputeBetaHealthCheckTypeEnumSSL = 5;
+  ComputeBetaHealthCheckTypeEnumINVALID = 6;
+}
+
+message ComputeBetaHealthCheck {
+  int64 check_interval_sec = 1;
+  string description = 2;
+  int64 healthy_threshold = 3;
+  ComputeBetaHealthCheckHttp2HealthCheck http2_health_check = 4;
+  ComputeBetaHealthCheckHttpHealthCheck http_health_check = 5;
+  ComputeBetaHealthCheckHttpsHealthCheck https_health_check = 6;
+  string name = 7;
+  ComputeBetaHealthCheckSslHealthCheck ssl_health_check = 8;
+  ComputeBetaHealthCheckTcpHealthCheck tcp_health_check = 9;
+  ComputeBetaHealthCheckTypeEnum type = 10;
+  int64 unhealthy_threshold = 11;
+  int64 timeout_sec = 12;
+  string region = 13;
+  string project = 14;
+  string self_link = 15;
+  string location = 16;
+}
+
+message ComputeBetaHealthCheckHttp2HealthCheck {
+  int64 port = 1;
+  string port_name = 2;
+  ComputeBetaHealthCheckHttp2HealthCheckPortSpecificationEnum port_specification = 3;
+  string host = 4;
+  string request_path = 5;
+  ComputeBetaHealthCheckHttp2HealthCheckProxyHeaderEnum proxy_header = 6;
+  string response = 7;
+}
+
+message ComputeBetaHealthCheckHttpHealthCheck {
+  int64 port = 1;
+  string port_name = 2;
+  ComputeBetaHealthCheckHttpHealthCheckPortSpecificationEnum port_specification = 3;
+  string host = 4;
+  string request_path = 5;
+  ComputeBetaHealthCheckHttpHealthCheckProxyHeaderEnum proxy_header = 6;
+  string response = 7;
+}
+
+message ComputeBetaHealthCheckHttpsHealthCheck {
+  int64 port = 1;
+  string port_name = 2;
+  ComputeBetaHealthCheckHttpsHealthCheckPortSpecificationEnum port_specification = 3;
+  string host = 4;
+  string request_path = 5;
+  ComputeBetaHealthCheckHttpsHealthCheckProxyHeaderEnum proxy_header = 6;
+  string response = 7;
+}
+
+message ComputeBetaHealthCheckSslHealthCheck {
+  int64 port = 1;
+  string port_name = 2;
+  ComputeBetaHealthCheckSslHealthCheckPortSpecificationEnum port_specification = 3;
+  string request = 4;
+  string response = 5;
+  ComputeBetaHealthCheckSslHealthCheckProxyHeaderEnum proxy_header = 6;
+}
+
+message ComputeBetaHealthCheckTcpHealthCheck {
+  int64 port = 1;
+  string port_name = 2;
+  ComputeBetaHealthCheckTcpHealthCheckPortSpecificationEnum port_specification = 3;
+  string request = 4;
+  string response = 5;
+  ComputeBetaHealthCheckTcpHealthCheckProxyHeaderEnum proxy_header = 6;
+}
+
+message ApplyComputeBetaHealthCheckRequest {
+  ComputeBetaHealthCheck resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteComputeBetaHealthCheckRequest {
+  string service_account_file = 1;
+  ComputeBetaHealthCheck resource = 2;
+}
+
+message ListComputeBetaHealthCheckRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListComputeBetaHealthCheckResponse {
+  repeated ComputeBetaHealthCheck items = 1;
+}
+
+service ComputeBetaHealthCheckService {
+  rpc ApplyComputeBetaHealthCheck(ApplyComputeBetaHealthCheckRequest) returns (ComputeBetaHealthCheck);
+  rpc DeleteComputeBetaHealthCheck(DeleteComputeBetaHealthCheckRequest) returns (google.protobuf.Empty);
+  rpc ListComputeBetaHealthCheck(ListComputeBetaHealthCheckRequest) returns (ListComputeBetaHealthCheckResponse);
+}

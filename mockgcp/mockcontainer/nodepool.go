@@ -1,0 +1,650 @@
+// Copyright 2024 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package mockcontainer
+
+import (
+	"context"
+	"fmt"
+	"strings"
+
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/encoding/prototext"
+	"google.golang.org/protobuf/proto"
+	"k8s.io/klog/v2"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
+	computepb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/container/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcompute"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
+)
+
+func (s *ClusterManagerV1) GetNodePool(ctx context.Context, req *pb.GetNodePoolRequest) (*pb.NodePool, error) {
+	name, err := s.parseNodePoolName(req.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := &pb.NodePool{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+	return obj, nil
+}
+
+func (s *ClusterManagerV1) ListNodePools(ctx context.Context, req *pb.ListNodePoolsRequest) (*pb.ListNodePoolsResponse, error) {
+	reqParent := req.GetParent()
+	if reqParent == "" && req.GetProjectId() != "" {
+		reqParent = fmt.Sprintf("projects/%s/locations/%s/clusters/%s", req.GetProjectId(), req.GetZone(), req.GetClusterId())
+	}
+	name, err := s.parseClusterName(reqParent)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	nodePoolPrefix := fqn + "/nodePools/"
+
+	var nodePools []*pb.NodePool
+	if err := s.storage.List(ctx, (*pb.NodePool)(nil).ProtoReflect().Descriptor(), storage.ListOptions{Prefix: nodePoolPrefix}, func(msg proto.Message) error {
+		np := msg.(*pb.NodePool)
+		nodePools = append(nodePools, np)
+		return nil
+	}); err != nil {
+		return nil, err
+	}
+
+	return &pb.ListNodePoolsResponse{
+		NodePools: nodePools,
+	}, nil
+}
+
+func (s *ClusterManagerV1) CreateNodePool(ctx context.Context, req *pb.CreateNodePoolRequest) (*pb.Operation, error) {
+	reqName := req.GetParent() + "/nodePools/" + req.GetNodePool().GetName()
+
+	name, err := s.parseNodePoolName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	cluster, err := s.GetCluster(ctx, &pb.GetClusterRequest{Name: req.GetParent()})
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := proto.CloneOf(req.NodePool)
+
+	obj.SelfLink = buildSelfLink(ctx, fqn)
+
+	if err := s.populateNodePoolDefaults(name.Project, cluster, obj); err != nil {
+		return nil, err
+	}
+
+	if err := s.storage.Create(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	if err := s.createMockIGM(ctx, name.Project, obj.InstanceGroupUrls, obj.InitialNodeCount); err != nil {
+		klog.Errorf("failed to create mock IGM: %v", err)
+	}
+
+	op := &pb.Operation{
+		Zone:          name.Location,
+		OperationType: pb.Operation_CREATE_NODE_POOL,
+		TargetLink:    buildSelfLink(ctx, AsZonalLink(name.LinkWithNumber())),
+	}
+	return s.startLRO(ctx, name.Project, op, func() (proto.Message, error) {
+		return obj, nil
+	})
+}
+
+func (s *ClusterManagerV1) populateNodePoolDefaults(project *projects.ProjectData, cluster *pb.Cluster, obj *pb.NodePool) error {
+	obj.Status = pb.NodePool_RUNNING
+	if obj.Version == "" {
+		obj.Version = cluster.CurrentNodeVersion
+	}
+
+	if obj.Config == nil {
+		obj.Config = &pb.NodeConfig{}
+	}
+	if err := s.populateNodeConfig(obj.Config); err != nil {
+		return err
+	}
+
+	if obj.InitialNodeCount == 0 {
+		obj.InitialNodeCount = 1
+	}
+
+	if obj.InstanceGroupUrls == nil {
+		zone, err := locationToZone(cluster.Location)
+		if err != nil {
+			return err
+		}
+
+		obj.InstanceGroupUrls = []string{
+			fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/zones/%s/instanceGroupManagers/gke-containercluster-abcdef-%s-grp", project.ID, zone, obj.Name),
+		}
+	}
+
+	if obj.Management == nil {
+		obj.Management = &pb.NodeManagement{
+			AutoUpgrade: true,
+			AutoRepair:  true,
+		}
+	}
+
+	if obj.MaxPodsConstraint == nil {
+		obj.MaxPodsConstraint = &pb.MaxPodsConstraint{
+			MaxPodsPerNode: 110,
+		}
+	}
+
+	// TODO: Fix NetworkConfig behavior.
+	// Real log:
+	//      "networkConfig": {
+	//        "podIpv4CidrBlock": "10.108.0.0/14",
+	//        "podRange": "gke-containercluster-${uniqueId}-pods-4e499d58",
+	//        "subnetwork": "projects/${projectId}/regions/us-east1/subnetworks/default"
+	//      },
+	// Mock log:
+	//     "networkConfig": {
+	//        "enablePrivateNodes": false,
+	//        "podIpv4CidrBlock": "10.92.0.0/14",
+	//        "podIpv4RangeUtilization": 0.001,
+	//        "podRange": "default-pool-pods-12345678"
+	//      },
+	if obj.NetworkConfig == nil {
+		obj.NetworkConfig = &pb.NodeNetworkConfig{}
+	}
+	if obj.NetworkConfig.EnablePrivateNodes == nil {
+		obj.NetworkConfig.EnablePrivateNodes = cluster.NetworkConfig.DefaultEnablePrivateNodes
+	}
+	if obj.NetworkConfig.PodIpv4CidrBlock == "" {
+		obj.NetworkConfig.PodIpv4CidrBlock = "10.92.0.0/14"
+	}
+	if obj.NetworkConfig.PodIpv4RangeUtilization == 0 {
+		obj.NetworkConfig.PodIpv4RangeUtilization = 0.001
+	}
+	if obj.NetworkConfig.PodRange == "" {
+		obj.NetworkConfig.PodRange = obj.Name + "-pods-12345678"
+	}
+	if obj.NetworkConfig.Subnetwork == "" {
+		obj.NetworkConfig.Subnetwork = cluster.NetworkConfig.Subnetwork
+	}
+	obj.NetworkConfig.Subnetwork = strings.TrimPrefix(obj.NetworkConfig.Subnetwork, "https://www.googleapis.com/compute/v1/")
+
+	if obj.PodIpv4CidrSize == 0 {
+		obj.PodIpv4CidrSize = 24
+	}
+
+	if obj.UpgradeSettings == nil {
+		obj.UpgradeSettings = &pb.NodePool_UpgradeSettings{
+			MaxSurge:       1,
+			MaxUnavailable: 0,
+			Strategy:       PtrTo(pb.NodePoolUpdateStrategy_SURGE),
+		}
+	}
+
+	return nil
+}
+
+func (s *ClusterManagerV1) populateNodeConfig(obj *pb.NodeConfig) error {
+
+	// Disk Size / Type
+	if obj.DiskSizeGb == 0 {
+		obj.DiskSizeGb = 100
+	}
+	if obj.DiskType == "" {
+		if strings.HasPrefix(obj.MachineType, "n4-") {
+			obj.DiskType = "hyperdisk-balanced"
+		} else {
+			obj.DiskType = "pd-balanced"
+		}
+	}
+
+	if obj.BootDisk == nil {
+		obj.BootDisk = &pb.BootDisk{}
+	}
+	if obj.BootDisk.DiskType == "" {
+		obj.BootDisk.DiskType = obj.DiskType
+	}
+	if obj.BootDisk.SizeGb == 0 {
+		obj.BootDisk.SizeGb = int64(obj.DiskSizeGb)
+	}
+
+	// EffectiveCgroupMode
+	if obj.EffectiveCgroupMode == pb.NodeConfig_EFFECTIVE_CGROUP_MODE_UNSPECIFIED {
+		obj.EffectiveCgroupMode = pb.NodeConfig_EFFECTIVE_CGROUP_MODE_V2
+	}
+
+	if obj.ImageType == "" {
+		obj.ImageType = "COS_CONTAINERD"
+	}
+
+	if obj.KubeletConfig == nil {
+		obj.KubeletConfig = &pb.NodeKubeletConfig{}
+		obj.KubeletConfig.InsecureKubeletReadonlyPortEnabled = PtrTo(false)
+		obj.KubeletConfig.MaxParallelImagePulls = 2
+	} else {
+		if obj.KubeletConfig.InsecureKubeletReadonlyPortEnabled == nil {
+			obj.KubeletConfig.InsecureKubeletReadonlyPortEnabled = PtrTo(false)
+		}
+		if obj.KubeletConfig.MaxParallelImagePulls == 0 {
+			obj.KubeletConfig.MaxParallelImagePulls = 3
+		}
+	}
+
+	if obj.MachineType == "" {
+		obj.MachineType = "e2-medium"
+	}
+
+	if obj.Metadata == nil {
+		obj.Metadata = make(map[string]string)
+	}
+
+	if obj.Metadata["disable-legacy-endpoints"] == "" {
+		obj.Metadata["disable-legacy-endpoints"] = "true"
+	}
+
+	if obj.OauthScopes == nil {
+		obj.OauthScopes = []string{
+			"https://www.googleapis.com/auth/devstorage.read_only",
+			"https://www.googleapis.com/auth/logging.write",
+			"https://www.googleapis.com/auth/monitoring",
+			"https://www.googleapis.com/auth/service.management.readonly",
+			"https://www.googleapis.com/auth/servicecontrol",
+			"https://www.googleapis.com/auth/trace.append",
+		}
+	}
+
+	if obj.ResourceLabels == nil {
+		obj.ResourceLabels = make(map[string]string)
+	}
+	obj.ResourceLabels["goog-gke-node-pool-provisioning-model"] = "on-demand"
+
+	if obj.ServiceAccount == "" {
+		obj.ServiceAccount = "default"
+	}
+
+	if obj.ShieldedInstanceConfig == nil {
+		obj.ShieldedInstanceConfig = &pb.ShieldedInstanceConfig{
+			EnableIntegrityMonitoring: true,
+		}
+	}
+
+	if obj.WindowsNodeConfig == nil {
+		obj.WindowsNodeConfig = &pb.WindowsNodeConfig{}
+	}
+
+	if obj.ConfidentialNodes != nil {
+		if obj.ConfidentialNodes.Enabled &&
+			obj.ConfidentialNodes.ConfidentialInstanceType == pb.ConfidentialNodes_CONFIDENTIAL_INSTANCE_TYPE_UNSPECIFIED {
+			obj.ConfidentialNodes.ConfidentialInstanceType = pb.ConfidentialNodes_SEV
+		}
+	}
+
+	return nil
+}
+
+func (s *ClusterManagerV1) populateAutoprovisioningNodePoolDefaults(obj *pb.AutoprovisioningNodePoolDefaults) error {
+
+	if obj.OauthScopes == nil {
+		obj.OauthScopes = []string{
+			"https://www.googleapis.com/auth/userinfo.email",
+			"https://www.googleapis.com/auth/cloud-platform",
+		}
+	} else {
+		// TODO: Reach out to API team to get clarification of the following behavior:
+		// When the input is
+		// "oauthScopes": [
+		//   "https://www.googleapis.com/auth/devstorage.read_only",
+		//   "https://www.googleapis.com/auth/logging.write"
+		// ],
+		// the output becomes
+		// "oauthScopes": [
+		//   "https://www.googleapis.com/auth/devstorage.read_only",
+		//   "https://www.googleapis.com/auth/logging.write",
+		//   "https://www.googleapis.com/auth/monitoring"
+		// ],
+		hasMonitoring := false
+		hasLoggingWrite := false
+		for _, scope := range obj.OauthScopes {
+			if scope == "https://www.googleapis.com/auth/monitoring" {
+				hasMonitoring = true
+			}
+			if scope == "https://www.googleapis.com/auth/logging.write" {
+				hasLoggingWrite = true
+			}
+		}
+		if hasLoggingWrite && !hasMonitoring {
+			obj.OauthScopes = append(obj.OauthScopes, "https://www.googleapis.com/auth/monitoring")
+		}
+	}
+
+	if obj.UpgradeSettings == nil {
+		obj.UpgradeSettings = &pb.NodePool_UpgradeSettings{}
+	}
+	if obj.UpgradeSettings.Strategy == nil {
+		obj.UpgradeSettings.Strategy = PtrTo(pb.NodePoolUpdateStrategy_SURGE)
+	}
+
+	if obj.Management == nil {
+		obj.Management = &pb.NodeManagement{
+			AutoRepair:  true,
+			AutoUpgrade: true,
+		}
+	}
+
+	// According to the proto:
+	//   This field is deprecated, min_cpu_platform should be specified using
+	//   `cloud.google.com/requested-min-cpu-platform` label selector on the pod.
+	//   To unset the min cpu platform field pass "automatic"
+	//   as field value.
+	if obj.MinCpuPlatform == "automatic" {
+		obj.MinCpuPlatform = ""
+	}
+
+	return nil
+}
+
+func (s *ClusterManagerV1) UpdateNodePool(ctx context.Context, req *pb.UpdateNodePoolRequest) (*pb.Operation, error) {
+	reqName := req.GetName()
+
+	name, err := s.parseNodePoolName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	obj := &pb.NodePool{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	klog.Infof("UpdateNodePool %v", prototext.Format(req))
+
+	update := proto.CloneOf(req)
+	update.Name = ""
+	update.NodePoolId = ""
+	update.ProjectId = ""
+	update.Zone = ""
+	update.ClusterId = ""
+
+	if update.Taints != nil {
+		obj.Config.Taints = update.GetTaints().Taints
+		update.Taints = nil
+	}
+
+	if update.LinuxNodeConfig != nil {
+		if obj.Config == nil {
+			obj.Config = &pb.NodeConfig{}
+		}
+		obj.Config.LinuxNodeConfig = update.LinuxNodeConfig
+		update.LinuxNodeConfig = nil
+	}
+	if update.KubeletConfig != nil {
+		if obj.Config == nil {
+			obj.Config = &pb.NodeConfig{}
+		}
+		obj.Config.KubeletConfig = update.GetKubeletConfig()
+		if obj.Config.KubeletConfig.InsecureKubeletReadonlyPortEnabled == nil {
+			obj.Config.KubeletConfig.InsecureKubeletReadonlyPortEnabled = PtrTo(false)
+		}
+		if obj.Config.KubeletConfig.MaxParallelImagePulls == 0 {
+			obj.Config.KubeletConfig.MaxParallelImagePulls = 3
+		}
+		update.KubeletConfig = nil
+	}
+	if update.ResourceManagerTags != nil {
+		if obj.Config == nil {
+			obj.Config = &pb.NodeConfig{}
+		}
+		obj.Config.ResourceManagerTags = update.ResourceManagerTags
+		update.ResourceManagerTags = nil
+	}
+	if update.ContainerdConfig != nil {
+		if obj.Config == nil {
+			obj.Config = &pb.NodeConfig{}
+		}
+		obj.Config.ContainerdConfig = update.ContainerdConfig
+		update.ContainerdConfig = nil
+	}
+
+	// TODO: Support more updates!
+
+	if !proto.Equal(update, &pb.UpdateNodePoolRequest{}) {
+		return nil, status.Errorf(codes.InvalidArgument, "update was not fully implemented UpdateNodePoolRequest=%v", prototext.Format(update))
+	}
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	op := &pb.Operation{
+		Zone:       name.Location,
+		TargetLink: buildSelfLink(ctx, AsZonalLink(name.LinkWithNumber())),
+	}
+	if req.GetKubeletConfig() != nil {
+		op.OperationType = pb.Operation_UPGRADE_NODES
+	}
+	return s.startLRO(ctx, name.Project, op, func() (proto.Message, error) {
+		return obj, nil
+	})
+}
+
+func (s *ClusterManagerV1) SetNodePoolSize(ctx context.Context, req *pb.SetNodePoolSizeRequest) (*pb.Operation, error) {
+	name, err := s.parseNodePoolName(req.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	obj := &pb.NodePool{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	obj.InitialNodeCount = req.NodeCount
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	op := &pb.Operation{
+		Zone:       name.Location,
+		TargetLink: buildSelfLink(ctx, AsZonalLink(name.LinkWithNumber())),
+	}
+	return s.startLRO(ctx, name.Project, op, func() (proto.Message, error) {
+		return obj, nil
+	})
+}
+
+func (s *ClusterManagerV1) DeleteNodePool(ctx context.Context, req *pb.DeleteNodePoolRequest) (*pb.Operation, error) {
+	name, err := s.parseNodePoolName(req.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	clusterName := name.ClusterName()
+	clusterFqn := clusterName.String()
+	cluster := &pb.Cluster{}
+	if err := s.storage.Get(ctx, clusterFqn, cluster); err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	oldObj := &pb.NodePool{}
+	if err := s.storage.Delete(ctx, fqn, oldObj); err != nil {
+		return nil, err
+	}
+
+	// Update the cluster's NodePools list after deletion
+	var newNodePools []*pb.NodePool
+	for _, np := range cluster.NodePools {
+		if np.Name != name.NodePool {
+			newNodePools = append(newNodePools, np)
+		}
+	}
+	cluster.NodePools = newNodePools
+
+	// To match realGCP, if the default node pool is deleted, remove NodeConfig on the cluster.
+	if name.NodePool == "default-pool" {
+		cluster.NodeConfig = nil
+	}
+
+	if err := s.storage.Update(ctx, clusterFqn, cluster); err != nil {
+		return nil, err
+	}
+
+	if err := s.deleteMockIGM(ctx, oldObj.InstanceGroupUrls); err != nil {
+		klog.Errorf("failed to delete mock IGM: %v", err)
+	}
+
+	op := &pb.Operation{
+		Zone:          name.Location,
+		OperationType: pb.Operation_DELETE_NODE_POOL,
+		TargetLink:    buildSelfLink(ctx, AsZonalLink(name.LinkWithNumber())),
+	}
+	return s.startLRO(ctx, name.Project, op, func() (proto.Message, error) {
+		return oldObj, nil
+	})
+}
+
+type nodePoolName struct {
+	Project  *projects.ProjectData
+	Location string
+	Cluster  string
+	NodePool string
+}
+
+func (n *nodePoolName) String() string {
+	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/clusters/" + n.Cluster + "/nodePools/" + n.NodePool
+}
+
+func (n *nodePoolName) LinkWithNumber() string {
+	return fmt.Sprintf("projects/%d/locations/%s/clusters/%s/nodePools/%s", n.Project.Number, n.Location, n.Cluster, n.NodePool)
+}
+
+func (n *nodePoolName) ClusterName() *clusterName {
+	return &clusterName{
+		Project:  n.Project,
+		Location: n.Location,
+		Cluster:  n.Cluster,
+	}
+}
+
+// parseNodePoolName parses a string into a nodePoolName.
+// The expected form is `projects/*/locations/*/clusters/*`.
+func (s *MockService) parseNodePoolName(name string) (*nodePoolName, error) {
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 8 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "clusters" && tokens[6] == "nodePools" {
+		project, err := s.Projects.GetProjectByID(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		name := &nodePoolName{
+			Project:  project,
+			Location: tokens[3],
+			Cluster:  tokens[5],
+			NodePool: tokens[7],
+		}
+
+		return name, nil
+	} else {
+		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+	}
+}
+
+func (s *ClusterManagerV1) createMockIGM(ctx context.Context, project *projects.ProjectData, instanceGroupUrls []string, initialNodeCount int32) error {
+	for _, igmUrl := range instanceGroupUrls {
+		// Extract FQN from URL
+		// https://www.googleapis.com/compute/v1/projects/%s/zones/%s/instanceGroupManagers/%s
+		prefix := "https://www.googleapis.com/compute/v1/"
+		if !strings.HasPrefix(igmUrl, prefix) {
+			continue
+		}
+		fqn := strings.TrimPrefix(igmUrl, prefix)
+
+		tokens := strings.Split(fqn, "/")
+		if len(tokens) < 6 {
+			continue
+		}
+		igmName := tokens[5]
+		zone := tokens[3]
+
+		igm := &computepb.InstanceGroupManager{
+			Name:             PtrTo(igmName),
+			BaseInstanceName: PtrTo(strings.TrimSuffix(igmName, "-grp")),
+			TargetSize:       PtrTo(initialNodeCount),
+			SelfLink:         PtrTo(igmUrl),
+			Zone:             PtrTo(mockcompute.BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/zones/%s", project.ID, zone))),
+			Status: &computepb.InstanceGroupManagerStatus{
+				IsStable: PtrTo(true),
+			},
+			CurrentActions: &computepb.InstanceGroupManagerActionsSummary{
+				None: PtrTo(initialNodeCount),
+			},
+			Kind:              PtrTo("compute#instanceGroupManager"),
+			Id:                PtrTo(uint64(123456789012)),
+			CreationTimestamp: PtrTo("2024-04-01T12:34:56.123456Z"),
+			Fingerprint:       PtrTo("abcdef0123A="),
+			UpdatePolicy: &computepb.InstanceGroupManagerUpdatePolicy{
+				Type: PtrTo("OPPORTUNISTIC"),
+				MaxSurge: &computepb.FixedOrPercent{
+					Fixed: PtrTo(int32(1)),
+				},
+				MaxUnavailable: &computepb.FixedOrPercent{
+					Fixed: PtrTo(int32(1)),
+				},
+				MinimalAction:     PtrTo("REPLACE"),
+				ReplacementMethod: PtrTo("SUBSTITUTE"),
+			},
+			InstanceLifecyclePolicy: &computepb.InstanceGroupManagerInstanceLifecyclePolicy{
+				DefaultActionOnFailure: PtrTo("REPAIR"),
+				ForceUpdateOnRepair:    PtrTo("YES"),
+			},
+			InstanceGroup:    PtrTo(mockcompute.BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/zones/%s/instanceGroups/%s", project.ID, zone, igmName))),
+			InstanceTemplate: PtrTo(mockcompute.BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/global/instanceTemplates/%s", project.ID, strings.TrimSuffix(igmName, "-grp")))),
+		}
+
+		if err := s.storage.Create(ctx, fqn, igm); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func (s *ClusterManagerV1) deleteMockIGM(ctx context.Context, instanceGroupUrls []string) error {
+	for _, igmUrl := range instanceGroupUrls {
+		prefix := "https://www.googleapis.com/compute/v1/"
+		if !strings.HasPrefix(igmUrl, prefix) {
+			continue
+		}
+		fqn := strings.TrimPrefix(igmUrl, prefix)
+
+		if err := s.storage.Delete(ctx, fqn, &computepb.InstanceGroupManager{}); err != nil {
+			return err
+		}
+	}
+	return nil
+}

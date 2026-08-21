@@ -1,0 +1,76 @@
+{
+  "name": "{{cluster}}",
+  "project": "{{project}}",
+  "location": "us-west1",
+  "description": "A sample aws cluster",
+  "networking": {
+    "vpcId": "{{aws_vpc}}",
+    "podAddressCidrBlocks": ["10.2.0.0/16"],
+    "serviceAddressCidrBlocks": ["10.1.0.0/16"],
+    "perNodePoolSgRulesDisabled": false
+  },
+  "awsRegion": "{{aws_region}}",
+  "controlPlane": {
+    "version": "1.28.3-gke.700",
+    "instanceType": "m5.large",
+    "sshConfig": {
+      "ec2KeyPair": "{{byo_multicloud_prefix}}-1p-dev-ssh"
+    },
+    "subnetIds": ["{{aws_subnet}}"],
+    "configEncryption": {
+      "kmsKeyArn": "arn:aws:kms:{{aws_region}}:{{aws_account_id}}:key/{{aws_database_encryption_key}}"
+    },
+    "securityGroupIds": ["{{aws_security_group}}"],
+    "iamInstanceProfile": "{{byo_multicloud_prefix}}-1p-dev-controlplane",
+    "rootVolume": {
+      "sizeGib": 10,
+      "kmsKeyArn": "arn:aws:kms:{{aws_region}}:{{aws_account_id}}:key/{{aws_volume_encryption_key}}",
+      "volumeType": "GP3",
+      "iops": 3000,
+      "throughput": 500
+    },
+    "mainVolume": {
+      "sizeGib": 10,
+      "kmsKeyArn": "arn:aws:kms:{{aws_region}}:{{aws_account_id}}:key/{{aws_volume_encryption_key}}",
+      "volumeType": "GP3",
+      "iops": 3000,
+      "throughput": 500
+    },
+    "databaseEncryption": {
+      "kmsKeyArn": "arn:aws:kms:{{aws_region}}:{{aws_account_id}}:key/{{aws_database_encryption_key}}"
+    },
+    "awsServicesAuthentication": {
+      "roleArn": "arn:aws:iam::{{aws_account_id}}:role/{{byo_multicloud_prefix}}-1p-dev-oneplatform",
+      "roleSessionName": "{{byo_multicloud_prefix}}-1p-dev-session"
+    },
+    "tags": {
+      "owner": "{{test_service_account}}",
+      "googleinternal:serviceAccount": "{{test_service_account}}"
+    },
+    "proxyConfig": {
+      "secretArn": "arn:aws:secretsmanager:us-west-2:126285863215:secret:proxy_config20210824150329476300000001-ABCDEF",
+      "secretVersion": "12345678-ABCD-EFGH-IJKL-987654321098"
+    }
+  },
+  "authorization": {
+    "adminUsers": [
+      {
+        "username": "user@domain.com"
+      }
+    ],
+    "adminGroups": [
+      {
+        "group": "group@domain.com"
+      }
+    ]
+  },
+  "annotations": {
+    "label-one": "value-one"
+  },
+  "fleet": {
+    "project": "{{project_number}}"
+  },
+  "binaryAuthorization": {
+    "evaluationMode": "DISABLED"
+  }
+}

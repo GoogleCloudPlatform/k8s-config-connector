@@ -1,0 +1,104 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum DatafusionBetaInstanceTypeEnum {
+  DatafusionBetaInstanceTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  DatafusionBetaInstanceTypeEnumTYPE_UNSPECIFIED = 1;
+  DatafusionBetaInstanceTypeEnumBASIC = 2;
+  DatafusionBetaInstanceTypeEnumENTERPRISE = 3;
+  DatafusionBetaInstanceTypeEnumDEVELOPER = 4;
+}
+
+enum DatafusionBetaInstanceStateEnum {
+  DatafusionBetaInstanceStateEnumNO_VALUE_DO_NOT_USE = 0;
+  DatafusionBetaInstanceStateEnumSTATE_UNSPECIFIED = 1;
+  DatafusionBetaInstanceStateEnumENABLED = 2;
+  DatafusionBetaInstanceStateEnumDISABLED = 3;
+  DatafusionBetaInstanceStateEnumUNKNOWN = 4;
+}
+
+message DatafusionBetaInstance {
+  string name = 1;
+  string description = 2;
+  DatafusionBetaInstanceTypeEnum type = 3;
+  bool enable_stackdriver_logging = 4;
+  bool enable_stackdriver_monitoring = 5;
+  bool private_instance = 6;
+  DatafusionBetaInstanceNetworkConfig network_config = 7;
+  map<string, string> labels = 8;
+  map<string, string> options = 9;
+  string create_time = 10;
+  string update_time = 11;
+  DatafusionBetaInstanceStateEnum state = 12;
+  string state_message = 13;
+  string service_endpoint = 14;
+  string zone = 15;
+  string version = 16;
+  string display_name = 17;
+  repeated DatafusionBetaInstanceAvailableVersion available_version = 18;
+  string api_endpoint = 19;
+  string gcs_bucket = 20;
+  string p4_service_account = 21;
+  string tenant_project_id = 22;
+  string dataproc_service_account = 23;
+  string project = 24;
+  string location = 25;
+}
+
+message DatafusionBetaInstanceNetworkConfig {
+  string network = 1;
+  string ip_allocation = 2;
+}
+
+message DatafusionBetaInstanceAvailableVersion {
+  string version_number = 1;
+  bool default_version = 2;
+  repeated string available_features = 3;
+}
+
+message ApplyDatafusionBetaInstanceRequest {
+  DatafusionBetaInstance resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteDatafusionBetaInstanceRequest {
+  string service_account_file = 1;
+  DatafusionBetaInstance resource = 2;
+}
+
+message ListDatafusionBetaInstanceRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListDatafusionBetaInstanceResponse {
+  repeated DatafusionBetaInstance items = 1;
+}
+
+service DatafusionBetaInstanceService {
+  rpc ApplyDatafusionBetaInstance(ApplyDatafusionBetaInstanceRequest) returns (DatafusionBetaInstance);
+  rpc DeleteDatafusionBetaInstance(DeleteDatafusionBetaInstanceRequest) returns (google.protobuf.Empty);
+  rpc ListDatafusionBetaInstance(ListDatafusionBetaInstanceRequest) returns (ListDatafusionBetaInstanceResponse);
+}

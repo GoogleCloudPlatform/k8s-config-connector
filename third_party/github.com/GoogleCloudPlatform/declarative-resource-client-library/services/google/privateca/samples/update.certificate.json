@@ -1,0 +1,46 @@
+{
+  "project": "{{project}}",
+  "location": "{{region}}",
+  "name": "{{cert}}",
+  "certificateAuthority": "{{ref:basic.certificate_authority.json:name}}",
+  "caPool": "no-delete-test",
+  "lifetime": "860s",
+  "subjectMode": "DEFAULT",
+  "config": {
+    "subjectConfig": {
+      "subject": {
+        "commonName": "san1.example.com",
+        "countryCode": "us",
+        "organization": "google",
+        "organizationalUnit": "enterprise",
+        "locality": "mountain view",
+        "province": "california",
+        "streetAddress": "1600 amphitheatre parkway",
+        "postalCode": "94109"
+      },
+      "subjectAltName": {
+        "dnsNames": ["san1.example.com"],
+        "uris": ["http://www.ietf.org/rfc/rfc3986.txt"],
+        "emailAddresses": ["magic-modules-eng@google.com"],
+        "ipAddresses": ["127.0.0.1"]
+      }
+    },
+    "x509Config": {
+      "caOptions": {
+        "nonCa": true
+      },
+      "keyUsage": {
+        "baseKeyUsage": {
+          "crlSign": true
+        }
+      }
+    },
+    "publicKey": {
+      "format": "PEM",
+      "key": "LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQ0lqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FnOEFNSUlDQ2dLQ0FnRUF2NndlQzFhVDE2bDJxUzZxZFljeQo3Qk9qelA3VHdUOXpVQWlGaFdwTDI1NkdScUM4eVFSZHFNc2k2OFEvLzc2MklVeXUvcWFIYkVnUThXUm1RZFZWCkdEbHhrQmZyQS9pWEIyZGd1anE4amgwSFdJVjJldjNUZXJWM2FVd3ZZVWxyb3docTAyN1NYOVUxaGJ1ZmRHQ00KdUtzSGlGMDVFcmdOdkV1UjhYQWtlSi9ZVjJEVjIrc1JxK1dnOXk0UndVWWJkY2hkRnR5MWQ1U1gvczBZcXN3Zwp5T0c5Vm9DZFI3YmFGMjJ1Z2hWUjQ0YVJtKzgzbWd0cUFaNE0rUnBlN0pHUnNVR1kvcFIzOTFUb2kwczhFbjE1CkpHaUFocVgyVzBVby9GWlpyeTN5dXFSZmRIWUVOQitBRHV5VE1UclVhS1p2N2V1YTBsVEJ6NW9vbTNqU0YzZ3YKSTdTUW9MZEsvamhFVk9PcTQxSWpCOEQ2MFNnZDY5YkQ3eVRJNTE2eXZaL3MzQXlLelc2ZjZLbmpkYkNjWktLVAowR0FlUE5MTmhEWWZTbEE5YndKOEhRUzJGZW5TcFNUQXJLdkdpVnJzaW5KdU5qYlFkUHVRSGNwV2Y5eDFtM0dSClRNdkYrVE5ZTS9scDdJTDJWTWJKUmZXUHkxaVd4bTlGMVlyNmRrSFZvTFA3b2NZa05SSG9QTHV0NUU2SUZKdEsKbFZJMk5uZVVZSkduWVNPKzF4UFY5VHFsSmVNTndyM3VGTUFOOE4vb0IzZjRXV3d1UllnUjBMNWcyQStMdngrZwpiYmRsK1RiLzBDTmZzbGZTdURyRlY4WjRuNmdWd2I5WlBHbE5IQ3ZucVJmTFVwUkZKd21SN1VZdnppL0U3clhKCkVEa0srdGNuUGt6Mkp0amRMS1I3cVZjQ0F3RUFBUT09Ci0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLQ=="
+    }
+  },
+  "labels": {
+   "value": "key"
+  }
+}

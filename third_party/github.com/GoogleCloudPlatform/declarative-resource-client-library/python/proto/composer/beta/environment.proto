@@ -1,0 +1,153 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+enum ComposerBetaEnvironmentStateEnum {
+  ComposerBetaEnvironmentStateEnumNO_VALUE_DO_NOT_USE = 0;
+  ComposerBetaEnvironmentStateEnumSTATE_UNSPECIFIED = 1;
+  ComposerBetaEnvironmentStateEnumCREATING = 2;
+  ComposerBetaEnvironmentStateEnumRUNNING = 3;
+  ComposerBetaEnvironmentStateEnumUPDATING = 4;
+  ComposerBetaEnvironmentStateEnumDELETING = 5;
+  ComposerBetaEnvironmentStateEnumERROR = 6;
+}
+
+message ComposerBetaEnvironment {
+  string name = 1;
+  ComposerBetaEnvironmentConfig config = 2;
+  string uuid = 3;
+  ComposerBetaEnvironmentStateEnum state = 4;
+  string create_time = 5;
+  string update_time = 6;
+  map<string, string> labels = 7;
+  string project = 8;
+  string location = 9;
+}
+
+message ComposerBetaEnvironmentConfig {
+  string gke_cluster = 1;
+  string dag_gcs_prefix = 2;
+  int64 node_count = 3;
+  ComposerBetaEnvironmentConfigSoftwareConfig software_config = 4;
+  ComposerBetaEnvironmentConfigNodeConfig node_config = 5;
+  ComposerBetaEnvironmentConfigPrivateEnvironmentConfig private_environment_config = 6;
+  ComposerBetaEnvironmentConfigWebServerNetworkAccessControl web_server_network_access_control = 7;
+  ComposerBetaEnvironmentConfigDatabaseConfig database_config = 8;
+  ComposerBetaEnvironmentConfigWebServerConfig web_server_config = 9;
+  ComposerBetaEnvironmentConfigEncryptionConfig encryption_config = 10;
+  string airflow_uri = 11;
+  ComposerBetaEnvironmentConfigMaintenanceWindow maintenance_window = 12;
+}
+
+message ComposerBetaEnvironmentConfigSoftwareConfig {
+  string image_version = 1;
+  map<string, string> airflow_config_overrides = 2;
+  map<string, string> pypi_packages = 3;
+  map<string, string> env_variables = 4;
+  string python_version = 5;
+}
+
+message ComposerBetaEnvironmentConfigNodeConfig {
+  string location = 1;
+  string machine_type = 2;
+  string network = 3;
+  string subnetwork = 4;
+  int64 disk_size_gb = 5;
+  repeated string oauth_scopes = 6;
+  string service_account = 7;
+  repeated string tags = 8;
+  ComposerBetaEnvironmentConfigNodeConfigIPAllocationPolicy ip_allocation_policy = 9;
+  int64 max_pods_per_node = 10;
+}
+
+message ComposerBetaEnvironmentConfigNodeConfigIPAllocationPolicy {
+  bool use_ip_aliases = 1;
+  string cluster_secondary_range_name = 2;
+  string cluster_ipv4_cidr_block = 3;
+  string services_secondary_range_name = 4;
+  string services_ipv4_cidr_block = 5;
+}
+
+message ComposerBetaEnvironmentConfigPrivateEnvironmentConfig {
+  bool enable_private_environment = 1;
+  ComposerBetaEnvironmentConfigPrivateEnvironmentConfigPrivateClusterConfig private_cluster_config = 2;
+  string web_server_ipv4_cidr_block = 3;
+  string cloud_sql_ipv4_cidr_block = 4;
+  string web_server_ipv4_reserved_range = 5;
+}
+
+message ComposerBetaEnvironmentConfigPrivateEnvironmentConfigPrivateClusterConfig {
+  bool enable_private_endpoint = 1;
+  string master_ipv4_cidr_block = 2;
+  string master_ipv4_reserved_range = 3;
+}
+
+message ComposerBetaEnvironmentConfigWebServerNetworkAccessControl {
+  repeated ComposerBetaEnvironmentConfigWebServerNetworkAccessControlAllowedIPRanges allowed_ip_ranges = 1;
+}
+
+message ComposerBetaEnvironmentConfigWebServerNetworkAccessControlAllowedIPRanges {
+  string value = 1;
+  string description = 2;
+}
+
+message ComposerBetaEnvironmentConfigDatabaseConfig {
+  string machine_type = 1;
+}
+
+message ComposerBetaEnvironmentConfigWebServerConfig {
+  string machine_type = 1;
+}
+
+message ComposerBetaEnvironmentConfigEncryptionConfig {
+  string kms_key_name = 1;
+}
+
+message ComposerBetaEnvironmentConfigMaintenanceWindow {
+  string start_time = 1;
+  string end_time = 2;
+  string recurrence = 3;
+}
+
+message ApplyComposerBetaEnvironmentRequest {
+  ComposerBetaEnvironment resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteComposerBetaEnvironmentRequest {
+  string service_account_file = 1;
+  ComposerBetaEnvironment resource = 2;
+}
+
+message ListComposerBetaEnvironmentRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListComposerBetaEnvironmentResponse {
+  repeated ComposerBetaEnvironment items = 1;
+}
+
+service ComposerBetaEnvironmentService {
+  rpc ApplyComposerBetaEnvironment(ApplyComposerBetaEnvironmentRequest) returns (ComposerBetaEnvironment);
+  rpc DeleteComposerBetaEnvironment(DeleteComposerBetaEnvironmentRequest) returns (google.protobuf.Empty);
+  rpc ListComposerBetaEnvironment(ListComposerBetaEnvironmentRequest) returns (ListComposerBetaEnvironmentResponse);
+}

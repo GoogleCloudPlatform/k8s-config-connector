@@ -1,0 +1,184 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum ContainerawsBetaNodePoolConfigRootVolumeVolumeTypeEnum {
+  ContainerawsBetaNodePoolConfigRootVolumeVolumeTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ContainerawsBetaNodePoolConfigRootVolumeVolumeTypeEnumVOLUME_TYPE_UNSPECIFIED = 1;
+  ContainerawsBetaNodePoolConfigRootVolumeVolumeTypeEnumGP2 = 2;
+  ContainerawsBetaNodePoolConfigRootVolumeVolumeTypeEnumGP3 = 3;
+}
+
+enum ContainerawsBetaNodePoolConfigTaintsEffectEnum {
+  ContainerawsBetaNodePoolConfigTaintsEffectEnumNO_VALUE_DO_NOT_USE = 0;
+  ContainerawsBetaNodePoolConfigTaintsEffectEnumEFFECT_UNSPECIFIED = 1;
+  ContainerawsBetaNodePoolConfigTaintsEffectEnumNO_SCHEDULE = 2;
+  ContainerawsBetaNodePoolConfigTaintsEffectEnumPREFER_NO_SCHEDULE = 3;
+  ContainerawsBetaNodePoolConfigTaintsEffectEnumNO_EXECUTE = 4;
+}
+
+enum ContainerawsBetaNodePoolConfigInstancePlacementTenancyEnum {
+  ContainerawsBetaNodePoolConfigInstancePlacementTenancyEnumNO_VALUE_DO_NOT_USE = 0;
+  ContainerawsBetaNodePoolConfigInstancePlacementTenancyEnumTENANCY_UNSPECIFIED = 1;
+  ContainerawsBetaNodePoolConfigInstancePlacementTenancyEnumDEFAULT = 2;
+  ContainerawsBetaNodePoolConfigInstancePlacementTenancyEnumDEDICATED = 3;
+  ContainerawsBetaNodePoolConfigInstancePlacementTenancyEnumHOST = 4;
+}
+
+enum ContainerawsBetaNodePoolStateEnum {
+  ContainerawsBetaNodePoolStateEnumNO_VALUE_DO_NOT_USE = 0;
+  ContainerawsBetaNodePoolStateEnumSTATE_UNSPECIFIED = 1;
+  ContainerawsBetaNodePoolStateEnumPROVISIONING = 2;
+  ContainerawsBetaNodePoolStateEnumRUNNING = 3;
+  ContainerawsBetaNodePoolStateEnumRECONCILING = 4;
+  ContainerawsBetaNodePoolStateEnumSTOPPING = 5;
+  ContainerawsBetaNodePoolStateEnumERROR = 6;
+  ContainerawsBetaNodePoolStateEnumDEGRADED = 7;
+}
+
+message ContainerawsBetaNodePool {
+  string name = 1;
+  string version = 2;
+  ContainerawsBetaNodePoolConfig config = 3;
+  ContainerawsBetaNodePoolAutoscaling autoscaling = 4;
+  string subnet_id = 5;
+  ContainerawsBetaNodePoolStateEnum state = 6;
+  string uid = 7;
+  bool reconciling = 8;
+  string create_time = 9;
+  string update_time = 10;
+  string etag = 11;
+  map<string, string> annotations = 12;
+  ContainerawsBetaNodePoolMaxPodsConstraint max_pods_constraint = 13;
+  ContainerawsBetaNodePoolManagement management = 14;
+  ContainerawsBetaNodePoolUpdateSettings update_settings = 15;
+  string project = 16;
+  string location = 17;
+  string cluster = 18;
+}
+
+message ContainerawsBetaNodePoolConfig {
+  string instance_type = 1;
+  ContainerawsBetaNodePoolConfigRootVolume root_volume = 2;
+  repeated ContainerawsBetaNodePoolConfigTaints taints = 3;
+  map<string, string> labels = 4;
+  map<string, string> tags = 5;
+  string iam_instance_profile = 6;
+  ContainerawsBetaNodePoolConfigConfigEncryption config_encryption = 7;
+  ContainerawsBetaNodePoolConfigSshConfig ssh_config = 8;
+  ContainerawsBetaNodePoolConfigSpotConfig spot_config = 9;
+  repeated string security_group_ids = 10;
+  ContainerawsBetaNodePoolConfigProxyConfig proxy_config = 11;
+  ContainerawsBetaNodePoolConfigInstancePlacement instance_placement = 12;
+  string image_type = 13;
+  ContainerawsBetaNodePoolConfigAutoscalingMetricsCollection autoscaling_metrics_collection = 14;
+}
+
+message ContainerawsBetaNodePoolConfigRootVolume {
+  int64 size_gib = 1;
+  ContainerawsBetaNodePoolConfigRootVolumeVolumeTypeEnum volume_type = 2;
+  int64 iops = 3;
+  int64 throughput = 4;
+  string kms_key_arn = 5;
+}
+
+message ContainerawsBetaNodePoolConfigTaints {
+  string key = 1;
+  string value = 2;
+  ContainerawsBetaNodePoolConfigTaintsEffectEnum effect = 3;
+}
+
+message ContainerawsBetaNodePoolConfigConfigEncryption {
+  string kms_key_arn = 1;
+}
+
+message ContainerawsBetaNodePoolConfigSshConfig {
+  string ec2_key_pair = 1;
+}
+
+message ContainerawsBetaNodePoolConfigSpotConfig {
+  repeated string instance_types = 1;
+}
+
+message ContainerawsBetaNodePoolConfigProxyConfig {
+  string secret_arn = 1;
+  string secret_version = 2;
+}
+
+message ContainerawsBetaNodePoolConfigInstancePlacement {
+  ContainerawsBetaNodePoolConfigInstancePlacementTenancyEnum tenancy = 1;
+}
+
+message ContainerawsBetaNodePoolConfigAutoscalingMetricsCollection {
+  string granularity = 1;
+  repeated string metrics = 2;
+}
+
+message ContainerawsBetaNodePoolAutoscaling {
+  int64 min_node_count = 1;
+  int64 max_node_count = 2;
+}
+
+message ContainerawsBetaNodePoolMaxPodsConstraint {
+  int64 max_pods_per_node = 1;
+}
+
+message ContainerawsBetaNodePoolManagement {
+  bool auto_repair = 1;
+}
+
+message ContainerawsBetaNodePoolUpdateSettings {
+  ContainerawsBetaNodePoolUpdateSettingsSurgeSettings surge_settings = 1;
+}
+
+message ContainerawsBetaNodePoolUpdateSettingsSurgeSettings {
+  int64 max_surge = 1;
+  int64 max_unavailable = 2;
+}
+
+message ApplyContainerawsBetaNodePoolRequest {
+  ContainerawsBetaNodePool resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteContainerawsBetaNodePoolRequest {
+  string service_account_file = 1;
+  ContainerawsBetaNodePool resource = 2;
+}
+
+message ListContainerawsBetaNodePoolRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+  string Cluster = 4;
+}
+
+message ListContainerawsBetaNodePoolResponse {
+  repeated ContainerawsBetaNodePool items = 1;
+}
+
+service ContainerawsBetaNodePoolService {
+  rpc ApplyContainerawsBetaNodePool(ApplyContainerawsBetaNodePoolRequest) returns (ContainerawsBetaNodePool);
+  rpc DeleteContainerawsBetaNodePool(DeleteContainerawsBetaNodePoolRequest) returns (google.protobuf.Empty);
+  rpc ListContainerawsBetaNodePool(ListContainerawsBetaNodePoolRequest) returns (ListContainerawsBetaNodePoolResponse);
+}

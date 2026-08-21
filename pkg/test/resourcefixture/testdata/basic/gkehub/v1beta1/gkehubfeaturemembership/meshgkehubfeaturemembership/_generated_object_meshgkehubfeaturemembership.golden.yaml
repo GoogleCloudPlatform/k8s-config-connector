@@ -1,0 +1,30 @@
+apiVersion: gkehub.cnrm.cloud.google.com/v1beta1
+kind: GKEHubFeatureMembership
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: gkehubfeaturemembership-mesh-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  featureRef:
+    name: gkehubfeature-mesh-${uniqueId}
+  location: global
+  membershipLocation: us-central1
+  membershipRef:
+    name: gkehubmembership-mesh-${uniqueId}
+  mesh:
+    management: MANAGEMENT_AUTOMATIC
+  projectRef:
+    name: gkehubfm-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  observedGeneration: 2

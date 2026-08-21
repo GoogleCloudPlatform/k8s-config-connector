@@ -1,0 +1,10 @@
+label: Config Connector IAPBrand
+markdownDescription: Creates yaml for a IAPBrand resource
+insertText: |
+  apiVersion: iap.cnrm.cloud.google.com/v1beta1
+  kind: IAPBrand
+  metadata:
+    name: \${1:iapbrand-name}
+  spec:
+    applicationTitle: \${2:test brand}
+    supportEmail: \${3:support@example.com}

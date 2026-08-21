@@ -1,0 +1,98 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: core.cnrm.cloud.google.com/v1alpha1
+kind: ServiceMapping
+metadata:
+  name: logging.cnrm.cloud.google.com
+  namespace: cnrm-system
+spec:
+  name: Logging
+  version: v1beta1
+  serviceHostName: "logging.googleapis.com"
+  resources:
+    - name: google_logging_log_sink
+      kind: LoggingLogSink
+      # Due to this being a custom KCC-only resource, the ID template is
+      # in a non-standard format to more easily allow for TF resource
+      # multiplexing.
+      idTemplate: "{{project?}}#{{folder?}}#{{org_id?}}#{{name}}"
+      # This TF resource has a custom crafted import ID that has an arbitrary format that is not able to be mapped
+      # cleanly to a URI, due to being a combination of multiple underlying resources.
+      idTemplateCanBeUsedToMatchResourceName: false
+      resourceAvailableInAssetInventory: true
+      metadataMapping:
+        name: name
+      resourceID:
+        targetField: name
+      iamMemberReferenceConfig:
+        targetField: writer_identity
+      resourceReferences:
+        - tfField: project
+          key: projectRef
+          description: |-
+            The project in which to create the sink. Only one of projectRef,
+            folderRef, or organizationRef may be specified.
+          gvk:
+            kind: Project
+            version: v1beta1
+            group: resourcemanager.cnrm.cloud.google.com
+          parent: true
+        - tfField: folder
+          key: folderRef
+          description: |-
+            The folder in which to create the sink. Only one of projectRef,
+            folderRef, or organizationRef may be specified.
+          gvk:
+            group: resourcemanager.cnrm.cloud.google.com
+            version: v1beta1
+            kind: Folder
+          parent: true
+          targetField: folder_id
+        - tfField: org_id
+          key: organizationRef
+          description: |-
+            The organization in which to create the sink. Only one of projectRef,
+            folderRef, or organizationRef may be specified.
+          gvk:
+            group: resourcemanager.cnrm.cloud.google.com
+            version: v1beta1
+            kind: Organization
+          parent: true
+        - tfField: destination
+          types:
+            - key: storageBucketRef
+              gvk:
+                kind: StorageBucket
+                version: v1beta1
+                group: storage.cnrm.cloud.google.com
+              valueTemplate: "storage.googleapis.com/{{value}}"
+            - key: bigQueryDatasetRef
+              gvk:
+                kind: BigQueryDataset
+                version: v1beta1
+                group: bigquery.cnrm.cloud.google.com
+              valueTemplate: "bigquery.googleapis.com/projects/{{project}}/datasets/{{value}}"
+            - key: pubSubTopicRef
+              gvk:
+                kind: PubSubTopic
+                version: v1beta1
+                group: pubsub.cnrm.cloud.google.com
+              valueTemplate: "pubsub.googleapis.com/projects/{{project}}/topics/{{value}}"
+            - key: loggingLogBucketRef
+              gvk:
+                kind: LoggingLogBucket
+                version: v1beta1
+                group: logging.cnrm.cloud.google.com
+              valueTemplate: "logging.googleapis.com/projects/{{project}}/locations/{{location}}/buckets/{{value}}"

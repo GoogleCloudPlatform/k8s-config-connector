@@ -1,0 +1,15 @@
+label: Config Connector DNSRecordSet
+markdownDescription: Creates yaml for a DNSRecordSet resource
+insertText: |
+  apiVersion: dns.cnrm.cloud.google.com/v1beta1
+  kind: DNSRecordSet
+  metadata:
+    name: \${1:dnsrecordset-name}
+  spec:
+    name: \${2:www.example.com.}
+    type: \${3:A}
+    ttl: \${4:300}
+    managedZoneRef:
+      name: \${5:dnsrecordset-dep-a}
+    rrdatas:
+    - \${6:8.8.8.8}

@@ -1,0 +1,139 @@
+// Copyright 2025 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package structuredreporting
+
+import (
+	"context"
+	"fmt"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	"google.golang.org/protobuf/encoding/prototext"
+	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/reflect/protoreflect"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"sigs.k8s.io/controller-runtime/pkg/log"
+	"sigs.k8s.io/controller-runtime/pkg/reconcile"
+)
+
+// DebugLogListener is a Listener that logs structured reporting events
+type DebugLogListener struct {
+}
+
+var _ Listener = &DebugLogListener{}
+
+// OnError is called when a controller calls ReportError
+func (l *DebugLogListener) OnError(ctx context.Context, err error, args ...any) {
+	log := log.FromContext(ctx)
+	log.Info("structuredreporting OnError",
+		"error", err)
+}
+
+// FormatAny is a utility function that will render a string representation of a protobuf message, or any other object.
+func FormatAny(obj any) string {
+	v := obj
+	if protoValue, ok := obj.(protoreflect.Value); ok {
+		val := protoValue.Interface()
+		switch val := val.(type) {
+		case string:
+			v = val
+		case proto.Message:
+			v = val
+		case protoreflect.Message:
+			v = val.Interface()
+		default:
+			return fmt.Sprintf("%v (type:proto:%T)", val, val)
+		}
+	}
+	switch v := v.(type) {
+	case string:
+		return v
+	case proto.Message:
+		return prototext.Format(v)
+	default:
+		return fmt.Sprintf("%v (type:%T)", v, v)
+	}
+}
+
+// OnDiff is called when a controller calls ReportDiffs
+func (l *DebugLogListener) OnDiff(ctx context.Context, diffs *Diff) {
+	log := log.FromContext(ctx)
+
+	var diffFields []string
+	for _, field := range diffs.Fields {
+		oldValue := ""
+		if field.Old != nil {
+			oldValue = FormatAny(field.Old)
+		}
+		newValue := ""
+		if field.New != nil {
+			newValue = FormatAny(field.New)
+		}
+		diffFields = append(diffFields, fmt.Sprintf("%s: %s -> %s", field.ID, oldValue, newValue))
+	}
+
+	log.Info("structuredreporting OnDiff",
+		"diff.controller", diffs.Controller,
+		"diff.fields", diffFields,
+		"diff.isNewObject", diffs.IsNewObject,
+	)
+}
+
+// OnReconcileStart is called when a controller calls ReportReconcileStart
+func (l *DebugLogListener) OnReconcileStart(ctx context.Context, u *unstructured.Unstructured, t k8s.ReconcilerType) {
+	log := log.FromContext(ctx)
+	log.Info("structuredreporting OnReconcileStart",
+		"object.kind", u.GroupVersionKind().Kind,
+		"object.name", u.GetName())
+}
+
+// OnReconcileEnd is called when a controller calls ReportReconcileEnd
+func (l *DebugLogListener) OnReconcileEnd(ctx context.Context, u *unstructured.Unstructured, result reconcile.Result, err error, t k8s.ReconcilerType) {
+	log := log.FromContext(ctx)
+	log.Info("structuredreporting OnReconcileEnd",
+		"object.kind", u.GroupVersionKind().Kind,
+		"object.name", u.GetName(),
+		"result", result,
+		"error", err)
+}
+
+// LogFieldUpdates is a Listener that logs updated fields during reconciliation,
+// only when objects are being updated.
+type LogFieldUpdates struct {
+}
+
+var _ Listener = &LogFieldUpdates{}
+
+// OnError is called when a controller calls ReportError
+func (l *LogFieldUpdates) OnError(ctx context.Context, err error, args ...any) {
+}
+
+// OnDiff is called when a controller calls ReportDiffs
+func (l *LogFieldUpdates) OnDiff(ctx context.Context, diffs *Diff) {
+	log := log.FromContext(ctx)
+	if !diffs.IsNewObject {
+		log.Info("detected changes to fields; triggering update",
+			"controller", diffs.Controller,
+			"changedFields", diffs.FieldIDs(),
+		)
+	}
+}
+
+// OnReconcileStart is called when a controller calls ReportReconcileStart
+func (l *LogFieldUpdates) OnReconcileStart(ctx context.Context, u *unstructured.Unstructured, t k8s.ReconcilerType) {
+}
+
+// OnReconcileEnd is called when a controller calls ReportReconcileEnd
+func (l *LogFieldUpdates) OnReconcileEnd(ctx context.Context, u *unstructured.Unstructured, result reconcile.Result, err error, t k8s.ReconcilerType) {
+}

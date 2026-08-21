@@ -1,0 +1,332 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum IdentitytoolkitAlphaConfigSignInEmailHashConfigAlgorithmEnum {
+  IdentitytoolkitAlphaConfigSignInEmailHashConfigAlgorithmEnumNO_VALUE_DO_NOT_USE = 0;
+  IdentitytoolkitAlphaConfigSignInEmailHashConfigAlgorithmEnumHASH_ALGORITHM_UNSPECIFIED = 1;
+  IdentitytoolkitAlphaConfigSignInEmailHashConfigAlgorithmEnumHMAC_SHA256 = 2;
+  IdentitytoolkitAlphaConfigSignInEmailHashConfigAlgorithmEnumHMAC_SHA1 = 3;
+  IdentitytoolkitAlphaConfigSignInEmailHashConfigAlgorithmEnumHMAC_MD5 = 4;
+  IdentitytoolkitAlphaConfigSignInEmailHashConfigAlgorithmEnumSCRYPT = 5;
+  IdentitytoolkitAlphaConfigSignInEmailHashConfigAlgorithmEnumPBKDF_SHA1 = 6;
+  IdentitytoolkitAlphaConfigSignInEmailHashConfigAlgorithmEnumMD5 = 7;
+  IdentitytoolkitAlphaConfigSignInEmailHashConfigAlgorithmEnumHMAC_SHA512 = 8;
+  IdentitytoolkitAlphaConfigSignInEmailHashConfigAlgorithmEnumSHA1 = 9;
+  IdentitytoolkitAlphaConfigSignInEmailHashConfigAlgorithmEnumBCRYPT = 10;
+  IdentitytoolkitAlphaConfigSignInEmailHashConfigAlgorithmEnumPBKDF2_SHA256 = 11;
+  IdentitytoolkitAlphaConfigSignInEmailHashConfigAlgorithmEnumSHA256 = 12;
+  IdentitytoolkitAlphaConfigSignInEmailHashConfigAlgorithmEnumSHA512 = 13;
+  IdentitytoolkitAlphaConfigSignInEmailHashConfigAlgorithmEnumSTANDARD_SCRYPT = 14;
+}
+
+enum IdentitytoolkitAlphaConfigSignInHashConfigAlgorithmEnum {
+  IdentitytoolkitAlphaConfigSignInHashConfigAlgorithmEnumNO_VALUE_DO_NOT_USE = 0;
+  IdentitytoolkitAlphaConfigSignInHashConfigAlgorithmEnumHASH_ALGORITHM_UNSPECIFIED = 1;
+  IdentitytoolkitAlphaConfigSignInHashConfigAlgorithmEnumHMAC_SHA256 = 2;
+  IdentitytoolkitAlphaConfigSignInHashConfigAlgorithmEnumHMAC_SHA1 = 3;
+  IdentitytoolkitAlphaConfigSignInHashConfigAlgorithmEnumHMAC_MD5 = 4;
+  IdentitytoolkitAlphaConfigSignInHashConfigAlgorithmEnumSCRYPT = 5;
+  IdentitytoolkitAlphaConfigSignInHashConfigAlgorithmEnumPBKDF_SHA1 = 6;
+  IdentitytoolkitAlphaConfigSignInHashConfigAlgorithmEnumMD5 = 7;
+  IdentitytoolkitAlphaConfigSignInHashConfigAlgorithmEnumHMAC_SHA512 = 8;
+  IdentitytoolkitAlphaConfigSignInHashConfigAlgorithmEnumSHA1 = 9;
+  IdentitytoolkitAlphaConfigSignInHashConfigAlgorithmEnumBCRYPT = 10;
+  IdentitytoolkitAlphaConfigSignInHashConfigAlgorithmEnumPBKDF2_SHA256 = 11;
+  IdentitytoolkitAlphaConfigSignInHashConfigAlgorithmEnumSHA256 = 12;
+  IdentitytoolkitAlphaConfigSignInHashConfigAlgorithmEnumSHA512 = 13;
+  IdentitytoolkitAlphaConfigSignInHashConfigAlgorithmEnumSTANDARD_SCRYPT = 14;
+}
+
+enum IdentitytoolkitAlphaConfigNotificationSendEmailMethodEnum {
+  IdentitytoolkitAlphaConfigNotificationSendEmailMethodEnumNO_VALUE_DO_NOT_USE = 0;
+  IdentitytoolkitAlphaConfigNotificationSendEmailMethodEnumMETHOD_UNSPECIFIED = 1;
+  IdentitytoolkitAlphaConfigNotificationSendEmailMethodEnumDEFAULT = 2;
+  IdentitytoolkitAlphaConfigNotificationSendEmailMethodEnumCUSTOM_SMTP = 3;
+}
+
+enum IdentitytoolkitAlphaConfigNotificationSendEmailSmtpSecurityModeEnum {
+  IdentitytoolkitAlphaConfigNotificationSendEmailSmtpSecurityModeEnumNO_VALUE_DO_NOT_USE = 0;
+  IdentitytoolkitAlphaConfigNotificationSendEmailSmtpSecurityModeEnumSECURITY_MODE_UNSPECIFIED = 1;
+  IdentitytoolkitAlphaConfigNotificationSendEmailSmtpSecurityModeEnumSSL = 2;
+  IdentitytoolkitAlphaConfigNotificationSendEmailSmtpSecurityModeEnumSTART_TLS = 3;
+}
+
+enum IdentitytoolkitAlphaConfigNotificationSendEmailResetPasswordTemplateBodyFormatEnum {
+  IdentitytoolkitAlphaConfigNotificationSendEmailResetPasswordTemplateBodyFormatEnumNO_VALUE_DO_NOT_USE = 0;
+  IdentitytoolkitAlphaConfigNotificationSendEmailResetPasswordTemplateBodyFormatEnumBODY_FORMAT_UNSPECIFIED = 1;
+  IdentitytoolkitAlphaConfigNotificationSendEmailResetPasswordTemplateBodyFormatEnumPLAIN_TEXT = 2;
+  IdentitytoolkitAlphaConfigNotificationSendEmailResetPasswordTemplateBodyFormatEnumHTML = 3;
+}
+
+enum IdentitytoolkitAlphaConfigNotificationSendEmailVerifyEmailTemplateBodyFormatEnum {
+  IdentitytoolkitAlphaConfigNotificationSendEmailVerifyEmailTemplateBodyFormatEnumNO_VALUE_DO_NOT_USE = 0;
+  IdentitytoolkitAlphaConfigNotificationSendEmailVerifyEmailTemplateBodyFormatEnumBODY_FORMAT_UNSPECIFIED = 1;
+  IdentitytoolkitAlphaConfigNotificationSendEmailVerifyEmailTemplateBodyFormatEnumPLAIN_TEXT = 2;
+  IdentitytoolkitAlphaConfigNotificationSendEmailVerifyEmailTemplateBodyFormatEnumHTML = 3;
+}
+
+enum IdentitytoolkitAlphaConfigNotificationSendEmailChangeEmailTemplateBodyFormatEnum {
+  IdentitytoolkitAlphaConfigNotificationSendEmailChangeEmailTemplateBodyFormatEnumNO_VALUE_DO_NOT_USE = 0;
+  IdentitytoolkitAlphaConfigNotificationSendEmailChangeEmailTemplateBodyFormatEnumBODY_FORMAT_UNSPECIFIED = 1;
+  IdentitytoolkitAlphaConfigNotificationSendEmailChangeEmailTemplateBodyFormatEnumPLAIN_TEXT = 2;
+  IdentitytoolkitAlphaConfigNotificationSendEmailChangeEmailTemplateBodyFormatEnumHTML = 3;
+}
+
+enum IdentitytoolkitAlphaConfigNotificationSendEmailDnsInfoCustomDomainStateEnum {
+  IdentitytoolkitAlphaConfigNotificationSendEmailDnsInfoCustomDomainStateEnumNO_VALUE_DO_NOT_USE = 0;
+  IdentitytoolkitAlphaConfigNotificationSendEmailDnsInfoCustomDomainStateEnumVERIFICATION_STATE_UNSPECIFIED = 1;
+  IdentitytoolkitAlphaConfigNotificationSendEmailDnsInfoCustomDomainStateEnumNOT_STARTED = 2;
+  IdentitytoolkitAlphaConfigNotificationSendEmailDnsInfoCustomDomainStateEnumIN_PROGRESS = 3;
+  IdentitytoolkitAlphaConfigNotificationSendEmailDnsInfoCustomDomainStateEnumFAILED = 4;
+  IdentitytoolkitAlphaConfigNotificationSendEmailDnsInfoCustomDomainStateEnumSUCCEEDED = 5;
+}
+
+enum IdentitytoolkitAlphaConfigNotificationSendEmailRevertSecondFactorAdditionTemplateBodyFormatEnum {
+  IdentitytoolkitAlphaConfigNotificationSendEmailRevertSecondFactorAdditionTemplateBodyFormatEnumNO_VALUE_DO_NOT_USE = 0;
+  IdentitytoolkitAlphaConfigNotificationSendEmailRevertSecondFactorAdditionTemplateBodyFormatEnumBODY_FORMAT_UNSPECIFIED = 1;
+  IdentitytoolkitAlphaConfigNotificationSendEmailRevertSecondFactorAdditionTemplateBodyFormatEnumPLAIN_TEXT = 2;
+  IdentitytoolkitAlphaConfigNotificationSendEmailRevertSecondFactorAdditionTemplateBodyFormatEnumHTML = 3;
+}
+
+enum IdentitytoolkitAlphaConfigSubtypeEnum {
+  IdentitytoolkitAlphaConfigSubtypeEnumNO_VALUE_DO_NOT_USE = 0;
+  IdentitytoolkitAlphaConfigSubtypeEnumSUBTYPE_UNSPECIFIED = 1;
+  IdentitytoolkitAlphaConfigSubtypeEnumIDENTITY_PLATFORM = 2;
+  IdentitytoolkitAlphaConfigSubtypeEnumFIREBASE_AUTH = 3;
+}
+
+enum IdentitytoolkitAlphaConfigMfaStateEnum {
+  IdentitytoolkitAlphaConfigMfaStateEnumNO_VALUE_DO_NOT_USE = 0;
+  IdentitytoolkitAlphaConfigMfaStateEnumSTATE_UNSPECIFIED = 1;
+  IdentitytoolkitAlphaConfigMfaStateEnumDISABLED = 2;
+  IdentitytoolkitAlphaConfigMfaStateEnumENABLED = 3;
+  IdentitytoolkitAlphaConfigMfaStateEnumMANDATORY = 4;
+}
+
+message IdentitytoolkitAlphaConfig {
+  IdentitytoolkitAlphaConfigSignIn sign_in = 1;
+  IdentitytoolkitAlphaConfigNotification notification = 2;
+  IdentitytoolkitAlphaConfigQuota quota = 3;
+  IdentitytoolkitAlphaConfigMonitoring monitoring = 4;
+  IdentitytoolkitAlphaConfigMultiTenant multi_tenant = 5;
+  repeated string authorized_domains = 6;
+  IdentitytoolkitAlphaConfigSubtypeEnum subtype = 7;
+  IdentitytoolkitAlphaConfigClient client = 8;
+  IdentitytoolkitAlphaConfigMfa mfa = 9;
+  IdentitytoolkitAlphaConfigBlockingFunctions blocking_functions = 10;
+  string project = 11;
+}
+
+message IdentitytoolkitAlphaConfigSignIn {
+  IdentitytoolkitAlphaConfigSignInEmail email = 1;
+  IdentitytoolkitAlphaConfigSignInPhoneNumber phone_number = 2;
+  IdentitytoolkitAlphaConfigSignInAnonymous anonymous = 3;
+  bool allow_duplicate_emails = 4;
+  IdentitytoolkitAlphaConfigSignInHashConfig hash_config = 5;
+}
+
+message IdentitytoolkitAlphaConfigSignInEmail {
+  bool enabled = 1;
+  bool password_required = 2;
+  IdentitytoolkitAlphaConfigSignInEmailHashConfig hash_config = 3;
+}
+
+message IdentitytoolkitAlphaConfigSignInEmailHashConfig {
+  IdentitytoolkitAlphaConfigSignInEmailHashConfigAlgorithmEnum algorithm = 1;
+  string signer_key = 2;
+  string salt_separator = 3;
+  int64 rounds = 4;
+  int64 memory_cost = 5;
+}
+
+message IdentitytoolkitAlphaConfigSignInPhoneNumber {
+  bool enabled = 1;
+  map<string, string> test_phone_numbers = 2;
+}
+
+message IdentitytoolkitAlphaConfigSignInAnonymous {
+  bool enabled = 1;
+}
+
+message IdentitytoolkitAlphaConfigSignInHashConfig {
+  IdentitytoolkitAlphaConfigSignInHashConfigAlgorithmEnum algorithm = 1;
+  string signer_key = 2;
+  string salt_separator = 3;
+  int64 rounds = 4;
+  int64 memory_cost = 5;
+}
+
+message IdentitytoolkitAlphaConfigNotification {
+  IdentitytoolkitAlphaConfigNotificationSendEmail send_email = 1;
+  IdentitytoolkitAlphaConfigNotificationSendSms send_sms = 2;
+  string default_locale = 3;
+}
+
+message IdentitytoolkitAlphaConfigNotificationSendEmail {
+  IdentitytoolkitAlphaConfigNotificationSendEmailMethodEnum method = 1;
+  IdentitytoolkitAlphaConfigNotificationSendEmailSmtp smtp = 2;
+  IdentitytoolkitAlphaConfigNotificationSendEmailResetPasswordTemplate reset_password_template = 3;
+  IdentitytoolkitAlphaConfigNotificationSendEmailVerifyEmailTemplate verify_email_template = 4;
+  IdentitytoolkitAlphaConfigNotificationSendEmailChangeEmailTemplate change_email_template = 5;
+  string callback_uri = 6;
+  IdentitytoolkitAlphaConfigNotificationSendEmailDnsInfo dns_info = 7;
+  IdentitytoolkitAlphaConfigNotificationSendEmailRevertSecondFactorAdditionTemplate revert_second_factor_addition_template = 8;
+}
+
+message IdentitytoolkitAlphaConfigNotificationSendEmailSmtp {
+  string sender_email = 1;
+  string host = 2;
+  int64 port = 3;
+  string username = 4;
+  string password = 5;
+  IdentitytoolkitAlphaConfigNotificationSendEmailSmtpSecurityModeEnum security_mode = 6;
+}
+
+message IdentitytoolkitAlphaConfigNotificationSendEmailResetPasswordTemplate {
+  string sender_local_part = 1;
+  string subject = 2;
+  string sender_display_name = 3;
+  string body = 4;
+  IdentitytoolkitAlphaConfigNotificationSendEmailResetPasswordTemplateBodyFormatEnum body_format = 5;
+  string reply_to = 6;
+  bool customized = 7;
+}
+
+message IdentitytoolkitAlphaConfigNotificationSendEmailVerifyEmailTemplate {
+  string sender_local_part = 1;
+  string subject = 2;
+  string sender_display_name = 3;
+  string body = 4;
+  IdentitytoolkitAlphaConfigNotificationSendEmailVerifyEmailTemplateBodyFormatEnum body_format = 5;
+  string reply_to = 6;
+  bool customized = 7;
+}
+
+message IdentitytoolkitAlphaConfigNotificationSendEmailChangeEmailTemplate {
+  string sender_local_part = 1;
+  string subject = 2;
+  string sender_display_name = 3;
+  string body = 4;
+  IdentitytoolkitAlphaConfigNotificationSendEmailChangeEmailTemplateBodyFormatEnum body_format = 5;
+  string reply_to = 6;
+  bool customized = 7;
+}
+
+message IdentitytoolkitAlphaConfigNotificationSendEmailDnsInfo {
+  string custom_domain = 1;
+  bool use_custom_domain = 2;
+  string pending_custom_domain = 3;
+  IdentitytoolkitAlphaConfigNotificationSendEmailDnsInfoCustomDomainStateEnum custom_domain_state = 4;
+  string domain_verification_request_time = 5;
+}
+
+message IdentitytoolkitAlphaConfigNotificationSendEmailRevertSecondFactorAdditionTemplate {
+  string sender_local_part = 1;
+  string subject = 2;
+  string sender_display_name = 3;
+  string body = 4;
+  IdentitytoolkitAlphaConfigNotificationSendEmailRevertSecondFactorAdditionTemplateBodyFormatEnum body_format = 5;
+  string reply_to = 6;
+  bool customized = 7;
+}
+
+message IdentitytoolkitAlphaConfigNotificationSendSms {
+  bool use_device_locale = 1;
+  IdentitytoolkitAlphaConfigNotificationSendSmsSmsTemplate sms_template = 2;
+}
+
+message IdentitytoolkitAlphaConfigNotificationSendSmsSmsTemplate {
+  string content = 1;
+}
+
+message IdentitytoolkitAlphaConfigQuota {
+  IdentitytoolkitAlphaConfigQuotaSignUpQuotaConfig sign_up_quota_config = 1;
+}
+
+message IdentitytoolkitAlphaConfigQuotaSignUpQuotaConfig {
+  int64 quota = 1;
+  string start_time = 2;
+  string quota_duration = 3;
+}
+
+message IdentitytoolkitAlphaConfigMonitoring {
+  IdentitytoolkitAlphaConfigMonitoringRequestLogging request_logging = 1;
+}
+
+message IdentitytoolkitAlphaConfigMonitoringRequestLogging {
+  bool enabled = 1;
+}
+
+message IdentitytoolkitAlphaConfigMultiTenant {
+  bool allow_tenants = 1;
+  string default_tenant_location = 2;
+}
+
+message IdentitytoolkitAlphaConfigClient {
+  string api_key = 1;
+  IdentitytoolkitAlphaConfigClientPermissions permissions = 2;
+  string firebase_subdomain = 3;
+}
+
+message IdentitytoolkitAlphaConfigClientPermissions {
+  bool disabled_user_signup = 1;
+  bool disabled_user_deletion = 2;
+}
+
+message IdentitytoolkitAlphaConfigMfa {
+  IdentitytoolkitAlphaConfigMfaStateEnum state = 1;
+}
+
+message IdentitytoolkitAlphaConfigBlockingFunctions {
+  map<string, IdentitytoolkitAlphaConfigBlockingFunctionsTriggers> triggers = 1;
+}
+
+message IdentitytoolkitAlphaConfigBlockingFunctionsTriggers {
+  string function_uri = 1;
+  string update_time = 2;
+}
+
+message ApplyIdentitytoolkitAlphaConfigRequest {
+  IdentitytoolkitAlphaConfig resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteIdentitytoolkitAlphaConfigRequest {
+  string service_account_file = 1;
+  IdentitytoolkitAlphaConfig resource = 2;
+}
+
+message ListIdentitytoolkitAlphaConfigRequest {
+  string service_account_file = 1;
+}
+
+message ListIdentitytoolkitAlphaConfigResponse {
+  repeated IdentitytoolkitAlphaConfig items = 1;
+}
+
+service IdentitytoolkitAlphaConfigService {
+  rpc ApplyIdentitytoolkitAlphaConfig(ApplyIdentitytoolkitAlphaConfigRequest) returns (IdentitytoolkitAlphaConfig);
+  rpc DeleteIdentitytoolkitAlphaConfig(DeleteIdentitytoolkitAlphaConfigRequest) returns (google.protobuf.Empty);
+  rpc ListIdentitytoolkitAlphaConfig(ListIdentitytoolkitAlphaConfigRequest) returns (ListIdentitytoolkitAlphaConfigResponse);
+}

@@ -1,0 +1,38 @@
+apiVersion: vmwareengine.cnrm.cloud.google.com/v1alpha1
+kind: VMwareEngineNetwork
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: vmwareenginenetwork-minimal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  description: Updated description
+  location: global
+  projectRef:
+    external: ${projectId}
+  type: STANDARD
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    state: ACTIVE
+    uid: 0123456789abcdef
+    updateTime: "1970-01-01T00:00:00Z"
+    vpcNetworks:
+    - network: projects/b3e854f0b4bedfea6-tp/global/networks/${networkId}
+      type: INTERNET
+    - network: projects/b3e854f0b4bedfea6-tp/global/networks/${networkId}
+      type: INTRANET
+    - network: projects/b3e854f0b4bedfea6-tp/global/networks/${networkId}
+      type: GOOGLE_CLOUD

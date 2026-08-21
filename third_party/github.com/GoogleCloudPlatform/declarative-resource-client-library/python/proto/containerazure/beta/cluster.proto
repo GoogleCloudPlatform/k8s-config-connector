@@ -1,0 +1,183 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum ContainerazureBetaClusterStateEnum {
+  ContainerazureBetaClusterStateEnumNO_VALUE_DO_NOT_USE = 0;
+  ContainerazureBetaClusterStateEnumSTATE_UNSPECIFIED = 1;
+  ContainerazureBetaClusterStateEnumPROVISIONING = 2;
+  ContainerazureBetaClusterStateEnumRUNNING = 3;
+  ContainerazureBetaClusterStateEnumRECONCILING = 4;
+  ContainerazureBetaClusterStateEnumSTOPPING = 5;
+  ContainerazureBetaClusterStateEnumERROR = 6;
+  ContainerazureBetaClusterStateEnumDEGRADED = 7;
+}
+
+enum ContainerazureBetaClusterLoggingConfigComponentConfigEnableComponentsEnum {
+  ContainerazureBetaClusterLoggingConfigComponentConfigEnableComponentsEnumNO_VALUE_DO_NOT_USE = 0;
+  ContainerazureBetaClusterLoggingConfigComponentConfigEnableComponentsEnumCOMPONENT_UNSPECIFIED = 1;
+  ContainerazureBetaClusterLoggingConfigComponentConfigEnableComponentsEnumSYSTEM_COMPONENTS = 2;
+  ContainerazureBetaClusterLoggingConfigComponentConfigEnableComponentsEnumWORKLOADS = 3;
+}
+
+message ContainerazureBetaCluster {
+  string name = 1;
+  string description = 2;
+  string azure_region = 3;
+  string resource_group_id = 4;
+  string client = 5;
+  ContainerazureBetaClusterAzureServicesAuthentication azure_services_authentication = 6;
+  ContainerazureBetaClusterNetworking networking = 7;
+  ContainerazureBetaClusterControlPlane control_plane = 8;
+  ContainerazureBetaClusterAuthorization authorization = 9;
+  ContainerazureBetaClusterStateEnum state = 10;
+  string endpoint = 11;
+  string uid = 12;
+  bool reconciling = 13;
+  string create_time = 14;
+  string update_time = 15;
+  string etag = 16;
+  map<string, string> annotations = 17;
+  ContainerazureBetaClusterWorkloadIdentityConfig workload_identity_config = 18;
+  string project = 19;
+  string location = 20;
+  ContainerazureBetaClusterFleet fleet = 21;
+  ContainerazureBetaClusterLoggingConfig logging_config = 22;
+  ContainerazureBetaClusterMonitoringConfig monitoring_config = 23;
+}
+
+message ContainerazureBetaClusterAzureServicesAuthentication {
+  string tenant_id = 1;
+  string application_id = 2;
+}
+
+message ContainerazureBetaClusterNetworking {
+  string virtual_network_id = 1;
+  repeated string pod_address_cidr_blocks = 2;
+  repeated string service_address_cidr_blocks = 3;
+}
+
+message ContainerazureBetaClusterControlPlane {
+  string version = 1;
+  string subnet_id = 2;
+  string vm_size = 3;
+  ContainerazureBetaClusterControlPlaneSshConfig ssh_config = 4;
+  ContainerazureBetaClusterControlPlaneRootVolume root_volume = 5;
+  ContainerazureBetaClusterControlPlaneMainVolume main_volume = 6;
+  ContainerazureBetaClusterControlPlaneDatabaseEncryption database_encryption = 7;
+  map<string, string> tags = 8;
+  ContainerazureBetaClusterControlPlaneProxyConfig proxy_config = 9;
+  repeated ContainerazureBetaClusterControlPlaneReplicaPlacements replica_placements = 10;
+}
+
+message ContainerazureBetaClusterControlPlaneSshConfig {
+  string authorized_key = 1;
+}
+
+message ContainerazureBetaClusterControlPlaneRootVolume {
+  int64 size_gib = 1;
+}
+
+message ContainerazureBetaClusterControlPlaneMainVolume {
+  int64 size_gib = 1;
+}
+
+message ContainerazureBetaClusterControlPlaneDatabaseEncryption {
+  string key_id = 1;
+}
+
+message ContainerazureBetaClusterControlPlaneProxyConfig {
+  string resource_group_id = 1;
+  string secret_id = 2;
+}
+
+message ContainerazureBetaClusterControlPlaneReplicaPlacements {
+  string subnet_id = 1;
+  string azure_availability_zone = 2;
+}
+
+message ContainerazureBetaClusterAuthorization {
+  repeated ContainerazureBetaClusterAuthorizationAdminUsers admin_users = 1;
+  repeated ContainerazureBetaClusterAuthorizationAdminGroups admin_groups = 2;
+}
+
+message ContainerazureBetaClusterAuthorizationAdminUsers {
+  string username = 1;
+}
+
+message ContainerazureBetaClusterAuthorizationAdminGroups {
+  string group = 1;
+}
+
+message ContainerazureBetaClusterWorkloadIdentityConfig {
+  string issuer_uri = 1;
+  string workload_pool = 2;
+  string identity_provider = 3;
+}
+
+message ContainerazureBetaClusterFleet {
+  string project = 1;
+  string membership = 2;
+}
+
+message ContainerazureBetaClusterLoggingConfig {
+  ContainerazureBetaClusterLoggingConfigComponentConfig component_config = 1;
+}
+
+message ContainerazureBetaClusterLoggingConfigComponentConfig {
+  repeated ContainerazureBetaClusterLoggingConfigComponentConfigEnableComponentsEnum enable_components = 1;
+}
+
+message ContainerazureBetaClusterMonitoringConfig {
+  ContainerazureBetaClusterMonitoringConfigManagedPrometheusConfig managed_prometheus_config = 1;
+}
+
+message ContainerazureBetaClusterMonitoringConfigManagedPrometheusConfig {
+  bool enabled = 1;
+}
+
+message ApplyContainerazureBetaClusterRequest {
+  ContainerazureBetaCluster resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteContainerazureBetaClusterRequest {
+  string service_account_file = 1;
+  ContainerazureBetaCluster resource = 2;
+}
+
+message ListContainerazureBetaClusterRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListContainerazureBetaClusterResponse {
+  repeated ContainerazureBetaCluster items = 1;
+}
+
+service ContainerazureBetaClusterService {
+  rpc ApplyContainerazureBetaCluster(ApplyContainerazureBetaClusterRequest) returns (ContainerazureBetaCluster);
+  rpc DeleteContainerazureBetaCluster(DeleteContainerazureBetaClusterRequest) returns (google.protobuf.Empty);
+  rpc ListContainerazureBetaCluster(ListContainerazureBetaClusterRequest) returns (ListContainerazureBetaClusterResponse);
+}

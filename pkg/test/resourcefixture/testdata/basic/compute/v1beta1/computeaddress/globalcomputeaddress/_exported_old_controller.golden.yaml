@@ -1,0 +1,20 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeAddress
+metadata:
+  annotations:
+    cnrm.cloud.google.com/project-id: ${projectId}
+  labels:
+    cnrm-test: "true"
+    managed-by-cnrm: "true"
+    test-label: updated-value
+  name: ${addressID}
+spec:
+  address: 8.8.8.8
+  addressType: INTERNAL
+  description: a test global address
+  location: global
+  networkRef:
+    external: projects/${projectId}/global/networks/default
+  prefixLength: 16
+  purpose: VPC_PEERING
+  resourceID: ${addressID}

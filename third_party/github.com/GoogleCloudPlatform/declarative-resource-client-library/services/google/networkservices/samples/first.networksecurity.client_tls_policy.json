@@ -1,0 +1,13 @@
+{
+  "name": "{{client1}}",
+  "project": "{{project}}",
+  "location": "global",
+  "description": "A sample client tls policy.",
+  "serverValidationCa": [
+    {
+      "certificateProviderInstance": {
+        "pluginInstance": "google_cloud_private_spiffe"
+      }
+    }
+  ]
+}

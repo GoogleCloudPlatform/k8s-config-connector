@@ -1,0 +1,8 @@
+- pre: gcloud kms keyrings create test-keyring-${uniqueId} --location=global
+- pre: gcloud kms keys create test-key-${uniqueId} --location=global --keyring=test-keyring-${uniqueId} --purpose=encryption
+- pre: gcloud kms keys create test-key2-${uniqueId} --location=global --keyring=test-keyring-${uniqueId} --purpose=encryption
+
+- exec: gcloud parametermanager parameters create test-${uniqueId} --location=global --parameter-format=JSON --labels='{"key":"value"}' --kms-key="projects/${projectId}/locations/global/keyRings/test-keyring-${uniqueId}/cryptoKeys/test-key-${uniqueId}"
+- exec: gcloud parametermanager parameters describe test-${uniqueId} --location=global
+- exec: gcloud parametermanager parameters update test-${uniqueId} --location=global --labels='{"key":"value2"}' --kms-key="projects/${projectId}/locations/global/keyRings/test-keyring-${uniqueId}/cryptoKeys/test-key2-${uniqueId}"
+- exec: gcloud parametermanager parameters delete test-${uniqueId} --location=global --quiet

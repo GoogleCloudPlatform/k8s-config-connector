@@ -1,0 +1,318 @@
+// Copyright 2022 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum BigqueryTableExternalDataConfigurationValueConversionModesTemporalTypesOutOfRangeConversionModeEnum {
+  BigqueryTableExternalDataConfigurationValueConversionModesTemporalTypesOutOfRangeConversionModeEnumNO_VALUE_DO_NOT_USE = 0;
+  BigqueryTableExternalDataConfigurationValueConversionModesTemporalTypesOutOfRangeConversionModeEnumTEMPORAL_TYPES_VALUE_UNSPECIFIED = 1;
+  BigqueryTableExternalDataConfigurationValueConversionModesTemporalTypesOutOfRangeConversionModeEnumTEMPORAL_TYPES_VALUE_REJECT = 2;
+  BigqueryTableExternalDataConfigurationValueConversionModesTemporalTypesOutOfRangeConversionModeEnumTEMPORAL_TYPES_VALUE_CLAMP = 3;
+}
+
+enum BigqueryTableExternalDataConfigurationValueConversionModesNumericTypeOutOfRangeConversionModeEnum {
+  BigqueryTableExternalDataConfigurationValueConversionModesNumericTypeOutOfRangeConversionModeEnumNO_VALUE_DO_NOT_USE = 0;
+  BigqueryTableExternalDataConfigurationValueConversionModesNumericTypeOutOfRangeConversionModeEnumNUMERIC_TYPE_VALUE_UNSPECIFIED = 1;
+  BigqueryTableExternalDataConfigurationValueConversionModesNumericTypeOutOfRangeConversionModeEnumNUMERIC_TYPE_VALUE_REJECT = 2;
+  BigqueryTableExternalDataConfigurationValueConversionModesNumericTypeOutOfRangeConversionModeEnumNUMERIC_TYPE_VALUE_ROUND = 3;
+}
+
+enum BigqueryTableExternalDataConfigurationDecimalTargetTypesEnum {
+  BigqueryTableExternalDataConfigurationDecimalTargetTypesEnumNO_VALUE_DO_NOT_USE = 0;
+  BigqueryTableExternalDataConfigurationDecimalTargetTypesEnumDECIMAL_TARGET_TYPE_UNSPECIFIED = 1;
+  BigqueryTableExternalDataConfigurationDecimalTargetTypesEnumNUMERIC = 2;
+  BigqueryTableExternalDataConfigurationDecimalTargetTypesEnumBIGNUMERIC = 3;
+  BigqueryTableExternalDataConfigurationDecimalTargetTypesEnumSTRING = 4;
+}
+
+enum BigqueryTableExternalDataConfigurationJsonExtensionEnum {
+  BigqueryTableExternalDataConfigurationJsonExtensionEnumNO_VALUE_DO_NOT_USE = 0;
+  BigqueryTableExternalDataConfigurationJsonExtensionEnumJSON_EXTENSION_UNSPECIFIED = 1;
+  BigqueryTableExternalDataConfigurationJsonExtensionEnumGEOJSON = 2;
+}
+
+message BigqueryTable {
+  string etag = 1;
+  string id = 2;
+  string self_link = 3;
+  string name = 4;
+  string dataset = 5;
+  string project = 6;
+  string friendly_name = 7;
+  string description = 8;
+  map<string, string> labels = 9;
+  BigqueryTableModel model = 10;
+  BigqueryTableSchema schema = 11;
+  BigqueryTableTimePartitioning time_partitioning = 12;
+  BigqueryTableRangePartitioning range_partitioning = 13;
+  BigqueryTableClustering clustering = 14;
+  bool require_partition_filter = 15;
+  string num_bytes = 16;
+  string num_physical_bytes = 17;
+  string num_long_term_bytes = 18;
+  int64 num_rows = 19;
+  int64 creation_time = 20;
+  int64 expiration_time = 21;
+  int64 last_modified_time = 22;
+  string type = 23;
+  BigqueryTableView view = 24;
+  BigqueryTableMaterializedView materialized_view = 25;
+  BigqueryTableExternalDataConfiguration external_data_configuration = 26;
+  string location = 27;
+  BigqueryTableStreamingBuffer streaming_buffer = 28;
+  BigqueryTableEncryptionConfiguration encryption_configuration = 29;
+  BigqueryTableSnapshotDefinition snapshot_definition = 30;
+  string default_collation = 31;
+}
+
+message BigqueryTableModel {
+  BigqueryTableModelModelOptions model_options = 1;
+  repeated BigqueryTableModelTrainingRuns training_runs = 2;
+}
+
+message BigqueryTableModelModelOptions {
+  string model_type = 1;
+  repeated string labels = 2;
+  string loss_type = 3;
+}
+
+message BigqueryTableModelTrainingRuns {
+  string state = 1;
+  string start_time = 2;
+  BigqueryTableModelTrainingRunsTrainingOptions training_options = 3;
+  repeated BigqueryTableModelTrainingRunsIterationResults iteration_results = 4;
+}
+
+message BigqueryTableModelTrainingRunsTrainingOptions {
+  int64 max_iteration = 1;
+  double learn_rate = 2;
+  double l1_reg = 3;
+  double l2_reg = 4;
+  double min_rel_progress = 5;
+  bool warm_start = 6;
+  bool early_stop = 7;
+  string learn_rate_strategy = 8;
+  double line_search_init_learn_rate = 9;
+}
+
+message BigqueryTableModelTrainingRunsIterationResults {
+  int64 index = 1;
+  double learn_rate = 2;
+  double training_loss = 3;
+  double eval_loss = 4;
+  string duration_ms = 5;
+}
+
+message BigqueryTableSchema {
+  repeated BigqueryTableGooglecloudbigqueryv2Tablefieldschema fields = 1;
+}
+
+message BigqueryTableGooglecloudbigqueryv2Tablefieldschema {
+  string name = 1;
+  string type = 2;
+  string mode = 3;
+  repeated BigqueryTableGooglecloudbigqueryv2Tablefieldschema fields = 4;
+  string description = 5;
+  BigqueryTableGooglecloudbigqueryv2TablefieldschemaCategories categories = 6;
+  BigqueryTableGooglecloudbigqueryv2TablefieldschemaPolicyTags policy_tags = 7;
+  repeated string name_alternative = 8;
+  int64 max_length = 9;
+  int64 precision = 10;
+  int64 scale = 11;
+  string collation = 12;
+  string default_value_expression = 13;
+}
+
+message BigqueryTableGooglecloudbigqueryv2TablefieldschemaCategories {
+  repeated string names = 1;
+}
+
+message BigqueryTableGooglecloudbigqueryv2TablefieldschemaPolicyTags {
+  repeated string names = 1;
+}
+
+message BigqueryTableTimePartitioning {
+  string type = 1;
+  string expiration_ms = 2;
+  string field = 3;
+}
+
+message BigqueryTableRangePartitioning {
+  string field = 1;
+  BigqueryTableRangePartitioningRange range = 2;
+}
+
+message BigqueryTableRangePartitioningRange {
+  string start = 1;
+  string end = 2;
+  string interval = 3;
+}
+
+message BigqueryTableClustering {
+  repeated string fields = 1;
+}
+
+message BigqueryTableView {
+  string query = 1;
+  repeated BigqueryTableViewUserDefinedFunctionResources user_defined_function_resources = 2;
+  bool use_legacy_sql = 3;
+  bool use_explicit_column_names = 4;
+}
+
+message BigqueryTableViewUserDefinedFunctionResources {
+  string resource_uri = 1;
+  string inline_code = 2;
+  repeated string inline_code_alternative = 3;
+}
+
+message BigqueryTableMaterializedView {
+  string query = 1;
+  int64 last_refresh_time = 2;
+  bool enable_refresh = 3;
+  int64 refresh_interval_ms = 4;
+}
+
+message BigqueryTableExternalDataConfiguration {
+  repeated string source_uris = 1;
+  BigqueryTableExternalDataConfigurationSchema schema = 2;
+  string source_format = 3;
+  int64 max_bad_records = 4;
+  bool autodetect = 5;
+  bool ignore_unknown_values = 6;
+  string compression = 7;
+  BigqueryTableExternalDataConfigurationCsvOptions csv_options = 8;
+  BigqueryTableExternalDataConfigurationBigtableOptions bigtable_options = 9;
+  BigqueryTableExternalDataConfigurationGoogleSheetsOptions google_sheets_options = 10;
+  repeated int64 max_bad_records_alternative = 11;
+  BigqueryTableExternalDataConfigurationHivePartitioningOptions hive_partitioning_options = 12;
+  string connection_id = 13;
+  BigqueryTableExternalDataConfigurationValueConversionModes value_conversion_modes = 14;
+  repeated BigqueryTableExternalDataConfigurationDecimalTargetTypesEnum decimal_target_types = 15;
+  BigqueryTableExternalDataConfigurationAvroOptions avro_options = 16;
+  BigqueryTableExternalDataConfigurationJsonExtensionEnum json_extension = 17;
+  BigqueryTableExternalDataConfigurationParquetOptions parquet_options = 18;
+}
+
+message BigqueryTableExternalDataConfigurationSchema {
+  repeated BigqueryTableGooglecloudbigqueryv2Tablefieldschema fields = 1;
+}
+
+message BigqueryTableExternalDataConfigurationCsvOptions {
+  string field_delimiter = 1;
+  string skip_leading_rows = 2;
+  string quote = 3;
+  bool allow_quoted_newlines = 4;
+  bool allow_jagged_rows = 5;
+  string encoding = 6;
+}
+
+message BigqueryTableExternalDataConfigurationBigtableOptions {
+  repeated BigqueryTableExternalDataConfigurationBigtableOptionsColumnFamilies column_families = 1;
+  bool ignore_unspecified_column_families = 2;
+  bool read_rowkey_as_string = 3;
+}
+
+message BigqueryTableExternalDataConfigurationBigtableOptionsColumnFamilies {
+  string family_id = 1;
+  string type = 2;
+  string encoding = 3;
+  repeated BigqueryTableExternalDataConfigurationBigtableOptionsColumnFamiliesColumns columns = 4;
+  bool only_read_latest = 5;
+}
+
+message BigqueryTableExternalDataConfigurationBigtableOptionsColumnFamiliesColumns {
+  string qualifier_encoded = 1;
+  string qualifier_string = 2;
+  string field_name = 3;
+  string type = 4;
+  string encoding = 5;
+  bool only_read_latest = 6;
+}
+
+message BigqueryTableExternalDataConfigurationGoogleSheetsOptions {
+  string skip_leading_rows = 1;
+  string range = 2;
+}
+
+message BigqueryTableExternalDataConfigurationHivePartitioningOptions {
+  string mode = 1;
+  string source_uri_prefix = 2;
+  bool require_partition_filter = 3;
+  repeated string fields = 4;
+}
+
+message BigqueryTableExternalDataConfigurationValueConversionModes {
+  BigqueryTableExternalDataConfigurationValueConversionModesTemporalTypesOutOfRangeConversionModeEnum temporal_types_out_of_range_conversion_mode = 1;
+  BigqueryTableExternalDataConfigurationValueConversionModesNumericTypeOutOfRangeConversionModeEnum numeric_type_out_of_range_conversion_mode = 2;
+}
+
+message BigqueryTableExternalDataConfigurationAvroOptions {
+  bool use_avro_logical_types = 1;
+}
+
+message BigqueryTableExternalDataConfigurationParquetOptions {
+  bool enum_as_string = 1;
+  bool enable_list_inference = 2;
+}
+
+message BigqueryTableStreamingBuffer {
+  int64 estimated_bytes = 1;
+  int64 estimated_rows = 2;
+  int64 oldest_entry_time = 3;
+}
+
+message BigqueryTableEncryptionConfiguration {
+  string kms_key_name = 1;
+}
+
+message BigqueryTableSnapshotDefinition {
+  string table = 1;
+  string dataset = 2;
+  string project = 3;
+  string snapshot_time = 4;
+}
+
+message ApplyBigqueryTableRequest {
+  BigqueryTable resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteBigqueryTableRequest {
+  string service_account_file = 1;
+  BigqueryTable resource = 2;
+}
+
+message ListBigqueryTableRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Dataset = 3;
+}
+
+message ListBigqueryTableResponse {
+  repeated BigqueryTable items = 1;
+}
+
+service BigqueryTableService {
+  rpc ApplyBigqueryTable(ApplyBigqueryTableRequest) returns (BigqueryTable);
+  rpc DeleteBigqueryTable(DeleteBigqueryTableRequest) returns (google.protobuf.Empty);
+  rpc ListBigqueryTable(ListBigqueryTableRequest) returns (ListBigqueryTableResponse);
+}

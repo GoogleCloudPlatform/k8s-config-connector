@@ -1,0 +1,21 @@
+label: Config Connector NetworkServicesGateway
+markdownDescription: Creates yaml for a NetworkServicesGateway resource
+insertText: |
+  apiVersion: networkservices.cnrm.cloud.google.com/v1beta1
+  kind: NetworkServicesGateway
+  metadata:
+    labels:
+      \${1:foo}: \${2:bar}
+    name: \${3:networkservicesgateway-name}
+  spec:
+    description: \${4:A test Gateway}
+    type: \${5:OPEN_MESH}
+    ports:
+    - \${6:80}
+    - \${7:443}
+    location: \${8:global}
+    scope: \${9:networkservicesgateway-sample}
+    serverTlsPolicyRef:
+      name: \${10:networkservicesgateway-dep}
+    projectRef:
+      external: \${11:projects/[PROJECT_ID?]}

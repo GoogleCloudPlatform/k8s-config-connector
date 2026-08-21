@@ -1,0 +1,9 @@
+label: Config Connector KMSKeyRing
+markdownDescription: Creates yaml for a KMSKeyRing resource
+insertText: |
+  apiVersion: kms.cnrm.cloud.google.com/v1beta1
+  kind: KMSKeyRing
+  metadata:
+    name: \${1:kmskeyring-name}
+  spec:
+    location: \${2:us-central1}

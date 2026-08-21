@@ -1,0 +1,4 @@
+```release-note:bug
+Add check to fetch kms IAM identity field on validator
+
+```

@@ -1,0 +1,66 @@
+// Copyright 2025 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package bigtable
+
+import (
+	pb "cloud.google.com/go/bigtable/admin/apiv2/adminpb"
+	"google.golang.org/genproto/googleapis/rpc/status"
+
+	krmbigtablev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/bigtable/v1alpha1"
+	common "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
+)
+
+func Status_v1alpha1_FromProto(mapCtx *direct.MapContext, in *status.Status) *common.Status {
+	if in == nil {
+		return nil
+	}
+	out := &common.Status{}
+	out.Code = direct.LazyPtr(in.GetCode())
+	out.Message = direct.LazyPtr(in.GetMessage())
+	return out
+}
+
+func Status_v1alpha1_ToProto(mapCtx *direct.MapContext, in *common.Status) *status.Status {
+	if in == nil {
+		return nil
+	}
+	out := &status.Status{}
+	out.Code = direct.ValueOf(in.Code)
+	out.Message = direct.ValueOf(in.Message)
+	return out
+}
+
+func EncryptionInfoObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionInfo) *krmbigtablev1alpha1.EncryptionInfoObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmbigtablev1alpha1.EncryptionInfoObservedState{}
+	out.EncryptionType = direct.Enum_FromProto(mapCtx, in.GetEncryptionType())
+	out.EncryptionStatus = Status_v1alpha1_FromProto(mapCtx, in.GetEncryptionStatus())
+	out.KMSKeyVersion = direct.LazyPtr(in.GetKmsKeyVersion())
+	return out
+}
+
+func EncryptionInfoObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmbigtablev1alpha1.EncryptionInfoObservedState) *pb.EncryptionInfo {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EncryptionInfo{}
+	out.EncryptionType = direct.Enum_ToProto[pb.EncryptionInfo_EncryptionType](mapCtx, in.EncryptionType)
+	out.EncryptionStatus = Status_v1alpha1_ToProto(mapCtx, in.EncryptionStatus)
+	out.KmsKeyVersion = direct.ValueOf(in.KMSKeyVersion)
+	return out
+}

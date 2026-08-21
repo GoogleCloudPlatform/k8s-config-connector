@@ -1,0 +1,74 @@
+{
+  "name": "{{resource_name}}",
+  "description": "A test GrpcRoute",
+  "meshes": ["projects/{{project}}/locations/global/meshes/{{ref:basicgrpc.networkservices.mesh.json:name}}"],
+  "gateways": ["projects/{{project}}/locations/global/gateways/{{ref:basicgrpc.networkservices.gateway.json:name}}"],
+  "project": "{{project}}",
+  "location": "global",
+  "hostnames": ["test1", "test2"],
+  "labels": {
+    "foo": "bar"
+  },
+  "rules": [
+    {
+      "matches": [
+        {
+          "method": {
+            "type": "EXACT",
+            "grpcService": "helloworld.Greeter",
+            "grpcMethod": "SayHello",
+            "caseSensitive": false
+          },
+          "headers": [
+            {
+              "type": "EXACT",
+              "key": "foo",
+              "value": "bar"
+            }
+          ]
+        }
+      ],
+      "action": {
+        "destinations": [
+          {
+
+            "serviceName": "projects/{{project}}/locations/global/backendServices/{{ref:basicgrpc.compute.backend_service.json:name}}",
+            "weight": 50
+          },
+          {
+
+            "serviceName": "projects/{{project}}/locations/global/backendServices/{{ref:basicgrpc.compute.backend_service.json:name}}",
+            "weight": 50
+          }
+        ],
+        "faultInjectionPolicy": {
+          "abort": {
+            "httpStatus": 501,
+            "percentage": 1
+          },
+          "delay": {
+            "fixedDelay": "10s",
+            "percentage": 2
+          }
+        },
+        "retryPolicy": {
+          "numRetries": 3,
+          "retryConditions": [
+            "refused-stream",
+            "cancelled"
+          ]
+        },
+        "timeout": "30s"
+      }
+    },
+    {
+      "action": {
+        "destinations": [
+          {
+            "serviceName": "projects/{{project}}/locations/global/backendServices/{{ref:basicgrpc.compute.backend_service.json:name}}"
+          }
+        ]
+      }
+    }
+  ]
+}

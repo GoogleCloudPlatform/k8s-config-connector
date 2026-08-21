@@ -1,0 +1,151 @@
+GET https://cloudsecuritycompliance.googleapis.com/v1/organizations/${organizationID}/locations/global/cloudControls/cloudsecuritycompliancecloudcontrol-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=organizations%2F${organizationID}%2Flocations%2Fglobal%2FcloudControls%2Fcloudsecuritycompliancecloudcontrol-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Requested entity was not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://cloudsecuritycompliance.googleapis.com/v1/organizations/${organizationID}/locations/global/cloudControls?%24alt=json%3Benum-encoding%3Dint&cloudControlId=cloudsecuritycompliancecloudcontrol-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=organizations%2F${organizationID}%2Flocations%2Fglobal
+
+{
+  "description": "Test description",
+  "displayName": "Test Control ${uniqueId}",
+  "name": "organizations/${organizationID}/locations/global/cloudControls/cloudsecuritycompliancecloudcontrol-${uniqueId}",
+  "severity": 3
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "description": "Test description",
+  "displayName": "Test Control ${uniqueId}",
+  "name": "organizations/${organizationID}/locations/global/cloudControls/cloudsecuritycompliancecloudcontrol-${uniqueId}",
+  "severity": 3
+}
+
+---
+
+GET https://cloudsecuritycompliance.googleapis.com/v1/organizations/${organizationID}/locations/global/cloudControls/cloudsecuritycompliancecloudcontrol-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=organizations%2F${organizationID}%2Flocations%2Fglobal%2FcloudControls%2Fcloudsecuritycompliancecloudcontrol-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "description": "Test description",
+  "displayName": "Test Control ${uniqueId}",
+  "name": "organizations/${organizationID}/locations/global/cloudControls/cloudsecuritycompliancecloudcontrol-${uniqueId}",
+  "severity": 3
+}
+
+---
+
+PATCH https://cloudsecuritycompliance.googleapis.com/v1/organizations/${organizationID}/locations/global/cloudControls/cloudsecuritycompliancecloudcontrol-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2CdisplayName%2Cseverity
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: cloud_control.name=organizations%2F${organizationID}%2Flocations%2Fglobal%2FcloudControls%2Fcloudsecuritycompliancecloudcontrol-${uniqueId}
+
+{
+  "description": "Test description updated",
+  "displayName": "Test Control ${uniqueId} Updated",
+  "name": "organizations/${organizationID}/locations/global/cloudControls/cloudsecuritycompliancecloudcontrol-${uniqueId}",
+  "severity": 2
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "description": "Test description updated",
+  "displayName": "Test Control ${uniqueId} Updated",
+  "name": "organizations/${organizationID}/locations/global/cloudControls/cloudsecuritycompliancecloudcontrol-${uniqueId}",
+  "severity": 2
+}
+
+---
+
+GET https://cloudsecuritycompliance.googleapis.com/v1/organizations/${organizationID}/locations/global/cloudControls/cloudsecuritycompliancecloudcontrol-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=organizations%2F${organizationID}%2Flocations%2Fglobal%2FcloudControls%2Fcloudsecuritycompliancecloudcontrol-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "description": "Test description updated",
+  "displayName": "Test Control ${uniqueId} Updated",
+  "name": "organizations/${organizationID}/locations/global/cloudControls/cloudsecuritycompliancecloudcontrol-${uniqueId}",
+  "severity": 2
+}
+
+---
+
+DELETE https://cloudsecuritycompliance.googleapis.com/v1/organizations/${organizationID}/locations/global/cloudControls/cloudsecuritycompliancecloudcontrol-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=organizations%2F${organizationID}%2Flocations%2Fglobal%2FcloudControls%2Fcloudsecuritycompliancecloudcontrol-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

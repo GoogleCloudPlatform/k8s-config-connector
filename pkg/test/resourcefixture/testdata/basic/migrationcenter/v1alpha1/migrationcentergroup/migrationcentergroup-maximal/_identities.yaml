@@ -1,0 +1,6 @@
+- caisURL: //migrationcenter.googleapis.com/projects/${projectId}/locations/us-central1/groups/migrationcentergroup-maximal-${uniqueId}
+  group: migrationcenter.cnrm.cloud.google.com
+  kind: MigrationCenterGroup
+  name: migrationcentergroup-maximal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

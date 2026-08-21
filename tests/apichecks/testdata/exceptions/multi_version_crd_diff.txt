@@ -1,0 +1,8 @@
+[multi_version_crd_diff] crd=alloydbclusters.alloydb.cnrm.cloud.google.com, versions=v1alpha1,v1beta1: diff detected in testdata/exceptions/multi_version_crd_diff/AlloyDBCluster.json
+[multi_version_crd_diff] crd=apphubapplications.apphub.cnrm.cloud.google.com, versions=v1alpha1,v1beta1: diff detected in testdata/exceptions/multi_version_crd_diff/AppHubApplication.json
+[multi_version_crd_diff] crd=bigquerydatatransferconfigs.bigquerydatatransfer.cnrm.cloud.google.com, versions=v1alpha1,v1beta1: diff detected in testdata/exceptions/multi_version_crd_diff/BigQueryDataTransferConfig.json
+[multi_version_crd_diff] crd=certificatemanagerdnsauthorizations.certificatemanager.cnrm.cloud.google.com, versions=v1alpha1,v1beta1: diff detected in testdata/exceptions/multi_version_crd_diff/CertificateManagerDNSAuthorization.json
+[multi_version_crd_diff] crd=cloudbuildworkerpools.cloudbuild.cnrm.cloud.google.com, versions=v1alpha1,v1beta1: diff detected in testdata/exceptions/multi_version_crd_diff/CloudBuildWorkerPool.json
+[multi_version_crd_diff] crd=notebookinstances.notebooks.cnrm.cloud.google.com, versions=v1alpha1,v1beta1: diff detected in testdata/exceptions/multi_version_crd_diff/NotebookInstance.json
+[multi_version_crd_diff] crd=privilegedaccessmanagerentitlements.privilegedaccessmanager.cnrm.cloud.google.com, versions=v1alpha1,v1beta1: diff detected in testdata/exceptions/multi_version_crd_diff/PrivilegedAccessManagerEntitlement.json
+[multi_version_crd_diff] crd=vertexaiindexes.vertexai.cnrm.cloud.google.com, versions=v1alpha1,v1beta1: diff detected in testdata/exceptions/multi_version_crd_diff/VertexAIIndex.json

@@ -1,0 +1,14 @@
+- caisURL: //bigquery.googleapis.com/projects/${projectId}/datasets/scbqexportdsmax${uniqueId}
+  group: bigquery.cnrm.cloud.google.com
+  kind: BigQueryDataset
+  name: scbqexportdsmax${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: unknown
+  error: 'cannot resolve organization: format of Organization external="${TEST_ORG_ID}"
+    was not known (use organizations/{organizationID})'
+  group: securitycenter.cnrm.cloud.google.com
+  kind: SecurityCenterBigQueryExport
+  name: scbqexportmaximal${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

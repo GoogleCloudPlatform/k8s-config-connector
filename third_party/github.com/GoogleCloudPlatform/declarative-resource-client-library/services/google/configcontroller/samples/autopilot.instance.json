@@ -1,0 +1,8 @@
+{
+  "project": "{{project}}",
+  "location": "{{region}}",
+  "name": "{{id}}",
+  "managementConfig": {
+    "fullManagementConfig": {}
+  }
+}

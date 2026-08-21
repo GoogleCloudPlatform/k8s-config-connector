@@ -1,0 +1,7 @@
+
+- exec: gcloud compute networks create test-network-${uniqueId}
+- exec: gcloud network-connectivity internal-ranges create test-${uniqueId} --network=test-network-${uniqueId} --prefix-length=24
+- exec: gcloud network-connectivity internal-ranges describe test-${uniqueId}
+- exec: gcloud network-connectivity internal-ranges update test-${uniqueId} --prefix-length=28
+- exec: gcloud network-connectivity internal-ranges delete test-${uniqueId} --quiet
+- exec: gcloud compute networks delete test-network-${uniqueId} --quiet

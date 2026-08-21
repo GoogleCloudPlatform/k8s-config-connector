@@ -1,0 +1,5 @@
+{
+  "role": "roles/vmwareengine.vmwareengineViewer",
+  "members": ["user:thomasrodgers@google.com"],
+  "resource": "{{ref:basic.private_cloud.json:__resource__}}"
+}

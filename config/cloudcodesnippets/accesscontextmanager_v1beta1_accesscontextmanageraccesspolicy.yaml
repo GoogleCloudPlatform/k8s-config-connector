@@ -1,0 +1,9 @@
+label: Config Connector AccessContextManagerAccessPolicy
+markdownDescription: Creates yaml for a AccessContextManagerAccessPolicy resource
+insertText: |
+  apiVersion: accesscontextmanager.cnrm.cloud.google.com/v1beta1
+  kind: AccessContextManagerAccessPolicy
+  metadata:
+    name: \${1:accesscontextmanageraccesspolicy-name}
+  spec:
+    title: \${2:Config Connector Sample}

@@ -1,0 +1,19 @@
+label: Config Connector DataflowJob
+markdownDescription: Creates yaml for a DataflowJob resource
+insertText: |
+  apiVersion: dataflow.cnrm.cloud.google.com/v1beta1
+  kind: DataflowJob
+  metadata:
+    labels:
+      \${1:label-one}: \${2:value-one}
+    name: \${3:dataflowjob-name}
+  spec:
+    tempGcsLocation: \${4:gs://[PROJECT_ID?]-dataflowjob-dep-streaming/tmp}
+    templateGcsPath: \${5:gs://dataflow-templates/2020-02-03-01_RC00/PubSub_to_BigQuery}
+    parameters:
+      inputTopic: \${6:projects/[PROJECT_ID?]/topics/dataflowjob-dep-streaming}
+      outputTableSpec: \${7:[PROJECT_ID?]:dataflowjobdepstreaming.dataflowjobdepstreaming}
+    zone: \${8:us-central1-a}
+    machineType: \${9:n1-standard-1}
+    maxWorkers: \${10:3}
+    ipConfiguration: \${11:WORKER_IP_PUBLIC}

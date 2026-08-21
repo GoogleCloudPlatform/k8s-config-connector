@@ -1,0 +1,12 @@
+- caisURL: //pubsub.googleapis.com/projects/${projectId}/topics/kcc-assetfeed-${uniqueId}
+  group: pubsub.cnrm.cloud.google.com
+  kind: PubSubTopic
+  name: kcc-assetfeed-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: unknown
+  group: asset.cnrm.cloud.google.com
+  kind: AssetFeed
+  name: assetfeed-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

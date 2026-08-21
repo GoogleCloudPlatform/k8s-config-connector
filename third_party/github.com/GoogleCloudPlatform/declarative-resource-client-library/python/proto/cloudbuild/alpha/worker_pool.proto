@@ -1,0 +1,109 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum CloudbuildAlphaWorkerPoolStateEnum {
+  CloudbuildAlphaWorkerPoolStateEnumNO_VALUE_DO_NOT_USE = 0;
+  CloudbuildAlphaWorkerPoolStateEnumSTATE_UNSPECIFIED = 1;
+  CloudbuildAlphaWorkerPoolStateEnumPENDING = 2;
+  CloudbuildAlphaWorkerPoolStateEnumAPPROVED = 3;
+  CloudbuildAlphaWorkerPoolStateEnumREJECTED = 4;
+  CloudbuildAlphaWorkerPoolStateEnumCANCELLED = 5;
+}
+
+enum CloudbuildAlphaWorkerPoolPrivatePoolV1ConfigNetworkConfigEgressOptionEnum {
+  CloudbuildAlphaWorkerPoolPrivatePoolV1ConfigNetworkConfigEgressOptionEnumNO_VALUE_DO_NOT_USE = 0;
+  CloudbuildAlphaWorkerPoolPrivatePoolV1ConfigNetworkConfigEgressOptionEnumEGRESS_OPTION_UNSPECIFIED = 1;
+  CloudbuildAlphaWorkerPoolPrivatePoolV1ConfigNetworkConfigEgressOptionEnumNO_PUBLIC_EGRESS = 2;
+  CloudbuildAlphaWorkerPoolPrivatePoolV1ConfigNetworkConfigEgressOptionEnumPUBLIC_EGRESS = 3;
+}
+
+message CloudbuildAlphaWorkerPool {
+  string name = 1;
+  string display_name = 2;
+  string uid = 3;
+  map<string, string> annotations = 4;
+  string create_time = 5;
+  string update_time = 6;
+  string delete_time = 7;
+  CloudbuildAlphaWorkerPoolStateEnum state = 8;
+  CloudbuildAlphaWorkerPoolPrivatePoolV1Config private_pool_v1_config = 9;
+  string etag = 10;
+  CloudbuildAlphaWorkerPoolWorkerConfig worker_config = 11;
+  CloudbuildAlphaWorkerPoolNetworkConfig network_config = 12;
+  string project = 13;
+  string location = 14;
+}
+
+message CloudbuildAlphaWorkerPoolPrivatePoolV1Config {
+  CloudbuildAlphaWorkerPoolPrivatePoolV1ConfigWorkerConfig worker_config = 1;
+  CloudbuildAlphaWorkerPoolPrivatePoolV1ConfigNetworkConfig network_config = 2;
+}
+
+message CloudbuildAlphaWorkerPoolPrivatePoolV1ConfigWorkerConfig {
+  string machine_type = 1;
+  int64 disk_size_gb = 2;
+}
+
+message CloudbuildAlphaWorkerPoolPrivatePoolV1ConfigNetworkConfig {
+  string peered_network = 1;
+  string peered_network_ip_range = 2;
+  CloudbuildAlphaWorkerPoolPrivatePoolV1ConfigNetworkConfigEgressOptionEnum egress_option = 3;
+}
+
+message CloudbuildAlphaWorkerPoolWorkerConfig {
+  string machine_type = 1;
+  int64 disk_size_gb = 2;
+  bool no_external_ip = 3;
+}
+
+message CloudbuildAlphaWorkerPoolNetworkConfig {
+  string peered_network = 1;
+  string peered_network_ip_range = 2;
+}
+
+message ApplyCloudbuildAlphaWorkerPoolRequest {
+  CloudbuildAlphaWorkerPool resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteCloudbuildAlphaWorkerPoolRequest {
+  string service_account_file = 1;
+  CloudbuildAlphaWorkerPool resource = 2;
+}
+
+message ListCloudbuildAlphaWorkerPoolRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListCloudbuildAlphaWorkerPoolResponse {
+  repeated CloudbuildAlphaWorkerPool items = 1;
+}
+
+service CloudbuildAlphaWorkerPoolService {
+  rpc ApplyCloudbuildAlphaWorkerPool(ApplyCloudbuildAlphaWorkerPoolRequest) returns (CloudbuildAlphaWorkerPool);
+  rpc DeleteCloudbuildAlphaWorkerPool(DeleteCloudbuildAlphaWorkerPoolRequest) returns (google.protobuf.Empty);
+  rpc ListCloudbuildAlphaWorkerPool(ListCloudbuildAlphaWorkerPoolRequest) returns (ListCloudbuildAlphaWorkerPoolResponse);
+}

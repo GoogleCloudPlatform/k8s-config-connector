@@ -1,0 +1,210 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum AssuredworkloadsWorkloadResourcesResourceTypeEnum {
+  AssuredworkloadsWorkloadResourcesResourceTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  AssuredworkloadsWorkloadResourcesResourceTypeEnumRESOURCE_TYPE_UNSPECIFIED = 1;
+  AssuredworkloadsWorkloadResourcesResourceTypeEnumCONSUMER_PROJECT = 2;
+  AssuredworkloadsWorkloadResourcesResourceTypeEnumENCRYPTION_KEYS_PROJECT = 3;
+  AssuredworkloadsWorkloadResourcesResourceTypeEnumKEYRING = 4;
+  AssuredworkloadsWorkloadResourcesResourceTypeEnumCONSUMER_FOLDER = 5;
+}
+
+enum AssuredworkloadsWorkloadComplianceRegimeEnum {
+  AssuredworkloadsWorkloadComplianceRegimeEnumNO_VALUE_DO_NOT_USE = 0;
+  AssuredworkloadsWorkloadComplianceRegimeEnumCOMPLIANCE_REGIME_UNSPECIFIED = 1;
+  AssuredworkloadsWorkloadComplianceRegimeEnumIL4 = 2;
+  AssuredworkloadsWorkloadComplianceRegimeEnumCJIS = 3;
+  AssuredworkloadsWorkloadComplianceRegimeEnumFEDRAMP_HIGH = 4;
+  AssuredworkloadsWorkloadComplianceRegimeEnumFEDRAMP_MODERATE = 5;
+  AssuredworkloadsWorkloadComplianceRegimeEnumUS_REGIONAL_ACCESS = 6;
+  AssuredworkloadsWorkloadComplianceRegimeEnumHIPAA = 7;
+  AssuredworkloadsWorkloadComplianceRegimeEnumHITRUST = 8;
+  AssuredworkloadsWorkloadComplianceRegimeEnumEU_REGIONS_AND_SUPPORT = 9;
+  AssuredworkloadsWorkloadComplianceRegimeEnumCA_REGIONS_AND_SUPPORT = 10;
+  AssuredworkloadsWorkloadComplianceRegimeEnumITAR = 11;
+  AssuredworkloadsWorkloadComplianceRegimeEnumAU_REGIONS_AND_US_SUPPORT = 12;
+  AssuredworkloadsWorkloadComplianceRegimeEnumASSURED_WORKLOADS_FOR_PARTNERS = 13;
+  AssuredworkloadsWorkloadComplianceRegimeEnumISR_REGIONS = 14;
+  AssuredworkloadsWorkloadComplianceRegimeEnumISR_REGIONS_AND_SUPPORT = 15;
+  AssuredworkloadsWorkloadComplianceRegimeEnumCA_PROTECTED_B = 16;
+  AssuredworkloadsWorkloadComplianceRegimeEnumIL5 = 17;
+  AssuredworkloadsWorkloadComplianceRegimeEnumIL2 = 18;
+  AssuredworkloadsWorkloadComplianceRegimeEnumJP_REGIONS_AND_SUPPORT = 19;
+}
+
+enum AssuredworkloadsWorkloadResourceSettingsResourceTypeEnum {
+  AssuredworkloadsWorkloadResourceSettingsResourceTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  AssuredworkloadsWorkloadResourceSettingsResourceTypeEnumRESOURCE_TYPE_UNSPECIFIED = 1;
+  AssuredworkloadsWorkloadResourceSettingsResourceTypeEnumCONSUMER_PROJECT = 2;
+  AssuredworkloadsWorkloadResourceSettingsResourceTypeEnumENCRYPTION_KEYS_PROJECT = 3;
+  AssuredworkloadsWorkloadResourceSettingsResourceTypeEnumKEYRING = 4;
+  AssuredworkloadsWorkloadResourceSettingsResourceTypeEnumCONSUMER_FOLDER = 5;
+}
+
+enum AssuredworkloadsWorkloadKajEnrollmentStateEnum {
+  AssuredworkloadsWorkloadKajEnrollmentStateEnumNO_VALUE_DO_NOT_USE = 0;
+  AssuredworkloadsWorkloadKajEnrollmentStateEnumKAJ_ENROLLMENT_STATE_UNSPECIFIED = 1;
+  AssuredworkloadsWorkloadKajEnrollmentStateEnumKAJ_ENROLLMENT_STATE_PENDING = 2;
+  AssuredworkloadsWorkloadKajEnrollmentStateEnumKAJ_ENROLLMENT_STATE_COMPLETE = 3;
+}
+
+enum AssuredworkloadsWorkloadSaaEnrollmentResponseSetupErrorsEnum {
+  AssuredworkloadsWorkloadSaaEnrollmentResponseSetupErrorsEnumNO_VALUE_DO_NOT_USE = 0;
+  AssuredworkloadsWorkloadSaaEnrollmentResponseSetupErrorsEnumSETUP_ERROR_UNSPECIFIED = 1;
+  AssuredworkloadsWorkloadSaaEnrollmentResponseSetupErrorsEnumERROR_INVALID_BASE_SETUP = 2;
+  AssuredworkloadsWorkloadSaaEnrollmentResponseSetupErrorsEnumERROR_MISSING_EXTERNAL_SIGNING_KEY = 3;
+  AssuredworkloadsWorkloadSaaEnrollmentResponseSetupErrorsEnumERROR_NOT_ALL_SERVICES_ENROLLED = 4;
+  AssuredworkloadsWorkloadSaaEnrollmentResponseSetupErrorsEnumERROR_SETUP_CHECK_FAILED = 5;
+}
+
+enum AssuredworkloadsWorkloadSaaEnrollmentResponseSetupStatusEnum {
+  AssuredworkloadsWorkloadSaaEnrollmentResponseSetupStatusEnumNO_VALUE_DO_NOT_USE = 0;
+  AssuredworkloadsWorkloadSaaEnrollmentResponseSetupStatusEnumSETUP_STATE_UNSPECIFIED = 1;
+  AssuredworkloadsWorkloadSaaEnrollmentResponseSetupStatusEnumSTATUS_PENDING = 2;
+  AssuredworkloadsWorkloadSaaEnrollmentResponseSetupStatusEnumSTATUS_COMPLETE = 3;
+}
+
+enum AssuredworkloadsWorkloadPartnerEnum {
+  AssuredworkloadsWorkloadPartnerEnumNO_VALUE_DO_NOT_USE = 0;
+  AssuredworkloadsWorkloadPartnerEnumPARTNER_UNSPECIFIED = 1;
+  AssuredworkloadsWorkloadPartnerEnumLOCAL_CONTROLS_BY_S3NS = 2;
+  AssuredworkloadsWorkloadPartnerEnumSOVEREIGN_CONTROLS_BY_T_SYSTEMS = 3;
+  AssuredworkloadsWorkloadPartnerEnumSOVEREIGN_CONTROLS_BY_SIA_MINSAIT = 4;
+  AssuredworkloadsWorkloadPartnerEnumSOVEREIGN_CONTROLS_BY_PSN = 5;
+}
+
+enum AssuredworkloadsWorkloadEkmProvisioningResponseEkmProvisioningStateEnum {
+  AssuredworkloadsWorkloadEkmProvisioningResponseEkmProvisioningStateEnumNO_VALUE_DO_NOT_USE = 0;
+  AssuredworkloadsWorkloadEkmProvisioningResponseEkmProvisioningStateEnumEKM_PROVISIONING_STATE_UNSPECIFIED = 1;
+  AssuredworkloadsWorkloadEkmProvisioningResponseEkmProvisioningStateEnumEKM_PROVISIONING_STATE_PENDING = 2;
+  AssuredworkloadsWorkloadEkmProvisioningResponseEkmProvisioningStateEnumEKM_PROVISIONING_STATE_FAILED = 3;
+  AssuredworkloadsWorkloadEkmProvisioningResponseEkmProvisioningStateEnumEKM_PROVISIONING_STATE_COMPLETED = 4;
+}
+
+enum AssuredworkloadsWorkloadEkmProvisioningResponseEkmProvisioningErrorDomainEnum {
+  AssuredworkloadsWorkloadEkmProvisioningResponseEkmProvisioningErrorDomainEnumNO_VALUE_DO_NOT_USE = 0;
+  AssuredworkloadsWorkloadEkmProvisioningResponseEkmProvisioningErrorDomainEnumEKM_PROVISIONING_ERROR_DOMAIN_UNSPECIFIED = 1;
+  AssuredworkloadsWorkloadEkmProvisioningResponseEkmProvisioningErrorDomainEnumUNSPECIFIED_ERROR = 2;
+  AssuredworkloadsWorkloadEkmProvisioningResponseEkmProvisioningErrorDomainEnumGOOGLE_SERVER_ERROR = 3;
+  AssuredworkloadsWorkloadEkmProvisioningResponseEkmProvisioningErrorDomainEnumEXTERNAL_USER_ERROR = 4;
+  AssuredworkloadsWorkloadEkmProvisioningResponseEkmProvisioningErrorDomainEnumEXTERNAL_PARTNER_ERROR = 5;
+  AssuredworkloadsWorkloadEkmProvisioningResponseEkmProvisioningErrorDomainEnumTIMEOUT_ERROR = 6;
+}
+
+enum AssuredworkloadsWorkloadEkmProvisioningResponseEkmProvisioningErrorMappingEnum {
+  AssuredworkloadsWorkloadEkmProvisioningResponseEkmProvisioningErrorMappingEnumNO_VALUE_DO_NOT_USE = 0;
+  AssuredworkloadsWorkloadEkmProvisioningResponseEkmProvisioningErrorMappingEnumEKM_PROVISIONING_ERROR_MAPPING_UNSPECIFIED = 1;
+  AssuredworkloadsWorkloadEkmProvisioningResponseEkmProvisioningErrorMappingEnumINVALID_SERVICE_ACCOUNT = 2;
+  AssuredworkloadsWorkloadEkmProvisioningResponseEkmProvisioningErrorMappingEnumMISSING_METRICS_SCOPE_ADMIN_PERMISSION = 3;
+  AssuredworkloadsWorkloadEkmProvisioningResponseEkmProvisioningErrorMappingEnumMISSING_EKM_CONNECTION_ADMIN_PERMISSION = 4;
+}
+
+message AssuredworkloadsWorkload {
+  string name = 1;
+  string display_name = 2;
+  repeated AssuredworkloadsWorkloadResources resources = 3;
+  AssuredworkloadsWorkloadComplianceRegimeEnum compliance_regime = 4;
+  string create_time = 5;
+  string billing_account = 6;
+  map<string, string> labels = 7;
+  string provisioned_resources_parent = 8;
+  AssuredworkloadsWorkloadKmsSettings kms_settings = 9;
+  repeated AssuredworkloadsWorkloadResourceSettings resource_settings = 10;
+  AssuredworkloadsWorkloadKajEnrollmentStateEnum kaj_enrollment_state = 11;
+  bool enable_sovereign_controls = 12;
+  AssuredworkloadsWorkloadSaaEnrollmentResponse saa_enrollment_response = 13;
+  AssuredworkloadsWorkloadComplianceStatus compliance_status = 14;
+  repeated string compliant_but_disallowed_services = 15;
+  AssuredworkloadsWorkloadPartnerEnum partner = 16;
+  AssuredworkloadsWorkloadPartnerPermissions partner_permissions = 17;
+  AssuredworkloadsWorkloadEkmProvisioningResponse ekm_provisioning_response = 18;
+  bool violation_notifications_enabled = 19;
+  string organization = 20;
+  string location = 21;
+}
+
+message AssuredworkloadsWorkloadResources {
+  int64 resource_id = 1;
+  AssuredworkloadsWorkloadResourcesResourceTypeEnum resource_type = 2;
+}
+
+message AssuredworkloadsWorkloadKmsSettings {
+  string next_rotation_time = 1;
+  string rotation_period = 2;
+}
+
+message AssuredworkloadsWorkloadResourceSettings {
+  string resource_id = 1;
+  AssuredworkloadsWorkloadResourceSettingsResourceTypeEnum resource_type = 2;
+  string display_name = 3;
+}
+
+message AssuredworkloadsWorkloadSaaEnrollmentResponse {
+  repeated AssuredworkloadsWorkloadSaaEnrollmentResponseSetupErrorsEnum setup_errors = 1;
+  AssuredworkloadsWorkloadSaaEnrollmentResponseSetupStatusEnum setup_status = 2;
+}
+
+message AssuredworkloadsWorkloadComplianceStatus {
+  repeated int64 active_violation_count = 1;
+  repeated int64 acknowledged_violation_count = 2;
+}
+
+message AssuredworkloadsWorkloadPartnerPermissions {
+  bool data_logs_viewer = 1;
+  bool service_access_approver = 2;
+  bool assured_workloads_monitoring = 3;
+}
+
+message AssuredworkloadsWorkloadEkmProvisioningResponse {
+  AssuredworkloadsWorkloadEkmProvisioningResponseEkmProvisioningStateEnum ekm_provisioning_state = 1;
+  AssuredworkloadsWorkloadEkmProvisioningResponseEkmProvisioningErrorDomainEnum ekm_Provisioning_error_domain = 2;
+  AssuredworkloadsWorkloadEkmProvisioningResponseEkmProvisioningErrorMappingEnum ekm_provisioning_error_mapping = 3;
+}
+
+message ApplyAssuredworkloadsWorkloadRequest {
+  AssuredworkloadsWorkload resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteAssuredworkloadsWorkloadRequest {
+  string service_account_file = 1;
+  AssuredworkloadsWorkload resource = 2;
+}
+
+message ListAssuredworkloadsWorkloadRequest {
+  string service_account_file = 1;
+  string Organization = 2;
+  string Location = 3;
+}
+
+message ListAssuredworkloadsWorkloadResponse {
+  repeated AssuredworkloadsWorkload items = 1;
+}
+
+service AssuredworkloadsWorkloadService {
+  rpc ApplyAssuredworkloadsWorkload(ApplyAssuredworkloadsWorkloadRequest) returns (AssuredworkloadsWorkload);
+  rpc DeleteAssuredworkloadsWorkload(DeleteAssuredworkloadsWorkloadRequest) returns (google.protobuf.Empty);
+  rpc ListAssuredworkloadsWorkload(ListAssuredworkloadsWorkloadRequest) returns (ListAssuredworkloadsWorkloadResponse);
+}

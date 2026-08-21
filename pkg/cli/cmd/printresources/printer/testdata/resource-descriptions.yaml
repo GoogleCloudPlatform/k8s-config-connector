@@ -1,0 +1,64 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+- GVK:
+    Group: bigtable.cnrm.cloud.google.com
+    Kind: BigtableTable
+    Version: v1beta1
+  ResourceNameFormat: //bigtableadmin.googleapis.com/projects/{{project}}/instances/{{instance_name}}/tables/{{name}}
+  SupportsBulkExport: true
+  SupportsExport: true
+- GVK:
+    Group: cloudbuild.cnrm.cloud.google.com
+    Kind: CloudBuildTrigger
+    Version: v1beta1
+  ResourceNameFormat: //cloudbuild.googleapis.com/projects/{{project}}/triggers/{{trigger_id}}
+  SupportsBulkExport: true
+  SupportsExport: true
+- GVK:
+    Group: dns.cnrm.cloud.google.com
+    Kind: DNSManagedZone
+    Version: v1beta1
+  ResourceNameFormat: //dns.googleapis.com/projects/{{project}}/managedZones/{{name}}
+  SupportsBulkExport: true
+  SupportsExport: true
+- GVK:
+    Group: dns.cnrm.cloud.google.com
+    Kind: DNSPolicy
+    Version: v1beta1
+  ResourceNameFormat: //dns.googleapis.com/projects/{{project}}/policies/{{name}}
+  SupportsBulkExport: true
+  SupportsExport: true
+- GVK:
+    Group: dns.cnrm.cloud.google.com
+    Kind: DNSRecordSet
+    Version: v1beta1
+  ResourceNameFormat: //dns.googleapis.com/{{project}}/{{zone-name}}/{{record-name}}/{{type}}
+  SupportsBulkExport: true
+  SupportsExport: true
+- GVK:
+    Group: secretmanager.cnrm.cloud.google.com
+    Kind: SecretManagerSecretVersion
+    Version: v1beta1
+  ResourceNameFormat: //secretmanager.googleapis.com/
+  SupportsBulkExport: false
+  SupportsExport: false
+- GVK:
+    Group: storage.cnrm.cloud.google.com
+    Kind: StorageBucket
+    Version: v1beta1
+  ResourceNameFormat: ""
+  SupportsBulkExport: true
+  SupportsExport: false
+  SupportsIAM: true

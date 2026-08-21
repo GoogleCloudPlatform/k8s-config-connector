@@ -1,0 +1,15 @@
+apiVersion: networksecurity.cnrm.cloud.google.com/v1beta1
+kind: NetworkSecurityAuthorizationPolicy
+metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: networksecurityauthorizationpolicy-${uniqueId}
+spec:
+  action: GRANT
+  rules:
+  - sources:
+    - principals:
+      - '*'
+    destinations:
+    - hosts:
+      - '*'

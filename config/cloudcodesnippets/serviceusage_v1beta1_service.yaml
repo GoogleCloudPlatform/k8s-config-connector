@@ -1,0 +1,9 @@
+label: Config Connector Service
+markdownDescription: Creates yaml for a Service resource
+insertText: |
+  apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+  kind: Service
+  metadata:
+    name: \${1:service-name}
+  spec:
+    resourceID: \${2:pubsub.googleapis.com}

@@ -1,0 +1,17 @@
+{
+  "name": "{{name}}",
+  "project": "run-v2-deploy-e2e",
+  "location": "{{region}}",
+  "launchStage": "GA",
+  "binaryAuthorization": {
+    "useDefault": true,
+    "breakglassJustification": "Some justification"
+  },
+  "template": {
+    "containers": [
+      {
+        "image": "gcr.io/cloudrun/hello"
+      }
+    ]
+  }
+}

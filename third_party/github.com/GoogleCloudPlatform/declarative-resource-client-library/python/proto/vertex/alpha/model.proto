@@ -1,0 +1,141 @@
+// Copyright 2022 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum VertexAlphaModelSupportedExportFormatsExportableContentsEnum {
+  VertexAlphaModelSupportedExportFormatsExportableContentsEnumNO_VALUE_DO_NOT_USE = 0;
+  VertexAlphaModelSupportedExportFormatsExportableContentsEnumEXPORTABLE_CONTENT_UNSPECIFIED = 1;
+  VertexAlphaModelSupportedExportFormatsExportableContentsEnumARTIFACT = 2;
+  VertexAlphaModelSupportedExportFormatsExportableContentsEnumIMAGE = 3;
+}
+
+enum VertexAlphaModelContainerSpecAcceleratorRequirementsTypeEnum {
+  VertexAlphaModelContainerSpecAcceleratorRequirementsTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  VertexAlphaModelContainerSpecAcceleratorRequirementsTypeEnumACCELERATOR_TYPE_UNSPECIFIED = 1;
+  VertexAlphaModelContainerSpecAcceleratorRequirementsTypeEnumCORAL_EDGE_TPU = 2;
+  VertexAlphaModelContainerSpecAcceleratorRequirementsTypeEnumNVIDIA_GPU = 3;
+  VertexAlphaModelContainerSpecAcceleratorRequirementsTypeEnumAMD_GPU = 4;
+}
+
+enum VertexAlphaModelSupportedDeploymentResourcesTypesEnum {
+  VertexAlphaModelSupportedDeploymentResourcesTypesEnumNO_VALUE_DO_NOT_USE = 0;
+  VertexAlphaModelSupportedDeploymentResourcesTypesEnumDEPLOYMENT_RESOURCES_TYPE_UNSPECIFIED = 1;
+  VertexAlphaModelSupportedDeploymentResourcesTypesEnumDEDICATED_RESOURCES = 2;
+  VertexAlphaModelSupportedDeploymentResourcesTypesEnumAUTOMATIC_RESOURCES = 3;
+}
+
+message VertexAlphaModel {
+  string name = 1;
+  string version_id = 2;
+  repeated string version_aliases = 3;
+  string version_create_time = 4;
+  string version_update_time = 5;
+  string display_name = 6;
+  string description = 7;
+  string version_description = 8;
+  repeated VertexAlphaModelSupportedExportFormats supported_export_formats = 9;
+  string training_pipeline = 10;
+  VertexAlphaModelOriginalModelInfo original_model_info = 11;
+  VertexAlphaModelContainerSpec container_spec = 12;
+  string artifact_uri = 13;
+  repeated VertexAlphaModelSupportedDeploymentResourcesTypesEnum supported_deployment_resources_types = 14;
+  repeated string supported_input_storage_formats = 15;
+  repeated string supported_output_storage_formats = 16;
+  string create_time = 17;
+  string update_time = 18;
+  repeated VertexAlphaModelDeployedModels deployed_models = 19;
+  string etag = 20;
+  map<string, string> labels = 21;
+  VertexAlphaModelEncryptionSpec encryption_spec = 22;
+  string project = 23;
+  string location = 24;
+}
+
+message VertexAlphaModelSupportedExportFormats {
+  string id = 1;
+  repeated VertexAlphaModelSupportedExportFormatsExportableContentsEnum exportable_contents = 2;
+}
+
+message VertexAlphaModelOriginalModelInfo {
+  string model = 1;
+}
+
+message VertexAlphaModelContainerSpec {
+  string image_uri = 1;
+  repeated string command = 2;
+  repeated string args = 3;
+  repeated VertexAlphaModelContainerSpecEnv env = 4;
+  repeated VertexAlphaModelContainerSpecPorts ports = 5;
+  string predict_route = 6;
+  string health_route = 7;
+  repeated VertexAlphaModelContainerSpecAcceleratorRequirements accelerator_requirements = 8;
+}
+
+message VertexAlphaModelContainerSpecEnv {
+  string name = 1;
+  string value = 2;
+}
+
+message VertexAlphaModelContainerSpecPorts {
+  int64 container_port = 1;
+}
+
+message VertexAlphaModelContainerSpecAcceleratorRequirements {
+  VertexAlphaModelContainerSpecAcceleratorRequirementsTypeEnum type = 1;
+  int64 count = 2;
+}
+
+message VertexAlphaModelDeployedModels {
+  string endpoint = 1;
+  string deployed_model_id = 2;
+}
+
+message VertexAlphaModelEncryptionSpec {
+  string kms_key_name = 1;
+}
+
+message ApplyVertexAlphaModelRequest {
+  VertexAlphaModel resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteVertexAlphaModelRequest {
+  string service_account_file = 1;
+  VertexAlphaModel resource = 2;
+}
+
+message ListVertexAlphaModelRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListVertexAlphaModelResponse {
+  repeated VertexAlphaModel items = 1;
+}
+
+service VertexAlphaModelService {
+  rpc ApplyVertexAlphaModel(ApplyVertexAlphaModelRequest) returns (VertexAlphaModel);
+  rpc DeleteVertexAlphaModel(DeleteVertexAlphaModelRequest) returns (google.protobuf.Empty);
+  rpc ListVertexAlphaModel(ListVertexAlphaModelRequest) returns (ListVertexAlphaModelResponse);
+}

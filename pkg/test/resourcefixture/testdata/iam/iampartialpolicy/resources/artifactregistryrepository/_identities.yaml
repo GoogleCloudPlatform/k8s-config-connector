@@ -1,0 +1,12 @@
+- caisURL: //artifactregistry.googleapis.com/projects/${projectId}/locations/us-central1/repositories/artifactregistryrepository-${uniqueId}
+  group: artifactregistry.cnrm.cloud.google.com
+  kind: ArtifactRegistryRepository
+  name: artifactregistryrepository-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: unknown
+  group: iam.cnrm.cloud.google.com
+  kind: IAMPartialPolicy
+  name: iampartialpolicy-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

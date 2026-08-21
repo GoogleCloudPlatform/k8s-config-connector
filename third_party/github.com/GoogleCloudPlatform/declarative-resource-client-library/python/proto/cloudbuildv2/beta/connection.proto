@@ -1,0 +1,129 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum Cloudbuildv2BetaConnectionInstallationStateStageEnum {
+  Cloudbuildv2BetaConnectionInstallationStateStageEnumNO_VALUE_DO_NOT_USE = 0;
+  Cloudbuildv2BetaConnectionInstallationStateStageEnumSTAGE_UNSPECIFIED = 1;
+  Cloudbuildv2BetaConnectionInstallationStateStageEnumPENDING_CREATE_APP = 2;
+  Cloudbuildv2BetaConnectionInstallationStateStageEnumPENDING_USER_OAUTH = 3;
+  Cloudbuildv2BetaConnectionInstallationStateStageEnumPENDING_INSTALL_APP = 4;
+  Cloudbuildv2BetaConnectionInstallationStateStageEnumCOMPLETE = 5;
+}
+
+message Cloudbuildv2BetaConnection {
+  string name = 1;
+  string create_time = 2;
+  string update_time = 3;
+  Cloudbuildv2BetaConnectionGithubConfig github_config = 4;
+  Cloudbuildv2BetaConnectionGithubEnterpriseConfig github_enterprise_config = 5;
+  Cloudbuildv2BetaConnectionGitlabConfig gitlab_config = 6;
+  Cloudbuildv2BetaConnectionInstallationState installation_state = 7;
+  bool disabled = 8;
+  bool reconciling = 9;
+  map<string, string> annotations = 10;
+  string etag = 11;
+  string project = 12;
+  string location = 13;
+}
+
+message Cloudbuildv2BetaConnectionGithubConfig {
+  Cloudbuildv2BetaConnectionGithubConfigAuthorizerCredential authorizer_credential = 1;
+  int64 app_installation_id = 2;
+}
+
+message Cloudbuildv2BetaConnectionGithubConfigAuthorizerCredential {
+  string oauth_token_secret_version = 1;
+  string username = 2;
+}
+
+message Cloudbuildv2BetaConnectionGithubEnterpriseConfig {
+  string host_uri = 1;
+  int64 app_id = 2;
+  string app_slug = 3;
+  string private_key_secret_version = 4;
+  string webhook_secret_secret_version = 5;
+  int64 app_installation_id = 6;
+  Cloudbuildv2BetaConnectionGithubEnterpriseConfigServiceDirectoryConfig service_directory_config = 7;
+  string ssl_ca = 8;
+}
+
+message Cloudbuildv2BetaConnectionGithubEnterpriseConfigServiceDirectoryConfig {
+  string service = 1;
+}
+
+message Cloudbuildv2BetaConnectionGitlabConfig {
+  string host_uri = 1;
+  string webhook_secret_secret_version = 2;
+  Cloudbuildv2BetaConnectionGitlabConfigReadAuthorizerCredential read_authorizer_credential = 3;
+  Cloudbuildv2BetaConnectionGitlabConfigAuthorizerCredential authorizer_credential = 4;
+  Cloudbuildv2BetaConnectionGitlabConfigServiceDirectoryConfig service_directory_config = 5;
+  string ssl_ca = 6;
+  string server_version = 7;
+}
+
+message Cloudbuildv2BetaConnectionGitlabConfigReadAuthorizerCredential {
+  string user_token_secret_version = 1;
+  string username = 2;
+}
+
+message Cloudbuildv2BetaConnectionGitlabConfigAuthorizerCredential {
+  string user_token_secret_version = 1;
+  string username = 2;
+}
+
+message Cloudbuildv2BetaConnectionGitlabConfigServiceDirectoryConfig {
+  string service = 1;
+}
+
+message Cloudbuildv2BetaConnectionInstallationState {
+  Cloudbuildv2BetaConnectionInstallationStateStageEnum stage = 1;
+  string message = 2;
+  string action_uri = 3;
+}
+
+message ApplyCloudbuildv2BetaConnectionRequest {
+  Cloudbuildv2BetaConnection resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteCloudbuildv2BetaConnectionRequest {
+  string service_account_file = 1;
+  Cloudbuildv2BetaConnection resource = 2;
+}
+
+message ListCloudbuildv2BetaConnectionRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListCloudbuildv2BetaConnectionResponse {
+  repeated Cloudbuildv2BetaConnection items = 1;
+}
+
+service Cloudbuildv2BetaConnectionService {
+  rpc ApplyCloudbuildv2BetaConnection(ApplyCloudbuildv2BetaConnectionRequest) returns (Cloudbuildv2BetaConnection);
+  rpc DeleteCloudbuildv2BetaConnection(DeleteCloudbuildv2BetaConnectionRequest) returns (google.protobuf.Empty);
+  rpc ListCloudbuildv2BetaConnection(ListCloudbuildv2BetaConnectionRequest) returns (ListCloudbuildv2BetaConnectionResponse);
+}

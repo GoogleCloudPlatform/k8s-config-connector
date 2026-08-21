@@ -1,0 +1,146 @@
+// Copyright 2022 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum BigqueryBetaRoutineRoutineTypeEnum {
+  BigqueryBetaRoutineRoutineTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  BigqueryBetaRoutineRoutineTypeEnumROUTINE_TYPE_UNSPECIFIED = 1;
+  BigqueryBetaRoutineRoutineTypeEnumSCALAR_FUNCTION = 2;
+  BigqueryBetaRoutineRoutineTypeEnumPROCEDURE = 3;
+}
+
+enum BigqueryBetaRoutineLanguageEnum {
+  BigqueryBetaRoutineLanguageEnumNO_VALUE_DO_NOT_USE = 0;
+  BigqueryBetaRoutineLanguageEnumLANGUAGE_UNSPECIFIED = 1;
+  BigqueryBetaRoutineLanguageEnumSQL = 2;
+  BigqueryBetaRoutineLanguageEnumJAVASCRIPT = 3;
+}
+
+enum BigqueryBetaRoutineArgumentsArgumentKindEnum {
+  BigqueryBetaRoutineArgumentsArgumentKindEnumNO_VALUE_DO_NOT_USE = 0;
+  BigqueryBetaRoutineArgumentsArgumentKindEnumARGUMENT_KIND_UNSPECIFIED = 1;
+  BigqueryBetaRoutineArgumentsArgumentKindEnumFIXED_TYPE = 2;
+  BigqueryBetaRoutineArgumentsArgumentKindEnumANY_TYPE = 3;
+}
+
+enum BigqueryBetaRoutineArgumentsModeEnum {
+  BigqueryBetaRoutineArgumentsModeEnumNO_VALUE_DO_NOT_USE = 0;
+  BigqueryBetaRoutineArgumentsModeEnumMODE_UNSPECIFIED = 1;
+  BigqueryBetaRoutineArgumentsModeEnumIN = 2;
+  BigqueryBetaRoutineArgumentsModeEnumOUT = 3;
+  BigqueryBetaRoutineArgumentsModeEnumINOUT = 4;
+}
+
+enum BigqueryBetaRoutineArgumentsDataTypeTypeKindEnum {
+  BigqueryBetaRoutineArgumentsDataTypeTypeKindEnumNO_VALUE_DO_NOT_USE = 0;
+  BigqueryBetaRoutineArgumentsDataTypeTypeKindEnumTYPE_KIND_UNSPECIFIED = 1;
+  BigqueryBetaRoutineArgumentsDataTypeTypeKindEnumINT64 = 2;
+  BigqueryBetaRoutineArgumentsDataTypeTypeKindEnumBOOL = 3;
+  BigqueryBetaRoutineArgumentsDataTypeTypeKindEnumFLOAT64 = 4;
+  BigqueryBetaRoutineArgumentsDataTypeTypeKindEnumSTRING = 5;
+  BigqueryBetaRoutineArgumentsDataTypeTypeKindEnumBYTES = 6;
+  BigqueryBetaRoutineArgumentsDataTypeTypeKindEnumTIMESTAMP = 7;
+  BigqueryBetaRoutineArgumentsDataTypeTypeKindEnumDATE = 8;
+  BigqueryBetaRoutineArgumentsDataTypeTypeKindEnumTIME = 9;
+  BigqueryBetaRoutineArgumentsDataTypeTypeKindEnumDATETIME = 10;
+  BigqueryBetaRoutineArgumentsDataTypeTypeKindEnumINTERVAL = 11;
+  BigqueryBetaRoutineArgumentsDataTypeTypeKindEnumGEOGRAPHY = 12;
+  BigqueryBetaRoutineArgumentsDataTypeTypeKindEnumNUMERIC = 13;
+  BigqueryBetaRoutineArgumentsDataTypeTypeKindEnumBIGNUMERIC = 14;
+  BigqueryBetaRoutineArgumentsDataTypeTypeKindEnumJSON = 15;
+  BigqueryBetaRoutineArgumentsDataTypeTypeKindEnumARRAY = 16;
+  BigqueryBetaRoutineArgumentsDataTypeTypeKindEnumSTRUCT = 17;
+}
+
+enum BigqueryBetaRoutineDeterminismLevelEnum {
+  BigqueryBetaRoutineDeterminismLevelEnumNO_VALUE_DO_NOT_USE = 0;
+  BigqueryBetaRoutineDeterminismLevelEnumDETERMINISM_LEVEL_UNSPECIFIED = 1;
+  BigqueryBetaRoutineDeterminismLevelEnumDETERMINISTIC = 2;
+  BigqueryBetaRoutineDeterminismLevelEnumNOT_DETERMINISTIC = 3;
+}
+
+message BigqueryBetaRoutine {
+  string etag = 1;
+  string name = 2;
+  string project = 3;
+  string dataset = 4;
+  BigqueryBetaRoutineRoutineTypeEnum routine_type = 5;
+  int64 creation_time = 6;
+  int64 last_modified_time = 7;
+  BigqueryBetaRoutineLanguageEnum language = 8;
+  repeated BigqueryBetaRoutineArguments arguments = 9;
+  BigqueryBetaRoutineArgumentsDataType return_type = 10;
+  repeated string imported_libraries = 11;
+  string definition_body = 12;
+  string description = 13;
+  BigqueryBetaRoutineDeterminismLevelEnum determinism_level = 14;
+  bool strict_mode = 15;
+}
+
+message BigqueryBetaRoutineArguments {
+  string name = 1;
+  BigqueryBetaRoutineArgumentsArgumentKindEnum argument_kind = 2;
+  BigqueryBetaRoutineArgumentsModeEnum mode = 3;
+  BigqueryBetaRoutineArgumentsDataType data_type = 4;
+}
+
+message BigqueryBetaRoutineArgumentsDataType {
+  BigqueryBetaRoutineArgumentsDataTypeTypeKindEnum type_kind = 1;
+  BigqueryBetaRoutineArgumentsDataType array_element_type = 2;
+  BigqueryBetaRoutineArgumentsDataTypeStructType struct_type = 3;
+}
+
+message BigqueryBetaRoutineArgumentsDataTypeStructType {
+  repeated BigqueryBetaRoutineArgumentsDataTypeStructTypeFields fields = 1;
+}
+
+message BigqueryBetaRoutineArgumentsDataTypeStructTypeFields {
+  string name = 1;
+  BigqueryBetaRoutineArgumentsDataType type = 2;
+}
+
+message ApplyBigqueryBetaRoutineRequest {
+  BigqueryBetaRoutine resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteBigqueryBetaRoutineRequest {
+  string service_account_file = 1;
+  BigqueryBetaRoutine resource = 2;
+}
+
+message ListBigqueryBetaRoutineRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Dataset = 3;
+}
+
+message ListBigqueryBetaRoutineResponse {
+  repeated BigqueryBetaRoutine items = 1;
+}
+
+service BigqueryBetaRoutineService {
+  rpc ApplyBigqueryBetaRoutine(ApplyBigqueryBetaRoutineRequest) returns (BigqueryBetaRoutine);
+  rpc DeleteBigqueryBetaRoutine(DeleteBigqueryBetaRoutineRequest) returns (google.protobuf.Empty);
+  rpc ListBigqueryBetaRoutine(ListBigqueryBetaRoutineRequest) returns (ListBigqueryBetaRoutineResponse);
+}

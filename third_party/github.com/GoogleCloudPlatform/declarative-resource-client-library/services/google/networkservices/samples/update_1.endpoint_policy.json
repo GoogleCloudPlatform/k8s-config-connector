@@ -1,0 +1,24 @@
+{
+  "name": "{{selector}}",
+  "location": "global",
+  "project": "{{project}}",
+  "labels": {
+    "label-one": "value-one"
+  },
+  "type": "SIDECAR_PROXY",
+  "authorizationPolicy": "{{ref:second.networksecurity.authorization_policy.json:name}}",
+  "endpointMatcher": {
+    "metadataLabelMatcher": {
+      "metadataLabelMatchCriteria": "MATCH_ANY",
+      "metadataLabels": [
+        {
+          "labelName": "filter-update",
+          "labelValue": "false"
+        }
+      ]
+    }
+  },
+  "description": "A sample endpoint policy",
+  "serverTlsPolicy": "{{ref:second.networksecurity.server_tls_policy.json:name}}",
+  "clientTlsPolicy": "{{ref:second.networksecurity.client_tls_policy.json:name}}"
+}

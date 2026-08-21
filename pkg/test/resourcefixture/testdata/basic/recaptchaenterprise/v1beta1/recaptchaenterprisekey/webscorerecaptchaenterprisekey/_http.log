@@ -1,0 +1,180 @@
+GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/CreateKey
+
+{
+  "key": {
+    "displayName": "display-name-one",
+    "testingOptions": {
+      "testingScore": 0.5
+    },
+    "webSettings": {
+      "allowAllDomains": true,
+      "integrationType": "SCORE"
+    }
+  },
+  "parent": "projects/kcc-recaptcha-enterprise"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "display-name-one",
+  "name": "projects/1935411576/keys/${keyID}",
+  "testingOptions": {
+    "testingScore": 0.5
+  },
+  "webSettings": {
+    "allowAllDomains": true,
+    "integrationType": "SCORE"
+  }
+}
+
+---
+
+GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/GetKey
+
+{
+  "name": "projects/kcc-recaptcha-enterprise/keys/${keyID}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "display-name-one",
+  "name": "projects/1935411576/keys/${keyID}",
+  "testingOptions": {
+    "testingScore": 0.5
+  },
+  "webSettings": {
+    "allowAllDomains": true,
+    "integrationType": "SCORE"
+  }
+}
+
+---
+
+GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/GetKey
+
+{
+  "name": "projects/kcc-recaptcha-enterprise/keys/${keyID}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "display-name-one",
+  "name": "projects/1935411576/keys/${keyID}",
+  "testingOptions": {
+    "testingScore": 0.5
+  },
+  "webSettings": {
+    "allowAllDomains": true,
+    "integrationType": "SCORE"
+  }
+}
+
+---
+
+GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/UpdateKey
+
+{
+  "key": {
+    "displayName": "display-name-two",
+    "name": "projects/1935411576/keys/${keyID}",
+    "testingOptions": {
+      "testingScore": 0.5
+    },
+    "webSettings": {
+      "allowAmpTraffic": true,
+      "allowedDomains": [
+        "subdomain.example.com"
+      ],
+      "integrationType": "SCORE"
+    }
+  },
+  "updateMask": "displayName,webSettings.allowAllDomains,webSettings.allowAmpTraffic,webSettings.allowedDomains"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "display-name-two",
+  "name": "projects/1935411576/keys/${keyID}",
+  "testingOptions": {
+    "testingScore": 0.5
+  },
+  "webSettings": {
+    "allowAmpTraffic": true,
+    "allowedDomains": [
+      "subdomain.example.com"
+    ],
+    "integrationType": "SCORE"
+  }
+}
+
+---
+
+GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/GetKey
+
+{
+  "name": "projects/kcc-recaptcha-enterprise/keys/${keyID}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "display-name-two",
+  "name": "projects/1935411576/keys/${keyID}",
+  "testingOptions": {
+    "testingScore": 0.5
+  },
+  "webSettings": {
+    "allowAmpTraffic": true,
+    "allowedDomains": [
+      "subdomain.example.com"
+    ],
+    "integrationType": "SCORE"
+  }
+}
+
+---
+
+GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/GetKey
+
+{
+  "name": "projects/kcc-recaptcha-enterprise/keys/${keyID}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "display-name-two",
+  "name": "projects/1935411576/keys/${keyID}",
+  "testingOptions": {
+    "testingScore": 0.5
+  },
+  "webSettings": {
+    "allowAmpTraffic": true,
+    "allowedDomains": [
+      "subdomain.example.com"
+    ],
+    "integrationType": "SCORE"
+  }
+}
+
+---
+
+GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/DeleteKey
+
+{
+  "name": "projects/kcc-recaptcha-enterprise/keys/${keyID}"
+}
+
+OK
+
+{}

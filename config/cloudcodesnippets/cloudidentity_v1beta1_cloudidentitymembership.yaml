@@ -1,0 +1,15 @@
+label: Config Connector CloudIdentityMembership
+markdownDescription: Creates yaml for a CloudIdentityMembership resource
+insertText: |
+  apiVersion: cloudidentity.cnrm.cloud.google.com/v1beta1
+  kind: CloudIdentityMembership
+  metadata:
+    name: \${1:cloudidentitymembership-name}
+  spec:
+    groupRef:
+      name: \${2:cloudidentitymembership-dep-managerrole}
+    preferredMemberKey:
+      id: \${3:test-member@example.com}
+    roles:
+    - name: \${4:MEMBER}
+    - name: \${5:MANAGER}

@@ -1,0 +1,111 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum ComputeBetaSubnetworkPurposeEnum {
+  ComputeBetaSubnetworkPurposeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaSubnetworkPurposeEnumINTERNAL_HTTPS_LOAD_BALANCER = 1;
+  ComputeBetaSubnetworkPurposeEnumPRIVATE = 2;
+  ComputeBetaSubnetworkPurposeEnumAGGREGATE = 3;
+  ComputeBetaSubnetworkPurposeEnumPRIVATE_SERVICE_CONNECT = 4;
+  ComputeBetaSubnetworkPurposeEnumCLOUD_EXTENSION = 5;
+  ComputeBetaSubnetworkPurposeEnumPRIVATE_NAT = 6;
+}
+
+enum ComputeBetaSubnetworkRoleEnum {
+  ComputeBetaSubnetworkRoleEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaSubnetworkRoleEnumACTIVE = 1;
+  ComputeBetaSubnetworkRoleEnumBACKUP = 2;
+}
+
+enum ComputeBetaSubnetworkLogConfigAggregationIntervalEnum {
+  ComputeBetaSubnetworkLogConfigAggregationIntervalEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaSubnetworkLogConfigAggregationIntervalEnumINTERVAL_5_SEC = 1;
+  ComputeBetaSubnetworkLogConfigAggregationIntervalEnumINTERVAL_30_SEC = 2;
+  ComputeBetaSubnetworkLogConfigAggregationIntervalEnumINTERVAL_1_MIN = 3;
+  ComputeBetaSubnetworkLogConfigAggregationIntervalEnumINTERVAL_5_MIN = 4;
+  ComputeBetaSubnetworkLogConfigAggregationIntervalEnumINTERVAL_10_MIN = 5;
+  ComputeBetaSubnetworkLogConfigAggregationIntervalEnumINTERVAL_15_MIN = 6;
+}
+
+enum ComputeBetaSubnetworkLogConfigMetadataEnum {
+  ComputeBetaSubnetworkLogConfigMetadataEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaSubnetworkLogConfigMetadataEnumEXCLUDE_ALL_METADATA = 1;
+  ComputeBetaSubnetworkLogConfigMetadataEnumINCLUDE_ALL_METADATA = 2;
+}
+
+message ComputeBetaSubnetwork {
+  string creation_timestamp = 1;
+  string description = 2;
+  string gateway_address = 3;
+  string ip_cidr_range = 4;
+  string name = 5;
+  string network = 6;
+  string fingerprint = 7;
+  ComputeBetaSubnetworkPurposeEnum purpose = 8;
+  ComputeBetaSubnetworkRoleEnum role = 9;
+  repeated ComputeBetaSubnetworkSecondaryIPRanges secondary_ip_ranges = 10;
+  bool private_ip_google_access = 11;
+  string region = 12;
+  ComputeBetaSubnetworkLogConfig log_config = 13;
+  string project = 14;
+  string self_link = 15;
+  bool enable_flow_logs = 16;
+}
+
+message ComputeBetaSubnetworkSecondaryIPRanges {
+  string range_name = 1;
+  string ip_cidr_range = 2;
+}
+
+message ComputeBetaSubnetworkLogConfig {
+  ComputeBetaSubnetworkLogConfigAggregationIntervalEnum aggregation_interval = 1;
+  double flow_sampling = 2;
+  ComputeBetaSubnetworkLogConfigMetadataEnum metadata = 3;
+}
+
+message ApplyComputeBetaSubnetworkRequest {
+  ComputeBetaSubnetwork resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteComputeBetaSubnetworkRequest {
+  string service_account_file = 1;
+  ComputeBetaSubnetwork resource = 2;
+}
+
+message ListComputeBetaSubnetworkRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Region = 3;
+}
+
+message ListComputeBetaSubnetworkResponse {
+  repeated ComputeBetaSubnetwork items = 1;
+}
+
+service ComputeBetaSubnetworkService {
+  rpc ApplyComputeBetaSubnetwork(ApplyComputeBetaSubnetworkRequest) returns (ComputeBetaSubnetwork);
+  rpc DeleteComputeBetaSubnetwork(DeleteComputeBetaSubnetworkRequest) returns (google.protobuf.Empty);
+  rpc ListComputeBetaSubnetwork(ListComputeBetaSubnetworkRequest) returns (ListComputeBetaSubnetworkResponse);
+}

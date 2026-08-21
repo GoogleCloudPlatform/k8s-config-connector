@@ -1,0 +1,13 @@
+{
+  "name": "{{build_note}}",
+  "project": "{{project}}",
+  "build": {
+    "builderVersion": "v2.0.0",
+    "signature": {
+      "publicKey": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDOePOK79g2zBG7/Cx23yutDgezLlVsmWHgkaFw8ImZMgPoJd5z/QKwFOebPi6Hr7w0takQJDBAjRI5G+m6M+3PQoxTURHVGvsgPV2v0fmXC00+LZiIRiypkLEFxO/J7da8A+OSgeVXDDko1KP2k7FZD+StxqWnXWjvIoJZVXC/8w6M1mcxrEZbcTumAK94NU925L9gl6wxc0V5Tv41WQS7at8QJicbyyvSwx67ZErIcfuV+tXjghUCjBRIOIeqs/pel14RlO+3s7shOj/aKICZQJBIG8+uNsRad9J9V/6CwCfVFcEo+Yicyk4lrox5uwsuPEWO845/ZZor90mkuyKO74HVA+VWbQB5JXDDpjysNS1xAFXAdQF8m2HHGGqqKWJssuWgewAfQCEYVy/JxwqHbbDQjDSLo5wvCIEJRV9E7sz8ycft/vKxo5isZjgBRrPp88ln7ROMb/M5ONp1S1nmPiV0qfcGj4YrzaeJCHudsz5Gc0qnDPOOkuWueKFn/uU= somebody-else@somebody-else.c.googlers.com",
+      "signature": "eWVzLCBhbnkgc3RyaW5nCg==",
+      "keyId": "new-sample-key",
+      "keyType": "PGP_ASCII_ARMORED"
+    }
+  }
+}

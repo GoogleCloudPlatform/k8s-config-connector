@@ -1,0 +1,79 @@
+{
+  "name": "{{cluster}}",
+  "project": "{{project}}",
+  "location": "us-west1",
+  "description": "An updated sample aws cluster",
+  "networking": {
+    "vpcId": "{{aws_vpc}}",
+    "podAddressCidrBlocks": ["10.2.0.0/16"],
+    "serviceAddressCidrBlocks": ["10.1.0.0/16"],
+    "perNodePoolSgRulesDisabled": true
+  },
+  "awsRegion": "{{aws_region}}",
+  "controlPlane": {
+    "version": "1.28.3-gke.700",
+    "instanceType": "t3.large",
+    "sshConfig": {
+      "ec2KeyPair": "updated-ec2-key-pair"
+    },
+    "subnetIds": ["{{aws_subnet}}"],
+    "securityGroupIds": ["sg-1", "sg-2"],
+    "iamInstanceProfile": "{{byo_multicloud_prefix}}-updated-1p-dev-controlplane",
+    "rootVolume": {
+      "sizeGib": 12,
+      "kmsKeyArn": "arn:aws:kms:{{aws_region}}:{{aws_account_id}}:key/updated-volume-encryption-kms-key-arn",
+      "volumeType": "GP2",
+      "iops": 0,
+      "throughput": 0
+    },
+    "mainVolume": {
+      "sizeGib": 10,
+      "kmsKeyArn": "arn:aws:kms:{{aws_region}}:{{aws_account_id}}:key/{{aws_volume_encryption_key}}",
+      "volumeType": "GP3",
+      "iops": 3000,
+      "throughput": 500
+    },
+    "configEncryption": {
+      "kmsKeyArn": "arn:aws:kms:{{aws_region}}:{{aws_account_id}}:key/updated-config-encryption-kms-key-arn"
+    },
+    "databaseEncryption": {
+      "kmsKeyArn": "arn:aws:kms:{{aws_region}}:{{aws_account_id}}:key/{{aws_database_encryption_key}}"
+    },
+    "awsServicesAuthentication": {
+      "roleArn": "arn:aws:iam::{{aws_account_id}}:role/{{byo_multicloud_prefix}}-1p-dev-oneplatform-2",
+      "roleSessionName": "{{byo_multicloud_prefix}}-1p-dev-session-2"
+    },
+    "tags": {
+      "owner": "updated-{{test_service_account}}",
+      "googleinternal:serviceAccount": "updated-{{test_service_account}}"
+    },
+    "proxyConfig": {
+      "secretArn": "arn:aws:secretsmanager:us-west-2:126285863215:secret:proxy_config20210824150329476300000001-ABCDEG",
+      "secretVersion": "12345678-ABCD-EFGH-IJKL-987654321099"
+    }
+  },
+  "authorization": {
+    "adminUsers": [
+      {
+        "username": "user@domain.com"
+      },
+      {
+        "username": "foo@google.com"
+      }
+    ],
+    "adminGroups": [
+      {
+        "group": "bar@domain.com"
+      }
+    ]
+  },
+  "annotations": {
+    "label-two": "value-two"
+  },
+  "fleet": {
+    "project": "{{project_number}}"
+  },
+  "binaryAuthorization": {
+    "evaluationMode": "PROJECT_SINGLETON_POLICY_ENFORCE"
+  }
+}

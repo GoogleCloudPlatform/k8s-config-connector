@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: dataproc.cnrm.cloud.google.com
+  kind: DataprocSession
+  name: dataprocsession-minimal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

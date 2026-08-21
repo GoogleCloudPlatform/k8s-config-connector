@@ -1,0 +1,8 @@
+{
+  "project": "{{ref:basic.firebase_project.json:project}}",
+  "displayName": "my cool name",
+  "bundleId": "{{bundleid}}",
+  "appStoreId": "9876543210",
+  "teamId": "3210987654",
+  "apiKeyId" : "{{ref:basic_ios.apikeys.key.json:uid}}"
+}

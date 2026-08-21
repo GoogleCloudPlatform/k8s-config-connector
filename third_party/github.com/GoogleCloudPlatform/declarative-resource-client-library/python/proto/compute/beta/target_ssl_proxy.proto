@@ -1,0 +1,63 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+enum ComputeBetaTargetSslProxyProxyHeaderEnum {
+  ComputeBetaTargetSslProxyProxyHeaderEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaTargetSslProxyProxyHeaderEnumNONE = 1;
+  ComputeBetaTargetSslProxyProxyHeaderEnumPROXY_V1 = 2;
+}
+
+message ComputeBetaTargetSslProxy {
+  int64 id = 1;
+  string name = 2;
+  string description = 3;
+  string self_link = 4;
+  string service = 5;
+  repeated string ssl_certificates = 6;
+  ComputeBetaTargetSslProxyProxyHeaderEnum proxy_header = 7;
+  string ssl_policy = 8;
+  string project = 9;
+}
+
+message ApplyComputeBetaTargetSslProxyRequest {
+  ComputeBetaTargetSslProxy resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteComputeBetaTargetSslProxyRequest {
+  string service_account_file = 1;
+  ComputeBetaTargetSslProxy resource = 2;
+}
+
+message ListComputeBetaTargetSslProxyRequest {
+  string service_account_file = 1;
+  string Project = 2;
+}
+
+message ListComputeBetaTargetSslProxyResponse {
+  repeated ComputeBetaTargetSslProxy items = 1;
+}
+
+service ComputeBetaTargetSslProxyService {
+  rpc ApplyComputeBetaTargetSslProxy(ApplyComputeBetaTargetSslProxyRequest) returns (ComputeBetaTargetSslProxy);
+  rpc DeleteComputeBetaTargetSslProxy(DeleteComputeBetaTargetSslProxyRequest) returns (google.protobuf.Empty);
+  rpc ListComputeBetaTargetSslProxy(ListComputeBetaTargetSslProxyRequest) returns (ListComputeBetaTargetSslProxyResponse);
+}

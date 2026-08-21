@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: identityplatform.cnrm.cloud.google.com
+  kind: IdentityPlatformOAuthIDPConfig
+  name: identityplatformoauthidpconfig-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

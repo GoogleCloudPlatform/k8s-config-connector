@@ -1,0 +1,2 @@
+ACTION    KIND      NAMESPACE NAME 
+Unchanged ConfigMap default   cm1  

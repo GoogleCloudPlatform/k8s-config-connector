@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: kms.cnrm.cloud.google.com
+  kind: KMSAutokeyConfig
+  name: autokeyconfig-project-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

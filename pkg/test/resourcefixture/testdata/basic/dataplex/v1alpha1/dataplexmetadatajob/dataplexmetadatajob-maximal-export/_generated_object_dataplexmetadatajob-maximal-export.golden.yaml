@@ -1,0 +1,49 @@
+apiVersion: dataplex.cnrm.cloud.google.com/v1alpha1
+kind: DataplexMetadataJob
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  labels:
+    cnrm-test: "true"
+  name: dataplexmetadatajob-maximal-export-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  exportSpec:
+    outputPath: gs://dataplex-metadatajob-bucket-max-exp-${uniqueId}/export/
+    scope:
+      aspectTypeRefs:
+      - external: projects/${projectId}/locations/us-central1/aspectTypes/my-aspect-type
+      entryGroupRefs:
+      - name: dataplexmetadatajob-eg-max-exp-${uniqueId}
+      entryTypeRefs:
+      - name: dataplexmetadatajob-et-max-exp-${uniqueId}
+      organizationLevel: false
+      projectRefs:
+      - external: ${projectId}
+  labels:
+    gcp-dataplex-metadatajob-test: "true"
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+  type: EXPORT
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/metadataJobs/dataplexmetadatajob-maximal-export-${uniqueId}
+  observedGeneration: 1
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    exportResult:
+      exportedEntries: 15
+    status:
+      completionPercent: 100
+      state: SUCCEEDED
+      updateTime: "2024-04-01T12:34:56.123456Z"
+    uid: 0123456789abcdef
+    updateTime: "1970-01-01T00:00:00Z"

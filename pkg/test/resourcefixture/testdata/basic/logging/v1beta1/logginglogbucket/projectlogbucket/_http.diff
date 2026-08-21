@@ -1,0 +1,45 @@
+1c1
+< GET https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}?alt=json
+---
+> GET https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+24c24
+< POST https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets?alt=json&bucketId=logginglogbucket-${uniqueId}
+---
+> POST https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets?%24alt=json%3Benum-encoding%3Dint&bucketId=logginglogbucket-${uniqueId}
+29,30d28
+<   "locked": false,
+<   "name": "projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}",
+47c45
+<   "lifecycleState": "ACTIVE",
+---
+>   "lifecycleState": 1,
+55c53
+< GET https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}?alt=json
+---
+> GET https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+71c69
+<   "lifecycleState": "ACTIVE",
+---
+>   "lifecycleState": 1,
+79c77
+< PATCH https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}?alt=json&updateMask=description%2CretentionDays
+---
+> PATCH https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2CretentionDays
+84d81
+<   "locked": false,
+101c98
+<   "lifecycleState": "ACTIVE",
+---
+>   "lifecycleState": 1,
+109c106
+< GET https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}?alt=json
+---
+> GET https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+125c122
+<   "lifecycleState": "ACTIVE",
+---
+>   "lifecycleState": 1,
+133c130
+< DELETE https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}?alt=json
+---
+> DELETE https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}?%24alt=json%3Benum-encoding%3Dint

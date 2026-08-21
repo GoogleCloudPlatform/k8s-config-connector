@@ -1,0 +1,40 @@
+apiVersion: notebooks.cnrm.cloud.google.com/v1beta1
+kind: NotebookInstance
+metadata:
+  labels:
+    goog-caip-notebook: ""
+  name: notebookinstance-minimal-${uniqueId}
+spec:
+  diskEncryption: GMEK
+  labels:
+    goog-caip-notebook: ""
+  machineType: https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/machineTypes/n1-standard-1
+  metadata:
+    container: gcr.io/deeplearning-platform-release/base-cpu
+    disable-swap-binaries: "true"
+    enable-guest-attributes: "TRUE"
+    notebooks-api: PROD
+    notebooks-api-version: v1
+    proxy-mode: service_account
+    serial-port-logging-enable: "true"
+    shutdown-script: /opt/deeplearning/bin/shutdown_script.sh
+    warmup-libraries: matplotlib.pyplot
+  networkRef:
+    external: https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default
+  projectRef:
+    external: ${projectId}
+  resourceID: notebookinstance-minimal-${uniqueId}
+  serviceAccountRef:
+    external: ${projectNumber}-compute@developer.gserviceaccount.com
+  serviceAccountScopes:
+  - https://www.googleapis.com/auth/cloud-platform
+  - https://www.googleapis.com/auth/userinfo.email
+  shieldedInstanceConfig:
+    enableIntegrityMonitoring: true
+    enableVTPM: true
+  subnetRef:
+    external: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/default
+  tags:
+  - deeplearning-vm
+  - notebook-instance
+  zone: us-central1-a

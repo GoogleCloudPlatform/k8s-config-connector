@@ -1,0 +1,18 @@
+apiVersion: composer.cnrm.cloud.google.com/v1beta1
+kind: ComposerEnvironment
+metadata:
+  name: composerenvironment-${uniqueId}
+spec:
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+  config:
+    nodeConfig:
+      networkRef:
+        external: projects/${projectId}/global/networks/default
+      subnetworkRef:
+        external: projects/${projectId}/regions/us-central1/subnetworks/default
+      serviceAccountRef:
+        external: composer-env-sa@${projectId}.iam.gserviceaccount.com
+    softwareConfig:
+      imageVersion: composer-3-airflow-3.1.7-build.5

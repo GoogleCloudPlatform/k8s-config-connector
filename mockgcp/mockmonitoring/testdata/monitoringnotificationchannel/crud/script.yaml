@@ -1,0 +1,4 @@
+- exec: gcloud beta monitoring channels create --type=email --channel-labels=email_address=test-${uniqueId}@example.com --display-name="Test Channel ${uniqueId}" --description="Test Channel Description" --project=${projectId}
+- exec: gcloud beta monitoring channels list --project=${projectId}
+- exec: gcloud beta monitoring channels describe $(gcloud beta monitoring channels list --filter='labels.email_address="test-${uniqueId}@example.com"'  --format='value(name)') --project=${projectId}
+- exec: gcloud beta monitoring channels delete $(gcloud beta monitoring channels list --filter='labels.email_address="test-${uniqueId}@example.com"'  --format='value(name)') --project=${projectId} --quiet

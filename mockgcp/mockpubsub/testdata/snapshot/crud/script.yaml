@@ -1,0 +1,8 @@
+- pre: gcloud pubsub topics create test-topic-${uniqueId} --project=${projectId}
+- pre: gcloud pubsub subscriptions create test-subscription-${uniqueId} --topic=test-topic-${uniqueId} --project=${projectId}
+- exec: gcloud pubsub snapshots create test-snapshot-${uniqueId} --subscription=test-subscription-${uniqueId} --subscription-project=${projectId} --project=${projectId}
+- exec: gcloud pubsub snapshots describe test-snapshot-${uniqueId} --project=${projectId}
+- exec: gcloud pubsub snapshots list --project=${projectId}
+- exec: gcloud pubsub snapshots delete test-snapshot-${uniqueId} --project=${projectId}
+- post: gcloud pubsub subscriptions delete test-subscription-${uniqueId} --project=${projectId}
+- post: gcloud pubsub topics delete test-topic-${uniqueId} --project=${projectId}

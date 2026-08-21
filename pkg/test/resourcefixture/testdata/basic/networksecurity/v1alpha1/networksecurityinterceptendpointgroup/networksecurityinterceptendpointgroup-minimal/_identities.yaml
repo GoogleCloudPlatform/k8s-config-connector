@@ -1,0 +1,6 @@
+- caisURL: //networksecurity.googleapis.com/projects/${projectId}/locations/global/interceptEndpointGroups/intercepteg-${uniqueId}
+  group: networksecurity.cnrm.cloud.google.com
+  kind: NetworkSecurityInterceptEndpointGroup
+  name: intercepteg-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

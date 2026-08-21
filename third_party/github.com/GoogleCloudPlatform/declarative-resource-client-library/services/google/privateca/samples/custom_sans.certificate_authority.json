@@ -1,0 +1,40 @@
+{
+  "name": "{{cs_authority}}",
+  "project": "{{project}}",
+  "location": "{{region}}",
+  "caPool": "no-delete-test",
+  "type": "SELF_SIGNED",
+  "config": {
+    "subjectConfig": {
+      "subject": {
+        "postalCode": "98109"
+      },
+      "subjectAltName": {
+        "customSans": [
+          {
+            "objectId": {
+              "objectIdPath": [1, 7]
+            },
+            "critical": false,
+            "value": "DAp0ZXN0LXZhbHVl"
+          }
+        ]
+      }
+    },
+    "x509Config": {
+      "keyUsage": {
+        "baseKeyUsage": {
+          "certSign": true,
+          "crlSign": true
+        }
+      },
+      "caOptions": {
+        "isCa": true
+      }
+    }
+  },
+  "lifetime": "43200s",
+  "keySpec": {
+    "algorithm": "EC_P256_SHA256"
+  }
+}

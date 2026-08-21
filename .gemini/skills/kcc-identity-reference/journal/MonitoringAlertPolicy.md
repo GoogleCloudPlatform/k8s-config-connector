@@ -1,0 +1,8 @@
+When implementing MonitoringAlertPolicy, I found:
+1. `MonitoringAlertPolicy` is a pure Terraform-based resource, so its types are defined under the generated package (`pkg/clients/generated/apis/monitoring/v1beta1`) and not in the `apis/monitoring/v1beta1` package.
+2. Because its KRM type is generated elsewhere, we implemented `getIdentityFromMonitoringAlertPolicySpec` to take `client.Object` (which `*unstructured.Unstructured` implements) rather than a typed pointer, avoiding any circular dependency between packages while remaining fully compatible with `refs.NormalizeWithFallback`.
+3. The legacy reference helper used `NormalizedExternal` on `MonitoringAlertPolicyRef`. We updated the reference struct to implement the modern `refs.Ref` interface and simplified the normalization logic in `pkg/controller/direct/common/refs.go` to call the standard `Normalize()` method.
+4. Based on PR feedback, we removed all custom AlertChart and IncidentList reference refinement logic from `direct/common/refs.go` to keep the reference visitor completely generic.
+5. In order to handle GCP API's specific format requirements, we moved formatting translation directly into `IncidentList_ToProto` in `dashboard_mappings.go`.
+6. To make reference validation resilient to relative references returned by the GCP API (such as `alertPolicies/{alertpolicy}`), we updated `FromExternal` in `monitoringalertpolicy_identity.go` to explicitly parse both canonical fully-qualified URLs and relative formats.
+7. We consolidated all test cases under the single identity unit test `monitoringalertpolicy_identity_test.go` using `cmp.Diff` for structural comparison, and deleted the redundant `monitoringalertpolicy_reference_test.go` file.

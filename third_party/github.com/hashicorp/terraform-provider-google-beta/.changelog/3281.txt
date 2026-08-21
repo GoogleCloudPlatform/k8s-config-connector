@@ -1,0 +1,3 @@
+```release-note:new-resource
+firebase: Add the `google_firebase_project` resource which will enable Firebase for a referenced Google project.
+```

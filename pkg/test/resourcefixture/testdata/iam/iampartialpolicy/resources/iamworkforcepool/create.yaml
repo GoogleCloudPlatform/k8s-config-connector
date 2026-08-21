@@ -1,0 +1,14 @@
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPartialPolicy
+metadata:
+  name: iampartialpolicy-${uniqueId}
+spec:
+  bindings:
+  - role: roles/iam.workforcePoolAdmin
+    members:
+    - member: user:test@example.com
+    - member: serviceAccount:test-sa@test-project.iam.gserviceaccount.com
+  resourceRef:
+    apiVersion: iam.cnrm.cloud.google.com/v1beta1
+    kind: IAMWorkforcePool
+    name: iamworkforcepool-${uniqueId}

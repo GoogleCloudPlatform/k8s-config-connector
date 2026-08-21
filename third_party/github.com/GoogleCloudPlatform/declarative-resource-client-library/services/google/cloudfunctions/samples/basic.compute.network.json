@@ -1,0 +1,5 @@
+{
+  "name": "{{function_network}}",
+  "project": "{{project}}",
+  "autoCreateSubnetworks": false
+}

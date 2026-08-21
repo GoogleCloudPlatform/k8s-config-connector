@@ -1,0 +1,11 @@
+{
+  "name": "{{rule2}}",
+  "project": "{{project}}",
+  "location": "{{region}}",
+  "description": "A test mirror collector forwarding rule with internal load balancing scheme",
+  "loadBalancingScheme": "INTERNAL",
+  "backendService": "{{ref:regional.backend_service.json:selfLink}}",
+  "networkTier": "PREMIUM",
+  "allPorts": true,
+  "isMirroringCollector": true
+}

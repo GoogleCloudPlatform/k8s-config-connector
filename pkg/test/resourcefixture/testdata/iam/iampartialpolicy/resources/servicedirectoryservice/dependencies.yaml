@@ -1,0 +1,18 @@
+apiVersion: servicedirectory.cnrm.cloud.google.com/v1beta1
+kind: ServiceDirectoryNamespace
+metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: servicedirectorynamespace-${uniqueId}
+spec:
+  location: us-central1
+---
+apiVersion: servicedirectory.cnrm.cloud.google.com/v1beta1
+kind: ServiceDirectoryService
+metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: servicedirectoryservice-${uniqueId}
+spec:
+  namespaceRef:
+    name: servicedirectorynamespace-${uniqueId}

@@ -1,0 +1,70 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum ComputeBetaNetworkRoutingConfigRoutingModeEnum {
+  ComputeBetaNetworkRoutingConfigRoutingModeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaNetworkRoutingConfigRoutingModeEnumREGIONAL = 1;
+  ComputeBetaNetworkRoutingConfigRoutingModeEnumGLOBAL = 2;
+}
+
+message ComputeBetaNetwork {
+  string description = 1;
+  string gateway_ipv4 = 2;
+  string name = 3;
+  bool auto_create_subnetworks = 4;
+  ComputeBetaNetworkRoutingConfig routing_config = 5;
+  int64 mtu = 6;
+  string project = 7;
+  string self_link = 8;
+  string self_link_with_id = 9;
+}
+
+message ComputeBetaNetworkRoutingConfig {
+  ComputeBetaNetworkRoutingConfigRoutingModeEnum routing_mode = 1;
+}
+
+message ApplyComputeBetaNetworkRequest {
+  ComputeBetaNetwork resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteComputeBetaNetworkRequest {
+  string service_account_file = 1;
+  ComputeBetaNetwork resource = 2;
+}
+
+message ListComputeBetaNetworkRequest {
+  string service_account_file = 1;
+  string Project = 2;
+}
+
+message ListComputeBetaNetworkResponse {
+  repeated ComputeBetaNetwork items = 1;
+}
+
+service ComputeBetaNetworkService {
+  rpc ApplyComputeBetaNetwork(ApplyComputeBetaNetworkRequest) returns (ComputeBetaNetwork);
+  rpc DeleteComputeBetaNetwork(DeleteComputeBetaNetworkRequest) returns (google.protobuf.Empty);
+  rpc ListComputeBetaNetwork(ListComputeBetaNetworkRequest) returns (ListComputeBetaNetworkResponse);
+}

@@ -1,0 +1,35 @@
+{
+  "name": "{{service}}",
+  "project": "{{project}}",
+  "backends": [
+    {
+      "description": "A network endpoint group",
+      "group": "{{ref:zonal.network_endpoint_group.json:selfLink}}",
+      "balancingMode": "RATE",
+      "maxUtilization": 0.5,
+      "maxRatePerEndpoint": 2
+    }
+  ],
+  "description": "An updated compute backend service",
+  "healthChecks": ["{{ref:https.health_check.json:selfLink}}"],
+  "timeoutSec": 5,
+  "port": 8080,
+  "protocol": "HTTPS",
+  "sessionAffinity": "GENERATED_COOKIE",
+  "affinityCookieTtlSec": 3600,
+  "loadBalancingScheme": "EXTERNAL",
+  "connectionDraining": {
+    "drainingTimeoutSec": 60
+  },
+  "iap": {
+    "enabled": true,
+    "oauth2ClientId": "251703766494-zsgtba1zc8s3gz1lthj0lvnxtth5qcbc.apps.googleusercontent.com",
+    "oauth2ClientSecret": "E3zjuMzlQl6kKN74cQpLaFry"
+  },
+  "customRequestHeaders": ["Via:"],
+  "customResponseHeaders": ["Via:"],
+  "logConfig": {
+    "enable": true,
+    "sampleRate": 0.5
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "parent": "projects/{{project}}",
+  "triggers": [
+    {
+      "schedule": {
+        "recurrencePeriodDuration": "86400s"
+      }
+    }
+  ],
+  "status": "HEALTHY",
+  "inspectJob": {
+    "storageConfig": {
+      "bigQueryOptions": {
+        "tableReference": {
+          "projectId": "{{project}}",
+          "datasetId": "{{ref:first.bigquery.dataset.json:name}}",
+          "tableId": "{{ref:first.bigquery.table.json:name}}"
+        },
+        "rowsLimitPercent": 66,
+        "includedFields": [
+          {
+            "name": "new-included-field"
+          }
+        ]
+      }
+    }
+  }
+}

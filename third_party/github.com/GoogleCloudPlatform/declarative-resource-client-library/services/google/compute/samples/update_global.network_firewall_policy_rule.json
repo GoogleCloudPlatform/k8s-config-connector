@@ -1,0 +1,31 @@
+{
+  "priority": 9000,
+  "project": "{{ref:__state__:project}}",
+  "location": "global",
+  "firewallPolicy": "projects/{{project}}/global/firewallPolicies/{{ref:global.network_firewall_policy.json:name}}",
+  "description": "Updated sample global network firewall policy rule",
+  "ruleName": "rule9000-allow-probe-updated",
+  "match": {
+    "layer4Configs": [
+      {
+        "ipProtocol": "udp",
+        "ports": ["1234"]
+      }
+    ],
+    "srcSecureTags": [{"name": "tagValues/{{ref:second.cloudresourcemanager.tag_value.json:name}}"}],
+    "srcIPRanges": ["10.100.0.2/32"],
+    "srcFqdns": ["wikipedia.org"],
+    "destFqdns": [],
+    "destRegionCodes": [],
+    "srcRegionCodes": ["US"],
+    "destThreatIntelligences": [],
+    "srcThreatIntelligences": ["iplist-public-clouds"],
+    "srcAddressGroups": ["projects/{{project}}/locations/global/addressGroups/{{ref:global.networksecurity.address_group.json:name}}"],
+    "destAddressGroups": []
+  },
+  "enableLogging" : true,
+  "targetSecureTags": [{"name": "tagValues/{{ref:first.cloudresourcemanager.tag_value.json:name}}"}],
+  "action": "allow",
+  "direction": "INGRESS",
+  "disabled" : true
+}

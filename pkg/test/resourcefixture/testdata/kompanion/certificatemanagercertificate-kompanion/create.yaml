@@ -1,0 +1,15 @@
+apiVersion: certificatemanager.cnrm.cloud.google.com/v1beta1
+kind: CertificateManagerCertificate
+metadata:
+  name: certificatemanagercertificate-kompanion-${uniqueId}
+spec:
+  description: sample managed certificate for kcc
+  location: global
+  scope: ALL_REGIONS
+  managed:
+    domains:
+      - "*.${uniqueId}.com"
+      - "test.${uniqueId}.com"
+      - "test2.${uniqueId}.com"
+    issuanceConfigRef:
+      external: projects/${projectId}/locations/global/certificateIssuanceConfigs/my-test-ic

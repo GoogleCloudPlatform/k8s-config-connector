@@ -1,0 +1,4 @@
+- Moved mockgcp secretmanager to httptogrpc.
+- Replaced type-casted `proto.Clone(x).(*pb.Secret)` with `proto.CloneOf(x)`, which is a generic function provided by recent versions of `google.golang.org/protobuf/proto`.
+- Confirmed that `mux.RewriteError` could be safely removed as per previous journal entries.
+- All e2e tests for secretmanager passed against the mock after migration.

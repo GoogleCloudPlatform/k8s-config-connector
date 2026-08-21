@@ -1,0 +1,13 @@
+label: Config Connector LoggingLogView
+markdownDescription: Creates yaml for a LoggingLogView resource
+insertText: |
+  apiVersion: logging.cnrm.cloud.google.com/v1beta1
+  kind: LoggingLogView
+  metadata:
+    name: \${1:logginglogview-name}
+  spec:
+    bucketRef:
+      name: \${2:logginglogview-dep-projectlogview}
+    description: \${3:A project-level log view}
+    filter: \${4:SOURCE("projects/myproject") AND resource.type = "gce_instance" AND
+      LOG_ID("stdout")}

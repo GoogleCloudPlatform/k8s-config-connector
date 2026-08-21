@@ -1,0 +1,1771 @@
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A="
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A="
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A="
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:setIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "policy": {
+    "bindings": [
+      {
+        "members": [
+          "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+        ],
+        "role": "roles/secretmanager.secretAccessor"
+      }
+    ],
+    "etag": "abcdef0123A=",
+    "version": 3
+  },
+  "updateMask": "bindings,etag,auditConfigs"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/secretmanager.secretAccessor"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/secretmanager.secretAccessor"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/secretmanager.secretAccessor"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/secretmanager.secretAccessor"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/secretmanager.secretAccessor"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Secret [projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}] not found.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets?alt=json&secretId=secretmanagersecret-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "replication": {
+    "automatic": {}
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}",
+  "replication": {
+    "automatic": {}
+  }
+}
+
+---
+
+GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}",
+  "replication": {
+    "automatic": {}
+  }
+}
+
+---
+
+POST https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}:addVersion?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "payload": {
+    "data": "SSBhbHdheXMgbG92ZWQgc3BhcnJpbmcgd2l0aCBnaWFudCBjYW5keSBzd29yZHMsIGJ1dCBJIGhhZCBubyBpZGVhIHRoYXQgd2FzIG15IHN1cGVyIHNlY3JldCBpbmZvcm1hdGlvbiE="
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}/versions/1",
+  "replicationStatus": {
+    "automatic": {}
+  },
+  "state": "ENABLED"
+}
+
+---
+
+POST https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}/versions/1:enable?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}/versions/1",
+  "replicationStatus": {
+    "automatic": {}
+  },
+  "state": "ENABLED"
+}
+
+---
+
+GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}/versions/1?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}/versions/1",
+  "replicationStatus": {
+    "automatic": {}
+  },
+  "state": "ENABLED"
+}
+
+---
+
+GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}/versions/1:access?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}/versions/1",
+  "payload": {
+    "data": "SSBhbHdheXMgbG92ZWQgc3BhcnJpbmcgd2l0aCBnaWFudCBjYW5keSBzd29yZHMsIGJ1dCBJIGhhZCBubyBpZGVhIHRoYXQgd2FzIG15IHN1cGVyIHNlY3JldCBpbmZvcm1hdGlvbiE=",
+    "dataCrc32c": "98593831"
+  }
+}
+
+---
+
+GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}/versions/1?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}/versions/1",
+  "replicationStatus": {
+    "automatic": {}
+  },
+  "state": "ENABLED"
+}
+
+---
+
+GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}/versions/1:access?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}/versions/1",
+  "payload": {
+    "data": "SSBhbHdheXMgbG92ZWQgc3BhcnJpbmcgd2l0aCBnaWFudCBjYW5keSBzd29yZHMsIGJ1dCBJIGhhZCBubyBpZGVhIHRoYXQgd2FzIG15IHN1cGVyIHNlY3JldCBpbmZvcm1hdGlvbiE=",
+    "dataCrc32c": "98593831"
+  }
+}
+
+---
+
+GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "service \"projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/services?alt=json&serviceId=runservice-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "ingress": "INGRESS_TRAFFIC_ALL",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "launchStage": "GA",
+  "template": {
+    "containers": [
+      {
+        "image": "gcr.io/cloudrun/hello",
+        "volumeMounts": [
+          {
+            "mountPath": "/secrets",
+            "name": "a-volume"
+          }
+        ]
+      }
+    ],
+    "volumes": [
+      {
+        "name": "a-volume",
+        "secret": {
+          "defaultMode": 292,
+          "items": [
+            {
+              "mode": 256,
+              "path": "my-secret",
+              "version": "1"
+            }
+          ],
+          "secret": "projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}"
+        }
+      }
+    ]
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.run.v2.Service",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "creator": "test@google.com",
+    "etag": "abcdef0123A=",
+    "generation": "1",
+    "ingress": "INGRESS_TRAFFIC_ALL",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "lastModifier": "test@google.com",
+    "launchStage": "GA",
+    "name": "projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}",
+    "template": {
+      "containers": [
+        {
+          "image": "gcr.io/cloudrun/hello",
+          "resources": {
+            "limits": {
+              "cpu": "1000m",
+              "memory": "512Mi"
+            }
+          },
+          "volumeMounts": [
+            {
+              "mountPath": "/secrets",
+              "name": "a-volume"
+            }
+          ]
+        }
+      ],
+      "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
+      "maxInstanceRequestConcurrency": 80,
+      "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+      "timeout": "300s",
+      "volumes": [
+        {
+          "name": "a-volume",
+          "secret": {
+            "defaultMode": 292,
+            "items": [
+              {
+                "mode": 256,
+                "path": "my-secret",
+                "version": "1"
+              }
+            ],
+            "secret": "projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}"
+          }
+        }
+      ]
+    },
+    "terminalCondition": {
+      "lastTransitionTime": "2025-01-01T00:00:00Z",
+      "state": "CONDITION_SUCCEEDED",
+      "type": "Ready"
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.run.v2.Service",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "creator": "test@google.com",
+    "etag": "abcdef0123A=",
+    "generation": "1",
+    "ingress": "INGRESS_TRAFFIC_ALL",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "lastModifier": "test@google.com",
+    "launchStage": "GA",
+    "name": "projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}",
+    "template": {
+      "containers": [
+        {
+          "image": "gcr.io/cloudrun/hello",
+          "resources": {
+            "limits": {
+              "cpu": "1000m",
+              "memory": "512Mi"
+            }
+          },
+          "volumeMounts": [
+            {
+              "mountPath": "/secrets",
+              "name": "a-volume"
+            }
+          ]
+        }
+      ],
+      "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
+      "maxInstanceRequestConcurrency": 80,
+      "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+      "timeout": "300s",
+      "volumes": [
+        {
+          "name": "a-volume",
+          "secret": {
+            "defaultMode": 292,
+            "items": [
+              {
+                "mode": 256,
+                "path": "my-secret",
+                "version": "1"
+              }
+            ],
+            "secret": "projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}"
+          }
+        }
+      ]
+    },
+    "terminalCondition": {
+      "lastTransitionTime": "2025-01-01T00:00:00Z",
+      "state": "CONDITION_SUCCEEDED",
+      "type": "Ready"
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.run.v2.Service",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "creator": "test@google.com",
+    "etag": "abcdef0123A=",
+    "generation": "1",
+    "ingress": "INGRESS_TRAFFIC_ALL",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "lastModifier": "test@google.com",
+    "launchStage": "GA",
+    "name": "projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}",
+    "template": {
+      "containers": [
+        {
+          "image": "gcr.io/cloudrun/hello",
+          "resources": {
+            "limits": {
+              "cpu": "1000m",
+              "memory": "512Mi"
+            }
+          },
+          "volumeMounts": [
+            {
+              "mountPath": "/secrets",
+              "name": "a-volume"
+            }
+          ]
+        }
+      ],
+      "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
+      "maxInstanceRequestConcurrency": 80,
+      "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+      "timeout": "300s",
+      "volumes": [
+        {
+          "name": "a-volume",
+          "secret": {
+            "defaultMode": 292,
+            "items": [
+              {
+                "mode": 256,
+                "path": "my-secret",
+                "version": "1"
+              }
+            ],
+            "secret": "projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}"
+          }
+        }
+      ]
+    },
+    "terminalCondition": {
+      "lastTransitionTime": "2025-01-01T00:00:00Z",
+      "state": "CONDITION_SUCCEEDED",
+      "type": "Ready"
+    },
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "creator": "${creatorID}",
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "ingress": "INGRESS_TRAFFIC_ALL",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lastModifier": "test@google.com",
+  "launchStage": "GA",
+  "name": "projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}",
+  "template": {
+    "containers": [
+      {
+        "image": "gcr.io/cloudrun/hello",
+        "resources": {
+          "limits": {
+            "cpu": "1000m",
+            "memory": "512Mi"
+          }
+        },
+        "volumeMounts": [
+          {
+            "mountPath": "/secrets",
+            "name": "a-volume"
+          }
+        ]
+      }
+    ],
+    "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
+    "maxInstanceRequestConcurrency": 80,
+    "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+    "timeout": "300s",
+    "volumes": [
+      {
+        "name": "a-volume",
+        "secret": {
+          "defaultMode": 292,
+          "items": [
+            {
+              "mode": 256,
+              "path": "my-secret",
+              "version": "1"
+            }
+          ],
+          "secret": "projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}"
+        }
+      }
+    ]
+  },
+  "terminalCondition": {
+    "lastTransitionTime": "2025-01-01T00:00:00Z",
+    "state": "CONDITION_SUCCEEDED",
+    "type": "Ready"
+  },
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "ingress": "INGRESS_TRAFFIC_ALL",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "launchStage": "GA",
+  "template": {
+    "containers": [
+      {
+        "image": "gcr.io/cloudrun/hello",
+        "resources": {
+          "limits": {
+            "cpu": "1000m",
+            "memory": "512Mi"
+          }
+        },
+        "volumeMounts": [
+          {
+            "mountPath": "/my-new-secrets-path",
+            "name": "a-volume"
+          }
+        ]
+      }
+    ],
+    "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
+    "maxInstanceRequestConcurrency": 80,
+    "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+    "timeout": "300s",
+    "volumes": [
+      {
+        "name": "a-volume",
+        "secret": {
+          "defaultMode": 256,
+          "items": [
+            {
+              "mode": 256,
+              "path": "my-secret",
+              "version": "1"
+            }
+          ],
+          "secret": "projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}"
+        }
+      }
+    ]
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.run.v2.Service",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "creator": "test@google.com",
+    "etag": "abcdef0123A=",
+    "generation": "1",
+    "ingress": "INGRESS_TRAFFIC_ALL",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "lastModifier": "test@google.com",
+    "launchStage": "GA",
+    "name": "projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}",
+    "template": {
+      "containers": [
+        {
+          "image": "gcr.io/cloudrun/hello",
+          "resources": {
+            "limits": {
+              "cpu": "1000m",
+              "memory": "512Mi"
+            }
+          },
+          "volumeMounts": [
+            {
+              "mountPath": "/my-new-secrets-path",
+              "name": "a-volume"
+            }
+          ]
+        }
+      ],
+      "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
+      "maxInstanceRequestConcurrency": 80,
+      "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+      "timeout": "300s",
+      "volumes": [
+        {
+          "name": "a-volume",
+          "secret": {
+            "defaultMode": 256,
+            "items": [
+              {
+                "mode": 256,
+                "path": "my-secret",
+                "version": "1"
+              }
+            ],
+            "secret": "projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}"
+          }
+        }
+      ]
+    },
+    "terminalCondition": {
+      "lastTransitionTime": "2025-01-01T00:00:00Z",
+      "state": "CONDITION_SUCCEEDED",
+      "type": "Ready"
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.run.v2.Service",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "creator": "test@google.com",
+    "etag": "abcdef0123A=",
+    "generation": "1",
+    "ingress": "INGRESS_TRAFFIC_ALL",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "lastModifier": "test@google.com",
+    "launchStage": "GA",
+    "name": "projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}",
+    "template": {
+      "containers": [
+        {
+          "image": "gcr.io/cloudrun/hello",
+          "resources": {
+            "limits": {
+              "cpu": "1000m",
+              "memory": "512Mi"
+            }
+          },
+          "volumeMounts": [
+            {
+              "mountPath": "/my-new-secrets-path",
+              "name": "a-volume"
+            }
+          ]
+        }
+      ],
+      "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
+      "maxInstanceRequestConcurrency": 80,
+      "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+      "timeout": "300s",
+      "volumes": [
+        {
+          "name": "a-volume",
+          "secret": {
+            "defaultMode": 256,
+            "items": [
+              {
+                "mode": 256,
+                "path": "my-secret",
+                "version": "1"
+              }
+            ],
+            "secret": "projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}"
+          }
+        }
+      ]
+    },
+    "terminalCondition": {
+      "lastTransitionTime": "2025-01-01T00:00:00Z",
+      "state": "CONDITION_SUCCEEDED",
+      "type": "Ready"
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.run.v2.Service",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "creator": "test@google.com",
+    "etag": "abcdef0123A=",
+    "generation": "1",
+    "ingress": "INGRESS_TRAFFIC_ALL",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "lastModifier": "test@google.com",
+    "launchStage": "GA",
+    "name": "projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}",
+    "template": {
+      "containers": [
+        {
+          "image": "gcr.io/cloudrun/hello",
+          "resources": {
+            "limits": {
+              "cpu": "1000m",
+              "memory": "512Mi"
+            }
+          },
+          "volumeMounts": [
+            {
+              "mountPath": "/my-new-secrets-path",
+              "name": "a-volume"
+            }
+          ]
+        }
+      ],
+      "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
+      "maxInstanceRequestConcurrency": 80,
+      "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+      "timeout": "300s",
+      "volumes": [
+        {
+          "name": "a-volume",
+          "secret": {
+            "defaultMode": 256,
+            "items": [
+              {
+                "mode": 256,
+                "path": "my-secret",
+                "version": "1"
+              }
+            ],
+            "secret": "projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}"
+          }
+        }
+      ]
+    },
+    "terminalCondition": {
+      "lastTransitionTime": "2025-01-01T00:00:00Z",
+      "state": "CONDITION_SUCCEEDED",
+      "type": "Ready"
+    },
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "creator": "${creatorID}",
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "ingress": "INGRESS_TRAFFIC_ALL",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lastModifier": "test@google.com",
+  "launchStage": "GA",
+  "name": "projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}",
+  "template": {
+    "containers": [
+      {
+        "image": "gcr.io/cloudrun/hello",
+        "resources": {
+          "limits": {
+            "cpu": "1000m",
+            "memory": "512Mi"
+          }
+        },
+        "volumeMounts": [
+          {
+            "mountPath": "/my-new-secrets-path",
+            "name": "a-volume"
+          }
+        ]
+      }
+    ],
+    "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
+    "maxInstanceRequestConcurrency": 80,
+    "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+    "timeout": "300s",
+    "volumes": [
+      {
+        "name": "a-volume",
+        "secret": {
+          "defaultMode": 256,
+          "items": [
+            {
+              "mode": 256,
+              "path": "my-secret",
+              "version": "1"
+            }
+          ],
+          "secret": "projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}"
+        }
+      }
+    ]
+  },
+  "terminalCondition": {
+    "lastTransitionTime": "2025-01-01T00:00:00Z",
+    "state": "CONDITION_SUCCEEDED",
+    "type": "Ready"
+  },
+  "uid": "111111111111111111111",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.run.v2.Service",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "creator": "test@google.com",
+    "etag": "abcdef0123A=",
+    "generation": "1",
+    "ingress": "INGRESS_TRAFFIC_ALL",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "lastModifier": "test@google.com",
+    "launchStage": "GA",
+    "name": "projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}",
+    "template": {
+      "containers": [
+        {
+          "image": "gcr.io/cloudrun/hello",
+          "resources": {
+            "limits": {
+              "cpu": "1000m",
+              "memory": "512Mi"
+            }
+          },
+          "volumeMounts": [
+            {
+              "mountPath": "/my-new-secrets-path",
+              "name": "a-volume"
+            }
+          ]
+        }
+      ],
+      "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
+      "maxInstanceRequestConcurrency": 80,
+      "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+      "timeout": "300s",
+      "volumes": [
+        {
+          "name": "a-volume",
+          "secret": {
+            "defaultMode": 256,
+            "items": [
+              {
+                "mode": 256,
+                "path": "my-secret",
+                "version": "1"
+              }
+            ],
+            "secret": "projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}"
+          }
+        }
+      ]
+    },
+    "terminalCondition": {
+      "lastTransitionTime": "2025-01-01T00:00:00Z",
+      "state": "CONDITION_SUCCEEDED",
+      "type": "Ready"
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://run.googleapis.com/v2/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.run.v2.Service",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "creator": "test@google.com",
+    "etag": "abcdef0123A=",
+    "generation": "1",
+    "ingress": "INGRESS_TRAFFIC_ALL",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "lastModifier": "test@google.com",
+    "launchStage": "GA",
+    "name": "projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}",
+    "template": {
+      "containers": [
+        {
+          "image": "gcr.io/cloudrun/hello",
+          "resources": {
+            "limits": {
+              "cpu": "1000m",
+              "memory": "512Mi"
+            }
+          },
+          "volumeMounts": [
+            {
+              "mountPath": "/my-new-secrets-path",
+              "name": "a-volume"
+            }
+          ]
+        }
+      ],
+      "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
+      "maxInstanceRequestConcurrency": 80,
+      "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+      "timeout": "300s",
+      "volumes": [
+        {
+          "name": "a-volume",
+          "secret": {
+            "defaultMode": 256,
+            "items": [
+              {
+                "mode": 256,
+                "path": "my-secret",
+                "version": "1"
+              }
+            ],
+            "secret": "projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}"
+          }
+        }
+      ]
+    },
+    "terminalCondition": {
+      "lastTransitionTime": "2025-01-01T00:00:00Z",
+      "state": "CONDITION_SUCCEEDED",
+      "type": "Ready"
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.run.v2.Service",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "creator": "test@google.com",
+    "etag": "abcdef0123A=",
+    "generation": "1",
+    "ingress": "INGRESS_TRAFFIC_ALL",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "lastModifier": "test@google.com",
+    "launchStage": "GA",
+    "name": "projects/${projectId}/locations/us-central1/services/runservice-${uniqueId}",
+    "template": {
+      "containers": [
+        {
+          "image": "gcr.io/cloudrun/hello",
+          "resources": {
+            "limits": {
+              "cpu": "1000m",
+              "memory": "512Mi"
+            }
+          },
+          "volumeMounts": [
+            {
+              "mountPath": "/my-new-secrets-path",
+              "name": "a-volume"
+            }
+          ]
+        }
+      ],
+      "executionEnvironment": "EXECUTION_ENVIRONMENT_GEN2",
+      "maxInstanceRequestConcurrency": 80,
+      "serviceAccount": "${projectNumber}-compute@developer.gserviceaccount.com",
+      "timeout": "300s",
+      "volumes": [
+        {
+          "name": "a-volume",
+          "secret": {
+            "defaultMode": 256,
+            "items": [
+              {
+                "mode": 256,
+                "path": "my-secret",
+                "version": "1"
+              }
+            ],
+            "secret": "projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}"
+          }
+        }
+      ]
+    },
+    "terminalCondition": {
+      "lastTransitionTime": "2025-01-01T00:00:00Z",
+      "state": "CONDITION_SUCCEEDED",
+      "type": "Ready"
+    },
+    "uid": "111111111111111111111",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}/versions/1?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}/versions/1",
+  "replicationStatus": {
+    "automatic": {}
+  },
+  "state": "ENABLED"
+}
+
+---
+
+GET https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}/versions/1:access?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}/versions/1",
+  "payload": {
+    "data": "SSBhbHdheXMgbG92ZWQgc3BhcnJpbmcgd2l0aCBnaWFudCBjYW5keSBzd29yZHMsIGJ1dCBJIGhhZCBubyBpZGVhIHRoYXQgd2FzIG15IHN1cGVyIHNlY3JldCBpbmZvcm1hdGlvbiE=",
+    "dataCrc32c": "98593831"
+  }
+}
+
+---
+
+POST https://secretmanager.googleapis.com/v1/projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}/versions/1:destroy?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "destroyTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}/versions/1",
+  "replicationStatus": {
+    "automatic": {}
+  },
+  "state": "DESTROYED"
+}
+
+---
+
+GET https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectNumber}/secrets/secretmanagersecret-${uniqueId}",
+  "replication": {
+    "automatic": {}
+  }
+}
+
+---
+
+DELETE https://secretmanager.googleapis.com/v1/projects/${projectId}/secrets/secretmanagersecret-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/secretmanager.secretAccessor"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "members": [
+        "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"
+      ],
+      "role": "roles/secretmanager.secretAccessor"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:setIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "policy": {
+    "etag": "abcdef0123A=",
+    "version": 1
+  },
+  "updateMask": "bindings,etag,auditConfigs"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "options": {
+    "requestedPolicyVersion": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A=",
+  "version": 1
+}

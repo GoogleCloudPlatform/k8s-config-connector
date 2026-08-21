@@ -1,0 +1,246 @@
+POST https://cloudasset.googleapis.com/v1/projects/${projectId}/feeds?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "feed": {
+    "assetTypes": [
+      "compute.googleapis.com/Network",
+      "compute.googleapis.com/Disk"
+    ],
+    "condition": {},
+    "contentType": "RESOURCE",
+    "feedOutputConfig": {
+      "pubsubDestination": {
+        "topic": "projects/${projectId}/topics/test-topic-${uniqueId}"
+      }
+    }
+  },
+  "feedId": "test-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "assetTypes": [
+    "compute.googleapis.com/Network",
+    "compute.googleapis.com/Disk"
+  ],
+  "condition": {},
+  "contentType": "RESOURCE",
+  "feedOutputConfig": {
+    "pubsubDestination": {
+      "topic": "projects/${projectId}/topics/test-topic-${uniqueId}"
+    }
+  },
+  "name": "projects/${projectNumber}/feeds/test-${uniqueId}"
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "lifecycleState": "ACTIVE",
+  "projectId": "${projectId}",
+  "projectNumber": "${projectNumber}"
+}
+
+---
+
+GET https://cloudasset.googleapis.com/v1/projects/${projectNumber}/feeds/test-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "assetTypes": [
+    "compute.googleapis.com/Network",
+    "compute.googleapis.com/Disk"
+  ],
+  "condition": {},
+  "contentType": "RESOURCE",
+  "feedOutputConfig": {
+    "pubsubDestination": {
+      "topic": "projects/${projectId}/topics/test-topic-${uniqueId}"
+    }
+  },
+  "name": "projects/${projectNumber}/feeds/test-${uniqueId}"
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "lifecycleState": "ACTIVE",
+  "projectId": "${projectId}",
+  "projectNumber": "${projectNumber}"
+}
+
+---
+
+GET https://cloudasset.googleapis.com/v1/projects/${projectNumber}/feeds/test-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "assetTypes": [
+    "compute.googleapis.com/Network",
+    "compute.googleapis.com/Disk"
+  ],
+  "condition": {},
+  "contentType": "RESOURCE",
+  "feedOutputConfig": {
+    "pubsubDestination": {
+      "topic": "projects/${projectId}/topics/test-topic-${uniqueId}"
+    }
+  },
+  "name": "projects/${projectNumber}/feeds/test-${uniqueId}"
+}
+
+---
+
+PATCH https://cloudasset.googleapis.com/v1/projects/${projectNumber}/feeds/test-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "feed": {
+    "condition": {},
+    "contentType": "IAM_POLICY",
+    "feedOutputConfig": {
+      "pubsubDestination": {}
+    }
+  },
+  "updateMask": "content_type"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "assetTypes": [
+    "compute.googleapis.com/Network",
+    "compute.googleapis.com/Disk"
+  ],
+  "condition": {},
+  "contentType": "IAM_POLICY",
+  "feedOutputConfig": {
+    "pubsubDestination": {
+      "topic": "projects/${projectId}/topics/test-topic-${uniqueId}"
+    }
+  },
+  "name": "projects/${projectNumber}/feeds/test-${uniqueId}"
+}
+
+---
+
+GET https://cloudresourcemanager.googleapis.com/v1/projects/${projectId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "lifecycleState": "ACTIVE",
+  "projectId": "${projectId}",
+  "projectNumber": "${projectNumber}"
+}
+
+---
+
+DELETE https://cloudasset.googleapis.com/v1/projects/${projectNumber}/feeds/test-${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

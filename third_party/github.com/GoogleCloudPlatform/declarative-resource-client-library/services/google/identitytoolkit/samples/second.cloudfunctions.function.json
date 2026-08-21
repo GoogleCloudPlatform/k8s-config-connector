@@ -1,0 +1,15 @@
+{
+  "name": "{{function2}}",
+  "project": "{{project}}",
+  "region": "{{region}}",
+  "runtime": "nodejs20",
+  "availableMemoryMb": 128,
+  "sourceArchiveUrl": "gs://aaa-dont-delete-dcl-cloud-functions-testing/http_trigger.zip",
+  "timeout": "60s",
+  "entryPoint": "helloGET",
+  "ingressSettings": "ALLOW_INTERNAL_ONLY",
+  "maxInstances": 10,
+  "httpsTrigger": {
+    "securityLevel": "SECURE_OPTIONAL"
+  }
+}

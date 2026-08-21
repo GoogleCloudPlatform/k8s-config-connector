@@ -1,0 +1,82 @@
+247c247
+< GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/gateways/networkservicesgateway-${uniqueId}?alt=json
+---
+> GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/gateways/networkservicesgateway-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+270c270
+< POST https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/gateways?alt=json&gatewayId=networkservicesgateway-${uniqueId}
+---
+> POST https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/gateways?%24alt=json%3Benum-encoding%3Dint&gatewayId=networkservicesgateway-${uniqueId}
+287c287
+<   "type": "OPEN_MESH"
+---
+>   "type": 1
+313c313
+< GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
+---
+> GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
+360c360
+< GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/gateways/networkservicesgateway-${uniqueId}?alt=json
+---
+> GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/gateways/networkservicesgateway-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+389c389
+<   "type": "OPEN_MESH",
+---
+>   "type": 1,
+395c395
+< PATCH https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/gateways/networkservicesgateway-${uniqueId}?alt=json&updateMask=description%2Clabels%2Cports%2CserverTlsPolicy
+---
+> PATCH https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/gateways/networkservicesgateway-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2Clabels%2Cports%2CserverTlsPolicy
+406c406
+<   "name": "projects/projects/${projectId}/locations/global/gateways/networkservicesgateway-${uniqueId}",
+---
+>   "name": "projects/${projectId}/locations/global/gateways/networkservicesgateway-${uniqueId}",
+410c410,412
+<   "serverTlsPolicy": "projects/${projectId}/locations/global/serverTlsPolicies/networksecurityservertlspolicy-2-${uniqueId}"
+---
+>   "scope": "${uniqueId}",
+>   "serverTlsPolicy": "projects/${projectId}/locations/global/serverTlsPolicies/networksecurityservertlspolicy-2-${uniqueId}",
+>   "type": 1
+436c438
+< GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
+---
+> GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
+484c486
+< GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/gateways/networkservicesgateway-${uniqueId}?alt=json
+---
+> GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/gateways/networkservicesgateway-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+513c515
+<   "type": "OPEN_MESH",
+---
+>   "type": 1,
+519c521
+< DELETE https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/gateways/networkservicesgateway-${uniqueId}?alt=json
+---
+> DELETE https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/gateways/networkservicesgateway-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+545c547
+< GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
+---
+> GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
+571,593d572
+<   }
+< }
+< 
+< ---
+< 
+< GET https://networkservices.googleapis.com/v1/projects/${projectId}/locations/global/gateways/networkservicesgateway-${uniqueId}?alt=json
+< Content-Type: application/json
+< 
+< 404 Not Found
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "error": {
+<     "code": 404,
+<     "message": "Resource 'projects/${projectId}/locations/global/gateways/networkservicesgateway-${uniqueId}' was not found",
+<     "status": "NOT_FOUND"

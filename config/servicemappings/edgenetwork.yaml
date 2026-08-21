@@ -1,0 +1,75 @@
+# Copyright 2023 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: core.cnrm.cloud.google.com/v1alpha1
+kind: ServiceMapping
+metadata:
+  name: edgenetwork.cnrm.cloud.google.com
+  namespace: cnrm-system
+spec:
+  name: EdgeNetwork
+  version: v1beta1
+  serviceHostName: edgenetwork.googleapis.com
+  resources:
+    - name: google_edgenetwork_network
+      kind: EdgeNetworkNetwork
+      idTemplate: "projects/{{project}}/locations/{{location}}/zones/{{zone}}/networks/{{network_id}}"
+      idTemplateCanBeUsedToMatchResourceName: false
+      resourceAvailableInAssetInventory: false
+      metadataMapping:
+        labels: labels
+        name: network_id
+      resourceID:
+        targetField: network_id
+      hierarchicalReferences:
+        - type: project
+          key: projectRef
+      resourceReferences:
+        - tfField: project
+          key: projectRef
+          description: |-
+            The project that this resource belongs to.
+          gvk:
+            kind: Project
+            version: v1beta1
+            group: resourcemanager.cnrm.cloud.google.com
+    - name: google_edgenetwork_subnet
+      kind: EdgeNetworkSubnet
+      idTemplate: "projects/{{project}}/locations/{{location}}/zones/{{zone}}/subnets/{{subnet_id}}"
+      idTemplateCanBeUsedToMatchResourceName: false
+      resourceAvailableInAssetInventory: false
+      metadataMapping:
+        labels: labels
+        name: subnet_id
+      resourceID:
+        targetField: subnet_id
+      hierarchicalReferences:
+        - type: project
+          key: projectRef
+      resourceReferences:
+        - tfField: project
+          key: projectRef
+          description: |-
+            The project that this resource belongs to.
+          gvk:
+            kind: Project
+            version: v1beta1
+            group: resourcemanager.cnrm.cloud.google.com
+        - key: networkRef
+          tfField: network
+          gvk:
+            kind: EdgeNetworkNetwork
+            version: v1beta1
+            group: edgenetwork.cnrm.cloud.google.com
+          targetField: name

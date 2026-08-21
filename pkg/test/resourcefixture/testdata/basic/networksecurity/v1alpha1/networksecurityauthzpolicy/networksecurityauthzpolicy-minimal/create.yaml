@@ -1,0 +1,19 @@
+apiVersion: networksecurity.cnrm.cloud.google.com/v1alpha1
+kind: NetworkSecurityAuthzPolicy
+metadata:
+  name: authzpolicy-min-${uniqueId}
+spec:
+  projectRef:
+    external: "projects/${projectId}"
+  location: us-central1
+  action: ALLOW
+  target:
+    loadBalancingScheme: INTERNAL_MANAGED
+    resources:
+      - external: "projects/${projectId}/regions/us-central1/forwardingRules/fr-${uniqueId}"
+  httpRules:
+    - from:
+        sources:
+          - ipBlocks:
+              - prefix: "10.0.0.0"
+                length: 24

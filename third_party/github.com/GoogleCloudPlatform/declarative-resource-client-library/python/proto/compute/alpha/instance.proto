@@ -1,0 +1,218 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum ComputeAlphaInstanceDisksInterfaceEnum {
+  ComputeAlphaInstanceDisksInterfaceEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeAlphaInstanceDisksInterfaceEnumSCSI = 1;
+  ComputeAlphaInstanceDisksInterfaceEnumNVME = 2;
+}
+
+enum ComputeAlphaInstanceDisksModeEnum {
+  ComputeAlphaInstanceDisksModeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeAlphaInstanceDisksModeEnumREAD_WRITE = 1;
+  ComputeAlphaInstanceDisksModeEnumREAD_ONLY = 2;
+}
+
+enum ComputeAlphaInstanceDisksTypeEnum {
+  ComputeAlphaInstanceDisksTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeAlphaInstanceDisksTypeEnumSCRATCH = 1;
+  ComputeAlphaInstanceDisksTypeEnumPERSISTENT = 2;
+}
+
+enum ComputeAlphaInstanceNetworkInterfacesAccessConfigsNetworkTierEnum {
+  ComputeAlphaInstanceNetworkInterfacesAccessConfigsNetworkTierEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeAlphaInstanceNetworkInterfacesAccessConfigsNetworkTierEnumPREMIUM = 1;
+  ComputeAlphaInstanceNetworkInterfacesAccessConfigsNetworkTierEnumSTANDARD = 2;
+}
+
+enum ComputeAlphaInstanceNetworkInterfacesAccessConfigsTypeEnum {
+  ComputeAlphaInstanceNetworkInterfacesAccessConfigsTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeAlphaInstanceNetworkInterfacesAccessConfigsTypeEnumONE_TO_ONE_NAT = 1;
+}
+
+enum ComputeAlphaInstanceNetworkInterfacesIPv6AccessConfigsNetworkTierEnum {
+  ComputeAlphaInstanceNetworkInterfacesIPv6AccessConfigsNetworkTierEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeAlphaInstanceNetworkInterfacesIPv6AccessConfigsNetworkTierEnumPREMIUM = 1;
+  ComputeAlphaInstanceNetworkInterfacesIPv6AccessConfigsNetworkTierEnumSTANDARD = 2;
+}
+
+enum ComputeAlphaInstanceNetworkInterfacesIPv6AccessConfigsTypeEnum {
+  ComputeAlphaInstanceNetworkInterfacesIPv6AccessConfigsTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeAlphaInstanceNetworkInterfacesIPv6AccessConfigsTypeEnumONE_TO_ONE_NAT = 1;
+}
+
+enum ComputeAlphaInstanceStatusEnum {
+  ComputeAlphaInstanceStatusEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeAlphaInstanceStatusEnumPROVISIONING = 1;
+  ComputeAlphaInstanceStatusEnumSTAGING = 2;
+  ComputeAlphaInstanceStatusEnumRUNNING = 3;
+  ComputeAlphaInstanceStatusEnumSTOPPING = 4;
+  ComputeAlphaInstanceStatusEnumSUSPENDING = 5;
+  ComputeAlphaInstanceStatusEnumSUSPENDED = 6;
+  ComputeAlphaInstanceStatusEnumTERMINATED = 7;
+}
+
+message ComputeAlphaInstance {
+  bool can_ip_forward = 1;
+  string cpu_platform = 2;
+  string creation_timestamp = 3;
+  bool deletion_protection = 4;
+  string description = 5;
+  repeated ComputeAlphaInstanceDisks disks = 6;
+  repeated ComputeAlphaInstanceGuestAccelerators guest_accelerators = 7;
+  string hostname = 8;
+  string id = 9;
+  map<string, string> labels = 10;
+  map<string, string> metadata = 11;
+  string machine_type = 12;
+  string min_cpu_platform = 13;
+  string name = 14;
+  repeated ComputeAlphaInstanceNetworkInterfaces network_interfaces = 15;
+  ComputeAlphaInstanceScheduling scheduling = 16;
+  repeated ComputeAlphaInstanceServiceAccounts service_accounts = 17;
+  ComputeAlphaInstanceShieldedInstanceConfig shielded_instance_config = 18;
+  ComputeAlphaInstanceStatusEnum status = 19;
+  string status_message = 20;
+  repeated string tags = 21;
+  string zone = 22;
+  string project = 23;
+  string self_link = 24;
+}
+
+message ComputeAlphaInstanceDisks {
+  bool auto_delete = 1;
+  bool boot = 2;
+  string device_name = 3;
+  ComputeAlphaInstanceDisksDiskEncryptionKey disk_encryption_key = 4;
+  int64 index = 5;
+  ComputeAlphaInstanceDisksInitializeParams initialize_params = 6;
+  ComputeAlphaInstanceDisksInterfaceEnum interface = 7;
+  ComputeAlphaInstanceDisksModeEnum mode = 8;
+  string source = 9;
+  ComputeAlphaInstanceDisksTypeEnum type = 10;
+}
+
+message ComputeAlphaInstanceDisksDiskEncryptionKey {
+  string raw_key = 1;
+  string rsa_encrypted_key = 2;
+  string sha256 = 3;
+}
+
+message ComputeAlphaInstanceDisksInitializeParams {
+  string disk_name = 1;
+  int64 disk_size_gb = 2;
+  string disk_type = 3;
+  string source_image = 4;
+  ComputeAlphaInstanceDisksInitializeParamsSourceImageEncryptionKey source_image_encryption_key = 5;
+}
+
+message ComputeAlphaInstanceDisksInitializeParamsSourceImageEncryptionKey {
+  string raw_key = 1;
+  string sha256 = 2;
+}
+
+message ComputeAlphaInstanceGuestAccelerators {
+  int64 accelerator_count = 1;
+  string accelerator_type = 2;
+}
+
+message ComputeAlphaInstanceNetworkInterfaces {
+  repeated ComputeAlphaInstanceNetworkInterfacesAccessConfigs access_configs = 1;
+  repeated ComputeAlphaInstanceNetworkInterfacesIPv6AccessConfigs ipv6_access_configs = 2;
+  repeated ComputeAlphaInstanceNetworkInterfacesAliasIPRanges alias_ip_ranges = 3;
+  string name = 4;
+  string network = 5;
+  string network_ip = 6;
+  string subnetwork = 7;
+}
+
+message ComputeAlphaInstanceNetworkInterfacesAccessConfigs {
+  string name = 1;
+  string nat_ip = 2;
+  string external_ipv6 = 3;
+  string external_ipv6_prefix_length = 4;
+  bool set_public_ptr = 5;
+  string public_ptr_domain_name = 6;
+  ComputeAlphaInstanceNetworkInterfacesAccessConfigsNetworkTierEnum network_tier = 7;
+  ComputeAlphaInstanceNetworkInterfacesAccessConfigsTypeEnum type = 8;
+}
+
+message ComputeAlphaInstanceNetworkInterfacesIPv6AccessConfigs {
+  string name = 1;
+  string nat_ip = 2;
+  string external_ipv6 = 3;
+  string external_ipv6_prefix_length = 4;
+  bool set_public_ptr = 5;
+  string public_ptr_domain_name = 6;
+  ComputeAlphaInstanceNetworkInterfacesIPv6AccessConfigsNetworkTierEnum network_tier = 7;
+  ComputeAlphaInstanceNetworkInterfacesIPv6AccessConfigsTypeEnum type = 8;
+}
+
+message ComputeAlphaInstanceNetworkInterfacesAliasIPRanges {
+  string ip_cidr_range = 1;
+  string subnetwork_range_name = 2;
+}
+
+message ComputeAlphaInstanceScheduling {
+  bool automatic_restart = 1;
+  string on_host_maintenance = 2;
+  bool preemptible = 3;
+}
+
+message ComputeAlphaInstanceServiceAccounts {
+  string email = 1;
+  repeated string scopes = 2;
+}
+
+message ComputeAlphaInstanceShieldedInstanceConfig {
+  bool enable_secure_boot = 1;
+  bool enable_vtpm = 2;
+  bool enable_integrity_monitoring = 3;
+}
+
+message ApplyComputeAlphaInstanceRequest {
+  ComputeAlphaInstance resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteComputeAlphaInstanceRequest {
+  string service_account_file = 1;
+  ComputeAlphaInstance resource = 2;
+}
+
+message ListComputeAlphaInstanceRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Zone = 3;
+}
+
+message ListComputeAlphaInstanceResponse {
+  repeated ComputeAlphaInstance items = 1;
+}
+
+service ComputeAlphaInstanceService {
+  rpc ApplyComputeAlphaInstance(ApplyComputeAlphaInstanceRequest) returns (ComputeAlphaInstance);
+  rpc DeleteComputeAlphaInstance(DeleteComputeAlphaInstanceRequest) returns (google.protobuf.Empty);
+  rpc ListComputeAlphaInstance(ListComputeAlphaInstanceRequest) returns (ListComputeAlphaInstanceResponse);
+}

@@ -1,0 +1,144 @@
+GET https://logging.googleapis.com/v2/organizations/${organizationID}/exclusions/${exclusionID}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Exclusion organizations/${organizationID}/exclusions/exclusion-${uniqueId} does not exist",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://logging.googleapis.com/v2/organizations/${organizationID}/exclusions?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+
+{
+  "description": "A basic log exclusion",
+  "filter": "resource.type=gcs_bucket severity\u003cERROR sample(insertId, 0.99)",
+  "name": "exclusion-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "A basic log exclusion",
+  "filter": "resource.type=gcs_bucket severity\u003cERROR sample(insertId, 0.99)",
+  "name": "organizations/${organizationID}/exclusions/exclusion-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://logging.googleapis.com/v2/organizations/${organizationID}/exclusions/${exclusionID}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "A basic log exclusion",
+  "filter": "resource.type=gcs_bucket severity\u003cERROR sample(insertId, 0.99)",
+  "name": "organizations/${organizationID}/exclusions/exclusion-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://logging.googleapis.com/v2/organizations/${organizationID}/exclusions/${exclusionID}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2Cdisabled%2Cfilter
+Content-Type: application/json
+
+{
+  "description": "An updated log exclusion",
+  "disabled": true,
+  "filter": "resource.type=gcs_bucket severity\u003c=ERROR sample(insertId, 0.99)",
+  "name": "organizations/${organizationID}/exclusions/exclusion-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "An updated log exclusion",
+  "disabled": true,
+  "filter": "resource.type=gcs_bucket severity\u003c=ERROR sample(insertId, 0.99)",
+  "name": "organizations/${organizationID}/exclusions/exclusion-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://logging.googleapis.com/v2/organizations/${organizationID}/exclusions/${exclusionID}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "An updated log exclusion",
+  "disabled": true,
+  "filter": "resource.type=gcs_bucket severity\u003c=ERROR sample(insertId, 0.99)",
+  "name": "organizations/${organizationID}/exclusions/exclusion-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://logging.googleapis.com/v2/organizations/${organizationID}/exclusions/${exclusionID}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

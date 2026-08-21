@@ -1,0 +1,3 @@
+```release-note:bug
+container: fixed an issue in `google_container_cluster` where `workload_metadata_config` would cause a permadiff
+```

@@ -1,0 +1,48 @@
+1c1
+< GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates/certificatemanagercertificate-kompanion-${uniqueId}?alt=json
+---
+> GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates/certificatemanagercertificate-kompanion-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+24c24
+< POST https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates?alt=json&certificateId=certificatemanagercertificate-kompanion-${uniqueId}
+---
+> POST https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates?%24alt=json%3Benum-encoding%3Dint&certificateId=certificatemanagercertificate-kompanion-${uniqueId}
+41c41
+<   "scope": "ALL_REGIONS"
+---
+>   "scope": 2
+67c67
+< GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
+---
+> GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
+123c123
+< GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates/certificatemanagercertificate-kompanion-${uniqueId}?alt=json
+---
+> GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates/certificatemanagercertificate-kompanion-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+146c146
+<         "state": "AUTHORIZED"
+---
+>         "state": 6
+150c150
+<         "state": "AUTHORIZED"
+---
+>         "state": 6
+154c154
+<         "state": "AUTHORIZED"
+---
+>         "state": 6
+163c163
+<     "state": "ACTIVE"
+---
+>     "state": 3
+166c166
+<   "scope": "ALL_REGIONS"
+---
+>   "scope": 2
+171c171
+< DELETE https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates/certificatemanagercertificate-kompanion-${uniqueId}?alt=json
+---
+> DELETE https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates/certificatemanagercertificate-kompanion-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+197c197
+< GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
+---
+> GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}

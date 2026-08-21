@@ -1,0 +1,8 @@
+{
+  "name": "{{compute_psc_subnetwork1}}",
+  "project": "{{project}}",
+  "region": "{{region}}",
+  "ipCidrRange": "10.2.0.0/16",
+  "network": "{{ref:basic.network.json:selfLink}}",
+  "purpose": "PRIVATE_SERVICE_CONNECT"
+}

@@ -1,0 +1,63 @@
+{
+  "name": "{{dashboard}}",
+  "project": "{{project}}",
+  "displayName": "test-dashboard",
+  "columnLayout": {
+    "columns": [
+      {
+        "weight": 1,
+        "widgets": [
+          {
+            "text": {
+              "content": "test-1"
+            }
+          },
+          {
+            "xyChart": {
+              "dataSets": [
+                {
+                  "timeSeriesQuery": {
+                    "timeSeriesFilter": {
+                      "filter": "project = {{project}}\nmetric.type = \"some_metric_type\""
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "text": {
+              "content": "test-2"
+            }
+          },
+          {
+            "text": {
+              "content": "test-3"
+            }
+          },
+          {
+            "xyChart": {
+              "dataSets": [
+                {
+                  "timeSeriesQuery": {
+                    "timeSeriesFilter": {
+                      "filter": "project = {{project}}\nmetric.type = \"some_metric_type\""
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "logsPanel": {
+              "filter": "project = {{project}}\nmetric.type = \"some_metric_type\"",
+              "resourceNames":[
+               "projects/{{project}}"
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

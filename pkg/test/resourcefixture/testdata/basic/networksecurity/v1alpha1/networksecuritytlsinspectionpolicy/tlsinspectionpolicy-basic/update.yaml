@@ -1,0 +1,14 @@
+apiVersion: networksecurity.cnrm.cloud.google.com/v1alpha1
+kind: NetworkSecurityTLSInspectionPolicy
+metadata:
+  name: tlsinspection-${uniqueId}
+spec:
+  projectRef:
+    external: projects/${projectId}
+  location: us-central1
+  description: "An updated TLS Inspection Policy to decrypt traffic"
+  caPoolRef:
+    name: capool-${uniqueId}
+  excludePublicCASet: true
+  minTLSVersion: TLS_1_2
+  tlsFeatureProfile: PROFILE_COMPATIBLE

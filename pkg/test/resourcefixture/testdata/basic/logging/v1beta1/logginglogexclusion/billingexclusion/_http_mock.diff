@@ -1,0 +1,58 @@
+1c1
+< GET https://logging.googleapis.com/v2/billingAccounts/${billingAccountID}/exclusions/${exclusionID}?alt=json
+---
+> GET https://logging.googleapis.com/v2/billingAccounts/${billingAccountID}/exclusions/${exclusionID}?%24alt=json%3Benum-encoding%3Dint
+24c24
+< POST https://logging.googleapis.com/v2/billingAccounts/${billingAccountID}/exclusions?alt=json
+---
+> POST https://logging.googleapis.com/v2/billingAccounts/${billingAccountID}/exclusions?%24alt=json%3Benum-encoding%3Dint
+53c53
+< GET https://logging.googleapis.com/v2/billingAccounts/${billingAccountID}/exclusions/${exclusionID}?alt=json
+---
+> GET https://logging.googleapis.com/v2/billingAccounts/${billingAccountID}/exclusions/${exclusionID}?%24alt=json%3Benum-encoding%3Dint
+76c76
+< PATCH https://logging.googleapis.com/v2/billingAccounts/${billingAccountID}/exclusions/${exclusionID}?alt=json&updateMask=description%2Cdisabled%2Cfilter
+---
+> PATCH https://logging.googleapis.com/v2/billingAccounts/${billingAccountID}/exclusions/${exclusionID}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2Cdisabled%2Cfilter
+82c82,83
+<   "filter": "resource.type=gcs_bucket severity\u003c=ERROR sample(insertId, 0.99)"
+---
+>   "filter": "resource.type=gcs_bucket severity\u003c=ERROR sample(insertId, 0.99)",
+>   "name": "billingAccounts/${billingAccountID}/exclusions/exclusion-${uniqueId}"
+106c107
+< GET https://logging.googleapis.com/v2/billingAccounts/${billingAccountID}/exclusions/${exclusionID}?alt=json
+---
+> GET https://logging.googleapis.com/v2/billingAccounts/${billingAccountID}/exclusions/${exclusionID}?%24alt=json%3Benum-encoding%3Dint
+130c131
+< DELETE https://logging.googleapis.com/v2/billingAccounts/${billingAccountID}/exclusions/${exclusionID}?alt=json
+---
+> DELETE https://logging.googleapis.com/v2/billingAccounts/${billingAccountID}/exclusions/${exclusionID}?%24alt=json%3Benum-encoding%3Dint
+143,166c144
+< {}
+< 
+< ---
+< 
+< GET https://logging.googleapis.com/v2/billingAccounts/${billingAccountID}/exclusions/${exclusionID}?alt=json
+< Content-Type: application/json
+< 
+< 404 Not Found
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "error": {
+<     "code": 404,
+<     "message": "Exclusion billingAccounts/${billingAccountID}/exclusions/exclusion-${uniqueId} does not exist",
+<     "status": "NOT_FOUND"
+<   }
+< }
+\ No newline at end of file
+---
+> {}
+\ No newline at end of file

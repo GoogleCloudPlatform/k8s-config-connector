@@ -1,0 +1,158 @@
+1c1
+< GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}?alt=json
+---
+> GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+24c24
+< POST https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools?alt=json&caPoolId=privatecacapool-${uniqueId}
+---
+> POST https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools?%24alt=json%3Benum-encoding%3Dint&caPoolId=privatecacapool-${uniqueId}
+30d29
+<       "allowConfigBasedIssuance": false,
+36,37c35,36
+<           "maxModulusSize": 128,
+<           "minModulusSize": 64
+---
+>           "maxModulusSize": "128",
+>           "minModulusSize": "64"
+42c41
+<           "signatureAlgorithm": "ECDSA_P384"
+---
+>           "signatureAlgorithm": 2
+49d47
+<           "critical": false,
+67,85c65,66
+<         "baseKeyUsage": {
+<           "certSign": false,
+<           "contentCommitment": false,
+<           "crlSign": false,
+<           "dataEncipherment": false,
+<           "decipherOnly": false,
+<           "digitalSignature": false,
+<           "encipherOnly": false,
+<           "keyAgreement": false,
+<           "keyEncipherment": false
+<         },
+<         "extendedKeyUsage": {
+<           "clientAuth": false,
+<           "codeSigning": false,
+<           "emailProtection": false,
+<           "ocspSigning": false,
+<           "serverAuth": false,
+<           "timeStamping": false
+<         },
+---
+>         "baseKeyUsage": {},
+>         "extendedKeyUsage": {},
+125c106
+<         "BASE_KEY_USAGE"
+---
+>         1
+134,135c115
+<   "name": "projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}",
+<   "tier": "ENTERPRISE"
+---
+>   "tier": 1
+161c141
+< GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+---
+> GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+279c259
+< GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}?alt=json
+---
+> GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+306c286
+<           "signatureAlgorithm": "ECDSA_P384"
+---
+>           "signatureAlgorithm": 2
+369c349
+<         "BASE_KEY_USAGE"
+---
+>         1
+379c359
+<   "tier": "ENTERPRISE"
+---
+>   "tier": 1
+384c364
+< PATCH https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}?alt=json&updateMask=issuancePolicy%2Clabels%2CpublishingOptions
+---
+> PATCH https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=issuancePolicy%2Clabels%2CpublishingOptions
+390,391c370
+<       "allowConfigBasedIssuance": true,
+<       "allowCsrBasedIssuance": false
+---
+>       "allowConfigBasedIssuance": true
+396,397c375,376
+<           "maxModulusSize": 256,
+<           "minModulusSize": 128
+---
+>           "maxModulusSize": "256",
+>           "minModulusSize": "128"
+402c381
+<           "signatureAlgorithm": "ECDSA_P256"
+---
+>           "signatureAlgorithm": 1
+485c464
+<         "EXTENDED_KEY_USAGE"
+---
+>         2
+495c474
+<   "name": "projects/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}",
+---
+>   "name": "projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}",
+499c478,479
+<   }
+---
+>   },
+>   "tier": 1
+525c505
+< GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+---
+> GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+668c648
+< GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}?alt=json
+---
+> GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+695c675
+<           "signatureAlgorithm": "ECDSA_P256"
+---
+>           "signatureAlgorithm": 1
+778c758
+<         "EXTENDED_KEY_USAGE"
+---
+>         2
+793c773
+<   "tier": "ENTERPRISE"
+---
+>   "tier": 1
+798c778
+< DELETE https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}?alt=json
+---
+> DELETE https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+824c804
+< GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
+---
+> GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+850,872d829
+<   }
+< }
+< 
+< ---
+< 
+< GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}?alt=json
+< Content-Type: application/json
+< 
+< 404 Not Found
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "error": {
+<     "code": 404,
+<     "message": "Resource 'projects/${projectId}/locations/us-central1/caPools/privatecacapool-${uniqueId}' was not found",
+<     "status": "NOT_FOUND"

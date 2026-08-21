@@ -1,0 +1,14 @@
+label: Config Connector ComputeNetworkPeering
+markdownDescription: Creates yaml for a ComputeNetworkPeering resource
+insertText: |
+  apiVersion: compute.cnrm.cloud.google.com/v1beta1
+  kind: ComputeNetworkPeering
+  metadata:
+    name: \${1:computenetworkpeering-name}
+  spec:
+    exportCustomRoutes: \${2:false}
+    importCustomRoutes: \${3:false}
+    networkRef:
+      name: \${4:computenetworkpeering-dep1}
+    peerNetworkRef:
+      name: \${5:computenetworkpeering-dep2}

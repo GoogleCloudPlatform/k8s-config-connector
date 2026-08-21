@@ -1,0 +1,66 @@
+# Copyright 2023 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# DEPRECATED: This file is deprecated and will be removed in the future.
+# Please use ci-presubmit.yaml instead.
+# Ideally all scripts would be in dev/ci/presubmits.
+
+name: Presubmit
+
+permissions:
+  contents: read
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - '**'
+      - '!experiments/**'
+  push:
+    branches: ["master", "release-*"]
+    paths:
+      - '**'
+      - '!experiments/**'
+  merge_group:
+    types: [checks_requested]
+    branches: ["master", "release-*"]
+    paths:
+      - '**'
+      - '!experiments/**'
+
+
+jobs:
+  validations:
+    name: "validations"
+    runs-on: ubuntu-latest
+    steps:
+      - name: "No-op validation check for branch protection"
+        run: echo "validations completed successfully"
+
+  build-images:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Free up disk space
+        run: dev/tasks/free-disk-space-on-github-actions-runner
+      - uses: ./dev/actions/cache-go
+      - name: "dev/tasks/build-images"
+        run: |
+          dev/tasks/build-images
+    env:
+      PROJECT_ID: cnrm-test
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true

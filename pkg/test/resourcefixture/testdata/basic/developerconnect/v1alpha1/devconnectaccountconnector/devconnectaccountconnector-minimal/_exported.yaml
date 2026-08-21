@@ -1,0 +1,19 @@
+apiVersion: developerconnect.cnrm.cloud.google.com/v1alpha1
+kind: DevConnectAccountConnector
+metadata:
+  labels:
+    cnrm-test: "true"
+    managed-by-cnrm: "true"
+  name: devconnectaccountconnector-${uniqueId}
+spec:
+  labels:
+    cnrm-test: "true"
+    managed-by-cnrm: "true"
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+  providerOauthConfig:
+    scopes:
+    - user:email
+    systemProviderID: GITHUB
+  resourceID: devconnectaccountconnector-${uniqueId}

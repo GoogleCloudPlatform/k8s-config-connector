@@ -1,0 +1,8 @@
+{
+  "name": "{{name}}",
+  "project": "{{project}}",
+  "destRange": "0.0.0.0/0",
+  "network": "global/networks/default",
+  "nextHopGateway": "default-internet-gateway",
+  "priority": 100
+}

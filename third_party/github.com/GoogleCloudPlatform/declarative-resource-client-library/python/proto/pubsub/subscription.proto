@@ -1,0 +1,78 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+message PubsubSubscription {
+  string name = 1;
+  string topic = 2;
+  map<string, string> labels = 3;
+  string message_retention_duration = 4;
+  bool retain_acked_messages = 5;
+  PubsubSubscriptionExpirationPolicy expiration_policy = 6;
+  string project = 7;
+  PubsubSubscriptionDeadLetterPolicy dead_letter_policy = 8;
+  PubsubSubscriptionPushConfig push_config = 9;
+  int64 ack_deadline_seconds = 10;
+}
+
+message PubsubSubscriptionExpirationPolicy {
+  string ttl = 1;
+}
+
+message PubsubSubscriptionDeadLetterPolicy {
+  string dead_letter_topic = 1;
+  int64 max_delivery_attempts = 2;
+}
+
+message PubsubSubscriptionPushConfig {
+  string push_endpoint = 1;
+  map<string, string> attributes = 2;
+  PubsubSubscriptionPushConfigOidcToken oidc_token = 3;
+}
+
+message PubsubSubscriptionPushConfigOidcToken {
+  string service_account_email = 1;
+  string audience = 2;
+}
+
+message ApplyPubsubSubscriptionRequest {
+  PubsubSubscription resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeletePubsubSubscriptionRequest {
+  string service_account_file = 1;
+  PubsubSubscription resource = 2;
+}
+
+message ListPubsubSubscriptionRequest {
+  string service_account_file = 1;
+  string Project = 2;
+}
+
+message ListPubsubSubscriptionResponse {
+  repeated PubsubSubscription items = 1;
+}
+
+service PubsubSubscriptionService {
+  rpc ApplyPubsubSubscription(ApplyPubsubSubscriptionRequest) returns (PubsubSubscription);
+  rpc DeletePubsubSubscription(DeletePubsubSubscriptionRequest) returns (google.protobuf.Empty);
+  rpc ListPubsubSubscription(ListPubsubSubscriptionRequest) returns (ListPubsubSubscriptionResponse);
+}

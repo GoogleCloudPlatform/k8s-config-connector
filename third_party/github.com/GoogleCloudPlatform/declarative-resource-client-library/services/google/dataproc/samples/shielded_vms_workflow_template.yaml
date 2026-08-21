@@ -1,0 +1,38 @@
+# Copyright 2024 Google LLC. All Rights Reserved.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+name: shielded_vms_workflow_template
+description: An example of a workflow template with Shielded VMs in GCE Cluster Config
+type: workflow_template
+versions:
+- ga
+- beta
+resource: samples/shielded_vms.workflow_template.json
+dependencies:
+- samples/basic.compute.subnetwork.json
+- samples/basic.compute.network.json
+variables:
+- name: dataproc_network
+  type: resource_name
+- name: dataproc_subnetwork
+  type: resource_name
+- name: project
+  type: project
+- name: range
+  type: resource_name
+- name: region
+  type: region
+- name: template_name
+  type: resource_name
+- name: zone
+  type: zone

@@ -1,0 +1,20 @@
+{
+  "name": "{{worker_pool}}",
+  "location": "{{region}}",
+  "project": "{{project}}",
+  "displayName": "sample-pool",
+  "annotations": {
+    "annotation-one": "value-one"
+  },
+  "privatePoolV1Config": {
+    "workerConfig": {
+      "machineType": "e2-standard-2",
+      "diskSizeGb": 100
+    },
+    "networkConfig": {
+      "peeredNetwork": "projects/{{project}}/global/networks/{{ref:basic.compute.network.json:name}}",
+      "egressOption": "NO_PUBLIC_EGRESS",
+      "peeredNetworkIPRange": "/28"
+    }
+  }
+}

@@ -1,0 +1,69 @@
+// Copyright 2022 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum VertexaiBetaMetadataSchemaSchemaTypeEnum {
+  VertexaiBetaMetadataSchemaSchemaTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  VertexaiBetaMetadataSchemaSchemaTypeEnumMETADATA_SCHEMA_TYPE_UNSPECIFIED = 1;
+  VertexaiBetaMetadataSchemaSchemaTypeEnumARTIFACT_TYPE = 2;
+  VertexaiBetaMetadataSchemaSchemaTypeEnumEXECUTION_TYPE = 3;
+  VertexaiBetaMetadataSchemaSchemaTypeEnumCONTEXT_TYPE = 4;
+}
+
+message VertexaiBetaMetadataSchema {
+  string name = 1;
+  string schema_version = 2;
+  string schema = 3;
+  VertexaiBetaMetadataSchemaSchemaTypeEnum schema_type = 4;
+  string create_time = 5;
+  string project = 6;
+  string location = 7;
+  string metadata_store = 8;
+}
+
+message ApplyVertexaiBetaMetadataSchemaRequest {
+  VertexaiBetaMetadataSchema resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteVertexaiBetaMetadataSchemaRequest {
+  string service_account_file = 1;
+  VertexaiBetaMetadataSchema resource = 2;
+}
+
+message ListVertexaiBetaMetadataSchemaRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+  string MetadataStore = 4;
+}
+
+message ListVertexaiBetaMetadataSchemaResponse {
+  repeated VertexaiBetaMetadataSchema items = 1;
+}
+
+service VertexaiBetaMetadataSchemaService {
+  rpc ApplyVertexaiBetaMetadataSchema(ApplyVertexaiBetaMetadataSchemaRequest) returns (VertexaiBetaMetadataSchema);
+  rpc DeleteVertexaiBetaMetadataSchema(DeleteVertexaiBetaMetadataSchemaRequest) returns (google.protobuf.Empty);
+  rpc ListVertexaiBetaMetadataSchema(ListVertexaiBetaMetadataSchemaRequest) returns (ListVertexaiBetaMetadataSchemaResponse);
+}

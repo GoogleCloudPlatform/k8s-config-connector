@@ -1,0 +1,7 @@
+{
+  "name": "{{backend}}",
+  "project": "{{project}}",
+  "description": "A backend bucket",
+  "bucketName": "{{ref:basic.storage.bucket.json:name}}",
+  "enableCdn": false
+}

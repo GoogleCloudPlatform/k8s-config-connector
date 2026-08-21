@@ -1,0 +1,3 @@
+```release-note:bug
+datacatalog: fixed permadiff on import for tags with a taxonomy set in config.
+```

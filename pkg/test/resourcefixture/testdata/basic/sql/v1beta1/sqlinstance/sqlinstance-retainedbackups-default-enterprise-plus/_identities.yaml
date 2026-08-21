@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: sql.cnrm.cloud.google.com
+  kind: SQLInstance
+  name: sqlinstance-primary-direct-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

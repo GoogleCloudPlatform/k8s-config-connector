@@ -1,0 +1,10 @@
+apiVersion: networkconnectivity.cnrm.cloud.google.com/v1alpha1
+kind: NetworkConnectivityRegionalEndpoint
+metadata:
+  name: regionalendpoint-${uniqueId}
+spec:
+  projectRef:
+    external: projects/${projectId}
+  location: us-central1
+  accessType: GLOBAL
+  targetGoogleAPI: cloudkms.us-central1.p.rep.googleapis.com

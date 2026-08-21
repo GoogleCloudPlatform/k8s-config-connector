@@ -1,0 +1,16 @@
+apiVersion: apigateway.cnrm.cloud.google.com/v1beta1
+kind: APIGatewayAPI
+metadata:
+  name: apigatewayapi-${uniqueId}
+  labels:
+    label-one: "value-one"
+    label-two: "value-two"
+  annotations:
+    annotation-one: "value-one"
+    annotation-two: "value-two"
+spec:
+  resourceID: "apigatewayapi-${uniqueId}"
+  displayName: "My APIGateway API full example"
+  projectRef:
+    external: ${projectId}
+  managedService: "apigatewayapi-full-${uniqueId}-{generatedId}.apigateway.${projectId}.cloud.goog"

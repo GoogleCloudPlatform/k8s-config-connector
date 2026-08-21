@@ -1,0 +1,13 @@
+label: Config Connector NetworkConnectivityHub
+markdownDescription: Creates yaml for a NetworkConnectivityHub resource
+insertText: |
+  apiVersion: networkconnectivity.cnrm.cloud.google.com/v1beta1
+  kind: NetworkConnectivityHub
+  metadata:
+    labels:
+      \${1:label-one}: \${2:value-one}
+    name: \${3:networkconnectivityhub-name}
+  spec:
+    projectRef:
+      external: \${4:projects/[PROJECT_ID?]}
+    description: \${5:A sample hub}

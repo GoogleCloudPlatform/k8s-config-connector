@@ -1,0 +1,35 @@
+{
+  "name": "{{cluster}}",
+  "project": "{{project}}",
+  "location": "us-west1",
+  "networking": {
+    "vpcId": "{{aws_vpc}}",
+    "podAddressCidrBlocks": ["10.2.0.0/16"],
+    "serviceAddressCidrBlocks": ["10.1.0.0/16"]
+  },
+  "awsRegion": "{{aws_region}}",
+  "controlPlane": {
+    "version": "1.27.4-gke.1600",
+    "subnetIds": ["{{aws_subnet}}"],
+    "iamInstanceProfile": "{{byo_multicloud_prefix}}-1p-dev-controlplane",
+    "databaseEncryption": {
+      "kmsKeyArn": "arn:aws:kms:{{aws_region}}:{{aws_account_id}}:key/{{aws_database_encryption_key}}"
+    },
+    "configEncryption": {
+      "kmsKeyArn": "arn:aws:kms:{{aws_region}}:{{aws_account_id}}:key/{{aws_database_encryption_key}}"
+    },
+    "awsServicesAuthentication": {
+      "roleArn": "arn:aws:iam::{{aws_account_id}}:role/{{byo_multicloud_prefix}}-1p-dev-oneplatform"
+    }
+  },
+  "authorization": {
+    "adminUsers": [
+      {
+        "username": "user@domain.com"
+      }
+    ]
+  },
+  "fleet": {
+    "project": "{{project_number}}"
+  }
+}

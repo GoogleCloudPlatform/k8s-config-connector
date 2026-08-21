@@ -1,0 +1,23 @@
+{
+  "name": "{{_dataset}}",
+  "project": "{{project}}",
+  "friendlyName": "updated-dataset",
+  "description": "An updated sample dataset",
+  "defaultTableExpirationMs": "4800000",
+  "defaultPartitionExpirationMs": "4800000",
+  "labels": {
+    "label-one": "value-two",
+    "label-two": "value-three"
+  },
+  "access": [
+    {
+      "role": "OWNER",
+      "groupByEmail": "magic-modules-eng@google.com"
+    },
+    {
+      "role": "roles/bigquery.dataEditor",
+      "groupByEmail": "magic-modules-eng@google.com"
+    }
+  ],
+  "location": "{{region}}"
+}

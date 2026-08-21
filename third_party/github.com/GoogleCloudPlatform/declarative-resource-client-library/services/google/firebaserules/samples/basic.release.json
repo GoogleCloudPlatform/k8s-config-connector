@@ -1,0 +1,5 @@
+{
+  "name": "{{release}}",
+  "project": "{{project}}",
+  "rulesetName":"{{ref:basic.ruleset.json:name}}"
+}

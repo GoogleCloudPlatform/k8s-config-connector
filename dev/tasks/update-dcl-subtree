@@ -1,0 +1,15 @@
+#!/bin/bash
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+REPO_ROOT=$(git rev-parse --show-toplevel)
+cd ${REPO_ROOT}
+
+git subtree add --prefix=third_party/github.com/GoogleCloudPlatform/declarative-resource-client-library \
+  https://github.com/GoogleCloudPlatform/declarative-resource-client-library v1.62.0 --squash
+
+# In future:
+#git subtree pull --prefix=third_party/github.com/GoogleCloudPlatform/declarative-resource-client-library \
+#  https://github.com/GoogleCloudPlatform/declarative-resource-client-library v1.63.0 --squash

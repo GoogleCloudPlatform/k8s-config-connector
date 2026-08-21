@@ -1,0 +1,20 @@
+label: Config Connector ComputeSSLCertificate
+markdownDescription: Creates yaml for a ComputeSSLCertificate resource
+insertText: |
+  apiVersion: compute.cnrm.cloud.google.com/v1beta1
+  kind: ComputeSSLCertificate
+  metadata:
+    name: \${1:computesslcertificate-name}
+  spec:
+    location: \${2:global}
+    description: \${3:example compute SSL certificate}
+    certificate:
+      valueFrom:
+        secretKeyRef:
+          name: \${4:computesslcertificate-dep}
+          key: \${5:certificate}
+    privateKey:
+      valueFrom:
+        secretKeyRef:
+          name: \${6:computesslcertificate-dep}
+          key: \${7:privateKey}

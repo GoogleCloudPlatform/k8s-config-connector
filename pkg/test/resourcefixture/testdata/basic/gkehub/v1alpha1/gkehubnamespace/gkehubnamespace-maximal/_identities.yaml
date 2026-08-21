@@ -1,0 +1,12 @@
+- caisURL: unknown
+  group: gkehub.cnrm.cloud.google.com
+  kind: GKEHubScope
+  name: gkehubscope-dep-max-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
+- caisURL: //gkehub.googleapis.com/projects/${projectId}/locations/global/scopes/gkehubscope-dep-max-${uniqueId}/namespaces/gkh-ns-max-${uniqueId}
+  group: gkehub.cnrm.cloud.google.com
+  kind: GKEHubNamespace
+  name: gkh-ns-max-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

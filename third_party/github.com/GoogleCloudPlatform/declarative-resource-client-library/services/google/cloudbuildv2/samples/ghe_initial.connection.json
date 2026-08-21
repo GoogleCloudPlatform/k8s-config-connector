@@ -1,0 +1,8 @@
+{
+  "name": "{{connection}}",
+  "githubEnterpriseConfig": {
+    "hostUri": "https://ghe.proctor-staging-test.com"
+  },
+  "project": "{{project}}",
+  "location": "{{region}}"
+}

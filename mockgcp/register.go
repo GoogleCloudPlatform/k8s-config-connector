@@ -1,0 +1,94 @@
+// Copyright 2022 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package mockgcp
+
+import (
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockaccesscontextmanager"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockaiplatform"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockalloydb"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockanalytics"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockapigateway"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockapihub"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockapphub"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockartifactregistry"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockasset"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbackupdr"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbatch"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbigquery"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbigqueryreservation"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbigtable"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbilling"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockbillingbudgets"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcertificatemanager"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockclouddeploy"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockclouddms"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcloudids"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcloudsecuritycompliance"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcloudtalentsolution"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcompute"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockconfig"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcontainer"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockcontaineranalysis"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdatacatalog"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdataflow"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdataform"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdataproc"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdeveloperconnect"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdialogflow"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdiscoveryengine"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdns"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockdocumentai"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockedgecontainer"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockessentialcontacts"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockfilestore"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockfirestore"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgeminidataanalytics"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgkemulticloud"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockhypercomputecluster"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockiam"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockiap"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocklicensemanager"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocklogging"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockmanagedkafka"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockmemcache"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockmemorystore"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockmigrationcenter"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockmonitoring"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknetworkconnectivity"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknetworksecurity"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknetworkservices"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocknotebooks"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockorgpolicy"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockosconfig"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockparametermanager"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockprivateca"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockpubsub"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockrapidmigrationassessment"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockredis"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockresourcemanager"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockrun"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocksecuritycenter"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockservicedirectory"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockservicenetworking"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockserviceusage"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocksourcerepo"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocksql"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockstorage"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mocktpu"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockvideostitcher"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockvision"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockworkflowexecution"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockworkloadmanager"
+)

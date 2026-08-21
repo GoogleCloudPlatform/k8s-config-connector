@@ -1,0 +1,13 @@
+apiVersion: backupdr.cnrm.cloud.google.com/v1alpha1
+kind: BackupDRManagementServer
+metadata:
+  name: backupdrmanagementserver-${uniqueId}
+spec:
+  location: us-east1
+  networks:
+  - networkRef:
+      external: projects/${projectId}/global/networks/${networkID}
+  projectRef:
+    external: ${projectId}
+  resourceID: backupdrmanagementserver-${uniqueId}
+  type: BACKUP_RESTORE

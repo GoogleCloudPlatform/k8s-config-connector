@@ -1,0 +1,15 @@
+apiVersion: networkservices.cnrm.cloud.google.com/v1alpha1
+kind: NetworkServicesWasmPlugin
+metadata:
+  name: wasmplugin-${uniqueId}
+  labels:
+    label-one: "value-one"
+spec:
+  projectRef:
+    external: ${projectId}
+  location: global
+  description: "test description"
+  mainVersionID: "v1"
+  versions:
+    v1:
+      imageURI: "us-docker.pkg.dev/service-extensions-samples/plugins/local-reply:main"

@@ -1,0 +1,12 @@
+- caisURL: //iam.googleapis.com/projects/${projectId}/serviceAccounts/extonly-${uniqueId}
+  group: iam.cnrm.cloud.google.com
+  kind: IAMServiceAccount
+  name: extonly-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: unknown
+  group: iam.cnrm.cloud.google.com
+  kind: IAMPolicyMember
+  name: iamexternalonlyref-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

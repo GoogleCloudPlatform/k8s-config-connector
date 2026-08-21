@@ -1,0 +1,6 @@
+- caisURL: //certificatemanager.googleapis.com/projects/${projectId}/locations/europe-west1/certificates/certificatemanagercertificate${uniqueId}
+  group: certificatemanager.cnrm.cloud.google.com
+  kind: CertificateManagerCertificate
+  name: certificatemanagercertificate-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

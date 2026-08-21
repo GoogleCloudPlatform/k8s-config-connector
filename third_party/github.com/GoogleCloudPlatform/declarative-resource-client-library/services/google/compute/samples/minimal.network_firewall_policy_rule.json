@@ -1,0 +1,15 @@
+{
+  "priority": 9000,
+  "project": "{{project}}",
+  "firewallPolicy": "projects/{{project}}/global/firewallPolicies/{{ref:minimal.network_firewall_policy.json:name}}",
+  "match": {
+    "layer4Configs": [
+      {
+        "ipProtocol": "all"
+      }
+    ],
+    "srcIPRanges": ["10.100.0.2/32"]
+  },
+  "action": "deny",
+  "direction": "INGRESS"
+}

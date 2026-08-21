@@ -1,0 +1,3 @@
+schema:
+- spec.password._validation.oneOf.required[valueFrom].not.required[value]=true
+- spec.password._validation.oneOf.required[value].not.required[valueFrom]=true

@@ -1,0 +1,212 @@
+# Copyright 2024 Google LLC. All Rights Reserved.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+info:
+  title: NetworkSecurity/ClientTlsPolicy
+  description: The NetworkSecurity ClientTlsPolicy resource
+  x-dcl-struct-name: ClientTlsPolicy
+  x-dcl-has-iam: true
+paths:
+  get:
+    description: The function used to get information about a ClientTlsPolicy
+    parameters:
+    - name: clientTlsPolicy
+      required: true
+      description: A full instance of a ClientTlsPolicy
+  apply:
+    description: The function used to apply information about a ClientTlsPolicy
+    parameters:
+    - name: clientTlsPolicy
+      required: true
+      description: A full instance of a ClientTlsPolicy
+  delete:
+    description: The function used to delete a ClientTlsPolicy
+    parameters:
+    - name: clientTlsPolicy
+      required: true
+      description: A full instance of a ClientTlsPolicy
+  deleteAll:
+    description: The function used to delete all ClientTlsPolicy
+    parameters:
+    - name: project
+      required: true
+      schema:
+        type: string
+    - name: location
+      required: true
+      schema:
+        type: string
+  list:
+    description: The function used to list information about many ClientTlsPolicy
+    parameters:
+    - name: project
+      required: true
+      schema:
+        type: string
+    - name: location
+      required: true
+      schema:
+        type: string
+components:
+  schemas:
+    ClientTlsPolicy:
+      title: ClientTlsPolicy
+      x-dcl-id: projects/{{project}}/locations/{{location}}/clientTlsPolicies/{{name}}
+      x-dcl-parent-container: project
+      x-dcl-labels: labels
+      x-dcl-has-create: true
+      x-dcl-has-iam: true
+      x-dcl-read-timeout: 0
+      x-dcl-apply-timeout: 0
+      x-dcl-delete-timeout: 0
+      type: object
+      required:
+      - name
+      - project
+      - location
+      properties:
+        clientCertificate:
+          type: object
+          x-dcl-go-name: ClientCertificate
+          x-dcl-go-type: ClientTlsPolicyClientCertificate
+          description: Optional. Defines a mechanism to provision client identity
+            (public and private keys) for peer to peer authentication. The presence
+            of this dictates mTLS.
+          properties:
+            certificateProviderInstance:
+              type: object
+              x-dcl-go-name: CertificateProviderInstance
+              x-dcl-go-type: ClientTlsPolicyClientCertificateCertificateProviderInstance
+              description: The certificate provider instance specification that will
+                be passed to the data plane, which will be used to load necessary
+                credential information.
+              x-dcl-conflicts:
+              - grpcEndpoint
+              required:
+              - pluginInstance
+              properties:
+                pluginInstance:
+                  type: string
+                  x-dcl-go-name: PluginInstance
+                  description: Required. Plugin instance name, used to locate and
+                    load CertificateProvider instance configuration. Set to "google_cloud_private_spiffe"
+                    to use Certificate Authority Service certificate provider instance.
+            grpcEndpoint:
+              type: object
+              x-dcl-go-name: GrpcEndpoint
+              x-dcl-go-type: ClientTlsPolicyClientCertificateGrpcEndpoint
+              description: gRPC specific configuration to access the gRPC server to
+                obtain the cert and private key.
+              x-dcl-conflicts:
+              - certificateProviderInstance
+              required:
+              - targetUri
+              properties:
+                targetUri:
+                  type: string
+                  x-dcl-go-name: TargetUri
+                  description: Required. The target URI of the gRPC endpoint. Only
+                    UDS path is supported, and should start with “unix:”.
+        createTime:
+          type: string
+          format: date-time
+          x-dcl-go-name: CreateTime
+          readOnly: true
+          description: Output only. The timestamp when the resource was created.
+          x-kubernetes-immutable: true
+        description:
+          type: string
+          x-dcl-go-name: Description
+          description: Optional. Free-text description of the resource.
+        labels:
+          type: object
+          additionalProperties:
+            type: string
+          x-dcl-go-name: Labels
+          description: Optional. Set of label tags associated with the resource.
+        location:
+          type: string
+          x-dcl-go-name: Location
+          description: The location for the resource
+          x-kubernetes-immutable: true
+        name:
+          type: string
+          x-dcl-go-name: Name
+          description: Required. Name of the ClientTlsPolicy resource.
+          x-kubernetes-immutable: true
+        project:
+          type: string
+          x-dcl-go-name: Project
+          description: The project for the resource
+          x-kubernetes-immutable: true
+          x-dcl-references:
+          - resource: Cloudresourcemanager/Project
+            field: name
+            parent: true
+        serverValidationCa:
+          type: array
+          x-dcl-go-name: ServerValidationCa
+          description: Required. Defines the mechanism to obtain the Certificate Authority
+            certificate to validate the server certificate.
+          x-dcl-send-empty: true
+          x-dcl-list-type: list
+          items:
+            type: object
+            x-dcl-go-type: ClientTlsPolicyServerValidationCa
+            properties:
+              certificateProviderInstance:
+                type: object
+                x-dcl-go-name: CertificateProviderInstance
+                x-dcl-go-type: ClientTlsPolicyServerValidationCaCertificateProviderInstance
+                description: The certificate provider instance specification that
+                  will be passed to the data plane, which will be used to load necessary
+                  credential information.
+                x-dcl-conflicts:
+                - grpcEndpoint
+                required:
+                - pluginInstance
+                properties:
+                  pluginInstance:
+                    type: string
+                    x-dcl-go-name: PluginInstance
+                    description: Required. Plugin instance name, used to locate and
+                      load CertificateProvider instance configuration. Set to "google_cloud_private_spiffe"
+                      to use Certificate Authority Service certificate provider instance.
+              grpcEndpoint:
+                type: object
+                x-dcl-go-name: GrpcEndpoint
+                x-dcl-go-type: ClientTlsPolicyServerValidationCaGrpcEndpoint
+                description: gRPC specific configuration to access the gRPC server
+                  to obtain the CA certificate.
+                x-dcl-conflicts:
+                - certificateProviderInstance
+                required:
+                - targetUri
+                properties:
+                  targetUri:
+                    type: string
+                    x-dcl-go-name: TargetUri
+                    description: Required. The target URI of the gRPC endpoint. Only
+                      UDS path is supported, and should start with “unix:”.
+        sni:
+          type: string
+          x-dcl-go-name: Sni
+          description: 'Optional. Server Name Indication string to present to the
+            server during TLS handshake. E.g: "secure.example.com".'
+        updateTime:
+          type: string
+          format: date-time
+          x-dcl-go-name: UpdateTime
+          readOnly: true
+          description: Output only. The timestamp when the resource was updated.
+          x-kubernetes-immutable: true

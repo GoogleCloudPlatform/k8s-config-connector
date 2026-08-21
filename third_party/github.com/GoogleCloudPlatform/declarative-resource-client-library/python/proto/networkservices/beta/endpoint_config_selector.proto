@@ -1,0 +1,99 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+enum NetworkservicesBetaEndpointConfigSelectorTypeEnum {
+  NetworkservicesBetaEndpointConfigSelectorTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  NetworkservicesBetaEndpointConfigSelectorTypeEnumENDPOINT_CONFIG_SELECTOR_TYPE_UNSPECIFIED = 1;
+  NetworkservicesBetaEndpointConfigSelectorTypeEnumSIDECAR_PROXY = 2;
+  NetworkservicesBetaEndpointConfigSelectorTypeEnumGRPC_SERVER = 3;
+}
+
+enum NetworkservicesBetaEndpointConfigSelectorEndpointMatcherMetadataLabelMatcherMetadataLabelMatchCriteriaEnum {
+  NetworkservicesBetaEndpointConfigSelectorEndpointMatcherMetadataLabelMatcherMetadataLabelMatchCriteriaEnumNO_VALUE_DO_NOT_USE = 0;
+  NetworkservicesBetaEndpointConfigSelectorEndpointMatcherMetadataLabelMatcherMetadataLabelMatchCriteriaEnumMETADATA_LABEL_MATCH_CRITERIA_UNSPECIFIED = 1;
+  NetworkservicesBetaEndpointConfigSelectorEndpointMatcherMetadataLabelMatcherMetadataLabelMatchCriteriaEnumMATCH_ANY = 2;
+  NetworkservicesBetaEndpointConfigSelectorEndpointMatcherMetadataLabelMatcherMetadataLabelMatchCriteriaEnumMATCH_ALL = 3;
+}
+
+message NetworkservicesBetaEndpointConfigSelector {
+  string name = 1;
+  string create_time = 2;
+  string update_time = 3;
+  map<string, string> labels = 4;
+  NetworkservicesBetaEndpointConfigSelectorTypeEnum type = 5;
+  string authorization_policy = 6;
+  NetworkservicesBetaEndpointConfigSelectorHttpFilters http_filters = 7;
+  NetworkservicesBetaEndpointConfigSelectorEndpointMatcher endpoint_matcher = 8;
+  NetworkservicesBetaEndpointConfigSelectorTrafficPortSelector traffic_port_selector = 9;
+  string description = 10;
+  string server_tls_policy = 11;
+  string client_tls_policy = 12;
+  string project = 13;
+  string location = 14;
+}
+
+message NetworkservicesBetaEndpointConfigSelectorHttpFilters {
+  repeated string http_filters = 1;
+}
+
+message NetworkservicesBetaEndpointConfigSelectorEndpointMatcher {
+  NetworkservicesBetaEndpointConfigSelectorEndpointMatcherMetadataLabelMatcher metadata_label_matcher = 1;
+}
+
+message NetworkservicesBetaEndpointConfigSelectorEndpointMatcherMetadataLabelMatcher {
+  NetworkservicesBetaEndpointConfigSelectorEndpointMatcherMetadataLabelMatcherMetadataLabelMatchCriteriaEnum metadata_label_match_criteria = 1;
+  repeated NetworkservicesBetaEndpointConfigSelectorEndpointMatcherMetadataLabelMatcherMetadataLabels metadata_labels = 2;
+}
+
+message NetworkservicesBetaEndpointConfigSelectorEndpointMatcherMetadataLabelMatcherMetadataLabels {
+  string label_name = 1;
+  string label_value = 2;
+}
+
+message NetworkservicesBetaEndpointConfigSelectorTrafficPortSelector {
+  repeated string ports = 1;
+}
+
+message ApplyNetworkservicesBetaEndpointConfigSelectorRequest {
+  NetworkservicesBetaEndpointConfigSelector resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteNetworkservicesBetaEndpointConfigSelectorRequest {
+  string service_account_file = 1;
+  NetworkservicesBetaEndpointConfigSelector resource = 2;
+}
+
+message ListNetworkservicesBetaEndpointConfigSelectorRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListNetworkservicesBetaEndpointConfigSelectorResponse {
+  repeated NetworkservicesBetaEndpointConfigSelector items = 1;
+}
+
+service NetworkservicesBetaEndpointConfigSelectorService {
+  rpc ApplyNetworkservicesBetaEndpointConfigSelector(ApplyNetworkservicesBetaEndpointConfigSelectorRequest) returns (NetworkservicesBetaEndpointConfigSelector);
+  rpc DeleteNetworkservicesBetaEndpointConfigSelector(DeleteNetworkservicesBetaEndpointConfigSelectorRequest) returns (google.protobuf.Empty);
+  rpc ListNetworkservicesBetaEndpointConfigSelector(ListNetworkservicesBetaEndpointConfigSelectorRequest) returns (ListNetworkservicesBetaEndpointConfigSelectorResponse);
+}

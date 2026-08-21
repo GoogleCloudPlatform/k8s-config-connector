@@ -1,0 +1,134 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum ComputeAlphaInterconnectLinkTypeEnum {
+  ComputeAlphaInterconnectLinkTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeAlphaInterconnectLinkTypeEnumLINK_TYPE_ETHERNET_10G_LR = 1;
+  ComputeAlphaInterconnectLinkTypeEnumLINK_TYPE_ETHERNET_100G_LR = 2;
+}
+
+enum ComputeAlphaInterconnectInterconnectTypeEnum {
+  ComputeAlphaInterconnectInterconnectTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeAlphaInterconnectInterconnectTypeEnumIT_PRIVATE = 1;
+  ComputeAlphaInterconnectInterconnectTypeEnumPARTNER = 2;
+  ComputeAlphaInterconnectInterconnectTypeEnumDEDICATED = 3;
+}
+
+enum ComputeAlphaInterconnectOperationalStatusEnum {
+  ComputeAlphaInterconnectOperationalStatusEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeAlphaInterconnectOperationalStatusEnumOS_ACTIVE = 1;
+  ComputeAlphaInterconnectOperationalStatusEnumOS_UNPROVISIONED = 2;
+  ComputeAlphaInterconnectOperationalStatusEnumOS_UNDER_MAINTENANCE = 3;
+}
+
+enum ComputeAlphaInterconnectExpectedOutagesSourceEnum {
+  ComputeAlphaInterconnectExpectedOutagesSourceEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeAlphaInterconnectExpectedOutagesSourceEnumGOOGLE = 1;
+}
+
+enum ComputeAlphaInterconnectExpectedOutagesStateEnum {
+  ComputeAlphaInterconnectExpectedOutagesStateEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeAlphaInterconnectExpectedOutagesStateEnumACTIVE = 1;
+  ComputeAlphaInterconnectExpectedOutagesStateEnumCANCELLED = 2;
+}
+
+enum ComputeAlphaInterconnectExpectedOutagesIssueTypeEnum {
+  ComputeAlphaInterconnectExpectedOutagesIssueTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeAlphaInterconnectExpectedOutagesIssueTypeEnumOUTAGE = 1;
+  ComputeAlphaInterconnectExpectedOutagesIssueTypeEnumPARTIAL_OUTAGE = 2;
+}
+
+enum ComputeAlphaInterconnectStateEnum {
+  ComputeAlphaInterconnectStateEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeAlphaInterconnectStateEnumDEPRECATED = 1;
+  ComputeAlphaInterconnectStateEnumOBSOLETE = 2;
+  ComputeAlphaInterconnectStateEnumDELETED = 3;
+  ComputeAlphaInterconnectStateEnumACTIVE = 4;
+}
+
+message ComputeAlphaInterconnect {
+  string description = 1;
+  string self_link = 2;
+  int64 id = 3;
+  string name = 4;
+  string location = 5;
+  ComputeAlphaInterconnectLinkTypeEnum link_type = 6;
+  int64 requested_link_count = 7;
+  ComputeAlphaInterconnectInterconnectTypeEnum interconnect_type = 8;
+  bool admin_enabled = 9;
+  string noc_contact_email = 10;
+  string customer_name = 11;
+  ComputeAlphaInterconnectOperationalStatusEnum operational_status = 12;
+  int64 provisioned_link_count = 13;
+  repeated string interconnect_attachments = 14;
+  string peer_ip_address = 15;
+  string google_ip_address = 16;
+  string google_reference_id = 17;
+  repeated ComputeAlphaInterconnectExpectedOutages expected_outages = 18;
+  repeated ComputeAlphaInterconnectCircuitInfos circuit_infos = 19;
+  ComputeAlphaInterconnectStateEnum state = 20;
+  string project = 21;
+}
+
+message ComputeAlphaInterconnectExpectedOutages {
+  string name = 1;
+  string description = 2;
+  ComputeAlphaInterconnectExpectedOutagesSourceEnum source = 3;
+  ComputeAlphaInterconnectExpectedOutagesStateEnum state = 4;
+  ComputeAlphaInterconnectExpectedOutagesIssueTypeEnum issue_type = 5;
+  repeated string affected_circuits = 6;
+  int64 start_time = 7;
+  int64 end_time = 8;
+}
+
+message ComputeAlphaInterconnectCircuitInfos {
+  string google_circuit_id = 1;
+  string google_demarc_id = 2;
+  string customer_demarc_id = 3;
+}
+
+message ApplyComputeAlphaInterconnectRequest {
+  ComputeAlphaInterconnect resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteComputeAlphaInterconnectRequest {
+  string service_account_file = 1;
+  ComputeAlphaInterconnect resource = 2;
+}
+
+message ListComputeAlphaInterconnectRequest {
+  string service_account_file = 1;
+  string Project = 2;
+}
+
+message ListComputeAlphaInterconnectResponse {
+  repeated ComputeAlphaInterconnect items = 1;
+}
+
+service ComputeAlphaInterconnectService {
+  rpc ApplyComputeAlphaInterconnect(ApplyComputeAlphaInterconnectRequest) returns (ComputeAlphaInterconnect);
+  rpc DeleteComputeAlphaInterconnect(DeleteComputeAlphaInterconnectRequest) returns (google.protobuf.Empty);
+  rpc ListComputeAlphaInterconnect(ListComputeAlphaInterconnectRequest) returns (ListComputeAlphaInterconnectResponse);
+}

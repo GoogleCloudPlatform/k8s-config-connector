@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: tags.cnrm.cloud.google.com
+  kind: TagsTagKey
+  name: tagstagkey-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

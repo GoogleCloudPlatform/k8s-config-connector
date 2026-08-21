@@ -1,0 +1,135 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum GkehubAlphaMembershipStateCodeEnum {
+  GkehubAlphaMembershipStateCodeEnumNO_VALUE_DO_NOT_USE = 0;
+  GkehubAlphaMembershipStateCodeEnumCODE_UNSPECIFIED = 1;
+  GkehubAlphaMembershipStateCodeEnumCREATING = 2;
+  GkehubAlphaMembershipStateCodeEnumREADY = 3;
+  GkehubAlphaMembershipStateCodeEnumDELETING = 4;
+  GkehubAlphaMembershipStateCodeEnumUPDATING = 5;
+  GkehubAlphaMembershipStateCodeEnumSERVICE_UPDATING = 6;
+}
+
+enum GkehubAlphaMembershipInfrastructureTypeEnum {
+  GkehubAlphaMembershipInfrastructureTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  GkehubAlphaMembershipInfrastructureTypeEnumINFRASTRUCTURE_TYPE_UNSPECIFIED = 1;
+  GkehubAlphaMembershipInfrastructureTypeEnumON_PREM = 2;
+  GkehubAlphaMembershipInfrastructureTypeEnumMULTI_CLOUD = 3;
+}
+
+message GkehubAlphaMembership {
+  GkehubAlphaMembershipEndpoint endpoint = 1;
+  string name = 2;
+  map<string, string> labels = 3;
+  string description = 4;
+  GkehubAlphaMembershipState state = 5;
+  string create_time = 6;
+  string update_time = 7;
+  string delete_time = 8;
+  string external_id = 9;
+  string last_connection_time = 10;
+  string unique_id = 11;
+  GkehubAlphaMembershipAuthority authority = 12;
+  GkehubAlphaMembershipInfrastructureTypeEnum infrastructure_type = 13;
+  string project = 14;
+  string location = 15;
+}
+
+message GkehubAlphaMembershipEndpoint {
+  GkehubAlphaMembershipEndpointGkeCluster gke_cluster = 1;
+  GkehubAlphaMembershipEndpointKubernetesMetadata kubernetes_metadata = 2;
+  GkehubAlphaMembershipEndpointKubernetesResource kubernetes_resource = 3;
+}
+
+message GkehubAlphaMembershipEndpointGkeCluster {
+  string resource_link = 1;
+}
+
+message GkehubAlphaMembershipEndpointKubernetesMetadata {
+  string kubernetes_api_server_version = 1;
+  string node_provider_id = 2;
+  int64 node_count = 3;
+  int64 vcpu_count = 4;
+  int64 memory_mb = 5;
+  string update_time = 6;
+}
+
+message GkehubAlphaMembershipEndpointKubernetesResource {
+  string membership_cr_manifest = 1;
+  repeated GkehubAlphaMembershipEndpointKubernetesResourceMembershipResources membership_resources = 2;
+  repeated GkehubAlphaMembershipEndpointKubernetesResourceConnectResources connect_resources = 3;
+  GkehubAlphaMembershipEndpointKubernetesResourceResourceOptions resource_options = 4;
+}
+
+message GkehubAlphaMembershipEndpointKubernetesResourceMembershipResources {
+  string manifest = 1;
+  bool cluster_scoped = 2;
+}
+
+message GkehubAlphaMembershipEndpointKubernetesResourceConnectResources {
+  string manifest = 1;
+  bool cluster_scoped = 2;
+}
+
+message GkehubAlphaMembershipEndpointKubernetesResourceResourceOptions {
+  string connect_version = 1;
+  bool v1beta1_crd = 2;
+}
+
+message GkehubAlphaMembershipState {
+  GkehubAlphaMembershipStateCodeEnum code = 1;
+}
+
+message GkehubAlphaMembershipAuthority {
+  string issuer = 1;
+  string workload_identity_pool = 2;
+  string identity_provider = 3;
+}
+
+message ApplyGkehubAlphaMembershipRequest {
+  GkehubAlphaMembership resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteGkehubAlphaMembershipRequest {
+  string service_account_file = 1;
+  GkehubAlphaMembership resource = 2;
+}
+
+message ListGkehubAlphaMembershipRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListGkehubAlphaMembershipResponse {
+  repeated GkehubAlphaMembership items = 1;
+}
+
+service GkehubAlphaMembershipService {
+  rpc ApplyGkehubAlphaMembership(ApplyGkehubAlphaMembershipRequest) returns (GkehubAlphaMembership);
+  rpc DeleteGkehubAlphaMembership(DeleteGkehubAlphaMembershipRequest) returns (google.protobuf.Empty);
+  rpc ListGkehubAlphaMembership(ListGkehubAlphaMembershipRequest) returns (ListGkehubAlphaMembershipResponse);
+}

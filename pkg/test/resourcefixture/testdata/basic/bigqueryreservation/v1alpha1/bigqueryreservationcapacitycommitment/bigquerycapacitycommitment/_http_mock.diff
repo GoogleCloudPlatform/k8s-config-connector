@@ -1,0 +1,93 @@
+1c1
+< GET https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west2/capacityCommitments/bqcc-${uniqueId}?alt=json
+---
+> GET https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west2/capacityCommitments/bqcc-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+24c24
+< POST https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west2/capacityCommitments?alt=json&capacityCommitmentId=bqcc-${uniqueId}
+---
+> POST https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west2/capacityCommitments?%24alt=json%3Benum-encoding%3Dint&capacityCommitmentId=bqcc-${uniqueId}&enforceSingleAdminProjectPerOrg=true
+28,30c28,30
+<   "edition": "STANDARD",
+<   "plan": "FLEX",
+<   "slotCount": 100
+---
+>   "edition": 1,
+>   "plan": 3,
+>   "slotCount": "100"
+46c46
+<   "edition": "STANDARD",
+---
+>   "edition": 1,
+48c48
+<   "plan": "FLEX",
+---
+>   "plan": 3,
+50c50
+<   "state": "ACTIVE"
+---
+>   "state": 2
+55c55
+< GET https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west2/capacityCommitments/bqcc-${uniqueId}?alt=json
+---
+> GET https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west2/capacityCommitments/bqcc-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+71c71
+<   "edition": "STANDARD",
+---
+>   "edition": 1,
+73c73
+<   "plan": "FLEX",
+---
+>   "plan": 3,
+75c75
+<   "state": "ACTIVE"
+---
+>   "state": 2
+80c80
+< PATCH https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west2/capacityCommitments/bqcc-${uniqueId}?alt=json&updateMask=renewalPlan
+---
+> PATCH https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west2/capacityCommitments/bqcc-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=renewalPlan
+84,85c84,88
+<   "plan": "FLEX",
+<   "renewalPlan": "FLEX"
+---
+>   "edition": 1,
+>   "name": "projects/${projectId}/locations/us-west2/capacityCommitments/bqcc-${uniqueId}",
+>   "plan": 3,
+>   "renewalPlan": 3,
+>   "slotCount": "100"
+101c104
+<   "edition": "STANDARD",
+---
+>   "edition": 1,
+103,104c106,107
+<   "plan": "FLEX",
+<   "renewalPlan": "FLEX",
+---
+>   "plan": 3,
+>   "renewalPlan": 3,
+106c109
+<   "state": "ACTIVE"
+---
+>   "state": 2
+111c114
+< GET https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west2/capacityCommitments/bqcc-${uniqueId}?alt=json
+---
+> GET https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west2/capacityCommitments/bqcc-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+127c130
+<   "edition": "STANDARD",
+---
+>   "edition": 1,
+129,130c132,133
+<   "plan": "FLEX",
+<   "renewalPlan": "FLEX",
+---
+>   "plan": 3,
+>   "renewalPlan": 3,
+132c135
+<   "state": "ACTIVE"
+---
+>   "state": 2
+137c140
+< DELETE https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west2/capacityCommitments/bqcc-${uniqueId}?alt=json
+---
+> DELETE https://bigqueryreservation.googleapis.com/v1/projects/${projectId}/locations/us-west2/capacityCommitments/bqcc-${uniqueId}?%24alt=json%3Benum-encoding%3Dint

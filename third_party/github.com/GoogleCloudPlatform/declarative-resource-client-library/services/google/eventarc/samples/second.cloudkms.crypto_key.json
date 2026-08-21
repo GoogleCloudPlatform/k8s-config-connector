@@ -1,0 +1,7 @@
+{
+  "name": "test-key-2",
+  "project": "{{project}}",
+  "location": "{{region}}",
+  "keyRing": "{{ref:minimal.cloudkms.key_ring.json:name}}",
+  "purpose": "ENCRYPT_DECRYPT"
+}

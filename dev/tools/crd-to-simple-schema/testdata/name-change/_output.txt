@@ -1,0 +1,9 @@
+names:
+- spec.names.plural=testresources
++ spec.names.plural=testresourcesnew
+- spec.names.singular=testresource
++ spec.names.singular=testresourcenew
+- spec.names.kind=TestResource
++ spec.names.kind=TestResourceNew
+- spec.names.shortNames.del
++ spec.names.shortNames.new

@@ -1,0 +1,11 @@
+{
+  "name": "{{job}}",
+  "description": "A sample job with pubsub target - update_1.",
+  "project": "{{project}}",
+  "location": "{{region}}",
+  "schedule": "every 5 minutes",
+  "pubsubTarget": {
+    "topicName": "projects/{{project}}/topics/{{ref:pubsub.pubsub.topic.json:name}}",
+    "data": "dXBkYXRlXzEK"
+  }
+}

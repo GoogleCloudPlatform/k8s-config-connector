@@ -1,0 +1,871 @@
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+version: 2
+interactions:
+  - id: 0
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: identitytoolkit.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://identitytoolkit.googleapis.com/admin/v2/projects/kcc-identity-platform/oauthIdpConfigs/oidc.oauth-idp-config-h1upm0cd3ajj?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+        Expires:
+          - Mon, 01 Jan 1990 00:00:00 GMT
+        Pragma:
+          - no-cache
+      status: 404 Not Found
+      code: 404
+      duration: 159.161133ms
+  - id: 1
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: identitytoolkit.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://identitytoolkit.googleapis.com/admin/v2/projects/kcc-identity-platform/oauthIdpConfigs/oidc.oauth-idp-config-h1upm0cd3ajj?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+        Expires:
+          - Mon, 01 Jan 1990 00:00:00 GMT
+        Pragma:
+          - no-cache
+      status: 404 Not Found
+      code: 404
+      duration: 145.196792ms
+  - id: 2
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: identitytoolkit.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://identitytoolkit.googleapis.com/admin/v2/projects/kcc-identity-platform/oauthIdpConfigs/oidc.oauth-idp-config-h1upm0cd3ajj?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+        Expires:
+          - Mon, 01 Jan 1990 00:00:00 GMT
+        Pragma:
+          - no-cache
+      status: 404 Not Found
+      code: 404
+      duration: 106.889656ms
+  - id: 3
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 119
+      transfer_encoding: []
+      trailer: {}
+      host: identitytoolkit.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: '{"clientId":"client-id","clientSecret":"secret","displayName":"test oauth idp config","enabled":true,"issuer":"issuer"}'
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://identitytoolkit.googleapis.com/admin/v2/projects/kcc-identity-platform/oauthIdpConfigs?alt=json&oauthIdpConfigId=oidc.oauth-idp-config-h1upm0cd3ajj
+      method: POST
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/746524917084/oauthIdpConfigs/oidc.oauth-idp-config-h1upm0cd3ajj",
+          "clientId": "client-id",
+          "issuer": "issuer",
+          "displayName": "test oauth idp config",
+          "enabled": true,
+          "clientSecret": "secret",
+          "responseType": {
+            "idToken": true
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+        Expires:
+          - Mon, 01 Jan 1990 00:00:00 GMT
+        Pragma:
+          - no-cache
+      status: 200 OK
+      code: 200
+      duration: 329.255594ms
+  - id: 4
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: identitytoolkit.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://identitytoolkit.googleapis.com/admin/v2/projects/kcc-identity-platform/oauthIdpConfigs/oidc.oauth-idp-config-h1upm0cd3ajj?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/746524917084/oauthIdpConfigs/oidc.oauth-idp-config-h1upm0cd3ajj",
+          "clientId": "client-id",
+          "issuer": "issuer",
+          "displayName": "test oauth idp config",
+          "enabled": true,
+          "clientSecret": "secret",
+          "responseType": {
+            "idToken": true
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+        Expires:
+          - Mon, 01 Jan 1990 00:00:00 GMT
+        Pragma:
+          - no-cache
+      status: 200 OK
+      code: 200
+      duration: 95.619071ms
+  - id: 5
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: identitytoolkit.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://identitytoolkit.googleapis.com/admin/v2/projects/kcc-identity-platform/oauthIdpConfigs/oidc.oauth-idp-config-h1upm0cd3ajj?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/746524917084/oauthIdpConfigs/oidc.oauth-idp-config-h1upm0cd3ajj",
+          "clientId": "client-id",
+          "issuer": "issuer",
+          "displayName": "test oauth idp config",
+          "enabled": true,
+          "clientSecret": "secret",
+          "responseType": {
+            "idToken": true
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+        Expires:
+          - Mon, 01 Jan 1990 00:00:00 GMT
+        Pragma:
+          - no-cache
+      status: 200 OK
+      code: 200
+      duration: 105.886698ms
+  - id: 6
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: identitytoolkit.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://identitytoolkit.googleapis.com/admin/v2/projects/kcc-identity-platform/oauthIdpConfigs/oidc.oauth-idp-config-h1upm0cd3ajj?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/746524917084/oauthIdpConfigs/oidc.oauth-idp-config-h1upm0cd3ajj",
+          "clientId": "client-id",
+          "issuer": "issuer",
+          "displayName": "test oauth idp config",
+          "enabled": true,
+          "clientSecret": "secret",
+          "responseType": {
+            "idToken": true
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+        Expires:
+          - Mon, 01 Jan 1990 00:00:00 GMT
+        Pragma:
+          - no-cache
+      status: 200 OK
+      code: 200
+      duration: 109.616511ms
+  - id: 7
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: identitytoolkit.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://identitytoolkit.googleapis.com/admin/v2/projects/kcc-identity-platform/oauthIdpConfigs/oidc.oauth-idp-config-h1upm0cd3ajj?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/746524917084/oauthIdpConfigs/oidc.oauth-idp-config-h1upm0cd3ajj",
+          "clientId": "client-id",
+          "issuer": "issuer",
+          "displayName": "test oauth idp config",
+          "enabled": true,
+          "clientSecret": "secret",
+          "responseType": {
+            "idToken": true
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+        Expires:
+          - Mon, 01 Jan 1990 00:00:00 GMT
+        Pragma:
+          - no-cache
+      status: 200 OK
+      code: 200
+      duration: 75.469511ms
+  - id: 8
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: identitytoolkit.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://identitytoolkit.googleapis.com/admin/v2/projects/kcc-identity-platform/oauthIdpConfigs/oidc.oauth-idp-config-h1upm0cd3ajj?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/746524917084/oauthIdpConfigs/oidc.oauth-idp-config-h1upm0cd3ajj",
+          "clientId": "client-id",
+          "issuer": "issuer",
+          "displayName": "test oauth idp config",
+          "enabled": true,
+          "clientSecret": "secret",
+          "responseType": {
+            "idToken": true
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+        Expires:
+          - Mon, 01 Jan 1990 00:00:00 GMT
+        Pragma:
+          - no-cache
+      status: 200 OK
+      code: 200
+      duration: 149.79331ms
+  - id: 9
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: identitytoolkit.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://identitytoolkit.googleapis.com/admin/v2/projects/kcc-identity-platform/oauthIdpConfigs/oidc.oauth-idp-config-h1upm0cd3ajj?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/746524917084/oauthIdpConfigs/oidc.oauth-idp-config-h1upm0cd3ajj",
+          "clientId": "client-id",
+          "issuer": "issuer",
+          "displayName": "test oauth idp config",
+          "enabled": true,
+          "clientSecret": "secret",
+          "responseType": {
+            "idToken": true
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+        Expires:
+          - Mon, 01 Jan 1990 00:00:00 GMT
+        Pragma:
+          - no-cache
+      status: 200 OK
+      code: 200
+      duration: 109.068147ms
+  - id: 10
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: identitytoolkit.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://identitytoolkit.googleapis.com/admin/v2/projects/kcc-identity-platform/oauthIdpConfigs/oidc.oauth-idp-config-h1upm0cd3ajj?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/746524917084/oauthIdpConfigs/oidc.oauth-idp-config-h1upm0cd3ajj",
+          "clientId": "client-id",
+          "issuer": "issuer",
+          "displayName": "test oauth idp config",
+          "enabled": true,
+          "clientSecret": "secret",
+          "responseType": {
+            "idToken": true
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+        Expires:
+          - Mon, 01 Jan 1990 00:00:00 GMT
+        Pragma:
+          - no-cache
+      status: 200 OK
+      code: 200
+      duration: 106.297425ms
+  - id: 11
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: identitytoolkit.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://identitytoolkit.googleapis.com/admin/v2/projects/kcc-identity-platform/oauthIdpConfigs/oidc.oauth-idp-config-h1upm0cd3ajj?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/746524917084/oauthIdpConfigs/oidc.oauth-idp-config-h1upm0cd3ajj",
+          "clientId": "client-id",
+          "issuer": "issuer",
+          "displayName": "test oauth idp config",
+          "enabled": true,
+          "clientSecret": "secret",
+          "responseType": {
+            "idToken": true
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+        Expires:
+          - Mon, 01 Jan 1990 00:00:00 GMT
+        Pragma:
+          - no-cache
+      status: 200 OK
+      code: 200
+      duration: 110.272238ms
+  - id: 12
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: identitytoolkit.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://identitytoolkit.googleapis.com/admin/v2/projects/kcc-identity-platform/oauthIdpConfigs/oidc.oauth-idp-config-h1upm0cd3ajj?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/746524917084/oauthIdpConfigs/oidc.oauth-idp-config-h1upm0cd3ajj",
+          "clientId": "client-id",
+          "issuer": "issuer",
+          "displayName": "test oauth idp config",
+          "enabled": true,
+          "clientSecret": "secret",
+          "responseType": {
+            "idToken": true
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+        Expires:
+          - Mon, 01 Jan 1990 00:00:00 GMT
+        Pragma:
+          - no-cache
+      status: 200 OK
+      code: 200
+      duration: 126.27187ms
+  - id: 13
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 154
+      transfer_encoding: []
+      trailer: {}
+      host: identitytoolkit.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: '{"clientId":"client-id","clientSecret":"secret1","displayName":"test oauth idp config","enabled":false,"issuer":"issuer1","responseType":{"idToken":true}}'
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://identitytoolkit.googleapis.com/admin/v2/projects/kcc-identity-platform/oauthIdpConfigs/oidc.oauth-idp-config-h1upm0cd3ajj?alt=json
+      method: PATCH
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/746524917084/oauthIdpConfigs/oidc.oauth-idp-config-h1upm0cd3ajj",
+          "clientId": "client-id",
+          "issuer": "issuer1",
+          "displayName": "test oauth idp config",
+          "clientSecret": "secret1",
+          "responseType": {
+            "idToken": true
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+        Expires:
+          - Mon, 01 Jan 1990 00:00:00 GMT
+        Pragma:
+          - no-cache
+      status: 200 OK
+      code: 200
+      duration: 334.740099ms
+  - id: 14
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: identitytoolkit.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://identitytoolkit.googleapis.com/admin/v2/projects/kcc-identity-platform/oauthIdpConfigs/oidc.oauth-idp-config-h1upm0cd3ajj?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/746524917084/oauthIdpConfigs/oidc.oauth-idp-config-h1upm0cd3ajj",
+          "clientId": "client-id",
+          "issuer": "issuer1",
+          "displayName": "test oauth idp config",
+          "clientSecret": "secret1",
+          "responseType": {
+            "idToken": true
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+        Expires:
+          - Mon, 01 Jan 1990 00:00:00 GMT
+        Pragma:
+          - no-cache
+      status: 200 OK
+      code: 200
+      duration: 95.762229ms
+  - id: 15
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: identitytoolkit.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://identitytoolkit.googleapis.com/admin/v2/projects/kcc-identity-platform/oauthIdpConfigs/oidc.oauth-idp-config-h1upm0cd3ajj?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/746524917084/oauthIdpConfigs/oidc.oauth-idp-config-h1upm0cd3ajj",
+          "clientId": "client-id",
+          "issuer": "issuer1",
+          "displayName": "test oauth idp config",
+          "clientSecret": "secret1",
+          "responseType": {
+            "idToken": true
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+        Expires:
+          - Mon, 01 Jan 1990 00:00:00 GMT
+        Pragma:
+          - no-cache
+      status: 200 OK
+      code: 200
+      duration: 98.683365ms
+  - id: 16
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: identitytoolkit.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://identitytoolkit.googleapis.com/admin/v2/projects/kcc-identity-platform/oauthIdpConfigs/oidc.oauth-idp-config-h1upm0cd3ajj?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/746524917084/oauthIdpConfigs/oidc.oauth-idp-config-h1upm0cd3ajj",
+          "clientId": "client-id",
+          "issuer": "issuer1",
+          "displayName": "test oauth idp config",
+          "clientSecret": "secret1",
+          "responseType": {
+            "idToken": true
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+        Expires:
+          - Mon, 01 Jan 1990 00:00:00 GMT
+        Pragma:
+          - no-cache
+      status: 200 OK
+      code: 200
+      duration: 95.211605ms
+  - id: 17
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: identitytoolkit.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://identitytoolkit.googleapis.com/admin/v2/projects/kcc-identity-platform/oauthIdpConfigs/oidc.oauth-idp-config-h1upm0cd3ajj?alt=json
+      method: DELETE
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {}
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+        Expires:
+          - Mon, 01 Jan 1990 00:00:00 GMT
+        Pragma:
+          - no-cache
+      status: 200 OK
+      code: 200
+      duration: 332.102499ms
+  - id: 18
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: identitytoolkit.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://identitytoolkit.googleapis.com/admin/v2/projects/kcc-identity-platform/oauthIdpConfigs/oidc.oauth-idp-config-h1upm0cd3ajj?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+        Expires:
+          - Mon, 01 Jan 1990 00:00:00 GMT
+        Pragma:
+          - no-cache
+      status: 404 Not Found
+      code: 404
+      duration: 126.709724ms

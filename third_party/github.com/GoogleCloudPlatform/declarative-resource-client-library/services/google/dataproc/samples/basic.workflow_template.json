@@ -1,0 +1,55 @@
+{
+  "name": "{{template_name}}",
+  "location": "{{region}}",
+  "placement": {
+    "managedCluster": {
+      "clusterName": "prefix",
+      "config": {
+        "gceClusterConfig": {
+          "zone": "{{zone}}",
+          "tags": ["foo", "bar"]
+        },
+        "masterConfig": {
+          "numInstances": 1,
+          "machineType": "n1-standard-4",
+          "diskConfig": {
+            "bootDiskType": "pd-ssd",
+            "bootDiskSizeGb": 15
+          }
+        },
+        "workerConfig": {
+          "numInstances": 2,
+          "machineType": "n1-standard-4",
+          "minCpuPlatform": "Intel Skylake",
+          "diskConfig": {
+            "bootDiskSizeGb": 15,
+            "numLocalSsds": 1
+          }
+        },
+        "secondaryWorkerConfig": {
+          "numInstances": 1
+        },
+        "softwareConfig": {
+          "imageVersion": "2.0.27-debian10"
+        },
+        "stagingBucket": ""
+      }
+    }
+  },
+  "jobs": [
+    {
+      "stepId": "someJob",
+      "sparkJob": {
+        "mainClass": "SomeClass"
+      }
+    },
+    {
+      "stepId": "otherJob",
+      "prerequisiteStepIds": ["someJob"],
+      "prestoJob": {
+        "queryFileUri": "someUriThatWontBeValidated"
+      }
+    }
+  ],
+  "project": "{{project}}"
+}

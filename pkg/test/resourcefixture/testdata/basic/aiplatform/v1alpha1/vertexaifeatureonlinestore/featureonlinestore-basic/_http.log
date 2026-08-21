@@ -1,0 +1,322 @@
+GRPC /google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService/GetFeatureOnlineStore
+
+{
+  "name": "projects/${projectId}/locations/us-central1/featureOnlineStores/featureonlinestore-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = The FeatureOnlineStore "projects/${projectId}/locations/us-central1/featureOnlineStores/featureonlinestore-${uniqueId}" does not exist.
+
+{}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService/CreateFeatureOnlineStore
+
+{
+  "featureOnlineStore": {
+    "bigtable": {
+      "autoScaling": {
+        "cpuUtilizationTarget": 50,
+        "maxNodeCount": 2,
+        "minNodeCount": 1
+      }
+    },
+    "labels": {
+      "foo": "bar"
+    }
+  },
+  "featureOnlineStoreId": "featureonlinestore-${uniqueId}",
+  "parent": "projects/${projectId}/locations/us-central1"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.CreateFeatureOnlineStoreOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/featureOnlineStores/featureonlinestore-${uniqueId}/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/featureOnlineStores/featureonlinestore-${uniqueId}/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.CreateFeatureOnlineStoreOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/featureOnlineStores/featureonlinestore-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.FeatureOnlineStore",
+    "bigtable": {
+      "autoScaling": {
+        "cpuUtilizationTarget": 50,
+        "maxNodeCount": 2,
+        "minNodeCount": 1
+      }
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "etag": "abcdef0123A=",
+    "labels": {
+      "foo": "bar"
+    },
+    "name": "projects/${projectNumber}/locations/us-central1/featureOnlineStores/featureonlinestore-${uniqueId}",
+    "state": "STABLE",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService/GetFeatureOnlineStore
+
+{
+  "name": "projects/${projectId}/locations/us-central1/featureOnlineStores/featureonlinestore-${uniqueId}"
+}
+
+OK
+
+{
+  "bigtable": {
+    "autoScaling": {
+      "cpuUtilizationTarget": 50,
+      "maxNodeCount": 2,
+      "minNodeCount": 1
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "foo": "bar"
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/featureOnlineStores/featureonlinestore-${uniqueId}",
+  "state": "STABLE",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService/GetFeatureOnlineStore
+
+{
+  "name": "projects/${projectId}/locations/us-central1/featureOnlineStores/featureonlinestore-${uniqueId}"
+}
+
+OK
+
+{
+  "bigtable": {
+    "autoScaling": {
+      "cpuUtilizationTarget": 50,
+      "maxNodeCount": 2,
+      "minNodeCount": 1
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "foo": "bar"
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/featureOnlineStores/featureonlinestore-${uniqueId}",
+  "state": "STABLE",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService/UpdateFeatureOnlineStore
+
+{
+  "featureOnlineStore": {
+    "bigtable": {
+      "autoScaling": {
+        "cpuUtilizationTarget": 50,
+        "maxNodeCount": 2,
+        "minNodeCount": 1
+      }
+    },
+    "labels": {
+      "foo": "baz"
+    },
+    "name": "projects/${projectId}/locations/us-central1/featureOnlineStores/featureonlinestore-${uniqueId}"
+  },
+  "updateMask": "labels"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.UpdateFeatureOnlineStoreOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/featureOnlineStores/featureonlinestore-${uniqueId}/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectNumber}/locations/us-central1/featureOnlineStores/featureonlinestore-${uniqueId}/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.UpdateFeatureOnlineStoreOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/featureOnlineStores/featureonlinestore-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.FeatureOnlineStore",
+    "bigtable": {
+      "autoScaling": {
+        "cpuUtilizationTarget": 50,
+        "maxNodeCount": 2,
+        "minNodeCount": 1
+      }
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "etag": "abcdef0123A=",
+    "labels": {
+      "foo": "baz"
+    },
+    "name": "projects/${projectNumber}/locations/us-central1/featureOnlineStores/featureonlinestore-${uniqueId}",
+    "state": "STABLE",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService/GetFeatureOnlineStore
+
+{
+  "name": "projects/${projectId}/locations/us-central1/featureOnlineStores/featureonlinestore-${uniqueId}"
+}
+
+OK
+
+{
+  "bigtable": {
+    "autoScaling": {
+      "cpuUtilizationTarget": 50,
+      "maxNodeCount": 2,
+      "minNodeCount": 1
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "foo": "baz"
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/featureOnlineStores/featureonlinestore-${uniqueId}",
+  "state": "STABLE",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService/GetFeatureOnlineStore
+
+{
+  "name": "projects/${projectId}/locations/us-central1/featureOnlineStores/featureonlinestore-${uniqueId}"
+}
+
+OK
+
+{
+  "bigtable": {
+    "autoScaling": {
+      "cpuUtilizationTarget": 50,
+      "maxNodeCount": 2,
+      "minNodeCount": 1
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "foo": "baz"
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/featureOnlineStores/featureonlinestore-${uniqueId}",
+  "state": "STABLE",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService/GetFeatureOnlineStore
+
+{
+  "name": "projects/${projectId}/locations/us-central1/featureOnlineStores/featureonlinestore-${uniqueId}"
+}
+
+OK
+
+{
+  "bigtable": {
+    "autoScaling": {
+      "cpuUtilizationTarget": 50,
+      "maxNodeCount": 2,
+      "minNodeCount": 1
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "etag": "abcdef0123A=",
+  "labels": {
+    "foo": "baz"
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/featureOnlineStores/featureonlinestore-${uniqueId}",
+  "state": "STABLE",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.aiplatform.v1.FeatureOnlineStoreAdminService/DeleteFeatureOnlineStore
+
+{
+  "name": "projects/${projectId}/locations/us-central1/featureOnlineStores/featureonlinestore-${uniqueId}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.DeleteOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectNumber}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}

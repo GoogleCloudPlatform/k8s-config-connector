@@ -1,0 +1,3 @@
+```release-note:none
+Fix handling of empty versioning and cors in hand written storage bucket for terraform-google-conversion
+```

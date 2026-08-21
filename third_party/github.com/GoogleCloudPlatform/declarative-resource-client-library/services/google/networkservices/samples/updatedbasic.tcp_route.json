@@ -1,0 +1,41 @@
+{
+  "name": "{{resource_name}}",
+  "meshes": ["projects/{{project}}/locations/global/meshes/{{ref:basictcp2.networkservices.mesh.json:name}}"],
+  "gateways": ["projects/{{project}}/locations/global/gateways/{{ref:basictcp2.networkservices.gateway.json:name}}"],
+  "project": "{{project}}",
+  "location": "global",
+  "description": "An updated test TcpRoute",
+  "labels": {
+    "foo2": "bar2"
+  },
+  "rules": [
+    {
+      "matches": [
+        {
+          "address": "10.0.0.2/32",
+          "port": "7775"
+        }
+      ],
+      "action": {
+        "destinations": [
+         {
+           "serviceName": "projects/{{project}}/locations/global/backendServices/{{ref:basictcp2.compute.backend_service.json:name}}",
+        "weight": 2
+         }
+       ]
+      }
+    },
+    {
+      "matches": [
+        {
+          "address": "10.0.0.1/0",
+      "port": "1"
+        }
+      ],
+      "action": {
+        "originalDestination": true,
+        "destinations": []
+      }
+    }
+  ]
+}

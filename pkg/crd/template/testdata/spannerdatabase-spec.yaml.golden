@@ -1,0 +1,15 @@
+databaseDialect: string
+ddl:
+- string
+enableDropProtection: boolean
+encryptionConfig:
+  kmsKeyRef:
+    external: string
+    name: string
+    namespace: string
+instanceRef:
+  external: string
+  name: string
+  namespace: string
+resourceID: string
+versionRetentionPeriod: string

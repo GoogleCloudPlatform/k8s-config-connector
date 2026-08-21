@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: datamigration.cnrm.cloud.google.com
+  kind: DatabaseMigrationConversionWorkspace
+  name: db-mw-min-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

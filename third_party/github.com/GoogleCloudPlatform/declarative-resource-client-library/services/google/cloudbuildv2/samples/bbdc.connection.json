@@ -1,0 +1,15 @@
+{
+  "name": "{{connection}}",
+  "bitbucketDataCenterConfig": {
+    "hostUri": "https://bitbucket-us-central.gcb-test.com",
+    "authorizerCredential": {
+      "userTokenSecretVersion": "projects/407304063574/secrets/bbdc-api-token/versions/latest"
+    },
+    "readAuthorizerCredential": {
+      "userTokenSecretVersion": "projects/407304063574/secrets/bbdc-read-token/versions/latest"
+    },
+    "webhookSecretSecretVersion":"projects/407304063574/secrets/bbdc-webhook-secret/versions/latest"
+  },
+  "project": "{{project}}",
+  "location": "us-west1"
+}

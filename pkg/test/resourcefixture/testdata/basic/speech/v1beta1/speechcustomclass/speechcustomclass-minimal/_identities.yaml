@@ -1,0 +1,6 @@
+- caisURL: //speech.googleapis.com/projects/${projectId}/locations/global/customClasses/speechcustomclass-minimal-${uniqueId}
+  group: speech.cnrm.cloud.google.com
+  kind: SpeechCustomClass
+  name: speechcustomclass-minimal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

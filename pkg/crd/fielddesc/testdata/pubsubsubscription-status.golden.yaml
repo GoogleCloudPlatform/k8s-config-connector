@@ -1,0 +1,105 @@
+fullname:
+- status
+shortname: status
+description: PubSubSubscriptionStatus defines the config connector machine state of
+  PubSubSubscription
+type: object
+format: ""
+requirementlevel: Optional
+children:
+- fullname:
+  - status
+  - conditions
+  shortname: conditions
+  description: Conditions represent the latest available observations of the object's
+    current state.
+  type: list (object)
+  format: ""
+  requirementlevel: Optional
+  children:
+  - fullname:
+    - status
+    - conditions
+    - '[]'
+    shortname: '[]'
+    description: ""
+    type: object
+    format: ""
+    requirementlevel: Optional
+    children:
+    - fullname:
+      - status
+      - conditions
+      - '[]'
+      - lastTransitionTime
+      shortname: lastTransitionTime
+      description: Last time the condition transitioned from one status to another.
+      type: string
+      format: ""
+      requirementlevel: Optional
+      children: []
+      additionalproperties: []
+    - fullname:
+      - status
+      - conditions
+      - '[]'
+      - message
+      shortname: message
+      description: Human-readable message indicating details about last transition.
+      type: string
+      format: ""
+      requirementlevel: Optional
+      children: []
+      additionalproperties: []
+    - fullname:
+      - status
+      - conditions
+      - '[]'
+      - reason
+      shortname: reason
+      description: Unique, one-word, CamelCase reason for the condition's last transition.
+      type: string
+      format: ""
+      requirementlevel: Optional
+      children: []
+      additionalproperties: []
+    - fullname:
+      - status
+      - conditions
+      - '[]'
+      - status
+      shortname: status
+      description: Status is the status of the condition. Can be True, False, Unknown.
+      type: string
+      format: ""
+      requirementlevel: Optional
+      children: []
+      additionalproperties: []
+    - fullname:
+      - status
+      - conditions
+      - '[]'
+      - type
+      shortname: type
+      description: Type is the type of the condition.
+      type: string
+      format: ""
+      requirementlevel: Optional
+      children: []
+      additionalproperties: []
+    additionalproperties: []
+  additionalproperties: []
+- fullname:
+  - status
+  - observedGeneration
+  shortname: observedGeneration
+  description: ObservedGeneration is the generation of the resource that was most
+    recently observed by the Config Connector controller. If this is equal to metadata.generation,
+    then that means that the current reported status reflects the most recent desired
+    state of the resource.
+  type: integer
+  format: int64
+  requirementlevel: Optional
+  children: []
+  additionalproperties: []
+additionalproperties: []

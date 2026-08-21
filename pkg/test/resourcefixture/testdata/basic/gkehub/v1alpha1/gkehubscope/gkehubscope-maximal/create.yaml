@@ -1,0 +1,12 @@
+apiVersion: gkehub.cnrm.cloud.google.com/v1alpha1
+kind: GKEHubScope
+metadata:
+  name: gkehubscope-maximal-${uniqueId}
+spec:
+  projectRef:
+    external: projects/${projectId}
+  location: global
+  namespaceLabels:
+    managed-by: "fleet-team-management"
+    security-tier: "high"
+  resourceID: gkehubscope-maximal-${uniqueId}

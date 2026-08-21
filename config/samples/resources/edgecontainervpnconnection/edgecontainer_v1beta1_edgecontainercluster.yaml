@@ -1,0 +1,45 @@
+# Copyright 2023 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: edgecontainer.cnrm.cloud.google.com/v1beta1
+kind: EdgeContainerCluster
+metadata:
+  name: edgecontainercluster-remote-control-plane-dep
+  labels:
+    label-one: "value-one"
+spec:
+  projectRef:
+    # Replace ${PROJECT_ID?} with your Google Cloud project id
+    external: ${PROJECT_ID?}
+  location: us-central1
+  networking:
+    clusterIpv4CidrBlocks: ["10.0.0.0/16"]
+    servicesIpv4CidrBlocks: ["10.1.0.0/16"]
+  fleet:
+    projectRef:
+      # Replace ${PROJECT_NUMBER?} with your Google Cloud project number
+      external: projects/${PROJECT_NUMBER?}
+  authorization:
+    adminUsers:
+      usernameRef:
+        # Replace ${CLUSTER_ADMIN_ACCOUNT?} with your user account or service account
+        external: ${CLUSTER_ADMIN_ACCOUNT?}
+  maintenancePolicy:
+    window:
+      recurringWindow:
+        window:
+          startTime: "2023-01-01T08:00:00Z"
+          endTime: "2023-01-01T17:00:00Z"
+        recurrence: "FREQ=WEEKLY;BYDAY=SA"
+  

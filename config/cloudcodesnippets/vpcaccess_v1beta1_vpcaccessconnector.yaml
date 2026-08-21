@@ -1,0 +1,16 @@
+label: Config Connector VPCAccessConnector
+markdownDescription: Creates yaml for a VPCAccessConnector resource
+insertText: |
+  apiVersion: vpcaccess.cnrm.cloud.google.com/v1beta1
+  kind: VPCAccessConnector
+  metadata:
+    name: \${1:vpcaccessconnector-name}
+  spec:
+    location: \${2:us-central1}
+    networkRef:
+      name: \${3:connector-dep-cidr}
+    ipCidrRange: \${4:10.132.0.0/28}
+    minThroughput: \${5:300}
+    maxThroughput: \${6:400}
+    projectRef:
+      external: \${7:projects/[PROJECT_ID?]}

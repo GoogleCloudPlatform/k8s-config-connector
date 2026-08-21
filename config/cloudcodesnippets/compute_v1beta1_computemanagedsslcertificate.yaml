@@ -1,0 +1,14 @@
+label: Config Connector ComputeManagedSSLCertificate
+markdownDescription: Creates yaml for a ComputeManagedSSLCertificate resource
+insertText: |
+  apiVersion: compute.cnrm.cloud.google.com/v1beta1
+  kind: ComputeManagedSSLCertificate
+  metadata:
+    name: \${1:computemanagedsslcertificate-name}
+  spec:
+    managed:
+      domains:
+      - \${2:sslcert.tf-test.club.}
+    projectRef:
+      external: \${3:[PROJECT_ID?]}
+    resourceID: \${4:computemanagedsslcertificate-sample}

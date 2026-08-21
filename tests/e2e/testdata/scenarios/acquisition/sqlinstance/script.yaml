@@ -1,0 +1,37 @@
+---
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLInstance
+metadata:
+  name: acquisition-sqlinstance-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: abandon
+spec:
+  databaseVersion: POSTGRES_15
+  region: us-central1
+  settings:
+    tier: db-f1-micro
+---
+TEST: ABANDON
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLInstance
+metadata:
+  name: acquisition-sqlinstance-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: abandon
+spec:
+  databaseVersion: POSTGRES_15
+  region: us-central1
+  settings:
+    tier: db-f1-micro
+---
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLInstance
+metadata:
+  name: acquisition-sqlinstance-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/deletion-policy: abandon
+spec:
+  databaseVersion: POSTGRES_15
+  region: us-central1
+  settings:
+    tier: db-f1-micro

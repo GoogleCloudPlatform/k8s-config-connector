@@ -1,0 +1,10 @@
+{
+  "name": "{{resource_name}}",
+  "project": "{{project}}",
+  "location": "global",
+  "service": "projects/{{project}}/locations/us-east1/namespaces/n1/services/s1",
+  "description": "A sample servce binding",
+  "labels": {
+    "label-one": "value-one"
+  }
+}

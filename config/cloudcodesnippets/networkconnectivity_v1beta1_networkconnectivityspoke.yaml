@@ -1,0 +1,20 @@
+label: Config Connector NetworkConnectivitySpoke
+markdownDescription: Creates yaml for a NetworkConnectivitySpoke resource
+insertText: |
+  apiVersion: networkconnectivity.cnrm.cloud.google.com/v1beta1
+  kind: NetworkConnectivitySpoke
+  metadata:
+    labels:
+      \${1:label-one}: \${2:value-one}
+    name: \${3:networkconnectivityspoke-name}
+  spec:
+    location: \${4:us-central1}
+    description: \${5:A sample spoke with a linked router appliance instance}
+    hubRef:
+      name: \${6:networkconnectivityspoke-dep}
+    linkedRouterApplianceInstances:
+      instances:
+      - virtualMachineRef:
+          name: \${7:networkconnectivityspoke-dep}
+        ipAddress: \${8:10.0.0.2}
+      siteToSiteDataTransfer: \${9:true}

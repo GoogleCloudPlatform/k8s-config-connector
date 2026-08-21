@@ -1,0 +1,12 @@
+- pre: gcloud compute networks create test-kafka-nw-${uniqueId} --project=${projectId} --subnet-mode=custom --bgp-routing-mode=regional
+- pre: gcloud compute networks subnets create test-kafka-sn-${uniqueId} --project=${projectId} --network=test-kafka-nw-${uniqueId} --region=us-central1 --range=10.0.0.0/24
+- exec: gcloud managed-kafka clusters create test-kafka-cluster-${uniqueId} --project=${projectId} --location=us-central1 --cpu=3 --memory=4Gi --subnets=projects/${projectId}/regions/us-central1/subnetworks/test-kafka-sn-${uniqueId}
+- exec: gcloud managed-kafka clusters list --project=${projectId} --location=us-central1
+- exec: gcloud managed-kafka clusters describe test-kafka-cluster-${uniqueId} --project=${projectId} --location=us-central1
+# Update cpu & labels
+- exec: gcloud managed-kafka clusters update test-kafka-cluster-${uniqueId} --project=${projectId} --location=us-central1 --labels=test=label --cpu=4
+# Describe again after update to verify
+- exec: gcloud managed-kafka clusters describe test-kafka-cluster-${uniqueId} --project=${projectId} --location=us-central1
+- exec: gcloud managed-kafka clusters delete test-kafka-cluster-${uniqueId} --project=${projectId} --location=us-central1 --quiet
+- post: gcloud compute networks subnets delete test-kafka-sn-${uniqueId} --project=${projectId} --region=us-central1 --quiet
+- post: gcloud compute networks delete test-kafka-nw-${uniqueId} --project=${projectId} --quiet

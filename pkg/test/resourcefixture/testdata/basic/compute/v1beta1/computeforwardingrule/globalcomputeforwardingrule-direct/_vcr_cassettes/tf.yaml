@@ -1,0 +1,4044 @@
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+version: 2
+interactions:
+  - id: 0
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/healthChecks/computehealthcheck-28i6nma6sbu9b?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 159.672172ms
+  - id: 1
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/networks/default?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "kind": "compute#network",
+          "id": "2445367146633761542",
+          "creationTimestamp": "2024-04-24T18:12:09.998-07:00",
+          "name": "default",
+          "description": "Default network for the project",
+          "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/networks/default",
+          "selfLinkWithId": "https://www.googleapis.com/compute/beta/projects/example-project/global/networks/2445367146633761542",
+          "autoCreateSubnetworks": true,
+          "subnetworks": [
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/asia-southeast2/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-west9/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/asia-southeast1/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-west1/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-east4/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-west6/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/asia-northeast1/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/australia-southeast2/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-west3/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-east1/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-north1/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/asia-south1/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-central2/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-west2/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/asia-northeast3/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-southwest1/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-west4/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/northamerica-northeast1/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/africa-south1/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/me-west1/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-west12/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-west8/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/southamerica-east1/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-west1/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/asia-south2/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/asia-east2/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-west2/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-west4/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/southamerica-west1/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-south1/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-west3/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/northamerica-northeast2/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/asia-northeast2/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/me-central1/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-central1/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/asia-east1/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-east5/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/me-central2/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-west10/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/australia-southeast1/subnetworks/default"
+          ],
+          "routingConfig": {
+            "routingMode": "REGIONAL"
+          },
+          "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 307.006537ms
+  - id: 2
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/networks/default?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "kind": "compute#network",
+          "id": "2445367146633761542",
+          "creationTimestamp": "2024-04-24T18:12:09.998-07:00",
+          "name": "default",
+          "description": "Default network for the project",
+          "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/networks/default",
+          "selfLinkWithId": "https://www.googleapis.com/compute/beta/projects/example-project/global/networks/2445367146633761542",
+          "autoCreateSubnetworks": true,
+          "subnetworks": [
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/asia-southeast2/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-west9/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/asia-southeast1/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-west1/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-east4/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-west6/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/asia-northeast1/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/australia-southeast2/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-west3/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-east1/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-north1/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/asia-south1/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-central2/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-west2/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/asia-northeast3/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-southwest1/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-west4/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/northamerica-northeast1/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/africa-south1/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/me-west1/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-west12/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-west8/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/southamerica-east1/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-west1/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/asia-south2/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/asia-east2/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-west2/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-west4/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/southamerica-west1/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-south1/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-west3/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/northamerica-northeast2/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/asia-northeast2/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/me-central1/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-central1/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/asia-east1/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/us-east5/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/me-central2/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/europe-west10/subnetworks/default",
+            "https://www.googleapis.com/compute/beta/projects/example-project/regions/australia-southeast1/subnetworks/default"
+          ],
+          "routingConfig": {
+            "routingMode": "REGIONAL"
+          },
+          "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 182.089872ms
+  - id: 3
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 208
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: |
+        {"checkIntervalSec":10,"healthyThreshold":2,"httpHealthCheck":{"port":80,"proxyHeader":"NONE","requestPath":"/"},"name":"computehealthcheck-28i6nma6sbu9b","timeoutSec":5,"type":"HTTP","unhealthyThreshold":2}
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/healthChecks?alt=json
+      method: POST
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "kind": "compute#operation",
+          "id": "158513506390642220",
+          "name": "operation-1714008259176-616e1a56e29db-e5c3aac1-a5e107de",
+          "operationType": "insert",
+          "targetLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/healthChecks/computehealthcheck-28i6nma6sbu9b",
+          "targetId": "6635534191184580140",
+          "status": "RUNNING",
+          "user": "integration-test@example-project.iam.gserviceaccount.com",
+          "progress": 0,
+          "insertTime": "2024-04-24T18:24:19.352-07:00",
+          "startTime": "2024-04-24T18:24:19.360-07:00",
+          "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1714008259176-616e1a56e29db-e5c3aac1-a5e107de"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 624.678314ms
+  - id: 4
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        X-Goog-Api-Client:
+          - gl-go/1.21.5 gdcl/0.160.0
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1714008259176-616e1a56e29db-e5c3aac1-a5e107de?alt=json&prettyPrint=false
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: '{"kind":"compute#operation","id":"158513506390642220","name":"operation-1714008259176-616e1a56e29db-e5c3aac1-a5e107de","operationType":"insert","targetLink":"https://www.googleapis.com/compute/beta/projects/example-project/global/healthChecks/computehealthcheck-28i6nma6sbu9b","targetId":"6635534191184580140","status":"DONE","user":"integration-test@example-project.iam.gserviceaccount.com","progress":100,"insertTime":"2024-04-24T18:24:19.352-07:00","startTime":"2024-04-24T18:24:19.360-07:00","endTime":"2024-04-24T18:24:20.195-07:00","selfLink":"https://www.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1714008259176-616e1a56e29db-e5c3aac1-a5e107de"}'
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 174.109787ms
+  - id: 5
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/healthChecks/computehealthcheck-28i6nma6sbu9b?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "kind": "compute#healthCheck",
+          "id": "6635534191184580140",
+          "creationTimestamp": "2024-04-24T18:24:19.357-07:00",
+          "name": "computehealthcheck-28i6nma6sbu9b",
+          "checkIntervalSec": 10,
+          "timeoutSec": 5,
+          "unhealthyThreshold": 2,
+          "healthyThreshold": 2,
+          "type": "HTTP",
+          "httpHealthCheck": {
+            "port": 80,
+            "requestPath": "/",
+            "proxyHeader": "NONE"
+          },
+          "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/healthChecks/computehealthcheck-28i6nma6sbu9b"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 143.344556ms
+  - id: 6
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/healthChecks/computehealthcheck-28i6nma6sbu9b?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "kind": "compute#healthCheck",
+          "id": "6635534191184580140",
+          "creationTimestamp": "2024-04-24T18:24:19.357-07:00",
+          "name": "computehealthcheck-28i6nma6sbu9b",
+          "checkIntervalSec": 10,
+          "timeoutSec": 5,
+          "unhealthyThreshold": 2,
+          "healthyThreshold": 2,
+          "type": "HTTP",
+          "httpHealthCheck": {
+            "port": 80,
+            "requestPath": "/",
+            "proxyHeader": "NONE"
+          },
+          "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/healthChecks/computehealthcheck-28i6nma6sbu9b"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 157.242339ms
+  - id: 7
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/backendServices/computebackendservice-28i6nma6sbu9b?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 224.616004ms
+  - id: 8
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 355
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: |
+        {"connectionDraining":{"drainingTimeoutSec":300},"healthChecks":["https://www.googleapis.com/compute/v1/projects/example-project/global/healthChecks/computehealthcheck-28i6nma6sbu9b"],"iap":{"enabled":false,"oauth2ClientId":"","oauth2ClientSecret":""},"loadBalancingScheme":"INTERNAL_SELF_MANAGED","name":"computebackendservice-28i6nma6sbu9b"}
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/backendServices?alt=json
+      method: POST
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "kind": "compute#operation",
+          "id": "5190325563491094057",
+          "name": "operation-1714008261490-616e1a59178f5-5ec7f6b0-a7ce31d8",
+          "operationType": "insert",
+          "targetLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/backendServices/computebackendservice-28i6nma6sbu9b",
+          "targetId": "3837652031959731753",
+          "status": "RUNNING",
+          "user": "integration-test@example-project.iam.gserviceaccount.com",
+          "progress": 0,
+          "insertTime": "2024-04-24T18:24:22.206-07:00",
+          "startTime": "2024-04-24T18:24:22.218-07:00",
+          "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1714008261490-616e1a59178f5-5ec7f6b0-a7ce31d8"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 1.017351504s
+  - id: 9
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        X-Goog-Api-Client:
+          - gl-go/1.21.5 gdcl/0.160.0
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1714008261490-616e1a59178f5-5ec7f6b0-a7ce31d8?alt=json&prettyPrint=false
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: '{"kind":"compute#operation","id":"5190325563491094057","name":"operation-1714008261490-616e1a59178f5-5ec7f6b0-a7ce31d8","operationType":"insert","targetLink":"https://www.googleapis.com/compute/beta/projects/example-project/global/backendServices/computebackendservice-28i6nma6sbu9b","targetId":"3837652031959731753","status":"DONE","user":"integration-test@example-project.iam.gserviceaccount.com","progress":100,"insertTime":"2024-04-24T18:24:22.206-07:00","startTime":"2024-04-24T18:24:22.218-07:00","endTime":"2024-04-24T18:24:39.999-07:00","selfLink":"https://www.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1714008261490-616e1a59178f5-5ec7f6b0-a7ce31d8"}'
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 159.166552ms
+  - id: 10
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/backendServices/computebackendservice-28i6nma6sbu9b?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "kind": "compute#backendService",
+          "id": "3837652031959731753",
+          "creationTimestamp": "2024-04-24T18:24:22.200-07:00",
+          "name": "computebackendservice-28i6nma6sbu9b",
+          "description": "",
+          "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/backendServices/computebackendservice-28i6nma6sbu9b",
+          "healthChecks": [
+            "https://www.googleapis.com/compute/beta/projects/example-project/global/healthChecks/computehealthcheck-28i6nma6sbu9b"
+          ],
+          "timeoutSec": 30,
+          "port": 80,
+          "protocol": "HTTP",
+          "fingerprint": "XKSLLLLPkmo=",
+          "portName": "http",
+          "sessionAffinity": "NONE",
+          "affinityCookieTtlSec": 0,
+          "loadBalancingScheme": "INTERNAL_SELF_MANAGED",
+          "connectionDraining": {
+            "drainingTimeoutSec": 300
+          },
+          "iap": {
+            "enabled": false,
+            "oauth2ClientId": "",
+            "oauth2ClientSecretSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 148.152674ms
+  - id: 11
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/urlMaps/computeurlmap-28i6nma6sbu9b?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 131.174822ms
+  - id: 12
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/backendServices/computebackendservice-28i6nma6sbu9b?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "kind": "compute#backendService",
+          "id": "3837652031959731753",
+          "creationTimestamp": "2024-04-24T18:24:22.200-07:00",
+          "name": "computebackendservice-28i6nma6sbu9b",
+          "description": "",
+          "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/backendServices/computebackendservice-28i6nma6sbu9b",
+          "healthChecks": [
+            "https://www.googleapis.com/compute/beta/projects/example-project/global/healthChecks/computehealthcheck-28i6nma6sbu9b"
+          ],
+          "timeoutSec": 30,
+          "port": 80,
+          "protocol": "HTTP",
+          "fingerprint": "XKSLLLLPkmo=",
+          "portName": "http",
+          "sessionAffinity": "NONE",
+          "affinityCookieTtlSec": 0,
+          "loadBalancingScheme": "INTERNAL_SELF_MANAGED",
+          "connectionDraining": {
+            "drainingTimeoutSec": 300
+          },
+          "iap": {
+            "enabled": false,
+            "oauth2ClientId": "",
+            "oauth2ClientSecretSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 153.120257ms
+  - id: 13
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 191
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: |
+        {"defaultService":"https://www.googleapis.com/compute/v1/projects/example-project/global/backendServices/computebackendservice-28i6nma6sbu9b","name":"computeurlmap-28i6nma6sbu9b"}
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/urlMaps?alt=json
+      method: POST
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "kind": "compute#operation",
+          "id": "4871485887428693554",
+          "name": "operation-1714008285148-616e1a6fa75a3-1ed15396-94c052fd",
+          "operationType": "insert",
+          "targetLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/urlMaps/computeurlmap-28i6nma6sbu9b",
+          "targetId": "7511393523099504178",
+          "status": "RUNNING",
+          "user": "integration-test@example-project.iam.gserviceaccount.com",
+          "progress": 0,
+          "insertTime": "2024-04-24T18:24:45.566-07:00",
+          "startTime": "2024-04-24T18:24:45.575-07:00",
+          "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1714008285148-616e1a6fa75a3-1ed15396-94c052fd"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 618.404519ms
+  - id: 14
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        X-Goog-Api-Client:
+          - gl-go/1.21.5 gdcl/0.160.0
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1714008285148-616e1a6fa75a3-1ed15396-94c052fd?alt=json&prettyPrint=false
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: '{"kind":"compute#operation","id":"4871485887428693554","name":"operation-1714008285148-616e1a6fa75a3-1ed15396-94c052fd","operationType":"insert","targetLink":"https://www.googleapis.com/compute/beta/projects/example-project/global/urlMaps/computeurlmap-28i6nma6sbu9b","targetId":"7511393523099504178","status":"DONE","user":"integration-test@example-project.iam.gserviceaccount.com","progress":100,"insertTime":"2024-04-24T18:24:45.566-07:00","startTime":"2024-04-24T18:24:45.575-07:00","endTime":"2024-04-24T18:24:46.201-07:00","selfLink":"https://www.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1714008285148-616e1a6fa75a3-1ed15396-94c052fd"}'
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 174.788732ms
+  - id: 15
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/urlMaps/computeurlmap-28i6nma6sbu9b?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "kind": "compute#urlMap",
+          "id": "7511393523099504178",
+          "creationTimestamp": "2024-04-24T18:24:45.528-07:00",
+          "name": "computeurlmap-28i6nma6sbu9b",
+          "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/urlMaps/computeurlmap-28i6nma6sbu9b",
+          "defaultService": "https://www.googleapis.com/compute/beta/projects/example-project/global/backendServices/computebackendservice-28i6nma6sbu9b",
+          "fingerprint": "whqJJusJgr4="
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 160.418923ms
+  - id: 16
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/targetHttpProxies/computetargethttpproxy-28i6nma6sbu9b?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 145.32731ms
+  - id: 17
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/targetHttpProxies/computetargethttpproxy-2-28i6nma6sbu9b?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 220.904966ms
+  - id: 18
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/urlMaps/computeurlmap-28i6nma6sbu9b?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "kind": "compute#urlMap",
+          "id": "7511393523099504178",
+          "creationTimestamp": "2024-04-24T18:24:45.528-07:00",
+          "name": "computeurlmap-28i6nma6sbu9b",
+          "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/urlMaps/computeurlmap-28i6nma6sbu9b",
+          "defaultService": "https://www.googleapis.com/compute/beta/projects/example-project/global/backendServices/computebackendservice-28i6nma6sbu9b",
+          "fingerprint": "whqJJusJgr4="
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 233.396991ms
+  - id: 19
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 171
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: |
+        {"description":"test description","name":"computetargethttpproxy-28i6nma6sbu9b","urlMap":"projects/example-project/global/urlMaps/computeurlmap-28i6nma6sbu9b"}
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/targetHttpProxies?alt=json
+      method: POST
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "kind": "compute#operation",
+          "id": "2910584208701525552",
+          "name": "operation-1714008287413-616e1a71d060d-eacb002f-b6889d06",
+          "operationType": "insert",
+          "targetLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/targetHttpProxies/computetargethttpproxy-28i6nma6sbu9b",
+          "targetId": "2693340253154184752",
+          "status": "RUNNING",
+          "user": "integration-test@example-project.iam.gserviceaccount.com",
+          "progress": 0,
+          "insertTime": "2024-04-24T18:24:47.913-07:00",
+          "startTime": "2024-04-24T18:24:47.928-07:00",
+          "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1714008287413-616e1a71d060d-eacb002f-b6889d06"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 685.007267ms
+  - id: 20
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 179
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: |
+        {"description":"other test description","name":"computetargethttpproxy-2-28i6nma6sbu9b","urlMap":"projects/example-project/global/urlMaps/computeurlmap-28i6nma6sbu9b"}
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/targetHttpProxies?alt=json
+      method: POST
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "kind": "compute#operation",
+          "id": "1608131626683076111",
+          "name": "operation-1714008287555-616e1a71f3060-c657a992-e1e5c96a",
+          "operationType": "insert",
+          "targetLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/targetHttpProxies/computetargethttpproxy-2-28i6nma6sbu9b",
+          "targetId": "6659338291508416015",
+          "status": "RUNNING",
+          "user": "integration-test@example-project.iam.gserviceaccount.com",
+          "progress": 0,
+          "insertTime": "2024-04-24T18:24:48.100-07:00",
+          "startTime": "2024-04-24T18:24:48.114-07:00",
+          "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1714008287555-616e1a71f3060-c657a992-e1e5c96a"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 790.182331ms
+  - id: 21
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        X-Goog-Api-Client:
+          - gl-go/1.21.5 gdcl/0.160.0
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1714008287413-616e1a71d060d-eacb002f-b6889d06?alt=json&prettyPrint=false
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: '{"kind":"compute#operation","id":"2910584208701525552","name":"operation-1714008287413-616e1a71d060d-eacb002f-b6889d06","operationType":"insert","targetLink":"https://www.googleapis.com/compute/beta/projects/example-project/global/targetHttpProxies/computetargethttpproxy-28i6nma6sbu9b","targetId":"2693340253154184752","status":"DONE","user":"integration-test@example-project.iam.gserviceaccount.com","progress":100,"insertTime":"2024-04-24T18:24:47.913-07:00","startTime":"2024-04-24T18:24:47.928-07:00","endTime":"2024-04-24T18:24:48.938-07:00","selfLink":"https://www.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1714008287413-616e1a71d060d-eacb002f-b6889d06"}'
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 259.255006ms
+  - id: 22
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/targetHttpProxies/computetargethttpproxy-28i6nma6sbu9b?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "kind": "compute#targetHttpProxy",
+          "id": "2693340253154184752",
+          "creationTimestamp": "2024-04-24T18:24:47.862-07:00",
+          "name": "computetargethttpproxy-28i6nma6sbu9b",
+          "description": "test description",
+          "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/targetHttpProxies/computetargethttpproxy-28i6nma6sbu9b",
+          "urlMap": "https://www.googleapis.com/compute/beta/projects/example-project/global/urlMaps/computeurlmap-28i6nma6sbu9b",
+          "fingerprint": "mgI0evbGAgo="
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 149.766441ms
+  - id: 23
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        X-Goog-Api-Client:
+          - gl-go/1.21.5 gdcl/0.160.0
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1714008287555-616e1a71f3060-c657a992-e1e5c96a?alt=json&prettyPrint=false
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: '{"kind":"compute#operation","id":"1608131626683076111","name":"operation-1714008287555-616e1a71f3060-c657a992-e1e5c96a","operationType":"insert","targetLink":"https://www.googleapis.com/compute/beta/projects/example-project/global/targetHttpProxies/computetargethttpproxy-2-28i6nma6sbu9b","targetId":"6659338291508416015","status":"DONE","user":"integration-test@example-project.iam.gserviceaccount.com","progress":100,"insertTime":"2024-04-24T18:24:48.100-07:00","startTime":"2024-04-24T18:24:48.114-07:00","endTime":"2024-04-24T18:24:49.184-07:00","selfLink":"https://www.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1714008287555-616e1a71f3060-c657a992-e1e5c96a"}'
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 139.124214ms
+  - id: 24
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/targetHttpProxies/computetargethttpproxy-28i6nma6sbu9b?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "kind": "compute#targetHttpProxy",
+          "id": "2693340253154184752",
+          "creationTimestamp": "2024-04-24T18:24:47.862-07:00",
+          "name": "computetargethttpproxy-28i6nma6sbu9b",
+          "description": "test description",
+          "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/targetHttpProxies/computetargethttpproxy-28i6nma6sbu9b",
+          "urlMap": "https://www.googleapis.com/compute/beta/projects/example-project/global/urlMaps/computeurlmap-28i6nma6sbu9b",
+          "fingerprint": "mgI0evbGAgo="
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 121.720733ms
+  - id: 25
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/forwardingRules/computeglobalforwardingrule-28i6nma6sbu9b?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 147.517431ms
+  - id: 26
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/targetHttpProxies/computetargethttpproxy-2-28i6nma6sbu9b?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "kind": "compute#targetHttpProxy",
+          "id": "6659338291508416015",
+          "creationTimestamp": "2024-04-24T18:24:48.060-07:00",
+          "name": "computetargethttpproxy-2-28i6nma6sbu9b",
+          "description": "other test description",
+          "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/targetHttpProxies/computetargethttpproxy-2-28i6nma6sbu9b",
+          "urlMap": "https://www.googleapis.com/compute/beta/projects/example-project/global/urlMaps/computeurlmap-28i6nma6sbu9b",
+          "fingerprint": "exc36eCFud4="
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 162.027309ms
+  - id: 27
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/targetHttpProxies/computetargethttpproxy-2-28i6nma6sbu9b?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "kind": "compute#targetHttpProxy",
+          "id": "6659338291508416015",
+          "creationTimestamp": "2024-04-24T18:24:48.060-07:00",
+          "name": "computetargethttpproxy-2-28i6nma6sbu9b",
+          "description": "other test description",
+          "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/targetHttpProxies/computetargethttpproxy-2-28i6nma6sbu9b",
+          "urlMap": "https://www.googleapis.com/compute/beta/projects/example-project/global/urlMaps/computeurlmap-28i6nma6sbu9b",
+          "fingerprint": "exc36eCFud4="
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 249.624914ms
+  - id: 28
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 477
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: |
+        {"IPAddress":"0.0.0.0","description":"A global forwarding rule","labels":{"cnrm-test":"true","label-one":"value-one","managed-by-cnrm":"true"},"loadBalancingScheme":"INTERNAL_SELF_MANAGED","name":"computeglobalforwardingrule-28i6nma6sbu9b","network":"projects/example-project/global/networks/default","portRange":"80","target":"https://www.googleapis.com/compute/v1/projects/example-project/global/targetHttpProxies/computetargethttpproxy-28i6nma6sbu9b"}
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/forwardingRules?alt=json
+      method: POST
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "kind": "compute#operation",
+          "id": "408269303511780867",
+          "name": "operation-1714008300258-616e1a7e103ed-47e03e20-ce74186b",
+          "operationType": "insert",
+          "targetLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/forwardingRules/computeglobalforwardingrule-28i6nma6sbu9b",
+          "targetId": "4886757618607197699",
+          "status": "RUNNING",
+          "user": "integration-test@example-project.iam.gserviceaccount.com",
+          "progress": 0,
+          "insertTime": "2024-04-24T18:25:00.823-07:00",
+          "startTime": "2024-04-24T18:25:00.833-07:00",
+          "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1714008300258-616e1a7e103ed-47e03e20-ce74186b"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 810.93768ms
+  - id: 29
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        X-Goog-Api-Client:
+          - gl-go/1.21.5 gdcl/0.160.0
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1714008300258-616e1a7e103ed-47e03e20-ce74186b?alt=json&prettyPrint=false
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: '{"kind":"compute#operation","id":"408269303511780867","name":"operation-1714008300258-616e1a7e103ed-47e03e20-ce74186b","operationType":"insert","targetLink":"https://www.googleapis.com/compute/beta/projects/example-project/global/forwardingRules/computeglobalforwardingrule-28i6nma6sbu9b","targetId":"4886757618607197699","status":"DONE","user":"integration-test@example-project.iam.gserviceaccount.com","progress":100,"insertTime":"2024-04-24T18:25:00.823-07:00","startTime":"2024-04-24T18:25:00.833-07:00","endTime":"2024-04-24T18:25:11.575-07:00","selfLink":"https://www.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1714008300258-616e1a7e103ed-47e03e20-ce74186b"}'
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 156.346018ms
+  - id: 30
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/forwardingRules/computeglobalforwardingrule-28i6nma6sbu9b?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "kind": "compute#forwardingRule",
+          "id": "4886757618607197699",
+          "creationTimestamp": "2024-04-24T18:25:00.785-07:00",
+          "name": "computeglobalforwardingrule-28i6nma6sbu9b",
+          "description": "A global forwarding rule",
+          "IPAddress": "0.0.0.0",
+          "IPProtocol": "TCP",
+          "portRange": "80-80",
+          "target": "https://www.googleapis.com/compute/beta/projects/example-project/global/targetHttpProxies/computetargethttpproxy-28i6nma6sbu9b",
+          "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/forwardingRules/computeglobalforwardingrule-28i6nma6sbu9b",
+          "loadBalancingScheme": "INTERNAL_SELF_MANAGED",
+          "network": "https://www.googleapis.com/compute/beta/projects/example-project/global/networks/default",
+          "networkTier": "PREMIUM",
+          "labelFingerprint": "42WmSpB8rSM=",
+          "fingerprint": "ig_w2rd0DUc="
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 156.77448ms
+  - id: 31
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 115
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: |
+        {"labelFingerprint":"42WmSpB8rSM=","labels":{"cnrm-test":"true","label-one":"value-one","managed-by-cnrm":"true"}}
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/forwardingRules/computeglobalforwardingrule-28i6nma6sbu9b/setLabels?alt=json
+      method: POST
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "kind": "compute#operation",
+          "id": "5427423920192228886",
+          "name": "operation-1714008312818-616e1a8a0a9e8-e751e9e7-c0a98283",
+          "operationType": "setLabels",
+          "targetLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/forwardingRules/computeglobalforwardingrule-28i6nma6sbu9b",
+          "targetId": "4886757618607197699",
+          "status": "DONE",
+          "user": "integration-test@example-project.iam.gserviceaccount.com",
+          "progress": 100,
+          "insertTime": "2024-04-24T18:25:13.235-07:00",
+          "startTime": "2024-04-24T18:25:13.236-07:00",
+          "endTime": "2024-04-24T18:25:13.236-07:00",
+          "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1714008312818-616e1a8a0a9e8-e751e9e7-c0a98283"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 630.442858ms
+  - id: 32
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/forwardingRules/computeglobalforwardingrule-28i6nma6sbu9b?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "kind": "compute#forwardingRule",
+          "id": "4886757618607197699",
+          "creationTimestamp": "2024-04-24T18:25:00.785-07:00",
+          "name": "computeglobalforwardingrule-28i6nma6sbu9b",
+          "description": "A global forwarding rule",
+          "IPAddress": "0.0.0.0",
+          "IPProtocol": "TCP",
+          "portRange": "80-80",
+          "target": "https://www.googleapis.com/compute/beta/projects/example-project/global/targetHttpProxies/computetargethttpproxy-28i6nma6sbu9b",
+          "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/forwardingRules/computeglobalforwardingrule-28i6nma6sbu9b",
+          "loadBalancingScheme": "INTERNAL_SELF_MANAGED",
+          "network": "https://www.googleapis.com/compute/beta/projects/example-project/global/networks/default",
+          "networkTier": "PREMIUM",
+          "labels": {
+            "cnrm-test": "true",
+            "label-one": "value-one",
+            "managed-by-cnrm": "true"
+          },
+          "labelFingerprint": "4CJKJ2YTIzI=",
+          "fingerprint": "ig_w2rd0DUc="
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 153.112217ms
+  - id: 33
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/forwardingRules/computeglobalforwardingrule-28i6nma6sbu9b?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "kind": "compute#forwardingRule",
+          "id": "4886757618607197699",
+          "creationTimestamp": "2024-04-24T18:25:00.785-07:00",
+          "name": "computeglobalforwardingrule-28i6nma6sbu9b",
+          "description": "A global forwarding rule",
+          "IPAddress": "0.0.0.0",
+          "IPProtocol": "TCP",
+          "portRange": "80-80",
+          "target": "https://www.googleapis.com/compute/beta/projects/example-project/global/targetHttpProxies/computetargethttpproxy-28i6nma6sbu9b",
+          "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/forwardingRules/computeglobalforwardingrule-28i6nma6sbu9b",
+          "loadBalancingScheme": "INTERNAL_SELF_MANAGED",
+          "network": "https://www.googleapis.com/compute/beta/projects/example-project/global/networks/default",
+          "networkTier": "PREMIUM",
+          "labels": {
+            "cnrm-test": "true",
+            "label-one": "value-one",
+            "managed-by-cnrm": "true"
+          },
+          "labelFingerprint": "4CJKJ2YTIzI=",
+          "fingerprint": "ig_w2rd0DUc="
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 144.965746ms
+  - id: 34
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/forwardingRules/computeglobalforwardingrule-28i6nma6sbu9b?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "kind": "compute#forwardingRule",
+          "id": "4886757618607197699",
+          "creationTimestamp": "2024-04-24T18:25:00.785-07:00",
+          "name": "computeglobalforwardingrule-28i6nma6sbu9b",
+          "description": "A global forwarding rule",
+          "IPAddress": "0.0.0.0",
+          "IPProtocol": "TCP",
+          "portRange": "80-80",
+          "target": "https://www.googleapis.com/compute/beta/projects/example-project/global/targetHttpProxies/computetargethttpproxy-28i6nma6sbu9b",
+          "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/forwardingRules/computeglobalforwardingrule-28i6nma6sbu9b",
+          "loadBalancingScheme": "INTERNAL_SELF_MANAGED",
+          "network": "https://www.googleapis.com/compute/beta/projects/example-project/global/networks/default",
+          "networkTier": "PREMIUM",
+          "labels": {
+            "cnrm-test": "true",
+            "label-one": "value-one",
+            "managed-by-cnrm": "true"
+          },
+          "labelFingerprint": "4CJKJ2YTIzI=",
+          "fingerprint": "ig_w2rd0DUc="
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 165.798035ms
+  - id: 35
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 151
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: |
+        {"target":"https://www.googleapis.com/compute/v1/projects/example-project/global/targetHttpProxies/computetargethttpproxy-2-28i6nma6sbu9b"}
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/forwardingRules/computeglobalforwardingrule-28i6nma6sbu9b/setTarget?alt=json
+      method: POST
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "kind": "compute#operation",
+          "id": "7217090080371117587",
+          "name": "operation-1714008316051-616e1a8d201a2-5f6e9254-3cbe7794",
+          "operationType": "SetTarget",
+          "targetLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/forwardingRules/computeglobalforwardingrule-28i6nma6sbu9b",
+          "targetId": "4886757618607197699",
+          "status": "RUNNING",
+          "user": "integration-test@example-project.iam.gserviceaccount.com",
+          "progress": 0,
+          "insertTime": "2024-04-24T18:25:16.492-07:00",
+          "startTime": "2024-04-24T18:25:16.509-07:00",
+          "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1714008316051-616e1a8d201a2-5f6e9254-3cbe7794"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 627.103153ms
+  - id: 36
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        X-Goog-Api-Client:
+          - gl-go/1.21.5 gdcl/0.160.0
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1714008316051-616e1a8d201a2-5f6e9254-3cbe7794?alt=json&prettyPrint=false
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: '{"kind":"compute#operation","id":"7217090080371117587","name":"operation-1714008316051-616e1a8d201a2-5f6e9254-3cbe7794","operationType":"SetTarget","targetLink":"https://www.googleapis.com/compute/beta/projects/example-project/global/forwardingRules/computeglobalforwardingrule-28i6nma6sbu9b","targetId":"4886757618607197699","status":"DONE","user":"integration-test@example-project.iam.gserviceaccount.com","progress":100,"insertTime":"2024-04-24T18:25:16.492-07:00","startTime":"2024-04-24T18:25:16.509-07:00","endTime":"2024-04-24T18:25:26.378-07:00","selfLink":"https://www.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1714008316051-616e1a8d201a2-5f6e9254-3cbe7794"}'
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 262.554448ms
+  - id: 37
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/forwardingRules/computeglobalforwardingrule-28i6nma6sbu9b?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "kind": "compute#forwardingRule",
+          "id": "4886757618607197699",
+          "creationTimestamp": "2024-04-24T18:25:00.785-07:00",
+          "name": "computeglobalforwardingrule-28i6nma6sbu9b",
+          "description": "A global forwarding rule",
+          "IPAddress": "0.0.0.0",
+          "IPProtocol": "TCP",
+          "portRange": "80-80",
+          "target": "https://www.googleapis.com/compute/beta/projects/example-project/global/targetHttpProxies/computetargethttpproxy-2-28i6nma6sbu9b",
+          "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/forwardingRules/computeglobalforwardingrule-28i6nma6sbu9b",
+          "loadBalancingScheme": "INTERNAL_SELF_MANAGED",
+          "network": "https://www.googleapis.com/compute/beta/projects/example-project/global/networks/default",
+          "networkTier": "PREMIUM",
+          "labels": {
+            "cnrm-test": "true",
+            "label-one": "value-one",
+            "managed-by-cnrm": "true"
+          },
+          "labelFingerprint": "4CJKJ2YTIzI=",
+          "fingerprint": "Juj9q5ALSMo="
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 263.478138ms
+  - id: 38
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/forwardingRules/computeglobalforwardingrule-28i6nma6sbu9b?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "kind": "compute#forwardingRule",
+          "id": "4886757618607197699",
+          "creationTimestamp": "2024-04-24T18:25:00.785-07:00",
+          "name": "computeglobalforwardingrule-28i6nma6sbu9b",
+          "description": "A global forwarding rule",
+          "IPAddress": "0.0.0.0",
+          "IPProtocol": "TCP",
+          "portRange": "80-80",
+          "target": "https://www.googleapis.com/compute/beta/projects/example-project/global/targetHttpProxies/computetargethttpproxy-2-28i6nma6sbu9b",
+          "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/forwardingRules/computeglobalforwardingrule-28i6nma6sbu9b",
+          "loadBalancingScheme": "INTERNAL_SELF_MANAGED",
+          "network": "https://www.googleapis.com/compute/beta/projects/example-project/global/networks/default",
+          "networkTier": "PREMIUM",
+          "labels": {
+            "cnrm-test": "true",
+            "label-one": "value-one",
+            "managed-by-cnrm": "true"
+          },
+          "labelFingerprint": "4CJKJ2YTIzI=",
+          "fingerprint": "Juj9q5ALSMo="
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 168.717775ms
+  - id: 39
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/urlMaps/computeurlmap-28i6nma6sbu9b?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "kind": "compute#urlMap",
+          "id": "7511393523099504178",
+          "creationTimestamp": "2024-04-24T18:24:45.528-07:00",
+          "name": "computeurlmap-28i6nma6sbu9b",
+          "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/urlMaps/computeurlmap-28i6nma6sbu9b",
+          "defaultService": "https://www.googleapis.com/compute/beta/projects/example-project/global/backendServices/computebackendservice-28i6nma6sbu9b",
+          "fingerprint": "whqJJusJgr4="
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 135.105429ms
+  - id: 40
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/targetHttpProxies/computetargethttpproxy-28i6nma6sbu9b?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "kind": "compute#targetHttpProxy",
+          "id": "2693340253154184752",
+          "creationTimestamp": "2024-04-24T18:24:47.862-07:00",
+          "name": "computetargethttpproxy-28i6nma6sbu9b",
+          "description": "test description",
+          "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/targetHttpProxies/computetargethttpproxy-28i6nma6sbu9b",
+          "urlMap": "https://www.googleapis.com/compute/beta/projects/example-project/global/urlMaps/computeurlmap-28i6nma6sbu9b",
+          "fingerprint": "mgI0evbGAgo="
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 162.810659ms
+  - id: 41
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/healthChecks/computehealthcheck-28i6nma6sbu9b?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "kind": "compute#healthCheck",
+          "id": "6635534191184580140",
+          "creationTimestamp": "2024-04-24T18:24:19.357-07:00",
+          "name": "computehealthcheck-28i6nma6sbu9b",
+          "checkIntervalSec": 10,
+          "timeoutSec": 5,
+          "unhealthyThreshold": 2,
+          "healthyThreshold": 2,
+          "type": "HTTP",
+          "httpHealthCheck": {
+            "port": 80,
+            "requestPath": "/",
+            "proxyHeader": "NONE"
+          },
+          "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/healthChecks/computehealthcheck-28i6nma6sbu9b"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 164.670154ms
+  - id: 42
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/targetHttpProxies/computetargethttpproxy-2-28i6nma6sbu9b?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "kind": "compute#targetHttpProxy",
+          "id": "6659338291508416015",
+          "creationTimestamp": "2024-04-24T18:24:48.060-07:00",
+          "name": "computetargethttpproxy-2-28i6nma6sbu9b",
+          "description": "other test description",
+          "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/targetHttpProxies/computetargethttpproxy-2-28i6nma6sbu9b",
+          "urlMap": "https://www.googleapis.com/compute/beta/projects/example-project/global/urlMaps/computeurlmap-28i6nma6sbu9b",
+          "fingerprint": "exc36eCFud4="
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 227.2089ms
+  - id: 43
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/backendServices/computebackendservice-28i6nma6sbu9b?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "kind": "compute#backendService",
+          "id": "3837652031959731753",
+          "creationTimestamp": "2024-04-24T18:24:22.200-07:00",
+          "name": "computebackendservice-28i6nma6sbu9b",
+          "description": "",
+          "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/backendServices/computebackendservice-28i6nma6sbu9b",
+          "healthChecks": [
+            "https://www.googleapis.com/compute/beta/projects/example-project/global/healthChecks/computehealthcheck-28i6nma6sbu9b"
+          ],
+          "timeoutSec": 30,
+          "port": 80,
+          "protocol": "HTTP",
+          "fingerprint": "XKSLLLLPkmo=",
+          "portName": "http",
+          "sessionAffinity": "NONE",
+          "affinityCookieTtlSec": 0,
+          "loadBalancingScheme": "INTERNAL_SELF_MANAGED",
+          "connectionDraining": {
+            "drainingTimeoutSec": 300
+          },
+          "iap": {
+            "enabled": false,
+            "oauth2ClientId": "",
+            "oauth2ClientSecretSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "usedBy": [
+            {
+              "reference": "https://www.googleapis.com/compute/beta/projects/example-project/global/urlMaps/computeurlmap-28i6nma6sbu9b"
+            }
+          ]
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 243.145147ms
+  - id: 44
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/healthChecks/computehealthcheck-28i6nma6sbu9b?alt=json
+      method: DELETE
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 400 Bad Request
+      code: 400
+      duration: 277.871954ms
+  - id: 45
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/urlMaps/computeurlmap-28i6nma6sbu9b?alt=json
+      method: DELETE
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 400 Bad Request
+      code: 400
+      duration: 433.862509ms
+  - id: 46
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/targetHttpProxies/computetargethttpproxy-2-28i6nma6sbu9b?alt=json
+      method: DELETE
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 400 Bad Request
+      code: 400
+      duration: 457.723039ms
+  - id: 47
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/backendServices/computebackendservice-28i6nma6sbu9b?alt=json
+      method: DELETE
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 400 Bad Request
+      code: 400
+      duration: 423.753724ms
+  - id: 48
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/targetHttpProxies/computetargethttpproxy-28i6nma6sbu9b?alt=json
+      method: DELETE
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "kind": "compute#operation",
+          "id": "6438775455817666533",
+          "name": "operation-1714008330104-616e1a9a86f45-cbd84728-a237f0ce",
+          "operationType": "delete",
+          "targetLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/targetHttpProxies/computetargethttpproxy-28i6nma6sbu9b",
+          "targetId": "2693340253154184752",
+          "status": "RUNNING",
+          "user": "integration-test@example-project.iam.gserviceaccount.com",
+          "progress": 0,
+          "insertTime": "2024-04-24T18:25:30.569-07:00",
+          "startTime": "2024-04-24T18:25:30.581-07:00",
+          "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1714008330104-616e1a9a86f45-cbd84728-a237f0ce"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 665.725592ms
+  - id: 49
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/forwardingRules/computeglobalforwardingrule-28i6nma6sbu9b?alt=json
+      method: DELETE
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "kind": "compute#operation",
+          "id": "3049989960842350565",
+          "name": "operation-1714008330098-616e1a9a857c8-6acc8997-10f94792",
+          "operationType": "delete",
+          "targetLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/forwardingRules/computeglobalforwardingrule-28i6nma6sbu9b",
+          "targetId": "4886757618607197699",
+          "status": "RUNNING",
+          "user": "integration-test@example-project.iam.gserviceaccount.com",
+          "progress": 0,
+          "insertTime": "2024-04-24T18:25:30.760-07:00",
+          "startTime": "2024-04-24T18:25:30.772-07:00",
+          "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1714008330098-616e1a9a857c8-6acc8997-10f94792"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 914.879232ms
+  - id: 50
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/targetHttpProxies/computetargethttpproxy-2-28i6nma6sbu9b?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "kind": "compute#targetHttpProxy",
+          "id": "6659338291508416015",
+          "creationTimestamp": "2024-04-24T18:24:48.060-07:00",
+          "name": "computetargethttpproxy-2-28i6nma6sbu9b",
+          "description": "other test description",
+          "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/targetHttpProxies/computetargethttpproxy-2-28i6nma6sbu9b",
+          "urlMap": "https://www.googleapis.com/compute/beta/projects/example-project/global/urlMaps/computeurlmap-28i6nma6sbu9b",
+          "fingerprint": "exc36eCFud4="
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 153.89151ms
+  - id: 51
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/urlMaps/computeurlmap-28i6nma6sbu9b?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "kind": "compute#urlMap",
+          "id": "7511393523099504178",
+          "creationTimestamp": "2024-04-24T18:24:45.528-07:00",
+          "name": "computeurlmap-28i6nma6sbu9b",
+          "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/urlMaps/computeurlmap-28i6nma6sbu9b",
+          "defaultService": "https://www.googleapis.com/compute/beta/projects/example-project/global/backendServices/computebackendservice-28i6nma6sbu9b",
+          "fingerprint": "whqJJusJgr4="
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 144.755169ms
+  - id: 52
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/healthChecks/computehealthcheck-28i6nma6sbu9b?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "kind": "compute#healthCheck",
+          "id": "6635534191184580140",
+          "creationTimestamp": "2024-04-24T18:24:19.357-07:00",
+          "name": "computehealthcheck-28i6nma6sbu9b",
+          "checkIntervalSec": 10,
+          "timeoutSec": 5,
+          "unhealthyThreshold": 2,
+          "healthyThreshold": 2,
+          "type": "HTTP",
+          "httpHealthCheck": {
+            "port": 80,
+            "requestPath": "/",
+            "proxyHeader": "NONE"
+          },
+          "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/healthChecks/computehealthcheck-28i6nma6sbu9b"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 157.53469ms
+  - id: 53
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/backendServices/computebackendservice-28i6nma6sbu9b?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "kind": "compute#backendService",
+          "id": "3837652031959731753",
+          "creationTimestamp": "2024-04-24T18:24:22.200-07:00",
+          "name": "computebackendservice-28i6nma6sbu9b",
+          "description": "",
+          "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/backendServices/computebackendservice-28i6nma6sbu9b",
+          "healthChecks": [
+            "https://www.googleapis.com/compute/beta/projects/example-project/global/healthChecks/computehealthcheck-28i6nma6sbu9b"
+          ],
+          "timeoutSec": 30,
+          "port": 80,
+          "protocol": "HTTP",
+          "fingerprint": "XKSLLLLPkmo=",
+          "portName": "http",
+          "sessionAffinity": "NONE",
+          "affinityCookieTtlSec": 0,
+          "loadBalancingScheme": "INTERNAL_SELF_MANAGED",
+          "connectionDraining": {
+            "drainingTimeoutSec": 300
+          },
+          "iap": {
+            "enabled": false,
+            "oauth2ClientId": "",
+            "oauth2ClientSecretSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "usedBy": [
+            {
+              "reference": "https://www.googleapis.com/compute/beta/projects/example-project/global/urlMaps/computeurlmap-28i6nma6sbu9b"
+            }
+          ]
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 246.313606ms
+  - id: 54
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/healthChecks/computehealthcheck-28i6nma6sbu9b?alt=json
+      method: DELETE
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 400 Bad Request
+      code: 400
+      duration: 242.833418ms
+  - id: 55
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/urlMaps/computeurlmap-28i6nma6sbu9b?alt=json
+      method: DELETE
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 400 Bad Request
+      code: 400
+      duration: 480.915071ms
+  - id: 56
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/targetHttpProxies/computetargethttpproxy-2-28i6nma6sbu9b?alt=json
+      method: DELETE
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 400 Bad Request
+      code: 400
+      duration: 573.001451ms
+  - id: 57
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/backendServices/computebackendservice-28i6nma6sbu9b?alt=json
+      method: DELETE
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 400 Bad Request
+      code: 400
+      duration: 463.061353ms
+  - id: 58
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/healthChecks/computehealthcheck-28i6nma6sbu9b?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "kind": "compute#healthCheck",
+          "id": "6635534191184580140",
+          "creationTimestamp": "2024-04-24T18:24:19.357-07:00",
+          "name": "computehealthcheck-28i6nma6sbu9b",
+          "checkIntervalSec": 10,
+          "timeoutSec": 5,
+          "unhealthyThreshold": 2,
+          "healthyThreshold": 2,
+          "type": "HTTP",
+          "httpHealthCheck": {
+            "port": 80,
+            "requestPath": "/",
+            "proxyHeader": "NONE"
+          },
+          "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/healthChecks/computehealthcheck-28i6nma6sbu9b"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 147.293132ms
+  - id: 59
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/urlMaps/computeurlmap-28i6nma6sbu9b?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "kind": "compute#urlMap",
+          "id": "7511393523099504178",
+          "creationTimestamp": "2024-04-24T18:24:45.528-07:00",
+          "name": "computeurlmap-28i6nma6sbu9b",
+          "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/urlMaps/computeurlmap-28i6nma6sbu9b",
+          "defaultService": "https://www.googleapis.com/compute/beta/projects/example-project/global/backendServices/computebackendservice-28i6nma6sbu9b",
+          "fingerprint": "whqJJusJgr4="
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 152.901372ms
+  - id: 60
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/healthChecks/computehealthcheck-28i6nma6sbu9b?alt=json
+      method: DELETE
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 400 Bad Request
+      code: 400
+      duration: 291.808338ms
+  - id: 61
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/backendServices/computebackendservice-28i6nma6sbu9b?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "kind": "compute#backendService",
+          "id": "3837652031959731753",
+          "creationTimestamp": "2024-04-24T18:24:22.200-07:00",
+          "name": "computebackendservice-28i6nma6sbu9b",
+          "description": "",
+          "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/backendServices/computebackendservice-28i6nma6sbu9b",
+          "healthChecks": [
+            "https://www.googleapis.com/compute/beta/projects/example-project/global/healthChecks/computehealthcheck-28i6nma6sbu9b"
+          ],
+          "timeoutSec": 30,
+          "port": 80,
+          "protocol": "HTTP",
+          "fingerprint": "XKSLLLLPkmo=",
+          "portName": "http",
+          "sessionAffinity": "NONE",
+          "affinityCookieTtlSec": 0,
+          "loadBalancingScheme": "INTERNAL_SELF_MANAGED",
+          "connectionDraining": {
+            "drainingTimeoutSec": 300
+          },
+          "iap": {
+            "enabled": false,
+            "oauth2ClientId": "",
+            "oauth2ClientSecretSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "usedBy": [
+            {
+              "reference": "https://www.googleapis.com/compute/beta/projects/example-project/global/urlMaps/computeurlmap-28i6nma6sbu9b"
+            }
+          ]
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 132.177801ms
+  - id: 62
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/targetHttpProxies/computetargethttpproxy-2-28i6nma6sbu9b?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "kind": "compute#targetHttpProxy",
+          "id": "6659338291508416015",
+          "creationTimestamp": "2024-04-24T18:24:48.060-07:00",
+          "name": "computetargethttpproxy-2-28i6nma6sbu9b",
+          "description": "other test description",
+          "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/targetHttpProxies/computetargethttpproxy-2-28i6nma6sbu9b",
+          "urlMap": "https://www.googleapis.com/compute/beta/projects/example-project/global/urlMaps/computeurlmap-28i6nma6sbu9b",
+          "fingerprint": "exc36eCFud4="
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 211.32657ms
+  - id: 63
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/urlMaps/computeurlmap-28i6nma6sbu9b?alt=json
+      method: DELETE
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 400 Bad Request
+      code: 400
+      duration: 456.29314ms
+  - id: 64
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/targetHttpProxies/computetargethttpproxy-2-28i6nma6sbu9b?alt=json
+      method: DELETE
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 400 Bad Request
+      code: 400
+      duration: 415.208332ms
+  - id: 65
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/backendServices/computebackendservice-28i6nma6sbu9b?alt=json
+      method: DELETE
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 400 Bad Request
+      code: 400
+      duration: 596.544788ms
+  - id: 66
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        X-Goog-Api-Client:
+          - gl-go/1.21.5 gdcl/0.160.0
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1714008330104-616e1a9a86f45-cbd84728-a237f0ce?alt=json&prettyPrint=false
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: '{"kind":"compute#operation","id":"6438775455817666533","name":"operation-1714008330104-616e1a9a86f45-cbd84728-a237f0ce","operationType":"delete","targetLink":"https://www.googleapis.com/compute/beta/projects/example-project/global/targetHttpProxies/computetargethttpproxy-28i6nma6sbu9b","targetId":"2693340253154184752","status":"DONE","user":"integration-test@example-project.iam.gserviceaccount.com","progress":100,"insertTime":"2024-04-24T18:25:30.569-07:00","startTime":"2024-04-24T18:25:30.581-07:00","endTime":"2024-04-24T18:25:31.996-07:00","selfLink":"https://www.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1714008330104-616e1a9a86f45-cbd84728-a237f0ce"}'
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 140.83765ms
+  - id: 67
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        X-Goog-Api-Client:
+          - gl-go/1.21.5 gdcl/0.160.0
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1714008330098-616e1a9a857c8-6acc8997-10f94792?alt=json&prettyPrint=false
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: '{"kind":"compute#operation","id":"3049989960842350565","name":"operation-1714008330098-616e1a9a857c8-6acc8997-10f94792","operationType":"delete","targetLink":"https://www.googleapis.com/compute/beta/projects/example-project/global/forwardingRules/computeglobalforwardingrule-28i6nma6sbu9b","targetId":"4886757618607197699","status":"DONE","user":"integration-test@example-project.iam.gserviceaccount.com","progress":100,"insertTime":"2024-04-24T18:25:30.760-07:00","startTime":"2024-04-24T18:25:30.772-07:00","endTime":"2024-04-24T18:25:42.543-07:00","selfLink":"https://www.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1714008330098-616e1a9a857c8-6acc8997-10f94792"}'
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 276.780073ms
+  - id: 68
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/healthChecks/computehealthcheck-28i6nma6sbu9b?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "kind": "compute#healthCheck",
+          "id": "6635534191184580140",
+          "creationTimestamp": "2024-04-24T18:24:19.357-07:00",
+          "name": "computehealthcheck-28i6nma6sbu9b",
+          "checkIntervalSec": 10,
+          "timeoutSec": 5,
+          "unhealthyThreshold": 2,
+          "healthyThreshold": 2,
+          "type": "HTTP",
+          "httpHealthCheck": {
+            "port": 80,
+            "requestPath": "/",
+            "proxyHeader": "NONE"
+          },
+          "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/healthChecks/computehealthcheck-28i6nma6sbu9b"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 178.435316ms
+  - id: 69
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/healthChecks/computehealthcheck-28i6nma6sbu9b?alt=json
+      method: DELETE
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 400 Bad Request
+      code: 400
+      duration: 246.691444ms
+  - id: 70
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/urlMaps/computeurlmap-28i6nma6sbu9b?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "kind": "compute#urlMap",
+          "id": "7511393523099504178",
+          "creationTimestamp": "2024-04-24T18:24:45.528-07:00",
+          "name": "computeurlmap-28i6nma6sbu9b",
+          "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/urlMaps/computeurlmap-28i6nma6sbu9b",
+          "defaultService": "https://www.googleapis.com/compute/beta/projects/example-project/global/backendServices/computebackendservice-28i6nma6sbu9b",
+          "fingerprint": "whqJJusJgr4="
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 130.882593ms
+  - id: 71
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/targetHttpProxies/computetargethttpproxy-2-28i6nma6sbu9b?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "kind": "compute#targetHttpProxy",
+          "id": "6659338291508416015",
+          "creationTimestamp": "2024-04-24T18:24:48.060-07:00",
+          "name": "computetargethttpproxy-2-28i6nma6sbu9b",
+          "description": "other test description",
+          "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/targetHttpProxies/computetargethttpproxy-2-28i6nma6sbu9b",
+          "urlMap": "https://www.googleapis.com/compute/beta/projects/example-project/global/urlMaps/computeurlmap-28i6nma6sbu9b",
+          "fingerprint": "exc36eCFud4="
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 132.421681ms
+  - id: 72
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/backendServices/computebackendservice-28i6nma6sbu9b?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "kind": "compute#backendService",
+          "id": "3837652031959731753",
+          "creationTimestamp": "2024-04-24T18:24:22.200-07:00",
+          "name": "computebackendservice-28i6nma6sbu9b",
+          "description": "",
+          "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/backendServices/computebackendservice-28i6nma6sbu9b",
+          "healthChecks": [
+            "https://www.googleapis.com/compute/beta/projects/example-project/global/healthChecks/computehealthcheck-28i6nma6sbu9b"
+          ],
+          "timeoutSec": 30,
+          "port": 80,
+          "protocol": "HTTP",
+          "fingerprint": "XKSLLLLPkmo=",
+          "portName": "http",
+          "sessionAffinity": "NONE",
+          "affinityCookieTtlSec": 0,
+          "loadBalancingScheme": "INTERNAL_SELF_MANAGED",
+          "connectionDraining": {
+            "drainingTimeoutSec": 300
+          },
+          "iap": {
+            "enabled": false,
+            "oauth2ClientId": "",
+            "oauth2ClientSecretSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "usedBy": [
+            {
+              "reference": "https://www.googleapis.com/compute/beta/projects/example-project/global/urlMaps/computeurlmap-28i6nma6sbu9b"
+            }
+          ]
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 140.449401ms
+  - id: 73
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/urlMaps/computeurlmap-28i6nma6sbu9b?alt=json
+      method: DELETE
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 400 Bad Request
+      code: 400
+      duration: 470.432714ms
+  - id: 74
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/targetHttpProxies/computetargethttpproxy-2-28i6nma6sbu9b?alt=json
+      method: DELETE
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "kind": "compute#operation",
+          "id": "3342953807566081992",
+          "name": "operation-1714008358762-616e1ab5db9e3-d475fe45-2b537a65",
+          "operationType": "delete",
+          "targetLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/targetHttpProxies/computetargethttpproxy-2-28i6nma6sbu9b",
+          "targetId": "6659338291508416015",
+          "status": "RUNNING",
+          "user": "integration-test@example-project.iam.gserviceaccount.com",
+          "progress": 0,
+          "insertTime": "2024-04-24T18:25:59.112-07:00",
+          "startTime": "2024-04-24T18:25:59.124-07:00",
+          "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1714008358762-616e1ab5db9e3-d475fe45-2b537a65"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 531.757555ms
+  - id: 75
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/backendServices/computebackendservice-28i6nma6sbu9b?alt=json
+      method: DELETE
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 400 Bad Request
+      code: 400
+      duration: 628.688658ms
+  - id: 76
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        X-Goog-Api-Client:
+          - gl-go/1.21.5 gdcl/0.160.0
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1714008358762-616e1ab5db9e3-d475fe45-2b537a65?alt=json&prettyPrint=false
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: '{"kind":"compute#operation","id":"3342953807566081992","name":"operation-1714008358762-616e1ab5db9e3-d475fe45-2b537a65","operationType":"delete","targetLink":"https://www.googleapis.com/compute/beta/projects/example-project/global/targetHttpProxies/computetargethttpproxy-2-28i6nma6sbu9b","targetId":"6659338291508416015","status":"DONE","user":"integration-test@example-project.iam.gserviceaccount.com","progress":100,"insertTime":"2024-04-24T18:25:59.112-07:00","startTime":"2024-04-24T18:25:59.124-07:00","endTime":"2024-04-24T18:26:00.197-07:00","selfLink":"https://www.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1714008358762-616e1ab5db9e3-d475fe45-2b537a65"}'
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 150.833607ms
+  - id: 77
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/healthChecks/computehealthcheck-28i6nma6sbu9b?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "kind": "compute#healthCheck",
+          "id": "6635534191184580140",
+          "creationTimestamp": "2024-04-24T18:24:19.357-07:00",
+          "name": "computehealthcheck-28i6nma6sbu9b",
+          "checkIntervalSec": 10,
+          "timeoutSec": 5,
+          "unhealthyThreshold": 2,
+          "healthyThreshold": 2,
+          "type": "HTTP",
+          "httpHealthCheck": {
+            "port": 80,
+            "requestPath": "/",
+            "proxyHeader": "NONE"
+          },
+          "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/healthChecks/computehealthcheck-28i6nma6sbu9b"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 168.81464ms
+  - id: 78
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/healthChecks/computehealthcheck-28i6nma6sbu9b?alt=json
+      method: DELETE
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 400 Bad Request
+      code: 400
+      duration: 339.253782ms
+  - id: 79
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/urlMaps/computeurlmap-28i6nma6sbu9b?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "kind": "compute#urlMap",
+          "id": "7511393523099504178",
+          "creationTimestamp": "2024-04-24T18:24:45.528-07:00",
+          "name": "computeurlmap-28i6nma6sbu9b",
+          "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/urlMaps/computeurlmap-28i6nma6sbu9b",
+          "defaultService": "https://www.googleapis.com/compute/beta/projects/example-project/global/backendServices/computebackendservice-28i6nma6sbu9b",
+          "fingerprint": "whqJJusJgr4="
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 223.22591ms
+  - id: 80
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/backendServices/computebackendservice-28i6nma6sbu9b?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "kind": "compute#backendService",
+          "id": "3837652031959731753",
+          "creationTimestamp": "2024-04-24T18:24:22.200-07:00",
+          "name": "computebackendservice-28i6nma6sbu9b",
+          "description": "",
+          "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/backendServices/computebackendservice-28i6nma6sbu9b",
+          "healthChecks": [
+            "https://www.googleapis.com/compute/beta/projects/example-project/global/healthChecks/computehealthcheck-28i6nma6sbu9b"
+          ],
+          "timeoutSec": 30,
+          "port": 80,
+          "protocol": "HTTP",
+          "fingerprint": "XKSLLLLPkmo=",
+          "portName": "http",
+          "sessionAffinity": "NONE",
+          "affinityCookieTtlSec": 0,
+          "loadBalancingScheme": "INTERNAL_SELF_MANAGED",
+          "connectionDraining": {
+            "drainingTimeoutSec": 300
+          },
+          "iap": {
+            "enabled": false,
+            "oauth2ClientId": "",
+            "oauth2ClientSecretSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "usedBy": [
+            {
+              "reference": "https://www.googleapis.com/compute/beta/projects/example-project/global/urlMaps/computeurlmap-28i6nma6sbu9b"
+            }
+          ]
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 153.805403ms
+  - id: 81
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/urlMaps/computeurlmap-28i6nma6sbu9b?alt=json
+      method: DELETE
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "kind": "compute#operation",
+          "id": "8655814243750514599",
+          "name": "operation-1714008391964-616e1ad58565b-64534a1b-a1b15f77",
+          "operationType": "delete",
+          "targetLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/urlMaps/computeurlmap-28i6nma6sbu9b",
+          "targetId": "7511393523099504178",
+          "status": "RUNNING",
+          "user": "integration-test@example-project.iam.gserviceaccount.com",
+          "progress": 0,
+          "insertTime": "2024-04-24T18:26:32.510-07:00",
+          "startTime": "2024-04-24T18:26:32.519-07:00",
+          "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1714008391964-616e1ad58565b-64534a1b-a1b15f77"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 847.180314ms
+  - id: 82
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/backendServices/computebackendservice-28i6nma6sbu9b?alt=json
+      method: DELETE
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 400 Bad Request
+      code: 400
+      duration: 643.79084ms
+  - id: 83
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        X-Goog-Api-Client:
+          - gl-go/1.21.5 gdcl/0.160.0
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1714008391964-616e1ad58565b-64534a1b-a1b15f77?alt=json&prettyPrint=false
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: '{"kind":"compute#operation","id":"8655814243750514599","name":"operation-1714008391964-616e1ad58565b-64534a1b-a1b15f77","operationType":"delete","targetLink":"https://www.googleapis.com/compute/beta/projects/example-project/global/urlMaps/computeurlmap-28i6nma6sbu9b","targetId":"7511393523099504178","status":"DONE","user":"integration-test@example-project.iam.gserviceaccount.com","progress":100,"insertTime":"2024-04-24T18:26:32.510-07:00","startTime":"2024-04-24T18:26:32.519-07:00","endTime":"2024-04-24T18:26:33.664-07:00","selfLink":"https://www.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1714008391964-616e1ad58565b-64534a1b-a1b15f77"}'
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 222.950308ms
+  - id: 84
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/healthChecks/computehealthcheck-28i6nma6sbu9b?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "kind": "compute#healthCheck",
+          "id": "6635534191184580140",
+          "creationTimestamp": "2024-04-24T18:24:19.357-07:00",
+          "name": "computehealthcheck-28i6nma6sbu9b",
+          "checkIntervalSec": 10,
+          "timeoutSec": 5,
+          "unhealthyThreshold": 2,
+          "healthyThreshold": 2,
+          "type": "HTTP",
+          "httpHealthCheck": {
+            "port": 80,
+            "requestPath": "/",
+            "proxyHeader": "NONE"
+          },
+          "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/healthChecks/computehealthcheck-28i6nma6sbu9b"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 148.285413ms
+  - id: 85
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/healthChecks/computehealthcheck-28i6nma6sbu9b?alt=json
+      method: DELETE
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 400 Bad Request
+      code: 400
+      duration: 233.789919ms
+  - id: 86
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/backendServices/computebackendservice-28i6nma6sbu9b?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "kind": "compute#backendService",
+          "id": "3837652031959731753",
+          "creationTimestamp": "2024-04-24T18:24:22.200-07:00",
+          "name": "computebackendservice-28i6nma6sbu9b",
+          "description": "",
+          "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/backendServices/computebackendservice-28i6nma6sbu9b",
+          "healthChecks": [
+            "https://www.googleapis.com/compute/beta/projects/example-project/global/healthChecks/computehealthcheck-28i6nma6sbu9b"
+          ],
+          "timeoutSec": 30,
+          "port": 80,
+          "protocol": "HTTP",
+          "fingerprint": "XKSLLLLPkmo=",
+          "portName": "http",
+          "sessionAffinity": "NONE",
+          "affinityCookieTtlSec": 0,
+          "loadBalancingScheme": "INTERNAL_SELF_MANAGED",
+          "connectionDraining": {
+            "drainingTimeoutSec": 300
+          },
+          "iap": {
+            "enabled": false,
+            "oauth2ClientId": "",
+            "oauth2ClientSecretSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 239.522394ms
+  - id: 87
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/backendServices/computebackendservice-28i6nma6sbu9b?alt=json
+      method: DELETE
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "kind": "compute#operation",
+          "id": "478349941283229541",
+          "name": "operation-1714008458491-616e1b14f7483-de31e4a0-58c95c34",
+          "operationType": "delete",
+          "targetLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/backendServices/computebackendservice-28i6nma6sbu9b",
+          "targetId": "3837652031959731753",
+          "status": "RUNNING",
+          "user": "integration-test@example-project.iam.gserviceaccount.com",
+          "progress": 0,
+          "insertTime": "2024-04-24T18:27:38.866-07:00",
+          "startTime": "2024-04-24T18:27:38.874-07:00",
+          "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1714008458491-616e1b14f7483-de31e4a0-58c95c34"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 586.433761ms
+  - id: 88
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        X-Goog-Api-Client:
+          - gl-go/1.21.5 gdcl/0.160.0
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1714008458491-616e1b14f7483-de31e4a0-58c95c34?alt=json&prettyPrint=false
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: '{"kind":"compute#operation","id":"478349941283229541","name":"operation-1714008458491-616e1b14f7483-de31e4a0-58c95c34","operationType":"delete","targetLink":"https://www.googleapis.com/compute/beta/projects/example-project/global/backendServices/computebackendservice-28i6nma6sbu9b","targetId":"3837652031959731753","status":"DONE","user":"integration-test@example-project.iam.gserviceaccount.com","progress":100,"insertTime":"2024-04-24T18:27:38.866-07:00","startTime":"2024-04-24T18:27:38.874-07:00","endTime":"2024-04-24T18:27:51.413-07:00","selfLink":"https://www.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1714008458491-616e1b14f7483-de31e4a0-58c95c34"}'
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 262.705952ms
+  - id: 89
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/healthChecks/computehealthcheck-28i6nma6sbu9b?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "kind": "compute#healthCheck",
+          "id": "6635534191184580140",
+          "creationTimestamp": "2024-04-24T18:24:19.357-07:00",
+          "name": "computehealthcheck-28i6nma6sbu9b",
+          "checkIntervalSec": 10,
+          "timeoutSec": 5,
+          "unhealthyThreshold": 2,
+          "healthyThreshold": 2,
+          "type": "HTTP",
+          "httpHealthCheck": {
+            "port": 80,
+            "requestPath": "/",
+            "proxyHeader": "NONE"
+          },
+          "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/healthChecks/computehealthcheck-28i6nma6sbu9b"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 190.206687ms
+  - id: 90
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/healthChecks/computehealthcheck-28i6nma6sbu9b?alt=json
+      method: DELETE
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "kind": "compute#operation",
+          "id": "1189922341719903471",
+          "name": "operation-1714008576716-616e1b85b6fd0-c54d1ed0-3b1dab82",
+          "operationType": "delete",
+          "targetLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/healthChecks/computehealthcheck-28i6nma6sbu9b",
+          "targetId": "6635534191184580140",
+          "status": "RUNNING",
+          "user": "integration-test@example-project.iam.gserviceaccount.com",
+          "progress": 0,
+          "insertTime": "2024-04-24T18:29:36.966-07:00",
+          "startTime": "2024-04-24T18:29:36.994-07:00",
+          "selfLink": "https://www.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1714008576716-616e1b85b6fd0-c54d1ed0-3b1dab82"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 582.030738ms
+  - id: 91
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: compute.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        X-Goog-Api-Client:
+          - gl-go/1.21.5 gdcl/0.160.0
+      url: https://compute.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1714008576716-616e1b85b6fd0-c54d1ed0-3b1dab82?alt=json&prettyPrint=false
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: '{"kind":"compute#operation","id":"1189922341719903471","name":"operation-1714008576716-616e1b85b6fd0-c54d1ed0-3b1dab82","operationType":"delete","targetLink":"https://www.googleapis.com/compute/beta/projects/example-project/global/healthChecks/computehealthcheck-28i6nma6sbu9b","targetId":"6635534191184580140","status":"DONE","user":"integration-test@example-project.iam.gserviceaccount.com","progress":100,"insertTime":"2024-04-24T18:29:36.966-07:00","startTime":"2024-04-24T18:29:36.994-07:00","endTime":"2024-04-24T18:29:39.917-07:00","selfLink":"https://www.googleapis.com/compute/beta/projects/example-project/global/operations/operation-1714008576716-616e1b85b6fd0-c54d1ed0-3b1dab82"}'
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 245.699137ms

@@ -1,0 +1,23 @@
+{
+  "name": "{{name}}",
+  "project": "{{project}}",
+  "goal": 0.9,
+  "displayName": "{{displayname}}",
+  "rollingPeriod": "86400s",
+  "userLabels":{
+    "test1":"value1"
+  },
+  "service":"{{ref:basic.service.json:name}}",
+  "serviceLevelIndicator":{
+    "windowsBased":{
+      "windowPeriod": "60s",
+      "metricMeanInRange": {
+        "timeSeries": "project = {{project}}\nresource.type=\"gce_instance\" \nmetric.type=\"compute.googleapis.com/instance/cpu/usage_time\"",
+        "range": {
+          "min": 50,
+          "max": 100
+        }
+      }
+    }
+  }
+}

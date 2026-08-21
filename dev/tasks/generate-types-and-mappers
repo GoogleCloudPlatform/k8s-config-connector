@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+cd ${REPO_ROOT}
+
+pushd dev/tools/controllerbuilder > /dev/null
+./generate-proto.sh
+# Dynamically discover and pre-warm any custom PROTO_SHA referenced in apis/*/generate.sh
+for sha in $(grep -E "PROTO_SHA=" ${REPO_ROOT}/apis/*/generate.sh 2>/dev/null | cut -d"=" -f2 | tr -d "\"'" | sort -u); do
+  if [ -n "${sha}" ]; then
+    echo "Pre-warming custom proto SHA: ${sha}"
+    ./generate-proto.sh "${sha}"
+  fi
+done
+popd > /dev/null
+
+# Prebuild controllerbuilder for fast execution across all services
+export CONTROLLERBUILDER="${REPO_ROOT}/bin/controllerbuilder"
+if [[ ! -x "${CONTROLLERBUILDER}" ]]; then
+  echo "Prebuilding controllerbuilder..."
+  go build -o "${CONTROLLERBUILDER}" ./dev/tools/controllerbuilder
+fi
+
+# For efficiency, we generate CRDs only once at the end
+export SKIP_GENERATE_CRDS=1
+export SKIP_GENERATE_PROTOS=1
+
+for f in $(find apis -name "generate.sh" | sort); do
+    if [[ "${f}" == *"backupdr"* || "${f}" == *"bigquerybiglake"* || "${f}" == *"bigtable"* || "${f}" == *"composer"* || "${f}" == *"contentwarehouse"* || "${f}" == *"datastream"* || "${f}" == *"discoveryengine"* || "${f}" == *"documentai"* || "${f}" == *"edgecontainer"* || "${f}" == *"gkebackup"* || "${f}" == *"orgpolicy"* || "${f}" == *"speech"* || "${f}" == *"tpu"* || "${f}" == *"vertexai"* || "${f}" == *"vmwareengine"* ]]; then
+        echo "Skipping ${f}"
+        continue
+    fi
+    echo "running ${f}"
+    (cd "${REPO_ROOT}" && ./"${f}")
+done
+
+# Now we generate CRDs
+unset SKIP_GENERATE_CRDS
+unset SKIP_GENERATE_PROTOS
+echo "Cleaning Go build cache to prevent stale metadata compilation issues"
+go clean -cache
+echo "Generating CRDs"
+dev/tasks/generate-crds

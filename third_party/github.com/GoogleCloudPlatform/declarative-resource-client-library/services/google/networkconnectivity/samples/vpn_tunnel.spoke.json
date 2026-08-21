@@ -1,0 +1,10 @@
+{
+  "name": "{{spoke}}",
+  "project": "{{ref:networkconnectivity.serviceusage.service.json:project}}",
+  "location": "{{region}}",
+  "hub": "projects/{{ref:networkconnectivity.serviceusage.service.json:project}}/locations/global/hubs/{{ref:basic.hub.json:name}}",
+  "linkedVpnTunnels": {
+    "uris": ["{{ref:gw1_if0.compute.vpn_tunnel.json:selfLink}}"],
+    "siteToSiteDataTransfer": true
+  }
+}

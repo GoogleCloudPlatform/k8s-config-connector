@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: iam.cnrm.cloud.google.com
+  kind: IAMPolicy
+  name: iamexternalonlyref-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

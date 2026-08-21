@@ -1,0 +1,24 @@
+1,2c1
+< GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
+< Content-Type: application/json
+---
+> GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
+31c30
+< POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets?alt=json
+---
+> POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets?alt=json&prettyPrint=false
+94,95c93
+< GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
+< Content-Type: application/json
+---
+> GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
+1283,1284c1281
+< GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
+< Content-Type: application/json
+---
+> GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
+1336,1337c1333
+< DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&deleteContents=false
+< Content-Type: application/json
+---
+> DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&deleteContents=false&prettyPrint=false

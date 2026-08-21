@@ -1,0 +1,14 @@
+conditions:
+- lastTransitionTime: string
+  message: string
+  reason: string
+  status: string
+  type: string
+cpuPlatform: string
+currentStatus: string
+instanceId: string
+labelFingerprint: string
+metadataFingerprint: string
+observedGeneration: integer
+selfLink: string
+tagsFingerprint: string

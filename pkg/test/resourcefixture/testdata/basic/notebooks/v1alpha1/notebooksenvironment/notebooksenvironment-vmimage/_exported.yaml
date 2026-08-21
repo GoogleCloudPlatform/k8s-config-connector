@@ -1,0 +1,12 @@
+apiVersion: notebooks.cnrm.cloud.google.com/v1alpha1
+kind: NotebooksEnvironment
+metadata:
+  name: notebooksenvironment-${uniqueId}
+spec:
+  location: us-west1-a
+  projectRef:
+    external: ${projectId}
+  resourceID: notebooksenvironment-${uniqueId}
+  vmImage:
+    imageFamily: tf-latest-cpu
+    project: deeplearning-platform-release

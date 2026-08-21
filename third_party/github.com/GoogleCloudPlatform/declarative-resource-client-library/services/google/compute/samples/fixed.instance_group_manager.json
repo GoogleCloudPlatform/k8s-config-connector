@@ -1,0 +1,22 @@
+{
+  "name": "{{manager}}",
+  "project": "{{project}}",
+  "location": "{{region}}",
+  "targetSize": 1,
+  "versions": [
+    {
+      "name": "sample-version-1",
+      "instanceTemplate": "{{ref:first.instance_template.json:selfLink}}",
+      "targetSize": {
+        "fixed": 1
+      }
+    },
+    {
+      "name": "sample-version-2",
+      "instanceTemplate": "{{ref:first.instance_template.json:selfLink}}"
+    }
+  ],
+  "updatePolicy": {
+    "instanceRedistributionType": "PROACTIVE"
+  }
+}

@@ -1,0 +1,111 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum IamAlphaWorkforcePoolProviderStateEnum {
+  IamAlphaWorkforcePoolProviderStateEnumNO_VALUE_DO_NOT_USE = 0;
+  IamAlphaWorkforcePoolProviderStateEnumSTATE_UNSPECIFIED = 1;
+  IamAlphaWorkforcePoolProviderStateEnumACTIVE = 2;
+  IamAlphaWorkforcePoolProviderStateEnumDELETED = 3;
+}
+
+enum IamAlphaWorkforcePoolProviderOidcWebSsoConfigResponseTypeEnum {
+  IamAlphaWorkforcePoolProviderOidcWebSsoConfigResponseTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  IamAlphaWorkforcePoolProviderOidcWebSsoConfigResponseTypeEnumRESPONSE_TYPE_UNSPECIFIED = 1;
+  IamAlphaWorkforcePoolProviderOidcWebSsoConfigResponseTypeEnumCODE = 2;
+  IamAlphaWorkforcePoolProviderOidcWebSsoConfigResponseTypeEnumID_TOKEN = 3;
+}
+
+enum IamAlphaWorkforcePoolProviderOidcWebSsoConfigAssertionClaimsBehaviorEnum {
+  IamAlphaWorkforcePoolProviderOidcWebSsoConfigAssertionClaimsBehaviorEnumNO_VALUE_DO_NOT_USE = 0;
+  IamAlphaWorkforcePoolProviderOidcWebSsoConfigAssertionClaimsBehaviorEnumASSERTION_CLAIMS_BEHAVIOR_UNSPECIFIED = 1;
+  IamAlphaWorkforcePoolProviderOidcWebSsoConfigAssertionClaimsBehaviorEnumMERGE_USER_INFO_OVER_ID_TOKEN_CLAIMS = 2;
+  IamAlphaWorkforcePoolProviderOidcWebSsoConfigAssertionClaimsBehaviorEnumONLY_ID_TOKEN_CLAIMS = 3;
+}
+
+message IamAlphaWorkforcePoolProvider {
+  string name = 1;
+  string display_name = 2;
+  string description = 3;
+  IamAlphaWorkforcePoolProviderStateEnum state = 4;
+  bool disabled = 5;
+  map<string, string> attribute_mapping = 6;
+  string attribute_condition = 7;
+  IamAlphaWorkforcePoolProviderSaml saml = 8;
+  IamAlphaWorkforcePoolProviderOidc oidc = 9;
+  string location = 10;
+  string workforce_pool = 11;
+}
+
+message IamAlphaWorkforcePoolProviderSaml {
+  string idp_metadata_xml = 1;
+}
+
+message IamAlphaWorkforcePoolProviderOidc {
+  string issuer_uri = 1;
+  string client_id = 2;
+  string jwks_json = 3;
+  IamAlphaWorkforcePoolProviderOidcWebSsoConfig web_sso_config = 4;
+  IamAlphaWorkforcePoolProviderOidcClientSecret client_secret = 5;
+}
+
+message IamAlphaWorkforcePoolProviderOidcWebSsoConfig {
+  IamAlphaWorkforcePoolProviderOidcWebSsoConfigResponseTypeEnum response_type = 1;
+  IamAlphaWorkforcePoolProviderOidcWebSsoConfigAssertionClaimsBehaviorEnum assertion_claims_behavior = 2;
+  repeated string additional_scopes = 3;
+}
+
+message IamAlphaWorkforcePoolProviderOidcClientSecret {
+  IamAlphaWorkforcePoolProviderOidcClientSecretValue value = 1;
+}
+
+message IamAlphaWorkforcePoolProviderOidcClientSecretValue {
+  string plain_text = 1;
+  string thumbprint = 2;
+}
+
+message ApplyIamAlphaWorkforcePoolProviderRequest {
+  IamAlphaWorkforcePoolProvider resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteIamAlphaWorkforcePoolProviderRequest {
+  string service_account_file = 1;
+  IamAlphaWorkforcePoolProvider resource = 2;
+}
+
+message ListIamAlphaWorkforcePoolProviderRequest {
+  string service_account_file = 1;
+  string Location = 2;
+  string WorkforcePool = 3;
+}
+
+message ListIamAlphaWorkforcePoolProviderResponse {
+  repeated IamAlphaWorkforcePoolProvider items = 1;
+}
+
+service IamAlphaWorkforcePoolProviderService {
+  rpc ApplyIamAlphaWorkforcePoolProvider(ApplyIamAlphaWorkforcePoolProviderRequest) returns (IamAlphaWorkforcePoolProvider);
+  rpc DeleteIamAlphaWorkforcePoolProvider(DeleteIamAlphaWorkforcePoolProviderRequest) returns (google.protobuf.Empty);
+  rpc ListIamAlphaWorkforcePoolProvider(ListIamAlphaWorkforcePoolProviderRequest) returns (ListIamAlphaWorkforcePoolProviderResponse);
+}

@@ -1,0 +1,38 @@
+apiVersion: batch.cnrm.cloud.google.com/v1alpha1
+kind: CloudBatchResourceAllowance
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  labels:
+    cnrm-test: "true"
+  name: batchallow-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+  usageResourceAllowance:
+    spec:
+      limit:
+        limit: 100
+      type: cpu-core-hour
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/resourceAllowances/batchallow-${uniqueId}
+  observedGeneration: 1
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    uid: 0123456789abcdef
+    usageResourceAllowance:
+      status:
+        limitStatus:
+          consumed: 0
+          limit: 100
+        state: RESOURCE_ALLOWANCE_ACTIVE

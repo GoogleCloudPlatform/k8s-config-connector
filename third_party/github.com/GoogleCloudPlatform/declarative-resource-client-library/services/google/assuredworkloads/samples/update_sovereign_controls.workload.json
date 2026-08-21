@@ -1,0 +1,11 @@
+{
+  "name": "{{ref:__state__:name}}",
+  "organization": "{{org_id}}",
+  "location": "europe-west9",
+  "displayName": "updated-example",
+  "billingAccount": "billingAccounts/{{billing_account}}",
+  "complianceRegime": "EU_REGIONS_AND_SUPPORT",
+  "labels": {
+    "label-two": "value-two-eu-regions-and-support"
+  }
+}

@@ -1,0 +1,5 @@
+- Service: apikeys v2
+- Official PB package: `cloud.google.com/go/apikeys/apiv2/apikeyspb`
+- Proto files were located in `third_party/googleapis/mockgcp/api/apikeys/v2/`
+- Generated files were in `mockgcp/generated/mockgcp/api/apikeys/v2/`
+- `httptogrpc` successfully handled the transition with minimal changes to implementation code.

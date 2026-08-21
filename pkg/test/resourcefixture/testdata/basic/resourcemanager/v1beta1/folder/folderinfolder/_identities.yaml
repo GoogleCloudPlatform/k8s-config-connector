@@ -1,0 +1,7 @@
+- caisURL: unknown
+  error: not yet supported
+  group: resourcemanager.cnrm.cloud.google.com
+  kind: Folder
+  name: folder-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

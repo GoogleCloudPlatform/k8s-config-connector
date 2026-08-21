@@ -1,0 +1,165 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+enum ContainerBetaNodePoolConfigSandboxConfigTypeEnum {
+  ContainerBetaNodePoolConfigSandboxConfigTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ContainerBetaNodePoolConfigSandboxConfigTypeEnumGVISOR = 1;
+}
+
+enum ContainerBetaNodePoolConfigReservationAffinityConsumeReservationTypeEnum {
+  ContainerBetaNodePoolConfigReservationAffinityConsumeReservationTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ContainerBetaNodePoolConfigReservationAffinityConsumeReservationTypeEnumNO_RESERVATION = 1;
+  ContainerBetaNodePoolConfigReservationAffinityConsumeReservationTypeEnumANY_RESERVATION = 2;
+  ContainerBetaNodePoolConfigReservationAffinityConsumeReservationTypeEnumSPECIFIC_RESERVATION = 3;
+}
+
+enum ContainerBetaNodePoolConditionsCodeEnum {
+  ContainerBetaNodePoolConditionsCodeEnumNO_VALUE_DO_NOT_USE = 0;
+  ContainerBetaNodePoolConditionsCodeEnumUNKNOWN = 1;
+  ContainerBetaNodePoolConditionsCodeEnumGCE_STOCKOUT = 2;
+  ContainerBetaNodePoolConditionsCodeEnumGKE_SERVICE_ACCOUNT_DELETED = 3;
+  ContainerBetaNodePoolConditionsCodeEnumGCE_QUOTA_EXCEEDED = 4;
+  ContainerBetaNodePoolConditionsCodeEnumSET_BY_OPERATOR = 5;
+}
+
+message ContainerBetaNodePool {
+  string name = 1;
+  ContainerBetaNodePoolConfig config = 2;
+  int64 node_count = 3;
+  string version = 4;
+  string status = 5;
+  string status_message = 6;
+  repeated string locations = 7;
+  ContainerBetaNodePoolAutoscaling autoscaling = 8;
+  ContainerBetaNodePoolManagement management = 9;
+  ContainerBetaNodePoolMaxPodsConstraint max_pods_constraint = 10;
+  repeated ContainerBetaNodePoolConditions conditions = 11;
+  int64 pod_ipv4_cidr_size = 12;
+  ContainerBetaNodePoolUpgradeSettings upgrade_settings = 13;
+  string cluster = 14;
+  string project = 15;
+  string location = 16;
+}
+
+message ContainerBetaNodePoolConfig {
+  string machine_type = 1;
+  int64 disk_size_gb = 2;
+  repeated string oauth_scopes = 3;
+  string service_account = 4;
+  map<string, string> metadata = 5;
+  string image_type = 6;
+  map<string, string> labels = 7;
+  int64 local_ssd_count = 8;
+  repeated string tags = 9;
+  bool preemptible = 10;
+  repeated ContainerBetaNodePoolConfigAccelerators accelerators = 11;
+  string disk_type = 12;
+  string min_cpu_platform = 13;
+  repeated ContainerBetaNodePoolConfigTaints taints = 14;
+  ContainerBetaNodePoolConfigSandboxConfig sandbox_config = 15;
+  ContainerBetaNodePoolConfigReservationAffinity reservation_affinity = 16;
+  ContainerBetaNodePoolConfigShieldedInstanceConfig shielded_instance_config = 17;
+}
+
+message ContainerBetaNodePoolConfigAccelerators {
+  int64 accelerator_count = 1;
+  string accelerator_type = 2;
+}
+
+message ContainerBetaNodePoolConfigTaints {
+  string key = 1;
+  string value = 2;
+  string effect = 3;
+}
+
+message ContainerBetaNodePoolConfigSandboxConfig {
+  ContainerBetaNodePoolConfigSandboxConfigTypeEnum type = 1;
+}
+
+message ContainerBetaNodePoolConfigReservationAffinity {
+  ContainerBetaNodePoolConfigReservationAffinityConsumeReservationTypeEnum consume_reservation_type = 1;
+  string key = 2;
+  repeated string values = 3;
+}
+
+message ContainerBetaNodePoolConfigShieldedInstanceConfig {
+  bool enable_secure_boot = 1;
+  bool enable_integrity_monitoring = 2;
+}
+
+message ContainerBetaNodePoolAutoscaling {
+  bool enabled = 1;
+  int64 min_node_count = 2;
+  int64 max_node_count = 3;
+  bool autoprovisioned = 4;
+}
+
+message ContainerBetaNodePoolManagement {
+  bool auto_upgrade = 1;
+  bool auto_repair = 2;
+  ContainerBetaNodePoolManagementUpgradeOptions upgrade_options = 3;
+}
+
+message ContainerBetaNodePoolManagementUpgradeOptions {
+  string auto_upgrade_start_time = 1;
+  string description = 2;
+}
+
+message ContainerBetaNodePoolMaxPodsConstraint {
+  int64 max_pods_per_node = 1;
+}
+
+message ContainerBetaNodePoolConditions {
+  ContainerBetaNodePoolConditionsCodeEnum code = 1;
+  string message = 2;
+}
+
+message ContainerBetaNodePoolUpgradeSettings {
+  int64 max_surge = 1;
+  int64 max_unavailable = 2;
+}
+
+message ApplyContainerBetaNodePoolRequest {
+  ContainerBetaNodePool resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteContainerBetaNodePoolRequest {
+  string service_account_file = 1;
+  ContainerBetaNodePool resource = 2;
+}
+
+message ListContainerBetaNodePoolRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+  string Cluster = 4;
+}
+
+message ListContainerBetaNodePoolResponse {
+  repeated ContainerBetaNodePool items = 1;
+}
+
+service ContainerBetaNodePoolService {
+  rpc ApplyContainerBetaNodePool(ApplyContainerBetaNodePoolRequest) returns (ContainerBetaNodePool);
+  rpc DeleteContainerBetaNodePool(DeleteContainerBetaNodePoolRequest) returns (google.protobuf.Empty);
+  rpc ListContainerBetaNodePool(ListContainerBetaNodePoolRequest) returns (ListContainerBetaNodePoolResponse);
+}

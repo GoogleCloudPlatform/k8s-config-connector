@@ -1,0 +1,12 @@
+- caisURL: unknown
+  group: memorystore.cnrm.cloud.google.com
+  kind: MemorystoreInstance
+  name: dependency-instance-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: unknown
+  group: memorystore.cnrm.cloud.google.com
+  kind: MemorystoreInstance
+  name: instance-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

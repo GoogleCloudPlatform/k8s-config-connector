@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: healthcare.cnrm.cloud.google.com
+  kind: HealthcareDataset
+  name: healthcaredataset-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

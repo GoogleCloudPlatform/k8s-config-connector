@@ -1,0 +1,14 @@
+apiVersion: recaptchaenterprise.cnrm.cloud.google.com/v1beta1
+kind: RecaptchaEnterpriseKey
+metadata:
+  name: recaptchaenterprisekey-${uniqueId}
+spec:
+  projectRef:
+     external: ${projectId}
+  displayName: updated-display-name-${uniqueId}
+  webSettings:
+    allowAllDomains: true
+    allowAmpTraffic: false
+    integrationType: SCORE
+  testingOptions:
+    testingScore: 0.5

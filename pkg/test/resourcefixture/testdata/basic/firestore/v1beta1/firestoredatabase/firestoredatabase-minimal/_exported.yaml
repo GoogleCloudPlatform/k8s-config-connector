@@ -1,0 +1,11 @@
+apiVersion: firestore.cnrm.cloud.google.com/v1beta1
+kind: FirestoreDatabase
+metadata:
+  name: firestoredatabase-${uniqueId}
+spec:
+  concurrencyMode: PESSIMISTIC
+  deleteProtectionState: DELETE_PROTECTION_DISABLED
+  locationID: us-west2
+  pointInTimeRecoveryEnablement: POINT_IN_TIME_RECOVERY_DISABLED
+  projectRef:
+    external: projects/${projectId}

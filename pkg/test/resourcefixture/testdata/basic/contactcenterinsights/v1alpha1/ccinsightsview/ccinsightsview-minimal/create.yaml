@@ -1,0 +1,9 @@
+apiVersion: contactcenterinsights.cnrm.cloud.google.com/v1alpha1
+kind: CCInsightsView
+metadata:
+  name: ccinsightsview-minimal-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  value: "projects/${projectId}/locations/us-central1/conversations/*"

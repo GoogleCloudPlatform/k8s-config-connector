@@ -1,0 +1,65 @@
+// Copyright 2022 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum ApigeeEnvironmentGroupStateEnum {
+  ApigeeEnvironmentGroupStateEnumNO_VALUE_DO_NOT_USE = 0;
+  ApigeeEnvironmentGroupStateEnumSTATE_UNSPECIFIED = 1;
+  ApigeeEnvironmentGroupStateEnumCREATING = 2;
+  ApigeeEnvironmentGroupStateEnumACTIVE = 3;
+  ApigeeEnvironmentGroupStateEnumDELETING = 4;
+}
+
+message ApigeeEnvironmentGroup {
+  string name = 1;
+  repeated string hostnames = 2;
+  int64 created_at = 3;
+  int64 last_modified_at = 4;
+  ApigeeEnvironmentGroupStateEnum state = 5;
+  string apigee_organization = 6;
+}
+
+message ApplyApigeeEnvironmentGroupRequest {
+  ApigeeEnvironmentGroup resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteApigeeEnvironmentGroupRequest {
+  string service_account_file = 1;
+  ApigeeEnvironmentGroup resource = 2;
+}
+
+message ListApigeeEnvironmentGroupRequest {
+  string service_account_file = 1;
+  string ApigeeOrganization = 2;
+}
+
+message ListApigeeEnvironmentGroupResponse {
+  repeated ApigeeEnvironmentGroup items = 1;
+}
+
+service ApigeeEnvironmentGroupService {
+  rpc ApplyApigeeEnvironmentGroup(ApplyApigeeEnvironmentGroupRequest) returns (ApigeeEnvironmentGroup);
+  rpc DeleteApigeeEnvironmentGroup(DeleteApigeeEnvironmentGroupRequest) returns (google.protobuf.Empty);
+  rpc ListApigeeEnvironmentGroup(ListApigeeEnvironmentGroupRequest) returns (ListApigeeEnvironmentGroupResponse);
+}

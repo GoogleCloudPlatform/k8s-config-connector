@@ -1,0 +1,16 @@
+label: Config Connector VertexAIDataset
+markdownDescription: Creates yaml for a VertexAIDataset resource
+insertText: |
+  apiVersion: vertexai.cnrm.cloud.google.com/v1beta1
+  kind: VertexAIDataset
+  metadata:
+    name: \${1:vertexaidataset-name}
+  spec:
+    displayName: \${2:example vertex AI dataset with encryption key}
+    metadataSchemaUri: \${3:gs://google-cloud-aiplatform/schema/dataset/metadata/image_1.0.0.yaml}
+    region: \${4:us-central1}
+    encryptionSpec:
+      kmsKeyNameRef:
+        name: \${5:vertexaidataset-dep-encryptionkey}
+    projectRef:
+      external: \${6:[PROJECT_ID?]}

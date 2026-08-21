@@ -1,0 +1,27 @@
+label: Config Connector MemcacheInstance
+markdownDescription: Creates yaml for a MemcacheInstance resource
+insertText: |
+  apiVersion: memcache.cnrm.cloud.google.com/v1beta1
+  kind: MemcacheInstance
+  metadata:
+    labels:
+      \${1:size}: \${2:small}
+      \${3:process-type}: \${4:long-queue}
+    name: \${5:memcacheinstance-name}
+  spec:
+    networkRef:
+      name: \${6:memcacheinstance-dep}
+    nodeConfig:
+      memorySizeMb: \${7:1024}
+      cpuCount: \${8:1}
+    nodeCount: \${9:2}
+    region: \${10:us-central1}
+    zones:
+    - \${11:us-central1-a}
+    - \${12:us-central1-c}
+    displayName: \${13:Sample Memcache Instance}
+    memcacheParameters:
+      params:
+        listen-backlog: \${14:10000}
+        max-item-size: \${15:524288}
+        max-reqs-per-event: \${16:1}

@@ -1,0 +1,293 @@
+# Copyright 2024 Google LLC. All Rights Reserved.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+info:
+  title: Storage/Bucket
+  description: The Storage Bucket resource
+  x-dcl-struct-name: Bucket
+  x-dcl-has-iam: true
+paths:
+  get:
+    description: The function used to get information about a Bucket
+    parameters:
+    - name: bucket
+      required: true
+      description: A full instance of a Bucket
+  apply:
+    description: The function used to apply information about a Bucket
+    parameters:
+    - name: bucket
+      required: true
+      description: A full instance of a Bucket
+  delete:
+    description: The function used to delete a Bucket
+    parameters:
+    - name: bucket
+      required: true
+      description: A full instance of a Bucket
+  deleteAll:
+    description: The function used to delete all Bucket
+    parameters:
+    - name: project
+      required: true
+      schema:
+        type: string
+  list:
+    description: The function used to list information about many Bucket
+    parameters:
+    - name: project
+      required: true
+      schema:
+        type: string
+components:
+  schemas:
+    Bucket:
+      title: Bucket
+      x-dcl-id: b/{{name}}?userProject={{project}}
+      x-dcl-parent-container: project
+      x-dcl-has-create: true
+      x-dcl-has-iam: true
+      x-dcl-read-timeout: 0
+      x-dcl-apply-timeout: 0
+      x-dcl-delete-timeout: 0
+      type: object
+      required:
+      - project
+      - location
+      - name
+      properties:
+        cors:
+          type: array
+          x-dcl-go-name: Cors
+          description: 'The bucket''s Cross-Origin Resource Sharing (CORS) configuration. '
+          x-dcl-send-empty: true
+          x-dcl-list-type: list
+          items:
+            type: object
+            x-dcl-go-type: BucketCors
+            properties:
+              maxAgeSeconds:
+                type: integer
+                format: int64
+                x-dcl-go-name: MaxAgeSeconds
+                description: 'The value, in seconds, to return in the Access-Control-Max-Age
+                  header used in preflight responses. '
+              method:
+                type: array
+                x-dcl-go-name: Method
+                description: 'The list of HTTP methods on which to include CORS response
+                  headers, (GET, OPTIONS, POST, etc) Note: "*" is permitted in the
+                  list of methods, and means "any method". '
+                x-dcl-send-empty: true
+                x-dcl-list-type: list
+                items:
+                  type: string
+                  x-dcl-go-type: string
+              origin:
+                type: array
+                x-dcl-go-name: Origin
+                description: 'The list of Origins eligible to receive CORS response
+                  headers. Note: "*" is permitted in the list of origins, and means
+                  "any Origin". '
+                x-dcl-send-empty: true
+                x-dcl-list-type: list
+                items:
+                  type: string
+                  x-dcl-go-type: string
+              responseHeader:
+                type: array
+                x-dcl-go-name: ResponseHeader
+                description: 'The list of HTTP headers other than the simple response
+                  headers to give permission for the user-agent to share across domains. '
+                x-dcl-send-empty: true
+                x-dcl-list-type: list
+                items:
+                  type: string
+                  x-dcl-go-type: string
+        lifecycle:
+          type: object
+          x-dcl-go-name: Lifecycle
+          x-dcl-go-type: BucketLifecycle
+          description: 'The bucket''s lifecycle configuration.  See https://developers.google.com/storage/docs/lifecycle
+            for more information. '
+          properties:
+            rule:
+              type: array
+              x-dcl-go-name: Rule
+              description: 'A lifecycle management rule, which is made of an action
+                to take and the condition(s) under which the action will be taken. '
+              x-dcl-send-empty: true
+              x-dcl-list-type: list
+              items:
+                type: object
+                x-dcl-go-type: BucketLifecycleRule
+                properties:
+                  action:
+                    type: object
+                    x-dcl-go-name: Action
+                    x-dcl-go-type: BucketLifecycleRuleAction
+                    description: The action to take.
+                    properties:
+                      storageClass:
+                        type: string
+                        x-dcl-go-name: StorageClass
+                        description: 'Target storage class. Required if the type of
+                          the action is SetStorageClass. '
+                      type:
+                        type: string
+                        x-dcl-go-name: Type
+                        x-dcl-go-type: BucketLifecycleRuleActionTypeEnum
+                        description: 'Type of the action. Currently, only Delete and
+                          SetStorageClass are supported. '
+                        enum:
+                        - Delete
+                        - SetStorageClass
+                  condition:
+                    type: object
+                    x-dcl-go-name: Condition
+                    x-dcl-go-type: BucketLifecycleRuleCondition
+                    description: 'The condition(s) under which the action will be
+                      taken. '
+                    properties:
+                      age:
+                        type: integer
+                        format: int64
+                        x-dcl-go-name: Age
+                        description: 'Age of an object (in days). This condition is
+                          satisfied when an object reaches the specified age. '
+                      createdBefore:
+                        type: string
+                        format: date-time
+                        x-dcl-go-name: CreatedBefore
+                        description: 'A date in RFC 3339 format with only the date
+                          part (for instance, "2013-01-15"). This condition is satisfied
+                          when an object is created before midnight of the specified
+                          date in UTC. '
+                      matchesStorageClass:
+                        type: array
+                        x-dcl-go-name: MatchesStorageClass
+                        description: 'Objects having any of the storage classes specified
+                          by this condition will be matched. Values include MULTI_REGIONAL,
+                          REGIONAL, NEARLINE, COLDLINE, STANDARD, and DURABLE_REDUCED_AVAILABILITY. '
+                        x-dcl-send-empty: true
+                        x-dcl-list-type: list
+                        items:
+                          type: string
+                          x-dcl-go-type: string
+                      numNewerVersions:
+                        type: integer
+                        format: int64
+                        x-dcl-go-name: NumNewerVersions
+                        description: 'Relevant only for versioned objects. If the
+                          value is N, this condition is satisfied when there are at
+                          least N versions (including the live version) newer than
+                          this version of the object. '
+                      withState:
+                        type: string
+                        x-dcl-go-name: WithState
+                        x-dcl-go-type: BucketLifecycleRuleConditionWithStateEnum
+                        description: 'Match to live and/or archived objects. Unversioned
+                          buckets have only live objects. Supported values include:
+                          ''LIVE'', ''ARCHIVED'', ''ANY''.'
+                        enum:
+                        - LIVE
+                        - ARCHIVED
+                        - ANY
+        location:
+          type: string
+          x-dcl-go-name: Location
+          description: 'The location of the bucket. Object data for objects in the
+            bucket resides in physical storage within this region. Defaults to `US`. '
+          x-kubernetes-immutable: true
+        logging:
+          type: object
+          x-dcl-go-name: Logging
+          x-dcl-go-type: BucketLogging
+          description: 'The bucket''s logging configuration, which defines the destination
+            bucket and optional name prefix for the current bucket''s logs. '
+          properties:
+            logBucket:
+              type: string
+              x-dcl-go-name: LogBucket
+              description: 'The destination bucket where the current bucket''s logs
+                should be placed. '
+            logObjectPrefix:
+              type: string
+              x-dcl-go-name: LogObjectPrefix
+              description: The object prefix for log objects. If it's not provided,
+                it defaults to the bucket's name.
+        name:
+          type: string
+          x-dcl-go-name: Name
+          description: 'The name of the bucket. '
+          x-kubernetes-immutable: true
+        project:
+          type: string
+          x-dcl-go-name: Project
+          description: The project id of the resource.
+          x-kubernetes-immutable: true
+          x-dcl-references:
+          - resource: Cloudresourcemanager/Project
+            field: name
+            parent: true
+        storageClass:
+          type: string
+          x-dcl-go-name: StorageClass
+          x-dcl-go-type: BucketStorageClassEnum
+          description: 'The bucket''s default storage class, used whenever no storageClass
+            is specified for a newly-created object. This defines how objects in the
+            bucket are stored and determines the SLA and the cost of storage. Values
+            include MULTI_REGIONAL, REGIONAL, STANDARD, NEARLINE, COLDLINE, ARCHIVE,
+            and DURABLE_REDUCED_AVAILABILITY. If this value is not specified when
+            the bucket is created, it will default to STANDARD. For more information,
+            see storage classes. '
+          enum:
+          - MULTI_REGIONAL
+          - REGIONAL
+          - STANDARD
+          - NEARLINE
+          - COLDLINE
+          - ARCHIVE
+          - DURABLE_REDUCED_AVAILABILITY
+        versioning:
+          type: object
+          x-dcl-go-name: Versioning
+          x-dcl-go-type: BucketVersioning
+          description: The bucket's versioning configuration.
+          properties:
+            enabled:
+              type: boolean
+              x-dcl-go-name: Enabled
+              description: 'While set to true, versioning is fully enabled for this
+                bucket. '
+        website:
+          type: object
+          x-dcl-go-name: Website
+          x-dcl-go-type: BucketWebsite
+          description: 'The bucket''s website configuration, controlling how the service
+            behaves when accessing bucket contents as a web site. See the Static Website
+            Examples for more information. '
+          properties:
+            mainPageSuffix:
+              type: string
+              x-dcl-go-name: MainPageSuffix
+              description: 'If the requested object path is missing, the service will
+                ensure the path has a trailing ''/'', append this suffix, and attempt
+                to retrieve the resulting object. This allows the creation of index.html
+                objects to represent directory pages. '
+            notFoundPage:
+              type: string
+              x-dcl-go-name: NotFoundPage
+              description: 'If the requested object path is missing, and any mainPageSuffix
+                object is missing, if applicable, the service will return the named
+                object from this bucket as the content for a 404 Not Found result. '

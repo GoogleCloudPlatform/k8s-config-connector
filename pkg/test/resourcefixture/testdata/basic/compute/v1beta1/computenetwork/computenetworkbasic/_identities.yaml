@@ -1,0 +1,6 @@
+- caisURL: //compute.googleapis.com/projects/${projectId}/global/networks/computenetwork-${uniqueId}
+  group: compute.cnrm.cloud.google.com
+  kind: ComputeNetwork
+  name: computenetwork-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

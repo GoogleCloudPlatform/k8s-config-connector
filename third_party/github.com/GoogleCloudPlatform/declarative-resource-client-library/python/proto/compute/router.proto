@@ -1,0 +1,162 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+enum ComputeRouterNatsLogConfigFilterEnum {
+  ComputeRouterNatsLogConfigFilterEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeRouterNatsLogConfigFilterEnumERRORS_ONLY = 1;
+  ComputeRouterNatsLogConfigFilterEnumTRANSLATIONS_ONLY = 2;
+  ComputeRouterNatsLogConfigFilterEnumALL = 3;
+}
+
+enum ComputeRouterNatsSourceSubnetworkIPRangesToNatEnum {
+  ComputeRouterNatsSourceSubnetworkIPRangesToNatEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeRouterNatsSourceSubnetworkIPRangesToNatEnumALL_SUBNETWORKS_ALL_IP_RANGES = 1;
+  ComputeRouterNatsSourceSubnetworkIPRangesToNatEnumALL_SUBNETWORKS_ALL_PRIMARY_IP_RANGES = 2;
+  ComputeRouterNatsSourceSubnetworkIPRangesToNatEnumLIST_OF_SUBNETWORKS = 3;
+}
+
+enum ComputeRouterNatsNatIPAllocateOptionEnum {
+  ComputeRouterNatsNatIPAllocateOptionEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeRouterNatsNatIPAllocateOptionEnumMANUAL_ONLY = 1;
+  ComputeRouterNatsNatIPAllocateOptionEnumAUTO_ONLY = 2;
+}
+
+enum ComputeRouterInterfacesManagementTypeEnum {
+  ComputeRouterInterfacesManagementTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeRouterInterfacesManagementTypeEnumMANAGED_BY_USER = 1;
+  ComputeRouterInterfacesManagementTypeEnumMANAGED_BY_ATTACHMENT = 2;
+}
+
+enum ComputeRouterBgpPeersAdvertisedGroupsEnum {
+  ComputeRouterBgpPeersAdvertisedGroupsEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeRouterBgpPeersAdvertisedGroupsEnumALL_SUBNETS = 1;
+  ComputeRouterBgpPeersAdvertisedGroupsEnumALL_VPC_SUBNETS = 2;
+  ComputeRouterBgpPeersAdvertisedGroupsEnumALL_PEER_VPC_SUBNETS = 3;
+}
+
+enum ComputeRouterBgpAdvertiseModeEnum {
+  ComputeRouterBgpAdvertiseModeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeRouterBgpAdvertiseModeEnumDEFAULT = 1;
+  ComputeRouterBgpAdvertiseModeEnumCUSTOM = 2;
+}
+
+message ComputeRouter {
+  string creation_timestamp = 1;
+  repeated ComputeRouterNats nats = 2;
+  string name = 3;
+  string network = 4;
+  repeated ComputeRouterInterfaces interfaces = 5;
+  string description = 6;
+  repeated ComputeRouterBgpPeers bgp_peers = 7;
+  ComputeRouterBgp bgp = 8;
+  string region = 9;
+  string project = 10;
+  string self_link = 11;
+}
+
+message ComputeRouterNats {
+  string name = 1;
+  ComputeRouterNatsLogConfig log_config = 2;
+  ComputeRouterNatsSourceSubnetworkIPRangesToNatEnum source_subnetwork_ip_ranges_to_nat = 3;
+  repeated string nat_ips = 4;
+  repeated string drain_nat_ips = 5;
+  repeated ComputeRouterNatsNatIPAllocateOptionEnum nat_ip_allocate_option = 6;
+  int64 min_ports_per_vm = 7;
+  int64 udp_idle_timeout_sec = 8;
+  int64 icmp_idle_timeout_sec = 9;
+  int64 tcp_established_idle_timeout_sec = 10;
+  int64 tcp_transitory_idle_timeout_sec = 11;
+  repeated ComputeRouterNatsSubnetworks subnetworks = 12;
+}
+
+message ComputeRouterNatsLogConfig {
+  bool enable = 1;
+  ComputeRouterNatsLogConfigFilterEnum filter = 2;
+}
+
+message ComputeRouterNatsSubnetworks {
+  string name = 1;
+  string source_ip_ranges_to_nat = 2;
+  string secondary_ip_range_names = 3;
+}
+
+message ComputeRouterInterfaces {
+  string name = 1;
+  string linked_vpn_tunnel = 2;
+  string ip_range = 3;
+  ComputeRouterInterfacesManagementTypeEnum management_type = 4;
+}
+
+message ComputeRouterBgpPeers {
+  string name = 1;
+  string interface_name = 2;
+  string ip_address = 3;
+  string peer_ip_address = 4;
+  int64 peer_asn = 5;
+  int64 advertised_route_priority = 6;
+  string advertise_mode = 7;
+  string management_type = 8;
+  repeated ComputeRouterBgpPeersAdvertisedGroupsEnum advertised_groups = 9;
+  repeated ComputeRouterBgpPeersAdvertisedIPRanges advertised_ip_ranges = 10;
+}
+
+message ComputeRouterBgpPeersAdvertisedIPRanges {
+  string range = 1;
+  string description = 2;
+}
+
+message ComputeRouterBgp {
+  int64 asn = 1;
+  ComputeRouterBgpAdvertiseModeEnum advertise_mode = 2;
+  repeated string advertised_groups = 3;
+  repeated ComputeRouterBgpAdvertisedIPRanges advertised_ip_ranges = 4;
+}
+
+message ComputeRouterBgpAdvertisedIPRanges {
+  string range = 1;
+  string description = 2;
+}
+
+message ApplyComputeRouterRequest {
+  ComputeRouter resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteComputeRouterRequest {
+  string service_account_file = 1;
+  ComputeRouter resource = 2;
+}
+
+message ListComputeRouterRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Region = 3;
+}
+
+message ListComputeRouterResponse {
+  repeated ComputeRouter items = 1;
+}
+
+service ComputeRouterService {
+  rpc ApplyComputeRouter(ApplyComputeRouterRequest) returns (ComputeRouter);
+  rpc DeleteComputeRouter(DeleteComputeRouterRequest) returns (google.protobuf.Empty);
+  rpc ListComputeRouter(ListComputeRouterRequest) returns (ListComputeRouterResponse);
+}

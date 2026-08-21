@@ -1,0 +1,1 @@
+The Go files in mocknetapp had already been migrated to use httptogrpc in a previous commit, but the generated protos and Makefile entries were left behind. Make sure to delete the generated protobuf files and update the Makefile.

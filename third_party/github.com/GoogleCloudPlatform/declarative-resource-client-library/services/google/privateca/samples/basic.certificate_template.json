@@ -1,0 +1,78 @@
+{
+  "name": "{{template}}",
+  "project": "{{project}}",
+  "location": "{{region}}",
+  "predefinedValues": {
+    "keyUsage": {
+      "baseKeyUsage": {
+        "digitalSignature": true,
+        "contentCommitment": true,
+        "keyEncipherment": true,
+        "dataEncipherment": true,
+        "keyAgreement": true,
+        "certSign": false,
+        "crlSign": false,
+        "encipherOnly": true,
+        "decipherOnly": true
+      },
+      "extendedKeyUsage": {
+        "serverAuth": true,
+        "clientAuth": true,
+        "codeSigning": true,
+        "emailProtection": true,
+        "timeStamping": true,
+        "ocspSigning": true
+      },
+      "unknownExtendedKeyUsages": [
+        {
+          "objectIdPath": [1, 6]
+        }
+      ]
+    },
+    "caOptions": {
+      "isCa": false,
+      "maxIssuerPathLength": 6
+    },
+    "policyIds": [
+      {
+        "objectIdPath": [1, 6]
+      }
+    ],
+    "aiaOcspServers": [
+      "string"
+    ],
+    "additionalExtensions": [
+      {
+        "objectId": {
+          "objectIdPath": [1, 6]
+        },
+        "critical": true,
+        "value": "c3RyaW5nCg=="
+      }
+    ]
+  },
+  "identityConstraints": {
+    "celExpression": {
+      "title": "Sample expression",
+      "description": "Always true",
+      "expression": "true",
+      "location": "any.file.anywhere"
+    },
+    "allowSubjectPassthrough": true,
+    "allowSubjectAltNamesPassthrough": true
+  },
+  "passthroughExtensions": {
+    "knownExtensions": [
+      "EXTENDED_KEY_USAGE"
+    ],
+    "additionalExtensions": [
+      {
+        "objectIdPath": [1, 6]
+      }
+    ]
+  },
+  "description": "An updated sample certificate template",
+  "labels": {
+    "label-two": "value-two"
+  }
+}

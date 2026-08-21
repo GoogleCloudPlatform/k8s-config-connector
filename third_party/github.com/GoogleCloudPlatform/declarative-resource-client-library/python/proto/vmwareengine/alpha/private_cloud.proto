@@ -1,0 +1,115 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum VmwareengineAlphaPrivateCloudStateEnum {
+  VmwareengineAlphaPrivateCloudStateEnumNO_VALUE_DO_NOT_USE = 0;
+  VmwareengineAlphaPrivateCloudStateEnumACTIVE = 1;
+  VmwareengineAlphaPrivateCloudStateEnumCREATING = 2;
+  VmwareengineAlphaPrivateCloudStateEnumUPDATING = 3;
+  VmwareengineAlphaPrivateCloudStateEnumFAILED = 4;
+  VmwareengineAlphaPrivateCloudStateEnumDELETED = 5;
+}
+
+message VmwareengineAlphaPrivateCloud {
+  string name = 1;
+  string create_time = 2;
+  string update_time = 3;
+  string delete_time = 4;
+  string expire_time = 5;
+  map<string, string> labels = 6;
+  VmwareengineAlphaPrivateCloudStateEnum state = 7;
+  VmwareengineAlphaPrivateCloudNetworkConfig network_config = 8;
+  VmwareengineAlphaPrivateCloudManagementCluster management_cluster = 9;
+  string description = 10;
+  repeated VmwareengineAlphaPrivateCloudConditions conditions = 11;
+  VmwareengineAlphaPrivateCloudHcx hcx = 12;
+  VmwareengineAlphaPrivateCloudNsx nsx = 13;
+  VmwareengineAlphaPrivateCloudVcenter vcenter = 14;
+  string project = 15;
+  string location = 16;
+}
+
+message VmwareengineAlphaPrivateCloudNetworkConfig {
+  string network = 1;
+  string service_network = 2;
+  string management_cidr = 3;
+}
+
+message VmwareengineAlphaPrivateCloudManagementCluster {
+  string cluster_id = 1;
+  string node_type_id = 2;
+  int64 node_count = 3;
+}
+
+message VmwareengineAlphaPrivateCloudConditions {
+  string code = 1;
+  string message = 2;
+}
+
+message VmwareengineAlphaPrivateCloudHcx {
+  string fdqn = 1;
+  string internal_ip = 2;
+  string external_ip = 3;
+  string version = 4;
+}
+
+message VmwareengineAlphaPrivateCloudNsx {
+  string fdqn = 1;
+  string internal_ip = 2;
+  string external_ip = 3;
+  string version = 4;
+}
+
+message VmwareengineAlphaPrivateCloudVcenter {
+  string fdqn = 1;
+  string internal_ip = 2;
+  string external_ip = 3;
+  string version = 4;
+}
+
+message ApplyVmwareengineAlphaPrivateCloudRequest {
+  VmwareengineAlphaPrivateCloud resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteVmwareengineAlphaPrivateCloudRequest {
+  string service_account_file = 1;
+  VmwareengineAlphaPrivateCloud resource = 2;
+}
+
+message ListVmwareengineAlphaPrivateCloudRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListVmwareengineAlphaPrivateCloudResponse {
+  repeated VmwareengineAlphaPrivateCloud items = 1;
+}
+
+service VmwareengineAlphaPrivateCloudService {
+  rpc ApplyVmwareengineAlphaPrivateCloud(ApplyVmwareengineAlphaPrivateCloudRequest) returns (VmwareengineAlphaPrivateCloud);
+  rpc DeleteVmwareengineAlphaPrivateCloud(DeleteVmwareengineAlphaPrivateCloudRequest) returns (google.protobuf.Empty);
+  rpc ListVmwareengineAlphaPrivateCloud(ListVmwareengineAlphaPrivateCloudRequest) returns (ListVmwareengineAlphaPrivateCloudResponse);
+}

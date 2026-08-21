@@ -1,0 +1,10 @@
+{
+  "billingAccount": "0186CC-FE4258-F9F63E",
+  "amount": {
+    "specifiedAmount": {
+      "currencyCode": "USD",
+      "units": 9000000,
+      "nanos": 0
+    }
+  }
+}

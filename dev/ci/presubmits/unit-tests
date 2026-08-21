@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+function on_error() {
+  echo "<hint_for_agent>Run 'dev/ci/presubmits/unit-tests' to fix.</hint_for_agent>"
+}
+trap on_error ERR
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+cd ${REPO_ROOT}
+
+. ${REPO_ROOT}/dev/tasks/install-gcloud
+. ${REPO_ROOT}/dev/tasks/setup-envtest
+
+# A dummy default project id is required for a few unit test cases
+export CLOUDSDK_CORE_PROJECT=foobar
+gcloud config set project foobar --quiet 2>/dev/null || true
+
+# Env var VALIDATE_URLS needs to be unset to avoid calling URLs in TestReferenceDocConsistency under scripts/generate-google3-docs/.
+unset VALIDATE_URLS
+
+SHARD_SPEC="${1:-${SHARD_SPEC:-}}"
+
+# Get all unit test packages excluding the operator, E2E tests, and preview CLI tests
+ALL_PACKAGES=$(go list ./... | grep -v "/operator" | grep -v "tests/e2e" | grep -v "pkg/cli/preview")
+
+if [[ "${SHARD_SPEC}" =~ ([0-9]+)-of-([0-9]+)$ ]]; then
+  SHARD_NUM="${BASH_REMATCH[1]}"
+  TOTAL_SHARDS="${BASH_REMATCH[2]}"
+  UNIT_TEST_PACKAGES=$(echo "${ALL_PACKAGES}" | awk -v num="${SHARD_NUM}" -v total="${TOTAL_SHARDS}" 'NR % total == (num % total)')
+  echo "Running unit tests (shard ${SHARD_NUM} of ${TOTAL_SHARDS})..."
+else
+  UNIT_TEST_PACKAGES="${ALL_PACKAGES}"
+  echo "Running unit tests..."
+fi
+
+go test -test.count=1 -parallel 2 -v ${UNIT_TEST_PACKAGES}

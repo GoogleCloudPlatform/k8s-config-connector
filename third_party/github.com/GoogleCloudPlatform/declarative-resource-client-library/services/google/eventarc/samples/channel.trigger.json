@@ -1,0 +1,21 @@
+{
+  "project": "{{project}}",
+  "location": "{{region}}",
+  "name": "{{name}}",
+  "labels": {},
+  "destination": {
+    "cloudRunService": {
+      "service": "projects/{{project}}/locations/{{region}}/services/{{ref:basicservice.run1.service.json:name}}",
+      "region": "{{region}}",
+      "path": "/route"
+    }
+  },
+  "channel":"projects/{{project}}/locations/{{region}}/channels/{{ref:basic.channel.json:name}}",
+  "serviceAccount": "{{service_account}}",
+  "matchingCriteria": [
+    {
+      "attribute": "type",
+      "value": "datadog.v1.alert"
+    }
+  ]
+}

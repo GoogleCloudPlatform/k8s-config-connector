@@ -1,0 +1,14 @@
+- exec: gcloud storage buckets create gs://bucket${uniqueId} --location=us-central1 --uniform-bucket-level-access
+
+- exec: gcloud resource-manager tags keys create test-${uniqueId} --parent=projects/${projectId}
+- exec: gcloud resource-manager tags values create value1 --parent=${projectId}/test-${uniqueId}
+
+- exec: gcloud resource-manager tags bindings create --parent="//storage.googleapis.com/projects/_/buckets/bucket${uniqueId}" --tag-value=${projectId}/test-${uniqueId}/value1 --location=us-central1
+- exec: gcloud resource-manager tags bindings list --parent="//storage.googleapis.com/projects/_/buckets/bucket${uniqueId}" --location=us-central1
+- exec: gcloud resource-manager tags bindings delete --tag-value=${projectId}/test-${uniqueId}/value1 --parent="//storage.googleapis.com/projects/_/buckets/bucket${uniqueId}" --location=us-central1 --quiet
+
+
+- exec: gcloud resource-manager tags values delete ${projectId}/test-${uniqueId}/value1 --quiet
+- exec: gcloud resource-manager tags keys delete ${projectId}/test-${uniqueId} --quiet
+
+- exec: gcloud storage buckets delete gs://bucket${uniqueId}

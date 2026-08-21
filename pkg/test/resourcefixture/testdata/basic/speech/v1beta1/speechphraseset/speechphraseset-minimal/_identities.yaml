@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: speech.cnrm.cloud.google.com
+  kind: SpeechPhraseSet
+  name: speechphraseset-minimal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

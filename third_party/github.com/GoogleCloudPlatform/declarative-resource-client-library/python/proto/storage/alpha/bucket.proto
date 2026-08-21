@@ -1,0 +1,127 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum StorageAlphaBucketLifecycleRuleActionTypeEnum {
+  StorageAlphaBucketLifecycleRuleActionTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  StorageAlphaBucketLifecycleRuleActionTypeEnumDelete = 1;
+  StorageAlphaBucketLifecycleRuleActionTypeEnumSetStorageClass = 2;
+}
+
+enum StorageAlphaBucketLifecycleRuleConditionWithStateEnum {
+  StorageAlphaBucketLifecycleRuleConditionWithStateEnumNO_VALUE_DO_NOT_USE = 0;
+  StorageAlphaBucketLifecycleRuleConditionWithStateEnumLIVE = 1;
+  StorageAlphaBucketLifecycleRuleConditionWithStateEnumARCHIVED = 2;
+  StorageAlphaBucketLifecycleRuleConditionWithStateEnumANY = 3;
+}
+
+enum StorageAlphaBucketStorageClassEnum {
+  StorageAlphaBucketStorageClassEnumNO_VALUE_DO_NOT_USE = 0;
+  StorageAlphaBucketStorageClassEnumMULTI_REGIONAL = 1;
+  StorageAlphaBucketStorageClassEnumREGIONAL = 2;
+  StorageAlphaBucketStorageClassEnumSTANDARD = 3;
+  StorageAlphaBucketStorageClassEnumNEARLINE = 4;
+  StorageAlphaBucketStorageClassEnumCOLDLINE = 5;
+  StorageAlphaBucketStorageClassEnumARCHIVE = 6;
+  StorageAlphaBucketStorageClassEnumDURABLE_REDUCED_AVAILABILITY = 7;
+}
+
+message StorageAlphaBucket {
+  string project = 1;
+  string location = 2;
+  string name = 3;
+  repeated StorageAlphaBucketCors cors = 4;
+  StorageAlphaBucketLifecycle lifecycle = 5;
+  StorageAlphaBucketLogging logging = 6;
+  StorageAlphaBucketStorageClassEnum storage_class = 7;
+  StorageAlphaBucketVersioning versioning = 8;
+  StorageAlphaBucketWebsite website = 9;
+}
+
+message StorageAlphaBucketCors {
+  int64 max_age_seconds = 1;
+  repeated string method = 2;
+  repeated string origin = 3;
+  repeated string response_header = 4;
+}
+
+message StorageAlphaBucketLifecycle {
+  repeated StorageAlphaBucketLifecycleRule rule = 1;
+}
+
+message StorageAlphaBucketLifecycleRule {
+  StorageAlphaBucketLifecycleRuleAction action = 1;
+  StorageAlphaBucketLifecycleRuleCondition condition = 2;
+}
+
+message StorageAlphaBucketLifecycleRuleAction {
+  string storage_class = 1;
+  StorageAlphaBucketLifecycleRuleActionTypeEnum type = 2;
+}
+
+message StorageAlphaBucketLifecycleRuleCondition {
+  int64 age = 1;
+  string created_before = 2;
+  StorageAlphaBucketLifecycleRuleConditionWithStateEnum with_state = 3;
+  repeated string matches_storage_class = 4;
+  int64 num_newer_versions = 5;
+}
+
+message StorageAlphaBucketLogging {
+  string log_bucket = 1;
+  string log_object_prefix = 2;
+}
+
+message StorageAlphaBucketVersioning {
+  bool enabled = 1;
+}
+
+message StorageAlphaBucketWebsite {
+  string main_page_suffix = 1;
+  string not_found_page = 2;
+}
+
+message ApplyStorageAlphaBucketRequest {
+  StorageAlphaBucket resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteStorageAlphaBucketRequest {
+  string service_account_file = 1;
+  StorageAlphaBucket resource = 2;
+}
+
+message ListStorageAlphaBucketRequest {
+  string service_account_file = 1;
+  string Project = 2;
+}
+
+message ListStorageAlphaBucketResponse {
+  repeated StorageAlphaBucket items = 1;
+}
+
+service StorageAlphaBucketService {
+  rpc ApplyStorageAlphaBucket(ApplyStorageAlphaBucketRequest) returns (StorageAlphaBucket);
+  rpc DeleteStorageAlphaBucket(DeleteStorageAlphaBucketRequest) returns (google.protobuf.Empty);
+  rpc ListStorageAlphaBucket(ListStorageAlphaBucketRequest) returns (ListStorageAlphaBucketResponse);
+}

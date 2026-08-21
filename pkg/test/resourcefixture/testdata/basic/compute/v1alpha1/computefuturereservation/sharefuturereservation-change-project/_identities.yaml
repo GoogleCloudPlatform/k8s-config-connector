@@ -1,0 +1,12 @@
+- caisURL: //cloudresourcemanager.googleapis.com/projects/project-${uniqueId}
+  group: resourcemanager.cnrm.cloud.google.com
+  kind: Project
+  name: project-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: //compute.googleapis.com/projects/${TEST_SHARED_RESERVATIONS_PROJECT}/zones/us-central1-a/futureReservations/sharereservation-${uniqueId}
+  group: compute.cnrm.cloud.google.com
+  kind: ComputeFutureReservation
+  name: sharereservation-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

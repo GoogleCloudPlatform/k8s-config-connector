@@ -1,0 +1,12 @@
+apiVersion: gkehub.cnrm.cloud.google.com/v1alpha1
+kind: GKEHubScopeRBACRoleBinding
+metadata:
+  name: gkehubscoperbacrolebinding-maximal-${uniqueId}
+spec:
+  scopeRef:
+    name: gkehubscoperbacrolebinding-maximal-${uniqueId}
+  group: "group1@google.com"
+  role:
+    predefinedRole: "EDIT"
+  labels:
+    env: prod

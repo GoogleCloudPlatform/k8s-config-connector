@@ -1,0 +1,90 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum NetworksecurityBetaAuthorizationPolicyActionEnum {
+  NetworksecurityBetaAuthorizationPolicyActionEnumNO_VALUE_DO_NOT_USE = 0;
+  NetworksecurityBetaAuthorizationPolicyActionEnumACTION_UNSPECIFIED = 1;
+  NetworksecurityBetaAuthorizationPolicyActionEnumALLOW = 2;
+  NetworksecurityBetaAuthorizationPolicyActionEnumDENY = 3;
+}
+
+message NetworksecurityBetaAuthorizationPolicy {
+  string name = 1;
+  string description = 2;
+  string create_time = 3;
+  string update_time = 4;
+  map<string, string> labels = 5;
+  NetworksecurityBetaAuthorizationPolicyActionEnum action = 6;
+  repeated NetworksecurityBetaAuthorizationPolicyRules rules = 7;
+  string project = 8;
+  string location = 9;
+}
+
+message NetworksecurityBetaAuthorizationPolicyRules {
+  repeated NetworksecurityBetaAuthorizationPolicyRulesSources sources = 1;
+  repeated NetworksecurityBetaAuthorizationPolicyRulesDestinations destinations = 2;
+}
+
+message NetworksecurityBetaAuthorizationPolicyRulesSources {
+  repeated string principals = 1;
+  repeated string ip_blocks = 2;
+}
+
+message NetworksecurityBetaAuthorizationPolicyRulesDestinations {
+  repeated string hosts = 1;
+  repeated int64 ports = 2;
+  repeated string methods = 3;
+  NetworksecurityBetaAuthorizationPolicyRulesDestinationsHttpHeaderMatch http_header_match = 4;
+}
+
+message NetworksecurityBetaAuthorizationPolicyRulesDestinationsHttpHeaderMatch {
+  string header_name = 1;
+  string regex_match = 2;
+}
+
+message ApplyNetworksecurityBetaAuthorizationPolicyRequest {
+  NetworksecurityBetaAuthorizationPolicy resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteNetworksecurityBetaAuthorizationPolicyRequest {
+  string service_account_file = 1;
+  NetworksecurityBetaAuthorizationPolicy resource = 2;
+}
+
+message ListNetworksecurityBetaAuthorizationPolicyRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListNetworksecurityBetaAuthorizationPolicyResponse {
+  repeated NetworksecurityBetaAuthorizationPolicy items = 1;
+}
+
+service NetworksecurityBetaAuthorizationPolicyService {
+  rpc ApplyNetworksecurityBetaAuthorizationPolicy(ApplyNetworksecurityBetaAuthorizationPolicyRequest) returns (NetworksecurityBetaAuthorizationPolicy);
+  rpc DeleteNetworksecurityBetaAuthorizationPolicy(DeleteNetworksecurityBetaAuthorizationPolicyRequest) returns (google.protobuf.Empty);
+  rpc ListNetworksecurityBetaAuthorizationPolicy(ListNetworksecurityBetaAuthorizationPolicyRequest) returns (ListNetworksecurityBetaAuthorizationPolicyResponse);
+}

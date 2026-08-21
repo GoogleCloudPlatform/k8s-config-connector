@@ -1,0 +1,7 @@
+{
+  "name": "{{association}}",
+  "attachmentTarget": "projects/{{project}}/global/networks/default",
+  "firewallPolicy": "{{ref:minimal.network_firewall_policy.json:name}}",
+  "project": "{{project}}"
+  
+}

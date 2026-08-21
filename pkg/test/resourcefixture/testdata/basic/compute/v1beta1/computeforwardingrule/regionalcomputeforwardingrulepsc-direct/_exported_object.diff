@@ -1,0 +1,9 @@
+15c15,16
+<     ip: projects/example-project-01/regions/us-central1/addresses/${addressID}
+---
+>     addressRef:
+>       external: projects/example-project-01/regions/us-central1/addresses/${addressID}
+23c24
+<     targetVPNGatewayRef:
+---
+>     serviceAttachmentRef:

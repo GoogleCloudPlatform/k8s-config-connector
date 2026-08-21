@@ -1,0 +1,264 @@
+GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/exampleStores/examplestore-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FexampleStores%2Fexamplestore-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "exampleStore \"projects/${projectId}/locations/us-central1/exampleStores/examplestore-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/exampleStores?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "description": "A description of the maximal example store.",
+  "displayName": "Maximal Example Store",
+  "exampleStoreConfig": {
+    "vertexEmbeddingModel": "publishers/google/models/textembedding-gecko@001"
+  },
+  "name": "projects/${projectId}/locations/us-central1/exampleStores/examplestore-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.CreateExampleStoreOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectId}/locations/us-central1/exampleStores/examplestore-${uniqueId}/operations/${operationID}"
+}
+
+---
+
+GET https://us-central1-aiplatform.googleapis.com/ui/projects/${projectId}/locations/us-central1/exampleStores/examplestore-${uniqueId}/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FexampleStores%2Fexamplestore-${uniqueId}%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.CreateExampleStoreOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectId}/locations/us-central1/exampleStores/examplestore-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.ExampleStore",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "A description of the maximal example store.",
+    "displayName": "Maximal Example Store",
+    "exampleStoreConfig": {
+      "vertexEmbeddingModel": "publishers/google/models/textembedding-gecko@001"
+    },
+    "name": "projects/${projectId}/locations/us-central1/exampleStores/examplestore-${uniqueId}",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/exampleStores/examplestore-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FexampleStores%2Fexamplestore-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "A description of the maximal example store.",
+  "displayName": "Maximal Example Store",
+  "exampleStoreConfig": {
+    "vertexEmbeddingModel": "publishers/google/models/textembedding-gecko@001"
+  },
+  "name": "projects/${projectId}/locations/us-central1/exampleStores/examplestore-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/exampleStores/examplestore-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2CdisplayName
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: example_store.name=projects%2F${projectId}%2Flocations%2Fus-central1%2FexampleStores%2Fexamplestore-${uniqueId}
+
+{
+  "description": "An updated description of the maximal example store.",
+  "displayName": "Updated Maximal Example Store",
+  "exampleStoreConfig": {
+    "vertexEmbeddingModel": "publishers/google/models/textembedding-gecko@001"
+  },
+  "name": "projects/${projectId}/locations/us-central1/exampleStores/examplestore-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.UpdateExampleStoreOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectId}/locations/us-central1/exampleStores/examplestore-${uniqueId}/operations/${operationID}"
+}
+
+---
+
+GET https://us-central1-aiplatform.googleapis.com/ui/projects/${projectId}/locations/us-central1/exampleStores/examplestore-${uniqueId}/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FexampleStores%2Fexamplestore-${uniqueId}%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.UpdateExampleStoreOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectId}/locations/us-central1/exampleStores/examplestore-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.ExampleStore",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "An updated description of the maximal example store.",
+    "displayName": "Updated Maximal Example Store",
+    "exampleStoreConfig": {
+      "vertexEmbeddingModel": "publishers/google/models/textembedding-gecko@001"
+    },
+    "name": "projects/${projectId}/locations/us-central1/exampleStores/examplestore-${uniqueId}",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/exampleStores/examplestore-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FexampleStores%2Fexamplestore-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "An updated description of the maximal example store.",
+  "displayName": "Updated Maximal Example Store",
+  "exampleStoreConfig": {
+    "vertexEmbeddingModel": "publishers/google/models/textembedding-gecko@001"
+  },
+  "name": "projects/${projectId}/locations/us-central1/exampleStores/examplestore-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://us-central1-aiplatform.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/exampleStores/examplestore-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FexampleStores%2Fexamplestore-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.aiplatform.v1beta1.DeleteExampleStoreOperationMetadata",
+    "genericMetadata": {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "updateTime": "2024-04-01T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectId}/locations/us-central1/exampleStores/examplestore-${uniqueId}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}

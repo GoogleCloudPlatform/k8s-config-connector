@@ -1,0 +1,303 @@
+GRPC /google.cloud.networksecurity.v1.Intercept/GetInterceptEndpointGroup
+
+{
+  "name": "projects/${projectId}/locations/global/interceptEndpointGroups/intercepteg-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = Resource 'projects/${projectId}/locations/global/interceptEndpointGroups/intercepteg-${uniqueId}' was not found
+
+{}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.Intercept/CreateInterceptEndpointGroup
+
+{
+  "interceptEndpointGroup": {
+    "description": "Initial description",
+    "interceptDeploymentGroup": "projects/${projectId}/locations/global/interceptDeploymentGroups/my-dg-${uniqueId}",
+    "labels": {
+      "my-key": "my-value"
+    }
+  },
+  "interceptEndpointGroupId": "intercepteg-${uniqueId}",
+  "parent": "projects/${projectId}/locations/global"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/interceptEndpointGroups/intercepteg-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/interceptEndpointGroups/intercepteg-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.InterceptEndpointGroup",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Initial description",
+    "interceptDeploymentGroup": "projects/${projectId}/locations/global/interceptDeploymentGroups/my-dg-${uniqueId}",
+    "labels": {
+      "my-key": "my-value"
+    },
+    "name": "projects/${projectId}/locations/global/interceptEndpointGroups/intercepteg-${uniqueId}",
+    "state": "ACTIVE",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.Intercept/GetInterceptEndpointGroup
+
+{
+  "name": "projects/${projectId}/locations/global/interceptEndpointGroups/intercepteg-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Initial description",
+  "interceptDeploymentGroup": "projects/${projectId}/locations/global/interceptDeploymentGroups/my-dg-${uniqueId}",
+  "labels": {
+    "my-key": "my-value"
+  },
+  "name": "projects/${projectId}/locations/global/interceptEndpointGroups/intercepteg-${uniqueId}",
+  "state": "ACTIVE",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.Intercept/GetInterceptEndpointGroup
+
+{
+  "name": "projects/${projectId}/locations/global/interceptEndpointGroups/intercepteg-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Initial description",
+  "interceptDeploymentGroup": "projects/${projectId}/locations/global/interceptDeploymentGroups/my-dg-${uniqueId}",
+  "labels": {
+    "my-key": "my-value"
+  },
+  "name": "projects/${projectId}/locations/global/interceptEndpointGroups/intercepteg-${uniqueId}",
+  "state": "ACTIVE",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.Intercept/UpdateInterceptEndpointGroup
+
+{
+  "interceptEndpointGroup": {
+    "description": "Updated description",
+    "interceptDeploymentGroup": "projects/${projectId}/locations/global/interceptDeploymentGroups/my-dg-${uniqueId}",
+    "labels": {
+      "my-key": "my-updated-value"
+    },
+    "name": "projects/${projectId}/locations/global/interceptEndpointGroups/intercepteg-${uniqueId}"
+  },
+  "updateMask": "description,labels"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/interceptEndpointGroups/intercepteg-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/interceptEndpointGroups/intercepteg-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.InterceptEndpointGroup",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Updated description",
+    "interceptDeploymentGroup": "projects/${projectId}/locations/global/interceptDeploymentGroups/my-dg-${uniqueId}",
+    "labels": {
+      "my-key": "my-updated-value"
+    },
+    "name": "projects/${projectId}/locations/global/interceptEndpointGroups/intercepteg-${uniqueId}",
+    "state": "ACTIVE",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.Intercept/GetInterceptEndpointGroup
+
+{
+  "name": "projects/${projectId}/locations/global/interceptEndpointGroups/intercepteg-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated description",
+  "interceptDeploymentGroup": "projects/${projectId}/locations/global/interceptDeploymentGroups/my-dg-${uniqueId}",
+  "labels": {
+    "my-key": "my-updated-value"
+  },
+  "name": "projects/${projectId}/locations/global/interceptEndpointGroups/intercepteg-${uniqueId}",
+  "state": "ACTIVE",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.Intercept/GetInterceptEndpointGroup
+
+{
+  "name": "projects/${projectId}/locations/global/interceptEndpointGroups/intercepteg-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated description",
+  "interceptDeploymentGroup": "projects/${projectId}/locations/global/interceptDeploymentGroups/my-dg-${uniqueId}",
+  "labels": {
+    "my-key": "my-updated-value"
+  },
+  "name": "projects/${projectId}/locations/global/interceptEndpointGroups/intercepteg-${uniqueId}",
+  "state": "ACTIVE",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.Intercept/GetInterceptEndpointGroup
+
+{
+  "name": "projects/${projectId}/locations/global/interceptEndpointGroups/intercepteg-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Updated description",
+  "interceptDeploymentGroup": "projects/${projectId}/locations/global/interceptDeploymentGroups/my-dg-${uniqueId}",
+  "labels": {
+    "my-key": "my-updated-value"
+  },
+  "name": "projects/${projectId}/locations/global/interceptEndpointGroups/intercepteg-${uniqueId}",
+  "state": "ACTIVE",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.Intercept/DeleteInterceptEndpointGroup
+
+{
+  "name": "projects/${projectId}/locations/global/interceptEndpointGroups/intercepteg-${uniqueId}"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/interceptEndpointGroups/intercepteg-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/global/interceptEndpointGroups/intercepteg-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/global/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.InterceptEndpointGroup",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Updated description",
+    "interceptDeploymentGroup": "projects/${projectId}/locations/global/interceptDeploymentGroups/my-dg-${uniqueId}",
+    "labels": {
+      "my-key": "my-updated-value"
+    },
+    "name": "projects/${projectId}/locations/global/interceptEndpointGroups/intercepteg-${uniqueId}",
+    "state": "ACTIVE",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}

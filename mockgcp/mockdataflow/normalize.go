@@ -1,0 +1,53 @@
+// Copyright 2022 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package mockdataflow
+
+import (
+	"regexp"
+	"strings"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
+)
+
+var _ mockgcpregistry.SupportsNormalization = &MockService{}
+
+func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
+	replacements.ReplacePath(".createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".currentStateTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".startTime", mockgcpregistry.PlaceholderTimestamp)
+
+	replacements.ReplacePath(".jobs[].createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".jobs[].currentStateTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".jobs[].startTime", mockgcpregistry.PlaceholderTimestamp)
+
+	replacements.ReplacePath(".job.createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".job.currentStateTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".job.startTime", mockgcpregistry.PlaceholderTimestamp)
+}
+
+func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
+	if !strings.Contains(event.URL(), "dataflow.googleapis.com") {
+		return
+	}
+
+	reVolatileID := regexp.MustCompile(`\([0-9a-f]{16}\)`)
+
+	event.VisitResponseStringValues(func(path string, value string) {
+		if reVolatileID.MatchString(value) {
+			normalized := reVolatileID.ReplaceAllString(value, "(volatile-error-id)")
+			replacements.ReplaceStringValue(value, normalized)
+		}
+	})
+}

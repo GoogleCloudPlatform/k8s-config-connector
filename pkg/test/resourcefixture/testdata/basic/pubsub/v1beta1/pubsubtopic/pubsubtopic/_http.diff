@@ -1,0 +1,57 @@
+76c76
+< GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-sample-${uniqueId}?alt=json
+---
+> GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-sample-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+99c99
+< PUT https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-sample-${uniqueId}?alt=json
+---
+> PUT https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-sample-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+113a114
+>   "name": "projects/${projectId}/topics/pubsubtopic-sample-${uniqueId}",
+115c116
+<     "encoding": "JSON",
+---
+>     "encoding": 1,
+144c145
+<     "encoding": "JSON",
+---
+>     "encoding": 1,
+151c152
+< GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-sample-${uniqueId}?alt=json
+---
+> GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-sample-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+178c179
+<     "encoding": "JSON",
+---
+>     "encoding": 1,
+185c186
+< PATCH https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-sample-${uniqueId}?alt=json&updateMask=labels%2CmessageStoragePolicy%2CmessageRetentionDuration
+---
+> PATCH https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-sample-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+201a203
+>     "name": "projects/${projectId}/topics/pubsubtopic-sample-${uniqueId}",
+203c205
+<       "encoding": "JSON",
+---
+>       "encoding": 1,
+206c208,209
+<   }
+---
+>   },
+>   "updateMask": "labels,messageRetentionDuration,messageStoragePolicy"
+234c237
+<     "encoding": "JSON",
+---
+>     "encoding": 1,
+241c244
+< GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-sample-${uniqueId}?alt=json
+---
+> GET https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-sample-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+269c272
+<     "encoding": "JSON",
+---
+>     "encoding": 1,
+276c279
+< DELETE https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-sample-${uniqueId}?alt=json
+---
+> DELETE https://pubsub.googleapis.com/v1/projects/${projectId}/topics/pubsubtopic-sample-${uniqueId}?%24alt=json%3Benum-encoding%3Dint

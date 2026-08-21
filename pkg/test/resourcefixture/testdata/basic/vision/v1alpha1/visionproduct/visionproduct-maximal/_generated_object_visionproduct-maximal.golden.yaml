@@ -1,0 +1,33 @@
+apiVersion: vision.cnrm.cloud.google.com/v1alpha1
+kind: VisionProduct
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: visionproduct-max-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  description: An updated description for maximal product
+  displayName: Maximal Vision Product Updated
+  location: us-west1
+  productCategory: apparel-v2
+  productLabels:
+  - key: color
+    value: red
+  - key: season
+    value: autumn
+  projectRef:
+    external: ${projectId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-west1/products/visionproduct-max-${uniqueId}
+  observedGeneration: 2
+  observedState: {}

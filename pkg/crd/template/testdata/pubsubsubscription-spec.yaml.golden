@@ -1,0 +1,51 @@
+ackDeadlineSeconds: integer
+bigqueryConfig:
+  dropUnknownFields: boolean
+  tableRef:
+    external: string
+    name: string
+    namespace: string
+  useTopicSchema: boolean
+  writeMetadata: boolean
+cloudStorageConfig:
+  avroConfig:
+    writeMetadata: boolean
+  bucketRef:
+    external: string
+    name: string
+    namespace: string
+  filenamePrefix: string
+  filenameSuffix: string
+  maxBytes: integer
+  maxDuration: string
+  state: string
+deadLetterPolicy:
+  deadLetterTopicRef:
+    external: string
+    name: string
+    namespace: string
+  maxDeliveryAttempts: integer
+enableExactlyOnceDelivery: boolean
+enableMessageOrdering: boolean
+expirationPolicy:
+  ttl: string
+filter: string
+messageRetentionDuration: string
+pushConfig:
+  attributes:
+    string: string
+  noWrapper:
+    writeMetadata: boolean
+  oidcToken:
+    audience: string
+    serviceAccountEmail: string
+  pushEndpoint: string
+resourceID: string
+retainAckedMessages: boolean
+retryPolicy:
+  maximumBackoff: string
+  minimumBackoff: string
+topicRef:
+  external: string
+  name: string
+  namespace: string

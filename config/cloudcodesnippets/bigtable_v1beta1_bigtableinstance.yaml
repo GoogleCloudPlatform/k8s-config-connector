@@ -1,0 +1,16 @@
+label: Config Connector BigtableInstance
+markdownDescription: Creates yaml for a BigtableInstance resource
+insertText: |
+  apiVersion: bigtable.cnrm.cloud.google.com/v1beta1
+  kind: BigtableInstance
+  metadata:
+    name: \${1:bigtableinstance-name}
+  spec:
+    displayName: \${2:BigtableSample}
+    cluster:
+    - clusterId: \${3:bigtableinstance-dep1}
+      zone: \${4:us-central1-a}
+      numNodes: \${5:3}
+    - clusterId: \${6:bigtableinstance-dep2}
+      zone: \${7:us-west1-a}
+      numNodes: \${8:3}

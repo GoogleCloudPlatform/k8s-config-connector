@@ -1,0 +1,74 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum BigqueryreservationBetaAssignmentJobTypeEnum {
+  BigqueryreservationBetaAssignmentJobTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  BigqueryreservationBetaAssignmentJobTypeEnumJOB_TYPE_UNSPECIFIED = 1;
+  BigqueryreservationBetaAssignmentJobTypeEnumPIPELINE = 2;
+  BigqueryreservationBetaAssignmentJobTypeEnumQUERY = 3;
+}
+
+enum BigqueryreservationBetaAssignmentStateEnum {
+  BigqueryreservationBetaAssignmentStateEnumNO_VALUE_DO_NOT_USE = 0;
+  BigqueryreservationBetaAssignmentStateEnumSTATE_UNSPECIFIED = 1;
+  BigqueryreservationBetaAssignmentStateEnumPENDING = 2;
+  BigqueryreservationBetaAssignmentStateEnumACTIVE = 3;
+}
+
+message BigqueryreservationBetaAssignment {
+  string name = 1;
+  string assignee = 2;
+  BigqueryreservationBetaAssignmentJobTypeEnum job_type = 3;
+  BigqueryreservationBetaAssignmentStateEnum state = 4;
+  string project = 5;
+  string location = 6;
+  string reservation = 7;
+}
+
+message ApplyBigqueryreservationBetaAssignmentRequest {
+  BigqueryreservationBetaAssignment resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteBigqueryreservationBetaAssignmentRequest {
+  string service_account_file = 1;
+  BigqueryreservationBetaAssignment resource = 2;
+}
+
+message ListBigqueryreservationBetaAssignmentRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+  string Reservation = 4;
+}
+
+message ListBigqueryreservationBetaAssignmentResponse {
+  repeated BigqueryreservationBetaAssignment items = 1;
+}
+
+service BigqueryreservationBetaAssignmentService {
+  rpc ApplyBigqueryreservationBetaAssignment(ApplyBigqueryreservationBetaAssignmentRequest) returns (BigqueryreservationBetaAssignment);
+  rpc DeleteBigqueryreservationBetaAssignment(DeleteBigqueryreservationBetaAssignmentRequest) returns (google.protobuf.Empty);
+  rpc ListBigqueryreservationBetaAssignment(ListBigqueryreservationBetaAssignmentRequest) returns (ListBigqueryreservationBetaAssignmentResponse);
+}

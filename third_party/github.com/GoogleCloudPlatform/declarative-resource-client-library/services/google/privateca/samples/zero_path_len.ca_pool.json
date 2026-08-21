@@ -1,0 +1,102 @@
+{
+  "name": "{{pool}}",
+  "project": "{{project}}",
+  "location": "{{region}}",
+  "tier": "ENTERPRISE",
+  "issuancePolicy": {
+    "allowedKeyTypes": [
+      {
+        "rsa": {
+          "minModulusSize": 64,
+          "maxModulusSize": 128
+        }
+      },
+      {
+        "ellipticCurve": {
+          "signatureAlgorithm": "ECDSA_P384"
+        }
+      }
+    ],
+    "maximumLifetime": "43200s",
+    "allowedIssuanceModes": {
+      "allowCsrBasedIssuance": true,
+      "allowConfigBasedIssuance": false
+    },
+    "baselineValues": {
+      "keyUsage": {
+        "baseKeyUsage": {
+          "digitalSignature": false,
+          "contentCommitment": false,
+          "keyEncipherment": false,
+          "dataEncipherment": false,
+          "keyAgreement": false,
+          "certSign": false,
+          "crlSign": false,
+          "encipherOnly": false,
+          "decipherOnly": false
+        },
+        "extendedKeyUsage": {
+          "serverAuth": false,
+          "clientAuth": false,
+          "codeSigning": false,
+          "emailProtection": false,
+          "timeStamping": false,
+          "ocspSigning": false
+        },
+        "unknownExtendedKeyUsages": [
+          {
+            "objectIdPath": [1, 7]
+          }
+        ]
+      },
+      "caOptions": {
+        "isCa": true,
+        "zeroMaxIssuerPathLength": true
+      },
+      "policyIds": [
+        {
+          "objectIdPath": [1, 7]
+        }
+      ],
+      "aiaOcspServers": [
+        "string"
+      ],
+      "additionalExtensions": [
+        {
+          "objectId": {
+            "objectIdPath": [1, 7]
+          },
+          "critical": false,
+          "value": "c3RyaW5nCg=="
+        }
+      ]
+    },
+    "identityConstraints": {
+      "celExpression": {
+        "title": "Sample expression",
+        "description": "Always false",
+        "expression": "false",
+        "location": "devops.ca_pool.json"
+      },
+      "allowSubjectPassthrough": false,
+      "allowSubjectAltNamesPassthrough": false
+    },
+    "passthroughExtensions": {
+      "knownExtensions": [
+        "BASE_KEY_USAGE"
+      ],
+      "additionalExtensions": [
+        {
+          "objectIdPath": [1, 7]
+        }
+      ]
+    }
+  },
+  "publishingOptions": {
+    "publishCaCert": false,
+    "publishCrl": false
+  },
+  "labels": {
+    "label-one": "value-one"
+  }
+}

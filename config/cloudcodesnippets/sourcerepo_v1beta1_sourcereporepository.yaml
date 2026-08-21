@@ -1,0 +1,14 @@
+label: Config Connector SourceRepoRepository
+markdownDescription: Creates yaml for a SourceRepoRepository resource
+insertText: |
+  apiVersion: sourcerepo.cnrm.cloud.google.com/v1beta1
+  kind: SourceRepoRepository
+  metadata:
+    name: \${1:sourcereporepository-name}
+  spec:
+    pubsubConfigs:
+    - topicRef:
+        name: \${2:sourcereporepository-dep}
+      serviceAccountRef:
+        name: \${3:sourcereporepository-dep}
+      messageFormat: \${4:JSON}

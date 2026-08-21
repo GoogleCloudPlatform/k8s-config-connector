@@ -1,0 +1,41 @@
+{
+  "name": "{{ref:__state__:name}}",
+  "parent": "organizations/{{org_id}}",
+  "location": "{{region}}",
+  "displayName": "sample-template",
+  "description": "A sample deidentify template",
+  "deidentifyConfig": {
+    "recordTransformations": {
+      "fieldTransformations": [
+        {
+          "fields": [
+            {
+              "name": "AGE"
+            }
+          ],
+          "condition": {
+            "expressions": {
+              "logicalOperator": "AND",
+              "conditions": {
+                "conditions": [
+                  {
+                    "field": {
+                      "name": "BREED"
+                    },
+                    "operator": "EQUAL_TO",
+                    "value": {
+                      "stringValue": "PUG"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "primitiveTransformation": {
+            "redactConfig": {}
+          }
+        }
+      ]
+    }
+  }
+}

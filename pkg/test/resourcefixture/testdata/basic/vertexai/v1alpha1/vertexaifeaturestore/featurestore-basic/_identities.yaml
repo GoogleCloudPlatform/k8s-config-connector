@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: vertexai.cnrm.cloud.google.com
+  kind: VertexAIFeaturestore
+  name: featurestore${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

@@ -1,0 +1,18 @@
+label: Config Connector IAMPolicy
+markdownDescription: Creates yaml for a IAMPolicy resource
+insertText: |
+  apiVersion: iam.cnrm.cloud.google.com/v1beta1
+  kind: IAMPolicy
+  metadata:
+    name: \${1:iampolicy-name}
+  spec:
+    resourceRef:
+      kind: \${2:Project}
+      external: \${3:projects/iampolicy-dep-external-project}
+    bindings:
+    - members:
+      - \${4:serviceAccount:[GSA_EMAIL?]}
+      role: \${5:roles/owner}
+    - members:
+      - \${6:serviceAccount:iampolicy-dep-external-project@iampolicy-dep-external-project.iam.gserviceaccount.com}
+      role: \${7:roles/storage.admin}

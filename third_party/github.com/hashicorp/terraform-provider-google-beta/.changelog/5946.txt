@@ -1,0 +1,4 @@
+```release-note:enhancement
+compute: added passing `exceed_redirect_options` field for `google_compute_security_policy` rules
+
+```

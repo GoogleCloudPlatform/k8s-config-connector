@@ -1,0 +1,10 @@
+apiVersion: gkehub.cnrm.cloud.google.com/v1alpha1
+kind: GKEHubScopeRBACRoleBinding
+metadata:
+  name: gkh-rb-user-${uniqueId}
+spec:
+  scopeRef:
+    name: gkh-rb-user-dep-${uniqueId}
+  role:
+    predefinedRole: ADMIN
+  user: user1@example.com

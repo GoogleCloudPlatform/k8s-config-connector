@@ -1,0 +1,758 @@
+GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/ListInstances
+
+{
+  "parent": "projects/${projectId}"
+}
+
+OK
+
+{}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/CreateInstance
+
+{
+  "clusters": {
+    "cluster-${uniqueId}": {
+      "defaultStorageType": "SSD",
+      "encryptionConfig": {},
+      "location": "projects/${projectId}/locations/us-central1-b",
+      "serveNodes": 1
+    }
+  },
+  "instance": {
+    "displayName": "Test Bigtable Instance",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "type": "DEVELOPMENT"
+  },
+  "instanceId": "bigtableinstance-${uniqueId}",
+  "parent": "projects/${projectId}"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.CreateInstanceMetadata",
+    "originalRequest": {
+      "clusters": {
+        "cluster-${uniqueId}": {
+          "defaultStorageType": "SSD",
+          "location": "projects/${projectId}/locations/us-central1-b",
+          "serveNodes": 1
+        }
+      },
+      "instance": {
+        "displayName": "Test Bigtable Instance",
+        "labels": {
+          "cnrm-test": "true",
+          "managed-by-cnrm": "true"
+        },
+        "type": "DEVELOPMENT"
+      },
+      "instanceId": "bigtableinstance-${uniqueId}",
+      "parent": "projects/${projectId}"
+    },
+    "requestTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "operations/projects/${projectId}/instances/bigtableinstance-${uniqueId}/locations/us-central1-b/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "operations/projects/${projectId}/instances/bigtableinstance-${uniqueId}/locations/us-central1-b/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.CreateInstanceMetadata",
+    "finishTime": "2024-04-01T12:34:56.123456Z",
+    "originalRequest": {
+      "clusters": {
+        "cluster-${uniqueId}": {
+          "defaultStorageType": "SSD",
+          "location": "projects/${projectId}/locations/us-central1-b",
+          "serveNodes": 1
+        }
+      },
+      "instance": {
+        "displayName": "Test Bigtable Instance",
+        "labels": {
+          "cnrm-test": "true",
+          "managed-by-cnrm": "true"
+        },
+        "type": "DEVELOPMENT"
+      },
+      "instanceId": "bigtableinstance-${uniqueId}",
+      "parent": "projects/${projectId}"
+    },
+    "requestTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "operations/projects/${projectId}/instances/bigtableinstance-${uniqueId}/locations/us-central1-b/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.Instance",
+    "displayName": "Test Bigtable Instance",
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "name": "projects/${projectId}/instances/bigtableinstance-${uniqueId}",
+    "state": "READY",
+    "type": "DEVELOPMENT"
+  }
+}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/ListInstances
+
+{
+  "parent": "projects/${projectId}"
+}
+
+OK
+
+{
+  "instances": [
+    {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "displayName": "Test Bigtable Instance",
+      "labels": {
+        "cnrm-test": "true",
+        "managed-by-cnrm": "true"
+      },
+      "name": "projects/${projectId}/instances/bigtableinstance-${uniqueId}",
+      "state": "READY",
+      "type": "DEVELOPMENT"
+    }
+  ]
+}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/ListClusters
+
+{
+  "parent": "projects/${projectId}/instances/bigtableinstance-${uniqueId}"
+}
+
+OK
+
+{
+  "clusters": [
+    {
+      "defaultStorageType": "SSD",
+      "location": "projects/${projectId}/locations/us-central1-b",
+      "name": "projects/${projectId}/instances/bigtableinstance-${uniqueId}/clusters/cluster-${uniqueId}",
+      "serveNodes": 1,
+      "state": "READY"
+    }
+  ]
+}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/ListInstances
+
+{
+  "parent": "projects/${projectId}"
+}
+
+OK
+
+{
+  "instances": [
+    {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "displayName": "Test Bigtable Instance",
+      "labels": {
+        "cnrm-test": "true",
+        "managed-by-cnrm": "true"
+      },
+      "name": "projects/${projectId}/instances/bigtableinstance-${uniqueId}",
+      "state": "READY",
+      "type": "DEVELOPMENT"
+    }
+  ]
+}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/ListClusters
+
+{
+  "parent": "projects/${projectId}/instances/bigtableinstance-${uniqueId}"
+}
+
+OK
+
+{
+  "clusters": [
+    {
+      "defaultStorageType": "SSD",
+      "location": "projects/${projectId}/locations/us-central1-b",
+      "name": "projects/${projectId}/instances/bigtableinstance-${uniqueId}/clusters/cluster-${uniqueId}",
+      "serveNodes": 1,
+      "state": "READY"
+    }
+  ]
+}
+
+---
+
+POST https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/bigtableinstance-${uniqueId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A="
+}
+
+---
+
+POST https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/bigtableinstance-${uniqueId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A="
+}
+
+---
+
+POST https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/bigtableinstance-${uniqueId}:setIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "policy": {
+    "bindings": [
+      {
+        "condition": {
+          "description": "Only allow at certain times",
+          "expression": "request.time \u003c timestamp(\"2025-01-01T00:00:00Z\")",
+          "title": "test-condition"
+        },
+        "members": [
+          "user:test@example.com",
+          "serviceAccount:test-sa@test-project.iam.gserviceaccount.com"
+        ],
+        "role": "roles/bigtable.admin"
+      }
+    ],
+    "etag": "abcdef0123A=",
+    "version": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "condition": {
+        "description": "Only allow at certain times",
+        "expression": "request.time \u003c timestamp(\"2025-01-01T00:00:00Z\")",
+        "title": "test-condition"
+      },
+      "members": [
+        "user:test@example.com",
+        "serviceAccount:test-sa@test-project.iam.gserviceaccount.com"
+      ],
+      "role": "roles/bigtable.admin"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 3
+}
+
+---
+
+POST https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/bigtableinstance-${uniqueId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "condition": {
+        "description": "Only allow at certain times",
+        "expression": "request.time \u003c timestamp(\"2025-01-01T00:00:00Z\")",
+        "title": "test-condition"
+      },
+      "members": [
+        "user:test@example.com",
+        "serviceAccount:test-sa@test-project.iam.gserviceaccount.com"
+      ],
+      "role": "roles/bigtable.admin"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 3
+}
+
+---
+
+POST https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/bigtableinstance-${uniqueId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "condition": {
+        "description": "Only allow at certain times",
+        "expression": "request.time \u003c timestamp(\"2025-01-01T00:00:00Z\")",
+        "title": "test-condition"
+      },
+      "members": [
+        "user:test@example.com",
+        "serviceAccount:test-sa@test-project.iam.gserviceaccount.com"
+      ],
+      "role": "roles/bigtable.admin"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 3
+}
+
+---
+
+POST https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/bigtableinstance-${uniqueId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "condition": {
+        "description": "Only allow at certain times",
+        "expression": "request.time \u003c timestamp(\"2025-01-01T00:00:00Z\")",
+        "title": "test-condition"
+      },
+      "members": [
+        "user:test@example.com",
+        "serviceAccount:test-sa@test-project.iam.gserviceaccount.com"
+      ],
+      "role": "roles/bigtable.admin"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 3
+}
+
+---
+
+POST https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/bigtableinstance-${uniqueId}:setIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "policy": {
+    "bindings": [
+      {
+        "condition": {
+          "description": "Only allow at certain times",
+          "expression": "request.time \u003c timestamp(\"2025-01-01T00:00:00Z\")",
+          "title": "test-condition"
+        },
+        "members": [
+          "group:test-group@example.com",
+          "serviceAccount:test-sa@test-project.iam.gserviceaccount.com",
+          "user:test@example.com"
+        ],
+        "role": "roles/bigtable.admin"
+      },
+      {
+        "condition": {
+          "description": "Editor condition",
+          "expression": "request.time \u003c timestamp(\"2026-01-01T00:00:00Z\")",
+          "title": "editor-condition"
+        },
+        "members": [
+          "user:editor@example.com"
+        ],
+        "role": "roles/bigtable.editor"
+      }
+    ],
+    "etag": "abcdef0123A=",
+    "version": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "condition": {
+        "description": "Only allow at certain times",
+        "expression": "request.time \u003c timestamp(\"2025-01-01T00:00:00Z\")",
+        "title": "test-condition"
+      },
+      "members": [
+        "group:test-group@example.com",
+        "serviceAccount:test-sa@test-project.iam.gserviceaccount.com",
+        "user:test@example.com"
+      ],
+      "role": "roles/bigtable.admin"
+    },
+    {
+      "condition": {
+        "description": "Editor condition",
+        "expression": "request.time \u003c timestamp(\"2026-01-01T00:00:00Z\")",
+        "title": "editor-condition"
+      },
+      "members": [
+        "user:editor@example.com"
+      ],
+      "role": "roles/bigtable.editor"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 3
+}
+
+---
+
+POST https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/bigtableinstance-${uniqueId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "condition": {
+        "description": "Only allow at certain times",
+        "expression": "request.time \u003c timestamp(\"2025-01-01T00:00:00Z\")",
+        "title": "test-condition"
+      },
+      "members": [
+        "group:test-group@example.com",
+        "serviceAccount:test-sa@test-project.iam.gserviceaccount.com",
+        "user:test@example.com"
+      ],
+      "role": "roles/bigtable.admin"
+    },
+    {
+      "condition": {
+        "description": "Editor condition",
+        "expression": "request.time \u003c timestamp(\"2026-01-01T00:00:00Z\")",
+        "title": "editor-condition"
+      },
+      "members": [
+        "user:editor@example.com"
+      ],
+      "role": "roles/bigtable.editor"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 3
+}
+
+---
+
+POST https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/bigtableinstance-${uniqueId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "condition": {
+        "description": "Only allow at certain times",
+        "expression": "request.time \u003c timestamp(\"2025-01-01T00:00:00Z\")",
+        "title": "test-condition"
+      },
+      "members": [
+        "group:test-group@example.com",
+        "serviceAccount:test-sa@test-project.iam.gserviceaccount.com",
+        "user:test@example.com"
+      ],
+      "role": "roles/bigtable.admin"
+    },
+    {
+      "condition": {
+        "description": "Editor condition",
+        "expression": "request.time \u003c timestamp(\"2026-01-01T00:00:00Z\")",
+        "title": "editor-condition"
+      },
+      "members": [
+        "user:editor@example.com"
+      ],
+      "role": "roles/bigtable.editor"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 3
+}
+
+---
+
+POST https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/bigtableinstance-${uniqueId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "bindings": [
+    {
+      "condition": {
+        "description": "Only allow at certain times",
+        "expression": "request.time \u003c timestamp(\"2025-01-01T00:00:00Z\")",
+        "title": "test-condition"
+      },
+      "members": [
+        "group:test-group@example.com",
+        "serviceAccount:test-sa@test-project.iam.gserviceaccount.com",
+        "user:test@example.com"
+      ],
+      "role": "roles/bigtable.admin"
+    },
+    {
+      "condition": {
+        "description": "Editor condition",
+        "expression": "request.time \u003c timestamp(\"2026-01-01T00:00:00Z\")",
+        "title": "editor-condition"
+      },
+      "members": [
+        "user:editor@example.com"
+      ],
+      "role": "roles/bigtable.editor"
+    }
+  ],
+  "etag": "abcdef0123A=",
+  "version": 3
+}
+
+---
+
+POST https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/bigtableinstance-${uniqueId}:setIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "policy": {
+    "etag": "abcdef0123A=",
+    "version": 3
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+POST https://bigtableadmin.googleapis.com/v2/projects/${projectId}/instances/bigtableinstance-${uniqueId}:getIamPolicy?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "etag": "abcdef0123A=",
+  "version": 1
+}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/ListInstances
+
+{
+  "parent": "projects/${projectId}"
+}
+
+OK
+
+{
+  "instances": [
+    {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "displayName": "Test Bigtable Instance",
+      "labels": {
+        "cnrm-test": "true",
+        "managed-by-cnrm": "true"
+      },
+      "name": "projects/${projectId}/instances/bigtableinstance-${uniqueId}",
+      "state": "READY",
+      "type": "DEVELOPMENT"
+    }
+  ]
+}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/ListClusters
+
+{
+  "parent": "projects/${projectId}/instances/bigtableinstance-${uniqueId}"
+}
+
+OK
+
+{
+  "clusters": [
+    {
+      "defaultStorageType": "SSD",
+      "location": "projects/${projectId}/locations/us-central1-b",
+      "name": "projects/${projectId}/instances/bigtableinstance-${uniqueId}/clusters/cluster-${uniqueId}",
+      "serveNodes": 1,
+      "state": "READY"
+    }
+  ]
+}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/DeleteInstance
+
+{
+  "name": "projects/${projectId}/instances/bigtableinstance-${uniqueId}"
+}
+
+OK
+
+{}

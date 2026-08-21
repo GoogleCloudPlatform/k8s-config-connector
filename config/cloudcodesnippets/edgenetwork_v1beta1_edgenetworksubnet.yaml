@@ -1,0 +1,16 @@
+label: Config Connector EdgeNetworkSubnet
+markdownDescription: Creates yaml for a EdgeNetworkSubnet resource
+insertText: |
+  apiVersion: edgenetwork.cnrm.cloud.google.com/v1beta1
+  kind: EdgeNetworkSubnet
+  metadata:
+    name: \${1:edgenetworksubnet-name}
+  spec:
+    description: \${2:A sample edgenetwork subnet}
+    location: \${3:us-central1}
+    zone: \${4:[ZONE_LOCATION]}
+    networkRef:
+      name: \${5:edgenetworksubnet-dep}
+    ipv4Cidr:
+    - \${6:1.1.1.1/24}
+    - \${7:2.2.2.2/32}

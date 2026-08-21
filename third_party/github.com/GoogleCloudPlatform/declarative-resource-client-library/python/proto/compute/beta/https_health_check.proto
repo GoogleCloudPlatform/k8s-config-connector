@@ -1,0 +1,60 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+message ComputeBetaHttpsHealthCheck {
+  int64 check_interval_sec = 1;
+  string description = 2;
+  int64 healthy_threshold = 3;
+  string host = 4;
+  string name = 5;
+  int64 port = 6;
+  string request_path = 7;
+  int64 timeout_sec = 8;
+  int64 unhealthy_threshold = 9;
+  string project = 10;
+  string self_link = 11;
+  string creation_timestamp = 12;
+}
+
+message ApplyComputeBetaHttpsHealthCheckRequest {
+  ComputeBetaHttpsHealthCheck resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteComputeBetaHttpsHealthCheckRequest {
+  string service_account_file = 1;
+  ComputeBetaHttpsHealthCheck resource = 2;
+}
+
+message ListComputeBetaHttpsHealthCheckRequest {
+  string service_account_file = 1;
+  string Project = 2;
+}
+
+message ListComputeBetaHttpsHealthCheckResponse {
+  repeated ComputeBetaHttpsHealthCheck items = 1;
+}
+
+service ComputeBetaHttpsHealthCheckService {
+  rpc ApplyComputeBetaHttpsHealthCheck(ApplyComputeBetaHttpsHealthCheckRequest) returns (ComputeBetaHttpsHealthCheck);
+  rpc DeleteComputeBetaHttpsHealthCheck(DeleteComputeBetaHttpsHealthCheckRequest) returns (google.protobuf.Empty);
+  rpc ListComputeBetaHttpsHealthCheck(ListComputeBetaHttpsHealthCheckRequest) returns (ListComputeBetaHttpsHealthCheckResponse);
+}

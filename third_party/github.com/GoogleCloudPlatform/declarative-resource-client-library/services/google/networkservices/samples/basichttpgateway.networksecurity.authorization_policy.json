@@ -1,0 +1,39 @@
+{
+  "name": "{{resource}}",
+  "project": "{{project}}",
+  "location": "global",
+  "action": "ALLOW",
+  "description": "Sample authorization policy",
+  "rules": [
+    {
+      "sources": [
+        {
+          "ipBlocks": ["1.2.3.4"],
+          "principals": ["*"]
+        }
+      ],
+      "destinations": [
+        {
+          "hosts": ["demo-service"],
+          "ports": [8080],
+          "methods": ["POST"]
+        }
+      ]
+    },
+    {
+      "sources": [
+        {
+          "ipBlocks": ["1.2.3.5"],
+          "principals": ["foo"]
+        }
+      ],
+      "destinations": [
+        {
+          "hosts": ["test-service"],
+          "ports": [8081],
+          "methods": ["GET"]
+        }
+      ]
+    }
+  ]
+}

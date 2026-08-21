@@ -1,0 +1,88 @@
+199c199
+< GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}?alt=json
+---
+> GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+222c222
+< POST https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates?alt=json&certificateId=certificatemanagercertificate${uniqueId}
+---
+> POST https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates?%24alt=json%3Benum-encoding%3Dint&certificateId=certificatemanagercertificate${uniqueId}
+242c242
+<   "scope": "EDGE_CACHE"
+---
+>   "scope": 1
+268c268
+< GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
+---
+> GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
+322c322
+< GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}?alt=json
+---
+> GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+346c346
+<         "state": "AUTHORIZED"
+---
+>         "state": 6
+350c350
+<         "state": "AUTHORIZED"
+---
+>         "state": 6
+361c361
+<     "state": "ACTIVE"
+---
+>     "state": 3
+364c364
+<   "scope": "EDGE_CACHE"
+---
+>   "scope": 1
+369c369
+< PATCH https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}?alt=json&updateMask=description%2Clabels
+---
+> PATCH https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2Clabels
+378c378,390
+<   }
+---
+>   },
+>   "managed": {
+>     "dnsAuthorizations": [
+>       "projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization1${uniqueId}",
+>       "projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization2${uniqueId}"
+>     ],
+>     "domains": [
+>       "${uniqueId}1.hashicorptest.com",
+>       "${uniqueId}2.hashicorptest.com"
+>     ]
+>   },
+>   "name": "projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}",
+>   "scope": 1
+404c416
+< GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
+---
+> GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
+459c471
+< GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}?alt=json
+---
+> GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+483c495
+<         "state": "AUTHORIZED"
+---
+>         "state": 6
+487c499
+<         "state": "AUTHORIZED"
+---
+>         "state": 6
+498c510
+<     "state": "ACTIVE"
+---
+>     "state": 3
+501c513
+<   "scope": "EDGE_CACHE"
+---
+>   "scope": 1
+506c518
+< DELETE https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}?alt=json
+---
+> DELETE https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+532c544
+< GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}?alt=json
+---
+> GET https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}

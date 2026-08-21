@@ -1,0 +1,51 @@
+# Copyright 2024 Google LLC. All Rights Reserved.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+name: info_type_deidentify_template
+description: A test of a dlp deidentify template with info type transformations
+type: deidentify_template
+versions:
+- ga
+- beta
+resource: samples/info_type.deidentify_template.json
+dependencies:
+- samples/first.cloudkms.crypto_key.json
+- samples/second.cloudkms.crypto_key.json
+- samples/basic.cloudkms.key_ring.json
+- samples/cloudkms.serviceusage.service.json
+- samples/basic.cloudbilling.project_billing_info.json
+- samples/basic.cloudresourcemanager.project.json
+updates:
+- resource: samples/update_info_type.deidentify_template.json
+  dependencies:
+  - samples/first.cloudkms.crypto_key.json
+  - samples/second.cloudkms.crypto_key.json
+  - samples/basic.cloudkms.key_ring.json
+  - samples/cloudkms.serviceusage.service.json
+  - samples/basic.cloudbilling.project_billing_info.json
+  - samples/basic.cloudresourcemanager.project.json
+variables:
+- name: billing_account
+  type: billing_account
+- name: id
+  type: resource_name
+- name: key1
+  type: resource_name
+- name: key2
+  type: resource_name
+- name: org_id
+  type: org_id
+- name: project
+  type: project
+- name: ring
+  type: resource_name

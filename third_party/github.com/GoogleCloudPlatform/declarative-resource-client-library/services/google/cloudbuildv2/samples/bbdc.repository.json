@@ -1,0 +1,10 @@
+{
+  "project": "{{project}}",
+  "location": "us-west1",
+  "connection": "{{ref:bbdc.connection.json:name}}",
+  "name": "{{repository}}",
+  "remoteUri": "https://bitbucket-us-central.gcb-test.com/scm/prob/repo-testing.git",
+  "annotations": {
+    "some-key": "some-value"
+  }
+}

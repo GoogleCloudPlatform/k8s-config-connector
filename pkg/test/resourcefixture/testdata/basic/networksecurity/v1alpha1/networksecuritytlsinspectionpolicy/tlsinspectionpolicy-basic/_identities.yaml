@@ -1,0 +1,12 @@
+- caisURL: //privateca.googleapis.com/projects/${projectId}/locations/us-central1/caPools/capool-${uniqueId}
+  group: privateca.cnrm.cloud.google.com
+  kind: PrivateCACAPool
+  name: capool-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: //networksecurity.googleapis.com/projects/${projectId}/locations/us-central1/tlsInspectionPolicies/tlsinspection-${uniqueId}
+  group: networksecurity.cnrm.cloud.google.com
+  kind: NetworkSecurityTLSInspectionPolicy
+  name: tlsinspection-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

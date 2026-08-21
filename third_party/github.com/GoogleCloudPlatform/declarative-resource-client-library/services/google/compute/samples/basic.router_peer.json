@@ -1,0 +1,10 @@
+{
+  "name": "{{peer}}",
+  "project": "{{project}}",
+  "location": "{{region}}",
+  "router": "{{ref:basic.router.json:name}}",
+  "peerIPAddress": "169.254.1.2",
+  "peerAsn": 65513,
+  "advertisedRoutePriority": 100,
+  "interfaceName": "interface-1"
+}

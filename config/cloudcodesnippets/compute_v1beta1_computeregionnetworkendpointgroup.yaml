@@ -1,0 +1,14 @@
+label: Config Connector ComputeRegionNetworkEndpointGroup
+markdownDescription: Creates yaml for a ComputeRegionNetworkEndpointGroup resource
+insertText: |
+  apiVersion: compute.cnrm.cloud.google.com/v1beta1
+  kind: ComputeRegionNetworkEndpointGroup
+  metadata:
+    name: \${1:computeregionnetworkendpointgroup-name}
+  spec:
+    region: \${2:us-west1}
+    defaultPort: \${3:90}
+    description: \${4:A sample regional network endpoint group.}
+    cloudFunction:
+      functionRef:
+        external: \${5:computeregionnetworkendpointgroup-dep-cloudfunction}

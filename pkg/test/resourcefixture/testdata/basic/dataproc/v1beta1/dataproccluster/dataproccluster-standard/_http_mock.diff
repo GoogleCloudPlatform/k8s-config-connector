@@ -1,0 +1,200 @@
+256c256
+< GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json
+---
+> GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+279c279
+< POST https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters?alt=json
+---
+> POST https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters?%24alt=json%3Benum-encoding%3Dint
+308c308,309
+<   }
+---
+>   },
+>   "projectId": "${projectId}"
+330c331
+<       "state": "PENDING",
+---
+>       "state": 1,
+344c345
+< GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json
+---
+> GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
+535c536
+< GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json
+---
+> GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+579c580
+<       "preemptibility": "NON_PREEMPTIBLE"
+---
+>       "preemptibility": 1
+599c600
+<       "preemptibility": "PREEMPTIBLE",
+---
+>       "preemptibility": 2,
+683c684
+<       "preemptibility": "NON_PREEMPTIBLE"
+---
+>       "preemptibility": 1
+698c699
+<     "state": "RUNNING",
+---
+>     "state": 2,
+703c704
+<       "state": "CREATING",
+---
+>       "state": 1,
+711c712
+< PATCH https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json&updateMask=labels
+---
+> PATCH https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=labels
+714a716,717
+>   "clusterName": "dataproccluster-${uniqueId}",
+>   "clusterUuid": "${dataStoreClusterUUID}",
+719a723,725
+>       "serviceAccountScopes": [
+>         "https://www.googleapis.com/auth/cloud-platform"
+>       ],
+727d732
+<     "initializationActions": [],
+729d733
+<       "accelerators": [],
+735c739,742
+<       "machineTypeUri": "n2-standard-2",
+---
+>       "instanceNames": [
+>         "dataproccluster-${uniqueId}-m"
+>       ],
+>       "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/n2-standard-2",
+738c745
+<       "preemptibility": "NON_PREEMPTIBLE"
+---
+>       "preemptibility": 1
+741d747
+<       "accelerators": [],
+747c753,762
+<       "machineTypeUri": "c4-standard-2",
+---
+>       "instanceNames": [
+>         "dataproccluster-${uniqueId}-sw-0"
+>       ],
+>       "isPreemptible": true,
+>       "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/c4-standard-2",
+>       "managedGroupConfig": {
+>         "instanceGroupManagerName": "dataproc-goog-reserved-auto-secondary-abcdefg",
+>         "instanceGroupManagerUri": "projects/${projectId}/regions/us-central1/instanceGroupManagers/dataproc-goog-reserved-auto-secondary-abcdefg",
+>         "instanceTemplateName": "dataproc-goog-reserved-auto-secondary-abcdefg"
+>       },
+750c765,768
+<       "preemptibility": "PREEMPTIBLE"
+---
+>       "preemptibility": 2,
+>       "startupConfig": {
+>         "requiredRegistrationFraction": 0.0001
+>       }
+754d771
+<       "optionalComponents": [],
+820d836
+<       "accelerators": [],
+826c842,846
+<       "machineTypeUri": "c4-standard-2",
+---
+>       "instanceNames": [
+>         "dataproccluster-${uniqueId}-w-0",
+>         "dataproccluster-${uniqueId}-w-1"
+>       ],
+>       "machineTypeUri": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-f/machineTypes/c4-standard-2",
+829c849
+<       "preemptibility": "NON_PREEMPTIBLE"
+---
+>       "preemptibility": 1
+836c856,867
+<   }
+---
+>   },
+>   "projectId": "${projectId}",
+>   "status": {
+>     "state": 2,
+>     "stateStartTime": "2024-04-01T12:34:56.123456Z"
+>   },
+>   "statusHistory": [
+>     {
+>       "state": 1,
+>       "stateStartTime": "2024-04-01T12:34:56.123456Z"
+>     }
+>   ]
+857c888
+<       "state": "PENDING",
+---
+>       "state": 1,
+866c897
+< GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json
+---
+> GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
+1051c1082
+< GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json
+---
+> GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+1095c1126
+<       "preemptibility": "NON_PREEMPTIBLE"
+---
+>       "preemptibility": 1
+1115c1146
+<       "preemptibility": "PREEMPTIBLE",
+---
+>       "preemptibility": 2,
+1199c1230
+<       "preemptibility": "NON_PREEMPTIBLE"
+---
+>       "preemptibility": 1
+1260c1291
+<     "state": "RUNNING",
+---
+>     "state": 2,
+1265c1296
+<       "state": "CREATING",
+---
+>       "state": 1,
+1269c1300
+<       "state": "RUNNING",
+---
+>       "state": 2,
+1273c1304
+<       "state": "UPDATING",
+---
+>       "state": 5,
+1281c1312
+< DELETE https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json
+---
+> DELETE https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+1303c1334
+<       "state": "PENDING",
+---
+>       "state": 1,
+1312c1343
+< GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json
+---
+> GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
+1352,1374d1382
+<   }
+< }
+< 
+< ---
+< 
+< GET https://dataproc.googleapis.com/v1/projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}?alt=json
+< Content-Type: application/json
+< 
+< 404 Not Found
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "error": {
+<     "code": 404,
+<     "message": "Not found: Cluster projects/${projectId}/regions/us-central1/clusters/dataproccluster-${uniqueId}",
+<     "status": "NOT_FOUND"

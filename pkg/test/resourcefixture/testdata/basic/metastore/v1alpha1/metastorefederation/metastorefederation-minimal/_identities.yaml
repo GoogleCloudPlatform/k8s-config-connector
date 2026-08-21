@@ -1,0 +1,12 @@
+- caisURL: unknown
+  group: metastore.cnrm.cloud.google.com
+  kind: MetastoreService
+  name: msfed-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
+- caisURL: unknown
+  group: metastore.cnrm.cloud.google.com
+  kind: MetastoreFederation
+  name: msfed-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

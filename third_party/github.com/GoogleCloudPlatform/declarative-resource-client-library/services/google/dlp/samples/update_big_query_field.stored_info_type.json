@@ -1,0 +1,19 @@
+{
+  "name": "{{ref:__state__:name}}",
+  "parent": "projects/{{project}}/locations/{{region}}",
+  "largeCustomDictionary": {
+    "outputPath": {
+      "path": "gs://aaa-dont-delete-dcl-dlp-testing/large-custom-dictionary-2"
+    },
+    "bigQueryField": {
+      "table": {
+        "projectId": "{{ref:second.bigquery.dataset.json:project}}",
+        "datasetId": "{{ref:second.bigquery.dataset.json:name}}",
+        "tableId": "{{ref:second.bigquery.table.json:name}}"
+      },
+      "field": {
+        "name": "new_sample_field"
+      }
+    }
+  }
+}

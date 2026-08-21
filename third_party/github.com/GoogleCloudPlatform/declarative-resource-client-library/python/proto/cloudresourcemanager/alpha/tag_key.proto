@@ -1,0 +1,66 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum CloudresourcemanagerAlphaTagKeyPurposeEnum {
+  CloudresourcemanagerAlphaTagKeyPurposeEnumNO_VALUE_DO_NOT_USE = 0;
+  CloudresourcemanagerAlphaTagKeyPurposeEnumPURPOSE_UNSPECIFIED = 1;
+  CloudresourcemanagerAlphaTagKeyPurposeEnumGCE_FIREWALL = 2;
+}
+
+message CloudresourcemanagerAlphaTagKey {
+  string name = 1;
+  string parent = 2;
+  string short_name = 3;
+  string namespaced_name = 4;
+  string description = 5;
+  string create_time = 6;
+  string update_time = 7;
+  string etag = 8;
+  CloudresourcemanagerAlphaTagKeyPurposeEnum purpose = 9;
+  map<string, string> purpose_data = 10;
+}
+
+message ApplyCloudresourcemanagerAlphaTagKeyRequest {
+  CloudresourcemanagerAlphaTagKey resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteCloudresourcemanagerAlphaTagKeyRequest {
+  string service_account_file = 1;
+  CloudresourcemanagerAlphaTagKey resource = 2;
+}
+
+message ListCloudresourcemanagerAlphaTagKeyRequest {
+  string service_account_file = 1;
+}
+
+message ListCloudresourcemanagerAlphaTagKeyResponse {
+  repeated CloudresourcemanagerAlphaTagKey items = 1;
+}
+
+service CloudresourcemanagerAlphaTagKeyService {
+  rpc ApplyCloudresourcemanagerAlphaTagKey(ApplyCloudresourcemanagerAlphaTagKeyRequest) returns (CloudresourcemanagerAlphaTagKey);
+  rpc DeleteCloudresourcemanagerAlphaTagKey(DeleteCloudresourcemanagerAlphaTagKeyRequest) returns (google.protobuf.Empty);
+  rpc ListCloudresourcemanagerAlphaTagKey(ListCloudresourcemanagerAlphaTagKeyRequest) returns (ListCloudresourcemanagerAlphaTagKeyResponse);
+}

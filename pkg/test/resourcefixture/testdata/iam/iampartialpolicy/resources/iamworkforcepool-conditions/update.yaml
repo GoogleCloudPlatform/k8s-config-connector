@@ -1,0 +1,26 @@
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPartialPolicy
+metadata:
+  name: iampartialpolicy-${uniqueId}
+spec:
+  bindings:
+  - role: roles/iam.workforcePoolAdmin
+    members:
+    - member: user:test@example.com
+    - member: serviceAccount:test-sa@test-project.iam.gserviceaccount.com
+    - member: group:test-group@example.com
+    condition:
+      title: test-condition
+      description: Only allow at certain times
+      expression: request.time < timestamp("2025-01-01T00:00:00Z")
+  - role: roles/iam.workforcePoolEditor
+    members:
+    - member: user:editor@example.com
+    condition:
+      title: editor-condition
+      description: Editor condition
+      expression: request.time < timestamp("2026-01-01T00:00:00Z")
+  resourceRef:
+    apiVersion: iam.cnrm.cloud.google.com/v1beta1
+    kind: IAMWorkforcePool
+    name: iamworkforcepool-${uniqueId}

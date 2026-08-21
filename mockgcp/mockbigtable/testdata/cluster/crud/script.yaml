@@ -1,0 +1,7 @@
+# Test for `gcloud bigtable clusters`
+- exec: gcloud bigtable instances create test-instance-${uniqueId} --display-name="Test Instance ${uniqueId}" --cluster-config=id=central1b,zone=us-central1-b --project=${projectId}
+- exec: gcloud bigtable clusters create central1f --instance=test-instance-${uniqueId} --zone=us-central1-f --num-nodes=3 --project=${projectId}
+- exec: gcloud bigtable clusters describe central1f --instance=test-instance-${uniqueId} --project=${projectId}
+- exec: gcloud bigtable clusters update central1f --instance=test-instance-${uniqueId} --num-nodes=5 --project=${projectId}
+- exec: gcloud bigtable clusters delete central1f --instance=test-instance-${uniqueId} --quiet --project=${projectId}
+- exec: gcloud bigtable instances delete test-instance-${uniqueId} --quiet --project=${projectId}

@@ -1,0 +1,3 @@
+```release-note:bug
+apigateway: fixed bug where field apiconfig could not be changed on resource `google_apigateway_gateway`
+```

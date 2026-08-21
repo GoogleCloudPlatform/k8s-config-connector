@@ -1,0 +1,12 @@
+label: Config Connector ComputeTargetVPNGateway
+markdownDescription: Creates yaml for a ComputeTargetVPNGateway resource
+insertText: |
+  apiVersion: compute.cnrm.cloud.google.com/v1beta1
+  kind: ComputeTargetVPNGateway
+  metadata:
+    name: \${1:computetargetvpngateway-name}
+  spec:
+    description: \${2:a test target vpn gateway}
+    region: \${3:us-central1}
+    networkRef:
+      name: \${4:computetargetvpngateway-dep}

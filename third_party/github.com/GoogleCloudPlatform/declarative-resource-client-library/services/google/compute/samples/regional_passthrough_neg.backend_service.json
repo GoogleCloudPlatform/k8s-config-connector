@@ -1,0 +1,13 @@
+{
+  "name": "{{service}}",
+  "project": "{{project}}",
+  "location": "{{region}}",
+  "loadBalancingScheme": "EXTERNAL",
+  "backends": [
+    {
+      "description": "A zonal passthough network endpoint group",
+      "group": "{{ref:zonal_passthrough.network_endpoint_group.json:selfLink}}"
+    }
+  ],
+  "healthChecks": ["{{ref:regional_tcp.health_check.json:selfLink}}"]
+}

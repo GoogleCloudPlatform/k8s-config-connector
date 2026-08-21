@@ -1,0 +1,22 @@
+apiVersion: networkservices.cnrm.cloud.google.com/v1alpha1
+kind: NetworkServicesLBRouteExtension
+metadata:
+  name: lbrouteextension-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  description: "An updated sample LBRouteExtension"
+  loadBalancingScheme: INTERNAL_MANAGED
+  forwardingRuleRefs:
+    - name: fr-${uniqueId}
+  extensionChains:
+    - name: "chain1"
+      matchCondition:
+        celExpression: "request.host == 'updated.example.com'"
+      extensions:
+        - name: "ext1"
+          authority: "updated.ext1.example.com"
+          backendServiceRef:
+            name: bs-callout2-${uniqueId}
+          timeout: "0.100s"

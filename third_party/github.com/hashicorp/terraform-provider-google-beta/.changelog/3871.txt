@@ -1,0 +1,3 @@
+```release-note:bug
+cloudidentity: fixed cloud identity datasources to handle pagination
+```

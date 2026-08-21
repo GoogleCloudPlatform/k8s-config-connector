@@ -1,0 +1,17 @@
+{
+  "name": "fleetobservability",
+  "project": "{{ref:gkehub.serviceusage.service.json:project}}",
+  "location": "global",
+  "spec": {
+    "fleetobservability": {
+      "loggingConfig": {
+        "defaultConfig": {
+          "mode": "COPY"
+        },
+        "fleetScopeLogsConfig": {
+          "mode": "MOVE"
+        }
+      }
+    }
+  }
+}

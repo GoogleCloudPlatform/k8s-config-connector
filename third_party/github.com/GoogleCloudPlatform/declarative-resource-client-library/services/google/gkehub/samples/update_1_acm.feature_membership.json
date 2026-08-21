@@ -1,0 +1,44 @@
+{
+  "project": "{{ref:gkehub.serviceusage.service.json:project}}",
+  "location": "global",
+  "feature": "projects/{{ref:acm.feature.json:project}}/locations/{{ref:acm.feature.json:location}}/features/{{ref:acm.feature.json:name}}",
+  "membership": "{{ref:first.membership.json:name}}",
+  "membershipLocation": "global",
+  "configmanagement": {
+    "configSync": {
+      "git": {
+        "syncRepo": "https://github.com/GoogleCloudPlatform/magic-modules",
+        "syncBranch": "main",
+        "policyDir": "mmv1",
+        "syncWaitSecs": "15",
+        "syncRev": "15d0b2c",
+        "secretType": "gcpserviceaccount",
+        "httpsProxy": "https://new-sample-proxy.com",
+        "gcpServiceAccountEmail": "{{ref:second.iam.service_account.json:email}}"
+      },
+      "metricsGcpServiceAccountEmail": "{{ref:second.iam.service_account.json:email}}",
+      "sourceFormat": "unstructured",
+      "preventDrift": true
+    },
+    "policyController": {
+      "enabled": false,
+      "exemptableNamespaces": ["new-sample-namespace"],
+      "referentialRulesEnabled": false,
+      "logDeniesEnabled": false,
+      "templateLibraryInstalled": false,
+      "auditIntervalSeconds": "9",
+      "mutationEnabled": false,
+      "monitoring": {
+        "backends": ["PROMETHEUS"]
+      }
+    },
+    "binauthz": {
+      "enabled": false
+    },
+    "hierarchyController": {
+      "enabled": false,
+      "enablePodTreeLabels": false,
+      "enableHierarchicalResourceQuota": false
+    }
+  }
+}

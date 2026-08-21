@@ -1,0 +1,1558 @@
+// Copyright 2024 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package lint
+
+import (
+	"bufio"
+	"fmt"
+	"go/ast"
+	"go/parser"
+	"go/token"
+	"os"
+	"path/filepath"
+	"slices"
+	"sort"
+	"strings"
+	"testing"
+	"unicode"
+
+	"github.com/google/go-cmp/cmp"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/dev/tools/controllerbuilder/pkg/codegen"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/register"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/crd/crdloader"
+	dclmetadata "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/metadata"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/dcl/schema/dclschemaloader"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/gvks/supportedgvks"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/servicemapping/servicemappingloader"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
+	testcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/controller"
+	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture"
+	testvariable "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture/variable"
+
+	apiextensions "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/apimachinery/pkg/util/sets"
+	"k8s.io/klog/v2"
+	"sigs.k8s.io/yaml"
+)
+
+// Looks for fields that looks like refs, but are not
+func TestMissingRefs(t *testing.T) {
+	t.Parallel()
+	crds, err := crdloader.LoadAllCRDs()
+	if err != nil {
+		t.Fatalf("error loading crds: %v", err)
+	}
+
+	var errs []string
+	for _, crd := range crds {
+		for _, version := range crd.Spec.Versions {
+			visitCRDVersion(version, func(field *CRDField) {
+				fieldPath := field.FieldPath
+
+				// Only consider spec
+				if strings.HasPrefix(fieldPath, ".status.") {
+					return
+				}
+
+				// Check if this is already a ref
+				if strings.HasSuffix(fieldPath, "Ref") {
+					return
+				}
+				if strings.HasSuffix(fieldPath, "Refs[]") || strings.HasSuffix(fieldPath, "Refs") {
+					return
+				}
+				if strings.HasSuffix(fieldPath, "Ref.external") {
+					return
+				}
+				if strings.HasSuffix(fieldPath, "Refs[].external") {
+					return
+				}
+				if strings.HasSuffix(fieldPath, "Ref.name") {
+					return
+				}
+
+				isRef := false
+				desc := field.props.Description
+				// Heuristic: look for descriptions like "should be of the form projects/{projectID}/locations/{location}/bars/{name}"
+				if strings.Contains(desc, " projects/") {
+					isRef = true
+				}
+				if strings.Contains(desc, "projects/{") {
+					isRef = true
+				}
+				if strings.Contains(desc, "locations/{") {
+					isRef = true
+				}
+				if strings.Contains(desc, "zones/{") {
+					isRef = true
+				}
+				if strings.Contains(desc, "regions/{") {
+					isRef = true
+				}
+				if strings.Contains(desc, "organizations/{") {
+					isRef = true
+				}
+				if strings.Contains(desc, "folders/{") {
+					isRef = true
+				}
+
+				if strings.HasSuffix(fieldPath, "erviceAccount") {
+					isRef = true
+				}
+				// TODO: how to detect KMS Key
+
+				if isRef {
+					// We don't require refs for zones or regions, nor for instanceTypes
+					switch {
+					case strings.HasSuffix(fieldPath, ".zone"), strings.HasSuffix(fieldPath, ".zones"):
+						// ok
+					case strings.HasSuffix(fieldPath, ".region"), strings.HasSuffix(fieldPath, ".regions"):
+						// ok
+					case strings.HasSuffix(fieldPath, ".location"), strings.HasSuffix(fieldPath, ".locations"):
+						// ok
+					case strings.HasSuffix(fieldPath, ".machineType"):
+						// ok
+					case strings.HasSuffix(fieldPath, ".acceleratorType"):
+						// ok
+					default:
+						errs = append(errs, fmt.Sprintf("[refs] crd=%s version=%v: field %q should be a reference", crd.Name, version.Name, fieldPath))
+
+					}
+				}
+
+			})
+		}
+	}
+
+	sort.Strings(errs)
+
+	want := strings.Join(errs, "\n")
+
+	test.CompareGoldenFile(t, "testdata/exceptions/missingrefs.txt", want)
+}
+
+// Looks for fields that looks like refs, but are in the status.
+// These fields should not be refs, they should be "external style" links.
+func TestNoRefsInStatus(t *testing.T) {
+	t.Parallel()
+	crds, err := crdloader.LoadAllCRDs()
+	if err != nil {
+		t.Fatalf("error loading crds: %v", err)
+	}
+
+	var errs []string
+	for _, crd := range crds {
+		for _, version := range crd.Spec.Versions {
+			visitCRDVersion(version, func(field *CRDField) {
+				fieldPath := field.FieldPath
+
+				// Only consider status
+				if !strings.HasPrefix(fieldPath, ".status.") {
+					return
+				}
+
+				// Well-known exception
+				if fieldPath == ".status.externalRef" {
+					return
+				}
+
+				if isRefFieldPath(fieldPath) {
+					errs = append(errs, fmt.Sprintf("[no_refs_in_status] crd=%s version=%v: reference field %q should not be in status", crd.Name, version.Name, fieldPath))
+				}
+			})
+		}
+	}
+
+	sort.Strings(errs)
+
+	want := strings.Join(errs, "\n")
+
+	test.CompareGoldenFile(t, "testdata/exceptions/no_refs_in_status.txt", want)
+}
+
+func TestCRDsDoNotHaveFooUrlRef(t *testing.T) {
+	t.Parallel()
+	crds, err := crdloader.LoadAllCRDs()
+	if err != nil {
+		t.Fatalf("error loading crds: %v", err)
+	}
+
+	for _, crd := range crds {
+		for _, version := range crd.Spec.Versions {
+			visitCRDVersion(version, func(field *CRDField) {
+				fieldPath := field.FieldPath
+				lower := strings.ToLower(fieldPath)
+				if strings.HasSuffix(lower, "urlref") && !strings.HasSuffix(lower, ".urlref") {
+					// Prefer network_ref to network_url_ref
+					// While we allow url_ref, network_url_ref is odd;
+					// _url indicates the data type / representation of the field,
+					// and we don't want two "types" in our field name.
+					t.Errorf("invalid field name %q in %q; prefer fooRef to fooUrlRef", fieldPath, crd.Name)
+				}
+			})
+		}
+	}
+}
+
+func isRefFieldPath(fieldPath string) bool {
+	// Check if this is named like a ref
+	isRef := false
+	if strings.HasSuffix(fieldPath, "Ref") {
+		isRef = true
+	}
+	if strings.HasSuffix(fieldPath, "Refs[]") || strings.HasSuffix(fieldPath, "Refs") {
+		isRef = true
+	}
+	return isRef
+}
+
+// CRDs should not have parentFooRef fields; use fooRef even for parent references.
+func TestCRDsHaveParentRefs(t *testing.T) {
+	t.Parallel()
+	crds, err := crdloader.LoadAllCRDs()
+	if err != nil {
+		t.Fatalf("error loading crds: %v", err)
+	}
+
+	var errs []string
+	for _, crd := range crds {
+		// Only visit the latest version of the CRD.
+		latest := findLatestVersion(t, crd)
+
+		for _, version := range crd.Spec.Versions {
+			if version.Name != latest {
+				continue
+			}
+
+			var allRefs []string
+			visitCRDVersion(version, func(field *CRDField) {
+				fieldPath := field.FieldPath
+
+				// Well-known exception
+				if fieldPath == ".status.externalRef" {
+					return
+				}
+
+				// Check if this is named like a ref
+				if isRefFieldPath(fieldPath) {
+					lastDot := strings.LastIndex(fieldPath, ".")
+					lastField := fieldPath[lastDot+1:]
+					id := strings.TrimSuffix(lastField, "Ref")
+					id = strings.TrimSuffix(id, "Refs")
+					id = strings.TrimSuffix(id, "Refs[]")
+					if strings.Contains(id, "Ref") {
+						t.Fatalf("could not trim Ref from fieldPath %q", fieldPath)
+					}
+					allRefs = append(allRefs, id)
+				}
+			})
+
+			slices.Sort(allRefs)
+
+			parents := 0
+			for _, ref := range allRefs {
+				if strings.HasPrefix(ref, "parent") {
+					parents++
+				}
+			}
+			if parents != 0 {
+				errs = append(errs, fmt.Sprintf("[crds_should_not_have_parent_refs] crd=%s version=%v: found a parent ref (found %v)", crd.Name, version.Name, allRefs))
+			}
+		}
+	}
+
+	sort.Strings(errs)
+
+	want := strings.Join(errs, "\n") + "\n"
+
+	test.CompareGoldenFile(t, "testdata/exceptions/crds_have_parent_refs.txt", want)
+}
+
+// Enforces acronym capitalization on CRDs
+// https://github.com/kubernetes/community/blob/master/contributors/devel/sig-architecture/api-conventions.md#naming-conventions
+// All letters in the acronym should have the same case, using the appropriate case for the situation.
+// For example, at the beginning of a field name, the acronym should be all lowercase, such as "httpGet".
+// Where used as a constant, all letters should be uppercase, such as "TCP" or "UDP".
+func TestCRDsAcronyms(t *testing.T) {
+	t.Parallel()
+	crds, err := crdloader.LoadAllCRDs()
+	if err != nil {
+		t.Fatalf("error loading crds: %v", err)
+	}
+
+	correctAcronyms := func(s string) string {
+		tokens := splitCamelCase(s)
+
+		for i, token := range tokens {
+			var singular, pluralSuffix string
+
+			if strings.HasSuffix(token, "ies") {
+				singular = token[:len(token)-3] + "y"
+				pluralSuffix = "ies"
+			} else if strings.HasSuffix(token, "es") {
+				singular = token[:len(token)-2]
+				pluralSuffix = "es"
+			} else if strings.HasSuffix(token, "s") {
+				singular = token   // or token[:len(token)-1]
+				pluralSuffix = "s" // maybe
+			} else {
+				singular = token
+				pluralSuffix = ""
+			}
+
+			for _, acronym := range codegen.Acronyms {
+				if pluralSuffix == "s" {
+					if strings.EqualFold(acronym, singular) {
+						pluralSuffix = ""
+					} else if !strings.EqualFold(acronym, singular[:len(singular)-1]) {
+						continue
+					}
+				} else {
+					if !strings.EqualFold(acronym, singular) {
+						continue
+					}
+				}
+
+				switch pluralSuffix {
+				case "ies": // y
+					tokens[i] = acronym[:len(acronym)-1] + "ies"
+				case "es":
+					tokens[i] = acronym + "es"
+				case "s":
+					tokens[i] = acronym + "s"
+				case "":
+					tokens[i] = acronym
+				}
+			}
+		}
+		corrected := strings.Join(tokens, "")
+		return corrected
+	}
+
+	var errs []string
+	for _, crd := range crds {
+		// Check the CRD Kind
+		{
+			kind := crd.Spec.Names.Kind
+			corrected := correctAcronyms(kind)
+			if corrected != kind {
+				errs = append(errs, fmt.Sprintf("[acronyms] crd=%s: kind %q should be %q", crd.Name, kind, corrected))
+			}
+		}
+
+		for _, version := range crd.Spec.Versions {
+			// Check each field in the CRD
+			visitCRDVersion(version, func(field *CRDField) {
+				fieldPath := field.FieldPath
+				corrected := correctAcronyms(fieldPath)
+
+				if corrected != fieldPath {
+					errs = append(errs, fmt.Sprintf("[acronyms] crd=%s version=%v: field %q should be %q", crd.Name, version.Name, fieldPath, corrected))
+				}
+			})
+		}
+	}
+
+	sort.Strings(errs)
+
+	want := strings.Join(errs, "\n")
+
+	test.CompareGoldenFile(t, "testdata/exceptions/acronyms.txt", want)
+}
+
+// Avoid passing sensitive data as plain text in the CRD
+func TestNoSensitiveField(t *testing.T) {
+	t.Parallel()
+	crds, err := crdloader.LoadAllCRDs()
+	if err != nil {
+		t.Fatalf("error loading crds: %v", err)
+	}
+
+	var errs []string
+
+	sensitiveKeywords := []string{
+		"password",
+	}
+	for _, crd := range crds {
+
+		for _, version := range crd.Spec.Versions {
+			totalPaths := sets.Set[string]{}
+			skepticalFieldPaths := sets.Set[string]{}
+			visitCRDVersion(version, func(field *CRDField) {
+				fieldPath := field.FieldPath
+				isSensitiveSkeptical := false
+				field.FieldPath = strings.ToLower(field.FieldPath)
+				for _, sensitiveWord := range sensitiveKeywords {
+					if strings.HasSuffix(field.FieldPath, sensitiveWord) {
+						isSensitiveSkeptical = true
+						break
+					}
+				}
+				if isSensitiveSkeptical {
+					skepticalFieldPaths.Insert(fieldPath)
+				}
+				totalPaths.Insert(fieldPath)
+			})
+			for skeptical := range skepticalFieldPaths {
+				if totalPaths.Has(skeptical + ".valueFrom.secretKeyRef.key") {
+					continue
+				}
+				if totalPaths.Has(skeptical + ".secretRef.name") {
+					continue
+				}
+				errs = append(errs, fmt.Sprintf("crd=%s version=%v: field %q is sensitive data, should use secretRef", crd.Name, version.Name, skeptical))
+			}
+
+		}
+	}
+
+	sort.Strings(errs)
+	want := strings.Join(errs, "\n")
+	test.CompareGoldenFile(t, "testdata/exceptions/sensitive.txt", want)
+}
+
+// splitCamelCase splits the string on capital letters, so camelCase => []string{"camel", "Case"}
+func splitCamelCase(s string) []string {
+	var tokens []string
+
+	var token string
+	for _, r := range s {
+		if unicode.IsUpper(r) {
+			if token != "" {
+				tokens = append(tokens, token)
+				token = ""
+			}
+		}
+		token += string(r)
+	}
+	if token != "" {
+		tokens = append(tokens, token)
+	}
+	return tokens
+}
+
+type CRDField struct {
+	FieldPath string
+	props     *apiextensions.JSONSchemaProps
+}
+
+func visitCRDVersion(version apiextensions.CustomResourceDefinitionVersion, callback func(crdField *CRDField)) {
+	visitProps(version.Schema.OpenAPIV3Schema, "", callback)
+}
+
+func visitProps(props *apiextensions.JSONSchemaProps, fieldPath string, callback func(crdField *CRDField)) {
+	callback(&CRDField{
+		FieldPath: fieldPath,
+		props:     props,
+	})
+
+	switch props.Type {
+	case "object":
+		for k := range props.Properties {
+			child := props.Properties[k]
+			visitProps(&child, fieldPath+"."+k, callback)
+		}
+
+	case "array":
+		if props.Items != nil {
+			for _, child := range props.Items.JSONSchemas {
+				visitProps(&child, fieldPath+"[]", callback)
+			}
+			if props.Items.Schema != nil {
+				visitProps(props.Items.Schema, fieldPath+"[]", callback)
+			}
+		}
+
+	// Add handling for google.protobuf.Value
+	case "string", "boolean", "integer", "number", "":
+		// No child properties
+	default:
+		// if preserveUnknownFields is true, we don't want to check the type
+		// For recursive types, we don't want to recurse into schemaless fields
+		if props.XPreserveUnknownFields != nil && *props.XPreserveUnknownFields {
+			// We don't want to recurse into schemaless fields
+			return
+		}
+		klog.Fatalf("unhandled props.Type %q in %+v", props.Type, props)
+	}
+}
+
+func TestCRDCamelCase(t *testing.T) {
+	t.Parallel()
+	crds, err := crdloader.LoadAllCRDs()
+	if err != nil {
+		t.Fatalf("error loading crds: %v", err)
+	}
+	var errs []string
+	for _, crd := range crds {
+		for _, version := range crd.Spec.Versions {
+			visitCRDVersion(version, func(field *CRDField) {
+				fieldPath := field.FieldPath
+				first := func() int32 {
+					tokens := strings.Split(fieldPath, ".")
+					// Only check the last token to avoid duplication.
+					for _, first := range tokens[len(tokens)-1] {
+						return first
+					}
+					return 0
+				}()
+				if unicode.IsUpper(first) {
+					errs = append(errs, fmt.Sprintf("[jsonNaming] crd=%s version=%v: field %q should use camel case", crd.Name, version.Name, field.FieldPath))
+				}
+			})
+		}
+	}
+	sort.Strings(errs)
+	if len(errs) != 0 {
+		t.Fatal(errs)
+	}
+}
+
+func TestCRDShortNames(t *testing.T) {
+	t.Parallel()
+	crds, err := crdloader.LoadAllCRDs()
+	if err != nil {
+		t.Fatalf("error loading CRDs: %v", err)
+	}
+
+	var errs []string
+	for _, crd := range crds {
+		if len(crd.Spec.Names.ShortNames) == 0 {
+			errs = append(errs, fmt.Sprintf("[shortnames] crd=%s: missing shortnames", crd.Name))
+		}
+		for _, sn := range crd.Spec.Names.ShortNames {
+			if !strings.HasPrefix(sn, "gcp") {
+				errs = append(errs, fmt.Sprintf("[shortnames] crd=%s: shortname %q does not start with gcp", crd.Name, sn))
+			}
+		}
+	}
+
+	sort.Strings(errs)
+	want := strings.Join(errs, "\n")
+	test.CompareGoldenFile(t, "testdata/exceptions/shortnames.txt", want)
+}
+
+// Run this test with WRITE_GOLDEN_OUTPUT set to update the exceptions list.
+func TestCRDFieldPresenceInTests(t *testing.T) {
+	t.Parallel()
+
+	shouldVisitCRD := func(crd *apiextensions.CustomResourceDefinition, version string) bool {
+
+		// only beta/v1 requires full API coverage so it should pass this test.
+		if strings.Contains(version, "alpha") {
+			return false
+		}
+
+		// skip core resources
+		if strings.Contains(crd.Name, "configconnectorcontexts.core.cnrm.cloud.google.com") ||
+			strings.Contains(crd.Name, "configconnectors.core.cnrm.cloud.google.com") {
+			return false
+		}
+
+		return true
+	}
+
+	missing := findFieldsNotCoveredByTests(t, shouldVisitCRD)
+
+	want := strings.Join(missing, "\n")
+	test.CompareGoldenFile(t, "testdata/exceptions/missingfields.txt", want)
+}
+
+// Run this test with WRITE_GOLDEN_OUTPUT set to update the exceptions list.
+func TestCRDFieldPresenceInTestsForAlpha(t *testing.T) {
+	t.Parallel()
+
+	shouldVisitCRD := func(crd *apiextensions.CustomResourceDefinition, version string) bool {
+		// Only visit alpha CRDs, we don't want to duplicate the beta
+		if !strings.Contains(version, "alpha") {
+			return false
+		}
+		return true
+	}
+
+	missing := findFieldsNotCoveredByTests(t, shouldVisitCRD)
+
+	want := strings.Join(missing, "\n")
+	test.CompareGoldenFile(t, "testdata/exceptions/alpha-missingfields.txt", want)
+}
+
+func findFieldsNotCoveredByTests(t *testing.T, shouldVisitCRD func(crd *apiextensions.CustomResourceDefinition, version string) bool) []string {
+	crds, err := crdloader.LoadAllCRDs()
+	if err != nil {
+		t.Fatalf("error loading CRDs: %v", err)
+	}
+
+	unstructs := loadUnstructs(t)
+	outputOnlySpecFields, err := loadOutputOnlySpecFields()
+	if err != nil {
+		t.Fatalf("error loading output-only spec fields from file: %v", err)
+	}
+
+	var errs []string
+	for _, crd := range crds {
+		// Only visit the latest version of the CRD.
+		latest := findLatestVersion(t, crd)
+
+		for _, version := range crd.Spec.Versions {
+			if version.Name != latest {
+				continue
+			}
+
+			kind := crd.Spec.Names.Kind
+
+			if !shouldVisitCRD(&crd, version.Name) {
+				continue
+			}
+
+			visitCRDVersion(version, func(field *CRDField) {
+				fieldPath := field.FieldPath
+				// Only consider fields under `spec`
+				if !strings.HasPrefix(fieldPath, ".spec.") {
+					return
+				}
+
+				// skip the resource id field
+				if strings.HasSuffix(fieldPath, ".resourceID") {
+					return
+				}
+
+				// Check for "Ref" fields
+				if strings.HasSuffix(fieldPath, "Ref") || strings.HasSuffix(fieldPath, "Refs[]") {
+					hasExternal := false
+					hasName := false
+
+					// Check for specific related fields
+					for _, obj := range unstructs {
+						if obj.GetKind() != kind {
+							continue
+						}
+						if hasField(obj.Object, fieldPath+".external") {
+							hasExternal = true
+						}
+						if hasField(obj.Object, fieldPath+".name") {
+							hasName = true
+						}
+					}
+
+					// Only report an error if neither external nor name is set
+					if !hasExternal && !hasName {
+						errs = append(errs, fmt.Sprintf("[missing_field] crd=%s version=%v: field %q is not set; neither 'external' nor 'name' are set", crd.Name, version.Name, fieldPath))
+					}
+					return
+				}
+
+				// Skip non-terminal fields. A field is considered non-terminal if it's a struct-like object
+				// (i.e., an object with properties) or an array. Other fields, including primitives and
+				// map-like objects (objects without properties), are considered terminal and will be checked for presence.
+				if field.props != nil {
+					switch field.props.Type {
+					case "object":
+						// Struct-like objects with properties are non-terminal.
+						// Map-like objects without properties are considered terminal.
+						if len(field.props.Properties) > 0 {
+							return
+						}
+					case "array":
+						// Arrays are always non-terminal containers.
+						return
+					}
+				}
+
+				// Any reference field was already handled and handling the children will just double count
+				// Check for `Ref.` or `Refs[].` to ensure it's a reference field,
+				// and avoid field names that include `Ref` (e.g., allowedReferrers in APIKeysKey).
+				if strings.Contains(fieldPath, "Ref.") || strings.Contains(fieldPath, "Refs[].") {
+					return
+				}
+
+				// Check if field exists in any unstructured object
+				missing := true
+				for _, obj := range unstructs {
+					if obj.GetKind() != kind {
+						continue
+					}
+					if hasField(obj.Object, fieldPath) {
+						missing = false
+						break
+					}
+				}
+
+				// Exclude output-only spec fields.
+				oosfLine := fmt.Sprintf("[output_only_spec_field] crd=%s version=%v: field %q is not set in unstructured objects", crd.Name, version.Name, fieldPath)
+				if _, ok := outputOnlySpecFields[oosfLine]; ok {
+					missing = false
+				}
+
+				if missing {
+					errs = append(errs, fmt.Sprintf("[missing_field] crd=%s version=%v: field %q is not set in unstructured objects", crd.Name, version.Name, fieldPath))
+				}
+			})
+		}
+	}
+
+	sort.Strings(errs)
+	return errs
+}
+
+func findLatestVersion(t *testing.T, crd apiextensions.CustomResourceDefinition) string {
+	versions := make(map[string]bool)
+	for _, version := range crd.Spec.Versions {
+		versions[version.Name] = true
+	}
+	latest := ""
+	for _, version := range []string{"v1", "v1beta1", "v1alpha1"} {
+		if versions[version] {
+			latest = version
+			break
+		}
+	}
+	if latest == "" {
+		t.Fatalf("no latest version found for crd %s", crd.Name)
+	}
+	return latest
+}
+
+func loadOutputOnlySpecFields() (map[string]bool, error) {
+	file, err := os.Open("testdata/exceptions/outputonlyspecfields.txt")
+	if err != nil {
+		return nil, err
+	}
+	defer file.Close()
+
+	outputOnlySpecFields := make(map[string]bool)
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		outputOnlySpecFields[scanner.Text()] = true
+	}
+
+	if err := scanner.Err(); err != nil {
+		return nil, err
+	}
+
+	return outputOnlySpecFields, nil
+}
+
+func loadUnstructs(t *testing.T) []*unstructured.Unstructured {
+	t.Helper()
+	unstructs := []*unstructured.Unstructured{}
+	fixtures := resourcefixture.Load(t)
+
+	for _, fixture := range fixtures {
+		fixture := fixture
+		createResource := bytesToUnstructured(t, fixture.Create)
+		updateResource := bytesToUnstructured(t, fixture.Update)
+
+		unstructs = append(unstructs, createResource, updateResource)
+	}
+
+	return unstructs
+}
+
+var (
+	testID      = testvariable.NewUniqueID()
+	testProject = testgcp.GCPProject{ProjectID: "test-skip", ProjectNumber: 123456789}
+)
+
+func bytesToUnstructured(t *testing.T, bytes []byte) *unstructured.Unstructured {
+	t.Helper()
+
+	updatedBytes := testcontroller.ReplaceTestVars(t, bytes, testID, testProject)
+	return ToUnstruct(t, updatedBytes)
+}
+
+// hasField checks if an unstructured object contains the given field path.
+// For list fields (indicated by [] in the path), it checks if any item in the list
+// contains the specified field. If the path ends with [], checks if the field exists
+// and is a non-empty list.
+func hasField(obj map[string]interface{}, fieldPath string) bool {
+	parts := strings.Split(strings.TrimPrefix(fieldPath, "."), ".")
+	current := obj
+
+	for i, part := range parts {
+		if strings.HasSuffix(part, "[]") {
+			listName := strings.TrimSuffix(part, "[]")
+			if next, ok := current[listName]; ok {
+				if items, ok := next.([]interface{}); ok {
+					// 1. If this is the last part, return true if the list exists
+					// For example, ".spec.automatedBackupPolicy.weeklySchedule.daysOfWeek[]"
+					if i == len(parts)-1 {
+						return true
+					}
+					// 2. Otherwise check remaining path in each item
+					// For example, ".spec.automatedBackupPolicy.weeklySchedule.startTimes[].hours"
+					remainingPath := strings.Join(parts[i+1:], ".")
+					for _, item := range items {
+						if itemMap, ok := item.(map[string]interface{}); ok {
+							if hasField(itemMap, remainingPath) {
+								return true // found the field in one of the items, we can stop searching
+							}
+						}
+					}
+				}
+			}
+			return false
+		}
+
+		if next, ok := current[part]; ok {
+			if nextMap, ok := next.(map[string]interface{}); ok {
+				current = nextMap
+			} else {
+				return i == len(parts)-1
+			}
+		} else {
+			return false
+		}
+	}
+	return true
+}
+
+func ToUnstruct(t *testing.T, bytes []byte) *unstructured.Unstructured {
+	t.Helper()
+
+	var obj map[string]interface{}
+	err := yaml.Unmarshal(bytes, &obj)
+	if err != nil {
+		t.Errorf("error unmarshalling bytes %s to unstruct: %v", string(bytes), err)
+	}
+
+	return &unstructured.Unstructured{Object: obj}
+}
+
+// TestCRDShortNamePluralization checks for obviously incorrect pluralization in shortNames
+func TestCRDShortNamePluralization(t *testing.T) {
+	t.Parallel()
+	crds, err := crdloader.LoadAllCRDs()
+	if err != nil {
+		t.Fatalf("error loading CRDs: %v", err)
+	}
+
+	var errs []string
+	for _, crd := range crds {
+		// Only check CRDs with exactly 2 shortNames (likely singular and plural forms)
+		if len(crd.Spec.Names.ShortNames) != 2 {
+			continue
+		}
+
+		// Get all CRD versions
+		var versions []string
+		for _, v := range crd.Spec.Versions {
+			versions = append(versions, v.Name)
+		}
+		versionStr := strings.Join(versions, ",")
+		if versionStr == "" {
+			versionStr = "unknown"
+		}
+
+		// Sort shortNames by length to identify singular (shorter) and plural (longer)
+		shortNames := make([]string, len(crd.Spec.Names.ShortNames))
+		copy(shortNames, crd.Spec.Names.ShortNames)
+		sort.Slice(shortNames, func(i, j int) bool {
+			return len(shortNames[i]) < len(shortNames[j])
+		})
+
+		singular := shortNames[0]
+		plural := shortNames[1]
+
+		// Check if the plural form is valid according to English pluralization rules
+		if !isValidPlural(singular, plural) {
+			errs = append(errs, fmt.Sprintf("[shortname_plural] crd=%s version=%s: plural shortName %q appears to have incorrect pluralization of %q", crd.Name, versionStr, plural, singular))
+		}
+	}
+
+	sort.Strings(errs)
+	want := strings.Join(errs, "\n")
+	test.CompareGoldenFile(t, "testdata/exceptions/shortname_pluralization.txt", want)
+}
+
+// TestMultiVersionCRDNoDiff checks for schema differences between versions of the same CRD.
+func TestMultiVersionCRDNoDiff(t *testing.T) {
+	t.Parallel()
+	crds, err := crdloader.LoadAllCRDs()
+	if err != nil {
+		t.Fatalf("error loading CRDs: %v", err)
+	}
+
+	diffDir := "testdata/exceptions/multi_version_crd_diff"
+
+	for _, crd := range crds {
+		if len(crd.Spec.Versions) <= 1 {
+			continue
+		}
+
+		// Get all versions and sort them
+		var versions []apiextensions.CustomResourceDefinitionVersion
+		for _, v := range crd.Spec.Versions {
+			versions = append(versions, v)
+		}
+		sort.Slice(versions, func(i, j int) bool {
+			return versions[i].Name < versions[j].Name
+		})
+
+		// The last version is the storage version and our "base"
+		baseVersion := versions[len(versions)-1]
+
+		var allDiffs strings.Builder
+
+		// Compare all other versions to the base version
+		for i := 0; i < len(versions)-1; i++ {
+			otherVersion := versions[i]
+
+			diff := cmp.Diff(otherVersion.Schema.OpenAPIV3Schema, baseVersion.Schema.OpenAPIV3Schema)
+			if diff != "" {
+				header := fmt.Sprintf("--- a/%s\n+++ b/%s\n", otherVersion.Name, baseVersion.Name)
+				allDiffs.WriteString(header)
+				allDiffs.WriteString(diff)
+				allDiffs.WriteString("\n")
+			}
+		}
+
+		if allDiffs.Len() > 0 {
+			diffFileName := crd.Spec.Names.Kind + ".diff"
+			diffFilePath := filepath.Join(diffDir, diffFileName)
+
+			if os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
+				if err := os.MkdirAll(diffDir, 0755); err != nil {
+					t.Fatalf("error creating directory %s: %v", diffDir, err)
+				}
+				// To address inconsistencies between local and CI environments,
+				// we normalize the diff output by replacing non-breaking spaces with regular spaces.
+				normalizedDiff := strings.ReplaceAll(allDiffs.String(), "\u00a0", " ")
+				if err := os.WriteFile(diffFilePath, []byte(normalizedDiff), 0644); err != nil {
+					t.Fatalf("error writing diff file %s: %v", diffFilePath, err)
+				}
+				// Continue to next CRD after writing
+				continue
+			}
+
+			expectedDiff, err := os.ReadFile(diffFilePath)
+			if err != nil {
+				t.Errorf("crd %s has schema diff between versions, but could not read exception file %s: %v\n\nGot diff:\n%s", crd.Name, diffFilePath, err, allDiffs.String())
+				continue
+			}
+
+			if diff := cmp.Diff(string(expectedDiff), allDiffs.String()); diff != "" {
+				// To address inconsistencies between local and CI environments,
+				// we normalize the diff output by replacing non-breaking spaces with regular spaces
+				// and folding multiline strings.Join blocks into a single line.
+				normalizedActual := normalizeStringsJoin(strings.ReplaceAll(allDiffs.String(), " ", " "))
+				normalizedExpected := normalizeStringsJoin(strings.ReplaceAll(string(expectedDiff), " ", " "))
+				if diff := cmp.Diff(normalizedExpected, normalizedActual); diff != "" {
+					t.Errorf("crd %s schema diff does not match golden file %s:\n%s", crd.Name, diffFilePath, diff)
+				}
+			}
+		}
+	}
+}
+
+// TestSpecShouldNotContainEtag checks for fields in spec that contain 'etag'.
+// Etag is a server-generated value and should not be in the spec.
+func TestSpecShouldNotContainEtag(t *testing.T) {
+	t.Parallel()
+	t.Log("Running TestSpecShouldNotContainEtag")
+	crds, err := crdloader.LoadAllCRDs()
+	if err != nil {
+		t.Fatalf("error loading crds: %v", err)
+	}
+
+	var errs []string
+	for _, crd := range crds {
+		for _, version := range crd.Spec.Versions {
+			visitCRDVersion(version, func(field *CRDField) {
+				fieldPath := field.FieldPath
+
+				// Only consider spec
+				if !strings.HasPrefix(fieldPath, ".spec.") {
+					return
+				}
+
+				// Get the field name from the path
+				parts := strings.Split(fieldPath, ".")
+				fieldName := parts[len(parts)-1]
+				fieldName = strings.TrimSuffix(fieldName, "[]")
+
+				// Check for etag
+				if strings.ToLower(fieldName) == "etag" {
+					errs = append(errs, fmt.Sprintf("[spec_etag] crd=%s version=%v: field %q contains etag", crd.Name, version.Name, fieldPath))
+				}
+			})
+		}
+	}
+
+	sort.Strings(errs)
+
+	want := strings.Join(errs, "\n")
+
+	test.CompareGoldenFile(t, "testdata/exceptions/spec_dislike_etag.txt", want)
+}
+
+// isValidPlural checks if a string is a valid pluralization of another string
+func isValidPlural(singular, plural string) bool {
+	// Special cases for words that are already plural or don't follow standard rules
+	alreadyPluralWords := []string{"settings", "metrics", "series", "data"}
+	for _, word := range alreadyPluralWords {
+		if strings.HasSuffix(singular, word) {
+			return plural == singular // Already plural words should stay the same
+		}
+	}
+
+	// Corpus pluralizes to corpora (e.g. vertexairagcorpus -> vertexairagcorpora)
+	if strings.HasSuffix(singular, "corpus") {
+		return plural == strings.TrimSuffix(singular, "corpus")+"corpora"
+	}
+
+	// Rule 1: If singular ends with 's', 'x', 'z', 'ch', 'sh', add 'es'
+	if strings.HasSuffix(singular, "s") ||
+		strings.HasSuffix(singular, "x") ||
+		strings.HasSuffix(singular, "z") ||
+		strings.HasSuffix(singular, "ch") ||
+		strings.HasSuffix(singular, "sh") {
+		return plural == singular+"es"
+	}
+
+	// Rule 2: If singular ends with 'y' preceded by a consonant, change 'y' to 'ies'
+	if strings.HasSuffix(singular, "y") && len(singular) > 1 {
+		// Check if the character before 'y' is a consonant
+		r := rune(singular[len(singular)-2])
+		if !isVowel(r) {
+			return plural == singular[:len(singular)-1]+"ies"
+		}
+	}
+
+	// Rule 3: If singular ends with 'f' or 'fe', change to 'ves'
+	if strings.HasSuffix(singular, "f") {
+		return plural == singular[:len(singular)-1]+"ves"
+	}
+	if strings.HasSuffix(singular, "fe") {
+		return plural == singular[:len(singular)-2]+"ves"
+	}
+
+	// Rule 4: Default case - just add 's'
+	return plural == singular+"s"
+}
+
+// Helper function to check if a rune is a vowel
+func isVowel(r rune) bool {
+	r = unicode.ToLower(r)
+	return r == 'a' || r == 'e' || r == 'i' || r == 'o' || r == 'u'
+}
+
+func TestIsValidPlural(t *testing.T) {
+	tests := []struct {
+		singular string
+		plural   string
+		want     bool
+	}{
+		{singular: "gcpvertexairagcorpus", plural: "gcpvertexairagcorpora", want: true},
+		{singular: "corpus", plural: "corpora", want: true},
+		{singular: "setting", plural: "settings", want: true},
+		{singular: "settings", plural: "settings", want: true},
+		{singular: "metric", plural: "metrics", want: true},
+		{singular: "metrics", plural: "metrics", want: true},
+		{singular: "status", plural: "statuses", want: true},
+		{singular: "gateway", plural: "gateways", want: true},
+		{singular: "proxy", plural: "proxies", want: true},
+		{singular: "shelf", plural: "shelves", want: true},
+		{singular: "knife", plural: "knives", want: true},
+		{singular: "invalid", plural: "invalid_plural", want: false},
+	}
+
+	for _, tc := range tests {
+		t.Run(fmt.Sprintf("%s_%s", tc.singular, tc.plural), func(t *testing.T) {
+			got := isValidPlural(tc.singular, tc.plural)
+			if got != tc.want {
+				t.Errorf("isValidPlural(%q, %q) = %t, want %t", tc.singular, tc.plural, got, tc.want)
+			}
+		})
+	}
+}
+
+func TestCRDObjectTypes(t *testing.T) {
+	t.Parallel()
+	// knownInvalidCRDs is a list of CRDs that currently fail the validation.
+	// We want to eventually fix these, but for now we allowlist them so the test passes.
+	// This allows us to detect new regressions.
+	knownInvalidCRDs := map[string]bool{
+		"dialogflowsecuritysettings.dialogflow.cnrm.cloud.google.com":                   true, // status.observedState is an empty object
+		"billingbudgetsbudgets.billingbudgets.cnrm.cloud.google.com":                    true, // spec.amount.lastPeriodAmount is an empty object
+		"accesscontextmanageraccesslevels.accesscontextmanager.cnrm.cloud.google.com":   true, // status.observedState is an empty object
+		"aiplatformmodels.aiplatform.cnrm.cloud.google.com":                             true, // status.observedState.supportedExportFormats[] is an empty object
+		"apigeeenvironments.apigee.cnrm.cloud.google.com":                               true, // status.observedState is an empty object
+		"apigeeorganizations.apigee.cnrm.cloud.google.com":                              true, // status.observedState is an empty object
+		"artifactregistryvpcscconfigs.artifactregistry.cnrm.cloud.google.com":           true, // status.observedState is an empty object
+		"bigqueryconnectionconnections.bigqueryconnection.cnrm.cloud.google.com":        true, // spec.cloudResource is an empty object
+		"bigquerydatapolicies.bigquerydatapolicy.cnrm.cloud.google.com":                 true, // status.observedState is an empty object
+		"bigquerydatatransferconfigs.bigquerydatatransfer.cnrm.cloud.google.com":        true, // spec.scheduleOptionsV2.manualSchedule is an empty object
+		"bigquerymigrationmigrationworkflows.bigquerymigration.cnrm.cloud.google.com":   true, // spec.tasks[*].translationTaskDetails.teradataOptions is an empty object
+		"bigquerytables.bigquery.cnrm.cloud.google.com":                                 true, // status.observedState is an empty object
+		"bigtableauthorizedviews.bigtable.cnrm.cloud.google.com":                        true, // status.observedState is an empty object
+		"bigtablelogicalviews.bigtable.cnrm.cloud.google.com":                           true, // status.observedState is an empty object
+		"bigtablematerializedviews.bigtable.cnrm.cloud.google.com":                      true, // status.observedState is an empty object
+		"clouddmsmigrationjobs.clouddms.cnrm.cloud.google.com":                          true, // spec.staticIPConnectivity and status.observedState are empty objects
+		"configdeliveryfleetpackages.configdelivery.cnrm.cloud.google.com":              true, // spec.rolloutStrategy.allAtOnce is an empty object
+		"datacatalogentries.datacatalog.cnrm.cloud.google.com":                          true, // spec.featureOnlineStoreSpec and status.observedState.databaseTableSpec.dataplexTable.dataplexSpec.dataFormat.csv are empty objects
+		"datacatalogpolicytags.datacatalog.cnrm.cloud.google.com":                       true, // status.observedState is an empty object
+		"dataformfolders.dataform.cnrm.cloud.google.com":                                true, // status.observedState is an empty object
+		"dataformrepositories.dataform.cnrm.cloud.google.com":                           true, // status.observedState is an empty object
+		"dataprocjobs.dataproc.cnrm.cloud.google.com":                                   true, // spec.pysparkJob.loggingConfig is an empty object
+		"datastreamconnectionprofiles.datastream.cnrm.cloud.google.com":                 true, // spec.staticServiceIPConnectivity is an empty object
+		"discoveryenginecontrols.discoveryengine.cnrm.cloud.google.com":                 true, // status.observedState is an empty object
+		"discoveryengineengines.discoveryengine.cnrm.cloud.google.com":                  true, // status.observedState is an empty object
+		"dlpconnections.dlp.cnrm.cloud.google.com":                                      true, // spec.cloudSQL.cloudSQLIAM is an empty object
+		"firestorebackupschedules.firestore.cnrm.cloud.google.com":                      true, // spec.dailyRecurrence is an empty object
+		"firestorefields.firestore.cnrm.cloud.google.com":                               true, // spec.indexConfig.indexes[].fields[].vectorConfig.flat is an empty object
+		"iamdenypolicies.iam.cnrm.cloud.google.com":                                     true, // status.observedState is an empty object
+		"monitoringdashboards.monitoring.cnrm.cloud.google.com":                         true, // spec.rowLayout.rows[].widgets[].singleViewGroup is an empty object
+		"recaptchaenterprisefirewallpolicies.recaptchaenterprise.cnrm.cloud.google.com": true, // spec.actions[].allow/block/redirect are empty objects
+		"servicenetworkingpeereddnsdomains.servicenetworking.cnrm.cloud.google.com":     true, // status.observedState is an empty object
+		"spannerbackupschedules.spanner.cnrm.cloud.google.com":                          true, // spec.fullBackupSpec is an empty object
+		"vertexaiindexes.vertexai.cnrm.cloud.google.com":                                true, // spec.metadata.config.algorithmConfig.bruteForceConfig is an empty object
+		"dlpdiscoveryconfigs.dlp.cnrm.cloud.google.com":                                 true, // spec.actions[].publishToChronicle, publishToScc, and others are empty objects
+		"contentwarehousedocuments.contentwarehouse.cnrm.cloud.google.com":              true, // status.observedState is an empty object
+		"videostitchercdnkeys.videostitcher.cnrm.cloud.google.com":                      true, // status.observedState is an empty object
+		"vertexaitrainingpipelines.aiplatform.cnrm.cloud.google.com":                    true, // status.observedState.modelToUpload.originalModelInfo is an empty object
+		"vertexaischedules.aiplatform.cnrm.cloud.google.com":                            true, // spec.createNotebookExecutionJobRequest.notebookExecutionJob.workbenchRuntime is an empty object
+		"transcoderjobs.transcoder.cnrm.cloud.google.com":                               true, // spec.config.elementaryStreams[].videoStream.vp9.sdr is an empty object
+
+	}
+
+	crds, err := crdloader.LoadAllCRDs()
+	if err != nil {
+		t.Fatalf("error loading crds: %v", err)
+	}
+
+	for _, crd := range crds {
+		t.Run(crd.Name, func(t *testing.T) {
+			t.Parallel()
+			isKnownInvalid := knownInvalidCRDs[crd.Name]
+			invalidVersions := 0
+			for _, version := range crd.Spec.Versions {
+				if version.Schema == nil || version.Schema.OpenAPIV3Schema == nil {
+					continue
+				}
+				schema := version.Schema.OpenAPIV3Schema
+				for name, subProps := range schema.Properties {
+					if name == "metadata" {
+						continue
+					}
+					if err := validateCRDProps(&subProps, fmt.Sprintf("%s.%s", version.Name, name)); err != nil {
+						if isKnownInvalid {
+							t.Logf("KNOWN INVALID: version %s is invalid: %v", version.Name, err)
+							invalidVersions++
+						} else {
+							t.Errorf("version %s is invalid: %v", version.Name, err)
+						}
+					}
+				}
+			}
+			if isKnownInvalid && invalidVersions == 0 {
+				t.Errorf("CRD %s is in knownInvalidCRDs but passed validation; please remove it from the list", crd.Name)
+			}
+		})
+	}
+}
+
+func validateCRDProps(props *apiextensions.JSONSchemaProps, path string) error {
+	if props.Type == "object" {
+		if len(props.Properties) == 0 && props.AdditionalProperties == nil && (props.XPreserveUnknownFields == nil || !*props.XPreserveUnknownFields) {
+			return fmt.Errorf("object at %s is missing properties, additionalProperties, or x-kubernetes-preserve-unknown-fields", path)
+		}
+	}
+	for name, subProps := range props.Properties {
+		if err := validateCRDProps(&subProps, path+"."+name); err != nil {
+			return err
+		}
+	}
+	if props.Items != nil {
+		if props.Items.Schema != nil {
+			if err := validateCRDProps(props.Items.Schema, path+"[]"); err != nil {
+				return err
+			}
+		}
+		for i := range props.Items.JSONSchemas {
+			if err := validateCRDProps(&props.Items.JSONSchemas[i], fmt.Sprintf("%s[%d]", path, i)); err != nil {
+				return err
+			}
+		}
+	}
+	if props.AdditionalProperties != nil && props.AdditionalProperties.Schema != nil {
+		if err := validateCRDProps(props.AdditionalProperties.Schema, path+"[*]"); err != nil {
+			return err
+		}
+	}
+	for i := range props.AllOf {
+		if err := validateCRDProps(&props.AllOf[i], fmt.Sprintf("%s.allOf[%d]", path, i)); err != nil {
+			return err
+		}
+	}
+	for i := range props.AnyOf {
+		if err := validateCRDProps(&props.AnyOf[i], fmt.Sprintf("%s.anyOf[%d]", path, i)); err != nil {
+			return err
+		}
+	}
+	for i := range props.OneOf {
+		if err := validateCRDProps(&props.OneOf[i], fmt.Sprintf("%s.oneOf[%d]", path, i)); err != nil {
+			return err
+		}
+	}
+	if props.Not != nil {
+		if err := validateCRDProps(props.Not, path+".not"); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func TestIAMSupport(t *testing.T) {
+	t.Parallel()
+	smLoader, err := servicemappingloader.New()
+	if err != nil {
+		t.Fatalf("error loading service mappings: %v", err)
+	}
+	dclLoader := dclmetadata.New()
+	dclSchemaLoader, err := dclschemaloader.New()
+	if err != nil {
+		t.Fatalf("error loading dcl schemas: %v", err)
+	}
+
+	crds, err := crdloader.LoadAllCRDs()
+	if err != nil {
+		t.Fatalf("error loading crds: %v", err)
+	}
+
+	var errs []string
+	for _, crd := range crds {
+		gvk := schema.GroupVersionKind{
+			Group:   crd.Spec.Group,
+			Version: crd.Spec.Versions[0].Name,
+			Kind:    crd.Spec.Names.Kind,
+		}
+
+		// Skip IAM resources themselves
+		if gvk.Group == "iam.cnrm.cloud.google.com" {
+			switch gvk.Kind {
+			case "IAMPolicy", "IAMPolicyMember", "IAMPartialPolicy", "IAMAuditConfig":
+				continue
+			}
+		}
+
+		discovered := supportedgvks.SupportsIAMByGVK(gvk)
+		actual := isIAMSupportedInKCC(gvk, smLoader, dclLoader, dclSchemaLoader)
+
+		if discovered && !actual {
+			errs = append(errs, fmt.Sprintf("[iam_gap_direct] crd=%s: supports IAM in REST but not in KCC direct", crd.Name))
+		}
+		if !discovered && actual {
+			// Report resources that support IAM in KCC but REST discovery didn't find it.
+			// This helps identify resources where IAM functions might be under a different name or path.
+			errs = append(errs, fmt.Sprintf("[iam_unexpected] crd=%s: supports IAM in KCC but REST discovery didn't find it", crd.Name))
+		}
+	}
+
+	sort.Strings(errs)
+
+	want := strings.Join(errs, "\n")
+
+	test.CompareGoldenFile(t, "testdata/exceptions/iamsupport.txt", want)
+}
+
+func isIAMSupportedInKCC(gvk schema.GroupVersionKind, _ *servicemappingloader.ServiceMappingLoader, _ dclmetadata.ServiceMetadataLoader, _ dclschemaloader.DCLSchemaLoader) bool {
+	// 1. Check Direct
+	if registry.IsDirectByGK(gvk.GroupKind()) {
+		return registry.IsIAMDirect(gvk.GroupKind())
+	}
+
+	// // 2. Check TF
+	// sm, _ := smLoader.GetServiceMapping(gvk.Group)
+	// if sm != nil {
+	// 	for _, rc := range sm.Spec.Resources {
+	// 		if rc.Kind == gvk.Kind {
+	// 			return rc.IAMConfig.PolicyName != "" || rc.IAMConfig.PolicyMemberName != ""
+	// 		}
+	// 	}
+	// }
+
+	// // 3. Check DCL
+	// if _, ok := dclLoader.GetResourceWithGVK(gvk); ok {
+	// 	dclSchema, err := dclschemaloader.GetDCLSchemaForGVK(gvk, dclLoader, dclSchemaLoader)
+	// 	if err == nil && dclSchema != nil {
+	// 		supportsIAM, _ := extension.HasIam(dclSchema)
+	// 		return supportsIAM
+	// 	}
+	// }
+
+	return false
+}
+
+// normalizeStringsJoin processes strings.Join blocks in the diff and folds them
+// into a single line format to avoid environmental discrepancies in go-cmp's diff alignments.
+func normalizeStringsJoin(input string) string {
+	lines := strings.Split(input, "\n")
+	var result []string
+	inJoin := false
+	var joinLines []string
+	var joinIndent string
+
+	for i := 0; i < len(lines); i++ {
+		line := lines[i]
+		if !inJoin {
+			if strings.Contains(line, "strings.Join({") {
+				inJoin = true
+				joinLines = []string{}
+				idx := strings.Index(line, "strings.Join({")
+				joinIndent = line[:idx]
+				continue
+			}
+			result = append(result, line)
+		} else {
+			if strings.Contains(line, `}, "")`) {
+				inJoin = false
+				var beforeParts []string
+				var afterParts []string
+				for _, jl := range joinLines {
+					var sign byte = ' '
+					if len(jl) > 0 {
+						if jl[0] == '+' {
+							sign = '+'
+						} else if jl[0] == '-' {
+							sign = '-'
+						}
+					}
+
+					startIdx := strings.Index(jl, `"`)
+					endIdx := strings.LastIndex(jl, `"`)
+					if startIdx != -1 && endIdx > startIdx {
+						strVal := jl[startIdx+1 : endIdx]
+						strVal = strings.ReplaceAll(strVal, `\"`, `"`)
+						strVal = strings.ReplaceAll(strVal, `\\`, `\`)
+
+						if sign == '+' {
+							afterParts = append(afterParts, strVal)
+						} else if sign == '-' {
+							beforeParts = append(beforeParts, strVal)
+						} else {
+							beforeParts = append(beforeParts, strVal)
+							afterParts = append(afterParts, strVal)
+						}
+					}
+				}
+
+				beforeStr := strings.Join(beforeParts, "")
+				afterStr := strings.Join(afterParts, "")
+
+				if beforeStr == afterStr {
+					escaped := strings.ReplaceAll(beforeStr, `"`, `\"`)
+					result = append(result, fmt.Sprintf(`%s"%s",`, joinIndent, escaped))
+				} else {
+					escapedBefore := strings.ReplaceAll(beforeStr, `"`, `\"`)
+					escapedAfter := strings.ReplaceAll(afterStr, `"`, `\"`)
+					result = append(result, fmt.Sprintf(`-%s"%s",`, joinIndent, escapedBefore))
+					result = append(result, fmt.Sprintf(`+%s"%s",`, joinIndent, escapedAfter))
+				}
+				continue
+			}
+			joinLines = append(joinLines, line)
+		}
+	}
+	return strings.Join(result, "\n")
+}
+
+type StructField struct {
+	Name string
+	Type string
+}
+
+type StructType struct {
+	Name   string
+	Fields []StructField
+}
+
+func getFieldTypeStr(expr ast.Expr) string {
+	switch t := expr.(type) {
+	case *ast.Ident:
+		return t.Name
+	case *ast.StarExpr:
+		return getFieldTypeStr(t.X)
+	case *ast.ArrayType:
+		return getFieldTypeStr(t.Elt)
+	case *ast.MapType:
+		return getFieldTypeStr(t.Value)
+	case *ast.SelectorExpr:
+		return t.Sel.Name
+	default:
+		return ""
+	}
+}
+
+func normalizeCycle(cycle []string) string {
+	if len(cycle) == 0 {
+		return ""
+	}
+	minIndex := 0
+	for i := 1; i < len(cycle); i++ {
+		if cycle[i] < cycle[minIndex] {
+			minIndex = i
+		}
+	}
+	normalized := make([]string, 0, len(cycle)+1)
+	for i := 0; i < len(cycle); i++ {
+		idx := (minIndex + i) % len(cycle)
+		normalized = append(normalized, cycle[idx])
+	}
+	normalized = append(normalized, normalized[0])
+	return strings.Join(normalized, " -> ")
+}
+
+func findCyclesInStructs(structs map[string]StructType) []string {
+	var results []string
+	visitedCycles := make(map[string]bool)
+
+	var dfs func(current string, visited map[string]bool, path []string)
+	dfs = func(current string, visited map[string]bool, path []string) {
+		visited[current] = true
+		defer func() { visited[current] = false }()
+
+		s, ok := structs[current]
+		if !ok {
+			return
+		}
+
+		for _, field := range s.Fields {
+			if _, exists := structs[field.Type]; !exists {
+				continue
+			}
+
+			for i, p := range path {
+				if p == field.Type {
+					cycleSlice := path[i:]
+					cycleStr := normalizeCycle(cycleSlice)
+					if !visitedCycles[cycleStr] {
+						visitedCycles[cycleStr] = true
+						results = append(results, cycleStr)
+					}
+					return
+				}
+			}
+
+			newPath := append(path, field.Type)
+			dfs(field.Type, visited, newPath)
+		}
+	}
+
+	for sName := range structs {
+		visited := make(map[string]bool)
+		dfs(sName, visited, []string{sName})
+	}
+
+	sort.Strings(results)
+	return results
+}
+
+func TestNoRecursiveTypes(t *testing.T) {
+	t.Parallel()
+	crds, err := crdloader.LoadCRDs()
+	if err != nil {
+		t.Fatalf("error loading KCC CRDs: %v", err)
+	}
+
+	var errs []string
+	visitedDirs := make(map[string]bool)
+
+	for _, crd := range crds {
+		service := strings.Split(crd.Spec.Group, ".")[0]
+		for _, version := range crd.Spec.Versions {
+			dirPath := filepath.Join("../../apis", service, version.Name)
+			dirPath = filepath.Clean(dirPath)
+			if visitedDirs[dirPath] {
+				continue
+			}
+			visitedDirs[dirPath] = true
+
+			if _, err := os.Stat(dirPath); os.IsNotExist(err) {
+				continue
+			}
+
+			fset := token.NewFileSet()
+			filter := func(fi os.FileInfo) bool {
+				return !strings.HasSuffix(fi.Name(), "_test.go") && strings.HasSuffix(fi.Name(), ".go")
+			}
+			pkgs, err := parser.ParseDir(fset, dirPath, filter, parser.ParseComments)
+			if err != nil {
+				t.Fatalf("error parsing dir %s: %v", dirPath, err)
+			}
+
+			for _, pkg := range pkgs {
+				structs := make(map[string]StructType)
+				for _, file := range pkg.Files {
+					ast.Inspect(file, func(n ast.Node) bool {
+						typeSpec, ok := n.(*ast.TypeSpec)
+						if !ok {
+							return true
+						}
+						structType, ok := typeSpec.Type.(*ast.StructType)
+						if !ok {
+							return true
+						}
+
+						sName := typeSpec.Name.Name
+						var fields []StructField
+
+						if structType.Fields != nil {
+							for _, f := range structType.Fields.List {
+								fieldTypeStr := getFieldTypeStr(f.Type)
+								if fieldTypeStr == "" {
+									continue
+								}
+								var fieldName string
+								if len(f.Names) > 0 {
+									fieldName = f.Names[0].Name
+								}
+								fields = append(fields, StructField{
+									Name: fieldName,
+									Type: fieldTypeStr,
+								})
+							}
+						}
+
+						structs[sName] = StructType{
+							Name:   sName,
+							Fields: fields,
+						}
+						return true
+					})
+				}
+
+				cycles := findCyclesInStructs(structs)
+				for _, cycle := range cycles {
+					relDir := filepath.ToSlash(dirPath)
+					relDir = strings.TrimPrefix(relDir, "../../")
+					errs = append(errs, fmt.Sprintf("[recursive_type] package=%s: %s", relDir, cycle))
+				}
+			}
+		}
+	}
+
+	sort.Strings(errs)
+	want := strings.Join(errs, "\n")
+	if len(errs) > 0 {
+		want += "\n"
+	}
+
+	test.CompareGoldenFile(t, "testdata/exceptions/recursivetypes.txt", want)
+}

@@ -1,0 +1,12 @@
+label: Config Connector BigQueryConnectionConnection
+markdownDescription: Creates yaml for a BigQueryConnectionConnection resource
+insertText: |
+  apiVersion: bigqueryconnection.cnrm.cloud.google.com/v1alpha1
+  kind: BigQueryConnectionConnection
+  metadata:
+    name: \${1:bigqueryconnectionconnection-name}
+  spec:
+    location: \${2:us-central1}
+    projectRef:
+      external: \${3:[PROJECT_ID?]}
+    cloudResource: {}

@@ -1,0 +1,46 @@
+1c1
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/nodeTemplates/${nodeTemplateID}?alt=json
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/nodeTemplates/${nodeTemplateID}
+30c30
+< POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/nodeTemplates?alt=json
+---
+> POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/nodeTemplates
+34d33
+<   "cpuOvercommitType": "NONE",
+37,41d35
+<   "nodeAffinityLabels": {
+<     "cnrm-test": "true",
+<     "managed-by-cnrm": "true",
+<     "memory_guarantee": "false"
+<   },
+46c40
+<   "region": "projects/${projectId}/global/regions/us-central1"
+---
+>   "region": "us-central1"
+77c71,72
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
+> Content-Type: application/json
+108c103
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/nodeTemplates/${nodeTemplateID}?alt=json
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/nodeTemplates/${nodeTemplateID}
+122d116
+<   "cpuOvercommitType": "NONE",
+128,132d121
+<   "nodeAffinityLabels": {
+<     "cnrm-test": "true",
+<     "managed-by-cnrm": "true",
+<     "memory_guarantee": "false"
+<   },
+147c136
+< DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/nodeTemplates/${nodeTemplateID}?alt=json
+---
+> DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/nodeTemplates/${nodeTemplateID}
+178c167,168
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
+> Content-Type: application/json

@@ -1,0 +1,29 @@
+# In: ~/.gemini/commands/docs/versions.toml
+# This command will be invoked via: /docs:versions
+
+description = "Asks the model to generate the docs needed to use version compatability."
+
+prompt = """
+You are a Config Connector and doc writing expert.
+Please write a document explaining how to use the backward compataibility version feature.
+The feature allows a customer to set a desired version for the CNRM in a namespace to operate in.
+The range of such allowed versions for 1.133.0 as example only goes back as far as 1.126.0
+
+Please analyze the following files.
+- @operator/config/crd/bases/core.cnrm.cloud.google.com_configconnectorcontexts.yaml
+
+Please look at the PR https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/4898
+
+Please create or update the following files.
+- docs/features/compatabilityversion.md
+
+Your response should include:
+- A table of what versions support what compatability versions.
+- A sample YAML of the type ConfigConnectorContext which highlights the version set to 1.126.0
+
+#### Summary of Changes
+
+- Briefly explain the **purpose** and **nature** of the code changes. What problem is this PR trying
+  to solve?
+- What is the core logic being documented?
+"""

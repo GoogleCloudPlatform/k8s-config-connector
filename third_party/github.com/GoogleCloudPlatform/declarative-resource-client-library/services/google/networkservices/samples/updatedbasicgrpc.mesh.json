@@ -1,0 +1,10 @@
+{
+  "name": "{{resource_name}}",
+  "project": "{{project}}",
+  "location": "global",
+  "description": "Updated description",
+  "interceptionPort": 81,
+  "labels": {
+    "foo1": "bar1"
+  }
+}

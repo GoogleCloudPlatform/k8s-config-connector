@@ -1,0 +1,14 @@
+label: Config Connector ComputeRouterInterface
+markdownDescription: Creates yaml for a ComputeRouterInterface resource
+insertText: |
+  apiVersion: compute.cnrm.cloud.google.com/v1beta1
+  kind: ComputeRouterInterface
+  metadata:
+    name: \${1:computerouterinterface-name}
+  spec:
+    routerRef:
+      name: \${2:computerouterinterface-dep}
+    region: \${3:us-central1}
+    ipRange: \${4:169.254.1.1/30}
+    vpnTunnelRef:
+      name: \${5:computerouterinterface-dep}

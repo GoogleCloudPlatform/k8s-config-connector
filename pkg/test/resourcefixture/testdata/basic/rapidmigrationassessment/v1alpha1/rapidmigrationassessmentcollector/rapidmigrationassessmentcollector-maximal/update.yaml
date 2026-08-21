@@ -1,0 +1,18 @@
+apiVersion: rapidmigrationassessment.cnrm.cloud.google.com/v1alpha1
+kind: RapidMigrationAssessmentCollector
+metadata:
+  name: rmacollector-max-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  serviceAccountRef:
+    external: overseer-kcc-tester@${projectId}.iam.gserviceaccount.com
+  displayName: Updated Maximal Collector
+  description: This is an updated maximal collector description
+  expectedAssetCount: 200
+  collectionDays: 60
+  eulaURI: "https://www.google.com/updated"
+  labels:
+    key1: val1
+    key2: val2

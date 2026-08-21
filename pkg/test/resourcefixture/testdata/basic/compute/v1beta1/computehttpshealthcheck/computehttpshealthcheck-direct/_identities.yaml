@@ -1,0 +1,6 @@
+- caisURL: //compute.googleapis.com/projects/${projectId}/global/httpsHealthChecks/computehttpshealthcheck-${uniqueId}
+  group: compute.cnrm.cloud.google.com
+  kind: ComputeHTTPSHealthCheck
+  name: computehttpshealthcheck-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

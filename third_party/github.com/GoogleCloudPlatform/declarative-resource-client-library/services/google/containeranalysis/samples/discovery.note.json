@@ -1,0 +1,7 @@
+{
+  "name": "{{discovery_note}}",
+  "project": "{{project}}",
+  "discovery": {
+    "analysisKind": "VULNERABILITY"
+  }
+}

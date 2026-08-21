@@ -1,0 +1,41 @@
+label: Config Connector MonitoringUptimeCheckConfig
+markdownDescription: Creates yaml for a MonitoringUptimeCheckConfig resource
+insertText: |
+  apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+  kind: MonitoringUptimeCheckConfig
+  metadata:
+    name: \${1:monitoringuptimecheckconfig-name}
+  spec:
+    projectRef:
+      external: \${2:projects/[PROJECT_ID?]}
+    displayName: \${3:A sample http uptime check config}
+    period: \${4:60s}
+    timeout: \${5:30s}
+    contentMatchers:
+    - content: \${6:.*}
+      matcher: \${7:MATCHES_REGEX}
+    selectedRegions:
+    - \${8:USA}
+    monitoredResource:
+      type: \${9:uptime_url}
+      filterLabels:
+        host: \${10:192.168.1.1}
+        project_id: \${11:[PROJECT_ID?]}
+    httpCheck:
+      requestMethod: \${12:POST}
+      useSsl: \${13:true}
+      path: \${14:/main}
+      port: \${15:80}
+      authInfo:
+        username: \${16:test}
+        password:
+          valueFrom:
+            secretKeyRef:
+              name: \${17:monitoringuptimecheckconfig-dep}
+              key: \${18:password}
+      maskHeaders: \${19:true}
+      headers:
+        header-one: \${20:value-one}
+      contentType: \${21:URL_ENCODED}
+      validateSsl: \${22:false}
+      body: \${23:c3RyaW5nCg==}

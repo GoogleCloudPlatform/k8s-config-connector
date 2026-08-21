@@ -1,0 +1,79 @@
+GET https://devicestreaming.googleapis.com/v1/projects/${projectId}/deviceSessions/devicestreamingsession-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2FdeviceSessions%2Fdevicestreamingsession-${uniqueId}
+
+403 Forbidden
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 403,
+    "message": "Device Streaming API has not been used in project ${projectId} before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/devicestreaming.googleapis.com/overview?project=${projectId} then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.",
+    "status": "PERMISSION_DENIED"
+  }
+}
+
+---
+
+POST https://devicestreaming.googleapis.com/v1/projects/${projectId}/deviceSessions?%24alt=json%3Benum-encoding%3Dint&deviceSessionId=devicestreamingsession-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}
+
+{
+  "androidDevice": {
+    "androidModelId": "Pixel8",
+    "androidVersionId": "34"
+  }
+}
+
+403 Forbidden
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 403,
+    "message": "Device Streaming API has not been used in project ${projectId} before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/devicestreaming.googleapis.com/overview?project=${projectId} then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.",
+    "status": "PERMISSION_DENIED"
+  }
+}
+
+---
+
+GET https://devicestreaming.googleapis.com/v1/projects/${projectId}/deviceSessions/devicestreamingsession-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2FdeviceSessions%2Fdevicestreamingsession-${uniqueId}
+
+403 Forbidden
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 403,
+    "message": "Device Streaming API has not been used in project ${projectId} before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/devicestreaming.googleapis.com/overview?project=${projectId} then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.",
+    "status": "PERMISSION_DENIED"
+  }
+}

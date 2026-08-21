@@ -1,0 +1,54 @@
+273c273,305
+< POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}/addResourcePolicies?alt=json
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}
+> Content-Type: application/json
+> 
+> 200 OK
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+>   "id": "000000000000000000000",
+>   "kind": "compute#disk",
+>   "labelFingerprint": "abcdef0123A=",
+>   "labels": {
+>     "cnrm-test": "true",
+>     "managed-by-cnrm": "true"
+>   },
+>   "name": "${diskID}",
+>   "physicalBlockSizeBytes": "4096",
+>   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}",
+>   "status": "READY",
+>   "type": "projects/${projectId}/zones/us-central1-a/diskTypes/pd-ssd",
+>   "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
+> }
+> 
+> ---
+> 
+> POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}/addResourcePolicies
+310c342,343
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}
+> Content-Type: application/json
+341c374
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}?alt=json
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}
+376c409
+< POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}/removeResourcePolicies?alt=json
+---
+> POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/disks/${diskID}/removeResourcePolicies
+413c446,447
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}
+> Content-Type: application/json

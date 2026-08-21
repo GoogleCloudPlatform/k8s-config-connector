@@ -1,0 +1,121 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum CloudidentityGroupDynamicGroupMetadataQueriesResourceTypeEnum {
+  CloudidentityGroupDynamicGroupMetadataQueriesResourceTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  CloudidentityGroupDynamicGroupMetadataQueriesResourceTypeEnumRESOURCE_TYPE_UNSPECIFIED = 1;
+  CloudidentityGroupDynamicGroupMetadataQueriesResourceTypeEnumUSER = 2;
+}
+
+enum CloudidentityGroupDynamicGroupMetadataStatusStatusEnum {
+  CloudidentityGroupDynamicGroupMetadataStatusStatusEnumNO_VALUE_DO_NOT_USE = 0;
+  CloudidentityGroupDynamicGroupMetadataStatusStatusEnumSTATUS_UNSPECIFIED = 1;
+  CloudidentityGroupDynamicGroupMetadataStatusStatusEnumUP_TO_DATE = 2;
+  CloudidentityGroupDynamicGroupMetadataStatusStatusEnumUPDATING_MEMBERSHIPS = 3;
+  CloudidentityGroupDynamicGroupMetadataStatusStatusEnumINVALID_QUERY = 4;
+}
+
+enum CloudidentityGroupInitialGroupConfigEnum {
+  CloudidentityGroupInitialGroupConfigEnumNO_VALUE_DO_NOT_USE = 0;
+  CloudidentityGroupInitialGroupConfigEnumINITIAL_GROUP_CONFIG_UNSPECIFIED = 1;
+  CloudidentityGroupInitialGroupConfigEnumWITH_INITIAL_OWNER = 2;
+  CloudidentityGroupInitialGroupConfigEnumEMPTY = 3;
+}
+
+message CloudidentityGroup {
+  string name = 1;
+  CloudidentityGroupGroupKey group_key = 2;
+  repeated CloudidentityGroupAdditionalGroupKeys additional_group_keys = 3;
+  string parent = 4;
+  string display_name = 5;
+  string description = 6;
+  string create_time = 7;
+  string update_time = 8;
+  map<string, string> labels = 9;
+  int64 direct_member_count = 10;
+  CloudidentityGroupDirectMemberCountPerType direct_member_count_per_type = 11;
+  repeated CloudidentityGroupDerivedAliases derived_aliases = 12;
+  CloudidentityGroupDynamicGroupMetadata dynamic_group_metadata = 13;
+  CloudidentityGroupInitialGroupConfigEnum initial_group_config = 14;
+}
+
+message CloudidentityGroupGroupKey {
+  string id = 1;
+  string namespace = 2;
+}
+
+message CloudidentityGroupAdditionalGroupKeys {
+  string id = 1;
+  string namespace = 2;
+}
+
+message CloudidentityGroupDirectMemberCountPerType {
+  int64 user_count = 1;
+  int64 group_count = 2;
+}
+
+message CloudidentityGroupDerivedAliases {
+  string id = 1;
+  string namespace = 2;
+}
+
+message CloudidentityGroupDynamicGroupMetadata {
+  repeated CloudidentityGroupDynamicGroupMetadataQueries queries = 1;
+  CloudidentityGroupDynamicGroupMetadataStatus status = 2;
+}
+
+message CloudidentityGroupDynamicGroupMetadataQueries {
+  CloudidentityGroupDynamicGroupMetadataQueriesResourceTypeEnum resource_type = 1;
+  string query = 2;
+}
+
+message CloudidentityGroupDynamicGroupMetadataStatus {
+  CloudidentityGroupDynamicGroupMetadataStatusStatusEnum status = 1;
+  string status_time = 2;
+}
+
+message ApplyCloudidentityGroupRequest {
+  CloudidentityGroup resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteCloudidentityGroupRequest {
+  string service_account_file = 1;
+  CloudidentityGroup resource = 2;
+}
+
+message ListCloudidentityGroupRequest {
+  string service_account_file = 1;
+  string Parent = 2;
+}
+
+message ListCloudidentityGroupResponse {
+  repeated CloudidentityGroup items = 1;
+}
+
+service CloudidentityGroupService {
+  rpc ApplyCloudidentityGroup(ApplyCloudidentityGroupRequest) returns (CloudidentityGroup);
+  rpc DeleteCloudidentityGroup(DeleteCloudidentityGroupRequest) returns (google.protobuf.Empty);
+  rpc ListCloudidentityGroup(ListCloudidentityGroupRequest) returns (ListCloudidentityGroupResponse);
+}

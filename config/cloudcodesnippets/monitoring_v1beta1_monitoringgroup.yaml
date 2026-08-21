@@ -1,0 +1,12 @@
+label: Config Connector MonitoringGroup
+markdownDescription: Creates yaml for a MonitoringGroup resource
+insertText: |
+  apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+  kind: MonitoringGroup
+  metadata:
+    name: \${1:monitoringgroup-name}
+  spec:
+    filter: \${2:resource.metadata.name=has_substring("test")}
+    displayName: \${3:MonitoringSubGroup}
+    parentRef:
+      name: \${4:monitoringgroup-dep}

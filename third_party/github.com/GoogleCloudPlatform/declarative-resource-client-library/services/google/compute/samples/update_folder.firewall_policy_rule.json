@@ -1,0 +1,21 @@
+{
+  "priority": 9000,
+  "firewallPolicy": "locations/global/firewallPolicies/{{ref:folder.firewall_policy.json:name}}",
+  "description": "allow-scan-probe-update",
+  "match": {
+    "layer4Configs": [
+      {
+        "ipProtocol": "udp",
+        "ports": ["22"]
+      }
+    ],
+    "srcIPRanges": ["11.100.0.1/32"],
+    "destIPRanges": []
+  },
+  "enableLogging" : true,
+  "targetServiceAccounts" : ["update-261421534184-compute@developer.gserviceaccount.com"],
+  "action" : "allow",
+  "direction": "INGRESS",
+  "disabled" : true,
+  "targetResources": ["{{ref:second_folder.network.json:selfLink}}"]
+}

@@ -1,0 +1,9 @@
+apiVersion: firestore.cnrm.cloud.google.com/v1beta1
+kind: FirestoreDatabase
+metadata:
+  name: firestoredatabase-dep-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  resourceID: test-db-min-${uniqueId}
+  locationID: us-west2

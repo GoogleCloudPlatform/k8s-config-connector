@@ -1,0 +1,3 @@
+```release-note:bug
+container: fix a bug where `additional_pod_network_configs` was not sent correctly in `google_container_node_pool`
+```

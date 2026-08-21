@@ -1,0 +1,111 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum IamWorkforcePoolProviderStateEnum {
+  IamWorkforcePoolProviderStateEnumNO_VALUE_DO_NOT_USE = 0;
+  IamWorkforcePoolProviderStateEnumSTATE_UNSPECIFIED = 1;
+  IamWorkforcePoolProviderStateEnumACTIVE = 2;
+  IamWorkforcePoolProviderStateEnumDELETED = 3;
+}
+
+enum IamWorkforcePoolProviderOidcWebSsoConfigResponseTypeEnum {
+  IamWorkforcePoolProviderOidcWebSsoConfigResponseTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  IamWorkforcePoolProviderOidcWebSsoConfigResponseTypeEnumRESPONSE_TYPE_UNSPECIFIED = 1;
+  IamWorkforcePoolProviderOidcWebSsoConfigResponseTypeEnumCODE = 2;
+  IamWorkforcePoolProviderOidcWebSsoConfigResponseTypeEnumID_TOKEN = 3;
+}
+
+enum IamWorkforcePoolProviderOidcWebSsoConfigAssertionClaimsBehaviorEnum {
+  IamWorkforcePoolProviderOidcWebSsoConfigAssertionClaimsBehaviorEnumNO_VALUE_DO_NOT_USE = 0;
+  IamWorkforcePoolProviderOidcWebSsoConfigAssertionClaimsBehaviorEnumASSERTION_CLAIMS_BEHAVIOR_UNSPECIFIED = 1;
+  IamWorkforcePoolProviderOidcWebSsoConfigAssertionClaimsBehaviorEnumMERGE_USER_INFO_OVER_ID_TOKEN_CLAIMS = 2;
+  IamWorkforcePoolProviderOidcWebSsoConfigAssertionClaimsBehaviorEnumONLY_ID_TOKEN_CLAIMS = 3;
+}
+
+message IamWorkforcePoolProvider {
+  string name = 1;
+  string display_name = 2;
+  string description = 3;
+  IamWorkforcePoolProviderStateEnum state = 4;
+  bool disabled = 5;
+  map<string, string> attribute_mapping = 6;
+  string attribute_condition = 7;
+  IamWorkforcePoolProviderSaml saml = 8;
+  IamWorkforcePoolProviderOidc oidc = 9;
+  string location = 10;
+  string workforce_pool = 11;
+}
+
+message IamWorkforcePoolProviderSaml {
+  string idp_metadata_xml = 1;
+}
+
+message IamWorkforcePoolProviderOidc {
+  string issuer_uri = 1;
+  string client_id = 2;
+  string jwks_json = 3;
+  IamWorkforcePoolProviderOidcWebSsoConfig web_sso_config = 4;
+  IamWorkforcePoolProviderOidcClientSecret client_secret = 5;
+}
+
+message IamWorkforcePoolProviderOidcWebSsoConfig {
+  IamWorkforcePoolProviderOidcWebSsoConfigResponseTypeEnum response_type = 1;
+  IamWorkforcePoolProviderOidcWebSsoConfigAssertionClaimsBehaviorEnum assertion_claims_behavior = 2;
+  repeated string additional_scopes = 3;
+}
+
+message IamWorkforcePoolProviderOidcClientSecret {
+  IamWorkforcePoolProviderOidcClientSecretValue value = 1;
+}
+
+message IamWorkforcePoolProviderOidcClientSecretValue {
+  string plain_text = 1;
+  string thumbprint = 2;
+}
+
+message ApplyIamWorkforcePoolProviderRequest {
+  IamWorkforcePoolProvider resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteIamWorkforcePoolProviderRequest {
+  string service_account_file = 1;
+  IamWorkforcePoolProvider resource = 2;
+}
+
+message ListIamWorkforcePoolProviderRequest {
+  string service_account_file = 1;
+  string Location = 2;
+  string WorkforcePool = 3;
+}
+
+message ListIamWorkforcePoolProviderResponse {
+  repeated IamWorkforcePoolProvider items = 1;
+}
+
+service IamWorkforcePoolProviderService {
+  rpc ApplyIamWorkforcePoolProvider(ApplyIamWorkforcePoolProviderRequest) returns (IamWorkforcePoolProvider);
+  rpc DeleteIamWorkforcePoolProvider(DeleteIamWorkforcePoolProviderRequest) returns (google.protobuf.Empty);
+  rpc ListIamWorkforcePoolProvider(ListIamWorkforcePoolProviderRequest) returns (ListIamWorkforcePoolProviderResponse);
+}

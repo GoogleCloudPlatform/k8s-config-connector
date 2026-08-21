@@ -1,0 +1,6 @@
+{
+  "name": "{{ref:__state__:name}}",
+  "project": "{{ref:gkehub.serviceusage.service.json:project}}",
+  "location": "global",
+  "displayName": "Some Other Name"
+}

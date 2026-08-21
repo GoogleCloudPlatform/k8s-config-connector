@@ -1,0 +1,13 @@
+apiVersion: bigqueryreservation.cnrm.cloud.google.com/v1alpha1
+kind: BigQueryReservationCapacityCommitment
+metadata:
+  name: bqcc-${uniqueId}
+spec:
+  edition: STANDARD
+  location: us-west2
+  plan: FLEX
+  projectRef:
+    external: ${projectId}
+  renewalPlan: FLEX
+  resourceID: bqcc-${uniqueId}
+  slotCount: 100

@@ -1,0 +1,1797 @@
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+version: 2
+interactions:
+  - id: 0
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: run.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://run.googleapis.com/v2/projects/example-project/locations/us-central1/services/runservice-1w5ax8rh1otic?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 350.44993ms
+  - id: 1
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 316
+      transfer_encoding: []
+      trailer: {}
+      host: run.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: |
+        {"ingress":"INGRESS_TRAFFIC_ALL","labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"launchStage":"GA","template":{"containers":[{"env":[{"name":"FOO","value":"bar]"}],"image":"gcr.io/cloudrun/hello"}],"scaling":{"maxInstanceCount":2}},"traffic":[{"percent":100,"type":"TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST"}]}
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://run.googleapis.com/v2/projects/example-project/locations/us-central1/services?alt=json&serviceId=runservice-1w5ax8rh1otic
+      method: POST
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-central1/operations/91ecdd0d-9cab-422c-b991-3936eb579e76",
+          "metadata": {
+            "@type": "type.googleapis.com/google.cloud.run.v2.Service",
+            "name": "projects/example-project/locations/us-central1/services/runservice-1w5ax8rh1otic",
+            "uid": "00983b4f-6f4b-4bd4-ac6f-1022cc24c160",
+            "generation": "1",
+            "labels": {
+              "cnrm-test": "true",
+              "managed-by-cnrm": "true"
+            },
+            "createTime": "2024-04-25T01:58:35.886675Z",
+            "updateTime": "2024-04-25T01:58:35.886675Z",
+            "creator": "integration-test@example-project.iam.gserviceaccount.com",
+            "lastModifier": "integration-test@example-project.iam.gserviceaccount.com",
+            "launchStage": "GA",
+            "template": {
+              "scaling": {
+                "maxInstanceCount": 2
+              },
+              "timeout": "300s",
+              "serviceAccount": "123456789-compute@developer.gserviceaccount.com",
+              "containers": [
+                {
+                  "image": "gcr.io/cloudrun/hello",
+                  "env": [
+                    {
+                      "name": "FOO",
+                      "value": "bar]"
+                    }
+                  ],
+                  "resources": {
+                    "limits": {
+                      "memory": "512Mi",
+                      "cpu": "1000m"
+                    },
+                    "cpuIdle": true
+                  },
+                  "ports": [
+                    {
+                      "name": "http1",
+                      "containerPort": 8080
+                    }
+                  ],
+                  "startupProbe": {
+                    "timeoutSeconds": 240,
+                    "periodSeconds": 240,
+                    "failureThreshold": 1,
+                    "tcpSocket": {
+                      "port": 8080
+                    }
+                  }
+                }
+              ],
+              "maxInstanceRequestConcurrency": 80
+            },
+            "traffic": [
+              {
+                "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+                "percent": 100
+              }
+            ],
+            "terminalCondition": {
+              "state": "CONDITION_PENDING"
+            },
+            "reconciling": true,
+            "etag": "\"CMvxprEGELis5qYD/cHJvamVjdHMvY25ybS10ZXN0LTF2a3hzOWJoanYweG85OHEvbG9jYXRpb25zL3VzLWNlbnRyYWwxL3NlcnZpY2VzL3J1bnNlcnZpY2UtMXc1YXg4cmgxb3RpYw\""
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 374.6107ms
+  - id: 2
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: run.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://run.googleapis.com/v2/projects/example-project/locations/us-central1/operations/91ecdd0d-9cab-422c-b991-3936eb579e76?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-central1/operations/91ecdd0d-9cab-422c-b991-3936eb579e76",
+          "metadata": {
+            "@type": "type.googleapis.com/google.cloud.run.v2.Service",
+            "name": "projects/example-project/locations/us-central1/services/runservice-1w5ax8rh1otic",
+            "uid": "00983b4f-6f4b-4bd4-ac6f-1022cc24c160",
+            "generation": "1",
+            "labels": {
+              "cnrm-test": "true",
+              "managed-by-cnrm": "true"
+            },
+            "createTime": "2024-04-25T01:58:35.886675Z",
+            "updateTime": "2024-04-25T01:58:35.886675Z",
+            "creator": "integration-test@example-project.iam.gserviceaccount.com",
+            "lastModifier": "integration-test@example-project.iam.gserviceaccount.com",
+            "ingress": "INGRESS_TRAFFIC_ALL",
+            "launchStage": "GA",
+            "template": {
+              "scaling": {
+                "maxInstanceCount": 2
+              },
+              "timeout": "300s",
+              "serviceAccount": "123456789-compute@developer.gserviceaccount.com",
+              "containers": [
+                {
+                  "image": "gcr.io/cloudrun/hello",
+                  "env": [
+                    {
+                      "name": "FOO",
+                      "value": "bar]"
+                    }
+                  ],
+                  "resources": {
+                    "limits": {
+                      "memory": "512Mi",
+                      "cpu": "1000m"
+                    },
+                    "cpuIdle": true
+                  },
+                  "ports": [
+                    {
+                      "name": "http1",
+                      "containerPort": 8080
+                    }
+                  ],
+                  "startupProbe": {
+                    "timeoutSeconds": 240,
+                    "periodSeconds": 240,
+                    "failureThreshold": 1,
+                    "tcpSocket": {
+                      "port": 8080
+                    }
+                  }
+                }
+              ],
+              "maxInstanceRequestConcurrency": 80
+            },
+            "traffic": [
+              {
+                "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+                "percent": 100
+              }
+            ],
+            "observedGeneration": "1",
+            "terminalCondition": {
+              "type": "Ready",
+              "state": "CONDITION_SUCCEEDED",
+              "lastTransitionTime": "2024-04-25T01:58:41.603366Z"
+            },
+            "conditions": [
+              {
+                "type": "RoutesReady",
+                "state": "CONDITION_SUCCEEDED",
+                "lastTransitionTime": "2024-04-25T01:58:41.567303Z"
+              },
+              {
+                "type": "ConfigurationsReady",
+                "state": "CONDITION_SUCCEEDED",
+                "lastTransitionTime": "2024-04-25T01:58:35.990115Z"
+              }
+            ],
+            "latestReadyRevision": "projects/example-project/locations/us-central1/services/runservice-1w5ax8rh1otic/revisions/runservice-1w5ax8rh1otic-00001-8bw",
+            "latestCreatedRevision": "projects/example-project/locations/us-central1/services/runservice-1w5ax8rh1otic/revisions/runservice-1w5ax8rh1otic-00001-8bw",
+            "trafficStatuses": [
+              {
+                "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+                "percent": 100
+              }
+            ],
+            "uri": "https://runservice-1w5ax8rh1otic-7id3oidh4q-uc.a.run.app",
+            "etag": "\"CMvxprEGELis5qYD/cHJvamVjdHMvY25ybS10ZXN0LTF2a3hzOWJoanYweG85OHEvbG9jYXRpb25zL3VzLWNlbnRyYWwxL3NlcnZpY2VzL3J1bnNlcnZpY2UtMXc1YXg4cmgxb3RpYw\""
+          },
+          "done": true,
+          "response": {
+            "@type": "type.googleapis.com/google.cloud.run.v2.Service",
+            "name": "projects/example-project/locations/us-central1/services/runservice-1w5ax8rh1otic",
+            "uid": "00983b4f-6f4b-4bd4-ac6f-1022cc24c160",
+            "generation": "1",
+            "labels": {
+              "cnrm-test": "true",
+              "managed-by-cnrm": "true"
+            },
+            "createTime": "2024-04-25T01:58:35.886675Z",
+            "updateTime": "2024-04-25T01:58:35.886675Z",
+            "creator": "integration-test@example-project.iam.gserviceaccount.com",
+            "lastModifier": "integration-test@example-project.iam.gserviceaccount.com",
+            "ingress": "INGRESS_TRAFFIC_ALL",
+            "launchStage": "GA",
+            "template": {
+              "scaling": {
+                "maxInstanceCount": 2
+              },
+              "timeout": "300s",
+              "serviceAccount": "123456789-compute@developer.gserviceaccount.com",
+              "containers": [
+                {
+                  "image": "gcr.io/cloudrun/hello",
+                  "env": [
+                    {
+                      "name": "FOO",
+                      "value": "bar]"
+                    }
+                  ],
+                  "resources": {
+                    "limits": {
+                      "memory": "512Mi",
+                      "cpu": "1000m"
+                    },
+                    "cpuIdle": true
+                  },
+                  "ports": [
+                    {
+                      "name": "http1",
+                      "containerPort": 8080
+                    }
+                  ],
+                  "startupProbe": {
+                    "timeoutSeconds": 240,
+                    "periodSeconds": 240,
+                    "failureThreshold": 1,
+                    "tcpSocket": {
+                      "port": 8080
+                    }
+                  }
+                }
+              ],
+              "maxInstanceRequestConcurrency": 80
+            },
+            "traffic": [
+              {
+                "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+                "percent": 100
+              }
+            ],
+            "observedGeneration": "1",
+            "terminalCondition": {
+              "type": "Ready",
+              "state": "CONDITION_SUCCEEDED",
+              "lastTransitionTime": "2024-04-25T01:58:41.603366Z"
+            },
+            "conditions": [
+              {
+                "type": "RoutesReady",
+                "state": "CONDITION_SUCCEEDED",
+                "lastTransitionTime": "2024-04-25T01:58:41.567303Z"
+              },
+              {
+                "type": "ConfigurationsReady",
+                "state": "CONDITION_SUCCEEDED",
+                "lastTransitionTime": "2024-04-25T01:58:35.990115Z"
+              }
+            ],
+            "latestReadyRevision": "projects/example-project/locations/us-central1/services/runservice-1w5ax8rh1otic/revisions/runservice-1w5ax8rh1otic-00001-8bw",
+            "latestCreatedRevision": "projects/example-project/locations/us-central1/services/runservice-1w5ax8rh1otic/revisions/runservice-1w5ax8rh1otic-00001-8bw",
+            "trafficStatuses": [
+              {
+                "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+                "percent": 100
+              }
+            ],
+            "uri": "https://runservice-1w5ax8rh1otic-7id3oidh4q-uc.a.run.app",
+            "etag": "\"CMvxprEGELis5qYD/cHJvamVjdHMvY25ybS10ZXN0LTF2a3hzOWJoanYweG85OHEvbG9jYXRpb25zL3VzLWNlbnRyYWwxL3NlcnZpY2VzL3J1bnNlcnZpY2UtMXc1YXg4cmgxb3RpYw\""
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 309.329908ms
+  - id: 3
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: run.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://run.googleapis.com/v2/projects/example-project/locations/us-central1/services/runservice-1w5ax8rh1otic?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-central1/services/runservice-1w5ax8rh1otic",
+          "uid": "00983b4f-6f4b-4bd4-ac6f-1022cc24c160",
+          "generation": "1",
+          "labels": {
+            "cnrm-test": "true",
+            "managed-by-cnrm": "true"
+          },
+          "createTime": "2024-04-25T01:58:35.886675Z",
+          "updateTime": "2024-04-25T01:58:35.886675Z",
+          "creator": "integration-test@example-project.iam.gserviceaccount.com",
+          "lastModifier": "integration-test@example-project.iam.gserviceaccount.com",
+          "ingress": "INGRESS_TRAFFIC_ALL",
+          "launchStage": "GA",
+          "template": {
+            "scaling": {
+              "maxInstanceCount": 2
+            },
+            "timeout": "300s",
+            "serviceAccount": "123456789-compute@developer.gserviceaccount.com",
+            "containers": [
+              {
+                "image": "gcr.io/cloudrun/hello",
+                "env": [
+                  {
+                    "name": "FOO",
+                    "value": "bar]"
+                  }
+                ],
+                "resources": {
+                  "limits": {
+                    "memory": "512Mi",
+                    "cpu": "1000m"
+                  },
+                  "cpuIdle": true
+                },
+                "ports": [
+                  {
+                    "name": "http1",
+                    "containerPort": 8080
+                  }
+                ],
+                "startupProbe": {
+                  "timeoutSeconds": 240,
+                  "periodSeconds": 240,
+                  "failureThreshold": 1,
+                  "tcpSocket": {
+                    "port": 8080
+                  }
+                }
+              }
+            ],
+            "maxInstanceRequestConcurrency": 80
+          },
+          "traffic": [
+            {
+              "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+              "percent": 100
+            }
+          ],
+          "observedGeneration": "1",
+          "terminalCondition": {
+            "type": "Ready",
+            "state": "CONDITION_SUCCEEDED",
+            "lastTransitionTime": "2024-04-25T01:58:41.603366Z"
+          },
+          "conditions": [
+            {
+              "type": "RoutesReady",
+              "state": "CONDITION_SUCCEEDED",
+              "lastTransitionTime": "2024-04-25T01:58:41.567303Z"
+            },
+            {
+              "type": "ConfigurationsReady",
+              "state": "CONDITION_SUCCEEDED",
+              "lastTransitionTime": "2024-04-25T01:58:35.990115Z"
+            }
+          ],
+          "latestReadyRevision": "projects/example-project/locations/us-central1/services/runservice-1w5ax8rh1otic/revisions/runservice-1w5ax8rh1otic-00001-8bw",
+          "latestCreatedRevision": "projects/example-project/locations/us-central1/services/runservice-1w5ax8rh1otic/revisions/runservice-1w5ax8rh1otic-00001-8bw",
+          "trafficStatuses": [
+            {
+              "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+              "percent": 100
+            }
+          ],
+          "uri": "https://runservice-1w5ax8rh1otic-7id3oidh4q-uc.a.run.app",
+          "etag": "\"CMvxprEGELis5qYD/cHJvamVjdHMvY25ybS10ZXN0LTF2a3hzOWJoanYweG85OHEvbG9jYXRpb25zL3VzLWNlbnRyYWwxL3NlcnZpY2VzL3J1bnNlcnZpY2UtMXc1YXg4cmgxb3RpYw\""
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 286.38511ms
+  - id: 4
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: run.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://run.googleapis.com/v2/projects/example-project/locations/us-central1/services/runservice-1w5ax8rh1otic?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-central1/services/runservice-1w5ax8rh1otic",
+          "uid": "00983b4f-6f4b-4bd4-ac6f-1022cc24c160",
+          "generation": "1",
+          "labels": {
+            "cnrm-test": "true",
+            "managed-by-cnrm": "true"
+          },
+          "createTime": "2024-04-25T01:58:35.886675Z",
+          "updateTime": "2024-04-25T01:58:35.886675Z",
+          "creator": "integration-test@example-project.iam.gserviceaccount.com",
+          "lastModifier": "integration-test@example-project.iam.gserviceaccount.com",
+          "ingress": "INGRESS_TRAFFIC_ALL",
+          "launchStage": "GA",
+          "template": {
+            "scaling": {
+              "maxInstanceCount": 2
+            },
+            "timeout": "300s",
+            "serviceAccount": "123456789-compute@developer.gserviceaccount.com",
+            "containers": [
+              {
+                "image": "gcr.io/cloudrun/hello",
+                "env": [
+                  {
+                    "name": "FOO",
+                    "value": "bar]"
+                  }
+                ],
+                "resources": {
+                  "limits": {
+                    "memory": "512Mi",
+                    "cpu": "1000m"
+                  },
+                  "cpuIdle": true
+                },
+                "ports": [
+                  {
+                    "name": "http1",
+                    "containerPort": 8080
+                  }
+                ],
+                "startupProbe": {
+                  "timeoutSeconds": 240,
+                  "periodSeconds": 240,
+                  "failureThreshold": 1,
+                  "tcpSocket": {
+                    "port": 8080
+                  }
+                }
+              }
+            ],
+            "maxInstanceRequestConcurrency": 80
+          },
+          "traffic": [
+            {
+              "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+              "percent": 100
+            }
+          ],
+          "observedGeneration": "1",
+          "terminalCondition": {
+            "type": "Ready",
+            "state": "CONDITION_SUCCEEDED",
+            "lastTransitionTime": "2024-04-25T01:58:41.603366Z"
+          },
+          "conditions": [
+            {
+              "type": "RoutesReady",
+              "state": "CONDITION_SUCCEEDED",
+              "lastTransitionTime": "2024-04-25T01:58:41.567303Z"
+            },
+            {
+              "type": "ConfigurationsReady",
+              "state": "CONDITION_SUCCEEDED",
+              "lastTransitionTime": "2024-04-25T01:58:35.990115Z"
+            }
+          ],
+          "latestReadyRevision": "projects/example-project/locations/us-central1/services/runservice-1w5ax8rh1otic/revisions/runservice-1w5ax8rh1otic-00001-8bw",
+          "latestCreatedRevision": "projects/example-project/locations/us-central1/services/runservice-1w5ax8rh1otic/revisions/runservice-1w5ax8rh1otic-00001-8bw",
+          "trafficStatuses": [
+            {
+              "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+              "percent": 100
+            }
+          ],
+          "uri": "https://runservice-1w5ax8rh1otic-7id3oidh4q-uc.a.run.app",
+          "etag": "\"CMvxprEGELis5qYD/cHJvamVjdHMvY25ybS10ZXN0LTF2a3hzOWJoanYweG85OHEvbG9jYXRpb25zL3VzLWNlbnRyYWwxL3NlcnZpY2VzL3J1bnNlcnZpY2UtMXc1YXg4cmgxb3RpYw\""
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 117.482802ms
+  - id: 5
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: run.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://run.googleapis.com/v2/projects/example-project/locations/us-central1/services/runservice-1w5ax8rh1otic?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-central1/services/runservice-1w5ax8rh1otic",
+          "uid": "00983b4f-6f4b-4bd4-ac6f-1022cc24c160",
+          "generation": "1",
+          "labels": {
+            "cnrm-test": "true",
+            "managed-by-cnrm": "true"
+          },
+          "createTime": "2024-04-25T01:58:35.886675Z",
+          "updateTime": "2024-04-25T01:58:35.886675Z",
+          "creator": "integration-test@example-project.iam.gserviceaccount.com",
+          "lastModifier": "integration-test@example-project.iam.gserviceaccount.com",
+          "ingress": "INGRESS_TRAFFIC_ALL",
+          "launchStage": "GA",
+          "template": {
+            "scaling": {
+              "maxInstanceCount": 2
+            },
+            "timeout": "300s",
+            "serviceAccount": "123456789-compute@developer.gserviceaccount.com",
+            "containers": [
+              {
+                "image": "gcr.io/cloudrun/hello",
+                "env": [
+                  {
+                    "name": "FOO",
+                    "value": "bar]"
+                  }
+                ],
+                "resources": {
+                  "limits": {
+                    "memory": "512Mi",
+                    "cpu": "1000m"
+                  },
+                  "cpuIdle": true
+                },
+                "ports": [
+                  {
+                    "name": "http1",
+                    "containerPort": 8080
+                  }
+                ],
+                "startupProbe": {
+                  "timeoutSeconds": 240,
+                  "periodSeconds": 240,
+                  "failureThreshold": 1,
+                  "tcpSocket": {
+                    "port": 8080
+                  }
+                }
+              }
+            ],
+            "maxInstanceRequestConcurrency": 80
+          },
+          "traffic": [
+            {
+              "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+              "percent": 100
+            }
+          ],
+          "observedGeneration": "1",
+          "terminalCondition": {
+            "type": "Ready",
+            "state": "CONDITION_SUCCEEDED",
+            "lastTransitionTime": "2024-04-25T01:58:41.603366Z"
+          },
+          "conditions": [
+            {
+              "type": "RoutesReady",
+              "state": "CONDITION_SUCCEEDED",
+              "lastTransitionTime": "2024-04-25T01:58:41.567303Z"
+            },
+            {
+              "type": "ConfigurationsReady",
+              "state": "CONDITION_SUCCEEDED",
+              "lastTransitionTime": "2024-04-25T01:58:35.990115Z"
+            }
+          ],
+          "latestReadyRevision": "projects/example-project/locations/us-central1/services/runservice-1w5ax8rh1otic/revisions/runservice-1w5ax8rh1otic-00001-8bw",
+          "latestCreatedRevision": "projects/example-project/locations/us-central1/services/runservice-1w5ax8rh1otic/revisions/runservice-1w5ax8rh1otic-00001-8bw",
+          "trafficStatuses": [
+            {
+              "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+              "percent": 100
+            }
+          ],
+          "uri": "https://runservice-1w5ax8rh1otic-7id3oidh4q-uc.a.run.app",
+          "etag": "\"CMvxprEGELis5qYD/cHJvamVjdHMvY25ybS10ZXN0LTF2a3hzOWJoanYweG85OHEvbG9jYXRpb25zL3VzLWNlbnRyYWwxL3NlcnZpY2VzL3J1bnNlcnZpY2UtMXc1YXg4cmgxb3RpYw\""
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 264.444224ms
+  - id: 6
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 691
+      transfer_encoding: []
+      trailer: {}
+      host: run.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: |
+        {"ingress":"INGRESS_TRAFFIC_ALL","labels":{"cnrm-test":"true","managed-by-cnrm":"true"},"launchStage":"GA","template":{"containers":[{"env":[{"name":"FOO","value":"[barbar"}],"image":"gcr.io/cloudrun/hello","ports":[{"containerPort":8080,"name":"http1"}],"resources":{"cpuIdle":true,"limits":{"cpu":"1000m","memory":"512Mi"}},"startupProbe":{"failureThreshold":1,"grpc":null,"httpGet":null,"periodSeconds":240,"tcpSocket":{"port":8080},"timeoutSeconds":240}}],"maxInstanceRequestConcurrency":80,"scaling":{"maxInstanceCount":3},"serviceAccount":"123456789-compute@developer.gserviceaccount.com","timeout":"300s"},"traffic":[{"percent":100,"type":"TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST"}]}
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://run.googleapis.com/v2/projects/example-project/locations/us-central1/services/runservice-1w5ax8rh1otic?alt=json
+      method: PATCH
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-central1/operations/87bf713d-796e-48c4-b668-4086c482a479",
+          "metadata": {
+            "@type": "type.googleapis.com/google.cloud.run.v2.Service",
+            "name": "projects/example-project/locations/us-central1/services/runservice-1w5ax8rh1otic",
+            "uid": "00983b4f-6f4b-4bd4-ac6f-1022cc24c160",
+            "generation": "2",
+            "labels": {
+              "cnrm-test": "true",
+              "managed-by-cnrm": "true"
+            },
+            "createTime": "2024-04-25T01:58:35.886675Z",
+            "updateTime": "2024-04-25T01:58:49.390665Z",
+            "creator": "integration-test@example-project.iam.gserviceaccount.com",
+            "lastModifier": "integration-test@example-project.iam.gserviceaccount.com",
+            "ingress": "INGRESS_TRAFFIC_ALL",
+            "launchStage": "GA",
+            "template": {
+              "scaling": {
+                "maxInstanceCount": 3
+              },
+              "timeout": "300s",
+              "serviceAccount": "123456789-compute@developer.gserviceaccount.com",
+              "containers": [
+                {
+                  "image": "gcr.io/cloudrun/hello",
+                  "env": [
+                    {
+                      "name": "FOO",
+                      "value": "[barbar"
+                    }
+                  ],
+                  "resources": {
+                    "limits": {
+                      "cpu": "1000m",
+                      "memory": "512Mi"
+                    },
+                    "cpuIdle": true
+                  },
+                  "ports": [
+                    {
+                      "name": "http1",
+                      "containerPort": 8080
+                    }
+                  ],
+                  "startupProbe": {
+                    "timeoutSeconds": 240,
+                    "periodSeconds": 240,
+                    "failureThreshold": 1,
+                    "tcpSocket": {
+                      "port": 8080
+                    }
+                  }
+                }
+              ],
+              "maxInstanceRequestConcurrency": 80
+            },
+            "traffic": [
+              {
+                "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+                "percent": 100
+              }
+            ],
+            "observedGeneration": "1",
+            "terminalCondition": {
+              "type": "Ready",
+              "state": "CONDITION_PENDING",
+              "lastTransitionTime": "2024-04-25T01:58:41.603366Z"
+            },
+            "conditions": [
+              {
+                "type": "RoutesReady",
+                "state": "CONDITION_SUCCEEDED",
+                "lastTransitionTime": "2024-04-25T01:58:41.567303Z"
+              },
+              {
+                "type": "ConfigurationsReady",
+                "state": "CONDITION_SUCCEEDED",
+                "lastTransitionTime": "2024-04-25T01:58:35.990115Z"
+              }
+            ],
+            "latestReadyRevision": "projects/example-project/locations/us-central1/services/runservice-1w5ax8rh1otic/revisions/runservice-1w5ax8rh1otic-00001-8bw",
+            "latestCreatedRevision": "projects/example-project/locations/us-central1/services/runservice-1w5ax8rh1otic/revisions/runservice-1w5ax8rh1otic-00001-8bw",
+            "trafficStatuses": [
+              {
+                "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+                "percent": 100
+              }
+            ],
+            "uri": "https://runservice-1w5ax8rh1otic-7id3oidh4q-uc.a.run.app",
+            "reconciling": true,
+            "etag": "\"CNnxprEGEKimpLoB/cHJvamVjdHMvY25ybS10ZXN0LTF2a3hzOWJoanYweG85OHEvbG9jYXRpb25zL3VzLWNlbnRyYWwxL3NlcnZpY2VzL3J1bnNlcnZpY2UtMXc1YXg4cmgxb3RpYw\""
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 234.872346ms
+  - id: 7
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: run.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://run.googleapis.com/v2/projects/example-project/locations/us-central1/operations/87bf713d-796e-48c4-b668-4086c482a479?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-central1/operations/87bf713d-796e-48c4-b668-4086c482a479",
+          "metadata": {
+            "@type": "type.googleapis.com/google.cloud.run.v2.Service",
+            "name": "projects/example-project/locations/us-central1/services/runservice-1w5ax8rh1otic",
+            "uid": "00983b4f-6f4b-4bd4-ac6f-1022cc24c160",
+            "generation": "2",
+            "labels": {
+              "cnrm-test": "true",
+              "managed-by-cnrm": "true"
+            },
+            "createTime": "2024-04-25T01:58:35.886675Z",
+            "updateTime": "2024-04-25T01:58:49.390665Z",
+            "creator": "integration-test@example-project.iam.gserviceaccount.com",
+            "lastModifier": "integration-test@example-project.iam.gserviceaccount.com",
+            "ingress": "INGRESS_TRAFFIC_ALL",
+            "launchStage": "GA",
+            "template": {
+              "scaling": {
+                "maxInstanceCount": 3
+              },
+              "timeout": "300s",
+              "serviceAccount": "123456789-compute@developer.gserviceaccount.com",
+              "containers": [
+                {
+                  "image": "gcr.io/cloudrun/hello",
+                  "env": [
+                    {
+                      "name": "FOO",
+                      "value": "[barbar"
+                    }
+                  ],
+                  "resources": {
+                    "limits": {
+                      "cpu": "1000m",
+                      "memory": "512Mi"
+                    },
+                    "cpuIdle": true
+                  },
+                  "ports": [
+                    {
+                      "name": "http1",
+                      "containerPort": 8080
+                    }
+                  ],
+                  "startupProbe": {
+                    "timeoutSeconds": 240,
+                    "periodSeconds": 240,
+                    "failureThreshold": 1,
+                    "tcpSocket": {
+                      "port": 8080
+                    }
+                  }
+                }
+              ],
+              "maxInstanceRequestConcurrency": 80
+            },
+            "traffic": [
+              {
+                "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+                "percent": 100
+              }
+            ],
+            "observedGeneration": "2",
+            "terminalCondition": {
+              "type": "Ready",
+              "state": "CONDITION_SUCCEEDED",
+              "lastTransitionTime": "2024-04-25T01:58:54.511740Z"
+            },
+            "conditions": [
+              {
+                "type": "RoutesReady",
+                "state": "CONDITION_SUCCEEDED",
+                "lastTransitionTime": "2024-04-25T01:58:54.471568Z"
+              },
+              {
+                "type": "ConfigurationsReady",
+                "state": "CONDITION_SUCCEEDED",
+                "lastTransitionTime": "2024-04-25T01:58:35.990115Z"
+              }
+            ],
+            "latestReadyRevision": "projects/example-project/locations/us-central1/services/runservice-1w5ax8rh1otic/revisions/runservice-1w5ax8rh1otic-00002-dlq",
+            "latestCreatedRevision": "projects/example-project/locations/us-central1/services/runservice-1w5ax8rh1otic/revisions/runservice-1w5ax8rh1otic-00002-dlq",
+            "trafficStatuses": [
+              {
+                "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+                "percent": 100
+              }
+            ],
+            "uri": "https://runservice-1w5ax8rh1otic-7id3oidh4q-uc.a.run.app",
+            "etag": "\"CNnxprEGEKimpLoB/cHJvamVjdHMvY25ybS10ZXN0LTF2a3hzOWJoanYweG85OHEvbG9jYXRpb25zL3VzLWNlbnRyYWwxL3NlcnZpY2VzL3J1bnNlcnZpY2UtMXc1YXg4cmgxb3RpYw\""
+          },
+          "done": true,
+          "response": {
+            "@type": "type.googleapis.com/google.cloud.run.v2.Service",
+            "name": "projects/example-project/locations/us-central1/services/runservice-1w5ax8rh1otic",
+            "uid": "00983b4f-6f4b-4bd4-ac6f-1022cc24c160",
+            "generation": "2",
+            "labels": {
+              "cnrm-test": "true",
+              "managed-by-cnrm": "true"
+            },
+            "createTime": "2024-04-25T01:58:35.886675Z",
+            "updateTime": "2024-04-25T01:58:49.390665Z",
+            "creator": "integration-test@example-project.iam.gserviceaccount.com",
+            "lastModifier": "integration-test@example-project.iam.gserviceaccount.com",
+            "ingress": "INGRESS_TRAFFIC_ALL",
+            "launchStage": "GA",
+            "template": {
+              "scaling": {
+                "maxInstanceCount": 3
+              },
+              "timeout": "300s",
+              "serviceAccount": "123456789-compute@developer.gserviceaccount.com",
+              "containers": [
+                {
+                  "image": "gcr.io/cloudrun/hello",
+                  "env": [
+                    {
+                      "name": "FOO",
+                      "value": "[barbar"
+                    }
+                  ],
+                  "resources": {
+                    "limits": {
+                      "cpu": "1000m",
+                      "memory": "512Mi"
+                    },
+                    "cpuIdle": true
+                  },
+                  "ports": [
+                    {
+                      "name": "http1",
+                      "containerPort": 8080
+                    }
+                  ],
+                  "startupProbe": {
+                    "timeoutSeconds": 240,
+                    "periodSeconds": 240,
+                    "failureThreshold": 1,
+                    "tcpSocket": {
+                      "port": 8080
+                    }
+                  }
+                }
+              ],
+              "maxInstanceRequestConcurrency": 80
+            },
+            "traffic": [
+              {
+                "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+                "percent": 100
+              }
+            ],
+            "observedGeneration": "2",
+            "terminalCondition": {
+              "type": "Ready",
+              "state": "CONDITION_SUCCEEDED",
+              "lastTransitionTime": "2024-04-25T01:58:54.511740Z"
+            },
+            "conditions": [
+              {
+                "type": "RoutesReady",
+                "state": "CONDITION_SUCCEEDED",
+                "lastTransitionTime": "2024-04-25T01:58:54.471568Z"
+              },
+              {
+                "type": "ConfigurationsReady",
+                "state": "CONDITION_SUCCEEDED",
+                "lastTransitionTime": "2024-04-25T01:58:35.990115Z"
+              }
+            ],
+            "latestReadyRevision": "projects/example-project/locations/us-central1/services/runservice-1w5ax8rh1otic/revisions/runservice-1w5ax8rh1otic-00002-dlq",
+            "latestCreatedRevision": "projects/example-project/locations/us-central1/services/runservice-1w5ax8rh1otic/revisions/runservice-1w5ax8rh1otic-00002-dlq",
+            "trafficStatuses": [
+              {
+                "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+                "percent": 100
+              }
+            ],
+            "uri": "https://runservice-1w5ax8rh1otic-7id3oidh4q-uc.a.run.app",
+            "etag": "\"CNnxprEGEKimpLoB/cHJvamVjdHMvY25ybS10ZXN0LTF2a3hzOWJoanYweG85OHEvbG9jYXRpb25zL3VzLWNlbnRyYWwxL3NlcnZpY2VzL3J1bnNlcnZpY2UtMXc1YXg4cmgxb3RpYw\""
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 119.727992ms
+  - id: 8
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: run.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://run.googleapis.com/v2/projects/example-project/locations/us-central1/services/runservice-1w5ax8rh1otic?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-central1/services/runservice-1w5ax8rh1otic",
+          "uid": "00983b4f-6f4b-4bd4-ac6f-1022cc24c160",
+          "generation": "2",
+          "labels": {
+            "cnrm-test": "true",
+            "managed-by-cnrm": "true"
+          },
+          "createTime": "2024-04-25T01:58:35.886675Z",
+          "updateTime": "2024-04-25T01:58:49.390665Z",
+          "creator": "integration-test@example-project.iam.gserviceaccount.com",
+          "lastModifier": "integration-test@example-project.iam.gserviceaccount.com",
+          "ingress": "INGRESS_TRAFFIC_ALL",
+          "launchStage": "GA",
+          "template": {
+            "scaling": {
+              "maxInstanceCount": 3
+            },
+            "timeout": "300s",
+            "serviceAccount": "123456789-compute@developer.gserviceaccount.com",
+            "containers": [
+              {
+                "image": "gcr.io/cloudrun/hello",
+                "env": [
+                  {
+                    "name": "FOO",
+                    "value": "[barbar"
+                  }
+                ],
+                "resources": {
+                  "limits": {
+                    "cpu": "1000m",
+                    "memory": "512Mi"
+                  },
+                  "cpuIdle": true
+                },
+                "ports": [
+                  {
+                    "name": "http1",
+                    "containerPort": 8080
+                  }
+                ],
+                "startupProbe": {
+                  "timeoutSeconds": 240,
+                  "periodSeconds": 240,
+                  "failureThreshold": 1,
+                  "tcpSocket": {
+                    "port": 8080
+                  }
+                }
+              }
+            ],
+            "maxInstanceRequestConcurrency": 80
+          },
+          "traffic": [
+            {
+              "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+              "percent": 100
+            }
+          ],
+          "observedGeneration": "2",
+          "terminalCondition": {
+            "type": "Ready",
+            "state": "CONDITION_SUCCEEDED",
+            "lastTransitionTime": "2024-04-25T01:58:54.511740Z"
+          },
+          "conditions": [
+            {
+              "type": "RoutesReady",
+              "state": "CONDITION_SUCCEEDED",
+              "lastTransitionTime": "2024-04-25T01:58:54.471568Z"
+            },
+            {
+              "type": "ConfigurationsReady",
+              "state": "CONDITION_SUCCEEDED",
+              "lastTransitionTime": "2024-04-25T01:58:35.990115Z"
+            }
+          ],
+          "latestReadyRevision": "projects/example-project/locations/us-central1/services/runservice-1w5ax8rh1otic/revisions/runservice-1w5ax8rh1otic-00002-dlq",
+          "latestCreatedRevision": "projects/example-project/locations/us-central1/services/runservice-1w5ax8rh1otic/revisions/runservice-1w5ax8rh1otic-00002-dlq",
+          "trafficStatuses": [
+            {
+              "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+              "percent": 100
+            }
+          ],
+          "uri": "https://runservice-1w5ax8rh1otic-7id3oidh4q-uc.a.run.app",
+          "etag": "\"CNnxprEGEKimpLoB/cHJvamVjdHMvY25ybS10ZXN0LTF2a3hzOWJoanYweG85OHEvbG9jYXRpb25zL3VzLWNlbnRyYWwxL3NlcnZpY2VzL3J1bnNlcnZpY2UtMXc1YXg4cmgxb3RpYw\""
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 106.087396ms
+  - id: 9
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: run.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://run.googleapis.com/v2/projects/example-project/locations/us-central1/services/runservice-1w5ax8rh1otic?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-central1/services/runservice-1w5ax8rh1otic",
+          "uid": "00983b4f-6f4b-4bd4-ac6f-1022cc24c160",
+          "generation": "2",
+          "labels": {
+            "cnrm-test": "true",
+            "managed-by-cnrm": "true"
+          },
+          "createTime": "2024-04-25T01:58:35.886675Z",
+          "updateTime": "2024-04-25T01:58:49.390665Z",
+          "creator": "integration-test@example-project.iam.gserviceaccount.com",
+          "lastModifier": "integration-test@example-project.iam.gserviceaccount.com",
+          "ingress": "INGRESS_TRAFFIC_ALL",
+          "launchStage": "GA",
+          "template": {
+            "scaling": {
+              "maxInstanceCount": 3
+            },
+            "timeout": "300s",
+            "serviceAccount": "123456789-compute@developer.gserviceaccount.com",
+            "containers": [
+              {
+                "image": "gcr.io/cloudrun/hello",
+                "env": [
+                  {
+                    "name": "FOO",
+                    "value": "[barbar"
+                  }
+                ],
+                "resources": {
+                  "limits": {
+                    "cpu": "1000m",
+                    "memory": "512Mi"
+                  },
+                  "cpuIdle": true
+                },
+                "ports": [
+                  {
+                    "name": "http1",
+                    "containerPort": 8080
+                  }
+                ],
+                "startupProbe": {
+                  "timeoutSeconds": 240,
+                  "periodSeconds": 240,
+                  "failureThreshold": 1,
+                  "tcpSocket": {
+                    "port": 8080
+                  }
+                }
+              }
+            ],
+            "maxInstanceRequestConcurrency": 80
+          },
+          "traffic": [
+            {
+              "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+              "percent": 100
+            }
+          ],
+          "observedGeneration": "2",
+          "terminalCondition": {
+            "type": "Ready",
+            "state": "CONDITION_SUCCEEDED",
+            "lastTransitionTime": "2024-04-25T01:58:54.511740Z"
+          },
+          "conditions": [
+            {
+              "type": "RoutesReady",
+              "state": "CONDITION_SUCCEEDED",
+              "lastTransitionTime": "2024-04-25T01:58:54.471568Z"
+            },
+            {
+              "type": "ConfigurationsReady",
+              "state": "CONDITION_SUCCEEDED",
+              "lastTransitionTime": "2024-04-25T01:58:35.990115Z"
+            }
+          ],
+          "latestReadyRevision": "projects/example-project/locations/us-central1/services/runservice-1w5ax8rh1otic/revisions/runservice-1w5ax8rh1otic-00002-dlq",
+          "latestCreatedRevision": "projects/example-project/locations/us-central1/services/runservice-1w5ax8rh1otic/revisions/runservice-1w5ax8rh1otic-00002-dlq",
+          "trafficStatuses": [
+            {
+              "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+              "percent": 100
+            }
+          ],
+          "uri": "https://runservice-1w5ax8rh1otic-7id3oidh4q-uc.a.run.app",
+          "etag": "\"CNnxprEGEKimpLoB/cHJvamVjdHMvY25ybS10ZXN0LTF2a3hzOWJoanYweG85OHEvbG9jYXRpb25zL3VzLWNlbnRyYWwxL3NlcnZpY2VzL3J1bnNlcnZpY2UtMXc1YXg4cmgxb3RpYw\""
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 119.556077ms
+  - id: 10
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: run.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://run.googleapis.com/v2/projects/example-project/locations/us-central1/services/runservice-1w5ax8rh1otic?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-central1/services/runservice-1w5ax8rh1otic",
+          "uid": "00983b4f-6f4b-4bd4-ac6f-1022cc24c160",
+          "generation": "2",
+          "labels": {
+            "cnrm-test": "true",
+            "managed-by-cnrm": "true"
+          },
+          "createTime": "2024-04-25T01:58:35.886675Z",
+          "updateTime": "2024-04-25T01:58:49.390665Z",
+          "creator": "integration-test@example-project.iam.gserviceaccount.com",
+          "lastModifier": "integration-test@example-project.iam.gserviceaccount.com",
+          "ingress": "INGRESS_TRAFFIC_ALL",
+          "launchStage": "GA",
+          "template": {
+            "scaling": {
+              "maxInstanceCount": 3
+            },
+            "timeout": "300s",
+            "serviceAccount": "123456789-compute@developer.gserviceaccount.com",
+            "containers": [
+              {
+                "image": "gcr.io/cloudrun/hello",
+                "env": [
+                  {
+                    "name": "FOO",
+                    "value": "[barbar"
+                  }
+                ],
+                "resources": {
+                  "limits": {
+                    "cpu": "1000m",
+                    "memory": "512Mi"
+                  },
+                  "cpuIdle": true
+                },
+                "ports": [
+                  {
+                    "name": "http1",
+                    "containerPort": 8080
+                  }
+                ],
+                "startupProbe": {
+                  "timeoutSeconds": 240,
+                  "periodSeconds": 240,
+                  "failureThreshold": 1,
+                  "tcpSocket": {
+                    "port": 8080
+                  }
+                }
+              }
+            ],
+            "maxInstanceRequestConcurrency": 80
+          },
+          "traffic": [
+            {
+              "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+              "percent": 100
+            }
+          ],
+          "observedGeneration": "2",
+          "terminalCondition": {
+            "type": "Ready",
+            "state": "CONDITION_SUCCEEDED",
+            "lastTransitionTime": "2024-04-25T01:58:54.511740Z"
+          },
+          "conditions": [
+            {
+              "type": "RoutesReady",
+              "state": "CONDITION_SUCCEEDED",
+              "lastTransitionTime": "2024-04-25T01:58:54.471568Z"
+            },
+            {
+              "type": "ConfigurationsReady",
+              "state": "CONDITION_SUCCEEDED",
+              "lastTransitionTime": "2024-04-25T01:58:35.990115Z"
+            }
+          ],
+          "latestReadyRevision": "projects/example-project/locations/us-central1/services/runservice-1w5ax8rh1otic/revisions/runservice-1w5ax8rh1otic-00002-dlq",
+          "latestCreatedRevision": "projects/example-project/locations/us-central1/services/runservice-1w5ax8rh1otic/revisions/runservice-1w5ax8rh1otic-00002-dlq",
+          "trafficStatuses": [
+            {
+              "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+              "percent": 100
+            }
+          ],
+          "uri": "https://runservice-1w5ax8rh1otic-7id3oidh4q-uc.a.run.app",
+          "etag": "\"CNnxprEGEKimpLoB/cHJvamVjdHMvY25ybS10ZXN0LTF2a3hzOWJoanYweG85OHEvbG9jYXRpb25zL3VzLWNlbnRyYWwxL3NlcnZpY2VzL3J1bnNlcnZpY2UtMXc1YXg4cmgxb3RpYw\""
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 107.659672ms
+  - id: 11
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: run.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://run.googleapis.com/v2/projects/example-project/locations/us-central1/services/runservice-1w5ax8rh1otic?alt=json
+      method: DELETE
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-central1/operations/067f8367-af70-40a8-b61d-dc95892fad0c",
+          "metadata": {
+            "@type": "type.googleapis.com/google.cloud.run.v2.Service",
+            "name": "projects/example-project/locations/us-central1/services/runservice-1w5ax8rh1otic",
+            "uid": "00983b4f-6f4b-4bd4-ac6f-1022cc24c160",
+            "generation": "3",
+            "labels": {
+              "cnrm-test": "true",
+              "managed-by-cnrm": "true"
+            },
+            "createTime": "2024-04-25T01:58:35.886675Z",
+            "updateTime": "2024-04-25T01:59:02.029208Z",
+            "deleteTime": "2024-04-25T01:59:02.029208Z",
+            "expireTime": "2024-05-25T01:59:02.029208Z",
+            "creator": "integration-test@example-project.iam.gserviceaccount.com",
+            "lastModifier": "integration-test@example-project.iam.gserviceaccount.com",
+            "ingress": "INGRESS_TRAFFIC_ALL",
+            "launchStage": "GA",
+            "template": {
+              "scaling": {
+                "maxInstanceCount": 3
+              },
+              "timeout": "300s",
+              "serviceAccount": "123456789-compute@developer.gserviceaccount.com",
+              "containers": [
+                {
+                  "image": "gcr.io/cloudrun/hello",
+                  "env": [
+                    {
+                      "name": "FOO",
+                      "value": "[barbar"
+                    }
+                  ],
+                  "resources": {
+                    "limits": {
+                      "cpu": "1000m",
+                      "memory": "512Mi"
+                    },
+                    "cpuIdle": true
+                  },
+                  "ports": [
+                    {
+                      "name": "http1",
+                      "containerPort": 8080
+                    }
+                  ],
+                  "startupProbe": {
+                    "timeoutSeconds": 240,
+                    "periodSeconds": 240,
+                    "failureThreshold": 1,
+                    "tcpSocket": {
+                      "port": 8080
+                    }
+                  }
+                }
+              ],
+              "maxInstanceRequestConcurrency": 80
+            },
+            "traffic": [
+              {
+                "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+                "percent": 100
+              }
+            ],
+            "observedGeneration": "2",
+            "terminalCondition": {
+              "type": "Ready",
+              "state": "CONDITION_PENDING",
+              "lastTransitionTime": "2024-04-25T01:58:54.511740Z"
+            },
+            "conditions": [
+              {
+                "type": "RoutesReady",
+                "state": "CONDITION_SUCCEEDED",
+                "lastTransitionTime": "2024-04-25T01:58:54.471568Z"
+              },
+              {
+                "type": "ConfigurationsReady",
+                "state": "CONDITION_SUCCEEDED",
+                "lastTransitionTime": "2024-04-25T01:58:35.990115Z"
+              }
+            ],
+            "latestReadyRevision": "projects/example-project/locations/us-central1/services/runservice-1w5ax8rh1otic/revisions/runservice-1w5ax8rh1otic-00002-dlq",
+            "latestCreatedRevision": "projects/example-project/locations/us-central1/services/runservice-1w5ax8rh1otic/revisions/runservice-1w5ax8rh1otic-00002-dlq",
+            "trafficStatuses": [
+              {
+                "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+                "percent": 100
+              }
+            ],
+            "uri": "https://runservice-1w5ax8rh1otic-7id3oidh4q-uc.a.run.app",
+            "reconciling": true,
+            "etag": "\"CObxprEGEMDb9g0/cHJvamVjdHMvY25ybS10ZXN0LTF2a3hzOWJoanYweG85OHEvbG9jYXRpb25zL3VzLWNlbnRyYWwxL3NlcnZpY2VzL3J1bnNlcnZpY2UtMXc1YXg4cmgxb3RpYw\""
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 130.263648ms
+  - id: 12
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: run.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://run.googleapis.com/v2/projects/example-project/locations/us-central1/operations/067f8367-af70-40a8-b61d-dc95892fad0c?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-central1/operations/067f8367-af70-40a8-b61d-dc95892fad0c",
+          "metadata": {
+            "@type": "type.googleapis.com/google.cloud.run.v2.Service",
+            "name": "projects/example-project/locations/us-central1/services/runservice-1w5ax8rh1otic",
+            "uid": "00983b4f-6f4b-4bd4-ac6f-1022cc24c160",
+            "generation": "3",
+            "labels": {
+              "cnrm-test": "true",
+              "managed-by-cnrm": "true"
+            },
+            "createTime": "2024-04-25T01:58:35.886675Z",
+            "updateTime": "2024-04-25T01:59:02.805900Z",
+            "deleteTime": "2024-04-25T01:59:02.029208Z",
+            "expireTime": "2024-05-25T01:59:02.029208Z",
+            "creator": "integration-test@example-project.iam.gserviceaccount.com",
+            "lastModifier": "integration-test@example-project.iam.gserviceaccount.com",
+            "ingress": "INGRESS_TRAFFIC_ALL",
+            "launchStage": "GA",
+            "template": {
+              "scaling": {
+                "maxInstanceCount": 3
+              },
+              "timeout": "300s",
+              "serviceAccount": "123456789-compute@developer.gserviceaccount.com",
+              "containers": [
+                {
+                  "image": "gcr.io/cloudrun/hello",
+                  "env": [
+                    {
+                      "name": "FOO",
+                      "value": "[barbar"
+                    }
+                  ],
+                  "resources": {
+                    "limits": {
+                      "cpu": "1000m",
+                      "memory": "512Mi"
+                    },
+                    "cpuIdle": true
+                  },
+                  "ports": [
+                    {
+                      "name": "http1",
+                      "containerPort": 8080
+                    }
+                  ],
+                  "startupProbe": {
+                    "timeoutSeconds": 240,
+                    "periodSeconds": 240,
+                    "failureThreshold": 1,
+                    "tcpSocket": {
+                      "port": 8080
+                    }
+                  }
+                }
+              ],
+              "maxInstanceRequestConcurrency": 80
+            },
+            "traffic": [
+              {
+                "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+                "percent": 100
+              }
+            ],
+            "observedGeneration": "3",
+            "terminalCondition": {
+              "type": "Ready",
+              "state": "CONDITION_SUCCEEDED",
+              "lastTransitionTime": "2024-04-25T01:59:02.805900Z"
+            },
+            "conditions": [
+              {
+                "type": "RoutesReady",
+                "state": "CONDITION_SUCCEEDED",
+                "lastTransitionTime": "2024-04-25T01:58:54.471568Z"
+              },
+              {
+                "type": "ConfigurationsReady",
+                "state": "CONDITION_SUCCEEDED",
+                "lastTransitionTime": "2024-04-25T01:58:35.990115Z"
+              }
+            ],
+            "latestReadyRevision": "projects/example-project/locations/us-central1/services/runservice-1w5ax8rh1otic/revisions/runservice-1w5ax8rh1otic-00002-dlq",
+            "latestCreatedRevision": "projects/example-project/locations/us-central1/services/runservice-1w5ax8rh1otic/revisions/runservice-1w5ax8rh1otic-00002-dlq",
+            "trafficStatuses": [
+              {
+                "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+                "percent": 100
+              }
+            ],
+            "uri": "https://runservice-1w5ax8rh1otic-7id3oidh4q-uc.a.run.app",
+            "etag": "\"CObxprEGEOCdpIAD/cHJvamVjdHMvY25ybS10ZXN0LTF2a3hzOWJoanYweG85OHEvbG9jYXRpb25zL3VzLWNlbnRyYWwxL3NlcnZpY2VzL3J1bnNlcnZpY2UtMXc1YXg4cmgxb3RpYw\""
+          },
+          "done": true,
+          "response": {
+            "@type": "type.googleapis.com/google.cloud.run.v2.Service",
+            "name": "projects/example-project/locations/us-central1/services/runservice-1w5ax8rh1otic",
+            "uid": "00983b4f-6f4b-4bd4-ac6f-1022cc24c160",
+            "generation": "3",
+            "labels": {
+              "cnrm-test": "true",
+              "managed-by-cnrm": "true"
+            },
+            "createTime": "2024-04-25T01:58:35.886675Z",
+            "updateTime": "2024-04-25T01:59:02.805900Z",
+            "deleteTime": "2024-04-25T01:59:02.029208Z",
+            "expireTime": "2024-05-25T01:59:02.029208Z",
+            "creator": "integration-test@example-project.iam.gserviceaccount.com",
+            "lastModifier": "integration-test@example-project.iam.gserviceaccount.com",
+            "ingress": "INGRESS_TRAFFIC_ALL",
+            "launchStage": "GA",
+            "template": {
+              "scaling": {
+                "maxInstanceCount": 3
+              },
+              "timeout": "300s",
+              "serviceAccount": "123456789-compute@developer.gserviceaccount.com",
+              "containers": [
+                {
+                  "image": "gcr.io/cloudrun/hello",
+                  "env": [
+                    {
+                      "name": "FOO",
+                      "value": "[barbar"
+                    }
+                  ],
+                  "resources": {
+                    "limits": {
+                      "cpu": "1000m",
+                      "memory": "512Mi"
+                    },
+                    "cpuIdle": true
+                  },
+                  "ports": [
+                    {
+                      "name": "http1",
+                      "containerPort": 8080
+                    }
+                  ],
+                  "startupProbe": {
+                    "timeoutSeconds": 240,
+                    "periodSeconds": 240,
+                    "failureThreshold": 1,
+                    "tcpSocket": {
+                      "port": 8080
+                    }
+                  }
+                }
+              ],
+              "maxInstanceRequestConcurrency": 80
+            },
+            "traffic": [
+              {
+                "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+                "percent": 100
+              }
+            ],
+            "observedGeneration": "3",
+            "terminalCondition": {
+              "type": "Ready",
+              "state": "CONDITION_SUCCEEDED",
+              "lastTransitionTime": "2024-04-25T01:59:02.805900Z"
+            },
+            "conditions": [
+              {
+                "type": "RoutesReady",
+                "state": "CONDITION_SUCCEEDED",
+                "lastTransitionTime": "2024-04-25T01:58:54.471568Z"
+              },
+              {
+                "type": "ConfigurationsReady",
+                "state": "CONDITION_SUCCEEDED",
+                "lastTransitionTime": "2024-04-25T01:58:35.990115Z"
+              }
+            ],
+            "latestReadyRevision": "projects/example-project/locations/us-central1/services/runservice-1w5ax8rh1otic/revisions/runservice-1w5ax8rh1otic-00002-dlq",
+            "latestCreatedRevision": "projects/example-project/locations/us-central1/services/runservice-1w5ax8rh1otic/revisions/runservice-1w5ax8rh1otic-00002-dlq",
+            "trafficStatuses": [
+              {
+                "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+                "percent": 100
+              }
+            ],
+            "uri": "https://runservice-1w5ax8rh1otic-7id3oidh4q-uc.a.run.app",
+            "etag": "\"CObxprEGEOCdpIAD/cHJvamVjdHMvY25ybS10ZXN0LTF2a3hzOWJoanYweG85OHEvbG9jYXRpb25zL3VzLWNlbnRyYWwxL3NlcnZpY2VzL3J1bnNlcnZpY2UtMXc1YXg4cmgxb3RpYw\""
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 110.195912ms

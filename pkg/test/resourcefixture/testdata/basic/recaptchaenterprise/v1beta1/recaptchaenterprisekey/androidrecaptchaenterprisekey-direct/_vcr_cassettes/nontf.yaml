@@ -1,0 +1,790 @@
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+version: 2
+interactions:
+  - id: 0
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 199
+      transfer_encoding: []
+      trailer: {}
+      host: recaptchaenterprise.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: '{"androidSettings":{"allowAllPackageNames":true},"displayName":"display-name-one","labels":{"cnrm-test":"true","label-one":"value-one","managed-by-cnrm":"true"},"testingOptions":{"testingScore":0.8}}'
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://recaptchaenterprise.googleapis.com/v1/projects/kcc-recaptcha-enterprise/keys?alt=json
+      method: POST
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/1066544882171/keys/6Ld0HsYpAAAAAOthR-na97Yp-1RrrNUtu84XGmaZ",
+          "displayName": "display-name-one",
+          "androidSettings": {
+            "allowAllPackageNames": true,
+            "allowedPackageNames": [],
+            "supportNonGoogleAppStoreDistribution": false
+          },
+          "labels": {
+            "cnrm-test": "true",
+            "label-one": "value-one",
+            "managed-by-cnrm": "true"
+          },
+          "testingOptions": {
+            "testingScore": 0.8,
+            "testingChallenge": "TESTING_CHALLENGE_UNSPECIFIED"
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 686.690171ms
+  - id: 1
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: recaptchaenterprise.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://recaptchaenterprise.googleapis.com/v1/projects/kcc-recaptcha-enterprise/keys/6Ld0HsYpAAAAAOthR-na97Yp-1RrrNUtu84XGmaZ?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/1066544882171/keys/6Ld0HsYpAAAAAOthR-na97Yp-1RrrNUtu84XGmaZ",
+          "displayName": "display-name-one",
+          "androidSettings": {
+            "allowAllPackageNames": true,
+            "allowedPackageNames": [],
+            "supportNonGoogleAppStoreDistribution": false
+          },
+          "labels": {
+            "label-one": "value-one",
+            "cnrm-test": "true",
+            "managed-by-cnrm": "true"
+          },
+          "testingOptions": {
+            "testingScore": 0.8,
+            "testingChallenge": "TESTING_CHALLENGE_UNSPECIFIED"
+          },
+          "createTime": "2024-04-25T01:57:54Z"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 248.157287ms
+  - id: 2
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: recaptchaenterprise.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://recaptchaenterprise.googleapis.com/v1/projects/kcc-recaptcha-enterprise/keys/6Ld0HsYpAAAAAOthR-na97Yp-1RrrNUtu84XGmaZ?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/1066544882171/keys/6Ld0HsYpAAAAAOthR-na97Yp-1RrrNUtu84XGmaZ",
+          "displayName": "display-name-one",
+          "androidSettings": {
+            "allowAllPackageNames": true,
+            "allowedPackageNames": [],
+            "supportNonGoogleAppStoreDistribution": false
+          },
+          "labels": {
+            "label-one": "value-one",
+            "managed-by-cnrm": "true",
+            "cnrm-test": "true"
+          },
+          "testingOptions": {
+            "testingScore": 0.8,
+            "testingChallenge": "TESTING_CHALLENGE_UNSPECIFIED"
+          },
+          "createTime": "2024-04-25T01:57:54Z"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 249.241387ms
+  - id: 3
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: recaptchaenterprise.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://recaptchaenterprise.googleapis.com/v1/projects/kcc-recaptcha-enterprise/keys/6Ld0HsYpAAAAAOthR-na97Yp-1RrrNUtu84XGmaZ?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/1066544882171/keys/6Ld0HsYpAAAAAOthR-na97Yp-1RrrNUtu84XGmaZ",
+          "displayName": "display-name-one",
+          "androidSettings": {
+            "allowAllPackageNames": true,
+            "allowedPackageNames": [],
+            "supportNonGoogleAppStoreDistribution": false
+          },
+          "labels": {
+            "cnrm-test": "true",
+            "label-one": "value-one",
+            "managed-by-cnrm": "true"
+          },
+          "testingOptions": {
+            "testingScore": 0.8,
+            "testingChallenge": "TESTING_CHALLENGE_UNSPECIFIED"
+          },
+          "createTime": "2024-04-25T01:57:54Z"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 411.352837ms
+  - id: 4
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: recaptchaenterprise.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://recaptchaenterprise.googleapis.com/v1/projects/kcc-recaptcha-enterprise/keys/6Ld0HsYpAAAAAOthR-na97Yp-1RrrNUtu84XGmaZ?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/1066544882171/keys/6Ld0HsYpAAAAAOthR-na97Yp-1RrrNUtu84XGmaZ",
+          "displayName": "display-name-one",
+          "androidSettings": {
+            "allowAllPackageNames": true,
+            "allowedPackageNames": [],
+            "supportNonGoogleAppStoreDistribution": false
+          },
+          "labels": {
+            "label-one": "value-one",
+            "cnrm-test": "true",
+            "managed-by-cnrm": "true"
+          },
+          "testingOptions": {
+            "testingScore": 0.8,
+            "testingChallenge": "TESTING_CHALLENGE_UNSPECIFIED"
+          },
+          "createTime": "2024-04-25T01:57:54Z"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 46.045649ms
+  - id: 5
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: recaptchaenterprise.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://recaptchaenterprise.googleapis.com/v1/projects/kcc-recaptcha-enterprise/keys/6Ld0HsYpAAAAAOthR-na97Yp-1RrrNUtu84XGmaZ?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/1066544882171/keys/6Ld0HsYpAAAAAOthR-na97Yp-1RrrNUtu84XGmaZ",
+          "displayName": "display-name-one",
+          "androidSettings": {
+            "allowAllPackageNames": true,
+            "allowedPackageNames": [],
+            "supportNonGoogleAppStoreDistribution": false
+          },
+          "labels": {
+            "managed-by-cnrm": "true",
+            "label-one": "value-one",
+            "cnrm-test": "true"
+          },
+          "testingOptions": {
+            "testingScore": 0.8,
+            "testingChallenge": "TESTING_CHALLENGE_UNSPECIFIED"
+          },
+          "createTime": "2024-04-25T01:57:54Z"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 335.301891ms
+  - id: 6
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: recaptchaenterprise.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://recaptchaenterprise.googleapis.com/v1/projects/kcc-recaptcha-enterprise/keys/6Ld0HsYpAAAAAOthR-na97Yp-1RrrNUtu84XGmaZ?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/1066544882171/keys/6Ld0HsYpAAAAAOthR-na97Yp-1RrrNUtu84XGmaZ",
+          "displayName": "display-name-one",
+          "androidSettings": {
+            "allowAllPackageNames": true,
+            "allowedPackageNames": [],
+            "supportNonGoogleAppStoreDistribution": false
+          },
+          "labels": {
+            "cnrm-test": "true",
+            "label-one": "value-one",
+            "managed-by-cnrm": "true"
+          },
+          "testingOptions": {
+            "testingScore": 0.8,
+            "testingChallenge": "TESTING_CHALLENGE_UNSPECIFIED"
+          },
+          "createTime": "2024-04-25T01:57:54Z"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 289.984169ms
+  - id: 7
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: recaptchaenterprise.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://recaptchaenterprise.googleapis.com/v1/projects/kcc-recaptcha-enterprise/keys/6Ld0HsYpAAAAAOthR-na97Yp-1RrrNUtu84XGmaZ?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/1066544882171/keys/6Ld0HsYpAAAAAOthR-na97Yp-1RrrNUtu84XGmaZ",
+          "displayName": "display-name-one",
+          "androidSettings": {
+            "allowAllPackageNames": true,
+            "allowedPackageNames": [],
+            "supportNonGoogleAppStoreDistribution": false
+          },
+          "labels": {
+            "label-one": "value-one",
+            "cnrm-test": "true",
+            "managed-by-cnrm": "true"
+          },
+          "testingOptions": {
+            "testingScore": 0.8,
+            "testingChallenge": "TESTING_CHALLENGE_UNSPECIFIED"
+          },
+          "createTime": "2024-04-25T01:57:54Z"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 2.24635979s
+  - id: 8
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: recaptchaenterprise.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://recaptchaenterprise.googleapis.com/v1/projects/kcc-recaptcha-enterprise/keys/6Ld0HsYpAAAAAOthR-na97Yp-1RrrNUtu84XGmaZ?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/1066544882171/keys/6Ld0HsYpAAAAAOthR-na97Yp-1RrrNUtu84XGmaZ",
+          "displayName": "display-name-one",
+          "androidSettings": {
+            "allowAllPackageNames": true,
+            "allowedPackageNames": [],
+            "supportNonGoogleAppStoreDistribution": false
+          },
+          "labels": {
+            "cnrm-test": "true",
+            "managed-by-cnrm": "true",
+            "label-one": "value-one"
+          },
+          "testingOptions": {
+            "testingScore": 0.8,
+            "testingChallenge": "TESTING_CHALLENGE_UNSPECIFIED"
+          },
+          "createTime": "2024-04-25T01:57:54Z"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 239.396174ms
+  - id: 9
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: recaptchaenterprise.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://recaptchaenterprise.googleapis.com/v1/projects/kcc-recaptcha-enterprise/keys/6Ld0HsYpAAAAAOthR-na97Yp-1RrrNUtu84XGmaZ?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/1066544882171/keys/6Ld0HsYpAAAAAOthR-na97Yp-1RrrNUtu84XGmaZ",
+          "displayName": "display-name-one",
+          "androidSettings": {
+            "allowAllPackageNames": true,
+            "allowedPackageNames": [],
+            "supportNonGoogleAppStoreDistribution": false
+          },
+          "labels": {
+            "label-one": "value-one",
+            "managed-by-cnrm": "true",
+            "cnrm-test": "true"
+          },
+          "testingOptions": {
+            "testingScore": 0.8,
+            "testingChallenge": "TESTING_CHALLENGE_UNSPECIFIED"
+          },
+          "createTime": "2024-04-25T01:57:54Z"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 319.689387ms
+  - id: 10
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 236
+      transfer_encoding: []
+      trailer: {}
+      host: recaptchaenterprise.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: '{"androidSettings":{"allowAllPackageNames":false,"allowedPackageNames":["com.android.application"]},"displayName":"display-name-two","labels":{"cnrm-test":"true","label-one":"value-one","label-two":"value-two","managed-by-cnrm":"true"}}'
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://recaptchaenterprise.googleapis.com/v1/projects/kcc-recaptcha-enterprise/keys/6Ld0HsYpAAAAAOthR-na97Yp-1RrrNUtu84XGmaZ?alt=json&updateMask=androidSettings.allowAllPackageNames%2CandroidSettings.allowedPackageNames%2CdisplayName%2Clabels
+      method: PATCH
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/1066544882171/keys/6Ld0HsYpAAAAAOthR-na97Yp-1RrrNUtu84XGmaZ",
+          "displayName": "display-name-two",
+          "androidSettings": {
+            "allowAllPackageNames": false,
+            "allowedPackageNames": [
+              "com.android.application"
+            ],
+            "supportNonGoogleAppStoreDistribution": false
+          },
+          "labels": {
+            "label-one": "value-one",
+            "cnrm-test": "true",
+            "managed-by-cnrm": "true",
+            "label-two": "value-two"
+          },
+          "testingOptions": {
+            "testingScore": 0.8,
+            "testingChallenge": "TESTING_CHALLENGE_UNSPECIFIED"
+          },
+          "createTime": "2024-04-25T01:57:54Z"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 362.9603ms
+  - id: 11
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: recaptchaenterprise.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://recaptchaenterprise.googleapis.com/v1/projects/kcc-recaptcha-enterprise/keys/6Ld0HsYpAAAAAOthR-na97Yp-1RrrNUtu84XGmaZ?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/1066544882171/keys/6Ld0HsYpAAAAAOthR-na97Yp-1RrrNUtu84XGmaZ",
+          "displayName": "display-name-two",
+          "androidSettings": {
+            "allowAllPackageNames": false,
+            "allowedPackageNames": [
+              "com.android.application"
+            ],
+            "supportNonGoogleAppStoreDistribution": false
+          },
+          "labels": {
+            "label-two": "value-two",
+            "cnrm-test": "true",
+            "managed-by-cnrm": "true",
+            "label-one": "value-one"
+          },
+          "testingOptions": {
+            "testingScore": 0.8,
+            "testingChallenge": "TESTING_CHALLENGE_UNSPECIFIED"
+          },
+          "createTime": "2024-04-25T01:57:54Z"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 305.092775ms
+  - id: 12
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: recaptchaenterprise.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://recaptchaenterprise.googleapis.com/v1/projects/kcc-recaptcha-enterprise/keys/6Ld0HsYpAAAAAOthR-na97Yp-1RrrNUtu84XGmaZ?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/1066544882171/keys/6Ld0HsYpAAAAAOthR-na97Yp-1RrrNUtu84XGmaZ",
+          "displayName": "display-name-two",
+          "androidSettings": {
+            "allowAllPackageNames": false,
+            "allowedPackageNames": [
+              "com.android.application"
+            ],
+            "supportNonGoogleAppStoreDistribution": false
+          },
+          "labels": {
+            "managed-by-cnrm": "true",
+            "label-two": "value-two",
+            "cnrm-test": "true",
+            "label-one": "value-one"
+          },
+          "testingOptions": {
+            "testingScore": 0.8,
+            "testingChallenge": "TESTING_CHALLENGE_UNSPECIFIED"
+          },
+          "createTime": "2024-04-25T01:57:54Z"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 204.480066ms
+  - id: 13
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: recaptchaenterprise.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://recaptchaenterprise.googleapis.com/v1/projects/kcc-recaptcha-enterprise/keys/6Ld0HsYpAAAAAOthR-na97Yp-1RrrNUtu84XGmaZ?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/1066544882171/keys/6Ld0HsYpAAAAAOthR-na97Yp-1RrrNUtu84XGmaZ",
+          "displayName": "display-name-two",
+          "androidSettings": {
+            "allowAllPackageNames": false,
+            "allowedPackageNames": [
+              "com.android.application"
+            ],
+            "supportNonGoogleAppStoreDistribution": false
+          },
+          "labels": {
+            "label-two": "value-two",
+            "label-one": "value-one",
+            "cnrm-test": "true",
+            "managed-by-cnrm": "true"
+          },
+          "testingOptions": {
+            "testingScore": 0.8,
+            "testingChallenge": "TESTING_CHALLENGE_UNSPECIFIED"
+          },
+          "createTime": "2024-04-25T01:57:54Z"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 295.183548ms
+  - id: 14
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: recaptchaenterprise.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://recaptchaenterprise.googleapis.com/v1/projects/kcc-recaptcha-enterprise/keys/6Ld0HsYpAAAAAOthR-na97Yp-1RrrNUtu84XGmaZ?alt=json
+      method: DELETE
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {}
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 969.609086ms

@@ -1,0 +1,23 @@
+
+{
+  "name": "projects/{{ref:basic.cloudresourcemanager.project.json:name}}/policies/gcp.restrictServiceUsage",
+  "parent": "projects/{{ref:basic.cloudresourcemanager.project.json:name}}",
+  "dryRunSpec": {
+    "rules": [
+      {
+        "condition": {
+          "title": "sample-dry-run-condition",
+          "description": "A sample condition for the dry run policy",
+          "expression": "resource.matchTagId('tagKeys/123', 'tagValues/345')",
+          "location": "sample-location.log"
+        },
+        "values": {
+          "allowedValues": ["is:redis.googleapis.com"],
+          "deniedValues": ["is:tpu.googleapis.com", "bigtable.googleapis.com"]
+        }
+      }
+    ],
+    "inheritFromParent": false,
+    "reset": false
+  }
+}

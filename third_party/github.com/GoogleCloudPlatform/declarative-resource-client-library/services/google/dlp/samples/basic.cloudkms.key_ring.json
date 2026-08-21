@@ -1,0 +1,5 @@
+{
+  "name": "{{ring}}",
+  "project": "{{ref:cloudkms.serviceusage.service.json:project}}",
+  "location": "global"
+}

@@ -1,0 +1,46 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicy
+metadata:
+  annotations:
+    # Abandon without deletion because:
+    # 1. The same initial policy is required for the next test run to succeed.
+    # 2. The ephemeral testing GSA will have already lost permission when it
+    # tries to delete the IAMPolicy, thus will fail the test.
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+  name: iamexternalonlyref-${uniqueId}
+spec:
+  resourceRef:
+    apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+    kind: Organization
+    external: ${IAM_INTEGRATION_TESTS_ORGANIZATION_ID}
+  bindings:
+    # Never remove below bindings. We need these bindings because they will:
+    # 1. Ensure kcc-eng group has admin access to the org.
+    # 2. Make sure our integration test service account can run tests against this organization.
+    # 3. Ensure the default admin account john@configconnector.joonix.net is kept unchanged.
+    - role: roles/billing.creator
+      members:
+        - domain:configconnector.joonix.net
+        - group:kcc-eng@google.com
+    - role: roles/resourcemanager.organizationAdmin
+      members:
+        - group:kcc-eng@google.com
+        - serviceAccount:cnrm-eap-prow@cnrm-eap.iam.gserviceaccount.com
+        - user:john@configconnector.joonix.net
+    - role: roles/resourcemanager.projectCreator
+      members:
+        - domain:configconnector.joonix.net

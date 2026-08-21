@@ -1,0 +1,13 @@
+- caisURL: unknown
+  group: workflows.cnrm.cloud.google.com
+  kind: WorkflowsWorkflow
+  name: workflow-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
+- caisURL: unknown
+  error: not yet supported
+  group: workflowexecutions.cnrm.cloud.google.com
+  kind: WorkflowsExecution
+  name: execution-minimal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

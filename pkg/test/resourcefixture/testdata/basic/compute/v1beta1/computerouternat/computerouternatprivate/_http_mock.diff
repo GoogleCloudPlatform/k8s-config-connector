@@ -1,0 +1,159 @@
+934c934,960
+< PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}
+> Content-Type: application/json
+> 
+> 200 OK
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+>   "description": "example router description",
+>   "id": "000000000000000000000",
+>   "kind": "compute#router",
+>   "name": "${routerID}",
+>   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+>   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+>   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}"
+> }
+> 
+> ---
+> 
+> PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}
+940d965
+<       "drainNatIps": [],
+945,946d969
+<       "icmpIdleTimeoutSec": 30,
+<       "logConfig": null,
+948d970
+<       "natIps": [],
+970,974c992
+<       "tcpEstablishedIdleTimeoutSec": 1200,
+<       "tcpTimeWaitTimeoutSec": 120,
+<       "tcpTransitoryIdleTimeoutSec": 30,
+<       "type": "PRIVATE",
+<       "udpIdleTimeoutSec": 30
+---
+>       "type": "PRIVATE"
+1007c1025,1026
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
+> Content-Type: application/json
+1038c1057
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}
+1065d1083
+<       "icmpIdleTimeoutSec": 30,
+1088,1092c1106
+<       "tcpEstablishedIdleTimeoutSec": 1200,
+<       "tcpTimeWaitTimeoutSec": 120,
+<       "tcpTransitoryIdleTimeoutSec": 30,
+<       "type": "PRIVATE",
+<       "udpIdleTimeoutSec": 30
+---
+>       "type": "PRIVATE"
+1102c1116
+< PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
+---
+> PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}
+1108,1111d1121
+<       "autoNetworkTier": "PREMIUM",
+<       "drainNatIps": [],
+<       "effectiveTcpTimeWaitTimeoutSec": 120,
+<       "enableDynamicPortAllocation": false,
+1116,1117d1125
+<       "icmpIdleTimeoutSec": 30,
+<       "logConfig": null,
+1119d1126
+<       "natIps": [],
+1144,1148c1151
+<       "tcpEstablishedIdleTimeoutSec": 1200,
+<       "tcpTimeWaitTimeoutSec": 120,
+<       "tcpTransitoryIdleTimeoutSec": 30,
+<       "type": "PRIVATE",
+<       "udpIdleTimeoutSec": 30
+---
+>       "type": "PRIVATE"
+1181c1184,1185
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
+> Content-Type: application/json
+1212c1216
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}
+1235d1238
+<       "enableDynamicPortAllocation": false,
+1240d1242
+<       "icmpIdleTimeoutSec": 30,
+1266,1270c1268
+<       "tcpEstablishedIdleTimeoutSec": 1200,
+<       "tcpTimeWaitTimeoutSec": 120,
+<       "tcpTransitoryIdleTimeoutSec": 30,
+<       "type": "PRIVATE",
+<       "udpIdleTimeoutSec": 30
+---
+>       "type": "PRIVATE"
+1280c1278
+< PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}?alt=json
+---
+> PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/routers/${routerID}
+1283,1285c1281
+< {
+<   "nats": []
+< }
+---
+> {}
+1315c1311,1312
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
+> Content-Type: application/json
+1364a1362,1397
+>   "nats": [
+>     {
+>       "autoNetworkTier": "PREMIUM",
+>       "effectiveTcpTimeWaitTimeoutSec": 120,
+>       "enableEndpointIndependentMapping": false,
+>       "endpointTypes": [
+>         "ENDPOINT_TYPE_VM"
+>       ],
+>       "name": "computerouternat-${uniqueId}",
+>       "rules": [
+>         {
+>           "action": {
+>             "sourceNatActiveRanges": [
+>               "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+>             ],
+>             "sourceNatDrainRanges": [
+>               "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+>             ]
+>           },
+>           "description": "private nat rule example",
+>           "match": "nexthop.hub == 'https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/global/hubs/networkconnectivityhub-${uniqueId}'",
+>           "ruleNumber": 100
+>         }
+>       ],
+>       "sourceSubnetworkIpRangesToNat": "LIST_OF_SUBNETWORKS",
+>       "subnetworks": [
+>         {
+>           "name": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+>           "sourceIpRangesToNat": [
+>             "ALL_IP_RANGES"
+>           ]
+>         }
+>       ],
+>       "type": "PRIVATE"
+>     }
+>   ],

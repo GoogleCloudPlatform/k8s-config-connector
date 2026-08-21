@@ -1,0 +1,26 @@
+label: Config Connector ComputeSnapshot
+markdownDescription: Creates yaml for a ComputeSnapshot resource
+insertText: |
+  apiVersion: compute.cnrm.cloud.google.com/v1beta1
+  kind: ComputeSnapshot
+  metadata:
+    labels:
+      \${1:label-one}: \${2:value-one}
+    name: \${3:computesnapshot-name}
+  spec:
+    description: \${4:ComputeSnapshot Sample}
+    zone: \${5:us-west1-c}
+    sourceDiskRef:
+      name: \${6:computesnapshot-dep}
+    snapshotEncryptionKey:
+      rawKey:
+        valueFrom:
+          secretKeyRef:
+            name: \${7:computesnapshot-dep}
+            key: \${8:snapshotEncryptionKey}
+    sourceDiskEncryptionKey:
+      rawKey:
+        valueFrom:
+          secretKeyRef:
+            name: \${9:computesnapshot-dep}
+            key: \${10:sourceDiskEncryptionKey}

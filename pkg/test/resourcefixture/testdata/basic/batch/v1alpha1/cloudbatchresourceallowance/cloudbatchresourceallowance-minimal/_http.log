@@ -1,0 +1,176 @@
+GRPC /google.cloud.batch.v1alpha.BatchService/GetResourceAllowance
+
+{
+  "name": "projects/${projectId}/locations/us-central1/resourceAllowances/batchallow-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = resourceAllowance "projects/${projectId}/locations/us-central1/resourceAllowances/batchallow-${uniqueId}" not found
+
+{}
+
+---
+
+GRPC /google.cloud.batch.v1alpha.BatchService/CreateResourceAllowance
+
+{
+  "parent": "projects/${projectId}/locations/us-central1",
+  "resourceAllowance": {
+    "labels": {
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "usageResourceAllowance": {
+      "spec": {
+        "limit": {
+          "limit": 100
+        },
+        "type": "cpu-core-hour"
+      }
+    }
+  },
+  "resourceAllowanceId": "batchallow-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/resourceAllowances/batchallow-${uniqueId}",
+  "uid": "111111111111111111111",
+  "usageResourceAllowance": {
+    "spec": {
+      "limit": {
+        "limit": 100
+      },
+      "type": "cpu-core-hour"
+    },
+    "status": {
+      "limitStatus": {
+        "consumed": 0,
+        "limit": 100
+      },
+      "state": "RESOURCE_ALLOWANCE_ACTIVE"
+    }
+  }
+}
+
+---
+
+GRPC /google.cloud.batch.v1alpha.BatchService/GetResourceAllowance
+
+{
+  "name": "projects/${projectId}/locations/us-central1/resourceAllowances/batchallow-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/resourceAllowances/batchallow-${uniqueId}",
+  "uid": "111111111111111111111",
+  "usageResourceAllowance": {
+    "spec": {
+      "limit": {
+        "limit": 100
+      },
+      "type": "cpu-core-hour"
+    },
+    "status": {
+      "limitStatus": {
+        "consumed": 0,
+        "limit": 100
+      },
+      "state": "RESOURCE_ALLOWANCE_ACTIVE"
+    }
+  }
+}
+
+---
+
+GRPC /google.cloud.batch.v1alpha.BatchService/GetResourceAllowance
+
+{
+  "name": "projects/${projectId}/locations/us-central1/resourceAllowances/batchallow-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "name": "projects/${projectId}/locations/us-central1/resourceAllowances/batchallow-${uniqueId}",
+  "uid": "111111111111111111111",
+  "usageResourceAllowance": {
+    "spec": {
+      "limit": {
+        "limit": 100
+      },
+      "type": "cpu-core-hour"
+    },
+    "status": {
+      "limitStatus": {
+        "consumed": 0,
+        "limit": 100
+      },
+      "state": "RESOURCE_ALLOWANCE_ACTIVE"
+    }
+  }
+}
+
+---
+
+GRPC /google.cloud.batch.v1alpha.BatchService/DeleteResourceAllowance
+
+{
+  "name": "projects/${projectId}/locations/us-central1/resourceAllowances/batchallow-${uniqueId}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.batch.v1alpha.OperationMetadata",
+    "apiVersion": "v1alpha",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/resourceAllowances/batchallow-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/resourceAllowances/batchallow-${uniqueId}/operations/${operationID}"
+}
+
+---
+
+GRPC /google.cloud.batch.v1alpha.BatchService/GetResourceAllowance
+
+{
+  "name": "projects/${projectId}/locations/us-central1/resourceAllowances/batchallow-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = resourceAllowance "projects/${projectId}/locations/us-central1/resourceAllowances/batchallow-${uniqueId}" not found
+
+{}
+
+---
+
+GRPC /google.cloud.batch.v1alpha.BatchService/GetResourceAllowance
+
+{
+  "name": "projects/${projectId}/locations/us-central1/resourceAllowances/batchallow-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = resourceAllowance "projects/${projectId}/locations/us-central1/resourceAllowances/batchallow-${uniqueId}" not found
+
+{}

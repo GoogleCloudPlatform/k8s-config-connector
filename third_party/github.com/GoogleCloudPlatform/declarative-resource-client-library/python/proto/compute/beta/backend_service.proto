@@ -1,0 +1,311 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+enum ComputeBetaBackendServiceBackendsBalancingModeEnum {
+  ComputeBetaBackendServiceBackendsBalancingModeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaBackendServiceBackendsBalancingModeEnumUTILIZATION = 1;
+  ComputeBetaBackendServiceBackendsBalancingModeEnumRATE = 2;
+  ComputeBetaBackendServiceBackendsBalancingModeEnumCONNECTION = 3;
+}
+
+enum ComputeBetaBackendServiceProtocolEnum {
+  ComputeBetaBackendServiceProtocolEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaBackendServiceProtocolEnumHTTP = 1;
+  ComputeBetaBackendServiceProtocolEnumHTTPS = 2;
+  ComputeBetaBackendServiceProtocolEnumHTTP2 = 3;
+  ComputeBetaBackendServiceProtocolEnumTCP = 4;
+  ComputeBetaBackendServiceProtocolEnumSSL = 5;
+  ComputeBetaBackendServiceProtocolEnumUDP = 6;
+  ComputeBetaBackendServiceProtocolEnumGRPC = 7;
+  ComputeBetaBackendServiceProtocolEnumALL = 8;
+  ComputeBetaBackendServiceProtocolEnumUNSPECIFIED = 9;
+}
+
+enum ComputeBetaBackendServiceSessionAffinityEnum {
+  ComputeBetaBackendServiceSessionAffinityEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaBackendServiceSessionAffinityEnumNONE = 1;
+  ComputeBetaBackendServiceSessionAffinityEnumCLIENT_IP = 2;
+  ComputeBetaBackendServiceSessionAffinityEnumCLIENT_IP_PROTO = 3;
+  ComputeBetaBackendServiceSessionAffinityEnumGENERATED_COOKIE = 4;
+  ComputeBetaBackendServiceSessionAffinityEnumCLIENT_IP_PORT_PROTO = 5;
+  ComputeBetaBackendServiceSessionAffinityEnumHTTP_COOKIE = 6;
+  ComputeBetaBackendServiceSessionAffinityEnumHEADER_FIELD = 7;
+  ComputeBetaBackendServiceSessionAffinityEnumCLIENT_IP_NO_DESTINATION = 8;
+}
+
+enum ComputeBetaBackendServiceLoadBalancingSchemeEnum {
+  ComputeBetaBackendServiceLoadBalancingSchemeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaBackendServiceLoadBalancingSchemeEnumINVALID_LOAD_BALANCING_SCHEME = 1;
+  ComputeBetaBackendServiceLoadBalancingSchemeEnumINTERNAL = 2;
+  ComputeBetaBackendServiceLoadBalancingSchemeEnumINTERNAL_MANAGED = 3;
+  ComputeBetaBackendServiceLoadBalancingSchemeEnumINTERNAL_SELF_MANAGED = 4;
+  ComputeBetaBackendServiceLoadBalancingSchemeEnumEXTERNAL = 5;
+  ComputeBetaBackendServiceLoadBalancingSchemeEnumEXTERNAL_MANAGED = 6;
+}
+
+enum ComputeBetaBackendServiceCdnPolicyCacheModeEnum {
+  ComputeBetaBackendServiceCdnPolicyCacheModeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaBackendServiceCdnPolicyCacheModeEnumINVALID_CACHE_MODE = 1;
+  ComputeBetaBackendServiceCdnPolicyCacheModeEnumUSE_ORIGIN_HEADERS = 2;
+  ComputeBetaBackendServiceCdnPolicyCacheModeEnumFORCE_CACHE_ALL = 3;
+  ComputeBetaBackendServiceCdnPolicyCacheModeEnumCACHE_ALL_STATIC = 4;
+}
+
+enum ComputeBetaBackendServiceLocalityLbPolicyEnum {
+  ComputeBetaBackendServiceLocalityLbPolicyEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaBackendServiceLocalityLbPolicyEnumINVALID_LB_POLICY = 1;
+  ComputeBetaBackendServiceLocalityLbPolicyEnumROUND_ROBIN = 2;
+  ComputeBetaBackendServiceLocalityLbPolicyEnumLEAST_REQUEST = 3;
+  ComputeBetaBackendServiceLocalityLbPolicyEnumRING_HASH = 4;
+  ComputeBetaBackendServiceLocalityLbPolicyEnumRANDOM = 5;
+  ComputeBetaBackendServiceLocalityLbPolicyEnumORIGINAL_DESTINATION = 6;
+  ComputeBetaBackendServiceLocalityLbPolicyEnumMAGLEV = 7;
+}
+
+enum ComputeBetaBackendServiceSubsettingPolicyEnum {
+  ComputeBetaBackendServiceSubsettingPolicyEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaBackendServiceSubsettingPolicyEnumNONE = 1;
+  ComputeBetaBackendServiceSubsettingPolicyEnumCONSISTENT_HASH_SUBSETTING = 2;
+}
+
+enum ComputeBetaBackendServiceConnectionTrackingPolicyTrackingModeEnum {
+  ComputeBetaBackendServiceConnectionTrackingPolicyTrackingModeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaBackendServiceConnectionTrackingPolicyTrackingModeEnumINVALID_TRACKING_MODE = 1;
+  ComputeBetaBackendServiceConnectionTrackingPolicyTrackingModeEnumPER_CONNECTION = 2;
+  ComputeBetaBackendServiceConnectionTrackingPolicyTrackingModeEnumPER_SESSION = 3;
+}
+
+enum ComputeBetaBackendServiceConnectionTrackingPolicyConnectionPersistenceOnUnhealthyBackendsEnum {
+  ComputeBetaBackendServiceConnectionTrackingPolicyConnectionPersistenceOnUnhealthyBackendsEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaBackendServiceConnectionTrackingPolicyConnectionPersistenceOnUnhealthyBackendsEnumDEFAULT_FOR_PROTOCOL = 1;
+  ComputeBetaBackendServiceConnectionTrackingPolicyConnectionPersistenceOnUnhealthyBackendsEnumNEVER_PERSIST = 2;
+  ComputeBetaBackendServiceConnectionTrackingPolicyConnectionPersistenceOnUnhealthyBackendsEnumALWAYS_PERSIST = 3;
+}
+
+message ComputeBetaBackendService {
+  string name = 1;
+  string description = 2;
+  string self_link = 3;
+  string self_link_with_id = 4;
+  repeated ComputeBetaBackendServiceBackends backends = 5;
+  repeated string health_checks = 6;
+  int64 timeout_sec = 7;
+  int64 port = 8;
+  ComputeBetaBackendServiceProtocolEnum protocol = 9;
+  string fingerprint = 10;
+  string port_name = 11;
+  bool enable_cdn = 12;
+  ComputeBetaBackendServiceSessionAffinityEnum session_affinity = 13;
+  int64 affinity_cookie_ttl_sec = 14;
+  string location = 15;
+  ComputeBetaBackendServiceFailoverPolicy failover_policy = 16;
+  ComputeBetaBackendServiceLoadBalancingSchemeEnum load_balancing_scheme = 17;
+  ComputeBetaBackendServiceConnectionDraining connection_draining = 18;
+  ComputeBetaBackendServiceIap iap = 19;
+  ComputeBetaBackendServiceCdnPolicy cdn_policy = 20;
+  repeated string custom_request_headers = 21;
+  repeated string custom_response_headers = 22;
+  string security_policy = 23;
+  ComputeBetaBackendServiceLogConfig log_config = 24;
+  ComputeBetaBackendServiceSecuritySettings security_settings = 25;
+  ComputeBetaBackendServiceLocalityLbPolicyEnum locality_lb_policy = 26;
+  ComputeBetaBackendServiceConsistentHash consistent_hash = 27;
+  ComputeBetaBackendServiceCircuitBreakers circuit_breakers = 28;
+  ComputeBetaBackendServiceOutlierDetection outlier_detection = 29;
+  string network = 30;
+  ComputeBetaBackendServiceSubsetting subsetting = 31;
+  ComputeBetaBackendServiceConnectionTrackingPolicy connection_tracking_policy = 32;
+  ComputeBetaBackendServiceMaxStreamDuration max_stream_duration = 33;
+  string project = 34;
+}
+
+message ComputeBetaBackendServiceBackends {
+  string description = 1;
+  string group = 2;
+  ComputeBetaBackendServiceBackendsBalancingModeEnum balancing_mode = 3;
+  double max_utilization = 4;
+  int64 max_rate = 5;
+  double max_rate_per_instance = 6;
+  double max_rate_per_endpoint = 7;
+  int64 max_connections = 8;
+  int64 max_connections_per_instance = 9;
+  int64 max_connections_per_endpoint = 10;
+  double capacity_scaler = 11;
+  bool failover = 12;
+}
+
+message ComputeBetaBackendServiceFailoverPolicy {
+  bool disable_connection_drain_on_failover = 1;
+  bool drop_traffic_if_unhealthy = 2;
+  double failover_ratio = 3;
+}
+
+message ComputeBetaBackendServiceConnectionDraining {
+  int64 draining_timeout_sec = 1;
+}
+
+message ComputeBetaBackendServiceIap {
+  bool enabled = 1;
+  string oauth2_client_id = 2;
+  string oauth2_client_secret = 3;
+  string oauth2_client_secret_sha256 = 4;
+}
+
+message ComputeBetaBackendServiceCdnPolicy {
+  ComputeBetaBackendServiceCdnPolicyCacheKeyPolicy cache_key_policy = 1;
+  repeated string signed_url_key_names = 2;
+  int64 signed_url_cache_max_age_sec = 3;
+  bool request_coalescing = 4;
+  ComputeBetaBackendServiceCdnPolicyCacheModeEnum cache_mode = 5;
+  int64 default_ttl = 6;
+  int64 max_ttl = 7;
+  int64 client_ttl = 8;
+  bool negative_caching = 9;
+  repeated ComputeBetaBackendServiceCdnPolicyNegativeCachingPolicy negative_caching_policy = 10;
+  repeated ComputeBetaBackendServiceCdnPolicyBypassCacheOnRequestHeaders bypass_cache_on_request_headers = 11;
+  int64 serve_while_stale = 12;
+}
+
+message ComputeBetaBackendServiceCdnPolicyCacheKeyPolicy {
+  bool include_protocol = 1;
+  bool include_host = 2;
+  bool include_query_string = 3;
+  repeated string query_string_whitelist = 4;
+  repeated string query_string_blacklist = 5;
+  repeated string include_http_headers = 6;
+  repeated string include_named_cookies = 7;
+}
+
+message ComputeBetaBackendServiceCdnPolicyNegativeCachingPolicy {
+  int64 code = 1;
+  int64 ttl = 2;
+}
+
+message ComputeBetaBackendServiceCdnPolicyBypassCacheOnRequestHeaders {
+  string header_name = 1;
+}
+
+message ComputeBetaBackendServiceLogConfig {
+  bool enable = 1;
+  double sample_rate = 2;
+}
+
+message ComputeBetaBackendServiceSecuritySettings {
+  string client_tls_policy = 1;
+  string authentication = 2;
+  repeated string subject_alt_names = 3;
+}
+
+message ComputeBetaBackendServiceConsistentHash {
+  ComputeBetaBackendServiceConsistentHashHttpCookie http_cookie = 1;
+  string http_header_name = 2;
+  int64 minimum_ring_size = 3;
+}
+
+message ComputeBetaBackendServiceConsistentHashHttpCookie {
+  string name = 1;
+  string path = 2;
+  ComputeBetaBackendServiceConsistentHashHttpCookieTtl ttl = 3;
+}
+
+message ComputeBetaBackendServiceConsistentHashHttpCookieTtl {
+  int64 seconds = 1;
+  int64 nanos = 2;
+}
+
+message ComputeBetaBackendServiceCircuitBreakers {
+  ComputeBetaBackendServiceCircuitBreakersConnectTimeout connect_timeout = 1;
+  int64 max_requests_per_connection = 2;
+  int64 max_connections = 3;
+  int64 max_pending_requests = 4;
+  int64 max_requests = 5;
+  int64 max_retries = 6;
+}
+
+message ComputeBetaBackendServiceCircuitBreakersConnectTimeout {
+  int64 seconds = 1;
+  int64 nanos = 2;
+}
+
+message ComputeBetaBackendServiceOutlierDetection {
+  int64 consecutive_errors = 1;
+  ComputeBetaBackendServiceOutlierDetectionInterval interval = 2;
+  ComputeBetaBackendServiceOutlierDetectionBaseEjectionTime base_ejection_time = 3;
+  int64 max_ejection_percent = 4;
+  int64 enforcing_consecutive_errors = 5;
+  int64 enforcing_success_rate = 6;
+  int64 success_rate_minimum_hosts = 7;
+  int64 success_rate_request_volume = 8;
+  int64 success_rate_stdev_factor = 9;
+  int64 consecutive_gateway_failure = 10;
+  int64 enforcing_consecutive_gateway_failure = 11;
+}
+
+message ComputeBetaBackendServiceOutlierDetectionInterval {
+  int64 seconds = 1;
+  int64 nanos = 2;
+}
+
+message ComputeBetaBackendServiceOutlierDetectionBaseEjectionTime {
+  int64 seconds = 1;
+  int64 nanos = 2;
+}
+
+message ComputeBetaBackendServiceSubsetting {
+  ComputeBetaBackendServiceSubsettingPolicyEnum policy = 1;
+}
+
+message ComputeBetaBackendServiceConnectionTrackingPolicy {
+  ComputeBetaBackendServiceConnectionTrackingPolicyTrackingModeEnum tracking_mode = 1;
+  ComputeBetaBackendServiceConnectionTrackingPolicyConnectionPersistenceOnUnhealthyBackendsEnum connection_persistence_on_unhealthy_backends = 2;
+  int64 idle_timeout_sec = 3;
+}
+
+message ComputeBetaBackendServiceMaxStreamDuration {
+  int64 seconds = 1;
+  int64 nanos = 2;
+}
+
+message ApplyComputeBetaBackendServiceRequest {
+  ComputeBetaBackendService resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteComputeBetaBackendServiceRequest {
+  string service_account_file = 1;
+  ComputeBetaBackendService resource = 2;
+}
+
+message ListComputeBetaBackendServiceRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListComputeBetaBackendServiceResponse {
+  repeated ComputeBetaBackendService items = 1;
+}
+
+service ComputeBetaBackendServiceService {
+  rpc ApplyComputeBetaBackendService(ApplyComputeBetaBackendServiceRequest) returns (ComputeBetaBackendService);
+  rpc DeleteComputeBetaBackendService(DeleteComputeBetaBackendServiceRequest) returns (google.protobuf.Empty);
+  rpc ListComputeBetaBackendService(ListComputeBetaBackendServiceRequest) returns (ListComputeBetaBackendServiceResponse);
+}

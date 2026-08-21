@@ -1,0 +1,5 @@
+### [2026-05-19] ClientGateway proto has no specifiable fields
+- **Context**: Implementing the direct controller for BeyondCorpClientGateway
+- **Problem**: The proto definition for ClientGateway only contains output fields (except for name). As a result, the KRM Spec struct generated initially lacked any domain-specific fields, and types.generated.go commented out ClientGatewayObservedState.
+- **Solution**: The BeyondCorpClientGatewaySpec was only configured with standard identity fields (ProjectRef, Location, ResourceID). All domain-specific fields (createTime, updateTime, state, id, clientConnectorService) from the proto were manually added to the BeyondCorpClientGatewayObservedState in clientgateway_types.go, so they become available on status.observedState.
+- **Impact**: When scaffolding a resource that primarily has output-only fields in GCP, be prepared to manually move those fields into the ObservedState and expect that the resource update method cannot change any domain fields (only identity/status updates happen).

@@ -1,0 +1,58 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+message ComputeBetaNetworkEndpoint {
+  int64 port = 1;
+  string ip_address = 2;
+  string fqdn = 3;
+  string instance = 4;
+  map<string, string> annotations = 5;
+  string project = 6;
+  string location = 7;
+  string group = 8;
+}
+
+message ApplyComputeBetaNetworkEndpointRequest {
+  ComputeBetaNetworkEndpoint resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteComputeBetaNetworkEndpointRequest {
+  string service_account_file = 1;
+  ComputeBetaNetworkEndpoint resource = 2;
+}
+
+message ListComputeBetaNetworkEndpointRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+  string Group = 4;
+}
+
+message ListComputeBetaNetworkEndpointResponse {
+  repeated ComputeBetaNetworkEndpoint items = 1;
+}
+
+service ComputeBetaNetworkEndpointService {
+  rpc ApplyComputeBetaNetworkEndpoint(ApplyComputeBetaNetworkEndpointRequest) returns (ComputeBetaNetworkEndpoint);
+  rpc DeleteComputeBetaNetworkEndpoint(DeleteComputeBetaNetworkEndpointRequest) returns (google.protobuf.Empty);
+  rpc ListComputeBetaNetworkEndpoint(ListComputeBetaNetworkEndpointRequest) returns (ListComputeBetaNetworkEndpointResponse);
+}

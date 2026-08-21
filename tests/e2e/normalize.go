@@ -1,0 +1,1713 @@
+// Copyright 2024 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package e2e
+
+import (
+	"bytes"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
+	"path/filepath"
+	"reflect"
+	"regexp"
+	"sort"
+	"strconv"
+	"strings"
+	"testing"
+	"time"
+
+	"k8s.io/apimachinery/pkg/runtime/schema"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
+	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/util/sets"
+)
+
+func normalizeKRMObject(t *testing.T, u *unstructured.Unstructured, project testgcp.GCPProject, folderID string, uniqueID string) {
+	visitor := buildKRMNormalizer(t, u, project, folderID, uniqueID)
+	if err := visitor.VisitUnstructured(u); err != nil {
+		t.Fatalf("failed to normalize KRM object: %v", err)
+	}
+}
+
+func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project testgcp.GCPProject, folderID string, uniqueID string) *objectWalker {
+	// Note: Avoid adding service-specific normalization logic here if possible. Instead, prefer adding per-service normalization in e.g. mockcloudresourcemanager/normalize.go.
+	replacements := NewReplacements()
+	findLinksInKRMObject(t, replacements, u)
+
+	if folderID != "" {
+		replacements.PathIDs[folderID] = "${folderID}"
+	}
+	if testgcp.TestFolderID.Get() != "" {
+		replacements.PathIDs[testgcp.TestFolderID.Get()] = "${folderID}"
+	}
+
+	annotations := u.GetAnnotations()
+	if annotations["cnrm.cloud.google.com/observed-secret-versions"] != "" {
+		// Includes resource versions, very volatile
+		annotations["cnrm.cloud.google.com/observed-secret-versions"] = "(removed)"
+	}
+	if annotations["test.cnrm.cloud.google.com/reconcile-cookie"] != "" {
+		// Deliberately volatile, ignore
+		annotations["test.cnrm.cloud.google.com/reconcile-cookie"] = "(removed)"
+	}
+	if annotations["cnrm.cloud.google.com/last-changed-cookie"] != "" {
+		annotations["cnrm.cloud.google.com/last-changed-cookie"] = "normalized-cookie"
+	}
+	for k, v := range annotations {
+		annotations[k] = replacements.ApplyReplacements(v)
+	}
+	u.SetAnnotations(annotations)
+
+	visitor := newObjectWalker(t)
+
+	// Apply replacements
+	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+		return replacements.ApplyReplacements(s)
+	})
+
+	visitor.removePaths.Insert(".metadata.creationTimestamp")
+	visitor.removePaths.Insert(".metadata.managedFields")
+	visitor.removePaths.Insert(".metadata.resourceVersion")
+	visitor.removePaths.Insert(".metadata.uid")
+
+	visitor.replacePaths[".metadata.deletionTimestamp"] = mockgcpregistry.PlaceholderTime
+	visitor.replacePaths[".status.lastModifiedCookie"] = "normalized-cookie"
+	visitor.replacePaths[".status.creationTimestamp"] = mockgcpregistry.PlaceholderTime
+	visitor.replacePaths[".status.conditions[].lastTransitionTime"] = mockgcpregistry.PlaceholderTime
+	visitor.replacePaths[".status.uniqueId"] = "12345678"
+	visitor.replacePaths[".status.uid"] = "12345678"
+	visitor.replacePaths[".status.observedState.uid"] = "0123456789abcdef"
+	visitor.replacePaths[".status.managedZoneId"] = "1234567890"
+	visitor.replacePaths[".status.creationTime"] = mockgcpregistry.PlaceholderTime
+	visitor.replacePaths[".status.createTime"] = mockgcpregistry.PlaceholderTime
+	visitor.replacePaths[".status.observedState.createTime"] = mockgcpregistry.PlaceholderTime
+	visitor.replacePaths[".status.observedState.lastUsedTime"] = mockgcpregistry.PlaceholderTime
+	visitor.replacePaths[".status.observedState.endTime"] = mockgcpregistry.PlaceholderTime
+	visitor.replacePaths[".status.observedState.updateTime"] = mockgcpregistry.PlaceholderTime
+	visitor.replacePaths[".status.observedState.pairingKey.expireTime"] = mockgcpregistry.PlaceholderTime
+	visitor.replacePaths[".status.updateTime"] = mockgcpregistry.PlaceholderTime
+	visitor.replacePaths[".status.expireTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".status.lastModifiedTime"] = mockgcpregistry.PlaceholderTime
+	visitor.replacePaths[".status.etag"] = "abcdef123456"
+	visitor.replacePaths[".status.observedState.etag"] = "abcdef123456"
+	visitor.replacePaths[".status.observedState.creationTimestamp"] = mockgcpregistry.PlaceholderTime
+	visitor.replacePaths[".status.observedState.oauth2ClientID"] = "888888888888888888888"
+	visitor.replacePaths[".status.observedState.deleteLockExpireTime"] = mockgcpregistry.PlaceholderTime
+
+	// LicenseManager
+	visitor.replacePaths[".status.observedState.currentBillingInfo.startTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".status.observedState.nextBillingInfo.startTime"] = mockgcpregistry.PlaceholderTimestamp
+
+	// Apigee
+	visitor.replacePaths[".status.expiresAt"] = strconv.FormatInt(time.Date(2024, 4, 1, 12, 34, 56, 123456, time.UTC).Unix(), 10)
+	visitor.replacePaths[".status.createdAt"] = strconv.FormatInt(time.Date(2024, 4, 1, 12, 34, 56, 123456, time.UTC).Unix(), 10)
+	visitor.replacePaths[".status.lastModifiedAt"] = strconv.FormatInt(time.Date(2024, 4, 1, 12, 34, 56, 123456, time.UTC).Unix(), 10)
+	visitor.replacePaths[".status.observedState.createdAt"] = time.Date(2024, 4, 1, 12, 34, 56, 123456, time.UTC).Unix()
+	visitor.replacePaths[".status.observedState.lastModifiedAt"] = time.Date(2024, 4, 1, 12, 34, 56, 123456, time.UTC).Unix()
+
+	// Specific to AlloyDB
+	visitor.replacePaths[".status.continuousBackupInfo[].enabledTime"] = mockgcpregistry.PlaceholderTime
+	visitor.replacePaths[".status.ipAddress"] = "10.1.2.3"
+	visitor.replacePaths[".status.outboundPublicIpAddresses"] = []string{"6.6.6.6", "8.8.8.8"}
+
+	// Specific to CloudKMS
+	visitor.replacePaths[".primary.createTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".primary.generateTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".nextRotationTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".status.observedState.nextRotationTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".status.observedState.expireTime"] = mockgcpregistry.PlaceholderTimestamp
+
+	// Specific to BigQuery
+	visitor.replacePaths[".spec.access[].userByEmail"] = "user@google.com"
+
+	// Specific to Dataflow
+	visitor.sortAndDeduplicateSlices.Insert(".spec.additionalExperiments")
+
+	// Specific to Dataproc
+	if u.GroupVersionKind().Group == "dataproc.cnrm.cloud.google.com" {
+		visitor.ReplacePath(".status.clusterUuid", "${dataStoreClusterUUID}")
+		visitor.ReplacePath(".status.observedState.uuid", "00000000-0000-0000-0000-000000000001")
+		visitor.ReplacePath(".status.status.stateStartTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".status.statusHistory[].stateStartTime", mockgcpregistry.PlaceholderTimestamp)
+
+		visitor.ReplacePath(".status.metrics.hdfsMetrics.dfs-capacity-present", "56789")
+		visitor.ReplacePath(".status.metrics.hdfsMetrics.dfs-capacity-remaining", "56789")
+		visitor.ReplacePath(".status.metrics.hdfsMetrics.dfs-capacity-total", "56789")
+		visitor.ReplacePath(".status.metrics.hdfsMetrics.dfs-capacity-used", "56789")
+
+		visitor.replacePaths[".status.observedState.stateHistory[].stateStartTime"] = mockgcpregistry.PlaceholderTimestamp
+		visitor.replacePaths[".status.observedState.stateTime"] = mockgcpregistry.PlaceholderTimestamp
+		visitor.replacePaths[".status.observedState.statusHistory[].stateStartTime"] = mockgcpregistry.PlaceholderTimestamp
+		visitor.replacePaths[".status.observedState.status.stateStartTime"] = mockgcpregistry.PlaceholderTimestamp
+		visitor.replacePaths[".status.observedState.creator"] = "${creatorID}"
+		visitor.replacePaths[".status.observedState.outputUri"] = "gs://dataproc-staging-us-central1-${projectNumber}-h/google-cloud-dataproc-metainfo/fffc/jobs/srvls-batch/driveroutput"
+	}
+
+	// Specific to Firestore
+	visitor.replacePaths[".status.observedState.earliestVersionTime"] = mockgcpregistry.PlaceholderTime
+
+	// Specific to Pubsub
+	visitor.replacePaths[".snapshots[].expireTime"] = mockgcpregistry.PlaceholderTimestamp
+
+	// Specific to Sql
+	visitor.replacePaths[".items[].etag"] = "abcdef0123A="
+	visitor.replacePaths[".status.firstIpAddress"] = "10.1.2.3"
+	visitor.replacePaths[".status.publicIpAddress"] = "10.1.2.3"
+	visitor.replacePaths[".status.ipAddress"] = "10.1.2.3"
+	visitor.replacePaths[".status.serverCaCert.cert"] = "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n"
+	visitor.replacePaths[".status.serverCaCert.commonName"] = "common-name"
+	visitor.replacePaths[".status.serverCaCert.createTime"] = mockgcpregistry.PlaceholderTime
+	visitor.replacePaths[".status.serverCaCert.expirationTime"] = mockgcpregistry.PlaceholderTime
+	visitor.replacePaths[".status.serverCaCert.sha1Fingerprint"] = "12345678"
+	visitor.replacePaths[".status.serviceAccountEmailAddress"] = "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com"
+
+	// Specific to VertexAI
+	visitor.replacePaths[".status.blobStoragePathPrefix"] = "cloud-ai-platform-00000000-1111-2222-3333-444444444444"
+	visitor.replacePaths[".status.state[].diskUtilizationBytes"] = "1"
+	visitor.replacePaths[".creator"] = "${creatorID}"
+	visitor.replacePaths[".status.observedState.state[].diskUtilizationBytes"] = "1"
+
+	// Specific to Monitoring
+	visitor.replacePaths[".status.creationRecord[].mutateTime"] = mockgcpregistry.PlaceholderTime
+	visitor.replacePaths[".status.creationRecord[].mutatedBy"] = "user@google.com"
+	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+		if path == ".spec.conditions[].name" {
+			tokens := strings.Split(s, "/")
+			if len(tokens) == 6 && tokens[4] == "conditions" {
+				tokens[5] = "${conditionId}"
+			}
+			s = strings.Join(tokens, "/")
+		}
+		return s
+	})
+
+	// Specific to GCS
+	visitor.ReplacePath(".spec.softDeletePolicy.effectiveTime", mockgcpregistry.PlaceholderTime)
+	visitor.ReplacePath(".status.observedState.softDeletePolicy.effectiveTime", mockgcpregistry.PlaceholderTime)
+
+	// Specific to Redis
+	visitor.replacePaths[".status.host"] = "10.20.30.40"
+	visitor.replacePaths[".status.currentLocationId"] = "us-central1-a"
+	visitor.replacePaths[".status.nodes[].zone"] = "us-central1-a"
+
+	// Specific to Compute
+	visitor.removePaths.Insert(".status.currentActions")
+	visitor.replacePaths[".status.status.isStable"] = true
+	visitor.replacePaths[".status.observedState.certificateID"] = 1111111111111111
+	visitor.replacePaths[".status.instanceId"] = "1111111111111111"
+	visitor.replacePaths[".status.gatewayId"] = 1111111111111111
+	visitor.replacePaths[".status.proxyId"] = 1111111111111111
+	visitor.replacePaths[".status.mapId"] = 1111111111111111
+	visitor.replacePaths[".status.id"] = 1111111111111111
+	visitor.replacePaths[".status.certificateId"] = 1111111111111111
+	visitor.replacePaths[".status.labelFingerprint"] = "abcdef0123A="
+	visitor.replacePaths[".status.fingerprint"] = "abcdef0123A="
+	visitor.replacePaths[".status.observedState.id"] = 1111111111111111
+	visitor.replacePaths[".status.generatedId"] = 1111111111111111
+
+	// Specific to Container
+	if u.GroupVersionKind().Group == "container.cnrm.cloud.google.com" {
+		visitor.replacePaths[".status.endpoint"] = "1.23.456.78"
+		visitor.replacePaths[".status.masterVersion"] = "1.30.5-gke.1014001"
+		visitor.replacePaths[".status.observedState.version"] = "1.30.5-gke.1014001"
+		visitor.replacePaths[".status.observedState.masterAuth.clusterCaCertificate"] = "1234567890abcdefghijklmn"
+		visitor.replacePaths[".status.observedState.privateClusterConfig.privateEndpoint"] = "10.128.0.2"
+		visitor.replacePaths[".status.observedState.privateClusterConfig.publicEndpoint"] = "8.8.8.8"
+
+		endpoint, _, _ := unstructured.NestedString(u.Object, "status", "observedState", "controlPlaneEndpointsConfig", "dnsEndpointConfig", "endpoint")
+		if endpoint != "" {
+			tokens := strings.Split(endpoint, "-")
+			if len(tokens) > 2 {
+				endpoint = strings.Replace(endpoint, tokens[1], "12345trewq", 1)
+				endpoint = strings.Replace(endpoint, fmt.Sprintf("%d", project.ProjectNumber), "${projectNumber}", -1)
+			}
+		} else {
+			endpoint = "gke-12345trewq-${projectNumber}.us-central1.gke.goog"
+		}
+		visitor.replacePaths[".status.observedState.controlPlaneEndpointsConfig.dnsEndpointConfig.endpoint"] = endpoint
+
+		visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+			// Replace GKE instance group manager names
+			// format: gke-cluster-sample-<something>-nodepool-sample-<uniqueid>-grp
+			// or gke-cluster-sample-<something>-default-pool-<something>-grp
+			// Normalize to: gke-containercluster-abcdef-<nodepool-suffix>-grp
+			reNodePoolIGM := regexp.MustCompile(`instanceGroupManagers/gke-[a-z0-9\-]+-nodepool-sample-([a-z0-9]+)-grp`)
+			s = reNodePoolIGM.ReplaceAllStringFunc(s, func(match string) string {
+				submatches := reNodePoolIGM.FindStringSubmatch(match)
+				return "instanceGroupManagers/gke-containercluster-abcdef-nodepool-sample-" + submatches[1] + "-grp"
+			})
+
+			reNodePoolIG := regexp.MustCompile(`instanceGroups/gke-[a-z0-9\-]+-nodepool-sample-([a-z0-9]+)-grp`)
+			s = reNodePoolIG.ReplaceAllStringFunc(s, func(match string) string {
+				submatches := reNodePoolIG.FindStringSubmatch(match)
+				return "instanceGroups/gke-containercluster-abcdef-nodepool-sample-" + submatches[1] + "-grp"
+			})
+
+			reDefaultPoolIGM := regexp.MustCompile(`instanceGroupManagers/gke-[a-z0-9\-]+-default-pool(-[a-z0-9]+)?-grp`)
+			s = reDefaultPoolIGM.ReplaceAllString(s, "instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp")
+
+			reDefaultPoolIG := regexp.MustCompile(`instanceGroups/gke-[a-z0-9\-]+-default-pool(-[a-z0-9]+)?-grp`)
+			s = reDefaultPoolIG.ReplaceAllString(s, "instanceGroups/gke-containercluster-abcdef-default-pool-grp")
+
+			// Normalize GKE versions (e.g. 1.35.5-gke.1163012 -> 1.30.5-gke.1014001)
+			reGKEVersion := regexp.MustCompile(`\b\d+\.\d+\.\d+-gke\.\d+\b`)
+			s = reGKEVersion.ReplaceAllString(s, "1.30.5-gke.1014001")
+
+			return s
+		})
+	}
+
+	// Specific to Certificate Manager
+	visitor.replacePaths[".status.dnsResourceRecord[].data"] = "${uniqueId}"
+
+	// Specific to Secret Manager
+	visitor.replacePaths[".spec.expireTime"] = "2025-10-03T15:01:23Z"
+
+	// Specific to MonitoringDashboard
+	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+		if strings.HasSuffix(path, ".alertChart.alertPolicyRef.external") {
+			tokens := strings.Split(s, "/")
+			if len(tokens) >= 2 {
+				switch tokens[len(tokens)-2] {
+				case "alertPolicies":
+					s = strings.ReplaceAll(s, tokens[len(tokens)-1], "${alertPolicyID}")
+				}
+			}
+		}
+		return s
+	})
+	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+		if strings.HasSuffix(path, ".policyRefs[].external") {
+			tokens := strings.Split(s, "/")
+			if len(tokens) >= 2 {
+				switch tokens[len(tokens)-2] {
+				case "alertPolicies":
+					s = strings.ReplaceAll(s, tokens[len(tokens)-1], "${alertPolicyID}")
+				}
+			}
+		}
+		return s
+	})
+	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+		if strings.HasSuffix(path, ".notificationChannels[]") || strings.HasSuffix(path, ".notificationChannels[].external") {
+			tokens := strings.Split(s, "/")
+			if len(tokens) >= 2 {
+				switch tokens[len(tokens)-2] {
+				case "notificationChannels":
+					s = strings.ReplaceAll(s, tokens[len(tokens)-1], "${notificationChannelID}")
+				}
+			}
+		}
+		return s
+	})
+
+	// Specific to EssentialContactContact
+	visitor.replacePaths[".validateTime"] = mockgcpregistry.PlaceholderTimestamp
+
+	// Specific to DataFlow
+	visitor.replacePaths[".status.jobId"] = "${jobID}"
+
+	// Specific to DataPlex
+	visitor.replacePaths[".status.observedState.status.updateTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".status.observedState.importResult.updateTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".status.observedState.metastoreStatus.updateTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".status.observedState.assetStatus.updateTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".status.observedState.executionStatus.updateTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".status.observedState.executionStatus.latestJob.uid"] = "0123456789abcdef"
+	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+		if strings.HasSuffix(path, ".status.observedState.executionStatus.latestJob.name") {
+			tokens := strings.Split(s, "/")
+			if len(tokens) >= 2 {
+				switch tokens[len(tokens)-2] {
+				case "jobs":
+					s = strings.ReplaceAll(s, tokens[len(tokens)-1], "0123456789abcdef")
+				}
+			}
+		}
+		return s
+	})
+
+	// Specific to SecretManager
+	visitor.replacePaths[".expireTime"] = mockgcpregistry.PlaceholderTimestamp
+
+	// Specific to CloudIdentityMembership
+	visitor.replacePaths[".membership.createTime"] = "2025-01-17T18:51:02.320337735Z"
+	visitor.replacePaths[".membership.updateTime"] = "2025-01-17T18:51:02.320337735Z"
+
+	// Specific to BigQueryConnectionConnection.
+	visitor.replacePaths[".status.observedState.aws.accessRole.identity"] = "048077221682493034546"
+	visitor.replacePaths[".status.observedState.azure.identity"] = "117243083562690747295"
+	visitor.replacePaths[".status.observedState.cloudResource.serviceAccountID"] = "bqcx-${projectNumber}-abcd@gcp-sa-bigquery-condel.iam.gserviceaccount.com"
+	visitor.replacePaths[".status.observedState.cloudSQL.serviceAccountID"] = "service-${projectNumber}@gcp-sa-bigqueryconnection.iam.gserviceaccount.com"
+	visitor.replacePaths[".status.observedState.spark.serviceAccountID"] = "bqcx-${projectNumber}-abcd@gcp-sa-bigquery-condel.iam.gserviceaccount.com"
+
+	// Specific to AssetSavedQuery
+	visitor.replacePaths[".status.observedState.lastUpdateTime"] = "2025-04-14T20:19:35.325343Z"
+	visitor.replacePaths[".lastUpdateTime"] = "2025-04-14T20:19:35.325343Z"
+
+	// Specific to RedisCluster
+	visitor.replacePaths[".status.observedState.encryptionInfo.lastUpdateTime"] = mockgcpregistry.PlaceholderTimestamp
+
+	// Specific to BigQueryDataTransferConfig
+	if u.GetKind() == "BigQueryDataTransferConfig" {
+		visitor.replacePaths[".status.observedState.nextRunTime"] = mockgcpregistry.PlaceholderTime
+		visitor.replacePaths[".status.observedState.ownerInfo.email"] = "user@google.com"
+		visitor.replacePaths[".status.observedState.userID"] = "0000000000000000000"
+		visitor.removePaths.Insert(".status.observedState.state") // data transfer run state, which depends on timing
+	}
+	if u.GetKind() == "DocumentAIProcessorVersion" {
+		visitor.replacePaths[".status.observedState.create_time"] = mockgcpregistry.PlaceholderTime
+	}
+
+	// Specific to Datacatalog
+	visitor.replacePaths[".dataCatalogTimestamps.createTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".dataCatalogTimestamps.updateTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".status.observedState.dataCatalogTimestamps.createTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".status.observedState.dataCatalogTimestamps.updateTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".sourceSystemTimestamps.createTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".sourceSystemTimestamps.updateTime"] = mockgcpregistry.PlaceholderTimestamp
+
+	// Specific to Eventarc
+	visitor.replacePaths[".pubsubTopic"] = "projects/${projectId}/topics/eventarc-channel-us-central1-eventarcchannel-minimal-${uniqueId}-123"
+	visitor.replacePaths[".response.pubsubTopic"] = "projects/${projectId}/topics/eventarc-channel-us-central1-eventarcchannel-minimal-${uniqueId}-123"
+	visitor.replacePaths[".status.observedState.pubsubTopic"] = "projects/${projectId}/topics/eventarc-channel-us-central1-eventarcchannel-minimal-${uniqueId}-123"
+
+	// Specific to WorflowsWorkflow
+	visitor.replacePaths[".status.observedState.revisionId"] = "revision-id-placeholder"
+	visitor.replacePaths[".status.observedState.revisionCreateTime"] = mockgcpregistry.PlaceholderTimestamp
+
+	// Specific to DocumentAIProcessor
+	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+		if strings.HasSuffix(path, ".status.observedState.processorVersionAliases[].processorVersion") {
+			tokens := strings.Split(s, "/")
+			if len(tokens) >= 2 {
+				switch tokens[len(tokens)-2] {
+				case "processorVersions":
+					s = strings.ReplaceAll(s, tokens[len(tokens)-1], "${processorVersionID}")
+				}
+			}
+		}
+		return s
+	})
+	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+		if strings.HasSuffix(path, ".status.observedState.defaultProcessorVersion") {
+			tokens := strings.Split(s, "/")
+			if len(tokens) >= 2 && tokens[len(tokens)-2] == "processorVersions" {
+				tokens[len(tokens)-1] = "${processorVersionID}"
+				s = strings.Join(tokens, "/")
+			}
+		}
+		return s
+	})
+
+	// Specific to VMwareEngineNetwork
+	// normalize "observedState.vpcNetworks[].network"
+	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+		if strings.HasSuffix(path, ".observedState.vpcNetworks[].network") {
+			tokens := strings.Split(s, "/")
+			if len(tokens) >= 2 && tokens[len(tokens)-2] == "networks" {
+				tokens[len(tokens)-1] = "${networkId}"
+				s = strings.Join(tokens, "/")
+			}
+		}
+		return s
+	})
+
+	// Specific to BackupPlanDR
+	// normalize "status.observedState.dataSource"
+	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+		if strings.HasSuffix(path, ".status.observedState.dataSource") {
+			tokens := strings.Split(s, "/")
+			if len(tokens) >= 2 && tokens[len(tokens)-2] == "dataSources" {
+				tokens[len(tokens)-1] = "${dataSourceID}"
+				s = strings.Join(tokens, "/")
+			}
+		}
+		return s
+	})
+
+	// Specific to NetworkManagement
+	visitor.replacePaths[".status.observedState.reachabilityDetails.verifyTime"] = "2025-01-01T12:34:56.123456Z"
+	visitor.replacePaths[".status.observedState.reachabilityDetails.traces[].endpointInfo.sourcePort"] = "12345"
+
+	// Specific to OrgPolicy
+	visitor.replacePaths[".status.observedState.spec.updateTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".status.observedState.dryRunSpec.updateTime"] = mockgcpregistry.PlaceholderTimestamp
+
+	// Specific to RunJob
+	visitor.replacePaths[".status.terminalCondition[].lastTransitionTime"] = mockgcpregistry.PlaceholderTime
+	visitor.replacePaths[".status.creator"] = "test@google.com"
+	visitor.replacePaths[".status.lastModifier"] = "test@google.com"
+
+	// Specific to RunService
+	visitor.replacePaths[".status.terminalCondition.lastTransitionTime"] = mockgcpregistry.PlaceholderTime
+
+	// Specific to Workflows
+	visitor.replacePaths[".status.observedState.validateTime"] = mockgcpregistry.PlaceholderTime
+
+	// Specific to IAMServiceAccountKey
+	visitor.replacePaths[".status.validAfter"] = mockgcpregistry.PlaceholderTime
+
+	// TODO: This should not be needed, we want to avoid churning the kube objects
+	visitor.sortSlices.Insert(".spec.access")
+	visitor.sortSlices.Insert(".spec.nodeConfig.oauthScopes")
+
+	if u.GetKind() == "Project" {
+		// For some tests that talk to the Mock Resource Manager, the Project object's ProjectID and ProjectNumber are dynamcially generated.
+		// We do not want to overrride this with the default mocked Project "mock-project".
+		visitor.replacePaths[".status.number"] = "${projectNumber}"
+	}
+
+	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+		return strings.ReplaceAll(s, project.ProjectID, "${projectId}")
+	})
+
+	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+		return strings.ReplaceAll(s, fmt.Sprintf("%d", project.ProjectNumber), "${projectNumber}")
+	})
+
+	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+		return strings.ReplaceAll(s, uniqueID, "${uniqueId}")
+	})
+
+	// TODO: Only for some objects?
+	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+		r := regexp.MustCompile(regexp.QuoteMeta(`deleted:serviceAccount:gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?uid=`) + `.*`)
+		return r.ReplaceAllLiteralString(s, "deleted:serviceAccount:gsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?uid=12345678")
+	})
+
+	// Try to extract resource IDs from links and replace them
+	{
+		name, _, _ := unstructured.NestedString(u.Object, "status", "observedState", "name")
+		if name == "" {
+			name, _, _ = unstructured.NestedString(u.Object, "status", "name")
+		}
+		tokens := strings.Split(name, "/")
+		if len(tokens) >= 2 {
+			typeName := tokens[len(tokens)-2]
+			id := tokens[len(tokens)-1]
+
+			// Remove any "verbs" we might be picking up by mistake
+			// e.g. https://cloudresourcemanager.googleapis.com/v3/folders/${folderID}:move?alt=json&prettyPrint=false
+			if strings.Contains(id, ":") {
+				id = strings.Split(id, ":")[0]
+			}
+
+			if typeName == "datasets" {
+				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+					return strings.ReplaceAll(s, id, "${datasetId}")
+				})
+			}
+			if typeName == "folders" {
+				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+					return strings.ReplaceAll(s, id, "${folderId}")
+				})
+			}
+			if typeName == "alertPolicies" {
+				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+					return strings.ReplaceAll(s, id, "${alertPolicyId}")
+				})
+			}
+			if typeName == "tensorboards" {
+				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+					return strings.ReplaceAll(s, id, "${tensorboardId}")
+				})
+			}
+			if typeName == "experiments" && len(tokens) >= 4 && tokens[len(tokens)-4] == "tensorboards" {
+				tensorboardID := tokens[len(tokens)-3]
+				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+					return strings.ReplaceAll(s, tensorboardID, "${tensorboardId}")
+				})
+			}
+			if typeName == "notificationChannels" {
+				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+					return strings.ReplaceAll(s, id, "${notificationChannelID}")
+				})
+			}
+			if typeName == "transferConfigs" {
+				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+					return strings.ReplaceAll(s, id, "${transferConfigID}")
+				})
+			}
+			if typeName == "processors" {
+				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+					return strings.ReplaceAll(s, id, "${processorID}")
+				})
+			}
+			if typeName == "indexes" {
+				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+					return strings.ReplaceAll(s, id, "${indexID}")
+				})
+			}
+		}
+
+		id, _, _ := unstructured.NestedString(u.Object, "status", "selfLinkWithId")
+		if id != "" {
+			tokens := strings.Split(id, "/")
+			n := len(tokens)
+			if n >= 2 {
+				typeName := tokens[len(tokens)-2]
+				id := tokens[len(tokens)-1]
+				if typeName == "targetGrpcProxies" {
+					visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+						return strings.ReplaceAll(s, id, "${targetGrpcProxiesID}")
+					})
+				}
+			}
+		}
+		observedStateId, _, _ := unstructured.NestedString(u.Object, "status", "observedState", "selfLinkWithID")
+		if observedStateId != "" {
+			tokens := strings.Split(observedStateId, "/")
+			n := len(tokens)
+			if n >= 2 {
+				typeName := tokens[len(tokens)-2]
+				id := tokens[len(tokens)-1]
+				if typeName == "networkEdgeSecurityServices" {
+					visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+						return strings.ReplaceAll(s, id, "${networkEdgeSecurityServiceID}")
+					})
+				}
+			}
+		}
+		// Get firewall policy id from firewall policy rule's externalRef and replace it
+		externalRef, _, _ := unstructured.NestedString(u.Object, "status", "externalRef")
+		if externalRef != "" {
+			tokens := strings.Split(externalRef, "/")
+			n := len(tokens)
+			if n >= 2 {
+				typeName := tokens[len(tokens)-2]
+				switch typeName {
+				case "contacts":
+					// "projects/${projectNumber}/contacts/${contactId}"
+					needle := "contacts/" + tokens[len(tokens)-1]
+					visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+						return strings.ReplaceAll(s, needle, "contacts/${contactId}")
+					})
+				case "rules":
+					// Get firewall policy id from firewall policy rule's externalRef and replace it
+					// e.g. "locations/global/firewallPolicies/${firewallPolicyID}/rules/9000"
+					if n >= 3 {
+						firewallPolicyId := tokens[len(tokens)-3]
+						visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+							return strings.ReplaceAll(s, firewallPolicyId, "${firewallPolicyID}")
+						})
+					}
+				case "processorVersions":
+					// Get processor id and version id from processor version's externalRef and replace it
+					// e.g. "projects/${projectId}/locations/us/processors/7f8f177e3b9cc6d9/processorVersions/1954ace3de6"
+					if n >= 3 {
+						processorId := tokens[len(tokens)-3]
+						processorVersionId := tokens[len(tokens)-1]
+						visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+							return strings.ReplaceAll(s, processorId, "${processorID}")
+						})
+						visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+							return strings.ReplaceAll(s, processorVersionId, "${processorVersionID}")
+						})
+					}
+				// Replace the server generated group id
+				case "groups":
+					// e.g. "groups/194f77d03ad"
+					groupId := tokens[len(tokens)-1]
+					visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+						return strings.ReplaceAll(s, groupId, "${groupID}")
+					})
+				case "memberships":
+					// e.g. "groups/194f77d03ad/memberships/196a3927214"
+					if n >= 3 {
+						groupId := tokens[len(tokens)-3]
+						visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+							return strings.ReplaceAll(s, groupId, "${groupID}")
+						})
+						membershipId := tokens[len(tokens)-1]
+						visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+							return strings.ReplaceAll(s, membershipId, "${membershipID}")
+						})
+					}
+				case "keyHandles":
+					uuid := tokens[len(tokens)-1]
+					visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+						return strings.ReplaceAll(s, uuid, "${keyHandleID}")
+					})
+				}
+			}
+		}
+
+		resourceID, _, _ := unstructured.NestedString(u.Object, "spec", "resourceID")
+		if resourceID != "" {
+			switch u.GroupVersionKind() {
+			case schema.GroupVersionKind{Group: "monitoring.cnrm.cloud.google.com", Version: "v1beta1", Kind: "MonitoringUptimeCheckConfig"}:
+				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+					return strings.ReplaceAll(s, resourceID, "${uptimeCheckConfigId}")
+				})
+
+			case schema.GroupVersionKind{Group: "monitoring.cnrm.cloud.google.com", Version: "v1beta1", Kind: "MonitoringGroup"}:
+				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+					return strings.ReplaceAll(s, resourceID, "${monitoringGroupID}")
+				})
+
+			case schema.GroupVersionKind{Group: "cloudidentity.cnrm.cloud.google.com", Version: "v1beta1", Kind: "CloudIdentityGroup"}:
+				tokens := strings.Split(resourceID, "/")
+				n := len(tokens)
+				// groups/{groupID}
+				if n >= 2 {
+					visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+						return strings.ReplaceAll(s, tokens[len(tokens)-1], "${groupID}")
+					})
+				}
+				// {groupID}
+				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+					return strings.ReplaceAll(s, resourceID, "${groupID}")
+				})
+
+			case schema.GroupVersionKind{Group: "cloudidentity.cnrm.cloud.google.com", Version: "v1beta1", Kind: "CloudIdentityMembership"}:
+				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+					return strings.ReplaceAll(s, resourceID, "${membershipID}")
+				})
+			}
+		}
+
+		selfLink, _, _ := unstructured.NestedString(u.Object, "status", "selfLink")
+		if selfLink != "" {
+			switch u.GroupVersionKind() {
+			case schema.GroupVersionKind{Group: "compute.cnrm.cloud.google.com", Version: "v1beta1", Kind: "ComputeFirewallPolicy"}:
+				// https://www.googleapis.com/compute/beta/locations/global/firewallPolicies/1059732409893
+				selfLink = strings.TrimPrefix(selfLink, "https://www.googleapis.com/compute/v1/locations/global/")
+				tokens := strings.Split(selfLink, "/")
+				n := len(tokens)
+				if n >= 2 {
+					visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+						return strings.ReplaceAll(s, tokens[len(tokens)-1], "${firewallPolicyID}")
+					})
+				}
+			}
+		}
+	}
+
+	if testgcp.TestOrgID.Get() != "" {
+		visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+			return strings.ReplaceAll(s, "organizations/"+testgcp.TestOrgID.Get(), "organizations/${organizationID}")
+		})
+	}
+
+	// Specific to RapidMigrationAssessment
+	if u.GroupVersionKind().Group == "rapidmigrationassessment.cnrm.cloud.google.com" {
+		visitor.ReplacePath(".status.observedState.bucket", "normalized-bucket")
+		visitor.ReplacePath(".status.observedState.guestOSScan.coreSource", "projects/${projectNumber}/locations/us-central1/sources/normalized-guest-os-scan-source")
+		visitor.ReplacePath(".status.observedState.vsphereScan.coreSource", "projects/${projectNumber}/locations/us-central1/sources/normalized-vsphere-scan-source")
+	}
+
+	return visitor
+}
+
+func setStringAtPath(m map[string]any, atPath string, newValue string) error {
+	visitor := objectWalker{}
+
+	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+		if path == atPath {
+			return newValue
+		}
+		return s
+	})
+
+	if err := visitor.visitMap(m, ""); err != nil {
+		return err
+	}
+	return nil
+}
+
+type objectWalker struct {
+	t *testing.T
+
+	removePaths              sets.Set[string]
+	sortSlices               sets.Set[string]
+	sortSlicesBy             []sortSliceBy
+	sortAndDeduplicateSlices sets.Set[string]
+	replacePaths             map[string]any
+	stringTransforms         []func(path string, value string) string
+	objectTransforms         []func(path string, value map[string]any)
+	sliceTransforms          []func(path string, value []any) []any
+
+	stringReplacements []stringReplacement
+}
+
+type sortSliceBy struct {
+	path   string
+	sortBy string
+}
+
+func (o *sortSliceBy) sortSlice(s []any) ([]any, error) {
+	sort.Slice(s, func(i, j int) bool {
+		v1 := s[i].(map[string]any)[o.sortBy]
+		v2 := s[j].(map[string]any)[o.sortBy]
+
+		s1 := fmt.Sprintf("%v", v1)
+		s2 := fmt.Sprintf("%v", v2)
+		return s1 < s2
+	})
+	return s, nil
+}
+
+type stringReplacement struct {
+	Find    string
+	Replace string
+}
+
+func newObjectWalker(t *testing.T) *objectWalker {
+	return &objectWalker{
+		t:                        t,
+		removePaths:              sets.New[string](),
+		sortSlices:               sets.New[string](),
+		sortAndDeduplicateSlices: sets.New[string](),
+		replacePaths:             make(map[string]any),
+	}
+}
+
+func (o *objectWalker) ReplacePath(path string, v any) {
+	if v2, found := o.replacePaths[path]; found && !reflect.DeepEqual(v, v2) {
+		o.t.Fatalf("objectWalker has duplicate ReplacePath %q", path)
+	}
+
+	o.replacePaths[path] = v
+}
+
+func (o *objectWalker) ReplaceStringValue(oldValue string, newValue string) {
+	// Check for duplicates
+	for _, replacement := range o.stringReplacements {
+		if replacement.Find == oldValue {
+			if replacement.Replace == newValue {
+				// Already have this replacement, no point adding it twice
+				return
+			}
+			o.t.Fatalf("FAIL: objectWalker has duplicate ReplaceStringValue %q=%q and %q=%q", oldValue, replacement.Replace, oldValue, newValue)
+		}
+	}
+
+	o.stringReplacements = append(o.stringReplacements, stringReplacement{Find: oldValue, Replace: newValue})
+
+	// Make sure the biggest replacements are first, to avoid substring replacement non-determinism
+	// e.g. subnetwork-a => ${subnet} but network-a => ${network}
+	sort.Slice(o.stringReplacements, func(i, j int) bool {
+		return len(o.stringReplacements[i].Find) > len(o.stringReplacements[j].Find)
+	})
+}
+
+func (o *objectWalker) TransformString(targetPath string, transform func(string) string) {
+	o.stringTransforms = append(o.stringTransforms, func(path string, s string) string {
+		if path == targetPath {
+			return transform(s)
+		}
+		return s
+	})
+}
+
+func (o *objectWalker) TransformLRO(transform func(map[string]any)) {
+	o.objectTransforms = append(o.objectTransforms, func(path string, m map[string]any) {
+		selfLink, _ := m["selfLink"].(string)
+		if strings.Contains(selfLink, "/operations/") {
+			transform(m)
+		}
+	})
+}
+
+func (o *objectWalker) TransformObject(targetPath string, transform func(map[string]any)) {
+	o.objectTransforms = append(o.objectTransforms, func(path string, m map[string]any) {
+		if path == targetPath {
+			transform(m)
+		}
+	})
+}
+
+func (o *objectWalker) RemovePath(path string) {
+	o.removePaths.Insert(path)
+}
+
+func (o *objectWalker) SortSlice(path string) {
+	o.sortSlices.Insert(path)
+}
+
+func (o *objectWalker) SortSliceBy(path string, sortBy string) {
+	o.sortSlicesBy = append(o.sortSlicesBy, sortSliceBy{path: path, sortBy: sortBy})
+}
+
+func (o *objectWalker) visitAny(v any, path string) (any, error) {
+	if v == nil {
+		return v, nil
+	}
+	switch v := v.(type) {
+	case map[string]any:
+		if err := o.visitMap(v, path); err != nil {
+			return nil, err
+		}
+		return v, nil
+	case []any:
+		return o.visitSlice(v, path)
+	case int, int32, int64, float32, float64, bool:
+		return o.visitPrimitive(v, path)
+	case string:
+		return o.visitString(v, path)
+	default:
+		return nil, fmt.Errorf("unhandled type at path %q: %T", path, v)
+	}
+}
+
+func (o *objectWalker) visitMap(m map[string]any, path string) error {
+	for _, fn := range o.objectTransforms {
+		fn(path, m)
+	}
+
+	for k, v := range m {
+		childPath := path + "." + k
+		if o.removePaths.Has(childPath) {
+			delete(m, k)
+			continue // nothing left to process
+		}
+
+		if v2, found := o.replacePaths[childPath]; found {
+			if v != nil && v != "null" { // don't replace nil/null values
+				m[k] = v2
+				continue // replacement value is assumed to be normalized
+			}
+		}
+
+		v2, err := o.visitAny(v, childPath)
+		if err != nil {
+			return err
+		}
+		m[k] = v2
+		v = v2
+	}
+
+	return nil
+}
+
+func sortSlice(s []any, deduplicate bool) ([]any, error) {
+	type entry struct {
+		o       any
+		sortKey string
+	}
+
+	var entries []entry
+	for i := range s {
+		j, err := json.Marshal(s[i])
+		if err != nil {
+			return nil, fmt.Errorf("error converting to json: %w", err)
+		}
+		entries = append(entries, entry{o: s[i], sortKey: string(j)})
+	}
+
+	sort.Slice(entries, func(i, j int) bool {
+		return entries[i].sortKey < entries[j].sortKey
+	})
+
+	out := make([]any, 0, len(s))
+	for i := range s {
+		if deduplicate && i > 0 && entries[i].sortKey == entries[i-1].sortKey {
+			continue
+		}
+		out = append(out, entries[i].o)
+	}
+
+	return out, nil
+}
+
+func (o *objectWalker) visitSlice(s []any, path string) (any, error) {
+	for _, fn := range o.sliceTransforms {
+		s = fn(path+"[]", s)
+	}
+
+	for i, v := range s {
+		v2, err := o.visitAny(v, path+"[]")
+		if err != nil {
+			return nil, err
+		}
+		s[i] = v2
+	}
+
+	// Note: do sorting "last" so we sort normalized values
+	if o.sortSlices.Has(path) {
+		sorted, err := sortSlice(s, false)
+		if err != nil {
+			return s, err
+		}
+		s = sorted
+	}
+
+	for _, sortSlice := range o.sortSlicesBy {
+		if sortSlice.path == path {
+			sorted, err := sortSlice.sortSlice(s)
+			if err != nil {
+				return s, err
+			}
+			s = sorted
+		}
+	}
+
+	if o.sortAndDeduplicateSlices.Has(path) {
+		sorted, err := sortSlice(s, true)
+		if err != nil {
+			return s, err
+		}
+		s = sorted
+	}
+
+	return s, nil
+}
+
+func (o *objectWalker) visitPrimitive(v any, _ string) (any, error) {
+	return v, nil
+}
+
+func (o *objectWalker) visitString(s string, path string) (string, error) {
+	for _, stringReplacement := range o.stringReplacements {
+		s = strings.ReplaceAll(s, stringReplacement.Find, stringReplacement.Replace)
+	}
+	for _, fn := range o.stringTransforms {
+		s = fn(path, s)
+	}
+	return s, nil
+}
+
+func (o *objectWalker) VisitUnstructured(v *unstructured.Unstructured) error {
+	if err := o.visitMap(v.Object, ""); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (o *objectWalker) RewriteURL(url string) (string, error) {
+	v2, err := o.visitString(url, "{url}")
+	if err != nil {
+		return "", err
+	}
+	return v2, nil
+}
+
+func (o *objectWalker) RewriteHeader(headerKey string, headerValue string) (string, error) {
+	v2, err := o.visitString(headerValue, "{header}:"+headerKey)
+	if err != nil {
+		return "", err
+	}
+	return v2, nil
+}
+
+func (o *objectWalker) RewriteHeaders(headers http.Header) error {
+	for k, vv := range headers {
+		for i, v := range vv {
+			s, err := o.RewriteHeader(k, v)
+			if err != nil {
+				return fmt.Errorf("error normalizing header %q=%q: %w", k, v, err)
+			}
+			headers[k][i] = s
+		}
+	}
+	return nil
+}
+
+// findLinksInEvent looks for link paths and feeds the values into replacement.ExtractIDsFromLinks
+func findLinksInEvent(t *testing.T, replacement *Replacements, event *test.LogEntry) {
+	linkPaths := sets.New(
+		".response.pscConnections[].forwardingRule",
+		".response.pscConnections[].network",
+		".selfLink",
+		".selfLinkWithId",
+	)
+
+	wellKnownPaths := map[string]string{
+		".pscConnections[].pscConnectionId":          "${pscConnectionID}",
+		".response.pscConnections[].pscConnectionId": "${pscConnectionID}",
+	}
+
+	s := event.Response.Body
+	if s == "" {
+		return
+	}
+
+	obj := make(map[string]any)
+	if err := json.Unmarshal([]byte(s), &obj); err != nil {
+		t.Fatalf("error from json.Unmarshal(%q): %v", s, err)
+		return
+	}
+
+	visitor := objectWalker{}
+
+	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+		if linkPaths.Has(path) {
+			replacement.ExtractIDsFromLinks(s)
+		}
+		if v := wellKnownPaths[path]; v != "" {
+			replacement.PathIDs[s] = v
+		}
+		return s
+	})
+
+	if err := visitor.visitMap(obj, ""); err != nil {
+		t.Fatalf("visiting response object: %v", err)
+	}
+}
+
+// findLinksInKRMObject looks for link paths and feeds the values into replacement.ExtractIDsFromLinks
+func findLinksInKRMObject(t *testing.T, replacement *Replacements, u *unstructured.Unstructured) {
+	linkPaths := sets.New(
+		".status.observedState.pscConnections[].forwardingRule",
+		".status.observedState.pscConnections[].network",
+	)
+
+	visitor := objectWalker{}
+
+	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+		if linkPaths.Has(path) {
+			replacement.ExtractIDsFromLinks(s)
+		}
+		return s
+	})
+
+	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+		if s == "" {
+			return s
+		}
+
+		switch path {
+		case ".spec.organizationRef.external":
+			id := strings.TrimPrefix(s, "organizations/")
+			replacement.PathIDs[id] = "${organizationID}"
+		case ".status.writerIdentity":
+			if strings.HasPrefix(s, "serviceAccount:service-org-") && strings.HasSuffix(s, "@gcp-sa-logging.iam.gserviceaccount.com") {
+				id := strings.TrimSuffix(strings.TrimPrefix(s, "serviceAccount:service-org-"), "@gcp-sa-logging.iam.gserviceaccount.com")
+				replacement.PathIDs[id] = "${organizationID}"
+			}
+			if strings.HasPrefix(s, "serviceAccount:service-folder-") && strings.HasSuffix(s, "@gcp-sa-logging.iam.gserviceaccount.com") {
+				id := strings.TrimSuffix(strings.TrimPrefix(s, "serviceAccount:service-folder-"), "@gcp-sa-logging.iam.gserviceaccount.com")
+				replacement.PathIDs[id] = "${folderID}"
+			}
+		case ".spec.resourceID":
+			if u.GetKind() == "RecaptchaEnterpriseKey" {
+				replacement.PathIDs[s] = "${keyID}"
+			}
+		}
+		return s
+	})
+
+	if err := visitor.visitMap(u.Object, ""); err != nil {
+		t.Fatalf("visiting KRM object: %v", err)
+	}
+}
+
+func NormalizeHTTPLog(t *testing.T, events test.LogEntries, services mockgcpregistry.Normalizer, project testgcp.GCPProject, uniqueID string, folderID string, organizationID string) {
+	normalizer := NewNormalizer(uniqueID, project)
+
+	normalizer.Preprocess(events)
+
+	if organizationID != "" {
+		normalizer.Replacements.PathIDs[organizationID] = "${organizationID}"
+	}
+	if folderID != "" {
+		normalizer.Replacements.PathIDs[folderID] = "${folderID}"
+	}
+	if uniqueID != "" {
+		normalizer.Replacements.PathIDs[uniqueID] = "${uniqueId}"
+	}
+
+	// Find any URLs
+	for _, event := range events {
+		findLinksInEvent(t, normalizer.Replacements, event)
+	}
+
+	// Find recaptchaenterprise key IDs in URL or Body and add to PathIDs
+	keyIDRegex := regexp.MustCompile(`/keys/([a-zA-Z0-9_-]+)`)
+	for _, event := range events {
+		if !strings.Contains(event.Request.URL, "recaptchaenterprise") {
+			continue
+		}
+		if matches := keyIDRegex.FindStringSubmatch(event.Request.URL); len(matches) > 1 {
+			normalizer.Replacements.PathIDs[matches[1]] = "${keyID}"
+		}
+		if event.Response.Body != "" {
+			if matches := keyIDRegex.FindAllStringSubmatch(event.Response.Body, -1); len(matches) > 0 {
+				for _, match := range matches {
+					if len(match) > 1 {
+						normalizer.Replacements.PathIDs[match[1]] = "${keyID}"
+					}
+				}
+			}
+		}
+	}
+
+	// Remove idempotency tokens
+	events.ReplaceRequestQueryParameter("requestId", "123456")
+
+	// Remove headers that just aren't very relevant to testing
+	// Remove headers in request.
+	events.RemoveHTTPRequestHeader("X-Goog-Api-Client")
+	if os.Getenv("E2E_GCP_TARGET") == "mock" {
+		for _, event := range events {
+			for i, ua := range event.Request.Header["User-Agent"] {
+				if !strings.HasSuffix(ua, "(mockgcp)") {
+					event.Request.Header["User-Agent"][i] = ua + " (mockgcp)"
+				}
+			}
+		}
+	}
+	// Remove header in response.
+	events.RemoveHTTPResponseHeader("Date")
+	events.RemoveHTTPResponseHeader("Alt-Svc")
+	events.RemoveHTTPResponseHeader("Server-Timing")
+	events.RemoveHTTPResponseHeader("X-Debug-Tracking-Id")
+	events.RemoveHTTPResponseHeader("X-Guploader-Uploadid")
+	events.RemoveHTTPResponseHeader("Etag")
+	events.RemoveHTTPResponseHeader("Content-Length") // an artifact of encoding
+	events.RemoveHTTPResponseHeader("Cache-Control")  // not really relevant to us
+	events.RemoveHTTPResponseHeader("Expires")        // not behavioural
+
+	normalizeHTTPResponses(t, services, events)
+
+	// Normalize using the KRM normalization function
+	events.PrettifyJSON(func(requestURL string, obj map[string]any) {
+		u := &unstructured.Unstructured{}
+		u.Object = obj
+		normalizeKRMObject(t, u, project, folderID, uniqueID)
+	})
+
+	// Apply replacements
+	normalizer.Replacements.ApplyReplacementsToHTTPEvents(events)
+}
+
+func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer, events test.LogEntries) {
+	visitor := newObjectWalker(t)
+
+	// If we get detailed info, don't record it - it's not part of the API contract
+	visitor.removePaths.Insert(".error.errors[].debugInfo")
+	if strings.Contains(t.Name(), "/dnsauthorization") {
+		visitor.removePaths.Insert(".metadata.requestedCancellation")
+		visitor.removePaths.Insert(".metadata.endTime")
+		visitor.removePaths.Insert(".response.metadata.requestedCancellation")
+		visitor.removePaths.Insert(".response.metadata.endTime")
+	}
+
+	if !strings.Contains(t.Name(), "/containercluster") && !strings.Contains(t.Name(), "/containernodepool") {
+		visitor.objectTransforms = append(visitor.objectTransforms, func(path string, m map[string]any) {
+			for _, key := range []string{"currentActions", "current_actions"} {
+				if currentActions, ok := m[key]; ok {
+					if currentActionsMap, ok := currentActions.(map[string]any); ok {
+						for k := range currentActionsMap {
+							currentActionsMap[k] = 1
+						}
+					}
+				}
+			}
+		})
+	}
+
+	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+		re := regexp.MustCompile(`debian-11-bullseye-v\d{8}`)
+		s = re.ReplaceAllString(s, "debian-11-bullseye-v20231010")
+		re2 := regexp.MustCompile(`built on \d{8}`)
+		s = re2.ReplaceAllString(s, "built on 20231010")
+		return s
+	})
+
+	visitor.objectTransforms = append(visitor.objectTransforms, func(path string, m map[string]any) {
+		if m["kind"] == "compute#image" {
+			selfLink, _ := m["selfLink"].(string)
+			// Only normalize public standard images (e.g., from debian-cloud), not custom user-defined images.
+			if strings.Contains(selfLink, "/projects/debian-cloud/") {
+				for k := range m {
+					switch k {
+					case "kind", "name", "family", "status", "selfLink":
+						// keep
+					default:
+						delete(m, k)
+					}
+				}
+				m["status"] = "READY"
+			}
+		}
+	})
+
+	if !testHasField(t, "routingConfig") {
+		visitor.objectTransforms = append(visitor.objectTransforms, func(path string, m map[string]any) {
+			if m["kind"] == "compute#network" {
+				delete(m, "routingConfig")
+			}
+		})
+	}
+
+	// Common variables
+	visitor.replacePaths[".uid"] = "111111111111111111111"
+	visitor.replacePaths[".etag"] = "abcdef0123A="
+	visitor.replacePaths[".response.etag"] = "abcdef0123A="
+	visitor.replacePaths[".serviceAccount.etag"] = "abcdef0123A="
+	visitor.replacePaths[".response.uniqueId"] = "12345678"
+	visitor.replacePaths[".response.uid"] = "111111111111111111111"
+	visitor.replacePaths[".response.startTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".response.endTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".labelFingerprint"] = "abcdef0123A="
+	visitor.replacePaths[".items[].labelFingerprint"] = "abcdef0123A="
+	visitor.replacePaths[".gatewayAddress"] = "10.0.0.1"
+	visitor.replacePaths[".items[].gatewayAddress"] = "10.0.0.1"
+
+	// Misc Operations
+	visitor.replacePaths[".insertTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".endTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".user"] = "user@example.com"
+
+	// Compute operations
+	visitor.replacePaths[".fingerprint"] = "abcdef0123A="
+	visitor.replacePaths[".startTime"] = mockgcpregistry.PlaceholderTimestamp
+
+	// Specific to Apigee
+	visitor.replacePaths[".response.createdAt"] = strconv.FormatInt(time.Date(2024, 4, 1, 12, 34, 56, 123456, time.UTC).Unix(), 10)
+	visitor.replacePaths[".response.lastModifiedAt"] = strconv.FormatInt(time.Date(2024, 4, 1, 12, 34, 56, 123456, time.UTC).Unix(), 10)
+	visitor.replacePaths[".response.expiresAt"] = strconv.FormatInt(time.Date(2024, 4, 1, 12, 34, 56, 123456, time.UTC).Unix(), 10)
+	{
+		visitor.sortSlices.Insert(".response.properties.property")
+		visitor.sortSlices.Insert(".properties.property")
+		visitor.replacePaths[".expiresAt"] = strconv.FormatInt(time.Date(2024, 4, 1, 12, 34, 56, 123456, time.UTC).Unix(), 10)
+		visitor.replacePaths[".createdAt"] = strconv.FormatInt(time.Date(2024, 4, 1, 12, 34, 56, 123456, time.UTC).Unix(), 10)
+		visitor.replacePaths[".lastModifiedAt"] = strconv.FormatInt(time.Date(2024, 4, 1, 12, 34, 56, 123456, time.UTC).Unix(), 10)
+	}
+
+	for _, event := range events {
+		// Compute URLs: Replace any compute beta URLs with v1 URLs
+		// Terraform uses the /beta/ endpoints, but mocks and direct controller should use /v1/
+		// This special handling to avoid diffs in http logs.
+		// This can be removed once all Compute resources are migrated to direct controller.
+		event.Request.URL = rewriteComputeURL(event.Request.URL)
+
+		// Normalize etags in URLS
+		event.Request.URL = normalizeEtagsInURL(event.Request.URL)
+	}
+
+	normalizeComputeSelfLink := func(u string) string {
+		u = rewriteComputeURL(u)
+		for _, prefix := range []string{
+			"https://compute.googleapis.com/compute/v1/",
+			"https://compute.googleapis.com/compute/beta/",
+			"https://www.googleapis.com/compute/v1/",
+			"https://www.googleapis.com/compute/beta/",
+		} {
+			if strings.HasPrefix(u, prefix) {
+				return strings.TrimPrefix(u, prefix)
+			}
+		}
+		return u
+	}
+
+	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+		if s == "${healthCheckID}" {
+			return "${httpHealthCheckID}"
+		}
+		switch path {
+		case ".network", ".region", ".selfLink", ".selfLinkWithId", ".sourceImage", ".subnetwork", ".subnetworks[]", ".target", ".targetLink", ".zone":
+			return rewriteComputeURL(s)
+		}
+		if strings.HasSuffix(path, ".type") || path == ".sourceDisk" || strings.HasSuffix(path, ".sourceDisk") {
+			return normalizeComputeSelfLink(s)
+		}
+		return s
+	})
+
+	// Specific to LROs
+	{
+		// For reasons unclear, operations emit done: false and cancelRequested: false.
+		// This seems to violate the normal behaviour of proto bool fields with implicit presence.
+		// Easiest just to normalize away the GCP responses that are hard to produce!
+		visitor.objectTransforms = append(visitor.objectTransforms, func(path string, m map[string]any) {
+			if path == "." {
+				if m["done"] == false {
+					delete(m, "done")
+				}
+			}
+
+			if path == ".metadata" {
+				if m["cancelRequested"] == false {
+					delete(m, "cancelRequested")
+				}
+			}
+		})
+	}
+
+	// Specific to DataFlow
+	{
+		visitor.ReplacePath(".job.startTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".job.createTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".currentStateTime", mockgcpregistry.PlaceholderTimestamp)
+		// The pipelineUrl includes a long random ID that does not appear elsewhere
+		visitor.ReplacePath(".environment.sdkPipelineOptions.options.pipelineUrl", "${pipelineUrl}")
+		visitor.sortAndDeduplicateSlices.Insert(".environment.experiments")
+		visitor.sortAndDeduplicateSlices.Insert(".environment.sdkPipelineOptions.options.experiments")
+
+		visitor.objectTransforms = append(visitor.objectTransforms, func(path string, m map[string]any) {
+			switch path {
+			case ".environment.userAgent",
+				".environment.version",
+				".jobMetadata",
+				".pipelineDescription",
+				".environment.sdkPipelineOptions.serialized_fn":
+				// These fields have a _lot_ of information, but it isn't surfaced in KCC
+				clear(m)
+				m["removed"] = "simplicity"
+			}
+		})
+
+		visitor.sliceTransforms = append(visitor.sliceTransforms, func(path string, a []any) []any {
+			switch path {
+			case ".environment.workerPools[]",
+				".stageStates[]",
+				".steps[]",
+				".environment.sdkPipelineOptions.display_data[]":
+				// These fields have a _lot_ of information, but it isn't surfaced in KCC
+				return []any{}
+			}
+			return a
+		})
+	}
+
+	// Specific to Sql
+	{
+		visitor.ReplacePath(".serverCaCert.cert", "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n")
+		visitor.ReplacePath(".serverCaCert.commonName", "common-name")
+		visitor.ReplacePath(".serverCaCert.createTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".serverCaCert.expirationTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".serverCaCert.sha1Fingerprint", "12345678")
+		visitor.ReplacePath(".serviceAccountEmailAddress", "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com")
+		visitor.ReplacePath(".settings.backupConfiguration.startTime", "12:00")
+		visitor.ReplacePath(".settings.settingsVersion", "123")
+	}
+
+	// Specific to BigQuery
+	{
+		visitor.SortSlice(".access")
+		visitor.ReplacePath(".access[].userByEmail", "user@google.com")
+	}
+
+	// BigQueryConnection
+	{
+		visitor.ReplacePath(".cloudResource.serviceAccountId", "bqcx-${projectNumber}-abcd@gcp-sa-bigquery-condel.iam.gserviceaccount.com")
+		visitor.ReplacePath(".creationTime", "123456789")
+		visitor.ReplacePath(".lastModifiedTime", "123456789")
+	}
+
+	// Workflows
+	{
+		visitor.ReplacePath(".revisionCreateTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".response.revisionCreateTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".revisionId", "revision-id-placeholder")
+		visitor.ReplacePath(".response.revisionId", "revision-id-placeholder")
+	}
+
+	// DocumentAI
+	{
+		visitor.ReplacePath(".metadata.commonMetadata.createTime", "2025-01-01T12:34:56.123456Z")
+		visitor.ReplacePath(".metadata.commonMetadata.updateTime", "2025-01-02T12:34:56.123456Z")
+	}
+
+	// AI Platform
+	{
+		visitor.ReplacePath(".updateTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".nextRunTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".expirationTime", "2024-09-01T12:34:56.123456Z")
+		visitor.ReplacePath(".schedules[].createTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".schedules[].nextRunTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".schedules[].startTime", mockgcpregistry.PlaceholderTimestamp)
+	}
+
+	// KMS
+	{
+		visitor.ReplacePath(".expireTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".generateTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".importJobs[].createTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".importJobs[].expireTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".importJobs[].generateTime", mockgcpregistry.PlaceholderTimestamp)
+	}
+
+	// Network Management
+	{
+		visitor.ReplacePath(".reachabilityDetails.verifyTime", "2025-01-01T12:34:56.123456Z")
+		visitor.ReplacePath(".response.reachabilityDetails.verifyTime", "2025-01-01T12:34:56.123456Z")
+
+		visitor.ReplacePath(".reachabilityDetails.traces[].endpointInfo.sourcePort", "12345")
+		visitor.ReplacePath(".response.reachabilityDetails.traces[].endpointInfo.sourcePort", "12345")
+	}
+
+	// LicenseManager
+	visitor.replacePaths[".currentBillingInfo.startTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".nextBillingInfo.startTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".response.currentBillingInfo.startTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".response.nextBillingInfo.startTime"] = mockgcpregistry.PlaceholderTimestamp
+
+	// Dataplex
+	visitor.replacePaths[".response.status.updateTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".status.updateTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".response.importResult.updateTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".importResult.updateTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".response.metastoreStatus.updateTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".response.serviceRevision.createTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".response.serviceRevision.updateTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".serviceRevision.createTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".serviceRevision.updateTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".metastoreStatus.updateTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".response.assetStatus.updateTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".assetStatus.updateTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".lakes[].updateTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".lakes[].createTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".lakes[].metastoreStatus.updateTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".lakes[].assetStatus.updateTime"] = mockgcpregistry.PlaceholderTimestamp
+
+	// Dataproc
+	visitor.replacePaths[".metadata.doneTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".response.stateTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".response.runtimeInfo.outputUri"] = "gs://dataproc-staging-us-central1-${projectNumber}-h/google-cloud-dataproc-metainfo/fffc/jobs/srvls-batch/driveroutput"
+	visitor.replacePaths[".response.stateHistory[].stateStartTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".stateHistory[].stateStartTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".stateTime"] = mockgcpregistry.PlaceholderTimestamp
+
+	// spanner
+	visitor.replacePaths[".metadata.progress.startTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".metadata.progress.endTime"] = "2024-04-02T12:34:56.123456Z"
+	visitor.replacePaths[".metadata.instanceConfig.etag"] = "abcdef0123A"
+
+	// Run visitors
+	events.PrettifyJSON(func(requestURL string, obj map[string]any) {
+		if strings.Contains(requestURL, "/backendServices") {
+			removeKeysFromMap(obj, []string{"routingConfig", "enableCDN", "subnetworks"})
+		}
+		if strings.Contains(requestURL, "/networks/") && (strings.Contains(requestURL, "/networks/computenetwork-") || strings.Contains(t.Name(), "computerouterinterface")) {
+			removeKeysFromMap(obj, []string{"subnetworks"})
+		}
+		// Deprecated: try to move these into mockgcp normalizers
+		if err := visitor.visitMap(obj, ""); err != nil {
+			t.Fatalf("error normalizing response: %v", err)
+		}
+	})
+
+	// Run per-service replaceres
+	{
+		replacements := newObjectWalker(t)
+
+		for _, entry := range events {
+			normalizer.ConfigureVisitor(entry.Request.URL, replacements)
+		}
+
+		for _, entry := range events {
+			normalizer.Previsit(entry, replacements)
+		}
+
+		// Replace URLs
+		for _, event := range events {
+			s, err := replacements.RewriteURL(event.Request.URL)
+			if err != nil {
+				t.Fatalf("error normalizing url %q: %v", event.Request.URL, err)
+			}
+			event.Request.URL = s
+		}
+
+		// Replace headers
+		for _, event := range events {
+			if err := replacements.RewriteHeaders(event.Request.Header); err != nil {
+				t.Fatalf("error normalizing request headers: %v", err)
+			}
+			if err := replacements.RewriteHeaders(event.Response.Header); err != nil {
+				t.Fatalf("error normalizing response headers: %v", err)
+			}
+		}
+
+		events.PrettifyJSON(func(requestURL string, obj map[string]any) {
+			if err := replacements.visitMap(obj, ""); err != nil {
+				t.Fatalf("error normalizing response: %v", err)
+			}
+		})
+	}
+}
+
+// Compute URLs: Replace any compute beta URLs with v1 URLs
+func rewriteComputeURL(u string) string {
+	for _, basePath := range []string{"https://compute.googleapis.com/compute", "https://www.googleapis.com/compute"} {
+		if strings.HasPrefix(u, basePath+"/beta/") {
+			u = basePath + "/v1/" + strings.TrimPrefix(u, basePath+"/beta/")
+		}
+	}
+	return u
+}
+
+func normalizeEtagsInURL(u string) string {
+	re := regexp.MustCompile(`etag=[a-zA-Z0-9%]+`)
+	return re.ReplaceAllString(u, "etag=abcdef0123A")
+}
+
+// isGetOperation returns true if this is an operation poll request
+func isGetOperation(e *test.LogEntry) bool {
+	if strings.Contains(e.Request.URL, "/operations/${operationID}") {
+		return true
+	}
+	if e.Request.URL == "/google.longrunning.Operations/GetOperation" {
+		return true
+	}
+	return false
+}
+
+func removeKeysFromMap(obj any, keys []string) {
+	if m, ok := obj.(map[string]any); ok {
+		for _, key := range keys {
+			delete(m, key)
+		}
+		for _, val := range m {
+			removeKeysFromMap(val, keys)
+		}
+	} else if arr, ok := obj.([]any); ok {
+		for _, val := range arr {
+			removeKeysFromMap(val, keys)
+		}
+	}
+}
+
+func findRepoRoot() string {
+	dir, err := os.Getwd()
+	if err != nil {
+		return ""
+	}
+	for {
+		if _, err := os.Stat(filepath.Join(dir, "go.work")); err == nil {
+			return dir
+		}
+		if _, err := os.Stat(filepath.Join(dir, ".git")); err == nil {
+			return dir
+		}
+		parent := filepath.Dir(dir)
+		if parent == dir {
+			break
+		}
+		dir = parent
+	}
+	// Fallback to checking go.mod
+	dir, err = os.Getwd()
+	if err != nil {
+		return ""
+	}
+	for {
+		if _, err := os.Stat(filepath.Join(dir, "go.mod")); err == nil {
+			return dir
+		}
+		parent := filepath.Dir(dir)
+		if parent == dir {
+			break
+		}
+		dir = parent
+	}
+	return ""
+}
+
+func testHasField(t *testing.T, fieldName string) bool {
+	name := t.Name()
+	var absPath string
+
+	repoRoot := findRepoRoot()
+	if repoRoot == "" {
+		return false
+	}
+
+	if strings.Contains(name, "/fixtures/") {
+		var relPath string
+		if idx := strings.Index(name, "/fixtures/"); idx != -1 {
+			relPath = name[idx+len("/fixtures/"):]
+		}
+		if relPath == "" {
+			return false
+		}
+		fullPath := filepath.Join(repoRoot, relPath)
+		if fi, err := os.Stat(fullPath); err == nil && fi.IsDir() {
+			absPath = fullPath
+		} else {
+			targetDirName := relPath
+			if idx := strings.Index(relPath, "/"); idx != -1 {
+				targetDirName = relPath[:idx]
+			}
+			if targetDirName == "pkg" {
+				targetDirName = filepath.Base(relPath)
+			}
+			// Walk pkg/test/resourcefixture/testdata under repoRoot to find a directory named targetDirName
+			var foundPath string
+			_ = filepath.WalkDir(filepath.Join(repoRoot, "pkg/test/resourcefixture/testdata"), func(path string, d os.DirEntry, err error) error {
+				if err != nil {
+					return err
+				}
+				if d.IsDir() && d.Name() == targetDirName {
+					// Check if this directory actually contains .log files to avoid matching parent directories
+					files, err := os.ReadDir(path)
+					if err == nil {
+						hasLog := false
+						for _, f := range files {
+							if !f.IsDir() && strings.HasSuffix(f.Name(), ".log") {
+								hasLog = true
+								break
+							}
+						}
+						if hasLog {
+							foundPath = path
+							return filepath.SkipAll
+						}
+					}
+				}
+				return nil
+			})
+			if foundPath == "" {
+				return false
+			}
+			absPath = foundPath
+		}
+	} else if strings.Contains(name, "/scenarios/") {
+		var relPath string
+		if idx := strings.Index(name, "/scenarios/"); idx != -1 {
+			relPath = name[idx+1:]
+		}
+		if relPath == "" {
+			return false
+		}
+		absPath = filepath.Join(repoRoot, "tests/e2e/testdata", relPath)
+	} else if strings.Contains(name, "TestScripts/") {
+		var relPath string
+		if idx := strings.Index(name, "TestScripts/"); idx != -1 {
+			relPath = name[idx+len("TestScripts/"):]
+		}
+		if relPath == "" {
+			return false
+		}
+		absPath = filepath.Join(repoRoot, "mockgcp", relPath)
+	} else {
+		return false
+	}
+
+	// Read any .log files in the directory to check if fieldName is present
+	files, err := os.ReadDir(absPath)
+	if err != nil {
+		return false
+	}
+	for _, f := range files {
+		if f.IsDir() || !strings.HasSuffix(f.Name(), ".log") {
+			continue
+		}
+		p := filepath.Join(absPath, f.Name())
+		if b, err := os.ReadFile(p); err == nil {
+			if bytes.Contains(b, []byte(fieldName)) {
+				return true
+			}
+		}
+	}
+	return false
+}

@@ -1,0 +1,40 @@
+# Copyright 2024 Google LLC. All Rights Reserved.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+name: oidc_workload_identity_pool_provider
+description: A basic example of an oidc workload identity pool provider
+type: workload_identity_pool_provider
+versions:
+- ga
+resource: samples/oidc.workload_identity_pool_provider.json
+dependencies:
+- samples/project.workload_identity_pool.json
+- samples/basic.cloudresourcemanager.project.json
+updates:
+- resource: samples/update_oidc.workload_identity_pool_provider.json
+  dependencies:
+  - samples/project.workload_identity_pool.json
+  - samples/basic.cloudresourcemanager.project.json
+variables:
+- name: id
+  type: resource_name
+- name: location
+  type: resource_name
+- name: org_id
+  type: org_id
+- name: pool
+  type: resource_name
+- name: provider
+  type: resource_name
+- name: region
+  type: region

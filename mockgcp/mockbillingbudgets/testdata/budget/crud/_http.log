@@ -1,0 +1,225 @@
+POST https://billingbudgets.googleapis.com/v1beta1/billingAccounts/${billingAccountID}/budgets?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "budget": {
+    "allUpdatesRule": {
+      "disableDefaultIamRecipients": false
+    },
+    "amount": {
+      "specifiedAmount": {
+        "currencyCode": "USD",
+        "nanos": 0,
+        "units": "100"
+      }
+    },
+    "displayName": "test-${uniqueId}",
+    "thresholdRules": [
+      {
+        "thresholdPercent": 0.5
+      }
+    ]
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "allUpdatesRule": {},
+  "amount": {
+    "specifiedAmount": {
+      "currencyCode": "USD",
+      "units": "100"
+    }
+  },
+  "budgetFilter": {
+    "calendarPeriod": "MONTH",
+    "creditTypesTreatment": "INCLUDE_ALL_CREDITS"
+  },
+  "displayName": "test-${uniqueId}",
+  "etag": "abcdef0123A=",
+  "name": "billingAccounts/${billingAccountID}/budgets/${billingAccountBudgetId}",
+  "thresholdRules": [
+    {
+      "spendBasis": "CURRENT_SPEND",
+      "thresholdPercent": 0.5
+    }
+  ]
+}
+
+---
+
+GET https://billingbudgets.googleapis.com/v1beta1/billingAccounts/${billingAccountID}/budgets?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "budgets": [
+    {
+      "allUpdatesRule": {},
+      "amount": {
+        "specifiedAmount": {
+          "currencyCode": "USD",
+          "units": "100"
+        }
+      },
+      "budgetFilter": {
+        "calendarPeriod": "MONTH",
+        "creditTypesTreatment": "INCLUDE_ALL_CREDITS"
+      },
+      "displayName": "test-${uniqueId}",
+      "etag": "abcdef0123A=",
+      "name": "billingAccounts/${billingAccountID}/budgets/${billingAccountBudgetId}",
+      "thresholdRules": [
+        {
+          "spendBasis": "CURRENT_SPEND",
+          "thresholdPercent": 0.5
+        }
+      ]
+    }
+  ]
+}
+
+---
+
+GET https://billingbudgets.googleapis.com/v1beta1/billingAccounts/${billingAccountID}/budgets/${billingAccountBudgetId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "allUpdatesRule": {},
+  "amount": {
+    "specifiedAmount": {
+      "currencyCode": "USD",
+      "units": "100"
+    }
+  },
+  "budgetFilter": {
+    "calendarPeriod": "MONTH",
+    "creditTypesTreatment": "INCLUDE_ALL_CREDITS"
+  },
+  "displayName": "test-${uniqueId}",
+  "etag": "abcdef0123A=",
+  "name": "billingAccounts/${billingAccountID}/budgets/${billingAccountBudgetId}",
+  "thresholdRules": [
+    {
+      "spendBasis": "CURRENT_SPEND",
+      "thresholdPercent": 0.5
+    }
+  ]
+}
+
+---
+
+GET https://billingbudgets.googleapis.com/v1beta1/billingAccounts/${billingAccountID}/budgets?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "budgets": [
+    {
+      "allUpdatesRule": {},
+      "amount": {
+        "specifiedAmount": {
+          "currencyCode": "USD",
+          "units": "100"
+        }
+      },
+      "budgetFilter": {
+        "calendarPeriod": "MONTH",
+        "creditTypesTreatment": "INCLUDE_ALL_CREDITS"
+      },
+      "displayName": "test-${uniqueId}",
+      "etag": "abcdef0123A=",
+      "name": "billingAccounts/${billingAccountID}/budgets/${billingAccountBudgetId}",
+      "thresholdRules": [
+        {
+          "spendBasis": "CURRENT_SPEND",
+          "thresholdPercent": 0.5
+        }
+      ]
+    }
+  ]
+}
+
+---
+
+DELETE https://billingbudgets.googleapis.com/v1beta1/billingAccounts/${billingAccountID}/budgets/${billingAccountBudgetId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://billingbudgets.googleapis.com/v1beta1/billingAccounts/${billingAccountID}/budgets?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

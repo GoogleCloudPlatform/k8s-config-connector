@@ -1,0 +1,9 @@
+```release-note:bug
+notebook: fixed bug where updating certain fields would result in a no-op update call instead of a create/destroy. Now, the only field that is updatable in place is `labels`
+```
+```release-note:bug
+notebook: fixed bug where many fields were being written as empty to state, causing a diff on the next plan
+```
+```release-note:bug
+notebook: fixed bug where setting `network` or `subnet` to a full URL would succeed, but cause a diff on the next plan
+```

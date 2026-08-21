@@ -1,0 +1,33 @@
+1c1
+< GET https://pubsub.googleapis.com/v1/projects/${projectId}/schemas/pubsubschema-${uniqueId}?alt=json
+---
+> GET https://pubsub.googleapis.com/v1/projects/${projectId}/schemas/pubsubschema-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+24c24
+< POST https://pubsub.googleapis.com/v1/projects/${projectId}/schemas?alt=json&schemaId=pubsubschema-${uniqueId}
+---
+> POST https://pubsub.googleapis.com/v1/projects/${projectId}/schemas?%24alt=json%3Benum-encoding%3Dint&schemaId=pubsubschema-${uniqueId}
+29,30c29
+<   "name": "pubsubschema-${uniqueId}",
+<   "type": "PROTOCOL_BUFFER"
+---
+>   "type": 1
+48c47
+<   "type": "PROTOCOL_BUFFER"
+---
+>   "type": 1
+53c52
+< GET https://pubsub.googleapis.com/v1/projects/${projectId}/schemas/pubsubschema-${uniqueId}?alt=json
+---
+> GET https://pubsub.googleapis.com/v1/projects/${projectId}/schemas/pubsubschema-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+71c70
+<   "type": "PROTOCOL_BUFFER"
+---
+>   "type": 1
+76c75
+< DELETE https://pubsub.googleapis.com/v1/projects/${projectId}/schemas/pubsubschema-${uniqueId}?alt=json
+---
+> DELETE https://pubsub.googleapis.com/v1/projects/${projectId}/schemas/pubsubschema-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+93c92
+< GET https://pubsub.googleapis.com/v1/projects/${projectId}/schemas/pubsubschema-${uniqueId}?alt=json
+---
+> GET https://pubsub.googleapis.com/v1/projects/${projectId}/schemas/pubsubschema-${uniqueId}?%24alt=json%3Benum-encoding%3Dint

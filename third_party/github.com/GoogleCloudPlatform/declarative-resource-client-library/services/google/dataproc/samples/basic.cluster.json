@@ -1,0 +1,19 @@
+{
+  "name": "{{cluster_name}}",
+  "location": "{{region}}",
+  "project": "projects/{{ref:dataproc.serviceusage.service.json:project}}",
+  "labels": {
+   "my-cluster": "exists"
+  },
+  "config": {
+    "gceClusterConfig": {
+      "zone": "{{zone}}",
+      "tags": ["foo", "bar"]
+    },
+    "softwareConfig": {
+      "properties": {
+        "core:hadoop.tmp.dir": "/tmp"
+      }
+    }
+  }
+}

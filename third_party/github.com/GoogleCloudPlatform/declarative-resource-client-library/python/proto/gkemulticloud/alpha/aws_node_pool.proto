@@ -1,0 +1,127 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+enum GkemulticloudAlphaAwsNodePoolConfigRootVolumeVolumeTypeEnum {
+  GkemulticloudAlphaAwsNodePoolConfigRootVolumeVolumeTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  GkemulticloudAlphaAwsNodePoolConfigRootVolumeVolumeTypeEnumVOLUME_TYPE_UNSPECIFIED = 1;
+  GkemulticloudAlphaAwsNodePoolConfigRootVolumeVolumeTypeEnumGP2 = 2;
+  GkemulticloudAlphaAwsNodePoolConfigRootVolumeVolumeTypeEnumGP3 = 3;
+}
+
+enum GkemulticloudAlphaAwsNodePoolConfigTaintsEffectEnum {
+  GkemulticloudAlphaAwsNodePoolConfigTaintsEffectEnumNO_VALUE_DO_NOT_USE = 0;
+  GkemulticloudAlphaAwsNodePoolConfigTaintsEffectEnumEFFECT_UNSPECIFIED = 1;
+  GkemulticloudAlphaAwsNodePoolConfigTaintsEffectEnumNO_SCHEDULE = 2;
+  GkemulticloudAlphaAwsNodePoolConfigTaintsEffectEnumPREFER_NO_SCHEDULE = 3;
+  GkemulticloudAlphaAwsNodePoolConfigTaintsEffectEnumNO_EXECUTE = 4;
+}
+
+enum GkemulticloudAlphaAwsNodePoolStateEnum {
+  GkemulticloudAlphaAwsNodePoolStateEnumNO_VALUE_DO_NOT_USE = 0;
+  GkemulticloudAlphaAwsNodePoolStateEnumSTATE_UNSPECIFIED = 1;
+  GkemulticloudAlphaAwsNodePoolStateEnumPROVISIONING = 2;
+  GkemulticloudAlphaAwsNodePoolStateEnumRUNNING = 3;
+  GkemulticloudAlphaAwsNodePoolStateEnumRECONCILING = 4;
+  GkemulticloudAlphaAwsNodePoolStateEnumSTOPPING = 5;
+  GkemulticloudAlphaAwsNodePoolStateEnumERROR = 6;
+  GkemulticloudAlphaAwsNodePoolStateEnumDEGRADED = 7;
+}
+
+message GkemulticloudAlphaAwsNodePool {
+  string name = 1;
+  string version = 2;
+  GkemulticloudAlphaAwsNodePoolConfig config = 3;
+  GkemulticloudAlphaAwsNodePoolAutoscaling autoscaling = 4;
+  string subnet_id = 5;
+  GkemulticloudAlphaAwsNodePoolStateEnum state = 6;
+  string uid = 7;
+  bool reconciling = 8;
+  string create_time = 9;
+  string update_time = 10;
+  string etag = 11;
+  map<string, string> annotations = 12;
+  GkemulticloudAlphaAwsNodePoolMaxPodsConstraint max_pods_constraint = 13;
+  string project = 14;
+  string location = 15;
+  string aws_cluster = 16;
+}
+
+message GkemulticloudAlphaAwsNodePoolConfig {
+  string instance_type = 1;
+  GkemulticloudAlphaAwsNodePoolConfigRootVolume root_volume = 2;
+  repeated GkemulticloudAlphaAwsNodePoolConfigTaints taints = 3;
+  map<string, string> labels = 4;
+  map<string, string> tags = 5;
+  string iam_instance_profile = 6;
+  GkemulticloudAlphaAwsNodePoolConfigSshConfig ssh_config = 7;
+  repeated string security_group_ids = 8;
+}
+
+message GkemulticloudAlphaAwsNodePoolConfigRootVolume {
+  int64 size_gib = 1;
+  GkemulticloudAlphaAwsNodePoolConfigRootVolumeVolumeTypeEnum volume_type = 2;
+  int64 iops = 3;
+  string kms_key_arn = 4;
+}
+
+message GkemulticloudAlphaAwsNodePoolConfigTaints {
+  string key = 1;
+  string value = 2;
+  GkemulticloudAlphaAwsNodePoolConfigTaintsEffectEnum effect = 3;
+}
+
+message GkemulticloudAlphaAwsNodePoolConfigSshConfig {
+  string ec2_key_pair = 1;
+}
+
+message GkemulticloudAlphaAwsNodePoolAutoscaling {
+  int64 min_node_count = 1;
+  int64 max_node_count = 2;
+}
+
+message GkemulticloudAlphaAwsNodePoolMaxPodsConstraint {
+  int64 max_pods_per_node = 1;
+}
+
+message ApplyGkemulticloudAlphaAwsNodePoolRequest {
+  GkemulticloudAlphaAwsNodePool resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteGkemulticloudAlphaAwsNodePoolRequest {
+  string service_account_file = 1;
+  GkemulticloudAlphaAwsNodePool resource = 2;
+}
+
+message ListGkemulticloudAlphaAwsNodePoolRequest {
+  string service_account_file = 1;
+	GkemulticloudAlphaAwsNodePool resource = 2;
+}
+
+message ListGkemulticloudAlphaAwsNodePoolResponse {
+  repeated GkemulticloudAlphaAwsNodePool items = 1;
+}
+
+service GkemulticloudAlphaAwsNodePoolService {
+  rpc ApplyGkemulticloudAlphaAwsNodePool(ApplyGkemulticloudAlphaAwsNodePoolRequest) returns (GkemulticloudAlphaAwsNodePool);
+  rpc DeleteGkemulticloudAlphaAwsNodePool(DeleteGkemulticloudAlphaAwsNodePoolRequest) returns (google.protobuf.Empty);
+  rpc ListGkemulticloudAlphaAwsNodePool(ListGkemulticloudAlphaAwsNodePoolRequest) returns (ListGkemulticloudAlphaAwsNodePoolResponse);
+}

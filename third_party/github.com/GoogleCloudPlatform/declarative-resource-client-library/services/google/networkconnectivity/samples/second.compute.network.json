@@ -1,0 +1,5 @@
+{
+  "name": "{{connectivity_network2}}",
+  "project": "{{ref:compute.serviceusage.service.json:project}}",
+  "autoCreateSubnetworks": false
+}

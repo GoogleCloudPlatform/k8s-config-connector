@@ -1,0 +1,18 @@
+label: Config Connector GKEHubMembership
+markdownDescription: Creates yaml for a GKEHubMembership resource
+insertText: |
+  apiVersion: gkehub.cnrm.cloud.google.com/v1beta1
+  kind: GKEHubMembership
+  metadata:
+    labels:
+      \${1:label-one}: \${2:value-one}
+    name: \${3:gkehubmembership-name}
+  spec:
+    location: \${4:global}
+    authority:
+      issuer: \${5:https://container.googleapis.com/v1/projects/[PROJECT_ID?]/locations/us-central1-a/clusters/gkehubmembership-dep}
+    description: \${6:A sample GKE Hub membership}
+    endpoint:
+      gkeCluster:
+        resourceRef:
+          name: \${7:gkehubmembership-dep}

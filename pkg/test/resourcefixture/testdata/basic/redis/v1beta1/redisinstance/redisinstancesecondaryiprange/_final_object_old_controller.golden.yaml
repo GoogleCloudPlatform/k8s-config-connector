@@ -1,0 +1,42 @@
+apiVersion: redis.cnrm.cloud.google.com/v1beta1
+kind: RedisInstance
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/project-id: ${projectId}
+    cnrm.cloud.google.com/state-into-spec: absent
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 3
+  labels:
+    cnrm-test: "true"
+    label-one: value-one
+  name: redisinstances-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  connectMode: DIRECT_PEERING
+  displayName: Sample Redis Instance with Secondary IP Range - Updated
+  memorySizeGb: 16
+  region: us-central1
+  resourceID: redisinstances-${uniqueId}
+  secondaryIpRange: auto
+  tier: STANDARD_HA
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  createTime: "1970-01-01T00:00:00Z"
+  currentLocationId: us-central1-a
+  host: 10.20.30.40
+  nodes:
+  - id: node-0
+    zone: us-central1-a
+  - id: node-1
+    zone: us-central1-a
+  observedGeneration: 3
+  persistenceIamIdentity: serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com
+  port: 6379

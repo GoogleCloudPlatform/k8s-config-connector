@@ -1,0 +1,17 @@
+{
+  "name": "{{deployment}}",
+  "project": "{{project}}",
+  "instanceFilter": {
+    "instances": ["projects/{{project}}/zones/{{zone}}/instances/{{ref:second.compute.instance.json:name}}"]
+  },
+  "recurringSchedule": {
+    "timeZone": {
+      "id": "America/New_York"
+    },
+    "timeOfDay": {},
+    "frequency": "MONTHLY",
+    "monthly": {
+      "monthDay": 8
+    }
+  }
+}

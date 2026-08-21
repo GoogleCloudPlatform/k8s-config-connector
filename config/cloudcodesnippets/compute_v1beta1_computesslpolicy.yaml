@@ -1,0 +1,12 @@
+label: Config Connector ComputeSSLPolicy
+markdownDescription: Creates yaml for a ComputeSSLPolicy resource
+insertText: |
+  apiVersion: compute.cnrm.cloud.google.com/v1beta1
+  kind: ComputeSSLPolicy
+  metadata:
+    name: \${1:computesslpolicy-name}
+  spec:
+    description: \${2:An SSL Policy with a MODERN encryption profile, supporting several
+      modern methods of encryption for TLS 1.1 and up.}
+    minTlsVersion: \${3:TLS_1_1}
+    profile: \${4:MODERN}

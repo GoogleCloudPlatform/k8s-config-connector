@@ -1,0 +1,27 @@
+label: Config Connector EventarcTrigger
+markdownDescription: Creates yaml for a EventarcTrigger resource
+insertText: |
+  apiVersion: eventarc.cnrm.cloud.google.com/v1beta1
+  kind: EventarcTrigger
+  metadata:
+    labels:
+      \${1:foo1}: \${2:bar1}
+    name: \${3:eventarctrigger-name}
+  spec:
+    location: \${4:us-central1}
+    destination:
+      cloudRunService:
+        serviceRef:
+          external: \${5:eventarctrigger-dep}
+        region: \${6:us-central1}
+    serviceAccountRef:
+      name: \${7:eventarctrigger-dep}
+    transport:
+      pubsub:
+        topicRef:
+          name: \${8:eventarctrigger-dep}
+    matchingCriteria:
+    - attribute: \${9:type}
+      value: \${10:google.cloud.pubsub.topic.v1.messagePublished}
+    projectRef:
+      external: \${11:projects/[PROJECT_ID?]}

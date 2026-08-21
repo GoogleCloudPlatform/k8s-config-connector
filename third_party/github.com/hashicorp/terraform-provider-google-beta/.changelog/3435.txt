@@ -1,0 +1,3 @@
+```release-note:bug
+compute: Stopped force-recreation of `google_compute_backend_service` and `google_compute_backend_service` on updating `locality_lb_policy
+```

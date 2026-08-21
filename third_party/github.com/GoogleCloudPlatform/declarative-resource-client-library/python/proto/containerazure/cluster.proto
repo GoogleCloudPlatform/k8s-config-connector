@@ -1,0 +1,158 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum ContainerazureClusterStateEnum {
+  ContainerazureClusterStateEnumNO_VALUE_DO_NOT_USE = 0;
+  ContainerazureClusterStateEnumSTATE_UNSPECIFIED = 1;
+  ContainerazureClusterStateEnumPROVISIONING = 2;
+  ContainerazureClusterStateEnumRUNNING = 3;
+  ContainerazureClusterStateEnumRECONCILING = 4;
+  ContainerazureClusterStateEnumSTOPPING = 5;
+  ContainerazureClusterStateEnumERROR = 6;
+  ContainerazureClusterStateEnumDEGRADED = 7;
+}
+
+message ContainerazureCluster {
+  string name = 1;
+  string description = 2;
+  string azure_region = 3;
+  string resource_group_id = 4;
+  string client = 5;
+  ContainerazureClusterAzureServicesAuthentication azure_services_authentication = 6;
+  ContainerazureClusterNetworking networking = 7;
+  ContainerazureClusterControlPlane control_plane = 8;
+  ContainerazureClusterAuthorization authorization = 9;
+  ContainerazureClusterStateEnum state = 10;
+  string endpoint = 11;
+  string uid = 12;
+  bool reconciling = 13;
+  string create_time = 14;
+  string update_time = 15;
+  string etag = 16;
+  map<string, string> annotations = 17;
+  ContainerazureClusterWorkloadIdentityConfig workload_identity_config = 18;
+  string project = 19;
+  string location = 20;
+  ContainerazureClusterFleet fleet = 21;
+}
+
+message ContainerazureClusterAzureServicesAuthentication {
+  string tenant_id = 1;
+  string application_id = 2;
+}
+
+message ContainerazureClusterNetworking {
+  string virtual_network_id = 1;
+  repeated string pod_address_cidr_blocks = 2;
+  repeated string service_address_cidr_blocks = 3;
+}
+
+message ContainerazureClusterControlPlane {
+  string version = 1;
+  string subnet_id = 2;
+  string vm_size = 3;
+  ContainerazureClusterControlPlaneSshConfig ssh_config = 4;
+  ContainerazureClusterControlPlaneRootVolume root_volume = 5;
+  ContainerazureClusterControlPlaneMainVolume main_volume = 6;
+  ContainerazureClusterControlPlaneDatabaseEncryption database_encryption = 7;
+  map<string, string> tags = 8;
+  ContainerazureClusterControlPlaneProxyConfig proxy_config = 9;
+  repeated ContainerazureClusterControlPlaneReplicaPlacements replica_placements = 10;
+}
+
+message ContainerazureClusterControlPlaneSshConfig {
+  string authorized_key = 1;
+}
+
+message ContainerazureClusterControlPlaneRootVolume {
+  int64 size_gib = 1;
+}
+
+message ContainerazureClusterControlPlaneMainVolume {
+  int64 size_gib = 1;
+}
+
+message ContainerazureClusterControlPlaneDatabaseEncryption {
+  string key_id = 1;
+}
+
+message ContainerazureClusterControlPlaneProxyConfig {
+  string resource_group_id = 1;
+  string secret_id = 2;
+}
+
+message ContainerazureClusterControlPlaneReplicaPlacements {
+  string subnet_id = 1;
+  string azure_availability_zone = 2;
+}
+
+message ContainerazureClusterAuthorization {
+  repeated ContainerazureClusterAuthorizationAdminUsers admin_users = 1;
+  repeated ContainerazureClusterAuthorizationAdminGroups admin_groups = 2;
+}
+
+message ContainerazureClusterAuthorizationAdminUsers {
+  string username = 1;
+}
+
+message ContainerazureClusterAuthorizationAdminGroups {
+  string group = 1;
+}
+
+message ContainerazureClusterWorkloadIdentityConfig {
+  string issuer_uri = 1;
+  string workload_pool = 2;
+  string identity_provider = 3;
+}
+
+message ContainerazureClusterFleet {
+  string project = 1;
+  string membership = 2;
+}
+
+message ApplyContainerazureClusterRequest {
+  ContainerazureCluster resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteContainerazureClusterRequest {
+  string service_account_file = 1;
+  ContainerazureCluster resource = 2;
+}
+
+message ListContainerazureClusterRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListContainerazureClusterResponse {
+  repeated ContainerazureCluster items = 1;
+}
+
+service ContainerazureClusterService {
+  rpc ApplyContainerazureCluster(ApplyContainerazureClusterRequest) returns (ContainerazureCluster);
+  rpc DeleteContainerazureCluster(DeleteContainerazureClusterRequest) returns (google.protobuf.Empty);
+  rpc ListContainerazureCluster(ListContainerazureClusterRequest) returns (ListContainerazureClusterResponse);
+}

@@ -1,0 +1,6 @@
+{
+  "project": "{{ref:compute.serviceusage.service.json:project}}",
+  "name": "{{gateway}}",
+  "location": "{{region}}",
+  "network": "{{ref:project.network.json:selfLink}}"
+}

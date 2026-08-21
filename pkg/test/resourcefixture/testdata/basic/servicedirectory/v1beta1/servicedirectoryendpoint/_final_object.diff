@@ -1,0 +1,12 @@
+6d5
+<     cnrm.cloud.google.com/state-into-spec: absent
+10c9
+<   generation: 3
+---
+>   generation: 2
+23d21
+<   resourceID: servicedirectoryendpoint-${uniqueId}
+34c32
+<   observedGeneration: 3
+---
+>   observedGeneration: 2

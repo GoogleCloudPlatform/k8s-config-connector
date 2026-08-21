@@ -1,0 +1,13 @@
+label: Config Connector Folder
+markdownDescription: Creates yaml for a Folder resource
+insertText: |
+  apiVersion: resourcemanager.cnrm.cloud.google.com/v1beta1
+  kind: Folder
+  metadata:
+    labels:
+      \${1:label-one}: \${2:value-one}
+    name: \${3:folder-name}
+  spec:
+    displayName: \${4:Config Connector Sample}
+    folderRef:
+      external: \${5:[FOLDER_ID?]}

@@ -1,0 +1,12 @@
+- exec: gcloud iam service-accounts create dataproc-${uniqueId}
+# Allow for IAM propagation
+- exec: sleep 15
+- exec: gcloud projects add-iam-policy-binding ${projectId} --member=serviceAccount:dataproc-${uniqueId}@${projectId}.iam.gserviceaccount.com --role=roles/dataproc.worker
+# Allow for IAM propagation
+- exec: sleep 120
+- exec: gcloud dataproc clusters create test-${uniqueId} --region=us-central1 --service-account=dataproc-${uniqueId}@${projectId}.iam.gserviceaccount.com --num-workers=2
+- exec: gcloud dataproc clusters describe test-${uniqueId} --region=us-central1
+- exec: gcloud dataproc clusters update test-${uniqueId} --region=us-central1 --num-workers=3
+- exec: gcloud dataproc clusters list --region=us-central1
+- exec: gcloud dataproc clusters delete test-${uniqueId} --region=us-central1 --quiet
+- exec: gcloud iam service-accounts delete dataproc-${uniqueId}@${projectId}.iam.gserviceaccount.com --quiet

@@ -1,0 +1,559 @@
+// Copyright 2025 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package preview
+
+import (
+	"context"
+	"fmt"
+	"strings"
+	"sync"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
+
+	constants "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/k8s"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/client-go/dynamic"
+	"k8s.io/client-go/kubernetes"
+	"k8s.io/client-go/rest"
+	"k8s.io/klog/v2"
+	"sigs.k8s.io/controller-runtime/pkg/client"
+	"sigs.k8s.io/controller-runtime/pkg/client/apiutil"
+	"sigs.k8s.io/controller-runtime/pkg/reconcile"
+)
+
+// GKNN is the canonical identity for a kube object; it is short for Group-Kind-Namespaced-Name
+// (Version is an encoding artifact, and does not change the identity of the object)
+type GKNN struct {
+	Group     string
+	Kind      string
+	Namespace string
+	Name      string
+}
+
+// Recorder holds the information from reconciling the objects
+type Recorder struct {
+	mutex   sync.Mutex
+	objects map[GKNN]*objectInfo
+
+	reconcileTrackerMutex sync.Mutex
+	// Track if a resource has been reconciled.
+	ReconciledResources map[GKNN]bool
+	// Number of resources has not been reconciled.
+	RemainResourcesCount int
+	// reconciledResults of the preview.
+	reconciledResults *RecorderReconciledResults
+}
+
+// NewRecorder creates a new Recorder.
+func NewRecorder() *Recorder {
+	return &Recorder{
+		objects:              make(map[GKNN]*objectInfo),
+		ReconciledResources:  make(map[GKNN]bool),
+		RemainResourcesCount: 0,
+	}
+}
+
+func (r *Recorder) GetRemainResourcesCount() int {
+	r.reconcileTrackerMutex.Lock()
+	defer r.reconcileTrackerMutex.Unlock()
+	return r.RemainResourcesCount
+}
+
+// objectInfo holds the activity from reconciling the objects
+type objectInfo struct {
+	events []event
+}
+
+type event struct {
+	// eventType is the type of event
+	eventType EventType
+	// diff is the diff that was recorded
+	diff *structuredreporting.Diff
+	// kubeAction is the kube action that was recorded
+	kubeAction *kubeAction
+	// gcpAction is the gcp action that was recorded
+	gcpAction *gcpAction
+	// the type of reconciler that the manager is using
+	reconcilerType k8s.ReconcilerType
+}
+
+type EventType string
+
+const (
+	EventTypeReconcileStart EventType = "reconcileStart"
+	EventTypeReconcileEnd   EventType = "reconcileEnd"
+	EventTypeDiff           EventType = "diff"
+	EventTypeKubeAction     EventType = "kubeAction"
+	EventTypeGCPAction      EventType = "gcpAction"
+)
+
+// kubeAction holds a kubernetes action that was recorded
+type kubeAction struct {
+	method string
+	action Action
+}
+
+// Action indicates whether we blocked or ignored the requested action.
+type Action string
+
+const (
+	// ActionIgnored indicates that the action was ignored.
+	ActionIgnored Action = "ignored"
+	// ActionBlocked indicates that the action was blocked.
+	ActionBlocked Action = "blocked"
+)
+
+// gcpAction holds a GCP action that was recorded
+type gcpAction struct {
+	Method     string
+	URL        string
+	Body       string
+	Action     Action
+	UpdateMask []string
+}
+
+// NewStructuredReportingListener creates a new StructuredReportingListener.
+func (r *Recorder) NewStructuredReportingListener() structuredreporting.Listener {
+	return &structuredReportingListener{recorder: r}
+}
+
+// structuredReportingListener is a listener for structured reporting events.
+type structuredReportingListener struct {
+	recorder *Recorder
+}
+
+// OnError is called by the structured reporting subsystem when an error occurs.
+func (l *structuredReportingListener) OnError(ctx context.Context, err error, args ...any) {
+	blockedGCPError, ok := ExtractBlockedGCPError(err)
+	if !ok {
+		return
+	}
+	l.recorder.recordGCPAction(ctx, blockedGCPError, args, ActionBlocked)
+}
+
+// OnReconcileStart is called by the structured reporting subsystem when a reconcile starts.
+func (l *structuredReportingListener) OnReconcileStart(ctx context.Context, u *unstructured.Unstructured, t k8s.ReconcilerType) {
+	l.recorder.recordReconcileStart(ctx, u, t)
+}
+
+// OnReconcileEnd is called by the structured reporting subsystem when a reconcile ends.
+func (l *structuredReportingListener) OnReconcileEnd(ctx context.Context, u *unstructured.Unstructured, result reconcile.Result, err error, t k8s.ReconcilerType) {
+	l.recorder.recordReconcileEnd(ctx, u, result, err, t)
+}
+
+// OnDiff is called by the structured reporting subsystem when a diff occurs.
+func (l *structuredReportingListener) OnDiff(ctx context.Context, diff *structuredreporting.Diff) {
+	l.recorder.recordDiff(ctx, diff)
+}
+
+// RecordBlockedKubeMethod is called by the interceptingKubeClient when a write operation is blocked.
+func (r *Recorder) RecordBlockedKubeMethod(ctx context.Context, scheme *runtime.Scheme, method string, args ...any) {
+	r.recordKubeAction(ctx, scheme, method, args, ActionBlocked)
+}
+
+// RecordIgnoredKubeMethod is called by the interceptingKubeClient when a read operation is ignored.
+func (r *Recorder) RecordIgnoredKubeMethod(ctx context.Context, scheme *runtime.Scheme, method string, args ...any) {
+	r.recordKubeAction(ctx, scheme, method, args, ActionIgnored)
+}
+
+// recordDiff captures the diff into our recorder.
+func (r *Recorder) recordDiff(ctx context.Context, diff *structuredreporting.Diff) {
+	log := klog.FromContext(ctx)
+
+	gknn := GKNN{}
+
+	if u := diff.Object; u != nil {
+		gknn = gknnFromUnstructured(u)
+	}
+
+	if done := r.GKNNDoneReconcile(gknn); done {
+		return
+	}
+
+	log.V(1).Info("recordDiffs", "gknn", gknn)
+
+	info := r.getObjectInfo(gknn)
+	diff.Object = nil // Clear reference to the large unstructured object to enable dynamic GC reclamation
+	info.events = append(info.events, event{
+		eventType: EventTypeDiff,
+		diff:      diff,
+	})
+}
+
+// recordReconcileStart captures the reconcile start into our recorder.
+func (r *Recorder) recordReconcileStart(ctx context.Context, u *unstructured.Unstructured, t k8s.ReconcilerType) {
+	gknn := gknnFromUnstructured(u)
+	if done := r.GKNNDoneReconcile(gknn); done {
+		return
+	}
+
+	info := r.getObjectInfo(gknn)
+	info.events = append(info.events, event{
+		eventType:      EventTypeReconcileStart,
+		reconcilerType: t,
+	})
+}
+
+// recordReconcileEnd captures the reconcile end into our recorder.
+func (r *Recorder) recordReconcileEnd(ctx context.Context, u *unstructured.Unstructured, result reconcile.Result, err error, t k8s.ReconcilerType) {
+	gknn := gknnFromUnstructured(u)
+
+	if done := r.GKNNDoneReconcile(gknn); done {
+		return
+	}
+
+	info := r.getObjectInfo(gknn)
+	info.events = append(info.events, event{
+		eventType:      EventTypeReconcileEnd,
+		reconcilerType: t,
+	})
+	r.reconcileTrackerMutex.Lock()
+	defer r.reconcileTrackerMutex.Unlock()
+	r.ReconciledResources[gknn] = true
+	r.RemainResourcesCount--
+}
+
+func (r *Recorder) GKNNDoneReconcile(gknn GKNN) bool {
+	r.reconcileTrackerMutex.Lock()
+	defer r.reconcileTrackerMutex.Unlock()
+	return r.ReconciledResources[gknn]
+}
+
+func gknnFromUnstructured(u *unstructured.Unstructured) GKNN {
+	return GKNN{
+		Group:     u.GroupVersionKind().Group,
+		Kind:      u.GroupVersionKind().Kind,
+		Namespace: u.GetNamespace(),
+		Name:      u.GetName(),
+	}
+}
+
+// recordKubeAction captures the kube action into our recorder.
+func (r *Recorder) recordKubeAction(ctx context.Context, scheme *runtime.Scheme, method string, args []any, action Action) {
+	klog.V(1).Infof("recordKubeAction %v %v %v", method, args, action)
+	var gknn GKNN
+
+	kubeAction := &kubeAction{
+		method: method,
+		action: action,
+	}
+
+	for _, arg := range args {
+		switch arg := arg.(type) {
+		case *unstructured.Unstructured:
+			gvk := arg.GroupVersionKind()
+			gknn = GKNN{
+				Group:     gvk.Group,
+				Kind:      gvk.Kind,
+				Namespace: arg.GetNamespace(),
+				Name:      arg.GetName(),
+			}
+			// We could capture the object here: kubeAction.object = arg.DeepCopy()
+
+		case client.Object:
+			if scheme == nil {
+				klog.V(2).Infof("scheme is nil, cannot resolve GVK for %T", arg)
+				continue
+			}
+			gvk, err := apiutil.GVKForObject(arg, scheme)
+			if err != nil {
+				klog.V(2).Infof("apiutil.GVKForObject failed: %v", err)
+			}
+			gknn = GKNN{
+				Group:     gvk.Group,
+				Kind:      gvk.Kind,
+				Namespace: arg.GetNamespace(),
+				Name:      arg.GetName(),
+			}
+
+		case []client.SubResourceUpdateOption:
+			// ignore
+
+		case []client.UpdateOption:
+			// ignore
+
+		default:
+			klog.Fatalf("unhandled arg type %T", arg)
+		}
+	}
+
+	if done := r.GKNNDoneReconcile(gknn); done {
+		return
+	}
+
+	info := r.getObjectInfo(gknn)
+	info.events = append(info.events, event{
+		eventType:  EventTypeKubeAction,
+		kubeAction: kubeAction,
+	})
+
+}
+
+// recordGCPAction captures the GCP action into our recorder.
+func (r *Recorder) recordGCPAction(ctx context.Context, err *BlockedGCPError, args []any, action Action) {
+	var gknn GKNN
+
+	gcpAction := &gcpAction{
+		Method:     err.Method,
+		Body:       err.Body,
+		URL:        err.URL,
+		Action:     action,
+		UpdateMask: err.UpdateMask,
+	}
+
+	for _, arg := range args {
+		switch arg := arg.(type) {
+		case *k8s.Resource:
+			group := strings.Split(arg.APIVersion, "/")[0]
+			gknn = GKNN{
+				Group:     group,
+				Kind:      arg.Kind,
+				Namespace: arg.Namespace,
+				Name:      arg.Name,
+			}
+		default:
+			klog.Fatalf("unhandled arg type %T", arg)
+		}
+	}
+
+	if done := r.GKNNDoneReconcile(gknn); done {
+		return
+	}
+
+	info := r.getObjectInfo(gknn)
+	info.events = append(info.events, event{
+		eventType: EventTypeGCPAction,
+		gcpAction: gcpAction,
+	})
+}
+
+// getObjectInfo returns the objectInfo for the given GKNN.
+// If there is no objectInfo, it creates a new one and returns it.
+func (r *Recorder) getObjectInfo(gknn GKNN) *objectInfo {
+	r.mutex.Lock()
+	defer r.mutex.Unlock()
+
+	info := r.objects[gknn]
+	if info == nil {
+		info = &objectInfo{}
+		r.objects[gknn] = info
+	}
+	return info
+}
+
+func (r *Recorder) DoneReconciling() bool {
+	r.reconcileTrackerMutex.Lock()
+	defer r.reconcileTrackerMutex.Unlock()
+	return r.RemainResourcesCount == 0
+}
+
+// TODO: Implement concurrent worker by GVRs.
+func (r *Recorder) PreloadGKNN(ctx context.Context, config *rest.Config, namespace string) error {
+	r.reconcileTrackerMutex.Lock()
+	defer r.reconcileTrackerMutex.Unlock()
+
+	log := klog.FromContext(ctx)
+	log.V(0).Info("Preloading the list of resources to reconcile")
+	// Make a copy of config to increase QPS and burst.
+	// This would not effect the config for the Manager.
+	config = rest.CopyConfig(config)
+
+	if config.QPS == 0 {
+		config.QPS = 100
+		config.Burst = 20
+	}
+	clientset, err := kubernetes.NewForConfig(config)
+	if err != nil {
+		return fmt.Errorf("error creating Kubernetes clientset: %w", err)
+	}
+
+	discoveryClient := clientset.Discovery()
+	dynamicClient, err := dynamic.NewForConfig(config)
+	if err != nil {
+		return fmt.Errorf("error creating dynamic client: %w", err)
+	}
+	apiResourceLists, err := discoveryClient.ServerPreferredResources()
+	if err != nil {
+		return fmt.Errorf("failed to get preferred resources: %w", err)
+	}
+	for _, apiResourceList := range apiResourceLists {
+		if !strings.Contains(apiResourceList.GroupVersion, "."+constants.CNRMDomain+"/") {
+			continue
+		}
+
+		apiResourceListGroupVersion, err := schema.ParseGroupVersion(apiResourceList.GroupVersion)
+		if err != nil {
+			log.V(1).Info("skipping unparseable groupVersion", apiResourceList.GroupVersion)
+			continue
+		}
+		for _, apiResource := range apiResourceList.APIResources {
+			if !apiResource.Namespaced {
+				continue
+			}
+			if !contains(apiResource.Verbs, "list") {
+				continue
+			}
+			gvr, ok := toTrackedGVR(apiResource, apiResourceListGroupVersion)
+			if !ok {
+				continue
+			}
+			var resources *unstructured.UnstructuredList
+			if namespace != "" {
+				resources, err = dynamicClient.Resource(gvr).Namespace(namespace).List(ctx, metav1.ListOptions{})
+				if err != nil {
+					return fmt.Errorf("fetching gvr %s resources: %w", gvr, err)
+				}
+			} else {
+				resources, err = dynamicClient.Resource(gvr).List(ctx, metav1.ListOptions{})
+				if err != nil {
+					return fmt.Errorf("fetching gvr %s resources: %w", gvr, err)
+				}
+			}
+			for _, resource := range resources.Items {
+				r.ReconciledResources[GKNN{
+					Group:     gvr.Group,
+					Kind:      resource.GetKind(),
+					Namespace: resource.GetNamespace(),
+					Name:      resource.GetName(),
+				}] = false
+			}
+			r.RemainResourcesCount += len(resources.Items)
+		}
+	}
+	log.V(0).Info("Successfully preloaded the list of resources to reconcile", "count", r.RemainResourcesCount)
+	return nil
+}
+
+func (recorder *Recorder) GetOrCreateReconciledResults() *RecorderReconciledResults {
+	if recorder.reconciledResults == nil {
+		recorder.reconciledResults = recorder.GenerateRecorderReconciledResults()
+	}
+	return recorder.reconciledResults
+}
+
+// contains checks if a slice contains a specific string.
+func contains(slice []string, str string) bool {
+	for _, s := range slice {
+		if strings.EqualFold(s, str) {
+			return true
+		}
+	}
+	return false
+}
+
+// toTrackedGVR converts an APIResource to a tracked GVR.
+// It returns the GVR and a boolean indicating whether it should be tracked.
+func toTrackedGVR(apiResource metav1.APIResource, apiResourceListGroupVersion schema.GroupVersion) (schema.GroupVersionResource, bool) {
+	gvr := schema.GroupVersionResource{
+		Group:    apiResource.Group,
+		Version:  apiResource.Version,
+		Resource: apiResource.Name,
+	}
+	if gvr.Group == "" {
+		gvr.Group = apiResourceListGroupVersion.Group
+	}
+	if gvr.Version == "" {
+		gvr.Version = apiResourceListGroupVersion.Version
+	}
+	// Not tracking CC and CCC objects.
+	if strings.HasSuffix(gvr.Group, constants.CoreCNRMGroup) {
+		return gvr, false
+	}
+
+	// Not tracking non-CNRM objects.
+	if !(strings.HasSuffix(gvr.Group, "."+constants.CNRMDomain) || gvr.Group == constants.CNRMDomain) {
+		return gvr, false
+	}
+
+	// Not tracking ignored CRDs.
+	if _, ok := constants.IgnoredCRDList[strings.ToLower(gvr.Resource)+"."+strings.ToLower(gvr.Group)]; ok {
+		return gvr, false
+	}
+	return gvr, true
+}
+
+func (r *Recorder) DeepCopy() *Recorder {
+	r.mutex.Lock()
+	defer r.mutex.Unlock()
+	r.reconcileTrackerMutex.Lock()
+	defer r.reconcileTrackerMutex.Unlock()
+
+	res := &Recorder{
+		objects:              make(map[GKNN]*objectInfo),
+		ReconciledResources:  make(map[GKNN]bool),
+		RemainResourcesCount: r.RemainResourcesCount,
+	}
+
+	for k, v := range r.objects {
+		res.objects[k] = v.DeepCopy()
+	}
+
+	for k, v := range r.ReconciledResources {
+		res.ReconciledResources[k] = v
+	}
+
+	return res
+}
+
+func (i *objectInfo) DeepCopy() *objectInfo {
+	if i == nil {
+		return nil
+	}
+	res := &objectInfo{
+		events: make([]event, len(i.events)),
+	}
+	for idx, e := range i.events {
+		res.events[idx] = e.DeepCopy()
+	}
+	return res
+}
+
+func (e event) DeepCopy() event {
+	res := event{
+		eventType:      e.eventType,
+		reconcilerType: e.reconcilerType,
+	}
+	if e.diff != nil {
+		res.diff = &structuredreporting.Diff{
+			IsNewObject: e.diff.IsNewObject,
+			Fields:      make([]structuredreporting.DiffField, len(e.diff.Fields)),
+		}
+
+		copy(res.diff.Fields, e.diff.Fields)
+	}
+	if e.kubeAction != nil {
+		res.kubeAction = &kubeAction{
+			method: e.kubeAction.method,
+			action: e.kubeAction.action,
+		}
+	}
+	if e.gcpAction != nil {
+		res.gcpAction = &gcpAction{
+			Method: e.gcpAction.Method,
+			URL:    e.gcpAction.URL,
+			Body:   e.gcpAction.Body,
+			Action: e.gcpAction.Action,
+		}
+		if e.gcpAction.UpdateMask != nil {
+			res.gcpAction.UpdateMask = make([]string, len(e.gcpAction.UpdateMask))
+			copy(res.gcpAction.UpdateMask, e.gcpAction.UpdateMask)
+		}
+	}
+	return res
+}

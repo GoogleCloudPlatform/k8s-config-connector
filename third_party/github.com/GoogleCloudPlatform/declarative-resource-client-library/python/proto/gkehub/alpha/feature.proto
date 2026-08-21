@@ -1,0 +1,171 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum GkehubAlphaFeatureResourceStateStateEnum {
+  GkehubAlphaFeatureResourceStateStateEnumNO_VALUE_DO_NOT_USE = 0;
+  GkehubAlphaFeatureResourceStateStateEnumSTATE_UNSPECIFIED = 1;
+  GkehubAlphaFeatureResourceStateStateEnumENABLING = 2;
+  GkehubAlphaFeatureResourceStateStateEnumACTIVE = 3;
+  GkehubAlphaFeatureResourceStateStateEnumDISABLING = 4;
+  GkehubAlphaFeatureResourceStateStateEnumUPDATING = 5;
+  GkehubAlphaFeatureResourceStateStateEnumSERVICE_UPDATING = 6;
+}
+
+enum GkehubAlphaFeatureSpecFleetobservabilityLoggingConfigDefaultConfigModeEnum {
+  GkehubAlphaFeatureSpecFleetobservabilityLoggingConfigDefaultConfigModeEnumNO_VALUE_DO_NOT_USE = 0;
+  GkehubAlphaFeatureSpecFleetobservabilityLoggingConfigDefaultConfigModeEnumMODE_UNSPECIFIED = 1;
+  GkehubAlphaFeatureSpecFleetobservabilityLoggingConfigDefaultConfigModeEnumCOPY = 2;
+  GkehubAlphaFeatureSpecFleetobservabilityLoggingConfigDefaultConfigModeEnumMOVE = 3;
+}
+
+enum GkehubAlphaFeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfigModeEnum {
+  GkehubAlphaFeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfigModeEnumNO_VALUE_DO_NOT_USE = 0;
+  GkehubAlphaFeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfigModeEnumMODE_UNSPECIFIED = 1;
+  GkehubAlphaFeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfigModeEnumCOPY = 2;
+  GkehubAlphaFeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfigModeEnumMOVE = 3;
+}
+
+enum GkehubAlphaFeatureStateStateCodeEnum {
+  GkehubAlphaFeatureStateStateCodeEnumNO_VALUE_DO_NOT_USE = 0;
+  GkehubAlphaFeatureStateStateCodeEnumCODE_UNSPECIFIED = 1;
+  GkehubAlphaFeatureStateStateCodeEnumOK = 2;
+  GkehubAlphaFeatureStateStateCodeEnumWARNING = 3;
+  GkehubAlphaFeatureStateStateCodeEnumERROR = 4;
+}
+
+enum GkehubAlphaFeatureStateServicemeshAnalysisMessagesMessageBaseLevelEnum {
+  GkehubAlphaFeatureStateServicemeshAnalysisMessagesMessageBaseLevelEnumNO_VALUE_DO_NOT_USE = 0;
+  GkehubAlphaFeatureStateServicemeshAnalysisMessagesMessageBaseLevelEnumLEVEL_UNSPECIFIED = 1;
+  GkehubAlphaFeatureStateServicemeshAnalysisMessagesMessageBaseLevelEnumERROR = 2;
+  GkehubAlphaFeatureStateServicemeshAnalysisMessagesMessageBaseLevelEnumWARNING = 3;
+  GkehubAlphaFeatureStateServicemeshAnalysisMessagesMessageBaseLevelEnumINFO = 4;
+}
+
+message GkehubAlphaFeature {
+  string name = 1;
+  map<string, string> labels = 2;
+  GkehubAlphaFeatureResourceState resource_state = 3;
+  GkehubAlphaFeatureSpec spec = 4;
+  GkehubAlphaFeatureState state = 5;
+  string create_time = 6;
+  string update_time = 7;
+  string delete_time = 8;
+  string project = 9;
+  string location = 10;
+}
+
+message GkehubAlphaFeatureResourceState {
+  GkehubAlphaFeatureResourceStateStateEnum state = 1;
+  bool has_resources = 2;
+}
+
+message GkehubAlphaFeatureSpec {
+  GkehubAlphaFeatureSpecMulticlusteringress multiclusteringress = 1;
+  GkehubAlphaFeatureSpecCloudauditlogging cloudauditlogging = 2;
+  GkehubAlphaFeatureSpecFleetobservability fleetobservability = 3;
+}
+
+message GkehubAlphaFeatureSpecMulticlusteringress {
+  string config_membership = 1;
+}
+
+message GkehubAlphaFeatureSpecCloudauditlogging {
+  repeated string allowlisted_service_accounts = 1;
+}
+
+message GkehubAlphaFeatureSpecFleetobservability {
+  GkehubAlphaFeatureSpecFleetobservabilityLoggingConfig logging_config = 1;
+}
+
+message GkehubAlphaFeatureSpecFleetobservabilityLoggingConfig {
+  GkehubAlphaFeatureSpecFleetobservabilityLoggingConfigDefaultConfig default_config = 1;
+  GkehubAlphaFeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig fleet_scope_logs_config = 2;
+}
+
+message GkehubAlphaFeatureSpecFleetobservabilityLoggingConfigDefaultConfig {
+  GkehubAlphaFeatureSpecFleetobservabilityLoggingConfigDefaultConfigModeEnum mode = 1;
+}
+
+message GkehubAlphaFeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfig {
+  GkehubAlphaFeatureSpecFleetobservabilityLoggingConfigFleetScopeLogsConfigModeEnum mode = 1;
+}
+
+message GkehubAlphaFeatureState {
+  GkehubAlphaFeatureStateState state = 1;
+  GkehubAlphaFeatureStateServicemesh servicemesh = 2;
+}
+
+message GkehubAlphaFeatureStateState {
+  GkehubAlphaFeatureStateStateCodeEnum code = 1;
+  string description = 2;
+  string update_time = 3;
+}
+
+message GkehubAlphaFeatureStateServicemesh {
+  repeated GkehubAlphaFeatureStateServicemeshAnalysisMessages analysis_messages = 1;
+}
+
+message GkehubAlphaFeatureStateServicemeshAnalysisMessages {
+  GkehubAlphaFeatureStateServicemeshAnalysisMessagesMessageBase message_base = 1;
+  string description = 2;
+  repeated string resource_paths = 3;
+  map<string, string> args = 4;
+}
+
+message GkehubAlphaFeatureStateServicemeshAnalysisMessagesMessageBase {
+  GkehubAlphaFeatureStateServicemeshAnalysisMessagesMessageBaseType type = 1;
+  GkehubAlphaFeatureStateServicemeshAnalysisMessagesMessageBaseLevelEnum level = 2;
+  string documentation_url = 3;
+}
+
+message GkehubAlphaFeatureStateServicemeshAnalysisMessagesMessageBaseType {
+  string display_name = 1;
+  string code = 2;
+}
+
+message ApplyGkehubAlphaFeatureRequest {
+  GkehubAlphaFeature resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteGkehubAlphaFeatureRequest {
+  string service_account_file = 1;
+  GkehubAlphaFeature resource = 2;
+}
+
+message ListGkehubAlphaFeatureRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListGkehubAlphaFeatureResponse {
+  repeated GkehubAlphaFeature items = 1;
+}
+
+service GkehubAlphaFeatureService {
+  rpc ApplyGkehubAlphaFeature(ApplyGkehubAlphaFeatureRequest) returns (GkehubAlphaFeature);
+  rpc DeleteGkehubAlphaFeature(DeleteGkehubAlphaFeatureRequest) returns (google.protobuf.Empty);
+  rpc ListGkehubAlphaFeature(ListGkehubAlphaFeatureRequest) returns (ListGkehubAlphaFeatureResponse);
+}

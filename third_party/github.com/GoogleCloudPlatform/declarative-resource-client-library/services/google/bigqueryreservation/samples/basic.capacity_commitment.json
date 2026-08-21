@@ -1,0 +1,6 @@
+{
+  "project": "{{project}}",
+  "location": "US",
+  "slotCount": 100,
+  "plan": "FLEX"
+}

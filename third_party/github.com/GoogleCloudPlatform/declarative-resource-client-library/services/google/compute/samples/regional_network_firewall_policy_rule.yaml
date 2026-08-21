@@ -1,0 +1,44 @@
+# Copyright 2024 Google LLC. All Rights Reserved.
+# 
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+# 
+#     http://www.apache.org/licenses/LICENSE-2.0
+# 
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+name: regional_network_firewall_policy_rule
+description: An example of a regional compute network firewall policy rule
+type: network_firewall_policy_rule
+versions:
+- ga
+resource: samples/regional.network_firewall_policy_rule.json
+dependencies:
+- samples/regional.networksecurity.address_group.json
+- samples/regional.network_firewall_policy.json
+- samples/first.cloudresourcemanager.tag_key.json
+- samples/first.cloudresourcemanager.tag_value.json
+- samples/second.cloudresourcemanager.tag_key.json
+- samples/second.cloudresourcemanager.tag_value.json
+- samples/basic.network.json
+variables:
+- name: compute_network
+  type: resource_name
+- name: org_id
+  type: org_id
+- name: policy
+  type: resource_name
+- name: project
+  type: project
+- name: region
+  type: region
+- name: tag_key1
+  type: resource_name
+- name: tag_key2
+  type: resource_name
+- name: tag_value1
+  type: resource_name

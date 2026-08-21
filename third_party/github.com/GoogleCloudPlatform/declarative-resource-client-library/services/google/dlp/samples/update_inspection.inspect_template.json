@@ -1,0 +1,51 @@
+{
+  "parent": "organizations/{{org_id}}",
+  "location": "global",
+  "inspectConfig": {
+    "infoTypes": [
+      {
+        "name": "AGE"
+      }
+    ],
+    "ruleSet": [
+      {
+        "infoTypes": [
+          {
+            "name": "AGE"
+          }
+        ],
+        "rules": [
+          {
+            "hotwordRule": {
+              "hotwordRegex": {
+                "pattern": "([12])(\\d{1,2})",
+                "groupIndexes": [0, 2]
+              },
+              "proximity": {
+                "windowBefore": 3,
+                "windowAfter": 4
+              },
+              "likelihoodAdjustment": {
+                "fixedLikelihood": "UNLIKELY"
+              }
+            }
+          },
+          {
+            "hotwordRule": {
+              "hotwordRegex": {
+                "pattern": "\\d+"
+              },
+              "proximity": {
+                "windowBefore": 1,
+                "windowAfter": 2
+              },
+              "likelihoodAdjustment": {
+                "relativeLikelihood": -1
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

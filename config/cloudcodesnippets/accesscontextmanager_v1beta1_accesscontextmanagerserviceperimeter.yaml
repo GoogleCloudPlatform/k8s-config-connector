@@ -1,0 +1,63 @@
+label: Config Connector AccessContextManagerServicePerimeter
+markdownDescription: Creates yaml for a AccessContextManagerServicePerimeter resource
+insertText: |
+  apiVersion: accesscontextmanager.cnrm.cloud.google.com/v1beta1
+  kind: AccessContextManagerServicePerimeter
+  metadata:
+    name: \${1:accesscontextmanagerserviceperimeter-name}
+  spec:
+    spec:
+      accessLevels:
+      - name: \${2:serviceperimeterdep2}
+      resources:
+      - projectRef:
+          external: \${3:projects/[PROJECT_NUMBER1]}
+      - projectRef:
+          external: \${4:projects/[PROJECT_NUMBER2]}
+      restrictedServices:
+      - \${5:storage.googleapis.com}
+      vpcAccessibleServices:
+        allowedServices:
+        - \${6:storage.googleapis.com}
+        - \${7:pubsub.googleapis.com}
+        enableRestriction: \${8:true}
+      egressPolicies:
+      - egressFrom:
+          identities:
+          - name: \${9:serviceperimeterengressdep}
+      - egressTo:
+          resources:
+          - projectRef:
+              external: \${10:projects/[PROJECT_NUMBER1]}
+      ingressPolicies:
+      - ingressFrom:
+          identities:
+          - name: \${11:serviceperimeteringressdep}
+          sources:
+          - accessLevelRef:
+              name: \${12:serviceperimeterdep2}
+        ingressTo:
+          resources:
+          - projectRef:
+              external: \${13:projects/[PROJECT_NUMBER2]}
+    status:
+      accessLevels:
+      - name: \${14:serviceperimeterdep2}
+      resources:
+      - projectRef:
+          external: \${15:projects/[PROJECT_NUMBER3]}
+      - projectRef:
+          external: \${16:projects/[PROJECT_NUMBER4]}
+      restrictedServices:
+      - \${17:bigquery.googleapis.com}
+      vpcAccessibleServices:
+        allowedServices:
+        - \${18:bigquery.googleapis.com}
+        - \${19:logging.googleapis.com}
+        enableRestriction: \${20:true}
+    title: \${21:Service Perimeter created by Config Connector}
+    useExplicitDryRunSpec: \${22:true}
+    accessPolicyRef:
+      external: \${23:accessPolicies/[ACCESS_POLICY_NUMBER]}
+    description: \${24:A Service Perimeter Created by Config Connector}
+    perimeterType: \${25:PERIMETER_TYPE_REGULAR}

@@ -1,0 +1,260 @@
+GET https://hypercomputecluster.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/hccmin?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fclusters%2Fhccmin
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/clusters/hccmin' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://hypercomputecluster.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters?%24alt=json%3Benum-encoding%3Dint&clusterId=hccmin
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "description": "Minimal Hypercompute Cluster",
+  "name": "projects/${projectId}/locations/us-central1/clusters/hccmin",
+  "networkResources": {
+    "net-resource-1": {
+      "config": {
+        "existingNetwork": {
+          "network": "projects/${projectId}/global/networks/default",
+          "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
+        }
+      }
+    }
+  },
+  "orchestrator": {
+    "slurm": {
+      "loginNodes": {
+        "count": "1",
+        "enableOsLogin": true,
+        "enablePublicIps": true,
+        "machineType": "e2-standard-4",
+        "zone": "us-central1-a"
+      }
+    }
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.hypercomputecluster.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/clusters/hccmin",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://hypercomputecluster.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.hypercomputecluster.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/clusters/hccmin",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.hypercomputecluster.v1.Cluster",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "Minimal Hypercompute Cluster",
+    "name": "projects/${projectId}/locations/us-central1/clusters/hccmin",
+    "networkResources": {
+      "net-resource-1": {
+        "config": {
+          "existingNetwork": {
+            "network": "projects/${projectId}/global/networks/default",
+            "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
+          }
+        },
+        "network": {
+          "network": "projects/${projectId}/global/networks/default",
+          "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
+        }
+      }
+    },
+    "orchestrator": {
+      "slurm": {
+        "loginNodes": {
+          "count": "1",
+          "enableOsLogin": true,
+          "enablePublicIps": true,
+          "instances": [
+            {
+              "instance": "projects/${projectId}/zones/us-central1-a/instances/hccmin-login-001"
+            }
+          ],
+          "machineType": "e2-standard-4",
+          "zone": "us-central1-a"
+        }
+      }
+    },
+    "reconciling": true,
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GET https://hypercomputecluster.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/hccmin?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fclusters%2Fhccmin
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Minimal Hypercompute Cluster",
+  "name": "projects/${projectId}/locations/us-central1/clusters/hccmin",
+  "networkResources": {
+    "net-resource-1": {
+      "config": {
+        "existingNetwork": {
+          "network": "projects/${projectId}/global/networks/default",
+          "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
+        }
+      },
+      "network": {
+        "network": "projects/${projectId}/global/networks/default",
+        "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/default"
+      }
+    }
+  },
+  "orchestrator": {
+    "slurm": {
+      "loginNodes": {
+        "count": "1",
+        "enableOsLogin": true,
+        "enablePublicIps": true,
+        "instances": [
+          {
+            "instance": "projects/${projectId}/zones/us-central1-a/instances/hccmin-login-001"
+          }
+        ],
+        "machineType": "e2-standard-4",
+        "zone": "us-central1-a"
+      }
+    }
+  },
+  "reconciling": true,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://hypercomputecluster.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/hccmin?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fclusters%2Fhccmin
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.hypercomputecluster.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/clusters/hccmin",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GET https://hypercomputecluster.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.hypercomputecluster.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/clusters/hccmin",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}

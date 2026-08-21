@@ -1,0 +1,212 @@
+{
+  "name": "{{resource_name}}",
+  "description": "A test HttpRoute",
+  "labels": {
+    "foo": "bar"
+  },
+  "meshes": ["projects/{{project}}/locations/global/meshes/{{ref:basichttp.networkservices.mesh.json:name}}"],
+  "gateways": ["projects/{{project}}/locations/global/gateways/{{ref:basichttp.networkservices.gateway.json:name}}"],
+
+  "project": "{{project}}",
+  "location": "global",
+  "hostnames": ["test1", "test2"],
+  "rules": [
+    {
+      "matches": [
+        {
+          "fullPathMatch": "/foo/bar",
+          "headers": [
+            {
+              "header": "foo-header",
+              "prefixMatch": "bar-value"
+            }
+          ]
+        },
+        {
+          "prefixMatch": "/foo/",
+          "ignoreCase": true
+        },
+        {
+          "regexMatch": "/foo/.*/bar/.*"
+        },
+        {
+          "prefixMatch": "/",
+          "headers": [
+            {
+              "header": "foo",
+              "exactMatch": "bar"
+            },
+            {
+              "header": "foo",
+              "regexMatch": "b.*ar"
+            },
+            {
+              "header": "foo",
+              "prefixMatch": "ba"
+            },
+            {
+              "header": "foo",
+              "presentMatch": true
+            },
+            {
+              "header": "foo",
+              "suffixMatch": "ar"
+            },
+            {
+              "header": "foo",
+              "rangeMatch": {
+                "start": 0,
+                "end": 5
+              },
+              "invertMatch": true
+            }
+          ]
+        },
+        {
+          "prefixMatch": "/",
+          "queryParameters": [
+            {
+              "queryParameter": "foo",
+              "exactMatch": "bar"
+            },
+            {
+              "queryParameter": "foo",
+              "regexMatch": ".*bar.*"
+            },
+            {
+              "queryParameter": "foo",
+              "presentMatch": true
+            }
+          ]
+        }
+      ],
+      "action": {
+        "destinations": [
+          {
+            "serviceName": "projects/{{project}}/locations/global/backendServices/{{ref:basichttp.compute.backend_service.json:name}}",
+            "weight": 1
+          },
+          {
+            "serviceName": "projects/{{project}}/locations/global/backendServices/{{ref:basichttp.compute.backend_service.json:name}}",
+            "weight": 1
+          }
+        ],
+        "requestMirrorPolicy": {
+          "destination": {
+            "serviceName": "projects/{{project}}/locations/global/backendServices/{{ref:basichttp.compute.backend_service.json:name}}"
+          }
+        },
+        "urlRewrite": {
+          "pathPrefixRewrite": "foo",
+          "hostRewrite": "foo"
+        },
+        "corsPolicy": {
+          "allowOrigins": [
+            "foo.com",
+            "bar.com"
+          ],
+          "allowOriginRegexes": [
+            ".*.foo.com",
+            ".*.bar.com"
+          ],
+          "allowMethods": [
+            "GET",
+            "POST"
+          ],
+          "allowHeaders": [
+            "foo",
+            "bar"
+          ],
+          "exposeHeaders": [
+            "foo",
+            "bar"
+          ],
+          "maxAge": "35",
+          "allowCredentials": true,
+          "disabled": false
+        },
+        "faultInjectionPolicy": {
+          "abort": {
+            "httpStatus": 501,
+            "percentage": 1
+          },
+          "delay": {
+            "fixedDelay": "10s",
+            "percentage": 2
+          }
+        },
+        "requestHeaderModifier": {
+          "add": {
+            "foo1": "bar1",
+            "baz1": "qux1"
+          },
+          "set": {
+            "foo2": "bar2",
+            "baz2": "qux2"
+          },
+          "remove": [
+            "foo3",
+            "bar3"
+          ]
+        },
+        "requestMirrorPolicy": {
+          "destination": {
+            "serviceName": "projects/{{project}}/locations/global/backendServices/{{ref:basichttp.compute.backend_service.json:name}}"
+          }
+        },
+        "responseHeaderModifier": {
+          "add": {
+            "foo1": "bar1",
+            "baz1": "qux1"
+          },
+          "set": {
+            "foo2": "bar2",
+            "baz2": "qux2"
+          },
+          "remove": [
+            "foo3",
+            "bar3"
+          ]
+        },
+        "retryPolicy": {
+          "numRetries": 3,
+          "perTryTimeout": "5s",
+          "retryConditions": [
+            "refused-stream",
+            "cancelled"
+          ]
+        },
+        "timeout": "30s"
+      }
+    },
+    {
+      "action": {
+        "redirect": {
+          "hostRedirect": "foo",
+          "responseCode": "MOVED_PERMANENTLY_DEFAULT",
+          "httpsRedirect": true,
+          "stripQuery": true,
+          "portRedirect": 7777
+        }
+      }
+    },
+    {
+      "action": {
+        "redirect": {
+          "hostRedirect": "test",
+          "prefixRewrite": "foo",
+          "responseCode": "FOUND"
+        }
+      }
+    },
+    {
+      "action": {
+        "redirect": {
+          "hostRedirect": "test",
+          "pathRedirect": "/foo",
+          "responseCode": "FOUND"
+        }
+      }
+    }
+  ]
+}

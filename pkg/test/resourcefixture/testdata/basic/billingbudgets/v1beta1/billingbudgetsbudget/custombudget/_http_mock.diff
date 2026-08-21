@@ -1,0 +1,167 @@
+1c1
+< POST https://billingbudgets.googleapis.com/v1beta1/billingAccounts/${billingAccountID}/budgets?alt=json
+---
+> GET https://billingbudgets.googleapis.com/v1/billingAccounts/${billingAccountID}/budgets/billingbudgetsbudget-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+4,34c4
+< {
+<   "budget": {
+<     "amount": {
+<       "specifiedAmount": {
+<         "currencyCode": "USD",
+<         "nanos": 0,
+<         "units": 9000000
+<       }
+<     },
+<     "budgetFilter": {
+<       "creditTypes": [
+<         "DISCOUNT"
+<       ],
+<       "creditTypesTreatment": "INCLUDE_SPECIFIED_CREDITS",
+<       "customPeriod": {
+<         "endDate": {
+<           "day": 14,
+<           "month": 3,
+<           "year": 2312
+<         },
+<         "startDate": {
+<           "day": 1,
+<           "month": 1,
+<           "year": 2140
+<         }
+<       }
+<     }
+<   }
+< }
+< 
+< 200 OK
+---
+> 404 Not Found
+44a15,27
+>   "error": {
+>     "code": 404,
+>     "message": "budget \"billingAccounts/${billingAccountId}/budgets/billingbudgetsbudget-${uniqueId}\" not found",
+>     "status": "NOT_FOUND"
+>   }
+> }
+> 
+> ---
+> 
+> POST https://billingbudgets.googleapis.com/v1/billingAccounts/${billingAccountID}/budgets?%24alt=json%3Benum-encoding%3Dint
+> Content-Type: application/json
+> 
+> {
+55c38
+<     "creditTypesTreatment": "INCLUDE_SPECIFIED_CREDITS",
+---
+>     "creditTypesTreatment": 3,
+69,70c52
+<   "etag": "abcdef0123A=",
+<   "name": "billingAccounts/${billingAccountId}/budgets/${billingAccountBudgetId}"
+---
+>   "name": "billingAccounts/${billingAccountId}/budgets/billingbudgetsbudget-${uniqueId}"
+73,77d54
+< ---
+< 
+< GET https://billingbudgets.googleapis.com/v1beta1/billingAccounts/${billingAccountID}/budgets/${billingAccountBudgetId}?alt=json
+< Content-Type: application/json
+< 
+99c76
+<     "creditTypesTreatment": "INCLUDE_SPECIFIED_CREDITS",
+---
+>     "creditTypesTreatment": 3,
+119c96
+< PATCH https://billingbudgets.googleapis.com/v1beta1/billingAccounts/${billingAccountID}/budgets/${billingAccountBudgetId}?alt=json&updateMask=budgetFilter.creditTypes%2CbudgetFilter.customPeriod
+---
+> GET https://billingbudgets.googleapis.com/v1/billingAccounts/${billingAccountID}/budgets/billingbudgetsbudget-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+122,152c99
+< {
+<   "budget": {
+<     "amount": {
+<       "specifiedAmount": {
+<         "currencyCode": "USD",
+<         "units": 9000000
+<       }
+<     },
+<     "budgetFilter": {
+<       "creditTypes": [
+<         "FREE_TIER"
+<       ],
+<       "creditTypesTreatment": "INCLUDE_SPECIFIED_CREDITS",
+<       "customPeriod": {
+<         "endDate": {
+<           "day": 15,
+<           "month": 4,
+<           "year": 2313
+<         },
+<         "startDate": {
+<           "day": 2,
+<           "month": 2,
+<           "year": 2141
+<         }
+<       }
+<     },
+<     "name": "billingAccounts/${billingAccountId}/budgets/${billingAccountBudgetId}"
+<   }
+< }
+< 
+< 200 OK
+---
+> 404 Not Found
+162a110,122
+>   "error": {
+>     "code": 404,
+>     "message": "budget \"billingAccounts/${billingAccountId}/budgets/billingbudgetsbudget-${uniqueId}\" not found",
+>     "status": "NOT_FOUND"
+>   }
+> }
+> 
+> ---
+> 
+> POST https://billingbudgets.googleapis.com/v1/billingAccounts/${billingAccountID}/budgets?%24alt=json%3Benum-encoding%3Dint
+> Content-Type: application/json
+> 
+> {
+173c133
+<     "creditTypesTreatment": "INCLUDE_SPECIFIED_CREDITS",
+---
+>     "creditTypesTreatment": 3,
+187,188c147
+<   "etag": "abcdef0123A=",
+<   "name": "billingAccounts/${billingAccountId}/budgets/${billingAccountBudgetId}"
+---
+>   "name": "billingAccounts/${billingAccountId}/budgets/billingbudgetsbudget-${uniqueId}"
+191,195d149
+< ---
+< 
+< GET https://billingbudgets.googleapis.com/v1beta1/billingAccounts/${billingAccountID}/budgets/${billingAccountBudgetId}?alt=json
+< Content-Type: application/json
+< 
+217c171
+<     "creditTypesTreatment": "INCLUDE_SPECIFIED_CREDITS",
+---
+>     "creditTypesTreatment": 3,
+237,254c191
+< DELETE https://billingbudgets.googleapis.com/v1beta1/billingAccounts/${billingAccountID}/budgets/${billingAccountBudgetId}?alt=json
+< Content-Type: application/json
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {}
+< 
+< ---
+< 
+< GET https://billingbudgets.googleapis.com/v1beta1/billingAccounts/${billingAccountID}/budgets/${billingAccountBudgetId}?alt=json
+---
+> GET https://billingbudgets.googleapis.com/v1/billingAccounts/${billingAccountID}/budgets/billingbudgetsbudget-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+270c207
+<     "message": "budget \"billingAccounts/${billingAccountId}/budgets/${billingAccountBudgetId}\" not found",
+---
+>     "message": "budget \"billingAccounts/${billingAccountId}/budgets/billingbudgetsbudget-${uniqueId}\" not found",

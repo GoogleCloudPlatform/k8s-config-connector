@@ -1,0 +1,9 @@
+{
+  "role": "roles/resourcemanager.tagViewer",
+  "members": ["domain:google.com"],
+  "condition": {
+    "title": "iam-cond",
+    "expression": "request.time.getHours(\"Europe/Berlin\") >= 9 && request.time.getHours(\"Europe/Berlin\") <= 17"
+  },
+  "resource": "{{ref:minimal.tag_value.json:__resource__}}"
+}

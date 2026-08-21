@@ -1,0 +1,43 @@
+apiVersion: rapidmigrationassessment.cnrm.cloud.google.com/v1alpha1
+kind: RapidMigrationAssessmentCollector
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: rmacollector-max-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  collectionDays: 60
+  description: This is an updated maximal collector description
+  displayName: Updated Maximal Collector
+  eulaURI: https://www.google.com/updated
+  expectedAssetCount: 200
+  labels:
+    key1: val1
+    key2: val2
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+  serviceAccountRef:
+    external: overseer-kcc-tester@${projectId}.iam.gserviceaccount.com
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/collectors/rmacollector-max-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    bucket: normalized-bucket
+    createTime: "1970-01-01T00:00:00Z"
+    guestOSScan:
+      coreSource: projects/${projectNumber}/locations/us-central1/sources/normalized-guest-os-scan-source
+    state: STATE_READY_TO_USE
+    updateTime: "1970-01-01T00:00:00Z"
+    vsphereScan:
+      coreSource: projects/${projectNumber}/locations/us-central1/sources/normalized-vsphere-scan-source

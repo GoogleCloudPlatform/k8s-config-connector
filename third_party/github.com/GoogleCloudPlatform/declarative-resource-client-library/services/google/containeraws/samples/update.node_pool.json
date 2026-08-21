@@ -1,0 +1,66 @@
+{
+  "name": "{{pool}}",
+  "project": "{{project}}",
+  "location": "us-west1",
+  "cluster": "{{ref:minimal.cluster.json:name}}",
+  "version": "1.27.4-gke.1600",
+  "autoscaling": {
+    "minNodeCount": 3,
+    "maxNodeCount": 8
+  },
+  "subnetId": "{{aws_subnet}}",
+  "maxPodsConstraint": {
+    "maxPodsPerNode": 110
+  },
+  "config": {
+    "instanceType": "t3.large",
+    "configEncryption": {
+      "kmsKeyArn": "arn:aws:kms:{{aws_region}}:{{aws_account_id}}:key/updated-config-encryption-kms-key-arn"
+    },
+    "rootVolume": {
+      "sizeGib": 12,
+      "kmsKeyArn": "arn:aws:kms:{{aws_region}}:{{aws_account_id}}:key/updated-volume-encryption-kms-key-arn",
+      "volumeType": "GP2",
+      "iops": 0,
+      "throughput": 0
+    },
+    "taints": [
+      {
+        "key": "taint-key",
+        "value": "taint-value",
+        "effect": "PREFER_NO_SCHEDULE"
+      }
+    ],
+    "labels": {
+      "label-one": "updated-value-one"
+    },
+    "tags": {
+      "tag-one": "updated-value-one"
+    },
+    "iamInstanceProfile": "{{byo_multicloud_prefix}}-updated-1p-dev-nodepool",
+    "sshConfig": {
+      "ec2KeyPair": "updated-ec2-key-pair"
+    },
+    "securityGroupIds": ["sg-1", "sg-2"],
+    "proxyConfig": {
+      "secretArn": "arn:aws:secretsmanager:us-west-2:126285863215:secret:proxy_config20210824150329476300000001-ABCDEG",
+      "secretVersion": "12345678-ABCD-EFGH-IJKL-987654321099"
+    },
+    "autoscalingMetricsCollection": {
+      "granularity": "1Minute",
+      "metrics": ["GroupMinSize", "GroupMaxSize"]
+    }
+  },
+  "management": {
+    "autoRepair": false
+  },
+  "updateSettings": {
+    "surgeSettings": {
+      "maxSurge": 2,
+      "maxUnavailable": 2
+    }
+  },
+  "annotations": {
+    "label-two": "value-two"
+  }
+}

@@ -1,0 +1,99 @@
+GRPC /grafeas.v1.Grafeas/GetNote
+
+{
+  "name": "projects/${projectId}/notes/grafeasnote-minimal-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = note with ID "grafeasnote-minimal-${uniqueId}" for project "${projectId}" does not exist
+
+{}
+
+---
+
+GRPC /grafeas.v1.Grafeas/CreateNote
+
+{
+  "note": {
+    "attestation": {
+      "hint": {
+        "humanReadableName": "qa"
+      }
+    },
+    "shortDescription": "Minimal Grafeas Note"
+  },
+  "noteId": "grafeasnote-minimal-${uniqueId}",
+  "parent": "projects/${projectId}"
+}
+
+OK
+
+{
+  "attestation": {
+    "hint": {
+      "humanReadableName": "qa"
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "ATTESTATION",
+  "name": "projects/${projectId}/notes/grafeasnote-minimal-${uniqueId}",
+  "shortDescription": "Minimal Grafeas Note",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /grafeas.v1.Grafeas/GetNote
+
+{
+  "name": "projects/${projectId}/notes/grafeasnote-minimal-${uniqueId}"
+}
+
+OK
+
+{
+  "attestation": {
+    "hint": {
+      "humanReadableName": "qa"
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "ATTESTATION",
+  "name": "projects/${projectId}/notes/grafeasnote-minimal-${uniqueId}",
+  "shortDescription": "Minimal Grafeas Note",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /grafeas.v1.Grafeas/GetNote
+
+{
+  "name": "projects/${projectId}/notes/grafeasnote-minimal-${uniqueId}"
+}
+
+OK
+
+{
+  "attestation": {
+    "hint": {
+      "humanReadableName": "qa"
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "ATTESTATION",
+  "name": "projects/${projectId}/notes/grafeasnote-minimal-${uniqueId}",
+  "shortDescription": "Minimal Grafeas Note",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /grafeas.v1.Grafeas/DeleteNote
+
+{
+  "name": "projects/${projectId}/notes/grafeasnote-minimal-${uniqueId}"
+}
+
+OK
+
+{}

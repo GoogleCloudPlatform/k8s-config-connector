@@ -1,0 +1,9 @@
+{
+  "name": "{{metric}}",
+  "project": "{{project}}",
+  "filter": "resource.type=gae_app AND severity<=ERROR",
+  "metricDescriptor": {
+    "metricKind": "DELTA",
+    "valueType": "INT64"
+  }
+}

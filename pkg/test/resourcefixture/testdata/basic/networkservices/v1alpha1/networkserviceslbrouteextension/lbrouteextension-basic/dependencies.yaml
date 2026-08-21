@@ -1,0 +1,113 @@
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  name: network-${uniqueId}
+spec:
+  autoCreateSubnetworks: false
+  routingMode: REGIONAL
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSubnetwork
+metadata:
+  name: subnet-${uniqueId}
+spec:
+  region: us-central1
+  ipCidrRange: 10.0.0.0/24
+  networkRef:
+    name: network-${uniqueId}
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeSubnetwork
+metadata:
+  name: proxy-subnet-${uniqueId}
+spec:
+  region: us-central1
+  ipCidrRange: 10.1.0.0/24
+  purpose: REGIONAL_MANAGED_PROXY
+  role: ACTIVE
+  networkRef:
+    name: network-${uniqueId}
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeHealthCheck
+metadata:
+  name: hc-${uniqueId}
+spec:
+  location: us-central1
+  checkIntervalSec: 5
+  timeoutSec: 5
+  healthyThreshold: 2
+  unhealthyThreshold: 2
+  http2HealthCheck:
+    port: 443
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeBackendService
+metadata:
+  name: bs-lb-${uniqueId}
+spec:
+  location: us-central1
+  loadBalancingScheme: INTERNAL_MANAGED
+  protocol: HTTP
+  healthChecks:
+    - healthCheckRef:
+        name: hc-${uniqueId}
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeBackendService
+metadata:
+  name: bs-callout-${uniqueId}
+spec:
+  location: us-central1
+  loadBalancingScheme: INTERNAL_MANAGED
+  protocol: HTTP2
+  healthChecks:
+    - healthCheckRef:
+        name: hc-${uniqueId}
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeBackendService
+metadata:
+  name: bs-callout2-${uniqueId}
+spec:
+  location: us-central1
+  loadBalancingScheme: INTERNAL_MANAGED
+  protocol: HTTP2
+  healthChecks:
+    - healthCheckRef:
+        name: hc-${uniqueId}
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeURLMap
+metadata:
+  name: urlmap-${uniqueId}
+spec:
+  location: us-central1
+  defaultService:
+    backendServiceRef:
+      name: bs-lb-${uniqueId}
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeTargetHTTPProxy
+metadata:
+  name: proxy-${uniqueId}
+spec:
+  location: us-central1
+  urlMapRef:
+    name: urlmap-${uniqueId}
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeForwardingRule
+metadata:
+  name: fr-${uniqueId}
+spec:
+  location: us-central1
+  loadBalancingScheme: INTERNAL_MANAGED
+  networkRef:
+    name: network-${uniqueId}
+  subnetworkRef:
+    name: subnet-${uniqueId}
+  target:
+    targetHTTPProxyRef:
+      name: proxy-${uniqueId}
+  portRange: "80"

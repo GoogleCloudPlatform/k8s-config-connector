@@ -1,0 +1,20 @@
+89c89
+< POST https://cloudresourcemanager.googleapis.com/v3/tagValues?alt=json
+---
+> POST https://cloudresourcemanager.googleapis.com/v3/tagValues?%24alt=json%3Benum-encoding%3Dint
+117c117
+< GET https://cloudresourcemanager.googleapis.com/v3/operations/${operationID}?alt=json
+---
+> GET https://cloudresourcemanager.googleapis.com/v3/operations/${operationID}
+151c151
+< GET https://cloudresourcemanager.googleapis.com/v3/tagValues/${tagValueID}?alt=json
+---
+> GET https://cloudresourcemanager.googleapis.com/v3/tagValues/${tagValueID}?%24alt=json%3Benum-encoding%3Dint
+177c177
+< DELETE https://cloudresourcemanager.googleapis.com/v3/tagValues/${tagValueID}?alt=json
+---
+> DELETE https://cloudresourcemanager.googleapis.com/v3/tagValues/${tagValueID}?%24alt=json%3Benum-encoding%3Dint
+199c199
+< GET https://cloudresourcemanager.googleapis.com/v3/operations/${operationID}?alt=json
+---
+> GET https://cloudresourcemanager.googleapis.com/v3/operations/${operationID}

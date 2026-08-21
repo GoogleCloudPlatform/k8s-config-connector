@@ -1,0 +1,15 @@
+label: Config Connector MonitoringService
+markdownDescription: Creates yaml for a MonitoringService resource
+insertText: |
+  apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+  kind: MonitoringService
+  metadata:
+    labels:
+      \${1:test1}: \${2:value1}
+    name: \${3:monitoringservice-name}
+  spec:
+    projectRef:
+      external: \${4:projects/[PROJECT_ID?]}
+    displayName: \${5:A basic monitoring service.}
+    telemetry:
+      resourceName: \${6://storage.googleapis.com/buckets/bucket-id1}

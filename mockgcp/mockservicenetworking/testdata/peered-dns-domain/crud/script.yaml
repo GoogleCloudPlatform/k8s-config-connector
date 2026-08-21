@@ -1,0 +1,36 @@
+# Create a network
+- exec: gcloud compute networks create test-network-${uniqueId} --project=${projectId} --subnet-mode=custom
+  stdout:
+    # Just check for the network name
+    contains: test-network-${uniqueId}
+
+# Allocate an IP address range for the service producer
+- exec: |
+    gcloud compute addresses create google-managed-services-test-network-${uniqueId} \
+      --global \
+      --purpose=VPC_PEERING \
+      --addresses=192.168.0.0 \
+      --prefix-length=16 \
+      --network=test-network-${uniqueId} \
+      --project=${projectId}
+  stdout:
+    # Just check for the address name
+    contains: google-managed-services-test-network-${uniqueId}
+
+# Create the VPC peering.
+- exec: |
+    gcloud services vpc-peerings connect \
+      --service=servicenetworking.googleapis.com \
+      --network=test-network-${uniqueId} \
+      --ranges=google-managed-services-test-network-${uniqueId} \
+      --project=${projectId}
+  stdout:
+    # Check for the operation name
+    contains: operations/
+
+# The peered-dns-domain commands should now succeed
+- exec: gcloud services peered-dns-domains create test-${uniqueId} --network=test-network-${uniqueId} --dns-suffix=test-suffix-${uniqueId}.com.
+- exec: gcloud services peered-dns-domains list --network=test-network-${uniqueId}
+  stdout:
+    contains: test-${uniqueId}
+- exec: gcloud services peered-dns-domains delete test-${uniqueId} --network=test-network-${uniqueId}

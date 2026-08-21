@@ -1,0 +1,5 @@
+### [2026-08-08] Implementing Direct Controller for GKEHubFleet
+- **Context**: Implementing Greenfield direct controller, E2E fixtures, and fuzzer for GKEHubFleet under Issue #12254.
+- **Problem**: GKEHub Fleet is a project-scoped resource in GCP that can have at most one instance per project, which must always be named "default". If we hardcode "default" as the metadata name, parallel tests can conflict and it restricts Kubernetes configurations.
+- **Solution**: We utilized KCC's `resourceID` override field in KRM. In the E2E fixtures, we set the metadata name to `gkehubfleet-minimal-${uniqueId}` (for minimal) or `gkehubfleet-maximal-${uniqueId}` (for maximal) to ensure parallel test isolation, but configured `spec.resourceID: default`. In the identity logic, this resolved the `FleetID` to "default", satisfying Google Cloud API's strict requirement while keeping Kubernetes resources distinct.
+- **Impact**: Ensures that developers can use unique metadata names in Config Connector for GKEHubFleet resources, while successfully mapping them to the single, required "default" fleet name in GCP.

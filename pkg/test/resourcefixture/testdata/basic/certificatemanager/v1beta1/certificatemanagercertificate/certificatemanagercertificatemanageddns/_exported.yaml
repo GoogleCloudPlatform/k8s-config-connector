@@ -1,0 +1,16 @@
+apiVersion: certificatemanager.cnrm.cloud.google.com/v1beta1
+kind: CertificateManagerCertificate
+metadata:
+  name: projects-${projectId}-locations-global-certificates-certificatemanagercertificate${uniqueId}
+spec:
+  description: updated description of a managed cert for kcc
+  location: ""
+  managed:
+    dnsAuthorizationsRefs:
+    - external: projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization1${uniqueId}
+    - external: projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization2${uniqueId}
+    domains:
+    - ${uniqueId}1.hashicorptest.com
+    - ${uniqueId}2.hashicorptest.com
+  projectRef: {}
+  scope: EDGE_CACHE

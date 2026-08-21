@@ -1,0 +1,15 @@
+{
+  "name": "{{provider}}",
+  "project": "projects/{{ref:basic.cloudresourcemanager.project.json:name}}",
+  "location": "global",
+  "workloadIdentityPool": "projects/{{ref:basic.cloudresourcemanager.project.json:name}}/locations/{{region}}/workloadIdentityPools/{{ref:project.workload_identity_pool.json:name}}",
+  "attributeMapping": {
+    "google.subject": "true"
+  },
+  "oidc": {
+    "issuerUri": "https://example.com/",
+    "allowedAudiences": [
+      "//iam.googleapis.com/projects/{{ref:basic.cloudresourcemanager.project.json:name}}/locations/{{location}}/workloadIdentityPools/{{ref:project.workload_identity_pool.json:name}}/providers/{{provider}}"
+    ]
+  }
+}

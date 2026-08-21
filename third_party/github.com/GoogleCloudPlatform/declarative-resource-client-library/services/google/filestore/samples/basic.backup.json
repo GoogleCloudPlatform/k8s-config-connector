@@ -1,0 +1,11 @@
+{
+  "name": "{{backup}}",
+  "project": "{{project}}",
+  "location": "{{region}}",
+  "description": "A sample backup",
+  "sourceInstance": "projects/{{project}}/locations/{{zone}}/instances/{{ref:basic.instance.json:name}}",
+  "sourceFileShare": "my_share",
+  "labels": {
+    "foo": "bar"
+  }
+}

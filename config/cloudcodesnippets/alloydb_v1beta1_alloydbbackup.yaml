@@ -1,0 +1,16 @@
+label: Config Connector AlloyDBBackup
+markdownDescription: Creates yaml for a AlloyDBBackup resource
+insertText: |
+  apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
+  kind: AlloyDBBackup
+  metadata:
+    name: \${1:alloydbbackup-name}
+  spec:
+    clusterNameRef:
+      external: \${2:projects/[PROJECT_ID?]/locations/us-central1/clusters/alloydbbackup-dep}
+    location: \${3:us-central1}
+    encryptionConfig:
+      kmsKeyNameRef:
+        external: \${4:projects/[PROJECT_ID?]/locations/us-central1/keyRings/alloydbbackup-dep/cryptoKeys/alloydbbackup-dep}
+    projectRef:
+      external: \${5:[PROJECT_ID?]}

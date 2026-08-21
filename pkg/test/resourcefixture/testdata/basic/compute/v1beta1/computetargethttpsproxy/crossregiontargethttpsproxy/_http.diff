@@ -1,0 +1,71 @@
+401c401
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}?alt=json
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}
+430c430
+< POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies?alt=json
+---
+> POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies
+438c438
+<     "https://certificatemanager.googleapis.com/v1/projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}"
+---
+>     "//certificatemanager.googleapis.com/projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}"
+470c470,471
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
+> Content-Type: application/json
+500c501
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}?alt=json
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}
+526c527
+<   "urlMap": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}"
+---
+>   "urlMap": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}"
+531c532
+< POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}/setQuicOverride?alt=json
+---
+> PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}
+535c536,542
+<   "quicOverride": "ENABLE"
+---
+>   "description": "target https proxy with certificate manager certificate",
+>   "name": "${targetHttpsProxyID}",
+>   "quicOverride": "ENABLE",
+>   "sslCertificates": [
+>     "//certificatemanager.googleapis.com/projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}"
+>   ],
+>   "urlMap": "projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}"
+553c560
+<   "operationType": "compute.targetHttpsProxies.setQuicOverride",
+---
+>   "operationType": "patch",
+565c572,573
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
+> Content-Type: application/json
+583c591
+<   "operationType": "compute.targetHttpsProxies.setQuicOverride",
+---
+>   "operationType": "patch",
+595c603
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}?alt=json
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}
+617a626
+>     "//certificatemanager.googleapis.com/projects/${projectId}/locations/global/certificates/certificatemanagercertificate${uniqueId}",
+621c630
+<   "urlMap": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}"
+---
+>   "urlMap": "projects/${projectId}/global/urlMaps/computeurlmap-${uniqueId}"
+626c635
+< DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}?alt=json
+---
+> DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/targetHttpsProxies/${targetHttpsProxyID}
+656c665,666
+< GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
+---
+> GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}
+> Content-Type: application/json

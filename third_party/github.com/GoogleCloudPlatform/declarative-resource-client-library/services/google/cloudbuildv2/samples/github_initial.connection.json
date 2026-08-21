@@ -1,0 +1,13 @@
+{
+  "name": "{{connection}}",
+  "githubConfig": {
+    "appInstallationId": 0,
+    "authorizerCredential": {
+      "oauthTokenSecretVersion": "projects/gcb-terraform-creds/secrets/github-pat/versions/1"
+    }
+  },
+  "project": "{{project}}",
+  "location": "{{region}}",
+  "annotations": {"somekey": "somevalue"},
+  "disabled": true
+}

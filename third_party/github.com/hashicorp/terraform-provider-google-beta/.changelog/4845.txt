@@ -1,0 +1,3 @@
+```release-note:bug
+dataflow: made `google_dataflow_flex_template_job` updates fail fast if the job is in the process of cancelling or draining (beta)
+```

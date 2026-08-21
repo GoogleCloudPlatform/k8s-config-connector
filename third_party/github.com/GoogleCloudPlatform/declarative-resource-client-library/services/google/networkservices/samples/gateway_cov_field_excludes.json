@@ -1,0 +1,5 @@
+{
+  "exclude_create_coverage": ["addresses", "certificateUrls", "gatewaySecurityPolicy", "network", "subnetwork"],
+  "exclude_update_coverage": ["name", "addresses", "certificateUrls", "gatewaySecurityPolicy", "network", "subnetwork"],
+  "allow_in_minimal_sample": ["type"]
+}

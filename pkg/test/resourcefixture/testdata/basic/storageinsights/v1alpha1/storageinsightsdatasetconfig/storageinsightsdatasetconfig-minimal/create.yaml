@@ -1,0 +1,22 @@
+apiVersion: storageinsights.cnrm.cloud.google.com/v1alpha1
+kind: StorageInsightsDatasetConfig
+metadata:
+  name: datasetconfigmin${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  description: "Minimal Storage Insights Dataset Config"
+  sourceProjects:
+    projectNumbers:
+      - ${projectNumber}
+  includeCloudStorageLocations:
+    locations:
+      - us-central1
+  includeCloudStorageBuckets:
+    cloudStorageBuckets:
+      - bucketRef:
+          name: storageinsights-min-dep-${uniqueId}
+  retentionPeriodDays: 30
+  identity:
+    type: IDENTITY_TYPE_PER_CONFIG

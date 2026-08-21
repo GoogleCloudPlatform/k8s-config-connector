@@ -1,0 +1,13 @@
+apiVersion: datamigration.cnrm.cloud.google.com/v1alpha1
+kind: DatabaseMigrationMigrationJob
+metadata:
+  name: db-mj-min-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  type: ONE_TIME
+  sourceRef:
+    external: projects/${projectId}/locations/us-central1/connectionProfiles/src-profile-${uniqueId}
+  destinationRef:
+    external: projects/${projectId}/locations/us-central1/connectionProfiles/dest-profile-${uniqueId}

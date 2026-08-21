@@ -1,0 +1,52 @@
+apiVersion: monitoring.cnrm.cloud.google.com/v1beta1
+kind: MonitoringDashboard
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: ${dashboardID}
+  namespace: ${uniqueId}
+spec:
+  displayName: monitoringdashboard-gridlayout
+  gridLayout:
+    widgets:
+    - alertChart:
+        alertPolicyRef:
+          name: monitoringalertpolicy-${uniqueId}
+      title: AlertChart Widget
+    - errorReportingPanel:
+        projectRefs:
+        - external: projects/project1
+        - external: projects/project2
+        services:
+        - foo
+        - bar
+        versions:
+        - v1
+        - v2
+      title: ErrorReporting Widget
+    - incidentList:
+        monitoredResources:
+        - labels:
+            instance_id: "12345678901234"
+            project_id: my-project
+            zone: us-central1-a
+          type: gce_instance
+        policyRefs:
+        - name: monitoringalertpolicy-${uniqueId}
+      title: IncidentList Widget
+  projectRef:
+    external: ${projectId}
+  resourceID: ${dashboardID}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  etag: abcdef123456
+  observedGeneration: 2

@@ -1,0 +1,15 @@
+label: Config Connector StorageNotification
+markdownDescription: Creates yaml for a StorageNotification resource
+insertText: |
+  apiVersion: storage.cnrm.cloud.google.com/v1beta1
+  kind: StorageNotification
+  metadata:
+    name: \${1:storagenotification-name}
+  spec:
+    bucketRef:
+      name: \${2:[PROJECT_ID?]-storagenotification-dep}
+    payloadFormat: \${3:JSON_API_V1}
+    topicRef:
+      name: \${4:storagenotification-dep}
+    eventTypes:
+    - \${5:OBJECT_ARCHIVE}

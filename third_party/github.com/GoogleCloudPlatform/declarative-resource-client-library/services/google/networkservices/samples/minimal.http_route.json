@@ -1,0 +1,17 @@
+{
+  "name": "{{resource_name}}",
+  "project": "{{project}}",
+  "location": "global",
+  "hostnames": ["test1"],
+  "rules": [
+    {
+      "action": {
+        "destinations": [
+          {
+            "serviceName": "projects/{{project}}/locations/global/backendServices/{{ref:minimalhttp.compute.backend_service.json:name}}"
+          }
+        ]
+      }
+    }
+  ]
+}

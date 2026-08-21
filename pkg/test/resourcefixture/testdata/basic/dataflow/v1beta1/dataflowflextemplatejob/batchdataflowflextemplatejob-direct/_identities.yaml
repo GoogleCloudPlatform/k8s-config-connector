@@ -1,0 +1,12 @@
+- caisURL: //storage.googleapis.com/projects/${projectId}/buckets/storagebucket-${uniqueId}
+  group: storage.cnrm.cloud.google.com
+  kind: StorageBucket
+  name: storagebucket-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: //dataflow.googleapis.com/projects/${projectId}/locations/us-central1/jobs/dataflowflextemplatejob-${uniqueId}
+  group: dataflow.cnrm.cloud.google.com
+  kind: DataflowFlexTemplateJob
+  name: dataflowflextemplatejob-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

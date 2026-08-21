@@ -1,0 +1,167 @@
+label: Config Connector DLPDeidentifyTemplate
+markdownDescription: Creates yaml for a DLPDeidentifyTemplate resource
+insertText: |
+  apiVersion: dlp.cnrm.cloud.google.com/v1beta1
+  kind: DLPDeidentifyTemplate
+  metadata:
+    name: \${1:dlpdeidentifytemplate-name}
+  spec:
+    projectRef:
+      external: \${2:projects/[PROJECT_ID?]}
+    displayName: \${3:sample-template}
+    description: \${4:A sample deidentify template}
+    deidentifyConfig:
+      infoTypeTransformations:
+        transformations:
+        - infoTypes:
+          - name: \${5:PHONE_NUMBER}
+          - name: \${6:AGE}
+          primitiveTransformation:
+            replaceConfig:
+              newValue:
+                integerValue: \${7:9}
+        - infoTypes:
+          - name: \${8:SALARY}
+          primitiveTransformation:
+            replaceConfig:
+              newValue:
+                floatValue: \${9:192168.01}
+        - infoTypes:
+          - name: \${10:HOME_PAGE}
+          primitiveTransformation:
+            replaceConfig:
+              newValue:
+                stringValue: \${11:https://www.example.com/}
+        - infoTypes:
+          - name: \${12:RETIRED}
+          primitiveTransformation:
+            replaceConfig:
+              newValue:
+                booleanValue: \${13:true}
+        - infoTypes:
+          - name: \${14:LAST_LOGIN}
+          primitiveTransformation:
+            replaceConfig:
+              newValue:
+                timestampValue: \${15:2014-10-02T15:01:23Z}
+        - infoTypes:
+          - name: \${16:START_TIME}
+          primitiveTransformation:
+            replaceConfig:
+              newValue:
+                timeValue:
+                  hours: \${17:9}
+                  minutes: \${18:30}
+                  seconds: \${19:0}
+                  nanos: \${20:0}
+        - infoTypes:
+          - name: \${21:DATE_OF_BIRTH}
+          primitiveTransformation:
+            replaceConfig:
+              newValue:
+                dateValue:
+                  year: \${22:2020}
+                  month: \${23:1}
+                  day: \${24:1}
+        - infoTypes:
+          - name: \${25:PAYDAY}
+          primitiveTransformation:
+            replaceConfig:
+              newValue:
+                dayOfWeekValue: \${26:FRIDAY}
+        - infoTypes:
+          - name: \${27:HEIGHT}
+          primitiveTransformation:
+            redactConfig: {}
+        - infoTypes:
+          - name: \${28:EMAIL_ADDRESS}
+          - name: \${29:LAST_NAME}
+          primitiveTransformation:
+            characterMaskConfig:
+              maskingCharacter: \${30:X}
+              numberToMask: \${31:4}
+              reverseOrder: \${32:true}
+              charactersToIgnore:
+              - charactersToSkip: \${33:#}
+              - commonCharactersToIgnore: \${34:PUNCTUATION}
+        - infoTypes:
+          - name: \${35:HOME_ADDRESS}
+          primitiveTransformation:
+            cryptoReplaceFfxFpeConfig:
+              context:
+                name: \${36:sometweak}
+              cryptoKey:
+                transient:
+                  name: \${37:beep}
+              surrogateInfoType:
+                name: \${38:abc}
+              commonAlphabet: \${39:NUMERIC}
+        - infoTypes:
+          - name: \${40:BANK_ACCOUNT_NUMBER}
+          primitiveTransformation:
+            cryptoReplaceFfxFpeConfig:
+              cryptoKey:
+                unwrapped:
+                  key: \${41:vJZQm1FyV4BdF99nlcUYNA==}
+              customAlphabet: \${42:~`!@#%^&*()_-+=[[]]|:;"'<,>.?/}
+        - infoTypes:
+          - name: \${43:BILLING_ADDRESS}
+          primitiveTransformation:
+            cryptoReplaceFfxFpeConfig:
+              cryptoKey:
+                kmsWrapped:
+                  wrappedKey: \${44:vJZQm1FyV4BdF99nlcUYNA==}
+                  cryptoKeyRef:
+                    name: \${45:dlpdeidentifytemplate-dep-infotypedeidentifytemplate}
+              radix: \${46:4}
+        - infoTypes:
+          - name: \${47:FIRST_NAME}
+          primitiveTransformation:
+            fixedSizeBucketingConfig:
+              lowerBound:
+                integerValue: \${48:7}
+              upperBound:
+                integerValue: \${49:9}
+              bucketSize: \${50:2.5}
+        - infoTypes:
+          - name: \${51:MIDDLE_NAME}
+          primitiveTransformation:
+            bucketingConfig:
+              buckets:
+              - min:
+                  integerValue: \${52:7}
+                max:
+                  integerValue: \${53:9}
+                replacementValue:
+                  integerValue: \${54:6}
+        - infoTypes:
+          - name: \${55:EYE_COLOR}
+          primitiveTransformation:
+            replaceWithInfoTypeConfig: {}
+        - infoTypes:
+          - name: \${56:START_DATE}
+          primitiveTransformation:
+            timePartConfig:
+              partToExtract: \${57:YEAR}
+        - infoTypes:
+          - name: \${58:CREDIT_CARD_NUMBER}
+          primitiveTransformation:
+            cryptoDeterministicConfig:
+              context:
+                name: \${59:sometweak}
+              cryptoKey:
+                transient:
+                  name: \${60:beep}
+              surrogateInfoType:
+                name: \${61:abc}
+        - infoTypes:
+          - name: \${62:LAST_VACATION}
+          primitiveTransformation:
+            dateShiftConfig:
+              upperBoundDays: \${63:3}
+              lowerBoundDays: \${64:2}
+              context:
+                name: \${65:def}
+              cryptoKey:
+                transient:
+                  name: \${66:beep}

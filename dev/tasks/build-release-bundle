@@ -1,0 +1,338 @@
+#!/usr/bin/env bash
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+# runs the config-connector build across all desired systems and architectures and creates a release tarball
+REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+cd ${REPO_ROOT}
+
+VERSION=${VERSION:-dev}
+
+BUILD_DIR="${REPO_ROOT}/.build"
+mkdir -p "${BUILD_DIR}"
+
+DIST="${REPO_ROOT}/dist"
+mkdir -p "${DIST}"
+
+BIN_DIR="${BUILD_DIR}/bin"
+mkdir -p "${BIN_DIR}"
+
+LICENSING_SCRIPT=${REPO_ROOT}/scripts/add-license-header-to-yaml.sh
+
+function add_license() {
+  file=$1
+  $LICENSING_SCRIPT ${file} > ${file}.tmp
+  mv ${file}.tmp ${file}
+}
+
+GOBIN=${BIN_DIR}/ go install sigs.k8s.io/kustomize/kustomize/v5@v5.3.0
+export PATH=${BIN_DIR}/:$PATH
+
+BUNDLE_DIR=${BUILD_DIR}/release-bundle
+mkdir -p ${BUNDLE_DIR}
+echo ${VERSION} > ${BUNDLE_DIR}/version
+
+# Create temp crds.yaml file
+CRDS_FILE=$(mktemp -t crds.XXXXXXXX.yaml)
+
+# Update container registry for kustomize
+IMAGE_PREFIX=${IMAGE_PREFIX:-"gcr.io/gke-release/cnrm/"}
+IMAGE_TAG=${IMAGE_TAG:-${VERSION}}
+
+RECORDER_IMG=${RECORDER_IMG:-"${IMAGE_PREFIX}recorder:${IMAGE_TAG}"}
+WEBHOOK_IMG=${WEBHOOK_IMG:-"${IMAGE_PREFIX}webhook:${IMAGE_TAG}"}
+UNMANAGEDDETECTOR_IMG=${UNMANAGEDDETECTOR_IMG:-"${IMAGE_PREFIX}unmanageddetector:${IMAGE_TAG}"}
+DELETIONDEFENDER_IMG=${DELETIONDEFENDER_IMG:-"${IMAGE_PREFIX}deletiondefender:${IMAGE_TAG}"}
+MANAGER_IMG=${MANAGER_IMG:-"${IMAGE_PREFIX}controller:${IMAGE_TAG}"}
+
+cd ${REPO_ROOT}
+cat config/installbundle/components/recorder/recorder_image_patch_template.yaml | \
+  sed -e "s@IMAGE_URL@${RECORDER_IMG}@g" > config/installbundle/components/recorder/recorder_image_patch.yaml
+cat config/installbundle/components/webhook/webhook_image_patch_template.yaml | \
+  sed -e "s@IMAGE_URL@${WEBHOOK_IMG}@g" > config/installbundle/components/webhook/webhook_image_patch.yaml
+cat config/installbundle/components/unmanageddetector/unmanageddetector_image_patch_template.yaml | \
+  sed -e "s@IMAGE_URL@${UNMANAGEDDETECTOR_IMG}@g" > config/installbundle/components/unmanageddetector/unmanageddetector_image_patch.yaml
+cat config/installbundle/components/deletiondefender/deletiondefender_image_patch_template.yaml | \
+  sed -e "s@IMAGE_URL@${DELETIONDEFENDER_IMG}@g" > config/installbundle/components/deletiondefender/deletiondefender_image_patch.yaml
+cat config/installbundle/components/manager/base/manager_image_patch_template.yaml | \
+  sed -e "s@IMAGE_URL@${MANAGER_IMG}@g" > config/installbundle/components/manager/base/manager_image_patch.yaml
+
+
+# Combine CRDs into one file and add a license header
+rm -f kustomization.yaml
+kustomize create
+
+# The following kinds are hardcoded here to block them from being included in the release bundle
+# until they pass a final manual verification. Once verified, they should be removed from this list.
+BLOCKED_KINDS=(
+    "ApigeeApiProduct"
+    "ApigeeRegistryAPI"
+    "ApigeeRegistryArtifact"
+    "ApigeeRegistryInstance"
+    "APIHubAPI"
+    "ApiHubAttribute"
+    "ApiHubCuration"
+    "ApiHubDependency"
+    "ApiHubDeployment"
+    "ApiHubInstance"
+    "ApiHubPlugin"
+    "ApiHubRuntimeProjectAttachment"
+    "AppHubServiceProjectAttachment"
+    "AppOptimizeReport"
+    "ArtifactRegistryVPCSCConfig"
+    "AutoMLDataset"
+    "BackupdrBackup"
+    "BeyondCorpClientConnectorService"
+    "BeyondCorpClientGateway"
+    "BigLakeCatalog"
+    "BigLakeLock"
+    "BigQueryAnalyticsHubDataExchange"
+    "BigQueryDataTransferTransferConfig"
+    "BigQueryMigrationMigrationWorkflow"
+    "BigQueryMigrationWorkflow"
+    "BigQueryReservationReservationGroup"
+    "BinaryAuthorizationPlatformPolicy"
+    "BlockchainNodeEngineBlockchainNode"
+    "BlockchainNodeEngineNode"
+    "CCInsightsAnalysisRule"
+    "CCInsightsConversation"
+    "CCInsightsIssueModel"
+    "CCInsightsPhraseMatcher"
+    "CCInsightsQAScorecard"
+    "CCInsightsView"
+    "CertificateManagerTrustConfig"
+    "CESApp"
+    "CloudBatchResourceAllowance"
+    "CloudBuildConnection"
+    "CloudIdentityDevice"
+    "CloudRunInstance"
+    "CloudRunWorkerPool"
+    "CloudSecurityComplianceCloudControl"
+    "CloudSecurityComplianceFramework"
+    "CloudSecurityComplianceFrameworkDeployment"
+    "CloudSecurityFramework"
+    "CloudTalentSolutionCompany"
+    "CloudTasksQueue"
+    "ConfigDeliveryFleetPackage"
+    "ConfigDeploymentGroup"
+    "ConnectorsConnection"
+    "ContactCenterInsightsConversation"
+    "ContentWarehouseDocument"
+    "ContentWarehouseRuleSet"
+    "ContentWarehouseSchema"
+    "ContentWarehouseSynonymSet"
+    "DatabaseMigrationConnectionProfile"
+    "DatabaseMigrationConversionWorkspace"
+    "DatabaseMigrationJob"
+    "DatabaseMigrationMigrationJob"
+    "DatabaseMigrationPrivateConnection"
+    "DataformFolder"
+    "DataformTeamFolder"
+    "DataLabelingAnnotationSpecSet"
+    "DataLabelingDataset"
+    "DataLabelingEvaluationJob"
+    "DataLabelingInstruction"
+    "DataLineageProcess"
+    "DataplexAspectType"
+    "DataplexDataAttributeBinding"
+    "DataplexDataProduct"
+    "DataplexDataScan"
+    "DataplexDataTaxonomy"
+    "DataplexGlossary"
+    "DataplexMetadataFeed"
+    "DevConnectAccountConnector"
+    "DevConnectConnection"
+    "DevConnectInsightsConfig"
+    "DeviceStreamingSession"
+    "DialogflowConversationDataset"
+    "DialogflowGenerator"
+    "DialogflowKnowledgeBase"
+    "DialogflowSecuritySettings"
+    "DialogflowSipTrunk"
+    "DialogflowTool"
+    "DiscoveryEngineControl"
+    "DiscoveryEngineConversation"
+    "DiscoveryEngineIdentityMappingStore"
+    "DiscoveryEngineSampleQuery"
+    "DiscoveryEngineSampleQuerySet"
+    "DiscoveryEngineSession"
+    "DLPConnection"
+    "DLPDiscoveryConfig"
+    "EnterpriseKnowledgeGraphEntityReconciliationJob"
+    "EventarcChannelConnection"
+    "EventarcGoogleApiSource"
+    "FinancialServicesInstance"
+    "GDCHardwareManagementHardware"
+    "GeminiDataAnalyticsConversation"
+    "GKEBackupBackupChannel"
+    "GKEHubFleet"
+    "GKEMulticloudAttachedCluster"
+    "GrafeasNote"
+    "GSuiteAddonsDeployment"
+    "HypercomputeClusterCluster"
+    "InfraManagerDeploymentGroup"
+    "KMSEKMConnection"
+    "LicenseManagerConfiguration"
+    "LiveStreamAsset"
+    "ManagedKafkaConnectCluster"
+    "MapManagementMapConfig"
+    "MapsPlatformDatasetsDataset"
+    "MarketingPlatformAdminAnalyticsAccountLink"
+    "MigrationCenterGroup"
+    "ModelArmorTemplate"
+    "NetworkConnectivityMulticloudDataTransferConfig"
+    "NetworkManagementVpcFlowLogsConfig"
+    "NetworkSecurityAddressGroup"
+    "NetworkSecurityBackendAuthenticationConfig"
+    "NetworkSecurityDNSThreatDetector"
+    "NetworkSecurityFirewallEndpoint"
+    "NetworkSecurityGatewaySecurityPolicy"
+    "NetworkSecurityInterceptDeployment"
+    "NetworkSecurityInterceptDeploymentGroup"
+    "NetworkSecurityInterceptEndpointGroupAssociation"
+    "NetworkSecurityMirroringDeployment"
+    "NetworkSecurityMirroringDeploymentGroup"
+    "NetworkSecurityMirroringEndpointGroupAssociation"
+    "NetworkSecurityPartnerSSEGateway"
+    "NetworkSecurityPartnerSSERealm"
+    "NetworkSecurityTlsInspectionPolicy"
+    "NetworkSecurityUrlList"
+    "NetworkServicesAuthzExtension"
+    "NotebookRuntime"
+    "NotebooksSchedule"
+    "OracleDatabaseAutonomousDatabase"
+    "ParallelstoreInstance"
+    "RapidMigrationAssessmentCollector"
+    "SaasServiceMgmtRelease"
+    "SecretManagerRegionalSecret"
+    "SecurityCenterBigQueryExport"
+    "SecurityCenterManagementEventThreatDetectionCustomModule"
+    "SecurityCenterManagementSecurityHealthAnalyticsCustomModule"
+    "SecurityCenterMuteConfig"
+    "SQLAdminBackup"
+    "StorageBatchOperationsJob"
+    "StorageInsightsDatasetConfig"
+    "TelcoAutomationEdgeSlm"
+    "TestingDeviceSession"
+    "TPUQueuedResource"
+    "TranscoderJob"
+    "TranslateAdaptiveMtDataset"
+    "VectorSearchCollection"
+    "VertexAICachedContent"
+    "VertexAICustomJob"
+    "VertexAIDataset"
+    "VertexAIDeploymentResourcePool"
+    "VertexAIEndpoint"
+    "VertexAIExampleStore"
+    "VertexAIFeatureGroup"
+    "VertexAIFeatureOnlineStore"
+    "VertexAIHyperparameterTuningJob"
+    "VertexAIModelDeploymentMonitoringJob"
+    "VertexAIPersistentResource"
+    "VertexAIPipelineJob"
+    "VertexAIRagCorpus"
+    "VertexAISchedule"
+    "VertexAISpecialistPool"
+    "VertexAIStudy"
+    "VertexAITrainingPipeline"
+    "VertexAITuningJob"
+    "VideoStitcherCDNKey"
+    "VisionAIApplication"
+    "VisionProduct"
+    "VMMigrationGroup"
+    "VMwareEnginePrivateConnection"
+    "WebSecurityScannerScanConfig"
+    "WorkloadManagerEvaluation"
+)
+
+declare -A BLOCKED_MAP
+for b in "${BLOCKED_KINDS[@]}"; do
+    BLOCKED_MAP["${b,,}"]=1
+done
+
+VALID_FILES=()
+for f in config/crds/resources/*.yaml; do
+    KIND=$(grep -m 1 -E "^    kind: " "$f" | awk '{print $2}')
+    if [[ -n "${BLOCKED_MAP[${KIND,,}]:-}" ]]; then
+        echo "Excluding unverified greenfield CRD from release bundle: $f"
+    else
+        VALID_FILES+=("$f")
+    fi
+done
+
+if [[ ${#VALID_FILES[@]} -gt 0 ]]; then
+    kustomize edit add resource "${VALID_FILES[@]}"
+fi
+
+$LICENSING_SCRIPT <(kustomize build .) > $CRDS_FILE
+
+# Build the install bundle with the secret volume
+GCP_IDENTITY_BUNDLE_DIR=${BUNDLE_DIR}/install-bundle-gcp-identity
+mkdir -p ${GCP_IDENTITY_BUNDLE_DIR}
+$LICENSING_SCRIPT <(kustomize build config/installbundle/releases/scopes/cluster/withsecretvolume) > ${GCP_IDENTITY_BUNDLE_DIR}/0-cnrm-system.yaml
+cp $CRDS_FILE ${GCP_IDENTITY_BUNDLE_DIR}/crds.yaml
+sed -i -E "s/\"?0.0.0-dev\"?/\"${VERSION}\"/g" ${GCP_IDENTITY_BUNDLE_DIR}/*
+# Create the autopilot variant of the secret volume install bundle
+AUTOPILOT_GCP_IDENTITY_BUNDLE_DIR=${BUNDLE_DIR}/install-bundle-autopilot-gcp-identity
+mkdir -p ${AUTOPILOT_GCP_IDENTITY_BUNDLE_DIR}
+$LICENSING_SCRIPT <(kustomize build config/installbundle/releases/scopes/cluster/autopilot-withsecretvolume) > ${AUTOPILOT_GCP_IDENTITY_BUNDLE_DIR}/0-cnrm-system.yaml
+cp $CRDS_FILE ${AUTOPILOT_GCP_IDENTITY_BUNDLE_DIR}/crds.yaml
+sed -i -E "s/\"?0.0.0-dev\"?/\"${VERSION}\"/g" ${AUTOPILOT_GCP_IDENTITY_BUNDLE_DIR}/*
+
+# Build the install bundle with workload identity
+WORKLOAD_IDENTITY_BUNDLE_DIR=${BUNDLE_DIR}/install-bundle-workload-identity
+mkdir -p ${WORKLOAD_IDENTITY_BUNDLE_DIR}
+$LICENSING_SCRIPT <(kustomize build config/installbundle/releases/scopes/cluster/withworkloadidentity) > ${WORKLOAD_IDENTITY_BUNDLE_DIR}/0-cnrm-system.yaml
+cp $CRDS_FILE ${WORKLOAD_IDENTITY_BUNDLE_DIR}/crds.yaml
+sed -i -E "s/\"?0.0.0-dev\"?/\"${VERSION}\"/g" ${WORKLOAD_IDENTITY_BUNDLE_DIR}/*
+# Create the autopilot variant of the workload identity install bundle
+AUTOPILOT_WORKLOAD_IDENTITY_BUNDLE_DIR=${BUNDLE_DIR}/install-bundle-autopilot-workload-identity
+mkdir -p ${AUTOPILOT_WORKLOAD_IDENTITY_BUNDLE_DIR}
+$LICENSING_SCRIPT <(kustomize build config/installbundle/releases/scopes/cluster/autopilot-withworkloadidentity) > ${AUTOPILOT_WORKLOAD_IDENTITY_BUNDLE_DIR}/0-cnrm-system.yaml
+cp $CRDS_FILE ${AUTOPILOT_WORKLOAD_IDENTITY_BUNDLE_DIR}/crds.yaml
+sed -i -E "s/\"?0.0.0-dev\"?/\"${VERSION}\"/g" ${AUTOPILOT_WORKLOAD_IDENTITY_BUNDLE_DIR}/*
+
+# Build the namespaced-mode install bundle (uses workload identity)
+NAMESPACED_BUNDLE_DIR=${BUNDLE_DIR}/install-bundle-namespaced
+mkdir -p ${NAMESPACED_BUNDLE_DIR}
+kustomize build config/installbundle/releases/scopes/namespaced/shared-components > ${NAMESPACED_BUNDLE_DIR}/0-cnrm-system.yaml
+add_license ${NAMESPACED_BUNDLE_DIR}/0-cnrm-system.yaml
+kustomize build config/installbundle/releases/scopes/namespaced/per-namespace-components |\
+  sed -e 's/mynamespace/${NAMESPACE?}/g' > ${NAMESPACED_BUNDLE_DIR}/per-namespace-components.yaml
+add_license ${NAMESPACED_BUNDLE_DIR}/per-namespace-components.yaml
+cp $CRDS_FILE ${NAMESPACED_BUNDLE_DIR}/crds.yaml
+sed -i -E "s/\"?0.0.0-dev\"?/\"${VERSION}\"/g" ${NAMESPACED_BUNDLE_DIR}/*
+
+# Create the autopilot variant of the namespaced-mode install bundle
+AUTOPILOT_NAMESPACED_BUNDLE_DIR=${BUNDLE_DIR}/install-bundle-autopilot-namespaced
+mkdir -p ${AUTOPILOT_NAMESPACED_BUNDLE_DIR}
+kustomize build config/installbundle/releases/scopes/namespaced/autopilot-shared-components > ${AUTOPILOT_NAMESPACED_BUNDLE_DIR}/0-cnrm-system.yaml
+add_license ${AUTOPILOT_NAMESPACED_BUNDLE_DIR}/0-cnrm-system.yaml
+kustomize build config/installbundle/releases/scopes/namespaced/per-namespace-components |\
+  sed -e 's/mynamespace/${NAMESPACE?}/g' > ${AUTOPILOT_NAMESPACED_BUNDLE_DIR}/per-namespace-components.yaml
+add_license ${AUTOPILOT_NAMESPACED_BUNDLE_DIR}/per-namespace-components.yaml
+cp $CRDS_FILE ${AUTOPILOT_NAMESPACED_BUNDLE_DIR}/crds.yaml
+sed -i -E "s/\"?0.0.0-dev\"?/\"${VERSION}\"/g" ${AUTOPILOT_NAMESPACED_BUNDLE_DIR}/*
+
+# Add the sample YAML files and applications to tarball
+cp -r config/samples/ ${BUNDLE_DIR}/
+
+tar -czvf ${DIST}/release-bundle.tar.gz -C ${BUNDLE_DIR}/ .
+
+# Remove the temporary kustomization.yaml file we wrote
+rm -f ${REPO_ROOT}/kustomization.yaml

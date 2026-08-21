@@ -1,0 +1,128 @@
+// Copyright 2022 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum VertexAlphaEndpointDeployedModelsDedicatedResourcesMachineSpecAcceleratorTypeEnum {
+  VertexAlphaEndpointDeployedModelsDedicatedResourcesMachineSpecAcceleratorTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  VertexAlphaEndpointDeployedModelsDedicatedResourcesMachineSpecAcceleratorTypeEnumACCELERATOR_TYPE_UNSPECIFIED = 1;
+  VertexAlphaEndpointDeployedModelsDedicatedResourcesMachineSpecAcceleratorTypeEnumNVIDIA_TESLA_K80 = 2;
+  VertexAlphaEndpointDeployedModelsDedicatedResourcesMachineSpecAcceleratorTypeEnumNVIDIA_TESLA_P100 = 3;
+  VertexAlphaEndpointDeployedModelsDedicatedResourcesMachineSpecAcceleratorTypeEnumNVIDIA_TESLA_V100 = 4;
+  VertexAlphaEndpointDeployedModelsDedicatedResourcesMachineSpecAcceleratorTypeEnumNVIDIA_TESLA_P4 = 5;
+  VertexAlphaEndpointDeployedModelsDedicatedResourcesMachineSpecAcceleratorTypeEnumNVIDIA_TESLA_T4 = 6;
+  VertexAlphaEndpointDeployedModelsDedicatedResourcesMachineSpecAcceleratorTypeEnumNVIDIA_TESLA_A100 = 7;
+  VertexAlphaEndpointDeployedModelsDedicatedResourcesMachineSpecAcceleratorTypeEnumTPU_V2 = 8;
+  VertexAlphaEndpointDeployedModelsDedicatedResourcesMachineSpecAcceleratorTypeEnumTPU_V3 = 9;
+}
+
+message VertexAlphaEndpoint {
+  string name = 1;
+  string display_name = 2;
+  string description = 3;
+  repeated VertexAlphaEndpointDeployedModels deployed_models = 4;
+  string etag = 5;
+  map<string, string> labels = 6;
+  string create_time = 7;
+  string update_time = 8;
+  VertexAlphaEndpointEncryptionSpec encryption_spec = 9;
+  string network = 10;
+  string model_deployment_monitoring_job = 11;
+  string project = 12;
+  string location = 13;
+}
+
+message VertexAlphaEndpointDeployedModels {
+  VertexAlphaEndpointDeployedModelsDedicatedResources dedicated_resources = 1;
+  VertexAlphaEndpointDeployedModelsAutomaticResources automatic_resources = 2;
+  string id = 3;
+  string model = 4;
+  string model_version_id = 5;
+  string display_name = 6;
+  string create_time = 7;
+  string service_account = 8;
+  bool disable_container_logging = 9;
+  bool enable_access_logging = 10;
+  VertexAlphaEndpointDeployedModelsPrivateEndpoints private_endpoints = 11;
+  string shared_resources = 12;
+  bool enable_container_logging = 13;
+}
+
+message VertexAlphaEndpointDeployedModelsDedicatedResources {
+  VertexAlphaEndpointDeployedModelsDedicatedResourcesMachineSpec machine_spec = 1;
+  int64 min_replica_count = 2;
+  int64 max_replica_count = 3;
+  repeated VertexAlphaEndpointDeployedModelsDedicatedResourcesAutoscalingMetricSpecs autoscaling_metric_specs = 4;
+}
+
+message VertexAlphaEndpointDeployedModelsDedicatedResourcesMachineSpec {
+  string machine_type = 1;
+  VertexAlphaEndpointDeployedModelsDedicatedResourcesMachineSpecAcceleratorTypeEnum accelerator_type = 2;
+  int64 accelerator_count = 3;
+}
+
+message VertexAlphaEndpointDeployedModelsDedicatedResourcesAutoscalingMetricSpecs {
+  string metric_name = 1;
+  int64 target = 2;
+}
+
+message VertexAlphaEndpointDeployedModelsAutomaticResources {
+  int64 min_replica_count = 1;
+  int64 max_replica_count = 2;
+}
+
+message VertexAlphaEndpointDeployedModelsPrivateEndpoints {
+  string predict_http_uri = 1;
+  string explain_http_uri = 2;
+  string health_http_uri = 3;
+  string service_attachment = 4;
+}
+
+message VertexAlphaEndpointEncryptionSpec {
+  string kms_key_name = 1;
+}
+
+message ApplyVertexAlphaEndpointRequest {
+  VertexAlphaEndpoint resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteVertexAlphaEndpointRequest {
+  string service_account_file = 1;
+  VertexAlphaEndpoint resource = 2;
+}
+
+message ListVertexAlphaEndpointRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListVertexAlphaEndpointResponse {
+  repeated VertexAlphaEndpoint items = 1;
+}
+
+service VertexAlphaEndpointService {
+  rpc ApplyVertexAlphaEndpoint(ApplyVertexAlphaEndpointRequest) returns (VertexAlphaEndpoint);
+  rpc DeleteVertexAlphaEndpoint(DeleteVertexAlphaEndpointRequest) returns (google.protobuf.Empty);
+  rpc ListVertexAlphaEndpoint(ListVertexAlphaEndpointRequest) returns (ListVertexAlphaEndpointResponse);
+}

@@ -1,0 +1,6 @@
+{
+  "name":"{{ref:__state__:name}}",
+  "project": "{{ref:__state__:project}}",
+  "location": "global",
+  "description": "Updated sample global network firewall policy."
+}

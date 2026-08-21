@@ -1,0 +1,541 @@
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+version: 2
+interactions:
+  - id: 0
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: cloudkms.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://cloudkms.googleapis.com/v1/projects/example-project/locations/us-central1/keyRings/kmscryptokey-6zwe0le41ydl?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 342.314414ms
+  - id: 1
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: cloudkms.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://cloudkms.googleapis.com/v1/projects/example-project/locations/us-central1/keyRings?alt=json&keyRingId=kmscryptokey-6zwe0le41ydl
+      method: POST
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-central1/keyRings/kmscryptokey-6zwe0le41ydl",
+          "createTime": "2024-04-25T01:42:56.769267694Z"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 108.017049ms
+  - id: 2
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: cloudkms.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://cloudkms.googleapis.com/v1/projects/example-project/locations/us-central1/keyRings/kmscryptokey-6zwe0le41ydl?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-central1/keyRings/kmscryptokey-6zwe0le41ydl",
+          "createTime": "2024-04-25T01:42:56.769267694Z"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 80.451506ms
+  - id: 3
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: cloudkms.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://cloudkms.googleapis.com/v1/projects/example-project/locations/us-central1/keyRings/kmscryptokey-6zwe0le41ydl?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-central1/keyRings/kmscryptokey-6zwe0le41ydl",
+          "createTime": "2024-04-25T01:42:56.769267694Z"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 85.535534ms
+  - id: 4
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: cloudkms.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://cloudkms.googleapis.com/v1/projects/example-project/locations/us-central1/keyRings/kmscryptokey-6zwe0le41ydl/cryptoKeys/kmscryptokey-6zwe0le41ydl?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 254.744338ms
+  - id: 5
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 190
+      transfer_encoding: []
+      trailer: {}
+      host: cloudkms.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: |
+        {"labels":{"cnrm-test":"true","key-one":"value-one","managed-by-cnrm":"true"},"purpose":"ASYMMETRIC_SIGN","versionTemplate":{"algorithm":"EC_SIGN_P384_SHA384","protectionLevel":"SOFTWARE"}}
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://cloudkms.googleapis.com/v1/projects/example-project/locations/us-central1/keyRings/kmscryptokey-6zwe0le41ydl/cryptoKeys?alt=json&cryptoKeyId=kmscryptokey-6zwe0le41ydl&skipInitialVersionCreation=false
+      method: POST
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-central1/keyRings/kmscryptokey-6zwe0le41ydl/cryptoKeys/kmscryptokey-6zwe0le41ydl",
+          "purpose": "ASYMMETRIC_SIGN",
+          "createTime": "2024-04-25T01:42:57.676688768Z",
+          "labels": {
+            "key-one": "value-one",
+            "managed-by-cnrm": "true",
+            "cnrm-test": "true"
+          },
+          "versionTemplate": {
+            "protectionLevel": "SOFTWARE",
+            "algorithm": "EC_SIGN_P384_SHA384"
+          },
+          "destroyScheduledDuration": "2592000s"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 112.847753ms
+  - id: 6
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: cloudkms.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://cloudkms.googleapis.com/v1/projects/example-project/locations/us-central1/keyRings/kmscryptokey-6zwe0le41ydl/cryptoKeys/kmscryptokey-6zwe0le41ydl?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-central1/keyRings/kmscryptokey-6zwe0le41ydl/cryptoKeys/kmscryptokey-6zwe0le41ydl",
+          "purpose": "ASYMMETRIC_SIGN",
+          "createTime": "2024-04-25T01:42:57.676688768Z",
+          "labels": {
+            "key-one": "value-one",
+            "managed-by-cnrm": "true",
+            "cnrm-test": "true"
+          },
+          "versionTemplate": {
+            "protectionLevel": "SOFTWARE",
+            "algorithm": "EC_SIGN_P384_SHA384"
+          },
+          "destroyScheduledDuration": "2592000s"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 76.844948ms
+  - id: 7
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: cloudkms.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://cloudkms.googleapis.com/v1/projects/example-project/locations/us-central1/keyRings/kmscryptokey-6zwe0le41ydl/cryptoKeys/kmscryptokey-6zwe0le41ydl?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-central1/keyRings/kmscryptokey-6zwe0le41ydl/cryptoKeys/kmscryptokey-6zwe0le41ydl",
+          "purpose": "ASYMMETRIC_SIGN",
+          "createTime": "2024-04-25T01:42:57.676688768Z",
+          "labels": {
+            "managed-by-cnrm": "true",
+            "key-one": "value-one",
+            "cnrm-test": "true"
+          },
+          "versionTemplate": {
+            "protectionLevel": "SOFTWARE",
+            "algorithm": "EC_SIGN_P384_SHA384"
+          },
+          "destroyScheduledDuration": "2592000s"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 63.539543ms
+  - id: 8
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: cloudkms.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://cloudkms.googleapis.com/v1/projects/example-project/locations/us-central1/keyRings/kmscryptokey-6zwe0le41ydl/cryptoKeys/kmscryptokey-6zwe0le41ydl?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-central1/keyRings/kmscryptokey-6zwe0le41ydl/cryptoKeys/kmscryptokey-6zwe0le41ydl",
+          "purpose": "ASYMMETRIC_SIGN",
+          "createTime": "2024-04-25T01:42:57.676688768Z",
+          "labels": {
+            "key-one": "value-one",
+            "cnrm-test": "true",
+            "managed-by-cnrm": "true"
+          },
+          "versionTemplate": {
+            "protectionLevel": "SOFTWARE",
+            "algorithm": "EC_SIGN_P384_SHA384"
+          },
+          "destroyScheduledDuration": "2592000s"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 67.820011ms
+  - id: 9
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: cloudkms.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://cloudkms.googleapis.com/v1/projects/example-project/locations/us-central1/keyRings/kmscryptokey-6zwe0le41ydl?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-central1/keyRings/kmscryptokey-6zwe0le41ydl",
+          "createTime": "2024-04-25T01:42:56.769267694Z"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 224.563243ms
+  - id: 10
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: cloudkms.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://cloudkms.googleapis.com/v1/projects/example-project/locations/us-central1/keyRings/kmscryptokey-6zwe0le41ydl/cryptoKeys/kmscryptokey-6zwe0le41ydl?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-central1/keyRings/kmscryptokey-6zwe0le41ydl/cryptoKeys/kmscryptokey-6zwe0le41ydl",
+          "purpose": "ASYMMETRIC_SIGN",
+          "createTime": "2024-04-25T01:42:57.676688768Z",
+          "labels": {
+            "managed-by-cnrm": "true",
+            "key-one": "value-one",
+            "cnrm-test": "true"
+          },
+          "versionTemplate": {
+            "protectionLevel": "SOFTWARE",
+            "algorithm": "EC_SIGN_P384_SHA384"
+          },
+          "destroyScheduledDuration": "2592000s"
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 155.890261ms
+  - id: 11
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: cloudkms.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        X-Goog-Api-Client:
+          - gl-go/1.21.5 gdcl/0.160.0
+      url: https://cloudkms.googleapis.com/v1/projects/example-project/locations/us-central1/keyRings/kmscryptokey-6zwe0le41ydl/cryptoKeys/kmscryptokey-6zwe0le41ydl/cryptoKeyVersions?alt=json&prettyPrint=false
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: '{"cryptoKeyVersions":[{"name":"projects/example-project/locations/us-central1/keyRings/kmscryptokey-6zwe0le41ydl/cryptoKeys/kmscryptokey-6zwe0le41ydl/cryptoKeyVersions/1","state":"ENABLED","createTime":"2024-04-25T01:42:57.676688768Z","protectionLevel":"SOFTWARE","algorithm":"EC_SIGN_P384_SHA384","generateTime":"2024-04-25T01:42:57.738316762Z"}],"totalSize":1}'
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 77.869918ms
+  - id: 12
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 3
+      transfer_encoding: []
+      trailer: {}
+      host: cloudkms.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: |
+        {}
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+        X-Goog-Api-Client:
+          - gl-go/1.21.5 gdcl/0.160.0
+      url: https://cloudkms.googleapis.com/v1/projects/example-project/locations/us-central1/keyRings/kmscryptokey-6zwe0le41ydl/cryptoKeys/kmscryptokey-6zwe0le41ydl/cryptoKeyVersions/1:destroy?alt=json&prettyPrint=false
+      method: POST
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: '{"name":"projects/example-project/locations/us-central1/keyRings/kmscryptokey-6zwe0le41ydl/cryptoKeys/kmscryptokey-6zwe0le41ydl/cryptoKeyVersions/1","state":"DESTROY_SCHEDULED","createTime":"2024-04-25T01:42:57.676688768Z","destroyTime":"2024-05-25T01:42:59.677260Z","protectionLevel":"SOFTWARE","algorithm":"EC_SIGN_P384_SHA384","generateTime":"2024-04-25T01:42:57.738316762Z"}'
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 165.281896ms

@@ -1,0 +1,6 @@
+{
+  "type": "custom.googleapis.com/{{suffix}}",
+  "project": "{{project}}",
+  "metricKind": "CUMULATIVE",
+  "valueType": "DISTRIBUTION"
+}

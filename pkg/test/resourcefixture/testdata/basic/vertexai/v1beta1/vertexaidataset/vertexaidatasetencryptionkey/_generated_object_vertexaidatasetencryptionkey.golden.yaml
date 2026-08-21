@@ -1,0 +1,35 @@
+apiVersion: vertexai.cnrm.cloud.google.com/v1beta1
+kind: VertexAIDataset
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/state-into-spec: absent
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 3
+  labels:
+    cnrm-test: "true"
+  name: vertexaidataset-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  displayName: an encrypted vertex AI dataset with updated name
+  encryptionSpec:
+    kmsKeyNameRef:
+      name: kmscryptokey-${uniqueId}
+  metadataSchemaUri: gs://google-cloud-aiplatform/schema/dataset/metadata/image_1.0.0.yaml
+  projectRef:
+    external: ${projectId}
+  region: us-central1
+  resourceID: ${datasetId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  observedGeneration: 3
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    name: projects/${projectNumber}/locations/us-central1/datasets/${datasetId}

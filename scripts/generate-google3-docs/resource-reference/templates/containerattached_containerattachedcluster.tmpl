@@ -1,0 +1,99 @@
+{{template "headercomment.tmpl" .}}
+
+{% extends "config-connector/_base.html" %}
+
+{% block page_title %}{{ .Kind}}{% endblock %}
+{% block body %}
+{{template "alphadisclaimer.tmpl" .}}
+
+<table>
+<thead>
+<tr>
+<th><strong>Property</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>{{"{{gcp_name_short}}"}} Service Name</td>
+<td>Anthos Multi-Cloud</td>
+</tr>
+<tr>
+<td>{{"{{gcp_name_short}}"}} Service Documentation</td>
+<td><a href="/anthos/clusters/docs/multi-cloud/attached">/anthos/clusters/docs/multi-cloud/attached</a></td>
+</tr>
+<tr>
+<td>{{"{{gcp_name_short}}"}} REST Resource Name</td>
+<td>v1.projects.locations.attachedClusters</td>
+</tr>
+<tr>
+<td>{{"{{gcp_name_short}}"}} REST Resource Documentation</td>
+<td><a href="/anthos/clusters/docs/multi-cloud/reference/rest/v1/projects.locations.attachedClusters">/anthos/clusters/docs/multi-cloud/reference/rest/v1/projects.locations.attachedClusters</a></td>
+</tr>
+<tr>
+<td>{{"{{product_name_short}}"}} Resource Short Names</td>
+<td>{{ .ShortNames}}</td>
+</tr>
+<tr>
+<td>{{"{{product_name_short}}"}} Service Name</td>
+<td>gkemulticloud.googleapis.com</td>
+</tr>
+<tr>
+<td>{{"{{product_name_short}}"}} Resource Fully Qualified Name</td>
+<td>{{ .FullyQualifiedName}}</td>
+</tr>
+{{template "iamsupport.tmpl" .}}
+<tr>
+<td>{{"{{product_name_short}}"}} Default Average Reconcile Interval In Seconds</td>
+<td>{{ .DefaultReconcileInterval}}</td>
+</tr>
+</tbody>
+</table>
+
+## Prerequisites
+
+Before you can use this resource, you must prepare the target cluster
+so that the multi-cloud service can connect to the target cluster.
+To prepare the cluster, follow the steps to deploy an install-agent into the target cluster:
+
+1. Get the manifest yaml file for the install-agent:
+
+`gcloud container attached clusters generate-install-manifest my-cluster  --location=GOOGLE_CLOUD_REGION --platform-version=PLATFORM_VERSION --output-file=manifest.yaml`
+
+Example command:
+
+`gcloud container attached clusters generate-install-manifest kcc-attached-cluster  --location=us-west1 --platform-version=1.25.0-gke.5 --output-file=manifest.yaml`
+
+2. Check out the target cluster and get the kubeconfig context:
+
+Amazon Elastic Kubernetes Service cluster: `aws eks update-kubeconfig --region $AWS_REGION --name $CLUSTER`
+
+Azure Kubernetes Service cluster: `az aks get-credentials -n $CLUSTER -g $AZURE_RESOURCE_GROUP`
+
+`export KUBECONFIG_CONTEXT=$(kubectl config current-context)`
+
+3. Apply the `manifest.yaml` file to the target cluster:
+
+(Optional if you used the previous command to switch context) `kubectl use-context $KUBECONFIG_CONTEXT`
+
+`kubectl apply -f manifest.yaml`
+
+You should see the following logs:
+
+```
+ namespace/gke-install created
+ serviceaccount/gke-install-agent created
+ clusterrolebinding.rbac.authorization.k8s.io/multicloud-install-agent-admin created
+ deployment.apps/gke-multicloud-agent created
+```
+
+4. Switch back to the Google Kubernetes Engine(GKE) cluster with Config Connector installed:
+
+Run `kubectl config get-contexts` to see all configured contexts. You should see at least two contexts:
+one associated with the target cluster, and one associated with the GKE cluster with Config Connector installed.
+
+Run `kubectl config use-context GKE_CONTEXT` to switch back to the GKE context.
+
+{{template "resource.tmpl" .}}
+{{template "endnote.tmpl" .}}
+{% endblock %}

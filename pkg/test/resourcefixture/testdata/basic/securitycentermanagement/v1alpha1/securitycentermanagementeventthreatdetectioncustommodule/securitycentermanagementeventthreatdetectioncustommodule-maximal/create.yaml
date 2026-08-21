@@ -1,0 +1,19 @@
+apiVersion: securitycentermanagement.cnrm.cloud.google.com/v1alpha1
+kind: SecurityCenterManagementEventThreatDetectionCustomModule
+metadata:
+  name: sccetdcm-max-${uniqueId}
+spec:
+  organizationRef:
+    external: organizations/${TEST_ORG_ID}
+  location: global
+  displayName: "Maximal Event Threat Detection Custom Module"
+  description: "A custom module for Event Threat Detection"
+  enablementState: ENABLED
+  type: CONFIGURABLE_BAD_IP
+  config:
+    metadata:
+      name: CONFIGURABLE_BAD_IP
+      description: "My custom configurable bad IP module"
+    ips:
+      - 1.2.3.4
+      - 5.6.7.8

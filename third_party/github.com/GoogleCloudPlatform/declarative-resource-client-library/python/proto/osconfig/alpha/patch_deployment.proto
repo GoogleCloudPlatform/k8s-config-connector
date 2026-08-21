@@ -1,0 +1,336 @@
+// Copyright 2022 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum OsconfigAlphaPatchDeploymentPatchConfigRebootConfigEnum {
+  OsconfigAlphaPatchDeploymentPatchConfigRebootConfigEnumNO_VALUE_DO_NOT_USE = 0;
+  OsconfigAlphaPatchDeploymentPatchConfigRebootConfigEnumREBOOT_CONFIG_UNSPECIFIED = 1;
+  OsconfigAlphaPatchDeploymentPatchConfigRebootConfigEnumDEFAULT = 2;
+  OsconfigAlphaPatchDeploymentPatchConfigRebootConfigEnumALWAYS = 3;
+  OsconfigAlphaPatchDeploymentPatchConfigRebootConfigEnumNEVER = 4;
+}
+
+enum OsconfigAlphaPatchDeploymentPatchConfigAptTypeEnum {
+  OsconfigAlphaPatchDeploymentPatchConfigAptTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  OsconfigAlphaPatchDeploymentPatchConfigAptTypeEnumTYPE_UNSPECIFIED = 1;
+  OsconfigAlphaPatchDeploymentPatchConfigAptTypeEnumDIST = 2;
+  OsconfigAlphaPatchDeploymentPatchConfigAptTypeEnumUPGRADE = 3;
+}
+
+enum OsconfigAlphaPatchDeploymentPatchConfigWindowsUpdateClassificationsEnum {
+  OsconfigAlphaPatchDeploymentPatchConfigWindowsUpdateClassificationsEnumNO_VALUE_DO_NOT_USE = 0;
+  OsconfigAlphaPatchDeploymentPatchConfigWindowsUpdateClassificationsEnumCLASSIFICATION_UNSPECIFIED = 1;
+  OsconfigAlphaPatchDeploymentPatchConfigWindowsUpdateClassificationsEnumCRITICAL = 2;
+  OsconfigAlphaPatchDeploymentPatchConfigWindowsUpdateClassificationsEnumSECURITY = 3;
+  OsconfigAlphaPatchDeploymentPatchConfigWindowsUpdateClassificationsEnumDEFINITION = 4;
+  OsconfigAlphaPatchDeploymentPatchConfigWindowsUpdateClassificationsEnumDRIVER = 5;
+  OsconfigAlphaPatchDeploymentPatchConfigWindowsUpdateClassificationsEnumFEATURE_PACK = 6;
+  OsconfigAlphaPatchDeploymentPatchConfigWindowsUpdateClassificationsEnumSERVICE_PACK = 7;
+  OsconfigAlphaPatchDeploymentPatchConfigWindowsUpdateClassificationsEnumTOOL = 8;
+  OsconfigAlphaPatchDeploymentPatchConfigWindowsUpdateClassificationsEnumUPDATE_ROLLUP = 9;
+  OsconfigAlphaPatchDeploymentPatchConfigWindowsUpdateClassificationsEnumUPDATE = 10;
+}
+
+enum OsconfigAlphaPatchDeploymentPatchConfigPreStepLinuxExecStepConfigInterpreterEnum {
+  OsconfigAlphaPatchDeploymentPatchConfigPreStepLinuxExecStepConfigInterpreterEnumNO_VALUE_DO_NOT_USE = 0;
+  OsconfigAlphaPatchDeploymentPatchConfigPreStepLinuxExecStepConfigInterpreterEnumINTERPRETER_UNSPECIFIED = 1;
+  OsconfigAlphaPatchDeploymentPatchConfigPreStepLinuxExecStepConfigInterpreterEnumNONE = 2;
+  OsconfigAlphaPatchDeploymentPatchConfigPreStepLinuxExecStepConfigInterpreterEnumSHELL = 3;
+  OsconfigAlphaPatchDeploymentPatchConfigPreStepLinuxExecStepConfigInterpreterEnumPOWERSHELL = 4;
+}
+
+enum OsconfigAlphaPatchDeploymentPatchConfigPreStepWindowsExecStepConfigInterpreterEnum {
+  OsconfigAlphaPatchDeploymentPatchConfigPreStepWindowsExecStepConfigInterpreterEnumNO_VALUE_DO_NOT_USE = 0;
+  OsconfigAlphaPatchDeploymentPatchConfigPreStepWindowsExecStepConfigInterpreterEnumINTERPRETER_UNSPECIFIED = 1;
+  OsconfigAlphaPatchDeploymentPatchConfigPreStepWindowsExecStepConfigInterpreterEnumNONE = 2;
+  OsconfigAlphaPatchDeploymentPatchConfigPreStepWindowsExecStepConfigInterpreterEnumSHELL = 3;
+  OsconfigAlphaPatchDeploymentPatchConfigPreStepWindowsExecStepConfigInterpreterEnumPOWERSHELL = 4;
+}
+
+enum OsconfigAlphaPatchDeploymentPatchConfigPostStepLinuxExecStepConfigInterpreterEnum {
+  OsconfigAlphaPatchDeploymentPatchConfigPostStepLinuxExecStepConfigInterpreterEnumNO_VALUE_DO_NOT_USE = 0;
+  OsconfigAlphaPatchDeploymentPatchConfigPostStepLinuxExecStepConfigInterpreterEnumINTERPRETER_UNSPECIFIED = 1;
+  OsconfigAlphaPatchDeploymentPatchConfigPostStepLinuxExecStepConfigInterpreterEnumNONE = 2;
+  OsconfigAlphaPatchDeploymentPatchConfigPostStepLinuxExecStepConfigInterpreterEnumSHELL = 3;
+  OsconfigAlphaPatchDeploymentPatchConfigPostStepLinuxExecStepConfigInterpreterEnumPOWERSHELL = 4;
+}
+
+enum OsconfigAlphaPatchDeploymentPatchConfigPostStepWindowsExecStepConfigInterpreterEnum {
+  OsconfigAlphaPatchDeploymentPatchConfigPostStepWindowsExecStepConfigInterpreterEnumNO_VALUE_DO_NOT_USE = 0;
+  OsconfigAlphaPatchDeploymentPatchConfigPostStepWindowsExecStepConfigInterpreterEnumINTERPRETER_UNSPECIFIED = 1;
+  OsconfigAlphaPatchDeploymentPatchConfigPostStepWindowsExecStepConfigInterpreterEnumNONE = 2;
+  OsconfigAlphaPatchDeploymentPatchConfigPostStepWindowsExecStepConfigInterpreterEnumSHELL = 3;
+  OsconfigAlphaPatchDeploymentPatchConfigPostStepWindowsExecStepConfigInterpreterEnumPOWERSHELL = 4;
+}
+
+enum OsconfigAlphaPatchDeploymentRecurringScheduleFrequencyEnum {
+  OsconfigAlphaPatchDeploymentRecurringScheduleFrequencyEnumNO_VALUE_DO_NOT_USE = 0;
+  OsconfigAlphaPatchDeploymentRecurringScheduleFrequencyEnumFREQUENCY_UNSPECIFIED = 1;
+  OsconfigAlphaPatchDeploymentRecurringScheduleFrequencyEnumWEEKLY = 2;
+  OsconfigAlphaPatchDeploymentRecurringScheduleFrequencyEnumMONTHLY = 3;
+  OsconfigAlphaPatchDeploymentRecurringScheduleFrequencyEnumDAILY = 4;
+}
+
+enum OsconfigAlphaPatchDeploymentRecurringScheduleWeeklyDayOfWeekEnum {
+  OsconfigAlphaPatchDeploymentRecurringScheduleWeeklyDayOfWeekEnumNO_VALUE_DO_NOT_USE = 0;
+  OsconfigAlphaPatchDeploymentRecurringScheduleWeeklyDayOfWeekEnumDAY_OF_WEEK_UNSPECIFIED = 1;
+  OsconfigAlphaPatchDeploymentRecurringScheduleWeeklyDayOfWeekEnumMONDAY = 2;
+  OsconfigAlphaPatchDeploymentRecurringScheduleWeeklyDayOfWeekEnumTUESDAY = 3;
+  OsconfigAlphaPatchDeploymentRecurringScheduleWeeklyDayOfWeekEnumWEDNESDAY = 4;
+  OsconfigAlphaPatchDeploymentRecurringScheduleWeeklyDayOfWeekEnumTHURSDAY = 5;
+  OsconfigAlphaPatchDeploymentRecurringScheduleWeeklyDayOfWeekEnumFRIDAY = 6;
+  OsconfigAlphaPatchDeploymentRecurringScheduleWeeklyDayOfWeekEnumSATURDAY = 7;
+  OsconfigAlphaPatchDeploymentRecurringScheduleWeeklyDayOfWeekEnumSUNDAY = 8;
+}
+
+enum OsconfigAlphaPatchDeploymentRecurringScheduleMonthlyWeekDayOfMonthDayOfWeekEnum {
+  OsconfigAlphaPatchDeploymentRecurringScheduleMonthlyWeekDayOfMonthDayOfWeekEnumNO_VALUE_DO_NOT_USE = 0;
+  OsconfigAlphaPatchDeploymentRecurringScheduleMonthlyWeekDayOfMonthDayOfWeekEnumDAY_OF_WEEK_UNSPECIFIED = 1;
+  OsconfigAlphaPatchDeploymentRecurringScheduleMonthlyWeekDayOfMonthDayOfWeekEnumMONDAY = 2;
+  OsconfigAlphaPatchDeploymentRecurringScheduleMonthlyWeekDayOfMonthDayOfWeekEnumTUESDAY = 3;
+  OsconfigAlphaPatchDeploymentRecurringScheduleMonthlyWeekDayOfMonthDayOfWeekEnumWEDNESDAY = 4;
+  OsconfigAlphaPatchDeploymentRecurringScheduleMonthlyWeekDayOfMonthDayOfWeekEnumTHURSDAY = 5;
+  OsconfigAlphaPatchDeploymentRecurringScheduleMonthlyWeekDayOfMonthDayOfWeekEnumFRIDAY = 6;
+  OsconfigAlphaPatchDeploymentRecurringScheduleMonthlyWeekDayOfMonthDayOfWeekEnumSATURDAY = 7;
+  OsconfigAlphaPatchDeploymentRecurringScheduleMonthlyWeekDayOfMonthDayOfWeekEnumSUNDAY = 8;
+}
+
+enum OsconfigAlphaPatchDeploymentRolloutModeEnum {
+  OsconfigAlphaPatchDeploymentRolloutModeEnumNO_VALUE_DO_NOT_USE = 0;
+  OsconfigAlphaPatchDeploymentRolloutModeEnumMODE_UNSPECIFIED = 1;
+  OsconfigAlphaPatchDeploymentRolloutModeEnumVALIDATION = 2;
+  OsconfigAlphaPatchDeploymentRolloutModeEnumENFORCEMENT = 3;
+}
+
+message OsconfigAlphaPatchDeployment {
+  string name = 1;
+  string description = 2;
+  OsconfigAlphaPatchDeploymentInstanceFilter instance_filter = 3;
+  OsconfigAlphaPatchDeploymentPatchConfig patch_config = 4;
+  string duration = 5;
+  OsconfigAlphaPatchDeploymentOneTimeSchedule one_time_schedule = 6;
+  OsconfigAlphaPatchDeploymentRecurringSchedule recurring_schedule = 7;
+  string create_time = 8;
+  string update_time = 9;
+  string last_execute_time = 10;
+  OsconfigAlphaPatchDeploymentRollout rollout = 11;
+  string project = 12;
+}
+
+message OsconfigAlphaPatchDeploymentInstanceFilter {
+  bool all = 1;
+  repeated OsconfigAlphaPatchDeploymentInstanceFilterGroupLabels group_labels = 2;
+  repeated string zones = 3;
+  repeated string instances = 4;
+  repeated string instance_name_prefixes = 5;
+}
+
+message OsconfigAlphaPatchDeploymentInstanceFilterGroupLabels {
+  map<string, string> labels = 1;
+}
+
+message OsconfigAlphaPatchDeploymentPatchConfig {
+  OsconfigAlphaPatchDeploymentPatchConfigRebootConfigEnum reboot_config = 1;
+  OsconfigAlphaPatchDeploymentPatchConfigApt apt = 2;
+  OsconfigAlphaPatchDeploymentPatchConfigYum yum = 3;
+  OsconfigAlphaPatchDeploymentPatchConfigGoo goo = 4;
+  OsconfigAlphaPatchDeploymentPatchConfigZypper zypper = 5;
+  OsconfigAlphaPatchDeploymentPatchConfigWindowsUpdate windows_update = 6;
+  OsconfigAlphaPatchDeploymentPatchConfigPreStep pre_step = 7;
+  OsconfigAlphaPatchDeploymentPatchConfigPostStep post_step = 8;
+  OsconfigAlphaPatchDeploymentPatchConfigRetryStrategy retry_strategy = 9;
+}
+
+message OsconfigAlphaPatchDeploymentPatchConfigApt {
+  OsconfigAlphaPatchDeploymentPatchConfigAptTypeEnum type = 1;
+  repeated string excludes = 2;
+  repeated string exclusive_packages = 3;
+}
+
+message OsconfigAlphaPatchDeploymentPatchConfigYum {
+  bool security = 1;
+  bool minimal = 2;
+  repeated string excludes = 3;
+  repeated string exclusive_packages = 4;
+}
+
+message OsconfigAlphaPatchDeploymentPatchConfigGoo {
+}
+
+message OsconfigAlphaPatchDeploymentPatchConfigZypper {
+  bool with_optional = 1;
+  bool with_update = 2;
+  repeated string categories = 3;
+  repeated string severities = 4;
+  repeated string excludes = 5;
+  repeated string exclusive_patches = 6;
+}
+
+message OsconfigAlphaPatchDeploymentPatchConfigWindowsUpdate {
+  repeated OsconfigAlphaPatchDeploymentPatchConfigWindowsUpdateClassificationsEnum classifications = 1;
+  repeated string excludes = 2;
+  repeated string exclusive_patches = 3;
+}
+
+message OsconfigAlphaPatchDeploymentPatchConfigPreStep {
+  OsconfigAlphaPatchDeploymentPatchConfigPreStepLinuxExecStepConfig linux_exec_step_config = 1;
+  OsconfigAlphaPatchDeploymentPatchConfigPreStepWindowsExecStepConfig windows_exec_step_config = 2;
+}
+
+message OsconfigAlphaPatchDeploymentPatchConfigPreStepLinuxExecStepConfig {
+  string local_path = 1;
+  OsconfigAlphaPatchDeploymentPatchConfigPreStepLinuxExecStepConfigGcsObject gcs_object = 2;
+  repeated int64 allowed_success_codes = 3;
+  OsconfigAlphaPatchDeploymentPatchConfigPreStepLinuxExecStepConfigInterpreterEnum interpreter = 4;
+}
+
+message OsconfigAlphaPatchDeploymentPatchConfigPreStepLinuxExecStepConfigGcsObject {
+  string bucket = 1;
+  string object = 2;
+  int64 generation_number = 3;
+}
+
+message OsconfigAlphaPatchDeploymentPatchConfigPreStepWindowsExecStepConfig {
+  string local_path = 1;
+  OsconfigAlphaPatchDeploymentPatchConfigPreStepWindowsExecStepConfigGcsObject gcs_object = 2;
+  repeated int64 allowed_success_codes = 3;
+  OsconfigAlphaPatchDeploymentPatchConfigPreStepWindowsExecStepConfigInterpreterEnum interpreter = 4;
+}
+
+message OsconfigAlphaPatchDeploymentPatchConfigPreStepWindowsExecStepConfigGcsObject {
+  string bucket = 1;
+  string object = 2;
+  int64 generation_number = 3;
+}
+
+message OsconfigAlphaPatchDeploymentPatchConfigPostStep {
+  OsconfigAlphaPatchDeploymentPatchConfigPostStepLinuxExecStepConfig linux_exec_step_config = 1;
+  OsconfigAlphaPatchDeploymentPatchConfigPostStepWindowsExecStepConfig windows_exec_step_config = 2;
+}
+
+message OsconfigAlphaPatchDeploymentPatchConfigPostStepLinuxExecStepConfig {
+  string local_path = 1;
+  OsconfigAlphaPatchDeploymentPatchConfigPostStepLinuxExecStepConfigGcsObject gcs_object = 2;
+  repeated int64 allowed_success_codes = 3;
+  OsconfigAlphaPatchDeploymentPatchConfigPostStepLinuxExecStepConfigInterpreterEnum interpreter = 4;
+}
+
+message OsconfigAlphaPatchDeploymentPatchConfigPostStepLinuxExecStepConfigGcsObject {
+  string bucket = 1;
+  string object = 2;
+  int64 generation_number = 3;
+}
+
+message OsconfigAlphaPatchDeploymentPatchConfigPostStepWindowsExecStepConfig {
+  string local_path = 1;
+  OsconfigAlphaPatchDeploymentPatchConfigPostStepWindowsExecStepConfigGcsObject gcs_object = 2;
+  repeated int64 allowed_success_codes = 3;
+  OsconfigAlphaPatchDeploymentPatchConfigPostStepWindowsExecStepConfigInterpreterEnum interpreter = 4;
+}
+
+message OsconfigAlphaPatchDeploymentPatchConfigPostStepWindowsExecStepConfigGcsObject {
+  string bucket = 1;
+  string object = 2;
+  int64 generation_number = 3;
+}
+
+message OsconfigAlphaPatchDeploymentPatchConfigRetryStrategy {
+  bool enabled = 1;
+}
+
+message OsconfigAlphaPatchDeploymentOneTimeSchedule {
+  string execute_time = 1;
+}
+
+message OsconfigAlphaPatchDeploymentRecurringSchedule {
+  OsconfigAlphaPatchDeploymentRecurringScheduleTimeZone time_zone = 1;
+  string start_time = 2;
+  string end_time = 3;
+  OsconfigAlphaPatchDeploymentRecurringScheduleTimeOfDay time_of_day = 4;
+  OsconfigAlphaPatchDeploymentRecurringScheduleFrequencyEnum frequency = 5;
+  OsconfigAlphaPatchDeploymentRecurringScheduleWeekly weekly = 6;
+  OsconfigAlphaPatchDeploymentRecurringScheduleMonthly monthly = 7;
+  string last_execute_time = 8;
+  string next_execute_time = 9;
+}
+
+message OsconfigAlphaPatchDeploymentRecurringScheduleTimeZone {
+  string id = 1;
+  string version = 2;
+}
+
+message OsconfigAlphaPatchDeploymentRecurringScheduleTimeOfDay {
+  int64 hours = 1;
+  int64 minutes = 2;
+  int64 seconds = 3;
+  int64 nanos = 4;
+}
+
+message OsconfigAlphaPatchDeploymentRecurringScheduleWeekly {
+  OsconfigAlphaPatchDeploymentRecurringScheduleWeeklyDayOfWeekEnum day_of_week = 1;
+}
+
+message OsconfigAlphaPatchDeploymentRecurringScheduleMonthly {
+  OsconfigAlphaPatchDeploymentRecurringScheduleMonthlyWeekDayOfMonth week_day_of_month = 1;
+  int64 month_day = 2;
+}
+
+message OsconfigAlphaPatchDeploymentRecurringScheduleMonthlyWeekDayOfMonth {
+  int64 week_ordinal = 1;
+  OsconfigAlphaPatchDeploymentRecurringScheduleMonthlyWeekDayOfMonthDayOfWeekEnum day_of_week = 2;
+}
+
+message OsconfigAlphaPatchDeploymentRollout {
+  OsconfigAlphaPatchDeploymentRolloutModeEnum mode = 1;
+  OsconfigAlphaPatchDeploymentRolloutDisruptionBudget disruption_budget = 2;
+}
+
+message OsconfigAlphaPatchDeploymentRolloutDisruptionBudget {
+  int64 fixed = 1;
+  int64 percent = 2;
+}
+
+message ApplyOsconfigAlphaPatchDeploymentRequest {
+  OsconfigAlphaPatchDeployment resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteOsconfigAlphaPatchDeploymentRequest {
+  string service_account_file = 1;
+  OsconfigAlphaPatchDeployment resource = 2;
+}
+
+message ListOsconfigAlphaPatchDeploymentRequest {
+  string service_account_file = 1;
+  string Project = 2;
+}
+
+message ListOsconfigAlphaPatchDeploymentResponse {
+  repeated OsconfigAlphaPatchDeployment items = 1;
+}
+
+service OsconfigAlphaPatchDeploymentService {
+  rpc ApplyOsconfigAlphaPatchDeployment(ApplyOsconfigAlphaPatchDeploymentRequest) returns (OsconfigAlphaPatchDeployment);
+  rpc DeleteOsconfigAlphaPatchDeployment(DeleteOsconfigAlphaPatchDeploymentRequest) returns (google.protobuf.Empty);
+  rpc ListOsconfigAlphaPatchDeployment(ListOsconfigAlphaPatchDeploymentRequest) returns (ListOsconfigAlphaPatchDeploymentResponse);
+}

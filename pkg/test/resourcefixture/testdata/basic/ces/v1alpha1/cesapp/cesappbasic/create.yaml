@@ -1,0 +1,32 @@
+apiVersion: ces.cnrm.cloud.google.com/v1alpha1
+kind: CESApp
+metadata:
+  name: cesapp-basic
+spec:
+  location: "global"
+  projectRef:
+    external: "projects/${projectId}"
+  rootAgentRef:
+    external: "projects/${projectId}/locations/global/agents/agent1"
+  clientCertificateSettings:
+    passphraseRef:
+      external: "projects/${projectId}/secrets/secret1/versions/1"
+    privateKeyRef:
+      external: "projects/${projectId}/secrets/secret2/versions/1"
+  evaluationPersonas:
+  - nameRef:
+      external: "projects/${projectId}/locations/global/evaluationPersonas/persona1"
+  loggingSettings:
+    redactionConfig:
+      deidentifyTemplateRef:
+        external: "projects/${projectId}/locations/global/deidentifyTemplates/template1"
+      inspectTemplateRef:
+        external: "projects/${projectId}/locations/global/inspectTemplates/template1"
+    audioRecordingConfig:
+      gcsPathPrefix: "gs://bucket1/"
+    evaluationAudioRecordingConfig:
+      gcsPathPrefix: "gs://bucket2/"
+    unredactedAudioRecordingConfig:
+      gcsPathPrefix: "gs://bucket3/"
+  guardrailRefs:
+  - external: "projects/${projectId}/locations/global/guardrails/guardrail1"

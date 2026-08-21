@@ -1,0 +1,115 @@
+// Copyright 2026 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package v1alpha1
+
+import (
+	"context"
+	"fmt"
+	"strings"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/parent"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
+	"sigs.k8s.io/controller-runtime/pkg/client"
+)
+
+var _ identity.Identity = &CloudDeployTargetIdentity{}
+
+// CloudDeployTargetIdentity is the identity of a CloudDeployTarget.
+type CloudDeployTargetIdentity struct {
+	parent *parent.ProjectAndLocationParent
+	id     string
+}
+
+func (i *CloudDeployTargetIdentity) String() string {
+	return i.parent.String() + "/targets/" + i.id
+}
+
+func (i *CloudDeployTargetIdentity) ID() string {
+	return i.id
+}
+
+func (i *CloudDeployTargetIdentity) Parent() *parent.ProjectAndLocationParent {
+	return i.parent
+}
+
+func (i *CloudDeployTargetIdentity) FromExternal(external string) error {
+	tokens := strings.Split(external, "/")
+	if len(tokens) != 6 || tokens[0] != "projects" || tokens[2] != "locations" || tokens[4] != "targets" {
+		return fmt.Errorf("format of CloudDeployTarget external=%q was not known (use projects/{{projectID}}/locations/{{location}}/targets/{{targetID}})", external)
+	}
+	i.parent = &parent.ProjectAndLocationParent{
+		ProjectID: tokens[1],
+		Location:  tokens[3],
+	}
+	i.id = tokens[5]
+	return nil
+}
+
+var _ identity.Resource = &CloudDeployTarget{}
+
+func (obj *CloudDeployTarget) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+
+	// Get Parent
+	projectRef, err := refsv1beta1.ResolveProject(ctx, reader, obj.GetNamespace(), obj.Spec.ProjectRef)
+	if err != nil {
+		return nil, err
+	}
+	projectID := projectRef.ProjectID
+	if projectID == "" {
+		return nil, fmt.Errorf("cannot resolve project")
+	}
+	location := common.ValueOf(obj.Spec.Location)
+	if location == "" {
+		return nil, fmt.Errorf("cannot resolve location")
+	}
+
+	// Get desired ID
+	resourceID := common.ValueOf(obj.Spec.ResourceID)
+	if resourceID == "" {
+		resourceID = obj.GetName()
+	}
+	if resourceID == "" {
+		return nil, fmt.Errorf("cannot resolve resource ID")
+	}
+
+	// Use approved External
+	externalRef := common.ValueOf(obj.Status.ExternalRef)
+	if externalRef != "" {
+		// Validate desired with actual
+		actualIdentity := &CloudDeployTargetIdentity{}
+		if err := actualIdentity.FromExternal(externalRef); err != nil {
+			return nil, err
+		}
+		if actualIdentity.Parent().ProjectID != projectID {
+			return nil, fmt.Errorf("spec.projectRef changed, expect %s, got %s", actualIdentity.Parent().ProjectID, projectID)
+		}
+		if actualIdentity.Parent().Location != location {
+			return nil, fmt.Errorf("spec.location changed, expect %s, got %s", actualIdentity.Parent().Location, location)
+		}
+		if actualIdentity.ID() != resourceID {
+			return nil, fmt.Errorf("cannot reset `metadata.name` or `spec.resourceID` to %s, since it has already assigned to %s",
+				resourceID, actualIdentity.ID())
+		}
+	}
+	return &CloudDeployTargetIdentity{
+		parent: &parent.ProjectAndLocationParent{
+			ProjectID: projectID,
+			Location:  location,
+		},
+		id: resourceID,
+	}, nil
+}

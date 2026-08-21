@@ -1,0 +1,311 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum OsconfigAlphaGuestPolicyPackagesDesiredStateEnum {
+  OsconfigAlphaGuestPolicyPackagesDesiredStateEnumNO_VALUE_DO_NOT_USE = 0;
+  OsconfigAlphaGuestPolicyPackagesDesiredStateEnumDESIRED_STATE_UNSPECIFIED = 1;
+  OsconfigAlphaGuestPolicyPackagesDesiredStateEnumINSTALLED = 2;
+  OsconfigAlphaGuestPolicyPackagesDesiredStateEnumREMOVED = 3;
+}
+
+enum OsconfigAlphaGuestPolicyPackagesManagerEnum {
+  OsconfigAlphaGuestPolicyPackagesManagerEnumNO_VALUE_DO_NOT_USE = 0;
+  OsconfigAlphaGuestPolicyPackagesManagerEnumMANAGER_UNSPECIFIED = 1;
+  OsconfigAlphaGuestPolicyPackagesManagerEnumANY = 2;
+  OsconfigAlphaGuestPolicyPackagesManagerEnumAPT = 3;
+  OsconfigAlphaGuestPolicyPackagesManagerEnumYUM = 4;
+  OsconfigAlphaGuestPolicyPackagesManagerEnumZYPPER = 5;
+  OsconfigAlphaGuestPolicyPackagesManagerEnumGOO = 6;
+}
+
+enum OsconfigAlphaGuestPolicyPackageRepositoriesAptArchiveTypeEnum {
+  OsconfigAlphaGuestPolicyPackageRepositoriesAptArchiveTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  OsconfigAlphaGuestPolicyPackageRepositoriesAptArchiveTypeEnumARCHIVE_TYPE_UNSPECIFIED = 1;
+  OsconfigAlphaGuestPolicyPackageRepositoriesAptArchiveTypeEnumDEB = 2;
+  OsconfigAlphaGuestPolicyPackageRepositoriesAptArchiveTypeEnumDEB_SRC = 3;
+}
+
+enum OsconfigAlphaGuestPolicyRecipesInstallStepsArchiveExtractionTypeEnum {
+  OsconfigAlphaGuestPolicyRecipesInstallStepsArchiveExtractionTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  OsconfigAlphaGuestPolicyRecipesInstallStepsArchiveExtractionTypeEnumTYPE_UNSPECIFIED = 1;
+  OsconfigAlphaGuestPolicyRecipesInstallStepsArchiveExtractionTypeEnumVALIDATION = 2;
+  OsconfigAlphaGuestPolicyRecipesInstallStepsArchiveExtractionTypeEnumDESIRED_STATE_CHECK = 3;
+  OsconfigAlphaGuestPolicyRecipesInstallStepsArchiveExtractionTypeEnumDESIRED_STATE_ENFORCEMENT = 4;
+  OsconfigAlphaGuestPolicyRecipesInstallStepsArchiveExtractionTypeEnumDESIRED_STATE_CHECK_POST_ENFORCEMENT = 5;
+}
+
+enum OsconfigAlphaGuestPolicyRecipesInstallStepsScriptRunInterpreterEnum {
+  OsconfigAlphaGuestPolicyRecipesInstallStepsScriptRunInterpreterEnumNO_VALUE_DO_NOT_USE = 0;
+  OsconfigAlphaGuestPolicyRecipesInstallStepsScriptRunInterpreterEnumINTERPRETER_UNSPECIFIED = 1;
+  OsconfigAlphaGuestPolicyRecipesInstallStepsScriptRunInterpreterEnumNONE = 2;
+  OsconfigAlphaGuestPolicyRecipesInstallStepsScriptRunInterpreterEnumSHELL = 3;
+  OsconfigAlphaGuestPolicyRecipesInstallStepsScriptRunInterpreterEnumPOWERSHELL = 4;
+}
+
+enum OsconfigAlphaGuestPolicyRecipesUpdateStepsArchiveExtractionTypeEnum {
+  OsconfigAlphaGuestPolicyRecipesUpdateStepsArchiveExtractionTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  OsconfigAlphaGuestPolicyRecipesUpdateStepsArchiveExtractionTypeEnumTYPE_UNSPECIFIED = 1;
+  OsconfigAlphaGuestPolicyRecipesUpdateStepsArchiveExtractionTypeEnumVALIDATION = 2;
+  OsconfigAlphaGuestPolicyRecipesUpdateStepsArchiveExtractionTypeEnumDESIRED_STATE_CHECK = 3;
+  OsconfigAlphaGuestPolicyRecipesUpdateStepsArchiveExtractionTypeEnumDESIRED_STATE_ENFORCEMENT = 4;
+  OsconfigAlphaGuestPolicyRecipesUpdateStepsArchiveExtractionTypeEnumDESIRED_STATE_CHECK_POST_ENFORCEMENT = 5;
+}
+
+enum OsconfigAlphaGuestPolicyRecipesUpdateStepsScriptRunInterpreterEnum {
+  OsconfigAlphaGuestPolicyRecipesUpdateStepsScriptRunInterpreterEnumNO_VALUE_DO_NOT_USE = 0;
+  OsconfigAlphaGuestPolicyRecipesUpdateStepsScriptRunInterpreterEnumINTERPRETER_UNSPECIFIED = 1;
+  OsconfigAlphaGuestPolicyRecipesUpdateStepsScriptRunInterpreterEnumNONE = 2;
+  OsconfigAlphaGuestPolicyRecipesUpdateStepsScriptRunInterpreterEnumSHELL = 3;
+  OsconfigAlphaGuestPolicyRecipesUpdateStepsScriptRunInterpreterEnumPOWERSHELL = 4;
+}
+
+enum OsconfigAlphaGuestPolicyRecipesDesiredStateEnum {
+  OsconfigAlphaGuestPolicyRecipesDesiredStateEnumNO_VALUE_DO_NOT_USE = 0;
+  OsconfigAlphaGuestPolicyRecipesDesiredStateEnumDESIRED_STATE_UNSPECIFIED = 1;
+  OsconfigAlphaGuestPolicyRecipesDesiredStateEnumINSTALLED = 2;
+  OsconfigAlphaGuestPolicyRecipesDesiredStateEnumREMOVED = 3;
+}
+
+message OsconfigAlphaGuestPolicy {
+  string name = 1;
+  string description = 2;
+  string create_time = 3;
+  string update_time = 4;
+  OsconfigAlphaGuestPolicyAssignment assignment = 5;
+  repeated OsconfigAlphaGuestPolicyPackages packages = 6;
+  repeated OsconfigAlphaGuestPolicyPackageRepositories package_repositories = 7;
+  repeated OsconfigAlphaGuestPolicyRecipes recipes = 8;
+  string etag = 9;
+  string project = 10;
+}
+
+message OsconfigAlphaGuestPolicyAssignment {
+  repeated OsconfigAlphaGuestPolicyAssignmentGroupLabels group_labels = 1;
+  repeated string zones = 2;
+  repeated string instances = 3;
+  repeated string instance_name_prefixes = 4;
+  repeated OsconfigAlphaGuestPolicyAssignmentOSTypes os_types = 5;
+}
+
+message OsconfigAlphaGuestPolicyAssignmentGroupLabels {
+  map<string, string> labels = 1;
+}
+
+message OsconfigAlphaGuestPolicyAssignmentOSTypes {
+  string os_short_name = 1;
+  string os_version = 2;
+  string os_architecture = 3;
+}
+
+message OsconfigAlphaGuestPolicyPackages {
+  string name = 1;
+  OsconfigAlphaGuestPolicyPackagesDesiredStateEnum desired_state = 2;
+  OsconfigAlphaGuestPolicyPackagesManagerEnum manager = 3;
+}
+
+message OsconfigAlphaGuestPolicyPackageRepositories {
+  OsconfigAlphaGuestPolicyPackageRepositoriesApt apt = 1;
+  OsconfigAlphaGuestPolicyPackageRepositoriesYum yum = 2;
+  OsconfigAlphaGuestPolicyPackageRepositoriesZypper zypper = 3;
+  OsconfigAlphaGuestPolicyPackageRepositoriesGoo goo = 4;
+}
+
+message OsconfigAlphaGuestPolicyPackageRepositoriesApt {
+  OsconfigAlphaGuestPolicyPackageRepositoriesAptArchiveTypeEnum archive_type = 1;
+  string uri = 2;
+  string distribution = 3;
+  repeated string components = 4;
+  string gpg_key = 5;
+}
+
+message OsconfigAlphaGuestPolicyPackageRepositoriesYum {
+  string id = 1;
+  string display_name = 2;
+  string base_url = 3;
+  repeated string gpg_keys = 4;
+}
+
+message OsconfigAlphaGuestPolicyPackageRepositoriesZypper {
+  string id = 1;
+  string display_name = 2;
+  string base_url = 3;
+  repeated string gpg_keys = 4;
+}
+
+message OsconfigAlphaGuestPolicyPackageRepositoriesGoo {
+  string name = 1;
+  string url = 2;
+}
+
+message OsconfigAlphaGuestPolicyRecipes {
+  string name = 1;
+  string version = 2;
+  repeated OsconfigAlphaGuestPolicyRecipesArtifacts artifacts = 3;
+  repeated OsconfigAlphaGuestPolicyRecipesInstallSteps install_steps = 4;
+  repeated OsconfigAlphaGuestPolicyRecipesUpdateSteps update_steps = 5;
+  OsconfigAlphaGuestPolicyRecipesDesiredStateEnum desired_state = 6;
+}
+
+message OsconfigAlphaGuestPolicyRecipesArtifacts {
+  string id = 1;
+  OsconfigAlphaGuestPolicyRecipesArtifactsRemote remote = 2;
+  OsconfigAlphaGuestPolicyRecipesArtifactsGcs gcs = 3;
+  bool allow_insecure = 4;
+}
+
+message OsconfigAlphaGuestPolicyRecipesArtifactsRemote {
+  string uri = 1;
+  string checksum = 2;
+}
+
+message OsconfigAlphaGuestPolicyRecipesArtifactsGcs {
+  string bucket = 1;
+  string object = 2;
+  int64 generation = 3;
+}
+
+message OsconfigAlphaGuestPolicyRecipesInstallSteps {
+  OsconfigAlphaGuestPolicyRecipesInstallStepsFileCopy file_copy = 1;
+  OsconfigAlphaGuestPolicyRecipesInstallStepsArchiveExtraction archive_extraction = 2;
+  OsconfigAlphaGuestPolicyRecipesInstallStepsMsiInstallation msi_installation = 3;
+  OsconfigAlphaGuestPolicyRecipesInstallStepsDpkgInstallation dpkg_installation = 4;
+  OsconfigAlphaGuestPolicyRecipesInstallStepsRpmInstallation rpm_installation = 5;
+  OsconfigAlphaGuestPolicyRecipesInstallStepsFileExec file_exec = 6;
+  OsconfigAlphaGuestPolicyRecipesInstallStepsScriptRun script_run = 7;
+}
+
+message OsconfigAlphaGuestPolicyRecipesInstallStepsFileCopy {
+  string artifact_id = 1;
+  string destination = 2;
+  bool overwrite = 3;
+  string permissions = 4;
+}
+
+message OsconfigAlphaGuestPolicyRecipesInstallStepsArchiveExtraction {
+  string artifact_id = 1;
+  string destination = 2;
+  OsconfigAlphaGuestPolicyRecipesInstallStepsArchiveExtractionTypeEnum type = 3;
+}
+
+message OsconfigAlphaGuestPolicyRecipesInstallStepsMsiInstallation {
+  string artifact_id = 1;
+  repeated string flags = 2;
+  repeated int64 allowed_exit_codes = 3;
+}
+
+message OsconfigAlphaGuestPolicyRecipesInstallStepsDpkgInstallation {
+  string artifact_id = 1;
+}
+
+message OsconfigAlphaGuestPolicyRecipesInstallStepsRpmInstallation {
+  string artifact_id = 1;
+}
+
+message OsconfigAlphaGuestPolicyRecipesInstallStepsFileExec {
+  string artifact_id = 1;
+  string local_path = 2;
+  repeated string args = 3;
+  repeated int64 allowed_exit_codes = 4;
+}
+
+message OsconfigAlphaGuestPolicyRecipesInstallStepsScriptRun {
+  string script = 1;
+  repeated int64 allowed_exit_codes = 2;
+  OsconfigAlphaGuestPolicyRecipesInstallStepsScriptRunInterpreterEnum interpreter = 3;
+}
+
+message OsconfigAlphaGuestPolicyRecipesUpdateSteps {
+  OsconfigAlphaGuestPolicyRecipesUpdateStepsFileCopy file_copy = 1;
+  OsconfigAlphaGuestPolicyRecipesUpdateStepsArchiveExtraction archive_extraction = 2;
+  OsconfigAlphaGuestPolicyRecipesUpdateStepsMsiInstallation msi_installation = 3;
+  OsconfigAlphaGuestPolicyRecipesUpdateStepsDpkgInstallation dpkg_installation = 4;
+  OsconfigAlphaGuestPolicyRecipesUpdateStepsRpmInstallation rpm_installation = 5;
+  OsconfigAlphaGuestPolicyRecipesUpdateStepsFileExec file_exec = 6;
+  OsconfigAlphaGuestPolicyRecipesUpdateStepsScriptRun script_run = 7;
+}
+
+message OsconfigAlphaGuestPolicyRecipesUpdateStepsFileCopy {
+  string artifact_id = 1;
+  string destination = 2;
+  bool overwrite = 3;
+  string permissions = 4;
+}
+
+message OsconfigAlphaGuestPolicyRecipesUpdateStepsArchiveExtraction {
+  string artifact_id = 1;
+  string destination = 2;
+  OsconfigAlphaGuestPolicyRecipesUpdateStepsArchiveExtractionTypeEnum type = 3;
+}
+
+message OsconfigAlphaGuestPolicyRecipesUpdateStepsMsiInstallation {
+  string artifact_id = 1;
+  repeated string flags = 2;
+  repeated int64 allowed_exit_codes = 3;
+}
+
+message OsconfigAlphaGuestPolicyRecipesUpdateStepsDpkgInstallation {
+  string artifact_id = 1;
+}
+
+message OsconfigAlphaGuestPolicyRecipesUpdateStepsRpmInstallation {
+  string artifact_id = 1;
+}
+
+message OsconfigAlphaGuestPolicyRecipesUpdateStepsFileExec {
+  string artifact_id = 1;
+  string local_path = 2;
+  repeated string args = 3;
+  repeated int64 allowed_exit_codes = 4;
+}
+
+message OsconfigAlphaGuestPolicyRecipesUpdateStepsScriptRun {
+  string script = 1;
+  repeated int64 allowed_exit_codes = 2;
+  OsconfigAlphaGuestPolicyRecipesUpdateStepsScriptRunInterpreterEnum interpreter = 3;
+}
+
+message ApplyOsconfigAlphaGuestPolicyRequest {
+  OsconfigAlphaGuestPolicy resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteOsconfigAlphaGuestPolicyRequest {
+  string service_account_file = 1;
+  OsconfigAlphaGuestPolicy resource = 2;
+}
+
+message ListOsconfigAlphaGuestPolicyRequest {
+  string service_account_file = 1;
+  string Project = 2;
+}
+
+message ListOsconfigAlphaGuestPolicyResponse {
+  repeated OsconfigAlphaGuestPolicy items = 1;
+}
+
+service OsconfigAlphaGuestPolicyService {
+  rpc ApplyOsconfigAlphaGuestPolicy(ApplyOsconfigAlphaGuestPolicyRequest) returns (OsconfigAlphaGuestPolicy);
+  rpc DeleteOsconfigAlphaGuestPolicy(DeleteOsconfigAlphaGuestPolicyRequest) returns (google.protobuf.Empty);
+  rpc ListOsconfigAlphaGuestPolicy(ListOsconfigAlphaGuestPolicyRequest) returns (ListOsconfigAlphaGuestPolicyResponse);
+}

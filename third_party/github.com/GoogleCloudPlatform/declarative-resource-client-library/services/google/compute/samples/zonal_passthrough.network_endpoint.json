@@ -1,0 +1,7 @@
+{
+  "project": "{{project}}",
+  "location": "{{zone}}",
+  "group": "{{ref:zonal_passthrough.network_endpoint_group.json:name}}",
+  "instance": "{{ref:basic.instance.json:name}}",
+  "ipAddress": "{{ref:basic.instance.json:networkInterfaces[0].networkIP}}"
+}

@@ -1,0 +1,8 @@
+apiVersion: kms.cnrm.cloud.google.com/v1beta1
+kind: KMSAutokeyConfig
+metadata:
+  name: autokeyconfig-project-${uniqueId}
+spec:
+  projectRef:
+    external: projects/${projectNumber}
+  keyProjectResolutionMode: RESOURCE_PROJECT

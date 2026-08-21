@@ -1,0 +1,12 @@
+- caisURL: //backupdr.googleapis.com/projects/${projectId}/locations/us-central1/backupVaults/backupdrbackupvault-labels-${uniqueId}
+  group: backupdr.cnrm.cloud.google.com
+  kind: BackupDRBackupVault
+  name: backupdrbackupvault-labels-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
+- caisURL: //backupdr.googleapis.com/projects/${projectId}/locations/us-central1/backupPlans/backupdrbackupplan-labels-${uniqueId}description
+  group: backupdr.cnrm.cloud.google.com
+  kind: BackupDRBackupPlan
+  name: backupdrbackupplan-labels-${uniqueId}description
+  namespace: ${uniqueId}
+  version: v1beta1

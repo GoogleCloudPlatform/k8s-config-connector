@@ -1,0 +1,21 @@
+{
+  "name": "{{resource_name}}",
+  "project": "{{project}}",
+  "location": "global",
+  "rules": [
+    {
+      "matches": [
+        {
+          "sniHost": ["*.bar.example.com"]
+        }
+      ],
+      "action": {
+        "destinations": [
+          {
+            "serviceName": "projects/{{project}}/locations/global/backendServices/{{ref:minimaltls.compute.backend_service.json:name}}"
+          }
+        ]
+      }
+    }
+  ]
+}

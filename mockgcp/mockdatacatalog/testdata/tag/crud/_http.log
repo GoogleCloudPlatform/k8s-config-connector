@@ -1,0 +1,158 @@
+GET https://datacatalog.googleapis.com/v1/projects/${projectId}/locations/us-central1/tagTemplates/testtagtemplate${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "TestTagTemplate",
+  "fields": {
+    "testfield": {
+      "displayName": "TestField",
+      "isRequired": true,
+      "name": "projects/${projectId}/locations/us-central1/tagTemplates/testtagtemplate${uniqueId}/fields/testfield",
+      "type": {
+        "primitiveType": "STRING"
+      }
+    }
+  },
+  "name": "projects/${projectId}/locations/us-central1/tagTemplates/testtagtemplate${uniqueId}"
+}
+
+---
+
+POST https://datacatalog.googleapis.com/v1/projects/${projectId}/locations/us-central1/entryGroups/testentrygroup${uniqueId}/entries/testentry${uniqueId}/tags?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "fields": {
+    "testfield": {
+      "stringValue": "test"
+    }
+  },
+  "template": "projects/${projectId}/locations/us-central1/tagTemplates/testtagtemplate${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "fields": {
+    "testfield": {
+      "displayName": "TestField",
+      "stringValue": "test"
+    }
+  },
+  "name": "projects/${projectId}/locations/us-central1/entryGroups/testentrygroup${uniqueId}/entries/testentry${uniqueId}/tags/mocktagid",
+  "template": "projects/${projectId}/locations/us-central1/tagTemplates/testtagtemplate${uniqueId}",
+  "templateDisplayName": "TestTagTemplate"
+}
+
+---
+
+GET https://datacatalog.googleapis.com/v1/projects/${projectId}/locations/us-central1/tagTemplates/testtagtemplate${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "TestTagTemplate",
+  "fields": {
+    "testfield": {
+      "displayName": "TestField",
+      "isRequired": true,
+      "name": "projects/${projectId}/locations/us-central1/tagTemplates/testtagtemplate${uniqueId}/fields/testfield",
+      "type": {
+        "primitiveType": "STRING"
+      }
+    }
+  },
+  "name": "projects/${projectId}/locations/us-central1/tagTemplates/testtagtemplate${uniqueId}"
+}
+
+---
+
+PATCH https://datacatalog.googleapis.com/v1/projects/${projectId}/locations/us-central1/entryGroups/testentrygroup${uniqueId}/entries/testentry${uniqueId}/tags/mocktagid?alt=json&updateMask=
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "fields": {
+    "testfield": {
+      "stringValue": "test_updated"
+    }
+  },
+  "template": "projects/${projectId}/locations/us-central1/tagTemplates/testtagtemplate${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "fields": {
+    "testfield": {
+      "displayName": "TestField",
+      "stringValue": "test_updated"
+    }
+  },
+  "name": "projects/${projectId}/locations/us-central1/entryGroups/testentrygroup${uniqueId}/entries/testentry${uniqueId}/tags/mocktagid",
+  "template": "projects/${projectId}/locations/us-central1/tagTemplates/testtagtemplate${uniqueId}",
+  "templateDisplayName": "TestTagTemplate"
+}
+
+---
+
+DELETE https://datacatalog.googleapis.com/v1/projects/${projectId}/locations/us-central1/entryGroups/testentrygroup${uniqueId}/entries/testentry${uniqueId}/tags/mocktagid?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

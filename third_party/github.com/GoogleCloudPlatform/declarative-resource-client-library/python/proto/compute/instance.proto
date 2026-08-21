@@ -1,0 +1,218 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum ComputeInstanceDisksInterfaceEnum {
+  ComputeInstanceDisksInterfaceEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeInstanceDisksInterfaceEnumSCSI = 1;
+  ComputeInstanceDisksInterfaceEnumNVME = 2;
+}
+
+enum ComputeInstanceDisksModeEnum {
+  ComputeInstanceDisksModeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeInstanceDisksModeEnumREAD_WRITE = 1;
+  ComputeInstanceDisksModeEnumREAD_ONLY = 2;
+}
+
+enum ComputeInstanceDisksTypeEnum {
+  ComputeInstanceDisksTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeInstanceDisksTypeEnumSCRATCH = 1;
+  ComputeInstanceDisksTypeEnumPERSISTENT = 2;
+}
+
+enum ComputeInstanceNetworkInterfacesAccessConfigsNetworkTierEnum {
+  ComputeInstanceNetworkInterfacesAccessConfigsNetworkTierEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeInstanceNetworkInterfacesAccessConfigsNetworkTierEnumPREMIUM = 1;
+  ComputeInstanceNetworkInterfacesAccessConfigsNetworkTierEnumSTANDARD = 2;
+}
+
+enum ComputeInstanceNetworkInterfacesAccessConfigsTypeEnum {
+  ComputeInstanceNetworkInterfacesAccessConfigsTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeInstanceNetworkInterfacesAccessConfigsTypeEnumONE_TO_ONE_NAT = 1;
+}
+
+enum ComputeInstanceNetworkInterfacesIPv6AccessConfigsNetworkTierEnum {
+  ComputeInstanceNetworkInterfacesIPv6AccessConfigsNetworkTierEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeInstanceNetworkInterfacesIPv6AccessConfigsNetworkTierEnumPREMIUM = 1;
+  ComputeInstanceNetworkInterfacesIPv6AccessConfigsNetworkTierEnumSTANDARD = 2;
+}
+
+enum ComputeInstanceNetworkInterfacesIPv6AccessConfigsTypeEnum {
+  ComputeInstanceNetworkInterfacesIPv6AccessConfigsTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeInstanceNetworkInterfacesIPv6AccessConfigsTypeEnumONE_TO_ONE_NAT = 1;
+}
+
+enum ComputeInstanceStatusEnum {
+  ComputeInstanceStatusEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeInstanceStatusEnumPROVISIONING = 1;
+  ComputeInstanceStatusEnumSTAGING = 2;
+  ComputeInstanceStatusEnumRUNNING = 3;
+  ComputeInstanceStatusEnumSTOPPING = 4;
+  ComputeInstanceStatusEnumSUSPENDING = 5;
+  ComputeInstanceStatusEnumSUSPENDED = 6;
+  ComputeInstanceStatusEnumTERMINATED = 7;
+}
+
+message ComputeInstance {
+  bool can_ip_forward = 1;
+  string cpu_platform = 2;
+  string creation_timestamp = 3;
+  bool deletion_protection = 4;
+  string description = 5;
+  repeated ComputeInstanceDisks disks = 6;
+  repeated ComputeInstanceGuestAccelerators guest_accelerators = 7;
+  string hostname = 8;
+  string id = 9;
+  map<string, string> labels = 10;
+  map<string, string> metadata = 11;
+  string machine_type = 12;
+  string min_cpu_platform = 13;
+  string name = 14;
+  repeated ComputeInstanceNetworkInterfaces network_interfaces = 15;
+  ComputeInstanceScheduling scheduling = 16;
+  repeated ComputeInstanceServiceAccounts service_accounts = 17;
+  ComputeInstanceShieldedInstanceConfig shielded_instance_config = 18;
+  ComputeInstanceStatusEnum status = 19;
+  string status_message = 20;
+  repeated string tags = 21;
+  string zone = 22;
+  string project = 23;
+  string self_link = 24;
+}
+
+message ComputeInstanceDisks {
+  bool auto_delete = 1;
+  bool boot = 2;
+  string device_name = 3;
+  ComputeInstanceDisksDiskEncryptionKey disk_encryption_key = 4;
+  int64 index = 5;
+  ComputeInstanceDisksInitializeParams initialize_params = 6;
+  ComputeInstanceDisksInterfaceEnum interface = 7;
+  ComputeInstanceDisksModeEnum mode = 8;
+  string source = 9;
+  ComputeInstanceDisksTypeEnum type = 10;
+}
+
+message ComputeInstanceDisksDiskEncryptionKey {
+  string raw_key = 1;
+  string rsa_encrypted_key = 2;
+  string sha256 = 3;
+}
+
+message ComputeInstanceDisksInitializeParams {
+  string disk_name = 1;
+  int64 disk_size_gb = 2;
+  string disk_type = 3;
+  string source_image = 4;
+  ComputeInstanceDisksInitializeParamsSourceImageEncryptionKey source_image_encryption_key = 5;
+}
+
+message ComputeInstanceDisksInitializeParamsSourceImageEncryptionKey {
+  string raw_key = 1;
+  string sha256 = 2;
+}
+
+message ComputeInstanceGuestAccelerators {
+  int64 accelerator_count = 1;
+  string accelerator_type = 2;
+}
+
+message ComputeInstanceNetworkInterfaces {
+  repeated ComputeInstanceNetworkInterfacesAccessConfigs access_configs = 1;
+  repeated ComputeInstanceNetworkInterfacesIPv6AccessConfigs ipv6_access_configs = 2;
+  repeated ComputeInstanceNetworkInterfacesAliasIPRanges alias_ip_ranges = 3;
+  string name = 4;
+  string network = 5;
+  string network_ip = 6;
+  string subnetwork = 7;
+}
+
+message ComputeInstanceNetworkInterfacesAccessConfigs {
+  string name = 1;
+  string nat_ip = 2;
+  string external_ipv6 = 3;
+  string external_ipv6_prefix_length = 4;
+  bool set_public_ptr = 5;
+  string public_ptr_domain_name = 6;
+  ComputeInstanceNetworkInterfacesAccessConfigsNetworkTierEnum network_tier = 7;
+  ComputeInstanceNetworkInterfacesAccessConfigsTypeEnum type = 8;
+}
+
+message ComputeInstanceNetworkInterfacesIPv6AccessConfigs {
+  string name = 1;
+  string nat_ip = 2;
+  string external_ipv6 = 3;
+  string external_ipv6_prefix_length = 4;
+  bool set_public_ptr = 5;
+  string public_ptr_domain_name = 6;
+  ComputeInstanceNetworkInterfacesIPv6AccessConfigsNetworkTierEnum network_tier = 7;
+  ComputeInstanceNetworkInterfacesIPv6AccessConfigsTypeEnum type = 8;
+}
+
+message ComputeInstanceNetworkInterfacesAliasIPRanges {
+  string ip_cidr_range = 1;
+  string subnetwork_range_name = 2;
+}
+
+message ComputeInstanceScheduling {
+  bool automatic_restart = 1;
+  string on_host_maintenance = 2;
+  bool preemptible = 3;
+}
+
+message ComputeInstanceServiceAccounts {
+  string email = 1;
+  repeated string scopes = 2;
+}
+
+message ComputeInstanceShieldedInstanceConfig {
+  bool enable_secure_boot = 1;
+  bool enable_vtpm = 2;
+  bool enable_integrity_monitoring = 3;
+}
+
+message ApplyComputeInstanceRequest {
+  ComputeInstance resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteComputeInstanceRequest {
+  string service_account_file = 1;
+  ComputeInstance resource = 2;
+}
+
+message ListComputeInstanceRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Zone = 3;
+}
+
+message ListComputeInstanceResponse {
+  repeated ComputeInstance items = 1;
+}
+
+service ComputeInstanceService {
+  rpc ApplyComputeInstance(ApplyComputeInstanceRequest) returns (ComputeInstance);
+  rpc DeleteComputeInstance(DeleteComputeInstanceRequest) returns (google.protobuf.Empty);
+  rpc ListComputeInstance(ListComputeInstanceRequest) returns (ListComputeInstanceResponse);
+}

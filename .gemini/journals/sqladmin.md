@@ -1,0 +1,5 @@
+### [2026-06-29] SQLAdminBackup Greenfield Types Generation
+- **Context**: Implementing direct types, CRD, and IdentityV2 for `SQLAdminBackup` under Issue #10298.
+- **Problem**: The issue description pinned the GCP service to `google.cloud.sqladmin.v1` and the resource to `SQLAdminBackup:Backup`. However, the actual proto package and messages are structured as `google.cloud.sql.v1` and `BackupRun` in the official googleapis. Attempting to use the suggested fields resulted in "proto: not found" errors.
+- **Solution**: Set the `--service` flag to `google.cloud.sql.v1` and the `--resource` flag to `SQLAdminBackup:BackupRun`. This successfully mapped to the proto definitions and allowed types, CRD, and IdentityV2 generation. KMS reference fields (`KMSCryptoKeyRef`) and instance reference fields (`SQLInstanceRef`) were then added manually to `sqladminbackup_types.go` to conform to KCC standards.
+- **Impact**: The next agent implementing the SQLAdminBackup controller or mappers can build directly on these types and use `BackupRun` as the underlying GCP proto.

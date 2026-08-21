@@ -1,0 +1,5 @@
+# This script focuses on listing billing accounts, as direct 'create' and 'delete'
+# operations for billing accounts are not straightforward with gcloud CLI.
+# To test create/delete, a more complex setup involving API calls or
+# linking/unlinking projects would be required.
+- exec: gcloud billing accounts list

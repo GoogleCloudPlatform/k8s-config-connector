@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: configdeployment.cnrm.cloud.google.com
+  kind: ConfigDeploymentGroup
+  name: configdeploymentgroup-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

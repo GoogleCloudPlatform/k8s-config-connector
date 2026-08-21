@@ -1,0 +1,10 @@
+{
+  "name": "{{attachment}}",
+  "project": "{{project}}",
+  "location": "{{region}}",
+  "description": "A sample service attachment for psc global access samples",
+  "targetService": "{{ref:psc_producer.forwarding_rule.json:selfLink}}",
+  "connectionPreference": "ACCEPT_AUTOMATIC",
+  "natSubnets": ["{{ref:psc_private_producer.subnetwork.json:selfLink}}"],
+  "enableProxyProtocol": true
+}

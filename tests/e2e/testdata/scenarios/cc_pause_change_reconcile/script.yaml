@@ -1,0 +1,66 @@
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# step 0
+apiVersion: core.cnrm.cloud.google.com/v1beta1
+kind: ConfigConnector
+metadata:
+  name: configconnector.core.cnrm.cloud.google.com
+spec:
+  mode: cluster
+---
+# step 1
+apiVersion: artifactregistry.cnrm.cloud.google.com/v1beta1
+kind: ArtifactRegistryRepository
+metadata:
+  name: artifactregistryrepository-sample-${uniqueId}
+  labels:
+    label-one: "value-one"
+spec:
+  format: DOCKER
+  location: us-west1
+  description: "description 1"
+---
+# step 2
+apiVersion: core.cnrm.cloud.google.com/v1beta1
+kind: ConfigConnector
+metadata:
+  name: configconnector.core.cnrm.cloud.google.com
+spec:
+  mode: cluster
+  actuationMode: Paused
+---
+# step 3
+TEST: APPLY-NO-WAIT
+apiVersion: artifactregistry.cnrm.cloud.google.com/v1beta1
+kind: ArtifactRegistryRepository
+metadata:
+  name: artifactregistryrepository-sample-${uniqueId}
+  labels:
+    label-one: "value-one"
+spec:
+  format: DOCKER
+  location: us-west1
+  description: "description 2"
+---
+# step 4
+TEST: WAIT-FOR-HTTP-REQUEST
+VALUE_PRESENT: "description 2"
+apiVersion: core.cnrm.cloud.google.com/v1beta1
+kind: ConfigConnector
+metadata:
+  name: configconnector.core.cnrm.cloud.google.com
+spec:
+  mode: cluster
+  actuationMode: Reconciling

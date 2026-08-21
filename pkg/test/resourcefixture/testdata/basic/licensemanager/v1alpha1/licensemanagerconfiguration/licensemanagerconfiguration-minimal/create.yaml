@@ -1,0 +1,17 @@
+apiVersion: licensemanager.cnrm.cloud.google.com/v1alpha1
+kind: LicenseManagerConfiguration
+metadata:
+  name: licensemanagerconfiguration-minimal-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  displayName: "minimal-license-manager-config"
+  product: projects/${projectId}/locations/us-central1/products/Office2021ProfessionalPlus
+  licenseType: LICENSE_TYPE_PER_MONTH_PER_USER
+  currentBillingInfo:
+    userCountBilling:
+      userCount: 5
+  nextBillingInfo:
+    userCountBilling:
+      userCount: 5

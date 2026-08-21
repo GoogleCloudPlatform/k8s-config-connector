@@ -1,0 +1,15 @@
+{
+  "name": "{{firewall}}",
+  "project": "{{project}}",
+  "allowed": [
+    {
+      "IPProtocol": "tcp",
+      "ports": [
+        "123"
+      ]
+    }
+  ],
+  "sourceTags": [],
+  "direction": "INGRESS",
+  "network": "https://www.googleapis.com/compute/v1/projects/{{project}}/global/networks/default"
+}

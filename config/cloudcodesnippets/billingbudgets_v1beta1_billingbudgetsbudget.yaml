@@ -1,0 +1,39 @@
+label: Config Connector BillingBudgetsBudget
+markdownDescription: Creates yaml for a BillingBudgetsBudget resource
+insertText: |
+  apiVersion: billingbudgets.cnrm.cloud.google.com/v1beta1
+  kind: BillingBudgetsBudget
+  metadata:
+    name: \${1:billingbudgetsbudget-name}
+  spec:
+    billingAccountRef:
+      external: \${2:[BILLING_ACCOUNT_ID_FOR_BILLING_RESOURCES?]}
+    displayName: \${3:sample-budget}
+    budgetFilter:
+      projects:
+      - name: \${4:billingbudgetsbudget-dep-calb}
+      creditTypes:
+      - \${5:DISCOUNT}
+      creditTypesTreatment: \${6:INCLUDE_SPECIFIED_CREDITS}
+      services:
+      - \${7:services/0245-C3C9-3864}
+      labels:
+        label-one:
+          values:
+          - \${8:value-one}
+      calendarPeriod: \${9:MONTH}
+    amount:
+      specifiedAmount:
+        currencyCode: \${10:USD}
+        units: \${11:9000000}
+        nanos: \${12:0}
+    thresholdRules:
+    - thresholdPercent: \${13:0.5}
+      spendBasis: \${14:CURRENT_SPEND}
+    allUpdatesRule:
+      pubsubTopicRef:
+        name: \${15:billingbudgetsbudget-dep-calendarbudget}
+      schemaVersion: \${16:1.0}
+      monitoringNotificationChannels:
+      - name: \${17:billingbudgetsbudget-dep-calendarbudget}
+      disableDefaultIamRecipients: \${18:false}

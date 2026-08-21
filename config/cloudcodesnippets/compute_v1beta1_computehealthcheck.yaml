@@ -1,0 +1,12 @@
+label: Config Connector ComputeHealthCheck
+markdownDescription: Creates yaml for a ComputeHealthCheck resource
+insertText: |
+  apiVersion: compute.cnrm.cloud.google.com/v1beta1
+  kind: ComputeHealthCheck
+  metadata:
+    name: \${1:computehealthcheck-name}
+  spec:
+    checkIntervalSec: \${2:10}
+    httpHealthCheck:
+      port: \${3:80}
+    location: \${4:global}

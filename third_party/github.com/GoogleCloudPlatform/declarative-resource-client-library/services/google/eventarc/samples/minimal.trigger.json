@@ -1,0 +1,18 @@
+{
+  "project": "{{project}}",
+  "location": "{{region}}",
+  "name": "{{name}}",
+  "destination": {
+    "cloudRunService": {
+      "service": "projects/{{project}}/locations/{{region}}/services/{{ref:basicservice.run1.service.json:name}}",
+      "region": "{{region}}"
+    }
+  },
+  "matchingCriteria": [
+    {
+      "attribute": "type",
+      "value": "google.cloud.pubsub.topic.v1.messagePublished"
+    }
+
+  ]
+}

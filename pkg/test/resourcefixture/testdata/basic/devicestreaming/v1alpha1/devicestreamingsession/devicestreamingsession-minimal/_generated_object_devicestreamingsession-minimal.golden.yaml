@@ -1,0 +1,29 @@
+apiVersion: devicestreaming.cnrm.cloud.google.com/v1alpha1
+kind: DeviceStreamingSession
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  labels:
+    cnrm-test: "true"
+  name: devicestreamingsession-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  androidDevice:
+    androidModelID: Pixel8
+    androidVersionID: "34"
+  projectRef:
+    external: ${projectId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: |-
+      Update call failed: error creating: creating DeviceStreamingSession projects/${projectId}/deviceSessions/devicestreamingsession-${uniqueId}: googleapi: Error 403: Device Streaming API has not been used in project ${projectId} before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/devicestreaming.googleapis.com/overview?project=${projectId} then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.
+      error details: name = ErrorInfo reason = SERVICE_DISABLED domain = googleapis.com metadata = map[activationUrl:https://console.developers.google.com/apis/api/devicestreaming.googleapis.com/overview?project=${projectId} consumer:projects/${projectId} containerInfo:${projectId} service:devicestreaming.googleapis.com serviceTitle:Device Streaming API]
+      error details: name = Help desc = Google developers console API activation url = https://console.developers.google.com/apis/api/devicestreaming.googleapis.com/overview?project=${projectId}
+      error details: name = LocalizedMessage locale = en-US msg = Device Streaming API has not been used in project ${projectId} before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/devicestreaming.googleapis.com/overview?project=${projectId} then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.
+    reason: UpdateFailed
+    status: "False"
+    type: Ready
+  observedGeneration: 1

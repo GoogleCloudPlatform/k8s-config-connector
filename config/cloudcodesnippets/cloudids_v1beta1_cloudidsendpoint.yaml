@@ -1,0 +1,14 @@
+label: Config Connector CloudIDSEndpoint
+markdownDescription: Creates yaml for a CloudIDSEndpoint resource
+insertText: |
+  apiVersion: cloudids.cnrm.cloud.google.com/v1beta1
+  kind: CloudIDSEndpoint
+  metadata:
+    name: \${1:cloudidsendpoint-name}
+  spec:
+    networkRef:
+      name: \${2:cloudidsendpoint-dep}
+    severity: \${3:INFORMATIONAL}
+    location: \${4:us-west2-a}
+    projectRef:
+      external: \${5:[PROJECT_ID?]}

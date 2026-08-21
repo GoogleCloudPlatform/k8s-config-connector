@@ -1,0 +1,344 @@
+// Copyright 2024 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package mockcompute
+
+import (
+	"context"
+	"fmt"
+	"strings"
+
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/proto"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
+)
+
+type DisksV1 struct {
+	*MockService
+	pb.UnimplementedDisksServer
+}
+
+func (s *DisksV1) Get(ctx context.Context, req *pb.GetDiskRequest) (*pb.Disk, error) {
+	reqName := "projects/" + req.GetProject() + "/zones/" + req.GetZone() + "/disks/" + req.GetDisk()
+	name, err := s.parseZonalDiskName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := &pb.Disk{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+		}
+		return nil, err
+	}
+
+	return obj, nil
+}
+
+func (s *DisksV1) Insert(ctx context.Context, req *pb.InsertDiskRequest) (*pb.Operation, error) {
+	reqName := "projects/" + req.GetProject() + "/zones/" + req.GetZone() + "/disks/" + req.GetDiskResource().GetName()
+	name, err := s.parseZonalDiskName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	id := s.generateID()
+
+	obj := proto.CloneOf(req.GetDiskResource())
+	obj.SelfLink = PtrTo(BuildComputeSelfLink(ctx, fqn))
+	obj.CreationTimestamp = PtrTo(s.nowString())
+	obj.Id = &id
+	obj.Kind = PtrTo("compute#disk")
+	obj.Zone = PtrTo(BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/zones/%s", name.Project.ID, name.Zone)))
+	obj.Status = PtrTo("READY")
+	obj.LabelFingerprint = PtrTo(labelsFingerprint(obj.Labels))
+	if obj.Type != nil {
+		if t := *obj.Type; t != "" && !strings.HasPrefix(t, "http") {
+			obj.Type = PtrTo(BuildComputeSelfLink(ctx, strings.TrimPrefix(t, "/")))
+		}
+	} else {
+		diskType := "pd-standard"
+		obj.Type = PtrTo(BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/zones/%s/diskTypes/%s", name.Project.ID, name.Zone, diskType)))
+	}
+	if obj.PhysicalBlockSizeBytes == nil {
+		obj.PhysicalBlockSizeBytes = PtrTo(int64(4096))
+	}
+
+	if obj.SourceImage != nil {
+		tokens := strings.Split(*obj.SourceImage, "/")
+		if len(tokens) == 2 {
+			// debian-cloud/debian-11
+			obj.SourceImage = PtrTo(BuildComputeSelfLink(ctx, "projects/debian-cloud/global/images/debian-11-bullseye-v20231010"))
+			obj.SourceImageId = PtrTo("2443108620951880213")
+		}
+		if len(tokens) == 6 {
+			// projects/debian-cloud/global/images/family/debian-11
+			obj.SourceImage = PtrTo(BuildComputeSelfLink(ctx, "projects/debian-cloud/global/images/debian-11-bullseye-v20231010"))
+			obj.SourceImageId = PtrTo("2443108620951880213")
+		}
+	}
+
+	if err := s.storage.Create(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("insert"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startZonalLRO(ctx, name.Project.ID, name.Zone, op, func() (proto.Message, error) {
+		return obj, nil
+	})
+}
+
+// Updates a Disk resource in the specified project using the data included in the request.
+func (s *DisksV1) Update(ctx context.Context, req *pb.UpdateDiskRequest) (*pb.Operation, error) {
+	reqName := "projects/" + req.GetProject() + "/zones/" + req.GetZone() + "/disks/" + req.GetDisk()
+	name, err := s.parseZonalDiskName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	obj := &pb.Disk{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	// TODO: Implement helper to implement the full rules here
+	proto.Merge(obj, req.GetDiskResource())
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("update"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startZonalLRO(ctx, name.Project.ID, name.Zone, op, func() (proto.Message, error) {
+		return obj, nil
+	})
+}
+
+func (s *DisksV1) Delete(ctx context.Context, req *pb.DeleteDiskRequest) (*pb.Operation, error) {
+	reqName := "projects/" + req.GetProject() + "/zones/" + req.GetZone() + "/disks/" + req.GetDisk()
+	name, err := s.parseZonalDiskName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	deleted := (&pb.Disk{})
+	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+		}
+		return nil, err
+	}
+
+	op := &pb.Operation{
+		TargetId:      deleted.Id,
+		TargetLink:    deleted.SelfLink,
+		OperationType: PtrTo("delete"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startZonalLRO(ctx, name.Project.ID, name.Zone, op, func() (proto.Message, error) {
+		return deleted, nil
+	})
+}
+
+func (s *DisksV1) Resize(ctx context.Context, req *pb.ResizeDiskRequest) (*pb.Operation, error) {
+	reqName := "projects/" + req.GetProject() + "/zones/" + req.GetZone() + "/disks/" + req.GetDisk()
+	name, err := s.parseZonalDiskName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	obj := &pb.Disk{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	sizeGb := req.GetDisksResizeRequestResource().GetSizeGb()
+	obj.SizeGb = &sizeGb
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	return s.newLRO(ctx, name.Project.ID)
+}
+
+func (s *DisksV1) SetLabels(ctx context.Context, req *pb.SetLabelsDiskRequest) (*pb.Operation, error) {
+	reqName := "projects/" + req.GetProject() + "/zones/" + req.GetZone() + "/disks/" + req.GetResource()
+	name, err := s.parseZonalDiskName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	obj := &pb.Disk{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	obj.Labels = req.GetZoneSetLabelsRequestResource().GetLabels()
+	obj.LabelFingerprint = req.GetZoneSetLabelsRequestResource().LabelFingerprint
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	return s.newLRO(ctx, name.Project.ID)
+}
+
+func (s *DisksV1) AddResourcePolicies(ctx context.Context, req *pb.AddResourcePoliciesDiskRequest) (*pb.Operation, error) {
+	reqName := "projects/" + req.GetProject() + "/zones/" + req.GetZone() + "/disks/" + req.GetDisk()
+	name, err := s.parseZonalDiskName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	obj := &pb.Disk{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+		}
+		return nil, err
+	}
+
+	policiesToAdd := req.GetDisksAddResourcePoliciesRequestResource().GetResourcePolicies()
+	for _, policy := range policiesToAdd {
+		found := false
+		for _, existing := range obj.ResourcePolicies {
+			if existing == policy {
+				found = true
+				break
+			}
+		}
+		if !found {
+			obj.ResourcePolicies = append(obj.ResourcePolicies, policy)
+		}
+	}
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("addResourcePolicies"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startZonalLRO(ctx, name.Project.ID, name.Zone, op, func() (proto.Message, error) {
+		return obj, nil
+	})
+}
+
+func (s *DisksV1) RemoveResourcePolicies(ctx context.Context, req *pb.RemoveResourcePoliciesDiskRequest) (*pb.Operation, error) {
+	reqName := "projects/" + req.GetProject() + "/zones/" + req.GetZone() + "/disks/" + req.GetDisk()
+	name, err := s.parseZonalDiskName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	obj := &pb.Disk{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+		}
+		return nil, err
+	}
+
+	policiesToRemove := req.GetDisksRemoveResourcePoliciesRequestResource().GetResourcePolicies()
+	var newPolicies []string
+	for _, existing := range obj.ResourcePolicies {
+		toRemove := false
+		for _, policy := range policiesToRemove {
+			if existing == policy {
+				toRemove = true
+				break
+			}
+		}
+		if !toRemove {
+			newPolicies = append(newPolicies, existing)
+		}
+	}
+	obj.ResourcePolicies = newPolicies
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("removeResourcePolicies"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startZonalLRO(ctx, name.Project.ID, name.Zone, op, func() (proto.Message, error) {
+		return obj, nil
+	})
+}
+
+type zonalDiskName struct {
+	Project *projects.ProjectData
+	Zone    string
+	Name    string
+}
+
+func (n *zonalDiskName) String() string {
+	return "projects/" + n.Project.ID + "/zones/" + n.Zone + "/disks/" + n.Name
+}
+
+// parseZonalDiskName parses a string into a zonalDiskName.
+// The expected form is `projects/*/zones/*/disk/*`.
+func (s *MockService) parseZonalDiskName(name string) (*zonalDiskName, error) {
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "zones" && tokens[4] == "disks" {
+		project, err := s.Projects.GetProjectByID(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		name := &zonalDiskName{
+			Project: project,
+			Zone:    tokens[3],
+			Name:    tokens[5],
+		}
+
+		return name, nil
+	} else {
+		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+	}
+}

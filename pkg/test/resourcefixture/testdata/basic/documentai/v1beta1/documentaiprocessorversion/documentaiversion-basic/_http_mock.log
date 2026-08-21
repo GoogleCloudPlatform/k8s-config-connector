@@ -1,0 +1,101 @@
+POST https://documentai.googleapis.com/v1/projects/${projectNumber}/locations/us/processors/${processorID}/processorVersions:train?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectNumber}%2Flocations%2Fus%2Fprocessors%2F${processorID}
+
+{
+  "parent": "projects/${projectNumber}/locations/us/processors/${processorID}",
+  "processorVersion": {
+    "displayName": "Test Document AI Version Name"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.documentai.v1.TrainProcessorVersionMetadata",
+    "commonMetadata": {
+      "createTime": "2025-01-01T12:34:56.123456Z",
+      "resource": "projects/${projectNumber}/locations/us/processors/${processorID}/processorVersions/${processorVersionID}",
+      "state": 1,
+      "updateTime": "2025-01-02T12:34:56.123456Z"
+    },
+    "testDatasetValidation": {},
+    "trainingDatasetValidation": {}
+  },
+  "name": "projects/${projectNumber}/locations/us/processors/${processorID}/operations/${operationID}"
+}
+
+---
+
+GET https://documentai.googleapis.com/v1/projects/${projectNumber}/locations/us/processors/${processorID}/processorVersions/${processorVersionID}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2Flocations%2Fus%2Fprocessors%2F${processorID}%2FprocessorVersions%2F${processorVersionID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Test Document AI Version Name",
+  "latestEvaluation": {},
+  "modelType": 2,
+  "name": "projects/${projectNumber}/locations/us/processors/${processorID}/processorVersions/${processorVersionID}",
+  "state": 7
+}
+
+---
+
+DELETE https://documentai.googleapis.com/v1/projects/${projectNumber}/locations/us/processors/${processorID}/processorVersions/${processorVersionID}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2Flocations%2Fus%2Fprocessors%2F${processorID}%2FprocessorVersions%2F${processorVersionID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.documentai.v1.DeleteProcessorVersionMetadata",
+    "commonMetadata": {
+      "createTime": "2025-01-01T12:34:56.123456Z",
+      "state": 1,
+      "updateTime": "2025-01-02T12:34:56.123456Z"
+    }
+  },
+  "name": "projects/${projectNumber}/locations/us/processors/${processorID}/processorVersions/${processorVersionID}/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.documentai.v1.ProcessorVersion",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "displayName": "Test Document AI Version Name",
+    "latestEvaluation": {},
+    "modelType": 2,
+    "name": "projects/${projectNumber}/locations/us/processors/${processorID}/processorVersions/${processorVersionID}",
+    "state": 7
+  }
+}

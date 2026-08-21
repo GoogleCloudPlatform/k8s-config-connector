@@ -1,0 +1,206 @@
+GET https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "key \"projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys?%24alt=json%3Benum-encoding%3Dint&keyId=apikeyskey${uniqueId}
+Content-Type: application/json
+
+{
+  "displayName": "Example Display Name",
+  "restrictions": {
+    "apiTargets": [
+      {
+        "methods": [
+          "GET"
+        ],
+        "service": "translate.googleapis.com"
+      }
+    ]
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "name": "operations/${operationID}"
+}
+
+---
+
+GET https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "Example Display Name",
+  "name": "projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}",
+  "restrictions": {
+    "apiTargets": [
+      {
+        "methods": [
+          "GET"
+        ],
+        "service": "translate.googleapis.com"
+      }
+    ]
+  }
+}
+
+---
+
+PATCH https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=displayName%2Crestrictions
+Content-Type: application/json
+
+{
+  "displayName": "Example Display Name - Updated",
+  "name": "projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}",
+  "restrictions": {
+    "apiTargets": [
+      {
+        "methods": [
+          "GET",
+          "DELETE"
+        ],
+        "service": "translate.googleapis.com"
+      }
+    ]
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "name": "operations/${operationID}"
+}
+
+---
+
+GET https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "Example Display Name - Updated",
+  "name": "projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}",
+  "restrictions": {
+    "apiTargets": [
+      {
+        "methods": [
+          "GET",
+          "DELETE"
+        ],
+        "service": "translate.googleapis.com"
+      }
+    ]
+  }
+}
+
+---
+
+DELETE https://apikeys.googleapis.com/v2/projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "operations/${operationID}"
+}
+
+---
+
+GET https://apikeys.googleapis.com/v2/operations/${operationID}
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "name": "operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.api.apikeys.v2.Key",
+    "displayName": "Example Display Name - Updated",
+    "name": "projects/${projectId}/locations/global/keys/apikeyskey${uniqueId}",
+    "restrictions": {
+      "apiTargets": [
+        {
+          "methods": [
+            "GET",
+            "DELETE"
+          ],
+          "service": "translate.googleapis.com"
+        }
+      ]
+    }
+  }
+}

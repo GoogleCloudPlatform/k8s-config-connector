@@ -1,0 +1,6 @@
+- caisURL: //cloudsecuritycompliance.googleapis.com/organizations/${TEST_ORG_ID}/locations/global/frameworks/cscframework-max-${uniqueId}
+  group: cloudsecuritycompliance.cnrm.cloud.google.com
+  kind: CloudSecurityComplianceFramework
+  name: cscframework-max-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

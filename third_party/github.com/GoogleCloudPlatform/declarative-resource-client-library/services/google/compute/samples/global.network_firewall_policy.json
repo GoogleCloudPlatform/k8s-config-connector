@@ -1,0 +1,6 @@
+{
+  "name": "{{policy}}-create",
+  "project": "{{project}}",
+  "location": "global",
+  "description": "Sample global network firewall policy"
+}

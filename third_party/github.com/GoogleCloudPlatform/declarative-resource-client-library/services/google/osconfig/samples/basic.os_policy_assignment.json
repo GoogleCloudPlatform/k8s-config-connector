@@ -1,0 +1,43 @@
+{
+  "name": "{{assignment}}",
+  "project": "{{project}}",
+  "location": "{{zone}}",
+  "description": "A test os policy assignment",
+  "osPolicies": [
+    {
+      "id": "policy",
+      "mode": "VALIDATION",
+      "resourceGroups": [
+        {
+          "resources": [
+            {
+              "id": "apt-to-yum",
+              "repository": {
+                "apt": {
+                  "archiveType": "DEB",
+                  "uri": "https://atl.mirrors.clouvider.net/debian",
+                  "distribution": "debian",
+                  "components": ["doc"],
+                  "gpgKey": ".gnupg/pubring.kbx"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "instanceFilter": {
+    "all": true,
+    "inclusionLabels": [],
+    "exclusionLabels": [],
+    "inventories": []
+  },
+  "rollout": {
+    "disruptionBudget": {
+      "percent": 1
+    },
+    "minWaitDuration": "3.5s"
+  },
+  "skipAwaitRollout": true
+}

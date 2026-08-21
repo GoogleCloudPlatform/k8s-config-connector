@@ -1,0 +1,72 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: core.cnrm.cloud.google.com/v1alpha1
+kind: ServiceMapping
+metadata:
+  name: kms.cnrm.cloud.google.com
+  namespace: cnrm-system
+spec:
+  name: KMS
+  version: v1beta1
+  serviceHostName: "cloudkms.googleapis.com"
+  resources:
+    - name: google_kms_crypto_key
+      kind: KMSCryptoKey
+      metadataMapping:
+        name: name
+        labels: labels
+      resourceID:
+        targetField: name
+      iamConfig:
+        policyName: google_kms_crypto_key_iam_policy
+        policyMemberName: google_kms_crypto_key_iam_member
+        referenceField:
+          name: crypto_key_id
+          type: id
+        supportsConditions: true
+      idTemplate: "{{key_ring}}/cryptoKeys/{{name}}"
+      # can't Get(...) after import (location is embedded the KMSKeyRing and not properly fetched
+      idTemplateCanBeUsedToMatchResourceName: false
+      resourceAvailableInAssetInventory: true
+      resourceReferences:
+        - tfField: key_ring
+          description: |-
+            The KMSKeyRing that this key belongs to.
+          key: keyRingRef
+          gvk:
+            kind: KMSKeyRing
+            version: v1beta1
+            group: kms.cnrm.cloud.google.com
+          targetField: self_link
+          parent: true
+    - name: google_kms_key_ring
+      kind: KMSKeyRing
+      iamConfig:
+        policyName: google_kms_key_ring_iam_policy
+        policyMemberName: google_kms_key_ring_iam_member
+        referenceField:
+          name: key_ring_id
+          type: id
+        supportsConditions: true
+      idTemplate: "projects/{{project}}/locations/{{location}}/keyRings/{{name}}"
+      idTemplateCanBeUsedToMatchResourceName: true
+      resourceAvailableInAssetInventory: true
+      metadataMapping:
+        name: name
+      resourceID:
+        targetField: name
+      containers:
+        - type: project
+          tfField: project

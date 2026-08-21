@@ -1,0 +1,37 @@
+POST https://us-central1-ml.googleapis.com/v1/projects/${projectId}/models?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+Content-Type: application/json
+
+{
+  "name": "test${uniqueId}",
+  "onlinePredictionConsoleLogging": false,
+  "onlinePredictionLogging": false,
+  "regions": [
+    "us-central1"
+  ]
+}
+
+mockRoundTripper injecting fake response for unknown service us-central1-ml.googleapis.com
+
+
+---
+
+GET https://us-central1-ml.googleapis.com/v1/projects/${projectId}/models/test${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+mockRoundTripper injecting fake response for unknown service us-central1-ml.googleapis.com
+
+
+---
+
+DELETE https://us-central1-ml.googleapis.com/v1/projects/${projectId}/models/test${uniqueId}?alt=json
+Accept: application/json
+Authorization: (removed)
+Connection: keep-alive
+
+mockRoundTripper injecting fake response for unknown service us-central1-ml.googleapis.com
+

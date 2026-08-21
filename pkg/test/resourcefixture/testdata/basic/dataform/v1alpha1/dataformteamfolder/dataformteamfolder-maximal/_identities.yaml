@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: dataform.cnrm.cloud.google.com
+  kind: DataformTeamFolder
+  name: dfteamfolder-max-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

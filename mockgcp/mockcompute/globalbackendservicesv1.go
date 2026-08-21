@@ -1,0 +1,305 @@
+// Copyright 2022 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package mockcompute
+
+import (
+	"context"
+	"strings"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/emptypb"
+)
+
+type GlobalBackendServicesV1 struct {
+	*MockService
+	pb.UnimplementedBackendServicesServer
+}
+
+func (s *GlobalBackendServicesV1) Get(ctx context.Context, req *pb.GetBackendServiceRequest) (*pb.BackendService, error) {
+	reqName := "projects/" + req.GetProject() + "/global" + "/backendServices/" + req.GetBackendService()
+	name, err := s.parseGlobalBackendServiceName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := &pb.BackendService{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+	}
+
+	return obj, nil
+}
+
+func (s *GlobalBackendServicesV1) Insert(ctx context.Context, req *pb.InsertBackendServiceRequest) (*pb.Operation, error) {
+	reqName := "projects/" + req.GetProject() + "/global" + "/backendServices/" + req.GetBackendServiceResource().GetName()
+	name, err := s.parseGlobalBackendServiceName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	id := s.generateID()
+
+	obj := proto.CloneOf(req.GetBackendServiceResource())
+	obj.SelfLink = PtrTo(BuildComputeSelfLink(ctx, fqn))
+	obj.CreationTimestamp = PtrTo(s.nowString())
+	obj.Id = &id
+	obj.Kind = PtrTo("compute#backendService")
+
+	s.populateBackendServiceDefaults(ctx, obj)
+
+	obj.Fingerprint = PtrTo(computeFingerprint(obj))
+
+	if err := s.storage.Create(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("insert"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+		return obj, nil
+	})
+}
+
+func (s *GlobalBackendServicesV1) Update(ctx context.Context, req *pb.UpdateBackendServiceRequest) (*pb.Operation, error) {
+	reqName := "projects/" + req.GetProject() + "/global" + "/backendServices/" + req.GetBackendServiceResource().GetName()
+	name, err := s.parseGlobalBackendServiceName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	obj := &pb.BackendService{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	// TODO: Implement helper to implement the full rules here
+	proto.Merge(obj, req.GetBackendServiceResource())
+
+	obj.Fingerprint = PtrTo(computeFingerprint(obj))
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("update"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+		return obj, nil
+	})
+}
+
+func (s *GlobalBackendServicesV1) Patch(ctx context.Context, req *pb.PatchBackendServiceRequest) (*pb.Operation, error) {
+	reqName := "projects/" + req.GetProject() + "/global" + "/backendServices/" + req.GetBackendServiceResource().GetName()
+	name, err := s.parseGlobalBackendServiceName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+	obj := &pb.BackendService{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	// TODO: Implement helper to implement the full rules here
+	proto.Merge(obj, req.GetBackendServiceResource())
+
+	obj.Fingerprint = PtrTo(computeFingerprint(obj))
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("patch"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+		return obj, nil
+	})
+}
+
+func (s *GlobalBackendServicesV1) Delete(ctx context.Context, req *pb.DeleteBackendServiceRequest) (*pb.Operation, error) {
+	reqName := "projects/" + req.GetProject() + "/global" + "/backendServices/" + req.GetBackendService()
+	name, err := s.parseGlobalBackendServiceName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	deleted := &pb.BackendService{}
+	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
+		return nil, err
+	}
+
+	op := &pb.Operation{
+		TargetId:      deleted.Id,
+		TargetLink:    deleted.SelfLink,
+		OperationType: PtrTo("delete"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+		return &emptypb.Empty{}, nil
+	})
+}
+
+func (s *GlobalBackendServicesV1) AddSignedUrlKey(ctx context.Context, req *pb.AddSignedUrlKeyBackendServiceRequest) (*pb.Operation, error) {
+	reqName := "projects/" + req.GetProject() + "/global" + "/backendServices/" + req.GetBackendService()
+	name, err := s.parseGlobalBackendServiceName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := &pb.BackendService{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+	}
+
+	keyResource := req.GetSignedUrlKeyResource()
+	if keyResource == nil || keyResource.KeyName == nil {
+		return nil, status.Errorf(codes.InvalidArgument, "SignedUrlKeyResource and KeyName must be specified")
+	}
+	keyName := *keyResource.KeyName
+
+	if obj.CdnPolicy == nil {
+		obj.CdnPolicy = &pb.BackendServiceCdnPolicy{}
+	}
+
+	found := false
+	for _, n := range obj.CdnPolicy.SignedUrlKeyNames {
+		if n == keyName {
+			found = true
+			break
+		}
+	}
+	if !found {
+		obj.CdnPolicy.SignedUrlKeyNames = append(obj.CdnPolicy.SignedUrlKeyNames, keyName)
+	}
+
+	obj.Fingerprint = PtrTo(computeFingerprint(obj))
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("addSignedUrlKey"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+		return obj, nil
+	})
+}
+
+func (s *GlobalBackendServicesV1) DeleteSignedUrlKey(ctx context.Context, req *pb.DeleteSignedUrlKeyBackendServiceRequest) (*pb.Operation, error) {
+	reqName := "projects/" + req.GetProject() + "/global" + "/backendServices/" + req.GetBackendService()
+	name, err := s.parseGlobalBackendServiceName(reqName)
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := &pb.BackendService{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, status.Errorf(codes.NotFound, "The resource '%s' was not found", fqn)
+	}
+
+	keyName := req.GetKeyName()
+	if keyName == "" {
+		return nil, status.Errorf(codes.InvalidArgument, "KeyName must be specified")
+	}
+
+	if obj.CdnPolicy != nil {
+		var newNames []string
+		for _, n := range obj.CdnPolicy.SignedUrlKeyNames {
+			if n != keyName {
+				newNames = append(newNames, n)
+			}
+		}
+		obj.CdnPolicy.SignedUrlKeyNames = newNames
+	}
+
+	obj.Fingerprint = PtrTo(computeFingerprint(obj))
+
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	op := &pb.Operation{
+		TargetId:      obj.Id,
+		TargetLink:    obj.SelfLink,
+		OperationType: PtrTo("deleteSignedUrlKey"),
+		User:          PtrTo("user@example.com"),
+	}
+	return s.startGlobalLRO(ctx, name.Project.ID, op, func() (proto.Message, error) {
+		return obj, nil
+	})
+}
+
+type globalBackendServiceName struct {
+	Project *projects.ProjectData
+	Name    string
+}
+
+func (n *globalBackendServiceName) String() string {
+	return "projects/" + n.Project.ID + "/global" + "/backendServices/" + n.Name
+}
+
+// parseBackendServiceName parses a string into a backendserviceName.
+// The expected form is `projects/*/regions/*/backendservice/*`.
+func (s *MockService) parseGlobalBackendServiceName(name string) (*globalBackendServiceName, error) {
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 5 && tokens[0] == "projects" && tokens[2] == "global" && tokens[3] == "backendServices" {
+		project, err := s.Projects.GetProjectByID(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		name := &globalBackendServiceName{
+			Project: project,
+			Name:    tokens[4],
+		}
+
+		return name, nil
+	} else {
+		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+	}
+}

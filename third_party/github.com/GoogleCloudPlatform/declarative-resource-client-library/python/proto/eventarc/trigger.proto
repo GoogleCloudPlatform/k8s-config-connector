@@ -1,0 +1,113 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+message EventarcTrigger {
+  string name = 1;
+  string uid = 2;
+  string create_time = 3;
+  string update_time = 4;
+  repeated EventarcTriggerMatchingCriteria matching_criteria = 5;
+  string service_account = 6;
+  EventarcTriggerDestination destination = 7;
+  EventarcTriggerTransport transport = 8;
+  map<string, string> labels = 9;
+  string etag = 10;
+  string project = 11;
+  string location = 12;
+  string channel = 13;
+  map<string, string> conditions = 14;
+  string event_data_content_type = 15;
+}
+
+message EventarcTriggerMatchingCriteria {
+  string attribute = 1;
+  string value = 2;
+  string operator = 3;
+}
+
+message EventarcTriggerDestination {
+  EventarcTriggerDestinationCloudRunService cloud_run_service = 1;
+  string cloud_function = 2;
+  EventarcTriggerDestinationGke gke = 3;
+  string workflow = 4;
+  EventarcTriggerDestinationHttpEndpoint http_endpoint = 5;
+  EventarcTriggerDestinationNetworkConfig network_config = 6;
+}
+
+message EventarcTriggerDestinationCloudRunService {
+  string service = 1;
+  string path = 2;
+  string region = 3;
+}
+
+message EventarcTriggerDestinationGke {
+  string cluster = 1;
+  string location = 2;
+  string namespace = 3;
+  string service = 4;
+  string path = 5;
+}
+
+message EventarcTriggerDestinationHttpEndpoint {
+  string uri = 1;
+}
+
+message EventarcTriggerDestinationNetworkConfig {
+  string network_attachment = 1;
+}
+
+message EventarcTriggerTransport {
+  EventarcTriggerTransportPubsub pubsub = 1;
+}
+
+message EventarcTriggerTransportPubsub {
+  string topic = 1;
+  string subscription = 2;
+}
+
+message ApplyEventarcTriggerRequest {
+  EventarcTrigger resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteEventarcTriggerRequest {
+  string service_account_file = 1;
+  EventarcTrigger resource = 2;
+}
+
+message ListEventarcTriggerRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListEventarcTriggerResponse {
+  repeated EventarcTrigger items = 1;
+}
+
+service EventarcTriggerService {
+  rpc ApplyEventarcTrigger(ApplyEventarcTriggerRequest) returns (EventarcTrigger);
+  rpc DeleteEventarcTrigger(DeleteEventarcTriggerRequest) returns (google.protobuf.Empty);
+  rpc ListEventarcTrigger(ListEventarcTriggerRequest) returns (ListEventarcTriggerResponse);
+}

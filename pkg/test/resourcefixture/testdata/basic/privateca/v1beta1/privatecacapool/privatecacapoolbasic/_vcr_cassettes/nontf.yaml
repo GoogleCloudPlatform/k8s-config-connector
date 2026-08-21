@@ -1,0 +1,2158 @@
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+version: 2
+interactions:
+    - id: 0
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: privateca.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://privateca.googleapis.com/v1/projects/example-project/locations/us-central1/caPools/privatecacapool-6keati6ocofj?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 404 Not Found
+        code: 404
+        duration: 334.541759ms
+    - id: 1
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: privateca.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://privateca.googleapis.com/v1/projects/example-project/locations/us-central1/caPools/privatecacapool-6keati6ocofj?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 404 Not Found
+        code: 404
+        duration: 262.602273ms
+    - id: 2
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: privateca.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://privateca.googleapis.com/v1/projects/example-project/locations/us-central1/caPools/privatecacapool-6keati6ocofj?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 404 Not Found
+        code: 404
+        duration: 224.160043ms
+    - id: 3
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 1448
+        transfer_encoding: []
+        trailer: {}
+        host: privateca.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: '{"issuancePolicy":{"allowedIssuanceModes":{"allowConfigBasedIssuance":false,"allowCsrBasedIssuance":true},"allowedKeyTypes":[{"rsa":{"maxModulusSize":128,"minModulusSize":64}},{"ellipticCurve":{"signatureAlgorithm":"ECDSA_P384"}}],"baselineValues":{"additionalExtensions":[{"critical":false,"objectId":{"objectIdPath":[1,7]},"value":"c3RyaW5nCg=="}],"aiaOcspServers":["string"],"caOptions":{"isCa":false,"maxIssuerPathLength":7},"keyUsage":{"baseKeyUsage":{"certSign":false,"contentCommitment":false,"crlSign":false,"dataEncipherment":false,"decipherOnly":false,"digitalSignature":false,"encipherOnly":false,"keyAgreement":false,"keyEncipherment":false},"extendedKeyUsage":{"clientAuth":false,"codeSigning":false,"emailProtection":false,"ocspSigning":false,"serverAuth":false,"timeStamping":false},"unknownExtendedKeyUsages":[{"objectIdPath":[1,7]}]},"policyIds":[{"objectIdPath":[1,7]}]},"identityConstraints":{"allowSubjectAltNamesPassthrough":false,"allowSubjectPassthrough":false,"celExpression":{"description":"Always false","expression":"false","location":"devops.ca_pool.json","title":"Sample expression"}},"maximumLifetime":"43200s","passthroughExtensions":{"additionalExtensions":[{"objectIdPath":[1,7]}],"knownExtensions":["BASE_KEY_USAGE"]}},"labels":{"cnrm-test":"true","label-two":"value-two","managed-by-cnrm":"true"},"name":"projects/example-project/locations/us-central1/caPools/privatecacapool-6keati6ocofj","tier":"ENTERPRISE"}'
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://privateca.googleapis.com/v1/projects/example-project/locations/us-central1/caPools?alt=json&caPoolId=privatecacapool-6keati6ocofj
+        method: POST
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/us-central1/operations/operation-1712621084869-6159eab66038a-842cdb7b-66415c97",
+              "metadata": {
+                "@type": "type.googleapis.com/google.cloud.security.privateca.v1.OperationMetadata",
+                "createTime": "2024-04-09T00:04:44.882453581Z",
+                "target": "projects/example-project/locations/us-central1/caPools/privatecacapool-6keati6ocofj",
+                "verb": "create",
+                "requestedCancellation": false,
+                "apiVersion": "v1"
+              },
+              "done": false
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 298.961076ms
+    - id: 4
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: privateca.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://privateca.googleapis.com/v1/projects/example-project/locations/us-central1/operations/operation-1712621084869-6159eab66038a-842cdb7b-66415c97?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/us-central1/operations/operation-1712621084869-6159eab66038a-842cdb7b-66415c97",
+              "metadata": {
+                "@type": "type.googleapis.com/google.cloud.security.privateca.v1.OperationMetadata",
+                "createTime": "2024-04-09T00:04:44.882453581Z",
+                "endTime": "2024-04-09T00:04:44.936644167Z",
+                "target": "projects/example-project/locations/us-central1/caPools/privatecacapool-6keati6ocofj",
+                "verb": "create",
+                "requestedCancellation": false,
+                "apiVersion": "v1"
+              },
+              "done": true,
+              "response": {
+                "@type": "type.googleapis.com/google.cloud.security.privateca.v1.CaPool",
+                "name": "projects/example-project/locations/us-central1/caPools/privatecacapool-6keati6ocofj",
+                "tier": "ENTERPRISE",
+                "issuancePolicy": {
+                  "allowedKeyTypes": [
+                    {
+                      "rsa": {
+                        "minModulusSize": "64",
+                        "maxModulusSize": "128"
+                      }
+                    },
+                    {
+                      "ellipticCurve": {
+                        "signatureAlgorithm": "ECDSA_P384"
+                      }
+                    }
+                  ],
+                  "maximumLifetime": "43200s",
+                  "allowedIssuanceModes": {
+                    "allowCsrBasedIssuance": true
+                  },
+                  "baselineValues": {
+                    "keyUsage": {
+                      "unknownExtendedKeyUsages": [
+                        {
+                          "objectIdPath": [
+                            1,
+                            7
+                          ]
+                        }
+                      ]
+                    },
+                    "caOptions": {
+                      "isCa": false,
+                      "maxIssuerPathLength": 7
+                    },
+                    "policyIds": [
+                      {
+                        "objectIdPath": [
+                          1,
+                          7
+                        ]
+                      }
+                    ],
+                    "aiaOcspServers": [
+                      "string"
+                    ],
+                    "additionalExtensions": [
+                      {
+                        "objectId": {
+                          "objectIdPath": [
+                            1,
+                            7
+                          ]
+                        },
+                        "value": "c3RyaW5nCg=="
+                      }
+                    ]
+                  },
+                  "identityConstraints": {
+                    "celExpression": {
+                      "expression": "false",
+                      "title": "Sample expression",
+                      "description": "Always false",
+                      "location": "devops.ca_pool.json"
+                    },
+                    "allowSubjectPassthrough": false,
+                    "allowSubjectAltNamesPassthrough": false
+                  },
+                  "passthroughExtensions": {
+                    "knownExtensions": [
+                      "BASE_KEY_USAGE"
+                    ],
+                    "additionalExtensions": [
+                      {
+                        "objectIdPath": [
+                          1,
+                          7
+                        ]
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 241.552345ms
+    - id: 5
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: privateca.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://privateca.googleapis.com/v1/projects/example-project/locations/us-central1/caPools/privatecacapool-6keati6ocofj?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/us-central1/caPools/privatecacapool-6keati6ocofj",
+              "tier": "ENTERPRISE",
+              "issuancePolicy": {
+                "allowedKeyTypes": [
+                  {
+                    "rsa": {
+                      "minModulusSize": "64",
+                      "maxModulusSize": "128"
+                    }
+                  },
+                  {
+                    "ellipticCurve": {
+                      "signatureAlgorithm": "ECDSA_P384"
+                    }
+                  }
+                ],
+                "maximumLifetime": "43200s",
+                "allowedIssuanceModes": {
+                  "allowCsrBasedIssuance": true
+                },
+                "baselineValues": {
+                  "keyUsage": {
+                    "unknownExtendedKeyUsages": [
+                      {
+                        "objectIdPath": [
+                          1,
+                          7
+                        ]
+                      }
+                    ]
+                  },
+                  "caOptions": {
+                    "isCa": false,
+                    "maxIssuerPathLength": 7
+                  },
+                  "policyIds": [
+                    {
+                      "objectIdPath": [
+                        1,
+                        7
+                      ]
+                    }
+                  ],
+                  "aiaOcspServers": [
+                    "string"
+                  ],
+                  "additionalExtensions": [
+                    {
+                      "objectId": {
+                        "objectIdPath": [
+                          1,
+                          7
+                        ]
+                      },
+                      "value": "c3RyaW5nCg=="
+                    }
+                  ]
+                },
+                "identityConstraints": {
+                  "celExpression": {
+                    "expression": "false",
+                    "title": "Sample expression",
+                    "description": "Always false",
+                    "location": "devops.ca_pool.json"
+                  },
+                  "allowSubjectPassthrough": false,
+                  "allowSubjectAltNamesPassthrough": false
+                },
+                "passthroughExtensions": {
+                  "knownExtensions": [
+                    "BASE_KEY_USAGE"
+                  ],
+                  "additionalExtensions": [
+                    {
+                      "objectIdPath": [
+                        1,
+                        7
+                      ]
+                    }
+                  ]
+                }
+              },
+              "labels": {
+                "cnrm-test": "true",
+                "label-two": "value-two",
+                "managed-by-cnrm": "true"
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 235.359777ms
+    - id: 6
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: privateca.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://privateca.googleapis.com/v1/projects/example-project/locations/us-central1/caPools/privatecacapool-6keati6ocofj?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/us-central1/caPools/privatecacapool-6keati6ocofj",
+              "tier": "ENTERPRISE",
+              "issuancePolicy": {
+                "allowedKeyTypes": [
+                  {
+                    "rsa": {
+                      "minModulusSize": "64",
+                      "maxModulusSize": "128"
+                    }
+                  },
+                  {
+                    "ellipticCurve": {
+                      "signatureAlgorithm": "ECDSA_P384"
+                    }
+                  }
+                ],
+                "maximumLifetime": "43200s",
+                "allowedIssuanceModes": {
+                  "allowCsrBasedIssuance": true
+                },
+                "baselineValues": {
+                  "keyUsage": {
+                    "unknownExtendedKeyUsages": [
+                      {
+                        "objectIdPath": [
+                          1,
+                          7
+                        ]
+                      }
+                    ]
+                  },
+                  "caOptions": {
+                    "isCa": false,
+                    "maxIssuerPathLength": 7
+                  },
+                  "policyIds": [
+                    {
+                      "objectIdPath": [
+                        1,
+                        7
+                      ]
+                    }
+                  ],
+                  "aiaOcspServers": [
+                    "string"
+                  ],
+                  "additionalExtensions": [
+                    {
+                      "objectId": {
+                        "objectIdPath": [
+                          1,
+                          7
+                        ]
+                      },
+                      "value": "c3RyaW5nCg=="
+                    }
+                  ]
+                },
+                "identityConstraints": {
+                  "celExpression": {
+                    "expression": "false",
+                    "title": "Sample expression",
+                    "description": "Always false",
+                    "location": "devops.ca_pool.json"
+                  },
+                  "allowSubjectPassthrough": false,
+                  "allowSubjectAltNamesPassthrough": false
+                },
+                "passthroughExtensions": {
+                  "knownExtensions": [
+                    "BASE_KEY_USAGE"
+                  ],
+                  "additionalExtensions": [
+                    {
+                      "objectIdPath": [
+                        1,
+                        7
+                      ]
+                    }
+                  ]
+                }
+              },
+              "labels": {
+                "cnrm-test": "true",
+                "label-two": "value-two",
+                "managed-by-cnrm": "true"
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 292.75059ms
+    - id: 7
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: privateca.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://privateca.googleapis.com/v1/projects/example-project/locations/us-central1/caPools/privatecacapool-6keati6ocofj?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/us-central1/caPools/privatecacapool-6keati6ocofj",
+              "tier": "ENTERPRISE",
+              "issuancePolicy": {
+                "allowedKeyTypes": [
+                  {
+                    "rsa": {
+                      "minModulusSize": "64",
+                      "maxModulusSize": "128"
+                    }
+                  },
+                  {
+                    "ellipticCurve": {
+                      "signatureAlgorithm": "ECDSA_P384"
+                    }
+                  }
+                ],
+                "maximumLifetime": "43200s",
+                "allowedIssuanceModes": {
+                  "allowCsrBasedIssuance": true
+                },
+                "baselineValues": {
+                  "keyUsage": {
+                    "unknownExtendedKeyUsages": [
+                      {
+                        "objectIdPath": [
+                          1,
+                          7
+                        ]
+                      }
+                    ]
+                  },
+                  "caOptions": {
+                    "isCa": false,
+                    "maxIssuerPathLength": 7
+                  },
+                  "policyIds": [
+                    {
+                      "objectIdPath": [
+                        1,
+                        7
+                      ]
+                    }
+                  ],
+                  "aiaOcspServers": [
+                    "string"
+                  ],
+                  "additionalExtensions": [
+                    {
+                      "objectId": {
+                        "objectIdPath": [
+                          1,
+                          7
+                        ]
+                      },
+                      "value": "c3RyaW5nCg=="
+                    }
+                  ]
+                },
+                "identityConstraints": {
+                  "celExpression": {
+                    "expression": "false",
+                    "title": "Sample expression",
+                    "description": "Always false",
+                    "location": "devops.ca_pool.json"
+                  },
+                  "allowSubjectPassthrough": false,
+                  "allowSubjectAltNamesPassthrough": false
+                },
+                "passthroughExtensions": {
+                  "knownExtensions": [
+                    "BASE_KEY_USAGE"
+                  ],
+                  "additionalExtensions": [
+                    {
+                      "objectIdPath": [
+                        1,
+                        7
+                      ]
+                    }
+                  ]
+                }
+              },
+              "labels": {
+                "cnrm-test": "true",
+                "label-two": "value-two",
+                "managed-by-cnrm": "true"
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 268.974891ms
+    - id: 8
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: privateca.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://privateca.googleapis.com/v1/projects/example-project/locations/us-central1/caPools/privatecacapool-6keati6ocofj?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/us-central1/caPools/privatecacapool-6keati6ocofj",
+              "tier": "ENTERPRISE",
+              "issuancePolicy": {
+                "allowedKeyTypes": [
+                  {
+                    "rsa": {
+                      "minModulusSize": "64",
+                      "maxModulusSize": "128"
+                    }
+                  },
+                  {
+                    "ellipticCurve": {
+                      "signatureAlgorithm": "ECDSA_P384"
+                    }
+                  }
+                ],
+                "maximumLifetime": "43200s",
+                "allowedIssuanceModes": {
+                  "allowCsrBasedIssuance": true
+                },
+                "baselineValues": {
+                  "keyUsage": {
+                    "unknownExtendedKeyUsages": [
+                      {
+                        "objectIdPath": [
+                          1,
+                          7
+                        ]
+                      }
+                    ]
+                  },
+                  "caOptions": {
+                    "isCa": false,
+                    "maxIssuerPathLength": 7
+                  },
+                  "policyIds": [
+                    {
+                      "objectIdPath": [
+                        1,
+                        7
+                      ]
+                    }
+                  ],
+                  "aiaOcspServers": [
+                    "string"
+                  ],
+                  "additionalExtensions": [
+                    {
+                      "objectId": {
+                        "objectIdPath": [
+                          1,
+                          7
+                        ]
+                      },
+                      "value": "c3RyaW5nCg=="
+                    }
+                  ]
+                },
+                "identityConstraints": {
+                  "celExpression": {
+                    "expression": "false",
+                    "title": "Sample expression",
+                    "description": "Always false",
+                    "location": "devops.ca_pool.json"
+                  },
+                  "allowSubjectPassthrough": false,
+                  "allowSubjectAltNamesPassthrough": false
+                },
+                "passthroughExtensions": {
+                  "knownExtensions": [
+                    "BASE_KEY_USAGE"
+                  ],
+                  "additionalExtensions": [
+                    {
+                      "objectIdPath": [
+                        1,
+                        7
+                      ]
+                    }
+                  ]
+                }
+              },
+              "labels": {
+                "cnrm-test": "true",
+                "label-two": "value-two",
+                "managed-by-cnrm": "true"
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 215.932608ms
+    - id: 9
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: privateca.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://privateca.googleapis.com/v1/projects/example-project/locations/us-central1/caPools/privatecacapool-6keati6ocofj?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/us-central1/caPools/privatecacapool-6keati6ocofj",
+              "tier": "ENTERPRISE",
+              "issuancePolicy": {
+                "allowedKeyTypes": [
+                  {
+                    "rsa": {
+                      "minModulusSize": "64",
+                      "maxModulusSize": "128"
+                    }
+                  },
+                  {
+                    "ellipticCurve": {
+                      "signatureAlgorithm": "ECDSA_P384"
+                    }
+                  }
+                ],
+                "maximumLifetime": "43200s",
+                "allowedIssuanceModes": {
+                  "allowCsrBasedIssuance": true
+                },
+                "baselineValues": {
+                  "keyUsage": {
+                    "unknownExtendedKeyUsages": [
+                      {
+                        "objectIdPath": [
+                          1,
+                          7
+                        ]
+                      }
+                    ]
+                  },
+                  "caOptions": {
+                    "isCa": false,
+                    "maxIssuerPathLength": 7
+                  },
+                  "policyIds": [
+                    {
+                      "objectIdPath": [
+                        1,
+                        7
+                      ]
+                    }
+                  ],
+                  "aiaOcspServers": [
+                    "string"
+                  ],
+                  "additionalExtensions": [
+                    {
+                      "objectId": {
+                        "objectIdPath": [
+                          1,
+                          7
+                        ]
+                      },
+                      "value": "c3RyaW5nCg=="
+                    }
+                  ]
+                },
+                "identityConstraints": {
+                  "celExpression": {
+                    "expression": "false",
+                    "title": "Sample expression",
+                    "description": "Always false",
+                    "location": "devops.ca_pool.json"
+                  },
+                  "allowSubjectPassthrough": false,
+                  "allowSubjectAltNamesPassthrough": false
+                },
+                "passthroughExtensions": {
+                  "knownExtensions": [
+                    "BASE_KEY_USAGE"
+                  ],
+                  "additionalExtensions": [
+                    {
+                      "objectIdPath": [
+                        1,
+                        7
+                      ]
+                    }
+                  ]
+                }
+              },
+              "labels": {
+                "cnrm-test": "true",
+                "label-two": "value-two",
+                "managed-by-cnrm": "true"
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 222.288255ms
+    - id: 10
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: privateca.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://privateca.googleapis.com/v1/projects/example-project/locations/us-central1/caPools/privatecacapool-6keati6ocofj?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/us-central1/caPools/privatecacapool-6keati6ocofj",
+              "tier": "ENTERPRISE",
+              "issuancePolicy": {
+                "allowedKeyTypes": [
+                  {
+                    "rsa": {
+                      "minModulusSize": "64",
+                      "maxModulusSize": "128"
+                    }
+                  },
+                  {
+                    "ellipticCurve": {
+                      "signatureAlgorithm": "ECDSA_P384"
+                    }
+                  }
+                ],
+                "maximumLifetime": "43200s",
+                "allowedIssuanceModes": {
+                  "allowCsrBasedIssuance": true
+                },
+                "baselineValues": {
+                  "keyUsage": {
+                    "unknownExtendedKeyUsages": [
+                      {
+                        "objectIdPath": [
+                          1,
+                          7
+                        ]
+                      }
+                    ]
+                  },
+                  "caOptions": {
+                    "isCa": false,
+                    "maxIssuerPathLength": 7
+                  },
+                  "policyIds": [
+                    {
+                      "objectIdPath": [
+                        1,
+                        7
+                      ]
+                    }
+                  ],
+                  "aiaOcspServers": [
+                    "string"
+                  ],
+                  "additionalExtensions": [
+                    {
+                      "objectId": {
+                        "objectIdPath": [
+                          1,
+                          7
+                        ]
+                      },
+                      "value": "c3RyaW5nCg=="
+                    }
+                  ]
+                },
+                "identityConstraints": {
+                  "celExpression": {
+                    "expression": "false",
+                    "title": "Sample expression",
+                    "description": "Always false",
+                    "location": "devops.ca_pool.json"
+                  },
+                  "allowSubjectPassthrough": false,
+                  "allowSubjectAltNamesPassthrough": false
+                },
+                "passthroughExtensions": {
+                  "knownExtensions": [
+                    "BASE_KEY_USAGE"
+                  ],
+                  "additionalExtensions": [
+                    {
+                      "objectIdPath": [
+                        1,
+                        7
+                      ]
+                    }
+                  ]
+                }
+              },
+              "labels": {
+                "cnrm-test": "true",
+                "label-two": "value-two",
+                "managed-by-cnrm": "true"
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 219.579404ms
+    - id: 11
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: privateca.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://privateca.googleapis.com/v1/projects/example-project/locations/us-central1/caPools/privatecacapool-6keati6ocofj?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/us-central1/caPools/privatecacapool-6keati6ocofj",
+              "tier": "ENTERPRISE",
+              "issuancePolicy": {
+                "allowedKeyTypes": [
+                  {
+                    "rsa": {
+                      "minModulusSize": "64",
+                      "maxModulusSize": "128"
+                    }
+                  },
+                  {
+                    "ellipticCurve": {
+                      "signatureAlgorithm": "ECDSA_P384"
+                    }
+                  }
+                ],
+                "maximumLifetime": "43200s",
+                "allowedIssuanceModes": {
+                  "allowCsrBasedIssuance": true
+                },
+                "baselineValues": {
+                  "keyUsage": {
+                    "unknownExtendedKeyUsages": [
+                      {
+                        "objectIdPath": [
+                          1,
+                          7
+                        ]
+                      }
+                    ]
+                  },
+                  "caOptions": {
+                    "isCa": false,
+                    "maxIssuerPathLength": 7
+                  },
+                  "policyIds": [
+                    {
+                      "objectIdPath": [
+                        1,
+                        7
+                      ]
+                    }
+                  ],
+                  "aiaOcspServers": [
+                    "string"
+                  ],
+                  "additionalExtensions": [
+                    {
+                      "objectId": {
+                        "objectIdPath": [
+                          1,
+                          7
+                        ]
+                      },
+                      "value": "c3RyaW5nCg=="
+                    }
+                  ]
+                },
+                "identityConstraints": {
+                  "celExpression": {
+                    "expression": "false",
+                    "title": "Sample expression",
+                    "description": "Always false",
+                    "location": "devops.ca_pool.json"
+                  },
+                  "allowSubjectPassthrough": false,
+                  "allowSubjectAltNamesPassthrough": false
+                },
+                "passthroughExtensions": {
+                  "knownExtensions": [
+                    "BASE_KEY_USAGE"
+                  ],
+                  "additionalExtensions": [
+                    {
+                      "objectIdPath": [
+                        1,
+                        7
+                      ]
+                    }
+                  ]
+                }
+              },
+              "labels": {
+                "cnrm-test": "true",
+                "label-two": "value-two",
+                "managed-by-cnrm": "true"
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 207.864932ms
+    - id: 12
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: privateca.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://privateca.googleapis.com/v1/projects/example-project/locations/us-central1/caPools/privatecacapool-6keati6ocofj?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/us-central1/caPools/privatecacapool-6keati6ocofj",
+              "tier": "ENTERPRISE",
+              "issuancePolicy": {
+                "allowedKeyTypes": [
+                  {
+                    "rsa": {
+                      "minModulusSize": "64",
+                      "maxModulusSize": "128"
+                    }
+                  },
+                  {
+                    "ellipticCurve": {
+                      "signatureAlgorithm": "ECDSA_P384"
+                    }
+                  }
+                ],
+                "maximumLifetime": "43200s",
+                "allowedIssuanceModes": {
+                  "allowCsrBasedIssuance": true
+                },
+                "baselineValues": {
+                  "keyUsage": {
+                    "unknownExtendedKeyUsages": [
+                      {
+                        "objectIdPath": [
+                          1,
+                          7
+                        ]
+                      }
+                    ]
+                  },
+                  "caOptions": {
+                    "isCa": false,
+                    "maxIssuerPathLength": 7
+                  },
+                  "policyIds": [
+                    {
+                      "objectIdPath": [
+                        1,
+                        7
+                      ]
+                    }
+                  ],
+                  "aiaOcspServers": [
+                    "string"
+                  ],
+                  "additionalExtensions": [
+                    {
+                      "objectId": {
+                        "objectIdPath": [
+                          1,
+                          7
+                        ]
+                      },
+                      "value": "c3RyaW5nCg=="
+                    }
+                  ]
+                },
+                "identityConstraints": {
+                  "celExpression": {
+                    "expression": "false",
+                    "title": "Sample expression",
+                    "description": "Always false",
+                    "location": "devops.ca_pool.json"
+                  },
+                  "allowSubjectPassthrough": false,
+                  "allowSubjectAltNamesPassthrough": false
+                },
+                "passthroughExtensions": {
+                  "knownExtensions": [
+                    "BASE_KEY_USAGE"
+                  ],
+                  "additionalExtensions": [
+                    {
+                      "objectIdPath": [
+                        1,
+                        7
+                      ]
+                    }
+                  ]
+                }
+              },
+              "labels": {
+                "cnrm-test": "true",
+                "label-two": "value-two",
+                "managed-by-cnrm": "true"
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 238.577976ms
+    - id: 13
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: privateca.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://privateca.googleapis.com/v1/projects/example-project/locations/us-central1/caPools/privatecacapool-6keati6ocofj?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/us-central1/caPools/privatecacapool-6keati6ocofj",
+              "tier": "ENTERPRISE",
+              "issuancePolicy": {
+                "allowedKeyTypes": [
+                  {
+                    "rsa": {
+                      "minModulusSize": "64",
+                      "maxModulusSize": "128"
+                    }
+                  },
+                  {
+                    "ellipticCurve": {
+                      "signatureAlgorithm": "ECDSA_P384"
+                    }
+                  }
+                ],
+                "maximumLifetime": "43200s",
+                "allowedIssuanceModes": {
+                  "allowCsrBasedIssuance": true
+                },
+                "baselineValues": {
+                  "keyUsage": {
+                    "unknownExtendedKeyUsages": [
+                      {
+                        "objectIdPath": [
+                          1,
+                          7
+                        ]
+                      }
+                    ]
+                  },
+                  "caOptions": {
+                    "isCa": false,
+                    "maxIssuerPathLength": 7
+                  },
+                  "policyIds": [
+                    {
+                      "objectIdPath": [
+                        1,
+                        7
+                      ]
+                    }
+                  ],
+                  "aiaOcspServers": [
+                    "string"
+                  ],
+                  "additionalExtensions": [
+                    {
+                      "objectId": {
+                        "objectIdPath": [
+                          1,
+                          7
+                        ]
+                      },
+                      "value": "c3RyaW5nCg=="
+                    }
+                  ]
+                },
+                "identityConstraints": {
+                  "celExpression": {
+                    "expression": "false",
+                    "title": "Sample expression",
+                    "description": "Always false",
+                    "location": "devops.ca_pool.json"
+                  },
+                  "allowSubjectPassthrough": false,
+                  "allowSubjectAltNamesPassthrough": false
+                },
+                "passthroughExtensions": {
+                  "knownExtensions": [
+                    "BASE_KEY_USAGE"
+                  ],
+                  "additionalExtensions": [
+                    {
+                      "objectIdPath": [
+                        1,
+                        7
+                      ]
+                    }
+                  ]
+                }
+              },
+              "labels": {
+                "cnrm-test": "true",
+                "label-two": "value-two",
+                "managed-by-cnrm": "true"
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 221.564135ms
+    - id: 14
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 1522
+        transfer_encoding: []
+        trailer: {}
+        host: privateca.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: '{"issuancePolicy":{"allowedIssuanceModes":{"allowConfigBasedIssuance":true,"allowCsrBasedIssuance":false},"allowedKeyTypes":[{"rsa":{"maxModulusSize":256,"minModulusSize":128}},{"ellipticCurve":{"signatureAlgorithm":"ECDSA_P256"}}],"baselineValues":{"additionalExtensions":[{"critical":true,"objectId":{"objectIdPath":[1,6]},"value":"bmV3LXN0cmluZwo="}],"aiaOcspServers":["new-string"],"caOptions":{"isCa":true,"maxIssuerPathLength":6},"keyUsage":{"baseKeyUsage":{"certSign":true,"contentCommitment":true,"crlSign":true,"dataEncipherment":true,"decipherOnly":true,"digitalSignature":true,"encipherOnly":true,"keyAgreement":true,"keyEncipherment":true},"extendedKeyUsage":{"clientAuth":true,"codeSigning":true,"emailProtection":true,"ocspSigning":true,"serverAuth":true,"timeStamping":true},"unknownExtendedKeyUsages":[{"objectIdPath":[1,6]}]},"policyIds":[{"objectIdPath":[1,6]}]},"identityConstraints":{"allowSubjectAltNamesPassthrough":true,"allowSubjectPassthrough":true,"celExpression":{"description":"Always true","expression":"true","location":"update_devops.ca_pool.json","title":"Updated expression"}},"maximumLifetime":"86400s","passthroughExtensions":{"additionalExtensions":[{"objectIdPath":[1,6]}],"knownExtensions":["EXTENDED_KEY_USAGE"]}},"labels":{"cnrm-test":"true","label-one":"value-one","label-two":"value-two","managed-by-cnrm":"true"},"name":"projects/projects/example-project/locations/us-central1/caPools/privatecacapool-6keati6ocofj","publishingOptions":{"publishCaCert":true,"publishCrl":true}}'
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://privateca.googleapis.com/v1/projects/example-project/locations/us-central1/caPools/privatecacapool-6keati6ocofj?alt=json&updateMask=issuancePolicy%2Clabels%2CpublishingOptions
+        method: PATCH
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/us-central1/operations/operation-1712621090601-6159eabbd7bfb-681a5152-7a7cc01c",
+              "metadata": {
+                "@type": "type.googleapis.com/google.cloud.security.privateca.v1.OperationMetadata",
+                "createTime": "2024-04-09T00:04:50.617532707Z",
+                "target": "projects/example-project/locations/us-central1/caPools/privatecacapool-6keati6ocofj",
+                "verb": "update",
+                "requestedCancellation": false,
+                "apiVersion": "v1"
+              },
+              "done": false
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 246.904182ms
+    - id: 15
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: privateca.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://privateca.googleapis.com/v1/projects/example-project/locations/us-central1/operations/operation-1712621090601-6159eabbd7bfb-681a5152-7a7cc01c?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/us-central1/operations/operation-1712621090601-6159eabbd7bfb-681a5152-7a7cc01c",
+              "metadata": {
+                "@type": "type.googleapis.com/google.cloud.security.privateca.v1.OperationMetadata",
+                "createTime": "2024-04-09T00:04:50.617532707Z",
+                "endTime": "2024-04-09T00:04:50.703025917Z",
+                "target": "projects/example-project/locations/us-central1/caPools/privatecacapool-6keati6ocofj",
+                "verb": "update",
+                "requestedCancellation": false,
+                "apiVersion": "v1"
+              },
+              "done": true,
+              "response": {
+                "@type": "type.googleapis.com/google.cloud.security.privateca.v1.CaPool",
+                "name": "projects/example-project/locations/us-central1/caPools/privatecacapool-6keati6ocofj",
+                "tier": "ENTERPRISE",
+                "issuancePolicy": {
+                  "allowedKeyTypes": [
+                    {
+                      "rsa": {
+                        "minModulusSize": "128",
+                        "maxModulusSize": "256"
+                      }
+                    },
+                    {
+                      "ellipticCurve": {
+                        "signatureAlgorithm": "ECDSA_P256"
+                      }
+                    }
+                  ],
+                  "maximumLifetime": "86400s",
+                  "allowedIssuanceModes": {
+                    "allowConfigBasedIssuance": true
+                  },
+                  "baselineValues": {
+                    "keyUsage": {
+                      "baseKeyUsage": {
+                        "digitalSignature": true,
+                        "contentCommitment": true,
+                        "keyEncipherment": true,
+                        "dataEncipherment": true,
+                        "keyAgreement": true,
+                        "certSign": true,
+                        "crlSign": true,
+                        "encipherOnly": true,
+                        "decipherOnly": true
+                      },
+                      "extendedKeyUsage": {
+                        "serverAuth": true,
+                        "clientAuth": true,
+                        "codeSigning": true,
+                        "emailProtection": true,
+                        "timeStamping": true,
+                        "ocspSigning": true
+                      },
+                      "unknownExtendedKeyUsages": [
+                        {
+                          "objectIdPath": [
+                            1,
+                            6
+                          ]
+                        }
+                      ]
+                    },
+                    "caOptions": {
+                      "isCa": true,
+                      "maxIssuerPathLength": 6
+                    },
+                    "policyIds": [
+                      {
+                        "objectIdPath": [
+                          1,
+                          6
+                        ]
+                      }
+                    ],
+                    "aiaOcspServers": [
+                      "new-string"
+                    ],
+                    "additionalExtensions": [
+                      {
+                        "objectId": {
+                          "objectIdPath": [
+                            1,
+                            6
+                          ]
+                        },
+                        "critical": true,
+                        "value": "bmV3LXN0cmluZwo="
+                      }
+                    ]
+                  },
+                  "identityConstraints": {
+                    "celExpression": {
+                      "expression": "true",
+                      "title": "Updated expression",
+                      "description": "Always true",
+                      "location": "update_devops.ca_pool.json"
+                    },
+                    "allowSubjectPassthrough": true,
+                    "allowSubjectAltNamesPassthrough": true
+                  },
+                  "passthroughExtensions": {
+                    "knownExtensions": [
+                      "EXTENDED_KEY_USAGE"
+                    ],
+                    "additionalExtensions": [
+                      {
+                        "objectIdPath": [
+                          1,
+                          6
+                        ]
+                      }
+                    ]
+                  }
+                },
+                "publishingOptions": {
+                  "publishCaCert": true,
+                  "publishCrl": true
+                }
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 251.32759ms
+    - id: 16
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: privateca.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://privateca.googleapis.com/v1/projects/example-project/locations/us-central1/caPools/privatecacapool-6keati6ocofj?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/us-central1/caPools/privatecacapool-6keati6ocofj",
+              "tier": "ENTERPRISE",
+              "issuancePolicy": {
+                "allowedKeyTypes": [
+                  {
+                    "rsa": {
+                      "minModulusSize": "128",
+                      "maxModulusSize": "256"
+                    }
+                  },
+                  {
+                    "ellipticCurve": {
+                      "signatureAlgorithm": "ECDSA_P256"
+                    }
+                  }
+                ],
+                "maximumLifetime": "86400s",
+                "allowedIssuanceModes": {
+                  "allowConfigBasedIssuance": true
+                },
+                "baselineValues": {
+                  "keyUsage": {
+                    "baseKeyUsage": {
+                      "digitalSignature": true,
+                      "contentCommitment": true,
+                      "keyEncipherment": true,
+                      "dataEncipherment": true,
+                      "keyAgreement": true,
+                      "certSign": true,
+                      "crlSign": true,
+                      "encipherOnly": true,
+                      "decipherOnly": true
+                    },
+                    "extendedKeyUsage": {
+                      "serverAuth": true,
+                      "clientAuth": true,
+                      "codeSigning": true,
+                      "emailProtection": true,
+                      "timeStamping": true,
+                      "ocspSigning": true
+                    },
+                    "unknownExtendedKeyUsages": [
+                      {
+                        "objectIdPath": [
+                          1,
+                          6
+                        ]
+                      }
+                    ]
+                  },
+                  "caOptions": {
+                    "isCa": true,
+                    "maxIssuerPathLength": 6
+                  },
+                  "policyIds": [
+                    {
+                      "objectIdPath": [
+                        1,
+                        6
+                      ]
+                    }
+                  ],
+                  "aiaOcspServers": [
+                    "new-string"
+                  ],
+                  "additionalExtensions": [
+                    {
+                      "objectId": {
+                        "objectIdPath": [
+                          1,
+                          6
+                        ]
+                      },
+                      "critical": true,
+                      "value": "bmV3LXN0cmluZwo="
+                    }
+                  ]
+                },
+                "identityConstraints": {
+                  "celExpression": {
+                    "expression": "true",
+                    "title": "Updated expression",
+                    "description": "Always true",
+                    "location": "update_devops.ca_pool.json"
+                  },
+                  "allowSubjectPassthrough": true,
+                  "allowSubjectAltNamesPassthrough": true
+                },
+                "passthroughExtensions": {
+                  "knownExtensions": [
+                    "EXTENDED_KEY_USAGE"
+                  ],
+                  "additionalExtensions": [
+                    {
+                      "objectIdPath": [
+                        1,
+                        6
+                      ]
+                    }
+                  ]
+                }
+              },
+              "publishingOptions": {
+                "publishCaCert": true,
+                "publishCrl": true
+              },
+              "labels": {
+                "cnrm-test": "true",
+                "label-one": "value-one",
+                "label-two": "value-two",
+                "managed-by-cnrm": "true"
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 234.635348ms
+    - id: 17
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: privateca.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://privateca.googleapis.com/v1/projects/example-project/locations/us-central1/caPools/privatecacapool-6keati6ocofj?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/us-central1/caPools/privatecacapool-6keati6ocofj",
+              "tier": "ENTERPRISE",
+              "issuancePolicy": {
+                "allowedKeyTypes": [
+                  {
+                    "rsa": {
+                      "minModulusSize": "128",
+                      "maxModulusSize": "256"
+                    }
+                  },
+                  {
+                    "ellipticCurve": {
+                      "signatureAlgorithm": "ECDSA_P256"
+                    }
+                  }
+                ],
+                "maximumLifetime": "86400s",
+                "allowedIssuanceModes": {
+                  "allowConfigBasedIssuance": true
+                },
+                "baselineValues": {
+                  "keyUsage": {
+                    "baseKeyUsage": {
+                      "digitalSignature": true,
+                      "contentCommitment": true,
+                      "keyEncipherment": true,
+                      "dataEncipherment": true,
+                      "keyAgreement": true,
+                      "certSign": true,
+                      "crlSign": true,
+                      "encipherOnly": true,
+                      "decipherOnly": true
+                    },
+                    "extendedKeyUsage": {
+                      "serverAuth": true,
+                      "clientAuth": true,
+                      "codeSigning": true,
+                      "emailProtection": true,
+                      "timeStamping": true,
+                      "ocspSigning": true
+                    },
+                    "unknownExtendedKeyUsages": [
+                      {
+                        "objectIdPath": [
+                          1,
+                          6
+                        ]
+                      }
+                    ]
+                  },
+                  "caOptions": {
+                    "isCa": true,
+                    "maxIssuerPathLength": 6
+                  },
+                  "policyIds": [
+                    {
+                      "objectIdPath": [
+                        1,
+                        6
+                      ]
+                    }
+                  ],
+                  "aiaOcspServers": [
+                    "new-string"
+                  ],
+                  "additionalExtensions": [
+                    {
+                      "objectId": {
+                        "objectIdPath": [
+                          1,
+                          6
+                        ]
+                      },
+                      "critical": true,
+                      "value": "bmV3LXN0cmluZwo="
+                    }
+                  ]
+                },
+                "identityConstraints": {
+                  "celExpression": {
+                    "expression": "true",
+                    "title": "Updated expression",
+                    "description": "Always true",
+                    "location": "update_devops.ca_pool.json"
+                  },
+                  "allowSubjectPassthrough": true,
+                  "allowSubjectAltNamesPassthrough": true
+                },
+                "passthroughExtensions": {
+                  "knownExtensions": [
+                    "EXTENDED_KEY_USAGE"
+                  ],
+                  "additionalExtensions": [
+                    {
+                      "objectIdPath": [
+                        1,
+                        6
+                      ]
+                    }
+                  ]
+                }
+              },
+              "publishingOptions": {
+                "publishCaCert": true,
+                "publishCrl": true
+              },
+              "labels": {
+                "cnrm-test": "true",
+                "label-one": "value-one",
+                "label-two": "value-two",
+                "managed-by-cnrm": "true"
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 209.9045ms
+    - id: 18
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: privateca.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://privateca.googleapis.com/v1/projects/example-project/locations/us-central1/caPools/privatecacapool-6keati6ocofj?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/us-central1/caPools/privatecacapool-6keati6ocofj",
+              "tier": "ENTERPRISE",
+              "issuancePolicy": {
+                "allowedKeyTypes": [
+                  {
+                    "rsa": {
+                      "minModulusSize": "128",
+                      "maxModulusSize": "256"
+                    }
+                  },
+                  {
+                    "ellipticCurve": {
+                      "signatureAlgorithm": "ECDSA_P256"
+                    }
+                  }
+                ],
+                "maximumLifetime": "86400s",
+                "allowedIssuanceModes": {
+                  "allowConfigBasedIssuance": true
+                },
+                "baselineValues": {
+                  "keyUsage": {
+                    "baseKeyUsage": {
+                      "digitalSignature": true,
+                      "contentCommitment": true,
+                      "keyEncipherment": true,
+                      "dataEncipherment": true,
+                      "keyAgreement": true,
+                      "certSign": true,
+                      "crlSign": true,
+                      "encipherOnly": true,
+                      "decipherOnly": true
+                    },
+                    "extendedKeyUsage": {
+                      "serverAuth": true,
+                      "clientAuth": true,
+                      "codeSigning": true,
+                      "emailProtection": true,
+                      "timeStamping": true,
+                      "ocspSigning": true
+                    },
+                    "unknownExtendedKeyUsages": [
+                      {
+                        "objectIdPath": [
+                          1,
+                          6
+                        ]
+                      }
+                    ]
+                  },
+                  "caOptions": {
+                    "isCa": true,
+                    "maxIssuerPathLength": 6
+                  },
+                  "policyIds": [
+                    {
+                      "objectIdPath": [
+                        1,
+                        6
+                      ]
+                    }
+                  ],
+                  "aiaOcspServers": [
+                    "new-string"
+                  ],
+                  "additionalExtensions": [
+                    {
+                      "objectId": {
+                        "objectIdPath": [
+                          1,
+                          6
+                        ]
+                      },
+                      "critical": true,
+                      "value": "bmV3LXN0cmluZwo="
+                    }
+                  ]
+                },
+                "identityConstraints": {
+                  "celExpression": {
+                    "expression": "true",
+                    "title": "Updated expression",
+                    "description": "Always true",
+                    "location": "update_devops.ca_pool.json"
+                  },
+                  "allowSubjectPassthrough": true,
+                  "allowSubjectAltNamesPassthrough": true
+                },
+                "passthroughExtensions": {
+                  "knownExtensions": [
+                    "EXTENDED_KEY_USAGE"
+                  ],
+                  "additionalExtensions": [
+                    {
+                      "objectIdPath": [
+                        1,
+                        6
+                      ]
+                    }
+                  ]
+                }
+              },
+              "publishingOptions": {
+                "publishCaCert": true,
+                "publishCrl": true
+              },
+              "labels": {
+                "cnrm-test": "true",
+                "label-one": "value-one",
+                "label-two": "value-two",
+                "managed-by-cnrm": "true"
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 260.447066ms
+    - id: 19
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: privateca.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://privateca.googleapis.com/v1/projects/example-project/locations/us-central1/caPools/privatecacapool-6keati6ocofj?alt=json
+        method: DELETE
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/us-central1/operations/operation-1712621093788-6159eabee1c29-9cfeb5bf-14719dce",
+              "metadata": {
+                "@type": "type.googleapis.com/google.cloud.security.privateca.v1.OperationMetadata",
+                "createTime": "2024-04-09T00:04:53.798418711Z",
+                "target": "projects/example-project/locations/us-central1/caPools/privatecacapool-6keati6ocofj",
+                "verb": "delete",
+                "requestedCancellation": false,
+                "apiVersion": "v1"
+              },
+              "done": false
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 247.430864ms
+    - id: 20
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: privateca.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://privateca.googleapis.com/v1/projects/example-project/locations/us-central1/operations/operation-1712621093788-6159eabee1c29-9cfeb5bf-14719dce?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: -1
+        uncompressed: true
+        body: |
+            {
+              "name": "projects/example-project/locations/us-central1/operations/operation-1712621093788-6159eabee1c29-9cfeb5bf-14719dce",
+              "metadata": {
+                "@type": "type.googleapis.com/google.cloud.security.privateca.v1.OperationMetadata",
+                "createTime": "2024-04-09T00:04:53.798418711Z",
+                "endTime": "2024-04-09T00:04:53.860290755Z",
+                "target": "projects/example-project/locations/us-central1/caPools/privatecacapool-6keati6ocofj",
+                "verb": "delete",
+                "requestedCancellation": false,
+                "apiVersion": "v1"
+              },
+              "done": true,
+              "response": {
+                "@type": "type.googleapis.com/google.protobuf.Empty"
+              }
+            }
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 200 OK
+        code: 200
+        duration: 222.874584ms
+    - id: 21
+      request:
+        proto: HTTP/1.1
+        proto_major: 1
+        proto_minor: 1
+        content_length: 0
+        transfer_encoding: []
+        trailer: {}
+        host: privateca.googleapis.com
+        remote_addr: ""
+        request_uri: ""
+        body: ""
+        form: {}
+        headers:
+            Content-Type:
+                - application/json
+        url: https://privateca.googleapis.com/v1/projects/example-project/locations/us-central1/caPools/privatecacapool-6keati6ocofj?alt=json
+        method: GET
+      response:
+        proto: HTTP/2.0
+        proto_major: 2
+        proto_minor: 0
+        transfer_encoding: []
+        trailer: {}
+        content_length: 0
+        uncompressed: true
+        body: fake error message
+        headers:
+            Content-Type:
+                - application/json; charset=UTF-8
+        status: 404 Not Found
+        code: 404
+        duration: 205.251003ms

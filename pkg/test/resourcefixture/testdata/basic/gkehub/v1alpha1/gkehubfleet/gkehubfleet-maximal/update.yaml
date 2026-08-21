@@ -1,0 +1,20 @@
+apiVersion: gkehub.cnrm.cloud.google.com/v1alpha1
+kind: GKEHubFleet
+metadata:
+  name: gkehubfleet-maximal-${uniqueId}
+spec:
+  projectRef:
+    external: projects/${projectId}
+  location: global
+  resourceID: default
+  displayName: "Maximal Fleet Updated"
+  labels:
+    test-label: maximal-updated
+  defaultClusterConfig:
+    securityPostureConfig:
+      mode: "DISABLED"
+      vulnerabilityMode: "VULNERABILITY_DISABLED"
+    binaryAuthorizationConfig:
+      evaluationMode: "DISABLED"
+    compliancePostureConfig:
+      mode: "DISABLED"

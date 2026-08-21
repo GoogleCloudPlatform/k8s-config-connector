@@ -1,0 +1,12 @@
+- caisURL: //cloudresourcemanager.googleapis.com/projects/${KCC_ATTACHED_CLUSTER_TEST_PROJECT}
+  group: resourcemanager.cnrm.cloud.google.com
+  kind: Project
+  name: project-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: unknown
+  group: containerattached.cnrm.cloud.google.com
+  kind: ContainerAttachedCluster
+  name: containerattachedcluster-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

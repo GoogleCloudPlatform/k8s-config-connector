@@ -1,0 +1,7 @@
+# ComputeForwardingRule Direct Controller Implementation Journal
+
+## Observations
+1. **Global and Regional Resource Architecture**: `ComputeForwardingRule` is a dual-natured resource that can be deployed globally or regionally. The direct controller handles this seamlessly by dynamically matching on resource identity and dispatching calls to either `ForwardingRulesClient` or `GlobalForwardingRulesClient`.
+2. **Private Service Connect (PSC) Label Restriction Handling**: The GCP compute API forbids passing `labels` during the initial `Insert` request for PSC forwarding rules (such as targets pointing to `all-apis`, `vpc-sc`, or `/serviceAttachments/`). The direct controller implements a robust workaround by creating the resource with empty labels and subsequently performing a `SetLabels` operation.
+3. **Dynamic Reconciliation and SelfLink Validation**: In the `Update` reconciliation path, the controller handles target and label updates. Special self-link matching (`IsSelfLinkEqual`) is used to prevent spurious updates when target dependencies are reconciled by different underlying controllers.
+4. **Rich E2E Fixture Coverage**: A comprehensive E2E test harness consisting of 13 separate regional/global fixtures covering TCP, SSL, GRPC, HTTPS, and PSC configurations was validated against `MockGCP`. Every single test successfully reconciles, updates, and deletes, showing perfect behavioral fidelity.

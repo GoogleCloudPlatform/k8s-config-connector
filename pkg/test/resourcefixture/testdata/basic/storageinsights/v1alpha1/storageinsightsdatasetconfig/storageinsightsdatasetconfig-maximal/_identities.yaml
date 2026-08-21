@@ -1,0 +1,12 @@
+- caisURL: //storage.googleapis.com/projects/${projectId}/buckets/storageinsights-max-dep-${uniqueId}
+  group: storage.cnrm.cloud.google.com
+  kind: StorageBucket
+  name: storageinsights-max-dep-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: //storageinsights.googleapis.com/projects/${projectId}/locations/us-central1/datasetConfigs/datasetconfigmax${uniqueId}
+  group: storageinsights.cnrm.cloud.google.com
+  kind: StorageInsightsDatasetConfig
+  name: datasetconfigmax${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

@@ -1,0 +1,229 @@
+{
+  "name": "{{assignment}}",
+  "project": "{{project}}",
+  "location": "{{zone}}",
+  "description": "A test os policy assignment",
+  "osPolicies": [
+    {
+      "id": "new-policy",
+      "mode": "VALIDATION",
+      "resourceGroups": [
+        {
+          "resources": [
+            {
+              "id": "apt-to-yum",
+              "repository": {
+                "yum": {
+                  "id": "new-yum",
+                  "displayName": "new-yum",
+                  "baseUrl": "http://mirrors.rcs.alaska.edu/centos/",
+                  "gpgKeys": ["RPM-GPG-KEY-CentOS-Debug-7"]
+                }
+              }
+            },
+            {
+              "id": "new-yum",
+              "repository": {
+                "yum": {
+                  "id": "new-yum",
+                  "displayName": "new-yum",
+                  "baseUrl": "http://mirrors.rcs.alaska.edu/centos/",
+                  "gpgKeys": ["RPM-GPG-KEY-CentOS-Debug-7"]
+                }
+              }
+            },
+            {
+              "id": "new-zypper",
+              "repository": {
+                "zypper": {
+                  "id": "new-zypper",
+                  "displayName": "new-zypper",
+                  "baseUrl": "http://mirror.vtti.vt.edu/opensuse/",
+                  "gpgKeys": ["new-sample-key-uri"]
+                }
+              }
+            },
+            {
+              "id": "new-goo",
+              "repository": {
+                "goo": {
+                  "name": "new-goo",
+                  "url": "https://foo.com/googet/baz"
+                }
+              }
+            },
+            {
+              "id": "new-exec1",
+              "exec": {
+                "validate": {
+                  "args": ["arg2"],
+                  "interpreter": "POWERSHELL",
+                  "outputFilePath": "$HOME/out",
+                  "file": {
+                    "localPath": "$HOME/script.bat"
+                  }
+                },
+                "enforce": {
+                  "args": ["arg2"],
+                  "interpreter": "POWERSHELL",
+                  "outputFilePath": "$HOME/out",
+                  "file": {
+                    "allowInsecure": false,
+                    "remote": {
+                      "uri": "https://www.example.com/script.bat",
+                      "sha256Checksum": "9f8e5818ccb47024d01000db713c0a333679b64678ff5fe2d9bea0a23014dd54"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "id": "new-exec2",
+              "exec": {
+                "validate": {
+                  "args": ["arg2"],
+                  "interpreter": "POWERSHELL",
+                  "outputFilePath": "$HOME/out",
+                  "file": {
+                    "allowInsecure": false,
+                    "remote": {
+                      "uri": "https://www.example.com/script.bat",
+                      "sha256Checksum": "9f8e5818ccb47024d01000db713c0a333679b64678ff5fe2d9bea0a23014dd54"
+                    }
+                  }
+                },
+                "enforce": {
+                  "args": ["arg2"],
+                  "interpreter": "POWERSHELL",
+                  "outputFilePath": "$HOME/out",
+                  "file": {
+                    "localPath": "$HOME/script.bat"
+                  }
+                }
+              }
+            },
+            {
+              "id": "new-exec3",
+              "exec": {
+                "validate": {
+                  "interpreter": "POWERSHELL",
+                  "outputFilePath": "$HOME/out",
+                  "file": {
+                    "allowInsecure": false,
+                    "gcs": {
+                      "bucket": "new-test-bucket",
+                      "object": "new-test-object",
+                      "generation": 2
+                    }
+                  }
+                },
+                "enforce": {
+                  "interpreter": "POWERSHELL",
+                  "outputFilePath": "$HOME/out",
+                  "script": "dir"
+                }
+              }
+            },
+            {
+              "id": "new-exec4",
+              "exec": {
+                "validate": {
+                  "interpreter": "POWERSHELL",
+                  "outputFilePath": "$HOME/out",
+                  "script": "dir"
+                },
+                "enforce": {
+                  "interpreter": "POWERSHELL",
+                  "outputFilePath": "$HOME/out",
+                  "file": {
+                    "allowInsecure": false,
+                    "gcs": {
+                      "bucket": "new-test-bucket",
+                      "object": "new-test-object",
+                      "generation": 2
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "id": "new-file1",
+              "file": {
+                "path": "$HOME/new-file",
+                "state": "PRESENT",
+                "file": {
+                  "localPath": "$HOME/new-file"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "resources": [
+            {
+              "id": "new-file2",
+              "file": {
+                "path": "$HOME/new-file",
+                "state": "CONTENTS_MATCH",
+                "permissions": "655",
+                "file": {
+                  "allowInsecure": false,
+                  "remote": {
+                    "uri": "https://www.example.com/new-file",
+                    "sha256Checksum": "9f8e5818ccb47024d01000db713c0a333679b64678ff5fe2d9bea0a23014dd54"
+                  }
+                }
+              }
+            },
+            {
+              "id": "new-file3",
+              "file": {
+                "path": "$HOME/new-file",
+                "state": "CONTENTS_MATCH",
+                "file": {
+                  "gcs": {
+                    "bucket": "new-test-bucket",
+                    "object": "new-test-object",
+                    "generation": 2
+                  }
+                }
+              }
+            },
+            {
+              "id": "new-file4",
+              "file": {
+                "path": "$HOME/new-file",
+                "state": "CONTENTS_MATCH",
+                "content": "new-sample-content"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "instanceFilter": {
+    "all": false,
+    "osShortNames": ["centos"],
+    "inclusionLabels": [
+      {
+        "labels": {
+          "label-one": "value-one"
+        }
+      }
+    ],
+    "exclusionLabels": [
+      {
+        "labels": {
+          "label-two": "value-two"
+        }
+      }
+    ]
+  },
+  "rollout": {
+    "disruptionBudget": {
+      "percent": 2
+    },
+    "minWaitDuration": "3.5s"
+  }
+}

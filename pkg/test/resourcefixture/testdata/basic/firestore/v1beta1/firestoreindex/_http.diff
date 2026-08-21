@@ -1,0 +1,54 @@
+144c144
+< POST https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/sample-collection-${uniqueId}/indexes?alt=json
+---
+> POST https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/sample-collection-${uniqueId}/indexes?%24alt=json%3Benum-encoding%3Dint
+151c151
+<       "order": "ASCENDING"
+---
+>       "order": 1
+155c155
+<       "order": "DESCENDING"
+---
+>       "order": 2
+158c158
+<   "queryScope": "COLLECTION"
+---
+>   "queryScope": 1
+176c176
+<     "state": "INITIALIZING"
+---
+>     "state": 1
+183c183
+< GET https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/operations/${operationID}?alt=json
+---
+> GET https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/operations/${operationID}
+232c232
+< GET https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/sample-collection-${uniqueId}/indexes/${indexID}?alt=json
+---
+> GET https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/sample-collection-${uniqueId}/indexes/${indexID}?%24alt=json%3Benum-encoding%3Dint
+246c246
+<   "density": "SPARSE_ALL",
+---
+>   "density": 1,
+250c250
+<       "order": "ASCENDING"
+---
+>       "order": 1
+254c254
+<       "order": "DESCENDING"
+---
+>       "order": 2
+258c258
+<       "order": "DESCENDING"
+---
+>       "order": 2
+262,263c262,263
+<   "queryScope": "COLLECTION",
+<   "state": "READY"
+---
+>   "queryScope": 1,
+>   "state": 2
+268c268
+< DELETE https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/sample-collection-${uniqueId}/indexes/${indexID}?alt=json
+---
+> DELETE https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/sample-collection-${uniqueId}/indexes/${indexID}?%24alt=json%3Benum-encoding%3Dint

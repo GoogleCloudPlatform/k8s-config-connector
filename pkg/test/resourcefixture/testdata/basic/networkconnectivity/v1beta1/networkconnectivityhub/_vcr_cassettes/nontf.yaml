@@ -1,0 +1,787 @@
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+version: 2
+interactions:
+  - id: 0
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkconnectivity.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkconnectivity.googleapis.com/v1/projects/example-project/locations/global/hubs/networkconnectivityhub-9k34uc1ios1q?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 323.443717ms
+  - id: 1
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkconnectivity.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkconnectivity.googleapis.com/v1/projects/example-project/locations/global/hubs/networkconnectivityhub-9k34uc1ios1q?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 290.702357ms
+  - id: 2
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkconnectivity.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkconnectivity.googleapis.com/v1/projects/example-project/locations/global/hubs/networkconnectivityhub-9k34uc1ios1q?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 357.566924ms
+  - id: 3
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 212
+      transfer_encoding: []
+      trailer: {}
+      host: networkconnectivity.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: '{"description":"A sample hub","labels":{"cnrm-test":"true","label-one":"value-one","managed-by-cnrm":"true"},"name":"projects/example-project/locations/global/hubs/networkconnectivityhub-9k34uc1ios1q"}'
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkconnectivity.googleapis.com/v1/projects/example-project/locations/global/hubs?alt=json&hubId=networkconnectivityhub-9k34uc1ios1q
+      method: POST
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/operations/operation-1714009864832-616e2052285c1-db1bd03b-5c454463",
+          "metadata": {
+            "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.OperationMetadata",
+            "createTime": "2024-04-25T01:51:06.180139869Z",
+            "target": "projects/example-project/locations/global/hubs/networkconnectivityhub-9k34uc1ios1q",
+            "verb": "create",
+            "requestedCancellation": false,
+            "apiVersion": "v1"
+          },
+          "done": false
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 1.787883946s
+  - id: 4
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkconnectivity.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkconnectivity.googleapis.com/v1/projects/example-project/locations/global/operations/operation-1714009864832-616e2052285c1-db1bd03b-5c454463?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/operations/operation-1714009864832-616e2052285c1-db1bd03b-5c454463",
+          "metadata": {
+            "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.OperationMetadata",
+            "createTime": "2024-04-25T01:51:06.180139869Z",
+            "endTime": "2024-04-25T01:51:18.946325751Z",
+            "target": "projects/example-project/locations/global/hubs/networkconnectivityhub-9k34uc1ios1q",
+            "verb": "create",
+            "requestedCancellation": false,
+            "apiVersion": "v1"
+          },
+          "done": true,
+          "response": {
+            "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.Hub",
+            "name": "projects/example-project/locations/global/hubs/networkconnectivityhub-9k34uc1ios1q",
+            "createTime": "2024-04-25T01:51:06.168050726Z",
+            "updateTime": "2024-04-25T01:51:06.168050726Z",
+            "description": "A sample hub",
+            "uniqueId": "5bb428fe-1655-49b9-9733-e316dc90495e",
+            "state": "ACTIVE",
+            "routeTables": [
+              "projects/123456789/locations/global/hubs/networkconnectivityhub-9k34uc1ios1q/routeTables/default"
+            ]
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 261.03156ms
+  - id: 5
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkconnectivity.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkconnectivity.googleapis.com/v1/projects/example-project/locations/global/hubs/networkconnectivityhub-9k34uc1ios1q?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/hubs/networkconnectivityhub-9k34uc1ios1q",
+          "createTime": "2024-04-25T01:51:06.168050726Z",
+          "updateTime": "2024-04-25T01:51:18.985783297Z",
+          "labels": {
+            "cnrm-test": "true",
+            "label-one": "value-one",
+            "managed-by-cnrm": "true"
+          },
+          "description": "A sample hub",
+          "uniqueId": "5bb428fe-1655-49b9-9733-e316dc90495e",
+          "state": "ACTIVE",
+          "routeTables": [
+            "projects/example-project/locations/global/hubs/networkconnectivityhub-9k34uc1ios1q/routeTables/default"
+          ]
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 361.996391ms
+  - id: 6
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkconnectivity.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkconnectivity.googleapis.com/v1/projects/example-project/locations/global/hubs/networkconnectivityhub-9k34uc1ios1q?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/hubs/networkconnectivityhub-9k34uc1ios1q",
+          "createTime": "2024-04-25T01:51:06.168050726Z",
+          "updateTime": "2024-04-25T01:51:18.985783297Z",
+          "labels": {
+            "label-one": "value-one",
+            "managed-by-cnrm": "true",
+            "cnrm-test": "true"
+          },
+          "description": "A sample hub",
+          "uniqueId": "5bb428fe-1655-49b9-9733-e316dc90495e",
+          "state": "ACTIVE",
+          "routeTables": [
+            "projects/example-project/locations/global/hubs/networkconnectivityhub-9k34uc1ios1q/routeTables/default"
+          ]
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 327.729041ms
+  - id: 7
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkconnectivity.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkconnectivity.googleapis.com/v1/projects/example-project/locations/global/hubs/networkconnectivityhub-9k34uc1ios1q?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/hubs/networkconnectivityhub-9k34uc1ios1q",
+          "createTime": "2024-04-25T01:51:06.168050726Z",
+          "updateTime": "2024-04-25T01:51:18.985783297Z",
+          "labels": {
+            "cnrm-test": "true",
+            "label-one": "value-one",
+            "managed-by-cnrm": "true"
+          },
+          "description": "A sample hub",
+          "uniqueId": "5bb428fe-1655-49b9-9733-e316dc90495e",
+          "state": "ACTIVE",
+          "routeTables": [
+            "projects/example-project/locations/global/hubs/networkconnectivityhub-9k34uc1ios1q/routeTables/default"
+          ]
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 166.49765ms
+  - id: 8
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkconnectivity.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkconnectivity.googleapis.com/v1/projects/example-project/locations/global/hubs/networkconnectivityhub-9k34uc1ios1q?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/hubs/networkconnectivityhub-9k34uc1ios1q",
+          "createTime": "2024-04-25T01:51:06.168050726Z",
+          "updateTime": "2024-04-25T01:51:18.985783297Z",
+          "labels": {
+            "cnrm-test": "true",
+            "label-one": "value-one",
+            "managed-by-cnrm": "true"
+          },
+          "description": "A sample hub",
+          "uniqueId": "5bb428fe-1655-49b9-9733-e316dc90495e",
+          "state": "ACTIVE",
+          "routeTables": [
+            "projects/example-project/locations/global/hubs/networkconnectivityhub-9k34uc1ios1q/routeTables/default"
+          ]
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 367.870466ms
+  - id: 9
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkconnectivity.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkconnectivity.googleapis.com/v1/projects/example-project/locations/global/hubs/networkconnectivityhub-9k34uc1ios1q?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/hubs/networkconnectivityhub-9k34uc1ios1q",
+          "createTime": "2024-04-25T01:51:06.168050726Z",
+          "updateTime": "2024-04-25T01:51:18.985783297Z",
+          "labels": {
+            "cnrm-test": "true",
+            "label-one": "value-one",
+            "managed-by-cnrm": "true"
+          },
+          "description": "A sample hub",
+          "uniqueId": "5bb428fe-1655-49b9-9733-e316dc90495e",
+          "state": "ACTIVE",
+          "routeTables": [
+            "projects/example-project/locations/global/hubs/networkconnectivityhub-9k34uc1ios1q/routeTables/default"
+          ]
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 130.466391ms
+  - id: 10
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkconnectivity.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkconnectivity.googleapis.com/v1/projects/example-project/locations/global/hubs/networkconnectivityhub-9k34uc1ios1q?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/hubs/networkconnectivityhub-9k34uc1ios1q",
+          "createTime": "2024-04-25T01:51:06.168050726Z",
+          "updateTime": "2024-04-25T01:51:18.985783297Z",
+          "labels": {
+            "cnrm-test": "true",
+            "label-one": "value-one",
+            "managed-by-cnrm": "true"
+          },
+          "description": "A sample hub",
+          "uniqueId": "5bb428fe-1655-49b9-9733-e316dc90495e",
+          "state": "ACTIVE",
+          "routeTables": [
+            "projects/example-project/locations/global/hubs/networkconnectivityhub-9k34uc1ios1q/routeTables/default"
+          ]
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 304.512762ms
+  - id: 11
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkconnectivity.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkconnectivity.googleapis.com/v1/projects/example-project/locations/global/hubs/networkconnectivityhub-9k34uc1ios1q?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/hubs/networkconnectivityhub-9k34uc1ios1q",
+          "createTime": "2024-04-25T01:51:06.168050726Z",
+          "updateTime": "2024-04-25T01:51:18.985783297Z",
+          "labels": {
+            "cnrm-test": "true",
+            "label-one": "value-one",
+            "managed-by-cnrm": "true"
+          },
+          "description": "A sample hub",
+          "uniqueId": "5bb428fe-1655-49b9-9733-e316dc90495e",
+          "state": "ACTIVE",
+          "routeTables": [
+            "projects/example-project/locations/global/hubs/networkconnectivityhub-9k34uc1ios1q/routeTables/default"
+          ]
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 363.412971ms
+  - id: 12
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkconnectivity.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkconnectivity.googleapis.com/v1/projects/example-project/locations/global/hubs/networkconnectivityhub-9k34uc1ios1q?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/hubs/networkconnectivityhub-9k34uc1ios1q",
+          "createTime": "2024-04-25T01:51:06.168050726Z",
+          "updateTime": "2024-04-25T01:51:18.985783297Z",
+          "labels": {
+            "cnrm-test": "true",
+            "label-one": "value-one",
+            "managed-by-cnrm": "true"
+          },
+          "description": "A sample hub",
+          "uniqueId": "5bb428fe-1655-49b9-9733-e316dc90495e",
+          "state": "ACTIVE",
+          "routeTables": [
+            "projects/example-project/locations/global/hubs/networkconnectivityhub-9k34uc1ios1q/routeTables/default"
+          ]
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 306.38682ms
+  - id: 13
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkconnectivity.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkconnectivity.googleapis.com/v1/projects/example-project/locations/global/hubs/networkconnectivityhub-9k34uc1ios1q?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/hubs/networkconnectivityhub-9k34uc1ios1q",
+          "createTime": "2024-04-25T01:51:06.168050726Z",
+          "updateTime": "2024-04-25T01:51:18.985783297Z",
+          "labels": {
+            "label-one": "value-one",
+            "managed-by-cnrm": "true",
+            "cnrm-test": "true"
+          },
+          "description": "A sample hub",
+          "uniqueId": "5bb428fe-1655-49b9-9733-e316dc90495e",
+          "state": "ACTIVE",
+          "routeTables": [
+            "projects/example-project/locations/global/hubs/networkconnectivityhub-9k34uc1ios1q/routeTables/default"
+          ]
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 344.919482ms
+  - id: 14
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkconnectivity.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkconnectivity.googleapis.com/v1/projects/example-project/locations/global/hubs/networkconnectivityhub-9k34uc1ios1q?alt=json
+      method: DELETE
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/operations/operation-1714009891441-616e206b88b74-53c3398f-2b8efc6c",
+          "metadata": {
+            "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.OperationMetadata",
+            "createTime": "2024-04-25T01:51:31.457368423Z",
+            "target": "projects/example-project/locations/global/hubs/networkconnectivityhub-9k34uc1ios1q",
+            "verb": "delete",
+            "requestedCancellation": false,
+            "apiVersion": "v1"
+          },
+          "done": false
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 398.573744ms
+  - id: 15
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkconnectivity.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkconnectivity.googleapis.com/v1/projects/example-project/locations/global/operations/operation-1714009891441-616e206b88b74-53c3398f-2b8efc6c?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/global/operations/operation-1714009891441-616e206b88b74-53c3398f-2b8efc6c",
+          "metadata": {
+            "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.OperationMetadata",
+            "createTime": "2024-04-25T01:51:31.457368423Z",
+            "endTime": "2024-04-25T01:51:48.348139024Z",
+            "target": "projects/example-project/locations/global/hubs/networkconnectivityhub-9k34uc1ios1q",
+            "verb": "delete",
+            "requestedCancellation": false,
+            "apiVersion": "v1"
+          },
+          "done": true,
+          "response": {
+            "@type": "type.googleapis.com/google.protobuf.Empty"
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 266.17472ms
+  - id: 16
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: networkconnectivity.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://networkconnectivity.googleapis.com/v1/projects/example-project/locations/global/hubs/networkconnectivityhub-9k34uc1ios1q?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 120.413631ms

@@ -1,0 +1,6 @@
+- caisURL: //workloadmanager.googleapis.com/projects/${projectId}/locations/us-central1/evaluations/workloadmanagerevaluation-minimal-${uniqueId}
+  group: workloadmanager.cnrm.cloud.google.com
+  kind: WorkloadManagerEvaluation
+  name: workloadmanagerevaluation-minimal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

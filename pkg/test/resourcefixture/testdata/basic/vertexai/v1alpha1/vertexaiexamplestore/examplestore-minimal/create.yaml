@@ -1,0 +1,11 @@
+apiVersion: vertexai.cnrm.cloud.google.com/v1alpha1
+kind: VertexAIExampleStore
+metadata:
+  name: examplestore-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  displayName: "Minimal Example Store"
+  exampleStoreConfig:
+    vertexEmbeddingModel: "publishers/google/models/textembedding-gecko@001"

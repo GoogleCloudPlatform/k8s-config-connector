@@ -1,0 +1,8 @@
+{
+  "project": "{{ref:basic.cloudresourcemanager.project.json:name}}",
+  "displayName": "Firebase enabled Project v2",
+  "annotations": {
+    "key" : "new value",
+    "key3" : "new key"
+  }
+}

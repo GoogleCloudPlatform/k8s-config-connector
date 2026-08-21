@@ -1,0 +1,3 @@
+```release-note:bug
+Exported fields in Mapper struct.
+```

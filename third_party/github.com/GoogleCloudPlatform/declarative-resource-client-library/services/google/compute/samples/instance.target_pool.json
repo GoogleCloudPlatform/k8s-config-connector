@@ -1,0 +1,7 @@
+{
+  "name": "{{pool}}",
+  "project": "{{project}}",
+  "region": "{{region}}",
+  "description": "A test target pool",
+  "instances": ["{{ref:basic.instance.json:selfLink}}"]
+}

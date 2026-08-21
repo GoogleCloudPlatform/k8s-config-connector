@@ -1,0 +1,7 @@
+{
+  "name": "{{key2}}",
+  "project": "{{ref:cloudkms.serviceusage.service.json:project}}",
+  "location": "global",
+  "keyRing": "{{ref:basic.cloudkms.key_ring.json:name}}",
+  "purpose": "ENCRYPT_DECRYPT"
+}

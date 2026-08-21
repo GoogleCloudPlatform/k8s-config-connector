@@ -1,0 +1,168 @@
+GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/CreateKey
+
+{
+  "key": {
+    "displayName": "display-name-${uniqueId}",
+    "testingOptions": {
+      "testingScore": 0.5
+    },
+    "webSettings": {
+      "allowAllDomains": true,
+      "integrationType": "SCORE"
+    }
+  },
+  "parent": "projects/${projectId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "display-name-${uniqueId}",
+  "name": "projects/${projectNumber}/keys/${keyID}",
+  "testingOptions": {
+    "testingScore": 0.5
+  },
+  "webSettings": {
+    "allowAllDomains": true,
+    "integrationType": "SCORE"
+  }
+}
+
+---
+
+GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/GetKey
+
+{
+  "name": "projects/${projectId}/keys/${keyID}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "display-name-${uniqueId}",
+  "name": "projects/${projectNumber}/keys/${keyID}",
+  "testingOptions": {
+    "testingScore": 0.5
+  },
+  "webSettings": {
+    "allowAllDomains": true,
+    "integrationType": "SCORE"
+  }
+}
+
+---
+
+GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/GetKey
+
+{
+  "name": "projects/${projectId}/keys/${keyID}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "display-name-${uniqueId}",
+  "name": "projects/${projectNumber}/keys/${keyID}",
+  "testingOptions": {
+    "testingScore": 0.5
+  },
+  "webSettings": {
+    "allowAllDomains": true,
+    "integrationType": "SCORE"
+  }
+}
+
+---
+
+GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/UpdateKey
+
+{
+  "key": {
+    "displayName": "updated-display-name-${uniqueId}",
+    "name": "projects/${projectNumber}/keys/${keyID}",
+    "testingOptions": {
+      "testingScore": 0.5
+    },
+    "webSettings": {
+      "allowAllDomains": true,
+      "integrationType": "SCORE"
+    }
+  },
+  "updateMask": "displayName"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "updated-display-name-${uniqueId}",
+  "name": "projects/${projectNumber}/keys/${keyID}",
+  "testingOptions": {
+    "testingScore": 0.5
+  },
+  "webSettings": {
+    "allowAllDomains": true,
+    "integrationType": "SCORE"
+  }
+}
+
+---
+
+GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/GetKey
+
+{
+  "name": "projects/${projectId}/keys/${keyID}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "updated-display-name-${uniqueId}",
+  "name": "projects/${projectNumber}/keys/${keyID}",
+  "testingOptions": {
+    "testingScore": 0.5
+  },
+  "webSettings": {
+    "allowAllDomains": true,
+    "integrationType": "SCORE"
+  }
+}
+
+---
+
+GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/GetKey
+
+{
+  "name": "projects/${projectId}/keys/${keyID}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "updated-display-name-${uniqueId}",
+  "name": "projects/${projectNumber}/keys/${keyID}",
+  "testingOptions": {
+    "testingScore": 0.5
+  },
+  "webSettings": {
+    "allowAllDomains": true,
+    "integrationType": "SCORE"
+  }
+}
+
+---
+
+GRPC /google.cloud.recaptchaenterprise.v1.RecaptchaEnterpriseService/DeleteKey
+
+{
+  "name": "projects/${projectId}/keys/${keyID}"
+}
+
+OK
+
+{}

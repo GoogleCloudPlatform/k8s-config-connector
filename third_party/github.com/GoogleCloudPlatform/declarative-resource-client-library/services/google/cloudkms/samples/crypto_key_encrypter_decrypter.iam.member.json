@@ -1,0 +1,5 @@
+{
+  "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter",
+  "member": "domain:google.com",
+  "resource": "{{ref:minimal.crypto_key.json:__resource__}}"
+}

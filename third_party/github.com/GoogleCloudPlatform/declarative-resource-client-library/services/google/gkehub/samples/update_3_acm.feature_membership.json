@@ -1,0 +1,17 @@
+{
+  "project": "{{ref:gkehub.serviceusage.service.json:project}}",
+  "location": "global",
+  "feature": "projects/{{ref:acm.feature.json:project}}/locations/{{ref:acm.feature.json:location}}/features/{{ref:acm.feature.json:name}}",
+  "membership": "{{ref:first.membership.json:name}}",
+  "membershipLocation": "global",
+  "configmanagement": {
+    "configSync": {},
+    "policyController": {
+      "enabled": false,
+      "mutationEnabled": false,
+      "monitoring": {
+        "backends": ["CLOUD_MONITORING"]
+      }
+    }
+  }
+}

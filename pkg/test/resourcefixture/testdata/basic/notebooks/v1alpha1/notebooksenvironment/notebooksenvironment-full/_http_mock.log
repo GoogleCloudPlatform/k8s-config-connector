@@ -1,0 +1,196 @@
+GET https://notebooks.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-a/environments/ne-full-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1-a%2Fenvironments%2Fne-full-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "environment \"projects/${projectId}/locations/us-central1-a/environments/ne-full-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://notebooks.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-a/environments?%24alt=json%3Benum-encoding%3Dint&environmentId=ne-full-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1-a
+
+{
+  "containerImage": {
+    "repository": "gcr.io/deeplearning-platform-release/base-cpu",
+    "tag": "latest"
+  },
+  "description": "A test environment with most fields set",
+  "displayName": "Full Test Environment",
+  "postStartupScript": "gs://some-bucket/script.sh"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.notebooks.v1beta1.OperationMetadata",
+    "apiVersion": "v1beta1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endpoint": "CreateEnvironment",
+    "target": "projects/${projectId}/locations/us-central1-a/environments/ne-full-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
+}
+
+---
+
+GET https://notebooks.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-a/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1-a%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.notebooks.v1beta1.OperationMetadata",
+    "apiVersion": "v1beta1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "endpoint": "CreateEnvironment",
+    "target": "projects/${projectId}/locations/us-central1-a/environments/ne-full-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.notebooks.v1beta1.Environment",
+    "containerImage": {
+      "repository": "gcr.io/deeplearning-platform-release/base-cpu",
+      "tag": "latest"
+    },
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "A test environment with most fields set",
+    "displayName": "Full Test Environment",
+    "name": "projects/${projectId}/locations/us-central1-a/environments/ne-full-${uniqueId}",
+    "postStartupScript": "gs://some-bucket/script.sh"
+  }
+}
+
+---
+
+GET https://notebooks.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-a/environments/ne-full-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1-a%2Fenvironments%2Fne-full-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "containerImage": {
+    "repository": "gcr.io/deeplearning-platform-release/base-cpu",
+    "tag": "latest"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "A test environment with most fields set",
+  "displayName": "Full Test Environment",
+  "name": "projects/${projectId}/locations/us-central1-a/environments/ne-full-${uniqueId}",
+  "postStartupScript": "gs://some-bucket/script.sh"
+}
+
+---
+
+DELETE https://notebooks.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-a/environments/ne-full-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1-a%2Fenvironments%2Fne-full-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.notebooks.v1beta1.OperationMetadata",
+    "apiVersion": "v1beta1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endpoint": "DeleteEnvironment",
+    "target": "projects/${projectId}/locations/us-central1-a/environments/ne-full-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}"
+}
+
+---
+
+GET https://notebooks.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-a/operations/${operationID}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1-a%2Foperations%2F${operationID}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.notebooks.v1beta1.OperationMetadata",
+    "apiVersion": "v1beta1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "endpoint": "DeleteEnvironment",
+    "target": "projects/${projectId}/locations/us-central1-a/environments/ne-full-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
+}

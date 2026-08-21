@@ -1,0 +1,18 @@
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPartialPolicy
+metadata:
+  name: iampartialpolicy-${uniqueId}
+spec:
+  bindings:
+  - role: roles/cloudkms.admin
+    members:
+    - member: user:test@example.com
+    - member: serviceAccount:test-sa@test-project.iam.gserviceaccount.com
+    - member: group:test-group@example.com
+  - role: roles/cloudkms.editor
+    members:
+    - member: user:editor@example.com
+  resourceRef:
+    apiVersion: kms.cnrm.cloud.google.com/v1beta1
+    kind: KMSKeyRing
+    name: kmskeyring-${uniqueId}

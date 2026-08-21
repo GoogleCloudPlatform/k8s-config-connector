@@ -1,0 +1,4 @@
+{
+  "name": "{{resource}}",
+  "dependencyId": "{{ref:minimal.dependencyservice.dependency.json:name}}"
+}

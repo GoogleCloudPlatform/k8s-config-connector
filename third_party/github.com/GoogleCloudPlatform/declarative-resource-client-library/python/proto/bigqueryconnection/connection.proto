@@ -1,0 +1,77 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+enum BigqueryconnectionConnectionCloudSqlTypeEnum {
+  BigqueryconnectionConnectionCloudSqlTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  BigqueryconnectionConnectionCloudSqlTypeEnumDATABASE_TYPE_UNSPECIFIED = 1;
+  BigqueryconnectionConnectionCloudSqlTypeEnumPOSTGRES = 2;
+  BigqueryconnectionConnectionCloudSqlTypeEnumMYSQL = 3;
+}
+
+message BigqueryconnectionConnection {
+  string name = 1;
+  string friendly_name = 2;
+  string description = 3;
+  BigqueryconnectionConnectionCloudSql cloud_sql = 4;
+  int64 creation_time = 5;
+  int64 last_modified_time = 6;
+  bool has_credential = 7;
+  string project = 8;
+  string location = 9;
+}
+
+message BigqueryconnectionConnectionCloudSql {
+  string instance_id = 1;
+  string database = 2;
+  BigqueryconnectionConnectionCloudSqlTypeEnum type = 3;
+  BigqueryconnectionConnectionCloudSqlCredential credential = 4;
+}
+
+message BigqueryconnectionConnectionCloudSqlCredential {
+  string username = 1;
+  string password = 2;
+}
+
+message ApplyBigqueryconnectionConnectionRequest {
+  BigqueryconnectionConnection resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteBigqueryconnectionConnectionRequest {
+  string service_account_file = 1;
+  BigqueryconnectionConnection resource = 2;
+}
+
+message ListBigqueryconnectionConnectionRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListBigqueryconnectionConnectionResponse {
+  repeated BigqueryconnectionConnection items = 1;
+}
+
+service BigqueryconnectionConnectionService {
+  rpc ApplyBigqueryconnectionConnection(ApplyBigqueryconnectionConnectionRequest) returns (BigqueryconnectionConnection);
+  rpc DeleteBigqueryconnectionConnection(DeleteBigqueryconnectionConnectionRequest) returns (google.protobuf.Empty);
+  rpc ListBigqueryconnectionConnection(ListBigqueryconnectionConnectionRequest) returns (ListBigqueryconnectionConnectionResponse);
+}

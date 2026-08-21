@@ -1,0 +1,15 @@
+label: Config Connector FirestoreIndex
+markdownDescription: Creates yaml for a FirestoreIndex resource
+insertText: |
+  apiVersion: firestore.cnrm.cloud.google.com/v1beta1
+  kind: FirestoreIndex
+  metadata:
+    name: \${1:firestoreindex-name}
+  spec:
+    collection: \${2:sample-collection}
+    fields:
+    - fieldPath: \${3:field1}
+      order: \${4:ASCENDING}
+    - fieldPath: \${5:field2}
+      order: \${6:DESCENDING}
+    queryScope: \${7:COLLECTION}

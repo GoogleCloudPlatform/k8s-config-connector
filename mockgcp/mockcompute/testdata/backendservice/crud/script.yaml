@@ -1,0 +1,5 @@
+- exec: gcloud compute backend-services create test-${uniqueId} --global --protocol HTTP --project=${projectId}
+- exec: gcloud compute backend-services describe test-${uniqueId} --global --project=${projectId}
+- exec: gcloud compute backend-services update test-${uniqueId} --global --description "updated description" --project=${projectId}
+- exec: gcloud compute backend-services describe test-${uniqueId} --global --project=${projectId}
+- exec: gcloud compute backend-services delete test-${uniqueId} --global --project=${projectId}

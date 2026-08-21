@@ -1,0 +1,125 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum RecaptchaenterpriseAlphaKeyWebSettingsIntegrationTypeEnum {
+  RecaptchaenterpriseAlphaKeyWebSettingsIntegrationTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  RecaptchaenterpriseAlphaKeyWebSettingsIntegrationTypeEnumSCORE = 1;
+  RecaptchaenterpriseAlphaKeyWebSettingsIntegrationTypeEnumCHECKBOX = 2;
+  RecaptchaenterpriseAlphaKeyWebSettingsIntegrationTypeEnumINVISIBLE = 3;
+}
+
+enum RecaptchaenterpriseAlphaKeyWebSettingsChallengeSecurityPreferenceEnum {
+  RecaptchaenterpriseAlphaKeyWebSettingsChallengeSecurityPreferenceEnumNO_VALUE_DO_NOT_USE = 0;
+  RecaptchaenterpriseAlphaKeyWebSettingsChallengeSecurityPreferenceEnumCHALLENGE_SECURITY_PREFERENCE_UNSPECIFIED = 1;
+  RecaptchaenterpriseAlphaKeyWebSettingsChallengeSecurityPreferenceEnumUSABILITY = 2;
+  RecaptchaenterpriseAlphaKeyWebSettingsChallengeSecurityPreferenceEnumBALANCE = 3;
+  RecaptchaenterpriseAlphaKeyWebSettingsChallengeSecurityPreferenceEnumSECURITY = 4;
+}
+
+enum RecaptchaenterpriseAlphaKeyTestingOptionsTestingChallengeEnum {
+  RecaptchaenterpriseAlphaKeyTestingOptionsTestingChallengeEnumNO_VALUE_DO_NOT_USE = 0;
+  RecaptchaenterpriseAlphaKeyTestingOptionsTestingChallengeEnumTESTING_CHALLENGE_UNSPECIFIED = 1;
+  RecaptchaenterpriseAlphaKeyTestingOptionsTestingChallengeEnumNOCAPTCHA = 2;
+  RecaptchaenterpriseAlphaKeyTestingOptionsTestingChallengeEnumUNSOLVABLE_CHALLENGE = 3;
+}
+
+enum RecaptchaenterpriseAlphaKeyWafSettingsWafServiceEnum {
+  RecaptchaenterpriseAlphaKeyWafSettingsWafServiceEnumNO_VALUE_DO_NOT_USE = 0;
+  RecaptchaenterpriseAlphaKeyWafSettingsWafServiceEnumCA = 1;
+  RecaptchaenterpriseAlphaKeyWafSettingsWafServiceEnumFASTLY = 2;
+}
+
+enum RecaptchaenterpriseAlphaKeyWafSettingsWafFeatureEnum {
+  RecaptchaenterpriseAlphaKeyWafSettingsWafFeatureEnumNO_VALUE_DO_NOT_USE = 0;
+  RecaptchaenterpriseAlphaKeyWafSettingsWafFeatureEnumCHALLENGE_PAGE = 1;
+  RecaptchaenterpriseAlphaKeyWafSettingsWafFeatureEnumSESSION_TOKEN = 2;
+  RecaptchaenterpriseAlphaKeyWafSettingsWafFeatureEnumACTION_TOKEN = 3;
+  RecaptchaenterpriseAlphaKeyWafSettingsWafFeatureEnumEXPRESS = 4;
+}
+
+message RecaptchaenterpriseAlphaKey {
+  string name = 1;
+  string display_name = 2;
+  RecaptchaenterpriseAlphaKeyWebSettings web_settings = 3;
+  RecaptchaenterpriseAlphaKeyAndroidSettings android_settings = 4;
+  RecaptchaenterpriseAlphaKeyIosSettings ios_settings = 5;
+  map<string, string> labels = 6;
+  string create_time = 7;
+  RecaptchaenterpriseAlphaKeyTestingOptions testing_options = 8;
+  RecaptchaenterpriseAlphaKeyWafSettings waf_settings = 9;
+  string project = 10;
+}
+
+message RecaptchaenterpriseAlphaKeyWebSettings {
+  bool allow_all_domains = 1;
+  repeated string allowed_domains = 2;
+  bool allow_amp_traffic = 3;
+  RecaptchaenterpriseAlphaKeyWebSettingsIntegrationTypeEnum integration_type = 4;
+  RecaptchaenterpriseAlphaKeyWebSettingsChallengeSecurityPreferenceEnum challenge_security_preference = 5;
+}
+
+message RecaptchaenterpriseAlphaKeyAndroidSettings {
+  bool allow_all_package_names = 1;
+  repeated string allowed_package_names = 2;
+}
+
+message RecaptchaenterpriseAlphaKeyIosSettings {
+  bool allow_all_bundle_ids = 1;
+  repeated string allowed_bundle_ids = 2;
+}
+
+message RecaptchaenterpriseAlphaKeyTestingOptions {
+  double testing_score = 1;
+  RecaptchaenterpriseAlphaKeyTestingOptionsTestingChallengeEnum testing_challenge = 2;
+}
+
+message RecaptchaenterpriseAlphaKeyWafSettings {
+  RecaptchaenterpriseAlphaKeyWafSettingsWafServiceEnum waf_service = 1;
+  RecaptchaenterpriseAlphaKeyWafSettingsWafFeatureEnum waf_feature = 2;
+}
+
+message ApplyRecaptchaenterpriseAlphaKeyRequest {
+  RecaptchaenterpriseAlphaKey resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteRecaptchaenterpriseAlphaKeyRequest {
+  string service_account_file = 1;
+  RecaptchaenterpriseAlphaKey resource = 2;
+}
+
+message ListRecaptchaenterpriseAlphaKeyRequest {
+  string service_account_file = 1;
+  string Project = 2;
+}
+
+message ListRecaptchaenterpriseAlphaKeyResponse {
+  repeated RecaptchaenterpriseAlphaKey items = 1;
+}
+
+service RecaptchaenterpriseAlphaKeyService {
+  rpc ApplyRecaptchaenterpriseAlphaKey(ApplyRecaptchaenterpriseAlphaKeyRequest) returns (RecaptchaenterpriseAlphaKey);
+  rpc DeleteRecaptchaenterpriseAlphaKey(DeleteRecaptchaenterpriseAlphaKeyRequest) returns (google.protobuf.Empty);
+  rpc ListRecaptchaenterpriseAlphaKey(ListRecaptchaenterpriseAlphaKeyRequest) returns (ListRecaptchaenterpriseAlphaKeyResponse);
+}

@@ -1,0 +1,12 @@
+- caisURL: //compute.googleapis.com/projects/${projectId}/global/networks/computenetwork-${uniqueId}
+  group: compute.cnrm.cloud.google.com
+  kind: ComputeNetwork
+  name: computenetwork-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: //networkconnectivity.googleapis.com/projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-allocationoptions-${uniqueId}
+  group: networkconnectivity.cnrm.cloud.google.com
+  kind: NetworkConnectivityInternalRange
+  name: networkconnectivityinternalrange-allocationoptions-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

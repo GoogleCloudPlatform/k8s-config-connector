@@ -1,0 +1,12 @@
+- caisURL: unknown
+  group: apigee.cnrm.cloud.google.com
+  kind: ApigeeEnvironment
+  name: apigeeenvironment-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: unknown
+  group: iam.cnrm.cloud.google.com
+  kind: IAMPartialPolicy
+  name: iampartialpolicy-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

@@ -1,0 +1,127 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum StorageBetaBucketLifecycleRuleActionTypeEnum {
+  StorageBetaBucketLifecycleRuleActionTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  StorageBetaBucketLifecycleRuleActionTypeEnumDelete = 1;
+  StorageBetaBucketLifecycleRuleActionTypeEnumSetStorageClass = 2;
+}
+
+enum StorageBetaBucketLifecycleRuleConditionWithStateEnum {
+  StorageBetaBucketLifecycleRuleConditionWithStateEnumNO_VALUE_DO_NOT_USE = 0;
+  StorageBetaBucketLifecycleRuleConditionWithStateEnumLIVE = 1;
+  StorageBetaBucketLifecycleRuleConditionWithStateEnumARCHIVED = 2;
+  StorageBetaBucketLifecycleRuleConditionWithStateEnumANY = 3;
+}
+
+enum StorageBetaBucketStorageClassEnum {
+  StorageBetaBucketStorageClassEnumNO_VALUE_DO_NOT_USE = 0;
+  StorageBetaBucketStorageClassEnumMULTI_REGIONAL = 1;
+  StorageBetaBucketStorageClassEnumREGIONAL = 2;
+  StorageBetaBucketStorageClassEnumSTANDARD = 3;
+  StorageBetaBucketStorageClassEnumNEARLINE = 4;
+  StorageBetaBucketStorageClassEnumCOLDLINE = 5;
+  StorageBetaBucketStorageClassEnumARCHIVE = 6;
+  StorageBetaBucketStorageClassEnumDURABLE_REDUCED_AVAILABILITY = 7;
+}
+
+message StorageBetaBucket {
+  string project = 1;
+  string location = 2;
+  string name = 3;
+  repeated StorageBetaBucketCors cors = 4;
+  StorageBetaBucketLifecycle lifecycle = 5;
+  StorageBetaBucketLogging logging = 6;
+  StorageBetaBucketStorageClassEnum storage_class = 7;
+  StorageBetaBucketVersioning versioning = 8;
+  StorageBetaBucketWebsite website = 9;
+}
+
+message StorageBetaBucketCors {
+  int64 max_age_seconds = 1;
+  repeated string method = 2;
+  repeated string origin = 3;
+  repeated string response_header = 4;
+}
+
+message StorageBetaBucketLifecycle {
+  repeated StorageBetaBucketLifecycleRule rule = 1;
+}
+
+message StorageBetaBucketLifecycleRule {
+  StorageBetaBucketLifecycleRuleAction action = 1;
+  StorageBetaBucketLifecycleRuleCondition condition = 2;
+}
+
+message StorageBetaBucketLifecycleRuleAction {
+  string storage_class = 1;
+  StorageBetaBucketLifecycleRuleActionTypeEnum type = 2;
+}
+
+message StorageBetaBucketLifecycleRuleCondition {
+  int64 age = 1;
+  string created_before = 2;
+  StorageBetaBucketLifecycleRuleConditionWithStateEnum with_state = 3;
+  repeated string matches_storage_class = 4;
+  int64 num_newer_versions = 5;
+}
+
+message StorageBetaBucketLogging {
+  string log_bucket = 1;
+  string log_object_prefix = 2;
+}
+
+message StorageBetaBucketVersioning {
+  bool enabled = 1;
+}
+
+message StorageBetaBucketWebsite {
+  string main_page_suffix = 1;
+  string not_found_page = 2;
+}
+
+message ApplyStorageBetaBucketRequest {
+  StorageBetaBucket resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteStorageBetaBucketRequest {
+  string service_account_file = 1;
+  StorageBetaBucket resource = 2;
+}
+
+message ListStorageBetaBucketRequest {
+  string service_account_file = 1;
+  string Project = 2;
+}
+
+message ListStorageBetaBucketResponse {
+  repeated StorageBetaBucket items = 1;
+}
+
+service StorageBetaBucketService {
+  rpc ApplyStorageBetaBucket(ApplyStorageBetaBucketRequest) returns (StorageBetaBucket);
+  rpc DeleteStorageBetaBucket(DeleteStorageBetaBucketRequest) returns (google.protobuf.Empty);
+  rpc ListStorageBetaBucket(ListStorageBetaBucketRequest) returns (ListStorageBetaBucketResponse);
+}

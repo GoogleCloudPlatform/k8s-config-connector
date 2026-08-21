@@ -1,0 +1,71 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum FirebaseAlphaFirebaseProjectStateEnum {
+  FirebaseAlphaFirebaseProjectStateEnumNO_VALUE_DO_NOT_USE = 0;
+  FirebaseAlphaFirebaseProjectStateEnumSTATE_UNSPECIFIED = 1;
+  FirebaseAlphaFirebaseProjectStateEnumACTIVE = 2;
+  FirebaseAlphaFirebaseProjectStateEnumDELETED = 3;
+}
+
+message FirebaseAlphaFirebaseProject {
+  string project_id = 1;
+  int64 project_number = 2;
+  string display_name = 3;
+  FirebaseAlphaFirebaseProjectResources resources = 4;
+  FirebaseAlphaFirebaseProjectStateEnum state = 5;
+  map<string, string> annotations = 6;
+  string project = 7;
+}
+
+message FirebaseAlphaFirebaseProjectResources {
+  string hosting_site = 1;
+  string realtime_database_instance = 2;
+  string storage_bucket = 3;
+  string location_id = 4;
+}
+
+message ApplyFirebaseAlphaFirebaseProjectRequest {
+  FirebaseAlphaFirebaseProject resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteFirebaseAlphaFirebaseProjectRequest {
+  string service_account_file = 1;
+  FirebaseAlphaFirebaseProject resource = 2;
+}
+
+message ListFirebaseAlphaFirebaseProjectRequest {
+  string service_account_file = 1;
+}
+
+message ListFirebaseAlphaFirebaseProjectResponse {
+  repeated FirebaseAlphaFirebaseProject items = 1;
+}
+
+service FirebaseAlphaFirebaseProjectService {
+  rpc ApplyFirebaseAlphaFirebaseProject(ApplyFirebaseAlphaFirebaseProjectRequest) returns (FirebaseAlphaFirebaseProject);
+  rpc DeleteFirebaseAlphaFirebaseProject(DeleteFirebaseAlphaFirebaseProjectRequest) returns (google.protobuf.Empty);
+  rpc ListFirebaseAlphaFirebaseProject(ListFirebaseAlphaFirebaseProjectRequest) returns (ListFirebaseAlphaFirebaseProjectResponse);
+}

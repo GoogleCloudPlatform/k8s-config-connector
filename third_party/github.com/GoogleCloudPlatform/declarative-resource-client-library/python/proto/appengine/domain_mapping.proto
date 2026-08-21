@@ -1,0 +1,79 @@
+// Copyright 2021 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+enum AppengineDomainMappingSslSettingsSslManagementTypeEnum {
+  AppengineDomainMappingSslSettingsSslManagementTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  AppengineDomainMappingSslSettingsSslManagementTypeEnumAUTOMATIC = 1;
+  AppengineDomainMappingSslSettingsSslManagementTypeEnumMANUAL = 2;
+}
+
+enum AppengineDomainMappingResourceRecordsTypeEnum {
+  AppengineDomainMappingResourceRecordsTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  AppengineDomainMappingResourceRecordsTypeEnumDATABASE_TYPE_UNSPECIFIED = 1;
+  AppengineDomainMappingResourceRecordsTypeEnumCLOUD_DATASTORE = 2;
+  AppengineDomainMappingResourceRecordsTypeEnumCLOUD_FIRESTORE = 3;
+  AppengineDomainMappingResourceRecordsTypeEnumCLOUD_DATASTORE_COMPATIBILITY = 4;
+}
+
+message AppengineDomainMapping {
+  string self_link = 1;
+  string name = 2;
+  AppengineDomainMappingSslSettings ssl_settings = 3;
+  repeated AppengineDomainMappingResourceRecords resource_records = 4;
+  string app = 5;
+}
+
+message AppengineDomainMappingSslSettings {
+  string certificate_id = 1;
+  AppengineDomainMappingSslSettingsSslManagementTypeEnum ssl_management_type = 2;
+  string pending_managed_certificate_id = 3;
+}
+
+message AppengineDomainMappingResourceRecords {
+  string name = 1;
+  string rrdata = 2;
+  AppengineDomainMappingResourceRecordsTypeEnum type = 3;
+}
+
+message ApplyAppengineDomainMappingRequest {
+  AppengineDomainMapping resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteAppengineDomainMappingRequest {
+  string service_account_file = 1;
+  AppengineDomainMapping resource = 2;
+}
+
+message ListAppengineDomainMappingRequest {
+  string service_account_file = 1;
+  string App = 2;
+}
+
+message ListAppengineDomainMappingResponse {
+  repeated AppengineDomainMapping items = 1;
+}
+
+service AppengineDomainMappingService {
+  rpc ApplyAppengineDomainMapping(ApplyAppengineDomainMappingRequest) returns (AppengineDomainMapping);
+  rpc DeleteAppengineDomainMapping(DeleteAppengineDomainMappingRequest) returns (google.protobuf.Empty);
+  rpc ListAppengineDomainMapping(ListAppengineDomainMappingRequest) returns (ListAppengineDomainMappingResponse);
+}

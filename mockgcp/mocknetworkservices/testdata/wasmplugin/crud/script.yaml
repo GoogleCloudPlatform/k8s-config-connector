@@ -1,0 +1,5 @@
+- exec: gcloud service-extensions wasm-plugins create test-${uniqueId} --location=global --project=${projectId} --description="test description" --main-version=v1 --image="us-docker.pkg.dev/service-extensions-samples/plugins/local-reply:main"
+- exec: gcloud service-extensions wasm-plugins describe test-${uniqueId} --location=global --project=${projectId}
+- exec: gcloud service-extensions wasm-plugins list --location=global --project=${projectId}
+- exec: gcloud service-extensions wasm-plugins update test-${uniqueId} --location=global --project=${projectId} --description="updated description"
+- exec: gcloud service-extensions wasm-plugins delete test-${uniqueId} --location=global --project=${projectId} --quiet

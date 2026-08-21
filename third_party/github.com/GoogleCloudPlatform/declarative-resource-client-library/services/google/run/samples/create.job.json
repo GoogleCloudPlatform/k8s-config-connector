@@ -1,0 +1,21 @@
+{
+  "name": "{{name}}",
+  "project": "run-v2-deploy-e2e",
+  "location": "{{region}}",
+  "launchStage": "BETA",
+  "template": {
+    "template": {
+      "containers": [ {
+        "image": "gcr.io/run-intro/screenshot:latest",
+        "args": ["https://cloud.google.com/run", "www.google.com"],
+        "env": [ {
+          "name": "FOO",
+          "value": "bar]"
+        }, {
+          "name": "oops",
+          "value": "{yay]"
+        } ]
+      } ]
+    }
+  }
+}

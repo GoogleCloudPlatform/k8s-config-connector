@@ -1,0 +1,25 @@
+- caisURL: //compute.googleapis.com/projects/${projectId}/global/networks/network-sample-${uniqueId}
+  group: compute.cnrm.cloud.google.com
+  kind: ComputeNetwork
+  name: network-sample-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: //compute.googleapis.com/projects/${projectId}/regions/us-central1/subnetworks/subnetwork-sample-${uniqueId}
+  group: compute.cnrm.cloud.google.com
+  kind: ComputeSubnetwork
+  name: subnetwork-sample-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: unknown
+  error: not yet supported
+  group: container.cnrm.cloud.google.com
+  kind: ContainerCluster
+  name: cluster-sample-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: //container.googleapis.com/projects/${projectId}/zones/us-central1-a/clusters/cluster-sample-${uniqueId}/nodePools/containernodepool-sample-${uniqueId}
+  group: container.cnrm.cloud.google.com
+  kind: ContainerNodePool
+  name: containernodepool-sample-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

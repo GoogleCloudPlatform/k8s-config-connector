@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: cloudquota.cnrm.cloud.google.com
+  kind: APIQuotaPreference
+  name: qpref-minimal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

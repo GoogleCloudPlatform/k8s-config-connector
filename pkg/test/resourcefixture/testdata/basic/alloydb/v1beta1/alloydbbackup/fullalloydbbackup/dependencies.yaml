@@ -1,0 +1,134 @@
+# Copyright 2023 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeNetwork
+metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: computenetwork-${uniqueId}
+spec:
+  autoCreateSubnetworks: false
+---
+apiVersion: serviceusage.cnrm.cloud.google.com/v1beta1
+kind: ServiceIdentity
+metadata:
+  name: serviceidentity-${uniqueId}
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+spec:
+  projectRef:
+    external: ${projectId}
+  resourceID: alloydb.googleapis.com
+---
+apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
+kind: AlloyDBCluster
+metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: alloydbcluster-${uniqueId}
+spec:
+  initialUser:
+    password:
+      value: alloydb-pg
+  location: europe-west10
+  networkRef:
+    external: projects/${projectId}/global/networks/computenetwork-${uniqueId}
+  projectRef:
+    external: ${projectId}
+  resourceID: alloydbcluster${uniqueId}
+---
+apiVersion: compute.cnrm.cloud.google.com/v1beta1
+kind: ComputeAddress
+metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: computeaddress-${uniqueId}
+spec:
+  location: global
+  addressType: INTERNAL
+  networkRef:
+    name: computenetwork-${uniqueId}
+  prefixLength: 16
+  purpose: VPC_PEERING
+  resourceID: computeaddress${uniqueId}
+---
+apiVersion: servicenetworking.cnrm.cloud.google.com/v1beta1
+kind: ServiceNetworkingConnection
+metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: servicenetworkingconnection-${uniqueId}
+spec:
+  networkRef:
+    name: computenetwork-${uniqueId}
+  reservedPeeringRanges:
+  - name: computeaddress-${uniqueId}
+  service: servicenetworking.googleapis.com
+---
+apiVersion: alloydb.cnrm.cloud.google.com/v1beta1
+kind: AlloyDBInstance
+metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: alloydbinstance-${uniqueId}
+spec:
+  clusterRef: 
+    name: alloydbcluster-${uniqueId}
+  instanceTypeRef:
+    name: alloydbcluster-${uniqueId}
+  machineConfig:
+    cpuCount: 2
+  resourceID: alloydbinstance${uniqueId}
+---
+apiVersion: kms.cnrm.cloud.google.com/v1beta1
+kind: KMSKeyRing
+metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: kmskeyring-${uniqueId}
+spec:
+  location: europe-west10
+---
+apiVersion: kms.cnrm.cloud.google.com/v1beta1
+kind: KMSCryptoKey
+metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  labels:
+    key-one: value-one
+  name: kmscryptokey-${uniqueId}
+spec:
+  keyRingRef:
+    name: kmskeyring-${uniqueId}
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicy
+metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: iampolicy-${uniqueId}
+spec:
+  resourceRef:
+    apiVersion: kms.cnrm.cloud.google.com/v1beta1
+    kind: KMSCryptoKey
+    name: kmscryptokey-${uniqueId}
+  bindings:
+    - role: roles/cloudkms.cryptoKeyEncrypterDecrypterViaDelegation
+      members:
+        - serviceAccount:service-${projectNumber}@gcp-sa-alloydb.iam.gserviceaccount.com
+    - role: roles/cloudkms.cryptoKeyEncrypterDecrypter
+      members:
+        - serviceAccount:service-${projectNumber}@gcp-sa-alloydb.iam.gserviceaccount.com

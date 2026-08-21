@@ -1,0 +1,151 @@
+# Copyright 2022 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: networkservices.cnrm.cloud.google.com/v1beta1
+kind: NetworkServicesHTTPRoute
+metadata:
+  name: networkserviceshttproute-${uniqueId}
+  labels:
+    foo2: bar2
+spec:
+  description: "An updated test HttpRoute"
+  meshes:
+  - name: "networkservicesmesh-2-${uniqueId}"
+  gateways:
+  - name: "networkservicesgateway-2-${uniqueId}"
+  location: "global"
+  hostnames:
+  - "test1"
+  - "test2"
+  - "newhost"
+  rules:
+  - matches:
+    - fullPathMatch: "/bar/foo"
+      headers:
+      - header: "foo-header2"
+        prefixMatch: "bar-value2"
+    - prefixMatch: "/foo2/"
+      ignoreCase: false
+    - regexMatch: "/foo2/.*/bar/.*"
+    - prefixMatch: "/"
+      headers:
+      - header: "foo2"
+        exactMatch: "bar2"
+      - header: "foo2"
+        regexMatch: "b.*ar2"
+      - header: "foo2"
+        prefixMatch: "2ba"
+      - header: "foo2"
+        presentMatch: false
+      - header: "foo2"
+        suffixMatch: "ar2"
+      - header: "foo2"
+        rangeMatch:
+          start: 1
+          end: 6
+        invertMatch: false
+    - prefixMatch: "/"
+      queryParameters:
+      - queryParameter: "foo2"
+        exactMatch: "bar2"
+      - queryParameter: "foo2"
+        regexMatch: ".*bar2.*"
+      - queryParameter: "foo2"
+        presentMatch: false
+    action:
+      destinations:
+      - serviceRef:
+          name: "computebackendservice-2-${uniqueId}"
+        weight: 2
+      - serviceRef:
+          name: "computebackendservice-2-${uniqueId}"
+        weight: 2
+      requestMirrorPolicy:
+        destination:
+          serviceRef:
+            name: "computebackendservice-2-${uniqueId}"
+      urlRewrite:
+        pathPrefixRewrite: "bar"
+        hostRewrite: "bar"
+      corsPolicy:
+        allowOrigins:
+        - "foo2.com"
+        - "bar2.com"
+        allowOriginRegexes:
+        - ".*.foo2.com"
+        - ".*.bar2.com"
+        allowMethods:
+        - "PUT"
+        - "PATCH"
+        allowHeaders:
+        - "foo2"
+        - "bar2"
+        exposeHeaders:
+        - "foo2"
+        - "bar2"
+        maxAge: "36"
+        allowCredentials: false
+        disabled: true
+      faultInjectionPolicy:
+        abort:
+          httpStatus: 500
+          percentage: 2
+        delay:
+          fixedDelay: "11s"
+          percentage: 3
+      requestHeaderModifier:
+        add:
+          foo2: "bar2"
+          baz2: "qux2"
+        set:
+          foo3: "bar3"
+          baz3: "qux3"
+        remove:
+        - "foo4"
+        - "bar4"
+      responseHeaderModifier:
+        add:
+          foo2: "bar2"
+          baz2: "qux2"
+        set:
+          foo3: "bar3"
+          baz3: "qux3"
+        remove:
+        - "foo4"
+        - "bar4"
+      retryPolicy:
+        numRetries: 4
+        perTryTimeout: "6s"
+        retryConditions:
+        - "refused-stream"
+      timeout: "31s"
+  - action:
+      redirect:
+        hostRedirect: "foo2"
+        responseCode: "FOUND"
+        httpsRedirect: false
+        stripQuery: false
+        portRedirect: 24601
+  - action:
+      redirect:
+        hostRedirect: "test"
+        prefixRewrite: "foo2"
+        responseCode: "SEE_OTHER"
+  - action:
+      redirect:
+        hostRedirect: "test"
+        pathRedirect: "/foo2"
+        responseCode: "SEE_OTHER"
+  projectRef:
+    external: "projects/${projectId}"

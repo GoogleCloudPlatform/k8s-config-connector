@@ -1,0 +1,69 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum LoggingLogBucketLifecycleStateEnum {
+  LoggingLogBucketLifecycleStateEnumNO_VALUE_DO_NOT_USE = 0;
+  LoggingLogBucketLifecycleStateEnumLIFECYCLE_STATE_UNSPECIFIED = 1;
+  LoggingLogBucketLifecycleStateEnumACTIVE = 2;
+  LoggingLogBucketLifecycleStateEnumDELETE_REQUESTED = 3;
+}
+
+message LoggingLogBucket {
+  string name = 1;
+  string description = 2;
+  string create_time = 3;
+  string update_time = 4;
+  int64 retention_days = 5;
+  bool locked = 6;
+  LoggingLogBucketLifecycleStateEnum lifecycle_state = 7;
+  string parent = 8;
+  string location = 9;
+  bool enable_analytics = 10;
+}
+
+message ApplyLoggingLogBucketRequest {
+  LoggingLogBucket resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteLoggingLogBucketRequest {
+  string service_account_file = 1;
+  LoggingLogBucket resource = 2;
+}
+
+message ListLoggingLogBucketRequest {
+  string service_account_file = 1;
+  string Location = 2;
+  string Parent = 3;
+}
+
+message ListLoggingLogBucketResponse {
+  repeated LoggingLogBucket items = 1;
+}
+
+service LoggingLogBucketService {
+  rpc ApplyLoggingLogBucket(ApplyLoggingLogBucketRequest) returns (LoggingLogBucket);
+  rpc DeleteLoggingLogBucket(DeleteLoggingLogBucketRequest) returns (google.protobuf.Empty);
+  rpc ListLoggingLogBucket(ListLoggingLogBucketRequest) returns (ListLoggingLogBucketResponse);
+}

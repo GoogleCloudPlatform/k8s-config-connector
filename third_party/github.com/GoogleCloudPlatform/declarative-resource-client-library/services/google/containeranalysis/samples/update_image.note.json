@@ -1,0 +1,13 @@
+{
+  "name": "{{image_note}}",
+  "project": "{{project}}",
+  "image": {
+    "resourceUrl": "new-sample-url",
+    "fingerprint": {
+      "v1Name": "new-sample-v1-name",
+      "v2Blob": [
+        "new-sample-v2-blob"
+      ]
+    }
+  }
+}

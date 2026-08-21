@@ -1,0 +1,4 @@
+10c10
+<     external: https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default
+---
+>     external: projects/${projectId}/global/networks/default

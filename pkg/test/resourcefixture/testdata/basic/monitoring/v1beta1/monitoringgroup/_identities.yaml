@@ -1,0 +1,12 @@
+- caisURL: unknown
+  group: monitoring.cnrm.cloud.google.com
+  kind: MonitoringGroup
+  name: monitoringgroup-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: unknown
+  group: monitoring.cnrm.cloud.google.com
+  kind: MonitoringGroup
+  name: monitoringgroup-subgroup-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

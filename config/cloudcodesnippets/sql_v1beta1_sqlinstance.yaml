@@ -1,0 +1,12 @@
+label: Config Connector SQLInstance
+markdownDescription: Creates yaml for a SQLInstance resource
+insertText: |
+  apiVersion: sql.cnrm.cloud.google.com/v1beta1
+  kind: SQLInstance
+  metadata:
+    name: \${1:sqlinstance-name}
+  spec:
+    databaseVersion: \${2:MYSQL_5_7}
+    region: \${3:us-central1}
+    settings:
+      tier: \${4:db-f1-micro}

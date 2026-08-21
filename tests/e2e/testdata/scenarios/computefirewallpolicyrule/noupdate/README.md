@@ -1,0 +1,1 @@
+Apply two identical FirewallPolicyRule resources, use "TOUCH" flag to force trigger a re-reconciliation. No patchRule request is logged.

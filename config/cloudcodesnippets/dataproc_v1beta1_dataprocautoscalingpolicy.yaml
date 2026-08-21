@@ -1,0 +1,18 @@
+label: Config Connector DataprocAutoscalingPolicy
+markdownDescription: Creates yaml for a DataprocAutoscalingPolicy resource
+insertText: |
+  apiVersion: dataproc.cnrm.cloud.google.com/v1beta1
+  kind: DataprocAutoscalingPolicy
+  metadata:
+    name: \${1:dataprocautoscalingpolicy-name}
+  spec:
+    location: \${2:us-central1}
+    workerConfig:
+      maxInstances: \${3:2}
+    secondaryWorkerConfig:
+      maxInstances: \${4:2}
+    basicAlgorithm:
+      yarnConfig:
+        gracefulDecommissionTimeout: \${5:60s}
+        scaleDownFactor: \${6:0.5}
+        scaleUpFactor: \${7:0.5}

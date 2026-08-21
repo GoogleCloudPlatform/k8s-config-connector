@@ -1,0 +1,7 @@
+{
+  "name": "{{service}}",
+  "project": "{{project}}",
+  "location": "{{region}}",
+  "network": "{{ref:basic.network.json:selfLink}}",
+  "loadBalancingScheme": "INTERNAL"
+}

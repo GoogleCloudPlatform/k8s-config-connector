@@ -1,0 +1,66 @@
+{{template "headercomment.tmpl" .}}
+
+{% extends "config-connector/_base.html" %}
+
+{% block page_title %}{{ .Kind}}{% endblock %}
+{% block body %}
+{{template "alphadisclaimer.tmpl" .}}
+
+This resource defines a Bigtable Garbage Collection (GC) policy.
+
+Warning: We don't recommend using `maxAge`, `maxVersion` or `mode` for defining a
+<code>{{.Kind}}</code> as these fields have known drift detection issues.
+
+Warning: We don't recommend having multiple <code>{{.Kind}}</code>s for the same
+column family as it may result in unexpected behavior.
+
+Note: <code>{{.Kind}}</code>s associated with a replicated table cannot be deleted directly.
+Instead, you must first un-replicate the instance by updating the instance to have one cluster.
+
+<table>
+<thead>
+<tr>
+<th><strong>Property</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>{{"{{gcp_name_short}}"}} Service Name</td>
+<td>Cloud Bigtable</td>
+</tr>
+<tr>
+<td>{{"{{gcp_name_short}}"}} Service Documentation</td>
+<td><a href="/bigtable/docs/">/bigtable/docs/</a></td>
+</tr>
+<tr>
+<td>{{"{{gcp_name_short}}"}} REST Resource Name</td>
+<td>bigtableadmin/v2/projects.instances.appProfiles</td>
+</tr>
+<tr>
+<td>{{"{{gcp_name_short}}"}} REST Resource Documentation</td>
+<td><a href="/bigtable/docs/reference/admin/rest/v2/projects.instances.tables/modifyColumnFamilies#gcrule">/bigtable/docs/reference/admin/rest/v2/projects.instances.tables/modifyColumnFamilies#gcrule</a></td>
+</tr>
+<tr>
+<td>{{"{{product_name_short}}"}} Resource Short Names</td>
+<td>{{ .ShortNames}}</td>
+</tr>
+<tr>
+<td>{{"{{product_name_short}}"}} Service Name</td>
+<td>bigtableadmin.googleapis.com</td>
+</tr>
+<tr>
+<td>{{"{{product_name_short}}"}} Resource Fully Qualified Name</td>
+<td>{{ .FullyQualifiedName}}</td>
+</tr>
+{{template "iamsupport.tmpl" .}}
+<tr>
+<td>{{"{{product_name_short}}"}} Default Average Reconcile Interval In Seconds</td>
+<td>{{ .DefaultReconcileInterval}}</td>
+</tr>
+</tbody>
+</table>
+
+{{template "resource.tmpl" .}}
+{{template "endnote.tmpl" .}}
+{% endblock %}

@@ -1,0 +1,9 @@
+{
+  "name": "{{group}}",
+  "project": "{{project}}",
+  "location": "{{region}}",
+  "networkEndpointType": "SERVERLESS",
+  "cloudFunction": {
+    "function": "{{ref:regional.cloudfunctions.function.json:name}}"
+  }
+}

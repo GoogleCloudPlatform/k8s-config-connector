@@ -1,0 +1,19 @@
+label: Config Connector ComputeRouter
+markdownDescription: Creates yaml for a ComputeRouter resource
+insertText: |
+  apiVersion: compute.cnrm.cloud.google.com/v1beta1
+  kind: ComputeRouter
+  metadata:
+    name: \${1:computerouter-name}
+  spec:
+    networkRef:
+      name: \${2:computerouter-dep}
+    description: \${3:example router description}
+    region: \${4:us-west1}
+    bgp:
+      asn: \${5:64514}
+      advertiseMode: \${6:CUSTOM}
+      advertisedGroups:
+      - \${7:ALL_SUBNETS}
+      advertisedIpRanges:
+      - range: \${8:1.2.3.4}

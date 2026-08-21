@@ -1,0 +1,4 @@
+- Moved mockgcp logging to httptogrpc.
+- Removed logging/v2 from mockgcp/Makefile and deleted generated grpc-gateway files.
+- Updated mockgcp/mocklogging/service.go to use httptogrpc and official clients for MetricsServiceV2 and ConfigServiceV2.
+- Deleted mux.RewriteError as it's not supported by httptogrpc and error handling is handled differently.

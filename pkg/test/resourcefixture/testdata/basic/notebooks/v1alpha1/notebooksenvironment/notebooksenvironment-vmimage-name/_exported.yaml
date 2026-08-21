@@ -1,0 +1,12 @@
+apiVersion: notebooks.cnrm.cloud.google.com/v1alpha1
+kind: NotebooksEnvironment
+metadata:
+  name: ne-vm-name-${uniqueId}
+spec:
+  location: us-central1-a
+  projectRef:
+    external: ${projectId}
+  resourceID: ne-vm-name-${uniqueId}
+  vmImage:
+    imageName: common-cpu-m116
+    project: deeplearning-platform-release

@@ -1,0 +1,111 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum ComputeAlphaSubnetworkPurposeEnum {
+  ComputeAlphaSubnetworkPurposeEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeAlphaSubnetworkPurposeEnumINTERNAL_HTTPS_LOAD_BALANCER = 1;
+  ComputeAlphaSubnetworkPurposeEnumPRIVATE = 2;
+  ComputeAlphaSubnetworkPurposeEnumAGGREGATE = 3;
+  ComputeAlphaSubnetworkPurposeEnumPRIVATE_SERVICE_CONNECT = 4;
+  ComputeAlphaSubnetworkPurposeEnumCLOUD_EXTENSION = 5;
+  ComputeAlphaSubnetworkPurposeEnumPRIVATE_NAT = 6;
+}
+
+enum ComputeAlphaSubnetworkRoleEnum {
+  ComputeAlphaSubnetworkRoleEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeAlphaSubnetworkRoleEnumACTIVE = 1;
+  ComputeAlphaSubnetworkRoleEnumBACKUP = 2;
+}
+
+enum ComputeAlphaSubnetworkLogConfigAggregationIntervalEnum {
+  ComputeAlphaSubnetworkLogConfigAggregationIntervalEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeAlphaSubnetworkLogConfigAggregationIntervalEnumINTERVAL_5_SEC = 1;
+  ComputeAlphaSubnetworkLogConfigAggregationIntervalEnumINTERVAL_30_SEC = 2;
+  ComputeAlphaSubnetworkLogConfigAggregationIntervalEnumINTERVAL_1_MIN = 3;
+  ComputeAlphaSubnetworkLogConfigAggregationIntervalEnumINTERVAL_5_MIN = 4;
+  ComputeAlphaSubnetworkLogConfigAggregationIntervalEnumINTERVAL_10_MIN = 5;
+  ComputeAlphaSubnetworkLogConfigAggregationIntervalEnumINTERVAL_15_MIN = 6;
+}
+
+enum ComputeAlphaSubnetworkLogConfigMetadataEnum {
+  ComputeAlphaSubnetworkLogConfigMetadataEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeAlphaSubnetworkLogConfigMetadataEnumEXCLUDE_ALL_METADATA = 1;
+  ComputeAlphaSubnetworkLogConfigMetadataEnumINCLUDE_ALL_METADATA = 2;
+}
+
+message ComputeAlphaSubnetwork {
+  string creation_timestamp = 1;
+  string description = 2;
+  string gateway_address = 3;
+  string ip_cidr_range = 4;
+  string name = 5;
+  string network = 6;
+  string fingerprint = 7;
+  ComputeAlphaSubnetworkPurposeEnum purpose = 8;
+  ComputeAlphaSubnetworkRoleEnum role = 9;
+  repeated ComputeAlphaSubnetworkSecondaryIPRanges secondary_ip_ranges = 10;
+  bool private_ip_google_access = 11;
+  string region = 12;
+  ComputeAlphaSubnetworkLogConfig log_config = 13;
+  string project = 14;
+  string self_link = 15;
+  bool enable_flow_logs = 16;
+}
+
+message ComputeAlphaSubnetworkSecondaryIPRanges {
+  string range_name = 1;
+  string ip_cidr_range = 2;
+}
+
+message ComputeAlphaSubnetworkLogConfig {
+  ComputeAlphaSubnetworkLogConfigAggregationIntervalEnum aggregation_interval = 1;
+  double flow_sampling = 2;
+  ComputeAlphaSubnetworkLogConfigMetadataEnum metadata = 3;
+}
+
+message ApplyComputeAlphaSubnetworkRequest {
+  ComputeAlphaSubnetwork resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteComputeAlphaSubnetworkRequest {
+  string service_account_file = 1;
+  ComputeAlphaSubnetwork resource = 2;
+}
+
+message ListComputeAlphaSubnetworkRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Region = 3;
+}
+
+message ListComputeAlphaSubnetworkResponse {
+  repeated ComputeAlphaSubnetwork items = 1;
+}
+
+service ComputeAlphaSubnetworkService {
+  rpc ApplyComputeAlphaSubnetwork(ApplyComputeAlphaSubnetworkRequest) returns (ComputeAlphaSubnetwork);
+  rpc DeleteComputeAlphaSubnetwork(DeleteComputeAlphaSubnetworkRequest) returns (google.protobuf.Empty);
+  rpc ListComputeAlphaSubnetwork(ListComputeAlphaSubnetworkRequest) returns (ListComputeAlphaSubnetworkResponse);
+}

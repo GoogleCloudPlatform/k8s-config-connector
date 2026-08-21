@@ -1,0 +1,3 @@
+- exec: gcloud container clusters create test-${uniqueId} --zone=us-central1-a --enable-dataplane-v2 --enable-ip-alias --release-channel stable --quiet
+- exec: gcloud container clusters describe test-${uniqueId} --zone=us-central1-a
+- exec: gcloud container clusters delete test-${uniqueId} --zone=us-central1-a --quiet

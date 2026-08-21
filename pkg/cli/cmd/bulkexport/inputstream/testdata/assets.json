@@ -1,0 +1,152 @@
+{
+  "name": "//bigquery.googleapis.com/projects/cli-test-project/datasets/bigquerydatasetsamplec99k2khjhfu8dfrt53mr",
+  "asset_type": "bigquery.googleapis.com/Dataset",
+  "ancestors": [
+    "projects/1234567890",
+    "organizations/1234567890"
+  ]
+}
+{
+  "name": "//bigquery.googleapis.com/projects/cli-test-project/datasets/bigquerydatasetivs17e1s13s9ro2k9n1j",
+  "asset_type": "bigquery.googleapis.com/Dataset",
+  "ancestors": [
+    "projects/1234567890",
+    "organizations/1234567890"
+  ]
+}
+{
+  "name": "//cloudkms.googleapis.com/projects/cli-test-project/locations/us-central1/keyRings/key-ring-4dln90vis0b1c6f1jja9",
+  "asset_type": "cloudkms.googleapis.com/KeyRing",
+  "ancestors": [
+    "projects/1234567890",
+    "organizations/1234567890"
+  ]
+}
+{
+  "name": "//compute.googleapis.com/projects/cli-test-project/regions/us-central1/addresses/computeaddress-1j26msq4eebfv63n6sil",
+  "asset_type": "compute.googleapis.com/Address",
+  "ancestors": [
+    "projects/1234567890",
+    "organizations/1234567890"
+  ]
+}
+{
+  "name": "//cloudsql.googleapis.com/projects/cli-test-project/instances/sqluser-dep-7olc12tp9tdancsggr6s",
+  "asset_type": "sqladmin.googleapis.com/Instance",
+  "ancestors": [
+    "projects/1234567890",
+    "organizations/1234567890"
+  ]
+}
+{
+  "name": "//compute.googleapis.com/projects/cli-test-project/regions/us-central1/addresses/computeaddress-asdbgmb8o9mo6s075qp3",
+  "asset_type": "compute.googleapis.com/Address",
+  "ancestors": [
+    "projects/1234567890",
+    "organizations/1234567890"
+  ]
+}
+{
+  "name": "//compute.googleapis.com/projects/cli-test-project/global/backendServices/computebackendservice-8034p172pirpg3bg31te",
+  "asset_type": "compute.googleapis.com/BackendService",
+  "ancestors": [
+    "projects/1234567890",
+    "organizations/1234567890"
+  ]
+}
+{
+  "name": "//cloudsql.googleapis.com/projects/cli-test-project/instances/sqlinstance-sample-iocjd2jpebp9brf46rob",
+  "asset_type": "sqladmin.googleapis.com/Instance",
+  "ancestors": [
+    "projects/1234567890",
+    "organizations/1234567890"
+  ]
+}
+{
+  "name": "//compute.googleapis.com/projects/cli-test-project/zones/us-central1-a/disks/computedisk-39kl1g908j6npdp7pa9f",
+  "asset_type": "compute.googleapis.com/Disk",
+  "ancestors": [
+    "projects/1234567890",
+    "organizations/1234567890"
+  ]
+}
+{
+  "name": "//compute.googleapis.com/projects/cli-test-project/zones/us-central1-a/disks/computedisk-hiiupq1q4ujch81bj4g9",
+  "asset_type": "compute.googleapis.com/Disk",
+  "ancestors": [
+    "projects/1234567890",
+    "organizations/1234567890"
+  ]
+}
+{
+  "name": "//compute.googleapis.com/projects/cli-test-project/regions/us-central1/forwardingRules/computeforwardingrule1-1j26msq4eebfv63n6sil",
+  "asset_type": "compute.googleapis.com/ForwardingRule",
+  "ancestors": [
+    "projects/1234567890",
+    "organizations/1234567890"
+  ]
+}
+{
+  "name": "//compute.googleapis.com/projects/cli-test-project/global/forwardingRules/computeglobalforwardingrule-8034p172pirpg3bg31te",
+  "asset_type": "compute.googleapis.com/GlobalForwardingRule",
+  "ancestors": [
+    "projects/1234567890",
+    "organizations/1234567890"
+  ]
+}
+{
+  "name": "//compute.googleapis.com/projects/cli-test-project/global/httpsHealthChecks/computehttpshealthcheck-a47jlrshb6gd936e4ldp",
+  "asset_type": "compute.googleapis.com/HttpsHealthCheck",
+  "ancestors": [
+    "projects/1234567890",
+    "organizations/1234567890"
+  ]
+}
+{
+  "name": "//compute.googleapis.com/projects/cli-test-project/regions/us-west2/routers/computerouter-79c4r73mpsdshkj36euu",
+  "asset_type": "compute.googleapis.com/Router",
+  "ancestors": [
+    "projects/1234567890",
+    "organizations/1234567890"
+  ]
+}
+{
+  "name": "//compute.googleapis.com/projects/cli-test-project/global/networks/computenetwork-f1r6mrivuob8ir3e0ddn",
+  "asset_type": "compute.googleapis.com/Network",
+  "ancestors": [
+    "projects/1234567890",
+    "organizations/1234567890"
+  ]
+}
+{
+  "name": "//compute.googleapis.com/projects/cli-test-project/regions/northamerica-northeast1/subnetworks/computenetwork-5c4l43579mb0sbvi5pn9",
+  "asset_type": "compute.googleapis.com/Subnetwork",
+  "ancestors": [
+    "projects/1234567890",
+    "organizations/1234567890"
+  ]
+}
+{
+  "name": "//compute.googleapis.com/projects/cli-test-project/regions/southamerica-east1/subnetworks/computenetwork-5c4l43579mb0sbvi5pn9",
+  "asset_type": "compute.googleapis.com/Subnetwork",
+  "ancestors": [
+    "projects/1234567890",
+    "organizations/1234567890"
+  ]
+}
+{
+  "name": "//compute.googleapis.com/projects/cli-test-project/regions/northamerica-northeast1/subnetworks/default",
+  "asset_type": "compute.googleapis.com/Subnetwork",
+  "ancestors": [
+    "projects/1234567890",
+    "organizations/1234567890"
+  ]
+}
+{
+  "name": "//storage.googleapis.com/storagebucket-sample-696uso65hngc4js48ic9",
+  "asset_type": "storage.googleapis.com/Bucket",
+  "ancestors": [
+    "projects/1234567890",
+    "organizations/1234567890"
+  ]
+}

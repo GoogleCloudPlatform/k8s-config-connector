@@ -1,0 +1,210 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum AssuredworkloadsBetaWorkloadResourcesResourceTypeEnum {
+  AssuredworkloadsBetaWorkloadResourcesResourceTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  AssuredworkloadsBetaWorkloadResourcesResourceTypeEnumRESOURCE_TYPE_UNSPECIFIED = 1;
+  AssuredworkloadsBetaWorkloadResourcesResourceTypeEnumCONSUMER_PROJECT = 2;
+  AssuredworkloadsBetaWorkloadResourcesResourceTypeEnumENCRYPTION_KEYS_PROJECT = 3;
+  AssuredworkloadsBetaWorkloadResourcesResourceTypeEnumKEYRING = 4;
+  AssuredworkloadsBetaWorkloadResourcesResourceTypeEnumCONSUMER_FOLDER = 5;
+}
+
+enum AssuredworkloadsBetaWorkloadComplianceRegimeEnum {
+  AssuredworkloadsBetaWorkloadComplianceRegimeEnumNO_VALUE_DO_NOT_USE = 0;
+  AssuredworkloadsBetaWorkloadComplianceRegimeEnumCOMPLIANCE_REGIME_UNSPECIFIED = 1;
+  AssuredworkloadsBetaWorkloadComplianceRegimeEnumIL4 = 2;
+  AssuredworkloadsBetaWorkloadComplianceRegimeEnumCJIS = 3;
+  AssuredworkloadsBetaWorkloadComplianceRegimeEnumFEDRAMP_HIGH = 4;
+  AssuredworkloadsBetaWorkloadComplianceRegimeEnumFEDRAMP_MODERATE = 5;
+  AssuredworkloadsBetaWorkloadComplianceRegimeEnumUS_REGIONAL_ACCESS = 6;
+  AssuredworkloadsBetaWorkloadComplianceRegimeEnumHIPAA = 7;
+  AssuredworkloadsBetaWorkloadComplianceRegimeEnumHITRUST = 8;
+  AssuredworkloadsBetaWorkloadComplianceRegimeEnumEU_REGIONS_AND_SUPPORT = 9;
+  AssuredworkloadsBetaWorkloadComplianceRegimeEnumCA_REGIONS_AND_SUPPORT = 10;
+  AssuredworkloadsBetaWorkloadComplianceRegimeEnumITAR = 11;
+  AssuredworkloadsBetaWorkloadComplianceRegimeEnumAU_REGIONS_AND_US_SUPPORT = 12;
+  AssuredworkloadsBetaWorkloadComplianceRegimeEnumASSURED_WORKLOADS_FOR_PARTNERS = 13;
+  AssuredworkloadsBetaWorkloadComplianceRegimeEnumISR_REGIONS = 14;
+  AssuredworkloadsBetaWorkloadComplianceRegimeEnumISR_REGIONS_AND_SUPPORT = 15;
+  AssuredworkloadsBetaWorkloadComplianceRegimeEnumCA_PROTECTED_B = 16;
+  AssuredworkloadsBetaWorkloadComplianceRegimeEnumIL5 = 17;
+  AssuredworkloadsBetaWorkloadComplianceRegimeEnumIL2 = 18;
+  AssuredworkloadsBetaWorkloadComplianceRegimeEnumJP_REGIONS_AND_SUPPORT = 19;
+}
+
+enum AssuredworkloadsBetaWorkloadResourceSettingsResourceTypeEnum {
+  AssuredworkloadsBetaWorkloadResourceSettingsResourceTypeEnumNO_VALUE_DO_NOT_USE = 0;
+  AssuredworkloadsBetaWorkloadResourceSettingsResourceTypeEnumRESOURCE_TYPE_UNSPECIFIED = 1;
+  AssuredworkloadsBetaWorkloadResourceSettingsResourceTypeEnumCONSUMER_PROJECT = 2;
+  AssuredworkloadsBetaWorkloadResourceSettingsResourceTypeEnumENCRYPTION_KEYS_PROJECT = 3;
+  AssuredworkloadsBetaWorkloadResourceSettingsResourceTypeEnumKEYRING = 4;
+  AssuredworkloadsBetaWorkloadResourceSettingsResourceTypeEnumCONSUMER_FOLDER = 5;
+}
+
+enum AssuredworkloadsBetaWorkloadKajEnrollmentStateEnum {
+  AssuredworkloadsBetaWorkloadKajEnrollmentStateEnumNO_VALUE_DO_NOT_USE = 0;
+  AssuredworkloadsBetaWorkloadKajEnrollmentStateEnumKAJ_ENROLLMENT_STATE_UNSPECIFIED = 1;
+  AssuredworkloadsBetaWorkloadKajEnrollmentStateEnumKAJ_ENROLLMENT_STATE_PENDING = 2;
+  AssuredworkloadsBetaWorkloadKajEnrollmentStateEnumKAJ_ENROLLMENT_STATE_COMPLETE = 3;
+}
+
+enum AssuredworkloadsBetaWorkloadSaaEnrollmentResponseSetupErrorsEnum {
+  AssuredworkloadsBetaWorkloadSaaEnrollmentResponseSetupErrorsEnumNO_VALUE_DO_NOT_USE = 0;
+  AssuredworkloadsBetaWorkloadSaaEnrollmentResponseSetupErrorsEnumSETUP_ERROR_UNSPECIFIED = 1;
+  AssuredworkloadsBetaWorkloadSaaEnrollmentResponseSetupErrorsEnumERROR_INVALID_BASE_SETUP = 2;
+  AssuredworkloadsBetaWorkloadSaaEnrollmentResponseSetupErrorsEnumERROR_MISSING_EXTERNAL_SIGNING_KEY = 3;
+  AssuredworkloadsBetaWorkloadSaaEnrollmentResponseSetupErrorsEnumERROR_NOT_ALL_SERVICES_ENROLLED = 4;
+  AssuredworkloadsBetaWorkloadSaaEnrollmentResponseSetupErrorsEnumERROR_SETUP_CHECK_FAILED = 5;
+}
+
+enum AssuredworkloadsBetaWorkloadSaaEnrollmentResponseSetupStatusEnum {
+  AssuredworkloadsBetaWorkloadSaaEnrollmentResponseSetupStatusEnumNO_VALUE_DO_NOT_USE = 0;
+  AssuredworkloadsBetaWorkloadSaaEnrollmentResponseSetupStatusEnumSETUP_STATE_UNSPECIFIED = 1;
+  AssuredworkloadsBetaWorkloadSaaEnrollmentResponseSetupStatusEnumSTATUS_PENDING = 2;
+  AssuredworkloadsBetaWorkloadSaaEnrollmentResponseSetupStatusEnumSTATUS_COMPLETE = 3;
+}
+
+enum AssuredworkloadsBetaWorkloadPartnerEnum {
+  AssuredworkloadsBetaWorkloadPartnerEnumNO_VALUE_DO_NOT_USE = 0;
+  AssuredworkloadsBetaWorkloadPartnerEnumPARTNER_UNSPECIFIED = 1;
+  AssuredworkloadsBetaWorkloadPartnerEnumLOCAL_CONTROLS_BY_S3NS = 2;
+  AssuredworkloadsBetaWorkloadPartnerEnumSOVEREIGN_CONTROLS_BY_T_SYSTEMS = 3;
+  AssuredworkloadsBetaWorkloadPartnerEnumSOVEREIGN_CONTROLS_BY_SIA_MINSAIT = 4;
+  AssuredworkloadsBetaWorkloadPartnerEnumSOVEREIGN_CONTROLS_BY_PSN = 5;
+}
+
+enum AssuredworkloadsBetaWorkloadEkmProvisioningResponseEkmProvisioningStateEnum {
+  AssuredworkloadsBetaWorkloadEkmProvisioningResponseEkmProvisioningStateEnumNO_VALUE_DO_NOT_USE = 0;
+  AssuredworkloadsBetaWorkloadEkmProvisioningResponseEkmProvisioningStateEnumEKM_PROVISIONING_STATE_UNSPECIFIED = 1;
+  AssuredworkloadsBetaWorkloadEkmProvisioningResponseEkmProvisioningStateEnumEKM_PROVISIONING_STATE_PENDING = 2;
+  AssuredworkloadsBetaWorkloadEkmProvisioningResponseEkmProvisioningStateEnumEKM_PROVISIONING_STATE_FAILED = 3;
+  AssuredworkloadsBetaWorkloadEkmProvisioningResponseEkmProvisioningStateEnumEKM_PROVISIONING_STATE_COMPLETED = 4;
+}
+
+enum AssuredworkloadsBetaWorkloadEkmProvisioningResponseEkmProvisioningErrorDomainEnum {
+  AssuredworkloadsBetaWorkloadEkmProvisioningResponseEkmProvisioningErrorDomainEnumNO_VALUE_DO_NOT_USE = 0;
+  AssuredworkloadsBetaWorkloadEkmProvisioningResponseEkmProvisioningErrorDomainEnumEKM_PROVISIONING_ERROR_DOMAIN_UNSPECIFIED = 1;
+  AssuredworkloadsBetaWorkloadEkmProvisioningResponseEkmProvisioningErrorDomainEnumUNSPECIFIED_ERROR = 2;
+  AssuredworkloadsBetaWorkloadEkmProvisioningResponseEkmProvisioningErrorDomainEnumGOOGLE_SERVER_ERROR = 3;
+  AssuredworkloadsBetaWorkloadEkmProvisioningResponseEkmProvisioningErrorDomainEnumEXTERNAL_USER_ERROR = 4;
+  AssuredworkloadsBetaWorkloadEkmProvisioningResponseEkmProvisioningErrorDomainEnumEXTERNAL_PARTNER_ERROR = 5;
+  AssuredworkloadsBetaWorkloadEkmProvisioningResponseEkmProvisioningErrorDomainEnumTIMEOUT_ERROR = 6;
+}
+
+enum AssuredworkloadsBetaWorkloadEkmProvisioningResponseEkmProvisioningErrorMappingEnum {
+  AssuredworkloadsBetaWorkloadEkmProvisioningResponseEkmProvisioningErrorMappingEnumNO_VALUE_DO_NOT_USE = 0;
+  AssuredworkloadsBetaWorkloadEkmProvisioningResponseEkmProvisioningErrorMappingEnumEKM_PROVISIONING_ERROR_MAPPING_UNSPECIFIED = 1;
+  AssuredworkloadsBetaWorkloadEkmProvisioningResponseEkmProvisioningErrorMappingEnumINVALID_SERVICE_ACCOUNT = 2;
+  AssuredworkloadsBetaWorkloadEkmProvisioningResponseEkmProvisioningErrorMappingEnumMISSING_METRICS_SCOPE_ADMIN_PERMISSION = 3;
+  AssuredworkloadsBetaWorkloadEkmProvisioningResponseEkmProvisioningErrorMappingEnumMISSING_EKM_CONNECTION_ADMIN_PERMISSION = 4;
+}
+
+message AssuredworkloadsBetaWorkload {
+  string name = 1;
+  string display_name = 2;
+  repeated AssuredworkloadsBetaWorkloadResources resources = 3;
+  AssuredworkloadsBetaWorkloadComplianceRegimeEnum compliance_regime = 4;
+  string create_time = 5;
+  string billing_account = 6;
+  map<string, string> labels = 7;
+  string provisioned_resources_parent = 8;
+  AssuredworkloadsBetaWorkloadKmsSettings kms_settings = 9;
+  repeated AssuredworkloadsBetaWorkloadResourceSettings resource_settings = 10;
+  AssuredworkloadsBetaWorkloadKajEnrollmentStateEnum kaj_enrollment_state = 11;
+  bool enable_sovereign_controls = 12;
+  AssuredworkloadsBetaWorkloadSaaEnrollmentResponse saa_enrollment_response = 13;
+  AssuredworkloadsBetaWorkloadComplianceStatus compliance_status = 14;
+  repeated string compliant_but_disallowed_services = 15;
+  AssuredworkloadsBetaWorkloadPartnerEnum partner = 16;
+  AssuredworkloadsBetaWorkloadPartnerPermissions partner_permissions = 17;
+  AssuredworkloadsBetaWorkloadEkmProvisioningResponse ekm_provisioning_response = 18;
+  bool violation_notifications_enabled = 19;
+  string organization = 20;
+  string location = 21;
+}
+
+message AssuredworkloadsBetaWorkloadResources {
+  int64 resource_id = 1;
+  AssuredworkloadsBetaWorkloadResourcesResourceTypeEnum resource_type = 2;
+}
+
+message AssuredworkloadsBetaWorkloadKmsSettings {
+  string next_rotation_time = 1;
+  string rotation_period = 2;
+}
+
+message AssuredworkloadsBetaWorkloadResourceSettings {
+  string resource_id = 1;
+  AssuredworkloadsBetaWorkloadResourceSettingsResourceTypeEnum resource_type = 2;
+  string display_name = 3;
+}
+
+message AssuredworkloadsBetaWorkloadSaaEnrollmentResponse {
+  repeated AssuredworkloadsBetaWorkloadSaaEnrollmentResponseSetupErrorsEnum setup_errors = 1;
+  AssuredworkloadsBetaWorkloadSaaEnrollmentResponseSetupStatusEnum setup_status = 2;
+}
+
+message AssuredworkloadsBetaWorkloadComplianceStatus {
+  repeated int64 active_violation_count = 1;
+  repeated int64 acknowledged_violation_count = 2;
+}
+
+message AssuredworkloadsBetaWorkloadPartnerPermissions {
+  bool data_logs_viewer = 1;
+  bool service_access_approver = 2;
+  bool assured_workloads_monitoring = 3;
+}
+
+message AssuredworkloadsBetaWorkloadEkmProvisioningResponse {
+  AssuredworkloadsBetaWorkloadEkmProvisioningResponseEkmProvisioningStateEnum ekm_provisioning_state = 1;
+  AssuredworkloadsBetaWorkloadEkmProvisioningResponseEkmProvisioningErrorDomainEnum ekm_Provisioning_error_domain = 2;
+  AssuredworkloadsBetaWorkloadEkmProvisioningResponseEkmProvisioningErrorMappingEnum ekm_provisioning_error_mapping = 3;
+}
+
+message ApplyAssuredworkloadsBetaWorkloadRequest {
+  AssuredworkloadsBetaWorkload resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteAssuredworkloadsBetaWorkloadRequest {
+  string service_account_file = 1;
+  AssuredworkloadsBetaWorkload resource = 2;
+}
+
+message ListAssuredworkloadsBetaWorkloadRequest {
+  string service_account_file = 1;
+  string Organization = 2;
+  string Location = 3;
+}
+
+message ListAssuredworkloadsBetaWorkloadResponse {
+  repeated AssuredworkloadsBetaWorkload items = 1;
+}
+
+service AssuredworkloadsBetaWorkloadService {
+  rpc ApplyAssuredworkloadsBetaWorkload(ApplyAssuredworkloadsBetaWorkloadRequest) returns (AssuredworkloadsBetaWorkload);
+  rpc DeleteAssuredworkloadsBetaWorkload(DeleteAssuredworkloadsBetaWorkloadRequest) returns (google.protobuf.Empty);
+  rpc ListAssuredworkloadsBetaWorkload(ListAssuredworkloadsBetaWorkloadRequest) returns (ListAssuredworkloadsBetaWorkloadResponse);
+}

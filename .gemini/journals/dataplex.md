@@ -1,0 +1,17 @@
+### [2026-05-26] Implement DataplexDataScan Types
+- **Context**: Implementing KRM types for DataplexDataScan (google.cloud.dataplex.v1)
+- **Problem**: DataplexDataScan requires manual scaffolding of inner struct fields inside `datascan_types.go` because the `prunetypes` generator removes nested types in `types.generated.go` if they are unreachable. Additionally, `k8s.io/apimachinery/pkg/runtime/schema` must be correctly imported in `datascan_reference.go` instead of `k8s.io/apimachinery/pkg/schema`.
+- **Solution**: Scaffolded fields `DataQualitySpec`, `DataProfileSpec`, `DataDiscoverySpec` and their related `ResultObservedState` fields manually in `datascan_types.go`. Fixed import path in `datascan_reference.go`.
+- **Impact**: Agents working on direct controllers for `dataplex` or any other nested specification APIs need to remember to correctly instantiate nested structure types in `datascan_types.go` and ensure proper imports for `schema.GroupVersionKind`.
+
+### [2026-06-24] Customizing Sub-structures and References for DataplexMetadataJob
+- **Context**: Implementing KRM types and IdentityV2 for `DataplexMetadataJob` under `v1alpha1`.
+- **Problem**: The GCP `MetadataJob` API defines relative resource name fields as raw primitive strings/lists (e.g., `entry_groups`, `entry_types`, `aspect_types`). KCC guidelines mandate that all fields referencing other GCP/KCC resources must be proper reference fields (e.g., using `EntryGroupRef`, `EntryTypeRef`, `AspectTypeRef`) following the `Ref`/`Refs` suffix convention.
+- **Solution**: Hand-coded customized sub-structure definitions (e.g., `MetadataJob_ImportJobSpec_ImportJobScope`, `MetadataJob_ExportJobSpec_ExportJobScope`) in `metadatajob_types.go` using reference types rather than raw strings. The controller builder tool/generator automatically mapping fields ending in `Refs` to matching repeated fields in proto (e.g., `entryGroupRefs` to `entry_groups` in proto), while also cleanly generating unchanged sub-structures in `types.generated.go`.
+- **Impact**: Subsequent developers can leverage this pattern to customize nested sub-structures and lists of references directly in their `_types.go` files without causing duplicate type definitions in `types.generated.go`.
+
+### [2026-06-29] Implement Greenfield DataplexMetadataJob Controller and Mocks
+- **Context**: Implementing the Greenfield direct controller, E2E fixtures, and fuzzer for `DataplexMetadataJob` under `v1alpha1`.
+- **Problem**: `DataplexMetadataJob` is a completely immutable resource in GCP (there is no `UpdateMetadataJob` or `DeleteMetadataJob` in the GCP API). Thus, it has no `Update` or `Delete` actions and needs to be registered with `registry.CannotBeDeleted()`. In mockgcp, long-running operations must also be correctly simulated so that the status is updated with completion results.
+- **Solution**: Implemented `dataplexmetadatajob_controller.go` to reject modifications by returning an update error if any spec difference is found, and implemented a no-op `Delete` method. Registered the model with `registry.CannotBeDeleted()`. Created a comprehensive mock service in mockgcp (`mockdataplex/metadatajob.go`) to simulate `CreateMetadataJob`, `GetMetadataJob`, and `CancelMetadataJob`. Implemented fuzzer with `Unimplemented_NotYetTriaged` for unmapped fields and added timestamp normalization to prevent volatile comparison test failures.
+- **Impact**: Demonstrates standard patterns for implementing direct controllers for immutable GCP resources and structuring mocks for custom LRO results.

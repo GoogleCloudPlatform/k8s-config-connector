@@ -1,0 +1,16 @@
+apiVersion: certificatemanager.cnrm.cloud.google.com/v1alpha1
+kind: CertificateManagerCertificateIssuanceConfig
+metadata:
+  name: certissuanceconfig-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  description: sample certificate issuance config
+  certificateAuthorityConfig:
+    certificateAuthorityServiceConfig:
+      caPoolRef:
+        name: privatecacapool-dep-${uniqueId}
+  lifetime: 86400s
+  rotationWindowPercentage: 10
+  keyAlgorithm: RSA_2048

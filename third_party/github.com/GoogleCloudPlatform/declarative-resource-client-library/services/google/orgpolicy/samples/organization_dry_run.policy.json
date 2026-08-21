@@ -1,0 +1,12 @@
+{
+  "name": "organizations/{{org_id}}/policies/gcp.restrictServiceUsage",
+  "parent": "organizations/{{org_id}}",
+  "dryRunSpec": {
+    "rules": [ 
+      {
+        "allowAll" : true
+      }
+    ],
+    "inheritFromParent": true
+  }
+}

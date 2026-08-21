@@ -1,0 +1,50 @@
+apiVersion: batch.cnrm.cloud.google.com/v1alpha1
+kind: BatchJob
+metadata:
+  name: batchjob-network-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  priority: 10
+  allocationPolicy:
+    location:
+      allowedLocations:
+        - "zones/us-central1-a"
+    instances:
+      - policy:
+          machineType: "e2-standard-2"
+          provisioningModel: "STANDARD"
+          accelerators:
+            - type: "nvidia-tesla-k80"
+              count: 1
+              installGpuDrivers: true
+          bootDisk:
+            imageRef:
+              external: "projects/debian-cloud/global/images/family/debian-11"
+            sizeGB: 100
+            type: "pd-standard"
+          disks:
+            - deviceName: "disk1"
+              newDisk:
+                sizeGB: 50
+                type: "pd-ssd"
+    network:
+      networkInterfaces:
+        - networkRef:
+            name: batchjob-dep-network-${uniqueId}
+          subnetworkRef:
+            name: batchjob-dep-subnetwork-${uniqueId}
+          noExternalIPAddress: false
+  taskGroups:
+    - taskCount: 1
+      taskSpec:
+        runnables:
+          - container:
+              imageURI: "gcr.io/google-containers/busybox"
+              entrypoint: "/bin/sh"
+              commands:
+                - "-c"
+                - "echo 'Hello, world!'"
+  logsPolicy:
+    destination: "CLOUD_LOGGING"

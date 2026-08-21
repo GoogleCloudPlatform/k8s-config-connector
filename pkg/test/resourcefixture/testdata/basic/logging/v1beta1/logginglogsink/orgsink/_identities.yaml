@@ -1,0 +1,12 @@
+- caisURL: //storage.googleapis.com/projects/${projectId}/buckets/orgsink-${uniqueId}
+  group: storage.cnrm.cloud.google.com
+  kind: StorageBucket
+  name: orgsink-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: //logging.googleapis.com/organizations/${TEST_ORG_ID}/sinks/orgsink-${uniqueId}
+  group: logging.cnrm.cloud.google.com
+  kind: LoggingLogSink
+  name: orgsink-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

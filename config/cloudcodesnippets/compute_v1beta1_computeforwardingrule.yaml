@@ -1,0 +1,18 @@
+label: Config Connector ComputeForwardingRule
+markdownDescription: Creates yaml for a ComputeForwardingRule resource
+insertText: |
+  apiVersion: compute.cnrm.cloud.google.com/v1beta1
+  kind: ComputeForwardingRule
+  metadata:
+    labels:
+      \${1:label-one}: \${2:value-one}
+    name: \${3:computeforwardingrule-name}
+  spec:
+    description: \${4:A global forwarding rule}
+    target:
+      targetHTTPProxyRef:
+        name: \${5:computeforwardingrule-dep-global-with-target-http-proxy}
+    portRange: \${6:80}
+    ipProtocol: \${7:TCP}
+    ipVersion: \${8:IPV4}
+    location: \${9:global}

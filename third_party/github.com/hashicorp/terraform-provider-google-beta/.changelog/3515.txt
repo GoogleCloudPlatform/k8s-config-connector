@@ -1,0 +1,3 @@
+```release-note:enhancement
+container: Changed retry logic for `google_container_node_pool` deletion to use timeouts and retry errors more specifically when cluster is updating.
+```

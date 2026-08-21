@@ -1,0 +1,75 @@
+apiVersion: hypercomputecluster.cnrm.cloud.google.com/v1alpha1
+kind: HypercomputeClusterCluster
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: hcc-maximal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  computeResources:
+    comp-resource-1:
+      config:
+        newOnDemandInstances:
+          machineType: n2-standard-4
+          zone: us-central1-a
+  description: Updated Maximal Hypercompute Cluster Description
+  labels:
+    foo: bar-updated
+  location: us-central1
+  networkResources:
+    net-resource-1:
+      config:
+        existingNetwork:
+          networkRef:
+            external: projects/${projectId}/global/networks/default
+          subnetworkRef:
+            external: projects/${projectId}/regions/us-central1/subnetworks/default
+  orchestrator:
+    slurm:
+      defaultPartition: partition1
+      loginNodes:
+        count: 1
+        enableOSLogin: true
+        enablePublicIPs: true
+        machineType: e2-standard-4
+        zone: us-central1-a
+      nodeSets:
+      - computeID: comp-resource-1
+        computeInstance:
+          bootDisk:
+            sizeGB: 100
+            type: projects/${projectId}/zones/us-central1-a/diskTypes/pd-standard
+          labels:
+            nodeset-label: test-updated
+          startupScript: |-
+            #!/bin/bash
+            echo hello
+        id: nodeset1
+        staticNodeCount: 1
+      partitions:
+      - id: partition1
+        nodeSetIds:
+        - nodeset1
+  projectRef:
+    external: ${projectId}
+  resourceID: hccmax
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/clusters/hccmax
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    orchestrator:
+      slurm:
+        loginNodes: {}
+    reconciling: true
+    updateTime: "1970-01-01T00:00:00Z"

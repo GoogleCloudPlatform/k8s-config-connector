@@ -1,0 +1,6 @@
+```release-note:bug
+container: made `addons_config.dns_cache_config` able to be updated without recreating and destroying.
+```
+```release-note:bug
+container: made `addons_config.cloudrun_config` able to be updated without recreating and destroying.
+```

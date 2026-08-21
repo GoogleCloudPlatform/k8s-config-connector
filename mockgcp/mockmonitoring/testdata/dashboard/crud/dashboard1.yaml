@@ -1,0 +1,5 @@
+displayName: test-dashboard1
+gridLayout:
+  widgets:
+  - text:
+      content: Hello World

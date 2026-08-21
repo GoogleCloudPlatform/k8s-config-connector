@@ -1,0 +1,17 @@
+label: Config Connector APIKeysKey
+markdownDescription: Creates yaml for a APIKeysKey resource
+insertText: |
+  apiVersion: apikeys.cnrm.cloud.google.com/v1alpha1
+  kind: APIKeysKey
+  metadata:
+    name: \${1:apikeyskey-name}
+  spec:
+    displayName: \${2:Human readable name}
+    projectRef:
+      external: \${3:projects/[PROJECT_ID?]}
+    resourceID: \${4:sample}
+    restrictions:
+      apiTargets:
+      - service: \${5:translate.googleapis.com}
+        methods:
+        - \${6:GET}

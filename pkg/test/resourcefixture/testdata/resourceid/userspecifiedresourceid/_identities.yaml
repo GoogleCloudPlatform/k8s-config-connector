@@ -1,0 +1,6 @@
+- caisURL: //bigquery.googleapis.com/projects/${projectId}/datasets/bigquerydataset_${uniqueId}
+  group: bigquery.cnrm.cloud.google.com
+  kind: BigQueryDataset
+  name: bigquerydataset-resourceid-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1

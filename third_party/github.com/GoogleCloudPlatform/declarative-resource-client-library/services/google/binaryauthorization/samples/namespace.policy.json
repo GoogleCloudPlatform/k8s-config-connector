@@ -1,0 +1,22 @@
+{
+  "project": "{{project}}",
+  "admissionWhitelistPatterns": [
+    {
+      "namePattern": "gcr.io/*"
+    }
+  ],
+  "kubernetesNamespaceAdmissionRules": {
+    "test-namespace": {
+      "evaluationMode": "REQUIRE_ATTESTATION",
+      "requireAttestationsBy": ["projects/{{ref:basic.attestor.json:project}}/attestors/{{ref:basic.attestor.json:name}}"],
+      "enforcementMode": "ENFORCED_BLOCK_AND_AUDIT_LOG"
+    }
+  },
+  "defaultAdmissionRule": {
+    "evaluationMode": "REQUIRE_ATTESTATION",
+    "requireAttestationsBy": ["projects/{{ref:basic.attestor.json:project}}/attestors/{{ref:basic.attestor.json:name}}"],
+    "enforcementMode": "ENFORCED_BLOCK_AND_AUDIT_LOG"
+  },
+  "description": "A sample binaryauthorization policy",
+  "globalPolicyEvaluationMode": "DISABLE"
+}

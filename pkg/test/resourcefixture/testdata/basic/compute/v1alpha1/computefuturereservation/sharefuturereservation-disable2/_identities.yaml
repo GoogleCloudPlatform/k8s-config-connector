@@ -1,0 +1,6 @@
+- caisURL: //compute.googleapis.com/projects/${TEST_SHARED_RESERVATIONS_PROJECT}/zones/us-central1-a/futureReservations/sharereservation-${uniqueId}
+  group: compute.cnrm.cloud.google.com
+  kind: ComputeFutureReservation
+  name: sharereservation-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

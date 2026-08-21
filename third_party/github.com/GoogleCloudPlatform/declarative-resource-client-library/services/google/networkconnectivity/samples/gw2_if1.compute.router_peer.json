@@ -1,0 +1,9 @@
+{
+  "name": "{{connectivity_peer4}}",
+  "project": "{{ref:compute.serviceusage.service.json:project}}",
+  "location": "{{region}}",
+  "router": "{{ref:second.compute.router.json:name}}",
+  "ipAddress": "169.254.0.12",
+  "peerAsn": 65002,
+  "peerIpAddress": "169.254.0.13"
+}

@@ -1,0 +1,18 @@
+apiVersion: discoveryengine.cnrm.cloud.google.com/v1alpha1
+kind: DiscoveryEngineLicenseConfig
+metadata:
+  name: discoveryenginelicenseconfig-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: global
+  resourceID: notebook-lm
+  licenseCount: 30
+  subscriptionTier: SUBSCRIPTION_TIER_NOTEBOOK_LM
+  subscriptionTerm: SUBSCRIPTION_TERM_ONE_MONTH
+  startDate:
+    year: 2026
+    month: 8
+    day: 15
+  autoRenew: true
+  freeTrial: false

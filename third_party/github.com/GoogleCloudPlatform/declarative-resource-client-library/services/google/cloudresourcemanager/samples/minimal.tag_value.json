@@ -1,0 +1,4 @@
+{
+  "parent": "tagKeys/{{ref:minimal.tag_key.json:name}}",
+  "shortName": "{{tag_value}}"
+}

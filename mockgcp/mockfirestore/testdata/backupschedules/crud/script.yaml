@@ -1,0 +1,9 @@
+- exec: gcloud firestore databases create --database=test-db-${uniqueId} --location=us-central1 --project=${projectId}
+- exec: gcloud firestore backups schedules create --database=test-db-${uniqueId} --recurrence=daily --retention=7d --project=${projectId}
+- exec: gcloud firestore backups schedules list --database=test-db-${uniqueId} --project=${projectId} --format="value(name)"
+  setEnv: projects/{{PROJECT_ID}}/databases/{{DATABASE_ID}}/backupSchedules/{{BACKUPSCHEDULE_ID}}
+- exec: gcloud firestore backups schedules describe --backup-schedule=${BACKUPSCHEDULE_ID} --database=test-db-${uniqueId} --project=${projectId}
+- exec: gcloud firestore backups schedules update --backup-schedule=${BACKUPSCHEDULE_ID} --database=test-db-${uniqueId} --retention=14d --project=${projectId}
+- exec: gcloud firestore backups schedules describe --backup-schedule=${BACKUPSCHEDULE_ID} --database=test-db-${uniqueId} --project=${projectId}
+- exec: gcloud firestore backups schedules delete --backup-schedule=${BACKUPSCHEDULE_ID} --database=test-db-${uniqueId} --project=${projectId} --quiet
+- exec: gcloud firestore databases delete --database=test-db-${uniqueId} --project=${projectId} --quiet

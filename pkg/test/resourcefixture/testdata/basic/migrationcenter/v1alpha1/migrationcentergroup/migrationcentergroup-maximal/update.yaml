@@ -1,0 +1,13 @@
+apiVersion: migrationcenter.cnrm.cloud.google.com/v1alpha1
+kind: MigrationCenterGroup
+metadata:
+  name: migrationcentergroup-maximal-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  displayName: Updated Maximal Migration Group
+  description: This is an updated maximal migration group description
+  labels:
+    key1: updated-val1
+    key3: val3

@@ -1,0 +1,1843 @@
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+version: 2
+interactions:
+  - id: 0
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: eventarc.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://eventarc.googleapis.com/v1/projects/example-project/locations/us-central1/triggers/eventarctrigger-2ubz1ejdpwb22?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 276.967188ms
+  - id: 1
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: eventarc.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://eventarc.googleapis.com/v1/projects/example-project/locations/us-central1/triggers/eventarctrigger-2ubz1ejdpwb22?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 238.779129ms
+  - id: 2
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: eventarc.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://eventarc.googleapis.com/v1/projects/example-project/locations/us-central1/triggers/eventarctrigger-2ubz1ejdpwb22?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 229.062666ms
+  - id: 3
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 553
+      transfer_encoding: []
+      trailer: {}
+      host: eventarc.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: '{"destination":{"cloudRun":{"region":"us-central1","service":"runservice-1-2ubz1ejdpwb22"}},"eventFilters":[{"attribute":"type","value":"google.cloud.pubsub.topic.v1.messagePublished"}],"labels":{"cnrm-test":"true","foo1":"bar1","managed-by-cnrm":"true"},"name":"projects/example-project/locations/us-central1/triggers/eventarctrigger-2ubz1ejdpwb22","serviceAccount":"gsa-2ubz1ejdpwb22@example-project.iam.gserviceaccount.com","transport":{"pubsub":{"topic":"projects/example-project/topics/pubsubtopic-2ubz1ejdpwb22"}}}'
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://eventarc.googleapis.com/v1/projects/example-project/locations/us-central1/triggers?alt=json&triggerId=eventarctrigger-2ubz1ejdpwb22
+      method: POST
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 400 Bad Request
+      code: 400
+      duration: 1.794863037s
+  - id: 4
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: eventarc.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://eventarc.googleapis.com/v1/projects/example-project/locations/us-central1/triggers/eventarctrigger-2ubz1ejdpwb22?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 81.897374ms
+  - id: 5
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: eventarc.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://eventarc.googleapis.com/v1/projects/example-project/locations/us-central1/triggers/eventarctrigger-2ubz1ejdpwb22?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 204.121058ms
+  - id: 6
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: eventarc.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://eventarc.googleapis.com/v1/projects/example-project/locations/us-central1/triggers/eventarctrigger-2ubz1ejdpwb22?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 249.791917ms
+  - id: 7
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 553
+      transfer_encoding: []
+      trailer: {}
+      host: eventarc.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: '{"destination":{"cloudRun":{"region":"us-central1","service":"runservice-1-2ubz1ejdpwb22"}},"eventFilters":[{"attribute":"type","value":"google.cloud.pubsub.topic.v1.messagePublished"}],"labels":{"cnrm-test":"true","foo1":"bar1","managed-by-cnrm":"true"},"name":"projects/example-project/locations/us-central1/triggers/eventarctrigger-2ubz1ejdpwb22","serviceAccount":"gsa-2ubz1ejdpwb22@example-project.iam.gserviceaccount.com","transport":{"pubsub":{"topic":"projects/example-project/topics/pubsubtopic-2ubz1ejdpwb22"}}}'
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://eventarc.googleapis.com/v1/projects/example-project/locations/us-central1/triggers?alt=json&triggerId=eventarctrigger-2ubz1ejdpwb22
+      method: POST
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 400 Bad Request
+      code: 400
+      duration: 997.660627ms
+  - id: 8
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: eventarc.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://eventarc.googleapis.com/v1/projects/example-project/locations/us-central1/triggers/eventarctrigger-2ubz1ejdpwb22?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 237.342824ms
+  - id: 9
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: eventarc.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://eventarc.googleapis.com/v1/projects/example-project/locations/us-central1/triggers/eventarctrigger-2ubz1ejdpwb22?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 249.89802ms
+  - id: 10
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: eventarc.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://eventarc.googleapis.com/v1/projects/example-project/locations/us-central1/triggers/eventarctrigger-2ubz1ejdpwb22?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 250.312909ms
+  - id: 11
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 553
+      transfer_encoding: []
+      trailer: {}
+      host: eventarc.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: '{"destination":{"cloudRun":{"region":"us-central1","service":"runservice-1-2ubz1ejdpwb22"}},"eventFilters":[{"attribute":"type","value":"google.cloud.pubsub.topic.v1.messagePublished"}],"labels":{"cnrm-test":"true","foo1":"bar1","managed-by-cnrm":"true"},"name":"projects/example-project/locations/us-central1/triggers/eventarctrigger-2ubz1ejdpwb22","serviceAccount":"gsa-2ubz1ejdpwb22@example-project.iam.gserviceaccount.com","transport":{"pubsub":{"topic":"projects/example-project/topics/pubsubtopic-2ubz1ejdpwb22"}}}'
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://eventarc.googleapis.com/v1/projects/example-project/locations/us-central1/triggers?alt=json&triggerId=eventarctrigger-2ubz1ejdpwb22
+      method: POST
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 400 Bad Request
+      code: 400
+      duration: 866.132997ms
+  - id: 12
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: eventarc.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://eventarc.googleapis.com/v1/projects/example-project/locations/us-central1/triggers/eventarctrigger-2ubz1ejdpwb22?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 205.882261ms
+  - id: 13
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: eventarc.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://eventarc.googleapis.com/v1/projects/example-project/locations/us-central1/triggers/eventarctrigger-2ubz1ejdpwb22?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 235.973697ms
+  - id: 14
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: eventarc.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://eventarc.googleapis.com/v1/projects/example-project/locations/us-central1/triggers/eventarctrigger-2ubz1ejdpwb22?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 300.457344ms
+  - id: 15
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 553
+      transfer_encoding: []
+      trailer: {}
+      host: eventarc.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: '{"destination":{"cloudRun":{"region":"us-central1","service":"runservice-1-2ubz1ejdpwb22"}},"eventFilters":[{"attribute":"type","value":"google.cloud.pubsub.topic.v1.messagePublished"}],"labels":{"cnrm-test":"true","foo1":"bar1","managed-by-cnrm":"true"},"name":"projects/example-project/locations/us-central1/triggers/eventarctrigger-2ubz1ejdpwb22","serviceAccount":"gsa-2ubz1ejdpwb22@example-project.iam.gserviceaccount.com","transport":{"pubsub":{"topic":"projects/example-project/topics/pubsubtopic-2ubz1ejdpwb22"}}}'
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://eventarc.googleapis.com/v1/projects/example-project/locations/us-central1/triggers?alt=json&triggerId=eventarctrigger-2ubz1ejdpwb22
+      method: POST
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 400 Bad Request
+      code: 400
+      duration: 998.143901ms
+  - id: 16
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: eventarc.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://eventarc.googleapis.com/v1/projects/example-project/locations/us-central1/triggers/eventarctrigger-2ubz1ejdpwb22?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 207.228583ms
+  - id: 17
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: eventarc.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://eventarc.googleapis.com/v1/projects/example-project/locations/us-central1/triggers/eventarctrigger-2ubz1ejdpwb22?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 210.373564ms
+  - id: 18
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: eventarc.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://eventarc.googleapis.com/v1/projects/example-project/locations/us-central1/triggers/eventarctrigger-2ubz1ejdpwb22?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 271.345677ms
+  - id: 19
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 553
+      transfer_encoding: []
+      trailer: {}
+      host: eventarc.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: '{"destination":{"cloudRun":{"region":"us-central1","service":"runservice-1-2ubz1ejdpwb22"}},"eventFilters":[{"attribute":"type","value":"google.cloud.pubsub.topic.v1.messagePublished"}],"labels":{"cnrm-test":"true","foo1":"bar1","managed-by-cnrm":"true"},"name":"projects/example-project/locations/us-central1/triggers/eventarctrigger-2ubz1ejdpwb22","serviceAccount":"gsa-2ubz1ejdpwb22@example-project.iam.gserviceaccount.com","transport":{"pubsub":{"topic":"projects/example-project/topics/pubsubtopic-2ubz1ejdpwb22"}}}'
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://eventarc.googleapis.com/v1/projects/example-project/locations/us-central1/triggers?alt=json&triggerId=eventarctrigger-2ubz1ejdpwb22
+      method: POST
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-central1/operations/operation-1714009092303-616e1d716ac2f-3f3b6214-75f57fa5",
+          "metadata": {
+            "@type": "type.googleapis.com/google.cloud.eventarc.v1.OperationMetadata",
+            "createTime": "2024-04-25T01:38:13.282926887Z",
+            "target": "projects/example-project/locations/us-central1/triggers/eventarctrigger-2ubz1ejdpwb22",
+            "verb": "create",
+            "requestedCancellation": false,
+            "apiVersion": "v1"
+          },
+          "done": false
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 1.233294514s
+  - id: 20
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: eventarc.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://eventarc.googleapis.com/v1/projects/example-project/locations/us-central1/operations/operation-1714009092303-616e1d716ac2f-3f3b6214-75f57fa5?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-central1/operations/operation-1714009092303-616e1d716ac2f-3f3b6214-75f57fa5",
+          "metadata": {
+            "@type": "type.googleapis.com/google.cloud.eventarc.v1.OperationMetadata",
+            "createTime": "2024-04-25T01:38:13.282926887Z",
+            "endTime": "2024-04-25T01:38:18.526926769Z",
+            "target": "projects/example-project/locations/us-central1/triggers/eventarctrigger-2ubz1ejdpwb22",
+            "verb": "create",
+            "requestedCancellation": false,
+            "apiVersion": "v1"
+          },
+          "done": true,
+          "response": {
+            "@type": "type.googleapis.com/google.cloud.eventarc.v1.Trigger",
+            "name": "projects/example-project/locations/us-central1/triggers/eventarctrigger-2ubz1ejdpwb22",
+            "uid": "87abb999-5fb2-4966-bfdf-7cef9d988948",
+            "createTime": "2024-04-25T01:38:13.278417217Z",
+            "updateTime": "2024-04-25T01:38:13.278417217Z",
+            "eventFilters": [
+              {
+                "attribute": "type",
+                "value": "google.cloud.pubsub.topic.v1.messagePublished"
+              }
+            ],
+            "serviceAccount": "gsa-2ubz1ejdpwb22@example-project.iam.gserviceaccount.com",
+            "destination": {
+              "cloudRun": {
+                "service": "runservice-1-2ubz1ejdpwb22",
+                "region": "us-central1"
+              }
+            },
+            "transport": {
+              "pubsub": {
+                "topic": "projects/example-project/topics/pubsubtopic-2ubz1ejdpwb22",
+                "subscription": "projects/example-project/subscriptions/eventarc-us-central1-eventarctrigger-2ubz1ejdpwb22-sub-244"
+              }
+            }
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 77.492955ms
+  - id: 21
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: eventarc.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://eventarc.googleapis.com/v1/projects/example-project/locations/us-central1/triggers/eventarctrigger-2ubz1ejdpwb22?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-central1/triggers/eventarctrigger-2ubz1ejdpwb22",
+          "uid": "87abb999-5fb2-4966-bfdf-7cef9d988948",
+          "createTime": "2024-04-25T01:38:13.278417217Z",
+          "updateTime": "2024-04-25T01:38:18.543631764Z",
+          "eventFilters": [
+            {
+              "attribute": "type",
+              "value": "google.cloud.pubsub.topic.v1.messagePublished"
+            }
+          ],
+          "serviceAccount": "gsa-2ubz1ejdpwb22@example-project.iam.gserviceaccount.com",
+          "destination": {
+            "cloudRun": {
+              "service": "runservice-1-2ubz1ejdpwb22",
+              "region": "us-central1"
+            }
+          },
+          "transport": {
+            "pubsub": {
+              "topic": "projects/example-project/topics/pubsubtopic-2ubz1ejdpwb22",
+              "subscription": "projects/example-project/subscriptions/eventarc-us-central1-eventarctrigger-2ubz1ejdpwb22-sub-244"
+            }
+          },
+          "labels": {
+            "cnrm-test": "true",
+            "foo1": "bar1",
+            "managed-by-cnrm": "true"
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 459.521286ms
+  - id: 22
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: eventarc.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://eventarc.googleapis.com/v1/projects/example-project/locations/us-central1/triggers/eventarctrigger-2ubz1ejdpwb22?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-central1/triggers/eventarctrigger-2ubz1ejdpwb22",
+          "uid": "87abb999-5fb2-4966-bfdf-7cef9d988948",
+          "createTime": "2024-04-25T01:38:13.278417217Z",
+          "updateTime": "2024-04-25T01:38:18.543631764Z",
+          "eventFilters": [
+            {
+              "attribute": "type",
+              "value": "google.cloud.pubsub.topic.v1.messagePublished"
+            }
+          ],
+          "serviceAccount": "gsa-2ubz1ejdpwb22@example-project.iam.gserviceaccount.com",
+          "destination": {
+            "cloudRun": {
+              "service": "runservice-1-2ubz1ejdpwb22",
+              "region": "us-central1"
+            }
+          },
+          "transport": {
+            "pubsub": {
+              "topic": "projects/example-project/topics/pubsubtopic-2ubz1ejdpwb22",
+              "subscription": "projects/example-project/subscriptions/eventarc-us-central1-eventarctrigger-2ubz1ejdpwb22-sub-244"
+            }
+          },
+          "labels": {
+            "cnrm-test": "true",
+            "foo1": "bar1",
+            "managed-by-cnrm": "true"
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 347.359137ms
+  - id: 23
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: eventarc.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://eventarc.googleapis.com/v1/projects/example-project/locations/us-central1/triggers/eventarctrigger-2ubz1ejdpwb22?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-central1/triggers/eventarctrigger-2ubz1ejdpwb22",
+          "uid": "87abb999-5fb2-4966-bfdf-7cef9d988948",
+          "createTime": "2024-04-25T01:38:13.278417217Z",
+          "updateTime": "2024-04-25T01:38:18.543631764Z",
+          "eventFilters": [
+            {
+              "attribute": "type",
+              "value": "google.cloud.pubsub.topic.v1.messagePublished"
+            }
+          ],
+          "serviceAccount": "gsa-2ubz1ejdpwb22@example-project.iam.gserviceaccount.com",
+          "destination": {
+            "cloudRun": {
+              "service": "runservice-1-2ubz1ejdpwb22",
+              "region": "us-central1"
+            }
+          },
+          "transport": {
+            "pubsub": {
+              "topic": "projects/example-project/topics/pubsubtopic-2ubz1ejdpwb22",
+              "subscription": "projects/example-project/subscriptions/eventarc-us-central1-eventarctrigger-2ubz1ejdpwb22-sub-244"
+            }
+          },
+          "labels": {
+            "cnrm-test": "true",
+            "foo1": "bar1",
+            "managed-by-cnrm": "true"
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 413.388534ms
+  - id: 24
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: eventarc.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://eventarc.googleapis.com/v1/projects/example-project/locations/us-central1/triggers/eventarctrigger-2ubz1ejdpwb22?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-central1/triggers/eventarctrigger-2ubz1ejdpwb22",
+          "uid": "87abb999-5fb2-4966-bfdf-7cef9d988948",
+          "createTime": "2024-04-25T01:38:13.278417217Z",
+          "updateTime": "2024-04-25T01:38:18.543631764Z",
+          "eventFilters": [
+            {
+              "attribute": "type",
+              "value": "google.cloud.pubsub.topic.v1.messagePublished"
+            }
+          ],
+          "serviceAccount": "gsa-2ubz1ejdpwb22@example-project.iam.gserviceaccount.com",
+          "destination": {
+            "cloudRun": {
+              "service": "runservice-1-2ubz1ejdpwb22",
+              "region": "us-central1"
+            }
+          },
+          "transport": {
+            "pubsub": {
+              "topic": "projects/example-project/topics/pubsubtopic-2ubz1ejdpwb22",
+              "subscription": "projects/example-project/subscriptions/eventarc-us-central1-eventarctrigger-2ubz1ejdpwb22-sub-244"
+            }
+          },
+          "labels": {
+            "cnrm-test": "true",
+            "foo1": "bar1",
+            "managed-by-cnrm": "true"
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 481.977254ms
+  - id: 25
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: eventarc.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://eventarc.googleapis.com/v1/projects/example-project/locations/us-central1/triggers/eventarctrigger-2ubz1ejdpwb22?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-central1/triggers/eventarctrigger-2ubz1ejdpwb22",
+          "uid": "87abb999-5fb2-4966-bfdf-7cef9d988948",
+          "createTime": "2024-04-25T01:38:13.278417217Z",
+          "updateTime": "2024-04-25T01:38:18.543631764Z",
+          "eventFilters": [
+            {
+              "attribute": "type",
+              "value": "google.cloud.pubsub.topic.v1.messagePublished"
+            }
+          ],
+          "serviceAccount": "gsa-2ubz1ejdpwb22@example-project.iam.gserviceaccount.com",
+          "destination": {
+            "cloudRun": {
+              "service": "runservice-1-2ubz1ejdpwb22",
+              "region": "us-central1"
+            }
+          },
+          "transport": {
+            "pubsub": {
+              "topic": "projects/example-project/topics/pubsubtopic-2ubz1ejdpwb22",
+              "subscription": "projects/example-project/subscriptions/eventarc-us-central1-eventarctrigger-2ubz1ejdpwb22-sub-244"
+            }
+          },
+          "labels": {
+            "cnrm-test": "true",
+            "foo1": "bar1",
+            "managed-by-cnrm": "true"
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 426.59483ms
+  - id: 26
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: eventarc.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://eventarc.googleapis.com/v1/projects/example-project/locations/us-central1/triggers/eventarctrigger-2ubz1ejdpwb22?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-central1/triggers/eventarctrigger-2ubz1ejdpwb22",
+          "uid": "87abb999-5fb2-4966-bfdf-7cef9d988948",
+          "createTime": "2024-04-25T01:38:13.278417217Z",
+          "updateTime": "2024-04-25T01:38:18.543631764Z",
+          "eventFilters": [
+            {
+              "attribute": "type",
+              "value": "google.cloud.pubsub.topic.v1.messagePublished"
+            }
+          ],
+          "serviceAccount": "gsa-2ubz1ejdpwb22@example-project.iam.gserviceaccount.com",
+          "destination": {
+            "cloudRun": {
+              "service": "runservice-1-2ubz1ejdpwb22",
+              "region": "us-central1"
+            }
+          },
+          "transport": {
+            "pubsub": {
+              "topic": "projects/example-project/topics/pubsubtopic-2ubz1ejdpwb22",
+              "subscription": "projects/example-project/subscriptions/eventarc-us-central1-eventarctrigger-2ubz1ejdpwb22-sub-244"
+            }
+          },
+          "labels": {
+            "cnrm-test": "true",
+            "foo1": "bar1",
+            "managed-by-cnrm": "true"
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 450.253735ms
+  - id: 27
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: eventarc.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://eventarc.googleapis.com/v1/projects/example-project/locations/us-central1/triggers/eventarctrigger-2ubz1ejdpwb22?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-central1/triggers/eventarctrigger-2ubz1ejdpwb22",
+          "uid": "87abb999-5fb2-4966-bfdf-7cef9d988948",
+          "createTime": "2024-04-25T01:38:13.278417217Z",
+          "updateTime": "2024-04-25T01:38:18.543631764Z",
+          "eventFilters": [
+            {
+              "attribute": "type",
+              "value": "google.cloud.pubsub.topic.v1.messagePublished"
+            }
+          ],
+          "serviceAccount": "gsa-2ubz1ejdpwb22@example-project.iam.gserviceaccount.com",
+          "destination": {
+            "cloudRun": {
+              "service": "runservice-1-2ubz1ejdpwb22",
+              "region": "us-central1"
+            }
+          },
+          "transport": {
+            "pubsub": {
+              "topic": "projects/example-project/topics/pubsubtopic-2ubz1ejdpwb22",
+              "subscription": "projects/example-project/subscriptions/eventarc-us-central1-eventarctrigger-2ubz1ejdpwb22-sub-244"
+            }
+          },
+          "labels": {
+            "cnrm-test": "true",
+            "foo1": "bar1",
+            "managed-by-cnrm": "true"
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 450.952297ms
+  - id: 28
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: eventarc.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://eventarc.googleapis.com/v1/projects/example-project/locations/us-central1/triggers/eventarctrigger-2ubz1ejdpwb22?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-central1/triggers/eventarctrigger-2ubz1ejdpwb22",
+          "uid": "87abb999-5fb2-4966-bfdf-7cef9d988948",
+          "createTime": "2024-04-25T01:38:13.278417217Z",
+          "updateTime": "2024-04-25T01:38:18.543631764Z",
+          "eventFilters": [
+            {
+              "attribute": "type",
+              "value": "google.cloud.pubsub.topic.v1.messagePublished"
+            }
+          ],
+          "serviceAccount": "gsa-2ubz1ejdpwb22@example-project.iam.gserviceaccount.com",
+          "destination": {
+            "cloudRun": {
+              "service": "runservice-1-2ubz1ejdpwb22",
+              "region": "us-central1"
+            }
+          },
+          "transport": {
+            "pubsub": {
+              "topic": "projects/example-project/topics/pubsubtopic-2ubz1ejdpwb22",
+              "subscription": "projects/example-project/subscriptions/eventarc-us-central1-eventarctrigger-2ubz1ejdpwb22-sub-244"
+            }
+          },
+          "labels": {
+            "cnrm-test": "true",
+            "foo1": "bar1",
+            "managed-by-cnrm": "true"
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 421.014589ms
+  - id: 29
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: eventarc.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://eventarc.googleapis.com/v1/projects/example-project/locations/us-central1/triggers/eventarctrigger-2ubz1ejdpwb22?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-central1/triggers/eventarctrigger-2ubz1ejdpwb22",
+          "uid": "87abb999-5fb2-4966-bfdf-7cef9d988948",
+          "createTime": "2024-04-25T01:38:13.278417217Z",
+          "updateTime": "2024-04-25T01:38:18.543631764Z",
+          "eventFilters": [
+            {
+              "attribute": "type",
+              "value": "google.cloud.pubsub.topic.v1.messagePublished"
+            }
+          ],
+          "serviceAccount": "gsa-2ubz1ejdpwb22@example-project.iam.gserviceaccount.com",
+          "destination": {
+            "cloudRun": {
+              "service": "runservice-1-2ubz1ejdpwb22",
+              "region": "us-central1"
+            }
+          },
+          "transport": {
+            "pubsub": {
+              "topic": "projects/example-project/topics/pubsubtopic-2ubz1ejdpwb22",
+              "subscription": "projects/example-project/subscriptions/eventarc-us-central1-eventarctrigger-2ubz1ejdpwb22-sub-244"
+            }
+          },
+          "labels": {
+            "managed-by-cnrm": "true",
+            "cnrm-test": "true",
+            "foo1": "bar1"
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 182.931038ms
+  - id: 30
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: eventarc.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://eventarc.googleapis.com/v1/projects/example-project/locations/us-central1/triggers/eventarctrigger-2ubz1ejdpwb22?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-central1/triggers/eventarctrigger-2ubz1ejdpwb22",
+          "uid": "87abb999-5fb2-4966-bfdf-7cef9d988948",
+          "createTime": "2024-04-25T01:38:13.278417217Z",
+          "updateTime": "2024-04-25T01:38:18.543631764Z",
+          "eventFilters": [
+            {
+              "attribute": "type",
+              "value": "google.cloud.pubsub.topic.v1.messagePublished"
+            }
+          ],
+          "serviceAccount": "gsa-2ubz1ejdpwb22@example-project.iam.gserviceaccount.com",
+          "destination": {
+            "cloudRun": {
+              "service": "runservice-1-2ubz1ejdpwb22",
+              "region": "us-central1"
+            }
+          },
+          "transport": {
+            "pubsub": {
+              "topic": "projects/example-project/topics/pubsubtopic-2ubz1ejdpwb22",
+              "subscription": "projects/example-project/subscriptions/eventarc-us-central1-eventarctrigger-2ubz1ejdpwb22-sub-244"
+            }
+          },
+          "labels": {
+            "foo1": "bar1",
+            "managed-by-cnrm": "true",
+            "cnrm-test": "true"
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 210.898577ms
+  - id: 31
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 368
+      transfer_encoding: []
+      trailer: {}
+      host: eventarc.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: '{"destination":{"cloudRun":{"path":"/route/subroute","region":"us-central1","service":"runservice-2-2ubz1ejdpwb22"}},"eventFilters":[{"attribute":"type","value":"google.cloud.pubsub.topic.v1.messagePublished"}],"labels":{"cnrm-test":"true","foo1":"bar2","managed-by-cnrm":"true"},"serviceAccount":"gsa-2ubz1ejdpwb22@example-project.iam.gserviceaccount.com"}'
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://eventarc.googleapis.com/v1/projects/example-project/locations/us-central1/triggers/eventarctrigger-2ubz1ejdpwb22?alt=json&updateMask=destination%2Clabels
+      method: PATCH
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-central1/operations/operation-1714009109290-616e1d819dc41-b8004d3a-3c03fe11",
+          "metadata": {
+            "@type": "type.googleapis.com/google.cloud.eventarc.v1.OperationMetadata",
+            "createTime": "2024-04-25T01:38:29.457814304Z",
+            "target": "projects/example-project/locations/us-central1/triggers/eventarctrigger-2ubz1ejdpwb22",
+            "verb": "update",
+            "requestedCancellation": false,
+            "apiVersion": "v1"
+          },
+          "done": false
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 442.741562ms
+  - id: 32
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: eventarc.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://eventarc.googleapis.com/v1/projects/example-project/locations/us-central1/operations/operation-1714009109290-616e1d819dc41-b8004d3a-3c03fe11?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-central1/operations/operation-1714009109290-616e1d819dc41-b8004d3a-3c03fe11",
+          "metadata": {
+            "@type": "type.googleapis.com/google.cloud.eventarc.v1.OperationMetadata",
+            "createTime": "2024-04-25T01:38:29.457814304Z",
+            "endTime": "2024-04-25T01:38:32.335118521Z",
+            "target": "projects/example-project/locations/us-central1/triggers/eventarctrigger-2ubz1ejdpwb22",
+            "verb": "update",
+            "requestedCancellation": false,
+            "apiVersion": "v1"
+          },
+          "done": true,
+          "response": {
+            "@type": "type.googleapis.com/google.cloud.eventarc.v1.Trigger",
+            "name": "projects/example-project/locations/us-central1/triggers/eventarctrigger-2ubz1ejdpwb22",
+            "uid": "87abb999-5fb2-4966-bfdf-7cef9d988948",
+            "createTime": "2024-04-25T01:38:13.278417217Z",
+            "updateTime": "2024-04-25T01:38:29.459991106Z",
+            "eventFilters": [
+              {
+                "attribute": "type",
+                "value": "google.cloud.pubsub.topic.v1.messagePublished"
+              }
+            ],
+            "serviceAccount": "gsa-2ubz1ejdpwb22@example-project.iam.gserviceaccount.com",
+            "destination": {
+              "cloudRun": {
+                "service": "runservice-2-2ubz1ejdpwb22",
+                "path": "/route/subroute",
+                "region": "us-central1"
+              }
+            },
+            "transport": {
+              "pubsub": {
+                "topic": "projects/example-project/topics/pubsubtopic-2ubz1ejdpwb22",
+                "subscription": "projects/example-project/subscriptions/eventarc-us-central1-eventarctrigger-2ubz1ejdpwb22-sub-244"
+              }
+            }
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 223.71663ms
+  - id: 33
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: eventarc.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://eventarc.googleapis.com/v1/projects/example-project/locations/us-central1/triggers/eventarctrigger-2ubz1ejdpwb22?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-central1/triggers/eventarctrigger-2ubz1ejdpwb22",
+          "uid": "87abb999-5fb2-4966-bfdf-7cef9d988948",
+          "createTime": "2024-04-25T01:38:13.278417217Z",
+          "updateTime": "2024-04-25T01:38:32.346993568Z",
+          "eventFilters": [
+            {
+              "attribute": "type",
+              "value": "google.cloud.pubsub.topic.v1.messagePublished"
+            }
+          ],
+          "serviceAccount": "gsa-2ubz1ejdpwb22@example-project.iam.gserviceaccount.com",
+          "destination": {
+            "cloudRun": {
+              "service": "runservice-2-2ubz1ejdpwb22",
+              "path": "/route/subroute",
+              "region": "us-central1"
+            }
+          },
+          "transport": {
+            "pubsub": {
+              "topic": "projects/example-project/topics/pubsubtopic-2ubz1ejdpwb22",
+              "subscription": "projects/example-project/subscriptions/eventarc-us-central1-eventarctrigger-2ubz1ejdpwb22-sub-244"
+            }
+          },
+          "labels": {
+            "cnrm-test": "true",
+            "foo1": "bar2",
+            "managed-by-cnrm": "true"
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 274.327265ms
+  - id: 34
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: eventarc.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://eventarc.googleapis.com/v1/projects/example-project/locations/us-central1/triggers/eventarctrigger-2ubz1ejdpwb22?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-central1/triggers/eventarctrigger-2ubz1ejdpwb22",
+          "uid": "87abb999-5fb2-4966-bfdf-7cef9d988948",
+          "createTime": "2024-04-25T01:38:13.278417217Z",
+          "updateTime": "2024-04-25T01:38:32.346993568Z",
+          "eventFilters": [
+            {
+              "attribute": "type",
+              "value": "google.cloud.pubsub.topic.v1.messagePublished"
+            }
+          ],
+          "serviceAccount": "gsa-2ubz1ejdpwb22@example-project.iam.gserviceaccount.com",
+          "destination": {
+            "cloudRun": {
+              "service": "runservice-2-2ubz1ejdpwb22",
+              "path": "/route/subroute",
+              "region": "us-central1"
+            }
+          },
+          "transport": {
+            "pubsub": {
+              "topic": "projects/example-project/topics/pubsubtopic-2ubz1ejdpwb22",
+              "subscription": "projects/example-project/subscriptions/eventarc-us-central1-eventarctrigger-2ubz1ejdpwb22-sub-244"
+            }
+          },
+          "labels": {
+            "cnrm-test": "true",
+            "foo1": "bar2",
+            "managed-by-cnrm": "true"
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 282.616162ms
+  - id: 35
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: eventarc.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://eventarc.googleapis.com/v1/projects/example-project/locations/us-central1/triggers/eventarctrigger-2ubz1ejdpwb22?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-central1/triggers/eventarctrigger-2ubz1ejdpwb22",
+          "uid": "87abb999-5fb2-4966-bfdf-7cef9d988948",
+          "createTime": "2024-04-25T01:38:13.278417217Z",
+          "updateTime": "2024-04-25T01:38:32.346993568Z",
+          "eventFilters": [
+            {
+              "attribute": "type",
+              "value": "google.cloud.pubsub.topic.v1.messagePublished"
+            }
+          ],
+          "serviceAccount": "gsa-2ubz1ejdpwb22@example-project.iam.gserviceaccount.com",
+          "destination": {
+            "cloudRun": {
+              "service": "runservice-2-2ubz1ejdpwb22",
+              "path": "/route/subroute",
+              "region": "us-central1"
+            }
+          },
+          "transport": {
+            "pubsub": {
+              "topic": "projects/example-project/topics/pubsubtopic-2ubz1ejdpwb22",
+              "subscription": "projects/example-project/subscriptions/eventarc-us-central1-eventarctrigger-2ubz1ejdpwb22-sub-244"
+            }
+          },
+          "labels": {
+            "cnrm-test": "true",
+            "foo1": "bar2",
+            "managed-by-cnrm": "true"
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 513.509153ms
+  - id: 36
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: eventarc.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://eventarc.googleapis.com/v1/projects/example-project/locations/us-central1/triggers/eventarctrigger-2ubz1ejdpwb22?alt=json
+      method: DELETE
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-central1/operations/operation-1714009115495-616e1d8788cba-7acbb75a-18ec3b5a",
+          "metadata": {
+            "@type": "type.googleapis.com/google.cloud.eventarc.v1.OperationMetadata",
+            "createTime": "2024-04-25T01:38:35.505013390Z",
+            "target": "projects/example-project/locations/us-central1/triggers/eventarctrigger-2ubz1ejdpwb22",
+            "verb": "delete",
+            "requestedCancellation": false,
+            "apiVersion": "v1"
+          },
+          "done": false
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 290.314199ms
+  - id: 37
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: eventarc.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://eventarc.googleapis.com/v1/projects/example-project/locations/us-central1/operations/operation-1714009115495-616e1d8788cba-7acbb75a-18ec3b5a?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: -1
+      uncompressed: true
+      body: |
+        {
+          "name": "projects/example-project/locations/us-central1/operations/operation-1714009115495-616e1d8788cba-7acbb75a-18ec3b5a",
+          "metadata": {
+            "@type": "type.googleapis.com/google.cloud.eventarc.v1.OperationMetadata",
+            "createTime": "2024-04-25T01:38:35.505013390Z",
+            "endTime": "2024-04-25T01:38:39.449725765Z",
+            "target": "projects/example-project/locations/us-central1/triggers/eventarctrigger-2ubz1ejdpwb22",
+            "verb": "delete",
+            "requestedCancellation": false,
+            "apiVersion": "v1"
+          },
+          "done": true,
+          "response": {
+            "@type": "type.googleapis.com/google.cloud.eventarc.v1.Trigger",
+            "name": "projects/example-project/locations/us-central1/triggers/eventarctrigger-2ubz1ejdpwb22",
+            "eventFilters": [
+              {
+                "attribute": "type",
+                "value": "google.cloud.pubsub.topic.v1.messagePublished"
+              }
+            ],
+            "serviceAccount": "gsa-2ubz1ejdpwb22@example-project.iam.gserviceaccount.com",
+            "destination": {
+              "cloudRun": {
+                "service": "runservice-2-2ubz1ejdpwb22",
+                "path": "/route/subroute",
+                "region": "us-central1"
+              }
+            }
+          }
+        }
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 200 OK
+      code: 200
+      duration: 317.785839ms
+  - id: 38
+    request:
+      proto: HTTP/1.1
+      proto_major: 1
+      proto_minor: 1
+      content_length: 0
+      transfer_encoding: []
+      trailer: {}
+      host: eventarc.googleapis.com
+      remote_addr: ""
+      request_uri: ""
+      body: ""
+      form: {}
+      headers:
+        Content-Type:
+          - application/json
+      url: https://eventarc.googleapis.com/v1/projects/example-project/locations/us-central1/triggers/eventarctrigger-2ubz1ejdpwb22?alt=json
+      method: GET
+    response:
+      proto: HTTP/2.0
+      proto_major: 2
+      proto_minor: 0
+      transfer_encoding: []
+      trailer: {}
+      content_length: 0
+      uncompressed: true
+      body: fake error message
+      headers:
+        Content-Type:
+          - application/json; charset=UTF-8
+      status: 404 Not Found
+      code: 404
+      duration: 210.486166ms

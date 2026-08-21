@@ -1,0 +1,3 @@
+```release-note:bug
+serviceusage: removed unneeded Optional schema behaviour from `email` field in `google_project_service_identity` (beta)
+```

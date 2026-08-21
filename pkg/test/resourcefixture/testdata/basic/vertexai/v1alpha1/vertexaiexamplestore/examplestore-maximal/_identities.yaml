@@ -1,0 +1,6 @@
+- caisURL: //aiplatform.googleapis.com/projects/${projectId}/locations/us-central1/exampleStores/examplestore-${uniqueId}
+  group: vertexai.cnrm.cloud.google.com
+  kind: VertexAIExampleStore
+  name: examplestore-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

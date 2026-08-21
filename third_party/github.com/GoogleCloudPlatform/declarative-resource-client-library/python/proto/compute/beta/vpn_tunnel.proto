@@ -1,0 +1,92 @@
+// Copyright 2024 Google LLC. All Rights Reserved.
+// 
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+// 
+//     http://www.apache.org/licenses/LICENSE-2.0
+// 
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+syntax = "proto3";
+// All generated protos should be opaque, with "xxx_hidden_" prepended to their field names.
+
+
+package dcl;
+
+import "proto/connector/sdk.proto";
+import "proto/empty.proto";
+
+
+enum ComputeBetaVpnTunnelStatusEnum {
+  ComputeBetaVpnTunnelStatusEnumNO_VALUE_DO_NOT_USE = 0;
+  ComputeBetaVpnTunnelStatusEnumPROVISIONING = 1;
+  ComputeBetaVpnTunnelStatusEnumWAITING_FOR_FULL_CONFIG = 2;
+  ComputeBetaVpnTunnelStatusEnumFIRST_HANDSHAKE = 3;
+  ComputeBetaVpnTunnelStatusEnumESTABLISHED = 4;
+  ComputeBetaVpnTunnelStatusEnumNO_INCOMING_PACKETS = 5;
+  ComputeBetaVpnTunnelStatusEnumAUTHORIZATION_ERROR = 6;
+  ComputeBetaVpnTunnelStatusEnumNEGOTIATION_FAILURE = 7;
+  ComputeBetaVpnTunnelStatusEnumDEPROVISIONING = 8;
+  ComputeBetaVpnTunnelStatusEnumFAILED = 9;
+  ComputeBetaVpnTunnelStatusEnumREJECTED = 10;
+  ComputeBetaVpnTunnelStatusEnumALLOCATING_RESOURCES = 11;
+  ComputeBetaVpnTunnelStatusEnumSTOPPED = 12;
+  ComputeBetaVpnTunnelStatusEnumPEER_IDENTITY_MISMATCH = 13;
+  ComputeBetaVpnTunnelStatusEnumTS_NARROWING_NOT_ALLOWED = 14;
+}
+
+message ComputeBetaVpnTunnel {
+  map<string, string> labels = 1;
+  int64 id = 2;
+  string name = 3;
+  string description = 4;
+  string location = 5;
+  string target_vpn_gateway = 6;
+  string vpn_gateway = 7;
+  int64 vpn_gateway_interface = 8;
+  string peer_external_gateway = 9;
+  int64 peer_external_gateway_interface = 10;
+  string peer_gcp_gateway = 11;
+  string router = 12;
+  string peer_ip = 13;
+  string shared_secret = 14;
+  string shared_secret_hash = 15;
+  ComputeBetaVpnTunnelStatusEnum status = 16;
+  string self_link = 17;
+  int64 ike_version = 18;
+  string detailed_status = 19;
+  repeated string local_traffic_selector = 20;
+  repeated string remote_traffic_selector = 21;
+  string project = 22;
+}
+
+message ApplyComputeBetaVpnTunnelRequest {
+  ComputeBetaVpnTunnel resource = 1;
+  repeated LifecycleDirective lifecycle_directives = 2;
+  string service_account_file = 3;
+}
+
+message DeleteComputeBetaVpnTunnelRequest {
+  string service_account_file = 1;
+  ComputeBetaVpnTunnel resource = 2;
+}
+
+message ListComputeBetaVpnTunnelRequest {
+  string service_account_file = 1;
+  string Project = 2;
+  string Location = 3;
+}
+
+message ListComputeBetaVpnTunnelResponse {
+  repeated ComputeBetaVpnTunnel items = 1;
+}
+
+service ComputeBetaVpnTunnelService {
+  rpc ApplyComputeBetaVpnTunnel(ApplyComputeBetaVpnTunnelRequest) returns (ComputeBetaVpnTunnel);
+  rpc DeleteComputeBetaVpnTunnel(DeleteComputeBetaVpnTunnelRequest) returns (google.protobuf.Empty);
+  rpc ListComputeBetaVpnTunnel(ListComputeBetaVpnTunnelRequest) returns (ListComputeBetaVpnTunnelResponse);
+}

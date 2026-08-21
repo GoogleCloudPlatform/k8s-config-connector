@@ -1,0 +1,26 @@
+{
+  "name": "{{name}}",
+  "project": "run-v2-deploy-e2e",
+  "location": "{{region}}",
+  "ingress": "INGRESS_TRAFFIC_ALL",
+  "launchStage": "GA",
+  "template": {
+    "scaling": {
+      "maxInstanceCount": 2
+    },
+    "containers": [ {
+      "image": "gcr.io/cloudrun/hello",
+      "env": [ {
+        "name": "Foo",
+        "value": "oops"
+      }, {
+        "name": "yAy",
+        "value": "wOw"
+      } ]
+    } ]
+  },
+  "traffic": [ {
+    "type": "TRAFFIC_TARGET_ALLOCATION_TYPE_LATEST",
+    "percent": 100
+  } ]
+}

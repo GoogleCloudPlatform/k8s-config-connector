@@ -1,0 +1,7 @@
+6d5
+<     cnrm.cloud.google.com/state-into-spec: absent
+29a29
+>   externalRef: projects/${projectId}/datasets/bigquerydataset_${uniqueId}
+31a32,33
+>   observedState:
+>     location: us-central1
