@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: livestream.cnrm.cloud.google.com
+  kind: LiveStreamAsset
+  name: livestreamasset-minimal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
