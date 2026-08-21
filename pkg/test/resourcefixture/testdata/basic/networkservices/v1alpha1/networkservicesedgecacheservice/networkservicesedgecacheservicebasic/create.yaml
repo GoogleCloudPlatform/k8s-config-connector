@@ -1,0 +1,23 @@
+apiVersion: networkservices.cnrm.cloud.google.com/v1alpha1
+kind: NetworkServicesEdgeCacheService
+metadata:
+  name: service-${uniqueId}
+spec:
+  description: some description
+  projectRef:
+    external: ${projectId}
+  resourceID: service-${uniqueId}
+  routing:
+    hostRule:
+      - description: host rule description
+        hosts:
+          - "sslcert.tf-test.club"
+        pathMatcher: routes
+    pathMatcher:
+      - name: routes
+        routeRule:
+          - description: a route rule to match against
+            priority: "1"
+            matchRule:
+              - prefixMatch: "/"
+            origin: "projects/${projectId}/locations/global/edgeCacheOrigins/origin-${uniqueId}"

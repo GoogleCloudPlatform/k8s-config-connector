@@ -35,6 +35,7 @@ var allServices = []string{
 	"multiclusterservicediscovery.googleapis.com",
 	"mesh.googleapis.com",
 	"servicenetworking.googleapis.com",
+	"networkservices.googleapis.com",
 	"serviceusage.googleapis.com",
 	"spanner.googleapis.com",
 	"vpcaccess.googleapis.com",

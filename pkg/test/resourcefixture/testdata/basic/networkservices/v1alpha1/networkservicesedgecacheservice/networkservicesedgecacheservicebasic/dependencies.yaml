@@ -1,0 +1,10 @@
+apiVersion: networkservices.cnrm.cloud.google.com/v1alpha1
+kind: NetworkServicesEdgeCacheOrigin
+metadata:
+  name: origin-${uniqueId}
+spec:
+  description: The default bucket for media edge test
+  originAddress: gs://media-edge-default
+  projectRef:
+    external: ${projectId}
+  resourceID: origin-${uniqueId}
