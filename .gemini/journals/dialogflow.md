@@ -39,3 +39,14 @@
   - Moved the generated output `types.generated.go` to `siptrunk_types.generated.go` and restored `types.generated.go` for the other Dialogflow v2 resources.
   - Implemented the identity and external ref logic in `dialogflowsiptrunk_identity.go` with unit tests in `dialogflowsiptrunk_identity_test.go`.
 - **Impact**: Provides a correct scaffolding, CRD, identity, and reference setup for DialogflowSipTrunk, preparing the codebase for the subsequent adapter and reconciliation controller implementation steps.
+
+### [2026-07-06] DialogflowTool Initial Types and Identity Scaffolding
+- **Context**: Implementing initial KRM types, CRD, and IdentityV2 for `DialogflowTool` (Issue #9290).
+- **Problem**:
+  - The issue description requested using service `google.cloud.dialogflow.v1` for the `DialogflowTool` resource. However, there is no `Tool` proto message under `google.cloud.dialogflow.v1`. It is defined under `google.cloud.dialogflow.cx.v3beta1`.
+  - The GCP URL template given in the instructions is `projects/{project}/locations/{location}/tools/{tool}` which omits the `agents/{agent}` parent path segment. However, Dialogflow CX Tools are subresources of agents (`projects/{project}/locations/{location}/agents/{agent}/tools/{tool}`).
+- **Solution**:
+  - Configured `generate.sh` to run the scaffolder for `DialogflowTool:Tool` under `--service google.cloud.dialogflow.cx.v3beta1` and rename `types.generated.go` to `tool_types.generated.go`.
+  - Defined `DialogflowCXAgentRef` in `apis/dialogflow/v1alpha1/dialogflowcxagent_reference.go` to act as the parent reference type for the tool.
+  - Implemented the identity parser and validation in `apis/dialogflow/v1alpha1/dialogflowtool_identity.go` with the correct nested `projects/{project}/locations/{location}/agents/{agent}/tools/{tool}` template.
+- **Impact**: Sets up correct types, CRD, identity, and reference mapping for DialogflowTool, providing a clean path for the subsequent direct controller implementation.
