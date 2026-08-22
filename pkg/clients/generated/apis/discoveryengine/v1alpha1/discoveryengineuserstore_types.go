@@ -28,7 +28,7 @@
 // that future versions of the go-client may include breaking changes.
 // Please try it out and give us feedback!
 
-package v1beta1
+package v1alpha1
 
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
@@ -38,103 +38,85 @@ import (
 
 var _ = apiextensionsv1.JSON{}
 
-type TableAutomatedBackupPolicy struct {
-	/* Required. How frequently automated backups should occur. The only supported value at this time is 24 hours. */
+type DiscoveryEngineUserStoreSpec struct {
+	/* Optional. The default subscription LicenseConfig for the UserStore. If enableLicenseAutoRegister is true, new users will automatically register under the default subscription. */
 	// +optional
-	Frequency *string `json:"frequency,omitempty"`
+	DefaultLicenseConfigRef *v1alpha1.ResourceRef `json:"defaultLicenseConfigRef,omitempty"`
 
-	/* Required. How long the automated backups should be retained. The only supported value at this time is 3 days. */
+	/* Optional. The display name of the User Store. */
 	// +optional
-	RetentionPeriod *string `json:"retentionPeriod,omitempty"`
-}
+	DisplayName *string `json:"displayName,omitempty"`
 
-type TableColumnFamily struct {
-	/* The name of the column family. */
-	Family string `json:"family"`
-}
-
-type BigtableTableSpec struct {
-	/* If specified, automated backups are enabled for this table. Otherwise, automated backups are disabled. */
+	/* Optional. Whether to enable license auto update for users in this User Store. If true, users with expired licenses will automatically be updated to use the default license config as long as the default license config has seats left. */
 	// +optional
-	AutomatedBackupPolicy *TableAutomatedBackupPolicy `json:"automatedBackupPolicy,omitempty"`
+	EnableExpiredLicenseAutoUpdate *bool `json:"enableExpiredLicenseAutoUpdate,omitempty"`
 
-	/* Duration to retain change stream data for the table. Set to 0 to disable. Must be between 1 and 7 days.. */
+	/* Optional. Whether to enable license auto register for users in this User Store. If true, new users will automatically register under the default license config as long as the default license config has seats left. */
 	// +optional
-	ChangeStreamRetention *string `json:"changeStreamRetention,omitempty"`
+	EnableLicenseAutoRegister *bool `json:"enableLicenseAutoRegister,omitempty"`
 
-	/* The names of the column families that should be created immediately upon table creation, specified by name. The values that may be set are specified here. At least one column family must be specified. */
-	// +optional
-	ColumnFamily []TableColumnFamily `json:"columnFamily,omitempty"`
+	/* Immutable. The location of this resource. */
+	Location string `json:"location"`
 
-	/* NOTE: DeletionProtection proto field is changed from string (1.38) to bool (1.40) in cloud.google.com/go/bigtable/admin/apiv2/adminpb
-	Set to true to make the table protected against data loss. i.e. deleting
-	the following resources through Admin APIs are prohibited:
+	/* The project that this resource belongs to. */
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	* The table.
-	* The column families in the table.
-	* The instance containing the table.
-
-	Note one can still delete the data stored in the table through Data APIs. */
-	// +optional
-	DeletionProtection *string `json:"deletionProtection,omitempty"`
-
-	/* Immutable. The instance to create the table in. */
-	InstanceRef v1alpha1.ResourceRef `json:"instanceRef"`
-
-	/* The BigtableTable name. If not given, the metadata.name will be used. */
+	/* The DiscoveryEngineUserStore name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
-
-	/* A list of predefined keys to split the table on. */
-	// +optional
-	SplitKeys []string `json:"splitKeys,omitempty"`
 }
 
-type BigtableTableStatus struct {
+type UserstoreObservedStateStatus struct {
+}
+
+type DiscoveryEngineUserStoreStatus struct {
 	/* Conditions represent the latest available observations of the
-	   BigtableTable's current state. */
+	   DiscoveryEngineUserStore's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the BigtableTable resource in GCP. */
+	/* A unique specifier for the DiscoveryEngineUserStore resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
+
+	/* ObservedState is the state of the resource as most recently observed in GCP. */
+	// +optional
+	ObservedState *UserstoreObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// +kubebuilder:resource:categories=gcp,shortName=gcpbigtabletable;gcpbigtabletables
+// +kubebuilder:resource:categories=gcp,shortName=gcpdiscoveryengineuserstore;gcpdiscoveryengineuserstores
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=stable"
+// +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/tf2crd=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
-// BigtableTable is the Schema for the bigtable API
+// DiscoveryEngineUserStore is the Schema for the discoveryengine API
 // +k8s:openapi-gen=true
-type BigtableTable struct {
+type DiscoveryEngineUserStore struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   BigtableTableSpec   `json:"spec,omitempty"`
-	Status BigtableTableStatus `json:"status,omitempty"`
+	Spec   DiscoveryEngineUserStoreSpec   `json:"spec,omitempty"`
+	Status DiscoveryEngineUserStoreStatus `json:"status,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// BigtableTableList contains a list of BigtableTable
-type BigtableTableList struct {
+// DiscoveryEngineUserStoreList contains a list of DiscoveryEngineUserStore
+type DiscoveryEngineUserStoreList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []BigtableTable `json:"items"`
+	Items           []DiscoveryEngineUserStore `json:"items"`
 }
 
 func init() {
-	SchemeBuilder.Register(&BigtableTable{}, &BigtableTableList{})
+	SchemeBuilder.Register(&DiscoveryEngineUserStore{}, &DiscoveryEngineUserStoreList{})
 }

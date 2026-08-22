@@ -233,6 +233,9 @@ func (g *TypeGenerator) WriteVisitedMessages() error {
 				if name == "google.cloud.connectors.v1.Secret" {
 					out.addImport("secretmanagerv1beta1", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1")
 				}
+				if name == "google.protobuf.Struct" {
+					out.addImport("apiextensionsv1", "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1")
+				}
 				if name == "google.rpc.Status" {
 					out.addImport("common", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common")
 					break
@@ -293,6 +296,9 @@ func (g *TypeGenerator) WriteOutputMessages() error {
 				name := field.Message().FullName()
 				if name == "google.cloud.connectors.v1.Secret" {
 					out.addImport("secretmanagerv1beta1", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1")
+				}
+				if name == "google.protobuf.Struct" {
+					out.addImport("apiextensionsv1", "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1")
 				}
 				if name == "google.rpc.Status" {
 					out.addImport("common", "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common")

@@ -1180,24 +1180,721 @@ spec:
                       and how frequently.
                     items:
                       properties:
+                        bigQueryTarget:
+                          description: BigQuery target for Discovery. The first target
+                            to match a table will be the one applied.
+                          properties:
+                            cadence:
+                              description: How often and when to update profiles.
+                                New tables that match both the filter and conditions
+                                are scanned as quickly as possible depending on system
+                                capacity.
+                              properties:
+                                inspectTemplateModifiedCadence:
+                                  description: Governs when to update data profiles
+                                    when the inspection rules defined by the `InspectTemplate`
+                                    change. If not set, changing the template will
+                                    not cause a data profile to update.
+                                  properties:
+                                    frequency:
+                                      description: How frequently data profiles can
+                                        be updated when the template is modified.
+                                        Defaults to never.
+                                      type: string
+                                  type: object
+                                refreshFrequency:
+                                  description: Frequency at which profiles should
+                                    be updated, regardless of whether the underlying
+                                    resource has changed. Defaults to never.
+                                  type: string
+                                schemaModifiedCadence:
+                                  description: Governs when to update data profiles
+                                    when a schema is modified.
+                                  properties:
+                                    frequency:
+                                      description: How frequently profiles may be
+                                        updated when schemas are modified. Defaults
+                                        to monthly.
+                                      type: string
+                                    types:
+                                      description: The type of events to consider
+                                        when deciding if the table's schema has been
+                                        modified and should have the profile updated.
+                                        Defaults to NEW_COLUMNS.
+                                      items:
+                                        type: string
+                                      type: array
+                                  type: object
+                                tableModifiedCadence:
+                                  description: Governs when to update data profiles
+                                    when a table is modified.
+                                  properties:
+                                    frequency:
+                                      description: How frequently data profiles can
+                                        be updated when tables are modified. Defaults
+                                        to never.
+                                      type: string
+                                    types:
+                                      description: The type of events to consider
+                                        when deciding if the table has been modified
+                                        and should have the profile updated. Defaults
+                                        to MODIFIED_TIMESTAMP.
+                                      items:
+                                        type: string
+                                      type: array
+                                  type: object
+                              type: object
+                            conditions:
+                              description: In addition to matching the filter, these
+                                conditions must be true before a profile is generated.
+                              properties:
+                                createdAfter:
+                                  description: BigQuery table must have been created
+                                    after this date. Used to avoid backfilling.
+                                  type: string
+                                orConditions:
+                                  description: At least one of the conditions must
+                                    be true for a table to be scanned.
+                                  properties:
+                                    minAge:
+                                      description: Minimum age a table must have before
+                                        Cloud DLP can profile it. Value must be 1
+                                        hour or greater.
+                                      type: string
+                                    minRowCount:
+                                      description: Minimum number of rows that should
+                                        be present before Cloud DLP profiles a table
+                                      format: int32
+                                      type: integer
+                                  type: object
+                                typeCollection:
+                                  description: Restrict discovery to categories of
+                                    table types.
+                                  type: string
+                                types:
+                                  description: Restrict discovery to specific table
+                                    types.
+                                  properties:
+                                    types:
+                                      description: A set of BigQuery table types.
+                                      items:
+                                        type: string
+                                      type: array
+                                  type: object
+                              type: object
+                            disabled:
+                              description: Tables that match this filter will not
+                                have profiles created.
+                              type: object
+                            filter:
+                              description: Required. The tables the discovery cadence
+                                applies to. The first target with a matching filter
+                                will be the one to apply to a table.
+                              properties:
+                                otherTables:
+                                  description: Catch-all. This should always be the
+                                    last filter in the list because anything above
+                                    it will apply first. Should only appear once in
+                                    a configuration. If none is specified, a default
+                                    one will be added automatically.
+                                  type: object
+                                tableReference:
+                                  description: The table to scan. Discovery configurations
+                                    including this can only include one DiscoveryTarget
+                                    (the DiscoveryTarget with this TableReference).
+                                  properties:
+                                    datasetID:
+                                      description: Dataset ID of the table.
+                                      type: string
+                                    projectID:
+                                      description: The Google Cloud project ID of
+                                        the project containing the table. If omitted,
+                                        the project ID is inferred from the parent
+                                        project. This field is required if the parent
+                                        resource is an organization.
+                                      type: string
+                                    tableID:
+                                      description: Name of the table.
+                                      type: string
+                                  type: object
+                                tables:
+                                  description: A specific set of tables for this filter
+                                    to apply to. A table collection must be specified
+                                    in only one filter per config. If a table id or
+                                    dataset is empty, Cloud DLP assumes all tables
+                                    in that collection must be profiled. Must specify
+                                    a project ID.
+                                  properties:
+                                    includeRegexes:
+                                      description: A collection of regular expressions
+                                        to match a BigQuery table against.
+                                      properties:
+                                        patterns:
+                                          description: A single BigQuery regular expression
+                                            pattern to match against one or more tables,
+                                            datasets, or projects that contain BigQuery
+                                            tables.
+                                          items:
+                                            properties:
+                                              datasetIDRegex:
+                                                description: If unset, this property
+                                                  matches all datasets.
+                                                type: string
+                                              projectIDRegex:
+                                                description: For organizations, if
+                                                  unset, will match all projects.
+                                                  Has no effect for data profile configurations
+                                                  created within a project.
+                                                type: string
+                                              tableIDRegex:
+                                                description: If unset, this property
+                                                  matches all tables.
+                                                type: string
+                                            type: object
+                                          type: array
+                                      type: object
+                                  type: object
+                              type: object
+                          type: object
+                        cloudSQLTarget:
+                          description: Cloud SQL target for Discovery. The first target
+                            to match a table will be the one applied.
+                          properties:
+                            conditions:
+                              description: In addition to matching the filter, these
+                                conditions must be true before a profile is generated.
+                              properties:
+                                databaseEngines:
+                                  description: Optional. Database engines that should
+                                    be profiled. Optional. Defaults to ALL_SUPPORTED_DATABASE_ENGINES
+                                    if unspecified.
+                                  items:
+                                    type: string
+                                  type: array
+                                types:
+                                  description: Data profiles will only be generated
+                                    for the database resource types specified in this
+                                    field. If not specified, defaults to [DATABASE_RESOURCE_TYPE_ALL_SUPPORTED_TYPES].
+                                  items:
+                                    type: string
+                                  type: array
+                              type: object
+                            disabled:
+                              description: Disable profiling for database resources
+                                that match this filter.
+                              type: object
+                            filter:
+                              description: Required. The tables the discovery cadence
+                                applies to. The first target with a matching filter
+                                will be the one to apply to a table.
+                              properties:
+                                collection:
+                                  description: A specific set of database resources
+                                    for this filter to apply to.
+                                  properties:
+                                    includeRegexes:
+                                      description: A collection of regular expressions
+                                        to match a database resource against.
+                                      properties:
+                                        patterns:
+                                          description: A group of regular expression
+                                            patterns to match against one or more
+                                            database resources. Maximum of 100 entries.
+                                            The sum of all regular expression's length
+                                            can't exceed 10 KiB.
+                                          items:
+                                            properties:
+                                              databaseRegex:
+                                                description: Regex to test the database
+                                                  name against. If empty, all databases
+                                                  match.
+                                                type: string
+                                              databaseResourceNameRegex:
+                                                description: Regex to test the database
+                                                  resource's name against. An example
+                                                  of a database resource name is a
+                                                  table's name. Other database resource
+                                                  names like view names could be included
+                                                  in the future. If empty, all database
+                                                  resources match.
+                                                type: string
+                                              instanceRegex:
+                                                description: Regex to test the instance
+                                                  name against. If empty, all instances
+                                                  match.
+                                                type: string
+                                              projectIDRegex:
+                                                description: For organizations, if
+                                                  unset, will match all projects.
+                                                  Has no effect for configurations
+                                                  created within a project.
+                                                type: string
+                                            type: object
+                                          type: array
+                                      type: object
+                                  type: object
+                                databaseResourceReference:
+                                  description: The database resource to scan. Targets
+                                    including this can only include one target (the
+                                    target with this database resource reference).
+                                  properties:
+                                    database:
+                                      description: Required. Name of a database within
+                                        the instance.
+                                      type: string
+                                    databaseResource:
+                                      description: Required. Name of a database resource,
+                                        for example, a table within the database.
+                                      type: string
+                                    instance:
+                                      description: 'Required. The instance where this
+                                        resource is located. For example: Cloud SQL
+                                        instance ID.'
+                                      type: string
+                                    projectID:
+                                      description: Required. If within a project-level
+                                        config, then this must match the config's
+                                        project ID.
+                                      type: string
+                                  type: object
+                                others:
+                                  description: Catch-all. This should always be the
+                                    last target in the list because anything above
+                                    it will apply first. Should only appear once in
+                                    a configuration. If none is specified, a default
+                                    one will be added automatically.
+                                  type: object
+                              type: object
+                            generationCadence:
+                              description: How often and when to update profiles.
+                                New tables that match both the filter and conditions
+                                are scanned as quickly as possible depending on system
+                                capacity.
+                              properties:
+                                inspectTemplateModifiedCadence:
+                                  description: Governs when to update data profiles
+                                    when the inspection rules defined by the `InspectTemplate`
+                                    change. If not set, changing the template will
+                                    not cause a data profile to update.
+                                  properties:
+                                    frequency:
+                                      description: How frequently data profiles can
+                                        be updated when the template is modified.
+                                        Defaults to never.
+                                      type: string
+                                  type: object
+                                refreshFrequency:
+                                  description: Data changes (non-schema changes) in
+                                    Cloud SQL tables can't trigger reprofiling. If
+                                    you set this field, profiles are refreshed at
+                                    this frequency regardless of whether the underlying
+                                    tables have changed. Defaults to never.
+                                  type: string
+                                schemaModifiedCadence:
+                                  description: When to reprofile if the schema has
+                                    changed.
+                                  properties:
+                                    frequency:
+                                      description: Frequency to regenerate data profiles
+                                        when the schema is modified. Defaults to monthly.
+                                      type: string
+                                    types:
+                                      description: The types of schema modifications
+                                        to consider. Defaults to NEW_COLUMNS.
+                                      items:
+                                        type: string
+                                      type: array
+                                  type: object
+                              type: object
+                          type: object
+                        cloudStorageTarget:
+                          description: Cloud Storage target for Discovery. The first
+                            target to match a table will be the one applied.
+                          properties:
+                            conditions:
+                              description: Optional. In addition to matching the filter,
+                                these conditions must be true before a profile is
+                                generated.
+                              properties:
+                                cloudStorageConditions:
+                                  description: Optional. Cloud Storage conditions.
+                                  properties:
+                                    includedBucketAttributes:
+                                      description: Required. Only objects with the
+                                        specified attributes will be scanned. Defaults
+                                        to [ALL_SUPPORTED_BUCKETS] if unset.
+                                      items:
+                                        type: string
+                                      type: array
+                                    includedObjectAttributes:
+                                      description: Required. Only objects with the
+                                        specified attributes will be scanned. If an
+                                        object has one of the specified attributes
+                                        but is inside an excluded bucket, it will
+                                        not be scanned. Defaults to [ALL_SUPPORTED_OBJECTS].
+                                        A profile will be created even if no objects
+                                        match the included_object_attributes.
+                                      items:
+                                        type: string
+                                      type: array
+                                  type: object
+                                createdAfter:
+                                  description: Optional. File store must have been
+                                    created after this date. Used to avoid backfilling.
+                                  type: string
+                                minAge:
+                                  description: Optional. Minimum age a file store
+                                    must have. If set, the value must be 1 hour or
+                                    greater.
+                                  type: string
+                              type: object
+                            disabled:
+                              description: Optional. Disable profiling for buckets
+                                that match this filter.
+                              type: object
+                            filter:
+                              description: Required. The buckets the generation_cadence
+                                applies to. The first target with a matching filter
+                                will be the one to apply to a bucket.
+                              properties:
+                                cloudStorageResourceReference:
+                                  description: Optional. The bucket to scan. Targets
+                                    including this can only include one target (the
+                                    target with this bucket). This enables profiling
+                                    the contents of a single bucket, while the other
+                                    options allow for easy profiling of many bucets
+                                    within a project or an organization.
+                                  properties:
+                                    bucketName:
+                                      description: Required. The bucket to scan.
+                                      type: string
+                                    projectID:
+                                      description: Required. If within a project-level
+                                        config, then this must match the config's
+                                        project id.
+                                      type: string
+                                  type: object
+                                collection:
+                                  description: Optional. A specific set of buckets
+                                    for this filter to apply to.
+                                  properties:
+                                    includeRegexes:
+                                      description: Optional. A collection of regular
+                                        expressions to match a file store against.
+                                      properties:
+                                        patterns:
+                                          description: Required. The group of regular
+                                            expression patterns to match against one
+                                            or more file stores. Maximum of 100 entries.
+                                            The sum of all regular expression's length
+                                            can't exceed 10 KiB.
+                                          items:
+                                            properties:
+                                              cloudStorageRegex:
+                                                description: Optional. Regex for Cloud
+                                                  Storage.
+                                                properties:
+                                                  bucketNameRegex:
+                                                    description: 'Optional. Regex
+                                                      to test the bucket name against.
+                                                      If empty, all buckets match.
+                                                      Example: "marketing2021" or
+                                                      "(marketing)\d{4}" will both
+                                                      match the bucket gs://marketing2021'
+                                                    type: string
+                                                  projectIDRegex:
+                                                    description: Optional. For organizations,
+                                                      if unset, will match all projects.
+                                                    type: string
+                                                type: object
+                                            type: object
+                                          type: array
+                                      type: object
+                                  type: object
+                                others:
+                                  description: Optional. Catch-all. This should always
+                                    be the last target in the list because anything
+                                    above it will apply first. Should only appear
+                                    once in a configuration. If none is specified,
+                                    a default one will be added automatically.
+                                  type: object
+                              type: object
+                            generationCadence:
+                              description: Optional. How often and when to update
+                                profiles. New buckets that match both the filter and
+                                conditions are scanned as quickly as possible depending
+                                on system capacity.
+                              properties:
+                                inspectTemplateModifiedCadence:
+                                  description: Optional. Governs when to update data
+                                    profiles when the inspection rules defined by
+                                    the `InspectTemplate` change. If not set, changing
+                                    the template will not cause a data profile to
+                                    update.
+                                  properties:
+                                    frequency:
+                                      description: How frequently data profiles can
+                                        be updated when the template is modified.
+                                        Defaults to never.
+                                      type: string
+                                  type: object
+                                refreshFrequency:
+                                  description: Optional. Data changes in Cloud Storage
+                                    can't trigger reprofiling. If you set this field,
+                                    profiles are refreshed at this frequency regardless
+                                    of whether the underlying buckets have changed.
+                                    Defaults to never.
+                                  type: string
+                              type: object
+                          type: object
                         otherCloudTarget:
                           description: Other clouds target for discovery. The first
                             target to match a resource will be the one applied.
                           properties:
+                            conditions:
+                              description: Optional. In addition to matching the filter,
+                                these conditions must be true before a profile is
+                                generated.
+                              properties:
+                                amazonS3BucketConditions:
+                                  description: Amazon S3 bucket conditions.
+                                  properties:
+                                    bucketTypes:
+                                      description: Optional. Bucket types that should
+                                        be profiled. Optional. Defaults to TYPE_ALL_SUPPORTED
+                                        if unspecified.
+                                      items:
+                                        type: string
+                                      type: array
+                                    objectStorageClasses:
+                                      description: Optional. Object classes that should
+                                        be profiled. Optional. Defaults to ALL_SUPPORTED_CLASSES
+                                        if unspecified.
+                                      items:
+                                        type: string
+                                      type: array
+                                  type: object
+                                minAge:
+                                  description: Minimum age a resource must be before
+                                    Cloud DLP can profile it. Value must be 1 hour
+                                    or greater.
+                                  type: string
+                              type: object
                             dataSourceType:
                               description: 'Required. The type of data profiles generated
                                 by this discovery target. Supported values are: *
                                 aws/s3/bucket'
+                              type: object
+                            disabled:
+                              description: Disable profiling for resources that match
+                                this filter.
+                              type: object
+                            filter:
+                              description: Required. The resources that the discovery
+                                cadence applies to. The first target with a matching
+                                filter will be the one to apply to a resource.
                               properties:
-                                dataSource:
-                                  description: |-
-                                    Output only. An identifying string to the type of resource being profiled.
-                                     Current values:
-
-                                     * google/bigquery/table
-                                     * google/project
-                                     * google/sql/table
-                                     * google/gcs/bucket
+                                collection:
+                                  description: A collection of resources for this
+                                    filter to apply to.
+                                  properties:
+                                    includeRegexes:
+                                      description: A collection of regular expressions
+                                        to match a resource against.
+                                      properties:
+                                        patterns:
+                                          description: A group of regular expression
+                                            patterns to match against one or more
+                                            resources. Maximum of 100 entries. The
+                                            sum of all regular expression's length
+                                            can't exceed 10 KiB.
+                                          items:
+                                            properties:
+                                              amazonS3BucketRegex:
+                                                description: Regex for Amazon S3 buckets.
+                                                properties:
+                                                  awsAccountRegex:
+                                                    description: The AWS account regex.
+                                                    properties:
+                                                      accountIDRegex:
+                                                        description: Optional. Regex
+                                                          to test the AWS account
+                                                          ID against. If empty, all
+                                                          accounts match.
+                                                        type: string
+                                                    type: object
+                                                  bucketNameRegex:
+                                                    description: Optional. Regex to
+                                                      test the bucket name against.
+                                                      If empty, all buckets match.
+                                                    type: string
+                                                type: object
+                                            type: object
+                                          type: array
+                                      type: object
+                                  type: object
+                                others:
+                                  description: Optional. Catch-all. This should always
+                                    be the last target in the list because anything
+                                    above it will apply first. Should only appear
+                                    once in a configuration. If none is specified,
+                                    a default one will be added automatically.
+                                  type: object
+                                singleResource:
+                                  description: The resource to scan. Configs using
+                                    this filter can only have one target (the target
+                                    with this single resource reference).
+                                  properties:
+                                    amazonS3Bucket:
+                                      description: Amazon S3 bucket.
+                                      properties:
+                                        awsAccount:
+                                          description: The AWS account.
+                                          properties:
+                                            accountID:
+                                              description: Required. AWS account ID.
+                                              type: string
+                                          type: object
+                                        bucketName:
+                                          description: Required. The bucket name.
+                                          type: string
+                                      type: object
+                                  type: object
+                              type: object
+                            generationCadence:
+                              description: How often and when to update data profiles.
+                                New resources that match both the filter and conditions
+                                are scanned as quickly as possible depending on system
+                                capacity.
+                              properties:
+                                inspectTemplateModifiedCadence:
+                                  description: Optional. Governs when to update data
+                                    profiles when the inspection rules defined by
+                                    the `InspectTemplate` change. If not set, changing
+                                    the template will not cause a data profile to
+                                    update.
+                                  properties:
+                                    frequency:
+                                      description: How frequently data profiles can
+                                        be updated when the template is modified.
+                                        Defaults to never.
+                                      type: string
+                                  type: object
+                                refreshFrequency:
+                                  description: Optional. Frequency to update profiles
+                                    regardless of whether the underlying resource
+                                    has changes. Defaults to never.
+                                  type: string
+                              type: object
+                          type: object
+                        secretsTarget:
+                          description: Discovery target that looks for credentials
+                            and secrets stored in cloud resource metadata and reports
+                            them as vulnerabilities to Security Command Center. Only
+                            one target of this type is allowed.
+                          type: object
+                        vertexDatasetTarget:
+                          description: Vertex AI dataset target for Discovery. The
+                            first target to match a dataset will be the one applied.
+                            Note that discovery for Vertex AI can incur Cloud Storage
+                            Class B operation charges for storage.objects.get operations
+                            and retrieval fees. For more information, see [Cloud Storage
+                            pricing](https://cloud.google.com/storage/pricing#price-tables).
+                            Note that discovery for Vertex AI dataset will not be
+                            able to scan images unless DiscoveryConfig.processing_location.image_fallback_location
+                            has multi_region_processing or global_processing configured.
+                          properties:
+                            conditions:
+                              description: In addition to matching the filter, these
+                                conditions must be true before a profile is generated.
+                              properties:
+                                createdAfter:
+                                  description: Vertex AI dataset must have been created
+                                    after this date. Used to avoid backfilling.
+                                  type: string
+                                minAge:
+                                  description: Minimum age a Vertex AI dataset must
+                                    have. If set, the value must be 1 hour or greater.
+                                  type: string
+                              type: object
+                            disabled:
+                              description: Disable profiling for datasets that match
+                                this filter.
+                              type: object
+                            filter:
+                              description: Required. The datasets the discovery cadence
+                                applies to. The first target with a matching filter
+                                will be the one to apply to a dataset.
+                              properties:
+                                collection:
+                                  description: A specific set of Vertex AI datasets
+                                    for this filter to apply to.
+                                  properties:
+                                    vertexDatasetRegexes:
+                                      description: The regex used to filter dataset
+                                        resources.
+                                      properties:
+                                        patterns:
+                                          description: Required. The group of regular
+                                            expression patterns to match against one
+                                            or more datasets. Maximum of 100 entries.
+                                            The sum of the lengths of all regular
+                                            expressions can't exceed 10 KiB.
+                                          items:
+                                            properties:
+                                              projectIDRegex:
+                                                description: For organizations, if
+                                                  unset, will match all projects.
+                                                  Has no effect for configurations
+                                                  created within a project.
+                                                type: string
+                                            type: object
+                                          type: array
+                                      type: object
+                                  type: object
+                                others:
+                                  description: Catch-all. This should always be the
+                                    last target in the list because anything above
+                                    it will apply first. Should only appear once in
+                                    a configuration. If none is specified, a default
+                                    one will be added automatically.
+                                  type: object
+                                vertexDatasetResourceReference:
+                                  description: The dataset resource to scan. Targets
+                                    including this can only include one target (the
+                                    target with this dataset resource reference).
+                                  properties:
+                                    datasetResourceName:
+                                      description: Required. The name of the dataset
+                                        resource. If set within a project-level configuration,
+                                        the specified resource must be within the
+                                        project.
+                                      type: string
+                                  type: object
+                              type: object
+                            generationCadence:
+                              description: How often and when to update profiles.
+                                New datasets that match both the filter and conditions
+                                are scanned as quickly as possible depending on system
+                                capacity.
+                              properties:
+                                inspectTemplateModifiedCadence:
+                                  description: Governs when to update data profiles
+                                    when the inspection rules defined by the `InspectTemplate`
+                                    change. If not set, changing the template will
+                                    not cause a data profile to be updated.
+                                  properties:
+                                    frequency:
+                                      description: How frequently data profiles can
+                                        be updated when the template is modified.
+                                        Defaults to never.
+                                      type: string
+                                  type: object
+                                refreshFrequency:
+                                  description: If you set this field, profiles are
+                                    refreshed at this frequency regardless of whether
+                                    the underlying datasets have changed. Defaults
+                                    to never.
                                   type: string
                               type: object
                           type: object

@@ -44,3 +44,5 @@ type DiscoveryEngineSearchEngineExpansion interface{}
 type DiscoveryEngineServingConfigExpansion interface{}
 
 type DiscoveryEngineSessionExpansion interface{}
+
+type DiscoveryEngineUserStoreExpansion interface{}
