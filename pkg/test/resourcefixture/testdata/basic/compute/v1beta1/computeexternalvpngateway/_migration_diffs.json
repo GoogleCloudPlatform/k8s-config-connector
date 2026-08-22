@@ -1,0 +1,54 @@
+[
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "ComputeExternalVPNGateway/externalvpngateway-${uniqueId}",
+    "fields": [
+      {
+        "id": "description",
+        "old": "",
+        "new": "an external vpn gateway"
+      },
+      {
+        "id": "interface.#",
+        "old": "0",
+        "new": "1"
+      },
+      {
+        "id": "interface.0.id",
+        "old": "",
+        "new": "0"
+      },
+      {
+        "id": "interface.0.ip_address",
+        "old": "",
+        "new": "8.8.8.8"
+      },
+      {
+        "id": "label_fingerprint",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": "externalvpngateway-${uniqueId}"
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "redundancy_type",
+        "old": "",
+        "new": "SINGLE_IP_INTERNALLY_REDUNDANT"
+      },
+      {
+        "id": "self_link",
+        "old": "",
+        "new": ""
+      }
+    ]
+  }
+]
