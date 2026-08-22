@@ -416,6 +416,24 @@ func CodeExecutionResult_ToProto(mapCtx *direct.MapContext, in *krm.CodeExecutio
 	out.Output = direct.ValueOf(in.Output)
 	return out
 }
+func ColabImageObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ColabImage) *krm.ColabImageObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ColabImageObservedState{}
+	out.ReleaseName = direct.LazyPtr(in.GetReleaseName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	return out
+}
+func ColabImageObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ColabImageObservedState) *pb.ColabImage {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ColabImage{}
+	out.ReleaseName = direct.ValueOf(in.ReleaseName)
+	out.Description = direct.ValueOf(in.Description)
+	return out
+}
 func Content_FromProto(mapCtx *direct.MapContext, in *pb.Content) *krm.Content {
 	if in == nil {
 		return nil
@@ -1392,22 +1410,42 @@ func NetworkSpec_FromProto(mapCtx *direct.MapContext, in *pb.NetworkSpec) *krm.N
 }
 */
 
-/* found existing non-generated mapping function "NetworkSpec_ToProto", skipping
-func NetworkSpec_ToProto(mapCtx *direct.MapContext, in *krm.NetworkSpec) *pb.NetworkSpec {
+/*
+found existing non-generated mapping function "NetworkSpec_ToProto", skipping
+
+	func NetworkSpec_ToProto(mapCtx *direct.MapContext, in *krm.NetworkSpec) *pb.NetworkSpec {
+		if in == nil {
+			return nil
+		}
+		out := &pb.NetworkSpec{}
+		out.EnableInternetAccess = direct.ValueOf(in.EnableInternetAccess)
+		if in.NetworkRef != nil {
+			out.Network = in.NetworkRef.External
+		}
+		if in.SubnetworkRef != nil {
+			out.Subnetwork = in.SubnetworkRef.External
+		}
+		return out
+	}
+*/
+func NotebookEUCConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NotebookEucConfig) *krm.NotebookEUCConfigObservedState {
 	if in == nil {
 		return nil
 	}
-	out := &pb.NetworkSpec{}
-	out.EnableInternetAccess = direct.ValueOf(in.EnableInternetAccess)
-	if in.NetworkRef != nil {
-		out.Network = in.NetworkRef.External
-	}
-	if in.SubnetworkRef != nil {
-		out.Subnetwork = in.SubnetworkRef.External
-	}
+	out := &krm.NotebookEUCConfigObservedState{}
+	out.EUCDisabled = direct.LazyPtr(in.GetEucDisabled())
+	out.BypassActasCheck = direct.LazyPtr(in.GetBypassActasCheck())
 	return out
 }
-*/
+func NotebookEUCConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NotebookEUCConfigObservedState) *pb.NotebookEucConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NotebookEucConfig{}
+	out.EucDisabled = direct.ValueOf(in.EUCDisabled)
+	out.BypassActasCheck = direct.ValueOf(in.BypassActasCheck)
+	return out
+}
 
 /* found existing non-generated mapping function "NotebookExecutionJob_FromProto", skipping
 func NotebookExecutionJob_FromProto(mapCtx *direct.MapContext, in *pb.NotebookExecutionJob) *krm.NotebookExecutionJob {
@@ -1650,6 +1688,46 @@ func NotebookExecutionJob_WorkbenchRuntime_ToProto(mapCtx *direct.MapContext, in
 		return nil
 	}
 	out := &pb.NotebookExecutionJob_WorkbenchRuntime{}
+	return out
+}
+func NotebookIdleShutdownConfig_FromProto(mapCtx *direct.MapContext, in *pb.NotebookIdleShutdownConfig) *krm.NotebookIdleShutdownConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NotebookIdleShutdownConfig{}
+	out.IdleTimeout = direct.StringDuration_FromProto(mapCtx, in.GetIdleTimeout())
+	out.IdleShutdownDisabled = direct.LazyPtr(in.GetIdleShutdownDisabled())
+	return out
+}
+func NotebookIdleShutdownConfig_ToProto(mapCtx *direct.MapContext, in *krm.NotebookIdleShutdownConfig) *pb.NotebookIdleShutdownConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NotebookIdleShutdownConfig{}
+	out.IdleTimeout = direct.StringDuration_ToProto(mapCtx, in.IdleTimeout)
+	out.IdleShutdownDisabled = direct.ValueOf(in.IdleShutdownDisabled)
+	return out
+}
+func NotebookSoftwareConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NotebookSoftwareConfig) *krm.NotebookSoftwareConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.NotebookSoftwareConfigObservedState{}
+	out.ColabImage = ColabImageObservedState_FromProto(mapCtx, in.GetColabImage())
+	out.Env = direct.Slice_FromProto(mapCtx, in.Env, EnvVar_FromProto)
+	out.PostStartupScriptConfig = PostStartupScriptConfig_FromProto(mapCtx, in.GetPostStartupScriptConfig())
+	return out
+}
+func NotebookSoftwareConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NotebookSoftwareConfigObservedState) *pb.NotebookSoftwareConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NotebookSoftwareConfig{}
+	if oneof := ColabImageObservedState_ToProto(mapCtx, in.ColabImage); oneof != nil {
+		out.RuntimeImage = &pb.NotebookSoftwareConfig_ColabImage{ColabImage: oneof}
+	}
+	out.Env = direct.Slice_ToProto(mapCtx, in.Env, EnvVar_ToProto)
+	out.PostStartupScriptConfig = PostStartupScriptConfig_ToProto(mapCtx, in.PostStartupScriptConfig)
 	return out
 }
 func PSCAutomationConfig_FromProto(mapCtx *direct.MapContext, in *pb.PSCAutomationConfig) *krm.PSCAutomationConfig {
@@ -1960,6 +2038,26 @@ func Port_ToProto(mapCtx *direct.MapContext, in *krm.Port) *pb.Port {
 	}
 	out := &pb.Port{}
 	out.ContainerPort = direct.ValueOf(in.ContainerPort)
+	return out
+}
+func PostStartupScriptConfig_FromProto(mapCtx *direct.MapContext, in *pb.PostStartupScriptConfig) *krm.PostStartupScriptConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PostStartupScriptConfig{}
+	out.PostStartupScript = direct.LazyPtr(in.GetPostStartupScript())
+	out.PostStartupScriptURL = direct.LazyPtr(in.GetPostStartupScriptUrl())
+	out.PostStartupScriptBehavior = direct.Enum_FromProto(mapCtx, in.GetPostStartupScriptBehavior())
+	return out
+}
+func PostStartupScriptConfig_ToProto(mapCtx *direct.MapContext, in *krm.PostStartupScriptConfig) *pb.PostStartupScriptConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PostStartupScriptConfig{}
+	out.PostStartupScript = direct.ValueOf(in.PostStartupScript)
+	out.PostStartupScriptUrl = direct.ValueOf(in.PostStartupScriptURL)
+	out.PostStartupScriptBehavior = direct.Enum_ToProto[pb.PostStartupScriptConfig_PostStartupScriptBehavior](mapCtx, in.PostStartupScriptBehavior)
 	return out
 }
 func PredefinedSplit_FromProto(mapCtx *direct.MapContext, in *pb.PredefinedSplit) *krm.PredefinedSplit {
@@ -2372,6 +2470,22 @@ found existing non-generated mapping function "Schema_ToProto", skipping
 		return out
 	}
 */
+func ShieldedVMConfig_FromProto(mapCtx *direct.MapContext, in *pb.ShieldedVmConfig) *krm.ShieldedVMConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ShieldedVMConfig{}
+	out.EnableSecureBoot = direct.LazyPtr(in.GetEnableSecureBoot())
+	return out
+}
+func ShieldedVMConfig_ToProto(mapCtx *direct.MapContext, in *krm.ShieldedVMConfig) *pb.ShieldedVmConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ShieldedVmConfig{}
+	out.EnableSecureBoot = direct.ValueOf(in.EnableSecureBoot)
+	return out
+}
 func SmoothGradConfig_FromProto(mapCtx *direct.MapContext, in *pb.SmoothGradConfig) *krm.SmoothGradConfig {
 	if in == nil {
 		return nil
@@ -3183,6 +3297,90 @@ func VertexAIFeatureOnlineStoreSpec_ToProto(mapCtx *direct.MapContext, in *krm.V
 	out.Labels = in.Labels
 	out.DedicatedServingEndpoint = FeatureOnlineStore_DedicatedServingEndpoint_ToProto(mapCtx, in.DedicatedServingEndpoint)
 	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
+	return out
+}
+func VertexAINotebookRuntimeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.NotebookRuntime) *krm.VertexAINotebookRuntimeObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VertexAINotebookRuntimeObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.ProxyURI = direct.LazyPtr(in.GetProxyUri())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.HealthState = direct.Enum_FromProto(mapCtx, in.GetHealthState())
+	out.ServiceAccount = direct.LazyPtr(in.GetServiceAccount())
+	out.RuntimeState = direct.Enum_FromProto(mapCtx, in.GetRuntimeState())
+	out.IsUpgradable = direct.LazyPtr(in.GetIsUpgradable())
+	out.ExpirationTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpirationTime())
+	out.Version = direct.LazyPtr(in.GetVersion())
+	out.NotebookRuntimeType = direct.Enum_FromProto(mapCtx, in.GetNotebookRuntimeType())
+	out.MachineSpec = MachineSpec_FromProto(mapCtx, in.GetMachineSpec())
+	out.DataPersistentDiskSpec = PersistentDiskSpec_FromProto(mapCtx, in.GetDataPersistentDiskSpec())
+	out.NetworkSpec = NetworkSpec_FromProto(mapCtx, in.GetNetworkSpec())
+	out.IdleShutdownConfig = NotebookIdleShutdownConfig_FromProto(mapCtx, in.GetIdleShutdownConfig())
+	out.EUCConfig = NotebookEUCConfigObservedState_FromProto(mapCtx, in.GetEucConfig())
+	out.ShieldedVMConfig = ShieldedVMConfig_FromProto(mapCtx, in.GetShieldedVmConfig())
+	out.SoftwareConfig = NotebookSoftwareConfigObservedState_FromProto(mapCtx, in.GetSoftwareConfig())
+	out.EncryptionSpec = EncryptionSpec_FromProto(mapCtx, in.GetEncryptionSpec())
+	out.SatisfiesPzs = direct.LazyPtr(in.GetSatisfiesPzs())
+	// MISSING: SatisfiesPzi
+	return out
+}
+func VertexAINotebookRuntimeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VertexAINotebookRuntimeObservedState) *pb.NotebookRuntime {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NotebookRuntime{}
+	out.Name = direct.ValueOf(in.Name)
+	out.ProxyUri = direct.ValueOf(in.ProxyURI)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.HealthState = direct.Enum_ToProto[pb.NotebookRuntime_HealthState](mapCtx, in.HealthState)
+	out.ServiceAccount = direct.ValueOf(in.ServiceAccount)
+	out.RuntimeState = direct.Enum_ToProto[pb.NotebookRuntime_RuntimeState](mapCtx, in.RuntimeState)
+	out.IsUpgradable = direct.ValueOf(in.IsUpgradable)
+	out.ExpirationTime = direct.StringTimestamp_ToProto(mapCtx, in.ExpirationTime)
+	out.Version = direct.ValueOf(in.Version)
+	out.NotebookRuntimeType = direct.Enum_ToProto[pb.NotebookRuntimeType](mapCtx, in.NotebookRuntimeType)
+	out.MachineSpec = MachineSpec_ToProto(mapCtx, in.MachineSpec)
+	out.DataPersistentDiskSpec = PersistentDiskSpec_ToProto(mapCtx, in.DataPersistentDiskSpec)
+	out.NetworkSpec = NetworkSpec_ToProto(mapCtx, in.NetworkSpec)
+	out.IdleShutdownConfig = NotebookIdleShutdownConfig_ToProto(mapCtx, in.IdleShutdownConfig)
+	out.EucConfig = NotebookEUCConfigObservedState_ToProto(mapCtx, in.EUCConfig)
+	out.ShieldedVmConfig = ShieldedVMConfig_ToProto(mapCtx, in.ShieldedVMConfig)
+	out.SoftwareConfig = NotebookSoftwareConfigObservedState_ToProto(mapCtx, in.SoftwareConfig)
+	out.EncryptionSpec = EncryptionSpec_ToProto(mapCtx, in.EncryptionSpec)
+	out.SatisfiesPzs = direct.ValueOf(in.SatisfiesPzs)
+	// MISSING: SatisfiesPzi
+	return out
+}
+func VertexAINotebookRuntimeSpec_FromProto(mapCtx *direct.MapContext, in *pb.NotebookRuntime) *krm.VertexAINotebookRuntimeSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.VertexAINotebookRuntimeSpec{}
+	out.RuntimeUser = direct.LazyPtr(in.GetRuntimeUser())
+	out.NotebookRuntimeTemplateRef = NotebookRuntimeTemplateRef_FromProto(mapCtx, in.GetNotebookRuntimeTemplateRef())
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Labels = in.Labels
+	out.NetworkTags = in.NetworkTags
+	// MISSING: SatisfiesPzi
+	return out
+}
+func VertexAINotebookRuntimeSpec_ToProto(mapCtx *direct.MapContext, in *krm.VertexAINotebookRuntimeSpec) *pb.NotebookRuntime {
+	if in == nil {
+		return nil
+	}
+	out := &pb.NotebookRuntime{}
+	out.RuntimeUser = direct.ValueOf(in.RuntimeUser)
+	out.NotebookRuntimeTemplateRef = NotebookRuntimeTemplateRef_ToProto(mapCtx, in.NotebookRuntimeTemplateRef)
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	out.Labels = in.Labels
+	out.NetworkTags = in.NetworkTags
+	// MISSING: SatisfiesPzi
 	return out
 }
 func VertexAIPipelineJobObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PipelineJob) *krm.VertexAIPipelineJobObservedState {
