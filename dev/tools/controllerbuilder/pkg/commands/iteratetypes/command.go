@@ -121,7 +121,7 @@ func writeToFile(ctx context.Context, o *Options, allproto *[]ResourceMetadata) 
 	for _, proto := range *allproto {
 		b, err := yaml.Marshal(proto)
 		if err != nil {
-			return fmt.Errorf("marshalling proto %s: %w", proto, err)
+			return fmt.Errorf("marshalling proto %s: %w", &proto, err)
 		}
 		f.WriteString(string(b) + "\n---\n")
 	}

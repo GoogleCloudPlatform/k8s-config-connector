@@ -188,6 +188,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//developerconnect.googleapis.com/projects/{}/locations/{}/insightsConfigs/{}":   true,
 
 		// Discovery Engine
+		"//discoveryengine.googleapis.com/projects/{}/locations/{}/aclConfig":                                     true,
 		"//discoveryengine.googleapis.com/projects/{}/locations/{}/collections/{}/engines/{}/servingConfigs/{}":   true,
 		"//discoveryengine.googleapis.com/projects/{}/locations/{}/collections/{}/dataStores/{}/conversations/{}": true,
 		"//discoveryengine.googleapis.com/projects/{}/locations/{}/dataStores/{}/controls/{}":                     true,
