@@ -59,6 +59,12 @@ func getOrganizationNumber() int64 {
 			return val
 		}
 	}
+	orgID := testgcp.TestOrgID.Get()
+	if orgID != "" {
+		if val, err := strconv.ParseInt(orgID, 10, 64); err == nil {
+			return val
+		}
+	}
 	return 123451001 // Fallback mock value
 }
 
@@ -102,6 +108,14 @@ func (s *StorageInsightsServer) CreateDatasetConfig(ctx context.Context, req *pb
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
+
+	// Validate retentionPeriodDays
+	if obj.RetentionPeriodDays == 0 {
+		return nil, status.Errorf(codes.InvalidArgument, "retentionPeriodDays is a required field")
+	}
+	if obj.RetentionPeriodDays < 1 || obj.RetentionPeriodDays > 3650 {
+		return nil, status.Errorf(codes.InvalidArgument, "invalid retentionPeriodDays: %d. Must be between 1 and 3650.", obj.RetentionPeriodDays)
+	}
 
 	// Real GCP does not return skipVerificationAndIngest in GET responses after creation,
 	// even if it was requested as true during POST. However, it is returned if set via PATCH.
@@ -174,12 +188,24 @@ func (s *StorageInsightsServer) UpdateDatasetConfig(ctx context.Context, req *pb
 	if req.DatasetConfig.OrganizationNumber == 0 {
 		return nil, status.Errorf(codes.InvalidArgument, "Dataset config must be in the same organization as the destination project. Invalid Organization number: 0")
 	}
+	if req.DatasetConfig.OrganizationNumber != existing.OrganizationNumber {
+		return nil, status.Errorf(codes.InvalidArgument, "Organization number cannot be changed once created")
+	}
 
 	updated := proto.Clone(existing).(*pb.DatasetConfig)
 	paths := req.GetUpdateMask().GetPaths()
 	if err := fields.UpdateByFieldMask(updated, req.DatasetConfig, paths); err != nil {
 		return nil, status.Errorf(codes.Internal, "error updating fields: %v", err)
 	}
+
+	// Validate retentionPeriodDays after applying update mask
+	if updated.RetentionPeriodDays == 0 {
+		return nil, status.Errorf(codes.InvalidArgument, "retentionPeriodDays is a required field")
+	}
+	if updated.RetentionPeriodDays < 1 || updated.RetentionPeriodDays > 3650 {
+		return nil, status.Errorf(codes.InvalidArgument, "invalid retentionPeriodDays: %d. Must be between 1 and 3650.", updated.RetentionPeriodDays)
+	}
+
 	updated.UpdateTime = timestamppb.New(now)
 
 	if err := s.storage.Update(ctx, fqn, updated); err != nil {
@@ -249,14 +275,53 @@ func (s *StorageInsightsServer) ListDatasetConfigs(ctx context.Context, req *pb.
 
 	prefix := "projects/" + project.ID + "/locations/" + tokens[3] + "/datasetConfigs/"
 
-	var response pb.ListDatasetConfigsResponse
+	pageSize := int(req.GetPageSize())
+	if pageSize <= 0 {
+		pageSize = 100 // Default page size
+	}
+	if pageSize > 1000 {
+		pageSize = 1000 // Max page size
+	}
+
+	startIndex := 0
+	pageToken := req.GetPageToken()
+	if pageToken != "" {
+		parsed, err := strconv.Atoi(pageToken)
+		if err != nil {
+			return nil, status.Errorf(codes.InvalidArgument, "invalid page token %q", pageToken)
+		}
+		startIndex = parsed
+	}
+
+	var all []*pb.DatasetConfig
 	err = s.storage.List(ctx, (&pb.DatasetConfig{}).ProtoReflect().Descriptor(), storage.ListOptions{Prefix: prefix}, func(obj proto.Message) error {
 		item := obj.(*pb.DatasetConfig)
-		response.DatasetConfigs = append(response.DatasetConfigs, item)
+		all = append(all, item)
 		return nil
 	})
 	if err != nil {
 		return nil, err
+	}
+
+	if startIndex < 0 {
+		startIndex = 0
+	}
+	if startIndex > len(all) {
+		startIndex = len(all)
+	}
+
+	endIndex := startIndex + pageSize
+	if endIndex > len(all) {
+		endIndex = len(all)
+	}
+
+	var response pb.ListDatasetConfigsResponse
+	if startIndex < len(all) {
+		response.DatasetConfigs = all[startIndex:endIndex]
+	}
+
+	if endIndex < len(all) {
+		response.NextPageToken = strconv.Itoa(endIndex)
 	}
 
 	return &response, nil
