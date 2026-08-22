@@ -38,7 +38,8 @@ ${CONTROLLERBUILDER} generate-types \
   --include-skipped-output \
   --resource CloudSecurityComplianceCloudControl:CloudControl \
   --resource CloudSecurityComplianceFramework:Framework \
-  --resource CloudSecurityFramework:Framework
+  --resource CloudSecurityFramework:Framework \
+  --resource CloudSecurityComplianceFrameworkDeployment:FrameworkDeployment
 
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.cloudsecuritycompliance.v1 \
