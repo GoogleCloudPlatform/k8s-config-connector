@@ -1,0 +1,90 @@
+apiVersion: contactcenterinsights.cnrm.cloud.google.com/v1alpha1
+kind: CCInsightsConversation
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: ccinsightsconv-max-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  agentID: agent-2
+  callMetadata:
+    agentChannel: 2
+    customerChannel: 1
+  dataSource:
+    gcsSource:
+      transcriptURI: gs://${projectId}-ccinsights-test-bucket-2026/transcript.json
+  labels:
+    key1: val1_updated
+    key3: val3
+  languageCode: es-ES
+  location: us-central1
+  medium: CHAT
+  obfuscatedUserID: test-user
+  projectRef:
+    external: ${projectId}
+  qualityMetadata:
+    agentInfo:
+    - agentID: agent-2
+      agentType: HUMAN_AGENT
+      displayName: Agent One Updated
+      dispositionCode: ESCALATED
+      team: billing
+    customerSatisfactionRating: 4
+    menuPath: menu_updated
+    waitDuration: 15s
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/conversations/ccinsightsconv-max-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    duration: 4s
+    transcript:
+      transcriptSegments:
+      - channelTag: 1
+        languageCode: en-US
+        messageTime: "1970-01-01T00:00:01Z"
+        segmentParticipant:
+          role: END_USER
+          userID: "1"
+        text: Hello, I am calling about my recent invoice.
+        words:
+        - word: Hello,
+        - word: I
+        - word: am
+        - word: calling
+        - word: about
+        - word: my
+        - word: recent
+        - word: invoice.
+      - channelTag: 2
+        languageCode: en-US
+        messageTime: "1970-01-01T00:00:05Z"
+        segmentParticipant:
+          role: HUMAN_AGENT
+          userID: "2"
+        text: I can certainly help with that. Can I have your account number?
+        words:
+        - word: I
+        - word: can
+        - word: certainly
+        - word: help
+        - word: with
+        - word: that.
+        - word: Can
+        - word: I
+        - word: have
+        - word: your
+        - word: account
+        - word: number?
+    turnCount: 2
+    updateTime: "1970-01-01T00:00:00Z"
