@@ -97,4 +97,3 @@ Your task is to draft the official release notes for version `{{VERSION}}`.
         - `git add docs/releasenotes/release-{{MAJOR_MINOR}}.md && git commit -m "Add release notes for {{VERSION}}"`
         - `git push origin draft-notes-{{VERSION}}`
         - `gh pr create --title "Release Notes {{VERSION}}" --body "Automated draft of release notes for version {{VERSION}} comparing {{PREVIOUS_TAG}} to {{CURRENT_TAG}}.<br><br>Triggered by chore: \`.agents/kcc-release.md\`" --head draft-notes-{{VERSION}} --label "overseer,area/release,priority/medium"`
-VERSION}}`
