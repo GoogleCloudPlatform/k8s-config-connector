@@ -170,7 +170,42 @@ func ResolveReferenceObject(resourceRefValRaw map[string]interface{},
 	// external resource reference, the 'external' field is used to specify a
 	// string identifier for the referenced resource.
 	if resourceRef.External != "" {
-		return resourceRef.External, nil
+		externalVal := resourceRef.External
+		// If reference is to ComputeRouter, and targetField is not "self_link" (so it expects only the name),
+		// and the external reference is a full path/URL, extract only the router name.
+		if typeConfig.GVK.Kind == "ComputeRouter" && (typeConfig.TargetField == "" || typeConfig.TargetField == "name") {
+			val := externalVal
+			for _, prefix := range []string{
+				"https://compute.googleapis.com/compute/v1/",
+				"https://compute.googleapis.com/compute/beta/",
+				"https://compute.googleapis.com/compute/v1beta1/",
+				"https://compute.googleapis.com/",
+				"https://www.googleapis.com/compute/v1/",
+				"https://www.googleapis.com/compute/beta/",
+				"https://www.googleapis.com/compute/v1beta1/",
+				"https://www.googleapis.com/",
+				"http://compute.googleapis.com/compute/v1/",
+				"http://compute.googleapis.com/compute/beta/",
+				"http://compute.googleapis.com/compute/v1beta1/",
+				"http://compute.googleapis.com/",
+				"http://www.googleapis.com/compute/v1/",
+				"http://www.googleapis.com/compute/beta/",
+				"http://www.googleapis.com/compute/v1beta1/",
+				"http://www.googleapis.com/",
+			} {
+				val = strings.TrimPrefix(val, prefix)
+			}
+			if strings.Contains(val, "/routers/") {
+				parts := strings.Split(val, "/routers/")
+				if len(parts) == 2 {
+					routerName := parts[1]
+					if !strings.Contains(routerName, "/") {
+						return routerName, nil
+					}
+				}
+			}
+		}
+		return externalVal, nil
 	}
 
 	// Deletions do some limited config expansion in order to preset immutable fields before the read
