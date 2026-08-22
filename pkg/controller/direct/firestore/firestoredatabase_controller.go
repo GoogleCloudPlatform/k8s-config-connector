@@ -210,6 +210,10 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	diff := &structuredreporting.Diff{}
 
 	updateMask := &fieldmaskpb.FieldMask{}
+	if !reflect.DeepEqual(actual.Type, expected.Type) {
+		diff.AddField("type", actual.Type, desired.Type)
+		updateMask.Paths = append(updateMask.Paths, "type")
+	}
 	if !reflect.DeepEqual(actual.ConcurrencyMode, expected.ConcurrencyMode) {
 		diff.AddField("concurrency_mode", actual.ConcurrencyMode, desired.ConcurrencyMode)
 		updateMask.Paths = append(updateMask.Paths, "concurrency_mode")
