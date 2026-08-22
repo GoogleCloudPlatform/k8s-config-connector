@@ -1,0 +1,123 @@
+GET https://cloudfunctions.googleapis.com/v1/projects/${projectId}/locations/us-west2/functions/cloudfunctionsfunction-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1 (mockgcp)
+
+404 Not Found
+Content-Type: application/json
+
+{
+  "code": 5,
+  "details": [],
+  "message": "cloudFunction \"projects/${projectId}/locations/us-west2/functions/cloudfunctionsfunction-${uniqueId}\" not found"
+}
+
+---
+
+POST https://cloudfunctions.googleapis.com/v1/projects/${projectId}/locations/us-west2/functions?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1 (mockgcp)
+
+{
+  "availableMemoryMb": 128,
+  "description": "A sample cloud function with an event trigger",
+  "entryPoint": "helloGET",
+  "environmentVariables": {
+    "TEST_ENV_VARIABLE": "test-env-variable-value"
+  },
+  "eventTrigger": {
+    "eventType": "providers/cloud.pubsub/eventTypes/topic.publish",
+    "failurePolicy": {
+      "retry": {}
+    },
+    "resource": "projects/${projectId}/topics/pubsubtopic-${uniqueId}",
+    "service": "pubsub.googleapis.com"
+  },
+  "ingressSettings": "ALLOW_INTERNAL_ONLY",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "one",
+    "label-two": "two",
+    "managed-by-cnrm": "true"
+  },
+  "maxInstances": 10,
+  "name": "projects/${projectId}/locations/us-west2/functions/cloudfunctionsfunction-${uniqueId}",
+  "runtime": "nodejs20",
+  "serviceAccountEmail": "${projectId}@appspot.gserviceaccount.com",
+  "sourceRepository": {
+    "url": "https://source.developers.google.com/projects//repos/kcc-cloud-functions/moveable-aliases/main"
+  },
+  "timeout": "60s",
+  "vpcConnector": "projects/${projectId}/locations/us-west2/connectors/c-1-${uniqueId}",
+  "vpcConnectorEgressSettings": "PRIVATE_RANGES_ONLY"
+}
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "done": true,
+  "metadata": null,
+  "name": "operations/${operationID}"
+}
+
+---
+
+GET https://cloudfunctions.googleapis.com/v1/projects/${projectId}/locations/us-west2/functions/cloudfunctionsfunction-${uniqueId}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1 (mockgcp)
+
+200 OK
+Content-Type: application/json
+Grpc-Metadata-Content-Type: application/grpc
+
+{
+  "availableMemoryMb": 128,
+  "buildEnvironmentVariables": {},
+  "buildId": "",
+  "buildName": "",
+  "buildServiceAccount": "",
+  "buildWorkerPool": "",
+  "description": "A sample cloud function with an event trigger",
+  "dockerRegistry": "DOCKER_REGISTRY_UNSPECIFIED",
+  "dockerRepository": "",
+  "entryPoint": "helloGET",
+  "environmentVariables": {
+    "TEST_ENV_VARIABLE": "test-env-variable-value"
+  },
+  "eventTrigger": {
+    "eventType": "providers/cloud.pubsub/eventTypes/topic.publish",
+    "failurePolicy": {
+      "retry": {}
+    },
+    "resource": "projects/${projectId}/topics/pubsubtopic-${uniqueId}",
+    "service": "pubsub.googleapis.com"
+  },
+  "ingressSettings": "ALLOW_INTERNAL_ONLY",
+  "kmsKeyName": "",
+  "labels": {
+    "cnrm-test": "true",
+    "label-one": "one",
+    "label-two": "two",
+    "managed-by-cnrm": "true"
+  },
+  "maxInstances": 10,
+  "minInstances": 0,
+  "name": "projects/${projectId}/locations/us-west2/functions/cloudfunctionsfunction-${uniqueId}",
+  "network": "",
+  "runtime": "nodejs20",
+  "secretEnvironmentVariables": [],
+  "secretVolumes": [],
+  "serviceAccountEmail": "${projectId}@appspot.gserviceaccount.com",
+  "sourceRepository": {
+    "deployedUrl": "",
+    "url": "https://source.developers.google.com/projects//repos/kcc-cloud-functions/moveable-aliases/main"
+  },
+  "sourceToken": "",
+  "status": "CLOUD_FUNCTION_STATUS_UNSPECIFIED",
+  "timeout": "60s",
+  "updateTime": null,
+  "versionId": "0",
+  "vpcConnector": "projects/${projectId}/locations/us-west2/connectors/c-1-${uniqueId}",
+  "vpcConnectorEgressSettings": "PRIVATE_RANGES_ONLY"
+}
