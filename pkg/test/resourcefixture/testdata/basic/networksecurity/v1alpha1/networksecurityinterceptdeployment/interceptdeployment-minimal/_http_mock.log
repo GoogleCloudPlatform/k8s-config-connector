@@ -1,0 +1,196 @@
+GRPC /google.cloud.networksecurity.v1.Intercept/GetInterceptDeployment
+
+{
+  "name": "projects/${projectId}/locations/us-central1/interceptDeployments/interceptdep-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = Resource 'projects/${projectId}/locations/us-central1/interceptDeployments/interceptdep-${uniqueId}' was not found
+
+{}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.Intercept/CreateInterceptDeployment
+
+{
+  "interceptDeployment": {
+    "forwardingRule": "projects/${projectId}/regions/us-central1/forwardingRules/my-fr-${uniqueId}",
+    "interceptDeploymentGroup": "projects/${projectId}/locations/global/interceptDeploymentGroups/my-dg-${uniqueId}"
+  },
+  "interceptDeploymentId": "interceptdep-${uniqueId}",
+  "parent": "projects/${projectId}/locations/us-central1"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/interceptDeployments/interceptdep-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/interceptDeployments/interceptdep-${uniqueId}",
+    "verb": "create"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.InterceptDeployment",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "forwardingRule": "projects/${projectId}/regions/us-central1/forwardingRules/my-fr-${uniqueId}",
+    "interceptDeploymentGroup": "projects/${projectId}/locations/global/interceptDeploymentGroups/my-dg-${uniqueId}",
+    "name": "projects/${projectId}/locations/us-central1/interceptDeployments/interceptdep-${uniqueId}",
+    "state": "ACTIVE",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.Intercept/GetInterceptDeployment
+
+{
+  "name": "projects/${projectId}/locations/us-central1/interceptDeployments/interceptdep-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "forwardingRule": "projects/${projectId}/regions/us-central1/forwardingRules/my-fr-${uniqueId}",
+  "interceptDeploymentGroup": "projects/${projectId}/locations/global/interceptDeploymentGroups/my-dg-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/interceptDeployments/interceptdep-${uniqueId}",
+  "state": "ACTIVE",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.Intercept/GetInterceptDeployment
+
+{
+  "name": "projects/${projectId}/locations/us-central1/interceptDeployments/interceptdep-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "forwardingRule": "projects/${projectId}/regions/us-central1/forwardingRules/my-fr-${uniqueId}",
+  "interceptDeploymentGroup": "projects/${projectId}/locations/global/interceptDeploymentGroups/my-dg-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/interceptDeployments/interceptdep-${uniqueId}",
+  "state": "ACTIVE",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.Intercept/GetInterceptDeployment
+
+{
+  "name": "projects/${projectId}/locations/us-central1/interceptDeployments/interceptdep-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "forwardingRule": "projects/${projectId}/regions/us-central1/forwardingRules/my-fr-${uniqueId}",
+  "interceptDeploymentGroup": "projects/${projectId}/locations/global/interceptDeploymentGroups/my-dg-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/interceptDeployments/interceptdep-${uniqueId}",
+  "state": "ACTIVE",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.Intercept/GetInterceptDeployment
+
+{
+  "name": "projects/${projectId}/locations/us-central1/interceptDeployments/interceptdep-${uniqueId}"
+}
+
+OK
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "forwardingRule": "projects/${projectId}/regions/us-central1/forwardingRules/my-fr-${uniqueId}",
+  "interceptDeploymentGroup": "projects/${projectId}/locations/global/interceptDeploymentGroups/my-dg-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/interceptDeployments/interceptdep-${uniqueId}",
+  "state": "ACTIVE",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.networksecurity.v1.Intercept/DeleteInterceptDeployment
+
+{
+  "name": "projects/${projectId}/locations/us-central1/interceptDeployments/interceptdep-${uniqueId}"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/interceptDeployments/interceptdep-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.OperationMetadata",
+    "apiVersion": "v1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/interceptDeployments/interceptdep-${uniqueId}",
+    "verb": "delete"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.InterceptDeployment",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "forwardingRule": "projects/${projectId}/regions/us-central1/forwardingRules/my-fr-${uniqueId}",
+    "interceptDeploymentGroup": "projects/${projectId}/locations/global/interceptDeploymentGroups/my-dg-${uniqueId}",
+    "name": "projects/${projectId}/locations/us-central1/interceptDeployments/interceptdep-${uniqueId}",
+    "state": "ACTIVE",
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
+}

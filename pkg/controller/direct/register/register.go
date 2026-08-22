@@ -113,6 +113,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/networkconnectivity"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/networkmanagement"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/networksecurity"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/networksecurity/interceptdeployment"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/networksecurity/interceptendpointgroup"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/networksecurity/mirroringdeployment"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/networksecurity/mirroringendpointgroup"

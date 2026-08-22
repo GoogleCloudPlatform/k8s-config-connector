@@ -1,0 +1,17 @@
+apiVersion: networksecurity.cnrm.cloud.google.com/v1alpha1
+kind: NetworkSecurityInterceptDeployment
+metadata:
+  labels:
+    my-key: updated-val
+  name: interceptdep-${uniqueId}
+spec:
+  description: Updated description
+  forwardingRuleRef:
+    external: projects/${projectId}/regions/us-central1/forwardingRules/my-fr-${uniqueId}
+  interceptDeploymentGroupRef:
+    external: projects/${projectId}/locations/global/interceptDeploymentGroups/my-dg-${uniqueId}
+  labels:
+    my-key: updated-val
+  location: us-central1
+  projectRef:
+    external: ${projectId}
