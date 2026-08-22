@@ -221,7 +221,7 @@ X-Xss-Protection: 0
         }
       },
       "displayName": "SQL Log Alert Condition Hourly",
-      "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+      "name": "projects/${projectId}/alertPolicies/${alertPolicyId}/conditions/${conditionID}"
     }
   ],
   "creationRecord": {
@@ -234,7 +234,7 @@ X-Xss-Protection: 0
     "mutateTime": "2024-04-01T12:34:56.123456Z",
     "mutatedBy": "user@example.com"
   },
-  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyId}",
   "userLabels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
@@ -272,7 +272,7 @@ X-Xss-Protection: 0
         }
       },
       "displayName": "SQL Log Alert Condition Hourly",
-      "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+      "name": "projects/${projectId}/alertPolicies/${alertPolicyId}/conditions/${conditionID}"
     }
   ],
   "creationRecord": {
@@ -285,7 +285,7 @@ X-Xss-Protection: 0
     "mutateTime": "2024-04-01T12:34:56.123456Z",
     "mutatedBy": "user@example.com"
   },
-  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyId}",
   "userLabels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
@@ -313,7 +313,7 @@ Content-Type: application/json
         }
       },
       "displayName": "SQL Log Alert Condition Hourly",
-      "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+      "name": "projects/${projectId}/alertPolicies/${alertPolicyId}/conditions/${conditionID}"
     }
   ],
   "displayName": "Test SQL Alert Policy Hourly",
@@ -350,7 +350,7 @@ X-Xss-Protection: 0
         }
       },
       "displayName": "SQL Log Alert Condition Hourly",
-      "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+      "name": "projects/${projectId}/alertPolicies/${alertPolicyId}/conditions/${conditionID}"
     }
   ],
   "creationRecord": {
@@ -363,7 +363,7 @@ X-Xss-Protection: 0
     "mutateTime": "2024-04-01T12:34:56.123456Z",
     "mutatedBy": "user@example.com"
   },
-  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyId}",
   "userLabels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
@@ -401,7 +401,7 @@ X-Xss-Protection: 0
         }
       },
       "displayName": "SQL Log Alert Condition Hourly",
-      "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+      "name": "projects/${projectId}/alertPolicies/${alertPolicyId}/conditions/${conditionID}"
     }
   ],
   "creationRecord": {
@@ -414,7 +414,7 @@ X-Xss-Protection: 0
     "mutateTime": "2024-04-01T12:34:56.123456Z",
     "mutatedBy": "user@example.com"
   },
-  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyId}",
   "userLabels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
