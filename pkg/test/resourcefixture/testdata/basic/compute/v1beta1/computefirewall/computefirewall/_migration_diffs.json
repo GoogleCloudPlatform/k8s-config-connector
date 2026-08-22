@@ -1,0 +1,104 @@
+[
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "ComputeFirewall/computefirewall-${uniqueId}",
+    "fields": [
+      {
+        "id": "allow.#",
+        "old": "0",
+        "new": "2"
+      },
+      {
+        "id": "allow.1737538065.ports.#",
+        "old": "0",
+        "new": "2"
+      },
+      {
+        "id": "allow.1737538065.ports.0",
+        "old": "",
+        "new": "80"
+      },
+      {
+        "id": "allow.1737538065.ports.1",
+        "old": "",
+        "new": "1000-2000"
+      },
+      {
+        "id": "allow.1737538065.protocol",
+        "old": "",
+        "new": "tcp"
+      },
+      {
+        "id": "allow.423519469.ports.#",
+        "old": "0",
+        "new": "2"
+      },
+      {
+        "id": "allow.423519469.ports.0",
+        "old": "",
+        "new": "1184"
+      },
+      {
+        "id": "allow.423519469.ports.1",
+        "old": "",
+        "new": "2"
+      },
+      {
+        "id": "allow.423519469.protocol",
+        "old": "",
+        "new": "udp"
+      },
+      {
+        "id": "creation_timestamp",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "destination_ranges.#",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "direction",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "disabled",
+        "old": "",
+        "new": "false"
+      },
+      {
+        "id": "enable_logging",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": "computefirewall-${uniqueId}"
+      },
+      {
+        "id": "network",
+        "old": "",
+        "new": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default"
+      },
+      {
+        "id": "priority",
+        "old": "",
+        "new": "1000"
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "self_link",
+        "old": "",
+        "new": ""
+      }
+    ]
+  }
+]
