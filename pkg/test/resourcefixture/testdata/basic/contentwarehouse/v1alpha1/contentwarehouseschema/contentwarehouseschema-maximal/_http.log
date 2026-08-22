@@ -1,0 +1,159 @@
+POST https://contentwarehouse.googleapis.com/v1/projects/${projectNumber}/locations/us/documentSchemas?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+
+{
+  "name": "projects/${projectNumber}/locations/us/documentSchemas/cws-${uniqueId}",
+  "displayName": "Maximal Schema ${uniqueId}",
+  "description": "A comprehensive document schema for testing",
+  "documentIsFolder": false,
+  "propertyDefinitions": [
+    {
+      "name": "prop_int",
+      "displayName": "Integer Property",
+      "isFilterable": true,
+      "isSearchable": true,
+      "isMetadata": true,
+      "integerTypeOptions": {}
+    },
+    {
+      "name": "prop_text",
+      "displayName": "Text Property",
+      "isRepeatable": true,
+      "isFilterable": true,
+      "isSearchable": true,
+      "isMetadata": true,
+      "isRequired": true,
+      "textTypeOptions": {}
+    },
+    {
+      "name": "prop_enum",
+      "displayName": "Enum Property",
+      "isFilterable": true,
+      "isSearchable": true,
+      "isMetadata": true,
+      "enumTypeOptions": {
+        "possibleValues": [
+          "VALUE_A",
+          "VALUE_B"
+        ]
+      }
+    }
+  ]
+}
+---
+GET https://contentwarehouse.googleapis.com/v1/projects/${projectNumber}/locations/us/documentSchemas/cws-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+
+{
+  "name": "projects/${projectNumber}/locations/us/documentSchemas/cws-${uniqueId}",
+  "displayName": "Maximal Schema ${uniqueId}",
+  "description": "A comprehensive document schema for testing",
+  "documentIsFolder": false,
+  "propertyDefinitions": [
+    {
+      "name": "prop_int",
+      "displayName": "Integer Property",
+      "isFilterable": true,
+      "isSearchable": true,
+      "isMetadata": true,
+      "integerTypeOptions": {}
+    },
+    {
+      "name": "prop_text",
+      "displayName": "Text Property",
+      "isRepeatable": true,
+      "isFilterable": true,
+      "isSearchable": true,
+      "isMetadata": true,
+      "isRequired": true,
+      "textTypeOptions": {}
+    },
+    {
+      "name": "prop_enum",
+      "displayName": "Enum Property",
+      "isFilterable": true,
+      "isSearchable": true,
+      "isMetadata": true,
+      "enumTypeOptions": {
+        "possibleValues": [
+          "VALUE_A",
+          "VALUE_B"
+        ]
+      }
+    }
+  ]
+}
+---
+PATCH https://contentwarehouse.googleapis.com/v1/projects/${projectNumber}/locations/us/documentSchemas/cws-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+
+{
+  "name": "projects/${projectNumber}/locations/us/documentSchemas/cws-${uniqueId}",
+  "displayName": "Maximal Schema Updated ${uniqueId}",
+  "description": "An updated comprehensive document schema",
+  "documentIsFolder": false,
+  "propertyDefinitions": [
+    {
+      "name": "prop_int",
+      "displayName": "Integer Property Updated",
+      "isFilterable": true,
+      "isSearchable": true,
+      "isMetadata": true,
+      "integerTypeOptions": {}
+    },
+    {
+      "name": "prop_text",
+      "displayName": "Text Property Updated",
+      "isRepeatable": true,
+      "isFilterable": true,
+      "isSearchable": true,
+      "isMetadata": true,
+      "isRequired": true,
+      "textTypeOptions": {}
+    },
+    {
+      "name": "prop_enum",
+      "displayName": "Enum Property Updated",
+      "isFilterable": true,
+      "isSearchable": true,
+      "isMetadata": true,
+      "enumTypeOptions": {
+        "possibleValues": [
+          "VALUE_A",
+          "VALUE_B",
+          "VALUE_C"
+        ],
+        "validationCheckDisabled": true
+      }
+    }
+  ]
+}
+---
+DELETE https://contentwarehouse.googleapis.com/v1/projects/${projectNumber}/locations/us/documentSchemas/cws-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+
+{}

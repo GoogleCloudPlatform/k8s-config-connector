@@ -29,42 +29,524 @@ import (
 	pb "google.golang.org/genproto/googleapis/cloud/contentwarehouse/v1"
 )
 
+func AccessControlAction_FromProto(mapCtx *direct.MapContext, in *pb.AccessControlAction) *krm.AccessControlAction {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AccessControlAction{}
+	out.OperationType = direct.Enum_FromProto(mapCtx, in.GetOperationType())
+	out.Policy = Policy_FromProto(mapCtx, in.GetPolicy())
+	return out
+}
+func AccessControlAction_ToProto(mapCtx *direct.MapContext, in *krm.AccessControlAction) *pb.AccessControlAction {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AccessControlAction{}
+	out.OperationType = direct.Enum_ToProto[pb.AccessControlAction_OperationType](mapCtx, in.OperationType)
+	out.Policy = Policy_ToProto(mapCtx, in.Policy)
+	return out
+}
+func Action_FromProto(mapCtx *direct.MapContext, in *pb.Action) *krm.Action {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Action{}
+	out.ActionID = direct.LazyPtr(in.GetActionId())
+	out.AccessControl = AccessControlAction_FromProto(mapCtx, in.GetAccessControl())
+	out.DataValidation = DataValidationAction_FromProto(mapCtx, in.GetDataValidation())
+	out.DataUpdate = DataUpdateAction_FromProto(mapCtx, in.GetDataUpdate())
+	out.AddToFolder = AddToFolderAction_FromProto(mapCtx, in.GetAddToFolder())
+	out.PublishToPubSub = PublishAction_FromProto(mapCtx, in.GetPublishToPubSub())
+	out.RemoveFromFolderAction = RemoveFromFolderAction_FromProto(mapCtx, in.GetRemoveFromFolderAction())
+	out.DeleteDocumentAction = DeleteDocumentAction_FromProto(mapCtx, in.GetDeleteDocumentAction())
+	return out
+}
+func Action_ToProto(mapCtx *direct.MapContext, in *krm.Action) *pb.Action {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Action{}
+	out.ActionId = direct.ValueOf(in.ActionID)
+	if oneof := AccessControlAction_ToProto(mapCtx, in.AccessControl); oneof != nil {
+		out.Action = &pb.Action_AccessControl{AccessControl: oneof}
+	}
+	if oneof := DataValidationAction_ToProto(mapCtx, in.DataValidation); oneof != nil {
+		out.Action = &pb.Action_DataValidation{DataValidation: oneof}
+	}
+	if oneof := DataUpdateAction_ToProto(mapCtx, in.DataUpdate); oneof != nil {
+		out.Action = &pb.Action_DataUpdate{DataUpdate: oneof}
+	}
+	if oneof := AddToFolderAction_ToProto(mapCtx, in.AddToFolder); oneof != nil {
+		out.Action = &pb.Action_AddToFolder{AddToFolder: oneof}
+	}
+	if oneof := PublishAction_ToProto(mapCtx, in.PublishToPubSub); oneof != nil {
+		out.Action = &pb.Action_PublishToPubSub{PublishToPubSub: oneof}
+	}
+	if oneof := RemoveFromFolderAction_ToProto(mapCtx, in.RemoveFromFolderAction); oneof != nil {
+		out.Action = &pb.Action_RemoveFromFolderAction{RemoveFromFolderAction: oneof}
+	}
+	if oneof := DeleteDocumentAction_ToProto(mapCtx, in.DeleteDocumentAction); oneof != nil {
+		out.Action = &pb.Action_DeleteDocumentAction{DeleteDocumentAction: oneof}
+	}
+	return out
+}
+func AddToFolderAction_FromProto(mapCtx *direct.MapContext, in *pb.AddToFolderAction) *krm.AddToFolderAction {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AddToFolderAction{}
+	out.Folders = in.Folders
+	return out
+}
+func AddToFolderAction_ToProto(mapCtx *direct.MapContext, in *krm.AddToFolderAction) *pb.AddToFolderAction {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AddToFolderAction{}
+	out.Folders = in.Folders
+	return out
+}
+func ContentWarehouseDocumentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Document) *krm.ContentWarehouseDocumentObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ContentWarehouseDocumentObservedState{}
+	// MISSING: Name
+	// MISSING: ReferenceID
+	// MISSING: DisplayName
+	// MISSING: Title
+	// MISSING: DisplayURI
+	// MISSING: DocumentSchemaName
+	// MISSING: PlainText
+	// MISSING: CloudAiDocument
+	// MISSING: StructuredContentURI
+	// MISSING: RawDocumentPath
+	// MISSING: InlineRawDocument
+	// MISSING: Properties
+	// MISSING: UpdateTime
+	// MISSING: CreateTime
+	// MISSING: RawDocumentFileType
+	// MISSING: AsyncEnabled
+	// MISSING: ContentCategory
+	// MISSING: TextExtractionDisabled
+	// MISSING: TextExtractionEnabled
+	// MISSING: Creator
+	// MISSING: Updater
+	// MISSING: DispositionTime
+	// MISSING: LegalHold
+	return out
+}
+func ContentWarehouseDocumentObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ContentWarehouseDocumentObservedState) *pb.Document {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Document{}
+	// MISSING: Name
+	// MISSING: ReferenceID
+	// MISSING: DisplayName
+	// MISSING: Title
+	// MISSING: DisplayURI
+	// MISSING: DocumentSchemaName
+	// MISSING: PlainText
+	// MISSING: CloudAiDocument
+	// MISSING: StructuredContentURI
+	// MISSING: RawDocumentPath
+	// MISSING: InlineRawDocument
+	// MISSING: Properties
+	// MISSING: UpdateTime
+	// MISSING: CreateTime
+	// MISSING: RawDocumentFileType
+	// MISSING: AsyncEnabled
+	// MISSING: ContentCategory
+	// MISSING: TextExtractionDisabled
+	// MISSING: TextExtractionEnabled
+	// MISSING: Creator
+	// MISSING: Updater
+	// MISSING: DispositionTime
+	// MISSING: LegalHold
+	return out
+}
+func ContentWarehouseDocumentSpec_FromProto(mapCtx *direct.MapContext, in *pb.Document) *krm.ContentWarehouseDocumentSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ContentWarehouseDocumentSpec{}
+	// MISSING: Name
+	// MISSING: ReferenceID
+	// MISSING: DisplayName
+	// MISSING: Title
+	// MISSING: DisplayURI
+	// MISSING: DocumentSchemaName
+	// MISSING: PlainText
+	// MISSING: CloudAiDocument
+	// MISSING: StructuredContentURI
+	// MISSING: RawDocumentPath
+	// MISSING: InlineRawDocument
+	// MISSING: Properties
+	// MISSING: UpdateTime
+	// MISSING: CreateTime
+	// MISSING: RawDocumentFileType
+	// MISSING: AsyncEnabled
+	// MISSING: ContentCategory
+	// MISSING: TextExtractionDisabled
+	// MISSING: TextExtractionEnabled
+	// MISSING: Creator
+	// MISSING: Updater
+	// MISSING: DispositionTime
+	// MISSING: LegalHold
+	return out
+}
+func ContentWarehouseDocumentSpec_ToProto(mapCtx *direct.MapContext, in *krm.ContentWarehouseDocumentSpec) *pb.Document {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Document{}
+	// MISSING: Name
+	// MISSING: ReferenceID
+	// MISSING: DisplayName
+	// MISSING: Title
+	// MISSING: DisplayURI
+	// MISSING: DocumentSchemaName
+	// MISSING: PlainText
+	// MISSING: CloudAiDocument
+	// MISSING: StructuredContentURI
+	// MISSING: RawDocumentPath
+	// MISSING: InlineRawDocument
+	// MISSING: Properties
+	// MISSING: UpdateTime
+	// MISSING: CreateTime
+	// MISSING: RawDocumentFileType
+	// MISSING: AsyncEnabled
+	// MISSING: ContentCategory
+	// MISSING: TextExtractionDisabled
+	// MISSING: TextExtractionEnabled
+	// MISSING: Creator
+	// MISSING: Updater
+	// MISSING: DispositionTime
+	// MISSING: LegalHold
+	return out
+}
+func ContentWarehouseRuleSetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RuleSet) *krm.ContentWarehouseRuleSetObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ContentWarehouseRuleSetObservedState{}
+	// MISSING: Name
+	return out
+}
+func ContentWarehouseRuleSetObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ContentWarehouseRuleSetObservedState) *pb.RuleSet {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RuleSet{}
+	// MISSING: Name
+	return out
+}
+func ContentWarehouseRuleSetSpec_FromProto(mapCtx *direct.MapContext, in *pb.RuleSet) *krm.ContentWarehouseRuleSetSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ContentWarehouseRuleSetSpec{}
+	// MISSING: Name
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Source = direct.LazyPtr(in.GetSource())
+	out.Rules = direct.Slice_FromProto(mapCtx, in.Rules, Rule_FromProto)
+	return out
+}
+func ContentWarehouseRuleSetSpec_ToProto(mapCtx *direct.MapContext, in *krm.ContentWarehouseRuleSetSpec) *pb.RuleSet {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RuleSet{}
+	// MISSING: Name
+	out.Description = direct.ValueOf(in.Description)
+	out.Source = direct.ValueOf(in.Source)
+	out.Rules = direct.Slice_ToProto(mapCtx, in.Rules, Rule_ToProto)
+	return out
+}
+func ContentWarehouseSchemaObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DocumentSchema) *krm.ContentWarehouseSchemaObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ContentWarehouseSchemaObservedState{}
+	// MISSING: Name
+	// MISSING: UpdateTime
+	// MISSING: CreateTime
+	return out
+}
+func ContentWarehouseSchemaObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ContentWarehouseSchemaObservedState) *pb.DocumentSchema {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DocumentSchema{}
+	// MISSING: Name
+	// MISSING: UpdateTime
+	// MISSING: CreateTime
+	return out
+}
+func ContentWarehouseSchemaSpec_FromProto(mapCtx *direct.MapContext, in *pb.DocumentSchema) *krm.ContentWarehouseSchemaSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ContentWarehouseSchemaSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.PropertyDefinitions = direct.Slice_FromProto(mapCtx, in.PropertyDefinitions, PropertyDefinition_FromProto)
+	out.DocumentIsFolder = direct.LazyPtr(in.GetDocumentIsFolder())
+	// MISSING: UpdateTime
+	// MISSING: CreateTime
+	out.Description = direct.LazyPtr(in.GetDescription())
+	return out
+}
+func ContentWarehouseSchemaSpec_ToProto(mapCtx *direct.MapContext, in *krm.ContentWarehouseSchemaSpec) *pb.DocumentSchema {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DocumentSchema{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.PropertyDefinitions = direct.Slice_ToProto(mapCtx, in.PropertyDefinitions, PropertyDefinition_ToProto)
+	out.DocumentIsFolder = direct.ValueOf(in.DocumentIsFolder)
+	// MISSING: UpdateTime
+	// MISSING: CreateTime
+	out.Description = direct.ValueOf(in.Description)
+	return out
+}
 func ContentWarehouseSynonymSetObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SynonymSet) *krm.ContentWarehouseSynonymSetObservedState {
 	if in == nil {
 		return nil
 	}
 	out := &krm.ContentWarehouseSynonymSetObservedState{}
+	// MISSING: Name
 	return out
 }
-
 func ContentWarehouseSynonymSetObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ContentWarehouseSynonymSetObservedState) *pb.SynonymSet {
 	if in == nil {
 		return nil
 	}
 	out := &pb.SynonymSet{}
+	// MISSING: Name
 	return out
 }
-
 func ContentWarehouseSynonymSetSpec_FromProto(mapCtx *direct.MapContext, in *pb.SynonymSet) *krm.ContentWarehouseSynonymSetSpec {
 	if in == nil {
 		return nil
 	}
 	out := &krm.ContentWarehouseSynonymSetSpec{}
+	// MISSING: Name
 	out.Context = direct.LazyPtr(in.GetContext())
 	out.Synonyms = direct.Slice_FromProto(mapCtx, in.Synonyms, SynonymSetSynonym_FromProto)
 	return out
 }
-
 func ContentWarehouseSynonymSetSpec_ToProto(mapCtx *direct.MapContext, in *krm.ContentWarehouseSynonymSetSpec) *pb.SynonymSet {
 	if in == nil {
 		return nil
 	}
 	out := &pb.SynonymSet{}
+	// MISSING: Name
 	out.Context = direct.ValueOf(in.Context)
 	out.Synonyms = direct.Slice_ToProto(mapCtx, in.Synonyms, SynonymSetSynonym_ToProto)
 	return out
 }
-
+func DataUpdateAction_FromProto(mapCtx *direct.MapContext, in *pb.DataUpdateAction) *krm.DataUpdateAction {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataUpdateAction{}
+	out.Entries = in.Entries
+	return out
+}
+func DataUpdateAction_ToProto(mapCtx *direct.MapContext, in *krm.DataUpdateAction) *pb.DataUpdateAction {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataUpdateAction{}
+	out.Entries = in.Entries
+	return out
+}
+func DataValidationAction_FromProto(mapCtx *direct.MapContext, in *pb.DataValidationAction) *krm.DataValidationAction {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DataValidationAction{}
+	out.Conditions = in.Conditions
+	return out
+}
+func DataValidationAction_ToProto(mapCtx *direct.MapContext, in *krm.DataValidationAction) *pb.DataValidationAction {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataValidationAction{}
+	out.Conditions = in.Conditions
+	return out
+}
+func DateTimeTypeOptions_FromProto(mapCtx *direct.MapContext, in *pb.DateTimeTypeOptions) *krm.DateTimeTypeOptions {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DateTimeTypeOptions{}
+	return out
+}
+func DateTimeTypeOptions_ToProto(mapCtx *direct.MapContext, in *krm.DateTimeTypeOptions) *pb.DateTimeTypeOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DateTimeTypeOptions{}
+	return out
+}
+func DeleteDocumentAction_FromProto(mapCtx *direct.MapContext, in *pb.DeleteDocumentAction) *krm.DeleteDocumentAction {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DeleteDocumentAction{}
+	out.EnableHardDelete = direct.LazyPtr(in.GetEnableHardDelete())
+	return out
+}
+func DeleteDocumentAction_ToProto(mapCtx *direct.MapContext, in *krm.DeleteDocumentAction) *pb.DeleteDocumentAction {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DeleteDocumentAction{}
+	out.EnableHardDelete = direct.ValueOf(in.EnableHardDelete)
+	return out
+}
+func EnumTypeOptions_FromProto(mapCtx *direct.MapContext, in *pb.EnumTypeOptions) *krm.EnumTypeOptions {
+	if in == nil {
+		return nil
+	}
+	out := &krm.EnumTypeOptions{}
+	out.PossibleValues = in.PossibleValues
+	out.ValidationCheckDisabled = direct.LazyPtr(in.GetValidationCheckDisabled())
+	return out
+}
+func EnumTypeOptions_ToProto(mapCtx *direct.MapContext, in *krm.EnumTypeOptions) *pb.EnumTypeOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EnumTypeOptions{}
+	out.PossibleValues = in.PossibleValues
+	out.ValidationCheckDisabled = direct.ValueOf(in.ValidationCheckDisabled)
+	return out
+}
+func FloatTypeOptions_FromProto(mapCtx *direct.MapContext, in *pb.FloatTypeOptions) *krm.FloatTypeOptions {
+	if in == nil {
+		return nil
+	}
+	out := &krm.FloatTypeOptions{}
+	return out
+}
+func FloatTypeOptions_ToProto(mapCtx *direct.MapContext, in *krm.FloatTypeOptions) *pb.FloatTypeOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FloatTypeOptions{}
+	return out
+}
+func IntegerTypeOptions_FromProto(mapCtx *direct.MapContext, in *pb.IntegerTypeOptions) *krm.IntegerTypeOptions {
+	if in == nil {
+		return nil
+	}
+	out := &krm.IntegerTypeOptions{}
+	return out
+}
+func IntegerTypeOptions_ToProto(mapCtx *direct.MapContext, in *krm.IntegerTypeOptions) *pb.IntegerTypeOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.IntegerTypeOptions{}
+	return out
+}
+func MapTypeOptions_FromProto(mapCtx *direct.MapContext, in *pb.MapTypeOptions) *krm.MapTypeOptions {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MapTypeOptions{}
+	return out
+}
+func MapTypeOptions_ToProto(mapCtx *direct.MapContext, in *krm.MapTypeOptions) *pb.MapTypeOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MapTypeOptions{}
+	return out
+}
+func PropertyTypeOptions_FromProto(mapCtx *direct.MapContext, in *pb.PropertyTypeOptions) *krm.PropertyTypeOptions {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PropertyTypeOptions{}
+	out.PropertyDefinitions = direct.Slice_FromProto(mapCtx, in.PropertyDefinitions, PropertyDefinition_FromProto)
+	return out
+}
+func PropertyTypeOptions_ToProto(mapCtx *direct.MapContext, in *krm.PropertyTypeOptions) *pb.PropertyTypeOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PropertyTypeOptions{}
+	out.PropertyDefinitions = direct.Slice_ToProto(mapCtx, in.PropertyDefinitions, PropertyDefinition_ToProto)
+	return out
+}
+func PublishAction_FromProto(mapCtx *direct.MapContext, in *pb.PublishAction) *krm.PublishAction {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PublishAction{}
+	out.TopicID = direct.LazyPtr(in.GetTopicId())
+	out.Messages = in.Messages
+	return out
+}
+func PublishAction_ToProto(mapCtx *direct.MapContext, in *krm.PublishAction) *pb.PublishAction {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PublishAction{}
+	out.TopicId = direct.ValueOf(in.TopicID)
+	out.Messages = in.Messages
+	return out
+}
+func RemoveFromFolderAction_FromProto(mapCtx *direct.MapContext, in *pb.RemoveFromFolderAction) *krm.RemoveFromFolderAction {
+	if in == nil {
+		return nil
+	}
+	out := &krm.RemoveFromFolderAction{}
+	out.Condition = direct.LazyPtr(in.GetCondition())
+	out.Folder = direct.LazyPtr(in.GetFolder())
+	return out
+}
+func RemoveFromFolderAction_ToProto(mapCtx *direct.MapContext, in *krm.RemoveFromFolderAction) *pb.RemoveFromFolderAction {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RemoveFromFolderAction{}
+	out.Condition = direct.ValueOf(in.Condition)
+	out.Folder = direct.ValueOf(in.Folder)
+	return out
+}
+func Rule_FromProto(mapCtx *direct.MapContext, in *pb.Rule) *krm.Rule {
+	if in == nil {
+		return nil
+	}
+	out := &krm.Rule{}
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.RuleID = direct.LazyPtr(in.GetRuleId())
+	out.TriggerType = direct.Enum_FromProto(mapCtx, in.GetTriggerType())
+	out.Condition = direct.LazyPtr(in.GetCondition())
+	out.Actions = direct.Slice_FromProto(mapCtx, in.Actions, Action_FromProto)
+	return out
+}
+func Rule_ToProto(mapCtx *direct.MapContext, in *krm.Rule) *pb.Rule {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Rule{}
+	out.Description = direct.ValueOf(in.Description)
+	out.RuleId = direct.ValueOf(in.RuleID)
+	out.TriggerType = direct.Enum_ToProto[pb.Rule_TriggerType](mapCtx, in.TriggerType)
+	out.Condition = direct.ValueOf(in.Condition)
+	out.Actions = direct.Slice_ToProto(mapCtx, in.Actions, Action_ToProto)
+	return out
+}
 func SynonymSetSynonym_FromProto(mapCtx *direct.MapContext, in *pb.SynonymSet_Synonym) *krm.SynonymSetSynonym {
 	if in == nil {
 		return nil
@@ -73,12 +555,39 @@ func SynonymSetSynonym_FromProto(mapCtx *direct.MapContext, in *pb.SynonymSet_Sy
 	out.Words = in.Words
 	return out
 }
-
 func SynonymSetSynonym_ToProto(mapCtx *direct.MapContext, in *krm.SynonymSetSynonym) *pb.SynonymSet_Synonym {
 	if in == nil {
 		return nil
 	}
 	out := &pb.SynonymSet_Synonym{}
 	out.Words = in.Words
+	return out
+}
+func TextTypeOptions_FromProto(mapCtx *direct.MapContext, in *pb.TextTypeOptions) *krm.TextTypeOptions {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TextTypeOptions{}
+	return out
+}
+func TextTypeOptions_ToProto(mapCtx *direct.MapContext, in *krm.TextTypeOptions) *pb.TextTypeOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TextTypeOptions{}
+	return out
+}
+func TimestampTypeOptions_FromProto(mapCtx *direct.MapContext, in *pb.TimestampTypeOptions) *krm.TimestampTypeOptions {
+	if in == nil {
+		return nil
+	}
+	out := &krm.TimestampTypeOptions{}
+	return out
+}
+func TimestampTypeOptions_ToProto(mapCtx *direct.MapContext, in *krm.TimestampTypeOptions) *pb.TimestampTypeOptions {
+	if in == nil {
+		return nil
+	}
+	out := &pb.TimestampTypeOptions{}
 	return out
 }

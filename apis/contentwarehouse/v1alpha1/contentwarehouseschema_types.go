@@ -113,6 +113,7 @@ func init() {
 	SchemeBuilder.Register(&ContentWarehouseSchema{}, &ContentWarehouseSchemaList{})
 }
 
+// +kcc:proto=google.cloud.contentwarehouse.v1.DateTimeTypeOptions
 // +kubebuilder:pruning:PreserveUnknownFields
 // +kubebuilder:validation:XPreserveUnknownFields
 type DateTimeTypeOptions struct {
@@ -189,8 +190,7 @@ type PropertyDefinition struct {
 	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.is_required
 	IsRequired *bool `json:"isRequired,omitempty"`
 
-	// The retrieval importance of the property during search.
-	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.retrieval_importance
+	// The retrieval importance of the property during search. Note: This field is not currently supported by the underlying direct reconciler/proto client library and specifying it will result in a validation error.
 	RetrievalImportance *string `json:"retrievalImportance,omitempty"`
 
 	// Integer property.
@@ -227,19 +227,15 @@ type PropertyDefinition struct {
 	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.timestamp_type_options
 	TimestampTypeOptions *TimestampTypeOptions `json:"timestampTypeOptions,omitempty"`
 
-	// The mapping information between this property to another schema source.
-	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.schema_sources
+	// The mapping information between this property to another schema source. Note: This field is not currently supported by the underlying direct reconciler/proto client library and specifying it will result in a validation error.
 	SchemaSources []PropertyDefinition_SchemaSource `json:"schemaSources,omitempty"`
 }
 
-// +kcc:proto=google.cloud.contentwarehouse.v1.PropertyDefinition.SchemaSource
 type PropertyDefinition_SchemaSource struct {
 	// The schema name in the source.
-	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.SchemaSource.name
 	Name *string `json:"name,omitempty"`
 
 	// The Doc AI processor type name.
-	// +kcc:proto:field=google.cloud.contentwarehouse.v1.PropertyDefinition.SchemaSource.processor_type
 	ProcessorType *string `json:"processorType,omitempty"`
 }
 
