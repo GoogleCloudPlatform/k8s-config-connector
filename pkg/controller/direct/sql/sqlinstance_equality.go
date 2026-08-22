@@ -506,6 +506,9 @@ func DiffIpConfiguration(desired *api.IpConfiguration, actual *api.IpConfigurati
 		diff.AddField(".settings.ipConfiguration.allocatedIpRange", actual.AllocatedIpRange, desired.AllocatedIpRange)
 	}
 	diff.AddDiff(DiffAclEntryLists(desired.AuthorizedNetworks, actual.AuthorizedNetworks))
+	if !slicesMatch(desired.CustomSubjectAlternativeNames, actual.CustomSubjectAlternativeNames) {
+		diff.AddField(".settings.ipConfiguration.customSubjectAlternativeNames", actual.CustomSubjectAlternativeNames, desired.CustomSubjectAlternativeNames)
+	}
 	if desired.EnablePrivatePathForGoogleCloudServices != actual.EnablePrivatePathForGoogleCloudServices {
 		diff.AddField(".settings.ipConfiguration.enablePrivatePathForGoogleCloudServices", actual.EnablePrivatePathForGoogleCloudServices, desired.EnablePrivatePathForGoogleCloudServices)
 	}
@@ -519,7 +522,20 @@ func DiffIpConfiguration(desired *api.IpConfiguration, actual *api.IpConfigurati
 	if desired.RequireSsl != actual.RequireSsl {
 		diff.AddField(".settings.ipConfiguration.requireSsl", actual.RequireSsl, desired.RequireSsl)
 	}
-	// Ignore ServerCaMode. It is not supported in KRM API.
+	desiredServerCaMode := desired.ServerCaMode
+	actualServerCaMode := actual.ServerCaMode
+	if desiredServerCaMode == "" {
+		desiredServerCaMode = "GOOGLE_MANAGED_INTERNAL_CA"
+	}
+	if actualServerCaMode == "" {
+		actualServerCaMode = "GOOGLE_MANAGED_INTERNAL_CA"
+	}
+	if desiredServerCaMode != actualServerCaMode {
+		diff.AddField(".settings.ipConfiguration.serverCaMode", actual.ServerCaMode, desired.ServerCaMode)
+	}
+	if desired.ServerCaPool != actual.ServerCaPool {
+		diff.AddField(".settings.ipConfiguration.serverCaPool", actual.ServerCaPool, desired.ServerCaPool)
+	}
 	if desired.SslMode != actual.SslMode {
 		diff.AddField(".settings.ipConfiguration.sslMode", actual.SslMode, desired.SslMode)
 	}

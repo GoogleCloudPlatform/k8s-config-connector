@@ -556,6 +556,12 @@ spec:
                           - value
                           type: object
                         type: array
+                      customSubjectAlternativeNames:
+                        description: List of custom Subject Alternative Names (SANs)
+                          for the server certificate.
+                        items:
+                          type: string
+                        type: array
                       enablePrivatePathForGoogleCloudServices:
                         description: Whether Google Cloud services such as BigQuery
                           are allowed to access data in this Cloud SQL instance over
@@ -617,6 +623,39 @@ spec:
                         type: array
                       requireSsl:
                         type: boolean
+                      serverCaMode:
+                        description: 'The CA mode for the server certificate. Enum:
+                          GOOGLE_MANAGED_INTERNAL_CA, GOOGLE_MANAGED_CAS_CA, CUSTOMER_MANAGED_CAS_CA.'
+                        type: string
+                      serverCaPoolRef:
+                        description: The CA pool resource for the server certificate
+                          when serverCaMode is CUSTOMER_MANAGED_CAS_CA.
+                        oneOf:
+                        - not:
+                            required:
+                            - external
+                          required:
+                          - name
+                        - not:
+                            anyOf:
+                            - required:
+                              - name
+                            - required:
+                              - namespace
+                          required:
+                          - external
+                        properties:
+                          external:
+                            description: A reference to an externally managed PrivateCACAPool
+                              resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/caPools/{{caPoolID}}".
+                            type: string
+                          name:
+                            description: The name of a PrivateCACAPool resource.
+                            type: string
+                          namespace:
+                            description: The namespace of a PrivateCACAPool resource.
+                            type: string
+                        type: object
                       sslMode:
                         description: Specify how SSL connection should be enforced
                           in DB connections. This field provides more SSL enforcment
