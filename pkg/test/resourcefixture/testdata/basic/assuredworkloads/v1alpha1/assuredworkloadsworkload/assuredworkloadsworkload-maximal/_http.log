@@ -1,0 +1,246 @@
+GET https://us-central1-assuredworkloads.googleapis.com/v1/organizations/${folderID}/locations/us-central1/workloads/aww-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=organizations%2F${folderID}%2Flocations%2Fus-central1%2Fworkloads%2Faww-maximal-${uniqueId}
+
+403 Forbidden
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 403,
+    "message": "Permission 'assuredworkloads.workload.get' denied on resource '//assuredworkloads.googleapis.com/organizations/${folderID}/locations/us-central1/workloads/aww-maximal-${uniqueId}' (or it may not exist). Remediate access with this Troubleshooter URL or share it with your administrator - https://console.cloud.google.com/iam-admin/troubleshooter/summary;errorId=normalized-error-id .",
+    "status": "PERMISSION_DENIED"
+  }
+}
+
+---
+
+POST https://us-central1-assuredworkloads.googleapis.com/v1/organizations/${folderID}/locations/us-central1/workloads?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=organizations%2F${folderID}%2Flocations%2Fus-central1
+
+{
+  "billingAccount": "billingAccounts/01BD15-3BAB95-35F231",
+  "complianceRegime": 4,
+  "displayName": "aww max ${uniqueId}"
+}
+
+403 Forbidden
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 403,
+    "message": "Permission 'assuredworkloads.workload.create' denied on resource 'organizations/${folderID}/locations/us-central1' (or resource may not exist).",
+    "status": "PERMISSION_DENIED"
+  }
+}
+
+---
+
+GET https://us-central1-assuredworkloads.googleapis.com/v1/organizations/${folderID}/locations/us-central1/workloads/aww-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=organizations%2F${folderID}%2Flocations%2Fus-central1%2Fworkloads%2Faww-maximal-${uniqueId}
+
+403 Forbidden
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 403,
+    "message": "Permission 'assuredworkloads.workload.get' denied on resource '//assuredworkloads.googleapis.com/organizations/${folderID}/locations/us-central1/workloads/aww-maximal-${uniqueId}' (or it may not exist). Remediate access with this Troubleshooter URL or share it with your administrator - https://console.cloud.google.com/iam-admin/troubleshooter/summary;errorId=normalized-error-id .",
+    "status": "PERMISSION_DENIED"
+  }
+}
+
+---
+
+POST https://us-central1-assuredworkloads.googleapis.com/v1/organizations/${folderID}/locations/us-central1/workloads?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=organizations%2F${folderID}%2Flocations%2Fus-central1
+
+{
+  "billingAccount": "billingAccounts/01BD15-3BAB95-35F231",
+  "complianceRegime": 4,
+  "displayName": "aww max ${uniqueId}"
+}
+
+403 Forbidden
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 403,
+    "message": "Permission 'assuredworkloads.workload.create' denied on resource 'organizations/${folderID}/locations/us-central1' (or resource may not exist).",
+    "status": "PERMISSION_DENIED"
+  }
+}
+
+---
+
+GET https://us-central1-assuredworkloads.googleapis.com/v1/organizations/${folderID}/locations/us-central1/workloads/aww-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=organizations%2F${folderID}%2Flocations%2Fus-central1%2Fworkloads%2Faww-maximal-${uniqueId}
+
+403 Forbidden
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 403,
+    "message": "Permission 'assuredworkloads.workload.get' denied on resource '//assuredworkloads.googleapis.com/organizations/${folderID}/locations/us-central1/workloads/aww-maximal-${uniqueId}' (or it may not exist). Remediate access with this Troubleshooter URL or share it with your administrator - https://console.cloud.google.com/iam-admin/troubleshooter/summary;errorId=normalized-error-id .",
+    "status": "PERMISSION_DENIED"
+  }
+}
+
+---
+
+POST https://us-central1-assuredworkloads.googleapis.com/v1/organizations/${folderID}/locations/us-central1/workloads?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=organizations%2F${folderID}%2Flocations%2Fus-central1
+
+{
+  "billingAccount": "billingAccounts/01BD15-3BAB95-35F231",
+  "complianceRegime": 4,
+  "displayName": "aww updated ${uniqueId}"
+}
+
+403 Forbidden
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 403,
+    "message": "Permission 'assuredworkloads.workload.create' denied on resource 'organizations/${folderID}/locations/us-central1' (or resource may not exist).",
+    "status": "PERMISSION_DENIED"
+  }
+}
+
+---
+
+GET https://us-central1-assuredworkloads.googleapis.com/v1/organizations/${folderID}/locations/us-central1/workloads/aww-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=organizations%2F${folderID}%2Flocations%2Fus-central1%2Fworkloads%2Faww-maximal-${uniqueId}
+
+403 Forbidden
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 403,
+    "message": "Permission 'assuredworkloads.workload.get' denied on resource '//assuredworkloads.googleapis.com/organizations/${folderID}/locations/us-central1/workloads/aww-maximal-${uniqueId}' (or it may not exist). Remediate access with this Troubleshooter URL or share it with your administrator - https://console.cloud.google.com/iam-admin/troubleshooter/summary;errorId=normalized-error-id .",
+    "status": "PERMISSION_DENIED"
+  }
+}
+
+---
+
+POST https://us-central1-assuredworkloads.googleapis.com/v1/organizations/${folderID}/locations/us-central1/workloads?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=organizations%2F${folderID}%2Flocations%2Fus-central1
+
+{
+  "billingAccount": "billingAccounts/01BD15-3BAB95-35F231",
+  "complianceRegime": 4,
+  "displayName": "aww updated ${uniqueId}"
+}
+
+403 Forbidden
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 403,
+    "message": "Permission 'assuredworkloads.workload.create' denied on resource 'organizations/${folderID}/locations/us-central1' (or resource may not exist).",
+    "status": "PERMISSION_DENIED"
+  }
+}
+
+---
+
+GET https://us-central1-assuredworkloads.googleapis.com/v1/organizations/${folderID}/locations/us-central1/workloads/aww-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=organizations%2F${folderID}%2Flocations%2Fus-central1%2Fworkloads%2Faww-maximal-${uniqueId}
+
+403 Forbidden
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 403,
+    "message": "Permission 'assuredworkloads.workload.get' denied on resource '//assuredworkloads.googleapis.com/organizations/${folderID}/locations/us-central1/workloads/aww-maximal-${uniqueId}' (or it may not exist). Remediate access with this Troubleshooter URL or share it with your administrator - https://console.cloud.google.com/iam-admin/troubleshooter/summary;errorId=normalized-error-id .",
+    "status": "PERMISSION_DENIED"
+  }
+}

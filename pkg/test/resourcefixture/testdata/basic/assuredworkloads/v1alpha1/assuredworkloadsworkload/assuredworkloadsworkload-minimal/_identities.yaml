@@ -1,0 +1,6 @@
+- caisURL: //assuredworkloads.googleapis.com/organizations/${TEST_ORG_ID}/locations/us-central1/workloads/aww-minimal-${uniqueId}
+  group: assuredworkloads.cnrm.cloud.google.com
+  kind: AssuredWorkloadsWorkload
+  name: aww-minimal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

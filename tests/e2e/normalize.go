@@ -1219,6 +1219,8 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 		s = re.ReplaceAllString(s, "debian-11-bullseye-v20231010")
 		re2 := regexp.MustCompile(`built on \d{8}`)
 		s = re2.ReplaceAllString(s, "built on 20231010")
+		re3 := regexp.MustCompile(`summary;errorId=[a-zA-Z0-9\-]+`)
+		s = re3.ReplaceAllString(s, "summary;errorId=normalized-error-id")
 		return s
 	})
 

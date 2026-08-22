@@ -35,6 +35,10 @@ func assuredWorkloadsWorkloadFuzzer() fuzztesting.KRMFuzzer {
 
 	f.SpecField(".billing_account")
 	f.SpecField(".resource_settings")
+	f.SpecField(".display_name")
+	f.SpecField(".compliance_regime")
+	f.SpecField(".enable_sovereign_controls")
+	f.SpecField(".partner")
 
 	f.StatusField(".create_time")
 	f.StatusField(".resources")
@@ -43,6 +47,7 @@ func assuredWorkloadsWorkloadFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusField(".compliant_but_disallowed_services")
 	f.Unimplemented_NotYetTriaged(".provisioned_resources_parent")
 	f.Unimplemented_NotYetTriaged(".kms_settings")
+	f.Unimplemented_NotYetTriaged(".saa_enrollment_response.setup_status")
 
 	f.Unimplemented_Identity(".name")
 	f.Unimplemented_Etag()
