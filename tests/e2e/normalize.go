@@ -1068,6 +1068,9 @@ func findLinksInKRMObject(t *testing.T, replacement *Replacements, u *unstructur
 		".status.observedState.pscConnections[].forwardingRule",
 		".status.observedState.pscConnections[].network",
 	)
+	if u.GetKind() == "VertexAIStudy" {
+		linkPaths.Insert(".status.observedState.name")
+	}
 
 	visitor := objectWalker{}
 

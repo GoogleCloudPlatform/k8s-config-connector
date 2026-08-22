@@ -17,6 +17,7 @@ package v1alpha1
 import (
 	"context"
 	"fmt"
+	"unicode"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
@@ -60,6 +61,10 @@ func (i *VertexAIStudyIdentity) Host() string {
 	return VertexAIStudyIdentityFormat.Host()
 }
 
+func (i *VertexAIStudyIdentity) ParentString() string {
+	return "projects/" + i.Project + "/locations/" + i.Location
+}
+
 func getIdentityFromVertexAIStudySpec(ctx context.Context, reader client.Reader, obj client.Object) (*VertexAIStudyIdentity, error) {
 	resourceID, err := refs.GetResourceID(obj)
 	if err != nil {
@@ -98,10 +103,37 @@ func (obj *VertexAIStudy) GetIdentity(ctx context.Context, reader client.Reader)
 			return nil, err
 		}
 
-		if statusIdentity.String() != specIdentity.String() {
-			return nil, fmt.Errorf("cannot change VertexAIStudy identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+		if statusIdentity.Location != specIdentity.Location {
+			return nil, fmt.Errorf("cannot change VertexAIStudy location (old location=%s, new location=%s)", statusIdentity.Location, specIdentity.Location)
 		}
+		if !IsProjectIDMatch(statusIdentity.Project, specIdentity.Project) {
+			return nil, fmt.Errorf("cannot change VertexAIStudy project (old project=%s, new project=%s)", statusIdentity.Project, specIdentity.Project)
+		}
+		specIdentity.Project = statusIdentity.Project
+		return statusIdentity, nil
 	}
 
 	return specIdentity, nil
+}
+
+func isNumeric(s string) bool {
+	for _, r := range s {
+		if !unicode.IsDigit(r) {
+			return false
+		}
+	}
+	return true
+}
+
+func IsProjectIDMatch(p1, p2 string) bool {
+	if p1 == "" || p2 == "" {
+		return false
+	}
+	if p1 == p2 {
+		return true
+	}
+	if isNumeric(p1) != isNumeric(p2) {
+		return true // skip check if one is numeric and the other is alphanumeric
+	}
+	return p1 == p2
 }
