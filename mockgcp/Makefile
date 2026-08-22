@@ -135,7 +135,8 @@ generate-grpc-for-google-protos:
 		./third_party/googleapis/google/cloud/vision/v1/*.proto \
 		./third_party/googleapis/google/cloud/developerconnect/v1/*.proto \
 		./apis/google/cloud/vectorsearch/v1/*.proto \
-		./third_party/googleapis/google/cloud/contactcenterinsights/v1/*.proto
+		./third_party/googleapis/google/cloud/contactcenterinsights/v1/*.proto \
+		./third_party/googleapis/google/cloud/securitycentermanagement/v1/security_center_management.proto
 
 .PHONY: generate-protos-from-openapi
 generate-protos-from-openapi:

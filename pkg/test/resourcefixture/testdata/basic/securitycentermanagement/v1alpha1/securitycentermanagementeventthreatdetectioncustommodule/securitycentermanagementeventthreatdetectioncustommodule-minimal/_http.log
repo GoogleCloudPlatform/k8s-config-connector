@@ -1,0 +1,213 @@
+GET https://securitycentermanagement.googleapis.com/v1/organizations/${organizationID}/locations/global/eventThreatDetectionCustomModules/sccetdcm-min-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=organizations%2F${organizationID}%2Flocations%2Fglobal%2FeventThreatDetectionCustomModules%2Fsccetdcm-min-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Resource \"organizations/${organizationID}/locations/global/eventThreatDetectionCustomModules/sccetdcm-min-${uniqueId}\" was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Resource \"organizations/${organizationID}/locations/global/eventThreatDetectionCustomModules/sccetdcm-min-${uniqueId}\" was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://securitycentermanagement.googleapis.com/v1/organizations/${organizationID}/locations/global/eventThreatDetectionCustomModules?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=organizations%2F${organizationID}%2Flocations%2Fglobal
+
+{
+  "config": {
+    "ips": [
+      "1.2.3.4"
+    ],
+    "metadata": {
+      "name": "CONFIGURABLE_BAD_IP"
+    }
+  },
+  "displayName": "Minimal Event Threat Detection Custom Module",
+  "enablementState": 1,
+  "type": "CONFIGURABLE_BAD_IP"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "config": {
+    "ips": [
+      "1.2.3.4"
+    ],
+    "metadata": {
+      "name": "CONFIGURABLE_BAD_IP"
+    }
+  },
+  "displayName": "Minimal Event Threat Detection Custom Module",
+  "enablementState": 1,
+  "lastEditor": "mock-editor@google.com",
+  "name": "organizations/${organizationID}/locations/global/eventThreatDetectionCustomModules/7688692171240737",
+  "type": "CONFIGURABLE_BAD_IP",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://securitycentermanagement.googleapis.com/v1/organizations/${organizationID}/locations/global/eventThreatDetectionCustomModules/7688692171240737?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=organizations%2F${organizationID}%2Flocations%2Fglobal%2FeventThreatDetectionCustomModules%2F7688692171240737
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "config": {
+    "ips": [
+      "1.2.3.4"
+    ],
+    "metadata": {
+      "name": "CONFIGURABLE_BAD_IP"
+    }
+  },
+  "displayName": "Minimal Event Threat Detection Custom Module",
+  "enablementState": 1,
+  "lastEditor": "mock-editor@google.com",
+  "name": "organizations/${organizationID}/locations/global/eventThreatDetectionCustomModules/7688692171240737",
+  "type": "CONFIGURABLE_BAD_IP",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://securitycentermanagement.googleapis.com/v1/organizations/${organizationID}/locations/global/eventThreatDetectionCustomModules/7688692171240737?%24alt=json%3Benum-encoding%3Dint&updateMask=displayName
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: event_threat_detection_custom_module.name=organizations%2F${organizationID}%2Flocations%2Fglobal%2FeventThreatDetectionCustomModules%2F7688692171240737
+
+{
+  "config": {
+    "ips": [
+      "1.2.3.4"
+    ],
+    "metadata": {
+      "name": "CONFIGURABLE_BAD_IP"
+    }
+  },
+  "displayName": "Updated Minimal Event Threat Detection Custom Module",
+  "enablementState": 1,
+  "name": "organizations/${organizationID}/locations/global/eventThreatDetectionCustomModules/7688692171240737",
+  "type": "CONFIGURABLE_BAD_IP"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "config": {
+    "ips": [
+      "1.2.3.4"
+    ],
+    "metadata": {
+      "name": "CONFIGURABLE_BAD_IP"
+    }
+  },
+  "displayName": "Updated Minimal Event Threat Detection Custom Module",
+  "enablementState": 1,
+  "lastEditor": "mock-editor@google.com",
+  "name": "organizations/${organizationID}/locations/global/eventThreatDetectionCustomModules/7688692171240737",
+  "type": "CONFIGURABLE_BAD_IP",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://securitycentermanagement.googleapis.com/v1/organizations/${organizationID}/locations/global/eventThreatDetectionCustomModules/7688692171240737?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=organizations%2F${organizationID}%2Flocations%2Fglobal%2FeventThreatDetectionCustomModules%2F7688692171240737
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "config": {
+    "ips": [
+      "1.2.3.4"
+    ],
+    "metadata": {
+      "name": "CONFIGURABLE_BAD_IP"
+    }
+  },
+  "displayName": "Updated Minimal Event Threat Detection Custom Module",
+  "enablementState": 1,
+  "lastEditor": "mock-editor@google.com",
+  "name": "organizations/${organizationID}/locations/global/eventThreatDetectionCustomModules/7688692171240737",
+  "type": "CONFIGURABLE_BAD_IP",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://securitycentermanagement.googleapis.com/v1/organizations/${organizationID}/locations/global/eventThreatDetectionCustomModules/7688692171240737?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=organizations%2F${organizationID}%2Flocations%2Fglobal%2FeventThreatDetectionCustomModules%2F7688692171240737
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
