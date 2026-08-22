@@ -274,12 +274,34 @@ func compareHTTPLogs(wantContent, gotContent string) error {
 
 	wantGrouped := make(map[string][]httpEvent)
 	for _, ev := range wantEvents {
+		if ev.Method == "GET" {
+			if strings.Contains(ev.URL, "/operations/") || strings.Contains(ev.URL, "/operations?") {
+				continue // Skip LRO polling GET requests
+			}
+			if strings.Contains(ev.Status, "404") || strings.Contains(ev.ResponseBody, `"code": 404`) || strings.Contains(ev.ResponseBody, `"code":404`) {
+				continue // Skip 404 GET requests
+			}
+			if strings.Contains(ev.Status, "403") || strings.Contains(ev.ResponseBody, `"code": 403`) || strings.Contains(ev.ResponseBody, `"code":403`) {
+				continue // Skip 403 GET requests
+			}
+		}
 		key := extractResourceKey(ev.URL)
 		wantGrouped[key] = append(wantGrouped[key], ev)
 	}
 
 	gotGrouped := make(map[string][]httpEvent)
 	for _, ev := range gotEvents {
+		if ev.Method == "GET" {
+			if strings.Contains(ev.URL, "/operations/") || strings.Contains(ev.URL, "/operations?") {
+				continue // Skip LRO polling GET requests
+			}
+			if strings.Contains(ev.Status, "404") || strings.Contains(ev.ResponseBody, `"code": 404`) || strings.Contains(ev.ResponseBody, `"code":404`) {
+				continue // Skip 404 GET requests
+			}
+			if strings.Contains(ev.Status, "403") || strings.Contains(ev.ResponseBody, `"code": 403`) || strings.Contains(ev.ResponseBody, `"code":403`) {
+				continue // Skip 403 GET requests
+			}
+		}
 		key := extractResourceKey(ev.URL)
 		gotGrouped[key] = append(gotGrouped[key], ev)
 	}

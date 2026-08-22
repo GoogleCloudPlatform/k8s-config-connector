@@ -378,14 +378,6 @@ func (s *ClusterManagerV1) UpdateCluster(ctx context.Context, req *pb.UpdateClus
 		update.DesiredDisableL4LbFirewallReconciliation = nil
 	}
 
-	if update.DesiredInTransitEncryptionConfig != nil {
-		if obj.NetworkConfig == nil {
-			obj.NetworkConfig = &pb.NetworkConfig{}
-		}
-		obj.NetworkConfig.InTransitEncryptionConfig = update.DesiredInTransitEncryptionConfig
-		update.DesiredInTransitEncryptionConfig = nil
-	}
-
 	if update.DesiredAdditionalIpRangesConfig != nil {
 		if obj.IpAllocationPolicy == nil {
 			obj.IpAllocationPolicy = &pb.IPAllocationPolicy{}
@@ -412,13 +404,19 @@ func (s *ClusterManagerV1) UpdateCluster(ctx context.Context, req *pb.UpdateClus
 		update.DesiredDatabaseEncryption = nil
 	}
 
-	if !proto.Equal(update, &pb.ClusterUpdate{}) {
+	if update.DesiredInTransitEncryptionConfig != nil {
+		if obj.NetworkConfig == nil {
+			obj.NetworkConfig = &pb.NetworkConfig{}
+		}
+		obj.NetworkConfig.InTransitEncryptionConfig = update.DesiredInTransitEncryptionConfig
+		update.DesiredInTransitEncryptionConfig = nil
+	}
 
+	if !proto.Equal(update, &pb.ClusterUpdate{}) {
 		return nil, status.Errorf(codes.InvalidArgument, "update was not fully implemented ClusterUpdate=%v", prototext.Format(update))
 	}
 
 	if err := s.populateClusterDefaults(name.Project, obj, false); err != nil {
-
 		return nil, err
 	}
 
@@ -426,10 +424,16 @@ func (s *ClusterManagerV1) UpdateCluster(ctx context.Context, req *pb.UpdateClus
 		return nil, err
 	}
 
+	targetLink := buildTargetLink(ctx, name)
+	if req.GetUpdate().GetDesiredNodePoolId() != "" {
+		nodePoolName := name.NodePool(req.GetUpdate().GetDesiredNodePoolId())
+		targetLink = buildSelfLink(ctx, AsZonalLink(nodePoolName.LinkWithNumber()))
+	}
+
 	op := &pb.Operation{
 		Zone:          name.Location,
 		OperationType: pb.Operation_UPDATE_CLUSTER,
-		TargetLink:    buildTargetLink(ctx, name),
+		TargetLink:    targetLink,
 	}
 	return s.startLRO(ctx, name.Project, op, func() (proto.Message, error) {
 		return obj, nil
