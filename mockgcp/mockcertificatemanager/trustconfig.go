@@ -43,6 +43,8 @@ func (s *CertificateManagerV1) GetTrustConfig(ctx context.Context, req *pb.GetTr
 		return nil, err
 	}
 
+	normalizePEMs(obj)
+
 	return obj, nil
 }
 
