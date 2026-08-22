@@ -111,6 +111,7 @@ X-Xss-Protection: 0
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-south2/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast1/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast3/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast1/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast2/subnetworks/${networkID}",
     "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-central2/subnetworks/${networkID}",
@@ -552,6 +553,44 @@ X-Xss-Protection: 0
           "purpose": "PRIVATE",
           "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast2",
           "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast2/subnetworks/${networkID}",
+          "stackType": "IPV4_ONLY",
+          "state": "READY"
+        }
+      ]
+    },
+    "regions/asia-southeast3": {
+      "subnetworks": [
+        {
+          "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+          "fingerprint": "abcdef0123A=",
+          "gatewayAddress": "10.228.0.1",
+          "id": "1234567890",
+          "ipCidrRange": "10.228.0.0/20",
+          "kind": "compute#subnetwork",
+          "name": "default",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
+          "privateIpGoogleAccess": false,
+          "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+          "purpose": "PRIVATE",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast3",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast3/subnetworks/default",
+          "stackType": "IPV4_ONLY",
+          "state": "READY"
+        },
+        {
+          "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+          "fingerprint": "abcdef0123A=",
+          "gatewayAddress": "10.228.0.1",
+          "id": "1234567890",
+          "ipCidrRange": "10.228.0.0/20",
+          "kind": "compute#subnetwork",
+          "name": "${networkID}",
+          "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+          "privateIpGoogleAccess": false,
+          "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+          "purpose": "PRIVATE",
+          "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast3",
+          "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast3/subnetworks/${networkID}",
           "stackType": "IPV4_ONLY",
           "state": "READY"
         }
@@ -3792,6 +3831,18 @@ X-Xss-Protection: 0
       "creationTimestamp": "2024-04-01T12:34:56.123456Z",
       "description": "Default local route to the subnetwork 10.226.0.0/20.",
       "destRange": "10.226.0.0/20",
+      "id": "${routeID}",
+      "kind": "compute#route",
+      "name": "${routeName}",
+      "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "nextHopNetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+      "priority": 0,
+      "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/routes/${routeName}"
+    },
+    {
+      "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+      "description": "Default local route to the subnetwork 10.228.0.0/20.",
+      "destRange": "10.228.0.0/20",
       "id": "${routeID}",
       "kind": "compute#route",
       "name": "${routeName}",
