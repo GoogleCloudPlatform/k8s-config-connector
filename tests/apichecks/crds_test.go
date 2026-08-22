@@ -1112,6 +1112,7 @@ func TestCRDObjectTypes(t *testing.T) {
 		"dataformrepositories.dataform.cnrm.cloud.google.com":                           true, // status.observedState is an empty object
 		"dataprocjobs.dataproc.cnrm.cloud.google.com":                                   true, // spec.pysparkJob.loggingConfig is an empty object
 		"datastreamconnectionprofiles.datastream.cnrm.cloud.google.com":                 true, // spec.staticServiceIPConnectivity is an empty object
+		"discoveryengineassistants.discoveryengine.cnrm.cloud.google.com":               true, // status.observedState is an empty object
 		"discoveryenginecontrols.discoveryengine.cnrm.cloud.google.com":                 true, // status.observedState is an empty object
 		"discoveryengineengines.discoveryengine.cnrm.cloud.google.com":                  true, // status.observedState is an empty object
 		"dlpconnections.dlp.cnrm.cloud.google.com":                                      true, // spec.cloudSQL.cloudSQLIAM is an empty object
