@@ -11,6 +11,12 @@ spec:
     # Use external reference only. A CA pool with enabled CA is required.
     # KCC does not support enabling a created CA.
     external: projects/${projectId}/locations/us-central1/caPools/capool-dep-2
+  trustConfigRef:
+    # Use external reference only until direct controller is implemented.
+    external: projects/${projectId}/locations/us-central1/trustConfigs/trustconfig-dep-2
   excludePublicCASet: true
-  minTLSVersion: TLS_1_2
-  tlsFeatureProfile: PROFILE_COMPATIBLE
+  minTLSVersion: TLS_1_1
+  tlsFeatureProfile: PROFILE_CUSTOM
+  customTLSFeatures:
+  - "TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA"
+  - "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256"
