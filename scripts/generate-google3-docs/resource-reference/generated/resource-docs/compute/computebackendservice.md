@@ -94,6 +94,10 @@ backend:
       external: string
       name: string
       namespace: string
+    regionNetworkEndpointGroupRef:
+      external: string
+      name: string
+      namespace: string
   maxConnections: integer
   maxConnectionsPerEndpoint: integer
   maxConnectionsPerInstance: integer
@@ -420,6 +424,46 @@ timeoutSec: integer
         <td>
             <p><code class="apitype">string</code></p>
             <p>The namespace of a ComputeNetworkEndpointGroup resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>backend[].group.regionNetworkEndpointGroupRef</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p>Reference to a ComputeRegionNetworkEndpointGroup resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>backend[].group.regionNetworkEndpointGroupRef.external</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>A reference to an externally managed ComputeRegionNetworkEndpointGroup resource. Should be in the format "projects/{project}/regions/{region}/networkEndpointGroups/{networkEndpointGroup}".</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>backend[].group.regionNetworkEndpointGroupRef.name</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The name of a ComputeRegionNetworkEndpointGroup resource.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>backend[].group.regionNetworkEndpointGroupRef.namespace</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>The namespace of a ComputeRegionNetworkEndpointGroup resource.</p>
         </td>
     </tr>
     <tr>
