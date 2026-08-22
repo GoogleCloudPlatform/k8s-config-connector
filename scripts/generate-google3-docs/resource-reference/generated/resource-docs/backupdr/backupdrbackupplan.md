@@ -81,6 +81,7 @@ backupVaultRef:
   namespace: string
 description: string
 location: string
+logRetentionDays: integer
 projectRef:
   external: string
   kind: string
@@ -408,6 +409,16 @@ resourceType: string
         <td>
             <p><code class="apitype">string</code></p>
             <p>Immutable.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>logRetentionDays</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>Optional. Applicable only for CloudSQL resource_type. Configures how long logs will be stored. It is defined in “days”. This value should be greater than or equal to minimum enforced log retention duration of the backup vault.</p>
         </td>
     </tr>
     <tr>

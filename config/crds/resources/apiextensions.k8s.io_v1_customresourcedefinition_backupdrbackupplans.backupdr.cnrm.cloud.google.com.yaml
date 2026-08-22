@@ -237,6 +237,13 @@ spec:
                 x-kubernetes-validations:
                 - message: Location field is immutable
                   rule: self == oldSelf
+              logRetentionDays:
+                description: Optional. Applicable only for CloudSQL resource_type.
+                  Configures how long logs will be stored. It is defined in “days”.
+                  This value should be greater than or equal to minimum enforced log
+                  retention duration of the backup vault.
+                format: int64
+                type: integer
               projectRef:
                 description: The Project that this resource belongs to.
                 oneOf:
@@ -564,6 +571,13 @@ spec:
                 x-kubernetes-validations:
                 - message: Location field is immutable
                   rule: self == oldSelf
+              logRetentionDays:
+                description: Optional. Applicable only for CloudSQL resource_type.
+                  Configures how long logs will be stored. It is defined in “days”.
+                  This value should be greater than or equal to minimum enforced log
+                  retention duration of the backup vault.
+                format: int64
+                type: integer
               projectRef:
                 description: The Project that this resource belongs to.
                 oneOf:
