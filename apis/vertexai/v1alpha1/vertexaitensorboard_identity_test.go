@@ -24,17 +24,17 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-func TestVertexAITensorboardIdentity_FromExternal(t *testing.T) {
+func TestVertexAITensorBoardIdentity_FromExternal(t *testing.T) {
 	tests := []struct {
 		name    string
 		ref     string
 		wantErr bool
-		want    *VertexAITensorboardIdentity
+		want    *VertexAITensorBoardIdentity
 	}{
 		{
 			name: "valid reference",
 			ref:  "projects/my-project/locations/us-central1/tensorboards/my-tensorboard",
-			want: &VertexAITensorboardIdentity{
+			want: &VertexAITensorBoardIdentity{
 				Project:     "my-project",
 				Location:    "us-central1",
 				Tensorboard: "my-tensorboard",
@@ -48,7 +48,7 @@ func TestVertexAITensorboardIdentity_FromExternal(t *testing.T) {
 		{
 			name: "full url",
 			ref:  "https://aiplatform.googleapis.com/projects/my-project/locations/us-central1/tensorboards/my-tensorboard",
-			want: &VertexAITensorboardIdentity{
+			want: &VertexAITensorBoardIdentity{
 				Project:     "my-project",
 				Location:    "us-central1",
 				Tensorboard: "my-tensorboard",
@@ -58,7 +58,7 @@ func TestVertexAITensorboardIdentity_FromExternal(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			i := &VertexAITensorboardIdentity{}
+			i := &VertexAITensorBoardIdentity{}
 			err := i.FromExternal(tt.ref)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("FromExternal() error = %v, wantErr %v", err, tt.wantErr)
@@ -73,17 +73,17 @@ func TestVertexAITensorboardIdentity_FromExternal(t *testing.T) {
 	}
 }
 
-func TestGetIdentityFromVertexAITensorboardSpec(t *testing.T) {
+func TestGetIdentityFromVertexAITensorBoardSpec(t *testing.T) {
 	tests := []struct {
 		name    string
-		obj     *VertexAITensorboard
-		want    *VertexAITensorboardIdentity
+		obj     *VertexAITensorBoard
+		want    *VertexAITensorBoardIdentity
 		wantErr bool
 	}{
 		{
 			name: "resourceID is simple name",
-			obj: &VertexAITensorboard{
-				Spec: VertexAITensorboardSpec{
+			obj: &VertexAITensorBoard{
+				Spec: VertexAITensorBoardSpec{
 					Region:     "us-central1",
 					ResourceID: common.LazyPtr("my-tensorboard"),
 					ProjectRef: &refsv1beta1.ProjectRef{
@@ -91,7 +91,7 @@ func TestGetIdentityFromVertexAITensorboardSpec(t *testing.T) {
 					},
 				},
 			},
-			want: &VertexAITensorboardIdentity{
+			want: &VertexAITensorBoardIdentity{
 				Project:     "my-project",
 				Location:    "us-central1",
 				Tensorboard: "my-tensorboard",
@@ -99,8 +99,8 @@ func TestGetIdentityFromVertexAITensorboardSpec(t *testing.T) {
 		},
 		{
 			name: "resourceID is full GCP URI",
-			obj: &VertexAITensorboard{
-				Spec: VertexAITensorboardSpec{
+			obj: &VertexAITensorBoard{
+				Spec: VertexAITensorBoardSpec{
 					Region:     "us-central1",
 					ResourceID: common.LazyPtr("projects/my-project/locations/us-central1/tensorboards/my-tensorboard"),
 					ProjectRef: &refsv1beta1.ProjectRef{
@@ -108,7 +108,7 @@ func TestGetIdentityFromVertexAITensorboardSpec(t *testing.T) {
 					},
 				},
 			},
-			want: &VertexAITensorboardIdentity{
+			want: &VertexAITensorBoardIdentity{
 				Project:     "my-project",
 				Location:    "us-central1",
 				Tensorboard: "my-tensorboard",
@@ -118,14 +118,14 @@ func TestGetIdentityFromVertexAITensorboardSpec(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := getIdentityFromVertexAITensorboardSpec(context.Background(), nil, tt.obj)
+			got, err := getIdentityFromVertexAITensorBoardSpec(context.Background(), nil, tt.obj)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("getIdentityFromVertexAITensorboardSpec() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("getIdentityFromVertexAITensorBoardSpec() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if !tt.wantErr {
 				if diff := cmp.Diff(tt.want, got); diff != "" {
-					t.Errorf("getIdentityFromVertexAITensorboardSpec() mismatch (-want +got):\n%s", diff)
+					t.Errorf("getIdentityFromVertexAITensorBoardSpec() mismatch (-want +got):\n%s", diff)
 				}
 			}
 		})
@@ -135,27 +135,27 @@ func TestGetIdentityFromVertexAITensorboardSpec(t *testing.T) {
 func TestVertexAITensorboard_GetIdentity(t *testing.T) {
 	tests := []struct {
 		name    string
-		obj     *VertexAITensorboard
-		want    *VertexAITensorboardIdentity
+		obj     *VertexAITensorBoard
+		want    *VertexAITensorBoardIdentity
 		wantErr bool
 	}{
 		{
 			name: "resourceID is nil, externalRef exists",
-			obj: &VertexAITensorboard{
+			obj: &VertexAITensorBoard{
 				ObjectMeta: metav1.ObjectMeta{
 					Name: "my-tensorboard-krm",
 				},
-				Spec: VertexAITensorboardSpec{
+				Spec: VertexAITensorBoardSpec{
 					Region: "us-central1",
 					ProjectRef: &refsv1beta1.ProjectRef{
 						External: "my-project",
 					},
 				},
-				Status: VertexAITensorboardStatus{
+				Status: VertexAITensorBoardStatus{
 					ExternalRef: common.LazyPtr("projects/my-project/locations/us-central1/tensorboards/123456789"),
 				},
 			},
-			want: &VertexAITensorboardIdentity{
+			want: &VertexAITensorBoardIdentity{
 				Project:     "my-project",
 				Location:    "us-central1",
 				Tensorboard: "123456789",

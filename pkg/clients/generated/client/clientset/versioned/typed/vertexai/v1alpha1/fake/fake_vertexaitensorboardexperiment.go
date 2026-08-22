@@ -27,26 +27,28 @@ import (
 	gentype "k8s.io/client-go/gentype"
 )
 
-// fakeVertexAITensorBoards implements VertexAITensorBoardInterface
-type fakeVertexAITensorBoards struct {
-	*gentype.FakeClientWithList[*v1alpha1.VertexAITensorBoard, *v1alpha1.VertexAITensorBoardList]
+// fakeVertexAITensorboardExperiments implements VertexAITensorboardExperimentInterface
+type fakeVertexAITensorboardExperiments struct {
+	*gentype.FakeClientWithList[*v1alpha1.VertexAITensorboardExperiment, *v1alpha1.VertexAITensorboardExperimentList]
 	Fake *FakeVertexaiV1alpha1
 }
 
-func newFakeVertexAITensorBoards(fake *FakeVertexaiV1alpha1, namespace string) vertexaiv1alpha1.VertexAITensorBoardInterface {
-	return &fakeVertexAITensorBoards{
-		gentype.NewFakeClientWithList[*v1alpha1.VertexAITensorBoard, *v1alpha1.VertexAITensorBoardList](
+func newFakeVertexAITensorboardExperiments(fake *FakeVertexaiV1alpha1, namespace string) vertexaiv1alpha1.VertexAITensorboardExperimentInterface {
+	return &fakeVertexAITensorboardExperiments{
+		gentype.NewFakeClientWithList[*v1alpha1.VertexAITensorboardExperiment, *v1alpha1.VertexAITensorboardExperimentList](
 			fake.Fake,
 			namespace,
-			v1alpha1.SchemeGroupVersion.WithResource("vertexaitensorboards"),
-			v1alpha1.SchemeGroupVersion.WithKind("VertexAITensorBoard"),
-			func() *v1alpha1.VertexAITensorBoard { return &v1alpha1.VertexAITensorBoard{} },
-			func() *v1alpha1.VertexAITensorBoardList { return &v1alpha1.VertexAITensorBoardList{} },
-			func(dst, src *v1alpha1.VertexAITensorBoardList) { dst.ListMeta = src.ListMeta },
-			func(list *v1alpha1.VertexAITensorBoardList) []*v1alpha1.VertexAITensorBoard {
+			v1alpha1.SchemeGroupVersion.WithResource("vertexaitensorboardexperiments"),
+			v1alpha1.SchemeGroupVersion.WithKind("VertexAITensorboardExperiment"),
+			func() *v1alpha1.VertexAITensorboardExperiment { return &v1alpha1.VertexAITensorboardExperiment{} },
+			func() *v1alpha1.VertexAITensorboardExperimentList {
+				return &v1alpha1.VertexAITensorboardExperimentList{}
+			},
+			func(dst, src *v1alpha1.VertexAITensorboardExperimentList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.VertexAITensorboardExperimentList) []*v1alpha1.VertexAITensorboardExperiment {
 				return gentype.ToPointerSlice(list.Items)
 			},
-			func(list *v1alpha1.VertexAITensorBoardList, items []*v1alpha1.VertexAITensorBoard) {
+			func(list *v1alpha1.VertexAITensorboardExperimentList, items []*v1alpha1.VertexAITensorboardExperiment) {
 				list.Items = gentype.FromPointerSlice(items)
 			},
 		),

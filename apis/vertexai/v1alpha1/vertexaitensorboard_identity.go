@@ -27,46 +27,46 @@ import (
 )
 
 var (
-	_ identity.IdentityV2 = &VertexAITensorboardIdentity{}
-	_ identity.Resource   = &VertexAITensorboard{}
+	_ identity.IdentityV2 = &VertexAITensorBoardIdentity{}
+	_ identity.Resource   = &VertexAITensorBoard{}
 )
 
-var VertexAITensorboardIdentityFormat = gcpurls.Template[VertexAITensorboardIdentity]("aiplatform.googleapis.com", "projects/{project}/locations/{location}/tensorboards/{tensorboard}")
+var VertexAITensorBoardIdentityFormat = gcpurls.Template[VertexAITensorBoardIdentity]("aiplatform.googleapis.com", "projects/{project}/locations/{location}/tensorboards/{tensorboard}")
 
-// VertexAITensorboardIdentity is the identity of a GCP VertexAITensorboard resource.
+// VertexAITensorBoardIdentity is the identity of a GCP VertexAITensorBoard resource.
 // +k8s:deepcopy-gen=false
-type VertexAITensorboardIdentity struct {
+type VertexAITensorBoardIdentity struct {
 	Project     string
 	Location    string
 	Tensorboard string
 }
 
-func (i *VertexAITensorboardIdentity) String() string {
-	return VertexAITensorboardIdentityFormat.ToString(*i)
+func (i *VertexAITensorBoardIdentity) String() string {
+	return VertexAITensorBoardIdentityFormat.ToString(*i)
 }
 
-func (i *VertexAITensorboardIdentity) FromExternal(ref string) error {
-	parsed, match, err := VertexAITensorboardIdentityFormat.Parse(ref)
+func (i *VertexAITensorBoardIdentity) FromExternal(ref string) error {
+	parsed, match, err := VertexAITensorBoardIdentityFormat.Parse(ref)
 	if err != nil {
-		return fmt.Errorf("format of VertexAITensorboard external=%q was not known (use %s): %w", ref, VertexAITensorboardIdentityFormat.CanonicalForm(), err)
+		return fmt.Errorf("format of VertexAITensorBoard external=%q was not known (use %s): %w", ref, VertexAITensorBoardIdentityFormat.CanonicalForm(), err)
 	}
 	if !match {
-		return fmt.Errorf("format of VertexAITensorboard external=%q was not known (use %s)", ref, VertexAITensorboardIdentityFormat.CanonicalForm())
+		return fmt.Errorf("format of VertexAITensorBoard external=%q was not known (use %s)", ref, VertexAITensorBoardIdentityFormat.CanonicalForm())
 	}
 
 	*i = *parsed
 	return nil
 }
 
-func (i *VertexAITensorboardIdentity) Host() string {
-	return VertexAITensorboardIdentityFormat.Host()
+func (i *VertexAITensorBoardIdentity) Host() string {
+	return VertexAITensorBoardIdentityFormat.Host()
 }
 
-func (i *VertexAITensorboardIdentity) ParentString() string {
+func (i *VertexAITensorBoardIdentity) ParentString() string {
 	return fmt.Sprintf("projects/%s/locations/%s", i.Project, i.Location)
 }
 
-func getIdentityFromVertexAITensorboardSpec(ctx context.Context, reader client.Reader, obj *VertexAITensorboard) (*VertexAITensorboardIdentity, error) {
+func getIdentityFromVertexAITensorBoardSpec(ctx context.Context, reader client.Reader, obj *VertexAITensorBoard) (*VertexAITensorBoardIdentity, error) {
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
 	if resourceID == "" {
 		resourceID = obj.GetName()
@@ -77,7 +77,7 @@ func getIdentityFromVertexAITensorboardSpec(ctx context.Context, reader client.R
 
 	// If resourceID is a full GCP URI, parse the actual tensorboard name from it.
 	if strings.HasPrefix(resourceID, "projects/") {
-		parsed, match, err := VertexAITensorboardIdentityFormat.Parse(resourceID)
+		parsed, match, err := VertexAITensorBoardIdentityFormat.Parse(resourceID)
 		if err == nil && match {
 			resourceID = parsed.Tensorboard
 		}
@@ -93,7 +93,7 @@ func getIdentityFromVertexAITensorboardSpec(ctx context.Context, reader client.R
 		return nil, fmt.Errorf("cannot resolve project: %w", err)
 	}
 
-	identity := &VertexAITensorboardIdentity{
+	identity := &VertexAITensorBoardIdentity{
 		Project:     projectID,
 		Location:    location,
 		Tensorboard: resourceID,
@@ -101,8 +101,8 @@ func getIdentityFromVertexAITensorboardSpec(ctx context.Context, reader client.R
 	return identity, nil
 }
 
-func (obj *VertexAITensorboard) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
-	specIdentity, err := getIdentityFromVertexAITensorboardSpec(ctx, reader, obj)
+func (obj *VertexAITensorBoard) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	specIdentity, err := getIdentityFromVertexAITensorBoardSpec(ctx, reader, obj)
 	if err != nil {
 		return nil, err
 	}
@@ -110,7 +110,7 @@ func (obj *VertexAITensorboard) GetIdentity(ctx context.Context, reader client.R
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		// Validate desired with actual
-		statusIdentity := &VertexAITensorboardIdentity{}
+		statusIdentity := &VertexAITensorBoardIdentity{}
 		if err := statusIdentity.FromExternal(externalRef); err != nil {
 			return nil, err
 		}
@@ -125,7 +125,7 @@ func (obj *VertexAITensorboard) GetIdentity(ctx context.Context, reader client.R
 		// Validate identity fields. We avoid direct string comparison of the full Identity because Project
 		// can be project ID string in specIdentity, but project number in statusIdentity.
 		if statusIdentity.Location != specIdentity.Location || statusIdentity.Tensorboard != specIdentity.Tensorboard {
-			return nil, fmt.Errorf("cannot change VertexAITensorboard identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+			return nil, fmt.Errorf("cannot change VertexAITensorBoard identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
 		}
 	}
 

@@ -13,7 +13,7 @@
 # limitations under the License.
 
 apiVersion: vertexai.cnrm.cloud.google.com/v1alpha1
-kind: VertexAITensorboard
+kind: VertexAITensorBoard
 metadata:
   labels:
     label-one: one

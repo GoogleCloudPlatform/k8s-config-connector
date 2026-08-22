@@ -137,14 +137,14 @@ spec:
                   - external
                 properties:
                   external:
-                    description: A reference to an externally managed VertexAITensorboard
+                    description: A reference to an externally managed VertexAITensorBoard
                       resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/tensorboards/{{tensorboardID}}".
                     type: string
                   name:
-                    description: The name of a VertexAITensorboard resource.
+                    description: The name of a VertexAITensorBoard resource.
                     type: string
                   namespace:
-                    description: The namespace of a VertexAITensorboard resource.
+                    description: The namespace of a VertexAITensorBoard resource.
                     type: string
                 type: object
             required:

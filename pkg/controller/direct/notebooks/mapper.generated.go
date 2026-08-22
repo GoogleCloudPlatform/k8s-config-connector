@@ -95,7 +95,7 @@ func ExecutionTemplate_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Exec
 	out.VertexAiParameters = ExecutionTemplate_VertexAiParameters_v1alpha1_FromProto(mapCtx, in.GetVertexAiParameters())
 	out.KernelSpec = direct.LazyPtr(in.GetKernelSpec())
 	if in.GetTensorboard() != "" {
-		out.TensorboardRef = &krmvertexaiv1alpha1.VertexAITensorboardRef{External: in.GetTensorboard()}
+		out.TensorboardRef = &krmvertexaiv1alpha1.VertexAITensorBoardRef{External: in.GetTensorboard()}
 	}
 	return out
 }

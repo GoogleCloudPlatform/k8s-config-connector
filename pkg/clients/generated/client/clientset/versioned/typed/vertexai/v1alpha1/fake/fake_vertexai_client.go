@@ -67,8 +67,12 @@ func (c *FakeVertexaiV1alpha1) VertexAIIndexEndpoints(namespace string) v1alpha1
 	return newFakeVertexAIIndexEndpoints(c, namespace)
 }
 
-func (c *FakeVertexaiV1alpha1) VertexAITensorboards(namespace string) v1alpha1.VertexAITensorboardInterface {
-	return newFakeVertexAITensorboards(c, namespace)
+func (c *FakeVertexaiV1alpha1) VertexAITensorBoards(namespace string) v1alpha1.VertexAITensorBoardInterface {
+	return newFakeVertexAITensorBoards(c, namespace)
+}
+
+func (c *FakeVertexaiV1alpha1) VertexAITensorboardExperiments(namespace string) v1alpha1.VertexAITensorboardExperimentInterface {
+	return newFakeVertexAITensorboardExperiments(c, namespace)
 }
 
 // RESTClient returns a RESTClient that is used to communicate

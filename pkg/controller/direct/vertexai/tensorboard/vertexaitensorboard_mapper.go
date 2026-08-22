@@ -21,18 +21,18 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/vertexai"
 )
 
-func VertexAITensorboardSpec_ToProto(mapCtx *direct.MapContext, in *krm.VertexAITensorboardSpec) *pb.Tensorboard {
-	return vertexai.VertexAITensorboardSpec_v1alpha1_ToProto(mapCtx, in)
+func VertexAITensorBoardSpec_ToProto(mapCtx *direct.MapContext, in *krm.VertexAITensorBoardSpec) *pb.Tensorboard {
+	return vertexai.VertexAITensorBoardSpec_v1alpha1_ToProto(mapCtx, in)
 }
 
-func VertexAITensorboardSpec_FromProto(mapCtx *direct.MapContext, in *pb.Tensorboard) *krm.VertexAITensorboardSpec {
-	return vertexai.VertexAITensorboardSpec_v1alpha1_FromProto(mapCtx, in)
+func VertexAITensorBoardSpec_FromProto(mapCtx *direct.MapContext, in *pb.Tensorboard) *krm.VertexAITensorBoardSpec {
+	return vertexai.VertexAITensorBoardSpec_v1alpha1_FromProto(mapCtx, in)
 }
 
-func VertexAITensorboardObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VertexAITensorboardObservedState) *pb.Tensorboard {
-	return vertexai.VertexAITensorboardObservedState_v1alpha1_ToProto(mapCtx, in)
+func VertexAITensorBoardObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VertexAITensorBoardObservedState) *pb.Tensorboard {
+	return vertexai.VertexAITensorBoardObservedState_v1alpha1_ToProto(mapCtx, in)
 }
 
-func VertexAITensorboardObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Tensorboard) *krm.VertexAITensorboardObservedState {
-	return vertexai.VertexAITensorboardObservedState_v1alpha1_FromProto(mapCtx, in)
+func VertexAITensorBoardObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Tensorboard) *krm.VertexAITensorBoardObservedState {
+	return vertexai.VertexAITensorBoardObservedState_v1alpha1_FromProto(mapCtx, in)
 }

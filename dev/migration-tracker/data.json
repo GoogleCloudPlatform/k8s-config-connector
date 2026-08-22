@@ -7974,7 +7974,7 @@
   },
   {
     "group": "vertexai",
-    "kind": "VertexAITensorboard",
+    "kind": "VertexAITensorBoard",
     "version": "v1beta1",
     "controllerType": "Terraform",
     "defaultController": "Terraform",

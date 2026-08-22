@@ -176,7 +176,7 @@ func VertexAIExampleStoreSpec_DisplayName_ToProto(mapCtx *direct.MapContext, in 
 	return in
 }
 
-func VertexAITensorboardSpec_DisplayName_ToProto(mapCtx *direct.MapContext, in string) string {
+func VertexAITensorBoardSpec_DisplayName_ToProto(mapCtx *direct.MapContext, in string) string {
 	return in
 }
 

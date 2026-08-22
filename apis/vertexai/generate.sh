@@ -42,7 +42,7 @@ ${CONTROLLERBUILDER} generate-types \
     --resource VertexAIFeatureGroup:FeatureGroup \
     --resource VertexAIDataLabelingJob:DataLabelingJob \
     --resource VertexAICustomJob:CustomJob \
-    --resource VertexAITensorboard:Tensorboard \
+    --resource VertexAITensorBoard:Tensorboard \
     --resource VertexAITensorboardExperiment:TensorboardExperiment
 
 # --- v1beta1 ---

@@ -24,7 +24,7 @@
 // resource: VertexAIFeatureGroup:FeatureGroup
 // resource: VertexAIDataLabelingJob:DataLabelingJob
 // resource: VertexAICustomJob:CustomJob
-// resource: VertexAITensorboard:Tensorboard
+// resource: VertexAITensorBoard:Tensorboard
 // resource: VertexAITensorboardExperiment:TensorboardExperiment
 
 package v1alpha1

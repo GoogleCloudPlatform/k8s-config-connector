@@ -237,7 +237,7 @@ func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error
 	}
 	obj.Spec.ProjectRef = &refsv1beta1.ProjectRef{Name: a.id.Project}
 	obj.Spec.Location = direct.PtrTo(a.id.Location)
-	obj.Spec.TensorboardRef = &krm.VertexAITensorboardRef{External: fmt.Sprintf("projects/%s/locations/%s/tensorboards/%s", a.id.Project, a.id.Location, a.id.Tensorboard)}
+	obj.Spec.TensorboardRef = &krm.VertexAITensorBoardRef{External: fmt.Sprintf("projects/%s/locations/%s/tensorboards/%s", a.id.Project, a.id.Location, a.id.Tensorboard)}
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err

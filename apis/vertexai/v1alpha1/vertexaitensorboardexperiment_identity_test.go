@@ -89,7 +89,7 @@ func TestGetIdentityFromVertexAITensorboardExperimentSpec(t *testing.T) {
 						External: "my-project",
 					},
 					Location: common.LazyPtr("us-central1"),
-					TensorboardRef: &VertexAITensorboardRef{
+					TensorboardRef: &VertexAITensorBoardRef{
 						External: "projects/my-project/locations/us-central1/tensorboards/my-tensorboard",
 					},
 					ResourceID: common.LazyPtr("my-experiment"),
@@ -107,7 +107,7 @@ func TestGetIdentityFromVertexAITensorboardExperimentSpec(t *testing.T) {
 			obj: &VertexAITensorboardExperiment{
 				Spec: VertexAITensorboardExperimentSpec{
 					Location: common.LazyPtr("us-central1"),
-					TensorboardRef: &VertexAITensorboardRef{
+					TensorboardRef: &VertexAITensorBoardRef{
 						External: "projects/my-project/locations/us-central1/tensorboards/my-tensorboard",
 					},
 					ResourceID: common.LazyPtr("my-experiment"),
@@ -123,7 +123,7 @@ func TestGetIdentityFromVertexAITensorboardExperimentSpec(t *testing.T) {
 						External: "other-project",
 					},
 					Location: common.LazyPtr("us-central1"),
-					TensorboardRef: &VertexAITensorboardRef{
+					TensorboardRef: &VertexAITensorBoardRef{
 						External: "projects/my-project/locations/us-central1/tensorboards/my-tensorboard",
 					},
 					ResourceID: common.LazyPtr("my-experiment"),
@@ -138,7 +138,7 @@ func TestGetIdentityFromVertexAITensorboardExperimentSpec(t *testing.T) {
 					ProjectRef: &refsv1beta1.ProjectRef{
 						External: "my-project",
 					},
-					TensorboardRef: &VertexAITensorboardRef{
+					TensorboardRef: &VertexAITensorBoardRef{
 						External: "projects/my-project/locations/us-central1/tensorboards/my-tensorboard",
 					},
 					ResourceID: common.LazyPtr("my-experiment"),
@@ -154,7 +154,7 @@ func TestGetIdentityFromVertexAITensorboardExperimentSpec(t *testing.T) {
 						External: "my-project",
 					},
 					Location: common.LazyPtr("us-east1"),
-					TensorboardRef: &VertexAITensorboardRef{
+					TensorboardRef: &VertexAITensorBoardRef{
 						External: "projects/my-project/locations/us-central1/tensorboards/my-tensorboard",
 					},
 					ResourceID: common.LazyPtr("my-experiment"),
