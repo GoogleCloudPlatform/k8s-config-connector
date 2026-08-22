@@ -131,6 +131,7 @@ fi
 shopt -s nullglob
 PROTO_FILES=(
     ${REPO_ROOT}/mockgcp/apis/google/apps/cloudidentity/*/*.proto
+    ${REPO_ROOT}/mockgcp/apis/google/cloud/discoveryengine/*/*.proto
     ${REPO_ROOT}/mockgcp/apis/mockgcp/cloud/apigee/*/*.proto
     ${REPO_ROOT}/mockgcp/apis/mockgcp/cloud/networkconnectivity/*/*.proto
     ${REPO_ROOT}/mockgcp/apis/mockgcp/cloud/servicenetworking/*/*.proto

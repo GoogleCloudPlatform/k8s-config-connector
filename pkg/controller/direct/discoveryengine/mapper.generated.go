@@ -21,6 +21,7 @@
 // krm.version: v1alpha1
 // proto.service: google.cloud.discoveryengine.v1
 // proto.service: google.cloud.discoveryengine.v1beta
+// proto.service: google.cloud.discoveryengine.v1alpha
 
 package discoveryengine
 
@@ -28,6 +29,7 @@ import (
 	pb "cloud.google.com/go/discoveryengine/apiv1/discoveryenginepb"
 	discoveryenginepb "cloud.google.com/go/discoveryengine/apiv1beta/discoveryenginepb"
 	krmdiscoveryenginev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/discoveryengine/v1alpha1"
+	v1alphapb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/cloud/discoveryengine/v1alpha"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
@@ -1545,6 +1547,46 @@ func DiscoveryEngineUserStoreSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in
 	out.EnableExpiredLicenseAutoUpdate = direct.ValueOf(in.EnableExpiredLicenseAutoUpdate)
 	return out
 }
+func DiscoveryEngineWidgetConfigObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *v1alphapb.WidgetConfig) *krmdiscoveryenginev1alpha1.DiscoveryEngineWidgetConfigObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.DiscoveryEngineWidgetConfigObservedState{}
+	// MISSING: Name
+	return out
+}
+func DiscoveryEngineWidgetConfigObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.DiscoveryEngineWidgetConfigObservedState) *v1alphapb.WidgetConfig {
+	if in == nil {
+		return nil
+	}
+	out := &v1alphapb.WidgetConfig{}
+	// MISSING: Name
+	return out
+}
+func DiscoveryEngineWidgetConfigSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *v1alphapb.WidgetConfig) *krmdiscoveryenginev1alpha1.DiscoveryEngineWidgetConfigSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.DiscoveryEngineWidgetConfigSpec{}
+	// MISSING: Name
+	out.AccessSettings = WidgetConfig_AccessSettings_v1alpha1_FromProto(mapCtx, in.GetAccessSettings())
+	out.UiSettings = WidgetConfig_UiSettings_v1alpha1_FromProto(mapCtx, in.GetUiSettings())
+	out.UiBranding = WidgetConfig_UiBranding_v1alpha1_FromProto(mapCtx, in.GetUiBranding())
+	out.HomepageSetting = WidgetConfig_HomepageSetting_v1alpha1_FromProto(mapCtx, in.GetHomepageSetting())
+	return out
+}
+func DiscoveryEngineWidgetConfigSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.DiscoveryEngineWidgetConfigSpec) *v1alphapb.WidgetConfig {
+	if in == nil {
+		return nil
+	}
+	out := &v1alphapb.WidgetConfig{}
+	// MISSING: Name
+	out.AccessSettings = WidgetConfig_AccessSettings_v1alpha1_ToProto(mapCtx, in.AccessSettings)
+	out.UiSettings = WidgetConfig_UiSettings_v1alpha1_ToProto(mapCtx, in.UiSettings)
+	out.UiBranding = WidgetConfig_UiBranding_v1alpha1_ToProto(mapCtx, in.UiBranding)
+	out.HomepageSetting = WidgetConfig_HomepageSetting_v1alpha1_ToProto(mapCtx, in.HomepageSetting)
+	return out
+}
 func EmbeddingConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *discoveryenginepb.EmbeddingConfig) *krmdiscoveryenginev1alpha1.EmbeddingConfig {
 	if in == nil {
 		return nil
@@ -1975,6 +2017,132 @@ func TextInput_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryengin
 	out := &pb.TextInput{}
 	out.Input = direct.ValueOf(in.Input)
 	out.Context = ConversationContext_v1alpha1_ToProto(mapCtx, in.Context)
+	return out
+}
+func WidgetConfig_AccessSettings_v1alpha1_FromProto(mapCtx *direct.MapContext, in *v1alphapb.WidgetConfig_AccessSettings) *krmdiscoveryenginev1alpha1.WidgetConfig_AccessSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.WidgetConfig_AccessSettings{}
+	out.AllowPublicAccess = direct.LazyPtr(in.GetAllowPublicAccess())
+	out.AllowlistedDomains = in.AllowlistedDomains
+	out.EnableWebApp = direct.LazyPtr(in.GetEnableWebApp())
+	out.WorkforceIdentityPoolProvider = direct.LazyPtr(in.GetWorkforceIdentityPoolProvider())
+	out.LanguageCode = direct.LazyPtr(in.GetLanguageCode())
+	return out
+}
+func WidgetConfig_AccessSettings_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.WidgetConfig_AccessSettings) *v1alphapb.WidgetConfig_AccessSettings {
+	if in == nil {
+		return nil
+	}
+	out := &v1alphapb.WidgetConfig_AccessSettings{}
+	out.AllowPublicAccess = direct.ValueOf(in.AllowPublicAccess)
+	out.AllowlistedDomains = in.AllowlistedDomains
+	out.EnableWebApp = direct.ValueOf(in.EnableWebApp)
+	out.WorkforceIdentityPoolProvider = direct.ValueOf(in.WorkforceIdentityPoolProvider)
+	out.LanguageCode = direct.ValueOf(in.LanguageCode)
+	return out
+}
+func WidgetConfig_HomepageSetting_v1alpha1_FromProto(mapCtx *direct.MapContext, in *v1alphapb.WidgetConfig_HomepageSetting) *krmdiscoveryenginev1alpha1.WidgetConfig_HomepageSetting {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.WidgetConfig_HomepageSetting{}
+	out.Shortcuts = in.Shortcuts
+	return out
+}
+func WidgetConfig_HomepageSetting_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.WidgetConfig_HomepageSetting) *v1alphapb.WidgetConfig_HomepageSetting {
+	if in == nil {
+		return nil
+	}
+	out := &v1alphapb.WidgetConfig_HomepageSetting{}
+	out.Shortcuts = in.Shortcuts
+	return out
+}
+func WidgetConfig_UiBranding_v1alpha1_FromProto(mapCtx *direct.MapContext, in *v1alphapb.WidgetConfig_UiBranding) *krmdiscoveryenginev1alpha1.WidgetConfig_UiBranding {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.WidgetConfig_UiBranding{}
+	out.Title = direct.LazyPtr(in.GetTitle())
+	out.LogoURI = direct.LazyPtr(in.GetLogoUri())
+	out.FaviconURI = direct.LazyPtr(in.GetFaviconUri())
+	out.PrimaryColor = direct.LazyPtr(in.GetPrimaryColor())
+	return out
+}
+func WidgetConfig_UiBranding_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.WidgetConfig_UiBranding) *v1alphapb.WidgetConfig_UiBranding {
+	if in == nil {
+		return nil
+	}
+	out := &v1alphapb.WidgetConfig_UiBranding{}
+	out.Title = direct.ValueOf(in.Title)
+	out.LogoUri = direct.ValueOf(in.LogoURI)
+	out.FaviconUri = direct.ValueOf(in.FaviconURI)
+	out.PrimaryColor = direct.ValueOf(in.PrimaryColor)
+	return out
+}
+func WidgetConfig_UiSettings_v1alpha1_FromProto(mapCtx *direct.MapContext, in *v1alphapb.WidgetConfig_UiSettings) *krmdiscoveryenginev1alpha1.WidgetConfig_UiSettings {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.WidgetConfig_UiSettings{}
+	out.InteractionType = direct.LazyPtr(in.GetInteractionType())
+	out.EnableAutocomplete = direct.LazyPtr(in.GetEnableAutocomplete())
+	out.EnableSafeSearch = direct.LazyPtr(in.GetEnableSafeSearch())
+	out.EnableQualityFeedback = direct.LazyPtr(in.GetEnableQualityFeedback())
+	out.EnableSearchAsYouType = direct.LazyPtr(in.GetEnableSearchAsYouType())
+	out.ResultDescriptionType = direct.LazyPtr(in.GetResultDescriptionType())
+	out.GenerativeAnswerConfig = WidgetConfig_UiSettings_GenerativeAnswerConfig_v1alpha1_FromProto(mapCtx, in.GetGenerativeAnswerConfig())
+	out.EnableVisualContentSummary = direct.LazyPtr(in.GetEnableVisualContentSummary())
+	out.EnablePeopleSearch = direct.LazyPtr(in.GetEnablePeopleSearch())
+	out.EnableCreateAgentButton = direct.LazyPtr(in.GetEnableCreateAgentButton())
+	return out
+}
+func WidgetConfig_UiSettings_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.WidgetConfig_UiSettings) *v1alphapb.WidgetConfig_UiSettings {
+	if in == nil {
+		return nil
+	}
+	out := &v1alphapb.WidgetConfig_UiSettings{}
+	out.InteractionType = direct.ValueOf(in.InteractionType)
+	out.EnableAutocomplete = direct.ValueOf(in.EnableAutocomplete)
+	out.EnableSafeSearch = direct.ValueOf(in.EnableSafeSearch)
+	out.EnableQualityFeedback = direct.ValueOf(in.EnableQualityFeedback)
+	out.EnableSearchAsYouType = direct.ValueOf(in.EnableSearchAsYouType)
+	out.ResultDescriptionType = direct.ValueOf(in.ResultDescriptionType)
+	out.GenerativeAnswerConfig = WidgetConfig_UiSettings_GenerativeAnswerConfig_v1alpha1_ToProto(mapCtx, in.GenerativeAnswerConfig)
+	out.EnableVisualContentSummary = direct.ValueOf(in.EnableVisualContentSummary)
+	out.EnablePeopleSearch = direct.ValueOf(in.EnablePeopleSearch)
+	out.EnableCreateAgentButton = direct.ValueOf(in.EnableCreateAgentButton)
+	return out
+}
+func WidgetConfig_UiSettings_GenerativeAnswerConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *v1alphapb.WidgetConfig_UiSettings_GenerativeAnswerConfig) *krmdiscoveryenginev1alpha1.WidgetConfig_UiSettings_GenerativeAnswerConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.WidgetConfig_UiSettings_GenerativeAnswerConfig{}
+	out.ResultCount = direct.LazyPtr(in.GetResultCount())
+	out.ModelVersion = direct.LazyPtr(in.GetModelVersion())
+	out.ModelPromptPreamble = direct.LazyPtr(in.GetModelPromptPreamble())
+	out.MaxRephraseSteps = direct.LazyPtr(in.GetMaxRephraseSteps())
+	out.IgnoreNonAnswerSeekingQuery = direct.LazyPtr(in.GetIgnoreNonAnswerSeekingQuery())
+	out.IgnoreAdversarialQuery = direct.LazyPtr(in.GetIgnoreAdversarialQuery())
+	out.IgnoreLowRelevantContent = direct.LazyPtr(in.GetIgnoreLowRelevantContent())
+	out.ImageSource = direct.LazyPtr(in.GetImageSource())
+	return out
+}
+func WidgetConfig_UiSettings_GenerativeAnswerConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.WidgetConfig_UiSettings_GenerativeAnswerConfig) *v1alphapb.WidgetConfig_UiSettings_GenerativeAnswerConfig {
+	if in == nil {
+		return nil
+	}
+	out := &v1alphapb.WidgetConfig_UiSettings_GenerativeAnswerConfig{}
+	out.ResultCount = direct.ValueOf(in.ResultCount)
+	out.ModelVersion = direct.ValueOf(in.ModelVersion)
+	out.ModelPromptPreamble = direct.ValueOf(in.ModelPromptPreamble)
+	out.MaxRephraseSteps = direct.ValueOf(in.MaxRephraseSteps)
+	out.IgnoreNonAnswerSeekingQuery = direct.ValueOf(in.IgnoreNonAnswerSeekingQuery)
+	out.IgnoreAdversarialQuery = direct.ValueOf(in.IgnoreAdversarialQuery)
+	out.IgnoreLowRelevantContent = direct.ValueOf(in.IgnoreLowRelevantContent)
+	out.ImageSource = direct.ValueOf(in.ImageSource)
 	return out
 }
 func WorkspaceConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.WorkspaceConfig) *krmdiscoveryenginev1alpha1.WorkspaceConfig {
