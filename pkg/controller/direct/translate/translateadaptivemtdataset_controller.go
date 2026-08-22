@@ -204,10 +204,7 @@ func (a *adapter) compare(ctx context.Context, actual, desired *pb.AdaptiveMtDat
 	}
 	maskedActual.Name = desired.Name
 
-	clonedDesired := proto.Clone(desired).(*pb.AdaptiveMtDataset)
-
-	// Since exampleCount is read-only / output-only on GCP, copy it from maskedActual to clonedDesired to prevent false diffs.
-	clonedDesired.ExampleCount = maskedActual.ExampleCount
+	clonedDesired := proto.CloneOf(desired)
 
 	diffs, _, err := common.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {

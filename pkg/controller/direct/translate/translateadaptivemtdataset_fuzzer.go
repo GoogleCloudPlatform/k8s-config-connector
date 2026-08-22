@@ -37,10 +37,10 @@ func fuzzTranslateAdaptiveMtDataset() fuzztesting.KRMFuzzer {
 	f.SpecField(".display_name")
 	f.SpecField(".source_language_code")
 	f.SpecField(".target_language_code")
-	f.SpecField(".example_count")
 
 	f.StatusField(".create_time")
 	f.StatusField(".update_time")
+	f.StatusField(".example_count")
 
 	return f
 }

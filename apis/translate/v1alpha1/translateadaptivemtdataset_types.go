@@ -50,10 +50,6 @@ type TranslateAdaptiveMtDatasetSpec struct {
 	// The BCP-47 language code of the target language.
 	// +required
 	TargetLanguageCode *string `json:"targetLanguageCode,omitempty"`
-
-	// The number of examples in the dataset.
-	// +optional
-	ExampleCount *int32 `json:"exampleCount,omitempty"`
 }
 
 // TranslateAdaptiveMtDatasetStatus defines the config connector machine state of TranslateAdaptiveMtDataset
@@ -82,6 +78,10 @@ type TranslateAdaptiveMtDatasetObservedState struct {
 	// Output only. Timestamp when this dataset was last updated.
 	// +optional
 	UpdateTime *string `json:"updateTime,omitempty"`
+
+	// Output only. The number of examples in the dataset.
+	// +optional
+	ExampleCount *int32 `json:"exampleCount,omitempty"`
 }
 
 // +genclient
