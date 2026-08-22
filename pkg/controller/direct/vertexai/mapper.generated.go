@@ -107,6 +107,42 @@ func BigQuerySource_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv
 	out.InputUri = direct.ValueOf(in.InputURI)
 	return out
 }
+func Blob_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Blob) *krmvertexaiv1alpha1.Blob {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.Blob{}
+	out.MimeType = direct.LazyPtr(in.GetMimeType())
+	out.Data = in.GetData()
+	return out
+}
+func Blob_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.Blob) *pb.Blob {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Blob{}
+	out.MimeType = direct.ValueOf(in.MimeType)
+	out.Data = in.Data
+	return out
+}
+func CodeExecutionResult_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.CodeExecutionResult) *krmvertexaiv1alpha1.CodeExecutionResult {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.CodeExecutionResult{}
+	out.Outcome = direct.Enum_FromProto(mapCtx, in.GetOutcome())
+	out.Output = direct.LazyPtr(in.GetOutput())
+	return out
+}
+func CodeExecutionResult_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.CodeExecutionResult) *pb.CodeExecutionResult {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CodeExecutionResult{}
+	out.Outcome = direct.Enum_ToProto[pb.CodeExecutionResult_Outcome](mapCtx, in.Outcome)
+	out.Output = direct.ValueOf(in.Output)
+	return out
+}
 func ContainerSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ContainerSpec) *krmvertexaiv1alpha1.ContainerSpec {
 	if in == nil {
 		return nil
@@ -127,6 +163,24 @@ func ContainerSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1
 	out.Command = in.Command
 	out.Args = in.Args
 	out.Env = direct.Slice_ToProto(mapCtx, in.Env, EnvVar_v1alpha1_ToProto)
+	return out
+}
+func Content_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Content) *krmvertexaiv1alpha1.Content {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.Content{}
+	out.Role = direct.LazyPtr(in.GetRole())
+	out.Parts = direct.Slice_FromProto(mapCtx, in.Parts, Part_v1alpha1_FromProto)
+	return out
+}
+func Content_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.Content) *pb.Content {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Content{}
+	out.Role = direct.ValueOf(in.Role)
+	out.Parts = direct.Slice_ToProto(mapCtx, in.Parts, Part_v1alpha1_ToProto)
 	return out
 }
 func CustomJobSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.CustomJobSpec) *krmvertexaiv1alpha1.CustomJobSpec {
@@ -271,6 +325,24 @@ func DiskSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha
 	out.BootDiskSizeGb = direct.ValueOf(in.BootDiskSizeGB)
 	return out
 }
+func DynamicRetrievalConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.DynamicRetrievalConfig) *krmvertexaiv1alpha1.DynamicRetrievalConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.DynamicRetrievalConfig{}
+	out.Mode = direct.Enum_FromProto(mapCtx, in.GetMode())
+	out.DynamicThreshold = in.DynamicThreshold
+	return out
+}
+func DynamicRetrievalConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.DynamicRetrievalConfig) *pb.DynamicRetrievalConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DynamicRetrievalConfig{}
+	out.Mode = direct.Enum_ToProto[pb.DynamicRetrievalConfig_Mode](mapCtx, in.Mode)
+	out.DynamicThreshold = in.DynamicThreshold
+	return out
+}
 
 /* found existing non-generated mapping function "EncryptionSpec_v1alpha1_FromProto", skipping
 func EncryptionSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.EncryptionSpec) *krmvertexaiv1alpha1.EncryptionSpec {
@@ -317,6 +389,22 @@ found existing non-generated mapping function "EncryptionSpec_v1beta1_ToProto", 
 		return out
 	}
 */
+func EnterpriseWebSearch_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.EnterpriseWebSearch) *krmvertexaiv1alpha1.EnterpriseWebSearch {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.EnterpriseWebSearch{}
+	out.ExcludeDomains = in.ExcludeDomains
+	return out
+}
+func EnterpriseWebSearch_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.EnterpriseWebSearch) *pb.EnterpriseWebSearch {
+	if in == nil {
+		return nil
+	}
+	out := &pb.EnterpriseWebSearch{}
+	out.ExcludeDomains = in.ExcludeDomains
+	return out
+}
 func EnvVar_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.EnvVar) *krmvertexaiv1alpha1.EnvVar {
 	if in == nil {
 		return nil
@@ -349,6 +437,24 @@ func ExampleStoreConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmverte
 	}
 	out := &pb.ExampleStoreConfig{}
 	out.VertexEmbeddingModel = direct.ValueOf(in.VertexEmbeddingModel)
+	return out
+}
+func ExecutableCode_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ExecutableCode) *krmvertexaiv1alpha1.ExecutableCode {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.ExecutableCode{}
+	out.Language = direct.Enum_FromProto(mapCtx, in.GetLanguage())
+	out.Code = direct.LazyPtr(in.GetCode())
+	return out
+}
+func ExecutableCode_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.ExecutableCode) *pb.ExecutableCode {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ExecutableCode{}
+	out.Language = direct.Enum_ToProto[pb.ExecutableCode_Language](mapCtx, in.Language)
+	out.Code = direct.ValueOf(in.Code)
 	return out
 }
 func FeatureGroup_BigQuery_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.FeatureGroup_BigQuery) *krmvertexaiv1alpha1.FeatureGroup_BigQuery {
@@ -429,6 +535,24 @@ func Featurestore_OnlineServingConfig_Scaling_v1alpha1_ToProto(mapCtx *direct.Ma
 	out.CpuUtilizationTarget = direct.ValueOf(in.CPUUtilizationTarget)
 	return out
 }
+func FileData_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.FileData) *krmvertexaiv1alpha1.FileData {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.FileData{}
+	out.MimeType = direct.LazyPtr(in.GetMimeType())
+	out.FileURI = direct.LazyPtr(in.GetFileUri())
+	return out
+}
+func FileData_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.FileData) *pb.FileData {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FileData{}
+	out.MimeType = direct.ValueOf(in.MimeType)
+	out.FileUri = direct.ValueOf(in.FileURI)
+	return out
+}
 func FlexStart_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.FlexStart) *krmvertexaiv1alpha1.FlexStart {
 	if in == nil {
 		return nil
@@ -445,6 +569,94 @@ func FlexStart_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alph
 	out.MaxRuntimeDuration = direct.StringDuration_ToProto(mapCtx, in.MaxRuntimeDuration)
 	return out
 }
+func FunctionCall_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.FunctionCall) *krmvertexaiv1alpha1.FunctionCall {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.FunctionCall{}
+	out.ID = direct.LazyPtr(in.GetId())
+	out.Name = direct.LazyPtr(in.GetName())
+	if v := direct.Struct_FromProto(mapCtx, in.GetArgs()); v != nil {
+		out.Args = *v
+	}
+	return out
+}
+func FunctionCall_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.FunctionCall) *pb.FunctionCall {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FunctionCall{}
+	out.Id = direct.ValueOf(in.ID)
+	out.Name = direct.ValueOf(in.Name)
+	out.Args = direct.Struct_ToProto(mapCtx, &in.Args)
+	return out
+}
+func FunctionCallingConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.FunctionCallingConfig) *krmvertexaiv1alpha1.FunctionCallingConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.FunctionCallingConfig{}
+	out.Mode = direct.Enum_FromProto(mapCtx, in.GetMode())
+	out.AllowedFunctionNames = in.AllowedFunctionNames
+	return out
+}
+func FunctionCallingConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.FunctionCallingConfig) *pb.FunctionCallingConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FunctionCallingConfig{}
+	out.Mode = direct.Enum_ToProto[pb.FunctionCallingConfig_Mode](mapCtx, in.Mode)
+	out.AllowedFunctionNames = in.AllowedFunctionNames
+	return out
+}
+func FunctionDeclaration_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.FunctionDeclaration) *krmvertexaiv1alpha1.FunctionDeclaration {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.FunctionDeclaration{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Parameters = Schema_v1alpha1_FromProto(mapCtx, in.GetParameters())
+	out.ParametersJsonSchema = Value_v1alpha1_FromProto(mapCtx, in.GetParametersJsonSchema())
+	out.Response = Schema_v1alpha1_FromProto(mapCtx, in.GetResponse())
+	out.ResponseJsonSchema = Value_v1alpha1_FromProto(mapCtx, in.GetResponseJsonSchema())
+	return out
+}
+func FunctionDeclaration_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.FunctionDeclaration) *pb.FunctionDeclaration {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FunctionDeclaration{}
+	out.Name = direct.ValueOf(in.Name)
+	out.Description = direct.ValueOf(in.Description)
+	out.Parameters = Schema_v1alpha1_ToProto(mapCtx, in.Parameters)
+	out.ParametersJsonSchema = Value_v1alpha1_ToProto(mapCtx, in.ParametersJsonSchema)
+	out.Response = Schema_v1alpha1_ToProto(mapCtx, in.Response)
+	out.ResponseJsonSchema = Value_v1alpha1_ToProto(mapCtx, in.ResponseJsonSchema)
+	return out
+}
+func FunctionResponse_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.FunctionResponse) *krmvertexaiv1alpha1.FunctionResponse {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.FunctionResponse{}
+	out.ID = direct.LazyPtr(in.GetId())
+	out.Name = direct.LazyPtr(in.GetName())
+	if v := direct.Struct_FromProto(mapCtx, in.GetResponse()); v != nil {
+		out.Response = *v
+	}
+	return out
+}
+func FunctionResponse_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.FunctionResponse) *pb.FunctionResponse {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FunctionResponse{}
+	out.Id = direct.ValueOf(in.ID)
+	out.Name = direct.ValueOf(in.Name)
+	out.Response = direct.Struct_ToProto(mapCtx, &in.Response)
+	return out
+}
 func GCSDestination_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.GcsDestination) *krmvertexaiv1alpha1.GCSDestination {
 	if in == nil {
 		return nil
@@ -459,6 +671,36 @@ func GCSDestination_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv
 	}
 	out := &pb.GcsDestination{}
 	out.OutputUriPrefix = direct.ValueOf(in.OutputURIPrefix)
+	return out
+}
+func GoogleMaps_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.GoogleMaps) *krmvertexaiv1alpha1.GoogleMaps {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.GoogleMaps{}
+	return out
+}
+func GoogleMaps_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.GoogleMaps) *pb.GoogleMaps {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GoogleMaps{}
+	return out
+}
+func GoogleSearchRetrieval_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.GoogleSearchRetrieval) *krmvertexaiv1alpha1.GoogleSearchRetrieval {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.GoogleSearchRetrieval{}
+	out.DynamicRetrievalConfig = DynamicRetrievalConfig_v1alpha1_FromProto(mapCtx, in.GetDynamicRetrievalConfig())
+	return out
+}
+func GoogleSearchRetrieval_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.GoogleSearchRetrieval) *pb.GoogleSearchRetrieval {
+	if in == nil {
+		return nil
+	}
+	out := &pb.GoogleSearchRetrieval{}
+	out.DynamicRetrievalConfig = DynamicRetrievalConfig_v1alpha1_ToProto(mapCtx, in.DynamicRetrievalConfig)
 	return out
 }
 func MachineSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.MachineSpec) *krmvertexaiv1alpha1.MachineSpec {
@@ -591,6 +833,62 @@ func PSCInterfaceConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmverte
 	out.DnsPeeringConfigs = direct.Slice_ToProto(mapCtx, in.DNSPeeringConfigs, DNSPeeringConfig_v1alpha1_ToProto)
 	return out
 }
+func Part_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Part) *krmvertexaiv1alpha1.Part {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.Part{}
+	out.Text = direct.LazyPtr(in.GetText())
+	out.InlineData = Blob_v1alpha1_FromProto(mapCtx, in.GetInlineData())
+	out.FileData = FileData_v1alpha1_FromProto(mapCtx, in.GetFileData())
+	out.FunctionCall = FunctionCall_v1alpha1_FromProto(mapCtx, in.GetFunctionCall())
+	out.FunctionResponse = FunctionResponse_v1alpha1_FromProto(mapCtx, in.GetFunctionResponse())
+	out.ExecutableCode = ExecutableCode_v1alpha1_FromProto(mapCtx, in.GetExecutableCode())
+	out.CodeExecutionResult = CodeExecutionResult_v1alpha1_FromProto(mapCtx, in.GetCodeExecutionResult())
+	out.VideoMetadata = VideoMetadata_v1alpha1_FromProto(mapCtx, in.GetVideoMetadata())
+	out.Thought = direct.LazyPtr(in.GetThought())
+	out.ThoughtSignature = in.GetThoughtSignature()
+	return out
+}
+func Part_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.Part) *pb.Part {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Part{}
+	if oneof := Part_Text_ToProto(mapCtx, in.Text); oneof != nil {
+		out.Data = oneof
+	}
+	if oneof := Blob_v1alpha1_ToProto(mapCtx, in.InlineData); oneof != nil {
+		out.Data = &pb.Part_InlineData{InlineData: oneof}
+	}
+	if oneof := FileData_v1alpha1_ToProto(mapCtx, in.FileData); oneof != nil {
+		out.Data = &pb.Part_FileData{FileData: oneof}
+	}
+	if oneof := FunctionCall_v1alpha1_ToProto(mapCtx, in.FunctionCall); oneof != nil {
+		out.Data = &pb.Part_FunctionCall{FunctionCall: oneof}
+	}
+	if oneof := FunctionResponse_v1alpha1_ToProto(mapCtx, in.FunctionResponse); oneof != nil {
+		out.Data = &pb.Part_FunctionResponse{FunctionResponse: oneof}
+	}
+	if oneof := ExecutableCode_v1alpha1_ToProto(mapCtx, in.ExecutableCode); oneof != nil {
+		out.Data = &pb.Part_ExecutableCode{ExecutableCode: oneof}
+	}
+	if oneof := CodeExecutionResult_v1alpha1_ToProto(mapCtx, in.CodeExecutionResult); oneof != nil {
+		out.Data = &pb.Part_CodeExecutionResult{CodeExecutionResult: oneof}
+	}
+	if oneof := VideoMetadata_v1alpha1_ToProto(mapCtx, in.VideoMetadata); oneof != nil {
+		out.Metadata = &pb.Part_VideoMetadata{VideoMetadata: oneof}
+	}
+	out.Thought = direct.ValueOf(in.Thought)
+	out.ThoughtSignature = in.ThoughtSignature
+	return out
+}
+func Part_Text_ToProto(mapCtx *direct.MapContext, in *string) *pb.Part_Text {
+	if in == nil {
+		return nil
+	}
+	return &pb.Part_Text{Text: *in}
+}
 func PythonPackageSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.PythonPackageSpec) *krmvertexaiv1alpha1.PythonPackageSpec {
 	if in == nil {
 		return nil
@@ -617,6 +915,134 @@ func PythonPackageSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertex
 	// MISSING: Env
 	return out
 }
+func RagRetrievalConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.RagRetrievalConfig) *krmvertexaiv1alpha1.RagRetrievalConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.RagRetrievalConfig{}
+	out.TopK = direct.LazyPtr(in.GetTopK())
+	out.HybridSearch = RagRetrievalConfig_HybridSearch_v1alpha1_FromProto(mapCtx, in.GetHybridSearch())
+	out.Filter = RagRetrievalConfig_Filter_v1alpha1_FromProto(mapCtx, in.GetFilter())
+	out.Ranking = RagRetrievalConfig_Ranking_v1alpha1_FromProto(mapCtx, in.GetRanking())
+	return out
+}
+func RagRetrievalConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.RagRetrievalConfig) *pb.RagRetrievalConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RagRetrievalConfig{}
+	out.TopK = direct.ValueOf(in.TopK)
+	out.HybridSearch = RagRetrievalConfig_HybridSearch_v1alpha1_ToProto(mapCtx, in.HybridSearch)
+	out.Filter = RagRetrievalConfig_Filter_v1alpha1_ToProto(mapCtx, in.Filter)
+	out.Ranking = RagRetrievalConfig_Ranking_v1alpha1_ToProto(mapCtx, in.Ranking)
+	return out
+}
+func RagRetrievalConfig_Filter_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.RagRetrievalConfig_Filter) *krmvertexaiv1alpha1.RagRetrievalConfig_Filter {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.RagRetrievalConfig_Filter{}
+	out.VectorDistanceThreshold = direct.LazyPtr(in.GetVectorDistanceThreshold())
+	out.VectorSimilarityThreshold = direct.LazyPtr(in.GetVectorSimilarityThreshold())
+	out.MetadataFilter = direct.LazyPtr(in.GetMetadataFilter())
+	return out
+}
+func RagRetrievalConfig_Filter_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.RagRetrievalConfig_Filter) *pb.RagRetrievalConfig_Filter {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RagRetrievalConfig_Filter{}
+	if oneof := RagRetrievalConfig_Filter_VectorDistanceThreshold_ToProto(mapCtx, in.VectorDistanceThreshold); oneof != nil {
+		out.VectorDbThreshold = oneof
+	}
+	if oneof := RagRetrievalConfig_Filter_VectorSimilarityThreshold_ToProto(mapCtx, in.VectorSimilarityThreshold); oneof != nil {
+		out.VectorDbThreshold = oneof
+	}
+	out.MetadataFilter = direct.ValueOf(in.MetadataFilter)
+	return out
+}
+func RagRetrievalConfig_Filter_VectorDistanceThreshold_ToProto(mapCtx *direct.MapContext, in *float64) *pb.RagRetrievalConfig_Filter_VectorDistanceThreshold {
+	if in == nil {
+		return nil
+	}
+	return &pb.RagRetrievalConfig_Filter_VectorDistanceThreshold{VectorDistanceThreshold: *in}
+}
+func RagRetrievalConfig_Filter_VectorSimilarityThreshold_ToProto(mapCtx *direct.MapContext, in *float64) *pb.RagRetrievalConfig_Filter_VectorSimilarityThreshold {
+	if in == nil {
+		return nil
+	}
+	return &pb.RagRetrievalConfig_Filter_VectorSimilarityThreshold{VectorSimilarityThreshold: *in}
+}
+func RagRetrievalConfig_HybridSearch_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.RagRetrievalConfig_HybridSearch) *krmvertexaiv1alpha1.RagRetrievalConfig_HybridSearch {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.RagRetrievalConfig_HybridSearch{}
+	out.Alpha = in.Alpha
+	return out
+}
+func RagRetrievalConfig_HybridSearch_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.RagRetrievalConfig_HybridSearch) *pb.RagRetrievalConfig_HybridSearch {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RagRetrievalConfig_HybridSearch{}
+	out.Alpha = in.Alpha
+	return out
+}
+func RagRetrievalConfig_Ranking_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.RagRetrievalConfig_Ranking) *krmvertexaiv1alpha1.RagRetrievalConfig_Ranking {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.RagRetrievalConfig_Ranking{}
+	out.RankService = RagRetrievalConfig_Ranking_RankService_v1alpha1_FromProto(mapCtx, in.GetRankService())
+	out.LlmRanker = RagRetrievalConfig_Ranking_LlmRanker_v1alpha1_FromProto(mapCtx, in.GetLlmRanker())
+	return out
+}
+func RagRetrievalConfig_Ranking_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.RagRetrievalConfig_Ranking) *pb.RagRetrievalConfig_Ranking {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RagRetrievalConfig_Ranking{}
+	if oneof := RagRetrievalConfig_Ranking_RankService_v1alpha1_ToProto(mapCtx, in.RankService); oneof != nil {
+		out.RankingConfig = &pb.RagRetrievalConfig_Ranking_RankService_{RankService: oneof}
+	}
+	if oneof := RagRetrievalConfig_Ranking_LlmRanker_v1alpha1_ToProto(mapCtx, in.LlmRanker); oneof != nil {
+		out.RankingConfig = &pb.RagRetrievalConfig_Ranking_LlmRanker_{LlmRanker: oneof}
+	}
+	return out
+}
+func RagRetrievalConfig_Ranking_LlmRanker_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.RagRetrievalConfig_Ranking_LlmRanker) *krmvertexaiv1alpha1.RagRetrievalConfig_Ranking_LlmRanker {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.RagRetrievalConfig_Ranking_LlmRanker{}
+	out.ModelName = in.ModelName
+	return out
+}
+func RagRetrievalConfig_Ranking_LlmRanker_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.RagRetrievalConfig_Ranking_LlmRanker) *pb.RagRetrievalConfig_Ranking_LlmRanker {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RagRetrievalConfig_Ranking_LlmRanker{}
+	out.ModelName = in.ModelName
+	return out
+}
+func RagRetrievalConfig_Ranking_RankService_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.RagRetrievalConfig_Ranking_RankService) *krmvertexaiv1alpha1.RagRetrievalConfig_Ranking_RankService {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.RagRetrievalConfig_Ranking_RankService{}
+	out.ModelName = in.ModelName
+	return out
+}
+func RagRetrievalConfig_Ranking_RankService_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.RagRetrievalConfig_Ranking_RankService) *pb.RagRetrievalConfig_Ranking_RankService {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RagRetrievalConfig_Ranking_RankService{}
+	out.ModelName = in.ModelName
+	return out
+}
 func ReservationAffinity_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ReservationAffinity) *krmvertexaiv1alpha1.ReservationAffinity {
 	if in == nil {
 		return nil
@@ -635,6 +1061,48 @@ func ReservationAffinity_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvert
 	out.ReservationAffinityType = direct.Enum_ToProto[pb.ReservationAffinity_Type](mapCtx, in.ReservationAffinityType)
 	out.Key = direct.ValueOf(in.Key)
 	out.Values = in.Values
+	return out
+}
+func Retrieval_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Retrieval) *krmvertexaiv1alpha1.Retrieval {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.Retrieval{}
+	out.VertexAiSearch = VertexAiSearch_v1alpha1_FromProto(mapCtx, in.GetVertexAiSearch())
+	out.VertexRagStore = VertexRagStore_v1alpha1_FromProto(mapCtx, in.GetVertexRagStore())
+	out.DisableAttribution = direct.LazyPtr(in.GetDisableAttribution())
+	return out
+}
+func Retrieval_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.Retrieval) *pb.Retrieval {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Retrieval{}
+	if oneof := VertexAiSearch_v1alpha1_ToProto(mapCtx, in.VertexAiSearch); oneof != nil {
+		out.Source = &pb.Retrieval_VertexAiSearch{VertexAiSearch: oneof}
+	}
+	if oneof := VertexRagStore_v1alpha1_ToProto(mapCtx, in.VertexRagStore); oneof != nil {
+		out.Source = &pb.Retrieval_VertexRagStore{VertexRagStore: oneof}
+	}
+	out.DisableAttribution = direct.ValueOf(in.DisableAttribution)
+	return out
+}
+func RetrievalConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.RetrievalConfig) *krmvertexaiv1alpha1.RetrievalConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.RetrievalConfig{}
+	out.LatLng = LatLng_v1alpha1_FromProto(mapCtx, in.GetLatLng())
+	out.LanguageCode = in.LanguageCode
+	return out
+}
+func RetrievalConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.RetrievalConfig) *pb.RetrievalConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.RetrievalConfig{}
+	out.LatLng = LatLng_v1alpha1_ToProto(mapCtx, in.LatLng)
+	out.LanguageCode = in.LanguageCode
 	return out
 }
 func SampleConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SampleConfig) *krmvertexaiv1alpha1.SampleConfig {
@@ -697,6 +1165,174 @@ func Scheduling_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alp
 	out.MaxWaitDuration = direct.StringDuration_ToProto(mapCtx, in.MaxWaitDuration)
 	return out
 }
+
+/* found existing non-generated mapping function "Schema_v1alpha1_FromProto", skipping
+func Schema_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Schema) *krmvertexaiv1alpha1.Schema {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.Schema{}
+	out.Type = direct.Enum_FromProto(mapCtx, in.GetType())
+	out.Format = direct.LazyPtr(in.GetFormat())
+	out.Title = direct.LazyPtr(in.GetTitle())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Nullable = direct.LazyPtr(in.GetNullable())
+	out.Default = Value_v1alpha1_FromProto(mapCtx, in.GetDefault())
+	out.Items = JSON_v1alpha1_FromProto(mapCtx, in.GetItems())
+	out.MinItems = direct.LazyPtr(in.GetMinItems())
+	out.MaxItems = direct.LazyPtr(in.GetMaxItems())
+	out.Enum = in.Enum
+	// MISSING: Properties
+	out.PropertyOrdering = in.PropertyOrdering
+	out.Required = in.Required
+	out.MinProperties = direct.LazyPtr(in.GetMinProperties())
+	out.MaxProperties = direct.LazyPtr(in.GetMaxProperties())
+	out.Minimum = direct.LazyPtr(in.GetMinimum())
+	out.Maximum = direct.LazyPtr(in.GetMaximum())
+	out.MinLength = direct.LazyPtr(in.GetMinLength())
+	out.MaxLength = direct.LazyPtr(in.GetMaxLength())
+	out.Pattern = direct.LazyPtr(in.GetPattern())
+	out.Example = Value_v1alpha1_FromProto(mapCtx, in.GetExample())
+	out.AnyOf = direct.Slice_FromProto(mapCtx, in.AnyOf, JSON_v1alpha1_FromProto)
+	out.AdditionalProperties = Value_v1alpha1_FromProto(mapCtx, in.GetAdditionalProperties())
+	out.Ref = direct.LazyPtr(in.GetRef())
+	// MISSING: Defs
+	return out
+}
+*/
+
+/*
+found existing non-generated mapping function "Schema_v1alpha1_ToProto", skipping
+
+	func Schema_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.Schema) *pb.Schema {
+		if in == nil {
+			return nil
+		}
+		out := &pb.Schema{}
+		out.Type = direct.Enum_ToProto[pb.Type](mapCtx, in.Type)
+		out.Format = direct.ValueOf(in.Format)
+		out.Title = direct.ValueOf(in.Title)
+		out.Description = direct.ValueOf(in.Description)
+		out.Nullable = direct.ValueOf(in.Nullable)
+		out.Default = Value_v1alpha1_ToProto(mapCtx, in.Default)
+		out.Items = JSON_v1alpha1_ToProto(mapCtx, in.Items)
+		out.MinItems = direct.ValueOf(in.MinItems)
+		out.MaxItems = direct.ValueOf(in.MaxItems)
+		out.Enum = in.Enum
+		// MISSING: Properties
+		out.PropertyOrdering = in.PropertyOrdering
+		out.Required = in.Required
+		out.MinProperties = direct.ValueOf(in.MinProperties)
+		out.MaxProperties = direct.ValueOf(in.MaxProperties)
+		out.Minimum = direct.ValueOf(in.Minimum)
+		out.Maximum = direct.ValueOf(in.Maximum)
+		out.MinLength = direct.ValueOf(in.MinLength)
+		out.MaxLength = direct.ValueOf(in.MaxLength)
+		out.Pattern = direct.ValueOf(in.Pattern)
+		out.Example = Value_v1alpha1_ToProto(mapCtx, in.Example)
+		out.AnyOf = direct.Slice_ToProto(mapCtx, in.AnyOf, JSON_v1alpha1_ToProto)
+		out.AdditionalProperties = Value_v1alpha1_ToProto(mapCtx, in.AdditionalProperties)
+		out.Ref = direct.ValueOf(in.Ref)
+		// MISSING: Defs
+		return out
+	}
+*/
+func Tool_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Tool) *krmvertexaiv1alpha1.Tool {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.Tool{}
+	out.FunctionDeclarations = direct.Slice_FromProto(mapCtx, in.FunctionDeclarations, FunctionDeclaration_v1alpha1_FromProto)
+	out.Retrieval = Retrieval_v1alpha1_FromProto(mapCtx, in.GetRetrieval())
+	out.GoogleSearch = Tool_GoogleSearch_v1alpha1_FromProto(mapCtx, in.GetGoogleSearch())
+	out.GoogleSearchRetrieval = GoogleSearchRetrieval_v1alpha1_FromProto(mapCtx, in.GetGoogleSearchRetrieval())
+	out.GoogleMaps = GoogleMaps_v1alpha1_FromProto(mapCtx, in.GetGoogleMaps())
+	out.EnterpriseWebSearch = EnterpriseWebSearch_v1alpha1_FromProto(mapCtx, in.GetEnterpriseWebSearch())
+	out.CodeExecution = Tool_CodeExecution_v1alpha1_FromProto(mapCtx, in.GetCodeExecution())
+	out.URLContext = URLContext_v1alpha1_FromProto(mapCtx, in.GetUrlContext())
+	out.ComputerUse = Tool_ComputerUse_v1alpha1_FromProto(mapCtx, in.GetComputerUse())
+	return out
+}
+func Tool_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.Tool) *pb.Tool {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tool{}
+	out.FunctionDeclarations = direct.Slice_ToProto(mapCtx, in.FunctionDeclarations, FunctionDeclaration_v1alpha1_ToProto)
+	out.Retrieval = Retrieval_v1alpha1_ToProto(mapCtx, in.Retrieval)
+	out.GoogleSearch = Tool_GoogleSearch_v1alpha1_ToProto(mapCtx, in.GoogleSearch)
+	out.GoogleSearchRetrieval = GoogleSearchRetrieval_v1alpha1_ToProto(mapCtx, in.GoogleSearchRetrieval)
+	out.GoogleMaps = GoogleMaps_v1alpha1_ToProto(mapCtx, in.GoogleMaps)
+	out.EnterpriseWebSearch = EnterpriseWebSearch_v1alpha1_ToProto(mapCtx, in.EnterpriseWebSearch)
+	out.CodeExecution = Tool_CodeExecution_v1alpha1_ToProto(mapCtx, in.CodeExecution)
+	out.UrlContext = URLContext_v1alpha1_ToProto(mapCtx, in.URLContext)
+	out.ComputerUse = Tool_ComputerUse_v1alpha1_ToProto(mapCtx, in.ComputerUse)
+	return out
+}
+func ToolConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ToolConfig) *krmvertexaiv1alpha1.ToolConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.ToolConfig{}
+	out.FunctionCallingConfig = FunctionCallingConfig_v1alpha1_FromProto(mapCtx, in.GetFunctionCallingConfig())
+	out.RetrievalConfig = RetrievalConfig_v1alpha1_FromProto(mapCtx, in.GetRetrievalConfig())
+	return out
+}
+func ToolConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.ToolConfig) *pb.ToolConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ToolConfig{}
+	out.FunctionCallingConfig = FunctionCallingConfig_v1alpha1_ToProto(mapCtx, in.FunctionCallingConfig)
+	out.RetrievalConfig = RetrievalConfig_v1alpha1_ToProto(mapCtx, in.RetrievalConfig)
+	return out
+}
+func Tool_CodeExecution_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Tool_CodeExecution) *krmvertexaiv1alpha1.Tool_CodeExecution {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.Tool_CodeExecution{}
+	return out
+}
+func Tool_CodeExecution_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.Tool_CodeExecution) *pb.Tool_CodeExecution {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tool_CodeExecution{}
+	return out
+}
+func Tool_ComputerUse_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Tool_ComputerUse) *krmvertexaiv1alpha1.Tool_ComputerUse {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.Tool_ComputerUse{}
+	out.Environment = direct.Enum_FromProto(mapCtx, in.GetEnvironment())
+	return out
+}
+func Tool_ComputerUse_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.Tool_ComputerUse) *pb.Tool_ComputerUse {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tool_ComputerUse{}
+	out.Environment = direct.Enum_ToProto[pb.Tool_ComputerUse_Environment](mapCtx, in.Environment)
+	return out
+}
+func Tool_GoogleSearch_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Tool_GoogleSearch) *krmvertexaiv1alpha1.Tool_GoogleSearch {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.Tool_GoogleSearch{}
+	out.ExcludeDomains = in.ExcludeDomains
+	return out
+}
+func Tool_GoogleSearch_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.Tool_GoogleSearch) *pb.Tool_GoogleSearch {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tool_GoogleSearch{}
+	out.ExcludeDomains = in.ExcludeDomains
+	return out
+}
 func TrainingConfig_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.TrainingConfig) *krmvertexaiv1alpha1.TrainingConfig {
 	if in == nil {
 		return nil
@@ -711,6 +1347,80 @@ func TrainingConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv
 	}
 	out := &pb.TrainingConfig{}
 	out.TimeoutTrainingMilliHours = direct.ValueOf(in.TimeoutTrainingMilliHours)
+	return out
+}
+func URLContext_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.UrlContext) *krmvertexaiv1alpha1.URLContext {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.URLContext{}
+	return out
+}
+func URLContext_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.URLContext) *pb.UrlContext {
+	if in == nil {
+		return nil
+	}
+	out := &pb.UrlContext{}
+	return out
+}
+func VertexAICachedContentObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.CachedContent) *krmvertexaiv1alpha1.VertexAICachedContentObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.VertexAICachedContentObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.UsageMetadata = CachedContent_UsageMetadata_v1alpha1_FromProto(mapCtx, in.GetUsageMetadata())
+	return out
+}
+func VertexAICachedContentObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.VertexAICachedContentObservedState) *pb.CachedContent {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CachedContent{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.UsageMetadata = CachedContent_UsageMetadata_v1alpha1_ToProto(mapCtx, in.UsageMetadata)
+	return out
+}
+func VertexAICachedContentSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.CachedContent) *krmvertexaiv1alpha1.VertexAICachedContentSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.VertexAICachedContentSpec{}
+	out.ExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpireTime())
+	out.TTL = direct.StringDuration_FromProto(mapCtx, in.GetTtl())
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Model = direct.LazyPtr(in.GetModel())
+	out.SystemInstruction = Content_v1alpha1_FromProto(mapCtx, in.GetSystemInstruction())
+	out.Contents = direct.Slice_FromProto(mapCtx, in.Contents, Content_v1alpha1_FromProto)
+	out.Tools = direct.Slice_FromProto(mapCtx, in.Tools, Tool_v1alpha1_FromProto)
+	out.ToolConfig = ToolConfig_v1alpha1_FromProto(mapCtx, in.GetToolConfig())
+	out.EncryptionSpec = EncryptionSpec_v1alpha1_FromProto(mapCtx, in.GetEncryptionSpec())
+	return out
+}
+func VertexAICachedContentSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.VertexAICachedContentSpec) *pb.CachedContent {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CachedContent{}
+	if oneof := direct.StringTimestamp_ToProto(mapCtx, in.ExpireTime); oneof != nil {
+		out.Expiration = &pb.CachedContent_ExpireTime{ExpireTime: oneof}
+	}
+	if oneof := direct.StringDuration_ToProto(mapCtx, in.TTL); oneof != nil {
+		out.Expiration = &pb.CachedContent_Ttl{Ttl: oneof}
+	}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Model = direct.ValueOf(in.Model)
+	out.SystemInstruction = Content_v1alpha1_ToProto(mapCtx, in.SystemInstruction)
+	out.Contents = direct.Slice_ToProto(mapCtx, in.Contents, Content_v1alpha1_ToProto)
+	out.Tools = direct.Slice_ToProto(mapCtx, in.Tools, Tool_v1alpha1_ToProto)
+	out.ToolConfig = ToolConfig_v1alpha1_ToProto(mapCtx, in.ToolConfig)
+	out.EncryptionSpec = EncryptionSpec_v1alpha1_ToProto(mapCtx, in.EncryptionSpec)
 	return out
 }
 func VertexAICustomJobObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.CustomJob) *krmvertexaiv1alpha1.VertexAICustomJobObservedState {
@@ -1321,6 +2031,110 @@ func VertexAITensorboardSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krm
 	// MISSING: Labels
 	// MISSING: Etag
 	out.IsDefault = direct.ValueOf(in.IsDefault)
+	return out
+}
+func VertexAiSearch_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.VertexAISearch) *krmvertexaiv1alpha1.VertexAiSearch {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.VertexAiSearch{}
+	out.Datastore = direct.LazyPtr(in.GetDatastore())
+	out.Engine = direct.LazyPtr(in.GetEngine())
+	out.MaxResults = direct.LazyPtr(in.GetMaxResults())
+	out.Filter = direct.LazyPtr(in.GetFilter())
+	out.DataStoreSpecs = direct.Slice_FromProto(mapCtx, in.DataStoreSpecs, VertexAiSearch_DataStoreSpec_v1alpha1_FromProto)
+	return out
+}
+func VertexAiSearch_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.VertexAiSearch) *pb.VertexAISearch {
+	if in == nil {
+		return nil
+	}
+	out := &pb.VertexAISearch{}
+	out.Datastore = direct.ValueOf(in.Datastore)
+	out.Engine = direct.ValueOf(in.Engine)
+	out.MaxResults = direct.ValueOf(in.MaxResults)
+	out.Filter = direct.ValueOf(in.Filter)
+	out.DataStoreSpecs = direct.Slice_ToProto(mapCtx, in.DataStoreSpecs, VertexAiSearch_DataStoreSpec_v1alpha1_ToProto)
+	return out
+}
+func VertexAiSearch_DataStoreSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.VertexAISearch_DataStoreSpec) *krmvertexaiv1alpha1.VertexAiSearch_DataStoreSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.VertexAiSearch_DataStoreSpec{}
+	out.DataStore = direct.LazyPtr(in.GetDataStore())
+	out.Filter = direct.LazyPtr(in.GetFilter())
+	return out
+}
+func VertexAiSearch_DataStoreSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.VertexAiSearch_DataStoreSpec) *pb.VertexAISearch_DataStoreSpec {
+	if in == nil {
+		return nil
+	}
+	out := &pb.VertexAISearch_DataStoreSpec{}
+	out.DataStore = direct.ValueOf(in.DataStore)
+	out.Filter = direct.ValueOf(in.Filter)
+	return out
+}
+func VertexRagStore_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.VertexRagStore) *krmvertexaiv1alpha1.VertexRagStore {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.VertexRagStore{}
+	out.RagCorpora = in.RagCorpora
+	out.RagResources = direct.Slice_FromProto(mapCtx, in.RagResources, VertexRagStore_RagResource_v1alpha1_FromProto)
+	out.SimilarityTopK = in.SimilarityTopK
+	out.VectorDistanceThreshold = in.VectorDistanceThreshold
+	out.RagRetrievalConfig = RagRetrievalConfig_v1alpha1_FromProto(mapCtx, in.GetRagRetrievalConfig())
+	out.StoreContext = direct.LazyPtr(in.GetStoreContext())
+	return out
+}
+func VertexRagStore_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.VertexRagStore) *pb.VertexRagStore {
+	if in == nil {
+		return nil
+	}
+	out := &pb.VertexRagStore{}
+	out.RagCorpora = in.RagCorpora
+	out.RagResources = direct.Slice_ToProto(mapCtx, in.RagResources, VertexRagStore_RagResource_v1alpha1_ToProto)
+	out.SimilarityTopK = in.SimilarityTopK
+	out.VectorDistanceThreshold = in.VectorDistanceThreshold
+	out.RagRetrievalConfig = RagRetrievalConfig_v1alpha1_ToProto(mapCtx, in.RagRetrievalConfig)
+	out.StoreContext = direct.ValueOf(in.StoreContext)
+	return out
+}
+func VertexRagStore_RagResource_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.VertexRagStore_RagResource) *krmvertexaiv1alpha1.VertexRagStore_RagResource {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.VertexRagStore_RagResource{}
+	out.RagCorpus = direct.LazyPtr(in.GetRagCorpus())
+	out.RagFileIds = in.RagFileIds
+	return out
+}
+func VertexRagStore_RagResource_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.VertexRagStore_RagResource) *pb.VertexRagStore_RagResource {
+	if in == nil {
+		return nil
+	}
+	out := &pb.VertexRagStore_RagResource{}
+	out.RagCorpus = direct.ValueOf(in.RagCorpus)
+	out.RagFileIds = in.RagFileIds
+	return out
+}
+func VideoMetadata_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.VideoMetadata) *krmvertexaiv1alpha1.VideoMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.VideoMetadata{}
+	out.StartOffset = direct.StringDuration_FromProto(mapCtx, in.GetStartOffset())
+	out.EndOffset = direct.StringDuration_FromProto(mapCtx, in.GetEndOffset())
+	return out
+}
+func VideoMetadata_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.VideoMetadata) *pb.VideoMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &pb.VideoMetadata{}
+	out.StartOffset = direct.StringDuration_ToProto(mapCtx, in.StartOffset)
+	out.EndOffset = direct.StringDuration_ToProto(mapCtx, in.EndOffset)
 	return out
 }
 func WorkerPoolSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.WorkerPoolSpec) *krmvertexaiv1alpha1.WorkerPoolSpec {
