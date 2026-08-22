@@ -17,10 +17,10 @@ package v1beta1
 import (
 	"context"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
-	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/apimachinery/pkg/types"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -83,29 +83,16 @@ func (r *AlloyDBInstanceRef) ParseExternalToIdentity() (identity.Identity, error
 }
 
 func (r *AlloyDBInstanceRef) Normalize(ctx context.Context, reader client.Reader, defaultNamespace string) error {
-
 	fallback := func(u *unstructured.Unstructured) string {
-
-		obj := &AlloyDBInstance{}
-
-		if err := runtime.DefaultUnstructuredConverter.FromUnstructured(u.Object, obj); err != nil {
-
-			return ""
-
-		}
-
-		identity, err := getIdentityFromAlloyDBInstanceSpec(ctx, reader, obj)
-
+		obj, err := common.ToStructuredType[*AlloyDBInstance](u)
 		if err != nil {
-
 			return ""
-
 		}
-
+		identity, err := getIdentityFromAlloyDBInstanceSpec(ctx, reader, obj)
+		if err != nil {
+			return ""
+		}
 		return identity.String()
-
 	}
-
 	return refs.NormalizeWithFallback(ctx, reader, r, defaultNamespace, fallback)
-
 }
