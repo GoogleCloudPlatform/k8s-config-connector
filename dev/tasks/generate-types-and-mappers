@@ -17,7 +17,7 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
-REPO_ROOT="$(git rev-parse --show-toplevel)"
+export REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}
 
 pushd dev/tools/controllerbuilder > /dev/null
@@ -26,7 +26,7 @@ pushd dev/tools/controllerbuilder > /dev/null
 for sha in $(grep -E "PROTO_SHA=" ${REPO_ROOT}/apis/*/generate.sh 2>/dev/null | cut -d"=" -f2 | tr -d "\"'" | sort -u); do
   if [ -n "${sha}" ]; then
     echo "Pre-warming custom proto SHA: ${sha}"
-    ./generate-proto.sh "${sha}"
+    ./generate-proto.sh "${sha}" "${REPO_ROOT}/.build/googleapis-${sha}.pb"
   fi
 done
 popd > /dev/null
@@ -42,14 +42,24 @@ fi
 export SKIP_GENERATE_CRDS=1
 export SKIP_GENERATE_PROTOS=1
 
+files_to_run=()
 for f in $(find apis -name "generate.sh" | sort); do
     if [[ "${f}" == *"backupdr"* || "${f}" == *"bigquerybiglake"* || "${f}" == *"bigtable"* || "${f}" == *"composer"* || "${f}" == *"contentwarehouse"* || "${f}" == *"datastream"* || "${f}" == *"discoveryengine"* || "${f}" == *"documentai"* || "${f}" == *"edgecontainer"* || "${f}" == *"gkebackup"* || "${f}" == *"orgpolicy"* || "${f}" == *"speech"* || "${f}" == *"tpu"* || "${f}" == *"vertexai"* || "${f}" == *"vmwareengine"* ]]; then
         echo "Skipping ${f}"
         continue
     fi
-    echo "running ${f}"
-    (cd "${REPO_ROOT}" && ./"${f}")
+    files_to_run+=("${f}")
 done
+
+# Run generate scripts in parallel
+PARALLELISM=$(nproc 2>/dev/null || echo 4)
+echo "Running ${#files_to_run[@]} generation scripts in parallel with ${PARALLELISM} workers..."
+printf "%s\n" "${files_to_run[@]}" | xargs -P "${PARALLELISM}" -n 1 bash -c '
+  set -o errexit
+  f="$1"
+  echo "running ${f}"
+  cd "${REPO_ROOT}" && ./"${f}"
+' _
 
 # Now we generate CRDs
 unset SKIP_GENERATE_CRDS
