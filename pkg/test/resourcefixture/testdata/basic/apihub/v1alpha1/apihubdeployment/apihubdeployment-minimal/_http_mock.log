@@ -1,0 +1,232 @@
+GET https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdeployments%2Fdep-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "deployment \"projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}\" not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "deployment \"projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}\" not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployments?%24alt=json%3Benum-encoding%3Dint&deploymentId=dep-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "deploymentType": {
+    "enumValues": {
+      "values": [
+        {
+          "id": "test-deployment-type"
+        }
+      ]
+    }
+  },
+  "displayName": "Minimal APIHubDeployment",
+  "endpoints": [
+    "https://api.example.com"
+  ],
+  "name": "projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}",
+  "resourceUri": "https://example.com/runtime/proxy"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "deploymentType": {
+    "enumValues": {
+      "values": [
+        {
+          "id": "test-deployment-type"
+        }
+      ]
+    }
+  },
+  "displayName": "Minimal APIHubDeployment",
+  "endpoints": [
+    "https://api.example.com"
+  ],
+  "name": "projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}",
+  "resourceUri": "https://example.com/runtime/proxy",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdeployments%2Fdep-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "deploymentType": {
+    "enumValues": {
+      "values": [
+        {
+          "id": "test-deployment-type"
+        }
+      ]
+    }
+  },
+  "displayName": "Minimal APIHubDeployment",
+  "endpoints": [
+    "https://api.example.com"
+  ],
+  "name": "projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}",
+  "resourceUri": "https://example.com/runtime/proxy",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=displayName
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: deployment.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdeployments%2Fdep-${uniqueId}
+
+{
+  "deploymentType": {
+    "enumValues": {
+      "values": [
+        {
+          "id": "test-deployment-type"
+        }
+      ]
+    }
+  },
+  "displayName": "Minimal APIHubDeployment Updated",
+  "endpoints": [
+    "https://api.example.com"
+  ],
+  "name": "projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}",
+  "resourceUri": "https://example.com/runtime/proxy"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "deploymentType": {
+    "enumValues": {
+      "values": [
+        {
+          "id": "test-deployment-type"
+        }
+      ]
+    }
+  },
+  "displayName": "Minimal APIHubDeployment Updated",
+  "endpoints": [
+    "https://api.example.com"
+  ],
+  "name": "projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}",
+  "resourceUri": "https://example.com/runtime/proxy",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdeployments%2Fdep-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "deploymentType": {
+    "enumValues": {
+      "values": [
+        {
+          "id": "test-deployment-type"
+        }
+      ]
+    }
+  },
+  "displayName": "Minimal APIHubDeployment Updated",
+  "endpoints": [
+    "https://api.example.com"
+  ],
+  "name": "projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}",
+  "resourceUri": "https://example.com/runtime/proxy",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployments/dep-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdeployments%2Fdep-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
