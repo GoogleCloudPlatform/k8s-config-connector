@@ -784,7 +784,7 @@ func RedisInstanceSpec_FromProto(mapCtx *direct.MapContext, in *redispb.Instance
 	// MISSING: MemorySizeGB
 	// (near miss): "MemorySizeGB" vs "MemorySizeGb"
 	if in.GetAuthorizedNetwork() != "" {
-		out.AuthorizedNetworkRef = &krm.InstanceAuthorizedNetworkRef{External: in.GetAuthorizedNetwork()}
+		out.AuthorizedNetworkRef = &krmcomputerefs.ComputeNetworkRef{External: in.GetAuthorizedNetwork()}
 	}
 	// MISSING: PersistenceIAMIdentity
 	out.ConnectMode = direct.Enum_FromProto(mapCtx, in.GetConnectMode())

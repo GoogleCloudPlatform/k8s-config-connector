@@ -39,6 +39,7 @@ import (
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	apirefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
@@ -85,7 +86,10 @@ func (m *computeInstanceGroupModel) AdapterForObject(ctx context.Context, op *di
 		return nil, err
 	}
 
-	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+	identity := id.(*krm.ComputeInstanceGroupIdentity)
+	projectRef := &refs.ProjectIdentity{ProjectID: identity.Project}
+
+	if err := common.NormalizeReferences(ctx, reader, obj, projectRef, m.config.ProjectMapper); err != nil {
 		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
 

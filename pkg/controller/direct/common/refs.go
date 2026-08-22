@@ -17,12 +17,25 @@ package common
 import (
 	"context"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/projects"
+	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-func NormalizeReferences(ctx context.Context, reader client.Reader, obj client.Object, projectRef *refs.ProjectIdentity) error {
-	if err := VisitFields(obj, &refNormalizer{ctx: ctx, src: obj, project: projectRef, kube: reader}); err != nil {
+func NormalizeReferences(ctx context.Context, reader client.Reader, obj client.Object, projectRef *refs.ProjectIdentity, projectMapper *projects.ProjectMapper) error {
+	parentProjectID := ""
+	if projectRef != nil {
+		parentProjectID = projectRef.ProjectID
+	}
+	if err := VisitFields(obj, &refNormalizer{
+		ctx:             ctx,
+		src:             obj,
+		project:         projectRef,
+		kube:            reader,
+		parentProjectID: parentProjectID,
+		projectMapper:   projectMapper,
+	}); err != nil {
 		return err
 	}
 	return nil
@@ -44,10 +57,12 @@ func normalizeProjectRef(ctx context.Context, reader client.Reader, src client.O
 }
 
 type refNormalizer struct {
-	ctx     context.Context
-	kube    client.Reader
-	src     client.Object
-	project *refs.ProjectIdentity
+	ctx             context.Context
+	kube            client.Reader
+	src             client.Object
+	project         *refs.ProjectIdentity
+	parentProjectID string
+	projectMapper   *projects.ProjectMapper
 }
 
 func (r *refNormalizer) VisitField(path string, v any) error {
@@ -57,6 +72,13 @@ func (r *refNormalizer) VisitField(path string, v any) error {
 		} else if ref != nil {
 			*projectRef = *ref
 		}
+	}
+
+	if networkRef, ok := v.(*computerefs.ComputeNetworkRef); ok {
+		if err := networkRef.CanonicalizeAndNormalize(r.ctx, r.kube, r.src.GetNamespace(), r.parentProjectID, r.projectMapper); err != nil {
+			return err
+		}
+		return nil
 	}
 
 	if ref, ok := v.(refs.Ref); ok {

@@ -84,11 +84,6 @@ func (m *caPoolModel) AdapterForObject(ctx context.Context, op *directbase.Adapt
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	// Always call common.NormalizeReferences to resolve references
-	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
-		return nil, fmt.Errorf("normalizing references: %w", err)
-	}
-
 	resourceID := direct.ValueOf(obj.Spec.ResourceID)
 	if resourceID == "" {
 		resourceID = obj.GetName()
@@ -109,6 +104,11 @@ func (m *caPoolModel) AdapterForObject(ctx context.Context, op *directbase.Adapt
 	projectID := projectRef.ProjectID
 	if projectID == "" {
 		return nil, fmt.Errorf("cannot resolve project")
+	}
+
+	// Always call common.NormalizeReferences to resolve references
+	if err := common.NormalizeReferences(ctx, reader, obj, projectRef, m.config.ProjectMapper); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
 
 	mapCtx := &direct.MapContext{}

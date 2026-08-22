@@ -73,13 +73,15 @@ func (m *serviceIdentityModel) AdapterForObject(ctx context.Context, op *directb
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	if err := common.NormalizeReferences(ctx, kube, obj, nil); err != nil {
-		return nil, fmt.Errorf("normalizing references: %w", err)
-	}
-
 	id, err := obj.GetIdentity(ctx, kube)
 	if err != nil {
 		return nil, err
+	}
+	identity := id.(*krm.ServiceIdentityIdentity)
+	projectRef := &refs.ProjectIdentity{ProjectID: identity.Project}
+
+	if err := common.NormalizeReferences(ctx, kube, obj, projectRef, m.config.ProjectMapper); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
 
 	gcpClient, err := m.client(ctx)

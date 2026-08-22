@@ -109,8 +109,10 @@ func (m *SubscriptionModel) AdapterForObject(ctx context.Context, op *directbase
 		obj.Spec.DeadLetterPolicy.DeadLetterTopicRef.External = "projects/" + projectID + "/topics/" + obj.Spec.DeadLetterPolicy.DeadLetterTopicRef.External
 	}
 
+	projectRef := &refs.ProjectIdentity{ProjectID: projectID}
+
 	// Always call common.NormalizeReferences to resolve any resource references:
-	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+	if err := common.NormalizeReferences(ctx, reader, obj, projectRef, m.config.ProjectMapper); err != nil {
 		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
 

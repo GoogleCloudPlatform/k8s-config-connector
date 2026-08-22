@@ -30,7 +30,7 @@ func ResolveComputeReservationRefs(ctx context.Context, reader client.Reader, pr
 		return nil
 	}
 
-	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+	if err := common.NormalizeReferences(ctx, reader, obj, nil, nil); err != nil {
 		return err
 	}
 

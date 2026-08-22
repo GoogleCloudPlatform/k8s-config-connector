@@ -33,6 +33,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/kms/v1beta1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
@@ -82,16 +83,17 @@ func (m *keyRingModel) AdapterForObject(ctx context.Context, op *directbase.Adap
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	// Always call common.NormalizeReferences to resolve references
-	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
-		return nil, fmt.Errorf("normalizing references: %w", err)
-	}
-
 	resolvedID, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
 	id := resolvedID.(*krm.KMSKeyRingIdentity)
+	projectRef := &refs.ProjectIdentity{ProjectID: id.Project}
+
+	// Always call common.NormalizeReferences to resolve references
+	if err := common.NormalizeReferences(ctx, reader, obj, projectRef, m.config.ProjectMapper); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
 
 	gcpClient, err := m.client(ctx, id.Project)
 	if err != nil {

@@ -81,7 +81,7 @@ func (m *networkAttachmentModel) AdapterForObject(ctx context.Context, op *direc
 		return nil, err
 	}
 
-	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+	if err := common.NormalizeReferences(ctx, reader, obj, nil, nil); err != nil {
 		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
 

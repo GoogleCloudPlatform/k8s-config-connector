@@ -67,7 +67,7 @@ func (m *TagsTagKeyModel) AdapterForObject(ctx context.Context, op *directbase.A
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+	if err := common.NormalizeReferences(ctx, reader, obj, nil, nil); err != nil {
 		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
 

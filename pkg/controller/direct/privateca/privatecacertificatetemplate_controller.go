@@ -85,11 +85,6 @@ func (m *certificateTemplateModel) AdapterForObject(ctx context.Context, op *dir
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	// Always call common.NormalizeReferences to resolve references
-	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
-		return nil, fmt.Errorf("normalizing references: %w", err)
-	}
-
 	resourceID := direct.ValueOf(obj.Spec.ResourceID)
 	if resourceID == "" {
 		resourceID = obj.GetName()
@@ -109,6 +104,13 @@ func (m *certificateTemplateModel) AdapterForObject(ctx context.Context, op *dir
 	}
 	if projectID == "" {
 		return nil, fmt.Errorf("cannot resolve project")
+	}
+
+	projectRef := &refs.ProjectIdentity{ProjectID: projectID}
+
+	// Always call common.NormalizeReferences to resolve references
+	if err := common.NormalizeReferences(ctx, reader, obj, projectRef, m.config.ProjectMapper); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
 
 	mapCtx := &direct.MapContext{}

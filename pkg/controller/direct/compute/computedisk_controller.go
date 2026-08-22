@@ -40,6 +40,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
@@ -95,7 +96,9 @@ func (m *computeDiskModel) AdapterForObject(ctx context.Context, op *directbase.
 		return nil, err
 	}
 
-	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+	projectRef := &refsv1beta1.ProjectIdentity{ProjectID: diskId.Project}
+
+	if err := common.NormalizeReferences(ctx, reader, obj, projectRef, m.config.ProjectMapper); err != nil {
 		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
 

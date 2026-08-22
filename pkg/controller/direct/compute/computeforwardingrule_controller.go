@@ -26,6 +26,7 @@ import (
 	gcp "cloud.google.com/go/compute/apiv1"
 	computepb "cloud.google.com/go/compute/apiv1/computepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
@@ -94,8 +95,10 @@ func (m *forwardingRuleModel) AdapterForObject(ctx context.Context, op *directba
 		return nil, fmt.Errorf("resolving remaining references: %w", err)
 	}
 
+	projectRef := &refs.ProjectIdentity{ProjectID: id.Project}
+
 	// Normalize standard KCC references.
-	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+	if err := common.NormalizeReferences(ctx, reader, obj, projectRef, m.config.ProjectMapper); err != nil {
 		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
 

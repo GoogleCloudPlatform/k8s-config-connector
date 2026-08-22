@@ -21,6 +21,7 @@ import (
 	gcp "cloud.google.com/go/servicedirectory/apiv1beta1"
 	pb "cloud.google.com/go/servicedirectory/apiv1beta1/servicedirectorypb"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/servicedirectory/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -75,11 +76,6 @@ func (m *namespaceModel) AdapterForObject(ctx context.Context, op *directbase.Ad
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	// Always call common.NormalizeReferences to resolve references
-	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
-		return nil, fmt.Errorf("normalizing references: %w", err)
-	}
-
 	idVal, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
@@ -87,6 +83,13 @@ func (m *namespaceModel) AdapterForObject(ctx context.Context, op *directbase.Ad
 	id, ok := idVal.(*krm.ServiceDirectoryNamespaceIdentity)
 	if !ok {
 		return nil, fmt.Errorf("unexpected identity type: %T", idVal)
+	}
+
+	projectRef := &refsv1beta1.ProjectIdentity{ProjectID: id.Project}
+
+	// Always call common.NormalizeReferences to resolve references
+	if err := common.NormalizeReferences(ctx, reader, obj, projectRef, m.config.ProjectMapper); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
 
 	// Convert the KRM spec to API format

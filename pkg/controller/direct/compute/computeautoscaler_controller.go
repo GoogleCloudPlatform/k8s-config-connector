@@ -87,7 +87,10 @@ func (m *computeAutoscalerModel) AdapterForObject(ctx context.Context, op *direc
 		return nil, fmt.Errorf("resolving references: %w", err)
 	}
 
-	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+	identity := id.(*krm.ComputeAutoscalerIdentity)
+	projectRef := &refs.ProjectIdentity{ProjectID: identity.Project}
+
+	if err := common.NormalizeReferences(ctx, reader, obj, projectRef, m.config.ProjectMapper); err != nil {
 		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
 

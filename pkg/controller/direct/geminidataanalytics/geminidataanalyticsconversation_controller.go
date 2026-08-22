@@ -86,7 +86,7 @@ func (m *geminiDataAnalyticsConversationModel) AdapterForObject(ctx context.Cont
 	}
 
 	// Normalize references in the spec
-	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+	if err := common.NormalizeReferences(ctx, reader, obj, nil, nil); err != nil {
 		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
 

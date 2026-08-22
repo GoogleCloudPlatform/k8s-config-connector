@@ -21,6 +21,7 @@ import (
 	compute "cloud.google.com/go/compute/apiv1"
 	pb "cloud.google.com/go/compute/apiv1/computepb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
@@ -67,14 +68,16 @@ func (m *urlMapModel) AdapterForObject(ctx context.Context, op *directbase.Adapt
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	// Always normalize references
-	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
-		return nil, fmt.Errorf("normalizing references: %w", err)
-	}
-
 	id, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
+	}
+	urlMapId := id.(*krm.ComputeURLMapIdentity)
+	projectRef := &refs.ProjectIdentity{ProjectID: urlMapId.Project}
+
+	// Always normalize references
+	if err := common.NormalizeReferences(ctx, reader, obj, projectRef, m.config.ProjectMapper); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
 
 	gcpClient, err := newGCPClient(m.config)
@@ -85,7 +88,6 @@ func (m *urlMapModel) AdapterForObject(ctx context.Context, op *directbase.Adapt
 	var urlMapsClient *compute.UrlMapsClient
 	var regionUrlMapsClient *compute.RegionUrlMapsClient
 
-	urlMapId := id.(*krm.ComputeURLMapIdentity)
 	if urlMapId.IsGlobal() {
 		urlMapsClient, err = gcpClient.newUrlMapsClient(ctx)
 		if err != nil {

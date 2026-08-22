@@ -35,6 +35,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
@@ -81,7 +82,10 @@ func (m *ComputeExternalVPNGatewayModel) AdapterForObject(ctx context.Context, o
 		return nil, err
 	}
 
-	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+	identity := id.(*krm.ComputeExternalVPNGatewayIdentity)
+	projectRef := &refs.ProjectIdentity{ProjectID: identity.Project}
+
+	if err := common.NormalizeReferences(ctx, reader, obj, projectRef, m.config.ProjectMapper); err != nil {
 		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
 

@@ -35,6 +35,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1alpha1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	secret "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1/secret"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -82,7 +83,10 @@ func (m *computeBackendServiceSignedURLKeyModel) AdapterForObject(ctx context.Co
 		return nil, err
 	}
 
-	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+	keyId := id.(*krm.ComputeBackendServiceSignedURLKeyIdentity)
+	projectRef := &refs.ProjectIdentity{ProjectID: keyId.Project}
+
+	if err := common.NormalizeReferences(ctx, reader, obj, projectRef, m.config.ProjectMapper); err != nil {
 		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
 
@@ -93,7 +97,6 @@ func (m *computeBackendServiceSignedURLKeyModel) AdapterForObject(ctx context.Co
 		return nil, mapCtx.Err()
 	}
 
-	keyId := id.(*krm.ComputeBackendServiceSignedURLKeyIdentity)
 	resource.KeyName = &keyId.SignedUrlKey
 
 	return &ComputeBackendServiceSignedURLKeyAdapter{
