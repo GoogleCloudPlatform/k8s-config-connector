@@ -38,17 +38,23 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   "name": "sqlinstance-unmanaged-${uniqueId}",
   "region": "us-central1",
   "replicaConfiguration": {
+    "failoverTarget": false,
     "kind": "sql#replicaConfiguration",
     "mysqlReplicaConfiguration": {
+      "connectRetryInterval": 0,
       "kind": "sql#mysqlReplicaConfiguration",
-      "username": "initial-user"
+      "masterHeartbeatPeriod": "0",
+      "username": "initial-user",
+      "verifyServerCertificate": false
     }
   },
   "settings": {
     "activationPolicy": "ALWAYS",
     "availabilityType": "ZONAL",
     "connectorEnforcement": "NOT_REQUIRED",
+    "crashSafeReplicationEnabled": false,
     "dataDiskType": "PD_SSD",
+    "deletionProtectionEnabled": false,
     "edition": "ENTERPRISE",
     "ipConfiguration": {
       "ipv4Enabled": true,
@@ -62,6 +68,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "pricingPlan": "PER_USE",
     "replicationType": "SYNCHRONOUS",
     "storageAutoResize": true,
+    "storageAutoResizeLimit": "0",
     "tier": "db-custom-1-3840",
     "userLabels": {
       "cnrm-test": "true",
@@ -165,10 +172,14 @@ X-Xss-Protection: 0
   "project": "${projectId}",
   "region": "us-central1",
   "replicaConfiguration": {
+    "failoverTarget": false,
     "kind": "sql#replicaConfiguration",
     "mysqlReplicaConfiguration": {
+      "connectRetryInterval": 0,
       "kind": "sql#mysqlReplicaConfiguration",
-      "username": "initial-user"
+      "masterHeartbeatPeriod": "0",
+      "username": "initial-user",
+      "verifyServerCertificate": false
     }
   },
   "satisfiesPzi": true,
@@ -200,6 +211,7 @@ X-Xss-Protection: 0
       "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
     },
     "connectorEnforcement": "NOT_REQUIRED",
+    "crashSafeReplicationEnabled": false,
     "dataDiskSizeGb": "10",
     "dataDiskType": "PD_SSD",
     "deletionProtectionEnabled": false,
@@ -407,10 +419,14 @@ X-Xss-Protection: 0
   "project": "${projectId}",
   "region": "us-central1",
   "replicaConfiguration": {
+    "failoverTarget": false,
     "kind": "sql#replicaConfiguration",
     "mysqlReplicaConfiguration": {
+      "connectRetryInterval": 0,
       "kind": "sql#mysqlReplicaConfiguration",
-      "username": "initial-user"
+      "masterHeartbeatPeriod": "0",
+      "username": "initial-user",
+      "verifyServerCertificate": false
     }
   },
   "satisfiesPzi": true,
@@ -442,6 +458,7 @@ X-Xss-Protection: 0
       "transactionalLogStorageState": "TRANSACTIONAL_LOG_STORAGE_STATE_UNSPECIFIED"
     },
     "connectorEnforcement": "NOT_REQUIRED",
+    "crashSafeReplicationEnabled": false,
     "dataDiskSizeGb": "10",
     "dataDiskType": "PD_SSD",
     "deletionProtectionEnabled": false,
