@@ -37,7 +37,8 @@ spec:
     restrictedServices:
       - "notebooks.googleapis.com"
     egressPolicies:
-      - egressFrom:
+      - title: dry run egress policy ${uniqueId}
+        egressFrom:
           identities:
           - serviceAccountRef:
               name: gsa-${uniqueId}
@@ -46,7 +47,8 @@ spec:
           - projectRef:
               name: project-${uniqueId}
     ingressPolicies:
-      - ingressFrom:
+      - title: dry run ingress policy ${uniqueId}
+        ingressFrom:
           identities:
             - serviceAccountRef:
                 name: gsa-${uniqueId}
