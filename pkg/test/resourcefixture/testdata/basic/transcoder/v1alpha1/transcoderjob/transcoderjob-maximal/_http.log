@@ -1,0 +1,464 @@
+GET https://storage.googleapis.com/storage/v1/b/transcoder-bucket-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The specified bucket does not exist.",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The specified bucket does not exist."
+  }
+}
+
+---
+
+POST https://storage.googleapis.com/storage/v1/b?alt=json&prettyPrint=false&project=${projectId}
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "iamConfiguration": {
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "lifecycle": {
+    "rule": []
+  },
+  "location": "us-central1",
+  "name": "transcoder-bucket-${uniqueId}",
+  "softDeletePolicy": {
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": false
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US-CENTRAL1",
+  "locationType": "region",
+  "metageneration": "1",
+  "name": "transcoder-bucket-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "satisfiesPZI": true,
+  "selfLink": "https://www.googleapis.com/storage/v1/b/transcoder-bucket-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/transcoder-bucket-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": false
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US-CENTRAL1",
+  "locationType": "region",
+  "metageneration": "1",
+  "name": "transcoder-bucket-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "satisfiesPZI": true,
+  "selfLink": "https://www.googleapis.com/storage/v1/b/transcoder-bucket-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GRPC /google.cloud.video.transcoder.v1.TranscoderService/ListJobs
+
+{
+  "filter": "labels.cnrm-resource-id:transcoderjob-maximal-${uniqueId}",
+  "parent": "projects/${projectId}/locations/us-central1"
+}
+
+OK
+
+{}
+
+---
+
+GRPC /google.cloud.video.transcoder.v1.TranscoderService/CreateJob
+
+{
+  "job": {
+    "inputUri": "gs://transcoder-bucket-${uniqueId}/input.mp4",
+    "labels": {
+      "cnrm-resource-id": "transcoderjob-maximal-${uniqueId}",
+      "cnrm-test": "true",
+      "managed-by-cnrm": "true"
+    },
+    "mode": "PROCESSING_MODE_INTERACTIVE",
+    "optimization": "AUTODETECT",
+    "outputUri": "gs://transcoder-bucket-${uniqueId}/output/",
+    "templateId": "preset/web-hd",
+    "ttlAfterCompletionDays": 1
+  },
+  "parent": "projects/${projectId}/locations/us-central1"
+}
+
+OK
+
+{
+  "config": {
+    "editList": [
+      {
+        "inputs": [
+          "input0"
+        ],
+        "key": "atom0",
+        "startTimeOffset": "0s"
+      }
+    ],
+    "elementaryStreams": [
+      {
+        "key": "video-stream0",
+        "videoStream": {
+          "h264": {
+            "aqStrength": 1,
+            "bFrameCount": 3,
+            "bitrateBps": 550000,
+            "crfLevel": 21,
+            "entropyCoder": "cabac",
+            "frameRate": 30,
+            "frameRateConversionStrategy": "DOWNSAMPLE",
+            "gopDuration": "3s",
+            "heightPixels": 360,
+            "pixelFormat": "yuv420p",
+            "preset": "veryfast",
+            "profile": "high",
+            "rateControlMode": "vbr",
+            "vbvFullnessBits": 495000,
+            "vbvSizeBits": 550000,
+            "widthPixels": 640
+          }
+        }
+      },
+      {
+        "key": "video-stream1",
+        "videoStream": {
+          "h264": {
+            "aqStrength": 1,
+            "bFrameCount": 3,
+            "bitrateBps": 2500000,
+            "crfLevel": 21,
+            "entropyCoder": "cabac",
+            "frameRate": 30,
+            "frameRateConversionStrategy": "DOWNSAMPLE",
+            "gopDuration": "3s",
+            "heightPixels": 720,
+            "pixelFormat": "yuv420p",
+            "preset": "veryfast",
+            "profile": "high",
+            "rateControlMode": "vbr",
+            "vbvFullnessBits": 2250000,
+            "vbvSizeBits": 2500000,
+            "widthPixels": 1280
+          }
+        }
+      },
+      {
+        "audioStream": {
+          "bitrateBps": 64000,
+          "channelCount": 2,
+          "channelLayout": [
+            "fl",
+            "fr"
+          ],
+          "codec": "aac",
+          "sampleRateHertz": 48000
+        },
+        "key": "audio-stream0"
+      }
+    ],
+    "inputs": [
+      {
+        "key": "input0",
+        "uri": "gs://transcoder-bucket-${uniqueId}/input.mp4"
+      }
+    ],
+    "manifests": [
+      {
+        "fileName": "manifest.m3u8",
+        "muxStreams": [
+          "media-sd",
+          "media-hd"
+        ],
+        "type": "HLS"
+      },
+      {
+        "dash": {
+          "segmentReferenceScheme": "SEGMENT_LIST"
+        },
+        "fileName": "manifest.mpd",
+        "muxStreams": [
+          "video-only-sd",
+          "video-only-hd",
+          "audio-only"
+        ],
+        "type": "DASH"
+      }
+    ],
+    "muxStreams": [
+      {
+        "container": "mp4",
+        "elementaryStreams": [
+          "video-stream0",
+          "audio-stream0"
+        ],
+        "fileName": "sd.mp4",
+        "key": "sd"
+      },
+      {
+        "container": "mp4",
+        "elementaryStreams": [
+          "video-stream1",
+          "audio-stream0"
+        ],
+        "fileName": "hd.mp4",
+        "key": "hd"
+      },
+      {
+        "container": "ts",
+        "elementaryStreams": [
+          "video-stream0",
+          "audio-stream0"
+        ],
+        "fileName": "media-sd.ts",
+        "key": "media-sd",
+        "segmentSettings": {
+          "segmentDuration": "6s"
+        }
+      },
+      {
+        "container": "ts",
+        "elementaryStreams": [
+          "video-stream1",
+          "audio-stream0"
+        ],
+        "fileName": "media-hd.ts",
+        "key": "media-hd",
+        "segmentSettings": {
+          "segmentDuration": "6s"
+        }
+      },
+      {
+        "container": "fmp4",
+        "elementaryStreams": [
+          "video-stream0"
+        ],
+        "fileName": "video-only-sd.m4s",
+        "key": "video-only-sd",
+        "segmentSettings": {
+          "segmentDuration": "6s"
+        }
+      },
+      {
+        "container": "fmp4",
+        "elementaryStreams": [
+          "video-stream1"
+        ],
+        "fileName": "video-only-hd.m4s",
+        "key": "video-only-hd",
+        "segmentSettings": {
+          "segmentDuration": "6s"
+        }
+      },
+      {
+        "container": "fmp4",
+        "elementaryStreams": [
+          "audio-stream0"
+        ],
+        "fileName": "audio-only.m4s",
+        "key": "audio-only",
+        "segmentSettings": {
+          "segmentDuration": "6s"
+        }
+      }
+    ],
+    "output": {
+      "uri": "gs://transcoder-bucket-${uniqueId}/output/"
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "labels": {
+    "cnrm-resource-id": "transcoderjob-maximal-${uniqueId}",
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "mode": "PROCESSING_MODE_INTERACTIVE",
+  "name": "projects/${projectNumber}/locations/us-central1/jobs/${jobID}",
+  "optimization": "AUTODETECT",
+  "state": "PENDING",
+  "ttlAfterCompletionDays": 1
+}
+
+---
+
+GRPC /google.cloud.video.transcoder.v1.TranscoderService/ListJobs
+
+{
+  "filter": "labels.cnrm-resource-id:5b996082-64fc-4bc6-8a6c-0fc78b1ffbae",
+  "parent": "projects/${projectId}/locations/us-central1"
+}
+
+OK
+
+{}
+
+---
+
+GRPC /google.cloud.video.transcoder.v1.TranscoderService/ListJobs
+
+{
+  "filter": "labels.cnrm-resource-id:5b996082-64fc-4bc6-8a6c-0fc78b1ffbae",
+  "parent": "projects/${projectId}/locations/us-central1"
+}
+
+OK
+
+{}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/transcoder-bucket-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "etag": "abcdef0123A=",
+  "generation": "12345678901234",
+  "iamConfiguration": {
+    "bucketPolicyOnly": {
+      "enabled": false
+    },
+    "publicAccessPrevention": "inherited",
+    "uniformBucketLevelAccess": {
+      "enabled": false
+    }
+  },
+  "id": "000000000000000000000",
+  "kind": "storage#bucket",
+  "labels": {
+    "cnrm-test": "true",
+    "managed-by-cnrm": "true"
+  },
+  "location": "US-CENTRAL1",
+  "locationType": "region",
+  "metageneration": "1",
+  "name": "transcoder-bucket-${uniqueId}",
+  "projectNumber": "${projectNumber}",
+  "satisfiesPZI": true,
+  "selfLink": "https://www.googleapis.com/storage/v1/b/transcoder-bucket-${uniqueId}",
+  "softDeletePolicy": {
+    "effectiveTime": "2024-04-01T12:34:56.123456Z",
+    "retentionDurationSeconds": "604800"
+  },
+  "storageClass": "STANDARD",
+  "timeCreated": "2024-04-01T12:34:56.123456Z",
+  "updated": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://storage.googleapis.com/storage/v1/b/transcoder-bucket-${uniqueId}/o?alt=json&prettyPrint=false&versions=true
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin
+
+{
+  "kind": "storage#objects"
+}
+
+---
+
+DELETE https://storage.googleapis.com/storage/v1/b/transcoder-bucket-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+204 No Content
+Content-Type: application/json
+Pragma: no-cache
+Server: UploadServer
+Vary: Origin
+Vary: X-Origin

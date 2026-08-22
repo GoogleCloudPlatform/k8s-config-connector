@@ -37,7 +37,13 @@ ${CONTROLLERBUILDER} generate-types \
   --api-version transcoder.cnrm.cloud.google.com/v1alpha1 \
   --resource TranscoderJob:Job
 
-# Note: We do not run generate-mapper here as this PR is for types/CRD/Identity only.
+${CONTROLLERBUILDER} generate-mapper \
+  --service google.cloud.video.transcoder.v1 \
+  --api-version transcoder.cnrm.cloud.google.com/v1alpha1
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
+
+if [ -d "${REPO_ROOT}/pkg/controller/direct/transcoder" ]; then
+  go run -mod=readonly golang.org/x/tools/cmd/goimports@${GOLANG_X_TOOLS_VERSION} -w pkg/controller/direct/transcoder/
+fi
