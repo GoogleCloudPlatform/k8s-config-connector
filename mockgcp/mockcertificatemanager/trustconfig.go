@@ -17,6 +17,7 @@ package mockcertificatemanager
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"google.golang.org/genproto/googleapis/longrunning"
 	"google.golang.org/grpc/codes"
@@ -56,6 +57,8 @@ func (s *CertificateManagerV1) CreateTrustConfig(ctx context.Context, req *pb.Cr
 
 	obj := proto.Clone(req.TrustConfig).(*pb.TrustConfig)
 	obj.Name = fqn
+
+	normalizePEMs(obj)
 
 	now := timestamppb.Now()
 	obj.CreateTime = now
@@ -113,6 +116,8 @@ func (s *CertificateManagerV1) UpdateTrustConfig(ctx context.Context, req *pb.Up
 		}
 	}
 
+	normalizePEMs(obj)
+
 	now := timestamppb.Now()
 	obj.UpdateTime = now
 	obj.Etag = "abcdef0123A="
@@ -163,4 +168,19 @@ func (s *CertificateManagerV1) DeleteTrustConfig(ctx context.Context, req *pb.De
 	return s.operations.StartLRO(ctx, parent, lroMetadata, func() (proto.Message, error) {
 		return &emptypb.Empty{}, nil
 	})
+}
+
+func normalizePEMs(trustConfig *pb.TrustConfig) {
+	for _, store := range trustConfig.TrustStores {
+		for _, anchor := range store.TrustAnchors {
+			if anchor.PemCertificate != "" && !strings.HasSuffix(anchor.PemCertificate, "\n") {
+				anchor.PemCertificate += "\n"
+			}
+		}
+		for _, ca := range store.IntermediateCas {
+			if ca.PemCertificate != "" && !strings.HasSuffix(ca.PemCertificate, "\n") {
+				ca.PemCertificate += "\n"
+			}
+		}
+	}
 }
