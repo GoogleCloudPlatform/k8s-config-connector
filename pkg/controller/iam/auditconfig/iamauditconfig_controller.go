@@ -272,7 +272,8 @@ func (r *reconcileContext) doReconcile(auditConfig *iamv1beta1.IAMAuditConfig) (
 		}
 		return false, r.handleDeleted(auditConfig)
 	}
-	if _, err := r.Reconciler.iamClient.GetAuditConfig(r.Ctx, auditConfig); err != nil {
+	oldAuditConfig, err := r.Reconciler.iamClient.GetAuditConfig(r.Ctx, auditConfig)
+	if err != nil {
 		if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
 			logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(auditConfig))
 			return r.handleUnresolvableDeps(auditConfig, unwrappedErr)
@@ -286,12 +287,21 @@ func (r *reconcileContext) doReconcile(auditConfig *iamv1beta1.IAMAuditConfig) (
 			return false, r.handleUpdateFailed(auditConfig, err)
 		}
 	}
-	if _, err := r.Reconciler.iamClient.SetAuditConfig(r.Ctx, auditConfig); err != nil {
-		if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
-			logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(auditConfig))
-			return r.handleUnresolvableDeps(auditConfig, unwrappedErr)
+	diff := &structuredreporting.Diff{IsNewObject: true}
+	if oldAuditConfig != nil {
+		diff = iamv1beta1.IAMAuditConfigSpecDiffers(&auditConfig.Spec, &oldAuditConfig.Spec)
+	}
+	if diff.HasDiff() {
+		if !diff.IsNewObject {
+			structuredreporting.ReportDiff(r.Ctx, diff)
 		}
-		return false, r.handleUpdateFailed(auditConfig, fmt.Errorf("error setting audit config: %w", err))
+		if _, err := r.Reconciler.iamClient.SetAuditConfig(r.Ctx, auditConfig); err != nil {
+			if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
+				logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(auditConfig))
+				return r.handleUnresolvableDeps(auditConfig, unwrappedErr)
+			}
+			return false, r.handleUpdateFailed(auditConfig, fmt.Errorf("error setting audit config: %w", err))
+		}
 	}
 	if isAPIServerUpdateRequired(auditConfig) {
 		return false, r.handleUpToDate(auditConfig)
