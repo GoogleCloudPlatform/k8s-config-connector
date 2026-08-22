@@ -809,6 +809,19 @@ func normalizeRepresentation(obj interface{}) interface{} {
 				}
 			}
 		}
+		// output-only field
+		// todo: need to normalize its value in logs and re-generate
+		if effectiveMaintenanceVersion, ok := v["effectiveMaintenanceVersion"].(string); ok && effectiveMaintenanceVersion == "REDISCLUSTER_20260626_00_01" {
+			delete(v, "effectiveMaintenanceVersion")
+		}
+		// currently unsupported in CRD
+		// todo: recover fields once they are supported
+		if satisfiesPzi, ok := v["satisfiesPzi"].(bool); ok && satisfiesPzi == true {
+			delete(v, "satisfiesPzi")
+		}
+		if serverCaMode, ok := v["serverCaMode"].(float64); ok && serverCaMode == 0 {
+			delete(v, "serverCaMode")
+		}
 		for k, val := range v {
 			v[k] = normalizeRepresentation(val)
 		}
