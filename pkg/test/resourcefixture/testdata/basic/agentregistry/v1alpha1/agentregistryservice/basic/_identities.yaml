@@ -1,0 +1,6 @@
+- caisURL: //agentregistry.googleapis.com/projects/${projectId}/locations/us-central1/services/agentregistryservice-${uniqueId}
+  group: agentregistry.cnrm.cloud.google.com
+  kind: AgentRegistryService
+  name: agentregistryservice-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
