@@ -1,0 +1,99 @@
+GET https://mapmanagement.googleapis.com/v2beta/projects/${projectId}/mapConfigs/mapmanagementmapconfig-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2FmapConfigs%2Fmapmanagementmapconfig-minimal-${uniqueId}
+X-Goog-User-Project: ${projectId}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "Request contains an invalid argument.",
+    "status": "INVALID_ARGUMENT"
+  }
+}
+
+---
+
+POST https://mapmanagement.googleapis.com/v2beta/projects/${projectId}/mapConfigs?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}
+X-Goog-User-Project: ${projectId}
+
+{
+  "displayName": "Minimal Map Config ${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Minimal Map Config ${uniqueId}",
+  "mapId": "94208ff807038e1575d64665",
+  "name": "projects/${projectNumber}/mapConfigs/94208ff807038e1575d64665",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://mapmanagement.googleapis.com/v2beta/projects/${projectNumber}/mapConfigs/94208ff807038e1575d64665?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2FmapConfigs%2F94208ff807038e1575d64665
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Minimal Map Config ${uniqueId}",
+  "mapId": "94208ff807038e1575d64665",
+  "name": "projects/${projectNumber}/mapConfigs/94208ff807038e1575d64665",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://mapmanagement.googleapis.com/v2beta/projects/${projectNumber}/mapConfigs/94208ff807038e1575d64665?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2FmapConfigs%2F94208ff807038e1575d64665
+X-Goog-User-Project: ${projectNumber}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: scaffolding on HTTPServer2
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
