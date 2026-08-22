@@ -95,3 +95,58 @@ func TestVertexAIExtensionIdentity_FromExternal(t *testing.T) {
 		})
 	}
 }
+
+func TestProjectsEqual(t *testing.T) {
+	tests := []struct {
+		name string
+		p1   string
+		p2   string
+		want bool
+	}{
+		{
+			name: "equal alphanumeric",
+			p1:   "proj-a",
+			p2:   "proj-a",
+			want: true,
+		},
+		{
+			name: "different alphanumeric",
+			p1:   "proj-a",
+			p2:   "proj-b",
+			want: false,
+		},
+		{
+			name: "equal numeric",
+			p1:   "12345",
+			p2:   "12345",
+			want: true,
+		},
+		{
+			name: "different numeric",
+			p1:   "12345",
+			p2:   "67890",
+			want: false,
+		},
+		{
+			name: "one alphanumeric, one numeric",
+			p1:   "proj-a",
+			p2:   "12345",
+			want: true,
+		},
+		{
+			name: "one numeric, one alphanumeric",
+			p1:   "12345",
+			p2:   "proj-a",
+			want: true,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := projectsEqual(tt.p1, tt.p2)
+			if got != tt.want {
+				t.Errorf("projectsEqual(%q, %q) = %v, want %v", tt.p1, tt.p2, got, tt.want)
+			}
+		})
+	}
+}

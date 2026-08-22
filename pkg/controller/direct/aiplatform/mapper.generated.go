@@ -2955,6 +2955,8 @@ func TimestampSplit_ToProto(mapCtx *direct.MapContext, in *krm.TimestampSplit) *
 	out.Key = direct.ValueOf(in.Key)
 	return out
 }
+
+/* found existing non-generated mapping function "ToolUseExample_FromProto", skipping
 func ToolUseExample_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.ToolUseExample) *krm.ToolUseExample {
 	if in == nil {
 		return nil
@@ -2973,24 +2975,30 @@ func ToolUseExample_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.ToolUs
 	out.ResponseSummary = direct.LazyPtr(in.GetResponseSummary())
 	return out
 }
-func ToolUseExample_ToProto(mapCtx *direct.MapContext, in *krm.ToolUseExample) *aiplatformpb.ToolUseExample {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "ToolUseExample_ToProto", skipping
+
+	func ToolUseExample_ToProto(mapCtx *direct.MapContext, in *krm.ToolUseExample) *aiplatformpb.ToolUseExample {
+		if in == nil {
+			return nil
+		}
+		out := &aiplatformpb.ToolUseExample{}
+		if oneof := ToolUseExample_ExtensionOperation_ToProto(mapCtx, in.ExtensionOperation); oneof != nil {
+			out.Target = &aiplatformpb.ToolUseExample_ExtensionOperation_{ExtensionOperation: oneof}
+		}
+		if oneof := ToolUseExample_FunctionName_ToProto(mapCtx, in.FunctionName); oneof != nil {
+			out.Target = oneof
+		}
+		out.DisplayName = direct.ValueOf(in.DisplayName)
+		out.Query = direct.ValueOf(in.Query)
+		out.RequestParams = direct.Struct_ToProto(mapCtx, &in.RequestParams)
+		out.ResponseParams = direct.Struct_ToProto(mapCtx, &in.ResponseParams)
+		out.ResponseSummary = direct.ValueOf(in.ResponseSummary)
+		return out
 	}
-	out := &aiplatformpb.ToolUseExample{}
-	if oneof := ToolUseExample_ExtensionOperation_ToProto(mapCtx, in.ExtensionOperation); oneof != nil {
-		out.Target = &aiplatformpb.ToolUseExample_ExtensionOperation_{ExtensionOperation: oneof}
-	}
-	if oneof := ToolUseExample_FunctionName_ToProto(mapCtx, in.FunctionName); oneof != nil {
-		out.Target = oneof
-	}
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Query = direct.ValueOf(in.Query)
-	out.RequestParams = direct.Struct_ToProto(mapCtx, &in.RequestParams)
-	out.ResponseParams = direct.Struct_ToProto(mapCtx, &in.ResponseParams)
-	out.ResponseSummary = direct.ValueOf(in.ResponseSummary)
-	return out
-}
+*/
 func ToolUseExample_FunctionName_ToProto(mapCtx *direct.MapContext, in *string) *aiplatformpb.ToolUseExample_FunctionName {
 	if in == nil {
 		return nil

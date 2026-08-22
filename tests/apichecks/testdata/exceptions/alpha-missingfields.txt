@@ -3865,25 +3865,17 @@
 [missing_field] crd=vertexaideploymentresourcepools.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.dedicatedResources.spot" is not set in unstructured objects
 [missing_field] crd=vertexaideploymentresourcepools.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.encryptionSpec.kmsKeyRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vertexaideploymentresourcepools.vertexai.cnrm.cloud.google.com version=v1alpha1: field ".spec.serviceAccountRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=vertexaiextensions.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
-[missing_field] crd=vertexaiextensions.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
-[missing_field] crd=vertexaiextensions.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
 [missing_field] crd=vertexaiextensions.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.manifest.apiSpec.openAPIGCSURI" is not set in unstructured objects
-[missing_field] crd=vertexaiextensions.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.manifest.apiSpec.openAPIYaml" is not set in unstructured objects
 [missing_field] crd=vertexaiextensions.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.manifest.authConfig.apiKeyConfig.apiKeySecretRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vertexaiextensions.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.manifest.authConfig.apiKeyConfig.httpElementLocation" is not set in unstructured objects
 [missing_field] crd=vertexaiextensions.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.manifest.authConfig.apiKeyConfig.name" is not set in unstructured objects
-[missing_field] crd=vertexaiextensions.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.manifest.authConfig.authType" is not set in unstructured objects
 [missing_field] crd=vertexaiextensions.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.manifest.authConfig.googleServiceAccountConfig.serviceAccountRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vertexaiextensions.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.manifest.authConfig.httpBasicAuthConfig.credentialSecretRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vertexaiextensions.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.manifest.authConfig.oauthConfig.accessToken" is not set in unstructured objects
 [missing_field] crd=vertexaiextensions.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.manifest.authConfig.oauthConfig.serviceAccountRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vertexaiextensions.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.manifest.authConfig.oidcConfig.idToken" is not set in unstructured objects
 [missing_field] crd=vertexaiextensions.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.manifest.authConfig.oidcConfig.serviceAccountRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=vertexaiextensions.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.manifest.description" is not set in unstructured objects
-[missing_field] crd=vertexaiextensions.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.manifest.name" is not set in unstructured objects
 [missing_field] crd=vertexaiextensions.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.privateServiceConnectConfig.serviceDirectoryRef" is not set; neither 'external' nor 'name' are set
-[missing_field] crd=vertexaiextensions.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vertexaiextensions.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.runtimeConfig.codeInterpreterRuntimeConfig.fileInputGCSBucketRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vertexaiextensions.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.runtimeConfig.codeInterpreterRuntimeConfig.fileOutputGCSBucketRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=vertexaiextensions.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.runtimeConfig.defaultParams" is not set in unstructured objects

@@ -1,0 +1,58 @@
+apiVersion: aiplatform.cnrm.cloud.google.com/v1alpha1
+kind: VertexAIExtension
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: extension-max-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  description: A maximal extension for testing updated
+  displayName: Maximal Extension Updated
+  location: us-central1
+  manifest:
+    apiSpec:
+      openAPIYaml: |
+        openapi: 3.0.0
+        info:
+          title: Maximal API
+          version: 1.0.0
+        servers:
+          - url: https://example.com
+        paths:
+          /hello:
+            get:
+              summary: Says hello
+              operationId: sayHello
+              responses:
+                '200':
+                  description: A successful response
+    authConfig:
+      authType: NO_AUTH
+    description: A maximal extension for testing
+    name: maximal_extension
+  projectRef:
+    external: ${projectId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectNumber}/locations/us-central1/extensions/5998321192103051264
+  observedGeneration: 2
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    extensionOperations:
+    - functionDeclaration:
+        description: |-
+          A maximal extension for testing
+
+          Says hello
+        name: sayHello
+      operationID: sayHello
+    updateTime: "1970-01-01T00:00:00Z"

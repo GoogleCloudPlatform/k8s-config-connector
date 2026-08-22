@@ -381,6 +381,54 @@ func RuntimeConfig_ToProto(mapCtx *direct.MapContext, in *krm.RuntimeConfig) *ai
 	if oneof := RuntimeConfig_VertexAISearchRuntimeConfig_ToProto(mapCtx, in.VertexAISearchRuntimeConfig); oneof != nil {
 		out.GoogleFirstPartyExtensionConfig = &aiplatformpb.RuntimeConfig_VertexAiSearchRuntimeConfig{VertexAiSearchRuntimeConfig: oneof}
 	}
-	out.DefaultParams = direct.Struct_ToProto(mapCtx, &in.DefaultParams)
+	if len(in.DefaultParams.Raw) > 0 {
+		out.DefaultParams = direct.Struct_ToProto(mapCtx, &in.DefaultParams)
+	}
+	return out
+}
+
+func ToolUseExample_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.ToolUseExample) *krm.ToolUseExample {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ToolUseExample{}
+	out.ExtensionOperation = ToolUseExample_ExtensionOperation_FromProto(mapCtx, in.GetExtensionOperation())
+	out.FunctionName = direct.LazyPtr(in.GetFunctionName())
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Query = direct.LazyPtr(in.GetQuery())
+	if in.GetRequestParams() != nil {
+		if v := direct.Struct_FromProto(mapCtx, in.GetRequestParams()); v != nil {
+			out.RequestParams = *v
+		}
+	}
+	if in.GetResponseParams() != nil {
+		if v := direct.Struct_FromProto(mapCtx, in.GetResponseParams()); v != nil {
+			out.ResponseParams = *v
+		}
+	}
+	out.ResponseSummary = direct.LazyPtr(in.GetResponseSummary())
+	return out
+}
+
+func ToolUseExample_ToProto(mapCtx *direct.MapContext, in *krm.ToolUseExample) *aiplatformpb.ToolUseExample {
+	if in == nil {
+		return nil
+	}
+	out := &aiplatformpb.ToolUseExample{}
+	if oneof := ToolUseExample_ExtensionOperation_ToProto(mapCtx, in.ExtensionOperation); oneof != nil {
+		out.Target = &aiplatformpb.ToolUseExample_ExtensionOperation_{ExtensionOperation: oneof}
+	}
+	if oneof := ToolUseExample_FunctionName_ToProto(mapCtx, in.FunctionName); oneof != nil {
+		out.Target = oneof
+	}
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Query = direct.ValueOf(in.Query)
+	if len(in.RequestParams.Raw) > 0 {
+		out.RequestParams = direct.Struct_ToProto(mapCtx, &in.RequestParams)
+	}
+	if len(in.ResponseParams.Raw) > 0 {
+		out.ResponseParams = direct.Struct_ToProto(mapCtx, &in.ResponseParams)
+	}
+	out.ResponseSummary = direct.ValueOf(in.ResponseSummary)
 	return out
 }
