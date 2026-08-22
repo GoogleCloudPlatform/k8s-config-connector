@@ -19,11 +19,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "Resource 'projects/${projectId}/locations/us-central1/qaScorecards/qascorecard-maximal-${uniqueId}' was not found",
+        "message": "No QaScorecardRevision found for (project ${projectNumber}, qa_scorecard_id qascorecard-maximal-${uniqueId}, revision_id latest).",
         "reason": "notFound"
       }
     ],
-    "message": "Resource 'projects/${projectId}/locations/us-central1/qaScorecards/qascorecard-maximal-${uniqueId}' was not found",
+    "message": "No QaScorecardRevision found for (project ${projectNumber}, qa_scorecard_id qascorecard-maximal-${uniqueId}, revision_id latest).",
     "status": "NOT_FOUND"
   }
 }
@@ -55,7 +55,7 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "This is a scorecard created to test maximal configuration ${uniqueId}",
   "displayName": "Scorecard Maximal ${uniqueId}",
-  "name": "projects/${projectId}/locations/us-central1/qaScorecards/qascorecard-maximal-${uniqueId}",
+  "name": "projects/${projectNumber}/locations/us-central1/qaScorecards/qascorecard-maximal-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
@@ -80,7 +80,7 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "This is a scorecard created to test maximal configuration ${uniqueId}",
   "displayName": "Scorecard Maximal ${uniqueId}",
-  "name": "projects/${projectId}/locations/us-central1/qaScorecards/qascorecard-maximal-${uniqueId}",
+  "name": "projects/${projectNumber}/locations/us-central1/qaScorecards/qascorecard-maximal-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
@@ -111,7 +111,7 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "This is a scorecard created to test maximal configuration updated ${uniqueId}",
   "displayName": "Scorecard Maximal Updated ${uniqueId}",
-  "name": "projects/${projectId}/locations/us-central1/qaScorecards/qascorecard-maximal-${uniqueId}",
+  "name": "projects/${projectNumber}/locations/us-central1/qaScorecards/qascorecard-maximal-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
@@ -136,7 +136,7 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "This is a scorecard created to test maximal configuration updated ${uniqueId}",
   "displayName": "Scorecard Maximal Updated ${uniqueId}",
-  "name": "projects/${projectId}/locations/us-central1/qaScorecards/qascorecard-maximal-${uniqueId}",
+  "name": "projects/${projectNumber}/locations/us-central1/qaScorecards/qascorecard-maximal-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 

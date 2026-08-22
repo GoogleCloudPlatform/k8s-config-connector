@@ -19,11 +19,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "Resource 'projects/${projectId}/locations/us-central1/qaScorecards/qascorecard-minimal-${uniqueId}' was not found",
+        "message": "No QaScorecardRevision found for (project ${projectNumber}, qa_scorecard_id qascorecard-minimal-${uniqueId}, revision_id latest).",
         "reason": "notFound"
       }
     ],
-    "message": "Resource 'projects/${projectId}/locations/us-central1/qaScorecards/qascorecard-minimal-${uniqueId}' was not found",
+    "message": "No QaScorecardRevision found for (project ${projectNumber}, qa_scorecard_id qascorecard-minimal-${uniqueId}, revision_id latest).",
     "status": "NOT_FOUND"
   }
 }
@@ -53,7 +53,7 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "displayName": "Scorecard Minimal ${uniqueId}",
-  "name": "projects/${projectId}/locations/us-central1/qaScorecards/qascorecard-minimal-${uniqueId}",
+  "name": "projects/${projectNumber}/locations/us-central1/qaScorecards/qascorecard-minimal-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
@@ -77,7 +77,7 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "displayName": "Scorecard Minimal ${uniqueId}",
-  "name": "projects/${projectId}/locations/us-central1/qaScorecards/qascorecard-minimal-${uniqueId}",
+  "name": "projects/${projectNumber}/locations/us-central1/qaScorecards/qascorecard-minimal-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
