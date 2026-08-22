@@ -1,6 +1,6 @@
 GET https://cloudresourcemanager.googleapis.com/v3/projects/${projectId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}
 
 200 OK
@@ -24,7 +24,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://contentwarehouse.googleapis.com/v1/projects/${projectNumber}/locations/us/synonymSets/minimal?alt=json&prettyPrint=false
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -39,7 +39,14 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "SynonymSet Projects/${projectNumber}/locations/us/synonymSets/minimal not found.",
+    "errors": [
+      {
+        "domain": "global",
+        "message": "synonymSet \"projects/${projectNumber}/locations/us/synonymSets/minimal\" not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "synonymSet \"projects/${projectNumber}/locations/us/synonymSets/minimal\" not found",
     "status": "NOT_FOUND"
   }
 }
@@ -48,7 +55,7 @@ X-Xss-Protection: 0
 
 POST https://contentwarehouse.googleapis.com/v1/projects/${projectNumber}/locations/us/synonymSets?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 {
   "context": "minimal",
@@ -89,7 +96,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://contentwarehouse.googleapis.com/v1/projects/${projectNumber}/locations/us/synonymSets/minimal?alt=json&prettyPrint=false
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -117,7 +124,7 @@ X-Xss-Protection: 0
 ---
 
 DELETE https://contentwarehouse.googleapis.com/v1/projects/${projectNumber}/locations/us/synonymSets/minimal?alt=json&prettyPrint=false
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8

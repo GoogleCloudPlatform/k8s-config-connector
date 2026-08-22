@@ -104,10 +104,36 @@ func (obj *ContentWarehouseSynonymSet) GetIdentity(ctx context.Context, reader c
 			return nil, err
 		}
 
-		if statusIdentity.String() != specIdentity.String() {
+		if statusIdentity.Location != specIdentity.Location ||
+			statusIdentity.Context != specIdentity.Context ||
+			!isProjectMatch(statusIdentity.Project, specIdentity.Project) {
 			return nil, fmt.Errorf("cannot change ContentWarehouseSynonymSet identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
 		}
 	}
 
 	return specIdentity, nil
+}
+
+func isProjectMatch(a, b string) bool {
+	if a == b {
+		return true
+	}
+	// If one of them is a project number (digits only), we can be lenient and allow it
+	// since GCP APIs often return project numbers in names while spec uses project IDs.
+	if isDigits(a) || isDigits(b) {
+		return true
+	}
+	return false
+}
+
+func isDigits(s string) bool {
+	if s == "" {
+		return false
+	}
+	for _, r := range s {
+		if r < '0' || r > '9' {
+			return false
+		}
+	}
+	return true
 }
