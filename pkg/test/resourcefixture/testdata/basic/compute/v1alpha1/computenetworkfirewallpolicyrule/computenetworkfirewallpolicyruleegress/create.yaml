@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,13 +15,13 @@
 apiVersion: compute.cnrm.cloud.google.com/v1alpha1
 kind: ComputeNetworkFirewallPolicyRule
 metadata:
-  name: nfpr-${uniqueId}
+  name: nfpr-egress-${uniqueId}
 spec:
   projectRef:
     external: projects/${projectId}
   action: "deny"
-  description: "A Firewall Policy Rule"
-  direction: "INGRESS"
+  description: "An egress Firewall Policy Rule"
+  direction: "EGRESS"
   disabled: false
   enableLogging: false
   firewallPolicyRef:
@@ -29,10 +29,10 @@ spec:
   match:
     layer4Configs:
     - ipProtocol: "tcp"
-    srcIpRanges:
+    destIpRanges:
     - "10.100.0.1/32"
-    - "172.20.0.0/16"
-    srcNetworkContext: "INTRA_VPC"
+    destNetworkContext: "INTERNET"
   targetServiceAccountRefs:
+  - name: "gsa-1-${uniqueId}"
   - name: "gsa-2-${uniqueId}"
-  resourceID: "1000"
+  resourceID: "1001"
