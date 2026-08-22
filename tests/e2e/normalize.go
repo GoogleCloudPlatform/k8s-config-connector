@@ -713,6 +713,12 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 		visitor.ReplacePath(".status.observedState.vsphereScan.coreSource", "projects/${projectNumber}/locations/us-central1/sources/normalized-vsphere-scan-source")
 	}
 
+	// Specific to BigQueryMigration
+	if u.GroupVersionKind().Group == "bigquerymigration.cnrm.cloud.google.com" {
+		visitor.ReplacePath(".status.externalRef", "projects/${projectId}/locations/us/workflows/${workflowID}")
+		visitor.ReplacePath(".status.observedState.name", "projects/${projectNumber}/locations/us/workflows/${workflowID}")
+	}
+
 	return visitor
 }
 

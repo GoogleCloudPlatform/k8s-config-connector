@@ -16,6 +16,7 @@ package e2e
 
 import (
 	"fmt"
+	"regexp"
 	"slices"
 	"sort"
 	"strings"
@@ -23,6 +24,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
 )
+
+var reUUID = regexp.MustCompile(`^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$`)
 
 // Replacements manages replacements of dynamic values, like resource IDs
 type Replacements struct {
@@ -92,6 +95,30 @@ func (r *Replacements) ApplyReplacements(s string) string {
 	for _, normalizer := range normalizers {
 		s = normalizer(s)
 	}
+
+	if strings.Contains(s, "bigquerymigration") {
+		reTaskID := regexp.MustCompile(`"id": "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"`)
+		s = reTaskID.ReplaceAllString(s, `"id": "00000000-0000-0000-0000-000000000000"`)
+
+		reTime := regexp.MustCompile(`"(createTime|lastUpdateTime|timeFinalized|timeStorageClassUpdated)": "\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d+Z"`)
+		s = reTime.ReplaceAllString(s, `"$1": "1970-01-01T00:00:00.000000Z"`)
+
+		reGCSGen := regexp.MustCompile(`generation=\d+`)
+		s = reGCSGen.ReplaceAllString(s, `generation=12345678901234`)
+
+		reGCSGenStr := regexp.MustCompile(`"generation": "\d+"`)
+		s = reGCSGenStr.ReplaceAllString(s, `"generation": "12345678901234"`)
+
+		reCRC32c := regexp.MustCompile(`"crc32c": "[a-zA-Z0-9+/=]+"`)
+		s = reCRC32c.ReplaceAllString(s, `"crc32c": "U7HIKg=="`)
+
+		reMD5 := regexp.MustCompile(`"md5Hash": "[a-zA-Z0-9+/=]+"`)
+		s = reMD5.ReplaceAllString(s, `"md5Hash": "ZkA4o51FU94h8Kz6I1IPyg=="`)
+
+		reGCSId := regexp.MustCompile(`"id": "bigquerymigration-dep-\$\{uniqueId\}/output/batch_translation_report\.csv/\d+"`)
+		s = reGCSId.ReplaceAllString(s, `"id": "bigquerymigration-dep-$${uniqueId}/output/batch_translation_report.csv/1234567890123456"`)
+	}
+
 	return s
 }
 
@@ -148,6 +175,11 @@ func (r *Replacements) placeholderForGCPResource(resource string, name string) s
 		return "${folderID}"
 	case "memberships":
 		return "${membershipID}"
+	case "workflows":
+		if reUUID.MatchString(name) {
+			return "${workflowID}"
+		}
+		return ""
 	case "sslCertificates":
 		return "${sslCertificateID}"
 	case "serviceAttachments":
