@@ -521,9 +521,18 @@ type EdgecacheserviceRouteRule struct {
 	// +optional
 	RouteAction *EdgecacheserviceRouteAction `json:"routeAction,omitempty"`
 
+	/* Supported HTTP methods. */
+	// +optional
+	RouteMethods *EdgecacheserviceRouteMethods `json:"routeMethods,omitempty"`
+
 	/* The URL redirect configuration for requests that match this route. */
 	// +optional
 	UrlRedirect *EdgecacheserviceUrlRedirect `json:"urlRedirect,omitempty"`
+}
+
+type EdgecacheserviceRouteMethods struct {
+	/* The list of allowed HTTP methods. */
+	AllowedMethods []string `json:"allowedMethods"`
 }
 
 type EdgecacheserviceRouting struct {
