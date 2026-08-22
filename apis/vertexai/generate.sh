@@ -43,7 +43,8 @@ ${CONTROLLERBUILDER} generate-types \
     --resource VertexAIDataLabelingJob:DataLabelingJob \
     --resource VertexAICustomJob:CustomJob \
     --resource VertexAITensorboard:Tensorboard \
-    --resource VertexAITensorboardExperiment:TensorboardExperiment
+    --resource VertexAITensorboardExperiment:TensorboardExperiment \
+    --resource VertexAIHyperparameterTuningJob:HyperparameterTuningJob
 
 # --- v1beta1 ---
 ${CONTROLLERBUILDER} generate-types \
