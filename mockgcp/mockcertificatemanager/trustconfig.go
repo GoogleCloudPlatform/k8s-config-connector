@@ -175,13 +175,19 @@ func (s *CertificateManagerV1) DeleteTrustConfig(ctx context.Context, req *pb.De
 func normalizePEMs(trustConfig *pb.TrustConfig) {
 	for _, store := range trustConfig.TrustStores {
 		for _, anchor := range store.TrustAnchors {
-			if anchor.PemCertificate != "" && !strings.HasSuffix(anchor.PemCertificate, "\n") {
-				anchor.PemCertificate += "\n"
+			pem := anchor.GetPemCertificate()
+			if pem != "" && !strings.HasSuffix(pem, "\n") {
+				anchor.Kind = &pb.TrustConfig_TrustAnchor_PemCertificate{
+					PemCertificate: pem + "\n",
+				}
 			}
 		}
 		for _, ca := range store.IntermediateCas {
-			if ca.PemCertificate != "" && !strings.HasSuffix(ca.PemCertificate, "\n") {
-				ca.PemCertificate += "\n"
+			pem := ca.GetPemCertificate()
+			if pem != "" && !strings.HasSuffix(pem, "\n") {
+				ca.Kind = &pb.TrustConfig_IntermediateCA_PemCertificate{
+					PemCertificate: pem + "\n",
+				}
 			}
 		}
 	}
