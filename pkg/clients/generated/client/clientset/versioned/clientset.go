@@ -163,6 +163,7 @@ import (
 	managedkafkav1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/managedkafka/v1alpha1"
 	managedkafkav1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/managedkafka/v1beta1"
 	mapmanagementv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/mapmanagement/v1alpha1"
+	mapsplatformdatasetsv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/mapsplatformdatasets/v1alpha1"
 	memcachev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/memcache/v1beta1"
 	memorystorev1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/memorystore/v1alpha1"
 	memorystorev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/client/clientset/versioned/typed/memorystore/v1beta1"
@@ -384,6 +385,7 @@ type Interface interface {
 	ManagedkafkaV1alpha1() managedkafkav1alpha1.ManagedkafkaV1alpha1Interface
 	ManagedkafkaV1beta1() managedkafkav1beta1.ManagedkafkaV1beta1Interface
 	MapmanagementV1alpha1() mapmanagementv1alpha1.MapmanagementV1alpha1Interface
+	MapsplatformdatasetsV1alpha1() mapsplatformdatasetsv1alpha1.MapsplatformdatasetsV1alpha1Interface
 	MemcacheV1beta1() memcachev1beta1.MemcacheV1beta1Interface
 	MemorystoreV1alpha1() memorystorev1alpha1.MemorystoreV1alpha1Interface
 	MemorystoreV1beta1() memorystorev1beta1.MemorystoreV1beta1Interface
@@ -603,6 +605,7 @@ type Clientset struct {
 	managedkafkaV1alpha1             *managedkafkav1alpha1.ManagedkafkaV1alpha1Client
 	managedkafkaV1beta1              *managedkafkav1beta1.ManagedkafkaV1beta1Client
 	mapmanagementV1alpha1            *mapmanagementv1alpha1.MapmanagementV1alpha1Client
+	mapsplatformdatasetsV1alpha1     *mapsplatformdatasetsv1alpha1.MapsplatformdatasetsV1alpha1Client
 	memcacheV1beta1                  *memcachev1beta1.MemcacheV1beta1Client
 	memorystoreV1alpha1              *memorystorev1alpha1.MemorystoreV1alpha1Client
 	memorystoreV1beta1               *memorystorev1beta1.MemorystoreV1beta1Client
@@ -1369,6 +1372,11 @@ func (c *Clientset) ManagedkafkaV1beta1() managedkafkav1beta1.ManagedkafkaV1beta
 // MapmanagementV1alpha1 retrieves the MapmanagementV1alpha1Client
 func (c *Clientset) MapmanagementV1alpha1() mapmanagementv1alpha1.MapmanagementV1alpha1Interface {
 	return c.mapmanagementV1alpha1
+}
+
+// MapsplatformdatasetsV1alpha1 retrieves the MapsplatformdatasetsV1alpha1Client
+func (c *Clientset) MapsplatformdatasetsV1alpha1() mapsplatformdatasetsv1alpha1.MapsplatformdatasetsV1alpha1Interface {
+	return c.mapsplatformdatasetsV1alpha1
 }
 
 // MemcacheV1beta1 retrieves the MemcacheV1beta1Client
@@ -2347,6 +2355,10 @@ func NewForConfigAndClient(c *rest.Config, httpClient *http.Client) (*Clientset,
 	if err != nil {
 		return nil, err
 	}
+	cs.mapsplatformdatasetsV1alpha1, err = mapsplatformdatasetsv1alpha1.NewForConfigAndClient(&configShallowCopy, httpClient)
+	if err != nil {
+		return nil, err
+	}
 	cs.memcacheV1beta1, err = memcachev1beta1.NewForConfigAndClient(&configShallowCopy, httpClient)
 	if err != nil {
 		return nil, err
@@ -2810,6 +2822,7 @@ func New(c rest.Interface) *Clientset {
 	cs.managedkafkaV1alpha1 = managedkafkav1alpha1.New(c)
 	cs.managedkafkaV1beta1 = managedkafkav1beta1.New(c)
 	cs.mapmanagementV1alpha1 = mapmanagementv1alpha1.New(c)
+	cs.mapsplatformdatasetsV1alpha1 = mapsplatformdatasetsv1alpha1.New(c)
 	cs.memcacheV1beta1 = memcachev1beta1.New(c)
 	cs.memorystoreV1alpha1 = memorystorev1alpha1.New(c)
 	cs.memorystoreV1beta1 = memorystorev1beta1.New(c)

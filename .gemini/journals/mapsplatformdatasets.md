@@ -1,0 +1,12 @@
+### [2026-07-02] Implementing Direct Types and Identity for MapsPlatformDatasetsDataset
+- **Context**: Greenfield implementation of KRM types and Identity for MapsPlatformDatasetsDataset (Kind: `MapsPlatformDatasetsDataset`, issue #10285, PR #11167).
+- **Problem**: 
+  - The proto service and package is located under `google.maps.mapsplatformdatasets.v1` instead of the typical `google.cloud` namespace.
+  - Due to this, the `generate-proto.sh` compiler script in `controllerbuilder` was initially missing the necessary glob path to include these protos during compilation, resulting in "proto message Dataset not found" errors.
+  - The `MapsPlatformDatasetsDataset` resource has no region/location field and is project-scoped (GCP URL: `projects/{project}/datasets/{dataset}`).
+- **Solution**:
+  - Added `${THIRD_PARTY}/googleapis/google/maps/mapsplatformdatasets/*/*.proto` to `generate-proto.sh`.
+  - Configured `generate.sh` to target `--service google.maps.mapsplatformdatasets.v1`.
+  - Defined the spec and status Go fields mapping cleanly to the v1 proto.
+  - Implemented `IdentityV2` and `ExternalRef` parsing without regional properties.
+- **Impact**: Enables subsequent development of the direct controller and mapper for Maps Platform Datasets by providing compiled, well-defined types and identities.
