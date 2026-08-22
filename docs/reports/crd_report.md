@@ -311,6 +311,7 @@
 | discoveryengine.cnrm.cloud.google.com          | DiscoveryEngineSearchEngine                              | True         | False       | False  | Direct     | True        |
 | discoveryengine.cnrm.cloud.google.com          | DiscoveryEngineServingConfig                             | True         | False       | False  | Direct     | True        |
 | discoveryengine.cnrm.cloud.google.com          | DiscoveryEngineSession                                   | True         | False       | False  | Direct     | True        |
+| discoveryengine.cnrm.cloud.google.com          | DiscoveryEngineUserStore                                 | True         | False       | False  | Direct     | True        |
 | dlp.cnrm.cloud.google.com                      | DLPConnection                                            | True         | False       | False  | Direct     | True        |
 | dlp.cnrm.cloud.google.com                      | DLPDeidentifyTemplate                                    | False        | True        | False  | DCL        | False       |
 | dlp.cnrm.cloud.google.com                      | DLPDiscoveryConfig                                       | True         | False       | False  | Direct     | True        |
@@ -569,6 +570,7 @@
 | tags.cnrm.cloud.google.com                     | TagsTagKey                                               | False        | True        | False  | Terraform  | True        |
 | tags.cnrm.cloud.google.com                     | TagsTagValue                                             | False        | True        | False  | Terraform  | True        |
 | cloudtasks.cnrm.cloud.google.com               | TasksQueue                                               | True         | False       | False  | Direct     | True        |
+| telcoautomation.cnrm.cloud.google.com          | TelcoAutomationEdgeSlm                                   | True         | False       | False  | Direct     | True        |
 | testing.cnrm.cloud.google.com                  | TestingDeviceSession                                     | True         | False       | False  | Direct     | True        |
 | tpu.cnrm.cloud.google.com                      | TPUNode                                                  | True         | False       | False  | Terraform  | False       |
 | tpu.cnrm.cloud.google.com                      | TPUVirtualMachine                                        | True         | False       | False  | Direct     | True        |
@@ -594,6 +596,7 @@
 | aiplatform.cnrm.cloud.google.com               | VertexAISchedule                                         | True         | False       | False  | Direct     | True        |
 | aiplatform.cnrm.cloud.google.com               | VertexAISpecialistPool                                   | True         | False       | False  | Direct     | True        |
 | aiplatform.cnrm.cloud.google.com               | VertexAIStudy                                            | True         | False       | False  | Direct     | True        |
+| vertexai.cnrm.cloud.google.com                 | VertexAITensorboardExperiment                            | True         | False       | False  | Direct     | True        |
 | vertexai.cnrm.cloud.google.com                 | VertexAITensorboard                                      | True         | False       | False  | Terraform  | True        |
 | aiplatform.cnrm.cloud.google.com               | VertexAITrainingPipeline                                 | True         | False       | False  | Direct     | True        |
 | aiplatform.cnrm.cloud.google.com               | VertexAITuningJob                                        | True         | False       | False  | Direct     | True        |
