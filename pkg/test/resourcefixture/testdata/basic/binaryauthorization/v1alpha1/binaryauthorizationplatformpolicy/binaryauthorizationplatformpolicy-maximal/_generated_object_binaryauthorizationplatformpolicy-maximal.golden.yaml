@@ -1,0 +1,38 @@
+apiVersion: binaryauthorization.cnrm.cloud.google.com/v1alpha1
+kind: BinaryAuthorizationPlatformPolicy
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: binauthz-maximal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  description: An updated maximal platform policy
+  gkePolicy:
+    checkSets:
+    - checks:
+      - alwaysDeny: true
+        displayName: always-deny-check-updated
+      displayName: updated-checkset
+      imageAllowlist:
+        allowPattern:
+        - gcr.io/another-project/*
+    imageAllowlist:
+      allowPattern:
+      - gcr.io/another-project/*
+  platform: gke
+  projectRef:
+    external: ${projectId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/platforms/gke/policies/binauthz-maximal-${uniqueId}
+  observedGeneration: 2
+  observedState: {}

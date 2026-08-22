@@ -173,6 +173,7 @@ require (
 require go.opentelemetry.io/auto/sdk v1.2.1 // indirect
 
 require (
+	cloud.google.com/go/binaryauthorization v1.15.0 // indirect
 	cloud.google.com/go/edgenetwork v1.8.0 // indirect
 	cloud.google.com/go/memcache v1.16.0 // indirect
 	cloud.google.com/go/pubsub v1.50.2 // indirect

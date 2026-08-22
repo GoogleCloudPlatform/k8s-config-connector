@@ -49,6 +49,7 @@ gen-proto-no-fixup:
 		./apis/google/apps/cloudidentity/v1beta1/*.proto \
 		./apis/mockgcp/cloud/config/v1/*.proto \
 		./apis/google/cloud/dns/v1/*.proto \
+		./apis/mockgcp/cloud/binaryauthorization/v1/*.proto \
 		./apis/mockgcp/cloud/apigee/v1/*.proto \
 		./apis/mockgcp/cloud/bigquery/v2/*.proto \
 		./apis/mockgcp/cloud/ids/v1/*.proto \
@@ -60,6 +61,7 @@ gen-proto-no-fixup:
 		./third_party/googleapis/mockgcp/api/serviceusage/v1/*.proto \
 		./third_party/googleapis/mockgcp/api/serviceusage/v1beta1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/apigateway/v1/*.proto \
+		./third_party/googleapis/mockgcp/cloud/binaryauthorization/v1/resources.proto \
 		./third_party/googleapis/mockgcp/cloud/dataform/v1/*.proto \
 		./third_party/googleapis/mockgcp/cloud/alloydb/v1beta/*.proto \
 		./third_party/googleapis/mockgcp/cloud/tasks/v2/*.proto \
