@@ -62,6 +62,12 @@ spec:
           spec:
             description: RedisClusterSpec defines the desired state of RedisCluster
             properties:
+              asyncClusterEndpointsDeletionEnabled:
+                description: Optional. If true, cluster endpoints that are created
+                  and registered by customers can be deleted asynchronously. That
+                  is, such a cluster endpoint can be de-registered before the forwarding
+                  rules in the cluster endpoint are deleted.
+                type: boolean
               authorizationMode:
                 description: Optional. The authorization mode of the Redis cluster.
                   If not provided, auth feature is disabled for the cluster.
@@ -82,25 +88,28 @@ spec:
                           is required.
                         properties:
                           hours:
-                            description: Hours of day in 24 hour format. Should be
-                              from 0 to 23. An API may choose to allow the value "24:00:00"
-                              for scenarios like business closing time.
+                            description: Hours of a day in 24 hour format. Must be
+                              greater than or equal to 0 and typically must be less
+                              than or equal to 23. An API may choose to allow the
+                              value "24:00:00" for scenarios like business closing
+                              time.
                             format: int32
                             type: integer
                           minutes:
-                            description: Minutes of hour of day. Must be from 0 to
-                              59.
+                            description: Minutes of an hour. Must be greater than
+                              or equal to 0 and less than or equal to 59.
                             format: int32
                             type: integer
                           nanos:
-                            description: Fractions of seconds in nanoseconds. Must
-                              be from 0 to 999,999,999.
+                            description: Fractions of seconds, in nanoseconds. Must
+                              be greater than or equal to 0 and less than or equal
+                              to 999,999,999.
                             format: int32
                             type: integer
                           seconds:
-                            description: Seconds of minutes of the time. Must normally
-                              be from 0 to 59. An API may allow the value 60 if it
-                              allows leap-seconds.
+                            description: Seconds of a minute. Must be greater than
+                              or equal to 0 and typically must be less than or equal
+                              to 59. An API may allow the value 60 if it allows leap-seconds.
                             format: int32
                             type: integer
                         type: object
@@ -247,25 +256,29 @@ spec:
                           description: Start time of the window in UTC.
                           properties:
                             hours:
-                              description: Hours of day in 24 hour format. Should
-                                be from 0 to 23. An API may choose to allow the value
-                                "24:00:00" for scenarios like business closing time.
+                              description: Hours of a day in 24 hour format. Must
+                                be greater than or equal to 0 and typically must be
+                                less than or equal to 23. An API may choose to allow
+                                the value "24:00:00" for scenarios like business closing
+                                time.
                               format: int32
                               type: integer
                             minutes:
-                              description: Minutes of hour of day. Must be from 0
-                                to 59.
+                              description: Minutes of an hour. Must be greater than
+                                or equal to 0 and less than or equal to 59.
                               format: int32
                               type: integer
                             nanos:
-                              description: Fractions of seconds in nanoseconds. Must
-                                be from 0 to 999,999,999.
+                              description: Fractions of seconds, in nanoseconds. Must
+                                be greater than or equal to 0 and less than or equal
+                                to 999,999,999.
                               format: int32
                               type: integer
                             seconds:
-                              description: Seconds of minutes of the time. Must normally
-                                be from 0 to 59. An API may allow the value 60 if
-                                it allows leap-seconds.
+                              description: Seconds of a minute. Must be greater than
+                                or equal to 0 and typically must be less than or equal
+                                to 59. An API may allow the value 60 if it allows
+                                leap-seconds.
                               format: int32
                               type: integer
                           type: object
@@ -750,6 +763,12 @@ spec:
           spec:
             description: RedisClusterSpec defines the desired state of RedisCluster
             properties:
+              asyncClusterEndpointsDeletionEnabled:
+                description: Optional. If true, cluster endpoints that are created
+                  and registered by customers can be deleted asynchronously. That
+                  is, such a cluster endpoint can be de-registered before the forwarding
+                  rules in the cluster endpoint are deleted.
+                type: boolean
               authorizationMode:
                 description: Optional. The authorization mode of the Redis cluster.
                   If not provided, auth feature is disabled for the cluster.
@@ -770,25 +789,28 @@ spec:
                           is required.
                         properties:
                           hours:
-                            description: Hours of day in 24 hour format. Should be
-                              from 0 to 23. An API may choose to allow the value "24:00:00"
-                              for scenarios like business closing time.
+                            description: Hours of a day in 24 hour format. Must be
+                              greater than or equal to 0 and typically must be less
+                              than or equal to 23. An API may choose to allow the
+                              value "24:00:00" for scenarios like business closing
+                              time.
                             format: int32
                             type: integer
                           minutes:
-                            description: Minutes of hour of day. Must be from 0 to
-                              59.
+                            description: Minutes of an hour. Must be greater than
+                              or equal to 0 and less than or equal to 59.
                             format: int32
                             type: integer
                           nanos:
-                            description: Fractions of seconds in nanoseconds. Must
-                              be from 0 to 999,999,999.
+                            description: Fractions of seconds, in nanoseconds. Must
+                              be greater than or equal to 0 and less than or equal
+                              to 999,999,999.
                             format: int32
                             type: integer
                           seconds:
-                            description: Seconds of minutes of the time. Must normally
-                              be from 0 to 59. An API may allow the value 60 if it
-                              allows leap-seconds.
+                            description: Seconds of a minute. Must be greater than
+                              or equal to 0 and typically must be less than or equal
+                              to 59. An API may allow the value 60 if it allows leap-seconds.
                             format: int32
                             type: integer
                         type: object
@@ -935,25 +957,29 @@ spec:
                           description: Start time of the window in UTC.
                           properties:
                             hours:
-                              description: Hours of day in 24 hour format. Should
-                                be from 0 to 23. An API may choose to allow the value
-                                "24:00:00" for scenarios like business closing time.
+                              description: Hours of a day in 24 hour format. Must
+                                be greater than or equal to 0 and typically must be
+                                less than or equal to 23. An API may choose to allow
+                                the value "24:00:00" for scenarios like business closing
+                                time.
                               format: int32
                               type: integer
                             minutes:
-                              description: Minutes of hour of day. Must be from 0
-                                to 59.
+                              description: Minutes of an hour. Must be greater than
+                                or equal to 0 and less than or equal to 59.
                               format: int32
                               type: integer
                             nanos:
-                              description: Fractions of seconds in nanoseconds. Must
-                                be from 0 to 999,999,999.
+                              description: Fractions of seconds, in nanoseconds. Must
+                                be greater than or equal to 0 and less than or equal
+                                to 999,999,999.
                               format: int32
                               type: integer
                             seconds:
-                              description: Seconds of minutes of the time. Must normally
-                                be from 0 to 59. An API may allow the value 60 if
-                                it allows leap-seconds.
+                              description: Seconds of a minute. Must be greater than
+                                or equal to 0 and typically must be less than or equal
+                                to 59. An API may allow the value 60 if it allows
+                                leap-seconds.
                               format: int32
                               type: integer
                           type: object

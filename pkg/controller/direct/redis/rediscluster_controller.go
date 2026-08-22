@@ -297,6 +297,13 @@ func (a *redisClusterAdapter) Update(ctx context.Context, updateOp *directbase.U
 				Paths: []string{path},
 			}
 
+			// Update asyncClusterEndpointsDeletionEnabled via updating clusterEndpoints field
+			if path == "async_cluster_endpoints_deletion_enabled" {
+				req.UpdateMask = &fieldmaskpb.FieldMask{
+					Paths: []string{"cluster_endpoints"},
+				}
+			}
+
 			req.Cluster.Name = a.id.String()
 
 			log.V(0).Info("making redis UpdateCluster call", "request", req)

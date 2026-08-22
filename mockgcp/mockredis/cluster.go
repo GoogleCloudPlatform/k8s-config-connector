@@ -106,6 +106,8 @@ func (r *clusterServer) CreateCluster(ctx context.Context, req *pb.CreateCluster
 		retObj := proto.CloneOf(obj)
 		// pscConfigs is not included in the response
 		retObj.PscConfigs = nil
+		// asyncClusterEndpointsDeletionEnabled is not included in the response
+		retObj.AsyncClusterEndpointsDeletionEnabled = nil
 		return retObj, nil
 	})
 }
@@ -206,6 +208,11 @@ func (r *clusterServer) syncReplication(ctx context.Context, obj *pb.Cluster) er
 }
 
 func (s *clusterServer) populateDefaultsForCluster(ctx context.Context, name *clusterName, obj *pb.Cluster) error {
+	// default value "false" is not included in the response
+	if mocks.ValueOf(obj.AsyncClusterEndpointsDeletionEnabled) == false {
+		obj.AsyncClusterEndpointsDeletionEnabled = nil
+	}
+
 	if obj.AuthorizationMode == pb.AuthorizationMode_AUTH_MODE_UNSPECIFIED {
 		obj.AuthorizationMode = pb.AuthorizationMode_AUTH_MODE_DISABLED
 	}
@@ -436,6 +443,8 @@ func (r *clusterServer) UpdateCluster(ctx context.Context, req *pb.UpdateCluster
 			obj.MaintenancePolicy = req.Cluster.MaintenancePolicy
 		case "crossClusterReplicationConfig":
 			obj.CrossClusterReplicationConfig = req.Cluster.CrossClusterReplicationConfig
+		case "clusterEndpoints":
+			obj.ClusterEndpoints = req.Cluster.ClusterEndpoints
 
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not supported by mockgcp", path)
@@ -467,6 +476,8 @@ func (r *clusterServer) UpdateCluster(ctx context.Context, req *pb.UpdateCluster
 		retObj := proto.CloneOf(obj)
 		// pscConfigs is not included in the response
 		retObj.PscConfigs = nil
+		// asyncClusterEndpointsDeletionEnabled is not included in the response
+		retObj.AsyncClusterEndpointsDeletionEnabled = nil
 		return retObj, nil
 	})
 }

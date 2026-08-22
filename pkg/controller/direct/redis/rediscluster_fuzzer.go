@@ -60,6 +60,7 @@ func redisClusterFuzzer() fuzztesting.KRMFuzzer {
 	f.SpecFields.Insert(".maintenance_policy.weekly_maintenance_window")
 	f.SpecFields.Insert(".kms_key")
 	f.SpecFields.Insert(".cross_cluster_replication_config")
+	f.SpecFields.Insert(".async_cluster_endpoints_deletion_enabled")
 
 	f.StatusFields.Insert(".create_time")
 	f.StatusFields.Insert(".state")

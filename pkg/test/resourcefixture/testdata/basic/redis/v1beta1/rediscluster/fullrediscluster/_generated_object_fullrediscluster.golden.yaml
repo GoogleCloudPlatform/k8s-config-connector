@@ -10,6 +10,7 @@ metadata:
   name: rediscluster-${uniqueId}
   namespace: ${uniqueId}
 spec:
+  asyncClusterEndpointsDeletionEnabled: true
   authorizationMode: AUTH_MODE_IAM_AUTH
   automatedBackupConfig:
     automatedBackupMode: ENABLED

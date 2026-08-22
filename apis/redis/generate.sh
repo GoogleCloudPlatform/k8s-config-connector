@@ -29,20 +29,35 @@ if [[ -z "${CONTROLLERBUILDER}" ]]; then
 fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
-./generate-proto.sh
 
+# We need a newer googleapis to get Folder (required because of shared package/multiversion mappers)
+PROTO_SHA="9d6942ad413c2dabec4d211150d406cc46113b69"
+PROTO_OUT="${REPO_ROOT}/.build/googleapis-${PROTO_SHA}.pb"
+
+# Unset SKIP_GENERATE_PROTOS so this specific script fetches the newer proto
+OLD_SKIP_GENERATE_PROTOS="${SKIP_GENERATE_PROTOS:-}"
+unset SKIP_GENERATE_PROTOS
+
+./generate-proto.sh ${PROTO_SHA} ${PROTO_OUT}
+
+# Restore SKIP_GENERATE_PROTOS
+if [[ -n "${OLD_SKIP_GENERATE_PROTOS}" ]]; then
+  export SKIP_GENERATE_PROTOS="${OLD_SKIP_GENERATE_PROTOS}"
+fi
 
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.redis.cluster.v1,google.cloud.redis.v1 \
   --api-version redis.cnrm.cloud.google.com/v1beta1 \
   --include-skipped-output \
   --resource RedisCluster:Cluster \
-  --resource RedisInstance:Instance
+  --resource RedisInstance:Instance \
+  --proto-source-path ${PROTO_OUT}
 
 ${CONTROLLERBUILDER} generate-mapper \
   --service google.cloud.redis.cluster.v1,google.cloud.redis.v1 \
   --api-version redis.cnrm.cloud.google.com/v1beta1 \
-  --include-skipped-output
+  --include-skipped-output \
+  --proto-source-path ${PROTO_OUT}
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
