@@ -1,4 +1,4 @@
-# Copyright 2022 Google LLC
+# Copyright 2026 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,15 +12,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-resources:
-  - ../../../../base
-  - ../../../../components/mcl-controller
-  - ../../../../components/syncer-controller
-  - manager_bindings.yaml
-patchesJson6902:
-  - target:
-      group: rbac.authorization.k8s.io
-      version: v1
-      kind: ClusterRoleBinding
-      name: admin-binding
-    path: cnrm_admin_binding_manager_patch.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: multiclusterlease-controller-manager
+  namespace: cnrm-system
+  labels:
+    cnrm.cloud.google.com/component: mcl-controller
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mcl-controller
+  template:
+    metadata:
+      labels:
+        app: mcl-controller
+    spec:
+      containers:
+      - name: manager
+        image: mcl-controller:latest
+        imagePullPolicy: IfNotPresent
+        args:
+        - --gcs-bucket=mcl-lease-bucket
