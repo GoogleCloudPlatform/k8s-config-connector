@@ -1,5 +1,5 @@
 GET https://storage.googleapis.com/storage/v1/b/${projectId}-bucket-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -26,7 +26,7 @@ Vary: X-Origin
 
 POST https://storage.googleapis.com/storage/v1/b?alt=json&prettyPrint=false&project=${projectId}
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 {
   "iamConfiguration": {
@@ -92,7 +92,7 @@ Vary: X-Origin
 ---
 
 GET https://storage.googleapis.com/storage/v1/b/${projectId}-bucket-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -138,13 +138,101 @@ Vary: X-Origin
 
 ---
 
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "Unknown service account",
+        "reason": "notFound"
+      }
+    ],
+    "message": "Unknown service account",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "accountId": "sa-${uniqueId}",
+  "serviceAccount": {
+    "displayName": "NotebooksSchedule Test SA"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "NotebooksSchedule Test SA",
+  "email": "sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "NotebooksSchedule Test SA",
+  "email": "sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
 GRPC /google.cloud.notebooks.v1.NotebookService/GetSchedule
 
 {
-  "name": "projects/${projectId}/locations/us-central1/schedules/notebooksschedule-minimal-${uniqueId}"
+  "name": "projects/${projectId}/locations/us-central1/schedules/notebooksschedule-maximal-${uniqueId}"
 }
 
-error: rpc error: code = NotFound desc = schedule "projects/${projectId}/locations/us-central1/schedules/notebooksschedule-minimal-${uniqueId}" not found
+error: rpc error: code = NotFound desc = Resource 'projects/${projectId}/locations/us-central1/schedules/notebooksschedule-maximal-${uniqueId}' was not found
 
 {}
 
@@ -156,15 +244,35 @@ GRPC /google.cloud.notebooks.v1.NotebookService/CreateSchedule
   "parent": "projects/${projectId}/locations/us-central1",
   "schedule": {
     "cronSchedule": "0 0 * * WED",
+    "description": "A maximal NotebooksSchedule test fixture",
     "executionTemplate": {
+      "acceleratorConfig": {
+        "coreCount": "1",
+        "type": "NVIDIA_TESLA_T4"
+      },
       "containerImageUri": "gcr.io/deeplearning-platform-release/base-cpu",
       "inputNotebookFile": "gs://${projectId}-bucket-${uniqueId}/notebook.ipynb",
+      "jobType": "VERTEX_AI",
+      "kernelSpec": "python3",
+      "labels": {
+        "my-label": "my-value"
+      },
       "masterType": "n1-standard-4",
       "outputNotebookFolder": "gs://${projectId}-bucket-${uniqueId}/output",
-      "scaleTier": "CUSTOM"
-    }
+      "parameters": "key=value",
+      "paramsYamlFile": "gs://${projectId}-bucket-${uniqueId}/params.yaml",
+      "scaleTier": "CUSTOM",
+      "serviceAccount": "sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+      "vertexAiParameters": {
+        "env": {
+          "MY_VAR": "MY_VAL"
+        }
+      }
+    },
+    "state": "ENABLED",
+    "timeZone": "America/Los_Angeles"
   },
-  "scheduleId": "notebooksschedule-minimal-${uniqueId}"
+  "scheduleId": "notebooksschedule-maximal-${uniqueId}"
 }
 
 OK
@@ -174,7 +282,7 @@ OK
     "@type": "type.googleapis.com/google.cloud.notebooks.v1.OperationMetadata",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endpoint": "CreateSchedule",
-    "target": "projects/${projectId}/locations/us-central1/schedules/notebooksschedule-minimal-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-central1/schedules/notebooksschedule-maximal-${uniqueId}",
     "verb": "create"
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
@@ -197,7 +305,7 @@ OK
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
     "endpoint": "CreateSchedule",
-    "target": "projects/${projectId}/locations/us-central1/schedules/notebooksschedule-minimal-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-central1/schedules/notebooksschedule-maximal-${uniqueId}",
     "verb": "create"
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
@@ -205,14 +313,34 @@ OK
     "@type": "type.googleapis.com/google.cloud.notebooks.v1.Schedule",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "cronSchedule": "0 0 * * WED",
+    "displayName": "notebooksschedule-maximal-${uniqueId}",
     "executionTemplate": {
+      "acceleratorConfig": {
+        "coreCount": "1",
+        "type": "NVIDIA_TESLA_T4"
+      },
       "containerImageUri": "gcr.io/deeplearning-platform-release/base-cpu",
       "inputNotebookFile": "gs://${projectId}-bucket-${uniqueId}/notebook.ipynb",
+      "jobType": "VERTEX_AI",
+      "kernelSpec": "python3",
+      "labels": {
+        "my-label": "my-value"
+      },
       "masterType": "n1-standard-4",
       "outputNotebookFolder": "gs://${projectId}-bucket-${uniqueId}/output",
-      "scaleTier": "CUSTOM"
+      "parameters": "key=value",
+      "paramsYamlFile": "gs://${projectId}-bucket-${uniqueId}/params.yaml",
+      "scaleTier": "CUSTOM",
+      "serviceAccount": "sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+      "vertexAiParameters": {
+        "env": {
+          "MY_VAR": "MY_VAL"
+        }
+      }
     },
-    "name": "projects/${projectId}/locations/us-central1/schedules/notebooksschedule-minimal-${uniqueId}",
+    "name": "projects/${projectId}/locations/us-central1/schedules/notebooksschedule-maximal-${uniqueId}",
+    "state": "ENABLED",
+    "timeZone": "America/Los_Angeles",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
@@ -222,7 +350,7 @@ OK
 GRPC /google.cloud.notebooks.v1.NotebookService/GetSchedule
 
 {
-  "name": "projects/${projectId}/locations/us-central1/schedules/notebooksschedule-minimal-${uniqueId}"
+  "name": "projects/${projectId}/locations/us-central1/schedules/notebooksschedule-maximal-${uniqueId}"
 }
 
 OK
@@ -230,14 +358,34 @@ OK
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "cronSchedule": "0 0 * * WED",
+  "displayName": "notebooksschedule-maximal-${uniqueId}",
   "executionTemplate": {
+    "acceleratorConfig": {
+      "coreCount": "1",
+      "type": "NVIDIA_TESLA_T4"
+    },
     "containerImageUri": "gcr.io/deeplearning-platform-release/base-cpu",
     "inputNotebookFile": "gs://${projectId}-bucket-${uniqueId}/notebook.ipynb",
+    "jobType": "VERTEX_AI",
+    "kernelSpec": "python3",
+    "labels": {
+      "my-label": "my-value"
+    },
     "masterType": "n1-standard-4",
     "outputNotebookFolder": "gs://${projectId}-bucket-${uniqueId}/output",
-    "scaleTier": "CUSTOM"
+    "parameters": "key=value",
+    "paramsYamlFile": "gs://${projectId}-bucket-${uniqueId}/params.yaml",
+    "scaleTier": "CUSTOM",
+    "serviceAccount": "sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+    "vertexAiParameters": {
+      "env": {
+        "MY_VAR": "MY_VAL"
+      }
+    }
   },
-  "name": "projects/${projectId}/locations/us-central1/schedules/notebooksschedule-minimal-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/schedules/notebooksschedule-maximal-${uniqueId}",
+  "state": "ENABLED",
+  "timeZone": "America/Los_Angeles",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
@@ -246,7 +394,7 @@ OK
 GRPC /google.cloud.notebooks.v1.NotebookService/GetSchedule
 
 {
-  "name": "projects/${projectId}/locations/us-central1/schedules/notebooksschedule-minimal-${uniqueId}"
+  "name": "projects/${projectId}/locations/us-central1/schedules/notebooksschedule-maximal-${uniqueId}"
 }
 
 OK
@@ -254,14 +402,34 @@ OK
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "cronSchedule": "0 0 * * WED",
+  "displayName": "notebooksschedule-maximal-${uniqueId}",
   "executionTemplate": {
+    "acceleratorConfig": {
+      "coreCount": "1",
+      "type": "NVIDIA_TESLA_T4"
+    },
     "containerImageUri": "gcr.io/deeplearning-platform-release/base-cpu",
     "inputNotebookFile": "gs://${projectId}-bucket-${uniqueId}/notebook.ipynb",
+    "jobType": "VERTEX_AI",
+    "kernelSpec": "python3",
+    "labels": {
+      "my-label": "my-value"
+    },
     "masterType": "n1-standard-4",
     "outputNotebookFolder": "gs://${projectId}-bucket-${uniqueId}/output",
-    "scaleTier": "CUSTOM"
+    "parameters": "key=value",
+    "paramsYamlFile": "gs://${projectId}-bucket-${uniqueId}/params.yaml",
+    "scaleTier": "CUSTOM",
+    "serviceAccount": "sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+    "vertexAiParameters": {
+      "env": {
+        "MY_VAR": "MY_VAL"
+      }
+    }
   },
-  "name": "projects/${projectId}/locations/us-central1/schedules/notebooksschedule-minimal-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/schedules/notebooksschedule-maximal-${uniqueId}",
+  "state": "ENABLED",
+  "timeZone": "America/Los_Angeles",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
@@ -270,7 +438,7 @@ OK
 GRPC /google.cloud.notebooks.v1.NotebookService/DeleteSchedule
 
 {
-  "name": "projects/${projectId}/locations/us-central1/schedules/notebooksschedule-minimal-${uniqueId}"
+  "name": "projects/${projectId}/locations/us-central1/schedules/notebooksschedule-maximal-${uniqueId}"
 }
 
 OK
@@ -280,7 +448,7 @@ OK
     "@type": "type.googleapis.com/google.cloud.notebooks.v1.OperationMetadata",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endpoint": "DeleteSchedule",
-    "target": "projects/${projectId}/locations/us-central1/schedules/notebooksschedule-minimal-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-central1/schedules/notebooksschedule-maximal-${uniqueId}",
     "verb": "delete"
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
@@ -303,7 +471,7 @@ OK
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
     "endpoint": "DeleteSchedule",
-    "target": "projects/${projectId}/locations/us-central1/schedules/notebooksschedule-minimal-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-central1/schedules/notebooksschedule-maximal-${uniqueId}",
     "verb": "delete"
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
@@ -314,8 +482,50 @@ OK
 
 ---
 
+GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "NotebooksSchedule Test SA",
+  "email": "sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "etag": "abcdef0123A=",
+  "name": "projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+  "oauth2ClientId": "888888888888888888888",
+  "projectId": "${projectId}",
+  "uniqueId": "111111111111111111111"
+}
+
+---
+
+DELETE https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/sa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
 GET https://storage.googleapis.com/storage/v1/b/${projectId}-bucket-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -362,7 +572,7 @@ Vary: X-Origin
 ---
 
 GET https://storage.googleapis.com/storage/v1/b/${projectId}-bucket-${uniqueId}/o?alt=json&prettyPrint=false&versions=true
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -371,17 +581,13 @@ Vary: Origin
 Vary: X-Origin
 
 {
-  "kind": "storage#objects",
-  "prefixes": [
-    "testfolder",
-    "testmanagedfolder"
-  ]
+  "kind": "storage#objects"
 }
 
 ---
 
 DELETE https://storage.googleapis.com/storage/v1/b/${projectId}-bucket-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 204 No Content
 Content-Type: application/json

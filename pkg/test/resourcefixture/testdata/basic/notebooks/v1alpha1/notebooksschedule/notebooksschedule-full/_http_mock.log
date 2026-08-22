@@ -425,7 +425,6 @@ OK
 {
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.notebooks.v1.OperationMetadata",
-    "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endpoint": "CreateSchedule",
     "target": "projects/${projectId}/locations/us-central1/schedules/n-sch-full-${uniqueId}",
@@ -448,7 +447,6 @@ OK
   "done": true,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.notebooks.v1.OperationMetadata",
-    "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
     "endpoint": "CreateSchedule",
@@ -548,7 +546,6 @@ OK
 {
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.notebooks.v1.OperationMetadata",
-    "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endpoint": "DeleteSchedule",
     "target": "projects/${projectId}/locations/us-central1/schedules/n-sch-full-${uniqueId}",
@@ -571,7 +568,6 @@ OK
   "done": true,
   "metadata": {
     "@type": "type.googleapis.com/google.cloud.notebooks.v1.OperationMetadata",
-    "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
     "endpoint": "DeleteSchedule",

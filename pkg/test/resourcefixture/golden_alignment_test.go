@@ -56,6 +56,8 @@ var realGCPSkipFixtures = map[string]bool{
 	"tags/v1beta1/tagstagkey/tagkeyacquire":        true,
 	"tags/v1beta1/tagstagvalue/tagvalueacquire":    true,
 	"tags/v1beta1/tagstagkey/tagkeyprojectautogen": true,
+	// NotebooksSchedule-full real GCP run recorded repeated failed attempts with InvalidArgument due to invalid notebook URI, leading to mismatched call counts.
+	"notebooks/v1alpha1/notebooksschedule/notebooksschedule-full": true,
 }
 
 func TestGoldenLogAlignment(t *testing.T) {
