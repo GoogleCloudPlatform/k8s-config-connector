@@ -42,7 +42,7 @@ func (s *ContactCenterInsightsServer) GetQaScorecard(ctx context.Context, req *p
 	obj := &pb.QaScorecard{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+			return nil, status.Errorf(codes.NotFound, "No QaScorecardRevision found for (project %d, qa_scorecard_id %s, revision_id latest).", name.Project.Number, name.QaScorecard)
 		}
 		return nil, err
 	}

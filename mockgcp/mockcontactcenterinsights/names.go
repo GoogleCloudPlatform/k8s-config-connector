@@ -15,6 +15,7 @@
 package mockcontactcenterinsights
 
 import (
+	"strconv"
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
@@ -29,7 +30,7 @@ type qaScorecardName struct {
 }
 
 func (n *qaScorecardName) String() string {
-	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/qaScorecards/" + n.QaScorecard
+	return "projects/" + strconv.FormatInt(n.Project.Number, 10) + "/locations/" + n.Location + "/qaScorecards/" + n.QaScorecard
 }
 
 // parseQaScorecardName parses a string into a qaScorecardName.
@@ -38,7 +39,7 @@ func (s *MockService) parseQaScorecardName(name string) (*qaScorecardName, error
 	tokens := strings.Split(name, "/")
 
 	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "qaScorecards" {
-		project, err := s.Projects.GetProjectByID(tokens[1])
+		project, err := s.Projects.GetProjectByIDOrNumber(tokens[1])
 		if err != nil {
 			return nil, err
 		}
