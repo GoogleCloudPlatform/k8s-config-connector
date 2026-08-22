@@ -39,3 +39,15 @@
   - Moved the generated output `types.generated.go` to `siptrunk_types.generated.go` and restored `types.generated.go` for the other Dialogflow v2 resources.
   - Implemented the identity and external ref logic in `dialogflowsiptrunk_identity.go` with unit tests in `dialogflowsiptrunk_identity_test.go`.
 - **Impact**: Provides a correct scaffolding, CRD, identity, and reference setup for DialogflowSipTrunk, preparing the codebase for the subsequent adapter and reconciliation controller implementation steps.
+
+### [2026-08-09] Implementing Direct Controller, E2E fixtures, and Fuzzer for DialogflowGenerator
+- **Context**: Greenfield implementation of the reconciliation logic, fuzzer, and E2E fixtures for DialogflowGenerator (Issue #12272).
+- **Problem**:
+  1. No mapper existed for `google.cloud.dialogflow.v2` since only Dialogflow CX v3 and v2beta1 (SipTrunk) mappers were registered.
+  2. Dialogflow Generator's Create API requires the `Name` field in the request payload to be completely empty or unset, otherwise failing with a 400 Bad Request error.
+- **Solution**:
+  1. Updated `apis/dialogflow/generate.sh` to generate the mapper for `google.cloud.dialogflow.v2` in the package-isolated directory `pkg/controller/direct/dialogflow/generator` to avoid symbol collisions.
+  2. Implemented the direct controller (`dialogflowgenerator_controller.go`) which clones the desired spec and clears the `Name` field in `Create` before sending the `CreateGenerator` request.
+  3. Registered the model in `pkg/controller/direct/register/register.go` and `pkg/controller/resourceconfig/static_config.go`.
+  4. Implemented `dialogflowgenerator_fuzzer.go` with explicit top-level spec and status fields and unimplemented categorization.
+- **Impact**: DialogflowGenerator is now a fully functional direct controller, backed by 100% compliant fuzz tests and minimal/maximal E2E fixtures recorded and verified successfully against real GCP.

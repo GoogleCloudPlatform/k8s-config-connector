@@ -44,6 +44,10 @@ func (i *DialogflowGeneratorIdentity) String() string {
 	return DialogflowGeneratorIdentityFormat.ToString(*i)
 }
 
+func (i *DialogflowGeneratorIdentity) ParentString() string {
+	return fmt.Sprintf("projects/%s/locations/%s", i.Project, i.Location)
+}
+
 func (i *DialogflowGeneratorIdentity) FromExternal(ref string) error {
 	parsed, match, err := DialogflowGeneratorIdentityFormat.Parse(ref)
 	if err != nil {

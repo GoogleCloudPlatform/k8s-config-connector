@@ -1,0 +1,6 @@
+- caisURL: //dialogflow.googleapis.com/projects/${projectId}/locations/global/generators/dialogflowgenerator-minimal-${uniqueId}
+  group: dialogflow.cnrm.cloud.google.com
+  kind: DialogflowGenerator
+  name: dialogflowgenerator-minimal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
