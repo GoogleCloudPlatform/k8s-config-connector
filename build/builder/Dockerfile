@@ -36,12 +36,21 @@ COPY third_party/ third_party/
 COPY version/ version/
 COPY scripts/generate-third-party-licenses scripts/generate-third-party-licenses
 COPY scripts/resource-autogen scripts/resource-autogen
-
 # Build the binaries from source in parallel. Note: the "-s -w" flags strip the tables
 # needed for debuggers, but not the line numbers for panics, and -trimpath reduces binary size.
 RUN --mount=type=cache,target=/root/.cache/go-build \
     --mount=type=cache,target=/go/pkg/mod \
-    CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -trimpath -p 4 -ldflags "-s -w -buildid=" -o . \
+    CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -trimpath -p 4 -ldflags "-s -w -buildid=" -o linux_amd64/ \
+      github.com/GoogleCloudPlatform/k8s-config-connector/cmd/deletiondefender \
+      github.com/GoogleCloudPlatform/k8s-config-connector/cmd/webhook \
+      github.com/GoogleCloudPlatform/k8s-config-connector/cmd/recorder \
+      github.com/GoogleCloudPlatform/k8s-config-connector/cmd/unmanageddetector \
+      github.com/GoogleCloudPlatform/k8s-config-connector/cmd/manager \
+      github.com/GoogleCloudPlatform/k8s-config-connector/cmd/config-connector
+
+RUN --mount=type=cache,target=/root/.cache/go-build \
+    --mount=type=cache,target=/go/pkg/mod \
+    CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -trimpath -p 4 -ldflags "-s -w -buildid=" -o linux_arm64/ \
       github.com/GoogleCloudPlatform/k8s-config-connector/cmd/deletiondefender \
       github.com/GoogleCloudPlatform/k8s-config-connector/cmd/webhook \
       github.com/GoogleCloudPlatform/k8s-config-connector/cmd/recorder \
@@ -51,3 +60,10 @@ RUN --mount=type=cache,target=/root/.cache/go-build \
 
 RUN --mount=type=cache,target=/go/pkg/mod \
     go run scripts/generate-third-party-licenses/main.go
+
+FROM scratch AS artifacts
+COPY --from=builder /go/src/github.com/GoogleCloudPlatform/k8s-config-connector/linux_amd64 /go/src/github.com/GoogleCloudPlatform/k8s-config-connector/linux_amd64
+COPY --from=builder /go/src/github.com/GoogleCloudPlatform/k8s-config-connector/linux_arm64 /go/src/github.com/GoogleCloudPlatform/k8s-config-connector/linux_arm64
+COPY --from=builder /go/src/github.com/GoogleCloudPlatform/k8s-config-connector/THIRD_PARTY_NOTICES /go/src/github.com/GoogleCloudPlatform/k8s-config-connector/THIRD_PARTY_NOTICES
+COPY --from=builder /go/src/github.com/GoogleCloudPlatform/k8s-config-connector/MIRRORED_LIBRARY_SOURCE /go/src/github.com/GoogleCloudPlatform/k8s-config-connector/MIRRORED_LIBRARY_SOURCE
+
