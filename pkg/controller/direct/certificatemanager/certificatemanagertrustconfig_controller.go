@@ -212,7 +212,9 @@ func (a *TrustConfigAdapter) updateStatus(ctx context.Context, op directbase.Ope
 
 	status := &krmcertificatemanagerv1alpha1.CertificateManagerTrustConfigStatus{}
 	status.ObservedState = observedState
-	status.ExternalRef = direct.LazyPtr(latest.GetName())
+	if latest != nil {
+		status.ExternalRef = direct.LazyPtr(latest.GetName())
+	}
 
 	return op.UpdateStatus(ctx, status, nil)
 }
