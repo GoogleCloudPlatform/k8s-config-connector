@@ -3656,6 +3656,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - parallelstore.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - parametermanager.cnrm.cloud.google.com
   resources:
   - '*'
@@ -5347,6 +5359,14 @@ rules:
   - watch
 - apiGroups:
   - oslogin.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - parallelstore.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
