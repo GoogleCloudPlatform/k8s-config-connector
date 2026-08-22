@@ -51,3 +51,18 @@ This skill guides the implementation of the `Adapter` interface
     
 ## Journaling
 Append any reconciliation alignment issues to `.gemini/journals/<service>.md` using the format described in the `kcc-agentic-journaler` skill.
+
+## GCP Labels Handling for Migrated Resources (Brownfield)
+
+To maintain backward compatibility during brownfield migrations, standard GCP labels must be mapped to/from Kubernetes `metadata.labels`. The `labels` field must not be present in `spec`.
+
+Follow this template:
+
+1. **Remove labels from Spec**: In `apis/<service>/<version>/<resource>_types.go`, ensure that `Labels` is not in `MyResourceSpec`. Comment it out if present and run `dev/tasks/generate-crds`.
+2. **Configure Fuzzer**: In `pkg/controller/direct/<service>/<resource>_fuzzer.go`, call `f.Unimplemented_LabelsAnnotations(".labels")`.
+3. **Map Labels in Controller**: In `pkg/controller/direct/<service>/<resource>_controller.go`, use the `github.com/GoogleCloudPlatform/k8s-config-connector/pkg/label` package to set the labels:
+   ```go
+   desiredProto.Labels = label.NewGCPLabelsFromK8sLabels(u.GetLabels())
+   ```
+4. **Create Labels Test Fixture**: In `pkg/test/resourcefixture/testdata/basic/<service>/<version>/<kind>/<resource_lowercase>-labels/`, define a dedicated test case that modifies `metadata.labels` between `create.yaml` and `update.yaml`.
+
