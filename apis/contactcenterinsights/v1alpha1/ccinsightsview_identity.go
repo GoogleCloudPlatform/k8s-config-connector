@@ -44,6 +44,10 @@ func (i *CCInsightsViewIdentity) String() string {
 	return CCInsightsViewIdentityFormat.ToString(*i)
 }
 
+func (i *CCInsightsViewIdentity) ParentString() string {
+	return "projects/" + i.Project + "/locations/" + i.Location
+}
+
 func (i *CCInsightsViewIdentity) FromExternal(ref string) error {
 	parsed, match, err := CCInsightsViewIdentityFormat.Parse(ref)
 	if err != nil {
@@ -61,7 +65,7 @@ func (i *CCInsightsViewIdentity) Host() string {
 	return CCInsightsViewIdentityFormat.Host()
 }
 
-func getIdentityFromCCInsightsViewSpec(ctx context.Context, reader client.Reader, obj client.Object) (*CCInsightsViewIdentity, error) {
+func getIdentityFromCCInsightsViewSpec(ctx context.Context, reader client.Reader, obj *CCInsightsView) (*CCInsightsViewIdentity, error) {
 	resourceID, err := refs.GetResourceID(obj)
 	if err != nil {
 		return nil, fmt.Errorf("cannot resolve resource ID: %w", err)
