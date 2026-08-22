@@ -23,6 +23,12 @@ import (
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
+	if !strings.Contains(url, "contentwarehouse.googleapis.com") {
+		return
+	}
+	replacements.TransformObject(".error", func(m map[string]any) {
+		delete(m, "errors")
+	})
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
