@@ -124,14 +124,14 @@ spec:
                   - external
                 properties:
                   external:
-                    description: The network selflink of form "projects/{{project}}/global/networks/{{name}}",
-                      when not managed by Config Connector.
+                    description: A reference to an externally managed ComputeNetwork
+                      resource. Should be in the format "projects/{{projectID}}/global/networks/{{networkID}}".
                     type: string
                   name:
-                    description: The `name` field of a `ComputeNetwork` resource.
+                    description: The name of a ComputeNetwork resource.
                     type: string
                   namespace:
-                    description: The `namespace` field of a `ComputeNetwork` resource.
+                    description: The namespace of a ComputeNetwork resource.
                     type: string
                 type: object
               projectRef:

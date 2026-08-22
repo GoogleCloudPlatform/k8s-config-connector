@@ -21,6 +21,7 @@ import (
 	"strings"
 	"time"
 
+	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networksecurity/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -276,7 +277,7 @@ func (a *firewallEndpointAssociationAdapter) Export(ctx context.Context) (*unstr
 		return nil, mapCtx.Err()
 	}
 
-	spec.NetworkRef = &krm.NetworkRef{External: association.Network}
+	spec.NetworkRef = &computerefs.ComputeNetworkRef{External: association.Network}
 	spec.FirewallEndpointRef = &krm.FirewallEndpointRef{External: association.FirewallEndpoint}
 	if association.TlsInspectionPolicy != "" {
 		spec.TLSInspectionPolicyRef = &krm.TLSInspectionPolicyRef{External: association.TlsInspectionPolicy}
