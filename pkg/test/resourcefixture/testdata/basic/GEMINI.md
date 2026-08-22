@@ -46,6 +46,17 @@ hack/record-gcp pkg/test/resourcefixture/testdata/basic/storage/v1beta1/storageb
 hack/compare-mock pkg/test/resourcefixture/testdata/basic/storage/v1beta1/storagebucket/storagebucketbasic
 ```
 
+> **Important Note on Regex Substring Collisions:**
+> The `hack/record-gcp` and `hack/compare-mock` scripts leverage `go test -run` beneath the hood, which splits paths by forward slashes (`/`) and executes substring regex matches for each segment sequentially.
+> 
+> If you are running fixtures that share substring terminology with other distinct resources (e.g., `container` and `containercluster` vs. `edgecontainer` and `edgecontainercluster`), the test runner may accidentally launch the wrong test suites in parallel, leading to extremely long timeouts and transient API quota errors.
+> 
+> To prevent unintentional test executions when dealing with colliding directories, wrap the specific components with standard regex anchors (`^` and `$`) and enclose the execution in single quotes:
+> ```bash
+> # Safe execution explicitly anchoring 'container' and 'containercluster'
+> hack/record-gcp 'pkg/test/resourcefixture/testdata/basic/^container$/v1beta1/^containercluster$/containercluster-datacache'
+> ```
+
 ### Manual Usage
 
 ```bash
