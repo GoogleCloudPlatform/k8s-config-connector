@@ -273,7 +273,7 @@ func compareTrustConfig(ctx context.Context, actual, desired *pb.TrustConfig) (*
 	maskedActual.Name = desired.Name
 	maskedActual.Labels = actual.Labels
 
-	clonedDesired := proto.Clone(desired).(*pb.TrustConfig)
+	clonedDesired := proto.CloneOf(desired)
 
 	normalizeTrustConfigSlices(maskedActual)
 	normalizeTrustConfigSlices(clonedDesired)
