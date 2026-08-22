@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -128,7 +128,7 @@ type DeploymentresourcepoolDedicatedResources struct {
 
 type DeploymentresourcepoolEncryptionSpec struct {
 	/* Required. The Cloud KMS resource identifier of the customer managed encryption key used to protect a resource. The key needs to be in the same region as where the compute resource is created. */
-	KmsKeyRef v1alpha1.ResourceRef `json:"kmsKeyRef"`
+	KmsKeyRef k8sv1alpha1.ResourceRef `json:"kmsKeyRef"`
 }
 
 type DeploymentresourcepoolFlexStart struct {
@@ -223,7 +223,7 @@ type VertexAIDeploymentResourcePoolSpec struct {
 	Location string `json:"location"`
 
 	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* The VertexAIDeploymentResourcePool name. If not given, the metadata.name will be used. */
 	// +optional
@@ -231,7 +231,7 @@ type VertexAIDeploymentResourcePoolSpec struct {
 
 	/* The service account that the DeploymentResourcePool's container(s) run as. */
 	// +optional
-	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+	ServiceAccountRef *k8sv1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 }
 
 type DeploymentresourcepoolObservedStateStatus struct {
@@ -251,7 +251,7 @@ type DeploymentresourcepoolObservedStateStatus struct {
 type VertexAIDeploymentResourcePoolStatus struct {
 	/* Conditions represent the latest available observations of the
 	   VertexAIDeploymentResourcePool's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the VertexAIDeploymentResourcePool resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

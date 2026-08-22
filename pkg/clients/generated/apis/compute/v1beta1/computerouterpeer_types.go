@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -176,19 +176,19 @@ type ComputeRouterPeerSpec struct {
 	the same region as this Cloud Router. The VM instance is the peer
 	side of the BGP session. */
 	// +optional
-	RouterApplianceInstanceRef *v1alpha1.ResourceRef `json:"routerApplianceInstanceRef,omitempty"`
+	RouterApplianceInstanceRef *k8sv1alpha1.ResourceRef `json:"routerApplianceInstanceRef,omitempty"`
 
 	/* The interface the BGP peer is associated with. */
-	RouterInterfaceRef v1alpha1.ResourceRef `json:"routerInterfaceRef"`
+	RouterInterfaceRef k8sv1alpha1.ResourceRef `json:"routerInterfaceRef"`
 
 	/* The Cloud Router in which this BGP peer will be configured. */
-	RouterRef v1alpha1.ResourceRef `json:"routerRef"`
+	RouterRef k8sv1alpha1.ResourceRef `json:"routerRef"`
 }
 
 type ComputeRouterPeerStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeRouterPeer's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* The resource that configures and manages this BGP peer.
 
 	* 'MANAGED_BY_USER' is the default value and can be managed by

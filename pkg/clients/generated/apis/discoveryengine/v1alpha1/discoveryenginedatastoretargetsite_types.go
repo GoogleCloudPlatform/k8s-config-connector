@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -41,7 +41,7 @@ var _ = apiextensionsv1.JSON{}
 type DiscoveryEngineDataStoreTargetSiteSpec struct {
 	/* The DataStore this target site should be part of. */
 	// +optional
-	DataStoreRef *v1alpha1.ResourceRef `json:"dataStoreRef,omitempty"`
+	DataStoreRef *k8sv1alpha1.ResourceRef `json:"dataStoreRef,omitempty"`
 
 	/* Input only. If set to false, a uri_pattern is generated to include all pages whose address contains the provided_uri_pattern. If set to true, an uri_pattern is generated to try to be an exact match of the provided_uri_pattern or just the specific page if the provided_uri_pattern is a specific one. provided_uri_pattern is always normalized to generate the URI pattern to be used by the search engine. */
 	// +optional
@@ -107,7 +107,7 @@ type DatastoretargetsiteSiteVerificationInfoStatus struct {
 type DiscoveryEngineDataStoreTargetSiteStatus struct {
 	/* Conditions represent the latest available observations of the
 	   DiscoveryEngineDataStoreTargetSite's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the DiscoveryEngineDataStoreTargetSite resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

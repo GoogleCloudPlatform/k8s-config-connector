@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -45,7 +45,7 @@ type VertexaipipelinejobDnsPeeringConfigs struct {
 
 	/* Required. The VPC network name in the target_project where the DNS zone specified by 'domain' is visible. */
 	// +optional
-	TargetNetworkRef *v1alpha1.ResourceRef `json:"targetNetworkRef,omitempty"`
+	TargetNetworkRef *k8sv1alpha1.ResourceRef `json:"targetNetworkRef,omitempty"`
 
 	/* Required. The project ID hosting the Cloud DNS managed zone that contains the 'domain'. */
 	// +optional
@@ -55,7 +55,7 @@ type VertexaipipelinejobDnsPeeringConfigs struct {
 type VertexaipipelinejobEncryptionSpec struct {
 	/* Required. The Cloud KMS resource identifier of the customer managed encryption key used to protect a resource. Has the form: `projects/my-project/locations/my-region/keyRings/my-kr/cryptoKeys/my-key`. The key needs to be in the same region as where the compute resource is created. */
 	// +optional
-	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+	KmsKeyRef *k8sv1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 }
 
 type VertexaipipelinejobPscInterfaceConfig struct {
@@ -65,7 +65,7 @@ type VertexaipipelinejobPscInterfaceConfig struct {
 
 	/* Optional. The name of the Compute Engine network attachment to attach to the resource within the region and user project. */
 	// +optional
-	NetworkAttachmentRef *v1alpha1.ResourceRef `json:"networkAttachmentRef,omitempty"`
+	NetworkAttachmentRef *k8sv1alpha1.ResourceRef `json:"networkAttachmentRef,omitempty"`
 }
 
 type VertexaipipelinejobRuntimeConfig struct {
@@ -96,7 +96,7 @@ type VertexAIPipelineJobSpec struct {
 
 	/* Reference to a ComputeNetwork. */
 	// +optional
-	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+	NetworkRef *k8sv1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
 	/* The spec of the pipeline. */
 	// +optional
@@ -107,7 +107,7 @@ type VertexAIPipelineJobSpec struct {
 	PreflightValidations *bool `json:"preflightValidations,omitempty"`
 
 	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Optional. Configuration for PSC-I for PipelineJob. */
 	// +optional
@@ -127,7 +127,7 @@ type VertexAIPipelineJobSpec struct {
 
 	/* The service account that the pipeline workload runs as. */
 	// +optional
-	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+	ServiceAccountRef *k8sv1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 
 	/* A template uri from where the PipelineJob.pipeline_spec, if empty, will be downloaded. */
 	// +optional
@@ -449,7 +449,7 @@ type VertexaipipelinejobTemplateMetadataStatus struct {
 type VertexAIPipelineJobStatus struct {
 	/* Conditions represent the latest available observations of the
 	   VertexAIPipelineJob's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the VertexAIPipelineJob resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -57,7 +57,7 @@ type NetworkManagementVPCFlowLogsConfigSpec struct {
 
 	/* Traffic will be logged from the Interconnect Attachment. */
 	// +optional
-	InterconnectAttachmentRef *v1alpha1.ResourceRef `json:"interconnectAttachmentRef,omitempty"`
+	InterconnectAttachmentRef *k8sv1alpha1.ResourceRef `json:"interconnectAttachmentRef,omitempty"`
 
 	/* Optional. Resource labels to represent user-provided metadata. */
 	// +optional
@@ -75,7 +75,7 @@ type NetworkManagementVPCFlowLogsConfigSpec struct {
 	MetadataFields []string `json:"metadataFields,omitempty"`
 
 	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* The NetworkManagementVPCFlowLogsConfig name. If not given, the metadata.name will be used. */
 	// +optional
@@ -87,7 +87,7 @@ type NetworkManagementVPCFlowLogsConfigSpec struct {
 
 	/* Traffic will be logged from the VPN Tunnel. */
 	// +optional
-	VpnTunnelRef *v1alpha1.ResourceRef `json:"vpnTunnelRef,omitempty"`
+	VpnTunnelRef *k8sv1alpha1.ResourceRef `json:"vpnTunnelRef,omitempty"`
 }
 
 type VpcflowlogsconfigObservedStateStatus struct {
@@ -107,7 +107,7 @@ type VpcflowlogsconfigObservedStateStatus struct {
 type NetworkManagementVPCFlowLogsConfigStatus struct {
 	/* Conditions represent the latest available observations of the
 	   NetworkManagementVPCFlowLogsConfig's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the NetworkManagementVPCFlowLogsConfig resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

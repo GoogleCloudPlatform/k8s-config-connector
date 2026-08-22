@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -41,13 +41,13 @@ var _ = apiextensionsv1.JSON{}
 type DatascanBigqueryExport struct {
 	/* Optional. The BigQuery table to export DataQualityScan results to. Format: //bigquery.googleapis.com/projects/PROJECT_ID/datasets/DATASET_ID/tables/TABLE_ID or projects/PROJECT_ID/datasets/DATASET_ID/tables/TABLE_ID */
 	// +optional
-	ResultsTableRef *v1alpha1.ResourceRef `json:"resultsTableRef,omitempty"`
+	ResultsTableRef *k8sv1alpha1.ResourceRef `json:"resultsTableRef,omitempty"`
 }
 
 type DatascanBigqueryPublishingConfig struct {
 	/* Optional. The BigQuery connection used to create BigLake tables. Must be in the form `projects/{project_id}/locations/{location_id}/connections/{connection_id}` */
 	// +optional
-	ConnectionRef *v1alpha1.ResourceRef `json:"connectionRef,omitempty"`
+	ConnectionRef *k8sv1alpha1.ResourceRef `json:"connectionRef,omitempty"`
 
 	/* Optional. Determines whether to  publish discovered tables as BigLake external tables or non-BigLake external tables. */
 	// +optional
@@ -79,7 +79,7 @@ type DatascanCsvOptions struct {
 type DatascanData struct {
 	/* Immutable. The Dataplex entity that represents the data source (e.g. BigQuery table) for DataScan, of the form: `projects/{project_number}/locations/{location_id}/lakes/{lake_id}/zones/{zone_id}/entities/{entity_id}`. */
 	// +optional
-	EntityRef *v1alpha1.ResourceRef `json:"entityRef,omitempty"`
+	EntityRef *k8sv1alpha1.ResourceRef `json:"entityRef,omitempty"`
 
 	/* Immutable. The service-qualified full resource name of the cloud resource for a DataScan job to scan against. The field could be: BigQuery table of type "TABLE" for DataProfileScan/DataQualityScan Format: //bigquery.googleapis.com/projects/PROJECT_ID/datasets/DATASET_ID/tables/TABLE_ID */
 	// +optional
@@ -532,7 +532,7 @@ type DataplexDataScanSpec struct {
 	Location string `json:"location"`
 
 	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* The DataplexDataScan name. If not given, the metadata.name will be used. */
 	// +optional
@@ -857,7 +857,7 @@ type DatascanTopNValuesStatus struct {
 type DataplexDataScanStatus struct {
 	/* Conditions represent the latest available observations of the
 	   DataplexDataScan's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the DataplexDataScan resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -75,7 +75,7 @@ type DiscoveryEngineSampleQuerySpec struct {
 	Location string `json:"location"`
 
 	/* Immutable. The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Required. The content of the sample query. */
 	QueryEntry SamplequeryQueryEntry `json:"queryEntry"`
@@ -85,7 +85,7 @@ type DiscoveryEngineSampleQuerySpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	/* Immutable. The DiscoveryEngineSampleQuerySet that this resource belongs to. */
-	SampleQuerySetRef v1alpha1.ResourceRef `json:"sampleQuerySetRef"`
+	SampleQuerySetRef k8sv1alpha1.ResourceRef `json:"sampleQuerySetRef"`
 }
 
 type SamplequeryObservedStateStatus struct {
@@ -97,7 +97,7 @@ type SamplequeryObservedStateStatus struct {
 type DiscoveryEngineSampleQueryStatus struct {
 	/* Conditions represent the latest available observations of the
 	   DiscoveryEngineSampleQuery's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the DiscoveryEngineSampleQuery resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

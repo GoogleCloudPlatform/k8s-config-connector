@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -122,7 +122,7 @@ type InstanceCloneSource struct {
 
 	/* The source SQLInstance to clone */
 	// +optional
-	SqlInstanceRef *v1alpha1.ResourceRef `json:"sqlInstanceRef,omitempty"`
+	SqlInstanceRef *k8sv1alpha1.ResourceRef `json:"sqlInstanceRef,omitempty"`
 }
 
 type InstanceDataCacheConfig struct {
@@ -190,7 +190,7 @@ type InstanceIpConfiguration struct {
 
 	/* ComputeNetworkRef is a reference to a GCP ComputeNetwork. */
 	// +optional
-	PrivateNetworkRef *v1alpha1.ResourceRef `json:"privateNetworkRef,omitempty"`
+	PrivateNetworkRef *k8sv1alpha1.ResourceRef `json:"privateNetworkRef,omitempty"`
 
 	/* PSC settings for a Cloud SQL instance. */
 	// +optional
@@ -326,7 +326,7 @@ type InstanceReplicaConfiguration struct {
 type InstanceReplicationCluster struct {
 	/* Optional. If the instance is a primary instance, then this field identifies the disaster recovery (DR) replica. A DR replica is an optional configuration for Enterprise Plus edition instances. If the instance is a read replica, then the field is not set. Set this field to a replica name to designate a DR replica for a primary instance. Remove the replica name to remove the DR replica designation. */
 	// +optional
-	FailoverDrReplicaRef *v1alpha1.ResourceRef `json:"failoverDrReplicaRef,omitempty"`
+	FailoverDrReplicaRef *k8sv1alpha1.ResourceRef `json:"failoverDrReplicaRef,omitempty"`
 }
 
 type InstanceRootPassword struct {
@@ -446,7 +446,7 @@ type InstanceSettings struct {
 type InstanceSqlServerAuditConfig struct {
 	/* The name of the destination bucket (e.g., gs://mybucket). */
 	// +optional
-	BucketRef *v1alpha1.ResourceRef `json:"bucketRef,omitempty"`
+	BucketRef *k8sv1alpha1.ResourceRef `json:"bucketRef,omitempty"`
 
 	/* How long to keep generated audit files. A duration in seconds with up to nine fractional digits, terminated by 's'. Example: "3.5s".. */
 	// +optional
@@ -460,7 +460,7 @@ type InstanceSqlServerAuditConfig struct {
 type InstanceValueFrom struct {
 	/* Reference to a value with the given key in the given Secret in the resource's namespace. */
 	// +optional
-	SecretKeyRef *v1alpha1.SecretKeyRef `json:"secretKeyRef,omitempty"`
+	SecretKeyRef *k8sv1alpha1.SecretKeyRef `json:"secretKeyRef,omitempty"`
 }
 
 type SQLInstanceSpec struct {
@@ -473,7 +473,7 @@ type SQLInstanceSpec struct {
 	DatabaseVersion *string `json:"databaseVersion,omitempty"`
 
 	// +optional
-	EncryptionKMSCryptoKeyRef *v1alpha1.ResourceRef `json:"encryptionKMSCryptoKeyRef,omitempty"`
+	EncryptionKMSCryptoKeyRef *k8sv1alpha1.ResourceRef `json:"encryptionKMSCryptoKeyRef,omitempty"`
 
 	/* The type of the instance. The valid values are:- 'SQL_INSTANCE_TYPE_UNSPECIFIED', 'CLOUD_SQL_INSTANCE', 'ON_PREMISES_INSTANCE' and 'READ_REPLICA_INSTANCE'. */
 	// +optional
@@ -484,7 +484,7 @@ type SQLInstanceSpec struct {
 	MaintenanceVersion *string `json:"maintenanceVersion,omitempty"`
 
 	// +optional
-	MasterInstanceRef *v1alpha1.ResourceRef `json:"masterInstanceRef,omitempty"`
+	MasterInstanceRef *k8sv1alpha1.ResourceRef `json:"masterInstanceRef,omitempty"`
 
 	/* Immutable. The region the instance will sit in. Note, Cloud SQL is not available in all regions. A valid region must be provided to use this resource. If a region is not provided in the resource definition, the provider region will be used instead, but this will be an apply-time error for instances if the provider region is not supported with Cloud SQL. If you choose not to provide the region argument for this resource, make sure you understand this. */
 	// +optional
@@ -562,7 +562,7 @@ type InstanceServerCaCertStatus struct {
 type SQLInstanceStatus struct {
 	/* Conditions represent the latest available observations of the
 	   SQLInstance's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* Available Maintenance versions. */
 	// +optional
 	AvailableMaintenanceVersions []string `json:"availableMaintenanceVersions,omitempty"`

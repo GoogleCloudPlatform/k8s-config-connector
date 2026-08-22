@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -98,7 +98,7 @@ type ComputeNetworkAttachmentSpec struct {
 	ProducerRejectLists []NetworkattachmentProducerRejectLists `json:"producerRejectLists,omitempty"`
 
 	/* The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* The ComputeNetworkAttachment name. If not given, the metadata.name will be used. */
 	// +optional
@@ -106,7 +106,7 @@ type ComputeNetworkAttachmentSpec struct {
 
 	/* An array of URLs where each entry is the URL of a subnet provided by the service consumer to use for endpoints in the producers that connect to this network attachment. */
 	// +optional
-	SubnetworkRefs []v1alpha1.ResourceRef `json:"subnetworkRefs,omitempty"`
+	SubnetworkRefs []k8sv1alpha1.ResourceRef `json:"subnetworkRefs,omitempty"`
 }
 
 type NetworkattachmentConnectionEndpointsStatus struct {
@@ -176,7 +176,7 @@ type NetworkattachmentObservedStateStatus struct {
 type ComputeNetworkAttachmentStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeNetworkAttachment's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the ComputeNetworkAttachment resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

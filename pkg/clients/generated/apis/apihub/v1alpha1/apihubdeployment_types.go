@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -46,7 +46,7 @@ type DeploymentDocumentation struct {
 
 type APIHubDeploymentSpec struct {
 	/* Required. The type of deployment. This maps to the following system defined attribute: `projects/{project}/locations/{location}/attributes/system-deployment-type` attribute. The number of values for this attribute will be based on the cardinality of the attribute. The same can be retrieved via GetAttribute API. All values should be from the list of allowed values defined for the attribute. */
-	DeploymentTypeRef v1alpha1.ResourceRef `json:"deploymentTypeRef"`
+	DeploymentTypeRef k8sv1alpha1.ResourceRef `json:"deploymentTypeRef"`
 
 	/* Optional. The description of the deployment. */
 	// +optional
@@ -64,13 +64,13 @@ type APIHubDeploymentSpec struct {
 
 	/* Optional. The environment mapping to this deployment. This maps to the following system defined attribute: `projects/{project}/locations/{location}/attributes/system-environment` attribute. The number of values for this attribute will be based on the cardinality of the attribute. The same can be retrieved via GetAttribute API. All values should be from the list of allowed values defined for the attribute. */
 	// +optional
-	EnvironmentRef *v1alpha1.ResourceRef `json:"environmentRef,omitempty"`
+	EnvironmentRef *k8sv1alpha1.ResourceRef `json:"environmentRef,omitempty"`
 
 	/* The location of this resource. */
 	Location string `json:"location"`
 
 	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* The APIHubDeployment name. If not given, the metadata.name will be used. */
 	// +optional
@@ -81,7 +81,7 @@ type APIHubDeploymentSpec struct {
 
 	/* Optional. The SLO for this deployment. This maps to the following system defined attribute: `projects/{project}/locations/{location}/attributes/system-slo` attribute. The number of values for this attribute will be based on the cardinality of the attribute. The same can be retrieved via GetAttribute API. All values should be from the list of allowed values defined for the attribute. */
 	// +optional
-	SloRef *v1alpha1.ResourceRef `json:"sloRef,omitempty"`
+	SloRef *k8sv1alpha1.ResourceRef `json:"sloRef,omitempty"`
 }
 
 type DeploymentObservedStateStatus struct {
@@ -101,7 +101,7 @@ type DeploymentObservedStateStatus struct {
 type APIHubDeploymentStatus struct {
 	/* Conditions represent the latest available observations of the
 	   APIHubDeployment's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the APIHubDeployment resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

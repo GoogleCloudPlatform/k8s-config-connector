@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -69,14 +69,14 @@ type JobCopy struct {
 
 type JobDefaultDataset struct {
 	/* A reference to the dataset. */
-	DatasetRef v1alpha1.ResourceRef `json:"datasetRef"`
+	DatasetRef k8sv1alpha1.ResourceRef `json:"datasetRef"`
 }
 
 type JobDestinationEncryptionConfiguration struct {
 	/* Describes the Cloud KMS encryption key that will be used to protect
 	destination BigQuery table. The BigQuery Service Account associated
 	with your project requires access to this encryption key. */
-	KmsKeyRef v1alpha1.ResourceRef `json:"kmsKeyRef"`
+	KmsKeyRef k8sv1alpha1.ResourceRef `json:"kmsKeyRef"`
 
 	/* Describes the Cloud KMS encryption key version used to protect destination BigQuery table. */
 	// +optional
@@ -85,7 +85,7 @@ type JobDestinationEncryptionConfiguration struct {
 
 type JobDestinationTable struct {
 	/* A reference to the table. */
-	TableRef v1alpha1.ResourceRef `json:"tableRef"`
+	TableRef k8sv1alpha1.ResourceRef `json:"tableRef"`
 }
 
 type JobExtract struct {
@@ -380,12 +380,12 @@ type JobScriptOptions struct {
 
 type JobSourceTable struct {
 	/* A reference to the table. */
-	TableRef v1alpha1.ResourceRef `json:"tableRef"`
+	TableRef k8sv1alpha1.ResourceRef `json:"tableRef"`
 }
 
 type JobSourceTables struct {
 	/* A reference to the table. */
-	TableRef v1alpha1.ResourceRef `json:"tableRef"`
+	TableRef k8sv1alpha1.ResourceRef `json:"tableRef"`
 }
 
 type JobTimePartitioning struct {
@@ -492,7 +492,7 @@ type JobStatusStatus struct {
 type BigQueryJobStatus struct {
 	/* Conditions represent the latest available observations of the
 	   BigQueryJob's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* The type of the job. */
 	// +optional
 	JobType *string `json:"jobType,omitempty"`

@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -46,7 +46,7 @@ type MetadatastoreDataplexConfig struct {
 
 type MetadatastoreEncryptionSpec struct {
 	/* Required. The Cloud KMS resource identifier of the customer managed encryption key used to protect a resource. The key needs to be in the same region as where the compute resource is created. */
-	KmsKeyRef v1alpha1.ResourceRef `json:"kmsKeyRef"`
+	KmsKeyRef k8sv1alpha1.ResourceRef `json:"kmsKeyRef"`
 }
 
 type VertexAIMetadataStoreSpec struct {
@@ -64,7 +64,7 @@ type VertexAIMetadataStoreSpec struct {
 
 	/* The project that this resource belongs to. */
 	// +optional
-	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+	ProjectRef *k8sv1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
 	/* The region of the Metadata Store. eg us-central1. */
 	// +optional
@@ -102,7 +102,7 @@ type MetadatastoreStateStatus struct {
 type VertexAIMetadataStoreStatus struct {
 	/* Conditions represent the latest available observations of the
 	   VertexAIMetadataStore's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the VertexAIMetadataStore resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

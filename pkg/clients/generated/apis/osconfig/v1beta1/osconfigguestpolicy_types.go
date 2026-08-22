@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -119,7 +119,7 @@ type GuestpolicyAssignment struct {
 	Only supported for project-level policies and must reference instances
 	within this project. */
 	// +optional
-	Instances []v1alpha1.ResourceRef `json:"instances,omitempty"`
+	Instances []k8sv1alpha1.ResourceRef `json:"instances,omitempty"`
 
 	/* Targets VM instances matching at least one of the following OS types.
 
@@ -194,7 +194,7 @@ type GuestpolicyFileExec struct {
 type GuestpolicyGcs struct {
 	/* Bucket of the Google Cloud Storage object. Given an example URL: `https://storage.googleapis.com/my-bucket/foo/bar#1234567` this value would be `my-bucket`. */
 	// +optional
-	BucketRef *v1alpha1.ResourceRef `json:"bucketRef,omitempty"`
+	BucketRef *k8sv1alpha1.ResourceRef `json:"bucketRef,omitempty"`
 
 	/* Must be provided if allow_insecure is false. Generation number of the Google Cloud Storage object. `https://storage.googleapis.com/my-bucket/foo/bar#1234567` this value would be `1234567`. */
 	// +optional
@@ -488,7 +488,7 @@ type OSConfigGuestPolicySpec struct {
 type OSConfigGuestPolicyStatus struct {
 	/* Conditions represent the latest available observations of the
 	   OSConfigGuestPolicy's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* Output only. Time this GuestPolicy was created. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`

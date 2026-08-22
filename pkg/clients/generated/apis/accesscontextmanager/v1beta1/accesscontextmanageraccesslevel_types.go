@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -70,7 +70,7 @@ type AccesslevelConditions struct {
 
 	/* A list of other access levels defined in the same `Policy`, referenced by resource name. Referencing an `AccessLevel` which does not exist is an error. All access levels listed must be granted for the Condition to be true. Example: "`accessPolicies/MY_POLICY/accessLevels/LEVEL_NAME"` */
 	// +optional
-	RequiredAccessLevels []v1alpha1.ResourceRef `json:"requiredAccessLevels,omitempty"`
+	RequiredAccessLevels []k8sv1alpha1.ResourceRef `json:"requiredAccessLevels,omitempty"`
 }
 
 type AccesslevelCustom struct {
@@ -123,7 +123,7 @@ type AccesslevelExpr struct {
 
 type AccesslevelMembers struct {
 	// +optional
-	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+	ServiceAccountRef *k8sv1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 
 	// +optional
 	User *string `json:"user,omitempty"`
@@ -144,7 +144,7 @@ type AccesslevelOsConstraints struct {
 
 type AccessContextManagerAccessLevelSpec struct {
 	/* The AccessPolicy that this resource belongs to. */
-	AccessPolicyRef v1alpha1.ResourceRef `json:"accessPolicyRef"`
+	AccessPolicyRef k8sv1alpha1.ResourceRef `json:"accessPolicyRef"`
 
 	/* A `BasicLevel` composed of `Conditions`. */
 	// +optional
@@ -173,7 +173,7 @@ type AccesslevelObservedStateStatus struct {
 type AccessContextManagerAccessLevelStatus struct {
 	/* Conditions represent the latest available observations of the
 	   AccessContextManagerAccessLevel's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the AccessContextManagerAccessLevel resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

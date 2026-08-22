@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -55,7 +55,7 @@ type EventarcGoogleAPISourceSpec struct {
 	It must match the pattern
 	`projects/-*-/locations/-*-/keyRings/-*-/cryptoKeys/-*`. */
 	// +optional
-	CryptoKeyRef *v1alpha1.ResourceRef `json:"cryptoKeyRef,omitempty"`
+	CryptoKeyRef *k8sv1alpha1.ResourceRef `json:"cryptoKeyRef,omitempty"`
 
 	/* Optional. Resource display name. */
 	// +optional
@@ -73,10 +73,10 @@ type EventarcGoogleAPISourceSpec struct {
 	LoggingConfig *GoogleapisourceLoggingConfig `json:"loggingConfig,omitempty"`
 
 	/* Required. Destination is the message bus that the GoogleApiSource is delivering to. It must be point to the full resource name of a MessageBus. Format: "projects/{PROJECT_ID}/locations/{region}/messagesBuses/{MESSAGE_BUS_ID) */
-	MessageBusRef v1alpha1.ResourceRef `json:"messageBusRef"`
+	MessageBusRef k8sv1alpha1.ResourceRef `json:"messageBusRef"`
 
 	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* The EventarcGoogleAPISource name. If not given, the metadata.name will be used. */
 	// +optional
@@ -104,7 +104,7 @@ type GoogleapisourceObservedStateStatus struct {
 type EventarcGoogleAPISourceStatus struct {
 	/* Conditions represent the latest available observations of the
 	   EventarcGoogleAPISource's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the EventarcGoogleAPISource resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

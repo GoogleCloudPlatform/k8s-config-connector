@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -82,7 +82,7 @@ type ApiApiTechnicalRequirements struct {
 
 type ApiAttributeRefs struct {
 	/* Reference to the attribute. */
-	AttributeRef v1alpha1.ResourceRef `json:"attributeRef"`
+	AttributeRef k8sv1alpha1.ResourceRef `json:"attributeRef"`
 
 	/* The value of the attribute. */
 	Values ApiValues `json:"values"`
@@ -160,7 +160,7 @@ type APIHubAPISpec struct {
 
 	/* Optional. The style of the API. This maps to the following system defined attribute: `projects/{project}/locations/{location}/attributes/system-api-style` */
 	// +optional
-	ApiStyleRef *v1alpha1.ResourceRef `json:"apiStyleRef,omitempty"`
+	ApiStyleRef *k8sv1alpha1.ResourceRef `json:"apiStyleRef,omitempty"`
 
 	/* Optional. The API technical requirements of the API. */
 	// +optional
@@ -172,7 +172,7 @@ type APIHubAPISpec struct {
 
 	/* Optional. The business unit owning the API. This maps to the following system defined attribute: `projects/{project}/locations/{location}/attributes/system-business-unit` */
 	// +optional
-	BusinessUnitRef *v1alpha1.ResourceRef `json:"businessUnitRef,omitempty"`
+	BusinessUnitRef *k8sv1alpha1.ResourceRef `json:"businessUnitRef,omitempty"`
 
 	/* Optional. The description of the API resource. */
 	// +optional
@@ -194,14 +194,14 @@ type APIHubAPISpec struct {
 
 	/* Optional. The maturity level of the API. This maps to the following system defined attribute: `projects/{project}/locations/{location}/attributes/system-maturity-level` */
 	// +optional
-	MaturityLevelRef *v1alpha1.ResourceRef `json:"maturityLevelRef,omitempty"`
+	MaturityLevelRef *k8sv1alpha1.ResourceRef `json:"maturityLevelRef,omitempty"`
 
 	/* Optional. Owner details for the API resource. */
 	// +optional
 	Owner *ApiOwner `json:"owner,omitempty"`
 
 	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* The APIHubAPI name. If not given, the metadata.name will be used. */
 	// +optional
@@ -209,15 +209,15 @@ type APIHubAPISpec struct {
 
 	/* Optional. The selected version for an API resource. This can be used when special handling is needed on client side for particular version of the API. Format is `projects/{project}/locations/{location}/apis/{api}/versions/{version}` */
 	// +optional
-	SelectedVersionRef *v1alpha1.ResourceRef `json:"selectedVersionRef,omitempty"`
+	SelectedVersionRef *k8sv1alpha1.ResourceRef `json:"selectedVersionRef,omitempty"`
 
 	/* Optional. The target users for the API. This maps to the following system defined attribute: `projects/{project}/locations/{location}/attributes/system-target-user` */
 	// +optional
-	TargetUserRef *v1alpha1.ResourceRef `json:"targetUserRef,omitempty"`
+	TargetUserRef *k8sv1alpha1.ResourceRef `json:"targetUserRef,omitempty"`
 
 	/* Optional. The team owning the API. This maps to the following system defined attribute: `projects/{project}/locations/{location}/attributes/system-team` */
 	// +optional
-	TeamRef *v1alpha1.ResourceRef `json:"teamRef,omitempty"`
+	TeamRef *k8sv1alpha1.ResourceRef `json:"teamRef,omitempty"`
 }
 
 type ApiObservedStateStatus struct {
@@ -259,7 +259,7 @@ type ApiSourceMetadataStatus struct {
 type APIHubAPIStatus struct {
 	/* Conditions represent the latest available observations of the
 	   APIHubAPI's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the APIHubAPI resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

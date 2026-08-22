@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -45,7 +45,7 @@ type PrivateconnectionVpcPeeringConfig struct {
 
 	/* Required. Fully qualified name of the VPC that Database Migration Service will peer to. */
 	// +optional
-	VpcNameRef *v1alpha1.ResourceRef `json:"vpcNameRef,omitempty"`
+	VpcNameRef *k8sv1alpha1.ResourceRef `json:"vpcNameRef,omitempty"`
 }
 
 type CloudDMSPrivateConnectionSpec struct {
@@ -67,7 +67,7 @@ type CloudDMSPrivateConnectionSpec struct {
 
 	/* Required. The host project of the application. */
 	// +optional
-	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+	ProjectRef *k8sv1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
 	/* The CloudDMSPrivateConnection name. If not given, the metadata.name will be used. */
 	// +optional
@@ -109,7 +109,7 @@ type PrivateconnectionObservedStateStatus struct {
 type CloudDMSPrivateConnectionStatus struct {
 	/* Conditions represent the latest available observations of the
 	   CloudDMSPrivateConnection's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the CloudDMSPrivateConnection resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

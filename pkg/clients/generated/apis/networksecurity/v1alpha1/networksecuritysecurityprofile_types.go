@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -51,13 +51,13 @@ type SecurityprofileAntivirusOverrides struct {
 type SecurityprofileCustomInterceptProfile struct {
 	/* Required. The target InterceptEndpointGroup. When a firewall rule with this security profile attached matches a packet, the packet will be intercepted to the location-local target in this group. */
 	// +optional
-	InterceptEndpointGroupRef *v1alpha1.ResourceRef `json:"interceptEndpointGroupRef,omitempty"`
+	InterceptEndpointGroupRef *k8sv1alpha1.ResourceRef `json:"interceptEndpointGroupRef,omitempty"`
 }
 
 type SecurityprofileCustomMirroringProfile struct {
 	/* Required. Immutable. The target MirroringEndpointGroup. When a mirroring rule with this security profile attached matches a packet, a replica will be mirrored to the location-local target in this group. */
 	// +optional
-	MirroringEndpointGroupRef *v1alpha1.ResourceRef `json:"mirroringEndpointGroupRef,omitempty"`
+	MirroringEndpointGroupRef *k8sv1alpha1.ResourceRef `json:"mirroringEndpointGroupRef,omitempty"`
 }
 
 type SecurityprofileSeverityOverrides struct {
@@ -135,7 +135,7 @@ type NetworkSecuritySecurityProfileSpec struct {
 	Location string `json:"location"`
 
 	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* The NetworkSecuritySecurityProfile name. If not given, the metadata.name will be used. */
 	// +optional
@@ -187,7 +187,7 @@ type SecurityprofileThreatPreventionProfileStatus struct {
 type NetworkSecuritySecurityProfileStatus struct {
 	/* Conditions represent the latest available observations of the
 	   NetworkSecuritySecurityProfile's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the NetworkSecuritySecurityProfile resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

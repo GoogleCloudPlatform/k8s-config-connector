@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -134,13 +134,13 @@ type ComputeNetworkFirewallPolicyRuleSpec struct {
 	EnableLogging *bool `json:"enableLogging,omitempty"`
 
 	/* The firewall policy of the resource. */
-	FirewallPolicyRef v1alpha1.ResourceRef `json:"firewallPolicyRef"`
+	FirewallPolicyRef k8sv1alpha1.ResourceRef `json:"firewallPolicyRef"`
 
 	/* A match condition that incoming traffic is evaluated against. If it evaluates to true, the corresponding 'action' is enforced. */
 	Match NetworkfirewallpolicyruleMatch `json:"match"`
 
 	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Immutable. Optional. The priority of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
@@ -155,13 +155,13 @@ type ComputeNetworkFirewallPolicyRuleSpec struct {
 	TargetSecureTags []NetworkfirewallpolicyruleTargetSecureTags `json:"targetSecureTags,omitempty"`
 
 	// +optional
-	TargetServiceAccountRefs []v1alpha1.ResourceRef `json:"targetServiceAccountRefs,omitempty"`
+	TargetServiceAccountRefs []k8sv1alpha1.ResourceRef `json:"targetServiceAccountRefs,omitempty"`
 }
 
 type ComputeNetworkFirewallPolicyRuleStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeNetworkFirewallPolicyRule's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* Type of the resource. Always `compute#firewallPolicyRule` for firewall policy rules. */
 	// +optional
 	Kind *string `json:"kind,omitempty"`

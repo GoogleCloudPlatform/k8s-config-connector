@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -70,7 +70,7 @@ type VMwareEngineNetworkPolicySpec struct {
 	Location string `json:"location"`
 
 	/* The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* The VMwareEngineNetworkPolicy name. If not given, the metadata.name will be used. */
 	// +optional
@@ -78,7 +78,7 @@ type VMwareEngineNetworkPolicySpec struct {
 
 	/* Optional. The relative resource name of the VMware Engine network. */
 	// +optional
-	VmwareEngineNetworkRef *v1alpha1.ResourceRef `json:"vmwareEngineNetworkRef,omitempty"`
+	VmwareEngineNetworkRef *k8sv1alpha1.ResourceRef `json:"vmwareEngineNetworkRef,omitempty"`
 }
 
 type NetworkpolicyExternalIPStatus struct {
@@ -122,7 +122,7 @@ type NetworkpolicyObservedStateStatus struct {
 type VMwareEngineNetworkPolicyStatus struct {
 	/* Conditions represent the latest available observations of the
 	   VMwareEngineNetworkPolicy's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the VMwareEngineNetworkPolicy resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

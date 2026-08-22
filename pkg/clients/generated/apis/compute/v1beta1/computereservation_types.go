@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -74,7 +74,7 @@ type ReservationLocalSsds struct {
 
 type ReservationProjectMap struct {
 	/* The resource reference that defaults to Project if Kind is not specified. */
-	KeyRef v1alpha1.ResourceRef `json:"keyRef"`
+	KeyRef k8sv1alpha1.ResourceRef `json:"keyRef"`
 
 	// +optional
 	Value *ReservationValue `json:"value,omitempty"`
@@ -105,7 +105,7 @@ type ReservationSpecificReservation struct {
 type ReservationValue struct {
 	/* The project ID, should be same as the key of this project config in the parent map. */
 	// +optional
-	ProjectIDRef *v1alpha1.ResourceRef `json:"projectIDRef,omitempty"`
+	ProjectIDRef *k8sv1alpha1.ResourceRef `json:"projectIDRef,omitempty"`
 }
 
 type ComputeReservationSpec struct {
@@ -135,7 +135,7 @@ type ComputeReservationSpec struct {
 type ComputeReservationStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeReservation's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* Full or partial URL to a parent commitment. This field displays for reservations that are tied to a commitment. */
 	// +optional
 	Commitment *string `json:"commitment,omitempty"`

@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -62,13 +62,13 @@ type SecureSourceManagerRepositorySpec struct {
 	InitialConfig *RepositoryInitialConfig `json:"initialConfig,omitempty"`
 
 	/* The name of the instance in which the repository is hosted, formatted as `projects/{project_number}/locations/{location_id}/instances/{instance_id}` */
-	InstanceRef v1alpha1.ResourceRef `json:"instanceRef"`
+	InstanceRef k8sv1alpha1.ResourceRef `json:"instanceRef"`
 
 	/* Immutable. Location of the instance. */
 	Location string `json:"location"`
 
 	/* Immutable. The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* The SecureSourceManagerRepository name. If not given, the metadata.name will be used. */
 	// +optional
@@ -114,7 +114,7 @@ type RepositoryUrisStatus struct {
 type SecureSourceManagerRepositoryStatus struct {
 	/* Conditions represent the latest available observations of the
 	   SecureSourceManagerRepository's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the SecureSourceManagerRepository resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

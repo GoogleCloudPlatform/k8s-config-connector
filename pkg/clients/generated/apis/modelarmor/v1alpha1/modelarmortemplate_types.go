@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -51,7 +51,7 @@ type TemplateAdvancedConfig struct {
 	e.g.
 	`projects/{project}/locations/{location}/deidentifyTemplates/{deidentify_template}` */
 	// +optional
-	DeidentifyTemplateRef *v1alpha1.ResourceRef `json:"deidentifyTemplateRef,omitempty"`
+	DeidentifyTemplateRef *k8sv1alpha1.ResourceRef `json:"deidentifyTemplateRef,omitempty"`
 
 	/* Optional. Sensitive Data Protection inspect template resource name
 
@@ -63,7 +63,7 @@ type TemplateAdvancedConfig struct {
 	e.g.
 	`projects/{project}/locations/{location}/inspectTemplates/{inspect_template}` */
 	// +optional
-	InspectTemplateRef *v1alpha1.ResourceRef `json:"inspectTemplateRef,omitempty"`
+	InspectTemplateRef *k8sv1alpha1.ResourceRef `json:"inspectTemplateRef,omitempty"`
 }
 
 type TemplateBasicConfig struct {
@@ -185,7 +185,7 @@ type ModelArmorTemplateSpec struct {
 	Location string `json:"location"`
 
 	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* The ModelArmorTemplate name. If not given, the metadata.name will be used. */
 	// +optional
@@ -209,7 +209,7 @@ type TemplateObservedStateStatus struct {
 type ModelArmorTemplateStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ModelArmorTemplate's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the ModelArmorTemplate resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

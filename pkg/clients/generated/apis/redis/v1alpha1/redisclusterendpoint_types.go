@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -52,7 +52,7 @@ type ClusterendpointConnections struct {
 
 type ClusterendpointPscConnection struct {
 	/* Required. The URI of the consumer side forwarding rule. Example: projects/{projectNumOrId}/regions/us-east1/forwardingRules/{resourceId}. */
-	ForwardingRuleRef v1alpha1.ResourceRef `json:"forwardingRuleRef"`
+	ForwardingRuleRef k8sv1alpha1.ResourceRef `json:"forwardingRuleRef"`
 }
 
 type RedisClusterEndpointSpec struct {
@@ -61,7 +61,7 @@ type RedisClusterEndpointSpec struct {
 	ClusterEndpoints []ClusterendpointClusterEndpoints `json:"clusterEndpoints,omitempty"`
 
 	/* Required. The RedisCluster reference of the endpoint. */
-	ClusterRef v1alpha1.ResourceRef `json:"clusterRef"`
+	ClusterRef k8sv1alpha1.ResourceRef `json:"clusterRef"`
 
 	/* Optional. The RedisClusterEndpoint name. If not given, the metadata.name will be used. */
 	// +optional
@@ -99,7 +99,7 @@ type ClusterendpointPscConnectionStatus struct {
 type RedisClusterEndpointStatus struct {
 	/* Conditions represent the latest available observations of the
 	   RedisClusterEndpoint's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the RedisClusterEndpoint resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

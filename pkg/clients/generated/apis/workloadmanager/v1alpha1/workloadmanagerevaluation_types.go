@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -75,15 +75,15 @@ type EvaluationResourceFilter struct {
 type EvaluationScopeRefs struct {
 	/* A folder to scope the evaluation to. */
 	// +optional
-	FolderRef *v1alpha1.ResourceRef `json:"folderRef,omitempty"`
+	FolderRef *k8sv1alpha1.ResourceRef `json:"folderRef,omitempty"`
 
 	/* An organization to scope the evaluation to. */
 	// +optional
-	OrganizationRef *v1alpha1.ResourceRef `json:"organizationRef,omitempty"`
+	OrganizationRef *k8sv1alpha1.ResourceRef `json:"organizationRef,omitempty"`
 
 	/* A project to scope the evaluation to. */
 	// +optional
-	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+	ProjectRef *k8sv1alpha1.ResourceRef `json:"projectRef,omitempty"`
 }
 
 type WorkloadManagerEvaluationSpec struct {
@@ -105,7 +105,7 @@ type WorkloadManagerEvaluationSpec struct {
 
 	/* Optional. Immutable. Customer-managed encryption key name. */
 	// +optional
-	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+	KmsKeyRef *k8sv1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 
 	/* Labels as key value pairs. */
 	// +optional
@@ -115,7 +115,7 @@ type WorkloadManagerEvaluationSpec struct {
 	Location string `json:"location"`
 
 	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Resource filter for an evaluation defining the scope of resources to be evaluated. */
 	// +optional
@@ -157,7 +157,7 @@ type EvaluationResourceStatusStatus struct {
 type WorkloadManagerEvaluationStatus struct {
 	/* Conditions represent the latest available observations of the
 	   WorkloadManagerEvaluation's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the WorkloadManagerEvaluation resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -44,7 +44,7 @@ type NetworkSecurityFirewallEndpointAssociationSpec struct {
 	Disabled *bool `json:"disabled,omitempty"`
 
 	/* Required. The URL of the FirewallEndpoint that is being associated. */
-	FirewallEndpointRef v1alpha1.ResourceRef `json:"firewallEndpointRef"`
+	FirewallEndpointRef k8sv1alpha1.ResourceRef `json:"firewallEndpointRef"`
 
 	/* Optional. Labels as key value pairs */
 	// +optional
@@ -54,10 +54,10 @@ type NetworkSecurityFirewallEndpointAssociationSpec struct {
 	Location string `json:"location"`
 
 	/* Required. The URL of the network that is being associated. */
-	NetworkRef v1alpha1.ResourceRef `json:"networkRef"`
+	NetworkRef k8sv1alpha1.ResourceRef `json:"networkRef"`
 
 	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* The NetworkSecurityFirewallEndpointAssociation name. If not given, the metadata.name will be used. */
 	// +optional
@@ -65,7 +65,7 @@ type NetworkSecurityFirewallEndpointAssociationSpec struct {
 
 	/* Optional. The URL of the TlsInspectionPolicy that is being associated. */
 	// +optional
-	TlsInspectionPolicyRef *v1alpha1.ResourceRef `json:"tlsInspectionPolicyRef,omitempty"`
+	TlsInspectionPolicyRef *k8sv1alpha1.ResourceRef `json:"tlsInspectionPolicyRef,omitempty"`
 }
 
 type FirewallendpointassociationObservedStateStatus struct {
@@ -89,7 +89,7 @@ type FirewallendpointassociationObservedStateStatus struct {
 type NetworkSecurityFirewallEndpointAssociationStatus struct {
 	/* Conditions represent the latest available observations of the
 	   NetworkSecurityFirewallEndpointAssociation's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the NetworkSecurityFirewallEndpointAssociation resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -45,7 +45,7 @@ type DatasetconfigCloudStorageBuckets struct {
 
 	/* Optional. Reference to a StorageBucket. */
 	// +optional
-	BucketRef *v1alpha1.ResourceRef `json:"bucketRef,omitempty"`
+	BucketRef *k8sv1alpha1.ResourceRef `json:"bucketRef,omitempty"`
 }
 
 type DatasetconfigExcludeCloudStorageBuckets struct {
@@ -102,7 +102,7 @@ type StorageInsightsDatasetConfigSpec struct {
 	- Folder identifier, formatted as `folders/{folder_number}`, for example,
 	`folders/9876543210`. */
 	// +optional
-	CloudStorageObjectRef *v1alpha1.ResourceRef `json:"cloudStorageObjectRef,omitempty"`
+	CloudStorageObjectRef *k8sv1alpha1.ResourceRef `json:"cloudStorageObjectRef,omitempty"`
 
 	/* Optional. A user-provided description for the dataset configuration. Maximum length: 256 characters. */
 	// +optional
@@ -148,7 +148,7 @@ type StorageInsightsDatasetConfigSpec struct {
 	OrganizationScope *bool `json:"organizationScope,omitempty"`
 
 	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* The StorageInsightsDatasetConfig name. If not given, the metadata.name will be used. */
 	// +optional
@@ -230,7 +230,7 @@ type DatasetconfigStatusStatus struct {
 type StorageInsightsDatasetConfigStatus struct {
 	/* Conditions represent the latest available observations of the
 	   StorageInsightsDatasetConfig's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the StorageInsightsDatasetConfig resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

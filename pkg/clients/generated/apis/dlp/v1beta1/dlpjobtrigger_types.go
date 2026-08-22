@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -342,7 +342,7 @@ type JobtriggerInspectJob struct {
 	InspectConfig *JobtriggerInspectConfig `json:"inspectConfig,omitempty"`
 
 	// +optional
-	InspectTemplateRef *v1alpha1.ResourceRef `json:"inspectTemplateRef,omitempty"`
+	InspectTemplateRef *k8sv1alpha1.ResourceRef `json:"inspectTemplateRef,omitempty"`
 
 	/* The data to scan. */
 	StorageConfig JobtriggerStorageConfig `json:"storageConfig"`
@@ -414,7 +414,7 @@ type JobtriggerPartitionId struct {
 	NamespaceId *string `json:"namespaceId,omitempty"`
 
 	// +optional
-	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+	ProjectRef *k8sv1alpha1.ResourceRef `json:"projectRef,omitempty"`
 }
 
 type JobtriggerProximity struct {
@@ -429,7 +429,7 @@ type JobtriggerProximity struct {
 
 type JobtriggerPubSub struct {
 	// +optional
-	TopicRef *v1alpha1.ResourceRef `json:"topicRef,omitempty"`
+	TopicRef *k8sv1alpha1.ResourceRef `json:"topicRef,omitempty"`
 }
 
 type JobtriggerPublishFindingsToCloudDataCatalog struct {
@@ -452,7 +452,7 @@ type JobtriggerRegex struct {
 }
 
 type JobtriggerRegexFileSet struct {
-	BucketRef v1alpha1.ResourceRef `json:"bucketRef"`
+	BucketRef k8sv1alpha1.ResourceRef `json:"bucketRef"`
 
 	/* A list of regular expressions matching file paths to exclude. All files in the bucket that match at least one of these regular expressions will be excluded from the scan. Regular expressions use RE2 [syntax](https://github.com/google/re2/wiki/Syntax); a guide can be found under the google/re2 repository on GitHub. */
 	// +optional
@@ -521,7 +521,7 @@ type JobtriggerStoredType struct {
 	CreateTime *string `json:"createTime,omitempty"`
 
 	// +optional
-	NameRef *v1alpha1.ResourceRef `json:"nameRef,omitempty"`
+	NameRef *k8sv1alpha1.ResourceRef `json:"nameRef,omitempty"`
 }
 
 type JobtriggerSurrogateType struct {
@@ -529,13 +529,13 @@ type JobtriggerSurrogateType struct {
 
 type JobtriggerTable struct {
 	// +optional
-	DatasetRef *v1alpha1.ResourceRef `json:"datasetRef,omitempty"`
+	DatasetRef *k8sv1alpha1.ResourceRef `json:"datasetRef,omitempty"`
 
 	// +optional
-	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+	ProjectRef *k8sv1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
 	// +optional
-	TableRef *v1alpha1.ResourceRef `json:"tableRef,omitempty"`
+	TableRef *k8sv1alpha1.ResourceRef `json:"tableRef,omitempty"`
 }
 
 type JobtriggerTableOptions struct {
@@ -546,13 +546,13 @@ type JobtriggerTableOptions struct {
 
 type JobtriggerTableReference struct {
 	// +optional
-	DatasetRef *v1alpha1.ResourceRef `json:"datasetRef,omitempty"`
+	DatasetRef *k8sv1alpha1.ResourceRef `json:"datasetRef,omitempty"`
 
 	// +optional
-	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+	ProjectRef *k8sv1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
 	// +optional
-	TableRef *v1alpha1.ResourceRef `json:"tableRef,omitempty"`
+	TableRef *k8sv1alpha1.ResourceRef `json:"tableRef,omitempty"`
 }
 
 type JobtriggerTimespanConfig struct {
@@ -612,7 +612,7 @@ type DLPJobTriggerSpec struct {
 	Location *string `json:"location,omitempty"`
 
 	/* Immutable. The Project that this resource belongs to. Only one of [projectRef] may be specified. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Immutable. Optional. The service-generated name of the resource. Used for acquisition only. Leave unset to create a new resource. */
 	// +optional
@@ -648,7 +648,7 @@ type JobtriggerErrorsStatus struct {
 type DLPJobTriggerStatus struct {
 	/* Conditions represent the latest available observations of the
 	   DLPJobTrigger's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* Output only. The creation timestamp of a triggeredJob. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`

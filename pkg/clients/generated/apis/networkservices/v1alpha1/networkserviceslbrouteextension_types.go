@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -68,7 +68,7 @@ type LbrouteextensionExtensions struct {
 	or
 	`https://www.googleapis.com/compute/v1/projects/{project}/global/backendServices/{backendService}`. */
 	// +optional
-	BackendServiceRef *v1alpha1.ResourceRef `json:"backendServiceRef,omitempty"`
+	BackendServiceRef *k8sv1alpha1.ResourceRef `json:"backendServiceRef,omitempty"`
 
 	/* Optional. Determines how the proxy behaves if the call to the extension
 	fails or times out.
@@ -162,7 +162,7 @@ type LbrouteextensionExtensions struct {
 	Note: Only the `external` subfield is supported as the
 	`NetworkServicesWasmPlugin` resource is not yet supported in Config Connector. */
 	// +optional
-	WasmPluginRef *v1alpha1.ResourceRef `json:"wasmPluginRef,omitempty"`
+	WasmPluginRef *k8sv1alpha1.ResourceRef `json:"wasmPluginRef,omitempty"`
 }
 
 type LbrouteextensionMatchCondition struct {
@@ -183,7 +183,7 @@ type NetworkServicesLBRouteExtensionSpec struct {
 	ExtensionChains []LbrouteextensionExtensionChains `json:"extensionChains"`
 
 	/* Required. A list of references to the forwarding rules to which this service extension is attached. At least one forwarding rule is required. Only one LBRouteExtension resource can be associated with a forwarding rule. */
-	ForwardingRuleRefs []v1alpha1.ResourceRef `json:"forwardingRuleRefs"`
+	ForwardingRuleRefs []k8sv1alpha1.ResourceRef `json:"forwardingRuleRefs"`
 
 	/* Required. All backend services and forwarding rules referenced by this extension must share the same load balancing scheme. Supported values: INTERNAL_MANAGED, EXTERNAL_MANAGED. */
 	LoadBalancingScheme string `json:"loadBalancingScheme"`
@@ -196,7 +196,7 @@ type NetworkServicesLBRouteExtensionSpec struct {
 	Metadata apiextensionsv1.JSON `json:"metadata,omitempty"`
 
 	/* The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* The NetworkServicesLBRouteExtension name. If not given, the metadata.name will be used. */
 	// +optional
@@ -216,7 +216,7 @@ type LbrouteextensionObservedStateStatus struct {
 type NetworkServicesLBRouteExtensionStatus struct {
 	/* Conditions represent the latest available observations of the
 	   NetworkServicesLBRouteExtension's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the NetworkServicesLBRouteExtension resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
