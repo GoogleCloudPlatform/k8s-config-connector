@@ -428,7 +428,7 @@ spec:
                               additionalProperties:
                                 type: string
                               description: |-
-                                Only `memory` and `cpu` keys in the map are supported.
+                                Only `memory`, `cpu` and `nvidia.com/gpu` keys in the map are supported.
 
                                  <p>Notes:
                                   * The only supported values for CPU are '1', '2', '4', and '8'. Setting 4
@@ -436,6 +436,7 @@ spec:
                                  https://cloud.google.com/run/docs/configuring/cpu.
                                    * For supported 'memory' values and syntax, go to
                                   https://cloud.google.com/run/docs/configuring/memory-limits
+                                  * The only supported 'nvidia.com/gpu' value is '1'.
                               type: object
                             startupCPUBoost:
                               description: Determines whether CPU should be boosted
@@ -555,6 +556,11 @@ spec:
                               name:
                                 description: Required. This must match the Name of
                                   a Volume.
+                                type: string
+                              subPath:
+                                description: Optional. Path within the volume from
+                                  which the container's volume should be mounted.
+                                  Defaults to "" (volume's root).
                                 type: string
                             type: object
                           type: array

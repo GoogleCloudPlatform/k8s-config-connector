@@ -270,6 +270,9 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		// OSConfig
 		"//osconfig.googleapis.com/projects/{}/guestPolicies/{}": true,
 
+		// Cloud Run
+		"//run.googleapis.com/projects/{}/locations/{}/instances/{}": true,
+
 		// Privileged Access Manager
 		"//privilegedaccessmanager.googleapis.com/folders/{}/locations/{}/entitlements/{}":       true,
 		"//privilegedaccessmanager.googleapis.com/organizations/{}/locations/{}/entitlements/{}": true,
