@@ -26,10 +26,9 @@ spec:
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
-    message: 'Update call failed: error updating: ComputeAddress is immutable and
-      cannot be updated'
-    reason: UpdateFailed
-    status: "False"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
     type: Ready
   creationTimestamp: "1970-01-01T00:00:00Z"
   labelFingerprint: abcdef0123A=
