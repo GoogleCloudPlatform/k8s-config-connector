@@ -1,7 +1,7 @@
 {
   "accessapproval": "AccessApproval",
   "accesscontextmanager": "AccessContextManager",
-  "aiplatform": "VertexAI",
+  "aiplatform": "AIPlatform",
   "analyticshub": "BigQueryAnalyticsHub",
   "artifactregistry": "ArtifactRegistry",
   "asset": "CloudAsset",

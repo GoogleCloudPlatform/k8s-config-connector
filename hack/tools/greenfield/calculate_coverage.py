@@ -108,20 +108,16 @@ def get_gcp_resources(googleapis_dir):
 
 def get_kcc_resources(kcc_dir):
     resources = []
-    crd_dir = os.path.join(kcc_dir, "config/crds/resources")
-    if not os.path.exists(crd_dir):
-        return []
-    for file in os.listdir(crd_dir):
-        if file.endswith(".yaml"):
-            path = os.path.join(crd_dir, file)
-            with open(path, 'r') as f:
-                content = f.read()
-                group_match = re.search(r'group:\s*([^\s]+)', content)
-                kind_section = re.search(r'names:.*?\s+kind:\s*([^\s]+)', content, re.DOTALL)
-                if group_match and kind_section:
-                    group = group_match.group(1).strip('"\'')
-                    kind = kind_section.group(1).strip('"\'')
-                    resources.append({'group': group, 'kind': kind})
+    static_config_path = os.path.join(kcc_dir, "pkg/controller/resourceconfig/static_config.go")
+    if os.path.exists(static_config_path):
+        with open(static_config_path, 'r') as f:
+            for line in f:
+                m = re.search(r'Group:\s*"([a-z0-9.]+)"\s*,\s*Kind:\s*"([A-Za-z0-9]+)"', line)
+                if m:
+                    resources.append({
+                        'group': m.group(1),
+                        'kind': m.group(2)
+                    })
     return resources
 
 def match_resources(gcp_resources, kcc_resources):
