@@ -113,7 +113,7 @@ func (s *SynonymSetV1) GetSynonymSet(ctx context.Context, req *pb.GetSynonymSetR
 
 	obj := &pb.SynonymSet{}
 	if err := s.storage.Get(ctx, canonicalFQN, obj); err != nil {
-		return nil, err
+		return nil, s.mapNotFoundError(err, canonicalFQN)
 	}
 
 	return obj, nil
@@ -133,7 +133,7 @@ func (s *SynonymSetV1) UpdateSynonymSet(ctx context.Context, req *pb.UpdateSynon
 	// Check if already exists (Update throws NOT_FOUND if it is not found)
 	existing := &pb.SynonymSet{}
 	if err := s.storage.Get(ctx, canonicalFQN, existing); err != nil {
-		return nil, err
+		return nil, s.mapNotFoundError(err, canonicalFQN)
 	}
 
 	synonymSet.Name = canonicalFQN
@@ -156,10 +156,21 @@ func (s *SynonymSetV1) DeleteSynonymSet(ctx context.Context, req *pb.DeleteSynon
 
 	deletedObject := &pb.SynonymSet{}
 	if err := s.storage.Delete(ctx, canonicalFQN, deletedObject); err != nil {
-		return nil, err
+		return nil, s.mapNotFoundError(err, canonicalFQN)
 	}
 
 	return &emptypb.Empty{}, nil
+}
+
+func (s *SynonymSetV1) mapNotFoundError(err error, name string) error {
+	if status.Code(err) == codes.NotFound {
+		formattedName := name
+		if strings.HasPrefix(name, "projects/") {
+			formattedName = "Projects/" + strings.TrimPrefix(name, "projects/")
+		}
+		return status.Errorf(codes.NotFound, "SynonymSet %s not found.", formattedName)
+	}
+	return err
 }
 
 func (s *SynonymSetV1) ListSynonymSets(ctx context.Context, req *pb.ListSynonymSetsRequest) (*pb.ListSynonymSetsResponse, error) {

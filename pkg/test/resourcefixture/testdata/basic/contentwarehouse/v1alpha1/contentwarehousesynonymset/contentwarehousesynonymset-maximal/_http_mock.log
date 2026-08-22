@@ -39,14 +39,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "synonymSet \"projects/${projectNumber}/locations/us/synonymSets/business\" not found",
-        "reason": "notFound"
-      }
-    ],
-    "message": "synonymSet \"projects/${projectNumber}/locations/us/synonymSets/business\" not found",
+    "message": "SynonymSet Projects/${projectNumber}/locations/us/synonymSets/business not found.",
     "status": "NOT_FOUND"
   }
 }
