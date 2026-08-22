@@ -10,19 +10,19 @@ metadata:
     cnrm.cloud.google.com/managed-by-kcc: "true"
     cnrm.cloud.google.com/stability-level: alpha
     cnrm.cloud.google.com/system: "true"
-  name: apihubplugins.apihub.cnrm.cloud.google.com
+  name: apihubcurations.apihub.cnrm.cloud.google.com
 spec:
   group: apihub.cnrm.cloud.google.com
   names:
     categories:
     - gcp
-    kind: APIHubPlugin
-    listKind: APIHubPluginList
-    plural: apihubplugins
+    kind: APIHubCuration
+    listKind: APIHubCurationList
+    plural: apihubcurations
     shortNames:
-    - gcpapihubplugin
-    - gcpapihubplugins
-    singular: apihubplugin
+    - gcpapihubcuration
+    - gcpapihubcurations
+    singular: apihubcuration
   preserveUnknownFields: false
   scope: Namespaced
   versions:
@@ -45,7 +45,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: APIHubPlugin is the Schema for the APIHubPlugin API
+        description: APIHubCuration is the Schema for the APIHubCuration API
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -60,16 +60,33 @@ spec:
           metadata:
             type: object
           spec:
-            description: APIHubPluginSpec defines the desired state of APIHubPlugin
+            description: APIHubCurationSpec defines the desired state of APIHubCuration
             properties:
               description:
-                description: Optional. The plugin description. Max length is 2000
-                  characters (Unicode code points).
+                description: Optional. The description of the curation.
                 type: string
               displayName:
-                description: Required. The display name of the plugin. Max length
-                  is 50 characters (Unicode code points).
+                description: Required. The display name of the curation.
                 type: string
+              endpoint:
+                description: Required. The endpoint to be triggered for curation.
+                properties:
+                  applicationIntegrationEndpointDetails:
+                    description: Required. The details of the Application Integration
+                      endpoint to be triggered for curation.
+                    properties:
+                      triggerID:
+                        description: Required. The API trigger ID of the Application
+                          Integration workflow.
+                        type: string
+                      uri:
+                        description: 'Required. The endpoint URI should be a valid
+                          REST URI for triggering an Application Integration. Format:
+                          `https://integrations.googleapis.com/v1/{name=projects/*/locations/*/integrations/*}:execute`
+                          or `https://{location}-integrations.googleapis.com/v1/{name=projects/*/locations/*/integrations/*}:execute`'
+                        type: string
+                    type: object
+                type: object
               location:
                 description: The location of this resource.
                 type: string
@@ -106,93 +123,18 @@ spec:
                     type: string
                 type: object
               resourceID:
-                description: The APIHubPlugin name. If not given, the metadata.name
+                description: The APIHubCuration name. If not given, the metadata.name
                   will be used.
                 type: string
-              type:
-                description: Required. The type of the API.
-                properties:
-                  enumValues:
-                    description: The attribute values associated with a resource in
-                      case attribute data type is enum.
-                    properties:
-                      values:
-                        description: Required. The attribute values in case attribute
-                          data type is enum.
-                        items:
-                          properties:
-                            description:
-                              description: Optional. The detailed description of the
-                                allowed value.
-                              type: string
-                            displayName:
-                              description: Required. The display name of the allowed
-                                value.
-                              type: string
-                            id:
-                              description: |-
-                                Required. The ID of the allowed value.
-                                 * If provided, the same will be used. The service will throw an error if
-                                 the specified id is already used by another allowed value in the same
-                                 attribute resource.
-                                 * If not provided, a system generated id derived from the display name
-                                 will be used. In this case, the service will handle conflict resolution
-                                 by adding a system generated suffix in case of duplicates.
-
-                                 This value should be 4-63 characters, and valid characters
-                                 are /[a-z][0-9]-/.
-                              type: string
-                            immutable:
-                              description: Optional. When set to true, the allowed
-                                value cannot be updated or deleted by the user. It
-                                can only be true for System defined attributes.
-                              type: boolean
-                          type: object
-                        type: array
-                    type: object
-                  jsonValues:
-                    description: The attribute values associated with a resource in
-                      case attribute data type is JSON.
-                    properties:
-                      values:
-                        description: Required. The attribute values in case attribute
-                          data type is string or JSON.
-                        items:
-                          type: string
-                        type: array
-                    type: object
-                  stringValues:
-                    description: The attribute values associated with a resource in
-                      case attribute data type is string.
-                    properties:
-                      values:
-                        description: Required. The attribute values in case attribute
-                          data type is string or JSON.
-                        items:
-                          type: string
-                        type: array
-                    type: object
-                  uriValues:
-                    description: The attribute values associated with a resource in
-                      case attribute data type is URL, URI or IP, like gs://bucket-name/object-name.
-                    properties:
-                      values:
-                        description: Required. The attribute values in case attribute
-                          data type is string or JSON.
-                        items:
-                          type: string
-                        type: array
-                    type: object
-                type: object
             required:
             - displayName
+            - endpoint
             - location
             - projectRef
-            - type
             type: object
           status:
-            description: APIHubPluginStatus defines the config connector machine state
-              of APIHubPlugin
+            description: APIHubCurationStatus defines the config connector machine
+              state of APIHubCuration
             properties:
               conditions:
                 description: Conditions represent the latest available observations
@@ -221,7 +163,8 @@ spec:
                   type: object
                 type: array
               externalRef:
-                description: A unique specifier for the APIHubPlugin resource in GCP.
+                description: A unique specifier for the APIHubCuration resource in
+                  GCP.
                 type: string
               observedGeneration:
                 description: ObservedGeneration is the generation of the resource
@@ -235,17 +178,40 @@ spec:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
                 properties:
-                  state:
-                    description: Output only. Represents the state of the plugin.
+                  createTime:
+                    description: Output only. The time at which the curation was created.
                     type: string
-                  type:
-                    description: Required. The type of the API.
-                    properties:
-                      attribute:
-                        description: 'Output only. The name of the attribute. Format:
-                          projects/{project}/locations/{location}/attributes/{attribute}'
-                        type: string
-                    type: object
+                  lastExecutionErrorCode:
+                    description: Output only. The error code of the last execution
+                      of the curation.
+                    type: string
+                  lastExecutionErrorMessage:
+                    description: Output only. Error message describing the failure,
+                      if any, during the last execution of the curation.
+                    type: string
+                  lastExecutionState:
+                    description: Output only. The last execution state of the curation.
+                    type: string
+                  pluginInstanceActions:
+                    description: Output only. The plugin instances and associated
+                      actions that are using the curation.
+                    items:
+                      properties:
+                        actionID:
+                          description: Output only. The action ID that is using the
+                            curation. This should map to one of the action IDs specified
+                            in action configs in the plugin.
+                          type: string
+                        pluginInstance:
+                          description: Output only. Plugin instance that is using
+                            the curation. Format is `projects/{project}/locations/{location}/plugins/{plugin}/instances/{instance}`
+                          type: string
+                      type: object
+                    type: array
+                  updateTime:
+                    description: Output only. The time at which the curation was last
+                      updated.
+                    type: string
                 type: object
             type: object
         required:
