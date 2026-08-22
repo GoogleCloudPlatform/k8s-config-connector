@@ -1,6 +1,6 @@
 GET https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/apis/api-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fapis%2Fapi-${uniqueId}
 
 404 Not Found
@@ -16,14 +16,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "api \"projects/${projectId}/locations/us-central1/apis/api-${uniqueId}\" not found",
-        "reason": "notFound"
-      }
-    ],
-    "message": "api \"projects/${projectId}/locations/us-central1/apis/api-${uniqueId}\" not found",
+    "message": "Resource 'projects/${projectId}/locations/us-central1/apis/api-${uniqueId}' was not found",
     "status": "NOT_FOUND"
   }
 }
@@ -32,7 +25,7 @@ X-Xss-Protection: 0
 
 POST https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/apis?%24alt=json%3Benum-encoding%3Dint&apiId=api-${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
 {
@@ -77,7 +70,7 @@ X-Xss-Protection: 0
 
 GET https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/apis/api-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fapis%2Fapi-${uniqueId}
 
 200 OK
@@ -109,7 +102,7 @@ X-Xss-Protection: 0
 
 PATCH https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/apis/api-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2CdisplayName%2Cdocumentation%2Cowner
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: api.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fapis%2Fapi-${uniqueId}
 
 {
@@ -154,7 +147,7 @@ X-Xss-Protection: 0
 
 GET https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/apis/api-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fapis%2Fapi-${uniqueId}
 
 200 OK
@@ -186,7 +179,7 @@ X-Xss-Protection: 0
 
 DELETE https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/apis/api-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fapis%2Fapi-${uniqueId}
 
 200 OK
