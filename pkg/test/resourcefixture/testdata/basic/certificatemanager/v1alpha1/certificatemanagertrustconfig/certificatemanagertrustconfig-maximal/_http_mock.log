@@ -102,6 +102,7 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.TrustConfig",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "sample trust config description maximal",
+    "etag": "abcdef0123A=",
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
@@ -145,6 +146,7 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "sample trust config description maximal",
+  "etag": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
@@ -249,6 +251,7 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.TrustConfig",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "description": "sample trust config description maximal updated",
+    "etag": "abcdef0123A=",
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
@@ -292,6 +295,7 @@ X-Xss-Protection: 0
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "sample trust config description maximal updated",
+  "etag": "abcdef0123A=",
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"

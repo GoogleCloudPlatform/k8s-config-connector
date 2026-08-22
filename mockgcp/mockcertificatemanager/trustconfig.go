@@ -60,6 +60,7 @@ func (s *CertificateManagerV1) CreateTrustConfig(ctx context.Context, req *pb.Cr
 	now := timestamppb.Now()
 	obj.CreateTime = now
 	obj.UpdateTime = now
+	obj.Etag = "abcdef0123A="
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -114,6 +115,7 @@ func (s *CertificateManagerV1) UpdateTrustConfig(ctx context.Context, req *pb.Up
 
 	now := timestamppb.Now()
 	obj.UpdateTime = now
+	obj.Etag = "abcdef0123A="
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
