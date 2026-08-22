@@ -20,9 +20,13 @@ import (
 	"time"
 
 	"google.golang.org/genproto/googleapis/longrunning"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 
 	pb_v2 "cloud.google.com/go/notebooks/apiv2/notebookspb"
 )
@@ -38,50 +42,6 @@ func (s *NotebookServiceV2) GetInstance(ctx context.Context, req *pb_v2.GetInsta
 	obj := &pb_v2.Instance{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		return nil, err
-	}
-	obj.Name = fqn
-	obj.Creator = "someone@somewhere.com"
-	obj.HealthState = pb_v2.HealthState_HEALTHY
-	obj.State = pb_v2.State_ACTIVE
-	obj.ProxyUri = fmt.Sprintf("https://%s-dot-us-central1.notebooks.googleusercontent.com", name.name)
-
-	if obj.GetGceSetup() == nil {
-		obj.Infrastructure = &pb_v2.Instance_GceSetup{
-			GceSetup: &pb_v2.GceSetup{},
-		}
-	}
-	gceSetup := obj.GetGceSetup()
-	if gceSetup.MachineType == "" {
-		gceSetup.MachineType = "n1-standard-1"
-	}
-	if len(gceSetup.ServiceAccounts) == 0 {
-		gceSetup.ServiceAccounts = []*pb_v2.ServiceAccount{
-			{
-				Email: fmt.Sprintf("%d-compute@developer.gserviceaccount.com", name.Project.Number),
-			},
-		}
-	}
-	if gceSetup.BootDisk == nil {
-		gceSetup.BootDisk = &pb_v2.BootDisk{
-			DiskSizeGb:     150,
-			DiskType:       pb_v2.DiskType_PD_STANDARD,
-			DiskEncryption: pb_v2.DiskEncryption_GMEK,
-		}
-	}
-	if len(gceSetup.NetworkInterfaces) == 0 {
-		gceSetup.NetworkInterfaces = []*pb_v2.NetworkInterface{
-			{
-				Network: fmt.Sprintf("projects/%s/global/networks/default", name.Project.ID),
-				Subnet:  fmt.Sprintf("projects/%s/regions/us-central1/subnetworks/default", name.Project.ID),
-			},
-		}
-	}
-
-	if obj.CreateTime == nil {
-		obj.CreateTime = timestamppb.New(time.Now())
-	}
-	if obj.UpdateTime == nil {
-		obj.UpdateTime = timestamppb.New(time.Now())
 	}
 
 	return obj, nil
@@ -104,6 +64,77 @@ func (s *NotebookServiceV2) CreateInstance(ctx context.Context, req *pb_v2.Creat
 	obj.HealthState = pb_v2.HealthState_HEALTH_STATE_UNSPECIFIED
 	obj.Creator = "someone@somewhere.com"
 	obj.ProxyUri = fmt.Sprintf("https://%s-dot-us-central1.notebooks.googleusercontent.com", req.InstanceId)
+
+	if obj.GetGceSetup() == nil {
+		obj.Infrastructure = &pb_v2.Instance_GceSetup{
+			GceSetup: &pb_v2.GceSetup{},
+		}
+	}
+	gceSetup := obj.GetGceSetup()
+	if gceSetup.MachineType == "" {
+		gceSetup.MachineType = "n1-standard-1"
+	}
+	if gceSetup.ServiceAccounts == nil {
+		gceSetup.ServiceAccounts = []*pb_v2.ServiceAccount{
+			{
+				Email:  fmt.Sprintf("%d-compute@developer.gserviceaccount.com", name.Project.Number),
+				Scopes: []string{"https://www.googleapis.com/auth/cloud-platform", "https://www.googleapis.com/auth/userinfo.email"},
+			},
+		}
+	} else {
+		for _, sa := range gceSetup.ServiceAccounts {
+			if sa.Email == "" {
+				sa.Email = fmt.Sprintf("%d-compute@developer.gserviceaccount.com", name.Project.Number)
+			}
+			if sa.Scopes == nil {
+				sa.Scopes = []string{"https://www.googleapis.com/auth/cloud-platform", "https://www.googleapis.com/auth/userinfo.email"}
+			}
+		}
+	}
+	if gceSetup.BootDisk == nil {
+		gceSetup.BootDisk = &pb_v2.BootDisk{
+			DiskSizeGb:     150,
+			DiskType:       pb_v2.DiskType_PD_STANDARD,
+			DiskEncryption: pb_v2.DiskEncryption_GMEK,
+		}
+	}
+	if gceSetup.DataDisks == nil {
+		gceSetup.DataDisks = []*pb_v2.DataDisk{
+			{
+				DiskSizeGb:     100,
+				DiskType:       pb_v2.DiskType_PD_STANDARD,
+				DiskEncryption: pb_v2.DiskEncryption_GMEK,
+			},
+		}
+	}
+	if gceSetup.ShieldedInstanceConfig == nil {
+		gceSetup.ShieldedInstanceConfig = &pb_v2.ShieldedInstanceConfig{
+			EnableIntegrityMonitoring: true,
+			EnableVtpm:                true,
+		}
+	}
+	if gceSetup.Tags == nil {
+		gceSetup.Tags = []string{"deeplearning-vm", "notebook-instance"}
+	}
+	if len(gceSetup.NetworkInterfaces) == 0 {
+		gceSetup.NetworkInterfaces = []*pb_v2.NetworkInterface{
+			{
+				Network: fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/global/networks/default", name.Project.ID),
+				Subnet:  fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/regions/us-central1/subnetworks/default", name.Project.ID),
+			},
+		}
+	} else {
+		var networkInterfaces []*pb_v2.NetworkInterface
+		for _, n := range gceSetup.NetworkInterfaces {
+			n = &pb_v2.NetworkInterface{
+				Network: fmt.Sprintf("https://www.googleapis.com/compute/v1/%s", n.Network),
+				Subnet:  fmt.Sprintf("https://www.googleapis.com/compute/v1/%s", n.Subnet),
+				NicType: pb_v2.NetworkInterface_GVNIC,
+			}
+			networkInterfaces = append(networkInterfaces, n)
+		}
+		gceSetup.NetworkInterfaces = networkInterfaces
+	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -140,13 +171,67 @@ func (s *NotebookServiceV2) UpdateInstance(ctx context.Context, req *pb_v2.Updat
 
 	updated := proto.Clone(existing).(*pb_v2.Instance)
 	if req.UpdateMask != nil {
-		if req.Instance.Labels != nil {
-			updated.Labels = req.Instance.Labels
+		allowedMutablePaths := map[string]bool{
+			"labels":                                                         true,
+			"disable_proxy_access":                                           true,
+			"gce_setup.min_cpu_platform":                                     true,
+			"gce_setup.metadata":                                             true,
+			"gce_setup.machine_type":                                         true,
+			"gce_setup.accelerator_configs":                                  true,
+			"gce_setup.accelerator_configs.type":                             true,
+			"gce_setup.accelerator_configs.core_count":                       true,
+			"gce_setup.gpu_driver_config":                                    true,
+			"gce_setup.gpu_driver_config.enable_gpu_driver":                  true,
+			"gce_setup.gpu_driver_config.custom_gpu_driver_path":             true,
+			"gce_setup.shielded_instance_config":                             true,
+			"gce_setup.shielded_instance_config.enable_secure_boot":          true,
+			"gce_setup.shielded_instance_config.enable_vtpm":                 true,
+			"gce_setup.shielded_instance_config.enable_integrity_monitoring": true,
+			"gce_setup.reservation_affinity":                                 true,
+			"gce_setup.reservation_affinity.consume_reservation_type":        true,
+			"gce_setup.reservation_affinity.key":                             true,
+			"gce_setup.reservation_affinity.values":                          true,
+			"gce_setup.tags":                                                 true,
+			"gce_setup.container_image":                                      true,
+			"gce_setup.container_image.repository":                           true,
+			"gce_setup.container_image.tag":                                  true,
+			"gce_setup.disable_public_ip":                                    true,
 		}
-		if req.Instance.GetGceSetup() != nil {
-			updated.Infrastructure = &pb_v2.Instance_GceSetup{
-				GceSetup: proto.Clone(req.Instance.GetGceSetup()).(*pb_v2.GceSetup),
+
+		for _, path := range req.UpdateMask.Paths {
+			if !allowedMutablePaths[path] {
+				return nil, status.Errorf(codes.InvalidArgument, "field %q is immutable", path)
 			}
+		}
+
+		requiresStopped := map[string]bool{
+			"gce_setup.accelerator_configs":                                  true,
+			"gce_setup.accelerator_configs.type":                             true,
+			"gce_setup.accelerator_configs.core_count":                       true,
+			"gce_setup.machine_type":                                         true,
+			"gce_setup.shielded_instance_config":                             true,
+			"gce_setup.shielded_instance_config.enable_secure_boot":          true,
+			"gce_setup.shielded_instance_config.enable_vtpm":                 true,
+			"gce_setup.shielded_instance_config.enable_integrity_monitoring": true,
+			"gce_setup.reservation_affinity":                                 true,
+			"gce_setup.reservation_affinity.consume_reservation_type":        true,
+			"gce_setup.reservation_affinity.key":                             true,
+			"gce_setup.reservation_affinity.values":                          true,
+			"gce_setup.container_image":                                      true,
+			"gce_setup.container_image.repository":                           true,
+			"gce_setup.container_image.tag":                                  true,
+			"gce_setup.disable_public_ip":                                    true,
+			"disable_proxy_access":                                           true,
+		}
+
+		for _, path := range req.UpdateMask.Paths {
+			if requiresStopped[path] && existing.State != pb_v2.State_STOPPED {
+				return nil, status.Errorf(codes.FailedPrecondition, "instance in state %q must be stopped before updating one of the following: [accelerator_configs machine_type shielded_instance_config reservation_affinity container_image disable_public_ip disable_proxy_access]", existing.State)
+			}
+		}
+
+		if err := fields.UpdateByFieldMask(updated, req.Instance, req.UpdateMask.Paths); err != nil {
+			return nil, err
 		}
 	} else {
 		proto.Merge(updated, req.Instance)

@@ -75,3 +75,15 @@ spec:
     name: kms-key-${uniqueId}
   role: roles/cloudkms.cryptoKeyEncrypterDecrypter
   member: "serviceAccount:service-${projectNumber}@compute-system.iam.gserviceaccount.com"
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
+metadata:
+  name: ni2-sa-compute-actas-${uniqueId}
+spec:
+  resourceRef:
+    apiVersion: iam.cnrm.cloud.google.com/v1beta1
+    kind: IAMServiceAccount
+    name: ni2-sa-${uniqueId}
+  role: roles/iam.serviceAccountUser
+  member: "serviceAccount:${projectNumber}-compute@developer.gserviceaccount.com"

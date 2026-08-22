@@ -207,6 +207,8 @@ func InstanceAcceleratorConfig_v1alpha1_ToProto(mapCtx *direct.MapContext, in *k
 	out.CoreCount = direct.ValueOf(in.CoreCount)
 	return out
 }
+
+/* found existing non-generated mapping function "InstanceBootDisk_v1alpha1_FromProto", skipping
 func InstanceBootDisk_v1alpha1_FromProto(mapCtx *direct.MapContext, in *notebookspb.BootDisk) *krmnotebooksv1alpha1.InstanceBootDisk {
 	if in == nil {
 		return nil
@@ -218,17 +220,23 @@ func InstanceBootDisk_v1alpha1_FromProto(mapCtx *direct.MapContext, in *notebook
 	// MISSING: KMSKey
 	return out
 }
-func InstanceBootDisk_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnotebooksv1alpha1.InstanceBootDisk) *notebookspb.BootDisk {
-	if in == nil {
-		return nil
+*/
+
+/*
+found existing non-generated mapping function "InstanceBootDisk_v1alpha1_ToProto", skipping
+
+	func InstanceBootDisk_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnotebooksv1alpha1.InstanceBootDisk) *notebookspb.BootDisk {
+		if in == nil {
+			return nil
+		}
+		out := &notebookspb.BootDisk{}
+		out.DiskSizeGb = direct.ValueOf(in.DiskSizeGB)
+		out.DiskType = direct.Enum_ToProto[notebookspb.DiskType](mapCtx, in.DiskType)
+		out.DiskEncryption = direct.Enum_ToProto[notebookspb.DiskEncryption](mapCtx, in.DiskEncryption)
+		// MISSING: KMSKey
+		return out
 	}
-	out := &notebookspb.BootDisk{}
-	out.DiskSizeGb = direct.ValueOf(in.DiskSizeGB)
-	out.DiskType = direct.Enum_ToProto[notebookspb.DiskType](mapCtx, in.DiskType)
-	out.DiskEncryption = direct.Enum_ToProto[notebookspb.DiskEncryption](mapCtx, in.DiskEncryption)
-	// MISSING: KMSKey
-	return out
-}
+*/
 func InstanceContainerImage_v1alpha1_FromProto(mapCtx *direct.MapContext, in *notebookspb.ContainerImage) *krmnotebooksv1alpha1.InstanceContainerImage {
 	if in == nil {
 		return nil
