@@ -1,0 +1,12 @@
+- caisURL: //compute.googleapis.com/projects/${projectId}/global/networks/network-${uniqueId}
+  group: compute.cnrm.cloud.google.com
+  kind: ComputeNetwork
+  name: network-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: //networksecurity.googleapis.com/projects/${projectId}/locations/global/mirroringDeploymentGroups/mirroringdg-${uniqueId}
+  group: networksecurity.cnrm.cloud.google.com
+  kind: NetworkSecurityMirroringDeploymentGroup
+  name: mirroringdg-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
