@@ -1,0 +1,151 @@
+GET https://discoveryengine.googleapis.com/v1beta/projects/${projectId}/locations/global/sampleQuerySets/sqset-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FsampleQuerySets%2Fsqset-max-${uniqueId}
+X-Goog-User-Project: ${projectId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "SampleQuerySet projects/${projectNumber}/locations/global/sampleQuerySets/sqset-max-${uniqueId} does not exist.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://discoveryengine.googleapis.com/v1beta/projects/${projectId}/locations/global/sampleQuerySets?%24alt=json%3Benum-encoding%3Dint&sampleQuerySetId=sqset-max-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal
+X-Goog-User-Project: ${projectId}
+
+{
+  "description": "Initial description of maximal sample query set",
+  "displayName": "Maximal Sample Query Set",
+  "name": "projects/${projectId}/locations/global/sampleQuerySets/sqset-max-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "description": "Initial description of maximal sample query set",
+  "displayName": "Maximal Sample Query Set",
+  "name": "projects/${projectNumber}/locations/global/sampleQuerySets/sqset-max-${uniqueId}"
+}
+
+---
+
+GET https://discoveryengine.googleapis.com/v1beta/projects/${projectId}/locations/global/sampleQuerySets/sqset-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FsampleQuerySets%2Fsqset-max-${uniqueId}
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "description": "Initial description of maximal sample query set",
+  "displayName": "Maximal Sample Query Set",
+  "name": "projects/${projectNumber}/locations/global/sampleQuerySets/sqset-max-${uniqueId}"
+}
+
+---
+
+PATCH https://discoveryengine.googleapis.com/v1beta/projects/${projectId}/locations/global/sampleQuerySets/sqset-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2CdisplayName
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: sample_query_set.name=projects%2F${projectId}%2Flocations%2Fglobal%2FsampleQuerySets%2Fsqset-max-${uniqueId}
+X-Goog-User-Project: ${projectId}
+
+{
+  "description": "Updated description of maximal sample query set",
+  "displayName": "Maximal Sample Query Set Updated",
+  "name": "projects/${projectId}/locations/global/sampleQuerySets/sqset-max-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "description": "Updated description of maximal sample query set",
+  "displayName": "Maximal Sample Query Set Updated",
+  "name": "projects/${projectNumber}/locations/global/sampleQuerySets/sqset-max-${uniqueId}"
+}
+
+---
+
+GET https://discoveryengine.googleapis.com/v1beta/projects/${projectId}/locations/global/sampleQuerySets/sqset-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FsampleQuerySets%2Fsqset-max-${uniqueId}
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "description": "Updated description of maximal sample query set",
+  "displayName": "Maximal Sample Query Set Updated",
+  "name": "projects/${projectNumber}/locations/global/sampleQuerySets/sqset-max-${uniqueId}"
+}
+
+---
+
+DELETE https://discoveryengine.googleapis.com/v1beta/projects/${projectId}/locations/global/sampleQuerySets/sqset-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FsampleQuerySets%2Fsqset-max-${uniqueId}
+X-Goog-User-Project: ${projectId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
