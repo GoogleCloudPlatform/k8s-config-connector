@@ -71,6 +71,12 @@ var (
 		Kind:    reflect.TypeOf(VertexAIFeatureOnlineStore{}).Name(),
 	}
 
+	VertexAIPersistentResourceGVK = schema.GroupVersionKind{
+		Group:   SchemeGroupVersion.Group,
+		Version: SchemeGroupVersion.Version,
+		Kind:    reflect.TypeOf(VertexAIPersistentResource{}).Name(),
+	}
+
 	VertexAIPipelineJobGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,
