@@ -53,7 +53,6 @@ type trustConfigModel struct {
 }
 
 func (m *trustConfigModel) client(ctx context.Context) (*gcp.Client, error) {
-	var opts []option.ClientOption
 	opts, err := m.config.RESTClientOptions()
 	if err != nil {
 		return nil, err
