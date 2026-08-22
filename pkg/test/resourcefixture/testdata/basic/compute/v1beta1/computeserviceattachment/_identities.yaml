@@ -16,7 +16,7 @@
   name: default
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: unknown
+- caisURL: //compute.googleapis.com/projects/${TEST_DEPENDENT_ORG_PROJECT_ID}/regions/us-west1/backendServices/computebackendservice-${uniqueId}
   group: compute.cnrm.cloud.google.com
   kind: ComputeBackendService
   name: computebackendservice-${uniqueId}
