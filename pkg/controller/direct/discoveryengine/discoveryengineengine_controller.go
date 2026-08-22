@@ -314,7 +314,9 @@ func (a *engineAdapter) Delete(ctx context.Context, deleteOp *directbase.DeleteO
 
 	err = op.Wait(ctx)
 	if err != nil {
-		return false, fmt.Errorf("waiting for discoveryengine engine %s deletion: %w", fqn, err)
+		if err.Error() != "unsupported result type <nil>: <nil>" {
+			return false, fmt.Errorf("waiting for discoveryengine engine %s deletion: %w", fqn, err)
+		}
 	}
 	log.V(2).Info("successfully deleted discoveryengine engine", "name", fqn)
 
