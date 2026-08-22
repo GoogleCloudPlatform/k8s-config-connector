@@ -17,11 +17,11 @@ package datalabelinginstruction
 import (
 	"context"
 	"fmt"
-	"reflect"
 
 	gcp "cloud.google.com/go/datalabeling/apiv1beta1"
 	pb "cloud.google.com/go/datalabeling/apiv1beta1/datalabelingpb"
 	"google.golang.org/api/option"
+	"google.golang.org/protobuf/proto"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
@@ -176,10 +176,10 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	if desiredProto.DataType != a.actual.DataType {
 		diff = true
 	}
-	if !reflect.DeepEqual(desiredProto.CsvInstruction, a.actual.CsvInstruction) {
+	if !proto.Equal(desiredProto.CsvInstruction, a.actual.CsvInstruction) {
 		diff = true
 	}
-	if !reflect.DeepEqual(desiredProto.PdfInstruction, a.actual.PdfInstruction) {
+	if !proto.Equal(desiredProto.PdfInstruction, a.actual.PdfInstruction) {
 		diff = true
 	}
 
