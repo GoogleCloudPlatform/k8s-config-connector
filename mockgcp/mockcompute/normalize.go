@@ -91,6 +91,25 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 			delete(obj, "sizeGb")
 			delete(obj, "recommendedSize")
 
+			if kind, _ := obj["kind"].(string); kind == "compute#instanceGroupManager" {
+				name, _ := obj["name"].(string)
+				if strings.HasPrefix(name, "gke-") {
+					delete(obj, "targetSizePolicy")
+					delete(obj, "targetStoppedSize")
+					delete(obj, "targetSuspendedSize")
+					delete(obj, "versions")
+					delete(obj, "serviceAccount")
+					delete(obj, "standbyPolicy")
+					delete(obj, "listManagedInstancesResults")
+					delete(obj, "satisfiesPzs")
+					if statusMap, ok := obj["status"].(map[string]any); ok {
+						delete(statusMap, "allInstancesConfig")
+						delete(statusMap, "stateful")
+						delete(statusMap, "versionTarget")
+					}
+				}
+			}
+
 			if obj["creationTimestamp"] != nil {
 				obj["creationTimestamp"] = mockgcpregistry.PlaceholderTimestamp
 			}

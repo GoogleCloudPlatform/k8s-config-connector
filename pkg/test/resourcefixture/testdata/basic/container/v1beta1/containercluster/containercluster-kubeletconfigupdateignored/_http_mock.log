@@ -202,9 +202,6 @@ X-Xss-Protection: 0
       "disabled": true
     }
   },
-  "anonymousAuthenticationConfig": {
-    "mode": "ENABLED"
-  },
   "autopilot": {},
   "autoscaling": {
     "autoprovisioningNodePoolDefaults": {
@@ -262,7 +259,6 @@ X-Xss-Protection: 0
   "enterpriseConfig": {
     "clusterTier": "STANDARD"
   },
-  "etag": "abcdef0123A=",
   "id": "000000000000000000000",
   "initialClusterVersion": "1.30.5-gke.1014001",
   "initialNodeCount": 1,
@@ -281,9 +277,6 @@ X-Xss-Protection: 0
   "labelFingerprint": "abcdef0123A=",
   "legacyAbac": {},
   "location": "us-central1-a",
-  "locations": [
-    "us-central1-a"
-  ],
   "loggingConfig": {
     "componentConfig": {
       "enableComponents": [
@@ -379,11 +372,6 @@ X-Xss-Protection: 0
     },
     "windowsNodeConfig": {}
   },
-  "nodePoolAutoConfig": {
-    "nodeKubeletConfig": {
-      "insecureKubeletReadonlyPortEnabled": false
-    }
-  },
   "nodePoolDefaults": {
     "nodeConfigDefaults": {
       "loggingConfig": {
@@ -448,9 +436,6 @@ X-Xss-Protection: 0
       "initialNodeCount": 1,
       "instanceGroupUrls": [
         "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp"
-      ],
-      "locations": [
-        "us-central1-a"
       ],
       "management": {
         "autoRepair": true,
@@ -540,12 +525,12 @@ X-Xss-Protection: 0
   },
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
-  "instanceGroup": "https://www.googleapis.com/compute/v1beta1/projects/${projectId}/zones/us-central1-a/instanceGroups/gke-containercluster-abcdef-default-pool-grp",
+  "instanceGroup": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/instanceGroups/gke-containercluster-abcdef-default-pool-grp",
   "instanceLifecyclePolicy": {
     "defaultActionOnFailure": "REPAIR",
     "forceUpdateOnRepair": "YES"
   },
-  "instanceTemplate": "https://www.googleapis.com/compute/v1beta1/projects/${projectId}/global/instanceTemplates/gke-containercluster-abcdef-default-pool",
+  "instanceTemplate": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/instanceTemplates/gke-containercluster-abcdef-default-pool",
   "kind": "compute#instanceGroupManager",
   "name": "gke-containercluster-abcdef-default-pool-grp",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp",
@@ -593,9 +578,6 @@ X-Xss-Protection: 0
     "networkPolicyConfig": {
       "disabled": true
     }
-  },
-  "anonymousAuthenticationConfig": {
-    "mode": "ENABLED"
   },
   "autopilot": {},
   "autoscaling": {
@@ -654,7 +636,6 @@ X-Xss-Protection: 0
   "enterpriseConfig": {
     "clusterTier": "STANDARD"
   },
-  "etag": "abcdef0123A=",
   "id": "000000000000000000000",
   "initialClusterVersion": "1.30.5-gke.1014001",
   "initialNodeCount": 1,
@@ -673,9 +654,6 @@ X-Xss-Protection: 0
   "labelFingerprint": "abcdef0123A=",
   "legacyAbac": {},
   "location": "us-central1-a",
-  "locations": [
-    "us-central1-a"
-  ],
   "loggingConfig": {
     "componentConfig": {
       "enableComponents": [
@@ -771,11 +749,6 @@ X-Xss-Protection: 0
     },
     "windowsNodeConfig": {}
   },
-  "nodePoolAutoConfig": {
-    "nodeKubeletConfig": {
-      "insecureKubeletReadonlyPortEnabled": false
-    }
-  },
   "nodePoolDefaults": {
     "nodeConfigDefaults": {
       "loggingConfig": {
@@ -840,9 +813,6 @@ X-Xss-Protection: 0
       "initialNodeCount": 1,
       "instanceGroupUrls": [
         "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp"
-      ],
-      "locations": [
-        "us-central1-a"
       ],
       "management": {
         "autoRepair": true,
@@ -932,12 +902,12 @@ X-Xss-Protection: 0
   },
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
-  "instanceGroup": "https://www.googleapis.com/compute/v1beta1/projects/${projectId}/zones/us-central1-a/instanceGroups/gke-containercluster-abcdef-default-pool-grp",
+  "instanceGroup": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/instanceGroups/gke-containercluster-abcdef-default-pool-grp",
   "instanceLifecyclePolicy": {
     "defaultActionOnFailure": "REPAIR",
     "forceUpdateOnRepair": "YES"
   },
-  "instanceTemplate": "https://www.googleapis.com/compute/v1beta1/projects/${projectId}/global/instanceTemplates/gke-containercluster-abcdef-default-pool",
+  "instanceTemplate": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/instanceTemplates/gke-containercluster-abcdef-default-pool",
   "kind": "compute#instanceGroupManager",
   "name": "gke-containercluster-abcdef-default-pool-grp",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp",
@@ -985,9 +955,6 @@ X-Xss-Protection: 0
     "networkPolicyConfig": {
       "disabled": true
     }
-  },
-  "anonymousAuthenticationConfig": {
-    "mode": "ENABLED"
   },
   "autopilot": {},
   "autoscaling": {
@@ -1046,7 +1013,6 @@ X-Xss-Protection: 0
   "enterpriseConfig": {
     "clusterTier": "STANDARD"
   },
-  "etag": "abcdef0123A=",
   "id": "000000000000000000000",
   "initialClusterVersion": "1.30.5-gke.1014001",
   "initialNodeCount": 1,
@@ -1065,9 +1031,6 @@ X-Xss-Protection: 0
   "labelFingerprint": "abcdef0123A=",
   "legacyAbac": {},
   "location": "us-central1-a",
-  "locations": [
-    "us-central1-a"
-  ],
   "loggingConfig": {
     "componentConfig": {
       "enableComponents": [
@@ -1163,11 +1126,6 @@ X-Xss-Protection: 0
     },
     "windowsNodeConfig": {}
   },
-  "nodePoolAutoConfig": {
-    "nodeKubeletConfig": {
-      "insecureKubeletReadonlyPortEnabled": false
-    }
-  },
   "nodePoolDefaults": {
     "nodeConfigDefaults": {
       "loggingConfig": {
@@ -1232,9 +1190,6 @@ X-Xss-Protection: 0
       "initialNodeCount": 1,
       "instanceGroupUrls": [
         "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp"
-      ],
-      "locations": [
-        "us-central1-a"
       ],
       "management": {
         "autoRepair": true,
@@ -1324,12 +1279,12 @@ X-Xss-Protection: 0
   },
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
-  "instanceGroup": "https://www.googleapis.com/compute/v1beta1/projects/${projectId}/zones/us-central1-a/instanceGroups/gke-containercluster-abcdef-default-pool-grp",
+  "instanceGroup": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/instanceGroups/gke-containercluster-abcdef-default-pool-grp",
   "instanceLifecyclePolicy": {
     "defaultActionOnFailure": "REPAIR",
     "forceUpdateOnRepair": "YES"
   },
-  "instanceTemplate": "https://www.googleapis.com/compute/v1beta1/projects/${projectId}/global/instanceTemplates/gke-containercluster-abcdef-default-pool",
+  "instanceTemplate": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/instanceTemplates/gke-containercluster-abcdef-default-pool",
   "kind": "compute#instanceGroupManager",
   "name": "gke-containercluster-abcdef-default-pool-grp",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp",
@@ -1377,9 +1332,6 @@ X-Xss-Protection: 0
     "networkPolicyConfig": {
       "disabled": true
     }
-  },
-  "anonymousAuthenticationConfig": {
-    "mode": "ENABLED"
   },
   "autopilot": {},
   "autoscaling": {
@@ -1438,7 +1390,6 @@ X-Xss-Protection: 0
   "enterpriseConfig": {
     "clusterTier": "STANDARD"
   },
-  "etag": "abcdef0123A=",
   "id": "000000000000000000000",
   "initialClusterVersion": "1.30.5-gke.1014001",
   "initialNodeCount": 1,
@@ -1457,9 +1408,6 @@ X-Xss-Protection: 0
   "labelFingerprint": "abcdef0123A=",
   "legacyAbac": {},
   "location": "us-central1-a",
-  "locations": [
-    "us-central1-a"
-  ],
   "loggingConfig": {
     "componentConfig": {
       "enableComponents": [
@@ -1555,11 +1503,6 @@ X-Xss-Protection: 0
     },
     "windowsNodeConfig": {}
   },
-  "nodePoolAutoConfig": {
-    "nodeKubeletConfig": {
-      "insecureKubeletReadonlyPortEnabled": false
-    }
-  },
   "nodePoolDefaults": {
     "nodeConfigDefaults": {
       "loggingConfig": {
@@ -1624,9 +1567,6 @@ X-Xss-Protection: 0
       "initialNodeCount": 1,
       "instanceGroupUrls": [
         "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp"
-      ],
-      "locations": [
-        "us-central1-a"
       ],
       "management": {
         "autoRepair": true,
@@ -1716,12 +1656,12 @@ X-Xss-Protection: 0
   },
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
-  "instanceGroup": "https://www.googleapis.com/compute/v1beta1/projects/${projectId}/zones/us-central1-a/instanceGroups/gke-containercluster-abcdef-default-pool-grp",
+  "instanceGroup": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/instanceGroups/gke-containercluster-abcdef-default-pool-grp",
   "instanceLifecyclePolicy": {
     "defaultActionOnFailure": "REPAIR",
     "forceUpdateOnRepair": "YES"
   },
-  "instanceTemplate": "https://www.googleapis.com/compute/v1beta1/projects/${projectId}/global/instanceTemplates/gke-containercluster-abcdef-default-pool",
+  "instanceTemplate": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/instanceTemplates/gke-containercluster-abcdef-default-pool",
   "kind": "compute#instanceGroupManager",
   "name": "gke-containercluster-abcdef-default-pool-grp",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp",
@@ -1769,9 +1709,6 @@ X-Xss-Protection: 0
     "networkPolicyConfig": {
       "disabled": true
     }
-  },
-  "anonymousAuthenticationConfig": {
-    "mode": "ENABLED"
   },
   "autopilot": {},
   "autoscaling": {
@@ -1830,7 +1767,6 @@ X-Xss-Protection: 0
   "enterpriseConfig": {
     "clusterTier": "STANDARD"
   },
-  "etag": "abcdef0123A=",
   "id": "000000000000000000000",
   "initialClusterVersion": "1.30.5-gke.1014001",
   "initialNodeCount": 1,
@@ -1849,9 +1785,6 @@ X-Xss-Protection: 0
   "labelFingerprint": "abcdef0123A=",
   "legacyAbac": {},
   "location": "us-central1-a",
-  "locations": [
-    "us-central1-a"
-  ],
   "loggingConfig": {
     "componentConfig": {
       "enableComponents": [
@@ -1947,11 +1880,6 @@ X-Xss-Protection: 0
     },
     "windowsNodeConfig": {}
   },
-  "nodePoolAutoConfig": {
-    "nodeKubeletConfig": {
-      "insecureKubeletReadonlyPortEnabled": false
-    }
-  },
   "nodePoolDefaults": {
     "nodeConfigDefaults": {
       "loggingConfig": {
@@ -2016,9 +1944,6 @@ X-Xss-Protection: 0
       "initialNodeCount": 1,
       "instanceGroupUrls": [
         "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp"
-      ],
-      "locations": [
-        "us-central1-a"
       ],
       "management": {
         "autoRepair": true,
@@ -2108,12 +2033,12 @@ X-Xss-Protection: 0
   },
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
-  "instanceGroup": "https://www.googleapis.com/compute/v1beta1/projects/${projectId}/zones/us-central1-a/instanceGroups/gke-containercluster-abcdef-default-pool-grp",
+  "instanceGroup": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/instanceGroups/gke-containercluster-abcdef-default-pool-grp",
   "instanceLifecyclePolicy": {
     "defaultActionOnFailure": "REPAIR",
     "forceUpdateOnRepair": "YES"
   },
-  "instanceTemplate": "https://www.googleapis.com/compute/v1beta1/projects/${projectId}/global/instanceTemplates/gke-containercluster-abcdef-default-pool",
+  "instanceTemplate": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/instanceTemplates/gke-containercluster-abcdef-default-pool",
   "kind": "compute#instanceGroupManager",
   "name": "gke-containercluster-abcdef-default-pool-grp",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp",
@@ -2161,9 +2086,6 @@ X-Xss-Protection: 0
     "networkPolicyConfig": {
       "disabled": true
     }
-  },
-  "anonymousAuthenticationConfig": {
-    "mode": "ENABLED"
   },
   "autopilot": {},
   "autoscaling": {
@@ -2222,7 +2144,6 @@ X-Xss-Protection: 0
   "enterpriseConfig": {
     "clusterTier": "STANDARD"
   },
-  "etag": "abcdef0123A=",
   "id": "000000000000000000000",
   "initialClusterVersion": "1.30.5-gke.1014001",
   "initialNodeCount": 1,
@@ -2241,9 +2162,6 @@ X-Xss-Protection: 0
   "labelFingerprint": "abcdef0123A=",
   "legacyAbac": {},
   "location": "us-central1-a",
-  "locations": [
-    "us-central1-a"
-  ],
   "loggingConfig": {
     "componentConfig": {
       "enableComponents": [
@@ -2339,11 +2257,6 @@ X-Xss-Protection: 0
     },
     "windowsNodeConfig": {}
   },
-  "nodePoolAutoConfig": {
-    "nodeKubeletConfig": {
-      "insecureKubeletReadonlyPortEnabled": false
-    }
-  },
   "nodePoolDefaults": {
     "nodeConfigDefaults": {
       "loggingConfig": {
@@ -2408,9 +2321,6 @@ X-Xss-Protection: 0
       "initialNodeCount": 1,
       "instanceGroupUrls": [
         "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp"
-      ],
-      "locations": [
-        "us-central1-a"
       ],
       "management": {
         "autoRepair": true,

@@ -1,0 +1,14 @@
+apiVersion: deploy.cloud.google.com/v1
+kind: Automation
+metadata:
+  name: pipeline-18c6a32eead1734f/automation-18c6a32eead1734f
+description: updated automation
+suspended: true
+serviceAccount: 518915279-compute@developer.gserviceaccount.com
+selector:
+  targets:
+  - id: target-18c6a32eead1734f
+rules:
+- promoteReleaseRule:
+    id: "promote-release"
+    wait: "2m"
