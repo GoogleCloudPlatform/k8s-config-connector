@@ -33,7 +33,7 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 
 # --- v1alpha1 ---
 ${CONTROLLERBUILDER} generate-types \
-    --service google.cloud.aiplatform.v1beta1 \
+    --service google.cloud.aiplatform.v1beta1,google.cloud.modelarmor.v1 \
     --api-version vertexai.cnrm.cloud.google.com/v1alpha1 \
     --resource VertexAIFeaturestore:Featurestore \
     --resource VertexAIMetadataStore:MetadataStore \
@@ -43,7 +43,8 @@ ${CONTROLLERBUILDER} generate-types \
     --resource VertexAIDataLabelingJob:DataLabelingJob \
     --resource VertexAICustomJob:CustomJob \
     --resource VertexAITensorboard:Tensorboard \
-    --resource VertexAITensorboardExperiment:TensorboardExperiment
+    --resource VertexAITensorboardExperiment:TensorboardExperiment \
+    --resource VertexAISecurityPolicy:Template
 
 # --- v1beta1 ---
 ${CONTROLLERBUILDER} generate-types \

@@ -1,0 +1,537 @@
+﻿2026-08-10T21:32:07.3159442Z Current runner version: '2.336.0'
+2026-08-10T21:32:07.3177340Z ##[group]Runner Image Provisioner
+2026-08-10T21:32:07.3178079Z Hosted Compute Agent
+2026-08-10T21:32:07.3178550Z Version: 20260707.563
+2026-08-10T21:32:07.3179362Z Commit: 02667638d2b423fbc733a8e32a88b44996a3ba6e
+2026-08-10T21:32:07.3180101Z Build Date: 2026-07-07T19:33:50Z
+2026-08-10T21:32:07.3180632Z Worker ID: {2dbd0db6-dc99-47cb-be65-eb1d14074b8e}
+2026-08-10T21:32:07.3181261Z Azure Region: westus3
+2026-08-10T21:32:07.3181715Z ##[endgroup]
+2026-08-10T21:32:07.3182853Z ##[group]Operating System
+2026-08-10T21:32:07.3183353Z Ubuntu
+2026-08-10T21:32:07.3183771Z 24.04.4
+2026-08-10T21:32:07.3184213Z LTS
+2026-08-10T21:32:07.3184624Z ##[endgroup]
+2026-08-10T21:32:07.3185095Z ##[group]Runner Image
+2026-08-10T21:32:07.3185605Z Image: ubuntu-24.04
+2026-08-10T21:32:07.3186173Z Version: 20260720.247.2
+2026-08-10T21:32:07.3187262Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260720.247/images/ubuntu/Ubuntu2404-Readme.md
+2026-08-10T21:32:07.3188449Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260720.247
+2026-08-10T21:32:07.3189360Z ##[endgroup]
+2026-08-10T21:32:07.3190253Z ##[group]GITHUB_TOKEN Permissions
+2026-08-10T21:32:07.3191950Z Contents: read
+2026-08-10T21:32:07.3192409Z Metadata: read
+2026-08-10T21:32:07.3192838Z ##[endgroup]
+2026-08-10T21:32:07.3194432Z Secret source: None
+2026-08-10T21:32:07.3195259Z Prepare workflow directory
+2026-08-10T21:32:07.3449147Z Prepare all required actions
+2026-08-10T21:32:07.3489776Z Getting action download info
+2026-08-10T21:32:07.6721933Z Download action repository 'actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683' (SHA:11bd71901bbe5b1630ceea73d27597364c9af683)
+2026-08-10T21:32:07.7554820Z Download action repository 'actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1' (SHA:4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1)
+2026-08-10T21:32:07.9926646Z Complete job name: fuzz-roundtrippers-3-of-8
+2026-08-10T21:32:08.0487394Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+2026-08-10T21:32:08.0494598Z ##[group]Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+2026-08-10T21:32:08.0495405Z with:
+2026-08-10T21:32:08.0495931Z   repository: GoogleCloudPlatform/k8s-config-connector
+2026-08-10T21:32:08.0499451Z   token: ***
+2026-08-10T21:32:08.0499892Z   ssh-strict: true
+2026-08-10T21:32:08.0500321Z   ssh-user: git
+2026-08-10T21:32:08.0500767Z   persist-credentials: true
+2026-08-10T21:32:08.0501247Z   clean: true
+2026-08-10T21:32:08.0501672Z   sparse-checkout-cone-mode: true
+2026-08-10T21:32:08.0502138Z   fetch-depth: 1
+2026-08-10T21:32:08.0502574Z   fetch-tags: false
+2026-08-10T21:32:08.0503015Z   show-progress: true
+2026-08-10T21:32:08.0503543Z   lfs: false
+2026-08-10T21:32:08.0503951Z   submodules: false
+2026-08-10T21:32:08.0504376Z   set-safe-directory: true
+2026-08-10T21:32:08.0504969Z ##[endgroup]
+2026-08-10T21:32:08.1314307Z Syncing repository: GoogleCloudPlatform/k8s-config-connector
+2026-08-10T21:32:08.1315828Z ##[group]Getting Git version info
+2026-08-10T21:32:08.1316532Z Working directory is '/home/runner/work/k8s-config-connector/k8s-config-connector'
+2026-08-10T21:32:08.1317652Z [command]/usr/bin/git version
+2026-08-10T21:32:08.1341967Z git version 2.54.0
+2026-08-10T21:32:08.1356033Z ##[endgroup]
+2026-08-10T21:32:08.1366614Z Temporarily overriding HOME='/home/runner/work/_temp/edf47660-6432-4c59-9923-f59fe2f1f9d0' before making global git config changes
+2026-08-10T21:32:08.1368622Z Adding repository directory to the temporary git global config as a safe directory
+2026-08-10T21:32:08.1371292Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/k8s-config-connector/k8s-config-connector
+2026-08-10T21:32:08.1396073Z Deleting the contents of '/home/runner/work/k8s-config-connector/k8s-config-connector'
+2026-08-10T21:32:08.1398680Z ##[group]Initializing the repository
+2026-08-10T21:32:08.1402177Z [command]/usr/bin/git init /home/runner/work/k8s-config-connector/k8s-config-connector
+2026-08-10T21:32:08.1478139Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-08-10T21:32:08.1479644Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-08-10T21:32:08.1480934Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-08-10T21:32:08.1481958Z hint: call:
+2026-08-10T21:32:08.1482455Z hint:
+2026-08-10T21:32:08.1483027Z hint: 	git config --global init.defaultBranch <name>
+2026-08-10T21:32:08.1483692Z hint:
+2026-08-10T21:32:08.1484482Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-08-10T21:32:08.1485827Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-08-10T21:32:08.1486692Z hint:
+2026-08-10T21:32:08.1487211Z hint: 	git branch -m <name>
+2026-08-10T21:32:08.1487756Z hint:
+2026-08-10T21:32:08.1488527Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-08-10T21:32:08.1490227Z Initialized empty Git repository in /home/runner/work/k8s-config-connector/k8s-config-connector/.git/
+2026-08-10T21:32:08.1492261Z [command]/usr/bin/git remote add origin https://github.com/GoogleCloudPlatform/k8s-config-connector
+2026-08-10T21:32:08.1607949Z ##[endgroup]
+2026-08-10T21:32:08.1609203Z ##[group]Disabling automatic garbage collection
+2026-08-10T21:32:08.1611454Z [command]/usr/bin/git config --local gc.auto 0
+2026-08-10T21:32:08.1631679Z ##[endgroup]
+2026-08-10T21:32:08.1632368Z ##[group]Setting up auth
+2026-08-10T21:32:08.1636640Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-08-10T21:32:08.1660385Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-08-10T21:32:08.1891049Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-08-10T21:32:08.1915283Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-08-10T21:32:08.2071060Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-08-10T21:32:08.2095501Z ##[endgroup]
+2026-08-10T21:32:08.2096613Z ##[group]Fetching the repository
+2026-08-10T21:32:08.2103916Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +ec10daee5bbb934b848d1e0ddab3d5cdf35ae512:refs/remotes/pull/12041/merge
+2026-08-10T21:32:11.3782182Z From https://github.com/GoogleCloudPlatform/k8s-config-connector
+2026-08-10T21:32:11.3786094Z  * [new ref]           ec10daee5bbb934b848d1e0ddab3d5cdf35ae512 -> pull/12041/merge
+2026-08-10T21:32:11.3802201Z ##[endgroup]
+2026-08-10T21:32:11.3804272Z ##[group]Determining the checkout info
+2026-08-10T21:32:11.3806552Z ##[endgroup]
+2026-08-10T21:32:11.3808142Z [command]/usr/bin/git sparse-checkout disable
+2026-08-10T21:32:11.4657770Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-08-10T21:32:11.5772931Z ##[group]Checking out the ref
+2026-08-10T21:32:11.5775471Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/12041/merge
+2026-08-10T21:32:12.6207388Z Updating files:  36% (14125/38559)
+2026-08-10T21:32:12.6327730Z Updating files:  37% (14267/38559)
+2026-08-10T21:32:12.6421779Z Updating files:  38% (14653/38559)
+2026-08-10T21:32:12.6512118Z Updating files:  39% (15039/38559)
+2026-08-10T21:32:12.6616521Z Updating files:  40% (15424/38559)
+2026-08-10T21:32:12.6700101Z Updating files:  41% (15810/38559)
+2026-08-10T21:32:12.6790642Z Updating files:  42% (16195/38559)
+2026-08-10T21:32:12.6872521Z Updating files:  43% (16581/38559)
+2026-08-10T21:32:12.6969204Z Updating files:  44% (16966/38559)
+2026-08-10T21:32:12.7103608Z Updating files:  45% (17352/38559)
+2026-08-10T21:32:12.7209929Z Updating files:  46% (17738/38559)
+2026-08-10T21:32:12.7306243Z Updating files:  47% (18123/38559)
+2026-08-10T21:32:12.7396245Z Updating files:  48% (18509/38559)
+2026-08-10T21:32:12.7488458Z Updating files:  49% (18894/38559)
+2026-08-10T21:32:12.7575063Z Updating files:  50% (19280/38559)
+2026-08-10T21:32:12.7670217Z Updating files:  51% (19666/38559)
+2026-08-10T21:32:12.7755107Z Updating files:  52% (20051/38559)
+2026-08-10T21:32:12.7842536Z Updating files:  53% (20437/38559)
+2026-08-10T21:32:12.7925257Z Updating files:  54% (20822/38559)
+2026-08-10T21:32:12.8012932Z Updating files:  55% (21208/38559)
+2026-08-10T21:32:12.8085479Z Updating files:  56% (21594/38559)
+2026-08-10T21:32:12.8175471Z Updating files:  57% (21979/38559)
+2026-08-10T21:32:12.8358355Z Updating files:  58% (22365/38559)
+2026-08-10T21:32:12.8529787Z Updating files:  59% (22750/38559)
+2026-08-10T21:32:12.8643623Z Updating files:  60% (23136/38559)
+2026-08-10T21:32:12.8758516Z Updating files:  61% (23521/38559)
+2026-08-10T21:32:12.8923561Z Updating files:  62% (23907/38559)
+2026-08-10T21:32:12.8992247Z Updating files:  63% (24293/38559)
+2026-08-10T21:32:12.9083628Z Updating files:  64% (24678/38559)
+2026-08-10T21:32:12.9195258Z Updating files:  65% (25064/38559)
+2026-08-10T21:32:12.9410745Z Updating files:  66% (25449/38559)
+2026-08-10T21:32:12.9583977Z Updating files:  67% (25835/38559)
+2026-08-10T21:32:12.9797906Z Updating files:  68% (26221/38559)
+2026-08-10T21:32:12.9959234Z Updating files:  69% (26606/38559)
+2026-08-10T21:32:13.0172669Z Updating files:  70% (26992/38559)
+2026-08-10T21:32:13.0419536Z Updating files:  71% (27377/38559)
+2026-08-10T21:32:13.0681309Z Updating files:  72% (27763/38559)
+2026-08-10T21:32:13.0802291Z Updating files:  73% (28149/38559)
+2026-08-10T21:32:13.1077271Z Updating files:  74% (28534/38559)
+2026-08-10T21:32:13.1388239Z Updating files:  75% (28920/38559)
+2026-08-10T21:32:13.1551497Z Updating files:  76% (29305/38559)
+2026-08-10T21:32:13.1796049Z Updating files:  77% (29691/38559)
+2026-08-10T21:32:13.1934782Z Updating files:  78% (30077/38559)
+2026-08-10T21:32:13.2136293Z Updating files:  79% (30462/38559)
+2026-08-10T21:32:13.3691840Z Updating files:  80% (30848/38559)
+2026-08-10T21:32:13.3765710Z Updating files:  81% (31233/38559)
+2026-08-10T21:32:13.3840608Z Updating files:  82% (31619/38559)
+2026-08-10T21:32:13.3915624Z Updating files:  83% (32004/38559)
+2026-08-10T21:32:13.3988925Z Updating files:  84% (32390/38559)
+2026-08-10T21:32:13.4119773Z Updating files:  85% (32776/38559)
+2026-08-10T21:32:13.4202767Z Updating files:  86% (33161/38559)
+2026-08-10T21:32:13.4307086Z Updating files:  87% (33547/38559)
+2026-08-10T21:32:13.4399473Z Updating files:  88% (33932/38559)
+2026-08-10T21:32:13.4473072Z Updating files:  89% (34318/38559)
+2026-08-10T21:32:13.4550169Z Updating files:  90% (34704/38559)
+2026-08-10T21:32:13.4719561Z Updating files:  91% (35089/38559)
+2026-08-10T21:32:13.4934920Z Updating files:  92% (35475/38559)
+2026-08-10T21:32:13.5131542Z Updating files:  93% (35860/38559)
+2026-08-10T21:32:13.5341543Z Updating files:  94% (36246/38559)
+2026-08-10T21:32:13.5487438Z Updating files:  95% (36632/38559)
+2026-08-10T21:32:13.5621231Z Updating files:  96% (37017/38559)
+2026-08-10T21:32:13.5746642Z Updating files:  97% (37403/38559)
+2026-08-10T21:32:13.5903382Z Updating files:  98% (37788/38559)
+2026-08-10T21:32:13.6062602Z Updating files:  99% (38174/38559)
+2026-08-10T21:32:13.6063190Z Updating files: 100% (38559/38559)
+2026-08-10T21:32:13.6063872Z Updating files: 100% (38559/38559), done.
+2026-08-10T21:32:13.6463503Z Note: switching to 'refs/remotes/pull/12041/merge'.
+2026-08-10T21:32:13.6464085Z 
+2026-08-10T21:32:13.6464424Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-08-10T21:32:13.6465240Z changes and commit them, and you can discard any commits you make in this
+2026-08-10T21:32:13.6466005Z state without impacting any branches by switching back to a branch.
+2026-08-10T21:32:13.6466554Z 
+2026-08-10T21:32:13.6466786Z If you want to create a new branch to retain commits you create, you may
+2026-08-10T21:32:13.6467217Z do so (now or later) by using -c with the switch command. Example:
+2026-08-10T21:32:13.6467453Z 
+2026-08-10T21:32:13.6467611Z   git switch -c <new-branch-name>
+2026-08-10T21:32:13.6467773Z 
+2026-08-10T21:32:13.6467919Z Or undo this operation with:
+2026-08-10T21:32:13.6468073Z 
+2026-08-10T21:32:13.6468212Z   git switch -
+2026-08-10T21:32:13.6468403Z 
+2026-08-10T21:32:13.6468594Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-08-10T21:32:13.6468936Z 
+2026-08-10T21:32:13.6469477Z HEAD is now at ec10daee Merge dd9d60c87f2bc481af2405c5908af6e5b3b63c71 into a5c34f665bf2da0056037f41016035bf101db401
+2026-08-10T21:32:13.6513183Z ##[endgroup]
+2026-08-10T21:32:13.6543248Z [command]/usr/bin/git log -1 --format=%H
+2026-08-10T21:32:13.6560744Z ec10daee5bbb934b848d1e0ddab3d5cdf35ae512
+2026-08-10T21:32:13.6740615Z ##[group]Run dev/tasks/free-disk-space-on-github-actions-runner
+2026-08-10T21:32:13.6741201Z [36;1mdev/tasks/free-disk-space-on-github-actions-runner[0m
+2026-08-10T21:32:13.6770602Z shell: /usr/bin/bash -e {0}
+2026-08-10T21:32:13.6771011Z ##[endgroup]
+2026-08-10T21:32:13.6865060Z Before cleanup:
+2026-08-10T21:32:13.6880200Z Filesystem      Size  Used Avail Use% Mounted on
+2026-08-10T21:32:13.6880565Z /dev/root       145G   58G   87G  40% /
+2026-08-10T21:33:07.5526553Z Deleted Images:
+2026-08-10T21:33:07.5527233Z untagged: ghcr.io/dependabot/dependabot-updater-core:latest
+2026-08-10T21:33:07.5528186Z untagged: ghcr.io/dependabot/dependabot-updater-core@sha256:06da5d15313bd7494b9d7843e5592a3447b0519d58d9443700b4c066dd88ce4e
+2026-08-10T21:33:07.5529182Z deleted: sha256:beb6211895b06b03926b0667940552751c56be0523e1abd73709ccc600de629c
+2026-08-10T21:33:07.5530093Z deleted: sha256:093d5b61c52fbf02002a4e73e3a1f9e143d7abb8e802bf4b6a89f1891376440e
+2026-08-10T21:33:07.5531048Z deleted: sha256:fae08bddc41bad0997839b6e729bc884a359edc342580be90ddfde260702d296
+2026-08-10T21:33:07.5531864Z deleted: sha256:c8ff9c7833650ca4152a258a0a5a3a8fbc6306808690a98048e0d32b9b15b7c4
+2026-08-10T21:33:07.5532416Z deleted: sha256:7485233e0281ed232ff9c9b22fae64a48baf277e12bec66a4d0bee2fc01eb355
+2026-08-10T21:33:07.5532976Z deleted: sha256:5235da268c35d780fd16381ea3cdccabc8c18348cf0b2e0b01af8779f07bd543
+2026-08-10T21:33:07.5533630Z deleted: sha256:bb41513a0461ed3aaa69541867fcf72926b72e81b299c59eee5d5ce44008336e
+2026-08-10T21:33:07.5534230Z deleted: sha256:6aa0a3f5721d48290c586c07a08b0cae33e20a8c0e4a02caca4c9e5e9ceb70a5
+2026-08-10T21:33:07.5534839Z deleted: sha256:e0be43307b491175885b237d0083b85b721f99cc274a2441d3e357a39cccb50c
+2026-08-10T21:33:07.5535464Z deleted: sha256:7ea70c5787a8e343868f1ad539db28a77db5edbb1e024b24ebad591b5def0da4
+2026-08-10T21:33:07.5536025Z deleted: sha256:fba6ba581fc892877e7599259950f74f4d18ea535d0a7f4132bcc6342c6fd88a
+2026-08-10T21:33:07.5536664Z deleted: sha256:ccaf719c0b42484491b94e62a93b95b26aec6fde56dc1cbbed9515b7f669aef9
+2026-08-10T21:33:07.5537370Z deleted: sha256:f103cd120fdd6cbc7f3d0e1d5bfb3e16290c32ead7b822d15c34460ecdf64b29
+2026-08-10T21:33:07.5538083Z untagged: ghcr.io/github/gh-aw-firewall/api-proxy:latest
+2026-08-10T21:33:07.5538852Z untagged: ghcr.io/github/gh-aw-firewall/api-proxy@sha256:fc2970aadaeae05993e76697d29f03dc8bfb9248ff87a8f3d8b0975485a4b317
+2026-08-10T21:33:07.5539731Z deleted: sha256:c275829eb3ac9f1d0bf2fd6e52969056bb4865be234f5b86244ffca331f60807
+2026-08-10T21:33:07.5540450Z deleted: sha256:6718689011eed0897d40ec7e5676add75f27e7c004fe52aeccd32b1f731fc2ab
+2026-08-10T21:33:07.5541005Z deleted: sha256:d24234332196f00130baa4c81be278de312033a96ee97eda181e771c5f06b502
+2026-08-10T21:33:07.5541535Z deleted: sha256:332141aff7801dbd8b17c3cdf5a24d10d81b8959d5a642c0be7bace6ef50ab56
+2026-08-10T21:33:07.5542129Z deleted: sha256:d6ef614c240e61cac7158d3a7ee9a410c402a09a05e78597676a95657cb36019
+2026-08-10T21:33:07.5542758Z deleted: sha256:6df6b333b4d0f005b60e28c1122f6a125ff4341a8c70ca670a87fa16cb0d3443
+2026-08-10T21:33:07.5543693Z deleted: sha256:ab9f3a85577dfd5a22ae0304ae74c12488cec989c3711cfad1e9368e2fafc1a5
+2026-08-10T21:33:07.5544282Z deleted: sha256:10b6f28122b16e3d80c54e71d3862408c577f6ff0339294343a8748ac0222a42
+2026-08-10T21:33:07.5544860Z deleted: sha256:0c510e9bce8d06ea9f60ea02991cd0fab1dbe507ac8df9e97e13f7a1b776d10b
+2026-08-10T21:33:07.5545368Z deleted: sha256:99c649c17859ff1c577895fa3686215de56be09d50dad7da7e1b4c4699b4c36d
+2026-08-10T21:33:07.5546083Z deleted: sha256:ce71179e83b5dfa4d0334c62a71d263f8316aa9b91ce87db83c38752ea5f1946
+2026-08-10T21:33:07.5546731Z deleted: sha256:42af7d5015d124254c82fa4f3c7b6126d37c2a8cb49ce041c8b2a4194ce99e8b
+2026-08-10T21:33:07.5547352Z deleted: sha256:4e06155ae763df57e62c25698c633755617e33d207d17b97b0cbfd5fb0c7785b
+2026-08-10T21:33:07.5547816Z untagged: ghcr.io/github/github-mcp-server:latest
+2026-08-10T21:33:07.5548483Z untagged: ghcr.io/github/github-mcp-server@sha256:2b0c48b070f61e9d3969269ead600f62d00fb237b60ac849ef3d166ee7de9ad3
+2026-08-10T21:33:07.5549746Z deleted: sha256:f40c60c6e12a30e2102b9249994156465f9ad40086cce3a525cd0db534310dc2
+2026-08-10T21:33:07.5550405Z deleted: sha256:b5250bf133ff3007629d7c9995d28ae6c6440a7ce316e1eb496ef88d1cc7a1ef
+2026-08-10T21:33:07.5551121Z deleted: sha256:93f8a4ff89fed3ba912cd46d84ce104671efdcd2e5e9813b539aca349ef54c77
+2026-08-10T21:33:07.5551747Z deleted: sha256:f143ca3d3aff7912392b5453df67a2c2311a9093c2ce9df6641f7969b8d57876
+2026-08-10T21:33:07.5552376Z deleted: sha256:dc4d20d688742988140835ef055b9bf2352771c9bd79e788163307766ace428d
+2026-08-10T21:33:07.5552919Z deleted: sha256:b5899337b61a770d1369ef891942bf206c5130fd418d79dd03b137c79417797e
+2026-08-10T21:33:07.5553538Z deleted: sha256:9961f624d433af6bf5f27a9329b20c9003871d4d6a8eaf7660e0c3ee97b99ec0
+2026-08-10T21:33:07.5554222Z deleted: sha256:a93d4c94ed98a870888a83c87b9ed539ad5ffe48766cf18704fdf7a7ddc22b8b
+2026-08-10T21:33:07.5554901Z deleted: sha256:aa5474e4e9e56714055b03e72a0b67af902f4250d72e7adbbad052d394da396c
+2026-08-10T21:33:07.5555558Z deleted: sha256:becefdc9434d01995ec24d208298b0b31e91bf355abcad4bb1c976f5c3d34041
+2026-08-10T21:33:07.5556259Z deleted: sha256:ace00d72e107d7fab390228217b3203f35c811e72e774a94e8146787ed135bd7
+2026-08-10T21:33:07.5556761Z deleted: sha256:1489daf1169adbdd01f5607124efecb1b8adae04ccc526b19b8c37b7b38f361d
+2026-08-10T21:33:07.5557451Z deleted: sha256:9aaec7450842aa16723e41bc54501a07d3ba7bdb005a59376bacde1677931af6
+2026-08-10T21:33:07.5558142Z deleted: sha256:90a369081e0d4a94f4b46a4bbcaedb0697cf7137f89c43b56863f1f82fc700df
+2026-08-10T21:33:07.5558810Z deleted: sha256:0d13c93c781826bb241661df56e754515b367c1b9f0658cd9b7779b387730a6b
+2026-08-10T21:33:07.5559468Z deleted: sha256:ae4ea0419daf3b80677707c6cb2a7e1ad717843d902a774d7e0fb08702db3df4
+2026-08-10T21:33:07.5560152Z deleted: sha256:9ac0db7cd6b389001b18856f7926a18dff7f834c84523445e5030fd753f09245
+2026-08-10T21:33:07.5560633Z untagged: ghcr.io/github/gh-aw-mcpg:latest
+2026-08-10T21:33:07.5561279Z untagged: ghcr.io/github/gh-aw-mcpg@sha256:3c744710ea275cd5ee65db92a1099e0d980754bd9fafda9ce67704c67004dc83
+2026-08-10T21:33:07.5562039Z deleted: sha256:0d3df43c86f7e6be375ac47805b2ca600ca1eb869c5d9759627f69786be992df
+2026-08-10T21:33:07.5562720Z deleted: sha256:18da42760118282bc3592b3e4e242888c8edc868e46551d3740943370fc961b1
+2026-08-10T21:33:07.5563380Z deleted: sha256:1b259134a1d27bc7f6c942477fa9ac953ed78f04d52ac40d61123cdd4cd5d933
+2026-08-10T21:33:07.5564042Z deleted: sha256:423c65e9d1193b1980fbd182e54ec28cdcf06f64833b3d29889eee2d3c3a9cf4
+2026-08-10T21:33:07.5564742Z deleted: sha256:04586c868512a57329f32f6fce894e6501d2de266d863f4049dea0e4a4d1b74c
+2026-08-10T21:33:07.5565244Z deleted: sha256:b8aa5a3c8cd9ee86c12bcce2a07b1191ac543f43d615dbf8524f47beaab3bab9
+2026-08-10T21:33:07.5565833Z deleted: sha256:cec1bfc3afe4c42bf0723c783ab16bcebaee0734f6b8624513751b5d3f7ba12e
+2026-08-10T21:33:07.5566339Z deleted: sha256:e56bf8f071ec044e227074f33fc258d5b0f903a53f3867597cb56628db110d07
+2026-08-10T21:33:07.5566858Z deleted: sha256:34884abbe92863fce933ed7c39c0e045631af0ed86d5cc0dfbdf9fdca426ce3c
+2026-08-10T21:33:07.5567457Z untagged: ghcr.io/github/gh-aw-firewall/agent:latest
+2026-08-10T21:33:07.5567989Z untagged: ghcr.io/github/gh-aw-firewall/agent@sha256:0d35e8682845f183c1c634699a8e8a6cbe2c271b867031410df74533243c5f67
+2026-08-10T21:33:07.5568596Z deleted: sha256:34486428c615b1af0c4fadb579031acb1d585e2b411b7fe157eff8b53538d634
+2026-08-10T21:33:07.5569301Z deleted: sha256:ffe5b18926c66c6628b61e6fb58d31b4dccd868034ba2738d714278b444a8b6f
+2026-08-10T21:33:07.5569893Z deleted: sha256:5c1d5d03de7240d290882992fe5e882738130186ba3133400b20a07b11b621cd
+2026-08-10T21:33:07.5570553Z deleted: sha256:499aac4cc461580d27a1157da60cbaa884021d7d3b0fff106d3e673f07315c16
+2026-08-10T21:33:07.5571045Z deleted: sha256:89b831d80e78406b43a6c95a79b1f3e024daf7bfea15c0f0456a553a2c18d552
+2026-08-10T21:33:07.5571542Z deleted: sha256:f62cdc35809c2eb747a73598128a57b17e9d613aeec0be78a1a4aca7bbfd94b4
+2026-08-10T21:33:07.5572072Z deleted: sha256:3e9fd60fe8162957a2a92a0aa344c45b3b076bb9bcf8fc15552a973a522a364d
+2026-08-10T21:33:07.5572651Z deleted: sha256:1bce1a475f4904ecbc5b3f820856130f15e4d7ac90ba0e8399203365eb13746c
+2026-08-10T21:33:07.5573212Z deleted: sha256:001c081771a82d859e83bd10f8788d3e9fdf9135c0818173c5d441ef2e2e941c
+2026-08-10T21:33:07.5573706Z deleted: sha256:73500115736fe03e6aa972e2ba795480a41fe941e213cd7cc2befb07609acb2b
+2026-08-10T21:33:07.5574216Z deleted: sha256:40ea6ba9fb643f004a92d0fd0ec7cc2ac661e68c7c1806c8dfa3c7bbd39d9d3a
+2026-08-10T21:33:07.5574722Z deleted: sha256:e89d119f240cb26543b869cabaab9e96cd15d5d93f8a6f1f28e4dba67d14d716
+2026-08-10T21:33:07.5575341Z deleted: sha256:1806b842d5b92fbabb0e1f320b4cb18134a87fd60287de81ee6c20198d9b1bb9
+2026-08-10T21:33:07.5575815Z deleted: sha256:dd4bc0e35d5e571c085836d260da0f7c7ceec71be00eadbd9981e33b6fedbe9d
+2026-08-10T21:33:07.5576330Z deleted: sha256:38e849f9b67dd1e6f67b40100c4bba76415bed55b46b9cf5df247c441e46a51a
+2026-08-10T21:33:07.5576833Z deleted: sha256:0ce3e765ec8781a5b85b7cf78c28de1e4a6002a5f6f3d706c626287428f3cb4d
+2026-08-10T21:33:07.5577325Z deleted: sha256:13fa6c7d25e7800c5ba71ae68af2979f8c11292d05d583be539c7bcb4bbe7e6a
+2026-08-10T21:33:07.5577880Z deleted: sha256:bf5fa42a765f68858e5f8e4ac71992aa9c4af17476aef5bcacf5efdc6b33ff9a
+2026-08-10T21:33:07.5578394Z deleted: sha256:10f9108f6cebf96e05cadfab3c188071f3c6d084abe680fd0bc9f61c268e854d
+2026-08-10T21:33:07.5578857Z untagged: ghcr.io/github/gh-aw-firewall/squid:latest
+2026-08-10T21:33:07.5579522Z untagged: ghcr.io/github/gh-aw-firewall/squid@sha256:5abc51995e5901c5d1daeefc957301ee409980e2e607391ec22c06cb2513327b
+2026-08-10T21:33:07.5580263Z deleted: sha256:5d2a3b5c96c4e06039394d9b1446fb9a6bbe22a0e779f8acee3c84dd87a8de3f
+2026-08-10T21:33:07.5580789Z deleted: sha256:7b3976961a67c6d5db582e58e3ec84f80ff4a6d17e81bd5c8b9ab8ac395eec3b
+2026-08-10T21:33:07.5581280Z deleted: sha256:15fdd1e303c4113814c37243c285a3094d92e6bbc7cb3cd3f3a892249130b783
+2026-08-10T21:33:07.5581772Z deleted: sha256:cf119a274cb9c334dd976fbb5a0ac69a34421beff51e1c51eaca952298aac12e
+2026-08-10T21:33:07.5582330Z deleted: sha256:5292e117ce638fa26361066de363a581b6649582eedfa92b668144ce4507369f
+2026-08-10T21:33:07.5582803Z deleted: sha256:18b8983bb021aeaf0d3dd60c74b83c5af746dd4e851b7272a3165130b2740bd3
+2026-08-10T21:33:07.5583328Z deleted: sha256:0f7aceedbeef2527fd8b8cb81c5e0ebbb3032d42cbd0847080e679dfa6deb274
+2026-08-10T21:33:07.5583825Z deleted: sha256:7b26b80c1cff713367db892365d8d1227498773be6690e7a39165099060acef2
+2026-08-10T21:33:07.5584325Z deleted: sha256:e8bce0aabd687e9ee90e0bada33884f40b277196f72aac9934357472863a80ae
+2026-08-10T21:33:07.5584619Z 
+2026-08-10T21:33:07.5658956Z Total reclaimed space: 1.851GB
+2026-08-10T21:33:07.5678063Z After cleanup:
+2026-08-10T21:33:07.5688432Z Filesystem      Size  Used Avail Use% Mounted on
+2026-08-10T21:33:07.5688912Z /dev/root       145G   32G  113G  22% /
+2026-08-10T21:33:07.5832800Z Prepare all required actions
+2026-08-10T21:33:07.5833419Z Getting action download info
+2026-08-10T21:33:07.7183091Z Download action repository 'actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e' (SHA:b7ad1dad31e06c5925ef5d2fc7ad053ef454303e)
+2026-08-10T21:33:08.4593139Z Download action repository 'actions/cache@v6' (SHA:55cc8345863c7cc4c66a329aec7e433d2d1c52a9)
+2026-08-10T21:33:08.7421238Z ##[group]Run ./dev/actions/cache-go
+2026-08-10T21:33:08.7421535Z with:
+2026-08-10T21:33:08.7421840Z   go-version-file: go.mod
+2026-08-10T21:33:08.7422116Z ##[endgroup]
+2026-08-10T21:33:08.7472517Z ##[start-action display=Set up Go;id=__self.__actions_setup-go]
+2026-08-10T21:33:08.7546400Z ##[group]Run actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e
+2026-08-10T21:33:08.7546786Z with:
+2026-08-10T21:33:08.7547038Z   go-version-file: go.mod
+2026-08-10T21:33:08.7547334Z   cache: false
+2026-08-10T21:33:08.7547578Z   check-latest: false
+2026-08-10T21:33:08.7549789Z   token: ***
+2026-08-10T21:33:08.7550097Z ##[endgroup]
+2026-08-10T21:33:08.8474919Z Setup go version spec 1.26.4
+2026-08-10T21:33:08.8481261Z Attempting to download 1.26.4...
+2026-08-10T21:33:09.8049608Z matching 1.26.4...
+2026-08-10T21:33:09.8070718Z Acquiring 1.26.4 from https://github.com/actions/go-versions/releases/download/1.26.4-26891772857/go-1.26.4-linux-x64.tar.gz
+2026-08-10T21:33:10.3858041Z Extracting Go...
+2026-08-10T21:33:10.3942740Z [command]/usr/bin/tar xz --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/9d732e97-9be0-404c-8bde-2cf88683cc27 -f /home/runner/work/_temp/1e980632-2ac6-4770-a74b-95a9a6bfe7c8
+2026-08-10T21:33:11.7706872Z Successfully extracted go to /home/runner/work/_temp/9d732e97-9be0-404c-8bde-2cf88683cc27
+2026-08-10T21:33:11.7707359Z Adding to the cache ...
+2026-08-10T21:33:16.8998646Z Successfully cached go to /opt/hostedtoolcache/go/1.26.4/x64
+2026-08-10T21:33:16.8999498Z Added go to the path
+2026-08-10T21:33:16.9001354Z Successfully set up Go version 1.26.4
+2026-08-10T21:33:16.9161879Z go version go1.26.4 linux/amd64
+2026-08-10T21:33:16.9162124Z 
+2026-08-10T21:33:16.9162470Z ##[group]go env
+2026-08-10T21:33:17.0175835Z AR='ar'
+2026-08-10T21:33:17.0176198Z CC='gcc'
+2026-08-10T21:33:17.0176514Z CGO_CFLAGS='-O2 -g'
+2026-08-10T21:33:17.0176817Z CGO_CPPFLAGS=''
+2026-08-10T21:33:17.0177137Z CGO_CXXFLAGS='-O2 -g'
+2026-08-10T21:33:17.0177503Z CGO_ENABLED='1'
+2026-08-10T21:33:17.0177791Z CGO_FFLAGS='-O2 -g'
+2026-08-10T21:33:17.0178078Z CGO_LDFLAGS='-O2 -g'
+2026-08-10T21:33:17.0178382Z CXX='g++'
+2026-08-10T21:33:17.0178661Z GCCGO='gccgo'
+2026-08-10T21:33:17.0179167Z GO111MODULE=''
+2026-08-10T21:33:17.0179511Z GOAMD64='v1'
+2026-08-10T21:33:17.0179806Z GOARCH='amd64'
+2026-08-10T21:33:17.0180111Z GOAUTH='netrc'
+2026-08-10T21:33:17.0180390Z GOBIN=''
+2026-08-10T21:33:17.0180690Z GOCACHE='/home/runner/.cache/go-build'
+2026-08-10T21:33:17.0181137Z GOCACHEPROG=''
+2026-08-10T21:33:17.0181410Z GODEBUG=''
+2026-08-10T21:33:17.0181771Z GOENV='/home/runner/.config/go/env'
+2026-08-10T21:33:17.0182163Z GOEXE=''
+2026-08-10T21:33:17.0182476Z GOEXPERIMENT=''
+2026-08-10T21:33:17.0182780Z GOFIPS140='off'
+2026-08-10T21:33:17.0183056Z GOFLAGS=''
+2026-08-10T21:33:17.0183897Z GOGCCFLAGS='-fPIC -m64 -pthread -Wl,--no-gc-sections -fmessage-length=0 -ffile-prefix-map=/tmp/go-build3613102789=/tmp/go-build -gno-record-gcc-switches'
+2026-08-10T21:33:17.0184728Z GOHOSTARCH='amd64'
+2026-08-10T21:33:17.0185013Z GOHOSTOS='linux'
+2026-08-10T21:33:17.0185331Z GOINSECURE=''
+2026-08-10T21:33:17.0185797Z GOMOD='/home/runner/work/k8s-config-connector/k8s-config-connector/go.mod'
+2026-08-10T21:33:17.0186356Z GOMODCACHE='/home/runner/go/pkg/mod'
+2026-08-10T21:33:17.0186730Z GONOPROXY=''
+2026-08-10T21:33:17.0187019Z GONOSUMDB=''
+2026-08-10T21:33:17.0187316Z GOOS='linux'
+2026-08-10T21:33:17.0187662Z GOPATH='/home/runner/go'
+2026-08-10T21:33:17.0188002Z GOPRIVATE=''
+2026-08-10T21:33:17.0188407Z GOPROXY='https://proxy.golang.org,direct'
+2026-08-10T21:33:17.0188860Z GOROOT='/opt/hostedtoolcache/go/1.26.4/x64'
+2026-08-10T21:33:17.0189693Z GOSUMDB='sum.golang.org'
+2026-08-10T21:33:17.0190039Z GOTELEMETRY='local'
+2026-08-10T21:33:17.0190403Z GOTELEMETRYDIR='/home/runner/.config/go/telemetry'
+2026-08-10T21:33:17.0190794Z GOTMPDIR=''
+2026-08-10T21:33:17.0191103Z GOTOOLCHAIN='local'
+2026-08-10T21:33:17.0191559Z GOTOOLDIR='/opt/hostedtoolcache/go/1.26.4/x64/pkg/tool/linux_amd64'
+2026-08-10T21:33:17.0192143Z GOVCS=''
+2026-08-10T21:33:17.0192429Z GOVERSION='go1.26.4'
+2026-08-10T21:33:17.0192900Z GOWORK='/home/runner/work/k8s-config-connector/k8s-config-connector/go.work'
+2026-08-10T21:33:17.0193496Z PKG_CONFIG='pkg-config'
+2026-08-10T21:33:17.0193757Z 
+2026-08-10T21:33:17.0194232Z ##[endgroup]
+2026-08-10T21:33:17.0273125Z ##[end-action id=__self.__actions_setup-go;outcome=success;conclusion=success;duration_ms=8279]
+2026-08-10T21:33:17.0276114Z ##[start-action display=Get Go environment variables;id=__self.go-env]
+2026-08-10T21:33:17.0296524Z ##[group]Run echo "GOCACHE=$(go env GOCACHE)" >> $GITHUB_OUTPUT
+2026-08-10T21:33:17.0296975Z [36;1mecho "GOCACHE=$(go env GOCACHE)" >> $GITHUB_OUTPUT[0m
+2026-08-10T21:33:17.0297388Z [36;1mecho "GOMODCACHE=$(go env GOMODCACHE)" >> $GITHUB_OUTPUT[0m
+2026-08-10T21:33:17.0326496Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-08-10T21:33:17.0326872Z env:
+2026-08-10T21:33:17.0327135Z   GOTOOLCHAIN: local
+2026-08-10T21:33:17.0327405Z ##[endgroup]
+2026-08-10T21:33:17.0436876Z ##[end-action id=__self.go-env;outcome=success;conclusion=success;duration_ms=16]
+2026-08-10T21:33:17.0441424Z ##[start-action display=Calculate dependencies hash;id=__self.deps-hash]
+2026-08-10T21:33:17.0457320Z ##[group]Run HASH=$(find . -name "go.mod" -o -name "go.sum" -not -path "*/vendor/*" | sort | xargs cat | sha256sum | head -c 64)
+2026-08-10T21:33:17.0457982Z [36;1mHASH=$(find . -name "go.mod" -o -name "go.sum" -not -path "*/vendor/*" | sort | xargs cat | sha256sum | head -c 64)[0m
+2026-08-10T21:33:17.0458441Z [36;1mecho "hash=${HASH}" >> $GITHUB_OUTPUT[0m
+2026-08-10T21:33:17.0479962Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-08-10T21:33:17.0480295Z env:
+2026-08-10T21:33:17.0480564Z   GOTOOLCHAIN: local
+2026-08-10T21:33:17.0480806Z ##[endgroup]
+2026-08-10T21:33:17.1683859Z ##[end-action id=__self.deps-hash;outcome=success;conclusion=success;duration_ms=124]
+2026-08-10T21:33:17.1686423Z ##[start-action display=Cache Go modules and build cache;id=__self.cache-deps]
+2026-08-10T21:33:17.1739632Z ##[group]Run actions/cache@v6
+2026-08-10T21:33:17.1739920Z with:
+2026-08-10T21:33:17.1740334Z   path: /home/runner/go/pkg/mod
+/home/runner/.cache/go-build
+~/.local/share/kubebuilder-envtest
+
+2026-08-10T21:33:17.1740929Z   key: go-deps-v7-Linux-15513848a2beef3a68507aa7fc46f446fcb33c1f2efabf9724de79875f206aad
+2026-08-10T21:33:17.1741404Z   enableCrossOsArchive: false
+2026-08-10T21:33:17.1741669Z   fail-on-cache-miss: false
+2026-08-10T21:33:17.1741960Z   lookup-only: false
+2026-08-10T21:33:17.1742210Z   save-always: false
+2026-08-10T21:33:17.1742468Z env:
+2026-08-10T21:33:17.1742705Z   GOTOOLCHAIN: local
+2026-08-10T21:33:17.1742959Z ##[endgroup]
+2026-08-10T21:33:17.5956724Z Cache hit for: go-deps-v7-Linux-15513848a2beef3a68507aa7fc46f446fcb33c1f2efabf9724de79875f206aad
+2026-08-10T21:33:18.8409447Z Received 29360128 of 2528187897 (1.2%), 28.0 MBs/sec
+2026-08-10T21:33:19.8407550Z Received 197132288 of 2528187897 (7.8%), 94.0 MBs/sec
+2026-08-10T21:33:20.8459211Z Received 402653184 of 2528187897 (15.9%), 127.8 MBs/sec
+2026-08-10T21:33:21.8458470Z Received 612368384 of 2528187897 (24.2%), 145.8 MBs/sec
+2026-08-10T21:33:22.8465349Z Received 805306368 of 2528187897 (31.9%), 153.4 MBs/sec
+2026-08-10T21:33:23.8464727Z Received 1002438656 of 2528187897 (39.7%), 159.2 MBs/sec
+2026-08-10T21:33:24.8723793Z Received 1207959552 of 2528187897 (47.8%), 163.8 MBs/sec
+2026-08-10T21:33:25.8727024Z Received 1396703232 of 2528187897 (55.2%), 165.8 MBs/sec
+2026-08-10T21:33:26.8748491Z Received 1585446912 of 2528187897 (62.7%), 167.4 MBs/sec
+2026-08-10T21:33:27.8747605Z Received 1774190592 of 2528187897 (70.2%), 168.6 MBs/sec
+2026-08-10T21:33:28.8755887Z Received 1962934272 of 2528187897 (77.6%), 169.6 MBs/sec
+2026-08-10T21:33:29.8756618Z Received 2143289344 of 2528187897 (84.8%), 169.8 MBs/sec
+2026-08-10T21:33:30.8766583Z Received 2277507072 of 2528187897 (90.1%), 166.6 MBs/sec
+2026-08-10T21:33:31.9003884Z Received 2415919104 of 2528187897 (95.6%), 163.9 MBs/sec
+2026-08-10T21:33:32.4363807Z Received 2528187897 of 2528187897 (100.0%), 165.2 MBs/sec
+2026-08-10T21:33:32.4364488Z Cache Size: ~2411 MB (2528187897 B)
+2026-08-10T21:33:32.4397563Z [command]/usr/bin/tar -xf /home/runner/work/_temp/6da1b5aa-79c8-4733-b994-8de372b61f7b/cache.tzst -P -C /home/runner/work/k8s-config-connector/k8s-config-connector --use-compress-program unzstd
+2026-08-10T21:34:25.4798015Z Cache restored successfully
+2026-08-10T21:34:25.8628687Z Cache restored from key: go-deps-v7-Linux-15513848a2beef3a68507aa7fc46f446fcb33c1f2efabf9724de79875f206aad
+2026-08-10T21:34:25.8974230Z ##[end-action id=__self.cache-deps;outcome=success;conclusion=success;duration_ms=68728]
+2026-08-10T21:34:25.9070715Z ##[start-action display=Prebuild dependencies on cache miss;id=__self.__run]
+2026-08-10T21:34:25.9180805Z ##[end-action id=__self.__run;outcome=skipped;conclusion=skipped;duration_ms=0]
+2026-08-10T21:34:25.9469205Z ##[group]Run ./dev/ci/presubmits/fuzz-roundtrippers "3-of-8"
+2026-08-10T21:34:25.9469678Z [36;1m./dev/ci/presubmits/fuzz-roundtrippers "3-of-8"[0m
+2026-08-10T21:34:26.0586102Z shell: /usr/bin/bash -e {0}
+2026-08-10T21:34:26.0586435Z env:
+2026-08-10T21:34:26.0586681Z   GOTOOLCHAIN: local
+2026-08-10T21:34:26.0586969Z   ARTIFACTS: /tmp/artifacts
+2026-08-10T21:34:26.0587236Z ##[endgroup]
+2026-08-10T21:34:26.1562433Z Running fuzz-roundtrippers (shard 3 of 8)...
+2026-08-10T21:34:28.8326001Z go: downloading k8s.io/klog v1.0.0
+2026-08-10T21:34:29.0345548Z go: downloading cloud.google.com/go/dataproc v1.12.0
+2026-08-10T21:34:29.1268930Z go: downloading cloud.google.com/go/recaptchaenterprise v1.3.1
+2026-08-10T21:34:29.1499120Z go: downloading cloud.google.com/go/vision v1.2.0
+2026-08-10T21:34:29.2413082Z go: downloading github.com/grpc-ecosystem/grpc-gateway/v2 v2.27.2
+2026-08-10T21:34:29.3348243Z go: downloading github.com/cespare/xxhash v1.1.0
+2026-08-10T21:34:29.3587302Z go: downloading github.com/grpc-ecosystem/grpc-gateway v1.16.0
+2026-08-10T21:34:29.4595699Z go: downloading github.com/apparentlymart/go-textseg v1.0.0
+2026-08-10T21:40:49.3442694Z === RUN   FuzzAllMappers
+2026-08-10T21:40:49.3443257Z warning: starting with empty corpus
+2026-08-10T21:40:49.3443966Z fuzz: elapsed: 0s, execs: 0 (0/sec), new interesting: 0 (total: 0)
+2026-08-10T21:40:52.3449254Z fuzz: elapsed: 3s, execs: 14 (5/sec), new interesting: 12 (total: 12)
+2026-08-10T21:40:55.3453071Z fuzz: elapsed: 6s, execs: 30 (5/sec), new interesting: 27 (total: 27)
+2026-08-10T21:40:58.3449985Z fuzz: elapsed: 9s, execs: 54 (8/sec), new interesting: 48 (total: 48)
+2026-08-10T21:41:01.3482131Z fuzz: elapsed: 12s, execs: 76 (7/sec), new interesting: 68 (total: 68)
+2026-08-10T21:41:04.3446777Z fuzz: elapsed: 15s, execs: 105 (10/sec), new interesting: 88 (total: 88)
+2026-08-10T21:41:07.3452992Z fuzz: elapsed: 18s, execs: 148 (14/sec), new interesting: 119 (total: 119)
+2026-08-10T21:41:10.3460450Z fuzz: elapsed: 21s, execs: 190 (14/sec), new interesting: 153 (total: 153)
+2026-08-10T21:41:13.3447610Z fuzz: elapsed: 24s, execs: 248 (19/sec), new interesting: 184 (total: 184)
+2026-08-10T21:41:16.3448851Z fuzz: elapsed: 27s, execs: 313 (22/sec), new interesting: 207 (total: 207)
+2026-08-10T21:41:19.3445498Z fuzz: elapsed: 30s, execs: 400 (29/sec), new interesting: 235 (total: 235)
+2026-08-10T21:41:22.3447636Z fuzz: elapsed: 33s, execs: 491 (30/sec), new interesting: 265 (total: 265)
+2026-08-10T21:41:25.3449164Z fuzz: elapsed: 36s, execs: 564 (24/sec), new interesting: 289 (total: 289)
+2026-08-10T21:41:28.3449848Z fuzz: elapsed: 39s, execs: 608 (15/sec), new interesting: 300 (total: 300)
+2026-08-10T21:41:31.3449379Z fuzz: elapsed: 42s, execs: 725 (39/sec), new interesting: 319 (total: 319)
+2026-08-10T21:41:34.3450437Z fuzz: elapsed: 45s, execs: 878 (51/sec), new interesting: 340 (total: 340)
+2026-08-10T21:41:37.3473121Z fuzz: elapsed: 48s, execs: 955 (26/sec), new interesting: 351 (total: 351)
+2026-08-10T21:41:40.3456055Z fuzz: elapsed: 51s, execs: 1001 (15/sec), new interesting: 359 (total: 359)
+2026-08-10T21:41:43.3449783Z fuzz: elapsed: 54s, execs: 1126 (42/sec), new interesting: 379 (total: 379)
+2026-08-10T21:41:46.3447895Z fuzz: elapsed: 57s, execs: 1429 (101/sec), new interesting: 397 (total: 397)
+2026-08-10T21:41:49.3446642Z fuzz: elapsed: 1m0s, execs: 1627 (66/sec), new interesting: 406 (total: 406)
+2026-08-10T21:41:52.3460279Z fuzz: elapsed: 1m3s, execs: 1784 (52/sec), new interesting: 419 (total: 419)
+2026-08-10T21:41:55.3456981Z fuzz: elapsed: 1m6s, execs: 2012 (76/sec), new interesting: 443 (total: 443)
+2026-08-10T21:41:58.3450116Z fuzz: elapsed: 1m9s, execs: 2266 (85/sec), new interesting: 457 (total: 457)
+2026-08-10T21:42:01.3447584Z fuzz: elapsed: 1m12s, execs: 2412 (49/sec), new interesting: 468 (total: 468)
+2026-08-10T21:42:04.3448829Z fuzz: elapsed: 1m15s, execs: 2677 (88/sec), new interesting: 484 (total: 484)
+2026-08-10T21:42:07.3445555Z fuzz: elapsed: 1m18s, execs: 2915 (79/sec), new interesting: 501 (total: 501)
+2026-08-10T21:42:10.3451788Z fuzz: elapsed: 1m21s, execs: 3138 (74/sec), new interesting: 515 (total: 515)
+2026-08-10T21:42:13.3447558Z fuzz: elapsed: 1m24s, execs: 3344 (69/sec), new interesting: 536 (total: 536)
+2026-08-10T21:42:16.3454723Z fuzz: elapsed: 1m27s, execs: 3676 (111/sec), new interesting: 555 (total: 555)
+2026-08-10T21:42:19.3446638Z fuzz: elapsed: 1m30s, execs: 4047 (124/sec), new interesting: 572 (total: 572)
+2026-08-10T21:42:22.3448531Z fuzz: elapsed: 1m33s, execs: 4353 (102/sec), new interesting: 590 (total: 590)
+2026-08-10T21:42:25.3455660Z fuzz: elapsed: 1m36s, execs: 4519 (55/sec), new interesting: 603 (total: 603)
+2026-08-10T21:42:28.3453634Z fuzz: elapsed: 1m39s, execs: 4712 (64/sec), new interesting: 622 (total: 622)
+2026-08-10T21:42:31.3451946Z fuzz: elapsed: 1m42s, execs: 5101 (130/sec), new interesting: 642 (total: 642)
+2026-08-10T21:42:34.3447879Z fuzz: elapsed: 1m45s, execs: 5617 (172/sec), new interesting: 645 (total: 645)
+2026-08-10T21:42:37.3451519Z fuzz: elapsed: 1m48s, execs: 6413 (265/sec), new interesting: 645 (total: 645)
+2026-08-10T21:42:40.3448534Z fuzz: elapsed: 1m51s, execs: 7121 (236/sec), new interesting: 647 (total: 647)
+2026-08-10T21:42:43.3446666Z fuzz: elapsed: 1m54s, execs: 7699 (193/sec), new interesting: 648 (total: 648)
+2026-08-10T21:42:46.3453105Z fuzz: elapsed: 1m57s, execs: 8530 (277/sec), new interesting: 651 (total: 651)
+2026-08-10T21:42:49.3460284Z fuzz: elapsed: 2m0s, execs: 9264 (245/sec), new interesting: 655 (total: 655)
+2026-08-10T21:42:52.3448832Z fuzz: elapsed: 2m3s, execs: 10046 (261/sec), new interesting: 656 (total: 656)
+2026-08-10T21:42:55.3449731Z fuzz: elapsed: 2m6s, execs: 10885 (280/sec), new interesting: 656 (total: 656)
+2026-08-10T21:42:58.3447836Z fuzz: elapsed: 2m9s, execs: 11646 (254/sec), new interesting: 657 (total: 657)
+2026-08-10T21:43:01.3447512Z fuzz: elapsed: 2m12s, execs: 12430 (261/sec), new interesting: 658 (total: 658)
+2026-08-10T21:43:04.3450180Z fuzz: elapsed: 2m15s, execs: 13170 (247/sec), new interesting: 660 (total: 660)
+2026-08-10T21:43:07.3450037Z fuzz: elapsed: 2m18s, execs: 13556 (129/sec), new interesting: 660 (total: 660)
+2026-08-10T21:43:10.3460727Z fuzz: elapsed: 2m21s, execs: 14509 (318/sec), new interesting: 660 (total: 660)
+2026-08-10T21:43:13.3463344Z fuzz: elapsed: 2m24s, execs: 15414 (302/sec), new interesting: 666 (total: 666)
+2026-08-10T21:43:16.3450092Z fuzz: elapsed: 2m27s, execs: 16134 (240/sec), new interesting: 666 (total: 666)
+2026-08-10T21:43:19.3449890Z fuzz: elapsed: 2m30s, execs: 17053 (306/sec), new interesting: 666 (total: 666)
+2026-08-10T21:43:19.4455226Z fuzz: elapsed: 2m30s, execs: 17053 (0/sec), new interesting: 666 (total: 666)
+2026-08-10T21:43:19.4455825Z --- FAIL: FuzzAllMappers (150.10s)
+2026-08-10T21:43:19.4456416Z     context deadline exceeded
+2026-08-10T21:43:19.4456770Z === NAME  
+2026-08-10T21:43:19.4457150Z FAIL
+2026-08-10T21:43:19.4497836Z exit status 1
+2026-08-10T21:43:19.4498607Z FAIL	github.com/GoogleCloudPlatform/k8s-config-connector/pkg/fuzztesting/fuzztests	150.169s
+2026-08-10T21:43:20.0951082Z <hint_for_agent>Run 'dev/ci/presubmits/fuzz-roundtrippers' to fix.</hint_for_agent>
+2026-08-10T21:43:20.0978527Z ##[error]Process completed with exit code 1.
+2026-08-10T21:43:20.1056954Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+2026-08-10T21:43:20.1058102Z ##[group]Run actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1
+2026-08-10T21:43:20.1058493Z with:
+2026-08-10T21:43:20.1058831Z   name: artifacts-fuzz-roundtrippers-3-of-8
+2026-08-10T21:43:20.1059333Z   path: /tmp/artifacts/
+2026-08-10T21:43:20.1059686Z   if-no-files-found: warn
+2026-08-10T21:43:20.1060007Z   compression-level: 6
+2026-08-10T21:43:20.1060265Z   overwrite: false
+2026-08-10T21:43:20.1060526Z   include-hidden-files: false
+2026-08-10T21:43:20.1060823Z env:
+2026-08-10T21:43:20.1061070Z   GOTOOLCHAIN: local
+2026-08-10T21:43:20.1061359Z ##[endgroup]
+2026-08-10T21:43:20.2487208Z (node:27082) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-08-10T21:43:20.2490619Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-08-10T21:43:20.2514937Z ##[warning]No files were found with the provided path: /tmp/artifacts/. No artifacts will be uploaded.
+2026-08-10T21:43:20.2658012Z Post job cleanup.
+2026-08-10T21:43:20.2662886Z ##[start-action display=Cache Go modules and build cache;id=__7ebd7fdb-a1a0-4697-83a7-619a9d023368.cache-deps]
+2026-08-10T21:43:20.2665210Z ##[end-action id=__7ebd7fdb-a1a0-4697-83a7-619a9d023368.cache-deps;outcome=skipped;conclusion=skipped;duration_ms=0]
+2026-08-10T21:43:20.2666984Z ##[start-action display=Set up Go;id=__7ebd7fdb-a1a0-4697-83a7-619a9d023368.__actions_setup-go]
+2026-08-10T21:43:20.2669249Z ##[end-action id=__7ebd7fdb-a1a0-4697-83a7-619a9d023368.__actions_setup-go;outcome=skipped;conclusion=skipped;duration_ms=0]
+2026-08-10T21:43:20.2731969Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+2026-08-10T21:43:20.2732956Z Post job cleanup.
+2026-08-10T21:43:20.3442310Z [command]/usr/bin/git version
+2026-08-10T21:43:20.3470042Z git version 2.54.0
+2026-08-10T21:43:20.3496930Z Temporarily overriding HOME='/home/runner/work/_temp/1d03d46a-aee5-4e27-85c7-f9bc222133df' before making global git config changes
+2026-08-10T21:43:20.3497638Z Adding repository directory to the temporary git global config as a safe directory
+2026-08-10T21:43:20.3501666Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/k8s-config-connector/k8s-config-connector
+2026-08-10T21:43:20.3530378Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-08-10T21:43:20.3556696Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-08-10T21:43:20.3917340Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-08-10T21:43:20.3933445Z http.https://github.com/.extraheader
+2026-08-10T21:43:20.3940610Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-08-10T21:43:20.3963252Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-08-10T21:43:20.4279701Z Cleaning up orphan processes
+2026-08-10T21:43:20.4552307Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683, actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
