@@ -86,15 +86,24 @@ type NetworkConnectivityInternalRangeSpec struct {
 	Usage *string `json:"usage,omitempty"`
 }
 
-// +kcc:proto=mockgcp.cloud.networkconnectivity.v1.AllocationOptions
+// +kcc:proto=mockgcp.cloud.networkconnectivity.v1.InternalRange.AllocationOptions
 type AllocationOptions struct {
 	// Optional. Allocation strategy. Not setting this field when the allocation is requested means an implementation defined strategy is used.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.AllocationOptions.allocation_strategy
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.InternalRange.AllocationOptions.allocation_strategy
 	AllocationStrategy *string `json:"allocationStrategy,omitempty"`
 
 	// Optional. This field must be set only when allocation_strategy is set to RANDOM_FIRST_N_AVAILABLE. The value should be the maximum expected parallelism of range creation requests issued to the same space of peered networks.
-	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.AllocationOptions.first_available_ranges_lookup_size
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.InternalRange.AllocationOptions.first_available_ranges_lookup_size
 	FirstAvailableRangesLookupSize *int32 `json:"firstAvailableRangesLookupSize,omitempty"`
+}
+
+// +kcc:proto=mockgcp.cloud.networkconnectivity.v1.InternalRange.Migration
+type Migration struct {
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.InternalRange.Migration.source
+	Source *string `json:"source,omitempty"`
+
+	// +kcc:proto:field=mockgcp.cloud.networkconnectivity.v1.InternalRange.Migration.target
+	Target *string `json:"target,omitempty"`
 }
 
 // NetworkConnectivityInternalRangeStatus defines the config connector machine state of NetworkConnectivityInternalRange

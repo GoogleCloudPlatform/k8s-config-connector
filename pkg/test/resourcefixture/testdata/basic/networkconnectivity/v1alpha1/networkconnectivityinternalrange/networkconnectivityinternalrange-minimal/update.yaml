@@ -22,5 +22,5 @@ spec:
   networkRef:
     name: computenetwork-${uniqueId}
   location: global
-  prefixLength: 28
+  prefixLength: 20
   description: "Updated description"

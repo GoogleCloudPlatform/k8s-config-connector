@@ -58,19 +58,6 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 		}
 	})
 
-	transformInternalRange := func(m map[string]any) {
-		if m["prefixLength"] != nil && m["ipCidrRange"] != nil {
-			if cidr, ok := m["ipCidrRange"].(string); ok {
-				parts := strings.Split(cidr, "/")
-				if len(parts) == 2 && strings.HasPrefix(parts[0], "10.0.") {
-					m["ipCidrRange"] = "10.0.1.0/" + parts[1]
-				}
-			}
-		}
-	}
-	replacements.TransformObject("", transformInternalRange)
-	replacements.TransformObject(".response", transformInternalRange)
-
 	replacements.TransformObject("", func(m map[string]any) {
 		if !isNetworkConnectivityOperation(m) {
 			return
@@ -92,4 +79,52 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
+	if !strings.Contains(event.URL(), "networkconnectivity.googleapis.com") {
+		return
+	}
+
+	var res struct {
+		IPCidrRange string `json:"ipCidrRange"`
+		Address     string `json:"address"`
+		Response    struct {
+			IPCidrRange string `json:"ipCidrRange"`
+			Address     string `json:"address"`
+		} `json:"response"`
+	}
+	if ok := event.ParseResponseInto(&res); ok {
+		cidr := res.IPCidrRange
+		if cidr == "" {
+			cidr = res.Response.IPCidrRange
+		}
+		if cidr != "" {
+			hasExplicitIP := false
+			event.VisitRequestStringValues(func(path string, value string) {
+				if (strings.HasSuffix(path, "ipCidrRange") || strings.HasSuffix(path, "ip_cidr_range")) && value != "" {
+					hasExplicitIP = true
+				}
+			})
+			if !hasExplicitIP {
+				parts := strings.Split(cidr, "/")
+				if len(parts) == 2 {
+					replacements.ReplaceStringValue(cidr, "10.0.1.0/"+parts[1])
+				}
+			}
+		}
+
+		addr := res.Address
+		if addr == "" {
+			addr = res.Response.Address
+		}
+		if addr != "" {
+			hasExplicitAddress := false
+			event.VisitRequestStringValues(func(path string, value string) {
+				if (strings.HasSuffix(path, "address") || strings.HasSuffix(path, "ipAddress")) && value != "" {
+					hasExplicitAddress = true
+				}
+			})
+			if !hasExplicitAddress {
+				replacements.ReplaceStringValue(addr, "10.128.0.2")
+			}
+		}
+	}
 }

@@ -70,8 +70,16 @@ func (r *regionalEndpoints) CreateProjectsLocationsRegionalEndpoint(ctx context.
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
-	obj.PscForwardingRule = fmt.Sprintf("//compute.googleapis.com/projects/%s/regions/%s/forwardingRules/rep-%s", name.Project.ID, name.Location, name.RegionalEndpointName)
-	obj.IpAddress = "10.128.0.2"
+	obj.PscForwardingRule = fmt.Sprintf("//compute.googleapis.com/projects/%s/regions/%s/forwardingRules/rep-autogen-fr-%s", name.Project.ID, name.Location, name.RegionalEndpointName)
+	if obj.Address == "" {
+		obj.Address = "10.128.0.2"
+	}
+	if obj.Network == "" {
+		obj.Network = fmt.Sprintf("projects/%s/global/networks/default", name.Project.ID)
+		obj.Subnetwork = fmt.Sprintf("projects/%s/regions/%s/subnetworks/default", name.Project.ID, name.Location)
+	} else {
+		obj.Subnetwork = ""
+	}
 	if err := r.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}

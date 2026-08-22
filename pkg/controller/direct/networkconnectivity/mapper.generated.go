@@ -24,58 +24,12 @@
 package networkconnectivity
 
 import (
-	krmcomputerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
-	krmcomputev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	pb "cloud.google.com/go/networkconnectivity/apiv1/networkconnectivitypb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/networkconnectivity/v1alpha1"
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/networkconnectivity/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-/* found existing non-generated mapping function "AllocationOptions_FromProto", skipping
-func AllocationOptions_FromProto(mapCtx *direct.MapContext, in *pb.AllocationOptions) *krm.AllocationOptions {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AllocationOptions{}
-	out.AllocationStrategy = direct.LazyPtr(in.GetAllocationStrategy())
-	out.FirstAvailableRangesLookupSize = direct.LazyPtr(in.GetFirstAvailableRangesLookupSize())
-	return out
-}
-*/
-
-/*
-found existing non-generated mapping function "AllocationOptions_ToProto", skipping
-
-	func AllocationOptions_ToProto(mapCtx *direct.MapContext, in *krm.AllocationOptions) *pb.AllocationOptions {
-		if in == nil {
-			return nil
-		}
-		out := &pb.AllocationOptions{}
-		out.AllocationStrategy = direct.ValueOf(in.AllocationStrategy)
-		out.FirstAvailableRangesLookupSize = direct.ValueOf(in.FirstAvailableRangesLookupSize)
-		return out
-	}
-*/
-func GoogleRpcErrorInfo_FromProto(mapCtx *direct.MapContext, in *pb.GoogleRpcErrorInfo) *krm.GoogleRpcErrorInfo {
-	if in == nil {
-		return nil
-	}
-	out := &krm.GoogleRpcErrorInfo{}
-	out.Domain = direct.LazyPtr(in.GetDomain())
-	out.Metadata = in.Metadata
-	out.Reason = direct.LazyPtr(in.GetReason())
-	return out
-}
-func GoogleRpcErrorInfo_ToProto(mapCtx *direct.MapContext, in *krm.GoogleRpcErrorInfo) *pb.GoogleRpcErrorInfo {
-	if in == nil {
-		return nil
-	}
-	out := &pb.GoogleRpcErrorInfo{}
-	out.Domain = direct.ValueOf(in.Domain)
-	out.Metadata = in.Metadata
-	out.Reason = direct.ValueOf(in.Reason)
-	return out
-}
+/* found existing non-generated mapping function "GoogleRpcStatus_FromProto", skipping
 func GoogleRpcStatus_FromProto(mapCtx *direct.MapContext, in *pb.GoogleRpcStatus) *krm.GoogleRpcStatus {
 	if in == nil {
 		return nil
@@ -86,42 +40,22 @@ func GoogleRpcStatus_FromProto(mapCtx *direct.MapContext, in *pb.GoogleRpcStatus
 	out.Message = direct.LazyPtr(in.GetMessage())
 	return out
 }
-func GoogleRpcStatus_ToProto(mapCtx *direct.MapContext, in *krm.GoogleRpcStatus) *pb.GoogleRpcStatus {
-	if in == nil {
-		return nil
-	}
-	out := &pb.GoogleRpcStatus{}
-	out.Code = direct.ValueOf(in.Code)
-	// MISSING: Details
-	out.Message = direct.ValueOf(in.Message)
-	return out
-}
-
-/* found existing non-generated mapping function "Migration_FromProto", skipping
-func Migration_FromProto(mapCtx *direct.MapContext, in *pb.Migration) *krm.Migration {
-	if in == nil {
-		return nil
-	}
-	out := &krm.Migration{}
-	out.Source = direct.LazyPtr(in.GetSource())
-	out.Target = direct.LazyPtr(in.GetTarget())
-	return out
-}
 */
 
-/* found existing non-generated mapping function "Migration_ToProto", skipping
-func Migration_ToProto(mapCtx *direct.MapContext, in *krm.Migration) *pb.Migration {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Migration{}
-	out.Source = direct.ValueOf(in.Source)
-	out.Target = direct.ValueOf(in.Target)
-	return out
-}
-*/
+/*
+found existing non-generated mapping function "GoogleRpcStatus_ToProto", skipping
 
-/* found existing non-generated mapping function "NetworkConnectivityInternalRangeObservedState_FromProto", skipping
+	func GoogleRpcStatus_ToProto(mapCtx *direct.MapContext, in *krm.GoogleRpcStatus) *pb.GoogleRpcStatus {
+		if in == nil {
+			return nil
+		}
+		out := &pb.GoogleRpcStatus{}
+		out.Code = direct.ValueOf(in.Code)
+		// MISSING: Details
+		out.Message = direct.ValueOf(in.Message)
+		return out
+	}
+*/
 func NetworkConnectivityInternalRangeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.InternalRange) *krm.NetworkConnectivityInternalRangeObservedState {
 	if in == nil {
 		return nil
@@ -135,9 +69,6 @@ func NetworkConnectivityInternalRangeObservedState_FromProto(mapCtx *direct.MapC
 	out.Users = in.Users
 	return out
 }
-*/
-
-/* found existing non-generated mapping function "NetworkConnectivityInternalRangeObservedState_ToProto", skipping
 func NetworkConnectivityInternalRangeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConnectivityInternalRangeObservedState) *pb.InternalRange {
 	if in == nil {
 		return nil
@@ -151,7 +82,6 @@ func NetworkConnectivityInternalRangeObservedState_ToProto(mapCtx *direct.MapCon
 	out.Users = in.Users
 	return out
 }
-*/
 
 /* found existing non-generated mapping function "NetworkConnectivityInternalRangeSpec_FromProto", skipping
 func NetworkConnectivityInternalRangeSpec_FromProto(mapCtx *direct.MapContext, in *pb.InternalRange) *krm.NetworkConnectivityInternalRangeSpec {
@@ -179,153 +109,33 @@ func NetworkConnectivityInternalRangeSpec_FromProto(mapCtx *direct.MapContext, i
 }
 */
 
-/*
-found existing non-generated mapping function "NetworkConnectivityInternalRangeSpec_ToProto", skipping
-
-	func NetworkConnectivityInternalRangeSpec_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConnectivityInternalRangeSpec) *pb.InternalRange {
-		if in == nil {
-			return nil
-		}
-		out := &pb.InternalRange{}
-		out.AllocationOptions = AllocationOptions_ToProto(mapCtx, in.AllocationOptions)
-		out.Description = direct.ValueOf(in.Description)
-		// MISSING: ExcludeCIDRRanges
-		// MISSING: Immutable
-		out.IpCidrRange = direct.ValueOf(in.IPCIDRRange)
-		out.Labels = in.Labels
-		out.Migration = Migration_ToProto(mapCtx, in.Migration)
-		// MISSING: Name
-		if in.NetworkRef != nil {
-			out.Network = in.NetworkRef.External
-		}
-		out.Overlaps = in.Overlaps
-		out.Peering = direct.ValueOf(in.Peering)
-		out.PrefixLength = direct.ValueOf(in.PrefixLength)
-		out.TargetCidrRange = in.TargetCIDRRange
-		out.Usage = direct.ValueOf(in.Usage)
-		return out
-	}
-*/
-func NetworkConnectivityMulticloudDataTransferConfigObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MulticloudDataTransferConfig) *krm.NetworkConnectivityMulticloudDataTransferConfigObservedState {
+/* found existing non-generated mapping function "NetworkConnectivityInternalRangeSpec_ToProto", skipping
+func NetworkConnectivityInternalRangeSpec_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConnectivityInternalRangeSpec) *pb.InternalRange {
 	if in == nil {
 		return nil
 	}
-	out := &krm.NetworkConnectivityMulticloudDataTransferConfigObservedState{}
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.DestinationsActiveCount = direct.LazyPtr(in.GetDestinationsActiveCount())
-	out.DestinationsCount = direct.LazyPtr(in.GetDestinationsCount())
-	// MISSING: Etag
-	// MISSING: Name
-	out.Services = Services_FromProto(mapCtx, in.Services)
-	out.Uid = direct.LazyPtr(in.GetUid())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	return out
-}
-func NetworkConnectivityMulticloudDataTransferConfigObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConnectivityMulticloudDataTransferConfigObservedState) *pb.MulticloudDataTransferConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.MulticloudDataTransferConfig{}
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.DestinationsActiveCount = direct.ValueOf(in.DestinationsActiveCount)
-	out.DestinationsCount = direct.ValueOf(in.DestinationsCount)
-	// MISSING: Etag
-	// MISSING: Name
-	out.Services = Services_ToProto(mapCtx, in.Services)
-	out.Uid = direct.ValueOf(in.Uid)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	return out
-}
-func NetworkConnectivityMulticloudDataTransferConfigSpec_FromProto(mapCtx *direct.MapContext, in *pb.MulticloudDataTransferConfig) *krm.NetworkConnectivityMulticloudDataTransferConfigSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.NetworkConnectivityMulticloudDataTransferConfigSpec{}
-	out.Description = direct.LazyPtr(in.GetDescription())
-	// MISSING: Etag
-	out.Labels = in.Labels
-	// MISSING: Name
-	return out
-}
-func NetworkConnectivityMulticloudDataTransferConfigSpec_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConnectivityMulticloudDataTransferConfigSpec) *pb.MulticloudDataTransferConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.MulticloudDataTransferConfig{}
+	out := &pb.InternalRange{}
+	out.AllocationOptions = AllocationOptions_ToProto(mapCtx, in.AllocationOptions)
 	out.Description = direct.ValueOf(in.Description)
-	// MISSING: Etag
+	// MISSING: ExcludeCIDRRanges
+	// MISSING: Immutable
+	out.IpCidrRange = direct.ValueOf(in.IPCIDRRange)
 	out.Labels = in.Labels
-	// MISSING: Name
-	return out
-}
-func NetworkConnectivityRegionalEndpointObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RegionalEndpoint) *krm.NetworkConnectivityRegionalEndpointObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.NetworkConnectivityRegionalEndpointObservedState{}
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.IPAddress = direct.LazyPtr(in.GetIpAddress())
-	// MISSING: Labels
-	// MISSING: Name
-	out.PSCForwardingRule = direct.LazyPtr(in.GetPscForwardingRule())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	return out
-}
-func NetworkConnectivityRegionalEndpointObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConnectivityRegionalEndpointObservedState) *pb.RegionalEndpoint {
-	if in == nil {
-		return nil
-	}
-	out := &pb.RegionalEndpoint{}
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.IpAddress = direct.ValueOf(in.IPAddress)
-	// MISSING: Labels
-	// MISSING: Name
-	out.PscForwardingRule = direct.ValueOf(in.PSCForwardingRule)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	return out
-}
-func NetworkConnectivityRegionalEndpointSpec_FromProto(mapCtx *direct.MapContext, in *pb.RegionalEndpoint) *krm.NetworkConnectivityRegionalEndpointSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.NetworkConnectivityRegionalEndpointSpec{}
-	out.AccessType = direct.LazyPtr(in.GetAccessType())
-	if in.GetAddress() != "" {
-		out.AddressRef = &krmcomputev1beta1.ComputeAddressRef{External: in.GetAddress()}
-	}
-	out.Description = direct.LazyPtr(in.GetDescription())
-	// MISSING: Labels
-	// MISSING: Name
-	if in.GetNetwork() != "" {
-		out.NetworkRef = &krmcomputerefs.ComputeNetworkRef{External: in.GetNetwork()}
-	}
-	if in.GetSubnetwork() != "" {
-		out.SubnetworkRef = &krmcomputev1beta1.ComputeSubnetworkRef{External: in.GetSubnetwork()}
-	}
-	out.TargetGoogleAPI = direct.LazyPtr(in.GetTargetGoogleApi())
-	return out
-}
-func NetworkConnectivityRegionalEndpointSpec_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConnectivityRegionalEndpointSpec) *pb.RegionalEndpoint {
-	if in == nil {
-		return nil
-	}
-	out := &pb.RegionalEndpoint{}
-	out.AccessType = direct.ValueOf(in.AccessType)
-	if in.AddressRef != nil {
-		out.Address = in.AddressRef.External
-	}
-	out.Description = direct.ValueOf(in.Description)
-	// MISSING: Labels
+	out.Migration = Migration_ToProto(mapCtx, in.Migration)
 	// MISSING: Name
 	if in.NetworkRef != nil {
 		out.Network = in.NetworkRef.External
 	}
-	if in.SubnetworkRef != nil {
-		out.Subnetwork = in.SubnetworkRef.External
-	}
-	out.TargetGoogleApi = direct.ValueOf(in.TargetGoogleAPI)
+	out.Overlaps = in.Overlaps
+	out.Peering = direct.ValueOf(in.Peering)
+	out.PrefixLength = direct.ValueOf(in.PrefixLength)
+	out.TargetCidrRange = in.TargetCIDRRange
+	out.Usage = direct.ValueOf(in.Usage)
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "NetworkConnectivityServiceConnectionPolicyObservedState_FromProto", skipping
 func NetworkConnectivityServiceConnectionPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ServiceConnectionPolicy) *krm.NetworkConnectivityServiceConnectionPolicyObservedState {
 	if in == nil {
 		return nil
@@ -341,6 +151,9 @@ func NetworkConnectivityServiceConnectionPolicyObservedState_FromProto(mapCtx *d
 	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
 	return out
 }
+*/
+
+/* found existing non-generated mapping function "NetworkConnectivityServiceConnectionPolicyObservedState_ToProto", skipping
 func NetworkConnectivityServiceConnectionPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.NetworkConnectivityServiceConnectionPolicyObservedState) *pb.ServiceConnectionPolicy {
 	if in == nil {
 		return nil
@@ -356,6 +169,7 @@ func NetworkConnectivityServiceConnectionPolicyObservedState_ToProto(mapCtx *dir
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	return out
 }
+*/
 
 /*
 found existing non-generated mapping function "NetworkConnectivityServiceConnectionPolicySpec_FromProto", skipping
@@ -387,85 +201,5 @@ func NetworkConnectivityServiceConnectionPolicySpec_ToProto(mapCtx *direct.MapCo
 	out.Network = NetworkConnectivityServiceConnectionPolicySpec_Network_ToProto(mapCtx, in.Network)
 	out.PscConfig = PSCConfig_ToProto(mapCtx, in.PSCConfig)
 	out.ServiceClass = direct.ValueOf(in.ServiceClass)
-	return out
-}
-func PSCConfig_FromProto(mapCtx *direct.MapContext, in *pb.PscConfig) *krm.PSCConfig {
-	if in == nil {
-		return nil
-	}
-	out := &krm.PSCConfig{}
-	// MISSING: AllowedGoogleProducersResourceHierarchyLevel
-	out.Limit = direct.LazyPtr(in.GetLimit())
-	out.ProducerInstanceLocation = direct.LazyPtr(in.GetProducerInstanceLocation())
-	out.Subnetworks = PSCConfig_Subnetworks_FromProto(mapCtx, in.Subnetworks)
-	return out
-}
-func PSCConfig_ToProto(mapCtx *direct.MapContext, in *krm.PSCConfig) *pb.PscConfig {
-	if in == nil {
-		return nil
-	}
-	out := &pb.PscConfig{}
-	// MISSING: AllowedGoogleProducersResourceHierarchyLevel
-	out.Limit = direct.ValueOf(in.Limit)
-	out.ProducerInstanceLocation = direct.ValueOf(in.ProducerInstanceLocation)
-	out.Subnetworks = PSCConfig_Subnetworks_ToProto(mapCtx, in.Subnetworks)
-	return out
-}
-func PSCConnection_FromProto(mapCtx *direct.MapContext, in *pb.PscConnection) *krm.PSCConnection {
-	if in == nil {
-		return nil
-	}
-	out := &krm.PSCConnection{}
-	out.ConsumerAddress = direct.LazyPtr(in.GetConsumerAddress())
-	out.ConsumerForwardingRule = direct.LazyPtr(in.GetConsumerForwardingRule())
-	out.ConsumerTargetProject = direct.LazyPtr(in.GetConsumerTargetProject())
-	out.Error = GoogleRpcStatus_FromProto(mapCtx, in.GetError())
-	out.ErrorInfo = GoogleRpcErrorInfo_FromProto(mapCtx, in.GetErrorInfo())
-	out.ErrorType = direct.LazyPtr(in.GetErrorType())
-	out.GCEOperation = direct.LazyPtr(in.GetGceOperation())
-	// MISSING: IPVersion
-	out.ProducerInstanceID = direct.LazyPtr(in.GetProducerInstanceId())
-	// MISSING: ProducerInstanceMetadata
-	out.PSCConnectionID = direct.LazyPtr(in.GetPscConnectionId())
-	out.SelectedSubnetwork = direct.LazyPtr(in.GetSelectedSubnetwork())
-	// MISSING: ServiceClass
-	out.State = direct.LazyPtr(in.GetState())
-	return out
-}
-func PSCConnection_ToProto(mapCtx *direct.MapContext, in *krm.PSCConnection) *pb.PscConnection {
-	if in == nil {
-		return nil
-	}
-	out := &pb.PscConnection{}
-	out.ConsumerAddress = direct.ValueOf(in.ConsumerAddress)
-	out.ConsumerForwardingRule = direct.ValueOf(in.ConsumerForwardingRule)
-	out.ConsumerTargetProject = direct.ValueOf(in.ConsumerTargetProject)
-	out.Error = GoogleRpcStatus_ToProto(mapCtx, in.Error)
-	out.ErrorInfo = GoogleRpcErrorInfo_ToProto(mapCtx, in.ErrorInfo)
-	out.ErrorType = direct.ValueOf(in.ErrorType)
-	out.GceOperation = direct.ValueOf(in.GCEOperation)
-	// MISSING: IPVersion
-	out.ProducerInstanceId = direct.ValueOf(in.ProducerInstanceID)
-	// MISSING: ProducerInstanceMetadata
-	out.PscConnectionId = direct.ValueOf(in.PSCConnectionID)
-	out.SelectedSubnetwork = direct.ValueOf(in.SelectedSubnetwork)
-	// MISSING: ServiceClass
-	out.State = direct.ValueOf(in.State)
-	return out
-}
-func StateTimeline_FromProto(mapCtx *direct.MapContext, in *pb.StateTimeline) *krm.StateTimeline {
-	if in == nil {
-		return nil
-	}
-	out := &krm.StateTimeline{}
-	out.States = direct.Slice_FromProto(mapCtx, in.States, StateMetadata_FromProto)
-	return out
-}
-func StateTimeline_ToProto(mapCtx *direct.MapContext, in *krm.StateTimeline) *pb.StateTimeline {
-	if in == nil {
-		return nil
-	}
-	out := &pb.StateTimeline{}
-	out.States = direct.Slice_ToProto(mapCtx, in.States, StateMetadata_ToProto)
 	return out
 }

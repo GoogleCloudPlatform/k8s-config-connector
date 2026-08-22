@@ -97,10 +97,10 @@ fi
 
 git reset --hard ${GOOGLEAPI_VERSION}
 
-# Overwrite config.proto with the updated version that has DeploymentGroup
-mkdir -p google/cloud/config/v1
-cp ${REPO_ROOT}/mockgcp/apis/google/cloud/config/v1/config.proto google/cloud/config/v1/config.proto
-
+# Copy any overlay protos from mockgcp/apis/google into VERSION_DIR
+if [ -d "${REPO_ROOT}/mockgcp/apis/google" ]; then
+    cp -r ${REPO_ROOT}/mockgcp/apis/google/* "${VERSION_DIR}/google/"
+fi
 
 if (which protoc); then
     echo "Found protoc version $(protoc --version)"
@@ -117,7 +117,7 @@ else
 fi
 
 
-if [ -f "${VERSIONED_OUTPUT_PATH}" ]; then
+if [[ "${FORCE_GENERATE}" != "1" ]] && [ -f "${VERSIONED_OUTPUT_PATH}" ]; then
     echo "Using cached googleapis pb file at ${VERSIONED_OUTPUT_PATH}"
     if [ "${VERSIONED_OUTPUT_PATH}" != "${OUTPUT_PATH}" ]; then
         cp "${VERSIONED_OUTPUT_PATH}" "${OUTPUT_PATH}"
@@ -130,11 +130,9 @@ fi
 # expand to an empty string instead of the literal wildcard string, avoiding protoc errors.
 shopt -s nullglob
 PROTO_FILES=(
-    ${REPO_ROOT}/mockgcp/apis/google/apps/cloudidentity/*/*.proto
     ${REPO_ROOT}/mockgcp/apis/mockgcp/cloud/apigee/*/*.proto
     ${REPO_ROOT}/mockgcp/apis/mockgcp/cloud/networkconnectivity/*/*.proto
     ${REPO_ROOT}/mockgcp/apis/mockgcp/cloud/servicenetworking/*/*.proto
-    ${REPO_ROOT}/mockgcp/apis/google/cloud/binaryauthorization/*/*.proto
     ${VERSION_DIR}/google/*/*.proto
     ${VERSION_DIR}/google/analytics/*/*/*.proto
     ${VERSION_DIR}/google/privacy/dlp/v2/*.proto

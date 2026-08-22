@@ -13,8 +13,6 @@
 // limitations under the License.
 
 // +tool:controller
-// proto.service: google.cloud.networkconnectivity.v1.HubService
-// proto.message: google.cloud.networkconnectivity.v1.RegionalEndpoint
 // crd.type: NetworkConnectivityRegionalEndpoint
 // crd.version: v1alpha1
 
@@ -25,7 +23,6 @@ import (
 	"fmt"
 	"time"
 
-	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/networkconnectivity/v1"
 	api "google.golang.org/api/networkconnectivity/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -106,7 +103,7 @@ type regionalEndpointAdapter struct {
 	gcpClient *api.Service
 	id        *krm.NetworkConnectivityRegionalEndpointIdentity
 	desired   *krm.NetworkConnectivityRegionalEndpoint
-	actual    *pb.RegionalEndpoint
+	actual    *api.RegionalEndpoint
 }
 
 var _ directbase.Adapter = &regionalEndpointAdapter{}
@@ -127,10 +124,7 @@ func (a *regionalEndpointAdapter) Find(ctx context.Context) (bool, error) {
 		return false, fmt.Errorf("getting networkconnectivity regionalendpoint %q from gcp: %w", a.id.String(), err)
 	}
 
-	if err := convertAPIToProto(actual, &a.actual); err != nil {
-		return false, err
-	}
-
+	a.actual = actual
 	return true, nil
 }
 
@@ -141,12 +135,10 @@ func (a *regionalEndpointAdapter) Create(ctx context.Context, createOp *directba
 	log.V(2).Info("creating networkconnectivity regionalendpoint", "name", a.id)
 	mapCtx := &direct.MapContext{}
 
-	desired := NetworkConnectivityRegionalEndpointSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
+	req := NetworkConnectivityRegionalEndpointSpec_ToAPI(mapCtx, &a.desired.DeepCopy().Spec)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	req := &api.RegionalEndpoint{}
-	err := convertProtoToAPI(desired, req)
 
 	fqn := a.id.String()
 
@@ -170,12 +162,9 @@ func (a *regionalEndpointAdapter) Create(ctx context.Context, createOp *directba
 	if err := unstructured.SetNestedField(u.Object, resourceID, "spec", "resourceID"); err != nil {
 		return fmt.Errorf("setting spec.resourceID: %w", err)
 	}
-	var createdPB *pb.RegionalEndpoint
-	if err := convertAPIToProto(created, &createdPB); err != nil {
-		return err
-	}
+
 	status := &krm.NetworkConnectivityRegionalEndpointStatus{}
-	status.ObservedState = NetworkConnectivityRegionalEndpointObservedState_FromProto(mapCtx, createdPB)
+	status.ObservedState = NetworkConnectivityRegionalEndpointObservedState_FromAPI(mapCtx, created)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -191,7 +180,7 @@ func (a *regionalEndpointAdapter) Update(ctx context.Context, updateOp *directba
 	// If any spec changes are attempted that would require an API update, it's not supported.
 	// We just update the status.
 	status := &krm.NetworkConnectivityRegionalEndpointStatus{}
-	status.ObservedState = NetworkConnectivityRegionalEndpointObservedState_FromProto(mapCtx, a.actual)
+	status.ObservedState = NetworkConnectivityRegionalEndpointObservedState_FromAPI(mapCtx, a.actual)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
@@ -206,7 +195,7 @@ func (a *regionalEndpointAdapter) Export(ctx context.Context) (*unstructured.Uns
 
 	obj := &krm.NetworkConnectivityRegionalEndpoint{}
 	mapCtx := &direct.MapContext{}
-	obj.Spec = direct.ValueOf(NetworkConnectivityRegionalEndpointSpec_FromProto(mapCtx, a.actual))
+	obj.Spec = direct.ValueOf(NetworkConnectivityRegionalEndpointSpec_FromAPI(mapCtx, a.actual))
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}

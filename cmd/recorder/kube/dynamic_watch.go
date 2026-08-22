@@ -153,16 +153,8 @@ func (w *dynamicWatch) watchUntilClosed(ctx context.Context) {
 	timeoutSeconds := int64(30 * 60)
 	options.TimeoutSeconds = &timeoutSeconds
 
-	// TODO: Once the WatchList feature gate is on by default, we can use SendInitialEvents to get a precise notification of the bookmark.
-	// Until then, we rely on a quirk that the bookmark is not sent until after the initial rows are sent (I believe)
-	// Even if that's not the case, we "only" end up with some slightly incorrect statistics.
-	// sendInitialEvents := true
-	// options.SendInitialEvents = &sendInitialEvents
-	// options.ResourceVersionMatch = metav1.ResourceVersionMatchNotOlderThan
-	// options.ResourceVersion = // unset for consistent read
-
-	// Note that we must send ResourceVersion "0", not empty, to receive bookmark events
-	options.ResourceVersion = "0"
+	sendInitialEvents := true
+	options.SendInitialEvents = &sendInitialEvents
 
 	events, err := resource.Watch(ctx, options)
 	if err != nil {

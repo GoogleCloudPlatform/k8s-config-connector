@@ -74,7 +74,21 @@ func (s *spokesServer) CreateProjectsLocationsSpoke(ctx context.Context, req *pb
 	obj.UniqueId = string(uuid.NewUUID())
 
 	// Set resolved defaults using project IDs
-	obj.SpokeType = "VPC_NETWORK"
+	if obj.LinkedRouterApplianceInstances != nil {
+		obj.SpokeType = "ROUTER_APPLIANCE"
+		if obj.LinkedRouterApplianceInstances.VpcNetwork == "" {
+			obj.LinkedRouterApplianceInstances.VpcNetwork = fmt.Sprintf("projects/%s/global/networks/default", name.Project.ID)
+		}
+	} else if obj.LinkedVpnTunnels != nil {
+		obj.SpokeType = "VPN"
+	} else if obj.LinkedInterconnectAttachments != nil {
+		obj.SpokeType = "INTERCONNECT_ATTACHMENT"
+	} else if obj.LinkedProducerVpcNetwork != nil {
+		obj.SpokeType = "PRODUCER_VPC_NETWORK"
+	} else {
+		obj.SpokeType = "VPC_NETWORK"
+	}
+	obj.Etag = "abcdef0123A="
 	if obj.Hub != "" {
 		obj.Group = fmt.Sprintf("%s/groups/default", obj.Hub)
 	}

@@ -80,7 +80,12 @@ func WatchKube[V any](ctx context.Context, kube *Target, gvr schema.GroupVersion
 // This allows us to wait for the initial "list" to complete, though
 // that list may be implemented via a watch.
 func (m *KubeView[V]) HasSyncedOnce() bool {
-	return m.syncedOnce.Load()
+	if m.syncedOnce.Load() {
+		return true
+	}
+	m.mutex.Lock()
+	defer m.mutex.Unlock()
+	return len(m.values) > 0
 }
 
 // Walk calls the callback function for each key/value pair in the map.

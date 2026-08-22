@@ -103,15 +103,8 @@ spec:
                   This field is for internal use.
                 properties:
                   source:
-                    description: 'Immutable. Resource path as an URI of the source
-                      resource, for example a subnet. The project for the source resource
-                      should match the project for the InternalRange. An example:
-                      /projects/{project}/regions/{region}/subnetworks/{subnet}'
                     type: string
                   target:
-                    description: 'Immutable. Resource path of the target resource.
-                      The target project can be different, as in the cases when migrating
-                      to peer networks. For example: /projects/{project}/regions/{region}/subnetworks/{subnet}'
                     type: string
                 type: object
               networkRef:
