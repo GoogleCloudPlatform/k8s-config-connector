@@ -68,16 +68,15 @@ func aiplatformModelFuzzer() fuzztesting.KRMFuzzer {
 	f.FilterSpec = func(in *pb.Model) {
 		if in.Metadata != nil {
 			clearUnsupportedValueFields(in.Metadata)
+			if in.Metadata.GetKind() == nil {
+				in.Metadata = nil
+			}
 		}
 		if in.ExplanationSpec != nil {
 			if in.ExplanationSpec.Metadata != nil {
 				for _, input := range in.ExplanationSpec.Metadata.Inputs {
-					for _, b := range input.InputBaselines {
-						clearUnsupportedValueFields(b)
-					}
-					for _, b := range input.EncodedBaselines {
-						clearUnsupportedValueFields(b)
-					}
+					input.InputBaselines = filterValueSlice(input.InputBaselines)
+					input.EncodedBaselines = filterValueSlice(input.EncodedBaselines)
 					if input.Visualization != nil {
 						input.Visualization.Type = 0
 						input.Visualization.Polarity = 0
@@ -85,12 +84,23 @@ func aiplatformModelFuzzer() fuzztesting.KRMFuzzer {
 					}
 				}
 				for _, output := range in.ExplanationSpec.Metadata.Outputs {
-					clearUnsupportedValueFields(output.GetIndexDisplayNameMapping())
+					if mapping := output.GetIndexDisplayNameMapping(); mapping != nil {
+						clearUnsupportedValueFields(mapping)
+						if mapping.GetKind() == nil {
+							output.DisplayNameMapping = nil
+						}
+					}
 				}
 			}
 			if in.ExplanationSpec.Parameters != nil {
 				if in.ExplanationSpec.Parameters.GetExamples() != nil {
-					clearUnsupportedValueFields(in.ExplanationSpec.Parameters.GetExamples().GetNearestNeighborSearchConfig())
+					config := in.ExplanationSpec.Parameters.GetExamples()
+					if mapping := config.GetNearestNeighborSearchConfig(); mapping != nil {
+						clearUnsupportedValueFields(mapping)
+						if mapping.GetKind() == nil {
+							config.Config = nil
+						}
+					}
 				}
 			}
 		}
@@ -128,6 +138,24 @@ func aiplatformModelFuzzer() fuzztesting.KRMFuzzer {
 	f.Unimplemented_Etag()
 
 	return f
+}
+
+func filterValueSlice(in []*structpb.Value) []*structpb.Value {
+	if in == nil {
+		return nil
+	}
+	var out []*structpb.Value
+	for _, v := range in {
+		if v == nil {
+			continue
+		}
+		clearUnsupportedValueFields(v)
+		if v.GetKind() == nil {
+			continue
+		}
+		out = append(out, v)
+	}
+	return out
 }
 
 func clearUnsupportedValueFields(v *structpb.Value) {

@@ -26,8 +26,13 @@
 // resource: VertexAICustomJob:CustomJob
 // resource: VertexAITensorboard:Tensorboard
 // resource: VertexAITensorboardExperiment:TensorboardExperiment
+// resource: VertexAIModelDeploymentMonitoringJob:ModelDeploymentMonitoringJob
 
 package v1alpha1
+
+import (
+	common "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+)
 
 // +kcc:proto=google.cloud.aiplatform.v1beta1.ActiveLearningConfig
 type ActiveLearningConfig struct {
@@ -75,6 +80,23 @@ type AutoscalingMetricSpec struct {
 	//  https://cloud.google.com/monitoring/api/v3/metric-model#generic-label-info
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.AutoscalingMetricSpec.monitored_resource_labels
 	MonitoredResourceLabels map[string]string `json:"monitoredResourceLabels,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.BigQueryDestination
+type BigQueryDestination struct {
+	// Required. BigQuery URI to a project or table, up to 2000 characters long.
+	//
+	//  When only the project is specified, the Dataset and Table is created.
+	//  When the full table reference is specified, the Dataset must exist and
+	//  table must not exist.
+	//
+	//  Accepted forms:
+	//
+	//  *  BigQuery path. For example:
+	//  `bq://projectId` or `bq://projectId.bqDatasetId` or
+	//  `bq://projectId.bqDatasetId.bqTableId`.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.BigQueryDestination.output_uri
+	OutputURI *string `json:"outputURI,omitempty"`
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1beta1.BigQuerySource
@@ -357,6 +379,15 @@ type GCSDestination struct {
 	OutputURIPrefix *string `json:"outputURIPrefix,omitempty"`
 }
 
+// +kcc:proto=google.cloud.aiplatform.v1beta1.GcsSource
+type GCSSource struct {
+	// Required. Google Cloud Storage URI(-s) to the input file(s). May contain
+	//  wildcards. For more information on wildcards, see
+	//  https://cloud.google.com/storage/docs/wildcards.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.GcsSource.uris
+	Uris []string `json:"uris,omitempty"`
+}
+
 // +kcc:proto=google.cloud.aiplatform.v1beta1.MachineSpec
 type MachineSpec struct {
 	// Immutable. The type of the machine.
@@ -431,6 +462,212 @@ type MetadataStore_MetadataStoreState struct {
 	// The disk utilization of the MetadataStore in bytes.
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.MetadataStore.MetadataStoreState.disk_utilization_bytes
 	DiskUtilizationBytes *int64 `json:"diskUtilizationBytes,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ModelDeploymentMonitoringBigQueryTable
+type ModelDeploymentMonitoringBigQueryTable struct {
+	// The source of log.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelDeploymentMonitoringBigQueryTable.log_source
+	LogSource *string `json:"logSource,omitempty"`
+
+	// The type of log.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelDeploymentMonitoringBigQueryTable.log_type
+	LogType *string `json:"logType,omitempty"`
+
+	// The created BigQuery table to store logs. Customer could do their own query
+	//  & analysis. Format:
+	//  `bq://<project_id>.model_deployment_monitoring_<endpoint_id>.<tolower(log_source)>_<tolower(log_type)>`
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelDeploymentMonitoringBigQueryTable.bigquery_table_path
+	BigqueryTablePath *string `json:"bigqueryTablePath,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ModelDeploymentMonitoringJob.LatestMonitoringPipelineMetadata
+type ModelDeploymentMonitoringJob_LatestMonitoringPipelineMetadata struct {
+	// The time that most recent monitoring pipelines that is related to this
+	//  run.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelDeploymentMonitoringJob.LatestMonitoringPipelineMetadata.run_time
+	RunTime *string `json:"runTime,omitempty"`
+
+	// The status of the most recent monitoring pipeline.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelDeploymentMonitoringJob.LatestMonitoringPipelineMetadata.status
+	Status *common.Status `json:"status,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ModelDeploymentMonitoringObjectiveConfig
+type ModelDeploymentMonitoringObjectiveConfig struct {
+	// The DeployedModel ID of the objective config.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelDeploymentMonitoringObjectiveConfig.deployed_model_id
+	DeployedModelID *string `json:"deployedModelID,omitempty"`
+
+	// The objective config of for the modelmonitoring job of this deployed model.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelDeploymentMonitoringObjectiveConfig.objective_config
+	ObjectiveConfig *ModelMonitoringObjectiveConfig `json:"objectiveConfig,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ModelDeploymentMonitoringScheduleConfig
+type ModelDeploymentMonitoringScheduleConfig struct {
+	// Required. The model monitoring job scheduling interval. It will be rounded
+	//  up to next full hour. This defines how often the monitoring jobs are
+	//  triggered.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelDeploymentMonitoringScheduleConfig.monitor_interval
+	MonitorInterval *string `json:"monitorInterval,omitempty"`
+
+	// The time window of the prediction data being included in each prediction
+	//  dataset. This window specifies how long the data should be collected from
+	//  historical model results for each run. If not set,
+	//  [ModelDeploymentMonitoringScheduleConfig.monitor_interval][google.cloud.aiplatform.v1beta1.ModelDeploymentMonitoringScheduleConfig.monitor_interval]
+	//  will be used. e.g. If currently the cutoff time is 2022-01-08 14:30:00 and
+	//  the monitor_window is set to be 3600, then data from 2022-01-08 13:30:00 to
+	//  2022-01-08 14:30:00 will be retrieved and aggregated to calculate the
+	//  monitoring statistics.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelDeploymentMonitoringScheduleConfig.monitor_window
+	MonitorWindow *string `json:"monitorWindow,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ModelMonitoringAlertConfig
+type ModelMonitoringAlertConfig struct {
+	// Email alert config.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringAlertConfig.email_alert_config
+	EmailAlertConfig *ModelMonitoringAlertConfig_EmailAlertConfig `json:"emailAlertConfig,omitempty"`
+
+	// Dump the anomalies to Cloud Logging. The anomalies will be put to json
+	//  payload encoded from proto
+	//  [google.cloud.aiplatform.logging.ModelMonitoringAnomaliesLogEntry][].
+	//  This can be further sinked to Pub/Sub or any other services supported
+	//  by Cloud Logging.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringAlertConfig.enable_logging
+	EnableLogging *bool `json:"enableLogging,omitempty"`
+
+	// Resource names of the NotificationChannels to send alert.
+	//  Must be of the format
+	//  `projects/<project_id_or_number>/notificationChannels/<channel_id>`
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringAlertConfig.notification_channels
+	NotificationChannels []string `json:"notificationChannels,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ModelMonitoringAlertConfig.EmailAlertConfig
+type ModelMonitoringAlertConfig_EmailAlertConfig struct {
+	// The email addresses to send the alert.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringAlertConfig.EmailAlertConfig.user_emails
+	UserEmails []string `json:"userEmails,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ModelMonitoringObjectiveConfig
+type ModelMonitoringObjectiveConfig struct {
+	// Training dataset for models. This field has to be set only if
+	//  TrainingPredictionSkewDetectionConfig is specified.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringObjectiveConfig.training_dataset
+	TrainingDataset *ModelMonitoringObjectiveConfig_TrainingDataset `json:"trainingDataset,omitempty"`
+
+	// The config for skew between training data and prediction data.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringObjectiveConfig.training_prediction_skew_detection_config
+	TrainingPredictionSkewDetectionConfig *ModelMonitoringObjectiveConfig_TrainingPredictionSkewDetectionConfig `json:"trainingPredictionSkewDetectionConfig,omitempty"`
+
+	// The config for drift of prediction data.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringObjectiveConfig.prediction_drift_detection_config
+	PredictionDriftDetectionConfig *ModelMonitoringObjectiveConfig_PredictionDriftDetectionConfig `json:"predictionDriftDetectionConfig,omitempty"`
+
+	// The config for integrating with Vertex Explainable AI.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringObjectiveConfig.explanation_config
+	ExplanationConfig *ModelMonitoringObjectiveConfig_ExplanationConfig `json:"explanationConfig,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ModelMonitoringObjectiveConfig.ExplanationConfig
+type ModelMonitoringObjectiveConfig_ExplanationConfig struct {
+	// If want to analyze the Vertex Explainable AI feature attribute scores or
+	//  not. If set to true, Vertex AI will log the feature attributions from
+	//  explain response and do the skew/drift detection for them.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringObjectiveConfig.ExplanationConfig.enable_feature_attributes
+	EnableFeatureAttributes *bool `json:"enableFeatureAttributes,omitempty"`
+
+	// Predictions generated by the BatchPredictionJob using baseline dataset.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringObjectiveConfig.ExplanationConfig.explanation_baseline
+	ExplanationBaseline *ModelMonitoringObjectiveConfig_ExplanationConfig_ExplanationBaseline `json:"explanationBaseline,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ModelMonitoringObjectiveConfig.ExplanationConfig.ExplanationBaseline
+type ModelMonitoringObjectiveConfig_ExplanationConfig_ExplanationBaseline struct {
+	// Cloud Storage location for BatchExplain output.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringObjectiveConfig.ExplanationConfig.ExplanationBaseline.gcs
+	GCS *GCSDestination `json:"gcs,omitempty"`
+
+	// BigQuery location for BatchExplain output.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringObjectiveConfig.ExplanationConfig.ExplanationBaseline.bigquery
+	Bigquery *BigQueryDestination `json:"bigquery,omitempty"`
+
+	// The storage format of the predictions generated BatchPrediction job.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringObjectiveConfig.ExplanationConfig.ExplanationBaseline.prediction_format
+	PredictionFormat *string `json:"predictionFormat,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ModelMonitoringObjectiveConfig.PredictionDriftDetectionConfig
+type ModelMonitoringObjectiveConfig_PredictionDriftDetectionConfig struct {
+
+	// TODO: unsupported map type with key string and value message
+
+	// TODO: unsupported map type with key string and value message
+
+	// Drift anomaly detection threshold used by all features.
+	//  When the per-feature thresholds are not set, this field can be used to
+	//  specify a threshold for all features.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringObjectiveConfig.PredictionDriftDetectionConfig.default_drift_threshold
+	DefaultDriftThreshold *ThresholdConfig `json:"defaultDriftThreshold,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ModelMonitoringObjectiveConfig.TrainingDataset
+type ModelMonitoringObjectiveConfig_TrainingDataset struct {
+	// The resource name of the Dataset used to train this Model.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringObjectiveConfig.TrainingDataset.dataset
+	Dataset *string `json:"dataset,omitempty"`
+
+	// The Google Cloud Storage uri of the unmanaged Dataset used to train
+	//  this Model.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringObjectiveConfig.TrainingDataset.gcs_source
+	GCSSource *GCSSource `json:"gcsSource,omitempty"`
+
+	// The BigQuery table of the unmanaged Dataset used to train this
+	//  Model.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringObjectiveConfig.TrainingDataset.bigquery_source
+	BigquerySource *BigQuerySource `json:"bigquerySource,omitempty"`
+
+	// Data format of the dataset, only applicable if the input is from
+	//  Google Cloud Storage.
+	//  The possible formats are:
+	//
+	//  "tf-record"
+	//  The source file is a TFRecord file.
+	//
+	//  "csv"
+	//  The source file is a CSV file.
+	//  "jsonl"
+	//  The source file is a JSONL file.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringObjectiveConfig.TrainingDataset.data_format
+	DataFormat *string `json:"dataFormat,omitempty"`
+
+	// The target field name the model is to predict.
+	//  This field will be excluded when doing Predict and (or) Explain for the
+	//  training data.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringObjectiveConfig.TrainingDataset.target_field
+	TargetField *string `json:"targetField,omitempty"`
+
+	// Strategy to sample data from Training Dataset.
+	//  If not set, we process the whole dataset.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringObjectiveConfig.TrainingDataset.logging_sampling_strategy
+	LoggingSamplingStrategy *SamplingStrategy `json:"loggingSamplingStrategy,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ModelMonitoringObjectiveConfig.TrainingPredictionSkewDetectionConfig
+type ModelMonitoringObjectiveConfig_TrainingPredictionSkewDetectionConfig struct {
+
+	// TODO: unsupported map type with key string and value message
+
+	// TODO: unsupported map type with key string and value message
+
+	// Skew anomaly detection threshold used by all features.
+	//  When the per-feature thresholds are not set, this field can be used to
+	//  specify a threshold for all features.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelMonitoringObjectiveConfig.TrainingPredictionSkewDetectionConfig.default_skew_threshold
+	DefaultSkewThreshold *ThresholdConfig `json:"defaultSkewThreshold,omitempty"`
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1beta1.NfsMount
@@ -508,6 +745,20 @@ type SampleConfig struct {
 	SampleStrategy *string `json:"sampleStrategy,omitempty"`
 }
 
+// +kcc:proto=google.cloud.aiplatform.v1beta1.SamplingStrategy
+type SamplingStrategy struct {
+	// Random sample config. Will support more sampling strategies later.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.SamplingStrategy.random_sample_config
+	RandomSampleConfig *SamplingStrategy_RandomSampleConfig `json:"randomSampleConfig,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.SamplingStrategy.RandomSampleConfig
+type SamplingStrategy_RandomSampleConfig struct {
+	// Sample rate (0, 1]
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.SamplingStrategy.RandomSampleConfig.sample_rate
+	SampleRate *float64 `json:"sampleRate,omitempty"`
+}
+
 // +kcc:proto=google.cloud.aiplatform.v1beta1.Scheduling
 type Scheduling struct {
 	// The maximum job running time. The default is 7 days.
@@ -536,6 +787,20 @@ type Scheduling struct {
 	//  If set to 0, the job will wait indefinitely. The default is 24 hours.
 	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.Scheduling.max_wait_duration
 	MaxWaitDuration *string `json:"maxWaitDuration,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1beta1.ThresholdConfig
+type ThresholdConfig struct {
+	// Specify a threshold value that can trigger the alert.
+	//  If this threshold config is for feature distribution distance:
+	//    1. For categorical feature, the distribution distance is calculated by
+	//       L-inifinity norm.
+	//    2. For numerical feature, the distribution distance is calculated by
+	//       Jensen–Shannon divergence.
+	//  Each feature must have a non-zero threshold if they need to be monitored.
+	//  Otherwise no alert will be triggered for that feature.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ThresholdConfig.value
+	Value *float64 `json:"value,omitempty"`
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1beta1.TrainingConfig
@@ -573,44 +838,6 @@ type WorkerPoolSpec struct {
 	DiskSpec *DiskSpec `json:"diskSpec,omitempty"`
 }
 
-/* unreachable type ListValue
-// +kcc:proto=google.protobuf.ListValue
-type ListValue struct {
-	// Repeated field of dynamically typed values.
-	// +kcc:proto:field=google.protobuf.ListValue.values
-	Values []Value `json:"values,omitempty"`
-}
-*/
-
-/* unreachable type Value
-// +kcc:proto=google.protobuf.Value
-type Value struct {
-	// Represents a null value.
-	// +kcc:proto:field=google.protobuf.Value.null_value
-	NullValue *string `json:"nullValue,omitempty"`
-
-	// Represents a double value.
-	// +kcc:proto:field=google.protobuf.Value.number_value
-	NumberValue *float64 `json:"numberValue,omitempty"`
-
-	// Represents a string value.
-	// +kcc:proto:field=google.protobuf.Value.string_value
-	StringValue *string `json:"stringValue,omitempty"`
-
-	// Represents a boolean value.
-	// +kcc:proto:field=google.protobuf.Value.bool_value
-	BoolValue *bool `json:"boolValue,omitempty"`
-
-	// Represents a structured value.
-	// +kcc:proto:field=google.protobuf.Value.struct_value
-	StructValue apiextensionsv1.JSON `json:"structValue,omitempty"`
-
-	// Represents a repeated `Value`.
-	// +kcc:proto:field=google.protobuf.Value.list_value
-	ListValue *ListValue `json:"listValue,omitempty"`
-}
-*/
-
 // +kcc:proto=google.type.Money
 type Money struct {
 	// The three-letter currency code defined in ISO 4217.
@@ -631,3 +858,27 @@ type Money struct {
 	// +kcc:proto:field=google.type.Money.nanos
 	Nanos *int32 `json:"nanos,omitempty"`
 }
+
+/* unreachable type ModelDeploymentMonitoringBigQueryTableObservedState
+// +kcc:observedstate:proto=google.cloud.aiplatform.v1beta1.ModelDeploymentMonitoringBigQueryTable
+type ModelDeploymentMonitoringBigQueryTableObservedState struct {
+	// The source of log.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelDeploymentMonitoringBigQueryTable.log_source
+	LogSource *string `json:"logSource,omitempty"`
+
+	// The type of log.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelDeploymentMonitoringBigQueryTable.log_type
+	LogType *string `json:"logType,omitempty"`
+
+	// The created BigQuery table to store logs. Customer could do their own query
+	//  & analysis. Format:
+	//  `bq://<project_id>.model_deployment_monitoring_<endpoint_id>.<tolower(log_source)>_<tolower(log_type)>`
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelDeploymentMonitoringBigQueryTable.bigquery_table_path
+	BigqueryTablePath *string `json:"bigqueryTablePath,omitempty"`
+
+	// Output only. The schema version of the request/response logging BigQuery
+	//  table. Default to v1 if unset.
+	// +kcc:proto:field=google.cloud.aiplatform.v1beta1.ModelDeploymentMonitoringBigQueryTable.request_response_logging_schema_version
+	RequestResponseLoggingSchemaVersion *string `json:"requestResponseLoggingSchemaVersion,omitempty"`
+}
+*/

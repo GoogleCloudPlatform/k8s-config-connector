@@ -109,7 +109,9 @@ func AIPlatformModelSpec_FromProto(mapCtx *direct.MapContext, in *pb.Model) *krm
 	// MISSING: DefaultCheckpointID
 	out.PredictSchemata = PredictSchemata_FromProto(mapCtx, in.GetPredictSchemata())
 	out.MetadataSchemaURI = direct.LazyPtr(in.GetMetadataSchemaUri())
-	out.Metadata = Value_FromProto(mapCtx, in.GetMetadata())
+	if val := direct.JSON_FromProto(mapCtx, in.GetMetadata()); val != nil {
+		out.Metadata = *val
+	}
 	out.PipelineJob = direct.LazyPtr(in.GetPipelineJob())
 	out.ContainerSpec = ModelContainerSpec_FromProto(mapCtx, in.GetContainerSpec())
 	out.ArtifactURI = direct.LazyPtr(in.GetArtifactUri())
@@ -140,7 +142,7 @@ found existing non-generated mapping function "AIPlatformModelSpec_ToProto", ski
 		// MISSING: DefaultCheckpointID
 		out.PredictSchemata = PredictSchemata_ToProto(mapCtx, in.PredictSchemata)
 		out.MetadataSchemaUri = direct.ValueOf(in.MetadataSchemaURI)
-		out.Metadata = Value_ToProto(mapCtx, in.Metadata)
+		out.Metadata = direct.JSON_ToProto(mapCtx, &in.Metadata)
 		out.PipelineJob = direct.ValueOf(in.PipelineJob)
 		out.ContainerSpec = ModelContainerSpec_ToProto(mapCtx, in.ContainerSpec)
 		out.ArtifactUri = direct.ValueOf(in.ArtifactURI)
@@ -568,7 +570,9 @@ func Examples_FromProto(mapCtx *direct.MapContext, in *pb.Examples) *krm.Example
 	}
 	out := &krm.Examples{}
 	out.ExampleGCSSource = Examples_ExampleGCSSource_FromProto(mapCtx, in.GetExampleGcsSource())
-	out.NearestNeighborSearchConfig = Value_FromProto(mapCtx, in.GetNearestNeighborSearchConfig())
+	if val := direct.JSON_FromProto(mapCtx, in.GetNearestNeighborSearchConfig()); val != nil {
+		out.NearestNeighborSearchConfig = *val
+	}
 	out.Presets = Presets_FromProto(mapCtx, in.GetPresets())
 	out.NeighborCount = direct.LazyPtr(in.GetNeighborCount())
 	return out
@@ -581,7 +585,7 @@ func Examples_ToProto(mapCtx *direct.MapContext, in *krm.Examples) *pb.Examples 
 	if oneof := Examples_ExampleGCSSource_ToProto(mapCtx, in.ExampleGCSSource); oneof != nil {
 		out.Source = &pb.Examples_ExampleGcsSource_{ExampleGcsSource: oneof}
 	}
-	if oneof := Value_ToProto(mapCtx, in.NearestNeighborSearchConfig); oneof != nil {
+	if oneof := direct.JSON_ToProto(mapCtx, &in.NearestNeighborSearchConfig); oneof != nil {
 		out.Config = &pb.Examples_NearestNeighborSearchConfig{NearestNeighborSearchConfig: oneof}
 	}
 	if oneof := Presets_ToProto(mapCtx, in.Presets); oneof != nil {
@@ -994,8 +998,8 @@ func FunctionCall_FromProto(mapCtx *direct.MapContext, in *pb.FunctionCall) *krm
 	}
 	out := &krm.FunctionCall{}
 	out.Name = direct.LazyPtr(in.GetName())
-	if v := direct.Struct_FromProto(mapCtx, in.GetArgs()); v != nil {
-		out.Args = *v
+	if val := direct.Struct_FromProto(mapCtx, in.GetArgs()); val != nil {
+		out.Args = *val
 	}
 	return out
 }
@@ -1048,8 +1052,8 @@ func FunctionResponse_FromProto(mapCtx *direct.MapContext, in *pb.FunctionRespon
 	}
 	out := &krm.FunctionResponse{}
 	out.Name = direct.LazyPtr(in.GetName())
-	if v := direct.Struct_FromProto(mapCtx, in.GetResponse()); v != nil {
-		out.Response = *v
+	if val := direct.Struct_FromProto(mapCtx, in.GetResponse()); val != nil {
+		out.Response = *val
 	}
 	return out
 }
@@ -2204,8 +2208,8 @@ func RuntimeConfig_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.Runtime
 	out.CodeInterpreterRuntimeConfig = RuntimeConfig_CodeInterpreterRuntimeConfig_FromProto(mapCtx, in.GetCodeInterpreterRuntimeConfig())
 	// MISSING: VertexAiSearchRuntimeConfig
 	// (near miss): "VertexAiSearchRuntimeConfig" vs "VertexAISearchRuntimeConfig"
-	if v := direct.Struct_FromProto(mapCtx, in.GetDefaultParams()); v != nil {
-		out.DefaultParams = *v
+	if val := direct.Struct_FromProto(mapCtx, in.GetDefaultParams()); val != nil {
+		out.DefaultParams = *val
 	}
 	return out
 }
@@ -2312,7 +2316,7 @@ func Schema_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.Schema) *krm.S
 	out.Title = direct.LazyPtr(in.GetTitle())
 	out.Description = direct.LazyPtr(in.GetDescription())
 	out.Nullable = direct.LazyPtr(in.GetNullable())
-	out.Default = Value_FromProto(mapCtx, in.GetDefault())
+	out.Default = direct.JSON_FromProto(mapCtx, in.GetDefault())
 	out.Items = apiextensionsv1.JSON_FromProto(mapCtx, in.GetItems())
 	out.MinItems = direct.LazyPtr(in.GetMinItems())
 	out.MaxItems = direct.LazyPtr(in.GetMaxItems())
@@ -2327,9 +2331,9 @@ func Schema_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.Schema) *krm.S
 	out.MinLength = direct.LazyPtr(in.GetMinLength())
 	out.MaxLength = direct.LazyPtr(in.GetMaxLength())
 	out.Pattern = direct.LazyPtr(in.GetPattern())
-	out.Example = Value_FromProto(mapCtx, in.GetExample())
+	out.Example = direct.JSON_FromProto(mapCtx, in.GetExample())
 	out.AnyOf = direct.Slice_FromProto(mapCtx, in.AnyOf, apiextensionsv1.JSON_FromProto)
-	out.AdditionalProperties = Value_FromProto(mapCtx, in.GetAdditionalProperties())
+	out.AdditionalProperties = direct.JSON_FromProto(mapCtx, in.GetAdditionalProperties())
 	out.Ref = direct.LazyPtr(in.GetRef())
 	// MISSING: Defs
 	return out
@@ -2349,7 +2353,7 @@ found existing non-generated mapping function "Schema_ToProto", skipping
 		out.Title = direct.ValueOf(in.Title)
 		out.Description = direct.ValueOf(in.Description)
 		out.Nullable = direct.ValueOf(in.Nullable)
-		out.Default = Value_ToProto(mapCtx, in.Default)
+		out.Default = direct.JSON_ToProto(mapCtx, in.Default)
 		out.Items = apiextensionsv1.JSON_ToProto(mapCtx, in.Items)
 		out.MinItems = direct.ValueOf(in.MinItems)
 		out.MaxItems = direct.ValueOf(in.MaxItems)
@@ -2364,9 +2368,9 @@ found existing non-generated mapping function "Schema_ToProto", skipping
 		out.MinLength = direct.ValueOf(in.MinLength)
 		out.MaxLength = direct.ValueOf(in.MaxLength)
 		out.Pattern = direct.ValueOf(in.Pattern)
-		out.Example = Value_ToProto(mapCtx, in.Example)
+		out.Example = direct.JSON_ToProto(mapCtx, in.Example)
 		out.AnyOf = direct.Slice_ToProto(mapCtx, in.AnyOf, apiextensionsv1.JSON_ToProto)
-		out.AdditionalProperties = Value_ToProto(mapCtx, in.AdditionalProperties)
+		out.AdditionalProperties = direct.JSON_ToProto(mapCtx, in.AdditionalProperties)
 		out.Ref = direct.ValueOf(in.Ref)
 		// MISSING: Defs
 		return out
@@ -2964,11 +2968,11 @@ func ToolUseExample_FromProto(mapCtx *direct.MapContext, in *aiplatformpb.ToolUs
 	out.FunctionName = direct.LazyPtr(in.GetFunctionName())
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.Query = direct.LazyPtr(in.GetQuery())
-	if v := direct.Struct_FromProto(mapCtx, in.GetRequestParams()); v != nil {
-		out.RequestParams = *v
+	if val := direct.Struct_FromProto(mapCtx, in.GetRequestParams()); val != nil {
+		out.RequestParams = *val
 	}
-	if v := direct.Struct_FromProto(mapCtx, in.GetResponseParams()); v != nil {
-		out.ResponseParams = *v
+	if val := direct.Struct_FromProto(mapCtx, in.GetResponseParams()); val != nil {
+		out.ResponseParams = *val
 	}
 	out.ResponseSummary = direct.LazyPtr(in.GetResponseSummary())
 	return out
@@ -3439,7 +3443,7 @@ func VertexAITrainingPipelineObservedState_FromProto(mapCtx *direct.MapContext, 
 	}
 	out := &krm.VertexAITrainingPipelineObservedState{}
 	out.Name = direct.LazyPtr(in.GetName())
-	out.TrainingTaskMetadata = Value_FromProto(mapCtx, in.GetTrainingTaskMetadata())
+	out.TrainingTaskMetadata = direct.JSON_FromProto(mapCtx, in.GetTrainingTaskMetadata())
 	out.ModelToUpload = AIPlatformModelObservedState_FromProto(mapCtx, in.GetModelToUpload())
 	// MISSING: ParentModel
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
@@ -3456,7 +3460,7 @@ func VertexAITrainingPipelineObservedState_ToProto(mapCtx *direct.MapContext, in
 	}
 	out := &pb.TrainingPipeline{}
 	out.Name = direct.ValueOf(in.Name)
-	out.TrainingTaskMetadata = Value_ToProto(mapCtx, in.TrainingTaskMetadata)
+	out.TrainingTaskMetadata = direct.JSON_ToProto(mapCtx, in.TrainingTaskMetadata)
 	out.ModelToUpload = AIPlatformModelObservedState_ToProto(mapCtx, in.ModelToUpload)
 	// MISSING: ParentModel
 	out.State = direct.Enum_ToProto[pb.PipelineState](mapCtx, in.State)
@@ -3475,7 +3479,7 @@ func VertexAITrainingPipelineSpec_FromProto(mapCtx *direct.MapContext, in *pb.Tr
 	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.InputDataConfig = InputDataConfig_FromProto(mapCtx, in.GetInputDataConfig())
 	out.TrainingTaskDefinition = direct.LazyPtr(in.GetTrainingTaskDefinition())
-	out.TrainingTaskInputs = Value_FromProto(mapCtx, in.GetTrainingTaskInputs())
+	out.TrainingTaskInputs = direct.JSON_FromProto(mapCtx, in.GetTrainingTaskInputs())
 	out.ModelToUpload = AIPlatformModelSpec_FromProto(mapCtx, in.GetModelToUpload())
 	out.ModelID = direct.LazyPtr(in.GetModelId())
 	// MISSING: ParentModel
@@ -3491,7 +3495,7 @@ func VertexAITrainingPipelineSpec_ToProto(mapCtx *direct.MapContext, in *krm.Ver
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.InputDataConfig = InputDataConfig_ToProto(mapCtx, in.InputDataConfig)
 	out.TrainingTaskDefinition = direct.ValueOf(in.TrainingTaskDefinition)
-	out.TrainingTaskInputs = Value_ToProto(mapCtx, in.TrainingTaskInputs)
+	out.TrainingTaskInputs = direct.JSON_ToProto(mapCtx, in.TrainingTaskInputs)
 	out.ModelToUpload = AIPlatformModelSpec_ToProto(mapCtx, in.ModelToUpload)
 	out.ModelId = direct.ValueOf(in.ModelID)
 	// MISSING: ParentModel

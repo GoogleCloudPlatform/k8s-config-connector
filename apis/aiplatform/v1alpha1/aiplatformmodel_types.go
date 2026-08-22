@@ -17,6 +17,7 @@ package v1alpha1
 import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -77,7 +78,7 @@ type AIPlatformModelSpec struct {
 	//  [metadata_schema][google.cloud.aiplatform.v1.Model.metadata_schema_uri].
 	//  Unset if the Model does not have any additional information.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.Model.metadata
-	Metadata *Value `json:"metadata,omitempty"`
+	Metadata apiextensionsv1.JSON `json:"metadata,omitempty"`
 
 	// Optional. This field is populated if the model is produced by a pipeline
 	//  job.

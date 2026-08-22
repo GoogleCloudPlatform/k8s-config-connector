@@ -18,6 +18,7 @@ import (
 	common "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
+	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -61,7 +62,7 @@ type VertexAITrainingPipelineSpec struct {
 	//  trainingTaskDefinition's inputs.
 	// +required
 	// +kcc:proto:field=google.cloud.aiplatform.v1.TrainingPipeline.training_task_inputs
-	TrainingTaskInputs *Value `json:"trainingTaskInputs,omitempty"`
+	TrainingTaskInputs *apiextensionsv1.JSON `json:"trainingTaskInputs,omitempty"`
 
 	// Describes the Model that may be uploaded by this TrainingPipeline.
 	// +optional
@@ -121,7 +122,7 @@ type VertexAITrainingPipelineObservedState struct {
 	//  and final information about the training task. While the pipeline is
 	//  running this information is populated only at a best effort basis.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.TrainingPipeline.training_task_metadata
-	TrainingTaskMetadata *Value `json:"trainingTaskMetadata,omitempty"`
+	TrainingTaskMetadata *apiextensionsv1.JSON `json:"trainingTaskMetadata,omitempty"`
 
 	// Describes the Model that may be uploaded by this TrainingPipeline.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.TrainingPipeline.model_to_upload
