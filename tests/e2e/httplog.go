@@ -317,6 +317,36 @@ func (x *Normalizer) Render(events test.LogEntries) string {
 		}
 	})
 
+	// Specific to Dataproc approximateUsage
+	jsonMutators = append(jsonMutators, func(requestURL string, obj map[string]any) {
+		isSession := strings.Contains(requestURL, "/sessions")
+		if !isSession && strings.Contains(requestURL, "/operations") {
+			// Check if it's a Session operation
+			if metadata, ok := obj["metadata"].(map[string]any); ok {
+				if strings.Contains(fmt.Sprintf("%v", metadata["@type"]), "Session") || metadata["session"] != nil {
+					isSession = true
+				}
+			}
+		}
+		if !isSession {
+			return
+		}
+		if runtimeInfo, ok := obj["runtimeInfo"].(map[string]any); ok {
+			if approxUsage, ok := runtimeInfo["approximateUsage"].(map[string]any); ok {
+				approxUsage["milliDcuSeconds"] = "12345"
+				approxUsage["shuffleStorageGbSeconds"] = "12345"
+			}
+		}
+		if response, ok := obj["response"].(map[string]any); ok {
+			if runtimeInfo, ok := response["runtimeInfo"].(map[string]any); ok {
+				if approxUsage, ok := runtimeInfo["approximateUsage"].(map[string]any); ok {
+					approxUsage["milliDcuSeconds"] = "12345"
+					approxUsage["shuffleStorageGbSeconds"] = "12345"
+				}
+			}
+		}
+	})
+
 	events.PrettifyJSON(jsonMutators...)
 
 	// Remove headers that just aren't very relevant to testing

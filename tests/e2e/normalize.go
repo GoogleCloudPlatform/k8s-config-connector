@@ -156,6 +156,10 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 		visitor.replacePaths[".status.observedState.statusHistory[].stateStartTime"] = mockgcpregistry.PlaceholderTimestamp
 		visitor.replacePaths[".status.observedState.status.stateStartTime"] = mockgcpregistry.PlaceholderTimestamp
 		visitor.replacePaths[".status.observedState.creator"] = "${creatorID}"
+		if u.GroupVersionKind().Kind == "DataprocSession" {
+			visitor.replacePaths[".status.observedState.runtimeInfo.approximateUsage.milliDcuSeconds"] = "12345"
+			visitor.replacePaths[".status.observedState.runtimeInfo.approximateUsage.shuffleStorageGbSeconds"] = "12345"
+		}
 		visitor.replacePaths[".status.observedState.outputUri"] = "gs://dataproc-staging-us-central1-${projectNumber}-h/google-cloud-dataproc-metainfo/fffc/jobs/srvls-batch/driveroutput"
 	}
 
@@ -1179,6 +1183,33 @@ func NormalizeHTTPLog(t *testing.T, events test.LogEntries, services mockgcpregi
 
 	// Normalize using the KRM normalization function
 	events.PrettifyJSON(func(requestURL string, obj map[string]any) {
+		// Specific to Dataproc approximateUsage
+		isSession := strings.Contains(requestURL, "/sessions")
+		if !isSession && strings.Contains(requestURL, "/operations") {
+			// Check if it's a Session operation
+			if metadata, ok := obj["metadata"].(map[string]any); ok {
+				if strings.Contains(fmt.Sprintf("%v", metadata["@type"]), "Session") || metadata["session"] != nil {
+					isSession = true
+				}
+			}
+		}
+		if isSession {
+			if runtimeInfo, ok := obj["runtimeInfo"].(map[string]any); ok {
+				if approxUsage, ok := runtimeInfo["approximateUsage"].(map[string]any); ok {
+					approxUsage["milliDcuSeconds"] = "12345"
+					approxUsage["shuffleStorageGbSeconds"] = "12345"
+				}
+			}
+			if response, ok := obj["response"].(map[string]any); ok {
+				if runtimeInfo, ok := response["runtimeInfo"].(map[string]any); ok {
+					if approxUsage, ok := runtimeInfo["approximateUsage"].(map[string]any); ok {
+						approxUsage["milliDcuSeconds"] = "12345"
+						approxUsage["shuffleStorageGbSeconds"] = "12345"
+					}
+				}
+			}
+		}
+
 		u := &unstructured.Unstructured{}
 		u.Object = obj
 		normalizeKRMObject(t, u, project, folderID, uniqueID)
