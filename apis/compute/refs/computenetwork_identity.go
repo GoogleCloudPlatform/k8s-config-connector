@@ -39,6 +39,10 @@ func (i *ComputeNetworkIdentity) String() string {
 	return ComputeNetworkIdentityFormat.ToString(*i)
 }
 
+// FromExternal parses ref into a ComputeNetworkIdentity.
+// It supports full HTTPS URIs ("https://www.googleapis.com/compute/v1/projects/{project}/global/networks/{network}")
+// and relative resource names ("projects/{project}/global/networks/{network}").
+// Raw short names (e.g. "my-vpc") are not valid external references until canonicalized via CanonicalizeExternal.
 func (i *ComputeNetworkIdentity) FromExternal(ref string) error {
 	trimmedRef := apirefs.TrimComputeURIPrefix(ref)
 	parsed, match, err := ComputeNetworkIdentityFormat.Parse(trimmedRef)

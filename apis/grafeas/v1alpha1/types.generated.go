@@ -16,7 +16,7 @@
 // +generated:types
 // krm.group: grafeas.cnrm.cloud.google.com
 // krm.version: v1alpha1
-// proto.service: google.cloud.grafeas.v1,grafeas.v1
+// proto.service: grafeas.v1
 // resource: GrafeasNote:Note
 
 package v1alpha1

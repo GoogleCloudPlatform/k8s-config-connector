@@ -16,6 +16,7 @@ package redis
 
 import (
 	redispb "cloud.google.com/go/redis/apiv1/redispb"
+	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/redis/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	dayofweekpb "google.golang.org/genproto/googleapis/type/dayofweek"
@@ -55,7 +56,7 @@ func RedisInstanceSpec_FromProto(mapCtx *direct.MapContext, in *redispb.Instance
 	out.AlternativeLocationId = direct.LazyPtr(in.GetAlternativeLocationId())
 	out.AuthEnabled = direct.LazyPtr(in.GetAuthEnabled())
 	if in.GetAuthorizedNetwork() != "" {
-		out.AuthorizedNetworkRef = &krm.InstanceAuthorizedNetworkRef{External: direct.LazyPtr(in.GetAuthorizedNetwork())}
+		out.AuthorizedNetworkRef = &computerefs.ComputeNetworkRef{External: in.GetAuthorizedNetwork()}
 	}
 	out.ConnectMode = direct.Enum_FromProto(mapCtx, in.GetConnectMode())
 	if in.GetCustomerManagedKey() != "" {
@@ -88,7 +89,7 @@ func RedisInstanceSpec_ToProto(mapCtx *direct.MapContext, in *krm.RedisInstanceS
 	out.AlternativeLocationId = direct.ValueOf(in.AlternativeLocationId)
 	out.AuthEnabled = direct.ValueOf(in.AuthEnabled)
 	if in.AuthorizedNetworkRef != nil {
-		out.AuthorizedNetwork = direct.ValueOf(in.AuthorizedNetworkRef.External)
+		out.AuthorizedNetwork = in.AuthorizedNetworkRef.External
 	}
 	out.ConnectMode = direct.Enum_ToProto[redispb.Instance_ConnectMode](mapCtx, in.ConnectMode)
 	if in.CustomerManagedKeyRef != nil {

@@ -15,20 +15,12 @@
 package v1beta1
 
 import (
+	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var RedisInstanceGVK = GroupVersion.WithKind("RedisInstance")
-
-type InstanceAuthorizedNetworkRef struct {
-	/* Allowed value: The `selfLink` field of a `ComputeNetwork` resource. */
-	External *string `json:"external,omitempty"`
-	/* Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names */
-	Name *string `json:"name,omitempty"`
-	/* Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/ */
-	Namespace *string `json:"namespace,omitempty"`
-}
 
 type InstanceCustomerManagedKeyRef struct {
 	/* Allowed value: The `selfLink` field of a `KMSCryptoKey` resource. */
@@ -170,7 +162,7 @@ type RedisInstanceSpec struct {
 	/* The network to which the instance is connected. If left
 	unspecified, the default network will be used. */
 	// +optional
-	AuthorizedNetworkRef *InstanceAuthorizedNetworkRef `json:"authorizedNetworkRef,omitempty"`
+	AuthorizedNetworkRef *computerefs.ComputeNetworkRef `json:"authorizedNetworkRef,omitempty"`
 
 	/* Immutable. The connection mode of the Redis instance. Default value: "DIRECT_PEERING" Possible values: ["DIRECT_PEERING", "PRIVATE_SERVICE_ACCESS"]. */
 	// +optional
