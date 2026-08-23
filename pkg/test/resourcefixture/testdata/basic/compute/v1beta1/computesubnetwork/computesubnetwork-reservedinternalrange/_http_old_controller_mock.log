@@ -358,7 +358,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}?alt=json
 Content-Type: application/json
 
 404 Not Found
@@ -387,20 +387,22 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks?alt=json
 Content-Type: application/json
 
 {
+  "logConfig": {
+    "enable": false
+  },
   "name": "${subnetworkID}",
   "network": "projects/${projectId}/global/networks/${networkID}",
-  "privateIpGoogleAccess": false,
-  "region": "us-central1",
-  "reservedInternalRange": "projects/${projectId}/locations/global/internalRanges/internalrange-${uniqueId}",
+  "region": "projects/${projectId}/global/regions/us-central1",
+  "reservedInternalRange": "networkconnectivity.googleapis.com/projects/${projectId}/locations/global/internalRanges/internalrange-${uniqueId}",
   "secondaryIpRanges": [
     {
       "ipCidrRange": "10.232.0.0/20",
       "rangeName": "secondary-range",
-      "reservedInternalRange": "projects/${projectId}/locations/global/internalRanges/internalrange-sec-${uniqueId}"
+      "reservedInternalRange": "networkconnectivity.googleapis.com/projects/${projectId}/locations/global/internalRanges/internalrange-sec-${uniqueId}"
     }
   ]
 }
@@ -433,8 +435,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
-Content-Type: application/json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -465,7 +466,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -487,6 +488,9 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "ipCidrRange": "10.231.0.0/20",
   "kind": "compute#subnetwork",
+  "logConfig": {
+    "enable": false
+  },
   "name": "${subnetworkID}",
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "privateIpGoogleAccess": false,
@@ -507,19 +511,127 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}/setPrivateIpGoogleAccess?alt=json
 Content-Type: application/json
 
 {
-  "network": "projects/${projectId}/global/networks/${networkID}",
+  "privateIpGoogleAccess": true
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "setPrivateIpGoogleAccess",
+  "progress": 0,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${subnetworkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "setPrivateIpGoogleAccess",
+  "progress": 100,
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${subnetworkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+  "user": "user@example.com"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}?alt=json
+Content-Type: application/json
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "allowSubnetCidrRoutesOverlap": false,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "enableFlowLogs": false,
+  "fingerprint": "abcdef0123A=",
+  "gatewayAddress": "10.0.0.1",
+  "id": "000000000000000000000",
+  "ipCidrRange": "10.231.0.0/20",
+  "kind": "compute#subnetwork",
+  "logConfig": {
+    "enable": false
+  },
+  "name": "${subnetworkID}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "privateIpGoogleAccess": true,
-  "region": "us-central1",
-  "reservedInternalRange": "projects/${projectId}/locations/global/internalRanges/internalrange-${uniqueId}",
+  "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
+  "purpose": "PRIVATE",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
+  "reservedInternalRange": "https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/global/internalRanges/internalrange-${uniqueId}",
   "secondaryIpRanges": [
     {
       "ipCidrRange": "10.232.0.0/20",
       "rangeName": "secondary-range",
-      "reservedInternalRange": "projects/${projectId}/locations/global/internalRanges/internalrange-sec-${uniqueId}"
+      "reservedInternalRange": "https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/global/internalRanges/internalrange-sec-${uniqueId}"
+    }
+  ],
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+  "stackType": "IPV4_ONLY"
+}
+
+---
+
+PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}?alt=json
+Content-Type: application/json
+
+{
+  "fingerprint": "abcdef0123A=",
+  "secondaryIpRanges": [
+    {
+      "ipCidrRange": "10.232.0.0/20",
+      "rangeName": "secondary-range",
+      "reservedInternalRange": "networkconnectivity.googleapis.com/projects/${projectId}/locations/global/internalRanges/internalrange-sec-${uniqueId}"
     },
     {
       "ipCidrRange": "10.233.0.0/20",
@@ -556,8 +668,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
-Content-Type: application/json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -588,7 +699,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -610,6 +721,9 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "ipCidrRange": "10.231.0.0/20",
   "kind": "compute#subnetwork",
+  "logConfig": {
+    "enable": false
+  },
   "name": "${subnetworkID}",
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "privateIpGoogleAccess": true,
@@ -634,7 +748,7 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -665,8 +779,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
-Content-Type: application/json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
 
 200 OK
 Content-Type: application/json; charset=UTF-8
