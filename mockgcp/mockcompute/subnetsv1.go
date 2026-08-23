@@ -27,6 +27,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/regions"
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/compute/v1"
+	networkconnectivitypb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/networkconnectivity/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
@@ -163,9 +164,9 @@ func (s *SubnetsV1) Insert(ctx context.Context, req *pb.InsertSubnetworkRequest)
 	obj.CreationTimestamp = PtrTo(s.nowString())
 	obj.Id = &id
 	obj.Kind = PtrTo("compute#subnetwork")
-	// if obj.EnableFlowLogs == nil {
-	// 	obj.EnableFlowLogs = PtrTo(false)
-	// }
+	if obj.EnableFlowLogs == nil {
+		obj.EnableFlowLogs = PtrTo(false)
+	}
 	if obj.PrivateIpGoogleAccess == nil {
 		obj.PrivateIpGoogleAccess = PtrTo(false)
 	}
@@ -179,7 +180,6 @@ func (s *SubnetsV1) Insert(ctx context.Context, req *pb.InsertSubnetworkRequest)
 	if obj.StackType == nil && obj.GetPurpose() != "PRIVATE_NAT" {
 		obj.StackType = PtrTo("IPV4_ONLY")
 	}
-	obj.State = PtrTo("READY")
 	networkName, err := s.parseNetworkSelfLink(obj.GetNetwork())
 	if err != nil {
 		return nil, status.Errorf(codes.InvalidArgument, "network %q is not valid", obj.GetNetwork())
@@ -187,11 +187,31 @@ func (s *SubnetsV1) Insert(ctx context.Context, req *pb.InsertSubnetworkRequest)
 	obj.Network = PtrTo(BuildComputeSelfLink(ctx, fmt.Sprintf("projects/%s/global/networks/%s", networkName.Project.ID, networkName.Name)))
 
 	if obj.GetIpCidrRange() == "" && obj.GetReservedInternalRange() != "" {
-		obj.IpCidrRange = PtrTo("10.128.0.0/20")
+		if cidr, ok := s.getInternalRangeCidr(ctx, obj.GetReservedInternalRange()); ok {
+			obj.IpCidrRange = PtrTo(cidr)
+		} else {
+			obj.IpCidrRange = PtrTo("10.128.0.0/20")
+		}
 	}
 	for i, sec := range obj.SecondaryIpRanges {
 		if sec.GetIpCidrRange() == "" && sec.GetReservedInternalRange() != "" {
-			sec.IpCidrRange = PtrTo(fmt.Sprintf("10.129.%d.0/24", i))
+			if cidr, ok := s.getInternalRangeCidr(ctx, sec.GetReservedInternalRange()); ok {
+				sec.IpCidrRange = PtrTo(cidr)
+			} else {
+				sec.IpCidrRange = PtrTo(fmt.Sprintf("10.129.%d.0/24", i))
+			}
+		}
+	}
+
+	// Expand top-level reservedInternalRange
+	if obj.GetReservedInternalRange() != "" {
+		obj.ReservedInternalRange = PtrTo(expandNetworkConnectivityLink(obj.GetReservedInternalRange()))
+	}
+
+	// Expand reservedInternalRange in secondaryIpRanges
+	for _, sec := range obj.SecondaryIpRanges {
+		if sec.GetReservedInternalRange() != "" {
+			sec.ReservedInternalRange = PtrTo(expandNetworkConnectivityLink(sec.GetReservedInternalRange()))
 		}
 	}
 
@@ -208,7 +228,9 @@ func (s *SubnetsV1) Insert(ctx context.Context, req *pb.InsertSubnetworkRequest)
 	gatewayAddress[3] = 1
 	obj.GatewayAddress = PtrTo(gatewayAddress.String())
 
-	// obj.AllowSubnetCidrRoutesOverlap = PtrTo(false)
+	if obj.AllowSubnetCidrRoutesOverlap == nil {
+		obj.AllowSubnetCidrRoutesOverlap = PtrTo(false)
+	}
 	obj.Fingerprint = PtrTo(computeFingerprint(obj))
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -350,9 +372,25 @@ func (s *SubnetsV1) Patch(ctx context.Context, req *pb.PatchSubnetworkRequest) (
 			obj.SecondaryIpRanges = patch.SecondaryIpRanges
 			for i, sec := range obj.SecondaryIpRanges {
 				if sec.GetIpCidrRange() == "" && sec.GetReservedInternalRange() != "" {
-					sec.IpCidrRange = PtrTo(fmt.Sprintf("10.129.%d.0/24", i))
+					if cidr, ok := s.getInternalRangeCidr(ctx, sec.GetReservedInternalRange()); ok {
+						sec.IpCidrRange = PtrTo(cidr)
+					} else {
+						sec.IpCidrRange = PtrTo(fmt.Sprintf("10.129.%d.0/24", i))
+					}
 				}
 			}
+		}
+	}
+
+	// Expand top-level reservedInternalRange
+	if obj.GetReservedInternalRange() != "" {
+		obj.ReservedInternalRange = PtrTo(expandNetworkConnectivityLink(obj.GetReservedInternalRange()))
+	}
+
+	// Expand reservedInternalRange in secondaryIpRanges
+	for _, sec := range obj.SecondaryIpRanges {
+		if sec.GetReservedInternalRange() != "" {
+			sec.ReservedInternalRange = PtrTo(expandNetworkConnectivityLink(sec.GetReservedInternalRange()))
 		}
 	}
 
@@ -429,4 +467,37 @@ func removeFromSlice[T comparable](s []T, removeValue T) ([]T, bool) {
 		keep = append(keep, t)
 	}
 	return keep, removed
+}
+
+func (s *SubnetsV1) getInternalRangeCidr(ctx context.Context, reservedRange string) (string, bool) {
+	if reservedRange == "" {
+		return "", false
+	}
+	idx := strings.Index(reservedRange, "projects/")
+	if idx == -1 {
+		return "", false
+	}
+	fqn := reservedRange[idx:]
+
+	internalRange := &networkconnectivitypb.InternalRange{}
+	if err := s.storage.Get(ctx, fqn, internalRange); err != nil {
+		return "", false
+	}
+	return internalRange.GetIpCidrRange(), true
+}
+
+func expandNetworkConnectivityLink(link string) string {
+	if link == "" {
+		return ""
+	}
+	if strings.HasPrefix(link, "https://") {
+		return link
+	}
+	trimmed := strings.TrimPrefix(link, "networkconnectivity.googleapis.com/")
+	trimmed = strings.TrimPrefix(trimmed, "networkconnectivity.googleapis.com/v1/")
+	trimmed = strings.TrimPrefix(trimmed, "/")
+	if strings.HasPrefix(trimmed, "projects/") {
+		return "https://networkconnectivity.googleapis.com/v1/" + trimmed
+	}
+	return link
 }

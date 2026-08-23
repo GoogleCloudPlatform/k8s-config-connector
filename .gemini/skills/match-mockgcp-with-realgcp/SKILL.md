@@ -7,10 +7,14 @@ When the golden tests for K8s Config Connector mock output diverge from real GCP
 ## Critical Rules
 
 *   **Real GCP Baseline Required**: You must always generate the initial baseline `_http.log` by running `hack/record-gcp` against a real GCP project and commit it first.
+*   **Basic Test Case Naming**: Ensure that the basic test case directory/folder names always contain the resource kind name (e.g., use `computesubnetwork-reservedinternalrange` instead of `reservedinternalrange`).
+*   **Handling record-gcp Failures**: If `record-gcp` fails, the bot should attempt to debug and fix the test case configuration (e.g., resolving IP address range conflicts, API/service enablement, or configuration schema issues). If it still fails after 3 distinct retry attempts, the bot must halt, escalate the failure to the human reviewer, and clearly explain the blocker/error in a comment.
+*   **No New Missing Fields**: We should not add new missing fields to the exceptions file (`tests/apichecks/testdata/exceptions/missingfields.txt`). If fixing or renaming an existing test case exposes/causes more missing fields, you must extend the test case configuration or add a new test case (or more than one if needed) to cover those missing fields.
 *   **Do NOT Generate Golden Logs from Mock**: You are strictly forbidden from generating or updating `_http.log` files against the mock in this step. You MUST first establish a baseline against `real` GCP with `E2E_GCP_TARGET=real E2E_KUBE_TARGET=envtest` with `WRITE_GOLDEN_OUTPUT=1`.
 *   **Do NOT Manually Edit HTTP Logs**: You are strictly forbidden from using text-editing tools (like `replace`, `write_file`, or `sed`) to modify any `_http.log` files. The ONLY valid way to update these files is by executing the test scripts (`hack/record-gcp` or `hack/compare-mock`) via the shell.
 *   **Provide Timestamps**: When starting and finishing running `hack/record-gcp` command, you must capture and provide the exact timestamps in PDT in the summary comment after addressing the comments so that the reviewer can check the GCP logs to verify the work.
 *   **Do NOT Modify Test Cases Post-Recording**: Do not update/modify the test case configuration (e.g., changing location/zone) after you have committed the real GCP logs. If you must change the test case, you must run `hack/record-gcp` again to record the real GCP logs.
+*   **Do NOT Update Legacy Controller**: Do not update or modify the legacy/Terraform-based controller (such as code under `pkg/krmtotf/references.go`) unless absolutely necessary. Keep the legacy controller logic unchanged and avoid modifications to common or shared legacy framework code.
 *   **Focus on Target CRUD Requests**: When aligning the HTTP logs, we only care about the requests made to the CRUD endpoint of the target resource. Non-target/dependent resource requests in the log do not need to be matched as strictly.
 
 ## Workflow

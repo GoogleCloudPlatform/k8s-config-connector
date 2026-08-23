@@ -10,12 +10,6 @@
   name: internalrange-${uniqueId}
   namespace: ${uniqueId}
   version: v1alpha1
-- caisURL: //networkconnectivity.googleapis.com/projects/${projectId}/locations/global/internalRanges/internalrange-sec-${uniqueId}
-  group: networkconnectivity.cnrm.cloud.google.com
-  kind: NetworkConnectivityInternalRange
-  name: internalrange-sec-${uniqueId}
-  namespace: ${uniqueId}
-  version: v1alpha1
 - caisURL: //compute.googleapis.com/projects/${projectId}/regions/us-central1/subnetworks/computesubnetwork-${uniqueId}
   group: compute.cnrm.cloud.google.com
   kind: ComputeSubnetwork

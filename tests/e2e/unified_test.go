@@ -305,6 +305,10 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 					if strings.Contains(fixture.Name, "regionaltargethttpsproxy") {
 						opt.CreateInOrder = true
 					}
+					if strings.Contains(fixture.Name, "computesubnetwork") {
+						opt.CreateInOrder = true
+						opt.DeleteInOrder = true
+					}
 
 					// We want to use SSA everywhere, but some of our tests are broken by SSA
 					switch group := primaryResource.GetObjectKind().GroupVersionKind().Group; group {
