@@ -28,9 +28,22 @@ GOLANGCI_LINT_CACHE := /tmp/golangci-lint
 # ./github/workflows/lint.yaml
 GOLANGCI_LINT_VERSION := v2.9.0
 
-# Use Docker BuildKit when building images to allow usage of 'setcap' in
-# multi-stage builds (https://github.com/moby/moby/issues/38132)
-DOCKER_BUILD := docker buildx build --load --cache-from=type=gha,scope=kcc --cache-to=type=gha,mode=max,scope=kcc $(DOCKER_BUILD_FLAGS)
+PLATFORM ?= linux/amd64
+BUILDER_PLATFORM ?= linux/amd64
+
+comma := ,
+ifeq ($(findstring $(comma),$(PLATFORM)),)
+DEFAULT_OUTPUT_TYPE = type=docker
+else
+DEFAULT_OUTPUT_TYPE = type=image
+endif
+OUTPUT_TYPE ?= $(DEFAULT_OUTPUT_TYPE)
+
+# Use docker buildx when building images to support multi-architecture builds.
+# The PLATFORM and OUTPUT_TYPE variables can be overridden as needed (e.g.,
+# to build and push multi-arch images, use PLATFORM=linux/amd64,linux/arm64 OUTPUT_TYPE=type=registry)
+DOCKER_BUILD = docker buildx build --platform="$(PLATFORM)" --output=$(OUTPUT_TYPE) --cache-from=type=gha,scope=kcc --cache-to=type=gha,mode=max,scope=kcc --build-context $(BUILDER_IMG)=bin/compiled $(DOCKER_BUILD_FLAGS)
+DOCKER_PUSH = docker buildx build --platform="$(PLATFORM)" --push --cache-from=type=gha,scope=kcc --cache-to=type=gha,mode=max,scope=kcc --build-context $(BUILDER_IMG)=bin/compiled $(DOCKER_BUILD_FLAGS)
 
 KUSTOMIZE ?= ./bin/kustomize
 
@@ -43,8 +56,6 @@ GKE_DISTROLESS_IMG := gcr.io/gke-release/gke-distroless/static:gke_distroless_20
 CRD_OUTPUT_TMP := config/crds/tmp
 CRD_OUTPUT_STAGING := config/crds/tmp/staging
 CRD_OUTPUT_FINAL := config/crds/resources
-PLATFORM ?= linux/amd64
-OUTPUT_TYPE ?= type=docker
 
 ifneq ($(origin KUBECONTEXT), undefined)
 CONTEXT_FLAG := --context ${KUBECONTEXT}
@@ -194,7 +205,8 @@ docker-build: docker-build-manager docker-build-recorder docker-build-webhook do
 # build all the binaries into the builder docker image
 .PHONY: docker-build-builder
 docker-build-builder:
-	$(DOCKER_BUILD) . -f build/builder/Dockerfile -t ${BUILDER_IMG}
+	mkdir -p bin/compiled
+	docker buildx build . -f build/builder/Dockerfile --platform="$(BUILDER_PLATFORM)" --output=type=local,dest=bin/compiled
 
 BUILDER_REPO ?= $(shell echo "${BUILDER_IMG}" | cut -d':' -f1)
 
@@ -245,12 +257,21 @@ docker-build-config-connector: docker-build-builder
 # Push the docker image
 .PHONY: docker-push
 docker-push:
+ifeq ($(findstring docker,$(OUTPUT_TYPE)),docker)
 	docker push ${CONTROLLER_IMG}
 	docker push ${RECORDER_IMG}
 	docker push ${WEBHOOK_IMG}
 	docker push ${DELETION_DEFENDER_IMG}
 	docker push ${UNMANAGED_DETECTOR_IMG}
 	docker push ${CONFIG_CONNECTOR_IMG}
+else
+	$(DOCKER_PUSH) -t ${CONTROLLER_IMG} --build-arg BUILDER_IMG=${BUILDER_IMG} --build-arg GKE_DISTROLESS_IMG=${GKE_DISTROLESS_IMG} - < build/manager/Dockerfile
+	$(DOCKER_PUSH) -t ${RECORDER_IMG} --build-arg BUILDER_IMG=${BUILDER_IMG} --build-arg GKE_DISTROLESS_IMG=${GKE_DISTROLESS_IMG} - < build/recorder/Dockerfile
+	$(DOCKER_PUSH) -t ${WEBHOOK_IMG} --build-arg BUILDER_IMG=${BUILDER_IMG} --build-arg GKE_DISTROLESS_IMG=${GKE_DISTROLESS_IMG} - < build/webhook/Dockerfile
+	$(DOCKER_PUSH) -t ${DELETION_DEFENDER_IMG} --build-arg BUILDER_IMG=${BUILDER_IMG} --build-arg GKE_DISTROLESS_IMG=${GKE_DISTROLESS_IMG} - < build/deletiondefender/Dockerfile
+	$(DOCKER_PUSH) -t ${UNMANAGED_DETECTOR_IMG} --build-arg BUILDER_IMG=${BUILDER_IMG} --build-arg GKE_DISTROLESS_IMG=${GKE_DISTROLESS_IMG} - < build/unmanageddetector/Dockerfile
+	$(DOCKER_PUSH) -t ${CONFIG_CONNECTOR_IMG} --build-arg BUILDER_IMG=${BUILDER_IMG} --build-arg GKE_DISTROLESS_IMG=${GKE_DISTROLESS_IMG} - < build/config-connector/Dockerfile
+endif
 
 __tooling-image:
 	docker buildx build build/tooling \
@@ -396,7 +417,7 @@ config-connector-manifests-autopilot: build-operator-manifests
 .PHONY: build-operator-manifests
 build-operator-manifests:
 	go run sigs.k8s.io/controller-tools/cmd/controller-gen@v0.16.5 crd paths="./operator/pkg/apis/..." output:crd:artifacts:config=operator/config/crd/bases
-	make -C operator docker-build GKE_DISTROLESS_IMG=${GKE_DISTROLESS_IMG}
+	make -C operator docker-build GKE_DISTROLESS_IMG=${GKE_DISTROLESS_IMG} PLATFORM="${PLATFORM}" OUTPUT_TYPE="${OUTPUT_TYPE}"
 
 .PHONY: push-operator-manifest
 push-operator-manifest:
