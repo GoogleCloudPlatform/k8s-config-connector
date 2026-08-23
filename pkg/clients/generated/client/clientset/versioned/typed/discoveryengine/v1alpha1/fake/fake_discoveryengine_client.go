@@ -79,6 +79,10 @@ func (c *FakeDiscoveryengineV1alpha1) DiscoveryEngineSessions(namespace string) 
 	return newFakeDiscoveryEngineSessions(c, namespace)
 }
 
+func (c *FakeDiscoveryengineV1alpha1) DiscoveryEngineUserStores(namespace string) v1alpha1.DiscoveryEngineUserStoreInterface {
+	return newFakeDiscoveryEngineUserStores(c, namespace)
+}
+
 // RESTClient returns a RESTClient that is used to communicate
 // with API server by this client implementation.
 func (c *FakeDiscoveryengineV1alpha1) RESTClient() rest.Interface {

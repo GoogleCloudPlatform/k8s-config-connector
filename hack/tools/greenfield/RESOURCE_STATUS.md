@@ -222,7 +222,7 @@ This file tracks the progress of new "Direct" resource implementations.
 | VertexAIModelMonitoringJob | aiplatform | - | - | - | 1 | PLANNED | - |
 | VertexAIRagDataSchema | aiplatform | - | - | - | 1 | PLANNED | - |
 | VertexAISession | aiplatform | - | - | - | 1 | PLANNED | - |
-| VertexAITensorboardExperiment | aiplatform | - | - | - | 1 | PLANNED | - |
+| VertexAITensorBoardExperiment | aiplatform | - | - | - | 1 | PLANNED | - |
 | VertexAITrial | aiplatform | - | - | - | 1 | PLANNED | - |
 | DiscoveryEngineChatEngine | discoveryengine | - | - | - | 1 | PLANNED | - |
 | DiscoveryEngineSearchEngine | discoveryengine | - | - | - | 1 | PLANNED | - |
@@ -240,6 +240,6 @@ This file tracks the progress of new "Direct" resource implementations.
 | AssuredWorkloads | assuredworkloads | - | - | - | 1 | PLANNED | - |
 | VertexAIExtension | aiplatform | - | - | - | 1 | PLANNED | - |
 | VertexAIModel | aiplatform | - | - | - | 1 | PLANNED | - |
-| VertexAITensorboard | aiplatform | - | - | - | 1 | PLANNED | - |
-| VertexAITensorboardRun | aiplatform | - | - | - | 1 | PLANNED | - |
+| VertexAITensorBoard | aiplatform | - | - | - | 1 | PLANNED | - |
+| VertexAITensorBoardRun | aiplatform | - | - | - | 1 | PLANNED | - |
 | VertexAISecurityPolicy | aiplatform | - | - | - | 1 | PLANNED | - |

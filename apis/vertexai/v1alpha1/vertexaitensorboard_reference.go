@@ -27,56 +27,56 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ refs.Ref = &VertexAITensorboardRef{}
+var _ refs.Ref = &VertexAITensorBoardRef{}
 
-// VertexAITensorboardRef is a reference to a GCP VertexAITensorboard.
-type VertexAITensorboardRef struct {
-	// A reference to an externally managed VertexAITensorboard resource.
+// VertexAITensorBoardRef is a reference to a GCP VertexAITensorBoard.
+type VertexAITensorBoardRef struct {
+	// A reference to an externally managed VertexAITensorBoard resource.
 	// Should be in the format "projects/{{projectID}}/locations/{{location}}/tensorboards/{{tensorboardID}}".
 	External string `json:"external,omitempty"`
 
-	// The name of a VertexAITensorboard resource.
+	// The name of a VertexAITensorBoard resource.
 	Name string `json:"name,omitempty"`
 
-	// The namespace of a VertexAITensorboard resource.
+	// The namespace of a VertexAITensorBoard resource.
 	Namespace string `json:"namespace,omitempty"`
 }
 
 func init() {
-	refs.Register(&VertexAITensorboardRef{}, &VertexAITensorboard{})
+	refs.Register(&VertexAITensorBoardRef{}, &VertexAITensorBoard{})
 }
 
-func (r *VertexAITensorboardRef) GetGVK() schema.GroupVersionKind {
-	return VertexAITensorboardGVK
+func (r *VertexAITensorBoardRef) GetGVK() schema.GroupVersionKind {
+	return VertexAITensorBoardGVK
 }
 
-func (r *VertexAITensorboardRef) GetNamespacedName() types.NamespacedName {
+func (r *VertexAITensorBoardRef) GetNamespacedName() types.NamespacedName {
 	return types.NamespacedName{
 		Name:      r.Name,
 		Namespace: r.Namespace,
 	}
 }
 
-func (r *VertexAITensorboardRef) GetExternal() string {
+func (r *VertexAITensorBoardRef) GetExternal() string {
 	return r.External
 }
 
-func (r *VertexAITensorboardRef) SetExternal(external string) {
+func (r *VertexAITensorBoardRef) SetExternal(external string) {
 	r.External = external
 	r.Name = ""
 	r.Namespace = ""
 }
 
-func (r *VertexAITensorboardRef) ValidateExternal(ref string) error {
-	id := &VertexAITensorboardIdentity{}
+func (r *VertexAITensorBoardRef) ValidateExternal(ref string) error {
+	id := &VertexAITensorBoardIdentity{}
 	return id.FromExternal(ref)
 }
 
-func (r *VertexAITensorboardRef) ParseExternalToIdentity() (identity.Identity, error) {
+func (r *VertexAITensorBoardRef) ParseExternalToIdentity() (identity.Identity, error) {
 	if r.External == "" {
 		return nil, fmt.Errorf("external is empty")
 	}
-	id := &VertexAITensorboardIdentity{}
+	id := &VertexAITensorBoardIdentity{}
 	err := id.FromExternal(r.External)
 	if err != nil {
 		return nil, err
@@ -84,13 +84,13 @@ func (r *VertexAITensorboardRef) ParseExternalToIdentity() (identity.Identity, e
 	return id, nil
 }
 
-func (r *VertexAITensorboardRef) Normalize(ctx context.Context, reader client.Reader, otherNamespace string) error {
+func (r *VertexAITensorBoardRef) Normalize(ctx context.Context, reader client.Reader, otherNamespace string) error {
 	fallback := func(u *unstructured.Unstructured) string {
-		structuredObj, err := common.ToStructuredType[*VertexAITensorboard](u)
+		structuredObj, err := common.ToStructuredType[*VertexAITensorBoard](u)
 		if err != nil {
 			return ""
 		}
-		identity, err := getIdentityFromVertexAITensorboardSpec(ctx, reader, structuredObj)
+		identity, err := getIdentityFromVertexAITensorBoardSpec(ctx, reader, structuredObj)
 		if err != nil {
 			return ""
 		}

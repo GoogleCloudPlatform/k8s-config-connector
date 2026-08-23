@@ -18,8 +18,8 @@ spec:
   names:
     categories:
     - gcp
-    kind: VertexAITensorboard
-    listKind: VertexAITensorboardList
+    kind: VertexAITensorBoard
+    listKind: VertexAITensorBoardList
     plural: vertexaitensorboards
     shortNames:
     - gcpvertexaitensorboard
@@ -47,7 +47,7 @@ spec:
     name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: VertexAITensorboard is the Schema for the VertexAITensorboard
+        description: VertexAITensorBoard is the Schema for the VertexAITensorBoard
           API
         properties:
           apiVersion:
@@ -63,7 +63,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: VertexAITensorboardSpec defines the desired state of VertexAITensorboard
+            description: VertexAITensorBoardSpec defines the desired state of VertexAITensorBoard
             properties:
               description:
                 description: Description of this Tensorboard.
@@ -153,7 +153,7 @@ spec:
                 description: The region of this resource.
                 type: string
               resourceID:
-                description: The VertexAITensorboard ID (which is server-generated).
+                description: The VertexAITensorBoard ID (which is server-generated).
                   If not given, Config Connector will create a new Tensorboard. If
                   given, Config Connector will acquire the existing Tensorboard with
                   this ID.
@@ -164,8 +164,8 @@ spec:
             - region
             type: object
           status:
-            description: VertexAITensorboardStatus defines the config connector machine
-              state of VertexAITensorboard
+            description: VertexAITensorBoardStatus defines the config connector machine
+              state of VertexAITensorBoard
             properties:
               conditions:
                 description: Conditions represent the latest available observations
@@ -194,7 +194,7 @@ spec:
                   type: object
                 type: array
               externalRef:
-                description: A unique specifier for the VertexAITensorboard resource
+                description: A unique specifier for the VertexAITensorBoard resource
                   in GCP.
                 type: string
               observedGeneration:

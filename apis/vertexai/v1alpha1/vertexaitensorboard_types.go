@@ -20,18 +20,18 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-var VertexAITensorboardGVK = GroupVersion.WithKind("VertexAITensorboard")
+var VertexAITensorBoardGVK = GroupVersion.WithKind("VertexAITensorBoard")
 
-// VertexAITensorboardSpec defines the desired state of VertexAITensorboard
+// VertexAITensorBoardSpec defines the desired state of VertexAITensorBoard
 // +kcc:spec:proto=google.cloud.aiplatform.v1beta1.Tensorboard
-type VertexAITensorboardSpec struct {
+type VertexAITensorBoardSpec struct {
 	// The project that this resource belongs to.
 	ProjectRef *refsv1beta1.ProjectRef `json:"projectRef"`
 
 	// The region of this resource.
 	Region string `json:"region"`
 
-	// The VertexAITensorboard ID (which is server-generated). If not given, Config Connector will create a new Tensorboard. If given, Config Connector will acquire the existing Tensorboard with this ID.
+	// The VertexAITensorBoard ID (which is server-generated). If not given, Config Connector will create a new Tensorboard. If given, Config Connector will acquire the existing Tensorboard with this ID.
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	// Required. User provided name of this Tensorboard.
@@ -57,8 +57,8 @@ type VertexAITensorboardSpec struct {
 	IsDefault *bool `json:"isDefault,omitempty"`
 }
 
-// VertexAITensorboardStatus defines the config connector machine state of VertexAITensorboard
-type VertexAITensorboardStatus struct {
+// VertexAITensorBoardStatus defines the config connector machine state of VertexAITensorBoard
+type VertexAITensorBoardStatus struct {
 	/* Conditions represent the latest available observations of the
 	   object's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
@@ -66,16 +66,16 @@ type VertexAITensorboardStatus struct {
 	// ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource.
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`
 
-	// A unique specifier for the VertexAITensorboard resource in GCP.
+	// A unique specifier for the VertexAITensorBoard resource in GCP.
 	ExternalRef *string `json:"externalRef,omitempty"`
 
 	// ObservedState is the state of the resource as most recently observed in GCP.
-	ObservedState *VertexAITensorboardObservedState `json:"observedState,omitempty"`
+	ObservedState *VertexAITensorBoardObservedState `json:"observedState,omitempty"`
 }
 
-// VertexAITensorboardObservedState is the state of the VertexAITensorboard resource as most recently observed in GCP.
+// VertexAITensorBoardObservedState is the state of the VertexAITensorBoard resource as most recently observed in GCP.
 // +kcc:observedstate:proto=google.cloud.aiplatform.v1beta1.Tensorboard
-type VertexAITensorboardObservedState struct {
+type VertexAITensorBoardObservedState struct {
 	// Output only. Name of the Tensorboard.
 	//  Format:
 	//  `projects/{project}/locations/{location}/tensorboards/{tensorboard}`
@@ -122,25 +122,25 @@ type VertexAITensorboardObservedState struct {
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
-// VertexAITensorboard is the Schema for the VertexAITensorboard API
+// VertexAITensorBoard is the Schema for the VertexAITensorBoard API
 // +k8s:openapi-gen=true
-type VertexAITensorboard struct {
+type VertexAITensorBoard struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
 	// +required
-	Spec   VertexAITensorboardSpec   `json:"spec,omitempty"`
-	Status VertexAITensorboardStatus `json:"status,omitempty"`
+	Spec   VertexAITensorBoardSpec   `json:"spec,omitempty"`
+	Status VertexAITensorBoardStatus `json:"status,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// VertexAITensorboardList contains a list of VertexAITensorboard
-type VertexAITensorboardList struct {
+// VertexAITensorBoardList contains a list of VertexAITensorBoard
+type VertexAITensorBoardList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []VertexAITensorboard `json:"items"`
+	Items           []VertexAITensorBoard `json:"items"`
 }
 
 func init() {
-	SchemeBuilder.Register(&VertexAITensorboard{}, &VertexAITensorboardList{})
+	SchemeBuilder.Register(&VertexAITensorBoard{}, &VertexAITensorBoardList{})
 }

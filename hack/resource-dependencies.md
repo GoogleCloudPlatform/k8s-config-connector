@@ -363,7 +363,7 @@ Resources in this list must be created in the order the list is in:
 - VertexAIFeaturestoreEntityTypeFeature
 - VertexAIIndex
 - VertexAIIndexEndpoint
-- VertexAITensorboard
+- VertexAITensorBoard
 - WorkflowsExecution (missing _reference.go only)
 - ComputeDisk
 - ComputeDiskResourcePolicyAttachment

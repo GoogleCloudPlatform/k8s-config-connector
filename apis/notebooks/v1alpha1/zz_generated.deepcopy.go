@@ -146,7 +146,7 @@ func (in *ExecutionTemplate) DeepCopyInto(out *ExecutionTemplate) {
 	}
 	if in.TensorboardRef != nil {
 		in, out := &in.TensorboardRef, &out.TensorboardRef
-		*out = new(vertexaiv1alpha1.VertexAITensorboardRef)
+		*out = new(vertexaiv1alpha1.VertexAITensorBoardRef)
 		**out = **in
 	}
 }

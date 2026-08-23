@@ -148,7 +148,7 @@ func CustomJobSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.CustomJo
 	out.BaseOutputDirectory = GCSDestination_v1alpha1_FromProto(mapCtx, in.GetBaseOutputDirectory())
 	out.ProtectedArtifactLocationID = direct.LazyPtr(in.GetProtectedArtifactLocationId())
 	if in.GetTensorboard() != "" {
-		out.TensorboardRef = &krmvertexaiv1alpha1.VertexAITensorboardRef{External: in.GetTensorboard()}
+		out.TensorboardRef = &krmvertexaiv1alpha1.VertexAITensorBoardRef{External: in.GetTensorboard()}
 	}
 	out.EnableWebAccess = direct.LazyPtr(in.GetEnableWebAccess())
 	out.EnableDashboardAccess = direct.LazyPtr(in.GetEnableDashboardAccess())
@@ -1219,6 +1219,64 @@ func VertexAIMetadataStoreSpec_v1beta1_ToProto(mapCtx *direct.MapContext, in *kr
 	out.DataplexConfig = MetadataStore_DataplexConfig_v1beta1_ToProto(mapCtx, in.DataplexConfig)
 	return out
 }
+func VertexAITensorBoardObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Tensorboard) *krmvertexaiv1alpha1.VertexAITensorBoardObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.VertexAITensorBoardObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	out.BlobStoragePathPrefix = direct.LazyPtr(in.GetBlobStoragePathPrefix())
+	out.RunCount = direct.LazyPtr(in.GetRunCount())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	// MISSING: Labels
+	// MISSING: Etag
+	out.SatisfiesPzs = direct.LazyPtr(in.GetSatisfiesPzs())
+	out.SatisfiesPzi = direct.LazyPtr(in.GetSatisfiesPzi())
+	return out
+}
+func VertexAITensorBoardObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.VertexAITensorBoardObservedState) *pb.Tensorboard {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tensorboard{}
+	out.Name = direct.ValueOf(in.Name)
+	out.BlobStoragePathPrefix = direct.ValueOf(in.BlobStoragePathPrefix)
+	out.RunCount = direct.ValueOf(in.RunCount)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	// MISSING: Labels
+	// MISSING: Etag
+	out.SatisfiesPzs = direct.ValueOf(in.SatisfiesPzs)
+	out.SatisfiesPzi = direct.ValueOf(in.SatisfiesPzi)
+	return out
+}
+func VertexAITensorBoardSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Tensorboard) *krmvertexaiv1alpha1.VertexAITensorBoardSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmvertexaiv1alpha1.VertexAITensorBoardSpec{}
+	out.DisplayName = in.GetDisplayName()
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.EncryptionSpec = EncryptionSpec_v1alpha1_FromProto(mapCtx, in.GetEncryptionSpec())
+	// MISSING: Labels
+	// MISSING: Etag
+	out.IsDefault = direct.LazyPtr(in.GetIsDefault())
+	return out
+}
+func VertexAITensorBoardSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.VertexAITensorBoardSpec) *pb.Tensorboard {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Tensorboard{}
+	out.DisplayName = VertexAITensorBoardSpec_DisplayName_ToProto(mapCtx, in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	out.EncryptionSpec = EncryptionSpec_v1alpha1_ToProto(mapCtx, in.EncryptionSpec)
+	// MISSING: Labels
+	// MISSING: Etag
+	out.IsDefault = direct.ValueOf(in.IsDefault)
+	return out
+}
 func VertexAITensorboardExperimentObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.TensorboardExperiment) *krmvertexaiv1alpha1.VertexAITensorboardExperimentObservedState {
 	if in == nil {
 		return nil
@@ -1263,64 +1321,6 @@ func VertexAITensorboardExperimentSpec_v1alpha1_ToProto(mapCtx *direct.MapContex
 	out.Labels = in.Labels
 	// MISSING: Etag
 	out.Source = direct.ValueOf(in.Source)
-	return out
-}
-func VertexAITensorboardObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Tensorboard) *krmvertexaiv1alpha1.VertexAITensorboardObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krmvertexaiv1alpha1.VertexAITensorboardObservedState{}
-	out.Name = direct.LazyPtr(in.GetName())
-	out.BlobStoragePathPrefix = direct.LazyPtr(in.GetBlobStoragePathPrefix())
-	out.RunCount = direct.LazyPtr(in.GetRunCount())
-	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
-	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
-	// MISSING: Labels
-	// MISSING: Etag
-	out.SatisfiesPzs = direct.LazyPtr(in.GetSatisfiesPzs())
-	out.SatisfiesPzi = direct.LazyPtr(in.GetSatisfiesPzi())
-	return out
-}
-func VertexAITensorboardObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.VertexAITensorboardObservedState) *pb.Tensorboard {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Tensorboard{}
-	out.Name = direct.ValueOf(in.Name)
-	out.BlobStoragePathPrefix = direct.ValueOf(in.BlobStoragePathPrefix)
-	out.RunCount = direct.ValueOf(in.RunCount)
-	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
-	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
-	// MISSING: Labels
-	// MISSING: Etag
-	out.SatisfiesPzs = direct.ValueOf(in.SatisfiesPzs)
-	out.SatisfiesPzi = direct.ValueOf(in.SatisfiesPzi)
-	return out
-}
-func VertexAITensorboardSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.Tensorboard) *krmvertexaiv1alpha1.VertexAITensorboardSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krmvertexaiv1alpha1.VertexAITensorboardSpec{}
-	out.DisplayName = in.GetDisplayName()
-	out.Description = direct.LazyPtr(in.GetDescription())
-	out.EncryptionSpec = EncryptionSpec_v1alpha1_FromProto(mapCtx, in.GetEncryptionSpec())
-	// MISSING: Labels
-	// MISSING: Etag
-	out.IsDefault = direct.LazyPtr(in.GetIsDefault())
-	return out
-}
-func VertexAITensorboardSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmvertexaiv1alpha1.VertexAITensorboardSpec) *pb.Tensorboard {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Tensorboard{}
-	out.DisplayName = VertexAITensorboardSpec_DisplayName_ToProto(mapCtx, in.DisplayName)
-	out.Description = direct.ValueOf(in.Description)
-	out.EncryptionSpec = EncryptionSpec_v1alpha1_ToProto(mapCtx, in.EncryptionSpec)
-	// MISSING: Labels
-	// MISSING: Etag
-	out.IsDefault = direct.ValueOf(in.IsDefault)
 	return out
 }
 func WorkerPoolSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.WorkerPoolSpec) *krmvertexaiv1alpha1.WorkerPoolSpec {

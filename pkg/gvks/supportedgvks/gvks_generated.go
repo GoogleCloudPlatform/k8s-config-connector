@@ -2818,7 +2818,7 @@ var legacyGVKs = map[schema.GroupVersionKind]legacyGVKData{
 	{
 		Group:   "vertexai.cnrm.cloud.google.com",
 		Version: "v1alpha1",
-		Kind:    "VertexAITensorboard",
+		Kind:    "VertexAITensorBoard",
 	}: {
 		Terraform:   true,
 		DCL:         false,

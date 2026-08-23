@@ -85,7 +85,7 @@ var syncerGVKsWithServiceGeneratedIDs = map[schema.GroupVersionKind]struct{}{
 	{Group: "vertexai.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "VertexAIDataset"}:                                      {},
 	{Group: "vertexai.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "VertexAIIndex"}:                                        {},
 	{Group: "vertexai.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "VertexAIIndexEndpoint"}:                                {},
-	{Group: "vertexai.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "VertexAITensorboard"}:                                  {},
+	{Group: "vertexai.cnrm.cloud.google.com", Version: "v1alpha1", Kind: "VertexAITensorBoard"}:                                  {},
 	{Group: "vertexai.cnrm.cloud.google.com", Version: "v1beta1", Kind: "VertexAIDataset"}:                                       {},
 	{Group: "vertexai.cnrm.cloud.google.com", Version: "v1beta1", Kind: "VertexAIIndex"}:                                         {},
 }

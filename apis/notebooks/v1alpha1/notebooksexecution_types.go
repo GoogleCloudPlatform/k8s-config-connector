@@ -198,7 +198,7 @@ type ExecutionTemplate struct {
 	KernelSpec *string `json:"kernelSpec,omitempty"`
 
 	// The Vertex AI [Tensorboard] resource to which this execution will upload Tensorboard logs.
-	TensorboardRef *vertexaiv1alpha1.VertexAITensorboardRef `json:"tensorboardRef,omitempty"`
+	TensorboardRef *vertexaiv1alpha1.VertexAITensorBoardRef `json:"tensorboardRef,omitempty"`
 }
 
 // +kcc:proto=google.cloud.notebooks.v1.ExecutionTemplate.DataprocParameters

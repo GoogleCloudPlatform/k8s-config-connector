@@ -20,7 +20,7 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
-func TestVertexAITensorboardRef_GetGVK(t *testing.T) {
+func TestVertexAITensorBoardRef_GetGVK(t *testing.T) {
 	tests := []struct {
 		name string
 		want schema.GroupVersionKind
@@ -30,13 +30,13 @@ func TestVertexAITensorboardRef_GetGVK(t *testing.T) {
 			want: schema.GroupVersionKind{
 				Group:   "vertexai.cnrm.cloud.google.com",
 				Version: "v1alpha1",
-				Kind:    "VertexAITensorboard",
+				Kind:    "VertexAITensorBoard",
 			},
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			r := &VertexAITensorboardRef{}
+			r := &VertexAITensorBoardRef{}
 			if got := r.GetGVK(); got != tt.want {
 				t.Errorf("GetGVK() = %v, want %v", got, tt.want)
 			}
@@ -44,7 +44,7 @@ func TestVertexAITensorboardRef_GetGVK(t *testing.T) {
 	}
 }
 
-func TestVertexAITensorboardRef_ValidateExternal(t *testing.T) {
+func TestVertexAITensorBoardRef_ValidateExternal(t *testing.T) {
 	tests := []struct {
 		name    string
 		ref     string
@@ -79,9 +79,9 @@ func TestVertexAITensorboardRef_ValidateExternal(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			r := &VertexAITensorboardRef{}
+			r := &VertexAITensorBoardRef{}
 			if err := r.ValidateExternal(tt.ref); (err != nil) != tt.wantErr {
-				t.Errorf("VertexAITensorboardRef.ValidateExternal() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("VertexAITensorBoardRef.ValidateExternal() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
 	}
