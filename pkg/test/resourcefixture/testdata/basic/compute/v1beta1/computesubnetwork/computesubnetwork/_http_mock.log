@@ -248,6 +248,9 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "ipCidrRange": "10.2.0.0/16",
   "kind": "compute#subnetwork",
+  "logConfig": {
+    "enable": false
+  },
   "name": "${subnetworkID}",
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "privateIpGoogleAccess": false,
@@ -265,6 +268,9 @@ Content-Type: application/json
 
 {
   "ipCidrRange": "10.2.0.0/16",
+  "logConfig": {
+    "enable": false
+  },
   "network": "projects/${projectId}/global/networks/${networkID}",
   "privateIpGoogleAccess": true,
   "region": "us-central1"
@@ -352,6 +358,9 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "ipCidrRange": "10.2.0.0/16",
   "kind": "compute#subnetwork",
+  "logConfig": {
+    "enable": false
+  },
   "name": "${subnetworkID}",
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "privateIpGoogleAccess": true,
