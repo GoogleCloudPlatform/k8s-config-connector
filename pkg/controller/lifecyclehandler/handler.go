@@ -16,6 +16,7 @@ package lifecyclehandler
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
@@ -27,6 +28,9 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/resourceoverrides"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util"
+	"github.com/googleapis/gax-go/v2/apierror"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 
 	corev1 "k8s.io/api/core/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
@@ -429,4 +433,25 @@ func IsOrphaned(resource *k8s.Resource, parentReferenceConfigs []corekccv1alpha1
 		return false, parent, nil
 	}
 	return false, nil, fmt.Errorf("no parent reference found in resource")
+}
+
+func IsNonRetryableError(err error) bool {
+	if err == nil {
+		return false
+	}
+	// Check for standard gRPC status code
+	if s, ok := status.FromError(err); ok {
+		switch s.Code() {
+		case codes.InvalidArgument, codes.Unimplemented:
+			return true
+		}
+	}
+	// Check for HTTP status code from apiError
+	var apiErr *apierror.APIError
+	if errors.As(err, &apiErr) {
+		if apiErr.HTTPCode() == 400 || apiErr.HTTPCode() == 501 {
+			return true
+		}
+	}
+	return false
 }

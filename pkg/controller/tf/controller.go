@@ -393,11 +393,8 @@ func (r *Reconciler) sync(ctx context.Context, krmResource *krmtotf.Resource, tf
 
 	// Report diff to structured-reporting subsystem
 	{
-		report := &structuredreporting.Diff{
-			Controller: k8s.ReconcilerTypeTerraform,
-		}
+		report := &structuredreporting.Diff{}
 		u, err := krmResource.MarshalAsUnstructured()
-
 		if err != nil {
 			log := log.FromContext(ctx)
 			log.Error(err, "error reporting diff")

@@ -17,12 +17,15 @@ package lifecyclehandler
 import (
 	"context"
 	"errors"
+	"fmt"
 	"testing"
 
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testvariable "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture/variable"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -254,6 +257,99 @@ func Test_reasonForUnresolvableDeps(t *testing.T) {
 			}
 			if got != test.want {
 				t.Errorf("reasonForUnresolvableDeps() got = %v, want %v", got, test.want)
+			}
+		})
+	}
+}
+
+func TestIsNonRetryableError(t *testing.T) {
+	tests := []struct {
+		name string
+		err  error
+		want bool
+	}{
+		{
+			name: "nil error",
+			err:  nil,
+			want: false,
+		},
+		{
+			name: "standard retryable error",
+			err:  errors.New("some general error"),
+			want: false,
+		},
+		{
+			name: "gRPC InvalidArgument",
+			err:  status.Error(codes.InvalidArgument, "invalid argument"),
+			want: true,
+		},
+		{
+			name: "gRPC FailedPrecondition (retryable)",
+			err:  status.Error(codes.FailedPrecondition, "failed precondition"),
+			want: false,
+		},
+		{
+			name: "gRPC OutOfRange (retryable)",
+			err:  status.Error(codes.OutOfRange, "out of range"),
+			want: false,
+		},
+		{
+			name: "gRPC PermissionDenied (retryable)",
+			err:  status.Error(codes.PermissionDenied, "permission denied"),
+			want: false,
+		},
+		{
+			name: "gRPC Unauthenticated (retryable)",
+			err:  status.Error(codes.Unauthenticated, "unauthenticated"),
+			want: false,
+		},
+		{
+			name: "gRPC Unimplemented",
+			err:  status.Error(codes.Unimplemented, "unimplemented"),
+			want: true,
+		},
+		{
+			name: "gRPC Internal (retryable)",
+			err:  status.Error(codes.Internal, "internal server error"),
+			want: false,
+		},
+		{
+			name: "wrapped gRPC InvalidArgument",
+			err:  fmt.Errorf("wrapped: %w", status.Error(codes.InvalidArgument, "invalid")),
+			want: true,
+		},
+		{
+			name: "error string with immutable (retryable)",
+			err:  errors.New("field 'foo' is immutable and cannot be updated"),
+			want: false,
+		},
+		{
+			name: "error string with cannot be updated (retryable)",
+			err:  errors.New("ComputeAddress cannot be updated"),
+			want: false,
+		},
+		{
+			name: "error string with cannot update (retryable)",
+			err:  errors.New("cannot update SecureSourceManagerInstance"),
+			want: false,
+		},
+		{
+			name: "error string with unsupported (retryable)",
+			err:  errors.New("unsupported field update on 'bar'"),
+			want: false,
+		},
+		{
+			name: "error string with unsupported result type (retryable)",
+			err:  errors.New("waiting for key creation: unsupported result type <nil>: <nil>"),
+			want: false,
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			got := IsNonRetryableError(tc.err)
+			if got != tc.want {
+				t.Errorf("IsNonRetryableError() got = %v, want %v", got, tc.want)
 			}
 		})
 	}

@@ -229,6 +229,7 @@ func (r *DirectReconciler) Reconcile(ctx context.Context, request reconcile.Requ
 	defer cancel()
 	r.RecordReconcileWorkers(ctx, r.gvk)
 	defer r.AfterReconcile()
+
 	defer r.RecordReconcileMetrics(ctx, r.gvk, request.Namespace, request.Name, startTime, &err)
 
 	obj := &unstructured.Unstructured{}
@@ -241,6 +242,27 @@ func (r *DirectReconciler) Reconcile(ctx context.Context, request reconcile.Requ
 		}
 		// Error reading the object - requeue the request.
 		return reconcile.Result{}, err
+	}
+
+	// Check if actuation is paused due to non-retryable error
+	paused := obj.GetAnnotations()["cnrm.cloud.google.com/actuation-paused"] == "true"
+	if paused {
+		observedGen, found, _ := unstructured.NestedInt64(obj.Object, "status", "observedGeneration")
+		if found && obj.GetGeneration() > observedGen {
+			// User updated spec, clear the pause annotation
+			annotations := obj.GetAnnotations()
+			if annotations != nil {
+				delete(annotations, "cnrm.cloud.google.com/actuation-paused")
+				obj.SetAnnotations(annotations)
+			}
+			if err := r.Update(ctx, obj); err != nil {
+				return reconcile.Result{}, err
+			}
+			logger.Info("cleared actuation-paused annotation due to spec update", "resource", request.NamespacedName)
+		} else {
+			logger.Info("Skipping reconcile as actuation is paused due to previous non-retryable error", "resource", request.NamespacedName)
+			return reconcile.Result{}, nil
+		}
 	}
 
 	runCtx := &reconcileContext{
@@ -262,6 +284,27 @@ func (r *DirectReconciler) Reconcile(ctx context.Context, request reconcile.Requ
 
 	requeue, err := runCtx.doReconcile(ctx, obj)
 	if err != nil {
+		if lifecyclehandler.IsNonRetryableError(err) {
+			logger.Info("reconciliation failed with non-retryable error, setting actuation-paused annotation to halt retries", "resource", request.NamespacedName, "error", err)
+			// Get the latest resource before updating to avoid resource conflict
+			latestObj := &unstructured.Unstructured{}
+			latestObj.SetGroupVersionKind(r.gvk)
+			if getErr := r.Get(ctx, request.NamespacedName, latestObj); getErr == nil {
+				annotations := latestObj.GetAnnotations()
+				if annotations == nil {
+					annotations = make(map[string]string)
+				}
+				annotations["cnrm.cloud.google.com/actuation-paused"] = "true"
+				latestObj.SetAnnotations(annotations)
+				if updateErr := r.Update(ctx, latestObj); updateErr != nil {
+					logger.Error(updateErr, "failed to set actuation-paused annotation on resource", "resource", request.NamespacedName)
+				}
+			} else {
+				logger.Error(getErr, "failed to get latest resource to set actuation-paused annotation", "resource", request.NamespacedName)
+			}
+			// Swallowed error to prevent immediate retry by controller-runtime
+			return reconcile.Result{}, nil
+		}
 		return reconcile.Result{}, err
 	}
 	if requeue {
