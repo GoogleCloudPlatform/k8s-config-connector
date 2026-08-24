@@ -1,0 +1,84 @@
+// Copyright 2026 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+package google.cloud.discoveryengine.v1alpha;
+
+import "google/api/field_behavior.proto";
+import "google/api/resource.proto";
+
+option go_package = "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/cloud/discoveryengine/v1alpha;discoveryenginepb";
+option java_multiple_files = true;
+option java_outer_classname = "WidgetConfigProto";
+option java_package = "com.google.cloud.discoveryengine.v1alpha";
+
+message WidgetConfig {
+  option (google.api.resource) = {
+    type: "discoveryengine.googleapis.com/WidgetConfig"
+    pattern: "projects/{project}/locations/{location}/collections/{collection}/engines/{engine}/widgetConfigs/{widget_config}"
+    pattern: "projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/widgetConfigs/{widget_config}"
+  };
+
+  string name = 1;
+
+  message AccessSettings {
+    bool allow_public_access = 1;
+    repeated string allowlisted_domains = 2;
+    bool enable_web_app = 3;
+    string workforce_identity_pool_provider = 4;
+    string language_code = 5;
+  }
+
+  message UiSettings {
+    string interaction_type = 1;
+    bool enable_autocomplete = 2;
+    bool enable_safe_search = 3;
+    bool enable_quality_feedback = 4;
+    bool enable_search_as_you_type = 5;
+    string result_description_type = 6;
+
+    message GenerativeAnswerConfig {
+      int32 result_count = 1;
+      string model_version = 2;
+      string model_prompt_preamble = 3;
+      int32 max_rephrase_steps = 4;
+      bool ignore_non_answer_seeking_query = 5;
+      bool ignore_adversarial_query = 6;
+      bool ignore_low_relevant_content = 7;
+      string image_source = 8;
+    }
+    GenerativeAnswerConfig generative_answer_config = 7;
+
+    bool enable_visual_content_summary = 8;
+    bool enable_people_search = 9;
+    bool enable_create_agent_button = 10;
+  }
+
+  message UiBranding {
+    string title = 1;
+    string logo_uri = 2;
+    string favicon_uri = 3;
+    string primary_color = 4;
+  }
+
+  message HomepageSetting {
+    repeated string shortcuts = 1;
+  }
+
+  AccessSettings access_settings = 2;
+  UiSettings ui_settings = 3;
+  UiBranding ui_branding = 4;
+  HomepageSetting homepage_setting = 5;
+}
