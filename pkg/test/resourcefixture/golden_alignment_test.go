@@ -183,6 +183,74 @@ func groupByPathAndMethod(events []httpEvent) pathMethodEvents {
 	return grouped
 }
 
+func getHost(urlStr string) string {
+	parts := strings.Split(urlStr, "/")
+	if len(parts) > 2 {
+		return parts[2]
+	}
+	return ""
+}
+
+func filterTransientConflict409s(events []httpEvent) []httpEvent {
+	var filtered []httpEvent
+	for _, ev := range events {
+		// A 409 Conflict represents a transient duplicate creation attempt due to eventual consistency, which is noise
+		if strings.Contains(ev.Status, "409") {
+			continue
+		}
+		filtered = append(filtered, ev)
+	}
+	return filtered
+}
+
+func filterTransientGET404s(events []httpEvent) []httpEvent {
+	var filtered []httpEvent
+	for i, ev := range events {
+		// A GET 404 is transient if:
+		// There is a subsequent successful GET (2xx) for this URL in the remaining events,
+		// and NO intervening state-modifying operations (POST, PUT, PATCH, DELETE) for the same service (host) occur.
+		if ev.Method == "GET" && strings.Contains(ev.Status, "404") {
+			hasSubsequentSuccess := false
+			for j := i + 1; j < len(events); j++ {
+				nextEv := events[j]
+				if (nextEv.Method == "POST" || nextEv.Method == "PUT" || nextEv.Method == "PATCH" || nextEv.Method == "DELETE") && getHost(nextEv.URL) == getHost(ev.URL) {
+					break
+				}
+				if nextEv.URL == ev.URL && nextEv.Method == "GET" && (strings.HasPrefix(nextEv.Status, "200") || strings.HasPrefix(nextEv.Status, "204")) {
+					hasSubsequentSuccess = true
+					break
+				}
+			}
+			if hasSubsequentSuccess {
+				// Skip this transient 404
+				continue
+			}
+		}
+		filtered = append(filtered, ev)
+	}
+	return filtered
+}
+
+func deduplicateConsecutiveGETs(events []httpEvent) []httpEvent {
+	var filtered []httpEvent
+	lastGETs := make(map[string]httpEvent)
+
+	for _, ev := range events {
+		if ev.Method == "GET" {
+			if last, exists := lastGETs[ev.URL]; exists && last.Status == ev.Status && last.ResponseBody == ev.ResponseBody {
+				// Skip consecutive identical GET for the same URL
+				continue
+			}
+			lastGETs[ev.URL] = ev
+		} else {
+			// Reset lastGETs if we see any write/delete request (like a POST/PUT/PATCH/DELETE) which might change the state
+			lastGETs = make(map[string]httpEvent)
+		}
+		filtered = append(filtered, ev)
+	}
+	return filtered
+}
+
 func compareLogs(t *testing.T, realPath, mockPath string, depKinds map[string]string, primaryKind string) {
 	realEvents := readLog(t, realPath)
 	mockEvents := readLog(t, mockPath)
@@ -190,6 +258,19 @@ func compareLogs(t *testing.T, realPath, mockPath string, depKinds map[string]st
 	if len(depKinds) > 0 {
 		realEvents = filterDependencyEvents(realEvents, depKinds, primaryKind)
 		mockEvents = filterDependencyEvents(mockEvents, depKinds, primaryKind)
+	}
+
+	// Restrict eventual-consistency transient error filtering and GET deduplication to IAMServiceAccount only.
+	// Live GCP IAM has a known replication delay causing transient 404s/409s during creation.
+	if primaryKind == "IAMServiceAccount" {
+		realEvents = filterTransientConflict409s(realEvents)
+		mockEvents = filterTransientConflict409s(mockEvents)
+
+		realEvents = filterTransientGET404s(realEvents)
+		mockEvents = filterTransientGET404s(mockEvents)
+
+		realEvents = deduplicateConsecutiveGETs(realEvents)
+		mockEvents = deduplicateConsecutiveGETs(mockEvents)
 	}
 
 	realGrouped := groupByPathAndMethod(realEvents)
