@@ -45,11 +45,24 @@ OUTPUT_PATH=${2:-"${REPO_ROOT}/.build/googleapis.pb"}
 THIRD_PARTY="${REPO_ROOT}/.build/third_party"
 mkdir -p "${THIRD_PARTY}/"
 
+if [ -n "${2:-}" ]; then
+    # Explicitly provided output path, use it directly
+    VERSIONED_OUTPUT_PATH="${OUTPUT_PATH}"
+else
+    # Default output path, version it with the SHA.
+    # ${OUTPUT_PATH%.pb} strips the suffix '.pb' from the path, then we append the SHA.
+    VERSIONED_OUTPUT_PATH="${OUTPUT_PATH%.pb}-${GOOGLEAPI_VERSION}.pb"
+fi
+
 # Fast-path check: if versioned pb file already exists (and force is not set), exit immediately
-VERSIONED_OUTPUT_PATH="${OUTPUT_PATH%.pb}-${GOOGLEAPI_VERSION}.pb"
 if [[ "${FORCE_GENERATE}" != "1" ]] && [ -f "${VERSIONED_OUTPUT_PATH}" ]; then
     if [ "${VERSIONED_OUTPUT_PATH}" != "${OUTPUT_PATH}" ]; then
-        cp "${VERSIONED_OUTPUT_PATH}" "${OUTPUT_PATH}"
+        if [ ! -f "${OUTPUT_PATH}" ]; then
+            # Atomic copy to prevent concurrent file corruption
+            TMP_PATH="${OUTPUT_PATH}.tmp.$$"
+            cp "${VERSIONED_OUTPUT_PATH}" "${TMP_PATH}"
+            mv "${TMP_PATH}" "${OUTPUT_PATH}"
+        fi
     fi
     exit 0
 fi
@@ -63,15 +76,6 @@ if [ "${GOOGLEAPI_VERSION}" == "HEAD" ]; then
     echo "Fetching latest googleapis for HEAD version"
     cd "${DEFAULT_GOOGLEAPI_DIR}"
     GOOGLEAPI_VERSION=$(git ls-remote https://github.com/googleapis/googleapis.git refs/heads/master | awk '{print $1}')
-fi
-
-if [ -n "${2:-}" ]; then
-    # Explicitly provided output path, use it directly
-    VERSIONED_OUTPUT_PATH="${OUTPUT_PATH}"
-else
-    # Default output path, version it with the SHA.
-    # ${OUTPUT_PATH%.pb} strips the suffix '.pb' from the path, then we append the SHA.
-    VERSIONED_OUTPUT_PATH="${OUTPUT_PATH%.pb}-${GOOGLEAPI_VERSION}.pb"
 fi
 
 if [[ "${SKIP_GENERATE_PROTOS:-0}" == "1" ]] && [ -f "${VERSIONED_OUTPUT_PATH}" ]; then
@@ -181,5 +185,8 @@ protoc --include_imports --include_source_info \
     -o ${VERSIONED_OUTPUT_PATH} 2> >(grep -v "Import .* is unused" >&2)
 
 if [ "${VERSIONED_OUTPUT_PATH}" != "${OUTPUT_PATH}" ]; then
-    cp "${VERSIONED_OUTPUT_PATH}" "${OUTPUT_PATH}"
+    # Atomic copy to prevent concurrent file corruption
+    TMP_PATH="${OUTPUT_PATH}.tmp.$$"
+    cp "${VERSIONED_OUTPUT_PATH}" "${TMP_PATH}"
+    mv "${TMP_PATH}" "${OUTPUT_PATH}"
 fi
