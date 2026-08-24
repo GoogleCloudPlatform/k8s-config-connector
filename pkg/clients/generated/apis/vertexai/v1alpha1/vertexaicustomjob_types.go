@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -88,7 +88,7 @@ type CustomjobDnsPeeringConfigs struct {
 
 type CustomjobEncryptionSpec struct {
 	/* Required. The Cloud KMS resource identifier of the customer managed encryption key used to protect a resource. The key needs to be in the same region as where the compute resource is created. */
-	KmsKeyRef v1alpha1.ResourceRef `json:"kmsKeyRef"`
+	KmsKeyRef k8sv1alpha1.ResourceRef `json:"kmsKeyRef"`
 }
 
 type CustomjobEnv struct {
@@ -144,11 +144,11 @@ type CustomjobJobSpec struct {
 
 	/* Optional. The Experiment associated with this job. Format: `projects/{project}/locations/{location}/metadataStores/{metadataStores}/contexts/{experiment-name}` */
 	// +optional
-	ExperimentRef *v1alpha1.ResourceRef `json:"experimentRef,omitempty"`
+	ExperimentRef *k8sv1alpha1.ResourceRef `json:"experimentRef,omitempty"`
 
 	/* Optional. The Experiment Run associated with this job. Format: `projects/{project}/locations/{location}/metadataStores/{metadataStores}/contexts/{experiment-name}-{experiment-run-name}` */
 	// +optional
-	ExperimentRunRef *v1alpha1.ResourceRef `json:"experimentRunRef,omitempty"`
+	ExperimentRunRef *k8sv1alpha1.ResourceRef `json:"experimentRunRef,omitempty"`
 
 	/* Optional. The name of the Model resources for which to generate a mapping
 	to the trial name formats. Model names should be of the form:
@@ -166,7 +166,7 @@ type CustomjobJobSpec struct {
 	the model, and can be moved to other versions later on. There will be
 	exactly one default version. */
 	// +optional
-	ModelRefs []v1alpha1.ResourceRef `json:"modelRefs,omitempty"`
+	ModelRefs []k8sv1alpha1.ResourceRef `json:"modelRefs,omitempty"`
 
 	/* Optional. The full name of the Compute Engine
 	[network](/compute/docs/networks-and-firewalls#networks) to which the Job
@@ -182,7 +182,7 @@ type CustomjobJobSpec struct {
 
 	If this field is left unspecified, the job is not peered with any network. */
 	// +optional
-	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+	NetworkRef *k8sv1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
 	/* Optional. The ID of the PersistentResource in the same Project and Location
 	which to run
@@ -219,11 +219,11 @@ type CustomjobJobSpec struct {
 
 	/* Specifies the service account for workload run-as account. Users submitting jobs must have act-as permission on this run-as account. If unspecified, the [Vertex AI Custom Code Service Agent](https://cloud.google.com/vertex-ai/docs/general/access-control#service-agents) for the CustomJob's project is used. */
 	// +optional
-	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+	ServiceAccountRef *k8sv1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 
 	/* Optional. The name of a Vertex AI [Tensorboard][google.cloud.aiplatform.v1beta1.Tensorboard] resource to which this CustomJob will upload Tensorboard logs. Format: `projects/{project}/locations/{location}/tensorboards/{tensorboard}` */
 	// +optional
-	TensorboardRef *v1alpha1.ResourceRef `json:"tensorboardRef,omitempty"`
+	TensorboardRef *k8sv1alpha1.ResourceRef `json:"tensorboardRef,omitempty"`
 
 	/* Required. The spec of the worker pools including machine type and Docker image. All worker pools except the first one are optional and can be skipped by providing an empty value. */
 	// +optional
@@ -408,7 +408,7 @@ type VertexAICustomJobSpec struct {
 	Location string `json:"location"`
 
 	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* The VertexAICustomJob name. If not given, the metadata.name will be used. */
 	// +optional
@@ -470,7 +470,7 @@ type CustomjobObservedStateStatus struct {
 type VertexAICustomJobStatus struct {
 	/* Conditions represent the latest available observations of the
 	   VertexAICustomJob's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the VertexAICustomJob resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

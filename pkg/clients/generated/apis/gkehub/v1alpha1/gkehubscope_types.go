@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -47,7 +47,7 @@ type GKEHubScopeSpec struct {
 	NamespaceLabels map[string]string `json:"namespaceLabels,omitempty"`
 
 	/* Immutable. The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Immutable. Optional. The resourceID of the resource; if not provided, the name of the resource will be used as the resourceID. */
 	// +optional
@@ -63,7 +63,7 @@ type ScopeStateStatus struct {
 type GKEHubScopeStatus struct {
 	/* Conditions represent the latest available observations of the
 	   GKEHubScope's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* Output only. The time at which this scope was created. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`

@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -142,7 +142,7 @@ type PrivilegedAccessManagerEntitlementSpec struct {
 
 	/* Immutable. The Folder that this resource belongs to. One and only one of 'projectRef', 'folderRef', or 'organizationRef' must be set. */
 	// +optional
-	FolderRef *v1alpha1.ResourceRef `json:"folderRef,omitempty"`
+	FolderRef *k8sv1alpha1.ResourceRef `json:"folderRef,omitempty"`
 
 	/* Immutable. Location of the resource. */
 	Location string `json:"location"`
@@ -152,14 +152,14 @@ type PrivilegedAccessManagerEntitlementSpec struct {
 
 	/* Immutable. The Organization that this resource belongs to. One and only one of 'projectRef', 'folderRef', or 'organizationRef' must be set. */
 	// +optional
-	OrganizationRef *v1alpha1.ResourceRef `json:"organizationRef,omitempty"`
+	OrganizationRef *k8sv1alpha1.ResourceRef `json:"organizationRef,omitempty"`
 
 	/* The access granted to a requester on successful approval. */
 	PrivilegedAccess EntitlementPrivilegedAccess `json:"privilegedAccess"`
 
 	/* Immutable. The Project that this resource belongs to. One and only one of 'projectRef', 'folderRef', or 'organizationRef' must be set. */
 	// +optional
-	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+	ProjectRef *k8sv1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
 	/* Required. The manner in which the requester should provide a justification for requesting access. */
 	RequesterJustificationConfig EntitlementRequesterJustificationConfig `json:"requesterJustificationConfig"`
@@ -190,7 +190,7 @@ type EntitlementObservedStateStatus struct {
 type PrivilegedAccessManagerEntitlementStatus struct {
 	/* Conditions represent the latest available observations of the
 	   PrivilegedAccessManagerEntitlement's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the PrivilegedAccessManagerEntitlement resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

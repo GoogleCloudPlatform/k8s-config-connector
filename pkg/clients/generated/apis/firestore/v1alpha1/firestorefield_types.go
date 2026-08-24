@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -138,7 +138,7 @@ type FirestoreFieldSpec struct {
 	CollectionGroup string `json:"collectionGroup"`
 
 	/* The FirestoreDatabase containing the collection group for this field. */
-	DatabaseRef v1alpha1.ResourceRef `json:"databaseRef"`
+	DatabaseRef k8sv1alpha1.ResourceRef `json:"databaseRef"`
 
 	/* The index configuration for this field. If unset, field indexing will revert to the configuration defined by the `ancestor_field`. To explicitly remove all indexes for this field, specify an index config with an empty list of indexes. */
 	// +optional
@@ -200,7 +200,7 @@ type FieldTtlConfigStatus struct {
 type FirestoreFieldStatus struct {
 	/* Conditions represent the latest available observations of the
 	   FirestoreField's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the FirestoreField resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

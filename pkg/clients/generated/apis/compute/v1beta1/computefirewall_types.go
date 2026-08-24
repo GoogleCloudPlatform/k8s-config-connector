@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -107,7 +107,7 @@ type ComputeFirewallSpec struct {
 	LogConfig *FirewallLogConfig `json:"logConfig,omitempty"`
 
 	/* The network to attach this firewall to. */
-	NetworkRef v1alpha1.ResourceRef `json:"networkRef"`
+	NetworkRef k8sv1alpha1.ResourceRef `json:"networkRef"`
 
 	/* Priority for this rule. This is an integer between 0 and 65535, both inclusive. When not specified, the value assumed is 1000. Relative priorities determine precedence of conflicting rules. Lower value of priority implies higher precedence (eg, a rule with priority 0 has higher precedence than a rule with priority 1). DENY rules take precedence over ALLOW rules having equal priority. */
 	// +optional
@@ -122,14 +122,14 @@ type ComputeFirewallSpec struct {
 	SourceRanges []string `json:"sourceRanges,omitempty"`
 
 	// +optional
-	SourceServiceAccounts []v1alpha1.ResourceRef `json:"sourceServiceAccounts,omitempty"`
+	SourceServiceAccounts []k8sv1alpha1.ResourceRef `json:"sourceServiceAccounts,omitempty"`
 
 	/* If source tags are specified, the firewall will apply only to traffic with source IP that belongs to a tag listed in source tags. Source tags cannot be used to control traffic to an instance's external IP address. Because tags are associated with an instance, not an IP address. One or both of sourceRanges and sourceTags may be set. If both properties are set, the firewall will apply to traffic that has source IP address within sourceRanges OR the source IP that belongs to a tag listed in the sourceTags property. The connection does not need to match both properties for the firewall to apply. For INGRESS traffic, one of 'source_ranges', 'source_tags' or 'source_service_accounts' is required. */
 	// +optional
 	SourceTags []string `json:"sourceTags,omitempty"`
 
 	// +optional
-	TargetServiceAccounts []v1alpha1.ResourceRef `json:"targetServiceAccounts,omitempty"`
+	TargetServiceAccounts []k8sv1alpha1.ResourceRef `json:"targetServiceAccounts,omitempty"`
 
 	/* A list of instance tags indicating sets of instances located in the network that may make network connections as specified in allowed[]. If no targetTags are specified, the firewall rule applies to all instances on the specified network. */
 	// +optional
@@ -139,7 +139,7 @@ type ComputeFirewallSpec struct {
 type ComputeFirewallStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeFirewall's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* Creation timestamp in RFC3339 text format. */
 	// +optional
 	CreationTimestamp *string `json:"creationTimestamp,omitempty"`

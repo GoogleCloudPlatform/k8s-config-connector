@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -39,9 +39,9 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type ServiceNetworkingConnectionSpec struct {
-	NetworkRef v1alpha1.ResourceRef `json:"networkRef"`
+	NetworkRef k8sv1alpha1.ResourceRef `json:"networkRef"`
 
-	ReservedPeeringRanges []v1alpha1.ResourceRef `json:"reservedPeeringRanges"`
+	ReservedPeeringRanges []k8sv1alpha1.ResourceRef `json:"reservedPeeringRanges"`
 
 	/* Immutable. Provider peering service that is managing peering connectivity for a service provider organization. For Google services that support this functionality it is 'servicenetworking.googleapis.com'. */
 	Service string `json:"service"`
@@ -50,7 +50,7 @@ type ServiceNetworkingConnectionSpec struct {
 type ServiceNetworkingConnectionStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ServiceNetworkingConnection's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`

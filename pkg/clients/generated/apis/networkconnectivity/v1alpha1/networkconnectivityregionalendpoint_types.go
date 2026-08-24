@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -44,7 +44,7 @@ type NetworkConnectivityRegionalEndpointSpec struct {
 
 	/* Optional. The IP Address of the Regional Endpoint. When no address is provided, an IP from the subnetwork is allocated. */
 	// +optional
-	AddressRef *v1alpha1.ResourceRef `json:"addressRef,omitempty"`
+	AddressRef *k8sv1alpha1.ResourceRef `json:"addressRef,omitempty"`
 
 	/* Optional. A description of this resource. */
 	// +optional
@@ -55,10 +55,10 @@ type NetworkConnectivityRegionalEndpointSpec struct {
 
 	/* Optional. The name of the VPC network for this private regional endpoint. */
 	// +optional
-	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+	NetworkRef *k8sv1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
 	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* The NetworkConnectivityRegionalEndpoint name. If not given, the metadata.name will be used. */
 	// +optional
@@ -66,7 +66,7 @@ type NetworkConnectivityRegionalEndpointSpec struct {
 
 	/* Optional. The name of the subnetwork from which the IP address will be allocated. */
 	// +optional
-	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
+	SubnetworkRef *k8sv1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
 
 	/* Required. The service endpoint this private regional endpoint connects to. Format: `{apiname}.{region}.p.rep.googleapis.com` Example: "cloudkms.us-central1.p.rep.googleapis.com". */
 	TargetGoogleAPI string `json:"targetGoogleAPI"`
@@ -93,7 +93,7 @@ type RegionalendpointObservedStateStatus struct {
 type NetworkConnectivityRegionalEndpointStatus struct {
 	/* Conditions represent the latest available observations of the
 	   NetworkConnectivityRegionalEndpoint's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the NetworkConnectivityRegionalEndpoint resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

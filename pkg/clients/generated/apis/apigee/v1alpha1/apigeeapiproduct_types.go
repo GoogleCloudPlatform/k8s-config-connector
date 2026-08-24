@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -204,7 +204,7 @@ type ApigeeAPIProductSpec struct {
 	OperationGroup *ApiproductOperationGroup `json:"operationGroup,omitempty"`
 
 	/* Reference to the organization. */
-	OrganizationRef v1alpha1.ResourceRef `json:"organizationRef"`
+	OrganizationRef k8sv1alpha1.ResourceRef `json:"organizationRef"`
 
 	/* Comma-separated list of API proxy names to which this API product is bound. */
 	// +optional
@@ -248,7 +248,7 @@ type ApiproductObservedStateStatus struct {
 type ApigeeAPIProductStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ApigeeAPIProduct's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the ApigeeAPIProduct resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

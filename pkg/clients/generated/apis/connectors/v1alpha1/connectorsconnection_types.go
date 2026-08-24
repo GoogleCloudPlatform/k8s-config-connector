@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -53,7 +53,7 @@ type ConnectionAdditionalVariables struct {
 
 	/* Value is a secret. */
 	// +optional
-	SecretValueRef *v1alpha1.ResourceRef `json:"secretValueRef,omitempty"`
+	SecretValueRef *k8sv1alpha1.ResourceRef `json:"secretValueRef,omitempty"`
 
 	/* Value is a string. */
 	// +optional
@@ -101,7 +101,7 @@ type ConnectionConfigVariables struct {
 
 	/* Value is a secret. */
 	// +optional
-	SecretValueRef *v1alpha1.ResourceRef `json:"secretValueRef,omitempty"`
+	SecretValueRef *k8sv1alpha1.ResourceRef `json:"secretValueRef,omitempty"`
 
 	/* Value is a string. */
 	// +optional
@@ -129,7 +129,7 @@ type ConnectionDestinations struct {
 
 	/* PSC service attachments. Format: projects/* /regions/* /serviceAttachments/* */
 	// +optional
-	ServiceAttachmentRef *v1alpha1.ResourceRef `json:"serviceAttachmentRef,omitempty"`
+	ServiceAttachmentRef *k8sv1alpha1.ResourceRef `json:"serviceAttachmentRef,omitempty"`
 }
 
 type ConnectionJwtClaims struct {
@@ -173,13 +173,13 @@ type ConnectionOauth2ClientCredentials struct {
 
 	/* Secret version reference containing the client secret. */
 	// +optional
-	ClientSecretRef *v1alpha1.ResourceRef `json:"clientSecretRef,omitempty"`
+	ClientSecretRef *k8sv1alpha1.ResourceRef `json:"clientSecretRef,omitempty"`
 }
 
 type ConnectionOauth2JwtBearer struct {
 	/* Secret version reference containing a PKCS#8 PEM-encoded private key associated with the Client Certificate. This private key will be used to sign JWTs used for the jwt-bearer authorization grant. Specified in the form as: `projects/* /secrets/* /versions/*`. */
 	// +optional
-	ClientKeyRef *v1alpha1.ResourceRef `json:"clientKeyRef,omitempty"`
+	ClientKeyRef *k8sv1alpha1.ResourceRef `json:"clientKeyRef,omitempty"`
 
 	/* JwtClaims providers fields to generate the token. */
 	// +optional
@@ -193,11 +193,11 @@ type ConnectionSshPublicKey struct {
 
 	/* Password (passphrase) for ssh client certificate if it has one. */
 	// +optional
-	SshClientCertPassRef *v1alpha1.ResourceRef `json:"sshClientCertPassRef,omitempty"`
+	SshClientCertPassRef *k8sv1alpha1.ResourceRef `json:"sshClientCertPassRef,omitempty"`
 
 	/* SSH Client Cert. It should contain both public and private key. */
 	// +optional
-	SshClientCertRef *v1alpha1.ResourceRef `json:"sshClientCertRef,omitempty"`
+	SshClientCertRef *k8sv1alpha1.ResourceRef `json:"sshClientCertRef,omitempty"`
 
 	/* The user account used to authenticate. */
 	// +optional
@@ -215,19 +215,19 @@ type ConnectionSslConfig struct {
 
 	/* Client Certificate */
 	// +optional
-	ClientCertificateRef *v1alpha1.ResourceRef `json:"clientCertificateRef,omitempty"`
+	ClientCertificateRef *k8sv1alpha1.ResourceRef `json:"clientCertificateRef,omitempty"`
 
 	/* Secret containing the passphrase protecting the Client Private Key */
 	// +optional
-	ClientPrivateKeyPassRef *v1alpha1.ResourceRef `json:"clientPrivateKeyPassRef,omitempty"`
+	ClientPrivateKeyPassRef *k8sv1alpha1.ResourceRef `json:"clientPrivateKeyPassRef,omitempty"`
 
 	/* Client Private Key */
 	// +optional
-	ClientPrivateKeyRef *v1alpha1.ResourceRef `json:"clientPrivateKeyRef,omitempty"`
+	ClientPrivateKeyRef *k8sv1alpha1.ResourceRef `json:"clientPrivateKeyRef,omitempty"`
 
 	/* Private Server Certificate. Needs to be specified if trust model is `PRIVATE`. */
 	// +optional
-	PrivateServerCertificateRef *v1alpha1.ResourceRef `json:"privateServerCertificateRef,omitempty"`
+	PrivateServerCertificateRef *k8sv1alpha1.ResourceRef `json:"privateServerCertificateRef,omitempty"`
 
 	/* Type of Server Cert (PEM/JKS/.. etc.) */
 	// +optional
@@ -249,7 +249,7 @@ type ConnectionSslConfig struct {
 type ConnectionUserPassword struct {
 	/* Secret version reference containing the password. */
 	// +optional
-	SecretRef *v1alpha1.ResourceRef `json:"secretRef,omitempty"`
+	SecretRef *k8sv1alpha1.ResourceRef `json:"secretRef,omitempty"`
 
 	/* Username. */
 	// +optional
@@ -266,7 +266,7 @@ type ConnectorsConnectionSpec struct {
 	ConfigVariables []ConnectionConfigVariables `json:"configVariables,omitempty"`
 
 	/* Required. Connector version on which the connection is created. The format is: projects/-*-/locations/-*-/providers/-*-/connectors/-*-/versions/-* Only global location is supported for ConnectorVersion resource. */
-	ConnectorVersionRef v1alpha1.ResourceRef `json:"connectorVersionRef"`
+	ConnectorVersionRef k8sv1alpha1.ResourceRef `json:"connectorVersionRef"`
 
 	/* Optional. Description of the resource. */
 	// +optional
@@ -292,7 +292,7 @@ type ConnectorsConnectionSpec struct {
 	NodeConfig *ConnectionNodeConfig `json:"nodeConfig,omitempty"`
 
 	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* The ConnectorsConnection name. If not given, the metadata.name will be used. */
 	// +optional
@@ -300,7 +300,7 @@ type ConnectorsConnectionSpec struct {
 
 	/* Optional. Service account needed for runtime plane to access GCP resources. */
 	// +optional
-	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+	ServiceAccountRef *k8sv1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 
 	/* Optional. Ssl config of a connection */
 	// +optional
@@ -358,7 +358,7 @@ type ConnectionStatusStatus struct {
 type ConnectorsConnectionStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ConnectorsConnection's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the ConnectorsConnection resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

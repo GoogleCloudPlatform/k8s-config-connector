@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -45,7 +45,7 @@ type VpnconnectionVpcProject struct {
 }
 
 type EdgeContainerVpnConnectionSpec struct {
-	ClusterRef v1alpha1.ResourceRef `json:"clusterRef"`
+	ClusterRef k8sv1alpha1.ResourceRef `json:"clusterRef"`
 
 	/* Immutable. Whether this VPN connection has HA enabled on cluster side. If enabled, when creating VPN connection we will attempt to use 2 ANG floating IPs. */
 	// +optional
@@ -60,7 +60,7 @@ type EdgeContainerVpnConnectionSpec struct {
 	NatGatewayIp *string `json:"natGatewayIp,omitempty"`
 
 	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
@@ -112,7 +112,7 @@ type VpnconnectionDetailsStatus struct {
 type EdgeContainerVpnConnectionStatus struct {
 	/* Conditions represent the latest available observations of the
 	   EdgeContainerVpnConnection's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* The time when the VPN connection was created. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`

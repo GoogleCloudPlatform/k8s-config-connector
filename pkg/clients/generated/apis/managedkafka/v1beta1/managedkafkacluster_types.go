@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -57,7 +57,7 @@ type ClusterGcpConfig struct {
 
 	/* Optional. Immutable. The Cloud KMS Key name to use for encryption. The key must be located in the same region as the cluster and cannot be changed. */
 	// +optional
-	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+	KmsKeyRef *k8sv1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 }
 
 type ClusterNetworkConfigs struct {
@@ -70,7 +70,7 @@ type ClusterNetworkConfigs struct {
 
 	The CIDR range of the subnet must be within the IPv4 address ranges for
 	private networks, as specified in RFC 1918. */
-	SubnetworkRef v1alpha1.ResourceRef `json:"subnetworkRef"`
+	SubnetworkRef k8sv1alpha1.ResourceRef `json:"subnetworkRef"`
 }
 
 type ClusterRebalanceConfig struct {
@@ -93,7 +93,7 @@ type ManagedKafkaClusterSpec struct {
 	Location string `json:"location"`
 
 	/* The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Optional. Rebalance configuration for the Kafka cluster. */
 	// +optional
@@ -121,7 +121,7 @@ type ClusterObservedStateStatus struct {
 type ManagedKafkaClusterStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ManagedKafkaCluster's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the ManagedKafkaCluster resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

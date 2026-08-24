@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -460,7 +460,7 @@ type DiscoveryconfigPubSubNotification struct {
 
 	/* Cloud Pub/Sub topic to send notifications to. */
 	// +optional
-	TopicRef *v1alpha1.ResourceRef `json:"topicRef,omitempty"`
+	TopicRef *k8sv1alpha1.ResourceRef `json:"topicRef,omitempty"`
 }
 
 type DiscoveryconfigPublishToChronicle struct {
@@ -671,7 +671,7 @@ type DLPDiscoveryConfigSpec struct {
 	ProcessingLocation *DiscoveryconfigProcessingLocation `json:"processingLocation,omitempty"`
 
 	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* The DLPDiscoveryConfig name. If not given, the metadata.name will be used. */
 	// +optional
@@ -758,7 +758,7 @@ type DiscoveryconfigTargetsStatus struct {
 type DLPDiscoveryConfigStatus struct {
 	/* Conditions represent the latest available observations of the
 	   DLPDiscoveryConfig's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the DLPDiscoveryConfig resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

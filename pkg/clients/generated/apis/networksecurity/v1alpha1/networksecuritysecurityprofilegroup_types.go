@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -41,11 +41,11 @@ var _ = apiextensionsv1.JSON{}
 type NetworkSecuritySecurityProfileGroupSpec struct {
 	/* Optional. Reference to a SecurityProfile with the CustomIntercept configuration. */
 	// +optional
-	CustomInterceptProfileRef *v1alpha1.ResourceRef `json:"customInterceptProfileRef,omitempty"`
+	CustomInterceptProfileRef *k8sv1alpha1.ResourceRef `json:"customInterceptProfileRef,omitempty"`
 
 	/* Optional. Reference to a SecurityProfile with the CustomMirroring configuration. */
 	// +optional
-	CustomMirroringProfileRef *v1alpha1.ResourceRef `json:"customMirroringProfileRef,omitempty"`
+	CustomMirroringProfileRef *k8sv1alpha1.ResourceRef `json:"customMirroringProfileRef,omitempty"`
 
 	/* Optional. An optional description of the profile group. Max length 2048 characters. */
 	// +optional
@@ -59,7 +59,7 @@ type NetworkSecuritySecurityProfileGroupSpec struct {
 	Location string `json:"location"`
 
 	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* The NetworkSecuritySecurityProfileGroup name. If not given, the metadata.name will be used. */
 	// +optional
@@ -67,11 +67,11 @@ type NetworkSecuritySecurityProfileGroupSpec struct {
 
 	/* Optional. Reference to a SecurityProfile with the ThreatPrevention configuration. */
 	// +optional
-	ThreatPreventionProfileRef *v1alpha1.ResourceRef `json:"threatPreventionProfileRef,omitempty"`
+	ThreatPreventionProfileRef *k8sv1alpha1.ResourceRef `json:"threatPreventionProfileRef,omitempty"`
 
 	/* Optional. Reference to a SecurityProfile with the UrlFiltering configuration. */
 	// +optional
-	UrlFilteringProfileRef *v1alpha1.ResourceRef `json:"urlFilteringProfileRef,omitempty"`
+	UrlFilteringProfileRef *k8sv1alpha1.ResourceRef `json:"urlFilteringProfileRef,omitempty"`
 }
 
 type SecurityprofilegroupObservedStateStatus struct {
@@ -95,7 +95,7 @@ type SecurityprofilegroupObservedStateStatus struct {
 type NetworkSecuritySecurityProfileGroupStatus struct {
 	/* Conditions represent the latest available observations of the
 	   NetworkSecuritySecurityProfileGroup's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the NetworkSecuritySecurityProfileGroup resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

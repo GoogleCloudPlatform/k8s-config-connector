@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -39,13 +39,13 @@ import (
 var _ = apiextensionsv1.JSON{}
 
 type ComputeInstanceGroupNamedPortSpec struct {
-	GroupRef v1alpha1.ResourceRef `json:"groupRef"`
+	GroupRef k8sv1alpha1.ResourceRef `json:"groupRef"`
 
 	/* Immutable. The port number, which can be a value between 1 and 65535. */
 	Port int64 `json:"port"`
 
 	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Immutable. Optional. The name of the resource. Used for creation and acquisition. When unset, the value of `metadata.name` is used as the default. */
 	// +optional
@@ -58,7 +58,7 @@ type ComputeInstanceGroupNamedPortSpec struct {
 type ComputeInstanceGroupNamedPortStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeInstanceGroupNamedPort's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`

@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -113,13 +113,13 @@ type ClusterConfig struct {
 type ClusterExistingBucket struct {
 	/* Required. Immutable. Reference to the Cloud Storage bucket to import. */
 	// +optional
-	BucketRef *v1alpha1.ResourceRef `json:"bucketRef,omitempty"`
+	BucketRef *k8sv1alpha1.ResourceRef `json:"bucketRef,omitempty"`
 }
 
 type ClusterExistingFilestore struct {
 	/* Required. Immutable. Reference to the Filestore instance to import. */
 	// +optional
-	FilestoreRef *v1alpha1.ResourceRef `json:"filestoreRef,omitempty"`
+	FilestoreRef *k8sv1alpha1.ResourceRef `json:"filestoreRef,omitempty"`
 }
 
 type ClusterExistingLustre struct {
@@ -131,11 +131,11 @@ type ClusterExistingLustre struct {
 type ClusterExistingNetwork struct {
 	/* Required. Immutable. Reference to the network to import. */
 	// +optional
-	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+	NetworkRef *k8sv1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
 	/* Required. Immutable. Particular subnetwork to use. */
 	// +optional
-	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
+	SubnetworkRef *k8sv1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
 }
 
 type ClusterFileShares struct {
@@ -231,7 +231,7 @@ type ClusterNewBucket struct {
 
 	/* Required. Immutable. Reference to the Cloud Storage bucket to create. */
 	// +optional
-	BucketRef *v1alpha1.ResourceRef `json:"bucketRef,omitempty"`
+	BucketRef *k8sv1alpha1.ResourceRef `json:"bucketRef,omitempty"`
 
 	/* Optional. Immutable. If set, indicates that the bucket should use hierarchical namespaces. */
 	// +optional
@@ -253,7 +253,7 @@ type ClusterNewFilestore struct {
 
 	/* Required. Immutable. Reference to the Filestore instance to create. */
 	// +optional
-	FilestoreRef *v1alpha1.ResourceRef `json:"filestoreRef,omitempty"`
+	FilestoreRef *k8sv1alpha1.ResourceRef `json:"filestoreRef,omitempty"`
 
 	/* Optional. Immutable. Access protocol to use for all file shares in the instance. Defaults to NFS V3 if not set. */
 	// +optional
@@ -303,7 +303,7 @@ type ClusterNewNetwork struct {
 
 	/* Required. Immutable. Reference to the network to create. */
 	// +optional
-	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+	NetworkRef *k8sv1alpha1.ResourceRef `json:"networkRef,omitempty"`
 }
 
 type ClusterNewOnDemandInstances struct {
@@ -457,7 +457,7 @@ type HypercomputeClusterClusterSpec struct {
 	Orchestrator *ClusterOrchestrator `json:"orchestrator,omitempty"`
 
 	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* The HypercomputeClusterCluster name. If not given, the metadata.name will be used. */
 	// +optional
@@ -513,7 +513,7 @@ type ClusterSlurmStatus struct {
 type HypercomputeClusterClusterStatus struct {
 	/* Conditions represent the latest available observations of the
 	   HypercomputeClusterCluster's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the HypercomputeClusterCluster resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

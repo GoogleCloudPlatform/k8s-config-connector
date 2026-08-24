@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -186,6 +186,12 @@ type ServingconfigModelSpec struct {
 	Version *string `json:"version,omitempty"`
 }
 
+type ServingconfigMultimodalSpec struct {
+	/* Optional. Source of image returned in the answer. */
+	// +optional
+	ImageSource *string `json:"imageSource,omitempty"`
+}
+
 type ServingconfigPersonalizationSpec struct {
 	/* The personalization mode of the search request. Defaults to [Mode.AUTO][google.cloud.discoveryengine.v1beta.SearchRequest.PersonalizationSpec.Mode.AUTO]. */
 	// +optional
@@ -289,6 +295,10 @@ type ServingconfigSummarySpec struct {
 	// +optional
 	ModelSpec *ServingconfigModelSpec `json:"modelSpec,omitempty"`
 
+	/* Optional. Multimodal specification. */
+	// +optional
+	MultimodalSpec *ServingconfigMultimodalSpec `json:"multimodalSpec,omitempty"`
+
 	/* The number of top results to generate the summary from. If the number
 	of results returned is less than `summaryResultCount`, the summary is
 	generated from all of the results.
@@ -327,7 +337,7 @@ type DiscoveryEngineServingConfigSpec struct {
 	EmbeddingConfig *ServingconfigEmbeddingConfig `json:"embeddingConfig,omitempty"`
 
 	/* Immutable. The Engine this serving config belongs to. */
-	EngineRef v1alpha1.ResourceRef `json:"engineRef"`
+	EngineRef k8sv1alpha1.ResourceRef `json:"engineRef"`
 
 	/* Filter controls to use in serving path. */
 	// +optional
@@ -361,7 +371,7 @@ type DiscoveryEngineServingConfigSpec struct {
 	PersonalizationSpec *ServingconfigPersonalizationSpec `json:"personalizationSpec,omitempty"`
 
 	/* Immutable. The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* The ranking expression controls the customized ranking on retrieval documents. */
 	// +optional
@@ -400,7 +410,7 @@ type ServingconfigObservedStateStatus struct {
 type DiscoveryEngineServingConfigStatus struct {
 	/* Conditions represent the latest available observations of the
 	   DiscoveryEngineServingConfig's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the DiscoveryEngineServingConfig resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

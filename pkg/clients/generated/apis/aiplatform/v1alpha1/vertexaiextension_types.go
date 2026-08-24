@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -48,7 +48,7 @@ type VertexaiextensionApiKeyConfig struct {
 	(https://cloud.google.com/vertex-ai/docs/general/access-control#service-agents)
 	on the specified resource. */
 	// +optional
-	ApiKeySecretRef *v1alpha1.ResourceRef `json:"apiKeySecretRef,omitempty"`
+	ApiKeySecretRef *k8sv1alpha1.ResourceRef `json:"apiKeySecretRef,omitempty"`
 
 	/* Required. The location of the API key. */
 	// +optional
@@ -98,11 +98,11 @@ type VertexaiextensionAuthConfig struct {
 type VertexaiextensionCodeInterpreterRuntimeConfig struct {
 	/* Optional. The Cloud Storage bucket for file input of this Extension. If specified, support input from the Cloud Storage bucket. Vertex Extension Custom Code Service Agent should be granted file reader to this bucket. If not specified, the extension will only accept file contents from request body and reject Cloud Storage file inputs. */
 	// +optional
-	FileInputGCSBucketRef *v1alpha1.ResourceRef `json:"fileInputGCSBucketRef,omitempty"`
+	FileInputGCSBucketRef *k8sv1alpha1.ResourceRef `json:"fileInputGCSBucketRef,omitempty"`
 
 	/* Optional. The Cloud Storage bucket for file output of this Extension. If specified, write all output files to the Cloud Storage bucket. Vertex Extension Custom Code Service Agent should be granted file writer to this bucket. If not specified, the file content will be output in response body. */
 	// +optional
-	FileOutputGCSBucketRef *v1alpha1.ResourceRef `json:"fileOutputGCSBucketRef,omitempty"`
+	FileOutputGCSBucketRef *k8sv1alpha1.ResourceRef `json:"fileOutputGCSBucketRef,omitempty"`
 }
 
 type VertexaiextensionExtensionOperation struct {
@@ -128,7 +128,7 @@ type VertexaiextensionGoogleServiceAccountConfig struct {
 	- If not specified, the Vertex AI Extension Service Agent
 	will be used to execute the Extension. */
 	// +optional
-	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+	ServiceAccountRef *k8sv1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 }
 
 type VertexaiextensionHttpBasicAuthConfig struct {
@@ -141,7 +141,7 @@ type VertexaiextensionHttpBasicAuthConfig struct {
 	(https://cloud.google.com/vertex-ai/docs/general/access-control#service-agents)
 	on the specified resource. */
 	// +optional
-	CredentialSecretRef *v1alpha1.ResourceRef `json:"credentialSecretRef,omitempty"`
+	CredentialSecretRef *k8sv1alpha1.ResourceRef `json:"credentialSecretRef,omitempty"`
 }
 
 type VertexaiextensionManifest struct {
@@ -176,7 +176,7 @@ type VertexaiextensionOauthConfig struct {
 	(https://cloud.google.com/vertex-ai/docs/general/access-control#service-agents)
 	on the provided service account. */
 	// +optional
-	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+	ServiceAccountRef *k8sv1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 }
 
 type VertexaiextensionOidcConfig struct {
@@ -197,7 +197,7 @@ type VertexaiextensionOidcConfig struct {
 	Service Agent
 	(https://cloud.google.com/vertex-ai/docs/general/access-control#service-agents). */
 	// +optional
-	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+	ServiceAccountRef *k8sv1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 }
 
 type VertexaiextensionPrivateServiceConnectConfig struct {
@@ -210,7 +210,7 @@ type VertexaiextensionPrivateServiceConnectConfig struct {
 	should be granted `servicedirectory.viewer` and
 	`servicedirectory.pscAuthorizedService` roles on the resource. */
 	// +optional
-	ServiceDirectoryRef *v1alpha1.ResourceRef `json:"serviceDirectoryRef,omitempty"`
+	ServiceDirectoryRef *k8sv1alpha1.ResourceRef `json:"serviceDirectoryRef,omitempty"`
 }
 
 type VertexaiextensionRuntimeConfig struct {
@@ -267,11 +267,11 @@ type VertexaiextensionToolUseExamples struct {
 type VertexaiextensionVertexAISearchRuntimeConfig struct {
 	/* Optional. Vertex AI Search engine ID. This is used to construct the search request. By setting this engine_id, API will construct the serving config using the default value to call search API for the user. The engine_id and serving_config_name cannot both be empty at the same time. */
 	// +optional
-	EngineRef *v1alpha1.ResourceRef `json:"engineRef,omitempty"`
+	EngineRef *k8sv1alpha1.ResourceRef `json:"engineRef,omitempty"`
 
 	/* Optional. Vertex AI Search serving config name. Format: `projects/{project}/locations/{location}/collections/{collection}/engines/{engine}/servingConfigs/{serving_config}` */
 	// +optional
-	ServingConfigRef *v1alpha1.ResourceRef `json:"servingConfigRef,omitempty"`
+	ServingConfigRef *k8sv1alpha1.ResourceRef `json:"servingConfigRef,omitempty"`
 }
 
 type VertexAIExtensionSpec struct {
@@ -293,7 +293,7 @@ type VertexAIExtensionSpec struct {
 	PrivateServiceConnectConfig *VertexaiextensionPrivateServiceConnectConfig `json:"privateServiceConnectConfig,omitempty"`
 
 	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* The VertexAIExtension name. If not given, the metadata.name will be used. */
 	// +optional
@@ -353,7 +353,7 @@ type VertexaiextensionObservedStateStatus struct {
 type VertexAIExtensionStatus struct {
 	/* Conditions represent the latest available observations of the
 	   VertexAIExtension's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the VertexAIExtension resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

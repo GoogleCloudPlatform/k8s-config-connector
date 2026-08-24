@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -165,7 +165,7 @@ type RepositoryUpstreamPolicies struct {
 
 	/* A reference to the repository resource, for example: `projects/p1/locations/us-central1/repositories/repo1`. */
 	// +optional
-	RepositoryRef *v1alpha1.ResourceRef `json:"repositoryRef,omitempty"`
+	RepositoryRef *k8sv1alpha1.ResourceRef `json:"repositoryRef,omitempty"`
 }
 
 type RepositoryVirtualRepositoryConfig struct {
@@ -197,7 +197,7 @@ type ArtifactRegistryRepositorySpec struct {
 
 	/* The Cloud KMS resource name of the customer managed encryption key that's used to encrypt the contents of the Repository. Has the form: `projects/my-project/locations/my-region/keyRings/my-kr/cryptoKeys/my-key`. This value may not be changed after the Repository has been created. */
 	// +optional
-	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+	KmsKeyRef *k8sv1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 
 	/* Immutable. The name of the location this repository is located in. */
 	Location string `json:"location"`
@@ -226,7 +226,7 @@ type ArtifactRegistryRepositorySpec struct {
 type ArtifactRegistryRepositoryStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ArtifactRegistryRepository's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* Output only. The time when the repository was created. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`

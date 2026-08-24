@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -125,7 +125,7 @@ type BackupplanDaysOfWeek struct {
 type BackupplanEncryptionKey struct {
 	/* Optional. Google Cloud KMS encryption key. */
 	// +optional
-	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+	KmsKeyRef *k8sv1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 }
 
 type BackupplanExclusionWindows struct {
@@ -266,7 +266,7 @@ type GKEBackupBackupPlanSpec struct {
 	BackupSchedule *BackupplanBackupSchedule `json:"backupSchedule,omitempty"`
 
 	/* Required. Immutable. The source cluster from which Backups will be created via this BackupPlan. */
-	ClusterRef v1alpha1.ResourceRef `json:"clusterRef"`
+	ClusterRef k8sv1alpha1.ResourceRef `json:"clusterRef"`
 
 	/* Optional. This flag indicates whether this BackupPlan has been deactivated.
 	Setting this field to True locks the BackupPlan such that no further
@@ -290,7 +290,7 @@ type GKEBackupBackupPlanSpec struct {
 	Location string `json:"location"`
 
 	/* The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* The GKEBackupBackupPlan name. If not given, the metadata.name will be used. */
 	// +optional
@@ -352,7 +352,7 @@ type BackupplanObservedStateStatus struct {
 type GKEBackupBackupPlanStatus struct {
 	/* Conditions represent the latest available observations of the
 	   GKEBackupBackupPlan's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the GKEBackupBackupPlan resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

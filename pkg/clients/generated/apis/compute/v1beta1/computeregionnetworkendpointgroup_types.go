@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -43,7 +43,7 @@ type RegionnetworkendpointgroupCloudFunction struct {
 	The function name is case-sensitive and must be 1-63 characters long.
 	Example value: "func1". */
 	// +optional
-	FunctionRef *v1alpha1.ResourceRef `json:"functionRef,omitempty"`
+	FunctionRef *k8sv1alpha1.ResourceRef `json:"functionRef,omitempty"`
 
 	/* Immutable. A template to parse function field from a request URL. URL mask allows
 	for routing to multiple Cloud Functions without having to create
@@ -61,7 +61,7 @@ type RegionnetworkendpointgroupCloudRun struct {
 	The service must be 1-63 characters long, and comply with RFC1035.
 	Example value: "run-service". */
 	// +optional
-	ServiceRef *v1alpha1.ResourceRef `json:"serviceRef,omitempty"`
+	ServiceRef *k8sv1alpha1.ResourceRef `json:"serviceRef,omitempty"`
 
 	/* Immutable. Cloud Run tag represents the "named-revision" to provide
 	additional fine-grained traffic routing information.
@@ -106,7 +106,7 @@ type ComputeRegionNetworkEndpointGroupSpec struct {
 	The URL of the network to which all network endpoints in the NEG belong. Uses
 	"default" project network if unspecified. */
 	// +optional
-	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+	NetworkRef *k8sv1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
 	/* Immutable. The target service url used to set up private service connection to
 	a Google API or a PSC Producer Service Attachment. */
@@ -123,13 +123,13 @@ type ComputeRegionNetworkEndpointGroupSpec struct {
 	/* Immutable. This field is only used for PSC.
 	Optional URL of the subnetwork to which all network endpoints in the NEG belong. */
 	// +optional
-	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
+	SubnetworkRef *k8sv1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
 }
 
 type ComputeRegionNetworkEndpointGroupStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeRegionNetworkEndpointGroup's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`

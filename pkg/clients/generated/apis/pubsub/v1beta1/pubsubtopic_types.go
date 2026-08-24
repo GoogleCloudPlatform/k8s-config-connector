@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -53,13 +53,13 @@ type TopicSchemaSettings struct {
 	Encoding *string `json:"encoding,omitempty"`
 
 	/* PubSubSchemaRef is a reference to a PubSubSchema. */
-	SchemaRef v1alpha1.ResourceRef `json:"schemaRef"`
+	SchemaRef k8sv1alpha1.ResourceRef `json:"schemaRef"`
 }
 
 type PubSubTopicSpec struct {
 	/* The KMSCryptoKey to be used to protect access to messages published on this topic. Your project's Pub/Sub service account ('service-{{PROJECT_NUMBER}}@gcp-sa-pubsub.iam.gserviceaccount.com') must have 'roles/cloudkms.cryptoKeyEncrypterDecrypter' to use this feature. */
 	// +optional
-	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+	KmsKeyRef *k8sv1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 
 	/* Indicates the minimum duration to retain a message after it is published to the topic. If this field is set, messages published to the topic in the last messageRetentionDuration are always available to subscribers. For instance, it allows any attached subscription to seek to a timestamp that is up to messageRetentionDuration in the past. If this field is not set, message retention is controlled by settings on individual subscriptions. Cannot be more than 31 days or less than 10 minutes. */
 	// +optional
@@ -81,7 +81,7 @@ type PubSubTopicSpec struct {
 type PubSubTopicStatus struct {
 	/* Conditions represent the latest available observations of the
 	   PubSubTopic's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`

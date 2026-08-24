@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -41,15 +41,15 @@ var _ = apiextensionsv1.JSON{}
 type AssignmentAssignee struct {
 	/* Exactly one of ProjectRef or FolderRef or OrganizationRef must be specified. */
 	// +optional
-	FolderRef *v1alpha1.ResourceRef `json:"folderRef,omitempty"`
+	FolderRef *k8sv1alpha1.ResourceRef `json:"folderRef,omitempty"`
 
 	/* Exactly one of ProjectRef or FolderRef or OrganizationRef must be specified. */
 	// +optional
-	OrganizationRef *v1alpha1.ResourceRef `json:"organizationRef,omitempty"`
+	OrganizationRef *k8sv1alpha1.ResourceRef `json:"organizationRef,omitempty"`
 
 	/* Exactly one of ProjectRef or FolderRef or OrganizationRef must be specified. */
 	// +optional
-	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+	ProjectRef *k8sv1alpha1.ResourceRef `json:"projectRef,omitempty"`
 }
 
 type BigQueryReservationAssignmentSpec struct {
@@ -60,7 +60,7 @@ type BigQueryReservationAssignmentSpec struct {
 	JobType string `json:"jobType"`
 
 	/* The name of reservation to create a new assignment in, or to move the assignment to. */
-	ReservationRef v1alpha1.ResourceRef `json:"reservationRef"`
+	ReservationRef k8sv1alpha1.ResourceRef `json:"reservationRef"`
 
 	/* Immutable. Optional. The BigQueryReservationAssignment ID used for resource creation or acquisition. Service-generated.Can be set only if resource acquisition . For acquisition: This field must be provided to identify the Reservation resource to acquire. */
 	// +optional
@@ -76,7 +76,7 @@ type AssignmentObservedStateStatus struct {
 type BigQueryReservationAssignmentStatus struct {
 	/* Conditions represent the latest available observations of the
 	   BigQueryReservationAssignment's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the BigqueryReservationAssignment resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

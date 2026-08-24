@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -196,7 +196,7 @@ type IAPSettingsSpec struct {
 
 	/* Project-wide App Engine service settings */
 	// +optional
-	AppEngineRef *v1alpha1.ResourceRef `json:"appEngineRef,omitempty"`
+	AppEngineRef *k8sv1alpha1.ResourceRef `json:"appEngineRef,omitempty"`
 
 	/* Top level wrapper for all application related settings in IAP */
 	// +optional
@@ -204,23 +204,23 @@ type IAPSettingsSpec struct {
 
 	/* Project-wide Compute service settings */
 	// +optional
-	ComputeServiceRef *v1alpha1.ResourceRef `json:"computeServiceRef,omitempty"`
+	ComputeServiceRef *k8sv1alpha1.ResourceRef `json:"computeServiceRef,omitempty"`
 
 	/* Folder-level settings */
 	// +optional
-	FolderRef *v1alpha1.ResourceRef `json:"folderRef,omitempty"`
+	FolderRef *k8sv1alpha1.ResourceRef `json:"folderRef,omitempty"`
 
 	/* Organization-level settings */
 	// +optional
-	OrganizationRef *v1alpha1.ResourceRef `json:"organizationRef,omitempty"`
+	OrganizationRef *k8sv1alpha1.ResourceRef `json:"organizationRef,omitempty"`
 
 	/* Project-level settings */
 	// +optional
-	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+	ProjectRef *k8sv1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
 	/* Project-wide web service settings */
 	// +optional
-	ProjectWebRef *v1alpha1.ResourceRef `json:"projectWebRef,omitempty"`
+	ProjectWebRef *k8sv1alpha1.ResourceRef `json:"projectWebRef,omitempty"`
 
 	/* The IAPSettings name. */
 	// +optional
@@ -230,7 +230,7 @@ type IAPSettingsSpec struct {
 type IAPSettingsStatus struct {
 	/* Conditions represent the latest available observations of the
 	   IAPSettings's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the IAPSettings resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

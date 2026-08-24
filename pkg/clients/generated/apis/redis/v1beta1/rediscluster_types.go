@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -106,12 +106,12 @@ type ClusterPersistenceConfig struct {
 type ClusterPrimaryCluster struct {
 	/* The full resource path of the remote cluster in the format: projects/<project>/locations/<region>/clusters/<cluster-id> */
 	// +optional
-	ClusterRef *v1alpha1.ResourceRef `json:"clusterRef,omitempty"`
+	ClusterRef *k8sv1alpha1.ResourceRef `json:"clusterRef,omitempty"`
 }
 
 type ClusterPscConfigs struct {
 	/* Required. The network where the IP address of the discovery endpoint will be reserved, in the form of projects/{network_project}/global/networks/{network_id}. */
-	NetworkRef v1alpha1.ResourceRef `json:"networkRef"`
+	NetworkRef k8sv1alpha1.ResourceRef `json:"networkRef"`
 }
 
 type ClusterRdbConfig struct {
@@ -127,7 +127,7 @@ type ClusterRdbConfig struct {
 type ClusterSecondaryClusters struct {
 	/* The full resource path of the remote cluster in the format: projects/<project>/locations/<region>/clusters/<cluster-id> */
 	// +optional
-	ClusterRef *v1alpha1.ResourceRef `json:"clusterRef,omitempty"`
+	ClusterRef *k8sv1alpha1.ResourceRef `json:"clusterRef,omitempty"`
 }
 
 type ClusterStartTime struct {
@@ -187,7 +187,7 @@ type RedisClusterSpec struct {
 
 	/* Optional. The KMS key name to encrypt data at rest. */
 	// +optional
-	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+	KmsKeyRef *k8sv1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 
 	/* Immutable. Location of the resource. */
 	Location string `json:"location"`
@@ -205,7 +205,7 @@ type RedisClusterSpec struct {
 	PersistenceConfig *ClusterPersistenceConfig `json:"persistenceConfig,omitempty"`
 
 	/* Immutable. The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Required. Each PscConfig configures the consumer network where IPs will be designated to the cluster for client access through Private Service Connect Automation. Currently, only one PscConfig is supported. */
 	// +optional
@@ -465,7 +465,7 @@ type ClusterUpdateInfoStatus struct {
 type RedisClusterStatus struct {
 	/* Conditions represent the latest available observations of the
 	   RedisCluster's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the RedisCluster resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

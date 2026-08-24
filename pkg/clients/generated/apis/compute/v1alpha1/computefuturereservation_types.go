@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -140,7 +140,7 @@ type FuturereservationLocalSsds struct {
 
 type FuturereservationProjectMap struct {
 	/* The resource reference that defaults to Project if Kind is not specified. */
-	KeyRef v1alpha1.ResourceRef `json:"keyRef"`
+	KeyRef k8sv1alpha1.ResourceRef `json:"keyRef"`
 
 	// +optional
 	Value *FuturereservationValue `json:"value,omitempty"`
@@ -191,7 +191,7 @@ type FuturereservationTimeWindow struct {
 type FuturereservationValue struct {
 	/* The project ID, should be same as the key of this project config in the parent map. */
 	// +optional
-	ProjectIDRef *v1alpha1.ResourceRef `json:"projectIDRef,omitempty"`
+	ProjectIDRef *k8sv1alpha1.ResourceRef `json:"projectIDRef,omitempty"`
 }
 
 type ComputeFutureReservationSpec struct {
@@ -238,7 +238,7 @@ type ComputeFutureReservationSpec struct {
 	PlanningStatus *string `json:"planningStatus,omitempty"`
 
 	/* The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* The reservation mode which determines reservation-termination behavior and expected pricing. Check the ReservationMode enum for the list of possible values. */
 	// +optional
@@ -500,7 +500,7 @@ type FuturereservationTimeWindowStatus struct {
 type ComputeFutureReservationStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeFutureReservation's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the ComputeFutureReservation resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

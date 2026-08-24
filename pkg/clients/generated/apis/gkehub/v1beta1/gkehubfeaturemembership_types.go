@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -85,7 +85,7 @@ type FeaturemembershipConfigSync struct {
 	Git *FeaturemembershipGit `json:"git,omitempty"`
 
 	// +optional
-	MetricsGcpServiceAccountRef *v1alpha1.ResourceRef `json:"metricsGcpServiceAccountRef,omitempty"`
+	MetricsGcpServiceAccountRef *k8sv1alpha1.ResourceRef `json:"metricsGcpServiceAccountRef,omitempty"`
 
 	// +optional
 	Oci *FeaturemembershipOci `json:"oci,omitempty"`
@@ -152,7 +152,7 @@ type FeaturemembershipDeploymentConfigs struct {
 
 type FeaturemembershipGit struct {
 	// +optional
-	GcpServiceAccountRef *v1alpha1.ResourceRef `json:"gcpServiceAccountRef,omitempty"`
+	GcpServiceAccountRef *k8sv1alpha1.ResourceRef `json:"gcpServiceAccountRef,omitempty"`
 
 	/* URL for the HTTPS proxy to be used when communicating with the Git repo. */
 	// +optional
@@ -243,7 +243,7 @@ type FeaturemembershipMutation struct {
 
 type FeaturemembershipOci struct {
 	// +optional
-	GcpServiceAccountRef *v1alpha1.ResourceRef `json:"gcpServiceAccountRef,omitempty"`
+	GcpServiceAccountRef *k8sv1alpha1.ResourceRef `json:"gcpServiceAccountRef,omitempty"`
 
 	/* The absolute path of the directory that contains the local resources. Default: the root directory of the image. */
 	// +optional
@@ -394,7 +394,7 @@ type GKEHubFeatureMembershipSpec struct {
 	Configmanagement *FeaturemembershipConfigmanagement `json:"configmanagement,omitempty"`
 
 	/* Immutable. */
-	FeatureRef v1alpha1.ResourceRef `json:"featureRef"`
+	FeatureRef k8sv1alpha1.ResourceRef `json:"featureRef"`
 
 	/* Immutable. The location of the feature */
 	Location string `json:"location"`
@@ -404,7 +404,7 @@ type GKEHubFeatureMembershipSpec struct {
 	MembershipLocation *string `json:"membershipLocation,omitempty"`
 
 	/* Immutable. */
-	MembershipRef v1alpha1.ResourceRef `json:"membershipRef"`
+	MembershipRef k8sv1alpha1.ResourceRef `json:"membershipRef"`
 
 	/* Manage Mesh Features */
 	// +optional
@@ -415,13 +415,13 @@ type GKEHubFeatureMembershipSpec struct {
 	Policycontroller *FeaturemembershipPolicycontroller `json:"policycontroller,omitempty"`
 
 	/* Immutable. The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 }
 
 type GKEHubFeatureMembershipStatus struct {
 	/* Conditions represent the latest available observations of the
 	   GKEHubFeatureMembership's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`

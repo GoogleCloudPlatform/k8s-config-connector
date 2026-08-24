@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -216,7 +216,7 @@ type EnvironmentDatabaseConfig struct {
 type EnvironmentEncryptionConfig struct {
 	/* Optional. Customer-managed Encryption Key available through Google's Key Management Service. Cannot be updated. If not specified, Google-managed key will be used. */
 	// +optional
-	KmsKeyRef *v1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
+	KmsKeyRef *k8sv1alpha1.ResourceRef `json:"kmsKeyRef,omitempty"`
 }
 
 type EnvironmentIpAllocationPolicy struct {
@@ -338,7 +338,7 @@ type EnvironmentNodeConfig struct {
 	This field is supported for Cloud Composer environments in versions
 	composer-3.*.*-airflow-*.*.* and newer. */
 	// +optional
-	ComposerNetworkAttachmentRef *v1alpha1.ResourceRef `json:"composerNetworkAttachmentRef,omitempty"`
+	ComposerNetworkAttachmentRef *k8sv1alpha1.ResourceRef `json:"composerNetworkAttachmentRef,omitempty"`
 
 	/* Optional. The disk size in GB used for node VMs. Minimum size is 30GB.
 	If unspecified, defaults to 100GB. Cannot be updated.
@@ -420,7 +420,7 @@ type EnvironmentNodeConfig struct {
 	[Shared VPC](/vpc/docs/shared-vpc) subnetwork requirements, see
 	`nodeConfig.subnetwork`. */
 	// +optional
-	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+	NetworkRef *k8sv1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
 	/* Optional. The set of Google API scopes to be made available on all
 	node VMs. If `oauth_scopes` is empty, defaults to
@@ -433,7 +433,7 @@ type EnvironmentNodeConfig struct {
 
 	/* Optional. The Google Cloud Platform Service Account to be used by the node VMs. If a service account is not specified, the "default" Compute Engine service account is used. Cannot be updated. */
 	// +optional
-	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+	ServiceAccountRef *k8sv1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 
 	/* Optional. The Compute Engine subnetwork to be used for machine
 	communications, specified as a
@@ -445,7 +445,7 @@ type EnvironmentNodeConfig struct {
 	and the subnetwork must belong to the enclosing environment's project and
 	location. */
 	// +optional
-	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
+	SubnetworkRef *k8sv1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
 
 	/* Optional. The list of instance tags applied to all node VMs. Tags are used to identify valid sources or targets for network firewalls. Each tag within the list must comply with [RFC1035](https://www.ietf.org/rfc/rfc1035.txt). Cannot be updated. */
 	// +optional
@@ -465,7 +465,7 @@ type EnvironmentPrivateClusterConfig struct {
 type EnvironmentPrivateEnvironmentConfig struct {
 	/* Optional. When specified, the environment will use Private Service Connect instead of VPC peerings to connect to Cloud SQL in the Tenant Project, and the PSC endpoint in the Customer Project will use an IP address from this subnetwork. */
 	// +optional
-	CloudComposerConnectionSubnetworkRef *v1alpha1.ResourceRef `json:"cloudComposerConnectionSubnetworkRef,omitempty"`
+	CloudComposerConnectionSubnetworkRef *k8sv1alpha1.ResourceRef `json:"cloudComposerConnectionSubnetworkRef,omitempty"`
 
 	/* Optional. The CIDR block from which IP range for Cloud Composer Network in
 	tenant project will be reserved. Needs to be disjoint from
@@ -679,7 +679,7 @@ type EnvironmentSoftwareConfig struct {
 type EnvironmentStorageConfig struct {
 	/* Optional. The name of the Cloud Storage bucket used by the environment. No `gs://` prefix. */
 	// +optional
-	BucketRef *v1alpha1.ResourceRef `json:"bucketRef,omitempty"`
+	BucketRef *k8sv1alpha1.ResourceRef `json:"bucketRef,omitempty"`
 }
 
 type EnvironmentTaskLogsRetentionConfig struct {
@@ -795,7 +795,7 @@ type ComposerEnvironmentSpec struct {
 	Location string `json:"location"`
 
 	/* The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* The ComposerEnvironment name. If not given, the metadata.name will be used. */
 	// +optional
@@ -880,7 +880,7 @@ type EnvironmentPrivateEnvironmentConfigStatus struct {
 type ComposerEnvironmentStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComposerEnvironment's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the ComposerEnvironment resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

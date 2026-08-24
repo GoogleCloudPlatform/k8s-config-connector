@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -67,7 +67,7 @@ type RapidMigrationAssessmentCollectorSpec struct {
 	Location string `json:"location"`
 
 	/* Immutable. The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* Immutable. The RapidMigrationAssessmentCollector name. If not given, the metadata.name will be used. */
 	// +optional
@@ -75,7 +75,7 @@ type RapidMigrationAssessmentCollectorSpec struct {
 
 	/* Service Account used to ingest data to this Collector. */
 	// +optional
-	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+	ServiceAccountRef *k8sv1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 }
 
 type CollectorGuestOSScanStatus struct {
@@ -123,7 +123,7 @@ type CollectorVsphereScanStatus struct {
 type RapidMigrationAssessmentCollectorStatus struct {
 	/* Conditions represent the latest available observations of the
 	   RapidMigrationAssessmentCollector's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the RapidMigrationAssessmentCollector resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

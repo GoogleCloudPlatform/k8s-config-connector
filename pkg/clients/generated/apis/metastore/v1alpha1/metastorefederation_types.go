@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -52,7 +52,7 @@ type FederationBackendMetastores struct {
 	* Dataproc Metastore
 	* `projects/{project_id}/locations/{location}/services/{service_id}` */
 	// +optional
-	ServiceRef *v1alpha1.ResourceRef `json:"serviceRef,omitempty"`
+	ServiceRef *k8sv1alpha1.ResourceRef `json:"serviceRef,omitempty"`
 }
 
 type MetastoreFederationSpec struct {
@@ -68,7 +68,7 @@ type MetastoreFederationSpec struct {
 
 	/* The Project that this resource belongs to. */
 	// +optional
-	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+	ProjectRef *k8sv1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
 	/* The MetastoreFederation name. If not given, the metadata.name will be used. */
 	// +optional
@@ -108,7 +108,7 @@ type FederationObservedStateStatus struct {
 type MetastoreFederationStatus struct {
 	/* Conditions represent the latest available observations of the
 	   MetastoreFederation's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the MetastoreFederation resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

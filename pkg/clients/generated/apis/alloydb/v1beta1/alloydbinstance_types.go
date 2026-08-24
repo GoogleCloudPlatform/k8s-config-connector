@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -155,7 +155,7 @@ type AlloyDBInstanceSpec struct {
 	AvailabilityType *string `json:"availabilityType,omitempty"`
 
 	/* The AlloyDBInstance cluster that this resource belongs to. */
-	ClusterRef v1alpha1.ResourceRef `json:"clusterRef"`
+	ClusterRef k8sv1alpha1.ResourceRef `json:"clusterRef"`
 
 	/* Configuration for Managed Connection Pool (MCP). */
 	// +optional
@@ -193,7 +193,7 @@ type AlloyDBInstanceSpec struct {
 	If the instance type is SECONDARY, the delete instance operation does not delete the secondary instance but abandons it instead.
 	Use deletionPolicy = "FORCE" in the associated secondary cluster and delete the cluster forcefully to delete the secondary cluster as well its associated secondary instance. */
 	// +optional
-	InstanceTypeRef *v1alpha1.ResourceRef `json:"instanceTypeRef,omitempty"`
+	InstanceTypeRef *k8sv1alpha1.ResourceRef `json:"instanceTypeRef,omitempty"`
 
 	/* Configurations for the machines that host the underlying database engine. */
 	// +optional
@@ -243,7 +243,7 @@ type InstanceObservedStateStatus struct {
 type AlloyDBInstanceStatus struct {
 	/* Conditions represent the latest available observations of the
 	   AlloyDBInstance's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* Time the Instance was created in UTC. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`

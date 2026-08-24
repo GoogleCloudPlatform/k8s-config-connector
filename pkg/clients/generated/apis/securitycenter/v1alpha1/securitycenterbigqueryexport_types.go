@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -40,7 +40,7 @@ var _ = apiextensionsv1.JSON{}
 
 type SecurityCenterBigQueryExportSpec struct {
 	/* The dataset to write findings' updates to. */
-	DatasetRef v1alpha1.ResourceRef `json:"datasetRef"`
+	DatasetRef k8sv1alpha1.ResourceRef `json:"datasetRef"`
 
 	/* The description of the export (max of 1024 characters). */
 	// +optional
@@ -54,7 +54,7 @@ type SecurityCenterBigQueryExportSpec struct {
 	Location string `json:"location"`
 
 	/* The organization that this resource belongs to. */
-	OrganizationRef v1alpha1.ResourceRef `json:"organizationRef"`
+	OrganizationRef k8sv1alpha1.ResourceRef `json:"organizationRef"`
 
 	/* The SecurityCenterBigQueryExport name. If not given, the metadata.name will be used. */
 	// +optional
@@ -82,7 +82,7 @@ type BigqueryexportObservedStateStatus struct {
 type SecurityCenterBigQueryExportStatus struct {
 	/* Conditions represent the latest available observations of the
 	   SecurityCenterBigQueryExport's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the SecurityCenterBigQueryExport resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

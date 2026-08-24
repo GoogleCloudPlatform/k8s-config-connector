@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -74,7 +74,7 @@ type RecordsetHealthCheckedTargets struct {
 
 type RecordsetInternalLoadBalancers struct {
 	/* ComputeAddressRef is a reference to a GCP ComputeAddress. */
-	IpAddressRef v1alpha1.ResourceRef `json:"ipAddressRef"`
+	IpAddressRef k8sv1alpha1.ResourceRef `json:"ipAddressRef"`
 
 	/* The configured IP protocol of the load balancer. This value is case-sensitive. Possible values: ["tcp", "udp"]. */
 	IpProtocol string `json:"ipProtocol"`
@@ -83,16 +83,16 @@ type RecordsetInternalLoadBalancers struct {
 	LoadBalancerType string `json:"loadBalancerType"`
 
 	/* ComputeNetworkRef is a reference to a GCP ComputeNetwork. */
-	NetworkRef v1alpha1.ResourceRef `json:"networkRef"`
+	NetworkRef k8sv1alpha1.ResourceRef `json:"networkRef"`
 
 	/* The configured port of the load balancer. */
 	Port string `json:"port"`
 
 	/* ProjectRef is a reference to a GCP Project. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	// +optional
-	RegionRef *v1alpha1.ResourceRef `json:"regionRef,omitempty"`
+	RegionRef *k8sv1alpha1.ResourceRef `json:"regionRef,omitempty"`
 }
 
 type RecordsetPrimary struct {
@@ -131,7 +131,7 @@ type RecordsetRoutingPolicy struct {
 	Geo []RecordsetGeo `json:"geo,omitempty"`
 
 	// +optional
-	HealthCheckRef *v1alpha1.ResourceRef `json:"healthCheckRef,omitempty"`
+	HealthCheckRef *k8sv1alpha1.ResourceRef `json:"healthCheckRef,omitempty"`
 
 	/* The configuration for a primary-backup policy with global to regional failover. Queries are responded to with the global primary targets, but if none of the primary targets are healthy, then we fallback to a regional failover policy. */
 	// +optional
@@ -174,7 +174,7 @@ type RecordsetWrr struct {
 
 type DNSRecordSetSpec struct {
 	/* DNSManagedZoneRef is a reference to a DNSManagedZone. */
-	ManagedZoneRef v1alpha1.ResourceRef `json:"managedZoneRef"`
+	ManagedZoneRef k8sv1alpha1.ResourceRef `json:"managedZoneRef"`
 
 	/* Immutable. The DNS name this record set will apply to. */
 	Name string `json:"name"`
@@ -201,7 +201,7 @@ type DNSRecordSetSpec struct {
 type DNSRecordSetStatus struct {
 	/* Conditions represent the latest available observations of the
 	   DNSRecordSet's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* ObservedGeneration is the generation of the resource that was most recently observed by the Config Connector controller. If this is equal to metadata.generation, then that means that the current reported status reflects the most recent desired state of the resource. */
 	// +optional
 	ObservedGeneration *int64 `json:"observedGeneration,omitempty"`

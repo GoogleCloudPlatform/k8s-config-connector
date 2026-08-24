@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -51,7 +51,7 @@ type WorkerpoolBinaryAuthorization struct {
 type WorkerpoolCloudSQLInstance struct {
 	/* The Cloud SQL instance connection names. */
 	// +optional
-	InstanceRefs []v1alpha1.ResourceRef `json:"instanceRefs,omitempty"`
+	InstanceRefs []k8sv1alpha1.ResourceRef `json:"instanceRefs,omitempty"`
 }
 
 type WorkerpoolContainers struct {
@@ -135,7 +135,7 @@ type WorkerpoolEnv struct {
 type WorkerpoolGcs struct {
 	/* Cloud Storage Bucket name. */
 	// +optional
-	BucketRef *v1alpha1.ResourceRef `json:"bucketRef,omitempty"`
+	BucketRef *k8sv1alpha1.ResourceRef `json:"bucketRef,omitempty"`
 
 	/* A list of additional flags to pass to the gcsfuse CLI. */
 	// +optional
@@ -205,7 +205,7 @@ type WorkerpoolItems struct {
 
 	/* The Cloud Secret Manager secret version. Can be 'latest' for the latest value, or an integer or a secret alias for a specific version. */
 	// +optional
-	VersionRef *v1alpha1.ResourceRef `json:"versionRef,omitempty"`
+	VersionRef *k8sv1alpha1.ResourceRef `json:"versionRef,omitempty"`
 }
 
 type WorkerpoolLivenessProbe struct {
@@ -241,11 +241,11 @@ type WorkerpoolLivenessProbe struct {
 type WorkerpoolNetworkInterfaces struct {
 	/* Optional. The VPC network that the Cloud Run resource will be able to send traffic to. */
 	// +optional
-	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+	NetworkRef *k8sv1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
 	/* Optional. The VPC subnetwork that the Cloud Run resource will get IPs from. */
 	// +optional
-	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
+	SubnetworkRef *k8sv1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
 
 	/* Optional. Network tags applied to this Cloud Run resource. */
 	// +optional
@@ -320,23 +320,23 @@ type WorkerpoolSecret struct {
 
 	/* Required. The name of the secret in Cloud Secret Manager. */
 	// +optional
-	SecretRef *v1alpha1.ResourceRef `json:"secretRef,omitempty"`
+	SecretRef *k8sv1alpha1.ResourceRef `json:"secretRef,omitempty"`
 }
 
 type WorkerpoolSecretKeyRef struct {
 	/* Required. The name of the secret in Cloud Secret Manager. */
 	// +optional
-	SecretRef *v1alpha1.ResourceRef `json:"secretRef,omitempty"`
+	SecretRef *k8sv1alpha1.ResourceRef `json:"secretRef,omitempty"`
 
 	/* The Cloud Secret Manager secret version. */
 	// +optional
-	VersionRef *v1alpha1.ResourceRef `json:"versionRef,omitempty"`
+	VersionRef *k8sv1alpha1.ResourceRef `json:"versionRef,omitempty"`
 }
 
 type WorkerpoolServiceMesh struct {
 	/* The Mesh resource name. */
 	// +optional
-	MeshRef *v1alpha1.ResourceRef `json:"meshRef,omitempty"`
+	MeshRef *k8sv1alpha1.ResourceRef `json:"meshRef,omitempty"`
 }
 
 type WorkerpoolStartupProbe struct {
@@ -386,7 +386,7 @@ type WorkerpoolTemplate struct {
 
 	/* A reference to a customer managed encryption key (CMEK) to use to encrypt this container image. */
 	// +optional
-	EncryptionKeyRef *v1alpha1.ResourceRef `json:"encryptionKeyRef,omitempty"`
+	EncryptionKeyRef *k8sv1alpha1.ResourceRef `json:"encryptionKeyRef,omitempty"`
 
 	/* Optional. The action to take if the encryption key is revoked. */
 	// +optional
@@ -406,7 +406,7 @@ type WorkerpoolTemplate struct {
 
 	/* Optional. Email address of the IAM service account associated with the revision of the service. */
 	// +optional
-	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+	ServiceAccountRef *k8sv1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 
 	/* Optional. Enables service mesh connectivity. */
 	// +optional
@@ -466,7 +466,7 @@ type WorkerpoolVolumes struct {
 type WorkerpoolVpcAccess struct {
 	/* VPC Access connector name. */
 	// +optional
-	ConnectorRef *v1alpha1.ResourceRef `json:"connectorRef,omitempty"`
+	ConnectorRef *k8sv1alpha1.ResourceRef `json:"connectorRef,omitempty"`
 
 	/* Optional. Traffic VPC egress settings. */
 	// +optional
@@ -514,7 +514,7 @@ type RunWorkerPoolSpec struct {
 	Location string `json:"location"`
 
 	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* The RunWorkerPool name. If not given, the metadata.name will be used. */
 	// +optional
@@ -718,7 +718,7 @@ type WorkerpoolTerminalConditionStatus struct {
 type RunWorkerPoolStatus struct {
 	/* Conditions represent the latest available observations of the
 	   RunWorkerPool's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the RunWorkerPool resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

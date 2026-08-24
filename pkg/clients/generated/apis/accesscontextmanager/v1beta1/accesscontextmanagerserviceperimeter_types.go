@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -75,7 +75,7 @@ type ServiceperimeterEgressTo struct {
 type ServiceperimeterIdentities struct {
 	/* A reference to an IAMServiceAccount resource. */
 	// +optional
-	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+	ServiceAccountRef *k8sv1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 
 	/* A user identity, should represent individual user or service account only. */
 	// +optional
@@ -139,23 +139,23 @@ type ServiceperimeterOperations struct {
 type ServiceperimeterResources struct {
 	/* (Optional) A list of GCP resources that are inside of the service perimeter. Currently only projects are allowed. */
 	// +optional
-	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+	ProjectRef *k8sv1alpha1.ResourceRef `json:"projectRef,omitempty"`
 }
 
 type ServiceperimeterSources struct {
 	/* (Optional) A reference to an AccessLevel resource that is allowed to ingress the perimeter. */
 	// +optional
-	AccessLevelRef *v1alpha1.ResourceRef `json:"accessLevelRef,omitempty"`
+	AccessLevelRef *k8sv1alpha1.ResourceRef `json:"accessLevelRef,omitempty"`
 
 	/* (Optional) A Google Cloud resource that is allowed to ingress the perimeter. Requests from these resources will be allowed to access perimeter data. Currently only projects are allowed. Format "projects/{project_number}" The project may be in any Google Cloud organization, not just the organization that the perimeter is defined in. */
 	// +optional
-	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+	ProjectRef *k8sv1alpha1.ResourceRef `json:"projectRef,omitempty"`
 }
 
 type ServiceperimeterSpec struct {
 	/* (Optional) A list of AccessLevel resource names that allow resources within the ServicePerimeter to be accessed from the internet. AccessLevels listed must be in the same policy as this ServicePerimeter. Referencing a nonexistent AccessLevel is a syntax error. If no AccessLevel names are listed, resources within the perimeter can only be accessed via GCP calls with request origins within the perimeter. For Service Perimeter Bridge, must be empty. */
 	// +optional
-	AccessLevels []v1alpha1.ResourceRef `json:"accessLevels,omitempty"`
+	AccessLevels []k8sv1alpha1.ResourceRef `json:"accessLevels,omitempty"`
 
 	/* List of EgressPolicies to apply to the perimeter. A perimeter may have multiple EgressPolicies, each of which is evaluated separately. Access is granted if any EgressPolicy grants it. Must be empty for a perimeter bridge. */
 	// +optional
@@ -181,7 +181,7 @@ type ServiceperimeterSpec struct {
 type ServiceperimeterStatus struct {
 	/* (Optional) A list of AccessLevel resource names that allow resources within the ServicePerimeter to be accessed from the internet. AccessLevels listed must be in the same policy as this ServicePerimeter. Referencing a nonexistent AccessLevel is a syntax error. If no AccessLevel names are listed, resources within the perimeter can only be accessed via GCP calls with request origins within the perimeter. For Service Perimeter Bridge, must be empty. */
 	// +optional
-	AccessLevels []v1alpha1.ResourceRef `json:"accessLevels,omitempty"`
+	AccessLevels []k8sv1alpha1.ResourceRef `json:"accessLevels,omitempty"`
 
 	/* List of EgressPolicies to apply to the perimeter. A perimeter may have multiple EgressPolicies, each of which is evaluated separately. Access is granted if any EgressPolicy grants it. Must be empty for a perimeter bridge. */
 	// +optional
@@ -216,7 +216,7 @@ type ServiceperimeterVpcAccessibleServices struct {
 
 type AccessContextManagerServicePerimeterSpec struct {
 	/* The AccessContextManagerAccessPolicy this AccessContextManagerServicePerimeter lives in. */
-	AccessPolicyRef v1alpha1.ResourceRef `json:"accessPolicyRef"`
+	AccessPolicyRef k8sv1alpha1.ResourceRef `json:"accessPolicyRef"`
 
 	/* Description of the ServicePerimeter and its use. Does not affect behavior. */
 	// +optional
@@ -264,7 +264,7 @@ type AccessContextManagerServicePerimeterSpec struct {
 type AccessContextManagerServicePerimeterStatus struct {
 	/* Conditions represent the latest available observations of the
 	   AccessContextManagerServicePerimeter's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* Time the AccessPolicy was created in UTC. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`

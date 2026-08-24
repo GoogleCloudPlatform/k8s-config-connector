@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -41,11 +41,11 @@ var _ = apiextensionsv1.JSON{}
 type NodepoolAdditionalNodeNetworkConfigs struct {
 	/* ComputeNetworkRef is a reference to a GCP ComputeNetwork. */
 	// +optional
-	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+	NetworkRef *k8sv1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
 	/* ComputeSubnetworkRef is a reference to a GCP ComputeSubnetwork. */
 	// +optional
-	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
+	SubnetworkRef *k8sv1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
 }
 
 type NodepoolAdditionalPodNetworkConfigs struct {
@@ -59,7 +59,7 @@ type NodepoolAdditionalPodNetworkConfigs struct {
 
 	/* ComputeSubnetworkRef is a reference to a GCP ComputeSubnetwork. */
 	// +optional
-	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
+	SubnetworkRef *k8sv1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
 }
 
 type NodepoolAdvancedMachineFeatures struct {
@@ -106,13 +106,13 @@ type NodepoolBlueGreenSettings struct {
 type NodepoolCa struct {
 	/* Reference to SecretManagerSecretVersion for the CA certificate. */
 	// +optional
-	SecretRef *v1alpha1.ResourceRef `json:"secretRef,omitempty"`
+	SecretRef *k8sv1alpha1.ResourceRef `json:"secretRef,omitempty"`
 }
 
 type NodepoolCert struct {
 	/* Reference to SecretManagerSecretVersion for the client certificate. */
 	// +optional
-	SecretRef *v1alpha1.ResourceRef `json:"secretRef,omitempty"`
+	SecretRef *k8sv1alpha1.ResourceRef `json:"secretRef,omitempty"`
 }
 
 type NodepoolCertificateAuthorityDomainConfig struct {
@@ -185,7 +185,7 @@ type NodepoolGcfsConfig struct {
 type NodepoolGcpSecretManagerCertificateConfig struct {
 	/* SecretRef is a reference to a SecretManagerSecretVersion resource. */
 	// +optional
-	SecretRef *v1alpha1.ResourceRef `json:"secretRef,omitempty"`
+	SecretRef *k8sv1alpha1.ResourceRef `json:"secretRef,omitempty"`
 }
 
 type NodepoolGpuDriverInstallationConfig struct {
@@ -274,7 +274,7 @@ type NodepoolHosts struct {
 type NodepoolKey struct {
 	/* Reference to SecretManagerSecretVersion for the client key. */
 	// +optional
-	SecretRef *v1alpha1.ResourceRef `json:"secretRef,omitempty"`
+	SecretRef *k8sv1alpha1.ResourceRef `json:"secretRef,omitempty"`
 }
 
 type NodepoolKubeletConfig struct {
@@ -366,7 +366,7 @@ type NodepoolNetworkConfig struct {
 
 	/* ComputeSubnetworkRef is a reference to a GCP ComputeSubnetwork. */
 	// +optional
-	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
+	SubnetworkRef *k8sv1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
 }
 
 type NodepoolNodeAffinity struct {
@@ -387,7 +387,7 @@ type NodepoolNodeConfig struct {
 
 	/* Immutable. Cryptographic key used to encrypt the boot disk. */
 	// +optional
-	BootDiskKMSCryptoKeyRef *v1alpha1.ResourceRef `json:"bootDiskKMSCryptoKeyRef,omitempty"`
+	BootDiskKMSCryptoKeyRef *k8sv1alpha1.ResourceRef `json:"bootDiskKMSCryptoKeyRef,omitempty"`
 
 	/* Immutable. Configuration for the confidential nodes feature, which makes nodes run on confidential VMs. Warning: This configuration can't be changed (or added/removed) after pool creation without deleting and recreating the entire pool. */
 	// +optional
@@ -475,7 +475,7 @@ type NodepoolNodeConfig struct {
 
 	/* Immutable. Setting this field will assign instances of this pool to run on the specified node group. This is useful for running workloads on sole tenant nodes. */
 	// +optional
-	NodeGroupRef *v1alpha1.ResourceRef `json:"nodeGroupRef,omitempty"`
+	NodeGroupRef *k8sv1alpha1.ResourceRef `json:"nodeGroupRef,omitempty"`
 
 	/* Immutable. The set of Google API scopes to be made available on all of the node VMs. */
 	// +optional
@@ -502,7 +502,7 @@ type NodepoolNodeConfig struct {
 	SandboxConfig *NodepoolSandboxConfig `json:"sandboxConfig,omitempty"`
 
 	// +optional
-	ServiceAccountRef *v1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
+	ServiceAccountRef *k8sv1alpha1.ResourceRef `json:"serviceAccountRef,omitempty"`
 
 	/* Immutable. Shielded Instance options. */
 	// +optional
@@ -536,7 +536,7 @@ type NodepoolNodeConfig struct {
 type NodepoolPlacementPolicy struct {
 	/* If set, refers to the name of a custom resource policy supplied by the user. The resource policy must be in the same project and region as the node pool. If not found, InvalidArgument error is returned. */
 	// +optional
-	PolicyNameRef *v1alpha1.ResourceRef `json:"policyNameRef,omitempty"`
+	PolicyNameRef *k8sv1alpha1.ResourceRef `json:"policyNameRef,omitempty"`
 
 	/* Optional. TPU placement topology for pod slice node pool. */
 	// +optional
@@ -680,7 +680,7 @@ type ContainerNodePoolSpec struct {
 	Autoscaling *NodepoolAutoscaling `json:"autoscaling,omitempty"`
 
 	/* The GKE cluster this node pool belongs to. */
-	ClusterRef v1alpha1.ResourceRef `json:"clusterRef"`
+	ClusterRef k8sv1alpha1.ResourceRef `json:"clusterRef"`
 
 	/* The initial node count for the pool. You must ensure that your Compute Engine resource quota is sufficient for this number of instances. You must also have available firewall and routes quota. */
 	// +optional
@@ -767,7 +767,7 @@ type NodepoolTaintStatus struct {
 type ContainerNodePoolStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ContainerNodePool's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the ContainerNodePool resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

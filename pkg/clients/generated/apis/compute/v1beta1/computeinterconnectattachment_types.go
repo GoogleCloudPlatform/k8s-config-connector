@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -99,7 +99,7 @@ type ComputeInterconnectAttachmentSpec struct {
 	this interconnect attachment, the HA VPN gateway's IP address will
 	be allocated from regional external IP address pool. */
 	// +optional
-	IpsecInternalAddresses []v1alpha1.ResourceRef `json:"ipsecInternalAddresses,omitempty"`
+	IpsecInternalAddresses []k8sv1alpha1.ResourceRef `json:"ipsecInternalAddresses,omitempty"`
 
 	/* Maximum Transmission Unit (MTU), in bytes, of packets passing through this interconnect attachment. Currently, only 1440 and 1500 are allowed. If not specified, the value will default to 1440. */
 	// +optional
@@ -113,7 +113,7 @@ type ComputeInterconnectAttachmentSpec struct {
 	ResourceID *string `json:"resourceID,omitempty"`
 
 	/* The Cloud Router to be used for dynamic routing. This router must be in the same region as this ComputeInterconnectAttachment. The ComputeInterconnectAttachment will automatically connect the interconnect to the network & region within which the Cloud Router is configured. */
-	RouterRef v1alpha1.ResourceRef `json:"routerRef"`
+	RouterRef k8sv1alpha1.ResourceRef `json:"routerRef"`
 
 	/* Immutable. The type of InterconnectAttachment you wish to create. Defaults to DEDICATED. Possible values: ["DEDICATED", "PARTNER", "PARTNER_PROVIDER"]. */
 	// +optional
@@ -133,7 +133,7 @@ type InterconnectattachmentPrivateInterconnectInfoStatus struct {
 type ComputeInterconnectAttachmentStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeInterconnectAttachment's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* IPv4 address + prefix length to be configured on Cloud Router Interface for this interconnect attachment. */
 	// +optional
 	CloudRouterIpAddress *string `json:"cloudRouterIpAddress,omitempty"`

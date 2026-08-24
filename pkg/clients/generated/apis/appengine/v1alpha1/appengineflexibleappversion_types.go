@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -564,7 +564,7 @@ type AppEngineFlexibleAppVersionSpec struct {
 	// +optional
 	ServiceAccount *string `json:"serviceAccount,omitempty"`
 
-	ServiceRef v1alpha1.ResourceRef `json:"serviceRef"`
+	ServiceRef k8sv1alpha1.ResourceRef `json:"serviceRef"`
 
 	/* Current serving status of this version. Only the versions with a SERVING status create instances and can be billed. Default value: "SERVING" Possible values: ["SERVING", "STOPPED"]. */
 	// +optional
@@ -578,7 +578,7 @@ type AppEngineFlexibleAppVersionSpec struct {
 type AppEngineFlexibleAppVersionStatus struct {
 	/* Conditions represent the latest available observations of the
 	   AppEngineFlexibleAppVersion's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* Full path to the Version resource in the API. Example, "v1". */
 	// +optional
 	Name *string `json:"name,omitempty"`

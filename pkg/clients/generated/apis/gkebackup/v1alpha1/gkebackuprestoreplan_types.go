@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -288,10 +288,10 @@ type RestoreplanVolumeDataRestorePolicyBindings struct {
 
 type GKEBackupRestorePlanSpec struct {
 	/* Required. Immutable. A reference to the [BackupPlan][google.cloud.gkebackup.v1.BackupPlan] from which Backups may be used as the source for Restores created via this RestorePlan. */
-	BackupPlanRef v1alpha1.ResourceRef `json:"backupPlanRef"`
+	BackupPlanRef k8sv1alpha1.ResourceRef `json:"backupPlanRef"`
 
 	/* Required. Immutable. The target cluster into which Restores created via this RestorePlan will restore data. NOTE: the cluster's region must be the same as the RestorePlan. */
-	ClusterRef v1alpha1.ResourceRef `json:"clusterRef"`
+	ClusterRef k8sv1alpha1.ResourceRef `json:"clusterRef"`
 
 	/* Optional. User specified descriptive string for this RestorePlan. */
 	// +optional
@@ -305,7 +305,7 @@ type GKEBackupRestorePlanSpec struct {
 	Location string `json:"location"`
 
 	/* The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* The GKEBackupRestorePlan name. If not given, the metadata.name will be used. */
 	// +optional
@@ -344,7 +344,7 @@ type RestoreplanObservedStateStatus struct {
 type GKEBackupRestorePlanStatus struct {
 	/* Conditions represent the latest available observations of the
 	   GKEBackupRestorePlan's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the GKEBackupRestorePlan resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -47,7 +47,7 @@ type VMwareEnginePrivateConnectionSpec struct {
 	Location string `json:"location"`
 
 	/* The Project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* The VMwareEnginePrivateConnection name. If not given, the metadata.name will be used. */
 	// +optional
@@ -58,13 +58,13 @@ type VMwareEnginePrivateConnectionSpec struct {
 	RoutingMode *string `json:"routingMode,omitempty"`
 
 	/* Required. Reference to the service network to create private connection. */
-	ServiceNetworkRef v1alpha1.ResourceRef `json:"serviceNetworkRef"`
+	ServiceNetworkRef k8sv1alpha1.ResourceRef `json:"serviceNetworkRef"`
 
 	/* Required. Private connection type. */
 	Type string `json:"type"`
 
 	/* Required. Reference to the VMware Engine network. */
-	VmwareEngineNetworkRef v1alpha1.ResourceRef `json:"vmwareEngineNetworkRef"`
+	VmwareEngineNetworkRef k8sv1alpha1.ResourceRef `json:"vmwareEngineNetworkRef"`
 }
 
 type PrivateconnectionObservedStateStatus struct {
@@ -100,7 +100,7 @@ type PrivateconnectionObservedStateStatus struct {
 type VMwareEnginePrivateConnectionStatus struct {
 	/* Conditions represent the latest available observations of the
 	   VMwareEnginePrivateConnection's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the VMwareEnginePrivateConnection resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

@@ -31,7 +31,7 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -57,7 +57,7 @@ type ComputeAddressSpec struct {
 	Warning: Since ComputePublicDelegatedPrefix is not yet supported as a Config Connector resource,
 	only the 'external' field of this reference can be used. */
 	// +optional
-	IpCollectionRef *v1alpha1.ResourceRef `json:"ipCollectionRef,omitempty"`
+	IpCollectionRef *k8sv1alpha1.ResourceRef `json:"ipCollectionRef,omitempty"`
 
 	/* Immutable. The IP Version that will be used by this address. The default value is 'IPV4'. Possible values: ["IPV4", "IPV6"]. */
 	// +optional
@@ -72,7 +72,7 @@ type ComputeAddressSpec struct {
 
 	/* The network in which to reserve the address. If global, the address must be within the RFC1918 IP space. The network cannot be deleted if there are any reserved IP ranges referring to it. This field can only be used with INTERNAL type with the VPC_PEERING and IPSEC_INTERCONNECT purposes. */
 	// +optional
-	NetworkRef *v1alpha1.ResourceRef `json:"networkRef,omitempty"`
+	NetworkRef *k8sv1alpha1.ResourceRef `json:"networkRef,omitempty"`
 
 	/* Immutable. The networking tier used for configuring this address. If this field is not specified, it is assumed to be PREMIUM. This argument should not be used when configuring Internal addresses, because [network tier cannot be set for internal traffic; it's always Premium](https://cloud.google.com/network-tiers/docs/overview). Possible values: ["PREMIUM", "STANDARD"]. */
 	// +optional
@@ -110,7 +110,7 @@ type ComputeAddressSpec struct {
 
 	/* The subnetwork in which to reserve the address. If an IP address is specified, it must be within the subnetwork's IP range.  This field can only be used with INTERNAL type with GCE_ENDPOINT/DNS_RESOLVER purposes. */
 	// +optional
-	SubnetworkRef *v1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
+	SubnetworkRef *k8sv1alpha1.ResourceRef `json:"subnetworkRef,omitempty"`
 }
 
 type AddressObservedStateStatus struct {
@@ -122,7 +122,7 @@ type AddressObservedStateStatus struct {
 type ComputeAddressStatus struct {
 	/* Conditions represent the latest available observations of the
 	   ComputeAddress's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* Creation timestamp in RFC3339 text format. */
 	// +optional
 	CreationTimestamp *string `json:"creationTimestamp,omitempty"`

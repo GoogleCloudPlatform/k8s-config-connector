@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -44,10 +44,10 @@ type NetworkSecurityInterceptDeploymentSpec struct {
 	Description *string `json:"description,omitempty"`
 
 	/* Required. Immutable. The regional forwarding rule that fronts the interceptors, for example: `projects/123456789/regions/us-central1/forwardingRules/my-rule`. */
-	ForwardingRuleRef v1alpha1.ResourceRef `json:"forwardingRuleRef"`
+	ForwardingRuleRef k8sv1alpha1.ResourceRef `json:"forwardingRuleRef"`
 
 	/* Required. Immutable. The deployment group that this deployment is a part of, for example: `projects/123456789/locations/global/interceptDeploymentGroups/my-dg`. */
-	InterceptDeploymentGroupRef v1alpha1.ResourceRef `json:"interceptDeploymentGroupRef"`
+	InterceptDeploymentGroupRef k8sv1alpha1.ResourceRef `json:"interceptDeploymentGroupRef"`
 
 	/* Optional. Labels are key/value pairs that help to organize and filter resources. */
 	// +optional
@@ -57,7 +57,7 @@ type NetworkSecurityInterceptDeploymentSpec struct {
 	Location string `json:"location"`
 
 	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	ProjectRef k8sv1alpha1.ResourceRef `json:"projectRef"`
 
 	/* The NetworkSecurityInterceptDeployment name. If not given, the metadata.name will be used. */
 	// +optional
@@ -85,7 +85,7 @@ type InterceptdeploymentObservedStateStatus struct {
 type NetworkSecurityInterceptDeploymentStatus struct {
 	/* Conditions represent the latest available observations of the
 	   NetworkSecurityInterceptDeployment's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the NetworkSecurityInterceptDeployment resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

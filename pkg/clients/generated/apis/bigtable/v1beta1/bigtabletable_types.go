@@ -31,12 +31,22 @@
 package v1beta1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 var _ = apiextensionsv1.JSON{}
+
+type TableAutomatedBackupPolicy struct {
+	/* Required. How frequently automated backups should occur. The only supported value at this time is 24 hours. */
+	// +optional
+	Frequency *string `json:"frequency,omitempty"`
+
+	/* Required. How long the automated backups should be retained. The only supported value at this time is 3 days. */
+	// +optional
+	RetentionPeriod *string `json:"retentionPeriod,omitempty"`
+}
 
 type TableColumnFamily struct {
 	/* The name of the column family. */
@@ -44,6 +54,10 @@ type TableColumnFamily struct {
 }
 
 type BigtableTableSpec struct {
+	/* If specified, automated backups are enabled for this table. Otherwise, automated backups are disabled. */
+	// +optional
+	AutomatedBackupPolicy *TableAutomatedBackupPolicy `json:"automatedBackupPolicy,omitempty"`
+
 	/* Duration to retain change stream data for the table. Set to 0 to disable. Must be between 1 and 7 days.. */
 	// +optional
 	ChangeStreamRetention *string `json:"changeStreamRetention,omitempty"`
@@ -65,7 +79,7 @@ type BigtableTableSpec struct {
 	DeletionProtection *string `json:"deletionProtection,omitempty"`
 
 	/* Immutable. The instance to create the table in. */
-	InstanceRef v1alpha1.ResourceRef `json:"instanceRef"`
+	InstanceRef k8sv1alpha1.ResourceRef `json:"instanceRef"`
 
 	/* The BigtableTable name. If not given, the metadata.name will be used. */
 	// +optional
@@ -79,7 +93,7 @@ type BigtableTableSpec struct {
 type BigtableTableStatus struct {
 	/* Conditions represent the latest available observations of the
 	   BigtableTable's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the BigtableTable resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`

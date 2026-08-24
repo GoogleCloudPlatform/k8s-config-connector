@@ -31,7 +31,7 @@
 package v1alpha1
 
 import (
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
+	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/clients/generated/apis/k8s/v1alpha1"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
@@ -41,7 +41,7 @@ var _ = apiextensionsv1.JSON{}
 type CloudsecurityframeworkCloudControlDetails struct {
 	/* Required. The name of the CloudControl in the format: “organizations/{organization}/locations/{location}/ cloudControls/{cloud-control}” */
 	// +optional
-	CloudControlRef *v1alpha1.ResourceRef `json:"cloudControlRef,omitempty"`
+	CloudControlRef *k8sv1alpha1.ResourceRef `json:"cloudControlRef,omitempty"`
 
 	/* Required. Major revision of cloudcontrol */
 	// +optional
@@ -91,11 +91,11 @@ type CloudSecurityFrameworkSpec struct {
 
 	/* The organization that this resource belongs to. Only one of organizationRef or projectRef may be specified. */
 	// +optional
-	OrganizationRef *v1alpha1.ResourceRef `json:"organizationRef,omitempty"`
+	OrganizationRef *k8sv1alpha1.ResourceRef `json:"organizationRef,omitempty"`
 
 	/* The project that this resource belongs to. Only one of organizationRef or projectRef may be specified. */
 	// +optional
-	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
+	ProjectRef *k8sv1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
 	/* Optional. The CloudSecurityFramework name. If not given, the metadata.name will be used. */
 	// +optional
@@ -127,7 +127,7 @@ type CloudsecurityframeworkObservedStateStatus struct {
 type CloudSecurityFrameworkStatus struct {
 	/* Conditions represent the latest available observations of the
 	   CloudSecurityFramework's current state. */
-	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	Conditions []k8sv1alpha1.Condition `json:"conditions,omitempty"`
 	/* A unique specifier for the CloudSecurityFramework resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
