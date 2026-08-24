@@ -108,47 +108,16 @@ def get_gcp_resources(googleapis_dir):
 
 def get_kcc_resources(kcc_dir):
     resources = []
-    crd_dir = os.path.join(kcc_dir, "config/crds/resources")
-    if not os.path.exists(crd_dir):
-        return []
-    for file in os.listdir(crd_dir):
-        if file.endswith(".yaml"):
-            path = os.path.join(crd_dir, file)
-            with open(path, 'r') as f:
-                content = f.read()
-                group_match = re.search(r'group:\s*([^\s]+)', content)
-                kind_section = re.search(r'names:.*?\s+kind:\s*([^\s]+)', content, re.DOTALL)
-                if group_match and kind_section:
-                    group = group_match.group(1).strip('"\'')
-                    kind = kind_section.group(1).strip('"\'')
-                    resources.append({'group': group, 'kind': kind})
-    return resources
-
-def get_inflight_resources(status_file_path):
-    resources = []
-    if not os.path.exists(status_file_path):
-        return resources
-        
-    with open(status_file_path, 'r') as f:
-        in_table = False
-        for line in f:
-            line = line.strip()
-            if line.startswith('| Resource | Service |'):
-                in_table = True
-                continue
-            if in_table and line.startswith('| :---'):
-                continue
-            if in_table and line.startswith('|'):
-                parts = [p.strip() for p in line.split('|')]
-                if len(parts) >= 6:
-                    resource = parts[1]
-                    service = parts[2]
-                    
-                    if resource and service:
-                        resources.append({
-                            'group': f"{service}.cnrm.cloud.google.com",
-                            'kind': resource
-                        })
+    static_config_path = os.path.join(kcc_dir, "pkg/controller/resourceconfig/static_config.go")
+    if os.path.exists(static_config_path):
+        with open(static_config_path, 'r') as f:
+            for line in f:
+                m = re.search(r'Group:\s*"([a-z0-9.]+)"\s*,\s*Kind:\s*"([A-Za-z0-9]+)"', line)
+                if m:
+                    resources.append({
+                        'group': m.group(1),
+                        'kind': m.group(2)
+                    })
     return resources
 
 def match_resources(gcp_resources, kcc_resources):
@@ -407,12 +376,7 @@ def main():
     all_gcp_raw_count = len(gcp_raw)
 
     kcc_resources = get_kcc_resources(kcc_dir)
-    
-    # Inject in-flight resources
-    status_file = os.path.join(os.path.dirname(__file__), "RESOURCE_STATUS.md")
-    inflight_resources = get_inflight_resources(status_file)
-    kcc_resources.extend(inflight_resources)
-    
+
     # match_resources needs to work with unified keys now
     covered = set()
     key_to_kcc_kind = {}

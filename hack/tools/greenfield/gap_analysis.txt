@@ -1,4 +1,4 @@
-Gap Analysis Snapshot - 2026-08-19 19:12:44
+Gap Analysis Snapshot - 2026-08-22 01:55:18
 GoogleAPIs SHA: 3f9c9d7
 KCC SHA:        e230bd
 -------------------------------------------------------
@@ -9,17 +9,17 @@ Total GCP Resources (Raw)      | 1781
   ├── Skipped Resources        | 63        
   └── Unified (Hierarchical)   | 0         
 -------------------------------------------------------
-Implemented in KCC             | 456       
-Missing from KCC               | 1262      
-  ├── Unmanageable             | 472       
-  └── Manageable               | 790       
-        ├── Adoptable          | 360       
-        ├── Partially Manageable | 89        
-        └── Fully Manageable   | 341       
-              ├── Easy (Leaf)  | 101       
-              ├── Next Layer   | 126       
-              ├── Next Next Layer | 28        
-              └── Deeply Nested | 89        
+Implemented in KCC             | 314       
+Missing from KCC               | 1404      
+  ├── Unmanageable             | 476       
+  └── Manageable               | 928       
+        ├── Adoptable          | 368       
+        ├── Partially Manageable | 92        
+        └── Fully Manageable   | 468       
+              ├── Easy (Leaf)  | 203       
+              ├── Next Layer   | 147       
+              ├── Next Next Layer | 37        
+              └── Deeply Nested | 91        
 -------------------------------------------------------
-Total API Coverage             | 26.54%
-Manageable Coverage            | 36.60%
+Total API Coverage             | 18.28%
+Manageable Coverage            | 25.28%
