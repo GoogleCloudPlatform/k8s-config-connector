@@ -174,21 +174,25 @@ func TestSmoketest(t *testing.T) {
 		revertManifests(filepath.Join(root, "config/installbundle/components"))
 	})
 
-	t.Logf("[PHASE START] Building images with tag %q", imageTag)
-	tBuild := time.Now()
-	buildCmd := exec.CommandContext(ctx, filepath.Join(root, "dev/tasks/build-images"))
-	buildCmd.Dir = root
-	buildCmd.Env = append(os.Environ(),
-		"IMAGE_TAG="+imageTag,
-		"IMAGE_PREFIX="+imagePrefix,
-	)
-	buildCmd.Stdout = os.Stdout
-	buildCmd.Stderr = os.Stderr
-	if err := buildCmd.Run(); err != nil {
-		t.Fatalf("failed to build images: %v", err)
+	if os.Getenv("SKIP_BUILD") == "1" || os.Getenv("REUSE_IMAGES") == "1" {
+		t.Logf("Skipping image build step because SKIP_BUILD/REUSE_IMAGES is set; reusing existing local images with tag %q", imageTag)
+	} else {
+		t.Logf("[PHASE START] Building images with tag %q", imageTag)
+		tBuild := time.Now()
+		buildCmd := exec.CommandContext(ctx, filepath.Join(root, "dev/tasks/build-images"))
+		buildCmd.Dir = root
+		buildCmd.Env = append(os.Environ(),
+			"IMAGE_TAG="+imageTag,
+			"IMAGE_PREFIX="+imagePrefix,
+		)
+		buildCmd.Stdout = os.Stdout
+		buildCmd.Stderr = os.Stderr
+		if err := buildCmd.Run(); err != nil {
+			t.Fatalf("failed to build images: %v", err)
+		}
+		t.Logf("[PHASE DONE] Building images took %v", time.Since(tBuild))
+		logDiskUsage("After Docker Build")
 	}
-	t.Logf("[PHASE DONE] Building images took %v", time.Since(tBuild))
-	logDiskUsage("After Docker Build")
 
 	t.Logf("Loading images into kind")
 	imagesToLoad := []string{
@@ -275,9 +279,13 @@ stringData:
 		t.Fatalf("failed to apply Secret: %v\nOutput: %s", err, string(output))
 	}
 
-	t.Logf("Configuring ConfigConnector in cluster mode with partial CRD installation (inclusive mode)")
-	// Use cluster mode with inclusive resourceSettings to verify partial CRD installation (issue #9651)
-	ccManifest := `
+	h := NewHarness(ctx, t)
+
+	// -------------------------------------------------------------------------
+	// Phase 1 (Control Group): Default mode without partial CRD (all controllers)
+	// -------------------------------------------------------------------------
+	t.Logf("[PHASE 1 - CONTROL GROUP] Configuring ConfigConnector in default cluster mode (without resourceSettings)")
+	defaultCCManifest := `
 apiVersion: core.cnrm.cloud.google.com/v1beta1
 kind: ConfigConnector
 metadata:
@@ -286,19 +294,11 @@ spec:
   mode: cluster
   stateIntoSpec: Absent
   credentialSecretName: kcc-google-service-account
-  experiments:
-    resourceSettings:
-      mode: include
-      resources:
-      - group: storage.cnrm.cloud.google.com
-        kind: StorageBucket
-      - group: pubsub.cnrm.cloud.google.com
-        kind: PubSubTopic
 `
-	applyCC := exec.CommandContext(ctx, "kubectl", "apply", "--server-side", "-f", "-")
-	applyCC.Stdin = strings.NewReader(ccManifest)
-	if output, err := applyCC.CombinedOutput(); err != nil {
-		t.Fatalf("failed to apply ConfigConnector: %v\nOutput: %s", err, string(output))
+	applyDefaultCC := exec.CommandContext(ctx, "kubectl", "apply", "--server-side", "-f", "-")
+	applyDefaultCC.Stdin = strings.NewReader(defaultCCManifest)
+	if output, err := applyDefaultCC.CombinedOutput(); err != nil {
+		t.Fatalf("failed to apply default ConfigConnector: %v\nOutput: %s", err, string(output))
 	}
 
 	t.Logf("Waiting for StorageBucket CRD")
@@ -317,8 +317,6 @@ spec:
 		t.Fatalf("PubSubTopic CRD not established: %v", err)
 	}
 
-	h := NewHarness(ctx, t)
-
 	t.Logf("[PHASE START] Waiting for KCC system components (webhook and controller managers) to be ready")
 	tSystem := time.Now()
 	if err := h.WaitForDeploymentAvailable("cnrm-system", "cnrm-webhook-manager", 5*time.Minute); err != nil {
@@ -328,6 +326,114 @@ spec:
 		t.Fatalf("cnrm-controller-manager failed to become ready: %v", err)
 	}
 	t.Logf("[PHASE DONE] KCC system components ready in %v", time.Since(tSystem))
+
+	t.Logf("[CONTROL GROUP] Verifying the number of active watches / registered controllers in default mode without Partial CRD")
+	defaultReconcileLines, defaultRawMetrics, err := h.GetControllerWorkerMetrics(1 * time.Minute)
+	if err != nil {
+		t.Fatalf("failed to get controller worker metrics in default mode: %v", err)
+	}
+	t.Logf("Found %d registered controller worker entries in default mode without Partial CRD", len(defaultReconcileLines))
+	if len(defaultReconcileLines) < 100 {
+		t.Errorf("expected >= 100 controller workers registered in default mode without partial CRD, but found %d. Raw metrics:\n%s", len(defaultReconcileLines), defaultRawMetrics)
+	}
+
+	// -------------------------------------------------------------------------
+	// Phase 2 (Exclusive Mode): Partial CRD in Exclusive Mode (excluding StorageBucket)
+	// -------------------------------------------------------------------------
+	t.Logf("[PHASE 2 - EXCLUSIVE MODE] Updating ConfigConnector to Exclusive Partial CRD mode (excluding StorageBucket)")
+	exclusiveCCManifest := `
+apiVersion: core.cnrm.cloud.google.com/v1beta1
+kind: ConfigConnector
+metadata:
+  name: configconnector.core.cnrm.cloud.google.com
+spec:
+  mode: cluster
+  stateIntoSpec: Absent
+  credentialSecretName: kcc-google-service-account
+  experiments:
+    resourceSettings:
+      mode: exclude
+      resources:
+      - group: storage.cnrm.cloud.google.com
+        kind: StorageBucket
+`
+	applyExclusiveCC := exec.CommandContext(ctx, "kubectl", "apply", "--server-side", "-f", "-")
+	applyExclusiveCC.Stdin = strings.NewReader(exclusiveCCManifest)
+	if output, err := applyExclusiveCC.CombinedOutput(); err != nil {
+		t.Fatalf("failed to apply exclusive ConfigConnector: %v\nOutput: %s", err, string(output))
+	}
+
+	t.Logf("Restarting cnrm-controller-manager pod to reload resourceSettings at startup (exclusive mode)")
+	if err := runCommand(ctx, t, root, "kubectl", "delete", "pod", "-n", "cnrm-system", "-l", "cnrm.cloud.google.com/component=cnrm-controller-manager", "--wait=true"); err != nil {
+		t.Fatalf("failed to restart cnrm-controller-manager pod: %v", err)
+	}
+	if err := h.WaitForStatefulSetReady("cnrm-system", "cnrm-controller-manager", 5*time.Minute); err != nil {
+		t.Fatalf("cnrm-controller-manager failed to become ready after restart: %v", err)
+	}
+
+	t.Logf("[EXCLUSIVE MODE] Verifying active watches / registered controllers in exclusive mode (StorageBucket excluded)")
+	exclusiveReconcileLines, exclusiveRawMetrics, err := h.GetControllerWorkerMetrics(1 * time.Minute)
+	if err != nil {
+		t.Fatalf("failed to get controller worker metrics in exclusive mode: %v", err)
+	}
+	t.Logf("Found %d registered controller worker entries in exclusive mode", len(exclusiveReconcileLines))
+
+	// Verify StorageBucket is excluded and other controllers (like PubSubTopic) remain registered
+	hasStorageBucket := false
+	hasPubSubTopic := false
+	for _, line := range exclusiveReconcileLines {
+		if strings.Contains(line, "storagebucket-parent-controller") {
+			hasStorageBucket = true
+		}
+		if strings.Contains(line, "pubsubtopic-parent-controller") {
+			hasPubSubTopic = true
+		}
+	}
+	if hasStorageBucket {
+		t.Errorf("expected storagebucket-parent-controller to be excluded in exclusive mode, but it was found in metrics:\n%s", strings.Join(exclusiveReconcileLines, "\n"))
+	}
+	if !hasPubSubTopic {
+		t.Errorf("expected pubsubtopic-parent-controller to be registered in exclusive mode, but it was missing from metrics:\n%s", strings.Join(exclusiveReconcileLines, "\n"))
+	}
+	if len(exclusiveReconcileLines) != len(defaultReconcileLines)-1 {
+		t.Errorf("expected controller count in exclusive mode (%d) to be exactly 1 less than default mode (%d). Raw metrics:\n%s", len(exclusiveReconcileLines), len(defaultReconcileLines), exclusiveRawMetrics)
+	}
+
+	// -------------------------------------------------------------------------
+	// Phase 3 (Inclusive Mode): Partial CRD in Inclusive Mode (StorageBucket & PubSubTopic)
+	// -------------------------------------------------------------------------
+	t.Logf("[PHASE 3 - INCLUSIVE MODE] Updating ConfigConnector to Inclusive Partial CRD mode")
+	inclusiveCCManifest := `
+apiVersion: core.cnrm.cloud.google.com/v1beta1
+kind: ConfigConnector
+metadata:
+  name: configconnector.core.cnrm.cloud.google.com
+spec:
+  mode: cluster
+  stateIntoSpec: Absent
+  credentialSecretName: kcc-google-service-account
+  experiments:
+    resourceSettings:
+      mode: include
+      resources:
+      - group: storage.cnrm.cloud.google.com
+        kind: StorageBucket
+      - group: pubsub.cnrm.cloud.google.com
+        kind: PubSubTopic
+`
+	applyInclusiveCC := exec.CommandContext(ctx, "kubectl", "apply", "--server-side", "-f", "-")
+	applyInclusiveCC.Stdin = strings.NewReader(inclusiveCCManifest)
+	if output, err := applyInclusiveCC.CombinedOutput(); err != nil {
+		t.Fatalf("failed to apply inclusive ConfigConnector: %v\nOutput: %s", err, string(output))
+	}
+
+	t.Logf("Restarting cnrm-controller-manager pod to reload resourceSettings at startup (inclusive mode)")
+	if err := runCommand(ctx, t, root, "kubectl", "delete", "pod", "-n", "cnrm-system", "-l", "cnrm.cloud.google.com/component=cnrm-controller-manager", "--wait=true"); err != nil {
+		t.Fatalf("failed to restart cnrm-controller-manager pod: %v", err)
+	}
+	if err := h.WaitForStatefulSetReady("cnrm-system", "cnrm-controller-manager", 5*time.Minute); err != nil {
+		t.Fatalf("cnrm-controller-manager failed to become ready after restart: %v", err)
+	}
 
 	t.Logf("Creating namespace")
 	ns := "config-control"
@@ -400,67 +506,18 @@ spec:
 	// In inclusive mode specifying only StorageBucket and PubSubTopic, only these two controllers
 	// should be registered, but since we only reconcile a StorageBucket, only its metrics will be recorded.
 	t.Logf("Verifying the number of active watches / registered controllers via Prometheus metrics (issue #9651)")
-
-	var metricsStr string
-	var reconcileLines []string
-	timeoutAt := time.Now().Add(1 * time.Minute)
-	for {
-		// 1. Get the pod name of cnrm-controller-manager
-		podNameCmd := exec.CommandContext(ctx, "kubectl", "get", "pods", "-n", "cnrm-system", "-l", "cnrm.cloud.google.com/component=cnrm-controller-manager", "-o", "jsonpath={.items[0].metadata.name}")
-		podNameBytes, err := podNameCmd.Output()
-		if err != nil {
-			t.Fatalf("failed to get manager pod name: %v\nOutput: %s", err, string(podNameBytes))
-		}
-		podName := strings.TrimSpace(string(podNameBytes))
-		if podName == "" {
-			if time.Now().After(timeoutAt) {
-				t.Fatalf("timeout waiting for cnrm-controller-manager pod to start")
-			}
-			t.Log("manager pod name is empty, retrying...")
-			time.Sleep(250 * time.Millisecond)
-			continue
-		}
-
-		// 2. Query metrics from the pod via kubectl API proxy. Since we use METRICS_VERSION=v2,
-		// the standard controller-runtime metrics are served on /metrics.v2.
-		metricsCmd := exec.CommandContext(ctx, "kubectl", "get", "--raw", fmt.Sprintf("/api/v1/namespaces/cnrm-system/pods/%s:8888/proxy/metrics.v2", podName))
-		metricsBytes, err := metricsCmd.Output()
-		if err != nil {
-			t.Logf("failed to get metrics from pod proxy: %v, retrying...", err)
-			time.Sleep(250 * time.Millisecond)
-			continue
-		}
-		metricsStr = string(metricsBytes)
-		t.Logf("Raw metrics response:\n%s", metricsStr)
-
-		// Filter for lines containing "controller_runtime_max_concurrent_reconciles"
-		reconcileLines = nil
-		for _, line := range strings.Split(metricsStr, "\n") {
-			if strings.Contains(line, "controller_runtime_max_concurrent_reconciles") && !strings.HasPrefix(line, "#") {
-				reconcileLines = append(reconcileLines, line)
-			}
-		}
-
-		// Since we specified only "StorageBucket" and "PubSubTopic" to be included, there should be very few kinds of workers registered.
-		// If the metrics are fully populated and we have at least 1 but not too many, we are good.
-		if len(reconcileLines) >= 1 && len(reconcileLines) <= 5 {
-			break
-		}
-
-		if time.Now().After(timeoutAt) {
-			break
-		}
-		t.Logf("Metrics not fully matching or populated yet (found %d lines). Retrying...", len(reconcileLines))
-		time.Sleep(250 * time.Millisecond)
+	partialReconcileLines, partialRawMetrics, err := h.GetControllerWorkerMetrics(1 * time.Minute)
+	if err != nil {
+		t.Fatalf("failed to get controller worker metrics in partial CRD mode: %v", err)
 	}
 
-	t.Logf("Found %d kind worker entries in metrics:\n%s", len(reconcileLines), strings.Join(reconcileLines, "\n"))
+	t.Logf("Found %d kind worker entries in metrics in inclusive mode:\n%s", len(partialReconcileLines), strings.Join(partialReconcileLines, "\n"))
 
-	if len(reconcileLines) == 0 {
-		t.Fatalf("expected some kind worker entries to be registered, but found none in metrics. Raw metrics response:\n%s", metricsStr)
+	if len(partialReconcileLines) == 0 {
+		t.Fatalf("expected some kind worker entries to be registered, but found none in metrics. Raw metrics response:\n%s", partialRawMetrics)
 	}
-	if len(reconcileLines) > 5 {
-		t.Errorf("expected only a few kind worker entries (due to inclusive mode specifying only StorageBucket and PubSubTopic), but found %d in metrics:\n%s", len(reconcileLines), strings.Join(reconcileLines, "\n"))
+	if len(partialReconcileLines) > 5 {
+		t.Errorf("expected only a few kind worker entries (due to inclusive mode specifying only StorageBucket and PubSubTopic), but found %d in metrics:\n%s", len(partialReconcileLines), strings.Join(partialReconcileLines, "\n"))
 	}
 
 	t.Logf("Smoketest completed successfully (failed as expected)")
@@ -575,6 +632,65 @@ func (h *Harness) WaitForStatefulSetReady(ns, name string, timeout time.Duration
 
 		if time.Now().After(deadline) {
 			return fmt.Errorf("timeout waiting for statefulset %s/%s to be ready", ns, name)
+		}
+		time.Sleep(250 * time.Millisecond)
+	}
+}
+
+func (h *Harness) GetControllerWorkerMetrics(timeout time.Duration) ([]string, string, error) {
+	deadline := time.Now().Add(timeout)
+	for {
+		if h.ctx.Err() != nil {
+			return nil, "", h.ctx.Err()
+		}
+		// 1. Get the pod name of cnrm-controller-manager
+		podNameCmd := exec.CommandContext(h.ctx, "kubectl", "get", "pods", "-n", "cnrm-system", "-l", "cnrm.cloud.google.com/component=cnrm-controller-manager", "-o", "jsonpath={.items[0].metadata.name}")
+		podNameBytes, err := podNameCmd.Output()
+		if err != nil {
+			h.Logf("failed to get manager pod name: %v\nOutput: %s", err, string(podNameBytes))
+			if time.Now().After(deadline) {
+				return nil, "", fmt.Errorf("timeout waiting for cnrm-controller-manager pod name: %w", err)
+			}
+			time.Sleep(250 * time.Millisecond)
+			continue
+		}
+		podName := strings.TrimSpace(string(podNameBytes))
+		if podName == "" {
+			if time.Now().After(deadline) {
+				return nil, "", fmt.Errorf("timeout waiting for cnrm-controller-manager pod to start")
+			}
+			time.Sleep(250 * time.Millisecond)
+			continue
+		}
+
+		// 2. Query metrics from the pod via kubectl API proxy. Since we use METRICS_VERSION=v2,
+		// the standard controller-runtime metrics are served on /metrics.v2.
+		metricsCmd := exec.CommandContext(h.ctx, "kubectl", "get", "--raw", fmt.Sprintf("/api/v1/namespaces/cnrm-system/pods/%s:8888/proxy/metrics.v2", podName))
+		metricsBytes, err := metricsCmd.Output()
+		if err != nil {
+			h.Logf("failed to get metrics from pod proxy: %v, retrying...", err)
+			if time.Now().After(deadline) {
+				return nil, "", fmt.Errorf("timeout getting metrics from pod proxy: %w", err)
+			}
+			time.Sleep(250 * time.Millisecond)
+			continue
+		}
+		rawMetrics := string(metricsBytes)
+
+		// Filter for lines containing "controller_runtime_max_concurrent_reconciles"
+		var reconcileLines []string
+		for _, line := range strings.Split(rawMetrics, "\n") {
+			if strings.Contains(line, "controller_runtime_max_concurrent_reconciles") && !strings.HasPrefix(line, "#") {
+				reconcileLines = append(reconcileLines, line)
+			}
+		}
+
+		if len(reconcileLines) > 0 {
+			return reconcileLines, rawMetrics, nil
+		}
+
+		if time.Now().After(deadline) {
+			return nil, rawMetrics, fmt.Errorf("timeout: no controller worker metric entries found in metrics:\n%s", rawMetrics)
 		}
 		time.Sleep(250 * time.Millisecond)
 	}
