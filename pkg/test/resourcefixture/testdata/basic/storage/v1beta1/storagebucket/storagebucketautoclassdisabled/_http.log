@@ -251,7 +251,8 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
     "label-one": "value-one",
     "label-two": "value-two",
     "managed-by-cnrm": "true"
-  }
+  },
+  "storageClass": "NEARLINE"
 }
 
 200 OK
@@ -294,7 +295,7 @@ Vary: X-Origin
     "effectiveTime": "2024-04-01T12:34:56.123456Z",
     "retentionDurationSeconds": "604800"
   },
-  "storageClass": "STANDARD",
+  "storageClass": "NEARLINE",
   "timeCreated": "2024-04-01T12:34:56.123456Z",
   "updated": "2024-04-01T12:34:56.123456Z"
 }
@@ -343,7 +344,7 @@ Vary: X-Origin
     "effectiveTime": "2024-04-01T12:34:56.123456Z",
     "retentionDurationSeconds": "604800"
   },
-  "storageClass": "STANDARD",
+  "storageClass": "NEARLINE",
   "timeCreated": "2024-04-01T12:34:56.123456Z",
   "updated": "2024-04-01T12:34:56.123456Z"
 }
