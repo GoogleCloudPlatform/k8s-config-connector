@@ -1,4 +1,4 @@
-// Copyright 2024 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -32,27 +32,23 @@ func engineFuzzer() fuzztesting.KRMFuzzer {
 		DiscoveryEngineEngineObservedState_v1alpha1_FromProto, DiscoveryEngineEngineObservedState_v1alpha1_ToProto,
 	)
 
-	f.UnimplementedFields.Insert(".chat_engine_metadata") // Could be status
-	f.UnimplementedFields.Insert(".create_time")          // Could be status
-	f.UnimplementedFields.Insert(".update_time")          // Could be status
+	f.Unimplemented_Identity(".name")
 
-	f.UnimplementedFields.Insert(".name") // special field
-
-	f.SpecFields.Insert(".display_name")
-	f.SpecFields.Insert(".common_config")
-	f.SpecFields.Insert(".chat_engine_config")
-	f.SpecFields.Insert(".search_engine_config")
-	f.SpecFields.Insert(".solution_type")
-	f.SpecFields.Insert(".data_store_ids")
-	f.SpecFields.Insert(".industry_vertical")
-	f.SpecFields.Insert(".disable_analytics")
-
-	// f.StatusFields.Insert(".create_time")
-	// f.StatusFields.Insert(".update_time")
+	f.Unimplemented_NotYetTriaged(".chat_engine_metadata")
+	f.Unimplemented_NotYetTriaged(".create_time")
+	f.Unimplemented_NotYetTriaged(".update_time")
 
 	f.Unimplemented_NotYetTriaged(".media_recommendation_engine_config")
-
 	f.Unimplemented_NotYetTriaged(".chat_engine_config.allow_cross_region")
+
+	f.SpecField(".display_name")
+	f.SpecField(".common_config")
+	f.SpecField(".chat_engine_config")
+	f.SpecField(".search_engine_config")
+	f.SpecField(".solution_type")
+	f.SpecField(".data_store_ids")
+	f.SpecField(".industry_vertical")
+	f.SpecField(".disable_analytics")
 
 	return f
 }
