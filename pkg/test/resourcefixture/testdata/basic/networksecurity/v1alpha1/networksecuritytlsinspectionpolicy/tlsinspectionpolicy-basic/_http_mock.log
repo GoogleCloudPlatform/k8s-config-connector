@@ -287,14 +287,6 @@ X-Xss-Protection: 0
   },
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.TlsInspectionPolicy",
-    "caPool": "projects/${projectId}/locations/us-central1/caPools/capool-dep-2",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "description": "An updated TLS Inspection Policy to decrypt traffic",
-    "excludePublicCaSet": true,
-    "minTlsVersion": "TLS_1_2",
-    "name": "projects/${projectId}/locations/us-central1/tlsInspectionPolicies/tlsinspection-${uniqueId}",
-    "tlsFeatureProfile": "PROFILE_COMPATIBLE",
-    "updateTime": "2024-04-01T12:34:56.123456Z"
+    "@type": "type.googleapis.com/google.protobuf.Empty"
   }
 }

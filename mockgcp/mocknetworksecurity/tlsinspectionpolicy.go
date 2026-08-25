@@ -20,6 +20,8 @@ import (
 	"strings"
 	"time"
 
+	"google.golang.org/protobuf/types/known/emptypb"
+
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 
 	pbv1 "cloud.google.com/go/networksecurity/apiv1/networksecuritypb"
@@ -145,7 +147,7 @@ func (s *NetworkSecurityV1Server) DeleteTlsInspectionPolicy(ctx context.Context,
 
 	lroPrefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	return s.operations.StartLRO(ctx, lroPrefix, metadata, func() (proto.Message, error) {
-		return deleted, nil
+		return &emptypb.Empty{}, nil
 	})
 }
 
