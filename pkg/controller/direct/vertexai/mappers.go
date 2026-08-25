@@ -23,6 +23,7 @@ import (
 	money "google.golang.org/genproto/googleapis/type/money"
 	"google.golang.org/protobuf/encoding/protojson"
 	"google.golang.org/protobuf/types/known/structpb"
+	"google.golang.org/protobuf/types/known/wrapperspb"
 	apiextensionsv1 "k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1"
 )
 
@@ -241,4 +242,108 @@ func JSON_v1alpha1_ToProto(mapCtx *direct.MapContext, in *apiextensionsv1.JSON) 
 		return nil
 	}
 	return out
+}
+
+func Int32Value_v1alpha1_FromProto(mapCtx *direct.MapContext, in *wrapperspb.Int32Value) *krmv1alpha1.Int32Value {
+	if in == nil {
+		return nil
+	}
+	out := in.Value
+	return &krmv1alpha1.Int32Value{
+		Value: &out,
+	}
+}
+
+func Int32Value_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Int32Value) *wrapperspb.Int32Value {
+	if in == nil || in.Value == nil {
+		return nil
+	}
+	return wrapperspb.Int32(*in.Value)
+}
+
+func Value_v1alpha1_FromProto(mapCtx *direct.MapContext, in *structpb.Value) *krmv1alpha1.Value {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.Value{}
+	switch in.GetKind().(type) {
+	case *structpb.Value_StringValue:
+		value := in.GetStringValue()
+		out.StringValue = &value
+	case *structpb.Value_NumberValue:
+		value := in.GetNumberValue()
+		out.NumberValue = &value
+	case *structpb.Value_NullValue:
+		value := in.GetNullValue().String()
+		out.NullValue = &value
+	case *structpb.Value_BoolValue:
+		value := in.GetBoolValue()
+		out.BoolValue = &value
+	case *structpb.Value_StructValue:
+		if val := direct.Struct_FromProto(mapCtx, in.GetStructValue()); val != nil {
+			out.StructValue = *val
+		}
+	}
+	return out
+}
+
+func Value_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Value) *structpb.Value {
+	if in == nil {
+		return nil
+	}
+	out := &structpb.Value{}
+	if in.StringValue != nil {
+		out.Kind = &structpb.Value_StringValue{
+			StringValue: direct.ValueOf(in.StringValue),
+		}
+	} else if in.NumberValue != nil {
+		out.Kind = &structpb.Value_NumberValue{
+			NumberValue: direct.ValueOf(in.NumberValue),
+		}
+	} else if in.NullValue != nil {
+		out.Kind = &structpb.Value_NullValue{
+			NullValue: structpb.NullValue_NULL_VALUE,
+		}
+	} else if in.BoolValue != nil {
+		out.Kind = &structpb.Value_BoolValue{
+			BoolValue: direct.ValueOf(in.BoolValue),
+		}
+	} else if len(in.StructValue.Raw) > 0 {
+		out.Kind = &structpb.Value_StructValue{
+			StructValue: direct.Struct_ToProto(mapCtx, &in.StructValue),
+		}
+	}
+	return out
+}
+
+func ListValue_v1alpha1_FromProto(mapCtx *direct.MapContext, in *structpb.ListValue) *krmv1alpha1.ListValue {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.ListValue{}
+	for _, v := range in.Values {
+		krmVal := Value_v1alpha1_FromProto(mapCtx, v)
+		if krmVal != nil {
+			out.Values = append(out.Values, *krmVal)
+		}
+	}
+	return out
+}
+
+func ListValue_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.ListValue) *structpb.ListValue {
+	if in == nil {
+		return nil
+	}
+	out := &structpb.ListValue{}
+	for _, v := range in.Values {
+		pbVal := Value_v1alpha1_ToProto(mapCtx, &v)
+		if pbVal != nil {
+			out.Values = append(out.Values, pbVal)
+		}
+	}
+	return out
+}
+
+func VertexAIHyperparameterTuningJobSpec_DisplayName_ToProto(mapCtx *direct.MapContext, in *string) string {
+	return direct.ValueOf(in)
 }

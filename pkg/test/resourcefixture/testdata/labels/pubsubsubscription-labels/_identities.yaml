@@ -1,0 +1,12 @@
+- caisURL: //pubsub.googleapis.com/projects/${projectId}/topics/pubsubtopic-sample-${uniqueId}
+  group: pubsub.cnrm.cloud.google.com
+  kind: PubSubTopic
+  name: pubsubtopic-sample-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: //pubsub.googleapis.com/projects/${projectId}/subscriptions/pubsubsubscription-sample-${uniqueId}
+  group: pubsub.cnrm.cloud.google.com
+  kind: PubSubSubscription
+  name: pubsubsubscription-sample-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
