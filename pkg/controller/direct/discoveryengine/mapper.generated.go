@@ -1333,6 +1333,24 @@ func DiscoveryEngineLicenseConfigSpec_v1alpha1_ToProto(mapCtx *direct.MapContext
 	out.FreeTrial = direct.ValueOf(in.FreeTrial)
 	return out
 }
+func DiscoveryEngineSampleQueryObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *discoveryenginepb.SampleQuery) *krmdiscoveryenginev1alpha1.DiscoveryEngineSampleQueryObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.DiscoveryEngineSampleQueryObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	return out
+}
+func DiscoveryEngineSampleQueryObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.DiscoveryEngineSampleQueryObservedState) *discoveryenginepb.SampleQuery {
+	if in == nil {
+		return nil
+	}
+	out := &discoveryenginepb.SampleQuery{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	return out
+}
 func DiscoveryEngineSampleQuerySetObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *discoveryenginepb.SampleQuerySet) *krmdiscoveryenginev1alpha1.DiscoveryEngineSampleQuerySetObservedState {
 	if in == nil {
 		return nil
@@ -1369,6 +1387,26 @@ func DiscoveryEngineSampleQuerySetSpec_v1alpha1_ToProto(mapCtx *direct.MapContex
 	// MISSING: Name
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.Description = direct.ValueOf(in.Description)
+	return out
+}
+func DiscoveryEngineSampleQuerySpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *discoveryenginepb.SampleQuery) *krmdiscoveryenginev1alpha1.DiscoveryEngineSampleQuerySpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.DiscoveryEngineSampleQuerySpec{}
+	out.QueryEntry = SampleQuery_QueryEntry_v1alpha1_FromProto(mapCtx, in.GetQueryEntry())
+	// MISSING: Name
+	return out
+}
+func DiscoveryEngineSampleQuerySpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.DiscoveryEngineSampleQuerySpec) *discoveryenginepb.SampleQuery {
+	if in == nil {
+		return nil
+	}
+	out := &discoveryenginepb.SampleQuery{}
+	if oneof := SampleQuery_QueryEntry_v1alpha1_ToProto(mapCtx, in.QueryEntry); oneof != nil {
+		out.Content = &discoveryenginepb.SampleQuery_QueryEntry_{QueryEntry: oneof}
+	}
+	// MISSING: Name
 	return out
 }
 func DiscoveryEngineServingConfigObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *discoveryenginepb.ServingConfig) *krmdiscoveryenginev1alpha1.DiscoveryEngineServingConfigObservedState {
@@ -1683,6 +1721,44 @@ func SafetyRatingObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *k
 	out.Severity = direct.Enum_ToProto[pb.SafetyRating_HarmSeverity](mapCtx, in.Severity)
 	out.SeverityScore = direct.ValueOf(in.SeverityScore)
 	out.Blocked = direct.ValueOf(in.Blocked)
+	return out
+}
+func SampleQuery_QueryEntry_v1alpha1_FromProto(mapCtx *direct.MapContext, in *discoveryenginepb.SampleQuery_QueryEntry) *krmdiscoveryenginev1alpha1.SampleQuery_QueryEntry {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.SampleQuery_QueryEntry{}
+	out.Query = direct.LazyPtr(in.GetQuery())
+	out.Targets = direct.Slice_FromProto(mapCtx, in.Targets, SampleQuery_QueryEntry_Target_v1alpha1_FromProto)
+	return out
+}
+func SampleQuery_QueryEntry_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.SampleQuery_QueryEntry) *discoveryenginepb.SampleQuery_QueryEntry {
+	if in == nil {
+		return nil
+	}
+	out := &discoveryenginepb.SampleQuery_QueryEntry{}
+	out.Query = direct.ValueOf(in.Query)
+	out.Targets = direct.Slice_ToProto(mapCtx, in.Targets, SampleQuery_QueryEntry_Target_v1alpha1_ToProto)
+	return out
+}
+func SampleQuery_QueryEntry_Target_v1alpha1_FromProto(mapCtx *direct.MapContext, in *discoveryenginepb.SampleQuery_QueryEntry_Target) *krmdiscoveryenginev1alpha1.SampleQuery_QueryEntry_Target {
+	if in == nil {
+		return nil
+	}
+	out := &krmdiscoveryenginev1alpha1.SampleQuery_QueryEntry_Target{}
+	out.URI = direct.LazyPtr(in.GetUri())
+	out.PageNumbers = in.PageNumbers
+	out.Score = in.Score
+	return out
+}
+func SampleQuery_QueryEntry_Target_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmdiscoveryenginev1alpha1.SampleQuery_QueryEntry_Target) *discoveryenginepb.SampleQuery_QueryEntry_Target {
+	if in == nil {
+		return nil
+	}
+	out := &discoveryenginepb.SampleQuery_QueryEntry_Target{}
+	out.Uri = direct.ValueOf(in.URI)
+	out.PageNumbers = in.PageNumbers
+	out.Score = in.Score
 	return out
 }
 func SearchLinkPromotion_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.SearchLinkPromotion) *krmdiscoveryenginev1alpha1.SearchLinkPromotion {
