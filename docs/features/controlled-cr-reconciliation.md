@@ -19,6 +19,16 @@ Because both global and local settings use the same mode, they combine **additiv
 * **In Exclusive Mode**: A resource is excluded (ignored) if it is listed in the `ConfigConnector` **OR** the `ConfigConnectorContext`.
 * **In Inclusive Mode**: A resource is included (reconciled) if it is listed in the `ConfigConnector` **OR** the `ConfigConnectorContext`.
 
+### Applying Changes (Pod Restart Required)
+
+Selective controller registration and initialization only takes place when the controller manager pod starts up. In order for newly applied changes in `resourceSettings` to take effect:
+
+* **Global changes (`ConfigConnector` object)**:
+  * In **cluster mode**: Restart the central `cnrm-controller-manager` pod in the `cnrm-system` namespace.
+  * In **namespaced mode**: Restart **all** `cnrm-controller-manager` pods across all namespaces.
+* **Namespace changes (`ConfigConnectorContext` object)**:
+  * Restart **only** the `cnrm-controller-manager` pod managing that specific namespace (e.g. the pod matching the label `cnrm.cloud.google.com/scoped-namespace=<target-namespace>`).
+
 ## Configuration Options
 
 To configure this feature, manipulate the `ResourceSettings` block in your `ConfigConnector` and `ConfigConnectorContext` definitions.
