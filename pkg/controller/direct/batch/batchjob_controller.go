@@ -98,7 +98,7 @@ func (m *jobModel) AdapterForObject(ctx context.Context, op *directbase.AdapterF
 	}
 
 	// TODO: The ComputeNetworkRef and ComputeSubnetworkRef misses normalization.
-	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+	if err := common.NormalizeReferences(ctx, reader, obj, nil, nil); err != nil {
 		return nil, err
 	}
 	mapCtx := &direct.MapContext{}

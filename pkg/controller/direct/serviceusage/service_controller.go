@@ -28,6 +28,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/serviceusage/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -74,13 +75,15 @@ func (m *serviceModel) AdapterForObject(ctx context.Context, op *directbase.Adap
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	if err := common.NormalizeReferences(ctx, kube, obj, nil); err != nil {
-		return nil, fmt.Errorf("normalizing references: %w", err)
-	}
-
 	id, err := obj.GetIdentity(ctx, kube)
 	if err != nil {
 		return nil, err
+	}
+	identity := id.(*krm.ServiceURIIdentity)
+	projectRef := &refsv1beta1.ProjectIdentity{ProjectID: identity.Project}
+
+	if err := common.NormalizeReferences(ctx, kube, obj, projectRef, m.config.ProjectMapper); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
 
 	gcpClient, err := m.client(ctx)

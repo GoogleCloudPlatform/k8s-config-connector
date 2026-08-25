@@ -92,7 +92,7 @@ func (m *dashboardModel) AdapterForObject(ctx context.Context, op *directbase.Ad
 		return nil, err
 	}
 
-	if err := common.NormalizeReferences(ctx, kube, obj, projectRef); err != nil {
+	if err := common.NormalizeReferences(ctx, kube, obj, projectRef, nil); err != nil {
 		return nil, err
 	}
 

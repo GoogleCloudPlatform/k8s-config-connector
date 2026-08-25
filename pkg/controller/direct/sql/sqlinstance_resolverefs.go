@@ -58,7 +58,7 @@ func ResolveSQLInstanceRefs(ctx context.Context, kube client.Reader, obj *krm.SQ
 	if err := resolveFailoverDrReplicaRef(ctx, kube, obj); err != nil {
 		return err
 	}
-	if err := common.NormalizeReferences(ctx, kube, obj, nil); err != nil {
+	if err := common.NormalizeReferences(ctx, kube, obj, nil, nil); err != nil {
 		return err
 	}
 	return nil

@@ -22,6 +22,7 @@ import (
 	gcp "cloud.google.com/go/artifactregistry/apiv1"
 	pb "cloud.google.com/go/artifactregistry/apiv1/artifactregistrypb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/artifactregistry/v1beta1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	common "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
@@ -75,13 +76,15 @@ func (m *modelArtifactRegistryRepository) AdapterForObject(ctx context.Context, 
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
-		return nil, fmt.Errorf("normalizing references: %w", err)
-	}
-
 	id, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
+	}
+	repoId := id.(*krm.ArtifactRegistryRepositoryIdentity)
+	projectRef := &refs.ProjectIdentity{ProjectID: repoId.Project}
+
+	if err := common.NormalizeReferences(ctx, reader, obj, projectRef, m.config.ProjectMapper); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
 
 	gcpClient, err := m.client(ctx)

@@ -88,7 +88,7 @@ func (m *computeFirewallPolicyModel) AdapterForObject(ctx context.Context, op *d
 	}
 
 	// We must first resolve/normalize the references in AdapterForObject
-	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+	if err := common.NormalizeReferences(ctx, reader, obj, nil, nil); err != nil {
 		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
 

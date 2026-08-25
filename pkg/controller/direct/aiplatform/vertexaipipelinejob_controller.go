@@ -78,7 +78,7 @@ func (m *pipelineJobModel) AdapterForObject(ctx context.Context, reader *directb
 	}
 
 	// Always call common.NormalizeReferences to resolve any resource references
-	if err := common.NormalizeReferences(ctx, reader.Reader, obj, nil); err != nil {
+	if err := common.NormalizeReferences(ctx, reader.Reader, obj, nil, nil); err != nil {
 		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
 

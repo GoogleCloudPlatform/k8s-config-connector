@@ -76,7 +76,7 @@ func (m *modelSchedule) AdapterForObject(ctx context.Context, op *directbase.Ada
 	}
 
 	// Always call common.NormalizeReferences to resolve references
-	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+	if err := common.NormalizeReferences(ctx, reader, obj, nil, nil); err != nil {
 		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
 

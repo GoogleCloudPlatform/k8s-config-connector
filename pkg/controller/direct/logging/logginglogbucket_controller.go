@@ -19,6 +19,7 @@ import (
 	"fmt"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/logging/v1beta1"
+	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
@@ -71,13 +72,18 @@ func (m *modelLoggingLogBucket) AdapterForObject(ctx context.Context, op *direct
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
-		return nil, fmt.Errorf("normalizing references: %w", err)
-	}
-
 	id, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
+	}
+	identity := id.(*krm.LogBucketIdentity)
+	var projectRef *refs.ProjectIdentity
+	if identity.Project != "" {
+		projectRef = &refs.ProjectIdentity{ProjectID: identity.Project}
+	}
+
+	if err := common.NormalizeReferences(ctx, reader, obj, projectRef, m.config.ProjectMapper); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
 
 	gcpClient, err := m.client(ctx)

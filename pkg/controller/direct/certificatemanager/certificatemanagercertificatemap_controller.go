@@ -21,7 +21,8 @@ import (
 	gcp "cloud.google.com/go/certificatemanager/apiv1"
 	pb "cloud.google.com/go/certificatemanager/apiv1/certificatemanagerpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/certificatemanager/v1beta1"
-	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
+	apirefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
@@ -73,13 +74,15 @@ func (m *certificateMapModel) AdapterForObject(ctx context.Context, op *directba
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
-	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
-		return nil, fmt.Errorf("normalizing references: %w", err)
-	}
-
 	identity, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
+	}
+	mapId := identity.(*krm.CertificateManagerCertificateMapIdentity)
+	projectRef := &refsv1beta1.ProjectIdentity{ProjectID: mapId.Project}
+
+	if err := common.NormalizeReferences(ctx, reader, obj, projectRef, m.config.ProjectMapper); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
 
 	gcpClient, err := m.client(ctx)
@@ -231,7 +234,7 @@ func (a *CertificateMapAdapter) Export(ctx context.Context) (*unstructured.Unstr
 	}
 
 	obj.Spec.ResourceID = direct.LazyPtr(a.id.CertificateMap)
-	obj.Spec.ProjectRef = refs.ProjectRef{External: a.id.Project}
+	obj.Spec.ProjectRef = apirefs.ProjectRef{External: a.id.Project}
 
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {

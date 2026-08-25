@@ -99,7 +99,7 @@ func (m *sessionTemplateModel) AdapterForObject(ctx context.Context, op *directb
 		return nil, fmt.Errorf("unexpected identity type: %T", id)
 	}
 
-	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+	if err := common.NormalizeReferences(ctx, reader, obj, nil, nil); err != nil {
 		return nil, fmt.Errorf("normalizing references: %w", err)
 	}
 
