@@ -1,7 +1,7 @@
 ---
 name: PR Review Assigner
 description: Automatically assigns ready-for-human PRs to k8s-config-connector-team members, striving to maintain assigned review counts within defined thresholds.
-schedule: "*/60 * * * *"
+schedule: "never"
 skipPR: true
 ---
 

@@ -1,7 +1,7 @@
 ---
 name: Legacy Feature Reviewer
 description: Domain specific reviews for TF/DCL legacy resource feature additions and updates.
-schedule: "@daily"
+schedule: "never"
 skipPR: true
 ---
 
