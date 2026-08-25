@@ -77,7 +77,8 @@ func (r *Recorder) GetRemainResourcesCount() int {
 
 // objectInfo holds the activity from reconciling the objects
 type objectInfo struct {
-	events []event
+	currentStatus string
+	events        []event
 }
 
 type event struct {
@@ -204,6 +205,9 @@ func (r *Recorder) recordReconcileStart(ctx context.Context, u *unstructured.Uns
 	}
 
 	info := r.getObjectInfo(gknn)
+	if info.currentStatus == "" || info.currentStatus == "N/A" {
+		info.currentStatus = extractCurrentStatus(u)
+	}
 	info.events = append(info.events, event{
 		eventType:      EventTypeReconcileStart,
 		reconcilerType: t,
@@ -426,18 +430,58 @@ func (r *Recorder) PreloadGKNN(ctx context.Context, config *rest.Config, namespa
 				}
 			}
 			for _, resource := range resources.Items {
-				r.ReconciledResources[GKNN{
+				gknn := GKNN{
 					Group:     gvr.Group,
 					Kind:      resource.GetKind(),
 					Namespace: resource.GetNamespace(),
 					Name:      resource.GetName(),
-				}] = false
+				}
+				r.ReconciledResources[gknn] = false
+				status := extractCurrentStatus(&resource)
+				info := r.getObjectInfo(gknn)
+				info.currentStatus = status
 			}
 			r.RemainResourcesCount += len(resources.Items)
 		}
 	}
 	log.V(0).Info("Successfully preloaded the list of resources to reconcile", "count", r.RemainResourcesCount)
 	return nil
+}
+
+// extractCurrentStatus extracts the current status/reason from a resource's status.conditions.
+func extractCurrentStatus(u *unstructured.Unstructured) string {
+	if u == nil {
+		return "N/A"
+	}
+	conditions, found, err := unstructured.NestedSlice(u.Object, "status", "conditions")
+	if err != nil || !found || len(conditions) == 0 {
+		return "N/A"
+	}
+	for _, condRaw := range conditions {
+		condMap, ok := condRaw.(map[string]interface{})
+		if !ok {
+			continue
+		}
+		if condType, _ := condMap["type"].(string); condType == "Ready" {
+			if reason, ok := condMap["reason"].(string); ok && reason != "" {
+				return reason
+			}
+			if status, ok := condMap["status"].(string); ok && status != "" {
+				return status
+			}
+		}
+	}
+	if len(conditions) > 0 {
+		if condMap, ok := conditions[0].(map[string]interface{}); ok {
+			if reason, ok := condMap["reason"].(string); ok && reason != "" {
+				return reason
+			}
+			if status, ok := condMap["status"].(string); ok && status != "" {
+				return status
+			}
+		}
+	}
+	return "N/A"
 }
 
 func (recorder *Recorder) GetOrCreateReconciledResults() *RecorderReconciledResults {
