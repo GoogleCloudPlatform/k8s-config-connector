@@ -71,6 +71,8 @@ func (s *FirewallActivationServer) CreateFirewallEndpointAssociation(ctx context
 	return s.operations.StartLRO(ctx, req.Parent, lroMetadata, func() (protoreflect.ProtoMessage, error) {
 		lroMetadata.EndTime = timestamppb.New(time.Now())
 		result := proto.CloneOf(obj)
+		// labels field does not populate in operation
+		obj.Labels = nil
 		return result, nil
 	})
 }
@@ -146,6 +148,8 @@ func (s *FirewallActivationServer) UpdateFirewallEndpointAssociation(ctx context
 	}
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (protoreflect.ProtoMessage, error) {
 		lroMetadata.EndTime = timestamppb.New(time.Now())
+		// labels field does not populate in operation
+		updated.Labels = nil
 		return updated, nil
 	})
 }
