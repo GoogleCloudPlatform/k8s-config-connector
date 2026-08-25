@@ -27,26 +27,26 @@ import (
 	gentype "k8s.io/client-go/gentype"
 )
 
-// fakeDiscoveryEngineSampleQueries implements DiscoveryEngineSampleQueryInterface
-type fakeDiscoveryEngineSampleQueries struct {
-	*gentype.FakeClientWithList[*v1alpha1.DiscoveryEngineSampleQuery, *v1alpha1.DiscoveryEngineSampleQueryList]
+// fakeDiscoveryEngineUserStores implements DiscoveryEngineUserStoreInterface
+type fakeDiscoveryEngineUserStores struct {
+	*gentype.FakeClientWithList[*v1alpha1.DiscoveryEngineUserStore, *v1alpha1.DiscoveryEngineUserStoreList]
 	Fake *FakeDiscoveryengineV1alpha1
 }
 
-func newFakeDiscoveryEngineSampleQueries(fake *FakeDiscoveryengineV1alpha1, namespace string) discoveryenginev1alpha1.DiscoveryEngineSampleQueryInterface {
-	return &fakeDiscoveryEngineSampleQueries{
-		gentype.NewFakeClientWithList[*v1alpha1.DiscoveryEngineSampleQuery, *v1alpha1.DiscoveryEngineSampleQueryList](
+func newFakeDiscoveryEngineUserStores(fake *FakeDiscoveryengineV1alpha1, namespace string) discoveryenginev1alpha1.DiscoveryEngineUserStoreInterface {
+	return &fakeDiscoveryEngineUserStores{
+		gentype.NewFakeClientWithList[*v1alpha1.DiscoveryEngineUserStore, *v1alpha1.DiscoveryEngineUserStoreList](
 			fake.Fake,
 			namespace,
-			v1alpha1.SchemeGroupVersion.WithResource("discoveryenginesamplequeries"),
-			v1alpha1.SchemeGroupVersion.WithKind("DiscoveryEngineSampleQuery"),
-			func() *v1alpha1.DiscoveryEngineSampleQuery { return &v1alpha1.DiscoveryEngineSampleQuery{} },
-			func() *v1alpha1.DiscoveryEngineSampleQueryList { return &v1alpha1.DiscoveryEngineSampleQueryList{} },
-			func(dst, src *v1alpha1.DiscoveryEngineSampleQueryList) { dst.ListMeta = src.ListMeta },
-			func(list *v1alpha1.DiscoveryEngineSampleQueryList) []*v1alpha1.DiscoveryEngineSampleQuery {
+			v1alpha1.SchemeGroupVersion.WithResource("discoveryengineuserstores"),
+			v1alpha1.SchemeGroupVersion.WithKind("DiscoveryEngineUserStore"),
+			func() *v1alpha1.DiscoveryEngineUserStore { return &v1alpha1.DiscoveryEngineUserStore{} },
+			func() *v1alpha1.DiscoveryEngineUserStoreList { return &v1alpha1.DiscoveryEngineUserStoreList{} },
+			func(dst, src *v1alpha1.DiscoveryEngineUserStoreList) { dst.ListMeta = src.ListMeta },
+			func(list *v1alpha1.DiscoveryEngineUserStoreList) []*v1alpha1.DiscoveryEngineUserStore {
 				return gentype.ToPointerSlice(list.Items)
 			},
-			func(list *v1alpha1.DiscoveryEngineSampleQueryList, items []*v1alpha1.DiscoveryEngineSampleQuery) {
+			func(list *v1alpha1.DiscoveryEngineUserStoreList, items []*v1alpha1.DiscoveryEngineUserStore) {
 				list.Items = gentype.FromPointerSlice(items)
 			},
 		),

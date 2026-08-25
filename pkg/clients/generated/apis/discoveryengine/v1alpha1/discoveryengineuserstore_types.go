@@ -38,67 +38,42 @@ import (
 
 var _ = apiextensionsv1.JSON{}
 
-type SamplequeryQueryEntry struct {
-	/* Required. The query. */
+type DiscoveryEngineUserStoreSpec struct {
+	/* Optional. The default subscription LicenseConfig for the UserStore. If enableLicenseAutoRegister is true, new users will automatically register under the default subscription. */
 	// +optional
-	Query *string `json:"query,omitempty"`
+	DefaultLicenseConfigRef *v1alpha1.ResourceRef `json:"defaultLicenseConfigRef,omitempty"`
 
-	/* List of targets for the query. */
+	/* Optional. The display name of the User Store. */
 	// +optional
-	Targets []SamplequeryTargets `json:"targets,omitempty"`
-}
+	DisplayName *string `json:"displayName,omitempty"`
 
-type SamplequeryTargets struct {
-	/* Expected page numbers of the target.
-
-	Each page number must be non negative. */
+	/* Optional. Whether to enable license auto update for users in this User Store. If true, users with expired licenses will automatically be updated to use the default license config as long as the default license config has seats left. */
 	// +optional
-	PageNumbers []int64 `json:"pageNumbers,omitempty"`
+	EnableExpiredLicenseAutoUpdate *bool `json:"enableExpiredLicenseAutoUpdate,omitempty"`
 
-	/* Relevance score of the target. */
+	/* Optional. Whether to enable license auto register for users in this User Store. If true, new users will automatically register under the default license config as long as the default license config has seats left. */
 	// +optional
-	Score *float64 `json:"score,omitempty"`
+	EnableLicenseAutoRegister *bool `json:"enableLicenseAutoRegister,omitempty"`
 
-	/* Expected uri of the target.
-
-	This field must be a UTF-8 encoded string with a length limit of 2048
-	characters.
-
-	Example of valid uris: `https://example.com/abc`,
-	`gcs://example/example.pdf`. */
-	// +optional
-	Uri *string `json:"uri,omitempty"`
-}
-
-type DiscoveryEngineSampleQuerySpec struct {
 	/* Immutable. The location of this resource. */
 	Location string `json:"location"`
 
-	/* Immutable. The Project that this resource belongs to. */
+	/* The project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* Required. The content of the sample query. */
-	QueryEntry SamplequeryQueryEntry `json:"queryEntry"`
-
-	/* The DiscoveryEngineSampleQuery name. If not given, the metadata.name will be used. */
+	/* The DiscoveryEngineUserStore name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
-
-	/* Immutable. The DiscoveryEngineSampleQuerySet that this resource belongs to. */
-	SampleQuerySetRef v1alpha1.ResourceRef `json:"sampleQuerySetRef"`
 }
 
-type SamplequeryObservedStateStatus struct {
-	/* Output only. Timestamp the SampleQuery was created at. */
-	// +optional
-	CreateTime *string `json:"createTime,omitempty"`
+type UserstoreObservedStateStatus struct {
 }
 
-type DiscoveryEngineSampleQueryStatus struct {
+type DiscoveryEngineUserStoreStatus struct {
 	/* Conditions represent the latest available observations of the
-	   DiscoveryEngineSampleQuery's current state. */
+	   DiscoveryEngineUserStore's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the DiscoveryEngineSampleQuery resource in GCP. */
+	/* A unique specifier for the DiscoveryEngineUserStore resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 
@@ -108,12 +83,12 @@ type DiscoveryEngineSampleQueryStatus struct {
 
 	/* ObservedState is the state of the resource as most recently observed in GCP. */
 	// +optional
-	ObservedState *SamplequeryObservedStateStatus `json:"observedState,omitempty"`
+	ObservedState *UserstoreObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// +kubebuilder:resource:categories=gcp,shortName=gcpdiscoveryenginesamplequery;gcpdiscoveryenginesamplequeries
+// +kubebuilder:resource:categories=gcp,shortName=gcpdiscoveryengineuserstore;gcpdiscoveryengineuserstores
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
@@ -123,25 +98,25 @@ type DiscoveryEngineSampleQueryStatus struct {
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
-// DiscoveryEngineSampleQuery is the Schema for the discoveryengine API
+// DiscoveryEngineUserStore is the Schema for the discoveryengine API
 // +k8s:openapi-gen=true
-type DiscoveryEngineSampleQuery struct {
+type DiscoveryEngineUserStore struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   DiscoveryEngineSampleQuerySpec   `json:"spec,omitempty"`
-	Status DiscoveryEngineSampleQueryStatus `json:"status,omitempty"`
+	Spec   DiscoveryEngineUserStoreSpec   `json:"spec,omitempty"`
+	Status DiscoveryEngineUserStoreStatus `json:"status,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// DiscoveryEngineSampleQueryList contains a list of DiscoveryEngineSampleQuery
-type DiscoveryEngineSampleQueryList struct {
+// DiscoveryEngineUserStoreList contains a list of DiscoveryEngineUserStore
+type DiscoveryEngineUserStoreList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []DiscoveryEngineSampleQuery `json:"items"`
+	Items           []DiscoveryEngineUserStore `json:"items"`
 }
 
 func init() {
-	SchemeBuilder.Register(&DiscoveryEngineSampleQuery{}, &DiscoveryEngineSampleQueryList{})
+	SchemeBuilder.Register(&DiscoveryEngineUserStore{}, &DiscoveryEngineUserStoreList{})
 }
