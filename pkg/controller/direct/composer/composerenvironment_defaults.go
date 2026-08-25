@@ -27,7 +27,7 @@ import (
 
 // defaultEnvironmentPb returns a proto Environment populated with static server-defaulted fields.
 // It serves as the centralized baseline template for universal static defaults defined in
-// docs/resource-defaults/composerenvironment.md.
+// docs/resource-behaviors/composerenvironment/default-value-analysis.md.
 //
 // Universal static defaults are deterministic, fixed constants applied across environments when the
 // corresponding spec field is unset.
