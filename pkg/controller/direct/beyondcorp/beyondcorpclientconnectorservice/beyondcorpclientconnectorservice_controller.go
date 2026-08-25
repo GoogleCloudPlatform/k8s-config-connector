@@ -25,6 +25,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 
@@ -34,7 +35,6 @@ import (
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
-	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/klog/v2"
 )
 
@@ -54,7 +54,7 @@ type model struct {
 
 func (m *model) client(ctx context.Context) (*gcp.Client, error) {
 	var opts []option.ClientOption
-	opts, err := m.config.GRPCClientOptions()
+	opts, err := m.config.RESTClientOptions()
 	if err != nil {
 		return nil, err
 	}
@@ -164,11 +164,12 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	updateReq := proto.CloneOf(a.desired)
 	updateReq.Name = a.actual.Name
 
-	paths, err := common.CompareProtoMessage(updateReq, a.actual, common.BasicDiff)
+	diffs, updateMask, err := a.compare(ctx, a.actual, updateReq)
 	if err != nil {
 		return err
 	}
-	if len(paths) == 0 {
+
+	if !diffs.HasDiff() {
 		log.V(2).Info("no field needs update", "name", a.id)
 		status := &krm.BeyondCorpClientConnectorServiceStatus{}
 		if err := a.updateStatus(ctx, status, a.actual); err != nil {
@@ -177,11 +178,12 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		return updateOp.UpdateStatus(ctx, status, nil)
 	}
 
+	diffs.Object = updateOp.GetUnstructured()
+	structuredreporting.ReportDiff(ctx, diffs)
+
 	req := &pb.UpdateClientConnectorServiceRequest{
 		ClientConnectorService: updateReq,
-		UpdateMask: &fieldmaskpb.FieldMask{
-			Paths: sets.List(paths),
-		},
+		UpdateMask:             updateMask,
 	}
 	op, err := a.gcpClient.UpdateClientConnectorService(ctx, req)
 	if err != nil {
@@ -198,6 +200,26 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		return err
 	}
 	return updateOp.UpdateStatus(ctx, status, nil)
+}
+
+func (a *Adapter) compare(ctx context.Context, actual, desired *pb.ClientConnectorService) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
+	// Round-trip actual to mask it to only spec fields (plus Name which is handled specially).
+	mapCtx := &direct.MapContext{}
+	spec := BeyondCorpClientConnectorServiceSpec_FromProto(mapCtx, actual)
+	if mapCtx.Err() != nil {
+		return nil, nil, mapCtx.Err()
+	}
+	maskedActual := BeyondCorpClientConnectorServiceSpec_ToProto(mapCtx, spec)
+	if mapCtx.Err() != nil {
+		return nil, nil, mapCtx.Err()
+	}
+	maskedActual.Name = desired.Name
+
+	diffs, updateMask, err := common.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
+	if err != nil {
+		return nil, nil, err
+	}
+	return diffs, updateMask, nil
 }
 
 // Delete deletes the resource in GCP.
