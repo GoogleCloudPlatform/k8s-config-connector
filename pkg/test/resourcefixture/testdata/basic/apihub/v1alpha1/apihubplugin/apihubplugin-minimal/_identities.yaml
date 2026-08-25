@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: apihub.cnrm.cloud.google.com
+  kind: APIHubPlugin
+  name: apihubplugin-minimal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
