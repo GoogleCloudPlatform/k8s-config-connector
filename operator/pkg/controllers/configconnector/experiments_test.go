@@ -21,6 +21,7 @@ import (
 	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	testcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/test/controller"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/utils/ptr"
 	"sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/declarative/pkg/manifest"
 )
 
@@ -158,5 +159,48 @@ func TestApplyMultiClusterLeaderElection(t *testing.T) {
 				t.Fatalf("StatefulSet not found in manifest")
 			}
 		})
+	}
+}
+
+func TestApplyResourceSettingsHashInClusterMode(t *testing.T) {
+	ctx := context.Background()
+
+	getManifests := func(t *testing.T) *manifest.Objects {
+		return testcontroller.ParseObjects(ctx, t, testcontroller.ClusterModeComponents)
+	}
+
+	m := getManifests(t)
+	r := &Reconciler{}
+
+	cc := &corev1beta1.ConfigConnector{
+		Spec: corev1beta1.ConfigConnectorSpec{
+			Experiments: &corev1beta1.CCExperiments{
+				ResourceSettings: &corev1beta1.ResourceSettings{
+					Mode: corev1beta1.ResourceSettingsModeExclude,
+					Resources: []corev1beta1.ResourceFilter{
+						{Group: ptr.To("storage.cnrm.cloud.google.com")},
+					},
+				},
+			},
+		},
+	}
+
+	if err := r.applyExperiments(ctx, cc, m); err != nil {
+		t.Fatalf("applyExperiments failed: %v", err)
+	}
+
+	foundStatefulSet := false
+	for _, item := range m.Items {
+		if IsControllerManagerStatefulSet(item) {
+			foundStatefulSet = true
+			templateAnnotations, _, _ := unstructured.NestedStringMap(item.UnstructuredObject().Object, "spec", "template", "metadata", "annotations")
+			hash := templateAnnotations["cnrm.cloud.google.com/resource-settings-hash"]
+			if hash == "" {
+				t.Errorf("expected cnrm.cloud.google.com/resource-settings-hash annotation on StatefulSet pod template, but was empty")
+			}
+		}
+	}
+	if !foundStatefulSet {
+		t.Fatalf("StatefulSet not found in manifest")
 	}
 }

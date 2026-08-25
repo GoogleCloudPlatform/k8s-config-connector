@@ -25,6 +25,7 @@ import (
 	"sigs.k8s.io/kubebuilder-declarative-pattern/pkg/patterns/declarative/pkg/manifest"
 
 	corev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/controllers"
 )
 
 func (r *Reconciler) transformForExperiments() declarative.ObjectTransform {
@@ -42,6 +43,19 @@ func (r *Reconciler) transformForExperiments() declarative.ObjectTransform {
 }
 
 func (r *Reconciler) applyExperiments(ctx context.Context, cc *corev1beta1.ConfigConnector, m *manifest.Objects) error {
+	var ccSettings *corev1beta1.ResourceSettings
+	if cc.Spec.Experiments != nil {
+		ccSettings = cc.Spec.Experiments.ResourceSettings
+	}
+	for _, item := range m.Items {
+		if IsControllerManagerStatefulSet(item) {
+			u := item.UnstructuredObject()
+			if err := controllers.ApplyResourceSettingsHashToPodTemplate(u, ccSettings, nil); err != nil {
+				return err
+			}
+		}
+	}
+
 	if cc.Spec.Experiments == nil {
 		return nil
 	}

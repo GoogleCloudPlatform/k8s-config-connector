@@ -237,7 +237,7 @@ func handleControllerManagerStatefulSet(ctx context.Context, c client.Client, cc
 		return nil, fmt.Errorf("error deleting stale StatefulSet for watched namespace %v: %w", ccc.Namespace, err)
 	}
 
-	if err := applyConfigConnectorExperiments(ctx, c, u); err != nil {
+	if err := applyConfigConnectorExperiments(ctx, c, ccc, u); err != nil {
 		return nil, err
 	}
 
@@ -253,27 +253,40 @@ func handleControllerManagerStatefulSetPerNamespace(ctx context.Context, c clien
 		return nil, fmt.Errorf("error deleting stale StatefulSet for watched namespace %v: %w", ccc.Namespace, err)
 	}
 
-	if err := applyConfigConnectorExperiments(ctx, c, u); err != nil {
+	if err := applyConfigConnectorExperiments(ctx, c, ccc, u); err != nil {
 		return nil, err
 	}
 
 	return manifest.NewObject(u)
 }
 
-func applyConfigConnectorExperiments(ctx context.Context, c client.Client, u *unstructured.Unstructured) error {
+func applyConfigConnectorExperiments(ctx context.Context, c client.Client, ccc *corev1beta1.ConfigConnectorContext, u *unstructured.Unstructured) error {
 	cc, err := controllers.GetConfigConnector(ctx, c, controllers.ValidConfigConnectorNamespacedName)
 	if err != nil {
 		if !apierrors.IsNotFound(err) {
 			return fmt.Errorf("error getting the ConfigConnector object %v: %w", controllers.ValidConfigConnectorNamespacedName, err)
 		}
-		// If CC is not found (e.g. during deletion tests), just skip applying experiments.
-		return nil
+		// If CC is not found (e.g. during deletion tests), apply with nil CC.
+		return applyExperimentsToManagerContainer(u, nil, ccc)
 	}
-	return applyExperimentsToManagerContainer(u, cc)
+	return applyExperimentsToManagerContainer(u, cc, ccc)
 }
 
-func applyExperimentsToManagerContainer(u *unstructured.Unstructured, cc *corev1beta1.ConfigConnector) error {
-	if cc.Spec.Experiments == nil {
+func applyExperimentsToManagerContainer(u *unstructured.Unstructured, cc *corev1beta1.ConfigConnector, ccc *corev1beta1.ConfigConnectorContext) error {
+	var ccSettings *corev1beta1.ResourceSettings
+	if cc != nil && cc.Spec.Experiments != nil {
+		ccSettings = cc.Spec.Experiments.ResourceSettings
+	}
+	var cccSettings *corev1beta1.ResourceSettings
+	if ccc != nil && ccc.Spec.Experiments != nil {
+		cccSettings = ccc.Spec.Experiments.ResourceSettings
+	}
+
+	if err := controllers.ApplyResourceSettingsHashToPodTemplate(u, ccSettings, cccSettings); err != nil {
+		return err
+	}
+
+	if cc == nil || cc.Spec.Experiments == nil {
 		return nil
 	}
 
