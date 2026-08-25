@@ -56,6 +56,10 @@ func (s *FirewallActivationServer) CreateFirewallEndpointAssociation(ctx context
 		return nil, err
 	}
 
+	if err := s.MockService.updateFirewallEndpoint(ctx, req.FirewallEndpointAssociation.GetFirewallEndpoint(), req.FirewallEndpointAssociation.GetNetwork(), fqn); err != nil {
+		return nil, err
+	}
+
 	now := time.Now()
 	lroMetadata := &pbv1.OperationMetadata{
 		CreateTime:            timestamppb.New(now),
