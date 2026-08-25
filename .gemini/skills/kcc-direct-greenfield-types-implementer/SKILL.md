@@ -81,9 +81,3 @@ Apply the baseline validations from `kcc-direct-base-types-implementer`, plus th
 
 ### 4. Journaling
 Append any quirks about the proto-to-struct mapping (e.g., field name collisions) to `.gemini/journals/<service>.md` using the format described in the `kcc-agentic-journaler` skill.
-
-### 5. Create PR
-Create the PR using the `send-pr` skill with `--labels "overseer,greenfield,step/gen-types,overseer/review"`. Include the release note block set to `NONE`:
-```release-note
-NONE
-```

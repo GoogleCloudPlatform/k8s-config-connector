@@ -43,10 +43,4 @@ This skill guides you through implementing Phase 3 (MockGCP and Alignment) for a
 ### 4. Verify and Run Presubmits
 - Run local validation: `scripts/validate-prereqs.sh`.
 - Run the e2e fixtures presubmit: `./dev/ci/presubmits/tests-e2e-fixtures-<kind_lowercase>`.
-- Make sure to stage and commit both `_http.log` and `_http_mock.log` files.
-
-### 5. Create PR
-Create the PR using the `send-pr` skill with `--labels "overseer,greenfield,step/mockgcp"`. Include the release note block:
-```release-note
-New Alpha Resources (Direct Reconciler): `<ResourceKind>`
-```
+- Make sure to stage and commit both `_http.log` and `_http_mock.log` files in your Pull Request.

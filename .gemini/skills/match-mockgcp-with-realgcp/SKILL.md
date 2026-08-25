@@ -47,10 +47,5 @@ Tips for fixing the discrepancies:
 5. Run `git diff` on the test fixtures to ensure that the golden `_http.log` accurately replaces volatile data with placeholder variables (e.g., `${ipAddress}`).
 6. Certain operation metadata values (e.g. `done: <missing> => false`) can be safely ignored as mock operations are generally simpler.
 
-### Step 3: Create PR
-1. Create a Pull Request with your changes using the `send-pr` skill.
-2. Pass the labels with `--labels "overseer,greenfield,step/mockgcp-alignment"`.
-3. Include the release note block set to `NONE` in the PR description:
-   ```release-note
-   NONE
-   ```
+
+
