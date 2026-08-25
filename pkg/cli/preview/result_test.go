@@ -108,11 +108,13 @@ func TestCombinedSummaryReport(t *testing.T) {
 		results: map[GKNN]*GKNNReconciledResult{
 			{Group: "g1", Kind: "K1", Namespace: "n1", Name: "name1"}: {
 				GKNN:            GKNN{Group: "g1", Kind: "K1", Namespace: "n1", Name: "name1"},
+				CurrentStatus:   "UpToDate",
 				ControllerType:  k8s.ReconcilerType("tf"),
 				ReconcileStatus: ReconcileStatusHealthy,
 			},
 			{Group: "g3", Kind: "K3", Namespace: "n3", Name: "name3"}: {
 				GKNN:            GKNN{Group: "g3", Kind: "K3", Namespace: "n3", Name: "name3"},
+				CurrentStatus:   "UpdateFailed",
 				ControllerType:  k8s.ReconcilerType("tf"),
 				ReconcileStatus: ReconcileStatusUnhealthy,
 			},
@@ -122,16 +124,19 @@ func TestCombinedSummaryReport(t *testing.T) {
 		results: map[GKNN]*GKNNReconciledResult{
 			{Group: "g1", Kind: "K1", Namespace: "n1", Name: "name1"}: {
 				GKNN:            GKNN{Group: "g1", Kind: "K1", Namespace: "n1", Name: "name1"},
+				CurrentStatus:   "UpToDate",
 				ControllerType:  k8s.ReconcilerType("direct"),
 				ReconcileStatus: ReconcileStatusUnhealthy,
 			},
 			{Group: "g2", Kind: "K2", Namespace: "n2", Name: "name2"}: {
 				GKNN:            GKNN{Group: "g2", Kind: "K2", Namespace: "n2", Name: "name2"},
+				CurrentStatus:   "UpToDate",
 				ControllerType:  k8s.ReconcilerType("direct"),
 				ReconcileStatus: ReconcileStatusHealthy,
 			},
 			{Group: "g3", Kind: "K3", Namespace: "n3", Name: "name3"}: {
 				GKNN:            GKNN{Group: "g3", Kind: "K3", Namespace: "n3", Name: "name3"},
+				CurrentStatus:   "UpdateFailed",
 				ControllerType:  k8s.ReconcilerType("direct"),
 				ReconcileStatus: ReconcileStatusUnhealthy,
 			},
@@ -163,10 +168,10 @@ func TestCombinedSummaryReport(t *testing.T) {
 
 	// Verify the content contains the expected headers and rows
 	expectedRows := []string{
-		"GROUP   KIND   NAME    DEFAULT-CONTROLLER   DEFAULT-RESULT   DEFAULT-DIFFS   ALTERNATIVE-CONTROLLER   ALTERNATIVE-RESULT   ALTERNATIVE-DIFFS",
-		"g1      K1     name1   tf                   HEALTHY          N/A             direct                   UNHEALTHY            N/A",
-		"g2      K2     name2   N/A                  N/A              N/A             direct                   HEALTHY              N/A",
-		"g3      K3     name3   tf                   UNHEALTHY        N/A             direct                   UNHEALTHY            N/A",
+		"GROUP   KIND   NAMESPACE   NAME    CURRENT-STATUS   DEFAULT-CONTROLLER   DEFAULT-RESULT   ALTERNATIVE-CONTROLLER   ALTERNATIVE-RESULT   DEFAULT-DIFFS   ALTERNATIVE-DIFFS",
+		"g1      K1     n1          name1   UpToDate         tf                   HEALTHY          direct                   UNHEALTHY            N/A             N/A",
+		"g2      K2     n2          name2   UpToDate         N/A                  N/A              direct                   HEALTHY              N/A             N/A",
+		"g3      K3     n3          name3   UpdateFailed     tf                   UNHEALTHY        direct                   UNHEALTHY            N/A             N/A",
 	}
 
 	for _, row := range expectedRows {

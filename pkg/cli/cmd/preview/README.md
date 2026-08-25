@@ -72,7 +72,7 @@ config-connector preview --gcp-qps 10 --gcp-burst 10
 
 The tool generates several files:
 
--   `preview-report-<timestamp>`: A summary table showing the Group, Kind, Name, and the reconciliation status/diffs for both the default and alternative runs.
+-   `preview-report-<timestamp>`: A summary table showing the Group, Kind, Namespace, Name, and the reconciliation status/diffs for both the default and alternative runs.
 -   `preview-report-<timestamp>-detail`: (Generated if errors occur) A JSON file containing detailed information about "Unhealthy" resources.
 -   `preview-report-<timestamp>-full-default`: (Generated if `--full-report` is set) Detailed event log for the default run.
 -   `preview-report-<timestamp>-full-alternative`: (Generated if `--full-report` is set) Detailed event log for the alternative run.
@@ -81,13 +81,14 @@ The tool generates several files:
 
 The summary report contains the following columns:
 
--   **GROUP/KIND/NAME**: Identifies the resource.
+-   **GROUP/KIND/NAMESPACE/NAME**: Identifies the resource.
+-   **CURRENT-STATUS**: The current status/reason of the resource in the cluster (e.g., `UpToDate`, `UpdateFailed`).
 -   **DEFAULT-CONTROLLER**: The controller used in the baseline run (e.g., `Terraform`, `Direct`).
 -   **DEFAULT-RESULT**: `HEALTHY` or `UNHEALTHY`.
--   **DEFAULT-DIFFS**: Fields that had diffs during reconciliation.
 -   **ALTERNATIVE-CONTROLLER**: The alternative controller being tested.
 -   **ALTERNATIVE-RESULT**: `HEALTHY`, `UNHEALTHY`, or `Missing` (if the alternative controller failed to pick up the resource).
--   **ALTERNATIVE-DIFFS**: Fields that had diffs during the alternative run.
+-   **DEFAULT-DIFFS**: Fields that had diffs during reconciliation in the default run.
+-   **ALTERNATIVE-DIFFS**: Fields that had diffs during reconciliation in the alternative run.
 
 ---
 

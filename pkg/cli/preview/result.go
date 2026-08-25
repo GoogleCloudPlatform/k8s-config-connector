@@ -51,6 +51,7 @@ func (s ReconcileStatus) String() string {
 // GKNNReconciledResult is the result of reconciling a GKNN object with a specific controller type.
 type GKNNReconciledResult struct {
 	GKNN            GKNN
+	CurrentStatus   string
 	ControllerType  k8s.ReconcilerType
 	ReconcileStatus ReconcileStatus
 	Diffs           *structuredreporting.Diff
@@ -59,7 +60,7 @@ type GKNNReconciledResult struct {
 
 // FormatGKNNReconciledResult formats the GKNNReconciledResult into a string.
 func (r *GKNNReconciledResult) FormatGKNNReconciledResult() string {
-	return fmt.Sprintf("ns=\"%s\" name=\"%s\" group=\"%s\" kind=\"%s\" controller_type=\"%s\" diffs=\"%s\" reconcile_status=\"%s\"", r.GKNN.Namespace, r.GKNN.Name, r.GKNN.Group, r.GKNN.Kind, r.ControllerType, FormatFieldIDs(r.Diffs), r.ReconcileStatus.String())
+	return fmt.Sprintf("ns=\"%s\" name=\"%s\" group=\"%s\" kind=\"%s\" current_status=\"%s\" controller_type=\"%s\" diffs=\"%s\" reconcile_status=\"%s\"", r.GKNN.Namespace, r.GKNN.Name, r.GKNN.Group, r.GKNN.Kind, r.CurrentStatus, r.ControllerType, FormatFieldIDs(r.Diffs), r.ReconcileStatus.String())
 }
 
 func FormatFieldIDs(diffs *structuredreporting.Diff) string {
@@ -92,9 +93,14 @@ func (r *Recorder) GenerateRecorderReconciledResults() *RecorderReconciledResult
 		results: make(map[GKNN]*GKNNReconciledResult),
 	}
 
-	for gknn := range r.objects {
+	for gknn, objInfo := range r.objects {
+		currentStatus := objInfo.currentStatus
+		if currentStatus == "" {
+			currentStatus = "N/A"
+		}
 		result := &GKNNReconciledResult{
 			GKNN:            gknn,
+			CurrentStatus:   currentStatus,
 			Diffs:           &structuredreporting.Diff{},
 			ReconcileStatus: ReconcileStatusHealthy,
 			GCPActions:      []*gcpAction{},
@@ -145,11 +151,12 @@ func (r *RecorderReconciledResults) CombinedSummaryReport(summaryFile string, al
 		fmt.Fprintf(f, "Detected %d good and %d bad objects in alternative run\n", altResult.goodCount, altResult.badCount)
 	}
 	w := tabwriter.NewWriter(f, 0, 0, 3, ' ', 0)
-	fmt.Fprintln(w, "GROUP\tKIND\tNAME\tDEFAULT-CONTROLLER\tDEFAULT-RESULT\tDEFAULT-DIFFS\tALTERNATIVE-CONTROLLER\tALTERNATIVE-RESULT\tALTERNATIVE-DIFFS")
+	fmt.Fprintln(w, "GROUP\tKIND\tNAMESPACE\tNAME\tCURRENT-STATUS\tDEFAULT-CONTROLLER\tDEFAULT-RESULT\tALTERNATIVE-CONTROLLER\tALTERNATIVE-RESULT\tDEFAULT-DIFFS\tALTERNATIVE-DIFFS")
 	type resultPair struct {
-		def  *GKNNReconciledResult
-		alt  *GKNNReconciledResult
-		gknn GKNN
+		def           *GKNNReconciledResult
+		alt           *GKNNReconciledResult
+		gknn          GKNN
+		currentStatus string
 	}
 
 	type combinedResult struct {
@@ -163,8 +170,11 @@ func (r *RecorderReconciledResults) CombinedSummaryReport(summaryFile string, al
 	addPair := func(gknn GKNN, result *GKNNReconciledResult, isAlt bool) {
 		pair, ok := combined.results[gknn]
 		if !ok {
-			pair = &resultPair{gknn: gknn}
+			pair = &resultPair{gknn: gknn, currentStatus: "N/A"}
 			combined.results[gknn] = pair
+		}
+		if result != nil && result.CurrentStatus != "" && result.CurrentStatus != "N/A" {
+			pair.currentStatus = result.CurrentStatus
 		}
 		if isAlt {
 			pair.alt = result
@@ -249,7 +259,11 @@ func (r *RecorderReconciledResults) CombinedSummaryReport(summaryFile string, al
 			altStatus = "Missing"
 		}
 
-		fmt.Fprintf(w, "%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n", pair.gknn.Group, pair.gknn.Kind, pair.gknn.Name, defCtrl, defStatus, defDiffs, altCtrl, altStatus, altDiffs)
+		currStatus := pair.currentStatus
+		if currStatus == "" {
+			currStatus = "N/A"
+		}
+		fmt.Fprintf(w, "%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n", pair.gknn.Group, pair.gknn.Kind, pair.gknn.Namespace, pair.gknn.Name, currStatus, defCtrl, defStatus, altCtrl, altStatus, defDiffs, altDiffs)
 	}
 
 	if err := w.Flush(); err != nil {
