@@ -1,6 +1,6 @@
-- caisURL: //configdelivery.googleapis.com/projects/${projectId}/locations/us-central1/fleetPackages/configdeliveryfleetpackage-${uniqueId}
+- caisURL: //configdelivery.googleapis.com/projects/${projectId}/locations/us-central1/fleetPackages/cdfpackage-${uniqueId}
   group: configdelivery.cnrm.cloud.google.com
   kind: ConfigDeliveryFleetPackage
-  name: configdeliveryfleetpackage-${uniqueId}
+  name: cdfpackage-${uniqueId}
   namespace: ${uniqueId}
   version: v1alpha1

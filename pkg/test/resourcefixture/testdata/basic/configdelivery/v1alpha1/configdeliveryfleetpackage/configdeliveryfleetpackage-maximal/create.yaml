@@ -15,7 +15,7 @@
 apiVersion: configdelivery.cnrm.cloud.google.com/v1alpha1
 kind: ConfigDeliveryFleetPackage
 metadata:
-  name: configdeliveryfleetpackage-${uniqueId}
+  name: cdfpackage-${uniqueId}
 spec:
   projectRef:
     external: ${projectId}
@@ -37,5 +37,5 @@ spec:
       maxConcurrent: 2
   variantSelector:
     variantNameTemplate: default-maximal
-  deletionPropagationPolicy: PROPAGATE
+  deletionPropagationPolicy: FOREGROUND
   state: ACTIVE
