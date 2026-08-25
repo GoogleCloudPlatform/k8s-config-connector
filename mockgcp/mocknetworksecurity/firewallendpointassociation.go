@@ -20,6 +20,8 @@ import (
 	"strings"
 	"time"
 
+	"google.golang.org/protobuf/types/known/emptypb"
+
 	pbv1 "cloud.google.com/go/networksecurity/apiv1/networksecuritypb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
@@ -170,7 +172,7 @@ func (s *FirewallActivationServer) DeleteFirewallEndpointAssociation(ctx context
 	}
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (protoreflect.ProtoMessage, error) {
 		lroMetadata.EndTime = timestamppb.New(time.Now())
-		return obj, nil
+		return &emptypb.Empty{}, nil
 	})
 }
 

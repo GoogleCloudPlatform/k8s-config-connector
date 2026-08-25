@@ -515,17 +515,7 @@ X-Xss-Protection: 0
   },
   "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.FirewallEndpointAssociation",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "disabled": true,
-    "firewallEndpoint": "projects/${projectId}/locations/us-central1-a/firewallEndpoints/fwe-${uniqueId}",
-    "labels": {
-      "foo": "baz"
-    },
-    "name": "projects/${projectId}/locations/us-central1-a/firewallEndpointAssociations/fwea-${uniqueId}",
-    "network": "projects/${projectId}/global/networks/${networkID}",
-    "state": "INACTIVE",
-    "updateTime": "2024-04-01T12:34:56.123456Z"
+    "@type": "type.googleapis.com/google.protobuf.Empty"
   }
 }
 
