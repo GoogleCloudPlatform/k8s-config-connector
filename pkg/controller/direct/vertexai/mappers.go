@@ -1,4 +1,4 @@
-// Copyright 2025 Google LLC
+// Copyright 2026 Google LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -241,4 +241,175 @@ func JSON_v1alpha1_ToProto(mapCtx *direct.MapContext, in *apiextensionsv1.JSON) 
 		return nil
 	}
 	return out
+}
+
+func Presets_Query_ToProto(mapCtx *direct.MapContext, in *string) *pb.Presets_Query {
+	if in == nil {
+		return nil
+	}
+	val := direct.Enum_ToProto[pb.Presets_Query](mapCtx, in)
+	return &val
+}
+
+func Value_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.Value) *structpb.Value {
+	if in == nil {
+		return nil
+	}
+	out := &structpb.Value{}
+	if in.BoolValue != nil {
+		out.Kind = &structpb.Value_BoolValue{
+			BoolValue: *in.BoolValue,
+		}
+	} else if in.NumberValue != nil {
+		out.Kind = &structpb.Value_NumberValue{
+			NumberValue: *in.NumberValue,
+		}
+	} else if in.StringValue != nil {
+		out.Kind = &structpb.Value_StringValue{
+			StringValue: *in.StringValue,
+		}
+	} else if in.NullValue != nil {
+		strVal := *in.NullValue
+		var value int32
+		if val, ok := structpb.NullValue_value[strVal]; ok {
+			value = val
+		}
+		out.Kind = &structpb.Value_NullValue{
+			NullValue: structpb.NullValue(value),
+		}
+	} else if len(in.StructValue.Raw) > 0 {
+		s := direct.Struct_ToProto(mapCtx, &in.StructValue)
+		out.Kind = &structpb.Value_StructValue{
+			StructValue: s,
+		}
+	} else if in.ListValue != nil {
+		out.Kind = &structpb.Value_ListValue{
+			ListValue: ListValue_v1alpha1_ToProto(mapCtx, in.ListValue),
+		}
+	}
+	return out
+}
+
+func Value_v1alpha1_FromProto(mapCtx *direct.MapContext, in *structpb.Value) *krmv1alpha1.Value {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.Value{}
+	switch kind := in.GetKind().(type) {
+	case *structpb.Value_StringValue:
+		value := kind.StringValue
+		out.StringValue = &value
+	case *structpb.Value_NumberValue:
+		value := kind.NumberValue
+		out.NumberValue = &value
+	case *structpb.Value_NullValue:
+		value := kind.NullValue.String()
+		out.NullValue = &value
+	case *structpb.Value_BoolValue:
+		value := kind.BoolValue
+		out.BoolValue = &value
+	case *structpb.Value_StructValue:
+		js := direct.Struct_FromProto(mapCtx, kind.StructValue)
+		if js != nil {
+			out.StructValue = *js
+		}
+	case *structpb.Value_ListValue:
+		out.ListValue = ListValue_v1alpha1_FromProto(mapCtx, kind.ListValue)
+	}
+	return out
+}
+
+func ListValue_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.ListValue) *structpb.ListValue {
+	if in == nil {
+		return nil
+	}
+	out := &structpb.ListValue{}
+	for _, v := range in.Values {
+		out.Values = append(out.Values, Value_v1alpha1_ToProto(mapCtx, &v))
+	}
+	return out
+}
+
+func ListValue_v1alpha1_FromProto(mapCtx *direct.MapContext, in *structpb.ListValue) *krmv1alpha1.ListValue {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.ListValue{}
+	for _, v := range in.GetValues() {
+		val := Value_v1alpha1_FromProto(mapCtx, v)
+		if val != nil {
+			out.Values = append(out.Values, *val)
+		}
+	}
+	return out
+}
+
+func ExplanationMetadata_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.ExplanationMetadata) *krmv1alpha1.ExplanationMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.ExplanationMetadata{}
+	out.FeatureAttributionsSchemaURI = direct.LazyPtr(in.GetFeatureAttributionsSchemaUri())
+	out.LatentSpaceSource = direct.LazyPtr(in.GetLatentSpaceSource())
+	return out
+}
+
+func ExplanationMetadata_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.ExplanationMetadata) *pb.ExplanationMetadata {
+	if in == nil {
+		return nil
+	}
+	out := &pb.ExplanationMetadata{}
+	out.FeatureAttributionsSchemaUri = direct.ValueOf(in.FeatureAttributionsSchemaURI)
+	out.LatentSpaceSource = direct.ValueOf(in.LatentSpaceSource)
+	return out
+}
+
+func VertexAIDataLabelingJobSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.DataLabelingJob) *krmv1alpha1.VertexAIDataLabelingJobSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmv1alpha1.VertexAIDataLabelingJobSpec{}
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	if v := in.GetDatasets(); len(v) != 0 {
+		for i := range v {
+			out.DatasetRefs = append(out.DatasetRefs, krmv1beta1.VertexAIDatasetRef{External: v[i]})
+		}
+	}
+	out.AnnotationLabels = in.GetAnnotationLabels()
+	out.LabelerCount = direct.LazyPtr(in.GetLabelerCount())
+	out.InstructionURI = direct.LazyPtr(in.GetInstructionUri())
+	out.InputsSchemaURI = direct.LazyPtr(in.GetInputsSchemaUri())
+	out.Inputs = JSON_v1alpha1_FromProto(mapCtx, in.GetInputs())
+	out.Labels = in.GetLabels()
+	out.SpecialistPools = in.GetSpecialistPools()
+	out.EncryptionSpec = EncryptionSpec_v1alpha1_FromProto(mapCtx, in.GetEncryptionSpec())
+	out.ActiveLearningConfig = ActiveLearningConfig_v1alpha1_FromProto(mapCtx, in.GetActiveLearningConfig())
+	return out
+}
+
+func VertexAIDataLabelingJobSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.VertexAIDataLabelingJobSpec) *pb.DataLabelingJob {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DataLabelingJob{}
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	if v := in.DatasetRefs; len(v) != 0 {
+		for i := range v {
+			out.Datasets = append(out.Datasets, v[i].External)
+		}
+	}
+	out.AnnotationLabels = in.AnnotationLabels
+	out.LabelerCount = direct.ValueOf(in.LabelerCount)
+	out.InstructionUri = direct.ValueOf(in.InstructionURI)
+	out.InputsSchemaUri = direct.ValueOf(in.InputsSchemaURI)
+	out.Inputs = JSON_v1alpha1_ToProto(mapCtx, in.Inputs)
+	out.Labels = in.Labels
+	out.SpecialistPools = in.SpecialistPools
+	out.EncryptionSpec = EncryptionSpec_v1alpha1_ToProto(mapCtx, in.EncryptionSpec)
+	out.ActiveLearningConfig = ActiveLearningConfig_v1alpha1_ToProto(mapCtx, in.ActiveLearningConfig)
+	return out
+}
+
+func VertexAIModelSpec_DisplayName_ToProto(mapCtx *direct.MapContext, in string) string {
+	return in
 }
