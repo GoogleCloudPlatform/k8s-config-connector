@@ -117,7 +117,6 @@ X-Xss-Protection: 0
   "name": "projects/${projectNumber}/locations/global/collections/default_collection/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.discoveryengine.v1.Engine",
-    "createTime": "2024-04-01T12:34:56.123456Z",
     "dataStoreIds": [
       "datastore-${uniqueId}"
     ],
@@ -127,8 +126,7 @@ X-Xss-Protection: 0
     "searchEngineConfig": {
       "searchTier": 1
     },
-    "solutionType": 2,
-    "updateTime": "2024-04-01T12:34:56.123456Z"
+    "solutionType": 2
   }
 }
 
@@ -183,11 +181,9 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "createTime": "2024-04-01T12:34:56.123456Z",
   "displayName": "Minimal Serving Config",
   "name": "projects/${projectNumber}/locations/global/collections/default_collection/engines/engine-${uniqueId}/servingConfigs/servingconfig-${uniqueId}",
-  "solutionType": 2,
-  "updateTime": "2024-04-01T12:34:56.123456Z"
+  "solutionType": 2
 }
 
 ---
@@ -209,11 +205,9 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "createTime": "2024-04-01T12:34:56.123456Z",
   "displayName": "Minimal Serving Config",
   "name": "projects/${projectNumber}/locations/global/collections/default_collection/engines/engine-${uniqueId}/servingConfigs/servingconfig-${uniqueId}",
-  "solutionType": 2,
-  "updateTime": "2024-04-01T12:34:56.123456Z"
+  "solutionType": 2
 }
 
 ---
@@ -255,7 +249,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "createTime": "2024-04-01T12:34:56.123456Z",
   "dataStoreIds": [
     "datastore-${uniqueId}"
   ],
@@ -265,8 +258,7 @@ X-Xss-Protection: 0
   "searchEngineConfig": {
     "searchTier": 1
   },
-  "solutionType": 2,
-  "updateTime": "2024-04-01T12:34:56.123456Z"
+  "solutionType": 2
 }
 
 ---
@@ -314,7 +306,6 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "createTime": "2024-04-01T12:34:56.123456Z",
   "defaultSchemaId": "default_schema",
   "displayName": "My DataStore for ServingConfig",
   "industryVertical": 1,
