@@ -135,6 +135,18 @@ func (s *NotebookServiceV2) CreateInstance(ctx context.Context, req *pb_v2.Creat
 		}
 		gceSetup.NetworkInterfaces = networkInterfaces
 	}
+	if obj.Labels == nil {
+		obj.Labels = make(map[string]string)
+	}
+	systemLabels := map[string]string{
+		"consumer-project-id":     name.Project.ID,
+		"consumer-project-number": fmt.Sprintf("%v", name.Project.Number),
+		"notebooks-product":       "workbench-instances",
+		"resource-name":           name.name,
+	}
+	for k, v := range systemLabels {
+		obj.Labels[k] = v
+	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err

@@ -1035,7 +1035,7 @@ GRPC /google.cloud.notebooks.v2.NotebookService/CreateInstance
       "${projectNumber}-compute@developer.gserviceaccount.com"
     ],
     "labels": {
-      "cnrm-test": "true"
+      "test": "full-gce"
     }
   },
   "instanceId": "ni2-full-${uniqueId}",
@@ -1146,7 +1146,11 @@ OK
       "${projectNumber}-compute@developer.gserviceaccount.com"
     ],
     "labels": {
-      "cnrm-test": "true"
+      "consumer-project-id": "${projectId}",
+      "consumer-project-number": "${projectNumber}",
+      "notebooks-product": "workbench-instances",
+      "resource-name": "ni2-full-${uniqueId}",
+      "test": "full-gce"
     },
     "name": "projects/${projectId}/locations/us-central1-a/instances/ni2-full-${uniqueId}",
     "proxyUri": "https://ni2-full-${uniqueId}-dot-us-central1.notebooks.googleusercontent.com",
@@ -1233,7 +1237,11 @@ OK
     "${projectNumber}-compute@developer.gserviceaccount.com"
   ],
   "labels": {
-    "cnrm-test": "true"
+    "consumer-project-id": "${projectId}",
+    "consumer-project-number": "${projectNumber}",
+    "notebooks-product": "workbench-instances",
+    "resource-name": "ni2-full-${uniqueId}",
+    "test": "full-gce"
   },
   "name": "projects/${projectId}/locations/us-central1-a/instances/ni2-full-${uniqueId}",
   "proxyUri": "https://ni2-full-${uniqueId}-dot-us-central1.notebooks.googleusercontent.com",
@@ -1307,11 +1315,16 @@ GRPC /google.cloud.notebooks.v2.NotebookService/UpdateInstance
       }
     },
     "labels": {
-      "cnrm-test": "true"
+      "consumer-project-id": "${projectId}",
+      "consumer-project-number": "${projectNumber}",
+      "notebooks-product": "workbench-instances",
+      "resource-name": "ni2-full-${uniqueId}",
+      "test": "full-gce",
+      "updated": "true"
     },
     "name": "projects/${projectId}/locations/us-central1-a/instances/ni2-full-${uniqueId}"
   },
-  "updateMask": "gceSetup.gpuDriverConfig.customGpuDriverPath,gceSetup.gpuDriverConfig.enableGpuDriver,gceSetup.metadata,gceSetup.tags"
+  "updateMask": "gceSetup.gpuDriverConfig.customGpuDriverPath,gceSetup.gpuDriverConfig.enableGpuDriver,gceSetup.metadata,gceSetup.tags,labels"
 }
 
 OK
@@ -1419,7 +1432,12 @@ OK
       "${projectNumber}-compute@developer.gserviceaccount.com"
     ],
     "labels": {
-      "cnrm-test": "true"
+      "consumer-project-id": "${projectId}",
+      "consumer-project-number": "${projectNumber}",
+      "notebooks-product": "workbench-instances",
+      "resource-name": "ni2-full-${uniqueId}",
+      "test": "full-gce",
+      "updated": "true"
     },
     "name": "projects/${projectId}/locations/us-central1-a/instances/ni2-full-${uniqueId}",
     "proxyUri": "https://ni2-full-${uniqueId}-dot-us-central1.notebooks.googleusercontent.com",
@@ -1508,7 +1526,12 @@ OK
     "${projectNumber}-compute@developer.gserviceaccount.com"
   ],
   "labels": {
-    "cnrm-test": "true"
+    "consumer-project-id": "${projectId}",
+    "consumer-project-number": "${projectNumber}",
+    "notebooks-product": "workbench-instances",
+    "resource-name": "ni2-full-${uniqueId}",
+    "test": "full-gce",
+    "updated": "true"
   },
   "name": "projects/${projectId}/locations/us-central1-a/instances/ni2-full-${uniqueId}",
   "proxyUri": "https://ni2-full-${uniqueId}-dot-us-central1.notebooks.googleusercontent.com",

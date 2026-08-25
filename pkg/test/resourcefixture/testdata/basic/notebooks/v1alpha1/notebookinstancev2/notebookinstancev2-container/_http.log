@@ -25,9 +25,6 @@ GRPC /google.cloud.notebooks.v2.NotebookService/CreateInstance
         "notebook-disable-downloads": "true",
         "notebook-disable-root": "true"
       }
-    },
-    "labels": {
-      "cnrm-test": "true"
     }
   },
   "instanceId": "ni2-container-${uniqueId}",
@@ -144,7 +141,6 @@ OK
     },
     "id": "000000000000000000000",
     "labels": {
-      "cnrm-test": "true",
       "consumer-project-id": "${projectId}",
       "consumer-project-number": "${projectNumber}",
       "notebooks-product": "workbench-instances",
@@ -242,7 +238,6 @@ OK
   },
   "id": "000000000000000000000",
   "labels": {
-    "cnrm-test": "true",
     "consumer-project-id": "${projectId}",
     "consumer-project-number": "${projectNumber}",
     "notebooks-product": "workbench-instances",
@@ -305,7 +300,6 @@ GRPC /google.cloud.notebooks.v2.NotebookService/UpdateInstance
       ]
     },
     "labels": {
-      "cnrm-test": "true",
       "consumer-project-id": "${projectId}",
       "consumer-project-number": "${projectNumber}",
       "notebooks-product": "workbench-instances",
@@ -427,7 +421,6 @@ OK
     },
     "id": "000000000000000000000",
     "labels": {
-      "cnrm-test": "true",
       "consumer-project-id": "${projectId}",
       "consumer-project-number": "${projectNumber}",
       "notebooks-product": "workbench-instances",
@@ -637,7 +630,6 @@ OK
   },
   "id": "000000000000000000000",
   "labels": {
-    "cnrm-test": "true",
     "consumer-project-id": "${projectId}",
     "consumer-project-number": "${projectNumber}",
     "notebooks-product": "workbench-instances",

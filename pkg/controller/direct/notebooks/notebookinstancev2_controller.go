@@ -115,7 +115,6 @@ func (m *modelInstanceV2) AdapterForObject(ctx context.Context, op *directbase.A
 	if mapCtx.Err() != nil {
 		return nil, mapCtx.Err()
 	}
-	desired.Labels = obj.Labels
 
 	return &InstanceV2Adapter{
 		id:        id,
@@ -246,17 +245,16 @@ func compareNotebooksV2(ctx context.Context, actual, desired *notebookspb.Instan
 		if des.Labels == nil {
 			des.Labels = make(map[string]string)
 		}
-		if act.Labels != nil {
-			systemLabels := []string{
-				"consumer-project-id",
-				"consumer-project-number",
-				"notebooks-product",
-				"resource-name",
-			}
-			for _, key := range systemLabels {
-				if v, ok := act.Labels[key]; ok {
-					des.Labels[key] = v
-				}
+
+		systemLabels := []string{
+			"consumer-project-id",
+			"consumer-project-number",
+			"notebooks-product",
+			"resource-name",
+		}
+		for _, key := range systemLabels {
+			if v, ok := act.Labels[key]; ok {
+				des.Labels[key] = v
 			}
 		}
 
