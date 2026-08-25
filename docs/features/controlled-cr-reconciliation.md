@@ -19,6 +19,14 @@ Because both global and local settings use the same mode, they combine **additiv
 * **In Exclusive Mode**: A resource is excluded (ignored) if it is listed in the `ConfigConnector` **OR** the `ConfigConnectorContext`.
 * **In Inclusive Mode**: A resource is included (reconciled) if it is listed in the `ConfigConnector` **OR** the `ConfigConnectorContext`.
 
+### Applying Changes (Automatic Pod Rollout)
+
+Selective controller registration and watch stream management occurs when the controller manager pod initializes. To apply changes without manual intervention:
+
+* The **Config Connector Operator** automatically calculates a deterministic hash of the active `resourceSettings` and injects it as a pod template annotation (`cnrm.cloud.google.com/resource-settings-hash`) on the `cnrm-controller-manager` StatefulSet.
+* When `resourceSettings` is created, modified, or removed in `ConfigConnector` or `ConfigConnectorContext`, the operator updates the StatefulSet template annotation, and Kubernetes automatically initiates a **rolling restart** of the target controller manager pod(s).
+* Upon startup, the controller manager registers and opens watch streams exclusively for the enabled resources.
+
 ## Configuration Options
 
 To configure this feature, manipulate the `ResourceSettings` block in your `ConfigConnector` and `ConfigConnectorContext` definitions.

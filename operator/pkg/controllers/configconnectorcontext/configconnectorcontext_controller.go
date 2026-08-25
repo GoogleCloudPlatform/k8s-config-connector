@@ -91,6 +91,25 @@ func Add(mgr ctrl.Manager, opt *ReconcilerOptions) error {
 		Named(controllerName).
 		WithOptions(controller.Options{MaxConcurrentReconciles: 20}).
 		WatchesRawSource(source.TypedChannel(r.customizationWatcher.Events(), &handler.EnqueueRequestForObject{})).
+		Watches(
+			&corev1beta1.ConfigConnector{},
+			handler.EnqueueRequestsFromMapFunc(func(ctx context.Context, _ client.Object) []reconcile.Request {
+				cccList := &corev1beta1.ConfigConnectorContextList{}
+				if err := r.client.List(ctx, cccList); err != nil {
+					return nil
+				}
+				var reqs []reconcile.Request
+				for _, ccc := range cccList.Items {
+					reqs = append(reqs, reconcile.Request{
+						NamespacedName: types.NamespacedName{
+							Namespace: ccc.Namespace,
+							Name:      ccc.Name,
+						},
+					})
+				}
+				return reqs
+			}),
+		).
 		For(obj, builder.OnlyMetadata).
 		Build(r)
 	if err != nil {
