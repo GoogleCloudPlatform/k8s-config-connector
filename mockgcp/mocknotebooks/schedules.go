@@ -72,7 +72,6 @@ func (s *NotebookServiceV1) CreateSchedule(ctx context.Context, req *pb.CreateSc
 
 	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	metadata := &pb.OperationMetadata{
-		ApiVersion:            "v1",
 		CreateTime:            timestamppb.New(time.Now()),
 		RequestedCancellation: false,
 		Target:                name.String(),
@@ -99,7 +98,6 @@ func (s *NotebookServiceV1) DeleteSchedule(ctx context.Context, req *pb.DeleteSc
 
 	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.Location)
 	metadata := &pb.OperationMetadata{
-		ApiVersion:            "v1",
 		CreateTime:            timestamppb.New(time.Now()),
 		RequestedCancellation: false,
 		Target:                name.String(),

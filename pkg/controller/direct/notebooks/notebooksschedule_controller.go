@@ -253,10 +253,25 @@ func compareSchedule(ctx context.Context, actual, desired *pb.Schedule) (*struct
 	clonedDesired := proto.CloneOf(desired)
 
 	populateDefaults := func(obj *pb.Schedule) {
-		// Even if empty, it's a good pattern to define and populate GCP/server defaults here
+		if obj.State == pb.Schedule_STATE_UNSPECIFIED {
+			obj.State = pb.Schedule_ENABLED
+		}
+		if obj.ExecutionTemplate != nil {
+			if obj.ExecutionTemplate.JobParameters == nil {
+				obj.ExecutionTemplate.JobParameters = &pb.ExecutionTemplate_VertexAiParameters{
+					VertexAiParameters: &pb.ExecutionTemplate_VertexAIParameters{},
+				}
+			}
+		}
 	}
 	populateDefaults(maskedActual)
 	populateDefaults(clonedDesired)
+
+	// Since description is not returned by the GCP API, copy it from clonedDesired to maskedActual
+	// to prevent false immutable diffs during update check.
+	if maskedActual.Description == "" {
+		maskedActual.Description = clonedDesired.Description
+	}
 
 	diffs, updateMask, err := common.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
