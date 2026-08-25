@@ -1,0 +1,5820 @@
+[
+  {
+    "resource": "admanager/AdBreak",
+    "service": "admanager",
+    "kind": "AdmanagerAdBreak",
+    "patterns": [
+      "networks/{network_code}/liveStreamEventsByAssetKey/{asset_key}/adBreaks/{ad_break}"
+    ],
+    "layer": "Deeply Nested",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "admanager/AdRule",
+    "service": "admanager",
+    "kind": "AdmanagerAdRule",
+    "patterns": [
+      "networks/{network_code}/adRules/{ad_rule}"
+    ],
+    "layer": "Partially Manageable",
+    "available_ops": [
+      "CREATE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [
+      "DELETE"
+    ],
+    "status": "missing"
+  },
+  {
+    "resource": "admanager/AdSpot",
+    "service": "admanager",
+    "kind": "AdmanagerAdSpot",
+    "patterns": [
+      "networks/{network_code}/adSpots/{ad_spot}"
+    ],
+    "layer": "Partially Manageable",
+    "available_ops": [
+      "CREATE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [
+      "DELETE"
+    ],
+    "status": "missing"
+  },
+  {
+    "resource": "admanager/AdUnit",
+    "service": "admanager",
+    "kind": "AdmanagerAdUnit",
+    "patterns": [
+      "networks/{network_code}/adUnits/{ad_unit}"
+    ],
+    "layer": "Partially Manageable",
+    "available_ops": [
+      "CREATE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [
+      "DELETE"
+    ],
+    "status": "missing"
+  },
+  {
+    "resource": "admanager/Application",
+    "service": "admanager",
+    "kind": "AdmanagerApplication",
+    "patterns": [
+      "networks/{network_code}/applications/{application}"
+    ],
+    "layer": "Partially Manageable",
+    "available_ops": [
+      "CREATE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [
+      "DELETE"
+    ],
+    "status": "missing"
+  },
+  {
+    "resource": "admanager/CdnConfig",
+    "service": "admanager",
+    "kind": "AdmanagerCdnConfig",
+    "patterns": [
+      "networks/{network_code}/cdnConfigs/{cdn_config}"
+    ],
+    "layer": "Partially Manageable",
+    "available_ops": [
+      "CREATE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [
+      "DELETE"
+    ],
+    "status": "missing"
+  },
+  {
+    "resource": "admanager/Contact",
+    "service": "admanager",
+    "kind": "AdmanagerContact",
+    "patterns": [
+      "networks/{network_code}/contacts/{contact}"
+    ],
+    "layer": "Partially Manageable",
+    "available_ops": [
+      "CREATE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [
+      "DELETE"
+    ],
+    "status": "missing"
+  },
+  {
+    "resource": "admanager/CreativeSet",
+    "service": "admanager",
+    "kind": "AdmanagerCreativeSet",
+    "patterns": [
+      "networks/{network_code}/creativeSets/{creative_set}"
+    ],
+    "layer": "Partially Manageable",
+    "available_ops": [
+      "CREATE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [
+      "DELETE"
+    ],
+    "status": "missing"
+  },
+  {
+    "resource": "admanager/CustomField",
+    "service": "admanager",
+    "kind": "AdmanagerCustomField",
+    "patterns": [
+      "networks/{network_code}/customFields/{custom_field}"
+    ],
+    "layer": "Partially Manageable",
+    "available_ops": [
+      "CREATE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [
+      "DELETE"
+    ],
+    "status": "missing"
+  },
+  {
+    "resource": "admanager/CustomTargetingKey",
+    "service": "admanager",
+    "kind": "AdmanagerCustomTargetingKey",
+    "patterns": [
+      "networks/{network_code}/customTargetingKeys/{custom_targeting_key}"
+    ],
+    "layer": "Partially Manageable",
+    "available_ops": [
+      "CREATE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [
+      "DELETE"
+    ],
+    "status": "missing"
+  },
+  {
+    "resource": "admanager/CustomTargetingValue",
+    "service": "admanager",
+    "kind": "AdmanagerCustomTargetingValue",
+    "patterns": [
+      "networks/{network_code}/customTargetingValues/{custom_targeting_value}"
+    ],
+    "layer": "Partially Manageable",
+    "available_ops": [
+      "CREATE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [
+      "DELETE"
+    ],
+    "status": "missing"
+  },
+  {
+    "resource": "admanager/EntitySignalsMapping",
+    "service": "admanager",
+    "kind": "AdmanagerEntitySignalsMapping",
+    "patterns": [
+      "networks/{network_code}/entitySignalsMappings/{entity_signals_mapping}"
+    ],
+    "layer": "Partially Manageable",
+    "available_ops": [
+      "CREATE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [
+      "DELETE"
+    ],
+    "status": "missing"
+  },
+  {
+    "resource": "admanager/Label",
+    "service": "admanager",
+    "kind": "AdmanagerLabel",
+    "patterns": [
+      "networks/{network_code}/labels/{label}"
+    ],
+    "layer": "Partially Manageable",
+    "available_ops": [
+      "CREATE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [
+      "DELETE"
+    ],
+    "status": "missing"
+  },
+  {
+    "resource": "admanager/LiveStream",
+    "service": "admanager",
+    "kind": "AdmanagerLiveStream",
+    "patterns": [
+      "networks/{network_code}/liveStreams/{live_stream}"
+    ],
+    "layer": "Partially Manageable",
+    "available_ops": [
+      "CREATE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [
+      "DELETE"
+    ],
+    "status": "missing"
+  },
+  {
+    "resource": "admanager/Placement",
+    "service": "admanager",
+    "kind": "AdmanagerPlacement",
+    "patterns": [
+      "networks/{network_code}/placements/{placement}"
+    ],
+    "layer": "Partially Manageable",
+    "available_ops": [
+      "CREATE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [
+      "DELETE"
+    ],
+    "status": "missing"
+  },
+  {
+    "resource": "admanager/PrivateAuction",
+    "service": "admanager",
+    "kind": "AdmanagerPrivateAuction",
+    "patterns": [
+      "networks/{network_code}/privateAuctions/{private_auction}"
+    ],
+    "layer": "Partially Manageable",
+    "available_ops": [
+      "CREATE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [
+      "DELETE"
+    ],
+    "status": "missing"
+  },
+  {
+    "resource": "admanager/PrivateAuctionDeal",
+    "service": "admanager",
+    "kind": "AdmanagerPrivateAuctionDeal",
+    "patterns": [
+      "networks/{network_code}/privateAuctionDeals/{private_auction_deal}"
+    ],
+    "layer": "Partially Manageable",
+    "available_ops": [
+      "CREATE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [
+      "DELETE"
+    ],
+    "status": "missing"
+  },
+  {
+    "resource": "admanager/Report",
+    "service": "admanager",
+    "kind": "AdmanagerReport",
+    "patterns": [
+      "networks/{network_code}/reports/{report}"
+    ],
+    "layer": "Partially Manageable",
+    "available_ops": [
+      "CREATE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [
+      "DELETE"
+    ],
+    "status": "missing"
+  },
+  {
+    "resource": "admanager/Site",
+    "service": "admanager",
+    "kind": "AdmanagerSite",
+    "patterns": [
+      "networks/{network_code}/sites/{site}"
+    ],
+    "layer": "Partially Manageable",
+    "available_ops": [
+      "CREATE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [
+      "DELETE"
+    ],
+    "status": "missing"
+  },
+  {
+    "resource": "admanager/Slate",
+    "service": "admanager",
+    "kind": "AdmanagerSlate",
+    "patterns": [
+      "networks/{network_code}/slates/{slate}"
+    ],
+    "layer": "Partially Manageable",
+    "available_ops": [
+      "CREATE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [
+      "DELETE"
+    ],
+    "status": "missing"
+  },
+  {
+    "resource": "admanager/TargetingPreset",
+    "service": "admanager",
+    "kind": "AdmanagerTargetingPreset",
+    "patterns": [
+      "networks/{network_code}/targetingPresets/{targeting_preset}"
+    ],
+    "layer": "Partially Manageable",
+    "available_ops": [
+      "CREATE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [
+      "DELETE"
+    ],
+    "status": "missing"
+  },
+  {
+    "resource": "admanager/Team",
+    "service": "admanager",
+    "kind": "AdmanagerTeam",
+    "patterns": [
+      "networks/{network_code}/teams/{team}"
+    ],
+    "layer": "Partially Manageable",
+    "available_ops": [
+      "CREATE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [
+      "DELETE"
+    ],
+    "status": "missing"
+  },
+  {
+    "resource": "agentregistry/Binding",
+    "service": "agentregistry",
+    "kind": "AgentregistryBinding",
+    "patterns": [
+      "projects/{project}/locations/{location}/bindings/{binding}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "agentregistry/Service",
+    "service": "agentregistry",
+    "kind": "AgentregistryService",
+    "patterns": [
+      "projects/{project}/locations/{location}/services/{service}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "aiplatform/Artifact",
+    "service": "aiplatform",
+    "kind": "AIPlatformArtifact",
+    "patterns": [
+      "projects/{project}/locations/{location}/metadataStores/{metadata_store}/artifacts/{artifact}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "aiplatform/CachedContent",
+    "service": "aiplatform",
+    "kind": "AIPlatformCachedContent",
+    "patterns": [
+      "projects/{project}/locations/{location}/cachedContents/{cached_content}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "aiplatform/Context",
+    "service": "aiplatform",
+    "kind": "AIPlatformContext",
+    "patterns": [
+      "projects/{project}/locations/{location}/metadataStores/{metadata_store}/contexts/{context}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "aiplatform/DatasetVersion",
+    "service": "aiplatform",
+    "kind": "AIPlatformDatasetVersion",
+    "patterns": [
+      "projects/{project}/locations/{location}/datasets/{dataset}/datasetVersions/{dataset_version}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "aiplatform/Execution",
+    "service": "aiplatform",
+    "kind": "AIPlatformExecution",
+    "patterns": [
+      "projects/{project}/locations/{location}/metadataStores/{metadata_store}/executions/{execution}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "aiplatform/FeatureMonitor",
+    "service": "aiplatform",
+    "kind": "AIPlatformFeatureMonitor",
+    "patterns": [
+      "projects/{project}/locations/{location}/featureGroups/{feature_group}/featureMonitors/{feature_monitor}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "aiplatform/FeatureView",
+    "service": "aiplatform",
+    "kind": "AIPlatformFeatureView",
+    "patterns": [
+      "projects/{project}/locations/{location}/featureOnlineStores/{feature_online_store}/featureViews/{feature_view}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "aiplatform/Memory",
+    "service": "aiplatform",
+    "kind": "AIPlatformMemory",
+    "patterns": [
+      "projects/{project}/locations/{location}/reasoningEngines/{reasoning_engine}/memories/{memory}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "aiplatform/Model",
+    "service": "aiplatform",
+    "kind": "AIPlatformModel",
+    "patterns": [
+      "projects/{project}/locations/{location}/models/{model}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "aiplatform/ModelDeploymentMonitoringJob",
+    "service": "aiplatform",
+    "kind": "AIPlatformModelDeploymentMonitoringJob",
+    "patterns": [
+      "projects/{project}/locations/{location}/modelDeploymentMonitoringJobs/{model_deployment_monitoring_job}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "aiplatform/ModelMonitor",
+    "service": "aiplatform",
+    "kind": "AIPlatformModelMonitor",
+    "patterns": [
+      "projects/{project}/locations/{location}/modelMonitors/{model_monitor}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "aiplatform/OnlineEvaluator",
+    "service": "aiplatform",
+    "kind": "AIPlatformOnlineEvaluator",
+    "patterns": [
+      "projects/{project}/locations/{location}/onlineEvaluators/{online_evaluator}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "aiplatform/PersistentResource",
+    "service": "aiplatform",
+    "kind": "AIPlatformPersistentResource",
+    "patterns": [
+      "projects/{project}/locations/{location}/persistentResources/{persistent_resource}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "aiplatform/RagCorpus",
+    "service": "aiplatform",
+    "kind": "AIPlatformRagCorpus",
+    "patterns": [
+      "projects/{project}/locations/{location}/ragCorpora/{rag_corpus}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "aiplatform/RagMetadata",
+    "service": "aiplatform",
+    "kind": "AIPlatformRagMetadata",
+    "patterns": [
+      "projects/{project}/locations/{location}/ragCorpora/{rag_corpus}/ragFiles/{rag_file}/ragMetadata/{rag_metadata}"
+    ],
+    "layer": "Next Next Layer (2 Parents)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "aiplatform/ReasoningEngine",
+    "service": "aiplatform",
+    "kind": "AIPlatformReasoningEngine",
+    "patterns": [
+      "projects/{project}/locations/{location}/reasoningEngines/{reasoning_engine}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "aiplatform/Schedule",
+    "service": "aiplatform",
+    "kind": "AIPlatformSchedule",
+    "patterns": [
+      "projects/{project}/locations/{location}/schedules/{schedule}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "aiplatform/Session",
+    "service": "aiplatform",
+    "kind": "AIPlatformSession",
+    "patterns": [
+      "projects/{project}/locations/{location}/reasoningEngines/{reasoning_engine}/sessions/{session}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "aiplatform/SpecialistPool",
+    "service": "aiplatform",
+    "kind": "AIPlatformSpecialistPool",
+    "patterns": [
+      "projects/{project}/locations/{location}/specialistPools/{specialist_pool}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "aiplatform/TensorboardExperiment",
+    "service": "aiplatform",
+    "kind": "VertexAITensorboardExperiment",
+    "patterns": [
+      "projects/{project}/locations/{location}/tensorboards/{tensorboard}/experiments/{experiment}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "implemented"
+  },
+  {
+    "resource": "aiplatform/TensorboardRun",
+    "service": "aiplatform",
+    "kind": "AIPlatformTensorboardRun",
+    "patterns": [
+      "projects/{project}/locations/{location}/tensorboards/{tensorboard}/experiments/{experiment}/runs/{run}"
+    ],
+    "layer": "Next Next Layer (2 Parents)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "aiplatform/TensorboardTimeSeries",
+    "service": "aiplatform",
+    "kind": "AIPlatformTensorboardTimeSeries",
+    "patterns": [
+      "projects/{project}/locations/{location}/tensorboards/{tensorboard}/experiments/{experiment}/runs/{run}/timeSeries/{time_series}"
+    ],
+    "layer": "Deeply Nested",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "analyticsadmin/AccessBinding",
+    "service": "analyticsadmin",
+    "kind": "AnalyticsadminAccessBinding",
+    "patterns": [
+      "accounts/{account}/accessBindings/{access_binding}",
+      "properties/{property}/accessBindings/{access_binding}"
+    ],
+    "layer": "Deeply Nested",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "analyticsadmin/Audience",
+    "service": "analyticsadmin",
+    "kind": "AnalyticsadminAudience",
+    "patterns": [
+      "properties/{property}/audiences/{audience}"
+    ],
+    "layer": "Partially Manageable",
+    "available_ops": [
+      "CREATE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [
+      "DELETE"
+    ],
+    "status": "missing"
+  },
+  {
+    "resource": "analyticsadmin/BigQueryLink",
+    "service": "analyticsadmin",
+    "kind": "AnalyticsadminBigQueryLink",
+    "patterns": [
+      "properties/{property}/bigQueryLinks/{bigquery_link}"
+    ],
+    "layer": "Deeply Nested",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "analyticsadmin/CalculatedMetric",
+    "service": "analyticsadmin",
+    "kind": "AnalyticsadminCalculatedMetric",
+    "patterns": [
+      "properties/{property}/calculatedMetrics/{calculated_metric}"
+    ],
+    "layer": "Deeply Nested",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "analyticsadmin/ChannelGroup",
+    "service": "analyticsadmin",
+    "kind": "AnalyticsadminChannelGroup",
+    "patterns": [
+      "properties/{property}/channelGroups/{channel_group}"
+    ],
+    "layer": "Deeply Nested",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "analyticsadmin/ConversionEvent",
+    "service": "analyticsadmin",
+    "kind": "AnalyticsadminConversionEvent",
+    "patterns": [
+      "properties/{property}/conversionEvents/{conversion_event}"
+    ],
+    "layer": "Deeply Nested",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "analyticsadmin/CustomDimension",
+    "service": "analyticsadmin",
+    "kind": "AnalyticsadminCustomDimension",
+    "patterns": [
+      "properties/{property}/customDimensions/{custom_dimension}"
+    ],
+    "layer": "Partially Manageable",
+    "available_ops": [
+      "CREATE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [
+      "DELETE"
+    ],
+    "status": "missing"
+  },
+  {
+    "resource": "analyticsadmin/CustomMetric",
+    "service": "analyticsadmin",
+    "kind": "AnalyticsadminCustomMetric",
+    "patterns": [
+      "properties/{property}/customMetrics/{custom_metric}"
+    ],
+    "layer": "Partially Manageable",
+    "available_ops": [
+      "CREATE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [
+      "DELETE"
+    ],
+    "status": "missing"
+  },
+  {
+    "resource": "analyticsadmin/DataStream",
+    "service": "analyticsadmin",
+    "kind": "AnalyticsadminDataStream",
+    "patterns": [
+      "properties/{property}/dataStreams/{data_stream}"
+    ],
+    "layer": "Deeply Nested",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "analyticsadmin/DisplayVideo360AdvertiserLink",
+    "service": "analyticsadmin",
+    "kind": "AnalyticsadminDisplayVideo360AdvertiserLink",
+    "patterns": [
+      "properties/{property}/displayVideo360AdvertiserLinks/{display_video_360_advertiser_link}"
+    ],
+    "layer": "Deeply Nested",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "analyticsadmin/EventCreateRule",
+    "service": "analyticsadmin",
+    "kind": "AnalyticsadminEventCreateRule",
+    "patterns": [
+      "properties/{property}/dataStreams/{data_stream}/eventCreateRules/{event_create_rule}"
+    ],
+    "layer": "Deeply Nested",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "analyticsadmin/EventEditRule",
+    "service": "analyticsadmin",
+    "kind": "AnalyticsadminEventEditRule",
+    "patterns": [
+      "properties/{property}/dataStreams/{data_stream}/eventEditRules/{event_edit_rule}"
+    ],
+    "layer": "Deeply Nested",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "analyticsadmin/ExpandedDataSet",
+    "service": "analyticsadmin",
+    "kind": "AnalyticsadminExpandedDataSet",
+    "patterns": [
+      "properties/{property}/expandedDataSets/{expanded_data_set}"
+    ],
+    "layer": "Deeply Nested",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "analyticsadmin/KeyEvent",
+    "service": "analyticsadmin",
+    "kind": "AnalyticsadminKeyEvent",
+    "patterns": [
+      "properties/{property}/keyEvents/{key_event}"
+    ],
+    "layer": "Deeply Nested",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "analyticsadmin/MeasurementProtocolSecret",
+    "service": "analyticsadmin",
+    "kind": "AnalyticsadminMeasurementProtocolSecret",
+    "patterns": [
+      "properties/{property}/dataStreams/{data_stream}/measurementProtocolSecrets/{measurement_protocol_secret}"
+    ],
+    "layer": "Deeply Nested",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "analyticsadmin/ReportingDataAnnotation",
+    "service": "analyticsadmin",
+    "kind": "AnalyticsadminReportingDataAnnotation",
+    "patterns": [
+      "properties/{property}/reportingDataAnnotations/{reporting_data_annotation}"
+    ],
+    "layer": "Deeply Nested",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "analyticsadmin/SKAdNetworkConversionValueSchema",
+    "service": "analyticsadmin",
+    "kind": "AnalyticsadminSKAdNetworkConversionValueSchema",
+    "patterns": [
+      "properties/{property}/dataStreams/{data_stream}/sKAdNetworkConversionValueSchema/{skadnetwork_conversion_value_schema}"
+    ],
+    "layer": "Deeply Nested",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "analyticsadmin/SearchAds360Link",
+    "service": "analyticsadmin",
+    "kind": "AnalyticsadminSearchAds360Link",
+    "patterns": [
+      "properties/{property}/searchAds360Links/{search_ads_360_link}"
+    ],
+    "layer": "Deeply Nested",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "analyticsadmin/SubpropertyEventFilter",
+    "service": "analyticsadmin",
+    "kind": "AnalyticsadminSubpropertyEventFilter",
+    "patterns": [
+      "properties/{property}/subpropertyEventFilters/{sub_property_event_filter}"
+    ],
+    "layer": "Deeply Nested",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "analyticshub/QueryTemplate",
+    "service": "analyticshub",
+    "kind": "BigQueryAnalyticsHubQueryTemplate",
+    "patterns": [
+      "projects/{project}/locations/{location}/dataExchanges/{data_exchange}/queryTemplates/{query_template}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "apihub/Attribute",
+    "service": "apihub",
+    "kind": "APIHubAttribute",
+    "patterns": [
+      "projects/{project}/locations/{location}/attributes/{attribute}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "apihub/Curation",
+    "service": "apihub",
+    "kind": "APIHubCuration",
+    "patterns": [
+      "projects/{project}/locations/{location}/curations/{curation}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "apihub/Dependency",
+    "service": "apihub",
+    "kind": "APIHubDependency",
+    "patterns": [
+      "projects/{project}/locations/{location}/dependencies/{dependency}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "apihub/ExternalApi",
+    "service": "apihub",
+    "kind": "APIHubExternalApi",
+    "patterns": [
+      "projects/{project}/locations/{location}/externalApis/{external_api}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "apihub/PluginInstance",
+    "service": "apihub",
+    "kind": "APIHubPluginInstance",
+    "patterns": [
+      "projects/{project}/locations/{location}/plugins/{plugin}/instances/{instance}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "apihub/Spec",
+    "service": "apihub",
+    "kind": "APIHubSpec",
+    "patterns": [
+      "projects/{project}/locations/{location}/apis/{api}/versions/{version}/specs/{spec}"
+    ],
+    "layer": "Next Next Layer (2 Parents)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "apihub/Version",
+    "service": "apihub",
+    "kind": "APIHubVersion",
+    "patterns": [
+      "projects/{project}/locations/{location}/apis/{api}/versions/{version}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "apphub/Service",
+    "service": "apphub",
+    "kind": "ApphubService",
+    "patterns": [
+      "projects/{project}/locations/{location}/applications/{application}/services/{service}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "apphub/Workload",
+    "service": "apphub",
+    "kind": "ApphubWorkload",
+    "patterns": [
+      "projects/{project}/locations/{location}/applications/{application}/workloads/{workload}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "area120tables/Row",
+    "service": "area120tables",
+    "kind": "Area120tablesRow",
+    "patterns": [
+      "tables/{table}/rows/{row}"
+    ],
+    "layer": "Deeply Nested",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "artifactregistry/Rule",
+    "service": "artifactregistry",
+    "kind": "ArtifactRegistryRule",
+    "patterns": [
+      "projects/{project}/locations/{location}/repositories/{repository}/rules/{rule}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "artifactregistry/Tag",
+    "service": "artifactregistry",
+    "kind": "ArtifactRegistryTag",
+    "patterns": [
+      "projects/{project}/locations/{location}/repositories/{repository}/packages/{package}/tags/{tag}"
+    ],
+    "layer": "Next Next Layer (2 Parents)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "assuredworkloads/Workload",
+    "service": "assuredworkloads",
+    "kind": "AssuredWorkloadsWorkload",
+    "patterns": [
+      "organizations/{organization}/locations/{location}/workloads/{workload}"
+    ],
+    "layer": "Deeply Nested",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "backupdr/Backup",
+    "service": "backupdr",
+    "kind": "BackupdrBackup",
+    "patterns": [
+      "projects/{project}/locations/{location}/backupVaults/{backupvault}/dataSources/{datasource}/backups/{backup}"
+    ],
+    "layer": "Next Next Layer (2 Parents)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "bigtableadmin/Cluster",
+    "service": "bigtableadmin",
+    "kind": "BigtableadminCluster",
+    "patterns": [
+      "projects/{project}/instances/{instance}/clusters/{cluster}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "bigtableadmin/SchemaBundle",
+    "service": "bigtableadmin",
+    "kind": "BigtableadminSchemaBundle",
+    "patterns": [
+      "projects/{project}/instances/{instance}/tables/{table}/schemaBundles/{schema_bundle}"
+    ],
+    "layer": "Next Next Layer (2 Parents)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "blockchainnodeengine/BlockchainNode",
+    "service": "blockchainnodeengine",
+    "kind": "BlockchainNodeEngineBlockchainNode",
+    "patterns": [
+      "projects/{project}/locations/{location}/blockchainNodes/{blockchain_node}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "ces/Agent",
+    "service": "ces",
+    "kind": "CesAgent",
+    "patterns": [
+      "projects/{project}/locations/{location}/apps/{app}/agents/{agent}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "ces/Deployment",
+    "service": "ces",
+    "kind": "CesDeployment",
+    "patterns": [
+      "projects/{project}/locations/{location}/apps/{app}/deployments/{deployment}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "ces/Evaluation",
+    "service": "ces",
+    "kind": "CesEvaluation",
+    "patterns": [
+      "projects/{project}/locations/{location}/apps/{app}/evaluations/{evaluation}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "ces/EvaluationDataset",
+    "service": "ces",
+    "kind": "CesEvaluationDataset",
+    "patterns": [
+      "projects/{project}/locations/{location}/apps/{app}/evaluationDatasets/{evaluation_dataset}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "ces/EvaluationExpectation",
+    "service": "ces",
+    "kind": "CesEvaluationExpectation",
+    "patterns": [
+      "projects/{project}/locations/{location}/apps/{app}/evaluationExpectations/{evaluation_expectation}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "ces/Example",
+    "service": "ces",
+    "kind": "CesExample",
+    "patterns": [
+      "projects/{project}/locations/{location}/apps/{app}/examples/{example}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "ces/Guardrail",
+    "service": "ces",
+    "kind": "CesGuardrail",
+    "patterns": [
+      "projects/{project}/locations/{location}/apps/{app}/guardrails/{guardrail}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "ces/ScheduledEvaluationRun",
+    "service": "ces",
+    "kind": "CesScheduledEvaluationRun",
+    "patterns": [
+      "projects/{project}/locations/{location}/apps/{app}/scheduledEvaluationRuns/{scheduled_evaluation_run}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "ces/Tool",
+    "service": "ces",
+    "kind": "CesTool",
+    "patterns": [
+      "projects/{project}/locations/{location}/apps/{app}/tools/{tool}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "chat/Membership",
+    "service": "chat",
+    "kind": "ChatMembership",
+    "patterns": [
+      "spaces/{space}/members/{member}"
+    ],
+    "layer": "Deeply Nested",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "chat/Message",
+    "service": "chat",
+    "kind": "ChatMessage",
+    "patterns": [
+      "spaces/{space}/messages/{message}"
+    ],
+    "layer": "Deeply Nested",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "chronicle/DataAccessLabel",
+    "service": "chronicle",
+    "kind": "ChronicleDataAccessLabel",
+    "patterns": [
+      "projects/{project}/locations/{location}/instances/{instance}/dataAccessLabels/{data_access_label}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "chronicle/DataAccessScope",
+    "service": "chronicle",
+    "kind": "ChronicleDataAccessScope",
+    "patterns": [
+      "projects/{project}/locations/{location}/instances/{instance}/dataAccessScopes/{data_access_scope}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "chronicle/DataTable",
+    "service": "chronicle",
+    "kind": "ChronicleDataTable",
+    "patterns": [
+      "projects/{project}/locations/{location}/instances/{instance}/dataTables/{data_table}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "chronicle/DataTableRow",
+    "service": "chronicle",
+    "kind": "ChronicleDataTableRow",
+    "patterns": [
+      "projects/{project}/locations/{location}/instances/{instance}/dataTables/{data_table}/dataTableRows/{data_table_row}"
+    ],
+    "layer": "Next Next Layer (2 Parents)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "chronicle/FindingsRefinement",
+    "service": "chronicle",
+    "kind": "ChronicleFindingsRefinement",
+    "patterns": [
+      "projects/{project}/locations/{location}/instances/{instance}/findingsRefinements/{findings_refinement}"
+    ],
+    "layer": "Partially Manageable",
+    "available_ops": [
+      "CREATE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [
+      "DELETE"
+    ],
+    "status": "missing"
+  },
+  {
+    "resource": "chronicle/NativeDashboard",
+    "service": "chronicle",
+    "kind": "ChronicleNativeDashboard",
+    "patterns": [
+      "projects/{project}/locations/{location}/instances/{instance}/nativeDashboards/{dashboard}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "chronicle/ReferenceList",
+    "service": "chronicle",
+    "kind": "ChronicleReferenceList",
+    "patterns": [
+      "projects/{project}/locations/{location}/instances/{instance}/referenceLists/{reference_list}"
+    ],
+    "layer": "Partially Manageable",
+    "available_ops": [
+      "CREATE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [
+      "DELETE"
+    ],
+    "status": "missing"
+  },
+  {
+    "resource": "chronicle/Rule",
+    "service": "chronicle",
+    "kind": "ChronicleRule",
+    "patterns": [
+      "projects/{project}/locations/{location}/instances/{instance}/rules/{rule}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "chronicle/Watchlist",
+    "service": "chronicle",
+    "kind": "ChronicleWatchlist",
+    "patterns": [
+      "projects/{project}/locations/{location}/instances/{instance}/watchlists/{watchlist}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "cloudbuild/Connection",
+    "service": "cloudbuild",
+    "kind": "CloudBuildConnection",
+    "patterns": [
+      "projects/{project}/locations/{location}/connections/{connection}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "cloudchannel/ChannelPartnerLink",
+    "service": "cloudchannel",
+    "kind": "CloudchannelChannelPartnerLink",
+    "patterns": [
+      "accounts/{account}/channelPartnerLinks/{channel_partner_link}"
+    ],
+    "layer": "Partially Manageable",
+    "available_ops": [
+      "CREATE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [
+      "DELETE"
+    ],
+    "status": "missing"
+  },
+  {
+    "resource": "cloudchannel/ChannelPartnerRepricingConfig",
+    "service": "cloudchannel",
+    "kind": "CloudchannelChannelPartnerRepricingConfig",
+    "patterns": [
+      "accounts/{account}/channelPartnerLinks/{channel_partner}/channelPartnerRepricingConfigs/{channel_partner_repricing_config}"
+    ],
+    "layer": "Deeply Nested",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "cloudchannel/Customer",
+    "service": "cloudchannel",
+    "kind": "CloudchannelCustomer",
+    "patterns": [
+      "accounts/{account}/customers/{customer}"
+    ],
+    "layer": "Deeply Nested",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "cloudchannel/CustomerRepricingConfig",
+    "service": "cloudchannel",
+    "kind": "CloudchannelCustomerRepricingConfig",
+    "patterns": [
+      "accounts/{account}/customers/{customer}/customerRepricingConfigs/{customer_repricing_config}"
+    ],
+    "layer": "Deeply Nested",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "cloudcontrolspartner/Customer",
+    "service": "cloudcontrolspartner",
+    "kind": "CloudcontrolspartnerCustomer",
+    "patterns": [
+      "organizations/{organization}/locations/{location}/customers/{customer}"
+    ],
+    "layer": "Deeply Nested",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "clouddeploy/CustomTargetType",
+    "service": "clouddeploy",
+    "kind": "ClouddeployCustomTargetType",
+    "patterns": [
+      "projects/{project}/locations/{location}/customTargetTypes/{custom_target_type}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "cloudkms/EkmConnection",
+    "service": "cloudkms",
+    "kind": "KMSEkmConnection",
+    "patterns": [
+      "projects/{project}/locations/{location}/ekmConnections/{ekm_connection}"
+    ],
+    "layer": "Partially Manageable",
+    "available_ops": [
+      "CREATE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [
+      "DELETE"
+    ],
+    "status": "missing"
+  },
+  {
+    "resource": "cloudnumberregistry/CustomRange",
+    "service": "cloudnumberregistry",
+    "kind": "CloudnumberregistryCustomRange",
+    "patterns": [
+      "projects/{project}/locations/{location}/customRanges/{custom_range}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "cloudnumberregistry/IpamAdminScope",
+    "service": "cloudnumberregistry",
+    "kind": "CloudnumberregistryIpamAdminScope",
+    "patterns": [
+      "projects/{project}/locations/{location}/ipamAdminScopes/{ipam_admin_scope}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "cloudnumberregistry/Realm",
+    "service": "cloudnumberregistry",
+    "kind": "CloudnumberregistryRealm",
+    "patterns": [
+      "projects/{project}/locations/{location}/realms/{realm}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "cloudnumberregistry/RegistryBook",
+    "service": "cloudnumberregistry",
+    "kind": "CloudnumberregistryRegistryBook",
+    "patterns": [
+      "projects/{project}/locations/{location}/registryBooks/{registry_book}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "cloudresourcemanager/TagKey",
+    "service": "cloudresourcemanager",
+    "kind": "CloudresourcemanagerTagKey",
+    "patterns": [
+      "tagKeys/{tag_key}"
+    ],
+    "layer": "Deeply Nested",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "cloudresourcemanager/TagValue",
+    "service": "cloudresourcemanager",
+    "kind": "CloudresourcemanagerTagValue",
+    "patterns": [
+      "tagValues/{tag_value}"
+    ],
+    "layer": "Deeply Nested",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "cloudsupport/SupportEventSubscription",
+    "service": "cloudsupport",
+    "kind": "CloudsupportSupportEventSubscription",
+    "patterns": [
+      "organizations/{organization}/supportEventSubscriptions/{support_event_subscription}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "cloudtasks/Queue",
+    "service": "cloudtasks",
+    "kind": "CloudtasksQueue",
+    "patterns": [
+      "projects/{project}/locations/{location}/queues/{queue}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "commerceproducer/PrivateOffer",
+    "service": "commerceproducer",
+    "kind": "CommerceproducerPrivateOffer",
+    "patterns": [
+      "projects/{project}/locations/{location}/privateOffers/{private_offer}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "commerceproducer/PrivateOfferDocument",
+    "service": "commerceproducer",
+    "kind": "CommerceproducerPrivateOfferDocument",
+    "patterns": [
+      "projects/{project}/locations/{location}/privateOffers/{private_offer}/documents/{document}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "composer/UserWorkloadsConfigMap",
+    "service": "composer",
+    "kind": "ComposerUserWorkloadsConfigMap",
+    "patterns": [
+      "projects/{project}/locations/{location}/environments/{environment}/userWorkloadsConfigMaps/{user_workloads_config_map}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "composer/UserWorkloadsSecret",
+    "service": "composer",
+    "kind": "ComposerUserWorkloadsSecret",
+    "patterns": [
+      "projects/{project}/locations/{location}/environments/{environment}/userWorkloadsSecrets/{user_workloads_secret}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "config/Deployment",
+    "service": "config",
+    "kind": "ConfigDeployment",
+    "patterns": [
+      "projects/{project}/locations/{location}/deployments/{deployment}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "config/DeploymentGroup",
+    "service": "config",
+    "kind": "ConfigDeploymentGroup",
+    "patterns": [
+      "projects/{project}/locations/{location}/deploymentGroups/{deployment_group}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "configdelivery/Release",
+    "service": "configdelivery",
+    "kind": "ConfigdeliveryRelease",
+    "patterns": [
+      "projects/{project}/locations/{location}/resourceBundles/{resource_bundle}/releases/{release}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "configdelivery/ResourceBundle",
+    "service": "configdelivery",
+    "kind": "ConfigdeliveryResourceBundle",
+    "patterns": [
+      "projects/{project}/locations/{location}/resourceBundles/{resource_bundle}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "configdelivery/Variant",
+    "service": "configdelivery",
+    "kind": "ConfigdeliveryVariant",
+    "patterns": [
+      "projects/{project}/locations/{location}/resourceBundles/{resource_bundle}/releases/{release}/variants/{variant}"
+    ],
+    "layer": "Next Next Layer (2 Parents)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "connectors/Connection",
+    "service": "connectors",
+    "kind": "ConnectorsConnection",
+    "patterns": [
+      "projects/{project}/locations/{location}/connections/{connection}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "contactcenterinsights/AnalysisRule",
+    "service": "contactcenterinsights",
+    "kind": "CCInsightsAnalysisRule",
+    "patterns": [
+      "projects/{project}/locations/{location}/analysisRules/{analysis_rule}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "contactcenterinsights/Conversation",
+    "service": "contactcenterinsights",
+    "kind": "CCInsightsConversation",
+    "patterns": [
+      "projects/{project}/locations/{location}/conversations/{conversation}",
+      "projects/{project}/locations/{location}/authorizedViewSets/{authorized_view_set}/authorizedViews/{authorized_view}/conversations/{conversation}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "contactcenterinsights/FeedbackLabel",
+    "service": "contactcenterinsights",
+    "kind": "CCInsightsFeedbackLabel",
+    "patterns": [
+      "projects/{project}/locations/{location}/conversations/{conversation}/feedbackLabels/{feedback_label}",
+      "projects/{project}/locations/{location}/authorizedViewSets/{authorized_view_set}/authorizedViews/{authorized_view}/conversations/{conversation}/feedbackLabels/{feedback_label}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "contactcenterinsights/IssueModel",
+    "service": "contactcenterinsights",
+    "kind": "CCInsightsIssueModel",
+    "patterns": [
+      "projects/{project}/locations/{location}/issueModels/{issue_model}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "contactcenterinsights/PhraseMatcher",
+    "service": "contactcenterinsights",
+    "kind": "CCInsightsPhraseMatcher",
+    "patterns": [
+      "projects/{project}/locations/{location}/phraseMatchers/{phrase_matcher}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "contactcenterinsights/QaQuestion",
+    "service": "contactcenterinsights",
+    "kind": "CCInsightsQaQuestion",
+    "patterns": [
+      "projects/{project}/locations/{location}/qaScorecards/{qa_scorecard}/revisions/{revision}/qaQuestions/{qa_question}"
+    ],
+    "layer": "Next Next Layer (2 Parents)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "contactcenterinsights/QaScorecard",
+    "service": "contactcenterinsights",
+    "kind": "CCInsightsQaScorecard",
+    "patterns": [
+      "projects/{project}/locations/{location}/qaScorecards/{qa_scorecard}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "contactcenterinsights/View",
+    "service": "contactcenterinsights",
+    "kind": "CCInsightsView",
+    "patterns": [
+      "projects/{project}/locations/{location}/views/{view}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "contentwarehouse/Document",
+    "service": "contentwarehouse",
+    "kind": "ContentWarehouseDocument",
+    "patterns": [
+      "projects/{project}/locations/{location}/documents/{document}",
+      "projects/{project}/locations/{location}/documents/referenceId/{reference_id}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "contentwarehouse/DocumentSchema",
+    "service": "contentwarehouse",
+    "kind": "ContentWarehouseDocumentSchema",
+    "patterns": [
+      "projects/{project}/locations/{location}/documentSchemas/{document_schema}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "contentwarehouse/RuleSet",
+    "service": "contentwarehouse",
+    "kind": "ContentWarehouseRuleSet",
+    "patterns": [
+      "projects/{project}/locations/{location}/ruleSets/{rule_set}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "dataform/Folder",
+    "service": "dataform",
+    "kind": "DataformFolder",
+    "patterns": [
+      "projects/{project}/locations/{location}/folders/{folder}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "dataform/ReleaseConfig",
+    "service": "dataform",
+    "kind": "DataformReleaseConfig",
+    "patterns": [
+      "projects/{project}/locations/{location}/repositories/{repository}/releaseConfigs/{release_config}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "dataform/WorkflowConfig",
+    "service": "dataform",
+    "kind": "DataformWorkflowConfig",
+    "patterns": [
+      "projects/{project}/locations/{location}/repositories/{repository}/workflowConfigs/{workflow_config}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "datalabeling/AnnotationSpecSet",
+    "service": "datalabeling",
+    "kind": "DataLabelingAnnotationSpecSet",
+    "patterns": [
+      "projects/{project}/annotationSpecSets/{annotation_spec_set}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ"
+    ],
+    "missing_ops": [
+      "UPDATE"
+    ],
+    "status": "missing"
+  },
+  {
+    "resource": "datalabeling/EvaluationJob",
+    "service": "datalabeling",
+    "kind": "DataLabelingEvaluationJob",
+    "patterns": [
+      "projects/{project}/evaluationJobs/{evaluation_job}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "datalineage/Process",
+    "service": "datalineage",
+    "kind": "DatalineageProcess",
+    "patterns": [
+      "projects/{project}/locations/{location}/processes/{process}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "datalineage/Run",
+    "service": "datalineage",
+    "kind": "DatalineageRun",
+    "patterns": [
+      "projects/{project}/locations/{location}/processes/{process}/runs/{run}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "datamanager/UserList",
+    "service": "datamanager",
+    "kind": "DatamanagerUserList",
+    "patterns": [
+      "accountTypes/{account_type}/accounts/{account}/userLists/{user_list}"
+    ],
+    "layer": "Deeply Nested",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "datamanager/UserListDirectLicense",
+    "service": "datamanager",
+    "kind": "DatamanagerUserListDirectLicense",
+    "patterns": [
+      "accountTypes/{account_type}/accounts/{account}/userListDirectLicenses/{user_list_direct_license}"
+    ],
+    "layer": "Partially Manageable",
+    "available_ops": [
+      "CREATE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [
+      "DELETE"
+    ],
+    "status": "missing"
+  },
+  {
+    "resource": "datamanager/UserListGlobalLicense",
+    "service": "datamanager",
+    "kind": "DatamanagerUserListGlobalLicense",
+    "patterns": [
+      "accountTypes/{account_type}/accounts/{account}/userListGlobalLicenses/{user_list_global_license}"
+    ],
+    "layer": "Partially Manageable",
+    "available_ops": [
+      "CREATE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [
+      "DELETE"
+    ],
+    "status": "missing"
+  },
+  {
+    "resource": "datamigration/ConnectionProfile",
+    "service": "datamigration",
+    "kind": "DatamigrationConnectionProfile",
+    "patterns": [
+      "projects/{project}/locations/{location}/connectionProfiles/{connection_profile}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "datamigration/ConversionWorkspace",
+    "service": "datamigration",
+    "kind": "DatamigrationConversionWorkspace",
+    "patterns": [
+      "projects/{project}/locations/{location}/conversionWorkspaces/{conversion_workspace}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "datamigration/MigrationJob",
+    "service": "datamigration",
+    "kind": "DatamigrationMigrationJob",
+    "patterns": [
+      "projects/{project}/locations/{location}/migrationJobs/{migration_job}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "dataplex/AspectType",
+    "service": "dataplex",
+    "kind": "DataplexAspectType",
+    "patterns": [
+      "projects/{project}/locations/{location}/aspectTypes/{aspect_type}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "dataplex/Asset",
+    "service": "dataplex",
+    "kind": "DataplexAsset",
+    "patterns": [
+      "projects/{project}/locations/{location}/lakes/{lake}/zones/{zone}/assets/{asset}"
+    ],
+    "layer": "Next Next Layer (2 Parents)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "dataplex/DataAsset",
+    "service": "dataplex",
+    "kind": "DataplexDataAsset",
+    "patterns": [
+      "projects/{project}/locations/{location}/dataProducts/{data_product}/dataAssets/{data_asset}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "dataplex/DataAttribute",
+    "service": "dataplex",
+    "kind": "DataplexDataAttribute",
+    "patterns": [
+      "projects/{project}/locations/{location}/dataTaxonomies/{dataTaxonomy}/attributes/{data_attribute_id}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "dataplex/DataAttributeBinding",
+    "service": "dataplex",
+    "kind": "DataplexDataAttributeBinding",
+    "patterns": [
+      "projects/{project}/locations/{location}/dataAttributeBindings/{data_attribute_binding_id}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "dataplex/DataProduct",
+    "service": "dataplex",
+    "kind": "DataplexDataProduct",
+    "patterns": [
+      "projects/{project}/locations/{location}/dataProducts/{data_product}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "dataplex/DataScan",
+    "service": "dataplex",
+    "kind": "DataplexDataScan",
+    "patterns": [
+      "projects/{project}/locations/{location}/dataScans/{dataScan}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "dataplex/DataTaxonomy",
+    "service": "dataplex",
+    "kind": "DataplexDataTaxonomy",
+    "patterns": [
+      "projects/{project}/locations/{location}/dataTaxonomies/{data_taxonomy_id}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "dataplex/EncryptionConfig",
+    "service": "dataplex",
+    "kind": "DataplexEncryptionConfig",
+    "patterns": [
+      "organizations/{organization}/locations/{location}/encryptionConfigs/{encryption_config}"
+    ],
+    "layer": "Deeply Nested",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "dataplex/Entity",
+    "service": "dataplex",
+    "kind": "DataplexEntity",
+    "patterns": [
+      "projects/{project}/locations/{location}/lakes/{lake}/zones/{zone}/entities/{entity}"
+    ],
+    "layer": "Next Next Layer (2 Parents)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "dataplex/Entry",
+    "service": "dataplex",
+    "kind": "DataplexEntry",
+    "patterns": [
+      "projects/{project}/locations/{location}/entryGroups/{entry_group}/entries/{entry}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "dataplex/EntryLink",
+    "service": "dataplex",
+    "kind": "DataplexEntryLink",
+    "patterns": [
+      "projects/{project}/locations/{location}/entryGroups/{entry_group}/entryLinks/{entry_link}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "dataplex/Glossary",
+    "service": "dataplex",
+    "kind": "DataplexGlossary",
+    "patterns": [
+      "projects/{project}/locations/{location}/glossaries/{glossary}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "dataplex/GlossaryCategory",
+    "service": "dataplex",
+    "kind": "DataplexGlossaryCategory",
+    "patterns": [
+      "projects/{project}/locations/{location}/glossaries/{glossary}/categories/{glossary_category}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "dataplex/GlossaryTerm",
+    "service": "dataplex",
+    "kind": "DataplexGlossaryTerm",
+    "patterns": [
+      "projects/{project}/locations/{location}/glossaries/{glossary}/terms/{glossary_term}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "dataplex/MetadataFeed",
+    "service": "dataplex",
+    "kind": "DataplexMetadataFeed",
+    "patterns": [
+      "projects/{project}/locations/{location}/metadataFeeds/{metadata_feed}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "developerconnect/AccountConnector",
+    "service": "developerconnect",
+    "kind": "DeveloperconnectAccountConnector",
+    "patterns": [
+      "projects/{project}/locations/{location}/accountConnectors/{account_connector}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "developerconnect/Connection",
+    "service": "developerconnect",
+    "kind": "DeveloperconnectConnection",
+    "patterns": [
+      "projects/{project}/locations/{location}/connections/{connection}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "developerconnect/InsightsConfig",
+    "service": "developerconnect",
+    "kind": "DeveloperconnectInsightsConfig",
+    "patterns": [
+      "projects/{project}/locations/{location}/insightsConfigs/{insights_config}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "devicestreaming/DeviceSession",
+    "service": "devicestreaming",
+    "kind": "DevicestreamingDeviceSession",
+    "patterns": [
+      "projects/{project}/deviceSessions/{device_session}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "dialogflow/Context",
+    "service": "dialogflow",
+    "kind": "DialogflowContext",
+    "patterns": [
+      "projects/{project}/agent/sessions/{session}/contexts/{context}",
+      "projects/{project}/agent/environments/{environment}/users/{user}/sessions/{session}/contexts/{context}",
+      "projects/{project}/locations/{location}/agent/sessions/{session}/contexts/{context}",
+      "projects/{project}/locations/{location}/agent/environments/{environment}/users/{user}/sessions/{session}/contexts/{context}"
+    ],
+    "layer": "Deeply Nested",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "dialogflow/ConversationDataset",
+    "service": "dialogflow",
+    "kind": "DialogflowConversationDataset",
+    "patterns": [
+      "projects/{project}/locations/{location}/conversationDatasets/{conversation_dataset}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ"
+    ],
+    "missing_ops": [
+      "UPDATE"
+    ],
+    "status": "missing"
+  },
+  {
+    "resource": "dialogflow/ConversationProfile",
+    "service": "dialogflow",
+    "kind": "DialogflowConversationProfile",
+    "patterns": [
+      "projects/{project}/conversationProfiles/{conversation_profile}",
+      "projects/{project}/locations/{location}/conversationProfiles/{conversation_profile}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "dialogflow/Document",
+    "service": "dialogflow",
+    "kind": "DialogflowDocument",
+    "patterns": [
+      "projects/{project}/knowledgeBases/{knowledge_base}/documents/{document}",
+      "projects/{project}/locations/{location}/knowledgeBases/{knowledge_base}/documents/{document}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "dialogflow/Environment",
+    "service": "dialogflow",
+    "kind": "DialogflowEnvironment",
+    "patterns": [
+      "projects/{project}/agent/environments/{environment}",
+      "projects/{project}/locations/{location}/agent/environments/{environment}",
+      "projects/{project}/locations/{location}/agents/{agent}/environments/{environment}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "dialogflow/Example",
+    "service": "dialogflow",
+    "kind": "DialogflowExample",
+    "patterns": [
+      "projects/{project}/locations/{location}/agents/{agent}/playbooks/{playbook}/examples/{example}"
+    ],
+    "layer": "Next Next Layer (2 Parents)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "dialogflow/Experiment",
+    "service": "dialogflow",
+    "kind": "DialogflowExperiment",
+    "patterns": [
+      "projects/{project}/locations/{location}/agents/{agent}/environments/{environment}/experiments/{experiment}"
+    ],
+    "layer": "Next Next Layer (2 Parents)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "dialogflow/Flow",
+    "service": "dialogflow",
+    "kind": "DialogflowFlow",
+    "patterns": [
+      "projects/{project}/locations/{location}/agents/{agent}/flows/{flow}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "dialogflow/Generator",
+    "service": "dialogflow",
+    "kind": "DialogflowGenerator",
+    "patterns": [
+      "projects/{project}/locations/{location}/generators/{generator}",
+      "projects/{project}/locations/{location}/agents/{agent}/generators/{generator}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "dialogflow/KnowledgeBase",
+    "service": "dialogflow",
+    "kind": "DialogflowKnowledgeBase",
+    "patterns": [
+      "projects/{project}/knowledgeBases/{knowledge_base}",
+      "projects/{project}/locations/{location}/knowledgeBases/{knowledge_base}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "dialogflow/Page",
+    "service": "dialogflow",
+    "kind": "DialogflowPage",
+    "patterns": [
+      "projects/{project}/locations/{location}/agents/{agent}/flows/{flow}/pages/{page}"
+    ],
+    "layer": "Next Next Layer (2 Parents)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "dialogflow/Participant",
+    "service": "dialogflow",
+    "kind": "DialogflowParticipant",
+    "patterns": [
+      "projects/{project}/conversations/{conversation}/participants/{participant}",
+      "projects/{project}/locations/{location}/conversations/{conversation}/participants/{participant}"
+    ],
+    "layer": "Partially Manageable",
+    "available_ops": [
+      "CREATE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [
+      "DELETE"
+    ],
+    "status": "missing"
+  },
+  {
+    "resource": "dialogflow/Playbook",
+    "service": "dialogflow",
+    "kind": "DialogflowPlaybook",
+    "patterns": [
+      "projects/{project}/locations/{location}/agents/{agent}/playbooks/{playbook}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "dialogflow/SecuritySettings",
+    "service": "dialogflow",
+    "kind": "DialogflowSecuritySettings",
+    "patterns": [
+      "projects/{project}/locations/{location}/securitySettings/{security_settings}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "dialogflow/SessionEntityType",
+    "service": "dialogflow",
+    "kind": "DialogflowSessionEntityType",
+    "patterns": [
+      "projects/{project}/agent/sessions/{session}/entityTypes/{entity_type}",
+      "projects/{project}/locations/{location}/agent/sessions/{session}/entityTypes/{entity_type}",
+      "projects/{project}/agent/environments/{environment}/users/{user}/sessions/{session}/entityTypes/{entity_type}",
+      "projects/{project}/locations/{location}/agent/environments/{environment}/users/{user}/sessions/{session}/entityTypes/{entity_type}",
+      "projects/{project}/locations/{location}/agents/{agent}/sessions/{session}/entityTypes/{entity_type}",
+      "projects/{project}/locations/{location}/agents/{agent}/environments/{environment}/sessions/{session}/entityTypes/{entity_type}"
+    ],
+    "layer": "Next Next Layer (2 Parents)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "dialogflow/TestCase",
+    "service": "dialogflow",
+    "kind": "DialogflowTestCase",
+    "patterns": [
+      "projects/{project}/locations/{location}/agents/{agent}/testCases/{test_case}"
+    ],
+    "layer": "Partially Manageable",
+    "available_ops": [
+      "CREATE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [
+      "DELETE"
+    ],
+    "status": "missing"
+  },
+  {
+    "resource": "dialogflow/Tool",
+    "service": "dialogflow",
+    "kind": "DialogflowTool",
+    "patterns": [
+      "projects/{project}/locations/{location}/tools/{tool}",
+      "projects/{project}/locations/{location}/agents/{agent}/tools/{tool}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "dialogflow/TransitionRouteGroup",
+    "service": "dialogflow",
+    "kind": "DialogflowTransitionRouteGroup",
+    "patterns": [
+      "projects/{project}/locations/{location}/agents/{agent}/flows/{flow}/transitionRouteGroups/{transition_route_group}",
+      "projects/{project}/locations/{location}/agents/{agent}/transitionRouteGroups/{transition_route_group}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "dialogflow/Version",
+    "service": "dialogflow",
+    "kind": "DialogflowVersion",
+    "patterns": [
+      "projects/{project}/agent/versions/{version}",
+      "projects/{project}/locations/{location}/agent/versions/{version}",
+      "projects/{project}/locations/{location}/agents/{agent}/flows/{flow}/versions/{version}"
+    ],
+    "layer": "Next Next Layer (2 Parents)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "dialogflow/Webhook",
+    "service": "dialogflow",
+    "kind": "DialogflowWebhook",
+    "patterns": [
+      "projects/{project}/locations/{location}/agents/{agent}/webhooks/{webhook}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "discoveryengine/Assistant",
+    "service": "discoveryengine",
+    "kind": "DiscoveryEngineAssistant",
+    "patterns": [
+      "projects/{project}/locations/{location}/collections/{collection}/engines/{engine}/assistants/{assistant}"
+    ],
+    "layer": "Next Next Layer (2 Parents)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "discoveryengine/Control",
+    "service": "discoveryengine",
+    "kind": "DiscoveryEngineControl",
+    "patterns": [
+      "projects/{project}/locations/{location}/dataStores/{data_store}/controls/{control}",
+      "projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/controls/{control}",
+      "projects/{project}/locations/{location}/collections/{collection}/engines/{engine}/controls/{control}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "discoveryengine/Document",
+    "service": "discoveryengine",
+    "kind": "DiscoveryEngineDocument",
+    "patterns": [
+      "projects/{project}/locations/{location}/dataStores/{data_store}/branches/{branch}/documents/{document}",
+      "projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/branches/{branch}/documents/{document}"
+    ],
+    "layer": "Next Next Layer (2 Parents)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "discoveryengine/Engine",
+    "service": "discoveryengine",
+    "kind": "DiscoveryEngineEngine",
+    "patterns": [
+      "projects/{project}/locations/{location}/collections/{collection}/engines/{engine}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "implemented"
+  },
+  {
+    "resource": "discoveryengine/LicenseConfig",
+    "service": "discoveryengine",
+    "kind": "DiscoveryEngineLicenseConfig",
+    "patterns": [
+      "projects/{project}/locations/{location}/licenseConfigs/{license_config}"
+    ],
+    "layer": "Partially Manageable",
+    "available_ops": [
+      "CREATE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [
+      "DELETE"
+    ],
+    "status": "implemented"
+  },
+  {
+    "resource": "discoveryengine/SampleQuery",
+    "service": "discoveryengine",
+    "kind": "DiscoveryEngineSampleQuery",
+    "patterns": [
+      "projects/{project}/locations/{location}/sampleQuerySets/{sample_query_set}/sampleQueries/{sample_query}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "discoveryengine/SampleQuerySet",
+    "service": "discoveryengine",
+    "kind": "DiscoveryEngineSampleQuerySet",
+    "patterns": [
+      "projects/{project}/locations/{location}/sampleQuerySets/{sample_query_set}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "discoveryengine/Schema",
+    "service": "discoveryengine",
+    "kind": "DiscoveryEngineSchema",
+    "patterns": [
+      "projects/{project}/locations/{location}/dataStores/{data_store}/schemas/{schema}",
+      "projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/schemas/{schema}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "discoveryengine/ServingConfig",
+    "service": "discoveryengine",
+    "kind": "DiscoveryEngineServingConfig",
+    "patterns": [
+      "projects/{project}/locations/{location}/dataStores/{data_store}/servingConfigs/{serving_config}",
+      "projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/servingConfigs/{serving_config}",
+      "projects/{project}/locations/{location}/collections/{collection}/engines/{engine}/servingConfigs/{serving_config}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "implemented"
+  },
+  {
+    "resource": "discoveryengine/TargetSite",
+    "service": "discoveryengine",
+    "kind": "DiscoveryEngineTargetSite",
+    "patterns": [
+      "projects/{project}/locations/{location}/dataStores/{data_store}/siteSearchEngine/targetSites/{target_site}",
+      "projects/{project}/locations/{location}/collections/{collection}/dataStores/{data_store}/siteSearchEngine/targetSites/{target_site}"
+    ],
+    "layer": "Deeply Nested",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "edgenetwork/Router",
+    "service": "edgenetwork",
+    "kind": "EdgenetworkRouter",
+    "patterns": [
+      "projects/{project}/locations/{location}/zones/{zone}/routers/{router}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "eventarc/MessageBus",
+    "service": "eventarc",
+    "kind": "EventarcMessageBus",
+    "patterns": [
+      "projects/{project}/locations/{location}/messageBuses/{message_bus}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "eventarc/Pipeline",
+    "service": "eventarc",
+    "kind": "EventarcPipeline",
+    "patterns": [
+      "projects/{project}/locations/{location}/pipelines/{pipeline}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "financialservices/BacktestResult",
+    "service": "financialservices",
+    "kind": "FinancialservicesBacktestResult",
+    "patterns": [
+      "projects/{project_num}/locations/{location}/instances/{instance}/backtestResults/{backtest_result}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "financialservices/Dataset",
+    "service": "financialservices",
+    "kind": "FinancialservicesDataset",
+    "patterns": [
+      "projects/{project_num}/locations/{location}/instances/{instance}/datasets/{dataset}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "financialservices/EngineConfig",
+    "service": "financialservices",
+    "kind": "FinancialservicesEngineConfig",
+    "patterns": [
+      "projects/{project_num}/locations/{location}/instances/{instance}/engineConfigs/{engine_config}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "financialservices/Instance",
+    "service": "financialservices",
+    "kind": "FinancialservicesInstance",
+    "patterns": [
+      "projects/{project}/locations/{location}/instances/{instance}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "financialservices/Model",
+    "service": "financialservices",
+    "kind": "FinancialservicesModel",
+    "patterns": [
+      "projects/{project_num}/locations/{location}/instances/{instance}/models/{model}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "financialservices/PredictionResult",
+    "service": "financialservices",
+    "kind": "FinancialservicesPredictionResult",
+    "patterns": [
+      "projects/{project_num}/locations/{location}/instances/{instance}/predictionResults/{prediction_result}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "gdchardwaremanagement/Hardware",
+    "service": "gdchardwaremanagement",
+    "kind": "GdchardwaremanagementHardware",
+    "patterns": [
+      "projects/{project}/locations/{location}/hardware/{hardware}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "geminidataanalytics/DataAgent",
+    "service": "geminidataanalytics",
+    "kind": "GeminidataanalyticsDataAgent",
+    "patterns": [
+      "projects/{project}/locations/{location}/dataAgents/{data_agent}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "generativelanguage/CachedContent",
+    "service": "generativelanguage",
+    "kind": "GenerativelanguageCachedContent",
+    "patterns": [
+      "cachedContents/{id}"
+    ],
+    "layer": "Deeply Nested",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "generativelanguage/Chunk",
+    "service": "generativelanguage",
+    "kind": "GenerativelanguageChunk",
+    "patterns": [
+      "corpora/{corpus}/documents/{document}/chunks/{chunk}"
+    ],
+    "layer": "Deeply Nested",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "generativelanguage/Corpus",
+    "service": "generativelanguage",
+    "kind": "GenerativelanguageCorpus",
+    "patterns": [
+      "corpora/{corpus}"
+    ],
+    "layer": "Deeply Nested",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "generativelanguage/Document",
+    "service": "generativelanguage",
+    "kind": "GenerativelanguageDocument",
+    "patterns": [
+      "corpora/{corpus}/documents/{document}"
+    ],
+    "layer": "Deeply Nested",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "generativelanguage/Permission",
+    "service": "generativelanguage",
+    "kind": "GenerativelanguagePermission",
+    "patterns": [
+      "tunedModels/{tuned_model}/permissions/{permission}",
+      "corpora/{corpus}/permissions/{permission}"
+    ],
+    "layer": "Deeply Nested",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "generativelanguage/TunedModel",
+    "service": "generativelanguage",
+    "kind": "GenerativelanguageTunedModel",
+    "patterns": [
+      "tunedModels/{tuned_model}"
+    ],
+    "layer": "Deeply Nested",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "gkebackup/RestoreChannel",
+    "service": "gkebackup",
+    "kind": "GkebackupRestoreChannel",
+    "patterns": [
+      "projects/{project}/locations/{location}/restoreChannels/{restore_channel}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "gkehub/Fleet",
+    "service": "gkehub",
+    "kind": "GKEHubFleet",
+    "patterns": [
+      "projects/{project}/locations/{location}/fleets/{fleet}",
+      "organizations/{organization}/locations/{location}/fleets/{fleet}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "implemented"
+  },
+  {
+    "resource": "gkemulticloud/AwsNodePool",
+    "service": "gkemulticloud",
+    "kind": "GkemulticloudAwsNodePool",
+    "patterns": [
+      "projects/{project}/locations/{location}/awsClusters/{aws_cluster}/awsNodePools/{aws_node_pool}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "gkemulticloud/AzureNodePool",
+    "service": "gkemulticloud",
+    "kind": "GkemulticloudAzureNodePool",
+    "patterns": [
+      "projects/{project}/locations/{location}/azureClusters/{azure_cluster}/azureNodePools/{azure_node_pool}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "grafeas/Note",
+    "service": "grafeas",
+    "kind": "GrafeasNote",
+    "patterns": [
+      "projects/{project}/notes/{note}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "implemented"
+  },
+  {
+    "resource": "grafeas/Occurrence",
+    "service": "grafeas",
+    "kind": "GrafeasOccurrence",
+    "patterns": [
+      "projects/{project}/occurrences/{occurrence}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "health/DataPoint",
+    "service": "health",
+    "kind": "HealthDataPoint",
+    "patterns": [
+      "users/{user}/dataTypes/{data_type}/dataPoints/{data_point}"
+    ],
+    "layer": "Partially Manageable",
+    "available_ops": [
+      "CREATE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [
+      "DELETE"
+    ],
+    "status": "missing"
+  },
+  {
+    "resource": "hypercomputecluster/Cluster",
+    "service": "hypercomputecluster",
+    "kind": "HypercomputeClusterCluster",
+    "patterns": [
+      "projects/{project}/locations/{location}/clusters/{cluster}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "implemented"
+  },
+  {
+    "resource": "hypercomputecluster/MachineLearningRun",
+    "service": "hypercomputecluster",
+    "kind": "HypercomputeclusterMachineLearningRun",
+    "patterns": [
+      "projects/{project}/locations/{location}/machineLearningRuns/{machine_learning_run}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "hypercomputecluster/MonitoredEvent",
+    "service": "hypercomputecluster",
+    "kind": "HypercomputeclusterMonitoredEvent",
+    "patterns": [
+      "projects/{project}/locations/{location}/machineLearningRuns/{machine_learning_run}/monitoredEvents/{monitored_event}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "iam/AccessPolicy",
+    "service": "iam",
+    "kind": "IAMAccessPolicy",
+    "patterns": [
+      "organizations/{organization}/locations/{location}/accessPolicies/{access_policy}",
+      "folders/{folder}/locations/{location}/accessPolicies/{access_policy}",
+      "projects/{project}/locations/{location}/accessPolicies/{access_policy}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "iam/PolicyBinding",
+    "service": "iam",
+    "kind": "IAMPolicyBinding",
+    "patterns": [
+      "organizations/{organization}/locations/{location}/policyBindings/{policy_binding}",
+      "folders/{folder}/locations/{location}/policyBindings/{policy_binding}",
+      "projects/{project}/locations/{location}/policyBindings/{policy_binding}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "iam/PrincipalAccessBoundaryPolicy",
+    "service": "iam",
+    "kind": "IAMPrincipalAccessBoundaryPolicy",
+    "patterns": [
+      "organizations/{organization}/locations/{location}/principalAccessBoundaryPolicies/{principal_access_boundary_policy}"
+    ],
+    "layer": "Deeply Nested",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "iap/TunnelDestGroup",
+    "service": "iap",
+    "kind": "IapTunnelDestGroup",
+    "patterns": [
+      "projects/{project}/iap_tunnel/locations/{location}/destGroups/{dest_group}"
+    ],
+    "layer": "Deeply Nested",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "jobs/Company",
+    "service": "jobs",
+    "kind": "JobsCompany",
+    "patterns": [
+      "projects/{project}/tenants/{tenant}/companies/{company}",
+      "projects/{project}/companies/{company}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "jobs/Job",
+    "service": "jobs",
+    "kind": "JobsJob",
+    "patterns": [
+      "projects/{project}/tenants/{tenant}/jobs/{job}",
+      "projects/{project}/jobs/{job}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "library-example/Book",
+    "service": "library-example",
+    "kind": "LibraryExampleBook",
+    "patterns": [
+      "shelves/{shelf}/books/{book}"
+    ],
+    "layer": "Deeply Nested",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "licensemanager/Configuration",
+    "service": "licensemanager",
+    "kind": "LicenseManagerConfiguration",
+    "patterns": [
+      "projects/{project}/locations/{location}/configurations/{configuration}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "implemented"
+  },
+  {
+    "resource": "livestream/Channel",
+    "service": "livestream",
+    "kind": "LivestreamChannel",
+    "patterns": [
+      "projects/{project}/locations/{location}/channels/{channel}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "livestream/DvrSession",
+    "service": "livestream",
+    "kind": "LivestreamDvrSession",
+    "patterns": [
+      "projects/{project}/locations/{location}/channels/{channel}/dvrSessions/{dvr_session}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "livestream/Input",
+    "service": "livestream",
+    "kind": "LivestreamInput",
+    "patterns": [
+      "projects/{project}/locations/{location}/inputs/{input}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "lustre/Instance",
+    "service": "lustre",
+    "kind": "LustreInstance",
+    "patterns": [
+      "projects/{project}/locations/{location}/instances/{instance}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "managedkafka/Acl",
+    "service": "managedkafka",
+    "kind": "ManagedKafkaAcl",
+    "patterns": [
+      "projects/{project}/locations/{location}/clusters/{cluster}/acls/{acl}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "managedkafka/ConnectCluster",
+    "service": "managedkafka",
+    "kind": "ManagedKafkaConnectCluster",
+    "patterns": [
+      "projects/{project}/locations/{location}/connectClusters/{connect_cluster}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "managedkafka/Connector",
+    "service": "managedkafka",
+    "kind": "ManagedKafkaConnector",
+    "patterns": [
+      "projects/{project}/locations/{location}/connectClusters/{connect_cluster}/connectors/{connector}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "mapmanagement/MapConfig",
+    "service": "mapmanagement",
+    "kind": "MapmanagementMapConfig",
+    "patterns": [
+      "projects/{project}/mapConfigs/{map_config}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "mapmanagement/MapContextConfig",
+    "service": "mapmanagement",
+    "kind": "MapmanagementMapContextConfig",
+    "patterns": [
+      "projects/{project}/mapConfigs/{map_config}/mapContextConfigs/{map_context_config}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "mapmanagement/StyleConfig",
+    "service": "mapmanagement",
+    "kind": "MapmanagementStyleConfig",
+    "patterns": [
+      "projects/{project}/styleConfigs/{style_config}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "merchantapi/CheckoutSettings",
+    "service": "merchantapi",
+    "kind": "MerchantapiCheckoutSettings",
+    "patterns": [
+      "accounts/{account}/programs/{program}/checkoutSettings"
+    ],
+    "layer": "Deeply Nested",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "merchantapi/CommissionGroup",
+    "service": "merchantapi",
+    "kind": "MerchantapiCommissionGroup",
+    "patterns": [
+      "accounts/{account}/contracts/{contract}/commissionGroups/{commission_group}"
+    ],
+    "layer": "Deeply Nested",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "merchantapi/Contract",
+    "service": "merchantapi",
+    "kind": "MerchantapiContract",
+    "patterns": [
+      "accounts/{account}/contracts/{contract}"
+    ],
+    "layer": "Partially Manageable",
+    "available_ops": [
+      "CREATE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [
+      "DELETE"
+    ],
+    "status": "missing"
+  },
+  {
+    "resource": "merchantapi/ConversionSource",
+    "service": "merchantapi",
+    "kind": "MerchantapiConversionSource",
+    "patterns": [
+      "accounts/{account}/conversionSources/{conversion_source}"
+    ],
+    "layer": "Deeply Nested",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "merchantapi/DataSource",
+    "service": "merchantapi",
+    "kind": "MerchantapiDataSource",
+    "patterns": [
+      "accounts/{account}/dataSources/{datasource}"
+    ],
+    "layer": "Deeply Nested",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "merchantapi/NotificationSubscription",
+    "service": "merchantapi",
+    "kind": "MerchantapiNotificationSubscription",
+    "patterns": [
+      "accounts/{account}/notificationsubscriptions/{notification_subscription}"
+    ],
+    "layer": "Deeply Nested",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "merchantapi/OmnichannelSetting",
+    "service": "merchantapi",
+    "kind": "MerchantapiOmnichannelSetting",
+    "patterns": [
+      "accounts/{account}/omnichannelSettings/{omnichannel_setting}"
+    ],
+    "layer": "Partially Manageable",
+    "available_ops": [
+      "CREATE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [
+      "DELETE"
+    ],
+    "status": "missing"
+  },
+  {
+    "resource": "merchantapi/OnlineReturnPolicy",
+    "service": "merchantapi",
+    "kind": "MerchantapiOnlineReturnPolicy",
+    "patterns": [
+      "accounts/{account}/onlineReturnPolicies/{return_policy}"
+    ],
+    "layer": "Deeply Nested",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "merchantapi/User",
+    "service": "merchantapi",
+    "kind": "MerchantapiUser",
+    "patterns": [
+      "accounts/{account}/users/{email}"
+    ],
+    "layer": "Deeply Nested",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "metastore/MetadataImport",
+    "service": "metastore",
+    "kind": "MetastoreMetadataImport",
+    "patterns": [
+      "projects/{project}/locations/{location}/services/{service}/metadataImports/{metadata_import}"
+    ],
+    "layer": "Partially Manageable",
+    "available_ops": [
+      "CREATE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [
+      "DELETE"
+    ],
+    "status": "missing"
+  },
+  {
+    "resource": "migrationcenter/ImportJob",
+    "service": "migrationcenter",
+    "kind": "MigrationcenterImportJob",
+    "patterns": [
+      "projects/{project}/locations/{location}/importJobs/{import_job}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "migrationcenter/PreferenceSet",
+    "service": "migrationcenter",
+    "kind": "MigrationcenterPreferenceSet",
+    "patterns": [
+      "projects/{project}/locations/{location}/preferenceSets/{preference_set}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "migrationcenter/Source",
+    "service": "migrationcenter",
+    "kind": "MigrationcenterSource",
+    "patterns": [
+      "projects/{project}/locations/{location}/sources/{source}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "netapp/ActiveDirectory",
+    "service": "netapp",
+    "kind": "NetappActiveDirectory",
+    "patterns": [
+      "projects/{project}/locations/{location}/activeDirectories/{active_directory}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "netapp/Backup",
+    "service": "netapp",
+    "kind": "NetappBackup",
+    "patterns": [
+      "projects/{project}/locations/{location}/backupVaults/{backup_vault}/backups/{backup}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "netapp/BackupVault",
+    "service": "netapp",
+    "kind": "NetappBackupVault",
+    "patterns": [
+      "projects/{project}/locations/{location}/backupVaults/{backup_vault}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "netapp/HostGroup",
+    "service": "netapp",
+    "kind": "NetappHostGroup",
+    "patterns": [
+      "projects/{project}/locations/{location}/hostGroups/{host_group}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "netapp/KmsConfig",
+    "service": "netapp",
+    "kind": "NetappKmsConfig",
+    "patterns": [
+      "projects/{project}/locations/{location}/kmsConfigs/{kms_config}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "netapp/QuotaRule",
+    "service": "netapp",
+    "kind": "NetappQuotaRule",
+    "patterns": [
+      "projects/{project}/locations/{location}/volumes/{volume}/quotaRules/{quota_rule}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "netapp/Replication",
+    "service": "netapp",
+    "kind": "NetappReplication",
+    "patterns": [
+      "projects/{project}/locations/{location}/volumes/{volume}/replications/{replication}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "netapp/Snapshot",
+    "service": "netapp",
+    "kind": "NetappSnapshot",
+    "patterns": [
+      "projects/{project}/locations/{location}/volumes/{volume}/snapshots/{snapshot}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "netapp/StoragePool",
+    "service": "netapp",
+    "kind": "NetappStoragePool",
+    "patterns": [
+      "projects/{project}/locations/{location}/storagePools/{storage_pool}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "netapp/Volume",
+    "service": "netapp",
+    "kind": "NetappVolume",
+    "patterns": [
+      "projects/{project}/locations/{location}/volumes/{volume}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "networkconnectivity/Destination",
+    "service": "networkconnectivity",
+    "kind": "NetworkConnectivityDestination",
+    "patterns": [
+      "projects/{project}/locations/{location}/multicloudDataTransferConfigs/{multicloud_data_transfer_config}/destinations/{destination}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "networkconnectivity/GatewayAdvertisedRoute",
+    "service": "networkconnectivity",
+    "kind": "NetworkConnectivityGatewayAdvertisedRoute",
+    "patterns": [
+      "projects/{project}/locations/{location}/spokes/{spoke}/gatewayAdvertisedRoutes/{gateway_advertised_route}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "networkconnectivity/MulticloudDataTransferConfig",
+    "service": "networkconnectivity",
+    "kind": "NetworkConnectivityMulticloudDataTransferConfig",
+    "patterns": [
+      "projects/{project}/locations/{location}/multicloudDataTransferConfigs/{multicloud_data_transfer_config}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "networkconnectivity/ServiceConnectionMap",
+    "service": "networkconnectivity",
+    "kind": "NetworkConnectivityServiceConnectionMap",
+    "patterns": [
+      "projects/{project}/locations/{location}/serviceConnectionMaps/{service_connection_map}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "networkconnectivity/Transport",
+    "service": "networkconnectivity",
+    "kind": "NetworkConnectivityTransport",
+    "patterns": [
+      "projects/{project}/locations/{location}/transports/{transport}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "networkmanagement/VpcFlowLogsConfig",
+    "service": "networkmanagement",
+    "kind": "NetworkManagementVPCFlowLogsConfig",
+    "patterns": [
+      "projects/{project}/locations/{location}/vpcFlowLogsConfigs/{vpc_flow_logs_config}",
+      "organizations/{organization}/locations/{location}/vpcFlowLogsConfigs/{vpc_flow_logs_config}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "implemented"
+  },
+  {
+    "resource": "networksecurity/AddressGroup",
+    "service": "networksecurity",
+    "kind": "NetworkSecurityAddressGroup",
+    "patterns": [
+      "projects/{project}/locations/{location}/addressGroups/{address_group}",
+      "organizations/{organization}/locations/{location}/addressGroups/{address_group}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "networksecurity/GatewaySecurityPolicyRule",
+    "service": "networksecurity",
+    "kind": "NetworkSecurityGatewaySecurityPolicyRule",
+    "patterns": [
+      "projects/{project}/locations/{location}/gatewaySecurityPolicies/{gateway_security_policy}/rules/{rule}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "networksecurity/InterceptDeployment",
+    "service": "networksecurity",
+    "kind": "NetworkSecurityInterceptDeployment",
+    "patterns": [
+      "projects/{project}/locations/{location}/interceptDeployments/{intercept_deployment}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "networksecurity/InterceptDeploymentGroup",
+    "service": "networksecurity",
+    "kind": "NetworkSecurityInterceptDeploymentGroup",
+    "patterns": [
+      "projects/{project}/locations/{location}/interceptDeploymentGroups/{intercept_deployment_group}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "networksecurity/InterceptEndpointGroupAssociation",
+    "service": "networksecurity",
+    "kind": "NetworkSecurityInterceptEndpointGroupAssociation",
+    "patterns": [
+      "projects/{project}/locations/{location}/interceptEndpointGroupAssociations/{intercept_endpoint_group_association}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "networksecurity/MirroringDeploymentGroup",
+    "service": "networksecurity",
+    "kind": "NetworkSecurityMirroringDeploymentGroup",
+    "patterns": [
+      "projects/{project}/locations/{location}/mirroringDeploymentGroups/{mirroring_deployment_group}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "networksecurity/MirroringEndpointGroupAssociation",
+    "service": "networksecurity",
+    "kind": "NetworkSecurityMirroringEndpointGroupAssociation",
+    "patterns": [
+      "projects/{project}/locations/{location}/mirroringEndpointGroupAssociations/{mirroring_endpoint_group_association}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "networksecurity/PartnerSSEGateway",
+    "service": "networksecurity",
+    "kind": "NetworkSecurityPartnerSSEGateway",
+    "patterns": [
+      "projects/{project}/locations/{location}/partnerSSEGateways/{partner_sse_gateway}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "networksecurity/UrlList",
+    "service": "networksecurity",
+    "kind": "NetworkSecurityURLList",
+    "patterns": [
+      "projects/{project}/locations/{location}/urlLists/{url_list}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "implemented"
+  },
+  {
+    "resource": "networkservices/AgentGateway",
+    "service": "networkservices",
+    "kind": "NetworkServicesAgentGateway",
+    "patterns": [
+      "projects/{project}/locations/{location}/agentGateways/{agent_gateway}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "networkservices/LbEdgeExtension",
+    "service": "networkservices",
+    "kind": "NetworkServicesLbEdgeExtension",
+    "patterns": [
+      "projects/{project}/locations/{location}/lbEdgeExtensions/{lb_edge_extension}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "networkservices/LbTrafficExtension",
+    "service": "networkservices",
+    "kind": "NetworkServicesLbTrafficExtension",
+    "patterns": [
+      "projects/{project}/locations/{location}/lbTrafficExtensions/{lb_traffic_extension}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "networkservices/ServiceLbPolicy",
+    "service": "networkservices",
+    "kind": "NetworkServicesServiceLbPolicy",
+    "patterns": [
+      "projects/{project}/locations/{location}/serviceLbPolicies/{service_lb_policy}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "notebooks/Runtime",
+    "service": "notebooks",
+    "kind": "NotebooksRuntime",
+    "patterns": [
+      "projects/{project}/locations/{location}/runtimes/{runtime}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "oracledatabase/AutonomousDatabase",
+    "service": "oracledatabase",
+    "kind": "OracledatabaseAutonomousDatabase",
+    "patterns": [
+      "projects/{project}/locations/{location}/autonomousDatabases/{autonomous_database}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "oracledatabase/ExadbVmCluster",
+    "service": "oracledatabase",
+    "kind": "OracledatabaseExadbVmCluster",
+    "patterns": [
+      "projects/{project}/locations/{location}/exadbVmClusters/{exadb_vm_cluster}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "parallelstore/Instance",
+    "service": "parallelstore",
+    "kind": "ParallelstoreInstance",
+    "patterns": [
+      "projects/{project}/locations/{location}/instances/{instance}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "rapidmigrationassessment/Collector",
+    "service": "rapidmigrationassessment",
+    "kind": "RapidMigrationAssessmentCollector",
+    "patterns": [
+      "projects/{project}/locations/{location}/collectors/{collector}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "implemented"
+  },
+  {
+    "resource": "resultstore/Invocation",
+    "service": "resultstore",
+    "kind": "ResultstoreInvocation",
+    "patterns": [
+      "invocations/{invocation}"
+    ],
+    "layer": "Deeply Nested",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "retail/Control",
+    "service": "retail",
+    "kind": "RetailControl",
+    "patterns": [
+      "projects/{project}/locations/{location}/catalogs/{catalog}/controls/{control}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "retail/Model",
+    "service": "retail",
+    "kind": "RetailModel",
+    "patterns": [
+      "projects/{project}/locations/{location}/catalogs/{catalog}/models/{model}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "retail/Product",
+    "service": "retail",
+    "kind": "RetailProduct",
+    "patterns": [
+      "projects/{project}/locations/{location}/catalogs/{catalog}/branches/{branch}/products/{product}"
+    ],
+    "layer": "Next Next Layer (2 Parents)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "retail/ServingConfig",
+    "service": "retail",
+    "kind": "RetailServingConfig",
+    "patterns": [
+      "projects/{project}/locations/{location}/catalogs/{catalog}/servingConfigs/{serving_config}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "run/WorkerPool",
+    "service": "run",
+    "kind": "CloudRunWorkerPool",
+    "patterns": [
+      "projects/{project}/locations/{location}/workerPools/{worker_pool}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "saasservicemgmt/Rollout",
+    "service": "saasservicemgmt",
+    "kind": "SaasservicemgmtRollout",
+    "patterns": [
+      "projects/{project}/locations/{location}/rollouts/{rollout_id}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "saasservicemgmt/RolloutKind",
+    "service": "saasservicemgmt",
+    "kind": "SaasservicemgmtRolloutKind",
+    "patterns": [
+      "projects/{project}/locations/{location}/rolloutKinds/{rollout_kind_id}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "saasservicemgmt/Saas",
+    "service": "saasservicemgmt",
+    "kind": "SaasservicemgmtSaas",
+    "patterns": [
+      "projects/{project}/locations/{location}/saas/{saas}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "saasservicemgmt/Tenant",
+    "service": "saasservicemgmt",
+    "kind": "SaasservicemgmtTenant",
+    "patterns": [
+      "projects/{project}/locations/{location}/tenants/{tenant}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "saasservicemgmt/Unit",
+    "service": "saasservicemgmt",
+    "kind": "SaasservicemgmtUnit",
+    "patterns": [
+      "projects/{project}/locations/{location}/units/{unit}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "saasservicemgmt/UnitKind",
+    "service": "saasservicemgmt",
+    "kind": "SaasservicemgmtUnitKind",
+    "patterns": [
+      "projects/{project}/locations/{location}/unitKinds/{unitKind}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "securesourcemanager/BranchRule",
+    "service": "securesourcemanager",
+    "kind": "SecuresourcemanagerBranchRule",
+    "patterns": [
+      "projects/{project}/locations/{location}/repositories/{repository}/branchRules/{branch_rule}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "securesourcemanager/Hook",
+    "service": "securesourcemanager",
+    "kind": "SecuresourcemanagerHook",
+    "patterns": [
+      "projects/{project}/locations/{location}/repositories/{repository}/hooks/{hook}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "securesourcemanager/Issue",
+    "service": "securesourcemanager",
+    "kind": "SecuresourcemanagerIssue",
+    "patterns": [
+      "projects/{project}/locations/{location}/repositories/{repository}/issues/{issue}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "securesourcemanager/IssueComment",
+    "service": "securesourcemanager",
+    "kind": "SecuresourcemanagerIssueComment",
+    "patterns": [
+      "projects/{project}/locations/{location}/repositories/{repository}/issues/{issue}/issueComments/{comment}"
+    ],
+    "layer": "Next Next Layer (2 Parents)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "securesourcemanager/PullRequest",
+    "service": "securesourcemanager",
+    "kind": "SecuresourcemanagerPullRequest",
+    "patterns": [
+      "projects/{project}/locations/{location}/repositories/{repository}/pullRequests/{pull_request}"
+    ],
+    "layer": "Partially Manageable",
+    "available_ops": [
+      "CREATE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [
+      "DELETE"
+    ],
+    "status": "missing"
+  },
+  {
+    "resource": "securesourcemanager/PullRequestComment",
+    "service": "securesourcemanager",
+    "kind": "SecuresourcemanagerPullRequestComment",
+    "patterns": [
+      "projects/{project}/locations/{location}/repositories/{repository}/pullRequests/{pull_request}/pullRequestComments/{comment}"
+    ],
+    "layer": "Next Next Layer (2 Parents)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "securitycenter/EventThreatDetectionCustomModule",
+    "service": "securitycenter",
+    "kind": "SecuritycenterEventThreatDetectionCustomModule",
+    "patterns": [
+      "organizations/{organization}/eventThreatDetectionSettings/customModules/{module}",
+      "folders/{folder}/eventThreatDetectionSettings/customModules/{module}",
+      "projects/{project}/eventThreatDetectionSettings/customModules/{module}"
+    ],
+    "layer": "Deeply Nested",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "securitycenter/SecurityHealthAnalyticsCustomModule",
+    "service": "securitycenter",
+    "kind": "SecuritycenterSecurityHealthAnalyticsCustomModule",
+    "patterns": [
+      "organizations/{organization}/securityHealthAnalyticsSettings/customModules/{custom_module}",
+      "folders/{folder}/securityHealthAnalyticsSettings/customModules/{custom_module}",
+      "projects/{project}/securityHealthAnalyticsSettings/customModules/{custom_module}"
+    ],
+    "layer": "Deeply Nested",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "securitycentermanagement/EventThreatDetectionCustomModule",
+    "service": "securitycentermanagement",
+    "kind": "SecurityCenterManagementEventThreatDetectionCustomModule",
+    "patterns": [
+      "organizations/{organization}/locations/{location}/eventThreatDetectionCustomModules/{event_threat_detection_custom_module}",
+      "projects/{project}/locations/{location}/eventThreatDetectionCustomModules/{event_threat_detection_custom_module}",
+      "folders/{folder}/locations/{location}/eventThreatDetectionCustomModules/{event_threat_detection_custom_module}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "implemented"
+  },
+  {
+    "resource": "securitycentermanagement/SecurityHealthAnalyticsCustomModule",
+    "service": "securitycentermanagement",
+    "kind": "SecuritycentermanagementSecurityHealthAnalyticsCustomModule",
+    "patterns": [
+      "organizations/{organization}/locations/{location}/securityHealthAnalyticsCustomModules/{security_health_analytics_custom_module}",
+      "projects/{project}/locations/{location}/securityHealthAnalyticsCustomModules/{security_health_analytics_custom_module}",
+      "folders/{folder}/locations/{location}/securityHealthAnalyticsCustomModules/{security_health_analytics_custom_module}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "securityposture/Posture",
+    "service": "securityposture",
+    "kind": "SecurityposturePosture",
+    "patterns": [
+      "organizations/{organization}/locations/{location}/postures/{posture}"
+    ],
+    "layer": "Deeply Nested",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "securityposture/PostureDeployment",
+    "service": "securityposture",
+    "kind": "SecurityposturePostureDeployment",
+    "patterns": [
+      "organizations/{organization}/locations/{location}/postureDeployments/{posture_deployment}"
+    ],
+    "layer": "Deeply Nested",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "spanner/Backup",
+    "service": "spanner",
+    "kind": "SpannerBackup",
+    "patterns": [
+      "projects/{project}/instances/{instance}/backups/{backup}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "spanner/InstancePartition",
+    "service": "spanner",
+    "kind": "SpannerInstancePartition",
+    "patterns": [
+      "projects/{project}/instances/{instance}/instancePartitions/{instance_partition}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "sqladmin/Backup",
+    "service": "sqladmin",
+    "kind": "SQLBackup",
+    "patterns": [
+      "projects/{project}/backups/{backup}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "storage/RapidCache",
+    "service": "storage",
+    "kind": "StorageRapidCache",
+    "patterns": [
+      "projects/{project}/buckets/{bucket}/rapidCaches/{rapid_cache}"
+    ],
+    "layer": "Partially Manageable",
+    "available_ops": [
+      "CREATE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [
+      "DELETE"
+    ],
+    "status": "missing"
+  },
+  {
+    "resource": "storageinsights/DatasetConfig",
+    "service": "storageinsights",
+    "kind": "StorageInsightsDatasetConfig",
+    "patterns": [
+      "projects/{project}/locations/{location}/datasetConfigs/{dataset_config}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "implemented"
+  },
+  {
+    "resource": "storageinsights/ReportConfig",
+    "service": "storageinsights",
+    "kind": "StorageinsightsReportConfig",
+    "patterns": [
+      "projects/{project}/locations/{location}/reportConfigs/{report_config}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "telcoautomation/Blueprint",
+    "service": "telcoautomation",
+    "kind": "TelcoautomationBlueprint",
+    "patterns": [
+      "projects/{project}/locations/{location}/orchestrationClusters/{orchestration_cluster}/blueprints/{blueprint}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "telcoautomation/Deployment",
+    "service": "telcoautomation",
+    "kind": "TelcoautomationDeployment",
+    "patterns": [
+      "projects/{project}/locations/{location}/orchestrationClusters/{orchestration_cluster}/deployments/{deployment}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "testing/DeviceSession",
+    "service": "testing",
+    "kind": "TestingDeviceSession",
+    "patterns": [
+      "projects/{project}/deviceSessions/{session}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "vectorsearch/DataObject",
+    "service": "vectorsearch",
+    "kind": "VectorsearchDataObject",
+    "patterns": [
+      "projects/{project}/locations/{location}/collections/{collection}/dataObjects/{dataObject}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "vectorsearch/Index",
+    "service": "vectorsearch",
+    "kind": "VectorsearchIndex",
+    "patterns": [
+      "projects/{project}/locations/{location}/collections/{collection}/indexes/{index}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "visionai/Application",
+    "service": "visionai",
+    "kind": "VisionAIApplication",
+    "patterns": [
+      "projects/{project}/locations/{location}/applications/{application}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "vmmigration/Group",
+    "service": "vmmigration",
+    "kind": "VmmigrationGroup",
+    "patterns": [
+      "projects/{project}/locations/{location}/groups/{group}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "vmwareengine/Cluster",
+    "service": "vmwareengine",
+    "kind": "VmwareengineCluster",
+    "patterns": [
+      "projects/{project}/locations/{location}/privateClouds/{private_cloud}/clusters/{cluster}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "vmwareengine/LoggingServer",
+    "service": "vmwareengine",
+    "kind": "VmwareengineLoggingServer",
+    "patterns": [
+      "projects/{project}/locations/{location}/privateClouds/{private_cloud}/loggingServers/{logging_server}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "vmwareengine/ManagementDnsZoneBinding",
+    "service": "vmwareengine",
+    "kind": "VmwareengineManagementDnsZoneBinding",
+    "patterns": [
+      "projects/{project}/locations/{location}/privateClouds/{private_cloud}/managementDnsZoneBindings/{management_dns_zone_binding}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "websecurityscanner/ScanConfig",
+    "service": "websecurityscanner",
+    "kind": "WebsecurityscannerScanConfig",
+    "patterns": [
+      "projects/{project}/scanConfigs/{scan_config}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  },
+  {
+    "resource": "workspaceevents/Subscription",
+    "service": "workspaceevents",
+    "kind": "WorkspaceeventsSubscription",
+    "patterns": [
+      "subscriptions/{subscription}"
+    ],
+    "layer": "Deeply Nested",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing"
+  }
+]
