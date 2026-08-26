@@ -34,7 +34,8 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
   "excludePublicCaSet": true,
   "minTlsVersion": 3,
   "name": "projects/${projectId}/locations/us-central1/tlsInspectionPolicies/tlsinspection-${uniqueId}",
-  "tlsFeatureProfile": 1
+  "tlsFeatureProfile": 1,
+  "trustConfig": "projects/${projectId}/locations/us-central1/trustConfigs/trustconfig-dep-1"
 }
 
 200 OK
@@ -94,6 +95,7 @@ X-Xss-Protection: 0
     "minTlsVersion": "TLS_1_2",
     "name": "projects/${projectId}/locations/us-central1/tlsInspectionPolicies/tlsinspection-${uniqueId}",
     "tlsFeatureProfile": "PROFILE_COMPATIBLE",
+    "trustConfig": "projects/${projectId}/locations/us-central1/trustConfigs/trustconfig-dep-1",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
@@ -123,23 +125,29 @@ X-Xss-Protection: 0
   "minTlsVersion": 3,
   "name": "projects/${projectId}/locations/us-central1/tlsInspectionPolicies/tlsinspection-${uniqueId}",
   "tlsFeatureProfile": 1,
+  "trustConfig": "projects/${projectId}/locations/us-central1/trustConfigs/trustconfig-dep-1",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-PATCH https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1/tlsInspectionPolicies/tlsinspection-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=caPool%2Cdescription
+PATCH https://networksecurity.googleapis.com/v1/projects/${projectId}/locations/us-central1/tlsInspectionPolicies/tlsinspection-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=caPool%2CcustomTlsFeatures%2Cdescription%2CminTlsVersion%2CtlsFeatureProfile%2CtrustConfig
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: tls_inspection_policy.name=projects%2F${projectId}%2Flocations%2Fus-central1%2FtlsInspectionPolicies%2Ftlsinspection-${uniqueId}
 
 {
   "caPool": "projects/${projectId}/locations/us-central1/caPools/capool-dep-2",
+  "customTlsFeatures": [
+    "TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA",
+    "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256"
+  ],
   "description": "An updated TLS Inspection Policy to decrypt traffic",
   "excludePublicCaSet": true,
-  "minTlsVersion": 3,
+  "minTlsVersion": 2,
   "name": "projects/${projectId}/locations/us-central1/tlsInspectionPolicies/tlsinspection-${uniqueId}",
-  "tlsFeatureProfile": 1
+  "tlsFeatureProfile": 4,
+  "trustConfig": "projects/${projectId}/locations/us-central1/trustConfigs/trustconfig-dep-2"
 }
 
 200 OK
@@ -194,11 +202,16 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.networksecurity.v1.TlsInspectionPolicy",
     "caPool": "projects/${projectId}/locations/us-central1/caPools/capool-dep-2",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "customTlsFeatures": [
+      "TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA",
+      "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256"
+    ],
     "description": "An updated TLS Inspection Policy to decrypt traffic",
     "excludePublicCaSet": true,
-    "minTlsVersion": "TLS_1_2",
+    "minTlsVersion": "TLS_1_1",
     "name": "projects/${projectId}/locations/us-central1/tlsInspectionPolicies/tlsinspection-${uniqueId}",
-    "tlsFeatureProfile": "PROFILE_COMPATIBLE",
+    "tlsFeatureProfile": "PROFILE_CUSTOM",
+    "trustConfig": "projects/${projectId}/locations/us-central1/trustConfigs/trustconfig-dep-2",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
@@ -223,11 +236,16 @@ X-Xss-Protection: 0
 {
   "caPool": "projects/${projectId}/locations/us-central1/caPools/capool-dep-2",
   "createTime": "2024-04-01T12:34:56.123456Z",
+  "customTlsFeatures": [
+    "TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA",
+    "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256"
+  ],
   "description": "An updated TLS Inspection Policy to decrypt traffic",
   "excludePublicCaSet": true,
-  "minTlsVersion": 3,
+  "minTlsVersion": 2,
   "name": "projects/${projectId}/locations/us-central1/tlsInspectionPolicies/tlsinspection-${uniqueId}",
-  "tlsFeatureProfile": 1,
+  "tlsFeatureProfile": 4,
+  "trustConfig": "projects/${projectId}/locations/us-central1/trustConfigs/trustconfig-dep-2",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 

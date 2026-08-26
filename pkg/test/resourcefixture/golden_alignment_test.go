@@ -757,6 +757,12 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		if v["logConfig"] == nil {
 			delete(v, "logConfig")
 		}
+		if slice, ok := v["customTlsFeatures"].([]interface{}); ok && len(slice) == 0 {
+			delete(v, "customTlsFeatures")
+		}
+		if val, ok := v["trustConfig"].(string); ok && val == "" {
+			delete(v, "trustConfig")
+		}
 		if val, ok := v["icmpIdleTimeoutSec"].(float64); ok && val == 30 {
 			delete(v, "icmpIdleTimeoutSec")
 		}
