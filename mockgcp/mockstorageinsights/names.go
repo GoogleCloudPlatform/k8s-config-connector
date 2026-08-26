@@ -38,7 +38,7 @@ func (s *MockService) parseDatasetConfigName(name string) (*datasetConfigName, e
 	tokens := strings.Split(name, "/")
 
 	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "datasetConfigs" {
-		project, err := s.Projects.GetProjectByID(tokens[1])
+		project, err := s.Projects.GetProjectByIDOrNumber(tokens[1])
 		if err != nil {
 			return nil, err
 		}

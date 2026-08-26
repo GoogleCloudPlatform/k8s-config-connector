@@ -272,7 +272,7 @@ func (s *StorageInsightsServer) ListDatasetConfigs(ctx context.Context, req *pb.
 		return nil, status.Errorf(codes.InvalidArgument, "parent %q is not valid", req.Parent)
 	}
 
-	project, err := s.Projects.GetProjectByID(tokens[1])
+	project, err := s.Projects.GetProjectByIDOrNumber(tokens[1])
 	if err != nil {
 		return nil, err
 	}
