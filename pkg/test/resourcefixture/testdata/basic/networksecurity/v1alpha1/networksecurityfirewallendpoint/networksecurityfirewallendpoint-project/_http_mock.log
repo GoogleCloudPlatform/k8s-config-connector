@@ -306,17 +306,6 @@ X-Xss-Protection: 0
   },
   "name": "projects/${projectId}/locations/us-central1-a/operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.FirewallEndpoint",
-    "billingProjectId": "${projectId}",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "endpointSettings": {
-      "jumboFramesEnabled": true
-    },
-    "labels": {
-      "foo": "baz"
-    },
-    "name": "projects/${projectId}/locations/us-central1-a/firewallEndpoints/fwe-${uniqueId}",
-    "state": "ACTIVE",
-    "updateTime": "2024-04-01T12:34:56.123456Z"
+    "@type": "type.googleapis.com/google.protobuf.Empty"
   }
 }

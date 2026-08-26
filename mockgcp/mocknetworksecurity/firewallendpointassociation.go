@@ -20,6 +20,8 @@ import (
 	"strings"
 	"time"
 
+	"google.golang.org/protobuf/types/known/emptypb"
+
 	pbv1 "cloud.google.com/go/networksecurity/apiv1/networksecuritypb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
@@ -44,9 +46,17 @@ func (s *FirewallActivationServer) CreateFirewallEndpointAssociation(ctx context
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(time.Now())
 	obj.UpdateTime = timestamppb.New(time.Now())
-	obj.State = pbv1.FirewallEndpointAssociation_ACTIVE
+	if obj.Disabled == true {
+		obj.State = pbv1.FirewallEndpointAssociation_INACTIVE
+	} else {
+		obj.State = pbv1.FirewallEndpointAssociation_ACTIVE
+	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	if err := s.MockService.updateFirewallEndpoint(ctx, req.FirewallEndpointAssociation.GetFirewallEndpoint(), req.FirewallEndpointAssociation.GetNetwork(), fqn); err != nil {
 		return nil, err
 	}
 
@@ -61,6 +71,8 @@ func (s *FirewallActivationServer) CreateFirewallEndpointAssociation(ctx context
 	return s.operations.StartLRO(ctx, req.Parent, lroMetadata, func() (protoreflect.ProtoMessage, error) {
 		lroMetadata.EndTime = timestamppb.New(time.Now())
 		result := proto.CloneOf(obj)
+		// labels field does not populate in operation
+		obj.Labels = nil
 		return result, nil
 	})
 }
@@ -116,6 +128,12 @@ func (s *FirewallActivationServer) UpdateFirewallEndpointAssociation(ctx context
 		}
 	}
 
+	if updated.Disabled == true {
+		updated.State = pbv1.FirewallEndpointAssociation_INACTIVE
+	} else {
+		updated.State = pbv1.FirewallEndpointAssociation_ACTIVE
+	}
+
 	if err := s.storage.Update(ctx, name.String(), updated); err != nil {
 		return nil, err
 	}
@@ -130,6 +148,8 @@ func (s *FirewallActivationServer) UpdateFirewallEndpointAssociation(ctx context
 	}
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (protoreflect.ProtoMessage, error) {
 		lroMetadata.EndTime = timestamppb.New(time.Now())
+		// labels field does not populate in operation
+		updated.Labels = nil
 		return updated, nil
 	})
 }
@@ -160,7 +180,7 @@ func (s *FirewallActivationServer) DeleteFirewallEndpointAssociation(ctx context
 	}
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (protoreflect.ProtoMessage, error) {
 		lroMetadata.EndTime = timestamppb.New(time.Now())
-		return obj, nil
+		return &emptypb.Empty{}, nil
 	})
 }
 

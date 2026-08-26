@@ -20,6 +20,8 @@ import (
 	"strings"
 	"time"
 
+	"google.golang.org/protobuf/types/known/emptypb"
+
 	pbv1 "cloud.google.com/go/networksecurity/apiv1/networksecuritypb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
 	longrunningpb "google.golang.org/genproto/googleapis/longrunning"
@@ -221,7 +223,7 @@ func (s *FirewallActivationServer) deleteFirewallEndpoint(ctx context.Context, r
 	}
 	return s.operations.StartLRO(ctx, lroPrefix, lroMetadata, func() (protoreflect.ProtoMessage, error) {
 		lroMetadata.EndTime = timestamppb.New(time.Now())
-		return obj, nil
+		return &emptypb.Empty{}, nil
 	})
 }
 
@@ -263,4 +265,22 @@ func (s *MockService) parseFirewallEndpointName(name string) (*firewallEndpointN
 	}
 	// Return invalid argument if the name does not match project-level or organization-level formats.
 	return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+}
+
+func (s *MockService) updateFirewallEndpoint(ctx context.Context, endpointName string, network string, associationName string) error {
+	endpoint := &pbv1.FirewallEndpoint{}
+	if err := s.storage.Get(ctx, endpointName, endpoint); err != nil {
+		return err
+	}
+
+	endpoint.AssociatedNetworks = append(endpoint.AssociatedNetworks, network)
+	endpoint.Associations = append(endpoint.Associations, &pbv1.FirewallEndpoint_AssociationReference{
+		Name:    associationName,
+		Network: network,
+	})
+
+	if err := s.storage.Update(ctx, endpointName, endpoint); err != nil {
+		return err
+	}
+	return nil
 }

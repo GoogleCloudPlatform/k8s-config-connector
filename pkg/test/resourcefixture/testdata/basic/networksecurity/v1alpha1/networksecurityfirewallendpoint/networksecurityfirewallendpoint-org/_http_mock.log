@@ -2,6 +2,7 @@ GET https://networksecurity.googleapis.com/v1/organizations/${organizationID}/lo
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=organizations%2F${organizationID}%2Flocations%2Fus-central1-a%2FfirewallEndpoints%2Ffwe-${uniqueId}
+X-Goog-User-Project: ${projectId}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -27,6 +28,7 @@ POST https://networksecurity.googleapis.com/v1/organizations/${organizationID}/l
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: parent=organizations%2F${organizationID}%2Flocations%2Fus-central1-a
+X-Goog-User-Project: ${projectId}
 
 {
   "billingProjectId": "${projectId}",
@@ -67,6 +69,7 @@ GET https://networksecurity.googleapis.com/v1/organizations/${organizationID}/lo
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=organizations%2F${organizationID}%2Flocations%2Fus-central1-a%2Foperations%2F${operationID}
+X-Goog-User-Project: ${projectId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -111,6 +114,7 @@ GET https://networksecurity.googleapis.com/v1/organizations/${organizationID}/lo
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=organizations%2F${organizationID}%2Flocations%2Fus-central1-a%2FfirewallEndpoints%2Ffwe-${uniqueId}
+X-Goog-User-Project: ${projectId}-2
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -142,6 +146,7 @@ PATCH https://networksecurity.googleapis.com/v1/organizations/${organizationID}/
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: firewall_endpoint.name=organizations%2F${organizationID}%2Flocations%2Fus-central1-a%2FfirewallEndpoints%2Ffwe-${uniqueId}
+X-Goog-User-Project: ${projectId}-2
 
 {
   "billingProjectId": "${projectId}-2",
@@ -181,6 +186,7 @@ GET https://networksecurity.googleapis.com/v1/organizations/${organizationID}/lo
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=organizations%2F${organizationID}%2Flocations%2Fus-central1-a%2Foperations%2F${operationID}
+X-Goog-User-Project: ${projectId}-2
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -225,6 +231,7 @@ GET https://networksecurity.googleapis.com/v1/organizations/${organizationID}/lo
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=organizations%2F${organizationID}%2Flocations%2Fus-central1-a%2FfirewallEndpoints%2Ffwe-${uniqueId}
+X-Goog-User-Project: ${projectId}-2
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -256,6 +263,7 @@ DELETE https://networksecurity.googleapis.com/v1/organizations/${organizationID}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=organizations%2F${organizationID}%2Flocations%2Fus-central1-a%2FfirewallEndpoints%2Ffwe-${uniqueId}
+X-Goog-User-Project: ${projectId}-2
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -284,6 +292,7 @@ GET https://networksecurity.googleapis.com/v1/organizations/${organizationID}/lo
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=organizations%2F${organizationID}%2Flocations%2Fus-central1-a%2Foperations%2F${operationID}
+X-Goog-User-Project: ${projectId}-2
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -307,17 +316,6 @@ X-Xss-Protection: 0
   },
   "name": "organizations/${organizationID}/locations/us-central1-a/operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/google.cloud.networksecurity.v1.FirewallEndpoint",
-    "billingProjectId": "${projectId}-2",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "endpointSettings": {
-      "jumboFramesEnabled": true
-    },
-    "labels": {
-      "foo": "baz"
-    },
-    "name": "organizations/${organizationID}/locations/us-central1-a/firewallEndpoints/fwe-${uniqueId}",
-    "state": "ACTIVE",
-    "updateTime": "2024-04-01T12:34:56.123456Z"
+    "@type": "type.googleapis.com/google.protobuf.Empty"
   }
 }
