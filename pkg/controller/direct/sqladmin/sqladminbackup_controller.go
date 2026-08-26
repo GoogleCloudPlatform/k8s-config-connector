@@ -67,7 +67,6 @@ type sqlAdminBackupAdapter struct {
 	desired *pb.BackupRun
 	actual  *pb.BackupRun
 
-	sqladminService     *api.Service
 	sqlBackupRunsClient *api.BackupRunsService
 	sqlOperationsClient *api.OperationsService
 }
@@ -120,7 +119,6 @@ func (m *sqlAdminBackupModel) AdapterForObject(ctx context.Context, op *directba
 		projectID:           projectID,
 		instanceID:          instanceID,
 		desired:             desiredProto,
-		sqladminService:     service,
 		sqlBackupRunsClient: api.NewBackupRunsService(service),
 		sqlOperationsClient: api.NewOperationsService(service),
 	}
@@ -139,14 +137,6 @@ func (m *sqlAdminBackupModel) AdapterForObject(ctx context.Context, op *directba
 	}
 
 	return adapter, nil
-}
-
-func parseInstanceID(ref string) string {
-	if ref == "" {
-		return ""
-	}
-	parts := strings.Split(ref, "/")
-	return parts[len(parts)-1]
 }
 
 func (a *sqlAdminBackupAdapter) Find(ctx context.Context) (bool, error) {
@@ -185,14 +175,15 @@ func (a *sqlAdminBackupAdapter) Create(ctx context.Context, op *directbase.Creat
 		return fmt.Errorf("inserting backup run: %w", err)
 	}
 
-	if err := a.pollForLROCompletion(ctx, insertOp, "create"); err != nil {
+	completedOp, err := a.pollForLROCompletion(ctx, insertOp, "create")
+	if err != nil {
 		return err
 	}
 
-	if insertOp.BackupContext == nil {
+	if completedOp.BackupContext == nil {
 		return fmt.Errorf("operation completed but BackupContext is nil")
 	}
-	backupID := insertOp.BackupContext.BackupId
+	backupID := completedOp.BackupContext.BackupId
 	if backupID == 0 {
 		return fmt.Errorf("operation completed but BackupId is 0")
 	}
@@ -255,7 +246,7 @@ func (a *sqlAdminBackupAdapter) Delete(ctx context.Context, op *directbase.Delet
 		return false, fmt.Errorf("deleting backup run %d: %w", a.backupID, err)
 	}
 
-	if err := a.pollForLROCompletion(ctx, deleteOp, "delete"); err != nil {
+	if _, err := a.pollForLROCompletion(ctx, deleteOp, "delete"); err != nil {
 		if direct.IsNotFound(err) {
 			return true, nil
 		}
@@ -301,7 +292,7 @@ func (a *sqlAdminBackupAdapter) Export(ctx context.Context) (*unstructured.Unstr
 	return u, nil
 }
 
-func (a *sqlAdminBackupAdapter) pollForLROCompletion(ctx context.Context, op *api.Operation, verb string) error {
+func (a *sqlAdminBackupAdapter) pollForLROCompletion(ctx context.Context, op *api.Operation, verb string) (*api.Operation, error) {
 	log := klog.FromContext(ctx)
 	var err error
 
@@ -317,19 +308,19 @@ func (a *sqlAdminBackupAdapter) pollForLROCompletion(ctx context.Context, op *ap
 			break
 		}
 		if err := gax.Sleep(ctx, pollingBackoff.Pause()); err != nil {
-			return fmt.Errorf("waiting for SQLAdminBackup %d %s failed: %w", a.backupID, verb, err)
+			return nil, fmt.Errorf("waiting for SQLAdminBackup %d %s failed: %w", a.backupID, verb, err)
 		}
 		op, err = a.sqlOperationsClient.Get(a.projectID, op.Name).Do()
 		if err != nil {
-			return fmt.Errorf("getting SQLAdminBackup %d %s operation %s failed: %w", a.backupID, verb, op.Name, err)
+			return nil, fmt.Errorf("getting SQLAdminBackup %d %s operation %s failed: %w", a.backupID, verb, op.Name, err)
 		}
 	}
 
 	if op.Error != nil && len(op.Error.Errors) > 0 {
-		return fmt.Errorf("SQLAdminBackup %d %s operation %s failed: %v", a.backupID, verb, op.Name, op.Error.Errors[0].Message)
+		return nil, fmt.Errorf("SQLAdminBackup %d %s operation %s failed: %v", a.backupID, verb, op.Name, op.Error.Errors[0].Message)
 	}
 
-	return nil
+	return op, nil
 }
 
 func (a *sqlAdminBackupAdapter) updateStatus(ctx context.Context, op directbase.Operation, externalRef string, latest *pb.BackupRun) error {
