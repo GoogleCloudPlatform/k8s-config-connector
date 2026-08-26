@@ -134,7 +134,6 @@ cloudiot.cnrm.cloud.google.com,CloudIOTDevice,True,False,False,Terraform,False
 cloudscheduler.cnrm.cloud.google.com,CloudSchedulerJob,False,True,False,DCL,False
 cloudsecuritycompliance.cnrm.cloud.google.com,CloudSecurityComplianceCloudControl,True,False,False,Direct,True
 cloudsecuritycompliance.cnrm.cloud.google.com,CloudSecurityComplianceFramework,True,False,False,Direct,True
-cloudsecuritycompliance.cnrm.cloud.google.com,CloudSecurityFramework,True,False,False,Direct,True
 cloudtalentsolution.cnrm.cloud.google.com,CloudTalentSolutionCompany,True,False,False,Direct,True
 colab.cnrm.cloud.google.com,ColabRuntime,True,False,False,Direct,True
 colab.cnrm.cloud.google.com,ColabRuntimeTemplate,True,False,False,Direct,True
@@ -304,7 +303,6 @@ discoveryengine.cnrm.cloud.google.com,DiscoveryEngineEngine,True,False,False,Dir
 discoveryengine.cnrm.cloud.google.com,DiscoveryEngineIdentityMappingStore,True,False,False,Direct,True
 discoveryengine.cnrm.cloud.google.com,DiscoveryEngineLicenseConfig,True,False,False,Direct,True
 discoveryengine.cnrm.cloud.google.com,DiscoveryEngineSampleQuerySet,True,False,False,Direct,True
-discoveryengine.cnrm.cloud.google.com,DiscoveryEngineSearchEngine,True,False,False,Direct,True
 discoveryengine.cnrm.cloud.google.com,DiscoveryEngineServingConfig,True,False,False,Direct,True
 discoveryengine.cnrm.cloud.google.com,DiscoveryEngineSession,True,False,False,Direct,True
 discoveryengine.cnrm.cloud.google.com,DiscoveryEngineUserStore,True,False,False,Direct,True

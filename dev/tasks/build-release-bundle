@@ -125,7 +125,6 @@ BLOCKED_KINDS=(
     "CloudSecurityComplianceCloudControl"
     "CloudSecurityComplianceFramework"
     "CloudSecurityComplianceFrameworkDeployment"
-    "CloudSecurityFramework"
     "CloudTalentSolutionCompany"
     "CloudTasksQueue"
     "ConfigDeliveryFleetPackage"
