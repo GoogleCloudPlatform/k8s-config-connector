@@ -33,6 +33,11 @@ This skill guides the implementation of the `Adapter` interface and the creation
 
 4.  **Record Golden Files (Real GCP)**:
     Run the tests against real GCP to record the traffic and object state. Ensure you use a sufficient timeout (e.g., 30-60 minutes) as GCP resource creation can be slow:
+
+    > [!WARNING]
+    > **WHENEVER A TEST CASE IS UPDATED, WE MUST RECORD REAL GCP LOGS AGAIN.**
+    > If you make any modifications to a test case configuration, manifest files (such as `create.yaml`, `update.yaml`, or `dependencies.yaml`), or the controller's runtime mapping configuration, you **MUST** run the test case against real GCP (`hack/record-gcp` or with `E2E_GCP_TARGET=real`) to regenerate the authentic `_http.log` baseline before comparing or committing any mock log changes. Do not attempt to manually edit the logs or bypass recording live traffic.
+
     ```bash
     # Run from the repository root
     RUN_E2E=1 \

@@ -29,6 +29,11 @@ This skill guides you through implementing Phase 3 (MockGCP and Alignment) for a
 
 ### 3. Incremental Mock Alignment
 - Run `hack/compare-mock "fixtures/^<testname>$"` to execute the tests against the mock implementation.
+
+  > [!WARNING]
+  > **WHENEVER A TEST CASE IS UPDATED, WE MUST RECORD REAL GCP LOGS AGAIN.**
+  > If you make any modifications to a test case configuration, manifest files (such as `create.yaml`, `update.yaml`, or `dependencies.yaml`), or the controller's runtime mapping configuration, you **MUST** run the test case against real GCP (`hack/record-gcp` or with `E2E_GCP_TARGET=real`) to regenerate the authentic `_http.log` baseline before comparing or committing any mock log changes. Do not attempt to manually edit the logs or bypass recording live traffic.
+
 - Use the `fix-diffs-mockgcp` skill (`mockgcp/.gemini/skills/fix-diffs-mockgcp/SKILL.md`) to align the mock logs with the real GCP output:
   - **Output-Only Fields/IDs**: If real GCP produces dynamic values that mockgcp lacks, implement a `populate<ResourceKind>Defaults` function in `mockgcp/mock<service_name>/<kind_lowercase>.go` called on `Insert` and `Get` to match the required format.
   - **Volatile/Random Values**: For values like timestamps or etags that are functionally identical but structurally unpredictable, update `normalize.go` for the service.
