@@ -58,6 +58,12 @@
 *   `VertexAIExampleStore`
     *   Manage [Vertex AI example stores](https://cloud.google.com/vertex-ai/docs) for managing example data.
 
+## New features:
+
+*   Introduce `cnrm.cloud.google.com/remove-default-node-pool-allow-node-config` annotation in `ContainerCluster` in addition to `cnrm.cloud.google.com/remove-default-node-pool` annotation.
+  * This allows setting a field like `spec.nodeConfig` while allowing KCC to subsequently remove it after removing the default pool to align with the recommended practice.
+  * This is specifically intended for scenarios where defining `spec.nodeConfig` is necessary to satisfy organizational policy or system requirements during initial cluster provisioning.
+
 ## New Fields:
 
 *   [`ContainerCluster`](https://cloud.google.com/config-connector/docs/reference/resource-docs/container/containercluster)
