@@ -233,7 +233,6 @@
 | container.cnrm.cloud.google.com                | ContainerNodePool                                        | False        | True        | False  | Terraform  | True        |
 | contentwarehouse.cnrm.cloud.google.com         | ContentWarehouseDocument                                 | True         | False       | False  | Direct     | True        |
 | contentwarehouse.cnrm.cloud.google.com         | ContentWarehouseRuleSet                                  | True         | False       | False  | Direct     | True        |
-| contentwarehouse.cnrm.cloud.google.com         | ContentWarehouseSchema                                   | True         | False       | False  | Direct     | True        |
 | contentwarehouse.cnrm.cloud.google.com         | ContentWarehouseSynonymSet                               | True         | False       | False  | Direct     | True        |
 | datamigration.cnrm.cloud.google.com            | DatabaseMigrationConversionWorkspace                     | True         | False       | False  | Direct     | True        |
 | datamigration.cnrm.cloud.google.com            | DatabaseMigrationMigrationJob                            | True         | False       | False  | Direct     | True        |
@@ -307,7 +306,6 @@
 | discoveryengine.cnrm.cloud.google.com          | DiscoveryEngineIdentityMappingStore                      | True         | False       | False  | Direct     | True        |
 | discoveryengine.cnrm.cloud.google.com          | DiscoveryEngineLicenseConfig                             | True         | False       | False  | Direct     | True        |
 | discoveryengine.cnrm.cloud.google.com          | DiscoveryEngineSampleQuerySet                            | True         | False       | False  | Direct     | True        |
-| discoveryengine.cnrm.cloud.google.com          | DiscoveryEngineSearchEngine                              | True         | False       | False  | Direct     | True        |
 | discoveryengine.cnrm.cloud.google.com          | DiscoveryEngineServingConfig                             | True         | False       | False  | Direct     | True        |
 | discoveryengine.cnrm.cloud.google.com          | DiscoveryEngineSession                                   | True         | False       | False  | Direct     | True        |
 | discoveryengine.cnrm.cloud.google.com          | DiscoveryEngineUserStore                                 | True         | False       | False  | Direct     | True        |

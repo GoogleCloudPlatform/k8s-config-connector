@@ -134,7 +134,6 @@ BLOCKED_KINDS=(
     "ContactCenterInsightsConversation"
     "ContentWarehouseDocument"
     "ContentWarehouseRuleSet"
-    "ContentWarehouseSchema"
     "ContentWarehouseSynonymSet"
     "DatabaseMigrationConnectionProfile"
     "DatabaseMigrationConversionWorkspace"
