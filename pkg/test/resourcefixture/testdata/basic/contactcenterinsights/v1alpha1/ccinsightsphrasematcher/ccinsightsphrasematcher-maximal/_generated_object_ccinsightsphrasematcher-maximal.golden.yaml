@@ -36,7 +36,7 @@ status:
   externalRef: projects/${projectId}/locations/us-central1/phraseMatchers/phrasematcher-maximal-${uniqueId}
   observedGeneration: 2
   observedState:
-    activationUpdateTime: "2026-08-26T00:44:39.769236981Z"
+    activationUpdateTime: "2024-04-01T12:34:56.123456Z"
     revisionCreateTime: "2024-04-01T12:34:56.123456Z"
     revisionID: rev-87654321
     updateTime: "1970-01-01T00:00:00Z"

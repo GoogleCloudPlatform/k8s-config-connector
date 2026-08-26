@@ -24,7 +24,7 @@ status:
   externalRef: projects/${projectId}/locations/us-central1/phraseMatchers/phrasematcher-minimal-${uniqueId}
   observedGeneration: 1
   observedState:
-    activationUpdateTime: "2026-08-26T00:43:28.751453884Z"
+    activationUpdateTime: "2024-04-01T12:34:56.123456Z"
     revisionCreateTime: "2024-04-01T12:34:56.123456Z"
     revisionID: rev-12345678
     updateTime: "1970-01-01T00:00:00Z"
