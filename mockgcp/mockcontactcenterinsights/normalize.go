@@ -33,6 +33,15 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.ReplacePath(".createTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".updateTime", mockgcpregistry.PlaceholderTimestamp)
 
+	replacements.ReplacePath("revisionCreateTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath("activationUpdateTime", mockgcpregistry.PlaceholderTimestamp)
+
+	replacements.ReplacePath(".revisionCreateTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".activationUpdateTime", mockgcpregistry.PlaceholderTimestamp)
+
+	replacements.ReplacePath("revisionId", "rev-12345678")
+	replacements.ReplacePath(".revisionId", "rev-12345678")
+
 	replacements.RemovePath("source")
 	replacements.RemovePath(".source")
 	replacements.RemovePath(".response.source")
