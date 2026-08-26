@@ -155,11 +155,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "datasetConfig \"projects/${projectId}/locations/us-central1/datasetConfigs/datasetconfigmax${uniqueId}\" not found",
+        "message": "Resource 'projects/${projectId}/locations/us-central1/datasetConfigs/datasetconfigmax${uniqueId}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "datasetConfig \"projects/${projectId}/locations/us-central1/datasetConfigs/datasetconfigmax${uniqueId}\" not found",
+    "message": "Resource 'projects/${projectId}/locations/us-central1/datasetConfigs/datasetconfigmax${uniqueId}' was not found",
     "status": "NOT_FOUND"
   }
 }

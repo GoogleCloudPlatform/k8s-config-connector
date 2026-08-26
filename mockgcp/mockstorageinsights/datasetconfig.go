@@ -33,7 +33,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 	testgcp "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/gcp"
 	"google.golang.org/genproto/googleapis/longrunning"
-	apierrors "k8s.io/apimachinery/pkg/api/errors"
 )
 
 type StorageInsightsServer struct {
@@ -54,12 +53,14 @@ func getUUID(name string) string {
 
 func getOrganizationNumber() int64 {
 	folderID := testgcp.TestFolderID.Get()
+	folderID = strings.TrimPrefix(folderID, "folders/")
 	if folderID != "" {
 		if val, err := strconv.ParseInt(folderID, 10, 64); err == nil {
 			return val
 		}
 	}
 	orgID := testgcp.TestOrgID.Get()
+	orgID = strings.TrimPrefix(orgID, "organizations/")
 	if orgID != "" {
 		if val, err := strconv.ParseInt(orgID, 10, 64); err == nil {
 			return val
@@ -81,7 +82,7 @@ func (s *StorageInsightsServer) GetDatasetConfig(ctx context.Context, req *pb.Ge
 
 	obj := &pb.DatasetConfig{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
-		if apierrors.IsNotFound(err) {
+		if status.Code(err) == codes.NotFound {
 			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
 		}
 		return nil, err
@@ -129,7 +130,7 @@ func (s *StorageInsightsServer) CreateDatasetConfig(ctx context.Context, req *pb
 		saPrefix = saPrefix[:15]
 	}
 
-	obj.Uid = "0123456789abcdef"
+	obj.Uid = "111111111111111111111"
 	obj.DatasetConfigState = pb.DatasetConfig_CONFIG_STATE_ACTIVE
 
 	identityType := pb.Identity_IDENTITY_TYPE_PER_CONFIG
@@ -181,7 +182,7 @@ func (s *StorageInsightsServer) UpdateDatasetConfig(ctx context.Context, req *pb
 
 	existing := &pb.DatasetConfig{}
 	if err := s.storage.Get(ctx, fqn, existing); err != nil {
-		if apierrors.IsNotFound(err) {
+		if status.Code(err) == codes.NotFound {
 			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
 		}
 		return nil, err
@@ -241,7 +242,7 @@ func (s *StorageInsightsServer) DeleteDatasetConfig(ctx context.Context, req *pb
 	fqn := name.String()
 	oldObj := &pb.DatasetConfig{}
 	if err := s.storage.Delete(ctx, fqn, oldObj); err != nil {
-		if apierrors.IsNotFound(err) {
+		if status.Code(err) == codes.NotFound {
 			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
 		}
 		return nil, err

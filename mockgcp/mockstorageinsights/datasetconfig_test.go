@@ -68,67 +68,60 @@ func TestListDatasetConfigsPagination(t *testing.T) {
 	server := svc.storageInsightsServer
 
 	tests := []struct {
-		name           string
-		pageSize       int32
-		pageToken      string
-		expectedLen    int
-		expectedNext   string
-		expectedCode   codes.Code
-		shouldNotPanic bool
+		name         string
+		pageSize     int32
+		pageToken    string
+		expectedLen  int
+		expectedNext string
+		expectedCode codes.Code
 	}{
 		{
-			name:           "default page size and empty token",
-			pageSize:       0,
-			pageToken:      "",
-			expectedLen:    5,
-			expectedNext:   "",
-			expectedCode:   codes.OK,
-			shouldNotPanic: true,
+			name:         "default page size and empty token",
+			pageSize:     0,
+			pageToken:    "",
+			expectedLen:  5,
+			expectedNext: "",
+			expectedCode: codes.OK,
 		},
 		{
-			name:           "page size 2 and empty token",
-			pageSize:       2,
-			pageToken:      "",
-			expectedLen:    2,
-			expectedNext:   "2",
-			expectedCode:   codes.OK,
-			shouldNotPanic: true,
+			name:         "page size 2 and empty token",
+			pageSize:     2,
+			pageToken:    "",
+			expectedLen:  2,
+			expectedNext: "2",
+			expectedCode: codes.OK,
 		},
 		{
-			name:           "page size 2 and token 2",
-			pageSize:       2,
-			pageToken:      "2",
-			expectedLen:    2,
-			expectedNext:   "4",
-			expectedCode:   codes.OK,
-			shouldNotPanic: true,
+			name:         "page size 2 and token 2",
+			pageSize:     2,
+			pageToken:    "2",
+			expectedLen:  2,
+			expectedNext: "4",
+			expectedCode: codes.OK,
 		},
 		{
-			name:           "negative page token (should not panic, clamp to 0)",
-			pageSize:       2,
-			pageToken:      "-3",
-			expectedLen:    2,
-			expectedNext:   "2",
-			expectedCode:   codes.OK,
-			shouldNotPanic: true,
+			name:         "negative page token (should not panic, clamp to 0)",
+			pageSize:     2,
+			pageToken:    "-3",
+			expectedLen:  2,
+			expectedNext: "2",
+			expectedCode: codes.OK,
 		},
 		{
-			name:           "extremely large page token (should not panic, clamp to end)",
-			pageSize:       2,
-			pageToken:      "100",
-			expectedLen:    0,
-			expectedNext:   "",
-			expectedCode:   codes.OK,
-			shouldNotPanic: true,
+			name:         "extremely large page token (should not panic, clamp to end)",
+			pageSize:     2,
+			pageToken:    "100",
+			expectedLen:  0,
+			expectedNext: "",
+			expectedCode: codes.OK,
 		},
 		{
-			name:           "invalid non-integer page token (should return error)",
-			pageSize:       2,
-			pageToken:      "abc",
-			expectedLen:    0,
-			expectedNext:   "",
-			expectedCode:   codes.InvalidArgument,
-			shouldNotPanic: true,
+			name:         "invalid non-integer page token (should return error)",
+			pageSize:     2,
+			pageToken:    "abc",
+			expectedLen:  0,
+			expectedNext: "",
+			expectedCode: codes.InvalidArgument,
 		},
 	}
 
@@ -140,24 +133,7 @@ func TestListDatasetConfigsPagination(t *testing.T) {
 				PageToken: tc.pageToken,
 			}
 
-			var resp *pb.ListDatasetConfigsResponse
-			var err error
-
-			didPanic := true
-			func() {
-				defer func() {
-					if r := recover(); r != nil {
-						didPanic = true
-					} else {
-						didPanic = false
-					}
-				}()
-				resp, err = server.ListDatasetConfigs(ctx, req)
-			}()
-
-			if tc.shouldNotPanic && didPanic {
-				t.Fatalf("test case panicked when it should not have")
-			}
+			resp, err := server.ListDatasetConfigs(ctx, req)
 
 			if tc.expectedCode != codes.OK {
 				if err == nil {

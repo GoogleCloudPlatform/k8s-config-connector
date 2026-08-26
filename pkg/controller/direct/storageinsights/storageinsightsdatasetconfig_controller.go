@@ -207,7 +207,7 @@ func (a *storageInsightsDatasetConfigAdapter) Update(ctx context.Context, update
 	structuredreporting.ReportDiff(ctx, diffs)
 
 	clonedDesired := proto.CloneOf(a.desired)
-	if clonedDesired.OrganizationNumber == 0 && a.actual.OrganizationNumber != 0 {
+	if clonedDesired.OrganizationNumber == 0 && a.actual != nil && a.actual.OrganizationNumber != 0 {
 		clonedDesired.OrganizationNumber = a.actual.OrganizationNumber
 	}
 
