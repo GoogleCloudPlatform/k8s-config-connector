@@ -90,7 +90,7 @@ Open a GitHub issue to coordinate the implementation of direct KRM types, identi
 *   **Assignee:** (leave unassigned or assign to the current bot)
 *   **Labels:** `overseer`, `greenfield`,`step/gen-types`, `overseer/review`
 *   **Body:**
-    ```
+    ````
     Please follow the skill `.gemini/skills/kcc-direct-greenfield-types-implementer/SKILL.md` for generating types for {kind}.
     Please follow the skill `.gemini/skills/kcc-identity-reference/SKILL.md` for generating identity for {kind}.
 
@@ -100,9 +100,14 @@ Open a GitHub issue to coordinate the implementation of direct KRM types, identi
 
     If you find any shortcomings in the skill (that likely apply to other resources), you may update SKILL.md. Also keep a journal of any less general observations etc. To avoid git merge conflicts, use a file under .gemini/skills/kcc-direct-greenfield-types-implementer/journal/, named after the kind or a similarly unique name. You may grep journal entries to identify learnings from other resources; if you find an important pattern by doing that you may also update the SKILL.md itself.
 
+    When creating the PR, include the release note block set to NONE:
+    ```release-note
+    NONE
+    ```
+
     ## Review Instructions
     Use .gemini/skills/reviewgen-greenfield-new-types/SKILL.md to conduct the review.
-    ```
+    ````
 
 ### Step 2: Direct Controller, E2E fixtures and Fuzzer
 
@@ -113,14 +118,19 @@ Open a GitHub issue to coordinate the implementation of the direct controller an
 *   **Assignee:** (leave unassigned or assign to the current bot)
 *   **Labels:** `overseer`, `greenfield`, `step/controller` `overseer/review`
 *   **Body:**
-    ```
+    ````
     Please follow the skill `.gemini/skills/kcc-direct-controller-logic-greenfield-implementer/SKILL.md` to implement the direct controller and record/verify E2E fixtures for {kind}.
 
     If you find any shortcomings in this skill (that likely apply to other resources), you may update it. Also keep a journal of any less general observations etc. To avoid git merge conflicts, use a file under its respective journal/ folder, named after the kind or a similarly unique name.
 
+    When creating the PR, include the release note block set to NONE:
+    ```release-note
+    NONE
+    ```
+
     ## Review Instructions
     Use .gemini/skills/reviewgen-greenfield-controller/SKILL.md to conduct the review.
-    ```
+    ````
 
 ### Step 3: mockGCP generation
 
@@ -131,9 +141,14 @@ Open a GitHub issue to coordinate the implementation of the mockGCP for a specif
 *   **Assignee:** (leave unassigned or assign to the current bot)
 *   **Labels:** `overseer`, `greenfield`,`step/mockgcp`
 *   **Body:**
-    ```
+    ````
     Please follow the skill `.gemini/skills/kcc-direct-mockgcp-implementer/SKILL.md` to implement Phase 3 (MockGCP and Alignment) for {kind} to verify behavioral correctness against the simulated GCP services.
+
+    When creating the PR, include the release note block for adding new alpha resources:
+    ```release-note
+    New Alpha Resources (Direct Reconciler): `{kind}`
     ```
+    ````
 
 ### Step 4: MockGCP Alignment with RealGCP
 
@@ -144,6 +159,12 @@ Open a GitHub issue to coordinate the alignment of MockGCP logs with RealGCP out
 *   **Assignee:** (leave unassigned or assign to the current bot)
 *   **Labels:** `overseer`, `greenfield`, `step/mockgcp-alignment`
 *   **Body:**
-    ```
+    ````
     Please follow the skill `.gemini/skills/match-mockgcp-with-realgcp/SKILL.md` to align the MockGCP logs with the RealGCP output for {kind}.
+
+    When creating the PR, include the release note block set to NONE:
+    ```release-note
+    NONE
     ```
+    ````
+
