@@ -1,0 +1,282 @@
+GET https://contactcenterinsights.googleapis.com/v1/projects/${projectId}/locations/us-central1/phraseMatchers/phrasematcher-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FphraseMatchers%2Fphrasematcher-maximal-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "No PhraseMatcher found for name projects/${projectNumber}/locations/us-central1/phraseMatchers/phrasematcher-maximal-${uniqueId}.",
+        "reason": "notFound"
+      }
+    ],
+    "message": "No PhraseMatcher found for name projects/${projectNumber}/locations/us-central1/phraseMatchers/phrasematcher-maximal-${uniqueId}.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://contactcenterinsights.googleapis.com/v1/projects/${projectId}/locations/us-central1/phraseMatchers?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "active": true,
+  "displayName": "Maximal Phrase Matcher ${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/phraseMatchers/phrasematcher-maximal-${uniqueId}",
+  "phraseMatchRuleGroups": [
+    {
+      "phraseMatchRules": [
+        {
+          "config": {
+            "exactMatchConfig": {
+              "caseSensitive": true
+            }
+          },
+          "query": "hello"
+        },
+        {
+          "negated": true,
+          "query": "world"
+        }
+      ],
+      "type": 2
+    }
+  ],
+  "roleMatch": 3,
+  "type": 1,
+  "versionTag": "v1"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "activationUpdateTime": "2024-04-01T12:34:56.123456Z",
+  "active": true,
+  "displayName": "Maximal Phrase Matcher ${uniqueId}",
+  "name": "projects/${projectNumber}/locations/us-central1/phraseMatchers/phrasematcher-maximal-${uniqueId}",
+  "phraseMatchRuleGroups": [
+    {
+      "phraseMatchRules": [
+        {
+          "config": {
+            "exactMatchConfig": {
+              "caseSensitive": true
+            }
+          },
+          "query": "hello"
+        },
+        {
+          "negated": true,
+          "query": "world"
+        }
+      ],
+      "type": 2
+    }
+  ],
+  "revisionCreateTime": "2024-04-01T12:34:56.123456Z",
+  "revisionId": "rev-12345678",
+  "roleMatch": 3,
+  "type": 1,
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "versionTag": "v1"
+}
+
+---
+
+GET https://contactcenterinsights.googleapis.com/v1/projects/${projectId}/locations/us-central1/phraseMatchers/phrasematcher-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FphraseMatchers%2Fphrasematcher-maximal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "activationUpdateTime": "2024-04-01T12:34:56.123456Z",
+  "active": true,
+  "displayName": "Maximal Phrase Matcher ${uniqueId}",
+  "name": "projects/${projectNumber}/locations/us-central1/phraseMatchers/phrasematcher-maximal-${uniqueId}",
+  "phraseMatchRuleGroups": [
+    {
+      "phraseMatchRules": [
+        {
+          "config": {
+            "exactMatchConfig": {
+              "caseSensitive": true
+            }
+          },
+          "query": "hello"
+        },
+        {
+          "negated": true,
+          "query": "world"
+        }
+      ],
+      "type": 2
+    }
+  ],
+  "revisionCreateTime": "2024-04-01T12:34:56.123456Z",
+  "revisionId": "rev-12345678",
+  "roleMatch": 3,
+  "type": 1,
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "versionTag": "v1"
+}
+
+---
+
+PATCH https://contactcenterinsights.googleapis.com/v1/projects/${projectId}/locations/us-central1/phraseMatchers/phrasematcher-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=active%2CdisplayName%2CphraseMatchRuleGroups%2CroleMatch%2Ctype%2CversionTag
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: phrase_matcher.name=projects%2F${projectId}%2Flocations%2Fus-central1%2FphraseMatchers%2Fphrasematcher-maximal-${uniqueId}
+
+{
+  "displayName": "Updated Maximal Phrase Matcher ${uniqueId}",
+  "name": "projects/${projectId}/locations/us-central1/phraseMatchers/phrasematcher-maximal-${uniqueId}",
+  "phraseMatchRuleGroups": [
+    {
+      "phraseMatchRules": [
+        {
+          "config": {
+            "exactMatchConfig": {}
+          },
+          "negated": true,
+          "query": "hi"
+        }
+      ],
+      "type": 1
+    }
+  ],
+  "roleMatch": 1,
+  "type": 2,
+  "versionTag": "v2"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "activationUpdateTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Updated Maximal Phrase Matcher ${uniqueId}",
+  "name": "projects/${projectNumber}/locations/us-central1/phraseMatchers/phrasematcher-maximal-${uniqueId}",
+  "phraseMatchRuleGroups": [
+    {
+      "phraseMatchRules": [
+        {
+          "config": {
+            "exactMatchConfig": {}
+          },
+          "negated": true,
+          "query": "hi"
+        }
+      ],
+      "type": 1
+    }
+  ],
+  "revisionCreateTime": "2024-04-01T12:34:56.123456Z",
+  "revisionId": "rev-12345678",
+  "roleMatch": 1,
+  "type": 2,
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "versionTag": "v2"
+}
+
+---
+
+GET https://contactcenterinsights.googleapis.com/v1/projects/${projectId}/locations/us-central1/phraseMatchers/phrasematcher-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FphraseMatchers%2Fphrasematcher-maximal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "activationUpdateTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Updated Maximal Phrase Matcher ${uniqueId}",
+  "name": "projects/${projectNumber}/locations/us-central1/phraseMatchers/phrasematcher-maximal-${uniqueId}",
+  "phraseMatchRuleGroups": [
+    {
+      "phraseMatchRules": [
+        {
+          "config": {
+            "exactMatchConfig": {}
+          },
+          "negated": true,
+          "query": "hi"
+        }
+      ],
+      "type": 1
+    }
+  ],
+  "revisionCreateTime": "2024-04-01T12:34:56.123456Z",
+  "revisionId": "rev-12345678",
+  "roleMatch": 1,
+  "type": 2,
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "versionTag": "v2"
+}
+
+---
+
+DELETE https://contactcenterinsights.googleapis.com/v1/projects/${projectId}/locations/us-central1/phraseMatchers/phrasematcher-maximal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FphraseMatchers%2Fphrasematcher-maximal-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
