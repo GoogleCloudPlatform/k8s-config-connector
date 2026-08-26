@@ -1,0 +1,28 @@
+apiVersion: sqladmin.cnrm.cloud.google.com/v1alpha1
+kind: SQLAdminBackup
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  labels:
+    cnrm-test: "true"
+  name: sqladminbackup-minimal-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  instanceRef:
+    name: sqlinstance-dep-${uniqueId}
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: 'Update call failed: error creating: inserting backup run: googleapi:
+      Error 403: Operation failed because you can only execute one backup operation
+      every 10 minutes. Last backup operation of this instance: 2026-08-26T02:22:44Z.
+      Try again after 2026-08-26T02:29:15Z., errorAdmissionControlQuotaExceeded'
+    reason: UpdateFailed
+    status: "False"
+    type: Ready
+  observedGeneration: 1
