@@ -252,13 +252,15 @@ def get_layer(patterns, ops):
     return "Not Manageable"
 
 def load_service_prefixes():
-    prefixes_file = os.path.join(os.path.dirname(__file__), "service_prefixes.json")
+    prefixes_file = os.path.join(os.path.dirname(__file__), "services_acronyms.json")
     if os.path.exists(prefixes_file):
         with open(prefixes_file, 'r') as f:
             return json.load(f)
     return {}
 
-service_prefixes = load_service_prefixes()
+service_prefixes_config = load_service_prefixes()
+service_prefixes = service_prefixes_config.get("prefixes", {})
+acronym_corrections = service_prefixes_config.get("acronyms", {})
 
 def get_predicted_kcc_kind(service, gcp_name):
     prefix = service_prefixes.get(service)
@@ -268,8 +270,15 @@ def get_predicted_kcc_kind(service, gcp_name):
 
     # Standardize names that start with a lowercase prefix to their proper CamelCase prefix
     if gcp_name.lower().startswith(prefix.lower()):
-        return prefix + gcp_name[len(prefix):]
-    return f"{prefix}{gcp_name}"
+        kind = prefix + gcp_name[len(prefix):]
+    else:
+        kind = f"{prefix}{gcp_name}"
+
+    # Apply global case-sensitive acronym and product corrections
+    for old_acr, new_acr in acronym_corrections.items():
+        kind = re.sub(fr'{old_acr}([A-Z]|$)', fr'{new_acr}\1', kind)
+
+    return kind
 
 def prepare_repo(repo_url, target_dir, sha):
     if not os.path.exists(target_dir):
