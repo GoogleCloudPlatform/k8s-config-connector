@@ -68,5 +68,8 @@ func firestoreFieldFuzzer() fuzztesting.KRMFuzzer {
 	f.StatusField(".index_config.indexes[].state")
 	f.StatusField(".ttl_config.state")
 
+	f.Unimplemented_NotYetTriaged(".index_config.indexes[].fields[].search_config")
+	f.Unimplemented_NotYetTriaged(".index_config.indexes[].search_index_options")
+
 	return f
 }
