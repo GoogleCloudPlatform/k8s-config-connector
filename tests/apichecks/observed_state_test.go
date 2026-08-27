@@ -133,6 +133,37 @@ func TestOutputOnlyFieldsAreUnderObservedState(t *testing.T) {
 	test.CompareGoldenFile(t, "testdata/exceptions/observed_state.txt", want)
 }
 
+func TestSecretManagerSecretStatusCreateTimeSchema(t *testing.T) {
+	t.Parallel()
+
+	const (
+		group   = "secretmanager.cnrm.cloud.google.com"
+		version = "v1beta1"
+		kind    = "SecretManagerSecret"
+	)
+
+	crd, err := crdloader.GetCRD(group, version, kind)
+	if err != nil {
+		t.Fatalf("loading %s CRD: %v", kind, err)
+	}
+
+	for _, crdVersion := range crd.Spec.Versions {
+		if crdVersion.Name != version {
+			continue
+		}
+		createTime := findOpenAPIProperty(crdVersion.Schema.OpenAPIV3Schema, "status", "createTime")
+		if createTime == nil {
+			t.Fatalf("%s %s CRD does not declare status.createTime", version, kind)
+		}
+		if got, want := createTime.Type, "string"; got != want {
+			t.Fatalf("status.createTime type = %q, want %q", got, want)
+		}
+		return
+	}
+
+	t.Fatalf("%s CRD does not contain version %s", kind, version)
+}
+
 func findOpenAPIProperty(schema *apiextensionsv1.JSONSchemaProps, path ...string) *apiextensionsv1.JSONSchemaProps {
 	pos := schema
 	for _, k := range path {
