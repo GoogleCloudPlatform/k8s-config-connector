@@ -54,7 +54,10 @@ X-Xss-Protection: 0
     "defaultSchemaId": "default_schema",
     "displayName": "My first data store",
     "industryVertical": 1,
-    "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}"
+    "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}",
+    "naturalLanguageQueryUnderstandingConfig": {
+      "mode": 2
+    }
   }
 }
 
@@ -77,10 +80,17 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "createTime": "2024-04-01T12:34:56.123456Z",
   "defaultSchemaId": "default_schema",
   "displayName": "My first data store",
   "industryVertical": 1,
-  "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}"
+  "name": "projects/${projectNumber}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}",
+  "naturalLanguageQueryUnderstandingConfig": {
+    "mode": 2
+  },
+  "solutionTypes": [
+    2
+  ]
 }
 
 ---
@@ -108,10 +118,17 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "createTime": "2024-04-01T12:34:56.123456Z",
   "defaultSchemaId": "default_schema",
   "displayName": "Updated display name",
   "industryVertical": 1,
-  "name": "projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}"
+  "name": "projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}",
+  "naturalLanguageQueryUnderstandingConfig": {
+    "mode": 2
+  },
+  "solutionTypes": [
+    2
+  ]
 }
 
 ---
@@ -133,10 +150,17 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "createTime": "2024-04-01T12:34:56.123456Z",
   "defaultSchemaId": "default_schema",
   "displayName": "Updated display name",
   "industryVertical": 1,
-  "name": "projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}"
+  "name": "projects/${projectId}/locations/global/collections/default_collection/dataStores/datastore-${uniqueId}",
+  "naturalLanguageQueryUnderstandingConfig": {
+    "mode": 2
+  },
+  "solutionTypes": [
+    2
+  ]
 }
 
 ---
