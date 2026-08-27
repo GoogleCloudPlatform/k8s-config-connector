@@ -16,6 +16,7 @@ package e2e
 
 import (
 	"fmt"
+	"regexp"
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
@@ -330,6 +331,15 @@ func (x *Normalizer) Render(events test.LogEntries) string {
 	events.RemoveHTTPResponseHeader("Expires")
 
 	got := events.FormatHTTP()
+
+	// Specific to AlloyDB: normalize the dynamic service account email hash
+	reAlloyDBSA := regexp.MustCompile(`c-([0-9a-zA-Z\-\{\}\$]+)-([0-9a-fA-F]+)@gcp-sa-alloydb\.iam\.gserviceaccount\.com`)
+	got = reAlloyDBSA.ReplaceAllString(got, `c-$1-abcdef12@gcp-sa-alloydb.iam.gserviceaccount.com`)
+
+	// Specific to Compute/AlloyDB peerings: normalize the stateDetails timestamp
+	reStateDetails := regexp.MustCompile(`\[\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d+[+-]\d{2}:\d{2}\]`)
+	got = reStateDetails.ReplaceAllString(got, "[2024-04-01T12:34:56.123-07:00]")
+
 	normalizers := []func(string) string{}
 	normalizers = append(normalizers, ReplaceString(x.uniqueID, "${uniqueId}"))
 	normalizers = append(normalizers, ReplaceString(x.project.ProjectID, "${projectId}"))
@@ -344,6 +354,7 @@ func (x *Normalizer) Render(events test.LogEntries) string {
 	for _, normalizer := range normalizers {
 		got = normalizer(got)
 	}
+
 	return got
 }
 
