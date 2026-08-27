@@ -29,6 +29,7 @@ import (
 
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/networkconnectivity/v1"
 	api "google.golang.org/api/networkconnectivity/v1"
+	"google.golang.org/protobuf/proto"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
@@ -196,9 +197,10 @@ func (a *internalRangeAdapter) Update(ctx context.Context, updateOp *directbase.
 	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
 
 	// Only mutable fields supported by GCP InternalRange Patch are included in updateMask.
-	// Other fields (ipCIDRRange, targetCIDRRange, allocationOptions, networkRef, usage, peering)
+	// Other fields (ipCIDRRange, targetCIDRRange, networkRef, usage, peering)
 	// are immutable / create-only parameters and cannot be modified in-place via Patch.
 	// prefixLength can be updated to resize the range size in IPv4 reservations.
+	// allocationOptions (e.g. firstAvailableRangesLookupSize for RANDOM_FIRST_N_AVAILABLE) can be updated.
 	paths := []string{}
 	if desired.Spec.Description != nil && resource.Description != a.actual.Description {
 		report.AddField("description", a.actual.Description, resource.Description)
@@ -211,6 +213,10 @@ func (a *internalRangeAdapter) Update(ctx context.Context, updateOp *directbase.
 	if desired.Spec.PrefixLength != nil && resource.PrefixLength != a.actual.PrefixLength {
 		report.AddField("prefix_length", a.actual.PrefixLength, resource.PrefixLength)
 		paths = append(paths, "prefixLength")
+	}
+	if desired.Spec.AllocationOptions != nil && !proto.Equal(resource.AllocationOptions, a.actual.AllocationOptions) {
+		report.AddField("allocation_options", a.actual.AllocationOptions, resource.AllocationOptions)
+		paths = append(paths, "allocationOptions")
 	}
 
 	if len(paths) > 0 {
