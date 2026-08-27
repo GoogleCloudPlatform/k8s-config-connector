@@ -39,6 +39,7 @@ ${CONTROLLERBUILDER} generate-types \
   --resource NotebooksEnvironment:Environment \
   --resource NotebooksExecution:Execution \
   --resource NotebooksSchedule:Schedule \
+  --resource NotebooksRuntime:Runtime \
   --resource NotebookInstanceV2:Instance
 
 ${CONTROLLERBUILDER} generate-mapper \
