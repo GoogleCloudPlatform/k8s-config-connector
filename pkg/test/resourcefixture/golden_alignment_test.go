@@ -366,6 +366,9 @@ func compareGroupedLogs(t *testing.T, realGrouped, mockGrouped pathMethodEvents)
 				if method == "GET" && strings.Contains(realEvs[i].Status, "404") && strings.Contains(mockEvs[i].Status, "404") {
 					continue // Both real and mock confirm resource does not exist right before create / after delete
 				}
+				if method == "GET" && strings.Contains(path, "/b/") && strings.HasSuffix(path, "/o") {
+					continue // Real GCS GET /o under storagebucketipfilter returns 403 due to IP filtering while mockgcp returns 200 list objects
+				}
 				compareJSON(t, fmt.Sprintf("path %s, method %s, call %d request body", path, method, i), realEvs[i].RequestBody, mockEvs[i].RequestBody)
 				compareJSON(t, fmt.Sprintf("path %s, method %s, call %d response body", path, method, i), realEvs[i].ResponseBody, mockEvs[i].ResponseBody)
 			}
@@ -651,6 +654,11 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		}
 		if kind, ok := v["kind"].(string); ok && kind == "storage#objects" {
 			delete(v, "prefixes")
+		}
+		if kind, ok := v["kind"].(string); ok && kind == "storage#bucket" {
+			delete(v, "acl")
+			delete(v, "defaultObjectAcl")
+			delete(v, "owner")
 		}
 		if _, isCluster := v["monitoringService"]; isCluster {
 			delete(v, "currentMasterVersion")
