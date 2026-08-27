@@ -143,7 +143,7 @@ func setClusterFields(name *clusterName, obj *pb.Cluster) {
 	// This field needs to be handled differently in mockgcp after we fix the
 	// behavior in the controller.
 	if obj.DatabaseVersion == pb.DatabaseVersion_DATABASE_VERSION_UNSPECIFIED {
-		obj.DatabaseVersion = pb.DatabaseVersion_POSTGRES_16
+		obj.DatabaseVersion = pb.DatabaseVersion_POSTGRES_17
 	}
 	if obj.EncryptionConfig != nil && obj.EncryptionConfig.KmsKeyName != "" {
 		obj.EncryptionInfo = &pb.EncryptionInfo{

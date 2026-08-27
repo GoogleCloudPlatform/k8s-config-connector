@@ -1,6 +1,6 @@
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -30,7 +30,7 @@ X-Xss-Protection: 0
 
 POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 {
   "autoCreateSubnetworks": false,
@@ -67,7 +67,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -99,7 +99,7 @@ X-Xss-Protection: 0
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -127,7 +127,7 @@ X-Xss-Protection: 0
 
 GET https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FvmwareEngineNetworks%2Fvmwareenginenetwork-minimal-${uniqueId}
 
 404 Not Found
@@ -152,7 +152,7 @@ X-Xss-Protection: 0
 
 POST https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/vmwareEngineNetworks?%24alt=json%3Benum-encoding%3Dint&vmwareEngineNetworkId=vmwareenginenetwork-minimal-${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal
 
 {
@@ -185,7 +185,7 @@ X-Xss-Protection: 0
 
 GET https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Foperations%2F${operationID}
 
 200 OK
@@ -240,7 +240,7 @@ X-Xss-Protection: 0
 
 GET https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/networkPeerings/vmwareenginenetworkpeering-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FnetworkPeerings%2Fvmwareenginenetworkpeering-minimal-${uniqueId}
 
 404 Not Found
@@ -265,7 +265,7 @@ X-Xss-Protection: 0
 
 POST https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/networkPeerings?%24alt=json%3Benum-encoding%3Dint&networkPeeringId=vmwareenginenetworkpeering-minimal-${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal
 
 {
@@ -300,7 +300,7 @@ X-Xss-Protection: 0
 
 GET https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Foperations%2F${operationID}
 
 200 OK
@@ -338,7 +338,7 @@ X-Xss-Protection: 0
     "peerNetwork": "projects/${projectId}/global/networks/${networkID}",
     "peerNetworkType": "STANDARD",
     "state": "ACTIVE",
-    "stateDetails": "[2025-01-02T03:04:05.678-09:00]: Connected.",
+    "stateDetails": "[2024-04-01T12:34:56.123-07:00]: Connected.",
     "uid": "111111111111111111111",
     "updateTime": "2024-04-01T12:34:56.123456Z",
     "vmwareEngineNetwork": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}"
@@ -349,7 +349,7 @@ X-Xss-Protection: 0
 
 GET https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/networkPeerings/vmwareenginenetworkpeering-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FnetworkPeerings%2Fvmwareenginenetworkpeering-minimal-${uniqueId}
 
 200 OK
@@ -375,7 +375,7 @@ X-Xss-Protection: 0
   "peerNetwork": "projects/${projectId}/global/networks/${networkID}",
   "peerNetworkType": 1,
   "state": 2,
-  "stateDetails": "[2025-01-02T03:04:05.678-09:00]: Connected.",
+  "stateDetails": "[2024-04-01T12:34:56.123-07:00]: Connected.",
   "uid": "111111111111111111111",
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "vmwareEngineNetwork": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}"
@@ -385,7 +385,7 @@ X-Xss-Protection: 0
 
 PATCH https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/networkPeerings/vmwareenginenetworkpeering-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: network_peering.name=projects%2F${projectId}%2Flocations%2Fglobal%2FnetworkPeerings%2Fvmwareenginenetworkpeering-minimal-${uniqueId}
 
 {
@@ -421,7 +421,7 @@ X-Xss-Protection: 0
 
 GET https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Foperations%2F${operationID}
 
 200 OK
@@ -459,7 +459,7 @@ X-Xss-Protection: 0
     "peerNetwork": "projects/${projectId}/global/networks/${networkID}",
     "peerNetworkType": "STANDARD",
     "state": "ACTIVE",
-    "stateDetails": "[2025-01-02T03:04:05.678-09:00]: Connected.",
+    "stateDetails": "[2024-04-01T12:34:56.123-07:00]: Connected.",
     "uid": "111111111111111111111",
     "updateTime": "2024-04-01T12:34:56.123456Z",
     "vmwareEngineNetwork": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}"
@@ -470,7 +470,7 @@ X-Xss-Protection: 0
 
 GET https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/networkPeerings/vmwareenginenetworkpeering-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FnetworkPeerings%2Fvmwareenginenetworkpeering-minimal-${uniqueId}
 
 200 OK
@@ -496,7 +496,7 @@ X-Xss-Protection: 0
   "peerNetwork": "projects/${projectId}/global/networks/${networkID}",
   "peerNetworkType": 1,
   "state": 2,
-  "stateDetails": "[2025-01-02T03:04:05.678-09:00]: Connected.",
+  "stateDetails": "[2024-04-01T12:34:56.123-07:00]: Connected.",
   "uid": "111111111111111111111",
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "vmwareEngineNetwork": "projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}"
@@ -506,7 +506,7 @@ X-Xss-Protection: 0
 
 DELETE https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/networkPeerings/vmwareenginenetworkpeering-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FnetworkPeerings%2Fvmwareenginenetworkpeering-minimal-${uniqueId}
 
 200 OK
@@ -534,7 +534,7 @@ X-Xss-Protection: 0
 
 GET https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Foperations%2F${operationID}
 
 200 OK
@@ -567,7 +567,7 @@ X-Xss-Protection: 0
 
 GET https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FvmwareEngineNetworks%2Fvmwareenginenetwork-minimal-${uniqueId}
 
 200 OK
@@ -609,7 +609,7 @@ X-Xss-Protection: 0
 
 DELETE https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/vmwareEngineNetworks/vmwareenginenetwork-minimal-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FvmwareEngineNetworks%2Fvmwareenginenetwork-minimal-${uniqueId}
 
 200 OK
@@ -637,7 +637,7 @@ X-Xss-Protection: 0
 
 GET https://vmwareengine.googleapis.com/v1/projects/${projectId}/locations/global/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2Foperations%2F${operationID}
 
 200 OK
@@ -670,7 +670,7 @@ X-Xss-Protection: 0
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -698,7 +698,7 @@ X-Xss-Protection: 0
 
 DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -728,7 +728,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8

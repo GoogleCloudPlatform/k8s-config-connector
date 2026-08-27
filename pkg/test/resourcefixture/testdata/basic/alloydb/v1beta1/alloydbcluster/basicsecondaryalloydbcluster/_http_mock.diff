@@ -74,7 +74,7 @@
 <     ]
 <   },
 <   "createTime": "2024-04-01T12:34:56.123456Z",
-<   "databaseVersion": "POSTGRES_16",
+<   "databaseVersion": "POSTGRES_17",
 <   "encryptionInfo": {
 <     "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
 <   },
@@ -142,9 +142,9 @@
 >       6,
 >       7
 1850c1768
-<   "databaseVersion": "POSTGRES_16",
+<   "databaseVersion": "POSTGRES_17",
 ---
->   "databaseVersion": 4,
+>   "databaseVersion": 5,
 1852c1770
 <     "encryptionType": "GOOGLE_DEFAULT_ENCRYPTION"
 ---
