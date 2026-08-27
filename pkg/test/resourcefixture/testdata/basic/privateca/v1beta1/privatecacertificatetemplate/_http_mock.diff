@@ -20,87 +20,51 @@
 <         "certSign": false,
 82d79
 <         "crlSign": false,
-169c166
-<         "EXTENDED_KEY_USAGE"
----
->         2
-182c179
-<           "value": "c3RyaW5nCg=="
----
->           "value": "YzNSeWFXNW5DZz09"
-234c231
+142c139
 < GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/certificateTemplates/privatecacertificatetemplate-${uniqueId}?alt=json
 ---
 > GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/certificateTemplates/privatecacertificatetemplate-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-276c273
+184c181
 <       "EXTENDED_KEY_USAGE"
 ---
 >       2
-289c286
+197c194
 <         "value": "c3RyaW5nCg=="
 ---
 >         "value": "YzNSeWFXNW5DZz09"
-340c337
+248c245
 < PATCH https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/certificateTemplates/privatecacertificatetemplate-${uniqueId}?alt=json&updateMask=labels
 ---
 > PATCH https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/certificateTemplates/privatecacertificatetemplate-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=labels
-372c369
+280c277
 <       "EXTENDED_KEY_USAGE"
 ---
 >       2
-385c382
+293c290
 <         "value": "c3RyaW5nCg=="
 ---
 >         "value": "YzNSeWFXNW5DZz09"
-397d393
+305d301
 <         "certSign": false,
-399d394
+307d302
 <         "crlSign": false,
-487c482
-<         "EXTENDED_KEY_USAGE"
----
->         2
-500c495
-<           "value": "c3RyaW5nCg=="
----
->           "value": "YzNSeWFXNW5DZz09"
-552c547
+367c362
 < GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/certificateTemplates/privatecacertificatetemplate-${uniqueId}?alt=json
 ---
 > GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/certificateTemplates/privatecacertificatetemplate-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-595c590
+410c405
 <       "EXTENDED_KEY_USAGE"
 ---
 >       2
-608c603
+423c418
 <         "value": "c3RyaW5nCg=="
 ---
 >         "value": "YzNSeWFXNW5DZz09"
-659c654
+474c469
 < DELETE https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/certificateTemplates/privatecacertificatetemplate-${uniqueId}?alt=json
 ---
 > DELETE https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/certificateTemplates/privatecacertificatetemplate-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
-685,707d679
-<   }
-< }
-< 
-< ---
-< 
+501c496
 < GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/certificateTemplates/privatecacertificatetemplate-${uniqueId}?alt=json
-< Content-Type: application/json
-< 
-< 404 Not Found
-< Content-Type: application/json; charset=UTF-8
-< Server: ESF
-< Vary: Origin
-< Vary: X-Origin
-< Vary: Referer
-< X-Content-Type-Options: nosniff
-< X-Frame-Options: SAMEORIGIN
-< X-Xss-Protection: 0
-< 
-< {
-<   "error": {
-<     "code": 404,
-<     "message": "Resource 'projects/${projectId}/locations/us-central1/certificateTemplates/privatecacertificatetemplate-${uniqueId}' was not found",
-<     "status": "NOT_FOUND"
+---
+> GET https://privateca.googleapis.com/v1/projects/${projectId}/locations/us-central1/certificateTemplates/privatecacertificatetemplate-${uniqueId}?%24alt=json%3Benum-encoding%3Dint

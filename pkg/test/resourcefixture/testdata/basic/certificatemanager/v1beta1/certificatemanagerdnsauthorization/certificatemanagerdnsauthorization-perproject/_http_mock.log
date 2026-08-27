@@ -58,21 +58,7 @@ X-Xss-Protection: 0
     "target": "projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization${uniqueId}",
     "verb": "create"
   },
-  "name": "projects/${projectId}/locations/global/operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.cloud.certificatemanager.v1.DnsAuthorization",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "description": "sample dns authorization per project",
-    "dnsResourceRecord": {
-      "data": "${uniqueId}",
-      "name": "_acme-challenge.${uniqueId}.hashicorptest.com.",
-      "type": "CNAME"
-    },
-    "domain": "${uniqueId}.hashicorptest.com",
-    "name": "projects/${projectId}/locations/global/dnsAuthorizations/certificatemanagerdnsauthorization${uniqueId}",
-    "type": "PER_PROJECT_RECORD",
-    "updateTime": "2024-04-01T12:34:56.123456Z"
-  }
+  "name": "projects/${projectId}/locations/global/operations/${operationID}"
 }
 
 ---

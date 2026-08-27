@@ -250,7 +250,7 @@ func (s *instanceAdminServer) PartialUpdateInstance(ctx context.Context, req *pb
 		RequestTime:     timestamppb.New(now),
 		OriginalRequest: req,
 	}
-	return s.operations.StartLROWithDone(ctx, prefix, metadata, func() (proto.Message, error) {
+	return s.operations.StartLROWithDoneAndResponse(ctx, prefix, metadata, func() (proto.Message, error) {
 		metadata.FinishTime = timestamppb.New(now)
 
 		returnObj := proto.Clone(obj).(*pb.Instance)
