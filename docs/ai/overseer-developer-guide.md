@@ -133,7 +133,7 @@ Once a PR is opened by a Coder Bot (or an existing PR is labeled with `overseer`
 - **Automated Test Failure Resolution**: If presubmit CI checks or unit tests fail, Overseer inspects the failure logs, spins up the worker sandbox, and pushes fixes.
 - **Automated Conflict Resolution**: If updates to `master` cause merge conflicts, Overseer rebases the branch and resolves standard conflicts.
 - **Automated Code Review (Selective)**: For select PRs based on configuration, `reviewbot-robot` provides initial feedback aligned with KCC review skills in `.gemini/skills/` (such as `reviewgen-greenfield-controller` and `reviewgen-brownfield-new-types`).
-- **Human Handover (`ready-for-human`)**: Once automated validations pass, the bot applies the `ready-for-human` label. The automated review assigner chore ([.agents/review-assigner.md](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/.agents/review-assigner.md)) periodically balances and assigns these PRs to maintainers on the `k8s-config-connector-team`.
+- **Human Handover (`overseer/ready-for-human`)**: Once automated validations pass, the bot applies the `overseer/ready-for-human` label. The automated review assigner chore ([.agents/review-assigner.md](https://github.com/GoogleCloudPlatform/k8s-config-connector/blob/master/.agents/review-assigner.md)) periodically balances and assigns these PRs to maintainers on the `k8s-config-connector-team`.
 
 ```mermaid
 sequenceDiagram
