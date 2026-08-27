@@ -218,6 +218,10 @@ func (a *internalRangeAdapter) Update(ctx context.Context, updateOp *directbase.
 		report.AddField("allocation_options", a.actual.AllocationOptions, resource.AllocationOptions)
 		paths = append(paths, "allocationOptions")
 	}
+	if desired.Spec.Overlaps != nil && !reflect.DeepEqual(resource.Overlaps, a.actual.Overlaps) {
+		report.AddField("overlaps", a.actual.Overlaps, resource.Overlaps)
+		paths = append(paths, "overlaps")
+	}
 
 	if len(paths) > 0 {
 		structuredreporting.ReportDiff(ctx, report)
