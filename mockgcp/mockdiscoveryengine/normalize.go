@@ -28,6 +28,10 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	}
 	replacements.ReplacePath(".startTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".endTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.RemovePath(".createTime")
+	replacements.RemovePath(".response.createTime")
+	replacements.RemovePath(".updateTime")
+	replacements.RemovePath(".response.updateTime")
 	replacements.RemovePath(".servingConfigDataStore")
 	replacements.RemovePath(".response.servingConfigDataStore")
 	replacements.RemovePath(".marketplaceAgentVisibility")
