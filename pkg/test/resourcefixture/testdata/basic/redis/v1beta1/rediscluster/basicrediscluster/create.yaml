@@ -21,6 +21,6 @@ spec:
   pscConfigs:
   - networkRef:
       external: projects/${projectId}/global/networks/computenetwork-${uniqueId}
-  location: us-central1
+  location: us-east1
   projectRef:
     external: ${projectId}

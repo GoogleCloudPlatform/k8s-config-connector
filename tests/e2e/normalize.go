@@ -1067,6 +1067,8 @@ func findLinksInKRMObject(t *testing.T, replacement *Replacements, u *unstructur
 	linkPaths := sets.New(
 		".status.observedState.pscConnections[].forwardingRule",
 		".status.observedState.pscConnections[].network",
+		".status.observedState.pscConnections[].serviceAttachment",
+		".status.observedState.pscServiceAttachments[].serviceAttachment",
 	)
 
 	visitor := objectWalker{}

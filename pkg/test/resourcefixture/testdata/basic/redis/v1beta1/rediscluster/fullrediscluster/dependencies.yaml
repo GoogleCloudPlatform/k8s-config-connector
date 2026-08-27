@@ -30,7 +30,7 @@ metadata:
   name: computesubnetwork-${uniqueId}
 spec:
   ipCidrRange: 10.128.0.0/20
-  region: us-central1
+  region: us-east1
   networkRef:
     external: projects/${projectId}/global/networks/computenetwork-${uniqueId}
 ---
@@ -45,7 +45,7 @@ metadata:
 spec:
   projectRef:
     external: projects/${projectId}
-  location: us-central1
+  location: us-east1
   serviceClass: "gcp-memorystore-redis"
   description: "Service Connection Policy for redis"
   networkRef:
@@ -59,7 +59,7 @@ kind: KMSKeyRing
 metadata:
   name: kmskeyring-${uniqueId}
 spec:
-  location: us-central1
+  location: us-east1
 ---
 apiVersion: kms.cnrm.cloud.google.com/v1beta1
 kind: KMSCryptoKey

@@ -1,6 +1,6 @@
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -30,7 +30,7 @@ X-Xss-Protection: 0
 
 POST https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 {
   "autoCreateSubnetworks": false,
@@ -67,7 +67,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -99,7 +99,7 @@ X-Xss-Protection: 0
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -125,9 +125,9 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/subnetworks/${subnetworkID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -145,19 +145,19 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}' was not found",
+        "message": "The resource 'projects/${projectId}/regions/us-east1/subnetworks/${subnetworkID}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}' was not found"
+    "message": "The resource 'projects/${projectId}/regions/us-east1/subnetworks/${subnetworkID}' was not found"
   }
 }
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks?alt=json
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/subnetworks?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 {
   "ipCidrRange": "10.128.0.0/20",
@@ -166,7 +166,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   },
   "name": "${subnetworkID}",
   "network": "projects/${projectId}/global/networks/${networkID}",
-  "region": "projects/${projectId}/global/regions/us-central1"
+  "region": "projects/${projectId}/global/regions/us-east1"
 }
 
 200 OK
@@ -186,19 +186,19 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 0,
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${subnetworkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/subnetworks/${subnetworkID}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -218,20 +218,20 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "insert",
   "progress": 100,
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${subnetworkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/subnetworks/${subnetworkID}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/subnetworks/${subnetworkID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -260,15 +260,15 @@ X-Xss-Protection: 0
   "privateIpGoogleAccess": false,
   "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
   "purpose": "PRIVATE",
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/subnetworks/${subnetworkID}",
   "stackType": "IPV4_ONLY"
 }
 
 ---
 
-GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/us-central1/serviceConnectionPolicies/scp-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/us-east1/serviceConnectionPolicies/scp-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -283,23 +283,23 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Resource 'projects/${projectId}/locations/us-central1/serviceConnectionPolicies/scp-${uniqueId}' was not found",
+    "message": "Resource 'projects/${projectId}/locations/us-east1/serviceConnectionPolicies/scp-${uniqueId}' was not found",
     "status": "NOT_FOUND"
   }
 }
 
 ---
 
-POST https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/us-central1/serviceConnectionPolicies?alt=json&prettyPrint=false&serviceConnectionPolicyId=scp-${uniqueId}
+POST https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/us-east1/serviceConnectionPolicies?alt=json&prettyPrint=false&serviceConnectionPolicyId=scp-${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 {
   "description": "Service Connection Policy for redis",
   "network": "projects/${projectId}/global/networks/${networkID}",
   "pscConfig": {
     "subnetworks": [
-      "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+      "projects/${projectId}/regions/us-east1/subnetworks/${subnetworkID}"
     ]
   },
   "serviceClass": "gcp-memorystore-redis"
@@ -320,16 +320,16 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1/serviceConnectionPolicies/scp-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-east1/serviceConnectionPolicies/scp-${uniqueId}",
     "verb": "create"
   },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+  "name": "projects/${projectId}/locations/us-east1/operations/${operationID}"
 }
 
 ---
 
-GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/us-east1/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -348,23 +348,23 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1/serviceConnectionPolicies/scp-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-east1/serviceConnectionPolicies/scp-${uniqueId}",
     "verb": "create"
   },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "name": "projects/${projectId}/locations/us-east1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.ServiceConnectionPolicy",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "etag": "abcdef0123A=",
-    "name": "projects/${projectId}/locations/us-central1/serviceConnectionPolicies/scp-${uniqueId}",
+    "name": "projects/${projectId}/locations/us-east1/serviceConnectionPolicies/scp-${uniqueId}",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
 
 ---
 
-GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/us-central1/serviceConnectionPolicies/scp-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/us-east1/serviceConnectionPolicies/scp-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -381,11 +381,11 @@ X-Xss-Protection: 0
   "description": "Service Connection Policy for redis",
   "etag": "abcdef0123A=",
   "infrastructure": "PSC",
-  "name": "projects/${projectId}/locations/us-central1/serviceConnectionPolicies/scp-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-east1/serviceConnectionPolicies/scp-${uniqueId}",
   "network": "projects/${projectId}/global/networks/${networkID}",
   "pscConfig": {
     "subnetworks": [
-      "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+      "projects/${projectId}/regions/us-east1/subnetworks/${subnetworkID}"
     ]
   },
   "serviceClass": "gcp-memorystore-redis",
@@ -394,16 +394,16 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/us-central1/serviceConnectionPolicies/scp-${uniqueId}?alt=json&prettyPrint=false
+PATCH https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/us-east1/serviceConnectionPolicies/scp-${uniqueId}?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 {
   "description": "Service Connection Policy for redis",
   "network": "projects/${projectId}/global/networks/${networkID}",
   "pscConfig": {
     "subnetworks": [
-      "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+      "projects/${projectId}/regions/us-east1/subnetworks/${subnetworkID}"
     ]
   },
   "serviceClass": "gcp-memorystore-redis"
@@ -424,16 +424,16 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1/serviceConnectionPolicies/scp-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-east1/serviceConnectionPolicies/scp-${uniqueId}",
     "verb": "update"
   },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+  "name": "projects/${projectId}/locations/us-east1/operations/${operationID}"
 }
 
 ---
 
-GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/us-east1/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -452,23 +452,23 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1/serviceConnectionPolicies/scp-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-east1/serviceConnectionPolicies/scp-${uniqueId}",
     "verb": "update"
   },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "name": "projects/${projectId}/locations/us-east1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.ServiceConnectionPolicy",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "etag": "abcdef0123A=",
-    "name": "projects/${projectId}/locations/us-central1/serviceConnectionPolicies/scp-${uniqueId}",
+    "name": "projects/${projectId}/locations/us-east1/serviceConnectionPolicies/scp-${uniqueId}",
     "updateTime": "2024-04-01T12:34:56.123456Z"
   }
 }
 
 ---
 
-GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/us-central1/serviceConnectionPolicies/scp-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/us-east1/serviceConnectionPolicies/scp-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -485,11 +485,11 @@ X-Xss-Protection: 0
   "description": "Service Connection Policy for redis",
   "etag": "abcdef0123A=",
   "infrastructure": "PSC",
-  "name": "projects/${projectId}/locations/us-central1/serviceConnectionPolicies/scp-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-east1/serviceConnectionPolicies/scp-${uniqueId}",
   "network": "projects/${projectId}/global/networks/${networkID}",
   "pscConfig": {
     "subnetworks": [
-      "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+      "projects/${projectId}/regions/us-east1/subnetworks/${subnetworkID}"
     ]
   },
   "serviceClass": "gcp-memorystore-redis",
@@ -498,9 +498,9 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}?alt=json
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-east1/keyRings/kmskeyring-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -515,16 +515,16 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "KeyRing projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId} not found.",
+    "message": "KeyRing projects/${projectId}/locations/us-east1/keyRings/kmskeyring-${uniqueId} not found.",
     "status": "NOT_FOUND"
   }
 }
 
 ---
 
-POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings?alt=json&keyRingId=kmskeyring-${uniqueId}
+POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-east1/keyRings?alt=json&keyRingId=kmskeyring-${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -538,14 +538,14 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}"
+  "name": "projects/${projectId}/locations/us-east1/keyRings/kmskeyring-${uniqueId}"
 }
 
 ---
 
-GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}?alt=json
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-east1/keyRings/kmskeyring-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -559,14 +559,14 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}"
+  "name": "projects/${projectId}/locations/us-east1/keyRings/kmskeyring-${uniqueId}"
 }
 
 ---
 
-GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}?alt=json
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-east1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -581,16 +581,16 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "CryptoKey projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId} not found.",
+    "message": "CryptoKey projects/${projectId}/locations/us-east1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId} not found.",
     "status": "NOT_FOUND"
   }
 }
 
 ---
 
-POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys?alt=json&cryptoKeyId=kmscryptokey-${uniqueId}&skipInitialVersionCreation=false
+POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-east1/keyRings/kmskeyring-${uniqueId}/cryptoKeys?alt=json&cryptoKeyId=kmscryptokey-${uniqueId}&skipInitialVersionCreation=false
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 {
   "labels": {
@@ -617,12 +617,12 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-east1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
   "primary": {
     "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "generateTime": "2024-04-01T12:34:56.123456Z",
-    "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
+    "name": "projects/${projectId}/locations/us-east1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
     "protectionLevel": "SOFTWARE",
     "state": "ENABLED"
   },
@@ -635,9 +635,9 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}?alt=json
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-east1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -656,12 +656,12 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-east1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
   "primary": {
     "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "generateTime": "2024-04-01T12:34:56.123456Z",
-    "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
+    "name": "projects/${projectId}/locations/us-east1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
     "protectionLevel": "SOFTWARE",
     "state": "ENABLED"
   },
@@ -674,8 +674,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}:getIamPolicy?alt=json&options.requestedPolicyVersion=3&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-east1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}:getIamPolicy?alt=json&options.requestedPolicyVersion=3&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -693,9 +693,9 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}:setIamPolicy?alt=json&prettyPrint=false
+POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-east1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}:setIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 {
   "policy": {
@@ -736,8 +736,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}:getIamPolicy?alt=json&options.requestedPolicyVersion=3&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-east1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}:getIamPolicy?alt=json&options.requestedPolicyVersion=3&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -764,10 +764,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-east1/clusters/rediscluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fclusters%2Frediscluster-${uniqueId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-east1%2Fclusters%2Frediscluster-${uniqueId}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -782,17 +782,17 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Resource 'projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}' was not found",
+    "message": "Resource 'projects/${projectId}/locations/us-east1/clusters/rediscluster-${uniqueId}' was not found",
     "status": "NOT_FOUND"
   }
 }
 
 ---
 
-POST https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters?%24alt=json%3Benum-encoding%3Dint&clusterId=rediscluster-${uniqueId}
+POST https://redis.googleapis.com/v1/projects/${projectId}/locations/us-east1/clusters?%24alt=json%3Benum-encoding%3Dint&clusterId=rediscluster-${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-east1
 
 {
   "authorizationMode": 1,
@@ -806,7 +806,7 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
     "retention": "2592000s"
   },
   "deletionProtectionEnabled": true,
-  "kmsKey": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
+  "kmsKey": "projects/${projectId}/locations/us-east1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
   "maintenancePolicy": {
     "weeklyMaintenanceWindow": [
       {
@@ -856,18 +856,18 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.redis.cluster.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-east1/clusters/rediscluster-${uniqueId}",
     "verb": "create"
   },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+  "name": "projects/${projectId}/locations/us-east1/operations/${operationID}"
 }
 
 ---
 
-GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-east1/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-east1%2Foperations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -886,10 +886,10 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-east1/clusters/rediscluster-${uniqueId}",
     "verb": "create"
   },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "name": "projects/${projectId}/locations/us-east1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.redis.cluster.v1.Cluster",
     "authorizationMode": "AUTH_MODE_IAM_AUTH",
@@ -917,11 +917,11 @@ X-Xss-Protection: 0
       "encryptionType": "CUSTOMER_MANAGED_ENCRYPTION",
       "kmsKeyPrimaryState": "ENABLED",
       "kmsKeyVersions": [
-        "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1"
+        "projects/${projectId}/locations/us-east1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1"
       ],
       "lastUpdateTime": "2024-04-01T12:34:56.123456Z"
     },
-    "kmsKey": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
+    "kmsKey": "projects/${projectId}/locations/us-east1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
     "maintenancePolicy": {
       "weeklyMaintenanceWindow": [
         {
@@ -932,7 +932,7 @@ X-Xss-Protection: 0
         }
       ]
     },
-    "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
+    "name": "projects/${projectId}/locations/us-east1/clusters/rediscluster-${uniqueId}",
     "nodeType": "REDIS_STANDARD_SMALL",
     "persistenceConfig": {
       "aofConfig": {
@@ -944,14 +944,14 @@ X-Xss-Protection: 0
     "pscConnections": [
       {
         "address": "10.11.12.13",
-        "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+        "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/forwardingRules/${forwardingRuleID}",
         "network": "projects/${projectId}/global/networks/${networkID}",
         "projectId": "${projectId}",
         "pscConnectionId": "${pscConnectionID}"
       },
       {
         "address": "10.11.12.13",
-        "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+        "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/forwardingRules/${forwardingRuleID}",
         "network": "projects/${projectId}/global/networks/${networkID}",
         "projectId": "${projectId}",
         "pscConnectionId": "${pscConnectionID}"
@@ -960,10 +960,10 @@ X-Xss-Protection: 0
     "pscServiceAttachments": [
       {
         "connectionType": "CONNECTION_TYPE_DISCOVERY",
-        "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa"
+        "serviceAttachment": "projects/${projectNumber}/regions/us-east1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa"
       },
       {
-        "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa-2"
+        "serviceAttachment": "projects/${projectNumber}/regions/us-east1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa-2"
       }
     ],
     "redisConfigs": {
@@ -984,10 +984,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-east1/clusters/rediscluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fclusters%2Frediscluster-${uniqueId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-east1%2Fclusters%2Frediscluster-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1025,11 +1025,11 @@ X-Xss-Protection: 0
     "encryptionType": 2,
     "kmsKeyPrimaryState": 1,
     "kmsKeyVersions": [
-      "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1"
+      "projects/${projectId}/locations/us-east1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1"
     ],
     "lastUpdateTime": "2024-04-01T12:34:56.123456Z"
   },
-  "kmsKey": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
+  "kmsKey": "projects/${projectId}/locations/us-east1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
   "maintenancePolicy": {
     "weeklyMaintenanceWindow": [
       {
@@ -1040,7 +1040,7 @@ X-Xss-Protection: 0
       }
     ]
   },
-  "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-east1/clusters/rediscluster-${uniqueId}",
   "nodeType": 4,
   "persistenceConfig": {
     "aofConfig": {
@@ -1052,14 +1052,14 @@ X-Xss-Protection: 0
   "pscConnections": [
     {
       "address": "10.11.12.13",
-      "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+      "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/forwardingRules/${forwardingRuleID}",
       "network": "projects/${projectId}/global/networks/${networkID}",
       "projectId": "${projectId}",
       "pscConnectionId": "${pscConnectionID}"
     },
     {
       "address": "10.11.12.13",
-      "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+      "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/forwardingRules/${forwardingRuleID}",
       "network": "projects/${projectId}/global/networks/${networkID}",
       "projectId": "${projectId}",
       "pscConnectionId": "${pscConnectionID}"
@@ -1068,10 +1068,10 @@ X-Xss-Protection: 0
   "pscServiceAttachments": [
     {
       "connectionType": 1,
-      "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa"
+      "serviceAttachment": "projects/${projectNumber}/regions/us-east1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa"
     },
     {
-      "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa-2"
+      "serviceAttachment": "projects/${projectNumber}/regions/us-east1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa-2"
     }
   ],
   "redisConfigs": {
@@ -1091,10 +1091,10 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=automatedBackupConfig
+PATCH https://redis.googleapis.com/v1/projects/${projectId}/locations/us-east1/clusters/rediscluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=automatedBackupConfig
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fclusters%2Frediscluster-${uniqueId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-east1%2Fclusters%2Frediscluster-${uniqueId}
 
 {
   "authorizationMode": 1,
@@ -1108,7 +1108,7 @@ X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-cen
     "retention": "1209600s"
   },
   "deletionProtectionEnabled": false,
-  "kmsKey": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
+  "kmsKey": "projects/${projectId}/locations/us-east1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
   "maintenancePolicy": {
     "weeklyMaintenanceWindow": [
       {
@@ -1119,7 +1119,7 @@ X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-cen
       }
     ]
   },
-  "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-east1/clusters/rediscluster-${uniqueId}",
   "nodeType": 4,
   "persistenceConfig": {
     "mode": 2,
@@ -1161,18 +1161,18 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.redis.cluster.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-east1/clusters/rediscluster-${uniqueId}",
     "verb": "update"
   },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+  "name": "projects/${projectId}/locations/us-east1/operations/${operationID}"
 }
 
 ---
 
-GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-east1/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-east1%2Foperations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1191,10 +1191,10 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-east1/clusters/rediscluster-${uniqueId}",
     "verb": "update"
   },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "name": "projects/${projectId}/locations/us-east1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.redis.cluster.v1.Cluster",
     "authorizationMode": "AUTH_MODE_IAM_AUTH",
@@ -1222,11 +1222,11 @@ X-Xss-Protection: 0
       "encryptionType": "CUSTOMER_MANAGED_ENCRYPTION",
       "kmsKeyPrimaryState": "ENABLED",
       "kmsKeyVersions": [
-        "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1"
+        "projects/${projectId}/locations/us-east1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1"
       ],
       "lastUpdateTime": "2024-04-01T12:34:56.123456Z"
     },
-    "kmsKey": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
+    "kmsKey": "projects/${projectId}/locations/us-east1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
     "maintenancePolicy": {
       "weeklyMaintenanceWindow": [
         {
@@ -1237,7 +1237,7 @@ X-Xss-Protection: 0
         }
       ]
     },
-    "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
+    "name": "projects/${projectId}/locations/us-east1/clusters/rediscluster-${uniqueId}",
     "nodeType": "REDIS_STANDARD_SMALL",
     "persistenceConfig": {
       "aofConfig": {
@@ -1249,14 +1249,14 @@ X-Xss-Protection: 0
     "pscConnections": [
       {
         "address": "10.11.12.13",
-        "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+        "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/forwardingRules/${forwardingRuleID}",
         "network": "projects/${projectId}/global/networks/${networkID}",
         "projectId": "${projectId}",
         "pscConnectionId": "${pscConnectionID}"
       },
       {
         "address": "10.11.12.13",
-        "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+        "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/forwardingRules/${forwardingRuleID}",
         "network": "projects/${projectId}/global/networks/${networkID}",
         "projectId": "${projectId}",
         "pscConnectionId": "${pscConnectionID}"
@@ -1265,10 +1265,10 @@ X-Xss-Protection: 0
     "pscServiceAttachments": [
       {
         "connectionType": "CONNECTION_TYPE_DISCOVERY",
-        "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa"
+        "serviceAttachment": "projects/${projectNumber}/regions/us-east1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa"
       },
       {
-        "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa-2"
+        "serviceAttachment": "projects/${projectNumber}/regions/us-east1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa-2"
       }
     ],
     "redisConfigs": {
@@ -1289,10 +1289,10 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=deletionProtectionEnabled
+PATCH https://redis.googleapis.com/v1/projects/${projectId}/locations/us-east1/clusters/rediscluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=deletionProtectionEnabled
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fclusters%2Frediscluster-${uniqueId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-east1%2Fclusters%2Frediscluster-${uniqueId}
 
 {
   "authorizationMode": 1,
@@ -1306,7 +1306,7 @@ X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-cen
     "retention": "1209600s"
   },
   "deletionProtectionEnabled": false,
-  "kmsKey": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
+  "kmsKey": "projects/${projectId}/locations/us-east1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
   "maintenancePolicy": {
     "weeklyMaintenanceWindow": [
       {
@@ -1317,7 +1317,7 @@ X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-cen
       }
     ]
   },
-  "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-east1/clusters/rediscluster-${uniqueId}",
   "nodeType": 4,
   "persistenceConfig": {
     "mode": 2,
@@ -1359,18 +1359,18 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.redis.cluster.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-east1/clusters/rediscluster-${uniqueId}",
     "verb": "update"
   },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+  "name": "projects/${projectId}/locations/us-east1/operations/${operationID}"
 }
 
 ---
 
-GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-east1/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-east1%2Foperations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1389,10 +1389,10 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-east1/clusters/rediscluster-${uniqueId}",
     "verb": "update"
   },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "name": "projects/${projectId}/locations/us-east1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.redis.cluster.v1.Cluster",
     "authorizationMode": "AUTH_MODE_IAM_AUTH",
@@ -1420,11 +1420,11 @@ X-Xss-Protection: 0
       "encryptionType": "CUSTOMER_MANAGED_ENCRYPTION",
       "kmsKeyPrimaryState": "ENABLED",
       "kmsKeyVersions": [
-        "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1"
+        "projects/${projectId}/locations/us-east1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1"
       ],
       "lastUpdateTime": "2024-04-01T12:34:56.123456Z"
     },
-    "kmsKey": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
+    "kmsKey": "projects/${projectId}/locations/us-east1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
     "maintenancePolicy": {
       "weeklyMaintenanceWindow": [
         {
@@ -1435,7 +1435,7 @@ X-Xss-Protection: 0
         }
       ]
     },
-    "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
+    "name": "projects/${projectId}/locations/us-east1/clusters/rediscluster-${uniqueId}",
     "nodeType": "REDIS_STANDARD_SMALL",
     "persistenceConfig": {
       "aofConfig": {
@@ -1447,14 +1447,14 @@ X-Xss-Protection: 0
     "pscConnections": [
       {
         "address": "10.11.12.13",
-        "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+        "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/forwardingRules/${forwardingRuleID}",
         "network": "projects/${projectId}/global/networks/${networkID}",
         "projectId": "${projectId}",
         "pscConnectionId": "${pscConnectionID}"
       },
       {
         "address": "10.11.12.13",
-        "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+        "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/forwardingRules/${forwardingRuleID}",
         "network": "projects/${projectId}/global/networks/${networkID}",
         "projectId": "${projectId}",
         "pscConnectionId": "${pscConnectionID}"
@@ -1463,10 +1463,10 @@ X-Xss-Protection: 0
     "pscServiceAttachments": [
       {
         "connectionType": "CONNECTION_TYPE_DISCOVERY",
-        "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa"
+        "serviceAttachment": "projects/${projectNumber}/regions/us-east1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa"
       },
       {
-        "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa-2"
+        "serviceAttachment": "projects/${projectNumber}/regions/us-east1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa-2"
       }
     ],
     "redisConfigs": {
@@ -1487,10 +1487,10 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=maintenancePolicy
+PATCH https://redis.googleapis.com/v1/projects/${projectId}/locations/us-east1/clusters/rediscluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=maintenancePolicy
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fclusters%2Frediscluster-${uniqueId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-east1%2Fclusters%2Frediscluster-${uniqueId}
 
 {
   "authorizationMode": 1,
@@ -1504,7 +1504,7 @@ X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-cen
     "retention": "1209600s"
   },
   "deletionProtectionEnabled": false,
-  "kmsKey": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
+  "kmsKey": "projects/${projectId}/locations/us-east1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
   "maintenancePolicy": {
     "weeklyMaintenanceWindow": [
       {
@@ -1515,7 +1515,7 @@ X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-cen
       }
     ]
   },
-  "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-east1/clusters/rediscluster-${uniqueId}",
   "nodeType": 4,
   "persistenceConfig": {
     "mode": 2,
@@ -1557,18 +1557,18 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.redis.cluster.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-east1/clusters/rediscluster-${uniqueId}",
     "verb": "update"
   },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+  "name": "projects/${projectId}/locations/us-east1/operations/${operationID}"
 }
 
 ---
 
-GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-east1/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-east1%2Foperations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1587,10 +1587,10 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-east1/clusters/rediscluster-${uniqueId}",
     "verb": "update"
   },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "name": "projects/${projectId}/locations/us-east1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.redis.cluster.v1.Cluster",
     "authorizationMode": "AUTH_MODE_IAM_AUTH",
@@ -1618,11 +1618,11 @@ X-Xss-Protection: 0
       "encryptionType": "CUSTOMER_MANAGED_ENCRYPTION",
       "kmsKeyPrimaryState": "ENABLED",
       "kmsKeyVersions": [
-        "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1"
+        "projects/${projectId}/locations/us-east1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1"
       ],
       "lastUpdateTime": "2024-04-01T12:34:56.123456Z"
     },
-    "kmsKey": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
+    "kmsKey": "projects/${projectId}/locations/us-east1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
     "maintenancePolicy": {
       "weeklyMaintenanceWindow": [
         {
@@ -1633,7 +1633,7 @@ X-Xss-Protection: 0
         }
       ]
     },
-    "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
+    "name": "projects/${projectId}/locations/us-east1/clusters/rediscluster-${uniqueId}",
     "nodeType": "REDIS_STANDARD_SMALL",
     "persistenceConfig": {
       "aofConfig": {
@@ -1645,14 +1645,14 @@ X-Xss-Protection: 0
     "pscConnections": [
       {
         "address": "10.11.12.13",
-        "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+        "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/forwardingRules/${forwardingRuleID}",
         "network": "projects/${projectId}/global/networks/${networkID}",
         "projectId": "${projectId}",
         "pscConnectionId": "${pscConnectionID}"
       },
       {
         "address": "10.11.12.13",
-        "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+        "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/forwardingRules/${forwardingRuleID}",
         "network": "projects/${projectId}/global/networks/${networkID}",
         "projectId": "${projectId}",
         "pscConnectionId": "${pscConnectionID}"
@@ -1661,10 +1661,10 @@ X-Xss-Protection: 0
     "pscServiceAttachments": [
       {
         "connectionType": "CONNECTION_TYPE_DISCOVERY",
-        "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa"
+        "serviceAttachment": "projects/${projectNumber}/regions/us-east1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa"
       },
       {
-        "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa-2"
+        "serviceAttachment": "projects/${projectNumber}/regions/us-east1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa-2"
       }
     ],
     "redisConfigs": {
@@ -1685,10 +1685,10 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=persistenceConfig
+PATCH https://redis.googleapis.com/v1/projects/${projectId}/locations/us-east1/clusters/rediscluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=persistenceConfig
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fclusters%2Frediscluster-${uniqueId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-east1%2Fclusters%2Frediscluster-${uniqueId}
 
 {
   "authorizationMode": 1,
@@ -1702,7 +1702,7 @@ X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-cen
     "retention": "1209600s"
   },
   "deletionProtectionEnabled": false,
-  "kmsKey": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
+  "kmsKey": "projects/${projectId}/locations/us-east1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
   "maintenancePolicy": {
     "weeklyMaintenanceWindow": [
       {
@@ -1713,7 +1713,7 @@ X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-cen
       }
     ]
   },
-  "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-east1/clusters/rediscluster-${uniqueId}",
   "nodeType": 4,
   "persistenceConfig": {
     "mode": 2,
@@ -1755,18 +1755,18 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.redis.cluster.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-east1/clusters/rediscluster-${uniqueId}",
     "verb": "update"
   },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+  "name": "projects/${projectId}/locations/us-east1/operations/${operationID}"
 }
 
 ---
 
-GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-east1/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-east1%2Foperations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1785,10 +1785,10 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-east1/clusters/rediscluster-${uniqueId}",
     "verb": "update"
   },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "name": "projects/${projectId}/locations/us-east1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.redis.cluster.v1.Cluster",
     "authorizationMode": "AUTH_MODE_IAM_AUTH",
@@ -1816,11 +1816,11 @@ X-Xss-Protection: 0
       "encryptionType": "CUSTOMER_MANAGED_ENCRYPTION",
       "kmsKeyPrimaryState": "ENABLED",
       "kmsKeyVersions": [
-        "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1"
+        "projects/${projectId}/locations/us-east1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1"
       ],
       "lastUpdateTime": "2024-04-01T12:34:56.123456Z"
     },
-    "kmsKey": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
+    "kmsKey": "projects/${projectId}/locations/us-east1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
     "maintenancePolicy": {
       "weeklyMaintenanceWindow": [
         {
@@ -1831,7 +1831,7 @@ X-Xss-Protection: 0
         }
       ]
     },
-    "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
+    "name": "projects/${projectId}/locations/us-east1/clusters/rediscluster-${uniqueId}",
     "nodeType": "REDIS_STANDARD_SMALL",
     "persistenceConfig": {
       "mode": "RDB",
@@ -1844,14 +1844,14 @@ X-Xss-Protection: 0
     "pscConnections": [
       {
         "address": "10.11.12.13",
-        "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+        "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/forwardingRules/${forwardingRuleID}",
         "network": "projects/${projectId}/global/networks/${networkID}",
         "projectId": "${projectId}",
         "pscConnectionId": "${pscConnectionID}"
       },
       {
         "address": "10.11.12.13",
-        "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+        "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/forwardingRules/${forwardingRuleID}",
         "network": "projects/${projectId}/global/networks/${networkID}",
         "projectId": "${projectId}",
         "pscConnectionId": "${pscConnectionID}"
@@ -1860,10 +1860,10 @@ X-Xss-Protection: 0
     "pscServiceAttachments": [
       {
         "connectionType": "CONNECTION_TYPE_DISCOVERY",
-        "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa"
+        "serviceAttachment": "projects/${projectNumber}/regions/us-east1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa"
       },
       {
-        "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa-2"
+        "serviceAttachment": "projects/${projectNumber}/regions/us-east1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa-2"
       }
     ],
     "redisConfigs": {
@@ -1884,10 +1884,10 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=redisConfigs
+PATCH https://redis.googleapis.com/v1/projects/${projectId}/locations/us-east1/clusters/rediscluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=redisConfigs
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fclusters%2Frediscluster-${uniqueId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-east1%2Fclusters%2Frediscluster-${uniqueId}
 
 {
   "authorizationMode": 1,
@@ -1901,7 +1901,7 @@ X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-cen
     "retention": "1209600s"
   },
   "deletionProtectionEnabled": false,
-  "kmsKey": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
+  "kmsKey": "projects/${projectId}/locations/us-east1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
   "maintenancePolicy": {
     "weeklyMaintenanceWindow": [
       {
@@ -1912,7 +1912,7 @@ X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-cen
       }
     ]
   },
-  "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-east1/clusters/rediscluster-${uniqueId}",
   "nodeType": 4,
   "persistenceConfig": {
     "mode": 2,
@@ -1954,18 +1954,18 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.redis.cluster.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-east1/clusters/rediscluster-${uniqueId}",
     "verb": "update"
   },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+  "name": "projects/${projectId}/locations/us-east1/operations/${operationID}"
 }
 
 ---
 
-GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-east1/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-east1%2Foperations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1984,10 +1984,10 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-east1/clusters/rediscluster-${uniqueId}",
     "verb": "update"
   },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "name": "projects/${projectId}/locations/us-east1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.redis.cluster.v1.Cluster",
     "authorizationMode": "AUTH_MODE_IAM_AUTH",
@@ -2015,11 +2015,11 @@ X-Xss-Protection: 0
       "encryptionType": "CUSTOMER_MANAGED_ENCRYPTION",
       "kmsKeyPrimaryState": "ENABLED",
       "kmsKeyVersions": [
-        "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1"
+        "projects/${projectId}/locations/us-east1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1"
       ],
       "lastUpdateTime": "2024-04-01T12:34:56.123456Z"
     },
-    "kmsKey": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
+    "kmsKey": "projects/${projectId}/locations/us-east1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
     "maintenancePolicy": {
       "weeklyMaintenanceWindow": [
         {
@@ -2030,7 +2030,7 @@ X-Xss-Protection: 0
         }
       ]
     },
-    "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
+    "name": "projects/${projectId}/locations/us-east1/clusters/rediscluster-${uniqueId}",
     "nodeType": "REDIS_STANDARD_SMALL",
     "persistenceConfig": {
       "mode": "RDB",
@@ -2043,14 +2043,14 @@ X-Xss-Protection: 0
     "pscConnections": [
       {
         "address": "10.11.12.13",
-        "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+        "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/forwardingRules/${forwardingRuleID}",
         "network": "projects/${projectId}/global/networks/${networkID}",
         "projectId": "${projectId}",
         "pscConnectionId": "${pscConnectionID}"
       },
       {
         "address": "10.11.12.13",
-        "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+        "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/forwardingRules/${forwardingRuleID}",
         "network": "projects/${projectId}/global/networks/${networkID}",
         "projectId": "${projectId}",
         "pscConnectionId": "${pscConnectionID}"
@@ -2059,10 +2059,10 @@ X-Xss-Protection: 0
     "pscServiceAttachments": [
       {
         "connectionType": "CONNECTION_TYPE_DISCOVERY",
-        "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa"
+        "serviceAttachment": "projects/${projectNumber}/regions/us-east1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa"
       },
       {
-        "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa-2"
+        "serviceAttachment": "projects/${projectNumber}/regions/us-east1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa-2"
       }
     ],
     "redisConfigs": {
@@ -2084,10 +2084,10 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=replicaCount
+PATCH https://redis.googleapis.com/v1/projects/${projectId}/locations/us-east1/clusters/rediscluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=replicaCount
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fclusters%2Frediscluster-${uniqueId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-east1%2Fclusters%2Frediscluster-${uniqueId}
 
 {
   "authorizationMode": 1,
@@ -2101,7 +2101,7 @@ X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-cen
     "retention": "1209600s"
   },
   "deletionProtectionEnabled": false,
-  "kmsKey": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
+  "kmsKey": "projects/${projectId}/locations/us-east1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
   "maintenancePolicy": {
     "weeklyMaintenanceWindow": [
       {
@@ -2112,7 +2112,7 @@ X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Fus-cen
       }
     ]
   },
-  "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-east1/clusters/rediscluster-${uniqueId}",
   "nodeType": 4,
   "persistenceConfig": {
     "mode": 2,
@@ -2154,18 +2154,18 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.redis.cluster.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-east1/clusters/rediscluster-${uniqueId}",
     "verb": "update"
   },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+  "name": "projects/${projectId}/locations/us-east1/operations/${operationID}"
 }
 
 ---
 
-GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-east1/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-east1%2Foperations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -2184,10 +2184,10 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-east1/clusters/rediscluster-${uniqueId}",
     "verb": "update"
   },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "name": "projects/${projectId}/locations/us-east1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.redis.cluster.v1.Cluster",
     "authorizationMode": "AUTH_MODE_IAM_AUTH",
@@ -2215,11 +2215,11 @@ X-Xss-Protection: 0
       "encryptionType": "CUSTOMER_MANAGED_ENCRYPTION",
       "kmsKeyPrimaryState": "ENABLED",
       "kmsKeyVersions": [
-        "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1"
+        "projects/${projectId}/locations/us-east1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1"
       ],
       "lastUpdateTime": "2024-04-01T12:34:56.123456Z"
     },
-    "kmsKey": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
+    "kmsKey": "projects/${projectId}/locations/us-east1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
     "maintenancePolicy": {
       "weeklyMaintenanceWindow": [
         {
@@ -2230,7 +2230,7 @@ X-Xss-Protection: 0
         }
       ]
     },
-    "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
+    "name": "projects/${projectId}/locations/us-east1/clusters/rediscluster-${uniqueId}",
     "nodeType": "REDIS_STANDARD_SMALL",
     "persistenceConfig": {
       "mode": "RDB",
@@ -2243,14 +2243,14 @@ X-Xss-Protection: 0
     "pscConnections": [
       {
         "address": "10.11.12.13",
-        "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+        "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/forwardingRules/${forwardingRuleID}",
         "network": "projects/${projectId}/global/networks/${networkID}",
         "projectId": "${projectId}",
         "pscConnectionId": "${pscConnectionID}"
       },
       {
         "address": "10.11.12.13",
-        "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+        "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/forwardingRules/${forwardingRuleID}",
         "network": "projects/${projectId}/global/networks/${networkID}",
         "projectId": "${projectId}",
         "pscConnectionId": "${pscConnectionID}"
@@ -2259,10 +2259,10 @@ X-Xss-Protection: 0
     "pscServiceAttachments": [
       {
         "connectionType": "CONNECTION_TYPE_DISCOVERY",
-        "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa"
+        "serviceAttachment": "projects/${projectNumber}/regions/us-east1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa"
       },
       {
-        "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa-2"
+        "serviceAttachment": "projects/${projectNumber}/regions/us-east1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa-2"
       }
     ],
     "redisConfigs": {
@@ -2284,10 +2284,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-east1/clusters/rediscluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fclusters%2Frediscluster-${uniqueId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-east1%2Fclusters%2Frediscluster-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -2325,11 +2325,11 @@ X-Xss-Protection: 0
     "encryptionType": 2,
     "kmsKeyPrimaryState": 1,
     "kmsKeyVersions": [
-      "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1"
+      "projects/${projectId}/locations/us-east1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1"
     ],
     "lastUpdateTime": "2024-04-01T12:34:56.123456Z"
   },
-  "kmsKey": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
+  "kmsKey": "projects/${projectId}/locations/us-east1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
   "maintenancePolicy": {
     "weeklyMaintenanceWindow": [
       {
@@ -2340,7 +2340,7 @@ X-Xss-Protection: 0
       }
     ]
   },
-  "name": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-east1/clusters/rediscluster-${uniqueId}",
   "nodeType": 4,
   "persistenceConfig": {
     "mode": 2,
@@ -2353,14 +2353,14 @@ X-Xss-Protection: 0
   "pscConnections": [
     {
       "address": "10.11.12.13",
-      "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+      "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/forwardingRules/${forwardingRuleID}",
       "network": "projects/${projectId}/global/networks/${networkID}",
       "projectId": "${projectId}",
       "pscConnectionId": "${pscConnectionID}"
     },
     {
       "address": "10.11.12.13",
-      "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/${forwardingRuleID}",
+      "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/forwardingRules/${forwardingRuleID}",
       "network": "projects/${projectId}/global/networks/${networkID}",
       "projectId": "${projectId}",
       "pscConnectionId": "${pscConnectionID}"
@@ -2369,10 +2369,10 @@ X-Xss-Protection: 0
   "pscServiceAttachments": [
     {
       "connectionType": 1,
-      "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa"
+      "serviceAttachment": "projects/${projectNumber}/regions/us-east1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa"
     },
     {
-      "serviceAttachment": "projects/${projectNumber}/regions/us-central1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa-2"
+      "serviceAttachment": "projects/${projectNumber}/regions/us-east1/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa-2"
     }
   ],
   "redisConfigs": {
@@ -2393,10 +2393,10 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+DELETE https://redis.googleapis.com/v1/projects/${projectId}/locations/us-east1/clusters/rediscluster-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fclusters%2Frediscluster-${uniqueId}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-east1%2Fclusters%2Frediscluster-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -2413,18 +2413,18 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.redis.cluster.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-east1/clusters/rediscluster-${uniqueId}",
     "verb": "delete"
   },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+  "name": "projects/${projectId}/locations/us-east1/operations/${operationID}"
 }
 
 ---
 
-GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}
+GET https://redis.googleapis.com/v1/projects/${projectId}/locations/us-east1/operations/${operationID}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Foperations%2F${operationID}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-east1%2Foperations%2F${operationID}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -2443,10 +2443,10 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1/clusters/rediscluster-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-east1/clusters/rediscluster-${uniqueId}",
     "verb": "delete"
   },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "name": "projects/${projectId}/locations/us-east1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.protobuf.Empty"
   }
@@ -2454,8 +2454,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}:getIamPolicy?alt=json&options.requestedPolicyVersion=3&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-east1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}:getIamPolicy?alt=json&options.requestedPolicyVersion=3&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -2482,9 +2482,9 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}:setIamPolicy?alt=json&prettyPrint=false
+POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-east1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}:setIamPolicy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 {
   "policy": {
@@ -2510,9 +2510,9 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}?alt=json
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-east1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -2531,12 +2531,12 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-east1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
   "primary": {
     "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "generateTime": "2024-04-01T12:34:56.123456Z",
-    "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
+    "name": "projects/${projectId}/locations/us-east1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
     "protectionLevel": "SOFTWARE",
     "state": "ENABLED"
   },
@@ -2549,8 +2549,8 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-east1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -2568,7 +2568,7 @@ X-Xss-Protection: 0
       "algorithm": "GOOGLE_SYMMETRIC_ENCRYPTION",
       "createTime": "2024-04-01T12:34:56.123456Z",
       "generateTime": "2024-04-01T12:34:56.123456Z",
-      "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
+      "name": "projects/${projectId}/locations/us-east1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
       "protectionLevel": "SOFTWARE",
       "state": "ENABLED"
     }
@@ -2578,9 +2578,9 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1:destroy?alt=json&prettyPrint=false
+POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-east1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1:destroy?alt=json&prettyPrint=false
 Content-Type: application/json
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 {}
 
@@ -2599,16 +2599,16 @@ X-Xss-Protection: 0
   "createTime": "2024-04-01T12:34:56.123456Z",
   "destroyTime": "2024-04-01T12:34:56.123456Z",
   "generateTime": "2024-04-01T12:34:56.123456Z",
-  "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
+  "name": "projects/${projectId}/locations/us-east1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
   "protectionLevel": "SOFTWARE",
   "state": "DESTROY_SCHEDULED"
 }
 
 ---
 
-GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}?alt=json
+GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-east1/keyRings/kmskeyring-${uniqueId}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -2622,13 +2622,13 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}"
+  "name": "projects/${projectId}/locations/us-east1/keyRings/kmskeyring-${uniqueId}"
 }
 
 ---
 
-GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/us-central1/serviceConnectionPolicies/scp-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/us-east1/serviceConnectionPolicies/scp-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -2645,11 +2645,11 @@ X-Xss-Protection: 0
   "description": "Service Connection Policy for redis",
   "etag": "abcdef0123A=",
   "infrastructure": "PSC",
-  "name": "projects/${projectId}/locations/us-central1/serviceConnectionPolicies/scp-${uniqueId}",
+  "name": "projects/${projectId}/locations/us-east1/serviceConnectionPolicies/scp-${uniqueId}",
   "network": "projects/${projectId}/global/networks/${networkID}",
   "pscConfig": {
     "subnetworks": [
-      "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+      "projects/${projectId}/regions/us-east1/subnetworks/${subnetworkID}"
     ]
   },
   "serviceClass": "gcp-memorystore-redis",
@@ -2658,8 +2658,8 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/us-central1/serviceConnectionPolicies/scp-${uniqueId}?alt=json&prettyPrint=false
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+DELETE https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/us-east1/serviceConnectionPolicies/scp-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -2676,16 +2676,16 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.networkconnectivity.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1/serviceConnectionPolicies/scp-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-east1/serviceConnectionPolicies/scp-${uniqueId}",
     "verb": "delete"
   },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+  "name": "projects/${projectId}/locations/us-east1/operations/${operationID}"
 }
 
 ---
 
-GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+GET https://networkconnectivity.googleapis.com/v1/projects/${projectId}/locations/us-east1/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -2704,10 +2704,10 @@ X-Xss-Protection: 0
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "endTime": "2024-04-01T12:34:56.123456Z",
-    "target": "projects/${projectId}/locations/us-central1/serviceConnectionPolicies/scp-${uniqueId}",
+    "target": "projects/${projectId}/locations/us-east1/serviceConnectionPolicies/scp-${uniqueId}",
     "verb": "delete"
   },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "name": "projects/${projectId}/locations/us-east1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.protobuf.Empty"
   }
@@ -2715,9 +2715,9 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/subnetworks/${subnetworkID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -2746,16 +2746,16 @@ X-Xss-Protection: 0
   "privateIpGoogleAccess": false,
   "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
   "purpose": "PRIVATE",
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/subnetworks/${subnetworkID}",
   "stackType": "IPV4_ONLY"
 }
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}?alt=json
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/subnetworks/${subnetworkID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -2774,19 +2774,19 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 0,
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${subnetworkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/subnetworks/${subnetworkID}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -2806,12 +2806,12 @@ X-Xss-Protection: 0
   "name": "${operationID}",
   "operationType": "delete",
   "progress": 100,
-  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}",
+  "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${subnetworkID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/subnetworks/${subnetworkID}",
   "user": "user@example.com"
 }
 
@@ -2819,7 +2819,7 @@ X-Xss-Protection: 0
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -2847,7 +2847,7 @@ X-Xss-Protection: 0
 
 DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -2877,7 +2877,7 @@ X-Xss-Protection: 0
 ---
 
 GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/operations/${operationID}?alt=json&prettyPrint=false
-User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
