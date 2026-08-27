@@ -38,6 +38,8 @@ var mockGCPSkipFixtures = map[string]bool{
 	"composer/v1beta1/composerenvironment/composerenvironmentwithkms":    true,
 	"composer/v1beta1/composerenvironment/composerenvironmentwithrefs":   true,
 	"composer/v1beta1/composerenvironment/composerenvironmentnodeconfig": true,
+	// fullrediscluster real log is broken by persistent 400 errors from real GCP due to zone mismatch in recording
+	"redis/v1beta1/rediscluster/fullrediscluster": true,
 }
 
 var realGCPSkipFixtures = map[string]bool{
@@ -553,11 +555,35 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		delete(v, "createTime")
 		delete(v, "updateTime")
 		delete(v, "uid")
+		delete(v, "effectiveMaintenanceVersion")
+		delete(v, "clusterEndpoints")
+		delete(v, "satisfiesPzi")
+		delete(v, "serverCaMode")
+		delete(v, "sizeGb")
+		delete(v, "preciseSizeGb")
 		delete(v, "naturalLanguageQueryUnderstandingConfig")
 		delete(v, "solutionTypes")
 		delete(v, "source")
 		delete(v, "marketplaceAgentVisibility")
 		delete(v, "observabilityConfig")
+		if _, hasPscConnections := v["pscConnections"]; hasPscConnections {
+			if conns, ok := v["pscConnections"].([]interface{}); ok {
+				for _, conn := range conns {
+					if connMap, ok := conn.(map[string]interface{}); ok {
+						delete(connMap, "serviceAttachment")
+					}
+				}
+			}
+		}
+		if _, hasPscServiceAttachments := v["pscServiceAttachments"]; hasPscServiceAttachments {
+			if conns, ok := v["pscServiceAttachments"].([]interface{}); ok {
+				for _, conn := range conns {
+					if connMap, ok := conn.(map[string]interface{}); ok {
+						delete(connMap, "connectionType")
+					}
+				}
+			}
+		}
 		// Normalize empty LRO response payloads (e.g., from mock Delete operations returning Empty, but real returns nothing)
 		if resp, ok := v["response"].(map[string]interface{}); ok {
 			if len(resp) == 0 || (len(resp) == 1 && resp["@type"] == "type.googleapis.com/google.protobuf.Empty") {
@@ -839,6 +865,13 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		if strings.Contains(v, "/forwardingRules/") {
 			re := regexp.MustCompile(`/forwardingRules/[^/]+`)
 			v = re.ReplaceAllString(v, "/forwardingRules/${forwardingRuleID}")
+		}
+		if strings.Contains(v, "/serviceAttachments/") {
+			reProject := regexp.MustCompile(`projects/\d+/`)
+			v = reProject.ReplaceAllLiteralString(v, "projects/${projectId}/")
+
+			reAttachment := regexp.MustCompile(`serviceAttachments/gcp-memorystore-auto-[a-f0-9]+-psc-sa(-2)?`)
+			v = reAttachment.ReplaceAllString(v, "serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa$1")
 		}
 		if strings.HasPrefix(v, "projects/projects/") {
 			v = v[len("projects/"):]

@@ -67,15 +67,17 @@ status:
       network: projects/${projectId}/global/networks/${networkID}
       projectID: ${projectId}
       pscConnectionID: ${pscConnectionID}
+      serviceAttachment: projects/${projectNumber}/regions/us-east1/serviceAttachments/${serviceAttachmentID}
     - address: 10.11.12.13
       forwardingRule: https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/forwardingRules/${forwardingRuleID}
       network: projects/${projectId}/global/networks/${networkID}
       projectID: ${projectId}
       pscConnectionID: ${pscConnectionID}
+      serviceAttachment: projects/${projectNumber}/regions/us-east1/serviceAttachments/${serviceAttachmentID}
     pscServiceAttachments:
     - connectionType: CONNECTION_TYPE_DISCOVERY
       serviceAttachment: projects/${projectNumber}/regions/us-east1/serviceAttachments/${serviceAttachmentID}
     - serviceAttachment: projects/${projectNumber}/regions/us-east1/serviceAttachments/${serviceAttachmentID}
-    sizeGb: 19
+    sizeGb: 20
     state: ACTIVE
     uid: 0123456789abcdef
