@@ -56,7 +56,7 @@ spec:
       cgroupMode: CGROUP_MODE_UNSPECIFIED
       sysctls:
         net.core.somaxconn: "4096"
-    machineType: n4-standard-2
+    machineType: n2-standard-2
   notificationConfig:
     pubsub:
       enabled: true

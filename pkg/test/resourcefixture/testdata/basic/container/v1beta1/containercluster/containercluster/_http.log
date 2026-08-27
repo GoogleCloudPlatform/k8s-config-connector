@@ -120,10 +120,6 @@ X-Xss-Protection: 0
   "kind": "compute#network",
   "name": "${networkID}",
   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
-  "routingConfig": {
-    "bgpBestPathSelectionMode": "LEGACY",
-    "routingMode": "REGIONAL"
-  },
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
 }
@@ -249,7 +245,9 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "allowSubnetCidrRoutesOverlap": false,
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "enableFlowLogs": false,
   "fingerprint": "abcdef0123A=",
   "gatewayAddress": "10.0.0.1",
   "id": "000000000000000000000",
@@ -265,8 +263,7 @@ X-Xss-Protection: 0
   "purpose": "PRIVATE",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
-  "stackType": "IPV4_ONLY",
-  "state": "READY"
+  "stackType": "IPV4_ONLY"
 }
 
 ---
@@ -476,14 +473,6 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
-  "primary": {
-    "algorithm": "EC_SIGN_P384_SHA384",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "generateTime": "2024-04-01T12:34:56.123456Z",
-    "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
-    "protectionLevel": "SOFTWARE",
-    "state": "ENABLED"
-  },
   "purpose": "ASYMMETRIC_SIGN",
   "versionTemplate": {
     "algorithm": "EC_SIGN_P384_SHA384",
@@ -516,14 +505,6 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
-  "primary": {
-    "algorithm": "EC_SIGN_P384_SHA384",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "generateTime": "2024-04-01T12:34:56.123456Z",
-    "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
-    "protectionLevel": "SOFTWARE",
-    "state": "ENABLED"
-  },
   "purpose": "ASYMMETRIC_SIGN",
   "versionTemplate": {
     "algorithm": "EC_SIGN_P384_SHA384",
@@ -662,7 +643,7 @@ User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/Goog
           "variant": "DEFAULT"
         }
       },
-      "machineType": "n4-standard-2"
+      "machineType": "n2-standard-2"
     },
     "notificationConfig": {
       "pubsub": {
@@ -732,11 +713,11 @@ X-Xss-Protection: 0
         "name": "CLUSTER_CONFIGURING_TOTAL"
       },
       {
-        "intValue": "12",
+        "intValue": "10",
         "name": "CLUSTER_DEPLOYING"
       },
       {
-        "intValue": "12",
+        "intValue": "10",
         "name": "CLUSTER_DEPLOYING_TOTAL"
       },
       {
@@ -773,6 +754,9 @@ X-Xss-Protection: 0
 
 {
   "addonsConfig": {
+    "dnsCacheConfig": {
+      "enabled": true
+    },
     "gcePersistentDiskCsiDriverConfig": {
       "enabled": true
     },
@@ -781,10 +765,11 @@ X-Xss-Protection: 0
     },
     "networkPolicyConfig": {
       "disabled": true
-    }
+    },
+    "nodeReadinessConfig": {}
   },
   "anonymousAuthenticationConfig": {
-    "mode": "ENABLED"
+    "mode": "LIMITED"
   },
   "autopilot": {},
   "autoscaling": {
@@ -825,11 +810,15 @@ X-Xss-Protection: 0
   "clusterTelemetry": {
     "type": "ENABLED"
   },
+  "controlPlaneEgress": {
+    "mode": "VIA_CONTROL_PLANE"
+  },
   "controlPlaneEndpointsConfig": {
     "dnsEndpointConfig": {
       "allowExternalTraffic": false,
+      "enableK8sCertsViaDns": false,
       "enableK8sTokensViaDns": false,
-      "endpoint": "gke-12345trewq-${projectNumber}.us-central1-a.gke.goog"
+      "endpoint": "gke-fffd766b1ddc49459222417a120559bf62e5-${projectNumber}.us-central1-a.gke.goog"
     },
     "ipEndpointsConfig": {
       "authorizedNetworksConfig": {
@@ -837,15 +826,14 @@ X-Xss-Protection: 0
       },
       "enablePublicEndpoint": true,
       "enabled": true,
-      "globalAccess": false,
       "privateEndpoint": "${privateEndpointIPV4}",
       "publicEndpoint": "${publicEndpointIPV4}"
     }
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "currentMasterVersion": "1.30.5-gke.1014001",
+  "currentMasterVersion": "1.35.6-gke.1710000",
   "currentNodeCount": 1,
-  "currentNodeVersion": "1.30.5-gke.1014001",
+  "currentNodeVersion": "1.35.6-gke.1710000",
   "databaseEncryption": {
     "currentState": "CURRENT_STATE_DECRYPTED",
     "state": "DECRYPTED"
@@ -859,17 +847,22 @@ X-Xss-Protection: 0
   },
   "etag": "abcdef0123A=",
   "id": "000000000000000000000",
-  "initialClusterVersion": "1.30.5-gke.1014001",
+  "initialClusterVersion": "1.35.6-gke.1710000",
   "initialNodeCount": 1,
   "instanceGroupUrls": [
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef"
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-cluster-sample-2rvfp-default-pool-fae16c6d-grp"
   ],
   "ipAllocationPolicy": {
     "clusterIpv4Cidr": "10.112.0.0/14",
     "clusterIpv4CidrBlock": "10.112.0.0/14",
+    "clusterSecondaryRangeName": "gke-cluster-sample-${uniqueId}-pods-fffd766b",
+    "defaultPodIpv4RangeUtilization": 0.0625,
+    "networkTierConfig": {
+      "networkTier": "NETWORK_TIER_DEFAULT"
+    },
     "podCidrOverprovisionConfig": {},
-    "servicesIpv4Cidr": "/20",
-    "servicesIpv4CidrBlock": "/20",
+    "servicesIpv4Cidr": "34.118.224.0/20",
+    "servicesIpv4CidrBlock": "34.118.224.0/20",
     "stackType": "IPV4",
     "useIpAliases": true
   },
@@ -891,9 +884,10 @@ X-Xss-Protection: 0
   "maintenancePolicy": {
     "resourceVersion": "abcd1234"
   },
+  "master": {},
   "masterAuth": {
     "clientCertificateConfig": {},
-    "clusterCaCertificate": "1234567890abcdefghijklmn"
+    "clusterCaCertificate": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUVMVENDQXBXZ0F3SUJBZ0lSQUwzRnJDeGt5KzdxUnpKRWpFNkZkQmN3RFFZSktvWklodmNOQVFFTEJRQXcKTHpFdE1Dc0dBMVVFQXhNa1pEVmtObU0yWlRjdE4ySXhOUzAwTm1GaExXRTVNREV0T0dKbE16STRNMlU0TmpkagpNQ0FYRFRJMk1EZ3lOekE0TlRVeU1sb1lEekl3TlRZd09ERTVNRGsxTlRJeVdqQXZNUzB3S3dZRFZRUURFeVJrCk5XUTJZelpsTnkwM1lqRTFMVFEyWVdFdFlUa3dNUzA0WW1Vek1qZ3paVGcyTjJNd2dnR2lNQTBHQ1NxR1NJYjMKRFFFQkFRVUFBNElCandBd2dnR0tBb0lCZ1FDbWF4Smx0UitkT1U4RFRpUXlhbGlnbW9QSTl3cTN0aFdrSnRiQQpiTXpObjdFSDNYME9jR0t0SDFxbXN1MEN6TUduQ2xJUlBMWU13WnlYek8yNVNBcWdoL2g1Q2lQQnJ0eWJEU292CmExUEtvQWFRL2VLQTN3QmZZNzdhOEdoQWM3SWJWaGNWbEpiQkNRV21jRE1JT3pERElTRkZqMlUvQUIxdEptRkgKK3VOaHJxNVJCQ0QrZnBrdEdQRzdXcnFMVklpNnVNMkhvWlUxU0FDWkRMNTJBcTljQ0g2aHlCaXZIaWpYWGhhNwplRHN1ZUgyQ0tEVjlKbVRGeEZzRFlOaXkreFN1TkJ3QU03K1JhRVBhUmRSTElxSk9PTjA0R1pqbmw1eE5qb2pVCkRTcWVNQk94a0c5eEE5aGVLbkpCUG9UMEtiQnZ2RVNoYi9DREdlbS9YUlZoMGxJTS9kTkg4SnJHUms3SE1VamUKd0FkVzVkMWM5amNmakE2aEZGQzBjcG5vMzRxbzFweGs1RkU5aGVxd2dQQkl4Vm0rMmMrd0QxUmIycmlOb2s2WQpTOW8zdzlkYzE1WDJpT3pmM3ExT294ck5MbUtqSlRtZ1orb2JJeGs1aUxwL2FuNENJWGt0MW5JV1YrSVRWYmt6Ck02YlM0dDUraHI5T2JBR3JSSjIwaG1VOVlpVUNBd0VBQWFOQ01FQXdEZ1lEVlIwUEFRSC9CQVFEQWdJRU1BOEcKQTFVZEV3RUIvd1FGTUFNQkFmOHdIUVlEVlIwT0JCWUVGQStlWWl0dnBsMzVuUGRYTzBtV2NlQ2R1U3RoTUEwRwpDU3FHU0liM0RRRUJDd1VBQTRJQmdRQjhXTDZ1enMwOSt3ay90bEhWeG1PNmR0andCQ3J6bnpJY05YNnA1LzNFCjdwU1gxTzlXaXhuOUlha29uK1hyaVU2cFhNOEtRVEo0b240Sk1HVFBxQldQQVFNY1ExTkk3ZmNKRTdNNS9JRUsKVnB3SXFKMEdTQkFmMG5XYjlIUGhaMk1aODJXTFloOXVXL0pHcWlKVXoyWEF1emM5TEhCWjV5QyttRmRkelJvYwowQjVKMVY2b3Q3VHJvVlpJV1c1RXZmNlVyUndkRFRjMDJhVHVFZzc3SjM3MEhDczBMN1NSS0JaMS9xRytXRGFoClVoSFcvbEFjUDgwME91TGRLd0NtRkM1bWVudnZJN0RtZXdBQVBwaEoremxrdE5jbEhjYlRqaFRmVGRVbC9LVmwKUUhsRjZGUWtTRERxUHdhVzArODIvVldtaHJ5NktOUGZtNjBxQStMMXFRc3BrOFJUdkVXU3hGZnJMQnlUcUxPOQpQdk9KcjBuOWlxVDZSalpVd3JNaDBodWVRZnBZZUFyN1ZYajdEZmRIVkczYlJRajJQTXBycjhwc2p5NnoyQU4vCkhnUlhvb1JSRi9Tbk1VaWYvSFBZNnJidmNpSVljTGpybWVjNjlpeTB4OTlMaGR4NUZWQlFGYmZ0UEhtUmd0VzkKcmhhWlUyUFUza1NZTzRGSGs4QUxWeWs9Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K"
   },
   "masterAuthorizedNetworksConfig": {
     "gcpPublicCidrsAccessEnabled": true
@@ -914,6 +908,7 @@ X-Xss-Protection: 0
   "name": "cluster-sample-${uniqueId}",
   "network": "${networkID}",
   "networkConfig": {
+    "defaultSnatStatus": {},
     "network": "projects/${projectId}/global/networks/${networkID}",
     "serviceExternalIpsConfig": {},
     "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
@@ -923,11 +918,11 @@ X-Xss-Protection: 0
       "enableNestedVirtualization": true
     },
     "bootDisk": {
-      "diskType": "hyperdisk-balanced",
+      "diskType": "pd-balanced",
       "sizeGb": "100"
     },
     "diskSizeGb": 100,
-    "diskType": "hyperdisk-balanced",
+    "diskType": "pd-balanced",
     "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
     "imageType": "COS_CONTAINERD",
     "kubeletConfig": {
@@ -944,9 +939,13 @@ X-Xss-Protection: 0
         "variant": "DEFAULT"
       }
     },
-    "machineType": "n4-standard-2",
+    "machineType": "n2-standard-2",
     "metadata": {
       "disable-legacy-endpoints": "true"
+    },
+    "nodeImageConfig": {
+      "image": "gke-1356-gke1710000-cos-125-19216-395-138-c-pre",
+      "imageProject": "gke-node-images"
     },
     "oauthScopes": [
       "https://www.googleapis.com/auth/devstorage.read_only",
@@ -964,6 +963,9 @@ X-Xss-Protection: 0
       "enableIntegrityMonitoring": true
     },
     "windowsNodeConfig": {}
+  },
+  "nodeCreationConfig": {
+    "nodeCreationMode": "VIA_KUBELET"
   },
   "nodePoolAutoConfig": {
     "nodeKubeletConfig": {
@@ -989,11 +991,11 @@ X-Xss-Protection: 0
           "enableNestedVirtualization": true
         },
         "bootDisk": {
-          "diskType": "hyperdisk-balanced",
+          "diskType": "pd-balanced",
           "sizeGb": "100"
         },
         "diskSizeGb": 100,
-        "diskType": "hyperdisk-balanced",
+        "diskType": "pd-balanced",
         "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
         "imageType": "COS_CONTAINERD",
         "kubeletConfig": {
@@ -1010,9 +1012,13 @@ X-Xss-Protection: 0
             "variant": "DEFAULT"
           }
         },
-        "machineType": "n4-standard-2",
+        "machineType": "n2-standard-2",
         "metadata": {
           "disable-legacy-endpoints": "true"
+        },
+        "nodeImageConfig": {
+          "image": "gke-1356-gke1710000-cos-125-19216-395-138-c-pre",
+          "imageProject": "gke-node-images"
         },
         "oauthScopes": [
           "https://www.googleapis.com/auth/devstorage.read_only",
@@ -1031,10 +1037,14 @@ X-Xss-Protection: 0
         },
         "windowsNodeConfig": {}
       },
+      "etag": "ebb39cfb-b615-4f06-8104-44de9c52b476",
       "initialNodeCount": 1,
       "instanceGroupUrls": [
-        "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp"
+        "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-cluster-sample-2rvfp-default-pool-fae16c6d-grp"
       ],
+      "kubeletCertInfo": {
+        "tpmBootstrapCertExpireTime": "2031-08-26T09:56:51Z"
+      },
       "locations": [
         "us-central1-a"
       ],
@@ -1047,18 +1057,22 @@ X-Xss-Protection: 0
       },
       "name": "default-pool",
       "networkConfig": {
-        "podIpv4CidrBlock": "10.92.0.0/14",
-        "podIpv4RangeUtilization": 0.001,
-        "podRange": "default-pool-pods-12345678",
+        "networkTierConfig": {
+          "networkTier": "NETWORK_TIER_DEFAULT"
+        },
+        "podIpv4CidrBlock": "10.234.32.0/20",
+        "podIpv4RangeUtilization": 0.0625,
+        "podRange": "gke-cluster-sample-${uniqueId}-pods-fffd766b",
         "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
       },
       "podIpv4CidrSize": 24,
+      "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectId}/zones/us-central1-a/clusters/cluster-sample-${uniqueId}/nodePools/default-pool",
       "status": "RUNNING",
       "upgradeSettings": {
         "maxSurge": 1,
         "strategy": "SURGE"
       },
-      "version": "1.30.5-gke.1014001"
+      "version": "1.35.6-gke.1710000"
     }
   ],
   "notificationConfig": {
@@ -1070,6 +1084,7 @@ X-Xss-Protection: 0
   "podAutoscaling": {
     "hpaProfile": "PERFORMANCE"
   },
+  "privateCluster": true,
   "privateClusterConfig": {
     "privateEndpoint": "${privateEndpointIPV4}",
     "publicEndpoint": "${publicEndpointIPV4}"
@@ -1109,7 +1124,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-cluster-sample-2rvfp-default-pool-fae16c6d-grp?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -1123,38 +1138,86 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "baseInstanceName": "gke-containercluster-abcdef-default-pool",
+  "baseInstanceName": "gke-cluster-sample-2rvfp-default-pool-fae16c6d",
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "currentActions": {
-    "none": 1
+    "abandoning": 0,
+    "creating": 0,
+    "creatingWithoutRetries": 0,
+    "deleting": 0,
+    "none": 1,
+    "recreating": 0,
+    "refreshing": 0,
+    "restarting": 0,
+    "resuming": 0,
+    "starting": 0,
+    "stopping": 0,
+    "suspending": 0,
+    "verifying": 0
   },
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
-  "instanceGroup": "https://www.googleapis.com/compute/v1beta1/projects/${projectId}/zones/us-central1-a/instanceGroups/gke-containercluster-abcdef-default-pool-grp",
+  "instanceGroup": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/instanceGroups/gke-cluster-sample-2rvfp-default-pool-fae16c6d-grp",
   "instanceLifecyclePolicy": {
     "defaultActionOnFailure": "REPAIR",
-    "forceUpdateOnRepair": "YES"
+    "forceUpdateOnRepair": "YES",
+    "onFailedHealthCheck": "DEFAULT_ACTION"
   },
-  "instanceTemplate": "https://www.googleapis.com/compute/v1beta1/projects/${projectId}/global/instanceTemplates/gke-containercluster-abcdef-default-pool",
+  "instanceTemplate": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/instanceTemplates/gke-cluster-sample-2rvfp-default-pool-fae16c6d",
   "kind": "compute#instanceGroupManager",
-  "name": "gke-containercluster-abcdef-default-pool-grp",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp",
+  "listManagedInstancesResults": "PAGINATED",
+  "name": "gke-cluster-sample-2rvfp-default-pool-fae16c6d-grp",
+  "satisfiesPzs": true,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-cluster-sample-2rvfp-default-pool-fae16c6d-grp",
+  "serviceAccount": "service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com",
+  "standbyPolicy": {
+    "mode": "MANUAL"
+  },
   "status": {
-    "isStable": true
+    "allInstancesConfig": {
+      "effective": true
+    },
+    "isStable": true,
+    "stateful": {
+      "hasStatefulConfig": false,
+      "isStateful": false,
+      "perInstanceConfigs": {
+        "allEffective": true
+      }
+    },
+    "versionTarget": {
+      "isReached": true
+    }
   },
   "targetSize": 1,
+  "targetSizePolicy": {
+    "mode": "INDIVIDUAL"
+  },
+  "targetStoppedSize": 0,
+  "targetSuspendedSize": 0,
   "updatePolicy": {
     "maxSurge": {
+      "calculated": 1,
       "fixed": 1
     },
     "maxUnavailable": {
+      "calculated": 1,
       "fixed": 1
     },
+    "minReadySec": 0,
     "minimalAction": "REPLACE",
     "replacementMethod": "SUBSTITUTE",
     "type": "OPPORTUNISTIC"
   },
-  "zone": "https://www.googleapis.com/compute/v1beta1/projects/${projectId}/zones/us-central1-a"
+  "versions": [
+    {
+      "instanceTemplate": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/instanceTemplates/gke-cluster-sample-2rvfp-default-pool-fae16c6d",
+      "targetSize": {
+        "calculated": 1
+      }
+    }
+  ],
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
 }
 
 ---
@@ -1174,6 +1237,9 @@ X-Xss-Protection: 0
 
 {
   "addonsConfig": {
+    "dnsCacheConfig": {
+      "enabled": true
+    },
     "gcePersistentDiskCsiDriverConfig": {
       "enabled": true
     },
@@ -1182,10 +1248,11 @@ X-Xss-Protection: 0
     },
     "networkPolicyConfig": {
       "disabled": true
-    }
+    },
+    "nodeReadinessConfig": {}
   },
   "anonymousAuthenticationConfig": {
-    "mode": "ENABLED"
+    "mode": "LIMITED"
   },
   "autopilot": {},
   "autoscaling": {
@@ -1226,11 +1293,15 @@ X-Xss-Protection: 0
   "clusterTelemetry": {
     "type": "ENABLED"
   },
+  "controlPlaneEgress": {
+    "mode": "VIA_CONTROL_PLANE"
+  },
   "controlPlaneEndpointsConfig": {
     "dnsEndpointConfig": {
       "allowExternalTraffic": false,
+      "enableK8sCertsViaDns": false,
       "enableK8sTokensViaDns": false,
-      "endpoint": "gke-12345trewq-${projectNumber}.us-central1-a.gke.goog"
+      "endpoint": "gke-fffd766b1ddc49459222417a120559bf62e5-${projectNumber}.us-central1-a.gke.goog"
     },
     "ipEndpointsConfig": {
       "authorizedNetworksConfig": {
@@ -1238,15 +1309,14 @@ X-Xss-Protection: 0
       },
       "enablePublicEndpoint": true,
       "enabled": true,
-      "globalAccess": false,
       "privateEndpoint": "${privateEndpointIPV4}",
       "publicEndpoint": "${publicEndpointIPV4}"
     }
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "currentMasterVersion": "1.30.5-gke.1014001",
+  "currentMasterVersion": "1.35.6-gke.1710000",
   "currentNodeCount": 1,
-  "currentNodeVersion": "1.30.5-gke.1014001",
+  "currentNodeVersion": "1.35.6-gke.1710000",
   "databaseEncryption": {
     "currentState": "CURRENT_STATE_DECRYPTED",
     "state": "DECRYPTED"
@@ -1260,17 +1330,22 @@ X-Xss-Protection: 0
   },
   "etag": "abcdef0123A=",
   "id": "000000000000000000000",
-  "initialClusterVersion": "1.30.5-gke.1014001",
+  "initialClusterVersion": "1.35.6-gke.1710000",
   "initialNodeCount": 1,
   "instanceGroupUrls": [
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef"
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-cluster-sample-2rvfp-default-pool-fae16c6d-grp"
   ],
   "ipAllocationPolicy": {
     "clusterIpv4Cidr": "10.112.0.0/14",
     "clusterIpv4CidrBlock": "10.112.0.0/14",
+    "clusterSecondaryRangeName": "gke-cluster-sample-${uniqueId}-pods-fffd766b",
+    "defaultPodIpv4RangeUtilization": 0.0625,
+    "networkTierConfig": {
+      "networkTier": "NETWORK_TIER_DEFAULT"
+    },
     "podCidrOverprovisionConfig": {},
-    "servicesIpv4Cidr": "/20",
-    "servicesIpv4CidrBlock": "/20",
+    "servicesIpv4Cidr": "34.118.224.0/20",
+    "servicesIpv4CidrBlock": "34.118.224.0/20",
     "stackType": "IPV4",
     "useIpAliases": true
   },
@@ -1292,9 +1367,10 @@ X-Xss-Protection: 0
   "maintenancePolicy": {
     "resourceVersion": "abcd1234"
   },
+  "master": {},
   "masterAuth": {
     "clientCertificateConfig": {},
-    "clusterCaCertificate": "1234567890abcdefghijklmn"
+    "clusterCaCertificate": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUVMVENDQXBXZ0F3SUJBZ0lSQUwzRnJDeGt5KzdxUnpKRWpFNkZkQmN3RFFZSktvWklodmNOQVFFTEJRQXcKTHpFdE1Dc0dBMVVFQXhNa1pEVmtObU0yWlRjdE4ySXhOUzAwTm1GaExXRTVNREV0T0dKbE16STRNMlU0TmpkagpNQ0FYRFRJMk1EZ3lOekE0TlRVeU1sb1lEekl3TlRZd09ERTVNRGsxTlRJeVdqQXZNUzB3S3dZRFZRUURFeVJrCk5XUTJZelpsTnkwM1lqRTFMVFEyWVdFdFlUa3dNUzA0WW1Vek1qZ3paVGcyTjJNd2dnR2lNQTBHQ1NxR1NJYjMKRFFFQkFRVUFBNElCandBd2dnR0tBb0lCZ1FDbWF4Smx0UitkT1U4RFRpUXlhbGlnbW9QSTl3cTN0aFdrSnRiQQpiTXpObjdFSDNYME9jR0t0SDFxbXN1MEN6TUduQ2xJUlBMWU13WnlYek8yNVNBcWdoL2g1Q2lQQnJ0eWJEU292CmExUEtvQWFRL2VLQTN3QmZZNzdhOEdoQWM3SWJWaGNWbEpiQkNRV21jRE1JT3pERElTRkZqMlUvQUIxdEptRkgKK3VOaHJxNVJCQ0QrZnBrdEdQRzdXcnFMVklpNnVNMkhvWlUxU0FDWkRMNTJBcTljQ0g2aHlCaXZIaWpYWGhhNwplRHN1ZUgyQ0tEVjlKbVRGeEZzRFlOaXkreFN1TkJ3QU03K1JhRVBhUmRSTElxSk9PTjA0R1pqbmw1eE5qb2pVCkRTcWVNQk94a0c5eEE5aGVLbkpCUG9UMEtiQnZ2RVNoYi9DREdlbS9YUlZoMGxJTS9kTkg4SnJHUms3SE1VamUKd0FkVzVkMWM5amNmakE2aEZGQzBjcG5vMzRxbzFweGs1RkU5aGVxd2dQQkl4Vm0rMmMrd0QxUmIycmlOb2s2WQpTOW8zdzlkYzE1WDJpT3pmM3ExT294ck5MbUtqSlRtZ1orb2JJeGs1aUxwL2FuNENJWGt0MW5JV1YrSVRWYmt6Ck02YlM0dDUraHI5T2JBR3JSSjIwaG1VOVlpVUNBd0VBQWFOQ01FQXdEZ1lEVlIwUEFRSC9CQVFEQWdJRU1BOEcKQTFVZEV3RUIvd1FGTUFNQkFmOHdIUVlEVlIwT0JCWUVGQStlWWl0dnBsMzVuUGRYTzBtV2NlQ2R1U3RoTUEwRwpDU3FHU0liM0RRRUJDd1VBQTRJQmdRQjhXTDZ1enMwOSt3ay90bEhWeG1PNmR0andCQ3J6bnpJY05YNnA1LzNFCjdwU1gxTzlXaXhuOUlha29uK1hyaVU2cFhNOEtRVEo0b240Sk1HVFBxQldQQVFNY1ExTkk3ZmNKRTdNNS9JRUsKVnB3SXFKMEdTQkFmMG5XYjlIUGhaMk1aODJXTFloOXVXL0pHcWlKVXoyWEF1emM5TEhCWjV5QyttRmRkelJvYwowQjVKMVY2b3Q3VHJvVlpJV1c1RXZmNlVyUndkRFRjMDJhVHVFZzc3SjM3MEhDczBMN1NSS0JaMS9xRytXRGFoClVoSFcvbEFjUDgwME91TGRLd0NtRkM1bWVudnZJN0RtZXdBQVBwaEoremxrdE5jbEhjYlRqaFRmVGRVbC9LVmwKUUhsRjZGUWtTRERxUHdhVzArODIvVldtaHJ5NktOUGZtNjBxQStMMXFRc3BrOFJUdkVXU3hGZnJMQnlUcUxPOQpQdk9KcjBuOWlxVDZSalpVd3JNaDBodWVRZnBZZUFyN1ZYajdEZmRIVkczYlJRajJQTXBycjhwc2p5NnoyQU4vCkhnUlhvb1JSRi9Tbk1VaWYvSFBZNnJidmNpSVljTGpybWVjNjlpeTB4OTlMaGR4NUZWQlFGYmZ0UEhtUmd0VzkKcmhhWlUyUFUza1NZTzRGSGs4QUxWeWs9Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K"
   },
   "masterAuthorizedNetworksConfig": {
     "gcpPublicCidrsAccessEnabled": true
@@ -1315,6 +1391,7 @@ X-Xss-Protection: 0
   "name": "cluster-sample-${uniqueId}",
   "network": "${networkID}",
   "networkConfig": {
+    "defaultSnatStatus": {},
     "network": "projects/${projectId}/global/networks/${networkID}",
     "serviceExternalIpsConfig": {},
     "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
@@ -1324,11 +1401,11 @@ X-Xss-Protection: 0
       "enableNestedVirtualization": true
     },
     "bootDisk": {
-      "diskType": "hyperdisk-balanced",
+      "diskType": "pd-balanced",
       "sizeGb": "100"
     },
     "diskSizeGb": 100,
-    "diskType": "hyperdisk-balanced",
+    "diskType": "pd-balanced",
     "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
     "imageType": "COS_CONTAINERD",
     "kubeletConfig": {
@@ -1345,9 +1422,13 @@ X-Xss-Protection: 0
         "variant": "DEFAULT"
       }
     },
-    "machineType": "n4-standard-2",
+    "machineType": "n2-standard-2",
     "metadata": {
       "disable-legacy-endpoints": "true"
+    },
+    "nodeImageConfig": {
+      "image": "gke-1356-gke1710000-cos-125-19216-395-138-c-pre",
+      "imageProject": "gke-node-images"
     },
     "oauthScopes": [
       "https://www.googleapis.com/auth/devstorage.read_only",
@@ -1365,6 +1446,9 @@ X-Xss-Protection: 0
       "enableIntegrityMonitoring": true
     },
     "windowsNodeConfig": {}
+  },
+  "nodeCreationConfig": {
+    "nodeCreationMode": "VIA_KUBELET"
   },
   "nodePoolAutoConfig": {
     "nodeKubeletConfig": {
@@ -1390,11 +1474,11 @@ X-Xss-Protection: 0
           "enableNestedVirtualization": true
         },
         "bootDisk": {
-          "diskType": "hyperdisk-balanced",
+          "diskType": "pd-balanced",
           "sizeGb": "100"
         },
         "diskSizeGb": 100,
-        "diskType": "hyperdisk-balanced",
+        "diskType": "pd-balanced",
         "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
         "imageType": "COS_CONTAINERD",
         "kubeletConfig": {
@@ -1411,9 +1495,13 @@ X-Xss-Protection: 0
             "variant": "DEFAULT"
           }
         },
-        "machineType": "n4-standard-2",
+        "machineType": "n2-standard-2",
         "metadata": {
           "disable-legacy-endpoints": "true"
+        },
+        "nodeImageConfig": {
+          "image": "gke-1356-gke1710000-cos-125-19216-395-138-c-pre",
+          "imageProject": "gke-node-images"
         },
         "oauthScopes": [
           "https://www.googleapis.com/auth/devstorage.read_only",
@@ -1432,10 +1520,14 @@ X-Xss-Protection: 0
         },
         "windowsNodeConfig": {}
       },
+      "etag": "ebb39cfb-b615-4f06-8104-44de9c52b476",
       "initialNodeCount": 1,
       "instanceGroupUrls": [
-        "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp"
+        "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-cluster-sample-2rvfp-default-pool-fae16c6d-grp"
       ],
+      "kubeletCertInfo": {
+        "tpmBootstrapCertExpireTime": "2031-08-26T09:56:51Z"
+      },
       "locations": [
         "us-central1-a"
       ],
@@ -1448,18 +1540,22 @@ X-Xss-Protection: 0
       },
       "name": "default-pool",
       "networkConfig": {
-        "podIpv4CidrBlock": "10.92.0.0/14",
-        "podIpv4RangeUtilization": 0.001,
-        "podRange": "default-pool-pods-12345678",
+        "networkTierConfig": {
+          "networkTier": "NETWORK_TIER_DEFAULT"
+        },
+        "podIpv4CidrBlock": "10.234.32.0/20",
+        "podIpv4RangeUtilization": 0.0625,
+        "podRange": "gke-cluster-sample-${uniqueId}-pods-fffd766b",
         "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
       },
       "podIpv4CidrSize": 24,
+      "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectId}/zones/us-central1-a/clusters/cluster-sample-${uniqueId}/nodePools/default-pool",
       "status": "RUNNING",
       "upgradeSettings": {
         "maxSurge": 1,
         "strategy": "SURGE"
       },
-      "version": "1.30.5-gke.1014001"
+      "version": "1.35.6-gke.1710000"
     }
   ],
   "notificationConfig": {
@@ -1471,6 +1567,7 @@ X-Xss-Protection: 0
   "podAutoscaling": {
     "hpaProfile": "PERFORMANCE"
   },
+  "privateCluster": true,
   "privateClusterConfig": {
     "privateEndpoint": "${privateEndpointIPV4}",
     "publicEndpoint": "${publicEndpointIPV4}"
@@ -1510,7 +1607,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-cluster-sample-2rvfp-default-pool-fae16c6d-grp?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -1524,38 +1621,86 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "baseInstanceName": "gke-containercluster-abcdef-default-pool",
+  "baseInstanceName": "gke-cluster-sample-2rvfp-default-pool-fae16c6d",
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "currentActions": {
-    "none": 1
+    "abandoning": 0,
+    "creating": 0,
+    "creatingWithoutRetries": 0,
+    "deleting": 0,
+    "none": 1,
+    "recreating": 0,
+    "refreshing": 0,
+    "restarting": 0,
+    "resuming": 0,
+    "starting": 0,
+    "stopping": 0,
+    "suspending": 0,
+    "verifying": 0
   },
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
-  "instanceGroup": "https://www.googleapis.com/compute/v1beta1/projects/${projectId}/zones/us-central1-a/instanceGroups/gke-containercluster-abcdef-default-pool-grp",
+  "instanceGroup": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/instanceGroups/gke-cluster-sample-2rvfp-default-pool-fae16c6d-grp",
   "instanceLifecyclePolicy": {
     "defaultActionOnFailure": "REPAIR",
-    "forceUpdateOnRepair": "YES"
+    "forceUpdateOnRepair": "YES",
+    "onFailedHealthCheck": "DEFAULT_ACTION"
   },
-  "instanceTemplate": "https://www.googleapis.com/compute/v1beta1/projects/${projectId}/global/instanceTemplates/gke-containercluster-abcdef-default-pool",
+  "instanceTemplate": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/instanceTemplates/gke-cluster-sample-2rvfp-default-pool-fae16c6d",
   "kind": "compute#instanceGroupManager",
-  "name": "gke-containercluster-abcdef-default-pool-grp",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp",
+  "listManagedInstancesResults": "PAGINATED",
+  "name": "gke-cluster-sample-2rvfp-default-pool-fae16c6d-grp",
+  "satisfiesPzs": true,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-cluster-sample-2rvfp-default-pool-fae16c6d-grp",
+  "serviceAccount": "service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com",
+  "standbyPolicy": {
+    "mode": "MANUAL"
+  },
   "status": {
-    "isStable": true
+    "allInstancesConfig": {
+      "effective": true
+    },
+    "isStable": true,
+    "stateful": {
+      "hasStatefulConfig": false,
+      "isStateful": false,
+      "perInstanceConfigs": {
+        "allEffective": true
+      }
+    },
+    "versionTarget": {
+      "isReached": true
+    }
   },
   "targetSize": 1,
+  "targetSizePolicy": {
+    "mode": "INDIVIDUAL"
+  },
+  "targetStoppedSize": 0,
+  "targetSuspendedSize": 0,
   "updatePolicy": {
     "maxSurge": {
+      "calculated": 1,
       "fixed": 1
     },
     "maxUnavailable": {
+      "calculated": 1,
       "fixed": 1
     },
+    "minReadySec": 0,
     "minimalAction": "REPLACE",
     "replacementMethod": "SUBSTITUTE",
     "type": "OPPORTUNISTIC"
   },
-  "zone": "https://www.googleapis.com/compute/v1beta1/projects/${projectId}/zones/us-central1-a"
+  "versions": [
+    {
+      "instanceTemplate": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/instanceTemplates/gke-cluster-sample-2rvfp-default-pool-fae16c6d",
+      "targetSize": {
+        "calculated": 1
+      }
+    }
+  ],
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
 }
 
 ---
@@ -1575,6 +1720,9 @@ X-Xss-Protection: 0
 
 {
   "addonsConfig": {
+    "dnsCacheConfig": {
+      "enabled": true
+    },
     "gcePersistentDiskCsiDriverConfig": {
       "enabled": true
     },
@@ -1583,10 +1731,11 @@ X-Xss-Protection: 0
     },
     "networkPolicyConfig": {
       "disabled": true
-    }
+    },
+    "nodeReadinessConfig": {}
   },
   "anonymousAuthenticationConfig": {
-    "mode": "ENABLED"
+    "mode": "LIMITED"
   },
   "autopilot": {},
   "autoscaling": {
@@ -1627,11 +1776,15 @@ X-Xss-Protection: 0
   "clusterTelemetry": {
     "type": "ENABLED"
   },
+  "controlPlaneEgress": {
+    "mode": "VIA_CONTROL_PLANE"
+  },
   "controlPlaneEndpointsConfig": {
     "dnsEndpointConfig": {
       "allowExternalTraffic": false,
+      "enableK8sCertsViaDns": false,
       "enableK8sTokensViaDns": false,
-      "endpoint": "gke-12345trewq-${projectNumber}.us-central1-a.gke.goog"
+      "endpoint": "gke-fffd766b1ddc49459222417a120559bf62e5-${projectNumber}.us-central1-a.gke.goog"
     },
     "ipEndpointsConfig": {
       "authorizedNetworksConfig": {
@@ -1639,15 +1792,14 @@ X-Xss-Protection: 0
       },
       "enablePublicEndpoint": true,
       "enabled": true,
-      "globalAccess": false,
       "privateEndpoint": "${privateEndpointIPV4}",
       "publicEndpoint": "${publicEndpointIPV4}"
     }
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "currentMasterVersion": "1.30.5-gke.1014001",
+  "currentMasterVersion": "1.35.6-gke.1710000",
   "currentNodeCount": 1,
-  "currentNodeVersion": "1.30.5-gke.1014001",
+  "currentNodeVersion": "1.35.6-gke.1710000",
   "databaseEncryption": {
     "currentState": "CURRENT_STATE_DECRYPTED",
     "state": "DECRYPTED"
@@ -1661,17 +1813,22 @@ X-Xss-Protection: 0
   },
   "etag": "abcdef0123A=",
   "id": "000000000000000000000",
-  "initialClusterVersion": "1.30.5-gke.1014001",
+  "initialClusterVersion": "1.35.6-gke.1710000",
   "initialNodeCount": 1,
   "instanceGroupUrls": [
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef"
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-cluster-sample-2rvfp-default-pool-fae16c6d-grp"
   ],
   "ipAllocationPolicy": {
     "clusterIpv4Cidr": "10.112.0.0/14",
     "clusterIpv4CidrBlock": "10.112.0.0/14",
+    "clusterSecondaryRangeName": "gke-cluster-sample-${uniqueId}-pods-fffd766b",
+    "defaultPodIpv4RangeUtilization": 0.0625,
+    "networkTierConfig": {
+      "networkTier": "NETWORK_TIER_DEFAULT"
+    },
     "podCidrOverprovisionConfig": {},
-    "servicesIpv4Cidr": "/20",
-    "servicesIpv4CidrBlock": "/20",
+    "servicesIpv4Cidr": "34.118.224.0/20",
+    "servicesIpv4CidrBlock": "34.118.224.0/20",
     "stackType": "IPV4",
     "useIpAliases": true
   },
@@ -1693,9 +1850,10 @@ X-Xss-Protection: 0
   "maintenancePolicy": {
     "resourceVersion": "abcd1234"
   },
+  "master": {},
   "masterAuth": {
     "clientCertificateConfig": {},
-    "clusterCaCertificate": "1234567890abcdefghijklmn"
+    "clusterCaCertificate": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUVMVENDQXBXZ0F3SUJBZ0lSQUwzRnJDeGt5KzdxUnpKRWpFNkZkQmN3RFFZSktvWklodmNOQVFFTEJRQXcKTHpFdE1Dc0dBMVVFQXhNa1pEVmtObU0yWlRjdE4ySXhOUzAwTm1GaExXRTVNREV0T0dKbE16STRNMlU0TmpkagpNQ0FYRFRJMk1EZ3lOekE0TlRVeU1sb1lEekl3TlRZd09ERTVNRGsxTlRJeVdqQXZNUzB3S3dZRFZRUURFeVJrCk5XUTJZelpsTnkwM1lqRTFMVFEyWVdFdFlUa3dNUzA0WW1Vek1qZ3paVGcyTjJNd2dnR2lNQTBHQ1NxR1NJYjMKRFFFQkFRVUFBNElCandBd2dnR0tBb0lCZ1FDbWF4Smx0UitkT1U4RFRpUXlhbGlnbW9QSTl3cTN0aFdrSnRiQQpiTXpObjdFSDNYME9jR0t0SDFxbXN1MEN6TUduQ2xJUlBMWU13WnlYek8yNVNBcWdoL2g1Q2lQQnJ0eWJEU292CmExUEtvQWFRL2VLQTN3QmZZNzdhOEdoQWM3SWJWaGNWbEpiQkNRV21jRE1JT3pERElTRkZqMlUvQUIxdEptRkgKK3VOaHJxNVJCQ0QrZnBrdEdQRzdXcnFMVklpNnVNMkhvWlUxU0FDWkRMNTJBcTljQ0g2aHlCaXZIaWpYWGhhNwplRHN1ZUgyQ0tEVjlKbVRGeEZzRFlOaXkreFN1TkJ3QU03K1JhRVBhUmRSTElxSk9PTjA0R1pqbmw1eE5qb2pVCkRTcWVNQk94a0c5eEE5aGVLbkpCUG9UMEtiQnZ2RVNoYi9DREdlbS9YUlZoMGxJTS9kTkg4SnJHUms3SE1VamUKd0FkVzVkMWM5amNmakE2aEZGQzBjcG5vMzRxbzFweGs1RkU5aGVxd2dQQkl4Vm0rMmMrd0QxUmIycmlOb2s2WQpTOW8zdzlkYzE1WDJpT3pmM3ExT294ck5MbUtqSlRtZ1orb2JJeGs1aUxwL2FuNENJWGt0MW5JV1YrSVRWYmt6Ck02YlM0dDUraHI5T2JBR3JSSjIwaG1VOVlpVUNBd0VBQWFOQ01FQXdEZ1lEVlIwUEFRSC9CQVFEQWdJRU1BOEcKQTFVZEV3RUIvd1FGTUFNQkFmOHdIUVlEVlIwT0JCWUVGQStlWWl0dnBsMzVuUGRYTzBtV2NlQ2R1U3RoTUEwRwpDU3FHU0liM0RRRUJDd1VBQTRJQmdRQjhXTDZ1enMwOSt3ay90bEhWeG1PNmR0andCQ3J6bnpJY05YNnA1LzNFCjdwU1gxTzlXaXhuOUlha29uK1hyaVU2cFhNOEtRVEo0b240Sk1HVFBxQldQQVFNY1ExTkk3ZmNKRTdNNS9JRUsKVnB3SXFKMEdTQkFmMG5XYjlIUGhaMk1aODJXTFloOXVXL0pHcWlKVXoyWEF1emM5TEhCWjV5QyttRmRkelJvYwowQjVKMVY2b3Q3VHJvVlpJV1c1RXZmNlVyUndkRFRjMDJhVHVFZzc3SjM3MEhDczBMN1NSS0JaMS9xRytXRGFoClVoSFcvbEFjUDgwME91TGRLd0NtRkM1bWVudnZJN0RtZXdBQVBwaEoremxrdE5jbEhjYlRqaFRmVGRVbC9LVmwKUUhsRjZGUWtTRERxUHdhVzArODIvVldtaHJ5NktOUGZtNjBxQStMMXFRc3BrOFJUdkVXU3hGZnJMQnlUcUxPOQpQdk9KcjBuOWlxVDZSalpVd3JNaDBodWVRZnBZZUFyN1ZYajdEZmRIVkczYlJRajJQTXBycjhwc2p5NnoyQU4vCkhnUlhvb1JSRi9Tbk1VaWYvSFBZNnJidmNpSVljTGpybWVjNjlpeTB4OTlMaGR4NUZWQlFGYmZ0UEhtUmd0VzkKcmhhWlUyUFUza1NZTzRGSGs4QUxWeWs9Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K"
   },
   "masterAuthorizedNetworksConfig": {
     "gcpPublicCidrsAccessEnabled": true
@@ -1716,6 +1874,7 @@ X-Xss-Protection: 0
   "name": "cluster-sample-${uniqueId}",
   "network": "${networkID}",
   "networkConfig": {
+    "defaultSnatStatus": {},
     "network": "projects/${projectId}/global/networks/${networkID}",
     "serviceExternalIpsConfig": {},
     "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
@@ -1725,11 +1884,11 @@ X-Xss-Protection: 0
       "enableNestedVirtualization": true
     },
     "bootDisk": {
-      "diskType": "hyperdisk-balanced",
+      "diskType": "pd-balanced",
       "sizeGb": "100"
     },
     "diskSizeGb": 100,
-    "diskType": "hyperdisk-balanced",
+    "diskType": "pd-balanced",
     "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
     "imageType": "COS_CONTAINERD",
     "kubeletConfig": {
@@ -1746,9 +1905,13 @@ X-Xss-Protection: 0
         "variant": "DEFAULT"
       }
     },
-    "machineType": "n4-standard-2",
+    "machineType": "n2-standard-2",
     "metadata": {
       "disable-legacy-endpoints": "true"
+    },
+    "nodeImageConfig": {
+      "image": "gke-1356-gke1710000-cos-125-19216-395-138-c-pre",
+      "imageProject": "gke-node-images"
     },
     "oauthScopes": [
       "https://www.googleapis.com/auth/devstorage.read_only",
@@ -1766,6 +1929,9 @@ X-Xss-Protection: 0
       "enableIntegrityMonitoring": true
     },
     "windowsNodeConfig": {}
+  },
+  "nodeCreationConfig": {
+    "nodeCreationMode": "VIA_KUBELET"
   },
   "nodePoolAutoConfig": {
     "nodeKubeletConfig": {
@@ -1791,11 +1957,11 @@ X-Xss-Protection: 0
           "enableNestedVirtualization": true
         },
         "bootDisk": {
-          "diskType": "hyperdisk-balanced",
+          "diskType": "pd-balanced",
           "sizeGb": "100"
         },
         "diskSizeGb": 100,
-        "diskType": "hyperdisk-balanced",
+        "diskType": "pd-balanced",
         "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
         "imageType": "COS_CONTAINERD",
         "kubeletConfig": {
@@ -1812,9 +1978,13 @@ X-Xss-Protection: 0
             "variant": "DEFAULT"
           }
         },
-        "machineType": "n4-standard-2",
+        "machineType": "n2-standard-2",
         "metadata": {
           "disable-legacy-endpoints": "true"
+        },
+        "nodeImageConfig": {
+          "image": "gke-1356-gke1710000-cos-125-19216-395-138-c-pre",
+          "imageProject": "gke-node-images"
         },
         "oauthScopes": [
           "https://www.googleapis.com/auth/devstorage.read_only",
@@ -1833,10 +2003,14 @@ X-Xss-Protection: 0
         },
         "windowsNodeConfig": {}
       },
+      "etag": "ebb39cfb-b615-4f06-8104-44de9c52b476",
       "initialNodeCount": 1,
       "instanceGroupUrls": [
-        "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp"
+        "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-cluster-sample-2rvfp-default-pool-fae16c6d-grp"
       ],
+      "kubeletCertInfo": {
+        "tpmBootstrapCertExpireTime": "2031-08-26T09:56:51Z"
+      },
       "locations": [
         "us-central1-a"
       ],
@@ -1849,18 +2023,22 @@ X-Xss-Protection: 0
       },
       "name": "default-pool",
       "networkConfig": {
-        "podIpv4CidrBlock": "10.92.0.0/14",
-        "podIpv4RangeUtilization": 0.001,
-        "podRange": "default-pool-pods-12345678",
+        "networkTierConfig": {
+          "networkTier": "NETWORK_TIER_DEFAULT"
+        },
+        "podIpv4CidrBlock": "10.234.32.0/20",
+        "podIpv4RangeUtilization": 0.0625,
+        "podRange": "gke-cluster-sample-${uniqueId}-pods-fffd766b",
         "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
       },
       "podIpv4CidrSize": 24,
+      "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectId}/zones/us-central1-a/clusters/cluster-sample-${uniqueId}/nodePools/default-pool",
       "status": "RUNNING",
       "upgradeSettings": {
         "maxSurge": 1,
         "strategy": "SURGE"
       },
-      "version": "1.30.5-gke.1014001"
+      "version": "1.35.6-gke.1710000"
     }
   ],
   "notificationConfig": {
@@ -1872,6 +2050,7 @@ X-Xss-Protection: 0
   "podAutoscaling": {
     "hpaProfile": "PERFORMANCE"
   },
+  "privateCluster": true,
   "privateClusterConfig": {
     "privateEndpoint": "${privateEndpointIPV4}",
     "publicEndpoint": "${publicEndpointIPV4}"
@@ -1911,7 +2090,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-cluster-sample-2rvfp-default-pool-fae16c6d-grp?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -1925,38 +2104,86 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "baseInstanceName": "gke-containercluster-abcdef-default-pool",
+  "baseInstanceName": "gke-cluster-sample-2rvfp-default-pool-fae16c6d",
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "currentActions": {
-    "none": 1
+    "abandoning": 0,
+    "creating": 0,
+    "creatingWithoutRetries": 0,
+    "deleting": 0,
+    "none": 1,
+    "recreating": 0,
+    "refreshing": 0,
+    "restarting": 0,
+    "resuming": 0,
+    "starting": 0,
+    "stopping": 0,
+    "suspending": 0,
+    "verifying": 0
   },
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
-  "instanceGroup": "https://www.googleapis.com/compute/v1beta1/projects/${projectId}/zones/us-central1-a/instanceGroups/gke-containercluster-abcdef-default-pool-grp",
+  "instanceGroup": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/instanceGroups/gke-cluster-sample-2rvfp-default-pool-fae16c6d-grp",
   "instanceLifecyclePolicy": {
     "defaultActionOnFailure": "REPAIR",
-    "forceUpdateOnRepair": "YES"
+    "forceUpdateOnRepair": "YES",
+    "onFailedHealthCheck": "DEFAULT_ACTION"
   },
-  "instanceTemplate": "https://www.googleapis.com/compute/v1beta1/projects/${projectId}/global/instanceTemplates/gke-containercluster-abcdef-default-pool",
+  "instanceTemplate": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/instanceTemplates/gke-cluster-sample-2rvfp-default-pool-fae16c6d",
   "kind": "compute#instanceGroupManager",
-  "name": "gke-containercluster-abcdef-default-pool-grp",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp",
+  "listManagedInstancesResults": "PAGINATED",
+  "name": "gke-cluster-sample-2rvfp-default-pool-fae16c6d-grp",
+  "satisfiesPzs": true,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-cluster-sample-2rvfp-default-pool-fae16c6d-grp",
+  "serviceAccount": "service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com",
+  "standbyPolicy": {
+    "mode": "MANUAL"
+  },
   "status": {
-    "isStable": true
+    "allInstancesConfig": {
+      "effective": true
+    },
+    "isStable": true,
+    "stateful": {
+      "hasStatefulConfig": false,
+      "isStateful": false,
+      "perInstanceConfigs": {
+        "allEffective": true
+      }
+    },
+    "versionTarget": {
+      "isReached": true
+    }
   },
   "targetSize": 1,
+  "targetSizePolicy": {
+    "mode": "INDIVIDUAL"
+  },
+  "targetStoppedSize": 0,
+  "targetSuspendedSize": 0,
   "updatePolicy": {
     "maxSurge": {
+      "calculated": 1,
       "fixed": 1
     },
     "maxUnavailable": {
+      "calculated": 1,
       "fixed": 1
     },
+    "minReadySec": 0,
     "minimalAction": "REPLACE",
     "replacementMethod": "SUBSTITUTE",
     "type": "OPPORTUNISTIC"
   },
-  "zone": "https://www.googleapis.com/compute/v1beta1/projects/${projectId}/zones/us-central1-a"
+  "versions": [
+    {
+      "instanceTemplate": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/instanceTemplates/gke-cluster-sample-2rvfp-default-pool-fae16c6d",
+      "targetSize": {
+        "calculated": 1
+      }
+    }
+  ],
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
 }
 
 ---
@@ -1976,6 +2203,9 @@ X-Xss-Protection: 0
 
 {
   "addonsConfig": {
+    "dnsCacheConfig": {
+      "enabled": true
+    },
     "gcePersistentDiskCsiDriverConfig": {
       "enabled": true
     },
@@ -1984,10 +2214,11 @@ X-Xss-Protection: 0
     },
     "networkPolicyConfig": {
       "disabled": true
-    }
+    },
+    "nodeReadinessConfig": {}
   },
   "anonymousAuthenticationConfig": {
-    "mode": "ENABLED"
+    "mode": "LIMITED"
   },
   "autopilot": {},
   "autoscaling": {
@@ -2028,11 +2259,15 @@ X-Xss-Protection: 0
   "clusterTelemetry": {
     "type": "ENABLED"
   },
+  "controlPlaneEgress": {
+    "mode": "VIA_CONTROL_PLANE"
+  },
   "controlPlaneEndpointsConfig": {
     "dnsEndpointConfig": {
       "allowExternalTraffic": false,
+      "enableK8sCertsViaDns": false,
       "enableK8sTokensViaDns": false,
-      "endpoint": "gke-12345trewq-${projectNumber}.us-central1-a.gke.goog"
+      "endpoint": "gke-fffd766b1ddc49459222417a120559bf62e5-${projectNumber}.us-central1-a.gke.goog"
     },
     "ipEndpointsConfig": {
       "authorizedNetworksConfig": {
@@ -2040,15 +2275,14 @@ X-Xss-Protection: 0
       },
       "enablePublicEndpoint": true,
       "enabled": true,
-      "globalAccess": false,
       "privateEndpoint": "${privateEndpointIPV4}",
       "publicEndpoint": "${publicEndpointIPV4}"
     }
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "currentMasterVersion": "1.30.5-gke.1014001",
+  "currentMasterVersion": "1.35.6-gke.1710000",
   "currentNodeCount": 1,
-  "currentNodeVersion": "1.30.5-gke.1014001",
+  "currentNodeVersion": "1.35.6-gke.1710000",
   "databaseEncryption": {
     "currentState": "CURRENT_STATE_DECRYPTED",
     "state": "DECRYPTED"
@@ -2062,17 +2296,22 @@ X-Xss-Protection: 0
   },
   "etag": "abcdef0123A=",
   "id": "000000000000000000000",
-  "initialClusterVersion": "1.30.5-gke.1014001",
+  "initialClusterVersion": "1.35.6-gke.1710000",
   "initialNodeCount": 1,
   "instanceGroupUrls": [
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef"
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-cluster-sample-2rvfp-default-pool-fae16c6d-grp"
   ],
   "ipAllocationPolicy": {
     "clusterIpv4Cidr": "10.112.0.0/14",
     "clusterIpv4CidrBlock": "10.112.0.0/14",
+    "clusterSecondaryRangeName": "gke-cluster-sample-${uniqueId}-pods-fffd766b",
+    "defaultPodIpv4RangeUtilization": 0.0625,
+    "networkTierConfig": {
+      "networkTier": "NETWORK_TIER_DEFAULT"
+    },
     "podCidrOverprovisionConfig": {},
-    "servicesIpv4Cidr": "/20",
-    "servicesIpv4CidrBlock": "/20",
+    "servicesIpv4Cidr": "34.118.224.0/20",
+    "servicesIpv4CidrBlock": "34.118.224.0/20",
     "stackType": "IPV4",
     "useIpAliases": true
   },
@@ -2094,9 +2333,10 @@ X-Xss-Protection: 0
   "maintenancePolicy": {
     "resourceVersion": "abcd1234"
   },
+  "master": {},
   "masterAuth": {
     "clientCertificateConfig": {},
-    "clusterCaCertificate": "1234567890abcdefghijklmn"
+    "clusterCaCertificate": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUVMVENDQXBXZ0F3SUJBZ0lSQUwzRnJDeGt5KzdxUnpKRWpFNkZkQmN3RFFZSktvWklodmNOQVFFTEJRQXcKTHpFdE1Dc0dBMVVFQXhNa1pEVmtObU0yWlRjdE4ySXhOUzAwTm1GaExXRTVNREV0T0dKbE16STRNMlU0TmpkagpNQ0FYRFRJMk1EZ3lOekE0TlRVeU1sb1lEekl3TlRZd09ERTVNRGsxTlRJeVdqQXZNUzB3S3dZRFZRUURFeVJrCk5XUTJZelpsTnkwM1lqRTFMVFEyWVdFdFlUa3dNUzA0WW1Vek1qZ3paVGcyTjJNd2dnR2lNQTBHQ1NxR1NJYjMKRFFFQkFRVUFBNElCandBd2dnR0tBb0lCZ1FDbWF4Smx0UitkT1U4RFRpUXlhbGlnbW9QSTl3cTN0aFdrSnRiQQpiTXpObjdFSDNYME9jR0t0SDFxbXN1MEN6TUduQ2xJUlBMWU13WnlYek8yNVNBcWdoL2g1Q2lQQnJ0eWJEU292CmExUEtvQWFRL2VLQTN3QmZZNzdhOEdoQWM3SWJWaGNWbEpiQkNRV21jRE1JT3pERElTRkZqMlUvQUIxdEptRkgKK3VOaHJxNVJCQ0QrZnBrdEdQRzdXcnFMVklpNnVNMkhvWlUxU0FDWkRMNTJBcTljQ0g2aHlCaXZIaWpYWGhhNwplRHN1ZUgyQ0tEVjlKbVRGeEZzRFlOaXkreFN1TkJ3QU03K1JhRVBhUmRSTElxSk9PTjA0R1pqbmw1eE5qb2pVCkRTcWVNQk94a0c5eEE5aGVLbkpCUG9UMEtiQnZ2RVNoYi9DREdlbS9YUlZoMGxJTS9kTkg4SnJHUms3SE1VamUKd0FkVzVkMWM5amNmakE2aEZGQzBjcG5vMzRxbzFweGs1RkU5aGVxd2dQQkl4Vm0rMmMrd0QxUmIycmlOb2s2WQpTOW8zdzlkYzE1WDJpT3pmM3ExT294ck5MbUtqSlRtZ1orb2JJeGs1aUxwL2FuNENJWGt0MW5JV1YrSVRWYmt6Ck02YlM0dDUraHI5T2JBR3JSSjIwaG1VOVlpVUNBd0VBQWFOQ01FQXdEZ1lEVlIwUEFRSC9CQVFEQWdJRU1BOEcKQTFVZEV3RUIvd1FGTUFNQkFmOHdIUVlEVlIwT0JCWUVGQStlWWl0dnBsMzVuUGRYTzBtV2NlQ2R1U3RoTUEwRwpDU3FHU0liM0RRRUJDd1VBQTRJQmdRQjhXTDZ1enMwOSt3ay90bEhWeG1PNmR0andCQ3J6bnpJY05YNnA1LzNFCjdwU1gxTzlXaXhuOUlha29uK1hyaVU2cFhNOEtRVEo0b240Sk1HVFBxQldQQVFNY1ExTkk3ZmNKRTdNNS9JRUsKVnB3SXFKMEdTQkFmMG5XYjlIUGhaMk1aODJXTFloOXVXL0pHcWlKVXoyWEF1emM5TEhCWjV5QyttRmRkelJvYwowQjVKMVY2b3Q3VHJvVlpJV1c1RXZmNlVyUndkRFRjMDJhVHVFZzc3SjM3MEhDczBMN1NSS0JaMS9xRytXRGFoClVoSFcvbEFjUDgwME91TGRLd0NtRkM1bWVudnZJN0RtZXdBQVBwaEoremxrdE5jbEhjYlRqaFRmVGRVbC9LVmwKUUhsRjZGUWtTRERxUHdhVzArODIvVldtaHJ5NktOUGZtNjBxQStMMXFRc3BrOFJUdkVXU3hGZnJMQnlUcUxPOQpQdk9KcjBuOWlxVDZSalpVd3JNaDBodWVRZnBZZUFyN1ZYajdEZmRIVkczYlJRajJQTXBycjhwc2p5NnoyQU4vCkhnUlhvb1JSRi9Tbk1VaWYvSFBZNnJidmNpSVljTGpybWVjNjlpeTB4OTlMaGR4NUZWQlFGYmZ0UEhtUmd0VzkKcmhhWlUyUFUza1NZTzRGSGs4QUxWeWs9Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K"
   },
   "masterAuthorizedNetworksConfig": {
     "gcpPublicCidrsAccessEnabled": true
@@ -2117,6 +2357,7 @@ X-Xss-Protection: 0
   "name": "cluster-sample-${uniqueId}",
   "network": "${networkID}",
   "networkConfig": {
+    "defaultSnatStatus": {},
     "network": "projects/${projectId}/global/networks/${networkID}",
     "serviceExternalIpsConfig": {},
     "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
@@ -2126,11 +2367,11 @@ X-Xss-Protection: 0
       "enableNestedVirtualization": true
     },
     "bootDisk": {
-      "diskType": "hyperdisk-balanced",
+      "diskType": "pd-balanced",
       "sizeGb": "100"
     },
     "diskSizeGb": 100,
-    "diskType": "hyperdisk-balanced",
+    "diskType": "pd-balanced",
     "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
     "imageType": "COS_CONTAINERD",
     "kubeletConfig": {
@@ -2147,9 +2388,13 @@ X-Xss-Protection: 0
         "variant": "DEFAULT"
       }
     },
-    "machineType": "n4-standard-2",
+    "machineType": "n2-standard-2",
     "metadata": {
       "disable-legacy-endpoints": "true"
+    },
+    "nodeImageConfig": {
+      "image": "gke-1356-gke1710000-cos-125-19216-395-138-c-pre",
+      "imageProject": "gke-node-images"
     },
     "oauthScopes": [
       "https://www.googleapis.com/auth/devstorage.read_only",
@@ -2167,6 +2412,9 @@ X-Xss-Protection: 0
       "enableIntegrityMonitoring": true
     },
     "windowsNodeConfig": {}
+  },
+  "nodeCreationConfig": {
+    "nodeCreationMode": "VIA_KUBELET"
   },
   "nodePoolAutoConfig": {
     "nodeKubeletConfig": {
@@ -2192,11 +2440,11 @@ X-Xss-Protection: 0
           "enableNestedVirtualization": true
         },
         "bootDisk": {
-          "diskType": "hyperdisk-balanced",
+          "diskType": "pd-balanced",
           "sizeGb": "100"
         },
         "diskSizeGb": 100,
-        "diskType": "hyperdisk-balanced",
+        "diskType": "pd-balanced",
         "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
         "imageType": "COS_CONTAINERD",
         "kubeletConfig": {
@@ -2213,9 +2461,13 @@ X-Xss-Protection: 0
             "variant": "DEFAULT"
           }
         },
-        "machineType": "n4-standard-2",
+        "machineType": "n2-standard-2",
         "metadata": {
           "disable-legacy-endpoints": "true"
+        },
+        "nodeImageConfig": {
+          "image": "gke-1356-gke1710000-cos-125-19216-395-138-c-pre",
+          "imageProject": "gke-node-images"
         },
         "oauthScopes": [
           "https://www.googleapis.com/auth/devstorage.read_only",
@@ -2234,10 +2486,14 @@ X-Xss-Protection: 0
         },
         "windowsNodeConfig": {}
       },
+      "etag": "ebb39cfb-b615-4f06-8104-44de9c52b476",
       "initialNodeCount": 1,
       "instanceGroupUrls": [
-        "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp"
+        "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-cluster-sample-2rvfp-default-pool-fae16c6d-grp"
       ],
+      "kubeletCertInfo": {
+        "tpmBootstrapCertExpireTime": "2031-08-26T09:56:51Z"
+      },
       "locations": [
         "us-central1-a"
       ],
@@ -2250,18 +2506,22 @@ X-Xss-Protection: 0
       },
       "name": "default-pool",
       "networkConfig": {
-        "podIpv4CidrBlock": "10.92.0.0/14",
-        "podIpv4RangeUtilization": 0.001,
-        "podRange": "default-pool-pods-12345678",
+        "networkTierConfig": {
+          "networkTier": "NETWORK_TIER_DEFAULT"
+        },
+        "podIpv4CidrBlock": "10.234.32.0/20",
+        "podIpv4RangeUtilization": 0.0625,
+        "podRange": "gke-cluster-sample-${uniqueId}-pods-fffd766b",
         "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
       },
       "podIpv4CidrSize": 24,
+      "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectId}/zones/us-central1-a/clusters/cluster-sample-${uniqueId}/nodePools/default-pool",
       "status": "RUNNING",
       "upgradeSettings": {
         "maxSurge": 1,
         "strategy": "SURGE"
       },
-      "version": "1.30.5-gke.1014001"
+      "version": "1.35.6-gke.1710000"
     }
   ],
   "notificationConfig": {
@@ -2273,6 +2533,7 @@ X-Xss-Protection: 0
   "podAutoscaling": {
     "hpaProfile": "PERFORMANCE"
   },
+  "privateCluster": true,
   "privateClusterConfig": {
     "privateEndpoint": "${privateEndpointIPV4}",
     "publicEndpoint": "${publicEndpointIPV4}"
@@ -2396,11 +2657,11 @@ X-Xss-Protection: 0
 
 {
   "name": "${operationID}",
-  "operationType": "SET_LABELS",
+  "operationType": "UPDATE_CLUSTER",
   "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectNumber}/zones/us-central1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
-  "targetLink": "https://container.googleapis.com/v1beta1/projects/${projectId}/zones/us-central1-a/clusters/cluster-sample-${uniqueId}",
+  "targetLink": "https://container.googleapis.com/v1beta1/projects/${projectNumber}/zones/us-central1-a/clusters/cluster-sample-${uniqueId}",
   "zone": "us-central1-a"
 }
 
@@ -2422,11 +2683,11 @@ X-Xss-Protection: 0
 {
   "endTime": "2024-04-01T12:34:56.123456Z",
   "name": "${operationID}",
-  "operationType": "SET_LABELS",
+  "operationType": "UPDATE_CLUSTER",
   "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectNumber}/zones/us-central1-a/operations/${operationID}",
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
-  "targetLink": "https://container.googleapis.com/v1beta1/projects/${projectId}/zones/us-central1-a/clusters/cluster-sample-${uniqueId}",
+  "targetLink": "https://container.googleapis.com/v1beta1/projects/${projectNumber}/zones/us-central1-a/clusters/cluster-sample-${uniqueId}",
   "zone": "us-central1-a"
 }
 
@@ -2447,6 +2708,9 @@ X-Xss-Protection: 0
 
 {
   "addonsConfig": {
+    "dnsCacheConfig": {
+      "enabled": true
+    },
     "gcePersistentDiskCsiDriverConfig": {
       "enabled": true
     },
@@ -2455,10 +2719,11 @@ X-Xss-Protection: 0
     },
     "networkPolicyConfig": {
       "disabled": true
-    }
+    },
+    "nodeReadinessConfig": {}
   },
   "anonymousAuthenticationConfig": {
-    "mode": "ENABLED"
+    "mode": "LIMITED"
   },
   "autopilot": {},
   "autoscaling": {
@@ -2497,13 +2762,17 @@ X-Xss-Protection: 0
   "binaryAuthorization": {},
   "clusterIpv4Cidr": "10.112.0.0/14",
   "clusterTelemetry": {
-    "type": "ENABLED"
+    "type": "DISABLED"
+  },
+  "controlPlaneEgress": {
+    "mode": "VIA_CONTROL_PLANE"
   },
   "controlPlaneEndpointsConfig": {
     "dnsEndpointConfig": {
       "allowExternalTraffic": false,
+      "enableK8sCertsViaDns": false,
       "enableK8sTokensViaDns": false,
-      "endpoint": "gke-12345trewq-${projectNumber}.us-central1-a.gke.goog"
+      "endpoint": "gke-fffd766b1ddc49459222417a120559bf62e5-${projectNumber}.us-central1-a.gke.goog"
     },
     "ipEndpointsConfig": {
       "authorizedNetworksConfig": {
@@ -2511,15 +2780,14 @@ X-Xss-Protection: 0
       },
       "enablePublicEndpoint": true,
       "enabled": true,
-      "globalAccess": false,
       "privateEndpoint": "${privateEndpointIPV4}",
       "publicEndpoint": "${publicEndpointIPV4}"
     }
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "currentMasterVersion": "1.30.5-gke.1014001",
+  "currentMasterVersion": "1.35.6-gke.1710000",
   "currentNodeCount": 1,
-  "currentNodeVersion": "1.30.5-gke.1014001",
+  "currentNodeVersion": "1.35.6-gke.1710000",
   "databaseEncryption": {
     "currentState": "CURRENT_STATE_DECRYPTED",
     "state": "DECRYPTED"
@@ -2533,17 +2801,22 @@ X-Xss-Protection: 0
   },
   "etag": "abcdef0123A=",
   "id": "000000000000000000000",
-  "initialClusterVersion": "1.30.5-gke.1014001",
+  "initialClusterVersion": "1.35.6-gke.1710000",
   "initialNodeCount": 1,
   "instanceGroupUrls": [
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef"
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-cluster-sample-2rvfp-default-pool-fae16c6d-grp"
   ],
   "ipAllocationPolicy": {
     "clusterIpv4Cidr": "10.112.0.0/14",
     "clusterIpv4CidrBlock": "10.112.0.0/14",
+    "clusterSecondaryRangeName": "gke-cluster-sample-${uniqueId}-pods-fffd766b",
+    "defaultPodIpv4RangeUtilization": 0.0625,
+    "networkTierConfig": {
+      "networkTier": "NETWORK_TIER_DEFAULT"
+    },
     "podCidrOverprovisionConfig": {},
-    "servicesIpv4Cidr": "/20",
-    "servicesIpv4CidrBlock": "/20",
+    "servicesIpv4Cidr": "34.118.224.0/20",
+    "servicesIpv4CidrBlock": "34.118.224.0/20",
     "stackType": "IPV4",
     "useIpAliases": true
   },
@@ -2554,20 +2827,16 @@ X-Xss-Protection: 0
     "us-central1-a"
   ],
   "loggingConfig": {
-    "componentConfig": {
-      "enableComponents": [
-        "SYSTEM_COMPONENTS",
-        "WORKLOADS"
-      ]
-    }
+    "componentConfig": {}
   },
   "loggingService": "none",
   "maintenancePolicy": {
     "resourceVersion": "abcd1234"
   },
+  "master": {},
   "masterAuth": {
     "clientCertificateConfig": {},
-    "clusterCaCertificate": "1234567890abcdefghijklmn"
+    "clusterCaCertificate": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUVMVENDQXBXZ0F3SUJBZ0lSQUwzRnJDeGt5KzdxUnpKRWpFNkZkQmN3RFFZSktvWklodmNOQVFFTEJRQXcKTHpFdE1Dc0dBMVVFQXhNa1pEVmtObU0yWlRjdE4ySXhOUzAwTm1GaExXRTVNREV0T0dKbE16STRNMlU0TmpkagpNQ0FYRFRJMk1EZ3lOekE0TlRVeU1sb1lEekl3TlRZd09ERTVNRGsxTlRJeVdqQXZNUzB3S3dZRFZRUURFeVJrCk5XUTJZelpsTnkwM1lqRTFMVFEyWVdFdFlUa3dNUzA0WW1Vek1qZ3paVGcyTjJNd2dnR2lNQTBHQ1NxR1NJYjMKRFFFQkFRVUFBNElCandBd2dnR0tBb0lCZ1FDbWF4Smx0UitkT1U4RFRpUXlhbGlnbW9QSTl3cTN0aFdrSnRiQQpiTXpObjdFSDNYME9jR0t0SDFxbXN1MEN6TUduQ2xJUlBMWU13WnlYek8yNVNBcWdoL2g1Q2lQQnJ0eWJEU292CmExUEtvQWFRL2VLQTN3QmZZNzdhOEdoQWM3SWJWaGNWbEpiQkNRV21jRE1JT3pERElTRkZqMlUvQUIxdEptRkgKK3VOaHJxNVJCQ0QrZnBrdEdQRzdXcnFMVklpNnVNMkhvWlUxU0FDWkRMNTJBcTljQ0g2aHlCaXZIaWpYWGhhNwplRHN1ZUgyQ0tEVjlKbVRGeEZzRFlOaXkreFN1TkJ3QU03K1JhRVBhUmRSTElxSk9PTjA0R1pqbmw1eE5qb2pVCkRTcWVNQk94a0c5eEE5aGVLbkpCUG9UMEtiQnZ2RVNoYi9DREdlbS9YUlZoMGxJTS9kTkg4SnJHUms3SE1VamUKd0FkVzVkMWM5amNmakE2aEZGQzBjcG5vMzRxbzFweGs1RkU5aGVxd2dQQkl4Vm0rMmMrd0QxUmIycmlOb2s2WQpTOW8zdzlkYzE1WDJpT3pmM3ExT294ck5MbUtqSlRtZ1orb2JJeGs1aUxwL2FuNENJWGt0MW5JV1YrSVRWYmt6Ck02YlM0dDUraHI5T2JBR3JSSjIwaG1VOVlpVUNBd0VBQWFOQ01FQXdEZ1lEVlIwUEFRSC9CQVFEQWdJRU1BOEcKQTFVZEV3RUIvd1FGTUFNQkFmOHdIUVlEVlIwT0JCWUVGQStlWWl0dnBsMzVuUGRYTzBtV2NlQ2R1U3RoTUEwRwpDU3FHU0liM0RRRUJDd1VBQTRJQmdRQjhXTDZ1enMwOSt3ay90bEhWeG1PNmR0andCQ3J6bnpJY05YNnA1LzNFCjdwU1gxTzlXaXhuOUlha29uK1hyaVU2cFhNOEtRVEo0b240Sk1HVFBxQldQQVFNY1ExTkk3ZmNKRTdNNS9JRUsKVnB3SXFKMEdTQkFmMG5XYjlIUGhaMk1aODJXTFloOXVXL0pHcWlKVXoyWEF1emM5TEhCWjV5QyttRmRkelJvYwowQjVKMVY2b3Q3VHJvVlpJV1c1RXZmNlVyUndkRFRjMDJhVHVFZzc3SjM3MEhDczBMN1NSS0JaMS9xRytXRGFoClVoSFcvbEFjUDgwME91TGRLd0NtRkM1bWVudnZJN0RtZXdBQVBwaEoremxrdE5jbEhjYlRqaFRmVGRVbC9LVmwKUUhsRjZGUWtTRERxUHdhVzArODIvVldtaHJ5NktOUGZtNjBxQStMMXFRc3BrOFJUdkVXU3hGZnJMQnlUcUxPOQpQdk9KcjBuOWlxVDZSalpVd3JNaDBodWVRZnBZZUFyN1ZYajdEZmRIVkczYlJRajJQTXBycjhwc2p5NnoyQU4vCkhnUlhvb1JSRi9Tbk1VaWYvSFBZNnJidmNpSVljTGpybWVjNjlpeTB4OTlMaGR4NUZWQlFGYmZ0UEhtUmd0VzkKcmhhWlUyUFUza1NZTzRGSGs4QUxWeWs9Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K"
   },
   "masterAuthorizedNetworksConfig": {
     "gcpPublicCidrsAccessEnabled": true
@@ -2576,8 +2845,9 @@ X-Xss-Protection: 0
     "advancedDatapathObservabilityConfig": {},
     "componentConfig": {
       "enableComponents": [
-        "SYSTEM_COMPONENTS",
-        "APISERVER"
+        "APISERVER",
+        "SCHEDULER",
+        "CONTROLLER_MANAGER"
       ]
     },
     "managedPrometheusConfig": {
@@ -2588,6 +2858,7 @@ X-Xss-Protection: 0
   "name": "cluster-sample-${uniqueId}",
   "network": "${networkID}",
   "networkConfig": {
+    "defaultSnatStatus": {},
     "network": "projects/${projectId}/global/networks/${networkID}",
     "serviceExternalIpsConfig": {},
     "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
@@ -2597,11 +2868,11 @@ X-Xss-Protection: 0
       "enableNestedVirtualization": true
     },
     "bootDisk": {
-      "diskType": "hyperdisk-balanced",
+      "diskType": "pd-balanced",
       "sizeGb": "100"
     },
     "diskSizeGb": 100,
-    "diskType": "hyperdisk-balanced",
+    "diskType": "pd-balanced",
     "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
     "imageType": "COS_CONTAINERD",
     "kubeletConfig": {
@@ -2618,9 +2889,13 @@ X-Xss-Protection: 0
         "variant": "DEFAULT"
       }
     },
-    "machineType": "n4-standard-2",
+    "machineType": "n2-standard-2",
     "metadata": {
       "disable-legacy-endpoints": "true"
+    },
+    "nodeImageConfig": {
+      "image": "gke-1356-gke1710000-cos-125-19216-395-138-c-pre",
+      "imageProject": "gke-node-images"
     },
     "oauthScopes": [
       "https://www.googleapis.com/auth/devstorage.read_only",
@@ -2638,6 +2913,9 @@ X-Xss-Protection: 0
       "enableIntegrityMonitoring": true
     },
     "windowsNodeConfig": {}
+  },
+  "nodeCreationConfig": {
+    "nodeCreationMode": "VIA_KUBELET"
   },
   "nodePoolAutoConfig": {
     "nodeKubeletConfig": {
@@ -2663,11 +2941,11 @@ X-Xss-Protection: 0
           "enableNestedVirtualization": true
         },
         "bootDisk": {
-          "diskType": "hyperdisk-balanced",
+          "diskType": "pd-balanced",
           "sizeGb": "100"
         },
         "diskSizeGb": 100,
-        "diskType": "hyperdisk-balanced",
+        "diskType": "pd-balanced",
         "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
         "imageType": "COS_CONTAINERD",
         "kubeletConfig": {
@@ -2684,9 +2962,13 @@ X-Xss-Protection: 0
             "variant": "DEFAULT"
           }
         },
-        "machineType": "n4-standard-2",
+        "machineType": "n2-standard-2",
         "metadata": {
           "disable-legacy-endpoints": "true"
+        },
+        "nodeImageConfig": {
+          "image": "gke-1356-gke1710000-cos-125-19216-395-138-c-pre",
+          "imageProject": "gke-node-images"
         },
         "oauthScopes": [
           "https://www.googleapis.com/auth/devstorage.read_only",
@@ -2705,10 +2987,14 @@ X-Xss-Protection: 0
         },
         "windowsNodeConfig": {}
       },
+      "etag": "ebb39cfb-b615-4f06-8104-44de9c52b476",
       "initialNodeCount": 1,
       "instanceGroupUrls": [
-        "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp"
+        "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-cluster-sample-2rvfp-default-pool-fae16c6d-grp"
       ],
+      "kubeletCertInfo": {
+        "tpmBootstrapCertExpireTime": "2031-08-26T09:56:51Z"
+      },
       "locations": [
         "us-central1-a"
       ],
@@ -2721,18 +3007,22 @@ X-Xss-Protection: 0
       },
       "name": "default-pool",
       "networkConfig": {
-        "podIpv4CidrBlock": "10.92.0.0/14",
-        "podIpv4RangeUtilization": 0.001,
-        "podRange": "default-pool-pods-12345678",
+        "networkTierConfig": {
+          "networkTier": "NETWORK_TIER_DEFAULT"
+        },
+        "podIpv4CidrBlock": "10.234.32.0/20",
+        "podIpv4RangeUtilization": 0.0625,
+        "podRange": "gke-cluster-sample-${uniqueId}-pods-fffd766b",
         "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
       },
       "podIpv4CidrSize": 24,
+      "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectId}/zones/us-central1-a/clusters/cluster-sample-${uniqueId}/nodePools/default-pool",
       "status": "RUNNING",
       "upgradeSettings": {
         "maxSurge": 1,
         "strategy": "SURGE"
       },
-      "version": "1.30.5-gke.1014001"
+      "version": "1.35.6-gke.1710000"
     }
   ],
   "notificationConfig": {
@@ -2744,6 +3034,7 @@ X-Xss-Protection: 0
   "podAutoscaling": {
     "hpaProfile": "PERFORMANCE"
   },
+  "privateCluster": true,
   "privateClusterConfig": {
     "privateEndpoint": "${privateEndpointIPV4}",
     "publicEndpoint": "${publicEndpointIPV4}"
@@ -2783,7 +3074,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-cluster-sample-2rvfp-default-pool-fae16c6d-grp?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -2797,38 +3088,86 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "baseInstanceName": "gke-containercluster-abcdef-default-pool",
+  "baseInstanceName": "gke-cluster-sample-2rvfp-default-pool-fae16c6d",
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "currentActions": {
-    "none": 1
+    "abandoning": 0,
+    "creating": 0,
+    "creatingWithoutRetries": 0,
+    "deleting": 0,
+    "none": 1,
+    "recreating": 0,
+    "refreshing": 0,
+    "restarting": 0,
+    "resuming": 0,
+    "starting": 0,
+    "stopping": 0,
+    "suspending": 0,
+    "verifying": 0
   },
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
-  "instanceGroup": "https://www.googleapis.com/compute/v1beta1/projects/${projectId}/zones/us-central1-a/instanceGroups/gke-containercluster-abcdef-default-pool-grp",
+  "instanceGroup": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/instanceGroups/gke-cluster-sample-2rvfp-default-pool-fae16c6d-grp",
   "instanceLifecyclePolicy": {
     "defaultActionOnFailure": "REPAIR",
-    "forceUpdateOnRepair": "YES"
+    "forceUpdateOnRepair": "YES",
+    "onFailedHealthCheck": "DEFAULT_ACTION"
   },
-  "instanceTemplate": "https://www.googleapis.com/compute/v1beta1/projects/${projectId}/global/instanceTemplates/gke-containercluster-abcdef-default-pool",
+  "instanceTemplate": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/instanceTemplates/gke-cluster-sample-2rvfp-default-pool-fae16c6d",
   "kind": "compute#instanceGroupManager",
-  "name": "gke-containercluster-abcdef-default-pool-grp",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp",
+  "listManagedInstancesResults": "PAGINATED",
+  "name": "gke-cluster-sample-2rvfp-default-pool-fae16c6d-grp",
+  "satisfiesPzs": true,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-cluster-sample-2rvfp-default-pool-fae16c6d-grp",
+  "serviceAccount": "service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com",
+  "standbyPolicy": {
+    "mode": "MANUAL"
+  },
   "status": {
-    "isStable": true
+    "allInstancesConfig": {
+      "effective": true
+    },
+    "isStable": true,
+    "stateful": {
+      "hasStatefulConfig": false,
+      "isStateful": false,
+      "perInstanceConfigs": {
+        "allEffective": true
+      }
+    },
+    "versionTarget": {
+      "isReached": true
+    }
   },
   "targetSize": 1,
+  "targetSizePolicy": {
+    "mode": "INDIVIDUAL"
+  },
+  "targetStoppedSize": 0,
+  "targetSuspendedSize": 0,
   "updatePolicy": {
     "maxSurge": {
+      "calculated": 1,
       "fixed": 1
     },
     "maxUnavailable": {
+      "calculated": 1,
       "fixed": 1
     },
+    "minReadySec": 0,
     "minimalAction": "REPLACE",
     "replacementMethod": "SUBSTITUTE",
     "type": "OPPORTUNISTIC"
   },
-  "zone": "https://www.googleapis.com/compute/v1beta1/projects/${projectId}/zones/us-central1-a"
+  "versions": [
+    {
+      "instanceTemplate": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/instanceTemplates/gke-cluster-sample-2rvfp-default-pool-fae16c6d",
+      "targetSize": {
+        "calculated": 1
+      }
+    }
+  ],
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
 }
 
 ---
@@ -2848,6 +3187,9 @@ X-Xss-Protection: 0
 
 {
   "addonsConfig": {
+    "dnsCacheConfig": {
+      "enabled": true
+    },
     "gcePersistentDiskCsiDriverConfig": {
       "enabled": true
     },
@@ -2856,10 +3198,11 @@ X-Xss-Protection: 0
     },
     "networkPolicyConfig": {
       "disabled": true
-    }
+    },
+    "nodeReadinessConfig": {}
   },
   "anonymousAuthenticationConfig": {
-    "mode": "ENABLED"
+    "mode": "LIMITED"
   },
   "autopilot": {},
   "autoscaling": {
@@ -2898,13 +3241,17 @@ X-Xss-Protection: 0
   "binaryAuthorization": {},
   "clusterIpv4Cidr": "10.112.0.0/14",
   "clusterTelemetry": {
-    "type": "ENABLED"
+    "type": "DISABLED"
+  },
+  "controlPlaneEgress": {
+    "mode": "VIA_CONTROL_PLANE"
   },
   "controlPlaneEndpointsConfig": {
     "dnsEndpointConfig": {
       "allowExternalTraffic": false,
+      "enableK8sCertsViaDns": false,
       "enableK8sTokensViaDns": false,
-      "endpoint": "gke-12345trewq-${projectNumber}.us-central1-a.gke.goog"
+      "endpoint": "gke-fffd766b1ddc49459222417a120559bf62e5-${projectNumber}.us-central1-a.gke.goog"
     },
     "ipEndpointsConfig": {
       "authorizedNetworksConfig": {
@@ -2912,15 +3259,14 @@ X-Xss-Protection: 0
       },
       "enablePublicEndpoint": true,
       "enabled": true,
-      "globalAccess": false,
       "privateEndpoint": "${privateEndpointIPV4}",
       "publicEndpoint": "${publicEndpointIPV4}"
     }
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "currentMasterVersion": "1.30.5-gke.1014001",
+  "currentMasterVersion": "1.35.6-gke.1710000",
   "currentNodeCount": 1,
-  "currentNodeVersion": "1.30.5-gke.1014001",
+  "currentNodeVersion": "1.35.6-gke.1710000",
   "databaseEncryption": {
     "currentState": "CURRENT_STATE_DECRYPTED",
     "state": "DECRYPTED"
@@ -2934,17 +3280,22 @@ X-Xss-Protection: 0
   },
   "etag": "abcdef0123A=",
   "id": "000000000000000000000",
-  "initialClusterVersion": "1.30.5-gke.1014001",
+  "initialClusterVersion": "1.35.6-gke.1710000",
   "initialNodeCount": 1,
   "instanceGroupUrls": [
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef"
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-cluster-sample-2rvfp-default-pool-fae16c6d-grp"
   ],
   "ipAllocationPolicy": {
     "clusterIpv4Cidr": "10.112.0.0/14",
     "clusterIpv4CidrBlock": "10.112.0.0/14",
+    "clusterSecondaryRangeName": "gke-cluster-sample-${uniqueId}-pods-fffd766b",
+    "defaultPodIpv4RangeUtilization": 0.0625,
+    "networkTierConfig": {
+      "networkTier": "NETWORK_TIER_DEFAULT"
+    },
     "podCidrOverprovisionConfig": {},
-    "servicesIpv4Cidr": "/20",
-    "servicesIpv4CidrBlock": "/20",
+    "servicesIpv4Cidr": "34.118.224.0/20",
+    "servicesIpv4CidrBlock": "34.118.224.0/20",
     "stackType": "IPV4",
     "useIpAliases": true
   },
@@ -2955,20 +3306,16 @@ X-Xss-Protection: 0
     "us-central1-a"
   ],
   "loggingConfig": {
-    "componentConfig": {
-      "enableComponents": [
-        "SYSTEM_COMPONENTS",
-        "WORKLOADS"
-      ]
-    }
+    "componentConfig": {}
   },
   "loggingService": "none",
   "maintenancePolicy": {
     "resourceVersion": "abcd1234"
   },
+  "master": {},
   "masterAuth": {
     "clientCertificateConfig": {},
-    "clusterCaCertificate": "1234567890abcdefghijklmn"
+    "clusterCaCertificate": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUVMVENDQXBXZ0F3SUJBZ0lSQUwzRnJDeGt5KzdxUnpKRWpFNkZkQmN3RFFZSktvWklodmNOQVFFTEJRQXcKTHpFdE1Dc0dBMVVFQXhNa1pEVmtObU0yWlRjdE4ySXhOUzAwTm1GaExXRTVNREV0T0dKbE16STRNMlU0TmpkagpNQ0FYRFRJMk1EZ3lOekE0TlRVeU1sb1lEekl3TlRZd09ERTVNRGsxTlRJeVdqQXZNUzB3S3dZRFZRUURFeVJrCk5XUTJZelpsTnkwM1lqRTFMVFEyWVdFdFlUa3dNUzA0WW1Vek1qZ3paVGcyTjJNd2dnR2lNQTBHQ1NxR1NJYjMKRFFFQkFRVUFBNElCandBd2dnR0tBb0lCZ1FDbWF4Smx0UitkT1U4RFRpUXlhbGlnbW9QSTl3cTN0aFdrSnRiQQpiTXpObjdFSDNYME9jR0t0SDFxbXN1MEN6TUduQ2xJUlBMWU13WnlYek8yNVNBcWdoL2g1Q2lQQnJ0eWJEU292CmExUEtvQWFRL2VLQTN3QmZZNzdhOEdoQWM3SWJWaGNWbEpiQkNRV21jRE1JT3pERElTRkZqMlUvQUIxdEptRkgKK3VOaHJxNVJCQ0QrZnBrdEdQRzdXcnFMVklpNnVNMkhvWlUxU0FDWkRMNTJBcTljQ0g2aHlCaXZIaWpYWGhhNwplRHN1ZUgyQ0tEVjlKbVRGeEZzRFlOaXkreFN1TkJ3QU03K1JhRVBhUmRSTElxSk9PTjA0R1pqbmw1eE5qb2pVCkRTcWVNQk94a0c5eEE5aGVLbkpCUG9UMEtiQnZ2RVNoYi9DREdlbS9YUlZoMGxJTS9kTkg4SnJHUms3SE1VamUKd0FkVzVkMWM5amNmakE2aEZGQzBjcG5vMzRxbzFweGs1RkU5aGVxd2dQQkl4Vm0rMmMrd0QxUmIycmlOb2s2WQpTOW8zdzlkYzE1WDJpT3pmM3ExT294ck5MbUtqSlRtZ1orb2JJeGs1aUxwL2FuNENJWGt0MW5JV1YrSVRWYmt6Ck02YlM0dDUraHI5T2JBR3JSSjIwaG1VOVlpVUNBd0VBQWFOQ01FQXdEZ1lEVlIwUEFRSC9CQVFEQWdJRU1BOEcKQTFVZEV3RUIvd1FGTUFNQkFmOHdIUVlEVlIwT0JCWUVGQStlWWl0dnBsMzVuUGRYTzBtV2NlQ2R1U3RoTUEwRwpDU3FHU0liM0RRRUJDd1VBQTRJQmdRQjhXTDZ1enMwOSt3ay90bEhWeG1PNmR0andCQ3J6bnpJY05YNnA1LzNFCjdwU1gxTzlXaXhuOUlha29uK1hyaVU2cFhNOEtRVEo0b240Sk1HVFBxQldQQVFNY1ExTkk3ZmNKRTdNNS9JRUsKVnB3SXFKMEdTQkFmMG5XYjlIUGhaMk1aODJXTFloOXVXL0pHcWlKVXoyWEF1emM5TEhCWjV5QyttRmRkelJvYwowQjVKMVY2b3Q3VHJvVlpJV1c1RXZmNlVyUndkRFRjMDJhVHVFZzc3SjM3MEhDczBMN1NSS0JaMS9xRytXRGFoClVoSFcvbEFjUDgwME91TGRLd0NtRkM1bWVudnZJN0RtZXdBQVBwaEoremxrdE5jbEhjYlRqaFRmVGRVbC9LVmwKUUhsRjZGUWtTRERxUHdhVzArODIvVldtaHJ5NktOUGZtNjBxQStMMXFRc3BrOFJUdkVXU3hGZnJMQnlUcUxPOQpQdk9KcjBuOWlxVDZSalpVd3JNaDBodWVRZnBZZUFyN1ZYajdEZmRIVkczYlJRajJQTXBycjhwc2p5NnoyQU4vCkhnUlhvb1JSRi9Tbk1VaWYvSFBZNnJidmNpSVljTGpybWVjNjlpeTB4OTlMaGR4NUZWQlFGYmZ0UEhtUmd0VzkKcmhhWlUyUFUza1NZTzRGSGs4QUxWeWs9Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K"
   },
   "masterAuthorizedNetworksConfig": {
     "gcpPublicCidrsAccessEnabled": true
@@ -2977,8 +3324,9 @@ X-Xss-Protection: 0
     "advancedDatapathObservabilityConfig": {},
     "componentConfig": {
       "enableComponents": [
-        "SYSTEM_COMPONENTS",
-        "APISERVER"
+        "APISERVER",
+        "SCHEDULER",
+        "CONTROLLER_MANAGER"
       ]
     },
     "managedPrometheusConfig": {
@@ -2989,6 +3337,7 @@ X-Xss-Protection: 0
   "name": "cluster-sample-${uniqueId}",
   "network": "${networkID}",
   "networkConfig": {
+    "defaultSnatStatus": {},
     "network": "projects/${projectId}/global/networks/${networkID}",
     "serviceExternalIpsConfig": {},
     "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
@@ -2998,11 +3347,11 @@ X-Xss-Protection: 0
       "enableNestedVirtualization": true
     },
     "bootDisk": {
-      "diskType": "hyperdisk-balanced",
+      "diskType": "pd-balanced",
       "sizeGb": "100"
     },
     "diskSizeGb": 100,
-    "diskType": "hyperdisk-balanced",
+    "diskType": "pd-balanced",
     "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
     "imageType": "COS_CONTAINERD",
     "kubeletConfig": {
@@ -3019,9 +3368,13 @@ X-Xss-Protection: 0
         "variant": "DEFAULT"
       }
     },
-    "machineType": "n4-standard-2",
+    "machineType": "n2-standard-2",
     "metadata": {
       "disable-legacy-endpoints": "true"
+    },
+    "nodeImageConfig": {
+      "image": "gke-1356-gke1710000-cos-125-19216-395-138-c-pre",
+      "imageProject": "gke-node-images"
     },
     "oauthScopes": [
       "https://www.googleapis.com/auth/devstorage.read_only",
@@ -3039,6 +3392,9 @@ X-Xss-Protection: 0
       "enableIntegrityMonitoring": true
     },
     "windowsNodeConfig": {}
+  },
+  "nodeCreationConfig": {
+    "nodeCreationMode": "VIA_KUBELET"
   },
   "nodePoolAutoConfig": {
     "nodeKubeletConfig": {
@@ -3064,11 +3420,11 @@ X-Xss-Protection: 0
           "enableNestedVirtualization": true
         },
         "bootDisk": {
-          "diskType": "hyperdisk-balanced",
+          "diskType": "pd-balanced",
           "sizeGb": "100"
         },
         "diskSizeGb": 100,
-        "diskType": "hyperdisk-balanced",
+        "diskType": "pd-balanced",
         "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
         "imageType": "COS_CONTAINERD",
         "kubeletConfig": {
@@ -3085,9 +3441,13 @@ X-Xss-Protection: 0
             "variant": "DEFAULT"
           }
         },
-        "machineType": "n4-standard-2",
+        "machineType": "n2-standard-2",
         "metadata": {
           "disable-legacy-endpoints": "true"
+        },
+        "nodeImageConfig": {
+          "image": "gke-1356-gke1710000-cos-125-19216-395-138-c-pre",
+          "imageProject": "gke-node-images"
         },
         "oauthScopes": [
           "https://www.googleapis.com/auth/devstorage.read_only",
@@ -3106,10 +3466,14 @@ X-Xss-Protection: 0
         },
         "windowsNodeConfig": {}
       },
+      "etag": "ebb39cfb-b615-4f06-8104-44de9c52b476",
       "initialNodeCount": 1,
       "instanceGroupUrls": [
-        "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp"
+        "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-cluster-sample-2rvfp-default-pool-fae16c6d-grp"
       ],
+      "kubeletCertInfo": {
+        "tpmBootstrapCertExpireTime": "2031-08-26T09:56:51Z"
+      },
       "locations": [
         "us-central1-a"
       ],
@@ -3122,18 +3486,22 @@ X-Xss-Protection: 0
       },
       "name": "default-pool",
       "networkConfig": {
-        "podIpv4CidrBlock": "10.92.0.0/14",
-        "podIpv4RangeUtilization": 0.001,
-        "podRange": "default-pool-pods-12345678",
+        "networkTierConfig": {
+          "networkTier": "NETWORK_TIER_DEFAULT"
+        },
+        "podIpv4CidrBlock": "10.234.32.0/20",
+        "podIpv4RangeUtilization": 0.0625,
+        "podRange": "gke-cluster-sample-${uniqueId}-pods-fffd766b",
         "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
       },
       "podIpv4CidrSize": 24,
+      "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectId}/zones/us-central1-a/clusters/cluster-sample-${uniqueId}/nodePools/default-pool",
       "status": "RUNNING",
       "upgradeSettings": {
         "maxSurge": 1,
         "strategy": "SURGE"
       },
-      "version": "1.30.5-gke.1014001"
+      "version": "1.35.6-gke.1710000"
     }
   ],
   "notificationConfig": {
@@ -3145,6 +3513,7 @@ X-Xss-Protection: 0
   "podAutoscaling": {
     "hpaProfile": "PERFORMANCE"
   },
+  "privateCluster": true,
   "privateClusterConfig": {
     "privateEndpoint": "${privateEndpointIPV4}",
     "publicEndpoint": "${publicEndpointIPV4}"
@@ -3184,7 +3553,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp?alt=json&prettyPrint=false
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-cluster-sample-2rvfp-default-pool-fae16c6d-grp?alt=json&prettyPrint=false
 User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
 200 OK
@@ -3198,38 +3567,86 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "baseInstanceName": "gke-containercluster-abcdef-default-pool",
+  "baseInstanceName": "gke-cluster-sample-2rvfp-default-pool-fae16c6d",
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
   "currentActions": {
-    "none": 1
+    "abandoning": 0,
+    "creating": 0,
+    "creatingWithoutRetries": 0,
+    "deleting": 0,
+    "none": 1,
+    "recreating": 0,
+    "refreshing": 0,
+    "restarting": 0,
+    "resuming": 0,
+    "starting": 0,
+    "stopping": 0,
+    "suspending": 0,
+    "verifying": 0
   },
   "fingerprint": "abcdef0123A=",
   "id": "000000000000000000000",
-  "instanceGroup": "https://www.googleapis.com/compute/v1beta1/projects/${projectId}/zones/us-central1-a/instanceGroups/gke-containercluster-abcdef-default-pool-grp",
+  "instanceGroup": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/instanceGroups/gke-cluster-sample-2rvfp-default-pool-fae16c6d-grp",
   "instanceLifecyclePolicy": {
     "defaultActionOnFailure": "REPAIR",
-    "forceUpdateOnRepair": "YES"
+    "forceUpdateOnRepair": "YES",
+    "onFailedHealthCheck": "DEFAULT_ACTION"
   },
-  "instanceTemplate": "https://www.googleapis.com/compute/v1beta1/projects/${projectId}/global/instanceTemplates/gke-containercluster-abcdef-default-pool",
+  "instanceTemplate": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/instanceTemplates/gke-cluster-sample-2rvfp-default-pool-fae16c6d",
   "kind": "compute#instanceGroupManager",
-  "name": "gke-containercluster-abcdef-default-pool-grp",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp",
+  "listManagedInstancesResults": "PAGINATED",
+  "name": "gke-cluster-sample-2rvfp-default-pool-fae16c6d-grp",
+  "satisfiesPzs": true,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-cluster-sample-2rvfp-default-pool-fae16c6d-grp",
+  "serviceAccount": "service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com",
+  "standbyPolicy": {
+    "mode": "MANUAL"
+  },
   "status": {
-    "isStable": true
+    "allInstancesConfig": {
+      "effective": true
+    },
+    "isStable": true,
+    "stateful": {
+      "hasStatefulConfig": false,
+      "isStateful": false,
+      "perInstanceConfigs": {
+        "allEffective": true
+      }
+    },
+    "versionTarget": {
+      "isReached": true
+    }
   },
   "targetSize": 1,
+  "targetSizePolicy": {
+    "mode": "INDIVIDUAL"
+  },
+  "targetStoppedSize": 0,
+  "targetSuspendedSize": 0,
   "updatePolicy": {
     "maxSurge": {
+      "calculated": 1,
       "fixed": 1
     },
     "maxUnavailable": {
+      "calculated": 1,
       "fixed": 1
     },
+    "minReadySec": 0,
     "minimalAction": "REPLACE",
     "replacementMethod": "SUBSTITUTE",
     "type": "OPPORTUNISTIC"
   },
-  "zone": "https://www.googleapis.com/compute/v1beta1/projects/${projectId}/zones/us-central1-a"
+  "versions": [
+    {
+      "instanceTemplate": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/instanceTemplates/gke-cluster-sample-2rvfp-default-pool-fae16c6d",
+      "targetSize": {
+        "calculated": 1
+      }
+    }
+  ],
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
 }
 
 ---
@@ -3249,6 +3666,9 @@ X-Xss-Protection: 0
 
 {
   "addonsConfig": {
+    "dnsCacheConfig": {
+      "enabled": true
+    },
     "gcePersistentDiskCsiDriverConfig": {
       "enabled": true
     },
@@ -3257,10 +3677,526 @@ X-Xss-Protection: 0
     },
     "networkPolicyConfig": {
       "disabled": true
-    }
+    },
+    "nodeReadinessConfig": {}
   },
   "anonymousAuthenticationConfig": {
-    "mode": "ENABLED"
+    "mode": "LIMITED"
+  },
+  "autopilot": {},
+  "autoscaling": {
+    "autoprovisioningNodePoolDefaults": {
+      "bootDiskKmsKey": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
+      "diskSizeGb": 100,
+      "imageType": "COS_CONTAINERD",
+      "management": {
+        "autoRepair": true,
+        "autoUpgrade": true
+      },
+      "oauthScopes": [
+        "https://www.googleapis.com/auth/userinfo.email",
+        "https://www.googleapis.com/auth/cloud-platform"
+      ],
+      "serviceAccount": "default",
+      "upgradeSettings": {
+        "strategy": "SURGE"
+      }
+    },
+    "autoscalingProfile": "BALANCED",
+    "enableNodeAutoprovisioning": true,
+    "resourceLimits": [
+      {
+        "maximum": "100",
+        "minimum": "10",
+        "resourceType": "cpu"
+      },
+      {
+        "maximum": "1000",
+        "minimum": "100",
+        "resourceType": "memory"
+      }
+    ]
+  },
+  "binaryAuthorization": {},
+  "clusterIpv4Cidr": "10.112.0.0/14",
+  "clusterTelemetry": {
+    "type": "DISABLED"
+  },
+  "controlPlaneEgress": {
+    "mode": "VIA_CONTROL_PLANE"
+  },
+  "controlPlaneEndpointsConfig": {
+    "dnsEndpointConfig": {
+      "allowExternalTraffic": false,
+      "enableK8sCertsViaDns": false,
+      "enableK8sTokensViaDns": false,
+      "endpoint": "gke-fffd766b1ddc49459222417a120559bf62e5-${projectNumber}.us-central1-a.gke.goog"
+    },
+    "ipEndpointsConfig": {
+      "authorizedNetworksConfig": {
+        "gcpPublicCidrsAccessEnabled": true
+      },
+      "enablePublicEndpoint": true,
+      "enabled": true,
+      "privateEndpoint": "${privateEndpointIPV4}",
+      "publicEndpoint": "${publicEndpointIPV4}"
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "currentMasterVersion": "1.35.6-gke.1710000",
+  "currentNodeCount": 1,
+  "currentNodeVersion": "1.35.6-gke.1710000",
+  "databaseEncryption": {
+    "currentState": "CURRENT_STATE_DECRYPTED",
+    "state": "DECRYPTED"
+  },
+  "defaultMaxPodsConstraint": {
+    "maxPodsPerNode": "110"
+  },
+  "endpoint": "${publicEndpointIPV4}",
+  "enterpriseConfig": {
+    "clusterTier": "STANDARD"
+  },
+  "etag": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "initialClusterVersion": "1.35.6-gke.1710000",
+  "initialNodeCount": 1,
+  "instanceGroupUrls": [
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-cluster-sample-2rvfp-default-pool-fae16c6d-grp"
+  ],
+  "ipAllocationPolicy": {
+    "clusterIpv4Cidr": "10.112.0.0/14",
+    "clusterIpv4CidrBlock": "10.112.0.0/14",
+    "clusterSecondaryRangeName": "gke-cluster-sample-${uniqueId}-pods-fffd766b",
+    "defaultPodIpv4RangeUtilization": 0.0625,
+    "networkTierConfig": {
+      "networkTier": "NETWORK_TIER_DEFAULT"
+    },
+    "podCidrOverprovisionConfig": {},
+    "servicesIpv4Cidr": "34.118.224.0/20",
+    "servicesIpv4CidrBlock": "34.118.224.0/20",
+    "stackType": "IPV4",
+    "useIpAliases": true
+  },
+  "labelFingerprint": "abcdef0123A=",
+  "legacyAbac": {},
+  "location": "us-central1-a",
+  "locations": [
+    "us-central1-a"
+  ],
+  "loggingConfig": {
+    "componentConfig": {}
+  },
+  "loggingService": "none",
+  "maintenancePolicy": {
+    "resourceVersion": "abcd1234"
+  },
+  "master": {},
+  "masterAuth": {
+    "clientCertificateConfig": {},
+    "clusterCaCertificate": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUVMVENDQXBXZ0F3SUJBZ0lSQUwzRnJDeGt5KzdxUnpKRWpFNkZkQmN3RFFZSktvWklodmNOQVFFTEJRQXcKTHpFdE1Dc0dBMVVFQXhNa1pEVmtObU0yWlRjdE4ySXhOUzAwTm1GaExXRTVNREV0T0dKbE16STRNMlU0TmpkagpNQ0FYRFRJMk1EZ3lOekE0TlRVeU1sb1lEekl3TlRZd09ERTVNRGsxTlRJeVdqQXZNUzB3S3dZRFZRUURFeVJrCk5XUTJZelpsTnkwM1lqRTFMVFEyWVdFdFlUa3dNUzA0WW1Vek1qZ3paVGcyTjJNd2dnR2lNQTBHQ1NxR1NJYjMKRFFFQkFRVUFBNElCandBd2dnR0tBb0lCZ1FDbWF4Smx0UitkT1U4RFRpUXlhbGlnbW9QSTl3cTN0aFdrSnRiQQpiTXpObjdFSDNYME9jR0t0SDFxbXN1MEN6TUduQ2xJUlBMWU13WnlYek8yNVNBcWdoL2g1Q2lQQnJ0eWJEU292CmExUEtvQWFRL2VLQTN3QmZZNzdhOEdoQWM3SWJWaGNWbEpiQkNRV21jRE1JT3pERElTRkZqMlUvQUIxdEptRkgKK3VOaHJxNVJCQ0QrZnBrdEdQRzdXcnFMVklpNnVNMkhvWlUxU0FDWkRMNTJBcTljQ0g2aHlCaXZIaWpYWGhhNwplRHN1ZUgyQ0tEVjlKbVRGeEZzRFlOaXkreFN1TkJ3QU03K1JhRVBhUmRSTElxSk9PTjA0R1pqbmw1eE5qb2pVCkRTcWVNQk94a0c5eEE5aGVLbkpCUG9UMEtiQnZ2RVNoYi9DREdlbS9YUlZoMGxJTS9kTkg4SnJHUms3SE1VamUKd0FkVzVkMWM5amNmakE2aEZGQzBjcG5vMzRxbzFweGs1RkU5aGVxd2dQQkl4Vm0rMmMrd0QxUmIycmlOb2s2WQpTOW8zdzlkYzE1WDJpT3pmM3ExT294ck5MbUtqSlRtZ1orb2JJeGs1aUxwL2FuNENJWGt0MW5JV1YrSVRWYmt6Ck02YlM0dDUraHI5T2JBR3JSSjIwaG1VOVlpVUNBd0VBQWFOQ01FQXdEZ1lEVlIwUEFRSC9CQVFEQWdJRU1BOEcKQTFVZEV3RUIvd1FGTUFNQkFmOHdIUVlEVlIwT0JCWUVGQStlWWl0dnBsMzVuUGRYTzBtV2NlQ2R1U3RoTUEwRwpDU3FHU0liM0RRRUJDd1VBQTRJQmdRQjhXTDZ1enMwOSt3ay90bEhWeG1PNmR0andCQ3J6bnpJY05YNnA1LzNFCjdwU1gxTzlXaXhuOUlha29uK1hyaVU2cFhNOEtRVEo0b240Sk1HVFBxQldQQVFNY1ExTkk3ZmNKRTdNNS9JRUsKVnB3SXFKMEdTQkFmMG5XYjlIUGhaMk1aODJXTFloOXVXL0pHcWlKVXoyWEF1emM5TEhCWjV5QyttRmRkelJvYwowQjVKMVY2b3Q3VHJvVlpJV1c1RXZmNlVyUndkRFRjMDJhVHVFZzc3SjM3MEhDczBMN1NSS0JaMS9xRytXRGFoClVoSFcvbEFjUDgwME91TGRLd0NtRkM1bWVudnZJN0RtZXdBQVBwaEoremxrdE5jbEhjYlRqaFRmVGRVbC9LVmwKUUhsRjZGUWtTRERxUHdhVzArODIvVldtaHJ5NktOUGZtNjBxQStMMXFRc3BrOFJUdkVXU3hGZnJMQnlUcUxPOQpQdk9KcjBuOWlxVDZSalpVd3JNaDBodWVRZnBZZUFyN1ZYajdEZmRIVkczYlJRajJQTXBycjhwc2p5NnoyQU4vCkhnUlhvb1JSRi9Tbk1VaWYvSFBZNnJidmNpSVljTGpybWVjNjlpeTB4OTlMaGR4NUZWQlFGYmZ0UEhtUmd0VzkKcmhhWlUyUFUza1NZTzRGSGs4QUxWeWs9Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K"
+  },
+  "masterAuthorizedNetworksConfig": {
+    "gcpPublicCidrsAccessEnabled": true
+  },
+  "monitoringConfig": {
+    "advancedDatapathObservabilityConfig": {},
+    "componentConfig": {
+      "enableComponents": [
+        "APISERVER",
+        "SCHEDULER",
+        "CONTROLLER_MANAGER"
+      ]
+    },
+    "managedPrometheusConfig": {
+      "enabled": true
+    }
+  },
+  "monitoringService": "none",
+  "name": "cluster-sample-${uniqueId}",
+  "network": "${networkID}",
+  "networkConfig": {
+    "defaultSnatStatus": {},
+    "network": "projects/${projectId}/global/networks/${networkID}",
+    "serviceExternalIpsConfig": {},
+    "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+  },
+  "nodeConfig": {
+    "advancedMachineFeatures": {
+      "enableNestedVirtualization": true
+    },
+    "bootDisk": {
+      "diskType": "pd-balanced",
+      "sizeGb": "100"
+    },
+    "diskSizeGb": 100,
+    "diskType": "pd-balanced",
+    "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
+    "imageType": "COS_CONTAINERD",
+    "kubeletConfig": {
+      "insecureKubeletReadonlyPortEnabled": false,
+      "maxParallelImagePulls": 2
+    },
+    "linuxNodeConfig": {
+      "sysctls": {
+        "net.core.somaxconn": "4096"
+      }
+    },
+    "loggingConfig": {
+      "variantConfig": {
+        "variant": "DEFAULT"
+      }
+    },
+    "machineType": "n2-standard-2",
+    "metadata": {
+      "disable-legacy-endpoints": "true"
+    },
+    "nodeImageConfig": {
+      "image": "gke-1356-gke1710000-cos-125-19216-395-138-c-pre",
+      "imageProject": "gke-node-images"
+    },
+    "oauthScopes": [
+      "https://www.googleapis.com/auth/devstorage.read_only",
+      "https://www.googleapis.com/auth/logging.write",
+      "https://www.googleapis.com/auth/monitoring",
+      "https://www.googleapis.com/auth/service.management.readonly",
+      "https://www.googleapis.com/auth/servicecontrol",
+      "https://www.googleapis.com/auth/trace.append"
+    ],
+    "resourceLabels": {
+      "goog-gke-node-pool-provisioning-model": "on-demand"
+    },
+    "serviceAccount": "default",
+    "shieldedInstanceConfig": {
+      "enableIntegrityMonitoring": true
+    },
+    "windowsNodeConfig": {}
+  },
+  "nodeCreationConfig": {
+    "nodeCreationMode": "VIA_KUBELET"
+  },
+  "nodePoolAutoConfig": {
+    "nodeKubeletConfig": {
+      "insecureKubeletReadonlyPortEnabled": false
+    }
+  },
+  "nodePoolDefaults": {
+    "nodeConfigDefaults": {
+      "loggingConfig": {
+        "variantConfig": {
+          "variant": "DEFAULT"
+        }
+      },
+      "nodeKubeletConfig": {
+        "insecureKubeletReadonlyPortEnabled": false
+      }
+    }
+  },
+  "nodePools": [
+    {
+      "config": {
+        "advancedMachineFeatures": {
+          "enableNestedVirtualization": true
+        },
+        "bootDisk": {
+          "diskType": "pd-balanced",
+          "sizeGb": "100"
+        },
+        "diskSizeGb": 100,
+        "diskType": "pd-balanced",
+        "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
+        "imageType": "COS_CONTAINERD",
+        "kubeletConfig": {
+          "insecureKubeletReadonlyPortEnabled": false,
+          "maxParallelImagePulls": 2
+        },
+        "linuxNodeConfig": {
+          "sysctls": {
+            "net.core.somaxconn": "4096"
+          }
+        },
+        "loggingConfig": {
+          "variantConfig": {
+            "variant": "DEFAULT"
+          }
+        },
+        "machineType": "n2-standard-2",
+        "metadata": {
+          "disable-legacy-endpoints": "true"
+        },
+        "nodeImageConfig": {
+          "image": "gke-1356-gke1710000-cos-125-19216-395-138-c-pre",
+          "imageProject": "gke-node-images"
+        },
+        "oauthScopes": [
+          "https://www.googleapis.com/auth/devstorage.read_only",
+          "https://www.googleapis.com/auth/logging.write",
+          "https://www.googleapis.com/auth/monitoring",
+          "https://www.googleapis.com/auth/service.management.readonly",
+          "https://www.googleapis.com/auth/servicecontrol",
+          "https://www.googleapis.com/auth/trace.append"
+        ],
+        "resourceLabels": {
+          "goog-gke-node-pool-provisioning-model": "on-demand"
+        },
+        "serviceAccount": "default",
+        "shieldedInstanceConfig": {
+          "enableIntegrityMonitoring": true
+        },
+        "windowsNodeConfig": {}
+      },
+      "etag": "ebb39cfb-b615-4f06-8104-44de9c52b476",
+      "initialNodeCount": 1,
+      "instanceGroupUrls": [
+        "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-cluster-sample-2rvfp-default-pool-fae16c6d-grp"
+      ],
+      "kubeletCertInfo": {
+        "tpmBootstrapCertExpireTime": "2031-08-26T09:56:51Z"
+      },
+      "locations": [
+        "us-central1-a"
+      ],
+      "management": {
+        "autoRepair": true,
+        "autoUpgrade": true
+      },
+      "maxPodsConstraint": {
+        "maxPodsPerNode": "110"
+      },
+      "name": "default-pool",
+      "networkConfig": {
+        "networkTierConfig": {
+          "networkTier": "NETWORK_TIER_DEFAULT"
+        },
+        "podIpv4CidrBlock": "10.234.32.0/20",
+        "podIpv4RangeUtilization": 0.0625,
+        "podRange": "gke-cluster-sample-${uniqueId}-pods-fffd766b",
+        "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+      },
+      "podIpv4CidrSize": 24,
+      "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectId}/zones/us-central1-a/clusters/cluster-sample-${uniqueId}/nodePools/default-pool",
+      "status": "RUNNING",
+      "upgradeSettings": {
+        "maxSurge": 1,
+        "strategy": "SURGE"
+      },
+      "version": "1.35.6-gke.1710000"
+    }
+  ],
+  "notificationConfig": {
+    "pubsub": {
+      "enabled": true,
+      "topic": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
+    }
+  },
+  "podAutoscaling": {
+    "hpaProfile": "PERFORMANCE"
+  },
+  "privateCluster": true,
+  "privateClusterConfig": {
+    "privateEndpoint": "${privateEndpointIPV4}",
+    "publicEndpoint": "${publicEndpointIPV4}"
+  },
+  "protectConfig": {
+    "workloadConfig": {
+      "auditMode": "BASIC"
+    },
+    "workloadVulnerabilityMode": "WORKLOAD_VULNERABILITY_MODE_UNSPECIFIED"
+  },
+  "rbacBindingConfig": {
+    "enableInsecureBindingSystemAuthenticated": true,
+    "enableInsecureBindingSystemUnauthenticated": true
+  },
+  "releaseChannel": {
+    "channel": "REGULAR"
+  },
+  "resourceLabels": {
+    "cnrm-test": "true",
+    "label-one": "value-two",
+    "managed-by-cnrm": "true"
+  },
+  "securityPostureConfig": {
+    "mode": "BASIC",
+    "vulnerabilityMode": "VULNERABILITY_MODE_UNSPECIFIED"
+  },
+  "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectId}/zones/us-central1-a/clusters/cluster-sample-${uniqueId}",
+  "servicesIpv4Cidr": "34.118.224.0/20",
+  "shieldedNodes": {
+    "enabled": true
+  },
+  "status": "RUNNING",
+  "subnetwork": "${subnetworkID}",
+  "userManagedKeysConfig": {},
+  "zone": "us-central1-a"
+}
+
+---
+
+PUT https://container.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-a/clusters/cluster-sample-${uniqueId}?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "update": {
+    "desiredLoggingConfig": {
+      "componentConfig": {
+        "enableComponents": [
+          "SYSTEM_COMPONENTS",
+          "WORKLOADS"
+        ]
+      }
+    }
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "${operationID}",
+  "operationType": "UPDATE_CLUSTER",
+  "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectNumber}/zones/us-central1-a/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetLink": "https://container.googleapis.com/v1beta1/projects/${projectNumber}/zones/us-central1-a/clusters/cluster-sample-${uniqueId}",
+  "zone": "us-central1-a"
+}
+
+---
+
+GET https://container.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-a/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "name": "${operationID}",
+  "operationType": "UPDATE_CLUSTER",
+  "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectNumber}/zones/us-central1-a/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetLink": "https://container.googleapis.com/v1beta1/projects/${projectNumber}/zones/us-central1-a/clusters/cluster-sample-${uniqueId}",
+  "zone": "us-central1-a"
+}
+
+---
+
+PUT https://container.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-a/clusters/cluster-sample-${uniqueId}?alt=json&prettyPrint=false
+Content-Type: application/json
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "update": {
+    "desiredMonitoringConfig": {
+      "advancedDatapathObservabilityConfig": {},
+      "componentConfig": {
+        "enableComponents": [
+          "SYSTEM_COMPONENTS",
+          "APISERVER"
+        ]
+      },
+      "managedPrometheusConfig": {
+        "enabled": true
+      }
+    }
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "name": "${operationID}",
+  "operationType": "UPDATE_CLUSTER",
+  "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectNumber}/zones/us-central1-a/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetLink": "https://container.googleapis.com/v1beta1/projects/${projectNumber}/zones/us-central1-a/clusters/cluster-sample-${uniqueId}",
+  "zone": "us-central1-a"
+}
+
+---
+
+GET https://container.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-a/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "name": "${operationID}",
+  "operationType": "UPDATE_CLUSTER",
+  "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectNumber}/zones/us-central1-a/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetLink": "https://container.googleapis.com/v1beta1/projects/${projectNumber}/zones/us-central1-a/clusters/cluster-sample-${uniqueId}",
+  "zone": "us-central1-a"
+}
+
+---
+
+GET https://container.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-a/clusters/cluster-sample-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "addonsConfig": {
+    "dnsCacheConfig": {
+      "enabled": true
+    },
+    "gcePersistentDiskCsiDriverConfig": {
+      "enabled": true
+    },
+    "kubernetesDashboard": {
+      "disabled": true
+    },
+    "networkPolicyConfig": {
+      "disabled": true
+    },
+    "nodeReadinessConfig": {}
+  },
+  "anonymousAuthenticationConfig": {
+    "mode": "LIMITED"
   },
   "autopilot": {},
   "autoscaling": {
@@ -3301,11 +4237,15 @@ X-Xss-Protection: 0
   "clusterTelemetry": {
     "type": "ENABLED"
   },
+  "controlPlaneEgress": {
+    "mode": "VIA_CONTROL_PLANE"
+  },
   "controlPlaneEndpointsConfig": {
     "dnsEndpointConfig": {
       "allowExternalTraffic": false,
+      "enableK8sCertsViaDns": false,
       "enableK8sTokensViaDns": false,
-      "endpoint": "gke-12345trewq-${projectNumber}.us-central1-a.gke.goog"
+      "endpoint": "gke-fffd766b1ddc49459222417a120559bf62e5-${projectNumber}.us-central1-a.gke.goog"
     },
     "ipEndpointsConfig": {
       "authorizedNetworksConfig": {
@@ -3313,15 +4253,14 @@ X-Xss-Protection: 0
       },
       "enablePublicEndpoint": true,
       "enabled": true,
-      "globalAccess": false,
       "privateEndpoint": "${privateEndpointIPV4}",
       "publicEndpoint": "${publicEndpointIPV4}"
     }
   },
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "currentMasterVersion": "1.30.5-gke.1014001",
+  "currentMasterVersion": "1.35.6-gke.1710000",
   "currentNodeCount": 1,
-  "currentNodeVersion": "1.30.5-gke.1014001",
+  "currentNodeVersion": "1.35.6-gke.1710000",
   "databaseEncryption": {
     "currentState": "CURRENT_STATE_DECRYPTED",
     "state": "DECRYPTED"
@@ -3335,17 +4274,22 @@ X-Xss-Protection: 0
   },
   "etag": "abcdef0123A=",
   "id": "000000000000000000000",
-  "initialClusterVersion": "1.30.5-gke.1014001",
+  "initialClusterVersion": "1.35.6-gke.1710000",
   "initialNodeCount": 1,
   "instanceGroupUrls": [
-    "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef"
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-cluster-sample-2rvfp-default-pool-fae16c6d-grp"
   ],
   "ipAllocationPolicy": {
     "clusterIpv4Cidr": "10.112.0.0/14",
     "clusterIpv4CidrBlock": "10.112.0.0/14",
+    "clusterSecondaryRangeName": "gke-cluster-sample-${uniqueId}-pods-fffd766b",
+    "defaultPodIpv4RangeUtilization": 0.0625,
+    "networkTierConfig": {
+      "networkTier": "NETWORK_TIER_DEFAULT"
+    },
     "podCidrOverprovisionConfig": {},
-    "servicesIpv4Cidr": "/20",
-    "servicesIpv4CidrBlock": "/20",
+    "servicesIpv4Cidr": "34.118.224.0/20",
+    "servicesIpv4CidrBlock": "34.118.224.0/20",
     "stackType": "IPV4",
     "useIpAliases": true
   },
@@ -3363,13 +4307,14 @@ X-Xss-Protection: 0
       ]
     }
   },
-  "loggingService": "none",
+  "loggingService": "logging.googleapis.com/kubernetes",
   "maintenancePolicy": {
     "resourceVersion": "abcd1234"
   },
+  "master": {},
   "masterAuth": {
     "clientCertificateConfig": {},
-    "clusterCaCertificate": "1234567890abcdefghijklmn"
+    "clusterCaCertificate": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUVMVENDQXBXZ0F3SUJBZ0lSQUwzRnJDeGt5KzdxUnpKRWpFNkZkQmN3RFFZSktvWklodmNOQVFFTEJRQXcKTHpFdE1Dc0dBMVVFQXhNa1pEVmtObU0yWlRjdE4ySXhOUzAwTm1GaExXRTVNREV0T0dKbE16STRNMlU0TmpkagpNQ0FYRFRJMk1EZ3lOekE0TlRVeU1sb1lEekl3TlRZd09ERTVNRGsxTlRJeVdqQXZNUzB3S3dZRFZRUURFeVJrCk5XUTJZelpsTnkwM1lqRTFMVFEyWVdFdFlUa3dNUzA0WW1Vek1qZ3paVGcyTjJNd2dnR2lNQTBHQ1NxR1NJYjMKRFFFQkFRVUFBNElCandBd2dnR0tBb0lCZ1FDbWF4Smx0UitkT1U4RFRpUXlhbGlnbW9QSTl3cTN0aFdrSnRiQQpiTXpObjdFSDNYME9jR0t0SDFxbXN1MEN6TUduQ2xJUlBMWU13WnlYek8yNVNBcWdoL2g1Q2lQQnJ0eWJEU292CmExUEtvQWFRL2VLQTN3QmZZNzdhOEdoQWM3SWJWaGNWbEpiQkNRV21jRE1JT3pERElTRkZqMlUvQUIxdEptRkgKK3VOaHJxNVJCQ0QrZnBrdEdQRzdXcnFMVklpNnVNMkhvWlUxU0FDWkRMNTJBcTljQ0g2aHlCaXZIaWpYWGhhNwplRHN1ZUgyQ0tEVjlKbVRGeEZzRFlOaXkreFN1TkJ3QU03K1JhRVBhUmRSTElxSk9PTjA0R1pqbmw1eE5qb2pVCkRTcWVNQk94a0c5eEE5aGVLbkpCUG9UMEtiQnZ2RVNoYi9DREdlbS9YUlZoMGxJTS9kTkg4SnJHUms3SE1VamUKd0FkVzVkMWM5amNmakE2aEZGQzBjcG5vMzRxbzFweGs1RkU5aGVxd2dQQkl4Vm0rMmMrd0QxUmIycmlOb2s2WQpTOW8zdzlkYzE1WDJpT3pmM3ExT294ck5MbUtqSlRtZ1orb2JJeGs1aUxwL2FuNENJWGt0MW5JV1YrSVRWYmt6Ck02YlM0dDUraHI5T2JBR3JSSjIwaG1VOVlpVUNBd0VBQWFOQ01FQXdEZ1lEVlIwUEFRSC9CQVFEQWdJRU1BOEcKQTFVZEV3RUIvd1FGTUFNQkFmOHdIUVlEVlIwT0JCWUVGQStlWWl0dnBsMzVuUGRYTzBtV2NlQ2R1U3RoTUEwRwpDU3FHU0liM0RRRUJDd1VBQTRJQmdRQjhXTDZ1enMwOSt3ay90bEhWeG1PNmR0andCQ3J6bnpJY05YNnA1LzNFCjdwU1gxTzlXaXhuOUlha29uK1hyaVU2cFhNOEtRVEo0b240Sk1HVFBxQldQQVFNY1ExTkk3ZmNKRTdNNS9JRUsKVnB3SXFKMEdTQkFmMG5XYjlIUGhaMk1aODJXTFloOXVXL0pHcWlKVXoyWEF1emM5TEhCWjV5QyttRmRkelJvYwowQjVKMVY2b3Q3VHJvVlpJV1c1RXZmNlVyUndkRFRjMDJhVHVFZzc3SjM3MEhDczBMN1NSS0JaMS9xRytXRGFoClVoSFcvbEFjUDgwME91TGRLd0NtRkM1bWVudnZJN0RtZXdBQVBwaEoremxrdE5jbEhjYlRqaFRmVGRVbC9LVmwKUUhsRjZGUWtTRERxUHdhVzArODIvVldtaHJ5NktOUGZtNjBxQStMMXFRc3BrOFJUdkVXU3hGZnJMQnlUcUxPOQpQdk9KcjBuOWlxVDZSalpVd3JNaDBodWVRZnBZZUFyN1ZYajdEZmRIVkczYlJRajJQTXBycjhwc2p5NnoyQU4vCkhnUlhvb1JSRi9Tbk1VaWYvSFBZNnJidmNpSVljTGpybWVjNjlpeTB4OTlMaGR4NUZWQlFGYmZ0UEhtUmd0VzkKcmhhWlUyUFUza1NZTzRGSGs4QUxWeWs9Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K"
   },
   "masterAuthorizedNetworksConfig": {
     "gcpPublicCidrsAccessEnabled": true
@@ -3386,10 +4331,11 @@ X-Xss-Protection: 0
       "enabled": true
     }
   },
-  "monitoringService": "none",
+  "monitoringService": "monitoring.googleapis.com/kubernetes",
   "name": "cluster-sample-${uniqueId}",
   "network": "${networkID}",
   "networkConfig": {
+    "defaultSnatStatus": {},
     "network": "projects/${projectId}/global/networks/${networkID}",
     "serviceExternalIpsConfig": {},
     "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
@@ -3399,11 +4345,11 @@ X-Xss-Protection: 0
       "enableNestedVirtualization": true
     },
     "bootDisk": {
-      "diskType": "hyperdisk-balanced",
+      "diskType": "pd-balanced",
       "sizeGb": "100"
     },
     "diskSizeGb": 100,
-    "diskType": "hyperdisk-balanced",
+    "diskType": "pd-balanced",
     "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
     "imageType": "COS_CONTAINERD",
     "kubeletConfig": {
@@ -3420,9 +4366,13 @@ X-Xss-Protection: 0
         "variant": "DEFAULT"
       }
     },
-    "machineType": "n4-standard-2",
+    "machineType": "n2-standard-2",
     "metadata": {
       "disable-legacy-endpoints": "true"
+    },
+    "nodeImageConfig": {
+      "image": "gke-1356-gke1710000-cos-125-19216-395-138-c-pre",
+      "imageProject": "gke-node-images"
     },
     "oauthScopes": [
       "https://www.googleapis.com/auth/devstorage.read_only",
@@ -3440,6 +4390,9 @@ X-Xss-Protection: 0
       "enableIntegrityMonitoring": true
     },
     "windowsNodeConfig": {}
+  },
+  "nodeCreationConfig": {
+    "nodeCreationMode": "VIA_KUBELET"
   },
   "nodePoolAutoConfig": {
     "nodeKubeletConfig": {
@@ -3465,11 +4418,11 @@ X-Xss-Protection: 0
           "enableNestedVirtualization": true
         },
         "bootDisk": {
-          "diskType": "hyperdisk-balanced",
+          "diskType": "pd-balanced",
           "sizeGb": "100"
         },
         "diskSizeGb": 100,
-        "diskType": "hyperdisk-balanced",
+        "diskType": "pd-balanced",
         "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
         "imageType": "COS_CONTAINERD",
         "kubeletConfig": {
@@ -3486,9 +4439,13 @@ X-Xss-Protection: 0
             "variant": "DEFAULT"
           }
         },
-        "machineType": "n4-standard-2",
+        "machineType": "n2-standard-2",
         "metadata": {
           "disable-legacy-endpoints": "true"
+        },
+        "nodeImageConfig": {
+          "image": "gke-1356-gke1710000-cos-125-19216-395-138-c-pre",
+          "imageProject": "gke-node-images"
         },
         "oauthScopes": [
           "https://www.googleapis.com/auth/devstorage.read_only",
@@ -3507,10 +4464,14 @@ X-Xss-Protection: 0
         },
         "windowsNodeConfig": {}
       },
+      "etag": "ebb39cfb-b615-4f06-8104-44de9c52b476",
       "initialNodeCount": 1,
       "instanceGroupUrls": [
-        "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-containercluster-abcdef-default-pool-grp"
+        "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-cluster-sample-2rvfp-default-pool-fae16c6d-grp"
       ],
+      "kubeletCertInfo": {
+        "tpmBootstrapCertExpireTime": "2031-08-26T09:56:51Z"
+      },
       "locations": [
         "us-central1-a"
       ],
@@ -3523,18 +4484,22 @@ X-Xss-Protection: 0
       },
       "name": "default-pool",
       "networkConfig": {
-        "podIpv4CidrBlock": "10.92.0.0/14",
-        "podIpv4RangeUtilization": 0.001,
-        "podRange": "default-pool-pods-12345678",
+        "networkTierConfig": {
+          "networkTier": "NETWORK_TIER_DEFAULT"
+        },
+        "podIpv4CidrBlock": "10.234.32.0/20",
+        "podIpv4RangeUtilization": 0.0625,
+        "podRange": "gke-cluster-sample-${uniqueId}-pods-fffd766b",
         "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
       },
       "podIpv4CidrSize": 24,
+      "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectId}/zones/us-central1-a/clusters/cluster-sample-${uniqueId}/nodePools/default-pool",
       "status": "RUNNING",
       "upgradeSettings": {
         "maxSurge": 1,
         "strategy": "SURGE"
       },
-      "version": "1.30.5-gke.1014001"
+      "version": "1.35.6-gke.1710000"
     }
   ],
   "notificationConfig": {
@@ -3546,6 +4511,1456 @@ X-Xss-Protection: 0
   "podAutoscaling": {
     "hpaProfile": "PERFORMANCE"
   },
+  "privateCluster": true,
+  "privateClusterConfig": {
+    "privateEndpoint": "${privateEndpointIPV4}",
+    "publicEndpoint": "${publicEndpointIPV4}"
+  },
+  "protectConfig": {
+    "workloadConfig": {
+      "auditMode": "BASIC"
+    },
+    "workloadVulnerabilityMode": "WORKLOAD_VULNERABILITY_MODE_UNSPECIFIED"
+  },
+  "rbacBindingConfig": {
+    "enableInsecureBindingSystemAuthenticated": true,
+    "enableInsecureBindingSystemUnauthenticated": true
+  },
+  "releaseChannel": {
+    "channel": "REGULAR"
+  },
+  "resourceLabels": {
+    "cnrm-test": "true",
+    "label-one": "value-two",
+    "managed-by-cnrm": "true"
+  },
+  "securityPostureConfig": {
+    "mode": "BASIC",
+    "vulnerabilityMode": "VULNERABILITY_MODE_UNSPECIFIED"
+  },
+  "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectId}/zones/us-central1-a/clusters/cluster-sample-${uniqueId}",
+  "servicesIpv4Cidr": "34.118.224.0/20",
+  "shieldedNodes": {
+    "enabled": true
+  },
+  "status": "RUNNING",
+  "subnetwork": "${subnetworkID}",
+  "userManagedKeysConfig": {},
+  "zone": "us-central1-a"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-cluster-sample-2rvfp-default-pool-fae16c6d-grp?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "baseInstanceName": "gke-cluster-sample-2rvfp-default-pool-fae16c6d",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "currentActions": {
+    "abandoning": 0,
+    "creating": 0,
+    "creatingWithoutRetries": 0,
+    "deleting": 0,
+    "none": 1,
+    "recreating": 0,
+    "refreshing": 0,
+    "restarting": 0,
+    "resuming": 0,
+    "starting": 0,
+    "stopping": 0,
+    "suspending": 0,
+    "verifying": 0
+  },
+  "fingerprint": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "instanceGroup": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/instanceGroups/gke-cluster-sample-2rvfp-default-pool-fae16c6d-grp",
+  "instanceLifecyclePolicy": {
+    "defaultActionOnFailure": "REPAIR",
+    "forceUpdateOnRepair": "YES",
+    "onFailedHealthCheck": "DEFAULT_ACTION"
+  },
+  "instanceTemplate": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/instanceTemplates/gke-cluster-sample-2rvfp-default-pool-fae16c6d",
+  "kind": "compute#instanceGroupManager",
+  "listManagedInstancesResults": "PAGINATED",
+  "name": "gke-cluster-sample-2rvfp-default-pool-fae16c6d-grp",
+  "satisfiesPzs": true,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-cluster-sample-2rvfp-default-pool-fae16c6d-grp",
+  "serviceAccount": "service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com",
+  "standbyPolicy": {
+    "mode": "MANUAL"
+  },
+  "status": {
+    "allInstancesConfig": {
+      "effective": true
+    },
+    "isStable": true,
+    "stateful": {
+      "hasStatefulConfig": false,
+      "isStateful": false,
+      "perInstanceConfigs": {
+        "allEffective": true
+      }
+    },
+    "versionTarget": {
+      "isReached": true
+    }
+  },
+  "targetSize": 1,
+  "targetSizePolicy": {
+    "mode": "INDIVIDUAL"
+  },
+  "targetStoppedSize": 0,
+  "targetSuspendedSize": 0,
+  "updatePolicy": {
+    "maxSurge": {
+      "calculated": 1,
+      "fixed": 1
+    },
+    "maxUnavailable": {
+      "calculated": 1,
+      "fixed": 1
+    },
+    "minReadySec": 0,
+    "minimalAction": "REPLACE",
+    "replacementMethod": "SUBSTITUTE",
+    "type": "OPPORTUNISTIC"
+  },
+  "versions": [
+    {
+      "instanceTemplate": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/instanceTemplates/gke-cluster-sample-2rvfp-default-pool-fae16c6d",
+      "targetSize": {
+        "calculated": 1
+      }
+    }
+  ],
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
+}
+
+---
+
+GET https://container.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-a/clusters/cluster-sample-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "addonsConfig": {
+    "dnsCacheConfig": {
+      "enabled": true
+    },
+    "gcePersistentDiskCsiDriverConfig": {
+      "enabled": true
+    },
+    "kubernetesDashboard": {
+      "disabled": true
+    },
+    "networkPolicyConfig": {
+      "disabled": true
+    },
+    "nodeReadinessConfig": {}
+  },
+  "anonymousAuthenticationConfig": {
+    "mode": "LIMITED"
+  },
+  "autopilot": {},
+  "autoscaling": {
+    "autoprovisioningNodePoolDefaults": {
+      "bootDiskKmsKey": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
+      "diskSizeGb": 100,
+      "imageType": "COS_CONTAINERD",
+      "management": {
+        "autoRepair": true,
+        "autoUpgrade": true
+      },
+      "oauthScopes": [
+        "https://www.googleapis.com/auth/userinfo.email",
+        "https://www.googleapis.com/auth/cloud-platform"
+      ],
+      "serviceAccount": "default",
+      "upgradeSettings": {
+        "strategy": "SURGE"
+      }
+    },
+    "autoscalingProfile": "BALANCED",
+    "enableNodeAutoprovisioning": true,
+    "resourceLimits": [
+      {
+        "maximum": "100",
+        "minimum": "10",
+        "resourceType": "cpu"
+      },
+      {
+        "maximum": "1000",
+        "minimum": "100",
+        "resourceType": "memory"
+      }
+    ]
+  },
+  "binaryAuthorization": {},
+  "clusterIpv4Cidr": "10.112.0.0/14",
+  "clusterTelemetry": {
+    "type": "ENABLED"
+  },
+  "controlPlaneEgress": {
+    "mode": "VIA_CONTROL_PLANE"
+  },
+  "controlPlaneEndpointsConfig": {
+    "dnsEndpointConfig": {
+      "allowExternalTraffic": false,
+      "enableK8sCertsViaDns": false,
+      "enableK8sTokensViaDns": false,
+      "endpoint": "gke-fffd766b1ddc49459222417a120559bf62e5-${projectNumber}.us-central1-a.gke.goog"
+    },
+    "ipEndpointsConfig": {
+      "authorizedNetworksConfig": {
+        "gcpPublicCidrsAccessEnabled": true
+      },
+      "enablePublicEndpoint": true,
+      "enabled": true,
+      "privateEndpoint": "${privateEndpointIPV4}",
+      "publicEndpoint": "${publicEndpointIPV4}"
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "currentMasterVersion": "1.35.6-gke.1710000",
+  "currentNodeCount": 1,
+  "currentNodeVersion": "1.35.6-gke.1710000",
+  "databaseEncryption": {
+    "currentState": "CURRENT_STATE_DECRYPTED",
+    "state": "DECRYPTED"
+  },
+  "defaultMaxPodsConstraint": {
+    "maxPodsPerNode": "110"
+  },
+  "endpoint": "${publicEndpointIPV4}",
+  "enterpriseConfig": {
+    "clusterTier": "STANDARD"
+  },
+  "etag": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "initialClusterVersion": "1.35.6-gke.1710000",
+  "initialNodeCount": 1,
+  "instanceGroupUrls": [
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-cluster-sample-2rvfp-default-pool-fae16c6d-grp"
+  ],
+  "ipAllocationPolicy": {
+    "clusterIpv4Cidr": "10.112.0.0/14",
+    "clusterIpv4CidrBlock": "10.112.0.0/14",
+    "clusterSecondaryRangeName": "gke-cluster-sample-${uniqueId}-pods-fffd766b",
+    "defaultPodIpv4RangeUtilization": 0.0625,
+    "networkTierConfig": {
+      "networkTier": "NETWORK_TIER_DEFAULT"
+    },
+    "podCidrOverprovisionConfig": {},
+    "servicesIpv4Cidr": "34.118.224.0/20",
+    "servicesIpv4CidrBlock": "34.118.224.0/20",
+    "stackType": "IPV4",
+    "useIpAliases": true
+  },
+  "labelFingerprint": "abcdef0123A=",
+  "legacyAbac": {},
+  "location": "us-central1-a",
+  "locations": [
+    "us-central1-a"
+  ],
+  "loggingConfig": {
+    "componentConfig": {
+      "enableComponents": [
+        "SYSTEM_COMPONENTS",
+        "WORKLOADS"
+      ]
+    }
+  },
+  "loggingService": "logging.googleapis.com/kubernetes",
+  "maintenancePolicy": {
+    "resourceVersion": "abcd1234"
+  },
+  "master": {},
+  "masterAuth": {
+    "clientCertificateConfig": {},
+    "clusterCaCertificate": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUVMVENDQXBXZ0F3SUJBZ0lSQUwzRnJDeGt5KzdxUnpKRWpFNkZkQmN3RFFZSktvWklodmNOQVFFTEJRQXcKTHpFdE1Dc0dBMVVFQXhNa1pEVmtObU0yWlRjdE4ySXhOUzAwTm1GaExXRTVNREV0T0dKbE16STRNMlU0TmpkagpNQ0FYRFRJMk1EZ3lOekE0TlRVeU1sb1lEekl3TlRZd09ERTVNRGsxTlRJeVdqQXZNUzB3S3dZRFZRUURFeVJrCk5XUTJZelpsTnkwM1lqRTFMVFEyWVdFdFlUa3dNUzA0WW1Vek1qZ3paVGcyTjJNd2dnR2lNQTBHQ1NxR1NJYjMKRFFFQkFRVUFBNElCandBd2dnR0tBb0lCZ1FDbWF4Smx0UitkT1U4RFRpUXlhbGlnbW9QSTl3cTN0aFdrSnRiQQpiTXpObjdFSDNYME9jR0t0SDFxbXN1MEN6TUduQ2xJUlBMWU13WnlYek8yNVNBcWdoL2g1Q2lQQnJ0eWJEU292CmExUEtvQWFRL2VLQTN3QmZZNzdhOEdoQWM3SWJWaGNWbEpiQkNRV21jRE1JT3pERElTRkZqMlUvQUIxdEptRkgKK3VOaHJxNVJCQ0QrZnBrdEdQRzdXcnFMVklpNnVNMkhvWlUxU0FDWkRMNTJBcTljQ0g2aHlCaXZIaWpYWGhhNwplRHN1ZUgyQ0tEVjlKbVRGeEZzRFlOaXkreFN1TkJ3QU03K1JhRVBhUmRSTElxSk9PTjA0R1pqbmw1eE5qb2pVCkRTcWVNQk94a0c5eEE5aGVLbkpCUG9UMEtiQnZ2RVNoYi9DREdlbS9YUlZoMGxJTS9kTkg4SnJHUms3SE1VamUKd0FkVzVkMWM5amNmakE2aEZGQzBjcG5vMzRxbzFweGs1RkU5aGVxd2dQQkl4Vm0rMmMrd0QxUmIycmlOb2s2WQpTOW8zdzlkYzE1WDJpT3pmM3ExT294ck5MbUtqSlRtZ1orb2JJeGs1aUxwL2FuNENJWGt0MW5JV1YrSVRWYmt6Ck02YlM0dDUraHI5T2JBR3JSSjIwaG1VOVlpVUNBd0VBQWFOQ01FQXdEZ1lEVlIwUEFRSC9CQVFEQWdJRU1BOEcKQTFVZEV3RUIvd1FGTUFNQkFmOHdIUVlEVlIwT0JCWUVGQStlWWl0dnBsMzVuUGRYTzBtV2NlQ2R1U3RoTUEwRwpDU3FHU0liM0RRRUJDd1VBQTRJQmdRQjhXTDZ1enMwOSt3ay90bEhWeG1PNmR0andCQ3J6bnpJY05YNnA1LzNFCjdwU1gxTzlXaXhuOUlha29uK1hyaVU2cFhNOEtRVEo0b240Sk1HVFBxQldQQVFNY1ExTkk3ZmNKRTdNNS9JRUsKVnB3SXFKMEdTQkFmMG5XYjlIUGhaMk1aODJXTFloOXVXL0pHcWlKVXoyWEF1emM5TEhCWjV5QyttRmRkelJvYwowQjVKMVY2b3Q3VHJvVlpJV1c1RXZmNlVyUndkRFRjMDJhVHVFZzc3SjM3MEhDczBMN1NSS0JaMS9xRytXRGFoClVoSFcvbEFjUDgwME91TGRLd0NtRkM1bWVudnZJN0RtZXdBQVBwaEoremxrdE5jbEhjYlRqaFRmVGRVbC9LVmwKUUhsRjZGUWtTRERxUHdhVzArODIvVldtaHJ5NktOUGZtNjBxQStMMXFRc3BrOFJUdkVXU3hGZnJMQnlUcUxPOQpQdk9KcjBuOWlxVDZSalpVd3JNaDBodWVRZnBZZUFyN1ZYajdEZmRIVkczYlJRajJQTXBycjhwc2p5NnoyQU4vCkhnUlhvb1JSRi9Tbk1VaWYvSFBZNnJidmNpSVljTGpybWVjNjlpeTB4OTlMaGR4NUZWQlFGYmZ0UEhtUmd0VzkKcmhhWlUyUFUza1NZTzRGSGs4QUxWeWs9Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K"
+  },
+  "masterAuthorizedNetworksConfig": {
+    "gcpPublicCidrsAccessEnabled": true
+  },
+  "monitoringConfig": {
+    "advancedDatapathObservabilityConfig": {},
+    "componentConfig": {
+      "enableComponents": [
+        "SYSTEM_COMPONENTS",
+        "APISERVER"
+      ]
+    },
+    "managedPrometheusConfig": {
+      "enabled": true
+    }
+  },
+  "monitoringService": "monitoring.googleapis.com/kubernetes",
+  "name": "cluster-sample-${uniqueId}",
+  "network": "${networkID}",
+  "networkConfig": {
+    "defaultSnatStatus": {},
+    "network": "projects/${projectId}/global/networks/${networkID}",
+    "serviceExternalIpsConfig": {},
+    "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+  },
+  "nodeConfig": {
+    "advancedMachineFeatures": {
+      "enableNestedVirtualization": true
+    },
+    "bootDisk": {
+      "diskType": "pd-balanced",
+      "sizeGb": "100"
+    },
+    "diskSizeGb": 100,
+    "diskType": "pd-balanced",
+    "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
+    "imageType": "COS_CONTAINERD",
+    "kubeletConfig": {
+      "insecureKubeletReadonlyPortEnabled": false,
+      "maxParallelImagePulls": 2
+    },
+    "linuxNodeConfig": {
+      "sysctls": {
+        "net.core.somaxconn": "4096"
+      }
+    },
+    "loggingConfig": {
+      "variantConfig": {
+        "variant": "DEFAULT"
+      }
+    },
+    "machineType": "n2-standard-2",
+    "metadata": {
+      "disable-legacy-endpoints": "true"
+    },
+    "nodeImageConfig": {
+      "image": "gke-1356-gke1710000-cos-125-19216-395-138-c-pre",
+      "imageProject": "gke-node-images"
+    },
+    "oauthScopes": [
+      "https://www.googleapis.com/auth/devstorage.read_only",
+      "https://www.googleapis.com/auth/logging.write",
+      "https://www.googleapis.com/auth/monitoring",
+      "https://www.googleapis.com/auth/service.management.readonly",
+      "https://www.googleapis.com/auth/servicecontrol",
+      "https://www.googleapis.com/auth/trace.append"
+    ],
+    "resourceLabels": {
+      "goog-gke-node-pool-provisioning-model": "on-demand"
+    },
+    "serviceAccount": "default",
+    "shieldedInstanceConfig": {
+      "enableIntegrityMonitoring": true
+    },
+    "windowsNodeConfig": {}
+  },
+  "nodeCreationConfig": {
+    "nodeCreationMode": "VIA_KUBELET"
+  },
+  "nodePoolAutoConfig": {
+    "nodeKubeletConfig": {
+      "insecureKubeletReadonlyPortEnabled": false
+    }
+  },
+  "nodePoolDefaults": {
+    "nodeConfigDefaults": {
+      "loggingConfig": {
+        "variantConfig": {
+          "variant": "DEFAULT"
+        }
+      },
+      "nodeKubeletConfig": {
+        "insecureKubeletReadonlyPortEnabled": false
+      }
+    }
+  },
+  "nodePools": [
+    {
+      "config": {
+        "advancedMachineFeatures": {
+          "enableNestedVirtualization": true
+        },
+        "bootDisk": {
+          "diskType": "pd-balanced",
+          "sizeGb": "100"
+        },
+        "diskSizeGb": 100,
+        "diskType": "pd-balanced",
+        "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
+        "imageType": "COS_CONTAINERD",
+        "kubeletConfig": {
+          "insecureKubeletReadonlyPortEnabled": false,
+          "maxParallelImagePulls": 2
+        },
+        "linuxNodeConfig": {
+          "sysctls": {
+            "net.core.somaxconn": "4096"
+          }
+        },
+        "loggingConfig": {
+          "variantConfig": {
+            "variant": "DEFAULT"
+          }
+        },
+        "machineType": "n2-standard-2",
+        "metadata": {
+          "disable-legacy-endpoints": "true"
+        },
+        "nodeImageConfig": {
+          "image": "gke-1356-gke1710000-cos-125-19216-395-138-c-pre",
+          "imageProject": "gke-node-images"
+        },
+        "oauthScopes": [
+          "https://www.googleapis.com/auth/devstorage.read_only",
+          "https://www.googleapis.com/auth/logging.write",
+          "https://www.googleapis.com/auth/monitoring",
+          "https://www.googleapis.com/auth/service.management.readonly",
+          "https://www.googleapis.com/auth/servicecontrol",
+          "https://www.googleapis.com/auth/trace.append"
+        ],
+        "resourceLabels": {
+          "goog-gke-node-pool-provisioning-model": "on-demand"
+        },
+        "serviceAccount": "default",
+        "shieldedInstanceConfig": {
+          "enableIntegrityMonitoring": true
+        },
+        "windowsNodeConfig": {}
+      },
+      "etag": "ebb39cfb-b615-4f06-8104-44de9c52b476",
+      "initialNodeCount": 1,
+      "instanceGroupUrls": [
+        "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-cluster-sample-2rvfp-default-pool-fae16c6d-grp"
+      ],
+      "kubeletCertInfo": {
+        "tpmBootstrapCertExpireTime": "2031-08-26T09:56:51Z"
+      },
+      "locations": [
+        "us-central1-a"
+      ],
+      "management": {
+        "autoRepair": true,
+        "autoUpgrade": true
+      },
+      "maxPodsConstraint": {
+        "maxPodsPerNode": "110"
+      },
+      "name": "default-pool",
+      "networkConfig": {
+        "networkTierConfig": {
+          "networkTier": "NETWORK_TIER_DEFAULT"
+        },
+        "podIpv4CidrBlock": "10.234.32.0/20",
+        "podIpv4RangeUtilization": 0.0625,
+        "podRange": "gke-cluster-sample-${uniqueId}-pods-fffd766b",
+        "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+      },
+      "podIpv4CidrSize": 24,
+      "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectId}/zones/us-central1-a/clusters/cluster-sample-${uniqueId}/nodePools/default-pool",
+      "status": "RUNNING",
+      "upgradeSettings": {
+        "maxSurge": 1,
+        "strategy": "SURGE"
+      },
+      "version": "1.35.6-gke.1710000"
+    }
+  ],
+  "notificationConfig": {
+    "pubsub": {
+      "enabled": true,
+      "topic": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
+    }
+  },
+  "podAutoscaling": {
+    "hpaProfile": "PERFORMANCE"
+  },
+  "privateCluster": true,
+  "privateClusterConfig": {
+    "privateEndpoint": "${privateEndpointIPV4}",
+    "publicEndpoint": "${publicEndpointIPV4}"
+  },
+  "protectConfig": {
+    "workloadConfig": {
+      "auditMode": "BASIC"
+    },
+    "workloadVulnerabilityMode": "WORKLOAD_VULNERABILITY_MODE_UNSPECIFIED"
+  },
+  "rbacBindingConfig": {
+    "enableInsecureBindingSystemAuthenticated": true,
+    "enableInsecureBindingSystemUnauthenticated": true
+  },
+  "releaseChannel": {
+    "channel": "REGULAR"
+  },
+  "resourceLabels": {
+    "cnrm-test": "true",
+    "label-one": "value-two",
+    "managed-by-cnrm": "true"
+  },
+  "securityPostureConfig": {
+    "mode": "BASIC",
+    "vulnerabilityMode": "VULNERABILITY_MODE_UNSPECIFIED"
+  },
+  "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectId}/zones/us-central1-a/clusters/cluster-sample-${uniqueId}",
+  "servicesIpv4Cidr": "34.118.224.0/20",
+  "shieldedNodes": {
+    "enabled": true
+  },
+  "status": "RUNNING",
+  "subnetwork": "${subnetworkID}",
+  "userManagedKeysConfig": {},
+  "zone": "us-central1-a"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-cluster-sample-2rvfp-default-pool-fae16c6d-grp?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "baseInstanceName": "gke-cluster-sample-2rvfp-default-pool-fae16c6d",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "currentActions": {
+    "abandoning": 0,
+    "creating": 0,
+    "creatingWithoutRetries": 0,
+    "deleting": 0,
+    "none": 1,
+    "recreating": 0,
+    "refreshing": 0,
+    "restarting": 0,
+    "resuming": 0,
+    "starting": 0,
+    "stopping": 0,
+    "suspending": 0,
+    "verifying": 0
+  },
+  "fingerprint": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "instanceGroup": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/instanceGroups/gke-cluster-sample-2rvfp-default-pool-fae16c6d-grp",
+  "instanceLifecyclePolicy": {
+    "defaultActionOnFailure": "REPAIR",
+    "forceUpdateOnRepair": "YES",
+    "onFailedHealthCheck": "DEFAULT_ACTION"
+  },
+  "instanceTemplate": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/instanceTemplates/gke-cluster-sample-2rvfp-default-pool-fae16c6d",
+  "kind": "compute#instanceGroupManager",
+  "listManagedInstancesResults": "PAGINATED",
+  "name": "gke-cluster-sample-2rvfp-default-pool-fae16c6d-grp",
+  "satisfiesPzs": true,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-cluster-sample-2rvfp-default-pool-fae16c6d-grp",
+  "serviceAccount": "service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com",
+  "standbyPolicy": {
+    "mode": "MANUAL"
+  },
+  "status": {
+    "allInstancesConfig": {
+      "effective": true
+    },
+    "isStable": true,
+    "stateful": {
+      "hasStatefulConfig": false,
+      "isStateful": false,
+      "perInstanceConfigs": {
+        "allEffective": true
+      }
+    },
+    "versionTarget": {
+      "isReached": true
+    }
+  },
+  "targetSize": 1,
+  "targetSizePolicy": {
+    "mode": "INDIVIDUAL"
+  },
+  "targetStoppedSize": 0,
+  "targetSuspendedSize": 0,
+  "updatePolicy": {
+    "maxSurge": {
+      "calculated": 1,
+      "fixed": 1
+    },
+    "maxUnavailable": {
+      "calculated": 1,
+      "fixed": 1
+    },
+    "minReadySec": 0,
+    "minimalAction": "REPLACE",
+    "replacementMethod": "SUBSTITUTE",
+    "type": "OPPORTUNISTIC"
+  },
+  "versions": [
+    {
+      "instanceTemplate": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/instanceTemplates/gke-cluster-sample-2rvfp-default-pool-fae16c6d",
+      "targetSize": {
+        "calculated": 1
+      }
+    }
+  ],
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
+}
+
+---
+
+GET https://container.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-a/clusters/cluster-sample-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "addonsConfig": {
+    "dnsCacheConfig": {
+      "enabled": true
+    },
+    "gcePersistentDiskCsiDriverConfig": {
+      "enabled": true
+    },
+    "kubernetesDashboard": {
+      "disabled": true
+    },
+    "networkPolicyConfig": {
+      "disabled": true
+    },
+    "nodeReadinessConfig": {}
+  },
+  "anonymousAuthenticationConfig": {
+    "mode": "LIMITED"
+  },
+  "autopilot": {},
+  "autoscaling": {
+    "autoprovisioningNodePoolDefaults": {
+      "bootDiskKmsKey": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
+      "diskSizeGb": 100,
+      "imageType": "COS_CONTAINERD",
+      "management": {
+        "autoRepair": true,
+        "autoUpgrade": true
+      },
+      "oauthScopes": [
+        "https://www.googleapis.com/auth/userinfo.email",
+        "https://www.googleapis.com/auth/cloud-platform"
+      ],
+      "serviceAccount": "default",
+      "upgradeSettings": {
+        "strategy": "SURGE"
+      }
+    },
+    "autoscalingProfile": "BALANCED",
+    "enableNodeAutoprovisioning": true,
+    "resourceLimits": [
+      {
+        "maximum": "100",
+        "minimum": "10",
+        "resourceType": "cpu"
+      },
+      {
+        "maximum": "1000",
+        "minimum": "100",
+        "resourceType": "memory"
+      }
+    ]
+  },
+  "binaryAuthorization": {},
+  "clusterIpv4Cidr": "10.112.0.0/14",
+  "clusterTelemetry": {
+    "type": "ENABLED"
+  },
+  "controlPlaneEgress": {
+    "mode": "VIA_CONTROL_PLANE"
+  },
+  "controlPlaneEndpointsConfig": {
+    "dnsEndpointConfig": {
+      "allowExternalTraffic": false,
+      "enableK8sCertsViaDns": false,
+      "enableK8sTokensViaDns": false,
+      "endpoint": "gke-fffd766b1ddc49459222417a120559bf62e5-${projectNumber}.us-central1-a.gke.goog"
+    },
+    "ipEndpointsConfig": {
+      "authorizedNetworksConfig": {
+        "gcpPublicCidrsAccessEnabled": true
+      },
+      "enablePublicEndpoint": true,
+      "enabled": true,
+      "privateEndpoint": "${privateEndpointIPV4}",
+      "publicEndpoint": "${publicEndpointIPV4}"
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "currentMasterVersion": "1.35.6-gke.1710000",
+  "currentNodeCount": 1,
+  "currentNodeVersion": "1.35.6-gke.1710000",
+  "databaseEncryption": {
+    "currentState": "CURRENT_STATE_DECRYPTED",
+    "state": "DECRYPTED"
+  },
+  "defaultMaxPodsConstraint": {
+    "maxPodsPerNode": "110"
+  },
+  "endpoint": "${publicEndpointIPV4}",
+  "enterpriseConfig": {
+    "clusterTier": "STANDARD"
+  },
+  "etag": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "initialClusterVersion": "1.35.6-gke.1710000",
+  "initialNodeCount": 1,
+  "instanceGroupUrls": [
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-cluster-sample-2rvfp-default-pool-fae16c6d-grp"
+  ],
+  "ipAllocationPolicy": {
+    "clusterIpv4Cidr": "10.112.0.0/14",
+    "clusterIpv4CidrBlock": "10.112.0.0/14",
+    "clusterSecondaryRangeName": "gke-cluster-sample-${uniqueId}-pods-fffd766b",
+    "defaultPodIpv4RangeUtilization": 0.0625,
+    "networkTierConfig": {
+      "networkTier": "NETWORK_TIER_DEFAULT"
+    },
+    "podCidrOverprovisionConfig": {},
+    "servicesIpv4Cidr": "34.118.224.0/20",
+    "servicesIpv4CidrBlock": "34.118.224.0/20",
+    "stackType": "IPV4",
+    "useIpAliases": true
+  },
+  "labelFingerprint": "abcdef0123A=",
+  "legacyAbac": {},
+  "location": "us-central1-a",
+  "locations": [
+    "us-central1-a"
+  ],
+  "loggingConfig": {
+    "componentConfig": {
+      "enableComponents": [
+        "SYSTEM_COMPONENTS",
+        "WORKLOADS"
+      ]
+    }
+  },
+  "loggingService": "logging.googleapis.com/kubernetes",
+  "maintenancePolicy": {
+    "resourceVersion": "abcd1234"
+  },
+  "master": {},
+  "masterAuth": {
+    "clientCertificateConfig": {},
+    "clusterCaCertificate": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUVMVENDQXBXZ0F3SUJBZ0lSQUwzRnJDeGt5KzdxUnpKRWpFNkZkQmN3RFFZSktvWklodmNOQVFFTEJRQXcKTHpFdE1Dc0dBMVVFQXhNa1pEVmtObU0yWlRjdE4ySXhOUzAwTm1GaExXRTVNREV0T0dKbE16STRNMlU0TmpkagpNQ0FYRFRJMk1EZ3lOekE0TlRVeU1sb1lEekl3TlRZd09ERTVNRGsxTlRJeVdqQXZNUzB3S3dZRFZRUURFeVJrCk5XUTJZelpsTnkwM1lqRTFMVFEyWVdFdFlUa3dNUzA0WW1Vek1qZ3paVGcyTjJNd2dnR2lNQTBHQ1NxR1NJYjMKRFFFQkFRVUFBNElCandBd2dnR0tBb0lCZ1FDbWF4Smx0UitkT1U4RFRpUXlhbGlnbW9QSTl3cTN0aFdrSnRiQQpiTXpObjdFSDNYME9jR0t0SDFxbXN1MEN6TUduQ2xJUlBMWU13WnlYek8yNVNBcWdoL2g1Q2lQQnJ0eWJEU292CmExUEtvQWFRL2VLQTN3QmZZNzdhOEdoQWM3SWJWaGNWbEpiQkNRV21jRE1JT3pERElTRkZqMlUvQUIxdEptRkgKK3VOaHJxNVJCQ0QrZnBrdEdQRzdXcnFMVklpNnVNMkhvWlUxU0FDWkRMNTJBcTljQ0g2aHlCaXZIaWpYWGhhNwplRHN1ZUgyQ0tEVjlKbVRGeEZzRFlOaXkreFN1TkJ3QU03K1JhRVBhUmRSTElxSk9PTjA0R1pqbmw1eE5qb2pVCkRTcWVNQk94a0c5eEE5aGVLbkpCUG9UMEtiQnZ2RVNoYi9DREdlbS9YUlZoMGxJTS9kTkg4SnJHUms3SE1VamUKd0FkVzVkMWM5amNmakE2aEZGQzBjcG5vMzRxbzFweGs1RkU5aGVxd2dQQkl4Vm0rMmMrd0QxUmIycmlOb2s2WQpTOW8zdzlkYzE1WDJpT3pmM3ExT294ck5MbUtqSlRtZ1orb2JJeGs1aUxwL2FuNENJWGt0MW5JV1YrSVRWYmt6Ck02YlM0dDUraHI5T2JBR3JSSjIwaG1VOVlpVUNBd0VBQWFOQ01FQXdEZ1lEVlIwUEFRSC9CQVFEQWdJRU1BOEcKQTFVZEV3RUIvd1FGTUFNQkFmOHdIUVlEVlIwT0JCWUVGQStlWWl0dnBsMzVuUGRYTzBtV2NlQ2R1U3RoTUEwRwpDU3FHU0liM0RRRUJDd1VBQTRJQmdRQjhXTDZ1enMwOSt3ay90bEhWeG1PNmR0andCQ3J6bnpJY05YNnA1LzNFCjdwU1gxTzlXaXhuOUlha29uK1hyaVU2cFhNOEtRVEo0b240Sk1HVFBxQldQQVFNY1ExTkk3ZmNKRTdNNS9JRUsKVnB3SXFKMEdTQkFmMG5XYjlIUGhaMk1aODJXTFloOXVXL0pHcWlKVXoyWEF1emM5TEhCWjV5QyttRmRkelJvYwowQjVKMVY2b3Q3VHJvVlpJV1c1RXZmNlVyUndkRFRjMDJhVHVFZzc3SjM3MEhDczBMN1NSS0JaMS9xRytXRGFoClVoSFcvbEFjUDgwME91TGRLd0NtRkM1bWVudnZJN0RtZXdBQVBwaEoremxrdE5jbEhjYlRqaFRmVGRVbC9LVmwKUUhsRjZGUWtTRERxUHdhVzArODIvVldtaHJ5NktOUGZtNjBxQStMMXFRc3BrOFJUdkVXU3hGZnJMQnlUcUxPOQpQdk9KcjBuOWlxVDZSalpVd3JNaDBodWVRZnBZZUFyN1ZYajdEZmRIVkczYlJRajJQTXBycjhwc2p5NnoyQU4vCkhnUlhvb1JSRi9Tbk1VaWYvSFBZNnJidmNpSVljTGpybWVjNjlpeTB4OTlMaGR4NUZWQlFGYmZ0UEhtUmd0VzkKcmhhWlUyUFUza1NZTzRGSGs4QUxWeWs9Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K"
+  },
+  "masterAuthorizedNetworksConfig": {
+    "gcpPublicCidrsAccessEnabled": true
+  },
+  "monitoringConfig": {
+    "advancedDatapathObservabilityConfig": {},
+    "componentConfig": {
+      "enableComponents": [
+        "SYSTEM_COMPONENTS",
+        "APISERVER"
+      ]
+    },
+    "managedPrometheusConfig": {
+      "enabled": true
+    }
+  },
+  "monitoringService": "monitoring.googleapis.com/kubernetes",
+  "name": "cluster-sample-${uniqueId}",
+  "network": "${networkID}",
+  "networkConfig": {
+    "defaultSnatStatus": {},
+    "network": "projects/${projectId}/global/networks/${networkID}",
+    "serviceExternalIpsConfig": {},
+    "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+  },
+  "nodeConfig": {
+    "advancedMachineFeatures": {
+      "enableNestedVirtualization": true
+    },
+    "bootDisk": {
+      "diskType": "pd-balanced",
+      "sizeGb": "100"
+    },
+    "diskSizeGb": 100,
+    "diskType": "pd-balanced",
+    "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
+    "imageType": "COS_CONTAINERD",
+    "kubeletConfig": {
+      "insecureKubeletReadonlyPortEnabled": false,
+      "maxParallelImagePulls": 2
+    },
+    "linuxNodeConfig": {
+      "sysctls": {
+        "net.core.somaxconn": "4096"
+      }
+    },
+    "loggingConfig": {
+      "variantConfig": {
+        "variant": "DEFAULT"
+      }
+    },
+    "machineType": "n2-standard-2",
+    "metadata": {
+      "disable-legacy-endpoints": "true"
+    },
+    "nodeImageConfig": {
+      "image": "gke-1356-gke1710000-cos-125-19216-395-138-c-pre",
+      "imageProject": "gke-node-images"
+    },
+    "oauthScopes": [
+      "https://www.googleapis.com/auth/devstorage.read_only",
+      "https://www.googleapis.com/auth/logging.write",
+      "https://www.googleapis.com/auth/monitoring",
+      "https://www.googleapis.com/auth/service.management.readonly",
+      "https://www.googleapis.com/auth/servicecontrol",
+      "https://www.googleapis.com/auth/trace.append"
+    ],
+    "resourceLabels": {
+      "goog-gke-node-pool-provisioning-model": "on-demand"
+    },
+    "serviceAccount": "default",
+    "shieldedInstanceConfig": {
+      "enableIntegrityMonitoring": true
+    },
+    "windowsNodeConfig": {}
+  },
+  "nodeCreationConfig": {
+    "nodeCreationMode": "VIA_KUBELET"
+  },
+  "nodePoolAutoConfig": {
+    "nodeKubeletConfig": {
+      "insecureKubeletReadonlyPortEnabled": false
+    }
+  },
+  "nodePoolDefaults": {
+    "nodeConfigDefaults": {
+      "loggingConfig": {
+        "variantConfig": {
+          "variant": "DEFAULT"
+        }
+      },
+      "nodeKubeletConfig": {
+        "insecureKubeletReadonlyPortEnabled": false
+      }
+    }
+  },
+  "nodePools": [
+    {
+      "config": {
+        "advancedMachineFeatures": {
+          "enableNestedVirtualization": true
+        },
+        "bootDisk": {
+          "diskType": "pd-balanced",
+          "sizeGb": "100"
+        },
+        "diskSizeGb": 100,
+        "diskType": "pd-balanced",
+        "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
+        "imageType": "COS_CONTAINERD",
+        "kubeletConfig": {
+          "insecureKubeletReadonlyPortEnabled": false,
+          "maxParallelImagePulls": 2
+        },
+        "linuxNodeConfig": {
+          "sysctls": {
+            "net.core.somaxconn": "4096"
+          }
+        },
+        "loggingConfig": {
+          "variantConfig": {
+            "variant": "DEFAULT"
+          }
+        },
+        "machineType": "n2-standard-2",
+        "metadata": {
+          "disable-legacy-endpoints": "true"
+        },
+        "nodeImageConfig": {
+          "image": "gke-1356-gke1710000-cos-125-19216-395-138-c-pre",
+          "imageProject": "gke-node-images"
+        },
+        "oauthScopes": [
+          "https://www.googleapis.com/auth/devstorage.read_only",
+          "https://www.googleapis.com/auth/logging.write",
+          "https://www.googleapis.com/auth/monitoring",
+          "https://www.googleapis.com/auth/service.management.readonly",
+          "https://www.googleapis.com/auth/servicecontrol",
+          "https://www.googleapis.com/auth/trace.append"
+        ],
+        "resourceLabels": {
+          "goog-gke-node-pool-provisioning-model": "on-demand"
+        },
+        "serviceAccount": "default",
+        "shieldedInstanceConfig": {
+          "enableIntegrityMonitoring": true
+        },
+        "windowsNodeConfig": {}
+      },
+      "etag": "ebb39cfb-b615-4f06-8104-44de9c52b476",
+      "initialNodeCount": 1,
+      "instanceGroupUrls": [
+        "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-cluster-sample-2rvfp-default-pool-fae16c6d-grp"
+      ],
+      "kubeletCertInfo": {
+        "tpmBootstrapCertExpireTime": "2031-08-26T09:56:51Z"
+      },
+      "locations": [
+        "us-central1-a"
+      ],
+      "management": {
+        "autoRepair": true,
+        "autoUpgrade": true
+      },
+      "maxPodsConstraint": {
+        "maxPodsPerNode": "110"
+      },
+      "name": "default-pool",
+      "networkConfig": {
+        "networkTierConfig": {
+          "networkTier": "NETWORK_TIER_DEFAULT"
+        },
+        "podIpv4CidrBlock": "10.234.32.0/20",
+        "podIpv4RangeUtilization": 0.0625,
+        "podRange": "gke-cluster-sample-${uniqueId}-pods-fffd766b",
+        "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+      },
+      "podIpv4CidrSize": 24,
+      "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectId}/zones/us-central1-a/clusters/cluster-sample-${uniqueId}/nodePools/default-pool",
+      "status": "RUNNING",
+      "upgradeSettings": {
+        "maxSurge": 1,
+        "strategy": "SURGE"
+      },
+      "version": "1.35.6-gke.1710000"
+    }
+  ],
+  "notificationConfig": {
+    "pubsub": {
+      "enabled": true,
+      "topic": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
+    }
+  },
+  "podAutoscaling": {
+    "hpaProfile": "PERFORMANCE"
+  },
+  "privateCluster": true,
+  "privateClusterConfig": {
+    "privateEndpoint": "${privateEndpointIPV4}",
+    "publicEndpoint": "${publicEndpointIPV4}"
+  },
+  "protectConfig": {
+    "workloadConfig": {
+      "auditMode": "BASIC"
+    },
+    "workloadVulnerabilityMode": "WORKLOAD_VULNERABILITY_MODE_UNSPECIFIED"
+  },
+  "rbacBindingConfig": {
+    "enableInsecureBindingSystemAuthenticated": true,
+    "enableInsecureBindingSystemUnauthenticated": true
+  },
+  "releaseChannel": {
+    "channel": "REGULAR"
+  },
+  "resourceLabels": {
+    "cnrm-test": "true",
+    "label-one": "value-two",
+    "managed-by-cnrm": "true"
+  },
+  "securityPostureConfig": {
+    "mode": "BASIC",
+    "vulnerabilityMode": "VULNERABILITY_MODE_UNSPECIFIED"
+  },
+  "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectId}/zones/us-central1-a/clusters/cluster-sample-${uniqueId}",
+  "servicesIpv4Cidr": "34.118.224.0/20",
+  "shieldedNodes": {
+    "enabled": true
+  },
+  "status": "RUNNING",
+  "subnetwork": "${subnetworkID}",
+  "userManagedKeysConfig": {},
+  "zone": "us-central1-a"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-cluster-sample-2rvfp-default-pool-fae16c6d-grp?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "baseInstanceName": "gke-cluster-sample-2rvfp-default-pool-fae16c6d",
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "currentActions": {
+    "abandoning": 0,
+    "creating": 0,
+    "creatingWithoutRetries": 0,
+    "deleting": 0,
+    "none": 1,
+    "recreating": 0,
+    "refreshing": 0,
+    "restarting": 0,
+    "resuming": 0,
+    "starting": 0,
+    "stopping": 0,
+    "suspending": 0,
+    "verifying": 0
+  },
+  "fingerprint": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "instanceGroup": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a/instanceGroups/gke-cluster-sample-2rvfp-default-pool-fae16c6d-grp",
+  "instanceLifecyclePolicy": {
+    "defaultActionOnFailure": "REPAIR",
+    "forceUpdateOnRepair": "YES",
+    "onFailedHealthCheck": "DEFAULT_ACTION"
+  },
+  "instanceTemplate": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/instanceTemplates/gke-cluster-sample-2rvfp-default-pool-fae16c6d",
+  "kind": "compute#instanceGroupManager",
+  "listManagedInstancesResults": "PAGINATED",
+  "name": "gke-cluster-sample-2rvfp-default-pool-fae16c6d-grp",
+  "satisfiesPzs": true,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-cluster-sample-2rvfp-default-pool-fae16c6d-grp",
+  "serviceAccount": "service-${projectNumber}@container-engine-robot.iam.gserviceaccount.com",
+  "standbyPolicy": {
+    "mode": "MANUAL"
+  },
+  "status": {
+    "allInstancesConfig": {
+      "effective": true
+    },
+    "isStable": true,
+    "stateful": {
+      "hasStatefulConfig": false,
+      "isStateful": false,
+      "perInstanceConfigs": {
+        "allEffective": true
+      }
+    },
+    "versionTarget": {
+      "isReached": true
+    }
+  },
+  "targetSize": 1,
+  "targetSizePolicy": {
+    "mode": "INDIVIDUAL"
+  },
+  "targetStoppedSize": 0,
+  "targetSuspendedSize": 0,
+  "updatePolicy": {
+    "maxSurge": {
+      "calculated": 1,
+      "fixed": 1
+    },
+    "maxUnavailable": {
+      "calculated": 1,
+      "fixed": 1
+    },
+    "minReadySec": 0,
+    "minimalAction": "REPLACE",
+    "replacementMethod": "SUBSTITUTE",
+    "type": "OPPORTUNISTIC"
+  },
+  "versions": [
+    {
+      "instanceTemplate": "https://www.googleapis.com/compute/beta/projects/${projectId}/regions/us-central1/instanceTemplates/gke-cluster-sample-2rvfp-default-pool-fae16c6d",
+      "targetSize": {
+        "calculated": 1
+      }
+    }
+  ],
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
+}
+
+---
+
+GET https://container.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1-a/clusters/cluster-sample-${uniqueId}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "addonsConfig": {
+    "dnsCacheConfig": {
+      "enabled": true
+    },
+    "gcePersistentDiskCsiDriverConfig": {
+      "enabled": true
+    },
+    "kubernetesDashboard": {
+      "disabled": true
+    },
+    "networkPolicyConfig": {
+      "disabled": true
+    },
+    "nodeReadinessConfig": {}
+  },
+  "anonymousAuthenticationConfig": {
+    "mode": "LIMITED"
+  },
+  "autopilot": {},
+  "autoscaling": {
+    "autoprovisioningNodePoolDefaults": {
+      "bootDiskKmsKey": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
+      "diskSizeGb": 100,
+      "imageType": "COS_CONTAINERD",
+      "management": {
+        "autoRepair": true,
+        "autoUpgrade": true
+      },
+      "oauthScopes": [
+        "https://www.googleapis.com/auth/userinfo.email",
+        "https://www.googleapis.com/auth/cloud-platform"
+      ],
+      "serviceAccount": "default",
+      "upgradeSettings": {
+        "strategy": "SURGE"
+      }
+    },
+    "autoscalingProfile": "BALANCED",
+    "enableNodeAutoprovisioning": true,
+    "resourceLimits": [
+      {
+        "maximum": "100",
+        "minimum": "10",
+        "resourceType": "cpu"
+      },
+      {
+        "maximum": "1000",
+        "minimum": "100",
+        "resourceType": "memory"
+      }
+    ]
+  },
+  "binaryAuthorization": {},
+  "clusterIpv4Cidr": "10.112.0.0/14",
+  "clusterTelemetry": {
+    "type": "ENABLED"
+  },
+  "controlPlaneEgress": {
+    "mode": "VIA_CONTROL_PLANE"
+  },
+  "controlPlaneEndpointsConfig": {
+    "dnsEndpointConfig": {
+      "allowExternalTraffic": false,
+      "enableK8sCertsViaDns": false,
+      "enableK8sTokensViaDns": false,
+      "endpoint": "gke-fffd766b1ddc49459222417a120559bf62e5-${projectNumber}.us-central1-a.gke.goog"
+    },
+    "ipEndpointsConfig": {
+      "authorizedNetworksConfig": {
+        "gcpPublicCidrsAccessEnabled": true
+      },
+      "enablePublicEndpoint": true,
+      "enabled": true,
+      "privateEndpoint": "${privateEndpointIPV4}",
+      "publicEndpoint": "${publicEndpointIPV4}"
+    }
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "currentMasterVersion": "1.35.6-gke.1710000",
+  "currentNodeCount": 1,
+  "currentNodeVersion": "1.35.6-gke.1710000",
+  "databaseEncryption": {
+    "currentState": "CURRENT_STATE_DECRYPTED",
+    "state": "DECRYPTED"
+  },
+  "defaultMaxPodsConstraint": {
+    "maxPodsPerNode": "110"
+  },
+  "endpoint": "${publicEndpointIPV4}",
+  "enterpriseConfig": {
+    "clusterTier": "STANDARD"
+  },
+  "etag": "abcdef0123A=",
+  "id": "000000000000000000000",
+  "initialClusterVersion": "1.35.6-gke.1710000",
+  "initialNodeCount": 1,
+  "instanceGroupUrls": [
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-cluster-sample-2rvfp-default-pool-fae16c6d-grp"
+  ],
+  "ipAllocationPolicy": {
+    "clusterIpv4Cidr": "10.112.0.0/14",
+    "clusterIpv4CidrBlock": "10.112.0.0/14",
+    "clusterSecondaryRangeName": "gke-cluster-sample-${uniqueId}-pods-fffd766b",
+    "defaultPodIpv4RangeUtilization": 0.0625,
+    "networkTierConfig": {
+      "networkTier": "NETWORK_TIER_DEFAULT"
+    },
+    "podCidrOverprovisionConfig": {},
+    "servicesIpv4Cidr": "34.118.224.0/20",
+    "servicesIpv4CidrBlock": "34.118.224.0/20",
+    "stackType": "IPV4",
+    "useIpAliases": true
+  },
+  "labelFingerprint": "abcdef0123A=",
+  "legacyAbac": {},
+  "location": "us-central1-a",
+  "locations": [
+    "us-central1-a"
+  ],
+  "loggingConfig": {
+    "componentConfig": {
+      "enableComponents": [
+        "SYSTEM_COMPONENTS",
+        "WORKLOADS"
+      ]
+    }
+  },
+  "loggingService": "logging.googleapis.com/kubernetes",
+  "maintenancePolicy": {
+    "resourceVersion": "abcd1234"
+  },
+  "master": {},
+  "masterAuth": {
+    "clientCertificateConfig": {},
+    "clusterCaCertificate": "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUVMVENDQXBXZ0F3SUJBZ0lSQUwzRnJDeGt5KzdxUnpKRWpFNkZkQmN3RFFZSktvWklodmNOQVFFTEJRQXcKTHpFdE1Dc0dBMVVFQXhNa1pEVmtObU0yWlRjdE4ySXhOUzAwTm1GaExXRTVNREV0T0dKbE16STRNMlU0TmpkagpNQ0FYRFRJMk1EZ3lOekE0TlRVeU1sb1lEekl3TlRZd09ERTVNRGsxTlRJeVdqQXZNUzB3S3dZRFZRUURFeVJrCk5XUTJZelpsTnkwM1lqRTFMVFEyWVdFdFlUa3dNUzA0WW1Vek1qZ3paVGcyTjJNd2dnR2lNQTBHQ1NxR1NJYjMKRFFFQkFRVUFBNElCandBd2dnR0tBb0lCZ1FDbWF4Smx0UitkT1U4RFRpUXlhbGlnbW9QSTl3cTN0aFdrSnRiQQpiTXpObjdFSDNYME9jR0t0SDFxbXN1MEN6TUduQ2xJUlBMWU13WnlYek8yNVNBcWdoL2g1Q2lQQnJ0eWJEU292CmExUEtvQWFRL2VLQTN3QmZZNzdhOEdoQWM3SWJWaGNWbEpiQkNRV21jRE1JT3pERElTRkZqMlUvQUIxdEptRkgKK3VOaHJxNVJCQ0QrZnBrdEdQRzdXcnFMVklpNnVNMkhvWlUxU0FDWkRMNTJBcTljQ0g2aHlCaXZIaWpYWGhhNwplRHN1ZUgyQ0tEVjlKbVRGeEZzRFlOaXkreFN1TkJ3QU03K1JhRVBhUmRSTElxSk9PTjA0R1pqbmw1eE5qb2pVCkRTcWVNQk94a0c5eEE5aGVLbkpCUG9UMEtiQnZ2RVNoYi9DREdlbS9YUlZoMGxJTS9kTkg4SnJHUms3SE1VamUKd0FkVzVkMWM5amNmakE2aEZGQzBjcG5vMzRxbzFweGs1RkU5aGVxd2dQQkl4Vm0rMmMrd0QxUmIycmlOb2s2WQpTOW8zdzlkYzE1WDJpT3pmM3ExT294ck5MbUtqSlRtZ1orb2JJeGs1aUxwL2FuNENJWGt0MW5JV1YrSVRWYmt6Ck02YlM0dDUraHI5T2JBR3JSSjIwaG1VOVlpVUNBd0VBQWFOQ01FQXdEZ1lEVlIwUEFRSC9CQVFEQWdJRU1BOEcKQTFVZEV3RUIvd1FGTUFNQkFmOHdIUVlEVlIwT0JCWUVGQStlWWl0dnBsMzVuUGRYTzBtV2NlQ2R1U3RoTUEwRwpDU3FHU0liM0RRRUJDd1VBQTRJQmdRQjhXTDZ1enMwOSt3ay90bEhWeG1PNmR0andCQ3J6bnpJY05YNnA1LzNFCjdwU1gxTzlXaXhuOUlha29uK1hyaVU2cFhNOEtRVEo0b240Sk1HVFBxQldQQVFNY1ExTkk3ZmNKRTdNNS9JRUsKVnB3SXFKMEdTQkFmMG5XYjlIUGhaMk1aODJXTFloOXVXL0pHcWlKVXoyWEF1emM5TEhCWjV5QyttRmRkelJvYwowQjVKMVY2b3Q3VHJvVlpJV1c1RXZmNlVyUndkRFRjMDJhVHVFZzc3SjM3MEhDczBMN1NSS0JaMS9xRytXRGFoClVoSFcvbEFjUDgwME91TGRLd0NtRkM1bWVudnZJN0RtZXdBQVBwaEoremxrdE5jbEhjYlRqaFRmVGRVbC9LVmwKUUhsRjZGUWtTRERxUHdhVzArODIvVldtaHJ5NktOUGZtNjBxQStMMXFRc3BrOFJUdkVXU3hGZnJMQnlUcUxPOQpQdk9KcjBuOWlxVDZSalpVd3JNaDBodWVRZnBZZUFyN1ZYajdEZmRIVkczYlJRajJQTXBycjhwc2p5NnoyQU4vCkhnUlhvb1JSRi9Tbk1VaWYvSFBZNnJidmNpSVljTGpybWVjNjlpeTB4OTlMaGR4NUZWQlFGYmZ0UEhtUmd0VzkKcmhhWlUyUFUza1NZTzRGSGs4QUxWeWs9Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K"
+  },
+  "masterAuthorizedNetworksConfig": {
+    "gcpPublicCidrsAccessEnabled": true
+  },
+  "monitoringConfig": {
+    "advancedDatapathObservabilityConfig": {},
+    "componentConfig": {
+      "enableComponents": [
+        "SYSTEM_COMPONENTS",
+        "APISERVER"
+      ]
+    },
+    "managedPrometheusConfig": {
+      "enabled": true
+    }
+  },
+  "monitoringService": "monitoring.googleapis.com/kubernetes",
+  "name": "cluster-sample-${uniqueId}",
+  "network": "${networkID}",
+  "networkConfig": {
+    "defaultSnatStatus": {},
+    "network": "projects/${projectId}/global/networks/${networkID}",
+    "serviceExternalIpsConfig": {},
+    "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+  },
+  "nodeConfig": {
+    "advancedMachineFeatures": {
+      "enableNestedVirtualization": true
+    },
+    "bootDisk": {
+      "diskType": "pd-balanced",
+      "sizeGb": "100"
+    },
+    "diskSizeGb": 100,
+    "diskType": "pd-balanced",
+    "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
+    "imageType": "COS_CONTAINERD",
+    "kubeletConfig": {
+      "insecureKubeletReadonlyPortEnabled": false,
+      "maxParallelImagePulls": 2
+    },
+    "linuxNodeConfig": {
+      "sysctls": {
+        "net.core.somaxconn": "4096"
+      }
+    },
+    "loggingConfig": {
+      "variantConfig": {
+        "variant": "DEFAULT"
+      }
+    },
+    "machineType": "n2-standard-2",
+    "metadata": {
+      "disable-legacy-endpoints": "true"
+    },
+    "nodeImageConfig": {
+      "image": "gke-1356-gke1710000-cos-125-19216-395-138-c-pre",
+      "imageProject": "gke-node-images"
+    },
+    "oauthScopes": [
+      "https://www.googleapis.com/auth/devstorage.read_only",
+      "https://www.googleapis.com/auth/logging.write",
+      "https://www.googleapis.com/auth/monitoring",
+      "https://www.googleapis.com/auth/service.management.readonly",
+      "https://www.googleapis.com/auth/servicecontrol",
+      "https://www.googleapis.com/auth/trace.append"
+    ],
+    "resourceLabels": {
+      "goog-gke-node-pool-provisioning-model": "on-demand"
+    },
+    "serviceAccount": "default",
+    "shieldedInstanceConfig": {
+      "enableIntegrityMonitoring": true
+    },
+    "windowsNodeConfig": {}
+  },
+  "nodeCreationConfig": {
+    "nodeCreationMode": "VIA_KUBELET"
+  },
+  "nodePoolAutoConfig": {
+    "nodeKubeletConfig": {
+      "insecureKubeletReadonlyPortEnabled": false
+    }
+  },
+  "nodePoolDefaults": {
+    "nodeConfigDefaults": {
+      "loggingConfig": {
+        "variantConfig": {
+          "variant": "DEFAULT"
+        }
+      },
+      "nodeKubeletConfig": {
+        "insecureKubeletReadonlyPortEnabled": false
+      }
+    }
+  },
+  "nodePools": [
+    {
+      "config": {
+        "advancedMachineFeatures": {
+          "enableNestedVirtualization": true
+        },
+        "bootDisk": {
+          "diskType": "pd-balanced",
+          "sizeGb": "100"
+        },
+        "diskSizeGb": 100,
+        "diskType": "pd-balanced",
+        "effectiveCgroupMode": "EFFECTIVE_CGROUP_MODE_V2",
+        "imageType": "COS_CONTAINERD",
+        "kubeletConfig": {
+          "insecureKubeletReadonlyPortEnabled": false,
+          "maxParallelImagePulls": 2
+        },
+        "linuxNodeConfig": {
+          "sysctls": {
+            "net.core.somaxconn": "4096"
+          }
+        },
+        "loggingConfig": {
+          "variantConfig": {
+            "variant": "DEFAULT"
+          }
+        },
+        "machineType": "n2-standard-2",
+        "metadata": {
+          "disable-legacy-endpoints": "true"
+        },
+        "nodeImageConfig": {
+          "image": "gke-1356-gke1710000-cos-125-19216-395-138-c-pre",
+          "imageProject": "gke-node-images"
+        },
+        "oauthScopes": [
+          "https://www.googleapis.com/auth/devstorage.read_only",
+          "https://www.googleapis.com/auth/logging.write",
+          "https://www.googleapis.com/auth/monitoring",
+          "https://www.googleapis.com/auth/service.management.readonly",
+          "https://www.googleapis.com/auth/servicecontrol",
+          "https://www.googleapis.com/auth/trace.append"
+        ],
+        "resourceLabels": {
+          "goog-gke-node-pool-provisioning-model": "on-demand"
+        },
+        "serviceAccount": "default",
+        "shieldedInstanceConfig": {
+          "enableIntegrityMonitoring": true
+        },
+        "windowsNodeConfig": {}
+      },
+      "etag": "ebb39cfb-b615-4f06-8104-44de9c52b476",
+      "initialNodeCount": 1,
+      "instanceGroupUrls": [
+        "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/instanceGroupManagers/gke-cluster-sample-2rvfp-default-pool-fae16c6d-grp"
+      ],
+      "kubeletCertInfo": {
+        "tpmBootstrapCertExpireTime": "2031-08-26T09:56:51Z"
+      },
+      "locations": [
+        "us-central1-a"
+      ],
+      "management": {
+        "autoRepair": true,
+        "autoUpgrade": true
+      },
+      "maxPodsConstraint": {
+        "maxPodsPerNode": "110"
+      },
+      "name": "default-pool",
+      "networkConfig": {
+        "networkTierConfig": {
+          "networkTier": "NETWORK_TIER_DEFAULT"
+        },
+        "podIpv4CidrBlock": "10.234.32.0/20",
+        "podIpv4RangeUtilization": 0.0625,
+        "podRange": "gke-cluster-sample-${uniqueId}-pods-fffd766b",
+        "subnetwork": "projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}"
+      },
+      "podIpv4CidrSize": 24,
+      "selfLink": "https://container.googleapis.com/v1beta1/projects/${projectId}/zones/us-central1-a/clusters/cluster-sample-${uniqueId}/nodePools/default-pool",
+      "status": "RUNNING",
+      "upgradeSettings": {
+        "maxSurge": 1,
+        "strategy": "SURGE"
+      },
+      "version": "1.35.6-gke.1710000"
+    }
+  ],
+  "notificationConfig": {
+    "pubsub": {
+      "enabled": true,
+      "topic": "projects/${projectId}/topics/pubsubtopic-${uniqueId}"
+    }
+  },
+  "podAutoscaling": {
+    "hpaProfile": "PERFORMANCE"
+  },
+  "privateCluster": true,
   "privateClusterConfig": {
     "privateEndpoint": "${privateEndpointIPV4}",
     "publicEndpoint": "${publicEndpointIPV4}"
@@ -3659,14 +6074,6 @@ X-Xss-Protection: 0
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}",
-  "primary": {
-    "algorithm": "EC_SIGN_P384_SHA384",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "generateTime": "2024-04-01T12:34:56.123456Z",
-    "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}/cryptoKeyVersions/1",
-    "protectionLevel": "SOFTWARE",
-    "state": "ENABLED"
-  },
   "purpose": "ASYMMETRIC_SIGN",
   "versionTemplate": {
     "algorithm": "EC_SIGN_P384_SHA384",
@@ -3811,7 +6218,9 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "allowSubnetCidrRoutesOverlap": false,
   "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "enableFlowLogs": false,
   "fingerprint": "abcdef0123A=",
   "gatewayAddress": "10.0.0.1",
   "id": "000000000000000000000",
@@ -3822,13 +6231,12 @@ X-Xss-Protection: 0
   },
   "name": "${subnetworkID}",
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
-  "privateIpGoogleAccess": false,
+  "privateIpGoogleAccess": true,
   "privateIpv6GoogleAccess": "DISABLE_GOOGLE_ACCESS",
   "purpose": "PRIVATE",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1",
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}",
-  "stackType": "IPV4_ONLY",
-  "state": "READY"
+  "stackType": "IPV4_ONLY"
 }
 
 ---
@@ -3918,10 +6326,6 @@ X-Xss-Protection: 0
   "kind": "compute#network",
   "name": "${networkID}",
   "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
-  "routingConfig": {
-    "bgpBestPathSelectionMode": "LEGACY",
-    "routingMode": "REGIONAL"
-  },
   "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}"
 }
