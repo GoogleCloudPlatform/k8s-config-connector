@@ -17,6 +17,7 @@ package mocknetworkconnectivity
 import (
 	"context"
 	"fmt"
+	"net"
 	"strings"
 	"time"
 
@@ -71,6 +72,24 @@ func (r *internalRanges) CreateProjectsLocationsInternalRange(ctx context.Contex
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.New(now)
 	obj.UpdateTime = timestamppb.New(now)
+	if len(obj.TargetCidrRange) > 0 {
+		if obj.Peering == "" {
+			obj.Peering = "FOR_SELF"
+		}
+		if obj.Usage == "" {
+			obj.Usage = "FOR_VPC"
+		}
+		if obj.IpCidrRange == "" {
+			ip, _, err := net.ParseCIDR(obj.TargetCidrRange[0])
+			if err == nil {
+				prefixLength := obj.PrefixLength
+				if prefixLength == 0 {
+					prefixLength = 24
+				}
+				obj.IpCidrRange = fmt.Sprintf("%s/%d", ip.String(), prefixLength)
+			}
+		}
+	}
 	if obj.Network != "" {
 		obj.Network = expandNetworkLink(obj.Network)
 	}
