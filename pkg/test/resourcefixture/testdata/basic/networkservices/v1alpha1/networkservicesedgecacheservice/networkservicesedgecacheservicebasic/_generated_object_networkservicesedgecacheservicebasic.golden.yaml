@@ -1,0 +1,61 @@
+apiVersion: networkservices.cnrm.cloud.google.com/v1alpha1
+kind: NetworkServicesEdgeCacheService
+metadata:
+  annotations:
+    cnrm.cloud.google.com/management-conflict-prevention-policy: none
+    cnrm.cloud.google.com/state-into-spec: absent
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: networkservicesedgecacheservice-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  description: An edge cache service test updated
+  projectRef:
+    external: ${projectId}
+  resourceID: networkservicesedgecacheservice${uniqueId}
+  routing:
+    hostRule:
+    - description: host rule description
+      hosts:
+      - sslcert.tf-test.club
+      pathMatcher: routes
+    pathMatcher:
+    - description: a path matcher
+      name: routes
+      routeRule:
+      - description: a route rule to match against
+        headerAction:
+          responseHeaderToAdd:
+          - headerName: x-cache-status
+            headerValue: '{cdn_cache_status}'
+        matchRule:
+        - prefixMatch: /
+        origin: networkservicesedgecacheorigin${uniqueId}
+        priority: "1"
+        routeAction:
+          cdnPolicy:
+            cacheMode: CACHE_ALL_STATIC
+            defaultTtl: 3600s
+          compressionMode: AUTOMATIC
+        routeMethods:
+          allowedMethods:
+          - GET
+          - HEAD
+          - OPTIONS
+          - POST
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  ipv4Addresses:
+  - 34.153.6.71
+  ipv6Addresses:
+  - '2600:1900:8010:172e::'
+  observedGeneration: 2
