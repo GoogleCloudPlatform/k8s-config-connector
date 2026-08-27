@@ -195,6 +195,10 @@ func (a *internalRangeAdapter) Update(ctx context.Context, updateOp *directbase.
 
 	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
 
+	// Only mutable fields supported by GCP InternalRange Patch are included in updateMask.
+	// Other fields (ipCIDRRange, targetCIDRRange, allocationOptions, networkRef, usage, peering)
+	// are immutable / create-only parameters and cannot be modified in-place via Patch.
+	// prefixLength can be updated to resize the range size in IPv4 reservations.
 	paths := []string{}
 	if desired.Spec.Description != nil && resource.Description != a.actual.Description {
 		report.AddField("description", a.actual.Description, resource.Description)
