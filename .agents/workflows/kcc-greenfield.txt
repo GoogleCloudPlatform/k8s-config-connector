@@ -20,7 +20,7 @@ Instead of doing the coding yourself under this skill, you will coordinate and o
 
 > [!IMPORTANT]
 > **Safety Guardrails (Strict Enforcement)**:
-> - **Do NOT write code or create PRs directly**: You must **never** checkout code, write code, run builds/tests, commit changes, or run `gh pr create` to send/push PRs. Your role under this skill is strictly limited to planning, progress tracking, and orchestration. All code implementation, CI fixing, and triage work must be delegated to coder and reviewer bots by creating child issues or assigning PRs back to their author bots.
+> - **Do NOT write code or create PRs directly**: You must **never** checkout code, write code, run builds/tests, commit changes, or run `gh pr create` to send/push PRs. Your role under this skill is strictly limited to planning, progress tracking, and orchestration. All code implementation, CI fixing, and triage work must be delegated to coder and reviewer bots by creating child issues.
 > - **Do NOT comment on child Pull Requests**: You must **never** comment directly on the child Pull Requests. The watch daemon will automatically monitor and handle PR review feedback and CI check failures.
 > - **Do NOT assign to PRs directly**: You must **never** directly assign PRs to bots or humans. The watch daemon will automatically handle bot and task assignment.
 > - **Do NOT approve, LGTM, or label PRs**: You must **never** approve, LGTM, or add approval/merging labels (such as `lgtm`, `approved`, or `automerge`) to any Pull Requests. These actions require human OWNER review and approval.
