@@ -879,6 +879,24 @@ The supported values are:
 														},
 													},
 												},
+												"route_methods": {
+													Type:        schema.TypeList,
+													Optional:    true,
+													Description: `Supported HTTP methods.`,
+													MaxItems:    1,
+													Elem: &schema.Resource{
+														Schema: map[string]*schema.Schema{
+															"allowed_methods": {
+																Type:        schema.TypeList,
+																Required:    true,
+																Description: `The list of allowed HTTP methods.`,
+																Elem: &schema.Schema{
+																	Type: schema.TypeString,
+																},
+															},
+														},
+													},
+												},
 											},
 										},
 									},
@@ -1571,6 +1589,7 @@ func flattenNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRule(v interfa
 			"route_action":  flattenNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleRouteAction(original["routeAction"], d, config),
 			"origin":        flattenNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleOrigin(original["origin"], d, config),
 			"url_redirect":  flattenNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleUrlRedirect(original["urlRedirect"], d, config),
+			"route_methods": flattenNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleRouteMethods(original["routeMethods"], d, config),
 		})
 	}
 	return transformed
@@ -2166,6 +2185,24 @@ func flattenNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleUrlRedirec
 	return v
 }
 
+func flattenNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleRouteMethods(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	if v == nil {
+		return nil
+	}
+	original := v.(map[string]interface{})
+	if len(original) == 0 {
+		return nil
+	}
+	transformed := make(map[string]interface{})
+	transformed["allowed_methods"] =
+		flattenNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleRouteMethodsAllowedMethods(original["allowedMethods"], d, config)
+	return []interface{}{transformed}
+}
+
+func flattenNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleRouteMethodsAllowedMethods(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
+	return v
+}
+
 func flattenNetworkServicesEdgeCacheServiceLogConfig(v interface{}, d *schema.ResourceData, config *transport_tpg.Config) interface{} {
 	if v == nil {
 		return nil
@@ -2403,6 +2440,13 @@ func expandNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRule(v interfac
 			return nil, err
 		} else if val := reflect.ValueOf(transformedUrlRedirect); val.IsValid() && !tpgresource.IsEmptyValue(val) {
 			transformed["urlRedirect"] = transformedUrlRedirect
+		}
+
+		transformedRouteMethods, err := expandNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleRouteMethods(original["route_methods"], d, config)
+		if err != nil {
+			return nil, err
+		} else if val := reflect.ValueOf(transformedRouteMethods); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+			transformed["routeMethods"] = transformedRouteMethods
 		}
 
 		req = append(req, transformed)
@@ -3383,6 +3427,29 @@ func expandNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleUrlRedirect
 }
 
 func expandNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleUrlRedirectStripQuery(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	return v, nil
+}
+
+func expandNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleRouteMethods(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
+	l := v.([]interface{})
+	if len(l) == 0 || l[0] == nil {
+		return nil, nil
+	}
+	raw := l[0]
+	original := raw.(map[string]interface{})
+	transformed := make(map[string]interface{})
+
+	transformedAllowedMethods, err := expandNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleRouteMethodsAllowedMethods(original["allowed_methods"], d, config)
+	if err != nil {
+		return nil, err
+	} else if val := reflect.ValueOf(transformedAllowedMethods); val.IsValid() && !tpgresource.IsEmptyValue(val) {
+		transformed["allowedMethods"] = transformedAllowedMethods
+	}
+
+	return transformed, nil
+}
+
+func expandNetworkServicesEdgeCacheServiceRoutingPathMatcherRouteRuleRouteMethodsAllowedMethods(v interface{}, d tpgresource.TerraformResourceData, config *transport_tpg.Config) (interface{}, error) {
 	return v, nil
 }
 
