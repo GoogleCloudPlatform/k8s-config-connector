@@ -196,37 +196,17 @@ func (a *internalRangeAdapter) Update(ctx context.Context, updateOp *directbase.
 	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
 
 	paths := []string{}
-	if desired.Spec.Description != nil && !reflect.DeepEqual(resource.Description, a.actual.Description) {
+	if desired.Spec.Description != nil && resource.Description != a.actual.Description {
 		report.AddField("description", a.actual.Description, resource.Description)
 		paths = append(paths, "description")
-	}
-	if desired.Spec.IPCIDRRange != nil && !reflect.DeepEqual(resource.IpCidrRange, a.actual.IpCidrRange) {
-		report.AddField("ip_cidr_range", a.actual.IpCidrRange, resource.IpCidrRange)
-		paths = append(paths, "ipCidrRange")
 	}
 	if desired.Spec.Labels != nil && !reflect.DeepEqual(resource.Labels, a.actual.Labels) {
 		report.AddField("labels", a.actual.Labels, resource.Labels)
 		paths = append(paths, "labels")
 	}
-	if desired.Spec.Peering != nil && !reflect.DeepEqual(resource.Peering, a.actual.Peering) {
-		report.AddField("peering", a.actual.Peering, resource.Peering)
-		paths = append(paths, "peering")
-	}
-	if desired.Spec.AllocationOptions != nil && !reflect.DeepEqual(resource.AllocationOptions, a.actual.AllocationOptions) {
-		report.AddField("allocation_options", a.actual.AllocationOptions, resource.AllocationOptions)
-		paths = append(paths, "allocationOptions")
-	}
-	if desired.Spec.PrefixLength != nil && !reflect.DeepEqual(resource.PrefixLength, a.actual.PrefixLength) {
+	if desired.Spec.PrefixLength != nil && resource.PrefixLength != a.actual.PrefixLength {
 		report.AddField("prefix_length", a.actual.PrefixLength, resource.PrefixLength)
 		paths = append(paths, "prefixLength")
-	}
-	if desired.Spec.TargetCIDRRange != nil && !reflect.DeepEqual(resource.TargetCidrRange, a.actual.TargetCidrRange) {
-		report.AddField("target_cidr_range", a.actual.TargetCidrRange, resource.TargetCidrRange)
-		paths = append(paths, "targetCidrRange")
-	}
-	if desired.Spec.Usage != nil && !reflect.DeepEqual(resource.Usage, a.actual.Usage) {
-		report.AddField("usage", a.actual.Usage, resource.Usage)
-		paths = append(paths, "usage")
 	}
 
 	if len(paths) > 0 {

@@ -7,16 +7,20 @@ metadata:
   generation: 2
   labels:
     cnrm-test: "true"
-  name: networkconnectivityinternalrange-minimal-${uniqueId}
+  name: networkconnectivityinternalrange-firstsmallestfitting-${uniqueId}
   namespace: ${uniqueId}
 spec:
+  allocationOptions:
+    allocationStrategy: FIRST_SMALLEST_FITTING
   description: Updated description
   location: global
   networkRef:
     name: ${networkID}
-  prefixLength: 28
+  prefixLength: 24
   projectRef:
     external: ${projectId}
+  targetCIDRRange:
+  - 172.16.0.0/12
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -24,7 +28,7 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-minimal-${uniqueId}
+  externalRef: projects/${projectId}/locations/global/internalRanges/networkconnectivityinternalrange-firstsmallestfitting-${uniqueId}
   observedGeneration: 2
   observedState:
     createTime: "1970-01-01T00:00:00Z"
