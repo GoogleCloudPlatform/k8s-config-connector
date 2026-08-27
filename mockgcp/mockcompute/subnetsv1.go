@@ -412,7 +412,7 @@ func (s *SubnetsV1) Patch(ctx context.Context, req *pb.PatchSubnetworkRequest) (
 	op := &pb.Operation{
 		TargetId:      obj.Id,
 		TargetLink:    obj.SelfLink,
-		OperationType: PtrTo("compute.subnetworks.patch"),
+		OperationType: PtrTo("patch"),
 		User:          PtrTo("user@example.com"),
 	}
 	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {

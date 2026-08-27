@@ -24,47 +24,42 @@
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}
-252,254d250
-<   "logConfig": {
-<     "enable": false
-<   },
-267c263
+267c266
 < POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}/setPrivateIpGoogleAccess?alt=json
 ---
 > PATCH https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}
-271c267,270
+271c270,276
 <   "privateIpGoogleAccess": true
 ---
 >   "ipCidrRange": "10.2.0.0/16",
+>   "logConfig": {
+>     "enable": false
+>   },
 >   "network": "projects/${projectId}/global/networks/${networkID}",
 >   "privateIpGoogleAccess": true,
 >   "region": "us-central1"
-289c288
+289c294
 <   "operationType": "setPrivateIpGoogleAccess",
 ---
->   "operationType": "compute.subnetworks.patch",
-302c301,302
+>   "operationType": "patch",
+302c307,308
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
 > Content-Type: application/json
-320c320
+320c326
 <   "operationType": "setPrivateIpGoogleAccess",
 ---
->   "operationType": "compute.subnetworks.patch",
-333c333
+>   "operationType": "patch",
+333c339
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}?alt=json
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}
-355,357d354
-<   "logConfig": {
-<     "enable": false
-<   },
-370c367
+370c376
 < DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}?alt=json
 ---
 > DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${subnetworkID}
-401c398,399
+401c407,408
 < GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}?alt=json&prettyPrint=false
 ---
 > GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/operations/${operationID}
