@@ -48,6 +48,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "done": true,
   "metadata": {
     "@type": "type.googleapis.com/google.firestore.admin.v1.CreateDatabaseMetadata"
   },
@@ -60,55 +61,13 @@ X-Xss-Protection: 0
     "databaseEdition": 1,
     "deleteProtectionState": 2,
     "earliestVersionTime": "2024-04-01T12:34:56.123456Z",
+    "enhancedTextSearchQueryMode": 1,
     "etag": "abcdef0123A=",
     "freeTier": true,
     "locationId": "us-west2",
     "name": "projects/${projectId}/databases/firestoredatabase-${uniqueId}",
     "pointInTimeRecoveryEnablement": 2,
     "type": 1,
-    "uid": "111111111111111111111",
-    "updateTime": "2024-04-01T12:34:56.123456Z",
-    "versionRetentionPeriod": "3600s"
-  }
-}
-
----
-
-GET https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/operations/${operationID}
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: name=projects%2F${projectId}%2Fdatabases%2Ffirestoredatabase-${uniqueId}%2Foperations%2F${operationID}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "done": true,
-  "metadata": {
-    "@type": "type.googleapis.com/google.firestore.admin.v1.CreateDatabaseMetadata"
-  },
-  "name": "projects/${projectId}/databases/firestoredatabase-${uniqueId}/operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.firestore.admin.v1.Database",
-    "appEngineIntegrationMode": "DISABLED",
-    "concurrencyMode": "PESSIMISTIC",
-    "createTime": "2024-04-01T12:34:56.123456Z",
-    "databaseEdition": "STANDARD",
-    "deleteProtectionState": "DELETE_PROTECTION_ENABLED",
-    "earliestVersionTime": "2024-04-01T12:34:56.123456Z",
-    "etag": "abcdef0123A=",
-    "freeTier": true,
-    "locationId": "us-west2",
-    "name": "projects/${projectId}/databases/firestoredatabase-${uniqueId}",
-    "pointInTimeRecoveryEnablement": "POINT_IN_TIME_RECOVERY_DISABLED",
-    "type": "FIRESTORE_NATIVE",
     "uid": "111111111111111111111",
     "updateTime": "2024-04-01T12:34:56.123456Z",
     "versionRetentionPeriod": "3600s"
@@ -139,6 +98,7 @@ X-Xss-Protection: 0
   "databaseEdition": 1,
   "deleteProtectionState": 2,
   "earliestVersionTime": "2024-04-01T12:34:56.123456Z",
+  "enhancedTextSearchQueryMode": 1,
   "etag": "abcdef0123A=",
   "freeTier": true,
   "locationId": "us-west2",
@@ -190,6 +150,7 @@ X-Xss-Protection: 0
     "databaseEdition": 1,
     "deleteProtectionState": 1,
     "earliestVersionTime": "2024-04-01T12:34:56.123456Z",
+    "enhancedTextSearchQueryMode": 1,
     "etag": "abcdef0123A=",
     "freeTier": true,
     "locationId": "us-west2",
@@ -226,6 +187,7 @@ X-Xss-Protection: 0
   "databaseEdition": 1,
   "deleteProtectionState": 1,
   "earliestVersionTime": "2024-04-01T12:34:56.123456Z",
+  "enhancedTextSearchQueryMode": 1,
   "etag": "abcdef0123A=",
   "freeTier": true,
   "locationId": "us-west2",
@@ -268,6 +230,7 @@ X-Xss-Protection: 0
     "deleteProtectionState": 1,
     "deleteTime": "2024-04-01T12:34:56.123456Z",
     "earliestVersionTime": "2024-04-01T12:34:56.123456Z",
+    "enhancedTextSearchQueryMode": 1,
     "etag": "abcdef0123A=",
     "freeTier": true,
     "locationId": "us-west2",
