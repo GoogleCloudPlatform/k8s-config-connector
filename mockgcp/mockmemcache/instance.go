@@ -193,6 +193,11 @@ func (s *MemcacheServer) populateNodes(obj *pb.Instance) {
 			Port:   11211,
 		})
 	}
+	if obj.NodeCount > 0 {
+		obj.DiscoveryEndpoint = "10.0.0.1:11211"
+	} else {
+		obj.DiscoveryEndpoint = ""
+	}
 }
 
 type instanceName struct {

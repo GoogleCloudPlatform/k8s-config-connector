@@ -126,6 +126,11 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".status.ipAddress"] = "10.1.2.3"
 	visitor.replacePaths[".status.outboundPublicIpAddresses"] = []string{"6.6.6.6", "8.8.8.8"}
 
+	// Specific to Memcached / MemcacheInstance
+	visitor.replacePaths[".status.discoveryEndpoint"] = "10.0.0.1:11211"
+	visitor.replacePaths[".status.memcacheNodes[].host"] = "10.0.0.1"
+	visitor.replacePaths[".status.memcacheNodes[].nodeId"] = "node-0"
+
 	// Specific to CloudKMS
 	visitor.replacePaths[".primary.createTime"] = mockgcpregistry.PlaceholderTimestamp
 	visitor.replacePaths[".primary.generateTime"] = mockgcpregistry.PlaceholderTimestamp
