@@ -59,10 +59,12 @@ OK
       },
       "instance": {
         "displayName": "BigtableSample",
+        "edition": "ENTERPRISE",
         "labels": {
           "cnrm-test": "true",
           "managed-by-cnrm": "true"
         },
+        "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}",
         "type": "PRODUCTION"
       },
       "instanceId": "bigtable-dep-${uniqueId}",
@@ -70,7 +72,7 @@ OK
     },
     "requestTime": "2024-04-01T12:34:56.123456Z"
   },
-  "name": "operations/projects/${projectId}/instances/bigtable-dep-${uniqueId}/locations/us-east1-b/operations/${operationID}"
+  "name": "operations/projects/${projectId}/instances/bigtable-dep-${uniqueId}/locations/us-west1-a/operations/${operationID}"
 }
 
 ---
@@ -78,7 +80,7 @@ OK
 GRPC /google.longrunning.Operations/GetOperation
 
 {
-  "name": "operations/projects/${projectId}/instances/bigtable-dep-${uniqueId}/locations/us-east1-b/operations/${operationID}"
+  "name": "operations/projects/${projectId}/instances/bigtable-dep-${uniqueId}/locations/us-west1-a/operations/${operationID}"
 }
 
 OK
@@ -103,10 +105,12 @@ OK
       },
       "instance": {
         "displayName": "BigtableSample",
+        "edition": "ENTERPRISE",
         "labels": {
           "cnrm-test": "true",
           "managed-by-cnrm": "true"
         },
+        "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}",
         "type": "PRODUCTION"
       },
       "instanceId": "bigtable-dep-${uniqueId}",
@@ -114,10 +118,11 @@ OK
     },
     "requestTime": "2024-04-01T12:34:56.123456Z"
   },
-  "name": "operations/projects/${projectId}/instances/bigtable-dep-${uniqueId}/locations/us-east1-b/operations/${operationID}",
+  "name": "operations/projects/${projectId}/instances/bigtable-dep-${uniqueId}/locations/us-west1-a/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.Instance",
     "displayName": "BigtableSample",
+    "edition": "ENTERPRISE",
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
@@ -143,6 +148,7 @@ OK
     {
       "createTime": "2024-04-01T12:34:56.123456Z",
       "displayName": "BigtableSample",
+      "edition": "ENTERPRISE",
       "labels": {
         "cnrm-test": "true",
         "managed-by-cnrm": "true"
@@ -198,6 +204,7 @@ OK
     {
       "createTime": "2024-04-01T12:34:56.123456Z",
       "displayName": "BigtableSample",
+      "edition": "ENTERPRISE",
       "labels": {
         "cnrm-test": "true",
         "managed-by-cnrm": "true"
@@ -279,8 +286,12 @@ OK
 
 {
   "columnFamilies": {
-    "family1": {},
-    "family2": {}
+    "family1": {
+      "gcRule": {}
+    },
+    "family2": {
+      "gcRule": {}
+    }
   },
   "granularity": "MILLIS",
   "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-${uniqueId}"
@@ -435,6 +446,25 @@ GRPC /google.bigtable.admin.v2.BigtableTableAdmin/UpdateTable
 OK
 
 {
+  "metadata": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.UpdateTableMetadata",
+    "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-${uniqueId}",
+    "startTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "operations/projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-${uniqueId}/locations/us-east1-b/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "operations/projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-${uniqueId}/locations/us-east1-b/operations/${operationID}"
+}
+
+OK
+
+{
   "done": true,
   "metadata": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.UpdateTableMetadata",
@@ -442,7 +472,7 @@ OK
     "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-${uniqueId}",
     "startTime": "2024-04-01T12:34:56.123456Z"
   },
-  "name": "operations/projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-${uniqueId}/locations/us-east1-c/operations/${operationID}",
+  "name": "operations/projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-${uniqueId}/locations/us-east1-b/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.Table",
     "automatedBackupPolicy": {
@@ -450,9 +480,7 @@ OK
       "retentionPeriod": "259200s"
     },
     "columnFamilies": {
-      "family2": {
-        "gcRule": {}
-      },
+      "family2": {},
       "family3": {}
     },
     "granularity": "MILLIS",
@@ -486,6 +514,42 @@ OK
 
 ---
 
+GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetTable
+
+{
+  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-${uniqueId}",
+  "view": "SCHEMA_VIEW"
+}
+
+OK
+
+{
+  "automatedBackupPolicy": {
+    "frequency": "86400s",
+    "retentionPeriod": "259200s"
+  },
+  "columnFamilies": {
+    "family2": {},
+    "family3": {}
+  },
+  "granularity": "MILLIS",
+  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-${uniqueId}"
+}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableTableAdmin/DeleteTable
+
+{
+  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-${uniqueId}"
+}
+
+OK
+
+{}
+
+---
+
 GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/ListInstances
 
 {
@@ -499,11 +563,24 @@ OK
     {
       "createTime": "2024-04-01T12:34:56.123456Z",
       "displayName": "BigtableSample",
+      "edition": "ENTERPRISE",
       "labels": {
         "cnrm-test": "true",
         "managed-by-cnrm": "true"
       },
       "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}",
+      "state": "READY",
+      "type": "PRODUCTION"
+    },
+    {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "displayName": "BigtableSample",
+      "edition": "ENTERPRISE",
+      "labels": {
+        "cnrm-test": "true",
+        "managed-by-cnrm": "true"
+      },
+      "name": "projects/${projectId}/instances/btinstance-birapznm4e2vyda",
       "state": "READY",
       "type": "PRODUCTION"
     }
@@ -541,46 +618,10 @@ OK
 
 ---
 
-GRPC /google.bigtable.admin.v2.BigtableTableAdmin/GetTable
-
-{
-  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-${uniqueId}",
-  "view": "SCHEMA_VIEW"
-}
-
-OK
-
-{
-  "automatedBackupPolicy": {
-    "frequency": "86400s",
-    "retentionPeriod": "259200s"
-  },
-  "columnFamilies": {
-    "family2": {},
-    "family3": {}
-  },
-  "granularity": "MILLIS",
-  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-${uniqueId}"
-}
-
----
-
 GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/DeleteInstance
 
 {
   "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}"
-}
-
-OK
-
-{}
-
----
-
-GRPC /google.bigtable.admin.v2.BigtableTableAdmin/DeleteTable
-
-{
-  "name": "projects/${projectId}/instances/bigtable-dep-${uniqueId}/tables/bigtabletable-${uniqueId}"
 }
 
 OK
