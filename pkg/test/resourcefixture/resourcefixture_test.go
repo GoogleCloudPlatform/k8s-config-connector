@@ -78,20 +78,9 @@ func testAllNamesAreUnique(t *testing.T, fixture resourcefixture.ResourceFixture
 
 func testCreateAndUpdateUnstructShouldDiffer(t *testing.T, fixture resourcefixture.ResourceFixture,
 	createUnstruct, updateUnstruct *unstructured.Unstructured) {
-	exemptedUpdateNoChange := map[string]bool{
-		"bigquerydatasetnochangeupdate":                 true,
-		"bigquerydatasetnochangeupdate-direct":          true,
-		"bigquerytable-view":                            true,
-		"certificatemanagercertificateissuanceconfig":   true,
-		"containercluster-resourcemanagertags-standard": true,
-		"dataformrepository-basic":                      true,
-		"datalabelinginstruction-maximal":               true,
-		"networkconnectivityregionalendpoint-maximal":   true,
-		"networkconnectivityregionalendpoint-minimal":   true,
-	}
-	if exemptedUpdateNoChange[fixture.Name] {
-		return
-	}
+	// DO NOT ADD ANY EXCEPTIONS HERE.
+	// If a resource is immutable, do not provide an update.yaml file and set SkipUpdate: true in the resource context.
+	// Otherwise, update.yaml must make a real change to spec, labels, or annotations.
 
 	createSpec := createUnstruct.Object["spec"]
 	updateSpec := updateUnstruct.Object["spec"]

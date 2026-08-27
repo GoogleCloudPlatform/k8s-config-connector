@@ -1,0 +1,2 @@
+25d24
+<   schema: '[{"mode":"NULLABLE","name":"dt","type":"DATE"},{"mode":"NULLABLE","name":"user_id","type":"STRING"}]'
