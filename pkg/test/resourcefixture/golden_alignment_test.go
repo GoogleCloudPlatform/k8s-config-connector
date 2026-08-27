@@ -35,9 +35,10 @@ var mockGCPSkipFixtures = map[string]bool{
 	"devicestreaming/v1alpha1/devicestreamingsession/devicestreamingsession-maximal": true,
 	"devicestreaming/v1alpha1/devicestreamingsession/devicestreamingsession-minimal": true,
 	// TODO(https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/12388): Align outdated ComposerEnvironment mock logs with real GCP
-	"composer/v1beta1/composerenvironment/composerenvironmentwithkms":    true,
-	"composer/v1beta1/composerenvironment/composerenvironmentwithrefs":   true,
-	"composer/v1beta1/composerenvironment/composerenvironmentnodeconfig": true,
+	"composer/v1beta1/composerenvironment/composerenvironmentwithkms":         true,
+	"composer/v1beta1/composerenvironment/composerenvironmentwithrefs":        true,
+	"composer/v1beta1/composerenvironment/composerenvironmentnodeconfig":      true,
+	"container/v1beta1/containernodepool/containernodepool-windowsnodeconfig": true,
 }
 
 var realGCPSkipFixtures = map[string]bool{
@@ -707,18 +708,22 @@ func normalizeRepresentation(obj interface{}) interface{} {
 			delete(v, "nodeConfig")
 			delete(v, "networkConfig")
 		}
-		if _, isNodePool := v["initialNodeCount"]; isNodePool {
+		if _, isNodePool := v["initialNodeCount"]; isNodePool || v["podIpv4CidrSize"] != nil || v["upgradeSettings"] != nil {
+			delete(v, "initialNodeCount")
 			delete(v, "instanceGroupUrls")
 			delete(v, "version")
 			delete(v, "networkConfig")
 			delete(v, "etag")
 			delete(v, "locations")
 			delete(v, "kubeletCertInfo")
+			delete(v, "autoscaling")
+			delete(v, "upgradeSettings")
 			if sl, ok := v["selfLink"].(string); ok {
 				v["selfLink"] = strings.ReplaceAll(sl, "/zones/", "/locations/")
 			}
 			if cfg, ok := v["config"].(map[string]interface{}); ok {
 				delete(cfg, "nodeImageConfig")
+				delete(cfg, "taints")
 			}
 		}
 		if auto, ok := v["autoCreateSubnetworks"].(bool); ok && auto {

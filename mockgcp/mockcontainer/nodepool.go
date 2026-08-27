@@ -467,9 +467,30 @@ func (s *ClusterManagerV1) SetNodePoolSize(ctx context.Context, req *pb.SetNodeP
 		return nil, err
 	}
 
+	// Update corresponding IGMs
+	for _, igmUrl := range obj.InstanceGroupUrls {
+		prefix := "https://www.googleapis.com/compute/v1/"
+		if !strings.HasPrefix(igmUrl, prefix) {
+			continue
+		}
+		igmFqn := strings.TrimPrefix(igmUrl, prefix)
+		igm := &computepb.InstanceGroupManager{}
+		if err := s.storage.Get(ctx, igmFqn, igm); err == nil {
+			igm.TargetSize = PtrTo(req.NodeCount)
+			if igm.CurrentActions == nil {
+				igm.CurrentActions = &computepb.InstanceGroupManagerActionsSummary{}
+			}
+			igm.CurrentActions.None = PtrTo(req.NodeCount)
+			if err := s.storage.Update(ctx, igmFqn, igm); err != nil {
+				klog.Errorf("failed to update mock IGM size: %v", err)
+			}
+		}
+	}
+
 	op := &pb.Operation{
-		Zone:       name.Location,
-		TargetLink: buildSelfLink(ctx, AsZonalLink(name.LinkWithNumber())),
+		Zone:          name.Location,
+		TargetLink:    buildSelfLink(ctx, AsZonalLink(name.LinkWithNumber())),
+		OperationType: pb.Operation_SET_NODE_POOL_SIZE,
 	}
 	return s.startLRO(ctx, name.Project, op, func() (proto.Message, error) {
 		return obj, nil

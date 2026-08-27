@@ -22,11 +22,7 @@ spec:
     linuxNodeConfig:
       cgroupMode: CGROUP_MODE_V2
       swapConfig:
-        bootDiskProfile:
-          swapSizeGib: 10
         enabled: false
-        encryptionConfig:
-          disabled: true
     machineType: e2-medium
   resourceID: nodepool-sample-${uniqueId}
 status:
