@@ -1,5 +1,185 @@
-293,366d292
-< GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-main-${uniqueId}?alt=json&prettyPrint=false
+0a1,77
+> GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytablesample${uniqueId}?alt=json&prettyPrint=false
+> 
+> 404 Not Found
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "error": {
+>     "code": 404,
+>     "errors": [
+>       {
+>         "domain": "global",
+>         "message": "Not found: Table ${projectId}:bigquerydatasetsample${uniqueId}.bigquerytablesample${uniqueId}",
+>         "reason": "notFound"
+>       }
+>     ],
+>     "message": "Not found: Table ${projectId}:bigquerydatasetsample${uniqueId}.bigquerytablesample${uniqueId}",
+>     "status": "NOT_FOUND"
+>   }
+> }
+> 
+> ---
+> 
+> POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables?alt=json&prettyPrint=false
+> Content-Type: application/json
+> 
+> {
+>   "friendlyName": "mv_test3",
+>   "labels": {
+>     "cnrm-test": "true",
+>     "department_name": "marketing",
+>     "managed-by-cnrm": "true"
+>   },
+>   "tableReference": {
+>     "datasetId": "bigquerydatasetsample${uniqueId}",
+>     "projectId": "${projectId}",
+>     "tableId": "bigquerytablesample${uniqueId}"
+>   },
+>   "view": {
+>     "query": "SELECT distinct dt, user_id FROM `${projectId}.bigquerydatasetsample${uniqueId}.bigquerytable-main-${uniqueId}`",
+>     "useLegacySql": false
+>   }
+> }
+> 
+> 404 Not Found
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "error": {
+>     "code": 404,
+>     "errors": [
+>       {
+>         "domain": "global",
+>         "message": "Not found: Dataset ${projectId}:bigquerydatasetsample${uniqueId}",
+>         "reason": "notFound"
+>       }
+>     ],
+>     "message": "Not found: Dataset ${projectId}:bigquerydatasetsample${uniqueId}",
+>     "status": "NOT_FOUND"
+>   }
+> }
+> 
+> ---
+> 
+30a108,208
+> GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-main-${uniqueId}?alt=json&prettyPrint=false
+> 
+> 404 Not Found
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "error": {
+>     "code": 404,
+>     "errors": [
+>       {
+>         "domain": "global",
+>         "message": "Not found: Table ${projectId}:bigquerydatasetsample${uniqueId}.bigquerytable-main-${uniqueId}",
+>         "reason": "notFound"
+>       }
+>     ],
+>     "message": "Not found: Table ${projectId}:bigquerydatasetsample${uniqueId}.bigquerytable-main-${uniqueId}",
+>     "status": "NOT_FOUND"
+>   }
+> }
+> 
+> ---
+> 
+> POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables?alt=json&prettyPrint=false
+> Content-Type: application/json
+> 
+> {
+>   "friendlyName": "main-table",
+>   "labels": {
+>     "cnrm-test": "true",
+>     "managed-by-cnrm": "true"
+>   },
+>   "schema": {
+>     "fields": [
+>       {
+>         "description": "Date",
+>         "mode": "REQUIRED",
+>         "name": "dt",
+>         "policyTags": {},
+>         "type": "DATE"
+>       },
+>       {
+>         "description": "User ID",
+>         "mode": "REQUIRED",
+>         "name": "user_id",
+>         "policyTags": {},
+>         "type": "STRING"
+>       },
+>       {
+>         "description": "Unique identifier of the entity",
+>         "mode": "REQUIRED",
+>         "name": "guid",
+>         "policyTags": {},
+>         "type": "STRING"
+>       }
+>     ]
+>   },
+>   "tableReference": {
+>     "datasetId": "bigquerydatasetsample${uniqueId}",
+>     "projectId": "${projectId}",
+>     "tableId": "bigquerytable-main-${uniqueId}"
+>   },
+>   "timePartitioning": {
+>     "field": "dt",
+>     "type": "DAY"
+>   }
+> }
+> 
+> 404 Not Found
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "error": {
+>     "code": 404,
+>     "errors": [
+>       {
+>         "domain": "global",
+>         "message": "Not found: Dataset ${projectId}:bigquerydatasetsample${uniqueId}",
+>         "reason": "notFound"
+>       }
+>     ],
+>     "message": "Not found: Dataset ${projectId}:bigquerydatasetsample${uniqueId}",
+>     "status": "NOT_FOUND"
+>   }
+> }
+> 
+> ---
+> 
+352,413d529
+< GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytablesample${uniqueId}?alt=json&prettyPrint=false
 < 
 < 200 OK
 < Content-Type: application/json; charset=UTF-8
@@ -14,11 +194,12 @@
 < {
 <   "creationTime": "123456789",
 <   "etag": "abcdef0123A=",
-<   "friendlyName": "main-table",
+<   "friendlyName": "mv_test3",
 <   "id": "000000000000000000000",
 <   "kind": "bigquery#table",
 <   "labels": {
 <     "cnrm-test": "true",
+<     "department_name": "marketing",
 <     "managed-by-cnrm": "true"
 <   },
 <   "lastModifiedTime": "123456789",
@@ -29,47 +210,347 @@
 <   "numLongTermLogicalBytes": "0",
 <   "numRows": "0",
 <   "numTotalLogicalBytes": "0",
-<   "partitionDefinition": {
-<     "partitionedColumn": [
-<       {
-<         "field": "dt"
-<       }
-<     ]
-<   },
 <   "schema": {
 <     "fields": [
 <       {
-<         "description": "Date",
-<         "mode": "REQUIRED",
+<         "description": "dt",
+<         "mode": "NULLABLE",
 <         "name": "dt",
 <         "type": "DATE"
 <       },
 <       {
-<         "description": "User ID",
-<         "mode": "REQUIRED",
+<         "description": "user_id",
+<         "mode": "NULLABLE",
 <         "name": "user_id",
 <         "type": "STRING"
+<       }
+<     ]
+<   },
+<   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}/tables/bigquerytablesample${uniqueId}",
+<   "tableReference": {
+<     "datasetId": "bigquerydatasetsample${uniqueId}",
+<     "projectId": "${projectId}",
+<     "tableId": "bigquerytablesample${uniqueId}"
+<   },
+<   "type": "VIEW",
+<   "view": {
+<     "query": "SELECT distinct dt, user_id FROM `${projectId}.bigquerydatasetsample${uniqueId}.bigquerytable-main-${uniqueId}`",
+<     "useLegacySql": false
+<   }
+< }
+< 
+< ---
+< 
+560c676
+< GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-main-${uniqueId}?alt=json&prettyPrint=false
+---
+> GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytablesample${uniqueId}?alt=json&prettyPrint=false
+575c691
+<   "friendlyName": "main-table",
+---
+>   "friendlyName": "mv_test3",
+579a696
+>     "department_name": "marketing",
+590,591c707,708
+<   "partitionDefinition": {
+<     "partitionedColumn": [
+---
+>   "schema": {
+>     "fields": [
+593c710,719
+<         "field": "dt"
+---
+>         "description": "dt",
+>         "mode": "NULLABLE",
+>         "name": "dt",
+>         "type": "DATE"
+>       },
+>       {
+>         "description": "user_id",
+>         "mode": "NULLABLE",
+>         "name": "user_id",
+>         "type": "STRING"
+596a723,747
+>   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}/tables/bigquerytablesample${uniqueId}",
+>   "tableReference": {
+>     "datasetId": "bigquerydatasetsample${uniqueId}",
+>     "projectId": "${projectId}",
+>     "tableId": "bigquerytablesample${uniqueId}"
+>   },
+>   "type": "VIEW",
+>   "view": {
+>     "query": "SELECT distinct dt, user_id FROM `${projectId}.bigquerydatasetsample${uniqueId}.bigquerytable-main-${uniqueId}`",
+>     "useLegacySql": false
+>   }
+> }
+> 
+> ---
+> 
+> PUT https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytablesample${uniqueId}?alt=json&prettyPrint=false
+> Content-Type: application/json
+> 
+> {
+>   "friendlyName": "mv_test3",
+>   "labels": {
+>     "cnrm-test": "true",
+>     "department_name": "marketing",
+>     "managed-by-cnrm": "true"
+>   },
+600,601c751,752
+<         "description": "Date",
+<         "mode": "REQUIRED",
+---
+>         "description": "dt",
+>         "mode": "NULLABLE",
+606,607c757,758
+<         "description": "User ID",
+<         "mode": "REQUIRED",
+---
+>         "description": "user_id",
+>         "mode": "NULLABLE",
+610,615d760
 <       },
 <       {
 <         "description": "Unique identifier of the entity",
 <         "mode": "REQUIRED",
 <         "name": "guid",
 <         "type": "STRING"
-<       }
-<     ]
-<   },
+619d763
 <   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}/tables/bigquerytable-main-${uniqueId}",
-<   "tableReference": {
-<     "datasetId": "bigquerydatasetsample${uniqueId}",
-<     "projectId": "${projectId}",
+623,627c767
 <     "tableId": "bigquerytable-main-${uniqueId}"
 <   },
 <   "timePartitioning": {
 <     "field": "dt",
 <     "type": "DAY"
-<   },
+---
+>     "tableId": "bigquerytablesample${uniqueId}"
+629c769,772
 <   "type": "TABLE"
+---
+>   "view": {
+>     "query": "SELECT distinct dt, user_id, guid FROM `${projectId}.bigquerydatasetsample${uniqueId}.bigquerytable-main-${uniqueId}`",
+>     "useLegacySql": false
+>   }
+632,635d774
+< ---
+< 
+< GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytablesample${uniqueId}?alt=json&prettyPrint=false
+< 
+677a817,822
+>       },
+>       {
+>         "description": "guid",
+>         "mode": "NULLABLE",
+>         "name": "guid",
+>         "type": "STRING"
+689c834
+<     "query": "SELECT distinct dt, user_id FROM `${projectId}.bigquerydatasetsample${uniqueId}.bigquerytable-main-${uniqueId}`",
+---
+>     "query": "SELECT distinct dt, user_id, guid FROM `${projectId}.bigquerydatasetsample${uniqueId}.bigquerytable-main-${uniqueId}`",
+696,697c841,851
+< PUT https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytablesample${uniqueId}?alt=json&prettyPrint=false
+< Content-Type: application/json
+---
+> GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytablesample${uniqueId}?alt=json&prettyPrint=false
+> 
+> 200 OK
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+699a854,855
+>   "creationTime": "123456789",
+>   "etag": "abcdef0123A=",
+700a857,858
+>   "id": "000000000000000000000",
+>   "kind": "bigquery#table",
+705a864,871
+>   "lastModifiedTime": "123456789",
+>   "location": "us-central1",
+>   "numActiveLogicalBytes": "0",
+>   "numBytes": "0",
+>   "numLongTermBytes": "0",
+>   "numLongTermLogicalBytes": "0",
+>   "numRows": "0",
+>   "numTotalLogicalBytes": "0",
+718a885,890
+>       },
+>       {
+>         "description": "guid",
+>         "mode": "NULLABLE",
+>         "name": "guid",
+>         "type": "STRING"
+721a894
+>   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}/tables/bigquerytablesample${uniqueId}",
+726a900
+>   "type": "VIEW",
+732a907,910
+> ---
+> 
+> GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-main-${uniqueId}?alt=json&prettyPrint=false
+> 
+746c924
+<   "friendlyName": "mv_test3",
+---
+>   "friendlyName": "main-table",
+751d928
+<     "department_name": "marketing",
+761a939,945
+>   "partitionDefinition": {
+>     "partitionedColumn": [
+>       {
+>         "field": "dt"
+>       }
+>     ]
+>   },
+765,766c949,950
+<         "description": "dt",
+<         "mode": "NULLABLE",
+---
+>         "description": "Date",
+>         "mode": "REQUIRED",
+771,772c955,956
+<         "description": "user_id",
+<         "mode": "NULLABLE",
+---
+>         "description": "User ID",
+>         "mode": "REQUIRED",
+777,778c961,962
+<         "description": "guid",
+<         "mode": "NULLABLE",
+---
+>         "description": "Unique identifier of the entity",
+>         "mode": "REQUIRED",
+784c968
+<   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}/tables/bigquerytablesample${uniqueId}",
+---
+>   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}/tables/bigquerytable-main-${uniqueId}",
+788c972
+<     "tableId": "bigquerytablesample${uniqueId}"
+---
+>     "tableId": "bigquerytable-main-${uniqueId}"
+790,794c974,978
+<   "type": "VIEW",
+<   "view": {
+<     "query": "SELECT distinct dt, user_id, guid FROM `${projectId}.bigquerydatasetsample${uniqueId}.bigquerytable-main-${uniqueId}`",
+<     "useLegacySql": false
+<   }
+---
+>   "timePartitioning": {
+>     "field": "dt",
+>     "type": "DAY"
+>   },
+>   "type": "TABLE"
+867,919d1050
+< GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
+< Content-Type: application/json
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "access": [
+<     {
+<       "role": "OWNER",
+<       "specialGroup": "projectOwners"
+<     },
+<     {
+<       "role": "OWNER",
+<       "userByEmail": "user@google.com"
+<     },
+<     {
+<       "role": "READER",
+<       "specialGroup": "projectReaders"
+<     },
+<     {
+<       "role": "WRITER",
+<       "specialGroup": "projectWriters"
+<     }
+<   ],
+<   "creationTime": "123456789",
+<   "datasetReference": {
+<     "datasetId": "bigquerydatasetsample${uniqueId}",
+<     "projectId": "${projectId}"
+<   },
+<   "etag": "abcdef0123A=",
+<   "id": "000000000000000000000",
+<   "kind": "bigquery#dataset",
+<   "labels": {
+<     "cnrm-test": "true",
+<     "managed-by-cnrm": "true"
+<   },
+<   "lastModifiedTime": "123456789",
+<   "location": "us-central1",
+<   "maxTimeTravelHours": "168",
+<   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}",
+<   "type": "DEFAULT"
 < }
 < 
 < ---
 < 
+1020a1152,1204
+> 
+> ---
+> 
+> GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
+> Content-Type: application/json
+> 
+> 200 OK
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "access": [
+>     {
+>       "role": "OWNER",
+>       "specialGroup": "projectOwners"
+>     },
+>     {
+>       "role": "OWNER",
+>       "userByEmail": "user@google.com"
+>     },
+>     {
+>       "role": "READER",
+>       "specialGroup": "projectReaders"
+>     },
+>     {
+>       "role": "WRITER",
+>       "specialGroup": "projectWriters"
+>     }
+>   ],
+>   "creationTime": "123456789",
+>   "datasetReference": {
+>     "datasetId": "bigquerydatasetsample${uniqueId}",
+>     "projectId": "${projectId}"
+>   },
+>   "etag": "abcdef0123A=",
+>   "id": "000000000000000000000",
+>   "kind": "bigquery#dataset",
+>   "labels": {
+>     "cnrm-test": "true",
+>     "managed-by-cnrm": "true"
+>   },
+>   "lastModifiedTime": "123456789",
+>   "location": "us-central1",
+>   "maxTimeTravelHours": "168",
+>   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}",
+>   "type": "DEFAULT"
+> }

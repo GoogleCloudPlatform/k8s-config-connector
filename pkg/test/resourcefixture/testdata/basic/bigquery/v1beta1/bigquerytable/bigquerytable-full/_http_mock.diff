@@ -1,4 +1,344 @@
-674,752d673
+150c150
+< GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+---
+> GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/referencedtable${uniqueId}?alt=json&prettyPrint=false
+152c152
+< 200 OK
+---
+> 404 Not Found
+163,168c163,174
+<   "email": "iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+<   "etag": "abcdef0123A=",
+<   "name": "projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+<   "oauth2ClientId": "888888888888888888888",
+<   "projectId": "${projectId}",
+<   "uniqueId": "111111111111111111111"
+---
+>   "error": {
+>     "code": 404,
+>     "errors": [
+>       {
+>         "domain": "global",
+>         "message": "Not found: Table ${projectId}:bigquerydataset${uniqueId}.referencedtable${uniqueId}",
+>         "reason": "notFound"
+>       }
+>     ],
+>     "message": "Not found: Table ${projectId}:bigquerydataset${uniqueId}.referencedtable${uniqueId}",
+>     "status": "NOT_FOUND"
+>   }
+193c199,243
+< GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}?alt=json&prettyPrint=false
+---
+> POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables?alt=json&prettyPrint=false
+> Content-Type: application/json
+> 
+> {
+>   "friendlyName": "referencedtable${uniqueId}",
+>   "labels": {
+>     "cnrm-test": "true",
+>     "managed-by-cnrm": "true"
+>   },
+>   "schema": {
+>     "fields": [
+>       {
+>         "description": "Date",
+>         "mode": "REQUIRED",
+>         "name": "dt",
+>         "policyTags": {},
+>         "type": "DATE"
+>       },
+>       {
+>         "description": "State Code",
+>         "mode": "REQUIRED",
+>         "name": "state_code",
+>         "policyTags": {},
+>         "type": "STRING"
+>       }
+>     ]
+>   },
+>   "tableConstraints": {
+>     "primaryKey": {
+>       "columns": [
+>         "dt",
+>         "state_code"
+>       ]
+>     }
+>   },
+>   "tableReference": {
+>     "datasetId": "bigquerydataset${uniqueId}",
+>     "projectId": "${projectId}",
+>     "tableId": "referencedtable${uniqueId}"
+>   },
+>   "timePartitioning": {
+>     "field": "dt",
+>     "type": "DAY"
+>   }
+> }
+211c261
+<         "message": "Not found: Table ${projectId}:bigquerydataset${uniqueId}.bigquerytable-${uniqueId}",
+---
+>         "message": "Not found: Dataset ${projectId}:bigquerydataset${uniqueId}",
+215c265
+<     "message": "Not found: Table ${projectId}:bigquerydataset${uniqueId}.bigquerytable-${uniqueId}",
+---
+>     "message": "Not found: Dataset ${projectId}:bigquerydataset${uniqueId}",
+244a295,372
+> GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}?alt=json&prettyPrint=false
+> 
+> 404 Not Found
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "error": {
+>     "code": 404,
+>     "errors": [
+>       {
+>         "domain": "global",
+>         "message": "Not found: Table ${projectId}:bigquerydataset${uniqueId}.bigquerytable-${uniqueId}",
+>         "reason": "notFound"
+>       }
+>     ],
+>     "message": "Not found: Table ${projectId}:bigquerydataset${uniqueId}.bigquerytable-${uniqueId}",
+>     "status": "NOT_FOUND"
+>   }
+> }
+> 
+> ---
+> 
+> GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}?alt=json
+> Content-Type: application/json
+> 
+> 200 OK
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "createTime": "2024-04-01T12:34:56.123456Z",
+>   "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}"
+> }
+> 
+> ---
+> 
+> GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/referencedtable${uniqueId}?alt=json&prettyPrint=false
+> 
+> 404 Not Found
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "error": {
+>     "code": 404,
+>     "errors": [
+>       {
+>         "domain": "global",
+>         "message": "Not found: Table ${projectId}:bigquerydataset${uniqueId}.referencedtable${uniqueId}",
+>         "reason": "notFound"
+>       }
+>     ],
+>     "message": "Not found: Table ${projectId}:bigquerydataset${uniqueId}.referencedtable${uniqueId}",
+>     "status": "NOT_FOUND"
+>   }
+> }
+> 
+> ---
+> 
+267a396,468
+> POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables?alt=json&prettyPrint=false
+> Content-Type: application/json
+> 
+> {
+>   "friendlyName": "referencedtable${uniqueId}",
+>   "labels": {
+>     "cnrm-test": "true",
+>     "managed-by-cnrm": "true"
+>   },
+>   "schema": {
+>     "fields": [
+>       {
+>         "description": "Date",
+>         "mode": "REQUIRED",
+>         "name": "dt",
+>         "policyTags": {},
+>         "type": "DATE"
+>       },
+>       {
+>         "description": "State Code",
+>         "mode": "REQUIRED",
+>         "name": "state_code",
+>         "policyTags": {},
+>         "type": "STRING"
+>       }
+>     ]
+>   },
+>   "tableConstraints": {
+>     "primaryKey": {
+>       "columns": [
+>         "dt",
+>         "state_code"
+>       ]
+>     }
+>   },
+>   "tableReference": {
+>     "datasetId": "bigquerydataset${uniqueId}",
+>     "projectId": "${projectId}",
+>     "tableId": "referencedtable${uniqueId}"
+>   },
+>   "timePartitioning": {
+>     "field": "dt",
+>     "type": "DAY"
+>   }
+> }
+> 
+> 404 Not Found
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "error": {
+>     "code": 404,
+>     "errors": [
+>       {
+>         "domain": "global",
+>         "message": "Not found: Dataset ${projectId}:bigquerydataset${uniqueId}",
+>         "reason": "notFound"
+>       }
+>     ],
+>     "message": "Not found: Dataset ${projectId}:bigquerydataset${uniqueId}",
+>     "status": "NOT_FOUND"
+>   }
+> }
+> 
+> ---
+> 
+557a759,860
+> GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/referencedtable${uniqueId}?alt=json&prettyPrint=false
+> 
+> 404 Not Found
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "error": {
+>     "code": 404,
+>     "errors": [
+>       {
+>         "domain": "global",
+>         "message": "Not found: Table ${projectId}:bigquerydataset${uniqueId}.referencedtable${uniqueId}",
+>         "reason": "notFound"
+>       }
+>     ],
+>     "message": "Not found: Table ${projectId}:bigquerydataset${uniqueId}.referencedtable${uniqueId}",
+>     "status": "NOT_FOUND"
+>   }
+> }
+> 
+> ---
+> 
+> POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables?alt=json&prettyPrint=false
+> Content-Type: application/json
+> 
+> {
+>   "friendlyName": "referencedtable${uniqueId}",
+>   "labels": {
+>     "cnrm-test": "true",
+>     "managed-by-cnrm": "true"
+>   },
+>   "schema": {
+>     "fields": [
+>       {
+>         "description": "Date",
+>         "mode": "REQUIRED",
+>         "name": "dt",
+>         "policyTags": {},
+>         "type": "DATE"
+>       },
+>       {
+>         "description": "State Code",
+>         "mode": "REQUIRED",
+>         "name": "state_code",
+>         "policyTags": {},
+>         "type": "STRING"
+>       }
+>     ]
+>   },
+>   "tableConstraints": {
+>     "primaryKey": {
+>       "columns": [
+>         "dt",
+>         "state_code"
+>       ]
+>     }
+>   },
+>   "tableReference": {
+>     "datasetId": "bigquerydataset${uniqueId}",
+>     "projectId": "${projectId}",
+>     "tableId": "referencedtable${uniqueId}"
+>   },
+>   "timePartitioning": {
+>     "field": "dt",
+>     "type": "DAY"
+>   }
+> }
+> 
+> 404 Not Found
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "error": {
+>     "code": 404,
+>     "errors": [
+>       {
+>         "domain": "global",
+>         "message": "Not found: Dataset ${projectId}:bigquerydataset${uniqueId}",
+>         "reason": "notFound"
+>       }
+>     ],
+>     "message": "Not found: Dataset ${projectId}:bigquerydataset${uniqueId}",
+>     "status": "NOT_FOUND"
+>   }
+> }
+> 
+> ---
+> 
+1186,1264d1488
 < GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/referencedtable${uniqueId}?alt=json&prettyPrint=false
 < 
 < 200 OK
@@ -78,3 +418,360 @@
 < 
 < ---
 < 
+1866,1880d2089
+< DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}?alt=json&prettyPrint=false
+< 
+< 204 No Content
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< 
+< ---
+< 
+1960c2169
+< GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+---
+> GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}?alt=json&prettyPrint=false
+1973c2182,2192
+<   "email": "iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+---
+>   "clustering": {
+>     "fields": [
+>       "name",
+>       "post_abbr"
+>     ]
+>   },
+>   "creationTime": "123456789",
+>   "description": "A detailed example of a BigQuery Table resource.",
+>   "encryptionConfiguration": {
+>     "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
+>   },
+1975,1978c2194,2324
+<   "name": "projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+<   "oauth2ClientId": "888888888888888888888",
+<   "projectId": "${projectId}",
+<   "uniqueId": "111111111111111111111"
+---
+>   "expirationTime": "2024-09-01T12:34:56.123456Z",
+>   "friendlyName": "BigQueryTable Full Example",
+>   "id": "000000000000000000000",
+>   "kind": "bigquery#table",
+>   "labels": {
+>     "managed-by-cnrm": "true",
+>     "spec-label-key1": "updated-value1",
+>     "spec-label-key2": "updated-value2"
+>   },
+>   "lastModifiedTime": "123456789",
+>   "location": "us-central1",
+>   "numActiveLogicalBytes": "0",
+>   "numBytes": "0",
+>   "numLongTermBytes": "0",
+>   "numLongTermLogicalBytes": "0",
+>   "numRows": "0",
+>   "numTotalLogicalBytes": "0",
+>   "partitionDefinition": {
+>     "partitionedColumn": [
+>       {
+>         "field": "date"
+>       }
+>     ]
+>   },
+>   "requirePartitionFilter": true,
+>   "schema": {
+>     "fields": [
+>       {
+>         "mode": "REQUIRED",
+>         "name": "name",
+>         "type": "STRING"
+>       },
+>       {
+>         "name": "post_abbr",
+>         "type": "STRING"
+>       },
+>       {
+>         "name": "date",
+>         "type": "DATE"
+>       },
+>       {
+>         "name": "col_numeric",
+>         "precision": "38",
+>         "scale": "9",
+>         "type": "NUMERIC"
+>       },
+>       {
+>         "name": "col_bignumeric",
+>         "precision": "76",
+>         "scale": "38",
+>         "type": "BIGNUMERIC"
+>       },
+>       {
+>         "name": "col_geography",
+>         "type": "GEOGRAPHY"
+>       },
+>       {
+>         "name": "col_timestamp",
+>         "type": "TIMESTAMP"
+>       },
+>       {
+>         "fields": [
+>           {
+>             "name": "sub_col1",
+>             "type": "INTEGER"
+>           },
+>           {
+>             "name": "sub_col2",
+>             "type": "BOOLEAN"
+>           }
+>         ],
+>         "name": "col_record",
+>         "type": "RECORD"
+>       },
+>       {
+>         "mode": "REPEATED",
+>         "name": "col_array",
+>         "type": "INTEGER"
+>       }
+>     ]
+>   },
+>   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}/tables/bigquerytable-${uniqueId}",
+>   "tableConstraints": {
+>     "foreignKeys": [
+>       {
+>         "columnReferences": [
+>           {
+>             "referencedColumn": "state_code",
+>             "referencingColumn": "post_abbr"
+>           }
+>         ],
+>         "name": "fk_constraint_example",
+>         "referencedTable": {
+>           "datasetId": "bigquerydataset${uniqueId}",
+>           "projectId": "${projectId}",
+>           "tableId": "referencedtable${uniqueId}"
+>         }
+>       },
+>       {
+>         "columnReferences": [
+>           {
+>             "referencedColumn": "dt",
+>             "referencingColumn": "date"
+>           }
+>         ],
+>         "name": "fk_constraint_example_2",
+>         "referencedTable": {
+>           "datasetId": "bigquerydataset${uniqueId}",
+>           "projectId": "${projectId}",
+>           "tableId": "referencedtable${uniqueId}"
+>         }
+>       }
+>     ],
+>     "primaryKey": {
+>       "columns": [
+>         "name"
+>       ]
+>     }
+>   },
+>   "tableReference": {
+>     "datasetId": "bigquerydataset${uniqueId}",
+>     "projectId": "${projectId}",
+>     "tableId": "bigquerytable-${uniqueId}"
+>   },
+>   "timePartitioning": {
+>     "expirationMs": "86400000",
+>     "field": "date",
+>     "requirePartitionFilter": true,
+>     "type": "DAY"
+>   },
+>   "type": "TABLE"
+1983c2329
+< DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/referencedtable${uniqueId}?alt=json&prettyPrint=false
+---
+> DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}?alt=json&prettyPrint=false
+1998c2344
+< DELETE https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+---
+> GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/referencedtable${uniqueId}?alt=json&prettyPrint=false
+2010c2356,2419
+< {}
+---
+> {
+>   "creationTime": "123456789",
+>   "encryptionConfiguration": {
+>     "kmsKeyName": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
+>   },
+>   "etag": "abcdef0123A=",
+>   "friendlyName": "referencedtable${uniqueId}",
+>   "id": "000000000000000000000",
+>   "kind": "bigquery#table",
+>   "labels": {
+>     "cnrm-test": "true",
+>     "managed-by-cnrm": "true"
+>   },
+>   "lastModifiedTime": "123456789",
+>   "location": "us-central1",
+>   "numActiveLogicalBytes": "0",
+>   "numBytes": "0",
+>   "numLongTermBytes": "0",
+>   "numLongTermLogicalBytes": "0",
+>   "numRows": "0",
+>   "numTotalLogicalBytes": "0",
+>   "partitionDefinition": {
+>     "partitionedColumn": [
+>       {
+>         "field": "dt"
+>       }
+>     ]
+>   },
+>   "schema": {
+>     "fields": [
+>       {
+>         "description": "Date",
+>         "mode": "REQUIRED",
+>         "name": "dt",
+>         "type": "DATE"
+>       },
+>       {
+>         "description": "State Code",
+>         "mode": "REQUIRED",
+>         "name": "state_code",
+>         "type": "STRING"
+>       }
+>     ]
+>   },
+>   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}/tables/referencedtable${uniqueId}",
+>   "tableConstraints": {
+>     "primaryKey": {
+>       "columns": [
+>         "dt",
+>         "state_code"
+>       ]
+>     }
+>   },
+>   "tableReference": {
+>     "datasetId": "bigquerydataset${uniqueId}",
+>     "projectId": "${projectId}",
+>     "tableId": "referencedtable${uniqueId}"
+>   },
+>   "timePartitioning": {
+>     "field": "dt",
+>     "type": "DAY"
+>   },
+>   "type": "TABLE"
+> }
+2014c2423,2438
+< GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}:getIamPolicy?alt=json&options.requestedPolicyVersion=3&prettyPrint=false
+---
+> DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/referencedtable${uniqueId}?alt=json&prettyPrint=false
+> 
+> 204 No Content
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> 
+> ---
+> 
+> GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+2027,2034c2451
+<   "bindings": [
+<     {
+<       "members": [
+<         "serviceAccount:bq-${projectNumber}@bigquery-encryption.iam.gserviceaccount.com"
+<       ],
+<       "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+<     }
+<   ],
+---
+>   "email": "iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+2036c2453,2456
+<   "version": 1
+---
+>   "name": "projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+>   "oauth2ClientId": "888888888888888888888",
+>   "projectId": "${projectId}",
+>   "uniqueId": "111111111111111111111"
+2041,2049c2461
+< POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}:setIamPolicy?alt=json&prettyPrint=false
+< Content-Type: application/json
+< 
+< {
+<   "policy": {
+<     "etag": "abcdef0123A=",
+<     "version": 3
+<   }
+< }
+---
+> DELETE https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+2061,2064c2473
+< {
+<   "etag": "abcdef0123A=",
+<   "version": 1
+< }
+---
+> {}
+2136a2546,2599
+> 
+> ---
+> 
+> GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}:getIamPolicy?alt=json&options.requestedPolicyVersion=3&prettyPrint=false
+> 
+> 200 OK
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "bindings": [
+>     {
+>       "members": [
+>         "serviceAccount:bq-${projectNumber}@bigquery-encryption.iam.gserviceaccount.com"
+>       ],
+>       "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+>     }
+>   ],
+>   "etag": "abcdef0123A=",
+>   "version": 1
+> }
+> 
+> ---
+> 
+> POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}:setIamPolicy?alt=json&prettyPrint=false
+> Content-Type: application/json
+> 
+> {
+>   "policy": {
+>     "etag": "abcdef0123A=",
+>     "version": 3
+>   }
+> }
+> 
+> 200 OK
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "etag": "abcdef0123A=",
+>   "version": 1
+> }

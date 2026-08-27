@@ -1,67 +1,7 @@
-367,368c367
-< GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
-< Content-Type: application/json
----
-> GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
-397c396
-< POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets?alt=json
----
-> POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets?alt=json&prettyPrint=false
-414,415c413,414
-<   "defaultPartitionExpirationMs": 3600000,
-<   "defaultTableExpirationMs": 3600000,
----
->   "defaultPartitionExpirationMs": "3600000",
->   "defaultTableExpirationMs": "3600000",
-474,475c473
-< GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
-< Content-Type: application/json
----
-> GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
-524c522
-< PUT https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
----
-> PATCH https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
-538a537,540
->       "specialGroup": "projectOwners"
->     },
->     {
->       "role": "OWNER",
-542,544d543
-<   "datasetReference": {
-<     "datasetId": "bigquerydataset${uniqueId}"
-<   },
-549,550c548,549
-<   "defaultPartitionExpirationMs": 3800000,
-<   "defaultTableExpirationMs": 3800000,
----
->   "defaultPartitionExpirationMs": "3800000",
->   "defaultTableExpirationMs": "3800000",
-552a552
->   "isCaseInsensitive": false,
-557d556
-<   "location": "US",
-583a583,586
->       "specialGroup": "projectOwners"
->     },
->     {
->       "role": "OWNER",
-601a605
->   "isCaseInsensitive": false,
-641a646,649
->       "specialGroup": "projectOwners"
->     },
->     {
->       "role": "OWNER",
-659a668
->   "isCaseInsensitive": false,
-675,676c684,746
-< DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&deleteContents=false
-< Content-Type: application/json
----
+54a55,83
 > GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
 > 
-> 200 OK
+> 404 Not Found
 > Content-Type: application/json; charset=UTF-8
 > Server: ESF
 > Vary: Origin
@@ -72,6 +12,116 @@
 > X-Xss-Protection: 0
 > 
 > {
+>   "error": {
+>     "code": 404,
+>     "errors": [
+>       {
+>         "domain": "global",
+>         "message": "Not found: Dataset ${projectId}:bigquerydataset${uniqueId}",
+>         "reason": "notFound"
+>       }
+>     ],
+>     "message": "Not found: Dataset ${projectId}:bigquerydataset${uniqueId}",
+>     "status": "NOT_FOUND"
+>   }
+> }
+> 
+> ---
+> 
+192a222,250
+> GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
+> 
+> 404 Not Found
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "error": {
+>     "code": 404,
+>     "errors": [
+>       {
+>         "domain": "global",
+>         "message": "Not found: Dataset ${projectId}:bigquerydataset${uniqueId}",
+>         "reason": "notFound"
+>       }
+>     ],
+>     "message": "Not found: Dataset ${projectId}:bigquerydataset${uniqueId}",
+>     "status": "NOT_FOUND"
+>   }
+> }
+> 
+> ---
+> 
+447,448c505
+< GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
+< Content-Type: application/json
+---
+> GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
+477c534
+< POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets?alt=json
+---
+> POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets?alt=json&prettyPrint=false
+494,495c551,552
+<   "defaultPartitionExpirationMs": 3600000,
+<   "defaultTableExpirationMs": 3600000,
+---
+>   "defaultPartitionExpirationMs": "3600000",
+>   "defaultTableExpirationMs": "3600000",
+554,555c611
+< GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
+< Content-Type: application/json
+---
+> GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
+604c660
+< PUT https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
+---
+> PATCH https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
+618a675,678
+>       "specialGroup": "projectOwners"
+>     },
+>     {
+>       "role": "OWNER",
+622,624d681
+<   "datasetReference": {
+<     "datasetId": "bigquerydataset${uniqueId}"
+<   },
+629,630c686,687
+<   "defaultPartitionExpirationMs": 3800000,
+<   "defaultTableExpirationMs": 3800000,
+---
+>   "defaultPartitionExpirationMs": "3800000",
+>   "defaultTableExpirationMs": "3800000",
+632a690
+>   "isCaseInsensitive": false,
+637d694
+<   "location": "US",
+663a721,724
+>       "specialGroup": "projectOwners"
+>     },
+>     {
+>       "role": "OWNER",
+681a743
+>   "isCaseInsensitive": false,
+721a784,787
+>       "specialGroup": "projectOwners"
+>     },
+>     {
+>       "role": "OWNER",
+739a806
+>   "isCaseInsensitive": false,
+755c822
+< GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+---
+> GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
+768c835,864
+<   "email": "iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+---
 >   "access": [
 >     {
 >       "domain": "google.com",
@@ -102,7 +152,12 @@
 >   "defaultPartitionExpirationMs": "3800000",
 >   "defaultTableExpirationMs": "3800000",
 >   "description": "Fully Configured BigQuery Dataset updated",
->   "etag": "abcdef0123A=",
+770,773c866,879
+<   "name": "projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+<   "oauth2ClientId": "888888888888888888888",
+<   "projectId": "${projectId}",
+<   "uniqueId": "111111111111111111111"
+---
 >   "friendlyName": "bigquerydataset-fullyconfigured-updated",
 >   "id": "000000000000000000000",
 >   "isCaseInsensitive": false,
@@ -117,8 +172,166 @@
 >   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}",
 >   "storageBillingModel": "LOGICAL",
 >   "type": "DEFAULT"
+778c884
+< GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}:getIamPolicy?alt=json&options.requestedPolicyVersion=3&prettyPrint=false
+---
+> DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&deleteContents=false&prettyPrint=false
+780c886
+< 200 OK
+---
+> 204 No Content
+790,801d895
+< {
+<   "bindings": [
+<     {
+<       "members": [
+<         "serviceAccount:bq-${projectNumber}@bigquery-encryption.iam.gserviceaccount.com"
+<       ],
+<       "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+<     }
+<   ],
+<   "etag": "abcdef0123A=",
+<   "version": 1
+< }
+805c899
+< DELETE https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+---
+> GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+817c911,918
+< {}
+---
+> {
+>   "email": "iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+>   "etag": "abcdef0123A=",
+>   "name": "projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+>   "oauth2ClientId": "888888888888888888888",
+>   "projectId": "${projectId}",
+>   "uniqueId": "111111111111111111111"
+> }
+821,829c922
+< POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}:setIamPolicy?alt=json&prettyPrint=false
+< Content-Type: application/json
+< 
+< {
+<   "policy": {
+<     "etag": "abcdef0123A=",
+<     "version": 3
+<   }
+< }
+---
+> DELETE https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+841,844c934
+< {
+<   "etag": "abcdef0123A=",
+<   "version": 1
+< }
+---
+> {}
+848,849c938
+< GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
+< Content-Type: application/json
+---
+> GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}:getIamPolicy?alt=json&options.requestedPolicyVersion=3&prettyPrint=false
+862,870c951
+<   "access": [
+<     {
+<       "domain": "google.com",
+<       "role": "READER"
+<     },
+<     {
+<       "role": "OWNER",
+<       "specialGroup": "projectOwners"
+<     },
+---
+>   "bindings": [
+872,873c953,956
+<       "role": "OWNER",
+<       "userByEmail": "user@google.com"
+---
+>       "members": [
+>         "serviceAccount:bq-${projectNumber}@bigquery-encryption.iam.gserviceaccount.com"
+>       ],
+>       "role": "roles/cloudkms.cryptoKeyEncrypterDecrypter"
+876,887d958
+<   "creationTime": "123456789",
+<   "datasetReference": {
+<     "datasetId": "bigquerydataset${uniqueId}",
+<     "projectId": "${projectId}"
+<   },
+<   "defaultCollation": "und:ci",
+<   "defaultEncryptionConfiguration": {
+<     "kmsKeyName": "projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}"
+<   },
+<   "defaultPartitionExpirationMs": "3800000",
+<   "defaultTableExpirationMs": "3800000",
+<   "description": "Fully Configured BigQuery Dataset updated",
+889,901c960
+<   "friendlyName": "bigquerydataset-fullyconfigured-updated",
+<   "id": "000000000000000000000",
+<   "kind": "bigquery#dataset",
+<   "labels": {
+<     "cnrm-test": "true",
+<     "managed-by-cnrm": "true"
+<   },
+<   "lastModifiedTime": "123456789",
+<   "location": "US",
+<   "maxTimeTravelHours": "96",
+<   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}",
+<   "storageBillingModel": "LOGICAL",
+<   "type": "DEFAULT"
+---
+>   "version": 1
+906c965
+< DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&deleteContents=false
+---
+> POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}:setIamPolicy?alt=json&prettyPrint=false
+909,923c968,973
+< 204 No Content
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< 
+< ---
+< 
+< GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}?alt=json
+< Content-Type: application/json
+---
+> {
+>   "policy": {
+>     "etag": "abcdef0123A=",
+>     "version": 3
+>   }
+> }
+936,937c986,987
+<   "createTime": "2024-04-01T12:34:56.123456Z",
+<   "name": "projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}"
+---
+>   "etag": "abcdef0123A=",
+>   "version": 1
+1031a1082,1101
 > }
 > 
 > ---
 > 
-> DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&deleteContents=false&prettyPrint=false
+> GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}?alt=json
+> Content-Type: application/json
+> 
+> 200 OK
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "createTime": "2024-04-01T12:34:56.123456Z",
+>   "name": "projects/${projectId}/locations/us/keyRings/kmskeyring-${uniqueId}"

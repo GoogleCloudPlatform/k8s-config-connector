@@ -1,0 +1,130 @@
+26c26,27
+< GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}?alt=json&prettyPrint=false
+---
+> GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}?alt=json
+> Content-Type: application/json
+41,48c42
+<     "errors": [
+<       {
+<         "domain": "global",
+<         "message": "Not found: Table ${projectId}:bigquerydataset${uniqueId}.bigquerytable-${uniqueId}",
+<         "reason": "notFound"
+<       }
+<     ],
+<     "message": "Not found: Table ${projectId}:bigquerydataset${uniqueId}.bigquerytable-${uniqueId}",
+---
+>     "message": "KeyRing projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId} not found.",
+55,56c49
+< GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}?alt=json
+< Content-Type: application/json
+---
+> GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}?alt=json&prettyPrint=false
+71c64,71
+<     "message": "KeyRing projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId} not found.",
+---
+>     "errors": [
+>       {
+>         "domain": "global",
+>         "message": "Not found: Table ${projectId}:bigquerydataset${uniqueId}.bigquerytable-${uniqueId}",
+>         "reason": "notFound"
+>       }
+>     ],
+>     "message": "Not found: Table ${projectId}:bigquerydataset${uniqueId}.bigquerytable-${uniqueId}",
+1128,1154d1127
+< POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}:setIamPolicy?alt=json&prettyPrint=false
+< Content-Type: application/json
+< 
+< {
+<   "policy": {
+<     "etag": "abcdef0123A=",
+<     "version": 3
+<   }
+< }
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "etag": "abcdef0123A=",
+<   "version": 1
+< }
+< 
+< ---
+< 
+1210a1184,1210
+> POST https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}/cryptoKeys/kmscryptokey-${uniqueId}:setIamPolicy?alt=json&prettyPrint=false
+> Content-Type: application/json
+> 
+> {
+>   "policy": {
+>     "etag": "abcdef0123A=",
+>     "version": 3
+>   }
+> }
+> 
+> 200 OK
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "etag": "abcdef0123A=",
+>   "version": 1
+> }
+> 
+> ---
+> 
+1226a1227,1246
+> GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}?alt=json
+> Content-Type: application/json
+> 
+> 200 OK
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "createTime": "2024-04-01T12:34:56.123456Z",
+>   "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}"
+> }
+> 
+> ---
+> 
+1290,1309d1309
+< }
+< 
+< ---
+< 
+< GET https://cloudkms.googleapis.com/v1/projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}?alt=json
+< Content-Type: application/json
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: ESF
+< Vary: Origin
+< Vary: X-Origin
+< Vary: Referer
+< X-Content-Type-Options: nosniff
+< X-Frame-Options: SAMEORIGIN
+< X-Xss-Protection: 0
+< 
+< {
+<   "createTime": "2024-04-01T12:34:56.123456Z",
+<   "name": "projects/${projectId}/locations/us-central1/keyRings/kmskeyring-${uniqueId}"
