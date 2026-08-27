@@ -22,6 +22,30 @@ SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_JSON_PATH = os.path.join(SCRIPT_DIR, 'data.json')
 OUTPUT_MD_PATH = os.path.join(SCRIPT_DIR, 'MIGRATION_STATUS.md')
 
+def get_next_step(r):
+    steps = r.get("steps", {})
+    if not steps.get("gen-types"):
+        return "Types"
+    if not steps.get("identity-reference"):
+        return "Identity/Ref"
+    if not steps.get("mapper-fuzzer"):
+        return "Mapper/Fuzz"
+    if not steps.get("mocks"):
+        return "Mocks"
+    if not steps.get("controller"):
+        return "Controller"
+    if not steps.get("tests"):
+        return "Tests"
+
+    supported_ctrls = r.get("supportedControllers", [])
+    if "Direct" not in supported_ctrls:
+        return "Register Direct Controller"
+
+    if r.get("defaultController") != "Direct":
+        return "Default to Direct Controller"
+
+    return "-"
+
 def main():
     # Refresh data.json if generate_data.py exists
     gen_script = os.path.join(SCRIPT_DIR, 'generate_data.py')
@@ -66,7 +90,7 @@ def main():
         else:
             by_group[grp]['not_started'] += 1
 
-    sorted_groups = sorted(by_group.items(), key=lambda x: (-x[1]['total'], x[0]))
+    sorted_groups = sorted(by_group.items(), key=lambda x: x[0])
 
     unmigrated = [r for r in data if r.get('state') != 'Completed' and not r.get('edgeCases', {}).get('gcpAPIDeprecated')]
     unmigrated.sort(key=lambda x: x.get('sortOrder', 9999))
@@ -113,23 +137,21 @@ def main():
     md.append('')
     md.append('---')
     md.append('')
-    md.append('## Top Priority Unmigrated Resources (Dependency Order)')
-
-
-    md.append('| Topo Order | Group | Kind | State | Types | Ref/ID | Controller | Downstream Count |')
-    md.append('| :---: | :--- | :--- | :---: | :---: | :---: | :---: | :---: |')
+    md.append('## Unmigrated Resources with Most Dependencies')
+    md.append('')
+    md.append('This section lists unmigrated brownfield resources ordered by their downstream dependency count (topological order). Resources with higher downstream counts are referenced by many other KCC resources, making them critical candidates to unblock migration pipelines.')
+    md.append('')
+    md.append('| Topo Order | Group | Kind | Downstream Dependents | State | Next Step |')
+    md.append('| :---: | :--- | :--- | :---: | :---: | :--- |')
 
     for r in unmigrated[:25]:
         order = r.get('sortOrder', '-')
         grp = r.get('group', '-')
         knd = r.get('kind', '-')
         st = r.get('state', '-')
-        # Omit 'No' and output empty string '' when false for readability purposes
-        st_types = 'Yes' if r.get('steps', {}).get('gen-types') else ''
-        st_ref = 'Yes' if r.get('steps', {}).get('identity-reference') else ''
-        st_ctrl = 'Yes' if r.get('steps', {}).get('controller') else ''
+        next_step = get_next_step(r)
         downstream = r.get('downstreamCount', 0)
-        md.append(f'| #{order} | `{grp}` | `{knd}` | **{st}** | {st_types} | {st_ref} | {st_ctrl} | `{downstream}` |')
+        md.append(f'| #{order} | `{grp}` | `{knd}` | `{downstream}` | **{st}** | `{next_step}` |')
 
     md.append('')
     md.append('---')

@@ -28,34 +28,37 @@
 
 ---
 
-## Top Priority Unmigrated Resources (Dependency Order)
-| Topo Order | Group | Kind | State | Types | Ref/ID | Controller | Downstream Count |
-| :---: | :--- | :--- | :---: | :---: | :---: | :---: | :---: |
-| #1 | `resourcemanager` | `Folder` | **In Progress** | Yes | Yes |  | `452` |
-| #2 | `resourcemanager` | `Project` | **In Progress** | Yes | Yes |  | `447` |
-| #3 | `kms` | `KMSKeyRing` | **In Progress** | Yes | Yes | Yes | `142` |
-| #4 | `kms` | `KMSCryptoKey` | **In Progress** | Yes | Yes | Yes | `140` |
-| #5 | `compute` | `ComputeNetwork` | **In Progress** | Yes | Yes | Yes | `136` |
-| #6 | `iam` | `IAMServiceAccount` | **In Progress** | Yes | Yes |  | `61` |
-| #7 | `storage` | `StorageBucket` | **In Progress** | Yes | Yes |  | `42` |
-| #8 | `compute` | `ComputeSubnetwork` | **In Progress** | Yes | Yes |  | `23` |
-| #9 | `serviceusage` | `Service` | **In Progress** | Yes | Yes | Yes | `15` |
-| #10 | `compute` | `ComputeSecurityPolicy` | **In Progress** | Yes | Yes | Yes | `13` |
-| #11 | `compute` | `ComputeHealthCheck` | **In Progress** | Yes |  |  | `12` |
-| #12 | `compute` | `ComputeHTTPHealthCheck` | **In Progress** | Yes | Yes | Yes | `11` |
-| #13 | `compute` | `ComputeNetworkEndpointGroup` | **In Progress** | Yes | Yes |  | `11` |
-| #14 | `compute` | `ComputeInstanceGroup` | **In Progress** | Yes | Yes | Yes | `10` |
-| #15 | `compute` | `ComputeBackendService` | **In Progress** | Yes | Yes |  | `9` |
-| #16 | `bigtable` | `BigtableInstance` | **In Progress** | Yes | Yes |  | `8` |
-| #17 | `pubsub` | `PubSubSchema` | **In Progress** | Yes | Yes | Yes | `8` |
-| #18 | `apigee` | `ApigeeOrganization` | **In Progress** | Yes | Yes |  | `7` |
-| #19 | `compute` | `ComputeBackendBucket` | **In Progress** | Yes |  |  | `7` |
-| #20 | `compute` | `ComputeInstanceTemplate` | **In Progress** |  |  |  | `7` |
-| #21 | `pubsub` | `PubSubTopic` | **In Progress** | Yes | Yes | Yes | `7` |
-| #22 | `compute` | `ComputeRouter` | **In Progress** | Yes | Yes | Yes | `6` |
-| #23 | `dataproc` | `DataprocCluster` | **In Progress** | Yes | Yes | Yes | `6` |
-| #24 | `compute` | `ComputeTargetVPNGateway` | **In Progress** | Yes |  |  | `5` |
-| #25 | `compute` | `ComputeURLMap` | **In Progress** | Yes | Yes | Yes | `5` |
+## Unmigrated Resources with Most Dependencies
+
+This section lists unmigrated brownfield resources ordered by their downstream dependency count (topological order). Resources with higher downstream counts are referenced by many other KCC resources, making them critical candidates to unblock migration pipelines.
+
+| Topo Order | Group | Kind | Downstream Dependents | State | Next Step |
+| :---: | :--- | :--- | :---: | :---: | :--- |
+| #1 | `resourcemanager` | `Folder` | `452` | **In Progress** | `Mapper/Fuzz` |
+| #2 | `resourcemanager` | `Project` | `447` | **In Progress** | `Mapper/Fuzz` |
+| #3 | `kms` | `KMSKeyRing` | `142` | **In Progress** | `Default to Direct Controller` |
+| #4 | `kms` | `KMSCryptoKey` | `140` | **In Progress** | `Default to Direct Controller` |
+| #5 | `compute` | `ComputeNetwork` | `136` | **In Progress** | `Default to Direct Controller` |
+| #6 | `iam` | `IAMServiceAccount` | `61` | **In Progress** | `Mapper/Fuzz` |
+| #7 | `storage` | `StorageBucket` | `42` | **In Progress** | `Controller` |
+| #8 | `compute` | `ComputeSubnetwork` | `23` | **In Progress** | `Mapper/Fuzz` |
+| #9 | `serviceusage` | `Service` | `15` | **In Progress** | `Default to Direct Controller` |
+| #10 | `compute` | `ComputeSecurityPolicy` | `13` | **In Progress** | `Default to Direct Controller` |
+| #11 | `compute` | `ComputeHealthCheck` | `12` | **In Progress** | `Identity/Ref` |
+| #12 | `compute` | `ComputeHTTPHealthCheck` | `11` | **In Progress** | `Default to Direct Controller` |
+| #13 | `compute` | `ComputeNetworkEndpointGroup` | `11` | **In Progress** | `Mocks` |
+| #14 | `compute` | `ComputeInstanceGroup` | `10` | **In Progress** | `Default to Direct Controller` |
+| #15 | `compute` | `ComputeBackendService` | `9` | **In Progress** | `Mapper/Fuzz` |
+| #16 | `bigtable` | `BigtableInstance` | `8` | **In Progress** | `Mapper/Fuzz` |
+| #17 | `pubsub` | `PubSubSchema` | `8` | **In Progress** | `Default to Direct Controller` |
+| #18 | `apigee` | `ApigeeOrganization` | `7` | **In Progress** | `Mapper/Fuzz` |
+| #19 | `compute` | `ComputeBackendBucket` | `7` | **In Progress** | `Identity/Ref` |
+| #20 | `compute` | `ComputeInstanceTemplate` | `7` | **In Progress** | `Types` |
+| #21 | `pubsub` | `PubSubTopic` | `7` | **In Progress** | `Default to Direct Controller` |
+| #22 | `compute` | `ComputeRouter` | `6` | **In Progress** | `Default to Direct Controller` |
+| #23 | `dataproc` | `DataprocCluster` | `6` | **In Progress** | `Default to Direct Controller` |
+| #24 | `compute` | `ComputeTargetVPNGateway` | `5` | **In Progress** | `Identity/Ref` |
+| #25 | `compute` | `ComputeURLMap` | `5` | **In Progress** | `Default to Direct Controller` |
 
 ---
 ## Resource Migration Progress by Service / Group
@@ -65,66 +68,66 @@
 
 | Group | Total | Completed | In Progress | Not Started | % Complete |
 | :--- | :---: | :---: | :---: | :---: | :---: |
-| `compute` | 56 | 1 | 52 | 3 | `1.8%` |
-| `iam` | 12 | 0 | 6 | 6 | `0.0%` |
-| `monitoring` | 9 | 1 | 8 | 0 | `11.1%` |
-| `networkservices` | 7 | 0 | 3 | 4 | `0.0%` |
-| `logging` | 5 | 1 | 4 | 0 | `20.0%` |
 | `accesscontextmanager` | 4 | 0 | 4 | 0 | `0.0%` |
 | `alloydb` | 4 | 1 | 3 | 0 | `25.0%` |
+| `apigee` | 2 | 0 | 2 | 0 | `0.0%` |
+| `artifactregistry` | 1 | 0 | 1 | 0 | `0.0%` |
 | `bigquery` | 4 | 0 | 3 | 1 | `0.0%` |
 | `bigtable` | 4 | 0 | 4 | 0 | `0.0%` |
-| `certificatemanager` | 4 | 1 | 3 | 0 | `25.0%` |
-| `dlp` | 4 | 0 | 0 | 4 | `0.0%` |
-| `identityplatform` | 4 | 0 | 0 | 4 | `0.0%` |
-| `privateca` | 4 | 0 | 4 | 0 | `0.0%` |
-| `resourcemanager` | 4 | 0 | 2 | 2 | `0.0%` |
-| `sql` | 4 | 1 | 2 | 1 | `25.0%` |
-| `storage` | 4 | 0 | 3 | 1 | `0.0%` |
-| `tags` | 4 | 1 | 3 | 0 | `25.0%` |
-| `dataproc` | 3 | 0 | 3 | 0 | `0.0%` |
-| `dns` | 3 | 0 | 3 | 0 | `0.0%` |
-| `edgecontainer` | 3 | 0 | 2 | 1 | `0.0%` |
-| `gkehub` | 3 | 1 | 2 | 0 | `33.3%` |
-| `networksecurity` | 3 | 0 | 3 | 0 | `0.0%` |
-| `pubsub` | 3 | 0 | 3 | 0 | `0.0%` |
-| `servicedirectory` | 3 | 0 | 3 | 0 | `0.0%` |
-| `vertexai` | 3 | 0 | 2 | 1 | `0.0%` |
-| `apigee` | 2 | 0 | 2 | 0 | `0.0%` |
-| `binaryauthorization` | 2 | 0 | 0 | 2 | `0.0%` |
-| `cloudidentity` | 2 | 2 | 0 | 0 | `100.0%` |
-| `container` | 2 | 0 | 2 | 0 | `0.0%` |
-| `datacatalog` | 2 | 0 | 2 | 0 | `0.0%` |
-| `dataflow` | 2 | 0 | 2 | 0 | `0.0%` |
-| `edgenetwork` | 2 | 0 | 2 | 0 | `0.0%` |
-| `filestore` | 2 | 0 | 1 | 1 | `0.0%` |
-| `iap` | 2 | 0 | 1 | 1 | `0.0%` |
-| `kms` | 2 | 0 | 2 | 0 | `0.0%` |
-| `networkconnectivity` | 2 | 0 | 2 | 0 | `0.0%` |
-| `osconfig` | 2 | 0 | 2 | 0 | `0.0%` |
-| `run` | 2 | 0 | 2 | 0 | `0.0%` |
-| `secretmanager` | 2 | 0 | 2 | 0 | `0.0%` |
-| `serviceusage` | 2 | 0 | 2 | 0 | `0.0%` |
-| `spanner` | 2 | 0 | 2 | 0 | `0.0%` |
-| `artifactregistry` | 1 | 0 | 1 | 0 | `0.0%` |
 | `billingbudgets` | 1 | 0 | 1 | 0 | `0.0%` |
+| `binaryauthorization` | 2 | 0 | 0 | 2 | `0.0%` |
+| `certificatemanager` | 4 | 1 | 3 | 0 | `25.0%` |
 | `cloudbuild` | 1 | 0 | 1 | 0 | `0.0%` |
 | `cloudfunctions` | 1 | 0 | 1 | 0 | `0.0%` |
+| `cloudidentity` | 2 | 2 | 0 | 0 | `100.0%` |
 | `cloudids` | 1 | 0 | 1 | 0 | `0.0%` |
 | `cloudscheduler` | 1 | 0 | 0 | 1 | `0.0%` |
+| `compute` | 56 | 1 | 52 | 3 | `1.8%` |
 | `configcontroller` | 1 | 0 | 0 | 1 | `0.0%` |
+| `container` | 2 | 0 | 2 | 0 | `0.0%` |
 | `containeranalysis` | 1 | 0 | 1 | 0 | `0.0%` |
 | `containerattached` | 1 | 0 | 1 | 0 | `0.0%` |
+| `datacatalog` | 2 | 0 | 2 | 0 | `0.0%` |
+| `dataflow` | 2 | 0 | 2 | 0 | `0.0%` |
 | `datafusion` | 1 | 0 | 0 | 1 | `0.0%` |
+| `dataproc` | 3 | 0 | 3 | 0 | `0.0%` |
+| `dlp` | 4 | 0 | 0 | 4 | `0.0%` |
+| `dns` | 3 | 0 | 3 | 0 | `0.0%` |
+| `edgecontainer` | 3 | 0 | 2 | 1 | `0.0%` |
+| `edgenetwork` | 2 | 0 | 2 | 0 | `0.0%` |
 | `eventarc` | 1 | 0 | 0 | 1 | `0.0%` |
+| `filestore` | 2 | 0 | 1 | 1 | `0.0%` |
 | `firestore` | 1 | 0 | 1 | 0 | `0.0%` |
+| `gkehub` | 3 | 1 | 2 | 0 | `33.3%` |
+| `iam` | 12 | 0 | 6 | 6 | `0.0%` |
+| `iap` | 2 | 0 | 1 | 1 | `0.0%` |
+| `identityplatform` | 4 | 0 | 0 | 4 | `0.0%` |
+| `kms` | 2 | 0 | 2 | 0 | `0.0%` |
+| `logging` | 5 | 1 | 4 | 0 | `20.0%` |
 | `memcache` | 1 | 0 | 1 | 0 | `0.0%` |
+| `monitoring` | 9 | 1 | 8 | 0 | `11.1%` |
+| `networkconnectivity` | 2 | 0 | 2 | 0 | `0.0%` |
+| `networksecurity` | 3 | 0 | 3 | 0 | `0.0%` |
+| `networkservices` | 7 | 0 | 3 | 4 | `0.0%` |
+| `osconfig` | 2 | 0 | 2 | 0 | `0.0%` |
+| `privateca` | 4 | 0 | 4 | 0 | `0.0%` |
+| `pubsub` | 3 | 0 | 3 | 0 | `0.0%` |
 | `pubsublite` | 1 | 0 | 1 | 0 | `0.0%` |
 | `recaptchaenterprise` | 1 | 0 | 1 | 0 | `0.0%` |
 | `redis` | 1 | 0 | 1 | 0 | `0.0%` |
+| `resourcemanager` | 4 | 0 | 2 | 2 | `0.0%` |
+| `run` | 2 | 0 | 2 | 0 | `0.0%` |
+| `secretmanager` | 2 | 0 | 2 | 0 | `0.0%` |
+| `servicedirectory` | 3 | 0 | 3 | 0 | `0.0%` |
 | `servicenetworking` | 1 | 0 | 1 | 0 | `0.0%` |
+| `serviceusage` | 2 | 0 | 2 | 0 | `0.0%` |
 | `sourcerepo` | 1 | 0 | 0 | 1 | `0.0%` |
+| `spanner` | 2 | 0 | 2 | 0 | `0.0%` |
+| `sql` | 4 | 1 | 2 | 1 | `25.0%` |
+| `storage` | 4 | 0 | 3 | 1 | `0.0%` |
 | `storagetransfer` | 1 | 0 | 0 | 1 | `0.0%` |
+| `tags` | 4 | 1 | 3 | 0 | `25.0%` |
+| `vertexai` | 3 | 0 | 2 | 1 | `0.0%` |
 | `vpcaccess` | 1 | 0 | 1 | 0 | `0.0%` |
 
 </details>

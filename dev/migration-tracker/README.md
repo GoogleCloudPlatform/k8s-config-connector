@@ -7,12 +7,7 @@ The primary status document is **[`MIGRATION_STATUS.md`](./MIGRATION_STATUS.md)*
 ## How to View Migration Status
 
 - **Primary (Markdown Dashboard)**: View **[`MIGRATION_STATUS.md`](./MIGRATION_STATUS.md)** directly for live progress metrics, dependency priority rankings, step implementation status, and full resource registries.
-- **Optional Web UI**: You can serve the static web dashboard locally if desired:
-  ```bash
-  cd dev/migration-tracker
-  python3 -m http.server 8000
-  ```
-  Then open [http://localhost:8000](http://localhost:8000) in your web browser.
+- **Web Dashboard**: View the hosted interactive dashboard at **[https://googlecloudplatform.github.io/k8s-config-connector/migration-tracker/#](https://googlecloudplatform.github.io/k8s-config-connector/migration-tracker/#)** (may be outdated). Alternatively, you can serve it locally using `python3 -m http.server 8000` in this directory.
 
 ## Scope of Brownfield Migration
 
