@@ -89,7 +89,7 @@ X-Xss-Protection: 0
   "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.cloud.redis.v1beta1.Instance",
-    "alternativeLocationId": "us-central1-f",
+    "alternativeLocationId": "us-central1-a",
     "authorizedNetwork": "projects/${projectId}/global/networks/default",
     "connectMode": "DIRECT_PEERING",
     "createTime": "2024-04-01T12:34:56.123456Z",
@@ -145,7 +145,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "alternativeLocationId": "us-central1-f",
+  "alternativeLocationId": "us-central1-a",
   "authorizedNetwork": "projects/${projectId}/global/networks/default",
   "connectMode": "DIRECT_PEERING",
   "createTime": "2024-04-01T12:34:56.123456Z",
@@ -186,195 +186,7 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://redis.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}?alt=json&updateMask=secondaryIpRange
-Content-Type: application/json
-
-{
-  "displayName": "Sample Redis Instance with Secondary IP Range",
-  "labels": {
-    "cnrm-test": "true",
-    "label-one": "value-one",
-    "managed-by-cnrm": "true"
-  },
-  "memorySizeGb": 1,
-  "persistenceConfig": {
-    "persistenceMode": "DISABLED"
-  },
-  "readReplicasMode": "READ_REPLICAS_DISABLED",
-  "replicaCount": 1,
-  "secondaryIpRange": "auto"
-}
-
-400 Bad Request
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 400,
-    "message": "com.google.apps.framework.request.StatusException: \u003ceye3 title='INVALID_ARGUMENT'/\u003e generic::INVALID_ARGUMENT: Secondary IP range can only be updated while enabling read replicas",
-    "status": "INVALID_ARGUMENT"
-  }
-}
-
----
-
-GET https://redis.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}?alt=json
-Content-Type: application/json
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "alternativeLocationId": "us-central1-f",
-  "authorizedNetwork": "projects/${projectId}/global/networks/default",
-  "connectMode": "DIRECT_PEERING",
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "currentLocationId": "us-central1-a",
-  "displayName": "Sample Redis Instance with Secondary IP Range",
-  "host": "10.1.2.3",
-  "labels": {
-    "cnrm-test": "true",
-    "label-one": "value-one",
-    "managed-by-cnrm": "true"
-  },
-  "locationId": "us-central1-a",
-  "memorySizeGb": 1,
-  "name": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
-  "nodes": [
-    {
-      "id": "node-0",
-      "zone": "us-central1-a"
-    },
-    {
-      "id": "node-1",
-      "zone": "us-central1-a"
-    }
-  ],
-  "persistenceConfig": {
-    "persistenceMode": "DISABLED"
-  },
-  "persistenceIamIdentity": "serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com",
-  "port": 6379,
-  "readReplicasMode": "READ_REPLICAS_DISABLED",
-  "redisVersion": "REDIS_7_0",
-  "replicaCount": 1,
-  "reservedIpRange": "10.1.2.0/24",
-  "state": "READY",
-  "tier": "STANDARD_HA",
-  "transitEncryptionMode": "DISABLED"
-}
-
----
-
-PATCH https://redis.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}?alt=json&updateMask=secondaryIpRange
-Content-Type: application/json
-
-{
-  "displayName": "Sample Redis Instance with Secondary IP Range",
-  "labels": {
-    "cnrm-test": "true",
-    "label-one": "value-one",
-    "managed-by-cnrm": "true"
-  },
-  "memorySizeGb": 1,
-  "persistenceConfig": {
-    "persistenceMode": "DISABLED"
-  },
-  "readReplicasMode": "READ_REPLICAS_DISABLED",
-  "replicaCount": 1,
-  "secondaryIpRange": "auto"
-}
-
-400 Bad Request
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 400,
-    "message": "com.google.apps.framework.request.StatusException: \u003ceye3 title='INVALID_ARGUMENT'/\u003e generic::INVALID_ARGUMENT: Secondary IP range can only be updated while enabling read replicas",
-    "status": "INVALID_ARGUMENT"
-  }
-}
-
----
-
-GET https://redis.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}?alt=json
-Content-Type: application/json
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "alternativeLocationId": "us-central1-f",
-  "authorizedNetwork": "projects/${projectId}/global/networks/default",
-  "connectMode": "DIRECT_PEERING",
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "currentLocationId": "us-central1-a",
-  "displayName": "Sample Redis Instance with Secondary IP Range",
-  "host": "10.1.2.3",
-  "labels": {
-    "cnrm-test": "true",
-    "label-one": "value-one",
-    "managed-by-cnrm": "true"
-  },
-  "locationId": "us-central1-a",
-  "memorySizeGb": 1,
-  "name": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
-  "nodes": [
-    {
-      "id": "node-0",
-      "zone": "us-central1-a"
-    },
-    {
-      "id": "node-1",
-      "zone": "us-central1-a"
-    }
-  ],
-  "persistenceConfig": {
-    "persistenceMode": "DISABLED"
-  },
-  "persistenceIamIdentity": "serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com",
-  "port": 6379,
-  "readReplicasMode": "READ_REPLICAS_DISABLED",
-  "redisVersion": "REDIS_7_0",
-  "replicaCount": 1,
-  "reservedIpRange": "10.1.2.0/24",
-  "state": "READY",
-  "tier": "STANDARD_HA",
-  "transitEncryptionMode": "DISABLED"
-}
-
----
-
-PATCH https://redis.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}?alt=json&updateMask=displayName%2CsecondaryIpRange
+PATCH https://redis.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}?alt=json&updateMask=displayName
 Content-Type: application/json
 
 {
@@ -393,7 +205,7 @@ Content-Type: application/json
   "secondaryIpRange": "auto"
 }
 
-400 Bad Request
+200 OK
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -404,16 +216,20 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "error": {
-    "code": 400,
-    "message": "com.google.apps.framework.request.StatusException: \u003ceye3 title='INVALID_ARGUMENT'/\u003e generic::INVALID_ARGUMENT: Secondary IP range can only be updated while enabling read replicas",
-    "status": "INVALID_ARGUMENT"
-  }
+  "done": false,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
+    "apiVersion": "v1beta1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
+    "verb": "update"
+  },
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
 }
 
 ---
 
-GET https://redis.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}?alt=json
+GET https://redis.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/operations/${operationID}?alt=json
 Content-Type: application/json
 
 200 OK
@@ -427,81 +243,55 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "alternativeLocationId": "us-central1-f",
-  "authorizedNetwork": "projects/${projectId}/global/networks/default",
-  "connectMode": "DIRECT_PEERING",
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "currentLocationId": "us-central1-a",
-  "displayName": "Sample Redis Instance with Secondary IP Range",
-  "host": "10.1.2.3",
-  "labels": {
-    "cnrm-test": "true",
-    "label-one": "value-one",
-    "managed-by-cnrm": "true"
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.cloud.common.OperationMetadata",
+    "apiVersion": "v1beta1",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
+    "target": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
+    "verb": "update"
   },
-  "locationId": "us-central1-a",
-  "memorySizeGb": 1,
-  "name": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
-  "nodes": [
-    {
-      "id": "node-0",
-      "zone": "us-central1-a"
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.redis.v1beta1.Instance",
+    "alternativeLocationId": "us-central1-a",
+    "authorizedNetwork": "projects/${projectId}/global/networks/default",
+    "connectMode": "DIRECT_PEERING",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "currentLocationId": "us-central1-a",
+    "displayName": "Sample Redis Instance with Secondary IP Range - Updated",
+    "host": "10.1.2.3",
+    "labels": {
+      "cnrm-test": "true",
+      "label-one": "value-one",
+      "managed-by-cnrm": "true"
     },
-    {
-      "id": "node-1",
-      "zone": "us-central1-a"
-    }
-  ],
-  "persistenceConfig": {
-    "persistenceMode": "DISABLED"
-  },
-  "persistenceIamIdentity": "serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com",
-  "port": 6379,
-  "readReplicasMode": "READ_REPLICAS_DISABLED",
-  "redisVersion": "REDIS_7_0",
-  "replicaCount": 1,
-  "reservedIpRange": "10.1.2.0/24",
-  "state": "READY",
-  "tier": "STANDARD_HA",
-  "transitEncryptionMode": "DISABLED"
-}
-
----
-
-PATCH https://redis.googleapis.com/v1beta1/projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}?alt=json&updateMask=displayName%2CsecondaryIpRange
-Content-Type: application/json
-
-{
-  "displayName": "Sample Redis Instance with Secondary IP Range - Updated",
-  "labels": {
-    "cnrm-test": "true",
-    "label-one": "value-one",
-    "managed-by-cnrm": "true"
-  },
-  "memorySizeGb": 1,
-  "persistenceConfig": {
-    "persistenceMode": "DISABLED"
-  },
-  "readReplicasMode": "READ_REPLICAS_DISABLED",
-  "replicaCount": 1,
-  "secondaryIpRange": "auto"
-}
-
-400 Bad Request
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "error": {
-    "code": 400,
-    "message": "com.google.apps.framework.request.StatusException: \u003ceye3 title='INVALID_ARGUMENT'/\u003e generic::INVALID_ARGUMENT: Secondary IP range can only be updated while enabling read replicas",
-    "status": "INVALID_ARGUMENT"
+    "locationId": "us-central1-a",
+    "memorySizeGb": 1,
+    "name": "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}",
+    "nodes": [
+      {
+        "id": "node-0",
+        "zone": "us-central1-a"
+      },
+      {
+        "id": "node-1",
+        "zone": "us-central1-a"
+      }
+    ],
+    "persistenceConfig": {
+      "persistenceMode": "DISABLED"
+    },
+    "persistenceIamIdentity": "serviceAccount:service-${projectNumber}@cloud-redis.iam.gserviceaccount.com",
+    "port": 6379,
+    "readReplicasMode": "READ_REPLICAS_DISABLED",
+    "redisVersion": "REDIS_7_0",
+    "replicaCount": 1,
+    "reservedIpRange": "10.1.2.0/24",
+    "state": "READY",
+    "tier": "STANDARD_HA",
+    "transitEncryptionMode": "DISABLED"
   }
 }
 
@@ -521,12 +311,12 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "alternativeLocationId": "us-central1-f",
+  "alternativeLocationId": "us-central1-a",
   "authorizedNetwork": "projects/${projectId}/global/networks/default",
   "connectMode": "DIRECT_PEERING",
   "createTime": "2024-04-01T12:34:56.123456Z",
   "currentLocationId": "us-central1-a",
-  "displayName": "Sample Redis Instance with Secondary IP Range",
+  "displayName": "Sample Redis Instance with Secondary IP Range - Updated",
   "host": "10.1.2.3",
   "labels": {
     "cnrm-test": "true",
