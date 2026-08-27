@@ -29,6 +29,7 @@ require (
 	cloud.google.com/go/cloudquotas v1.11.0
 	cloud.google.com/go/cloudsecuritycompliance v1.0.0
 	cloud.google.com/go/compute v1.63.0
+	cloud.google.com/go/contactcenterinsights v1.22.0
 	cloud.google.com/go/dataform v1.0.0
 	cloud.google.com/go/dataplex v1.34.0
 	cloud.google.com/go/dataproc/v2 v2.22.0
@@ -37,6 +38,7 @@ require (
 	cloud.google.com/go/developerconnect v1.1.0
 	cloud.google.com/go/dialogflow v1.82.0
 	cloud.google.com/go/discoveryengine v1.32.0
+	cloud.google.com/go/documentai v1.48.0
 	cloud.google.com/go/edgecontainer v1.9.0
 	cloud.google.com/go/edgenetwork v1.8.0
 	cloud.google.com/go/essentialcontacts v1.12.0
@@ -73,6 +75,7 @@ require (
 	cloud.google.com/go/securitycenter v1.44.0
 	cloud.google.com/go/speech v1.35.0
 	cloud.google.com/go/storage v1.62.0
+	cloud.google.com/go/vectorsearch v1.3.0
 	cloud.google.com/go/video v1.32.0
 	cloud.google.com/go/vision/v2 v2.15.0
 	cloud.google.com/go/vmwareengine v1.8.0
