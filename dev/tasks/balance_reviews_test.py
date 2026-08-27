@@ -51,14 +51,14 @@ class TestBalanceReviews(unittest.TestCase):
                 "title": "Candidate 1",
                 "body": "Fixes #100",
                 "requested_reviewers": [{"login": "outsider"}],
-                "labels": [{"name": "ready-for-human"}]
+                "labels": [{"name": "overseer/ready-for-human"}]
             },
             {
                 "number": 4,
                 "title": "Candidate 2",
                 "body": "No tracking issue",
                 "requested_reviewers": [],
-                "labels": [{"name": "ready-for-human"}]
+                "labels": [{"name": "overseer/ready-for-human"}]
             },
             {
                 "number": 5,
@@ -66,6 +66,13 @@ class TestBalanceReviews(unittest.TestCase):
                 "body": "",
                 "requested_reviewers": [],
                 "labels": []
+            },
+            {
+                "number": 6,
+                "title": "Stopped PR",
+                "body": "Fixes #100",
+                "requested_reviewers": [],
+                "labels": [{"name": "overseer/ready-for-human"}, {"name": "overseer/stop"}]
             }
         ]
         
@@ -77,7 +84,7 @@ class TestBalanceReviews(unittest.TestCase):
         # Check tracking issue maps
         self.assertEqual(tracking_map, {100: {"alice"}, 200: {"bob"}})
         
-        # Check candidate extraction (only #3 and #4 should be candidates)
+        # Check candidate extraction (only #3 and #4 should be candidates, #6 has overseer/stop)
         candidate_numbers = [pr["number"] for pr in candidates]
         self.assertEqual(candidate_numbers, [3, 4])
 
@@ -94,7 +101,7 @@ class TestBalanceReviews(unittest.TestCase):
                 "title": "PR 3",
                 "body": "Fixes #100",
                 "requested_reviewers": [],
-                "labels": [{"name": "ready-for-human"}]
+                "labels": [{"name": "overseer/ready-for-human"}]
             }
         ]
         
@@ -122,7 +129,7 @@ class TestBalanceReviews(unittest.TestCase):
                 "title": "PR 3",
                 "body": "Fixes #300",
                 "requested_reviewers": [],
-                "labels": [{"name": "ready-for-human"}]
+                "labels": [{"name": "overseer/ready-for-human"}]
             }
         ]
         
@@ -146,7 +153,7 @@ class TestBalanceReviews(unittest.TestCase):
                 "title": "PR 3",
                 "body": "Fixes #300",
                 "requested_reviewers": [],
-                "labels": [{"name": "ready-for-human"}]
+                "labels": [{"name": "overseer/ready-for-human"}]
             }
         ]
         
@@ -170,7 +177,7 @@ class TestBalanceReviews(unittest.TestCase):
                 "title": "PR 3",
                 "body": "Fixes #300",
                 "requested_reviewers": [],
-                "labels": [{"name": "ready-for-human"}]
+                "labels": [{"name": "overseer/ready-for-human"}]
             }
         ]
         

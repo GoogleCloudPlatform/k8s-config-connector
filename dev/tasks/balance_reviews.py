@@ -54,7 +54,7 @@ def audit_workloads(prs, team):
     Returns:
         workloads: dict of team member -> open review count.
         tracking_issue_to_reviewer: dict of issue_id -> set of team member usernames currently reviewing it.
-        unassigned_candidates: list of PRs that are candidate ready-for-human PRs.
+        unassigned_candidates: list of PRs that are candidate overseer/ready-for-human PRs.
     """
     workloads = {member: 0 for member in team}
     tracking_issue_to_reviewer = {}
@@ -78,13 +78,13 @@ def audit_workloads(prs, team):
                 for reviewer in assigned_team_reviewers:
                     tracking_issue_to_reviewer[issue_id].add(reviewer)
         else:
-            if "ready-for-human" in labels:
+            if "overseer/ready-for-human" in labels and "overseer/stop" not in labels:
                 unassigned_candidates.append(pr)
 
     return workloads, tracking_issue_to_reviewer, unassigned_candidates
 
 def balance_reviews(unassigned_candidates, team, workloads, tracking_issue_to_reviewer):
-    """Perform the review assignment algorithm on unassigned ready-for-human candidates."""
+    """Perform the review assignment algorithm on unassigned overseer/ready-for-human candidates."""
     assignments = []
     
     # Sort candidates by number to ensure deterministic ordering
@@ -172,7 +172,7 @@ def main():
     for member in TEAM:
         print(f"  {member}: {workloads[member]} assigned reviews")
 
-    print(f"\nFound {len(candidates)} unassigned ready-for-human PRs.")
+    print(f"\nFound {len(candidates)} unassigned overseer/ready-for-human PRs.")
 
     assignments = balance_reviews(candidates, TEAM, workloads, tracking_maps)
 
