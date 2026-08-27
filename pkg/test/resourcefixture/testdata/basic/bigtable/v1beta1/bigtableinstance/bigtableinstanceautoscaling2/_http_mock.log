@@ -121,10 +121,12 @@ OK
       },
       "instance": {
         "displayName": "bigtableinstance",
+        "edition": "ENTERPRISE",
         "labels": {
           "cnrm-test": "true",
           "managed-by-cnrm": "true"
         },
+        "name": "projects/${projectId}/instances/bt-${uniqueId}",
         "type": "PRODUCTION"
       },
       "instanceId": "bt-${uniqueId}",
@@ -171,10 +173,12 @@ OK
       },
       "instance": {
         "displayName": "bigtableinstance",
+        "edition": "ENTERPRISE",
         "labels": {
           "cnrm-test": "true",
           "managed-by-cnrm": "true"
         },
+        "name": "projects/${projectId}/instances/bt-${uniqueId}",
         "type": "PRODUCTION"
       },
       "instanceId": "bt-${uniqueId}",
@@ -186,6 +190,7 @@ OK
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.Instance",
     "displayName": "bigtableinstance",
+    "edition": "ENTERPRISE",
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
@@ -211,6 +216,7 @@ OK
     {
       "createTime": "2024-04-01T12:34:56.123456Z",
       "displayName": "bigtableinstance",
+      "edition": "ENTERPRISE",
       "labels": {
         "cnrm-test": "true",
         "managed-by-cnrm": "true"
@@ -328,6 +334,7 @@ OK
     {
       "createTime": "2024-04-01T12:34:56.123456Z",
       "displayName": "bigtableinstance",
+      "edition": "ENTERPRISE",
       "labels": {
         "cnrm-test": "true",
         "managed-by-cnrm": "true"
@@ -537,32 +544,6 @@ GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/PartialUpdateInstance
 OK
 
 {
-  "metadata": {
-    "@type": "type.googleapis.com/google.bigtable.admin.v2.UpdateInstanceMetadata",
-    "originalRequest": {
-      "instance": {
-        "displayName": "bigtableinstance",
-        "name": "projects/${projectId}/instances/bt-${uniqueId}",
-        "type": "PRODUCTION"
-      },
-      "updateMask": "displayName,type"
-    },
-    "requestTime": "2024-04-01T12:34:56.123456Z"
-  },
-  "name": "operations/projects/${projectId}/instances/bt-${uniqueId}/locations/us-central1-a/operations/${operationID}"
-}
-
----
-
-GRPC /google.longrunning.Operations/GetOperation
-
-{
-  "name": "operations/projects/${projectId}/instances/bt-${uniqueId}/locations/us-central1-a/operations/${operationID}"
-}
-
-OK
-
-{
   "done": true,
   "metadata": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.UpdateInstanceMetadata",
@@ -582,12 +563,12 @@ OK
     "@type": "type.googleapis.com/google.bigtable.admin.v2.Instance",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "displayName": "bigtableinstance",
+    "edition": "ENTERPRISE",
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/instances/bt-${uniqueId}",
-    "state": "READY",
     "type": "PRODUCTION"
   }
 }
@@ -1043,6 +1024,7 @@ OK
     {
       "createTime": "2024-04-01T12:34:56.123456Z",
       "displayName": "bigtableinstance",
+      "edition": "ENTERPRISE",
       "labels": {
         "cnrm-test": "true",
         "managed-by-cnrm": "true"
@@ -1160,6 +1142,7 @@ OK
     {
       "createTime": "2024-04-01T12:34:56.123456Z",
       "displayName": "bigtableinstance",
+      "edition": "ENTERPRISE",
       "labels": {
         "cnrm-test": "true",
         "managed-by-cnrm": "true"

@@ -185,7 +185,7 @@ func (s *Operations) StartLROWithDone(ctx context.Context, prefix string, metada
 		klog.Warningf("error updating LRO: %v", err2)
 	}
 
-	return op, nil
+	return finished, nil
 }
 
 func markDone(op *pb.Operation, result proto.Message, err error, keepMetadataOnDone bool) error {
