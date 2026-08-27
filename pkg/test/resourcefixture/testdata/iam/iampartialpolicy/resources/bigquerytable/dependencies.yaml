@@ -5,7 +5,7 @@ metadata:
     cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
   name: bigquerydataset-${uniqueId}
 spec:
-  datasetId: dataset_${uniqueId}
+  resourceID: dataset_${uniqueId}
 ---
 apiVersion: bigquery.cnrm.cloud.google.com/v1beta1
 kind: BigQueryTable
@@ -16,4 +16,4 @@ metadata:
 spec:
   datasetRef:
     name: bigquerydataset-${uniqueId}
-  tableId: test_table
+  resourceID: test_table
