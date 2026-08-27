@@ -24,8 +24,6 @@ spec:
     linuxNodeConfig:
       cgroupMode: CGROUP_MODE_V2
       swapConfig:
-        dedicatedLocalSsdProfile:
-          diskCount: 1
         enabled: false
     machineType: n2-standard-4
   resourceID: nodepool-sample-${uniqueId}

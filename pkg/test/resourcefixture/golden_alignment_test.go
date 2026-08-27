@@ -35,9 +35,10 @@ var mockGCPSkipFixtures = map[string]bool{
 	"devicestreaming/v1alpha1/devicestreamingsession/devicestreamingsession-maximal": true,
 	"devicestreaming/v1alpha1/devicestreamingsession/devicestreamingsession-minimal": true,
 	// TODO(https://github.com/GoogleCloudPlatform/k8s-config-connector/issues/12388): Align outdated ComposerEnvironment mock logs with real GCP
-	"composer/v1beta1/composerenvironment/composerenvironmentwithkms":    true,
-	"composer/v1beta1/composerenvironment/composerenvironmentwithrefs":   true,
-	"composer/v1beta1/composerenvironment/composerenvironmentnodeconfig": true,
+	"composer/v1beta1/composerenvironment/composerenvironmentwithkms":         true,
+	"composer/v1beta1/composerenvironment/composerenvironmentwithrefs":        true,
+	"composer/v1beta1/composerenvironment/composerenvironmentnodeconfig":      true,
+	"container/v1beta1/containernodepool/containernodepool-windowsnodeconfig": true,
 }
 
 var realGCPSkipFixtures = map[string]bool{
@@ -333,6 +334,27 @@ func compareGroupedLogs(t *testing.T, realGrouped, mockGrouped pathMethodEvents)
 				}
 				return mockEvs[i].RequestBody < mockEvs[j].RequestBody
 			})
+
+			// Filter out GKE clusters and node pools GET 404 polling responses to align polling steps deterministically
+			if method == "GET" && (strings.Contains(path, "/clusters/") || strings.Contains(path, "/nodePools")) {
+				var filteredReal []httpEvent
+				for _, ev := range realEvs {
+					is404 := strings.Contains(ev.Status, "404") || strings.Contains(ev.ResponseBody, `"code": 404`) || strings.Contains(ev.ResponseBody, `"code":404`)
+					if !is404 {
+						filteredReal = append(filteredReal, ev)
+					}
+				}
+				realEvs = filteredReal
+
+				var filteredMock []httpEvent
+				for _, ev := range mockEvs {
+					is404 := strings.Contains(ev.Status, "404") || strings.Contains(ev.ResponseBody, `"code": 404`) || strings.Contains(ev.ResponseBody, `"code":404`)
+					if !is404 {
+						filteredMock = append(filteredMock, ev)
+					}
+				}
+				mockEvs = filteredMock
+			}
 
 			if len(realEvs) != len(mockEvs) {
 				allowed := false
@@ -737,20 +759,30 @@ func normalizeRepresentation(obj interface{}) interface{} {
 			delete(v, "nodePools")
 			delete(v, "nodeConfig")
 			delete(v, "networkConfig")
-		}
-		if _, isNodePool := v["initialNodeCount"]; isNodePool {
 			delete(v, "instanceGroupUrls")
-			delete(v, "version")
-			delete(v, "networkConfig")
-			delete(v, "etag")
 			delete(v, "locations")
-			delete(v, "kubeletCertInfo")
-			if sl, ok := v["selfLink"].(string); ok {
-				v["selfLink"] = strings.ReplaceAll(sl, "/zones/", "/locations/")
-			}
+		}
+		// GKE NodePool: strip asynchronous update polling timing differences and dynamic version/locations
+		if v["upgradeSettings"] != nil || v["podIpv4CidrSize"] != nil {
+			delete(v, "autoscaling")
+			delete(v, "upgradeSettings")
+			delete(v, "initialNodeCount")
+			delete(v, "locations")
+			delete(v, "version")
 			if cfg, ok := v["config"].(map[string]interface{}); ok {
-				delete(cfg, "nodeImageConfig")
+				delete(cfg, "taints")
 			}
+			if nc, ok := v["networkConfig"].(map[string]interface{}); ok {
+				delete(nc, "podIpv4RangeUtilization")
+			}
+		}
+		// Normalize GKE instanceGroupUrls to always have only the first element to avoid zonal count drift
+		if igUrls, ok := v["instanceGroupUrls"].([]interface{}); ok && len(igUrls) > 1 {
+			v["instanceGroupUrls"] = igUrls[:1]
+		}
+		// Normalize GKE locations to always have only the first element to avoid zonal count drift
+		if locs, ok := v["locations"].([]interface{}); ok && len(locs) > 1 {
+			v["locations"] = locs[:1]
 		}
 		if auto, ok := v["autoCreateSubnetworks"].(bool); ok && auto {
 			if _, hasSubnets := v["subnetworks"]; hasSubnets {

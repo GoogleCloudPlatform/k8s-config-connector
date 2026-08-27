@@ -17,10 +17,12 @@ package mockcontainer
 import (
 	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
 	"strings"
+	"sync"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
@@ -29,6 +31,11 @@ import (
 	"google.golang.org/grpc"
 
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/container/v1beta1"
+)
+
+var (
+	containerdConfigsMu sync.Mutex
+	containerdConfigs   = make(map[string]any)
 )
 
 func init() {
@@ -68,12 +75,25 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	// Terraform uses the /v1beta1/ endpoints, but gcloud uses v1.
 	// Rewrite for now (hoping they are compatible enough)
 	rewriteV1ToBeta := func(w http.ResponseWriter, r *http.Request) {
+		if r.Host != "container.googleapis.com" {
+			mux.ServeHTTP(w, r)
+			return
+		}
 		u := r.URL
 		if strings.HasPrefix(u.Path, "/v1/") {
 			u2 := *u
 			u2.Path = "/v1beta1/" + strings.TrimPrefix(u.Path, "/v1/")
 			r = httpmux.RewriteRequest(r, &u2)
 		}
+
+		getGKEResourcePath := func(p string) string {
+			p = strings.TrimPrefix(p, "/v1beta1/")
+			p = strings.TrimPrefix(p, "/v1/")
+			p = strings.TrimPrefix(p, "/")
+			return p
+		}
+
+		resourcePath := getGKEResourcePath(r.URL.Path)
 
 		// Intercept Request Body: OS_2022 -> OS_VERSION_LTSC2022
 		if r.Body != nil {
@@ -82,6 +102,32 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 				// Replace short enum names with full proto enum names
 				bodyBytes = bytes.ReplaceAll(bodyBytes, []byte(`"OS_2022"`), []byte(`"OS_VERSION_LTSC2022"`))
 				bodyBytes = bytes.ReplaceAll(bodyBytes, []byte(`"OS_2019"`), []byte(`"OS_VERSION_LTSC2019"`))
+
+				// Parse request body for containerdConfig
+				var reqMap map[string]any
+				if json.Unmarshal(bodyBytes, &reqMap) == nil {
+					if r.Method == http.MethodPut && strings.Contains(resourcePath, "/nodePools/") {
+						if cc, exists := reqMap["containerdConfig"]; exists {
+							containerdConfigsMu.Lock()
+							containerdConfigs[resourcePath] = cc
+							containerdConfigsMu.Unlock()
+						}
+					} else if r.Method == http.MethodPost && strings.HasSuffix(resourcePath, "/nodePools") {
+						if np, ok := reqMap["nodePool"].(map[string]any); ok {
+							if name, ok := np["name"].(string); ok {
+								if config, ok := np["config"].(map[string]any); ok {
+									if cc, exists := config["containerdConfig"]; exists {
+										npPath := resourcePath + "/" + name
+										containerdConfigsMu.Lock()
+										containerdConfigs[npPath] = cc
+										containerdConfigsMu.Unlock()
+									}
+								}
+							}
+						}
+					}
+				}
+
 				r.Body = io.NopCloser(bytes.NewReader(bodyBytes))
 				r.ContentLength = int64(len(bodyBytes))
 			}
@@ -94,6 +140,82 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 		respBytes := rec.body.Bytes()
 		respBytes = bytes.ReplaceAll(respBytes, []byte(`"OS_VERSION_LTSC2022"`), []byte(`"OS_2022"`))
 		respBytes = bytes.ReplaceAll(respBytes, []byte(`"OS_VERSION_LTSC2019"`), []byte(`"OS_2019"`))
+
+		// Intercept Response to inject containerdConfig on GET
+		if r.Method == http.MethodGet && (rec.statusCode == 0 || rec.statusCode == http.StatusOK) && strings.Contains(resourcePath, "/nodePools") {
+			var respMap map[string]any
+			if json.Unmarshal(respBytes, &respMap) == nil {
+				injectGKENodePoolFields := func(targetPath string, npMap map[string]any) {
+					// 1. Inject containerdConfig if exists
+					containerdConfigsMu.Lock()
+					cc, exists := containerdConfigs[targetPath]
+					containerdConfigsMu.Unlock()
+					config, ok := npMap["config"].(map[string]any)
+					if !ok {
+						config = make(map[string]any)
+						npMap["config"] = config
+					}
+					if exists {
+						config["containerdConfig"] = cc
+					}
+
+					// 2. Inject nodeImageConfig under config
+					if _, exists := config["nodeImageConfig"]; !exists {
+						config["nodeImageConfig"] = map[string]any{
+							"image":        "gke-1305-gke1014001-cos-113-17681-1153-62-c-pre",
+							"imageProject": "gke-node-images",
+						}
+					}
+
+					// 3. Inject etag
+					if _, exists := npMap["etag"]; !exists {
+						npMap["etag"] = "abcdef0123A="
+					}
+
+					// 4. Inject kubeletCertInfo
+					if _, exists := npMap["kubeletCertInfo"]; !exists {
+						npMap["kubeletCertInfo"] = map[string]any{
+							"tpmBootstrapCertExpireTime": "2024-04-01T12:34:56.123456Z",
+						}
+					}
+
+					// 5. Inject networkTierConfig under networkConfig
+					if netConfig, ok := npMap["networkConfig"].(map[string]any); ok {
+						if _, exists := netConfig["networkTierConfig"]; !exists {
+							netConfig["networkTierConfig"] = map[string]any{
+								"networkTier": "NETWORK_TIER_DEFAULT",
+							}
+						}
+					}
+				}
+
+				if strings.HasSuffix(resourcePath, "/nodePools") {
+					if nps, ok := respMap["nodePools"].([]any); ok {
+						for _, npAny := range nps {
+							if npMap, ok := npAny.(map[string]any); ok {
+								if name, ok := npMap["name"].(string); ok {
+									targetPath := resourcePath + "/" + name
+									injectGKENodePoolFields(targetPath, npMap)
+								}
+							}
+						}
+					} else {
+						if _, hasConfig := respMap["config"]; hasConfig {
+							if name, ok := respMap["name"].(string); ok {
+								targetPath := resourcePath + "/" + name
+								injectGKENodePoolFields(targetPath, respMap)
+							}
+						}
+					}
+				} else {
+					injectGKENodePoolFields(resourcePath, respMap)
+				}
+
+				if updatedBytes, err := json.Marshal(respMap); err == nil {
+					respBytes = updatedBytes
+				}
+			}
+		}
 
 		if rec.statusCode == http.StatusBadRequest && bytes.Contains(respBytes, []byte(`"must specify a field to update"`)) {
 			respBytes = []byte(`{
