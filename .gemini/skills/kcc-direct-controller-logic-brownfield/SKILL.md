@@ -23,6 +23,10 @@ This skill guides the implementation of the `Adapter` interface
 2.  **Verify and Record against MockGCP / Fix Discrepancies**:
     Run the fixtures tests against mock GCP to check behavior, update golden files, and verify correctness.
 
+    > [!WARNING]
+    > **WHENEVER A TEST CASE IS UPDATED, WE MUST RECORD REAL GCP LOGS AGAIN.**
+    > If you make any modifications to a test case configuration, manifest files (such as `create.yaml`, `update.yaml`, or `dependencies.yaml`), or the controller's runtime mapping configuration, you **MUST** run the test case against real GCP (`hack/record-gcp` or with `E2E_GCP_TARGET=real`) to regenerate the authentic `_http.log` baseline before comparing or committing any mock log changes. Do not attempt to manually edit the logs or bypass recording live traffic.
+
     When the direct controller becomes available for a resource, the test framework automatically injects the 'direct' 
     annotation into the test YAML and generates golden logs using the direct controller. If both the legacy and direct 
     controllers are available, the framework also records the legacy controller logs (_http_old_controller.log, 

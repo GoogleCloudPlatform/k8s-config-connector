@@ -15,6 +15,7 @@
 package resourcefixture_test
 
 import (
+	"reflect"
 	"testing"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
@@ -32,6 +33,7 @@ func TestResourceContents(t *testing.T) {
 		createUnstruct := test.ToUnstruct(t, f.Create)
 		updateUnstruct := test.ToUnstruct(t, f.Update)
 		testCreateAndUpdateUnstructMatchingProperties(t, f, createUnstruct, updateUnstruct)
+		testCreateAndUpdateUnstructShouldDiffer(t, f, createUnstruct, updateUnstruct)
 		dependencies := make([]*unstructured.Unstructured, 0)
 		testAllNamesAreUnique(t, f, append(dependencies, createUnstruct)...)
 	}
@@ -71,5 +73,38 @@ func testAllNamesAreUnique(t *testing.T, fixture resourcefixture.ResourceFixture
 				fixture.Name, r.GetName())
 		}
 		names[r.GetName()] = r
+	}
+}
+
+func testCreateAndUpdateUnstructShouldDiffer(t *testing.T, fixture resourcefixture.ResourceFixture,
+	createUnstruct, updateUnstruct *unstructured.Unstructured) {
+	exemptedUpdateNoChange := map[string]bool{
+		"bigquerydatasetnochangeupdate":                 true,
+		"bigquerydatasetnochangeupdate-direct":          true,
+		"bigquerytable-view":                            true,
+		"certificatemanagercertificateissuanceconfig":   true,
+		"containercluster-resourcemanagertags-standard": true,
+		"dataformrepository-basic":                      true,
+		"datalabelinginstruction-maximal":               true,
+		"networkconnectivityregionalendpoint-maximal":   true,
+		"networkconnectivityregionalendpoint-minimal":   true,
+	}
+	if exemptedUpdateNoChange[fixture.Name] {
+		return
+	}
+
+	createSpec := createUnstruct.Object["spec"]
+	updateSpec := updateUnstruct.Object["spec"]
+
+	createLabels := createUnstruct.GetLabels()
+	updateLabels := updateUnstruct.GetLabels()
+
+	createAnnotations := createUnstruct.GetAnnotations()
+	updateAnnotations := updateUnstruct.GetAnnotations()
+
+	if reflect.DeepEqual(createSpec, updateSpec) &&
+		reflect.DeepEqual(createLabels, updateLabels) &&
+		reflect.DeepEqual(createAnnotations, updateAnnotations) {
+		t.Errorf("fixture %q has update.yaml but it does not make any changes to spec, labels, or annotations compared to create.yaml. An update.yaml must trigger a real update/patch.", fixture.Name)
 	}
 }
