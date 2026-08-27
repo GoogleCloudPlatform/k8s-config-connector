@@ -21,6 +21,7 @@ spec:
       FROM `${projectId}.bigquerydatasetsample${uniqueId}.bigquerytable-main-${uniqueId}`
     refreshIntervalMs: 1800000
   resourceID: bigquerytablesample${uniqueId}
+  schema: '[{"mode":"NULLABLE","name":"dt","type":"DATE"},{"mode":"NULLABLE","name":"user_id","type":"STRING"}]'
   timePartitioning:
     field: dt
     type: DAY
