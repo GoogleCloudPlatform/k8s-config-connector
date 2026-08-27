@@ -28,20 +28,35 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	}
 	replacements.ReplacePath(".startTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".endTime", mockgcpregistry.PlaceholderTimestamp)
-	replacements.RemovePath(".createTime")
-	replacements.RemovePath(".response.createTime")
-	replacements.RemovePath(".updateTime")
-	replacements.RemovePath(".response.updateTime")
 	replacements.RemovePath(".servingConfigDataStore")
 	replacements.RemovePath(".response.servingConfigDataStore")
-	replacements.RemovePath(".marketplaceAgentVisibility")
-	replacements.RemovePath(".response.marketplaceAgentVisibility")
-	replacements.RemovePath(".observabilityConfig")
-	replacements.RemovePath(".response.observabilityConfig")
-	replacements.RemovePath(".naturalLanguageQueryUnderstandingConfig")
-	replacements.RemovePath(".response.naturalLanguageQueryUnderstandingConfig")
-	replacements.RemovePath(".solutionTypes")
-	replacements.RemovePath(".response.solutionTypes")
+
+	replacements.TransformLRO(func(m map[string]any) {
+		if resp, ok := m["response"].(map[string]any); ok {
+			if len(resp) == 0 || (len(resp) == 1 && resp["@type"] == "type.googleapis.com/google.protobuf.Empty") {
+				delete(m, "response")
+			}
+		}
+	})
+
+	transformFunc := func(m map[string]any) {
+		name, _ := m["name"].(string)
+		if strings.Contains(name, "/engines/") {
+			// For Engines, the real log does not have createTime, updateTime, marketplaceAgentVisibility, observabilityConfig
+			delete(m, "createTime")
+			delete(m, "updateTime")
+			delete(m, "marketplaceAgentVisibility")
+			delete(m, "observabilityConfig")
+		} else if strings.Contains(name, "/dataStores/") {
+			// For DataStores, the real log has createTime, naturalLanguageQueryUnderstandingConfig, solutionTypes
+			if m["createTime"] != nil {
+				m["createTime"] = mockgcpregistry.PlaceholderTimestamp
+			}
+		}
+	}
+
+	replacements.TransformObject("", transformFunc)
+	replacements.TransformObject(".response", transformFunc)
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
