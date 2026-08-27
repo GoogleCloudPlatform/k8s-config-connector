@@ -309,6 +309,10 @@ func testFixturesInSeries(ctx context.Context, t *testing.T, scenarioOptions Sce
 						opt.CreateInOrder = true
 						opt.DeleteInOrder = true
 					}
+					if strings.Contains(fixture.Name, "spanner") {
+						opt.CreateInOrder = true
+						opt.DeleteInOrder = true
+					}
 
 					// We want to use SSA everywhere, but some of our tests are broken by SSA
 					switch group := primaryResource.GetObjectKind().GroupVersionKind().Group; group {
