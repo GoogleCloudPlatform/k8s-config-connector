@@ -131,10 +131,102 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.security.privateca.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/us-central1/certificateTemplates/privatecacertificatetemplate-${uniqueId}",
     "verb": "create"
   },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.security.privateca.v1.CertificateTemplate",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "An basic sample certificate template",
+    "identityConstraints": {
+      "allowSubjectAltNamesPassthrough": true,
+      "allowSubjectPassthrough": true,
+      "celExpression": {
+        "description": "Always true",
+        "expression": "true",
+        "location": "any.file.anywhere",
+        "title": "Sample expression"
+      }
+    },
+    "labels": {
+      "cnrm-test": "true",
+      "label-two": "value-two",
+      "managed-by-cnrm": "true"
+    },
+    "name": "projects/${projectId}/locations/us-central1/certificateTemplates/privatecacertificatetemplate-${uniqueId}",
+    "passthroughExtensions": {
+      "additionalExtensions": [
+        {
+          "objectIdPath": [
+            1,
+            6
+          ]
+        }
+      ],
+      "knownExtensions": [
+        "EXTENDED_KEY_USAGE"
+      ]
+    },
+    "predefinedValues": {
+      "additionalExtensions": [
+        {
+          "critical": true,
+          "objectId": {
+            "objectIdPath": [
+              1,
+              6
+            ]
+          },
+          "value": "c3RyaW5nCg=="
+        }
+      ],
+      "aiaOcspServers": [
+        "string"
+      ],
+      "caOptions": {
+        "isCa": false,
+        "maxIssuerPathLength": 6
+      },
+      "keyUsage": {
+        "baseKeyUsage": {
+          "contentCommitment": true,
+          "dataEncipherment": true,
+          "decipherOnly": true,
+          "digitalSignature": true,
+          "encipherOnly": true,
+          "keyAgreement": true,
+          "keyEncipherment": true
+        },
+        "extendedKeyUsage": {
+          "clientAuth": true,
+          "codeSigning": true,
+          "emailProtection": true,
+          "ocspSigning": true,
+          "serverAuth": true,
+          "timeStamping": true
+        },
+        "unknownExtendedKeyUsages": [
+          {
+            "objectIdPath": [
+              1,
+              6
+            ]
+          }
+        ]
+      },
+      "policyIds": [
+        {
+          "objectIdPath": [
+            1,
+            6
+          ]
+        }
+      ]
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
 }
 
 ---
@@ -356,10 +448,103 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.security.privateca.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/us-central1/certificateTemplates/privatecacertificatetemplate-${uniqueId}",
     "verb": "update"
   },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.cloud.security.privateca.v1.CertificateTemplate",
+    "createTime": "2024-04-01T12:34:56.123456Z",
+    "description": "An basic sample certificate template",
+    "identityConstraints": {
+      "allowSubjectAltNamesPassthrough": true,
+      "allowSubjectPassthrough": true,
+      "celExpression": {
+        "description": "Always true",
+        "expression": "true",
+        "location": "any.file.anywhere",
+        "title": "Sample expression"
+      }
+    },
+    "labels": {
+      "cnrm-test": "true",
+      "label-one": "value-one",
+      "label-two": "value-two",
+      "managed-by-cnrm": "true"
+    },
+    "name": "projects/${projectId}/locations/us-central1/certificateTemplates/privatecacertificatetemplate-${uniqueId}",
+    "passthroughExtensions": {
+      "additionalExtensions": [
+        {
+          "objectIdPath": [
+            1,
+            6
+          ]
+        }
+      ],
+      "knownExtensions": [
+        "EXTENDED_KEY_USAGE"
+      ]
+    },
+    "predefinedValues": {
+      "additionalExtensions": [
+        {
+          "critical": true,
+          "objectId": {
+            "objectIdPath": [
+              1,
+              6
+            ]
+          },
+          "value": "c3RyaW5nCg=="
+        }
+      ],
+      "aiaOcspServers": [
+        "string"
+      ],
+      "caOptions": {
+        "isCa": false,
+        "maxIssuerPathLength": 6
+      },
+      "keyUsage": {
+        "baseKeyUsage": {
+          "contentCommitment": true,
+          "dataEncipherment": true,
+          "decipherOnly": true,
+          "digitalSignature": true,
+          "encipherOnly": true,
+          "keyAgreement": true,
+          "keyEncipherment": true
+        },
+        "extendedKeyUsage": {
+          "clientAuth": true,
+          "codeSigning": true,
+          "emailProtection": true,
+          "ocspSigning": true,
+          "serverAuth": true,
+          "timeStamping": true
+        },
+        "unknownExtendedKeyUsages": [
+          {
+            "objectIdPath": [
+              1,
+              6
+            ]
+          }
+        ]
+      },
+      "policyIds": [
+        {
+          "objectIdPath": [
+            1,
+            6
+          ]
+        }
+      ]
+    },
+    "updateTime": "2024-04-01T12:34:56.123456Z"
+  }
 }
 
 ---
@@ -490,10 +675,14 @@ X-Xss-Protection: 0
     "@type": "type.googleapis.com/google.cloud.security.privateca.v1.OperationMetadata",
     "apiVersion": "v1",
     "createTime": "2024-04-01T12:34:56.123456Z",
+    "endTime": "2024-04-01T12:34:56.123456Z",
     "target": "projects/${projectId}/locations/us-central1/certificateTemplates/privatecacertificatetemplate-${uniqueId}",
     "verb": "delete"
   },
-  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}"
+  "name": "projects/${projectId}/locations/us-central1/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.protobuf.Empty"
+  }
 }
 
 ---
