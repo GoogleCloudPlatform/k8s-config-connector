@@ -84,6 +84,7 @@ X-Xss-Protection: 0
   },
   "lastModifiedTime": "123456789",
   "location": "us-central1",
+  "satisfiesPzs": false,
   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetsample${uniqueId}",
   "type": "DEFAULT"
 }
@@ -560,6 +561,7 @@ X-Xss-Protection: 0
   },
   "type": "VIEW",
   "view": {
+    "privacyPolicy": {},
     "query": "SELECT distinct dt, user_id FROM `${projectId}.bigquerydatasetsample${uniqueId}.bigquerytable-main-${uniqueId}`",
     "useLegacySql": false
   }
@@ -723,6 +725,10 @@ Content-Type: application/json
       "specialGroup": "projectOwners"
     },
     {
+      "role": "OWNER",
+      "userByEmail": "user@google.com"
+    },
+    {
       "routine": {
         "datasetId": "bigquerydatasetsample${uniqueId}",
         "projectId": "${projectId}",
@@ -786,6 +792,10 @@ X-Xss-Protection: 0
       "specialGroup": "projectOwners"
     },
     {
+      "role": "OWNER",
+      "userByEmail": "user@google.com"
+    },
+    {
       "routine": {
         "datasetId": "bigquerydatasetsample${uniqueId}",
         "projectId": "${projectId}",
@@ -817,6 +827,7 @@ X-Xss-Protection: 0
   },
   "lastModifiedTime": "123456789",
   "location": "us-central1",
+  "satisfiesPzs": false,
   "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydatasetaccessfull${uniqueId}",
   "type": "DEFAULT"
 }
@@ -859,6 +870,10 @@ X-Xss-Protection: 0
     {
       "role": "OWNER",
       "specialGroup": "projectOwners"
+    },
+    {
+      "role": "OWNER",
+      "userByEmail": "user@google.com"
     },
     {
       "routine": {
@@ -938,6 +953,10 @@ X-Xss-Protection: 0
       "specialGroup": "projectOwners"
     },
     {
+      "role": "OWNER",
+      "userByEmail": "user@google.com"
+    },
+    {
       "routine": {
         "datasetId": "bigquerydatasetsample${uniqueId}",
         "projectId": "${projectId}",
@@ -1012,6 +1031,10 @@ X-Xss-Protection: 0
     {
       "role": "OWNER",
       "specialGroup": "projectOwners"
+    },
+    {
+      "role": "OWNER",
+      "userByEmail": "user@google.com"
     },
     {
       "routine": {
@@ -1167,6 +1190,7 @@ X-Xss-Protection: 0
   },
   "type": "VIEW",
   "view": {
+    "privacyPolicy": {},
     "query": "SELECT distinct dt, user_id FROM `${projectId}.bigquerydatasetsample${uniqueId}.bigquerytable-main-${uniqueId}`",
     "useLegacySql": false
   }
