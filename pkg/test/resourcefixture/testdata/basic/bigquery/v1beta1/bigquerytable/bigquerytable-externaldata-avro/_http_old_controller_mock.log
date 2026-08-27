@@ -538,6 +538,21 @@ X-Xss-Protection: 0
 
 ---
 
+DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}?alt=json&prettyPrint=false
+
+204 No Content
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+
+---
+
 GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
 Content-Type: application/json
 
@@ -593,93 +608,6 @@ X-Xss-Protection: 0
 
 DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&deleteContents=false
 Content-Type: application/json
-
-204 No Content
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-
----
-
-GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}?alt=json&prettyPrint=false
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "creationTime": "123456789",
-  "description": "An updated BigQuery table.",
-  "etag": "abcdef0123A=",
-  "expirationTime": "2024-09-01T12:34:56.123456Z",
-  "externalDataConfiguration": {
-    "avroOptions": {
-      "useAvroLogicalTypes": true
-    },
-    "compression": "NONE",
-    "ignoreUnknownValues": true,
-    "maxBadRecords": 100,
-    "sourceFormat": "CSV",
-    "sourceUris": [
-      "gs://cloud-samples-data/bigquery/us-states/us-states.avro"
-    ]
-  },
-  "friendlyName": "BigQuery Table Updated",
-  "id": "000000000000000000000",
-  "kind": "bigquery#table",
-  "labels": {
-    "cnrm-test": "true",
-    "managed-by-cnrm": "true"
-  },
-  "lastModifiedTime": "123456789",
-  "location": "us-central1",
-  "numActiveLogicalBytes": "0",
-  "numBytes": "0",
-  "numLongTermBytes": "0",
-  "numLongTermLogicalBytes": "0",
-  "numRows": "0",
-  "numTotalLogicalBytes": "0",
-  "requirePartitionFilter": false,
-  "schema": {
-    "fields": [
-      {
-        "description": "The common name of the state.",
-        "mode": "REQUIRED",
-        "name": "name",
-        "type": "STRING"
-      },
-      {
-        "description": "The postal code abbreviation of the state.",
-        "mode": "REQUIRED",
-        "name": "post_abbr",
-        "type": "STRING"
-      }
-    ]
-  },
-  "selfLink": "https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/bigquerydataset${uniqueId}/tables/bigquerytable-${uniqueId}",
-  "tableReference": {
-    "datasetId": "bigquerydataset${uniqueId}",
-    "projectId": "${projectId}",
-    "tableId": "bigquerytable-${uniqueId}"
-  },
-  "type": "EXTERNAL"
-}
-
----
-
-DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}/tables/bigquerytable-${uniqueId}?alt=json&prettyPrint=false
 
 204 No Content
 Content-Type: application/json; charset=UTF-8
