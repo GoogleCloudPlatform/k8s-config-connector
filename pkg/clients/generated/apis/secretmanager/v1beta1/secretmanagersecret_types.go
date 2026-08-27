@@ -222,6 +222,10 @@ type SecretManagerSecretStatus struct {
 	/* Conditions represent the latest available observations of the
 	   SecretManagerSecret's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
+	/* The time at which the SecretManagerSecret was created. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
+
 	/* A unique specifier for the SecretManagerSecret resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
