@@ -6,7 +6,14 @@
 >   generation: 2
 22d20
 <   resourceID: redisinstances-${uniqueId}
-40c38,39
+28,30c26,27
+<     message: 'Update call failed: error applying desired state: summary: Error updating
+<       Instance "projects/${projectId}/locations/us-central1/instances/redisinstances-${uniqueId}":
+<       googleapi: Error 400: update_mask path "secondaryIpRange" not valid'
+---
+>     message: 'Update call failed: error updating: googleapi: Error 400: update_mask
+>       path "secondaryIpRange" not valid'
+42c39,40
 <   observedGeneration: 3
 ---
 >   observedGeneration: 2

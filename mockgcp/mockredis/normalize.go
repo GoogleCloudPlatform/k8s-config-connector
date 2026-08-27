@@ -60,6 +60,8 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.ReplacePath(".response.locationId", "us-central1-a")
 	replacements.ReplacePath(".nodes[].zone", "us-central1-a")
 	replacements.ReplacePath(".response.nodes[].zone", "us-central1-a")
+	replacements.ReplacePath(".alternativeLocationId", "us-central1-a")
+	replacements.ReplacePath(".response.alternativeLocationId", "us-central1-a")
 
 	// Remove maintenance fields since they are volatile and not supported by the mock
 	replacements.RemovePath(".availableMaintenanceVersions")
