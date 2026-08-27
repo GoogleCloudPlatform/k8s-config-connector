@@ -100,6 +100,7 @@ func (s *sqlDatabaseServer) Update(ctx context.Context, req *pb.SqlDatabasesUpda
 		return nil, err
 	}
 
+	obj.Charset = req.GetBody().Charset
 	obj.Collation = req.GetBody().Collation
 	obj.Etag = fields.ComputeWeakEtag(obj)
 
@@ -110,6 +111,7 @@ func (s *sqlDatabaseServer) Update(ctx context.Context, req *pb.SqlDatabasesUpda
 	op := &pb.Operation{
 		TargetProject: name.Project.ID,
 		OperationType: pb.Operation_UPDATE_DATABASE,
+		Status:        pb.Operation_DONE, // Operation returns LRO, but it is (always?) done
 	}
 
 	return s.operations.startLRO(ctx, op, obj, func() (proto.Message, error) {
@@ -133,6 +135,7 @@ func (s *sqlDatabaseServer) Delete(ctx context.Context, req *pb.SqlDatabasesDele
 	op := &pb.Operation{
 		TargetProject: name.Project.ID,
 		OperationType: pb.Operation_DELETE_DATABASE,
+		Status:        pb.Operation_DONE, // Operation returns LRO, but it is (always?) done
 	}
 
 	return s.operations.startLRO(ctx, op, deleted, func() (proto.Message, error) {
