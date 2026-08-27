@@ -19,7 +19,7 @@ metadata:
     label-one: "value-one"
   name: cluster-sample-${uniqueId}
 spec:
-  location: us-central1-a
+  location: us-west2-a
   initialNodeCount: 1
   networkRef:
     name: computenetwork-${uniqueId}

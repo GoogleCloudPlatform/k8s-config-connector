@@ -34,7 +34,7 @@ spec:
   ipAllocationPolicy:
     clusterIpv4CidrBlock: /20
     servicesIpv4CidrBlock: /20
-  location: us-central1-a
+  location: us-west2-a
   loggingConfig:
     enableComponents:
     - SYSTEM_COMPONENTS
@@ -79,11 +79,11 @@ status:
   observedState:
     controlPlaneEndpointsConfig:
       dnsEndpointConfig:
-        endpoint: gke-12345trewq-${projectNumber}.us-central1-a.gke.goog
+        endpoint: gke-12345trewq-${projectNumber}.us-west2-a.gke.goog
     masterAuth:
       clusterCaCertificate: 1234567890abcdefghijklmn
     privateClusterConfig:
       privateEndpoint: 10.128.0.2
       publicEndpoint: 8.8.8.8
-  selfLink: https://container.googleapis.com/v1beta1/projects/${projectId}/zones/us-central1-a/clusters/cluster-sample-${uniqueId}
+  selfLink: https://container.googleapis.com/v1beta1/projects/${projectId}/zones/us-west2-a/clusters/cluster-sample-${uniqueId}
   servicesIpv4Cidr: 34.118.224.0/20
