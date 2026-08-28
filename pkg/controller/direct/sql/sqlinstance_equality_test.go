@@ -351,3 +351,53 @@ func TestDiffInstances_ServerCa_WithDiff(t *testing.T) {
 		}
 	}
 }
+
+func TestDiffInstances_ServerCa_CustomSANs_OrderIndependent(t *testing.T) {
+	t.Parallel()
+	desired := &api.DatabaseInstance{
+		Settings: &api.Settings{
+			IpConfiguration: &api.IpConfiguration{
+				CustomSubjectAlternativeNames: []string{"a.example.com", "b.example.com", "c.example.com"},
+			},
+		},
+	}
+
+	actual := &api.DatabaseInstance{
+		Settings: &api.Settings{
+			IpConfiguration: &api.IpConfiguration{
+				CustomSubjectAlternativeNames: []string{"c.example.com", "a.example.com", "b.example.com"},
+			},
+		},
+	}
+
+	diff := DiffInstances(desired, actual)
+
+	if diff.HasDiff() {
+		t.Errorf("DiffInstances() expected no diffs for re-ordered SANs, but got: %v", diff.Fields)
+	}
+}
+
+func TestDiffInstances_ServerCaPool_PrefixNormalization(t *testing.T) {
+	t.Parallel()
+	desired := &api.DatabaseInstance{
+		Settings: &api.Settings{
+			IpConfiguration: &api.IpConfiguration{
+				ServerCaPool: "projects/test-project/locations/us-central1/caPools/my-ca-pool",
+			},
+		},
+	}
+
+	actual := &api.DatabaseInstance{
+		Settings: &api.Settings{
+			IpConfiguration: &api.IpConfiguration{
+				ServerCaPool: "//privateca.googleapis.com/projects/test-project/locations/us-central1/caPools/my-ca-pool",
+			},
+		},
+	}
+
+	diff := DiffInstances(desired, actual)
+
+	if diff.HasDiff() {
+		t.Errorf("DiffInstances() expected no diffs for normalized CA pool prefixes, but got: %v", diff.Fields)
+	}
+}
