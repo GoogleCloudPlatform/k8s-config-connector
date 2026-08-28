@@ -79,6 +79,17 @@ Your task is to perform a version bump for version `{{version}}`.
 You are a release manager for the Config Connector (KCC) project.
 Your task is to draft the official release notes for version `{{VERSION}}`.
 
+# Drafting Guidelines (CRITICAL)
+When compiling and writing the release notes, you MUST strictly adhere to the following rules:
+1.  **No MockGCP changes**: Do NOT cover MockGCP changes, alignment, or test logs in the release notes.
+2.  **No Sample changes**: Do NOT cover sample config updates or sample changes in the release notes.
+3.  **No Internal Implementation details**: Do NOT cover internal refactoring or implementation details (such as standardizing references, internal package imports, etc.) in the release notes.
+4.  **No Integration Test changes**: Do NOT cover integration test runner modifications or validation improvements in the release notes.
+5.  **No GitHub Action changes**: Do NOT cover CI workflows, GitHub Actions, or validation workflow changes in the release notes.
+6.  **No Smoke Test changes**: Do NOT cover smoke test framework changes or SMOKETEST phase additions in the release notes.
+7.  **Resource Categorization Precedence**: If a resource is listed in the "Reconciliation Improvements" section (e.g., promoting a resource or adding opt-in direct reconciliation), it MUST NOT be listed in the "New Alpha Resources" or "New Beta Resources" section.
+8.  **Merged Reconcilers Only**: Only release note resources whose controllers have already been merged.
+
 # Task
 1.  **Identify Version Range**:
     - Fetch latest tags: `git fetch --tags --force`.
