@@ -623,13 +623,13 @@ spec:
                         type: array
                       requireSsl:
                         type: boolean
-                      serverCaMode:
+                      serverCAMode:
                         description: 'The CA mode for the server certificate. Enum:
                           GOOGLE_MANAGED_INTERNAL_CA, GOOGLE_MANAGED_CAS_CA, CUSTOMER_MANAGED_CAS_CA.'
                         type: string
-                      serverCaPoolRef:
+                      serverCAPoolRef:
                         description: The CA pool resource for the server certificate
-                          when serverCaMode is CUSTOMER_MANAGED_CAS_CA.
+                          when serverCAMode is CUSTOMER_MANAGED_CAS_CA.
                         oneOf:
                         - not:
                             required:

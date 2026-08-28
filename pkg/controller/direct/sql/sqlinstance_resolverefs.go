@@ -49,7 +49,7 @@ func ResolveSQLInstanceRefs(ctx context.Context, kube client.Reader, obj *krm.SQ
 	if err := resolvePrivateNetworkRef(ctx, kube, obj); err != nil {
 		return err
 	}
-	if err := resolveServerCaPoolRef(ctx, kube, obj); err != nil {
+	if err := resolveServerCAPoolRef(ctx, kube, obj); err != nil {
 		return err
 	}
 	if err := resolveAuditLogBucketRef(ctx, kube, obj); err != nil {
@@ -240,12 +240,12 @@ func resolvePrivateNetworkRef(ctx context.Context, kube client.Reader, obj *krm.
 	return nil
 }
 
-func resolveServerCaPoolRef(ctx context.Context, kube client.Reader, obj *krm.SQLInstance) error {
-	if obj.Spec.Settings.IpConfiguration == nil || obj.Spec.Settings.IpConfiguration.ServerCaPoolRef == nil {
+func resolveServerCAPoolRef(ctx context.Context, kube client.Reader, obj *krm.SQLInstance) error {
+	if obj.Spec.Settings.IpConfiguration == nil || obj.Spec.Settings.IpConfiguration.ServerCAPoolRef == nil {
 		return nil
 	}
 
-	ref := obj.Spec.Settings.IpConfiguration.ServerCaPoolRef
+	ref := obj.Spec.Settings.IpConfiguration.ServerCAPoolRef
 	if err := ref.Normalize(ctx, kube, obj.GetNamespace()); err != nil {
 		return err
 	}
