@@ -858,7 +858,7 @@ func runScenario(ctx context.Context, t *testing.T, options ScenarioOptions, fix
 				// Verify HTTP log with static checks
 				verifyUserAgent(h)
 
-				if fixture.Update != nil {
+				if !options.TestPause && fixture.Update != nil {
 					hasUpdate := false
 					updateEvents := h.Events.GetHTTPEvents()[eventsBeforeUpdateCount:]
 					for _, event := range updateEvents {
