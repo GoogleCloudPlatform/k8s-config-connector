@@ -22,8 +22,8 @@ spec:
   settings:
     tier: db-custom-2-7680
     ipConfiguration:
-      serverCaMode: CUSTOMER_MANAGED_CAS_CA
-      serverCaPoolRef:
+      serverCAMode: CUSTOMER_MANAGED_CAS_CA
+      serverCAPoolRef:
         name: sqlinstance-ca-pool-sample
       customSubjectAlternativeNames:
         - "db.internal.example.com"
