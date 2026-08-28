@@ -24,13 +24,12 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(videostitcherCDNKeyFuzzer())
+	fuzztesting.RegisterKRMSpecFuzzer(videostitcherCDNKeyFuzzer())
 }
 
 func videostitcherCDNKeyFuzzer() fuzztesting.KRMFuzzer {
-	f := fuzztesting.NewKRMTypedFuzzer(&pb.CdnKey{},
+	f := fuzztesting.NewKRMTypedSpecFuzzer(&pb.CdnKey{},
 		VideoStitcherCDNKeySpec_FromProto, VideoStitcherCDNKeySpec_ToProto,
-		VideoStitcherCDNKeyObservedState_FromProto, VideoStitcherCDNKeyObservedState_ToProto,
 	)
 
 	// Identity fields that are not in KRM fields

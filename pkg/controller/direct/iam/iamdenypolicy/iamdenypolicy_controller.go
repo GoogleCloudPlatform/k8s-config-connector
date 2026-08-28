@@ -139,19 +139,13 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 		return fmt.Errorf("creating IAMDenyPolicy %q: %w", a.id.String(), err)
 	}
 
-	created, err := op.Wait(ctx)
+	_, err = op.Wait(ctx)
 	if err != nil {
 		return fmt.Errorf("waiting for IAMDenyPolicy %q creation: %w", a.id.String(), err)
 	}
 
 	log.V(2).Info("successfully created IAMDenyPolicy", "name", a.id.String())
 
-	observedState := mappers.IAMDenyPolicyObservedState_FromProto(mapCtx, created)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-
-	a.desired.Status.ObservedState = observedState
 	a.desired.Status.ExternalRef = direct.LazyPtr(a.id.String())
 
 	return nil
@@ -204,19 +198,13 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		return fmt.Errorf("updating IAMDenyPolicy %q: %w", a.id.String(), err)
 	}
 
-	updated, err := op.Wait(ctx)
+	_, err = op.Wait(ctx)
 	if err != nil {
 		return fmt.Errorf("waiting for IAMDenyPolicy %q update: %w", a.id.String(), err)
 	}
 
 	log.V(2).Info("successfully updated IAMDenyPolicy", "name", a.id.String())
 
-	observedState := mappers.IAMDenyPolicyObservedState_FromProto(mapCtx, updated)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-
-	a.desired.Status.ObservedState = observedState
 	a.desired.Status.ExternalRef = direct.LazyPtr(a.id.String())
 
 	return nil

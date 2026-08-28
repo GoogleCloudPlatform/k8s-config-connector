@@ -64,13 +64,13 @@ type BigtableAuthorizedViewStatus struct {
 	ExternalRef *string `json:"externalRef,omitempty"`
 
 	// ObservedState is the state of the resource as most recently observed in GCP.
-	ObservedState *BigtableAuthorizedViewObservedState `json:"observedState,omitempty"`
+	// ObservedState *BigtableAuthorizedViewObservedState `json:"observedState,omitempty"`
 }
 
 // BigtableAuthorizedViewObservedState is the state of the BigtableAuthorizedView resource as most recently observed in GCP.
-// +kcc:observedstate:proto=google.bigtable.admin.v2.AuthorizedView
-type BigtableAuthorizedViewObservedState struct {
-}
+// // +kcc:observedstate:proto=google.bigtable.admin.v2.AuthorizedView
+// type BigtableAuthorizedViewObservedState struct {
+// }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object

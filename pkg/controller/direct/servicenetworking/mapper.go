@@ -22,24 +22,25 @@ import (
 	api "google.golang.org/api/servicenetworking/v1"
 )
 
-func ServiceNetworkingPeeredDNSDomainObservedState_FromProto(mapCtx *direct.MapContext, in *api.PeeredDnsDomain) *krmv1alpha1.ServiceNetworkingPeeredDNSDomainObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krmv1alpha1.ServiceNetworkingPeeredDNSDomainObservedState{}
-	// MISSING: DNSSuffix
-	// MISSING: Name
-	return out
-}
-func ServiceNetworkingPeeredDNSDomainObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.ServiceNetworkingPeeredDNSDomainObservedState) *api.PeeredDnsDomain {
-	if in == nil {
-		return nil
-	}
-	out := &api.PeeredDnsDomain{}
-	// MISSING: DNSSuffix
-	// MISSING: Name
-	return out
-}
+//	func ServiceNetworkingPeeredDNSDomainObservedState_FromProto(mapCtx *direct.MapContext, in *api.PeeredDnsDomain) *krmv1alpha1.ServiceNetworkingPeeredDNSDomainObservedState {
+//		if in == nil {
+//			return nil
+//		}
+//		out := &krmv1alpha1.ServiceNetworkingPeeredDNSDomainObservedState{}
+//		// MISSING: DNSSuffix
+//		// MISSING: Name
+//		return out
+//	}
+//
+//	func ServiceNetworkingPeeredDNSDomainObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.ServiceNetworkingPeeredDNSDomainObservedState) *api.PeeredDnsDomain {
+//		if in == nil {
+//			return nil
+//		}
+//		out := &api.PeeredDnsDomain{}
+//		// MISSING: DNSSuffix
+//		// MISSING: Name
+//		return out
+//	}
 func ServiceNetworkingPeeredDNSDomainSpec_FromProto(mapCtx *direct.MapContext, in *api.PeeredDnsDomain) *krmv1alpha1.ServiceNetworkingPeeredDNSDomainSpec {
 	if in == nil {
 		return nil

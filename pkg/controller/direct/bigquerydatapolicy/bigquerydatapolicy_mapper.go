@@ -26,20 +26,21 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func BigQueryDataPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataPolicy) *krmv1alpha1.BigQueryDataPolicyObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krmv1alpha1.BigQueryDataPolicyObservedState{}
-	return out
-}
-func BigQueryDataPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.BigQueryDataPolicyObservedState) *pb.DataPolicy {
-	if in == nil {
-		return nil
-	}
-	out := &pb.DataPolicy{}
-	return out
-}
+//	func BigQueryDataPolicyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DataPolicy) *krmv1alpha1.BigQueryDataPolicyObservedState {
+//		if in == nil {
+//			return nil
+//		}
+//		out := &krmv1alpha1.BigQueryDataPolicyObservedState{}
+//		return out
+//	}
+//
+//	func BigQueryDataPolicyObservedState_ToProto(mapCtx *direct.MapContext, in *krmv1alpha1.BigQueryDataPolicyObservedState) *pb.DataPolicy {
+//		if in == nil {
+//			return nil
+//		}
+//		out := &pb.DataPolicy{}
+//		return out
+//	}
 func BigQueryDataPolicySpec_FromProto(mapCtx *direct.MapContext, in *pb.DataPolicy) *krmv1alpha1.BigQueryDataPolicySpec {
 	if in == nil {
 		return nil

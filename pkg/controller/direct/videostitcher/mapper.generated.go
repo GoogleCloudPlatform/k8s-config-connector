@@ -99,22 +99,6 @@ func MediaCDNKey_TokenConfig_ToProto(mapCtx *direct.MapContext, in *krm.MediaCDN
 	out.QueryParameter = direct.ValueOf(in.QueryParameter)
 	return out
 }
-func VideoStitcherCDNKeyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CdnKey) *krm.VideoStitcherCDNKeyObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.VideoStitcherCDNKeyObservedState{}
-	// MISSING: Name
-	return out
-}
-func VideoStitcherCDNKeyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.VideoStitcherCDNKeyObservedState) *pb.CdnKey {
-	if in == nil {
-		return nil
-	}
-	out := &pb.CdnKey{}
-	// MISSING: Name
-	return out
-}
 func VideoStitcherCDNKeySpec_FromProto(mapCtx *direct.MapContext, in *pb.CdnKey) *krm.VideoStitcherCDNKeySpec {
 	if in == nil {
 		return nil

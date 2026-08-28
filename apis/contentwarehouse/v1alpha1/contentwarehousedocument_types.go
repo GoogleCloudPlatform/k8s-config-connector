@@ -48,13 +48,13 @@ type ContentWarehouseDocumentStatus struct {
 	ExternalRef *string `json:"externalRef,omitempty"`
 
 	// ObservedState is the state of the resource as most recently observed in GCP.
-	ObservedState *ContentWarehouseDocumentObservedState `json:"observedState,omitempty"`
+	// ObservedState *ContentWarehouseDocumentObservedState `json:"observedState,omitempty"`
 }
 
 // ContentWarehouseDocumentObservedState is the state of the ContentWarehouseDocument resource as most recently observed in GCP.
-// +kcc:observedstate:proto=google.cloud.contentwarehouse.v1.Document
-type ContentWarehouseDocumentObservedState struct {
-}
+// // +kcc:observedstate:proto=google.cloud.contentwarehouse.v1.Document
+// type ContentWarehouseDocumentObservedState struct {
+// }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object

@@ -207,12 +207,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 }
 
 func (a *Adapter) updateStatus(ctx context.Context, op directbase.Operation, latest *pb.CdnKey) error {
-	mapCtx := &direct.MapContext{}
 	status := krm.VideoStitcherCDNKeyStatus{}
-	status.ObservedState = VideoStitcherCDNKeyObservedState_FromProto(mapCtx, latest)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
 
 	externalRef := a.id.String()
 	status.ExternalRef = &externalRef

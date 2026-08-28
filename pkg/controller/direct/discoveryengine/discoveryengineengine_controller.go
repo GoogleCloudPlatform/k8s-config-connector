@@ -283,12 +283,7 @@ func compareEngine(ctx context.Context, actual, desired *pb.Engine) (*structured
 }
 
 func (a *engineAdapter) updateStatus(ctx context.Context, op directbase.Operation, latest *pb.Engine) error {
-	mapCtx := &direct.MapContext{}
 	status := &krm.DiscoveryEngineEngineStatus{}
-	status.ObservedState = DiscoveryEngineEngineObservedState_v1alpha1_FromProto(mapCtx, latest)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
 	status.ExternalRef = direct.PtrTo(a.id.String())
 	return op.UpdateStatus(ctx, status, nil)
 }

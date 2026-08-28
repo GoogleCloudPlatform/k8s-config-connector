@@ -60,13 +60,13 @@ type BigtableMaterializedViewStatus struct {
 	Name *string `json:"name,omitempty"`
 
 	// ObservedState is the state of the resource as most recently observed in GCP.
-	ObservedState *BigtableMaterializedViewObservedState `json:"observedState,omitempty"`
+	// ObservedState *BigtableMaterializedViewObservedState `json:"observedState,omitempty"`
 }
 
 // BigtableMaterializedViewObservedState is the state of the BigtableMaterializedView resource as most recently observed in GCP.
-// +kcc:observedstate:proto=google.bigtable.admin.v2.MaterializedView
-type BigtableMaterializedViewObservedState struct {
-}
+// // +kcc:observedstate:proto=google.bigtable.admin.v2.MaterializedView
+// type BigtableMaterializedViewObservedState struct {
+// }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
