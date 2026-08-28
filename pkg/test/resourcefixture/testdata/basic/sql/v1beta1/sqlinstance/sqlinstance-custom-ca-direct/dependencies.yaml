@@ -16,6 +16,9 @@ apiVersion: privateca.cnrm.cloud.google.com/v1beta1
 kind: PrivateCACAPool
 metadata:
   name: privatecacapool-dep-${uniqueId}
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: direct
+    cnrm.cloud.google.com/deletion-policy: "abandon"
 spec:
   projectRef:
     external: projects/${projectId}
@@ -23,11 +26,84 @@ spec:
   tier: DEVOPS
 ---
 apiVersion: privateca.cnrm.cloud.google.com/v1beta1
+kind: PrivateCACertificateAuthority
+metadata:
+  name: privatecacertificateauthority-dep-${uniqueId}
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: direct
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+spec:
+  projectRef:
+    external: projects/${projectId}
+  location: us-central1
+  type: SELF_SIGNED
+  caPoolRef:
+    name: privatecacapool-dep-${uniqueId}
+  lifetime: 86400s
+  config:
+    subjectConfig:
+      subject:
+        organization: Example
+        commonName: my-certificate-authority
+      subjectAltName:
+        dnsNames:
+        - example.com
+    x509Config:
+      caOptions:
+        isCa: true
+      keyUsage:
+        baseKeyUsage:
+          certSign: true
+          crlSign: true
+        extendedKeyUsage:
+          serverAuth: true
+  keySpec:
+    algorithm: RSA_PKCS1_4096_SHA256
+---
+apiVersion: privateca.cnrm.cloud.google.com/v1beta1
 kind: PrivateCACAPool
 metadata:
   name: privatecacapool-dep2-${uniqueId}
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: direct
+    cnrm.cloud.google.com/deletion-policy: "abandon"
 spec:
   projectRef:
     external: projects/${projectId}
   location: us-central1
   tier: DEVOPS
+---
+apiVersion: privateca.cnrm.cloud.google.com/v1beta1
+kind: PrivateCACertificateAuthority
+metadata:
+  name: privatecacertificateauthority-dep2-${uniqueId}
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: direct
+    cnrm.cloud.google.com/deletion-policy: "abandon"
+spec:
+  projectRef:
+    external: projects/${projectId}
+  location: us-central1
+  type: SELF_SIGNED
+  caPoolRef:
+    name: privatecacapool-dep2-${uniqueId}
+  lifetime: 86400s
+  config:
+    subjectConfig:
+      subject:
+        organization: Example
+        commonName: my-certificate-authority-2
+      subjectAltName:
+        dnsNames:
+        - example.com
+    x509Config:
+      caOptions:
+        isCa: true
+      keyUsage:
+        baseKeyUsage:
+          certSign: true
+          crlSign: true
+        extendedKeyUsage:
+          serverAuth: true
+  keySpec:
+    algorithm: RSA_PKCS1_4096_SHA256
