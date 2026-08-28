@@ -23,9 +23,9 @@ spec:
   region: us-central1
   settings:
     ipConfiguration:
-      serverCaMode: CUSTOMER_MANAGED_CAS_CA
-      serverCaPoolRef:
-        name: privatecacapool-dep-${uniqueId}
+      serverCAMode: CUSTOMER_MANAGED_CAS_CA
+      serverCAPoolRef:
+        name: privatecacapool-dep2-${uniqueId}
       customSubjectAlternativeNames:
         - "db.example.com"
         - "db-replica.example.com"
