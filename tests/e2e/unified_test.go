@@ -854,6 +854,31 @@ func runScenario(ctx context.Context, t *testing.T, options ScenarioOptions, fix
 				// Verify HTTP log with static checks
 				verifyUserAgent(h)
 
+				if fixture.Update != nil {
+					hasUpdate := false
+					for _, event := range h.Events.GetHTTPEvents() {
+						method := event.Request.Method
+						if method == "PATCH" || method == "PUT" {
+							hasUpdate = true
+							break
+						}
+						if method == "GRPC" {
+							u := event.Request.URL
+							idx := strings.LastIndex(u, "/")
+							if idx != -1 {
+								methodName := u[idx+1:]
+								if strings.HasPrefix(methodName, "Update") || strings.HasPrefix(methodName, "Patch") {
+									hasUpdate = true
+									break
+								}
+							}
+						}
+					}
+					if !hasUpdate {
+						t.Errorf("fixture test %q includes update.yaml, but no HTTP PATCH/PUT request was recorded in the HTTP log; update.yaml must trigger resource mutation on GCP", fixture.TestKey)
+					}
+				}
+
 				// Verify events against golden file or records events
 				if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" || os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
 					events := test.LogEntries(h.Events.GetHTTPEvents())
