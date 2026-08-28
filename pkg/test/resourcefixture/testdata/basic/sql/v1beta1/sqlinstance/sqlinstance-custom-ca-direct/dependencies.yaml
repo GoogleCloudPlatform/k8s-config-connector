@@ -21,3 +21,13 @@ spec:
     external: projects/${projectId}
   location: us-central1
   tier: DEVOPS
+---
+apiVersion: privateca.cnrm.cloud.google.com/v1beta1
+kind: PrivateCACAPool
+metadata:
+  name: privatecacapool-dep2-${uniqueId}
+spec:
+  projectRef:
+    external: projects/${projectId}
+  location: us-central1
+  tier: DEVOPS

@@ -21,9 +21,9 @@ spec:
       customSubjectAlternativeNames:
       - db.example.com
       - db-replica.example.com
-      serverCaMode: CUSTOMER_MANAGED_CAS_CA
-      serverCaPoolRef:
-        name: privatecacapool-dep-${uniqueId}
+      serverCAMode: CUSTOMER_MANAGED_CAS_CA
+      serverCAPoolRef:
+        name: privatecacapool-dep2-${uniqueId}
     locationPreference:
       zone: us-central1-a
     tier: db-custom-1-3840
