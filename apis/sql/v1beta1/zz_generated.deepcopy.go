@@ -1232,13 +1232,13 @@ func (in *InstanceIpConfiguration) DeepCopyInto(out *InstanceIpConfiguration) {
 		*out = make([]string, len(*in))
 		copy(*out, *in)
 	}
-	if in.ServerCaMode != nil {
-		in, out := &in.ServerCaMode, &out.ServerCaMode
+	if in.ServerCAMode != nil {
+		in, out := &in.ServerCAMode, &out.ServerCAMode
 		*out = new(string)
 		**out = **in
 	}
-	if in.ServerCaPoolRef != nil {
-		in, out := &in.ServerCaPoolRef, &out.ServerCaPoolRef
+	if in.ServerCAPoolRef != nil {
+		in, out := &in.ServerCAPoolRef, &out.ServerCAPoolRef
 		*out = new(privatecarefs.PrivateCACAPoolRef)
 		**out = **in
 	}

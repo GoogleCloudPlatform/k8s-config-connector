@@ -179,11 +179,11 @@ type InstanceIpConfiguration struct {
 
 	/* The CA mode for the server certificate. Enum: GOOGLE_MANAGED_INTERNAL_CA, GOOGLE_MANAGED_CAS_CA, CUSTOMER_MANAGED_CAS_CA. */
 	// +optional
-	ServerCaMode *string `json:"serverCaMode,omitempty"`
+	ServerCAMode *string `json:"serverCAMode,omitempty"`
 
-	/* The CA pool resource for the server certificate when serverCaMode is CUSTOMER_MANAGED_CAS_CA. */
+	/* The CA pool resource for the server certificate when serverCAMode is CUSTOMER_MANAGED_CAS_CA. */
 	// +optional
-	ServerCaPoolRef *privatecarefs.PrivateCACAPoolRef `json:"serverCaPoolRef,omitempty"`
+	ServerCAPoolRef *privatecarefs.PrivateCACAPoolRef `json:"serverCAPoolRef,omitempty"`
 }
 
 type InstanceLocationPreference struct {
