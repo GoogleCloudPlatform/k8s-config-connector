@@ -740,6 +740,9 @@ func populateDefaults(obj *pb.DatabaseInstance) {
 			ipConfiguration.SslMode = pb.IpConfiguration_ALLOW_UNENCRYPTED_AND_ENCRYPTED
 		}
 	}
+	if ipConfiguration.ServerCaMode == nil {
+		ipConfiguration.ServerCaMode = PtrTo("GOOGLE_MANAGED_INTERNAL_CA")
+	}
 
 	if settings.LocationPreference == nil {
 		settings.LocationPreference = &pb.LocationPreference{
@@ -944,6 +947,41 @@ func (s *sqlInstancesService) Patch(ctx context.Context, req *pb.SqlInstancesPat
 		}
 		if settings.Tier != "" {
 			obj.Settings.Tier = settings.Tier
+		}
+		if settings.IpConfiguration != nil {
+			if obj.Settings.IpConfiguration == nil {
+				obj.Settings.IpConfiguration = &pb.IpConfiguration{}
+			}
+			if settings.IpConfiguration.ServerCaMode != nil {
+				obj.Settings.IpConfiguration.ServerCaMode = settings.IpConfiguration.ServerCaMode
+			}
+			if settings.IpConfiguration.ServerCaPool != nil {
+				obj.Settings.IpConfiguration.ServerCaPool = settings.IpConfiguration.ServerCaPool
+			}
+			if settings.IpConfiguration.CustomSubjectAlternativeNames != nil {
+				obj.Settings.IpConfiguration.CustomSubjectAlternativeNames = settings.IpConfiguration.CustomSubjectAlternativeNames
+			}
+			if settings.IpConfiguration.Ipv4Enabled != nil {
+				obj.Settings.IpConfiguration.Ipv4Enabled = settings.IpConfiguration.Ipv4Enabled
+			}
+			if settings.IpConfiguration.RequireSsl != nil {
+				obj.Settings.IpConfiguration.RequireSsl = settings.IpConfiguration.RequireSsl
+			}
+			if settings.IpConfiguration.SslMode != pb.IpConfiguration_SSL_MODE_UNSPECIFIED {
+				obj.Settings.IpConfiguration.SslMode = settings.IpConfiguration.SslMode
+			}
+			if settings.IpConfiguration.AllocatedIpRange != "" {
+				obj.Settings.IpConfiguration.AllocatedIpRange = settings.IpConfiguration.AllocatedIpRange
+			}
+			if settings.IpConfiguration.PrivateNetwork != "" {
+				obj.Settings.IpConfiguration.PrivateNetwork = settings.IpConfiguration.PrivateNetwork
+			}
+			if settings.IpConfiguration.AuthorizedNetworks != nil {
+				obj.Settings.IpConfiguration.AuthorizedNetworks = settings.IpConfiguration.AuthorizedNetworks
+			}
+			if settings.IpConfiguration.EnablePrivatePathForGoogleCloudServices != nil {
+				obj.Settings.IpConfiguration.EnablePrivatePathForGoogleCloudServices = settings.IpConfiguration.EnablePrivatePathForGoogleCloudServices
+			}
 		}
 	}
 	if body := req.GetBody(); body != nil {
