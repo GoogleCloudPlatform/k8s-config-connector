@@ -2,7 +2,7 @@
   {
     "resource": "admanager/AdBreak",
     "service": "admanager",
-    "kind": "AdmanagerAdBreak",
+    "kind": "AdManagerAdBreak",
     "patterns": [
       "networks/{network_code}/liveStreamEventsByAssetKey/{asset_key}/adBreaks/{ad_break}"
     ],
@@ -19,7 +19,7 @@
   {
     "resource": "admanager/AdRule",
     "service": "admanager",
-    "kind": "AdmanagerAdRule",
+    "kind": "AdManagerAdRule",
     "patterns": [
       "networks/{network_code}/adRules/{ad_rule}"
     ],
@@ -37,7 +37,7 @@
   {
     "resource": "admanager/AdSpot",
     "service": "admanager",
-    "kind": "AdmanagerAdSpot",
+    "kind": "AdManagerAdSpot",
     "patterns": [
       "networks/{network_code}/adSpots/{ad_spot}"
     ],
@@ -55,7 +55,7 @@
   {
     "resource": "admanager/AdUnit",
     "service": "admanager",
-    "kind": "AdmanagerAdUnit",
+    "kind": "AdManagerAdUnit",
     "patterns": [
       "networks/{network_code}/adUnits/{ad_unit}"
     ],
@@ -73,7 +73,7 @@
   {
     "resource": "admanager/Application",
     "service": "admanager",
-    "kind": "AdmanagerApplication",
+    "kind": "AdManagerApplication",
     "patterns": [
       "networks/{network_code}/applications/{application}"
     ],
@@ -91,7 +91,7 @@
   {
     "resource": "admanager/CdnConfig",
     "service": "admanager",
-    "kind": "AdmanagerCdnConfig",
+    "kind": "AdManagerCDNConfig",
     "patterns": [
       "networks/{network_code}/cdnConfigs/{cdn_config}"
     ],
@@ -109,7 +109,7 @@
   {
     "resource": "admanager/Contact",
     "service": "admanager",
-    "kind": "AdmanagerContact",
+    "kind": "AdManagerContact",
     "patterns": [
       "networks/{network_code}/contacts/{contact}"
     ],
@@ -127,7 +127,7 @@
   {
     "resource": "admanager/CreativeSet",
     "service": "admanager",
-    "kind": "AdmanagerCreativeSet",
+    "kind": "AdManagerCreativeSet",
     "patterns": [
       "networks/{network_code}/creativeSets/{creative_set}"
     ],
@@ -145,7 +145,7 @@
   {
     "resource": "admanager/CustomField",
     "service": "admanager",
-    "kind": "AdmanagerCustomField",
+    "kind": "AdManagerCustomField",
     "patterns": [
       "networks/{network_code}/customFields/{custom_field}"
     ],
@@ -163,7 +163,7 @@
   {
     "resource": "admanager/CustomTargetingKey",
     "service": "admanager",
-    "kind": "AdmanagerCustomTargetingKey",
+    "kind": "AdManagerCustomTargetingKey",
     "patterns": [
       "networks/{network_code}/customTargetingKeys/{custom_targeting_key}"
     ],
@@ -181,7 +181,7 @@
   {
     "resource": "admanager/CustomTargetingValue",
     "service": "admanager",
-    "kind": "AdmanagerCustomTargetingValue",
+    "kind": "AdManagerCustomTargetingValue",
     "patterns": [
       "networks/{network_code}/customTargetingValues/{custom_targeting_value}"
     ],
@@ -199,7 +199,7 @@
   {
     "resource": "admanager/EntitySignalsMapping",
     "service": "admanager",
-    "kind": "AdmanagerEntitySignalsMapping",
+    "kind": "AdManagerEntitySignalsMapping",
     "patterns": [
       "networks/{network_code}/entitySignalsMappings/{entity_signals_mapping}"
     ],
@@ -217,7 +217,7 @@
   {
     "resource": "admanager/Label",
     "service": "admanager",
-    "kind": "AdmanagerLabel",
+    "kind": "AdManagerLabel",
     "patterns": [
       "networks/{network_code}/labels/{label}"
     ],
@@ -235,7 +235,7 @@
   {
     "resource": "admanager/LiveStream",
     "service": "admanager",
-    "kind": "AdmanagerLiveStream",
+    "kind": "AdManagerLiveStream",
     "patterns": [
       "networks/{network_code}/liveStreams/{live_stream}"
     ],
@@ -253,7 +253,7 @@
   {
     "resource": "admanager/Placement",
     "service": "admanager",
-    "kind": "AdmanagerPlacement",
+    "kind": "AdManagerPlacement",
     "patterns": [
       "networks/{network_code}/placements/{placement}"
     ],
@@ -271,7 +271,7 @@
   {
     "resource": "admanager/PrivateAuction",
     "service": "admanager",
-    "kind": "AdmanagerPrivateAuction",
+    "kind": "AdManagerPrivateAuction",
     "patterns": [
       "networks/{network_code}/privateAuctions/{private_auction}"
     ],
@@ -289,7 +289,7 @@
   {
     "resource": "admanager/PrivateAuctionDeal",
     "service": "admanager",
-    "kind": "AdmanagerPrivateAuctionDeal",
+    "kind": "AdManagerPrivateAuctionDeal",
     "patterns": [
       "networks/{network_code}/privateAuctionDeals/{private_auction_deal}"
     ],
@@ -307,7 +307,7 @@
   {
     "resource": "admanager/Report",
     "service": "admanager",
-    "kind": "AdmanagerReport",
+    "kind": "AdManagerReport",
     "patterns": [
       "networks/{network_code}/reports/{report}"
     ],
@@ -325,7 +325,7 @@
   {
     "resource": "admanager/Site",
     "service": "admanager",
-    "kind": "AdmanagerSite",
+    "kind": "AdManagerSite",
     "patterns": [
       "networks/{network_code}/sites/{site}"
     ],
@@ -343,7 +343,7 @@
   {
     "resource": "admanager/Slate",
     "service": "admanager",
-    "kind": "AdmanagerSlate",
+    "kind": "AdManagerSlate",
     "patterns": [
       "networks/{network_code}/slates/{slate}"
     ],
@@ -361,7 +361,7 @@
   {
     "resource": "admanager/TargetingPreset",
     "service": "admanager",
-    "kind": "AdmanagerTargetingPreset",
+    "kind": "AdManagerTargetingPreset",
     "patterns": [
       "networks/{network_code}/targetingPresets/{targeting_preset}"
     ],
@@ -379,7 +379,7 @@
   {
     "resource": "admanager/Team",
     "service": "admanager",
-    "kind": "AdmanagerTeam",
+    "kind": "AdManagerTeam",
     "patterns": [
       "networks/{network_code}/teams/{team}"
     ],
@@ -397,7 +397,7 @@
   {
     "resource": "agentregistry/Binding",
     "service": "agentregistry",
-    "kind": "AgentregistryBinding",
+    "kind": "AgentRegistryBinding",
     "patterns": [
       "projects/{project}/locations/{location}/bindings/{binding}"
     ],
@@ -414,7 +414,7 @@
   {
     "resource": "agentregistry/Service",
     "service": "agentregistry",
-    "kind": "AgentregistryService",
+    "kind": "AgentRegistryService",
     "patterns": [
       "projects/{project}/locations/{location}/services/{service}"
     ],
@@ -652,7 +652,7 @@
   {
     "resource": "aiplatform/RagCorpus",
     "service": "aiplatform",
-    "kind": "AIPlatformRagCorpus",
+    "kind": "AIPlatformRAGCorpus",
     "patterns": [
       "projects/{project}/locations/{location}/ragCorpora/{rag_corpus}"
     ],
@@ -669,7 +669,7 @@
   {
     "resource": "aiplatform/RagMetadata",
     "service": "aiplatform",
-    "kind": "AIPlatformRagMetadata",
+    "kind": "AIPlatformRAGMetadata",
     "patterns": [
       "projects/{project}/locations/{location}/ragCorpora/{rag_corpus}/ragFiles/{rag_file}/ragMetadata/{rag_metadata}"
     ],
@@ -771,7 +771,7 @@
   {
     "resource": "aiplatform/TensorboardRun",
     "service": "aiplatform",
-    "kind": "AIPlatformTensorboardRun",
+    "kind": "AIPlatformTensorBoardRun",
     "patterns": [
       "projects/{project}/locations/{location}/tensorboards/{tensorboard}/experiments/{experiment}/runs/{run}"
     ],
@@ -788,7 +788,7 @@
   {
     "resource": "aiplatform/TensorboardTimeSeries",
     "service": "aiplatform",
-    "kind": "AIPlatformTensorboardTimeSeries",
+    "kind": "AIPlatformTensorBoardTimeSeries",
     "patterns": [
       "projects/{project}/locations/{location}/tensorboards/{tensorboard}/experiments/{experiment}/runs/{run}/timeSeries/{time_series}"
     ],
@@ -805,7 +805,7 @@
   {
     "resource": "analyticsadmin/AccessBinding",
     "service": "analyticsadmin",
-    "kind": "AnalyticsadminAccessBinding",
+    "kind": "AnalyticsAdminAccessBinding",
     "patterns": [
       "accounts/{account}/accessBindings/{access_binding}",
       "properties/{property}/accessBindings/{access_binding}"
@@ -823,7 +823,7 @@
   {
     "resource": "analyticsadmin/Audience",
     "service": "analyticsadmin",
-    "kind": "AnalyticsadminAudience",
+    "kind": "AnalyticsAdminAudience",
     "patterns": [
       "properties/{property}/audiences/{audience}"
     ],
@@ -841,7 +841,7 @@
   {
     "resource": "analyticsadmin/BigQueryLink",
     "service": "analyticsadmin",
-    "kind": "AnalyticsadminBigQueryLink",
+    "kind": "AnalyticsAdminBigQueryLink",
     "patterns": [
       "properties/{property}/bigQueryLinks/{bigquery_link}"
     ],
@@ -858,7 +858,7 @@
   {
     "resource": "analyticsadmin/CalculatedMetric",
     "service": "analyticsadmin",
-    "kind": "AnalyticsadminCalculatedMetric",
+    "kind": "AnalyticsAdminCalculatedMetric",
     "patterns": [
       "properties/{property}/calculatedMetrics/{calculated_metric}"
     ],
@@ -875,7 +875,7 @@
   {
     "resource": "analyticsadmin/ChannelGroup",
     "service": "analyticsadmin",
-    "kind": "AnalyticsadminChannelGroup",
+    "kind": "AnalyticsAdminChannelGroup",
     "patterns": [
       "properties/{property}/channelGroups/{channel_group}"
     ],
@@ -892,7 +892,7 @@
   {
     "resource": "analyticsadmin/ConversionEvent",
     "service": "analyticsadmin",
-    "kind": "AnalyticsadminConversionEvent",
+    "kind": "AnalyticsAdminConversionEvent",
     "patterns": [
       "properties/{property}/conversionEvents/{conversion_event}"
     ],
@@ -909,7 +909,7 @@
   {
     "resource": "analyticsadmin/CustomDimension",
     "service": "analyticsadmin",
-    "kind": "AnalyticsadminCustomDimension",
+    "kind": "AnalyticsAdminCustomDimension",
     "patterns": [
       "properties/{property}/customDimensions/{custom_dimension}"
     ],
@@ -927,7 +927,7 @@
   {
     "resource": "analyticsadmin/CustomMetric",
     "service": "analyticsadmin",
-    "kind": "AnalyticsadminCustomMetric",
+    "kind": "AnalyticsAdminCustomMetric",
     "patterns": [
       "properties/{property}/customMetrics/{custom_metric}"
     ],
@@ -945,7 +945,7 @@
   {
     "resource": "analyticsadmin/DataStream",
     "service": "analyticsadmin",
-    "kind": "AnalyticsadminDataStream",
+    "kind": "AnalyticsAdminDataStream",
     "patterns": [
       "properties/{property}/dataStreams/{data_stream}"
     ],
@@ -962,7 +962,7 @@
   {
     "resource": "analyticsadmin/DisplayVideo360AdvertiserLink",
     "service": "analyticsadmin",
-    "kind": "AnalyticsadminDisplayVideo360AdvertiserLink",
+    "kind": "AnalyticsAdminDisplayVideo360AdvertiserLink",
     "patterns": [
       "properties/{property}/displayVideo360AdvertiserLinks/{display_video_360_advertiser_link}"
     ],
@@ -979,7 +979,7 @@
   {
     "resource": "analyticsadmin/EventCreateRule",
     "service": "analyticsadmin",
-    "kind": "AnalyticsadminEventCreateRule",
+    "kind": "AnalyticsAdminEventCreateRule",
     "patterns": [
       "properties/{property}/dataStreams/{data_stream}/eventCreateRules/{event_create_rule}"
     ],
@@ -996,7 +996,7 @@
   {
     "resource": "analyticsadmin/EventEditRule",
     "service": "analyticsadmin",
-    "kind": "AnalyticsadminEventEditRule",
+    "kind": "AnalyticsAdminEventEditRule",
     "patterns": [
       "properties/{property}/dataStreams/{data_stream}/eventEditRules/{event_edit_rule}"
     ],
@@ -1013,7 +1013,7 @@
   {
     "resource": "analyticsadmin/ExpandedDataSet",
     "service": "analyticsadmin",
-    "kind": "AnalyticsadminExpandedDataSet",
+    "kind": "AnalyticsAdminExpandedDataSet",
     "patterns": [
       "properties/{property}/expandedDataSets/{expanded_data_set}"
     ],
@@ -1030,7 +1030,7 @@
   {
     "resource": "analyticsadmin/KeyEvent",
     "service": "analyticsadmin",
-    "kind": "AnalyticsadminKeyEvent",
+    "kind": "AnalyticsAdminKeyEvent",
     "patterns": [
       "properties/{property}/keyEvents/{key_event}"
     ],
@@ -1047,7 +1047,7 @@
   {
     "resource": "analyticsadmin/MeasurementProtocolSecret",
     "service": "analyticsadmin",
-    "kind": "AnalyticsadminMeasurementProtocolSecret",
+    "kind": "AnalyticsAdminMeasurementProtocolSecret",
     "patterns": [
       "properties/{property}/dataStreams/{data_stream}/measurementProtocolSecrets/{measurement_protocol_secret}"
     ],
@@ -1064,7 +1064,7 @@
   {
     "resource": "analyticsadmin/ReportingDataAnnotation",
     "service": "analyticsadmin",
-    "kind": "AnalyticsadminReportingDataAnnotation",
+    "kind": "AnalyticsAdminReportingDataAnnotation",
     "patterns": [
       "properties/{property}/reportingDataAnnotations/{reporting_data_annotation}"
     ],
@@ -1081,7 +1081,7 @@
   {
     "resource": "analyticsadmin/SKAdNetworkConversionValueSchema",
     "service": "analyticsadmin",
-    "kind": "AnalyticsadminSKAdNetworkConversionValueSchema",
+    "kind": "AnalyticsAdminSKAdNetworkConversionValueSchema",
     "patterns": [
       "properties/{property}/dataStreams/{data_stream}/sKAdNetworkConversionValueSchema/{skadnetwork_conversion_value_schema}"
     ],
@@ -1098,7 +1098,7 @@
   {
     "resource": "analyticsadmin/SearchAds360Link",
     "service": "analyticsadmin",
-    "kind": "AnalyticsadminSearchAds360Link",
+    "kind": "AnalyticsAdminSearchAds360Link",
     "patterns": [
       "properties/{property}/searchAds360Links/{search_ads_360_link}"
     ],
@@ -1115,7 +1115,7 @@
   {
     "resource": "analyticsadmin/SubpropertyEventFilter",
     "service": "analyticsadmin",
-    "kind": "AnalyticsadminSubpropertyEventFilter",
+    "kind": "AnalyticsAdminSubpropertyEventFilter",
     "patterns": [
       "properties/{property}/subpropertyEventFilters/{sub_property_event_filter}"
     ],
@@ -1200,7 +1200,7 @@
   {
     "resource": "apihub/ExternalApi",
     "service": "apihub",
-    "kind": "APIHubExternalApi",
+    "kind": "APIHubExternalAPI",
     "patterns": [
       "projects/{project}/locations/{location}/externalApis/{external_api}"
     ],
@@ -1302,7 +1302,7 @@
   {
     "resource": "area120tables/Row",
     "service": "area120tables",
-    "kind": "Area120tablesRow",
+    "kind": "Area120TablesRow",
     "patterns": [
       "tables/{table}/rows/{row}"
     ],
@@ -1370,7 +1370,7 @@
   {
     "resource": "backupdr/Backup",
     "service": "backupdr",
-    "kind": "BackupdrBackup",
+    "kind": "BackupDRBackup",
     "patterns": [
       "projects/{project}/locations/{location}/backupVaults/{backupvault}/dataSources/{datasource}/backups/{backup}"
     ],
@@ -1387,7 +1387,7 @@
   {
     "resource": "bigtableadmin/Cluster",
     "service": "bigtableadmin",
-    "kind": "BigtableadminCluster",
+    "kind": "BigtableAdminCluster",
     "patterns": [
       "projects/{project}/instances/{instance}/clusters/{cluster}"
     ],
@@ -1404,7 +1404,7 @@
   {
     "resource": "bigtableadmin/SchemaBundle",
     "service": "bigtableadmin",
-    "kind": "BigtableadminSchemaBundle",
+    "kind": "BigtableAdminSchemaBundle",
     "patterns": [
       "projects/{project}/instances/{instance}/tables/{table}/schemaBundles/{schema_bundle}"
     ],
@@ -1438,7 +1438,7 @@
   {
     "resource": "ces/Agent",
     "service": "ces",
-    "kind": "CesAgent",
+    "kind": "CESAgent",
     "patterns": [
       "projects/{project}/locations/{location}/apps/{app}/agents/{agent}"
     ],
@@ -1455,7 +1455,7 @@
   {
     "resource": "ces/Deployment",
     "service": "ces",
-    "kind": "CesDeployment",
+    "kind": "CESDeployment",
     "patterns": [
       "projects/{project}/locations/{location}/apps/{app}/deployments/{deployment}"
     ],
@@ -1472,7 +1472,7 @@
   {
     "resource": "ces/Evaluation",
     "service": "ces",
-    "kind": "CesEvaluation",
+    "kind": "CESEvaluation",
     "patterns": [
       "projects/{project}/locations/{location}/apps/{app}/evaluations/{evaluation}"
     ],
@@ -1489,7 +1489,7 @@
   {
     "resource": "ces/EvaluationDataset",
     "service": "ces",
-    "kind": "CesEvaluationDataset",
+    "kind": "CESEvaluationDataset",
     "patterns": [
       "projects/{project}/locations/{location}/apps/{app}/evaluationDatasets/{evaluation_dataset}"
     ],
@@ -1506,7 +1506,7 @@
   {
     "resource": "ces/EvaluationExpectation",
     "service": "ces",
-    "kind": "CesEvaluationExpectation",
+    "kind": "CESEvaluationExpectation",
     "patterns": [
       "projects/{project}/locations/{location}/apps/{app}/evaluationExpectations/{evaluation_expectation}"
     ],
@@ -1523,7 +1523,7 @@
   {
     "resource": "ces/Example",
     "service": "ces",
-    "kind": "CesExample",
+    "kind": "CESExample",
     "patterns": [
       "projects/{project}/locations/{location}/apps/{app}/examples/{example}"
     ],
@@ -1540,7 +1540,7 @@
   {
     "resource": "ces/Guardrail",
     "service": "ces",
-    "kind": "CesGuardrail",
+    "kind": "CESGuardrail",
     "patterns": [
       "projects/{project}/locations/{location}/apps/{app}/guardrails/{guardrail}"
     ],
@@ -1557,7 +1557,7 @@
   {
     "resource": "ces/ScheduledEvaluationRun",
     "service": "ces",
-    "kind": "CesScheduledEvaluationRun",
+    "kind": "CESScheduledEvaluationRun",
     "patterns": [
       "projects/{project}/locations/{location}/apps/{app}/scheduledEvaluationRuns/{scheduled_evaluation_run}"
     ],
@@ -1574,7 +1574,7 @@
   {
     "resource": "ces/Tool",
     "service": "ces",
-    "kind": "CesTool",
+    "kind": "CESTool",
     "patterns": [
       "projects/{project}/locations/{location}/apps/{app}/tools/{tool}"
     ],
@@ -1797,7 +1797,7 @@
   {
     "resource": "cloudchannel/ChannelPartnerLink",
     "service": "cloudchannel",
-    "kind": "CloudchannelChannelPartnerLink",
+    "kind": "CloudChannelChannelPartnerLink",
     "patterns": [
       "accounts/{account}/channelPartnerLinks/{channel_partner_link}"
     ],
@@ -1815,7 +1815,7 @@
   {
     "resource": "cloudchannel/ChannelPartnerRepricingConfig",
     "service": "cloudchannel",
-    "kind": "CloudchannelChannelPartnerRepricingConfig",
+    "kind": "CloudChannelChannelPartnerRepricingConfig",
     "patterns": [
       "accounts/{account}/channelPartnerLinks/{channel_partner}/channelPartnerRepricingConfigs/{channel_partner_repricing_config}"
     ],
@@ -1832,7 +1832,7 @@
   {
     "resource": "cloudchannel/Customer",
     "service": "cloudchannel",
-    "kind": "CloudchannelCustomer",
+    "kind": "CloudChannelCustomer",
     "patterns": [
       "accounts/{account}/customers/{customer}"
     ],
@@ -1849,7 +1849,7 @@
   {
     "resource": "cloudchannel/CustomerRepricingConfig",
     "service": "cloudchannel",
-    "kind": "CloudchannelCustomerRepricingConfig",
+    "kind": "CloudChannelCustomerRepricingConfig",
     "patterns": [
       "accounts/{account}/customers/{customer}/customerRepricingConfigs/{customer_repricing_config}"
     ],
@@ -1866,7 +1866,7 @@
   {
     "resource": "cloudcontrolspartner/Customer",
     "service": "cloudcontrolspartner",
-    "kind": "CloudcontrolspartnerCustomer",
+    "kind": "CloudControlsPartnerCustomer",
     "patterns": [
       "organizations/{organization}/locations/{location}/customers/{customer}"
     ],
@@ -1883,7 +1883,7 @@
   {
     "resource": "clouddeploy/CustomTargetType",
     "service": "clouddeploy",
-    "kind": "ClouddeployCustomTargetType",
+    "kind": "CloudDeployCustomTargetType",
     "patterns": [
       "projects/{project}/locations/{location}/customTargetTypes/{custom_target_type}"
     ],
@@ -1900,7 +1900,7 @@
   {
     "resource": "cloudkms/EkmConnection",
     "service": "cloudkms",
-    "kind": "KMSEkmConnection",
+    "kind": "KMSEKMConnection",
     "patterns": [
       "projects/{project}/locations/{location}/ekmConnections/{ekm_connection}"
     ],
@@ -1918,7 +1918,7 @@
   {
     "resource": "cloudnumberregistry/CustomRange",
     "service": "cloudnumberregistry",
-    "kind": "CloudnumberregistryCustomRange",
+    "kind": "CloudNumberRegistryCustomRange",
     "patterns": [
       "projects/{project}/locations/{location}/customRanges/{custom_range}"
     ],
@@ -1935,7 +1935,7 @@
   {
     "resource": "cloudnumberregistry/IpamAdminScope",
     "service": "cloudnumberregistry",
-    "kind": "CloudnumberregistryIpamAdminScope",
+    "kind": "CloudNumberRegistryIpamAdminScope",
     "patterns": [
       "projects/{project}/locations/{location}/ipamAdminScopes/{ipam_admin_scope}"
     ],
@@ -1952,7 +1952,7 @@
   {
     "resource": "cloudnumberregistry/Realm",
     "service": "cloudnumberregistry",
-    "kind": "CloudnumberregistryRealm",
+    "kind": "CloudNumberRegistryRealm",
     "patterns": [
       "projects/{project}/locations/{location}/realms/{realm}"
     ],
@@ -1969,7 +1969,7 @@
   {
     "resource": "cloudnumberregistry/RegistryBook",
     "service": "cloudnumberregistry",
-    "kind": "CloudnumberregistryRegistryBook",
+    "kind": "CloudNumberRegistryRegistryBook",
     "patterns": [
       "projects/{project}/locations/{location}/registryBooks/{registry_book}"
     ],
@@ -1986,7 +1986,7 @@
   {
     "resource": "cloudresourcemanager/TagKey",
     "service": "cloudresourcemanager",
-    "kind": "CloudresourcemanagerTagKey",
+    "kind": "CloudResourceManagerTagKey",
     "patterns": [
       "tagKeys/{tag_key}"
     ],
@@ -2003,7 +2003,7 @@
   {
     "resource": "cloudresourcemanager/TagValue",
     "service": "cloudresourcemanager",
-    "kind": "CloudresourcemanagerTagValue",
+    "kind": "CloudResourceManagerTagValue",
     "patterns": [
       "tagValues/{tag_value}"
     ],
@@ -2020,7 +2020,7 @@
   {
     "resource": "cloudsupport/SupportEventSubscription",
     "service": "cloudsupport",
-    "kind": "CloudsupportSupportEventSubscription",
+    "kind": "CloudSupportSupportEventSubscription",
     "patterns": [
       "organizations/{organization}/supportEventSubscriptions/{support_event_subscription}"
     ],
@@ -2037,7 +2037,7 @@
   {
     "resource": "cloudtasks/Queue",
     "service": "cloudtasks",
-    "kind": "CloudtasksQueue",
+    "kind": "CloudTasksQueue",
     "patterns": [
       "projects/{project}/locations/{location}/queues/{queue}"
     ],
@@ -2054,7 +2054,7 @@
   {
     "resource": "commerceproducer/PrivateOffer",
     "service": "commerceproducer",
-    "kind": "CommerceproducerPrivateOffer",
+    "kind": "CommerceProducerPrivateOffer",
     "patterns": [
       "projects/{project}/locations/{location}/privateOffers/{private_offer}"
     ],
@@ -2071,7 +2071,7 @@
   {
     "resource": "commerceproducer/PrivateOfferDocument",
     "service": "commerceproducer",
-    "kind": "CommerceproducerPrivateOfferDocument",
+    "kind": "CommerceProducerPrivateOfferDocument",
     "patterns": [
       "projects/{project}/locations/{location}/privateOffers/{private_offer}/documents/{document}"
     ],
@@ -2156,7 +2156,7 @@
   {
     "resource": "configdelivery/Release",
     "service": "configdelivery",
-    "kind": "ConfigdeliveryRelease",
+    "kind": "ConfigDeliveryRelease",
     "patterns": [
       "projects/{project}/locations/{location}/resourceBundles/{resource_bundle}/releases/{release}"
     ],
@@ -2173,7 +2173,7 @@
   {
     "resource": "configdelivery/ResourceBundle",
     "service": "configdelivery",
-    "kind": "ConfigdeliveryResourceBundle",
+    "kind": "ConfigDeliveryResourceBundle",
     "patterns": [
       "projects/{project}/locations/{location}/resourceBundles/{resource_bundle}"
     ],
@@ -2190,7 +2190,7 @@
   {
     "resource": "configdelivery/Variant",
     "service": "configdelivery",
-    "kind": "ConfigdeliveryVariant",
+    "kind": "ConfigDeliveryVariant",
     "patterns": [
       "projects/{project}/locations/{location}/resourceBundles/{resource_bundle}/releases/{release}/variants/{variant}"
     ],
@@ -2311,7 +2311,7 @@
   {
     "resource": "contactcenterinsights/QaQuestion",
     "service": "contactcenterinsights",
-    "kind": "CCInsightsQaQuestion",
+    "kind": "CCInsightsQAQuestion",
     "patterns": [
       "projects/{project}/locations/{location}/qaScorecards/{qa_scorecard}/revisions/{revision}/qaQuestions/{qa_question}"
     ],
@@ -2328,7 +2328,7 @@
   {
     "resource": "contactcenterinsights/QaScorecard",
     "service": "contactcenterinsights",
-    "kind": "CCInsightsQaScorecard",
+    "kind": "CCInsightsQAScorecard",
     "patterns": [
       "projects/{project}/locations/{location}/qaScorecards/{qa_scorecard}"
     ],
@@ -2500,7 +2500,7 @@
   {
     "resource": "datalineage/Process",
     "service": "datalineage",
-    "kind": "DatalineageProcess",
+    "kind": "DriveLabelsProcess",
     "patterns": [
       "projects/{project}/locations/{location}/processes/{process}"
     ],
@@ -2517,7 +2517,7 @@
   {
     "resource": "datalineage/Run",
     "service": "datalineage",
-    "kind": "DatalineageRun",
+    "kind": "DriveLabelsRun",
     "patterns": [
       "projects/{project}/locations/{location}/processes/{process}/runs/{run}"
     ],
@@ -2534,7 +2534,7 @@
   {
     "resource": "datamanager/UserList",
     "service": "datamanager",
-    "kind": "DatamanagerUserList",
+    "kind": "DataManagerUserList",
     "patterns": [
       "accountTypes/{account_type}/accounts/{account}/userLists/{user_list}"
     ],
@@ -2551,7 +2551,7 @@
   {
     "resource": "datamanager/UserListDirectLicense",
     "service": "datamanager",
-    "kind": "DatamanagerUserListDirectLicense",
+    "kind": "DataManagerUserListDirectLicense",
     "patterns": [
       "accountTypes/{account_type}/accounts/{account}/userListDirectLicenses/{user_list_direct_license}"
     ],
@@ -2569,7 +2569,7 @@
   {
     "resource": "datamanager/UserListGlobalLicense",
     "service": "datamanager",
-    "kind": "DatamanagerUserListGlobalLicense",
+    "kind": "DataManagerUserListGlobalLicense",
     "patterns": [
       "accountTypes/{account_type}/accounts/{account}/userListGlobalLicenses/{user_list_global_license}"
     ],
@@ -2587,7 +2587,7 @@
   {
     "resource": "datamigration/ConnectionProfile",
     "service": "datamigration",
-    "kind": "DatamigrationConnectionProfile",
+    "kind": "DataMigrationConnectionProfile",
     "patterns": [
       "projects/{project}/locations/{location}/connectionProfiles/{connection_profile}"
     ],
@@ -2604,7 +2604,7 @@
   {
     "resource": "datamigration/ConversionWorkspace",
     "service": "datamigration",
-    "kind": "DatamigrationConversionWorkspace",
+    "kind": "DataMigrationConversionWorkspace",
     "patterns": [
       "projects/{project}/locations/{location}/conversionWorkspaces/{conversion_workspace}"
     ],
@@ -2621,7 +2621,7 @@
   {
     "resource": "datamigration/MigrationJob",
     "service": "datamigration",
-    "kind": "DatamigrationMigrationJob",
+    "kind": "DataMigrationMigrationJob",
     "patterns": [
       "projects/{project}/locations/{location}/migrationJobs/{migration_job}"
     ],
@@ -2910,7 +2910,7 @@
   {
     "resource": "developerconnect/AccountConnector",
     "service": "developerconnect",
-    "kind": "DeveloperconnectAccountConnector",
+    "kind": "DeveloperConnectAccountConnector",
     "patterns": [
       "projects/{project}/locations/{location}/accountConnectors/{account_connector}"
     ],
@@ -2927,7 +2927,7 @@
   {
     "resource": "developerconnect/Connection",
     "service": "developerconnect",
-    "kind": "DeveloperconnectConnection",
+    "kind": "DeveloperConnectConnection",
     "patterns": [
       "projects/{project}/locations/{location}/connections/{connection}"
     ],
@@ -2944,7 +2944,7 @@
   {
     "resource": "developerconnect/InsightsConfig",
     "service": "developerconnect",
-    "kind": "DeveloperconnectInsightsConfig",
+    "kind": "DeveloperConnectInsightsConfig",
     "patterns": [
       "projects/{project}/locations/{location}/insightsConfigs/{insights_config}"
     ],
@@ -2961,7 +2961,7 @@
   {
     "resource": "devicestreaming/DeviceSession",
     "service": "devicestreaming",
-    "kind": "DevicestreamingDeviceSession",
+    "kind": "DeviceStreamingDeviceSession",
     "patterns": [
       "projects/{project}/deviceSessions/{device_session}"
     ],
@@ -3518,7 +3518,7 @@
   {
     "resource": "edgenetwork/Router",
     "service": "edgenetwork",
-    "kind": "EdgenetworkRouter",
+    "kind": "EdgeNetworkRouter",
     "patterns": [
       "projects/{project}/locations/{location}/zones/{zone}/routers/{router}"
     ],
@@ -3569,7 +3569,7 @@
   {
     "resource": "financialservices/BacktestResult",
     "service": "financialservices",
-    "kind": "FinancialservicesBacktestResult",
+    "kind": "FinancialServicesBacktestResult",
     "patterns": [
       "projects/{project_num}/locations/{location}/instances/{instance}/backtestResults/{backtest_result}"
     ],
@@ -3586,7 +3586,7 @@
   {
     "resource": "financialservices/Dataset",
     "service": "financialservices",
-    "kind": "FinancialservicesDataset",
+    "kind": "FinancialServicesDataset",
     "patterns": [
       "projects/{project_num}/locations/{location}/instances/{instance}/datasets/{dataset}"
     ],
@@ -3603,7 +3603,7 @@
   {
     "resource": "financialservices/EngineConfig",
     "service": "financialservices",
-    "kind": "FinancialservicesEngineConfig",
+    "kind": "FinancialServicesEngineConfig",
     "patterns": [
       "projects/{project_num}/locations/{location}/instances/{instance}/engineConfigs/{engine_config}"
     ],
@@ -3620,7 +3620,7 @@
   {
     "resource": "financialservices/Instance",
     "service": "financialservices",
-    "kind": "FinancialservicesInstance",
+    "kind": "FinancialServicesInstance",
     "patterns": [
       "projects/{project}/locations/{location}/instances/{instance}"
     ],
@@ -3637,7 +3637,7 @@
   {
     "resource": "financialservices/Model",
     "service": "financialservices",
-    "kind": "FinancialservicesModel",
+    "kind": "FinancialServicesModel",
     "patterns": [
       "projects/{project_num}/locations/{location}/instances/{instance}/models/{model}"
     ],
@@ -3654,7 +3654,7 @@
   {
     "resource": "financialservices/PredictionResult",
     "service": "financialservices",
-    "kind": "FinancialservicesPredictionResult",
+    "kind": "FinancialServicesPredictionResult",
     "patterns": [
       "projects/{project_num}/locations/{location}/instances/{instance}/predictionResults/{prediction_result}"
     ],
@@ -3671,7 +3671,7 @@
   {
     "resource": "gdchardwaremanagement/Hardware",
     "service": "gdchardwaremanagement",
-    "kind": "GdchardwaremanagementHardware",
+    "kind": "GDCHardwareManagementHardware",
     "patterns": [
       "projects/{project}/locations/{location}/hardware/{hardware}"
     ],
@@ -3688,7 +3688,7 @@
   {
     "resource": "geminidataanalytics/DataAgent",
     "service": "geminidataanalytics",
-    "kind": "GeminidataanalyticsDataAgent",
+    "kind": "GeminiDataAnalyticsDataAgent",
     "patterns": [
       "projects/{project}/locations/{location}/dataAgents/{data_agent}"
     ],
@@ -3705,7 +3705,7 @@
   {
     "resource": "generativelanguage/CachedContent",
     "service": "generativelanguage",
-    "kind": "GenerativelanguageCachedContent",
+    "kind": "GenerativeLanguageCachedContent",
     "patterns": [
       "cachedContents/{id}"
     ],
@@ -3722,7 +3722,7 @@
   {
     "resource": "generativelanguage/Chunk",
     "service": "generativelanguage",
-    "kind": "GenerativelanguageChunk",
+    "kind": "GenerativeLanguageChunk",
     "patterns": [
       "corpora/{corpus}/documents/{document}/chunks/{chunk}"
     ],
@@ -3739,7 +3739,7 @@
   {
     "resource": "generativelanguage/Corpus",
     "service": "generativelanguage",
-    "kind": "GenerativelanguageCorpus",
+    "kind": "GenerativeLanguageCorpus",
     "patterns": [
       "corpora/{corpus}"
     ],
@@ -3756,7 +3756,7 @@
   {
     "resource": "generativelanguage/Document",
     "service": "generativelanguage",
-    "kind": "GenerativelanguageDocument",
+    "kind": "GenerativeLanguageDocument",
     "patterns": [
       "corpora/{corpus}/documents/{document}"
     ],
@@ -3773,7 +3773,7 @@
   {
     "resource": "generativelanguage/Permission",
     "service": "generativelanguage",
-    "kind": "GenerativelanguagePermission",
+    "kind": "GenerativeLanguagePermission",
     "patterns": [
       "tunedModels/{tuned_model}/permissions/{permission}",
       "corpora/{corpus}/permissions/{permission}"
@@ -3791,7 +3791,7 @@
   {
     "resource": "generativelanguage/TunedModel",
     "service": "generativelanguage",
-    "kind": "GenerativelanguageTunedModel",
+    "kind": "GenerativeLanguageTunedModel",
     "patterns": [
       "tunedModels/{tuned_model}"
     ],
@@ -3808,7 +3808,7 @@
   {
     "resource": "gkebackup/RestoreChannel",
     "service": "gkebackup",
-    "kind": "GkebackupRestoreChannel",
+    "kind": "GKEBackupRestoreChannel",
     "patterns": [
       "projects/{project}/locations/{location}/restoreChannels/{restore_channel}"
     ],
@@ -3843,7 +3843,7 @@
   {
     "resource": "gkemulticloud/AwsNodePool",
     "service": "gkemulticloud",
-    "kind": "GkemulticloudAwsNodePool",
+    "kind": "GKEMultiCloudAWSNodePool",
     "patterns": [
       "projects/{project}/locations/{location}/awsClusters/{aws_cluster}/awsNodePools/{aws_node_pool}"
     ],
@@ -3860,7 +3860,7 @@
   {
     "resource": "gkemulticloud/AzureNodePool",
     "service": "gkemulticloud",
-    "kind": "GkemulticloudAzureNodePool",
+    "kind": "GKEMultiCloudAzureNodePool",
     "patterns": [
       "projects/{project}/locations/{location}/azureClusters/{azure_cluster}/azureNodePools/{azure_node_pool}"
     ],
@@ -3946,7 +3946,7 @@
   {
     "resource": "hypercomputecluster/MachineLearningRun",
     "service": "hypercomputecluster",
-    "kind": "HypercomputeclusterMachineLearningRun",
+    "kind": "HypercomputeClusterMachineLearningRun",
     "patterns": [
       "projects/{project}/locations/{location}/machineLearningRuns/{machine_learning_run}"
     ],
@@ -3963,7 +3963,7 @@
   {
     "resource": "hypercomputecluster/MonitoredEvent",
     "service": "hypercomputecluster",
-    "kind": "HypercomputeclusterMonitoredEvent",
+    "kind": "HypercomputeClusterMonitoredEvent",
     "patterns": [
       "projects/{project}/locations/{location}/machineLearningRuns/{machine_learning_run}/monitoredEvents/{monitored_event}"
     ],
@@ -4035,7 +4035,7 @@
   {
     "resource": "iap/TunnelDestGroup",
     "service": "iap",
-    "kind": "IapTunnelDestGroup",
+    "kind": "IAPTunnelDestGroup",
     "patterns": [
       "projects/{project}/iap_tunnel/locations/{location}/destGroups/{dest_group}"
     ],
@@ -4122,7 +4122,7 @@
   {
     "resource": "livestream/Channel",
     "service": "livestream",
-    "kind": "LivestreamChannel",
+    "kind": "LiveStreamChannel",
     "patterns": [
       "projects/{project}/locations/{location}/channels/{channel}"
     ],
@@ -4139,7 +4139,7 @@
   {
     "resource": "livestream/DvrSession",
     "service": "livestream",
-    "kind": "LivestreamDvrSession",
+    "kind": "LiveStreamDVRSession",
     "patterns": [
       "projects/{project}/locations/{location}/channels/{channel}/dvrSessions/{dvr_session}"
     ],
@@ -4156,7 +4156,7 @@
   {
     "resource": "livestream/Input",
     "service": "livestream",
-    "kind": "LivestreamInput",
+    "kind": "LiveStreamInput",
     "patterns": [
       "projects/{project}/locations/{location}/inputs/{input}"
     ],
@@ -4190,7 +4190,7 @@
   {
     "resource": "managedkafka/Acl",
     "service": "managedkafka",
-    "kind": "ManagedKafkaAcl",
+    "kind": "ManagedKafkaACL",
     "patterns": [
       "projects/{project}/locations/{location}/clusters/{cluster}/acls/{acl}"
     ],
@@ -4241,7 +4241,7 @@
   {
     "resource": "mapmanagement/MapConfig",
     "service": "mapmanagement",
-    "kind": "MapmanagementMapConfig",
+    "kind": "MapManagementMapConfig",
     "patterns": [
       "projects/{project}/mapConfigs/{map_config}"
     ],
@@ -4258,7 +4258,7 @@
   {
     "resource": "mapmanagement/MapContextConfig",
     "service": "mapmanagement",
-    "kind": "MapmanagementMapContextConfig",
+    "kind": "MapManagementMapContextConfig",
     "patterns": [
       "projects/{project}/mapConfigs/{map_config}/mapContextConfigs/{map_context_config}"
     ],
@@ -4275,7 +4275,7 @@
   {
     "resource": "mapmanagement/StyleConfig",
     "service": "mapmanagement",
-    "kind": "MapmanagementStyleConfig",
+    "kind": "MapManagementStyleConfig",
     "patterns": [
       "projects/{project}/styleConfigs/{style_config}"
     ],
@@ -4292,7 +4292,7 @@
   {
     "resource": "merchantapi/CheckoutSettings",
     "service": "merchantapi",
-    "kind": "MerchantapiCheckoutSettings",
+    "kind": "MerchantAPICheckoutSettings",
     "patterns": [
       "accounts/{account}/programs/{program}/checkoutSettings"
     ],
@@ -4309,7 +4309,7 @@
   {
     "resource": "merchantapi/CommissionGroup",
     "service": "merchantapi",
-    "kind": "MerchantapiCommissionGroup",
+    "kind": "MerchantAPICommissionGroup",
     "patterns": [
       "accounts/{account}/contracts/{contract}/commissionGroups/{commission_group}"
     ],
@@ -4326,7 +4326,7 @@
   {
     "resource": "merchantapi/Contract",
     "service": "merchantapi",
-    "kind": "MerchantapiContract",
+    "kind": "MerchantAPIContract",
     "patterns": [
       "accounts/{account}/contracts/{contract}"
     ],
@@ -4344,7 +4344,7 @@
   {
     "resource": "merchantapi/ConversionSource",
     "service": "merchantapi",
-    "kind": "MerchantapiConversionSource",
+    "kind": "MerchantAPIConversionSource",
     "patterns": [
       "accounts/{account}/conversionSources/{conversion_source}"
     ],
@@ -4361,7 +4361,7 @@
   {
     "resource": "merchantapi/DataSource",
     "service": "merchantapi",
-    "kind": "MerchantapiDataSource",
+    "kind": "MerchantAPIDataSource",
     "patterns": [
       "accounts/{account}/dataSources/{datasource}"
     ],
@@ -4378,7 +4378,7 @@
   {
     "resource": "merchantapi/NotificationSubscription",
     "service": "merchantapi",
-    "kind": "MerchantapiNotificationSubscription",
+    "kind": "MerchantAPINotificationSubscription",
     "patterns": [
       "accounts/{account}/notificationsubscriptions/{notification_subscription}"
     ],
@@ -4395,7 +4395,7 @@
   {
     "resource": "merchantapi/OmnichannelSetting",
     "service": "merchantapi",
-    "kind": "MerchantapiOmnichannelSetting",
+    "kind": "MerchantAPIOmnichannelSetting",
     "patterns": [
       "accounts/{account}/omnichannelSettings/{omnichannel_setting}"
     ],
@@ -4413,7 +4413,7 @@
   {
     "resource": "merchantapi/OnlineReturnPolicy",
     "service": "merchantapi",
-    "kind": "MerchantapiOnlineReturnPolicy",
+    "kind": "MerchantAPIOnlineReturnPolicy",
     "patterns": [
       "accounts/{account}/onlineReturnPolicies/{return_policy}"
     ],
@@ -4430,7 +4430,7 @@
   {
     "resource": "merchantapi/User",
     "service": "merchantapi",
-    "kind": "MerchantapiUser",
+    "kind": "MerchantAPIUser",
     "patterns": [
       "accounts/{account}/users/{email}"
     ],
@@ -4465,7 +4465,7 @@
   {
     "resource": "migrationcenter/ImportJob",
     "service": "migrationcenter",
-    "kind": "MigrationcenterImportJob",
+    "kind": "MigrationCenterImportJob",
     "patterns": [
       "projects/{project}/locations/{location}/importJobs/{import_job}"
     ],
@@ -4482,7 +4482,7 @@
   {
     "resource": "migrationcenter/PreferenceSet",
     "service": "migrationcenter",
-    "kind": "MigrationcenterPreferenceSet",
+    "kind": "MigrationCenterPreferenceSet",
     "patterns": [
       "projects/{project}/locations/{location}/preferenceSets/{preference_set}"
     ],
@@ -4499,7 +4499,7 @@
   {
     "resource": "migrationcenter/Source",
     "service": "migrationcenter",
-    "kind": "MigrationcenterSource",
+    "kind": "MigrationCenterSource",
     "patterns": [
       "projects/{project}/locations/{location}/sources/{source}"
     ],
@@ -4584,7 +4584,7 @@
   {
     "resource": "netapp/KmsConfig",
     "service": "netapp",
-    "kind": "NetappKmsConfig",
+    "kind": "NetappKMSConfig",
     "patterns": [
       "projects/{project}/locations/{location}/kmsConfigs/{kms_config}"
     ],
@@ -4960,7 +4960,7 @@
   {
     "resource": "networkservices/LbEdgeExtension",
     "service": "networkservices",
-    "kind": "NetworkServicesLbEdgeExtension",
+    "kind": "NetworkServicesLBEdgeExtension",
     "patterns": [
       "projects/{project}/locations/{location}/lbEdgeExtensions/{lb_edge_extension}"
     ],
@@ -4977,7 +4977,7 @@
   {
     "resource": "networkservices/LbTrafficExtension",
     "service": "networkservices",
-    "kind": "NetworkServicesLbTrafficExtension",
+    "kind": "NetworkServicesLBTrafficExtension",
     "patterns": [
       "projects/{project}/locations/{location}/lbTrafficExtensions/{lb_traffic_extension}"
     ],
@@ -4994,7 +4994,7 @@
   {
     "resource": "networkservices/ServiceLbPolicy",
     "service": "networkservices",
-    "kind": "NetworkServicesServiceLbPolicy",
+    "kind": "NetworkServicesServiceLBPolicy",
     "patterns": [
       "projects/{project}/locations/{location}/serviceLbPolicies/{service_lb_policy}"
     ],
@@ -5028,7 +5028,7 @@
   {
     "resource": "oracledatabase/AutonomousDatabase",
     "service": "oracledatabase",
-    "kind": "OracledatabaseAutonomousDatabase",
+    "kind": "OracleDatabaseAutonomousDatabase",
     "patterns": [
       "projects/{project}/locations/{location}/autonomousDatabases/{autonomous_database}"
     ],
@@ -5045,7 +5045,7 @@
   {
     "resource": "oracledatabase/ExadbVmCluster",
     "service": "oracledatabase",
-    "kind": "OracledatabaseExadbVmCluster",
+    "kind": "OracleDatabaseExadbVMCluster",
     "patterns": [
       "projects/{project}/locations/{location}/exadbVmClusters/{exadb_vm_cluster}"
     ],
@@ -5096,7 +5096,7 @@
   {
     "resource": "resultstore/Invocation",
     "service": "resultstore",
-    "kind": "ResultstoreInvocation",
+    "kind": "ResultStoreInvocation",
     "patterns": [
       "invocations/{invocation}"
     ],
@@ -5198,7 +5198,7 @@
   {
     "resource": "saasservicemgmt/Rollout",
     "service": "saasservicemgmt",
-    "kind": "SaasservicemgmtRollout",
+    "kind": "SaaSServiceMgmtRollout",
     "patterns": [
       "projects/{project}/locations/{location}/rollouts/{rollout_id}"
     ],
@@ -5215,7 +5215,7 @@
   {
     "resource": "saasservicemgmt/RolloutKind",
     "service": "saasservicemgmt",
-    "kind": "SaasservicemgmtRolloutKind",
+    "kind": "SaaSServiceMgmtRolloutKind",
     "patterns": [
       "projects/{project}/locations/{location}/rolloutKinds/{rollout_kind_id}"
     ],
@@ -5232,7 +5232,7 @@
   {
     "resource": "saasservicemgmt/Saas",
     "service": "saasservicemgmt",
-    "kind": "SaasservicemgmtSaas",
+    "kind": "SaaSServiceMgmtSaaS",
     "patterns": [
       "projects/{project}/locations/{location}/saas/{saas}"
     ],
@@ -5249,7 +5249,7 @@
   {
     "resource": "saasservicemgmt/Tenant",
     "service": "saasservicemgmt",
-    "kind": "SaasservicemgmtTenant",
+    "kind": "SaaSServiceMgmtTenant",
     "patterns": [
       "projects/{project}/locations/{location}/tenants/{tenant}"
     ],
@@ -5266,7 +5266,7 @@
   {
     "resource": "saasservicemgmt/Unit",
     "service": "saasservicemgmt",
-    "kind": "SaasservicemgmtUnit",
+    "kind": "SaaSServiceMgmtUnit",
     "patterns": [
       "projects/{project}/locations/{location}/units/{unit}"
     ],
@@ -5283,7 +5283,7 @@
   {
     "resource": "saasservicemgmt/UnitKind",
     "service": "saasservicemgmt",
-    "kind": "SaasservicemgmtUnitKind",
+    "kind": "SaaSServiceMgmtUnitKind",
     "patterns": [
       "projects/{project}/locations/{location}/unitKinds/{unitKind}"
     ],
@@ -5300,7 +5300,7 @@
   {
     "resource": "securesourcemanager/BranchRule",
     "service": "securesourcemanager",
-    "kind": "SecuresourcemanagerBranchRule",
+    "kind": "SecureSourceManagerBranchRule",
     "patterns": [
       "projects/{project}/locations/{location}/repositories/{repository}/branchRules/{branch_rule}"
     ],
@@ -5317,7 +5317,7 @@
   {
     "resource": "securesourcemanager/Hook",
     "service": "securesourcemanager",
-    "kind": "SecuresourcemanagerHook",
+    "kind": "SecureSourceManagerHook",
     "patterns": [
       "projects/{project}/locations/{location}/repositories/{repository}/hooks/{hook}"
     ],
@@ -5334,7 +5334,7 @@
   {
     "resource": "securesourcemanager/Issue",
     "service": "securesourcemanager",
-    "kind": "SecuresourcemanagerIssue",
+    "kind": "SecureSourceManagerIssue",
     "patterns": [
       "projects/{project}/locations/{location}/repositories/{repository}/issues/{issue}"
     ],
@@ -5351,7 +5351,7 @@
   {
     "resource": "securesourcemanager/IssueComment",
     "service": "securesourcemanager",
-    "kind": "SecuresourcemanagerIssueComment",
+    "kind": "SecureSourceManagerIssueComment",
     "patterns": [
       "projects/{project}/locations/{location}/repositories/{repository}/issues/{issue}/issueComments/{comment}"
     ],
@@ -5368,7 +5368,7 @@
   {
     "resource": "securesourcemanager/PullRequest",
     "service": "securesourcemanager",
-    "kind": "SecuresourcemanagerPullRequest",
+    "kind": "SecureSourceManagerPullRequest",
     "patterns": [
       "projects/{project}/locations/{location}/repositories/{repository}/pullRequests/{pull_request}"
     ],
@@ -5386,7 +5386,7 @@
   {
     "resource": "securesourcemanager/PullRequestComment",
     "service": "securesourcemanager",
-    "kind": "SecuresourcemanagerPullRequestComment",
+    "kind": "SecureSourceManagerPullRequestComment",
     "patterns": [
       "projects/{project}/locations/{location}/repositories/{repository}/pullRequests/{pull_request}/pullRequestComments/{comment}"
     ],
@@ -5403,7 +5403,7 @@
   {
     "resource": "securitycenter/EventThreatDetectionCustomModule",
     "service": "securitycenter",
-    "kind": "SecuritycenterEventThreatDetectionCustomModule",
+    "kind": "SecurityCenterEventThreatDetectionCustomModule",
     "patterns": [
       "organizations/{organization}/eventThreatDetectionSettings/customModules/{module}",
       "folders/{folder}/eventThreatDetectionSettings/customModules/{module}",
@@ -5422,7 +5422,7 @@
   {
     "resource": "securitycenter/SecurityHealthAnalyticsCustomModule",
     "service": "securitycenter",
-    "kind": "SecuritycenterSecurityHealthAnalyticsCustomModule",
+    "kind": "SecurityCenterSecurityHealthAnalyticsCustomModule",
     "patterns": [
       "organizations/{organization}/securityHealthAnalyticsSettings/customModules/{custom_module}",
       "folders/{folder}/securityHealthAnalyticsSettings/customModules/{custom_module}",
@@ -5460,7 +5460,7 @@
   {
     "resource": "securitycentermanagement/SecurityHealthAnalyticsCustomModule",
     "service": "securitycentermanagement",
-    "kind": "SecuritycentermanagementSecurityHealthAnalyticsCustomModule",
+    "kind": "SecurityCenterManagementSecurityHealthAnalyticsCustomModule",
     "patterns": [
       "organizations/{organization}/locations/{location}/securityHealthAnalyticsCustomModules/{security_health_analytics_custom_module}",
       "projects/{project}/locations/{location}/securityHealthAnalyticsCustomModules/{security_health_analytics_custom_module}",
@@ -5479,7 +5479,7 @@
   {
     "resource": "securityposture/Posture",
     "service": "securityposture",
-    "kind": "SecurityposturePosture",
+    "kind": "SecurityPosturePosture",
     "patterns": [
       "organizations/{organization}/locations/{location}/postures/{posture}"
     ],
@@ -5496,7 +5496,7 @@
   {
     "resource": "securityposture/PostureDeployment",
     "service": "securityposture",
-    "kind": "SecurityposturePostureDeployment",
+    "kind": "SecurityPosturePostureDeployment",
     "patterns": [
       "organizations/{organization}/locations/{location}/postureDeployments/{posture_deployment}"
     ],
@@ -5547,7 +5547,7 @@
   {
     "resource": "sqladmin/Backup",
     "service": "sqladmin",
-    "kind": "SQLBackup",
+    "kind": "SQLAdminBackup",
     "patterns": [
       "projects/{project}/backups/{backup}"
     ],
@@ -5599,7 +5599,7 @@
   {
     "resource": "storageinsights/ReportConfig",
     "service": "storageinsights",
-    "kind": "StorageinsightsReportConfig",
+    "kind": "StorageInsightsReportConfig",
     "patterns": [
       "projects/{project}/locations/{location}/reportConfigs/{report_config}"
     ],
@@ -5616,7 +5616,7 @@
   {
     "resource": "telcoautomation/Blueprint",
     "service": "telcoautomation",
-    "kind": "TelcoautomationBlueprint",
+    "kind": "TelcoAutomationBlueprint",
     "patterns": [
       "projects/{project}/locations/{location}/orchestrationClusters/{orchestration_cluster}/blueprints/{blueprint}"
     ],
@@ -5633,7 +5633,7 @@
   {
     "resource": "telcoautomation/Deployment",
     "service": "telcoautomation",
-    "kind": "TelcoautomationDeployment",
+    "kind": "TelcoAutomationDeployment",
     "patterns": [
       "projects/{project}/locations/{location}/orchestrationClusters/{orchestration_cluster}/deployments/{deployment}"
     ],
@@ -5667,7 +5667,7 @@
   {
     "resource": "vectorsearch/DataObject",
     "service": "vectorsearch",
-    "kind": "VectorsearchDataObject",
+    "kind": "VectorSearchDataObject",
     "patterns": [
       "projects/{project}/locations/{location}/collections/{collection}/dataObjects/{dataObject}"
     ],
@@ -5684,7 +5684,7 @@
   {
     "resource": "vectorsearch/Index",
     "service": "vectorsearch",
-    "kind": "VectorsearchIndex",
+    "kind": "VectorSearchIndex",
     "patterns": [
       "projects/{project}/locations/{location}/collections/{collection}/indexes/{index}"
     ],
@@ -5718,7 +5718,7 @@
   {
     "resource": "vmmigration/Group",
     "service": "vmmigration",
-    "kind": "VmmigrationGroup",
+    "kind": "VMMigrationGroup",
     "patterns": [
       "projects/{project}/locations/{location}/groups/{group}"
     ],
@@ -5735,7 +5735,7 @@
   {
     "resource": "vmwareengine/Cluster",
     "service": "vmwareengine",
-    "kind": "VmwareengineCluster",
+    "kind": "VMwareEngineCluster",
     "patterns": [
       "projects/{project}/locations/{location}/privateClouds/{private_cloud}/clusters/{cluster}"
     ],
@@ -5752,7 +5752,7 @@
   {
     "resource": "vmwareengine/LoggingServer",
     "service": "vmwareengine",
-    "kind": "VmwareengineLoggingServer",
+    "kind": "VMwareEngineLoggingServer",
     "patterns": [
       "projects/{project}/locations/{location}/privateClouds/{private_cloud}/loggingServers/{logging_server}"
     ],
@@ -5769,7 +5769,7 @@
   {
     "resource": "vmwareengine/ManagementDnsZoneBinding",
     "service": "vmwareengine",
-    "kind": "VmwareengineManagementDnsZoneBinding",
+    "kind": "VMwareEngineManagementDNSZoneBinding",
     "patterns": [
       "projects/{project}/locations/{location}/privateClouds/{private_cloud}/managementDnsZoneBindings/{management_dns_zone_binding}"
     ],
@@ -5786,7 +5786,7 @@
   {
     "resource": "websecurityscanner/ScanConfig",
     "service": "websecurityscanner",
-    "kind": "WebsecurityscannerScanConfig",
+    "kind": "WebSecurityScannerScanConfig",
     "patterns": [
       "projects/{project}/scanConfigs/{scan_config}"
     ],
@@ -5803,7 +5803,7 @@
   {
     "resource": "workspaceevents/Subscription",
     "service": "workspaceevents",
-    "kind": "WorkspaceeventsSubscription",
+    "kind": "WorkspaceEventsSubscription",
     "patterns": [
       "subscriptions/{subscription}"
     ],
