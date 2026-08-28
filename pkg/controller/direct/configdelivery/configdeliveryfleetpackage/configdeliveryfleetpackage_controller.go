@@ -17,6 +17,7 @@ package configdeliveryfleetpackage
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	gcp "cloud.google.com/go/configdelivery/apiv1"
 	pb "cloud.google.com/go/configdelivery/apiv1/configdeliverypb"
@@ -270,7 +271,11 @@ func (a *ConfigDeliveryFleetPackageAdapter) Delete(ctx context.Context, deleteOp
 	fqn := a.id.String()
 	log.V(2).Info("deleting ConfigDeliveryFleetPackage", "name", fqn)
 
-	req := &pb.DeleteFleetPackageRequest{Name: fqn}
+	req := &pb.DeleteFleetPackageRequest{
+		Name:         fqn,
+		Force:        true,
+		AllowMissing: true,
+	}
 	op, err := a.gcpClient.DeleteFleetPackage(ctx, req)
 	if err != nil {
 		if direct.IsNotFound(err) {
@@ -295,6 +300,31 @@ func compareFleetPackage(ctx context.Context, actual, desired *pb.FleetPackage) 
 		return nil, nil, err
 	}
 	maskedActual.Labels = actual.Labels
+	maskedActual.Name = desired.Name
+
+	normalizeProject := func(p string) string {
+		if p == "" {
+			return ""
+		}
+		if !strings.HasPrefix(p, "projects/") {
+			return "projects/" + p
+		}
+		return p
+	}
+
+	if desired.Target != nil && desired.Target.GetFleet() != nil {
+		desired.Target.GetFleet().Project = normalizeProject(desired.Target.GetFleet().Project)
+		if desired.Target.GetFleet().Selector == nil {
+			desired.Target.GetFleet().Selector = &pb.Fleet_LabelSelector{}
+		}
+	}
+	if maskedActual.Target != nil && maskedActual.Target.GetFleet() != nil {
+		maskedActual.Target.GetFleet().Project = normalizeProject(maskedActual.Target.GetFleet().Project)
+		if maskedActual.Target.GetFleet().Selector == nil {
+			maskedActual.Target.GetFleet().Selector = &pb.Fleet_LabelSelector{}
+		}
+	}
+
 	diffs, updateMask, err := common.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
 		return nil, nil, err

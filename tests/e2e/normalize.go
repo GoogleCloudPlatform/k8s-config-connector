@@ -1219,6 +1219,8 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 		s = re.ReplaceAllString(s, "debian-11-bullseye-v20231010")
 		re2 := regexp.MustCompile(`built on \d{8}`)
 		s = re2.ReplaceAllString(s, "built on 20231010")
+		reRollout := regexp.MustCompile(`rollouts/rollout-\d{8}-\d{6}`)
+		s = reRollout.ReplaceAllString(s, "rollouts/rollout-placeholder")
 		return s
 	})
 
@@ -1485,6 +1487,9 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 
 	// Run visitors
 	events.PrettifyJSON(func(requestURL string, obj map[string]any) {
+		if strings.Contains(requestURL, "/fleetPackages") {
+			removeKeysFromMap(obj, []string{"info"})
+		}
 		if strings.Contains(requestURL, "/backendServices") {
 			removeKeysFromMap(obj, []string{"routingConfig", "enableCDN", "subnetworks"})
 		}
