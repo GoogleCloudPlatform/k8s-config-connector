@@ -453,7 +453,7 @@ func InstanceServerCAPoolRefKRMToGCP(in *privatecarefs.PrivateCACAPoolRef) strin
 		return ""
 	}
 
-	return in.External
+	return privatecarefs.StripCAPoolPrefix(in.External)
 }
 
 func InstanceAuthorizedNetworksKRMToGCP(in []krm.InstanceAuthorizedNetworks) []*api.AclEntry {
