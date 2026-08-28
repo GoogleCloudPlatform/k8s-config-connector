@@ -206,6 +206,9 @@ func (c *ProjectCache) queryForProject(ctx context.Context, name string) (*cache
 	req := &resourcemanagerpb.GetProjectRequest{
 		Name: name,
 	}
+	if c.client == nil {
+		return nil, fmt.Errorf("project cache client is nil; cannot lookup project %q", req.Name)
+	}
 	project, err := c.client.GetProject(ctx, req)
 	if err != nil {
 		return nil, fmt.Errorf("error getting project %q: %w", req.Name, err)
@@ -226,4 +229,15 @@ func (c *ProjectCache) queryForProject(ctx context.Context, name string) (*cache
 		projectNumber: projectNumber,
 		timestamp:     time.Now(),
 	}, nil
+}
+
+// InsertForTest inserts a project ID to project number mapping into the cache for testing purposes.
+func (c *ProjectCache) InsertForTest(projectID string, projectNumber int64) {
+	info := &cachedProjectInfo{
+		projectID:     projectID,
+		projectNumber: projectNumber,
+		timestamp:     time.Now(),
+	}
+	c.projectsByID.Set(projectID, info)
+	c.projectsByNumber.Set(projectNumber, info)
 }
