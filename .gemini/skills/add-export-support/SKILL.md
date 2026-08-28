@@ -118,6 +118,15 @@ To test your exporter, integrate it with the E2E test harness:
 		exportURI = resolveCAISURI(h, obj)
 ```
 
+### Step 3.5: Remove from Ratcheting Exclusions (MANDATORY)
+
+Before running the E2E test cases against real or mock GCP, you **MUST** ensure the target resource is removed from the ratcheting exclusion list in `tests/e2e/ratcheting.go`. This enables the re-reconciliation test step, which is a fundamental use case KCC resources must support.
+
+1. Open `tests/e2e/ratcheting.go`.
+2. Locate the function `ShouldTestRereconiliation`.
+3. Locate the `switch` statement that checks `primaryResource.GroupVersionKind()`.
+4. If there is a `case` block for your target resource's `GroupKind`, remove that `case` line from the switch statement.
+
 ### Step 4: Run E2E Test and Generate Golden Export Files
 
 Run the target test fixture using:

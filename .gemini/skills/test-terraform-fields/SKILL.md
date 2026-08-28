@@ -32,6 +32,17 @@ A complete test fixture directory contains:
 
 ---
 
+## Remove from Ratcheting Exclusions (MANDATORY)
+
+Before running the test cases against real or mock GCP, you **MUST** remove the target resource from the ratcheting exclusion list in `tests/e2e/ratcheting.go`. This ensures that re-reconciliation testing (which touches the primary object after E2E creation to verify zero-write operations) is enabled and validated, which is a fundamental use case KCC resources must support.
+
+1. Open `tests/e2e/ratcheting.go`.
+2. Locate the function `ShouldTestRereconiliation`.
+3. Locate the `switch` statement that checks `primaryResource.GroupVersionKind()`.
+4. If there is a `case` block for your target resource's `GroupKind` (e.g., `schema.GroupKind{Group: "dns.cnrm.cloud.google.com", Kind: "DNSRecordSet"}`), remove that `case` line from the switch statement.
+
+---
+
 ## 3. Recording Ground Truth against Real GCP (CRITICAL MANDATORY STEP)
 
 > [!IMPORTANT]

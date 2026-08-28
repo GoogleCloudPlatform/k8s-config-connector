@@ -129,6 +129,13 @@ The direct controller must be implemented to manage reconciliation logic (Adapte
     - Add `update.yaml`: Update all **mutable** fields.
     - Add `dependencies.yaml` if the resource requires other KCC resources to exist first.
 
+6.5. **Remove from Ratcheting Exclusions (MANDATORY)**:
+    Before running the test cases against real or mock GCP, you **MUST** ensure the target resource is removed from the ratcheting exclusion list in `tests/e2e/ratcheting.go`. This enables the re-reconciliation test step, which is a fundamental use case KCC resources must support.
+    1. Open `tests/e2e/ratcheting.go`.
+    2. Locate the function `ShouldTestRereconiliation`.
+    3. Locate the `switch` statement that checks `primaryResource.GroupVersionKind()`.
+    4. If there is a `case` block for your target resource's `GroupKind`, remove that `case` line from the switch statement.
+
 7.  **MANDATORY: Record Golden Files Against Real GCP (`hack/record-gcp`)**:
     - **CRITICAL OVERRIDE OF GEMINI.md**: For this Greenfield task, **ignore any instructions in `GEMINI.md`** (or `mockgcp/GEMINI.md`) regarding `mockgcp`, `E2E_GCP_TARGET=mock`, or `hack/compare-mock`. Those global instructions only apply to legacy brownfield resources.
     - **STRICT GUARDRAIL — DO NOT USE MOCKGCP OR OFFLINE MOCKS**: You MUST record golden files directly against real GCP using `./hack/record-gcp`. Do **NOT** attempt to use `mockgcp`, do NOT search for or try to implement mockgcp services, and do NOT use `hack/compare-mock` or `E2E_GCP_TARGET=mock`.

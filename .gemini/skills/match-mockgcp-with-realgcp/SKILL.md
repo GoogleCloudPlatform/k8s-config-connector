@@ -20,6 +20,15 @@ When the golden tests for K8s Config Connector mock output diverge from real GCP
 
 ## Workflow
 
+### Step 0: Remove from Ratcheting Exclusions (MANDATORY)
+
+Before running the test cases against real or mock GCP, you **MUST** ensure the target resource is removed from the ratcheting exclusion list in `tests/e2e/ratcheting.go`. This enables the re-reconciliation test step, which is a fundamental use case KCC resources must support.
+
+1. Open `tests/e2e/ratcheting.go`.
+2. Locate the function `ShouldTestRereconiliation`.
+3. Locate the `switch` statement that checks `primaryResource.GroupVersionKind()`.
+4. If there is a `case` block for your target resource's `GroupKind`, remove that `case` line from the switch statement.
+
 ### Step 1: Record GCP logs
 
 1.  Run `hack/record-gcp "fixtures/^<testname>$"` to capture real GCP behavior.

@@ -26,6 +26,13 @@ The migration test (`TestMigrationToDirect` in `tests/e2e/migration_test.go`) ex
 
 ## The 4-Step Development Sequence (How to Fix Issues)
 
+### Step 0: Remove from Ratcheting Exclusions (MANDATORY)
+Before running the test cases against real or mock GCP, you **MUST** ensure the target resource is removed from the ratcheting exclusion list in `tests/e2e/ratcheting.go`. This enables the re-reconciliation test step, which is a fundamental use case KCC resources must support.
+1. Open `tests/e2e/ratcheting.go`.
+2. Locate the function `ShouldTestRereconiliation`.
+3. Locate the `switch` statement that checks `primaryResource.GroupVersionKind()`.
+4. If there is a `case` block for your target resource's `GroupKind`, remove that `case` line from the switch statement.
+
 ### Step 1: Diagnose the Takeover Diff (MANDATORY - RUN ON REAL GCP FIRST)
 Before writing any code or making any changes, you must diagnose the behavior against real GCP and document it in a separate commit.
 1. Run the E2E migration test suite against real GCP for the specific fixture to exercise the APIs and generate audit logs:
