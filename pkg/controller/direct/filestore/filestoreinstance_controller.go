@@ -17,9 +17,10 @@ package filestore
 import (
 	"context"
 	"fmt"
-	"strings"
+	"reflect"
 
 	"google.golang.org/api/option"
+	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
@@ -27,6 +28,7 @@ import (
 
 	gcp "cloud.google.com/go/filestore/apiv1"
 	pb "cloud.google.com/go/filestore/apiv1/filestorepb"
+	computerefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/refs"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/filestore/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -112,9 +114,8 @@ func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapt
 
 // Find implements the Adapter interface.
 func (a *filestoreInstanceAdapter) Find(ctx context.Context) (bool, error) {
-	if a.id.Instance == "" {
-		return false, nil
-	}
+	log := klog.FromContext(ctx)
+	log.V(2).Info("finding FilestoreInstance", "name", a.id.String())
 
 	req := &pb.GetInstanceRequest{
 		Name: a.id.String(),
@@ -204,7 +205,7 @@ func (a *filestoreInstanceAdapter) Create(ctx context.Context, createOp *directb
 
 	op, err := a.client.CreateInstance(ctx, req)
 	if err != nil {
-		return fmt.Errorf("creating instance: %w", err)
+		return fmt.Errorf("creating FilestoreInstance %s: %w", a.id.String(), err)
 	}
 
 	latest, err := op.Wait(ctx)
@@ -229,53 +230,24 @@ func (a *filestoreInstanceAdapter) Update(ctx context.Context, updateOp *directb
 		return err
 	}
 
-	first := true
 	normalize := func(ctx context.Context, pbObj *pb.Instance) error {
-		if first {
-			pbObj.Labels = desired.Labels
-			first = false
-		} else {
-			pbObj.Labels = a.actual.Labels
+		if a.actual == nil {
+			return nil
 		}
-
-		// Merge any unset fields in Networks and FileShares from actual to avoid false diffs on immutable fields
+		// Standardize network path format (short name vs. full selfLink URL) to avoid false diffs
 		for _, dn := range pbObj.Networks {
 			for _, an := range a.actual.Networks {
 				if isSameNetwork(dn.Network, an.Network) {
 					dn.Network = an.Network
-
-					if len(dn.Modes) == 0 {
-						dn.Modes = an.Modes
-					}
 					if dn.ReservedIpRange == "" {
 						dn.ReservedIpRange = an.ReservedIpRange
 					}
 					if len(dn.IpAddresses) == 0 {
 						dn.IpAddresses = an.IpAddresses
 					}
-					if dn.ConnectMode == pb.NetworkConfig_CONNECT_MODE_UNSPECIFIED {
-						dn.ConnectMode = an.ConnectMode
-					}
 				}
 			}
 		}
-
-		for _, df := range pbObj.FileShares {
-			for _, af := range a.actual.FileShares {
-				if df.Name == af.Name {
-					if df.CapacityGb == 0 {
-						df.CapacityGb = af.CapacityGb
-					}
-					if df.Source == nil {
-						df.Source = af.Source
-					}
-					if len(df.NfsExportOptions) == 0 {
-						df.NfsExportOptions = af.NfsExportOptions
-					}
-				}
-			}
-		}
-
 		return nil
 	}
 
@@ -288,7 +260,18 @@ func (a *filestoreInstanceAdapter) Update(ctx context.Context, updateOp *directb
 		normalize,
 	)
 	if err != nil {
-		return fmt.Errorf("comparing actual and desired FilestoreInstance: %w", err)
+		return fmt.Errorf("comparing actual and desired FilestoreInstance %s: %w", a.id.String(), err)
+	}
+
+	if a.actual != nil && !reflect.DeepEqual(a.actual.Labels, desired.Labels) {
+		if updateMask == nil {
+			updateMask = &fieldmaskpb.FieldMask{}
+		}
+		updateMask.Paths = append(updateMask.Paths, "labels")
+		if diff == nil {
+			diff = &structuredreporting.Diff{}
+		}
+		diff.AddField("labels", a.actual.Labels, desired.Labels)
 	}
 
 	var latest *pb.Instance
@@ -333,15 +316,18 @@ func (a *filestoreInstanceAdapter) updateStatus(ctx context.Context, op directba
 	return op.UpdateStatus(ctx, status, nil)
 }
 
-func isSameNetwork(a, b string) bool {
-	if a == b {
+// isSameNetwork matches desired and actual network references, supporting both short names and full resource paths.
+func isSameNetwork(desired, actual string) bool {
+	if desired == actual {
 		return true
 	}
-	if a == "" || b == "" {
+	if desired == "" || actual == "" {
 		return false
 	}
-	if strings.HasSuffix(a, "/"+b) || strings.HasSuffix(b, "/"+a) {
-		return true
+
+	if id, err := computerefs.ParseComputeNetworkExternal(actual); err == nil {
+		return id.Network == desired || id.String() == desired
 	}
+
 	return false
 }
