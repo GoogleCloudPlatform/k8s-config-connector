@@ -31,6 +31,13 @@ This skill guides the implementation of the `Adapter` interface and the creation
     - Add `update.yaml`: Update all **mutable** fields.
     - Add `dependencies.yaml` if the resource requires other KCC resources to exist first.
 
+3.5. **Remove from Ratcheting Exclusions (MANDATORY)**:
+    Before running the test cases against real or mock GCP, you **MUST** ensure the target resource is removed from the ratcheting exclusion list in `tests/e2e/ratcheting.go`. This enables the re-reconciliation test step, which is a fundamental use case KCC resources must support.
+    1. Open `tests/e2e/ratcheting.go`.
+    2. Locate the function `ShouldTestRereconiliation`.
+    3. Locate the `switch` statement that checks `primaryResource.GroupVersionKind()`.
+    4. If there is a `case` block for your target resource's `GroupKind`, remove that `case` line from the switch statement.
+
 4.  **Record Golden Files (Real GCP)**:
     Run the tests against real GCP to record the traffic and object state. Ensure you use a sufficient timeout (e.g., 30-60 minutes) as GCP resource creation can be slow:
 

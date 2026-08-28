@@ -133,6 +133,15 @@ Add the service to `mockgcp/mockserviceusage/knownservices.go`.
 
 If the resource has KRM tests, add it to `config/tests/samples/create/harness.go`.
 
+### 9b. Remove from Ratcheting Exclusions (MANDATORY)
+
+Before running the test cases against real or mock GCP, you **MUST** ensure the target resource is removed from the ratcheting exclusion list in `tests/e2e/ratcheting.go`. This enables the re-reconciliation test step, which is a fundamental use case KCC resources must support.
+
+1. Open `tests/e2e/ratcheting.go`.
+2. Locate the function `ShouldTestRereconiliation`.
+3. Locate the `switch` statement that checks `primaryResource.GroupVersionKind()`.
+4. If there is a `case` block for your target resource's `GroupKind`, remove that `case` line from the switch statement.
+
 ### 10. Verify and Align Logs
 
 Please use the skill .gemini/skills/match-mockgcp-with-realgcp/SKILL.md to align the mockgcp behavior with the real gcp behavior.

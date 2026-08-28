@@ -20,6 +20,13 @@ This skill guides the implementation of the `Adapter` interface
     - Use the generated mappers and manual mappers as needed.
     - Ensure correct error handling (e.g., handling 404s in `Find`).
 
+1.5. **Remove from Ratcheting Exclusions (MANDATORY)**:
+    Before running the test cases against real or mock GCP, you **MUST** ensure the target resource is removed from the ratcheting exclusion list in `tests/e2e/ratcheting.go`. This enables the re-reconciliation test step, which is a fundamental use case KCC resources must support.
+    1. Open `tests/e2e/ratcheting.go`.
+    2. Locate the function `ShouldTestRereconiliation`.
+    3. Locate the `switch` statement that checks `primaryResource.GroupVersionKind()`.
+    4. If there is a `case` block for your target resource's `GroupKind`, remove that `case` line from the switch statement.
+
 2.  **Verify and Record against MockGCP / Fix Discrepancies**:
     Run the fixtures tests against mock GCP to check behavior, update golden files, and verify correctness.
 

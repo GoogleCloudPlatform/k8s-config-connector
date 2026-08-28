@@ -27,6 +27,13 @@ This skill guides you through implementing Phase 3 (MockGCP and Alignment) for a
   - Implement the mock service entrypoint in `mockgcp/mock<service_name>/service.go` and register it in `mockgcp/register.go`.
 - If the mock service already exists, implement the necessary CRUD (Create, Read, Update, Delete) methods for `<ResourceKind>` in `mockgcp/mock<service_name>/<kind_lowercase>.go`.
 
+### 2b. Remove from Ratcheting Exclusions (MANDATORY)
+Before running the test cases against real or mock GCP, you **MUST** ensure the target resource is removed from the ratcheting exclusion list in `tests/e2e/ratcheting.go`. This enables the re-reconciliation test step, which is a fundamental use case KCC resources must support.
+1. Open `tests/e2e/ratcheting.go`.
+2. Locate the function `ShouldTestRereconiliation`.
+3. Locate the `switch` statement that checks `primaryResource.GroupVersionKind()`.
+4. If there is a `case` block for your target resource's `GroupKind`, remove that `case` line from the switch statement.
+
 ### 3. Incremental Mock Alignment
 - Run `hack/compare-mock "fixtures/^<testname>$"` to execute the tests against the mock implementation.
 

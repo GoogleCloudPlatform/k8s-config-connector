@@ -41,6 +41,13 @@ This skill guides an automated agent through adding a missing field to a GCP res
    - If the new field can be added to an existing test without conflict, do so.
    - If the new field requires a specific setup (e.g., cross-instance replication requires two instances), create a new test folder with `create.yaml` (and `dependencies.yaml` if needed).
 
+5b. **Remove from Ratcheting Exclusions (MANDATORY)**
+   - Before running the test cases against real or mock GCP, you **MUST** ensure the target resource is removed from the ratcheting exclusion list in `tests/e2e/ratcheting.go`. This enables the re-reconciliation test step, which is a fundamental use case KCC resources must support.
+   1. Open `tests/e2e/ratcheting.go`.
+   2. Locate the function `ShouldTestRereconiliation`.
+   3. Locate the `switch` statement that checks `primaryResource.GroupVersionKind()`.
+   4. If there is a `case` block for your target resource's `GroupKind`, remove that `case` line from the switch statement.
+
 6. **Regenerate Golden Output**
    - Run the mock compare script to generate new golden output (you must set `WRITE_GOLDEN_OUTPUT=1`):
      `WRITE_GOLDEN_OUTPUT=1 hack/compare-mock pkg/test/resourcefixture/testdata/basic/group/version/kind/[testname]/`
