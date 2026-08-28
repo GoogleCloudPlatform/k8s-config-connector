@@ -16,6 +16,7 @@ package mocksql
 
 import (
 	"net/url"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"k8s.io/klog/v2"
@@ -24,6 +25,10 @@ import (
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
+	if !strings.Contains(url, "sqladmin.googleapis.com") {
+		return
+	}
+
 	// SQLUser
 	replacements.ReplacePath(".items[].passwordPolicy.status.passwordExpirationTime", "2025-06-19T01:02:03Z")
 
@@ -37,6 +42,11 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.ReplacePath(".operation.user", "overseer-kcc-tester@${projectId}.iam.gserviceaccount.com")
 	replacements.ReplacePath(".clientCert.certInfo.createTime", "2026-10-14T00:44:02.750Z")
 	replacements.ReplacePath(".clientCert.certInfo.expirationTime", "2036-10-11T00:45:02.750Z")
+
+	// SQLInstance
+	replacements.ReplacePath(".serverCaCert.certSerialNumber", "0")
+	replacements.ReplacePath(".serverCaCerts[].certSerialNumber", "0")
+	replacements.ReplacePath(".items[].certSerialNumber", "0")
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
@@ -45,12 +55,16 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 	}
 
 	var sqlInstance struct {
+		DNSName     string `json:"dnsName"`
 		IPAddresses []struct {
 			IPAddress string `json:"ipAddress"`
 			Type      string `json:"type"`
 		} `json:"ipAddresses"`
 	}
 	if ok := event.ParseResponseInto(&sqlInstance); ok {
+		if sqlInstance.DNSName != "" {
+			replacements.ReplaceStringValue(sqlInstance.DNSName, "${dnsName}")
+		}
 		for _, ipAddress := range sqlInstance.IPAddresses {
 			switch ipAddress.Type {
 			case "PRIVATE":
@@ -59,9 +73,6 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 				replacements.ReplaceStringValue(ipAddress.IPAddress, "10.10.10.10")
 			case "OUTGOING":
 				replacements.ReplaceStringValue(ipAddress.IPAddress, "10.10.10.11")
-			}
-			if ipAddress.Type == "PRIMARY" {
-				replacements.ReplaceStringValue(ipAddress.IPAddress, "10.10.10.10")
 			}
 		}
 	}
