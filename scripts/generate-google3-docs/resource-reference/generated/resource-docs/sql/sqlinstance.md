@@ -190,8 +190,8 @@ settings:
       - string
       pscEnabled: boolean
     requireSsl: boolean
-    serverCaMode: string
-    serverCaPoolRef:
+    serverCAMode: string
+    serverCAPoolRef:
       external: string
       name: string
       namespace: string
@@ -1413,7 +1413,7 @@ settings:
     </tr>
     <tr>
         <td>
-            <p><code>settings.ipConfiguration.serverCaMode</code></p>
+            <p><code>settings.ipConfiguration.serverCAMode</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -1423,17 +1423,17 @@ settings:
     </tr>
     <tr>
         <td>
-            <p><code>settings.ipConfiguration.serverCaPoolRef</code></p>
+            <p><code>settings.ipConfiguration.serverCAPoolRef</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
             <p><code class="apitype">object</code></p>
-            <p>The CA pool resource for the server certificate when serverCaMode is CUSTOMER_MANAGED_CAS_CA.</p>
+            <p>The CA pool resource for the server certificate when serverCAMode is CUSTOMER_MANAGED_CAS_CA.</p>
         </td>
     </tr>
     <tr>
         <td>
-            <p><code>settings.ipConfiguration.serverCaPoolRef.external</code></p>
+            <p><code>settings.ipConfiguration.serverCAPoolRef.external</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -1443,7 +1443,7 @@ settings:
     </tr>
     <tr>
         <td>
-            <p><code>settings.ipConfiguration.serverCaPoolRef.name</code></p>
+            <p><code>settings.ipConfiguration.serverCAPoolRef.name</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -1453,7 +1453,7 @@ settings:
     </tr>
     <tr>
         <td>
-            <p><code>settings.ipConfiguration.serverCaPoolRef.namespace</code></p>
+            <p><code>settings.ipConfiguration.serverCAPoolRef.namespace</code></p>
             <p><i>Optional</i></p>
         </td>
         <td>
@@ -2122,8 +2122,8 @@ spec:
   settings:
     tier: db-custom-2-7680
     ipConfiguration:
-      serverCaMode: CUSTOMER_MANAGED_CAS_CA
-      serverCaPoolRef:
+      serverCAMode: CUSTOMER_MANAGED_CAS_CA
+      serverCAPoolRef:
         name: sqlinstance-ca-pool-sample
       customSubjectAlternativeNames:
         - "db.internal.example.com"

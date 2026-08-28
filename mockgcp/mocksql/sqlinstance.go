@@ -179,6 +179,10 @@ func (s *sqlInstancesService) Insert(ctx context.Context, req *pb.SqlInstancesIn
 
 	obj.GceZone = obj.Settings.LocationPreference.Zone
 
+	if obj.DnsName == nil {
+		obj.DnsName = PtrTo(name.InstanceName + ".example." + obj.Region + ".sql.goog.")
+	}
+
 	obj.Settings.SettingsVersion = wrapperspb.Int64(1)
 
 	obj.Etag = fields.ComputeWeakEtag(obj)
