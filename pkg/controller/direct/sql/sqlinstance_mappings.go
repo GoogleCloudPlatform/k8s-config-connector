@@ -420,8 +420,8 @@ func InstanceIpConfigurationKRMToGCP(in *krm.InstanceIpConfiguration) *api.IpCon
 		PrivateNetwork:                          InstancePrivateNetworkRefKRMToGCP(in.PrivateNetworkRef),
 		PscConfig:                               InstancePscConfigKRMToGCP(in.PscConfig),
 		RequireSsl:                              direct.ValueOf(in.RequireSsl),
-		ServerCaMode:                            direct.ValueOf(in.ServerCaMode),
-		ServerCaPool:                            InstanceServerCaPoolRefKRMToGCP(in.ServerCaPoolRef),
+		ServerCaMode:                            direct.ValueOf(in.ServerCAMode),
+		ServerCaPool:                            InstanceServerCAPoolRefKRMToGCP(in.ServerCAPoolRef),
 		SslMode:                                 direct.ValueOf(in.SslMode),
 	}
 
@@ -435,17 +435,20 @@ func InstanceIpConfigurationKRMToGCP(in *krm.InstanceIpConfiguration) *api.IpCon
 	if in.RequireSsl != nil {
 		out.ForceSendFields = append(out.ForceSendFields, "RequireSsl")
 	}
-	if in.ServerCaMode != nil {
+	if in.ServerCAMode != nil {
 		out.ForceSendFields = append(out.ForceSendFields, "ServerCaMode")
 	}
-	if in.ServerCaPoolRef != nil {
+	if in.ServerCAPoolRef != nil {
 		out.ForceSendFields = append(out.ForceSendFields, "ServerCaPool")
+	}
+	if in.CustomSubjectAlternativeNames != nil {
+		out.ForceSendFields = append(out.ForceSendFields, "CustomSubjectAlternativeNames")
 	}
 
 	return out
 }
 
-func InstanceServerCaPoolRefKRMToGCP(in *privatecarefs.PrivateCACAPoolRef) string {
+func InstanceServerCAPoolRefKRMToGCP(in *privatecarefs.PrivateCACAPoolRef) string {
 	if in == nil {
 		return ""
 	}
@@ -991,15 +994,15 @@ func InstanceIpConfigurationGCPToKRM(in *api.IpConfiguration) *krm.InstanceIpCon
 		PrivateNetworkRef:                       InstancePrivateNetworkRefRefGCPToKRM(in.PrivateNetwork),
 		PscConfig:                               InstancePscConfigGCPToKRM(in.PscConfig),
 		RequireSsl:                              direct.PtrTo(in.RequireSsl),
-		ServerCaMode:                            direct.LazyPtr(in.ServerCaMode),
-		ServerCaPoolRef:                         InstanceServerCaPoolRefGCPToKRM(in.ServerCaPool),
+		ServerCAMode:                            direct.LazyPtr(in.ServerCaMode),
+		ServerCAPoolRef:                         InstanceServerCAPoolRefGCPToKRM(in.ServerCaPool),
 		SslMode:                                 direct.LazyPtr(in.SslMode),
 	}
 
 	return out
 }
 
-func InstanceServerCaPoolRefGCPToKRM(in string) *privatecarefs.PrivateCACAPoolRef {
+func InstanceServerCAPoolRefGCPToKRM(in string) *privatecarefs.PrivateCACAPoolRef {
 	if in == "" {
 		return nil
 	}
