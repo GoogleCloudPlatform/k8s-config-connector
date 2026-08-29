@@ -54,34 +54,6 @@ func APIHubAttributeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.API
 	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	return out
 }
-func APIHubAttributeSpec_FromProto(mapCtx *direct.MapContext, in *pb.Attribute) *krm.APIHubAttributeSpec {
-	if in == nil {
-		return nil
-	}
-	out := &krm.APIHubAttributeSpec{}
-	// MISSING: Name
-	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
-	out.Description = direct.LazyPtr(in.GetDescription())
-	out.Scope = direct.Enum_FromProto(mapCtx, in.GetScope())
-	out.DataType = direct.Enum_FromProto(mapCtx, in.GetDataType())
-	out.AllowedValues = direct.Slice_FromProto(mapCtx, in.AllowedValues, Attribute_AllowedValue_FromProto)
-	out.Cardinality = direct.LazyPtr(in.GetCardinality())
-	return out
-}
-func APIHubAttributeSpec_ToProto(mapCtx *direct.MapContext, in *krm.APIHubAttributeSpec) *pb.Attribute {
-	if in == nil {
-		return nil
-	}
-	out := &pb.Attribute{}
-	// MISSING: Name
-	out.DisplayName = direct.ValueOf(in.DisplayName)
-	out.Description = direct.ValueOf(in.Description)
-	out.Scope = direct.Enum_ToProto[pb.Attribute_Scope](mapCtx, in.Scope)
-	out.DataType = direct.Enum_ToProto[pb.Attribute_DataType](mapCtx, in.DataType)
-	out.AllowedValues = direct.Slice_ToProto(mapCtx, in.AllowedValues, Attribute_AllowedValue_ToProto)
-	out.Cardinality = direct.ValueOf(in.Cardinality)
-	return out
-}
 func APIHubDependencyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Dependency) *krm.APIHubDependencyObservedState {
 	if in == nil {
 		return nil
