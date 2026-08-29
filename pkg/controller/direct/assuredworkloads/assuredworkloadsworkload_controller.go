@@ -60,7 +60,7 @@ func (m *modelAssuredWorkloadsWorkload) client(ctx context.Context, location str
 		return nil, err
 	}
 	if location != "" {
-		endpoint := fmt.Sprintf("https://%s-assuredworkloads.googleapis.com", location)
+		endpoint := fmt.Sprintf("%s-assuredworkloads.googleapis.com:443", location)
 		opts = append(opts, option.WithEndpoint(endpoint))
 	}
 	gcpClient, err := gcp.NewRESTClient(ctx, opts...)
