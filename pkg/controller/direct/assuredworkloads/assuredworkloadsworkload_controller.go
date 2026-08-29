@@ -228,13 +228,18 @@ func (a *AssuredWorkloadsWorkloadAdapter) Export(ctx context.Context) (*unstruct
 		return nil, mapCtx.Err()
 	}
 
+	obj.Spec.Location = a.id.Location
+
 	uObj, err := runtime.DefaultUnstructuredConverter.ToUnstructured(obj)
 	if err != nil {
 		return nil, err
 	}
 
-	u.SetName(a.actual.Name)
+	u.SetName(a.id.Workload)
 	u.SetGroupVersionKind(krm.AssuredWorkloadsWorkloadGVK)
+	u.SetAnnotations(map[string]string{
+		"cnrm.cloud.google.com/organization-id": a.id.Organization,
+	})
 
 	u.Object = uObj
 	return u, nil
