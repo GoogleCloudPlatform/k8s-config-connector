@@ -49,3 +49,11 @@ func DenyRule_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmiamv1alpha1.Den
 func DenyRule_v1alpha1_FromProto(mapCtx *direct.MapContext, in *iampb.DenyRule) *krmiamv1alpha1.DenyRule {
 	return DenyRule_FromProto(mapCtx, in)
 }
+
+func IAMServiceAccountSpec_ToProto(mapCtx *direct.MapContext, in *krmiamv1beta1.IAMServiceAccountSpec) *pb.ServiceAccount {
+	return IAMServiceAccountSpec_v1beta1_ToProto(mapCtx, in)
+}
+
+func IAMServiceAccountSpec_FromProto(mapCtx *direct.MapContext, in *pb.ServiceAccount) *krmiamv1beta1.IAMServiceAccountSpec {
+	return IAMServiceAccountSpec_v1beta1_FromProto(mapCtx, in)
+}
