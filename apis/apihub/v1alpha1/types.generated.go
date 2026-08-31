@@ -24,6 +24,7 @@
 // resource: APIHubExternalAPI:ExternalApi
 // resource: APIHubInstance:ApiHubInstance
 // resource: APIHubAttribute:Attribute
+// resource: APIHubDependency:Dependency
 
 package v1alpha1
 
@@ -89,6 +90,34 @@ type AttributeValues_StringAttributeValues struct {
 	Values []string `json:"values,omitempty"`
 }
 
+// +kcc:proto=google.cloud.apihub.v1.DependencyEntityReference
+type DependencyEntityReference struct {
+	// The resource name of an operation in the API Hub.
+	//
+	//  Format:
+	//  `projects/{project}/locations/{location}/apis/{api}/versions/{version}/operations/{operation}`
+	// +kcc:proto:field=google.cloud.apihub.v1.DependencyEntityReference.operation_resource_name
+	OperationResourceName *string `json:"operationResourceName,omitempty"`
+
+	// The resource name of an external API in the API Hub.
+	//
+	//  Format:
+	//  `projects/{project}/locations/{location}/externalApis/{external_api}`
+	// +kcc:proto:field=google.cloud.apihub.v1.DependencyEntityReference.external_api_resource_name
+	ExternalAPIResourceName *string `json:"externalAPIResourceName,omitempty"`
+}
+
+// +kcc:proto=google.cloud.apihub.v1.DependencyErrorDetail
+type DependencyErrorDetail struct {
+	// Optional. Error in the dependency.
+	// +kcc:proto:field=google.cloud.apihub.v1.DependencyErrorDetail.error
+	Error *string `json:"error,omitempty"`
+
+	// Optional. Timestamp at which the error was found.
+	// +kcc:proto:field=google.cloud.apihub.v1.DependencyErrorDetail.error_time
+	ErrorTime *string `json:"errorTime,omitempty"`
+}
+
 // +kcc:proto=google.cloud.apihub.v1.Documentation
 type Documentation struct {
 	// Optional. The uri of the externally hosted documentation.
@@ -113,4 +142,11 @@ type AttributeValuesObservedState struct {
 	//  Format: projects/{project}/locations/{location}/attributes/{attribute}
 	// +kcc:proto:field=google.cloud.apihub.v1.AttributeValues.attribute
 	Attribute *string `json:"attribute,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.apihub.v1.DependencyEntityReference
+type DependencyEntityReferenceObservedState struct {
+	// Output only. Display name of the entity.
+	// +kcc:proto:field=google.cloud.apihub.v1.DependencyEntityReference.display_name
+	DisplayName *string `json:"displayName,omitempty"`
 }

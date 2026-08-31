@@ -41,6 +41,7 @@ ${CONTROLLERBUILDER} generate-types \
   --resource APIHubExternalAPI:ExternalApi \
   --resource APIHubInstance:ApiHubInstance \
   --resource APIHubAttribute:Attribute \
+  --resource APIHubDependency:Dependency \
   --prune-unused-types=false
 
 ${CONTROLLERBUILDER} generate-mapper --service google.cloud.apihub.v1 --api-version apihub.cnrm.cloud.google.com/v1alpha1

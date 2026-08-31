@@ -82,6 +82,36 @@ func APIHubAttributeSpec_ToProto(mapCtx *direct.MapContext, in *krm.APIHubAttrib
 	out.Cardinality = direct.ValueOf(in.Cardinality)
 	return out
 }
+func APIHubDependencyObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Dependency) *krm.APIHubDependencyObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.APIHubDependencyObservedState{}
+	// MISSING: Name
+	out.Consumer = DependencyEntityReferenceObservedState_FromProto(mapCtx, in.GetConsumer())
+	out.Supplier = DependencyEntityReferenceObservedState_FromProto(mapCtx, in.GetSupplier())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.DiscoveryMode = direct.Enum_FromProto(mapCtx, in.GetDiscoveryMode())
+	out.ErrorDetail = DependencyErrorDetail_FromProto(mapCtx, in.GetErrorDetail())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func APIHubDependencyObservedState_ToProto(mapCtx *direct.MapContext, in *krm.APIHubDependencyObservedState) *pb.Dependency {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Dependency{}
+	// MISSING: Name
+	out.Consumer = DependencyEntityReferenceObservedState_ToProto(mapCtx, in.Consumer)
+	out.Supplier = DependencyEntityReferenceObservedState_ToProto(mapCtx, in.Supplier)
+	out.State = direct.Enum_ToProto[pb.Dependency_State](mapCtx, in.State)
+	out.DiscoveryMode = direct.Enum_ToProto[pb.Dependency_DiscoveryMode](mapCtx, in.DiscoveryMode)
+	out.ErrorDetail = DependencyErrorDetail_ToProto(mapCtx, in.ErrorDetail)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
 func APIHubDeploymentObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Deployment) *krm.APIHubDeploymentObservedState {
 	if in == nil {
 		return nil
@@ -336,6 +366,80 @@ func AttributeValues_StringAttributeValues_ToProto(mapCtx *direct.MapContext, in
 	}
 	out := &pb.AttributeValues_StringAttributeValues{}
 	out.Values = in.Values
+	return out
+}
+func DependencyEntityReference_FromProto(mapCtx *direct.MapContext, in *pb.DependencyEntityReference) *krm.DependencyEntityReference {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DependencyEntityReference{}
+	out.OperationResourceName = direct.LazyPtr(in.GetOperationResourceName())
+	out.ExternalAPIResourceName = direct.LazyPtr(in.GetExternalApiResourceName())
+	// MISSING: DisplayName
+	return out
+}
+func DependencyEntityReference_ToProto(mapCtx *direct.MapContext, in *krm.DependencyEntityReference) *pb.DependencyEntityReference {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DependencyEntityReference{}
+	if oneof := DependencyEntityReference_OperationResourceName_ToProto(mapCtx, in.OperationResourceName); oneof != nil {
+		out.Identifier = oneof
+	}
+	if oneof := DependencyEntityReference_ExternalApiResourceName_ToProto(mapCtx, in.ExternalAPIResourceName); oneof != nil {
+		out.Identifier = oneof
+	}
+	// MISSING: DisplayName
+	return out
+}
+func DependencyEntityReference_OperationResourceName_ToProto(mapCtx *direct.MapContext, in *string) *pb.DependencyEntityReference_OperationResourceName {
+	if in == nil {
+		return nil
+	}
+	return &pb.DependencyEntityReference_OperationResourceName{OperationResourceName: *in}
+}
+func DependencyEntityReference_ExternalApiResourceName_ToProto(mapCtx *direct.MapContext, in *string) *pb.DependencyEntityReference_ExternalApiResourceName {
+	if in == nil {
+		return nil
+	}
+	return &pb.DependencyEntityReference_ExternalApiResourceName{ExternalApiResourceName: *in}
+}
+func DependencyEntityReferenceObservedState_FromProto(mapCtx *direct.MapContext, in *pb.DependencyEntityReference) *krm.DependencyEntityReferenceObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DependencyEntityReferenceObservedState{}
+	// MISSING: OperationResourceName
+	// MISSING: ExternalAPIResourceName
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	return out
+}
+func DependencyEntityReferenceObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DependencyEntityReferenceObservedState) *pb.DependencyEntityReference {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DependencyEntityReference{}
+	// MISSING: OperationResourceName
+	// MISSING: ExternalAPIResourceName
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	return out
+}
+func DependencyErrorDetail_FromProto(mapCtx *direct.MapContext, in *pb.DependencyErrorDetail) *krm.DependencyErrorDetail {
+	if in == nil {
+		return nil
+	}
+	out := &krm.DependencyErrorDetail{}
+	out.Error = direct.Enum_FromProto(mapCtx, in.GetError())
+	out.ErrorTime = direct.StringTimestamp_FromProto(mapCtx, in.GetErrorTime())
+	return out
+}
+func DependencyErrorDetail_ToProto(mapCtx *direct.MapContext, in *krm.DependencyErrorDetail) *pb.DependencyErrorDetail {
+	if in == nil {
+		return nil
+	}
+	out := &pb.DependencyErrorDetail{}
+	out.Error = direct.Enum_ToProto[pb.DependencyErrorDetail_Error](mapCtx, in.Error)
+	out.ErrorTime = direct.StringTimestamp_ToProto(mapCtx, in.ErrorTime)
 	return out
 }
 func Documentation_FromProto(mapCtx *direct.MapContext, in *pb.Documentation) *krm.Documentation {
