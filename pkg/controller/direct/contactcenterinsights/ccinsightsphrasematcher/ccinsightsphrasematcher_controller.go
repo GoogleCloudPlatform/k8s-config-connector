@@ -138,7 +138,7 @@ func (a *adapter) Find(ctx context.Context) (bool, error) {
 	req := &pb.GetPhraseMatcherRequest{Name: a.id.String()}
 	actual, err := a.gcpClient.GetPhraseMatcher(ctx, req)
 	if err != nil {
-		if direct.IsNotFound(err) {
+		if direct.IsNotFound(err) || direct.IsBadRequest(err) {
 			return false, nil
 		}
 		return false, fmt.Errorf("getting CCInsightsPhraseMatcher %q: %w", a.id, err)
@@ -152,24 +152,23 @@ func (a *adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating CCInsightsPhraseMatcher", "name", a.id)
 
-	a.desired.Name = a.id.String()
+	a.desired.Name = ""
 	req := &pb.CreatePhraseMatcherRequest{
 		Parent:        a.id.ParentString(),
 		PhraseMatcher: a.desired,
 	}
-	_, err := a.gcpClient.CreatePhraseMatcher(ctx, req)
+	created, err := a.gcpClient.CreatePhraseMatcher(ctx, req)
 
 	if err != nil {
 		return fmt.Errorf("creating CCInsightsPhraseMatcher %s: %w", a.id, err)
 	}
-	log.V(2).Info("successfully created CCInsightsPhraseMatcher", "name", a.id)
+	log.V(2).Info("successfully created CCInsightsPhraseMatcher", "name", created.Name)
 
-	latest, err := a.gcpClient.GetPhraseMatcher(ctx, &pb.GetPhraseMatcherRequest{Name: a.id.String()})
-	if err != nil {
-		return fmt.Errorf("getting CCInsightsPhraseMatcher %s after creation: %w", a.id, err)
+	if err := a.id.FromExternal(created.Name); err != nil {
+		return fmt.Errorf("parsing server-assigned phrase matcher name %q: %w", created.Name, err)
 	}
 
-	return a.updateStatus(ctx, createOp, latest)
+	return a.updateStatus(ctx, createOp, created)
 }
 
 func (a *adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
@@ -216,6 +215,14 @@ func (a *adapter) compare(ctx context.Context, actual, desired *pb.PhraseMatcher
 	clonedDesired := proto.Clone(desired).(*pb.PhraseMatcher)
 	clonedDesired.Name = actual.Name
 	maskedActual.Name = actual.Name
+
+	populateDefaults := func(obj *pb.PhraseMatcher) {
+		if obj.DisplayName == "" {
+			obj.DisplayName = actual.DisplayName
+		}
+	}
+	populateDefaults(maskedActual)
+	populateDefaults(clonedDesired)
 
 	diffs, updateMask, err := common.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
@@ -267,7 +274,7 @@ func (a *adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperati
 	req := &pb.DeletePhraseMatcherRequest{Name: a.id.String()}
 	err := a.gcpClient.DeletePhraseMatcher(ctx, req)
 	if err != nil {
-		if direct.IsNotFound(err) {
+		if direct.IsNotFound(err) || direct.IsBadRequest(err) {
 			return true, nil
 		}
 		return false, fmt.Errorf("deleting CCInsightsPhraseMatcher %s: %w", a.id, err)

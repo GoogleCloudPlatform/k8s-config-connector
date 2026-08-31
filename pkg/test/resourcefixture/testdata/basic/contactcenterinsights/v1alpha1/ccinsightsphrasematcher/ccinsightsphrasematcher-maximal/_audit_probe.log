@@ -1,0 +1,31 @@
+GET https://contactcenterinsights.googleapis.com/v1/projects/${projectNumber}/locations/us-central1/phraseMatchers/6492803406424493961?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: scaffolding on HTTPServer2
+
+{
+  "activationUpdateTime": "2026-08-31T19:54:45.120166Z",
+  "displayName": "Updated Maximal Phrase Matcher ${uniqueId}",
+  "name": "projects/${projectNumber}/locations/us-central1/phraseMatchers/6492803406424493961",
+  "phraseMatchRuleGroups": [
+    {
+      "phraseMatchRules": [
+        {
+          "config": {
+            "exactMatchConfig": {}
+          },
+          "negated": true,
+          "query": "hi"
+        }
+      ],
+      "type": 1
+    }
+  ],
+  "revisionCreateTime": "2024-04-01T12:34:56.123456Z",
+  "revisionId": "revision-id-placeholder",
+  "roleMatch": 1,
+  "type": 2,
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "versionTag": "v2"
+}
