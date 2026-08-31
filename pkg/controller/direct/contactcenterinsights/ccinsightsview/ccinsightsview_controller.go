@@ -103,8 +103,13 @@ func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForO
 		return nil, mapCtx.Err()
 	}
 
+	idTyped := id.(*krm.CCInsightsViewIdentity)
+	if desired.DisplayName == "" {
+		desired.DisplayName = u.GetName()
+	}
+
 	return &adapter{
-		id:      id.(*krm.CCInsightsViewIdentity),
+		id:      idTyped,
 		desired: desired,
 		gcp:     gcp,
 	}, nil
@@ -139,7 +144,7 @@ func (a *adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	view.Name = a.id.String()
 
 	req := &pb.CreateViewRequest{
-		Parent: fmt.Sprintf("projects/%s/locations/%s", a.id.Project, a.id.Location),
+		Parent: a.id.ParentString(),
 		View:   view,
 	}
 
@@ -249,6 +254,6 @@ func (a *adapter) updateStatus(ctx context.Context, op directbase.Operation, lat
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	status.ExternalRef = direct.LazyPtr(a.id.String())
+	status.ExternalRef = direct.LazyPtr(latest.Name)
 	return op.UpdateStatus(ctx, status, nil)
 }
