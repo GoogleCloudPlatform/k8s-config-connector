@@ -14,17 +14,17 @@ spec:
   - connections:
     - pscConnection:
         forwardingRuleRef:
-          name: ${forwardingRuleID}
+          name: computeforwardingrule-1a-${uniqueId}
     - pscConnection:
         forwardingRuleRef:
-          name: ${forwardingRuleID}
+          name: computeforwardingrule-1b-${uniqueId}
   - connections:
     - pscConnection:
         forwardingRuleRef:
-          name: ${forwardingRuleID}
+          name: computeforwardingrule-2a-${uniqueId}
     - pscConnection:
         forwardingRuleRef:
-          name: ${forwardingRuleID}
+          name: computeforwardingrule-2b-${uniqueId}
   clusterRef:
     name: rediscluster-${uniqueId}
 status:

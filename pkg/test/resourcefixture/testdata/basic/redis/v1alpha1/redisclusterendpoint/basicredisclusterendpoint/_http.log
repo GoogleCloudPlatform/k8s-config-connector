@@ -688,7 +688,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/computeaddress-1a-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -708,11 +708,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/${projectId}/regions/europe-west4/addresses/${addressID}' was not found",
+        "message": "The resource 'projects/${projectId}/regions/europe-west4/addresses/computeaddress-1a-${uniqueId}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/${projectId}/regions/europe-west4/addresses/${addressID}' was not found"
+    "message": "The resource 'projects/${projectId}/regions/europe-west4/addresses/computeaddress-1a-${uniqueId}' was not found"
   }
 }
 
@@ -728,7 +728,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "${addressID}",
+  "name": "computeaddress-1a-${uniqueId}",
   "purpose": "GCE_ENDPOINT",
   "region": "projects/${projectId}/global/regions/europe-west4",
   "subnetwork": "projects/${projectId}/regions/europe-west4/subnetworks/${subnetworkID}"
@@ -756,7 +756,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/computeaddress-1a-${uniqueId}",
   "user": "user@example.com"
 }
 
@@ -788,13 +788,13 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/computeaddress-1a-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/computeaddress-1a-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -816,18 +816,18 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "compute#address",
   "labelFingerprint": "abcdef0123A=",
-  "name": "${addressID}",
+  "name": "computeaddress-1a-${uniqueId}",
   "networkTier": "PREMIUM",
   "purpose": "GCE_ENDPOINT",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/computeaddress-1a-${uniqueId}",
   "status": "RESERVED",
   "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/subnetworks/${subnetworkID}"
 }
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}/setLabels?alt=json
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/computeaddress-1a-${uniqueId}/setLabels?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -862,13 +862,13 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/computeaddress-1a-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/computeaddress-1a-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -894,21 +894,21 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "${addressID}",
+  "name": "computeaddress-1a-${uniqueId}",
   "networkTier": "PREMIUM",
   "purpose": "GCE_ENDPOINT",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/computeaddress-1a-${uniqueId}",
   "status": "RESERVED",
   "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/subnetworks/${subnetworkID}"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1a-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: project=${projectId}&region=europe-west4&forwarding_rule=${forwardingRuleID}
+X-Goog-Request-Params: project=${projectId}&region=europe-west4&forwarding_rule=computeforwardingrule-1a-${uniqueId}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -926,11 +926,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}' was not found",
+        "message": "The resource 'projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1a-${uniqueId}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}' was not found"
+    "message": "The resource 'projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1a-${uniqueId}' was not found"
   }
 }
 
@@ -945,7 +945,7 @@ X-Goog-Request-Params: project=${projectId}&region=europe-west4
   "IPAddress": "8.8.8.8",
   "allowPscGlobalAccess": true,
   "loadBalancingScheme": "",
-  "name": "${forwardingRuleID}",
+  "name": "computeforwardingrule-1a-${uniqueId}",
   "network": "projects/${projectId}/global/networks/${networkID}",
   "subnetwork": "projects/${projectId}/regions/europe-west4/subnetworks/${subnetworkID}",
   "target": "projects/${projectNumber}/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa-2"
@@ -973,7 +973,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1a-${uniqueId}",
   "user": "user@example.com"
 }
 
@@ -1007,16 +1007,16 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1a-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1a-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: project=${projectId}&region=europe-west4&forwarding_rule=${forwardingRuleID}
+X-Goog-Request-Params: project=${projectId}&region=europe-west4&forwarding_rule=computeforwardingrule-1a-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1037,13 +1037,13 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "compute#forwardingRule",
   "labelFingerprint": "abcdef0123A=",
-  "name": "${forwardingRuleID}",
+  "name": "computeforwardingrule-1a-${uniqueId}",
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "networkTier": "PREMIUM",
   "pscConnectionId": "111111111111",
   "pscConnectionStatus": "PENDING",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1a-${uniqueId}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
   "serviceDirectoryRegistrations": [
     {
@@ -1056,10 +1056,10 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}/setLabels
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1a-${uniqueId}/setLabels
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: project=${projectId}&region=europe-west4&resource=${forwardingRuleID}
+X-Goog-Request-Params: project=${projectId}&region=europe-west4&resource=computeforwardingrule-1a-${uniqueId}
 
 {
   "labelFingerprint": "abcdef0123A=",
@@ -1092,16 +1092,16 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1a-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1a-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: project=${projectId}&region=europe-west4&forwarding_rule=${forwardingRuleID}
+X-Goog-Request-Params: project=${projectId}&region=europe-west4&forwarding_rule=computeforwardingrule-1a-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1126,13 +1126,13 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "${forwardingRuleID}",
+  "name": "computeforwardingrule-1a-${uniqueId}",
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "networkTier": "PREMIUM",
   "pscConnectionId": "111111111111",
   "pscConnectionStatus": "PENDING",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1a-${uniqueId}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
   "serviceDirectoryRegistrations": [
     {
@@ -1145,7 +1145,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/computeaddress-1b-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -1165,11 +1165,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/${projectId}/regions/europe-west4/addresses/${addressID}' was not found",
+        "message": "The resource 'projects/${projectId}/regions/europe-west4/addresses/computeaddress-1b-${uniqueId}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/${projectId}/regions/europe-west4/addresses/${addressID}' was not found"
+    "message": "The resource 'projects/${projectId}/regions/europe-west4/addresses/computeaddress-1b-${uniqueId}' was not found"
   }
 }
 
@@ -1185,7 +1185,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "${addressID}",
+  "name": "computeaddress-1b-${uniqueId}",
   "purpose": "GCE_ENDPOINT",
   "region": "projects/${projectId}/global/regions/europe-west4",
   "subnetwork": "projects/${projectId}/regions/europe-west4/subnetworks/${subnetworkID}"
@@ -1213,7 +1213,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/computeaddress-1b-${uniqueId}",
   "user": "user@example.com"
 }
 
@@ -1245,13 +1245,13 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/computeaddress-1b-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/computeaddress-1b-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -1273,18 +1273,18 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "compute#address",
   "labelFingerprint": "abcdef0123A=",
-  "name": "${addressID}",
+  "name": "computeaddress-1b-${uniqueId}",
   "networkTier": "PREMIUM",
   "purpose": "GCE_ENDPOINT",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/computeaddress-1b-${uniqueId}",
   "status": "RESERVED",
   "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/subnetworks/${subnetworkID}"
 }
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}/setLabels?alt=json
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/computeaddress-1b-${uniqueId}/setLabels?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -1319,13 +1319,13 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/computeaddress-1b-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/computeaddress-1b-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -1351,21 +1351,21 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "${addressID}",
+  "name": "computeaddress-1b-${uniqueId}",
   "networkTier": "PREMIUM",
   "purpose": "GCE_ENDPOINT",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/computeaddress-1b-${uniqueId}",
   "status": "RESERVED",
   "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/subnetworks/${subnetworkID}"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1b-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: project=${projectId}&region=europe-west4&forwarding_rule=${forwardingRuleID}
+X-Goog-Request-Params: project=${projectId}&region=europe-west4&forwarding_rule=computeforwardingrule-1b-${uniqueId}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -1383,11 +1383,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}' was not found",
+        "message": "The resource 'projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1b-${uniqueId}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}' was not found"
+    "message": "The resource 'projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1b-${uniqueId}' was not found"
   }
 }
 
@@ -1402,7 +1402,7 @@ X-Goog-Request-Params: project=${projectId}&region=europe-west4
   "IPAddress": "8.8.8.8",
   "allowPscGlobalAccess": true,
   "loadBalancingScheme": "",
-  "name": "${forwardingRuleID}",
+  "name": "computeforwardingrule-1b-${uniqueId}",
   "network": "projects/${projectId}/global/networks/${networkID}",
   "subnetwork": "projects/${projectId}/regions/europe-west4/subnetworks/${subnetworkID}",
   "target": "projects/${projectNumber}/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa"
@@ -1430,7 +1430,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1b-${uniqueId}",
   "user": "user@example.com"
 }
 
@@ -1464,16 +1464,16 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1b-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1b-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: project=${projectId}&region=europe-west4&forwarding_rule=${forwardingRuleID}
+X-Goog-Request-Params: project=${projectId}&region=europe-west4&forwarding_rule=computeforwardingrule-1b-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1494,13 +1494,13 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "compute#forwardingRule",
   "labelFingerprint": "abcdef0123A=",
-  "name": "${forwardingRuleID}",
+  "name": "computeforwardingrule-1b-${uniqueId}",
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "networkTier": "PREMIUM",
   "pscConnectionId": "111111111111",
   "pscConnectionStatus": "PENDING",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1b-${uniqueId}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
   "serviceDirectoryRegistrations": [
     {
@@ -1513,10 +1513,10 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}/setLabels
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1b-${uniqueId}/setLabels
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: project=${projectId}&region=europe-west4&resource=${forwardingRuleID}
+X-Goog-Request-Params: project=${projectId}&region=europe-west4&resource=computeforwardingrule-1b-${uniqueId}
 
 {
   "labelFingerprint": "abcdef0123A=",
@@ -1549,16 +1549,16 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1b-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1b-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: project=${projectId}&region=europe-west4&forwarding_rule=${forwardingRuleID}
+X-Goog-Request-Params: project=${projectId}&region=europe-west4&forwarding_rule=computeforwardingrule-1b-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1583,13 +1583,13 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "${forwardingRuleID}",
+  "name": "computeforwardingrule-1b-${uniqueId}",
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "networkTier": "PREMIUM",
   "pscConnectionId": "111111111111",
   "pscConnectionStatus": "PENDING",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1b-${uniqueId}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
   "serviceDirectoryRegistrations": [
     {
@@ -1602,7 +1602,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/computeaddress-2a-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -1622,11 +1622,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/${projectId}/regions/europe-west4/addresses/${addressID}' was not found",
+        "message": "The resource 'projects/${projectId}/regions/europe-west4/addresses/computeaddress-2a-${uniqueId}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/${projectId}/regions/europe-west4/addresses/${addressID}' was not found"
+    "message": "The resource 'projects/${projectId}/regions/europe-west4/addresses/computeaddress-2a-${uniqueId}' was not found"
   }
 }
 
@@ -1642,7 +1642,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "${addressID}",
+  "name": "computeaddress-2a-${uniqueId}",
   "purpose": "GCE_ENDPOINT",
   "region": "projects/${projectId}/global/regions/europe-west4",
   "subnetwork": "projects/${projectId}/regions/europe-west4/subnetworks/${subnetworkID}"
@@ -1670,7 +1670,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/computeaddress-2a-${uniqueId}",
   "user": "user@example.com"
 }
 
@@ -1702,13 +1702,13 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/computeaddress-2a-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/computeaddress-2a-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -1730,18 +1730,18 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "compute#address",
   "labelFingerprint": "abcdef0123A=",
-  "name": "${addressID}",
+  "name": "computeaddress-2a-${uniqueId}",
   "networkTier": "PREMIUM",
   "purpose": "GCE_ENDPOINT",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/computeaddress-2a-${uniqueId}",
   "status": "RESERVED",
   "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/subnetworks/${subnetworkID}"
 }
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}/setLabels?alt=json
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/computeaddress-2a-${uniqueId}/setLabels?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -1776,13 +1776,13 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/computeaddress-2a-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/computeaddress-2a-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -1808,21 +1808,21 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "${addressID}",
+  "name": "computeaddress-2a-${uniqueId}",
   "networkTier": "PREMIUM",
   "purpose": "GCE_ENDPOINT",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/computeaddress-2a-${uniqueId}",
   "status": "RESERVED",
   "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/subnetworks/${subnetworkID}"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-2a-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: project=${projectId}&region=europe-west4&forwarding_rule=${forwardingRuleID}
+X-Goog-Request-Params: project=${projectId}&region=europe-west4&forwarding_rule=computeforwardingrule-2a-${uniqueId}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -1840,11 +1840,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}' was not found",
+        "message": "The resource 'projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-2a-${uniqueId}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}' was not found"
+    "message": "The resource 'projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-2a-${uniqueId}' was not found"
   }
 }
 
@@ -1859,7 +1859,7 @@ X-Goog-Request-Params: project=${projectId}&region=europe-west4
   "IPAddress": "8.8.8.8",
   "allowPscGlobalAccess": true,
   "loadBalancingScheme": "",
-  "name": "${forwardingRuleID}",
+  "name": "computeforwardingrule-2a-${uniqueId}",
   "network": "projects/${projectId}/global/networks/${networkID}",
   "subnetwork": "projects/${projectId}/regions/europe-west4/subnetworks/${subnetworkID}",
   "target": "projects/${projectNumber}/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa-2"
@@ -1887,7 +1887,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-2a-${uniqueId}",
   "user": "user@example.com"
 }
 
@@ -1921,16 +1921,16 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-2a-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-2a-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: project=${projectId}&region=europe-west4&forwarding_rule=${forwardingRuleID}
+X-Goog-Request-Params: project=${projectId}&region=europe-west4&forwarding_rule=computeforwardingrule-2a-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1951,13 +1951,13 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "compute#forwardingRule",
   "labelFingerprint": "abcdef0123A=",
-  "name": "${forwardingRuleID}",
+  "name": "computeforwardingrule-2a-${uniqueId}",
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "networkTier": "PREMIUM",
   "pscConnectionId": "111111111111",
   "pscConnectionStatus": "PENDING",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-2a-${uniqueId}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
   "serviceDirectoryRegistrations": [
     {
@@ -1970,10 +1970,10 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}/setLabels
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-2a-${uniqueId}/setLabels
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: project=${projectId}&region=europe-west4&resource=${forwardingRuleID}
+X-Goog-Request-Params: project=${projectId}&region=europe-west4&resource=computeforwardingrule-2a-${uniqueId}
 
 {
   "labelFingerprint": "abcdef0123A=",
@@ -2006,16 +2006,16 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-2a-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-2a-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: project=${projectId}&region=europe-west4&forwarding_rule=${forwardingRuleID}
+X-Goog-Request-Params: project=${projectId}&region=europe-west4&forwarding_rule=computeforwardingrule-2a-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -2040,13 +2040,13 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "${forwardingRuleID}",
+  "name": "computeforwardingrule-2a-${uniqueId}",
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "networkTier": "PREMIUM",
   "pscConnectionId": "111111111111",
   "pscConnectionStatus": "PENDING",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-2a-${uniqueId}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
   "serviceDirectoryRegistrations": [
     {
@@ -2059,7 +2059,7 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/computeaddress-2b-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -2079,11 +2079,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/${projectId}/regions/europe-west4/addresses/${addressID}' was not found",
+        "message": "The resource 'projects/${projectId}/regions/europe-west4/addresses/computeaddress-2b-${uniqueId}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/${projectId}/regions/europe-west4/addresses/${addressID}' was not found"
+    "message": "The resource 'projects/${projectId}/regions/europe-west4/addresses/computeaddress-2b-${uniqueId}' was not found"
   }
 }
 
@@ -2099,7 +2099,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "${addressID}",
+  "name": "computeaddress-2b-${uniqueId}",
   "purpose": "GCE_ENDPOINT",
   "region": "projects/${projectId}/global/regions/europe-west4",
   "subnetwork": "projects/${projectId}/regions/europe-west4/subnetworks/${subnetworkID}"
@@ -2127,7 +2127,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/computeaddress-2b-${uniqueId}",
   "user": "user@example.com"
 }
 
@@ -2159,13 +2159,13 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/computeaddress-2b-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/computeaddress-2b-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -2187,18 +2187,18 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "compute#address",
   "labelFingerprint": "abcdef0123A=",
-  "name": "${addressID}",
+  "name": "computeaddress-2b-${uniqueId}",
   "networkTier": "PREMIUM",
   "purpose": "GCE_ENDPOINT",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/computeaddress-2b-${uniqueId}",
   "status": "RESERVED",
   "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/subnetworks/${subnetworkID}"
 }
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}/setLabels?alt=json
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/computeaddress-2b-${uniqueId}/setLabels?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -2233,13 +2233,13 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/computeaddress-2b-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/computeaddress-2b-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -2265,21 +2265,21 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "${addressID}",
+  "name": "computeaddress-2b-${uniqueId}",
   "networkTier": "PREMIUM",
   "purpose": "GCE_ENDPOINT",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/computeaddress-2b-${uniqueId}",
   "status": "RESERVED",
   "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/subnetworks/${subnetworkID}"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-2b-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: project=${projectId}&region=europe-west4&forwarding_rule=${forwardingRuleID}
+X-Goog-Request-Params: project=${projectId}&region=europe-west4&forwarding_rule=computeforwardingrule-2b-${uniqueId}
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
@@ -2297,11 +2297,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "The resource 'projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}' was not found",
+        "message": "The resource 'projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-2b-${uniqueId}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "The resource 'projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}' was not found"
+    "message": "The resource 'projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-2b-${uniqueId}' was not found"
   }
 }
 
@@ -2316,7 +2316,7 @@ X-Goog-Request-Params: project=${projectId}&region=europe-west4
   "IPAddress": "8.8.8.8",
   "allowPscGlobalAccess": true,
   "loadBalancingScheme": "",
-  "name": "${forwardingRuleID}",
+  "name": "computeforwardingrule-2b-${uniqueId}",
   "network": "projects/${projectId}/global/networks/${networkID}",
   "subnetwork": "projects/${projectId}/regions/europe-west4/subnetworks/${subnetworkID}",
   "target": "projects/${projectNumber}/regions/europe-west4/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa"
@@ -2344,7 +2344,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-2b-${uniqueId}",
   "user": "user@example.com"
 }
 
@@ -2378,16 +2378,16 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-2b-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-2b-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: project=${projectId}&region=europe-west4&forwarding_rule=${forwardingRuleID}
+X-Goog-Request-Params: project=${projectId}&region=europe-west4&forwarding_rule=computeforwardingrule-2b-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -2408,13 +2408,13 @@ X-Xss-Protection: 0
   "id": "000000000000000000000",
   "kind": "compute#forwardingRule",
   "labelFingerprint": "abcdef0123A=",
-  "name": "${forwardingRuleID}",
+  "name": "computeforwardingrule-2b-${uniqueId}",
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "networkTier": "PREMIUM",
   "pscConnectionId": "111111111111",
   "pscConnectionStatus": "PENDING",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-2b-${uniqueId}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
   "serviceDirectoryRegistrations": [
     {
@@ -2427,10 +2427,10 @@ X-Xss-Protection: 0
 
 ---
 
-POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}/setLabels
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-2b-${uniqueId}/setLabels
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: project=${projectId}&region=europe-west4&resource=${forwardingRuleID}
+X-Goog-Request-Params: project=${projectId}&region=europe-west4&resource=computeforwardingrule-2b-${uniqueId}
 
 {
   "labelFingerprint": "abcdef0123A=",
@@ -2463,16 +2463,16 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-2b-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-2b-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: project=${projectId}&region=europe-west4&forwarding_rule=${forwardingRuleID}
+X-Goog-Request-Params: project=${projectId}&region=europe-west4&forwarding_rule=computeforwardingrule-2b-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -2497,13 +2497,13 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "${forwardingRuleID}",
+  "name": "computeforwardingrule-2b-${uniqueId}",
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "networkTier": "PREMIUM",
   "pscConnectionId": "111111111111",
   "pscConnectionStatus": "PENDING",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-2b-${uniqueId}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
   "serviceDirectoryRegistrations": [
     {
@@ -2628,10 +2628,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1a-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: project=${projectId}&region=europe-west4&forwarding_rule=${forwardingRuleID}
+X-Goog-Request-Params: project=${projectId}&region=europe-west4&forwarding_rule=computeforwardingrule-1a-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -2656,13 +2656,13 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "${forwardingRuleID}",
+  "name": "computeforwardingrule-1a-${uniqueId}",
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "networkTier": "PREMIUM",
   "pscConnectionId": "111111111111",
   "pscConnectionStatus": "PENDING",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1a-${uniqueId}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
   "serviceDirectoryRegistrations": [
     {
@@ -2675,10 +2675,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1b-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: project=${projectId}&region=europe-west4&forwarding_rule=${forwardingRuleID}
+X-Goog-Request-Params: project=${projectId}&region=europe-west4&forwarding_rule=computeforwardingrule-1b-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -2703,13 +2703,13 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "${forwardingRuleID}",
+  "name": "computeforwardingrule-1b-${uniqueId}",
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "networkTier": "PREMIUM",
   "pscConnectionId": "111111111111",
   "pscConnectionStatus": "PENDING",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1b-${uniqueId}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
   "serviceDirectoryRegistrations": [
     {
@@ -2762,7 +2762,7 @@ X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Feurope
         {
           "pscConnection": {
             "address": "10.11.12.13",
-            "forwardingRule": "projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+            "forwardingRule": "projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1a-${uniqueId}",
             "network": "projects/${projectId}/global/networks/${networkID}",
             "projectId": "${projectId}",
             "pscConnectionId": "${pscConnectionID}",
@@ -2772,7 +2772,7 @@ X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Feurope
         {
           "pscConnection": {
             "address": "10.11.12.13",
-            "forwardingRule": "projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+            "forwardingRule": "projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1b-${uniqueId}",
             "network": "projects/${projectId}/global/networks/${networkID}",
             "projectId": "${projectId}",
             "pscConnectionId": "${pscConnectionID}",
@@ -2876,7 +2876,7 @@ X-Xss-Protection: 0
           {
             "pscConnection": {
               "address": "10.11.12.13",
-              "forwardingRule": "projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+              "forwardingRule": "projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1a-${uniqueId}",
               "network": "projects/${projectId}/global/networks/${networkID}",
               "projectId": "${projectId}",
               "pscConnectionId": "${pscConnectionID}",
@@ -2888,7 +2888,7 @@ X-Xss-Protection: 0
             "pscConnection": {
               "address": "10.11.12.13",
               "connectionType": "CONNECTION_TYPE_DISCOVERY",
-              "forwardingRule": "projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+              "forwardingRule": "projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1b-${uniqueId}",
               "network": "projects/${projectId}/global/networks/${networkID}",
               "projectId": "${projectId}",
               "pscConnectionId": "${pscConnectionID}",
@@ -3016,7 +3016,7 @@ X-Xss-Protection: 0
         {
           "pscConnection": {
             "address": "10.11.12.13",
-            "forwardingRule": "projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+            "forwardingRule": "projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1a-${uniqueId}",
             "network": "projects/${projectId}/global/networks/${networkID}",
             "projectId": "${projectId}",
             "pscConnectionId": "${pscConnectionID}",
@@ -3028,7 +3028,7 @@ X-Xss-Protection: 0
           "pscConnection": {
             "address": "10.11.12.13",
             "connectionType": 1,
-            "forwardingRule": "projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+            "forwardingRule": "projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1b-${uniqueId}",
             "network": "projects/${projectId}/global/networks/${networkID}",
             "projectId": "${projectId}",
             "pscConnectionId": "${pscConnectionID}",
@@ -3102,10 +3102,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1a-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: project=${projectId}&region=europe-west4&forwarding_rule=${forwardingRuleID}
+X-Goog-Request-Params: project=${projectId}&region=europe-west4&forwarding_rule=computeforwardingrule-1a-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -3130,13 +3130,13 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "${forwardingRuleID}",
+  "name": "computeforwardingrule-1a-${uniqueId}",
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "networkTier": "PREMIUM",
   "pscConnectionId": "111111111111",
-  "pscConnectionStatus": "PENDING",
+  "pscConnectionStatus": "ACCEPTED",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1a-${uniqueId}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
   "serviceDirectoryRegistrations": [
     {
@@ -3149,10 +3149,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1b-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: project=${projectId}&region=europe-west4&forwarding_rule=${forwardingRuleID}
+X-Goog-Request-Params: project=${projectId}&region=europe-west4&forwarding_rule=computeforwardingrule-1b-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -3177,13 +3177,13 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "${forwardingRuleID}",
+  "name": "computeforwardingrule-1b-${uniqueId}",
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "networkTier": "PREMIUM",
   "pscConnectionId": "111111111111",
-  "pscConnectionStatus": "ACCEPTED",
+  "pscConnectionStatus": "PENDING",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1b-${uniqueId}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
   "serviceDirectoryRegistrations": [
     {
@@ -3196,10 +3196,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-2a-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: project=${projectId}&region=europe-west4&forwarding_rule=${forwardingRuleID}
+X-Goog-Request-Params: project=${projectId}&region=europe-west4&forwarding_rule=computeforwardingrule-2a-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -3224,13 +3224,13 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "${forwardingRuleID}",
+  "name": "computeforwardingrule-2a-${uniqueId}",
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "networkTier": "PREMIUM",
   "pscConnectionId": "111111111111",
-  "pscConnectionStatus": "ACCEPTED",
+  "pscConnectionStatus": "PENDING",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-2a-${uniqueId}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
   "serviceDirectoryRegistrations": [
     {
@@ -3243,10 +3243,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-2b-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: project=${projectId}&region=europe-west4&forwarding_rule=${forwardingRuleID}
+X-Goog-Request-Params: project=${projectId}&region=europe-west4&forwarding_rule=computeforwardingrule-2b-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -3271,13 +3271,13 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "${forwardingRuleID}",
+  "name": "computeforwardingrule-2b-${uniqueId}",
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "networkTier": "PREMIUM",
   "pscConnectionId": "111111111111",
-  "pscConnectionStatus": "PENDING",
+  "pscConnectionStatus": "ACCEPTED",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-2b-${uniqueId}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
   "serviceDirectoryRegistrations": [
     {
@@ -3330,7 +3330,7 @@ X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Feurope
         {
           "pscConnection": {
             "address": "10.11.12.13",
-            "forwardingRule": "projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+            "forwardingRule": "projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1a-${uniqueId}",
             "network": "projects/${projectId}/global/networks/${networkID}",
             "projectId": "${projectId}",
             "pscConnectionId": "${pscConnectionID}",
@@ -3340,7 +3340,7 @@ X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Feurope
         {
           "pscConnection": {
             "address": "10.11.12.13",
-            "forwardingRule": "projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+            "forwardingRule": "projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1b-${uniqueId}",
             "network": "projects/${projectId}/global/networks/${networkID}",
             "projectId": "${projectId}",
             "pscConnectionId": "${pscConnectionID}",
@@ -3354,7 +3354,7 @@ X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Feurope
         {
           "pscConnection": {
             "address": "10.11.12.13",
-            "forwardingRule": "projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+            "forwardingRule": "projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-2a-${uniqueId}",
             "network": "projects/${projectId}/global/networks/${networkID}",
             "projectId": "${projectId}",
             "pscConnectionId": "${pscConnectionID}",
@@ -3364,7 +3364,7 @@ X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Feurope
         {
           "pscConnection": {
             "address": "10.11.12.13",
-            "forwardingRule": "projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+            "forwardingRule": "projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-2b-${uniqueId}",
             "network": "projects/${projectId}/global/networks/${networkID}",
             "projectId": "${projectId}",
             "pscConnectionId": "${pscConnectionID}",
@@ -3468,7 +3468,7 @@ X-Xss-Protection: 0
           {
             "pscConnection": {
               "address": "10.11.12.13",
-              "forwardingRule": "projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+              "forwardingRule": "projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1a-${uniqueId}",
               "network": "projects/${projectId}/global/networks/${networkID}",
               "projectId": "${projectId}",
               "pscConnectionId": "${pscConnectionID}",
@@ -3480,7 +3480,7 @@ X-Xss-Protection: 0
             "pscConnection": {
               "address": "10.11.12.13",
               "connectionType": "CONNECTION_TYPE_DISCOVERY",
-              "forwardingRule": "projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+              "forwardingRule": "projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1b-${uniqueId}",
               "network": "projects/${projectId}/global/networks/${networkID}",
               "projectId": "${projectId}",
               "pscConnectionId": "${pscConnectionID}",
@@ -3495,7 +3495,7 @@ X-Xss-Protection: 0
           {
             "pscConnection": {
               "address": "10.11.12.13",
-              "forwardingRule": "projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+              "forwardingRule": "projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-2a-${uniqueId}",
               "network": "projects/${projectId}/global/networks/${networkID}",
               "projectId": "${projectId}",
               "pscConnectionId": "${pscConnectionID}",
@@ -3507,7 +3507,7 @@ X-Xss-Protection: 0
             "pscConnection": {
               "address": "10.11.12.13",
               "connectionType": "CONNECTION_TYPE_DISCOVERY",
-              "forwardingRule": "projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+              "forwardingRule": "projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-2b-${uniqueId}",
               "network": "projects/${projectId}/global/networks/${networkID}",
               "projectId": "${projectId}",
               "pscConnectionId": "${pscConnectionID}",
@@ -3635,7 +3635,7 @@ X-Xss-Protection: 0
         {
           "pscConnection": {
             "address": "10.11.12.13",
-            "forwardingRule": "projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+            "forwardingRule": "projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1a-${uniqueId}",
             "network": "projects/${projectId}/global/networks/${networkID}",
             "projectId": "${projectId}",
             "pscConnectionId": "${pscConnectionID}",
@@ -3647,7 +3647,7 @@ X-Xss-Protection: 0
           "pscConnection": {
             "address": "10.11.12.13",
             "connectionType": 1,
-            "forwardingRule": "projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+            "forwardingRule": "projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1b-${uniqueId}",
             "network": "projects/${projectId}/global/networks/${networkID}",
             "projectId": "${projectId}",
             "pscConnectionId": "${pscConnectionID}",
@@ -3662,7 +3662,7 @@ X-Xss-Protection: 0
         {
           "pscConnection": {
             "address": "10.11.12.13",
-            "forwardingRule": "projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+            "forwardingRule": "projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-2a-${uniqueId}",
             "network": "projects/${projectId}/global/networks/${networkID}",
             "projectId": "${projectId}",
             "pscConnectionId": "${pscConnectionID}",
@@ -3674,7 +3674,7 @@ X-Xss-Protection: 0
           "pscConnection": {
             "address": "10.11.12.13",
             "connectionType": 1,
-            "forwardingRule": "projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+            "forwardingRule": "projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-2b-${uniqueId}",
             "network": "projects/${projectId}/global/networks/${networkID}",
             "projectId": "${projectId}",
             "pscConnectionId": "${pscConnectionID}",
@@ -3938,10 +3938,10 @@ X-Xss-Protection: 0
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-2b-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: project=${projectId}&region=europe-west4&forwarding_rule=${forwardingRuleID}
+X-Goog-Request-Params: project=${projectId}&region=europe-west4&forwarding_rule=computeforwardingrule-2b-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -3966,13 +3966,13 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "${forwardingRuleID}",
+  "name": "computeforwardingrule-2b-${uniqueId}",
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "networkTier": "PREMIUM",
   "pscConnectionId": "111111111111",
   "pscConnectionStatus": "ACCEPTED",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-2b-${uniqueId}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
   "serviceDirectoryRegistrations": [
     {
@@ -3985,10 +3985,10 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-2b-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: project=${projectId}&region=europe-west4&forwarding_rule=${forwardingRuleID}
+X-Goog-Request-Params: project=${projectId}&region=europe-west4&forwarding_rule=computeforwardingrule-2b-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -4012,7 +4012,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-2b-${uniqueId}",
   "user": "user@example.com"
 }
 
@@ -4046,13 +4046,13 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-2b-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/computeaddress-2b-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -4078,18 +4078,18 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "${addressID}",
+  "name": "computeaddress-2b-${uniqueId}",
   "networkTier": "PREMIUM",
   "purpose": "GCE_ENDPOINT",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/computeaddress-2b-${uniqueId}",
   "status": "RESERVED",
   "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/subnetworks/${subnetworkID}"
 }
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}?alt=json
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/computeaddress-2b-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -4115,7 +4115,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/computeaddress-2b-${uniqueId}",
   "user": "user@example.com"
 }
 
@@ -4147,16 +4147,16 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/computeaddress-2b-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-2a-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: project=${projectId}&region=europe-west4&forwarding_rule=${forwardingRuleID}
+X-Goog-Request-Params: project=${projectId}&region=europe-west4&forwarding_rule=computeforwardingrule-2a-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -4181,13 +4181,13 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "${forwardingRuleID}",
+  "name": "computeforwardingrule-2a-${uniqueId}",
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "networkTier": "PREMIUM",
   "pscConnectionId": "111111111111",
   "pscConnectionStatus": "ACCEPTED",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-2a-${uniqueId}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
   "serviceDirectoryRegistrations": [
     {
@@ -4200,10 +4200,10 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-2a-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: project=${projectId}&region=europe-west4&forwarding_rule=${forwardingRuleID}
+X-Goog-Request-Params: project=${projectId}&region=europe-west4&forwarding_rule=computeforwardingrule-2a-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -4227,7 +4227,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-2a-${uniqueId}",
   "user": "user@example.com"
 }
 
@@ -4261,13 +4261,13 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-2a-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/computeaddress-2a-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -4293,18 +4293,18 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "${addressID}",
+  "name": "computeaddress-2a-${uniqueId}",
   "networkTier": "PREMIUM",
   "purpose": "GCE_ENDPOINT",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/computeaddress-2a-${uniqueId}",
   "status": "RESERVED",
   "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/subnetworks/${subnetworkID}"
 }
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}?alt=json
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/computeaddress-2a-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -4330,7 +4330,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/computeaddress-2a-${uniqueId}",
   "user": "user@example.com"
 }
 
@@ -4362,16 +4362,16 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/computeaddress-2a-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1b-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: project=${projectId}&region=europe-west4&forwarding_rule=${forwardingRuleID}
+X-Goog-Request-Params: project=${projectId}&region=europe-west4&forwarding_rule=computeforwardingrule-1b-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -4396,13 +4396,13 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "${forwardingRuleID}",
+  "name": "computeforwardingrule-1b-${uniqueId}",
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "networkTier": "PREMIUM",
   "pscConnectionId": "111111111111",
   "pscConnectionStatus": "ACCEPTED",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1b-${uniqueId}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
   "serviceDirectoryRegistrations": [
     {
@@ -4415,10 +4415,10 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1b-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: project=${projectId}&region=europe-west4&forwarding_rule=${forwardingRuleID}
+X-Goog-Request-Params: project=${projectId}&region=europe-west4&forwarding_rule=computeforwardingrule-1b-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -4442,7 +4442,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1b-${uniqueId}",
   "user": "user@example.com"
 }
 
@@ -4476,13 +4476,13 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1b-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/computeaddress-1b-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -4508,18 +4508,18 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "${addressID}",
+  "name": "computeaddress-1b-${uniqueId}",
   "networkTier": "PREMIUM",
   "purpose": "GCE_ENDPOINT",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/computeaddress-1b-${uniqueId}",
   "status": "RESERVED",
   "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/subnetworks/${subnetworkID}"
 }
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}?alt=json
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/computeaddress-1b-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -4545,7 +4545,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/computeaddress-1b-${uniqueId}",
   "user": "user@example.com"
 }
 
@@ -4577,16 +4577,16 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/computeaddress-1b-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1a-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: project=${projectId}&region=europe-west4&forwarding_rule=${forwardingRuleID}
+X-Goog-Request-Params: project=${projectId}&region=europe-west4&forwarding_rule=computeforwardingrule-1a-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -4611,13 +4611,13 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "${forwardingRuleID}",
+  "name": "computeforwardingrule-1a-${uniqueId}",
   "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
   "networkTier": "PREMIUM",
   "pscConnectionId": "111111111111",
   "pscConnectionStatus": "ACCEPTED",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1a-${uniqueId}",
   "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
   "serviceDirectoryRegistrations": [
     {
@@ -4630,10 +4630,10 @@ X-Xss-Protection: 0
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1a-${uniqueId}
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-X-Goog-Request-Params: project=${projectId}&region=europe-west4&forwarding_rule=${forwardingRuleID}
+X-Goog-Request-Params: project=${projectId}&region=europe-west4&forwarding_rule=computeforwardingrule-1a-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -4657,7 +4657,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1a-${uniqueId}",
   "user": "user@example.com"
 }
 
@@ -4691,13 +4691,13 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${forwardingRuleID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/${forwardingRuleID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1a-${uniqueId}",
   "user": "user@example.com"
 }
 
 ---
 
-GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}?alt=json
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/computeaddress-1a-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -4723,18 +4723,18 @@ X-Xss-Protection: 0
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
-  "name": "${addressID}",
+  "name": "computeaddress-1a-${uniqueId}",
   "networkTier": "PREMIUM",
   "purpose": "GCE_ENDPOINT",
   "region": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4",
-  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/computeaddress-1a-${uniqueId}",
   "status": "RESERVED",
   "subnetwork": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/subnetworks/${subnetworkID}"
 }
 
 ---
 
-DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}?alt=json
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/computeaddress-1a-${uniqueId}?alt=json
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 
@@ -4760,7 +4760,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "RUNNING",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/computeaddress-1a-${uniqueId}",
   "user": "user@example.com"
 }
 
@@ -4792,7 +4792,7 @@ X-Xss-Protection: 0
   "startTime": "2024-04-01T12:34:56.123456Z",
   "status": "DONE",
   "targetId": "${addressID}",
-  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/${addressID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/addresses/computeaddress-1a-${uniqueId}",
   "user": "user@example.com"
 }
 

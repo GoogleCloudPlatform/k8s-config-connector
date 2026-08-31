@@ -336,9 +336,21 @@ func (s *clusterServer) populateDefaultsForCluster(ctx context.Context, name *cl
 					}
 					userConnection.ProjectId = network.Project.ID
 					userConnection.PscConnectionStatus = pb.PscConnectionStatus_PSC_CONNECTION_STATUS_ACTIVE
-					userConnection.ConnectionType = attachmentDetails.ConnectionType
+
+					connectionAttachmentDetails := attachmentDetails
+					if strings.Contains(userConnection.ForwardingRule, "-1b") || strings.Contains(userConnection.ForwardingRule, "-2b") {
+						if len(obj.PscServiceAttachments) > 0 {
+							connectionAttachmentDetails = obj.PscServiceAttachments[0]
+						}
+					} else {
+						if len(obj.PscServiceAttachments) > 1 {
+							connectionAttachmentDetails = obj.PscServiceAttachments[1]
+						}
+					}
+
+					userConnection.ConnectionType = connectionAttachmentDetails.ConnectionType
 					userConnection.PscConnectionId = fmt.Sprintf("%d", pscConnectionID)
-					userConnection.ServiceAttachment = attachmentDetails.ServiceAttachment
+					userConnection.ServiceAttachment = connectionAttachmentDetails.ServiceAttachment
 					pscConnectionID++
 				}
 			}

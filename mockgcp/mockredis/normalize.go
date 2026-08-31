@@ -76,6 +76,11 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.RemovePath(".response.availableMaintenanceVersions")
 	replacements.RemovePath(".maintenanceVersion")
 	replacements.RemovePath(".response.maintenanceVersion")
+
+	// Sort connections slice to ensure deterministic comparison
+	replacements.SortSlice(".clusterEndpoints[].connections")
+	replacements.SortSlice(".response.clusterEndpoints[].connections")
+	replacements.SortSlice(".status.observedState.clusterEndpoints[].connections")
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
@@ -98,10 +103,13 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 				tokens := strings.Split(value, "/")
 				if len(tokens) == 11 && tokens[9] == "forwardingRules" {
 					// e.g. https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-bed6...
-					if strings.HasSuffix(tokens[10], "-2") {
-						replacements.ReplaceStringValue(tokens[10], "${forwardingRuleID}-2")
-					} else {
-						replacements.ReplaceStringValue(tokens[10], "${forwardingRuleID}")
+					name := tokens[10]
+					if strings.HasPrefix(name, "sca-auto-fr-") || strings.HasPrefix(name, "ssc-auto-fr-") {
+						if strings.HasSuffix(name, "-2") {
+							replacements.ReplaceStringValue(name, "${forwardingRuleID}-2")
+						} else {
+							replacements.ReplaceStringValue(name, "${forwardingRuleID}")
+						}
 					}
 				}
 			}
