@@ -109,6 +109,11 @@ func resolveEndpointReferences(ctx context.Context, reader client.Reader, obj *k
 				if err := pscConnection.ForwardingRuleRef.Normalize(ctx, reader, obj.GetNamespace()); err != nil {
 					return err
 				}
+				external := pscConnection.ForwardingRuleRef.GetExternal()
+				if external != "" && !strings.HasPrefix(external, "https://") {
+					external = "https://www.googleapis.com/compute/v1/" + strings.TrimPrefix(external, "/")
+					pscConnection.ForwardingRuleRef.External = external
+				}
 			}
 		}
 	}

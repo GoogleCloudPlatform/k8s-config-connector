@@ -2684,7 +2684,7 @@ X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Feurope
         {
           "pscConnection": {
             "address": "10.11.12.13",
-            "forwardingRule": "projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1a-${uniqueId}",
+            "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1a-${uniqueId}",
             "network": "projects/${projectId}/global/networks/${networkID}",
             "projectId": "${projectId}",
             "pscConnectionId": "${pscConnectionID}",
@@ -2694,7 +2694,7 @@ X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Feurope
         {
           "pscConnection": {
             "address": "10.11.12.13",
-            "forwardingRule": "projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1b-${uniqueId}",
+            "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1b-${uniqueId}",
             "network": "projects/${projectId}/global/networks/${networkID}",
             "projectId": "${projectId}",
             "pscConnectionId": "${pscConnectionID}",
@@ -2796,7 +2796,7 @@ X-Xss-Protection: 0
             "pscConnection": {
               "address": "10.11.12.13",
               "connectionType": "CONNECTION_TYPE_DISCOVERY",
-              "forwardingRule": "projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1b-${uniqueId}",
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1b-${uniqueId}",
               "network": "projects/${projectId}/global/networks/${networkID}",
               "projectId": "${projectId}",
               "pscConnectionId": "${pscConnectionID}",
@@ -2807,7 +2807,7 @@ X-Xss-Protection: 0
           {
             "pscConnection": {
               "address": "10.11.12.13",
-              "forwardingRule": "projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1a-${uniqueId}",
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1a-${uniqueId}",
               "network": "projects/${projectId}/global/networks/${networkID}",
               "projectId": "${projectId}",
               "pscConnectionId": "${pscConnectionID}",
@@ -2933,7 +2933,7 @@ X-Xss-Protection: 0
           "pscConnection": {
             "address": "10.11.12.13",
             "connectionType": 1,
-            "forwardingRule": "projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1b-${uniqueId}",
+            "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1b-${uniqueId}",
             "network": "projects/${projectId}/global/networks/${networkID}",
             "projectId": "${projectId}",
             "pscConnectionId": "${pscConnectionID}",
@@ -2944,7 +2944,7 @@ X-Xss-Protection: 0
         {
           "pscConnection": {
             "address": "10.11.12.13",
-            "forwardingRule": "projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1a-${uniqueId}",
+            "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1a-${uniqueId}",
             "network": "projects/${projectId}/global/networks/${networkID}",
             "projectId": "${projectId}",
             "pscConnectionId": "${pscConnectionID}",
@@ -3219,7 +3219,7 @@ X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Feurope
         {
           "pscConnection": {
             "address": "10.11.12.13",
-            "forwardingRule": "projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1a-${uniqueId}",
+            "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1a-${uniqueId}",
             "network": "projects/${projectId}/global/networks/${networkID}",
             "projectId": "${projectId}",
             "pscConnectionId": "${pscConnectionID}",
@@ -3229,7 +3229,7 @@ X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Feurope
         {
           "pscConnection": {
             "address": "10.11.12.13",
-            "forwardingRule": "projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1b-${uniqueId}",
+            "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1b-${uniqueId}",
             "network": "projects/${projectId}/global/networks/${networkID}",
             "projectId": "${projectId}",
             "pscConnectionId": "${pscConnectionID}",
@@ -3243,7 +3243,7 @@ X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Feurope
         {
           "pscConnection": {
             "address": "10.11.12.13",
-            "forwardingRule": "projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-2a-${uniqueId}",
+            "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-2a-${uniqueId}",
             "network": "projects/${projectId}/global/networks/${networkID}",
             "projectId": "${projectId}",
             "pscConnectionId": "${pscConnectionID}",
@@ -3253,7 +3253,7 @@ X-Goog-Request-Params: cluster.name=projects%2F${projectId}%2Flocations%2Feurope
         {
           "pscConnection": {
             "address": "10.11.12.13",
-            "forwardingRule": "projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-2b-${uniqueId}",
+            "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-2b-${uniqueId}",
             "network": "projects/${projectId}/global/networks/${networkID}",
             "projectId": "${projectId}",
             "pscConnectionId": "${pscConnectionID}",
@@ -3355,7 +3355,7 @@ X-Xss-Protection: 0
             "pscConnection": {
               "address": "10.11.12.13",
               "connectionType": "CONNECTION_TYPE_DISCOVERY",
-              "forwardingRule": "projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1b-${uniqueId}",
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1b-${uniqueId}",
               "network": "projects/${projectId}/global/networks/${networkID}",
               "projectId": "${projectId}",
               "pscConnectionId": "${pscConnectionID}",
@@ -3366,7 +3366,7 @@ X-Xss-Protection: 0
           {
             "pscConnection": {
               "address": "10.11.12.13",
-              "forwardingRule": "projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1a-${uniqueId}",
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1a-${uniqueId}",
               "network": "projects/${projectId}/global/networks/${networkID}",
               "projectId": "${projectId}",
               "pscConnectionId": "${pscConnectionID}",
@@ -3382,7 +3382,7 @@ X-Xss-Protection: 0
             "pscConnection": {
               "address": "10.11.12.13",
               "connectionType": "CONNECTION_TYPE_DISCOVERY",
-              "forwardingRule": "projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-2b-${uniqueId}",
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-2b-${uniqueId}",
               "network": "projects/${projectId}/global/networks/${networkID}",
               "projectId": "${projectId}",
               "pscConnectionId": "${pscConnectionID}",
@@ -3393,7 +3393,7 @@ X-Xss-Protection: 0
           {
             "pscConnection": {
               "address": "10.11.12.13",
-              "forwardingRule": "projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-2a-${uniqueId}",
+              "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-2a-${uniqueId}",
               "network": "projects/${projectId}/global/networks/${networkID}",
               "projectId": "${projectId}",
               "pscConnectionId": "${pscConnectionID}",
@@ -3519,7 +3519,7 @@ X-Xss-Protection: 0
           "pscConnection": {
             "address": "10.11.12.13",
             "connectionType": 1,
-            "forwardingRule": "projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1b-${uniqueId}",
+            "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1b-${uniqueId}",
             "network": "projects/${projectId}/global/networks/${networkID}",
             "projectId": "${projectId}",
             "pscConnectionId": "${pscConnectionID}",
@@ -3530,7 +3530,7 @@ X-Xss-Protection: 0
         {
           "pscConnection": {
             "address": "10.11.12.13",
-            "forwardingRule": "projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1a-${uniqueId}",
+            "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-1a-${uniqueId}",
             "network": "projects/${projectId}/global/networks/${networkID}",
             "projectId": "${projectId}",
             "pscConnectionId": "${pscConnectionID}",
@@ -3546,7 +3546,7 @@ X-Xss-Protection: 0
           "pscConnection": {
             "address": "10.11.12.13",
             "connectionType": 1,
-            "forwardingRule": "projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-2b-${uniqueId}",
+            "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-2b-${uniqueId}",
             "network": "projects/${projectId}/global/networks/${networkID}",
             "projectId": "${projectId}",
             "pscConnectionId": "${pscConnectionID}",
@@ -3557,7 +3557,7 @@ X-Xss-Protection: 0
         {
           "pscConnection": {
             "address": "10.11.12.13",
-            "forwardingRule": "projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-2a-${uniqueId}",
+            "forwardingRule": "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/forwardingRules/computeforwardingrule-2a-${uniqueId}",
             "network": "projects/${projectId}/global/networks/${networkID}",
             "projectId": "${projectId}",
             "pscConnectionId": "${pscConnectionID}",
