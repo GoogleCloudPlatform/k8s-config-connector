@@ -181,6 +181,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		"//dialogflow.googleapis.com/projects/{}/locations/{}/knowledgeBases/{}":       true,
 		"//dialogflow.googleapis.com/projects/{}/locations/{}/securitySettings/{}":     true,
 		"//dialogflow.googleapis.com/projects/{}/locations/{}/sipTrunks/{}":            true,
+		"//dialogflow.googleapis.com/projects/{}/locations/{}/agents/{}/tools/{}":      true,
 
 		// Device Streaming
 		"//devicestreaming.googleapis.com/projects/{}/deviceSessions/{}": true,
