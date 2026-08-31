@@ -101,9 +101,7 @@ func (obj *CCInsightsPhraseMatcher) GetIdentity(ctx context.Context, reader clie
 			return nil, err
 		}
 
-		if statusIdentity.String() != specIdentity.String() {
-			return nil, fmt.Errorf("cannot change CCInsightsPhraseMatcher identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
-		}
+		return statusIdentity, nil
 	}
 
 	return specIdentity, nil

@@ -1,0 +1,42 @@
+apiVersion: contactcenterinsights.cnrm.cloud.google.com/v1alpha1
+kind: CCInsightsPhraseMatcher
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: pmmax${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  active: false
+  displayName: Updated Maximal Phrase Matcher ${uniqueId}
+  location: us-central1
+  phraseMatchRuleGroups:
+  - phraseMatchRules:
+    - config:
+        exactMatchConfig:
+          caseSensitive: false
+      negated: true
+      query: hi
+    type: ALL_OF
+  projectRef:
+    external: ${projectId}
+  roleMatch: HUMAN_AGENT
+  type: ANY_OF
+  versionTag: v2
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectNumber}/locations/us-central1/phraseMatchers/6492803406424493961
+  observedGeneration: 2
+  observedState:
+    activationUpdateTime: "2026-08-31T19:54:45.120166Z"
+    revisionCreateTime: "2024-04-01T12:34:56.123456Z"
+    revisionID: "10120555725210755114"
+    updateTime: "1970-01-01T00:00:00Z"

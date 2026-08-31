@@ -1,7 +1,7 @@
 apiVersion: contactcenterinsights.cnrm.cloud.google.com/v1alpha1
 kind: CCInsightsPhraseMatcher
 metadata:
-  name: phrasematcher-maximal-${uniqueId}
+  name: pmmax${uniqueId}
 spec:
   projectRef:
     external: ${projectId}
@@ -21,3 +21,6 @@ spec:
           caseSensitive: true
     - query: "world"
       negated: true
+      config:
+        exactMatchConfig:
+          caseSensitive: false
