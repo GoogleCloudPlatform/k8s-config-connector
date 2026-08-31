@@ -7,4 +7,4 @@ spec:
     external: ${projectId}
   location: us-central1
   displayName: "My Updated CCInsights View"
-  value: "projects/${projectId}/locations/us-central1/conversations/*"
+  value: 'agent_id="updated-agent"'

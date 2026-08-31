@@ -1,0 +1,13 @@
+GET https://contactcenterinsights.googleapis.com/v1/projects/${projectNumber}/locations/us-central1/views/${viewId}?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: scaffolding on HTTPServer2
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "My Updated CCInsights View",
+  "name": "projects/${projectNumber}/locations/us-central1/views/${viewId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z",
+  "value": "agent_id=\"updated-agent\""
+}
