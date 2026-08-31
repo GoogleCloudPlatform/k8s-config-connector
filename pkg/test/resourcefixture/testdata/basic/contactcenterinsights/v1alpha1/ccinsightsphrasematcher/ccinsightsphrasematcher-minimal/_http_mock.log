@@ -1,0 +1,136 @@
+GET https://contactcenterinsights.googleapis.com/v1/projects/${projectId}/locations/us-central1/phraseMatchers/pmmin${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FphraseMatchers%2Fpmmin${uniqueId}
+
+400 Bad Request
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 400,
+    "message": "Invalid phrase matcher ID: pmmin${uniqueId}",
+    "status": "INVALID_ARGUMENT"
+  }
+}
+
+---
+
+POST https://contactcenterinsights.googleapis.com/v1/projects/${projectId}/locations/us-central1/phraseMatchers?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "phraseMatchRuleGroups": [
+    {
+      "phraseMatchRules": [
+        {
+          "config": {
+            "exactMatchConfig": {}
+          },
+          "query": "hello"
+        }
+      ],
+      "type": 2
+    }
+  ],
+  "type": 2
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "activationUpdateTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "12568581401334663530",
+  "name": "projects/${projectNumber}/locations/us-central1/phraseMatchers/12568581401334663530",
+  "phraseMatchRuleGroups": [
+    {
+      "phraseMatchRules": [
+        {
+          "config": {
+            "exactMatchConfig": {}
+          },
+          "query": "hello"
+        }
+      ],
+      "type": 2
+    }
+  ],
+  "revisionCreateTime": "2024-04-01T12:34:56.123456Z",
+  "revisionId": "revision-id-placeholder",
+  "type": 2
+}
+
+---
+
+GET https://contactcenterinsights.googleapis.com/v1/projects/${projectNumber}/locations/us-central1/phraseMatchers/12568581401334663530?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2Flocations%2Fus-central1%2FphraseMatchers%2F12568581401334663530
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "activationUpdateTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "12568581401334663530",
+  "name": "projects/${projectNumber}/locations/us-central1/phraseMatchers/12568581401334663530",
+  "phraseMatchRuleGroups": [
+    {
+      "phraseMatchRules": [
+        {
+          "config": {
+            "exactMatchConfig": {}
+          },
+          "query": "hello"
+        }
+      ],
+      "type": 2
+    }
+  ],
+  "revisionCreateTime": "2024-04-01T12:34:56.123456Z",
+  "revisionId": "revision-id-placeholder",
+  "type": 2
+}
+
+---
+
+DELETE https://contactcenterinsights.googleapis.com/v1/projects/${projectNumber}/locations/us-central1/phraseMatchers/12568581401334663530?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectNumber}%2Flocations%2Fus-central1%2FphraseMatchers%2F12568581401334663530
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

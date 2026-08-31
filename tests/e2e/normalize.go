@@ -392,6 +392,9 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".status.observedState.revisionId"] = "revision-id-placeholder"
 	visitor.replacePaths[".status.observedState.revisionCreateTime"] = mockgcpregistry.PlaceholderTimestamp
 
+	// Specific to CCInsightsPhraseMatcher
+	visitor.replacePaths[".status.observedState.activationUpdateTime"] = mockgcpregistry.PlaceholderTimestamp
+
 	// Specific to DocumentAIProcessor
 	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 		if strings.HasSuffix(path, ".status.observedState.processorVersionAliases[].processorVersion") {
@@ -1408,6 +1411,16 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 
 	// Workflows
 	{
+		visitor.ReplacePath(".revisionCreateTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".response.revisionCreateTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".revisionId", "revision-id-placeholder")
+		visitor.ReplacePath(".response.revisionId", "revision-id-placeholder")
+	}
+
+	// ContactCenterInsights
+	{
+		visitor.ReplacePath(".activationUpdateTime", mockgcpregistry.PlaceholderTimestamp)
+		visitor.ReplacePath(".response.activationUpdateTime", mockgcpregistry.PlaceholderTimestamp)
 		visitor.ReplacePath(".revisionCreateTime", mockgcpregistry.PlaceholderTimestamp)
 		visitor.ReplacePath(".response.revisionCreateTime", mockgcpregistry.PlaceholderTimestamp)
 		visitor.ReplacePath(".revisionId", "revision-id-placeholder")

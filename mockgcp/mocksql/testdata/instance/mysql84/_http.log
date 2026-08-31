@@ -203,7 +203,8 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 400,
-    "message": "Invalid request: Invalid Tier (db-c4a-highmem-2) for (ENTERPRISE) Edition."
+    "message": "Invalid request: Invalid Tier (db-c4a-highmem-2) for (ENTERPRISE) Edition.",
+    "status": "INVALID_ARGUMENT"
   }
 }
 
