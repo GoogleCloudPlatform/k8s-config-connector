@@ -107,8 +107,6 @@ BLOCKED_KINDS=(
     "BigQueryMigrationWorkflow"
     "BigQueryReservationReservationGroup"
     "BinaryAuthorizationPlatformPolicy"
-    "BlockchainNodeEngineBlockchainNode"
-    "BlockchainNodeEngineNode"
     "CCInsightsAnalysisRule"
     "CCInsightsConversation"
     "CCInsightsIssueModel"

@@ -53,7 +53,6 @@ SKIP_TEST_APIGROUPS=(
     "billing.cnrm.cloud.google.com"
     "billingbudgets.cnrm.cloud.google.com"
     "binaryauthorization.cnrm.cloud.google.com"
-    "blockchainnodeengine.cnrm.cloud.google.com"
     "certificatemanager.cnrm.cloud.google.com"
     "cloudasset.cnrm.cloud.google.com"
     "cloudbuild.cnrm.cloud.google.com"

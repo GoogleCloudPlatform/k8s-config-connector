@@ -32,6 +32,8 @@
 | apigeeregistry.cnrm.cloud.google.com           | ApigeeRegistryInstance                                   | True         | False       | False  | Direct     | True        |
 | apigee.cnrm.cloud.google.com                   | ApigeeSyncAuthorization                                  | True         | False       | False  | Terraform  | False       |
 | apihub.cnrm.cloud.google.com                   | APIHubAPI                                                | True         | False       | False  | Direct     | True        |
+| apihub.cnrm.cloud.google.com                   | APIHubAttribute                                          | True         | False       | False  | Direct     | True        |
+| apihub.cnrm.cloud.google.com                   | APIHubDependency                                         | True         | False       | False  | Direct     | True        |
 | apihub.cnrm.cloud.google.com                   | APIHubDeployment                                         | True         | False       | False  | Direct     | True        |
 | apihub.cnrm.cloud.google.com                   | APIHubExternalAPI                                        | True         | False       | False  | Direct     | True        |
 | apihub.cnrm.cloud.google.com                   | APIHubInstance                                           | True         | False       | False  | Direct     | True        |
@@ -99,7 +101,6 @@
 | binaryauthorization.cnrm.cloud.google.com      | BinaryAuthorizationAttestor                              | False        | True        | False  | DCL        | False       |
 | binaryauthorization.cnrm.cloud.google.com      | BinaryAuthorizationPlatformPolicy                        | True         | False       | False  | Direct     | True        |
 | binaryauthorization.cnrm.cloud.google.com      | BinaryAuthorizationPolicy                                | False        | True        | False  | DCL        | False       |
-| blockchainnodeengine.cnrm.cloud.google.com     | BlockchainNodeEngineBlockchainNode                       | True         | False       | False  | Direct     | True        |
 | contactcenterinsights.cnrm.cloud.google.com    | CCInsightsConversation                                   | True         | False       | False  | Direct     | True        |
 | contactcenterinsights.cnrm.cloud.google.com    | CCInsightsIssueModel                                     | True         | False       | False  | Direct     | True        |
 | contactcenterinsights.cnrm.cloud.google.com    | CCInsightsPhraseMatcher                                  | True         | False       | False  | Direct     | True        |
@@ -307,7 +308,6 @@
 | discoveryengine.cnrm.cloud.google.com          | DiscoveryEngineIdentityMappingStore                      | True         | False       | False  | Direct     | True        |
 | discoveryengine.cnrm.cloud.google.com          | DiscoveryEngineLicenseConfig                             | True         | False       | False  | Direct     | True        |
 | discoveryengine.cnrm.cloud.google.com          | DiscoveryEngineSampleQuerySet                            | True         | False       | False  | Direct     | True        |
-| discoveryengine.cnrm.cloud.google.com          | DiscoveryEngineSearchEngine                              | True         | False       | False  | Direct     | True        |
 | discoveryengine.cnrm.cloud.google.com          | DiscoveryEngineServingConfig                             | True         | False       | False  | Direct     | True        |
 | discoveryengine.cnrm.cloud.google.com          | DiscoveryEngineSession                                   | True         | False       | False  | Direct     | True        |
 | discoveryengine.cnrm.cloud.google.com          | DiscoveryEngineUserStore                                 | True         | False       | False  | Direct     | True        |
