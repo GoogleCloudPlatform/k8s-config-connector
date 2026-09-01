@@ -19,11 +19,11 @@ X-Xss-Protection: 0
     "errors": [
       {
         "domain": "global",
-        "message": "api \"projects/${projectId}/locations/us-central1/apis/api-${uniqueId}\" not found",
+        "message": "Resource 'projects/${projectId}/locations/us-central1/apis/api-${uniqueId}' was not found",
         "reason": "notFound"
       }
     ],
-    "message": "api \"projects/${projectId}/locations/us-central1/apis/api-${uniqueId}\" not found",
+    "message": "Resource 'projects/${projectId}/locations/us-central1/apis/api-${uniqueId}' was not found",
     "status": "NOT_FOUND"
   }
 }
