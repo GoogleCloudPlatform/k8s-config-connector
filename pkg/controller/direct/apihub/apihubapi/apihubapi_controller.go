@@ -72,11 +72,22 @@ func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForO
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
+	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
 	idBase, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
 	id := idBase.(*krm.APIHubAPIIdentity)
+
+	mapCtx := &direct.MapContext{}
+	desired := apihub.APIHubAPISpec_ToProto(mapCtx, &obj.Spec)
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+	desired.Name = id.String()
 
 	gcpClient, err := m.client(ctx)
 	if err != nil {
@@ -85,7 +96,7 @@ func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForO
 	return &Adapter{
 		id:        id,
 		gcpClient: gcpClient,
-		desired:   obj,
+		desired:   desired,
 	}, nil
 }
 
@@ -96,7 +107,7 @@ func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapt
 type Adapter struct {
 	id        *krm.APIHubAPIIdentity
 	gcpClient *gcp.Client
-	desired   *krm.APIHubAPI
+	desired   *pb.Api
 	actual    *pb.Api
 }
 
@@ -122,21 +133,11 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating APIHubAPI")
-	mapCtx := &direct.MapContext{}
-
-	desired := a.desired.DeepCopy()
-	resource := apihub.APIHubAPISpec_ToProto(mapCtx, &desired.Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-	resource.Name = a.id.String()
-
-	parentString := fmt.Sprintf("projects/%s/locations/%s", a.id.Project, a.id.Location)
 
 	req := &pb.CreateApiRequest{
-		Parent: parentString,
+		Parent: a.id.ParentString(),
 		ApiId:  a.id.Api,
-		Api:    resource,
+		Api:    a.desired,
 	}
 
 	created, err := a.gcpClient.CreateApi(ctx, req)
@@ -153,12 +154,6 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	log.V(2).Info("updating APIHubAPI", "name", a.id.String())
 	mapCtx := &direct.MapContext{}
 
-	desired := apihub.APIHubAPISpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-	desired.Name = a.id.String()
-
 	// Mask actual to only contain spec fields for correct diffing
 	maskedActualSpec := apihub.APIHubAPISpec_FromProto(mapCtx, a.actual)
 	if mapCtx.Err() != nil {
@@ -170,7 +165,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	}
 	maskedActual.Name = a.id.String()
 
-	clonedDesired := proto.Clone(desired).(*pb.Api)
+	clonedDesired := proto.Clone(a.desired).(*pb.Api)
 
 	diffs, updateMask, err := common.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
@@ -185,7 +180,7 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	structuredreporting.ReportDiff(ctx, diffs)
 
 	req := &pb.UpdateApiRequest{
-		Api:        desired,
+		Api:        a.desired,
 		UpdateMask: updateMask,
 	}
 
