@@ -85,7 +85,6 @@ func testCreateAndUpdateUnstructShouldDiffer(t *testing.T, fixture resourcefixtu
 		"certificatemanagercertificateissuanceconfig":   true,
 		"containercluster-resourcemanagertags-standard": true,
 		"dataformrepository-basic":                      true,
-		"datalabelinginstruction-maximal":               true,
 		"networkconnectivityregionalendpoint-maximal":   true,
 		"networkconnectivityregionalendpoint-minimal":   true,
 	}
