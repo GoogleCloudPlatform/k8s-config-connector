@@ -591,6 +591,7 @@
 | vertexai.cnrm.cloud.google.com                 | VertexAIIndex                                            | True         | True        | False  | Terraform  | False       |
 | vertexai.cnrm.cloud.google.com                 | VertexAIMetadataStore                                    | True         | True        | False  | Direct     | True        |
 | aiplatform.cnrm.cloud.google.com               | VertexAIPipelineJob                                      | True         | False       | False  | Direct     | True        |
+| aiplatform.cnrm.cloud.google.com               | VertexAIRagCorpus                                        | True         | False       | False  | Direct     | True        |
 | aiplatform.cnrm.cloud.google.com               | VertexAISchedule                                         | True         | False       | False  | Direct     | True        |
 | aiplatform.cnrm.cloud.google.com               | VertexAISpecialistPool                                   | True         | False       | False  | Direct     | True        |
 | aiplatform.cnrm.cloud.google.com               | VertexAIStudy                                            | True         | False       | False  | Direct     | True        |
