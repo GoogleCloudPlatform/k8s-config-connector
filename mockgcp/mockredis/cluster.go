@@ -232,6 +232,7 @@ func (s *clusterServer) populateDefaultsForCluster(ctx context.Context, name *cl
 		}
 	}
 
+	suffix := "abcdef0123456789"
 	if obj.PscConnections == nil {
 		pscConnectionID := time.Now().UnixNano()
 
@@ -243,13 +244,18 @@ func (s *clusterServer) populateDefaultsForCluster(ctx context.Context, name *cl
 				}
 				pscConnectionID++
 				forwardingRuleID := fmt.Sprintf("ssc-auto-fr-%x", pscConnectionID)
+				suffix2 := ""
+				if i == 1 {
+					suffix2 = "-2"
+				}
 				pscConnection := &pb.PscConnection{
 					// The assigned addresses are (seemingly) not deterministic
-					Address:         fmt.Sprintf("10.128.0.%d", rand.IntN(100)),
-					ForwardingRule:  fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/regions/%s/forwardingRules/%s", network.Project.ID, name.Location, forwardingRuleID),
-					Network:         pscConfig.Network,
-					ProjectId:       network.Project.ID,
-					PscConnectionId: fmt.Sprintf("%d", pscConnectionID),
+					Address:           fmt.Sprintf("10.128.0.%d", rand.IntN(100)),
+					ForwardingRule:    fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/regions/%s/forwardingRules/%s", network.Project.ID, name.Location, forwardingRuleID),
+					Network:           pscConfig.Network,
+					ProjectId:         network.Project.ID,
+					PscConnectionId:   fmt.Sprintf("%d", pscConnectionID),
+					ServiceAttachment: fmt.Sprintf("projects/%d/regions/%s/serviceAttachments/gcp-memorystore-auto-%s-psc-sa%s", name.Project.Number, name.Location, suffix, suffix2),
 				}
 				obj.PscConnections = append(obj.PscConnections, pscConnection)
 			}
@@ -257,7 +263,6 @@ func (s *clusterServer) populateDefaultsForCluster(ctx context.Context, name *cl
 	}
 
 	if obj.PscServiceAttachments == nil {
-		suffix := "abcdef0123456789"
 		obj.PscServiceAttachments = []*pb.PscServiceAttachment{
 			{
 				ServiceAttachment: fmt.Sprintf("projects/%d/regions/%s/serviceAttachments/gcp-memorystore-auto-%s-psc-sa", name.Project.Number, name.Location, suffix),
@@ -294,7 +299,7 @@ func (s *clusterServer) populateDefaultsForCluster(ctx context.Context, name *cl
 		return fmt.Errorf("unknown node type %v", obj.GetNodeType())
 	}
 	obj.PreciseSizeGb = mocks.PtrTo(float64(nodeCapacity * float64(obj.GetShardCount())))
-	obj.SizeGb = mocks.PtrTo(int32(obj.GetPreciseSizeGb()))
+	obj.SizeGb = mocks.PtrTo(int32(obj.GetPreciseSizeGb() + 0.5))
 
 	if obj.TransitEncryptionMode == pb.TransitEncryptionMode_TRANSIT_ENCRYPTION_MODE_UNSPECIFIED {
 		obj.TransitEncryptionMode = pb.TransitEncryptionMode_TRANSIT_ENCRYPTION_MODE_DISABLED

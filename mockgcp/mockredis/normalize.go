@@ -15,6 +15,7 @@
 package mockredis
 
 import (
+	"regexp"
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
@@ -66,8 +67,31 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.RemovePath(".response.availableMaintenanceVersions")
 	replacements.RemovePath(".maintenanceVersion")
 	replacements.RemovePath(".response.maintenanceVersion")
+	replacements.RemovePath(".effectiveMaintenanceVersion")
+	replacements.RemovePath(".response.effectiveMaintenanceVersion")
+	replacements.RemovePath(".clusterEndpoints")
+	replacements.RemovePath(".response.clusterEndpoints")
+	replacements.RemovePath(".satisfiesPzi")
+	replacements.RemovePath(".response.satisfiesPzi")
+	replacements.RemovePath(".serverCaMode")
+	replacements.RemovePath(".response.serverCaMode")
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
-	// No-op for now
+	// Only apply normalization if the request is for this service
+	if !strings.Contains(event.URL(), "redis.googleapis.com") {
+		return
+	}
+
+	re := regexp.MustCompile(`projects/(\d+)/regions/[a-z0-9-]+/serviceAttachments/gcp-memorystore-auto-([a-f0-9]+)-psc-sa`)
+
+	event.VisitResponseStringValues(func(path string, value string) {
+		match := re.FindStringSubmatch(value)
+		if len(match) == 3 {
+			projectNumber := match[1]
+			hash := match[2]
+			replacements.ReplaceStringValue(projectNumber, "${projectNumber}")
+			replacements.ReplaceStringValue(hash, "abcdef0123456789")
+		}
+	})
 }
