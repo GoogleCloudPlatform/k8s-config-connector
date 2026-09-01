@@ -10,18 +10,6 @@ metadata:
   name: api-${uniqueId}
   namespace: ${uniqueId}
 spec:
-  apiFunctionalRequirements:
-    stringValues:
-      values:
-      - func-requirement-2
-  apiRequirements:
-    stringValues:
-      values:
-      - requirement-2
-  apiTechnicalRequirements:
-    stringValues:
-      values:
-      - tech-requirement-2
   description: A comprehensive APIHubAPI for E2E testing - Updated
   displayName: Maximal APIHubAPI Updated
   documentation:
