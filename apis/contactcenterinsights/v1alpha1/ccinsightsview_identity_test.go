@@ -72,3 +72,46 @@ func TestCCInsightsViewIdentity_FromExternal(t *testing.T) {
 		})
 	}
 }
+
+func TestCCInsightsViewRef_ValidateExternal(t *testing.T) {
+	tests := []struct {
+		name    string
+		ref     string
+		wantErr bool
+	}{
+		{
+			name:    "valid reference",
+			ref:     "projects/my-project/locations/us-central1/views/my-view",
+			wantErr: false,
+		},
+		{
+			name:    "invalid prefix",
+			ref:     "invalid/my-project/locations/us-central1/views/my-view",
+			wantErr: true,
+		},
+		{
+			name:    "missing location",
+			ref:     "projects/my-project/views/my-view",
+			wantErr: true,
+		},
+		{
+			name:    "missing view",
+			ref:     "projects/my-project/locations/us-central1",
+			wantErr: true,
+		},
+		{
+			name:    "empty string",
+			ref:     "",
+			wantErr: true,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			r := &CCInsightsViewRef{}
+			if err := r.ValidateExternal(tt.ref); (err != nil) != tt.wantErr {
+				t.Errorf("CCInsightsViewRef.ValidateExternal() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}
