@@ -78,10 +78,8 @@ func APIHubAttributeSpec_ToProto(mapCtx *direct.MapContext, in *krm.APIHubAttrib
 	out.Scope = direct.Enum_ToProto[pb.Attribute_Scope](mapCtx, in.Scope)
 	out.DataType = direct.Enum_ToProto[pb.Attribute_DataType](mapCtx, in.DataType)
 	out.AllowedValues = direct.Slice_ToProto(mapCtx, in.AllowedValues, Attribute_AllowedValue_ToProto)
-	if in.Cardinality != nil && *in.Cardinality != 0 {
+	if in.Cardinality != nil {
 		out.Cardinality = *in.Cardinality
-	} else {
-		out.Cardinality = 1
 	}
 	return out
 }
