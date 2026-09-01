@@ -6,7 +6,7 @@ In Kubernetes Config Connector (KCC), controllers continuously reconcile the des
 
 While continuous retries are essential for transient failures (e.g., temporary network blips, eventual consistency propagation, server-side 5xx errors), they become infinite reconciliation loops when encountering permanent client errors (such as `InvalidArgument` or `Unimplemented`) or KCC diffing bugs (such as false-positive diffs due to missing API domain knowledge).
 
-These tight loops exhaust the underlying GCP API quota across customer projects, flood operator logs, and frequently escalate into critical on-call operational burdens. To stop infinite reconciliation loops and provide targeted incident mitigation, we decided that introducing **resource-level pause** capabilities is the most effective approach. This enables KCC to automatically halt retries on non-retryable errors and provides users with fine-grained actuation control to mitigate operational impact.
+These tight loops exhaust the underlying GCP API quota across customer projects, flood controller logs, and frequently escalate into critical on-call operational burdens. To stop infinite reconciliation loops and provide targeted incident mitigation, we decided that introducing **resource-level pause** capabilities is the most effective approach. This enables KCC to automatically halt retries on non-retryable errors and provides users with fine-grained actuation control to mitigate operational impact.
 
 ## 2. Use Case Deep Dive
 
@@ -33,24 +33,34 @@ Resource-level actuation pause supports two essential use cases:
 ## 4. Proposed Solution: Resource-Level Actuation Mode
 
 To extend the actuation concept down to individual resources, we introduce the annotation:
-`cnrm.cloud.google.com/actuation-mode: "Reconciling" | "Paused" | "AutoPaused"`
+`cnrm.cloud.google.com/actuation-mode: "Reconciling" | "AutoPaused" | "Paused" | "ForceReconciling"`
 
-When specified on an individual resource, this annotation overrides the cluster-level (`ConfigConnector.spec.actuationMode`) and namespace-level (`ConfigConnectorContext.spec.actuationMode`) configurations, following [KCC's standard configuration hierarchy](#82-kccs-standard-configuration-hierarchy) to control custom resource behaviors while cleanly distinguishing between **user-initiated manual pause** and **KCC-initiated automated pause**.
+When specified on an individual resource, this annotation overrides the cluster-level (`ConfigConnector.spec.actuationMode`) and namespace-level (`ConfigConnectorContext.spec.actuationMode`) configurations, following [KCC's standard configuration hierarchy](#82-kccs-standard-configuration-hierarchy) to control custom resource behaviors while maintaining complete semantic consistency across all hierarchy levels.
 
 ### 4.1. Supported Actuation Modes & Semantics
 
-| `cnrm.cloud.google.com/actuation-mode` | Initiator | Behavior on Reconciliation | Behavior on `.spec` Update (`generation > observedGeneration`) |
-| :--- | :--- | :--- | :--- |
-| **`"Paused"`** | User | Freezes all GCP actuation (`Create`, `Update`, and `Delete`) and periodic drift correction. Deletions are halted to protect cloud resources. | **Remains Paused.** Does not auto-resume; requires explicit user action to unpause. |
-| **`"AutoPaused"`** | KCC | Set automatically upon encountering a non-retryable error. Skips GCP `Create`/`Update` actuation and halts workqueue retries. Deletion is always processed. | **Auto-Resumes.** KCC detects the spec modification, automatically clears the annotation, and reconciles the fix. |
-| **`"Reconciling"`** | User | Actively reconciles the resource against GCP (`Create`, `Update`, and `Delete`). | Standard active reconciliation. Can be used to override a parent namespace or cluster-level `"Paused"` mode for a specific resource. |
-| *(Unset)* | Default | Inherits actuation mode from the namespace (`ConfigConnectorContext`) or cluster (`ConfigConnector`), defaulting to `"Reconciling"`. | Standard inheritance. |
+| Mode Value | In CC / CCC | Behavior on Reconciliation | Behavior on `.spec` Update (`generation > observedGeneration`) |
+| :--- | :---: | :--- | :--- |
+| **`"Reconciling"`**<br>*(or unset)* | **Yes** | Standard active reconciliation. Actively reconciles against GCP and applies periodic drift correction. Automatically transitions to `"AutoPaused"` upon encountering a non-retryable client error. | Continues active reconciliation. |
+| **`"AutoPaused"`** | **No** | Set automatically by KCC upon encountering a non-retryable error. Skips GCP `Create`/`Update` actuation and halts workqueue retries. Deletions are processed immediately. | **Auto-Resumes to `"Reconciling"`.** KCC detects the spec change, deletes the annotation, and reconciles the fix. |
+| **`"ForceReconciling"`** | **No** | **Strict, unconditional force reconciliation.** Actively reconciles against GCP with continuous exponential backoff retries on error (bypasses `AutoPaused`). Overrides parent namespace pause and acts as an escape hatch for out-of-band fixes / debug mode. | Continues active reconciliation. |
+| **`"Paused"`** | **Yes** | Freezes all GCP actuation (`Create`, `Update`, and `Delete`) and periodic drift correction. Deletions are halted to protect cloud resources. | **Remains Paused.** Does not auto-resume; requires explicit user action to unpause. |
 
 ---
 
-### 4.2. Mode 1: Automatic Pause on Non-Retryable Errors (`AutoPaused`)
+### 4.2. Standard Reconciliation & Automatic Pause on Non-Retryable Errors (`Reconciling` & `AutoPaused`)
 
-When reconciliation fails due to a non-retryable (terminal) client error—such as `codes.InvalidArgument`, `codes.Unimplemented`, HTTP `400` with invalid arguments, or HTTP `501` (see [Appendix 8.1](#81-detailed-categorization-of-non-retryable-vs-retryable-errors) for the complete taxonomy)—retrying with the same configuration against the same API state is guaranteed to fail. KCC automatically halts workqueue retries and places the resource into `AutoPaused` mode.
+Under standard KCC operation, resources operate in an intelligent automated lifecycle that balances active convergence against quota protection:
+
+1. **`"Reconciling"` (Default Operational State):**
+   * Resources without an explicit annotation (or with `actuation-mode: "Reconciling"`) actively reconcile against GCP.
+   * On transient errors (e.g. 5xx, network timeouts, eventual consistency), KCC retries with standard exponential backoff.
+   * If reconciliation fails due to a **non-retryable (terminal) client error** (e.g. `codes.InvalidArgument`, `codes.Unimplemented`, HTTP `400` invalid syntax, or HTTP `501`; see [Appendix 8.1](#81-detailed-categorization-of-non-retryable-vs-retryable-errors)), retrying with identical inputs is guaranteed to fail. KCC automatically transitions the resource to **`"AutoPaused"`**.
+
+2. **`"AutoPaused"` (Safe Error Pause):**
+   * KCC halts workqueue retries to stop API quota burn and log flooding.
+   * The controller records `status.conditions[Ready]=False` with `reason: UpdateFailedNonRetryable`.
+   * **Auto-Resume Flow:** When the user updates `.spec` (e.g. fixing a typo or invalid field in Git or `kubectl`), the Kubernetes API server increments `metadata.generation`. The controller detects `metadata.generation > status.observedGeneration`, automatically resets the mode back to **`"Reconciling"`**, and immediately actuates the fix against GCP.
 
 #### 4.2.1. Error Inspection Logic (Example Implementation)
 To accurately classify errors across client libraries (gRPC, Google REST clients, standard wrapped Go errors), a centralized error evaluator can be implemented in `pkg/controller/lifecyclehandler`. The following is an illustrative example implementation:
@@ -77,66 +87,68 @@ func IsNonRetryableError(err error) bool {
         }
     }
 
-    var googleAPIErr *googleapi.Error
-    if errors.As(err, &googleAPIErr) {
-        if googleAPIErr.Code == http.StatusBadRequest || googleAPIErr.Code == http.StatusNotImplemented {
-            return true
-        }
-    }
-
     return false
 }
 ```
 
-#### 4.2.2. Auto-Pause State Machine & Auto-Resume Flow
+#### 4.2.2. Auto-Pause State Machine & Transitions
+
+```
+                      ┌─────────────────────────┐
+                      │       Reconciling       │◄───────────────────┐
+                      │    (Active & Safe)      │                    │
+                      └────────────┬────────────┘                    │
+                                   │                                 │
+                     Non-Retryable │ Client Error                    │ User Updates .spec
+                     (e.g. 400 /   │ InvalidArgument                 │ (generation > observedGeneration)
+                                   ▼                                 │
+                      ┌─────────────────────────┐                    │
+                      │       AutoPaused        │────────────────────┘
+                      │   (Retries Halted)      │
+                      └─────────────────────────┘
+```
 
 1. **Failure Handling (Entering `AutoPaused`):**
    * When `adapter.Create()` or `adapter.Update()` returns an error, the controller evaluates `lifecyclehandler.IsNonRetryableError(err)`.
    * The controller calls `handleUpdateFailed(ctx, u, err)` to record `status.conditions[Ready]=False` and update `status.observedGeneration = metadata.generation`.
    * If non-retryable:
-     1. The controller annotates the resource (using `retry.RetryOnConflict` or `client.Patch` to handle metadata conflicts safely):
+     1. The controller annotates the resource:
         ```yaml
         metadata:
           annotations:
             cnrm.cloud.google.com/actuation-mode: "AutoPaused"
         ```
-     2. The controller ensures status clearly communicates the auto-pause state alongside the root-cause failure (e.g. `reason: UpdateFailedNonRetryable`, with message: `Update failed: <GCP Error Message>. Actuation is automatically paused to halt retry loops; modify .spec to resume reconciliation.`).
+     2. The controller ensures status communicates the root-cause failure (e.g. `reason: UpdateFailedNonRetryable`, with message: `Update failed: <GCP Error Message>. Actuation is automatically paused to halt retry loops; modify .spec to resume reconciliation.`).
      3. The controller halts further workqueue retries by returning `reconcile.Result{}, nil` to `controller-runtime`.
 2. **Reconciliation Check & Auto-Resume:**
-   * We extend KCC's existing actuation mode evaluation logic (in `pkg/controller/resourceactuation` and reconcilers like `directbase`, `tf`, `dcl`):
-     * When `Reconcile()` is triggered for an object in `AutoPaused`:
-       * Check if `metadata.deletionTimestamp` is set. If the user deletes a resource that failed validation, **proceed immediately with deletion and finalizer cleanup**.
-       * Compare `metadata.generation` with `status.observedGeneration`:
-         * **If `metadata.generation > status.observedGeneration`:** The user modified the `.spec` (e.g. fixed the typo in Git). The controller automatically clears the `cnrm.cloud.google.com/actuation-mode` annotation, logs an informational message, and proceeds with full reconciliation.
-         * **If `metadata.generation == status.observedGeneration`:** The resource remains in the terminal error state. The controller exits with `reconcile.Result{}, nil`.
+   * When `Reconcile()` is triggered for an object in `AutoPaused`:
+     * Check if `metadata.deletionTimestamp` is set. If the user deletes a resource that failed validation, **proceed immediately with deletion and finalizer cleanup**.
+     * Compare `metadata.generation` with `status.observedGeneration`:
+       * **If `metadata.generation > status.observedGeneration`:** The user modified `.spec`. The controller deletes the annotation, logs an informational message, and proceeds with full reconciliation.
+       * **If `metadata.generation == status.observedGeneration`:** The resource remains in the terminal error state. The controller exits with `reconcile.Result{}, nil`.
 
 ---
 
-### 4.3. Mode 2: Manual Per-Resource Actuation Pause (`Paused`)
+### 4.3. Manual Override Modes (`Paused` & `ForceReconciling`)
 
-To empower users during incident mitigation, maintenance, or troubleshooting, users can explicitly pause actuation on any individual resource at any time:
+Users can explicitly set manual override annotations on individual resources to take direct control over reconciliation—either completely freezing actuation during maintenance and incidents (`"Paused"`), or forcing continuous retries during troubleshooting (`"ForceReconciling"`):
 
-```yaml
-apiVersion: compute.cnrm.cloud.google.com/v1beta1
-kind: ComputeInstance
-metadata:
-  name: my-instance
-  annotations:
-    cnrm.cloud.google.com/actuation-mode: "Paused"
-```
-
-#### 4.3.1. Behavior When Manually Paused
+#### 4.3.1. Manual Hard Pause (`"Paused"`)
 * **All Actuation Halted:** Consistent with `ConfigConnector` and `ConfigConnectorContext` `spec.actuationMode: "Paused"`, setting `actuation-mode: "Paused"` freezes **all actuation against GCP (`Create`, `Update`, and `Delete`)** and stops periodic drift correction.
 * **Deletion Safety Protection:** If a resource is deleted (`kubectl delete`) while `actuation-mode: "Paused"`, KCC ensures finalizers remain in place and halts deletion against GCP, preserving the underlying cloud resource (see [Appendix 8.3](#83-event-dropping--unpause-latency-analysis) for detailed lifecycle analysis).
 * **Spec Modification Isolation:** Unlike `AutoPaused`, modifying the `.spec` will **not** clear a manual `"Paused"` annotation. The resource remains paused until explicitly unpaused.
 * **Status Untouched (Retains Prior Data):** The controller does not fetch live state from GCP nor write to `.status` while paused.
 
-#### 4.3.2. Resuming Actuation
-Users can resume reconciliation at any time by:
-1. Removing the `cnrm.cloud.google.com/actuation-mode` annotation, or
-2. Setting `cnrm.cloud.google.com/actuation-mode: "Reconciling"`.
+#### 4.3.2. Manual Force Reconciliation (`"ForceReconciling"`)
+* **Unconditional Reconciliation:** Setting `actuation-mode: "ForceReconciling"` explicitly commands KCC to actively reconcile the resource against GCP, bypassing automatic pausing on non-retryable errors.
+* **Continuous Exponential Retries:** If a non-retryable error occurs while explicitly set to `"ForceReconciling"`, KCC honors user intent and continues retrying with exponential backoff (`Result{}, err`), serving as an escape hatch for debugging or waiting for out-of-band GCP backend propagation.
 
-#### 4.3.3. Visibility & Warning on Manual Pause
+#### 4.3.3. Resuming Reconciliation / Returning to `"Reconciling"`
+Users can resume standard reconciliation at any time by:
+1. Removing the `cnrm.cloud.google.com/actuation-mode` annotation (inheriting default `Reconciling`), or
+2. Explicitly setting `cnrm.cloud.google.com/actuation-mode: "Reconciling"`.
+
+#### 4.3.4. Visibility & Warning on Manual Pause
 Because setting a resource to `"Paused"` halts all actuation indefinitely (including `Delete`), KCC can return a non-blocking **Validating Admission Webhook Warning** (`admissionv1.AdmissionResponse.Warnings`) to provide immediate feedback:
 * **On `kubectl apply` or `kubectl delete` with `actuation-mode: "Paused"`:**
   ```text
@@ -160,7 +172,7 @@ Use a single boolean annotation for both automatic error pausing and manual user
   * **Unable to Pause Actuation on Spec Changes (Even with Manual Annotation):** Because the reconciler automatically clears `actuation-paused` whenever `metadata.generation > status.observedGeneration` (to support automatic resume after fixing errors), this design cannot pause actuation if a user modifies the `.spec` while intending for actuation to remain paused. Any `.spec` change increments `metadata.generation` and forces the controller to clear the pause annotation and actuate against GCP.
   * **Potential GitOps Sync Fighting:** If a GitOps engine (e.g., ArgoCD, Flux) is configured with aggressive drift correction on annotations, it might attempt to prune the dynamically added `actuation-paused` annotation from the cluster.
   * **Manual Intervention for Out-of-Band Fixes:** If an error is resolved by an out-of-band change in GCP (e.g. enabling a GCP API service) rather than editing the KRM `spec`, `metadata.generation` will not change. The user must manually remove the annotation to force a retry.
-  * **Outcome:** Rejected in favor of the multi-state `cnrm.cloud.google.com/actuation-mode: "Paused" | "AutoPaused" | "Reconciling"` design, which cleanly separates manual pause from automatic error pause.
+  * **Outcome:** Rejected in favor of the multi-state `cnrm.cloud.google.com/actuation-mode: "Paused" | "AutoPaused" | "Reconciling"` design, which cleanly separates manual pause from automatic pausing on non-retryable errors.
 
 ### 5.2. Option 2: Workqueue Max Retry Limit (Dropping Key After Max Retries)
 
@@ -192,7 +204,7 @@ Catch all `InvalidArgument` errors at admission time using validating webhooks.
   3. The annotation deletion fires a Kubernetes Watch event, triggering KCC to reconcile again.
   4. GCP API rejects the unchanged spec with the same non-retryable error.
   5. KCC re-adds `actuation-mode: "AutoPaused"`.
-  6. GitOps removes it again $\rightarrow$ creating an infinite cyclic fighting loop that burns CPU, API quota, and floods operator logs.
+  6. GitOps removes it again $\rightarrow$ creating an infinite cyclic fighting loop that burns CPU, API quota, and floods controller logs.
 * **Alternative Under Consideration: Status-Driven Error Pause:**
   * Restrict `cnrm.cloud.google.com/actuation-mode: "Paused" | "Reconciling"` strictly to user-managed declarative annotations for manual pause/unpause.
   * For automated non-retryable error pauses, track the pause state purely within `status.conditions[Ready]` (with `reason: "UpdateFailedNonRetryable"` and `observedGeneration == metadata.generation`) without mutating `metadata.annotations`.
@@ -201,32 +213,77 @@ Catch all `InvalidArgument` errors at admission time using validating webhooks.
     * **Requires `.spec` Update to Retrigger:** Because the pause is evaluated against `metadata.generation == status.observedGeneration`, modifying metadata (like labels or non-actuation annotations) will not trigger a retry.
     * If an issue is resolved out-of-band in GCP without changing `.spec` (e.g., enabling a GCP service API or updating external IAM roles), users are forced to either modify `.spec` (e.g., a dummy field or whitespace edit in tools that increment generation) or explicitly apply `cnrm.cloud.google.com/actuation-mode: "Reconciling"` to force a retry.
 
-### 6.2. Behavior on Non-Retryable Error When Actuation Mode is Explicitly `"Reconciling"`
+### 6.2. Behavior on Non-Retryable Error When Actuation Mode is Explicitly `"Reconciling"` vs. `"ForceReconciling"`
 
-* **The Dilemma:** When an operator explicitly applies `cnrm.cloud.google.com/actuation-mode: "Reconciling"` (e.g. to override a parent namespace pause or force reconciliation), they express an explicit declarative intent: *"I want this resource to actively reconcile against GCP."* If KCC encounters a permanent client error (e.g., `InvalidArgument` / `400`), automatically switching the annotation to `"AutoPaused"` violates the user's explicit declarative intent. Conversely, ignoring the error and continuing tight retries burns GCP API quota and spams logs.
+* **The Dilemma:** When a user explicitly applies `cnrm.cloud.google.com/actuation-mode: "Reconciling"` (or inherits it from CCC), having KCC encounter a permanent client error (e.g., `InvalidArgument` / `400`) presents a design choice: should `"Reconciling"` mean *"Standard managed reconciliation with auto-pause safety"* or *"Unconditional force reconciliation"*? If it means unconditional reconciliation, it burns API quota; if it auto-pauses, how can users force retries when troubleshooting?
+
+* **Adopted Solution (Section 4):**
+  * **`"Reconciling"` (or unset):** Represents standard managed reconciliation across all tiers (CC, CCC, and Resource). Actively reconciles and automatically transitions to `"AutoPaused"` upon encountering a non-retryable error to protect API quotas.
+  * **`"ForceReconciling"`:** Introduces a dedicated, unambiguous manual override mode. When explicitly set, KCC bypasses `"AutoPaused"` and executes continuous exponential backoff retries regardless of error type, serving as an escape hatch for out-of-band GCP backend propagation or debugging.
+  * **Benefits:** Preserves 100% semantic consistency across CC, CCC, and Resource levels for `"Reconciling"`, while giving users an explicit, dedicated mechanism (`"ForceReconciling"`) to bypass auto-pauses without ambiguity.
+
+* **Alternative Options Evaluated:**
+  * **Option A: Overload `"Reconciling"` to Mean Unconditional Retry:**
+    * An explicit `"Reconciling"` annotation never auto-pauses, retrying continuously on all errors.
+    * *Drawback:* Breaks semantic consistency with `ConfigConnectorContext.spec.actuationMode: "Reconciling"`, which represents standard managed reconciliation.
+  * **Option B: Degraded Requeue / Low-Frequency Polling (Slow Retry):**
+    * When a non-retryable error occurs on an explicitly `"Reconciling"` resource, KCC requeues with a long interval (e.g. `RequeueAfter: 30 * time.Minute`).
+    * *Drawback:* Introduces arbitrary polling intervals and continues making failing API calls indefinitely.
+  * **Option C: Status-Driven Error Pause (Preserve Annotation, Silently Halt in Status):**
+    * KCC never modifies the `"Reconciling"` annotation, but silently halts retries in `status.conditions[Ready]`.
+    * *Drawback:* Opaque and misleading. A user inspecting `metadata.annotations` sees `"Reconciling"` and assumes the controller is active, while KCC is secretly halted.
+
+### 6.3. Auto-Resume Metadata Cleanup: Remove Annotation vs. Explicitly Set `"Reconciling"`
+
+* **The Core Question:**
+  When auto-resuming from `AutoPaused` upon a `.spec` update (`generation > observedGeneration`), should KCC **completely remove the annotation** or **explicitly set it to `"Reconciling"`**?
 
 * **Current Proposed Solution (Section 4):**
-  * When a non-retryable error is encountered, KCC unilaterally overwrites `metadata.annotations["cnrm.cloud.google.com/actuation-mode"]` to `"AutoPaused"` (even if it was previously set to `"Reconciling"`) and returns `(reconcile.Result{}, nil)`.
-  * The resource remains paused until the user modifies `.spec` (`generation > observedGeneration`), which automatically clears `"AutoPaused"` and resumes reconciliation.
-  * **Limitation:** Mutating the user's explicit `"Reconciling"` annotation directly overrides declarative user intent and can confuse operators who expect user-applied annotations to remain untouched.
+  * KCC simply deletes the `cnrm.cloud.google.com/actuation-mode` annotation directly (`delete(annotations, "cnrm.cloud.google.com/actuation-mode")`) without checking `metadata.managedFields` or considering who originally created or modified the annotation.
+  * While straightforward, this raises considerations regarding Kubernetes Server-Side Apply (SSA) metadata ownership versus hierarchical defaults.
 
-* **Alternative Options Under Consideration:**
-  * **Option A: Strict User Intent (Continuous Exponential Backoff)**
-    * KCC respects the explicit `"Reconciling"` annotation and does **not** auto-pause. KCC returns `(Result{}, err)` to `controller-runtime`, continuing exponential backoff retries.
-    * *Pros:* Preserves strict declarative intent. If an out-of-band GCP change resolves the error, KCC automatically succeeds without requiring user intervention.
-    * *Cons:* Continues infinite retry loops and API quota exhaustion for genuinely broken configurations until the user removes the `"Reconciling"` annotation.
-  * **Option B: Degraded Requeue / Low-Frequency Polling (Slow Retry)**
-    * When a non-retryable error occurs on an explicitly `"Reconciling"` resource, KCC reports `Ready: False` (`reason: UpdateFailedNonRetryable`), but instead of tight exponential retries or complete halting, it requeues with a long interval (e.g. `reconcile.Result{RequeueAfter: 30 * time.Minute}`).
-    * *Pros:* Respects user intent to keep reconciling while protecting GCP API quota and eliminating log spam.
-    * *Cons:* Introduces an arbitrary requeue interval and continues making low-frequency failing API calls indefinitely.
-  * **Option C: Status-Driven Error Pause (Preserve User Annotation, Halt Current Generation)**
-    * KCC **never** modifies the user's `actuation-mode: "Reconciling"` annotation.
-    * KCC records the non-retryable failure in `status.conditions[Ready]` with `observedGeneration == generation` and halts retries for the *current* generation (`reconcile.Result{}, nil`).
-    * *Re-triggering:* Modifying `.spec` automatically resumes reconciliation (`generation > observedGeneration`). If resolved out-of-band, re-applying or updating the annotation acts as a one-shot trigger to attempt one new reconciliation for the current generation.
-    * *Pros:* Decouples user intent (annotations) from controller status (conditions), prevents annotation mutation, and stops quota burn.
-    * *Cons:*
-      * **Opaque & Misleading System State:** An operator inspecting `metadata.annotations` sees `actuation-mode: "Reconciling"` and naturally assumes the controller is actively retrying/reconciling against GCP, whereas KCC is actually silently halted.
-      * **Violates User Intent Without Explicit Feedback:** It fails to honor the user's explicit command to reconcile, yet hides the fact that it stopped. This creates a confusing mental model where the resource's declared metadata contradicts the controller's runtime behavior.
+* **Architectural Options & Considerations:**
+
+  * **Option A: Remove Annotation with Field Manager Verification (`metadata.managedFields`)**
+    * **Mechanism:** Before deleting the annotation, KCC inspects `metadata.managedFields` to verify that KCC itself (e.g. `cnrm.cloud.google.com/controller` / `kcc-reconciler`) was the manager that applied `AutoPaused`.
+    * If KCC owns the field, it safely removes its managed field entry. If an external manager or GitOps system owns or altered the field, KCC avoids blindly deleting external metadata and updates the value to `"Reconciling"`.
+    * **Pros:** Respects SSA metadata ownership and preserves hierarchical inheritance from `ConfigConnectorContext` (`spec.actuationMode: "Paused"`).
+    * **Cons:** Requires implementing `managedFields` parsing and inspection logic in the reconciler.
+
+  * **Option B: Explicitly Set Annotation to `"Reconciling"` (Tied to Universal Defaulting)**
+    * **Mechanism:** KCC overwrites the annotation to `cnrm.cloud.google.com/actuation-mode: "Reconciling"` upon auto-resume.
+    * **Universal Defaulting Factor:** If KCC adopts a model where all resources are universally defaulted with `actuation-mode: "Reconciling"` upon creation, every resource is expected to carry this annotation explicitly, and KCC can stop worrying about checking field managers.
+    * **Pros:** Simple mutation logic; avoids managing field deletion and `managedFields` parsing.
+    * **Cons & Trade-offs:**
+      * **Massive Churn Across All KCC Resources:** Requires mutating and managing annotations across every single existing and newly created KCC resource in the cluster.
+      * **Overwrites Namespace Hierarchy:** Stamping an explicit `actuation-mode: "Reconciling"` on individual resources overrides any subsequent namespace-level pause on `ConfigConnectorContext` (CCC).
+      * **GitOps Metadata Drift:** Causes GitOps tools (Config Sync, ArgoCD) to detect persistent metadata drift against raw manifests in Git that do not declare the annotation.
+
+### 6.4. UX of Delayed Deletion During Pause: Reverting an Accidental Deletion
+
+* **The Scenario & The Kubernetes API Trap:**
+  1. A resource is currently in `"Paused"` mode (`cnrm.cloud.google.com/actuation-mode: "Paused"`).
+  2. A user or automated pipeline inadvertently deletes the resource (`kubectl delete` or namespace deletion).
+  3. The Kubernetes API server sets `metadata.deletionTimestamp` on the object. Because the resource is in `"Paused"` mode, KCC preserves finalizers and halts actuation, protecting the live GCP resource while the Kubernetes CR sits in `Terminating` status.
+  4. The user realizes the deletion was a mistake and wishes to **revert the deletion and resume reconciliation**.
+  5. **The Trap:** In Kubernetes, `metadata.deletionTimestamp` is **immutable once set**—an object in deletion cannot be "undeleted" in etcd. If the user simply unpauses the resource (e.g. setting `actuation-mode: "Reconciling"` or removing the pause annotation), KCC sees `deletionTimestamp != nil` and **immediately calls GCP Delete APIs, permanently destroying the live cloud resource**.
+
+* **The User Recovery Workflow (Abandon & Re-Adopt):**
+  To safely recover the resource without destroying the underlying GCP infrastructure, users must execute a 3-step recovery workflow:
+  1. **Step 1 — Prevent GCP Deletion:** Set `cnrm.cloud.google.com/deletion-policy: "abandon"` on the terminating Kubernetes resource.
+  2. **Step 2 — Finalize Kubernetes Object:** Unpause the resource (or strip finalizers). KCC executes the abandon policy, removing the Kubernetes object from etcd without sending any delete requests to GCP.
+  3. **Step 3 — Re-Create & Re-Adopt:** Apply a fresh KRM manifest with the same resource name and spec (using `cnrm.cloud.google.com/management-conflict-prevention-policy: "none"` or `cnrm.cloud.google.com/state-into-spec: "merge"`). KCC will detect the existing GCP resource, re-adopt it, and resume active reconciliation.
+
+* **Admission Webhook Strategies: Blocking Deletion vs. Warnings:**
+
+  * **Option A: Webhook Blocks Deletion (`allowed: false` unless `deletion-policy: "abandon"`) — Recommended:**
+    * **Mechanism:** When a `DELETE` request is received for a resource with `actuation-mode: "Paused"`, KCC's Validating Admission Webhook rejects the request upfront with an error message unless `cnrm.cloud.google.com/deletion-policy: "abandon"` is present.
+    * **Benefits:** Completely prevents `metadata.deletionTimestamp` from ever being set in etcd. The object never enters the irreversible `Terminating` state, eliminating the risk of accidental cloud resource destruction upon unpause.
+    * **Handling Cascading Namespace Deletion:** To avoid blocking namespace deletion when a namespace containing paused resources is deleted, the webhook can exempt requests originating from the Kubernetes `system:serviceaccount:kube-system:namespace-controller` or when the parent `Namespace` is in `Terminating` state.
+
+  * **Option B: Non-Blocking Webhook Warning (`allowed: true` with `AdmissionResponse.Warnings`):**
+    * **Mechanism:** Allows the `DELETE` request through (setting `deletionTimestamp`), but emits an immediate warning in the user's terminal/kubectl client.
+    * **Trade-off:** Non-disruptive to automation and namespace deletion, but leaves the object stuck in `Terminating` and requires the 3-step recovery workflow if deletion was accidental.
 
 ---
 
@@ -239,6 +296,13 @@ We can introduce dedicated Prometheus metrics to track actuation pause behavior 
 
 ### 7.2. Automated Fan-Out Enqueue on Cluster/Namespace Unpause
 To improve the UX of `ConfigConnectorContext` / `ConfigConnector` unpause, controllers could attach an event handler to `ConfigConnectorContext` that maps `PAUSED -> RECONCILING` transitions to automatically enqueue all managed resources in the namespace (`handler.EnqueueRequestsFromMapFunc`), eliminating the reliance on periodic re-reconciliation.
+
+### 7.3. Admission Webhook Blocking on Paused Resource Deletions
+As analyzed in [Section 6.4](#64-ux-of-delayed-deletion-during-pause-reverting-an-accidental-deletion), deleting a resource while paused sets an immutable `deletionTimestamp` in `etcd`, which triggers unintended GCP deletion upon subsequent unpause.
+
+To eliminate this trap across all tiers (resource annotations, `ConfigConnectorContext`, and `ConfigConnector`):
+* **Reject `DELETE` Upfront:** Extend KCC's Validating Admission Webhook to reject `DELETE` operations on paused resources (`allowed: false`) unless `cnrm.cloud.google.com/deletion-policy: "abandon"` is present.
+* **Cascading Deletion Exemption:** Allow deletion if initiated by `kube-system:namespace-controller` or when the parent `Namespace` is in `Terminating` state to avoid namespace teardown deadlocks.
 
 ---
 
@@ -296,7 +360,7 @@ When determining runtime behavior for any given resource, KCC resolves settings 
 
 #### B. Application to Resource-Level Actuation Controls
 The proposed `cnrm.cloud.google.com/actuation-mode` annotation follows this exact pattern:
-* **Resource Level:** `cnrm.cloud.google.com/actuation-mode: "Paused" | "AutoPaused" | "Reconciling"` (allows per-resource pause or per-resource unpause override).
+* **Resource Level:** `cnrm.cloud.google.com/actuation-mode: "Reconciling" | "AutoPaused" | "Paused" | "ForceReconciling"` (allows per-resource pause, override, or force reconcile).
 * **Namespace Level:** `ConfigConnectorContext.spec.actuationMode: "Paused" | "Reconciling"`.
 * **Cluster Level:** `ConfigConnector.spec.actuationMode: "Paused" | "Reconciling"`.
 * **Default:** `"Reconciling"`.
@@ -358,7 +422,7 @@ The resource-level actuation mode design addresses event lifecycles on individua
 
 1. **`AutoPaused` (KCC-Initiated on Terminal Error):**
    * **1.1. Apply Events while AutoPaused:**
-     * **When `.spec` is modified (`generation > observedGeneration`):** Updating the `.spec` (e.g. fixing a typo or invalid field) mutates the Custom Resource directly in Kubernetes. The API server emits an immediate Watch event. The controller detects that the spec was updated, automatically clears `actuation-mode: "AutoPaused"`, and reconciles the fix against GCP immediately without waiting for periodic re-reconciliation.
+     * **When `.spec` is modified (`generation > observedGeneration`):** Updating the `.spec` (e.g. fixing a typo or invalid field) mutates the Custom Resource directly in Kubernetes. The API server emits an immediate Watch event. The controller detects that the spec was updated, deletes the annotation, and reconciles the fix against GCP immediately without waiting for periodic re-reconciliation.
      * **When `.spec` is unchanged (`generation == observedGeneration`):** Metadata updates (or background watch triggers) that do not change `.spec` are evaluated and skipped (`reconcile.Result{}, nil`), halting retry loops.
    * **1.2. Delete Events while AutoPaused:**
      * When a user deletes a resource (`kubectl delete`) in `AutoPaused` mode, the controller observes `metadata.deletionTimestamp != nil`.
