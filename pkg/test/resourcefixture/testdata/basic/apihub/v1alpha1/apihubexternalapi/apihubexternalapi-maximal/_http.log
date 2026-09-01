@@ -1,0 +1,207 @@
+GET https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/externalApis/extapi-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FexternalApis%2Fextapi-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/externalApis/extapi-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/externalApis?%24alt=json%3Benum-encoding%3Dint&externalApiId=extapi-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "description": "A comprehensive APIHubExternalAPI for E2E testing",
+  "displayName": "Maximal APIHubExternalAPI",
+  "documentation": {
+    "externalUri": "https://example.com/docs"
+  },
+  "endpoints": [
+    "https://api.example.com"
+  ],
+  "name": "projects/${projectId}/locations/us-central1/externalApis/extapi-${uniqueId}",
+  "paths": [
+    "/v1"
+  ]
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "A comprehensive APIHubExternalAPI for E2E testing",
+  "displayName": "Maximal APIHubExternalAPI",
+  "documentation": {
+    "externalUri": "https://example.com/docs"
+  },
+  "endpoints": [
+    "https://api.example.com"
+  ],
+  "name": "projects/${projectId}/locations/us-central1/externalApis/extapi-${uniqueId}",
+  "paths": [
+    "/v1"
+  ],
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/externalApis/extapi-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FexternalApis%2Fextapi-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "A comprehensive APIHubExternalAPI for E2E testing",
+  "displayName": "Maximal APIHubExternalAPI",
+  "documentation": {
+    "externalUri": "https://example.com/docs"
+  },
+  "endpoints": [
+    "https://api.example.com"
+  ],
+  "name": "projects/${projectId}/locations/us-central1/externalApis/extapi-${uniqueId}",
+  "paths": [
+    "/v1"
+  ],
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/externalApis/extapi-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2CdisplayName%2Cdocumentation%2Cendpoints%2Cpaths
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: external_api.name=projects%2F${projectId}%2Flocations%2Fus-central1%2FexternalApis%2Fextapi-${uniqueId}
+
+{
+  "description": "An updated comprehensive APIHubExternalAPI for E2E testing",
+  "displayName": "Maximal APIHubExternalAPI Updated",
+  "documentation": {
+    "externalUri": "https://example.com/docs/v2"
+  },
+  "endpoints": [
+    "https://api.example.com/v2"
+  ],
+  "name": "projects/${projectId}/locations/us-central1/externalApis/extapi-${uniqueId}",
+  "paths": [
+    "/v2"
+  ]
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "An updated comprehensive APIHubExternalAPI for E2E testing",
+  "displayName": "Maximal APIHubExternalAPI Updated",
+  "documentation": {
+    "externalUri": "https://example.com/docs/v2"
+  },
+  "endpoints": [
+    "https://api.example.com/v2"
+  ],
+  "name": "projects/${projectId}/locations/us-central1/externalApis/extapi-${uniqueId}",
+  "paths": [
+    "/v2"
+  ],
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/externalApis/extapi-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FexternalApis%2Fextapi-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "An updated comprehensive APIHubExternalAPI for E2E testing",
+  "displayName": "Maximal APIHubExternalAPI Updated",
+  "documentation": {
+    "externalUri": "https://example.com/docs/v2"
+  },
+  "endpoints": [
+    "https://api.example.com/v2"
+  ],
+  "name": "projects/${projectId}/locations/us-central1/externalApis/extapi-${uniqueId}",
+  "paths": [
+    "/v2"
+  ],
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/externalApis/extapi-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FexternalApis%2Fextapi-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

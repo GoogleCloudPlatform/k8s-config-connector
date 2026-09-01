@@ -1,0 +1,22 @@
+GET https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/externalApis/extapi-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "An updated comprehensive APIHubExternalAPI for E2E testing",
+  "displayName": "Maximal APIHubExternalAPI Updated",
+  "documentation": {
+    "externalUri": "https://example.com/docs/v2"
+  },
+  "endpoints": [
+    "https://api.example.com/v2"
+  ],
+  "name": "projects/${projectId}/locations/us-central1/externalApis/extapi-${uniqueId}",
+  "paths": [
+    "/v2"
+  ],
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
