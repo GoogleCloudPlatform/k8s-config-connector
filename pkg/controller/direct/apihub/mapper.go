@@ -46,3 +46,42 @@ func APIHubInstance_Config_ToProto(mapCtx *direct.MapContext, in *krm.APIHubInst
 
 	return out
 }
+
+func APIHubAttributeSpec_FromProto(mapCtx *direct.MapContext, in *pb.Attribute) *krm.APIHubAttributeSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.APIHubAttributeSpec{}
+	// MISSING: Name
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
+	out.Description = direct.LazyPtr(in.GetDescription())
+	out.Scope = direct.Enum_FromProto(mapCtx, in.GetScope())
+	out.DataType = direct.Enum_FromProto(mapCtx, in.GetDataType())
+	out.AllowedValues = direct.Slice_FromProto(mapCtx, in.AllowedValues, Attribute_AllowedValue_FromProto)
+
+	cardinality := int32(in.GetCardinality())
+	if cardinality == 0 {
+		cardinality = 1
+	}
+	out.Cardinality = &cardinality
+	return out
+}
+
+func APIHubAttributeSpec_ToProto(mapCtx *direct.MapContext, in *krm.APIHubAttributeSpec) *pb.Attribute {
+	if in == nil {
+		return nil
+	}
+	out := &pb.Attribute{}
+	// MISSING: Name
+	out.DisplayName = direct.ValueOf(in.DisplayName)
+	out.Description = direct.ValueOf(in.Description)
+	out.Scope = direct.Enum_ToProto[pb.Attribute_Scope](mapCtx, in.Scope)
+	out.DataType = direct.Enum_ToProto[pb.Attribute_DataType](mapCtx, in.DataType)
+	out.AllowedValues = direct.Slice_ToProto(mapCtx, in.AllowedValues, Attribute_AllowedValue_ToProto)
+	if in.Cardinality != nil && *in.Cardinality != 0 {
+		out.Cardinality = *in.Cardinality
+	} else {
+		out.Cardinality = 1
+	}
+	return out
+}
