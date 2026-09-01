@@ -98,3 +98,34 @@ func isNumeric(s string) bool {
 	}
 	return len(s) > 0
 }
+
+type viewName struct {
+	Project  *projects.ProjectData
+	Location string
+	View     string
+}
+
+func (n *viewName) String() string {
+	return "projects/" + strconv.FormatInt(n.Project.Number, 10) + "/locations/" + n.Location + "/views/" + n.View
+}
+
+// parseViewName parses a string into a viewName.
+// The expected form is projects/<projectID>/locations/<location>/views/<view>
+func (s *MockService) parseViewName(name string) (*viewName, error) {
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "views" {
+		project, err := s.Projects.GetProjectByIDOrNumber(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		return &viewName{
+			Project:  project,
+			Location: tokens[3],
+			View:     tokens[5],
+		}, nil
+	} else {
+		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+	}
+}
