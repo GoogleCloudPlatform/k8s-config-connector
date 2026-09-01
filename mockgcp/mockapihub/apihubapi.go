@@ -18,6 +18,8 @@ import (
 	"context"
 
 	pb "cloud.google.com/go/apihub/apiv1/apihubpb"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
@@ -38,6 +40,9 @@ func (s *ApiHubServer) GetApi(ctx context.Context, req *pb.GetApiRequest) (*pb.A
 
 	obj := &pb.Api{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
@@ -79,6 +84,9 @@ func (s *ApiHubServer) UpdateApi(ctx context.Context, req *pb.UpdateApiRequest) 
 
 	obj := &pb.Api{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
@@ -140,6 +148,9 @@ func (s *ApiHubServer) DeleteApi(ctx context.Context, req *pb.DeleteApiRequest) 
 
 	obj := &pb.Api{}
 	if err := s.storage.Delete(ctx, fqn, obj); err != nil {
+		if status.Code(err) == codes.NotFound {
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+		}
 		return nil, err
 	}
 
