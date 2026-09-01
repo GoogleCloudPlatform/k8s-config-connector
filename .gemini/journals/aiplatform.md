@@ -32,6 +32,17 @@
 - **Solution**: Followed the `send-pr` workflow by committing the scaffolded types, CRD, and Identity files first before executing the PR sending script.
 - **Impact**: Demonstrates that the `generate.sh` script robustly handles multiple direct resources in `aiplatform` without pruned/unreachable type issues when all active types are correctly listed.
 
+### 2026-07-06 Implementing direct types for VertexAIPersistentResource
+- **Context**: Implementing direct types for `VertexAIPersistentResource` in `apis/aiplatform/v1alpha1/`.
+- **Problem**: 
+  1. The direct spec needs to map a standard GCP Network string (`network` field in `PersistentResource` proto) to KCC's canonical reference type (`computev1beta1.ComputeNetworkRef`).
+  2. The generator comments out unreachable types in `types.generated.go` under `aiplatform` unless they are explicitly referenced as Go structures or status fields in our main KRM type definition files.
+- **Solution**:
+  1. Defined `NetworkRef *computev1beta1.ComputeNetworkRef` in `VertexAIPersistentResourceSpec` with the direct tag mapping annotation `// +kcc:proto:field=google.cloud.aiplatform.v1.PersistentResource.network`.
+  2. Map GCP's `google.rpc.Status` (e.g. for `error` field in `PersistentResource` proto) to `*common.Status` from `github.com/GoogleCloudPlatform/k8s-config-connector/apis/common` rather than referencing `StatusObservedState`.
+  3. Running `generate.sh` correctly uncommented the required nested types (`ResourcePool`, `PSCInterfaceConfig`, `ResourceRuntimeSpec`, etc.) and automatically generated `zz_generated.deepcopy.go` and mapper mappings.
+- **Impact**: Demonstrates how to leverage KCC reference fields, external package imports (`computev1beta1`), and `common` types with the standard type generator to cleanly map complex nested resources.
+
 ### 2026-07-08 Implementing the Greenfield Direct Controller, Fuzzer, and E2E Fixtures for VertexAIPipelineJob
 - **Context**: Implementing the direct controller, E2E basic test fixtures, and fuzzer for `VertexAIPipelineJob` as part of the Greenfield migration.
 - **Problem**: Greenfield resource implementation requires the creation of a fully-isolated direct controller to manage the reconciliation lifecycle (Adapter interface: Find, Create, Update, Delete, and Export), registration in the static configuration, a KRM fuzzer matching specification/status fields, and minimal/maximal golden test fixtures.
