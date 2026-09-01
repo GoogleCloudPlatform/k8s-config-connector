@@ -28,9 +28,9 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: projects/${projectNumber}/locations/us-central1/phraseMatchers/12568581401334663530
+  externalRef: projects/${projectNumber}/locations/us-central1/phraseMatchers/${phraseMatcherID}
   observedGeneration: 1
   observedState:
     activationUpdateTime: "2024-04-01T12:34:56.123456Z"
     revisionCreateTime: "2024-04-01T12:34:56.123456Z"
-    revisionID: "12568581401334663577"
+    revisionID: revision-id-placeholder
