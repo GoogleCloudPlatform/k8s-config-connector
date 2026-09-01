@@ -6,4 +6,4 @@ spec:
   projectRef:
     external: ${projectId}
   location: us-central1
-  value: "projects/${projectId}/locations/us-central1/conversations/*"
+  value: 'agent_id="my-agent"'
