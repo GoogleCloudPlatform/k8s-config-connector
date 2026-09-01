@@ -59,12 +59,6 @@ var (
 		Kind:    reflect.TypeOf(DataLabelingAnnotationSpecSet{}).Name(),
 	}
 
-	DataLabelingDatasetGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(DataLabelingDataset{}).Name(),
-	}
-
 	DataLabelingEvaluationJobGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,

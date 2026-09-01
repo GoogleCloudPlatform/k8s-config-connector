@@ -37,7 +37,6 @@ ${CONTROLLERBUILDER} generate-types \
   --include-skipped-output \
   --resource DataLabelingInstruction:Instruction \
   --resource DataLabelingAnnotationSpecSet:AnnotationSpecSet \
-  --resource DataLabelingDataset:Dataset \
   --resource DataLabelingEvaluationJob:EvaluationJob \
   --prune-unused-types=false
 
