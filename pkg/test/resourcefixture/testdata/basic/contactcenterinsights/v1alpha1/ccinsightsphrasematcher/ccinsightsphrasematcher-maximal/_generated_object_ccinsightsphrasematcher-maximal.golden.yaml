@@ -36,7 +36,7 @@ status:
   externalRef: projects/${projectNumber}/locations/us-central1/phraseMatchers/6492803406424493961
   observedGeneration: 2
   observedState:
-    activationUpdateTime: "2026-08-31T19:54:45.120166Z"
+    activationUpdateTime: "2024-04-01T12:34:56.123456Z"
     revisionCreateTime: "2024-04-01T12:34:56.123456Z"
     revisionID: "10120555725210755114"
     updateTime: "1970-01-01T00:00:00Z"

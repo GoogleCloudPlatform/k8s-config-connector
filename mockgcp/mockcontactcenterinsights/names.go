@@ -53,3 +53,48 @@ func (s *MockService) parseQaScorecardName(name string) (*qaScorecardName, error
 		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 	}
 }
+
+type phraseMatcherName struct {
+	Project       *projects.ProjectData
+	Location      string
+	PhraseMatcher string
+}
+
+func (n *phraseMatcherName) String() string {
+	return "projects/" + strconv.FormatInt(n.Project.Number, 10) + "/locations/" + n.Location + "/phraseMatchers/" + n.PhraseMatcher
+}
+
+// parsePhraseMatcherName parses a string into a phraseMatcherName.
+// The expected form is projects/<projectID>/locations/<location>/phraseMatchers/<phraseMatcher>
+func (s *MockService) parsePhraseMatcherName(name string) (*phraseMatcherName, error) {
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "phraseMatchers" {
+		project, err := s.Projects.GetProjectByIDOrNumber(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		phraseMatcherID := tokens[5]
+		if !isNumeric(phraseMatcherID) {
+			return nil, status.Errorf(codes.InvalidArgument, "Invalid phrase matcher ID: %s", phraseMatcherID)
+		}
+
+		return &phraseMatcherName{
+			Project:       project,
+			Location:      tokens[3],
+			PhraseMatcher: phraseMatcherID,
+		}, nil
+	} else {
+		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+	}
+}
+
+func isNumeric(s string) bool {
+	for _, c := range s {
+		if c < '0' || c > '9' {
+			return false
+		}
+	}
+	return len(s) > 0
+}
