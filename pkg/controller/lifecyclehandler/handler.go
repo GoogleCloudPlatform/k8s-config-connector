@@ -16,6 +16,7 @@ package lifecyclehandler
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
@@ -28,6 +29,9 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util"
 
+	"google.golang.org/api/googleapi"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	corev1 "k8s.io/api/core/v1"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -429,4 +433,37 @@ func IsOrphaned(resource *k8s.Resource, parentReferenceConfigs []corekccv1alpha1
 		return false, parent, nil
 	}
 	return false, nil, fmt.Errorf("no parent reference found in resource")
+}
+
+type grpcStatus interface {
+	GRPCStatus() *status.Status
+}
+
+// IsNonRetryableError returns true if the error represents a non-retryable client error
+// such as INVALID_ARGUMENT, FAILED_PRECONDITION, OUT_OF_RANGE (gRPC) or 400 Bad Request (HTTP).
+func IsNonRetryableError(err error) bool {
+	if err == nil {
+		return false
+	}
+
+	// 1. Check gRPC status code
+	var gs grpcStatus
+	if errors.As(err, &gs) {
+		st := gs.GRPCStatus()
+		switch st.Code() {
+		case codes.InvalidArgument, codes.FailedPrecondition, codes.OutOfRange:
+			return true
+		}
+	}
+
+	// 2. Check HTTP status code (googleapi.Error)
+	var ge *googleapi.Error
+	if errors.As(err, &ge) {
+		switch ge.Code {
+		case 400: // Bad Request
+			return true
+		}
+	}
+
+	return false
 }

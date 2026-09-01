@@ -17,6 +17,7 @@ package lifecyclehandler
 import (
 	"context"
 	"errors"
+	"fmt"
 	"testing"
 
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
@@ -24,6 +25,9 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test"
 	testvariable "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/test/resourcefixture/variable"
 
+	"google.golang.org/api/googleapi"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
@@ -254,6 +258,74 @@ func Test_reasonForUnresolvableDeps(t *testing.T) {
 			}
 			if got != test.want {
 				t.Errorf("reasonForUnresolvableDeps() got = %v, want %v", got, test.want)
+			}
+		})
+	}
+}
+
+func TestIsNonRetryableError(t *testing.T) {
+	tests := []struct {
+		name string
+		err  error
+		want bool
+	}{
+		{
+			name: "nil error",
+			err:  nil,
+			want: false,
+		},
+		{
+			name: "standard go error",
+			err:  errors.New("generic error"),
+			want: false,
+		},
+		{
+			name: "gRPC InvalidArgument error",
+			err:  status.Error(codes.InvalidArgument, "invalid argument"),
+			want: true,
+		},
+		{
+			name: "gRPC FailedPrecondition error",
+			err:  status.Error(codes.FailedPrecondition, "failed precondition"),
+			want: true,
+		},
+		{
+			name: "gRPC OutOfRange error",
+			err:  status.Error(codes.OutOfRange, "out of range"),
+			want: true,
+		},
+		{
+			name: "gRPC Unavailable error",
+			err:  status.Error(codes.Unavailable, "unavailable"),
+			want: false,
+		},
+		{
+			name: "wrapped gRPC InvalidArgument error",
+			err:  fmt.Errorf("wrapped: %w", status.Error(codes.InvalidArgument, "invalid argument")),
+			want: true,
+		},
+		{
+			name: "googleapi.Error 400 Bad Request",
+			err:  &googleapi.Error{Code: 400, Message: "bad request"},
+			want: true,
+		},
+		{
+			name: "googleapi.Error 403 Forbidden",
+			err:  &googleapi.Error{Code: 403, Message: "forbidden"},
+			want: false,
+		},
+		{
+			name: "wrapped googleapi.Error 400 Bad Request",
+			err:  fmt.Errorf("failed during reconciliation: %w", &googleapi.Error{Code: 400, Message: "bad request"}),
+			want: true,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := IsNonRetryableError(tt.err)
+			if got != tt.want {
+				t.Errorf("IsNonRetryableError() = %v, want %v", got, tt.want)
 			}
 		})
 	}

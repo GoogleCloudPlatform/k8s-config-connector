@@ -199,6 +199,10 @@ func (r *Reconciler) Reconcile(ctx context.Context, request reconcile.Request) (
 	defer structuredreporting.ReportReconcileEnd(ctx, uObj, result, err, k8s.ReconcilerTypeIAMPolicyMember)
 	requeue, err := reconcileContext.doReconcile(&memberPolicy)
 	if err != nil {
+		if lifecyclehandler.IsNonRetryableError(err) {
+			logger.Info("reconciliation failed with a non-retryable error, halting retries until user updates", "resource", request.NamespacedName, "error", err)
+			return reconcile.Result{}, nil
+		}
 		return reconcile.Result{}, err
 	}
 	if requeue {

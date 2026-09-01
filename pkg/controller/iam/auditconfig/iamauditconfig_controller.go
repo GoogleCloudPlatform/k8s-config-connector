@@ -187,6 +187,10 @@ func (r *Reconciler) Reconcile(ctx context.Context, request reconcile.Request) (
 	}
 	requeue, err := reconcileContext.doReconcile(&auditConfig)
 	if err != nil {
+		if lifecyclehandler.IsNonRetryableError(err) {
+			logger.Info("reconciliation failed with a non-retryable error, halting retries until user updates", "resource", request.NamespacedName, "error", err)
+			return reconcile.Result{}, nil
+		}
 		return reconcile.Result{}, err
 	}
 	if requeue {

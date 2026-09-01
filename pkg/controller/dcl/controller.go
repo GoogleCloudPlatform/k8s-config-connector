@@ -260,6 +260,10 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (res 
 	}
 	requeue, err := r.sync(ctx, resource)
 	if err != nil {
+		if lifecyclehandler.IsNonRetryableError(err) {
+			r.logger.Info("reconciliation failed with a non-retryable error, halting retries until user updates", "resource", req.NamespacedName, "error", err)
+			return reconcile.Result{}, nil
+		}
 		return reconcile.Result{}, err
 	}
 	if requeue {
