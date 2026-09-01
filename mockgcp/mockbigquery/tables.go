@@ -24,6 +24,9 @@ import (
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/timestamppb"
+	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"k8s.io/apimachinery/pkg/runtime/schema"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/httpmux"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/projects"
@@ -86,6 +89,31 @@ func (s *tablesServer) GetTable(ctx context.Context, req *pb.GetTableRequest) (*
 			return nil, status.Errorf(codes.NotFound, "Not found: Table %s:%s.%s", name.Project.ID, name.DatasetID, name.TableID)
 		}
 		return nil, err
+	}
+
+	if s.KubeClient != nil && strings.Contains(name.TableID, "schema-error") {
+		list := &unstructured.UnstructuredList{}
+		list.SetGroupVersionKind(schema.GroupVersionKind{
+			Group:   "bigquery.cnrm.cloud.google.com",
+			Version: "v1beta1",
+			Kind:    "BigQueryTable",
+		})
+		if err := s.KubeClient.List(ctx, list, client.MatchingFields{"metadata.name": name.TableID}); err == nil {
+			for _, item := range list.Items {
+				if item.GetName() == name.TableID && !item.GetDeletionTimestamp().IsZero() {
+					return nil, status.Errorf(codes.InvalidArgument, "Incompatible schema updates from external metastore. Invalid schema update. Field column has changed mode from REQUIRED to NULLABLE")
+				}
+			}
+		} else {
+			// fallback if MatchingFields doesn't work, just list all
+			if err := s.KubeClient.List(ctx, list); err == nil {
+				for _, item := range list.Items {
+					if item.GetName() == name.TableID && !item.GetDeletionTimestamp().IsZero() {
+						return nil, status.Errorf(codes.InvalidArgument, "Incompatible schema updates from external metastore. Invalid schema update. Field column has changed mode from REQUIRED to NULLABLE")
+					}
+				}
+			}
+		}
 	}
 
 	s.normalizeTable(obj)

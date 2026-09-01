@@ -373,6 +373,17 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 
 			return false, r.handleUpdateFailed(ctx, u, err)
 		}
+
+		// If there is any other error when getting/finding the GCP resource:
+		// 1. If we are in deletion, assume the resource may exist and attempt to delete it.
+		//    We don't want to skip deleting and orphan the resource.
+		// 2. Otherwise (creation/update), propagate the error.
+		if !u.GetDeletionTimestamp().IsZero() {
+			logger.Info("failed to find resource during deletion, attempting delete anyway", "error", err, "resource", k8s.GetNamespacedName(u))
+			existsAlready = true
+		} else {
+			return false, r.handleUpdateFailed(ctx, u, err)
+		}
 	}
 
 	defer execution.RecoverWithInternalError(&err)

@@ -1,0 +1,12 @@
+- caisURL: //bigquery.googleapis.com/projects/${projectId}/datasets/bqdataset-schema-error-direct-${uniqueId}
+  group: bigquery.cnrm.cloud.google.com
+  kind: BigQueryDataset
+  name: bqdataset-schema-error-direct-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: //bigquery.googleapis.com/projects/${projectId}/datasets/bqdataset-schema-error-direct-${uniqueId}/tables/bqtable-schema-error-direct-${uniqueId}
+  group: bigquery.cnrm.cloud.google.com
+  kind: BigQueryTable
+  name: bqtable-schema-error-direct-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
