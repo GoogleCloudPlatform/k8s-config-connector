@@ -394,6 +394,7 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 
 	// Specific to CCInsightsPhraseMatcher
 	visitor.replacePaths[".status.observedState.activationUpdateTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".status.observedState.revisionID"] = "revision-id-placeholder"
 
 	// Specific to DocumentAIProcessor
 	visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
@@ -1109,6 +1110,13 @@ func findLinksInKRMObject(t *testing.T, replacement *Replacements, u *unstructur
 				if len(parts) > 0 {
 					viewID := parts[len(parts)-1]
 					replacement.PathIDs[viewID] = "${viewId}"
+				}
+			}
+			if u.GetKind() == "CCInsightsPhraseMatcher" {
+				parts := strings.Split(s, "/")
+				if len(parts) > 0 {
+					phraseMatcherID := parts[len(parts)-1]
+					replacement.PathIDs[phraseMatcherID] = "${phraseMatcherID}"
 				}
 			}
 		}

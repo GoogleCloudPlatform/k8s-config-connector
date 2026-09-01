@@ -43,4 +43,34 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
+	if !strings.Contains(event.URL(), "contactcenterinsights") {
+		return
+	}
+
+	previsitValue := func(val string) {
+		if strings.Contains(val, "/phraseMatchers/") {
+			tokens := strings.Split(val, "/")
+			for i := 0; i < len(tokens)-1; i++ {
+				if tokens[i] == "phraseMatchers" {
+					id := tokens[i+1]
+					if idx := strings.Index(id, "?"); idx != -1 {
+						id = id[:idx]
+					}
+					if isNumeric(id) {
+						replacements.ReplaceStringValue(id, "${phraseMatcherID}")
+					}
+				}
+			}
+		}
+	}
+
+	previsitValue(event.URL())
+
+	event.VisitRequestStringValues(func(path string, value string) {
+		previsitValue(value)
+	})
+
+	event.VisitResponseStringValues(func(path string, value string) {
+		previsitValue(value)
+	})
 }
