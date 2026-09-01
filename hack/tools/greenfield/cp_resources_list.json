@@ -1314,7 +1314,7 @@
       "UPDATE"
     ],
     "missing_ops": [],
-    "status": "missing"
+    "status": "deprecated"
   },
   {
     "resource": "artifactregistry/Rule",
@@ -1433,7 +1433,7 @@
       "UPDATE"
     ],
     "missing_ops": [],
-    "status": "missing"
+    "status": "deprecated"
   },
   {
     "resource": "ces/Agent",
@@ -2478,7 +2478,7 @@
     "missing_ops": [
       "UPDATE"
     ],
-    "status": "missing"
+    "status": "deprecated"
   },
   {
     "resource": "datalabeling/EvaluationJob",
@@ -2495,7 +2495,7 @@
       "UPDATE"
     ],
     "missing_ops": [],
-    "status": "missing"
+    "status": "deprecated"
   },
   {
     "resource": "datalineage/Process",
@@ -5023,7 +5023,7 @@
       "UPDATE"
     ],
     "missing_ops": [],
-    "status": "missing"
+    "status": "deprecated"
   },
   {
     "resource": "oracledatabase/AutonomousDatabase",
@@ -5074,7 +5074,7 @@
       "UPDATE"
     ],
     "missing_ops": [],
-    "status": "missing"
+    "status": "deprecated"
   },
   {
     "resource": "rapidmigrationassessment/Collector",
