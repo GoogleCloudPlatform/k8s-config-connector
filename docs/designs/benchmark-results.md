@@ -1,13 +1,13 @@
-# Ground-Truth Master Parity Evaluation: 5 Representative Production Services
+# Greenfield Empirical Parity & Generation Gap Benchmark
 
 **Date:** 2026-09-02  
-**Branch:** `bulk-crd-gen-experiment`  
+**Branch:** `bulk-crd-gen-experiment` / `docs-bulk-crd-generation`  
 **Tooling Evaluated:** `dev/tools/controllerbuilder` (Direct Root Spec/Status generation + Parent Pattern inference)  
-**Evaluation Methodology:** Clean Wipe $\to$ Batch Execution (`./apis/<service>/generate.sh` + `dev/tasks/generate-crds`) $\to$ 3-Way Git Diff Against Master Baseline.
+**Evaluation Methodology:** Per-Service Sandboxed Isolation $\to$ Wipe Types $\to$ Run `apis/<svc>/generate.sh` (`SKIP_GENERATE_CRDS=1`) $\to$ Isolated `controller-gen` $\to$ Apply `crd-tools` $\to$ Compare Baseline Production CRD vs Generated Sandbox CRD (normalizing casing quirks).
 
 ---
 
-## 1. Executive Master Parity Scorecard
+## 1. Executive Master Parity Scorecard (5 Deep-Dive Services)
 
 | Service | Target Kinds | Build Gate (`generate.sh` + `generate-crds`) | Inferred Parent Hierarchy | Deterministic Structural & Field Accuracy | Manual Overrides Required on Master |
 | :--- | :--- | :---: | :---: | :---: | :--- |
@@ -69,96 +69,134 @@
 
 ---
 
-## 3. Key Takeaways & Confirmed Architectural Validation
+## 3. Key Takeaways & Architectural Validation
 
-1. **Deterministic-First Eliminates 88–94% of Boilerplate:**
-   * Across all 5 production services, 100% of top-level non-output fields and observed-state lifecycle fields are now correctly scaffolded into `<Kind>Spec` and `<Kind>ObservedState`.
-   * Developers and AI micro-agents never need to hand-write mechanical proto structs, JSON tags, or primitive types.
+1. **Deterministic-First Eliminates 80–90% of Boilerplate:**
+   * Across all evaluated production services, top-level non-output fields and observed-state lifecycle fields are correctly scaffolded into `<Kind>Spec` and `<Kind>ObservedState`.
+   * Developers and AI agents never need to hand-write mechanical proto structs, JSON tags, or primitive types.
 
-2. **The Remaining 6–12% is Exclusively Domain Design Decisions:**
+2. **The Remaining 10–20% is Exclusively Domain Design Decisions:**
    * Swapping raw GCP string identifiers for `*Ref` (e.g. `ComputeNetworkRef`, `KMSCryptoKeyRef`, `PubSubTopicRef`).
    * Mapping sensitive credentials (passwords, tokens, keys) to `SecretRef` / `SecretKeySelector`.
    * Defining custom child-parent relationships when a resource is scoped to a parent CRD rather than standard Project/Location (e.g. `ClusterRef`, `KeyRingRef`).
 
 3. **KCC Native Go Override Model is Proven:**
-   * The developer or AI agent only needs to place the 1–2 customized structs in `<kind>_types.go`. `controllerbuilder` skips generating them in `types.generated.go`, resulting in a clean, maintainable architecture without any YAML overlay DSLs.
+   * The developer or AI agent only needs to place the customized structs in `<kind>_types.go`. `controllerbuilder` skips generating them in `types.generated.go`, eliminating the need for YAML overlay DSLs.
 
 ---
 
-## 4. Automated Measurement Calibration & Failure Diagnostics
+## 4. Sandboxed Isolation Architecture & Methodology
 
-To ensure the automated measurement pipeline (`dev/tasks/evaluate-greenfield-parity.py`) matches ground-truth baselines before executing across all 115 Greenfield services, we ran a calibration pass across the 5 representative services.
+To measure the true deterministic generation gap without cross-service contamination or test artifact leakage, the benchmark uses a sandboxed, per-service isolation loop:
 
-### 4.1 Calibration Output Scorecard
-
-```
-============================================================
-           GREENFIELD PARITY EVALUATION SCORECARD
-============================================================
-Services Evaluated:          5 (kms, cloudbuild, bigqueryconnection, artifactregistry, alloydb)
-Services Passed Build Gate:  5 / 5 (100% compilation & CRD generation)
-Total Properties Analyzed:   330
-Deterministic Exact Matches: 176 (53.33% uncalibrated raw score)
-Reference Overrides (*Ref):  19
-Secret Overrides (SecretRef):0
-============================================================
-```
-
-### 4.2 Diagnostic Breakdown of Discrepancies & Failures
-
-The raw uncalibrated automated score (53.33%) differed from the verified ground-truth scorecard (~88–94%) due to three specific failure modes identified by the calibration pass:
-
-| Failure / Mismatch Factor | Kinds Affected | Root Cause | Impact on Uncalibrated Score | Calibration Fix |
-| :--- | :--- | :--- | :--- | :--- |
-| **Brownfield Direct Migrations** | `CloudBuildWorkerPool` (62 props), `ArtifactRegistryVPCSCConfig` (13 props) | Kinds have `Direct` reconcilers in `static_config.go` but their schemas live in legacy `pkg/clients/generated/apis/` and are skipped in `generate.sh`. | **-75 properties (0% match)** artificially dragging total down | Exclude non-scaffolded brownfield migrations from Greenfield target list |
-| **Upstream Proto Additions** | `AlloyDBInstance` (46 added fields) | `google.cloud.alloydb.v1beta` contains new GCP API fields (`activationPolicy`, `geminiConfig`, `clientConnectionConfig`) not present in older CRDs. | Treated as property additions rather than generator bugs | Categorize newly added proto fields separately from structural schema mismatches |
-| **Nested Struct Override Shadowing** | `BigQueryConnectionConnection` (23 missing props) | Master overrides nested credential/spark sub-messages with KRM `SecretRef` / `DataprocClusterRef`. Raw generator emits raw proto strings. | Property name changes counted as missing fields | Treat `*Ref` and `SecretRef` blocks as atomic single-field units |
-
-### 4.3 Calibrated Greenfield Parity (Excluding Brownfield Direct Migrations)
-
-When filtering out Brownfield direct migrations that lack scaffolding in `generate.sh` and measuring true pure Greenfield kinds:
-* **`KMS` Greenfield Kinds (`KMSKeyHandle`, `KMSImportJob`, `KMSAutokeyConfig`):** 54 / 58 properties = **93.1% Deterministic Parity**.
-* **`CloudBuildConnection`:** 48 exact matches + 15 `*Ref` overrides = **78.8% Structural Match Rate**.
-* **`AlloyDBInstance`:** 42 exact matches + 1 `*Ref` override = **71.7% Structural Match Rate** against baseline (with 46 new proto fields added for complete GCP API coverage).
-
-This calibration confirms that the generator logic is functioning as intended, and provides the necessary filtering rules to run the full Greenfield evaluation accurately.
+1. **Snapshot Baseline:** Parses existing production CRD schemas from `config/crds/resources/*.yaml`.
+2. **Clean Wipe:** Wipes generated files (`apis/<svc>/v*/types.generated.go` and `<kind>_types.go`) for the target service only.
+3. **Execute Generator:** Runs `apis/<svc>/generate.sh` with `SKIP_GENERATE_CRDS=1`.
+4. **Isolated `controller-gen`:** Invokes `controller-gen` with `paths=./<svc>/...` targeting `.build/sandbox-crds/<svc>/`.
+5. **Canonical Post-Processing:** Applies `crd-tools` (`add-validation-to-crds`, `set-field`, `backport-alpha`, etc.) directly to the sandbox CRDs.
+6. **AST/Schema Parity Diff:** Compares baseline vs sandbox CRD schemas, categorizing exact matches, reference overrides (`*Ref`), secret overrides (`SecretRef`), type mismatches, missing fields, and added proto fields, while ignoring harmless casing quirks (e.g. `diskSizeGB` vs `diskSizeGb`).
+7. **Immediate Reversion:** Reverts `apis/<svc>/` via `git checkout` before proceeding to the next service, preventing failure cascades.
 
 ---
 
-## 5. Full Repository Greenfield Evaluation: 123 Services & 21,395 Properties
+## 5. Full Repository Empirical Evaluation: 122 Services & 396 Kinds
 
-Following calibration, we executed the automated evaluation pipeline across all Greenfield direct services across the entire Kubernetes Config Connector repository.
+The sandboxed benchmark was executed across all 122 GCP services defined in the repository.
 
-### 5.1 Full-Repository Scorecard
+### 5.1 Repository Scorecard
 
 ```
 ============================================================
-           GREENFIELD PARITY EVALUATION SCORECARD
+      SANDBOXED GREENFIELD PARITY EVALUATION SCORECARD
 ============================================================
-Services Evaluated:          123
-Services Passed Build Gate:  120 / 123 (97.6% build success rate)
-Total Properties Analyzed:   21,395
-Deterministic Exact Matches: 21,395 (100.0% schema fidelity)
-Reference Overrides (*Ref):  0 (all cleanly resolved via <kind>_types.go)
-Secret Overrides (SecretRef):0
+Services Evaluated:          122
+Services Passed Build Gate:  99 / 122 (81.1% build success rate)
+Total Kinds Evaluated:       396
+Total Baseline Properties:   19,769
+Deterministic Exact Matches: 9,068 (45.87% repository-wide)
+Reference Overrides (*Ref):  235
+Secret Overrides (SecretRef):1
 ============================================================
-Detailed JSON Report: .build/greenfield-parity-report.json
+Detailed JSON Dataset: docs/designs/benchmark-results.json
 ```
 
-### 5.2 Key Takeaways & Repository-Scale Validation
+### 5.2 Comparative Analysis: Repository-Wide vs Build-Passing Subset
 
-1. **Deterministic Regeneration Reproduces 100% of Production Schemas:**
-   * Across all 120 passing services, wiping `types.generated.go` and executing batch `generate.sh` + `dev/tasks/generate-crds` regenerated **21,395 OpenAPI v3 schema properties with 100.0% exact parity**.
-   * KCC's native Go override model (`types.generated.go` skipping structs defined in `<kind>_types.go`) seamlessly links generated companion types with domain-overridden root types without a single compilation error or schema regression.
+| Metric | Repository-Wide (All 122 Services) | Build-Passing Services Only (99 Services) |
+| :--- | :--- | :--- |
+| **Services Evaluated** | **122** | **99** (81.1%) |
+| **Build Gate Failures** | **23** (18.9%, scored as 0) | **0** |
+| **Kinds Analyzed** | **396** | **240** |
+| **Total Baseline Properties** | **19,769** | **10,982** |
+| **Deterministic Exact Matches** | **9,068** (**45.87%**) | **9,068** (**82.57%**) |
+| **Structural Parity (+ `*Ref` & `SecretRef`)** | **9,304** (**47.06%**) | **9,304** (**84.72%**) |
+| **Resource Reference Overrides (`*Ref`)** | 235 | 235 |
+| **Secret Overrides (`SecretRef`)** | 1 | 1 |
+| **Missing Properties (Domain Gap / Scoping)** | 10,465 | 1,643 (14.96%) |
+| **Type Mismatches** | 35 | 35 (0.32%) |
+| **Added Proto Properties (New upstream fields)** | 2,925 | 2,925 |
 
-2. **97.6% Build Pass Rate Across 123 Services:**
-   * **120 out of 123 service generation scripts** ran to completion and generated their respective types cleanly in batch mode with `SKIP_GENERATE_CRDS=1`.
-   * **3 Edge Cases Identified for Script Modernization:**
-     * `discoveryengine`: Employs a custom multi-version file-moving pattern (`v1_types.generated.go`, `v1beta_types.generated.go`) that requires standardizing.
-     * `osconfig` & `bigqueryconnection`: Custom post-generation formatting steps that can be aligned with canonical generator conventions.
+---
 
-3. **Definitive Proof for Bulk Deterministic Generation:**
-   * The experiment proves that `controllerbuilder generate-types` and `generate-mapper` provide an entirely reliable, deterministic foundation for scaling Direct KRM controller development across all present and future Google Cloud Platform services.
+### 5.3 Parity Tier Distribution (240 Kinds in 99 Passing Services)
+
+| Parity Tier | Kind Count | Percentage | Key Characteristics |
+| :--- | :--- | :--- | :--- |
+| **Tier 1: 100% Exact Parity** | **52 kinds** | **21.7%** | Clean 1:1 proto-to-CRD mapping with zero human overrides (e.g. `APIKeysKey`, `AppHubApplication`, `BigLakeCatalog`, `VideoStitcherCDNKey`, `VisionProduct`). |
+| **Tier 2: 80.0% – 99.9% Parity** | **127 kinds** | **52.9%** | Standard greenfield resources requiring only standard reference overrides (`*Ref`) or minor parent-scoping adjustments (e.g. `BatchJob`, `CloudDeployDeliveryPipeline`, `PrivateCACAPool`, `TranscoderJob`). |
+| **Tier 3: 50.0% – 79.9% Parity** | **50 kinds** | **20.8%** | Resources with extensive custom status modeling, multiple parent references, or deprecated field pruning (e.g. `AlloyDBCluster`, `CloudBuildConnection`, `RedisCluster`). |
+| **Tier 4: < 50.0% Parity** | **11 kinds** | **4.6%** | Resources heavily restructured during migration or featuring massive nested status schemas (e.g. `CertificateManagerCertificate`, `StorageBucket`, `PrivateCACertificateAuthority`). |
+
+> **Key Takeaway**: **74.6%** (179 of 240 kinds) achieve $\ge 80\%$ exact deterministic parity directly from raw protos with no manual intervention.
+
+---
+
+### 5.4 Root Cause Analysis of Generation Gaps
+
+1. **Resource References (`*Ref` — 235 fields):**
+   * GCP protos use flat string resource names (e.g. `kms_key_name`, `network`, `subnetwork`, `service_account`).
+   * KCC intentionally models these as Kubernetes object references (`kmsKeyRef`, `networkRef`, etc.).
+   * *Example:* `AlloyDBCluster.spec.restoreBackupSource.backupNameRef` vs raw proto string `backup_name`.
+
+2. **Sensitive Secret Overrides (`SecretRef` — Passwords & Credentials):**
+   * GCP protos define sensitive credentials as raw strings (`password`), whereas KCC models them as Kubernetes `SecretKeyRef` selectors.
+   * *Example:* `AlloyDBCluster.spec.initialUser.password` and `AlloyDBUser.spec.password`.
+
+3. **Type Mismatches (35 fields across 99 services):**
+   * **Strings vs Numbers:** `ComposerEnvironment` CPU/memory allocations (`string` in baseline KCC to support unit suffixes like `"1.875GB"` vs raw `number` in proto).
+   * **Arrays vs Maps:** `Workstations` `annotations`/`labels` modeled as key-value slice vs map.
+
+4. **Missing Properties (1,643 fields):**
+   * Sub-messages omitted due to non-standard parent-child hierarchies (e.g. child resource references like `KeyRingRef` or `ClusterRef`).
+   * Deprecated or legacy status fields that have been reorganized or pruned in newer GCP API proto definitions.
+
+---
+
+### 5.5 Build Gate Failures Breakdown (23 Services / 156 Kinds)
+
+The 23 services that failed compilation during isolated evaluation fell into 3 distinct categories:
+
+| Failure Category | Service Count | Affected Services | Root Cause & Resolution |
+| :--- | :---: | :--- | :--- |
+| **Missing `apiextensionsv1` Import** | **7 services** | `ces`, `dataflow`, `networkservices`, `securitycentermanagement`, `vectorsearch`, `vertexai`, `visionai` | **Deterministic Tooling Fix:** `controllerbuilder` emits fields typed as `apiextensionsv1.JSON` without declaring the import package. Adding automatic import resolution in `controllerbuilder` will immediately unblock all 7 services. |
+| **Unresolved Slice Types** | **8 services** | `bigtable`, `compute`, `container`, `logging`, `notebooks`, `osconfig`, `servicedirectory`, `speech` | **Deterministic Tooling Fix:** Existing handwritten types reference structs in `types.generated.go` that were omitted when empty structs were skipped. |
+| **AST Type Mismatches & Tool Failures** | **8 services** | `aiplatform`, `containerattached`, `iam`, `networksecurity`, `orgpolicy`, `privilegedaccessmanager`, `managedkafka`, `monitoring` | Handwritten struct field conflicts or `controller-gen` AST edge cases during clean generation. |
+
+---
+
+### 6. Strategic Engineering Roadmap
+
+1. **Phase 1: Deterministic Tooling Enhancements in `controllerbuilder`**
+   * Auto-import `k8s.io/apiextensions-apiserver/pkg/apis/apiextensions/v1` when `apiextensionsv1.JSON` fields are generated (unblocks 7 services).
+   * Support empty struct / slice generation for missing types in `controllerbuilder` (unblocks 8 services).
+   * This raises build pass rate from **81.1% $\to$ 93.4%** deterministically.
+
+2. **Phase 2: Scoped Micro-Agent Workflow**
+   * Constrain AI agents and developers strictly to non-deterministic domain decisions:
+     * Mapping `*Ref` fields in `<kind>_types.go`.
+     * Wrapping sensitive credential fields in `SecretRef`.
+     * Defining parent identity logic in `<kind>_identity.go` and `<kind>_reference.go`.
+   * Let `controllerbuilder` deterministically generate and maintain all remaining 85%+ of types, mappers, and schemas.
 
 
 
