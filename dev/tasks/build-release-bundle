@@ -98,7 +98,6 @@ BLOCKED_KINDS=(
     "AutoMLDataset"
     "BackupdrBackup"
     "BeyondCorpClientConnectorService"
-    "BeyondCorpClientGateway"
     "BigLakeCatalog"
     "BigLakeLock"
     "BigQueryAnalyticsHubDataExchange"
