@@ -29,14 +29,13 @@ package monitoring
 import (
 	pb "cloud.google.com/go/monitoring/apiv3/v2/monitoringpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/monitoring/v1beta1"
-	v1pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/monitoring/dashboard/v1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	labelpb "google.golang.org/genproto/googleapis/api/label"
 	monitoredrespb "google.golang.org/genproto/googleapis/api/monitoredres"
 )
 
 /* found existing non-generated mapping function "Aggregation_FromProto", skipping
-func Aggregation_FromProto(mapCtx *direct.MapContext, in *v1pb.Aggregation) *krm.Aggregation {
+func Aggregation_FromProto(mapCtx *direct.MapContext, in *dashboardpb.Aggregation) *krm.Aggregation {
 	if in == nil {
 		return nil
 	}
@@ -50,21 +49,21 @@ func Aggregation_FromProto(mapCtx *direct.MapContext, in *v1pb.Aggregation) *krm
 */
 
 /* found existing non-generated mapping function "Aggregation_ToProto", skipping
-func Aggregation_ToProto(mapCtx *direct.MapContext, in *krm.Aggregation) *v1pb.Aggregation {
+func Aggregation_ToProto(mapCtx *direct.MapContext, in *krm.Aggregation) *dashboardpb.Aggregation {
 	if in == nil {
 		return nil
 	}
-	out := &v1pb.Aggregation{}
+	out := &dashboardpb.Aggregation{}
 	out.AlignmentPeriod = direct.StringDuration_ToProto(mapCtx, in.AlignmentPeriod)
-	out.PerSeriesAligner = direct.Enum_ToProto[v1pb.Aggregation_Aligner](mapCtx, in.PerSeriesAligner)
-	out.CrossSeriesReducer = direct.Enum_ToProto[v1pb.Aggregation_Reducer](mapCtx, in.CrossSeriesReducer)
+	out.PerSeriesAligner = direct.Enum_ToProto[dashboardpb.Aggregation_Aligner](mapCtx, in.PerSeriesAligner)
+	out.CrossSeriesReducer = direct.Enum_ToProto[dashboardpb.Aggregation_Reducer](mapCtx, in.CrossSeriesReducer)
 	out.GroupByFields = in.GroupByFields
 	return out
 }
 */
 
 /* found existing non-generated mapping function "AlertChart_FromProto", skipping
-func AlertChart_FromProto(mapCtx *direct.MapContext, in *v1pb.AlertChart) *krm.AlertChart {
+func AlertChart_FromProto(mapCtx *direct.MapContext, in *dashboardpb.AlertChart) *krm.AlertChart {
 	if in == nil {
 		return nil
 	}
@@ -77,11 +76,11 @@ func AlertChart_FromProto(mapCtx *direct.MapContext, in *v1pb.AlertChart) *krm.A
 /*
 found existing non-generated mapping function "AlertChart_ToProto", skipping
 
-	func AlertChart_ToProto(mapCtx *direct.MapContext, in *krm.AlertChart) *v1pb.AlertChart {
+	func AlertChart_ToProto(mapCtx *direct.MapContext, in *krm.AlertChart) *dashboardpb.AlertChart {
 		if in == nil {
 			return nil
 		}
-		out := &v1pb.AlertChart{}
+		out := &dashboardpb.AlertChart{}
 		// MISSING: Name
 		return out
 	}
@@ -652,7 +651,7 @@ func AlertpolicyTrigger_Percent_ToProto(mapCtx *direct.MapContext, in *float64) 
 */
 
 /* found existing non-generated mapping function "ChartOptions_FromProto", skipping
-func ChartOptions_FromProto(mapCtx *direct.MapContext, in *v1pb.ChartOptions) *krm.ChartOptions {
+func ChartOptions_FromProto(mapCtx *direct.MapContext, in *dashboardpb.ChartOptions) *krm.ChartOptions {
 	if in == nil {
 		return nil
 	}
@@ -663,18 +662,18 @@ func ChartOptions_FromProto(mapCtx *direct.MapContext, in *v1pb.ChartOptions) *k
 */
 
 /* found existing non-generated mapping function "ChartOptions_ToProto", skipping
-func ChartOptions_ToProto(mapCtx *direct.MapContext, in *krm.ChartOptions) *v1pb.ChartOptions {
+func ChartOptions_ToProto(mapCtx *direct.MapContext, in *krm.ChartOptions) *dashboardpb.ChartOptions {
 	if in == nil {
 		return nil
 	}
-	out := &v1pb.ChartOptions{}
-	out.Mode = direct.Enum_ToProto[v1pb.ChartOptions_Mode](mapCtx, in.Mode)
+	out := &dashboardpb.ChartOptions{}
+	out.Mode = direct.Enum_ToProto[dashboardpb.ChartOptions_Mode](mapCtx, in.Mode)
 	return out
 }
 */
 
 /* found existing non-generated mapping function "CollapsibleGroup_FromProto", skipping
-func CollapsibleGroup_FromProto(mapCtx *direct.MapContext, in *v1pb.CollapsibleGroup) *krm.CollapsibleGroup {
+func CollapsibleGroup_FromProto(mapCtx *direct.MapContext, in *dashboardpb.CollapsibleGroup) *krm.CollapsibleGroup {
 	if in == nil {
 		return nil
 	}
@@ -685,18 +684,18 @@ func CollapsibleGroup_FromProto(mapCtx *direct.MapContext, in *v1pb.CollapsibleG
 */
 
 /* found existing non-generated mapping function "CollapsibleGroup_ToProto", skipping
-func CollapsibleGroup_ToProto(mapCtx *direct.MapContext, in *krm.CollapsibleGroup) *v1pb.CollapsibleGroup {
+func CollapsibleGroup_ToProto(mapCtx *direct.MapContext, in *krm.CollapsibleGroup) *dashboardpb.CollapsibleGroup {
 	if in == nil {
 		return nil
 	}
-	out := &v1pb.CollapsibleGroup{}
+	out := &dashboardpb.CollapsibleGroup{}
 	out.Collapsed = direct.ValueOf(in.Collapsed)
 	return out
 }
 */
 
 /* found existing non-generated mapping function "ColumnLayout_FromProto", skipping
-func ColumnLayout_FromProto(mapCtx *direct.MapContext, in *v1pb.ColumnLayout) *krm.ColumnLayout {
+func ColumnLayout_FromProto(mapCtx *direct.MapContext, in *dashboardpb.ColumnLayout) *krm.ColumnLayout {
 	if in == nil {
 		return nil
 	}
@@ -707,18 +706,18 @@ func ColumnLayout_FromProto(mapCtx *direct.MapContext, in *v1pb.ColumnLayout) *k
 */
 
 /* found existing non-generated mapping function "ColumnLayout_ToProto", skipping
-func ColumnLayout_ToProto(mapCtx *direct.MapContext, in *krm.ColumnLayout) *v1pb.ColumnLayout {
+func ColumnLayout_ToProto(mapCtx *direct.MapContext, in *krm.ColumnLayout) *dashboardpb.ColumnLayout {
 	if in == nil {
 		return nil
 	}
-	out := &v1pb.ColumnLayout{}
+	out := &dashboardpb.ColumnLayout{}
 	out.Columns = direct.Slice_ToProto(mapCtx, in.Columns, ColumnLayout_Column_ToProto)
 	return out
 }
 */
 
 /* found existing non-generated mapping function "ColumnLayout_Column_FromProto", skipping
-func ColumnLayout_Column_FromProto(mapCtx *direct.MapContext, in *v1pb.ColumnLayout_Column) *krm.ColumnLayout_Column {
+func ColumnLayout_Column_FromProto(mapCtx *direct.MapContext, in *dashboardpb.ColumnLayout_Column) *krm.ColumnLayout_Column {
 	if in == nil {
 		return nil
 	}
@@ -730,11 +729,11 @@ func ColumnLayout_Column_FromProto(mapCtx *direct.MapContext, in *v1pb.ColumnLay
 */
 
 /* found existing non-generated mapping function "ColumnLayout_Column_ToProto", skipping
-func ColumnLayout_Column_ToProto(mapCtx *direct.MapContext, in *krm.ColumnLayout_Column) *v1pb.ColumnLayout_Column {
+func ColumnLayout_Column_ToProto(mapCtx *direct.MapContext, in *krm.ColumnLayout_Column) *dashboardpb.ColumnLayout_Column {
 	if in == nil {
 		return nil
 	}
-	out := &v1pb.ColumnLayout_Column{}
+	out := &dashboardpb.ColumnLayout_Column{}
 	out.Weight = direct.ValueOf(in.Weight)
 	out.Widgets = direct.Slice_ToProto(mapCtx, in.Widgets, Widget_ToProto)
 	return out
@@ -742,7 +741,7 @@ func ColumnLayout_Column_ToProto(mapCtx *direct.MapContext, in *krm.ColumnLayout
 */
 
 /* found existing non-generated mapping function "DashboardFilter_FromProto", skipping
-func DashboardFilter_FromProto(mapCtx *direct.MapContext, in *v1pb.DashboardFilter) *krm.DashboardFilter {
+func DashboardFilter_FromProto(mapCtx *direct.MapContext, in *dashboardpb.DashboardFilter) *krm.DashboardFilter {
 	if in == nil {
 		return nil
 	}
@@ -756,32 +755,32 @@ func DashboardFilter_FromProto(mapCtx *direct.MapContext, in *v1pb.DashboardFilt
 */
 
 /* found existing non-generated mapping function "DashboardFilter_ToProto", skipping
-func DashboardFilter_ToProto(mapCtx *direct.MapContext, in *krm.DashboardFilter) *v1pb.DashboardFilter {
+func DashboardFilter_ToProto(mapCtx *direct.MapContext, in *krm.DashboardFilter) *dashboardpb.DashboardFilter {
 	if in == nil {
 		return nil
 	}
-	out := &v1pb.DashboardFilter{}
+	out := &dashboardpb.DashboardFilter{}
 	out.LabelKey = direct.ValueOf(in.LabelKey)
 	out.TemplateVariable = direct.ValueOf(in.TemplateVariable)
 	if oneof := DashboardFilter_StringValue_ToProto(mapCtx, in.StringValue); oneof != nil {
 		out.DefaultValue = oneof
 	}
-	out.FilterType = direct.Enum_ToProto[v1pb.DashboardFilter_FilterType](mapCtx, in.FilterType)
+	out.FilterType = direct.Enum_ToProto[dashboardpb.DashboardFilter_FilterType](mapCtx, in.FilterType)
 	return out
 }
 */
 
 /* found existing non-generated mapping function "DashboardFilter_StringValue_ToProto", skipping
-func DashboardFilter_StringValue_ToProto(mapCtx *direct.MapContext, in *string) *v1pb.DashboardFilter_StringValue {
+func DashboardFilter_StringValue_ToProto(mapCtx *direct.MapContext, in *string) *dashboardpb.DashboardFilter_StringValue {
 	if in == nil {
 		return nil
 	}
-	return &v1pb.DashboardFilter_StringValue{StringValue: *in}
+	return &dashboardpb.DashboardFilter_StringValue{StringValue: *in}
 }
 */
 
 /* found existing non-generated mapping function "ErrorReportingPanel_FromProto", skipping
-func ErrorReportingPanel_FromProto(mapCtx *direct.MapContext, in *v1pb.ErrorReportingPanel) *krm.ErrorReportingPanel {
+func ErrorReportingPanel_FromProto(mapCtx *direct.MapContext, in *dashboardpb.ErrorReportingPanel) *krm.ErrorReportingPanel {
 	if in == nil {
 		return nil
 	}
@@ -794,11 +793,11 @@ func ErrorReportingPanel_FromProto(mapCtx *direct.MapContext, in *v1pb.ErrorRepo
 */
 
 /* found existing non-generated mapping function "ErrorReportingPanel_ToProto", skipping
-func ErrorReportingPanel_ToProto(mapCtx *direct.MapContext, in *krm.ErrorReportingPanel) *v1pb.ErrorReportingPanel {
+func ErrorReportingPanel_ToProto(mapCtx *direct.MapContext, in *krm.ErrorReportingPanel) *dashboardpb.ErrorReportingPanel {
 	if in == nil {
 		return nil
 	}
-	out := &v1pb.ErrorReportingPanel{}
+	out := &dashboardpb.ErrorReportingPanel{}
 	// MISSING: ProjectNames
 	out.Services = in.Services
 	out.Versions = in.Versions
@@ -807,7 +806,7 @@ func ErrorReportingPanel_ToProto(mapCtx *direct.MapContext, in *krm.ErrorReporti
 */
 
 /* found existing non-generated mapping function "GridLayout_FromProto", skipping
-func GridLayout_FromProto(mapCtx *direct.MapContext, in *v1pb.GridLayout) *krm.GridLayout {
+func GridLayout_FromProto(mapCtx *direct.MapContext, in *dashboardpb.GridLayout) *krm.GridLayout {
 	if in == nil {
 		return nil
 	}
@@ -819,11 +818,11 @@ func GridLayout_FromProto(mapCtx *direct.MapContext, in *v1pb.GridLayout) *krm.G
 */
 
 /* found existing non-generated mapping function "GridLayout_ToProto", skipping
-func GridLayout_ToProto(mapCtx *direct.MapContext, in *krm.GridLayout) *v1pb.GridLayout {
+func GridLayout_ToProto(mapCtx *direct.MapContext, in *krm.GridLayout) *dashboardpb.GridLayout {
 	if in == nil {
 		return nil
 	}
-	out := &v1pb.GridLayout{}
+	out := &dashboardpb.GridLayout{}
 	out.Columns = direct.ValueOf(in.Columns)
 	out.Widgets = direct.Slice_ToProto(mapCtx, in.Widgets, Widget_ToProto)
 	return out
@@ -831,7 +830,7 @@ func GridLayout_ToProto(mapCtx *direct.MapContext, in *krm.GridLayout) *v1pb.Gri
 */
 
 /* found existing non-generated mapping function "IncidentList_FromProto", skipping
-func IncidentList_FromProto(mapCtx *direct.MapContext, in *v1pb.IncidentList) *krm.IncidentList {
+func IncidentList_FromProto(mapCtx *direct.MapContext, in *dashboardpb.IncidentList) *krm.IncidentList {
 	if in == nil {
 		return nil
 	}
@@ -843,11 +842,11 @@ func IncidentList_FromProto(mapCtx *direct.MapContext, in *v1pb.IncidentList) *k
 */
 
 /* found existing non-generated mapping function "IncidentList_ToProto", skipping
-func IncidentList_ToProto(mapCtx *direct.MapContext, in *krm.IncidentList) *v1pb.IncidentList {
+func IncidentList_ToProto(mapCtx *direct.MapContext, in *krm.IncidentList) *dashboardpb.IncidentList {
 	if in == nil {
 		return nil
 	}
-	out := &v1pb.IncidentList{}
+	out := &dashboardpb.IncidentList{}
 	out.MonitoredResources = direct.Slice_ToProto(mapCtx, in.MonitoredResources, MonitoredResource_ToProto)
 	// MISSING: PolicyNames
 	return out
@@ -855,7 +854,7 @@ func IncidentList_ToProto(mapCtx *direct.MapContext, in *krm.IncidentList) *v1pb
 */
 
 /* found existing non-generated mapping function "LogsPanel_FromProto", skipping
-func LogsPanel_FromProto(mapCtx *direct.MapContext, in *v1pb.LogsPanel) *krm.LogsPanel {
+func LogsPanel_FromProto(mapCtx *direct.MapContext, in *dashboardpb.LogsPanel) *krm.LogsPanel {
 	if in == nil {
 		return nil
 	}
@@ -869,11 +868,11 @@ func LogsPanel_FromProto(mapCtx *direct.MapContext, in *v1pb.LogsPanel) *krm.Log
 /*
 found existing non-generated mapping function "LogsPanel_ToProto", skipping
 
-	func LogsPanel_ToProto(mapCtx *direct.MapContext, in *krm.LogsPanel) *v1pb.LogsPanel {
+	func LogsPanel_ToProto(mapCtx *direct.MapContext, in *krm.LogsPanel) *dashboardpb.LogsPanel {
 		if in == nil {
 			return nil
 		}
-		out := &v1pb.LogsPanel{}
+		out := &dashboardpb.LogsPanel{}
 		out.Filter = direct.ValueOf(in.Filter)
 		out.ResourceNames = LogsPanel_ResourceNames_ToProto(mapCtx, in.ResourceNames)
 		return out
@@ -971,7 +970,7 @@ func MonitoringAlertPolicySpec_ToProto(mapCtx *direct.MapContext, in *krm.Monito
 */
 
 /* found existing non-generated mapping function "MonitoringDashboardSpec_FromProto", skipping
-func MonitoringDashboardSpec_FromProto(mapCtx *direct.MapContext, in *v1pb.Dashboard) *krm.MonitoringDashboardSpec {
+func MonitoringDashboardSpec_FromProto(mapCtx *direct.MapContext, in *dashboardpb.Dashboard) *krm.MonitoringDashboardSpec {
 	if in == nil {
 		return nil
 	}
@@ -990,25 +989,25 @@ func MonitoringDashboardSpec_FromProto(mapCtx *direct.MapContext, in *v1pb.Dashb
 */
 
 /* found existing non-generated mapping function "MonitoringDashboardSpec_ToProto", skipping
-func MonitoringDashboardSpec_ToProto(mapCtx *direct.MapContext, in *krm.MonitoringDashboardSpec) *v1pb.Dashboard {
+func MonitoringDashboardSpec_ToProto(mapCtx *direct.MapContext, in *krm.MonitoringDashboardSpec) *dashboardpb.Dashboard {
 	if in == nil {
 		return nil
 	}
-	out := &v1pb.Dashboard{}
+	out := &dashboardpb.Dashboard{}
 	// MISSING: Name
 	out.DisplayName = direct.ValueOf(in.DisplayName)
 	// MISSING: Etag
 	if oneof := GridLayout_ToProto(mapCtx, in.GridLayout); oneof != nil {
-		out.Layout = &v1pb.Dashboard_GridLayout{GridLayout: oneof}
+		out.Layout = &dashboardpb.Dashboard_GridLayout{GridLayout: oneof}
 	}
 	if oneof := MosaicLayout_ToProto(mapCtx, in.MosaicLayout); oneof != nil {
-		out.Layout = &v1pb.Dashboard_MosaicLayout{MosaicLayout: oneof}
+		out.Layout = &dashboardpb.Dashboard_MosaicLayout{MosaicLayout: oneof}
 	}
 	if oneof := RowLayout_ToProto(mapCtx, in.RowLayout); oneof != nil {
-		out.Layout = &v1pb.Dashboard_RowLayout{RowLayout: oneof}
+		out.Layout = &dashboardpb.Dashboard_RowLayout{RowLayout: oneof}
 	}
 	if oneof := ColumnLayout_ToProto(mapCtx, in.ColumnLayout); oneof != nil {
-		out.Layout = &v1pb.Dashboard_ColumnLayout{ColumnLayout: oneof}
+		out.Layout = &dashboardpb.Dashboard_ColumnLayout{ColumnLayout: oneof}
 	}
 	out.DashboardFilters = direct.Slice_ToProto(mapCtx, in.DashboardFilters, DashboardFilter_ToProto)
 	// MISSING: Labels
@@ -1017,7 +1016,7 @@ func MonitoringDashboardSpec_ToProto(mapCtx *direct.MapContext, in *krm.Monitori
 */
 
 /* found existing non-generated mapping function "MonitoringDashboardStatus_FromProto", skipping
-func MonitoringDashboardStatus_FromProto(mapCtx *direct.MapContext, in *v1pb.Dashboard) *krm.MonitoringDashboardStatus {
+func MonitoringDashboardStatus_FromProto(mapCtx *direct.MapContext, in *dashboardpb.Dashboard) *krm.MonitoringDashboardStatus {
 	if in == nil {
 		return nil
 	}
@@ -1036,11 +1035,11 @@ func MonitoringDashboardStatus_FromProto(mapCtx *direct.MapContext, in *v1pb.Das
 */
 
 /* found existing non-generated mapping function "MonitoringDashboardStatus_ToProto", skipping
-func MonitoringDashboardStatus_ToProto(mapCtx *direct.MapContext, in *krm.MonitoringDashboardStatus) *v1pb.Dashboard {
+func MonitoringDashboardStatus_ToProto(mapCtx *direct.MapContext, in *krm.MonitoringDashboardStatus) *dashboardpb.Dashboard {
 	if in == nil {
 		return nil
 	}
-	out := &v1pb.Dashboard{}
+	out := &dashboardpb.Dashboard{}
 	// MISSING: Name
 	// MISSING: DisplayName
 	out.Etag = direct.ValueOf(in.Etag)
@@ -1403,7 +1402,7 @@ func MonitoringUptimeCheckConfigStatus_ToProto(mapCtx *direct.MapContext, in *kr
 }
 
 /* found existing non-generated mapping function "MosaicLayout_FromProto", skipping
-func MosaicLayout_FromProto(mapCtx *direct.MapContext, in *v1pb.MosaicLayout) *krm.MosaicLayout {
+func MosaicLayout_FromProto(mapCtx *direct.MapContext, in *dashboardpb.MosaicLayout) *krm.MosaicLayout {
 	if in == nil {
 		return nil
 	}
@@ -1415,11 +1414,11 @@ func MosaicLayout_FromProto(mapCtx *direct.MapContext, in *v1pb.MosaicLayout) *k
 */
 
 /* found existing non-generated mapping function "MosaicLayout_ToProto", skipping
-func MosaicLayout_ToProto(mapCtx *direct.MapContext, in *krm.MosaicLayout) *v1pb.MosaicLayout {
+func MosaicLayout_ToProto(mapCtx *direct.MapContext, in *krm.MosaicLayout) *dashboardpb.MosaicLayout {
 	if in == nil {
 		return nil
 	}
-	out := &v1pb.MosaicLayout{}
+	out := &dashboardpb.MosaicLayout{}
 	out.Columns = direct.ValueOf(in.Columns)
 	out.Tiles = direct.Slice_ToProto(mapCtx, in.Tiles, MosaicLayout_Tile_ToProto)
 	return out
@@ -1427,7 +1426,7 @@ func MosaicLayout_ToProto(mapCtx *direct.MapContext, in *krm.MosaicLayout) *v1pb
 */
 
 /* found existing non-generated mapping function "MosaicLayout_Tile_FromProto", skipping
-func MosaicLayout_Tile_FromProto(mapCtx *direct.MapContext, in *v1pb.MosaicLayout_Tile) *krm.MosaicLayout_Tile {
+func MosaicLayout_Tile_FromProto(mapCtx *direct.MapContext, in *dashboardpb.MosaicLayout_Tile) *krm.MosaicLayout_Tile {
 	if in == nil {
 		return nil
 	}
@@ -1441,23 +1440,23 @@ func MosaicLayout_Tile_FromProto(mapCtx *direct.MapContext, in *v1pb.MosaicLayou
 }
 */
 
-/*
-found existing non-generated mapping function "MosaicLayout_Tile_ToProto", skipping
-
-	func MosaicLayout_Tile_ToProto(mapCtx *direct.MapContext, in *krm.MosaicLayout_Tile) *v1pb.MosaicLayout_Tile {
-		if in == nil {
-			return nil
-		}
-		out := &v1pb.MosaicLayout_Tile{}
-		out.XPos = direct.ValueOf(in.XPos)
-		out.YPos = direct.ValueOf(in.YPos)
-		out.Width = direct.ValueOf(in.Width)
-		out.Height = direct.ValueOf(in.Height)
-		out.Widget = Widget_ToProto(mapCtx, in.Widget)
-		return out
+/* found existing non-generated mapping function "MosaicLayout_Tile_ToProto", skipping
+func MosaicLayout_Tile_ToProto(mapCtx *direct.MapContext, in *krm.MosaicLayout_Tile) *dashboardpb.MosaicLayout_Tile {
+	if in == nil {
+		return nil
 	}
+	out := &dashboardpb.MosaicLayout_Tile{}
+	out.XPos = direct.ValueOf(in.XPos)
+	out.YPos = direct.ValueOf(in.YPos)
+	out.Width = direct.ValueOf(in.Width)
+	out.Height = direct.ValueOf(in.Height)
+	out.Widget = Widget_ToProto(mapCtx, in.Widget)
+	return out
+}
 */
-func OpsAnalyticsQuery_FromProto(mapCtx *direct.MapContext, in *v1pb.OpsAnalyticsQuery) *krm.OpsAnalyticsQuery {
+
+/* found existing non-generated mapping function "OpsAnalyticsQuery_FromProto", skipping
+func OpsAnalyticsQuery_FromProto(mapCtx *direct.MapContext, in *dashboardpb.OpsAnalyticsQuery) *krm.OpsAnalyticsQuery {
 	if in == nil {
 		return nil
 	}
@@ -1465,17 +1464,21 @@ func OpsAnalyticsQuery_FromProto(mapCtx *direct.MapContext, in *v1pb.OpsAnalytic
 	out.SQL = direct.LazyPtr(in.GetSql())
 	return out
 }
-func OpsAnalyticsQuery_ToProto(mapCtx *direct.MapContext, in *krm.OpsAnalyticsQuery) *v1pb.OpsAnalyticsQuery {
+*/
+
+/* found existing non-generated mapping function "OpsAnalyticsQuery_ToProto", skipping
+func OpsAnalyticsQuery_ToProto(mapCtx *direct.MapContext, in *krm.OpsAnalyticsQuery) *dashboardpb.OpsAnalyticsQuery {
 	if in == nil {
 		return nil
 	}
-	out := &v1pb.OpsAnalyticsQuery{}
+	out := &dashboardpb.OpsAnalyticsQuery{}
 	out.Sql = direct.ValueOf(in.SQL)
 	return out
 }
+*/
 
 /* found existing non-generated mapping function "PickTimeSeriesFilter_FromProto", skipping
-func PickTimeSeriesFilter_FromProto(mapCtx *direct.MapContext, in *v1pb.PickTimeSeriesFilter) *krm.PickTimeSeriesFilter {
+func PickTimeSeriesFilter_FromProto(mapCtx *direct.MapContext, in *dashboardpb.PickTimeSeriesFilter) *krm.PickTimeSeriesFilter {
 	if in == nil {
 		return nil
 	}
@@ -1489,21 +1492,21 @@ func PickTimeSeriesFilter_FromProto(mapCtx *direct.MapContext, in *v1pb.PickTime
 */
 
 /* found existing non-generated mapping function "PickTimeSeriesFilter_ToProto", skipping
-func PickTimeSeriesFilter_ToProto(mapCtx *direct.MapContext, in *krm.PickTimeSeriesFilter) *v1pb.PickTimeSeriesFilter {
+func PickTimeSeriesFilter_ToProto(mapCtx *direct.MapContext, in *krm.PickTimeSeriesFilter) *dashboardpb.PickTimeSeriesFilter {
 	if in == nil {
 		return nil
 	}
-	out := &v1pb.PickTimeSeriesFilter{}
-	out.RankingMethod = direct.Enum_ToProto[v1pb.PickTimeSeriesFilter_Method](mapCtx, in.RankingMethod)
+	out := &dashboardpb.PickTimeSeriesFilter{}
+	out.RankingMethod = direct.Enum_ToProto[dashboardpb.PickTimeSeriesFilter_Method](mapCtx, in.RankingMethod)
 	out.NumTimeSeries = direct.ValueOf(in.NumTimeSeries)
-	out.Direction = direct.Enum_ToProto[v1pb.PickTimeSeriesFilter_Direction](mapCtx, in.Direction)
+	out.Direction = direct.Enum_ToProto[dashboardpb.PickTimeSeriesFilter_Direction](mapCtx, in.Direction)
 	// MISSING: Interval
 	return out
 }
 */
 
 /* found existing non-generated mapping function "PieChart_FromProto", skipping
-func PieChart_FromProto(mapCtx *direct.MapContext, in *v1pb.PieChart) *krm.PieChart {
+func PieChart_FromProto(mapCtx *direct.MapContext, in *dashboardpb.PieChart) *krm.PieChart {
 	if in == nil {
 		return nil
 	}
@@ -1516,20 +1519,20 @@ func PieChart_FromProto(mapCtx *direct.MapContext, in *v1pb.PieChart) *krm.PieCh
 */
 
 /* found existing non-generated mapping function "PieChart_ToProto", skipping
-func PieChart_ToProto(mapCtx *direct.MapContext, in *krm.PieChart) *v1pb.PieChart {
+func PieChart_ToProto(mapCtx *direct.MapContext, in *krm.PieChart) *dashboardpb.PieChart {
 	if in == nil {
 		return nil
 	}
-	out := &v1pb.PieChart{}
+	out := &dashboardpb.PieChart{}
 	out.DataSets = direct.Slice_ToProto(mapCtx, in.DataSets, PieChart_PieChartDataSet_ToProto)
-	out.ChartType = direct.Enum_ToProto[v1pb.PieChart_PieChartType](mapCtx, in.ChartType)
+	out.ChartType = direct.Enum_ToProto[dashboardpb.PieChart_PieChartType](mapCtx, in.ChartType)
 	out.ShowLabels = direct.ValueOf(in.ShowLabels)
 	return out
 }
 */
 
 /* found existing non-generated mapping function "PieChart_PieChartDataSet_FromProto", skipping
-func PieChart_PieChartDataSet_FromProto(mapCtx *direct.MapContext, in *v1pb.PieChart_PieChartDataSet) *krm.PieChart_PieChartDataSet {
+func PieChart_PieChartDataSet_FromProto(mapCtx *direct.MapContext, in *dashboardpb.PieChart_PieChartDataSet) *krm.PieChart_PieChartDataSet {
 	if in == nil {
 		return nil
 	}
@@ -1542,11 +1545,11 @@ func PieChart_PieChartDataSet_FromProto(mapCtx *direct.MapContext, in *v1pb.PieC
 */
 
 /* found existing non-generated mapping function "PieChart_PieChartDataSet_ToProto", skipping
-func PieChart_PieChartDataSet_ToProto(mapCtx *direct.MapContext, in *krm.PieChart_PieChartDataSet) *v1pb.PieChart_PieChartDataSet {
+func PieChart_PieChartDataSet_ToProto(mapCtx *direct.MapContext, in *krm.PieChart_PieChartDataSet) *dashboardpb.PieChart_PieChartDataSet {
 	if in == nil {
 		return nil
 	}
-	out := &v1pb.PieChart_PieChartDataSet{}
+	out := &dashboardpb.PieChart_PieChartDataSet{}
 	out.TimeSeriesQuery = TimeSeriesQuery_ToProto(mapCtx, in.TimeSeriesQuery)
 	out.SliceNameTemplate = direct.ValueOf(in.SliceNameTemplate)
 	out.MinAlignmentPeriod = direct.StringDuration_ToProto(mapCtx, in.MinAlignmentPeriod)
@@ -1555,7 +1558,7 @@ func PieChart_PieChartDataSet_ToProto(mapCtx *direct.MapContext, in *krm.PieChar
 */
 
 /* found existing non-generated mapping function "RowLayout_FromProto", skipping
-func RowLayout_FromProto(mapCtx *direct.MapContext, in *v1pb.RowLayout) *krm.RowLayout {
+func RowLayout_FromProto(mapCtx *direct.MapContext, in *dashboardpb.RowLayout) *krm.RowLayout {
 	if in == nil {
 		return nil
 	}
@@ -1566,18 +1569,18 @@ func RowLayout_FromProto(mapCtx *direct.MapContext, in *v1pb.RowLayout) *krm.Row
 */
 
 /* found existing non-generated mapping function "RowLayout_ToProto", skipping
-func RowLayout_ToProto(mapCtx *direct.MapContext, in *krm.RowLayout) *v1pb.RowLayout {
+func RowLayout_ToProto(mapCtx *direct.MapContext, in *krm.RowLayout) *dashboardpb.RowLayout {
 	if in == nil {
 		return nil
 	}
-	out := &v1pb.RowLayout{}
+	out := &dashboardpb.RowLayout{}
 	out.Rows = direct.Slice_ToProto(mapCtx, in.Rows, RowLayout_Row_ToProto)
 	return out
 }
 */
 
 /* found existing non-generated mapping function "RowLayout_Row_FromProto", skipping
-func RowLayout_Row_FromProto(mapCtx *direct.MapContext, in *v1pb.RowLayout_Row) *krm.RowLayout_Row {
+func RowLayout_Row_FromProto(mapCtx *direct.MapContext, in *dashboardpb.RowLayout_Row) *krm.RowLayout_Row {
 	if in == nil {
 		return nil
 	}
@@ -1589,11 +1592,11 @@ func RowLayout_Row_FromProto(mapCtx *direct.MapContext, in *v1pb.RowLayout_Row) 
 */
 
 /* found existing non-generated mapping function "RowLayout_Row_ToProto", skipping
-func RowLayout_Row_ToProto(mapCtx *direct.MapContext, in *krm.RowLayout_Row) *v1pb.RowLayout_Row {
+func RowLayout_Row_ToProto(mapCtx *direct.MapContext, in *krm.RowLayout_Row) *dashboardpb.RowLayout_Row {
 	if in == nil {
 		return nil
 	}
-	out := &v1pb.RowLayout_Row{}
+	out := &dashboardpb.RowLayout_Row{}
 	out.Weight = direct.ValueOf(in.Weight)
 	out.Widgets = direct.Slice_ToProto(mapCtx, in.Widgets, Widget_ToProto)
 	return out
@@ -1601,7 +1604,7 @@ func RowLayout_Row_ToProto(mapCtx *direct.MapContext, in *krm.RowLayout_Row) *v1
 */
 
 /* found existing non-generated mapping function "Scorecard_FromProto", skipping
-func Scorecard_FromProto(mapCtx *direct.MapContext, in *v1pb.Scorecard) *krm.Scorecard {
+func Scorecard_FromProto(mapCtx *direct.MapContext, in *dashboardpb.Scorecard) *krm.Scorecard {
 	if in == nil {
 		return nil
 	}
@@ -1616,20 +1619,20 @@ func Scorecard_FromProto(mapCtx *direct.MapContext, in *v1pb.Scorecard) *krm.Sco
 */
 
 /* found existing non-generated mapping function "Scorecard_ToProto", skipping
-func Scorecard_ToProto(mapCtx *direct.MapContext, in *krm.Scorecard) *v1pb.Scorecard {
+func Scorecard_ToProto(mapCtx *direct.MapContext, in *krm.Scorecard) *dashboardpb.Scorecard {
 	if in == nil {
 		return nil
 	}
-	out := &v1pb.Scorecard{}
+	out := &dashboardpb.Scorecard{}
 	out.TimeSeriesQuery = TimeSeriesQuery_ToProto(mapCtx, in.TimeSeriesQuery)
 	if oneof := Scorecard_GaugeView_ToProto(mapCtx, in.GaugeView); oneof != nil {
-		out.DataView = &v1pb.Scorecard_GaugeView_{GaugeView: oneof}
+		out.DataView = &dashboardpb.Scorecard_GaugeView_{GaugeView: oneof}
 	}
 	if oneof := Scorecard_SparkChartView_ToProto(mapCtx, in.SparkChartView); oneof != nil {
-		out.DataView = &v1pb.Scorecard_SparkChartView_{SparkChartView: oneof}
+		out.DataView = &dashboardpb.Scorecard_SparkChartView_{SparkChartView: oneof}
 	}
 	if oneof := BlankView_ToProto(mapCtx, in.BlankView); oneof != nil {
-		out.DataView = &v1pb.Scorecard_BlankView{BlankView: oneof}
+		out.DataView = &dashboardpb.Scorecard_BlankView{BlankView: oneof}
 	}
 	out.Thresholds = direct.Slice_ToProto(mapCtx, in.Thresholds, Threshold_ToProto)
 	return out
@@ -1637,7 +1640,7 @@ func Scorecard_ToProto(mapCtx *direct.MapContext, in *krm.Scorecard) *v1pb.Score
 */
 
 /* found existing non-generated mapping function "Scorecard_GaugeView_FromProto", skipping
-func Scorecard_GaugeView_FromProto(mapCtx *direct.MapContext, in *v1pb.Scorecard_GaugeView) *krm.Scorecard_GaugeView {
+func Scorecard_GaugeView_FromProto(mapCtx *direct.MapContext, in *dashboardpb.Scorecard_GaugeView) *krm.Scorecard_GaugeView {
 	if in == nil {
 		return nil
 	}
@@ -1649,11 +1652,11 @@ func Scorecard_GaugeView_FromProto(mapCtx *direct.MapContext, in *v1pb.Scorecard
 */
 
 /* found existing non-generated mapping function "Scorecard_GaugeView_ToProto", skipping
-func Scorecard_GaugeView_ToProto(mapCtx *direct.MapContext, in *krm.Scorecard_GaugeView) *v1pb.Scorecard_GaugeView {
+func Scorecard_GaugeView_ToProto(mapCtx *direct.MapContext, in *krm.Scorecard_GaugeView) *dashboardpb.Scorecard_GaugeView {
 	if in == nil {
 		return nil
 	}
-	out := &v1pb.Scorecard_GaugeView{}
+	out := &dashboardpb.Scorecard_GaugeView{}
 	out.LowerBound = direct.ValueOf(in.LowerBound)
 	out.UpperBound = direct.ValueOf(in.UpperBound)
 	return out
@@ -1661,7 +1664,7 @@ func Scorecard_GaugeView_ToProto(mapCtx *direct.MapContext, in *krm.Scorecard_Ga
 */
 
 /* found existing non-generated mapping function "Scorecard_SparkChartView_FromProto", skipping
-func Scorecard_SparkChartView_FromProto(mapCtx *direct.MapContext, in *v1pb.Scorecard_SparkChartView) *krm.Scorecard_SparkChartView {
+func Scorecard_SparkChartView_FromProto(mapCtx *direct.MapContext, in *dashboardpb.Scorecard_SparkChartView) *krm.Scorecard_SparkChartView {
 	if in == nil {
 		return nil
 	}
@@ -1673,19 +1676,19 @@ func Scorecard_SparkChartView_FromProto(mapCtx *direct.MapContext, in *v1pb.Scor
 */
 
 /* found existing non-generated mapping function "Scorecard_SparkChartView_ToProto", skipping
-func Scorecard_SparkChartView_ToProto(mapCtx *direct.MapContext, in *krm.Scorecard_SparkChartView) *v1pb.Scorecard_SparkChartView {
+func Scorecard_SparkChartView_ToProto(mapCtx *direct.MapContext, in *krm.Scorecard_SparkChartView) *dashboardpb.Scorecard_SparkChartView {
 	if in == nil {
 		return nil
 	}
-	out := &v1pb.Scorecard_SparkChartView{}
-	out.SparkChartType = direct.Enum_ToProto[v1pb.SparkChartType](mapCtx, in.SparkChartType)
+	out := &dashboardpb.Scorecard_SparkChartView{}
+	out.SparkChartType = direct.Enum_ToProto[dashboardpb.SparkChartType](mapCtx, in.SparkChartType)
 	out.MinAlignmentPeriod = direct.StringDuration_ToProto(mapCtx, in.MinAlignmentPeriod)
 	return out
 }
 */
 
 /* found existing non-generated mapping function "SectionHeader_FromProto", skipping
-func SectionHeader_FromProto(mapCtx *direct.MapContext, in *v1pb.SectionHeader) *krm.SectionHeader {
+func SectionHeader_FromProto(mapCtx *direct.MapContext, in *dashboardpb.SectionHeader) *krm.SectionHeader {
 	if in == nil {
 		return nil
 	}
@@ -1697,11 +1700,11 @@ func SectionHeader_FromProto(mapCtx *direct.MapContext, in *v1pb.SectionHeader) 
 */
 
 /* found existing non-generated mapping function "SectionHeader_ToProto", skipping
-func SectionHeader_ToProto(mapCtx *direct.MapContext, in *krm.SectionHeader) *v1pb.SectionHeader {
+func SectionHeader_ToProto(mapCtx *direct.MapContext, in *krm.SectionHeader) *dashboardpb.SectionHeader {
 	if in == nil {
 		return nil
 	}
-	out := &v1pb.SectionHeader{}
+	out := &dashboardpb.SectionHeader{}
 	out.Subtitle = direct.ValueOf(in.Subtitle)
 	out.DividerBelow = direct.ValueOf(in.DividerBelow)
 	return out
@@ -1709,7 +1712,7 @@ func SectionHeader_ToProto(mapCtx *direct.MapContext, in *krm.SectionHeader) *v1
 */
 
 /* found existing non-generated mapping function "SingleViewGroup_FromProto", skipping
-func SingleViewGroup_FromProto(mapCtx *direct.MapContext, in *v1pb.SingleViewGroup) *krm.SingleViewGroup {
+func SingleViewGroup_FromProto(mapCtx *direct.MapContext, in *dashboardpb.SingleViewGroup) *krm.SingleViewGroup {
 	if in == nil {
 		return nil
 	}
@@ -1719,17 +1722,17 @@ func SingleViewGroup_FromProto(mapCtx *direct.MapContext, in *v1pb.SingleViewGro
 */
 
 /* found existing non-generated mapping function "SingleViewGroup_ToProto", skipping
-func SingleViewGroup_ToProto(mapCtx *direct.MapContext, in *krm.SingleViewGroup) *v1pb.SingleViewGroup {
+func SingleViewGroup_ToProto(mapCtx *direct.MapContext, in *krm.SingleViewGroup) *dashboardpb.SingleViewGroup {
 	if in == nil {
 		return nil
 	}
-	out := &v1pb.SingleViewGroup{}
+	out := &dashboardpb.SingleViewGroup{}
 	return out
 }
 */
 
 /* found existing non-generated mapping function "StatisticalTimeSeriesFilter_FromProto", skipping
-func StatisticalTimeSeriesFilter_FromProto(mapCtx *direct.MapContext, in *v1pb.StatisticalTimeSeriesFilter) *krm.StatisticalTimeSeriesFilter {
+func StatisticalTimeSeriesFilter_FromProto(mapCtx *direct.MapContext, in *dashboardpb.StatisticalTimeSeriesFilter) *krm.StatisticalTimeSeriesFilter {
 	if in == nil {
 		return nil
 	}
@@ -1741,19 +1744,19 @@ func StatisticalTimeSeriesFilter_FromProto(mapCtx *direct.MapContext, in *v1pb.S
 */
 
 /* found existing non-generated mapping function "StatisticalTimeSeriesFilter_ToProto", skipping
-func StatisticalTimeSeriesFilter_ToProto(mapCtx *direct.MapContext, in *krm.StatisticalTimeSeriesFilter) *v1pb.StatisticalTimeSeriesFilter {
+func StatisticalTimeSeriesFilter_ToProto(mapCtx *direct.MapContext, in *krm.StatisticalTimeSeriesFilter) *dashboardpb.StatisticalTimeSeriesFilter {
 	if in == nil {
 		return nil
 	}
-	out := &v1pb.StatisticalTimeSeriesFilter{}
-	out.RankingMethod = direct.Enum_ToProto[v1pb.StatisticalTimeSeriesFilter_Method](mapCtx, in.RankingMethod)
+	out := &dashboardpb.StatisticalTimeSeriesFilter{}
+	out.RankingMethod = direct.Enum_ToProto[dashboardpb.StatisticalTimeSeriesFilter_Method](mapCtx, in.RankingMethod)
 	out.NumTimeSeries = direct.ValueOf(in.NumTimeSeries)
 	return out
 }
 */
 
 /* found existing non-generated mapping function "TableDisplayOptions_FromProto", skipping
-func TableDisplayOptions_FromProto(mapCtx *direct.MapContext, in *v1pb.TableDisplayOptions) *krm.TableDisplayOptions {
+func TableDisplayOptions_FromProto(mapCtx *direct.MapContext, in *dashboardpb.TableDisplayOptions) *krm.TableDisplayOptions {
 	if in == nil {
 		return nil
 	}
@@ -1764,18 +1767,18 @@ func TableDisplayOptions_FromProto(mapCtx *direct.MapContext, in *v1pb.TableDisp
 */
 
 /* found existing non-generated mapping function "TableDisplayOptions_ToProto", skipping
-func TableDisplayOptions_ToProto(mapCtx *direct.MapContext, in *krm.TableDisplayOptions) *v1pb.TableDisplayOptions {
+func TableDisplayOptions_ToProto(mapCtx *direct.MapContext, in *krm.TableDisplayOptions) *dashboardpb.TableDisplayOptions {
 	if in == nil {
 		return nil
 	}
-	out := &v1pb.TableDisplayOptions{}
+	out := &dashboardpb.TableDisplayOptions{}
 	out.ShownColumns = in.ShownColumns
 	return out
 }
 */
 
 /* found existing non-generated mapping function "Text_FromProto", skipping
-func Text_FromProto(mapCtx *direct.MapContext, in *v1pb.Text) *krm.Text {
+func Text_FromProto(mapCtx *direct.MapContext, in *dashboardpb.Text) *krm.Text {
 	if in == nil {
 		return nil
 	}
@@ -1788,20 +1791,20 @@ func Text_FromProto(mapCtx *direct.MapContext, in *v1pb.Text) *krm.Text {
 */
 
 /* found existing non-generated mapping function "Text_ToProto", skipping
-func Text_ToProto(mapCtx *direct.MapContext, in *krm.Text) *v1pb.Text {
+func Text_ToProto(mapCtx *direct.MapContext, in *krm.Text) *dashboardpb.Text {
 	if in == nil {
 		return nil
 	}
-	out := &v1pb.Text{}
+	out := &dashboardpb.Text{}
 	out.Content = direct.ValueOf(in.Content)
-	out.Format = direct.Enum_ToProto[v1pb.Text_Format](mapCtx, in.Format)
+	out.Format = direct.Enum_ToProto[dashboardpb.Text_Format](mapCtx, in.Format)
 	out.Style = Text_TextStyle_ToProto(mapCtx, in.Style)
 	return out
 }
 */
 
 /* found existing non-generated mapping function "Text_TextStyle_FromProto", skipping
-func Text_TextStyle_FromProto(mapCtx *direct.MapContext, in *v1pb.Text_TextStyle) *krm.Text_TextStyle {
+func Text_TextStyle_FromProto(mapCtx *direct.MapContext, in *dashboardpb.Text_TextStyle) *krm.Text_TextStyle {
 	if in == nil {
 		return nil
 	}
@@ -1818,24 +1821,24 @@ func Text_TextStyle_FromProto(mapCtx *direct.MapContext, in *v1pb.Text_TextStyle
 */
 
 /* found existing non-generated mapping function "Text_TextStyle_ToProto", skipping
-func Text_TextStyle_ToProto(mapCtx *direct.MapContext, in *krm.Text_TextStyle) *v1pb.Text_TextStyle {
+func Text_TextStyle_ToProto(mapCtx *direct.MapContext, in *krm.Text_TextStyle) *dashboardpb.Text_TextStyle {
 	if in == nil {
 		return nil
 	}
-	out := &v1pb.Text_TextStyle{}
+	out := &dashboardpb.Text_TextStyle{}
 	out.BackgroundColor = direct.ValueOf(in.BackgroundColor)
 	out.TextColor = direct.ValueOf(in.TextColor)
-	out.HorizontalAlignment = direct.Enum_ToProto[v1pb.Text_TextStyle_HorizontalAlignment](mapCtx, in.HorizontalAlignment)
-	out.VerticalAlignment = direct.Enum_ToProto[v1pb.Text_TextStyle_VerticalAlignment](mapCtx, in.VerticalAlignment)
-	out.Padding = direct.Enum_ToProto[v1pb.Text_TextStyle_PaddingSize](mapCtx, in.Padding)
-	out.FontSize = direct.Enum_ToProto[v1pb.Text_TextStyle_FontSize](mapCtx, in.FontSize)
-	out.PointerLocation = direct.Enum_ToProto[v1pb.Text_TextStyle_PointerLocation](mapCtx, in.PointerLocation)
+	out.HorizontalAlignment = direct.Enum_ToProto[dashboardpb.Text_TextStyle_HorizontalAlignment](mapCtx, in.HorizontalAlignment)
+	out.VerticalAlignment = direct.Enum_ToProto[dashboardpb.Text_TextStyle_VerticalAlignment](mapCtx, in.VerticalAlignment)
+	out.Padding = direct.Enum_ToProto[dashboardpb.Text_TextStyle_PaddingSize](mapCtx, in.Padding)
+	out.FontSize = direct.Enum_ToProto[dashboardpb.Text_TextStyle_FontSize](mapCtx, in.FontSize)
+	out.PointerLocation = direct.Enum_ToProto[dashboardpb.Text_TextStyle_PointerLocation](mapCtx, in.PointerLocation)
 	return out
 }
 */
 
 /* found existing non-generated mapping function "Threshold_FromProto", skipping
-func Threshold_FromProto(mapCtx *direct.MapContext, in *v1pb.Threshold) *krm.Threshold {
+func Threshold_FromProto(mapCtx *direct.MapContext, in *dashboardpb.Threshold) *krm.Threshold {
 	if in == nil {
 		return nil
 	}
@@ -1850,22 +1853,22 @@ func Threshold_FromProto(mapCtx *direct.MapContext, in *v1pb.Threshold) *krm.Thr
 */
 
 /* found existing non-generated mapping function "Threshold_ToProto", skipping
-func Threshold_ToProto(mapCtx *direct.MapContext, in *krm.Threshold) *v1pb.Threshold {
+func Threshold_ToProto(mapCtx *direct.MapContext, in *krm.Threshold) *dashboardpb.Threshold {
 	if in == nil {
 		return nil
 	}
-	out := &v1pb.Threshold{}
+	out := &dashboardpb.Threshold{}
 	out.Label = direct.ValueOf(in.Label)
 	out.Value = direct.ValueOf(in.Value)
-	out.Color = direct.Enum_ToProto[v1pb.Threshold_Color](mapCtx, in.Color)
-	out.Direction = direct.Enum_ToProto[v1pb.Threshold_Direction](mapCtx, in.Direction)
-	out.TargetAxis = direct.Enum_ToProto[v1pb.Threshold_TargetAxis](mapCtx, in.TargetAxis)
+	out.Color = direct.Enum_ToProto[dashboardpb.Threshold_Color](mapCtx, in.Color)
+	out.Direction = direct.Enum_ToProto[dashboardpb.Threshold_Direction](mapCtx, in.Direction)
+	out.TargetAxis = direct.Enum_ToProto[dashboardpb.Threshold_TargetAxis](mapCtx, in.TargetAxis)
 	return out
 }
 */
 
 /* found existing non-generated mapping function "TimeSeriesFilter_FromProto", skipping
-func TimeSeriesFilter_FromProto(mapCtx *direct.MapContext, in *v1pb.TimeSeriesFilter) *krm.TimeSeriesFilter {
+func TimeSeriesFilter_FromProto(mapCtx *direct.MapContext, in *dashboardpb.TimeSeriesFilter) *krm.TimeSeriesFilter {
 	if in == nil {
 		return nil
 	}
@@ -1880,16 +1883,16 @@ func TimeSeriesFilter_FromProto(mapCtx *direct.MapContext, in *v1pb.TimeSeriesFi
 */
 
 /* found existing non-generated mapping function "TimeSeriesFilter_ToProto", skipping
-func TimeSeriesFilter_ToProto(mapCtx *direct.MapContext, in *krm.TimeSeriesFilter) *v1pb.TimeSeriesFilter {
+func TimeSeriesFilter_ToProto(mapCtx *direct.MapContext, in *krm.TimeSeriesFilter) *dashboardpb.TimeSeriesFilter {
 	if in == nil {
 		return nil
 	}
-	out := &v1pb.TimeSeriesFilter{}
+	out := &dashboardpb.TimeSeriesFilter{}
 	out.Filter = direct.ValueOf(in.Filter)
 	out.Aggregation = Aggregation_ToProto(mapCtx, in.Aggregation)
 	out.SecondaryAggregation = Aggregation_ToProto(mapCtx, in.SecondaryAggregation)
 	if oneof := PickTimeSeriesFilter_ToProto(mapCtx, in.PickTimeSeriesFilter); oneof != nil {
-		out.OutputFilter = &v1pb.TimeSeriesFilter_PickTimeSeriesFilter{PickTimeSeriesFilter: oneof}
+		out.OutputFilter = &dashboardpb.TimeSeriesFilter_PickTimeSeriesFilter{PickTimeSeriesFilter: oneof}
 	}
 	// MISSING: StatisticalTimeSeriesFilter
 	return out
@@ -1897,7 +1900,7 @@ func TimeSeriesFilter_ToProto(mapCtx *direct.MapContext, in *krm.TimeSeriesFilte
 */
 
 /* found existing non-generated mapping function "TimeSeriesFilterRatio_FromProto", skipping
-func TimeSeriesFilterRatio_FromProto(mapCtx *direct.MapContext, in *v1pb.TimeSeriesFilterRatio) *krm.TimeSeriesFilterRatio {
+func TimeSeriesFilterRatio_FromProto(mapCtx *direct.MapContext, in *dashboardpb.TimeSeriesFilterRatio) *krm.TimeSeriesFilterRatio {
 	if in == nil {
 		return nil
 	}
@@ -1912,16 +1915,16 @@ func TimeSeriesFilterRatio_FromProto(mapCtx *direct.MapContext, in *v1pb.TimeSer
 */
 
 /* found existing non-generated mapping function "TimeSeriesFilterRatio_ToProto", skipping
-func TimeSeriesFilterRatio_ToProto(mapCtx *direct.MapContext, in *krm.TimeSeriesFilterRatio) *v1pb.TimeSeriesFilterRatio {
+func TimeSeriesFilterRatio_ToProto(mapCtx *direct.MapContext, in *krm.TimeSeriesFilterRatio) *dashboardpb.TimeSeriesFilterRatio {
 	if in == nil {
 		return nil
 	}
-	out := &v1pb.TimeSeriesFilterRatio{}
+	out := &dashboardpb.TimeSeriesFilterRatio{}
 	out.Numerator = TimeSeriesFilterRatio_RatioPart_ToProto(mapCtx, in.Numerator)
 	out.Denominator = TimeSeriesFilterRatio_RatioPart_ToProto(mapCtx, in.Denominator)
 	out.SecondaryAggregation = Aggregation_ToProto(mapCtx, in.SecondaryAggregation)
 	if oneof := PickTimeSeriesFilter_ToProto(mapCtx, in.PickTimeSeriesFilter); oneof != nil {
-		out.OutputFilter = &v1pb.TimeSeriesFilterRatio_PickTimeSeriesFilter{PickTimeSeriesFilter: oneof}
+		out.OutputFilter = &dashboardpb.TimeSeriesFilterRatio_PickTimeSeriesFilter{PickTimeSeriesFilter: oneof}
 	}
 	// MISSING: StatisticalTimeSeriesFilter
 	return out
@@ -1929,7 +1932,7 @@ func TimeSeriesFilterRatio_ToProto(mapCtx *direct.MapContext, in *krm.TimeSeries
 */
 
 /* found existing non-generated mapping function "TimeSeriesFilterRatio_RatioPart_FromProto", skipping
-func TimeSeriesFilterRatio_RatioPart_FromProto(mapCtx *direct.MapContext, in *v1pb.TimeSeriesFilterRatio_RatioPart) *krm.TimeSeriesFilterRatio_RatioPart {
+func TimeSeriesFilterRatio_RatioPart_FromProto(mapCtx *direct.MapContext, in *dashboardpb.TimeSeriesFilterRatio_RatioPart) *krm.TimeSeriesFilterRatio_RatioPart {
 	if in == nil {
 		return nil
 	}
@@ -1941,11 +1944,11 @@ func TimeSeriesFilterRatio_RatioPart_FromProto(mapCtx *direct.MapContext, in *v1
 */
 
 /* found existing non-generated mapping function "TimeSeriesFilterRatio_RatioPart_ToProto", skipping
-func TimeSeriesFilterRatio_RatioPart_ToProto(mapCtx *direct.MapContext, in *krm.TimeSeriesFilterRatio_RatioPart) *v1pb.TimeSeriesFilterRatio_RatioPart {
+func TimeSeriesFilterRatio_RatioPart_ToProto(mapCtx *direct.MapContext, in *krm.TimeSeriesFilterRatio_RatioPart) *dashboardpb.TimeSeriesFilterRatio_RatioPart {
 	if in == nil {
 		return nil
 	}
-	out := &v1pb.TimeSeriesFilterRatio_RatioPart{}
+	out := &dashboardpb.TimeSeriesFilterRatio_RatioPart{}
 	out.Filter = direct.ValueOf(in.Filter)
 	out.Aggregation = Aggregation_ToProto(mapCtx, in.Aggregation)
 	return out
@@ -1953,7 +1956,7 @@ func TimeSeriesFilterRatio_RatioPart_ToProto(mapCtx *direct.MapContext, in *krm.
 */
 
 /* found existing non-generated mapping function "TimeSeriesQuery_FromProto", skipping
-func TimeSeriesQuery_FromProto(mapCtx *direct.MapContext, in *v1pb.TimeSeriesQuery) *krm.TimeSeriesQuery {
+func TimeSeriesQuery_FromProto(mapCtx *direct.MapContext, in *dashboardpb.TimeSeriesQuery) *krm.TimeSeriesQuery {
 	if in == nil {
 		return nil
 	}
@@ -1970,16 +1973,16 @@ func TimeSeriesQuery_FromProto(mapCtx *direct.MapContext, in *v1pb.TimeSeriesQue
 */
 
 /* found existing non-generated mapping function "TimeSeriesQuery_ToProto", skipping
-func TimeSeriesQuery_ToProto(mapCtx *direct.MapContext, in *krm.TimeSeriesQuery) *v1pb.TimeSeriesQuery {
+func TimeSeriesQuery_ToProto(mapCtx *direct.MapContext, in *krm.TimeSeriesQuery) *dashboardpb.TimeSeriesQuery {
 	if in == nil {
 		return nil
 	}
-	out := &v1pb.TimeSeriesQuery{}
+	out := &dashboardpb.TimeSeriesQuery{}
 	if oneof := TimeSeriesFilter_ToProto(mapCtx, in.TimeSeriesFilter); oneof != nil {
-		out.Source = &v1pb.TimeSeriesQuery_TimeSeriesFilter{TimeSeriesFilter: oneof}
+		out.Source = &dashboardpb.TimeSeriesQuery_TimeSeriesFilter{TimeSeriesFilter: oneof}
 	}
 	if oneof := TimeSeriesFilterRatio_ToProto(mapCtx, in.TimeSeriesFilterRatio); oneof != nil {
-		out.Source = &v1pb.TimeSeriesQuery_TimeSeriesFilterRatio{TimeSeriesFilterRatio: oneof}
+		out.Source = &dashboardpb.TimeSeriesQuery_TimeSeriesFilterRatio{TimeSeriesFilterRatio: oneof}
 	}
 	if oneof := TimeSeriesQuery_TimeSeriesQueryLanguage_ToProto(mapCtx, in.TimeSeriesQueryLanguage); oneof != nil {
 		out.Source = oneof
@@ -1988,7 +1991,7 @@ func TimeSeriesQuery_ToProto(mapCtx *direct.MapContext, in *krm.TimeSeriesQuery)
 		out.Source = oneof
 	}
 	if oneof := OpsAnalyticsQuery_ToProto(mapCtx, in.OpsAnalyticsQuery); oneof != nil {
-		out.Source = &v1pb.TimeSeriesQuery_OpsAnalyticsQuery{OpsAnalyticsQuery: oneof}
+		out.Source = &dashboardpb.TimeSeriesQuery_OpsAnalyticsQuery{OpsAnalyticsQuery: oneof}
 	}
 	out.UnitOverride = direct.ValueOf(in.UnitOverride)
 	out.OutputFullDuration = direct.ValueOf(in.OutputFullDuration)
@@ -1997,25 +2000,25 @@ func TimeSeriesQuery_ToProto(mapCtx *direct.MapContext, in *krm.TimeSeriesQuery)
 */
 
 /* found existing non-generated mapping function "TimeSeriesQuery_TimeSeriesQueryLanguage_ToProto", skipping
-func TimeSeriesQuery_TimeSeriesQueryLanguage_ToProto(mapCtx *direct.MapContext, in *string) *v1pb.TimeSeriesQuery_TimeSeriesQueryLanguage {
+func TimeSeriesQuery_TimeSeriesQueryLanguage_ToProto(mapCtx *direct.MapContext, in *string) *dashboardpb.TimeSeriesQuery_TimeSeriesQueryLanguage {
 	if in == nil {
 		return nil
 	}
-	return &v1pb.TimeSeriesQuery_TimeSeriesQueryLanguage{TimeSeriesQueryLanguage: *in}
+	return &dashboardpb.TimeSeriesQuery_TimeSeriesQueryLanguage{TimeSeriesQueryLanguage: *in}
 }
 */
 
 /* found existing non-generated mapping function "TimeSeriesQuery_PrometheusQuery_ToProto", skipping
-func TimeSeriesQuery_PrometheusQuery_ToProto(mapCtx *direct.MapContext, in *string) *v1pb.TimeSeriesQuery_PrometheusQuery {
+func TimeSeriesQuery_PrometheusQuery_ToProto(mapCtx *direct.MapContext, in *string) *dashboardpb.TimeSeriesQuery_PrometheusQuery {
 	if in == nil {
 		return nil
 	}
-	return &v1pb.TimeSeriesQuery_PrometheusQuery{PrometheusQuery: *in}
+	return &dashboardpb.TimeSeriesQuery_PrometheusQuery{PrometheusQuery: *in}
 }
 */
 
 /* found existing non-generated mapping function "TimeSeriesTable_FromProto", skipping
-func TimeSeriesTable_FromProto(mapCtx *direct.MapContext, in *v1pb.TimeSeriesTable) *krm.TimeSeriesTable {
+func TimeSeriesTable_FromProto(mapCtx *direct.MapContext, in *dashboardpb.TimeSeriesTable) *krm.TimeSeriesTable {
 	if in == nil {
 		return nil
 	}
@@ -2028,20 +2031,20 @@ func TimeSeriesTable_FromProto(mapCtx *direct.MapContext, in *v1pb.TimeSeriesTab
 */
 
 /* found existing non-generated mapping function "TimeSeriesTable_ToProto", skipping
-func TimeSeriesTable_ToProto(mapCtx *direct.MapContext, in *krm.TimeSeriesTable) *v1pb.TimeSeriesTable {
+func TimeSeriesTable_ToProto(mapCtx *direct.MapContext, in *krm.TimeSeriesTable) *dashboardpb.TimeSeriesTable {
 	if in == nil {
 		return nil
 	}
-	out := &v1pb.TimeSeriesTable{}
+	out := &dashboardpb.TimeSeriesTable{}
 	out.DataSets = direct.Slice_ToProto(mapCtx, in.DataSets, TimeSeriesTable_TableDataSet_ToProto)
-	out.MetricVisualization = direct.Enum_ToProto[v1pb.TimeSeriesTable_MetricVisualization](mapCtx, in.MetricVisualization)
+	out.MetricVisualization = direct.Enum_ToProto[dashboardpb.TimeSeriesTable_MetricVisualization](mapCtx, in.MetricVisualization)
 	out.ColumnSettings = direct.Slice_ToProto(mapCtx, in.ColumnSettings, TimeSeriesTable_ColumnSettings_ToProto)
 	return out
 }
 */
 
 /* found existing non-generated mapping function "TimeSeriesTable_ColumnSettings_FromProto", skipping
-func TimeSeriesTable_ColumnSettings_FromProto(mapCtx *direct.MapContext, in *v1pb.TimeSeriesTable_ColumnSettings) *krm.TimeSeriesTable_ColumnSettings {
+func TimeSeriesTable_ColumnSettings_FromProto(mapCtx *direct.MapContext, in *dashboardpb.TimeSeriesTable_ColumnSettings) *krm.TimeSeriesTable_ColumnSettings {
 	if in == nil {
 		return nil
 	}
@@ -2053,11 +2056,11 @@ func TimeSeriesTable_ColumnSettings_FromProto(mapCtx *direct.MapContext, in *v1p
 */
 
 /* found existing non-generated mapping function "TimeSeriesTable_ColumnSettings_ToProto", skipping
-func TimeSeriesTable_ColumnSettings_ToProto(mapCtx *direct.MapContext, in *krm.TimeSeriesTable_ColumnSettings) *v1pb.TimeSeriesTable_ColumnSettings {
+func TimeSeriesTable_ColumnSettings_ToProto(mapCtx *direct.MapContext, in *krm.TimeSeriesTable_ColumnSettings) *dashboardpb.TimeSeriesTable_ColumnSettings {
 	if in == nil {
 		return nil
 	}
-	out := &v1pb.TimeSeriesTable_ColumnSettings{}
+	out := &dashboardpb.TimeSeriesTable_ColumnSettings{}
 	out.Column = direct.ValueOf(in.Column)
 	out.Visible = direct.ValueOf(in.Visible)
 	return out
@@ -2065,7 +2068,7 @@ func TimeSeriesTable_ColumnSettings_ToProto(mapCtx *direct.MapContext, in *krm.T
 */
 
 /* found existing non-generated mapping function "TimeSeriesTable_TableDataSet_FromProto", skipping
-func TimeSeriesTable_TableDataSet_FromProto(mapCtx *direct.MapContext, in *v1pb.TimeSeriesTable_TableDataSet) *krm.TimeSeriesTable_TableDataSet {
+func TimeSeriesTable_TableDataSet_FromProto(mapCtx *direct.MapContext, in *dashboardpb.TimeSeriesTable_TableDataSet) *krm.TimeSeriesTable_TableDataSet {
 	if in == nil {
 		return nil
 	}
@@ -2081,11 +2084,11 @@ func TimeSeriesTable_TableDataSet_FromProto(mapCtx *direct.MapContext, in *v1pb.
 /*
 found existing non-generated mapping function "TimeSeriesTable_TableDataSet_ToProto", skipping
 
-	func TimeSeriesTable_TableDataSet_ToProto(mapCtx *direct.MapContext, in *krm.TimeSeriesTable_TableDataSet) *v1pb.TimeSeriesTable_TableDataSet {
+	func TimeSeriesTable_TableDataSet_ToProto(mapCtx *direct.MapContext, in *krm.TimeSeriesTable_TableDataSet) *dashboardpb.TimeSeriesTable_TableDataSet {
 		if in == nil {
 			return nil
 		}
-		out := &v1pb.TimeSeriesTable_TableDataSet{}
+		out := &dashboardpb.TimeSeriesTable_TableDataSet{}
 		out.TimeSeriesQuery = TimeSeriesQuery_ToProto(mapCtx, in.TimeSeriesQuery)
 		out.TableTemplate = direct.ValueOf(in.TableTemplate)
 		out.MinAlignmentPeriod = direct.StringDuration_ToProto(mapCtx, in.MinAlignmentPeriod)
@@ -2247,7 +2250,7 @@ func UptimeCheckConfig_TCPCheck_ToProto(mapCtx *direct.MapContext, in *krm.Uptim
 }
 
 /* found existing non-generated mapping function "Widget_FromProto", skipping
-func Widget_FromProto(mapCtx *direct.MapContext, in *v1pb.Widget) *krm.Widget {
+func Widget_FromProto(mapCtx *direct.MapContext, in *dashboardpb.Widget) *krm.Widget {
 	if in == nil {
 		return nil
 	}
@@ -2273,50 +2276,50 @@ func Widget_FromProto(mapCtx *direct.MapContext, in *v1pb.Widget) *krm.Widget {
 */
 
 /* found existing non-generated mapping function "Widget_ToProto", skipping
-func Widget_ToProto(mapCtx *direct.MapContext, in *krm.Widget) *v1pb.Widget {
+func Widget_ToProto(mapCtx *direct.MapContext, in *krm.Widget) *dashboardpb.Widget {
 	if in == nil {
 		return nil
 	}
-	out := &v1pb.Widget{}
+	out := &dashboardpb.Widget{}
 	out.Title = direct.ValueOf(in.Title)
 	if oneof := XyChart_ToProto(mapCtx, in.XyChart); oneof != nil {
-		out.Content = &v1pb.Widget_XyChart{XyChart: oneof}
+		out.Content = &dashboardpb.Widget_XyChart{XyChart: oneof}
 	}
 	if oneof := Scorecard_ToProto(mapCtx, in.Scorecard); oneof != nil {
-		out.Content = &v1pb.Widget_Scorecard{Scorecard: oneof}
+		out.Content = &dashboardpb.Widget_Scorecard{Scorecard: oneof}
 	}
 	if oneof := Text_ToProto(mapCtx, in.Text); oneof != nil {
-		out.Content = &v1pb.Widget_Text{Text: oneof}
+		out.Content = &dashboardpb.Widget_Text{Text: oneof}
 	}
 	if oneof := Empty_ToProto(mapCtx, in.Blank); oneof != nil {
-		out.Content = &v1pb.Widget_Blank{Blank: oneof}
+		out.Content = &dashboardpb.Widget_Blank{Blank: oneof}
 	}
 	if oneof := AlertChart_ToProto(mapCtx, in.AlertChart); oneof != nil {
-		out.Content = &v1pb.Widget_AlertChart{AlertChart: oneof}
+		out.Content = &dashboardpb.Widget_AlertChart{AlertChart: oneof}
 	}
 	if oneof := TimeSeriesTable_ToProto(mapCtx, in.TimeSeriesTable); oneof != nil {
-		out.Content = &v1pb.Widget_TimeSeriesTable{TimeSeriesTable: oneof}
+		out.Content = &dashboardpb.Widget_TimeSeriesTable{TimeSeriesTable: oneof}
 	}
 	if oneof := CollapsibleGroup_ToProto(mapCtx, in.CollapsibleGroup); oneof != nil {
-		out.Content = &v1pb.Widget_CollapsibleGroup{CollapsibleGroup: oneof}
+		out.Content = &dashboardpb.Widget_CollapsibleGroup{CollapsibleGroup: oneof}
 	}
 	if oneof := LogsPanel_ToProto(mapCtx, in.LogsPanel); oneof != nil {
-		out.Content = &v1pb.Widget_LogsPanel{LogsPanel: oneof}
+		out.Content = &dashboardpb.Widget_LogsPanel{LogsPanel: oneof}
 	}
 	if oneof := IncidentList_ToProto(mapCtx, in.IncidentList); oneof != nil {
-		out.Content = &v1pb.Widget_IncidentList{IncidentList: oneof}
+		out.Content = &dashboardpb.Widget_IncidentList{IncidentList: oneof}
 	}
 	if oneof := PieChart_ToProto(mapCtx, in.PieChart); oneof != nil {
-		out.Content = &v1pb.Widget_PieChart{PieChart: oneof}
+		out.Content = &dashboardpb.Widget_PieChart{PieChart: oneof}
 	}
 	if oneof := ErrorReportingPanel_ToProto(mapCtx, in.ErrorReportingPanel); oneof != nil {
-		out.Content = &v1pb.Widget_ErrorReportingPanel{ErrorReportingPanel: oneof}
+		out.Content = &dashboardpb.Widget_ErrorReportingPanel{ErrorReportingPanel: oneof}
 	}
 	if oneof := SectionHeader_ToProto(mapCtx, in.SectionHeader); oneof != nil {
-		out.Content = &v1pb.Widget_SectionHeader{SectionHeader: oneof}
+		out.Content = &dashboardpb.Widget_SectionHeader{SectionHeader: oneof}
 	}
 	if oneof := SingleViewGroup_ToProto(mapCtx, in.SingleViewGroup); oneof != nil {
-		out.Content = &v1pb.Widget_SingleViewGroup{SingleViewGroup: oneof}
+		out.Content = &dashboardpb.Widget_SingleViewGroup{SingleViewGroup: oneof}
 	}
 	// MISSING: ID
 	// (near miss): "ID" vs "Id"
@@ -2325,7 +2328,7 @@ func Widget_ToProto(mapCtx *direct.MapContext, in *krm.Widget) *v1pb.Widget {
 */
 
 /* found existing non-generated mapping function "XyChart_FromProto", skipping
-func XyChart_FromProto(mapCtx *direct.MapContext, in *v1pb.XyChart) *krm.XyChart {
+func XyChart_FromProto(mapCtx *direct.MapContext, in *dashboardpb.XyChart) *krm.XyChart {
 	if in == nil {
 		return nil
 	}
@@ -2342,11 +2345,11 @@ func XyChart_FromProto(mapCtx *direct.MapContext, in *v1pb.XyChart) *krm.XyChart
 */
 
 /* found existing non-generated mapping function "XyChart_ToProto", skipping
-func XyChart_ToProto(mapCtx *direct.MapContext, in *krm.XyChart) *v1pb.XyChart {
+func XyChart_ToProto(mapCtx *direct.MapContext, in *krm.XyChart) *dashboardpb.XyChart {
 	if in == nil {
 		return nil
 	}
-	out := &v1pb.XyChart{}
+	out := &dashboardpb.XyChart{}
 	out.DataSets = direct.Slice_ToProto(mapCtx, in.DataSets, XyChart_DataSet_ToProto)
 	out.TimeshiftDuration = direct.StringDuration_ToProto(mapCtx, in.TimeshiftDuration)
 	out.Thresholds = direct.Slice_ToProto(mapCtx, in.Thresholds, Threshold_ToProto)
@@ -2359,7 +2362,7 @@ func XyChart_ToProto(mapCtx *direct.MapContext, in *krm.XyChart) *v1pb.XyChart {
 */
 
 /* found existing non-generated mapping function "XyChart_Axis_FromProto", skipping
-func XyChart_Axis_FromProto(mapCtx *direct.MapContext, in *v1pb.XyChart_Axis) *krm.XyChart_Axis {
+func XyChart_Axis_FromProto(mapCtx *direct.MapContext, in *dashboardpb.XyChart_Axis) *krm.XyChart_Axis {
 	if in == nil {
 		return nil
 	}
@@ -2371,19 +2374,19 @@ func XyChart_Axis_FromProto(mapCtx *direct.MapContext, in *v1pb.XyChart_Axis) *k
 */
 
 /* found existing non-generated mapping function "XyChart_Axis_ToProto", skipping
-func XyChart_Axis_ToProto(mapCtx *direct.MapContext, in *krm.XyChart_Axis) *v1pb.XyChart_Axis {
+func XyChart_Axis_ToProto(mapCtx *direct.MapContext, in *krm.XyChart_Axis) *dashboardpb.XyChart_Axis {
 	if in == nil {
 		return nil
 	}
-	out := &v1pb.XyChart_Axis{}
+	out := &dashboardpb.XyChart_Axis{}
 	out.Label = direct.ValueOf(in.Label)
-	out.Scale = direct.Enum_ToProto[v1pb.XyChart_Axis_Scale](mapCtx, in.Scale)
+	out.Scale = direct.Enum_ToProto[dashboardpb.XyChart_Axis_Scale](mapCtx, in.Scale)
 	return out
 }
 */
 
 /* found existing non-generated mapping function "XyChart_DataSet_FromProto", skipping
-func XyChart_DataSet_FromProto(mapCtx *direct.MapContext, in *v1pb.XyChart_DataSet) *krm.XyChart_DataSet {
+func XyChart_DataSet_FromProto(mapCtx *direct.MapContext, in *dashboardpb.XyChart_DataSet) *krm.XyChart_DataSet {
 	if in == nil {
 		return nil
 	}
@@ -2398,16 +2401,16 @@ func XyChart_DataSet_FromProto(mapCtx *direct.MapContext, in *v1pb.XyChart_DataS
 */
 
 /* found existing non-generated mapping function "XyChart_DataSet_ToProto", skipping
-func XyChart_DataSet_ToProto(mapCtx *direct.MapContext, in *krm.XyChart_DataSet) *v1pb.XyChart_DataSet {
+func XyChart_DataSet_ToProto(mapCtx *direct.MapContext, in *krm.XyChart_DataSet) *dashboardpb.XyChart_DataSet {
 	if in == nil {
 		return nil
 	}
-	out := &v1pb.XyChart_DataSet{}
+	out := &dashboardpb.XyChart_DataSet{}
 	out.TimeSeriesQuery = TimeSeriesQuery_ToProto(mapCtx, in.TimeSeriesQuery)
-	out.PlotType = direct.Enum_ToProto[v1pb.XyChart_DataSet_PlotType](mapCtx, in.PlotType)
+	out.PlotType = direct.Enum_ToProto[dashboardpb.XyChart_DataSet_PlotType](mapCtx, in.PlotType)
 	out.LegendTemplate = direct.ValueOf(in.LegendTemplate)
 	out.MinAlignmentPeriod = direct.StringDuration_ToProto(mapCtx, in.MinAlignmentPeriod)
-	out.TargetAxis = direct.Enum_ToProto[v1pb.XyChart_DataSet_TargetAxis](mapCtx, in.TargetAxis)
+	out.TargetAxis = direct.Enum_ToProto[dashboardpb.XyChart_DataSet_TargetAxis](mapCtx, in.TargetAxis)
 	return out
 }
 */

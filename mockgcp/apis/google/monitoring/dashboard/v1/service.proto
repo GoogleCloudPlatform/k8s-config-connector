@@ -17,7 +17,7 @@ syntax = "proto3";
 package google.monitoring.dashboard.v1;
 
 option csharp_namespace = "Google.Cloud.Monitoring.Dashboard.V1";
-option go_package = "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/monitoring/dashboard/v1;dashboardpb";
+option go_package = "cloud.google.com/go/monitoring/dashboard/apiv1/dashboardpb;dashboardpb";
 option java_multiple_files = true;
 option java_outer_classname = "ServiceMonitoringProto";
 option java_package = "com.google.monitoring.dashboard.v1";
