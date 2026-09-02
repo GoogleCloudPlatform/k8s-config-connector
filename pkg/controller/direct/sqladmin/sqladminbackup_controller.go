@@ -16,7 +16,6 @@ package sqladmin
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"strconv"
 	"strings"
@@ -304,16 +303,25 @@ func (a *sqlAdminBackupAdapter) pollForLROCompletion(ctx context.Context, op *ap
 	for {
 		log.V(2).Info("polling", "op", op)
 
+		if op == nil {
+			return nil, fmt.Errorf("operation is nil while polling for SQLAdminBackup %d %s", a.backupID, verb)
+		}
+
 		if op.Status == "DONE" {
 			break
 		}
 		if err := gax.Sleep(ctx, pollingBackoff.Pause()); err != nil {
 			return nil, fmt.Errorf("waiting for SQLAdminBackup %d %s failed: %w", a.backupID, verb, err)
 		}
-		op, err = a.sqlOperationsClient.Get(a.projectID, op.Name).Do()
+		opName := op.Name
+		op, err = a.sqlOperationsClient.Get(a.projectID, opName).Do()
 		if err != nil {
-			return nil, fmt.Errorf("getting SQLAdminBackup %d %s operation %s failed: %w", a.backupID, verb, op.Name, err)
+			return nil, fmt.Errorf("getting SQLAdminBackup %d %s operation %s failed: %w", a.backupID, verb, opName, err)
 		}
+	}
+
+	if op == nil {
+		return nil, fmt.Errorf("operation is nil after polling for SQLAdminBackup %d %s", a.backupID, verb)
 	}
 
 	if op.Error != nil && len(op.Error.Errors) > 0 {
@@ -341,13 +349,9 @@ func toProto(in *api.BackupRun) (*pb.BackupRun, error) {
 	if in == nil {
 		return nil, nil
 	}
-	j, err := json.Marshal(in)
-	if err != nil {
-		return nil, fmt.Errorf("marshalling api.BackupRun to JSON: %w", err)
-	}
 	out := &pb.BackupRun{}
-	if err := json.Unmarshal(j, out); err != nil {
-		return nil, fmt.Errorf("unmarshalling JSON to pb.BackupRun: %w", err)
+	if err := common.APIToProto(in, out); err != nil {
+		return nil, err
 	}
 	return out, nil
 }
@@ -356,13 +360,9 @@ func toAPI(in *pb.BackupRun) (*api.BackupRun, error) {
 	if in == nil {
 		return nil, nil
 	}
-	j, err := json.Marshal(in)
-	if err != nil {
-		return nil, fmt.Errorf("marshalling pb.BackupRun to JSON: %w", err)
-	}
 	out := &api.BackupRun{}
-	if err := json.Unmarshal(j, out); err != nil {
-		return nil, fmt.Errorf("unmarshalling JSON to api.BackupRun: %w", err)
+	if err := common.ProtoToAPI(in, out); err != nil {
+		return nil, err
 	}
 	return out, nil
 }
