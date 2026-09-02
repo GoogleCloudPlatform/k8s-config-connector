@@ -13,25 +13,13 @@
 # limitations under the License.
 
 apiVersion: apihub.cnrm.cloud.google.com/v1alpha1
-kind: APIHubExternalAPI
+kind: APIHubAttribute
 metadata:
-  name: extapi-${uniqueId}
+  name: attr-${uniqueId}
 spec:
   projectRef:
     external: ${projectId}
   location: us-central1
-  displayName: "Maximal APIHubExternalAPI Updated"
-  description: "An updated comprehensive APIHubExternalAPI for E2E testing"
-  endpoints:
-    - "https://api.example.com/v2"
-  paths:
-    - "/v2"
-  documentation:
-    externalURI: "https://example.com/docs/v2"
-  attributeRefs:
-    - attributeRef:
-        name: attr-${uniqueId}
-      values:
-        stringValues:
-          values:
-            - "hello-world-updated"
+  displayName: "Minimal APIHubAttribute for External API"
+  scope: API
+  dataType: STRING

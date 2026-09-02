@@ -28,3 +28,10 @@ spec:
     - "/v1"
   documentation:
     externalURI: "https://example.com/docs"
+  attributeRefs:
+    - attributeRef:
+        name: attr-${uniqueId}
+      values:
+        stringValues:
+          values:
+            - "hello-world"
