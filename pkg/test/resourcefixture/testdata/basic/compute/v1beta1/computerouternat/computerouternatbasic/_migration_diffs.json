@@ -1,0 +1,183 @@
+[
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "ComputeNetwork/computenetwork-${uniqueId}",
+    "fields": [
+      {
+        "id": "auto_create_subnetworks",
+        "old": "",
+        "new": "false"
+      },
+      {
+        "id": "delete_default_routes_on_create",
+        "old": "",
+        "new": "false"
+      },
+      {
+        "id": "gateway_ipv4",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "internal_ipv6_range",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "mtu",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": "computenetwork-${uniqueId}"
+      },
+      {
+        "id": "network_firewall_policy_enforcement_order",
+        "old": "",
+        "new": "AFTER_CLASSIC_FIREWALL"
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "routing_mode",
+        "old": "",
+        "new": "REGIONAL"
+      },
+      {
+        "id": "self_link",
+        "old": "",
+        "new": ""
+      }
+    ]
+  },
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "ComputeRouter/computerouter-${uniqueId}",
+    "fields": [
+      {
+        "id": "creation_timestamp",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "description",
+        "old": "",
+        "new": "example router description"
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": "computerouter-${uniqueId}"
+      },
+      {
+        "id": "network",
+        "old": "",
+        "new": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/computenetwork-${uniqueId}"
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "region",
+        "old": "",
+        "new": "us-west1"
+      },
+      {
+        "id": "self_link",
+        "old": "",
+        "new": ""
+      }
+    ]
+  },
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "ComputeRouterNAT/computerouternat-${uniqueId}",
+    "fields": [
+      {
+        "id": "enable_dynamic_port_allocation",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "enable_endpoint_independent_mapping",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "endpoint_types.#",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "icmp_idle_timeout_sec",
+        "old": "",
+        "new": "30"
+      },
+      {
+        "id": "name",
+        "old": "",
+        "new": "computerouternat-${uniqueId}"
+      },
+      {
+        "id": "nat_ip_allocate_option",
+        "old": "",
+        "new": "AUTO_ONLY"
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "region",
+        "old": "",
+        "new": "us-west1"
+      },
+      {
+        "id": "router",
+        "old": "",
+        "new": "computerouter-${uniqueId}"
+      },
+      {
+        "id": "source_subnetwork_ip_ranges_to_nat",
+        "old": "",
+        "new": "ALL_SUBNETWORKS_ALL_IP_RANGES"
+      },
+      {
+        "id": "tcp_established_idle_timeout_sec",
+        "old": "",
+        "new": "1200"
+      },
+      {
+        "id": "tcp_time_wait_timeout_sec",
+        "old": "",
+        "new": "120"
+      },
+      {
+        "id": "tcp_transitory_idle_timeout_sec",
+        "old": "",
+        "new": "30"
+      },
+      {
+        "id": "type",
+        "old": "",
+        "new": "PUBLIC"
+      },
+      {
+        "id": "udp_idle_timeout_sec",
+        "old": "",
+        "new": "30"
+      }
+    ]
+  }
+]
