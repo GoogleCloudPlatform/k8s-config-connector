@@ -101,12 +101,6 @@ var (
 		Kind:    reflect.TypeOf(DiscoveryEngineSampleQuerySet{}).Name(),
 	}
 
-	DiscoveryEngineSearchEngineGVK = schema.GroupVersionKind{
-		Group:   SchemeGroupVersion.Group,
-		Version: SchemeGroupVersion.Version,
-		Kind:    reflect.TypeOf(DiscoveryEngineSearchEngine{}).Name(),
-	}
-
 	DiscoveryEngineServingConfigGVK = schema.GroupVersionKind{
 		Group:   SchemeGroupVersion.Group,
 		Version: SchemeGroupVersion.Version,

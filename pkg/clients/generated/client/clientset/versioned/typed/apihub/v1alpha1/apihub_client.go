@@ -32,6 +32,8 @@ import (
 type ApihubV1alpha1Interface interface {
 	RESTClient() rest.Interface
 	APIHubAPIsGetter
+	APIHubAttributesGetter
+	APIHubDependenciesGetter
 	APIHubDeploymentsGetter
 	APIHubExternalAPIsGetter
 	APIHubInstancesGetter
@@ -46,6 +48,14 @@ type ApihubV1alpha1Client struct {
 
 func (c *ApihubV1alpha1Client) APIHubAPIs(namespace string) APIHubAPIInterface {
 	return newAPIHubAPIs(c, namespace)
+}
+
+func (c *ApihubV1alpha1Client) APIHubAttributes(namespace string) APIHubAttributeInterface {
+	return newAPIHubAttributes(c, namespace)
+}
+
+func (c *ApihubV1alpha1Client) APIHubDependencies(namespace string) APIHubDependencyInterface {
+	return newAPIHubDependencies(c, namespace)
 }
 
 func (c *ApihubV1alpha1Client) APIHubDeployments(namespace string) APIHubDeploymentInterface {

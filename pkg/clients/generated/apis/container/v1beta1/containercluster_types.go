@@ -198,6 +198,16 @@ type ClusterBlueGreenSettings struct {
 	StandardRolloutPolicy *ClusterStandardRolloutPolicy `json:"standardRolloutPolicy,omitempty"`
 }
 
+type ClusterBootDiskProfile struct {
+	/* Swap size in GiB. */
+	// +optional
+	SwapSizeGib *int64 `json:"swapSizeGib,omitempty"`
+
+	/* Swap size as a percentage of the boot disk size. */
+	// +optional
+	SwapSizePercent *int64 `json:"swapSizePercent,omitempty"`
+}
+
 type ClusterCa struct {
 	/* Reference to SecretManagerSecretVersion for the CA certificate. */
 	// +optional
@@ -336,6 +346,12 @@ type ClusterDatabaseEncryption struct {
 	State string `json:"state"`
 }
 
+type ClusterDedicatedLocalSsdProfile struct {
+	/* The number of physical local NVMe SSD disks to attach. */
+	// +optional
+	DiskCount *int64 `json:"diskCount,omitempty"`
+}
+
 type ClusterDefaultComputeClassConfig struct {
 	/* Enables default compute class. */
 	Enabled bool `json:"enabled"`
@@ -377,6 +393,22 @@ type ClusterDnsEndpointConfig struct {
 type ClusterEnableK8sBetaApis struct {
 	/* Enabled Kubernetes Beta APIs. */
 	EnabledApis []string `json:"enabledApis"`
+}
+
+type ClusterEncryptionConfig struct {
+	/* If true, swap space will not be encrypted. */
+	// +optional
+	Disabled *bool `json:"disabled,omitempty"`
+}
+
+type ClusterEphemeralLocalSsdProfile struct {
+	/* Swap size in GiB. */
+	// +optional
+	SwapSizeGib *int64 `json:"swapSizeGib,omitempty"`
+
+	/* Swap size as a percentage of the ephemeral local SSD capacity. */
+	// +optional
+	SwapSizePercent *int64 `json:"swapSizePercent,omitempty"`
 }
 
 type ClusterEphemeralStorageConfig struct {
@@ -633,6 +665,10 @@ type ClusterLinuxNodeConfig struct {
 	/* cgroupMode specifies the cgroup mode to be used on the node. */
 	// +optional
 	CgroupMode *string `json:"cgroupMode,omitempty"`
+
+	/* SwapConfig specifies the swap configuration on the nodes. */
+	// +optional
+	SwapConfig *ClusterSwapConfig `json:"swapConfig,omitempty"`
 
 	/* The Linux kernel parameters to be applied to the nodes and all pods running on the nodes. */
 	// +optional
@@ -1162,6 +1198,28 @@ type ClusterStandardRolloutPolicy struct {
 	/* Soak time after each batch gets drained. A duration in seconds with up to nine fractional digits, ending with 's'. Example: "3.5s". */
 	// +optional
 	BatchSoakDuration *string `json:"batchSoakDuration,omitempty"`
+}
+
+type ClusterSwapConfig struct {
+	/* BootDiskProfile specifies the configuration for swap on the node's boot disk. */
+	// +optional
+	BootDiskProfile *ClusterBootDiskProfile `json:"bootDiskProfile,omitempty"`
+
+	/* DedicatedLocalSsdProfile specifies the configuration for swap on dedicated local NVMe SSDs. */
+	// +optional
+	DedicatedLocalSsdProfile *ClusterDedicatedLocalSsdProfile `json:"dedicatedLocalSsdProfile,omitempty"`
+
+	/* Whether swap is enabled. */
+	// +optional
+	Enabled *bool `json:"enabled,omitempty"`
+
+	/* EncryptionConfig specifies the encryption configuration for swap. */
+	// +optional
+	EncryptionConfig *ClusterEncryptionConfig `json:"encryptionConfig,omitempty"`
+
+	/* EphemeralLocalSsdProfile specifies the configuration for swap on ephemeral local SSDs. */
+	// +optional
+	EphemeralLocalSsdProfile *ClusterEphemeralLocalSsdProfile `json:"ephemeralLocalSsdProfile,omitempty"`
 }
 
 type ClusterTaint struct {

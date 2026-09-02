@@ -38,19 +38,56 @@ import (
 
 var _ = apiextensionsv1.JSON{}
 
-type DiscoveryEngineSearchEngineSpec struct {
-	/* The DataStore this DiscoveryEngineSearchEngine should be part of. */
-	DataStoreRef v1alpha1.ResourceRef `json:"dataStoreRef"`
+type VertexAITensorboardExperimentSpec struct {
+	/* Description of this TensorboardExperiment. */
+	// +optional
+	Description *string `json:"description,omitempty"`
+
+	/* User provided name of this TensorboardExperiment. */
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
+
+	/* The labels with user-defined metadata to organize your TensorboardExperiment. */
+	// +optional
+	Labels map[string]string `json:"labels,omitempty"`
+
+	/* The location of this resource. */
+	Location string `json:"location"`
+
+	/* The project that this resource belongs to. */
+	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+
+	/* The VertexAITensorboardExperiment name. If not given, the metadata.name will be used. */
+	// +optional
+	ResourceID *string `json:"resourceID,omitempty"`
+
+	/* Immutable. Source of the TensorboardExperiment. Example: a custom training job. */
+	// +optional
+	Source *string `json:"source,omitempty"`
+
+	/* The VertexAITensorboard that this resource belongs to. */
+	TensorboardRef v1alpha1.ResourceRef `json:"tensorboardRef"`
 }
 
-type SearchengineObservedStateStatus struct {
+type TensorboardexperimentObservedStateStatus struct {
+	/* Output only. Timestamp when this TensorboardExperiment was created. */
+	// +optional
+	CreateTime *string `json:"createTime,omitempty"`
+
+	/* Output only. Name of the TensorboardExperiment. Format: `projects/{project}/locations/{location}/tensorboards/{tensorboard}/experiments/{experiment}` */
+	// +optional
+	Name *string `json:"name,omitempty"`
+
+	/* Output only. Timestamp when this TensorboardExperiment was last updated. */
+	// +optional
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
-type DiscoveryEngineSearchEngineStatus struct {
+type VertexAITensorboardExperimentStatus struct {
 	/* Conditions represent the latest available observations of the
-	   DiscoveryEngineSearchEngine's current state. */
+	   VertexAITensorboardExperiment's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the DiscoveryEngineSearchEngine resource in GCP. */
+	/* A unique specifier for the VertexAITensorboardExperiment resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 
@@ -60,12 +97,12 @@ type DiscoveryEngineSearchEngineStatus struct {
 
 	/* ObservedState is the state of the resource as most recently observed in GCP. */
 	// +optional
-	ObservedState *SearchengineObservedStateStatus `json:"observedState,omitempty"`
+	ObservedState *TensorboardexperimentObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// +kubebuilder:resource:categories=gcp,shortName=gcpdiscoveryenginesearchengine;gcpdiscoveryenginesearchengines
+// +kubebuilder:resource:categories=gcp,shortName=gcpvertexaitensorboardexperiment;gcpvertexaitensorboardexperiments
 // +kubebuilder:subresource:status
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
@@ -75,25 +112,25 @@ type DiscoveryEngineSearchEngineStatus struct {
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
-// DiscoveryEngineSearchEngine is the Schema for the discoveryengine API
+// VertexAITensorboardExperiment is the Schema for the vertexai API
 // +k8s:openapi-gen=true
-type DiscoveryEngineSearchEngine struct {
+type VertexAITensorboardExperiment struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   DiscoveryEngineSearchEngineSpec   `json:"spec,omitempty"`
-	Status DiscoveryEngineSearchEngineStatus `json:"status,omitempty"`
+	Spec   VertexAITensorboardExperimentSpec   `json:"spec,omitempty"`
+	Status VertexAITensorboardExperimentStatus `json:"status,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// DiscoveryEngineSearchEngineList contains a list of DiscoveryEngineSearchEngine
-type DiscoveryEngineSearchEngineList struct {
+// VertexAITensorboardExperimentList contains a list of VertexAITensorboardExperiment
+type VertexAITensorboardExperimentList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []DiscoveryEngineSearchEngine `json:"items"`
+	Items           []VertexAITensorboardExperiment `json:"items"`
 }
 
 func init() {
-	SchemeBuilder.Register(&DiscoveryEngineSearchEngine{}, &DiscoveryEngineSearchEngineList{})
+	SchemeBuilder.Register(&VertexAITensorboardExperiment{}, &VertexAITensorboardExperimentList{})
 }

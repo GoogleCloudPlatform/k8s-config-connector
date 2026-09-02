@@ -23,6 +23,10 @@ package v1alpha1
 
 type APIHubAPIExpansion interface{}
 
+type APIHubAttributeExpansion interface{}
+
+type APIHubDependencyExpansion interface{}
+
 type APIHubDeploymentExpansion interface{}
 
 type APIHubExternalAPIExpansion interface{}

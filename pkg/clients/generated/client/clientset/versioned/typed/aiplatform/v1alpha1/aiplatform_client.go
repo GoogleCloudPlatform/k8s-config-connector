@@ -32,7 +32,6 @@ import (
 type AiplatformV1alpha1Interface interface {
 	RESTClient() rest.Interface
 	AIPlatformModelsGetter
-	VertexAIExtensionsGetter
 	VertexAIFeatureOnlineStoresGetter
 	VertexAIPipelineJobsGetter
 	VertexAISchedulesGetter
@@ -49,10 +48,6 @@ type AiplatformV1alpha1Client struct {
 
 func (c *AiplatformV1alpha1Client) AIPlatformModels(namespace string) AIPlatformModelInterface {
 	return newAIPlatformModels(c, namespace)
-}
-
-func (c *AiplatformV1alpha1Client) VertexAIExtensions(namespace string) VertexAIExtensionInterface {
-	return newVertexAIExtensions(c, namespace)
 }
 
 func (c *AiplatformV1alpha1Client) VertexAIFeatureOnlineStores(namespace string) VertexAIFeatureOnlineStoreInterface {

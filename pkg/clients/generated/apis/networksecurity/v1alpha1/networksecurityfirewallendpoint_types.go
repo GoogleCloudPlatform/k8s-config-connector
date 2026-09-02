@@ -64,8 +64,13 @@ type NetworkSecurityFirewallEndpointSpec struct {
 	/* The location of this resource. */
 	Location string `json:"location"`
 
-	/* The project that this resource belongs to. */
-	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
+	/* The organization that this resource belongs to. Only one of organizationRef or projectRef may be specified. */
+	// +optional
+	OrganizationRef *v1alpha1.ResourceRef `json:"organizationRef,omitempty"`
+
+	/* The project that this resource belongs to. Only one of organizationRef or projectRef may be specified. */
+	// +optional
+	ProjectRef *v1alpha1.ResourceRef `json:"projectRef,omitempty"`
 
 	/* The NetworkSecurityFirewallEndpoint name. If not given, the metadata.name will be used. */
 	// +optional
