@@ -24,6 +24,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apihub/apihubapi"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apihub/apihubattribute"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apihub/apihubdeployment"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apihub/apihubexternalapi"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apihub/apihubplugin"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apikeys"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apphub"
