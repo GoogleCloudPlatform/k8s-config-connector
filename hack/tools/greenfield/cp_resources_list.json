@@ -460,7 +460,14 @@
       "UPDATE"
     ],
     "missing_ops": [],
-    "status": "missing"
+    "status": "missing",
+    "references": [
+      {
+        "field": "model",
+        "target_group": "aiplatform.cnrm.cloud.google.com",
+        "target_kind": "AIPlatformModel"
+      }
+    ]
   },
   {
     "resource": "aiplatform/Context",
@@ -579,7 +586,14 @@
       "UPDATE"
     ],
     "missing_ops": [],
-    "status": "missing"
+    "status": "missing",
+    "references": [
+      {
+        "field": "encryption_spec.kms_key_name",
+        "target_group": "kms.cnrm.cloud.google.com",
+        "target_kind": "KMSCryptoKey"
+      }
+    ]
   },
   {
     "resource": "aiplatform/ModelDeploymentMonitoringJob",
@@ -647,7 +661,19 @@
       "UPDATE"
     ],
     "missing_ops": [],
-    "status": "missing"
+    "status": "missing",
+    "references": [
+      {
+        "field": "network",
+        "target_group": "compute.cnrm.cloud.google.com",
+        "target_kind": "ComputeNetwork"
+      },
+      {
+        "field": "encryption_spec.kms_key_name",
+        "target_group": "kms.cnrm.cloud.google.com",
+        "target_kind": "KMSCryptoKey"
+      }
+    ]
   },
   {
     "resource": "aiplatform/RagCorpus",
@@ -664,7 +690,29 @@
       "UPDATE"
     ],
     "missing_ops": [],
-    "status": "missing"
+    "status": "missing",
+    "references": [
+      {
+        "field": "encryption_spec.kms_key_name",
+        "target_group": "kms.cnrm.cloud.google.com",
+        "target_kind": "KMSCryptoKey"
+      },
+      {
+        "field": "vector_db_config.vertex_feature_store.feature_view_resource_name",
+        "target_group": "aiplatform.cnrm.cloud.google.com",
+        "target_kind": "AIPlatformFeatureView"
+      },
+      {
+        "field": "vector_db_config.vertex_vector_search.index_endpoint",
+        "target_group": "aiplatform.cnrm.cloud.google.com",
+        "target_kind": "AIPlatformIndexEndpoint"
+      },
+      {
+        "field": "vector_db_config.vertex_vector_search.index",
+        "target_group": "aiplatform.cnrm.cloud.google.com",
+        "target_kind": "AIPlatformIndex"
+      }
+    ]
   },
   {
     "resource": "aiplatform/RagMetadata",
@@ -715,7 +763,8 @@
       "UPDATE"
     ],
     "missing_ops": [],
-    "status": "missing"
+    "status": "missing",
+    "references": []
   },
   {
     "resource": "aiplatform/Session",
@@ -752,23 +801,6 @@
     "status": "missing"
   },
   {
-    "resource": "aiplatform/TensorboardExperiment",
-    "service": "aiplatform",
-    "kind": "VertexAITensorboardExperiment",
-    "patterns": [
-      "projects/{project}/locations/{location}/tensorboards/{tensorboard}/experiments/{experiment}"
-    ],
-    "layer": "Next Layer (1 Parent)",
-    "available_ops": [
-      "CREATE",
-      "DELETE",
-      "READ",
-      "UPDATE"
-    ],
-    "missing_ops": [],
-    "status": "implemented"
-  },
-  {
     "resource": "aiplatform/TensorboardRun",
     "service": "aiplatform",
     "kind": "AIPlatformTensorBoardRun",
@@ -801,6 +833,23 @@
     ],
     "missing_ops": [],
     "status": "missing"
+  },
+  {
+    "resource": "aiplatform/TensorboardExperiment",
+    "service": "aiplatform",
+    "kind": "VertexAITensorboardExperiment",
+    "patterns": [
+      "projects/{project}/locations/{location}/tensorboards/{tensorboard}/experiments/{experiment}"
+    ],
+    "layer": "Next Layer (1 Parent)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "implemented"
   },
   {
     "resource": "analyticsadmin/AccessBinding",
@@ -1161,7 +1210,8 @@
       "UPDATE"
     ],
     "missing_ops": [],
-    "status": "missing"
+    "status": "missing",
+    "references": []
   },
   {
     "resource": "apihub/Curation",
@@ -1178,7 +1228,8 @@
       "UPDATE"
     ],
     "missing_ops": [],
-    "status": "missing"
+    "status": "missing",
+    "references": []
   },
   {
     "resource": "apihub/Dependency",
@@ -1195,7 +1246,43 @@
       "UPDATE"
     ],
     "missing_ops": [],
-    "status": "missing"
+    "status": "missing",
+    "references": [
+      {
+        "field": "consumer.external_api_resource_name",
+        "target_group": "apihub.cnrm.cloud.google.com",
+        "target_kind": "APIHubExternalAPI"
+      },
+      {
+        "field": "supplier.external_api_resource_name",
+        "target_group": "apihub.cnrm.cloud.google.com",
+        "target_kind": "APIHubExternalAPI"
+      }
+    ]
+  },
+  {
+    "resource": "apihub/Deployment",
+    "service": "apihub",
+    "kind": "APIHubDeployment",
+    "patterns": [
+      "projects/{project}/locations/{location}/deployments/{deployment}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing",
+    "references": [
+      {
+        "field": "attributes",
+        "target_group": "apihub.cnrm.cloud.google.com",
+        "target_kind": "APIHubAttribute"
+      }
+    ]
   },
   {
     "resource": "apihub/ExternalApi",
@@ -1212,7 +1299,14 @@
       "UPDATE"
     ],
     "missing_ops": [],
-    "status": "missing"
+    "status": "missing",
+    "references": [
+      {
+        "field": "attributes",
+        "target_group": "apihub.cnrm.cloud.google.com",
+        "target_kind": "APIHubAttribute"
+      }
+    ]
   },
   {
     "resource": "apihub/PluginInstance",
@@ -1383,6 +1477,30 @@
     ],
     "missing_ops": [],
     "status": "missing"
+  },
+  {
+    "resource": "beyondcorp/ClientConnectorService",
+    "service": "beyondcorp",
+    "kind": "BeyondCorpClientConnectorService",
+    "patterns": [
+      "projects/{project}/locations/{location}/clientConnectorServices/{client_connector_service}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing",
+    "references": [
+      {
+        "field": "egress.peered_vpc.network_vpc",
+        "target_group": "compute.cnrm.cloud.google.com",
+        "target_kind": "ComputeNetwork"
+      }
+    ]
   },
   {
     "resource": "bigtableadmin/Cluster",
@@ -2236,7 +2354,14 @@
       "UPDATE"
     ],
     "missing_ops": [],
-    "status": "missing"
+    "status": "missing",
+    "references": [
+      {
+        "field": "annotator_selector.phrase_matchers",
+        "target_group": "contactcenterinsights.cnrm.cloud.google.com",
+        "target_kind": "ContactCenterInsightsPhraseMatcher"
+      }
+    ]
   },
   {
     "resource": "contactcenterinsights/Conversation",
@@ -2254,7 +2379,8 @@
       "UPDATE"
     ],
     "missing_ops": [],
-    "status": "missing"
+    "status": "missing",
+    "references": []
   },
   {
     "resource": "contactcenterinsights/FeedbackLabel",
@@ -2357,7 +2483,8 @@
       "UPDATE"
     ],
     "missing_ops": [],
-    "status": "missing"
+    "status": "missing",
+    "references": []
   },
   {
     "resource": "contentwarehouse/Document",
@@ -2616,7 +2743,8 @@
       "UPDATE"
     ],
     "missing_ops": [],
-    "status": "missing"
+    "status": "missing",
+    "references": []
   },
   {
     "resource": "datamigration/MigrationJob",
@@ -2735,7 +2863,14 @@
       "UPDATE"
     ],
     "missing_ops": [],
-    "status": "missing"
+    "status": "missing",
+    "references": [
+      {
+        "field": "access_groups.default_iam_role_config.role",
+        "target_group": "iam.cnrm.cloud.google.com",
+        "target_kind": "IAMRole"
+      }
+    ]
   },
   {
     "resource": "dataplex/DataScan",
@@ -2905,7 +3040,29 @@
       "UPDATE"
     ],
     "missing_ops": [],
-    "status": "missing"
+    "status": "missing",
+    "references": [
+      {
+        "field": "scope.projects",
+        "target_group": "resourcemanager.cnrm.cloud.google.com",
+        "target_kind": "Project"
+      },
+      {
+        "field": "scope.entry_groups",
+        "target_group": "dataplex.cnrm.cloud.google.com",
+        "target_kind": "DataplexEntryGroup"
+      },
+      {
+        "field": "filters.entry_types",
+        "target_group": "dataplex.cnrm.cloud.google.com",
+        "target_kind": "DataplexEntryType"
+      },
+      {
+        "field": "filters.aspect_types",
+        "target_group": "dataplex.cnrm.cloud.google.com",
+        "target_kind": "DataplexAspectType"
+      }
+    ]
   },
   {
     "resource": "developerconnect/AccountConnector",
@@ -2973,7 +3130,8 @@
       "UPDATE"
     ],
     "missing_ops": [],
-    "status": "missing"
+    "status": "missing",
+    "references": []
   },
   {
     "resource": "dialogflow/Context",
@@ -3135,7 +3293,9 @@
       "UPDATE"
     ],
     "missing_ops": [],
-    "status": "missing"
+    "status": "missing",
+    "parent": "projects/{project}/locations/{location}/agents/{agent}",
+    "references": []
   },
   {
     "resource": "dialogflow/KnowledgeBase",
@@ -3153,7 +3313,14 @@
       "UPDATE"
     ],
     "missing_ops": [],
-    "status": "missing"
+    "status": "missing",
+    "references": [
+      {
+        "field": "kms_key",
+        "target_group": "kms.cnrm.cloud.google.com",
+        "target_kind": "KMSCryptoKey"
+      }
+    ]
   },
   {
     "resource": "dialogflow/Page",
@@ -3281,7 +3448,33 @@
       "UPDATE"
     ],
     "missing_ops": [],
-    "status": "missing"
+    "status": "missing",
+    "parent": {
+      "target_group": "dialogflow.cnrm.cloud.google.com",
+      "target_kind": "DialogflowAgent"
+    },
+    "references": [
+      {
+        "field": "open_api_spec.service_directory_config.service",
+        "target_group": "servicedirectory.cnrm.cloud.google.com",
+        "target_kind": "ServiceDirectoryService"
+      },
+      {
+        "field": "data_store_spec.data_store_connections[].data_store",
+        "target_group": "discoveryengine.cnrm.cloud.google.com",
+        "target_kind": "DiscoveryEngineDataStore"
+      },
+      {
+        "field": "extension_spec.name",
+        "target_group": "aiplatform.cnrm.cloud.google.com",
+        "target_kind": "VertexAIExtension"
+      },
+      {
+        "field": "connector_spec.name",
+        "target_group": "connectors.cnrm.cloud.google.com",
+        "target_kind": "ConnectorsConnection"
+      }
+    ]
   },
   {
     "resource": "dialogflow/TransitionRouteGroup",
@@ -4732,7 +4925,8 @@
       "UPDATE"
     ],
     "missing_ops": [],
-    "status": "missing"
+    "status": "missing",
+    "references": []
   },
   {
     "resource": "networkconnectivity/ServiceConnectionMap",
@@ -4784,7 +4978,29 @@
       "UPDATE"
     ],
     "missing_ops": [],
-    "status": "implemented"
+    "status": "implemented",
+    "references": [
+      {
+        "field": "network",
+        "target_group": "compute.cnrm.cloud.google.com",
+        "target_kind": "ComputeNetwork"
+      },
+      {
+        "field": "subnet",
+        "target_group": "compute.cnrm.cloud.google.com",
+        "target_kind": "ComputeSubnetwork"
+      },
+      {
+        "field": "interconnect_attachment",
+        "target_group": "compute.cnrm.cloud.google.com",
+        "target_kind": "ComputeInterconnectAttachment"
+      },
+      {
+        "field": "vpn_tunnel",
+        "target_group": "compute.cnrm.cloud.google.com",
+        "target_kind": "ComputeVpnTunnel"
+      }
+    ]
   },
   {
     "resource": "networksecurity/AddressGroup",
@@ -4819,7 +5035,11 @@
       "UPDATE"
     ],
     "missing_ops": [],
-    "status": "missing"
+    "status": "missing",
+    "parent": {
+      "target_group": "networksecurity.cnrm.cloud.google.com",
+      "target_kind": "NetworkSecurityGatewaySecurityPolicy"
+    }
   },
   {
     "resource": "networksecurity/InterceptDeployment",
@@ -4836,7 +5056,19 @@
       "UPDATE"
     ],
     "missing_ops": [],
-    "status": "missing"
+    "status": "missing",
+    "references": [
+      {
+        "field": "forwarding_rule",
+        "target_group": "compute.cnrm.cloud.google.com",
+        "target_kind": "ComputeForwardingRule"
+      },
+      {
+        "field": "intercept_deployment_group",
+        "target_group": "networksecurity.cnrm.cloud.google.com",
+        "target_kind": "NetworkSecurityInterceptDeploymentGroup"
+      }
+    ]
   },
   {
     "resource": "networksecurity/InterceptDeploymentGroup",
@@ -4853,7 +5085,14 @@
       "UPDATE"
     ],
     "missing_ops": [],
-    "status": "missing"
+    "status": "missing",
+    "references": [
+      {
+        "field": "network",
+        "target_group": "compute.cnrm.cloud.google.com",
+        "target_kind": "ComputeNetwork"
+      }
+    ]
   },
   {
     "resource": "networksecurity/InterceptEndpointGroupAssociation",
@@ -4870,7 +5109,19 @@
       "UPDATE"
     ],
     "missing_ops": [],
-    "status": "missing"
+    "status": "missing",
+    "references": [
+      {
+        "field": "intercept_endpoint_group",
+        "target_group": "networksecurity.cnrm.cloud.google.com",
+        "target_kind": "NetworkSecurityInterceptEndpointGroup"
+      },
+      {
+        "field": "network",
+        "target_group": "compute.cnrm.cloud.google.com",
+        "target_kind": "ComputeNetwork"
+      }
+    ]
   },
   {
     "resource": "networksecurity/MirroringDeploymentGroup",
@@ -4887,7 +5138,14 @@
       "UPDATE"
     ],
     "missing_ops": [],
-    "status": "missing"
+    "status": "missing",
+    "references": [
+      {
+        "field": "network",
+        "target_group": "compute.cnrm.cloud.google.com",
+        "target_kind": "ComputeNetwork"
+      }
+    ]
   },
   {
     "resource": "networksecurity/MirroringEndpointGroupAssociation",
@@ -4904,7 +5162,19 @@
       "UPDATE"
     ],
     "missing_ops": [],
-    "status": "missing"
+    "status": "missing",
+    "references": [
+      {
+        "field": "mirroring_endpoint_group",
+        "target_group": "networksecurity.cnrm.cloud.google.com",
+        "target_kind": "NetworkSecurityMirroringEndpointGroup"
+      },
+      {
+        "field": "network",
+        "target_group": "compute.cnrm.cloud.google.com",
+        "target_kind": "ComputeNetwork"
+      }
+    ]
   },
   {
     "resource": "networksecurity/PartnerSSEGateway",
@@ -4921,7 +5191,8 @@
       "UPDATE"
     ],
     "missing_ops": [],
-    "status": "missing"
+    "status": "missing",
+    "references": []
   },
   {
     "resource": "networksecurity/UrlList",
@@ -5298,6 +5569,30 @@
     "status": "missing"
   },
   {
+    "resource": "saasservicemgmt/Release",
+    "service": "saasservicemgmt",
+    "kind": "SaasServiceMgmtRelease",
+    "patterns": [
+      "projects/{project}/locations/{location}/releases/{release}"
+    ],
+    "layer": "Easy (Leaf)",
+    "available_ops": [
+      "CREATE",
+      "DELETE",
+      "READ",
+      "UPDATE"
+    ],
+    "missing_ops": [],
+    "status": "missing",
+    "references": [
+      {
+        "field": "unit_kind",
+        "target_group": "saasservicemgmt.cnrm.cloud.google.com",
+        "target_kind": "SaaSServiceMgmtUnitKind"
+      }
+    ]
+  },
+  {
     "resource": "securesourcemanager/BranchRule",
     "service": "securesourcemanager",
     "kind": "SecureSourceManagerBranchRule",
@@ -5559,7 +5854,8 @@
       "UPDATE"
     ],
     "missing_ops": [],
-    "status": "missing"
+    "status": "missing",
+    "references": []
   },
   {
     "resource": "storage/RapidCache",
@@ -5594,7 +5890,19 @@
       "UPDATE"
     ],
     "missing_ops": [],
-    "status": "implemented"
+    "status": "implemented",
+    "references": [
+      {
+        "field": "include_cloud_storage_buckets",
+        "target_group": "storage.cnrm.cloud.google.com",
+        "target_kind": "StorageBucket"
+      },
+      {
+        "field": "exclude_cloud_storage_buckets",
+        "target_group": "storage.cnrm.cloud.google.com",
+        "target_kind": "StorageBucket"
+      }
+    ]
   },
   {
     "resource": "storageinsights/ReportConfig",
@@ -5730,7 +6038,8 @@
       "UPDATE"
     ],
     "missing_ops": [],
-    "status": "missing"
+    "status": "missing",
+    "references": []
   },
   {
     "resource": "vmwareengine/Cluster",
