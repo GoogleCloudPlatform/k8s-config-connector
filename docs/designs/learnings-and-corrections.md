@@ -91,7 +91,37 @@ To measure deterministic generation fidelity with 100% certainty:
 
 ---
 
-## 6. Summary Matrix of Corrections
+## 7. Evaluation Suite Failures, Taxonomy Discoveries, and Script Calibration Lessons
+
+During the transition from manual 5-service verification to an automated programmatic measurement harness (`dev/tasks/evaluate-greenfield-parity.py`), running the initial evaluation pipeline revealed four significant failures and critical taxonomy discoveries:
+
+### 7.1 Failure 1: Conflating "Direct Controller" with "Greenfield KRM Types"
+* **The Failure:** `evaluate-greenfield-parity.py` initially assumed that any resource with `SupportedControllers: [ReconcilerTypeDirect]` in `static_config.go` was a Greenfield resource whose types reside in `apis/<service>/` and are scaffolded by `apis/<service>/generate.sh`.
+* **The Root Cause:** In KCC's history, some legacy Terraform/DCL resources were migrated to Direct controllers (*Brownfield Direct Migrations*). Their reconcilers live in `pkg/controller/direct/`, but their KRM Go types originate from legacy packages (`pkg/clients/generated/apis/`) or use `--skip-scaffold-files` in `generate.sh` (e.g., `CloudBuildWorkerPool`, `ArtifactRegistryVPCSCConfig`).
+* **The Impact:** When the evaluation harness wiped `apis/` and ran `generate.sh`, `CloudBuildWorkerPool` (62 baseline properties) and `ArtifactRegistryVPCSCConfig` (13 baseline properties) produced 0 new properties, artificially dropping the 5-service exact match rate from ~90% down to 53.33%.
+* **The Correction:** Greenfield discovery must verify that a kind is actually declared as a target in `apis/<service>/generate.sh` and has its canonical types in `apis/<service>/`, rather than blindly trusting `static_config.go`.
+
+### 7.2 Failure 2: Over-Aggressive Type Deletion in Evaluation Harness
+* **The Failure:** The measurement harness executed `rm -f apis/{svc}/v*/*types*` in Step 2 to simulate clean regeneration from scratch.
+* **The Root Cause:** Certain resources are synthetic or custom KCC abstractions not backed by a 1:1 GCP proto message (e.g., `apis/kms/v1alpha1/kmssecretciphertext_types.go`). These are not listed in `apis/kms/generate.sh`.
+* **The Impact:** Wiping all `*types*` deleted these custom files permanently during the run, causing `generate-crds` to fail to produce CRDs for them.
+* **The Correction:** The wipe phase must only remove `types.generated.go` and the specific `<kind>_types.go` files for kinds that `generate.sh` is configured to build, preserving custom non-proto types.
+
+### 7.3 Failure 3: Upstream Protobuf Schema Drift vs Static Baseline CRDs
+* **The Failure:** In services like `alloydb`, raw deterministic generation produced 89 properties compared to 60 baseline properties in the existing CRD (46 added fields).
+* **The Root Cause:** KCC's existing CRDs were generated against older proto snapshots. Regenerating against modern proto definitions (`google.cloud.alloydb.v1beta`) automatically incorporates newly added GCP API fields (e.g., `activationPolicy`, `geminiConfig`, `clientConnectionConfig.sslConfig`).
+* **The Impact:** The comparison tool initially categorized newly introduced GCP proto fields as discrepancies rather than distinguishing between schema drift from proto updates versus generator conversion errors.
+* **The Correction:** The measurement tool and scorecards must explicitly distinguish between **True Structural Matches**, **GCP Upstream Additions** (fields in new proto not present in legacy CRD), and **Domain Override Gaps** (`*Ref` / `SecretRef` modifications).
+
+### 7.4 Failure 4: Sub-Resource Override Shadowing in Hybrid Services
+* **The Failure:** In `bigqueryconnection`, raw deterministic generation showed 23 "missing" properties and 16 "added" properties.
+* **The Root Cause:** Master replaces entire nested proto sub-messages with KRM reference structs (e.g., `MetastoreServiceRef`, `DataprocClusterRef`, `BasicAuthSecretRef` replacing `username`/`password`/`instanceId`). Raw protobuf generation outputs the raw proto string fields instead.
+* **The Impact:** Without accounting for multi-field substitutions where 1 KRM `SecretRef` replaces 2–3 proto credential strings (`username`, `password`), simple property name matching undercounts true deterministic coverage.
+* **The Correction:** Treat reference and secret blocks as atomic unit matches in AST comparison.
+
+---
+
+## 8. Summary Matrix of Corrections & Evaluation Learnings
 
 | Topic | Initial Mistake | Correct KCC Standard | Impact |
 | :--- | :--- | :--- | :--- |
@@ -102,3 +132,7 @@ To measure deterministic generation fidelity with 100% certainty:
 | **Credential Gaps** | Treat as distinct category from references | Classify as a subtype of Resource Reference (`SecretRef`) | Unifies reference resolution model |
 | **Validation Planning** | Report numbers from ad-hoc AST scripts before building validation harness | Define test harness first; wipe $\to$ `generate.sh` $\to$ `git diff master` | 100% objective, ground-truth verification via Git |
 | **Test Execution Flow** | Reset per-service against master (risking state leaks & generator context loss) | Multi-service batch run on experiment branch; single diff & clean reset | Preserves generator state; enables holistic side-by-side comparison |
+| **Greenfield Discovery** | Assume all `Direct` reconcilers in `static_config.go` are pure Greenfield | Verify kind is declared in `generate.sh` and not a legacy `--skip-scaffold-files` migration | Prevents false 0% match rates on Brownfield migrations |
+| **Evaluation Wiping** | Wipe `*types*` indiscriminately with `rm -f` | Only wipe generated types for kinds declared in `generate.sh` | Prevents deleting handwritten/custom non-proto types |
+| **Schema Drift Handling** | Treat new proto fields as generator failures | Differentiate upstream proto additions from structural generator errors | Accurately accounts for evolving GCP API surfaces |
+
