@@ -99,6 +99,9 @@ func (r *Replacements) ApplyReplacements(s string) string {
 func (r *Replacements) placeholderForGCPResource(resource string, name string) string {
 	switch resource {
 	case "addresses":
+		if strings.HasPrefix(name, "computeaddress-1a") || strings.HasPrefix(name, "computeaddress-1b") || strings.HasPrefix(name, "computeaddress-2a") || strings.HasPrefix(name, "computeaddress-2b") {
+			return ""
+		}
 		return "${addressID}"
 	case "urlMaps":
 		return "${urlMapID}"
@@ -127,6 +130,9 @@ func (r *Replacements) placeholderForGCPResource(resource string, name string) s
 	case "exclusions":
 		return "${exclusionID}"
 	case "forwardingRules":
+		if strings.HasPrefix(name, "computeforwardingrule-1a") || strings.HasPrefix(name, "computeforwardingrule-1b") || strings.HasPrefix(name, "computeforwardingrule-2a") || strings.HasPrefix(name, "computeforwardingrule-2b") {
+			return ""
+		}
 		return "${forwardingRuleID}"
 	case "groups":
 		return "${groupID}"

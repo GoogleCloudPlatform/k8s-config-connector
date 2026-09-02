@@ -27,7 +27,7 @@ func RedisClusterEndpointObservedState_FromProto(mapCtx *direct.MapContext, in *
 		return nil
 	}
 	out := &krm.RedisClusterEndpointObservedState{}
-	out.ClusterEndpoints = direct.Slice_FromProto(mapCtx, in.ClusterEndpoints, ClusterEndpoint_ClusterEndpointObservedState_FromProto)
+	out.ClusterEndpoints = slice_FromProto(mapCtx, in.ClusterEndpoints, ClusterEndpoint_ClusterEndpointObservedState_FromProto)
 	return out
 }
 
@@ -45,7 +45,7 @@ func RedisClusterEndpointSpec_FromProto(mapCtx *direct.MapContext, in *pb.Cluste
 		return nil
 	}
 	out := &krm.RedisClusterEndpointSpec{}
-	out.ClusterEndpoints = direct.Slice_FromProto(mapCtx, in.ClusterEndpoints, ClusterEndpoint_ClusterEndpoint_FromProto)
+	out.ClusterEndpoints = slice_FromProto(mapCtx, in.ClusterEndpoints, ClusterEndpoint_ClusterEndpoint_FromProto)
 	return out
 }
 
@@ -61,8 +61,12 @@ func ClusterEndpoint_ClusterEndpoint_FromProto(mapCtx *direct.MapContext, in *pb
 	if in == nil {
 		return nil
 	}
+	connections := slice_FromProto(mapCtx, in.Connections, ClusterEndpoint_ConnectionDetail_FromProto)
+	if connections == nil {
+		return nil
+	}
 	out := &krmredisv1alpha1.ClusterEndpoint_ClusterEndpoint{}
-	out.Connections = direct.Slice_FromProto(mapCtx, in.Connections, ClusterEndpoint_ConnectionDetail_FromProto)
+	out.Connections = connections
 	return out
 }
 func ClusterEndpoint_ClusterEndpoint_ToProto(mapCtx *direct.MapContext, in *krmredisv1alpha1.ClusterEndpoint_ClusterEndpoint) *pb.ClusterEndpoint {
@@ -77,8 +81,12 @@ func ClusterEndpoint_ClusterEndpointObservedState_FromProto(mapCtx *direct.MapCo
 	if in == nil {
 		return nil
 	}
+	connections := slice_FromProto(mapCtx, in.Connections, ClusterEndpoint_ConnectionDetailObservedState_FromProto)
+	if connections == nil {
+		return nil
+	}
 	out := &krmredisv1alpha1.ClusterEndpoint_ClusterEndpointObservedState{}
-	out.Connections = direct.Slice_FromProto(mapCtx, in.Connections, ClusterEndpoint_ConnectionDetailObservedState_FromProto)
+	out.Connections = connections
 	return out
 }
 func ClusterEndpoint_ClusterEndpointObservedState_ToProto(mapCtx *direct.MapContext, in *krmredisv1alpha1.ClusterEndpoint_ClusterEndpointObservedState) *pb.ClusterEndpoint {
@@ -93,9 +101,12 @@ func ClusterEndpoint_ConnectionDetail_FromProto(mapCtx *direct.MapContext, in *p
 	if in == nil {
 		return nil
 	}
+	userConnection := in.GetPscConnection()
+	if userConnection == nil {
+		return nil
+	}
 	out := &krmredisv1alpha1.ClusterEndpoint_ConnectionDetail{}
-	// MISSING: PSCAutoConnection
-	out.PSCConnection = ClusterEndpoint_PSCConnection_FromProto(mapCtx, in.GetPscConnection())
+	out.PSCConnection = ClusterEndpoint_PSCConnection_FromProto(mapCtx, userConnection)
 	return out
 }
 func ClusterEndpoint_ConnectionDetail_ToProto(mapCtx *direct.MapContext, in *krmredisv1alpha1.ClusterEndpoint_ConnectionDetail) *pb.ConnectionDetail {
@@ -113,9 +124,12 @@ func ClusterEndpoint_ConnectionDetailObservedState_FromProto(mapCtx *direct.MapC
 	if in == nil {
 		return nil
 	}
+	userConnection := in.GetPscConnection()
+	if userConnection == nil {
+		return nil
+	}
 	out := &krmredisv1alpha1.ClusterEndpoint_ConnectionDetailObservedState{}
-	// MISSING: PSCAutoConnection
-	out.PSCConnection = ClusterEndpoint_PSCConnectionObservedState_FromProto(mapCtx, in.GetPscConnection())
+	out.PSCConnection = ClusterEndpoint_PSCConnectionObservedState_FromProto(mapCtx, userConnection)
 	return out
 }
 func ClusterEndpoint_ConnectionDetailObservedState_ToProto(mapCtx *direct.MapContext, in *krmredisv1alpha1.ClusterEndpoint_ConnectionDetailObservedState) *pb.ConnectionDetail {
@@ -178,4 +192,22 @@ func ClusterEndpoint_PSCConnection_ToProto(mapCtx *direct.MapContext, in *krmred
 		out.ForwardingRule = in.ForwardingRuleRef.External
 	}
 	return out
+}
+
+func slice_FromProto[T, U any](mapCtx *direct.MapContext, in []*T, mapper func(mapCtx *direct.MapContext, in *T) *U) []U {
+	if in == nil {
+		return nil
+	}
+
+	outSlice := make([]U, 0, len(in))
+	for _, inItem := range in {
+		outItem := mapper(mapCtx, inItem)
+		if outItem != nil {
+			outSlice = append(outSlice, *outItem)
+		}
+	}
+	if len(outSlice) == 0 {
+		return nil
+	}
+	return outSlice
 }

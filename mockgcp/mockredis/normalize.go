@@ -15,6 +15,8 @@
 package mockredis
 
 import (
+	"fmt"
+	"regexp"
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
@@ -27,7 +29,15 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 		return
 	}
 	replacements.ReplacePath(".pscConnections[].address", "10.11.12.13")
+	replacements.ReplacePath(".clusterEndpoints[].connections[].pscAutoConnection.address", "10.11.12.13")
+	replacements.ReplacePath(".clusterEndpoints[].connections[].pscAutoConnection.pscConnectionId", "${pscConnectionID}")
+	replacements.ReplacePath(".clusterEndpoints[].connections[].pscConnection.address", "10.11.12.13")
+	replacements.ReplacePath(".clusterEndpoints[].connections[].pscConnection.pscConnectionId", "${pscConnectionID}")
 	replacements.ReplacePath(".response.pscConnections[].address", "10.11.12.13")
+	replacements.ReplacePath(".response.clusterEndpoints[].connections[].pscAutoConnection.address", "10.11.12.13")
+	replacements.ReplacePath(".response.clusterEndpoints[].connections[].pscAutoConnection.pscConnectionId", "${pscConnectionID}")
+	replacements.ReplacePath(".response.clusterEndpoints[].connections[].pscConnection.address", "10.11.12.13")
+	replacements.ReplacePath(".response.clusterEndpoints[].connections[].pscConnection.pscConnectionId", "${pscConnectionID}")
 	replacements.ReplacePath(".discoveryEndpoints[].address", "10.11.12.13")
 	replacements.ReplacePath(".response.discoveryEndpoints[].address", "10.11.12.13")
 	replacements.ReplacePath(".encryptionInfo.lastUpdateTime", "2024-04-01T12:34:56.123456Z")
@@ -66,8 +76,43 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.RemovePath(".response.availableMaintenanceVersions")
 	replacements.RemovePath(".maintenanceVersion")
 	replacements.RemovePath(".response.maintenanceVersion")
+
+	// Sort connections slice to ensure deterministic comparison
+	replacements.SortSlice(".clusterEndpoints[].connections")
+	replacements.SortSlice(".response.clusterEndpoints[].connections")
+	replacements.SortSlice(".status.observedState.clusterEndpoints[].connections")
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
-	// No-op for now
+	if strings.Contains(event.URL(), "https://redis.googleapis.com") || strings.Contains(event.URL(), "https://compute.googleapis.com") {
+		normalizeSA := func(path string, value string) {
+			re := regexp.MustCompile(`projects/[^/]+/regions/([^/]+)/serviceAttachments/gcp-memorystore-auto-([a-f0-9]+)-psc-sa(-2)?`)
+			if re.MatchString(value) {
+				match := re.FindStringSubmatch(value)
+				normalized := fmt.Sprintf("projects/${projectNumber}/regions/%s/serviceAttachments/gcp-memorystore-auto-abcdef0123456789-psc-sa%s", match[1], match[3])
+				replacements.ReplaceStringValue(value, normalized)
+			}
+		}
+		event.VisitRequestStringValues(normalizeSA)
+		event.VisitResponseStringValues(normalizeSA)
+	}
+
+	if strings.Contains(event.URL(), "https://redis.googleapis.com") {
+		event.VisitResponseStringValues(func(path string, value string) {
+			if strings.HasSuffix(path, ".forwardingRule") {
+				tokens := strings.Split(value, "/")
+				if len(tokens) == 11 && tokens[9] == "forwardingRules" {
+					// e.g. https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/forwardingRules/sca-auto-fr-bed6...
+					name := tokens[10]
+					if strings.HasPrefix(name, "sca-auto-fr-") || strings.HasPrefix(name, "ssc-auto-fr-") {
+						if strings.HasSuffix(name, "-2") {
+							replacements.ReplaceStringValue(name, "${forwardingRuleID}-2")
+						} else {
+							replacements.ReplaceStringValue(name, "${forwardingRuleID}")
+						}
+					}
+				}
+			}
+		})
+	}
 }

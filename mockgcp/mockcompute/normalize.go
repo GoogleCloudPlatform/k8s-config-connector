@@ -288,6 +288,8 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 				if v := tokens[n-1]; v == "default" {
 					// Don't replace, "default" is a well-known value used for both subnetwork and network
 					// We could instead do something like this:  replacements.ReplaceStringValue(kind + "/" + v, kind + "/" + placeholder)
+				} else if strings.HasPrefix(v, "computeaddress-1a") || strings.HasPrefix(v, "computeaddress-1b") || strings.HasPrefix(v, "computeaddress-2a") || strings.HasPrefix(v, "computeaddress-2b") || strings.HasPrefix(v, "computeforwardingrule-1a") || strings.HasPrefix(v, "computeforwardingrule-1b") || strings.HasPrefix(v, "computeforwardingrule-2a") || strings.HasPrefix(v, "computeforwardingrule-2b") {
+					// Keep forwardingRule and address name to distinguish -1a, -1b, -2a, -2b, do not normalize them to ${forwardingRuleID} or ${addressID}
 				} else {
 					replacements.ReplaceStringValue(v, namePlaceholder)
 				}
