@@ -1,0 +1,38 @@
+apiVersion: apihub.cnrm.cloud.google.com/v1alpha1
+kind: APIHubDependency
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 2
+  labels:
+    cnrm-test: "true"
+  name: dep-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  consumer:
+    externalAPIResourceName: projects/${projectId}/locations/us-central1/externalApis/consumer-${uniqueId}
+  description: Maximal APIHubDependency Updated
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+  supplier:
+    externalAPIResourceName: projects/${projectId}/locations/us-central1/externalApis/supplier-${uniqueId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/dependencies/dep-${uniqueId}
+  observedGeneration: 2
+  observedState:
+    consumer:
+      displayName: Consumer API
+    createTime: "1970-01-01T00:00:00Z"
+    discoveryMode: MANUAL
+    state: VALIDATED
+    supplier:
+      displayName: Supplier API
+    updateTime: "1970-01-01T00:00:00Z"
