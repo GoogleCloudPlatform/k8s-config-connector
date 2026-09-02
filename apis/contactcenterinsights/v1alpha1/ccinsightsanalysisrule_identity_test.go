@@ -16,6 +16,8 @@ package v1alpha1
 
 import (
 	"testing"
+
+	"github.com/google/go-cmp/cmp"
 )
 
 func TestCCInsightsAnalysisRuleIdentity_FromExternal(t *testing.T) {
@@ -29,9 +31,9 @@ func TestCCInsightsAnalysisRuleIdentity_FromExternal(t *testing.T) {
 			name:  "Full resource name",
 			input: "projects/my-project/locations/us-central1/analysisRules/my-rule",
 			expected: &CCInsightsAnalysisRuleIdentity{
-				Project:       "my-project",
-				Location:      "us-central1",
-				Analysis_rule: "my-rule",
+				Project:      "my-project",
+				Location:     "us-central1",
+				AnalysisRule: "my-rule",
 			},
 			hasError: false,
 		},
@@ -39,9 +41,9 @@ func TestCCInsightsAnalysisRuleIdentity_FromExternal(t *testing.T) {
 			name:  "Full resource name with host",
 			input: "contactcenterinsights.googleapis.com/projects/my-project/locations/us-central1/analysisRules/my-rule",
 			expected: &CCInsightsAnalysisRuleIdentity{
-				Project:       "my-project",
-				Location:      "us-central1",
-				Analysis_rule: "my-rule",
+				Project:      "my-project",
+				Location:     "us-central1",
+				AnalysisRule: "my-rule",
 			},
 			hasError: false,
 		},
@@ -66,8 +68,8 @@ func TestCCInsightsAnalysisRuleIdentity_FromExternal(t *testing.T) {
 			if err != nil {
 				t.Fatalf("unexpected error: %v", err)
 			}
-			if id.Project != tc.expected.Project || id.Location != tc.expected.Location || id.Analysis_rule != tc.expected.Analysis_rule {
-				t.Fatalf("expected %+v, got %+v", tc.expected, id)
+			if diff := cmp.Diff(tc.expected, id); diff != "" {
+				t.Fatalf("mismatch (-want +got):\n%s", diff)
 			}
 		})
 	}

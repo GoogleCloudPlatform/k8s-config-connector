@@ -30,14 +30,14 @@ var (
 	_ identity.Resource   = &CCInsightsAnalysisRule{}
 )
 
-var CCInsightsAnalysisRuleIdentityFormat = gcpurls.Template[CCInsightsAnalysisRuleIdentity]("contactcenterinsights.googleapis.com", "projects/{project}/locations/{location}/analysisRules/{analysis_rule}")
+var CCInsightsAnalysisRuleIdentityFormat = gcpurls.Template[CCInsightsAnalysisRuleIdentity]("contactcenterinsights.googleapis.com", "projects/{project}/locations/{location}/analysisRules/{analysisRule}")
 
 // CCInsightsAnalysisRuleIdentity is the identity of a GCP CCInsightsAnalysisRule resource.
 // +k8s:deepcopy-gen=false
 type CCInsightsAnalysisRuleIdentity struct {
-	Project       string
-	Location      string
-	Analysis_rule string
+	Project      string
+	Location     string
+	AnalysisRule string
 }
 
 func (i *CCInsightsAnalysisRuleIdentity) String() string {
@@ -82,9 +82,9 @@ func getIdentityFromCCInsightsAnalysisRuleSpec(ctx context.Context, reader clien
 	}
 
 	identity := &CCInsightsAnalysisRuleIdentity{
-		Project:       projectID,
-		Location:      location,
-		Analysis_rule: resourceID,
+		Project:      projectID,
+		Location:     location,
+		AnalysisRule: resourceID,
 	}
 	return identity, nil
 }

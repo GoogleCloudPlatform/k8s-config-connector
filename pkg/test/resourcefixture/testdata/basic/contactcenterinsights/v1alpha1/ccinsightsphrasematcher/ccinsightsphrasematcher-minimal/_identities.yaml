@@ -1,4 +1,4 @@
-- caisURL: unknown
+- caisURL: //contactcenterinsights.googleapis.com/projects/${projectNumber}/locations/us-central1/phraseMatchers/12568581401334663530
   group: contactcenterinsights.cnrm.cloud.google.com
   kind: CCInsightsPhraseMatcher
   name: pmmin${uniqueId}

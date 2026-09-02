@@ -143,6 +143,15 @@ func NormalizeDynamicIDs(s string) string {
 				lines[i] = "  caisURL: unknown"
 			}
 		}
+		// Normalize CCInsightsPhraseMatcher IDs: locations/.../phraseMatchers/<phraseMatcherId>
+		// Since it has a server-generated ID, we normalize it to unknown to match static unit tests consistently.
+		if idx := strings.Index(line, "/phraseMatchers/"); idx != -1 {
+			if strings.HasPrefix(strings.TrimSpace(line), "- ") {
+				lines[i] = "- caisURL: unknown"
+			} else {
+				lines[i] = "  caisURL: unknown"
+			}
+		}
 		// Normalize IAP Brand numeric IDs: projects/.../brands/<brandId>
 		if idx := strings.Index(line, "/brands/"); idx != -1 {
 			lines[i] = line[:idx+len("/brands/")]
