@@ -63,10 +63,6 @@ func (c *FakeDiscoveryengineV1alpha1) DiscoveryEngineSampleQuerySets(namespace s
 	return newFakeDiscoveryEngineSampleQuerySets(c, namespace)
 }
 
-func (c *FakeDiscoveryengineV1alpha1) DiscoveryEngineSearchEngines(namespace string) v1alpha1.DiscoveryEngineSearchEngineInterface {
-	return newFakeDiscoveryEngineSearchEngines(c, namespace)
-}
-
 func (c *FakeDiscoveryengineV1alpha1) DiscoveryEngineServingConfigs(namespace string) v1alpha1.DiscoveryEngineServingConfigInterface {
 	return newFakeDiscoveryEngineServingConfigs(c, namespace)
 }

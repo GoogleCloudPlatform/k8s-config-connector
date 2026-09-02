@@ -37,8 +37,6 @@ type DiscoveryEngineLicenseConfigExpansion interface{}
 
 type DiscoveryEngineSampleQuerySetExpansion interface{}
 
-type DiscoveryEngineSearchEngineExpansion interface{}
-
 type DiscoveryEngineServingConfigExpansion interface{}
 
 type DiscoveryEngineSessionExpansion interface{}

@@ -38,73 +38,89 @@ import (
 
 var _ = apiextensionsv1.JSON{}
 
-type TensorboardEncryptionSpec struct {
-	/* Required. The Cloud KMS resource identifier of the customer managed encryption key used to protect a resource. The key needs to be in the same region as where the compute resource is created. */
-	KmsKeyRef v1alpha1.ResourceRef `json:"kmsKeyRef"`
-}
-
-type VertexAITensorboardSpec struct {
-	/* Description of this Tensorboard. */
+type AttributeAllowedValues struct {
+	/* Optional. The detailed description of the allowed value. */
 	// +optional
 	Description *string `json:"description,omitempty"`
 
-	/* Required. User provided name of this Tensorboard. */
+	/* Required. The display name of the allowed value. */
+	// +optional
+	DisplayName *string `json:"displayName,omitempty"`
+
+	/* Required. The ID of the allowed value.
+	* If provided, the same will be used. The service will throw an error if
+	the specified id is already used by another allowed value in the same
+	attribute resource.
+	* If not provided, a system generated id derived from the display name
+	will be used. In this case, the service will handle conflict resolution
+	by adding a system generated suffix in case of duplicates.
+
+	This value should be 4-63 characters, and valid characters
+	are /[a-z][0-9]-/. */
+	// +optional
+	Id *string `json:"id,omitempty"`
+
+	/* Optional. When set to true, the allowed value cannot be updated or deleted by the user. It can only be true for System defined attributes. */
+	// +optional
+	Immutable *bool `json:"immutable,omitempty"`
+}
+
+type APIHubAttributeSpec struct {
+	/* Optional. The list of allowed values when the attribute value is of type enum. This is required when the dataType of the attribute is ENUM. The maximum number of allowed values of an attribute will be 1000. */
+	// +optional
+	AllowedValues []AttributeAllowedValues `json:"allowedValues,omitempty"`
+
+	/* Optional. The maximum number of values that the attribute can have when associated with an API Hub resource. Cardinality 1 would represent a single-valued attribute. It must not be less than 1 or greater than 20. If not specified, the cardinality would be set to 1 by default and represent a single-valued attribute. */
+	// +optional
+	Cardinality *int32 `json:"cardinality,omitempty"`
+
+	/* Required. The type of the data of the attribute. */
+	DataType string `json:"dataType"`
+
+	/* Optional. The description of the attribute. */
+	// +optional
+	Description *string `json:"description,omitempty"`
+
+	/* Required. The display name of the attribute. */
 	DisplayName string `json:"displayName"`
 
-	/* Customer-managed encryption key spec for a Tensorboard. If set, this Tensorboard and all sub-resources of this Tensorboard will be secured by this key. */
-	// +optional
-	EncryptionSpec *TensorboardEncryptionSpec `json:"encryptionSpec,omitempty"`
-
-	/* Used to indicate if the TensorBoard instance is the default one. Each project & region can have at most one default TensorBoard instance. Creation of a default TensorBoard instance and updating an existing TensorBoard instance to be default will mark all other TensorBoard instances (if any) as non default. */
-	// +optional
-	IsDefault *bool `json:"isDefault,omitempty"`
+	/* The location of this resource. */
+	Location string `json:"location"`
 
 	/* The project that this resource belongs to. */
 	ProjectRef v1alpha1.ResourceRef `json:"projectRef"`
 
-	/* The region of this resource. */
-	Region string `json:"region"`
-
-	/* The VertexAITensorboard ID (which is server-generated). If not given, Config Connector will create a new Tensorboard. If given, Config Connector will acquire the existing Tensorboard with this ID. */
+	/* The APIHubAttribute name. If not given, the metadata.name will be used. */
 	// +optional
 	ResourceID *string `json:"resourceID,omitempty"`
+
+	/* Required. The scope of the attribute. It represents the resource in the API Hub to which the attribute can be linked. */
+	Scope string `json:"scope"`
 }
 
-type TensorboardObservedStateStatus struct {
-	/* Output only. Consumer project Cloud Storage path prefix used to store blob data, which can either be a bucket or directory. Does not end with a '/'. */
-	// +optional
-	BlobStoragePathPrefix *string `json:"blobStoragePathPrefix,omitempty"`
-
-	/* Output only. Timestamp when this Tensorboard was created. */
+type AttributeObservedStateStatus struct {
+	/* Output only. The time at which the attribute was created. */
 	// +optional
 	CreateTime *string `json:"createTime,omitempty"`
 
-	/* Output only. Name of the Tensorboard. Format: `projects/{project}/locations/{location}/tensorboards/{tensorboard}` */
+	/* Output only. The definition type of the attribute. */
 	// +optional
-	Name *string `json:"name,omitempty"`
+	DefinitionType *string `json:"definitionType,omitempty"`
 
-	/* Output only. The number of Runs stored in this Tensorboard. */
+	/* Output only. When mandatory is true, the attribute is mandatory for the resource specified in the scope. Only System defined attributes can be mandatory. */
 	// +optional
-	RunCount *int32 `json:"runCount,omitempty"`
+	Mandatory *bool `json:"mandatory,omitempty"`
 
-	/* Output only. Reserved for future use. */
-	// +optional
-	SatisfiesPzi *bool `json:"satisfiesPzi,omitempty"`
-
-	/* Output only. Reserved for future use. */
-	// +optional
-	SatisfiesPzs *bool `json:"satisfiesPzs,omitempty"`
-
-	/* Output only. Timestamp when this Tensorboard was last updated. */
+	/* Output only. The time at which the attribute was last updated. */
 	// +optional
 	UpdateTime *string `json:"updateTime,omitempty"`
 }
 
-type VertexAITensorboardStatus struct {
+type APIHubAttributeStatus struct {
 	/* Conditions represent the latest available observations of the
-	   VertexAITensorboard's current state. */
+	   APIHubAttribute's current state. */
 	Conditions []v1alpha1.Condition `json:"conditions,omitempty"`
-	/* A unique specifier for the VertexAITensorboard resource in GCP. */
+	/* A unique specifier for the APIHubAttribute resource in GCP. */
 	// +optional
 	ExternalRef *string `json:"externalRef,omitempty"`
 
@@ -114,42 +130,40 @@ type VertexAITensorboardStatus struct {
 
 	/* ObservedState is the state of the resource as most recently observed in GCP. */
 	// +optional
-	ObservedState *TensorboardObservedStateStatus `json:"observedState,omitempty"`
+	ObservedState *AttributeObservedStateStatus `json:"observedState,omitempty"`
 }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-// +kubebuilder:resource:categories=gcp,shortName=gcpvertexaitensorboard;gcpvertexaitensorboards
+// +kubebuilder:resource:categories=gcp,shortName=gcpapihubattribute;gcpapihubattributes
 // +kubebuilder:subresource:status
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/default-controller=direct"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/managed-by-kcc=true"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/stability-level=alpha"
 // +kubebuilder:metadata:labels="cnrm.cloud.google.com/system=true"
-// +kubebuilder:metadata:labels="cnrm.cloud.google.com/tf2crd=true"
 // +kubebuilder:printcolumn:name="Age",JSONPath=".metadata.creationTimestamp",type="date"
 // +kubebuilder:printcolumn:name="Ready",JSONPath=".status.conditions[?(@.type=='Ready')].status",type="string",description="When 'True', the most recent reconcile of the resource succeeded"
 // +kubebuilder:printcolumn:name="Status",JSONPath=".status.conditions[?(@.type=='Ready')].reason",type="string",description="The reason for the value in 'Ready'"
 // +kubebuilder:printcolumn:name="Status Age",JSONPath=".status.conditions[?(@.type=='Ready')].lastTransitionTime",type="date",description="The last transition time for the value in 'Status'"
 
-// VertexAITensorboard is the Schema for the vertexai API
+// APIHubAttribute is the Schema for the apihub API
 // +k8s:openapi-gen=true
-type VertexAITensorboard struct {
+type APIHubAttribute struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   VertexAITensorboardSpec   `json:"spec,omitempty"`
-	Status VertexAITensorboardStatus `json:"status,omitempty"`
+	Spec   APIHubAttributeSpec   `json:"spec,omitempty"`
+	Status APIHubAttributeStatus `json:"status,omitempty"`
 }
 
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
-// VertexAITensorboardList contains a list of VertexAITensorboard
-type VertexAITensorboardList struct {
+// APIHubAttributeList contains a list of APIHubAttribute
+type APIHubAttributeList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []VertexAITensorboard `json:"items"`
+	Items           []APIHubAttribute `json:"items"`
 }
 
 func init() {
-	SchemeBuilder.Register(&VertexAITensorboard{}, &VertexAITensorboardList{})
+	SchemeBuilder.Register(&APIHubAttribute{}, &APIHubAttributeList{})
 }
