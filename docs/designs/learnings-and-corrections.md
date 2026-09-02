@@ -119,6 +119,15 @@ During the transition from manual 5-service verification to an automated program
 * **The Impact:** Without accounting for multi-field substitutions where 1 KRM `SecretRef` replaces 2–3 proto credential strings (`username`, `password`), simple property name matching undercounts true deterministic coverage.
 * **The Correction:** Treat reference and secret blocks as atomic unit matches in AST comparison.
 
+### 7.5 Failure 5: Global Pipeline Abort Cascade and Bogus Match Rates (The "99.66% Fidelity" Illusion)
+* **The Failure:** Reporting an artificial "99.66% deterministic exact match / 100% fidelity" across 123 services.
+* **The Root Cause:** In batch execution across the repository, `dev/tasks/generate-crds` invokes `controller-gen` globally (`paths="./..."`). When a single package (`dialogflow`) encountered compile/type resolution errors, `controller-gen` aborted the entire generation step. It did not write the regenerated CRD YAMLs to `config/crds/resources/`. When the comparison step ran, it compared the pre-existing/stale baseline CRD files on disk against the baseline snapshots, producing a completely fabricated, circular 99.66% match rate.
+* **The Conceptual Error:** Conflating "GCP Protobuf Surface Fidelity" with "CRD Parity against Existing Production KCC CRDs". Existing CRDs represent human-curated schemas with intentional domain overrides (`*Ref`, `SecretRef`, parent scoping), not raw proto reflections.
+* **The Correction:**
+  1. **Per-Service Package Isolation:** `controller-gen` must be invoked per-service (`paths="./apis/<service>/..."`) into an isolated sandbox output directory (`.build/sandbox-crds/`), so a single service failure cannot poison other services.
+  2. **Hard Validation Gates:** If `generate-types` or `controller-gen` fails for a service, that service must be explicitly marked as **0% generated / Build Failed** rather than comparing against stale baseline files on disk.
+  3. **Accurate Metric Naming:** Explicitly report **CRD Parity against Existing KCC CRDs**, separating Exact Matches, Domain Gaps (`*Ref`, `SecretRef`, parent scoping), and Proto Surface Expansions.
+
 ---
 
 ## 8. Summary Matrix of Corrections & Evaluation Learnings
@@ -135,4 +144,7 @@ During the transition from manual 5-service verification to an automated program
 | **Greenfield Discovery** | Assume all `Direct` reconcilers in `static_config.go` are pure Greenfield | Verify kind is declared in `generate.sh` and not a legacy `--skip-scaffold-files` migration | Prevents false 0% match rates on Brownfield migrations |
 | **Evaluation Wiping** | Wipe `*types*` indiscriminately with `rm -f` | Only wipe generated types for kinds declared in `generate.sh` | Prevents deleting handwritten/custom non-proto types |
 | **Schema Drift Handling** | Treat new proto fields as generator failures | Differentiate upstream proto additions from structural generator errors | Accurately accounts for evolving GCP API surfaces |
+| **Pipeline Batching** | Run global `controller-gen` across all packages (`./...`) in batch | Run `controller-gen` per-service in an isolated sandbox | Prevents a single failing package from aborting CRD generation for the rest of the repo |
+| **Measurement Semantics** | Claim "100% proto fidelity" | Measure "CRD Parity against Existing KCC CRDs" | Accurately reflects comparison against human-curated KCC schemas |
+
 
