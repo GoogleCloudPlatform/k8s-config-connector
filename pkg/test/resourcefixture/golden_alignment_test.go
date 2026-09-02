@@ -285,8 +285,8 @@ func is404OrEmptyOnDeleted(path string, ev httpEvent, mockGrouped pathMethodEven
 	if strings.Contains(ev.ResponseBody, `"code": 404`) || strings.Contains(ev.ResponseBody, `"code":404`) {
 		return true
 	}
-	// Handle rule-specific 400 Not Found
-	if strings.Contains(ev.Status, "400") && strings.Contains(ev.ResponseBody, "does not contain a rule") {
+	// Handle rule-specific 400 Not Found for Compute Firewall Policies
+	if strings.Contains(path, "/firewallPolicies") && strings.Contains(ev.Status, "400") && strings.Contains(ev.ResponseBody, "does not contain a rule") {
 		return true
 	}
 	return false
@@ -380,11 +380,6 @@ func compareGroupedLogs(t *testing.T, realGrouped, mockGrouped pathMethodEvents)
 	for path, mockMethods := range mockGrouped {
 		realMethods, pathExistsInReal := realGrouped[path]
 		if !pathExistsInReal {
-			isDoubleSlash := strings.Contains(path, "//")
-			isAll404 := allEvents404(mockMethods)
-			if isDoubleSlash && isAll404 {
-				continue
-			}
 			t.Errorf("path %q present in mock log but missing in real log", path)
 			continue
 		}
@@ -1094,15 +1089,4 @@ func isDependencyEvent(ev httpEvent, depKinds map[string]string, primaryKind str
 		return true
 	}
 	return false
-}
-
-func allEvents404(methods map[string][]httpEvent) bool {
-	for _, evs := range methods {
-		for _, ev := range evs {
-			if !strings.Contains(ev.Status, "404") && !strings.Contains(ev.ResponseBody, `"code": 404`) && !strings.Contains(ev.ResponseBody, `"code":404`) {
-				return false
-			}
-		}
-	}
-	return true
 }
