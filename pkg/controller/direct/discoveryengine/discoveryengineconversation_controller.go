@@ -22,12 +22,16 @@ package discoveryengine
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"strings"
 
 	gcp "cloud.google.com/go/discoveryengine/apiv1"
 	pb "cloud.google.com/go/discoveryengine/apiv1/discoveryenginepb"
+	"google.golang.org/api/googleapi"
 	"google.golang.org/api/option"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/fieldmaskpb"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -156,7 +160,7 @@ func (a *conversationAdapter) Find(ctx context.Context) (bool, error) {
 	req := &pb.GetConversationRequest{Name: fqn}
 	actual, err := a.gcpClient.GetConversation(ctx, req)
 	if err != nil {
-		if direct.IsNotFound(err) {
+		if isConversationNotFound(err) {
 			return false, nil
 		}
 		return false, fmt.Errorf("getting discoveryengine conversation %q from gcp: %w", fqn, err)
@@ -164,6 +168,29 @@ func (a *conversationAdapter) Find(ctx context.Context) (bool, error) {
 
 	a.actual = actual
 	return true, nil
+}
+
+func isConversationNotFound(err error) bool {
+	if err == nil {
+		return false
+	}
+	if direct.IsNotFound(err) {
+		return true
+	}
+	// On real GCP, GET conversation returns 500 INTERNAL with "Internal error encountered" when not found.
+	// We check for this specific error to treat it as not found.
+	var apiErr *googleapi.Error
+	if errors.As(err, &apiErr) {
+		if apiErr.Code == 500 && strings.Contains(apiErr.Message, "Internal error encountered") {
+			return true
+		}
+	}
+	if s, ok := status.FromError(err); ok {
+		if s.Code() == codes.Internal && strings.Contains(s.Message(), "Internal error encountered") {
+			return true
+		}
+	}
+	return false
 }
 
 func (a *conversationAdapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
