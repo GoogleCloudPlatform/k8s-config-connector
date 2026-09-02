@@ -23,6 +23,8 @@ package compute
 import (
 	"context"
 	"fmt"
+	"reflect"
+	"sort"
 
 	compute "cloud.google.com/go/compute/apiv1"
 	computepb "cloud.google.com/go/compute/apiv1/computepb"
@@ -441,6 +443,8 @@ func compareComputeRouterNAT(ctx context.Context, actual, desired *computepb.Rou
 
 	clonedDesired := proto.CloneOf(desired)
 
+	common.MergeUnsetFields(reflect.ValueOf(clonedDesired), reflect.ValueOf(maskedActual))
+
 	populateDefaults := func(obj *computepb.RouterNat) {
 		if obj.IcmpIdleTimeoutSec == nil {
 			obj.IcmpIdleTimeoutSec = proto.Int32(30)
@@ -467,9 +471,70 @@ func compareComputeRouterNAT(ctx context.Context, actual, desired *computepb.Rou
 	populateDefaults(maskedActual)
 	populateDefaults(clonedDesired)
 
+	normalizeRouterNat(maskedActual)
+	normalizeRouterNat(clonedDesired)
+
 	diffs, updateMask, err := common.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
 		return nil, nil, err
 	}
 	return diffs, updateMask, nil
+}
+
+func normalizeRouterNat(obj *computepb.RouterNat) {
+	if obj == nil {
+		return
+	}
+
+	// 1. Normalize and sort NatIps
+	for i, ip := range obj.NatIps {
+		obj.NatIps[i] = normalizeComputeLink(ip)
+	}
+	sort.Strings(obj.NatIps)
+
+	// 2. Normalize and sort DrainNatIps
+	for i, ip := range obj.DrainNatIps {
+		obj.DrainNatIps[i] = normalizeComputeLink(ip)
+	}
+	sort.Strings(obj.DrainNatIps)
+
+	// 3. Normalize Rules
+	for _, rule := range obj.Rules {
+		if rule.Action != nil {
+			for i, ip := range rule.Action.SourceNatActiveIps {
+				rule.Action.SourceNatActiveIps[i] = normalizeComputeLink(ip)
+			}
+			sort.Strings(rule.Action.SourceNatActiveIps)
+
+			for i, ip := range rule.Action.SourceNatDrainIps {
+				rule.Action.SourceNatDrainIps[i] = normalizeComputeLink(ip)
+			}
+			sort.Strings(rule.Action.SourceNatDrainIps)
+
+			for i, r := range rule.Action.SourceNatActiveRanges {
+				rule.Action.SourceNatActiveRanges[i] = normalizeComputeLink(r)
+			}
+			sort.Strings(rule.Action.SourceNatActiveRanges)
+
+			for i, r := range rule.Action.SourceNatDrainRanges {
+				rule.Action.SourceNatDrainRanges[i] = normalizeComputeLink(r)
+			}
+			sort.Strings(rule.Action.SourceNatDrainRanges)
+		}
+	}
+	sort.Slice(obj.Rules, func(i, j int) bool {
+		return obj.Rules[i].GetRuleNumber() < obj.Rules[j].GetRuleNumber()
+	})
+
+	// 4. Normalize Subnetworks
+	for _, sub := range obj.Subnetworks {
+		if sub.Name != nil {
+			val := normalizeComputeLink(*sub.Name)
+			sub.Name = &val
+		}
+		sort.Strings(sub.SourceIpRangesToNat)
+		sort.Strings(sub.SecondaryIpRangeNames)
+	}
+
+	sort.Strings(obj.EndpointTypes)
 }
