@@ -1,5 +1,11 @@
 - caisURL: unknown
   group: apihub.cnrm.cloud.google.com
+  kind: APIHubAttribute
+  name: attr-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
+- caisURL: unknown
+  group: apihub.cnrm.cloud.google.com
   kind: APIHubExternalAPI
   name: extapi-${uniqueId}
   namespace: ${uniqueId}
