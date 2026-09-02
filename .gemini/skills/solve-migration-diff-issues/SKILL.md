@@ -26,8 +26,16 @@ The migration test (`TestMigrationToDirect` in `tests/e2e/migration_test.go`) ex
 
 ## The 4-Step Development Sequence (How to Fix Issues)
 
-### Step 0: Remove from Ratcheting Exclusions (MANDATORY)
-Before running the test cases against real or mock GCP, you **MUST** ensure the target resource is removed from the ratcheting exclusion list in `tests/e2e/ratcheting.go`. This enables the re-reconciliation test step, which is a fundamental use case KCC resources must support.
+### Step 0: Remove from Ratcheting Exclusions (MANDATORY Make-up)
+The primary focus of this skill is diagnosing and fixing takeover diffs in `TestMigrationToDirect`.
+
+Removing the target resource from the ratcheting exclusion list in `tests/e2e/ratcheting.go` is ideally handled during the direct controller logic phase (Step 1.5 in the brownfield logic skill). If the resource has not yet been removed from `tests/e2e/ratcheting.go`, performing the removal here in Step 0 acts as a **make-up for a previous miss** from the controller logic phase.
+
+If you perform this make-up removal here, you **MUST** ensure that:
+1. The standard fixtures (`TestAllInSeries`) are validated and re-recorded against real GCP (using `./hack/record-gcp` to verify 0-write re-reconciliation), and
+2. The migration diff tests (`TestMigrationToDirect`) are successfully validated.
+
+To remove the resource from the exclusions:
 1. Open `tests/e2e/ratcheting.go`.
 2. Locate the function `ShouldTestRereconiliation`.
 3. Locate the `switch` statement that checks `primaryResource.GroupVersionKind()`.
