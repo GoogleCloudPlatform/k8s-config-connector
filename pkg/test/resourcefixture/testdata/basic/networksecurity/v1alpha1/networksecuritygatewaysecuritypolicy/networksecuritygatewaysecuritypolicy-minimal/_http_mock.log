@@ -94,22 +94,6 @@ OK
 
 ---
 
-GRPC /google.cloud.networksecurity.v1.NetworkSecurity/GetGatewaySecurityPolicy
-
-{
-  "name": "projects/${projectId}/locations/us-central1/gatewaySecurityPolicies/gsp-min-${uniqueId}"
-}
-
-OK
-
-{
-  "createTime": "2024-04-01T12:34:56.123456Z",
-  "name": "projects/${projectId}/locations/us-central1/gatewaySecurityPolicies/gsp-min-${uniqueId}",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
-}
-
----
-
 GRPC /google.cloud.networksecurity.v1.NetworkSecurity/DeleteGatewaySecurityPolicy
 
 {
