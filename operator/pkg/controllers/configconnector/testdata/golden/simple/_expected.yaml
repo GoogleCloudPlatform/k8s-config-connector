@@ -2564,18 +2564,6 @@ rules:
   - patch
   - delete
 - apiGroups:
-  - blockchainnodeengine.cnrm.cloud.google.com
-  resources:
-  - '*'
-  verbs:
-  - get
-  - list
-  - watch
-  - create
-  - update
-  - patch
-  - delete
-- apiGroups:
   - certificatemanager.cnrm.cloud.google.com
   resources:
   - '*'
@@ -4619,14 +4607,6 @@ rules:
   - watch
 - apiGroups:
   - binaryauthorization.cnrm.cloud.google.com
-  resources:
-  - '*'
-  verbs:
-  - get
-  - list
-  - watch
-- apiGroups:
-  - blockchainnodeengine.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
