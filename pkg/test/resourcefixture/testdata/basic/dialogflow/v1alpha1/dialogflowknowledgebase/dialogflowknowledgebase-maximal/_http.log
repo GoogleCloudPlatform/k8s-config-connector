@@ -1,0 +1,144 @@
+GET https://dialogflow.googleapis.com/v2/projects/${projectId}/locations/global/knowledgeBases/dialogflowkb-max-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FknowledgeBases%2Fdialogflowkb-max-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Knowledge Base with ID dialogflowkb-max-${uniqueId} not found in projects/${projectId}/locations/global.",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://dialogflow.googleapis.com/v2/projects/${projectId}/locations/global/knowledgeBases?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fglobal
+
+{
+  "displayName": "KB Maximal ${uniqueId}",
+  "languageCode": "en"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "KB Maximal ${uniqueId}",
+  "languageCode": "en",
+  "name": "projects/${projectId}/locations/global/knowledgeBases/MjQ5ODY3NjU5NTQ0MzYzMDA4MQ"
+}
+
+---
+
+GET https://dialogflow.googleapis.com/v2/projects/${projectId}/locations/global/knowledgeBases/MjQ5ODY3NjU5NTQ0MzYzMDA4MQ?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FknowledgeBases%2FMjQ5ODY3NjU5NTQ0MzYzMDA4MQ
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "KB Maximal ${uniqueId}",
+  "languageCode": "en",
+  "name": "projects/${projectId}/locations/global/knowledgeBases/MjQ5ODY3NjU5NTQ0MzYzMDA4MQ"
+}
+
+---
+
+PATCH https://dialogflow.googleapis.com/v2/projects/${projectId}/locations/global/knowledgeBases/MjQ5ODY3NjU5NTQ0MzYzMDA4MQ?%24alt=json%3Benum-encoding%3Dint&updateMask=displayName
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: knowledge_base.name=projects%2F${projectId}%2Flocations%2Fglobal%2FknowledgeBases%2FMjQ5ODY3NjU5NTQ0MzYzMDA4MQ
+
+{
+  "displayName": "KB Maximal ${uniqueId} Updated",
+  "languageCode": "en",
+  "name": "projects/${projectId}/locations/global/knowledgeBases/MjQ5ODY3NjU5NTQ0MzYzMDA4MQ"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "KB Maximal ${uniqueId} Updated",
+  "languageCode": "en",
+  "name": "projects/${projectId}/locations/global/knowledgeBases/MjQ5ODY3NjU5NTQ0MzYzMDA4MQ"
+}
+
+---
+
+GET https://dialogflow.googleapis.com/v2/projects/${projectId}/locations/global/knowledgeBases/MjQ5ODY3NjU5NTQ0MzYzMDA4MQ?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FknowledgeBases%2FMjQ5ODY3NjU5NTQ0MzYzMDA4MQ
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "displayName": "KB Maximal ${uniqueId} Updated",
+  "languageCode": "en",
+  "name": "projects/${projectId}/locations/global/knowledgeBases/MjQ5ODY3NjU5NTQ0MzYzMDA4MQ"
+}
+
+---
+
+DELETE https://dialogflow.googleapis.com/v2/projects/${projectId}/locations/global/knowledgeBases/MjQ5ODY3NjU5NTQ0MzYzMDA4MQ?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fglobal%2FknowledgeBases%2FMjQ5ODY3NjU5NTQ0MzYzMDA4MQ
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

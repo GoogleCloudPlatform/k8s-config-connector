@@ -1,0 +1,27 @@
+apiVersion: dialogflow.cnrm.cloud.google.com/v1alpha1
+kind: DialogflowKnowledgeBase
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  labels:
+    cnrm-test: "true"
+  name: dialogflowkb-min-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  displayName: KB Minimal ${uniqueId}
+  location: global
+  projectRef:
+    external: ${projectId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/global/knowledgeBases/NTU1Nzk3NTM0MDc1MzYxNjg5Nw
+  observedGeneration: 1
+  observedState:
+    name: projects/${projectId}/locations/global/knowledgeBases/NTU1Nzk3NTM0MDc1MzYxNjg5Nw
