@@ -1,0 +1,6 @@
+pkg/test/resourcefixture/testdata/basic/contactcenterinsights/v1alpha1/ccinsightsphrasematcher/ccinsightsphrasematcher-maximal
+pkg/test/resourcefixture/testdata/basic/contactcenterinsights/v1alpha1/ccinsightsphrasematcher/ccinsightsphrasematcher-minimal
+pkg/test/resourcefixture/testdata/basic/contactcenterinsights/v1alpha1/ccinsightsqascorecard/ccinsightsqascorecard-maximal
+pkg/test/resourcefixture/testdata/basic/contactcenterinsights/v1alpha1/ccinsightsqascorecard/ccinsightsqascorecard-minimal
+pkg/test/resourcefixture/testdata/basic/contactcenterinsights/v1alpha1/ccinsightsview/ccinsightsview-maximal
+pkg/test/resourcefixture/testdata/basic/contactcenterinsights/v1alpha1/ccinsightsview/ccinsightsview-minimal
