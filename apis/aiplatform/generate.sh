@@ -34,6 +34,7 @@ cd ${REPO_ROOT}/dev/tools/controllerbuilder
 ${CONTROLLERBUILDER} generate-types \
   --service google.cloud.aiplatform.v1,google.cloud.aiplatform.v1beta1 \
   --api-version aiplatform.cnrm.cloud.google.com/v1alpha1 \
+  --resource AIPlatformCachedContent:CachedContent \
   --resource AIPlatformPersistentResource:PersistentResource \
   --resource AIPlatformSpecialistPool:SpecialistPool \
   --resource AIPlatformModel:Model \
@@ -69,6 +70,11 @@ ${CONTROLLERBUILDER} generate-mapper \
   --api-version aiplatform.cnrm.cloud.google.com/v1alpha1 \
   --include-skipped-output \
   --prepopulate-resource
+
+# Add XPreserveUnknownFields to empty structs to avoid empty schema issues in CRD generation
+sed -i 's/\/\/ +kcc:proto=google.cloud.aiplatform.v1.GoogleMaps/\/\/ +kcc:proto=google.cloud.aiplatform.v1.GoogleMaps\n\/\/ +kubebuilder:validation:XPreserveUnknownFields/g' "${REPO_ROOT}/apis/aiplatform/v1alpha1/types.generated.go"
+sed -i 's/\/\/ +kcc:proto=google.cloud.aiplatform.v1.Tool.CodeExecution/\/\/ +kcc:proto=google.cloud.aiplatform.v1.Tool.CodeExecution\n\/\/ +kubebuilder:validation:XPreserveUnknownFields/g' "${REPO_ROOT}/apis/aiplatform/v1alpha1/types.generated.go"
+sed -i 's/\/\/ +kcc:proto=google.cloud.aiplatform.v1.UrlContext/\/\/ +kcc:proto=google.cloud.aiplatform.v1.UrlContext\n\/\/ +kubebuilder:validation:XPreserveUnknownFields/g' "${REPO_ROOT}/apis/aiplatform/v1alpha1/types.generated.go"
 
 cd ${REPO_ROOT}
 if [[ -z "${SKIP_GENERATE_CRDS:-}" ]]; then
