@@ -10,6 +10,13 @@ metadata:
   name: extapi-${uniqueId}
   namespace: ${uniqueId}
 spec:
+  attributeRefs:
+  - attributeRef:
+      name: attr-${uniqueId}
+    values:
+      stringValues:
+        values:
+        - hello-world-updated
   description: An updated comprehensive APIHubExternalAPI for E2E testing
   displayName: Maximal APIHubExternalAPI Updated
   documentation:
