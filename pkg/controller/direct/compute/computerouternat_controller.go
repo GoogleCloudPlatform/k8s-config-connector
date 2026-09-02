@@ -390,7 +390,7 @@ func (a *RouterNATAdapter) Delete(ctx context.Context, deleteOp *directbase.Dele
 
 	a.router = router
 
-	var newNats []*computepb.RouterNat
+	newNats := []*computepb.RouterNat{}
 	found := false
 	for _, nat := range a.router.Nats {
 		if nat.GetName() == a.id.ComputeRouterNAT {
