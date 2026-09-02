@@ -221,6 +221,14 @@ func (x *Normalizer) Render(events test.LogEntries) string {
 	// Specific to vertexai
 	addReplacement("blobStoragePathPrefix", "cloud-ai-platform-00000000-1111-2222-3333-444444444444")
 	addReplacement("response.blobStoragePathPrefix", "cloud-ai-platform-00000000-1111-2222-3333-444444444444")
+	addReplacement("versionCreateTime", "2024-04-01T12:34:56.123456Z")
+	addReplacement("versionUpdateTime", "2024-04-01T12:34:56.123456Z")
+	addReplacement("response.versionCreateTime", "2024-04-01T12:34:56.123456Z")
+	addReplacement("response.versionUpdateTime", "2024-04-01T12:34:56.123456Z")
+	addSetStringReplacement(".versionCreateTime", "2024-04-01T12:34:56.123456Z")
+	addSetStringReplacement(".versionUpdateTime", "2024-04-01T12:34:56.123456Z")
+	addSetStringReplacement(".response.versionCreateTime", "2024-04-01T12:34:56.123456Z")
+	addSetStringReplacement(".response.versionUpdateTime", "2024-04-01T12:34:56.123456Z")
 
 	// Specific to Sql
 	addReplacement("serverCaCert.cert", "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n")

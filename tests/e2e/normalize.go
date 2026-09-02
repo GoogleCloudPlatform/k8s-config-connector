@@ -178,6 +178,8 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".status.serviceAccountEmailAddress"] = "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com"
 
 	// Specific to VertexAI
+	visitor.replacePaths[".status.observedState.versionCreateTime"] = mockgcpregistry.PlaceholderTime
+	visitor.replacePaths[".status.observedState.versionUpdateTime"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.blobStoragePathPrefix"] = "cloud-ai-platform-00000000-1111-2222-3333-444444444444"
 	visitor.replacePaths[".status.state[].diskUtilizationBytes"] = "1"
 	visitor.replacePaths[".creator"] = "${creatorID}"
@@ -1129,6 +1131,13 @@ func findLinksInKRMObject(t *testing.T, replacement *Replacements, u *unstructur
 }
 
 func NormalizeHTTPLog(t *testing.T, events test.LogEntries, services mockgcpregistry.Normalizer, project testgcp.GCPProject, uniqueID string, folderID string, organizationID string) {
+	// Clear response body for UpdateModel in GRPC to align with real empty response
+	for _, event := range events {
+		if event.Request.Method == "GRPC" && strings.HasSuffix(event.Request.URL, "/google.cloud.aiplatform.v1.ModelService/UpdateModel") {
+			event.Response.Body = ""
+		}
+	}
+
 	normalizer := NewNormalizer(uniqueID, project)
 
 	normalizer.Preprocess(events)
@@ -1533,6 +1542,12 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 	visitor.replacePaths[".metadata.progress.startTime"] = mockgcpregistry.PlaceholderTimestamp
 	visitor.replacePaths[".metadata.progress.endTime"] = "2024-04-02T12:34:56.123456Z"
 	visitor.replacePaths[".metadata.instanceConfig.etag"] = "abcdef0123A"
+
+	// vertexai
+	visitor.replacePaths[".versionCreateTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".versionUpdateTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".response.versionCreateTime"] = mockgcpregistry.PlaceholderTimestamp
+	visitor.replacePaths[".response.versionUpdateTime"] = mockgcpregistry.PlaceholderTimestamp
 
 	// Run visitors
 	events.PrettifyJSON(func(requestURL string, obj map[string]any) {

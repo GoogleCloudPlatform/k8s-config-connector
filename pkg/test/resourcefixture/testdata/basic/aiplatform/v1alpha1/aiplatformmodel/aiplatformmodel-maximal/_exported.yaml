@@ -1,0 +1,20 @@
+apiVersion: aiplatform.cnrm.cloud.google.com/v1alpha1
+kind: AIPlatformModel
+metadata:
+  labels:
+    label-key: label-val-updated
+  name: model-max-${uniqueId}
+spec:
+  containerSpec:
+    imageURI: gcr.io/google-samples/hello-app:1.0
+  description: Updated description
+  displayName: Maximal Model Updated
+  labels:
+    label-key: label-val-updated
+  location: us-central1
+  projectRef:
+    name: ${projectId}
+  resourceID: model-max-${uniqueId}
+  versionAliases:
+  - alias-one
+  versionDescription: Initial version description
