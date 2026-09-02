@@ -19,6 +19,7 @@ This skill guides the implementation of the `Adapter` interface
     - Implement `Find`, `Create`, `Update`, and `Delete`.
     - Use the generated mappers and manual mappers as needed.
     - Ensure correct error handling (e.g., handling 404s in `Find`).
+    - **Service-Generated Resource IDs**: If the brownfield resource has a service-generated resource ID, see the `kcc-direct-service-generated-id` skill for mandatory identity and reconciler rules (including `Find()` pre-check guards, `Create()` request handling, and `GetIdentity()` comparison rules).
 
 1.5. **Remove from Ratcheting Exclusions (MANDATORY)**:
     Before running the test cases against real or mock GCP, you **MUST** ensure the target resource is removed from the ratcheting exclusion list in `tests/e2e/ratcheting.go`. This enables the re-reconciliation test step, which is a fundamental use case KCC resources must support.

@@ -62,6 +62,7 @@ After running the generator, verify the `_types.go` file meets these requirement
 - **Strict Schema Compatibility**: At the initial stage of creating a direct Go type for an existing resource (transitioning from Terraform/DCL), the Go type should be strictly schema-compatible with the existing CRD definition.
   * Do NOT add new fields like `externalRef` or `observedState` under `Status` yet.
   * Run `dev/tasks/diff-crds` to verify schema compatibility and ensure no unintended new fields are introduced.
+- **Service-Generated Resource IDs**: If the resource uses service-generated resource IDs, see the `kcc-direct-service-generated-id` skill for mandatory identity design rules, specifically regarding the handling and mapping of `spec.resourceID` (Rule 1).
 
 ### 3. Fuzzers
 - Create a fuzzer for the mapper to verify that round-trip conversions (FromProto and ToProto) are lossless and correct.
