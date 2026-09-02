@@ -152,6 +152,16 @@ func runMigrationScenario(ctx context.Context, t *testing.T, fixture resourcefix
 		primaryResource := bytesToUnstructured(t, fixture.Create, uniqueID, project)
 		opt := create.CreateDeleteTestOptions{CleanupResources: false}
 
+		// ComputeSubnetwork and ComputeRouterNAT have strict dependencies on other resources (like ComputeNetwork or ComputeRouter).
+		// For ComputeRouterNAT, NAT gateway configuration is treated as an embedded configuration on a GCP Router.
+		// Therefore, GCP does not allow configuring NAT on a router that does not exist yet.
+		// Similarly, deleting a network or router will fail if active NAT/subnetwork configurations are still attached.
+		// Setting CreateInOrder and DeleteInOrder ensures dependencies are fully ready first during creation and cleaned up last during deletion.
+		if strings.Contains(fixture.Name, "computesubnetwork") || strings.Contains(fixture.Name, "computerouternat") {
+			opt.CreateInOrder = true
+			opt.DeleteInOrder = true
+		}
+
 		if fixture.Dependencies != nil {
 			dependencyYamls := testyaml.SplitYAML(t, fixture.Dependencies)
 			for _, dependBytes := range dependencyYamls {
