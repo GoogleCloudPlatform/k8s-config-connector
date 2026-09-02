@@ -52,3 +52,34 @@ func (s *MockService) parseApiName(name string) (*apiName, error) {
 		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 	}
 }
+
+type attributeName struct {
+	Project       *projects.ProjectData
+	Location      string
+	AttributeName string
+}
+
+func (n *attributeName) String() string {
+	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/attributes/" + n.AttributeName
+}
+
+// parseAttributeName parses a string into an attributeName.
+// The expected form is projects/<projectID>/locations/<location>/attributes/<attributeName>
+func (s *MockService) parseAttributeName(name string) (*attributeName, error) {
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "attributes" {
+		project, err := s.Projects.GetProjectByID(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		return &attributeName{
+			Project:       project,
+			Location:      tokens[3],
+			AttributeName: tokens[5],
+		}, nil
+	} else {
+		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+	}
+}

@@ -171,6 +171,12 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 
 	clonedDesired := proto.Clone(desired).(*pb.Attribute)
 
+	// If cardinality is not specified in the desired spec, align clonedDesired's cardinality
+	// with the actual/server value to avoid false diffs during update and re-reconciliation.
+	if a.desired.Spec.Cardinality == nil {
+		clonedDesired.Cardinality = maskedActual.Cardinality
+	}
+
 	diffs, updateMask, err := compareAttribute(ctx, maskedActual, clonedDesired)
 	if err != nil {
 		return err
