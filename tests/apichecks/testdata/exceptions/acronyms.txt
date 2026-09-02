@@ -1,4 +1,5 @@
 [acronyms] crd=accesscontextmanageraccesslevels.accesscontextmanager.cnrm.cloud.google.com version=v1beta1: field ".spec.basic.conditions[].devicePolicy.osConstraints[].requireVerifiedChromeOs" should be ".spec.basic.conditions[].devicePolicy.osConstraints[].requireVerifiedChromeOS"
+[acronyms] crd=aiplatformcachedcontents.aiplatform.cnrm.cloud.google.com version=v1alpha1: field ".spec.tools[].retrieval.vertexRagStore.ragResources[].ragFileIds" should be ".spec.tools[].retrieval.vertexRagStore.ragResources[].ragFileIDs"
 [acronyms] crd=alloydbclusters.alloydb.cnrm.cloud.google.com version=v1alpha1: field ".spec.networkConfig.allocatedIpRange" should be ".spec.networkConfig.allocatedIPRange"
 [acronyms] crd=alloydbclusters.alloydb.cnrm.cloud.google.com version=v1alpha1: field ".status.migrationSource[].referenceId" should be ".status.migrationSource[].referenceID"
 [acronyms] crd=alloydbclusters.alloydb.cnrm.cloud.google.com version=v1beta1: field ".spec.networkConfig.allocatedIpRange" should be ".spec.networkConfig.allocatedIPRange"
