@@ -71,6 +71,7 @@ require (
 	cloud.google.com/go/pubsublite v1.10.0
 	cloud.google.com/go/recaptchaenterprise/v2 v2.26.0
 	cloud.google.com/go/redis v1.25.0
+	cloud.google.com/go/saasplatform v0.9.0
 	cloud.google.com/go/secretmanager v1.20.0
 	cloud.google.com/go/securesourcemanager v1.4.1
 	cloud.google.com/go/securitycenter v1.45.0

@@ -104,7 +104,7 @@ require (
 	cloud.google.com/go/vectorsearch v1.3.0
 	cloud.google.com/go/video v1.33.0
 	cloud.google.com/go/vision/v2 v2.15.0
-	cloud.google.com/go/vmmigration v1.15.0
+	cloud.google.com/go/vmmigration v1.16.0
 	cloud.google.com/go/vmwareengine v1.9.0
 	cloud.google.com/go/workflows v1.20.0
 	cloud.google.com/go/workloadmanager v1.1.0

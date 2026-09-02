@@ -324,8 +324,12 @@ func (a *sqlAdminBackupAdapter) pollForLROCompletion(ctx context.Context, op *ap
 		return nil, fmt.Errorf("operation is nil after polling for SQLAdminBackup %d %s", a.backupID, verb)
 	}
 
-	if op.Error != nil && len(op.Error.Errors) > 0 {
-		return nil, fmt.Errorf("SQLAdminBackup %d %s operation %s failed: %v", a.backupID, verb, op.Name, op.Error.Errors[0].Message)
+	if op.Error != nil {
+		msg := "unknown operation error"
+		if len(op.Error.Errors) > 0 {
+			msg = op.Error.Errors[0].Message
+		}
+		return nil, fmt.Errorf("SQLAdminBackup %d %s operation %s failed: %v", a.backupID, verb, op.Name, msg)
 	}
 
 	return op, nil
