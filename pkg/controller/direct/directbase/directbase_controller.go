@@ -371,8 +371,13 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 				return true, r.Reconciler.HandleUnresolvableDeps(ctx, resource, unwrappedErr)
 			}
 
-			return false, r.handleUpdateFailed(ctx, u, err)
+			return r.handleUnresolvableDeps(ctx, u, unwrappedErr)
 		}
+
+		if !u.GetDeletionTimestamp().IsZero() {
+			return false, r.handleDeleteFailed(ctx, u, err)
+		}
+		return false, r.handleUpdateFailed(ctx, u, err)
 	}
 
 	defer execution.RecoverWithInternalError(&err)
