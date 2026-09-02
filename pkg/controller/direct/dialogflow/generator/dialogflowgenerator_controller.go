@@ -151,7 +151,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating DialogflowGenerator", "name", a.id.String())
 
-	desired := proto.Clone(a.desired).(*pb.Generator)
+	desired := proto.CloneOf(a.desired)
 	desired.Name = "" // Must be empty during creation!
 
 	req := &pb.CreateGeneratorRequest{
