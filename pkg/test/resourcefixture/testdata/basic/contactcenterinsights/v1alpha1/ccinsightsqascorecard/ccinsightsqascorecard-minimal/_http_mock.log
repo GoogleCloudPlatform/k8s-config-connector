@@ -5,7 +5,7 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2F
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
-Server: ESF
+Server: scaffolding on HTTPServer2
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
@@ -16,13 +16,6 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "No QaScorecardRevision found for (project ${projectNumber}, qa_scorecard_id qascorecard-minimal-${uniqueId}, revision_id latest).",
-        "reason": "notFound"
-      }
-    ],
     "message": "No QaScorecardRevision found for (project ${projectNumber}, qa_scorecard_id qascorecard-minimal-${uniqueId}, revision_id latest).",
     "status": "NOT_FOUND"
   }
@@ -42,7 +35,7 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
+Server: scaffolding on HTTPServer2
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
@@ -66,7 +59,7 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2F
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
+Server: scaffolding on HTTPServer2
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
@@ -90,7 +83,7 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2F
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
+Server: scaffolding on HTTPServer2
 Vary: Origin
 Vary: X-Origin
 Vary: Referer

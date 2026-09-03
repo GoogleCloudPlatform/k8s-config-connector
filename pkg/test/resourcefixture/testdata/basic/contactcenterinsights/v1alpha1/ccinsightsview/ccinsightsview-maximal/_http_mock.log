@@ -5,7 +5,7 @@ X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2F
 
 404 Not Found
 Content-Type: application/json; charset=UTF-8
-Server: ESF
+Server: scaffolding on HTTPServer2
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
@@ -16,14 +16,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "Resource 'projects/${projectNumber}/locations/us-central1/views/ccinsightsview-maximal-${uniqueId}' was not found",
-        "reason": "notFound"
-      }
-    ],
-    "message": "Resource 'projects/${projectNumber}/locations/us-central1/views/ccinsightsview-maximal-${uniqueId}' was not found",
+    "message": "No view found for project: `${projectNumber}` and view Id: `ccinsightsview-maximal-${uniqueId}`.",
     "status": "NOT_FOUND"
   }
 }
@@ -43,7 +36,7 @@ X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
+Server: scaffolding on HTTPServer2
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
@@ -68,7 +61,7 @@ X-Goog-Request-Params: name=projects%2F${projectNumber}%2Flocations%2Fus-central
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
+Server: scaffolding on HTTPServer2
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
@@ -99,7 +92,7 @@ X-Goog-Request-Params: view.name=projects%2F${projectNumber}%2Flocations%2Fus-ce
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
+Server: scaffolding on HTTPServer2
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
@@ -124,7 +117,7 @@ X-Goog-Request-Params: name=projects%2F${projectNumber}%2Flocations%2Fus-central
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
+Server: scaffolding on HTTPServer2
 Vary: Origin
 Vary: X-Origin
 Vary: Referer
@@ -149,7 +142,7 @@ X-Goog-Request-Params: name=projects%2F${projectNumber}%2Flocations%2Fus-central
 
 200 OK
 Content-Type: application/json; charset=UTF-8
-Server: ESF
+Server: scaffolding on HTTPServer2
 Vary: Origin
 Vary: X-Origin
 Vary: Referer

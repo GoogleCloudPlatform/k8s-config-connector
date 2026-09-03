@@ -46,7 +46,7 @@ func (s *ContactCenterInsightsServer) GetView(ctx context.Context, req *pb.GetVi
 	obj := &pb.View{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+			return nil, status.Errorf(codes.NotFound, "No view found for project: `%d` and view Id: `%s`.", name.Project.Number, name.View)
 		}
 		return nil, err
 	}
@@ -93,7 +93,7 @@ func (s *ContactCenterInsightsServer) UpdateView(ctx context.Context, req *pb.Up
 	obj := &pb.View{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+			return nil, status.Errorf(codes.NotFound, "No view found for project: `%d` and view Id: `%s`.", name.Project.Number, name.View)
 		}
 		return nil, err
 	}
@@ -129,7 +129,7 @@ func (s *ContactCenterInsightsServer) DeleteView(ctx context.Context, req *pb.De
 	obj := &pb.View{}
 	if err := s.storage.Delete(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+			return nil, status.Errorf(codes.NotFound, "No view found for project: `%d` and view Id: `%s`.", name.Project.Number, name.View)
 		}
 		return nil, err
 	}

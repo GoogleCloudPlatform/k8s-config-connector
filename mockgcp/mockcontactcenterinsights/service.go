@@ -77,7 +77,14 @@ func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (ht
 	}
 
 	mux.RewriteHeaders = func(ctx context.Context, response http.ResponseWriter, payload proto.Message) {
+		response.Header().Set("Server", "scaffolding on HTTPServer2")
 		response.Header().Del("Cache-Control")
+	}
+
+	mux.RewriteError = func(ctx context.Context, error *httpmux.ErrorResponse) {
+		if error.Code == 404 {
+			error.Errors = nil
+		}
 	}
 
 	return mux, nil
