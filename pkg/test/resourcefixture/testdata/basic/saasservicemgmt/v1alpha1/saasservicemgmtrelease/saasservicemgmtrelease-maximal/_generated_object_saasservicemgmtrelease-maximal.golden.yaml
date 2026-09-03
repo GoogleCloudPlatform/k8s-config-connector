@@ -27,6 +27,4 @@ status:
     type: Ready
   externalRef: projects/${projectId}/locations/us-central1/releases/saasservicemgmtrelease-${uniqueId}
   observedGeneration: 2
-  observedState:
-    createTime: "1970-01-01T00:00:00Z"
-    updateTime: "1970-01-01T00:00:00Z"
+  observedState: {}
