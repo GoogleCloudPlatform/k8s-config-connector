@@ -34,7 +34,7 @@ This skill guides the implementation of the `Adapter` interface
     2. If there are unexpected updates or writes in `_http.log`, diagnose and resolve these re-reconciliation diff bugs.
 
     **Resolution Steps for Re-reconciliation Diff Bugs**:
-    * **Handling Server Defaults with `common.MergeUnsetFields`**: If the server returns default values for fields not specified in KRM, use `common.MergeUnsetFields(desiredKRM, actualKRM)` (or standard compare pipelines like `common.CompareBrownfieldSpec` which internally leverage `MergeUnsetFields`) to adopt the actual server values into the desired state, preventing spurious update attempts on unspecified fields.
+    * **Comparing Diffs with `common.CompareBrownfieldSpec` for Server Defaults**: If the server returns default values for fields not specified in KRM, replace the diffing logic with `common.CompareBrownfieldSpec` to adopt the actual server values into the desired state before comparison, preventing spurious update attempts on unspecified fields.
     * **Link Normalization**: If the server returns formatted links (e.g., using relative paths or project numbers instead of project IDs) that differ from what the user specifies in KRM, write normalizers to convert both user-specified and server-returned URIs into a canonical format before comparison.
     * **Slice/List Sorting**: If the server returns elements in a repeated field in a non-deterministic or different order than specified in KRM (for unordered lists), sort the slice elements deterministically in both desired and actual states before comparison.
 
