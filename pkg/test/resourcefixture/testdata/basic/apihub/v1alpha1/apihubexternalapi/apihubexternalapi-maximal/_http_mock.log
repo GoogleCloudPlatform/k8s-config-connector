@@ -76,7 +76,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Resource \"projects/${projectId}/locations/us-central1/externalApis/extapi-${uniqueId}\" was not found",
+    "message": "Resource 'projects/${projectId}/locations/us-central1/externalApis/extapi-${uniqueId}' was not found",
     "status": "NOT_FOUND"
   }
 }
