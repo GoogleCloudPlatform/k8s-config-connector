@@ -47,7 +47,7 @@ func (s *ApiHubServer) GetExternalApi(ctx context.Context, req *pb.GetExternalAp
 	obj := &pb.ExternalApi{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "Resource %q was not found", fqn)
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
 		}
 		return nil, err
 	}
@@ -94,7 +94,7 @@ func (s *ApiHubServer) UpdateExternalApi(ctx context.Context, req *pb.UpdateExte
 	obj := &pb.ExternalApi{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "Resource %q was not found", fqn)
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
 		}
 		return nil, err
 	}
@@ -147,7 +147,7 @@ func (s *ApiHubServer) DeleteExternalApi(ctx context.Context, req *pb.DeleteExte
 	obj := &pb.ExternalApi{}
 	if err := s.storage.Delete(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "Resource %q was not found", fqn)
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
 		}
 		return nil, err
 	}
