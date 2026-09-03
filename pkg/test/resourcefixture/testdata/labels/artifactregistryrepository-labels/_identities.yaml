@@ -1,0 +1,12 @@
+- caisURL: //artifactregistry.googleapis.com/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}-2
+  group: artifactregistry.cnrm.cloud.google.com
+  kind: ArtifactRegistryRepository
+  name: arrepository-${uniqueId}-2
+  namespace: ${uniqueId}
+  version: v1beta1
+- caisURL: //artifactregistry.googleapis.com/projects/${projectId}/locations/us-west1/repositories/arrepository-${uniqueId}
+  group: artifactregistry.cnrm.cloud.google.com
+  kind: ArtifactRegistryRepository
+  name: arrepository-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1beta1
