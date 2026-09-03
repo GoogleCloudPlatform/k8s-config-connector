@@ -36,6 +36,9 @@ import (
 	metricstransport "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/metrics/transport"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/util"
+	"github.com/googleapis/gax-go/v2/apierror"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 
 	"golang.org/x/sync/semaphore"
 	corev1 "k8s.io/api/core/v1"
@@ -375,12 +378,23 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 		}
 
 		if !u.GetDeletionTimestamp().IsZero() {
+			if IsNotFound(err) {
+				logger.Info("underlying resource does not exist (Find returned NotFound); no API call necessary", "resource", k8s.GetNamespacedName(u))
+				return false, r.handleDeleted(ctx, u)
+			}
 			return false, r.handleDeleteFailed(ctx, u, err)
 		}
-		return false, r.handleUpdateFailed(ctx, u, err)
+
+		if IsNotFound(err) {
+			existsAlready = false
+			err = nil
+		} else {
+			return false, r.handleUpdateFailed(ctx, u, err)
+		}
 	}
 
 	defer execution.RecoverWithInternalError(&err)
+
 	if !u.GetDeletionTimestamp().IsZero() {
 		logger.Info("finalizing resource deletion", "resource", k8s.GetNamespacedName(u))
 		if !k8s.HasFinalizer(u, k8s.ControllerFinalizerName) {
@@ -398,14 +412,18 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 			logger.Info("deletion policy set to abandon; abandoning underlying resource", "resource", k8s.GetNamespacedName(u))
 			return false, r.handleDeleted(ctx, u)
 		}
+
 		if !existsAlready {
-			logger.Info("underlying resource does not exist; no API call necessary", "resource", k8s.GetNamespacedName(u))
+			logger.Info("underlying resource does not exist (existsAlready == false); no API call necessary", "resource", k8s.GetNamespacedName(u))
 			return false, r.handleDeleted(ctx, u)
 		}
 
 		logger.Info("deleting underlying resource", "resource", k8s.GetNamespacedName(u))
 		deleteOp := NewDeleteOperation(r.Reconciler.Client, u)
 		if _, err := adapter.Delete(ctx, deleteOp); err != nil {
+			if IsNotFound(err) {
+				return false, r.handleDeleted(ctx, u)
+			}
 			if !errors.Is(err, k8s.ErrIAMNotFound) && !k8s.IsReferenceNotFoundError(err) {
 				if unwrappedErr, ok := lifecyclehandler.CausedByUnresolvableDeps(err); ok {
 					logger.Info(unwrappedErr.Error(), "resource", k8s.GetNamespacedName(u))
@@ -623,4 +641,32 @@ func toK8sResource(policy *unstructured.Unstructured) (*k8s.Resource, error) {
 		return nil, fmt.Errorf("error marshalling to k8s resource: %w", err)
 	}
 	return &resource, nil
+}
+
+func IsNotFound(err error) bool {
+	if err == nil {
+		return false
+	}
+	apiError := &apierror.APIError{}
+	if errors.As(err, &apiError) {
+		if apiError.HTTPCode() == 404 {
+			return true
+		}
+		if apiError.HTTPCode() == -1 {
+			statusErr, ok := status.FromError(err)
+			if ok && statusErr.Code() == codes.NotFound {
+				return true
+			}
+		}
+	} else {
+		statusErr, ok := status.FromError(err)
+		if ok && statusErr.Code() == codes.NotFound {
+			return true
+		}
+	}
+	unwrapped := errors.Unwrap(err)
+	if unwrapped != nil {
+		return IsNotFound(unwrapped)
+	}
+	return false
 }
