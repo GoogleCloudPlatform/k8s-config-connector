@@ -1,0 +1,58 @@
+GET https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployments/depl-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+X-Audit-Probe: true
+
+200 OK
+X-Gfe-Server: ESF
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "deploymentType": {
+    "attribute": "projects/${projectId}/locations/us-central1/attributes/system-deployment-type",
+    "enumValues": {
+      "values": [
+        {
+          "description": "Apigee",
+          "displayName": "Apigee",
+          "id": "apigee",
+          "immutable": true
+        }
+      ]
+    }
+  },
+  "description": "A comprehensive APIHubDeployment for E2E testing - Updated",
+  "displayName": "Maximal APIHubDeployment Updated",
+  "documentation": {
+    "externalUri": "https://example.com/docs/v2"
+  },
+  "endpoints": [
+    "https://api.example.com",
+    "https://api.example.com/v2"
+  ],
+  "environment": {
+    "attribute": "projects/${projectId}/locations/us-central1/attributes/system-environment",
+    "enumValues": {
+      "values": [
+        {
+          "description": "Production",
+          "displayName": "Production",
+          "id": "prod"
+        }
+      ]
+    }
+  },
+  "name": "projects/${projectId}/locations/us-central1/deployments/depl-${uniqueId}",
+  "resourceUri": "organizations/test-org/environments/test-env/apis/test-api-v2",
+  "slo": {
+    "attribute": "projects/${projectId}/locations/us-central1/attributes/system-slo",
+    "enumValues": {
+      "values": [
+        {
+          "description": "99.99% SLO",
+          "displayName": "99.99%",
+          "id": "99-99"
+        }
+      ]
+    }
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
