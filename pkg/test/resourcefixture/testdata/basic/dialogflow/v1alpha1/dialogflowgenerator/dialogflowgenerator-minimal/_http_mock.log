@@ -16,13 +16,6 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "errors": [
-      {
-        "domain": "global",
-        "message": "Generator with ID dialogflowgenerator-min-${uniqueId} not found in projects/${projectId}.",
-        "reason": "notFound"
-      }
-    ],
     "message": "Generator with ID dialogflowgenerator-min-${uniqueId} not found in projects/${projectId}.",
     "status": "NOT_FOUND"
   }
