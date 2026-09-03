@@ -25,12 +25,7 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-type ApiHubServer struct {
-	*MockService
-	pb.UnimplementedApiHubServer
-}
-
-func populateApiAttributes(obj *pb.Api) {
+func populateExternalApiAttributes(obj *pb.ExternalApi) {
 	if obj == nil {
 		return
 	}
@@ -41,43 +36,43 @@ func populateApiAttributes(obj *pb.Api) {
 	}
 }
 
-func (s *ApiHubServer) GetApi(ctx context.Context, req *pb.GetApiRequest) (*pb.Api, error) {
-	name, err := s.parseApiName(req.Name)
+func (s *ApiHubServer) GetExternalApi(ctx context.Context, req *pb.GetExternalApiRequest) (*pb.ExternalApi, error) {
+	name, err := s.parseExternalApiName(req.Name)
 	if err != nil {
 		return nil, err
 	}
 
 	fqn := name.String()
 
-	obj := &pb.Api{}
+	obj := &pb.ExternalApi{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+			return nil, status.Errorf(codes.NotFound, "Resource %q was not found", fqn)
 		}
 		return nil, err
 	}
 
-	populateApiAttributes(obj)
+	populateExternalApiAttributes(obj)
 	return obj, nil
 }
 
-func (s *ApiHubServer) CreateApi(ctx context.Context, req *pb.CreateApiRequest) (*pb.Api, error) {
-	reqName := req.Parent + "/apis/" + req.ApiId
-	name, err := s.parseApiName(reqName)
+func (s *ApiHubServer) CreateExternalApi(ctx context.Context, req *pb.CreateExternalApiRequest) (*pb.ExternalApi, error) {
+	reqName := req.Parent + "/externalApis/" + req.ExternalApiId
+	name, err := s.parseExternalApiName(reqName)
 	if err != nil {
 		return nil, err
 	}
 
 	fqn := name.String()
 
-	obj := proto.Clone(req.Api).(*pb.Api)
+	obj := proto.Clone(req.ExternalApi).(*pb.ExternalApi)
 	obj.Name = fqn
 
 	now := timestamppb.Now()
 	obj.CreateTime = now
 	obj.UpdateTime = now
 
-	populateApiAttributes(obj)
+	populateExternalApiAttributes(obj)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -86,20 +81,20 @@ func (s *ApiHubServer) CreateApi(ctx context.Context, req *pb.CreateApiRequest) 
 	return obj, nil
 }
 
-func (s *ApiHubServer) UpdateApi(ctx context.Context, req *pb.UpdateApiRequest) (*pb.Api, error) {
-	apiName := req.GetApi().GetName()
+func (s *ApiHubServer) UpdateExternalApi(ctx context.Context, req *pb.UpdateExternalApiRequest) (*pb.ExternalApi, error) {
+	extApiName := req.GetExternalApi().GetName()
 
-	name, err := s.parseApiName(apiName)
+	name, err := s.parseExternalApiName(extApiName)
 	if err != nil {
 		return nil, err
 	}
 
 	fqn := name.String()
 
-	obj := &pb.Api{}
+	obj := &pb.ExternalApi{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+			return nil, status.Errorf(codes.NotFound, "Resource %q was not found", fqn)
 		}
 		return nil, err
 	}
@@ -109,43 +104,30 @@ func (s *ApiHubServer) UpdateApi(ctx context.Context, req *pb.UpdateApiRequest) 
 	if len(paths) == 0 {
 		// Treat as all paths if empty
 		paths = []string{
-			"display_name", "description", "owner", "documentation",
-			"target_user", "team", "business_unit", "maturity_level", "attributes",
+			"display_name", "description", "endpoints", "paths", "documentation", "attributes",
 		}
 	}
 
 	for _, path := range paths {
 		switch path {
 		case "display_name", "displayName":
-			obj.DisplayName = req.GetApi().GetDisplayName()
+			obj.DisplayName = req.GetExternalApi().GetDisplayName()
 		case "description":
-			obj.Description = req.GetApi().GetDescription()
-		case "owner":
-			obj.Owner = req.GetApi().GetOwner()
+			obj.Description = req.GetExternalApi().GetDescription()
+		case "endpoints":
+			obj.Endpoints = req.GetExternalApi().GetEndpoints()
+		case "paths":
+			obj.Paths = req.GetExternalApi().GetPaths()
 		case "documentation":
-			obj.Documentation = req.GetApi().GetDocumentation()
-		case "target_user", "targetUser":
-			obj.TargetUser = req.GetApi().GetTargetUser()
-		case "team":
-			obj.Team = req.GetApi().GetTeam()
-		case "business_unit", "businessUnit":
-			obj.BusinessUnit = req.GetApi().GetBusinessUnit()
-		case "maturity_level", "maturityLevel":
-			obj.MaturityLevel = req.GetApi().GetMaturityLevel()
+			obj.Documentation = req.GetExternalApi().GetDocumentation()
 		case "attributes":
-			obj.Attributes = req.GetApi().GetAttributes()
-		case "api_requirements", "apiRequirements":
-			obj.ApiRequirements = req.GetApi().GetApiRequirements()
-		case "api_functional_requirements", "apiFunctionalRequirements":
-			obj.ApiFunctionalRequirements = req.GetApi().GetApiFunctionalRequirements()
-		case "api_technical_requirements", "apiTechnicalRequirements":
-			obj.ApiTechnicalRequirements = req.GetApi().GetApiTechnicalRequirements()
+			obj.Attributes = req.GetExternalApi().GetAttributes()
 		}
 	}
 
 	obj.UpdateTime = timestamppb.Now()
 
-	populateApiAttributes(obj)
+	populateExternalApiAttributes(obj)
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -154,18 +136,18 @@ func (s *ApiHubServer) UpdateApi(ctx context.Context, req *pb.UpdateApiRequest) 
 	return obj, nil
 }
 
-func (s *ApiHubServer) DeleteApi(ctx context.Context, req *pb.DeleteApiRequest) (*emptypb.Empty, error) {
-	name, err := s.parseApiName(req.Name)
+func (s *ApiHubServer) DeleteExternalApi(ctx context.Context, req *pb.DeleteExternalApiRequest) (*emptypb.Empty, error) {
+	name, err := s.parseExternalApiName(req.Name)
 	if err != nil {
 		return nil, err
 	}
 
 	fqn := name.String()
 
-	obj := &pb.Api{}
+	obj := &pb.ExternalApi{}
 	if err := s.storage.Delete(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
+			return nil, status.Errorf(codes.NotFound, "Resource %q was not found", fqn)
 		}
 		return nil, err
 	}

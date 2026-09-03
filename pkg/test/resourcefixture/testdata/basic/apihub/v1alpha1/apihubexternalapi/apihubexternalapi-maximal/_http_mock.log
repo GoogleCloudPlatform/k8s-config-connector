@@ -1,6 +1,6 @@
 GET https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/attributes/attr-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fattributes%2Fattr-${uniqueId}
 
 404 Not Found
@@ -25,7 +25,7 @@ X-Xss-Protection: 0
 
 POST https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/attributes?%24alt=json%3Benum-encoding%3Dint&attributeId=attr-${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
 {
@@ -60,7 +60,7 @@ X-Xss-Protection: 0
 
 GET https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/externalApis/extapi-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FexternalApis%2Fextapi-${uniqueId}
 
 404 Not Found
@@ -76,7 +76,7 @@ X-Xss-Protection: 0
 {
   "error": {
     "code": 404,
-    "message": "Resource 'projects/${projectId}/locations/us-central1/externalApis/extapi-${uniqueId}' was not found",
+    "message": "Resource \"projects/${projectId}/locations/us-central1/externalApis/extapi-${uniqueId}\" was not found",
     "status": "NOT_FOUND"
   }
 }
@@ -85,7 +85,7 @@ X-Xss-Protection: 0
 
 POST https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/externalApis?%24alt=json%3Benum-encoding%3Dint&externalApiId=extapi-${uniqueId}
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
 {
@@ -153,7 +153,7 @@ X-Xss-Protection: 0
 
 GET https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/externalApis/extapi-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FexternalApis%2Fextapi-${uniqueId}
 
 200 OK
@@ -197,7 +197,7 @@ X-Xss-Protection: 0
 
 PATCH https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/externalApis/extapi-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=attributes%2Cdescription%2CdisplayName%2Cdocumentation%2Cendpoints%2Cpaths
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: external_api.name=projects%2F${projectId}%2Flocations%2Fus-central1%2FexternalApis%2Fextapi-${uniqueId}
 
 {
@@ -265,7 +265,7 @@ X-Xss-Protection: 0
 
 GET https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/externalApis/extapi-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FexternalApis%2Fextapi-${uniqueId}
 
 200 OK
@@ -309,7 +309,7 @@ X-Xss-Protection: 0
 
 DELETE https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/externalApis/extapi-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FexternalApis%2Fextapi-${uniqueId}
 
 200 OK
@@ -328,7 +328,7 @@ X-Xss-Protection: 0
 
 GET https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/attributes/attr-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fattributes%2Fattr-${uniqueId}
 
 200 OK
@@ -356,7 +356,7 @@ X-Xss-Protection: 0
 
 DELETE https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/attributes/attr-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fattributes%2Fattr-${uniqueId}
 
 200 OK

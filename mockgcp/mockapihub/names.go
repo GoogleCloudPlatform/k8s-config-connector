@@ -114,3 +114,34 @@ func (s *MockService) parseDeploymentName(name string) (*deploymentName, error) 
 		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 	}
 }
+
+type externalApiName struct {
+	Project         *projects.ProjectData
+	Location        string
+	ExternalApiName string
+}
+
+func (n *externalApiName) String() string {
+	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/externalApis/" + n.ExternalApiName
+}
+
+// parseExternalApiName parses a string into an externalApiName.
+// The expected form is projects/<projectID>/locations/<location>/externalApis/<externalApiName>
+func (s *MockService) parseExternalApiName(name string) (*externalApiName, error) {
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "externalApis" {
+		project, err := s.Projects.GetProjectByID(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		return &externalApiName{
+			Project:         project,
+			Location:        tokens[3],
+			ExternalApiName: tokens[5],
+		}, nil
+	} else {
+		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+	}
+}
