@@ -103,6 +103,8 @@ func (s *SaasDeploymentsServer) CreateRelease(ctx context.Context, req *pb.Creat
 	}
 
 	response := proto.Clone(obj).(*pb.Release)
+	response.CreateTime = nil
+	response.UpdateTime = nil
 	response.Etag = ""
 	return response, nil
 }
@@ -139,6 +141,8 @@ func (s *SaasDeploymentsServer) UpdateRelease(ctx context.Context, req *pb.Updat
 	}
 
 	response := proto.Clone(obj).(*pb.Release)
+	response.CreateTime = nil
+	response.UpdateTime = nil
 	response.Etag = ""
 	return response, nil
 }

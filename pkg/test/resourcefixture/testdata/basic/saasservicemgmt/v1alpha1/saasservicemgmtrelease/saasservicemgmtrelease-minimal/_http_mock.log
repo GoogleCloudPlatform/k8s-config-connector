@@ -54,14 +54,12 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "createTime": "2024-04-01T12:34:56.123456Z",
   "labels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
   },
   "name": "projects/${projectId}/locations/us-central1/releases/saasservicemgmtrelease-${uniqueId}",
-  "unitKind": "projects/${projectId}/locations/us-central1/unitKinds/kcc-test-unit-kind",
-  "updateTime": "2024-04-01T12:34:56.123456Z"
+  "unitKind": "projects/${projectId}/locations/us-central1/unitKinds/kcc-test-unit-kind"
 }
 
 ---
