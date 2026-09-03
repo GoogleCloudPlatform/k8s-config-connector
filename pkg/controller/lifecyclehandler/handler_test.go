@@ -287,12 +287,12 @@ func TestIsNonRetryableError(t *testing.T) {
 		{
 			name: "gRPC FailedPrecondition error",
 			err:  status.Error(codes.FailedPrecondition, "failed precondition"),
-			want: true,
+			want: false,
 		},
 		{
 			name: "gRPC OutOfRange error",
 			err:  status.Error(codes.OutOfRange, "out of range"),
-			want: true,
+			want: false,
 		},
 		{
 			name: "gRPC Unavailable error",
@@ -305,8 +305,18 @@ func TestIsNonRetryableError(t *testing.T) {
 			want: true,
 		},
 		{
-			name: "googleapi.Error 400 Bad Request",
+			name: "googleapi.Error 400 Bad Request (no matching body or message)",
 			err:  &googleapi.Error{Code: 400, Message: "bad request"},
+			want: false,
+		},
+		{
+			name: "googleapi.Error 400 Bad Request with invalid_argument status in body",
+			err:  &googleapi.Error{Code: 400, Message: "bad request", Body: `{"error": {"status": "INVALID_ARGUMENT"}}`},
+			want: true,
+		},
+		{
+			name: "googleapi.Error 400 Bad Request with invalid XXX field message",
+			err:  &googleapi.Error{Code: 400, Message: "invalid location field"},
 			want: true,
 		},
 		{
@@ -315,8 +325,8 @@ func TestIsNonRetryableError(t *testing.T) {
 			want: false,
 		},
 		{
-			name: "wrapped googleapi.Error 400 Bad Request",
-			err:  fmt.Errorf("failed during reconciliation: %w", &googleapi.Error{Code: 400, Message: "bad request"}),
+			name: "wrapped googleapi.Error 400 Bad Request with invalid XXX field message",
+			err:  fmt.Errorf("failed during reconciliation: %w", &googleapi.Error{Code: 400, Message: "invalid spec field"}),
 			want: true,
 		},
 	}

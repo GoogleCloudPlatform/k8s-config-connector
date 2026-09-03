@@ -27,6 +27,7 @@ import (
 	dclcontroller "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/dcl"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/errorhandling"
 	kccpredicate "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/predicate"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/ratelimiter"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/resourceconfig"
@@ -122,6 +123,11 @@ func (r *ParentReconciler) Reconcile(ctx context.Context, req reconcile.Request)
 	u.SetGroupVersionKind(r.gvk)
 	if err := r.Get(ctx, req.NamespacedName, u); err != nil {
 		return reconcile.Result{}, client.IgnoreNotFound(err)
+	}
+
+	if errorhandling.ShouldSkip(u) {
+		logger.Info("reconciliation skipped because resource is in terminal failure state and metadata.generation is unchanged", "resource", req.NamespacedName)
+		return reconcile.Result{}, nil
 	}
 
 	controllerType, err := r.determineControllerType(ctx, u)

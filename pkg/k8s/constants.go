@@ -45,6 +45,7 @@ const (
 	Updating                             = "Updating"
 	UpdatingMessage                      = "Update in progress"
 	UpdateFailed                         = "UpdateFailed"
+	UpdateFailedTerminalError            = "UpdateFailedTerminalError"
 	Deleting                             = "Deleting"
 	DeletingMessage                      = "Deletion in progress"
 	Deleted                              = "Deleted"

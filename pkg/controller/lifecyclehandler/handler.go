@@ -18,6 +18,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"strings"
 
 	corekccv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/core/v1alpha1"
 	k8sv1alpha1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
@@ -314,13 +315,17 @@ func (r *LifecycleHandler) HandleUpdating(ctx context.Context, resource *k8s.Res
 func (r *LifecycleHandler) HandleUpdateFailed(ctx context.Context, resource *k8s.Resource, err error) error {
 	structuredreporting.ReportError(ctx, err, resource)
 	msg := fmt.Errorf("Update call failed: %w", err).Error()
-	setCondition(resource, corev1.ConditionFalse, k8s.UpdateFailed, msg)
+	reason := k8s.UpdateFailed
+	if IsNonRetryableError(err) {
+		reason = k8s.UpdateFailedTerminalError
+	}
+	setCondition(resource, corev1.ConditionFalse, reason, msg)
 	setObservedGeneration(resource, resource.GetGeneration())
 	if err := r.updateStatus(ctx, resource); err != nil {
 		return err
 	}
 
-	r.recordEvent(ctx, resource, corev1.EventTypeWarning, k8s.UpdateFailed, msg)
+	r.recordEvent(ctx, resource, corev1.EventTypeWarning, reason, msg)
 	return fmt.Errorf("Update call failed: %w", err)
 }
 
@@ -440,7 +445,7 @@ type grpcStatus interface {
 }
 
 // IsNonRetryableError returns true if the error represents a non-retryable client error
-// such as INVALID_ARGUMENT, FAILED_PRECONDITION, OUT_OF_RANGE (gRPC) or 400 Bad Request (HTTP).
+// such as INVALID_ARGUMENT (gRPC) or 400 Bad Request (HTTP) with status "invalid_argument" or message containing "invalid XXX field".
 func IsNonRetryableError(err error) bool {
 	if err == nil {
 		return false
@@ -451,7 +456,7 @@ func IsNonRetryableError(err error) bool {
 	if errors.As(err, &gs) {
 		st := gs.GRPCStatus()
 		switch st.Code() {
-		case codes.InvalidArgument, codes.FailedPrecondition, codes.OutOfRange:
+		case codes.InvalidArgument:
 			return true
 		}
 	}
@@ -459,9 +464,16 @@ func IsNonRetryableError(err error) bool {
 	// 2. Check HTTP status code (googleapi.Error)
 	var ge *googleapi.Error
 	if errors.As(err, &ge) {
-		switch ge.Code {
-		case 400: // Bad Request
-			return true
+		if ge.Code == 400 {
+			bodyLower := strings.ToLower(ge.Body)
+			msgLower := strings.ToLower(ge.Message)
+			if strings.Contains(bodyLower, `"status": "invalid_argument"`) ||
+				strings.Contains(bodyLower, `"invalid_argument"`) {
+				return true
+			}
+			if strings.Contains(msgLower, "invalid") && strings.Contains(msgLower, "field") {
+				return true
+			}
 		}
 	}
 
