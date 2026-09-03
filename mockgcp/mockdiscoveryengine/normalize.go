@@ -30,7 +30,6 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.ReplacePath(".endTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.RemovePath(".servingConfigDataStore")
 	replacements.RemovePath(".response.servingConfigDataStore")
-
 	replacements.TransformLRO(func(m map[string]any) {
 		if resp, ok := m["response"].(map[string]any); ok {
 			if len(resp) == 0 || (len(resp) == 1 && resp["@type"] == "type.googleapis.com/google.protobuf.Empty") {

@@ -206,8 +206,13 @@ func (a *storageInsightsDatasetConfigAdapter) Update(ctx context.Context, update
 
 	structuredreporting.ReportDiff(ctx, diffs)
 
+	clonedDesired := proto.CloneOf(a.desired)
+	if clonedDesired.OrganizationNumber == 0 && a.actual != nil && a.actual.OrganizationNumber != 0 {
+		clonedDesired.OrganizationNumber = a.actual.OrganizationNumber
+	}
+
 	req := &pb.UpdateDatasetConfigRequest{
-		DatasetConfig: a.desired,
+		DatasetConfig: clonedDesired,
 		UpdateMask:    updateMask,
 	}
 
@@ -302,6 +307,12 @@ func compareDatasetConfig(ctx context.Context, actual, desired *pb.DatasetConfig
 	}
 
 	clonedDesired := proto.CloneOf(desired)
+
+	// OrganizationNumber is auto-populated by the GCP API if not specified in the desired spec.
+	// Overriding/copying it from actual/maskedActual to clonedDesired prevents false-positive diffs during reconciliation.
+	if clonedDesired.OrganizationNumber == 0 && maskedActual.OrganizationNumber != 0 {
+		clonedDesired.OrganizationNumber = maskedActual.OrganizationNumber
+	}
 
 	populateDefaults := func(obj *pb.DatasetConfig) {
 		// Populate server defaults if needed
