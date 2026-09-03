@@ -17,6 +17,7 @@ package mocknotebooks
 import (
 	"context"
 	"fmt"
+	"sort"
 	"time"
 
 	"google.golang.org/genproto/googleapis/longrunning"
@@ -114,8 +115,11 @@ func (s *NotebookServiceV2) CreateInstance(ctx context.Context, req *pb_v2.Creat
 		}
 	}
 	if gceSetup.Tags == nil {
-		gceSetup.Tags = []string{"deeplearning-vm", "notebook-instance"}
+		gceSetup.Tags = []string{}
 	}
+	gceSetup.Tags = append(gceSetup.Tags, "deeplearning-vm", "notebook-instance")
+	sort.Strings(gceSetup.Tags)
+
 	if len(gceSetup.NetworkInterfaces) == 0 {
 		gceSetup.NetworkInterfaces = []*pb_v2.NetworkInterface{
 			{

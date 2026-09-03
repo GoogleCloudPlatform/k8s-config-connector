@@ -1342,7 +1342,9 @@ GRPC /google.cloud.notebooks.v2.NotebookService/UpdateInstance
         "enableVtpm": true
       },
       "tags": [
+        "deeplearning-vm",
         "full-test",
+        "notebook-instance",
         "updated"
       ],
       "vmImage": {

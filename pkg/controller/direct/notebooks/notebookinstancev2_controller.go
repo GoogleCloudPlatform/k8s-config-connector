@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 	"slices"
+	"sort"
 
 	"k8s.io/apimachinery/pkg/util/sets"
 
@@ -273,8 +274,13 @@ func compareNotebooksV2(ctx context.Context, actual, desired *notebookspb.Instan
 			desGce.ServiceAccounts = actGce.ServiceAccounts
 			desGce.EnableIpForwarding = actGce.EnableIpForwarding
 			if desGce.Tags == nil {
-				desGce.Tags = actGce.Tags
+				desGce.Tags = []string{}
 			}
+			// GCP Notebooks V2 API injects two system tags on creation.
+			// We copy these to desired to prevent continuous diffs on tags.
+			desGce.Tags = append(desGce.Tags, "deeplearning-vm", "notebook-instance")
+			sort.Strings(desGce.Tags)
+
 			if desGce.GetContainerImage() == nil {
 				desGce.Image = &notebookspb.GceSetup_VmImage{VmImage: actGce.GetVmImage()}
 			}
