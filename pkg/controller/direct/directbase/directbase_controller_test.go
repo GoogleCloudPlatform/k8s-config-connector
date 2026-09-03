@@ -24,8 +24,10 @@ import (
 	operatorv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/lifecyclehandler"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	"google.golang.org/api/googleapi"
 
 	corev1 "k8s.io/api/core/v1"
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -424,5 +426,171 @@ func TestReconcile_FindUnresolvableDependency_Delete(t *testing.T) {
 
 	if readyCondition["reason"] != k8s.DependencyNotReady {
 		t.Errorf("expected condition reason to be %s, got: %v", k8s.DependencyNotReady, readyCondition["reason"])
+	}
+}
+
+func TestReconcile_UnreadableButDeletable_Delete(t *testing.T) {
+	ctx := context.TODO()
+	scheme := runtime.NewScheme()
+	_ = corev1.AddToScheme(scheme)
+	_ = operatorv1beta1.AddToScheme(scheme)
+
+	bqGVK := schema.GroupVersionKind{
+		Group:   "bigquery.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "BigQueryTable",
+	}
+
+	u := &unstructured.Unstructured{}
+	u.SetGroupVersionKind(bqGVK)
+	u.SetName("test-bq-table")
+	u.SetNamespace("test-ns")
+
+	// Set finalizer and deletion timestamp
+	now := metav1.Now()
+	u.SetDeletionTimestamp(&now)
+	u.SetFinalizers([]string{k8s.ControllerFinalizerName})
+
+	adapter := &mockAdapter{
+		findFound:     false,
+		findErr:       &googleapi.Error{Code: 400, Message: "external metastore schema drift error"},
+		deleteDeleted: true,
+	}
+	model := &mockModel{
+		adapter: adapter,
+	}
+
+	k8sClient := fake.NewClientBuilder().
+		WithScheme(scheme).
+		WithStatusSubresource(u).
+		WithRuntimeObjects(u).
+		Build()
+
+	r := &DirectReconciler{
+		LifecycleHandler: lifecyclehandler.NewLifecycleHandler(
+			k8sClient,
+			record.NewFakeRecorder(100),
+		),
+		Client:          k8sClient,
+		scheme:          scheme,
+		gvk:             bqGVK,
+		model:           model,
+		jitterGenerator: &mockJitterGenerator{},
+	}
+
+	req := reconcile.Request{
+		NamespacedName: types.NamespacedName{
+			Namespace: "test-ns",
+			Name:      "test-bq-table",
+		},
+	}
+
+	_, err := r.Reconcile(ctx, req)
+	if err != nil {
+		t.Fatalf("expected reconcile to succeed without error, but got: %v", err)
+	}
+
+	if !adapter.deleteCalled {
+		t.Error("expected Adapter.Delete() to be called when Find() fails with HTTP 400 on BigQueryTable")
+	}
+
+	// Verify that the finalizer has been removed from the resource (i.e. deleted successfully)
+	obj := &unstructured.Unstructured{}
+	obj.SetGroupVersionKind(bqGVK)
+	if err := k8sClient.Get(ctx, req.NamespacedName, obj); err != nil {
+		if !apierrors.IsNotFound(err) {
+			t.Fatalf("unexpected error retrieving object: %v", err)
+		}
+	} else {
+		finalizers := obj.GetFinalizers()
+		for _, f := range finalizers {
+			if f == k8s.ControllerFinalizerName {
+				t.Error("expected finalizer to be removed, but it is still present")
+			}
+		}
+	}
+}
+
+func TestReconcile_NotUnreadableButDeletable_DeleteFailed(t *testing.T) {
+	ctx := context.TODO()
+	scheme := runtime.NewScheme()
+	_ = corev1.AddToScheme(scheme)
+	_ = operatorv1beta1.AddToScheme(scheme)
+
+	containerGVK := schema.GroupVersionKind{
+		Group:   "container.cnrm.cloud.google.com",
+		Version: "v1beta1",
+		Kind:    "ContainerCluster",
+	}
+
+	u := &unstructured.Unstructured{}
+	u.SetGroupVersionKind(containerGVK)
+	u.SetName("test-container-cluster")
+	u.SetNamespace("test-ns")
+
+	// Set finalizer and deletion timestamp
+	now := metav1.Now()
+	u.SetDeletionTimestamp(&now)
+	u.SetFinalizers([]string{k8s.ControllerFinalizerName})
+
+	adapter := &mockAdapter{
+		findFound:     false,
+		findErr:       &googleapi.Error{Code: 400, Message: "some bad request error"},
+		deleteDeleted: true,
+	}
+	model := &mockModel{
+		adapter: adapter,
+	}
+
+	k8sClient := fake.NewClientBuilder().
+		WithScheme(scheme).
+		WithStatusSubresource(u).
+		WithRuntimeObjects(u).
+		Build()
+
+	r := &DirectReconciler{
+		LifecycleHandler: lifecyclehandler.NewLifecycleHandler(
+			k8sClient,
+			record.NewFakeRecorder(100),
+		),
+		Client:          k8sClient,
+		scheme:          scheme,
+		gvk:             containerGVK,
+		model:           model,
+		jitterGenerator: &mockJitterGenerator{},
+	}
+
+	req := reconcile.Request{
+		NamespacedName: types.NamespacedName{
+			Namespace: "test-ns",
+			Name:      "test-container-cluster",
+		},
+	}
+
+	_, err := r.Reconcile(ctx, req)
+	if err == nil {
+		t.Fatal("expected reconcile to fail with error, but got nil")
+	}
+
+	if adapter.deleteCalled {
+		t.Error("expected Adapter.Delete() NOT to be called when Find() fails with HTTP 400 on ContainerCluster")
+	}
+
+	// Verify that the finalizer is still present
+	obj := &unstructured.Unstructured{}
+	obj.SetGroupVersionKind(containerGVK)
+	if err := k8sClient.Get(ctx, req.NamespacedName, obj); err != nil {
+		t.Fatalf("unexpected error retrieving object: %v", err)
+	}
+	finalizers := obj.GetFinalizers()
+	hasFinalizer := false
+	for _, f := range finalizers {
+		if f == k8s.ControllerFinalizerName {
+			hasFinalizer = true
+			break
+		}
+	}
+	if !hasFinalizer {
+		t.Error("expected finalizer to still be present, but it was removed")
 	}
 }

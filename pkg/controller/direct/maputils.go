@@ -24,6 +24,7 @@ import (
 	"time"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/googleapis/gax-go/v2/apierror"
 	statuspb "google.golang.org/genproto/googleapis/rpc/status"
 	grpcCode "google.golang.org/grpc/codes"
@@ -655,4 +656,8 @@ func Status_ToProto(mapCtx *MapContext, in *common.Status) *statuspb.Status {
 	out.Code = ValueOf(in.Code)
 	out.Message = ValueOf(in.Message)
 	return out
+}
+
+func init() {
+	directbase.IsNotFound = IsNotFound
 }

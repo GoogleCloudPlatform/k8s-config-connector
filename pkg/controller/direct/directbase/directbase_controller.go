@@ -375,9 +375,15 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 		}
 
 		if !u.GetDeletionTimestamp().IsZero() {
-			return false, r.handleDeleteFailed(ctx, u, err)
+			if IsUnreadableButDeletable(u.GroupVersionKind(), err) {
+				logger.Info("resource is unreadable-but-deletable; proceeding with deletion anyway", "resource", k8s.GetNamespacedName(u), "error", err)
+				existsAlready = true
+			} else {
+				return false, r.handleDeleteFailed(ctx, u, err)
+			}
+		} else {
+			return false, r.handleUpdateFailed(ctx, u, err)
 		}
-		return false, r.handleUpdateFailed(ctx, u, err)
 	}
 
 	defer execution.RecoverWithInternalError(&err)
