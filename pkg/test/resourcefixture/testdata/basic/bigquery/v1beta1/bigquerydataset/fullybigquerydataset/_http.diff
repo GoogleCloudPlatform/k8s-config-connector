@@ -1,61 +1,102 @@
-367,368c367
+394,395c394,446
 < GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
 < Content-Type: application/json
 ---
+> GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+> 
+> 404 Not Found
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "error": {
+>     "code": 404,
+>     "errors": [
+>       {
+>         "domain": "global",
+>         "message": "Service account projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com does not exist.",
+>         "reason": "notFound"
+>       }
+>     ],
+>     "message": "Service account projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com does not exist.",
+>     "status": "NOT_FOUND"
+>   }
+> }
+> 
+> ---
+> 
+> GET https://iam.googleapis.com/v1/projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com?alt=json&prettyPrint=false
+> 
+> 200 OK
+> Content-Type: application/json; charset=UTF-8
+> Server: ESF
+> Vary: Origin
+> Vary: X-Origin
+> Vary: Referer
+> X-Content-Type-Options: nosniff
+> X-Frame-Options: SAMEORIGIN
+> X-Xss-Protection: 0
+> 
+> {
+>   "email": "iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+>   "etag": "abcdef0123A=",
+>   "name": "projects/${projectId}/serviceAccounts/iamsa-${uniqueId}@${projectId}.iam.gserviceaccount.com",
+>   "oauth2ClientId": "888888888888888888888",
+>   "projectId": "${projectId}",
+>   "uniqueId": "111111111111111111111"
+> }
+> 
+> ---
+> 
 > GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
-397c396
+424c475
 < POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets?alt=json
 ---
 > POST https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets?alt=json&prettyPrint=false
-414,415c413,414
+441,442c492,493
 <   "defaultPartitionExpirationMs": 3600000,
 <   "defaultTableExpirationMs": 3600000,
 ---
 >   "defaultPartitionExpirationMs": "3600000",
 >   "defaultTableExpirationMs": "3600000",
-474,475c473
+501,502c552
 < GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
 < Content-Type: application/json
 ---
 > GET https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
-524c522
+551c601
 < PUT https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json
 ---
 > PATCH https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&prettyPrint=false
-538a537,540
->       "specialGroup": "projectOwners"
->     },
->     {
->       "role": "OWNER",
-542,544d543
+569,571d618
 <   "datasetReference": {
 <     "datasetId": "bigquerydataset${uniqueId}"
 <   },
-549,550c548,549
+576,577c623,624
 <   "defaultPartitionExpirationMs": 3800000,
 <   "defaultTableExpirationMs": 3800000,
 ---
 >   "defaultPartitionExpirationMs": "3800000",
 >   "defaultTableExpirationMs": "3800000",
-552a552
+579a627
 >   "isCaseInsensitive": false,
-557d556
+584d631
 <   "location": "US",
-583a583,586
->       "specialGroup": "projectOwners"
->     },
->     {
->       "role": "OWNER",
-601a605
+629c676
+<   "isCaseInsensitive": true,
+---
 >   "isCaseInsensitive": false,
-641a646,649
->       "specialGroup": "projectOwners"
->     },
->     {
->       "role": "OWNER",
-659a668
+688c735
+<   "isCaseInsensitive": true,
+---
 >   "isCaseInsensitive": false,
-675,676c684,746
+704,705c751,809
 < DELETE https://bigquery.googleapis.com/bigquery/v2/projects/${projectId}/datasets/${datasetID}?alt=json&deleteContents=false
 < Content-Type: application/json
 ---
@@ -76,10 +117,6 @@
 >     {
 >       "domain": "google.com",
 >       "role": "READER"
->     },
->     {
->       "role": "OWNER",
->       "specialGroup": "projectOwners"
 >     },
 >     {
 >       "role": "OWNER",

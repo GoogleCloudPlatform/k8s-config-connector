@@ -188,9 +188,7 @@ X-Xss-Protection: 0
   "done": true,
   "name": "operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/mockgcp.api.serviceusage.v1beta1.ServiceIdentity",
-    "email": "bq-${projectNumber}@bigquery-encryption.iam.gserviceaccount.com",
-    "uniqueId": "12345678"
+    "@type": "type.googleapis.com/google.api.serviceusage.v1beta1.ServiceIdentity"
   }
 }
 
@@ -537,10 +535,6 @@ Content-Type: application/json
     },
     {
       "role": "OWNER",
-      "specialGroup": "projectOwners"
-    },
-    {
-      "role": "OWNER",
       "userByEmail": "user@google.com"
     }
   ],
@@ -576,10 +570,6 @@ X-Xss-Protection: 0
     {
       "domain": "google.com",
       "role": "READER"
-    },
-    {
-      "role": "OWNER",
-      "specialGroup": "projectOwners"
     },
     {
       "role": "OWNER",
@@ -646,10 +636,6 @@ X-Xss-Protection: 0
     },
     {
       "role": "OWNER",
-      "specialGroup": "projectOwners"
-    },
-    {
-      "role": "OWNER",
       "userByEmail": "user@google.com"
     }
   ],
@@ -701,10 +687,6 @@ X-Xss-Protection: 0
     {
       "domain": "google.com",
       "role": "READER"
-    },
-    {
-      "role": "OWNER",
-      "specialGroup": "projectOwners"
     },
     {
       "role": "OWNER",

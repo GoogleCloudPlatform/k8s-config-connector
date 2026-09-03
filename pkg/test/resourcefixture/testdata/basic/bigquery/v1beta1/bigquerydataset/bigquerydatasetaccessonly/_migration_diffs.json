@@ -1,0 +1,194 @@
+[
+  {
+    "controller": "tf",
+    "isNewObject": true,
+    "resource": "BigQueryDataset/bigquerydataset${uniqueId}",
+    "fields": [
+      {
+        "id": "access.#",
+        "old": "0",
+        "new": "2"
+      },
+      {
+        "id": "access.1721160693.dataset.#",
+        "old": "0",
+        "new": "0"
+      },
+      {
+        "id": "access.1721160693.domain",
+        "old": "",
+        "new": "google.com"
+      },
+      {
+        "id": "access.1721160693.group_by_email",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "access.1721160693.iam_member",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "access.1721160693.role",
+        "old": "",
+        "new": "READER"
+      },
+      {
+        "id": "access.1721160693.routine.#",
+        "old": "0",
+        "new": "0"
+      },
+      {
+        "id": "access.1721160693.special_group",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "access.1721160693.user_by_email",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "access.1721160693.view.#",
+        "old": "0",
+        "new": "0"
+      },
+      {
+        "id": "access.3793192849.dataset.#",
+        "old": "0",
+        "new": "0"
+      },
+      {
+        "id": "access.3793192849.domain",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "access.3793192849.group_by_email",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "access.3793192849.iam_member",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "access.3793192849.role",
+        "old": "",
+        "new": "OWNER"
+      },
+      {
+        "id": "access.3793192849.routine.#",
+        "old": "0",
+        "new": "0"
+      },
+      {
+        "id": "access.3793192849.special_group",
+        "old": "",
+        "new": "projectOwners"
+      },
+      {
+        "id": "access.3793192849.user_by_email",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "access.3793192849.view.#",
+        "old": "0",
+        "new": "0"
+      },
+      {
+        "id": "creation_time",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "dataset_id",
+        "old": "",
+        "new": "bigquerydataset${uniqueId}"
+      },
+      {
+        "id": "default_collation",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "default_table_expiration_ms",
+        "old": "",
+        "new": "3600000"
+      },
+      {
+        "id": "delete_contents_on_destroy",
+        "old": "",
+        "new": "false"
+      },
+      {
+        "id": "description",
+        "old": "",
+        "new": "BigQuery Dataset With Access Block"
+      },
+      {
+        "id": "etag",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "friendly_name",
+        "old": "",
+        "new": "bigquerydataset-accessonly"
+      },
+      {
+        "id": "is_case_insensitive",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "labels.%",
+        "old": "0",
+        "new": "2"
+      },
+      {
+        "id": "labels.cnrm-test",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "labels.managed-by-cnrm",
+        "old": "",
+        "new": "true"
+      },
+      {
+        "id": "last_modified_time",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "location",
+        "old": "",
+        "new": "US"
+      },
+      {
+        "id": "max_time_travel_hours",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "project",
+        "old": "",
+        "new": "${projectId}"
+      },
+      {
+        "id": "self_link",
+        "old": "",
+        "new": ""
+      },
+      {
+        "id": "storage_billing_model",
+        "old": "",
+        "new": ""
+      }
+    ]
+  }
+]
