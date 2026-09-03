@@ -19,13 +19,25 @@ This skill guides the implementation of the `Adapter` interface
     - Implement `Find`, `Create`, `Update`, and `Delete`.
     - Use the generated mappers and manual mappers as needed.
     - Ensure correct error handling (e.g., handling 404s in `Find`).
+    - **Service-Generated Resource IDs**: If the brownfield resource has a service-generated resource ID, see the `kcc-direct-service-generated-id` skill for mandatory identity and reconciler rules (including `Find()` pre-check guards, `Create()` request handling, and `GetIdentity()` comparison rules).
 
 1.5. **Remove from Ratcheting Exclusions (MANDATORY)**:
-    Before running the test cases against real or mock GCP, you **MUST** ensure the target resource is removed from the ratcheting exclusion list in `tests/e2e/ratcheting.go`. This enables the re-reconciliation test step, which is a fundamental use case KCC resources must support.
+    This controller logic phase is the **primary stage** where the target resource must be removed from the ratcheting exclusion list in `tests/e2e/ratcheting.go`. Removing the exclusion activates Server-Side Apply (SSA) creation and re-reconciliation verification within the test runner. This is a fundamental KCC capability that ensures direct controllers support 0-write re-reconciliation.
+
+    To remove the resource from the exclusions:
     1. Open `tests/e2e/ratcheting.go`.
     2. Locate the function `ShouldTestRereconiliation`.
     3. Locate the `switch` statement that checks `primaryResource.GroupVersionKind()`.
     4. If there is a `case` block for your target resource's `GroupKind`, remove that `case` line from the switch statement.
+
+    After removing the exclusion, you **MUST** validate and re-record the standard fixtures (`TestAllInSeries`) against live GCP to verify 0-write re-reconciliation:
+    1. Run the recorder: `./hack/record-gcp TestAllInSeries/fixtures/<fixture-name>` (or all fixtures for this kind).
+    2. If there are unexpected updates or writes in `_http.log`, diagnose and resolve these re-reconciliation diff bugs.
+
+    **Resolution Steps for Re-reconciliation Diff Bugs**:
+    * **Comparing Diffs with `common.CompareBrownfieldSpec` for Server Defaults**: If the server returns default values for fields not specified in KRM, replace the diffing logic with `common.CompareBrownfieldSpec` to adopt the actual server values into the desired state before comparison, preventing spurious update attempts on unspecified fields.
+    * **Link Normalization**: If the server returns formatted links (e.g., using relative paths or project numbers instead of project IDs) that differ from what the user specifies in KRM, write normalizers to convert both user-specified and server-returned URIs into a canonical format before comparison.
+    * **Slice/List Sorting**: If the server returns elements in a repeated field in a non-deterministic or different order than specified in KRM (for unordered lists), sort the slice elements deterministically in both desired and actual states before comparison.
 
 2.  **Verify and Record against MockGCP / Fix Discrepancies**:
     Run the fixtures tests against mock GCP to check behavior, update golden files, and verify correctness.

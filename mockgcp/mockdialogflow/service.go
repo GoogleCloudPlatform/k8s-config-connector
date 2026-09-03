@@ -21,6 +21,7 @@ package mockdialogflow
 import (
 	"context"
 	"net/http"
+	"strings"
 
 	"google.golang.org/grpc"
 
@@ -58,15 +59,25 @@ func (s *MockService) ExpectedHosts() []string {
 
 func (s *MockService) Register(grpcServer *grpc.Server) {
 	pb.RegisterSipTrunksServer(grpcServer, &sipTrunksServer{MockService: s})
+	pb.RegisterGeneratorsServer(grpcServer, &generatorsServer{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {
-	mux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
+	grpcMux, err := httpmux.NewServeMux(ctx, conn, httpmux.Options{},
 		grpcpb.RegisterSipTrunksHandler,
+		grpcpb.RegisterGeneratorsHandler,
 	)
 	if err != nil {
 		return nil, err
 	}
+
+	mux := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// Rewrite /v2/ to /v2beta1/ for dialogflow
+		if strings.HasPrefix(r.URL.Path, "/v2/") {
+			r.URL.Path = "/v2beta1/" + strings.TrimPrefix(r.URL.Path, "/v2/")
+		}
+		grpcMux.ServeHTTP(w, r)
+	})
 
 	return mux, nil
 }

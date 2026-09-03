@@ -258,6 +258,18 @@ def load_service_prefixes():
             return json.load(f)
     return {}
 
+def load_deprecated_services():
+    deprecated_file = os.path.join(os.path.dirname(__file__), "deprecated_services.json")
+    deprecated_set = set()
+    if os.path.exists(deprecated_file):
+        with open(deprecated_file, 'r') as f:
+            deprecated_data = json.load(f)
+            for item in deprecated_data:
+                service_base = item["service"].replace(".googleapis.com", "").lower()
+                for kind in item["kinds"]:
+                    deprecated_set.add((service_base, kind.lower()))
+    return deprecated_set
+
 service_prefixes_config = load_service_prefixes()
 service_prefixes = service_prefixes_config.get("prefixes", {})
 acronym_corrections = service_prefixes_config.get("acronyms", {})
@@ -484,26 +496,42 @@ def main():
     all_gcp_keys = set(gcp_resources.keys())
     covered = {key for key in covered if key in all_gcp_keys}
     missing = all_gcp_keys - covered
+
+    deprecated_services = load_deprecated_services()
+    deprecated_keys = set()
+    for key, info in gcp_resources.items():
+        if key in key_to_kcc_kind:
+            kcc_kind = key_to_kcc_kind[key]
+        else:
+            kcc_kind = get_predicted_kcc_kind(info['service'], info['name'])
+        if (info['service'].lower(), kcc_kind.lower()) in deprecated_services:
+            deprecated_keys.add(key)
+
+    implemented_deprecated = covered & deprecated_keys
+    missing_deprecated = missing & deprecated_keys
+
+    active_covered = covered - deprecated_keys
+    active_missing = missing - deprecated_keys
     
     # Calculate how many raw rtypes were unified
     total_raw_rtypes = sum(len(info['rtypes']) for info in gcp_resources.values())
     unification_count = total_raw_rtypes - len(gcp_resources)
 
-    # Manageable = Has at least one CRUD function
+    # Manageable = Has at least one CRUD function (excluding deprecated keys)
     manageable_gcp = {key for key, info in gcp_resources.items() if len(info['ops']) > 0}
-    missing_manageable = manageable_gcp - covered
+    missing_manageable = manageable_gcp - covered - deprecated_keys
 
-    # Fully Manageable = Has both CREATE and DELETE functions
+    # Fully Manageable = Has both CREATE and DELETE functions (excluding deprecated keys)
     fully_manageable_gcp = {key for key, info in gcp_resources.items() if 'CREATE' in info['ops'] and 'DELETE' in info['ops']}
-    missing_fully_manageable = fully_manageable_gcp - covered
+    missing_fully_manageable = fully_manageable_gcp - covered - deprecated_keys
 
-    # Partially Manageable = Has CREATE but lacks DELETE
+    # Partially Manageable = Has CREATE but lacks DELETE (excluding deprecated keys)
     partially_manageable_gcp = {key for key, info in gcp_resources.items() if 'CREATE' in info['ops'] and 'DELETE' not in info['ops']}
-    missing_partially_manageable = partially_manageable_gcp - covered
+    missing_partially_manageable = partially_manageable_gcp - covered - deprecated_keys
 
-    # Adoptable = Has no CREATE but has at least one other CRUD function
+    # Adoptable = Has no CREATE but has at least one other CRUD function (excluding deprecated keys)
     adoptable_gcp = {key for key, info in gcp_resources.items() if 'CREATE' not in info['ops'] and len(info['ops']) > 0}
-    missing_adoptable = adoptable_gcp - covered
+    missing_adoptable = adoptable_gcp - covered - deprecated_keys
 
     # Easy = Fully Manageable AND Leaf pattern
     missing_easy = {key for key in missing_fully_manageable if is_leaf(gcp_resources[key]['patterns'])}
@@ -524,7 +552,7 @@ def main():
     if update_gap:
         now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-        missing_non_manageable = len(missing - missing_manageable)
+        missing_non_manageable = len(active_missing - missing_manageable)
         missing_deeply_nested = len(missing_fully_manageable - missing_easy - missing_next_layer - missing_next_next_layer)
 
         analysis_lines = [
@@ -536,11 +564,12 @@ def main():
             "-" * 55,
             f"{'Total GCP Resources (Raw)':<30} | {all_gcp_raw_count:<10}",
             f"{'  ├── Processed (Unified)':<30} | {len(all_gcp_keys):<10}",
+            f"{'  ├── Deprecated Resources':<30} | {len(deprecated_keys):<10}",
             f"{'  ├── Skipped Resources':<30} | {skipped_count:<10}",
             f"{'  └── Unified (Hierarchical)':<30} | {unification_count:<10}",
             "-" * 55,
-            f"{'Implemented in KCC':<30} | {len(covered):<10}",
-            f"{'Missing from KCC':<30} | {len(missing):<10}",
+            f"{'Implemented in KCC':<30} | {len(active_covered):<10}",
+            f"{'Missing from KCC':<30} | {len(active_missing):<10}",
             f"{'  ├── Unmanageable':<30} | {missing_non_manageable:<10}",
             f"{'  └── Manageable':<30} | {len(missing_manageable):<10}",
             f"{'        ├── Adoptable':<30} | {len(missing_adoptable):<10}",
@@ -565,7 +594,7 @@ def main():
             available_ops = sorted(list(info['ops']))
             missing_ops = sorted(list({'CREATE', 'READ', 'UPDATE', 'DELETE'} - info['ops']))
             layer = get_layer(info['patterns'], info['ops'])
-            status = "implemented" if key in covered else "missing"
+            status = "deprecated" if key in deprecated_keys else ("implemented" if key in covered else "missing")
 
             if key in key_to_kcc_kind:
                 kcc_kind = key_to_kcc_kind[key]

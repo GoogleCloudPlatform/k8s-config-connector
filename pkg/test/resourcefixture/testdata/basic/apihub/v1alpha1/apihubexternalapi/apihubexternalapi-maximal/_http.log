@@ -1,3 +1,63 @@
+GET https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/attributes/attr-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fattributes%2Fattr-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource \"projects/${projectId}/locations/us-central1/attributes/attr-${uniqueId}\" was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/attributes?%24alt=json%3Benum-encoding%3Dint&attributeId=attr-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "dataType": 3,
+  "displayName": "Minimal APIHubAttribute for External API",
+  "name": "projects/${projectId}/locations/us-central1/attributes/attr-${uniqueId}",
+  "scope": 8
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "cardinality": 1,
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "dataType": 3,
+  "definitionType": 2,
+  "displayName": "Minimal APIHubAttribute for External API",
+  "name": "projects/${projectId}/locations/us-central1/attributes/attr-${uniqueId}",
+  "scope": 8,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
 GET https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/externalApis/extapi-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
@@ -29,6 +89,15 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
 X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
 
 {
+  "attributes": {
+    "projects/${projectId}/locations/us-central1/attributes/attr-${uniqueId}": {
+      "stringValues": {
+        "values": [
+          "hello-world"
+        ]
+      }
+    }
+  },
   "description": "A comprehensive APIHubExternalAPI for E2E testing",
   "displayName": "Maximal APIHubExternalAPI",
   "documentation": {
@@ -54,6 +123,16 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "attributes": {
+    "projects/${projectId}/locations/us-central1/attributes/attr-${uniqueId}": {
+      "attribute": "projects/${projectId}/locations/us-central1/attributes/attr-${uniqueId}",
+      "stringValues": {
+        "values": [
+          "hello-world"
+        ]
+      }
+    }
+  },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "A comprehensive APIHubExternalAPI for E2E testing",
   "displayName": "Maximal APIHubExternalAPI",
@@ -88,6 +167,16 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "attributes": {
+    "projects/${projectId}/locations/us-central1/attributes/attr-${uniqueId}": {
+      "attribute": "projects/${projectId}/locations/us-central1/attributes/attr-${uniqueId}",
+      "stringValues": {
+        "values": [
+          "hello-world"
+        ]
+      }
+    }
+  },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "A comprehensive APIHubExternalAPI for E2E testing",
   "displayName": "Maximal APIHubExternalAPI",
@@ -106,12 +195,21 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/externalApis/extapi-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2CdisplayName%2Cdocumentation%2Cendpoints%2Cpaths
+PATCH https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/externalApis/extapi-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=attributes%2Cdescription%2CdisplayName%2Cdocumentation%2Cendpoints%2Cpaths
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: external_api.name=projects%2F${projectId}%2Flocations%2Fus-central1%2FexternalApis%2Fextapi-${uniqueId}
 
 {
+  "attributes": {
+    "projects/${projectId}/locations/us-central1/attributes/attr-${uniqueId}": {
+      "stringValues": {
+        "values": [
+          "hello-world-updated"
+        ]
+      }
+    }
+  },
   "description": "An updated comprehensive APIHubExternalAPI for E2E testing",
   "displayName": "Maximal APIHubExternalAPI Updated",
   "documentation": {
@@ -137,6 +235,16 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "attributes": {
+    "projects/${projectId}/locations/us-central1/attributes/attr-${uniqueId}": {
+      "attribute": "projects/${projectId}/locations/us-central1/attributes/attr-${uniqueId}",
+      "stringValues": {
+        "values": [
+          "hello-world-updated"
+        ]
+      }
+    }
+  },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "An updated comprehensive APIHubExternalAPI for E2E testing",
   "displayName": "Maximal APIHubExternalAPI Updated",
@@ -171,6 +279,16 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "attributes": {
+    "projects/${projectId}/locations/us-central1/attributes/attr-${uniqueId}": {
+      "attribute": "projects/${projectId}/locations/us-central1/attributes/attr-${uniqueId}",
+      "stringValues": {
+        "values": [
+          "hello-world-updated"
+        ]
+      }
+    }
+  },
   "createTime": "2024-04-01T12:34:56.123456Z",
   "description": "An updated comprehensive APIHubExternalAPI for E2E testing",
   "displayName": "Maximal APIHubExternalAPI Updated",
@@ -193,6 +311,53 @@ DELETE https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-centr
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
 X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FexternalApis%2Fextapi-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/attributes/attr-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fattributes%2Fattr-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "cardinality": 1,
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "dataType": 3,
+  "definitionType": 2,
+  "displayName": "Minimal APIHubAttribute for External API",
+  "name": "projects/${projectId}/locations/us-central1/attributes/attr-${uniqueId}",
+  "scope": 8,
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/attributes/attr-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fattributes%2Fattr-${uniqueId}
 
 200 OK
 Content-Type: application/json; charset=UTF-8

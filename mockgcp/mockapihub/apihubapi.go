@@ -30,6 +30,17 @@ type ApiHubServer struct {
 	pb.UnimplementedApiHubServer
 }
 
+func populateApiAttributes(obj *pb.Api) {
+	if obj == nil {
+		return
+	}
+	for k, v := range obj.Attributes {
+		if v != nil {
+			v.Attribute = k
+		}
+	}
+}
+
 func (s *ApiHubServer) GetApi(ctx context.Context, req *pb.GetApiRequest) (*pb.Api, error) {
 	name, err := s.parseApiName(req.Name)
 	if err != nil {
@@ -46,6 +57,7 @@ func (s *ApiHubServer) GetApi(ctx context.Context, req *pb.GetApiRequest) (*pb.A
 		return nil, err
 	}
 
+	populateApiAttributes(obj)
 	return obj, nil
 }
 
@@ -64,6 +76,8 @@ func (s *ApiHubServer) CreateApi(ctx context.Context, req *pb.CreateApiRequest) 
 	now := timestamppb.Now()
 	obj.CreateTime = now
 	obj.UpdateTime = now
+
+	populateApiAttributes(obj)
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -130,6 +144,8 @@ func (s *ApiHubServer) UpdateApi(ctx context.Context, req *pb.UpdateApiRequest) 
 	}
 
 	obj.UpdateTime = timestamppb.Now()
+
+	populateApiAttributes(obj)
 
 	if err := s.storage.Update(ctx, fqn, obj); err != nil {
 		return nil, err
