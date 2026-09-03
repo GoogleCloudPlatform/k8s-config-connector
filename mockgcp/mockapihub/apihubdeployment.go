@@ -38,7 +38,7 @@ func (s *ApiHubServer) GetDeployment(ctx context.Context, req *pb.GetDeploymentR
 	obj := &pb.Deployment{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "Resource %q was not found", fqn)
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
 		}
 		return nil, err
 	}
@@ -84,7 +84,7 @@ func (s *ApiHubServer) UpdateDeployment(ctx context.Context, req *pb.UpdateDeplo
 	obj := &pb.Deployment{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "Resource %q was not found", fqn)
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
 		}
 		return nil, err
 	}
@@ -140,7 +140,7 @@ func (s *ApiHubServer) DeleteDeployment(ctx context.Context, req *pb.DeleteDeplo
 	obj := &pb.Deployment{}
 	if err := s.storage.Delete(ctx, fqn, obj); err != nil {
 		if status.Code(err) == codes.NotFound {
-			return nil, status.Errorf(codes.NotFound, "Resource %q was not found", fqn)
+			return nil, status.Errorf(codes.NotFound, "Resource '%s' was not found", fqn)
 		}
 		return nil, err
 	}
