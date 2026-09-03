@@ -126,6 +126,11 @@ type Adapter struct {
 }
 
 var _ directbase.Adapter = &Adapter{}
+var _ directbase.UnreadableDeleter = &Adapter{}
+
+func (a *Adapter) IsUnreadableButDeletable(err error) bool {
+	return direct.IsBadRequest(err)
+}
 
 func (a *Adapter) Find(ctx context.Context) (bool, error) {
 	log := klog.FromContext(ctx)
