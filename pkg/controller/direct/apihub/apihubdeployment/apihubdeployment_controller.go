@@ -18,8 +18,6 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
-
 	gcp "cloud.google.com/go/apihub/apiv1"
 	pb "cloud.google.com/go/apihub/apiv1/apihubpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/apihub/v1alpha1"
@@ -27,10 +25,12 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/apihub"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/directbase"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/registry"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	"google.golang.org/api/option"
-	"google.golang.org/protobuf/types/known/fieldmaskpb"
+	"google.golang.org/protobuf/proto"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -76,11 +76,22 @@ func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForO
 		return nil, fmt.Errorf("error converting to %T: %w", obj, err)
 	}
 
+	if err := common.NormalizeReferences(ctx, reader, obj, nil); err != nil {
+		return nil, fmt.Errorf("normalizing references: %w", err)
+	}
+
 	idBase, err := obj.GetIdentity(ctx, reader)
 	if err != nil {
 		return nil, err
 	}
 	id := idBase.(*krm.APIHubDeploymentIdentity)
+
+	mapCtx := &direct.MapContext{}
+	desired := apihub.APIHubDeploymentSpec_ToProto(mapCtx, &obj.Spec)
+	if mapCtx.Err() != nil {
+		return nil, mapCtx.Err()
+	}
+	desired.Name = id.String()
 
 	gcpClient, err := m.client(ctx)
 	if err != nil {
@@ -89,7 +100,7 @@ func (m *model) AdapterForObject(ctx context.Context, op *directbase.AdapterForO
 	return &Adapter{
 		id:        id,
 		gcpClient: gcpClient,
-		desired:   obj,
+		desired:   desired,
 	}, nil
 }
 
@@ -100,7 +111,7 @@ func (m *model) AdapterForURL(ctx context.Context, url string) (directbase.Adapt
 type Adapter struct {
 	id        *krm.APIHubDeploymentIdentity
 	gcpClient *gcp.Client
-	desired   *krm.APIHubDeployment
+	desired   *pb.Deployment
 	actual    *pb.Deployment
 }
 
@@ -126,21 +137,11 @@ func (a *Adapter) Find(ctx context.Context) (bool, error) {
 func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperation) error {
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating APIHubDeployment")
-	mapCtx := &direct.MapContext{}
-
-	desired := a.desired.DeepCopy()
-	resource := apihub.APIHubDeploymentSpec_ToProto(mapCtx, &desired.Spec)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-	resource.Name = a.id.String()
-
-	parentString := fmt.Sprintf("projects/%s/locations/%s", a.id.Project, a.id.Location)
 
 	req := &pb.CreateDeploymentRequest{
-		Parent:       parentString,
+		Parent:       a.id.ParentString(),
 		DeploymentId: a.id.Deployment,
-		Deployment:   resource,
+		Deployment:   a.desired,
 	}
 
 	created, err := a.gcpClient.CreateDeployment(ctx, req)
@@ -149,14 +150,7 @@ func (a *Adapter) Create(ctx context.Context, createOp *directbase.CreateOperati
 	}
 	log.V(2).Info("successfully created APIHubDeployment", "name", a.id.String())
 
-	status := &krm.APIHubDeploymentStatus{}
-	status.ObservedState = apihub.APIHubDeploymentObservedState_FromProto(mapCtx, created)
-	if mapCtx.Err() != nil {
-		return mapCtx.Err()
-	}
-	externalRef := created.Name
-	status.ExternalRef = &externalRef
-	return createOp.UpdateStatus(ctx, status, nil)
+	return a.updateStatus(ctx, createOp, created)
 }
 
 func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperation) error {
@@ -164,28 +158,33 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	log.V(2).Info("updating APIHubDeployment", "name", a.id.String())
 	mapCtx := &direct.MapContext{}
 
-	resource := apihub.APIHubDeploymentSpec_ToProto(mapCtx, &a.desired.DeepCopy().Spec)
+	// Mask actual to only contain spec fields for correct diffing
+	maskedActualSpec := apihub.APIHubDeploymentSpec_FromProto(mapCtx, a.actual)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	resource.Name = a.id.String()
+	maskedActual := apihub.APIHubDeploymentSpec_ToProto(mapCtx, maskedActualSpec)
+	if mapCtx.Err() != nil {
+		return mapCtx.Err()
+	}
+	maskedActual.Name = a.id.String()
 
-	paths, err := common.CompareProtoMessage(resource, a.actual, common.BasicDiff)
+	clonedDesired := proto.Clone(a.desired).(*pb.Deployment)
+
+	diffs, updateMask, err := common.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
 		return err
 	}
-	if len(paths) == 0 {
+
+	if !diffs.HasDiff() {
 		log.V(2).Info("no field needs update", "name", a.id.String())
 		return nil
 	}
 
-	updateMask := &fieldmaskpb.FieldMask{}
-	for path := range paths {
-		updateMask.Paths = append(updateMask.Paths, path)
-	}
+	structuredreporting.ReportDiff(ctx, diffs)
 
 	req := &pb.UpdateDeploymentRequest{
-		Deployment: resource,
+		Deployment: a.desired,
 		UpdateMask: updateMask,
 	}
 
@@ -194,14 +193,19 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		return fmt.Errorf("updating APIHubDeployment %s: %w", a.id.String(), err)
 	}
 
+	return a.updateStatus(ctx, updateOp, updated)
+}
+
+func (a *Adapter) updateStatus(ctx context.Context, op directbase.Operation, latest *pb.Deployment) error {
+	mapCtx := &direct.MapContext{}
 	status := &krm.APIHubDeploymentStatus{}
-	status.ObservedState = apihub.APIHubDeploymentObservedState_FromProto(mapCtx, updated)
+	status.ObservedState = apihub.APIHubDeploymentObservedState_FromProto(mapCtx, latest)
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	externalRef := updated.Name
+	externalRef := latest.Name
 	status.ExternalRef = &externalRef
-	return updateOp.UpdateStatus(ctx, status, nil)
+	return op.UpdateStatus(ctx, status, nil)
 }
 
 func (a *Adapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {
