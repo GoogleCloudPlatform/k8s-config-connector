@@ -107,6 +107,7 @@ OK
       }
     },
     "healthState": "HEALTHY",
+    "id": "000000000000000000000",
     "labels": {
       "consumer-project-id": "${projectId}",
       "consumer-project-number": "${projectNumber}",
@@ -175,6 +176,7 @@ OK
       "project": "cloud-notebooks-managed"
     }
   },
+  "id": "000000000000000000000",
   "labels": {
     "consumer-project-id": "${projectId}",
     "consumer-project-number": "${projectNumber}",

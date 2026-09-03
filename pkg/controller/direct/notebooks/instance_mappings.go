@@ -168,3 +168,42 @@ func InstanceServiceAccount_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmn
 	}
 	return out
 }
+
+func NotebookInstanceV2ObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *notebookspb.Instance) *krmnotebooksv1alpha1.NotebookInstanceV2ObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmnotebooksv1alpha1.NotebookInstanceV2ObservedState{}
+	// MISSING: Name
+	out.GCESetup = InstanceGCESetupObservedState_v1alpha1_FromProto(mapCtx, in.GetGceSetup())
+	out.ProxyURI = direct.LazyPtr(in.GetProxyUri())
+	out.Creator = direct.LazyPtr(in.GetCreator())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.UpgradeHistory = direct.Slice_FromProto(mapCtx, in.UpgradeHistory, InstanceUpgradeHistoryEntryObservedState_v1alpha1_FromProto)
+	out.GCPID = direct.LazyPtr(in.Id)
+	out.HealthState = direct.Enum_FromProto(mapCtx, in.GetHealthState())
+	out.HealthInfo = in.HealthInfo
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func NotebookInstanceV2ObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnotebooksv1alpha1.NotebookInstanceV2ObservedState) *notebookspb.Instance {
+	if in == nil {
+		return nil
+	}
+	out := &notebookspb.Instance{}
+	// MISSING: Name
+	if oneof := InstanceGCESetupObservedState_v1alpha1_ToProto(mapCtx, in.GCESetup); oneof != nil {
+		out.Infrastructure = &notebookspb.Instance_GceSetup{GceSetup: oneof}
+	}
+	out.ProxyUri = direct.ValueOf(in.ProxyURI)
+	out.Creator = direct.ValueOf(in.Creator)
+	out.State = direct.Enum_ToProto[notebookspb.State](mapCtx, in.State)
+	out.UpgradeHistory = direct.Slice_ToProto(mapCtx, in.UpgradeHistory, InstanceUpgradeHistoryEntryObservedState_v1alpha1_ToProto)
+	out.Id = direct.ValueOf(in.GCPID)
+	out.HealthState = direct.Enum_ToProto[notebookspb.HealthState](mapCtx, in.HealthState)
+	out.HealthInfo = in.HealthInfo
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}

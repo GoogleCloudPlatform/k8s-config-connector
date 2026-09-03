@@ -35,6 +35,7 @@ status:
       - scopes:
         - https://www.googleapis.com/auth/cloud-platform
         - https://www.googleapis.com/auth/userinfo.email
+    gcpID: "000000000000000000000"
     healthState: HEALTHY
     proxyURI: https://ni2-vm-name-${uniqueId}-dot-us-central1.notebooks.googleusercontent.com
     state: ACTIVE

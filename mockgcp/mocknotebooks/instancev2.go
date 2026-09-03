@@ -20,6 +20,8 @@ import (
 	"sort"
 	"time"
 
+	"k8s.io/apimachinery/pkg/util/uuid"
+
 	"google.golang.org/genproto/googleapis/longrunning"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -151,6 +153,8 @@ func (s *NotebookServiceV2) CreateInstance(ctx context.Context, req *pb_v2.Creat
 	for k, v := range systemLabels {
 		obj.Labels[k] = v
 	}
+
+	obj.Id = string(uuid.NewUUID())
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err

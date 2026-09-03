@@ -40,6 +40,7 @@ status:
       - scopes:
         - https://www.googleapis.com/auth/cloud-platform
         - https://www.googleapis.com/auth/userinfo.email
+    gcpID: "000000000000000000000"
     proxyURI: https://ni2-container-${uniqueId}-dot-us-central1.notebooks.googleusercontent.com
     state: PROVISIONING
     updateTime: "1970-01-01T00:00:00Z"

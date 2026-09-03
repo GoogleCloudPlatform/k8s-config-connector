@@ -1144,6 +1144,7 @@ OK
       }
     },
     "healthState": "HEALTHY",
+    "id": "000000000000000000000",
     "instanceOwners": [
       "${projectNumber}-compute@developer.gserviceaccount.com"
     ],
@@ -1237,6 +1238,7 @@ OK
       "project": "debian-cloud"
     }
   },
+  "id": "000000000000000000000",
   "instanceOwners": [
     "${projectNumber}-compute@developer.gserviceaccount.com"
   ],
@@ -1436,6 +1438,7 @@ OK
         "project": "debian-cloud"
       }
     },
+    "id": "000000000000000000000",
     "instanceOwners": [
       "${projectNumber}-compute@developer.gserviceaccount.com"
     ],
@@ -1532,6 +1535,7 @@ OK
       "project": "debian-cloud"
     }
   },
+  "id": "000000000000000000000",
   "instanceOwners": [
     "${projectNumber}-compute@developer.gserviceaccount.com"
   ],
