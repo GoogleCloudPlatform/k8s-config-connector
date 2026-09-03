@@ -60,6 +60,8 @@ func (r *CCInsightsAnalysisRuleRef) GetExternal() string {
 
 func (r *CCInsightsAnalysisRuleRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *CCInsightsAnalysisRuleRef) ValidateExternal(ref string) error {

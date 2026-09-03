@@ -60,6 +60,8 @@ func (r *CCInsightsPhraseMatcherRef) GetExternal() string {
 
 func (r *CCInsightsPhraseMatcherRef) SetExternal(ref string) {
 	r.External = ref
+	r.Name = ""
+	r.Namespace = ""
 }
 
 func (r *CCInsightsPhraseMatcherRef) ValidateExternal(ref string) error {
