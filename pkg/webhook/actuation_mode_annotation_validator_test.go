@@ -16,10 +16,10 @@ package webhook
 
 import (
 	"context"
+	"strings"
 	"testing"
 
 	admissionv1 "k8s.io/api/admission/v1"
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"sigs.k8s.io/controller-runtime/pkg/webhook/admission"
 	"sigs.k8s.io/yaml"
@@ -33,8 +33,10 @@ func TestActuationModeAnnotationValidator(t *testing.T) {
 		operation     admissionv1.Operation
 		objYaml       string
 		oldObjYaml    string
+		expectAllowed bool
 		expectWarning bool
 		warningMsg    string
+		expectError   string
 	}{
 		{
 			name:      "no annotation on create",
@@ -45,6 +47,7 @@ kind: FooInstance
 metadata:
   name: my-instance
 `,
+			expectAllowed: true,
 			expectWarning: false,
 		},
 		{
@@ -58,6 +61,7 @@ metadata:
   annotations:
     cnrm.cloud.google.com/actuation-mode: Reconciling
 `,
+			expectAllowed: true,
 			expectWarning: false,
 		},
 		{
@@ -71,6 +75,7 @@ metadata:
   annotations:
     cnrm.cloud.google.com/actuation-mode: Paused
 `,
+			expectAllowed: true,
 			expectWarning: true,
 			warningMsg:    "Resource 'my-instance' has cnrm.cloud.google.com/actuation-mode: \"Paused\". All actuation against GCP (including Create, Update, and Delete) is halted until unpaused.",
 		},
@@ -85,8 +90,66 @@ metadata:
   annotations:
     cnrm.cloud.google.com/actuation-mode: Paused
 `,
+			expectAllowed: true,
 			expectWarning: true,
 			warningMsg:    "Resource 'my-instance' has cnrm.cloud.google.com/actuation-mode: \"Paused\". All actuation against GCP (including Create, Update, and Delete) is halted until unpaused.",
+		},
+		{
+			name:      "paused annotation on update",
+			operation: admissionv1.Update,
+			objYaml: `
+apiVersion: foo.cnrm.cloud.google.com/v1beta1
+kind: FooInstance
+metadata:
+  name: my-instance
+  annotations:
+    cnrm.cloud.google.com/actuation-mode: Paused
+`,
+			oldObjYaml: `
+apiVersion: foo.cnrm.cloud.google.com/v1beta1
+kind: FooInstance
+metadata:
+  name: my-instance
+  annotations:
+    cnrm.cloud.google.com/actuation-mode: Reconciling
+`,
+			expectAllowed: true,
+			expectWarning: true,
+			warningMsg:    "Resource 'my-instance' has cnrm.cloud.google.com/actuation-mode: \"Paused\". All actuation against GCP (including Create, Update, and Delete) is halted until unpaused.",
+		},
+		{
+			name:      "invalid annotation value on create",
+			operation: admissionv1.Create,
+			objYaml: `
+apiVersion: foo.cnrm.cloud.google.com/v1beta1
+kind: FooInstance
+metadata:
+  name: my-instance
+  annotations:
+    cnrm.cloud.google.com/actuation-mode: paused
+`,
+			expectAllowed: false,
+			expectError:   `invalid value "paused" for annotation cnrm.cloud.google.com/actuation-mode; allowed values are "Paused" and "Reconciling"`,
+		},
+		{
+			name:      "invalid annotation value on update",
+			operation: admissionv1.Update,
+			objYaml: `
+apiVersion: foo.cnrm.cloud.google.com/v1beta1
+kind: FooInstance
+metadata:
+  name: my-instance
+  annotations:
+    cnrm.cloud.google.com/actuation-mode: invalid-value
+`,
+			oldObjYaml: `
+apiVersion: foo.cnrm.cloud.google.com/v1beta1
+kind: FooInstance
+metadata:
+  name: my-instance
+`,
+			expectAllowed: false,
+			expectError:   `invalid value "invalid-value" for annotation cnrm.cloud.google.com/actuation-mode; allowed values are "Paused" and "Reconciling"`,
 		},
 	}
 
@@ -96,32 +159,30 @@ metadata:
 			req.Operation = tc.operation
 
 			if tc.objYaml != "" {
-				u := &unstructured.Unstructured{}
-				if err := yaml.Unmarshal([]byte(tc.objYaml), &u.Object); err != nil {
-					t.Fatalf("failed to unmarshal objYaml: %v", err)
-				}
-				raw, err := yaml.Marshal(u)
+				raw, err := yaml.YAMLToJSON([]byte(tc.objYaml))
 				if err != nil {
-					t.Fatalf("failed to marshal obj: %v", err)
+					t.Fatalf("failed to convert objYaml to JSON: %v", err)
 				}
 				req.Object = runtime.RawExtension{Raw: raw}
 			}
 
 			if tc.oldObjYaml != "" {
-				u := &unstructured.Unstructured{}
-				if err := yaml.Unmarshal([]byte(tc.oldObjYaml), &u.Object); err != nil {
-					t.Fatalf("failed to unmarshal oldObjYaml: %v", err)
-				}
-				raw, err := yaml.Marshal(u)
+				raw, err := yaml.YAMLToJSON([]byte(tc.oldObjYaml))
 				if err != nil {
-					t.Fatalf("failed to marshal old obj: %v", err)
+					t.Fatalf("failed to convert oldObjYaml to JSON: %v", err)
 				}
 				req.OldObject = runtime.RawExtension{Raw: raw}
 			}
 
 			resp := v.Handle(context.Background(), req)
-			if !resp.Allowed {
-				t.Errorf("expected allowed to be true, got %v", resp.Allowed)
+			if resp.Allowed != tc.expectAllowed {
+				t.Errorf("expected allowed to be %v, got %v", tc.expectAllowed, resp.Allowed)
+			}
+
+			if !tc.expectAllowed {
+				if tc.expectError != "" && !strings.Contains(resp.Result.Message, tc.expectError) {
+					t.Errorf("expected denied message to contain %q, got %q", tc.expectError, resp.Result.Message)
+				}
 			}
 
 			if tc.expectWarning {

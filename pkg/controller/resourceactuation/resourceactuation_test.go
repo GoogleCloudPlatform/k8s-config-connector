@@ -96,7 +96,7 @@ func TestDecideActuationMode(t *testing.T) {
 			expectedActuationMode: opv1beta1.Paused,
 		},
 		{
-			name: "CC/CCC Paused overrides resource annotation Reconciling",
+			name: "resource annotation Reconciling overrides CC/CCC Paused",
 			annotations: map[string]string{
 				"cnrm.cloud.google.com/actuation-mode": "Reconciling",
 			},
@@ -106,7 +106,7 @@ func TestDecideActuationMode(t *testing.T) {
 					Actuation: opv1beta1.Paused,
 				},
 			},
-			expectedActuationMode: opv1beta1.Paused,
+			expectedActuationMode: opv1beta1.Reconciling,
 		},
 		{
 			name: "unknown annotation value falls back to CC/CCC",

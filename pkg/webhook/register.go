@@ -201,7 +201,7 @@ func GetCommonWebhookConfigs() ([]Config, error) {
 			Path:          "/actuation-mode-validation",
 			Type:          Validating,
 			HandlerFunc:   NewRequestLoggingHandler(NewActuationModeAnnotationValidatorHandler(), "actuation-mode validation"),
-			FailurePolicy: admissionregistration.Fail,
+			FailurePolicy: admissionregistration.Ignore,
 			Rules: getRulesForOperationTypes(allResourcesRules,
 				admissionregistration.Create,
 				admissionregistration.Update,

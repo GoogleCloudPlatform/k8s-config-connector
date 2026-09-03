@@ -19,26 +19,24 @@ import (
 	"fmt"
 	"net/http"
 
+	opv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 
 	admissionv1 "k8s.io/api/admission/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/klog/v2"
-	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/webhook/admission"
 )
 
-type actuationModeAnnotationValidator struct {
-	client client.Client
-}
+type actuationModeAnnotationValidator struct{}
 
 // NewActuationModeAnnotationValidatorHandler creates an instance of
 // actuationModeAnnotationValidator to handle actuation-mode annotation
 // validation and warnings.
 func NewActuationModeAnnotationValidatorHandler() HandlerFunc {
 	return func(mgr manager.Manager) admission.Handler {
-		return &actuationModeAnnotationValidator{client: mgr.GetClient()}
+		return &actuationModeAnnotationValidator{}
 	}
 }
 
@@ -64,13 +62,21 @@ func (a *actuationModeAnnotationValidator) Handle(ctx context.Context, req admis
 	}
 
 	value, ok := k8s.GetAnnotation(k8s.ActuationModeAnnotation, obj)
-	if ok && value == "Paused" {
-		name := obj.GetName()
-		if name == "" {
-			name = req.Name
+	if ok {
+		mode := opv1beta1.ActuationMode(value)
+		if mode != opv1beta1.Paused && mode != opv1beta1.Reconciling {
+			return admission.Denied(fmt.Sprintf("invalid value %q for annotation %s; allowed values are %q and %q",
+				value, k8s.ActuationModeAnnotation, opv1beta1.Paused, opv1beta1.Reconciling))
 		}
-		warning := fmt.Sprintf("Resource '%s' has %s: \"Paused\". All actuation against GCP (including Create, Update, and Delete) is halted until unpaused.", name, k8s.ActuationModeAnnotation)
-		return allowedResponse.WithWarnings(warning)
+		if mode == opv1beta1.Paused {
+			name := obj.GetName()
+			if name == "" {
+				name = req.Name
+			}
+			warning := fmt.Sprintf("Resource '%s' has %s: %q. All actuation against GCP (including Create, Update, and Delete) is halted until unpaused.",
+				name, k8s.ActuationModeAnnotation, opv1beta1.Paused)
+			return allowedResponse.WithWarnings(warning)
+		}
 	}
 
 	return allowedResponse
