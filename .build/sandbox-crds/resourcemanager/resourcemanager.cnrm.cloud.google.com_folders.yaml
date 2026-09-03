@@ -1,0 +1,186 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 0.0.0-dev
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: folders.resourcemanager.cnrm.cloud.google.com
+spec:
+  group: resourcemanager.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: Folder
+    listKind: FolderList
+    plural: folders
+    shortNames:
+    - gcpfolder
+    - gcpfolders
+    singular: folder
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1beta1
+    schema:
+      openAPIV3Schema:
+        description: Folder is the Schema for the Folder API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: FolderSpec defines the desired state of Folder
+            properties:
+              displayName:
+                description: 'The folder''s display name. A folder''s display name
+                  must be unique amongst its siblings. For example, no two folders
+                  with the same parent can share the same display name. The display
+                  name must start and end with a letter or digit, may contain letters,
+                  digits, spaces, hyphens and underscores and can be no longer than
+                  30 characters. This is captured by the regular expression: `[\p{L}\p{N}]([\p{L}\p{N}_-
+                  ]{0,28}[\p{L}\p{N}])?`.'
+                type: string
+              folderRef:
+                description: The folder that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The 'name' field of a folder, when not managed by
+                      Config Connector. This field must be set when 'name' field is
+                      not set.
+                    type: string
+                  name:
+                    description: The 'name' field of a 'Folder' resource. This field
+                      must be set when 'external' field is not set.
+                    type: string
+                  namespace:
+                    description: The 'namespace' field of a 'Folder' resource. If
+                      unset, the namespace is defaulted to the namespace of the referencer
+                      resource.
+                    type: string
+                type: object
+              parent:
+                description: Required. The folder's parent's resource name. Updates
+                  to the folder's parent must be performed using [MoveFolder][google.cloud.resourcemanager.v3.Folders.MoveFolder].
+                type: string
+              resourceID:
+                description: The Folder name. If not given, the metadata.name will
+                  be used.
+                type: string
+            type: object
+          status:
+            description: FolderStatus defines the config connector machine state of
+              Folder
+            properties:
+              conditions:
+                description: Conditions represent the latest available observations
+                  of the object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the Folder resource in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  createTime:
+                    description: Output only. Timestamp when the folder was created.
+                    type: string
+                  deleteTime:
+                    description: Output only. Timestamp when the folder was requested
+                      to be deleted.
+                    type: string
+                  etag:
+                    description: Output only. A checksum computed by the server based
+                      on the current value of the folder resource. This may be sent
+                      on update and delete requests to ensure the client has an up-to-date
+                      value before proceeding.
+                    type: string
+                  state:
+                    description: Output only. The lifecycle state of the folder. Updates
+                      to the state must be performed using [DeleteFolder][google.cloud.resourcemanager.v3.Folders.DeleteFolder]
+                      and [UndeleteFolder][google.cloud.resourcemanager.v3.Folders.UndeleteFolder].
+                    type: string
+                  updateTime:
+                    description: Output only. Timestamp when the folder was last modified.
+                    type: string
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

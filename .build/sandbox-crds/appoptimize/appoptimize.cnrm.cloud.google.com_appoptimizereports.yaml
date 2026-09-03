@@ -1,0 +1,276 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    cnrm.cloud.google.com/version: 0.0.0-dev
+  creationTimestamp: null
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: appoptimizereports.appoptimize.cnrm.cloud.google.com
+spec:
+  group: appoptimize.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: AppOptimizeReport
+    listKind: AppOptimizeReportList
+    plural: appoptimizereports
+    shortNames:
+    - gcpappoptimizereport
+    - gcpappoptimizereports
+    singular: appoptimizereport
+  preserveUnknownFields: false
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: AppOptimizeReport is the Schema for the AppOptimizeReport API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: AppOptimizeReportSpec defines the desired state of AppOptimizeReport
+            properties:
+              dimensions:
+                description: |-
+                  Required. A list of dimensions to include in the report. Supported values:
+
+                     * `project`
+                     * `application`
+                     * `service_or_workload`
+                     * `resource`
+                     * `resource_type`
+                     * `location`
+                     * `product_display_name`
+                     * `sku`
+                     * `month`
+                     * `day`
+                     * `hour`
+
+                   To aggregate results by time, specify at least one time dimension
+                   (`month`, `day`, or `hour`). All time dimensions use Pacific Time,
+                   respect Daylight Saving Time (DST), and follow these ISO 8601 formats:
+
+                     * `month`: `YYYY-MM` (e.g., `2024-01`)
+                     * `day`: `YYYY-MM-DD` (e.g., `2024-01-10`)
+                     * `hour`: `YYYY-MM-DDTHH` (e.g., `2024-01-10T00`)
+
+                   If the time range filter does not align with the selected time dimension,
+                   the range is expanded to encompass the full period of the finest-grained
+                   time dimension.
+
+                   For example, if the filter is `2026-01-10` through `2026-01-12` and the
+                   `month` dimension is selected, the effective time range expands to include
+                   all of January (`2026-01-01` to `2026-02-01`).
+                items:
+                  type: string
+                type: array
+              filter:
+                description: |-
+                  Optional. A Common Expression Language (CEL) expression used to filter the
+                   data for the report.
+
+                   Predicates may refer to any dimension. Filtering must conform to these
+                   constraints:
+
+                     * All string field predicates must use exact string matches.
+                     * Multiple predicates referring to the same string field must be joined
+                       using the logical OR operator ('||').
+                     * All other predicates must be joined using the logical AND operator
+                       (`&&`).
+                     * A predicate on a time dimension (e.g., `day`) specifying the start time
+                       must use a greater-than-or-equal-to comparison (`>=`).
+                     * A predicate on a time dimension specifying the end time must use a
+                       less-than comparison (`<`).
+
+                   Examples:
+
+                     1. Filter by a specific resource type:
+                        `"resource_type == 'compute.googleapis.com/Instance'"`
+
+                     2. Filter data points that fall within a specific absolute time interval:
+                        `"hour >= timestamp('2024-01-01T00:00:00Z') &&
+                        hour < timestamp('2024-02-01T00:00:00Z')"`
+
+                     3. Filter data points that fall within the past 72 hours:
+                        `"hour >= now - duration('72h')"`
+
+                     4. Combine string predicate with time interval predicate:
+                        `"(location == 'us-east1' || location == 'us-west1') &&
+                         hour >= timestamp('2023-12-01T00:00:00Z') &&
+                         hour < timestamp('2024-02-01T00:00:00Z')"`
+
+                   If the filter omits time dimensions (`month`, `day`, `hour`), the report
+                   defaults to a 7-day range ending at the previous Pacific Time midnight,
+                   with Daylight Saving Time (DST) applied.
+
+                   For example, if the current Pacific Time is `2026-01-05T12:00:00`,
+                   the default range is `2025-12-29T00:00:00` to `2026-01-05T00:00:00` Pacific
+                   time.
+                type: string
+              location:
+                description: The location of this resource.
+                type: string
+              metrics:
+                description: |-
+                  Required. A list of metrics to include in the report. Supported values:
+
+                     * `cost`
+                     * `cpu_mean_utilization`
+                     * `cpu_usage_core_seconds`
+                     * `cpu_allocation_core_seconds`
+                     * `cpu_p95_utilization`
+                     * `memory_mean_utilization`
+                     * `memory_usage_byte_seconds`
+                     * `memory_allocation_byte_seconds`
+                     * `memory_p95_utilization`
+                items:
+                  type: string
+                type: array
+              projectRef:
+                description: The project that this resource belongs to.
+                oneOf:
+                - not:
+                    required:
+                    - external
+                  required:
+                  - name
+                - not:
+                    anyOf:
+                    - required:
+                      - name
+                    - required:
+                      - namespace
+                  required:
+                  - external
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: The AppOptimizeReport name. If not given, the metadata.name
+                  will be used.
+                type: string
+              scopes:
+                description: Optional. The resource containers for which to fetch
+                  data. Default is the project specified in the report's parent.
+                items:
+                  properties:
+                    application:
+                      description: |-
+                        Required. An App Hub Application to fetch data from.
+
+                         Format:
+                         `"projects/{project}/locations/{location}/applications/{application}"`.
+                      type: string
+                    project:
+                      description: |-
+                        Required. A Google Cloud Platform project to fetch data from.
+
+                         Format: `"projects/{project}"`.
+                      type: string
+                  type: object
+                type: array
+            required:
+            - location
+            type: object
+          status:
+            description: AppOptimizeReportStatus defines the config connector machine
+              state of AppOptimizeReport
+            properties:
+              conditions:
+                description: Conditions represent the latest available observations
+                  of the object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: Unique, one-word, CamelCase reason for the condition's
+                        last transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the AppOptimizeReport resource
+                  in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  expireTime:
+                    description: Output only. Timestamp in UTC of when this report
+                      expires. Once the report expires, it will no longer be accessible
+                      and the report's underlying data will be deleted.
+                    type: string
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
