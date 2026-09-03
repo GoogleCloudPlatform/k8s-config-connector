@@ -1,0 +1,400 @@
+GET https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployments/depl-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdeployments%2Fdepl-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource \"projects/${projectId}/locations/us-central1/deployments/depl-${uniqueId}\" was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployments?%24alt=json%3Benum-encoding%3Dint&deploymentId=depl-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "deploymentType": {
+    "enumValues": {
+      "values": [
+        {
+          "id": "apigee"
+        }
+      ]
+    }
+  },
+  "description": "A comprehensive APIHubDeployment for E2E testing",
+  "displayName": "Maximal APIHubDeployment",
+  "documentation": {
+    "externalUri": "https://example.com/docs"
+  },
+  "endpoints": [
+    "https://api.example.com"
+  ],
+  "environment": {
+    "enumValues": {
+      "values": [
+        {
+          "id": "staging"
+        }
+      ]
+    }
+  },
+  "name": "projects/${projectId}/locations/us-central1/deployments/depl-${uniqueId}",
+  "resourceUri": "organizations/test-org/environments/test-env/apis/test-api",
+  "slo": {
+    "enumValues": {
+      "values": [
+        {
+          "id": "99-9"
+        }
+      ]
+    }
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "deploymentType": {
+    "attribute": "projects/${projectId}/locations/us-central1/attributes/system-deployment-type",
+    "enumValues": {
+      "values": [
+        {
+          "description": "Apigee",
+          "displayName": "Apigee",
+          "id": "apigee",
+          "immutable": true
+        }
+      ]
+    }
+  },
+  "description": "A comprehensive APIHubDeployment for E2E testing",
+  "displayName": "Maximal APIHubDeployment",
+  "documentation": {
+    "externalUri": "https://example.com/docs"
+  },
+  "endpoints": [
+    "https://api.example.com"
+  ],
+  "environment": {
+    "attribute": "projects/${projectId}/locations/us-central1/attributes/system-environment",
+    "enumValues": {
+      "values": [
+        {
+          "description": "Staging",
+          "displayName": "Staging",
+          "id": "staging"
+        }
+      ]
+    }
+  },
+  "name": "projects/${projectId}/locations/us-central1/deployments/depl-${uniqueId}",
+  "resourceUri": "organizations/test-org/environments/test-env/apis/test-api",
+  "slo": {
+    "attribute": "projects/${projectId}/locations/us-central1/attributes/system-slo",
+    "enumValues": {
+      "values": [
+        {
+          "description": "99.9% SLO",
+          "displayName": "99.9%",
+          "id": "99-9"
+        }
+      ]
+    }
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployments/depl-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdeployments%2Fdepl-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "deploymentType": {
+    "attribute": "projects/${projectId}/locations/us-central1/attributes/system-deployment-type",
+    "enumValues": {
+      "values": [
+        {
+          "description": "Apigee",
+          "displayName": "Apigee",
+          "id": "apigee",
+          "immutable": true
+        }
+      ]
+    }
+  },
+  "description": "A comprehensive APIHubDeployment for E2E testing",
+  "displayName": "Maximal APIHubDeployment",
+  "documentation": {
+    "externalUri": "https://example.com/docs"
+  },
+  "endpoints": [
+    "https://api.example.com"
+  ],
+  "environment": {
+    "attribute": "projects/${projectId}/locations/us-central1/attributes/system-environment",
+    "enumValues": {
+      "values": [
+        {
+          "description": "Staging",
+          "displayName": "Staging",
+          "id": "staging"
+        }
+      ]
+    }
+  },
+  "name": "projects/${projectId}/locations/us-central1/deployments/depl-${uniqueId}",
+  "resourceUri": "organizations/test-org/environments/test-env/apis/test-api",
+  "slo": {
+    "attribute": "projects/${projectId}/locations/us-central1/attributes/system-slo",
+    "enumValues": {
+      "values": [
+        {
+          "description": "99.9% SLO",
+          "displayName": "99.9%",
+          "id": "99-9"
+        }
+      ]
+    }
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployments/depl-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2CdisplayName%2Cdocumentation%2Cendpoints%2Cenvironment%2CresourceUri%2Cslo
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: deployment.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdeployments%2Fdepl-${uniqueId}
+
+{
+  "deploymentType": {
+    "enumValues": {
+      "values": [
+        {
+          "id": "apigee"
+        }
+      ]
+    }
+  },
+  "description": "A comprehensive APIHubDeployment for E2E testing - Updated",
+  "displayName": "Maximal APIHubDeployment Updated",
+  "documentation": {
+    "externalUri": "https://example.com/docs/v2"
+  },
+  "endpoints": [
+    "https://api.example.com",
+    "https://api.example.com/v2"
+  ],
+  "environment": {
+    "enumValues": {
+      "values": [
+        {
+          "id": "prod"
+        }
+      ]
+    }
+  },
+  "name": "projects/${projectId}/locations/us-central1/deployments/depl-${uniqueId}",
+  "resourceUri": "organizations/test-org/environments/test-env/apis/test-api-v2",
+  "slo": {
+    "enumValues": {
+      "values": [
+        {
+          "id": "99-99"
+        }
+      ]
+    }
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "deploymentType": {
+    "attribute": "projects/${projectId}/locations/us-central1/attributes/system-deployment-type",
+    "enumValues": {
+      "values": [
+        {
+          "description": "Apigee",
+          "displayName": "Apigee",
+          "id": "apigee",
+          "immutable": true
+        }
+      ]
+    }
+  },
+  "description": "A comprehensive APIHubDeployment for E2E testing - Updated",
+  "displayName": "Maximal APIHubDeployment Updated",
+  "documentation": {
+    "externalUri": "https://example.com/docs/v2"
+  },
+  "endpoints": [
+    "https://api.example.com",
+    "https://api.example.com/v2"
+  ],
+  "environment": {
+    "attribute": "projects/${projectId}/locations/us-central1/attributes/system-environment",
+    "enumValues": {
+      "values": [
+        {
+          "description": "Production",
+          "displayName": "Production",
+          "id": "prod"
+        }
+      ]
+    }
+  },
+  "name": "projects/${projectId}/locations/us-central1/deployments/depl-${uniqueId}",
+  "resourceUri": "organizations/test-org/environments/test-env/apis/test-api-v2",
+  "slo": {
+    "attribute": "projects/${projectId}/locations/us-central1/attributes/system-slo",
+    "enumValues": {
+      "values": [
+        {
+          "description": "99.99% SLO",
+          "displayName": "99.99%",
+          "id": "99-99"
+        }
+      ]
+    }
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployments/depl-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdeployments%2Fdepl-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "deploymentType": {
+    "attribute": "projects/${projectId}/locations/us-central1/attributes/system-deployment-type",
+    "enumValues": {
+      "values": [
+        {
+          "description": "Apigee",
+          "displayName": "Apigee",
+          "id": "apigee",
+          "immutable": true
+        }
+      ]
+    }
+  },
+  "description": "A comprehensive APIHubDeployment for E2E testing - Updated",
+  "displayName": "Maximal APIHubDeployment Updated",
+  "documentation": {
+    "externalUri": "https://example.com/docs/v2"
+  },
+  "endpoints": [
+    "https://api.example.com",
+    "https://api.example.com/v2"
+  ],
+  "environment": {
+    "attribute": "projects/${projectId}/locations/us-central1/attributes/system-environment",
+    "enumValues": {
+      "values": [
+        {
+          "description": "Production",
+          "displayName": "Production",
+          "id": "prod"
+        }
+      ]
+    }
+  },
+  "name": "projects/${projectId}/locations/us-central1/deployments/depl-${uniqueId}",
+  "resourceUri": "organizations/test-org/environments/test-env/apis/test-api-v2",
+  "slo": {
+    "attribute": "projects/${projectId}/locations/us-central1/attributes/system-slo",
+    "enumValues": {
+      "values": [
+        {
+          "description": "99.99% SLO",
+          "displayName": "99.99%",
+          "id": "99-99"
+        }
+      ]
+    }
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/deployments/depl-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdeployments%2Fdepl-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}

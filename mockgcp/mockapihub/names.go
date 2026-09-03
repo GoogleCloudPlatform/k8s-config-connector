@@ -83,3 +83,34 @@ func (s *MockService) parseAttributeName(name string) (*attributeName, error) {
 		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
 	}
 }
+
+type deploymentName struct {
+	Project        *projects.ProjectData
+	Location       string
+	DeploymentName string
+}
+
+func (n *deploymentName) String() string {
+	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/deployments/" + n.DeploymentName
+}
+
+// parseDeploymentName parses a string into a deploymentName.
+// The expected form is projects/<projectID>/locations/<location>/deployments/<deploymentName>
+func (s *MockService) parseDeploymentName(name string) (*deploymentName, error) {
+	tokens := strings.Split(name, "/")
+
+	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "deployments" {
+		project, err := s.Projects.GetProjectByID(tokens[1])
+		if err != nil {
+			return nil, err
+		}
+
+		return &deploymentName{
+			Project:        project,
+			Location:       tokens[3],
+			DeploymentName: tokens[5],
+		}, nil
+	} else {
+		return nil, status.Errorf(codes.InvalidArgument, "name %q is not valid", name)
+	}
+}
