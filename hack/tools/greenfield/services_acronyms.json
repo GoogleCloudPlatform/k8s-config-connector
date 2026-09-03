@@ -10,6 +10,7 @@
     "analyticsdata": "AnalyticsData",
     "analyticshub": "BigQueryAnalyticsHub",
     "apihub": "APIHub",
+    "apphub": "AppHub",
     "area120tables": "Area120Tables",
     "artifactregistry": "ArtifactRegistry",
     "asset": "CloudAsset",
@@ -158,6 +159,7 @@
     "Cdn": "CDN",
     "Ekm": "EKM",
     "Hcx": "HCX",
+    "Ipam": "IPAM",
 
     "Gke": "GKE",
     "Api": "API",
