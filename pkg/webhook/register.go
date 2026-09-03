@@ -196,6 +196,19 @@ func GetCommonWebhookConfigs() ([]Config, error) {
 			),
 			SideEffects: admissionregistration.SideEffectClassNone,
 		},
+		{
+			Name:          "actuation-mode-validation.cnrm.cloud.google.com",
+			Path:          "/actuation-mode-validation",
+			Type:          Validating,
+			HandlerFunc:   NewRequestLoggingHandler(NewActuationModeAnnotationValidatorHandler(), "actuation-mode validation"),
+			FailurePolicy: admissionregistration.Fail,
+			Rules: getRulesForOperationTypes(allResourcesRules,
+				admissionregistration.Create,
+				admissionregistration.Update,
+				admissionregistration.Delete,
+			),
+			SideEffects: admissionregistration.SideEffectClassNone,
+		},
 	}
 	return whCfgs, nil
 }

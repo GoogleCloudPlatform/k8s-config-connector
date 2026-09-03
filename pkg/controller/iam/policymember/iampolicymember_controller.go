@@ -242,7 +242,7 @@ func (r *reconcileContext) doReconcile(policyMember *iamv1beta1.IAMPolicyMember)
 		return true, err
 	}
 
-	am := resourceactuation.DecideActuationMode(cc, ccc)
+	am := resourceactuation.DecideActuationMode(policyMember.GetAnnotations(), cc, ccc)
 	switch am {
 	case opcorev1beta1.Reconciling:
 		logger.V(2).Info("Actuating a resource as actuation mode is \"Reconciling\"", "resource", r.NamespacedName)

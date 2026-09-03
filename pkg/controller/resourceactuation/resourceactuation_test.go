@@ -28,6 +28,7 @@ import (
 func TestDecideActuationMode(t *testing.T) {
 	tests := []struct {
 		name                  string
+		annotations           map[string]string
 		cc                    opv1beta1.ConfigConnector
 		ccc                   opv1beta1.ConfigConnectorContext
 		expectedActuationMode opv1beta1.ActuationMode
@@ -81,11 +82,50 @@ func TestDecideActuationMode(t *testing.T) {
 			ccc:                   opv1beta1.ConfigConnectorContext{},
 			expectedActuationMode: opv1beta1.Reconciling,
 		},
+		{
+			name: "annotation is Paused overrides CC/CCC Reconciling",
+			annotations: map[string]string{
+				"cnrm.cloud.google.com/actuation-mode": "Paused",
+			},
+			cc: opv1beta1.ConfigConnector{
+				Spec: opv1beta1.ConfigConnectorSpec{
+					Mode:      opk8s.ClusterMode,
+					Actuation: opv1beta1.Reconciling,
+				},
+			},
+			expectedActuationMode: opv1beta1.Paused,
+		},
+		{
+			name: "CC/CCC Paused overrides resource annotation Reconciling",
+			annotations: map[string]string{
+				"cnrm.cloud.google.com/actuation-mode": "Reconciling",
+			},
+			cc: opv1beta1.ConfigConnector{
+				Spec: opv1beta1.ConfigConnectorSpec{
+					Mode:      opk8s.ClusterMode,
+					Actuation: opv1beta1.Paused,
+				},
+			},
+			expectedActuationMode: opv1beta1.Paused,
+		},
+		{
+			name: "unknown annotation value falls back to CC/CCC",
+			annotations: map[string]string{
+				"cnrm.cloud.google.com/actuation-mode": "InvalidValue",
+			},
+			cc: opv1beta1.ConfigConnector{
+				Spec: opv1beta1.ConfigConnectorSpec{
+					Mode:      opk8s.ClusterMode,
+					Actuation: opv1beta1.Paused,
+				},
+			},
+			expectedActuationMode: opv1beta1.Paused,
+		},
 	}
 
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			actualMode := resourceactuation.DecideActuationMode(test.cc, test.ccc)
+			actualMode := resourceactuation.DecideActuationMode(test.annotations, test.cc, test.ccc)
 			if test.expectedActuationMode != actualMode {
 				t.Errorf("DecideActuationMode failed; got %v, want %v", actualMode, test.expectedActuationMode)
 			}

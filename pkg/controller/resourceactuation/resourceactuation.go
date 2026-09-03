@@ -25,23 +25,38 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
 
-// DecideActuationMode looks at CC and CCC to see if they specify an actuationMode.
-// - If both CC & CCC specify a actuationMode in Namespaced mode, we defer to the CCC's value.
-//   - If only CC specifies a actuationMode in Namespaced mode, we defer to the CC's value.
-//
-// - If both CC & CCC specify an actuationMode in cluster mode, the CCC specification is irrelevant.
-// - If neither CC nor CCC specify a actuationMode, we defer to the default value defined in apis.
-func DecideActuationMode(cc opv1beta1.ConfigConnector, ccc opv1beta1.ConfigConnectorContext) opv1beta1.ActuationMode {
+// DecideActuationMode looks at annotations, CC, and CCC to see if they specify an actuationMode.
+//   - If CC or CCC specifies "Paused" at the namespace/cluster level, that config takes precedence
+//     and the resource actuation mode is always "Paused" (individual resources cannot override to "Reconciling").
+//   - If CC/CCC level is "Reconciling" (or unset), and the individual resource has the "cnrm.cloud.google.com/actuation-mode: Paused"
+//     annotation, then the individual resource actuation mode is "Paused".
+//   - Otherwise, the resource actuation mode is "Reconciling".
+func DecideActuationMode(annotations map[string]string, cc opv1beta1.ConfigConnector, ccc opv1beta1.ConfigConnectorContext) opv1beta1.ActuationMode {
+	// First, determine the base actuation mode from CC/CCC config.
+	var baseActuationMode opv1beta1.ActuationMode
 	if ccc.Spec.Actuation != "" && cc.Spec.Mode == opk8s.NamespacedMode {
-		return ccc.Spec.Actuation
+		baseActuationMode = ccc.Spec.Actuation
+	} else if cc.Spec.Actuation != "" {
+		baseActuationMode = cc.Spec.Actuation
+	} else {
+		baseActuationMode = opv1beta1.DefaultActuationMode()
 	}
 
-	// if no CCC exists or doesn't define a value, defer to the CC's value.
-	if cc.Spec.Actuation != "" {
-		return cc.Spec.Actuation
+	// If the namespace or cluster level actuation is paused, the resource is always paused.
+	if baseActuationMode == opv1beta1.Paused {
+		return opv1beta1.Paused
 	}
 
-	return opv1beta1.DefaultActuationMode()
+	// Otherwise, the base mode is Reconciling. Check if the individual resource annotation pauses it.
+	if annotations != nil {
+		if val, ok := annotations[k8s.ActuationModeAnnotation]; ok {
+			if opv1beta1.ActuationMode(val) == opv1beta1.Paused {
+				return opv1beta1.Paused
+			}
+		}
+	}
+
+	return opv1beta1.Reconciling
 }
 
 // ShouldSkip skips a resource actuatation if the ReconcileIntervalInSecondsAnnotation = 0 and the KRM resource has not changed since its last UpToDate.
