@@ -1108,9 +1108,26 @@ OK
       },
       "machineType": "n1-standard-4",
       "metadata": {
+        "disable-swap-binaries": "true",
+        "enable-guest-attributes": "TRUE",
+        "enable-jupyterlab4": "true",
         "enable-os-config": "true",
+        "enable-oslogin": "TRUE",
+        "instance-region": "us-central1",
+        "new-proxy-agent-enabled": "true",
         "notebook-disable-downloads": "true",
-        "notebook-disable-root": "true"
+        "notebook-disable-root": "true",
+        "notebooks-api": "PROD",
+        "notebooks-api-version": "v1",
+        "proxy-backend-id": "000000000000000000000",
+        "proxy-mode": "mail",
+        "proxy-registration-url": "https://us-central1.notebooks.cloud.google.com/tun/m/000000000000000000000",
+        "proxy-url": "000000000000000000000-dot-us-central1.notebooks.googleusercontent.com",
+        "proxy-user-mail": "${projectNumber}-compute@developer.gserviceaccount.com",
+        "report-event-url": "https://notebooks.googleapis.com/v2/projects/${projectId}/locations/us-central1-a/instances/ni2-full-${uniqueId}:reportInfoSystem",
+        "resource-url": "https://notebooks.googleapis.com/v2/projects/${projectId}/locations/us-central1-a/instances/ni2-full-${uniqueId}",
+        "serial-port-logging-enable": "true",
+        "shutdown-script": "/opt/deeplearning/bin/shutdown_script.sh"
       },
       "networkInterfaces": [
         {
@@ -1145,9 +1162,6 @@ OK
     },
     "healthState": "HEALTHY",
     "id": "000000000000000000000",
-    "instanceOwners": [
-      "${projectNumber}-compute@developer.gserviceaccount.com"
-    ],
     "labels": {
       "consumer-project-id": "${projectId}",
       "consumer-project-number": "${projectNumber}",
@@ -1203,9 +1217,26 @@ OK
     },
     "machineType": "n1-standard-4",
     "metadata": {
+      "disable-swap-binaries": "true",
+      "enable-guest-attributes": "TRUE",
+      "enable-jupyterlab4": "true",
       "enable-os-config": "true",
+      "enable-oslogin": "TRUE",
+      "instance-region": "us-central1",
+      "new-proxy-agent-enabled": "true",
       "notebook-disable-downloads": "true",
-      "notebook-disable-root": "true"
+      "notebook-disable-root": "true",
+      "notebooks-api": "PROD",
+      "notebooks-api-version": "v1",
+      "proxy-backend-id": "000000000000000000000",
+      "proxy-mode": "mail",
+      "proxy-registration-url": "https://us-central1.notebooks.cloud.google.com/tun/m/000000000000000000000",
+      "proxy-url": "000000000000000000000-dot-us-central1.notebooks.googleusercontent.com",
+      "proxy-user-mail": "${projectNumber}-compute@developer.gserviceaccount.com",
+      "report-event-url": "https://notebooks.googleapis.com/v2/projects/${projectId}/locations/us-central1-a/instances/ni2-full-${uniqueId}:reportInfoSystem",
+      "resource-url": "https://notebooks.googleapis.com/v2/projects/${projectId}/locations/us-central1-a/instances/ni2-full-${uniqueId}",
+      "serial-port-logging-enable": "true",
+      "shutdown-script": "/opt/deeplearning/bin/shutdown_script.sh"
     },
     "networkInterfaces": [
       {
@@ -1239,9 +1270,6 @@ OK
     }
   },
   "id": "000000000000000000000",
-  "instanceOwners": [
-    "${projectNumber}-compute@developer.gserviceaccount.com"
-  ],
   "labels": {
     "consumer-project-id": "${projectId}",
     "consumer-project-number": "${projectNumber}",
@@ -1401,10 +1429,27 @@ OK
       },
       "machineType": "n1-standard-4",
       "metadata": {
+        "disable-swap-binaries": "true",
+        "enable-guest-attributes": "TRUE",
+        "enable-jupyterlab4": "true",
         "enable-os-config": "true",
+        "enable-oslogin": "TRUE",
+        "instance-region": "us-central1",
+        "new-proxy-agent-enabled": "true",
         "notebook-disable-downloads": "true",
         "notebook-disable-root": "true",
-        "notebook-updated-metadata": "true"
+        "notebook-updated-metadata": "true",
+        "notebooks-api": "PROD",
+        "notebooks-api-version": "v1",
+        "proxy-backend-id": "000000000000000000000",
+        "proxy-mode": "mail",
+        "proxy-registration-url": "https://us-central1.notebooks.cloud.google.com/tun/m/000000000000000000000",
+        "proxy-url": "000000000000000000000-dot-us-central1.notebooks.googleusercontent.com",
+        "proxy-user-mail": "${projectNumber}-compute@developer.gserviceaccount.com",
+        "report-event-url": "https://notebooks.googleapis.com/v2/projects/${projectId}/locations/us-central1-a/instances/ni2-full-${uniqueId}:reportInfoSystem",
+        "resource-url": "https://notebooks.googleapis.com/v2/projects/${projectId}/locations/us-central1-a/instances/ni2-full-${uniqueId}",
+        "serial-port-logging-enable": "true",
+        "shutdown-script": "/opt/deeplearning/bin/shutdown_script.sh"
       },
       "networkInterfaces": [
         {
@@ -1439,9 +1484,6 @@ OK
       }
     },
     "id": "000000000000000000000",
-    "instanceOwners": [
-      "${projectNumber}-compute@developer.gserviceaccount.com"
-    ],
     "labels": {
       "consumer-project-id": "${projectId}",
       "consumer-project-number": "${projectNumber}",
@@ -1498,10 +1540,27 @@ OK
     },
     "machineType": "n1-standard-4",
     "metadata": {
+      "disable-swap-binaries": "true",
+      "enable-guest-attributes": "TRUE",
+      "enable-jupyterlab4": "true",
       "enable-os-config": "true",
+      "enable-oslogin": "TRUE",
+      "instance-region": "us-central1",
+      "new-proxy-agent-enabled": "true",
       "notebook-disable-downloads": "true",
       "notebook-disable-root": "true",
-      "notebook-updated-metadata": "true"
+      "notebook-updated-metadata": "true",
+      "notebooks-api": "PROD",
+      "notebooks-api-version": "v1",
+      "proxy-backend-id": "000000000000000000000",
+      "proxy-mode": "mail",
+      "proxy-registration-url": "https://us-central1.notebooks.cloud.google.com/tun/m/000000000000000000000",
+      "proxy-url": "000000000000000000000-dot-us-central1.notebooks.googleusercontent.com",
+      "proxy-user-mail": "${projectNumber}-compute@developer.gserviceaccount.com",
+      "report-event-url": "https://notebooks.googleapis.com/v2/projects/${projectId}/locations/us-central1-a/instances/ni2-full-${uniqueId}:reportInfoSystem",
+      "resource-url": "https://notebooks.googleapis.com/v2/projects/${projectId}/locations/us-central1-a/instances/ni2-full-${uniqueId}",
+      "serial-port-logging-enable": "true",
+      "shutdown-script": "/opt/deeplearning/bin/shutdown_script.sh"
     },
     "networkInterfaces": [
       {
@@ -1536,9 +1595,6 @@ OK
     }
   },
   "id": "000000000000000000000",
-  "instanceOwners": [
-    "${projectNumber}-compute@developer.gserviceaccount.com"
-  ],
   "labels": {
     "consumer-project-id": "${projectId}",
     "consumer-project-number": "${projectNumber}",

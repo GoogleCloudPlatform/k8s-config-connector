@@ -238,6 +238,7 @@ func compareNotebooksV2(ctx context.Context, actual, desired *notebookspb.Instan
 	clonedDesired := proto.Clone(desired).(*notebookspb.Instance)
 
 	populateDefaults := func(act, des *notebookspb.Instance) {
+		// InstanceOwners is unreadable and immutable after creation, the values will be stored in metadata
 		act.InstanceOwners = nil
 		des.InstanceOwners = nil
 

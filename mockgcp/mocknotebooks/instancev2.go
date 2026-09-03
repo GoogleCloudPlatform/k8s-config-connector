@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 	"sort"
+	"strings"
 	"time"
 
 	"k8s.io/apimachinery/pkg/util/uuid"
@@ -154,13 +155,15 @@ func (s *NotebookServiceV2) CreateInstance(ctx context.Context, req *pb_v2.Creat
 		obj.Labels[k] = v
 	}
 
+	s.populateSystemMetadata(obj, name)
+
 	obj.Id = string(uuid.NewUUID())
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.region)
+	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.location)
 	metadata := &pb_v2.OperationMetadata{
 		CreateTime:            timestamppb.New(time.Now()),
 		RequestedCancellation: false,
@@ -187,6 +190,15 @@ func (s *NotebookServiceV2) UpdateInstance(ctx context.Context, req *pb_v2.Updat
 	existing := &pb_v2.Instance{}
 	if err := s.storage.Get(ctx, fqn, existing); err != nil {
 		return nil, err
+	}
+
+	savedSystemMetadata := make(map[string]string)
+	if existing.GetGceSetup() != nil {
+		for k, v := range existing.GetGceSetup().GetMetadata() {
+			if isSystemMetadataKey(k) {
+				savedSystemMetadata[k] = v
+			}
+		}
 	}
 
 	updated := proto.Clone(existing).(*pb_v2.Instance)
@@ -257,13 +269,26 @@ func (s *NotebookServiceV2) UpdateInstance(ctx context.Context, req *pb_v2.Updat
 		proto.Merge(updated, req.Instance)
 	}
 
+	// Restore the saved system metadata
+	if updated.GetGceSetup() == nil {
+		updated.Infrastructure = &pb_v2.Instance_GceSetup{
+			GceSetup: &pb_v2.GceSetup{},
+		}
+	}
+	if updated.GetGceSetup().Metadata == nil {
+		updated.GetGceSetup().Metadata = make(map[string]string)
+	}
+	for k, v := range savedSystemMetadata {
+		updated.GetGceSetup().Metadata[k] = v
+	}
+
 	updated.UpdateTime = timestamppb.New(time.Now())
 
 	if err := s.storage.Update(ctx, fqn, updated); err != nil {
 		return nil, err
 	}
 
-	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.region)
+	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.location)
 	metadata := &pb_v2.OperationMetadata{
 		CreateTime:            timestamppb.New(time.Now()),
 		RequestedCancellation: false,
@@ -289,7 +314,7 @@ func (s *NotebookServiceV2) DeleteInstance(ctx context.Context, req *pb_v2.Delet
 	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
 		return nil, err
 	}
-	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.region)
+	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.location)
 	metadata := &pb_v2.OperationMetadata{
 		CreateTime:            timestamppb.Now(),
 		RequestedCancellation: false,
@@ -301,4 +326,87 @@ func (s *NotebookServiceV2) DeleteInstance(ctx context.Context, req *pb_v2.Delet
 		metadata.EndTime = timestamppb.New(time.Now())
 		return &emptypb.Empty{}, nil
 	})
+}
+
+func (s *NotebookServiceV2) populateSystemMetadata(obj *pb_v2.Instance, name *instanceName) {
+	gceSetup := obj.GetGceSetup()
+	if gceSetup == nil {
+		return
+	}
+
+	region := name.location
+	if lastToken := strings.LastIndex(region, "-"); lastToken != -1 {
+		if len(region)-lastToken-1 == 1 {
+			region = region[:lastToken]
+		}
+	}
+
+	if gceSetup.Metadata == nil {
+		gceSetup.Metadata = map[string]string{}
+	}
+	systemMetadata := map[string]string{
+		"disable-swap-binaries":      "true",
+		"enable-guest-attributes":    "TRUE",
+		"enable-jupyterlab4":         "true",
+		"enable-oslogin":             "TRUE",
+		"instance-region":            region,
+		"new-proxy-agent-enabled":    "true",
+		"notebooks-api":              "PROD",
+		"notebooks-api-version":      "v1",
+		"proxy-backend-id":           "000000000000000000000",
+		"proxy-registration-url":     fmt.Sprintf("https://%s.notebooks.cloud.google.com/tun/m/%s", region, "000000000000000000000"),
+		"proxy-url":                  fmt.Sprintf("%s-dot-%s.notebooks.googleusercontent.com", "000000000000000000000", region),
+		"report-event-url":           fmt.Sprintf("https://notebooks.googleapis.com/v2/projects/%s/locations/%s/instances/%s:reportInfoSystem", name.Project.ID, name.location, name.name),
+		"resource-url":               fmt.Sprintf("https://notebooks.googleapis.com/v2/projects/%s/locations/%s/instances/%s", name.Project.ID, name.location, name.name),
+		"serial-port-logging-enable": "true",
+		"shutdown-script":            "/opt/deeplearning/bin/shutdown_script.sh",
+	}
+	for k, v := range systemMetadata {
+		gceSetup.Metadata[k] = v
+	}
+	if len(obj.InstanceOwners) == 0 {
+		gceSetup.Metadata["proxy-mode"] = "service_account"
+	} else {
+		gceSetup.Metadata["proxy-mode"] = "mail"
+		// Currently supports one owner only
+		gceSetup.Metadata["proxy-user-mail"] = obj.InstanceOwners[0]
+	}
+	obj.InstanceOwners = nil
+	if gceSetup.GetContainerImage() != nil {
+		gceSetup.Metadata["cos-update-strategy"] = "update_disabled"
+		gceSetup.Metadata["custom-container-image"] = "true"
+		gceSetup.Metadata["custom-container-payload"] = fmt.Sprintf("%s:%s", gceSetup.GetContainerImage().GetRepository(), gceSetup.GetContainerImage().GetTag())
+		gceSetup.Metadata["google-logging-enabled"] = "true"
+		gceSetup.Metadata["user-data"] = "#include file:///mnt/stateful_partition/workbench/cloud-config.yaml"
+	}
+}
+
+func isSystemMetadataKey(k string) bool {
+	switch k {
+	case "disable-swap-binaries",
+		"enable-guest-attributes",
+		"enable-jupyterlab4",
+		"enable-oslogin",
+		"instance-region",
+		"new-proxy-agent-enabled",
+		"notebooks-api",
+		"notebooks-api-version",
+		"proxy-backend-id",
+		"proxy-registration-url",
+		"proxy-url",
+		"report-event-url",
+		"resource-url",
+		"serial-port-logging-enable",
+		"shutdown-script",
+		"proxy-mode",
+		"proxy-user-mail",
+		"cos-update-strategy",
+		"custom-container-image",
+		"custom-container-payload",
+		"google-logging-enabled",
+		"user-data":
+		return true
+	default:
+		return false
+	}
 }

@@ -78,6 +78,24 @@ OK
         }
       ],
       "machineType": "n1-standard-1",
+      "metadata": {
+        "disable-swap-binaries": "true",
+        "enable-guest-attributes": "TRUE",
+        "enable-jupyterlab4": "true",
+        "enable-oslogin": "TRUE",
+        "instance-region": "us-central1",
+        "new-proxy-agent-enabled": "true",
+        "notebooks-api": "PROD",
+        "notebooks-api-version": "v1",
+        "proxy-backend-id": "000000000000000000000",
+        "proxy-mode": "service_account",
+        "proxy-registration-url": "https://us-central1.notebooks.cloud.google.com/tun/m/000000000000000000000",
+        "proxy-url": "000000000000000000000-dot-us-central1.notebooks.googleusercontent.com",
+        "report-event-url": "https://notebooks.googleapis.com/v2/projects/${projectId}/locations/us-central1-a/instances/ni2-vm-name-${uniqueId}:reportInfoSystem",
+        "resource-url": "https://notebooks.googleapis.com/v2/projects/${projectId}/locations/us-central1-a/instances/ni2-vm-name-${uniqueId}",
+        "serial-port-logging-enable": "true",
+        "shutdown-script": "/opt/deeplearning/bin/shutdown_script.sh"
+      },
       "networkInterfaces": [
         {
           "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
@@ -148,6 +166,24 @@ OK
       }
     ],
     "machineType": "n1-standard-1",
+    "metadata": {
+      "disable-swap-binaries": "true",
+      "enable-guest-attributes": "TRUE",
+      "enable-jupyterlab4": "true",
+      "enable-oslogin": "TRUE",
+      "instance-region": "us-central1",
+      "new-proxy-agent-enabled": "true",
+      "notebooks-api": "PROD",
+      "notebooks-api-version": "v1",
+      "proxy-backend-id": "000000000000000000000",
+      "proxy-mode": "service_account",
+      "proxy-registration-url": "https://us-central1.notebooks.cloud.google.com/tun/m/000000000000000000000",
+      "proxy-url": "000000000000000000000-dot-us-central1.notebooks.googleusercontent.com",
+      "report-event-url": "https://notebooks.googleapis.com/v2/projects/${projectId}/locations/us-central1-a/instances/ni2-vm-name-${uniqueId}:reportInfoSystem",
+      "resource-url": "https://notebooks.googleapis.com/v2/projects/${projectId}/locations/us-central1-a/instances/ni2-vm-name-${uniqueId}",
+      "serial-port-logging-enable": "true",
+      "shutdown-script": "/opt/deeplearning/bin/shutdown_script.sh"
+    },
     "networkInterfaces": [
       {
         "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/default",
