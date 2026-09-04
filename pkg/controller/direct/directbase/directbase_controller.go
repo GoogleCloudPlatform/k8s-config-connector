@@ -24,6 +24,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/kccstate"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/errorhandling"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/jitter"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/lifecyclehandler"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/metrics"
@@ -257,6 +258,15 @@ func (r *DirectReconciler) Reconcile(ctx context.Context, request reconcile.Requ
 	}
 	if skip {
 		logger.V(2).Info("Skipping reconcile as nothing has changed and 0 reconcile period is set", "resource", request.NamespacedName)
+		return reconcile.Result{}, nil
+	}
+
+	skipTerminalError, err := errorhandling.ShouldSkip(obj)
+	if err != nil {
+		return reconcile.Result{}, err
+	}
+	if skipTerminalError {
+		logger.V(2).Info("Skipping reconcile because resource is in terminal error state and spec is not updated", "resource", request.NamespacedName)
 		return reconcile.Result{}, nil
 	}
 
