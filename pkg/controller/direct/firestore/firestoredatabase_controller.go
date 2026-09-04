@@ -195,10 +195,9 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 	}
 	desired.Name = fqn
 
-	// Type is required, and we default it to FIRESTORE_NATIVE if unspecified.
-	if desired.Type == pb.Database_DATABASE_TYPE_UNSPECIFIED {
-		desired.Type = pb.Database_FIRESTORE_NATIVE
-	}
+	// Preserve the current database type when the field is omitted. Existing
+	// resources created before type was supported do not declare it.
+	applyDatabaseTypeDefaultForUpdate(desired, a.actual, a.desired.Spec.Type)
 
 	// Simulate server-side defaulting, so we don't issue updates for fields that
 	// are different only because of defaulting.
