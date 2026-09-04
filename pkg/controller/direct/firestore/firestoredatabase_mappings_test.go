@@ -22,6 +22,35 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func TestFirestoreDatabaseDefaultType(t *testing.T) {
+	mapCtx := &direct.MapContext{}
+	proto := FirestoreDatabaseSpec_v1beta1_ToProto(mapCtx, &krm.FirestoreDatabaseSpec{})
+	if err := mapCtx.Err(); err != nil {
+		t.Fatalf("mapping FirestoreDatabase spec to proto: %v", err)
+	}
+
+	ApplyServerSideDefaults(proto)
+
+	if got, want := proto.GetType(), pb.Database_FIRESTORE_NATIVE; got != want {
+		t.Errorf("default database type is %v, want %v", got, want)
+	}
+}
+
+func TestFirestoreDatabaseOmittedTypePreservesDatastoreMode(t *testing.T) {
+	mapCtx := &direct.MapContext{}
+	desired := FirestoreDatabaseSpec_v1beta1_ToProto(mapCtx, &krm.FirestoreDatabaseSpec{})
+	if err := mapCtx.Err(); err != nil {
+		t.Fatalf("mapping FirestoreDatabase spec to proto: %v", err)
+	}
+	actual := &pb.Database{Type: pb.Database_DATASTORE_MODE}
+
+	applyDatabaseTypeDefaultForUpdate(desired, actual, nil)
+
+	if got, want := desired.GetType(), pb.Database_DATASTORE_MODE; got != want {
+		t.Errorf("database type after update defaulting is %v, want %v", got, want)
+	}
+}
+
 func TestFirestoreDatabaseTypeMapping(t *testing.T) {
 	databaseType := "DATASTORE_MODE"
 	mapCtx := &direct.MapContext{}
