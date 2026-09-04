@@ -220,7 +220,7 @@ X-Xss-Protection: 0
       },
       {
         "fieldPath": "__name__",
-        "order": "DESCENDING"
+        "order": "ASCENDING"
       }
     ],
     "name": "projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/sample-collection-${uniqueId}/indexes/${indexID}",
@@ -258,7 +258,7 @@ X-Xss-Protection: 0
     },
     {
       "fieldPath": "__name__",
-      "order": "DESCENDING"
+      "order": "ASCENDING"
     }
   ],
   "name": "projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/sample-collection-${uniqueId}/indexes/${indexID}",
