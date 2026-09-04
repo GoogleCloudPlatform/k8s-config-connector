@@ -356,6 +356,42 @@ func (a *SecurityPolicyAdapter) assignGCPDefaults(desired, actual *pb.SecurityPo
 	if desired.Type == nil {
 		desired.Type = actual.Type
 	}
+	if len(desired.Rules) == len(actual.Rules) {
+		actualByPriority := make(map[int32]*pb.SecurityPolicyRule, len(actual.Rules))
+		for _, r := range actual.Rules {
+			if r.Priority != nil {
+				actualByPriority[*r.Priority] = r
+			}
+		}
+		reordered := make([]*pb.SecurityPolicyRule, 0, len(desired.Rules))
+		for _, dr := range desired.Rules {
+			if dr.Priority == nil {
+				break
+			}
+			ar, ok := actualByPriority[*dr.Priority]
+			if !ok {
+				break
+			}
+			if dr.Kind == nil {
+				ar.Kind = nil
+			}
+			if dr.Description == nil && ar.GetDescription() == "" {
+				ar.Description = nil
+			}
+			if dr.Preview == nil && !ar.GetPreview() {
+				ar.Preview = nil
+			}
+			if dr.RateLimitOptions != nil && ar.RateLimitOptions != nil {
+				if dr.RateLimitOptions.EnforceOnKey == nil && len(dr.RateLimitOptions.EnforceOnKeyConfigs) == 0 && ar.RateLimitOptions.GetEnforceOnKey() == "ALL" {
+					ar.RateLimitOptions.EnforceOnKey = nil
+				}
+			}
+			reordered = append(reordered, ar)
+		}
+		if len(reordered) == len(desired.Rules) {
+			actual.Rules = reordered
+		}
+	}
 }
 
 func ComputeSecurityPolicyStatus_v1beta1_FromProto(mapCtx *direct.MapContext, in *pb.SecurityPolicy) *krm.ComputeSecurityPolicyStatus {
