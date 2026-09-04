@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"log"
 	"strings"
+	"sync"
 
 	"time"
 
@@ -73,6 +74,7 @@ func ResourceComputeSecurityPolicy() *schema.Resource {
 				Type:     schema.TypeSet,
 				Optional: true,
 				Computed: true, // If no rules are set, a default rule is added
+				Set:      resourceComputeSecurityPolicyRuleHash,
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
 						"action": {
@@ -261,7 +263,7 @@ func ResourceComputeSecurityPolicy() *schema.Resource {
 									"enforce_on_key": {
 										Type:         schema.TypeString,
 										Optional:     true,
-										Default:      "ALL",
+										Computed:     true,
 										Description:  `Determines the key to enforce the rateLimitThreshold on`,
 										ValidateFunc: validation.StringInSlice([]string{"ALL", "IP", "HTTP_HEADER", "XFF_IP", "HTTP_COOKIE", "HTTP_PATH", "SNI", "REGION_CODE", ""}, false),
 									},
@@ -570,6 +572,56 @@ func resourceComputeSecurityPolicyRulePreconfiguredWafConfigExclusionFieldParams
 	}
 }
 
+var computeSecurityPolicyRuleElemOnce sync.Once
+var computeSecurityPolicyRuleElem *schema.Resource
+
+func getComputeSecurityPolicyRuleElem() *schema.Resource {
+	computeSecurityPolicyRuleElemOnce.Do(func() {
+		computeSecurityPolicyRuleElem = ResourceComputeSecurityPolicy().Schema["rule"].Elem.(*schema.Resource)
+	})
+	return computeSecurityPolicyRuleElem
+}
+
+func effectiveEnforceOnKey(rloMap map[string]interface{}) string {
+	if len(rloMap) == 0 {
+		return ""
+	}
+	eok, _ := rloMap["enforce_on_key"].(string)
+	configs, _ := rloMap["enforce_on_key_configs"].([]interface{})
+	if eok == "" && len(configs) == 0 {
+		return "ALL"
+	}
+	return eok
+}
+
+func resourceComputeSecurityPolicyRuleHash(v interface{}) int {
+	if v == nil {
+		return 0
+	}
+	ruleMap, ok := v.(map[string]interface{})
+	if !ok {
+		return schema.HashResource(getComputeSecurityPolicyRuleElem())(v)
+	}
+	ruleCopy := make(map[string]interface{}, len(ruleMap))
+	for k, val := range ruleMap {
+		ruleCopy[k] = val
+	}
+	if rloList, ok := ruleCopy["rate_limit_options"].([]interface{}); ok && len(rloList) > 0 && rloList[0] != nil {
+		if rloMap, ok := rloList[0].(map[string]interface{}); ok {
+			rloCopy := make(map[string]interface{}, len(rloMap))
+			for k, val := range rloMap {
+				rloCopy[k] = val
+			}
+			rloCopy["enforce_on_key"] = effectiveEnforceOnKey(rloCopy)
+			rloListCopy := make([]interface{}, len(rloList))
+			copy(rloListCopy, rloList)
+			rloListCopy[0] = rloCopy
+			ruleCopy["rate_limit_options"] = rloListCopy
+		}
+	}
+	return schema.HashResource(getComputeSecurityPolicyRuleElem())(ruleCopy)
+}
+
 func rulesCustomizeDiff(_ context.Context, diff *schema.ResourceDiff, _ interface{}) error {
 	_, n := diff.GetChange("rule")
 	nSet := n.(*schema.Set)
@@ -817,7 +869,7 @@ func resourceComputeSecurityPolicyUpdate(d *schema.ResourceData, meta interface{
 					}
 				}
 
-				if fmt.Sprintf("%v", oMap["enforce_on_key"]) != fmt.Sprintf("%v", nMap["enforce_on_key"]) {
+				if effectiveEnforceOnKey(oMap) != effectiveEnforceOnKey(nMap) {
 					updateMask = append(updateMask, "rate_limit_options.enforce_on_key")
 				}
 
@@ -1248,14 +1300,20 @@ func expandSecurityPolicyRuleRateLimitOptions(configured []interface{}) *compute
 	}
 
 	data := configured[0].(map[string]interface{})
+	enforceOnKey := data["enforce_on_key"].(string)
+	enforceOnKeyConfigs := expandSecurityPolicyEnforceOnKeyConfigs(data["enforce_on_key_configs"].([]interface{}))
+	if enforceOnKey == "" && len(enforceOnKeyConfigs) == 0 {
+		enforceOnKey = "ALL"
+	}
+
 	return &compute.SecurityPolicyRuleRateLimitOptions{
 		BanThreshold:          expandThreshold(data["ban_threshold"].([]interface{})),
 		RateLimitThreshold:    expandThreshold(data["rate_limit_threshold"].([]interface{})),
 		ExceedAction:          data["exceed_action"].(string),
 		ConformAction:         data["conform_action"].(string),
-		EnforceOnKey:          data["enforce_on_key"].(string),
+		EnforceOnKey:          enforceOnKey,
 		EnforceOnKeyName:      data["enforce_on_key_name"].(string),
-		EnforceOnKeyConfigs:   expandSecurityPolicyEnforceOnKeyConfigs(data["enforce_on_key_configs"].([]interface{})),
+		EnforceOnKeyConfigs:   enforceOnKeyConfigs,
 		BanDurationSec:        int64(data["ban_duration_sec"].(int)),
 		ExceedRedirectOptions: expandSecurityPolicyRuleRedirectOptions(data["exceed_redirect_options"].([]interface{})),
 		ForceSendFields:       []string{"EnforceOnKey", "EnforceOnKeyName", "EnforceOnKeyConfigs"},
