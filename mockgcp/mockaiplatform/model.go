@@ -20,6 +20,7 @@ package mockaiplatform
 
 import (
 	"context"
+	"strconv"
 	"strings"
 	"time"
 
@@ -83,7 +84,7 @@ type ModelName struct {
 }
 
 func (n *ModelName) String() string {
-	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/models/" + n.ModelID
+	return "projects/" + strconv.FormatInt(n.Project.Number, 10) + "/locations/" + n.Location + "/models/" + n.ModelID
 }
 
 // parseModelName parses a string into a modelName.
@@ -91,7 +92,11 @@ func (n *ModelName) String() string {
 func (s *MockService) parseModelName(name string) (*ModelName, error) {
 	tokens := strings.Split(name, "/")
 	if len(tokens) == 6 && tokens[0] == "projects" && tokens[2] == "locations" && tokens[4] == "models" {
-		project, err := s.Projects.GetProjectByID(tokens[1])
+		projectName, err := projects.ParseProjectName(tokens[0] + "/" + tokens[1])
+		if err != nil {
+			return nil, err
+		}
+		project, err := s.Projects.GetProject(projectName)
 		if err != nil {
 			return nil, err
 		}
