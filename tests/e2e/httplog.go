@@ -47,9 +47,6 @@ func RemoveExtraEvents(events test.LogEntries) test.LogEntries {
 	// Remove repeated GET requests (after normalization)
 	var previous *test.LogEntry
 	events = events.KeepIf(func(e *test.LogEntry) bool {
-		lastComponent := func(s string) string {
-			return s[strings.LastIndex(s, "/")+1:]
-		}
 
 		// isGet checks if this is a GET request, or a GRPC equivalent
 		isGet := func(r test.Request) bool {
@@ -57,9 +54,9 @@ func RemoveExtraEvents(events test.LogEntries) test.LogEntries {
 				return true
 			}
 			if r.Method == "GRPC" {
-				methodName := lastComponent(r.URL)
-				switch methodName {
-				case "GetAppProfile":
+				url := r.URL
+				switch url {
+				case "/google.bigtable.admin.v2.BigtableInstanceAdmin/GetAppProfile", "/google.cloud.notebooks.v2.NotebookService/GetInstance", "/google.longrunning.Operations/GetOperation":
 					return true
 				}
 			}

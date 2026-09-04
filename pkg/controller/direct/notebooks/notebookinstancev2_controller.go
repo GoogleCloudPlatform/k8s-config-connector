@@ -17,6 +17,10 @@ package notebooks
 import (
 	"context"
 	"fmt"
+	"slices"
+	"sort"
+
+	"k8s.io/apimachinery/pkg/util/sets"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/notebooks/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -195,7 +199,7 @@ func (a *InstanceV2Adapter) Update(ctx context.Context, updateOp *directbase.Upd
 
 	a.desired.Name = a.id.String()
 
-	diffs, updateMask, err := compareNotebooksV2(ctx, a.actual, a.desired)
+	clonedDesired, diffs, updateMask, err := compareNotebooksV2(ctx, a.actual, a.desired)
 	if err != nil {
 		return err
 	}
@@ -208,7 +212,7 @@ func (a *InstanceV2Adapter) Update(ctx context.Context, updateOp *directbase.Upd
 	structuredreporting.ReportDiff(ctx, diffs)
 
 	req := &notebookspb.UpdateInstanceRequest{
-		Instance:   a.desired,
+		Instance:   clonedDesired,
 		UpdateMask: updateMask,
 	}
 	op, err := a.gcpClient.UpdateInstance(ctx, req)
@@ -224,126 +228,135 @@ func (a *InstanceV2Adapter) Update(ctx context.Context, updateOp *directbase.Upd
 
 	return a.updateStatus(ctx, updateOp, updated)
 }
-
-func compareNotebooksV2(ctx context.Context, actual, desired *notebookspb.Instance) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
+func compareNotebooksV2(ctx context.Context, actual, desired *notebookspb.Instance) (*notebookspb.Instance, *structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
 	maskedActual, err := mappers.OnlySpecFields(actual, NotebookInstanceV2Spec_v1alpha1_FromProto, NotebookInstanceV2Spec_v1alpha1_ToProto)
 	if err != nil {
-		return nil, nil, err
+		return nil, nil, nil, err
 	}
 	maskedActual.Name = desired.Name
 
 	clonedDesired := proto.Clone(desired).(*notebookspb.Instance)
 
 	populateDefaults := func(act, des *notebookspb.Instance) {
-		actGCE := act.GetGceSetup()
-		desGCE := des.GetGceSetup()
-		if desGCE == nil {
-			desGCE = &notebookspb.GceSetup{}
-			des.Infrastructure = &notebookspb.Instance_GceSetup{GceSetup: desGCE}
-		}
-		if actGCE == nil {
-			actGCE = &notebookspb.GceSetup{}
-			act.Infrastructure = &notebookspb.Instance_GceSetup{GceSetup: actGCE}
+		// InstanceOwners is unreadable and immutable after creation, the values will be stored in metadata
+		act.InstanceOwners = nil
+		des.InstanceOwners = nil
+
+		// GCP Notebooks V2 API injects several system labels on creation.
+		// We copy these to desired to prevent continuous diffs on labels.
+		if des.Labels == nil {
+			des.Labels = make(map[string]string)
 		}
 
-		// Copy/align ServiceAccounts if not specified in desired
-		if len(desGCE.ServiceAccounts) == 0 && len(actGCE.ServiceAccounts) > 0 {
-			desGCE.ServiceAccounts = actGCE.ServiceAccounts
+		systemLabels := []string{
+			"consumer-project-id",
+			"consumer-project-number",
+			"notebooks-product",
+			"resource-name",
 		}
-		// Copy/align BootDisk if not specified in desired
-		if desGCE.BootDisk == nil && actGCE.BootDisk != nil {
-			desGCE.BootDisk = actGCE.BootDisk
-		}
-		// Copy/align BootDisk KMS keys if not specified in desired
-		if desGCE.BootDisk != nil && actGCE.BootDisk != nil {
-			if desGCE.BootDisk.KmsKey == "" && actGCE.BootDisk.KmsKey != "" {
-				desGCE.BootDisk.KmsKey = actGCE.BootDisk.KmsKey
-				desGCE.BootDisk.DiskEncryption = actGCE.BootDisk.DiskEncryption
+		for _, key := range systemLabels {
+			if v, ok := act.Labels[key]; ok {
+				des.Labels[key] = v
 			}
 		}
-		// Copy/align DataDisks if not specified in desired
-		if len(desGCE.DataDisks) == 0 && len(actGCE.DataDisks) > 0 {
-			desGCE.DataDisks = actGCE.DataDisks
-		}
-		// Copy/align DataDisks KMS keys if not specified in desired
-		if len(desGCE.DataDisks) > 0 && len(actGCE.DataDisks) == len(desGCE.DataDisks) {
-			for i := range desGCE.DataDisks {
-				desDisk := desGCE.DataDisks[i]
-				actDisk := actGCE.DataDisks[i]
-				if desDisk.KmsKey == "" && actDisk.KmsKey != "" {
-					desDisk.KmsKey = actDisk.KmsKey
-					desDisk.DiskEncryption = actDisk.DiskEncryption
+
+		// Handle GceSetup (Infrastructure) fields
+		actGce := act.GetGceSetup()
+		desGce := des.GetGceSetup()
+
+		// Align immutable fields under GceSetup from actual to desired.
+		// This ensures we do not generate false diffs for fields that can never be updated.
+		if desGce == nil {
+			des.Infrastructure = act.Infrastructure
+		} else {
+			desGce.BootDisk = actGce.BootDisk
+			desGce.DataDisks = actGce.DataDisks
+			desGce.NetworkInterfaces = actGce.NetworkInterfaces
+			desGce.ServiceAccounts = actGce.ServiceAccounts
+			desGce.EnableIpForwarding = actGce.EnableIpForwarding
+			if desGce.Tags == nil {
+				desGce.Tags = []string{}
+			}
+			// GCP Notebooks V2 API injects two system tags on creation.
+			// We copy these to desired to prevent continuous diffs on tags.
+			desGce.Tags = append(desGce.Tags, "deeplearning-vm", "notebook-instance")
+			sort.Strings(desGce.Tags)
+
+			if desGce.GetContainerImage() == nil {
+				desGce.Image = &notebookspb.GceSetup_VmImage{VmImage: actGce.GetVmImage()}
+			}
+			if desGce.ShieldedInstanceConfig == nil {
+				desGce.ShieldedInstanceConfig = actGce.ShieldedInstanceConfig
+			} else {
+				if desGce.ShieldedInstanceConfig.EnableVtpm == true {
+					desGce.ShieldedInstanceConfig = actGce.ShieldedInstanceConfig
+				}
+				if desGce.ShieldedInstanceConfig.EnableIntegrityMonitoring == true {
+					desGce.ShieldedInstanceConfig = actGce.ShieldedInstanceConfig
 				}
 			}
-		}
-		// Copy/align NetworkInterfaces if not specified in desired
-		if len(desGCE.NetworkInterfaces) == 0 && len(actGCE.NetworkInterfaces) > 0 {
-			desGCE.NetworkInterfaces = actGCE.NetworkInterfaces
-		}
-		// Copy/align Image (VmImage / ContainerImage) if not specified in desired
-		if desGCE.Image == nil && actGCE.Image != nil {
-			desGCE.Image = actGCE.Image
-		}
-		// Copy/align VmImage fields if present on both sides
-		desVM := desGCE.GetVmImage()
-		actVM := actGCE.GetVmImage()
-		if desVM != nil && actVM != nil {
-			if desVM.Project == "" {
-				desVM.Project = actVM.Project
+
+			// Ensure all desired metadata exist in actual; otherwise it is changed
+			metadataChanged := false
+			for k, desVal := range desGce.Metadata {
+				actVal, ok := actGce.Metadata[k]
+				if !ok || desVal != actVal {
+					metadataChanged = true
+					break
+				}
 			}
-			if desVM.GetFamily() == "" && actVM.GetFamily() != "" {
-				desVM.Image = &notebookspb.VmImage_Family{Family: actVM.GetFamily()}
-			}
-			if desVM.GetName() == "" && actVM.GetName() != "" {
-				desVM.Image = &notebookspb.VmImage_Name{Name: actVM.GetName()}
-			}
-		}
-		// Copy/align ContainerImage fields if present on both sides
-		desContainer := desGCE.GetContainerImage()
-		actContainer := actGCE.GetContainerImage()
-		if desContainer != nil && actContainer != nil {
-			if desContainer.Repository == "" {
-				desContainer.Repository = actContainer.Repository
-			}
-			if desContainer.Tag == "" {
-				desContainer.Tag = actContainer.Tag
-			}
-		}
-		// Copy/align GpuDriverConfig, Tags, and Metadata (which are immutable on GCP)
-		desGCE.GpuDriverConfig = actGCE.GpuDriverConfig
-		desGCE.Tags = actGCE.Tags
-		desGCE.Metadata = actGCE.Metadata
-		// Copy/align DisablePublicIp if not specified in desired
-		if !desGCE.DisablePublicIp && actGCE.DisablePublicIp {
-			desGCE.DisablePublicIp = actGCE.DisablePublicIp
-		}
-		// Copy/align EnableIpForwarding if not specified in desired
-		if !desGCE.EnableIpForwarding && actGCE.EnableIpForwarding {
-			desGCE.EnableIpForwarding = actGCE.EnableIpForwarding
-		}
-		// Copy/align ShieldedInstanceConfig defaults
-		if actGCE.ShieldedInstanceConfig == nil {
-			actGCE.ShieldedInstanceConfig = &notebookspb.ShieldedInstanceConfig{
-				EnableSecureBoot:          false,
-				EnableVtpm:                true,
-				EnableIntegrityMonitoring: true,
-			}
-		}
-		if desGCE.ShieldedInstanceConfig == nil {
-			desGCE.ShieldedInstanceConfig = &notebookspb.ShieldedInstanceConfig{
-				EnableSecureBoot:          false,
-				EnableVtpm:                true,
-				EnableIntegrityMonitoring: true,
+			if !metadataChanged {
+				desGce.Metadata = actGce.Metadata
 			}
 		}
 	}
 	populateDefaults(maskedActual, clonedDesired)
 
-	diffs, updateMask, err := common.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
+	// Validate immutable fields and get fine-grained update mask
+	diffPaths, diffs, err := common.CompareProtoMessageStructuredDiff(clonedDesired, maskedActual, common.BasicDiff)
 	if err != nil {
-		return nil, nil, err
+		return nil, nil, nil, err
 	}
-	return diffs, updateMask, nil
+
+	// See https://docs.cloud.google.com/gemini-enterprise-agent-platform/notebooks/workbench/reference/rest/v2/projects.locations.instances/patch#query-parameters
+	allowedMutablePaths := sets.New(
+		"labels",
+		"disable_proxy_access",
+		"gce_setup.min_cpu_platform",
+		"gce_setup.metadata",
+		"gce_setup.machine_type",
+		"gce_setup.accelerator_configs",
+		"gce_setup.accelerator_configs.type",
+		"gce_setup.accelerator_configs.core_count",
+		"gce_setup.gpu_driver_config",
+		"gce_setup.gpu_driver_config.enable_gpu_driver",
+		"gce_setup.gpu_driver_config.custom_gpu_driver_path",
+		"gce_setup.shielded_instance_config",
+		"gce_setup.shielded_instance_config.enable_secure_boot",
+		"gce_setup.shielded_instance_config.enable_vtpm",
+		"gce_setup.shielded_instance_config.enable_integrity_monitoring",
+		"gce_setup.reservation_affinity",
+		"gce_setup.reservation_affinity.consume_reservation_type",
+		"gce_setup.reservation_affinity.key",
+		"gce_setup.reservation_affinity.values",
+		"gce_setup.tags",
+		"gce_setup.container_image",
+		"gce_setup.container_image.repository",
+		"gce_setup.container_image.tag",
+		"gce_setup.disable_public_ip",
+	)
+
+	for path := range diffPaths {
+		if !allowedMutablePaths.Has(path) {
+			return nil, nil, nil, fmt.Errorf("field %q is immutable", path)
+		}
+	}
+
+	paths := diffPaths.UnsortedList()
+	slices.Sort(paths)
+	updateMask := &fieldmaskpb.FieldMask{Paths: paths}
+
+	return clonedDesired, diffs, updateMask, nil
 }
 
 func (a *InstanceV2Adapter) updateStatus(ctx context.Context, op directbase.Operation, latest *notebookspb.Instance) error {

@@ -17,12 +17,20 @@ package mocknotebooks
 import (
 	"context"
 	"fmt"
+	"sort"
+	"strings"
 	"time"
 
+	"k8s.io/apimachinery/pkg/util/uuid"
+
 	"google.golang.org/genproto/googleapis/longrunning"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/common/fields"
 
 	pb_v2 "cloud.google.com/go/notebooks/apiv2/notebookspb"
 )
@@ -38,50 +46,6 @@ func (s *NotebookServiceV2) GetInstance(ctx context.Context, req *pb_v2.GetInsta
 	obj := &pb_v2.Instance{}
 	if err := s.storage.Get(ctx, fqn, obj); err != nil {
 		return nil, err
-	}
-	obj.Name = fqn
-	obj.Creator = "someone@somewhere.com"
-	obj.HealthState = pb_v2.HealthState_HEALTHY
-	obj.State = pb_v2.State_ACTIVE
-	obj.ProxyUri = fmt.Sprintf("https://%s-dot-us-central1.notebooks.googleusercontent.com", name.name)
-
-	if obj.GetGceSetup() == nil {
-		obj.Infrastructure = &pb_v2.Instance_GceSetup{
-			GceSetup: &pb_v2.GceSetup{},
-		}
-	}
-	gceSetup := obj.GetGceSetup()
-	if gceSetup.MachineType == "" {
-		gceSetup.MachineType = "n1-standard-1"
-	}
-	if len(gceSetup.ServiceAccounts) == 0 {
-		gceSetup.ServiceAccounts = []*pb_v2.ServiceAccount{
-			{
-				Email: fmt.Sprintf("%d-compute@developer.gserviceaccount.com", name.Project.Number),
-			},
-		}
-	}
-	if gceSetup.BootDisk == nil {
-		gceSetup.BootDisk = &pb_v2.BootDisk{
-			DiskSizeGb:     150,
-			DiskType:       pb_v2.DiskType_PD_STANDARD,
-			DiskEncryption: pb_v2.DiskEncryption_GMEK,
-		}
-	}
-	if len(gceSetup.NetworkInterfaces) == 0 {
-		gceSetup.NetworkInterfaces = []*pb_v2.NetworkInterface{
-			{
-				Network: fmt.Sprintf("projects/%s/global/networks/default", name.Project.ID),
-				Subnet:  fmt.Sprintf("projects/%s/regions/us-central1/subnetworks/default", name.Project.ID),
-			},
-		}
-	}
-
-	if obj.CreateTime == nil {
-		obj.CreateTime = timestamppb.New(time.Now())
-	}
-	if obj.UpdateTime == nil {
-		obj.UpdateTime = timestamppb.New(time.Now())
 	}
 
 	return obj, nil
@@ -105,11 +69,101 @@ func (s *NotebookServiceV2) CreateInstance(ctx context.Context, req *pb_v2.Creat
 	obj.Creator = "someone@somewhere.com"
 	obj.ProxyUri = fmt.Sprintf("https://%s-dot-us-central1.notebooks.googleusercontent.com", req.InstanceId)
 
+	if obj.GetGceSetup() == nil {
+		obj.Infrastructure = &pb_v2.Instance_GceSetup{
+			GceSetup: &pb_v2.GceSetup{},
+		}
+	}
+	gceSetup := obj.GetGceSetup()
+	if gceSetup.MachineType == "" {
+		gceSetup.MachineType = "n1-standard-1"
+	}
+	if gceSetup.ServiceAccounts == nil {
+		gceSetup.ServiceAccounts = []*pb_v2.ServiceAccount{
+			{
+				Email:  fmt.Sprintf("%d-compute@developer.gserviceaccount.com", name.Project.Number),
+				Scopes: []string{"https://www.googleapis.com/auth/cloud-platform", "https://www.googleapis.com/auth/userinfo.email"},
+			},
+		}
+	} else {
+		for _, sa := range gceSetup.ServiceAccounts {
+			if sa.Email == "" {
+				sa.Email = fmt.Sprintf("%d-compute@developer.gserviceaccount.com", name.Project.Number)
+			}
+			if sa.Scopes == nil {
+				sa.Scopes = []string{"https://www.googleapis.com/auth/cloud-platform", "https://www.googleapis.com/auth/userinfo.email"}
+			}
+		}
+	}
+	if gceSetup.BootDisk == nil {
+		gceSetup.BootDisk = &pb_v2.BootDisk{
+			DiskSizeGb:     150,
+			DiskType:       pb_v2.DiskType_PD_STANDARD,
+			DiskEncryption: pb_v2.DiskEncryption_GMEK,
+		}
+	}
+	if gceSetup.DataDisks == nil {
+		gceSetup.DataDisks = []*pb_v2.DataDisk{
+			{
+				DiskSizeGb:     100,
+				DiskType:       pb_v2.DiskType_PD_STANDARD,
+				DiskEncryption: pb_v2.DiskEncryption_GMEK,
+			},
+		}
+	}
+	if gceSetup.ShieldedInstanceConfig == nil {
+		gceSetup.ShieldedInstanceConfig = &pb_v2.ShieldedInstanceConfig{
+			EnableIntegrityMonitoring: true,
+			EnableVtpm:                true,
+		}
+	}
+	if gceSetup.Tags == nil {
+		gceSetup.Tags = []string{}
+	}
+	gceSetup.Tags = append(gceSetup.Tags, "deeplearning-vm", "notebook-instance")
+	sort.Strings(gceSetup.Tags)
+
+	if len(gceSetup.NetworkInterfaces) == 0 {
+		gceSetup.NetworkInterfaces = []*pb_v2.NetworkInterface{
+			{
+				Network: fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/global/networks/default", name.Project.ID),
+				Subnet:  fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/regions/us-central1/subnetworks/default", name.Project.ID),
+			},
+		}
+	} else {
+		var networkInterfaces []*pb_v2.NetworkInterface
+		for _, n := range gceSetup.NetworkInterfaces {
+			n = &pb_v2.NetworkInterface{
+				Network: fmt.Sprintf("https://www.googleapis.com/compute/v1/%s", n.Network),
+				Subnet:  fmt.Sprintf("https://www.googleapis.com/compute/v1/%s", n.Subnet),
+				NicType: pb_v2.NetworkInterface_GVNIC,
+			}
+			networkInterfaces = append(networkInterfaces, n)
+		}
+		gceSetup.NetworkInterfaces = networkInterfaces
+	}
+	if obj.Labels == nil {
+		obj.Labels = make(map[string]string)
+	}
+	systemLabels := map[string]string{
+		"consumer-project-id":     name.Project.ID,
+		"consumer-project-number": fmt.Sprintf("%v", name.Project.Number),
+		"notebooks-product":       "workbench-instances",
+		"resource-name":           name.name,
+	}
+	for k, v := range systemLabels {
+		obj.Labels[k] = v
+	}
+
+	s.populateSystemMetadata(obj, name)
+
+	obj.Id = string(uuid.NewUUID())
+
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
 	}
 
-	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.region)
+	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.location)
 	metadata := &pb_v2.OperationMetadata{
 		CreateTime:            timestamppb.New(time.Now()),
 		RequestedCancellation: false,
@@ -138,18 +192,94 @@ func (s *NotebookServiceV2) UpdateInstance(ctx context.Context, req *pb_v2.Updat
 		return nil, err
 	}
 
+	savedSystemMetadata := make(map[string]string)
+	if existing.GetGceSetup() != nil {
+		for k, v := range existing.GetGceSetup().GetMetadata() {
+			if isSystemMetadataKey(k) {
+				savedSystemMetadata[k] = v
+			}
+		}
+	}
+
 	updated := proto.Clone(existing).(*pb_v2.Instance)
 	if req.UpdateMask != nil {
-		if req.Instance.Labels != nil {
-			updated.Labels = req.Instance.Labels
+		allowedMutablePaths := map[string]bool{
+			"labels":                                                         true,
+			"disable_proxy_access":                                           true,
+			"gce_setup.min_cpu_platform":                                     true,
+			"gce_setup.metadata":                                             true,
+			"gce_setup.machine_type":                                         true,
+			"gce_setup.accelerator_configs":                                  true,
+			"gce_setup.accelerator_configs.type":                             true,
+			"gce_setup.accelerator_configs.core_count":                       true,
+			"gce_setup.gpu_driver_config":                                    true,
+			"gce_setup.gpu_driver_config.enable_gpu_driver":                  true,
+			"gce_setup.gpu_driver_config.custom_gpu_driver_path":             true,
+			"gce_setup.shielded_instance_config":                             true,
+			"gce_setup.shielded_instance_config.enable_secure_boot":          true,
+			"gce_setup.shielded_instance_config.enable_vtpm":                 true,
+			"gce_setup.shielded_instance_config.enable_integrity_monitoring": true,
+			"gce_setup.reservation_affinity":                                 true,
+			"gce_setup.reservation_affinity.consume_reservation_type":        true,
+			"gce_setup.reservation_affinity.key":                             true,
+			"gce_setup.reservation_affinity.values":                          true,
+			"gce_setup.tags":                                                 true,
+			"gce_setup.container_image":                                      true,
+			"gce_setup.container_image.repository":                           true,
+			"gce_setup.container_image.tag":                                  true,
+			"gce_setup.disable_public_ip":                                    true,
 		}
-		if req.Instance.GetGceSetup() != nil {
-			updated.Infrastructure = &pb_v2.Instance_GceSetup{
-				GceSetup: proto.Clone(req.Instance.GetGceSetup()).(*pb_v2.GceSetup),
+
+		for _, path := range req.UpdateMask.Paths {
+			if !allowedMutablePaths[path] {
+				return nil, status.Errorf(codes.InvalidArgument, "field %q is immutable", path)
 			}
+		}
+
+		requiresStopped := map[string]bool{
+			"gce_setup.accelerator_configs":                                  true,
+			"gce_setup.accelerator_configs.type":                             true,
+			"gce_setup.accelerator_configs.core_count":                       true,
+			"gce_setup.machine_type":                                         true,
+			"gce_setup.shielded_instance_config":                             true,
+			"gce_setup.shielded_instance_config.enable_secure_boot":          true,
+			"gce_setup.shielded_instance_config.enable_vtpm":                 true,
+			"gce_setup.shielded_instance_config.enable_integrity_monitoring": true,
+			"gce_setup.reservation_affinity":                                 true,
+			"gce_setup.reservation_affinity.consume_reservation_type":        true,
+			"gce_setup.reservation_affinity.key":                             true,
+			"gce_setup.reservation_affinity.values":                          true,
+			"gce_setup.container_image":                                      true,
+			"gce_setup.container_image.repository":                           true,
+			"gce_setup.container_image.tag":                                  true,
+			"gce_setup.disable_public_ip":                                    true,
+			"disable_proxy_access":                                           true,
+		}
+
+		for _, path := range req.UpdateMask.Paths {
+			if requiresStopped[path] && existing.State != pb_v2.State_STOPPED {
+				return nil, status.Errorf(codes.FailedPrecondition, "instance in state %q must be stopped before updating one of the following: [accelerator_configs machine_type shielded_instance_config reservation_affinity container_image disable_public_ip disable_proxy_access]", existing.State)
+			}
+		}
+
+		if err := fields.UpdateByFieldMask(updated, req.Instance, req.UpdateMask.Paths); err != nil {
+			return nil, err
 		}
 	} else {
 		proto.Merge(updated, req.Instance)
+	}
+
+	// Restore the saved system metadata
+	if updated.GetGceSetup() == nil {
+		updated.Infrastructure = &pb_v2.Instance_GceSetup{
+			GceSetup: &pb_v2.GceSetup{},
+		}
+	}
+	if updated.GetGceSetup().Metadata == nil {
+		updated.GetGceSetup().Metadata = make(map[string]string)
+	}
+	for k, v := range savedSystemMetadata {
+		updated.GetGceSetup().Metadata[k] = v
 	}
 
 	updated.UpdateTime = timestamppb.New(time.Now())
@@ -158,7 +288,7 @@ func (s *NotebookServiceV2) UpdateInstance(ctx context.Context, req *pb_v2.Updat
 		return nil, err
 	}
 
-	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.region)
+	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.location)
 	metadata := &pb_v2.OperationMetadata{
 		CreateTime:            timestamppb.New(time.Now()),
 		RequestedCancellation: false,
@@ -184,7 +314,7 @@ func (s *NotebookServiceV2) DeleteInstance(ctx context.Context, req *pb_v2.Delet
 	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
 		return nil, err
 	}
-	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.region)
+	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.location)
 	metadata := &pb_v2.OperationMetadata{
 		CreateTime:            timestamppb.Now(),
 		RequestedCancellation: false,
@@ -196,4 +326,87 @@ func (s *NotebookServiceV2) DeleteInstance(ctx context.Context, req *pb_v2.Delet
 		metadata.EndTime = timestamppb.New(time.Now())
 		return &emptypb.Empty{}, nil
 	})
+}
+
+func (s *NotebookServiceV2) populateSystemMetadata(obj *pb_v2.Instance, name *instanceName) {
+	gceSetup := obj.GetGceSetup()
+	if gceSetup == nil {
+		return
+	}
+
+	region := name.location
+	if lastToken := strings.LastIndex(region, "-"); lastToken != -1 {
+		if len(region)-lastToken-1 == 1 {
+			region = region[:lastToken]
+		}
+	}
+
+	if gceSetup.Metadata == nil {
+		gceSetup.Metadata = map[string]string{}
+	}
+	systemMetadata := map[string]string{
+		"disable-swap-binaries":      "true",
+		"enable-guest-attributes":    "TRUE",
+		"enable-jupyterlab4":         "true",
+		"enable-oslogin":             "TRUE",
+		"instance-region":            region,
+		"new-proxy-agent-enabled":    "true",
+		"notebooks-api":              "PROD",
+		"notebooks-api-version":      "v1",
+		"proxy-backend-id":           "000000000000000000000",
+		"proxy-registration-url":     fmt.Sprintf("https://%s.notebooks.cloud.google.com/tun/m/%s", region, "000000000000000000000"),
+		"proxy-url":                  fmt.Sprintf("%s-dot-%s.notebooks.googleusercontent.com", "000000000000000000000", region),
+		"report-event-url":           fmt.Sprintf("https://notebooks.googleapis.com/v2/projects/%s/locations/%s/instances/%s:reportInfoSystem", name.Project.ID, name.location, name.name),
+		"resource-url":               fmt.Sprintf("https://notebooks.googleapis.com/v2/projects/%s/locations/%s/instances/%s", name.Project.ID, name.location, name.name),
+		"serial-port-logging-enable": "true",
+		"shutdown-script":            "/opt/deeplearning/bin/shutdown_script.sh",
+	}
+	for k, v := range systemMetadata {
+		gceSetup.Metadata[k] = v
+	}
+	if len(obj.InstanceOwners) == 0 {
+		gceSetup.Metadata["proxy-mode"] = "service_account"
+	} else {
+		gceSetup.Metadata["proxy-mode"] = "mail"
+		// Currently supports one owner only
+		gceSetup.Metadata["proxy-user-mail"] = obj.InstanceOwners[0]
+	}
+	obj.InstanceOwners = nil
+	if gceSetup.GetContainerImage() != nil {
+		gceSetup.Metadata["cos-update-strategy"] = "update_disabled"
+		gceSetup.Metadata["custom-container-image"] = "true"
+		gceSetup.Metadata["custom-container-payload"] = fmt.Sprintf("%s:%s", gceSetup.GetContainerImage().GetRepository(), gceSetup.GetContainerImage().GetTag())
+		gceSetup.Metadata["google-logging-enabled"] = "true"
+		gceSetup.Metadata["user-data"] = "#include file:///mnt/stateful_partition/workbench/cloud-config.yaml"
+	}
+}
+
+func isSystemMetadataKey(k string) bool {
+	switch k {
+	case "disable-swap-binaries",
+		"enable-guest-attributes",
+		"enable-jupyterlab4",
+		"enable-oslogin",
+		"instance-region",
+		"new-proxy-agent-enabled",
+		"notebooks-api",
+		"notebooks-api-version",
+		"proxy-backend-id",
+		"proxy-registration-url",
+		"proxy-url",
+		"report-event-url",
+		"resource-url",
+		"serial-port-logging-enable",
+		"shutdown-script",
+		"proxy-mode",
+		"proxy-user-mail",
+		"cos-update-strategy",
+		"custom-container-image",
+		"custom-container-payload",
+		"google-logging-enabled",
+		"user-data":
+		return true
+	default:
+		return false
+	}
 }

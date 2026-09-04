@@ -37,6 +37,37 @@ func VMImage_ImageFamily_ToProto(mapCtx *direct.MapContext, in *string) *pb.VmIm
 	return &pb.VmImage_ImageFamily{ImageFamily: direct.ValueOf(in)}
 }
 
+func InstanceBootDisk_v1alpha1_FromProto(mapCtx *direct.MapContext, in *notebookspb.BootDisk) *krmnotebooksv1alpha1.InstanceBootDisk {
+	if in == nil {
+		return nil
+	}
+	out := &krmnotebooksv1alpha1.InstanceBootDisk{}
+	out.DiskSizeGB = direct.LazyPtr(in.GetDiskSizeGb())
+	out.DiskType = direct.Enum_FromProto(mapCtx, in.GetDiskType())
+	out.DiskEncryption = direct.Enum_FromProto(mapCtx, in.GetDiskEncryption())
+	if in.GetDiskEncryption() == notebookspb.DiskEncryption_CMEK {
+		if in.GetKmsKey() != "" {
+			out.KmsKeyRef = &kmsv1beta1.KMSCryptoKeyRef{External: in.GetKmsKey()}
+		}
+	}
+	return out
+}
+
+func InstanceBootDisk_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnotebooksv1alpha1.InstanceBootDisk) *notebookspb.BootDisk {
+	if in == nil {
+		return nil
+	}
+	out := &notebookspb.BootDisk{}
+	out.DiskSizeGb = direct.ValueOf(in.DiskSizeGB)
+	out.DiskType = direct.Enum_ToProto[notebookspb.DiskType](mapCtx, in.DiskType)
+	out.DiskEncryption = direct.Enum_ToProto[notebookspb.DiskEncryption](mapCtx, in.DiskEncryption)
+	if in.KmsKeyRef != nil {
+		out.KmsKey = in.KmsKeyRef.External
+		out.DiskEncryption = notebookspb.DiskEncryption_CMEK
+	}
+	return out
+}
+
 func InstanceDataDisk_v1alpha1_FromProto(mapCtx *direct.MapContext, in *notebookspb.DataDisk) *krmnotebooksv1alpha1.InstanceDataDisk {
 	if in == nil {
 		return nil
@@ -135,5 +166,44 @@ func InstanceServiceAccount_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmn
 	if in.ServiceAccountRef != nil {
 		out.Email = in.ServiceAccountRef.External
 	}
+	return out
+}
+
+func NotebookInstanceV2ObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *notebookspb.Instance) *krmnotebooksv1alpha1.NotebookInstanceV2ObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmnotebooksv1alpha1.NotebookInstanceV2ObservedState{}
+	// MISSING: Name
+	out.GCESetup = InstanceGCESetupObservedState_v1alpha1_FromProto(mapCtx, in.GetGceSetup())
+	out.ProxyURI = direct.LazyPtr(in.GetProxyUri())
+	out.Creator = direct.LazyPtr(in.GetCreator())
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.UpgradeHistory = direct.Slice_FromProto(mapCtx, in.UpgradeHistory, InstanceUpgradeHistoryEntryObservedState_v1alpha1_FromProto)
+	out.GCPID = direct.LazyPtr(in.Id)
+	out.HealthState = direct.Enum_FromProto(mapCtx, in.GetHealthState())
+	out.HealthInfo = in.HealthInfo
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func NotebookInstanceV2ObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnotebooksv1alpha1.NotebookInstanceV2ObservedState) *notebookspb.Instance {
+	if in == nil {
+		return nil
+	}
+	out := &notebookspb.Instance{}
+	// MISSING: Name
+	if oneof := InstanceGCESetupObservedState_v1alpha1_ToProto(mapCtx, in.GCESetup); oneof != nil {
+		out.Infrastructure = &notebookspb.Instance_GceSetup{GceSetup: oneof}
+	}
+	out.ProxyUri = direct.ValueOf(in.ProxyURI)
+	out.Creator = direct.ValueOf(in.Creator)
+	out.State = direct.Enum_ToProto[notebookspb.State](mapCtx, in.State)
+	out.UpgradeHistory = direct.Slice_ToProto(mapCtx, in.UpgradeHistory, InstanceUpgradeHistoryEntryObservedState_v1alpha1_ToProto)
+	out.Id = direct.ValueOf(in.GCPID)
+	out.HealthState = direct.Enum_ToProto[notebookspb.HealthState](mapCtx, in.HealthState)
+	out.HealthInfo = in.HealthInfo
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
 	return out
 }

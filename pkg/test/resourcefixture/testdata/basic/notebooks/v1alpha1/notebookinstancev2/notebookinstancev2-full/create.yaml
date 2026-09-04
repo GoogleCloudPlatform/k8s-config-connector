@@ -15,36 +15,56 @@
 apiVersion: notebooks.cnrm.cloud.google.com/v1alpha1
 kind: NotebookInstanceV2
 metadata:
-  name: notebookinstancev2-maximal-${uniqueId}
+  name: ni2-full-${uniqueId}
 spec:
   projectRef:
     external: ${projectId}
   location: us-central1-a
   gceSetup:
-    machineType: n1-standard-1
-    containerImage:
-      repository: gcr.io/deeplearning-platform-release/base-cpu
+    machineType: n1-standard-4
+    vmImage:
+      family: debian-11
+      project: debian-cloud
+    acceleratorConfigs:
+      - coreCount: 1
+        type: NVIDIA_TESLA_T4
     bootDisk:
       diskSizeGB: 100
       diskType: PD_SSD
-      diskEncryption: GMEK
+      diskEncryption: CMEK
+      kmsKeyRef:
+        name: kms-key-${uniqueId}
     dataDisks:
       - diskSizeGB: 100
         diskType: PD_SSD
-        diskEncryption: GMEK
+        diskEncryption: CMEK
+        kmsKeyRef:
+          name: kms-key-${uniqueId}
+    enableIPForwarding: true
+    gpuDriverConfig:
+      enableGpuDriver: true
+    networkInterfaces:
+      - networkRef:
+          name: ni2-net-${uniqueId}
+        subnetRef:
+          name: ni2-sub-${uniqueId}
+        nicType: GVNIC
+    serviceAccounts:
+      - serviceAccountRef:
+          name: ni2-sa-${uniqueId}
     shieldedInstanceConfig:
-      enableSecureBoot: false
+      enableSecureBoot: true
       enableVTPM: true
       enableIntegrityMonitoring: true
     disablePublicIP: true
     tags:
-      - tag1
-      - tag2
+      - full-test
     metadata:
       enable-os-config: "true"
+      notebook-disable-downloads: "true"
+      notebook-disable-root: "true"
   instanceOwners: 
     - ${projectNumber}-compute@developer.gserviceaccount.com
-  disableProxyAccess: true
+  disableProxyAccess: false
   labels:
-    environment: development
-    team: config-connector
+    test: full-gce

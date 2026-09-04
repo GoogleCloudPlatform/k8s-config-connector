@@ -143,7 +143,7 @@ func (s *NotebookServiceV1) StopInstance(ctx context.Context, req *pb.StopInstan
 		return nil, err
 	}
 
-	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.region)
+	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.location)
 	metadata := &pb.OperationMetadata{
 		CreateTime:            timestamppb.New(time.Now()),
 		RequestedCancellation: false,
@@ -170,7 +170,7 @@ func (s *NotebookServiceV1) StartInstance(ctx context.Context, req *pb.StartInst
 		return nil, err
 	}
 
-	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.region)
+	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.location)
 	metadata := &pb.OperationMetadata{
 		CreateTime:            timestamppb.New(time.Now()),
 		RequestedCancellation: false,
@@ -257,7 +257,7 @@ func (s *NotebookServiceV1) CreateInstance(ctx context.Context, req *pb.CreateIn
 		return nil, err
 	}
 
-	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.region)
+	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.location)
 	metadata := &pb.OperationMetadata{
 		CreateTime:            timestamppb.New(time.Now()),
 		RequestedCancellation: false,
@@ -302,7 +302,7 @@ func (s *NotebookServiceV1) UpdateShieldedInstanceConfig(ctx context.Context, re
 	if err := s.storage.Update(ctx, fqn, updated); err != nil {
 		return nil, err
 	}
-	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.region)
+	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.location)
 	metadata := &pb.OperationMetadata{
 		CreateTime:            timestamppb.New(time.Now()),
 		RequestedCancellation: false,
@@ -362,7 +362,7 @@ func (s *NotebookServiceV1) DeleteInstance(ctx context.Context, req *pb.DeleteIn
 	if err := s.storage.Delete(ctx, fqn, deleted); err != nil {
 		return nil, err
 	}
-	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.region)
+	prefix := fmt.Sprintf("projects/%s/locations/%s", name.Project.ID, name.location)
 	metadata := &pb.OperationMetadata{
 		ApiVersion:            "v1",
 		CreateTime:            timestamppb.Now(),
@@ -378,13 +378,13 @@ func (s *NotebookServiceV1) DeleteInstance(ctx context.Context, req *pb.DeleteIn
 }
 
 type instanceName struct {
-	Project *projects.ProjectData
-	region  string
-	name    string
+	Project  *projects.ProjectData
+	location string
+	name     string
 }
 
 func (n *instanceName) String() string {
-	return fmt.Sprintf("projects/%s/locations/%s/instances/%s", n.Project.ID, n.region, n.name)
+	return fmt.Sprintf("projects/%s/locations/%s/instances/%s", n.Project.ID, n.location, n.name)
 }
 
 // parseInstanceName parses a string into an instanceName.
@@ -399,9 +399,9 @@ func (s *MockService) parseInstanceName(name string) (*instanceName, error) {
 		}
 
 		name := &instanceName{
-			Project: project,
-			region:  tokens[3],
-			name:    tokens[5],
+			Project:  project,
+			location: tokens[3],
+			name:     tokens[5],
 		}
 
 		return name, nil
