@@ -341,7 +341,12 @@ func resolveFailoverDrReplicaRef(ctx context.Context, kube client.Reader, obj *k
 			return err
 		}
 
-		obj.Spec.ReplicationCluster.FailoverDrReplicaRef.External = replicaInstanceName
+		replicaInstanceProject, ok := replicaInstance.GetAnnotations()[k8s.ProjectIDAnnotation]
+		if !ok {
+			replicaInstanceProject = replicaInstance.GetNamespace()
+		}
+
+		obj.Spec.ReplicationCluster.FailoverDrReplicaRef.External = fmt.Sprintf("%s:%s", replicaInstanceProject, replicaInstanceName)
 
 		return nil
 	} else {

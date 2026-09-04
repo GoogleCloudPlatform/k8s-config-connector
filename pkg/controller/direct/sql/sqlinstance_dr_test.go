@@ -860,3 +860,125 @@ func TestDiffInstances_DR_ThreeTierTopology_SingleZone_CrossZone_CrossRegion(t *
 		t.Fatalf("expected DR_REPLICA role on demoted primary, got: %v", newDemotedStatus.CurrentRole)
 	}
 }
+
+// TestDiffInstances_DR_BackupConfiguration_Suppression validates that when an Enterprise DR primary
+// is demoted to a replica during DR failover, Cloud SQL's automatic disabling of backups on replicas
+// (enabled=false, pointInTimeRecoveryEnabled=false, binaryLogEnabled=false) is suppressed by DiffInstances,
+// preventing unrecoverable 400 INVALID_ARGUMENT errors from Cloud SQL API.
+// It also validates that for a normal primary, backup differences are NOT suppressed.
+func TestDiffInstances_DR_BackupConfiguration_Suppression(t *testing.T) {
+	desiredDRPrimary := &api.DatabaseInstance{
+		Name:            "dr-primary",
+		Region:          "us-central1",
+		DatabaseVersion: "POSTGRES_16",
+		Settings: &api.Settings{
+			Tier:             "db-perf-optimized-N-2",
+			AvailabilityType: "REGIONAL",
+			BackupConfiguration: &api.BackupConfiguration{
+				Enabled:                    true,
+				PointInTimeRecoveryEnabled: true,
+				BinaryLogEnabled:           true,
+			},
+		},
+		ReplicationCluster: &api.ReplicationCluster{
+			FailoverDrReplicaName: "dr-replica",
+		},
+	}
+
+	// In GCP, during DR role swap, dr-primary is demoted to READ_REPLICA_INSTANCE,
+	// and Cloud SQL forcibly turns off backups on the replica.
+	demotedActual := &api.DatabaseInstance{
+		Name:               "dr-primary",
+		Region:             "us-central1",
+		DatabaseVersion:    "POSTGRES_16",
+		InstanceType:       "READ_REPLICA_INSTANCE",
+		MasterInstanceName: "dr-replica",
+		Settings: &api.Settings{
+			Tier:             "db-perf-optimized-N-2",
+			AvailabilityType: "REGIONAL",
+			BackupConfiguration: &api.BackupConfiguration{
+				Enabled:                    false,
+				PointInTimeRecoveryEnabled: false,
+				BinaryLogEnabled:           false,
+			},
+		},
+		ReplicationCluster: &api.ReplicationCluster{
+			DrReplica:        true,
+			PsaWriteEndpoint: "endpoint.sql.goog",
+		},
+	}
+
+	diffDemoted := DiffInstances(desiredDRPrimary, demotedActual)
+	if diffDemoted.HasDiff() {
+		t.Fatalf("expected diff suppression on demoted DR primary for backupConfiguration, got: %v", diffDemoted)
+	}
+
+	// Test promoted replica: Manifest specifies a replica (no backups), but GCP promotes it to primary with backups enabled.
+	desiredDRReplica := &api.DatabaseInstance{
+		Name:               "dr-replica",
+		Region:             "us-east1",
+		DatabaseVersion:    "POSTGRES_16",
+		InstanceType:       "READ_REPLICA_INSTANCE",
+		MasterInstanceName: "dr-primary",
+		Settings: &api.Settings{
+			Tier:             "db-perf-optimized-N-2",
+			AvailabilityType: "REGIONAL",
+		},
+	}
+	promotedActual := &api.DatabaseInstance{
+		Name:            "dr-replica",
+		Region:          "us-east1",
+		DatabaseVersion: "POSTGRES_16",
+		InstanceType:    "CLOUD_SQL_INSTANCE",
+		Settings: &api.Settings{
+			Tier:             "db-perf-optimized-N-2",
+			AvailabilityType: "REGIONAL",
+			BackupConfiguration: &api.BackupConfiguration{
+				Enabled:                    true,
+				PointInTimeRecoveryEnabled: true,
+			},
+		},
+		ReplicationCluster: &api.ReplicationCluster{
+			FailoverDrReplicaName: "dr-primary",
+			PsaWriteEndpoint:      "endpoint.sql.goog",
+		},
+	}
+	diffPromoted := DiffInstances(desiredDRReplica, promotedActual)
+	if diffPromoted.HasDiff() {
+		t.Fatalf("expected diff suppression on promoted DR replica for backupConfiguration, got: %v", diffPromoted)
+	}
+
+	// Counter-test: A standalone non-DR instance MUST report diff if backups are disabled
+	desiredNormal := &api.DatabaseInstance{
+		Name:            "normal-primary",
+		Region:          "us-central1",
+		DatabaseVersion: "POSTGRES_16",
+		Settings: &api.Settings{
+			Tier:             "db-custom-2-7680",
+			AvailabilityType: "REGIONAL",
+			BackupConfiguration: &api.BackupConfiguration{
+				Enabled:                    true,
+				PointInTimeRecoveryEnabled: true,
+			},
+		},
+	}
+	actualNormalMismatched := &api.DatabaseInstance{
+		Name:            "normal-primary",
+		Region:          "us-central1",
+		DatabaseVersion: "POSTGRES_16",
+		InstanceType:    "CLOUD_SQL_INSTANCE",
+		Settings: &api.Settings{
+			Tier:             "db-custom-2-7680",
+			AvailabilityType: "REGIONAL",
+			BackupConfiguration: &api.BackupConfiguration{
+				Enabled:                    false,
+				PointInTimeRecoveryEnabled: false,
+			},
+		},
+	}
+
+	diffNormal := DiffInstances(desiredNormal, actualNormalMismatched)
+	if !diffNormal.HasDiff() {
+		t.Fatalf("expected diff on regular primary when backupConfiguration differs, got none")
+	}
+}
