@@ -261,3 +261,11 @@ To replace or decommission a DR replica (e.g. migrating to a different region):
 - When using PSC instead of Private Service Access (PSA), `psaWriteEndpoint` is empty.
 - Client connectivity during failovers should be directed using Cloud DNS Routing Policies (Failover or Geolocation routing) pointing to the PSC endpoint in each region.
 - KCC exposes `status.pscServiceAttachmentLink` and `status.dnsName` on each instance for automated integration.
+
+---
+
+## 8. Testing & Verification
+
+For comprehensive documentation on the multi-tiered testing architecture, test suites, and edge case coverage, see:
+- **[Cloud SQL Enterprise DR Testing Architecture](cloudsql-enterprise-dr-testing.md)**
+
