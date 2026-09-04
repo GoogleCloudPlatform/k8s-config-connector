@@ -24,6 +24,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/kccstate"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/errorhandling"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/jitter"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/lifecyclehandler"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/metrics"
@@ -250,6 +251,11 @@ func (r *DirectReconciler) Reconcile(ctx context.Context, request reconcile.Requ
 	}
 	structuredreporting.ReportReconcileStart(ctx, obj, k8s.ReconcilerTypeDirect)
 	defer structuredreporting.ReportReconcileEnd(ctx, obj, result, err, k8s.ReconcilerTypeDirect)
+
+	if errorhandling.ShouldSkip(obj) {
+		logger.Info("reconciliation skipped because resource is in terminal failure state and metadata.generation is unchanged", "resource", request.NamespacedName)
+		return reconcile.Result{}, nil
+	}
 
 	skip, err := resourceactuation.ShouldSkip(obj)
 	if err != nil {
