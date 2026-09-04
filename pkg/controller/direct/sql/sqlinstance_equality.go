@@ -766,9 +766,10 @@ func DiffReplicationCluster(desired *api.ReplicationCluster, actual *api.Replica
 		actual = &api.ReplicationCluster{}
 	}
 	if !isInstanceNameEqual(desired.FailoverDrReplicaName, actual.FailoverDrReplicaName) {
-		// If either actual or desired has active DR indicators (or an active role swap),
-		// suppress failoverDrReplicaName diff caused by role swap.
-		if (drRoleSwap || actual.DrReplica || desired.DrReplica || actual.PsaWriteEndpoint != "" || desired.PsaWriteEndpoint != "") && (desired.FailoverDrReplicaName == "" || actual.FailoverDrReplicaName == "") {
+		// During an active DR role swap (switchover or failover), suppress failoverDrReplicaName diff
+		// caused by role inversion. When not in a role swap, allow normal diff reporting so users
+		// can configure or decommission failoverDrReplicaRef.
+		if drRoleSwap && (desired.FailoverDrReplicaName == "" || actual.FailoverDrReplicaName == "") {
 			// DR role swap: the promoted/demoted instance inverts failoverDrReplicaName. Suppress.
 		} else {
 			diff.AddField(".replicationCluster.failoverDrReplicaName", actual.FailoverDrReplicaName, desired.FailoverDrReplicaName)
@@ -786,7 +787,8 @@ func isInstanceNameEqual(a, b string) bool {
 	if a == "" || b == "" {
 		return false
 	}
-	return strings.HasSuffix(a, ":"+b) || strings.HasSuffix(b, ":"+a)
+	return strings.HasSuffix(a, ":"+b) || strings.HasSuffix(b, ":"+a) ||
+		strings.HasSuffix(a, "/"+b) || strings.HasSuffix(b, "/"+a)
 }
 
 func isEnterpriseDRRoleSwap(desired, actual *api.DatabaseInstance) bool {

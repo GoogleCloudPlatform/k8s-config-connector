@@ -1445,3 +1445,125 @@ func TestDiffInstances_DR_PublicIP_NoPSA(t *testing.T) {
 		t.Fatalf("expected PRIMARY role for public IP promoted instance, got: %v", promotedStatus.CurrentRole)
 	}
 }
+
+// TestDiffInstances_DR_DecommissionFailoverDrReplica ensures that when a user clears
+// failoverDrReplicaRef on a primary instance that has an active DR cluster (with psaWriteEndpoint),
+// DiffInstances MUST NOT suppress the diff and must report the diff so Cloud SQL can remove the DR designation.
+func TestDiffInstances_DR_DecommissionFailoverDrReplica(t *testing.T) {
+	desiredPrimary := &api.DatabaseInstance{
+		Name:            "dr-primary",
+		Region:          "us-central1",
+		DatabaseVersion: "POSTGRES_16",
+		Settings:        &api.Settings{Tier: "db-perf-optimized-N-2"},
+		ReplicationCluster: &api.ReplicationCluster{
+			FailoverDrReplicaName: "", // User intentionally cleared DR replica designation
+		},
+	}
+	actualPrimary := &api.DatabaseInstance{
+		Name:            "dr-primary",
+		Region:          "us-central1",
+		DatabaseVersion: "POSTGRES_16",
+		Settings:        &api.Settings{Tier: "db-perf-optimized-N-2"},
+		ReplicationCluster: &api.ReplicationCluster{
+			FailoverDrReplicaName: "dr-replica",
+			PsaWriteEndpoint:      "psa-endpoint.sql.goog",
+		},
+	}
+
+	diff := DiffInstances(desiredPrimary, actualPrimary)
+	if !diff.HasDiff() {
+		t.Fatalf("expected diff when decommissioning failoverDrReplicaName on primary with PSA endpoint, but diff was incorrectly suppressed!")
+	}
+	found := false
+	for _, f := range diff.Fields {
+		if f.ID == ".replicationCluster.failoverDrReplicaName" {
+			found = true
+			break
+		}
+	}
+	if !found {
+		t.Fatalf("expected .replicationCluster.failoverDrReplicaName diff, got: %v", diff.Fields)
+	}
+}
+
+// TestIsInstanceNameEqual_Formats validates name matching across all supported Cloud SQL reference formats:
+// short names, legacy project-colon prefixes, full resource URLs, and REST URLs.
+func TestIsInstanceNameEqual_Formats(t *testing.T) {
+	tests := []struct {
+		a, b string
+		want bool
+	}{
+		{"my-instance", "my-instance", true},
+		{"my-proj:my-instance", "my-instance", true},
+		{"my-instance", "my-proj:my-instance", true},
+		{"projects/my-proj/instances/my-instance", "my-instance", true},
+		{"my-instance", "projects/my-proj/instances/my-instance", true},
+		{"https://sqladmin.googleapis.com/sql/v1beta4/projects/my-proj/instances/my-instance", "my-instance", true},
+		{"other-instance", "my-instance", false},
+		{"notmy-instance", "my-instance", false},
+		{"", "my-instance", false},
+		{"my-instance", "", false},
+		{"", "", true},
+	}
+	for _, tc := range tests {
+		got := isInstanceNameEqual(tc.a, tc.b)
+		if got != tc.want {
+			t.Errorf("isInstanceNameEqual(%q, %q) = %v, want %v", tc.a, tc.b, got, tc.want)
+		}
+	}
+}
+
+// TestDiffInstances_DR_FullyQualifiedResourceURLs verifies that DR role-swap suppression
+// works cleanly even when specs use fully-qualified GCP resource paths for masterInstanceRef
+// or failoverDrReplicaRef.
+func TestDiffInstances_DR_FullyQualifiedResourceURLs(t *testing.T) {
+	desiredPrimary := &api.DatabaseInstance{
+		Name:            "dr-primary",
+		Region:          "us-central1",
+		DatabaseVersion: "POSTGRES_16",
+		Settings:        &api.Settings{Tier: "db-perf-optimized-N-2"},
+		ReplicationCluster: &api.ReplicationCluster{
+			FailoverDrReplicaName: "projects/test-proj/instances/dr-replica",
+		},
+	}
+	desiredReplica := &api.DatabaseInstance{
+		Name:               "dr-replica",
+		Region:             "us-east1",
+		DatabaseVersion:    "POSTGRES_16",
+		MasterInstanceName: "projects/test-proj/instances/dr-primary",
+		InstanceType:       "READ_REPLICA_INSTANCE",
+		Settings:           &api.Settings{Tier: "db-perf-optimized-N-2"},
+	}
+
+	// Inverted state returned from GCP API (using short names)
+	demotedPrimaryActual := &api.DatabaseInstance{
+		Name:               "dr-primary",
+		Region:             "us-central1",
+		DatabaseVersion:    "POSTGRES_16",
+		MasterInstanceName: "dr-replica",
+		InstanceType:       "READ_REPLICA_INSTANCE",
+		Settings:           &api.Settings{Tier: "db-perf-optimized-N-2"},
+		ReplicationCluster: &api.ReplicationCluster{
+			DrReplica:        true,
+			PsaWriteEndpoint: "dr.sql.goog",
+		},
+	}
+	promotedReplicaActual := &api.DatabaseInstance{
+		Name:            "dr-replica",
+		Region:          "us-east1",
+		DatabaseVersion: "POSTGRES_16",
+		InstanceType:    "CLOUD_SQL_INSTANCE",
+		Settings:        &api.Settings{Tier: "db-perf-optimized-N-2"},
+		ReplicationCluster: &api.ReplicationCluster{
+			FailoverDrReplicaName: "dr-primary",
+			PsaWriteEndpoint:      "dr.sql.goog",
+		},
+	}
+
+	if diff := DiffInstances(desiredPrimary, demotedPrimaryActual); diff.HasDiff() {
+		t.Fatalf("expected diff suppression on demoted primary with qualified URLs, got: %v", diff)
+	}
+	if diff := DiffInstances(desiredReplica, promotedReplicaActual); diff.HasDiff() {
+		t.Fatalf("expected diff suppression on promoted replica with qualified URLs, got: %v", diff)
+	}
+}
