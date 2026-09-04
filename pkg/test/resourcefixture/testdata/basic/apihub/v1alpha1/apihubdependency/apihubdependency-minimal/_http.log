@@ -1,0 +1,411 @@
+GET https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/externalApis/consumer-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FexternalApis%2Fconsumer-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/externalApis/consumer-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/externalApis?%24alt=json%3Benum-encoding%3Dint&externalApiId=consumer-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "displayName": "Consumer API",
+  "endpoints": [
+    "https://example.com/consumer"
+  ],
+  "name": "projects/${projectId}/locations/us-central1/externalApis/consumer-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Consumer API",
+  "endpoints": [
+    "https://example.com/consumer"
+  ],
+  "name": "projects/${projectId}/locations/us-central1/externalApis/consumer-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/externalApis/supplier-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FexternalApis%2Fsupplier-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/externalApis/supplier-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/externalApis?%24alt=json%3Benum-encoding%3Dint&externalApiId=supplier-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "displayName": "Supplier API",
+  "endpoints": [
+    "https://example.com/supplier"
+  ],
+  "name": "projects/${projectId}/locations/us-central1/externalApis/supplier-${uniqueId}"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Supplier API",
+  "endpoints": [
+    "https://example.com/supplier"
+  ],
+  "name": "projects/${projectId}/locations/us-central1/externalApis/supplier-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/dependencies/dep-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdependencies%2Fdep-${uniqueId}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "message": "Resource 'projects/${projectId}/locations/us-central1/dependencies/dep-${uniqueId}' was not found",
+    "status": "NOT_FOUND"
+  }
+}
+
+---
+
+POST https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/dependencies?%24alt=json%3Benum-encoding%3Dint&dependencyId=dep-${uniqueId}
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: parent=projects%2F${projectId}%2Flocations%2Fus-central1
+
+{
+  "consumer": {
+    "externalApiResourceName": "projects/${projectId}/locations/us-central1/externalApis/consumer-${uniqueId}"
+  },
+  "description": "Minimal APIHubDependency",
+  "name": "projects/${projectId}/locations/us-central1/dependencies/dep-${uniqueId}",
+  "supplier": {
+    "externalApiResourceName": "projects/${projectId}/locations/us-central1/externalApis/supplier-${uniqueId}"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "consumer": {
+    "displayName": "Consumer API",
+    "externalApiResourceName": "projects/${projectId}/locations/us-central1/externalApis/consumer-${uniqueId}"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Minimal APIHubDependency",
+  "discoveryMode": 1,
+  "name": "projects/${projectId}/locations/us-central1/dependencies/dep-${uniqueId}",
+  "state": 2,
+  "supplier": {
+    "displayName": "Supplier API",
+    "externalApiResourceName": "projects/${projectId}/locations/us-central1/externalApis/supplier-${uniqueId}"
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/dependencies/dep-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdependencies%2Fdep-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "consumer": {
+    "displayName": "Consumer API",
+    "externalApiResourceName": "projects/${projectId}/locations/us-central1/externalApis/consumer-${uniqueId}"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Minimal APIHubDependency",
+  "discoveryMode": 1,
+  "name": "projects/${projectId}/locations/us-central1/dependencies/dep-${uniqueId}",
+  "state": 2,
+  "supplier": {
+    "displayName": "Supplier API",
+    "externalApiResourceName": "projects/${projectId}/locations/us-central1/externalApis/supplier-${uniqueId}"
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+PATCH https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/dependencies/dep-${uniqueId}?%24alt=json%3Benum-encoding%3Dint&updateMask=description
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: dependency.name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdependencies%2Fdep-${uniqueId}
+
+{
+  "consumer": {
+    "externalApiResourceName": "projects/${projectId}/locations/us-central1/externalApis/consumer-${uniqueId}"
+  },
+  "description": "Minimal APIHubDependency Updated",
+  "name": "projects/${projectId}/locations/us-central1/dependencies/dep-${uniqueId}",
+  "supplier": {
+    "externalApiResourceName": "projects/${projectId}/locations/us-central1/externalApis/supplier-${uniqueId}"
+  }
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "consumer": {
+    "displayName": "Consumer API",
+    "externalApiResourceName": "projects/${projectId}/locations/us-central1/externalApis/consumer-${uniqueId}"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Minimal APIHubDependency Updated",
+  "discoveryMode": 1,
+  "name": "projects/${projectId}/locations/us-central1/dependencies/dep-${uniqueId}",
+  "state": 2,
+  "supplier": {
+    "displayName": "Supplier API",
+    "externalApiResourceName": "projects/${projectId}/locations/us-central1/externalApis/supplier-${uniqueId}"
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+GET https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/dependencies/dep-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdependencies%2Fdep-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "consumer": {
+    "displayName": "Consumer API",
+    "externalApiResourceName": "projects/${projectId}/locations/us-central1/externalApis/consumer-${uniqueId}"
+  },
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "Minimal APIHubDependency Updated",
+  "discoveryMode": 1,
+  "name": "projects/${projectId}/locations/us-central1/dependencies/dep-${uniqueId}",
+  "state": 2,
+  "supplier": {
+    "displayName": "Supplier API",
+    "externalApiResourceName": "projects/${projectId}/locations/us-central1/externalApis/supplier-${uniqueId}"
+  },
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/dependencies/dep-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2Fdependencies%2Fdep-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/externalApis/supplier-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FexternalApis%2Fsupplier-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Supplier API",
+  "endpoints": [
+    "https://example.com/supplier"
+  ],
+  "name": "projects/${projectId}/locations/us-central1/externalApis/supplier-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/externalApis/supplier-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FexternalApis%2Fsupplier-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
+
+---
+
+GET https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/externalApis/consumer-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FexternalApis%2Fconsumer-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "displayName": "Consumer API",
+  "endpoints": [
+    "https://example.com/consumer"
+  ],
+  "name": "projects/${projectId}/locations/us-central1/externalApis/consumer-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
+}
+
+---
+
+DELETE https://apihub.googleapis.com/v1/projects/${projectId}/locations/us-central1/externalApis/consumer-${uniqueId}?%24alt=json%3Benum-encoding%3Dint
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+X-Goog-Request-Params: name=projects%2F${projectId}%2Flocations%2Fus-central1%2FexternalApis%2Fconsumer-${uniqueId}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{}
