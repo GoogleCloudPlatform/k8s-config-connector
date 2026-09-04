@@ -125,14 +125,14 @@ spec:
                     type: string
                 type: object
               resourceID:
-                description: The APIHubCuration name. If not given, the metadata.name
-                  will be used.
+                description: Required. The APIHubCuration name.
                 type: string
             required:
             - displayName
             - endpoint
             - location
             - projectRef
+            - resourceID
             type: object
           status:
             description: APIHubCurationStatus defines the config connector machine

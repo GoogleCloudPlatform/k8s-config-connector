@@ -134,7 +134,7 @@ func TestAPIHubCuration_GetIdentity(t *testing.T) {
 		t.Errorf("GetIdentity() = %q, want %q", id.String(), expectedID)
 	}
 
-	// Test case 2: ResourceID is not set (falls back to metadata.name)
+	// Test case 2: ResourceID is not set (should fail because it's required)
 	curationObjWithDefaultID := &APIHubCuration{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      "my-curation-k8s-name",
@@ -148,12 +148,8 @@ func TestAPIHubCuration_GetIdentity(t *testing.T) {
 		},
 	}
 
-	id, err = curationObjWithDefaultID.GetIdentity(ctx, nil)
-	if err != nil {
-		t.Fatalf("unexpected error getting identity: %v", err)
-	}
-	expectedDefaultID := "projects/my-project/locations/us-central1/curations/my-curation-k8s-name"
-	if id.String() != expectedDefaultID {
-		t.Errorf("GetIdentity() = %q, want %q", id.String(), expectedDefaultID)
+	_, err = curationObjWithDefaultID.GetIdentity(ctx, nil)
+	if err == nil {
+		t.Fatal("expected error getting identity when ResourceID is not set, but got nil")
 	}
 }

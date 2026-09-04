@@ -32,8 +32,9 @@ type APIHubCurationSpec struct {
 	// The location of this resource.
 	Location *string `json:"location"`
 
-	// The APIHubCuration name. If not given, the metadata.name will be used.
-	ResourceID *string `json:"resourceID,omitempty"`
+	// Required. The APIHubCuration name.
+	// +kubebuilder:validation:Required
+	ResourceID *string `json:"resourceID"`
 
 	// Required. The display name of the curation.
 	// +kubebuilder:validation:Required
