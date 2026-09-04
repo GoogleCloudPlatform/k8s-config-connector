@@ -504,7 +504,6 @@ func schemaNodeConfig() *schema.Schema {
 							"cpu_cfs_quota": {
 								Type:        schema.TypeBool,
 								Optional:    true,
-								Default:     true,
 								Description: `Enable CPU CFS quota enforcement for containers that specify CPU limits.`,
 							},
 							"cpu_cfs_quota_period": {
