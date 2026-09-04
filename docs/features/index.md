@@ -11,6 +11,7 @@ This page provides a guide to the most common configuration and management tasks
 ## Managing Reconciliation
 
 *   **[Choose Controller Implementations (Direct vs. Terraform)](controller-configuration.md)**: Manually select between Direct, Terraform, or DCL controllers for specific resources.
+*   **[Manage Cloud SQL Enterprise Disaster Recovery](cloudsql-enterprise-dr.md)**: Manage Cloud SQL Enterprise Plus DR failover and switchover scenarios with GitOps and ArgoCD.
 *   **[Pause Reconciliation](pause.md)**: Temporarily stop Config Connector from managing one or more resources.
 *   **[Pin to an Older Version (Backward Compatibility)](compatabilityversion.md)**: Run a specific namespace at an older version of Config Connector to ensure stability during upgrades.
 
