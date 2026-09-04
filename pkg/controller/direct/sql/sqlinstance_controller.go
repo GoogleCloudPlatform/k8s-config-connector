@@ -24,6 +24,7 @@ import (
 
 	api "google.golang.org/api/sqladmin/v1beta4"
 	"google.golang.org/protobuf/encoding/protojson"
+	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/klog/v2"
@@ -759,13 +760,41 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating SQLInstance", "desired", a.desired)
 
+	if a.actual != nil && (a.actual.State == "MAINTENANCE" || a.actual.State == "UPDATING") {
+		log.Info("Cloud SQL instance is in transient state, checking active operations", "name", a.resourceID, "state", a.actual.State)
+		op, isBusy, err := a.checkActiveOperations(ctx)
+		if err != nil {
+			log.Error(err, "error listing operations for instance", "name", a.resourceID)
+		}
+		if isBusy {
+			opName := "unknown"
+			opType := "MAINTENANCE"
+			if op != nil {
+				opName = op.Name
+				opType = op.OperationType
+			}
+			log.Info("Cloud SQL failover or maintenance operation in progress; entering standby", "name", a.resourceID, "operation", opName, "type", opType)
+			status, err := SQLInstanceStatusGCPToKRM(a.actual)
+			if err != nil {
+				return fmt.Errorf("converting status: %w", err)
+			}
+			readyCondition := k8s.NewCustomReadyCondition(
+				corev1.ConditionFalse,
+				"FailoverInProgress",
+				fmt.Sprintf("Cloud SQL operation %s (%s) is in progress. KCC is standing by until completion.", opName, opType),
+			)
+			updateOp.RequestRequeue()
+			return updateOp.UpdateStatus(ctx, status, &readyCondition)
+		}
+	}
+
 	if upToDate, err := a.CompareLastModifiedCookie(ctx, updateOp, a.actual); err == nil && upToDate {
 		log.V(2).Info("resource is up to date (cookie match)", "name", a.resourceID)
 		status, err := SQLInstanceStatusGCPToKRM(a.actual)
 		if err != nil {
 			return fmt.Errorf("updating SQLInstance status failed: %w", err)
 		}
-		return setStatus(u, status)
+		return a.updateFinalStatus(ctx, updateOp, u, status)
 	}
 
 	// First, handle database version updates
@@ -931,7 +960,7 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		return err
 	}
 
-	return setStatus(u, status)
+	return a.updateFinalStatus(ctx, updateOp, u, status)
 }
 
 func (a *sqlInstanceAdapter) SetLastModifiedCookie(ctx context.Context, op directbase.Operation, actual *api.DatabaseInstance) error {
@@ -974,6 +1003,13 @@ func (a *sqlInstanceAdapter) Delete(ctx context.Context, deleteOp *directbase.De
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting SQLInstance", "actual", a.actual)
 
+	if a.actual != nil && (a.actual.State == "MAINTENANCE" || a.actual.State == "UPDATING") {
+		_, isBusy, _ := a.checkActiveOperations(ctx)
+		if isBusy {
+			return false, fmt.Errorf("cannot delete SQLInstance %s while failover or maintenance operation is in progress", a.resourceID)
+		}
+	}
+
 	op, err := a.sqlInstancesClient.Delete(a.projectID, a.resourceID).Context(ctx).Do()
 	if err != nil {
 		if direct.IsNotFound(err) {
@@ -990,6 +1026,49 @@ func (a *sqlInstanceAdapter) Delete(ctx context.Context, deleteOp *directbase.De
 	log.V(2).Info("deleted SQLInstance", "op", op)
 
 	return true, nil
+}
+
+func (a *sqlInstanceAdapter) checkActiveOperations(ctx context.Context) (*api.Operation, bool, error) {
+	if a.sqlOperationsClient == nil || a.projectID == "" || a.resourceID == "" {
+		return nil, false, nil
+	}
+	resp, err := a.sqlOperationsClient.List(a.projectID).Instance(a.resourceID).Context(ctx).Do()
+	if err != nil {
+		return nil, false, err
+	}
+	for _, op := range resp.Items {
+		if op.Status != "DONE" {
+			return op, true, nil
+		}
+	}
+	return nil, false, nil
+}
+
+func (a *sqlInstanceAdapter) updateFinalStatus(ctx context.Context, updateOp *directbase.UpdateOperation, u *unstructured.Unstructured, status *krm.SQLInstanceStatus) error {
+	wasFailover := false
+	if conditions, found, _ := unstructured.NestedSlice(u.Object, "status", "conditions"); found {
+		for _, c := range conditions {
+			if condMap, ok := c.(map[string]any); ok {
+				if condMap["reason"] == "FailoverInProgress" {
+					wasFailover = true
+					break
+				}
+			}
+		}
+	}
+	if wasFailover {
+		role := "UNKNOWN"
+		if status.CurrentRole != nil {
+			role = *status.CurrentRole
+		}
+		readyCondition := k8s.NewCustomReadyCondition(
+			corev1.ConditionTrue,
+			"FailoverAcknowledged",
+			fmt.Sprintf("Cloud SQL failover complete. Current role: %s. Orchestration resumed.", role),
+		)
+		return updateOp.UpdateStatus(ctx, status, &readyCondition)
+	}
+	return setStatus(u, status)
 }
 
 func (a *sqlInstanceAdapter) Export(ctx context.Context) (*unstructured.Unstructured, error) {

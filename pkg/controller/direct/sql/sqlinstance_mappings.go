@@ -1115,6 +1115,14 @@ func SQLInstanceStatusGCPToKRM(in *api.DatabaseInstance) (*krm.SQLInstanceStatus
 		}
 	}
 
+	if in.MasterInstanceName == "" {
+		out.CurrentRole = direct.LazyPtr("PRIMARY")
+	} else if in.ReplicationCluster != nil && in.ReplicationCluster.DrReplica {
+		out.CurrentRole = direct.LazyPtr("DR_REPLICA")
+	} else {
+		out.CurrentRole = direct.LazyPtr("READ_REPLICA")
+	}
+
 	return out, nil
 }
 

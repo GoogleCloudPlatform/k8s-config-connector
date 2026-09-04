@@ -37,15 +37,16 @@ func DiffInstances(desired *api.DatabaseInstance, actual *api.DatabaseInstance) 
 		diff.AddField(".databaseVersion", actual.DatabaseVersion, desired.DatabaseVersion)
 	}
 	diff.AddDiff(DiffDiskEncryptionConfiguration(desired.DiskEncryptionConfiguration, actual.DiskEncryptionConfiguration))
+	drActive := isEnterpriseDR(desired, actual)
 	// Ignore GeminiConfig. It is not supported in KRM API.
-	if desired.InstanceType != actual.InstanceType {
+	if !drActive && desired.InstanceType != actual.InstanceType {
 		diff.AddField(".instanceType", actual.InstanceType, desired.InstanceType)
 	}
 	// Ignore Kind. It is sometimes not set in API responses.
 	if desired.MaintenanceVersion != actual.MaintenanceVersion {
 		diff.AddField(".maintenanceVersion", actual.MaintenanceVersion, desired.MaintenanceVersion)
 	}
-	if desired.MasterInstanceName != actual.MasterInstanceName {
+	if !drActive && desired.MasterInstanceName != actual.MasterInstanceName {
 		diff.AddField(".masterInstanceName", actual.MasterInstanceName, desired.MasterInstanceName)
 	}
 	// Ignore MaxDiskSize. It is not supported in KRM API.
@@ -720,6 +721,16 @@ func DiffStorageAutoResize(desired *bool, actual *bool) *structuredreporting.Dif
 	return diff
 }
 
+func isEnterpriseDR(desired, actual *api.DatabaseInstance) bool {
+	if desired != nil && desired.ReplicationCluster != nil && (desired.ReplicationCluster.FailoverDrReplicaName != "" || desired.ReplicationCluster.DrReplica || desired.ReplicationCluster.PsaWriteEndpoint != "") {
+		return true
+	}
+	if actual != nil && actual.ReplicationCluster != nil && (actual.ReplicationCluster.FailoverDrReplicaName != "" || actual.ReplicationCluster.DrReplica || actual.ReplicationCluster.PsaWriteEndpoint != "") {
+		return true
+	}
+	return false
+}
+
 func DiffReplicationCluster(desired *api.ReplicationCluster, actual *api.ReplicationCluster) *structuredreporting.Diff {
 	diff := &structuredreporting.Diff{}
 	if desired == nil {
@@ -729,7 +740,12 @@ func DiffReplicationCluster(desired *api.ReplicationCluster, actual *api.Replica
 		actual = &api.ReplicationCluster{}
 	}
 	if desired.FailoverDrReplicaName != actual.FailoverDrReplicaName {
-		diff.AddField(".replicationCluster.failoverDrReplicaName", actual.FailoverDrReplicaName, desired.FailoverDrReplicaName)
+		// If either actual or desired has active DR indicators, suppress failoverDrReplicaName diff caused by role swap
+		if (actual.DrReplica || actual.PsaWriteEndpoint != "" || desired.PsaWriteEndpoint != "") && (desired.FailoverDrReplicaName == "" || actual.FailoverDrReplicaName == "") {
+			// DR role swap: the promoted/demoted instance inverts failoverDrReplicaName. Suppress.
+		} else {
+			diff.AddField(".replicationCluster.failoverDrReplicaName", actual.FailoverDrReplicaName, desired.FailoverDrReplicaName)
+		}
 	}
 	// Ignore PsaWriteEndpoint. It is output only.
 	// Ignore DrReplica. It is output only.

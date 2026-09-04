@@ -1111,8 +1111,22 @@ func (s *sqlInstancesService) Switchover(ctx context.Context, req *pb.SqlInstanc
 		oldMaster.MasterInstanceName = name.Project.ID + ":" + name.InstanceName
 
 		// Swap ReplicationCluster
-		obj.ReplicationCluster = oldMaster.ReplicationCluster
-		oldMaster.ReplicationCluster = nil
+		drTrue := true
+		var psaPtr *string
+		if obj.ReplicationCluster != nil && obj.ReplicationCluster.PsaWriteEndpoint != nil {
+			psaPtr = obj.ReplicationCluster.PsaWriteEndpoint
+		} else if oldMaster.ReplicationCluster != nil && oldMaster.ReplicationCluster.PsaWriteEndpoint != nil {
+			psaPtr = oldMaster.ReplicationCluster.PsaWriteEndpoint
+		}
+
+		oldMaster.ReplicationCluster = &pb.ReplicationCluster{
+			DrReplica:        &drTrue,
+			PsaWriteEndpoint: psaPtr,
+		}
+		obj.ReplicationCluster = &pb.ReplicationCluster{
+			FailoverDrReplicaName: &oldMasterName.InstanceName,
+			PsaWriteEndpoint:      psaPtr,
+		}
 
 		// Set replica names
 		replicaName := oldMasterName.InstanceName
@@ -1143,6 +1157,38 @@ func (s *sqlInstancesService) Switchover(ctx context.Context, req *pb.SqlInstanc
 	op := &pb.Operation{
 		TargetProject: name.Project.ID,
 		OperationType: pb.Operation_SWITCHOVER,
+	}
+
+	return s.operations.startLRO(ctx, op, obj, func() (proto.Message, error) {
+		return obj, nil
+	})
+}
+
+func (s *sqlInstancesService) Failover(ctx context.Context, req *pb.SqlInstancesFailoverRequest) (*pb.Operation, error) {
+	name, err := s.buildInstanceName(req.GetProject(), req.GetInstance())
+	if err != nil {
+		return nil, err
+	}
+
+	fqn := name.String()
+
+	obj := &pb.DatabaseInstance{}
+	if err := s.storage.Get(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	if obj.GceZone != "" && obj.SecondaryGceZone != "" {
+		obj.GceZone, obj.SecondaryGceZone = obj.SecondaryGceZone, obj.GceZone
+	}
+
+	obj.Etag = fields.ComputeWeakEtag(obj)
+	if err := s.storage.Update(ctx, fqn, obj); err != nil {
+		return nil, err
+	}
+
+	op := &pb.Operation{
+		TargetProject: name.Project.ID,
+		OperationType: pb.Operation_FAILOVER,
 	}
 
 	return s.operations.startLRO(ctx, op, obj, func() (proto.Message, error) {
