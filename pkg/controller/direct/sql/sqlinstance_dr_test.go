@@ -18,8 +18,10 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
+	"strings"
 	"testing"
 
 	corev1 "k8s.io/api/core/v1"
@@ -913,7 +915,7 @@ func TestDiffInstances_DR_BackupConfiguration_Suppression(t *testing.T) {
 		t.Fatalf("expected diff suppression on demoted DR primary for backupConfiguration, got: %v", diffDemoted)
 	}
 
-	// Test promoted replica: Manifest specifies a replica (no backups), but GCP promotes it to primary with backups enabled.
+	// Test promoted replica: Manifest specifies a replica (no backups), but GCP promotes it to primary with full backups enabled.
 	desiredDRReplica := &api.DatabaseInstance{
 		Name:               "dr-replica",
 		Region:             "us-east1",
@@ -934,8 +936,15 @@ func TestDiffInstances_DR_BackupConfiguration_Suppression(t *testing.T) {
 			Tier:             "db-perf-optimized-N-2",
 			AvailabilityType: "REGIONAL",
 			BackupConfiguration: &api.BackupConfiguration{
-				Enabled:                    true,
-				PointInTimeRecoveryEnabled: true,
+				Enabled:                     true,
+				PointInTimeRecoveryEnabled:  true,
+				Location:                    "us-east1",
+				StartTime:                   "04:00",
+				TransactionLogRetentionDays: 7,
+				BackupRetentionSettings: &api.BackupRetentionSettings{
+					RetainedBackups: 7,
+					RetentionUnit:   "COUNT",
+				},
 			},
 		},
 		ReplicationCluster: &api.ReplicationCluster{
@@ -980,5 +989,459 @@ func TestDiffInstances_DR_BackupConfiguration_Suppression(t *testing.T) {
 	diffNormal := DiffInstances(desiredNormal, actualNormalMismatched)
 	if !diffNormal.HasDiff() {
 		t.Fatalf("expected diff on regular primary when backupConfiguration differs, got none")
+	}
+}
+
+// TestDiffInstances_DR_ExhaustiveMatrix_AllEnginesAndVersions validates Enterprise DR
+// role swap across every database version supported by Cloud SQL Enterprise DR:
+// PostgreSQL (14, 15, 16), MySQL (8.0, 8.4), and SQL Server (2019, 2022).
+func TestDiffInstances_DR_ExhaustiveMatrix_AllEnginesAndVersions(t *testing.T) {
+	matrix := []struct {
+		engineFamily string
+		version      string
+		tier         string
+		settings     func() *api.Settings
+	}{
+		{
+			engineFamily: "PostgreSQL",
+			version:      "POSTGRES_14",
+			tier:         "db-custom-2-7680",
+			settings: func() *api.Settings {
+				return &api.Settings{
+					Tier: "db-custom-2-7680",
+					DatabaseFlags: []*api.DatabaseFlags{
+						{Name: "autovacuum", Value: "on"},
+						{Name: "log_connections", Value: "on"},
+					},
+					DataCacheConfig: &api.DataCacheConfig{DataCacheEnabled: true},
+				}
+			},
+		},
+		{
+			engineFamily: "PostgreSQL",
+			version:      "POSTGRES_15",
+			tier:         "db-perf-optimized-N-2",
+			settings: func() *api.Settings {
+				return &api.Settings{
+					Tier: "db-perf-optimized-N-2",
+					DatabaseFlags: []*api.DatabaseFlags{
+						{Name: "work_mem", Value: "16384"},
+					},
+				}
+			},
+		},
+		{
+			engineFamily: "PostgreSQL",
+			version:      "POSTGRES_16",
+			tier:         "db-perf-optimized-N-4",
+			settings: func() *api.Settings {
+				return &api.Settings{
+					Tier:            "db-perf-optimized-N-4",
+					DataCacheConfig: &api.DataCacheConfig{DataCacheEnabled: true},
+				}
+			},
+		},
+		{
+			engineFamily: "MySQL",
+			version:      "MYSQL_8_0",
+			tier:         "db-custom-4-15360",
+			settings: func() *api.Settings {
+				return &api.Settings{
+					Tier: "db-custom-4-15360",
+					BackupConfiguration: &api.BackupConfiguration{
+						Enabled:          true,
+						BinaryLogEnabled: true,
+					},
+				}
+			},
+		},
+		{
+			engineFamily: "MySQL",
+			version:      "MYSQL_8_4",
+			tier:         "db-perf-optimized-N-2",
+			settings: func() *api.Settings {
+				return &api.Settings{
+					Tier: "db-perf-optimized-N-2",
+					BackupConfiguration: &api.BackupConfiguration{
+						Enabled:          true,
+						BinaryLogEnabled: true,
+					},
+				}
+			},
+		},
+		{
+			engineFamily: "SQL Server",
+			version:      "SQLSERVER_2019_ENTERPRISE",
+			tier:         "db-custom-4-16384",
+			settings: func() *api.Settings {
+				return &api.Settings{
+					Tier: "db-custom-4-16384",
+					SqlServerAuditConfig: &api.SqlServerAuditConfig{
+						Bucket:            "gs://test-sqlserver-audit",
+						RetentionInterval: "7d",
+					},
+				}
+			},
+		},
+		{
+			engineFamily: "SQL Server",
+			version:      "SQLSERVER_2022_ENTERPRISE",
+			tier:         "db-custom-8-32768",
+			settings: func() *api.Settings {
+				return &api.Settings{
+					Tier: "db-custom-8-32768",
+					ActiveDirectoryConfig: &api.SqlActiveDirectoryConfig{
+						Domain: "corp.example.com",
+					},
+				}
+			},
+		},
+	}
+
+	for _, item := range matrix {
+		testName := fmt.Sprintf("%s_%s", item.engineFamily, item.version)
+		t.Run(testName, func(t *testing.T) {
+			psaEndpoint := fmt.Sprintf("%s.global.sql-psa.goog", strings.ToLower(item.version))
+
+			// Desired Baseline
+			primaryDesired := &api.DatabaseInstance{
+				Name:            "primary-" + strings.ToLower(item.version),
+				Region:          "us-central1",
+				DatabaseVersion: item.version,
+				Settings:        item.settings(),
+				ReplicationCluster: &api.ReplicationCluster{
+					FailoverDrReplicaName: "dr-replica-" + strings.ToLower(item.version),
+				},
+			}
+			replicaDesired := &api.DatabaseInstance{
+				Name:               "dr-replica-" + strings.ToLower(item.version),
+				Region:             "us-east1",
+				DatabaseVersion:    item.version,
+				MasterInstanceName: "primary-" + strings.ToLower(item.version),
+				InstanceType:       "READ_REPLICA_INSTANCE",
+				Settings:           item.settings(),
+			}
+
+			// Mode 2: Forward Switchover in GCP
+			primaryDemotedActual := &api.DatabaseInstance{
+				Name:               primaryDesired.Name,
+				Region:             "us-central1",
+				DatabaseVersion:    item.version,
+				MasterInstanceName: replicaDesired.Name,
+				InstanceType:       "READ_REPLICA_INSTANCE",
+				Settings:           item.settings(),
+				ReplicationCluster: &api.ReplicationCluster{
+					DrReplica:        true,
+					PsaWriteEndpoint: psaEndpoint,
+				},
+			}
+			replicaPromotedActual := &api.DatabaseInstance{
+				Name:            replicaDesired.Name,
+				Region:          "us-east1",
+				DatabaseVersion: item.version,
+				InstanceType:    "CLOUD_SQL_INSTANCE",
+				Settings:        item.settings(),
+				ReplicationCluster: &api.ReplicationCluster{
+					FailoverDrReplicaName: primaryDesired.Name,
+					PsaWriteEndpoint:      psaEndpoint,
+				},
+			}
+
+			// Assert diff suppression during role swap
+			if diff := DiffInstances(primaryDesired, primaryDemotedActual); diff.HasDiff() {
+				t.Fatalf("[%s] expected diff suppression on demoted primary, got: %v", testName, diff)
+			}
+			if diff := DiffInstances(replicaDesired, replicaPromotedActual); diff.HasDiff() {
+				t.Fatalf("[%s] expected diff suppression on promoted replica, got: %v", testName, diff)
+			}
+
+			// Verify status mapping during role swap
+			priStatus, err := SQLInstanceStatusGCPToKRM(primaryDemotedActual)
+			if err != nil || priStatus.CurrentRole == nil || *priStatus.CurrentRole != "DR_REPLICA" {
+				t.Fatalf("[%s] expected DR_REPLICA role, got: %v", testName, priStatus.CurrentRole)
+			}
+			repStatus, err := SQLInstanceStatusGCPToKRM(replicaPromotedActual)
+			if err != nil || repStatus.CurrentRole == nil || *repStatus.CurrentRole != "PRIMARY" {
+				t.Fatalf("[%s] expected PRIMARY role, got: %v", testName, repStatus.CurrentRole)
+			}
+
+			// Mode 2 Failback: Reverse Switchover back to original roles
+			primaryRestoredActual := &api.DatabaseInstance{
+				Name:            primaryDesired.Name,
+				Region:          "us-central1",
+				DatabaseVersion: item.version,
+				InstanceType:    "CLOUD_SQL_INSTANCE",
+				Settings:        item.settings(),
+				ReplicationCluster: &api.ReplicationCluster{
+					FailoverDrReplicaName: replicaDesired.Name,
+					PsaWriteEndpoint:      psaEndpoint,
+				},
+			}
+			replicaRestoredActual := &api.DatabaseInstance{
+				Name:               replicaDesired.Name,
+				Region:             "us-east1",
+				DatabaseVersion:    item.version,
+				MasterInstanceName: primaryDesired.Name,
+				InstanceType:       "READ_REPLICA_INSTANCE",
+				Settings:           item.settings(),
+				ReplicationCluster: &api.ReplicationCluster{
+					DrReplica:        true,
+					PsaWriteEndpoint: psaEndpoint,
+				},
+			}
+
+			if diff := DiffInstances(primaryDesired, primaryRestoredActual); diff.HasDiff() {
+				t.Fatalf("[%s] expected zero diff on restored primary, got: %v", testName, diff)
+			}
+			if diff := DiffInstances(replicaDesired, replicaRestoredActual); diff.HasDiff() {
+				t.Fatalf("[%s] expected zero diff on restored replica, got: %v", testName, diff)
+			}
+		})
+	}
+}
+
+// TestDiffInstances_DR_LegitimateConfigDriftDetected ensures that while DR role-swap diffs
+// (instanceType, masterInstanceName, failoverDrReplicaName, backupConfiguration) are suppressed,
+// legitimate declarative configuration changes (tier, labels, authorized networks, database flags)
+// MUST NOT be suppressed and are properly detected for reconciliation.
+func TestDiffInstances_DR_LegitimateConfigDriftDetected(t *testing.T) {
+	// Desired manifest specifies tier upgrade and an added user label
+	desiredPrimary := &api.DatabaseInstance{
+		Name:            "dr-primary",
+		Region:          "us-central1",
+		DatabaseVersion: "POSTGRES_16",
+		Settings: &api.Settings{
+			Tier: "db-perf-optimized-N-4", // Upgraded tier in manifest
+			UserLabels: map[string]string{
+				"env":  "prod",
+				"cost": "finance",
+			},
+			DatabaseFlags: []*api.DatabaseFlags{
+				{Name: "autovacuum", Value: "on"},
+			},
+		},
+		ReplicationCluster: &api.ReplicationCluster{
+			FailoverDrReplicaName: "dr-replica",
+		},
+	}
+
+	// In GCP, dr-primary is demoted (DR_REPLICA), but still running the old tier and missing the label
+	demotedActualWithDrift := &api.DatabaseInstance{
+		Name:               "dr-primary",
+		Region:             "us-central1",
+		DatabaseVersion:    "POSTGRES_16",
+		MasterInstanceName: "dr-replica",
+		InstanceType:       "READ_REPLICA_INSTANCE",
+		Settings: &api.Settings{
+			Tier: "db-perf-optimized-N-2", // Old tier in GCP
+			UserLabels: map[string]string{
+				"env": "prod",
+			},
+			DatabaseFlags: []*api.DatabaseFlags{
+				{Name: "autovacuum", Value: "on"},
+			},
+			BackupConfiguration: &api.BackupConfiguration{
+				Enabled: false,
+			},
+		},
+		ReplicationCluster: &api.ReplicationCluster{
+			DrReplica:        true,
+			PsaWriteEndpoint: "dr.sql.goog",
+		},
+	}
+
+	diff := DiffInstances(desiredPrimary, demotedActualWithDrift)
+	if !diff.HasDiff() {
+		t.Fatalf("expected diff detection on legitimate tier and label drift, but got none!")
+	}
+
+	// Verify that diff specifically detected .settings.tier and .settings.userLabels
+	tierDiffFound := false
+	labelDiffFound := false
+	for _, entry := range diff.Fields {
+		if entry.ID == ".settings.tier" {
+			tierDiffFound = true
+		}
+		if strings.HasPrefix(entry.ID, ".settings.userLabels") {
+			labelDiffFound = true
+		}
+		if entry.ID == ".masterInstanceName" || entry.ID == ".instanceType" {
+			t.Fatalf("spurious diff on DR role fields: %s", entry.ID)
+		}
+	}
+
+	if !tierDiffFound {
+		t.Fatalf("expected diff on .settings.tier, entries were: %v", diff.Fields)
+	}
+	if !labelDiffFound {
+		t.Fatalf("expected diff on .settings.userLabels, entries were: %v", diff.Fields)
+	}
+}
+
+// TestDiffInstances_DR_CascadingAndMultiReplicaTopology tests a multi-node topology:
+// 1 Primary (us-central1) + 1 Cross-Region DR Replica (us-east1) + 2 In-Region Read Replicas (us-central1).
+// It verifies that during Mode 2 switchover, in-region cascading replicas and repointed replicas
+// maintain predictable diff and role behavior.
+func TestDiffInstances_DR_CascadingAndMultiReplicaTopology(t *testing.T) {
+	primaryDesired := &api.DatabaseInstance{
+		Name:            "prod-primary",
+		Region:          "us-central1",
+		DatabaseVersion: "POSTGRES_16",
+		Settings:        &api.Settings{Tier: "db-perf-optimized-N-2"},
+		ReplicationCluster: &api.ReplicationCluster{
+			FailoverDrReplicaName: "prod-dr-replica",
+		},
+	}
+	drReplicaDesired := &api.DatabaseInstance{
+		Name:               "prod-dr-replica",
+		Region:             "us-east1",
+		DatabaseVersion:    "POSTGRES_16",
+		MasterInstanceName: "prod-primary",
+		InstanceType:       "READ_REPLICA_INSTANCE",
+		Settings:           &api.Settings{Tier: "db-perf-optimized-N-2"},
+	}
+	inregReplica1Desired := &api.DatabaseInstance{
+		Name:               "prod-inreg-replica-1",
+		Region:             "us-central1",
+		DatabaseVersion:    "POSTGRES_16",
+		MasterInstanceName: "prod-primary",
+		InstanceType:       "READ_REPLICA_INSTANCE",
+		Settings:           &api.Settings{Tier: "db-perf-optimized-N-2"},
+	}
+	inregReplica2Desired := &api.DatabaseInstance{
+		Name:               "prod-inreg-replica-2",
+		Region:             "us-central1",
+		DatabaseVersion:    "POSTGRES_16",
+		MasterInstanceName: "prod-primary",
+		InstanceType:       "READ_REPLICA_INSTANCE",
+		Settings:           &api.Settings{Tier: "db-perf-optimized-N-2"},
+	}
+
+	// Mode 2 Switchover:
+	// - prod-dr-replica is promoted to PRIMARY
+	// - prod-primary is demoted to DR_REPLICA
+	// - prod-inreg-replica-1 continues cascading from prod-primary
+	// - prod-inreg-replica-2 is repointed to prod-dr-replica (new primary)
+	psaEndpoint := "prod-dr.sql-psa.goog"
+	primaryActual := &api.DatabaseInstance{
+		Name:               "prod-primary",
+		Region:             "us-central1",
+		DatabaseVersion:    "POSTGRES_16",
+		MasterInstanceName: "prod-dr-replica",
+		InstanceType:       "READ_REPLICA_INSTANCE",
+		Settings:           &api.Settings{Tier: "db-perf-optimized-N-2"},
+		ReplicationCluster: &api.ReplicationCluster{
+			DrReplica:        true,
+			PsaWriteEndpoint: psaEndpoint,
+		},
+	}
+	drReplicaActual := &api.DatabaseInstance{
+		Name:            "prod-dr-replica",
+		Region:          "us-east1",
+		DatabaseVersion: "POSTGRES_16",
+		InstanceType:    "CLOUD_SQL_INSTANCE",
+		Settings:        &api.Settings{Tier: "db-perf-optimized-N-2"},
+		ReplicationCluster: &api.ReplicationCluster{
+			FailoverDrReplicaName: "prod-primary",
+			PsaWriteEndpoint:      psaEndpoint,
+		},
+	}
+	inreg1Actual := &api.DatabaseInstance{
+		Name:               "prod-inreg-replica-1",
+		Region:             "us-central1",
+		DatabaseVersion:    "POSTGRES_16",
+		MasterInstanceName: "prod-primary",
+		InstanceType:       "READ_REPLICA_INSTANCE",
+		Settings:           &api.Settings{Tier: "db-perf-optimized-N-2"},
+	}
+
+	// 1. DR Primary & Replica have diff suppression
+	if diff := DiffInstances(primaryDesired, primaryActual); diff.HasDiff() {
+		t.Fatalf("expected diff suppression on demoted primary in 4-node cluster, got: %v", diff)
+	}
+	if diff := DiffInstances(drReplicaDesired, drReplicaActual); diff.HasDiff() {
+		t.Fatalf("expected diff suppression on promoted DR replica in 4-node cluster, got: %v", diff)
+	}
+
+	// 2. Cascading local replica remains in sync with 0 diff
+	if diff := DiffInstances(inregReplica1Desired, inreg1Actual); diff.HasDiff() {
+		t.Fatalf("expected zero diff on cascading in-region replica, got: %v", diff)
+	}
+
+	// 3. Regular read replica that is intentionally mismatched against its desired master
+	// MUST report a diff so KCC can reconcile it
+	inreg2MismatchedActual := &api.DatabaseInstance{
+		Name:               "prod-inreg-replica-2",
+		Region:             "us-central1",
+		DatabaseVersion:    "POSTGRES_16",
+		MasterInstanceName: "prod-dr-replica", // Differs from desired prod-primary
+		InstanceType:       "READ_REPLICA_INSTANCE",
+		Settings:           &api.Settings{Tier: "db-perf-optimized-N-2"},
+	}
+	diffInreg2 := DiffInstances(inregReplica2Desired, inreg2MismatchedActual)
+	if !diffInreg2.HasDiff() {
+		t.Fatalf("expected diff on in-region replica when master differs from manifest, got none")
+	}
+}
+
+// TestDiffInstances_DR_PublicIP_NoPSA tests Cloud SQL Enterprise DR configured without
+// Private Service Access (i.e. using Public IPs or PSC, where psaWriteEndpoint is empty).
+func TestDiffInstances_DR_PublicIP_NoPSA(t *testing.T) {
+	desiredPrimary := &api.DatabaseInstance{
+		Name:            "pub-primary",
+		Region:          "us-central1",
+		DatabaseVersion: "POSTGRES_16",
+		Settings:        &api.Settings{Tier: "db-perf-optimized-N-2"},
+		ReplicationCluster: &api.ReplicationCluster{
+			FailoverDrReplicaName: "pub-replica",
+		},
+	}
+	desiredReplica := &api.DatabaseInstance{
+		Name:               "pub-replica",
+		Region:             "us-east1",
+		DatabaseVersion:    "POSTGRES_16",
+		MasterInstanceName: "pub-primary",
+		InstanceType:       "READ_REPLICA_INSTANCE",
+		Settings:           &api.Settings{Tier: "db-perf-optimized-N-2"},
+	}
+
+	// Inverted state in GCP without PSA endpoint
+	demotedPrimaryActual := &api.DatabaseInstance{
+		Name:               "pub-primary",
+		Region:             "us-central1",
+		DatabaseVersion:    "POSTGRES_16",
+		MasterInstanceName: "pub-replica",
+		InstanceType:       "READ_REPLICA_INSTANCE",
+		Settings:           &api.Settings{Tier: "db-perf-optimized-N-2"},
+		ReplicationCluster: &api.ReplicationCluster{
+			DrReplica: true, // drReplica flag is set by GCP even without PSA
+		},
+	}
+	promotedReplicaActual := &api.DatabaseInstance{
+		Name:            "pub-replica",
+		Region:          "us-east1",
+		DatabaseVersion: "POSTGRES_16",
+		InstanceType:    "CLOUD_SQL_INSTANCE",
+		Settings:        &api.Settings{Tier: "db-perf-optimized-N-2"},
+		ReplicationCluster: &api.ReplicationCluster{
+			FailoverDrReplicaName: "pub-primary",
+		},
+	}
+
+	if diff := DiffInstances(desiredPrimary, demotedPrimaryActual); diff.HasDiff() {
+		t.Fatalf("expected diff suppression on public IP demoted primary, got: %v", diff)
+	}
+	if diff := DiffInstances(desiredReplica, promotedReplicaActual); diff.HasDiff() {
+		t.Fatalf("expected diff suppression on public IP promoted replica, got: %v", diff)
+	}
+
+	// Status role projection without PSA
+	demotedStatus, err := SQLInstanceStatusGCPToKRM(demotedPrimaryActual)
+	if err != nil || demotedStatus.CurrentRole == nil || *demotedStatus.CurrentRole != "DR_REPLICA" {
+		t.Fatalf("expected DR_REPLICA role for public IP demoted instance, got: %v", demotedStatus.CurrentRole)
+	}
+	promotedStatus, err := SQLInstanceStatusGCPToKRM(promotedReplicaActual)
+	if err != nil || promotedStatus.CurrentRole == nil || *promotedStatus.CurrentRole != "PRIMARY" {
+		t.Fatalf("expected PRIMARY role for public IP promoted instance, got: %v", promotedStatus.CurrentRole)
 	}
 }

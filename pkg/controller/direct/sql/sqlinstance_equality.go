@@ -57,10 +57,12 @@ func DiffInstances(desired *api.DatabaseInstance, actual *api.DatabaseInstance) 
 	if desired.Region != actual.Region {
 		diff.AddField(".region", actual.Region, desired.Region)
 	}
-	diff.AddDiff(DiffReplicaConfiguration(desired.ReplicaConfiguration, actual.ReplicaConfiguration))
-	diff.AddDiff(DiffReplicationCluster(desired.ReplicationCluster, actual.ReplicationCluster))
-	// Ignore RootPassword. It is not exported.
 	drRoleSwap := isEnterpriseDRRoleSwap(desired, actual)
+	if !drRoleSwap {
+		diff.AddDiff(DiffReplicaConfiguration(desired.ReplicaConfiguration, actual.ReplicaConfiguration))
+	}
+	diff.AddDiff(DiffReplicationCluster(desired.ReplicationCluster, actual.ReplicationCluster, drRoleSwap))
+	// Ignore RootPassword. It is not exported.
 	diff.AddDiff(DiffSettings(desired.Settings, actual.Settings, drRoleSwap))
 
 	// Ignore SqlNetworkArchitecture. It is not supported in KRM API.
@@ -288,6 +290,15 @@ func DiffAdvancedMachineFeatures(desired *api.AdvancedMachineFeatures, actual *a
 
 func DiffBackupConfiguration(desired *api.BackupConfiguration, actual *api.BackupConfiguration, drRoleSwap bool) *structuredreporting.Diff {
 	diff := &structuredreporting.Diff{}
+	if drRoleSwap {
+		// During a Cloud SQL Enterprise DR role swap (failover or switchover), Cloud SQL
+		// automatically manages the backup configuration: turning ON backups and PITR
+		// on the promoted primary, and turning OFF backups on the demoted replica.
+		// Attempting to reconcile desired against actual on either instance will trigger
+		// unrecoverable 400 INVALID_ARGUMENT ("Backups cannot be enabled on a read replica")
+		// or improperly disable backups on the promoted primary.
+		return diff
+	}
 	if desired == nil {
 		desired = &api.BackupConfiguration{}
 	}
@@ -295,17 +306,17 @@ func DiffBackupConfiguration(desired *api.BackupConfiguration, actual *api.Backu
 		actual = &api.BackupConfiguration{}
 	}
 	diff.AddDiff(DiffBackupRetentionSettings(desired.BackupRetentionSettings, actual.BackupRetentionSettings))
-	if !drRoleSwap && desired.BinaryLogEnabled != actual.BinaryLogEnabled {
+	if desired.BinaryLogEnabled != actual.BinaryLogEnabled {
 		diff.AddField(".settings.backupConfiguration.binaryLogEnabled", actual.BinaryLogEnabled, desired.BinaryLogEnabled)
 	}
-	if !drRoleSwap && desired.Enabled != actual.Enabled {
+	if desired.Enabled != actual.Enabled {
 		diff.AddField(".settings.backupConfiguration.enabled", actual.Enabled, desired.Enabled)
 	}
 	// Ignore Kind. It is sometimes not set in API responses.
 	if desired.Location != actual.Location {
 		diff.AddField(".settings.backupConfiguration.location", actual.Location, desired.Location)
 	}
-	if !drRoleSwap && desired.PointInTimeRecoveryEnabled != actual.PointInTimeRecoveryEnabled {
+	if desired.PointInTimeRecoveryEnabled != actual.PointInTimeRecoveryEnabled {
 		diff.AddField(".settings.backupConfiguration.pointInTimeRecoveryEnabled", actual.PointInTimeRecoveryEnabled, desired.PointInTimeRecoveryEnabled)
 	}
 	// Ignore StartTime if it is not set. empty string is not a valid start time.
@@ -746,7 +757,7 @@ func isEnterpriseDR(desired, actual *api.DatabaseInstance) bool {
 	return false
 }
 
-func DiffReplicationCluster(desired *api.ReplicationCluster, actual *api.ReplicationCluster) *structuredreporting.Diff {
+func DiffReplicationCluster(desired *api.ReplicationCluster, actual *api.ReplicationCluster, drRoleSwap bool) *structuredreporting.Diff {
 	diff := &structuredreporting.Diff{}
 	if desired == nil {
 		desired = &api.ReplicationCluster{}
@@ -755,8 +766,9 @@ func DiffReplicationCluster(desired *api.ReplicationCluster, actual *api.Replica
 		actual = &api.ReplicationCluster{}
 	}
 	if !isInstanceNameEqual(desired.FailoverDrReplicaName, actual.FailoverDrReplicaName) {
-		// If either actual or desired has active DR indicators, suppress failoverDrReplicaName diff caused by role swap
-		if (actual.DrReplica || actual.PsaWriteEndpoint != "" || desired.PsaWriteEndpoint != "") && (desired.FailoverDrReplicaName == "" || actual.FailoverDrReplicaName == "") {
+		// If either actual or desired has active DR indicators (or an active role swap),
+		// suppress failoverDrReplicaName diff caused by role swap.
+		if (drRoleSwap || actual.DrReplica || desired.DrReplica || actual.PsaWriteEndpoint != "" || desired.PsaWriteEndpoint != "") && (desired.FailoverDrReplicaName == "" || actual.FailoverDrReplicaName == "") {
 			// DR role swap: the promoted/demoted instance inverts failoverDrReplicaName. Suppress.
 		} else {
 			diff.AddField(".replicationCluster.failoverDrReplicaName", actual.FailoverDrReplicaName, desired.FailoverDrReplicaName)
@@ -783,12 +795,13 @@ func isEnterpriseDRRoleSwap(desired, actual *api.DatabaseInstance) bool {
 	}
 	// Case 1: Primary in spec, but demoted to replica in GCP
 	if (desired.MasterInstanceName == "" || (desired.ReplicationCluster != nil && desired.ReplicationCluster.FailoverDrReplicaName != "")) &&
-		(actual.InstanceType == "READ_REPLICA_INSTANCE" || actual.MasterInstanceName != "") {
+		(actual.InstanceType == "READ_REPLICA_INSTANCE" || actual.MasterInstanceName != "" || (actual.ReplicationCluster != nil && actual.ReplicationCluster.DrReplica)) {
 		return true
 	}
 	// Case 2: Replica in spec, but promoted to primary in GCP
-	if (desired.MasterInstanceName != "" || desired.InstanceType == "READ_REPLICA_INSTANCE") &&
-		(actual.InstanceType == "CLOUD_SQL_INSTANCE" && actual.MasterInstanceName == "") {
+	if (desired.MasterInstanceName != "" || desired.InstanceType == "READ_REPLICA_INSTANCE" || (desired.ReplicationCluster != nil && desired.ReplicationCluster.DrReplica)) &&
+		(actual.InstanceType == "CLOUD_SQL_INSTANCE" || actual.InstanceType == "" || (actual.ReplicationCluster != nil && actual.ReplicationCluster.FailoverDrReplicaName != "")) &&
+		actual.MasterInstanceName == "" {
 		return true
 	}
 	return false
