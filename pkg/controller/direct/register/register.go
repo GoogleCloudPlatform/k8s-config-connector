@@ -160,6 +160,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/vertexai/tensorboardexperiment"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/videostitcher"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/vision"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/vmmigration"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/vmwareengine"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/workflowexecutions"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/workflows"
