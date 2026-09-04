@@ -25,7 +25,10 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/lifecyclehandler"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	corev1 "k8s.io/api/core/v1"
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -424,5 +427,228 @@ func TestReconcile_FindUnresolvableDependency_Delete(t *testing.T) {
 
 	if readyCondition["reason"] != k8s.DependencyNotReady {
 		t.Errorf("expected condition reason to be %s, got: %v", k8s.DependencyNotReady, readyCondition["reason"])
+	}
+}
+
+func TestReconcile_Delete_FindNotFound(t *testing.T) {
+	ctx := context.TODO()
+	scheme := runtime.NewScheme()
+	_ = corev1.AddToScheme(scheme)
+	_ = operatorv1beta1.AddToScheme(scheme)
+
+	u := &unstructured.Unstructured{}
+	u.SetGroupVersionKind(testGVK)
+	u.SetName("test-resource")
+	u.SetNamespace("test-ns")
+
+	// Set finalizer and deletion timestamp
+	now := metav1.Now()
+	u.SetDeletionTimestamp(&now)
+	u.SetFinalizers([]string{k8s.ControllerFinalizerName})
+
+	adapter := &mockAdapter{
+		findFound: false,
+		findErr:   status.Error(codes.NotFound, "not found"),
+	}
+	model := &mockModel{
+		adapter: adapter,
+	}
+
+	k8sClient := fake.NewClientBuilder().
+		WithScheme(scheme).
+		WithStatusSubresource(u).
+		WithRuntimeObjects(u).
+		Build()
+
+	r := &DirectReconciler{
+		LifecycleHandler: lifecyclehandler.NewLifecycleHandler(
+			k8sClient,
+			record.NewFakeRecorder(100),
+		),
+		Client:          k8sClient,
+		scheme:          scheme,
+		gvk:             testGVK,
+		model:           model,
+		jitterGenerator: &mockJitterGenerator{},
+	}
+
+	req := reconcile.Request{
+		NamespacedName: types.NamespacedName{
+			Namespace: "test-ns",
+			Name:      "test-resource",
+		},
+	}
+
+	_, err := r.Reconcile(ctx, req)
+	if err != nil {
+		t.Fatalf("expected reconcile to succeed, but got error: %v", err)
+	}
+
+	if adapter.deleteCalled {
+		t.Error("expected Adapter.Delete() NOT to be called when Find() returns NotFound")
+	}
+
+	// Verify that the finalizer has been removed from the resource (since it's already gone)
+	obj := &unstructured.Unstructured{}
+	obj.SetGroupVersionKind(testGVK)
+	err = k8sClient.Get(ctx, req.NamespacedName, obj)
+	if err == nil {
+		finalizers := obj.GetFinalizers()
+		for _, f := range finalizers {
+			if f == k8s.ControllerFinalizerName {
+				t.Error("expected finalizer to be removed, but it was still present")
+			}
+		}
+	} else if !apierrors.IsNotFound(err) {
+		t.Fatalf("unexpected error getting object: %v", err)
+	}
+}
+
+func TestReconcile_Delete_DeleteNotFound(t *testing.T) {
+	ctx := context.TODO()
+	scheme := runtime.NewScheme()
+	_ = corev1.AddToScheme(scheme)
+	_ = operatorv1beta1.AddToScheme(scheme)
+
+	u := &unstructured.Unstructured{}
+	u.SetGroupVersionKind(testGVK)
+	u.SetName("test-resource")
+	u.SetNamespace("test-ns")
+
+	// Set finalizer and deletion timestamp
+	now := metav1.Now()
+	u.SetDeletionTimestamp(&now)
+	u.SetFinalizers([]string{k8s.ControllerFinalizerName})
+
+	adapter := &mockAdapter{
+		findFound: true,
+		findErr:   nil,
+		deleteErr: status.Error(codes.NotFound, "not found"),
+	}
+	model := &mockModel{
+		adapter: adapter,
+	}
+
+	k8sClient := fake.NewClientBuilder().
+		WithScheme(scheme).
+		WithStatusSubresource(u).
+		WithRuntimeObjects(u).
+		Build()
+
+	r := &DirectReconciler{
+		LifecycleHandler: lifecyclehandler.NewLifecycleHandler(
+			k8sClient,
+			record.NewFakeRecorder(100),
+		),
+		Client:          k8sClient,
+		scheme:          scheme,
+		gvk:             testGVK,
+		model:           model,
+		jitterGenerator: &mockJitterGenerator{},
+	}
+
+	req := reconcile.Request{
+		NamespacedName: types.NamespacedName{
+			Namespace: "test-ns",
+			Name:      "test-resource",
+		},
+	}
+
+	_, err := r.Reconcile(ctx, req)
+	if err != nil {
+		t.Fatalf("expected reconcile to succeed, but got error: %v", err)
+	}
+
+	if !adapter.deleteCalled {
+		t.Error("expected Adapter.Delete() to be called when Find() returns existsAlready")
+	}
+
+	// Verify that the finalizer has been removed from the resource (since Delete() returned NotFound)
+	obj := &unstructured.Unstructured{}
+	obj.SetGroupVersionKind(testGVK)
+	err = k8sClient.Get(ctx, req.NamespacedName, obj)
+	if err == nil {
+		finalizers := obj.GetFinalizers()
+		for _, f := range finalizers {
+			if f == k8s.ControllerFinalizerName {
+				t.Error("expected finalizer to be removed, but it was still present")
+			}
+		}
+	} else if !apierrors.IsNotFound(err) {
+		t.Fatalf("unexpected error getting object: %v", err)
+	}
+}
+
+func TestReconcile_Delete_FindReturnsFalseNoError(t *testing.T) {
+	ctx := context.TODO()
+	scheme := runtime.NewScheme()
+	_ = corev1.AddToScheme(scheme)
+	_ = operatorv1beta1.AddToScheme(scheme)
+
+	u := &unstructured.Unstructured{}
+	u.SetGroupVersionKind(testGVK)
+	u.SetName("test-resource")
+	u.SetNamespace("test-ns")
+
+	// Set finalizer and deletion timestamp
+	now := metav1.Now()
+	u.SetDeletionTimestamp(&now)
+	u.SetFinalizers([]string{k8s.ControllerFinalizerName})
+
+	adapter := &mockAdapter{
+		findFound: false,
+		findErr:   nil,
+	}
+	model := &mockModel{
+		adapter: adapter,
+	}
+
+	k8sClient := fake.NewClientBuilder().
+		WithScheme(scheme).
+		WithStatusSubresource(u).
+		WithRuntimeObjects(u).
+		Build()
+
+	r := &DirectReconciler{
+		LifecycleHandler: lifecyclehandler.NewLifecycleHandler(
+			k8sClient,
+			record.NewFakeRecorder(100),
+		),
+		Client:          k8sClient,
+		scheme:          scheme,
+		gvk:             testGVK,
+		model:           model,
+		jitterGenerator: &mockJitterGenerator{},
+	}
+
+	req := reconcile.Request{
+		NamespacedName: types.NamespacedName{
+			Namespace: "test-ns",
+			Name:      "test-resource",
+		},
+	}
+
+	_, err := r.Reconcile(ctx, req)
+	if err != nil {
+		t.Fatalf("expected reconcile to succeed, but got error: %v", err)
+	}
+
+	if adapter.deleteCalled {
+		t.Error("expected Adapter.Delete() NOT to be called when Find() returns existsAlready == false and err == nil")
+	}
+
+	// Verify that the finalizer has been removed from the resource (since it's already gone)
+	obj := &unstructured.Unstructured{}
+	obj.SetGroupVersionKind(testGVK)
+	err = k8sClient.Get(ctx, req.NamespacedName, obj)
+	if err == nil {
+		finalizers := obj.GetFinalizers()
+		for _, f := range finalizers {
+			if f == k8s.ControllerFinalizerName {
+				t.Error("expected finalizer to be removed, but it was still present")
+			}
+		}
+	} else if !apierrors.IsNotFound(err) {
+		t.Fatalf("unexpected error getting object: %v", err)
 	}
 }
