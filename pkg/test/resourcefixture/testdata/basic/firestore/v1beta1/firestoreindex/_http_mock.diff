@@ -45,9 +45,9 @@
 ---
 >       "order": 2
 261c261
-<       "order": "DESCENDING"
+<       "order": "ASCENDING"
 ---
->       "order": 2
+>       "order": 1
 265,266c265,266
 <   "queryScope": "COLLECTION_RECURSIVE",
 <   "state": "READY"
