@@ -554,6 +554,8 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		delete(v, "updateTime")
 		delete(v, "activationUpdateTime")
 		delete(v, "revisionCreateTime")
+		delete(v, "versionCreateTime")
+		delete(v, "versionUpdateTime")
 		delete(v, "uid")
 		delete(v, "naturalLanguageQueryUnderstandingConfig")
 		delete(v, "solutionTypes")
