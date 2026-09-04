@@ -760,6 +760,16 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 	log := klog.FromContext(ctx)
 	log.V(2).Info("updating SQLInstance", "desired", a.desired)
 
+	// KCC Resource Development Guidance Alignment (Asynchronous Operation Standby):
+	// During failovers, switchovers, or maintenance, Cloud SQL instances enter MAINTENANCE or UPDATING.
+	// The Cloud SQL Admin API rejects concurrent updates against instances in transient states with
+	// HTTP 409 Conflict. Rather than failing the reconcile loop (which triggers exponential backoff
+	// in controller-runtime and generates noisy reconcile error events), the direct controller
+	// inspects active operations via sqlOperations.list.
+	//
+	// If an operation (SWITCHOVER, FAILOVER, PROMOTE_REPLICA) is running, KCC transitions the resource
+	// condition to Ready=False, Reason=FailoverInProgress and requests a non-blocking requeue
+	// (updateOp.RequestRequeue()) to smoothly poll until Cloud SQL finishes.
 	if a.actual != nil && (a.actual.State == "MAINTENANCE" || a.actual.State == "UPDATING") {
 		log.Info("Cloud SQL instance is in transient state, checking active operations", "name", a.resourceID, "state", a.actual.State)
 		op, isBusy, err := a.checkActiveOperations(ctx)
@@ -1003,6 +1013,11 @@ func (a *sqlInstanceAdapter) Delete(ctx context.Context, deleteOp *directbase.De
 	log := klog.FromContext(ctx)
 	log.V(2).Info("deleting SQLInstance", "actual", a.actual)
 
+	// KCC Resource Development Guidance Alignment (Deletion Safety Guard):
+	// In accordance with KCC Finalizer and Resource Lifecycle conventions, deleting a resource while
+	// an underlying GCP database failover or maintenance operation is actively in flight risks
+	// split-brain topologies, orphaned replication targets, or unrecoverable data loss.
+	// We intercept Delete() and return a descriptive terminal error while operations are running.
 	if a.actual != nil && (a.actual.State == "MAINTENANCE" || a.actual.State == "UPDATING") {
 		_, isBusy, _ := a.checkActiveOperations(ctx)
 		if isBusy {

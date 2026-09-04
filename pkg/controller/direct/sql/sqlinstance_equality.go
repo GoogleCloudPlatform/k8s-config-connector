@@ -721,6 +721,22 @@ func DiffStorageAutoResize(desired *bool, actual *bool) *structuredreporting.Dif
 	return diff
 }
 
+// isEnterpriseDR checks if the instance is configured for Cloud SQL Enterprise DR.
+//
+// KCC Resource Development Guidance Alignment (Declarative Reconciliation & Diff Suppression):
+// Per KCC declarative reconciliation guidelines (AIP-128 compliance), KCC reconciles user-declared
+// intent against observed GCP infrastructure. For Cloud SQL Enterprise DR, the GCP control plane
+// autonomously executes role inversions during planned switchovers (Mode 2) or emergency promotions (Mode 3):
+//  1. The DR replica in Region B is promoted to PRIMARY.
+//  2. The former primary in Region A is demoted to a replica pointing to Region B.
+//
+// Because the Cloud SQL Admin API rejects mutating 'masterInstanceName' on existing instances via
+// instances.update with HTTP 400 INVALID_ARGUMENT ("masterInstanceName cannot be updated via instances.update"),
+// attempting to re-impose .spec.masterInstanceRef causes an unrecoverable reconciliation loop.
+//
+// In alignment with KCC's equality engine design patterns, this method detects Enterprise DR configurations
+// and suppresses spurious diffs on .instanceType, .masterInstanceName, and reciprocal .failoverDrReplicaName,
+// allowing declarative GitOps manifests to remain stable across repeated bidirectional failbacks.
 func isEnterpriseDR(desired, actual *api.DatabaseInstance) bool {
 	if desired != nil && desired.ReplicationCluster != nil && (desired.ReplicationCluster.FailoverDrReplicaName != "" || desired.ReplicationCluster.DrReplica || desired.ReplicationCluster.PsaWriteEndpoint != "") {
 		return true
