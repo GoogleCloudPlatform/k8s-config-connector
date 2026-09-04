@@ -315,9 +315,53 @@ func TestIsNonRetryableError(t *testing.T) {
 			want: true,
 		},
 		{
-			name: "googleapi.Error 400 Bad Request with invalid XXX field message",
+			name: "googleapi.Error 400 Bad Request with invalid XXX field message (unsupported without legacy reason or body status)",
 			err:  &googleapi.Error{Code: 400, Message: "invalid location field"},
+			want: false,
+		},
+		{
+			name: "googleapi.Error 400 Bad Request with invalid reason in Errors",
+			err: &googleapi.Error{
+				Code:    400,
+				Message: "bad request",
+				Errors: []googleapi.ErrorItem{
+					{Reason: "invalid"},
+				},
+			},
 			want: true,
+		},
+		{
+			name: "googleapi.Error 400 Bad Request with invalidParameter reason in Errors",
+			err: &googleapi.Error{
+				Code:    400,
+				Message: "bad request",
+				Errors: []googleapi.ErrorItem{
+					{Reason: "invalidParameter"},
+				},
+			},
+			want: true,
+		},
+		{
+			name: "googleapi.Error 400 Bad Request with required reason in Errors",
+			err: &googleapi.Error{
+				Code:    400,
+				Message: "bad request",
+				Errors: []googleapi.ErrorItem{
+					{Reason: "required"},
+				},
+			},
+			want: true,
+		},
+		{
+			name: "googleapi.Error 400 Bad Request with non-matching reason in Errors",
+			err: &googleapi.Error{
+				Code:    400,
+				Message: "bad request",
+				Errors: []googleapi.ErrorItem{
+					{Reason: "someOtherReason"},
+				},
+			},
+			want: false,
 		},
 		{
 			name: "googleapi.Error 403 Forbidden",
@@ -325,8 +369,14 @@ func TestIsNonRetryableError(t *testing.T) {
 			want: false,
 		},
 		{
-			name: "wrapped googleapi.Error 400 Bad Request with invalid XXX field message",
-			err:  fmt.Errorf("failed during reconciliation: %w", &googleapi.Error{Code: 400, Message: "invalid spec field"}),
+			name: "wrapped googleapi.Error 400 Bad Request with required reason in Errors",
+			err: fmt.Errorf("failed during reconciliation: %w", &googleapi.Error{
+				Code:    400,
+				Message: "bad request",
+				Errors: []googleapi.ErrorItem{
+					{Reason: "required"},
+				},
+			}),
 			want: true,
 		},
 	}

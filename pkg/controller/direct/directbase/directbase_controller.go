@@ -252,11 +252,6 @@ func (r *DirectReconciler) Reconcile(ctx context.Context, request reconcile.Requ
 	structuredreporting.ReportReconcileStart(ctx, obj, k8s.ReconcilerTypeDirect)
 	defer structuredreporting.ReportReconcileEnd(ctx, obj, result, err, k8s.ReconcilerTypeDirect)
 
-	if errorhandling.ShouldSkip(obj) {
-		logger.Info("reconciliation skipped because resource is in terminal failure state and metadata.generation is unchanged", "resource", request.NamespacedName)
-		return reconcile.Result{}, nil
-	}
-
 	skip, err := resourceactuation.ShouldSkip(obj)
 	if err != nil {
 		return reconcile.Result{}, err
@@ -266,12 +261,17 @@ func (r *DirectReconciler) Reconcile(ctx context.Context, request reconcile.Requ
 		return reconcile.Result{}, nil
 	}
 
+	skipTerminalError, err := errorhandling.ShouldSkip(obj)
+	if err != nil {
+		return reconcile.Result{}, err
+	}
+	if skipTerminalError {
+		logger.V(2).Info("Skipping reconcile because resource is in terminal error state and spec is not updated", "resource", request.NamespacedName)
+		return reconcile.Result{}, nil
+	}
+
 	requeue, err := runCtx.doReconcile(ctx, obj)
 	if err != nil {
-		if lifecyclehandler.IsNonRetryableError(err) {
-			logger.Info("reconciliation failed with a non-retryable error, halting retries until user updates", "resource", request.NamespacedName, "error", err)
-			return reconcile.Result{}, nil
-		}
 		return reconcile.Result{}, err
 	}
 	if requeue {

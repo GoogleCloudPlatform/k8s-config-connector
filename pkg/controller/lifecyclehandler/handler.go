@@ -444,34 +444,31 @@ type grpcStatus interface {
 	GRPCStatus() *status.Status
 }
 
-// IsNonRetryableError returns true if the error represents a non-retryable client error
-// such as INVALID_ARGUMENT (gRPC) or 400 Bad Request (HTTP) with status "invalid_argument" or message containing "invalid XXX field".
+// IsNonRetryableError returns true if the error represents a non-retryable client error (INVALID_ARGUMENT).
 func IsNonRetryableError(err error) bool {
 	if err == nil {
 		return false
 	}
 
-	// 1. Check gRPC status code
+	// 1. Check gRPC / GAPIC status code
 	var gs grpcStatus
 	if errors.As(err, &gs) {
-		st := gs.GRPCStatus()
-		switch st.Code() {
-		case codes.InvalidArgument:
+		if gs.GRPCStatus().Code() == codes.InvalidArgument {
 			return true
 		}
 	}
 
 	// 2. Check HTTP status code (googleapi.Error)
 	var ge *googleapi.Error
-	if errors.As(err, &ge) {
-		if ge.Code == 400 {
-			bodyLower := strings.ToLower(ge.Body)
-			msgLower := strings.ToLower(ge.Message)
-			if strings.Contains(bodyLower, `"status": "invalid_argument"`) ||
-				strings.Contains(bodyLower, `"invalid_argument"`) {
-				return true
-			}
-			if strings.Contains(msgLower, "invalid") && strings.Contains(msgLower, "field") {
+	if errors.As(err, &ge) && ge.Code == 400 {
+		bodyLower := strings.ToLower(ge.Body)
+		if strings.Contains(bodyLower, `"status": "invalid_argument"`) ||
+			strings.Contains(bodyLower, `"invalid_argument"`) {
+			return true
+		}
+		for _, item := range ge.Errors {
+			switch item.Reason {
+			case "invalid", "invalidParameter", "required":
 				return true
 			}
 		}

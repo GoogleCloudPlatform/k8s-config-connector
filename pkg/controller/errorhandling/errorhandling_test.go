@@ -25,6 +25,7 @@ func TestShouldSkip(t *testing.T) {
 		name     string
 		resource *unstructured.Unstructured
 		want     bool
+		wantErr  bool
 	}{
 		{
 			name: "normal resource - should not skip",
@@ -38,7 +39,8 @@ func TestShouldSkip(t *testing.T) {
 					},
 				},
 			},
-			want: false,
+			want:    false,
+			wantErr: false,
 		},
 		{
 			name: "resource with UpdateFailedTerminalError and matching generation - should skip",
@@ -63,7 +65,8 @@ func TestShouldSkip(t *testing.T) {
 					},
 				},
 			},
-			want: true,
+			want:    true,
+			wantErr: false,
 		},
 		{
 			name: "resource with UpdateFailedTerminalError and matching generation but ContinuousRetry annotation - should not skip",
@@ -91,7 +94,8 @@ func TestShouldSkip(t *testing.T) {
 					},
 				},
 			},
-			want: false,
+			want:    false,
+			wantErr: false,
 		},
 		{
 			name: "resource with UpdateFailedTerminalError but generation progressed - should not skip",
@@ -116,7 +120,8 @@ func TestShouldSkip(t *testing.T) {
 					},
 				},
 			},
-			want: false,
+			want:    false,
+			wantErr: false,
 		},
 		{
 			name: "resource with UpdateFailedTerminalError but being deleted - should not skip",
@@ -145,13 +150,17 @@ func TestShouldSkip(t *testing.T) {
 					},
 				},
 			},
-			want: false,
+			want:    false,
+			wantErr: false,
 		},
 	}
 
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
-			got := ShouldSkip(tc.resource)
+			got, err := ShouldSkip(tc.resource)
+			if (err != nil) != tc.wantErr {
+				t.Fatalf("ShouldSkip() error = %v, wantErr %v", err, tc.wantErr)
+			}
 			if got != tc.want {
 				t.Errorf("ShouldSkip() = %v, want %v", got, tc.want)
 			}

@@ -15,29 +15,41 @@
 package errorhandling
 
 import (
+	"fmt"
+
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
+	corev1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
 
-const (
-	// ErrorHandlingModeAnnotation is the annotation key for configuring custom error handling modes.
-	ErrorHandlingModeAnnotation = "cnrm.cloud.google.com/error-handling-mode"
-
-	// ErrorHandlingModeContinuousRetry is a mode where reconciliation retries continuously despite terminal client errors.
-	ErrorHandlingModeContinuousRetry = "ContinuousRetry"
-)
-
-// ShouldSkip returns true if the resource reconciliation should be skipped.
-// Reconciliation is skipped if the resource has a Ready condition with reason "UpdateFailedTerminalError",
-// the status.observedGeneration matches metadata.generation, and the error-handling-mode
-// annotation is not set to "ContinuousRetry".
-func ShouldSkip(u *unstructured.Unstructured) bool {
+// ShouldSkip returns true if reconciliation should be skipped due to an unchanged terminal error state.
+func ShouldSkip(u *unstructured.Unstructured) (bool, error) {
 	if u.GetDeletionTimestamp() != nil {
-		return false
+		return false, nil
 	}
 
-	conditions, foundCond, errCond := unstructured.NestedSlice(u.Object, "status", "conditions")
-	if errCond != nil || !foundCond {
-		return false
+	if val, ok := k8s.GetAnnotation(k8s.ErrorHandlingModeAnnotation, u); ok && val == k8s.ErrorHandlingModeContinuousRetry {
+		return false, nil
+	}
+
+	generation, foundGen, err := unstructured.NestedInt64(u.Object, "metadata", "generation")
+	if err != nil {
+		return false, fmt.Errorf("error reading 'metadata.generation': %w", err)
+	}
+	observedGeneration, foundObsGen, err := unstructured.NestedInt64(u.Object, "status", "observedGeneration")
+	if err != nil {
+		return false, fmt.Errorf("error reading 'status.observedGeneration': %w", err)
+	}
+	if !foundGen || !foundObsGen || generation != observedGeneration {
+		return false, nil
+	}
+
+	conditions, foundCond, err := unstructured.NestedSlice(u.Object, "status", "conditions")
+	if err != nil {
+		return false, fmt.Errorf("error reading 'status.conditions': %w", err)
+	}
+	if !foundCond {
+		return false, nil
 	}
 
 	for _, condRaw := range conditions {
@@ -45,16 +57,12 @@ func ShouldSkip(u *unstructured.Unstructured) bool {
 		if !ok {
 			continue
 		}
-		if cond["type"] == "Ready" && cond["reason"] == "UpdateFailedTerminalError" {
-			observedGen, foundGen, errGen := unstructured.NestedInt64(u.Object, "status", "observedGeneration")
-			if errGen == nil && foundGen && u.GetGeneration() == observedGen {
-				annotations := u.GetAnnotations()
-				if annotations == nil || annotations[ErrorHandlingModeAnnotation] != ErrorHandlingModeContinuousRetry {
-					return true
-				}
-			}
+		if cond["type"] == string(k8s.ConditionReady) &&
+			cond["status"] == string(corev1.ConditionFalse) &&
+			cond["reason"] == k8s.UpdateFailedTerminalError {
+			return true, nil
 		}
 	}
 
-	return false
+	return false, nil
 }
