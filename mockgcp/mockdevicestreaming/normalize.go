@@ -23,11 +23,28 @@ import (
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
+	replacements.ReplacePath(".createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".expireTime", mockgcpregistry.PlaceholderTimestamp)
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
 	// Only apply normalization if the request is for this service
 	if !strings.Contains(event.URL(), "devicestreaming.googleapis.com") {
 		return
+	}
+
+	// Find the session ID from the response (which will be in the form session-<random>)
+	var sessionID string
+	event.VisitResponseStringValues(func(path string, value string) {
+		if strings.HasPrefix(value, "projects/") && strings.Contains(value, "/deviceSessions/session-") {
+			parts := strings.Split(value, "/")
+			if len(parts) >= 4 && strings.HasPrefix(parts[3], "session-") {
+				sessionID = parts[3]
+			}
+		}
+	})
+
+	if sessionID != "" {
+		replacements.ReplaceStringValue(sessionID, "session-${uniqueId}")
 	}
 }
