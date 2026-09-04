@@ -16,6 +16,7 @@ package sqladmin
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"strconv"
 	"strings"
@@ -33,6 +34,7 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/mappers"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	gax "github.com/googleapis/gax-go/v2"
+	"google.golang.org/api/googleapi"
 	api "google.golang.org/api/sqladmin/v1beta4"
 	"google.golang.org/protobuf/proto"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -145,7 +147,7 @@ func (a *sqlAdminBackupAdapter) Find(ctx context.Context) (bool, error) {
 
 	actual, err := a.sqlBackupRunsClient.Get(a.projectID, a.instanceID, a.backupID).Do()
 	if err != nil {
-		if direct.IsNotFound(err) {
+		if isNotFound(err) {
 			return false, nil
 		}
 		return false, fmt.Errorf("getting backup run %d: %w", a.backupID, err)
@@ -239,14 +241,14 @@ func (a *sqlAdminBackupAdapter) Delete(ctx context.Context, op *directbase.Delet
 
 	deleteOp, err := a.sqlBackupRunsClient.Delete(a.projectID, a.instanceID, a.backupID).Do()
 	if err != nil {
-		if direct.IsNotFound(err) {
+		if isNotFound(err) {
 			return true, nil
 		}
 		return false, fmt.Errorf("deleting backup run %d: %w", a.backupID, err)
 	}
 
 	if _, err := a.pollForLROCompletion(ctx, deleteOp, "delete"); err != nil {
-		if direct.IsNotFound(err) {
+		if isNotFound(err) {
 			return true, nil
 		}
 		return false, err
@@ -382,4 +384,15 @@ func compareResource(ctx context.Context, actual, desired *pb.BackupRun) (*struc
 		return nil, err
 	}
 	return diffs, nil
+}
+
+func isNotFound(err error) bool {
+	if err == nil {
+		return false
+	}
+	var apiErr *googleapi.Error
+	if errors.As(err, &apiErr) {
+		return apiErr.Code == 404
+	}
+	return direct.IsNotFound(err)
 }
