@@ -154,6 +154,7 @@ settings:
   databaseFlags:
   - name: string
     value: string
+  databaseReplicationEnabled: boolean
   deletionProtectionEnabled: boolean
   denyMaintenancePeriod:
     endDate: string
@@ -1021,6 +1022,16 @@ settings:
         <td>
             <p><code class="apitype">string</code></p>
             <p>Value of the flag.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>settings.databaseReplicationEnabled</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>Configuration specific to read replica instances. Indicates whether replication is enabled or not. WARNING: Changing this field restarts the read replica instance.</p>
         </td>
     </tr>
     <tr>

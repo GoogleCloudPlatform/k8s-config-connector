@@ -145,6 +145,7 @@ func sqlInstanceLegacyFuzzer() fuzztesting.KRMFuzzer_NoProto {
 	f.SpecField(".Settings.DataDiskSizeGb")
 	f.SpecField(".Settings.DataDiskType")
 	f.SpecField(".Settings.DatabaseFlags")
+	f.SpecField(".Settings.DatabaseReplicationEnabled")
 	f.SpecField(".Settings.DeletionProtectionEnabled")
 	f.SpecField(".Settings.DenyMaintenancePeriods")
 	f.SpecField(".Settings.Edition")
@@ -238,7 +239,6 @@ func sqlInstanceLegacyFuzzer() fuzztesting.KRMFuzzer_NoProto {
 	f.Unimplemented_NotYetTriaged(".SwitchTransactionLogsToCloudStorageEnabled")
 	f.Unimplemented_NotYetTriaged(".Tags")
 
-	f.Unimplemented_NotYetTriaged(".Settings.DatabaseReplicationEnabled")
 	f.Unimplemented_NotYetTriaged(".Settings.EnableDataplexIntegration")
 	f.Unimplemented_NotYetTriaged(".Settings.EnableGoogleMlIntegration")
 	f.Unimplemented_NotYetTriaged(".Settings.Kind")
