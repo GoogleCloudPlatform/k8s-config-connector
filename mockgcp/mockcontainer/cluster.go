@@ -412,6 +412,14 @@ func (s *ClusterManagerV1) UpdateCluster(ctx context.Context, req *pb.UpdateClus
 		update.DesiredDatabaseEncryption = nil
 	}
 
+	if update.DesiredPrivilegedAdmissionConfig != nil {
+		if obj.Autopilot == nil {
+			obj.Autopilot = &pb.Autopilot{}
+		}
+		obj.Autopilot.PrivilegedAdmissionConfig = update.DesiredPrivilegedAdmissionConfig
+		update.DesiredPrivilegedAdmissionConfig = nil
+	}
+
 	if !proto.Equal(update, &pb.ClusterUpdate{}) {
 
 		return nil, status.Errorf(codes.InvalidArgument, "update was not fully implemented ClusterUpdate=%v", prototext.Format(update))
@@ -637,7 +645,20 @@ func (s *ClusterManagerV1) populateClusterDefaults(project *projects.ProjectData
 	if obj.Autoscaling.AutoscalingProfile == pb.ClusterAutoscaling_PROFILE_UNSPECIFIED {
 		obj.Autoscaling.AutoscalingProfile = pb.ClusterAutoscaling_BALANCED
 	}
-	if obj.Autoscaling.EnableNodeAutoprovisioning {
+	if obj.GetAutopilot().GetEnabled() {
+		obj.Autoscaling.EnableNodeAutoprovisioning = true
+		obj.Autoscaling.AutoscalingProfile = pb.ClusterAutoscaling_OPTIMIZE_UTILIZATION
+		if len(obj.Autoscaling.ResourceLimits) == 0 {
+			obj.Autoscaling.ResourceLimits = []*pb.ResourceLimit{
+				{ResourceType: "cpu", Maximum: 1000000000},
+				{ResourceType: "memory", Maximum: 1000000000},
+				{ResourceType: "nvidia-tesla-t4", Maximum: 1000000000},
+				{ResourceType: "nvidia-tesla-a100", Maximum: 1000000000},
+			}
+		}
+	}
+
+	if obj.Autoscaling.EnableNodeAutoprovisioning && !obj.GetAutopilot().GetEnabled() {
 		if obj.Autoscaling.AutoprovisioningNodePoolDefaults == nil {
 			obj.Autoscaling.AutoprovisioningNodePoolDefaults = &pb.AutoprovisioningNodePoolDefaults{}
 		}
@@ -679,6 +700,18 @@ func (s *ClusterManagerV1) populateClusterDefaults(project *projects.ProjectData
 	}
 	if obj.Autoscaling.AutoprovisioningNodePoolDefaults.ServiceAccount == "" {
 		obj.Autoscaling.AutoprovisioningNodePoolDefaults.ServiceAccount = "default"
+	}
+
+	if obj.GetAutopilot().GetEnabled() {
+		if obj.Autoscaling.AutoprovisioningNodePoolDefaults.UpgradeSettings == nil {
+			obj.Autoscaling.AutoprovisioningNodePoolDefaults.UpgradeSettings = &pb.NodePool_UpgradeSettings{}
+		}
+		if obj.Autoscaling.AutoprovisioningNodePoolDefaults.UpgradeSettings.Strategy == nil {
+			obj.Autoscaling.AutoprovisioningNodePoolDefaults.UpgradeSettings.Strategy = PtrTo(pb.NodePoolUpdateStrategy_SURGE)
+		}
+		if obj.Autoscaling.AutoprovisioningNodePoolDefaults.UpgradeSettings.MaxSurge == 0 {
+			obj.Autoscaling.AutoprovisioningNodePoolDefaults.UpgradeSettings.MaxSurge = 1
+		}
 	}
 
 	// BinaryAuthorization
@@ -788,8 +821,14 @@ func (s *ClusterManagerV1) populateClusterDefaults(project *projects.ProjectData
 	}
 
 	if obj.InstanceGroupUrls == nil {
-		obj.InstanceGroupUrls = []string{
-			fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/zones/%s/instanceGroupManagers/gke-containercluster-abcdef", project.ID, zone),
+		if obj.GetAutopilot().GetEnabled() {
+			obj.InstanceGroupUrls = []string{
+				fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/zones/%s/instanceGroupManagers/gk3-%s-pool-1", project.ID, zone, obj.Name),
+			}
+		} else {
+			obj.InstanceGroupUrls = []string{
+				fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/zones/%s/instanceGroupManagers/gke-containercluster-abcdef", project.ID, zone),
+			}
 		}
 	}
 
@@ -898,6 +937,9 @@ func (s *ClusterManagerV1) populateClusterDefaults(project *projects.ProjectData
 	if obj.MonitoringConfig.AdvancedDatapathObservabilityConfig == nil {
 		obj.MonitoringConfig.AdvancedDatapathObservabilityConfig = &pb.AdvancedDatapathObservabilityConfig{}
 	}
+	if obj.GetAutopilot().GetEnabled() {
+		obj.MonitoringConfig.AdvancedDatapathObservabilityConfig.EnableMetrics = true
+	}
 
 	if obj.MonitoringConfig.ComponentConfig == nil {
 		obj.MonitoringConfig.ComponentConfig = &pb.MonitoringComponentConfig{}
@@ -972,6 +1014,14 @@ func (s *ClusterManagerV1) populateClusterDefaults(project *projects.ProjectData
 		}
 		if nodeConfigDefaults.NodeKubeletConfig.InsecureKubeletReadonlyPortEnabled == nil {
 			nodeConfigDefaults.NodeKubeletConfig.InsecureKubeletReadonlyPortEnabled = PtrTo(false)
+		}
+
+		if obj.GetAutopilot().GetEnabled() {
+			if nodeConfigDefaults.GcfsConfig == nil {
+				nodeConfigDefaults.GcfsConfig = &pb.GcfsConfig{
+					Enabled: true,
+				}
+			}
 		}
 	}
 
@@ -1065,10 +1115,33 @@ func (s *ClusterManagerV1) populateClusterDefaults(project *projects.ProjectData
 		obj.RbacBindingConfig = &pb.RBACBindingConfig{}
 	}
 	if obj.RbacBindingConfig.EnableInsecureBindingSystemAuthenticated == nil {
-		obj.RbacBindingConfig.EnableInsecureBindingSystemAuthenticated = PtrTo(true)
+		if obj.GetAutopilot().GetEnabled() {
+			obj.RbacBindingConfig.EnableInsecureBindingSystemAuthenticated = PtrTo(false)
+		} else {
+			obj.RbacBindingConfig.EnableInsecureBindingSystemAuthenticated = PtrTo(true)
+		}
 	}
 	if obj.RbacBindingConfig.EnableInsecureBindingSystemUnauthenticated == nil {
-		obj.RbacBindingConfig.EnableInsecureBindingSystemUnauthenticated = PtrTo(true)
+		if obj.GetAutopilot().GetEnabled() {
+			obj.RbacBindingConfig.EnableInsecureBindingSystemUnauthenticated = PtrTo(false)
+		} else {
+			obj.RbacBindingConfig.EnableInsecureBindingSystemUnauthenticated = PtrTo(true)
+		}
+	}
+
+	if obj.GetAutopilot().GetEnabled() {
+		if obj.VerticalPodAutoscaling == nil {
+			obj.VerticalPodAutoscaling = &pb.VerticalPodAutoscaling{
+				Enabled: true,
+			}
+		}
+		if obj.WorkloadIdentityConfig == nil {
+			obj.WorkloadIdentityConfig = &pb.WorkloadIdentityConfig{
+				WorkloadPool:      fmt.Sprintf("%s.svc.id.goog", project.ID),
+				IdentityProvider:  fmt.Sprintf("https://container.googleapis.com/v1/projects/%s/locations/%s/clusters/%s", project.ID, obj.Location, obj.Name),
+				IdentityNamespace: fmt.Sprintf("%s.svc.id.goog", project.ID),
+			}
+		}
 	}
 
 	if obj.ReleaseChannel == nil {

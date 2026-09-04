@@ -1232,7 +1232,6 @@
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.dnsConfig.clusterDns" is not set in unstructured objects
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.dnsConfig.clusterDnsDomain" is not set in unstructured objects
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.dnsConfig.clusterDnsScope" is not set in unstructured objects
-[missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.enableAutopilot" is not set in unstructured objects
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.enableBinaryAuthorization" is not set in unstructured objects
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.enableFqdnNetworkPolicy" is not set in unstructured objects
 [missing_field] crd=containerclusters.container.cnrm.cloud.google.com version=v1beta1: field ".spec.enableIntranodeVisibility" is not set in unstructured objects

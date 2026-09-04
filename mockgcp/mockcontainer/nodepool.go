@@ -138,8 +138,14 @@ func (s *ClusterManagerV1) populateNodePoolDefaults(project *projects.ProjectDat
 			return err
 		}
 
-		obj.InstanceGroupUrls = []string{
-			fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/zones/%s/instanceGroupManagers/gke-containercluster-abcdef-%s-grp", project.ID, zone, obj.Name),
+		if cluster.GetAutopilot().GetEnabled() {
+			obj.InstanceGroupUrls = []string{
+				fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/zones/%s/instanceGroupManagers/gk3-%s-%s-grp", project.ID, zone, cluster.Name, obj.Name),
+			}
+		} else {
+			obj.InstanceGroupUrls = []string{
+				fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/zones/%s/instanceGroupManagers/gke-containercluster-abcdef-%s-grp", project.ID, zone, obj.Name),
+			}
 		}
 	}
 
