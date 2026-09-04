@@ -774,7 +774,18 @@ func (a *sqlInstanceAdapter) Update(ctx context.Context, updateOp *directbase.Up
 		log.Info("Cloud SQL instance is in transient state, checking active operations", "name", a.resourceID, "state", a.actual.State)
 		op, isBusy, err := a.checkActiveOperations(ctx)
 		if err != nil {
-			log.Error(err, "error listing operations for instance", "name", a.resourceID)
+			log.Error(err, "error listing operations for instance in transient state", "name", a.resourceID)
+			status, statusErr := SQLInstanceStatusGCPToKRM(a.actual)
+			if statusErr != nil {
+				return fmt.Errorf("converting status: %w", statusErr)
+			}
+			readyCondition := k8s.NewCustomReadyCondition(
+				corev1.ConditionFalse,
+				"FailoverInProgress",
+				fmt.Sprintf("Cloud SQL instance is in %s state, and checking active operations encountered a transient error: %v. Standing by.", a.actual.State, err),
+			)
+			updateOp.RequestRequeue()
+			return updateOp.UpdateStatus(ctx, status, &readyCondition)
 		}
 		if isBusy {
 			opName := "unknown"
@@ -1019,9 +1030,18 @@ func (a *sqlInstanceAdapter) Delete(ctx context.Context, deleteOp *directbase.De
 	// split-brain topologies, orphaned replication targets, or unrecoverable data loss.
 	// We intercept Delete() and return a descriptive terminal error while operations are running.
 	if a.actual != nil && (a.actual.State == "MAINTENANCE" || a.actual.State == "UPDATING") {
-		_, isBusy, _ := a.checkActiveOperations(ctx)
+		op, isBusy, err := a.checkActiveOperations(ctx)
+		if err != nil {
+			return false, fmt.Errorf("cannot delete SQLInstance %s in %s state: checking active operations failed: %w", a.resourceID, a.actual.State, err)
+		}
 		if isBusy {
-			return false, fmt.Errorf("cannot delete SQLInstance %s while failover or maintenance operation is in progress", a.resourceID)
+			opName := "unknown"
+			opType := "MAINTENANCE"
+			if op != nil {
+				opName = op.Name
+				opType = op.OperationType
+			}
+			return false, fmt.Errorf("cannot delete SQLInstance %s while failover or maintenance operation %s (%s) is in progress", a.resourceID, opName, opType)
 		}
 	}
 

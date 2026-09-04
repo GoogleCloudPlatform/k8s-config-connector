@@ -780,6 +780,35 @@ func DiffReplicationCluster(desired *api.ReplicationCluster, actual *api.Replica
 	return diff
 }
 
+// parseInstanceReference parses an instance identifier into (project, instance).
+// Supported formats:
+//   - "my-instance" -> ("", "my-instance")
+//   - "my-project:my-instance" -> ("my-project", "my-instance")
+//   - "projects/my-project/instances/my-instance" -> ("my-project", "my-instance")
+//   - "https://sqladmin.googleapis.com/.../projects/my-project/instances/my-instance" -> ("my-project", "my-instance")
+func parseInstanceReference(ref string) (project string, instance string) {
+	ref = strings.TrimSpace(ref)
+	if ref == "" {
+		return "", ""
+	}
+	// Check for URL or slash-delimited path: projects/{project}/instances/{instance}
+	if idx := strings.Index(ref, "projects/"); idx != -1 {
+		parts := strings.Split(ref[idx:], "/")
+		if len(parts) >= 4 && parts[0] == "projects" && parts[2] == "instances" {
+			return parts[1], parts[3]
+		}
+	}
+	// Check for colon-delimited format: {project}:{instance}
+	if parts := strings.Split(ref, ":"); len(parts) == 2 {
+		return parts[0], parts[1]
+	}
+	// Fall back to short instance name after any slash
+	if idx := strings.LastIndex(ref, "/"); idx != -1 {
+		return "", ref[idx+1:]
+	}
+	return "", ref
+}
+
 func isInstanceNameEqual(a, b string) bool {
 	if a == b {
 		return true
@@ -787,8 +816,16 @@ func isInstanceNameEqual(a, b string) bool {
 	if a == "" || b == "" {
 		return false
 	}
-	return strings.HasSuffix(a, ":"+b) || strings.HasSuffix(b, ":"+a) ||
-		strings.HasSuffix(a, "/"+b) || strings.HasSuffix(b, "/"+a)
+	projA, instA := parseInstanceReference(a)
+	projB, instB := parseInstanceReference(b)
+	if instA != instB {
+		return false
+	}
+	// If both specify a project, they must match
+	if projA != "" && projB != "" && projA != projB {
+		return false
+	}
+	return true
 }
 
 func isEnterpriseDRRoleSwap(desired, actual *api.DatabaseInstance) bool {

@@ -1498,7 +1498,13 @@ func TestIsInstanceNameEqual_Formats(t *testing.T) {
 		{"my-instance", "my-proj:my-instance", true},
 		{"projects/my-proj/instances/my-instance", "my-instance", true},
 		{"my-instance", "projects/my-proj/instances/my-instance", true},
+		{"my-proj:my-instance", "projects/my-proj/instances/my-instance", true},
+		{"projects/my-proj/instances/my-instance", "my-proj:my-instance", true},
+		{"proj-a:my-instance", "projects/proj-b/instances/my-instance", false},
+		{"projects/proj-a/instances/my-instance", "projects/proj-b/instances/my-instance", false},
+		{"proj-a:my-instance", "proj-b:my-instance", false},
 		{"https://sqladmin.googleapis.com/sql/v1beta4/projects/my-proj/instances/my-instance", "my-instance", true},
+		{"https://sqladmin.googleapis.com/sql/v1beta4/projects/my-proj/instances/my-instance", "my-proj:my-instance", true},
 		{"other-instance", "my-instance", false},
 		{"notmy-instance", "my-instance", false},
 		{"", "my-instance", false},
@@ -1565,5 +1571,173 @@ func TestDiffInstances_DR_FullyQualifiedResourceURLs(t *testing.T) {
 	}
 	if diff := DiffInstances(desiredReplica, promotedReplicaActual); diff.HasDiff() {
 		t.Fatalf("expected diff suppression on promoted replica with qualified URLs, got: %v", diff)
+	}
+}
+
+// TestSQLInstanceStatus_CurrentRole_MasterInstancePrecedence ensures that an instance
+// with MasterInstanceName set is never classified as PRIMARY, even if ReplicationCluster.DrReplica
+// is temporarily false.
+func TestSQLInstanceStatus_CurrentRole_MasterInstancePrecedence(t *testing.T) {
+	instWithMaster := &api.DatabaseInstance{
+		Name:               "replica-instance",
+		MasterInstanceName: "primary-instance",
+		ReplicationCluster: &api.ReplicationCluster{
+			DrReplica:        false, // Edge case: drReplica false but has master
+			PsaWriteEndpoint: "dr.sql.goog",
+		},
+	}
+	status, err := SQLInstanceStatusGCPToKRM(instWithMaster)
+	if err != nil {
+		t.Fatalf("unexpected error converting status: %v", err)
+	}
+	if status.CurrentRole == nil || *status.CurrentRole != "DR_REPLICA" {
+		t.Fatalf("expected CurrentRole DR_REPLICA for instance with MasterInstanceName, got: %v", status.CurrentRole)
+	}
+}
+
+// TestSQLInstance_StandbyDuringTransientOperationError ensures that when an instance is in
+// MAINTENANCE or UPDATING state and the sqlOperations.list API returns a transient error,
+// the controller gracefully enters standby (Ready=False, Reason=FailoverInProgress) and requests
+// a requeue instead of issuing colliding mutating updates.
+func TestSQLInstance_StandbyDuringTransientOperationError(t *testing.T) {
+	ctx := context.Background()
+
+	mutatingCallInvoked := false
+	transport := &mockTransport{
+		roundTripFunc: func(req *http.Request) (*http.Response, error) {
+			if req.Method == "PUT" || req.Method == "PATCH" || req.Method == "POST" {
+				if req.URL.Path != "/sql/v1beta4/projects/test-project/operations" {
+					mutatingCallInvoked = true
+				}
+			}
+			// Mock GET operations list failing with transient HTTP 500 error
+			if req.Method == "GET" && req.URL.Path == "/sql/v1beta4/projects/test-project/operations" {
+				return &http.Response{
+					StatusCode: 500,
+					Header:     make(http.Header),
+					Body:       io.NopCloser(bytes.NewReader([]byte(`{"error":{"code":500,"message":"Internal backend error"}}`))),
+				}, nil
+			}
+			return &http.Response{
+				StatusCode: 200,
+				Header:     make(http.Header),
+				Body:       io.NopCloser(bytes.NewReader([]byte(`{}`))),
+			}, nil
+		},
+	}
+
+	httpClient := &http.Client{Transport: transport}
+	sqlClient, err := api.NewService(ctx, option.WithHTTPClient(httpClient))
+	if err != nil {
+		t.Fatalf("failed creating sql service: %v", err)
+	}
+
+	u := &unstructured.Unstructured{
+		Object: map[string]interface{}{
+			"apiVersion": "sql.cnrm.cloud.google.com/v1beta1",
+			"kind":       "SQLInstance",
+			"metadata": map[string]interface{}{
+				"name": "transient-instance",
+			},
+		},
+	}
+
+	adapter := &sqlInstanceAdapter{
+		resourceID:          "transient-instance",
+		projectID:           "test-project",
+		sqlInstancesClient:  api.NewInstancesService(sqlClient),
+		sqlOperationsClient: api.NewOperationsService(sqlClient),
+		desired:             &krm.SQLInstance{},
+		actual: &api.DatabaseInstance{
+			Name:  "transient-instance",
+			State: "MAINTENANCE", // In transient state
+			Settings: &api.Settings{
+				Tier: "db-perf-optimized-N-2",
+			},
+		},
+		fieldMeta: make(map[string]*FieldMetadata),
+	}
+
+	updateOp := newTestUpdateOp(u)
+	err = adapter.Update(ctx, updateOp)
+	if err != nil {
+		t.Fatalf("expected nil error on graceful standby during transient error, got: %v", err)
+	}
+
+	if mutatingCallInvoked {
+		t.Fatalf("mutating API call was invoked during transient error in MAINTENANCE state!")
+	}
+
+	conditions, found, err := unstructured.NestedSlice(u.Object, "status", "conditions")
+	if err != nil || !found || len(conditions) == 0 {
+		t.Fatalf("expected conditions to be populated on unstructured, got: %v", conditions)
+	}
+	condMap := conditions[0].(map[string]any)
+	if condMap["reason"] != "FailoverInProgress" {
+		t.Fatalf("expected reason 'FailoverInProgress', got: %v", condMap["reason"])
+	}
+	if condMap["status"] != string(corev1.ConditionFalse) {
+		t.Fatalf("expected status 'False', got: %v", condMap["status"])
+	}
+}
+
+// TestSQLInstance_DeletionBlocked_TransientOperationError verifies that if checkActiveOperations
+// returns an error while an instance is in MAINTENANCE or UPDATING state, Delete() aborts
+// with an error to safeguard the resource from destructive termination.
+func TestSQLInstance_DeletionBlocked_TransientOperationError(t *testing.T) {
+	ctx := context.Background()
+
+	deletionInvoked := false
+	transport := &mockTransport{
+		roundTripFunc: func(req *http.Request) (*http.Response, error) {
+			if req.Method == "DELETE" {
+				deletionInvoked = true
+			}
+			// Mock GET operations list failing with HTTP 500 error
+			if req.Method == "GET" && req.URL.Path == "/sql/v1beta4/projects/test-project/operations" {
+				return &http.Response{
+					StatusCode: 500,
+					Header:     make(http.Header),
+					Body:       io.NopCloser(bytes.NewReader([]byte(`{"error":{"code":500,"message":"Transient error"}}`))),
+				}, nil
+			}
+			return &http.Response{
+				StatusCode: 200,
+				Header:     make(http.Header),
+				Body:       io.NopCloser(bytes.NewReader([]byte(`{}`))),
+			}, nil
+		},
+	}
+
+	httpClient := &http.Client{Transport: transport}
+	sqlClient, err := api.NewService(ctx, option.WithHTTPClient(httpClient))
+	if err != nil {
+		t.Fatalf("failed creating sql service: %v", err)
+	}
+
+	adapter := &sqlInstanceAdapter{
+		resourceID:          "deleting-instance",
+		projectID:           "test-project",
+		sqlInstancesClient:  api.NewInstancesService(sqlClient),
+		sqlOperationsClient: api.NewOperationsService(sqlClient),
+		actual: &api.DatabaseInstance{
+			Name:  "deleting-instance",
+			State: "MAINTENANCE",
+		},
+	}
+
+	u := &unstructured.Unstructured{}
+	c := fake.NewClientBuilder().Build()
+	deleteOp := directbase.NewDeleteOperation(c, u)
+
+	deleted, err := adapter.Delete(ctx, deleteOp)
+	if err == nil {
+		t.Fatalf("expected error blocking deletion during transient checkActiveOperations error, got nil")
+	}
+	if deleted {
+		t.Fatalf("expected deleted=false when operation check fails during MAINTENANCE, got true")
+	}
+	if deletionInvoked {
+		t.Fatalf("DELETE API call was invoked despite operation check failure during MAINTENANCE!")
 	}
 }
