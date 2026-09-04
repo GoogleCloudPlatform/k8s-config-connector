@@ -788,6 +788,10 @@ spec:
                 description: The connection name of the instance to be used in connection
                   strings. For example, when connecting with Cloud SQL Proxy.
                 type: string
+              currentRole:
+                description: 'The current active role of the instance in an Enterprise
+                  DR cluster: ''PRIMARY'' or ''DR_REPLICA''.'
+                type: string
               dnsName:
                 description: The dns name of the instance.
                 type: string

@@ -1111,22 +1111,8 @@ func (s *sqlInstancesService) Switchover(ctx context.Context, req *pb.SqlInstanc
 		oldMaster.MasterInstanceName = name.Project.ID + ":" + name.InstanceName
 
 		// Swap ReplicationCluster
-		drTrue := true
-		var psaPtr *string
-		if obj.ReplicationCluster != nil && obj.ReplicationCluster.PsaWriteEndpoint != nil {
-			psaPtr = obj.ReplicationCluster.PsaWriteEndpoint
-		} else if oldMaster.ReplicationCluster != nil && oldMaster.ReplicationCluster.PsaWriteEndpoint != nil {
-			psaPtr = oldMaster.ReplicationCluster.PsaWriteEndpoint
-		}
-
-		oldMaster.ReplicationCluster = &pb.ReplicationCluster{
-			DrReplica:        &drTrue,
-			PsaWriteEndpoint: psaPtr,
-		}
-		obj.ReplicationCluster = &pb.ReplicationCluster{
-			FailoverDrReplicaName: &oldMasterName.InstanceName,
-			PsaWriteEndpoint:      psaPtr,
-		}
+		obj.ReplicationCluster = oldMaster.ReplicationCluster
+		oldMaster.ReplicationCluster = nil
 
 		// Set replica names
 		replicaName := oldMasterName.InstanceName
