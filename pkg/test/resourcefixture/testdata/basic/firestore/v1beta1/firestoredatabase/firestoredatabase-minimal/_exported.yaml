@@ -9,3 +9,4 @@ spec:
   pointInTimeRecoveryEnablement: POINT_IN_TIME_RECOVERY_DISABLED
   projectRef:
     external: projects/${projectId}
+  type: FIRESTORE_NATIVE
