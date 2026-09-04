@@ -412,6 +412,14 @@ func (s *ClusterManagerV1) UpdateCluster(ctx context.Context, req *pb.UpdateClus
 		update.DesiredDatabaseEncryption = nil
 	}
 
+	if update.DesiredPrivilegedAdmissionConfig != nil {
+		if obj.Autopilot == nil {
+			obj.Autopilot = &pb.Autopilot{}
+		}
+		obj.Autopilot.PrivilegedAdmissionConfig = update.DesiredPrivilegedAdmissionConfig
+		update.DesiredPrivilegedAdmissionConfig = nil
+	}
+
 	if !proto.Equal(update, &pb.ClusterUpdate{}) {
 
 		return nil, status.Errorf(codes.InvalidArgument, "update was not fully implemented ClusterUpdate=%v", prototext.Format(update))
@@ -637,13 +645,38 @@ func (s *ClusterManagerV1) populateClusterDefaults(project *projects.ProjectData
 	if obj.Autoscaling.AutoscalingProfile == pb.ClusterAutoscaling_PROFILE_UNSPECIFIED {
 		obj.Autoscaling.AutoscalingProfile = pb.ClusterAutoscaling_BALANCED
 	}
+	if obj.GetAutopilot().GetEnabled() {
+		obj.Autoscaling.EnableNodeAutoprovisioning = true
+		obj.Autoscaling.AutoscalingProfile = pb.ClusterAutoscaling_OPTIMIZE_UTILIZATION
+		if len(obj.Autoscaling.ResourceLimits) == 0 {
+			obj.Autoscaling.ResourceLimits = []*pb.ResourceLimit{
+				{ResourceType: "cpu", Maximum: 1000000000},
+				{ResourceType: "memory", Maximum: 1000000000},
+				{ResourceType: "nvidia-tesla-t4", Maximum: 1000000000},
+				{ResourceType: "nvidia-tesla-a100", Maximum: 1000000000},
+			}
+		}
+	}
 	if obj.Autoscaling.EnableNodeAutoprovisioning {
 		if obj.Autoscaling.AutoprovisioningNodePoolDefaults == nil {
 			obj.Autoscaling.AutoprovisioningNodePoolDefaults = &pb.AutoprovisioningNodePoolDefaults{}
 		}
 
+		if obj.NodeConfig != nil && len(obj.NodeConfig.OauthScopes) > 0 && len(obj.Autoscaling.AutoprovisioningNodePoolDefaults.OauthScopes) == 0 {
+			obj.Autoscaling.AutoprovisioningNodePoolDefaults.OauthScopes = append([]string{}, obj.NodeConfig.OauthScopes...)
+		}
+
 		if err := s.populateAutoprovisioningNodePoolDefaults(obj.Autoscaling.AutoprovisioningNodePoolDefaults); err != nil {
 			return err
+		}
+
+		if obj.GetAutopilot().GetEnabled() {
+			if obj.Autoscaling.AutoprovisioningNodePoolDefaults.UpgradeSettings == nil {
+				obj.Autoscaling.AutoprovisioningNodePoolDefaults.UpgradeSettings = &pb.NodePool_UpgradeSettings{}
+			}
+			if obj.Autoscaling.AutoprovisioningNodePoolDefaults.UpgradeSettings.MaxSurge == 0 {
+				obj.Autoscaling.AutoprovisioningNodePoolDefaults.UpgradeSettings.MaxSurge = 1
+			}
 		}
 	}
 

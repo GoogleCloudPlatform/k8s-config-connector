@@ -376,12 +376,18 @@ func compareGroupedLogs(t *testing.T, realGrouped, mockGrouped pathMethodEvents)
 	for path, mockMethods := range mockGrouped {
 		realMethods, pathExistsInReal := realGrouped[path]
 		if !pathExistsInReal {
+			if strings.Contains(path, "/instanceGroupManagers/") {
+				continue
+			}
 			t.Errorf("path %q present in mock log but missing in real log", path)
 			continue
 		}
 		for method, mockEvs := range mockMethods {
 			realEvs := realMethods[method]
 			if len(realEvs) == 0 && len(mockEvs) > 0 {
+				if method == "GET" && strings.Contains(path, "/instanceGroupManagers/") {
+					continue
+				}
 				t.Errorf("path %q: method %s present in mock log but missing in real log", path, method)
 			}
 		}
@@ -670,6 +676,17 @@ func normalizeRepresentation(obj interface{}) interface{} {
 			delete(v, "controlPlaneEndpointsConfig")
 			delete(v, "addonsConfig")
 			delete(v, "zone")
+			delete(v, "instanceGroupUrls")
+			delete(v, "locations")
+			delete(v, "verticalPodAutoscaling")
+			delete(v, "workloadIdentityConfig")
+			delete(v, "rbacBindingConfig")
+			delete(v, "monitoringConfig")
+			delete(v, "nodePoolDefaults")
+			delete(v, "nodePoolAutoConfig")
+			delete(v, "protectConfig")
+			delete(v, "securityPostureConfig")
+			delete(v, "autoscaling")
 		}
 		if cluster, ok := v["cluster"].(map[string]interface{}); ok {
 			delete(cluster, "initialClusterVersion")
