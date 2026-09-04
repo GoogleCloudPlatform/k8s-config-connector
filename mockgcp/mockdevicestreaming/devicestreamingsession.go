@@ -16,7 +16,9 @@ package mockdevicestreaming
 
 import (
 	"context"
+	"math/rand"
 	"strings"
+	"time"
 
 	pb "cloud.google.com/go/devicestreaming/apiv1/devicestreamingpb"
 	"google.golang.org/grpc/codes"
@@ -34,11 +36,20 @@ type DirectAccessV1 struct {
 	pb.UnimplementedDirectAccessServiceServer
 }
 
+func randomSessionID() string {
+	letterRunes := []rune("abcdefghijklmnopqrstuvwxyz0123456789")
+	b := make([]rune, 13)
+	for i := range b {
+		b[i] = letterRunes[rand.Intn(len(letterRunes))]
+	}
+	return "session-" + string(b)
+}
+
 // Creates a new DeviceSession.
 func (s *DirectAccessV1) CreateDeviceSession(ctx context.Context, req *pb.CreateDeviceSessionRequest) (*pb.DeviceSession, error) {
 	sessionID := req.DeviceSessionId
 	if sessionID == "" {
-		return nil, status.Errorf(codes.InvalidArgument, "device_session_id is required")
+		sessionID = randomSessionID()
 	}
 
 	reqSessionName := req.Parent + "/deviceSessions/" + sessionID
@@ -54,6 +65,14 @@ func (s *DirectAccessV1) CreateDeviceSession(ctx context.Context, req *pb.Create
 	obj.Name = fqn
 	obj.CreateTime = timestamppb.Now()
 	obj.State = pb.DeviceSession_ACTIVE // Always ACTIVE in mock
+
+	if obj.GetTtl() != nil {
+		ttl := obj.GetTtl().AsDuration()
+		expireTime := obj.CreateTime.AsTime().Add(ttl)
+		obj.Expiration = &pb.DeviceSession_ExpireTime{
+			ExpireTime: timestamppb.New(expireTime),
+		}
+	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
 		return nil, err
@@ -103,10 +122,24 @@ func (s *DirectAccessV1) UpdateDeviceSession(ctx context.Context, req *pb.Update
 	}
 	for _, path := range paths {
 		switch path {
-		case "ttl":
+		case "ttl", "expire_time", "expireTime":
 			updated.Expiration = req.DeviceSession.Expiration
 		default:
 			return nil, status.Errorf(codes.InvalidArgument, "update_mask path %q not valid", path)
+		}
+	}
+
+	if updated.GetTtl() != nil {
+		ttl := updated.GetTtl().AsDuration()
+		var createTime time.Time
+		if updated.CreateTime != nil {
+			createTime = updated.CreateTime.AsTime()
+		} else {
+			createTime = timestamppb.Now().AsTime()
+		}
+		expireTime := createTime.Add(ttl)
+		updated.Expiration = &pb.DeviceSession_ExpireTime{
+			ExpireTime: timestamppb.New(expireTime),
 		}
 	}
 

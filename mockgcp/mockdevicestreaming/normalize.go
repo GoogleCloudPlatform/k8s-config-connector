@@ -15,6 +15,7 @@
 package mockdevicestreaming
 
 import (
+	"regexp"
 	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
@@ -23,6 +24,9 @@ import (
 var _ mockgcpregistry.SupportsNormalization = &MockService{}
 
 func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.NormalizingVisitor) {
+	replacements.ReplacePath(".createTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".expireTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".activeStartTime", mockgcpregistry.PlaceholderTimestamp)
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
@@ -30,4 +34,12 @@ func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcp
 	if !strings.Contains(event.URL(), "devicestreaming.googleapis.com") {
 		return
 	}
+
+	// Capture any session ID pattern "session-[a-z0-9]{13}" and replace it with "session-${uniqueId}"
+	sessionIDRegex := regexp.MustCompile(`session-[a-z0-9]{13}`)
+	event.VisitResponseStringValues(func(path string, value string) {
+		for _, match := range sessionIDRegex.FindAllString(value, -1) {
+			replacements.ReplaceStringValue(match, "session-${uniqueId}")
+		}
+	})
 }

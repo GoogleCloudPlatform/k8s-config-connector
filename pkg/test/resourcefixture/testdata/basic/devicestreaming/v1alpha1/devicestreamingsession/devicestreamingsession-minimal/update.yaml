@@ -1,11 +1,11 @@
 apiVersion: devicestreaming.cnrm.cloud.google.com/v1alpha1
 kind: DeviceStreamingSession
 metadata:
-  name: session-max-${uniqueId}
+  name: session-min-${uniqueId}
 spec:
   projectRef:
     external: ${projectId}
-  ttl: 1800s
+  ttl: 1200s
   androidDevice:
     androidModelID: "shiba"
     androidVersionID: "34"
