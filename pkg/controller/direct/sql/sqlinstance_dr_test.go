@@ -678,3 +678,186 @@ func TestSQLInstance_BidirectionalSwitchoverLifecycle(t *testing.T) {
 		t.Fatalf("expected Ready=True, Reason=FailoverAcknowledged after failback, got %v / %v", cond2["status"], cond2["reason"])
 	}
 }
+
+// TestDiffInstances_DR_ThreeTierTopology_SingleZone_CrossZone_CrossRegion validates a complete
+// real-world production topology consisting of:
+// 1. Primary Instance (us-central1, Regional HA across zones)
+// 2. In-Region Single-Zone Read Replica (us-central1-a, Zonal)
+// 3. Cross-Region DR Replica (us-east1, Regional HA across zones)
+func TestDiffInstances_DR_ThreeTierTopology_SingleZone_CrossZone_CrossRegion(t *testing.T) {
+	// Instance 1: Regional Primary in us-central1 (across zones)
+	primaryDesired := &api.DatabaseInstance{
+		Name:            "pg-dr-primary",
+		Region:          "us-central1",
+		DatabaseVersion: "POSTGRES_16",
+		Settings: &api.Settings{
+			Tier:             "db-perf-optimized-N-2",
+			AvailabilityType: "REGIONAL",
+		},
+		ReplicationCluster: &api.ReplicationCluster{
+			FailoverDrReplicaName: "pg-dr-replica",
+		},
+	}
+	primaryActual := &api.DatabaseInstance{
+		Name:            "pg-dr-primary",
+		Region:          "us-central1",
+		DatabaseVersion: "POSTGRES_16",
+		Settings: &api.Settings{
+			Tier:             "db-perf-optimized-N-2",
+			AvailabilityType: "REGIONAL",
+		},
+		ReplicationCluster: &api.ReplicationCluster{
+			FailoverDrReplicaName: "pg-dr-replica",
+			PsaWriteEndpoint:      "psa-endpoint.sql.goog",
+		},
+	}
+
+	// Instance 2: Single-Zone Read Replica in us-central1-a (single zone)
+	zonalReplicaDesired := &api.DatabaseInstance{
+		Name:               "pg-inregion-replica",
+		Region:             "us-central1",
+		GceZone:            "us-central1-a",
+		MasterInstanceName: "pg-dr-primary",
+		InstanceType:       "READ_REPLICA_INSTANCE",
+		DatabaseVersion:    "POSTGRES_16",
+		Settings: &api.Settings{
+			Tier:             "db-perf-optimized-N-2",
+			AvailabilityType: "ZONAL",
+		},
+	}
+	zonalReplicaActual := &api.DatabaseInstance{
+		Name:               "pg-inregion-replica",
+		Region:             "us-central1",
+		GceZone:            "us-central1-a",
+		MasterInstanceName: "pg-dr-primary",
+		InstanceType:       "READ_REPLICA_INSTANCE",
+		DatabaseVersion:    "POSTGRES_16",
+		Settings: &api.Settings{
+			Tier:             "db-perf-optimized-N-2",
+			AvailabilityType: "ZONAL",
+		},
+	}
+
+	// Instance 3: Cross-Region DR Replica in us-east1 (Regional HA across zones)
+	drReplicaDesired := &api.DatabaseInstance{
+		Name:               "pg-dr-replica",
+		Region:             "us-east1",
+		MasterInstanceName: "pg-dr-primary",
+		InstanceType:       "READ_REPLICA_INSTANCE",
+		DatabaseVersion:    "POSTGRES_16",
+		Settings: &api.Settings{
+			Tier:             "db-perf-optimized-N-2",
+			AvailabilityType: "REGIONAL",
+		},
+	}
+	drReplicaActual := &api.DatabaseInstance{
+		Name:               "pg-dr-replica",
+		Region:             "us-east1",
+		MasterInstanceName: "pg-dr-primary",
+		InstanceType:       "READ_REPLICA_INSTANCE",
+		DatabaseVersion:    "POSTGRES_16",
+		Settings: &api.Settings{
+			Tier:             "db-perf-optimized-N-2",
+			AvailabilityType: "REGIONAL",
+		},
+		ReplicationCluster: &api.ReplicationCluster{
+			DrReplica:        true,
+			PsaWriteEndpoint: "psa-endpoint.sql.goog",
+		},
+	}
+
+	// 1. Initial State: Diff checks
+	if diff := DiffInstances(primaryDesired, primaryActual); diff.HasDiff() {
+		t.Fatalf("primary should have no diff, got: %v", diff)
+	}
+	if diff := DiffInstances(zonalReplicaDesired, zonalReplicaActual); diff.HasDiff() {
+		t.Fatalf("zonal replica should have no diff, got: %v", diff)
+	}
+	if diff := DiffInstances(drReplicaDesired, drReplicaActual); diff.HasDiff() {
+		t.Fatalf("dr replica should have no diff, got: %v", diff)
+	}
+
+	// 2. Initial State: Role mappings
+	primStatus, err := SQLInstanceStatusGCPToKRM(primaryActual)
+	if err != nil || primStatus.CurrentRole == nil || *primStatus.CurrentRole != "PRIMARY" {
+		t.Fatalf("expected PRIMARY role on primary, got: %v", primStatus.CurrentRole)
+	}
+
+	zonalStatus, err := SQLInstanceStatusGCPToKRM(zonalReplicaActual)
+	if err != nil || zonalStatus.CurrentRole != nil {
+		t.Fatalf("expected nil CurrentRole on regular zonal replica, got: %v", zonalStatus.CurrentRole)
+	}
+
+	drStatus, err := SQLInstanceStatusGCPToKRM(drReplicaActual)
+	if err != nil || drStatus.CurrentRole == nil || *drStatus.CurrentRole != "DR_REPLICA" {
+		t.Fatalf("expected DR_REPLICA role on DR replica, got: %v", drStatus.CurrentRole)
+	}
+
+	// 3. Verify that the zonal replica retains strict diff detection on MasterInstanceName
+	mutatedZonalDesired := &api.DatabaseInstance{
+		Name:               "pg-inregion-replica",
+		Region:             "us-central1",
+		GceZone:            "us-central1-a",
+		MasterInstanceName: "other-primary", // Intentionally mismatched
+		InstanceType:       "READ_REPLICA_INSTANCE",
+		DatabaseVersion:    "POSTGRES_16",
+		Settings: &api.Settings{
+			Tier:             "db-perf-optimized-N-2",
+			AvailabilityType: "ZONAL",
+		},
+	}
+	if diff := DiffInstances(mutatedZonalDesired, zonalReplicaActual); !diff.HasDiff() {
+		t.Fatalf("expected diff on regular zonal replica when master differs, but got none (diff suppression must not leak)")
+	}
+
+	// 4. Planned Cross-Region Switchover: Primary <-> DR Replica Swap
+	postSwitchoverPrimaryActual := &api.DatabaseInstance{
+		Name:               "pg-dr-primary",
+		Region:             "us-central1",
+		DatabaseVersion:    "POSTGRES_16",
+		MasterInstanceName: "pg-dr-replica",
+		InstanceType:       "READ_REPLICA_INSTANCE",
+		Settings: &api.Settings{
+			Tier:             "db-perf-optimized-N-2",
+			AvailabilityType: "REGIONAL",
+		},
+		ReplicationCluster: &api.ReplicationCluster{
+			DrReplica:        true,
+			PsaWriteEndpoint: "psa-endpoint.sql.goog",
+		},
+	}
+
+	postSwitchoverDRActual := &api.DatabaseInstance{
+		Name:            "pg-dr-replica",
+		Region:          "us-east1",
+		DatabaseVersion: "POSTGRES_16",
+		Settings: &api.Settings{
+			Tier:             "db-perf-optimized-N-2",
+			AvailabilityType: "REGIONAL",
+		},
+		ReplicationCluster: &api.ReplicationCluster{
+			FailoverDrReplicaName: "pg-dr-primary",
+			PsaWriteEndpoint:      "psa-endpoint.sql.goog",
+		},
+	}
+
+	// Diff suppression should be active on both DR instances post-switchover
+	if diff := DiffInstances(primaryDesired, postSwitchoverPrimaryActual); diff.HasDiff() {
+		t.Fatalf("expected diff suppression on demoted primary post-switchover, got: %v", diff)
+	}
+	if diff := DiffInstances(drReplicaDesired, postSwitchoverDRActual); diff.HasDiff() {
+		t.Fatalf("expected diff suppression on promoted replica post-switchover, got: %v", diff)
+	}
+
+	// Role inversion
+	newPrimStatus, err := SQLInstanceStatusGCPToKRM(postSwitchoverDRActual)
+	if err != nil || newPrimStatus.CurrentRole == nil || *newPrimStatus.CurrentRole != "PRIMARY" {
+		t.Fatalf("expected PRIMARY role on promoted DR replica, got: %v", newPrimStatus.CurrentRole)
+	}
+
+	newDemotedStatus, err := SQLInstanceStatusGCPToKRM(postSwitchoverPrimaryActual)
+	if err != nil || newDemotedStatus.CurrentRole == nil || *newDemotedStatus.CurrentRole != "DR_REPLICA" {
+		t.Fatalf("expected DR_REPLICA role on demoted primary, got: %v", newDemotedStatus.CurrentRole)
+	}
+}
+
