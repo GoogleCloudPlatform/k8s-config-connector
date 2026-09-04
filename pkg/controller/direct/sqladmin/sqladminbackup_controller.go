@@ -22,8 +22,8 @@ import (
 	"strings"
 	"time"
 
+	sqladmin "cloud.google.com/go/sql/apiv1"
 	pb "cloud.google.com/go/sql/apiv1/sqlpb"
-	apiscommon "github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/sqladmin/v1alpha1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/config"
@@ -35,7 +35,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	gax "github.com/googleapis/gax-go/v2"
 	"google.golang.org/api/googleapi"
-	api "google.golang.org/api/sqladmin/v1beta4"
 	"google.golang.org/protobuf/proto"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -68,8 +67,8 @@ type sqlAdminBackupAdapter struct {
 	desired *pb.BackupRun
 	actual  *pb.BackupRun
 
-	sqlBackupRunsClient *api.BackupRunsService
-	sqlOperationsClient *api.OperationsService
+	sqlBackupRunsClient *sqladmin.SqlBackupRunsClient
+	sqlOperationsClient *sqladmin.SqlOperationsClient
 }
 
 var _ directbase.Adapter = &sqlAdminBackupAdapter{}
@@ -105,9 +104,13 @@ func (m *sqlAdminBackupModel) AdapterForObject(ctx context.Context, op *directba
 	if err != nil {
 		return nil, err
 	}
-	service, err := api.NewService(ctx, opts...)
+	sqlBackupRunsClient, err := sqladmin.NewSqlBackupRunsRESTClient(ctx, opts...)
 	if err != nil {
-		return nil, fmt.Errorf("building sqladmin service client: %w", err)
+		return nil, fmt.Errorf("building sql backup runs client: %w", err)
+	}
+	sqlOperationsClient, err := sqladmin.NewSqlOperationsRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building sql operations client: %w", err)
 	}
 
 	mapCtx := &direct.MapContext{}
@@ -116,25 +119,30 @@ func (m *sqlAdminBackupModel) AdapterForObject(ctx context.Context, op *directba
 		return nil, mapCtx.Err()
 	}
 
+	resolvedIdentity, err := obj.GetIdentity(ctx, kube)
+	if err != nil {
+		return nil, err
+	}
+	identity, ok := resolvedIdentity.(*krm.SQLAdminBackupIdentity)
+	if !ok {
+		return nil, fmt.Errorf("unexpected identity type: %T", resolvedIdentity)
+	}
+
+	var backupID int64
+	if identity.Backup != "" {
+		backupID, err = strconv.ParseInt(identity.Backup, 10, 64)
+		if err != nil {
+			return nil, fmt.Errorf("parsing backup ID %q as int64: %w", identity.Backup, err)
+		}
+	}
+
 	adapter := &sqlAdminBackupAdapter{
 		projectID:           projectID,
 		instanceID:          instanceID,
+		backupID:            backupID,
 		desired:             desiredProto,
-		sqlBackupRunsClient: api.NewBackupRunsService(service),
-		sqlOperationsClient: api.NewOperationsService(service),
-	}
-
-	externalRef := apiscommon.ValueOf(obj.Status.ExternalRef)
-	if externalRef != "" {
-		id := &krm.SQLAdminBackupIdentity{}
-		if err := id.FromExternal(externalRef); err != nil {
-			return nil, err
-		}
-		backupID, err := strconv.ParseInt(id.Backup, 10, 64)
-		if err != nil {
-			return nil, fmt.Errorf("parsing backup ID %q as int64: %w", id.Backup, err)
-		}
-		adapter.backupID = backupID
+		sqlBackupRunsClient: sqlBackupRunsClient,
+		sqlOperationsClient: sqlOperationsClient,
 	}
 
 	return adapter, nil
@@ -145,7 +153,12 @@ func (a *sqlAdminBackupAdapter) Find(ctx context.Context) (bool, error) {
 		return false, nil
 	}
 
-	actual, err := a.sqlBackupRunsClient.Get(a.projectID, a.instanceID, a.backupID).Do()
+	req := &pb.SqlBackupRunsGetRequest{
+		Project:  a.projectID,
+		Instance: a.instanceID,
+		Id:       a.backupID,
+	}
+	actual, err := a.sqlBackupRunsClient.Get(ctx, req)
 	if err != nil {
 		if isNotFound(err) {
 			return false, nil
@@ -153,12 +166,7 @@ func (a *sqlAdminBackupAdapter) Find(ctx context.Context) (bool, error) {
 		return false, fmt.Errorf("getting backup run %d: %w", a.backupID, err)
 	}
 
-	actualProto, err := toProto(actual)
-	if err != nil {
-		return false, err
-	}
-
-	a.actual = actualProto
+	a.actual = actual
 	return true, nil
 }
 
@@ -166,12 +174,13 @@ func (a *sqlAdminBackupAdapter) Create(ctx context.Context, op *directbase.Creat
 	log := klog.FromContext(ctx)
 	log.V(2).Info("creating backup run", "project", a.projectID, "instance", a.instanceID)
 
-	desiredAPI, err := toAPI(a.desired)
-	if err != nil {
-		return err
+	req := &pb.SqlBackupRunsInsertRequest{
+		Project:  a.projectID,
+		Instance: a.instanceID,
+		Body:     a.desired,
 	}
 
-	insertOp, err := a.sqlBackupRunsClient.Insert(a.projectID, a.instanceID, desiredAPI).Do()
+	insertOp, err := a.sqlBackupRunsClient.Insert(ctx, req)
 	if err != nil {
 		return fmt.Errorf("inserting backup run: %w", err)
 	}
@@ -191,16 +200,17 @@ func (a *sqlAdminBackupAdapter) Create(ctx context.Context, op *directbase.Creat
 	a.backupID = backupID
 	backupIDStr := strconv.FormatInt(backupID, 10)
 
-	actual, err := a.sqlBackupRunsClient.Get(a.projectID, a.instanceID, a.backupID).Do()
+	getReq := &pb.SqlBackupRunsGetRequest{
+		Project:  a.projectID,
+		Instance: a.instanceID,
+		Id:       a.backupID,
+	}
+	actual, err := a.sqlBackupRunsClient.Get(ctx, getReq)
 	if err != nil {
 		return fmt.Errorf("getting created backup run %d: %w", a.backupID, err)
 	}
 
-	actualProto, err := toProto(actual)
-	if err != nil {
-		return err
-	}
-	a.actual = actualProto
+	a.actual = actual
 
 	identity := &krm.SQLAdminBackupIdentity{
 		Project: a.projectID,
@@ -208,7 +218,7 @@ func (a *sqlAdminBackupAdapter) Create(ctx context.Context, op *directbase.Creat
 	}
 	externalRef := identity.String()
 
-	return a.updateStatus(ctx, op, externalRef, actualProto)
+	return a.updateStatus(ctx, op, externalRef, actual)
 }
 
 func (a *sqlAdminBackupAdapter) Update(ctx context.Context, op *directbase.UpdateOperation) error {
@@ -239,7 +249,12 @@ func (a *sqlAdminBackupAdapter) Delete(ctx context.Context, op *directbase.Delet
 		return true, nil
 	}
 
-	deleteOp, err := a.sqlBackupRunsClient.Delete(a.projectID, a.instanceID, a.backupID).Do()
+	req := &pb.SqlBackupRunsDeleteRequest{
+		Project:  a.projectID,
+		Instance: a.instanceID,
+		Id:       a.backupID,
+	}
+	deleteOp, err := a.sqlBackupRunsClient.Delete(ctx, req)
 	if err != nil {
 		if isNotFound(err) {
 			return true, nil
@@ -293,7 +308,7 @@ func (a *sqlAdminBackupAdapter) Export(ctx context.Context) (*unstructured.Unstr
 	return u, nil
 }
 
-func (a *sqlAdminBackupAdapter) pollForLROCompletion(ctx context.Context, op *api.Operation, verb string) (*api.Operation, error) {
+func (a *sqlAdminBackupAdapter) pollForLROCompletion(ctx context.Context, op *pb.Operation, verb string) (*pb.Operation, error) {
 	log := klog.FromContext(ctx)
 	var err error
 
@@ -309,14 +324,18 @@ func (a *sqlAdminBackupAdapter) pollForLROCompletion(ctx context.Context, op *ap
 			return nil, fmt.Errorf("operation is nil while polling for SQLAdminBackup %d %s", a.backupID, verb)
 		}
 
-		if op.Status == "DONE" {
+		if op.Status == pb.Operation_DONE {
 			break
 		}
 		if err := gax.Sleep(ctx, pollingBackoff.Pause()); err != nil {
 			return nil, fmt.Errorf("waiting for SQLAdminBackup %d %s failed: %w", a.backupID, verb, err)
 		}
 		opName := op.Name
-		op, err = a.sqlOperationsClient.Get(a.projectID, opName).Do()
+		req := &pb.SqlOperationsGetRequest{
+			Project:   a.projectID,
+			Operation: opName,
+		}
+		op, err = a.sqlOperationsClient.Get(ctx, req)
 		if err != nil {
 			return nil, fmt.Errorf("getting SQLAdminBackup %d %s operation %s failed: %w", a.backupID, verb, opName, err)
 		}
@@ -349,28 +368,6 @@ func (a *sqlAdminBackupAdapter) updateStatus(ctx context.Context, op directbase.
 		ExternalRef:   &externalRef,
 	}
 	return op.UpdateStatus(ctx, status, nil)
-}
-
-func toProto(in *api.BackupRun) (*pb.BackupRun, error) {
-	if in == nil {
-		return nil, nil
-	}
-	out := &pb.BackupRun{}
-	if err := common.APIToProto(in, out); err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func toAPI(in *pb.BackupRun) (*api.BackupRun, error) {
-	if in == nil {
-		return nil, nil
-	}
-	out := &api.BackupRun{}
-	if err := common.ProtoToAPI(in, out); err != nil {
-		return nil, err
-	}
-	return out, nil
 }
 
 func compareResource(ctx context.Context, actual, desired *pb.BackupRun) (*structuredreporting.Diff, error) {

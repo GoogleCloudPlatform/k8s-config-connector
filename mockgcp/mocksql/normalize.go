@@ -16,6 +16,7 @@ package mocksql
 
 import (
 	"net/url"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/mockgcpregistry"
 	"k8s.io/klog/v2"
@@ -31,6 +32,19 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
 	if !isSQLAPI(event) {
 		return
+	}
+
+	u, err := url.Parse(event.URL())
+	if err == nil {
+		parts := strings.Split(u.Path, "/")
+		for i, part := range parts {
+			if part == "backupRuns" && i+1 < len(parts) {
+				backupID := parts[i+1]
+				if backupID != "" {
+					replacements.ReplaceStringValue(backupID, "123456789")
+				}
+			}
+		}
 	}
 
 	var sqlInstance struct {
