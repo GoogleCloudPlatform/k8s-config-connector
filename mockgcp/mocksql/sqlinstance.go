@@ -661,6 +661,15 @@ func populateDefaults(obj *pb.DatabaseInstance) {
 		}
 	}
 
+	if obj.InstanceType == pb.SqlInstanceType_READ_REPLICA_INSTANCE {
+		if obj.Settings == nil {
+			obj.Settings = &pb.Settings{}
+		}
+		if obj.Settings.DatabaseReplicationEnabled == nil {
+			obj.Settings.DatabaseReplicationEnabled = wrapperspb.Bool(true)
+		}
+	}
+
 	if obj.GeminiConfig == nil {
 		if isMysql(obj) {
 			obj.GeminiConfig = &pb.GeminiInstanceConfig{

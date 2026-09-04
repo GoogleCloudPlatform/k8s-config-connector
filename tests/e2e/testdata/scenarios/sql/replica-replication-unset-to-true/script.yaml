@@ -1,0 +1,71 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# 00: Create Master instance
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLInstance
+metadata:
+  name: sqlinstance-master-${uniqueId}
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: "direct"
+spec:
+  databaseVersion: MYSQL_5_7
+  region: us-central1
+  settings:
+    backupConfiguration:
+      binaryLogEnabled: true
+      enabled: true
+    locationPreference:
+      zone: us-central1-a
+    tier: db-custom-1-3840
+  resourceID: sqlinstance-master-${uniqueId}
+---
+# 01: Create Read Replica with databaseReplicationEnabled omitted (unset)
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLInstance
+metadata:
+  name: sqlinstance-replica-${uniqueId}
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: "direct"
+spec:
+  databaseVersion: MYSQL_5_7
+  instanceType: READ_REPLICA_INSTANCE
+  masterInstanceRef:
+    name: sqlinstance-master-${uniqueId}
+  region: us-central1
+  settings:
+    locationPreference:
+      zone: us-central1-b
+    tier: db-custom-1-3840
+  resourceID: sqlinstance-replica-${uniqueId}
+---
+# 02: Switch databaseReplicationEnabled from unset (which GCP actual has as true) to true
+apiVersion: sql.cnrm.cloud.google.com/v1beta1
+kind: SQLInstance
+metadata:
+  name: sqlinstance-replica-${uniqueId}
+  annotations:
+    alpha.cnrm.cloud.google.com/reconciler: "direct"
+spec:
+  databaseVersion: MYSQL_5_7
+  instanceType: READ_REPLICA_INSTANCE
+  masterInstanceRef:
+    name: sqlinstance-master-${uniqueId}
+  region: us-central1
+  settings:
+    locationPreference:
+      zone: us-central1-b
+    tier: db-custom-1-3840
+    databaseReplicationEnabled: true
+  resourceID: sqlinstance-replica-${uniqueId}

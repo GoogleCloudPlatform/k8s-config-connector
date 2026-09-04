@@ -154,10 +154,10 @@ func InstanceSettingsKRMToGCP(in krm.InstanceSettings, labels map[string]string)
 		DataDiskSizeGb:              direct.ValueOf(in.DiskSize),
 		DataDiskType:                direct.ValueOf(in.DiskType),
 		DatabaseFlags:               InstanceDatabaseFlagsKRMToGCP(in.DatabaseFlags),
-		// DatabaseReplicationEnabled is not supported in KRM API.
-		DeletionProtectionEnabled: direct.ValueOf(in.DeletionProtectionEnabled),
-		DenyMaintenancePeriods:    InstanceDenyMaintenancePeriodsKRMToGCP(in.DenyMaintenancePeriod),
-		Edition:                   direct.ValueOf(in.Edition),
+		DatabaseReplicationEnabled:  direct.ValueOf(in.DatabaseReplicationEnabled),
+		DeletionProtectionEnabled:   direct.ValueOf(in.DeletionProtectionEnabled),
+		DenyMaintenancePeriods:      InstanceDenyMaintenancePeriodsKRMToGCP(in.DenyMaintenancePeriod),
+		Edition:                     direct.ValueOf(in.Edition),
 		// EnableDataplexIntegration is not supported in KRM API.
 		// EnableGoogleMlIntegration is not supported in KRM API.
 		InsightsConfig:           InstanceInsightsConfigKRMToGCP(in.InsightsConfig),
@@ -179,6 +179,9 @@ func InstanceSettingsKRMToGCP(in krm.InstanceSettings, labels map[string]string)
 
 	if in.CrashSafeReplication != nil {
 		out.ForceSendFields = append(out.ForceSendFields, "CrashSafeReplicationEnabled")
+	}
+	if in.DatabaseReplicationEnabled != nil {
+		out.ForceSendFields = append(out.ForceSendFields, "DatabaseReplicationEnabled")
 	}
 	if in.DeletionProtectionEnabled != nil {
 		out.ForceSendFields = append(out.ForceSendFields, "DeletionProtectionEnabled")
@@ -701,23 +704,23 @@ func InstanceSettingsGCPToKRM(in *api.Settings) krm.InstanceSettings {
 	}
 
 	out := krm.InstanceSettings{
-		ActivationPolicy:          direct.LazyPtr(in.ActivationPolicy),
-		ActiveDirectoryConfig:     InstanceActiveDirectoryConfigGCPToKRM(in.ActiveDirectoryConfig),
-		AdvancedMachineFeatures:   InstanceAdvancedMachineFeaturesGCPToKRM(in.AdvancedMachineFeatures),
-		AuthorizedGaeApplications: in.AuthorizedGaeApplications,
-		AvailabilityType:          direct.LazyPtr(in.AvailabilityType),
-		BackupConfiguration:       InstanceBackupConfigurationGCPToKRM(in.BackupConfiguration),
-		Collation:                 direct.LazyPtr(in.Collation),
-		ConnectorEnforcement:      direct.LazyPtr(in.ConnectorEnforcement),
-		CrashSafeReplication:      direct.PtrTo(in.CrashSafeReplicationEnabled),
-		DataCacheConfig:           InstanceDataCacheConfigGCPToKRM(in.DataCacheConfig),
-		DiskSize:                  direct.LazyPtr(in.DataDiskSizeGb),
-		DiskType:                  direct.LazyPtr(in.DataDiskType),
-		DatabaseFlags:             InstanceDatabaseFlagsGCPToKRM(in.DatabaseFlags),
-		// DatabaseReplicationEnabled is not supported in KRM API.
-		DeletionProtectionEnabled: direct.PtrTo(in.DeletionProtectionEnabled),
-		DenyMaintenancePeriod:     InstanceDenyMaintenancePeriodsGCPToKRM(in.DenyMaintenancePeriods),
-		Edition:                   direct.LazyPtr(in.Edition),
+		ActivationPolicy:           direct.LazyPtr(in.ActivationPolicy),
+		ActiveDirectoryConfig:      InstanceActiveDirectoryConfigGCPToKRM(in.ActiveDirectoryConfig),
+		AdvancedMachineFeatures:    InstanceAdvancedMachineFeaturesGCPToKRM(in.AdvancedMachineFeatures),
+		AuthorizedGaeApplications:  in.AuthorizedGaeApplications,
+		AvailabilityType:           direct.LazyPtr(in.AvailabilityType),
+		BackupConfiguration:        InstanceBackupConfigurationGCPToKRM(in.BackupConfiguration),
+		Collation:                  direct.LazyPtr(in.Collation),
+		ConnectorEnforcement:       direct.LazyPtr(in.ConnectorEnforcement),
+		CrashSafeReplication:       direct.PtrTo(in.CrashSafeReplicationEnabled),
+		DataCacheConfig:            InstanceDataCacheConfigGCPToKRM(in.DataCacheConfig),
+		DiskSize:                   direct.LazyPtr(in.DataDiskSizeGb),
+		DiskType:                   direct.LazyPtr(in.DataDiskType),
+		DatabaseFlags:              InstanceDatabaseFlagsGCPToKRM(in.DatabaseFlags),
+		DatabaseReplicationEnabled: direct.PtrTo(in.DatabaseReplicationEnabled),
+		DeletionProtectionEnabled:  direct.PtrTo(in.DeletionProtectionEnabled),
+		DenyMaintenancePeriod:      InstanceDenyMaintenancePeriodsGCPToKRM(in.DenyMaintenancePeriods),
+		Edition:                    direct.LazyPtr(in.Edition),
 		// EnableDataplexIntegration is not supported in KRM API.
 		// EnableGoogleMlIntegration is not supported in KRM API.
 		InsightsConfig:           InstanceInsightsConfigGCPToKRM(in.InsightsConfig),

@@ -330,6 +330,10 @@ type InstanceSettings struct {
 	// +optional
 	DatabaseFlags []InstanceDatabaseFlags `json:"databaseFlags,omitempty"`
 
+	/* Configuration specific to read replica instances. Indicates whether replication is enabled or not. WARNING: Changing this field restarts the read replica instance. */
+	// +optional
+	DatabaseReplicationEnabled *bool `json:"databaseReplicationEnabled,omitempty"`
+
 	/* Configuration to protect against accidental instance deletion. */
 	// +optional
 	DeletionProtectionEnabled *bool `json:"deletionProtectionEnabled,omitempty"`
