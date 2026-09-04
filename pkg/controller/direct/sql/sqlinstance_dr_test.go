@@ -860,4 +860,3 @@ func TestDiffInstances_DR_ThreeTierTopology_SingleZone_CrossZone_CrossRegion(t *
 		t.Fatalf("expected DR_REPLICA role on demoted primary, got: %v", newDemotedStatus.CurrentRole)
 	}
 }
-
