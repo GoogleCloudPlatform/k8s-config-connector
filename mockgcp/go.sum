@@ -130,6 +130,8 @@ cloud.google.com/go/longrunning v1.2.0 h1:WjYH3YHBGCxGJP9M4dWGHBfXr/cFIjMkNgWcJj
 cloud.google.com/go/longrunning v1.2.0/go.mod h1:5KMQALFGOCtFoi2xSOA1u3H7WKlhmckgiyFw7+LGQp0=
 cloud.google.com/go/managedkafka v0.8.1 h1:Bd5KPCg/TkknTyHYh/tYqGhmSJmINDBK0QGL/CoBZfg=
 cloud.google.com/go/managedkafka v0.8.1/go.mod h1:avX/DyZA0vPVlhJjt0wQ4q36kh6Ex/zEpScKyWBJdhg=
+cloud.google.com/go/maps v1.39.0 h1:lcoR/d/elJb02dwL7bL+gLv+AV3Sl0FBdsaV/1YRtL0=
+cloud.google.com/go/maps v1.39.0/go.mod h1:OTPStQ6AWGQtDQo4QwSRbpJUczmD5XIZg2iXR9XJtW8=
 cloud.google.com/go/memcache v1.16.0 h1:J6Iq97D6rlDMTJRnTjP3tttRrop8bZDCEKpbsmu0K1c=
 cloud.google.com/go/memcache v1.16.0/go.mod h1:y/rXhJiieCF742K958dY29fSfM+Y3wh2thRmWspU2Dg=
 cloud.google.com/go/memorystore v0.9.0 h1:CPIW9v7XGjcpwJtLaJUjDohep47tI5c2zP0R3v8rldw=
