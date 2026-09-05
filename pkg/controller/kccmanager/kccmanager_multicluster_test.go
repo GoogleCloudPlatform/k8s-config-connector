@@ -279,10 +279,10 @@ func newTestManagerWithConfig(t *testing.T, cfg *rest.Config, identity string, n
 			LeaderElectionID:       identity,
 		},
 		MultiClusterLease: true,
-		testConfig: testConfig{
-			skipControllerRegistration:   true,
-			multiClusterLeaseConfig:      mclConfig,
-			suppressExitOnLeadershipLoss: true,
+		TestConfig: TestConfig{
+			SkipControllerRegistration:   true,
+			MultiClusterLeaseConfig:      mclConfig,
+			SuppressExitOnLeadershipLoss: true,
 		},
 	}
 
@@ -455,17 +455,16 @@ func TestSplitBrainProtection(t *testing.T) {
 					LeaderElectionID: localIdentity,
 				},
 				MultiClusterLease: true,
-				testConfig: testConfig{
-					skipControllerRegistration: true,
-					multiClusterLeaseConfig: &operatorv1beta1.MultiClusterLeaseSpec{
+				TestConfig: TestConfig{
+					SkipControllerRegistration: true,
+					MultiClusterLeaseConfig: &operatorv1beta1.MultiClusterLeaseSpec{
 						LeaseName:                leaseName,
 						Namespace:                ns,
 						ClusterCandidateIdentity: localIdentity,
 					},
-					suppressExitOnLeadershipLoss: true,
+					SuppressExitOnLeadershipLoss: true,
 				},
 			}
-
 			mgr, err := New(ctx, cfg, kccCfg)
 			if err != nil {
 				t.Fatalf("error creating manager: %v", err)

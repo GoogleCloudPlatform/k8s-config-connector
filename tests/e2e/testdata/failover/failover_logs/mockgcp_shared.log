@@ -1,0 +1,434 @@
+I0305 22:56:40.594913  733542 mock_http_roundtrip.go:197] "serving mock gcp grpc server" address="127.0.0.2:32865"
+Initializing mock-project in MockGCP...
+I0305 22:56:40.604738  733542 mockgcp_http.go:291] mockgcp request: POST https://cloudresourcemanager.googleapis.com/v1/projects
+I0305 22:56:40.605903  733542 mockgcp_http.go:320] mockgcp response: POST https://cloudresourcemanager.googleapis.com/v1/projects => 200
+Successfully initialized mock-project.
+MockGCP Server listening on [::]:8082
+I0305 22:56:40.612360  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/networks
+I0305 22:56:40.616906  733542 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1772751400616-ad8b5b78-2361-428f-be95-3917f3431a77"
+I0305 22:56:40.617230  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/networks => 200
+I0305 22:56:40.617301  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-central1/subnetworks
+I0305 22:56:40.617434  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400616-ad8b5b78-2361-428f-be95-3917f3431a77
+I0305 22:56:40.617789  733542 operations.go:121] "storing operation" fqn="projects/mock-project/regions/us-central1/operations/operation-1772751400617-b2197d9c-086c-4d44-b4cb-92b032b512fa"
+I0305 22:56:40.617865  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400616-ad8b5b78-2361-428f-be95-3917f3431a77 => 200
+I0305 22:56:40.617891  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-central1/subnetworks => 200
+I0305 22:56:40.617942  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-central1/operations/operation-1772751400617-b2197d9c-086c-4d44-b4cb-92b032b512fa
+I0305 22:56:40.618296  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-central1/operations/operation-1772751400617-b2197d9c-086c-4d44-b4cb-92b032b512fa => 200
+I0305 22:56:40.618346  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west1/subnetworks
+I0305 22:56:40.618610  733542 operations.go:121] "storing operation" fqn="projects/mock-project/regions/europe-west1/operations/operation-1772751400618-ee61e43d-2435-4f2a-b52b-d496750c966c"
+I0305 22:56:40.618714  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west1/subnetworks => 200
+I0305 22:56:40.618754  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west1/operations/operation-1772751400618-ee61e43d-2435-4f2a-b52b-d496750c966c
+I0305 22:56:40.618992  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west1/operations/operation-1772751400618-ee61e43d-2435-4f2a-b52b-d496750c966c => 200
+I0305 22:56:40.619045  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-west1/subnetworks
+I0305 22:56:40.619277  733542 operations.go:121] "storing operation" fqn="projects/mock-project/regions/us-west1/operations/operation-1772751400619-b23c8e5a-805f-4fd9-8a5e-e0af417aac10"
+I0305 22:56:40.619390  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-west1/subnetworks => 200
+I0305 22:56:40.619462  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-west1/operations/operation-1772751400619-b23c8e5a-805f-4fd9-8a5e-e0af417aac10
+I0305 22:56:40.619691  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-west1/operations/operation-1772751400619-b23c8e5a-805f-4fd9-8a5e-e0af417aac10 => 200
+I0305 22:56:40.619750  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-east1/subnetworks
+I0305 22:56:40.620045  733542 operations.go:121] "storing operation" fqn="projects/mock-project/regions/asia-east1/operations/operation-1772751400620-5899f129-1aae-4944-9d49-c632ee4596ae"
+I0305 22:56:40.620158  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-east1/subnetworks => 200
+I0305 22:56:40.620203  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-east1/operations/operation-1772751400620-5899f129-1aae-4944-9d49-c632ee4596ae
+I0305 22:56:40.620426  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-east1/operations/operation-1772751400620-5899f129-1aae-4944-9d49-c632ee4596ae => 200
+I0305 22:56:40.620473  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-east1/subnetworks
+I0305 22:56:40.620708  733542 operations.go:121] "storing operation" fqn="projects/mock-project/regions/us-east1/operations/operation-1772751400620-3ab4f211-cf7f-4dff-b6cb-19fdf6b4a2f2"
+I0305 22:56:40.620860  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-east1/subnetworks => 200
+I0305 22:56:40.620911  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-east1/operations/operation-1772751400620-3ab4f211-cf7f-4dff-b6cb-19fdf6b4a2f2
+I0305 22:56:40.621138  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-east1/operations/operation-1772751400620-3ab4f211-cf7f-4dff-b6cb-19fdf6b4a2f2 => 200
+I0305 22:56:40.621181  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-northeast1/subnetworks
+I0305 22:56:40.621415  733542 operations.go:121] "storing operation" fqn="projects/mock-project/regions/asia-northeast1/operations/operation-1772751400621-865ab268-ab5c-4db2-a386-2783dcdfab98"
+I0305 22:56:40.621517  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-northeast1/subnetworks => 200
+I0305 22:56:40.621560  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-northeast1/operations/operation-1772751400621-865ab268-ab5c-4db2-a386-2783dcdfab98
+I0305 22:56:40.621817  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-northeast1/operations/operation-1772751400621-865ab268-ab5c-4db2-a386-2783dcdfab98 => 200
+I0305 22:56:40.621868  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-southeast1/subnetworks
+I0305 22:56:40.622119  733542 operations.go:121] "storing operation" fqn="projects/mock-project/regions/asia-southeast1/operations/operation-1772751400622-7ab0208d-c877-43a5-88ec-14dedd1627bd"
+I0305 22:56:40.622221  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-southeast1/subnetworks => 200
+I0305 22:56:40.622270  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-southeast1/operations/operation-1772751400622-7ab0208d-c877-43a5-88ec-14dedd1627bd
+I0305 22:56:40.622501  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-southeast1/operations/operation-1772751400622-7ab0208d-c877-43a5-88ec-14dedd1627bd => 200
+I0305 22:56:40.622553  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-east4/subnetworks
+I0305 22:56:40.622761  733542 operations.go:121] "storing operation" fqn="projects/mock-project/regions/us-east4/operations/operation-1772751400622-57721ccc-35b2-4cb2-8969-e7466ad4408a"
+I0305 22:56:40.622848  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-east4/subnetworks => 200
+I0305 22:56:40.622884  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-east4/operations/operation-1772751400622-57721ccc-35b2-4cb2-8969-e7466ad4408a
+I0305 22:56:40.623062  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-east4/operations/operation-1772751400622-57721ccc-35b2-4cb2-8969-e7466ad4408a => 200
+I0305 22:56:40.623101  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/australia-southeast1/subnetworks
+I0305 22:56:40.623353  733542 operations.go:121] "storing operation" fqn="projects/mock-project/regions/australia-southeast1/operations/operation-1772751400623-449aff6f-997f-458b-84b2-05fcb80b37ee"
+I0305 22:56:40.623472  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/australia-southeast1/subnetworks => 200
+I0305 22:56:40.623546  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/australia-southeast1/operations/operation-1772751400623-449aff6f-997f-458b-84b2-05fcb80b37ee
+I0305 22:56:40.623750  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/australia-southeast1/operations/operation-1772751400623-449aff6f-997f-458b-84b2-05fcb80b37ee => 200
+I0305 22:56:40.623793  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west2/subnetworks
+I0305 22:56:40.624029  733542 operations.go:121] "storing operation" fqn="projects/mock-project/regions/europe-west2/operations/operation-1772751400624-83d218e7-253a-4aca-ae0c-b15342becb23"
+I0305 22:56:40.624114  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west2/subnetworks => 200
+I0305 22:56:40.624155  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west2/operations/operation-1772751400624-83d218e7-253a-4aca-ae0c-b15342becb23
+I0305 22:56:40.624354  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west2/operations/operation-1772751400624-83d218e7-253a-4aca-ae0c-b15342becb23 => 200
+I0305 22:56:40.624401  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west3/subnetworks
+I0305 22:56:40.624652  733542 operations.go:121] "storing operation" fqn="projects/mock-project/regions/europe-west3/operations/operation-1772751400624-d3f47b1c-511f-477c-840e-8b204180e09e"
+I0305 22:56:40.624774  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west3/subnetworks => 200
+I0305 22:56:40.624818  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west3/operations/operation-1772751400624-d3f47b1c-511f-477c-840e-8b204180e09e
+I0305 22:56:40.625066  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west3/operations/operation-1772751400624-d3f47b1c-511f-477c-840e-8b204180e09e => 200
+I0305 22:56:40.625121  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/southamerica-east1/subnetworks
+I0305 22:56:40.625365  733542 operations.go:121] "storing operation" fqn="projects/mock-project/regions/southamerica-east1/operations/operation-1772751400625-757bf0de-a87c-4318-8127-f6bde914ef45"
+I0305 22:56:40.625474  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/southamerica-east1/subnetworks => 200
+I0305 22:56:40.625522  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/southamerica-east1/operations/operation-1772751400625-757bf0de-a87c-4318-8127-f6bde914ef45
+I0305 22:56:40.625720  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/southamerica-east1/operations/operation-1772751400625-757bf0de-a87c-4318-8127-f6bde914ef45 => 200
+I0305 22:56:40.625766  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-south1/subnetworks
+I0305 22:56:40.625985  733542 operations.go:121] "storing operation" fqn="projects/mock-project/regions/asia-south1/operations/operation-1772751400625-610c6909-b745-4977-ab43-fc03b47dd6f0"
+I0305 22:56:40.626091  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-south1/subnetworks => 200
+I0305 22:56:40.626137  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-south1/operations/operation-1772751400625-610c6909-b745-4977-ab43-fc03b47dd6f0
+I0305 22:56:40.626336  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-south1/operations/operation-1772751400625-610c6909-b745-4977-ab43-fc03b47dd6f0 => 200
+I0305 22:56:40.626384  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/northamerica-northeast1/subnetworks
+I0305 22:56:40.626614  733542 operations.go:121] "storing operation" fqn="projects/mock-project/regions/northamerica-northeast1/operations/operation-1772751400626-bae5c4d5-a066-43c0-87b0-e69253846462"
+I0305 22:56:40.626715  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/northamerica-northeast1/subnetworks => 200
+I0305 22:56:40.626755  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/northamerica-northeast1/operations/operation-1772751400626-bae5c4d5-a066-43c0-87b0-e69253846462
+I0305 22:56:40.626982  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/northamerica-northeast1/operations/operation-1772751400626-bae5c4d5-a066-43c0-87b0-e69253846462 => 200
+I0305 22:56:40.627030  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west4/subnetworks
+I0305 22:56:40.627263  733542 operations.go:121] "storing operation" fqn="projects/mock-project/regions/europe-west4/operations/operation-1772751400627-e0089168-858c-4442-a9d9-71c72d47d4dc"
+I0305 22:56:40.627368  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west4/subnetworks => 200
+I0305 22:56:40.627412  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west4/operations/operation-1772751400627-e0089168-858c-4442-a9d9-71c72d47d4dc
+I0305 22:56:40.627627  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west4/operations/operation-1772751400627-e0089168-858c-4442-a9d9-71c72d47d4dc => 200
+I0305 22:56:40.627682  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-north1/subnetworks
+I0305 22:56:40.627909  733542 operations.go:121] "storing operation" fqn="projects/mock-project/regions/europe-north1/operations/operation-1772751400627-c6e7f5b8-bfe8-442e-8847-69c1c934fdc1"
+I0305 22:56:40.627998  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-north1/subnetworks => 200
+I0305 22:56:40.628039  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-north1/operations/operation-1772751400627-c6e7f5b8-bfe8-442e-8847-69c1c934fdc1
+I0305 22:56:40.628257  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-north1/operations/operation-1772751400627-c6e7f5b8-bfe8-442e-8847-69c1c934fdc1 => 200
+I0305 22:56:40.628298  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-west2/subnetworks
+I0305 22:56:40.628534  733542 operations.go:121] "storing operation" fqn="projects/mock-project/regions/us-west2/operations/operation-1772751400628-5e0090dd-fc6a-44b1-ae2e-ea8328113444"
+I0305 22:56:40.628651  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-west2/subnetworks => 200
+I0305 22:56:40.628687  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-west2/operations/operation-1772751400628-5e0090dd-fc6a-44b1-ae2e-ea8328113444
+I0305 22:56:40.628853  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-west2/operations/operation-1772751400628-5e0090dd-fc6a-44b1-ae2e-ea8328113444 => 200
+I0305 22:56:40.628888  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-east2/subnetworks
+I0305 22:56:40.629083  733542 operations.go:121] "storing operation" fqn="projects/mock-project/regions/asia-east2/operations/operation-1772751400629-747b9068-104b-49bb-a525-a42fde979bdc"
+I0305 22:56:40.629185  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-east2/subnetworks => 200
+I0305 22:56:40.629219  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-east2/operations/operation-1772751400629-747b9068-104b-49bb-a525-a42fde979bdc
+I0305 22:56:40.629423  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-east2/operations/operation-1772751400629-747b9068-104b-49bb-a525-a42fde979bdc => 200
+I0305 22:56:40.629468  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west6/subnetworks
+I0305 22:56:40.629691  733542 operations.go:121] "storing operation" fqn="projects/mock-project/regions/europe-west6/operations/operation-1772751400629-f8562c44-7ca9-42b1-8e54-daf3949f79b8"
+I0305 22:56:40.629793  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west6/subnetworks => 200
+I0305 22:56:40.629833  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west6/operations/operation-1772751400629-f8562c44-7ca9-42b1-8e54-daf3949f79b8
+I0305 22:56:40.630037  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west6/operations/operation-1772751400629-f8562c44-7ca9-42b1-8e54-daf3949f79b8 => 200
+I0305 22:56:40.630096  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-northeast2/subnetworks
+I0305 22:56:40.630326  733542 operations.go:121] "storing operation" fqn="projects/mock-project/regions/asia-northeast2/operations/operation-1772751400630-a1511bc5-0d1c-434b-b782-a89e25a82b3a"
+I0305 22:56:40.630412  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-northeast2/subnetworks => 200
+I0305 22:56:40.630448  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-northeast2/operations/operation-1772751400630-a1511bc5-0d1c-434b-b782-a89e25a82b3a
+I0305 22:56:40.630635  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-northeast2/operations/operation-1772751400630-a1511bc5-0d1c-434b-b782-a89e25a82b3a => 200
+I0305 22:56:40.630671  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-northeast3/subnetworks
+I0305 22:56:40.630864  733542 operations.go:121] "storing operation" fqn="projects/mock-project/regions/asia-northeast3/operations/operation-1772751400630-04759e55-1972-492f-94ca-4392ebe1c1fd"
+I0305 22:56:40.630959  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-northeast3/subnetworks => 200
+I0305 22:56:40.631005  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-northeast3/operations/operation-1772751400630-04759e55-1972-492f-94ca-4392ebe1c1fd
+I0305 22:56:40.631271  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-northeast3/operations/operation-1772751400630-04759e55-1972-492f-94ca-4392ebe1c1fd => 200
+I0305 22:56:40.631327  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-west3/subnetworks
+I0305 22:56:40.631571  733542 operations.go:121] "storing operation" fqn="projects/mock-project/regions/us-west3/operations/operation-1772751400631-721356e9-df97-4973-a7f3-45768863315d"
+I0305 22:56:40.631676  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-west3/subnetworks => 200
+I0305 22:56:40.631722  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-west3/operations/operation-1772751400631-721356e9-df97-4973-a7f3-45768863315d
+I0305 22:56:40.631950  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-west3/operations/operation-1772751400631-721356e9-df97-4973-a7f3-45768863315d => 200
+I0305 22:56:40.632007  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-west4/subnetworks
+I0305 22:56:40.632288  733542 operations.go:121] "storing operation" fqn="projects/mock-project/regions/us-west4/operations/operation-1772751400632-8ec69d84-c08a-40d9-91b8-8d7c32348f91"
+I0305 22:56:40.632374  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-west4/subnetworks => 200
+I0305 22:56:40.632417  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-west4/operations/operation-1772751400632-8ec69d84-c08a-40d9-91b8-8d7c32348f91
+I0305 22:56:40.632642  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-west4/operations/operation-1772751400632-8ec69d84-c08a-40d9-91b8-8d7c32348f91 => 200
+I0305 22:56:40.632691  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-southeast2/subnetworks
+I0305 22:56:40.632939  733542 operations.go:121] "storing operation" fqn="projects/mock-project/regions/asia-southeast2/operations/operation-1772751400632-2c964ab1-6fbe-4e6f-9ed3-7307a49529ab"
+I0305 22:56:40.633036  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-southeast2/subnetworks => 200
+I0305 22:56:40.633083  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-southeast2/operations/operation-1772751400632-2c964ab1-6fbe-4e6f-9ed3-7307a49529ab
+I0305 22:56:40.633272  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-southeast2/operations/operation-1772751400632-2c964ab1-6fbe-4e6f-9ed3-7307a49529ab => 200
+I0305 22:56:40.633318  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-central2/subnetworks
+I0305 22:56:40.633576  733542 operations.go:121] "storing operation" fqn="projects/mock-project/regions/europe-central2/operations/operation-1772751400633-178d2da2-f3a9-417e-acd9-87b48d5b077d"
+I0305 22:56:40.633681  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-central2/subnetworks => 200
+I0305 22:56:40.633721  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-central2/operations/operation-1772751400633-178d2da2-f3a9-417e-acd9-87b48d5b077d
+I0305 22:56:40.633928  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-central2/operations/operation-1772751400633-178d2da2-f3a9-417e-acd9-87b48d5b077d => 200
+I0305 22:56:40.633969  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/northamerica-northeast2/subnetworks
+I0305 22:56:40.634206  733542 operations.go:121] "storing operation" fqn="projects/mock-project/regions/northamerica-northeast2/operations/operation-1772751400634-a08d48ae-697b-46fd-9ebe-feb01b3480d2"
+I0305 22:56:40.634315  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/northamerica-northeast2/subnetworks => 200
+I0305 22:56:40.634371  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/northamerica-northeast2/operations/operation-1772751400634-a08d48ae-697b-46fd-9ebe-feb01b3480d2
+I0305 22:56:40.634625  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/northamerica-northeast2/operations/operation-1772751400634-a08d48ae-697b-46fd-9ebe-feb01b3480d2 => 200
+I0305 22:56:40.634667  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-south2/subnetworks
+I0305 22:56:40.634862  733542 operations.go:121] "storing operation" fqn="projects/mock-project/regions/asia-south2/operations/operation-1772751400634-97830aaf-38d5-49e1-be7c-57ff57f03816"
+I0305 22:56:40.634954  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-south2/subnetworks => 200
+I0305 22:56:40.634991  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-south2/operations/operation-1772751400634-97830aaf-38d5-49e1-be7c-57ff57f03816
+I0305 22:56:40.635175  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/asia-south2/operations/operation-1772751400634-97830aaf-38d5-49e1-be7c-57ff57f03816 => 200
+I0305 22:56:40.635216  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/australia-southeast2/subnetworks
+I0305 22:56:40.635491  733542 operations.go:121] "storing operation" fqn="projects/mock-project/regions/australia-southeast2/operations/operation-1772751400635-79df2942-3154-4033-afac-7e03b306f446"
+I0305 22:56:40.635607  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/australia-southeast2/subnetworks => 200
+I0305 22:56:40.635666  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/australia-southeast2/operations/operation-1772751400635-79df2942-3154-4033-afac-7e03b306f446
+I0305 22:56:40.635927  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/australia-southeast2/operations/operation-1772751400635-79df2942-3154-4033-afac-7e03b306f446 => 200
+I0305 22:56:40.635990  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/southamerica-west1/subnetworks
+I0305 22:56:40.636255  733542 operations.go:121] "storing operation" fqn="projects/mock-project/regions/southamerica-west1/operations/operation-1772751400636-aabaaaba-44ba-457e-89d7-c459f30f8aa1"
+I0305 22:56:40.636349  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/southamerica-west1/subnetworks => 200
+I0305 22:56:40.636389  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/southamerica-west1/operations/operation-1772751400636-aabaaaba-44ba-457e-89d7-c459f30f8aa1
+I0305 22:56:40.636598  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/southamerica-west1/operations/operation-1772751400636-aabaaaba-44ba-457e-89d7-c459f30f8aa1 => 200
+I0305 22:56:40.636656  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west8/subnetworks
+I0305 22:56:40.636885  733542 operations.go:121] "storing operation" fqn="projects/mock-project/regions/europe-west8/operations/operation-1772751400636-c63bb4a9-84b6-4736-bdae-b629d1e1cf6c"
+I0305 22:56:40.636982  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west8/subnetworks => 200
+I0305 22:56:40.637026  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west8/operations/operation-1772751400636-c63bb4a9-84b6-4736-bdae-b629d1e1cf6c
+I0305 22:56:40.637205  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west8/operations/operation-1772751400636-c63bb4a9-84b6-4736-bdae-b629d1e1cf6c => 200
+I0305 22:56:40.637252  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west9/subnetworks
+I0305 22:56:40.637490  733542 operations.go:121] "storing operation" fqn="projects/mock-project/regions/europe-west9/operations/operation-1772751400637-0b9c833a-5f1f-4ba2-84d4-b5005b8c0666"
+I0305 22:56:40.637577  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west9/subnetworks => 200
+I0305 22:56:40.637617  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west9/operations/operation-1772751400637-0b9c833a-5f1f-4ba2-84d4-b5005b8c0666
+I0305 22:56:40.637822  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west9/operations/operation-1772751400637-0b9c833a-5f1f-4ba2-84d4-b5005b8c0666 => 200
+I0305 22:56:40.637868  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-east5/subnetworks
+I0305 22:56:40.638064  733542 operations.go:121] "storing operation" fqn="projects/mock-project/regions/us-east5/operations/operation-1772751400638-aa674f62-b465-4f1d-9830-ce941ea101b4"
+I0305 22:56:40.638139  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-east5/subnetworks => 200
+I0305 22:56:40.638174  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-east5/operations/operation-1772751400638-aa674f62-b465-4f1d-9830-ce941ea101b4
+I0305 22:56:40.638368  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-east5/operations/operation-1772751400638-aa674f62-b465-4f1d-9830-ce941ea101b4 => 200
+I0305 22:56:40.638405  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-southwest1/subnetworks
+I0305 22:56:40.638621  733542 operations.go:121] "storing operation" fqn="projects/mock-project/regions/europe-southwest1/operations/operation-1772751400638-e9f3145e-7c62-47b2-9378-70ff7e2a71dc"
+I0305 22:56:40.638742  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-southwest1/subnetworks => 200
+I0305 22:56:40.638792  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-southwest1/operations/operation-1772751400638-e9f3145e-7c62-47b2-9378-70ff7e2a71dc
+I0305 22:56:40.639020  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-southwest1/operations/operation-1772751400638-e9f3145e-7c62-47b2-9378-70ff7e2a71dc => 200
+I0305 22:56:40.639063  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-south1/subnetworks
+I0305 22:56:40.639262  733542 operations.go:121] "storing operation" fqn="projects/mock-project/regions/us-south1/operations/operation-1772751400639-18372178-866c-4115-9631-1b03cfa9f301"
+I0305 22:56:40.639363  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-south1/subnetworks => 200
+I0305 22:56:40.639418  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-south1/operations/operation-1772751400639-18372178-866c-4115-9631-1b03cfa9f301
+I0305 22:56:40.639666  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/us-south1/operations/operation-1772751400639-18372178-866c-4115-9631-1b03cfa9f301 => 200
+I0305 22:56:40.639718  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/me-west1/subnetworks
+I0305 22:56:40.639972  733542 operations.go:121] "storing operation" fqn="projects/mock-project/regions/me-west1/operations/operation-1772751400639-26bc6aae-b2d7-4094-9327-63509d1f3d54"
+I0305 22:56:40.640074  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/me-west1/subnetworks => 200
+I0305 22:56:40.640118  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/me-west1/operations/operation-1772751400639-26bc6aae-b2d7-4094-9327-63509d1f3d54
+I0305 22:56:40.640358  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/me-west1/operations/operation-1772751400639-26bc6aae-b2d7-4094-9327-63509d1f3d54 => 200
+I0305 22:56:40.640405  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west12/subnetworks
+I0305 22:56:40.640646  733542 operations.go:121] "storing operation" fqn="projects/mock-project/regions/europe-west12/operations/operation-1772751400640-358057ce-a905-4139-b281-f7b26c238bd7"
+I0305 22:56:40.640740  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west12/subnetworks => 200
+I0305 22:56:40.640781  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west12/operations/operation-1772751400640-358057ce-a905-4139-b281-f7b26c238bd7
+I0305 22:56:40.640983  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west12/operations/operation-1772751400640-358057ce-a905-4139-b281-f7b26c238bd7 => 200
+I0305 22:56:40.641033  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/me-central1/subnetworks
+I0305 22:56:40.641305  733542 operations.go:121] "storing operation" fqn="projects/mock-project/regions/me-central1/operations/operation-1772751400641-a5b68eff-8143-421e-acfa-f12e228a334d"
+I0305 22:56:40.641416  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/me-central1/subnetworks => 200
+I0305 22:56:40.641468  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/me-central1/operations/operation-1772751400641-a5b68eff-8143-421e-acfa-f12e228a334d
+I0305 22:56:40.641666  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/me-central1/operations/operation-1772751400641-a5b68eff-8143-421e-acfa-f12e228a334d => 200
+I0305 22:56:40.641710  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west10/subnetworks
+I0305 22:56:40.641921  733542 operations.go:121] "storing operation" fqn="projects/mock-project/regions/europe-west10/operations/operation-1772751400641-1589159c-1cf6-4dfc-aa0c-ac36671681c9"
+I0305 22:56:40.642016  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west10/subnetworks => 200
+I0305 22:56:40.642060  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west10/operations/operation-1772751400641-1589159c-1cf6-4dfc-aa0c-ac36671681c9
+I0305 22:56:40.642580  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-west10/operations/operation-1772751400641-1589159c-1cf6-4dfc-aa0c-ac36671681c9 => 200
+I0305 22:56:40.642639  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/africa-south1/subnetworks
+I0305 22:56:40.642900  733542 operations.go:121] "storing operation" fqn="projects/mock-project/regions/africa-south1/operations/operation-1772751400642-e147bf1d-2d7c-4929-b898-c42369c46cee"
+I0305 22:56:40.643002  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/africa-south1/subnetworks => 200
+I0305 22:56:40.643050  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/africa-south1/operations/operation-1772751400642-e147bf1d-2d7c-4929-b898-c42369c46cee
+I0305 22:56:40.643281  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/africa-south1/operations/operation-1772751400642-e147bf1d-2d7c-4929-b898-c42369c46cee => 200
+I0305 22:56:40.643331  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/northamerica-south1/subnetworks
+I0305 22:56:40.643572  733542 operations.go:121] "storing operation" fqn="projects/mock-project/regions/northamerica-south1/operations/operation-1772751400643-e73c0a52-90ec-4d5b-92c0-8fabc90a4860"
+I0305 22:56:40.643683  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/northamerica-south1/subnetworks => 200
+I0305 22:56:40.643725  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/northamerica-south1/operations/operation-1772751400643-e73c0a52-90ec-4d5b-92c0-8fabc90a4860
+I0305 22:56:40.643966  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/northamerica-south1/operations/operation-1772751400643-e73c0a52-90ec-4d5b-92c0-8fabc90a4860 => 200
+I0305 22:56:40.644012  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-north2/subnetworks
+I0305 22:56:40.644240  733542 operations.go:121] "storing operation" fqn="projects/mock-project/regions/europe-north2/operations/operation-1772751400644-0c47ff7e-839f-4d5f-a816-5dc432296d8c"
+I0305 22:56:40.644337  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-north2/subnetworks => 200
+I0305 22:56:40.644385  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-north2/operations/operation-1772751400644-0c47ff7e-839f-4d5f-a816-5dc432296d8c
+I0305 22:56:40.644615  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/regions/europe-north2/operations/operation-1772751400644-0c47ff7e-839f-4d5f-a816-5dc432296d8c => 200
+I0305 22:56:40.644835  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I0305 22:56:40.645543  733542 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1772751400645-70579a88-5a7c-4569-a5c7-e1dc261f0666"
+I0305 22:56:40.645669  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I0305 22:56:40.645715  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400645-70579a88-5a7c-4569-a5c7-e1dc261f0666
+I0305 22:56:40.645930  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400645-70579a88-5a7c-4569-a5c7-e1dc261f0666 => 200
+I0305 22:56:40.646039  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/aggregated/subnetworks
+I0305 22:56:40.648033  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/aggregated/subnetworks => 200
+I0305 22:56:40.649315  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I0305 22:56:40.649606  733542 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1772751400649-43a1cd78-7445-4cf4-be32-f0ab752ad8d2"
+I0305 22:56:40.649767  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I0305 22:56:40.649813  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400649-43a1cd78-7445-4cf4-be32-f0ab752ad8d2
+I0305 22:56:40.650060  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400649-43a1cd78-7445-4cf4-be32-f0ab752ad8d2 => 200
+I0305 22:56:40.650113  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I0305 22:56:40.650421  733542 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1772751400650-5892cb67-0d18-46ae-acd6-c749fc853b7d"
+I0305 22:56:40.650545  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I0305 22:56:40.650586  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400650-5892cb67-0d18-46ae-acd6-c749fc853b7d
+I0305 22:56:40.650807  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400650-5892cb67-0d18-46ae-acd6-c749fc853b7d => 200
+I0305 22:56:40.650863  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I0305 22:56:40.651089  733542 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1772751400651-9edb8d18-1f30-45ea-845d-2497c4d78c14"
+I0305 22:56:40.651196  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I0305 22:56:40.651240  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400651-9edb8d18-1f30-45ea-845d-2497c4d78c14
+I0305 22:56:40.651478  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400651-9edb8d18-1f30-45ea-845d-2497c4d78c14 => 200
+I0305 22:56:40.651534  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I0305 22:56:40.651782  733542 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1772751400651-4ae4725a-f195-4a9b-89ef-3323b2e11a8c"
+I0305 22:56:40.651896  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I0305 22:56:40.651936  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400651-4ae4725a-f195-4a9b-89ef-3323b2e11a8c
+I0305 22:56:40.652136  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400651-4ae4725a-f195-4a9b-89ef-3323b2e11a8c => 200
+I0305 22:56:40.652192  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I0305 22:56:40.652436  733542 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1772751400652-7f6ec25b-83ce-4999-8cf5-673c8dd13373"
+I0305 22:56:40.652540  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I0305 22:56:40.652580  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400652-7f6ec25b-83ce-4999-8cf5-673c8dd13373
+I0305 22:56:40.652785  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400652-7f6ec25b-83ce-4999-8cf5-673c8dd13373 => 200
+I0305 22:56:40.652825  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I0305 22:56:40.653073  733542 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1772751400653-a2d869d7-868c-425c-ad27-e1c68f03fab1"
+I0305 22:56:40.653224  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I0305 22:56:40.653287  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400653-a2d869d7-868c-425c-ad27-e1c68f03fab1
+I0305 22:56:40.653532  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400653-a2d869d7-868c-425c-ad27-e1c68f03fab1 => 200
+I0305 22:56:40.653600  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I0305 22:56:40.653890  733542 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1772751400653-1e7aaa82-95db-4707-8a51-2aff8d13bf1a"
+I0305 22:56:40.653996  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I0305 22:56:40.654041  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400653-1e7aaa82-95db-4707-8a51-2aff8d13bf1a
+I0305 22:56:40.654253  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400653-1e7aaa82-95db-4707-8a51-2aff8d13bf1a => 200
+I0305 22:56:40.654309  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I0305 22:56:40.655714  733542 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1772751400655-231a734a-3faa-4f21-a12c-3265b0583498"
+I0305 22:56:40.655872  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I0305 22:56:40.655943  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400655-231a734a-3faa-4f21-a12c-3265b0583498
+I0305 22:56:40.656199  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400655-231a734a-3faa-4f21-a12c-3265b0583498 => 200
+I0305 22:56:40.656265  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I0305 22:56:40.656998  733542 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1772751400656-3e62b50e-3433-4ca9-9b65-fa71590919b5"
+I0305 22:56:40.657135  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I0305 22:56:40.657183  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400656-3e62b50e-3433-4ca9-9b65-fa71590919b5
+I0305 22:56:40.657479  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400656-3e62b50e-3433-4ca9-9b65-fa71590919b5 => 200
+I0305 22:56:40.657559  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I0305 22:56:40.657856  733542 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1772751400657-27dec832-6cbb-4e74-8fa9-31e84bd55d7e"
+I0305 22:56:40.657947  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I0305 22:56:40.657996  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400657-27dec832-6cbb-4e74-8fa9-31e84bd55d7e
+I0305 22:56:40.658215  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400657-27dec832-6cbb-4e74-8fa9-31e84bd55d7e => 200
+I0305 22:56:40.658267  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I0305 22:56:40.658497  733542 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1772751400658-24bae36d-9e06-45e2-b699-1729b1b73a8c"
+I0305 22:56:40.658630  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I0305 22:56:40.658679  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400658-24bae36d-9e06-45e2-b699-1729b1b73a8c
+I0305 22:56:40.658895  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400658-24bae36d-9e06-45e2-b699-1729b1b73a8c => 200
+I0305 22:56:40.658961  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I0305 22:56:40.659244  733542 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1772751400659-9975cdf4-ec12-4e84-ba32-9c65509394db"
+I0305 22:56:40.659362  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I0305 22:56:40.659406  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400659-9975cdf4-ec12-4e84-ba32-9c65509394db
+I0305 22:56:40.659634  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400659-9975cdf4-ec12-4e84-ba32-9c65509394db => 200
+I0305 22:56:40.659695  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I0305 22:56:40.659974  733542 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1772751400659-412cc7a5-d4b3-4e74-8371-4b6c15a3667f"
+I0305 22:56:40.660109  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I0305 22:56:40.660152  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400659-412cc7a5-d4b3-4e74-8371-4b6c15a3667f
+I0305 22:56:40.660362  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400659-412cc7a5-d4b3-4e74-8371-4b6c15a3667f => 200
+I0305 22:56:40.660419  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I0305 22:56:40.660639  733542 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1772751400660-910e7e0e-3f68-4e1b-b2ce-315551f489b5"
+I0305 22:56:40.660766  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I0305 22:56:40.660817  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400660-910e7e0e-3f68-4e1b-b2ce-315551f489b5
+I0305 22:56:40.661146  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400660-910e7e0e-3f68-4e1b-b2ce-315551f489b5 => 200
+I0305 22:56:40.661235  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I0305 22:56:40.661620  733542 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1772751400661-7dfb3d84-5f9d-4135-8ba0-c5b197d35e9a"
+I0305 22:56:40.661786  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I0305 22:56:40.661878  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400661-7dfb3d84-5f9d-4135-8ba0-c5b197d35e9a
+I0305 22:56:40.662170  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400661-7dfb3d84-5f9d-4135-8ba0-c5b197d35e9a => 200
+I0305 22:56:40.662235  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I0305 22:56:40.662472  733542 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1772751400662-acb77ab1-68b3-4d9b-940a-51c6ffbe5503"
+I0305 22:56:40.662575  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I0305 22:56:40.662625  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400662-acb77ab1-68b3-4d9b-940a-51c6ffbe5503
+I0305 22:56:40.662869  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400662-acb77ab1-68b3-4d9b-940a-51c6ffbe5503 => 200
+I0305 22:56:40.662912  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I0305 22:56:40.663153  733542 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1772751400663-67479673-6b96-47e1-9e24-3b4f007d9b3d"
+I0305 22:56:40.663278  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I0305 22:56:40.663328  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400663-67479673-6b96-47e1-9e24-3b4f007d9b3d
+I0305 22:56:40.663522  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400663-67479673-6b96-47e1-9e24-3b4f007d9b3d => 200
+I0305 22:56:40.663565  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I0305 22:56:40.663854  733542 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1772751400663-038634e2-ea66-4932-b0c2-9554f7b7fd87"
+I0305 22:56:40.663970  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I0305 22:56:40.664017  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400663-038634e2-ea66-4932-b0c2-9554f7b7fd87
+I0305 22:56:40.664240  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400663-038634e2-ea66-4932-b0c2-9554f7b7fd87 => 200
+I0305 22:56:40.664293  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I0305 22:56:40.664510  733542 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1772751400664-4972b141-7b91-417b-bb4d-230b8316b785"
+I0305 22:56:40.664599  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I0305 22:56:40.664635  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400664-4972b141-7b91-417b-bb4d-230b8316b785
+I0305 22:56:40.664811  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400664-4972b141-7b91-417b-bb4d-230b8316b785 => 200
+I0305 22:56:40.664862  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I0305 22:56:40.665094  733542 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1772751400665-125c9379-dc92-4eb2-b6a0-5c405f91a058"
+I0305 22:56:40.665187  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I0305 22:56:40.665225  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400665-125c9379-dc92-4eb2-b6a0-5c405f91a058
+I0305 22:56:40.665433  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400665-125c9379-dc92-4eb2-b6a0-5c405f91a058 => 200
+I0305 22:56:40.665487  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I0305 22:56:40.665707  733542 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1772751400665-44365af4-3d5a-41fa-a923-b8ec67f6429d"
+I0305 22:56:40.665797  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I0305 22:56:40.665835  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400665-44365af4-3d5a-41fa-a923-b8ec67f6429d
+I0305 22:56:40.666075  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400665-44365af4-3d5a-41fa-a923-b8ec67f6429d => 200
+I0305 22:56:40.666135  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I0305 22:56:40.666412  733542 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1772751400666-e6baa190-c26e-4a2f-b8ca-aa8c0a6a15aa"
+I0305 22:56:40.666504  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I0305 22:56:40.666558  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400666-e6baa190-c26e-4a2f-b8ca-aa8c0a6a15aa
+I0305 22:56:40.666820  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400666-e6baa190-c26e-4a2f-b8ca-aa8c0a6a15aa => 200
+I0305 22:56:40.666868  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I0305 22:56:40.667098  733542 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1772751400667-610264eb-297a-4590-98f7-1b2771e67ece"
+I0305 22:56:40.667216  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I0305 22:56:40.667261  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400667-610264eb-297a-4590-98f7-1b2771e67ece
+I0305 22:56:40.667469  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400667-610264eb-297a-4590-98f7-1b2771e67ece => 200
+I0305 22:56:40.667511  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I0305 22:56:40.667757  733542 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1772751400667-f29daab8-3bc7-48bc-98fc-7e2a7da40b52"
+I0305 22:56:40.667886  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I0305 22:56:40.667934  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400667-f29daab8-3bc7-48bc-98fc-7e2a7da40b52
+I0305 22:56:40.668151  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400667-f29daab8-3bc7-48bc-98fc-7e2a7da40b52 => 200
+I0305 22:56:40.668198  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I0305 22:56:40.668441  733542 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1772751400668-86ed02a3-94c6-4f17-a3d7-b93f8b90d55b"
+I0305 22:56:40.668545  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I0305 22:56:40.668584  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400668-86ed02a3-94c6-4f17-a3d7-b93f8b90d55b
+I0305 22:56:40.668833  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400668-86ed02a3-94c6-4f17-a3d7-b93f8b90d55b => 200
+I0305 22:56:40.668899  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I0305 22:56:40.669188  733542 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1772751400669-d318397d-a29e-43a3-8f3b-ddc537ca0cb1"
+I0305 22:56:40.669307  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I0305 22:56:40.669346  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400669-d318397d-a29e-43a3-8f3b-ddc537ca0cb1
+I0305 22:56:40.669539  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400669-d318397d-a29e-43a3-8f3b-ddc537ca0cb1 => 200
+I0305 22:56:40.669583  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I0305 22:56:40.669859  733542 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1772751400669-04983bfc-8147-40b3-b674-ffd0ac332132"
+I0305 22:56:40.669997  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I0305 22:56:40.670055  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400669-04983bfc-8147-40b3-b674-ffd0ac332132
+I0305 22:56:40.670330  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400669-04983bfc-8147-40b3-b674-ffd0ac332132 => 200
+I0305 22:56:40.670381  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I0305 22:56:40.670636  733542 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1772751400670-a01b465b-f5a9-4fb6-85e5-02227325da20"
+I0305 22:56:40.670737  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I0305 22:56:40.670783  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400670-a01b465b-f5a9-4fb6-85e5-02227325da20
+I0305 22:56:40.671014  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400670-a01b465b-f5a9-4fb6-85e5-02227325da20 => 200
+I0305 22:56:40.671080  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I0305 22:56:40.671430  733542 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1772751400671-911d8cc3-0364-4f7e-9b0d-307b4bad7086"
+I0305 22:56:40.671569  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I0305 22:56:40.671636  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400671-911d8cc3-0364-4f7e-9b0d-307b4bad7086
+I0305 22:56:40.671867  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400671-911d8cc3-0364-4f7e-9b0d-307b4bad7086 => 200
+I0305 22:56:40.671915  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I0305 22:56:40.672146  733542 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1772751400672-4a0b9dfe-6082-4c4c-8ecf-d7d14187bf82"
+I0305 22:56:40.672247  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I0305 22:56:40.672288  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400672-4a0b9dfe-6082-4c4c-8ecf-d7d14187bf82
+I0305 22:56:40.672502  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400672-4a0b9dfe-6082-4c4c-8ecf-d7d14187bf82 => 200
+I0305 22:56:40.672546  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I0305 22:56:40.672780  733542 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1772751400672-c3c0120a-e1ba-4f18-ae9d-a486467f9006"
+I0305 22:56:40.672883  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I0305 22:56:40.672924  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400672-c3c0120a-e1ba-4f18-ae9d-a486467f9006
+I0305 22:56:40.673103  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400672-c3c0120a-e1ba-4f18-ae9d-a486467f9006 => 200
+I0305 22:56:40.673149  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I0305 22:56:40.673354  733542 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1772751400673-366a762f-3692-4aae-aac2-cab8d51f2b44"
+I0305 22:56:40.673437  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I0305 22:56:40.673476  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400673-366a762f-3692-4aae-aac2-cab8d51f2b44
+I0305 22:56:40.673657  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400673-366a762f-3692-4aae-aac2-cab8d51f2b44 => 200
+I0305 22:56:40.673704  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I0305 22:56:40.673927  733542 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1772751400673-e3c58da7-d38f-45b1-99f1-27ff5f5485a7"
+I0305 22:56:40.674014  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I0305 22:56:40.674057  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400673-e3c58da7-d38f-45b1-99f1-27ff5f5485a7
+I0305 22:56:40.674259  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400673-e3c58da7-d38f-45b1-99f1-27ff5f5485a7 => 200
+I0305 22:56:40.674311  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I0305 22:56:40.674527  733542 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1772751400674-4303acbc-de39-4b2e-908e-a486bac270da"
+I0305 22:56:40.674622  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I0305 22:56:40.674666  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400674-4303acbc-de39-4b2e-908e-a486bac270da
+I0305 22:56:40.674913  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400674-4303acbc-de39-4b2e-908e-a486bac270da => 200
+I0305 22:56:40.674960  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I0305 22:56:40.675219  733542 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1772751400675-99da5be1-83b3-4605-92f8-8902fa502ec3"
+I0305 22:56:40.675336  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I0305 22:56:40.675380  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400675-99da5be1-83b3-4605-92f8-8902fa502ec3
+I0305 22:56:40.675644  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400675-99da5be1-83b3-4605-92f8-8902fa502ec3 => 200
+I0305 22:56:40.675700  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I0305 22:56:40.675960  733542 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1772751400675-8689ae45-d2d6-4157-bec4-6dac094a3825"
+I0305 22:56:40.676055  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I0305 22:56:40.676095  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400675-8689ae45-d2d6-4157-bec4-6dac094a3825
+I0305 22:56:40.676313  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400675-8689ae45-d2d6-4157-bec4-6dac094a3825 => 200
+I0305 22:56:40.676368  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I0305 22:56:40.676598  733542 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1772751400676-a5f7034e-f09a-4eb0-8ca9-e6d537b4434f"
+I0305 22:56:40.676708  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I0305 22:56:40.676746  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400676-a5f7034e-f09a-4eb0-8ca9-e6d537b4434f
+I0305 22:56:40.676967  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400676-a5f7034e-f09a-4eb0-8ca9-e6d537b4434f => 200
+I0305 22:56:40.677017  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I0305 22:56:40.677260  733542 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1772751400677-2f849eb6-9bec-40fc-a119-b61e43ede4c4"
+I0305 22:56:40.677374  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I0305 22:56:40.677413  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400677-2f849eb6-9bec-40fc-a119-b61e43ede4c4
+I0305 22:56:40.677610  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400677-2f849eb6-9bec-40fc-a119-b61e43ede4c4 => 200
+I0305 22:56:40.677650  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I0305 22:56:40.677854  733542 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1772751400677-880697eb-807a-4e67-9b2d-6185112b797d"
+I0305 22:56:40.677972  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I0305 22:56:40.678023  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400677-880697eb-807a-4e67-9b2d-6185112b797d
+I0305 22:56:40.678230  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400677-880697eb-807a-4e67-9b2d-6185112b797d => 200
+I0305 22:56:40.678278  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I0305 22:56:40.678524  733542 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1772751400678-d51a3175-af38-4880-a8c2-671a33094472"
+I0305 22:56:40.678619  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I0305 22:56:40.678659  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400678-d51a3175-af38-4880-a8c2-671a33094472
+I0305 22:56:40.678839  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400678-d51a3175-af38-4880-a8c2-671a33094472 => 200
+I0305 22:56:40.678881  733542 mockgcp_http.go:291] mockgcp request: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes
+I0305 22:56:40.679074  733542 operations.go:121] "storing operation" fqn="projects/mock-project/global/operations/operation-1772751400679-ebbaeedc-3ca4-4f4e-b49c-3e4563efb547"
+I0305 22:56:40.679161  733542 mockgcp_http.go:320] mockgcp response: POST https://compute.googleapis.com/compute/v1/projects/mock-project/global/routes => 200
+I0305 22:56:40.679200  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400679-ebbaeedc-3ca4-4f4e-b49c-3e4563efb547
+I0305 22:56:40.679427  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400679-ebbaeedc-3ca4-4f4e-b49c-3e4563efb547 => 200
+MockGCP Proxy: GET / (Host: 127.0.0.1, Orig: 127.0.0.1:8082)
+I0305 22:56:41.366645  733542 mockgcp_http.go:291] mockgcp request: GET /
+E0305 22:56:41.366665  733542 mockgcp_http.go:339] host name "127.0.0.1" not known.  Please verify the ExpectedHost in service.go and retry.
+2026/03/05 22:56:41 response: 403 -
+I0305 22:56:41.430039  733542 mockgcp_http.go:291] mockgcp request: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400616-ad8b5b78-2361-428f-be95-3917f3431a77
+I0305 22:56:41.430586  733542 mockgcp_http.go:320] mockgcp response: GET https://compute.googleapis.com/compute/v1/projects/mock-project/global/operations/operation-1772751400616-ad8b5b78-2361-428f-be95-3917f3431a77 => 200
