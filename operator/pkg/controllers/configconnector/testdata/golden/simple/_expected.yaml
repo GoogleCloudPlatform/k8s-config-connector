@@ -2204,6 +2204,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - agentregistry.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - aiplatform.cnrm.cloud.google.com
   resources:
   - '*'
@@ -4379,6 +4391,14 @@ metadata:
 rules:
 - apiGroups:
   - accesscontextmanager.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - agentregistry.cnrm.cloud.google.com
   resources:
   - '*'
   verbs:
