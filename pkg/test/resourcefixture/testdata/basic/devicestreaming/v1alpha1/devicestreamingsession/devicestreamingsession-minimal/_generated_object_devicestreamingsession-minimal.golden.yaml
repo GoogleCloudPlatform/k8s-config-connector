@@ -7,11 +7,11 @@ metadata:
   generation: 1
   labels:
     cnrm-test: "true"
-  name: devicestreamingsession-${uniqueId}
+  name: session-min-${uniqueId}
   namespace: ${uniqueId}
 spec:
   androidDevice:
-    androidModelID: Pixel8
+    androidModelID: shiba
     androidVersionID: "34"
   projectRef:
     external: ${projectId}
@@ -22,7 +22,7 @@ status:
     reason: UpToDate
     status: "True"
     type: Ready
-  externalRef: projects/${projectId}/deviceSessions/devicestreamingsession-${uniqueId}
+  externalRef: projects/${projectId}/deviceSessions/session-${uniqueId}
   observedGeneration: 1
   observedState:
     createTime: "1970-01-01T00:00:00Z"
