@@ -257,9 +257,6 @@
 *   [`PubSubTopic`](https://cloud.google.com/config-connector/docs/reference/resource-docs/pubsub/pubsubtopic)
     *   Added `spec.messageStoragePolicy.enforceInTransit` field.
 
-*   [`ComputeRouterNAT`](https://cloud.google.com/config-connector/docs/reference/resource-docs/compute/computerouternat)
-    *   Added Private NAT feature support.
-
 ## Reconciliation Improvements
 
 We have added support for direct reconciliation to more resources, with opt-in behaviour. The API is unchanged. To use the direct reconciler, add the `cnrm.cloud.google.com/reconciler: direct` annotation to the corresponding Config Connector object.
@@ -317,7 +314,6 @@ We have added support for direct reconciliation to more resources, with opt-in b
 *   [`ComposerEnvironment`](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/11001): Fix storageConfig.bucketRef mapping.
 *   [`MemorystoreInstance`](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/11547): Prevent infinite reconciliation drift loop by aligning connections list length.
 *   [`MemorystoreInstance`](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/11559): Prevent false drift and update attempts on unspecified immutable fields.
-*   [`ComputeBackendService`](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/11800): Fix config-connector export tool to export `backend` field.
 *   [`KMSAutokeyConfig`](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9658): Clean up and improve autokey config identity and deletion resolution.
 *   [`BigQuery`](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9623): Fix perpetual diff on tables inheriting dataset encryption.
 *   [`NotebooksInstance`](https://github.com/GoogleCloudPlatform/k8s-config-connector/pull/9810): Fix direct controller for NotebookInstance to resolve references.
