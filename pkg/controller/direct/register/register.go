@@ -152,6 +152,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/storageinsights"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tags"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/tpu"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/transcoder"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/vectorsearch"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/vertexai"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/vertexai/deploymentresourcepool"

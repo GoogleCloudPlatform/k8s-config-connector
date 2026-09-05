@@ -204,8 +204,8 @@ cloud.google.com/go/talent v1.13.0 h1:/nZYKG20ZHfZDr7ikRuDnssxk8fuaDxGR+KH3iB4ga
 cloud.google.com/go/talent v1.13.0/go.mod h1:GSwli9V25WQdzeuJDJWH9TlQmA8lPFn7yKsxowdxW9Y=
 cloud.google.com/go/trace v1.16.0 h1:GmQovzFc5F0CNfl0VLgL64aoTtu7xsM0YajW2GlG9+E=
 cloud.google.com/go/trace v1.16.0/go.mod h1:r+bdAn16dKLSV1G2D5v3e58IlQlizfxWrUfjx7kM7X0=
-cloud.google.com/go/video v1.32.0 h1:9Us/tkhNRg3WY9wIrVC3Jcs1P0nXKE4XnS1zYJ3xTTY=
-cloud.google.com/go/video v1.32.0/go.mod h1:KxDL728ZzH+FJwtEb9XkiLTETW5bI37hTWbJiRYeXkk=
+cloud.google.com/go/video v1.33.0 h1:zPA41kNscRrJeRo/xD73TjNCFAnRDnP9ViNPuWARVeg=
+cloud.google.com/go/video v1.33.0/go.mod h1:hEx8TNpQT6kdjMVsywePvT8BCb63Ee3F/R0GRa9wnzo=
 cloud.google.com/go/vision/v2 v2.15.0 h1:aTR1vj4++WtS9HD6YdGuoaYygMTJ873WaoV9sYjlQCc=
 cloud.google.com/go/vision/v2 v2.15.0/go.mod h1:DUdjdFkXqPvEoPC4WDYFvYCn0LlAZ4vVz29A0bXvW90=
 cloud.google.com/go/vmwareengine v1.8.0 h1:TmHKgTRH+mjq2VaaxrNcXqWyeleX7YaJPvrfWFCn0eE=
