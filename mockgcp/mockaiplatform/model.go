@@ -20,6 +20,7 @@ package mockaiplatform
 
 import (
 	"context"
+	"strconv"
 	"strings"
 	"time"
 
@@ -41,7 +42,11 @@ type modelService struct {
 }
 
 func (s *modelService) UploadModel(ctx context.Context, req *pb.UploadModelRequest) (*longrunning.Operation, error) {
-	reqName := req.Parent + "/models/xia"
+	modelID := req.ModelId
+	if modelID == "" {
+		modelID = "xia"
+	}
+	reqName := req.Parent + "/models/" + modelID
 	name, err := s.parseModelName(reqName)
 	if err != nil {
 		return nil, err
@@ -66,7 +71,7 @@ func (s *modelService) UploadModel(ctx context.Context, req *pb.UploadModelReque
 		CreateTime: timestamppb.New(now),
 		UpdateTime: timestamppb.New(now),
 	}
-	opPrefix := name.String()
+	opPrefix := name.StringWithProjectNumber()
 	return s.operations.StartLRO(ctx, opPrefix, op, func() (proto.Message, error) {
 		// Many fields are not populated in the LRO result
 		result := proto.CloneOf(obj)
@@ -84,6 +89,10 @@ type ModelName struct {
 
 func (n *ModelName) String() string {
 	return "projects/" + n.Project.ID + "/locations/" + n.Location + "/models/" + n.ModelID
+}
+
+func (n *ModelName) StringWithProjectNumber() string {
+	return "projects/" + strconv.FormatInt(n.Project.Number, 10) + "/locations/" + n.Location + "/models/" + n.ModelID
 }
 
 // parseModelName parses a string into a modelName.
@@ -161,7 +170,7 @@ func (s *modelService) DeleteModel(ctx context.Context, req *pb.DeleteModelReque
 		CreateTime: timestamppb.New(now),
 		UpdateTime: timestamppb.New(now),
 	}
-	opPrefix := name.String()
+	opPrefix := name.StringWithProjectNumber()
 
 	return s.operations.DoneLRO(ctx, opPrefix, op, &emptypb.Empty{})
 }
@@ -186,7 +195,7 @@ func (s *modelService) UpdateModel(ctx context.Context, req *pb.UpdateModelReque
 	}
 	for _, path := range paths {
 		switch path {
-		case "displayName":
+		case "displayName", "display_name":
 			obj.DisplayName = req.GetModel().GetDisplayName()
 		case "description":
 			obj.Description = req.GetModel().GetDescription()

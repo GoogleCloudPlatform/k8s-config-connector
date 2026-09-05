@@ -43,6 +43,10 @@ func (i *AIPlatformModelIdentity) String() string {
 	return AIPlatformModelIdentityFormat.ToString(*i)
 }
 
+func (i *AIPlatformModelIdentity) ParentString() string {
+	return "projects/" + i.Project + "/locations/" + i.Location
+}
+
 func (i *AIPlatformModelIdentity) FromExternal(ref string) error {
 	parsed, match, err := AIPlatformModelIdentityFormat.Parse(ref)
 	if err != nil {
