@@ -1,0 +1,53 @@
+31,32c31
+<     "enabled": true,
+<     "terminalStorageClass": "NEARLINE"
+---
+>     "enabled": true
+44,46d42
+<   "lifecycle": {
+<     "rule": []
+<   },
+162,163c158,163
+<     "enabled": true,
+<     "terminalStorageClass": "ARCHIVE"
+---
+>     "enabled": true
+>   },
+>   "iamConfiguration": {
+>     "uniformBucketLevelAccess": {
+>       "enabled": true
+>     }
+170c170,173
+<   }
+---
+>   },
+>   "location": "US",
+>   "name": "storagebucket-autoclass-ns-${uniqueId}",
+>   "storageClass": "NEARLINE"
+183c186
+<     "terminalStorageClass": "ARCHIVE",
+---
+>     "terminalStorageClass": "NEARLINE",
+237c240
+<     "terminalStorageClass": "ARCHIVE",
+---
+>     "terminalStorageClass": "NEARLINE",
+276,293d278
+< }
+< 
+< ---
+< 
+< GET https://storage.googleapis.com/storage/v1/b/storagebucket-autoclass-ns-${uniqueId}/o?alt=json&prettyPrint=false&versions=true
+< 
+< 200 OK
+< Content-Type: application/json; charset=UTF-8
+< Server: UploadServer
+< Vary: Origin
+< Vary: X-Origin
+< 
+< {
+<   "kind": "storage#objects",
+<   "prefixes": [
+<     "testfolder",
+<     "testmanagedfolder"
+<   ]
