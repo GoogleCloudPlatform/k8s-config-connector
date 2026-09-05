@@ -61,12 +61,6 @@ func (i *SQLAdminBackupIdentity) Host() string {
 
 func getIdentityFromSQLAdminBackupSpec(ctx context.Context, reader client.Reader, obj *SQLAdminBackup) (*SQLAdminBackupIdentity, error) {
 	resourceID := common.ValueOf(obj.Spec.ResourceID)
-	if resourceID == "" {
-		resourceID = obj.GetName()
-	}
-	if resourceID == "" {
-		return nil, fmt.Errorf("cannot resolve resource ID")
-	}
 
 	projectID, err := refsv1beta1.ResolveProjectID(ctx, reader, obj)
 	if err != nil {
@@ -95,8 +89,16 @@ func (obj *SQLAdminBackup) GetIdentity(ctx context.Context, reader client.Reader
 			return nil, err
 		}
 
-		if statusIdentity.String() != specIdentity.String() {
-			return nil, fmt.Errorf("cannot change SQLAdminBackup identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+		specID := common.ValueOf(obj.Spec.ResourceID)
+		if specID == "" {
+			if statusIdentity.Project != specIdentity.Project {
+				return nil, fmt.Errorf("cannot change SQLAdminBackup identity (old project=%q, new project=%q)", statusIdentity.Project, specIdentity.Project)
+			}
+			return statusIdentity, nil
+		}
+
+		if statusIdentity.Backup != specID {
+			return nil, fmt.Errorf("cannot change SQLAdminBackup identity (old=%q, new=%q)", statusIdentity.Backup, specID)
 		}
 	}
 
