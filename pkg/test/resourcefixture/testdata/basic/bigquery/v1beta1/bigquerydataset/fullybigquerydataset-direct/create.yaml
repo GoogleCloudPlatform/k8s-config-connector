@@ -35,4 +35,6 @@ spec:
   access:
     - role: OWNER
       specialGroup: projectOwners
+    - role: OWNER
+      userByEmail: ${serviceAccountEmail}
   storageBillingModel: LOGICAL
