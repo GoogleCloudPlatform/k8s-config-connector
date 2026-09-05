@@ -248,6 +248,7 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 
 		// Model Armor
 		"//modelarmor.googleapis.com/projects/{}/locations/{}/templates/{}": true,
+		"//modelarmor.googleapis.com/projects/{}/locations/{}/floorSetting": true,
 
 		// Network Connectivity
 		"//networkconnectivity.googleapis.com/projects/{}/locations/{}/regionalEndpoints/{}":             true,

@@ -30,6 +30,42 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func AiPlatformFloorSetting_FromProto(mapCtx *direct.MapContext, in *pb.AiPlatformFloorSetting) *krm.AiPlatformFloorSetting {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AiPlatformFloorSetting{}
+	out.InspectOnly = direct.LazyPtr(in.GetInspectOnly())
+	out.InspectAndBlock = direct.LazyPtr(in.GetInspectAndBlock())
+	out.EnableCloudLogging = direct.LazyPtr(in.GetEnableCloudLogging())
+	return out
+}
+func AiPlatformFloorSetting_ToProto(mapCtx *direct.MapContext, in *krm.AiPlatformFloorSetting) *pb.AiPlatformFloorSetting {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AiPlatformFloorSetting{}
+	if oneof := AiPlatformFloorSetting_InspectOnly_ToProto(mapCtx, in.InspectOnly); oneof != nil {
+		out.EnforcementType = oneof
+	}
+	if oneof := AiPlatformFloorSetting_InspectAndBlock_ToProto(mapCtx, in.InspectAndBlock); oneof != nil {
+		out.EnforcementType = oneof
+	}
+	out.EnableCloudLogging = direct.ValueOf(in.EnableCloudLogging)
+	return out
+}
+func AiPlatformFloorSetting_InspectOnly_ToProto(mapCtx *direct.MapContext, in *bool) *pb.AiPlatformFloorSetting_InspectOnly {
+	if in == nil {
+		return nil
+	}
+	return &pb.AiPlatformFloorSetting_InspectOnly{InspectOnly: *in}
+}
+func AiPlatformFloorSetting_InspectAndBlock_ToProto(mapCtx *direct.MapContext, in *bool) *pb.AiPlatformFloorSetting_InspectAndBlock {
+	if in == nil {
+		return nil
+	}
+	return &pb.AiPlatformFloorSetting_InspectAndBlock{InspectAndBlock: *in}
+}
 func FilterConfig_FromProto(mapCtx *direct.MapContext, in *pb.FilterConfig) *krm.FilterConfig {
 	if in == nil {
 		return nil
@@ -66,6 +102,52 @@ func MaliciousURIFilterSettings_ToProto(mapCtx *direct.MapContext, in *krm.Malic
 	}
 	out := &pb.MaliciousUriFilterSettings{}
 	out.FilterEnforcement = direct.Enum_ToProto[pb.MaliciousUriFilterSettings_MaliciousUriFilterEnforcement](mapCtx, in.FilterEnforcement)
+	return out
+}
+func ModelArmorFloorSettingObservedState_FromProto(mapCtx *direct.MapContext, in *pb.FloorSetting) *krm.ModelArmorFloorSettingObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ModelArmorFloorSettingObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func ModelArmorFloorSettingObservedState_ToProto(mapCtx *direct.MapContext, in *krm.ModelArmorFloorSettingObservedState) *pb.FloorSetting {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FloorSetting{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+func ModelArmorFloorSettingSpec_FromProto(mapCtx *direct.MapContext, in *pb.FloorSetting) *krm.ModelArmorFloorSettingSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.ModelArmorFloorSettingSpec{}
+	// MISSING: Name
+	out.FilterConfig = FilterConfig_FromProto(mapCtx, in.GetFilterConfig())
+	out.EnableFloorSettingEnforcement = in.EnableFloorSettingEnforcement
+	out.IntegratedServices = direct.EnumSlice_FromProto(mapCtx, in.IntegratedServices)
+	out.AiPlatformFloorSetting = AiPlatformFloorSetting_FromProto(mapCtx, in.GetAiPlatformFloorSetting())
+	out.FloorSettingMetadata = FloorSetting_FloorSettingMetadata_FromProto(mapCtx, in.GetFloorSettingMetadata())
+	return out
+}
+func ModelArmorFloorSettingSpec_ToProto(mapCtx *direct.MapContext, in *krm.ModelArmorFloorSettingSpec) *pb.FloorSetting {
+	if in == nil {
+		return nil
+	}
+	out := &pb.FloorSetting{}
+	// MISSING: Name
+	out.FilterConfig = FilterConfig_ToProto(mapCtx, in.FilterConfig)
+	out.EnableFloorSettingEnforcement = in.EnableFloorSettingEnforcement
+	out.IntegratedServices = direct.EnumSlice_ToProto[pb.FloorSetting_IntegratedService](mapCtx, in.IntegratedServices)
+	out.AiPlatformFloorSetting = AiPlatformFloorSetting_ToProto(mapCtx, in.AiPlatformFloorSetting)
+	out.FloorSettingMetadata = FloorSetting_FloorSettingMetadata_ToProto(mapCtx, in.FloorSettingMetadata)
 	return out
 }
 func ModelArmorTemplateObservedState_FromProto(mapCtx *direct.MapContext, in *pb.Template) *krm.ModelArmorTemplateObservedState {
