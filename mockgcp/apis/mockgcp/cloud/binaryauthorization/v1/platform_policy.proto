@@ -14,14 +14,16 @@
 
 syntax = "proto3";
 
-package google.cloud.binaryauthorization.v1;
+package mockgcp.cloud.binaryauthorization.v1;
 
+import "google/api/annotations.proto";
 import "google/api/field_behavior.proto";
 import "google/api/resource.proto";
+import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
-import "google/cloud/binaryauthorization/v1/resources.proto";
+import "mockgcp/cloud/binaryauthorization/v1/resources.proto";
 
-option go_package = "cloud.google.com/go/binaryauthorization/apiv1/binaryauthorizationpb;binaryauthorizationpb";
+option go_package = "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/mockgcp/cloud/binaryauthorization/v1;binaryauthorizationpb";
 
 message PlatformPolicy {
   option (google.api.resource) = {
@@ -144,4 +146,51 @@ message VulnerabilityCheck {
   MaximumFixableSeverity maximum_fixable_severity = 3 [(google.api.field_behavior) = REQUIRED];
   repeated string allowed_cves = 4 [(google.api.field_behavior) = OPTIONAL];
   repeated string container_analysis_vulnerability_projects = 5 [(google.api.field_behavior) = OPTIONAL];
+}
+
+service PlatformPolicyViewer {
+  rpc GetPlatformPolicy(GetPlatformPolicyRequest) returns (PlatformPolicy) {
+    option (google.api.http) = {
+      get: "/v1/{name=projects/*/platforms/*/policies/*}"
+    };
+  }
+
+  rpc CreatePlatformPolicy(CreatePlatformPolicyRequest) returns (PlatformPolicy) {
+    option (google.api.http) = {
+      post: "/v1/{parent=projects/*/platforms/*}/policies"
+      body: "platform_policy"
+    };
+  }
+
+  rpc ReplacePlatformPolicy(ReplacePlatformPolicyRequest) returns (PlatformPolicy) {
+    option (google.api.http) = {
+      put: "/v1/{name=projects/*/platforms/*/policies/*}"
+      body: "platform_policy"
+    };
+  }
+
+  rpc DeletePlatformPolicy(DeletePlatformPolicyRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/v1/{name=projects/*/platforms/*/policies/*}"
+    };
+  }
+}
+
+message GetPlatformPolicyRequest {
+  string name = 1;
+}
+
+message CreatePlatformPolicyRequest {
+  string parent = 1;
+  string policy_id = 2;
+  PlatformPolicy platform_policy = 3;
+}
+
+message ReplacePlatformPolicyRequest {
+  string name = 1;
+  PlatformPolicy platform_policy = 2;
+}
+
+message DeletePlatformPolicyRequest {
+  string name = 1;
 }
