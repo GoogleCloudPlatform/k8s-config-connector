@@ -252,17 +252,11 @@ func (r *ParentReconciler) determineControllerType(ctx context.Context, u *unstr
 		}
 	}
 
-	// Check for CCC setting
-	_, ccc, err := kccstate.FetchLiveKCCState(ctx, r.Client, types.NamespacedName{Namespace: u.GetNamespace(), Name: u.GetName()})
-	if err != nil {
-		return "", fmt.Errorf("error fetching kcc state: %w", err)
-	}
-	if ccc.Spec.Experiments != nil {
-		for k, v := range ccc.Spec.Experiments.ControllerOverrides {
-			if k == r.gvk.GroupKind().String() {
-				return v, nil
-			}
-		}
+	// Check for CC or CCC overrides
+	if reconcilerType, ok, err := r.getControllerOverrides(ctx, u); err != nil {
+		return "", err
+	} else if ok {
+		return reconcilerType, nil
 	}
 
 	// Fallback to static config
@@ -273,4 +267,32 @@ func (r *ParentReconciler) determineControllerType(ctx context.Context, u *unstr
 		return "", fmt.Errorf("error getting controller config found for GroupKind %v", gk)
 	}
 	return config.DefaultController, nil
+}
+
+// getControllerOverrides fetches the live KCC state and returns the controller override
+// for the current resource's GroupKind if one is defined in either ConfigConnectorContext
+// or global ConfigConnector. The namespace-scoped ConfigConnectorContext overrides take
+// precedence over global ConfigConnector overrides. Returns the overridden ReconcilerType,
+// a boolean indicating whether an override was matched, and any fetch errors.
+func (r *ParentReconciler) getControllerOverrides(ctx context.Context, u *unstructured.Unstructured) (k8s.ReconcilerType, bool, error) {
+	cc, ccc, err := kccstate.FetchLiveKCCState(ctx, r.Client, types.NamespacedName{Namespace: u.GetNamespace(), Name: u.GetName()})
+	if err != nil {
+		return "", false, fmt.Errorf("error fetching kcc state: %w", err)
+	}
+
+	gk := r.gvk.GroupKind().String()
+
+	if ccc.Spec.Experiments != nil {
+		if override, ok := ccc.Spec.Experiments.ControllerOverrides[gk]; ok {
+			return override, true, nil
+		}
+	}
+
+	if cc.Spec.Experiments != nil {
+		if override, ok := cc.Spec.Experiments.ControllerOverrides[gk]; ok {
+			return override, true, nil
+		}
+	}
+
+	return "", false, nil
 }
