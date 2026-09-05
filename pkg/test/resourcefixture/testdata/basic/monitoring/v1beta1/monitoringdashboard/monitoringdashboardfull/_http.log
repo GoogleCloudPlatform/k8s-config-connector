@@ -1,6 +1,6 @@
 POST https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 {
   "combiner": "AND_WITH_MATCHING_RESOURCE",
@@ -74,7 +74,7 @@ X-Xss-Protection: 0
         }
       },
       "displayName": "Very high CPU usage",
-      "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+      "name": "projects/${projectId}/alertPolicies/${alertPolicyId}/conditions/${conditionID}"
     }
   ],
   "creationRecord": {
@@ -87,7 +87,7 @@ X-Xss-Protection: 0
     "mutateTime": "2024-04-01T12:34:56.123456Z",
     "mutatedBy": "user@example.com"
   },
-  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyId}",
   "userLabels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
@@ -98,7 +98,7 @@ X-Xss-Protection: 0
 
 GET https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies/${alertPolicyID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -136,7 +136,7 @@ X-Xss-Protection: 0
         }
       },
       "displayName": "Very high CPU usage",
-      "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+      "name": "projects/${projectId}/alertPolicies/${alertPolicyId}/conditions/${conditionID}"
     }
   ],
   "creationRecord": {
@@ -149,7 +149,7 @@ X-Xss-Protection: 0
     "mutateTime": "2024-04-01T12:34:56.123456Z",
     "mutatedBy": "user@example.com"
   },
-  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyId}",
   "userLabels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
@@ -160,7 +160,7 @@ X-Xss-Protection: 0
 
 GET https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/${dashboardID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Fdashboards%2F${dashboardID}
 
 404 Not Found
@@ -185,7 +185,7 @@ X-Xss-Protection: 0
 
 POST https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: parent=projects%2F${projectId}
 
 {
@@ -290,7 +290,7 @@ X-Goog-Request-Params: parent=projects%2F${projectId}
           },
           {
             "alertChart": {
-              "name": "projects/${projectId}/alertPolicies/${alertPolicyID}"
+              "name": "projects/${projectId}/alertPolicies/${alertPolicyId}"
             },
             "title": "AlertChart Widget"
           },
@@ -378,7 +378,7 @@ X-Goog-Request-Params: parent=projects%2F${projectId}
                 }
               ],
               "policyNames": [
-                "alertPolicies/${alertPolicyID}"
+                "alertPolicies/${alertPolicyId}"
               ]
             },
             "title": "IncidentList Widget"
@@ -516,7 +516,7 @@ X-Xss-Protection: 0
           },
           {
             "alertChart": {
-              "name": "projects/${projectId}/alertPolicies/${alertPolicyID}"
+              "name": "projects/${projectId}/alertPolicies/${alertPolicyId}"
             },
             "title": "AlertChart Widget"
           },
@@ -605,7 +605,7 @@ X-Xss-Protection: 0
                 }
               ],
               "policyNames": [
-                "alertPolicies/${alertPolicyID}"
+                "alertPolicies/${alertPolicyId}"
               ]
             },
             "title": "IncidentList Widget"
@@ -635,7 +635,7 @@ X-Xss-Protection: 0
 
 GET https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/${dashboardID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Fdashboards%2F${dashboardID}
 
 200 OK
@@ -751,7 +751,7 @@ X-Xss-Protection: 0
           },
           {
             "alertChart": {
-              "name": "projects/${projectId}/alertPolicies/${alertPolicyID}"
+              "name": "projects/${projectId}/alertPolicies/${alertPolicyId}"
             },
             "title": "AlertChart Widget"
           },
@@ -840,7 +840,7 @@ X-Xss-Protection: 0
                 }
               ],
               "policyNames": [
-                "alertPolicies/${alertPolicyID}"
+                "alertPolicies/${alertPolicyId}"
               ]
             },
             "title": "IncidentList Widget"
@@ -870,7 +870,7 @@ X-Xss-Protection: 0
 
 PATCH https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/${dashboardID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: dashboard.name=projects%2F${projectId}%2Fdashboards%2F${dashboardID}
 
 {
@@ -975,7 +975,7 @@ X-Goog-Request-Params: dashboard.name=projects%2F${projectId}%2Fdashboards%2F${d
           },
           {
             "alertChart": {
-              "name": "projects/${projectId}/alertPolicies/${alertPolicyID}"
+              "name": "projects/${projectId}/alertPolicies/${alertPolicyId}"
             },
             "title": "AlertChart Widget"
           },
@@ -1063,7 +1063,7 @@ X-Goog-Request-Params: dashboard.name=projects%2F${projectId}%2Fdashboards%2F${d
                 }
               ],
               "policyNames": [
-                "alertPolicies/${alertPolicyID}"
+                "alertPolicies/${alertPolicyId}"
               ]
             },
             "title": "IncidentList Widget"
@@ -1202,7 +1202,7 @@ X-Xss-Protection: 0
           },
           {
             "alertChart": {
-              "name": "projects/${projectId}/alertPolicies/${alertPolicyID}"
+              "name": "projects/${projectId}/alertPolicies/${alertPolicyId}"
             },
             "title": "AlertChart Widget"
           },
@@ -1291,7 +1291,7 @@ X-Xss-Protection: 0
                 }
               ],
               "policyNames": [
-                "alertPolicies/${alertPolicyID}"
+                "alertPolicies/${alertPolicyId}"
               ]
             },
             "title": "IncidentList Widget"
@@ -1321,7 +1321,7 @@ X-Xss-Protection: 0
 
 GET https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/${dashboardID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Fdashboards%2F${dashboardID}
 
 200 OK
@@ -1437,7 +1437,7 @@ X-Xss-Protection: 0
           },
           {
             "alertChart": {
-              "name": "projects/${projectId}/alertPolicies/${alertPolicyID}"
+              "name": "projects/${projectId}/alertPolicies/${alertPolicyId}"
             },
             "title": "AlertChart Widget"
           },
@@ -1526,7 +1526,7 @@ X-Xss-Protection: 0
                 }
               ],
               "policyNames": [
-                "alertPolicies/${alertPolicyID}"
+                "alertPolicies/${alertPolicyId}"
               ]
             },
             "title": "IncidentList Widget"
@@ -1556,7 +1556,7 @@ X-Xss-Protection: 0
 
 DELETE https://monitoring.googleapis.com/v1/projects/${projectId}/dashboards/${dashboardID}?%24alt=json%3Benum-encoding%3Dint
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 X-Goog-Request-Params: name=projects%2F${projectId}%2Fdashboards%2F${dashboardID}
 
 200 OK
@@ -1575,7 +1575,7 @@ X-Xss-Protection: 0
 
 GET https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies/${alertPolicyID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
@@ -1613,7 +1613,7 @@ X-Xss-Protection: 0
         }
       },
       "displayName": "Very high CPU usage",
-      "name": "projects/${projectId}/alertPolicies/${alertPolicyID}/conditions/${conditionID}"
+      "name": "projects/${projectId}/alertPolicies/${alertPolicyId}/conditions/${conditionID}"
     }
   ],
   "creationRecord": {
@@ -1626,7 +1626,7 @@ X-Xss-Protection: 0
     "mutateTime": "2024-04-01T12:34:56.123456Z",
     "mutatedBy": "user@example.com"
   },
-  "name": "projects/${projectId}/alertPolicies/${alertPolicyID}",
+  "name": "projects/${projectId}/alertPolicies/${alertPolicyId}",
   "userLabels": {
     "cnrm-test": "true",
     "managed-by-cnrm": "true"
@@ -1637,7 +1637,7 @@ X-Xss-Protection: 0
 
 DELETE https://monitoring.googleapis.com/v3/projects/${projectId}/alertPolicies/${alertPolicyID}?alt=json
 Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} (mockgcp)
 
 200 OK
 Content-Type: application/json; charset=UTF-8
