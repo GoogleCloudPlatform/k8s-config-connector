@@ -6,6 +6,7 @@ If a decision needs to be made or changed, please file an issue for that decisio
 | Short Name | Brief Description | Date of Decision | Status | Link to More Details |
 | :--- | :--- | :--- | :--- | :--- |
 | Labels in Direct Resources | Use Kubernetes `metadata.labels` as the single source of truth for GCP labels (for now). Remove `labels` from `Spec`. | 2025-10-09 | Current | [Link](../ai/handle-labels-for-direct-resource.md) |
+| Labels Migration for Brownfield | Automated label propagation and E2E fixture checks for migrated resources. | 2026-07-10 | Proposed | [Link](../designs/labels-migration-for-brownfield-resources.md) |
 | Server Generated ID | Use `status.externalRef` for server-generated IDs. For migrated resources, continue writing to `spec.resourceID` for compatibility if status into spec is set to merge. | 2025-12-03 | Current | [Link](../ai/server-generated-id.md) |
 | Structured Diff Output | Ensure Direct controllers have a structured diff output during reconciliation and support safer upgrade. | 2026-01-01 | Current | |
 | Start Reconcile Field | All Direct controllers should have a `status.startReconcile` field populated when reconciliation begins and which is cleared when reconciliation finishes. | 2026-01-01 | Proposed | |
