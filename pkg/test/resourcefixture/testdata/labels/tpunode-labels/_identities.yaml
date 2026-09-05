@@ -1,0 +1,6 @@
+- caisURL: unknown
+  group: tpu.cnrm.cloud.google.com
+  kind: TPUNode
+  name: tpunode-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1
