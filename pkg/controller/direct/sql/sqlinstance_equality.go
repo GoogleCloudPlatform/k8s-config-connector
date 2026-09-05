@@ -20,6 +20,7 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/privateca/privatecarefs"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/structuredreporting"
 	api "google.golang.org/api/sqladmin/v1beta4"
 )
@@ -506,6 +507,9 @@ func DiffIpConfiguration(desired *api.IpConfiguration, actual *api.IpConfigurati
 		diff.AddField(".settings.ipConfiguration.allocatedIpRange", actual.AllocatedIpRange, desired.AllocatedIpRange)
 	}
 	diff.AddDiff(DiffAclEntryLists(desired.AuthorizedNetworks, actual.AuthorizedNetworks))
+	if !stringSlicesSetEqual(desired.CustomSubjectAlternativeNames, actual.CustomSubjectAlternativeNames) {
+		diff.AddField(".settings.ipConfiguration.customSubjectAlternativeNames", actual.CustomSubjectAlternativeNames, desired.CustomSubjectAlternativeNames)
+	}
 	if desired.EnablePrivatePathForGoogleCloudServices != actual.EnablePrivatePathForGoogleCloudServices {
 		diff.AddField(".settings.ipConfiguration.enablePrivatePathForGoogleCloudServices", actual.EnablePrivatePathForGoogleCloudServices, desired.EnablePrivatePathForGoogleCloudServices)
 	}
@@ -519,13 +523,53 @@ func DiffIpConfiguration(desired *api.IpConfiguration, actual *api.IpConfigurati
 	if desired.RequireSsl != actual.RequireSsl {
 		diff.AddField(".settings.ipConfiguration.requireSsl", actual.RequireSsl, desired.RequireSsl)
 	}
-	// Ignore ServerCaMode. It is not supported in KRM API.
+	desiredServerCaMode := desired.ServerCaMode
+	actualServerCaMode := actual.ServerCaMode
+	if desiredServerCaMode == "" {
+		desiredServerCaMode = "GOOGLE_MANAGED_INTERNAL_CA"
+	}
+	if actualServerCaMode == "" {
+		actualServerCaMode = "GOOGLE_MANAGED_INTERNAL_CA"
+	}
+	if desiredServerCaMode != actualServerCaMode {
+		diff.AddField(".settings.ipConfiguration.serverCaMode", actual.ServerCaMode, desired.ServerCaMode)
+	}
+	if normalizeCaPool(desired.ServerCaPool) != normalizeCaPool(actual.ServerCaPool) {
+		diff.AddField(".settings.ipConfiguration.serverCaPool", actual.ServerCaPool, desired.ServerCaPool)
+	}
 	if desired.SslMode != actual.SslMode {
 		diff.AddField(".settings.ipConfiguration.sslMode", actual.SslMode, desired.SslMode)
 	}
 	// Ignore ForceSendFields. Assume it is set correctly in desired.
 	// Ignore NullFields. Assume it is set correctly in desired.
 	return diff
+}
+
+func normalizeCaPool(s string) string {
+	s = privatecarefs.StripCAPoolPrefix(s)
+	s = strings.TrimPrefix(s, "https://privateca.googleapis.com/v1/")
+	s = strings.TrimPrefix(s, "https://privateca.googleapis.com/")
+	return s
+}
+
+func stringSlicesSetEqual(a, b []string) bool {
+	if len(a) != len(b) {
+		return false
+	}
+	if len(a) == 0 {
+		return true
+	}
+	m := make(map[string]int, len(a))
+	for _, v := range a {
+		m[v]++
+	}
+	for _, v := range b {
+		if m[v] == 0 {
+			return false
+		}
+		m[v]--
+	}
+	return true
 }
 
 // AclEntriesByName implements sort.Interface for []*api.AclEntry based on the Name field.

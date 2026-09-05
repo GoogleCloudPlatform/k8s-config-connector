@@ -56,7 +56,11 @@ func (s *MockService) ConfigureVisitor(url string, visitor mockgcpregistry.Norma
 
 	visitor.ReplacePath(".caCertificateDescriptions[].certFingerprint.sha256Hash", sha256)
 	visitor.ReplacePath(".caCertificateDescriptions[].tbsCertificateDigest", sha256)
+	visitor.ReplacePath(".caCertificateDescriptions[].publicKey.key", DummyPublicKeyBase64)
 	visitor.RemovePath(".caCertificateDescriptions[].publicKey.format")
+	visitor.TransformString(".pemCaCertificates[]", func(string) string {
+		return "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n"
+	})
 	visitor.ReplacePath(".accessUrls.caCertificateAccessUrl", "http://privateca-content-00000000-0000-0000-0000-000000000000.storage.googleapis.com/ca.crt")
 	visitor.ReplacePath(".accessUrls.crlAccessUrls[]", "http://privateca-content-00000000-0000-0000-0000-000000000000.storage.googleapis.com/crl")
 
@@ -70,7 +74,11 @@ func (s *MockService) ConfigureVisitor(url string, visitor mockgcpregistry.Norma
 	visitor.ReplacePath(".response.caCertificateDescriptions[].subjectKeyId.keyId", keyId)
 	visitor.ReplacePath(".response.caCertificateDescriptions[].certFingerprint.sha256Hash", sha256)
 	visitor.ReplacePath(".response.caCertificateDescriptions[].tbsCertificateDigest", sha256)
+	visitor.ReplacePath(".response.caCertificateDescriptions[].publicKey.key", DummyPublicKeyBase64)
 	visitor.RemovePath(".response.caCertificateDescriptions[].publicKey.format")
+	visitor.TransformString(".response.pemCaCertificates[]", func(string) string {
+		return "-----BEGIN CERTIFICATE-----\n-----END CERTIFICATE-----\n"
+	})
 	visitor.ReplacePath(".response.accessUrls.caCertificateAccessUrl", "http://privateca-content-00000000-0000-0000-0000-000000000000.storage.googleapis.com/ca.crt")
 	visitor.ReplacePath(".response.accessUrls.crlAccessUrls[]", "http://privateca-content-00000000-0000-0000-0000-000000000000.storage.googleapis.com/crl")
 }

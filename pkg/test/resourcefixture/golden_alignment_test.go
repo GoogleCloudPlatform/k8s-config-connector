@@ -633,6 +633,34 @@ func normalizeRepresentation(obj interface{}) interface{} {
 				v["status"] = "RUNNING"
 			}
 		}
+		if kind, ok := v["kind"].(string); ok && kind == "sql#instance" {
+			delete(v, "databaseInstalledVersion")
+			delete(v, "maintenanceVersion")
+			delete(v, "upgradableDatabaseVersions")
+			delete(v, "dnsName")
+			delete(v, "dnsNames")
+			delete(v, "geminiConfig")
+			delete(v, "includeReplicasForMajorVersionUpgrade")
+			if settings, ok := v["settings"].(map[string]interface{}); ok {
+				delete(settings, "enableDataplexIntegration")
+				delete(settings, "replicationLagMaxSeconds")
+				if ipConfig, ok := settings["ipConfiguration"].(map[string]interface{}); ok {
+					delete(ipConfig, "serverCertificateRotationMode")
+				}
+				if backupConfig, ok := settings["backupConfiguration"].(map[string]interface{}); ok {
+					delete(backupConfig, "backupTier")
+				}
+			}
+		}
+		if kind, ok := v["kind"].(string); ok && kind == "sql#usersList" {
+			if items, ok := v["items"].([]interface{}); ok {
+				for _, item := range items {
+					if m, ok := item.(map[string]interface{}); ok {
+						delete(m, "passwordPolicy")
+					}
+				}
+			}
+		}
 		if kind, ok := v["kind"].(string); ok && kind == "compute#backendService" {
 			delete(v, "port")
 			delete(v, "portName")
