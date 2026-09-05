@@ -163,6 +163,7 @@ PROTO_FILES=(
     ${VERSION_DIR}/google/storage/v1/*.proto
     ${VERSION_DIR}/google/pubsub/v1/*.proto
     ${VERSION_DIR}/google/maps/mapmanagement/*/*.proto
+    ${VERSION_DIR}/google/maps/mapsplatformdatasets/*/*.proto
     ${VERSION_DIR}/google/cloud/memorystore/v1/*.proto
     ${VERSION_DIR}/google/container/*/*.proto
     ${VERSION_DIR}/google/privacy/dlp/v2/*.proto
