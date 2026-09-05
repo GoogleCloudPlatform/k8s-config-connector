@@ -402,6 +402,24 @@ func compareComputeInstanceGroupManager(ctx context.Context, actual, desired *pb
 				}
 			}
 		}
+		if obj.UpdatePolicy == nil {
+			obj.UpdatePolicy = &pb.InstanceGroupManagerUpdatePolicy{}
+		}
+		if obj.UpdatePolicy.ReplacementMethod == nil {
+			val := "SUBSTITUTE"
+			obj.UpdatePolicy.ReplacementMethod = &val
+		}
+		if obj.UpdatePolicy.Type == nil {
+			val := "OPPORTUNISTIC"
+			obj.UpdatePolicy.Type = &val
+		}
+		if obj.InstanceTemplate != nil && len(obj.Versions) == 0 {
+			obj.Versions = []*pb.InstanceGroupManagerVersion{
+				{
+					InstanceTemplate: obj.InstanceTemplate,
+				},
+			}
+		}
 	}
 
 	populateDefaults(clonedDesired)
