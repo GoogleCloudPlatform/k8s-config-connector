@@ -15,7 +15,13 @@ import json
 
 def run(cmd):
     print(f"Running command: {' '.join(cmd)}")
-    return subprocess.run(cmd, check=True, capture_output=True, text=True)
+    try:
+        return subprocess.run(cmd, check=True, capture_output=True, text=True)
+    except subprocess.CalledProcessError as e:
+        print(f"Command failed with exit code {e.returncode}")
+        print(f"Stderr: {e.stderr}")
+        print(f"Stdout: {e.stdout}")
+        raise
 
 
 def main():
@@ -39,9 +45,41 @@ def main():
     github_username = run(["gh", "api", "user", "-q", ".login"]).stdout.strip()
     user_fork = f"https://github.com/{github_username}/k8s-config-connector"
 
+    # Clean up any leftover branches from previous runs
+    print("Cleaning up potentially stale local and remote branches...")
+    try:
+        run(["git", "branch", "-D", branch_name])
+        print(f"Successfully deleted stale local branch '{branch_name}'.")
+    except subprocess.CalledProcessError as e:
+        if "not found" in e.stderr:
+            print(f"Local branch '{branch_name}' did not exist, which is clean. Continuing.")
+        elif "used by worktree" in e.stderr:
+            print(f"Branch '{branch_name}' is locked by an orphaned worktree. Please clean it up manually.")
+            print("Run 'git worktree list' to see orphaned worktrees.")
+            print("Run 'git worktree remove --force <path>' to remove it.")
+            sys.exit(1)
+        else:
+            print(f"An unexpected error occurred while deleting the local branch:")
+            print(f"Stderr: {e.stderr}")
+            raise
+
+    try:
+        run(["git", "push", user_fork, "--delete", branch_name])
+        print(f"Successfully deleted stale remote branch '{branch_name}'.")
+    except subprocess.CalledProcessError as e:
+        if "remote ref does not exist" in e.stderr:
+            print(f"Remote branch '{branch_name}' did not exist, which is clean. Continuing.")
+        else:
+            print(f"An unexpected error occurred while deleting the remote branch:")
+            print(f"Stderr: {e.stderr}")
+            raise
+
     # Create a temporary worktree
-    with tempfile.TemporaryDirectory() as tmpdir:
-        run(["git", "worktree", "add", "-b", branch_name, tmpdir, release_branch])
+    tmpdir = tempfile.mkdtemp()
+    try:
+        # We base the new branch on the upstream branch to ensure it's clean
+        run(["git", "worktree", "add", "-b", branch_name, tmpdir, f"upstream/{release_branch}"])
+        # run(["git", "worktree", "add", "-b", branch_name, tmpdir, release_branch])
         os.chdir(tmpdir)
 
         # Cherry-pick the commits
@@ -55,7 +93,9 @@ def main():
         pr_output = run(["gh", "pr", "create", "--title", pr_title, "--body", pr_body, "--base", release_branch, "--head", f"{github_username}:{branch_name}"]).stdout.strip()
         print(f"Created PR for cherry-pick: {pr_output}")
 
+    finally:
         # Remove the worktree
+        print("Cleaning up worktree...")
         os.chdir(repo_root)
         run(["git", "worktree", "remove", tmpdir, "--force"])
 
