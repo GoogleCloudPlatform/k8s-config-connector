@@ -403,16 +403,25 @@ func validateResourceReferences(t *testing.T, rc v1alpha1.ResourceConfig) {
 		if len(refConfig.Types) == 0 {
 			assertTypeConfig(t, rc, refConfig, refConfig.TypeConfig)
 		} else {
-			if !reflect.DeepEqual(refConfig.TypeConfig, emptyTypeConfig) {
-				t.Errorf("should not fill the inline TypeConfig if Types is specified")
-			}
+			usesKindDiscriminator := refConfig.Types[0].Key == ""
 			for _, typeConfig := range refConfig.Types {
 				assertTypeConfig(t, rc, refConfig, typeConfig)
-			}
-			for _, typeConfig := range refConfig.Types {
-				if typeConfig.Key == "" {
-					t.Errorf("the ReferenceConfig for tfField %v has multiple types, but not all types have a key specified, like: %+v", refConfig.TFField, typeConfig)
+				if (typeConfig.Key == "") != usesKindDiscriminator {
+					t.Errorf("the ReferenceConfig for tfField %v mixes keyed and kind-discriminated types", refConfig.TFField)
 				}
+			}
+
+			if usesKindDiscriminator {
+				if refConfig.Key == "" {
+					t.Errorf("the kind-discriminated ReferenceConfig for tfField %v must specify its field key", refConfig.TFField)
+				}
+				inlineWithoutKey := refConfig.TypeConfig
+				inlineWithoutKey.Key = ""
+				if !reflect.DeepEqual(inlineWithoutKey, emptyTypeConfig) {
+					t.Errorf("the kind-discriminated ReferenceConfig for tfField %v must only set Key in the inline TypeConfig", refConfig.TFField)
+				}
+			} else if !reflect.DeepEqual(refConfig.TypeConfig, emptyTypeConfig) {
+				t.Errorf("should not fill the inline TypeConfig if keyed Types are specified")
 			}
 		}
 	}
