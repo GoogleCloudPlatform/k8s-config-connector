@@ -28,6 +28,7 @@ import (
 type ApiHubServer struct {
 	*MockService
 	pb.UnimplementedApiHubServer
+	pb.UnimplementedApiHubDependenciesServer
 }
 
 func populateApiAttributes(obj *pb.Api) {
