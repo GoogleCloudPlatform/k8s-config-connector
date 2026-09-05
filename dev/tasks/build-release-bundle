@@ -140,7 +140,6 @@ BLOCKED_KINDS=(
     "DataformTeamFolder"
     "DataLabelingAnnotationSpecSet"
     "DataLabelingEvaluationJob"
-    "DataLabelingInstruction"
     "DataLineageProcess"
     "DataplexAspectType"
     "DataplexDataAttributeBinding"
