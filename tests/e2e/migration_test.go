@@ -469,6 +469,14 @@ func formatDiffsRaw(t *testing.T, listener *migrationDiffListener) string {
 		rawDiffs = append(rawDiffs, rd)
 	}
 
+	// Sort rawDiffs by Resource and Controller to ensure deterministic output order across concurrent reconciles
+	sort.Slice(rawDiffs, func(i, j int) bool {
+		if rawDiffs[i].Resource != rawDiffs[j].Resource {
+			return rawDiffs[i].Resource < rawDiffs[j].Resource
+		}
+		return rawDiffs[i].Controller < rawDiffs[j].Controller
+	})
+
 	// Marshal to pretty JSON
 	bytes, err := json.MarshalIndent(rawDiffs, "", "  ")
 	if err != nil {
