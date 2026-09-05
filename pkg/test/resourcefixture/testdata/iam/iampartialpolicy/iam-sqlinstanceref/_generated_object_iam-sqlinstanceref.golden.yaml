@@ -3,9 +3,6 @@ kind: IAMPartialPolicy
 metadata:
   annotations:
     cnrm.cloud.google.com/state-into-spec: absent
-  finalizers:
-  - cnrm.cloud.google.com/finalizer
-  - cnrm.cloud.google.com/deletion-defender
   generation: 1
   labels:
     cnrm-test: "true"
@@ -23,18 +20,25 @@ spec:
     kind: PubSubTopic
     name: pubsubtopic-${uniqueId}
 status:
-  allBindings:
-  - members:
-    - serviceAccount:p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com
-    role: roles/editor
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
-    message: The resource is up to date
-    reason: UpToDate
-    status: "True"
+    message: |-
+      Update call failed: error fetching live state for resource: error reading underlying resource: summary: Error when reading or editing Resource "pubsub topic \"projects/${projectId}/topics/pubsubtopic-${uniqueId}\"" with IAM Policy: Error retrieving IAM policy for pubsub topic "projects/${projectId}/topics/pubsubtopic-${uniqueId}": googleapi: Error 403: User not authorized to perform this action.
+      Details:
+      [
+        {
+          "@type": "type.googleapis.com/google.rpc.ErrorInfo",
+          "domain": "iam.googleapis.com",
+          "metadata": {
+            "error_info_id": "CiQwMWEwNDMyNy02MjFmLTdlMmEtODMzNS02Y2QwZTdjMjIzMDASOHByb2plY3RzL2Nucm0tYmFybmktNC90b3BpY3MvcHVic3VidG9waWMtNnVkMnpjZWVkMml5Z21p",
+            "permission": "pubsub.topics.getIamPolicy",
+            "resource": "projects/${projectId}/topics/pubsubtopic-${uniqueId}",
+            "troubleshooter_url": "https://console.cloud.google.com/iam-admin/troubleshooter/summary;errorId=CiQwMWEwNDMyNy02MjFmLTdlMmEtODMzNS02Y2QwZTdjMjIzMDASOHByb2plY3RzL2Nucm0tYmFybmktNC90b3BpY3MvcHVic3VidG9waWMtNnVkMnpjZWVkMml5Z21p"
+          },
+          "reason": "IAM_PERMISSION_DENIED"
+        }
+      ]
+    reason: UpdateFailed
+    status: "False"
     type: Ready
-  lastAppliedBindings:
-  - members:
-    - serviceAccount:p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com
-    role: roles/editor
   observedGeneration: 1

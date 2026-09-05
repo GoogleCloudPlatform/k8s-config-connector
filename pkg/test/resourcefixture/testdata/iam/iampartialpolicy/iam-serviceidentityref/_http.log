@@ -16,7 +16,7 @@ X-Xss-Protection: 0
   "done": true,
   "name": "operations/${operationID}",
   "response": {
-    "@type": "type.googleapis.com/mockgcp.api.serviceusage.v1beta1.ServiceIdentity",
+    "@type": "type.googleapis.com/google.api.serviceusage.v1beta1.ServiceIdentity",
     "email": "service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com",
     "uniqueId": "12345678"
   }
@@ -143,6 +143,7 @@ X-Xss-Protection: 0
   },
   "mode": "STANDARD_REPOSITORY",
   "name": "projects/${projectId}/locations/us-west1/repositories/artifactregistryrepository-${uniqueId}",
+  "registryUri": "us-west1-docker.pkg.dev/${projectId}/artifactregistryrepository-${uniqueId}",
   "satisfiesPzi": true,
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "vulnerabilityScanningConfig": {
@@ -193,7 +194,7 @@ User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-confi
   }
 }
 
-200 OK
+403 Forbidden
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -204,94 +205,11 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "bindings": [
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
-      ],
-      "role": "roles/editor"
-    }
-  ],
-  "etag": "abcdef0123A=",
-  "version": 1
-}
-
----
-
-GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/artifactregistryrepository-${uniqueId}:getIamPolicy?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "bindings": [
-    {
-      "members": [
-        "serviceAccount:service-${projectNumber}@gcp-sa-pubsub.iam.gserviceaccount.com"
-      ],
-      "role": "roles/editor"
-    }
-  ],
-  "etag": "abcdef0123A=",
-  "version": 1
-}
-
----
-
-POST https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/artifactregistryrepository-${uniqueId}:setIamPolicy?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-{
-  "policy": {
-    "etag": "abcdef0123A=",
-    "version": 3
+  "error": {
+    "code": 403,
+    "message": "Permission 'artifactregistry.repositories.setIamPolicy' denied on resource '//artifactregistry.googleapis.com/projects/${projectId}/locations/us-west1/repositories/artifactregistryrepository-${uniqueId}' (or it may not exist). Remediate access with this Troubleshooter URL or share it with your administrator - https://console.cloud.google.com/iam-admin/troubleshooter/summary;errorId=CiQwMWEwNDMyNC0xODNhLTc5M2MtYjczYy1kOWVjY2FiNGMxYjESYHByb2plY3RzL2Nucm0tYmFybmktNC9sb2NhdGlvbnMvdXMtd2VzdDEvcmVwb3NpdG9yaWVzL2FydGlmYWN0cmVnaXN0cnlyZXBvc2l0b3J5LW9lZmhiZGl0bTJ6emhoeQ%3D%3D .",
+    "status": "PERMISSION_DENIED"
   }
-}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "etag": "abcdef0123A=",
-  "version": 1
-}
-
----
-
-GET https://artifactregistry.googleapis.com/v1/projects/${projectId}/locations/us-west1/repositories/artifactregistryrepository-${uniqueId}:getIamPolicy?alt=json
-Content-Type: application/json
-User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{
-  "etag": "abcdef0123A=",
-  "version": 1
 }
 
 ---
@@ -319,6 +237,7 @@ X-Xss-Protection: 0
   },
   "mode": "STANDARD_REPOSITORY",
   "name": "projects/${projectId}/locations/us-west1/repositories/artifactregistryrepository-${uniqueId}",
+  "registryUri": "us-west1-docker.pkg.dev/${projectId}/artifactregistryrepository-${uniqueId}",
   "satisfiesPzi": true,
   "updateTime": "2024-04-01T12:34:56.123456Z",
   "vulnerabilityScanningConfig": {

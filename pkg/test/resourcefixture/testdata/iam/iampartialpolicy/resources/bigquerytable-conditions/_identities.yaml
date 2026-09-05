@@ -1,10 +1,10 @@
-- caisURL: //bigquery.googleapis.com/projects/${projectId}/datasets/bigquerydataset-${uniqueId}
+- caisURL: //bigquery.googleapis.com/projects/${projectId}/datasets/dataset_${uniqueId}
   group: bigquery.cnrm.cloud.google.com
   kind: BigQueryDataset
   name: bigquerydataset-${uniqueId}
   namespace: ${uniqueId}
   version: v1beta1
-- caisURL: //bigquery.googleapis.com/projects/${projectId}/datasets/bigquerydataset-${uniqueId}/tables/bigquerytable-${uniqueId}
+- caisURL: //bigquery.googleapis.com/projects/${projectId}/datasets/dataset_${uniqueId}/tables/test_table
   group: bigquery.cnrm.cloud.google.com
   kind: BigQueryTable
   name: bigquerytable-${uniqueId}
