@@ -150,6 +150,9 @@ spec:
               group: iam.cnrm.cloud.google.com
             targetField: email
             valueTemplate: "serviceAccount:{{value}}"
+          - key: group
+            jsonSchemaType: string
+            valueTemplate: "group:{{value}}"
           - key: user
             jsonSchemaType: string
             valueTemplate: "user:{{value}}"
@@ -179,6 +182,9 @@ spec:
               group: iam.cnrm.cloud.google.com
             targetField: email
             valueTemplate: "serviceAccount:{{value}}"
+          - key: group
+            jsonSchemaType: string
+            valueTemplate: "group:{{value}}"
           - key: user
             jsonSchemaType: string
             valueTemplate: "user:{{value}}"
@@ -267,6 +273,9 @@ spec:
               group: iam.cnrm.cloud.google.com
             targetField: email
             valueTemplate: "serviceAccount:{{value}}"
+          - key: group
+            jsonSchemaType: string
+            valueTemplate: "group:{{value}}"
           - key: user
             jsonSchemaType: string
             valueTemplate: "user:{{value}}"
@@ -296,6 +305,9 @@ spec:
               group: iam.cnrm.cloud.google.com
             targetField: email
             valueTemplate: "serviceAccount:{{value}}"
+          - key: group
+            jsonSchemaType: string
+            valueTemplate: "group:{{value}}"
           - key: user
             jsonSchemaType: string
             valueTemplate: "user:{{value}}"
