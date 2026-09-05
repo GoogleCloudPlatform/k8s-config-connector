@@ -83,6 +83,46 @@ var ExternalOnlyTypes = map[schema.GroupVersionKind]ExternalOnlyType{
 		},
 		ExternalFormat: "{{billing_account_id}}",
 	},
+	externalonlygvks.IAPWebBackendServiceGVK: {
+		UnstructHandler: func(ref iamv1beta1.ResourceReference, u *unstructured.Unstructured) *unstructured.Unstructured {
+			u.Object["spec"] = map[string]interface{}{
+				"web_backend_service": ref.External,
+				"webBackendService":   ref.External,
+			}
+			return u
+		}, ResourceConfig: &corekccv1alpha1.ResourceConfig{
+			IAMConfig: corekccv1alpha1.IAMConfig{
+				PolicyName:       "google_iap_web_backend_service_iam_policy",
+				PolicyMemberName: "google_iap_web_backend_service_iam_member",
+				ReferenceField: corekccv1alpha1.IAMReferenceField{
+					Name: "web_backend_service",
+					Type: "id",
+				},
+				SupportsConditions: true,
+			},
+		},
+		ExternalFormat: "projects/{{project}}/iap_web/compute/services/{{web_backend_service}}",
+	},
+	externalonlygvks.IAPTunnelInstanceGVK: {
+		UnstructHandler: func(ref iamv1beta1.ResourceReference, u *unstructured.Unstructured) *unstructured.Unstructured {
+			u.Object["spec"] = map[string]interface{}{
+				"instance": ref.External,
+			}
+			return u
+		},
+		ResourceConfig: &corekccv1alpha1.ResourceConfig{
+			IAMConfig: corekccv1alpha1.IAMConfig{
+				PolicyName:       "google_iap_tunnel_instance_iam_policy",
+				PolicyMemberName: "google_iap_tunnel_instance_iam_member",
+				ReferenceField: corekccv1alpha1.IAMReferenceField{
+					Name: "instance",
+					Type: "id",
+				},
+				SupportsConditions: true,
+			},
+		},
+		ExternalFormat: "projects/{{project}}/iap_tunnel/zones/{{zone}}/instances/{{instance}}",
+	},
 }
 
 func GetResourceConfigForExternalOnlyGVK(gvk schema.GroupVersionKind) (*corekccv1alpha1.ResourceConfig, error) {
