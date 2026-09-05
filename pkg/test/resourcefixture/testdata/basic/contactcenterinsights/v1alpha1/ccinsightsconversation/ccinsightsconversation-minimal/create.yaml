@@ -1,0 +1,12 @@
+apiVersion: contactcenterinsights.cnrm.cloud.google.com/v1alpha1
+kind: CCInsightsConversation
+metadata:
+  name: ccinsightsconv-min-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  medium: CHAT
+  dataSource:
+    gcsSource:
+      transcriptURI: gs://${projectId}-ccinsights-test-bucket-2026/transcript.json

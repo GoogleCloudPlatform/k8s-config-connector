@@ -1,0 +1,31 @@
+apiVersion: contactcenterinsights.cnrm.cloud.google.com/v1alpha1
+kind: CCInsightsConversation
+metadata:
+  name: ccinsightsconv-max-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  medium: CHAT
+  dataSource:
+    gcsSource:
+      transcriptURI: gs://${projectId}-ccinsights-test-bucket-2026/transcript.json
+  languageCode: en-US
+  agentID: agent-1
+  labels:
+    key1: val1
+    key2: val2
+  obfuscatedUserID: test-user
+  callMetadata:
+    customerChannel: 1
+    agentChannel: 2
+  qualityMetadata:
+    customerSatisfactionRating: 5
+    waitDuration: 10s
+    menuPath: main_menu
+    agentInfo:
+      - agentID: agent-1
+        displayName: Agent One
+        team: support
+        dispositionCode: RESOLVED
+        agentType: HUMAN_AGENT
