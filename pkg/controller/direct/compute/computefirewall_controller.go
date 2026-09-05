@@ -23,6 +23,7 @@ package compute
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	compute "cloud.google.com/go/compute/apiv1"
 	computepb "cloud.google.com/go/compute/apiv1/computepb"
@@ -269,6 +270,34 @@ func compareFirewall(ctx context.Context, actual, desired *computepb.Firewall) (
 
 	clonedDesired := proto.Clone(desired).(*computepb.Firewall)
 
+	// Normalize network references
+	if maskedActual.Network != nil {
+		maskedActual.Network = direct.LazyPtr(normalizeComputeURL(*maskedActual.Network))
+	}
+	if clonedDesired.Network != nil {
+		clonedDesired.Network = direct.LazyPtr(normalizeComputeURL(*clonedDesired.Network))
+	}
+
+	// Ignore optional/defaulted slices if not specified in desired KRM spec
+	if len(clonedDesired.SourceRanges) == 0 {
+		maskedActual.SourceRanges = nil
+	}
+	if len(clonedDesired.SourceTags) == 0 {
+		maskedActual.SourceTags = nil
+	}
+	if len(clonedDesired.SourceServiceAccounts) == 0 {
+		maskedActual.SourceServiceAccounts = nil
+	}
+	if len(clonedDesired.TargetTags) == 0 {
+		maskedActual.TargetTags = nil
+	}
+	if len(clonedDesired.TargetServiceAccounts) == 0 {
+		maskedActual.TargetServiceAccounts = nil
+	}
+	if len(clonedDesired.DestinationRanges) == 0 {
+		maskedActual.DestinationRanges = nil
+	}
+
 	populateDefaults := func(obj *computepb.Firewall) {
 		if obj.Priority == nil {
 			obj.Priority = direct.LazyPtr(int32(1000))
@@ -295,4 +324,16 @@ func compareFirewall(ctx context.Context, actual, desired *computepb.Firewall) (
 		return nil, err
 	}
 	return diffs, nil
+}
+
+func normalizeComputeURL(urlVal string) string {
+	for _, basePath := range []string{"https://compute.googleapis.com/compute", "https://www.googleapis.com/compute"} {
+		for _, version := range []string{"/beta/", "/v1/"} {
+			prefix := basePath + version
+			if strings.HasPrefix(urlVal, prefix) {
+				urlVal = strings.TrimPrefix(urlVal, prefix)
+			}
+		}
+	}
+	return strings.TrimPrefix(urlVal, "/")
 }
