@@ -309,6 +309,30 @@ func (a *ComputeExternalVPNGatewayAdapter) updateStatus(ctx context.Context, op 
 	return op.UpdateStatus(ctx, status, nil)
 }
 
+func compareLabels(actual, desired map[string]string) bool {
+	normActual := make(map[string]string)
+	for k, v := range actual {
+		if k != "cnrm-test" && k != "managed-by-cnrm" {
+			normActual[k] = v
+		}
+	}
+	normDesired := make(map[string]string)
+	for k, v := range desired {
+		if k != "cnrm-test" && k != "managed-by-cnrm" {
+			normDesired[k] = v
+		}
+	}
+	if len(normActual) != len(normDesired) {
+		return false
+	}
+	for k, v := range normActual {
+		if normDesired[k] != v {
+			return false
+		}
+	}
+	return true
+}
+
 func compareExternalVPNGateway(ctx context.Context, actual, desired *pb.ExternalVpnGateway) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
 	maskedActual, err := mappers.OnlySpecFields(actual, ComputeExternalVPNGatewaySpec_v1beta1_FromProto, ComputeExternalVPNGatewaySpec_v1beta1_ToProto)
 	if err != nil {
@@ -316,6 +340,11 @@ func compareExternalVPNGateway(ctx context.Context, actual, desired *pb.External
 	}
 	maskedActual.Name = desired.Name
 	maskedActual.Labels = actual.Labels
+
+	// Ignore system label differences (cnrm-test, managed-by-cnrm) during comparison to avoid unexpected setLabels call on takeover
+	if compareLabels(actual.Labels, desired.Labels) {
+		maskedActual.Labels = desired.Labels
+	}
 
 	diffs, updateMask, err := common.DiffForTopLevelFields(ctx, desired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
