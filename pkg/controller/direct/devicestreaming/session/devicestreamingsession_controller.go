@@ -17,6 +17,7 @@ package session
 import (
 	"context"
 	"fmt"
+	"time"
 
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/devicestreaming/v1alpha1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
@@ -32,6 +33,7 @@ import (
 	pb "cloud.google.com/go/devicestreaming/apiv1/devicestreamingpb"
 	"google.golang.org/api/option"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/timestamppb"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -118,6 +120,10 @@ func (a *DeviceStreamingSessionAdapter) Find(ctx context.Context) (bool, error) 
 	log := klog.FromContext(ctx)
 	log.V(2).Info("getting DeviceStreamingSession", "name", a.id)
 
+	if a.id.DeviceSession == "" {
+		return false, nil
+	}
+
 	req := &pb.GetDeviceSessionRequest{Name: a.id.String()}
 	session, err := a.gcpClient.GetDeviceSession(ctx, req)
 	if err != nil {
@@ -169,6 +175,37 @@ func (a *DeviceStreamingSessionAdapter) Update(ctx context.Context, updateOp *di
 
 	clonedDesired := proto.Clone(desired).(*pb.DeviceSession)
 	clonedDesired.Name = a.id.String()
+
+	// If TTL is set, convert it to ExpireTime based on creation time, since UpdateDeviceSession only supports ExpireTime.
+	if clonedDesired.GetTtl() != nil && a.actual.GetCreateTime() != nil {
+		duration := clonedDesired.GetTtl().AsDuration()
+		createTime := a.actual.GetCreateTime().AsTime()
+		newExpireTime := createTime.Add(duration)
+
+		// Check if the calculated newExpireTime is effectively equal (within 5 seconds) to the actual ExpireTime
+		actualExpireTime := a.actual.GetExpireTime().AsTime()
+		diff := newExpireTime.Sub(actualExpireTime)
+		if diff < 0 {
+			diff = -diff
+		}
+		if diff < 5*time.Second {
+			// Effectively equal, use the actual expire time to avoid precision/rounding diffs
+			clonedDesired.Expiration = &pb.DeviceSession_ExpireTime{
+				ExpireTime: a.actual.GetExpireTime(),
+			}
+		} else {
+			clonedDesired.Expiration = &pb.DeviceSession_ExpireTime{
+				ExpireTime: timestamppb.New(newExpireTime),
+			}
+		}
+	}
+
+	// If expireTime and TTL are unset, preserve the actual expireTime from GCP so we don't attempt to clear/update it.
+	if clonedDesired.GetExpireTime() == nil && clonedDesired.GetTtl() == nil {
+		clonedDesired.Expiration = &pb.DeviceSession_ExpireTime{
+			ExpireTime: a.actual.GetExpireTime(),
+		}
+	}
 
 	diffs, updateMask, err := common.DiffForTopLevelFields(ctx, clonedDesired.ProtoReflect(), maskedActual.ProtoReflect())
 	if err != nil {
@@ -247,6 +284,10 @@ func (a *DeviceStreamingSessionAdapter) updateStatus(ctx context.Context, op dir
 	if mapCtx.Err() != nil {
 		return mapCtx.Err()
 	}
-	status.ExternalRef = direct.PtrTo(a.id.String())
+	externalRef := latest.GetName()
+	if externalRef == "" {
+		externalRef = a.id.String()
+	}
+	status.ExternalRef = direct.PtrTo(externalRef)
 	return op.UpdateStatus(ctx, status, nil)
 }
