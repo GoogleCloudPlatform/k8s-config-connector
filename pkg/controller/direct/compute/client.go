@@ -29,6 +29,7 @@
 // proto.service: google.cloud.compute.v1.Autoscalers
 // proto.service: google.cloud.compute.v1.NodeTemplates
 // proto.service: google.cloud.compute.v1.Firewalls
+// proto.service: google.cloud.compute.v1.Subnetworks
 
 package compute
 
@@ -453,6 +454,18 @@ func (m *gcpClient) newExternalVpnGatewaysClient(ctx context.Context) (*compute.
 	client, err := compute.NewExternalVpnGatewaysRESTClient(ctx, opts...)
 	if err != nil {
 		return nil, fmt.Errorf("building ComputeExternalVpnGateways client: %w", err)
+	}
+	return client, err
+}
+
+func (m *gcpClient) newSubnetworksClient(ctx context.Context) (*compute.SubnetworksClient, error) {
+	opts, err := m.config.RESTClientOptions()
+	if err != nil {
+		return nil, err
+	}
+	client, err := compute.NewSubnetworksRESTClient(ctx, opts...)
+	if err != nil {
+		return nil, fmt.Errorf("building ComputeSubnetworks client: %w", err)
 	}
 	return client, err
 }

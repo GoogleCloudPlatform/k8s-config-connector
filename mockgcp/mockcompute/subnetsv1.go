@@ -167,6 +167,11 @@ func (s *SubnetsV1) Insert(ctx context.Context, req *pb.InsertSubnetworkRequest)
 	if obj.EnableFlowLogs == nil {
 		obj.EnableFlowLogs = PtrTo(false)
 	}
+	if obj.LogConfig == nil {
+		obj.LogConfig = &pb.SubnetworkLogConfig{
+			Enable: PtrTo(false),
+		}
+	}
 	if obj.PrivateIpGoogleAccess == nil {
 		obj.PrivateIpGoogleAccess = PtrTo(false)
 	}
@@ -368,6 +373,12 @@ func (s *SubnetsV1) Patch(ctx context.Context, req *pb.PatchSubnetworkRequest) (
 		if patch.Role != nil {
 			obj.Role = patch.Role
 		}
+		if patch.LogConfig != nil {
+			obj.LogConfig = patch.LogConfig
+		}
+		if patch.EnableFlowLogs != nil {
+			obj.EnableFlowLogs = patch.EnableFlowLogs
+		}
 		if patch.SecondaryIpRanges != nil {
 			obj.SecondaryIpRanges = patch.SecondaryIpRanges
 			for i, sec := range obj.SecondaryIpRanges {
@@ -401,7 +412,7 @@ func (s *SubnetsV1) Patch(ctx context.Context, req *pb.PatchSubnetworkRequest) (
 	op := &pb.Operation{
 		TargetId:      obj.Id,
 		TargetLink:    obj.SelfLink,
-		OperationType: PtrTo("compute.subnetworks.patch"),
+		OperationType: PtrTo("patch"),
 		User:          PtrTo("user@example.com"),
 	}
 	return s.startRegionalLRO(ctx, name.Project.ID, name.Region, op, func() (proto.Message, error) {
