@@ -99,13 +99,13 @@ type DiscoveryEngineEngineStatus struct {
 	ExternalRef *string `json:"externalRef,omitempty"`
 
 	// ObservedState is the state of the resource as most recently observed in GCP.
-	ObservedState *DiscoveryEngineEngineObservedState `json:"observedState,omitempty"`
+	// ObservedState *DiscoveryEngineEngineObservedState `json:"observedState,omitempty"`
 }
 
 // DiscoveryEngineEngineObservedState is the state of the DiscoveryEngineEngine resource as most recently observed in GCP.
-// +kcc:observedstate:proto=google.cloud.discoveryengine.v1.Engine
-type DiscoveryEngineEngineObservedState struct {
-}
+// // +kcc:observedstate:proto=google.cloud.discoveryengine.v1.Engine
+// type DiscoveryEngineEngineObservedState struct {
+// }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object

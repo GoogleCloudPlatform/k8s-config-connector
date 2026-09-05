@@ -29,22 +29,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func DialogflowSecuritySettingsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.SecuritySettings) *krm.DialogflowSecuritySettingsObservedState {
-	if in == nil {
-		return nil
-	}
-	out := &krm.DialogflowSecuritySettingsObservedState{}
-	// MISSING: Name
-	return out
-}
-func DialogflowSecuritySettingsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.DialogflowSecuritySettingsObservedState) *pb.SecuritySettings {
-	if in == nil {
-		return nil
-	}
-	out := &pb.SecuritySettings{}
-	// MISSING: Name
-	return out
-}
 func DialogflowSecuritySettingsSpec_FromProto(mapCtx *direct.MapContext, in *pb.SecuritySettings) *krm.DialogflowSecuritySettingsSpec {
 	if in == nil {
 		return nil

@@ -64,13 +64,13 @@ type VideoStitcherCDNKeyStatus struct {
 	ExternalRef *string `json:"externalRef,omitempty"`
 
 	// ObservedState is the state of the resource as most recently observed in GCP.
-	ObservedState *VideoStitcherCDNKeyObservedState `json:"observedState,omitempty"`
+	// ObservedState *VideoStitcherCDNKeyObservedState `json:"observedState,omitempty"`
 }
 
 // VideoStitcherCDNKeyObservedState is the state of the VideoStitcherCDNKey resource as most recently observed in GCP.
-// +kcc:observedstate:proto=google.cloud.video.stitcher.v1.CdnKey
-type VideoStitcherCDNKeyObservedState struct {
-}
+// // +kcc:observedstate:proto=google.cloud.video.stitcher.v1.CdnKey
+// type VideoStitcherCDNKeyObservedState struct {
+// }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object

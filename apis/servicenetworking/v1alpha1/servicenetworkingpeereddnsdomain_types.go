@@ -50,13 +50,13 @@ type ServiceNetworkingPeeredDNSDomainStatus struct {
 	ExternalRef *string `json:"externalRef,omitempty"`
 
 	// ObservedState is the state of the resource as most recently observed in GCP.
-	ObservedState *ServiceNetworkingPeeredDNSDomainObservedState `json:"observedState,omitempty"`
+	// ObservedState *ServiceNetworkingPeeredDNSDomainObservedState `json:"observedState,omitempty"`
 }
 
 // ServiceNetworkingPeeredDNSDomainObservedState is the state of the ServiceNetworkingPeeredDNSDomain resource as most recently observed in GCP.
-// +kcc:observedstate:proto=mockgcp.cloud.servicenetworking.v1.PeeredDnsDomain
-type ServiceNetworkingPeeredDNSDomainObservedState struct {
-}
+// // +kcc:observedstate:proto=mockgcp.cloud.servicenetworking.v1.PeeredDnsDomain
+// type ServiceNetworkingPeeredDNSDomainObservedState struct {
+// }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object

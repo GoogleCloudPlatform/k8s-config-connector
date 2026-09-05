@@ -90,28 +90,28 @@ type IAMDenyPolicyStatus struct {
 	ExternalRef *string `json:"externalRef,omitempty"`
 
 	// ObservedState is the state of the resource as most recently observed in GCP.
-	ObservedState *IAMDenyPolicyObservedState `json:"observedState,omitempty"`
+	// ObservedState *IAMDenyPolicyObservedState `json:"observedState,omitempty"`
 }
 
 // IAMDenyPolicyObservedState is the state of the IAMDenyPolicy resource as most recently observed in GCP.
-// +kcc:observedstate:proto=google.iam.v2.Policy
-type IAMDenyPolicyObservedState struct {
-	// NOTYET: no clear use case?
-	// // Immutable. The globally unique ID of the `Policy`. Assigned automatically when the
-	// //  `Policy` is created.
-	// // +kcc:proto:field=google.iam.v2.Policy.uid
-	// Uid *string `json:"uid,omitempty"`
-
-	// NOTYET: no clear use case?
-	// 	// An opaque tag that identifies the current version of the `Policy`. IAM uses
-	// //  this value to help manage concurrent updates, so they do not cause one
-	// //  update to be overwritten by another.
-	// //
-	// //  If this field is present in a [CreatePolicy][] request, the value is
-	// //  ignored.
-	// // +kcc:proto:field=google.iam.v2.Policy.etag
-	// Etag *string `json:"etag,omitempty"`
-}
+// // +kcc:observedstate:proto=google.iam.v2.Policy
+// type IAMDenyPolicyObservedState struct {
+// 	// NOTYET: no clear use case?
+// 	// // Immutable. The globally unique ID of the `Policy`. Assigned automatically when the
+// 	// //  `Policy` is created.
+// 	// // +kcc:proto:field=google.iam.v2.Policy.uid
+// 	// Uid *string `json:"uid,omitempty"`
+//
+// 	// NOTYET: no clear use case?
+// 	// 	// An opaque tag that identifies the current version of the `Policy`. IAM uses
+// 	// //  this value to help manage concurrent updates, so they do not cause one
+// 	// //  update to be overwritten by another.
+// 	// //
+// 	// //  If this field is present in a [CreatePolicy][] request, the value is
+// 	// //  ignored.
+// 	// // +kcc:proto:field=google.iam.v2.Policy.etag
+// 	// Etag *string `json:"etag,omitempty"`
+// }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object

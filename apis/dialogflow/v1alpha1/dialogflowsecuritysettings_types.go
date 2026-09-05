@@ -101,13 +101,13 @@ type DialogflowSecuritySettingsStatus struct {
 	ExternalRef *string `json:"externalRef,omitempty"`
 
 	// ObservedState is the state of the resource as most recently observed in GCP.
-	ObservedState *DialogflowSecuritySettingsObservedState `json:"observedState,omitempty"`
+	// ObservedState *DialogflowSecuritySettingsObservedState `json:"observedState,omitempty"`
 }
 
 // DialogflowSecuritySettingsObservedState is the state of the DialogflowSecuritySettings resource as most recently observed in GCP.
-// +kcc:observedstate:proto=google.cloud.dialogflow.cx.v3.SecuritySettings
-type DialogflowSecuritySettingsObservedState struct {
-}
+// // +kcc:observedstate:proto=google.cloud.dialogflow.cx.v3.SecuritySettings
+// type DialogflowSecuritySettingsObservedState struct {
+// }
 
 // +genclient
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object

@@ -25,13 +25,12 @@ import (
 )
 
 func init() {
-	fuzztesting.RegisterKRMFuzzer(denyPolicyFuzzer())
+	fuzztesting.RegisterKRMSpecFuzzer(denyPolicyFuzzer())
 }
 
 func denyPolicyFuzzer() fuzztesting.KRMFuzzer {
-	f := fuzztesting.NewKRMTypedFuzzer(&pb.Policy{},
+	f := fuzztesting.NewKRMTypedSpecFuzzer(&pb.Policy{},
 		IAMDenyPolicySpec_FromProto, IAMDenyPolicySpec_ToProto,
-		IAMDenyPolicyObservedState_FromProto, IAMDenyPolicyObservedState_ToProto,
 	)
 
 	f.SpecFields.Insert(".display_name")
