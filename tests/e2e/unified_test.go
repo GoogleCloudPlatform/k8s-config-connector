@@ -630,6 +630,10 @@ func runScenario(ctx context.Context, t *testing.T, options ScenarioOptions, fix
 					// Note that this does introduce a dependency that objects are ordered correctly for creation.
 					opt.CreateInOrder = true
 				}
+				var eventsBeforeUpdateCount int
+				opt.OnUpdateStart = func(h *create.Harness) {
+					eventsBeforeUpdateCount = len(h.Events.GetHTTPEvents())
+				}
 				create.RunCreateDeleteTest(h, opt)
 
 				// Get testName from t.Name()
@@ -853,6 +857,50 @@ func runScenario(ctx context.Context, t *testing.T, options ScenarioOptions, fix
 
 				// Verify HTTP log with static checks
 				verifyUserAgent(h)
+
+				if !options.TestPause && fixture.Update != nil {
+					hasUpdate := false
+					updateEvents := h.Events.GetHTTPEvents()[eventsBeforeUpdateCount:]
+					for _, event := range updateEvents {
+						method := event.Request.Method
+						u := event.Request.URL
+
+						isMut := true
+						if method == "GET" || method == "HEAD" || method == "OPTIONS" {
+							isMut = false
+						} else if method == "POST" {
+							// Filter out common read-only POST operations
+							if strings.Contains(u, ":getIamPolicy") ||
+								strings.Contains(u, ":testIamPermissions") ||
+								strings.Contains(u, ":search") ||
+								strings.Contains(u, ":query") {
+								isMut = false
+							}
+						} else if method == "GRPC" {
+							idx := strings.LastIndex(u, "/")
+							if idx != -1 {
+								methodName := u[idx+1:]
+								// Filter out common read-only gRPC methods
+								if strings.HasPrefix(methodName, "Get") ||
+									strings.HasPrefix(methodName, "List") ||
+									strings.HasPrefix(methodName, "Watch") ||
+									strings.HasPrefix(methodName, "Describe") ||
+									strings.HasPrefix(methodName, "Search") ||
+									strings.HasPrefix(methodName, "Query") {
+									isMut = false
+								}
+							}
+						}
+
+						if isMut {
+							hasUpdate = true
+							break
+						}
+					}
+					if !hasUpdate {
+						t.Errorf("fixture test %q includes update.yaml, but no GCP resource mutation request was recorded in the HTTP log; update.yaml must trigger resource mutation on GCP", fixture.TestKey)
+					}
+				}
 
 				// Verify events against golden file or records events
 				if os.Getenv("GOLDEN_REQUEST_CHECKS") != "" || os.Getenv("WRITE_GOLDEN_OUTPUT") != "" {
