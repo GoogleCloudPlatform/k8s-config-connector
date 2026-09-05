@@ -37,15 +37,16 @@ func DiffInstances(desired *api.DatabaseInstance, actual *api.DatabaseInstance) 
 		diff.AddField(".databaseVersion", actual.DatabaseVersion, desired.DatabaseVersion)
 	}
 	diff.AddDiff(DiffDiskEncryptionConfiguration(desired.DiskEncryptionConfiguration, actual.DiskEncryptionConfiguration))
+	drActive := isEnterpriseDR(desired, actual)
 	// Ignore GeminiConfig. It is not supported in KRM API.
-	if desired.InstanceType != actual.InstanceType {
+	if !drActive && desired.InstanceType != actual.InstanceType {
 		diff.AddField(".instanceType", actual.InstanceType, desired.InstanceType)
 	}
 	// Ignore Kind. It is sometimes not set in API responses.
 	if desired.MaintenanceVersion != actual.MaintenanceVersion {
 		diff.AddField(".maintenanceVersion", actual.MaintenanceVersion, desired.MaintenanceVersion)
 	}
-	if desired.MasterInstanceName != actual.MasterInstanceName {
+	if !drActive && !isInstanceNameEqual(desired.MasterInstanceName, actual.MasterInstanceName) {
 		diff.AddField(".masterInstanceName", actual.MasterInstanceName, desired.MasterInstanceName)
 	}
 	// Ignore MaxDiskSize. It is not supported in KRM API.
@@ -56,10 +57,13 @@ func DiffInstances(desired *api.DatabaseInstance, actual *api.DatabaseInstance) 
 	if desired.Region != actual.Region {
 		diff.AddField(".region", actual.Region, desired.Region)
 	}
-	diff.AddDiff(DiffReplicaConfiguration(desired.ReplicaConfiguration, actual.ReplicaConfiguration))
-	diff.AddDiff(DiffReplicationCluster(desired.ReplicationCluster, actual.ReplicationCluster))
+	drRoleSwap := isEnterpriseDRRoleSwap(desired, actual)
+	if !drRoleSwap {
+		diff.AddDiff(DiffReplicaConfiguration(desired.ReplicaConfiguration, actual.ReplicaConfiguration))
+	}
+	diff.AddDiff(DiffReplicationCluster(desired.ReplicationCluster, actual.ReplicationCluster, drRoleSwap))
 	// Ignore RootPassword. It is not exported.
-	diff.AddDiff(DiffSettings(desired.Settings, actual.Settings))
+	diff.AddDiff(DiffSettings(desired.Settings, actual.Settings, drRoleSwap))
 
 	// Ignore SqlNetworkArchitecture. It is not supported in KRM API.
 	// Ignore SwitchTransactionLogsToCloudStorageEnabled. It is not supported in KRM API.
@@ -104,7 +108,7 @@ func DiffReplicaConfiguration(desired *api.ReplicaConfiguration, actual *api.Rep
 	return diff
 }
 
-func DiffSettings(desired *api.Settings, actual *api.Settings) *structuredreporting.Diff {
+func DiffSettings(desired *api.Settings, actual *api.Settings, drRoleSwap bool) *structuredreporting.Diff {
 	diff := &structuredreporting.Diff{}
 	if desired == nil {
 		desired = &api.Settings{}
@@ -123,7 +127,7 @@ func DiffSettings(desired *api.Settings, actual *api.Settings) *structuredreport
 	if !strings.EqualFold(desired.AvailabilityType, actual.AvailabilityType) {
 		diff.AddField(".settings.availabilityType", actual.AvailabilityType, desired.AvailabilityType)
 	}
-	diff.AddDiff(DiffBackupConfiguration(desired.BackupConfiguration, actual.BackupConfiguration))
+	diff.AddDiff(DiffBackupConfiguration(desired.BackupConfiguration, actual.BackupConfiguration, drRoleSwap))
 	if desired.Collation != actual.Collation {
 		diff.AddField(".settings.collation", actual.Collation, desired.Collation)
 	}
@@ -161,9 +165,7 @@ func DiffSettings(desired *api.Settings, actual *api.Settings) *structuredreport
 	if desired.ReplicationType != actual.ReplicationType {
 		diff.AddField(".settings.replicationType", actual.ReplicationType, desired.ReplicationType)
 	}
-	if desired.SettingsVersion != actual.SettingsVersion {
-		diff.AddField(".settings.settingsVersion", actual.SettingsVersion, desired.SettingsVersion)
-	}
+	// Ignore SettingsVersion. It is an internal GCP version counter and not configurable in KRM API.
 	diff.AddDiff(DiffSqlServerAuditConfig(desired.SqlServerAuditConfig, actual.SqlServerAuditConfig))
 	diff.AddDiff(DiffStorageAutoResize(desired.StorageAutoResize, actual.StorageAutoResize))
 	if desired.StorageAutoResizeLimit != actual.StorageAutoResizeLimit {
@@ -286,8 +288,17 @@ func DiffAdvancedMachineFeatures(desired *api.AdvancedMachineFeatures, actual *a
 	return diff
 }
 
-func DiffBackupConfiguration(desired *api.BackupConfiguration, actual *api.BackupConfiguration) *structuredreporting.Diff {
+func DiffBackupConfiguration(desired *api.BackupConfiguration, actual *api.BackupConfiguration, drRoleSwap bool) *structuredreporting.Diff {
 	diff := &structuredreporting.Diff{}
+	if drRoleSwap {
+		// During a Cloud SQL Enterprise DR role swap (failover or switchover), Cloud SQL
+		// automatically manages the backup configuration: turning ON backups and PITR
+		// on the promoted primary, and turning OFF backups on the demoted replica.
+		// Attempting to reconcile desired against actual on either instance will trigger
+		// unrecoverable 400 INVALID_ARGUMENT ("Backups cannot be enabled on a read replica")
+		// or improperly disable backups on the promoted primary.
+		return diff
+	}
 	if desired == nil {
 		desired = &api.BackupConfiguration{}
 	}
@@ -720,7 +731,33 @@ func DiffStorageAutoResize(desired *bool, actual *bool) *structuredreporting.Dif
 	return diff
 }
 
-func DiffReplicationCluster(desired *api.ReplicationCluster, actual *api.ReplicationCluster) *structuredreporting.Diff {
+// isEnterpriseDR checks if the instance is configured for Cloud SQL Enterprise DR.
+//
+// KCC Resource Development Guidance Alignment (Declarative Reconciliation & Diff Suppression):
+// Per KCC declarative reconciliation guidelines (AIP-128 compliance), KCC reconciles user-declared
+// intent against observed GCP infrastructure. For Cloud SQL Enterprise DR, the GCP control plane
+// autonomously executes role inversions during planned switchovers (Mode 2) or emergency promotions (Mode 3):
+//  1. The DR replica in Region B is promoted to PRIMARY.
+//  2. The former primary in Region A is demoted to a replica pointing to Region B.
+//
+// Because the Cloud SQL Admin API rejects mutating 'masterInstanceName' on existing instances via
+// instances.update with HTTP 400 INVALID_ARGUMENT ("masterInstanceName cannot be updated via instances.update"),
+// attempting to re-impose .spec.masterInstanceRef causes an unrecoverable reconciliation loop.
+//
+// In alignment with KCC's equality engine design patterns, this method detects Enterprise DR configurations
+// and suppresses spurious diffs on .instanceType, .masterInstanceName, and reciprocal .failoverDrReplicaName,
+// allowing declarative GitOps manifests to remain stable across repeated bidirectional failbacks.
+func isEnterpriseDR(desired, actual *api.DatabaseInstance) bool {
+	if desired != nil && desired.ReplicationCluster != nil && (desired.ReplicationCluster.FailoverDrReplicaName != "" || desired.ReplicationCluster.DrReplica || desired.ReplicationCluster.PsaWriteEndpoint != "") {
+		return true
+	}
+	if actual != nil && actual.ReplicationCluster != nil && (actual.ReplicationCluster.FailoverDrReplicaName != "" || actual.ReplicationCluster.DrReplica || actual.ReplicationCluster.PsaWriteEndpoint != "") {
+		return true
+	}
+	return false
+}
+
+func DiffReplicationCluster(desired *api.ReplicationCluster, actual *api.ReplicationCluster, drRoleSwap bool) *structuredreporting.Diff {
 	diff := &structuredreporting.Diff{}
 	if desired == nil {
 		desired = &api.ReplicationCluster{}
@@ -728,10 +765,83 @@ func DiffReplicationCluster(desired *api.ReplicationCluster, actual *api.Replica
 	if actual == nil {
 		actual = &api.ReplicationCluster{}
 	}
-	if desired.FailoverDrReplicaName != actual.FailoverDrReplicaName {
-		diff.AddField(".replicationCluster.failoverDrReplicaName", actual.FailoverDrReplicaName, desired.FailoverDrReplicaName)
+	if !isInstanceNameEqual(desired.FailoverDrReplicaName, actual.FailoverDrReplicaName) {
+		// During an active DR role swap (switchover or failover), suppress failoverDrReplicaName diff
+		// caused by role inversion. When not in a role swap, allow normal diff reporting so users
+		// can configure or decommission failoverDrReplicaRef.
+		if drRoleSwap && (desired.FailoverDrReplicaName == "" || actual.FailoverDrReplicaName == "") {
+			// DR role swap: the promoted/demoted instance inverts failoverDrReplicaName. Suppress.
+		} else {
+			diff.AddField(".replicationCluster.failoverDrReplicaName", actual.FailoverDrReplicaName, desired.FailoverDrReplicaName)
+		}
 	}
 	// Ignore PsaWriteEndpoint. It is output only.
 	// Ignore DrReplica. It is output only.
 	return diff
+}
+
+// parseInstanceReference parses an instance identifier into (project, instance).
+// Supported formats:
+//   - "my-instance" -> ("", "my-instance")
+//   - "my-project:my-instance" -> ("my-project", "my-instance")
+//   - "projects/my-project/instances/my-instance" -> ("my-project", "my-instance")
+//   - "https://sqladmin.googleapis.com/.../projects/my-project/instances/my-instance" -> ("my-project", "my-instance")
+func parseInstanceReference(ref string) (project string, instance string) {
+	ref = strings.TrimSpace(ref)
+	if ref == "" {
+		return "", ""
+	}
+	// Check for URL or slash-delimited path: projects/{project}/instances/{instance}
+	if idx := strings.Index(ref, "projects/"); idx != -1 {
+		parts := strings.Split(ref[idx:], "/")
+		if len(parts) >= 4 && parts[0] == "projects" && parts[2] == "instances" {
+			return parts[1], parts[3]
+		}
+	}
+	// Check for colon-delimited format: {project}:{instance}
+	if parts := strings.Split(ref, ":"); len(parts) == 2 {
+		return parts[0], parts[1]
+	}
+	// Fall back to short instance name after any slash
+	if idx := strings.LastIndex(ref, "/"); idx != -1 {
+		return "", ref[idx+1:]
+	}
+	return "", ref
+}
+
+func isInstanceNameEqual(a, b string) bool {
+	if a == b {
+		return true
+	}
+	if a == "" || b == "" {
+		return false
+	}
+	projA, instA := parseInstanceReference(a)
+	projB, instB := parseInstanceReference(b)
+	if instA != instB {
+		return false
+	}
+	// If both specify a project, they must match
+	if projA != "" && projB != "" && projA != projB {
+		return false
+	}
+	return true
+}
+
+func isEnterpriseDRRoleSwap(desired, actual *api.DatabaseInstance) bool {
+	if !isEnterpriseDR(desired, actual) {
+		return false
+	}
+	// Case 1: Primary in spec, but demoted to replica in GCP
+	if (desired.MasterInstanceName == "" || (desired.ReplicationCluster != nil && desired.ReplicationCluster.FailoverDrReplicaName != "")) &&
+		(actual.InstanceType == "READ_REPLICA_INSTANCE" || actual.MasterInstanceName != "" || (actual.ReplicationCluster != nil && actual.ReplicationCluster.DrReplica)) {
+		return true
+	}
+	// Case 2: Replica in spec, but promoted to primary in GCP
+	if (desired.MasterInstanceName != "" || desired.InstanceType == "READ_REPLICA_INSTANCE" || (desired.ReplicationCluster != nil && desired.ReplicationCluster.DrReplica)) &&
+		(actual.InstanceType == "CLOUD_SQL_INSTANCE" || actual.InstanceType == "" || (actual.ReplicationCluster != nil && actual.ReplicationCluster.FailoverDrReplicaName != "")) &&
+		actual.MasterInstanceName == "" {
+		return true
+	}
+	return false
 }

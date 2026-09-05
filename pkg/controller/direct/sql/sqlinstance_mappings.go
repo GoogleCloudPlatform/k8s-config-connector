@@ -1115,6 +1115,18 @@ func SQLInstanceStatusGCPToKRM(in *api.DatabaseInstance) (*krm.SQLInstanceStatus
 		}
 	}
 
+	// KCC Resource Development Guidance Alignment (Runtime Role Projection):
+	// Per KCC API conventions on runtime status projection, status.currentRole surfaces the live
+	// GCP replication role ('PRIMARY', 'DR_REPLICA') for instances participating in an Enterprise DR
+	// cluster without mutating the user's declarative spec. Standalone instances omit this field.
+	if in.ReplicationCluster != nil && (in.ReplicationCluster.DrReplica || in.ReplicationCluster.FailoverDrReplicaName != "" || in.ReplicationCluster.PsaWriteEndpoint != "") {
+		if in.ReplicationCluster.DrReplica || in.MasterInstanceName != "" {
+			out.CurrentRole = direct.LazyPtr("DR_REPLICA")
+		} else {
+			out.CurrentRole = direct.LazyPtr("PRIMARY")
+		}
+	}
+
 	return out, nil
 }
 

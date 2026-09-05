@@ -2241,6 +2241,11 @@ func (in *SQLInstanceStatus) DeepCopyInto(out *SQLInstanceStatus) {
 		*out = make([]v1alpha1.Condition, len(*in))
 		copy(*out, *in)
 	}
+	if in.CurrentRole != nil {
+		in, out := &in.CurrentRole, &out.CurrentRole
+		*out = new(string)
+		**out = **in
+	}
 	if in.AvailableMaintenanceVersions != nil {
 		in, out := &in.AvailableMaintenanceVersions, &out.AvailableMaintenanceVersions
 		*out = make([]string, len(*in))
