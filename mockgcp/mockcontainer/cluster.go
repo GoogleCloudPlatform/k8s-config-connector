@@ -412,6 +412,14 @@ func (s *ClusterManagerV1) UpdateCluster(ctx context.Context, req *pb.UpdateClus
 		update.DesiredDatabaseEncryption = nil
 	}
 
+	if update.DesiredPrivilegedAdmissionConfig != nil {
+		if obj.Autopilot == nil {
+			obj.Autopilot = &pb.Autopilot{}
+		}
+		obj.Autopilot.PrivilegedAdmissionConfig = update.DesiredPrivilegedAdmissionConfig
+		update.DesiredPrivilegedAdmissionConfig = nil
+	}
+
 	if !proto.Equal(update, &pb.ClusterUpdate{}) {
 
 		return nil, status.Errorf(codes.InvalidArgument, "update was not fully implemented ClusterUpdate=%v", prototext.Format(update))

@@ -417,6 +417,7 @@ func ContainerClusterSpec_FromProto(mapCtx *direct.MapContext, in *pb.Cluster) *
 	// Flattened fields
 	if in.GetAutopilot() != nil {
 		out.EnableAutopilot = direct.LazyPtr(in.GetAutopilot().GetEnabled())
+		out.PrivilegedAdmissionConfig = PrivilegedAdmissionConfig_FromProto(mapCtx, in.GetAutopilot().GetPrivilegedAdmissionConfig())
 	}
 	if in.GetLegacyAbac() != nil {
 		out.EnableLegacyAbac = direct.LazyPtr(in.GetLegacyAbac().GetEnabled())
@@ -489,8 +490,11 @@ func ContainerClusterSpec_ToProto(mapCtx *direct.MapContext, in *krm.ContainerCl
 	out.EnableK8SBetaApis = K8SBetaAPIConfig_ToProto(mapCtx, in.EnableK8SBetaApis)
 
 	// Flattened fields
-	if in.EnableAutopilot != nil {
-		out.Autopilot = &pb.Autopilot{Enabled: direct.ValueOf(in.EnableAutopilot)}
+	if in.EnableAutopilot != nil || in.PrivilegedAdmissionConfig != nil {
+		out.Autopilot = &pb.Autopilot{
+			Enabled:                   direct.ValueOf(in.EnableAutopilot),
+			PrivilegedAdmissionConfig: PrivilegedAdmissionConfig_ToProto(mapCtx, in.PrivilegedAdmissionConfig),
+		}
 	}
 	if in.EnableLegacyAbac != nil {
 		out.LegacyAbac = &pb.LegacyAbac{Enabled: direct.ValueOf(in.EnableLegacyAbac)}
@@ -619,4 +623,22 @@ func map_string_string_ToProto(mapCtx *direct.MapContext, in map[string]string) 
 	return &pb.ResourceManagerTags{
 		Tags: in,
 	}
+}
+
+func PrivilegedAdmissionConfig_FromProto(mapCtx *direct.MapContext, in *pb.PrivilegedAdmissionConfig) *krm.PrivilegedAdmissionConfig {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PrivilegedAdmissionConfig{}
+	out.AllowlistPaths = in.GetAllowlistPaths()
+	return out
+}
+
+func PrivilegedAdmissionConfig_ToProto(mapCtx *direct.MapContext, in *krm.PrivilegedAdmissionConfig) *pb.PrivilegedAdmissionConfig {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PrivilegedAdmissionConfig{}
+	out.AllowlistPaths = in.AllowlistPaths
+	return out
 }
