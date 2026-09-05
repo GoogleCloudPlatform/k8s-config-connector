@@ -13,6 +13,7 @@ metadata:
   generation: 2
   labels:
     cnrm-test: "true"
+    updated-by: robot
   name: cluster-sample-${uniqueId}
   namespace: ${uniqueId}
 spec:
