@@ -29,23 +29,30 @@ if [[ -z "${CONTROLLERBUILDER}" ]]; then
 fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
-./generate-proto.sh
+if [[ -n ${SKIP_GENERATE_PROTOS:-} ]]; then
+  unset SKIP_GENERATE_PROTOS
+fi
+./generate-proto.sh "57394718a71457aa37ab002352b22081976bdd91" "${REPO_ROOT}/.build/googleapis-run.pb"
 
 # --- v1alpha1 ---
 ${CONTROLLERBUILDER} generate-types \
+    --proto-source-path "${REPO_ROOT}/.build/googleapis-run.pb" \
     --service google.cloud.run.v2 \
     --api-version "run.cnrm.cloud.google.com/v1alpha1" \
-    --resource RunWorkerPool:WorkerPool
+    --resource RunWorkerPool:WorkerPool \
+    --resource CloudRunInstance:Instance
 
 
 
 # --- v1beta1 ---
 ${CONTROLLERBUILDER} generate-types \
+  --proto-source-path "${REPO_ROOT}/.build/googleapis-run.pb" \
   --service google.cloud.run.v2 \
   --api-version run.cnrm.cloud.google.com/v1beta1 \
   --resource RunJob:Job
 
 ${CONTROLLERBUILDER} generate-mapper \
+  --proto-source-path "${REPO_ROOT}/.build/googleapis-run.pb" \
   --service google.cloud.run.v2 \
   --api-version "run.cnrm.cloud.google.com/v1beta1" \
   --multiversion
