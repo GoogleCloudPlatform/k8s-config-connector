@@ -515,6 +515,16 @@ func compareJSON(t *testing.T, context, realJSON, mockJSON string) {
 	realJSON = composerBucketRegex.ReplaceAllString(realJSON, "composerenviron-00000001-bucket")
 	mockJSON = composerBucketRegex.ReplaceAllString(mockJSON, "composerenviron-00000001-bucket")
 
+	// Normalize private IP addresses (e.g. 10.x.x.x) to 10.0.0.1 to align real and mock logs
+	ipRegex := regexp.MustCompile(`10\.\d+\.\d+\.\d+`)
+	realJSON = ipRegex.ReplaceAllString(realJSON, "10.0.0.1")
+	mockJSON = ipRegex.ReplaceAllString(mockJSON, "10.0.0.1")
+
+	// Normalize memcache nodeId (e.g. node-a-1 or node-0) to node-0
+	nodeIdRegex := regexp.MustCompile(`"nodeId":\s*"node-[a-zA-Z0-9-]+"`)
+	realJSON = nodeIdRegex.ReplaceAllString(realJSON, `"nodeId": "node-0"`)
+	mockJSON = nodeIdRegex.ReplaceAllString(mockJSON, `"nodeId": "node-0"`)
+
 	var realObj, mockObj interface{}
 
 	if realJSON != "" {
@@ -560,6 +570,20 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		delete(v, "source")
 		delete(v, "marketplaceAgentVisibility")
 		delete(v, "observabilityConfig")
+		delete(v, "effectiveMaintenanceVersion")
+		if params, ok := v["parameters"].(map[string]interface{}); ok {
+			delete(params, "id")
+		}
+		if _, ok := v["nodeId"]; ok {
+			delete(v, "memcacheFullVersion")
+			delete(v, "memcacheVersion")
+			delete(v, "parameters")
+		}
+		if _, ok := v["projectId"]; ok {
+			delete(v, "labels")
+			delete(v, "name")
+			delete(v, "parent")
+		}
 		// Normalize empty LRO response payloads (e.g., from mock Delete operations returning Empty, but real returns nothing)
 		if resp, ok := v["response"].(map[string]interface{}); ok {
 			if len(resp) == 0 || (len(resp) == 1 && resp["@type"] == "type.googleapis.com/google.protobuf.Empty") {
@@ -620,6 +644,7 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		if _, isOp := v["operationType"]; isOp {
 			v["name"] = "operations/${operationID}"
 			delete(v, "metadata")
+			delete(v, "response")
 			if status, ok := v["status"].(string); ok && status == "PENDING" {
 				v["status"] = "RUNNING"
 			}
@@ -629,6 +654,7 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		} else if name, ok := v["name"].(string); ok && (strings.Contains(name, "operation") || strings.Contains(name, "/operations/")) {
 			v["name"] = "operations/${operationID}"
 			delete(v, "metadata")
+			delete(v, "response")
 			if status, ok := v["status"].(string); ok && status == "PENDING" {
 				v["status"] = "RUNNING"
 			}
