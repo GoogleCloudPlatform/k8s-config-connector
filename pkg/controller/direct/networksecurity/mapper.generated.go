@@ -622,6 +622,22 @@ func InterceptLocationObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, 
 	out.State = direct.Enum_ToProto[pb.InterceptLocation_State](mapCtx, in.State)
 	return out
 }
+func MirroringDeploymentGroup_ConnectedEndpointGroupObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.MirroringDeploymentGroup_ConnectedEndpointGroup) *krmnetworksecurityv1alpha1.MirroringDeploymentGroup_ConnectedEndpointGroupObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.MirroringDeploymentGroup_ConnectedEndpointGroupObservedState{}
+	out.Name = direct.LazyPtr(in.GetName())
+	return out
+}
+func MirroringDeploymentGroup_ConnectedEndpointGroupObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.MirroringDeploymentGroup_ConnectedEndpointGroupObservedState) *pb.MirroringDeploymentGroup_ConnectedEndpointGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MirroringDeploymentGroup_ConnectedEndpointGroup{}
+	out.Name = direct.ValueOf(in.Name)
+	return out
+}
 func MirroringEndpointGroup_AssociationDetailsObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.MirroringEndpointGroup_AssociationDetails) *krmnetworksecurityv1alpha1.MirroringEndpointGroup_AssociationDetailsObservedState {
 	if in == nil {
 		return nil
@@ -1255,6 +1271,64 @@ func NetworkSecurityInterceptEndpointGroupSpec_v1alpha1_ToProto(mapCtx *direct.M
 	if in.InterceptDeploymentGroupRef != nil {
 		out.InterceptDeploymentGroup = in.InterceptDeploymentGroupRef.External
 	}
+	out.Description = direct.ValueOf(in.Description)
+	return out
+}
+func NetworkSecurityMirroringDeploymentGroupObservedState_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.MirroringDeploymentGroup) *krmnetworksecurityv1alpha1.NetworkSecurityMirroringDeploymentGroupObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.NetworkSecurityMirroringDeploymentGroupObservedState{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	out.ConnectedEndpointGroups = direct.Slice_FromProto(mapCtx, in.ConnectedEndpointGroups, MirroringDeploymentGroup_ConnectedEndpointGroupObservedState_v1alpha1_FromProto)
+	// MISSING: NestedDeployments
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.Reconciling = direct.LazyPtr(in.GetReconciling())
+	out.Locations = direct.Slice_FromProto(mapCtx, in.Locations, MirroringLocationObservedState_v1alpha1_FromProto)
+	return out
+}
+func NetworkSecurityMirroringDeploymentGroupObservedState_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.NetworkSecurityMirroringDeploymentGroupObservedState) *pb.MirroringDeploymentGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MirroringDeploymentGroup{}
+	// MISSING: Name
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	out.ConnectedEndpointGroups = direct.Slice_ToProto(mapCtx, in.ConnectedEndpointGroups, MirroringDeploymentGroup_ConnectedEndpointGroupObservedState_v1alpha1_ToProto)
+	// MISSING: NestedDeployments
+	out.State = direct.Enum_ToProto[pb.MirroringDeploymentGroup_State](mapCtx, in.State)
+	out.Reconciling = direct.ValueOf(in.Reconciling)
+	out.Locations = direct.Slice_ToProto(mapCtx, in.Locations, MirroringLocationObservedState_v1alpha1_ToProto)
+	return out
+}
+func NetworkSecurityMirroringDeploymentGroupSpec_v1alpha1_FromProto(mapCtx *direct.MapContext, in *pb.MirroringDeploymentGroup) *krmnetworksecurityv1alpha1.NetworkSecurityMirroringDeploymentGroupSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krmnetworksecurityv1alpha1.NetworkSecurityMirroringDeploymentGroupSpec{}
+	// MISSING: Name
+	out.Labels = in.Labels
+	if in.GetNetwork() != "" {
+		out.NetworkRef = &krmcomputev1beta1.ComputeNetworkRef{External: in.GetNetwork()}
+	}
+	// MISSING: NestedDeployments
+	out.Description = direct.LazyPtr(in.GetDescription())
+	return out
+}
+func NetworkSecurityMirroringDeploymentGroupSpec_v1alpha1_ToProto(mapCtx *direct.MapContext, in *krmnetworksecurityv1alpha1.NetworkSecurityMirroringDeploymentGroupSpec) *pb.MirroringDeploymentGroup {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MirroringDeploymentGroup{}
+	// MISSING: Name
+	out.Labels = in.Labels
+	if in.NetworkRef != nil {
+		out.Network = in.NetworkRef.External
+	}
+	// MISSING: NestedDeployments
 	out.Description = direct.ValueOf(in.Description)
 	return out
 }
