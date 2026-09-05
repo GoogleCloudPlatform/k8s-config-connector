@@ -457,6 +457,11 @@ spec:
                       - value
                       type: object
                     type: array
+                  databaseReplicationEnabled:
+                    description: 'Configuration specific to read replica instances.
+                      Indicates whether replication is enabled or not. WARNING: Changing
+                      this field restarts the read replica instance.'
+                    type: boolean
                   deletionProtectionEnabled:
                     description: Configuration to protect against accidental instance
                       deletion.
