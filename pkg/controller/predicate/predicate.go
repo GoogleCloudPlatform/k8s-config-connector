@@ -71,6 +71,11 @@ func (UnderlyingResourceOutOfSyncPredicate) Update(e event.UpdateEvent) bool {
 		return true
 	}
 
+	// Recognize actuation mode annotation changes to immediately trigger reconciliation
+	if e.ObjectOld.GetAnnotations()[k8s.ActuationModeAnnotation] != e.ObjectNew.GetAnnotations()[k8s.ActuationModeAnnotation] {
+		return true
+	}
+
 	// Changes to the reconcile interval annotation should trigger a reconcile
 	if oldValue, newValue := e.ObjectOld.GetAnnotations()[k8s.ReconcileIntervalInSecondsAnnotation], e.ObjectNew.GetAnnotations()[k8s.ReconcileIntervalInSecondsAnnotation]; oldValue != newValue {
 		newValueInt, err := strconv.ParseInt(newValue, 10, 32)

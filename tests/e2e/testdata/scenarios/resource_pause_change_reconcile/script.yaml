@@ -1,0 +1,135 @@
+# Copyright 2026 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# step 0
+apiVersion: core.cnrm.cloud.google.com/v1beta1
+kind: ConfigConnectorContext
+metadata:
+  name: configconnectorcontext.core.cnrm.cloud.google.com
+spec:
+  googleServiceAccount: "kcc@${projectId}.iam.gserviceaccount.com"
+---
+# step 1
+apiVersion: core.cnrm.cloud.google.com/v1beta1
+kind: ConfigConnector
+metadata:
+  name: configconnector.core.cnrm.cloud.google.com
+spec:
+  mode: namespaced
+---
+# step 2
+apiVersion: logging.cnrm.cloud.google.com/v1beta1
+kind: LoggingLogBucket
+metadata:
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: logginglogbucket-${uniqueId}
+spec:
+  projectRef:
+    external: "projects/${projectId}"
+  location: "global"
+  description: "A sample log bucket"
+  locked: false
+  retentionDays: 30
+---
+# step 3
+apiVersion: logging.cnrm.cloud.google.com/v1beta1
+kind: LoggingLogView
+metadata:
+  name: logginglogview-sample-${uniqueId}
+spec:
+  bucketRef:
+    name: "logginglogbucket-${uniqueId}"
+  description: "description 1"
+---
+# step 4
+apiVersion: logging.cnrm.cloud.google.com/v1beta1
+kind: LoggingLogView
+metadata:
+  name: logginglogview-sample-${uniqueId}
+  annotations:
+    unrelated-annotation: "some-value"
+spec:
+  bucketRef:
+    name: "logginglogbucket-${uniqueId}"
+  description: "description 1"
+---
+# step 5
+apiVersion: logging.cnrm.cloud.google.com/v1beta1
+kind: LoggingLogView
+metadata:
+  name: logginglogview-sample-${uniqueId}
+  annotations:
+    unrelated-annotation: "some-value"
+    cnrm.cloud.google.com/actuation-mode: "Paused"
+spec:
+  bucketRef:
+    name: "logginglogbucket-${uniqueId}"
+  description: "description 1"
+---
+# step 6
+TEST: APPLY-NO-WAIT
+apiVersion: logging.cnrm.cloud.google.com/v1beta1
+kind: LoggingLogView
+metadata:
+  name: logginglogview-sample-${uniqueId}
+  annotations:
+    unrelated-annotation: "some-value"
+    cnrm.cloud.google.com/actuation-mode: "Paused"
+spec:
+  bucketRef:
+    name: "logginglogbucket-${uniqueId}"
+  description: "description 2"
+---
+# step 7
+TEST: WAIT-FOR-HTTP-REQUEST
+VALUE_PRESENT: "description 2"
+apiVersion: logging.cnrm.cloud.google.com/v1beta1
+kind: LoggingLogView
+metadata:
+  name: logginglogview-sample-${uniqueId}
+  annotations:
+    unrelated-annotation: "some-value"
+    cnrm.cloud.google.com/actuation-mode: "Reconciling"
+spec:
+  bucketRef:
+    name: "logginglogbucket-${uniqueId}"
+  description: "description 2"
+---
+# step 8
+apiVersion: logging.cnrm.cloud.google.com/v1beta1
+kind: LoggingLogView
+metadata:
+  name: logginglogview-sample-${uniqueId}
+  annotations:
+    unrelated-annotation: "some-value"
+    cnrm.cloud.google.com/actuation-mode: "Paused"
+spec:
+  bucketRef:
+    name: "logginglogbucket-${uniqueId}"
+  description: "description 2"
+---
+# step 9
+TEST: DELETE
+apiVersion: logging.cnrm.cloud.google.com/v1beta1
+kind: LoggingLogView
+metadata:
+  name: logginglogview-sample-${uniqueId}
+---
+# step 10
+TEST: DELETE
+apiVersion: logging.cnrm.cloud.google.com/v1beta1
+kind: LoggingLogBucket
+metadata:
+  name: logginglogbucket-${uniqueId}
