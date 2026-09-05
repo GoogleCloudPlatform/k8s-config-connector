@@ -633,6 +633,30 @@ func normalizeRepresentation(obj interface{}) interface{} {
 				v["status"] = "RUNNING"
 			}
 		}
+		if kind, ok := v["kind"].(string); ok && kind == "bigquery#table" {
+			tableType, _ := v["type"].(string)
+			if tableType == "MATERIALIZED_VIEW" {
+				delete(v, "schema")
+				delete(v, "materializedViewStatus")
+				if mv, ok := v["materializedView"].(map[string]interface{}); ok {
+					delete(mv, "lastRefreshTime")
+				}
+			}
+			if tableType == "VIEW" {
+				if view, ok := v["view"].(map[string]interface{}); ok {
+					delete(view, "privacyPolicy")
+				}
+				if schema, ok := v["schema"].(map[string]interface{}); ok {
+					if fields, ok := schema["fields"].([]interface{}); ok {
+						for _, field := range fields {
+							if fMap, ok := field.(map[string]interface{}); ok {
+								delete(fMap, "description")
+							}
+						}
+					}
+				}
+			}
+		}
 		if kind, ok := v["kind"].(string); ok && kind == "compute#backendService" {
 			delete(v, "port")
 			delete(v, "portName")

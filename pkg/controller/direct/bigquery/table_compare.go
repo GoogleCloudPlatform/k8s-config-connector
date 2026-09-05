@@ -65,7 +65,7 @@ func sortSchemaFields(fields []*bigquery.TableFieldSchema) {
 	})
 }
 
-func tableFieldsSchemaEqual(actual, desired []*bigquery.TableFieldSchema, prefix string, diff *structuredreporting.Diff) (bool, error) {
+func tableFieldsSchemaEqual(actual, desired []*bigquery.TableFieldSchema, prefix string, diff *structuredreporting.Diff, isView bool) (bool, error) {
 	if len(actual) == 0 && len(desired) == 0 {
 		return true, nil
 	}
@@ -98,7 +98,8 @@ func tableFieldsSchemaEqual(actual, desired []*bigquery.TableFieldSchema, prefix
 			diff.AddField(fieldPrefix+".default_value_expression", actual[i].DefaultValueExpression, desired[i].DefaultValueExpression)
 			return false, nil
 		}
-		if !reflect.DeepEqual(actual[i].Description, desired[i].Description) {
+		// BigQuery does not return/preserve field descriptions for views (views, materialized views).
+		if !isView && !reflect.DeepEqual(actual[i].Description, desired[i].Description) {
 			diff.AddField(fieldPrefix+".description", actual[i].Description, desired[i].Description)
 			return false, nil
 		}
@@ -142,7 +143,7 @@ func tableFieldsSchemaEqual(actual, desired []*bigquery.TableFieldSchema, prefix
 			diff.AddField(fieldPrefix+".type", actual[i].Type, desired[i].Type)
 			return false, nil
 		}
-		eq, err := tableFieldsSchemaEqual(actual[i].Fields, desired[i].Fields, fieldPrefix+".fields", diff)
+		eq, err := tableFieldsSchemaEqual(actual[i].Fields, desired[i].Fields, fieldPrefix+".fields", diff, isView)
 		if err != nil {
 			return false, err
 		}
@@ -218,7 +219,7 @@ func externalDataConfigurationEqual(actual, desired *bigquery.ExternalDataConfig
 		return false, nil
 	}
 
-	equal, err := tableSchemaEq(actual.Schema, desired.Schema, prefix+".schema", diff)
+	equal, err := tableSchemaEq(actual.Schema, desired.Schema, prefix+".schema", diff, false)
 	if err != nil {
 		return false, err
 	}
@@ -256,7 +257,7 @@ func materializedViewEq(actual, desired *bigquery.MaterializedViewDefinition, pr
 	return true
 }
 
-func tableSchemaEq(actual, desired *bigquery.TableSchema, prefix string, diff *structuredreporting.Diff) (bool, error) {
+func tableSchemaEq(actual, desired *bigquery.TableSchema, prefix string, diff *structuredreporting.Diff, isView bool) (bool, error) {
 	if desired == nil {
 		// If the desired schema is not specified in the KRM spec, we do not enforce it.
 		// This is common for Views, Materialized Views, and External Tables where the schema is derived or autodetected.
@@ -267,7 +268,7 @@ func tableSchemaEq(actual, desired *bigquery.TableSchema, prefix string, diff *s
 		diff.AddField(prefix, actual, desired)
 		return false, nil
 	}
-	return tableFieldsSchemaEqual(actual.Fields, desired.Fields, prefix+".fields", diff)
+	return tableFieldsSchemaEqual(actual.Fields, desired.Fields, prefix+".fields", diff, isView)
 }
 
 func viewEq(actual, desired *bigquery.ViewDefinition, prefix string, diff *structuredreporting.Diff) bool {
@@ -342,7 +343,8 @@ func TableEq(actual, desired *bigquery.Table, diff *structuredreporting.Diff) (b
 		diff.AddField("labels", actual.Labels, desired.Labels)
 		return false, nil
 	}
-	equal, err := tableSchemaEq(actual.Schema, desired.Schema, "schema", diff)
+	isView := actual.View != nil || desired.View != nil || actual.MaterializedView != nil || desired.MaterializedView != nil
+	equal, err := tableSchemaEq(actual.Schema, desired.Schema, "schema", diff, isView)
 	if err != nil {
 		return false, err
 	}
