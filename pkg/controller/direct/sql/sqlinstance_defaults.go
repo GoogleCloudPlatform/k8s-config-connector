@@ -106,6 +106,14 @@ func ApplySQLInstanceGCPDefaults(in *krm.SQLInstance, out *api.DatabaseInstance,
 			// GCP default IpConfiguration.Ipv4Enabled is true.
 			out.Settings.IpConfiguration.Ipv4Enabled = true
 		}
+		if in.Spec.Settings.IpConfiguration.EnablePrivatePathForGoogleCloudServices == nil {
+			// GCP default IpConfiguration.EnablePrivatePathForGoogleCloudServices is false.
+			out.Settings.IpConfiguration.EnablePrivatePathForGoogleCloudServices = false
+		}
+		if in.Spec.Settings.IpConfiguration.RequireSsl == nil {
+			// GCP default IpConfiguration.RequireSsl is false.
+			out.Settings.IpConfiguration.RequireSsl = false
+		}
 		if in.Spec.Settings.IpConfiguration.SslMode == nil {
 			if out.Settings.IpConfiguration.RequireSsl {
 				if strings.HasPrefix(out.DatabaseVersion, "MYSQL") || strings.HasPrefix(out.DatabaseVersion, "POSTGRES") {
