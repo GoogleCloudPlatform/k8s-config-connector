@@ -73,6 +73,11 @@ func run(ctx context.Context) error {
 	// Support default klog verbosity (so that we can see client-go traffic)
 	klogFlagSet := goflag.NewFlagSet("klog", goflag.ExitOnError)
 	klog.InitFlags(klogFlagSet)
+	// Opt into the new klog behavior so that -stderrthreshold is honored even
+	// when -logtostderr=true (the default).
+	// Ref: kubernetes/klog#212, kubernetes/klog#432
+	_ = klogFlagSet.Set("legacy_stderr_threshold_behavior", "false")
+	_ = klogFlagSet.Set("stderrthreshold", "INFO")
 	flag.CommandLine.AddGoFlag(klogFlagSet.Lookup("v"))
 
 	flag.CommandLine.AddGoFlagSet(goflag.CommandLine)
