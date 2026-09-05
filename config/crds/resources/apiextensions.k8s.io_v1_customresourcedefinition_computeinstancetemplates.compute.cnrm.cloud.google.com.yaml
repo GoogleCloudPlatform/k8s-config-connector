@@ -190,6 +190,12 @@ spec:
                         120,000. For more details, see the [Extreme persistent disk
                         documentation](https://cloud.google.com/compute/docs/disks/extreme-persistent-disk).
                       type: integer
+                    provisionedThroughput:
+                      description: Immutable. Indicates how much throughput to provision
+                        for the disk. This sets the number of throughput mb per second
+                        that the disk can handle. Values must be greater than or equal
+                        to 1.
+                      type: integer
                     resourcePolicies:
                       items:
                         oneOf:
