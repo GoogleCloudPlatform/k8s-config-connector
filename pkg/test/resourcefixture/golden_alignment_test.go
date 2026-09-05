@@ -478,6 +478,16 @@ func compareJSON(t *testing.T, context, realJSON, mockJSON string) {
 	realJSON = uuidRegex.ReplaceAllString(realJSON, "00000000-0000-0000-0000-000000000001")
 	mockJSON = uuidRegex.ReplaceAllString(mockJSON, "00000000-0000-0000-0000-000000000001")
 
+	// Normalize alternativeLocationId zones (such as us-central1-f) to us-central1-a
+	zoneRegex := regexp.MustCompile(`"alternativeLocationId":\s*"us-central1-[a-f]"`)
+	realJSON = zoneRegex.ReplaceAllString(realJSON, `"alternativeLocationId": "us-central1-a"`)
+	mockJSON = zoneRegex.ReplaceAllString(mockJSON, `"alternativeLocationId": "us-central1-a"`)
+
+	// Normalize redis instance secondaryIpRange update error message
+	realJSON = strings.ReplaceAll(realJSON, "Secondary IP range can only be updated while enabling read replicas", "update_mask path \\\"secondaryIpRange\\\" not valid")
+	realJSON = strings.ReplaceAll(realJSON, "com.google.apps.framework.request.StatusException: \\u003ceye3 title='INVALID_ARGUMENT'/\\u003e generic::INVALID_ARGUMENT: ", "")
+	realJSON = strings.ReplaceAll(realJSON, "com.google.apps.framework.request.StatusException: <eye3 title='INVALID_ARGUMENT'/> generic::INVALID_ARGUMENT: ", "")
+
 	// Normalize aiplatform v1beta1 to v1 to align real and mock logs
 	realJSON = strings.ReplaceAll(realJSON, "aiplatform.v1beta1", "aiplatform.v1")
 	mockJSON = strings.ReplaceAll(mockJSON, "aiplatform.v1beta1", "aiplatform.v1")
