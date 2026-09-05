@@ -17,6 +17,7 @@ package bigquerydataset
 import (
 	"encoding/json"
 	"fmt"
+	"slices"
 
 	bigquery "cloud.google.com/go/bigquery"
 	"google.golang.org/protobuf/encoding/protojson"
@@ -89,6 +90,7 @@ func cloneBigQueryDatasetMetadate(in *bigquery.DatasetMetadata) *bigquery.Datase
 					ProjectID: access.Dataset.Dataset.ProjectID,
 					DatasetID: access.Dataset.Dataset.DatasetID,
 				},
+				TargetTypes: slices.Clone(access.Dataset.TargetTypes),
 			}
 		}
 		acccessList = append(acccessList, curAccess)

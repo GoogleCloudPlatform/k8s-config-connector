@@ -222,66 +222,12 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 		return fmt.Errorf("BigQueryDataset %s/%s location cannot be changed, actual: %s, desired: %s", u.GetNamespace(), u.GetName(), resource.Location, desired.Location)
 	}
 	// Find diff
-	report := &structuredreporting.Diff{Object: updateOp.GetUnstructured()}
-	updateMask := &fieldmaskpb.FieldMask{}
-	if desired.Description != "" && !reflect.DeepEqual(desired.Description, resource.Description) {
-		report.AddField("description", resource.Description, desired.Description)
-		resource.Description = desired.Description
-		updateMask.Paths = append(updateMask.Paths, "description")
-	}
-	if desired.Name != "" && !reflect.DeepEqual(desired.Name, resource.Name) {
-		report.AddField("friendly_name", resource.Name, desired.Name)
-		resource.Name = desired.Name
-		updateMask.Paths = append(updateMask.Paths, "friendly_name")
-	}
-	if desired.DefaultPartitionExpiration != 0 && !reflect.DeepEqual(desired.DefaultPartitionExpiration, resource.DefaultPartitionExpiration) {
-		report.AddField("default_partition_expiration", resource.DefaultPartitionExpiration, desired.DefaultPartitionExpiration)
-		resource.DefaultPartitionExpiration = desired.DefaultPartitionExpiration
-		updateMask.Paths = append(updateMask.Paths, "default_partition_expiration")
-	}
-	if desired.DefaultTableExpiration != 0 && !reflect.DeepEqual(desired.DefaultTableExpiration, resource.DefaultTableExpiration) {
-		report.AddField("default_table_expiration", resource.DefaultTableExpiration, desired.DefaultTableExpiration)
-		resource.DefaultTableExpiration = desired.DefaultTableExpiration
-		updateMask.Paths = append(updateMask.Paths, "default_table_expiration")
-	}
-	if desired.DefaultCollation != "" && !reflect.DeepEqual(desired.DefaultCollation, resource.DefaultCollation) {
-		report.AddField("default_collation", resource.DefaultCollation, desired.DefaultCollation)
-		resource.DefaultCollation = desired.DefaultCollation
-		updateMask.Paths = append(updateMask.Paths, "default_collation")
-	}
-	if desired.DefaultEncryptionConfig != nil && resource.DefaultEncryptionConfig != nil && !reflect.DeepEqual(desired.DefaultEncryptionConfig, resource.DefaultEncryptionConfig) {
-		report.AddField("default_encryption_configuration", resource.DefaultEncryptionConfig, desired.DefaultEncryptionConfig)
-		resource.DefaultEncryptionConfig.KMSKeyName = desired.DefaultEncryptionConfig.KMSKeyName
-		updateMask.Paths = append(updateMask.Paths, "default_encryption_configuration")
-	}
-	if desiredKRM.Spec.IsCaseInsensitive != nil && !reflect.DeepEqual(desired.IsCaseInsensitive, resource.IsCaseInsensitive) {
-		report.AddField("is_case_sensitive", resource.IsCaseInsensitive, desired.IsCaseInsensitive)
-		resource.IsCaseInsensitive = desired.IsCaseInsensitive
-		updateMask.Paths = append(updateMask.Paths, "is_case_sensitive")
-	}
-	if desired.StorageBillingModel != "" && !reflect.DeepEqual(desired.StorageBillingModel, resource.StorageBillingModel) {
-		report.AddField("storage_billing_model", resource.StorageBillingModel, desired.StorageBillingModel)
-		resource.StorageBillingModel = desired.StorageBillingModel
-		updateMask.Paths = append(updateMask.Paths, "storage_billing_model")
-	}
-	// If we do not set a value, the GCP service defaults to 168
-	// If the existing value is 168, it means that we did not set this field at creation and it defaults to 168.
-	// So if the desired value is 0, it means that we do not intend to update this field.
-	if desired.MaxTimeTravel != 0 && !reflect.DeepEqual(desired.MaxTimeTravel, resource.MaxTimeTravel) && (resource.MaxTimeTravel != 168 && desired.MaxTimeTravel != 0) {
-		report.AddField("max_time_travel", resource.MaxTimeTravel, desired.MaxTimeTravel)
-		resource.MaxTimeTravel = desired.MaxTimeTravel
-		updateMask.Paths = append(updateMask.Paths, "max_time_travel")
-	}
-	if desired.Access != nil && resource.Access != nil && len(desired.Access) > 0 && !reflect.DeepEqual(desired.Access, resource.Access) {
-		report.AddField("access", resource.Access, desired.Access)
-		for _, access := range desired.Access {
-			resource.Access = append(resource.Access, access)
-		}
-	}
+	updateMask, report := computeDiff(desiredKRM, desired, resource)
 	if len(updateMask.Paths) == 0 {
 		return nil
 	}
 
+	report.Object = updateOp.GetUnstructured()
 	structuredreporting.ReportDiff(ctx, report)
 
 	// Compute the dataset metadate for update request
@@ -349,4 +295,84 @@ func (a *Adapter) Delete(ctx context.Context, deleteOp *directbase.DeleteOperati
 	log.V(2).Info("successfully deleted Dataset", "name", a.id.Dataset)
 
 	return true, nil
+}
+
+func computeDiff(desiredKRM *krm.BigQueryDataset, desired *bigquery.DatasetMetadata, resource *bigquery.DatasetMetadata) (*fieldmaskpb.FieldMask, *structuredreporting.Diff) {
+	report := &structuredreporting.Diff{}
+	updateMask := &fieldmaskpb.FieldMask{}
+	if desired.Description != "" && !reflect.DeepEqual(desired.Description, resource.Description) {
+		report.AddField("description", resource.Description, desired.Description)
+		resource.Description = desired.Description
+		updateMask.Paths = append(updateMask.Paths, "description")
+	}
+	if desired.Name != "" && !reflect.DeepEqual(desired.Name, resource.Name) {
+		report.AddField("friendly_name", resource.Name, desired.Name)
+		resource.Name = desired.Name
+		updateMask.Paths = append(updateMask.Paths, "friendly_name")
+	}
+	if desired.DefaultPartitionExpiration != 0 && !reflect.DeepEqual(desired.DefaultPartitionExpiration, resource.DefaultPartitionExpiration) {
+		report.AddField("default_partition_expiration", resource.DefaultPartitionExpiration, desired.DefaultPartitionExpiration)
+		resource.DefaultPartitionExpiration = desired.DefaultPartitionExpiration
+		updateMask.Paths = append(updateMask.Paths, "default_partition_expiration")
+	}
+	if desired.DefaultTableExpiration != 0 && !reflect.DeepEqual(desired.DefaultTableExpiration, resource.DefaultTableExpiration) {
+		report.AddField("default_table_expiration", resource.DefaultTableExpiration, desired.DefaultTableExpiration)
+		resource.DefaultTableExpiration = desired.DefaultTableExpiration
+		updateMask.Paths = append(updateMask.Paths, "default_table_expiration")
+	}
+	if desired.DefaultCollation != "" && !reflect.DeepEqual(desired.DefaultCollation, resource.DefaultCollation) {
+		report.AddField("default_collation", resource.DefaultCollation, desired.DefaultCollation)
+		resource.DefaultCollation = desired.DefaultCollation
+		updateMask.Paths = append(updateMask.Paths, "default_collation")
+	}
+	if desired.DefaultEncryptionConfig != nil && resource.DefaultEncryptionConfig != nil && !reflect.DeepEqual(desired.DefaultEncryptionConfig, resource.DefaultEncryptionConfig) {
+		report.AddField("default_encryption_configuration", resource.DefaultEncryptionConfig, desired.DefaultEncryptionConfig)
+		resource.DefaultEncryptionConfig.KMSKeyName = desired.DefaultEncryptionConfig.KMSKeyName
+		updateMask.Paths = append(updateMask.Paths, "default_encryption_configuration")
+	}
+	if desiredKRM.Spec.IsCaseInsensitive != nil && !reflect.DeepEqual(desired.IsCaseInsensitive, resource.IsCaseInsensitive) {
+		report.AddField("is_case_sensitive", resource.IsCaseInsensitive, desired.IsCaseInsensitive)
+		resource.IsCaseInsensitive = desired.IsCaseInsensitive
+		updateMask.Paths = append(updateMask.Paths, "is_case_sensitive")
+	}
+	if desired.StorageBillingModel != "" && !reflect.DeepEqual(desired.StorageBillingModel, resource.StorageBillingModel) {
+		report.AddField("storage_billing_model", resource.StorageBillingModel, desired.StorageBillingModel)
+		resource.StorageBillingModel = desired.StorageBillingModel
+		updateMask.Paths = append(updateMask.Paths, "storage_billing_model")
+	}
+	// If we do not set a value, the GCP service defaults to 168
+	// If the existing value is 168, it means that we did not set this field at creation and it defaults to 168.
+	// So if the desired value is 0, it means that we do not intend to update this field.
+	if desired.MaxTimeTravel != 0 && !reflect.DeepEqual(desired.MaxTimeTravel, resource.MaxTimeTravel) && (resource.MaxTimeTravel != 168 && desired.MaxTimeTravel != 0) {
+		report.AddField("max_time_travel", resource.MaxTimeTravel, desired.MaxTimeTravel)
+		resource.MaxTimeTravel = desired.MaxTimeTravel
+		updateMask.Paths = append(updateMask.Paths, "max_time_travel")
+	}
+	if len(desired.Access) > 0 && !accessEqual(desired.Access, resource.Access) {
+		report.AddField("access", resource.Access, desired.Access)
+		resource.Access = desired.Access
+		updateMask.Paths = append(updateMask.Paths, "access")
+	}
+	return updateMask, report
+}
+
+func accessEqual(a, b []*bigquery.AccessEntry) bool {
+	if len(a) != len(b) {
+		return false
+	}
+	used := make([]bool, len(b))
+	for _, itemA := range a {
+		found := false
+		for j, itemB := range b {
+			if !used[j] && reflect.DeepEqual(itemA, itemB) {
+				used[j] = true
+				found = true
+				break
+			}
+		}
+		if !found {
+			return false
+		}
+	}
+	return true
 }

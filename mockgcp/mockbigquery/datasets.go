@@ -170,6 +170,17 @@ func sortAccess(obj *pb.Dataset) {
 
 		return false
 	})
+
+	// Deduplicate access entries (real BigQuery API deduplicates access entries)
+	if len(obj.Access) > 1 {
+		deduped := make([]*pb.DatasetAccess, 0, len(obj.Access))
+		for _, a := range obj.Access {
+			if len(deduped) == 0 || !proto.Equal(deduped[len(deduped)-1], a) {
+				deduped = append(deduped, a)
+			}
+		}
+		obj.Access = deduped
+	}
 }
 
 func (s *datasetsServer) UpdateDataset(ctx context.Context, req *pb.UpdateDatasetRequest) (*pb.Dataset, error) {
