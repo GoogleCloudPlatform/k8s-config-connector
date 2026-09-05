@@ -30,6 +30,8 @@ func (s *MockService) ConfigureVisitor(url string, visitor mockgcpregistry.Norma
 	visitor.ReplacePath(".updateTime", mockgcpregistry.PlaceholderTimestamp)
 	visitor.ReplacePath(".response.createTime", mockgcpregistry.PlaceholderTimestamp)
 	visitor.ReplacePath(".response.updateTime", mockgcpregistry.PlaceholderTimestamp)
+	visitor.ReplacePath(".etag", "abcdef0123A=")
+	visitor.ReplacePath(".response.etag", "abcdef0123A=")
 
 	visitor.ReplacePath(".metadata.createTime", mockgcpregistry.PlaceholderTimestamp)
 	visitor.ReplacePath(".metadata.endTime", mockgcpregistry.PlaceholderTimestamp)
