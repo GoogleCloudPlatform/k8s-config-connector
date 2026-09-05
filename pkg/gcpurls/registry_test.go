@@ -288,11 +288,14 @@ func TestRegisteredTemplatesMatchCAI(t *testing.T) {
 		// Storage Insights
 		"//storageinsights.googleapis.com/projects/{}/locations/{}/datasetConfigs/{}": true,
 
-		// Vision
-		"//vision.googleapis.com/projects/{}/locations/{}/products/{}": true,
+		// TPU
+		"//tpu.googleapis.com/projects/{}/locations/{}/queuedResources/{}": true,
 
 		// Vector Search
 		"//vectorsearch.googleapis.com/projects/{}/locations/{}/collections/{}": true,
+
+		// Vision
+		"//vision.googleapis.com/projects/{}/locations/{}/products/{}": true,
 
 		// Workflow Executions
 		"//workflowexecutions.googleapis.com/projects/{}/locations/{}/workflows/{}/executions/{}": true,
