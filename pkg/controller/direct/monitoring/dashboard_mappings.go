@@ -22,9 +22,9 @@ import (
 	"google.golang.org/protobuf/types/known/durationpb"
 	"google.golang.org/protobuf/types/known/emptypb"
 
-	pb "cloud.google.com/go/monitoring/dashboard/apiv1/dashboardpb"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/monitoring/v1beta1"
 	monitoringv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/monitoring/v1beta1"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/monitoring/dashboard/v1"
 	monitoredres "google.golang.org/genproto/googleapis/api/monitoredres"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -287,5 +287,23 @@ func BlankView_ToProto(mapCtx *direct.MapContext, in *krm.BlankView) *emptypb.Em
 		return nil
 	}
 	out := &emptypb.Empty{}
+	return out
+}
+
+func OpsAnalyticsQuery_FromProto(mapCtx *direct.MapContext, in *pb.OpsAnalyticsQuery) *krm.OpsAnalyticsQuery {
+	if in == nil {
+		return nil
+	}
+	out := &krm.OpsAnalyticsQuery{}
+	out.SQL = direct.LazyPtr(in.GetSql())
+	return out
+}
+
+func OpsAnalyticsQuery_ToProto(mapCtx *direct.MapContext, in *krm.OpsAnalyticsQuery) *pb.OpsAnalyticsQuery {
+	if in == nil {
+		return nil
+	}
+	out := &pb.OpsAnalyticsQuery{}
+	out.Sql = direct.ValueOf(in.SQL)
 	return out
 }

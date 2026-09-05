@@ -19,11 +19,17 @@ import (
 	"encoding/base64"
 	"fmt"
 
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/monitoring/dashboard/v1"
 	"google.golang.org/protobuf/proto"
 )
 
 func computeEtag(obj proto.Message) string {
-	b, err := proto.Marshal(obj)
+	clone := proto.Clone(obj)
+	if dashboard, ok := clone.(*pb.Dashboard); ok {
+		dashboard.Name = ""
+		dashboard.Etag = ""
+	}
+	b, err := proto.Marshal(clone)
 	if err != nil {
 		panic(fmt.Sprintf("converting to proto: %v", err))
 	}

@@ -18,8 +18,8 @@ import (
 	"context"
 	"testing"
 
-	pb "cloud.google.com/go/monitoring/dashboard/apiv1/dashboardpb"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/projects"
+	pb "github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/generated/google/monitoring/dashboard/v1"
 	"github.com/google/go-cmp/cmp"
 	"google.golang.org/protobuf/testing/protocmp"
 )
