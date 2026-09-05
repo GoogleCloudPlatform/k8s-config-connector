@@ -53,6 +53,10 @@ type IndexFields struct {
 }
 
 type FirestoreIndexSpec struct {
+	/* Immutable. The API scope at which a query is run. Default value: "ANY_API" Possible values: ["ANY_API", "DATASTORE_MODE_API", "MONGODB_COMPATIBLE_API"]. */
+	// +optional
+	ApiScope *string `json:"apiScope,omitempty"`
+
 	/* Immutable. The collection being indexed. */
 	Collection string `json:"collection"`
 
@@ -63,7 +67,7 @@ type FirestoreIndexSpec struct {
 	/* Immutable. The fields supported by this index. The last field entry is always for the field path '__name__'. If, on creation, '__name__' was not specified as the last field, it will be added automatically with the same direction as that of the last field defined. If the final field in a composite index is not directional, the '__name__' will be ordered '"ASCENDING"' (unless explicitly specified otherwise). */
 	Fields []IndexFields `json:"fields"`
 
-	/* Immutable. The scope at which a query is run. Default value: "COLLECTION" Possible values: ["COLLECTION", "COLLECTION_GROUP"]. */
+	/* Immutable. The scope at which a query is run. Default value: "COLLECTION" Possible values: ["COLLECTION", "COLLECTION_GROUP", "COLLECTION_RECURSIVE"]. */
 	// +optional
 	QueryScope *string `json:"queryScope,omitempty"`
 }

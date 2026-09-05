@@ -1,54 +1,60 @@
-144c144
+104c104
 < POST https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/sample-collection-${uniqueId}/indexes?alt=json
 ---
 > POST https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/sample-collection-${uniqueId}/indexes?%24alt=json%3Benum-encoding%3Dint
-151c151
+108c108
+<   "apiScope": "DATASTORE_MODE_API",
+---
+>   "apiScope": 1,
+112c112
 <       "order": "ASCENDING"
 ---
 >       "order": 1
-155c155
+116c116
 <       "order": "DESCENDING"
 ---
 >       "order": 2
-158c158
-<   "queryScope": "COLLECTION"
+119c119
+<   "queryScope": "COLLECTION_RECURSIVE"
 ---
->   "queryScope": 1
-176c176
+>   "queryScope": 3
+137c137
 <     "state": "INITIALIZING"
 ---
 >     "state": 1
-183c183
+144c144
 < GET https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/operations/${operationID}?alt=json
 ---
 > GET https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/operations/${operationID}
-232c232
+194c194
 < GET https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/sample-collection-${uniqueId}/indexes/${indexID}?alt=json
 ---
 > GET https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/sample-collection-${uniqueId}/indexes/${indexID}?%24alt=json%3Benum-encoding%3Dint
-246c246
+208,209c208,209
+<   "apiScope": "DATASTORE_MODE_API",
 <   "density": "SPARSE_ALL",
 ---
+>   "apiScope": 1,
 >   "density": 1,
-250c250
+213c213
 <       "order": "ASCENDING"
 ---
 >       "order": 1
-254c254
+217c217
 <       "order": "DESCENDING"
 ---
 >       "order": 2
-258c258
-<       "order": "DESCENDING"
+221c221
+<       "order": "ASCENDING"
 ---
->       "order": 2
-262,263c262,263
-<   "queryScope": "COLLECTION",
+>       "order": 1
+225,226c225,226
+<   "queryScope": "COLLECTION_RECURSIVE",
 <   "state": "READY"
 ---
->   "queryScope": 1,
+>   "queryScope": 3,
 >   "state": 2
-268c268
+231c231
 < DELETE https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/sample-collection-${uniqueId}/indexes/${indexID}?alt=json
 ---
 > DELETE https://firestore.googleapis.com/v1/projects/${projectId}/databases/firestoredatabase-${uniqueId}/collectionGroups/sample-collection-${uniqueId}/indexes/${indexID}?%24alt=json%3Benum-encoding%3Dint
