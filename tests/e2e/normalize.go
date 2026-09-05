@@ -1440,6 +1440,11 @@ func normalizeHTTPResponses(t *testing.T, normalizer mockgcpregistry.Normalizer,
 		visitor.ReplacePath(".serviceAccountEmailAddress", "p${projectNumber}-abcdef@gcp-sa-cloud-sql.iam.gserviceaccount.com")
 		visitor.ReplacePath(".settings.backupConfiguration.startTime", "12:00")
 		visitor.ReplacePath(".settings.settingsVersion", "123")
+		if !strings.Contains(t.Name(), "/sqlinstance") && !strings.Contains(t.Name(), "/instance/") {
+			visitor.ReplacePath(".settings.locationPreference.zone", "us-central1-a")
+			visitor.ReplacePath(".items[].settings.locationPreference.zone", "us-central1-a")
+			visitor.ReplacePath(".response.settings.locationPreference.zone", "us-central1-a")
+		}
 	}
 
 	// Specific to BigQuery
