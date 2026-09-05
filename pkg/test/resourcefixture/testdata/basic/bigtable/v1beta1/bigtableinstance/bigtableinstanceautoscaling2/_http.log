@@ -121,10 +121,12 @@ OK
       },
       "instance": {
         "displayName": "bigtableinstance",
+        "edition": "ENTERPRISE",
         "labels": {
           "cnrm-test": "true",
           "managed-by-cnrm": "true"
         },
+        "name": "projects/${projectId}/instances/bt-${uniqueId}",
         "type": "PRODUCTION"
       },
       "instanceId": "bt-${uniqueId}",
@@ -132,7 +134,7 @@ OK
     },
     "requestTime": "2024-04-01T12:34:56.123456Z"
   },
-  "name": "operations/projects/${projectId}/instances/bt-${uniqueId}/locations/us-central1-a/operations/${operationID}"
+  "name": "operations/projects/${projectId}/instances/bt-${uniqueId}/locations/us-central1-b/operations/${operationID}"
 }
 
 ---
@@ -140,7 +142,7 @@ OK
 GRPC /google.longrunning.Operations/GetOperation
 
 {
-  "name": "operations/projects/${projectId}/instances/bt-${uniqueId}/locations/us-central1-a/operations/${operationID}"
+  "name": "operations/projects/${projectId}/instances/bt-${uniqueId}/locations/us-central1-b/operations/${operationID}"
 }
 
 OK
@@ -171,10 +173,12 @@ OK
       },
       "instance": {
         "displayName": "bigtableinstance",
+        "edition": "ENTERPRISE",
         "labels": {
           "cnrm-test": "true",
           "managed-by-cnrm": "true"
         },
+        "name": "projects/${projectId}/instances/bt-${uniqueId}",
         "type": "PRODUCTION"
       },
       "instanceId": "bt-${uniqueId}",
@@ -182,10 +186,11 @@ OK
     },
     "requestTime": "2024-04-01T12:34:56.123456Z"
   },
-  "name": "operations/projects/${projectId}/instances/bt-${uniqueId}/locations/us-central1-a/operations/${operationID}",
+  "name": "operations/projects/${projectId}/instances/bt-${uniqueId}/locations/us-central1-b/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.Instance",
     "displayName": "bigtableinstance",
+    "edition": "ENTERPRISE",
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
@@ -211,6 +216,7 @@ OK
     {
       "createTime": "2024-04-01T12:34:56.123456Z",
       "displayName": "bigtableinstance",
+      "edition": "ENTERPRISE",
       "labels": {
         "cnrm-test": "true",
         "managed-by-cnrm": "true"
@@ -234,6 +240,44 @@ OK
 
 {
   "clusters": [
+    {
+      "clusterConfig": {
+        "clusterAutoscalingConfig": {
+          "autoscalingLimits": {
+            "maxServeNodes": 4,
+            "minServeNodes": 2
+          },
+          "autoscalingTargets": {
+            "cpuUtilizationPercent": 80,
+            "storageUtilizationGibPerNode": 2560
+          }
+        }
+      },
+      "defaultStorageType": "SSD",
+      "location": "projects/${projectId}/locations/us-central1-b",
+      "name": "projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-2-${uniqueId}",
+      "serveNodes": 2,
+      "state": "READY"
+    },
+    {
+      "clusterConfig": {
+        "clusterAutoscalingConfig": {
+          "autoscalingLimits": {
+            "maxServeNodes": 3,
+            "minServeNodes": 2
+          },
+          "autoscalingTargets": {
+            "cpuUtilizationPercent": 80,
+            "storageUtilizationGibPerNode": 2560
+          }
+        }
+      },
+      "defaultStorageType": "SSD",
+      "location": "projects/${projectId}/locations/us-central1-f",
+      "name": "projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-4-${uniqueId}",
+      "serveNodes": 2,
+      "state": "READY"
+    },
     {
       "clusterConfig": {
         "clusterAutoscalingConfig": {
@@ -267,46 +311,8 @@ OK
         }
       },
       "defaultStorageType": "SSD",
-      "location": "projects/${projectId}/locations/us-central1-b",
-      "name": "projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-2-${uniqueId}",
-      "serveNodes": 2,
-      "state": "READY"
-    },
-    {
-      "clusterConfig": {
-        "clusterAutoscalingConfig": {
-          "autoscalingLimits": {
-            "maxServeNodes": 4,
-            "minServeNodes": 2
-          },
-          "autoscalingTargets": {
-            "cpuUtilizationPercent": 80,
-            "storageUtilizationGibPerNode": 2560
-          }
-        }
-      },
-      "defaultStorageType": "SSD",
       "location": "projects/${projectId}/locations/us-central1-c",
       "name": "projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-3-${uniqueId}",
-      "serveNodes": 2,
-      "state": "READY"
-    },
-    {
-      "clusterConfig": {
-        "clusterAutoscalingConfig": {
-          "autoscalingLimits": {
-            "maxServeNodes": 3,
-            "minServeNodes": 2
-          },
-          "autoscalingTargets": {
-            "cpuUtilizationPercent": 80,
-            "storageUtilizationGibPerNode": 2560
-          }
-        }
-      },
-      "defaultStorageType": "SSD",
-      "location": "projects/${projectId}/locations/us-central1-f",
-      "name": "projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-4-${uniqueId}",
       "serveNodes": 2,
       "state": "READY"
     }
@@ -328,6 +334,7 @@ OK
     {
       "createTime": "2024-04-01T12:34:56.123456Z",
       "displayName": "bigtableinstance",
+      "edition": "ENTERPRISE",
       "labels": {
         "cnrm-test": "true",
         "managed-by-cnrm": "true"
@@ -355,6 +362,44 @@ OK
       "clusterConfig": {
         "clusterAutoscalingConfig": {
           "autoscalingLimits": {
+            "maxServeNodes": 4,
+            "minServeNodes": 2
+          },
+          "autoscalingTargets": {
+            "cpuUtilizationPercent": 80,
+            "storageUtilizationGibPerNode": 2560
+          }
+        }
+      },
+      "defaultStorageType": "SSD",
+      "location": "projects/${projectId}/locations/us-central1-b",
+      "name": "projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-2-${uniqueId}",
+      "serveNodes": 2,
+      "state": "READY"
+    },
+    {
+      "clusterConfig": {
+        "clusterAutoscalingConfig": {
+          "autoscalingLimits": {
+            "maxServeNodes": 3,
+            "minServeNodes": 2
+          },
+          "autoscalingTargets": {
+            "cpuUtilizationPercent": 80,
+            "storageUtilizationGibPerNode": 2560
+          }
+        }
+      },
+      "defaultStorageType": "SSD",
+      "location": "projects/${projectId}/locations/us-central1-f",
+      "name": "projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-4-${uniqueId}",
+      "serveNodes": 2,
+      "state": "READY"
+    },
+    {
+      "clusterConfig": {
+        "clusterAutoscalingConfig": {
+          "autoscalingLimits": {
             "maxServeNodes": 5,
             "minServeNodes": 3
           },
@@ -384,46 +429,8 @@ OK
         }
       },
       "defaultStorageType": "SSD",
-      "location": "projects/${projectId}/locations/us-central1-b",
-      "name": "projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-2-${uniqueId}",
-      "serveNodes": 2,
-      "state": "READY"
-    },
-    {
-      "clusterConfig": {
-        "clusterAutoscalingConfig": {
-          "autoscalingLimits": {
-            "maxServeNodes": 4,
-            "minServeNodes": 2
-          },
-          "autoscalingTargets": {
-            "cpuUtilizationPercent": 80,
-            "storageUtilizationGibPerNode": 2560
-          }
-        }
-      },
-      "defaultStorageType": "SSD",
       "location": "projects/${projectId}/locations/us-central1-c",
       "name": "projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-3-${uniqueId}",
-      "serveNodes": 2,
-      "state": "READY"
-    },
-    {
-      "clusterConfig": {
-        "clusterAutoscalingConfig": {
-          "autoscalingLimits": {
-            "maxServeNodes": 3,
-            "minServeNodes": 2
-          },
-          "autoscalingTargets": {
-            "cpuUtilizationPercent": 80,
-            "storageUtilizationGibPerNode": 2560
-          }
-        }
-      },
-      "defaultStorageType": "SSD",
-      "location": "projects/${projectId}/locations/us-central1-f",
-      "name": "projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-4-${uniqueId}",
       "serveNodes": 2,
       "state": "READY"
     }
@@ -446,6 +453,44 @@ OK
       "clusterConfig": {
         "clusterAutoscalingConfig": {
           "autoscalingLimits": {
+            "maxServeNodes": 4,
+            "minServeNodes": 2
+          },
+          "autoscalingTargets": {
+            "cpuUtilizationPercent": 80,
+            "storageUtilizationGibPerNode": 2560
+          }
+        }
+      },
+      "defaultStorageType": "SSD",
+      "location": "projects/${projectId}/locations/us-central1-b",
+      "name": "projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-2-${uniqueId}",
+      "serveNodes": 2,
+      "state": "READY"
+    },
+    {
+      "clusterConfig": {
+        "clusterAutoscalingConfig": {
+          "autoscalingLimits": {
+            "maxServeNodes": 3,
+            "minServeNodes": 2
+          },
+          "autoscalingTargets": {
+            "cpuUtilizationPercent": 80,
+            "storageUtilizationGibPerNode": 2560
+          }
+        }
+      },
+      "defaultStorageType": "SSD",
+      "location": "projects/${projectId}/locations/us-central1-f",
+      "name": "projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-4-${uniqueId}",
+      "serveNodes": 2,
+      "state": "READY"
+    },
+    {
+      "clusterConfig": {
+        "clusterAutoscalingConfig": {
+          "autoscalingLimits": {
             "maxServeNodes": 5,
             "minServeNodes": 3
           },
@@ -475,46 +520,8 @@ OK
         }
       },
       "defaultStorageType": "SSD",
-      "location": "projects/${projectId}/locations/us-central1-b",
-      "name": "projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-2-${uniqueId}",
-      "serveNodes": 2,
-      "state": "READY"
-    },
-    {
-      "clusterConfig": {
-        "clusterAutoscalingConfig": {
-          "autoscalingLimits": {
-            "maxServeNodes": 4,
-            "minServeNodes": 2
-          },
-          "autoscalingTargets": {
-            "cpuUtilizationPercent": 80,
-            "storageUtilizationGibPerNode": 2560
-          }
-        }
-      },
-      "defaultStorageType": "SSD",
       "location": "projects/${projectId}/locations/us-central1-c",
       "name": "projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-3-${uniqueId}",
-      "serveNodes": 2,
-      "state": "READY"
-    },
-    {
-      "clusterConfig": {
-        "clusterAutoscalingConfig": {
-          "autoscalingLimits": {
-            "maxServeNodes": 3,
-            "minServeNodes": 2
-          },
-          "autoscalingTargets": {
-            "cpuUtilizationPercent": 80,
-            "storageUtilizationGibPerNode": 2560
-          }
-        }
-      },
-      "defaultStorageType": "SSD",
-      "location": "projects/${projectId}/locations/us-central1-f",
-      "name": "projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-4-${uniqueId}",
       "serveNodes": 2,
       "state": "READY"
     }
@@ -537,32 +544,6 @@ GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/PartialUpdateInstance
 OK
 
 {
-  "metadata": {
-    "@type": "type.googleapis.com/google.bigtable.admin.v2.UpdateInstanceMetadata",
-    "originalRequest": {
-      "instance": {
-        "displayName": "bigtableinstance",
-        "name": "projects/${projectId}/instances/bt-${uniqueId}",
-        "type": "PRODUCTION"
-      },
-      "updateMask": "displayName,type"
-    },
-    "requestTime": "2024-04-01T12:34:56.123456Z"
-  },
-  "name": "operations/projects/${projectId}/instances/bt-${uniqueId}/locations/us-central1-a/operations/${operationID}"
-}
-
----
-
-GRPC /google.longrunning.Operations/GetOperation
-
-{
-  "name": "operations/projects/${projectId}/instances/bt-${uniqueId}/locations/us-central1-a/operations/${operationID}"
-}
-
-OK
-
-{
   "done": true,
   "metadata": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.UpdateInstanceMetadata",
@@ -577,127 +558,18 @@ OK
     },
     "requestTime": "2024-04-01T12:34:56.123456Z"
   },
-  "name": "operations/projects/${projectId}/instances/bt-${uniqueId}/locations/us-central1-a/operations/${operationID}",
+  "name": "operations/projects/${projectId}/instances/bt-${uniqueId}/locations/us-central1-b/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.Instance",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "displayName": "bigtableinstance",
+    "edition": "ENTERPRISE",
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
     },
     "name": "projects/${projectId}/instances/bt-${uniqueId}",
-    "state": "READY",
     "type": "PRODUCTION"
-  }
-}
-
----
-
-GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/PartialUpdateCluster
-
-{
-  "cluster": {
-    "clusterConfig": {
-      "clusterAutoscalingConfig": {
-        "autoscalingLimits": {
-          "maxServeNodes": 5,
-          "minServeNodes": 3
-        },
-        "autoscalingTargets": {
-          "cpuUtilizationPercent": 70,
-          "storageUtilizationGibPerNode": 2560
-        }
-      }
-    },
-    "name": "projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-1-${uniqueId}"
-  },
-  "updateMask": "clusterConfig.clusterAutoscalingConfig"
-}
-
-OK
-
-{
-  "metadata": {
-    "@type": "type.googleapis.com/google.bigtable.admin.v2.PartialUpdateClusterMetadata",
-    "originalRequest": {
-      "cluster": {
-        "clusterConfig": {
-          "clusterAutoscalingConfig": {
-            "autoscalingLimits": {
-              "maxServeNodes": 5,
-              "minServeNodes": 3
-            },
-            "autoscalingTargets": {
-              "cpuUtilizationPercent": 70,
-              "storageUtilizationGibPerNode": 2560
-            }
-          }
-        },
-        "name": "projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-1-${uniqueId}"
-      },
-      "updateMask": "clusterConfig.clusterAutoscalingConfig"
-    },
-    "requestTime": "2024-04-01T12:34:56.123456Z"
-  },
-  "name": "operations/projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-1-${uniqueId}/locations/us-central1-a/operations/${operationID}"
-}
-
----
-
-GRPC /google.longrunning.Operations/GetOperation
-
-{
-  "name": "operations/projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-1-${uniqueId}/locations/us-central1-a/operations/${operationID}"
-}
-
-OK
-
-{
-  "done": true,
-  "metadata": {
-    "@type": "type.googleapis.com/google.bigtable.admin.v2.PartialUpdateClusterMetadata",
-    "finishTime": "2024-04-01T12:34:56.123456Z",
-    "originalRequest": {
-      "cluster": {
-        "clusterConfig": {
-          "clusterAutoscalingConfig": {
-            "autoscalingLimits": {
-              "maxServeNodes": 5,
-              "minServeNodes": 3
-            },
-            "autoscalingTargets": {
-              "cpuUtilizationPercent": 70,
-              "storageUtilizationGibPerNode": 2560
-            }
-          }
-        },
-        "name": "projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-1-${uniqueId}"
-      },
-      "updateMask": "clusterConfig.clusterAutoscalingConfig"
-    },
-    "requestTime": "2024-04-01T12:34:56.123456Z"
-  },
-  "name": "operations/projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-1-${uniqueId}/locations/us-central1-a/operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.bigtable.admin.v2.Cluster",
-    "clusterConfig": {
-      "clusterAutoscalingConfig": {
-        "autoscalingLimits": {
-          "maxServeNodes": 5,
-          "minServeNodes": 3
-        },
-        "autoscalingTargets": {
-          "cpuUtilizationPercent": 70,
-          "storageUtilizationGibPerNode": 2560
-        }
-      }
-    },
-    "defaultStorageType": "SSD",
-    "location": "projects/${projectId}/locations/us-central1-a",
-    "name": "projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-1-${uniqueId}",
-    "serveNodes": 3,
-    "state": "READY"
   }
 }
 
@@ -828,115 +700,6 @@ GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/PartialUpdateCluster
         }
       }
     },
-    "name": "projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-3-${uniqueId}"
-  },
-  "updateMask": "clusterConfig.clusterAutoscalingConfig"
-}
-
-OK
-
-{
-  "metadata": {
-    "@type": "type.googleapis.com/google.bigtable.admin.v2.PartialUpdateClusterMetadata",
-    "originalRequest": {
-      "cluster": {
-        "clusterConfig": {
-          "clusterAutoscalingConfig": {
-            "autoscalingLimits": {
-              "maxServeNodes": 4,
-              "minServeNodes": 2
-            },
-            "autoscalingTargets": {
-              "cpuUtilizationPercent": 80,
-              "storageUtilizationGibPerNode": 2560
-            }
-          }
-        },
-        "name": "projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-3-${uniqueId}"
-      },
-      "updateMask": "clusterConfig.clusterAutoscalingConfig"
-    },
-    "requestTime": "2024-04-01T12:34:56.123456Z"
-  },
-  "name": "operations/projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-3-${uniqueId}/locations/us-central1-c/operations/${operationID}"
-}
-
----
-
-GRPC /google.longrunning.Operations/GetOperation
-
-{
-  "name": "operations/projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-3-${uniqueId}/locations/us-central1-c/operations/${operationID}"
-}
-
-OK
-
-{
-  "done": true,
-  "metadata": {
-    "@type": "type.googleapis.com/google.bigtable.admin.v2.PartialUpdateClusterMetadata",
-    "finishTime": "2024-04-01T12:34:56.123456Z",
-    "originalRequest": {
-      "cluster": {
-        "clusterConfig": {
-          "clusterAutoscalingConfig": {
-            "autoscalingLimits": {
-              "maxServeNodes": 4,
-              "minServeNodes": 2
-            },
-            "autoscalingTargets": {
-              "cpuUtilizationPercent": 80,
-              "storageUtilizationGibPerNode": 2560
-            }
-          }
-        },
-        "name": "projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-3-${uniqueId}"
-      },
-      "updateMask": "clusterConfig.clusterAutoscalingConfig"
-    },
-    "requestTime": "2024-04-01T12:34:56.123456Z"
-  },
-  "name": "operations/projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-3-${uniqueId}/locations/us-central1-c/operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.bigtable.admin.v2.Cluster",
-    "clusterConfig": {
-      "clusterAutoscalingConfig": {
-        "autoscalingLimits": {
-          "maxServeNodes": 4,
-          "minServeNodes": 2
-        },
-        "autoscalingTargets": {
-          "cpuUtilizationPercent": 80,
-          "storageUtilizationGibPerNode": 2560
-        }
-      }
-    },
-    "defaultStorageType": "SSD",
-    "location": "projects/${projectId}/locations/us-central1-c",
-    "name": "projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-3-${uniqueId}",
-    "serveNodes": 2,
-    "state": "READY"
-  }
-}
-
----
-
-GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/PartialUpdateCluster
-
-{
-  "cluster": {
-    "clusterConfig": {
-      "clusterAutoscalingConfig": {
-        "autoscalingLimits": {
-          "maxServeNodes": 4,
-          "minServeNodes": 2
-        },
-        "autoscalingTargets": {
-          "cpuUtilizationPercent": 80,
-          "storageUtilizationGibPerNode": 2560
-        }
-      }
-    },
     "name": "projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-4-${uniqueId}"
   },
   "updateMask": "clusterConfig.clusterAutoscalingConfig"
@@ -1030,6 +793,224 @@ OK
 
 ---
 
+GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/PartialUpdateCluster
+
+{
+  "cluster": {
+    "clusterConfig": {
+      "clusterAutoscalingConfig": {
+        "autoscalingLimits": {
+          "maxServeNodes": 5,
+          "minServeNodes": 3
+        },
+        "autoscalingTargets": {
+          "cpuUtilizationPercent": 70,
+          "storageUtilizationGibPerNode": 2560
+        }
+      }
+    },
+    "name": "projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-1-${uniqueId}"
+  },
+  "updateMask": "clusterConfig.clusterAutoscalingConfig"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.PartialUpdateClusterMetadata",
+    "originalRequest": {
+      "cluster": {
+        "clusterConfig": {
+          "clusterAutoscalingConfig": {
+            "autoscalingLimits": {
+              "maxServeNodes": 5,
+              "minServeNodes": 3
+            },
+            "autoscalingTargets": {
+              "cpuUtilizationPercent": 70,
+              "storageUtilizationGibPerNode": 2560
+            }
+          }
+        },
+        "name": "projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-1-${uniqueId}"
+      },
+      "updateMask": "clusterConfig.clusterAutoscalingConfig"
+    },
+    "requestTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "operations/projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-1-${uniqueId}/locations/us-central1-a/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "operations/projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-1-${uniqueId}/locations/us-central1-a/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.PartialUpdateClusterMetadata",
+    "finishTime": "2024-04-01T12:34:56.123456Z",
+    "originalRequest": {
+      "cluster": {
+        "clusterConfig": {
+          "clusterAutoscalingConfig": {
+            "autoscalingLimits": {
+              "maxServeNodes": 5,
+              "minServeNodes": 3
+            },
+            "autoscalingTargets": {
+              "cpuUtilizationPercent": 70,
+              "storageUtilizationGibPerNode": 2560
+            }
+          }
+        },
+        "name": "projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-1-${uniqueId}"
+      },
+      "updateMask": "clusterConfig.clusterAutoscalingConfig"
+    },
+    "requestTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "operations/projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-1-${uniqueId}/locations/us-central1-a/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.Cluster",
+    "clusterConfig": {
+      "clusterAutoscalingConfig": {
+        "autoscalingLimits": {
+          "maxServeNodes": 5,
+          "minServeNodes": 3
+        },
+        "autoscalingTargets": {
+          "cpuUtilizationPercent": 70,
+          "storageUtilizationGibPerNode": 2560
+        }
+      }
+    },
+    "defaultStorageType": "SSD",
+    "location": "projects/${projectId}/locations/us-central1-a",
+    "name": "projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-1-${uniqueId}",
+    "serveNodes": 3,
+    "state": "READY"
+  }
+}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/PartialUpdateCluster
+
+{
+  "cluster": {
+    "clusterConfig": {
+      "clusterAutoscalingConfig": {
+        "autoscalingLimits": {
+          "maxServeNodes": 4,
+          "minServeNodes": 2
+        },
+        "autoscalingTargets": {
+          "cpuUtilizationPercent": 80,
+          "storageUtilizationGibPerNode": 2560
+        }
+      }
+    },
+    "name": "projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-3-${uniqueId}"
+  },
+  "updateMask": "clusterConfig.clusterAutoscalingConfig"
+}
+
+OK
+
+{
+  "metadata": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.PartialUpdateClusterMetadata",
+    "originalRequest": {
+      "cluster": {
+        "clusterConfig": {
+          "clusterAutoscalingConfig": {
+            "autoscalingLimits": {
+              "maxServeNodes": 4,
+              "minServeNodes": 2
+            },
+            "autoscalingTargets": {
+              "cpuUtilizationPercent": 80,
+              "storageUtilizationGibPerNode": 2560
+            }
+          }
+        },
+        "name": "projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-3-${uniqueId}"
+      },
+      "updateMask": "clusterConfig.clusterAutoscalingConfig"
+    },
+    "requestTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "operations/projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-3-${uniqueId}/locations/us-central1-c/operations/${operationID}"
+}
+
+---
+
+GRPC /google.longrunning.Operations/GetOperation
+
+{
+  "name": "operations/projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-3-${uniqueId}/locations/us-central1-c/operations/${operationID}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.PartialUpdateClusterMetadata",
+    "finishTime": "2024-04-01T12:34:56.123456Z",
+    "originalRequest": {
+      "cluster": {
+        "clusterConfig": {
+          "clusterAutoscalingConfig": {
+            "autoscalingLimits": {
+              "maxServeNodes": 4,
+              "minServeNodes": 2
+            },
+            "autoscalingTargets": {
+              "cpuUtilizationPercent": 80,
+              "storageUtilizationGibPerNode": 2560
+            }
+          }
+        },
+        "name": "projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-3-${uniqueId}"
+      },
+      "updateMask": "clusterConfig.clusterAutoscalingConfig"
+    },
+    "requestTime": "2024-04-01T12:34:56.123456Z"
+  },
+  "name": "operations/projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-3-${uniqueId}/locations/us-central1-c/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.Cluster",
+    "clusterConfig": {
+      "clusterAutoscalingConfig": {
+        "autoscalingLimits": {
+          "maxServeNodes": 4,
+          "minServeNodes": 2
+        },
+        "autoscalingTargets": {
+          "cpuUtilizationPercent": 80,
+          "storageUtilizationGibPerNode": 2560
+        }
+      }
+    },
+    "defaultStorageType": "SSD",
+    "location": "projects/${projectId}/locations/us-central1-c",
+    "name": "projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-3-${uniqueId}",
+    "serveNodes": 2,
+    "state": "READY"
+  }
+}
+
+---
+
 GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/ListInstances
 
 {
@@ -1043,6 +1024,7 @@ OK
     {
       "createTime": "2024-04-01T12:34:56.123456Z",
       "displayName": "bigtableinstance",
+      "edition": "ENTERPRISE",
       "labels": {
         "cnrm-test": "true",
         "managed-by-cnrm": "true"
@@ -1066,25 +1048,6 @@ OK
 
 {
   "clusters": [
-    {
-      "clusterConfig": {
-        "clusterAutoscalingConfig": {
-          "autoscalingLimits": {
-            "maxServeNodes": 5,
-            "minServeNodes": 3
-          },
-          "autoscalingTargets": {
-            "cpuUtilizationPercent": 70,
-            "storageUtilizationGibPerNode": 2560
-          }
-        }
-      },
-      "defaultStorageType": "SSD",
-      "location": "projects/${projectId}/locations/us-central1-a",
-      "name": "projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-1-${uniqueId}",
-      "serveNodes": 3,
-      "state": "READY"
-    },
     {
       "clusterConfig": {
         "clusterAutoscalingConfig": {
@@ -1118,71 +1081,11 @@ OK
         }
       },
       "defaultStorageType": "SSD",
-      "location": "projects/${projectId}/locations/us-central1-c",
-      "name": "projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-3-${uniqueId}",
-      "serveNodes": 2,
-      "state": "READY"
-    },
-    {
-      "clusterConfig": {
-        "clusterAutoscalingConfig": {
-          "autoscalingLimits": {
-            "maxServeNodes": 4,
-            "minServeNodes": 2
-          },
-          "autoscalingTargets": {
-            "cpuUtilizationPercent": 80,
-            "storageUtilizationGibPerNode": 2560
-          }
-        }
-      },
-      "defaultStorageType": "SSD",
       "location": "projects/${projectId}/locations/us-central1-f",
       "name": "projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-4-${uniqueId}",
       "serveNodes": 2,
       "state": "READY"
-    }
-  ]
-}
-
----
-
-GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/ListInstances
-
-{
-  "parent": "projects/${projectId}"
-}
-
-OK
-
-{
-  "instances": [
-    {
-      "createTime": "2024-04-01T12:34:56.123456Z",
-      "displayName": "bigtableinstance",
-      "labels": {
-        "cnrm-test": "true",
-        "managed-by-cnrm": "true"
-      },
-      "name": "projects/${projectId}/instances/bt-${uniqueId}",
-      "state": "READY",
-      "type": "PRODUCTION"
-    }
-  ]
-}
-
----
-
-GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/ListClusters
-
-{
-  "parent": "projects/${projectId}/instances/bt-${uniqueId}"
-}
-
-OK
-
-{
-  "clusters": [
+    },
     {
       "clusterConfig": {
         "clusterAutoscalingConfig": {
@@ -1216,6 +1119,67 @@ OK
         }
       },
       "defaultStorageType": "SSD",
+      "location": "projects/${projectId}/locations/us-central1-c",
+      "name": "projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-3-${uniqueId}",
+      "serveNodes": 2,
+      "state": "READY"
+    }
+  ]
+}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/ListInstances
+
+{
+  "parent": "projects/${projectId}"
+}
+
+OK
+
+{
+  "instances": [
+    {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "displayName": "bigtableinstance",
+      "edition": "ENTERPRISE",
+      "labels": {
+        "cnrm-test": "true",
+        "managed-by-cnrm": "true"
+      },
+      "name": "projects/${projectId}/instances/bt-${uniqueId}",
+      "state": "READY",
+      "type": "PRODUCTION"
+    }
+  ]
+}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/ListClusters
+
+{
+  "parent": "projects/${projectId}/instances/bt-${uniqueId}"
+}
+
+OK
+
+{
+  "clusters": [
+    {
+      "clusterConfig": {
+        "clusterAutoscalingConfig": {
+          "autoscalingLimits": {
+            "maxServeNodes": 4,
+            "minServeNodes": 2
+          },
+          "autoscalingTargets": {
+            "cpuUtilizationPercent": 80,
+            "storageUtilizationGibPerNode": 2560
+          }
+        }
+      },
+      "defaultStorageType": "SSD",
       "location": "projects/${projectId}/locations/us-central1-b",
       "name": "projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-2-${uniqueId}",
       "serveNodes": 2,
@@ -1235,9 +1199,28 @@ OK
         }
       },
       "defaultStorageType": "SSD",
-      "location": "projects/${projectId}/locations/us-central1-c",
-      "name": "projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-3-${uniqueId}",
+      "location": "projects/${projectId}/locations/us-central1-f",
+      "name": "projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-4-${uniqueId}",
       "serveNodes": 2,
+      "state": "READY"
+    },
+    {
+      "clusterConfig": {
+        "clusterAutoscalingConfig": {
+          "autoscalingLimits": {
+            "maxServeNodes": 5,
+            "minServeNodes": 3
+          },
+          "autoscalingTargets": {
+            "cpuUtilizationPercent": 70,
+            "storageUtilizationGibPerNode": 2560
+          }
+        }
+      },
+      "defaultStorageType": "SSD",
+      "location": "projects/${projectId}/locations/us-central1-a",
+      "name": "projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-1-${uniqueId}",
+      "serveNodes": 3,
       "state": "READY"
     },
     {
@@ -1254,8 +1237,8 @@ OK
         }
       },
       "defaultStorageType": "SSD",
-      "location": "projects/${projectId}/locations/us-central1-f",
-      "name": "projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-4-${uniqueId}",
+      "location": "projects/${projectId}/locations/us-central1-c",
+      "name": "projects/${projectId}/instances/bt-${uniqueId}/clusters/cluster-3-${uniqueId}",
       "serveNodes": 2,
       "state": "READY"
     }
