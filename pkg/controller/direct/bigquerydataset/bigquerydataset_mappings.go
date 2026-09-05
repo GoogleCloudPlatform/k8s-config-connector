@@ -113,7 +113,7 @@ func BigQueryDatasetStatus_ToProto(mapCtx *direct.MapContext, in *krm.BigQueryDa
 	out.LastModifiedTime = direct.UnixMillisToTime(direct.ValueOf(in.LastModifiedTime))
 	// The full dataset ID in the form projectID:datasetID
 	if in.SelfLink != nil {
-		selfLink := strings.Trim(direct.ValueOf(in.SelfLink), "https://bigquery.googleapis.com/bigquery/v2/")
+		selfLink := strings.TrimPrefix(direct.ValueOf(in.SelfLink), "https://bigquery.googleapis.com/bigquery/v2/")
 		tokens := strings.Split(selfLink, "/")
 		if len(tokens) == 4 && tokens[0] == "projects" && tokens[2] == "datasets" {
 			out.FullID = fmt.Sprintf("%s:%s", tokens[1], tokens[3])
