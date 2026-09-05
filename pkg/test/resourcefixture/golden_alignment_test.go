@@ -38,6 +38,10 @@ var mockGCPSkipFixtures = map[string]bool{
 	"composer/v1beta1/composerenvironment/composerenvironmentwithkms":    true,
 	"composer/v1beta1/composerenvironment/composerenvironmentwithrefs":   true,
 	"composer/v1beta1/composerenvironment/composerenvironmentnodeconfig": true,
+	// Skip StorageBucket autoclass nonstandard test because it fails to reconcile on real GCP by design of GCP storage class restrictions on Autoclass.
+	"storage/v1beta1/storagebucket/storagebucketautoclassnonstandard": true,
+	// Skip StorageBucketAccessControl because it is unsupported by MockGCP.
+	"storage/v1beta1/storagebucketaccesscontrol/storagebucketaccesscontrol": true,
 }
 
 var realGCPSkipFixtures = map[string]bool{
