@@ -16,6 +16,7 @@ spec:
     categories:
     - gcp
     kind: ServiceNetworkingConnection
+    listKind: ServiceNetworkingConnectionList
     plural: servicenetworkingconnections
     shortNames:
     - gcpservicenetworkingconnection
@@ -43,22 +44,28 @@ spec:
     name: v1beta1
     schema:
       openAPIV3Schema:
+        description: ServiceNetworkingConnection is the Schema for the ServiceNetworkingConnection
+          API
         properties:
           apiVersion:
-            description: 'apiVersion defines the versioned schema of this representation
+            description: 'APIVersion defines the versioned schema of this representation
               of an object. Servers should convert recognized schemas to the latest
-              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#resources'
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
             type: string
           kind:
-            description: 'kind is a string value representing the REST resource this
+            description: 'Kind is a string value representing the REST resource this
               object represents. Servers may infer this from the endpoint the client
-              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds'
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
             type: string
           metadata:
             type: object
           spec:
+            description: ServiceNetworkingConnectionSpec defines the desired state
+              of ServiceNetworkingConnection
             properties:
               networkRef:
+                description: Required. The service consumer's VPC network that's connected
+                  with service producer network.
                 oneOf:
                 - not:
                     required:
@@ -75,17 +82,24 @@ spec:
                   - external
                 properties:
                   external:
-                    description: 'Allowed value: The `name` field of a `ComputeNetwork`
-                      resource.'
+                    description: A reference to an externally managed Compute Network
+                      resource. Should be in the format `projects/{{projectID}}/global/networks/{{network}}`.
                     type: string
                   name:
-                    description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                    description: The `name` field of a `ComputeNetwork` resource.
                     type: string
                   namespace:
-                    description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                    description: The `namespace` field of a `ComputeNetwork` resource.
                     type: string
                 type: object
               reservedPeeringRanges:
+                description: One or more allocated IP address ranges for this service
+                  producer of type `PEERING`. Note that invoking CreateConnection
+                  method with a different range when connection is already established
+                  will not modify already provisioned service producer subnetworks.
+                  If CreateConnection method is invoked repeatedly to reconnect when
+                  peering connection had been disconnected on the consumer side, leaving
+                  this field empty will restore previously allocated IP ranges.
                 items:
                   oneOf:
                   - not:
@@ -103,14 +117,14 @@ spec:
                     - external
                   properties:
                     external:
-                      description: 'Allowed value: The `name` field of a `ComputeAddress`
-                        resource.'
+                      description: The ComputeAddress selflink in the form "projects/{{project}}/regions/{{region}}/addresses/{{name}}"
+                        when not managed by Config Connector.
                       type: string
                     name:
-                      description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names'
+                      description: The `name` field of a `ComputeAddress` resource.
                       type: string
                     namespace:
-                      description: 'Namespace of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/'
+                      description: The `namespace` field of a `ComputeAddress` resource.
                       type: string
                   type: object
                 type: array
@@ -125,10 +139,12 @@ spec:
             - service
             type: object
           status:
+            description: ServiceNetworkingConnectionStatus defines the config connector
+              machine state of ServiceNetworkingConnection
             properties:
               conditions:
-                description: Conditions represent the latest available observation
-                  of the resource's current state.
+                description: Conditions represent the latest available observations
+                  of the object's current state.
                 items:
                   properties:
                     lastTransitionTime:
@@ -158,8 +174,11 @@ spec:
                   If this is equal to metadata.generation, then that means that the
                   current reported status reflects the most recent desired state of
                   the resource.
+                format: int64
                 type: integer
               peering:
+                description: The name of the VPC Network Peering connection that was
+                  created by the service producer.
                 type: string
             type: object
         required:
@@ -169,9 +188,3 @@ spec:
     storage: true
     subresources:
       status: {}
-status:
-  acceptedNames:
-    kind: ""
-    plural: ""
-  conditions: []
-  storedVersions: []
