@@ -73,7 +73,7 @@ func (a *actuationModeAnnotationValidator) Handle(ctx context.Context, req admis
 			if name == "" {
 				name = req.Name
 			}
-			warning := fmt.Sprintf("Resource '%s' has %s: %q. All actuation against GCP (including Create, Update, and Delete) is halted until unpaused.",
+			warning := fmt.Sprintf("Resource '%s' has %s: %q. Actuation against GCP (Create and Update) is halted until unpaused. Deletion will reconcile normally.",
 				name, k8s.ActuationModeAnnotation, opv1beta1.Paused)
 			return allowedResponse.WithWarnings(warning)
 		}

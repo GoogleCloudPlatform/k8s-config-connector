@@ -229,7 +229,7 @@ func (r *Reconciler) DoReconcile(ctx context.Context, req reconcile.Request) (re
 		return reconcile.Result{}, err
 	}
 
-	am := resourceactuation.DecideActuationMode(u.GetAnnotations(), cc, ccc)
+	am := resourceactuation.DecideActuationMode(cc, ccc)
 	switch am {
 	case v1beta1.Reconciling:
 		r.logger.V(2).Info("Actuating a resource as actuation mode is \"Reconciling\"", "resource", req.NamespacedName)

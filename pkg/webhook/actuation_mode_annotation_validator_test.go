@@ -77,7 +77,7 @@ metadata:
 `,
 			expectAllowed: true,
 			expectWarning: true,
-			warningMsg:    "Resource 'my-instance' has cnrm.cloud.google.com/actuation-mode: \"Paused\". All actuation against GCP (including Create, Update, and Delete) is halted until unpaused.",
+			warningMsg:    "Resource 'my-instance' has cnrm.cloud.google.com/actuation-mode: \"Paused\". Actuation against GCP (Create and Update) is halted until unpaused. Deletion will reconcile normally.",
 		},
 		{
 			name:      "paused annotation on delete",
@@ -92,7 +92,7 @@ metadata:
 `,
 			expectAllowed: true,
 			expectWarning: true,
-			warningMsg:    "Resource 'my-instance' has cnrm.cloud.google.com/actuation-mode: \"Paused\". All actuation against GCP (including Create, Update, and Delete) is halted until unpaused.",
+			warningMsg:    "Resource 'my-instance' has cnrm.cloud.google.com/actuation-mode: \"Paused\". Actuation against GCP (Create and Update) is halted until unpaused. Deletion will reconcile normally.",
 		},
 		{
 			name:      "paused annotation on update",
@@ -115,7 +115,7 @@ metadata:
 `,
 			expectAllowed: true,
 			expectWarning: true,
-			warningMsg:    "Resource 'my-instance' has cnrm.cloud.google.com/actuation-mode: \"Paused\". All actuation against GCP (including Create, Update, and Delete) is halted until unpaused.",
+			warningMsg:    "Resource 'my-instance' has cnrm.cloud.google.com/actuation-mode: \"Paused\". Actuation against GCP (Create and Update) is halted until unpaused. Deletion will reconcile normally.",
 		},
 		{
 			name:      "invalid annotation value on create",

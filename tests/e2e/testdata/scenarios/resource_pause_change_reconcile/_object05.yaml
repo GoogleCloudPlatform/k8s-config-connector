@@ -1,8 +1,8 @@
-apiVersion: artifactregistry.cnrm.cloud.google.com/v1beta1
-kind: ArtifactRegistryRepository
+apiVersion: logging.cnrm.cloud.google.com/v1beta1
+kind: LoggingLogView
 metadata:
   annotations:
-    cnrm.cloud.google.com/actuation-mode: Reconciling
+    cnrm.cloud.google.com/actuation-mode: Paused
     cnrm.cloud.google.com/management-conflict-prevention-policy: none
     cnrm.cloud.google.com/project-id: ${projectId}
     cnrm.cloud.google.com/state-into-spec: absent
@@ -10,16 +10,16 @@ metadata:
   finalizers:
   - cnrm.cloud.google.com/finalizer
   - cnrm.cloud.google.com/deletion-defender
-  generation: 3
-  labels:
-    label-one: value-one
-  name: artifactregistryrepository-sample-${uniqueId}
+  generation: 2
+  name: logginglogview-sample-${uniqueId}
   namespace: ${projectId}
 spec:
-  description: description 2
-  format: DOCKER
-  location: us-west1
-  resourceID: artifactregistryrepository-sample-${uniqueId}
+  bucketRef:
+    name: logginglogbucket-${uniqueId}
+  description: description 1
+  projectRef:
+    external: ${projectId}
+  resourceID: logginglogview-sample-${uniqueId}
 status:
   conditions:
   - lastTransitionTime: "1970-01-01T00:00:00Z"
@@ -28,6 +28,5 @@ status:
     status: "True"
     type: Ready
   createTime: "1970-01-01T00:00:00Z"
-  name: artifactregistryrepository-sample-${uniqueId}
-  observedGeneration: 3
+  observedGeneration: 2
   updateTime: "1970-01-01T00:00:00Z"

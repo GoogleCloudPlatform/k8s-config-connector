@@ -21,7 +21,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/apis/core/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/operator/pkg/kccstate"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/jitter"
@@ -292,23 +291,22 @@ func (r *reconcileContext) doReconcile(ctx context.Context, u *unstructured.Unst
 		return false, err
 	}
 
-	am := resourceactuation.DecideActuationMode(u.GetAnnotations(), cc, ccc)
-	switch am {
-	case v1beta1.Reconciling:
-		logger.V(2).Info("Actuating a resource as actuation mode is \"Reconciling\"", "resource", r.NamespacedName)
-	case v1beta1.Paused:
+	skipActuation, err := resourceactuation.ShouldSkipActuation(
+		u.GetAnnotations(),
+		!u.GetDeletionTimestamp().IsZero(),
+		cc, ccc,
+	)
+	if err != nil {
+		return false, r.handleUpdateFailed(ctx, u, err)
+	}
+	if skipActuation {
 		logger.V(2).Info("Skipping actuation of resource as actuation mode is \"Paused\"", "resource", r.NamespacedName)
-
-		// add finalizers for deletion defender to make sure we don't delete cloud provider resources when uninstalling
 		if u.GetDeletionTimestamp().IsZero() {
 			if err := r.ensureFinalizers(ctx, u); err != nil {
 				return false, nil
 			}
 		}
-
 		return false, nil
-	default:
-		return false, fmt.Errorf("unknown actuation mode %v", am)
 	}
 
 	// Apply defaulters

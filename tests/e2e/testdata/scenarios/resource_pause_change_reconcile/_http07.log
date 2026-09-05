@@ -2,7 +2,7 @@ GET https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buc
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1 (mockgcp)
 
-404 Not Found
+200 OK
 Content-Type: application/json; charset=UTF-8
 Server: ESF
 Vary: Origin
@@ -13,22 +13,20 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
-  "error": {
-    "code": 404,
-    "message": "View logginglogview-sample-${uniqueId} does not exist",
-    "status": "NOT_FOUND"
-  }
+  "createTime": "2024-04-01T12:34:56.123456Z",
+  "description": "description 1",
+  "name": "projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}/views/logginglogview-sample-${uniqueId}",
+  "updateTime": "2024-04-01T12:34:56.123456Z"
 }
 
 ---
 
-POST https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}/views?alt=json&viewId=logginglogview-sample-${uniqueId}
+PATCH https://logging.googleapis.com/v2/projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}/views/logginglogview-sample-${uniqueId}?alt=json&updateMask=description
 Content-Type: application/json
 User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion} DeclarativeClientLib/0.0.1 (mockgcp)
 
 {
-  "description": "description 1",
-  "name": "projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}/views/logginglogview-sample-${uniqueId}"
+  "description": "description 2"
 }
 
 200 OK
@@ -43,7 +41,7 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "description 1",
+  "description": "description 2",
   "name": "projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}/views/logginglogview-sample-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
@@ -66,7 +64,7 @@ X-Xss-Protection: 0
 
 {
   "createTime": "2024-04-01T12:34:56.123456Z",
-  "description": "description 1",
+  "description": "description 2",
   "name": "projects/${projectId}/locations/global/buckets/logginglogbucket-${uniqueId}/views/logginglogview-sample-${uniqueId}",
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }

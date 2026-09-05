@@ -29,75 +29,107 @@ spec:
   mode: namespaced
 ---
 # step 2
-apiVersion: artifactregistry.cnrm.cloud.google.com/v1beta1
-kind: ArtifactRegistryRepository
+apiVersion: logging.cnrm.cloud.google.com/v1beta1
+kind: LoggingLogBucket
 metadata:
-  name: artifactregistryrepository-sample-${uniqueId}
-  labels:
-    label-one: "value-one"
+  annotations:
+    cnrm.cloud.google.com/reconcile-interval-in-seconds: "0"
+  name: logginglogbucket-${uniqueId}
 spec:
-  format: DOCKER
-  location: us-west1
-  description: "description 1"
+  projectRef:
+    external: "projects/${projectId}"
+  location: "global"
+  description: "A sample log bucket"
+  locked: false
+  retentionDays: 30
 ---
 # step 3
-apiVersion: artifactregistry.cnrm.cloud.google.com/v1beta1
-kind: ArtifactRegistryRepository
+apiVersion: logging.cnrm.cloud.google.com/v1beta1
+kind: LoggingLogView
 metadata:
-  name: artifactregistryrepository-sample-${uniqueId}
-  labels:
-    label-one: "value-one"
-  annotations:
-    unrelated-annotation: "some-value"
+  name: logginglogview-sample-${uniqueId}
 spec:
-  format: DOCKER
-  location: us-west1
+  bucketRef:
+    name: "logginglogbucket-${uniqueId}"
   description: "description 1"
 ---
 # step 4
-apiVersion: artifactregistry.cnrm.cloud.google.com/v1beta1
-kind: ArtifactRegistryRepository
+apiVersion: logging.cnrm.cloud.google.com/v1beta1
+kind: LoggingLogView
 metadata:
-  name: artifactregistryrepository-sample-${uniqueId}
-  labels:
-    label-one: "value-one"
+  name: logginglogview-sample-${uniqueId}
   annotations:
     unrelated-annotation: "some-value"
-    cnrm.cloud.google.com/actuation-mode: "Paused"
 spec:
-  format: DOCKER
-  location: us-west1
+  bucketRef:
+    name: "logginglogbucket-${uniqueId}"
   description: "description 1"
 ---
 # step 5
-TEST: APPLY-NO-WAIT
-apiVersion: artifactregistry.cnrm.cloud.google.com/v1beta1
-kind: ArtifactRegistryRepository
+apiVersion: logging.cnrm.cloud.google.com/v1beta1
+kind: LoggingLogView
 metadata:
-  name: artifactregistryrepository-sample-${uniqueId}
-  labels:
-    label-one: "value-one"
+  name: logginglogview-sample-${uniqueId}
   annotations:
     unrelated-annotation: "some-value"
     cnrm.cloud.google.com/actuation-mode: "Paused"
 spec:
-  format: DOCKER
-  location: us-west1
-  description: "description 2"
+  bucketRef:
+    name: "logginglogbucket-${uniqueId}"
+  description: "description 1"
 ---
 # step 6
+TEST: APPLY-NO-WAIT
+apiVersion: logging.cnrm.cloud.google.com/v1beta1
+kind: LoggingLogView
+metadata:
+  name: logginglogview-sample-${uniqueId}
+  annotations:
+    unrelated-annotation: "some-value"
+    cnrm.cloud.google.com/actuation-mode: "Paused"
+spec:
+  bucketRef:
+    name: "logginglogbucket-${uniqueId}"
+  description: "description 2"
+---
+# step 7
 TEST: WAIT-FOR-HTTP-REQUEST
 VALUE_PRESENT: "description 2"
-apiVersion: artifactregistry.cnrm.cloud.google.com/v1beta1
-kind: ArtifactRegistryRepository
+apiVersion: logging.cnrm.cloud.google.com/v1beta1
+kind: LoggingLogView
 metadata:
-  name: artifactregistryrepository-sample-${uniqueId}
-  labels:
-    label-one: "value-one"
+  name: logginglogview-sample-${uniqueId}
   annotations:
     unrelated-annotation: "some-value"
     cnrm.cloud.google.com/actuation-mode: "Reconciling"
 spec:
-  format: DOCKER
-  location: us-west1
+  bucketRef:
+    name: "logginglogbucket-${uniqueId}"
   description: "description 2"
+---
+# step 8
+apiVersion: logging.cnrm.cloud.google.com/v1beta1
+kind: LoggingLogView
+metadata:
+  name: logginglogview-sample-${uniqueId}
+  annotations:
+    unrelated-annotation: "some-value"
+    cnrm.cloud.google.com/actuation-mode: "Paused"
+spec:
+  bucketRef:
+    name: "logginglogbucket-${uniqueId}"
+  description: "description 2"
+---
+# step 9
+TEST: DELETE
+apiVersion: logging.cnrm.cloud.google.com/v1beta1
+kind: LoggingLogView
+metadata:
+  name: logginglogview-sample-${uniqueId}
+---
+# step 10
+TEST: DELETE
+apiVersion: logging.cnrm.cloud.google.com/v1beta1
+kind: LoggingLogBucket
+metadata:
+  name: logginglogbucket-${uniqueId}

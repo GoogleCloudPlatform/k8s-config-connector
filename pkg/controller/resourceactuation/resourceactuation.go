@@ -25,35 +25,66 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
 
-// DecideActuationMode looks at annotations, CC, and CCC to see if they specify an actuationMode.
+// DecideActuationMode looks at CC and CCC to see if they specify an actuationMode.
 // The order of precedence is:
-//  1. Check annotation; if unset
-//  2. Check CCC (if in namespaced mode); if unset
-//  3. Check CC; if unset
-//  4. Use default value "Reconciling"
-func DecideActuationMode(annotations map[string]string, cc opv1beta1.ConfigConnector, ccc opv1beta1.ConfigConnectorContext) opv1beta1.ActuationMode {
-	// 1. Check annotation. Only accept valid annotation values ("Paused" or "Reconciling").
-	if annotations != nil {
-		if val, ok := annotations[k8s.ActuationModeAnnotation]; ok && val != "" {
-			mode := opv1beta1.ActuationMode(val)
-			if mode == opv1beta1.Paused || mode == opv1beta1.Reconciling {
-				return mode
-			}
-		}
-	}
-
-	// 2. Check CCC (only relevant in Namespaced mode).
+//  1. Check CCC (if in namespaced mode); if unset
+//  2. Check CC; if unset
+//  3. Use default value "Reconciling"
+func DecideActuationMode(cc opv1beta1.ConfigConnector, ccc opv1beta1.ConfigConnectorContext) opv1beta1.ActuationMode {
+	// 1. Check CCC (only relevant in Namespaced mode).
 	if ccc.Spec.Actuation != "" && cc.Spec.Mode == opk8s.NamespacedMode {
 		return ccc.Spec.Actuation
 	}
 
-	// 3. Check CC.
+	// 2. Check CC.
 	if cc.Spec.Actuation != "" {
 		return cc.Spec.Actuation
 	}
 
-	// 4. Default.
+	// 3. Default.
 	return opv1beta1.DefaultActuationMode()
+}
+
+// ShouldSkipActuation determines whether actuation against GCP should be skipped
+// based on resource annotations and CC/CCC actuation modes.
+//
+// Rules:
+// 1. Resource annotation takes precedence:
+//   - "Paused": Skips Create/Update/Drift, but allows Deletion to proceed (returns false if isDeleting).
+//   - "Reconciling": Allows actuation to proceed (returns false).
+//   - Invalid value: Returns an error.
+//
+// 2. Fall back to CC/CCC actuation mode (via DecideActuationMode):
+//   - "Paused": Skips all operations including deletion (returns true).
+//   - "Reconciling": Allows actuation to proceed (returns false).
+func ShouldSkipActuation(annotations map[string]string, isDeleting bool, cc opv1beta1.ConfigConnector, ccc opv1beta1.ConfigConnectorContext) (bool, error) {
+	if annotations != nil {
+		if val, ok := annotations[k8s.ActuationModeAnnotation]; ok && val != "" {
+			switch opv1beta1.ActuationMode(val) {
+			case opv1beta1.Reconciling:
+				return false, nil
+			case opv1beta1.Paused:
+				// Resource-level pause does NOT pause deletion
+				if isDeleting {
+					return false, nil
+				}
+				return true, nil
+			default:
+				return false, fmt.Errorf("invalid value %q for annotation %s; allowed values are %q and %q",
+					val, k8s.ActuationModeAnnotation, opv1beta1.Paused, opv1beta1.Reconciling)
+			}
+		}
+	}
+
+	am := DecideActuationMode(cc, ccc)
+	switch am {
+	case opv1beta1.Reconciling:
+		return false, nil
+	case opv1beta1.Paused:
+		return true, nil
+	default:
+		return false, fmt.Errorf("unknown actuation mode %v", am)
+	}
 }
 
 // ShouldSkip skips a resource actuatation if the ReconcileIntervalInSecondsAnnotation = 0 and the KRM resource has not changed since its last UpToDate.
