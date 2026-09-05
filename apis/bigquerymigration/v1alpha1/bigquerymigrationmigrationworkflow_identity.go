@@ -43,6 +43,10 @@ func (i *BigQueryMigrationMigrationWorkflowIdentity) String() string {
 	return BigQueryMigrationMigrationWorkflowIdentityFormat.ToString(*i)
 }
 
+func (i *BigQueryMigrationMigrationWorkflowIdentity) ParentString() string {
+	return "projects/" + i.Project + "/locations/" + i.Location
+}
+
 func (i *BigQueryMigrationMigrationWorkflowIdentity) FromExternal(ref string) error {
 	parsed, match, err := BigQueryMigrationMigrationWorkflowIdentityFormat.Parse(ref)
 	if err != nil {
@@ -99,9 +103,11 @@ func (obj *BigQueryMigrationMigrationWorkflow) GetIdentity(ctx context.Context, 
 			return nil, err
 		}
 
-		if statusIdentity.String() != specIdentity.String() {
-			return nil, fmt.Errorf("cannot change BigQueryMigrationMigrationWorkflow identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+		if statusIdentity.Project != specIdentity.Project || statusIdentity.Location != specIdentity.Location {
+			return nil, fmt.Errorf("cannot change BigQueryMigrationMigrationWorkflow parent (old=%q, new parent=%q)", statusIdentity.ParentString(), specIdentity.ParentString())
 		}
+
+		specIdentity.Workflow = statusIdentity.Workflow
 	}
 
 	return specIdentity, nil
