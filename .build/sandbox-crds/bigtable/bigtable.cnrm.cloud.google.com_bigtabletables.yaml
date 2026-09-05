@@ -1,0 +1,536 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.16.5
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: bigtabletables.bigtable.cnrm.cloud.google.com
+spec:
+  group: bigtable.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: BigtableTable
+    listKind: BigtableTableList
+    plural: bigtabletables
+    shortNames:
+    - gcpbigtabletable
+    - gcpbigtabletables
+    singular: bigtabletable
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1beta1
+    schema:
+      openAPIV3Schema:
+        description: BigtableTable is the Schema for the BigtableTable API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: BigtableTableSpec defines the desired state of BigtableTable
+            properties:
+              automatedBackupPolicy:
+                description: |-
+                  If specified, automated backups are enabled for this table.
+                   Otherwise, automated backups are disabled.
+                properties:
+                  frequency:
+                    description: |-
+                      How frequently automated backups should occur. The only supported value
+                       at this time is 24 hours. An undefined frequency is treated as 24 hours.
+                    type: string
+                  locations:
+                    description: |-
+                      Optional. A list of Cloud Bigtable zones where automated backups are
+                       allowed to be created. If empty, automated backups will be created in all
+                       zones of the instance. Locations are in the format
+                       `projects/{project}/locations/{zone}`.
+                       This field can only set for tables in Enterprise Plus instances.
+                    items:
+                      type: string
+                    type: array
+                  retentionPeriod:
+                    description: |-
+                      Required. How long the automated backups should be retained. Values must
+                       be at least 3 days and at most 90 days.
+                    type: string
+                type: object
+              changeStreamConfig:
+                description: |-
+                  If specified, enable the change stream on this table.
+                   Otherwise, the change stream is disabled and the change stream is not
+                   retained.
+                properties:
+                  retentionPeriod:
+                    description: |-
+                      How long the change stream should be retained. Change stream data older
+                       than the retention period will not be returned when reading the change
+                       stream from the table.
+                       Values must be at least 1 day and at most 7 days, and will be truncated to
+                       microsecond granularity.
+                    type: string
+                type: object
+              deletionProtection:
+                description: |-
+                  Set to true to make the table protected against data loss. i.e. deleting
+                   the following resources through Admin APIs are prohibited:
+
+                   * The table.
+                   * The column families in the table.
+                   * The instance containing the table.
+
+                   Note one can still delete the data stored in the table through Data APIs.
+                type: boolean
+              granularity:
+                description: |-
+                  Immutable. The granularity (i.e. `MILLIS`) at which timestamps are stored
+                   in this table. Timestamps not matching the granularity will be rejected. If
+                   unspecified at creation time, the value will be set to `MILLIS`. Views:
+                   `SCHEMA_VIEW`, `FULL`.
+                type: string
+              projectRef:
+                description: The project that this resource belongs to.
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: The BigtableTable name. If not given, the metadata.name
+                  will be used.
+                type: string
+              rowKeySchema:
+                description: |-
+                  The row key schema for this table. The schema is used to decode the raw row
+                   key bytes into a structured format. The order of field declarations in this
+                   schema is important, as it reflects how the raw row key bytes are
+                   structured. Currently, this only affects how the key is read via a
+                   GoogleSQL query from the ExecuteQuery API.
+
+                   For a SQL query, the _key column is still read as raw bytes. But queries
+                   can reference the key fields by name, which will be decoded from _key using
+                   provided type and encoding. Queries that reference key fields will fail if
+                   they encounter an invalid row key.
+
+                   For example, if _key = "some_id#2024-04-30#\x00\x13\x00\xf3" with the
+                   following schema:
+                   {
+                     fields {
+                       field_name: "id"
+                       type { string { encoding: utf8_bytes {} } }
+                     }
+                     fields {
+                       field_name: "date"
+                       type { string { encoding: utf8_bytes {} } }
+                     }
+                     fields {
+                       field_name: "product_code"
+                       type { int64 { encoding: big_endian_bytes {} } }
+                     }
+                     encoding { delimited_bytes { delimiter: "#" } }
+                   }
+
+                   The decoded key parts would be:
+                     id = "some_id", date = "2024-04-30", product_code = 1245427
+                   The query "SELECT _key, product_code FROM table" will return two columns:
+                   /------------------------------------------------------\
+                   |              _key                     | product_code |
+                   | --------------------------------------|--------------|
+                   | "some_id#2024-04-30#\x00\x13\x00\xf3" |   1245427    |
+                   \------------------------------------------------------/
+
+                   The schema has the following invariants:
+                   (1) The decoded field values are order-preserved. For read, the field
+                   values will be decoded in sorted mode from the raw bytes.
+                   (2) Every field in the schema must specify a non-empty name.
+                   (3) Every field must specify a type with an associated encoding. The type
+                   is limited to scalar types only: Array, Map, Aggregate, and Struct are not
+                   allowed.
+                   (4) The field names must not collide with existing column family
+                   names and reserved keywords "_key" and "_timestamp".
+
+                   The following update operations are allowed for row_key_schema:
+                   - Update from an empty schema to a new schema.
+                   - Remove the existing schema. This operation requires setting the
+                     `ignore_warnings` flag to `true`, since it might be a backward
+                     incompatible change. Without the flag, the update request will fail with
+                     an INVALID_ARGUMENT error.
+                   Any other row key schema update operation (e.g. update existing schema
+                   columns names or types) is currently unsupported.
+                properties:
+                  encoding:
+                    description: The encoding to use when converting to or from lower
+                      level types.
+                    properties:
+                      delimitedBytes:
+                        description: Use `DelimitedBytes` encoding.
+                        properties:
+                          delimiter:
+                            description: |-
+                              Byte sequence used to delimit concatenated fields. The delimiter must
+                               contain at least 1 character and at most 50 characters.
+                            format: byte
+                            type: string
+                        type: object
+                      orderedCodeBytes:
+                        description: User `OrderedCodeBytes` encoding.
+                        type: object
+                      singleton:
+                        description: Use `Singleton` encoding.
+                        type: object
+                    type: object
+                  fields:
+                    description: The names and types of the fields in this struct.
+                    items:
+                      properties:
+                        fieldName:
+                          description: |-
+                            The field name (optional). Fields without a `field_name` are considered
+                             anonymous and cannot be referenced by name.
+                          type: string
+                        type:
+                          description: The type of values in this field.
+                          properties:
+                            aggregateType:
+                              description: Aggregate
+                              properties:
+                                hllppUniqueCount:
+                                  description: HyperLogLogPlusPlusUniqueCount aggregator.
+                                  type: object
+                                inputType:
+                                  description: |-
+                                    Type of the inputs that are accumulated by this `Aggregate`, which must
+                                     specify a full encoding.
+                                     Use `AddInput` mutations to accumulate new inputs.
+                                max:
+                                  description: Max aggregator.
+                                  type: object
+                                min:
+                                  description: Min aggregator.
+                                  type: object
+                                sum:
+                                  description: Sum aggregator.
+                                  type: object
+                              type: object
+                            arrayType:
+                              description: Array
+                              properties:
+                                elementType:
+                                  description: The type of the elements in the array.
+                                    This must not be `Array`.
+                              type: object
+                            boolType:
+                              description: Bool
+                              type: object
+                            bytesType:
+                              description: Bytes
+                              properties:
+                                encoding:
+                                  description: The encoding to use when converting
+                                    to or from lower level types.
+                                  properties:
+                                    raw:
+                                      description: Use `Raw` encoding.
+                                      type: object
+                                  type: object
+                              type: object
+                            dateType:
+                              description: Date
+                              type: object
+                            enumType:
+                              description: Enum
+                              properties:
+                                enumName:
+                                  description: |-
+                                    The fully qualified name of the protobuf enum message, including package.
+                                     In the format of "foo.bar.EnumMessage".
+                                  type: string
+                                schemaBundleID:
+                                  description: The ID of the schema bundle that this
+                                    enum is defined in.
+                                  type: string
+                              type: object
+                            float32Type:
+                              description: Float32
+                              type: object
+                            float64Type:
+                              description: Float64
+                              type: object
+                            int64Type:
+                              description: Int64
+                              properties:
+                                encoding:
+                                  description: The encoding to use when converting
+                                    to or from lower level types.
+                                  properties:
+                                    bigEndianBytes:
+                                      description: Use `BigEndianBytes` encoding.
+                                      properties:
+                                        bytesType:
+                                          description: 'Deprecated: ignored if set.'
+                                          properties:
+                                            encoding:
+                                              description: The encoding to use when
+                                                converting to or from lower level
+                                                types.
+                                              properties:
+                                                raw:
+                                                  description: Use `Raw` encoding.
+                                                  type: object
+                                              type: object
+                                          type: object
+                                      type: object
+                                    orderedCodeBytes:
+                                      description: Use `OrderedCodeBytes` encoding.
+                                      type: object
+                                  type: object
+                              type: object
+                            mapType:
+                              description: Map
+                              properties:
+                                keyType:
+                                  description: |-
+                                    The type of a map key.
+                                     Only `Bytes`, `String`, and `Int64` are allowed as key types.
+                                valueType:
+                                  description: The type of the values in a map.
+                              type: object
+                            protoType:
+                              description: Proto
+                              properties:
+                                messageName:
+                                  description: |-
+                                    The fully qualified name of the protobuf message, including package. In
+                                     the format of "foo.bar.Message".
+                                  type: string
+                                schemaBundleID:
+                                  description: The ID of the schema bundle that this
+                                    proto is defined in.
+                                  type: string
+                              type: object
+                            stringType:
+                              description: String
+                              properties:
+                                encoding:
+                                  description: The encoding to use when converting
+                                    to or from lower level types.
+                                  properties:
+                                    utf8Bytes:
+                                      description: Use `Utf8Bytes` encoding.
+                                      type: object
+                                    utf8Raw:
+                                      description: 'Deprecated: if set, converts to
+                                        an empty `utf8_bytes`.'
+                                      type: object
+                                  type: object
+                              type: object
+                            structType:
+                              description: Struct
+                            timestampType:
+                              description: Timestamp
+                              properties:
+                                encoding:
+                                  description: The encoding to use when converting
+                                    to or from lower level types.
+                                  properties:
+                                    unixMicrosInt64:
+                                      description: |-
+                                        Encodes the number of microseconds since the Unix epoch using the
+                                         given `Int64` encoding. Values must be microsecond-aligned.
+
+                                         Compatible with:
+
+                                          - Java `Instant.truncatedTo()` with `ChronoUnit.MICROS`
+                                      properties:
+                                        bigEndianBytes:
+                                          description: Use `BigEndianBytes` encoding.
+                                          properties:
+                                            bytesType:
+                                              description: 'Deprecated: ignored if
+                                                set.'
+                                              properties:
+                                                encoding:
+                                                  description: The encoding to use
+                                                    when converting to or from lower
+                                                    level types.
+                                                  properties:
+                                                    raw:
+                                                      description: Use `Raw` encoding.
+                                                      type: object
+                                                  type: object
+                                              type: object
+                                          type: object
+                                        orderedCodeBytes:
+                                          description: Use `OrderedCodeBytes` encoding.
+                                          type: object
+                                      type: object
+                                  type: object
+                              type: object
+                          type: object
+                      type: object
+                    type: array
+                type: object
+              tieredStorageConfig:
+                description: |-
+                  Rules to specify what data is stored in each storage tier.
+                   Different tiers store data differently, providing different trade-offs
+                   between cost and performance. Different parts of a table can be stored
+                   separately on different tiers.
+                   If a config is specified, tiered storage is enabled for this table.
+                   Otherwise, tiered storage is disabled.
+                   Only SSD instances can configure tiered storage.
+                properties:
+                  infrequentAccess:
+                    description: |-
+                      Rule to specify what data is stored in the infrequent access(IA) tier.
+                       The IA tier allows storing more data per node with reduced performance.
+                    properties:
+                      includeIfOlderThan:
+                        description: |-
+                          Include cells older than the given age.
+                           For the infrequent access tier, this value must be at least 30 days.
+                        type: string
+                    type: object
+                type: object
+            type: object
+          status:
+            description: BigtableTableStatus defines the config connector machine
+              state of BigtableTable
+            properties:
+              conditions:
+                description: |-
+                  Conditions represent the latest available observations of the
+                  object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: |-
+                        Unique, one-word, CamelCase reason for the condition's last
+                        transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the BigtableTable resource in
+                  GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                properties:
+                  restoreInfo:
+                    description: |-
+                      Output only. If this table was restored from another data source (e.g. a
+                       backup), this field will be populated with information about the restore.
+                    properties:
+                      backupInfo:
+                        description: |-
+                          Information about the backup used to restore the table. The backup
+                           may no longer exist.
+                        properties:
+                          backup:
+                            description: Output only. Name of the backup.
+                            type: string
+                          endTime:
+                            description: |-
+                              Output only. This time that the backup was finished. Row data in the
+                               backup will be no newer than this timestamp.
+                            type: string
+                          sourceBackup:
+                            description: |-
+                              Output only. Name of the backup from which this backup was copied. If a
+                               backup is not created by copying a backup, this field will be empty. Values
+                               are of the form:
+                               projects/<project>/instances/<instance>/clusters/<cluster>/backups/<backup>
+                            type: string
+                          sourceTable:
+                            description: Output only. Name of the table the backup
+                              was created from.
+                            type: string
+                          startTime:
+                            description: |-
+                              Output only. The time that the backup was started. Row data in the backup
+                               will be no older than this timestamp.
+                            type: string
+                        type: object
+                      sourceType:
+                        description: The type of the restore source.
+                        type: string
+                    type: object
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}

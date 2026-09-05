@@ -1,0 +1,265 @@
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.16.5
+  labels:
+    cnrm.cloud.google.com/managed-by-kcc: "true"
+    cnrm.cloud.google.com/system: "true"
+  name: computenetworkpeerings.compute.cnrm.cloud.google.com
+spec:
+  group: compute.cnrm.cloud.google.com
+  names:
+    categories:
+    - gcp
+    kind: ComputeNetworkPeering
+    listKind: ComputeNetworkPeeringList
+    plural: computenetworkpeerings
+    shortNames:
+    - gcpcomputenetworkpeering
+    - gcpcomputenetworkpeerings
+    singular: computenetworkpeering
+  scope: Namespaced
+  versions:
+  - additionalPrinterColumns:
+    - jsonPath: .metadata.creationTimestamp
+      name: Age
+      type: date
+    - description: When 'True', the most recent reconcile of the resource succeeded
+      jsonPath: .status.conditions[?(@.type=='Ready')].status
+      name: Ready
+      type: string
+    - description: The reason for the value in 'Ready'
+      jsonPath: .status.conditions[?(@.type=='Ready')].reason
+      name: Status
+      type: string
+    - description: The last transition time for the value in 'Status'
+      jsonPath: .status.conditions[?(@.type=='Ready')].lastTransitionTime
+      name: Status Age
+      type: date
+    name: v1beta1
+    schema:
+      openAPIV3Schema:
+        description: ComputeNetworkPeering is the Schema for the ComputeNetworkPeering
+          API
+        properties:
+          apiVersion:
+            description: |-
+              APIVersion defines the versioned schema of this representation of an object.
+              Servers should convert recognized schemas to the latest internal value, and
+              may reject unrecognized values.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+            type: string
+          kind:
+            description: |-
+              Kind is a string value representing the REST resource this object represents.
+              Servers may infer this from the endpoint the client submits requests to.
+              Cannot be updated.
+              In CamelCase.
+              More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: ComputeNetworkPeeringSpec defines the desired state of ComputeNetworkPeering
+            properties:
+              autoCreateRoutes:
+                description: This field will be deprecated soon. Use the exchange_subnet_routes
+                  field instead. Indicates whether full mesh connectivity is created
+                  and managed automatically between peered networks. Currently this
+                  field should always be true since Google Compute Engine will automatically
+                  create and manage subnetwork routes between two networks when peering
+                  state is ACTIVE.
+                type: boolean
+              connectionStatus:
+                description: '[Output Only] The effective state of the peering connection
+                  as a whole.'
+                properties:
+                  consensusState:
+                    description: The consensus state contains information about the
+                      status of update and delete for a consensus peering connection.
+                    properties:
+                      deleteStatus:
+                        description: |-
+                          The status of the delete request.
+                           Check the DeleteStatus enum for the list of possible values.
+                        type: string
+                      updateStatus:
+                        description: |-
+                          The status of the update request.
+                           Check the UpdateStatus enum for the list of possible values.
+                        type: string
+                    type: object
+                  trafficConfiguration:
+                    description: The active connectivity settings for the peering
+                      connection based on the settings of the network peerings.
+                    properties:
+                      exportCustomRoutesToPeer:
+                        description: Whether custom routes are being exported to the
+                          peer network.
+                        type: boolean
+                      exportSubnetRoutesWithPublicIPToPeer:
+                        description: Whether subnet routes with public IP ranges are
+                          being exported to the peer network.
+                        type: boolean
+                      importCustomRoutesFromPeer:
+                        description: Whether custom routes are being imported from
+                          the peer network.
+                        type: boolean
+                      importSubnetRoutesWithPublicIPFromPeer:
+                        description: Whether subnet routes with public IP ranges are
+                          being imported from the peer network.
+                        type: boolean
+                      stackType:
+                        description: |-
+                          Which IP version(s) of traffic and routes are being imported or exported between peer networks.
+                           Check the StackType enum for the list of possible values.
+                        type: string
+                    type: object
+                  updateStrategy:
+                    description: |-
+                      The update strategy determines the update/delete semantics for this peering connection.
+                       Check the UpdateStrategy enum for the list of possible values.
+                    type: string
+                type: object
+              exchangeSubnetRoutes:
+                description: Indicates whether full mesh connectivity is created and
+                  managed automatically between peered networks. Currently this field
+                  should always be true since Google Compute Engine will automatically
+                  create and manage subnetwork routes between two networks when peering
+                  state is ACTIVE.
+                type: boolean
+              exportCustomRoutes:
+                description: Whether to export the custom routes to peer network.
+                  The default value is false.
+                type: boolean
+              exportSubnetRoutesWithPublicIP:
+                description: Whether subnet routes with public IP range are exported.
+                  The default value is true, all subnet routes are exported. IPv4
+                  special-use ranges are always exported to peers and are not controlled
+                  by this field.
+                type: boolean
+              importCustomRoutes:
+                description: Whether to import the custom routes from peer network.
+                  The default value is false.
+                type: boolean
+              importSubnetRoutesWithPublicIP:
+                description: Whether subnet routes with public IP range are imported.
+                  The default value is false. IPv4 special-use ranges are always imported
+                  from peers and are not controlled by this field.
+                type: boolean
+              location:
+                description: The location of this resource.
+                type: string
+              network:
+                description: The URL of the peer network. It can be either full URL
+                  or partial URL. The peer network may belong to a different project.
+                  If the partial URL does not contain project, it is assumed that
+                  the peer network is in the same project as the current network.
+                type: string
+              peerMtu:
+                description: '[Output Only] Maximum Transmission Unit in bytes of
+                  the peer network.'
+                format: int32
+                type: integer
+              projectRef:
+                description: The project that this resource belongs to.
+                properties:
+                  external:
+                    description: The `projectID` field of a project, when not managed
+                      by Config Connector.
+                    type: string
+                  kind:
+                    description: The kind of the Project resource; optional but must
+                      be `Project` if provided.
+                    type: string
+                  name:
+                    description: The `name` field of a `Project` resource.
+                    type: string
+                  namespace:
+                    description: The `namespace` field of a `Project` resource.
+                    type: string
+                type: object
+              resourceID:
+                description: The ComputeNetworkPeering name. If not given, the metadata.name
+                  will be used.
+                type: string
+              stackType:
+                description: |-
+                  Which IP version(s) of traffic and routes are allowed to be imported or exported between peer networks. The default value is IPV4_ONLY.
+                   Check the StackType enum for the list of possible values.
+                type: string
+              state:
+                description: |-
+                  [Output Only] State for the peering, either `ACTIVE` or `INACTIVE`. The peering is `ACTIVE` when there's a matching configuration in the peer network.
+                   Check the State enum for the list of possible values.
+                type: string
+              stateDetails:
+                description: '[Output Only] Details about the current state of the
+                  peering.'
+                type: string
+              updateStrategy:
+                description: |-
+                  The update strategy determines the semantics for updates and deletes to the peering connection configuration.
+                   Check the UpdateStrategy enum for the list of possible values.
+                type: string
+            required:
+            - location
+            type: object
+          status:
+            description: ComputeNetworkPeeringStatus defines the config connector
+              machine state of ComputeNetworkPeering
+            properties:
+              conditions:
+                description: |-
+                  Conditions represent the latest available observations of the
+                  object's current state.
+                items:
+                  properties:
+                    lastTransitionTime:
+                      description: Last time the condition transitioned from one status
+                        to another.
+                      type: string
+                    message:
+                      description: Human-readable message indicating details about
+                        last transition.
+                      type: string
+                    reason:
+                      description: |-
+                        Unique, one-word, CamelCase reason for the condition's last
+                        transition.
+                      type: string
+                    status:
+                      description: Status is the status of the condition. Can be True,
+                        False, Unknown.
+                      type: string
+                    type:
+                      description: Type is the type of the condition.
+                      type: string
+                  type: object
+                type: array
+              externalRef:
+                description: A unique specifier for the ComputeNetworkPeering resource
+                  in GCP.
+                type: string
+              observedGeneration:
+                description: ObservedGeneration is the generation of the resource
+                  that was most recently observed by the Config Connector controller.
+                  If this is equal to metadata.generation, then that means that the
+                  current reported status reflects the most recent desired state of
+                  the resource.
+                format: int64
+                type: integer
+              observedState:
+                description: ObservedState is the state of the resource as most recently
+                  observed in GCP.
+                type: object
+            type: object
+        required:
+        - spec
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
