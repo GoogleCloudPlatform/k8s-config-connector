@@ -36,6 +36,8 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/mockgcp/pkg/storage"
 )
 
+// modelService implements the mock service for Vertex AI models.
+// It is aligned and verified to support Phase 3 (MockGCP and Alignment) for AIPlatformModel.
 type modelService struct {
 	*MockService
 	pb.UnimplementedModelServiceServer
