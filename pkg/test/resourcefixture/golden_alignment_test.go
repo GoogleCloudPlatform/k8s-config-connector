@@ -230,7 +230,7 @@ func getProjectID(path string) string {
 	return ""
 }
 
-func hasDeletedParent(path string, mockGrouped pathMethodEvents) bool {
+func hasDeletedSelfOrParent(path string, mockGrouped pathMethodEvents) bool {
 	normalizedPath := normalizeAPIVersion(path)
 	segments := strings.Split(normalizedPath, "/")
 
@@ -240,8 +240,8 @@ func hasDeletedParent(path string, mockGrouped pathMethodEvents) bool {
 		normalizedMockPaths[normalizeAPIVersion(mockPath)] = methods
 	}
 
-	// 1. Standard prefix-based parent check
-	for i := len(segments) - 1; i > 0; i-- {
+	// 1. Standard prefix-based parent/self check
+	for i := len(segments); i > 0; i-- {
 		parentPath := strings.Join(segments[:i], "/")
 		if parentPath == "" {
 			continue
@@ -275,14 +275,18 @@ func hasDeletedParent(path string, mockGrouped pathMethodEvents) bool {
 	return false
 }
 
-func is404OrEmptyOnDeletedParent(path string, ev httpEvent, mockGrouped pathMethodEvents) bool {
-	if !hasDeletedParent(path, mockGrouped) {
+func is404OrEmptyOnDeleted(path string, ev httpEvent, mockGrouped pathMethodEvents) bool {
+	if !hasDeletedSelfOrParent(path, mockGrouped) {
 		return false
 	}
 	if strings.Contains(ev.Status, "404") {
 		return true
 	}
 	if strings.Contains(ev.ResponseBody, `"code": 404`) || strings.Contains(ev.ResponseBody, `"code":404`) {
+		return true
+	}
+	// Handle rule-specific 400 Not Found for Compute Firewall Policies
+	if strings.Contains(path, "/firewallPolicies") && strings.Contains(ev.Status, "400") && strings.Contains(ev.ResponseBody, "does not contain a rule") {
 		return true
 	}
 	return false
@@ -298,7 +302,7 @@ func compareGroupedLogs(t *testing.T, realGrouped, mockGrouped pathMethodEvents)
 
 			if !pathExistsInMock {
 				// If DELETE is missing entirely, we check if it is allowed via deleted parent
-				if method == "DELETE" && hasDeletedParent(path, mockGrouped) {
+				if method == "DELETE" && hasDeletedSelfOrParent(path, mockGrouped) {
 					continue
 				}
 				if method == "GET" && strings.Contains(path, "/instanceGroupManagers/") {
@@ -309,7 +313,7 @@ func compareGroupedLogs(t *testing.T, realGrouped, mockGrouped pathMethodEvents)
 			}
 
 			if len(mockEvs) == 0 {
-				if method == "DELETE" && hasDeletedParent(path, mockGrouped) {
+				if method == "DELETE" && hasDeletedSelfOrParent(path, mockGrouped) {
 					continue
 				}
 				t.Errorf("path %q: method %s present in real log but missing in mock log", path, method)
@@ -333,7 +337,7 @@ func compareGroupedLogs(t *testing.T, realGrouped, mockGrouped pathMethodEvents)
 			if len(realEvs) != len(mockEvs) {
 				allowed := false
 				if method == "DELETE" && len(mockEvs) < len(realEvs) {
-					if hasDeletedParent(path, mockGrouped) {
+					if hasDeletedSelfOrParent(path, mockGrouped) {
 						allowed = true
 					}
 				}
@@ -360,7 +364,7 @@ func compareGroupedLogs(t *testing.T, realGrouped, mockGrouped pathMethodEvents)
 			}
 
 			for i := 0; i < compareCount; i++ {
-				if is404OrEmptyOnDeletedParent(path, realEvs[i], mockGrouped) || is404OrEmptyOnDeletedParent(path, mockEvs[i], mockGrouped) {
+				if is404OrEmptyOnDeleted(path, realEvs[i], mockGrouped) || is404OrEmptyOnDeleted(path, mockEvs[i], mockGrouped) {
 					continue
 				}
 				if method == "GET" && strings.Contains(realEvs[i].Status, "404") && strings.Contains(mockEvs[i].Status, "404") {

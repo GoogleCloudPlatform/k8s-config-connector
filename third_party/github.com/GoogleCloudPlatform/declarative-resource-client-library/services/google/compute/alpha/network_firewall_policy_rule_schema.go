@@ -375,6 +375,16 @@ func DCLNetworkFirewallPolicyRuleSchema() *dcl.Schema {
 											GoType: "string",
 										},
 									},
+									"srcNetworkContext": &dcl.Property{
+										Type:        "string",
+										GoName:      "SrcNetworkContext",
+										Description: "The network context of the traffic source.",
+									},
+									"destNetworkContext": &dcl.Property{
+										Type:        "string",
+										GoName:      "DestNetworkContext",
+										Description: "The network context of the traffic destination.",
+									},
 								},
 							},
 							"priority": &dcl.Property{

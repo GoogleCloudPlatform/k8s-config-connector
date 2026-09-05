@@ -80,7 +80,7 @@ func (s *FirewallPoliciesV1) Insert(ctx context.Context, req *pb.InsertFirewallP
 
 	// Use default rules
 	if obj.Rules == nil {
-		populateDefaultRules(obj)
+		populateDefaultRules(obj, true)
 	}
 
 	if err := s.storage.Create(ctx, fqn, obj); err != nil {
@@ -285,7 +285,7 @@ func (s *FirewallPoliciesV1) RemoveRule(ctx context.Context, req *pb.RemoveRuleF
 	if len(rules) == 0 {
 		// When the target policy has no rules, i.e. all the custom rules are deleted,
 		// we update the policy to add default rules to it.
-		populateDefaultRules(obj)
+		populateDefaultRules(obj, true)
 	} else {
 		obj.Rules = rules
 	}
@@ -328,11 +328,15 @@ func (s *MockService) parseFirewallPolicyName(name string) (*firewallPolicyName,
 	}
 }
 
-func populateDefaultRules(obj *pb.FirewallPolicy) {
+func populateDefaultRules(obj *pb.FirewallPolicy, isOrg bool) {
+	ipv6Suffix := ""
+	if isOrg {
+		ipv6Suffix = " ipv6"
+	}
 	obj.Rules = []*pb.FirewallPolicyRule{
 		{
 			Action:        PtrTo("goto_next"),
-			Description:   PtrTo("default egress rule ipv6"),
+			Description:   PtrTo("default egress rule" + ipv6Suffix),
 			Direction:     PtrTo("EGRESS"),
 			EnableLogging: PtrTo(false),
 			Kind:          PtrTo("compute#firewallPolicyRule"),
@@ -349,7 +353,7 @@ func populateDefaultRules(obj *pb.FirewallPolicy) {
 		},
 		{
 			Action:        PtrTo("goto_next"),
-			Description:   PtrTo("default ingress rule ipv6"),
+			Description:   PtrTo("default ingress rule" + ipv6Suffix),
 			Direction:     PtrTo("INGRESS"),
 			EnableLogging: PtrTo(false),
 			Kind:          PtrTo("compute#firewallPolicyRule"),
