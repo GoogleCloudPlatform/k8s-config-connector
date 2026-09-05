@@ -42,3 +42,13 @@
 - **Solution**: Set the full resource name (including the user-provided ID) on the `PhraseMatcher.Name` field in the `Create` request.
 - **Impact**: Other resources in `contactcenterinsights` (like `View`) likely follow this same pattern.
 
+### [2026-07-02] CCInsightsAnalysisRule Greenfield Types Scaffolding
+- **Context**: Implementing Greenfield direct types, CRD, and IdentityV2 for `CCInsightsAnalysisRule` resource (mapped to `google.cloud.contactcenterinsights.v1.AnalysisRule`).
+- **Problem**: CCInsightsAnalysisRule's `AnnotatorSelector` field has nested reference lists to other resources (`phraseMatchers` and `issueModels`). If left as `[]string`, they would bypass KCC's strict reference guidelines.
+- **Solution**: 
+  1. Manually defined `AnnotatorSelector` within `ccinsightsanalysisrule_types.go`, overriding the generated version.
+  2. Declared `PhraseMatchers []CCInsightsPhraseMatcherRef` and `IssueModels []CCInsightsIssueModelRef` as proper, strong KCC references.
+  3. Created `ccinsightsphrasematcher_reference.go` to expose `CCInsightsPhraseMatcherRef` as a canonical reference type.
+  4. Implemented `ccinsightsanalysisrule_identity.go` (implementing `identity.IdentityV2` and `identity.Resource`) and `ccinsightsanalysisrule_reference.go` (implementing `refs.Ref`).
+  5. Wrote unit tests for identity and reference validation and confirmed they compile and pass perfectly.
+- **Impact**: Establishes a completely compliant, strongly-typed direct type foundation for `CCInsightsAnalysisRule` with robust references and URL validation.
