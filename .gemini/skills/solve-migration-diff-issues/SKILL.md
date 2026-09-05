@@ -92,7 +92,16 @@ Using the diff produced in Step 1, identify why the Direct controller sees a dif
    ```
 2. Verify that the `"isNewObject": false` block in `_migration_diffs.json` is **completely gone**, indicating a clean 0-write takeover on real GCP.
 3. Confirm that the test passes with a perfect green status and there are no unexpected write calls to the GCP API in the real GCP traffic.
-4. **Iterate if Necessary:** If there are still bugs, diffs, or unexpected writes at this step, repeat Step 2 and Step 3 to fix the issue until validation passes cleanly.
+4. Confirm that `./hack/record-gcp` passes with a perfect green status and records the updated HTTP cassettes (`_http_migration_phase1_legacy_create.log`, etc.) against live GCP.
+5. **Iterate if Necessary:** If there are still bugs, diffs, or unexpected writes at this step, repeat Step 2 and Step 3 to fix the issue until validation passes cleanly.
+
+### GCP Recording PR Reporting Mandate
+When opening your Pull Request, you **MUST** explicitly state in the PR description whether Step 4 item 3 (`./hack/record-gcp`) succeeded against live GCP:
+- **If `./hack/record-gcp` succeeded**: State the GCP project used and confirm that updated live GCP HTTP cassettes are included in the PR.
+- **If `./hack/record-gcp` could not be run or failed** (e.g., due to disabled APIs, missing IAM permissions, or quota limits):
+  1. Document the exact `./hack/record-gcp` command you executed.
+  2. Quote the full error output.
+  3. Explicitly note that the cassettes were generated using mock GCP (`E2E_GCP_TARGET=mock`).
 
 ---
 
