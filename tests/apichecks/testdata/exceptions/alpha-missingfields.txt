@@ -2317,10 +2317,6 @@
 [missing_field] crd=discoveryenginelicenseconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.endDate.day" is not set in unstructured objects
 [missing_field] crd=discoveryenginelicenseconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.endDate.month" is not set in unstructured objects
 [missing_field] crd=discoveryenginelicenseconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.endDate.year" is not set in unstructured objects
-[missing_field] crd=discoveryenginesamplequerysets.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.description" is not set in unstructured objects
-[missing_field] crd=discoveryenginesamplequerysets.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.displayName" is not set in unstructured objects
-[missing_field] crd=discoveryenginesamplequerysets.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.location" is not set in unstructured objects
-[missing_field] crd=discoveryenginesamplequerysets.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.projectRef" is not set; neither 'external' nor 'name' are set
 [missing_field] crd=discoveryengineservingconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.boostControlIDs[]" is not set in unstructured objects
 [missing_field] crd=discoveryengineservingconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.dissociateControlIDs[]" is not set in unstructured objects
 [missing_field] crd=discoveryengineservingconfigs.discoveryengine.cnrm.cloud.google.com version=v1alpha1: field ".spec.diversityLevel" is not set in unstructured objects
