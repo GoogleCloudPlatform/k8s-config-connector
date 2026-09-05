@@ -101,6 +101,7 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".status.observedState.lastUsedTime"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.observedState.endTime"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.observedState.updateTime"] = mockgcpregistry.PlaceholderTime
+	visitor.replacePaths[".status.observedState.nextRunTime"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.observedState.pairingKey.expireTime"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.updateTime"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.expireTime"] = mockgcpregistry.PlaceholderTimestamp
@@ -374,6 +375,11 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 		visitor.replacePaths[".status.observedState.userID"] = "0000000000000000000"
 		visitor.removePaths.Insert(".status.observedState.state") // data transfer run state, which depends on timing
 	}
+	// Specific to VertexAISchedule
+	if u.GetKind() == "VertexAISchedule" {
+		visitor.replacePaths[".spec.startTime"] = mockgcpregistry.PlaceholderTime
+		visitor.replacePaths[".spec.endTime"] = mockgcpregistry.PlaceholderTime
+	}
 	if u.GetKind() == "DocumentAIProcessorVersion" {
 		visitor.replacePaths[".status.observedState.create_time"] = mockgcpregistry.PlaceholderTime
 	}
@@ -560,6 +566,11 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 			if typeName == "indexes" {
 				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 					return strings.ReplaceAll(s, id, "${indexID}")
+				})
+			}
+			if typeName == "schedules" {
+				visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+					return strings.ReplaceAll(s, id, "${scheduleID}")
 				})
 			}
 		}

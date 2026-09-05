@@ -81,6 +81,10 @@ func (s *MockService) Register(grpcServer *grpc.Server) {
 	descModel := pb.ModelService_ServiceDesc
 	descModel.ServiceName = "google.cloud.aiplatform.v1.ModelService"
 	grpcServer.RegisterService(&descModel, &modelService{MockService: s})
+
+	descSchedule := pb.ScheduleService_ServiceDesc
+	descSchedule.ServiceName = "google.cloud.aiplatform.v1.ScheduleService"
+	grpcServer.RegisterService(&descSchedule, &scheduleService{MockService: s})
 }
 
 func (s *MockService) NewHTTPMux(ctx context.Context, conn *grpc.ClientConn) (http.Handler, error) {

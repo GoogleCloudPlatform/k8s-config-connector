@@ -26,7 +26,8 @@ spec:
     foo: bar
     baz: qux
   runtimeConfig:
-    gcsOutputDirectory: gs://vertexai-pipelinejob-bucket-${uniqueId}/output
+    gcsOutputDirectoryRef:
+      name: vertexai-pipelinejob-bucket-${uniqueId}
     failurePolicy: PIPELINE_FAILURE_POLICY_FAIL_FAST
   pipelineSpec:
     pipelineInfo:
