@@ -1297,6 +1297,44 @@ spec:
       containers:
         - type: project
           tfField: project
+    - name: google_compute_network_endpoint
+      kind: ComputeNetworkEndpoint
+      idTemplate: "projects/{{project}}/zones/{{zone}}/networkEndpointGroups/{{network_endpoint_group}}/{{instance?}}/{{ip_address}}/{{port}}"
+      idTemplateCanBeUsedToMatchResourceName: false
+      resourceAvailableInAssetInventory: false
+      v1alpha1ToV1beta1: true
+      storageVersion: v1alpha1
+      metadataMapping:
+        name: port
+      resourceID:
+        targetField: port
+      hierarchicalReferences:
+        - type: project
+          key: projectRef
+      resourceReferences:
+        - tfField: project
+          key: projectRef
+          description: |-
+            The project that this resource belongs to.
+          gvk:
+            kind: Project
+            version: v1beta1
+            group: resourcemanager.cnrm.cloud.google.com
+        - key: instanceRef
+          tfField: instance
+          gvk:
+            kind: ComputeInstance
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: name
+        - key: networkEndpointGroupRef
+          tfField: network_endpoint_group
+          gvk:
+            kind: ComputeNetworkEndpointGroup
+            version: v1beta1
+            group: compute.cnrm.cloud.google.com
+          targetField: name
+          parent: true
     - name: google_compute_network_endpoint_group
       kind: ComputeNetworkEndpointGroup
       metadataMapping:
