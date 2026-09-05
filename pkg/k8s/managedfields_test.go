@@ -133,6 +133,9 @@ var schema = &apiextensions.JSONSchemaProps{
 				"field":     {Type: "string"},
 				"external":  {Type: "string"},
 				"unrelated": {Type: "string"},
+				"region":    {Type: "string"},
+				"location":  {Type: "string"},
+				"zone":      {Type: "string"},
 				"projectRef": {
 					Properties: map[string]apiextensions.JSONSchemaProps{
 						"external":  {Type: "string"},
@@ -697,6 +700,54 @@ func TestConstructTrimmedSpecWithManagedFields(t *testing.T) {
 				},
 			},
 			expected: map[string]interface{}{
+				"unrelated": "val",
+			},
+		},
+		{
+			name: "region is preserved even if not in managed fields as long as in spec",
+			resource: &k8s.Resource{
+				Spec: map[string]interface{}{
+					"region":    "europe-west1",
+					"unrelated": "val",
+				},
+				ManagedFields: testk8s.MapToFieldPathSet(t, map[string]interface{}{
+					"f:unrelated": emptyObject,
+				}),
+			},
+			expected: map[string]interface{}{
+				"region":    "europe-west1",
+				"unrelated": "val",
+			},
+		},
+		{
+			name: "location is preserved even if not in managed fields as long as in spec",
+			resource: &k8s.Resource{
+				Spec: map[string]interface{}{
+					"location":  "us-central1",
+					"unrelated": "val",
+				},
+				ManagedFields: testk8s.MapToFieldPathSet(t, map[string]interface{}{
+					"f:unrelated": emptyObject,
+				}),
+			},
+			expected: map[string]interface{}{
+				"location":  "us-central1",
+				"unrelated": "val",
+			},
+		},
+		{
+			name: "zone is preserved even if not in managed fields as long as in spec",
+			resource: &k8s.Resource{
+				Spec: map[string]interface{}{
+					"zone":      "us-central1-a",
+					"unrelated": "val",
+				},
+				ManagedFields: testk8s.MapToFieldPathSet(t, map[string]interface{}{
+					"f:unrelated": emptyObject,
+				}),
+			},
+			expected: map[string]interface{}{
+				"zone":      "us-central1-a",
 				"unrelated": "val",
 			},
 		},
