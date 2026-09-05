@@ -143,10 +143,11 @@ X-Xss-Protection: 0
 
 ---
 
-PATCH https://logging.googleapis.com/v2/folders/${folderID}/locations/global/buckets/_Default?%24alt=json%3Benum-encoding%3Dint&updateMask=description%2CretentionDays
+PATCH https://logging.googleapis.com/v2/folders/${folderID}/locations/global/buckets/_Default?%24alt=json%3Benum-encoding%3Dint&updateMask=retentionDays
 Content-Type: application/json
 
 {
+  "description": "Default bucket",
   "retentionDays": 15
 }
 
@@ -161,6 +162,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "description": "Default bucket",
   "lifecycleState": 1,
   "name": "folders/${folderID}/locations/global/buckets/_Default",
   "retentionDays": 15,
@@ -183,6 +185,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "description": "Default bucket",
   "lifecycleState": 1,
   "name": "folders/${folderID}/locations/global/buckets/_Default",
   "retentionDays": 15,
@@ -195,6 +198,7 @@ PATCH https://logging.googleapis.com/v2/folders/${folderID}/locations/global/buc
 Content-Type: application/json
 
 {
+  "description": "Default bucket",
   "retentionDays": 10
 }
 
@@ -209,6 +213,7 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "description": "Default bucket",
   "lifecycleState": 1,
   "name": "folders/${folderID}/locations/global/buckets/_Default",
   "retentionDays": 10,
@@ -231,28 +236,12 @@ X-Frame-Options: SAMEORIGIN
 X-Xss-Protection: 0
 
 {
+  "description": "Default bucket",
   "lifecycleState": 1,
   "name": "folders/${folderID}/locations/global/buckets/_Default",
   "retentionDays": 10,
   "updateTime": "2024-04-01T12:34:56.123456Z"
 }
-
----
-
-DELETE https://logging.googleapis.com/v2/folders/${folderID}/locations/global/buckets/_Default?%24alt=json%3Benum-encoding%3Dint
-Content-Type: application/json
-
-200 OK
-Content-Type: application/json; charset=UTF-8
-Server: ESF
-Vary: Origin
-Vary: X-Origin
-Vary: Referer
-X-Content-Type-Options: nosniff
-X-Frame-Options: SAMEORIGIN
-X-Xss-Protection: 0
-
-{}
 
 ---
 
