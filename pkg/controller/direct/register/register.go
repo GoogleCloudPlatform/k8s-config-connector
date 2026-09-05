@@ -84,6 +84,7 @@ import (
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/developerconnect"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/devicestreaming/session"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/dialogflow/generator"
+	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/dialogflow/knowledgebase"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/dialogflow/siptrunk"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/discoveryengine"
 	_ "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/dlp"
