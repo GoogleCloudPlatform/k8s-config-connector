@@ -390,6 +390,10 @@ func compareGroupedLogs(t *testing.T, realGrouped, mockGrouped pathMethodEvents)
 
 var statusRegex = regexp.MustCompile(`^\d{3} `)
 
+func isStatusLine(line string) bool {
+	return statusRegex.MatchString(line) || line == "OK" || strings.HasPrefix(line, "error:")
+}
+
 func parseLog(t *testing.T, content string) []httpEvent {
 	var events []httpEvent
 	rawEvents := strings.Split(content, "\n---\n")
@@ -420,7 +424,7 @@ func parseLog(t *testing.T, content string) []httpEvent {
 		}
 
 		var reqBodyLines []string
-		for idx < len(lines) && !statusRegex.MatchString(lines[idx]) {
+		for idx < len(lines) && !isStatusLine(lines[idx]) {
 			reqBodyLines = append(reqBodyLines, lines[idx])
 			idx++
 		}
@@ -465,6 +469,7 @@ func cleanURL(u string) string {
 		u = u[slashIdx:]
 	}
 	u = regexp.MustCompile(`/instanceGroupManagers/gke-.*-grp`).ReplaceAllString(u, "/instanceGroupManagers/gke-containercluster-normalized-grp")
+	u = regexp.MustCompile(`/locations/us-[a-z0-9-]+/operations/`).ReplaceAllString(u, "/locations/us-east1-b/operations/")
 	return u
 }
 
@@ -477,6 +482,11 @@ func compareJSON(t *testing.T, context, realJSON, mockJSON string) {
 	uuidRegex := regexp.MustCompile(`[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}`)
 	realJSON = uuidRegex.ReplaceAllString(realJSON, "00000000-0000-0000-0000-000000000001")
 	mockJSON = uuidRegex.ReplaceAllString(mockJSON, "00000000-0000-0000-0000-000000000001")
+
+	// Normalize bigtable operation location zones
+	reBigtableLocation := regexp.MustCompile(`/locations/us-[a-z0-9-]+/operations/`)
+	realJSON = reBigtableLocation.ReplaceAllString(realJSON, "/locations/us-east1-b/operations/")
+	mockJSON = reBigtableLocation.ReplaceAllString(mockJSON, "/locations/us-east1-b/operations/")
 
 	// Normalize aiplatform v1beta1 to v1 to align real and mock logs
 	realJSON = strings.ReplaceAll(realJSON, "aiplatform.v1beta1", "aiplatform.v1")
@@ -546,6 +556,15 @@ func normalizeRepresentation(obj interface{}) interface{} {
 	switch v := obj.(type) {
 	case map[string]interface{}:
 		delete(v, "policyProfile")
+		if cfs, ok := v["columnFamilies"].(map[string]interface{}); ok {
+			for _, cfRaw := range cfs {
+				if cf, ok := cfRaw.(map[string]interface{}); ok {
+					if gcRule, ok := cf["gcRule"].(map[string]interface{}); ok && len(gcRule) == 0 {
+						delete(cf, "gcRule")
+					}
+				}
+			}
+		}
 		delete(v, "done")
 		delete(v, "requestedCancellation")
 		delete(v, "endTime")
@@ -560,6 +579,9 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		delete(v, "source")
 		delete(v, "marketplaceAgentVisibility")
 		delete(v, "observabilityConfig")
+		if _, ok := v["metadata"]; ok {
+			delete(v, "response")
+		}
 		// Normalize empty LRO response payloads (e.g., from mock Delete operations returning Empty, but real returns nothing)
 		if resp, ok := v["response"].(map[string]interface{}); ok {
 			if len(resp) == 0 || (len(resp) == 1 && resp["@type"] == "type.googleapis.com/google.protobuf.Empty") {

@@ -10,6 +10,52 @@ OK
 
 ---
 
+GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/GetAppProfile
+
+{
+  "name": "projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId} not found
+
+{}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/CreateAppProfile
+
+{
+  "appProfile": {
+    "description": "Initial description.",
+    "singleClusterRouting": {
+      "allowTransactionalWrites": true,
+      "clusterId": "cluster1-${uniqueId}"
+    },
+    "standardIsolation": {
+      "priority": "PRIORITY_MEDIUM"
+    }
+  },
+  "appProfileId": "bigtableappprofile-${uniqueId}",
+  "ignoreWarnings": true,
+  "parent": "projects/${projectId}/instances/profiledep${uniqueId}"
+}
+
+OK
+
+{
+  "description": "Initial description.",
+  "name": "projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}",
+  "singleClusterRouting": {
+    "allowTransactionalWrites": true,
+    "clusterId": "cluster1-${uniqueId}"
+  },
+  "standardIsolation": {
+    "priority": "PRIORITY_MEDIUM"
+  }
+}
+
+---
+
 GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/CreateInstance
 
 {
@@ -59,10 +105,12 @@ OK
       },
       "instance": {
         "displayName": "BigtableSample",
+        "edition": "ENTERPRISE",
         "labels": {
           "cnrm-test": "true",
           "managed-by-cnrm": "true"
         },
+        "name": "projects/${projectId}/instances/profiledep${uniqueId}",
         "type": "PRODUCTION"
       },
       "instanceId": "profiledep${uniqueId}",
@@ -70,7 +118,7 @@ OK
     },
     "requestTime": "2024-04-01T12:34:56.123456Z"
   },
-  "name": "operations/projects/${projectId}/instances/profiledep${uniqueId}/locations/us-central1-a/operations/${operationID}"
+  "name": "operations/projects/${projectId}/instances/profiledep${uniqueId}/locations/us-east1-b/operations/${operationID}"
 }
 
 ---
@@ -78,7 +126,7 @@ OK
 GRPC /google.longrunning.Operations/GetOperation
 
 {
-  "name": "operations/projects/${projectId}/instances/profiledep${uniqueId}/locations/us-central1-a/operations/${operationID}"
+  "name": "operations/projects/${projectId}/instances/profiledep${uniqueId}/locations/us-east1-b/operations/${operationID}"
 }
 
 OK
@@ -103,10 +151,12 @@ OK
       },
       "instance": {
         "displayName": "BigtableSample",
+        "edition": "ENTERPRISE",
         "labels": {
           "cnrm-test": "true",
           "managed-by-cnrm": "true"
         },
+        "name": "projects/${projectId}/instances/profiledep${uniqueId}",
         "type": "PRODUCTION"
       },
       "instanceId": "profiledep${uniqueId}",
@@ -114,10 +164,11 @@ OK
     },
     "requestTime": "2024-04-01T12:34:56.123456Z"
   },
-  "name": "operations/projects/${projectId}/instances/profiledep${uniqueId}/locations/us-central1-a/operations/${operationID}",
+  "name": "operations/projects/${projectId}/instances/profiledep${uniqueId}/locations/us-east1-b/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.Instance",
     "displayName": "BigtableSample",
+    "edition": "ENTERPRISE",
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
@@ -143,6 +194,7 @@ OK
     {
       "createTime": "2024-04-01T12:34:56.123456Z",
       "displayName": "BigtableSample",
+      "edition": "ENTERPRISE",
       "labels": {
         "cnrm-test": "true",
         "managed-by-cnrm": "true"
@@ -198,6 +250,7 @@ OK
     {
       "createTime": "2024-04-01T12:34:56.123456Z",
       "displayName": "BigtableSample",
+      "edition": "ENTERPRISE",
       "labels": {
         "cnrm-test": "true",
         "managed-by-cnrm": "true"
@@ -236,52 +289,6 @@ OK
       "state": "READY"
     }
   ]
-}
-
----
-
-GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/GetAppProfile
-
-{
-  "name": "projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}"
-}
-
-error: rpc error: code = NotFound desc = projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId} not found
-
-{}
-
----
-
-GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/CreateAppProfile
-
-{
-  "appProfile": {
-    "description": "Initial description.",
-    "singleClusterRouting": {
-      "allowTransactionalWrites": true,
-      "clusterId": "cluster1-${uniqueId}"
-    },
-    "standardIsolation": {
-      "priority": "PRIORITY_MEDIUM"
-    }
-  },
-  "appProfileId": "bigtableappprofile-${uniqueId}",
-  "ignoreWarnings": true,
-  "parent": "projects/${projectId}/instances/profiledep${uniqueId}"
-}
-
-OK
-
-{
-  "description": "Initial description.",
-  "name": "projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}",
-  "singleClusterRouting": {
-    "allowTransactionalWrites": true,
-    "clusterId": "cluster1-${uniqueId}"
-  },
-  "standardIsolation": {
-    "priority": "PRIORITY_MEDIUM"
-  }
 }
 
 ---
@@ -335,7 +342,7 @@ OK
   "metadata": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.UpdateAppProfileMetadata"
   },
-  "name": "operations/projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}/locations/us-central1-a/operations/${operationID}",
+  "name": "operations/projects/${projectId}/instances/profiledep${uniqueId}/appProfiles/bigtableappprofile-${uniqueId}/locations/us-east1-b/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.AppProfile",
     "description": "Updated description.",
@@ -404,6 +411,7 @@ OK
     {
       "createTime": "2024-04-01T12:34:56.123456Z",
       "displayName": "BigtableSample",
+      "edition": "ENTERPRISE",
       "labels": {
         "cnrm-test": "true",
         "managed-by-cnrm": "true"

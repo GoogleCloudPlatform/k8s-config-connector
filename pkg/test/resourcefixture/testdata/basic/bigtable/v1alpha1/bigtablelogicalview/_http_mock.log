@@ -10,6 +10,47 @@ OK
 
 ---
 
+GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/GetLogicalView
+
+{
+  "name": "projects/${projectId}/instances/lvdep${uniqueId}/logicalViews/lv-${uniqueId}"
+}
+
+error: rpc error: code = NotFound desc = projects/${projectId}/instances/lvdep${uniqueId}/logicalViews/lv-${uniqueId} not found
+
+{}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/CreateLogicalView
+
+{
+  "logicalView": {
+    "deletionProtection": true,
+    "query": "SELECT 1 AS value"
+  },
+  "logicalViewId": "lv-${uniqueId}",
+  "parent": "projects/${projectId}/instances/lvdep${uniqueId}"
+}
+
+OK
+
+{
+  "done": true,
+  "metadata": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.CreateLogicalViewMetadata"
+  },
+  "name": "operations/projects/${projectId}/instances/lvdep${uniqueId}/logicalViews/lv-${uniqueId}/locations/us-east1-b/operations/${operationID}",
+  "response": {
+    "@type": "type.googleapis.com/google.bigtable.admin.v2.LogicalView",
+    "deletionProtection": true,
+    "name": "projects/${projectId}/instances/lvdep${uniqueId}/logicalViews/lv-${uniqueId}",
+    "query": "SELECT 1 AS value"
+  }
+}
+
+---
+
 GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/CreateInstance
 
 {
@@ -48,10 +89,12 @@ OK
       },
       "instance": {
         "displayName": "BigtableSampleLV",
+        "edition": "ENTERPRISE",
         "labels": {
           "cnrm-test": "true",
           "managed-by-cnrm": "true"
         },
+        "name": "projects/${projectId}/instances/lvdep${uniqueId}",
         "type": "PRODUCTION"
       },
       "instanceId": "lvdep${uniqueId}",
@@ -59,7 +102,7 @@ OK
     },
     "requestTime": "2024-04-01T12:34:56.123456Z"
   },
-  "name": "operations/projects/${projectId}/instances/lvdep${uniqueId}/locations/us-central1-a/operations/${operationID}"
+  "name": "operations/projects/${projectId}/instances/lvdep${uniqueId}/locations/us-east1-b/operations/${operationID}"
 }
 
 ---
@@ -67,7 +110,7 @@ OK
 GRPC /google.longrunning.Operations/GetOperation
 
 {
-  "name": "operations/projects/${projectId}/instances/lvdep${uniqueId}/locations/us-central1-a/operations/${operationID}"
+  "name": "operations/projects/${projectId}/instances/lvdep${uniqueId}/locations/us-east1-b/operations/${operationID}"
 }
 
 OK
@@ -87,10 +130,12 @@ OK
       },
       "instance": {
         "displayName": "BigtableSampleLV",
+        "edition": "ENTERPRISE",
         "labels": {
           "cnrm-test": "true",
           "managed-by-cnrm": "true"
         },
+        "name": "projects/${projectId}/instances/lvdep${uniqueId}",
         "type": "PRODUCTION"
       },
       "instanceId": "lvdep${uniqueId}",
@@ -98,10 +143,11 @@ OK
     },
     "requestTime": "2024-04-01T12:34:56.123456Z"
   },
-  "name": "operations/projects/${projectId}/instances/lvdep${uniqueId}/locations/us-central1-a/operations/${operationID}",
+  "name": "operations/projects/${projectId}/instances/lvdep${uniqueId}/locations/us-east1-b/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.Instance",
     "displayName": "BigtableSampleLV",
+    "edition": "ENTERPRISE",
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
@@ -127,6 +173,7 @@ OK
     {
       "createTime": "2024-04-01T12:34:56.123456Z",
       "displayName": "BigtableSampleLV",
+      "edition": "ENTERPRISE",
       "labels": {
         "cnrm-test": "true",
         "managed-by-cnrm": "true"
@@ -158,95 +205,6 @@ OK
       "state": "READY"
     }
   ]
-}
-
----
-
-GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/ListInstances
-
-{
-  "parent": "projects/${projectId}"
-}
-
-OK
-
-{
-  "instances": [
-    {
-      "createTime": "2024-04-01T12:34:56.123456Z",
-      "displayName": "BigtableSampleLV",
-      "labels": {
-        "cnrm-test": "true",
-        "managed-by-cnrm": "true"
-      },
-      "name": "projects/${projectId}/instances/lvdep${uniqueId}",
-      "state": "READY",
-      "type": "PRODUCTION"
-    }
-  ]
-}
-
----
-
-GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/ListClusters
-
-{
-  "parent": "projects/${projectId}/instances/lvdep${uniqueId}"
-}
-
-OK
-
-{
-  "clusters": [
-    {
-      "defaultStorageType": "SSD",
-      "location": "projects/${projectId}/locations/us-central1-a",
-      "name": "projects/${projectId}/instances/lvdep${uniqueId}/clusters/cluster1-${uniqueId}",
-      "serveNodes": 3,
-      "state": "READY"
-    }
-  ]
-}
-
----
-
-GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/GetLogicalView
-
-{
-  "name": "projects/${projectId}/instances/lvdep${uniqueId}/logicalViews/lv-${uniqueId}"
-}
-
-error: rpc error: code = NotFound desc = projects/${projectId}/instances/lvdep${uniqueId}/logicalViews/lv-${uniqueId} not found
-
-{}
-
----
-
-GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/CreateLogicalView
-
-{
-  "logicalView": {
-    "deletionProtection": true,
-    "query": "SELECT 1 AS value"
-  },
-  "logicalViewId": "lv-${uniqueId}",
-  "parent": "projects/${projectId}/instances/lvdep${uniqueId}"
-}
-
-OK
-
-{
-  "done": true,
-  "metadata": {
-    "@type": "type.googleapis.com/google.bigtable.admin.v2.CreateLogicalViewMetadata"
-  },
-  "name": "operations/projects/${projectId}/instances/lvdep${uniqueId}/logicalViews/lv-${uniqueId}/locations/us-central1-a/operations/${operationID}",
-  "response": {
-    "@type": "type.googleapis.com/google.bigtable.admin.v2.LogicalView",
-    "deletionProtection": true,
-    "name": "projects/${projectId}/instances/lvdep${uniqueId}/logicalViews/lv-${uniqueId}",
-    "query": "SELECT 1 AS value"
-  }
 }
 
 ---
@@ -285,13 +243,62 @@ OK
   "metadata": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.UpdateLogicalViewMetadata"
   },
-  "name": "operations/projects/${projectId}/instances/lvdep${uniqueId}/logicalViews/lv-${uniqueId}/locations/us-central1-a/operations/${operationID}",
+  "name": "operations/projects/${projectId}/instances/lvdep${uniqueId}/logicalViews/lv-${uniqueId}/locations/us-east1-b/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.LogicalView",
     "deletionProtection": true,
     "name": "projects/${projectId}/instances/lvdep${uniqueId}/logicalViews/lv-${uniqueId}",
     "query": "SELECT 1 AS value"
   }
+}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/ListInstances
+
+{
+  "parent": "projects/${projectId}"
+}
+
+OK
+
+{
+  "instances": [
+    {
+      "createTime": "2024-04-01T12:34:56.123456Z",
+      "displayName": "BigtableSampleLV",
+      "edition": "ENTERPRISE",
+      "labels": {
+        "cnrm-test": "true",
+        "managed-by-cnrm": "true"
+      },
+      "name": "projects/${projectId}/instances/lvdep${uniqueId}",
+      "state": "READY",
+      "type": "PRODUCTION"
+    }
+  ]
+}
+
+---
+
+GRPC /google.bigtable.admin.v2.BigtableInstanceAdmin/ListClusters
+
+{
+  "parent": "projects/${projectId}/instances/lvdep${uniqueId}"
+}
+
+OK
+
+{
+  "clusters": [
+    {
+      "defaultStorageType": "SSD",
+      "location": "projects/${projectId}/locations/us-central1-a",
+      "name": "projects/${projectId}/instances/lvdep${uniqueId}/clusters/cluster1-${uniqueId}",
+      "serveNodes": 3,
+      "state": "READY"
+    }
+  ]
 }
 
 ---
@@ -329,7 +336,7 @@ OK
   "metadata": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.UpdateLogicalViewMetadata"
   },
-  "name": "operations/projects/${projectId}/instances/lvdep${uniqueId}/logicalViews/lv-${uniqueId}/locations/us-central1-a/operations/${operationID}",
+  "name": "operations/projects/${projectId}/instances/lvdep${uniqueId}/logicalViews/lv-${uniqueId}/locations/us-east1-b/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.LogicalView",
     "name": "projects/${projectId}/instances/lvdep${uniqueId}/logicalViews/lv-${uniqueId}",
@@ -394,6 +401,7 @@ OK
     {
       "createTime": "2024-04-01T12:34:56.123456Z",
       "displayName": "BigtableSampleLV",
+      "edition": "ENTERPRISE",
       "labels": {
         "cnrm-test": "true",
         "managed-by-cnrm": "true"

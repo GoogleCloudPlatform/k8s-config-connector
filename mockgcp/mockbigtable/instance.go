@@ -103,6 +103,10 @@ func (s *instanceAdminServer) CreateInstance(ctx context.Context, req *pb.Create
 	}
 
 	originalRequest := proto.CloneOf(req)
+	if originalRequest.Instance == nil {
+		originalRequest.Instance = &pb.Instance{}
+	}
+	originalRequest.Instance.Name = name.String()
 
 	now := time.Now()
 	instanceFQN := name.String()
@@ -114,6 +118,9 @@ func (s *instanceAdminServer) CreateInstance(ctx context.Context, req *pb.Create
 	obj.CreateTime = timestamppb.New(now)
 
 	if err := s.populateDefaultsForInstance(obj); err != nil {
+		return nil, err
+	}
+	if err := s.populateDefaultsForInstance(originalRequest.Instance); err != nil {
 		return nil, err
 	}
 
@@ -319,6 +326,9 @@ func (s *MockService) parseInstanceName(name string) (*instanceName, error) {
 func (s *MockService) populateDefaultsForInstance(obj *pb.Instance) error {
 	if obj.Type == pb.Instance_TYPE_UNSPECIFIED {
 		obj.Type = pb.Instance_PRODUCTION
+	}
+	if obj.Edition == pb.Instance_EDITION_UNSPECIFIED {
+		obj.Edition = pb.Instance_ENTERPRISE
 	}
 
 	return nil

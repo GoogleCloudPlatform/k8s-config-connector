@@ -70,10 +70,12 @@ OK
       },
       "instance": {
         "displayName": "BigtableSample",
+        "edition": "ENTERPRISE",
         "labels": {
           "cnrm-test": "true",
           "managed-by-cnrm": "true"
         },
+        "name": "projects/${projectId}/instances/btinstance-${uniqueId}",
         "type": "PRODUCTION"
       },
       "instanceId": "btinstance-${uniqueId}",
@@ -81,7 +83,7 @@ OK
     },
     "requestTime": "2024-04-01T12:34:56.123456Z"
   },
-  "name": "operations/projects/${projectId}/instances/btinstance-${uniqueId}/locations/us-central1-a/operations/${operationID}"
+  "name": "operations/projects/${projectId}/instances/btinstance-${uniqueId}/locations/us-east1-b/operations/${operationID}"
 }
 
 ---
@@ -89,7 +91,7 @@ OK
 GRPC /google.longrunning.Operations/GetOperation
 
 {
-  "name": "operations/projects/${projectId}/instances/btinstance-${uniqueId}/locations/us-central1-a/operations/${operationID}"
+  "name": "operations/projects/${projectId}/instances/btinstance-${uniqueId}/locations/us-east1-b/operations/${operationID}"
 }
 
 OK
@@ -119,10 +121,12 @@ OK
       },
       "instance": {
         "displayName": "BigtableSample",
+        "edition": "ENTERPRISE",
         "labels": {
           "cnrm-test": "true",
           "managed-by-cnrm": "true"
         },
+        "name": "projects/${projectId}/instances/btinstance-${uniqueId}",
         "type": "PRODUCTION"
       },
       "instanceId": "btinstance-${uniqueId}",
@@ -130,10 +134,11 @@ OK
     },
     "requestTime": "2024-04-01T12:34:56.123456Z"
   },
-  "name": "operations/projects/${projectId}/instances/btinstance-${uniqueId}/locations/us-central1-a/operations/${operationID}",
+  "name": "operations/projects/${projectId}/instances/btinstance-${uniqueId}/locations/us-east1-b/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.Instance",
     "displayName": "BigtableSample",
+    "edition": "ENTERPRISE",
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
@@ -159,6 +164,7 @@ OK
     {
       "createTime": "2024-04-01T12:34:56.123456Z",
       "displayName": "BigtableSample",
+      "edition": "ENTERPRISE",
       "labels": {
         "cnrm-test": "true",
         "managed-by-cnrm": "true"
@@ -221,6 +227,7 @@ OK
     {
       "createTime": "2024-04-01T12:34:56.123456Z",
       "displayName": "BigtableSample",
+      "edition": "ENTERPRISE",
       "labels": {
         "cnrm-test": "true",
         "managed-by-cnrm": "true"
@@ -283,6 +290,7 @@ OK
     {
       "createTime": "2024-04-01T12:34:56.123456Z",
       "displayName": "BigtableSample",
+      "edition": "ENTERPRISE",
       "labels": {
         "cnrm-test": "true",
         "managed-by-cnrm": "true"
@@ -394,7 +402,7 @@ OK
     },
     "requestTime": "2024-04-01T12:34:56.123456Z"
   },
-  "name": "operations/projects/${projectId}/instances/btinstance-${uniqueId}/locations/us-central1-a/operations/${operationID}"
+  "name": "operations/projects/${projectId}/instances/btinstance-${uniqueId}/locations/us-east1-b/operations/${operationID}"
 }
 
 ---
@@ -402,7 +410,7 @@ OK
 GRPC /google.longrunning.Operations/GetOperation
 
 {
-  "name": "operations/projects/${projectId}/instances/btinstance-${uniqueId}/locations/us-central1-a/operations/${operationID}"
+  "name": "operations/projects/${projectId}/instances/btinstance-${uniqueId}/locations/us-east1-b/operations/${operationID}"
 }
 
 OK
@@ -422,11 +430,12 @@ OK
     },
     "requestTime": "2024-04-01T12:34:56.123456Z"
   },
-  "name": "operations/projects/${projectId}/instances/btinstance-${uniqueId}/locations/us-central1-a/operations/${operationID}",
+  "name": "operations/projects/${projectId}/instances/btinstance-${uniqueId}/locations/us-east1-b/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.Instance",
     "createTime": "2024-04-01T12:34:56.123456Z",
     "displayName": "BigtableSample",
+    "edition": "ENTERPRISE",
     "labels": {
       "cnrm-test": "true",
       "managed-by-cnrm": "true"
@@ -463,7 +472,7 @@ OK
     },
     "requestTime": "2024-04-01T12:34:56.123456Z"
   },
-  "name": "operations/projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-1-${uniqueId}/locations/us-central1-a/operations/${operationID}"
+  "name": "operations/projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-1-${uniqueId}/locations/us-east1-b/operations/${operationID}"
 }
 
 ---
@@ -471,7 +480,7 @@ OK
 GRPC /google.longrunning.Operations/GetOperation
 
 {
-  "name": "operations/projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-1-${uniqueId}/locations/us-central1-a/operations/${operationID}"
+  "name": "operations/projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-1-${uniqueId}/locations/us-east1-b/operations/${operationID}"
 }
 
 OK
@@ -490,7 +499,7 @@ OK
     },
     "requestTime": "2024-04-01T12:34:56.123456Z"
   },
-  "name": "operations/projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-1-${uniqueId}/locations/us-central1-a/operations/${operationID}",
+  "name": "operations/projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-1-${uniqueId}/locations/us-east1-b/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.Cluster",
     "defaultStorageType": "SSD",
@@ -527,7 +536,7 @@ OK
     },
     "requestTime": "2024-04-01T12:34:56.123456Z"
   },
-  "name": "operations/projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-2-${uniqueId}/locations/us-west1-b/operations/${operationID}"
+  "name": "operations/projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-2-${uniqueId}/locations/us-east1-b/operations/${operationID}"
 }
 
 ---
@@ -535,7 +544,7 @@ OK
 GRPC /google.longrunning.Operations/GetOperation
 
 {
-  "name": "operations/projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-2-${uniqueId}/locations/us-west1-b/operations/${operationID}"
+  "name": "operations/projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-2-${uniqueId}/locations/us-east1-b/operations/${operationID}"
 }
 
 OK
@@ -554,7 +563,7 @@ OK
     },
     "requestTime": "2024-04-01T12:34:56.123456Z"
   },
-  "name": "operations/projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-2-${uniqueId}/locations/us-west1-b/operations/${operationID}",
+  "name": "operations/projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-2-${uniqueId}/locations/us-east1-b/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.Cluster",
     "defaultStorageType": "SSD",
@@ -591,7 +600,7 @@ OK
     },
     "requestTime": "2024-04-01T12:34:56.123456Z"
   },
-  "name": "operations/projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-3-${uniqueId}/locations/us-east1-d/operations/${operationID}"
+  "name": "operations/projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-3-${uniqueId}/locations/us-east1-b/operations/${operationID}"
 }
 
 ---
@@ -599,7 +608,7 @@ OK
 GRPC /google.longrunning.Operations/GetOperation
 
 {
-  "name": "operations/projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-3-${uniqueId}/locations/us-east1-d/operations/${operationID}"
+  "name": "operations/projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-3-${uniqueId}/locations/us-east1-b/operations/${operationID}"
 }
 
 OK
@@ -618,7 +627,7 @@ OK
     },
     "requestTime": "2024-04-01T12:34:56.123456Z"
   },
-  "name": "operations/projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-3-${uniqueId}/locations/us-east1-d/operations/${operationID}",
+  "name": "operations/projects/${projectId}/instances/btinstance-${uniqueId}/clusters/cluster-3-${uniqueId}/locations/us-east1-b/operations/${operationID}",
   "response": {
     "@type": "type.googleapis.com/google.bigtable.admin.v2.Cluster",
     "defaultStorageType": "SSD",
@@ -644,6 +653,7 @@ OK
     {
       "createTime": "2024-04-01T12:34:56.123456Z",
       "displayName": "BigtableSample",
+      "edition": "ENTERPRISE",
       "labels": {
         "cnrm-test": "true",
         "managed-by-cnrm": "true"
@@ -706,6 +716,7 @@ OK
     {
       "createTime": "2024-04-01T12:34:56.123456Z",
       "displayName": "BigtableSample",
+      "edition": "ENTERPRISE",
       "labels": {
         "cnrm-test": "true",
         "managed-by-cnrm": "true"
