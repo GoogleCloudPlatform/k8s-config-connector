@@ -966,6 +966,7 @@ func MaybeSkip(t *testing.T, testKey string, resources []*unstructured.Unstructu
 			case schema.GroupKind{Group: "apigateway.cnrm.cloud.google.com", Kind: "APIGatewayAPI"}:
 			case schema.GroupKind{Group: "apihub.cnrm.cloud.google.com", Kind: "APIHubAPI"}:
 			case schema.GroupKind{Group: "apihub.cnrm.cloud.google.com", Kind: "APIHubAttribute"}:
+			case schema.GroupKind{Group: "apihub.cnrm.cloud.google.com", Kind: "APIHubDependency"}:
 			case schema.GroupKind{Group: "apihub.cnrm.cloud.google.com", Kind: "APIHubDeployment"}:
 			case schema.GroupKind{Group: "apihub.cnrm.cloud.google.com", Kind: "APIHubExternalAPI"}:
 
