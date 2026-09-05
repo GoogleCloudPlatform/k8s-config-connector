@@ -12,6 +12,10 @@ type APIArgs struct {
 	ProtoMessageName string
 	// ProtoMessageFullName is the fully qualified proto message name, e.g. google.cloud.v1.Foo
 	ProtoMessageFullName string
+
+	ParentFields        string
+	SpecFields          string
+	ObservedStateFields string
 }
 
 const TypesTemplate = `
@@ -44,6 +48,9 @@ var {{ .Kind }}GVK = GroupVersion.WithKind("{{ .Kind }}")
 // +kcc:spec:proto={{ .KindProtoTag }}
 {{- end }}
 type {{ .Kind }}Spec struct {
+{{- if .ParentFields }}
+{{ .ParentFields }}
+{{- else }}
 	// The project that this resource belongs to.
 	ProjectRef *refsv1beta1.ProjectRef ` + "`" + `json:"projectRef"` + "`" + `
 
@@ -52,6 +59,10 @@ type {{ .Kind }}Spec struct {
 
 	// The {{ .Kind }} name. If not given, the metadata.name will be used.
 	ResourceID *string ` + "`" + `json:"resourceID,omitempty"` + "`" + `
+{{- end }}
+{{- if .SpecFields }}
+{{ .SpecFields }}
+{{- end }}
 }
 
 // {{ .Kind }}Status defines the config connector machine state of {{ .Kind }}
@@ -75,6 +86,9 @@ type {{ .Kind }}Status struct {
 // +kcc:observedstate:proto={{ .KindProtoTag }}
 {{- end }}
 type {{ .Kind }}ObservedState struct {
+{{- if .ObservedStateFields }}
+{{ .ObservedStateFields }}
+{{- end }}
 }
 
 // +genclient

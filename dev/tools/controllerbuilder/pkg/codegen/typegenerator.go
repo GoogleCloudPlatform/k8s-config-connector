@@ -41,6 +41,7 @@ type TypeGenerator struct {
 	visitedMessages         []protoreflect.MessageDescriptor
 	outputMessages          []*OutputMessageDetails
 	observedStateMessages   sets.String
+	rootMessageFullNames    sets.String
 	generatedFileAnnotation *codegenannotations.FileAnnotation
 	includeSkippedOutput    bool
 }
@@ -55,6 +56,7 @@ func NewTypeGenerator(goPackage string, outputBaseDir string, api *protoapi.Prot
 		goPackage:             goPackage,
 		api:                   api,
 		observedStateMessages: sets.NewString(),
+		rootMessageFullNames:  sets.NewString(),
 	}
 	g.generatorBase.init(outputBaseDir)
 	return g
@@ -73,6 +75,7 @@ func (g *TypeGenerator) WithIncludeSkippedOutput(includeSkippedOutput bool) *Typ
 }
 
 func (g *TypeGenerator) VisitProto(resourceProtoFullName string) error {
+	g.rootMessageFullNames.Insert(resourceProtoFullName)
 
 	descriptor, err := g.api.Files().FindDescriptorByName(protoreflect.FullName(resourceProtoFullName))
 	if err != nil {
@@ -219,6 +222,10 @@ func (g *TypeGenerator) WriteVisitedMessages() error {
 		if msg.IsMapEntry() {
 			continue
 		}
+		if g.rootMessageFullNames.Has(string(msg.FullName())) {
+			// Skip root resource messages in types.generated.go as they are generated into <kind>_types.go
+			continue
+		}
 
 		k := generatedFileKey{
 			GoPackage: g.goPackage,
@@ -281,6 +288,10 @@ func (g *TypeGenerator) WriteOutputMessages() error {
 		if msg.IsMapEntry() {
 			continue
 		}
+		if g.rootMessageFullNames.Has(string(msg.FullName())) {
+			// Skip root resource messages in types.generated.go as they are generated into <kind>_types.go
+			continue
+		}
 
 		k := generatedFileKey{
 			GoPackage: g.goPackage,
@@ -334,6 +345,117 @@ func (g *TypeGenerator) WriteOutputMessages() error {
 		WriteObservedStateMessage(&out.body, msgDetails, g.observedStateMessages)
 	}
 	return errors.Join(g.errors...)
+}
+
+func RenderParentFields(msg protoreflect.MessageDescriptor, kind string) string {
+	var sb strings.Builder
+	var res *annotations.ResourceDescriptor
+	if msg != nil && msg.Options() != nil {
+		if ext, ok := proto.GetExtension(msg.Options(), annotations.E_Resource).(*annotations.ResourceDescriptor); ok && ext != nil {
+			res = ext
+		}
+	}
+
+	hasFolder := false
+	hasProject := false
+	hasOrg := false
+	hasLocation := false
+	isSingleton := false
+
+	if res != nil && len(res.GetPattern()) > 0 {
+		pattern := res.GetPattern()[0]
+		if strings.Contains(pattern, "folders/{folder}") {
+			hasFolder = true
+		}
+		if strings.Contains(pattern, "projects/{project}") {
+			hasProject = true
+		}
+		if strings.Contains(pattern, "organizations/{organization}") {
+			hasOrg = true
+		}
+		if strings.Contains(pattern, "locations/{location}") || strings.Contains(pattern, "regions/{region}") || strings.Contains(pattern, "zones/{zone}") {
+			hasLocation = true
+		}
+		lastSegment := pattern[strings.LastIndex(pattern, "/")+1:]
+		if !strings.HasPrefix(lastSegment, "{") {
+			isSingleton = true
+		}
+	} else {
+		// Fallback default
+		hasProject = true
+		hasLocation = true
+	}
+
+	if hasFolder {
+		sb.WriteString("\t// The folder that this resource belongs to.\n")
+		sb.WriteString("\t// +optional\n")
+		sb.WriteString("\tFolderRef *refsv1beta1.FolderRef `json:\"folderRef,omitempty\"`\n\n")
+	}
+	if hasProject {
+		sb.WriteString("\t// The project that this resource belongs to.\n")
+		sb.WriteString("\t// +optional\n")
+		sb.WriteString("\tProjectRef *refsv1beta1.ProjectRef `json:\"projectRef,omitempty\"`\n\n")
+	}
+	if hasOrg {
+		sb.WriteString("\t// The organization that this resource belongs to.\n")
+		sb.WriteString("\t// +optional\n")
+		sb.WriteString("\tOrganizationRef *refsv1beta1.OrganizationRef `json:\"organizationRef,omitempty\"`\n\n")
+	}
+	if hasLocation {
+		sb.WriteString("\t// The location of this resource.\n")
+		sb.WriteString("\tLocation string `json:\"location\"`\n\n")
+	}
+	if !isSingleton {
+		sb.WriteString(fmt.Sprintf("\t// The %s name. If not given, the metadata.name will be used.\n", kind))
+		sb.WriteString("\tResourceID *string `json:\"resourceID,omitempty\"`\n")
+	}
+	return sb.String()
+}
+
+func (g *TypeGenerator) RenderSpecFields(msg protoreflect.MessageDescriptor) (string, error) {
+	if msg == nil {
+		return "", nil
+	}
+	var buf bytes.Buffer
+	fieldIndex := 0
+	for i := 0; i < msg.Fields().Len(); i++ {
+		field := msg.Fields().Get(i)
+		if field.Name() == "name" {
+			continue // Handled by Parent/ResourceID
+		}
+		if IsFieldBehavior(field, annotations.FieldBehavior_OUTPUT_ONLY) {
+			continue
+		}
+		WriteField(&buf, field, msg, fieldIndex, false)
+		fieldIndex++
+	}
+	return buf.String(), nil
+}
+
+func (g *TypeGenerator) RenderObservedStateFields(msg protoreflect.MessageDescriptor) (string, error) {
+	if msg == nil {
+		return "", nil
+	}
+	var buf bytes.Buffer
+	fieldIndex := 0
+	for i := 0; i < msg.Fields().Len(); i++ {
+		field := msg.Fields().Get(i)
+		if field.Name() == "name" {
+			continue // Handled by status.ExternalRef
+		}
+		if IsFieldBehavior(field, annotations.FieldBehavior_OUTPUT_ONLY) {
+			isMessage := field.Kind() == protoreflect.MessageKind && !field.IsMap()
+			useObservedState := false
+			if isMessage {
+				if g.observedStateMessages.Has(string(field.Message().FullName())) {
+					useObservedState = true
+				}
+			}
+			WriteField(&buf, field, msg, fieldIndex, useObservedState)
+			fieldIndex++
+		}
+	}
+	return buf.String(), nil
 }
 
 func WriteMessageAsComment(out io.Writer, msg protoreflect.MessageDescriptor, reason string) {
