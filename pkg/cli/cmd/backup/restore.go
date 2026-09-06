@@ -16,6 +16,8 @@ package backup
 
 import (
 	"context"
+	"crypto/sha256"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
@@ -44,6 +46,7 @@ type restoreOptions struct {
 	cluster                  string
 	targetClusterLocation    string
 	sourceBucket             string
+	fallbackBucket           string
 	fromDir                  string
 	backupTimestamp          string
 	project                  string
@@ -56,11 +59,15 @@ type restoreOptions struct {
 	autoCreateNamespaces     bool
 	deletionPolicy           string
 	managementConflictPolicy string
+	verifyIntegrity          bool
 	dryRun                   bool
+	includeClusterBackup     bool
 }
 
 func NewRestoreCmd() *cobra.Command {
-	options := &restoreOptions{}
+	options := &restoreOptions{
+		verifyIntegrity: true,
+	}
 
 	cmd := &cobra.Command{
 		Use:   "restore",
@@ -74,6 +81,7 @@ func NewRestoreCmd() *cobra.Command {
 	cmd.Flags().StringVar(&options.cluster, "cluster", "", "Name of the cluster")
 	cmd.Flags().StringVar(&options.targetClusterLocation, "target-cluster-location", "", "Location of the target cluster")
 	cmd.Flags().StringVar(&options.sourceBucket, "source-bucket", "", "Source GCS bucket name")
+	cmd.Flags().StringVar(&options.fallbackBucket, "fallback-bucket", "", "Fallback GCS bucket name if source bucket is unreachable during outage")
 	cmd.Flags().StringVar(&options.fromDir, "from-dir", "", "Local directory containing backup files to restore from")
 	cmd.Flags().StringVar(&options.backupTimestamp, "backup-timestamp", "latest", "Backup timestamp (YYYY_MM_DD_HH_MM_SS or 'latest')")
 	cmd.Flags().StringVar(&options.project, "project", "", "GCP project ID")
@@ -86,7 +94,9 @@ func NewRestoreCmd() *cobra.Command {
 	cmd.Flags().BoolVar(&options.autoCreateNamespaces, "auto-create-namespaces", true, "Automatically create target namespaces if they do not exist")
 	cmd.Flags().StringVar(&options.deletionPolicy, "deletion-policy", "abandon", "Deletion policy annotation (abandon or delete)")
 	cmd.Flags().StringVar(&options.managementConflictPolicy, "management-conflict-policy", "none", "Management conflict policy (none, resource, or priority)")
+	cmd.Flags().BoolVar(&options.verifyIntegrity, "verify-integrity", true, "Verify SHA-256 cryptographic checksums from summary.json")
 	cmd.Flags().BoolVar(&options.dryRun, "dry-run", false, "Perform a dry-run validation")
+	cmd.Flags().BoolVar(&options.includeClusterBackup, "include-cluster-backup", false, "Restore in-cluster workloads and volumes via Backup for GKE (if recorded in summary.json)")
 
 	return cmd
 }
@@ -108,7 +118,11 @@ func runRestore(ctx context.Context, options *restoreOptions) error {
 
 	var objects []*unstructured.Unstructured
 	if options.fromDir != "" {
-		objs, err := loadObjectsFromDir(options.fromDir, clusterName, options.backupTimestamp)
+		if strings.Contains(options.fromDir, "..") {
+			return fmt.Errorf("invalid --from-dir %q: relative path traversal sequences ('..') are prohibited", options.fromDir)
+		}
+		cleanDir := filepath.Clean(options.fromDir)
+		objs, err := loadObjectsFromDir(cleanDir, clusterName, options.backupTimestamp, options.verifyIntegrity)
 		if err != nil {
 			return fmt.Errorf("loading objects from directory %s: %w", options.fromDir, err)
 		}
@@ -124,9 +138,19 @@ func runRestore(ctx context.Context, options *restoreOptions) error {
 		}
 		defer gcsClient.Close()
 
-		objs, err := loadObjectsFromGCS(ctx, gcsClient, options.sourceBucket, clusterName, options.backupTimestamp)
+		objs, err := loadObjectsFromGCS(ctx, gcsClient, options.sourceBucket, clusterName, options.backupTimestamp, options.verifyIntegrity)
 		if err != nil {
-			return fmt.Errorf("loading objects from GCS: %w", err)
+			if options.fallbackBucket != "" {
+				fmt.Printf("Notice: primary bucket gs://%s failed (%v). Failing over to replica fallback bucket gs://%s...\n", options.sourceBucket, err, options.fallbackBucket)
+				fallbackObjs, fallbackErr := loadObjectsFromGCS(ctx, gcsClient, options.fallbackBucket, clusterName, options.backupTimestamp, options.verifyIntegrity)
+				if fallbackErr != nil {
+					return fmt.Errorf("primary bucket gs://%s failed (%v) and fallback bucket gs://%s also failed: %w", options.sourceBucket, err, options.fallbackBucket, fallbackErr)
+				}
+				fmt.Printf("Successfully loaded %d resources from replica fallback bucket gs://%s.\n", len(fallbackObjs), options.fallbackBucket)
+				objs = fallbackObjs
+			} else {
+				return fmt.Errorf("loading objects from GCS: %w", err)
+			}
 		}
 		objects = objs
 	}
@@ -182,10 +206,14 @@ func runRestore(ctx context.Context, options *restoreOptions) error {
 	return nil
 }
 
-func loadObjectsFromDir(rootDir, cluster, timestamp string) ([]*unstructured.Unstructured, error) {
-	searchDir := rootDir
+func loadObjectsFromDir(rootDir, cluster, timestamp string, verifyIntegrity bool) ([]*unstructured.Unstructured, error) {
+	if strings.Contains(rootDir, "..") {
+		return nil, fmt.Errorf("invalid directory %q: directory traversal sequences prohibited", rootDir)
+	}
+
+	searchDir := filepath.Clean(rootDir)
 	// Check if rootDir contains cluster/timestamp subdirectories
-	clusterDir := filepath.Join(rootDir, cluster)
+	clusterDir := filepath.Join(searchDir, cluster)
 	if fi, err := os.Stat(clusterDir); err == nil && fi.IsDir() {
 		if timestamp == "latest" || timestamp == "" {
 			entries, err := os.ReadDir(clusterDir)
@@ -210,6 +238,28 @@ func loadObjectsFromDir(rootDir, cluster, timestamp string) ([]*unstructured.Uns
 	}
 
 	fmt.Printf("Loading backup files from directory: %s\n", searchDir)
+
+	// Attempt reading summary.json for integrity checking
+	var integrityMap map[string]string
+	summaryPath := filepath.Join(searchDir, "summary.json")
+	if summaryBytes, err := os.ReadFile(summaryPath); err == nil {
+		var sm struct {
+			Integrity     map[string]string      `json:"integrity"`
+			ClusterBackup *ClusterBackupMetadata `json:"clusterBackup"`
+		}
+		if err := json.Unmarshal(summaryBytes, &sm); err == nil {
+			if len(sm.Integrity) > 0 {
+				integrityMap = sm.Integrity
+				if verifyIntegrity {
+					fmt.Printf("Loaded cryptographic integrity manifest with %d checksums.\n", len(integrityMap))
+				}
+			}
+			if sm.ClusterBackup != nil && sm.ClusterBackup.BackupName != "" {
+				fmt.Printf("Detected correlated GKE cluster backup: %s [state: %s]\n", sm.ClusterBackup.BackupName, sm.ClusterBackup.State)
+			}
+		}
+	}
+
 	var objects []*unstructured.Unstructured
 
 	err := filepath.WalkDir(searchDir, func(path string, d fs.DirEntry, err error) error {
@@ -224,6 +274,18 @@ func loadObjectsFromDir(rootDir, cluster, timestamp string) ([]*unstructured.Uns
 		if err != nil {
 			fmt.Printf("Warning: failed to read file %s: %v\n", path, err)
 			return nil
+		}
+
+		if verifyIntegrity && len(integrityMap) > 0 {
+			relPath, relErr := filepath.Rel(searchDir, path)
+			if relErr == nil {
+				if expectedHash, exists := integrityMap[relPath]; exists {
+					actualHash := fmt.Sprintf("sha256:%x", sha256.Sum256(data))
+					if actualHash != expectedHash {
+						return fmt.Errorf("cryptographic checksum mismatch on %s: expected %s, got %s (tamper alert)", relPath, expectedHash, actualHash)
+					}
+				}
+			}
 		}
 
 		obj := &unstructured.Unstructured{}
@@ -243,17 +305,41 @@ func loadObjectsFromDir(rootDir, cluster, timestamp string) ([]*unstructured.Uns
 	return objects, nil
 }
 
-func loadObjectsFromGCS(ctx context.Context, gcsClient *storage.Client, bucket, cluster, timestamp string) ([]*unstructured.Unstructured, error) {
+func loadObjectsFromGCS(ctx context.Context, gcsClient *storage.Client, bucket, cluster, timestamp string, verifyIntegrity bool) ([]*unstructured.Unstructured, error) {
 	fmt.Printf("Loading backup from gs://%s/%s/%s/...\n", bucket, cluster, timestamp)
 
 	backupTimestamp := timestamp
 	if backupTimestamp == "latest" || backupTimestamp == "" {
 		latest, err := findLatestBackup(ctx, gcsClient, bucket, cluster)
 		if err != nil {
-			return nil, fmt.Errorf("finding latest backup: %w", err)
+			return nil, fmt.Errorf("finding latest backup in bucket %s: %w", bucket, err)
 		}
 		backupTimestamp = latest
 		fmt.Printf("Resolved 'latest' to timestamp: %s\n", backupTimestamp)
+	}
+
+	// Read summary.json for integrity checking if available
+	var integrityMap map[string]string
+	summaryName := fmt.Sprintf("%s/%s/summary.json", cluster, backupTimestamp)
+	summaryRc, err := gcsClient.Bucket(bucket).Object(summaryName).NewReader(ctx)
+	if err == nil {
+		defer summaryRc.Close()
+		summaryData, _ := io.ReadAll(summaryRc)
+		var sm struct {
+			Integrity     map[string]string      `json:"integrity"`
+			ClusterBackup *ClusterBackupMetadata `json:"clusterBackup"`
+		}
+		if err := json.Unmarshal(summaryData, &sm); err == nil {
+			if len(sm.Integrity) > 0 {
+				integrityMap = sm.Integrity
+				if verifyIntegrity {
+					fmt.Printf("Loaded cryptographic integrity manifest with %d checksums from gs://%s.\n", len(integrityMap), bucket)
+				}
+			}
+			if sm.ClusterBackup != nil && sm.ClusterBackup.BackupName != "" {
+				fmt.Printf("Detected correlated GKE cluster backup: %s [state: %s]\n", sm.ClusterBackup.BackupName, sm.ClusterBackup.State)
+			}
+		}
 	}
 
 	prefix := fmt.Sprintf("%s/%s/", cluster, backupTimestamp)
@@ -266,18 +352,29 @@ func loadObjectsFromGCS(ctx context.Context, gcsClient *storage.Client, bucket, 
 			break
 		}
 		if err != nil {
-			return nil, fmt.Errorf("iterating GCS objects: %w", err)
+			return nil, fmt.Errorf("iterating GCS objects in bucket %s: %w", bucket, err)
 		}
 
 		if !strings.HasSuffix(attrs.Name, ".yaml") {
 			continue
 		}
 
-		obj, err := loadObject(ctx, gcsClient, bucket, attrs.Name)
+		obj, rawData, err := loadObject(ctx, gcsClient, bucket, attrs.Name)
 		if err != nil {
 			fmt.Printf("Warning: failed to load %s: %v\n", attrs.Name, err)
 			continue
 		}
+
+		if verifyIntegrity && len(integrityMap) > 0 {
+			relKey := strings.TrimPrefix(attrs.Name, prefix)
+			if expectedHash, exists := integrityMap[relKey]; exists {
+				actualHash := fmt.Sprintf("sha256:%x", sha256.Sum256(rawData))
+				if actualHash != expectedHash {
+					return nil, fmt.Errorf("cryptographic checksum mismatch on %s: expected %s, got %s (tamper alert)", relKey, expectedHash, actualHash)
+				}
+			}
+		}
+
 		objects = append(objects, obj)
 	}
 
@@ -349,24 +446,24 @@ func findLatestBackup(ctx context.Context, gcsClient *storage.Client, bucket, cl
 	return timestamps[len(timestamps)-1], nil
 }
 
-func loadObject(ctx context.Context, gcsClient *storage.Client, bucket, objectName string) (*unstructured.Unstructured, error) {
+func loadObject(ctx context.Context, gcsClient *storage.Client, bucket, objectName string) (*unstructured.Unstructured, []byte, error) {
 	rc, err := gcsClient.Bucket(bucket).Object(objectName).NewReader(ctx)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 	defer rc.Close()
 
 	data, err := io.ReadAll(rc)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	obj := &unstructured.Unstructured{}
 	if err := yaml.Unmarshal(data, &obj.Object); err != nil {
-		return nil, fmt.Errorf("unmarshaling YAML: %w", err)
+		return nil, nil, fmt.Errorf("unmarshaling YAML: %w", err)
 	}
 
-	return obj, nil
+	return obj, data, nil
 }
 
 func validateResources(ctx context.Context, kubeClient *kubecli.Client, objects []*unstructured.Unstructured, skipMissingCRDs bool) ([]*unstructured.Unstructured, error) {
@@ -564,6 +661,30 @@ func applyObject(ctx context.Context, kubeClient *kubecli.Client, obj *unstructu
 		if newReg != region {
 			_ = unstructured.SetNestedField(obj.Object, newReg, "spec", "region")
 		}
+	}
+	if regions, ok, _ := unstructured.NestedStringSlice(obj.Object, "spec", "messageStoragePolicy", "allowedPersistenceRegions"); ok {
+		var newRegions []string
+		for _, r := range regions {
+			newRegions = append(newRegions, remapRegion(r))
+		}
+		_ = unstructured.SetNestedStringSlice(obj.Object, newRegions, "spec", "messageStoragePolicy", "allowedPersistenceRegions")
+	}
+	if replicas, ok, _ := unstructured.NestedSlice(obj.Object, "spec", "replication", "userManaged", "replicas"); ok {
+		for _, rep := range replicas {
+			if repMap, ok := rep.(map[string]interface{}); ok {
+				if loc, ok := repMap["location"].(string); ok {
+					repMap["location"] = remapRegion(loc)
+				}
+			}
+		}
+		_ = unstructured.SetNestedSlice(obj.Object, replicas, "spec", "replication", "userManaged", "replicas")
+	}
+	if dataLocations, ok, _ := unstructured.NestedStringSlice(obj.Object, "spec", "customPlacementConfig", "dataLocations"); ok {
+		var newLocations []string
+		for _, dl := range dataLocations {
+			newLocations = append(newLocations, remapRegion(dl))
+		}
+		_ = unstructured.SetNestedStringSlice(obj.Object, newLocations, "spec", "customPlacementConfig", "dataLocations")
 	}
 
 	obj.SetAnnotations(annotations)

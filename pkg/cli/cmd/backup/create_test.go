@@ -15,6 +15,10 @@
 package backup
 
 import (
+	"encoding/json"
+	"os"
+	"path/filepath"
+	"strings"
 	"testing"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
@@ -92,5 +96,75 @@ func TestSanitizeObject(t *testing.T) {
 	}
 	if v, ok := annotations["other-annotation"]; !ok || v != "value" {
 		t.Errorf("other-annotation should have been preserved")
+	}
+}
+
+func TestWriteSummaryWithIntegrity(t *testing.T) {
+	tempDir := t.TempDir()
+	cluster := "test-cluster"
+	timestamp := "2026_09_06_12_00_00"
+
+	stats := map[string]int{
+		"storage.cnrm.cloud.google.com/StorageBucket": 2,
+		"pubsub.cnrm.cloud.google.com/PubSubTopic":    3,
+	}
+	integrity := map[string]string{
+		"default/storagebucket/bucket-a.yaml": "sha256:abc1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcd",
+		"default/storagebucket/bucket-b.yaml": "sha256:def1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcd",
+	}
+
+	opts := &createOptions{
+		outputDir: tempDir,
+	}
+
+	clusterBackup := &ClusterBackupMetadata{
+		Provider:       "gkebackup.googleapis.com",
+		BackupPlan:     "projects/test-project/locations/us-central1/backupPlans/test-cluster-backup-plan",
+		BackupName:     "projects/test-project/locations/us-central1/backupPlans/test-cluster-backup-plan/backups/kcc-20260906",
+		State:          "IN_PROGRESS",
+		IncludeVolumes: true,
+		AllNamespaces:  true,
+	}
+
+	if err := writeSummary(nil, nil, nil, opts, cluster, timestamp, stats, integrity, clusterBackup); err != nil {
+		t.Fatalf("writeSummary failed: %v", err)
+	}
+
+	summaryPath := filepath.Join(tempDir, cluster, timestamp, "summary.json")
+	data, err := os.ReadFile(summaryPath)
+	if err != nil {
+		t.Fatalf("Failed to read summary.json: %v", err)
+	}
+
+	var sm SummaryManifest
+	if err := json.Unmarshal(data, &sm); err != nil {
+		t.Fatalf("Failed to unmarshal summary.json: %v", err)
+	}
+
+	if sm.Counts["storage.cnrm.cloud.google.com/StorageBucket"] != 2 {
+		t.Errorf("Counts mismatch: expected 2, got %d", sm.Counts["storage.cnrm.cloud.google.com/StorageBucket"])
+	}
+	if len(sm.Integrity) != 2 {
+		t.Errorf("Expected 2 integrity records, got %d", len(sm.Integrity))
+	}
+	if sm.Integrity["default/storagebucket/bucket-a.yaml"] != "sha256:abc1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcd" {
+		t.Errorf("Integrity hash mismatch: got %s", sm.Integrity["default/storagebucket/bucket-a.yaml"])
+	}
+	if sm.ClusterBackup == nil || sm.ClusterBackup.Provider != "gkebackup.googleapis.com" {
+		t.Errorf("ClusterBackup metadata not properly recorded: %+v", sm.ClusterBackup)
+	}
+}
+
+func TestCreatePathTraversalDefense(t *testing.T) {
+	opts := &createOptions{
+		outputDir: "/tmp/../../etc",
+	}
+
+	err := runCreate(nil, opts)
+	if err == nil {
+		t.Fatalf("Expected path traversal error for output-dir, got nil")
+	}
+	if !strings.Contains(err.Error(), "relative path traversal sequences") {
+		t.Errorf("Expected traversal error message, got: %v", err)
 	}
 }
