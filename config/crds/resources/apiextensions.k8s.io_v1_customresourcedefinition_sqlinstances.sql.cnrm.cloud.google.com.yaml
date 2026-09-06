@@ -609,6 +609,81 @@ spec:
                               items:
                                 type: string
                               type: array
+                            pscAutoConnectionPolicyEnabled:
+                              description: Whether to set up the PSC service attachment
+                                with a Service Connection Policy.
+                              type: boolean
+                            pscAutoConnections:
+                              description: The list of settings for requested Private
+                                Service Connect consumer endpoints to be set up for
+                                this instance.
+                              items:
+                                properties:
+                                  consumerNetwork:
+                                    description: The consumer network of this consumer
+                                      endpoint. This must be a resource path that
+                                      includes both the host project and the network
+                                      name. For example, `projects/project1/global/networks/network1`.
+                                      The consumer host project of this network might
+                                      be different from the consumer service project.
+                                    type: string
+                                  consumerNetworkRef:
+                                    description: ComputeNetworkRef is a reference
+                                      to a GCP ComputeNetwork.
+                                    oneOf:
+                                    - not:
+                                        required:
+                                        - external
+                                      required:
+                                      - name
+                                    - not:
+                                        anyOf:
+                                        - required:
+                                          - name
+                                        - required:
+                                          - namespace
+                                      required:
+                                      - external
+                                    properties:
+                                      external:
+                                        description: A reference to an externally
+                                          managed ComputeNetwork resource. Should
+                                          be in the format "projects/{{projectID}}/global/networks/{{networkID}}".
+                                        type: string
+                                      name:
+                                        description: The name of a ComputeNetwork
+                                          resource.
+                                        type: string
+                                      namespace:
+                                        description: The namespace of a ComputeNetwork
+                                          resource.
+                                        type: string
+                                    type: object
+                                  consumerNetworkStatus:
+                                    description: The connection policy status of the
+                                      consumer network.
+                                    type: string
+                                  consumerProject:
+                                    description: The project ID of consumer service
+                                      project of this consumer endpoint. This is only
+                                      applicable if consumer_network is a shared vpc
+                                      network.
+                                    type: string
+                                  consumerServiceProjectId:
+                                    description: The project ID of consumer service
+                                      project of this consumer endpoint. This is only
+                                      applicable if consumer_network is a shared vpc
+                                      network. Alias for consumerProject.
+                                    type: string
+                                  ipAddress:
+                                    description: The IP address of the consumer endpoint.
+                                    type: string
+                                  status:
+                                    description: The connection status of the consumer
+                                      endpoint.
+                                    type: string
+                                type: object
+                              type: array
                             pscEnabled:
                               description: Whether PSC connectivity is enabled for
                                 this instance.

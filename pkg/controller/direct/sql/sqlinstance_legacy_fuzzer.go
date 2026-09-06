@@ -77,6 +77,15 @@ func sqlInstanceLegacyFuzzer() fuzztesting.KRMFuzzer_NoProto {
 				for _, net := range in.Settings.IpConfiguration.AuthorizedNetworks {
 					net.Kind = "sql#aclEntry"
 				}
+				if in.Settings.IpConfiguration.PscConfig != nil {
+					for _, pac := range in.Settings.IpConfiguration.PscConfig.PscAutoConnections {
+						pac.ConsumerNetworkStatus = ""
+						pac.IpAddress = ""
+						pac.ServiceConnectionPolicy = ""
+						pac.ServiceConnectionPolicyCreationResult = ""
+						pac.Status = ""
+					}
+				}
 			}
 			if in.Settings.LocationPreference != nil {
 				in.Settings.LocationPreference.Kind = "sql#locationPreference"
@@ -162,6 +171,8 @@ func sqlInstanceLegacyFuzzer() fuzztesting.KRMFuzzer_NoProto {
 	f.SpecField(".Settings.IpConfiguration.PrivateNetwork")
 	f.SpecField(".Settings.IpConfiguration.PscConfig")
 	f.SpecField(".Settings.IpConfiguration.PscConfig.AllowedConsumerProjects")
+	f.SpecField(".Settings.IpConfiguration.PscConfig.PscAutoConnectionPolicyEnabled")
+	f.SpecField(".Settings.IpConfiguration.PscConfig.PscAutoConnections")
 	f.SpecField(".Settings.IpConfiguration.PscConfig.PscEnabled")
 	f.SpecField(".Settings.IpConfiguration.RequireSsl")
 	f.SpecField(".Settings.IpConfiguration.SslMode")
@@ -275,11 +286,8 @@ func sqlInstanceLegacyFuzzer() fuzztesting.KRMFuzzer_NoProto {
 	f.Unimplemented_NotYetTriaged(".Settings.IpConfiguration.ServerCaPool")
 	f.Unimplemented_NotYetTriaged(".Settings.IpConfiguration.ServerCertificateRotationMode")
 	f.Unimplemented_NotYetTriaged(".Settings.IpConfiguration.PscConfig.NetworkAttachmentUri")
-	f.Unimplemented_NotYetTriaged(".Settings.IpConfiguration.PscConfig.PscAutoConnectionPolicyEnabled")
-	f.Unimplemented_NotYetTriaged(".Settings.IpConfiguration.PscConfig.PscAutoConnections")
 	f.Unimplemented_NotYetTriaged(".Settings.IpConfiguration.PscConfig.PscAutoDnsEnabled")
 	f.Unimplemented_NotYetTriaged(".Settings.IpConfiguration.PscConfig.PscWriteEndpointDnsEnabled")
-	f.Unimplemented_NotYetTriaged(".Settings.IpConfiguration.PscConfig.PscAutoConnectionPolicyEnabled")
 
 	f.Unimplemented_NotYetTriaged(".Settings.LocationPreference.Kind")
 	f.Unimplemented_NotYetTriaged(".Settings.MaintenanceWindow.Kind")

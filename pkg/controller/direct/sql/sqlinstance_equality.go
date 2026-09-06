@@ -598,8 +598,72 @@ func DiffPscConfig(desired *api.PscConfig, actual *api.PscConfig) *structuredrep
 	if desired.PscEnabled != actual.PscEnabled {
 		diff.AddField(".settings.ipConfiguration.pscConfig.pscEnabled", actual.PscEnabled, desired.PscEnabled)
 	}
+	if desired.PscAutoConnectionPolicyEnabled != actual.PscAutoConnectionPolicyEnabled {
+		diff.AddField(".settings.ipConfiguration.pscConfig.pscAutoConnectionPolicyEnabled", actual.PscAutoConnectionPolicyEnabled, desired.PscAutoConnectionPolicyEnabled)
+	}
+	diff.AddDiff(DiffPscAutoConnectionLists(desired.PscAutoConnections, actual.PscAutoConnections))
 	// Ignore ForceSendFields. Assume it is set correctly in desired.
 	// Ignore NullFields. Assume it is set correctly in desired.
+	return diff
+}
+
+func canonicalNetworkURI(uri string) string {
+	uri = strings.TrimPrefix(uri, "https://www.googleapis.com/compute/v1/")
+	uri = strings.TrimPrefix(uri, "/")
+	return uri
+}
+
+type PscAutoConnectionsByNetwork []*api.PscAutoConnectionConfig
+
+func (a PscAutoConnectionsByNetwork) Len() int      { return len(a) }
+func (a PscAutoConnectionsByNetwork) Swap(i, j int) { a[i], a[j] = a[j], a[i] }
+func (a PscAutoConnectionsByNetwork) Less(i, j int) bool {
+	netI := canonicalNetworkURI(a[i].ConsumerNetwork)
+	netJ := canonicalNetworkURI(a[j].ConsumerNetwork)
+	if netI != netJ {
+		return netI < netJ
+	}
+	return a[i].ConsumerProject < a[j].ConsumerProject
+}
+
+func DiffPscAutoConnectionLists(desired []*api.PscAutoConnectionConfig, actual []*api.PscAutoConnectionConfig) *structuredreporting.Diff {
+	diff := &structuredreporting.Diff{}
+	if len(desired) == 0 && len(actual) == 0 {
+		return diff
+	}
+	if len(desired) != len(actual) {
+		diff.AddField(".settings.ipConfiguration.pscConfig.pscAutoConnections", actual, desired)
+		return diff
+	}
+
+	desiredSorted := make([]*api.PscAutoConnectionConfig, len(desired))
+	copy(desiredSorted, desired)
+	sort.Sort(PscAutoConnectionsByNetwork(desiredSorted))
+
+	actualSorted := make([]*api.PscAutoConnectionConfig, len(actual))
+	copy(actualSorted, actual)
+	sort.Sort(PscAutoConnectionsByNetwork(actualSorted))
+
+	for i := 0; i < len(desiredSorted); i++ {
+		diff.AddDiff(DiffPscAutoConnection(desiredSorted[i], actualSorted[i]))
+	}
+	return diff
+}
+
+func DiffPscAutoConnection(desired *api.PscAutoConnectionConfig, actual *api.PscAutoConnectionConfig) *structuredreporting.Diff {
+	diff := &structuredreporting.Diff{}
+	if desired == nil {
+		desired = &api.PscAutoConnectionConfig{}
+	}
+	if actual == nil {
+		actual = &api.PscAutoConnectionConfig{}
+	}
+	if canonicalNetworkURI(desired.ConsumerNetwork) != canonicalNetworkURI(actual.ConsumerNetwork) {
+		diff.AddField(".settings.ipConfiguration.pscConfig.pscAutoConnections.consumerNetwork", actual.ConsumerNetwork, desired.ConsumerNetwork)
+	}
+	if desired.ConsumerProject != "" && desired.ConsumerProject != actual.ConsumerProject {
+		diff.AddField(".settings.ipConfiguration.pscConfig.pscAutoConnections.consumerProject", actual.ConsumerProject, desired.ConsumerProject)
+	}
 	return diff
 }
 

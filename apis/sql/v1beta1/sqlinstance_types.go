@@ -231,9 +231,46 @@ type InstancePscConfig struct {
 	// +optional
 	AllowedConsumerProjects []string `json:"allowedConsumerProjects,omitempty"`
 
+	/* The list of settings for requested Private Service Connect consumer endpoints to be set up for this instance. */
+	// +optional
+	PscAutoConnections []InstancePscAutoConnectionConfig `json:"pscAutoConnections,omitempty"`
+
+	/* Whether to set up the PSC service attachment with a Service Connection Policy. */
+	// +optional
+	PscAutoConnectionPolicyEnabled *bool `json:"pscAutoConnectionPolicyEnabled,omitempty"`
+
 	/* Whether PSC connectivity is enabled for this instance. */
 	// +optional
 	PscEnabled *bool `json:"pscEnabled,omitempty"`
+}
+
+type InstancePscAutoConnectionConfig struct {
+	/* The consumer network of this consumer endpoint. This must be a resource path that includes both the host project and the network name. For example, `projects/project1/global/networks/network1`. The consumer host project of this network might be different from the consumer service project. */
+	// +optional
+	ConsumerNetwork *string `json:"consumerNetwork,omitempty"`
+
+	// +optional
+	ConsumerNetworkRef *computerefs.ComputeNetworkRef `json:"consumerNetworkRef,omitempty"`
+
+	/* The connection policy status of the consumer network. */
+	// +optional
+	ConsumerNetworkStatus *string `json:"consumerNetworkStatus,omitempty"`
+
+	/* The project ID of consumer service project of this consumer endpoint. This is only applicable if consumer_network is a shared vpc network. */
+	// +optional
+	ConsumerProject *string `json:"consumerProject,omitempty"`
+
+	/* The project ID of consumer service project of this consumer endpoint. This is only applicable if consumer_network is a shared vpc network. Alias for consumerProject. */
+	// +optional
+	ConsumerServiceProjectId *string `json:"consumerServiceProjectId,omitempty"`
+
+	/* The IP address of the consumer endpoint. */
+	// +optional
+	IpAddress *string `json:"ipAddress,omitempty"`
+
+	/* The connection status of the consumer endpoint. */
+	// +optional
+	Status *string `json:"status,omitempty"`
 }
 
 type InstanceReplicaConfiguration struct {

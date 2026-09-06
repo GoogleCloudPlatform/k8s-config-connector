@@ -469,12 +469,31 @@ func InstancePscConfigKRMToGCP(in []krm.InstancePscConfig) *api.PscConfig {
 	inFixed := in[0]
 
 	out := &api.PscConfig{
-		AllowedConsumerProjects: inFixed.AllowedConsumerProjects,
-		PscEnabled:              direct.ValueOf(inFixed.PscEnabled),
+		AllowedConsumerProjects:        inFixed.AllowedConsumerProjects,
+		PscAutoConnectionPolicyEnabled: direct.ValueOf(inFixed.PscAutoConnectionPolicyEnabled),
+		PscEnabled:                     direct.ValueOf(inFixed.PscEnabled),
 	}
 
 	if inFixed.PscEnabled != nil {
 		out.ForceSendFields = append(out.ForceSendFields, "PscEnabled")
+	}
+	if inFixed.PscAutoConnectionPolicyEnabled != nil {
+		out.ForceSendFields = append(out.ForceSendFields, "PscAutoConnectionPolicyEnabled")
+	}
+
+	for _, pac := range inFixed.PscAutoConnections {
+		network := direct.ValueOf(pac.ConsumerNetwork)
+		if network == "" && pac.ConsumerNetworkRef != nil {
+			network = pac.ConsumerNetworkRef.External
+		}
+		project := direct.ValueOf(pac.ConsumerProject)
+		if project == "" && pac.ConsumerServiceProjectId != nil {
+			project = *pac.ConsumerServiceProjectId
+		}
+		out.PscAutoConnections = append(out.PscAutoConnections, &api.PscAutoConnectionConfig{
+			ConsumerNetwork: network,
+			ConsumerProject: project,
+		})
 	}
 
 	return out
@@ -995,10 +1014,33 @@ func InstancePscConfigGCPToKRM(in *api.PscConfig) []krm.InstancePscConfig {
 		return nil
 	}
 
+	var pscAutoConnections []krm.InstancePscAutoConnectionConfig
+	for _, pac := range in.PscAutoConnections {
+		if pac == nil {
+			continue
+		}
+		item := krm.InstancePscAutoConnectionConfig{
+			ConsumerNetwork:          direct.LazyPtr(pac.ConsumerNetwork),
+			ConsumerProject:          direct.LazyPtr(pac.ConsumerProject),
+			ConsumerServiceProjectId: direct.LazyPtr(pac.ConsumerProject),
+			ConsumerNetworkStatus:    direct.LazyPtr(pac.ConsumerNetworkStatus),
+			IpAddress:                direct.LazyPtr(pac.IpAddress),
+			Status:                   direct.LazyPtr(pac.Status),
+		}
+		if pac.ConsumerNetwork != "" {
+			item.ConsumerNetworkRef = &computerefs.ComputeNetworkRef{
+				External: pac.ConsumerNetwork,
+			}
+		}
+		pscAutoConnections = append(pscAutoConnections, item)
+	}
+
 	out := []krm.InstancePscConfig{
 		{
-			AllowedConsumerProjects: in.AllowedConsumerProjects,
-			PscEnabled:              direct.PtrTo(in.PscEnabled),
+			AllowedConsumerProjects:        in.AllowedConsumerProjects,
+			PscAutoConnectionPolicyEnabled: direct.PtrTo(in.PscAutoConnectionPolicyEnabled),
+			PscEnabled:                     direct.PtrTo(in.PscEnabled),
+			PscAutoConnections:             pscAutoConnections,
 		},
 	}
 
