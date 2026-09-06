@@ -18,6 +18,7 @@ import (
 	"strconv"
 
 	pb "cloud.google.com/go/secretmanager/apiv1/secretmanagerpb"
+	pubsubv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/pubsub/v1beta1"
 	refs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/secretmanager/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
@@ -82,6 +83,34 @@ func Replication_ToProto(mapCtx *direct.MapContext, in *krm.Replication) *pb.Rep
 	if out.Replication == nil && *in.LegacyAuto {
 		out.Replication = &pb.Replication_Automatic_{Automatic: &pb.Replication_Automatic{}}
 	}
+	return out
+}
+
+func SecretManagerSecretSpec_FromProto(mapCtx *direct.MapContext, in *pb.Secret) *krm.SecretManagerSecretSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.SecretManagerSecretSpec{}
+	out.Replication = Replication_FromProto(mapCtx, in.GetReplication())
+	for _, topic := range in.GetTopics() {
+		if topic != nil && topic.GetName() != "" {
+			out.TopicRefs = append(out.TopicRefs, &krm.TopicRef{
+				PubSubTopicRef: &pubsubv1beta1.PubSubTopicRef{
+					External: topic.GetName(),
+				},
+			})
+		}
+	}
+	out.ExpireTime = direct.StringTimestamp_FromProto(mapCtx, in.GetExpireTime())
+	out.TTL = direct.StringDuration_FromProto(mapCtx, in.GetTtl())
+	out.Rotation = Rotation_FromProto(mapCtx, in.GetRotation())
+	if len(in.VersionAliases) > 0 {
+		out.VersionAliases = make(map[string]string, len(in.VersionAliases))
+		for k, v := range in.VersionAliases {
+			out.VersionAliases[k] = strconv.FormatInt(v, 10)
+		}
+	}
+	out.Annotations = in.Annotations
 	return out
 }
 
