@@ -15,6 +15,8 @@
 package backup
 
 import (
+	"crypto/sha256"
+	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -313,6 +315,54 @@ func TestDRRegionAndProjectRemapping(t *testing.T) {
 	if newReg != "us-east4" {
 		t.Errorf("Expected SQL region to be remapped to us-east4, got %s", newReg)
 	}
+
+	// Test PubSub allowedPersistenceRegions remapping
+	pubsub := &unstructured.Unstructured{
+		Object: map[string]interface{}{
+			"apiVersion": "pubsub.cnrm.cloud.google.com/v1beta1",
+			"kind":       "PubSubTopic",
+			"spec": map[string]interface{}{
+				"messageStoragePolicy": map[string]interface{}{
+					"allowedPersistenceRegions": []interface{}{"us-central1"},
+				},
+			},
+		},
+	}
+	regions, ok, _ := unstructured.NestedSlice(pubsub.Object, "spec", "messageStoragePolicy", "allowedPersistenceRegions")
+	if !ok || len(regions) != 1 {
+		t.Fatalf("Failed to get allowedPersistenceRegions: %+v", regions)
+	}
+	remappedRegion := remapRegion(regions[0].(string))
+	if remappedRegion != "us-east4" {
+		t.Errorf("Expected PubSub allowedPersistenceRegions to be remapped to us-east4, got %s", remappedRegion)
+	}
+
+	// Test SecretManager replicas remapping
+	secret := &unstructured.Unstructured{
+		Object: map[string]interface{}{
+			"apiVersion": "secretmanager.cnrm.cloud.google.com/v1beta1",
+			"kind":       "SecretManagerSecret",
+			"spec": map[string]interface{}{
+				"replication": map[string]interface{}{
+					"userManaged": map[string]interface{}{
+						"replicas": []interface{}{
+							map[string]interface{}{
+								"location": "us-central1",
+							},
+						},
+					},
+				},
+			},
+		},
+	}
+	replicas, ok, _ := unstructured.NestedSlice(secret.Object, "spec", "replication", "userManaged", "replicas")
+	if !ok || len(replicas) != 1 {
+		t.Fatalf("Failed to get replicas: %+v", replicas)
+	}
+	replicaLoc := remapRegion(replicas[0].(map[string]interface{})["location"].(string))
+	if replicaLoc != "us-east4" {
+		t.Errorf("Expected SecretManager replica location to be remapped to us-east4, got %s", replicaLoc)
+	}
 }
 
 func TestLoadObjectsFromDir(t *testing.T) {
@@ -340,7 +390,7 @@ spec:
 	}
 
 	// Test loading via rootDir + cluster + timestamp
-	objs, err := loadObjectsFromDir(tempDir, cluster, timestamp)
+	objs, err := loadObjectsFromDir(tempDir, cluster, timestamp, false)
 	if err != nil {
 		t.Fatalf("loadObjectsFromDir failed: %v", err)
 	}
@@ -352,11 +402,100 @@ spec:
 	}
 
 	// Test loading via latest resolution
-	latestObjs, err := loadObjectsFromDir(tempDir, cluster, "latest")
+	latestObjs, err := loadObjectsFromDir(tempDir, cluster, "latest", false)
 	if err != nil {
 		t.Fatalf("loadObjectsFromDir with latest failed: %v", err)
 	}
 	if len(latestObjs) != 1 {
 		t.Fatalf("Expected 1 object loaded with latest, got %d", len(latestObjs))
+	}
+}
+
+func TestLoadObjectsFromDirWithIntegrity(t *testing.T) {
+	tempDir := t.TempDir()
+	cluster := "test-cluster"
+	timestamp := "2026_09_06_12_00_00"
+
+	manifestDir := filepath.Join(tempDir, cluster, timestamp, "default", "storagebucket")
+	if err := os.MkdirAll(manifestDir, 0755); err != nil {
+		t.Fatalf("Failed to create manifest dir: %v", err)
+	}
+
+	manifestContent := "apiVersion: storage.cnrm.cloud.google.com/v1beta1\nkind: StorageBucket\nmetadata:\n  name: secure-bucket\n  namespace: default\nspec:\n  location: us-central1\n"
+	manifestPath := filepath.Join(manifestDir, "secure-bucket.yaml")
+	if err := os.WriteFile(manifestPath, []byte(manifestContent), 0644); err != nil {
+		t.Fatalf("Failed to write manifest: %v", err)
+	}
+
+	// Calculate correct SHA-256
+	hash := sha256.Sum256([]byte(manifestContent))
+	hashStr := fmt.Sprintf("sha256:%x", hash)
+
+	summaryDir := filepath.Join(tempDir, cluster, timestamp)
+	summaryJSON := fmt.Sprintf(`{
+		"counts": {"StorageBucket": 1},
+		"integrity": {
+			"default/storagebucket/secure-bucket.yaml": "%s"
+		}
+	}`, hashStr)
+
+	if err := os.WriteFile(filepath.Join(summaryDir, "summary.json"), []byte(summaryJSON), 0644); err != nil {
+		t.Fatalf("Failed to write summary: %v", err)
+	}
+
+	objs, err := loadObjectsFromDir(tempDir, cluster, timestamp, true)
+	if err != nil {
+		t.Fatalf("loadObjectsFromDir with valid integrity failed: %v", err)
+	}
+	if len(objs) != 1 {
+		t.Fatalf("Expected 1 object, got %d", len(objs))
+	}
+}
+
+func TestLoadObjectsFromDirTamperingDetected(t *testing.T) {
+	tempDir := t.TempDir()
+	cluster := "test-cluster"
+	timestamp := "2026_09_06_12_00_00"
+
+	manifestDir := filepath.Join(tempDir, cluster, timestamp, "default", "storagebucket")
+	if err := os.MkdirAll(manifestDir, 0755); err != nil {
+		t.Fatalf("Failed to create manifest dir: %v", err)
+	}
+
+	manifestContent := "apiVersion: storage.cnrm.cloud.google.com/v1beta1\nkind: StorageBucket\nmetadata:\n  name: tampered-bucket\n  namespace: default\nspec:\n  location: us-central1\n"
+	manifestPath := filepath.Join(manifestDir, "tampered-bucket.yaml")
+	if err := os.WriteFile(manifestPath, []byte(manifestContent), 0644); err != nil {
+		t.Fatalf("Failed to write manifest: %v", err)
+	}
+
+	summaryDir := filepath.Join(tempDir, cluster, timestamp)
+	// Write wrong hash to simulate tampering
+	summaryJSON := `{
+		"counts": {"StorageBucket": 1},
+		"integrity": {
+			"default/storagebucket/tampered-bucket.yaml": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+		}
+	}`
+
+	if err := os.WriteFile(filepath.Join(summaryDir, "summary.json"), []byte(summaryJSON), 0644); err != nil {
+		t.Fatalf("Failed to write summary: %v", err)
+	}
+
+	_, err := loadObjectsFromDir(tempDir, cluster, timestamp, true)
+	if err == nil {
+		t.Fatalf("Expected tamper detection error, got nil")
+	}
+	if !strings.Contains(err.Error(), "cryptographic checksum mismatch") {
+		t.Errorf("Expected tamper alert message, got: %v", err)
+	}
+}
+
+func TestPathTraversalProtection(t *testing.T) {
+	_, err := loadObjectsFromDir("/tmp/../etc", "cluster", "latest", false)
+	if err == nil {
+		t.Fatalf("Expected error for directory traversal path, got nil")
+	}
+	if !strings.Contains(err.Error(), "directory traversal") {
+		t.Errorf("Expected directory traversal error, got: %v", err)
 	}
 }

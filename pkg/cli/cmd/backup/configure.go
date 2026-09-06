@@ -29,18 +29,31 @@ import (
 
 type configureOptions struct {
 	kubecli.ClusterOptions
-	cluster        string
-	location       string
-	bucket         string
-	bucketLocation string
-	frequency      string
-	project        string
-	clusterProject string
-	namespace      string
+	cluster          string
+	location         string
+	bucket           string
+	bucketLocation   string
+	frequency        string
+	project          string
+	clusterProject   string
+	namespace        string
+	dualRegion       string
+	turboReplication bool
+	versioning       bool
+	retentionDays    int
+	lockRetention    bool
+	autopilot            bool
+	replicaBucket        string
+	replicaLocation      string
+	dryRun               bool
+	includeClusterBackup bool
+	gkeBackupPlan        string
 }
 
 func NewConfigureCmd() *cobra.Command {
-	options := &configureOptions{}
+	options := &configureOptions{
+		versioning: true,
+	}
 
 	cmd := &cobra.Command{
 		Use:   "configure",
@@ -59,6 +72,17 @@ func NewConfigureCmd() *cobra.Command {
 	cmd.Flags().StringVar(&options.project, "project", "", "GCP project ID where the backup bucket/SA reside")
 	cmd.Flags().StringVar(&options.clusterProject, "cluster-project", "", "GCP project ID where the cluster resides (for Workload Identity). Defaults to --project if not specified.")
 	cmd.Flags().StringVar(&options.namespace, "namespace", "cnrm-system", "Namespace where Config Connector is installed")
+	cmd.Flags().StringVar(&options.dualRegion, "dual-region", "", "Dual-region bucket pair (e.g. nam4, eur4, asia1)")
+	cmd.Flags().BoolVar(&options.turboReplication, "turbo-replication", false, "Enable GCS Turbo Replication (RPO < 15m) for dual-region buckets")
+	cmd.Flags().BoolVar(&options.versioning, "versioning", true, "Enable object versioning on backup bucket")
+	cmd.Flags().IntVar(&options.retentionDays, "retention-days", 0, "Retention period in days for WORM compliance")
+	cmd.Flags().BoolVar(&options.lockRetention, "lock-retention", false, "Permanently lock the bucket retention policy (WORM compliance)")
+	cmd.Flags().BoolVar(&options.autopilot, "autopilot", false, "Configure CronJob with GKE Autopilot-compliant securityContext and resources")
+	cmd.Flags().StringVar(&options.replicaBucket, "replica-bucket", "", "Secondary replica GCS bucket for cross-region disaster recovery")
+	cmd.Flags().StringVar(&options.replicaLocation, "replica-location", "us-east1", "GCS location for secondary replica bucket")
+	cmd.Flags().BoolVar(&options.dryRun, "dry-run", false, "Output the generated Kubernetes manifests without applying them to the cluster")
+	cmd.Flags().BoolVar(&options.includeClusterBackup, "include-cluster-backup", false, "Configure Backup for GKE (gkebackup.googleapis.com) to backup cluster workloads and persistent volumes")
+	cmd.Flags().StringVar(&options.gkeBackupPlan, "gke-backup-plan", "", "Name of the GKE BackupPlan to configure (defaults to <cluster>-backup-plan)")
 
 	return cmd
 }
@@ -90,24 +114,54 @@ func runConfigure(cmd *cobra.Command, options *configureOptions) error {
 		schedule = options.frequency
 	}
 
+	bucketLoc := options.bucketLocation
+	if options.dualRegion != "" {
+		bucketLoc = options.dualRegion
+	}
+
+	retentionSeconds := 0
+	if options.retentionDays > 0 {
+		retentionSeconds = options.retentionDays * 86400
+	}
+
 	data := struct {
-		ProjectID        string
-		ClusterProjectID string
-		Cluster          string
-		Bucket           string
-		BucketLocation   string
-		Schedule         string
-		Namespace        string
-		Version          string
+		ProjectID              string
+		ClusterProjectID       string
+		Cluster                string
+		Bucket                 string
+		BucketLocation         string
+		Schedule               string
+		Namespace              string
+		Version                string
+		DualRegion             string
+		TurboReplication       bool
+		Versioning             bool
+		RetentionPeriodSeconds int
+		LockRetention          bool
+		Autopilot              bool
+		ReplicaBucket          string
+		ReplicaLocation        string
+		IncludeClusterBackup   bool
+		GKEBackupPlan          string
 	}{
-		ProjectID:        options.project,
-		ClusterProjectID: clusterProject,
-		Cluster:          options.cluster,
-		Bucket:           options.bucket,
-		BucketLocation:   options.bucketLocation,
-		Schedule:         schedule,
-		Namespace:        options.namespace,
-		Version:          version.GetVersion(),
+		ProjectID:              options.project,
+		ClusterProjectID:       clusterProject,
+		Cluster:                options.cluster,
+		Bucket:                 options.bucket,
+		BucketLocation:         bucketLoc,
+		Schedule:               schedule,
+		Namespace:              options.namespace,
+		Version:                version.GetVersion(),
+		DualRegion:             options.dualRegion,
+		TurboReplication:       options.turboReplication,
+		Versioning:             options.versioning,
+		RetentionPeriodSeconds: retentionSeconds,
+		LockRetention:          options.lockRetention,
+		Autopilot:              options.autopilot,
+		ReplicaBucket:          options.replicaBucket,
+		ReplicaLocation:        options.replicaLocation,
+		IncludeClusterBackup:   options.includeClusterBackup,
+		GKEBackupPlan:          options.gkeBackupPlan,
 	}
 
 	tmpl, err := template.New("configure").Parse(configureTemplate)
@@ -118,6 +172,11 @@ func runConfigure(cmd *cobra.Command, options *configureOptions) error {
 	var buf bytes.Buffer
 	if err := tmpl.Execute(&buf, data); err != nil {
 		return fmt.Errorf("executing template: %w", err)
+	}
+
+	if options.dryRun {
+		fmt.Fprint(cmd.OutOrStdout(), buf.String())
+		return nil
 	}
 
 	kubeClient, err := kubecli.NewClient(ctx, options.ClusterOptions)
@@ -156,6 +215,42 @@ metadata:
   namespace: {{.Namespace}}
 spec:
   location: {{.BucketLocation}}
+  uniformBucketLevelAccess: true
+  publicAccessPrevention: enforced
+{{- if .Versioning}}
+  versioning:
+    enabled: true
+{{- end}}
+{{- if .RetentionPeriodSeconds}}
+  retentionPolicy:
+    retentionPeriod: {{.RetentionPeriodSeconds}}
+    {{- if .LockRetention}}
+    isLocked: true
+    {{- end}}
+{{- end}}
+{{- if .ReplicaBucket}}
+---
+apiVersion: storage.cnrm.cloud.google.com/v1beta1
+kind: StorageBucket
+metadata:
+  name: {{.ReplicaBucket}}
+  namespace: {{.Namespace}}
+spec:
+  location: {{.ReplicaLocation}}
+  uniformBucketLevelAccess: true
+  publicAccessPrevention: enforced
+{{- if .Versioning}}
+  versioning:
+    enabled: true
+{{- end}}
+{{- if .RetentionPeriodSeconds}}
+  retentionPolicy:
+    retentionPeriod: {{.RetentionPeriodSeconds}}
+    {{- if .LockRetention}}
+    isLocked: true
+    {{- end}}
+{{- end}}
+{{- end}}
 ---
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMServiceAccount
@@ -181,15 +276,56 @@ spec:
 apiVersion: iam.cnrm.cloud.google.com/v1beta1
 kind: IAMPolicyMember
 metadata:
-  name: cnrm-backup-bucket-admin
+  name: cnrm-backup-bucket-creator
   namespace: {{.Namespace}}
 spec:
   member: serviceAccount:cnrm-backup@{{.ProjectID}}.iam.gserviceaccount.com
-  role: roles/storage.objectAdmin
+  role: roles/storage.objectCreator
   resourceRef:
     apiVersion: storage.cnrm.cloud.google.com/v1beta1
     kind: StorageBucket
     name: {{.Bucket}}
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
+metadata:
+  name: cnrm-backup-bucket-viewer
+  namespace: {{.Namespace}}
+spec:
+  member: serviceAccount:cnrm-backup@{{.ProjectID}}.iam.gserviceaccount.com
+  role: roles/storage.objectViewer
+  resourceRef:
+    apiVersion: storage.cnrm.cloud.google.com/v1beta1
+    kind: StorageBucket
+    name: {{.Bucket}}
+{{- if .ReplicaBucket}}
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
+metadata:
+  name: cnrm-backup-replica-creator
+  namespace: {{.Namespace}}
+spec:
+  member: serviceAccount:cnrm-backup@{{.ProjectID}}.iam.gserviceaccount.com
+  role: roles/storage.objectCreator
+  resourceRef:
+    apiVersion: storage.cnrm.cloud.google.com/v1beta1
+    kind: StorageBucket
+    name: {{.ReplicaBucket}}
+---
+apiVersion: iam.cnrm.cloud.google.com/v1beta1
+kind: IAMPolicyMember
+metadata:
+  name: cnrm-backup-replica-viewer
+  namespace: {{.Namespace}}
+spec:
+  member: serviceAccount:cnrm-backup@{{.ProjectID}}.iam.gserviceaccount.com
+  role: roles/storage.objectViewer
+  resourceRef:
+    apiVersion: storage.cnrm.cloud.google.com/v1beta1
+    kind: StorageBucket
+    name: {{.ReplicaBucket}}
+{{- end}}
 ---
 apiVersion: v1
 kind: ServiceAccount
@@ -239,9 +375,54 @@ spec:
             app: cnrm-backup
         spec:
           serviceAccountName: cnrm-backup-manager
+          restartPolicy: OnFailure
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 65534
+            runAsGroup: 65534
+            fsGroup: 65534
+            seccompProfile:
+              type: RuntimeDefault
           containers:
           - name: backup
             image: gcr.io/gke-release/cnrm/config-connector-cli:{{.Version}}
-            command: ["config-connector", "backup", "create", "--bucket", "{{.Bucket}}", "--project", "{{.ProjectID}}", "--namespace", "{{.Namespace}}"{{if .Cluster}}, "--cluster", "{{.Cluster}}"{{end}}]
-          restartPolicy: OnFailure
+            command:
+            - config-connector
+            - backup
+            - create
+            - --bucket
+            - {{.Bucket}}
+            - --project
+            - {{.ProjectID}}
+            - --namespace
+            - {{.Namespace}}
+            {{- if .Cluster}}
+            - --cluster
+            - {{.Cluster}}
+            {{- end}}
+            {{- if .ReplicaBucket}}
+            - --replica-bucket
+            - {{.ReplicaBucket}}
+            {{- end}}
+            {{- if .IncludeClusterBackup}}
+            - --include-cluster-backup
+            {{- if .GKEBackupPlan}}
+            - --gke-backup-plan
+            - {{.GKEBackupPlan}}
+            {{- end}}
+            {{- end}}
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop:
+                - ALL
+            resources:
+              requests:
+                cpu: 250m
+                memory: 512Mi
+                ephemeral-storage: 1Gi
+              limits:
+                cpu: 1000m
+                memory: 1Gi
+                ephemeral-storage: 2Gi
 `
