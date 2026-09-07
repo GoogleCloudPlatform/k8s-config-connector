@@ -17,7 +17,7 @@ package composer
 import (
 	"context"
 	"fmt"
-	"reflect"
+	"maps"
 	"sort"
 	"strings"
 
@@ -334,7 +334,7 @@ var fieldUpdaters = []fieldUpdater{
 	{
 		mask: "labels",
 		build: func(desired *krm.ComposerEnvironment, desiredPb, actualPb *composerpb.Environment) *composerpb.Environment {
-			if desired.Spec.Labels != nil && !reflect.DeepEqual(desiredPb.Labels, actualPb.Labels) {
+			if desired.Spec.Labels != nil && !maps.Equal(desiredPb.Labels, actualPb.Labels) {
 				return &composerpb.Environment{
 					Labels: desiredPb.Labels,
 				}
@@ -408,7 +408,7 @@ var fieldUpdaters = []fieldUpdater{
 	{
 		mask: "config.software_config.airflow_config_overrides",
 		build: func(desired *krm.ComposerEnvironment, desiredPb, actualPb *composerpb.Environment) *composerpb.Environment {
-			if desired.Spec.Config != nil && desired.Spec.Config.SoftwareConfig != nil && desired.Spec.Config.SoftwareConfig.AirflowConfigOverrides != nil && !reflect.DeepEqual(desiredPb.GetConfig().GetSoftwareConfig().GetAirflowConfigOverrides(), actualPb.GetConfig().GetSoftwareConfig().GetAirflowConfigOverrides()) {
+			if desired.Spec.Config != nil && desired.Spec.Config.SoftwareConfig != nil && desired.Spec.Config.SoftwareConfig.AirflowConfigOverrides != nil && !maps.Equal(desiredPb.GetConfig().GetSoftwareConfig().GetAirflowConfigOverrides(), actualPb.GetConfig().GetSoftwareConfig().GetAirflowConfigOverrides()) {
 				return &composerpb.Environment{
 					Config: &composerpb.EnvironmentConfig{
 						SoftwareConfig: &composerpb.SoftwareConfig{
@@ -424,7 +424,7 @@ var fieldUpdaters = []fieldUpdater{
 	{
 		mask: "config.software_config.env_variables",
 		build: func(desired *krm.ComposerEnvironment, desiredPb, actualPb *composerpb.Environment) *composerpb.Environment {
-			if desired.Spec.Config != nil && desired.Spec.Config.SoftwareConfig != nil && desired.Spec.Config.SoftwareConfig.EnvVariables != nil && !reflect.DeepEqual(desiredPb.GetConfig().GetSoftwareConfig().GetEnvVariables(), actualPb.GetConfig().GetSoftwareConfig().GetEnvVariables()) {
+			if desired.Spec.Config != nil && desired.Spec.Config.SoftwareConfig != nil && desired.Spec.Config.SoftwareConfig.EnvVariables != nil && !maps.Equal(desiredPb.GetConfig().GetSoftwareConfig().GetEnvVariables(), actualPb.GetConfig().GetSoftwareConfig().GetEnvVariables()) {
 				return &composerpb.Environment{
 					Config: &composerpb.EnvironmentConfig{
 						SoftwareConfig: &composerpb.SoftwareConfig{
@@ -440,7 +440,7 @@ var fieldUpdaters = []fieldUpdater{
 	{
 		mask: "config.software_config.pypi_packages",
 		build: func(desired *krm.ComposerEnvironment, desiredPb, actualPb *composerpb.Environment) *composerpb.Environment {
-			if desired.Spec.Config != nil && desired.Spec.Config.SoftwareConfig != nil && desired.Spec.Config.SoftwareConfig.PypiPackages != nil && !reflect.DeepEqual(desiredPb.GetConfig().GetSoftwareConfig().GetPypiPackages(), actualPb.GetConfig().GetSoftwareConfig().GetPypiPackages()) {
+			if desired.Spec.Config != nil && desired.Spec.Config.SoftwareConfig != nil && desired.Spec.Config.SoftwareConfig.PypiPackages != nil && !maps.Equal(desiredPb.GetConfig().GetSoftwareConfig().GetPypiPackages(), actualPb.GetConfig().GetSoftwareConfig().GetPypiPackages()) {
 				return &composerpb.Environment{
 					Config: &composerpb.EnvironmentConfig{
 						SoftwareConfig: &composerpb.SoftwareConfig{
@@ -530,13 +530,39 @@ var fieldUpdaters = []fieldUpdater{
 	{
 		mask: "config.recovery_config.scheduled_snapshots_config",
 		build: func(desired *krm.ComposerEnvironment, desiredPb, actualPb *composerpb.Environment) *composerpb.Environment {
-			if desired.Spec.Config != nil && desired.Spec.Config.RecoveryConfig != nil && desired.Spec.Config.RecoveryConfig.ScheduledSnapshotsConfig != nil && !proto.Equal(desiredPb.GetConfig().GetRecoveryConfig().GetScheduledSnapshotsConfig(), actualPb.GetConfig().GetRecoveryConfig().GetScheduledSnapshotsConfig()) {
-				return &composerpb.Environment{
-					Config: &composerpb.EnvironmentConfig{
-						RecoveryConfig: &composerpb.RecoveryConfig{
-							ScheduledSnapshotsConfig: desiredPb.GetConfig().GetRecoveryConfig().GetScheduledSnapshotsConfig(),
+			if desired.Spec.Config != nil && desired.Spec.Config.RecoveryConfig != nil && desired.Spec.Config.RecoveryConfig.ScheduledSnapshotsConfig != nil {
+				desiredSnapshots := desiredPb.GetConfig().GetRecoveryConfig().GetScheduledSnapshotsConfig()
+				actualSnapshots := actualPb.GetConfig().GetRecoveryConfig().GetScheduledSnapshotsConfig()
+
+				// If snapshots are not enabled in actual and desired also has enabled: false, no update needed.
+				if actualSnapshots == nil && !desiredSnapshots.GetEnabled() {
+					return nil
+				}
+
+				effectiveSnapshots := proto.Clone(desiredSnapshots).(*composerpb.ScheduledSnapshotsConfig)
+				// When explicitly disabling snapshots (enabled == false), preserve existing snapshotLocation,
+				// schedule, and timezone from actualPb if omitted in spec to avoid second-pass drift and 400 rejection.
+				if !effectiveSnapshots.GetEnabled() && actualSnapshots != nil {
+					schedCfg := desired.Spec.Config.RecoveryConfig.ScheduledSnapshotsConfig
+					if schedCfg.SnapshotLocation == nil {
+						effectiveSnapshots.SnapshotLocation = actualSnapshots.SnapshotLocation
+					}
+					if schedCfg.SnapshotCreationSchedule == nil {
+						effectiveSnapshots.SnapshotCreationSchedule = actualSnapshots.SnapshotCreationSchedule
+					}
+					if schedCfg.TimeZone == nil {
+						effectiveSnapshots.TimeZone = actualSnapshots.TimeZone
+					}
+				}
+
+				if !proto.Equal(effectiveSnapshots, actualSnapshots) {
+					return &composerpb.Environment{
+						Config: &composerpb.EnvironmentConfig{
+							RecoveryConfig: &composerpb.RecoveryConfig{
+								ScheduledSnapshotsConfig: effectiveSnapshots,
+							},
 						},
-					},
+					}
 				}
 			}
 			return nil

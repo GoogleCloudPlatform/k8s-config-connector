@@ -398,7 +398,13 @@ func TestComputedFieldPathsValidity(t *testing.T) {
 			DatabaseConfig:           &composerpb.DatabaseConfig{},
 			WebServerConfig:          &composerpb.WebServerConfig{},
 			PrivateEnvironmentConfig: &composerpb.PrivateEnvironmentConfig{},
-			WorkloadsConfig:          &composerpb.WorkloadsConfig{},
+			WorkloadsConfig: &composerpb.WorkloadsConfig{
+				Scheduler:    &composerpb.WorkloadsConfig_SchedulerResource{},
+				DagProcessor: &composerpb.WorkloadsConfig_DagProcessorResource{},
+				Triggerer:    &composerpb.WorkloadsConfig_TriggererResource{},
+				WebServer:    &composerpb.WorkloadsConfig_WebServerResource{},
+				Worker:       &composerpb.WorkloadsConfig_WorkerResource{},
+			},
 		},
 	}
 	parentMap := common.BuildParentMap(env, env, computedFieldPaths)
@@ -465,5 +471,72 @@ func TestFindProtoField(t *testing.T) {
 	// Non-existent field should return nil
 	if fd := common.FindProtoField(nodeDesc, "nonExistentField"); fd != nil {
 		t.Errorf("expected nil for nonExistentField, got %q", fd.Name())
+	}
+}
+
+func TestPopulateDesiredWithActualIfComputed_PartialWorkloadsConfig(t *testing.T) {
+	desired := &krm.ComposerEnvironment{
+		Spec: krm.ComposerEnvironmentSpec{
+			Config: &krm.EnvironmentConfig{
+				WorkloadsConfig: &krm.WorkloadsConfig{
+					Triggerer: &krm.WorkloadsConfig_TriggererResource{
+						Count: direct.LazyPtr(int32(2)),
+					},
+				},
+			},
+		},
+	}
+	mapCtx := &direct.MapContext{}
+	desiredPb := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+	if mapCtx.Err() != nil {
+		t.Fatalf("unexpected error converting desired spec: %v", mapCtx.Err())
+	}
+
+	actual := &composerpb.Environment{
+		Config: &composerpb.EnvironmentConfig{
+			WorkloadsConfig: &composerpb.WorkloadsConfig{
+				Scheduler: &composerpb.WorkloadsConfig_SchedulerResource{
+					Cpu: 0.5, MemoryGb: 1.875, StorageGb: 1.0, Count: 1,
+				},
+				WebServer: &composerpb.WorkloadsConfig_WebServerResource{
+					Cpu: 0.5, MemoryGb: 1.875, StorageGb: 1.0,
+				},
+				Worker: &composerpb.WorkloadsConfig_WorkerResource{
+					Cpu: 0.5, MemoryGb: 1.875, StorageGb: 1.0, MinCount: 1, MaxCount: 3,
+				},
+				Triggerer: &composerpb.WorkloadsConfig_TriggererResource{
+					Cpu: 0.5, MemoryGb: 0.5, Count: 1,
+				},
+				DagProcessor: &composerpb.WorkloadsConfig_DagProcessorResource{
+					Cpu: 0.5, MemoryGb: 1.875, StorageGb: 1.0, Count: 1,
+				},
+			},
+		},
+	}
+
+	populateDesiredWithActualIfComputed(desired, desiredPb, actual)
+
+	// Triggerer should have Count=2 from desired, but Cpu and MemoryGb preserved from actual
+	triggerer := desiredPb.GetConfig().GetWorkloadsConfig().GetTriggerer()
+	if triggerer.GetCount() != 2 {
+		t.Errorf("expected Triggerer.Count=2, got %d", triggerer.GetCount())
+	}
+	if triggerer.GetCpu() != 0.5 {
+		t.Errorf("expected Triggerer.Cpu=0.5, got %v", triggerer.GetCpu())
+	}
+	if triggerer.GetMemoryGb() != 0.5 {
+		t.Errorf("expected Triggerer.MemoryGb=0.5, got %v", triggerer.GetMemoryGb())
+	}
+
+	// Scheduler was completely omitted in desired, should be fully preserved from actual
+	scheduler := desiredPb.GetConfig().GetWorkloadsConfig().GetScheduler()
+	if diff := cmp.Diff(actual.GetConfig().GetWorkloadsConfig().GetScheduler(), scheduler, protocmp.Transform()); diff != "" {
+		t.Errorf("Scheduler diff (-want +got):\n%s", diff)
+	}
+
+	// Worker was completely omitted in desired, should be fully preserved from actual
+	worker := desiredPb.GetConfig().GetWorkloadsConfig().GetWorker()
+	if diff := cmp.Diff(actual.GetConfig().GetWorkloadsConfig().GetWorker(), worker, protocmp.Transform()); diff != "" {
+		t.Errorf("Worker diff (-want +got):\n%s", diff)
 	}
 }
