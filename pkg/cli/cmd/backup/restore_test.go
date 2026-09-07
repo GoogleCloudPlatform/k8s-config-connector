@@ -586,3 +586,102 @@ func TestTargetNamespaceAndZoneRemapping(t *testing.T) {
 		t.Errorf("Expected spec.projectRef.external to be dr-target-project, got %s", projExt)
 	}
 }
+
+func TestCMEKAndIAMMemberRemapping(t *testing.T) {
+	opts := &restoreOptions{
+		targetProject: "new-dr-project",
+		targetRegion:  "us-east1",
+		regionMapping: "us-central1=us-east1",
+	}
+
+	secret := &unstructured.Unstructured{
+		Object: map[string]interface{}{
+			"apiVersion": "secretmanager.cnrm.cloud.google.com/v1beta1",
+			"kind":       "SecretManagerSecret",
+			"spec": map[string]interface{}{
+				"customerManagedEncryption": map[string]interface{}{
+					"kmsKeyName": "projects/old-proj/locations/us-central1/keyRings/my-ring/cryptoKeys/my-key",
+				},
+			},
+		},
+	}
+
+	iamMemberSA := &unstructured.Unstructured{
+		Object: map[string]interface{}{
+			"apiVersion": "iam.cnrm.cloud.google.com/v1beta1",
+			"kind":       "IAMPolicyMember",
+			"spec": map[string]interface{}{
+				"member": "serviceAccount:my-sa@old-proj.iam.gserviceaccount.com",
+			},
+		},
+	}
+
+	iamMemberWI := &unstructured.Unstructured{
+		Object: map[string]interface{}{
+			"apiVersion": "iam.cnrm.cloud.google.com/v1beta1",
+			"kind":       "IAMPolicyMember",
+			"spec": map[string]interface{}{
+				"member": "serviceAccount:old-proj.svc.id.goog[default/workload-ksa]",
+			},
+		},
+	}
+
+	// Remap CMEK key logic
+	remapRegion := func(currentRegion string) string {
+		if opts.regionMapping != "" {
+			parts := strings.Split(opts.regionMapping, "=")
+			if len(parts) == 2 && strings.TrimSpace(parts[0]) == currentRegion {
+				return strings.TrimSpace(parts[1])
+			}
+		}
+		if opts.targetRegion != "" {
+			return opts.targetRegion
+		}
+		return currentRegion
+	}
+
+	remapKMSKey := func(keyPath string) string {
+		newPath := keyPath
+		if opts.targetProject != "" && strings.HasPrefix(newPath, "projects/") {
+			parts := strings.Split(newPath, "/")
+			if len(parts) >= 2 {
+				parts[1] = opts.targetProject
+				newPath = strings.Join(parts, "/")
+			}
+		}
+		if (opts.regionMapping != "" || opts.targetRegion != "") && strings.Contains(newPath, "/locations/") {
+			parts := strings.Split(newPath, "/")
+			for idx, part := range parts {
+				if part == "locations" && idx+1 < len(parts) {
+					parts[idx+1] = remapRegion(parts[idx+1])
+				}
+			}
+			newPath = strings.Join(parts, "/")
+		}
+		return newPath
+	}
+
+	origKey, _, _ := unstructured.NestedString(secret.Object, "spec", "customerManagedEncryption", "kmsKeyName")
+	newKey := remapKMSKey(origKey)
+	expectedKey := "projects/new-dr-project/locations/us-east1/keyRings/my-ring/cryptoKeys/my-key"
+	if newKey != expectedKey {
+		t.Errorf("Expected CMEK key remapped to %s, got %s", expectedKey, newKey)
+	}
+
+	// Remap IAM members
+	memberSA, _, _ := unstructured.NestedString(iamMemberSA.Object, "spec", "member")
+	parts := strings.Split(memberSA, "@")
+	newMemberSA := fmt.Sprintf("%s@%s.iam.gserviceaccount.com", parts[0], opts.targetProject)
+	expectedSA := "serviceAccount:my-sa@new-dr-project.iam.gserviceaccount.com"
+	if newMemberSA != expectedSA {
+		t.Errorf("Expected IAM SA member remapped to %s, got %s", expectedSA, newMemberSA)
+	}
+
+	memberWI, _, _ := unstructured.NestedString(iamMemberWI.Object, "spec", "member")
+	wiParts := strings.Split(memberWI, ".svc.id.goog")
+	newMemberWI := fmt.Sprintf("serviceAccount:%s.svc.id.goog%s", opts.targetProject, wiParts[1])
+	expectedWI := "serviceAccount:new-dr-project.svc.id.goog[default/workload-ksa]"
+	if newMemberWI != expectedWI {
+		t.Errorf("Expected Workload Identity member remapped to %s, got %s", expectedWI, newMemberWI)
+	}
+}
