@@ -48,16 +48,24 @@ func (r *Reconciler) applyExperiments(ctx context.Context, cc *corev1beta1.Confi
 		return err
 	}
 
-	if cc.Spec.Experiments == nil {
+	if cc.Spec.Experiments == nil || cc.Spec.Experiments.MultiClusterLease == nil {
+		// Filter out MCL and Syncer components if the experiment is not enabled
+		var filteredItems []*manifest.Object
+		for _, item := range m.Items {
+			labels := item.UnstructuredObject().GetLabels()
+			component, ok := labels[k8s.KCCSystemComponentLabel]
+			if ok && (component == k8s.KCCMCLControllerComponent || component == k8s.KCCSyncerControllerComponent) {
+				continue
+			}
+			filteredItems = append(filteredItems, item)
+		}
+		m.Items = filteredItems
 		return nil
 	}
 
-	if cc.Spec.Experiments.MultiClusterLease != nil {
-		if err := r.applyMultiClusterLeaderElection(ctx, cc.Spec.Experiments.MultiClusterLease, m); err != nil {
-			return err
-		}
+	if err := r.applyMultiClusterLeaderElection(ctx, cc.Spec.Experiments.MultiClusterLease, m); err != nil {
+		return err
 	}
-
 	return nil
 }
 

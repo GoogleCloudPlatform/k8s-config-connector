@@ -595,6 +595,10 @@ func (r *Reconciler) selectCRDsByVersion(m *manifest.Objects, version string) er
 			if !isKCCCRD(obj) {
 				return fmt.Errorf("installation manifests contain non-KCC CRDs %v", obj.UnstructuredObject().GetName())
 			}
+			if isMCLOrSyncerCRD(obj) {
+				transformed = append(transformed, obj)
+				continue
+			}
 			hasVersion, err := containsVersion(obj, version)
 			if err != nil {
 				return fmt.Errorf("error checking if CRD %v contains version %v: %w", obj.UnstructuredObject().GetName(), version, err)
@@ -972,7 +976,13 @@ func isKCCCRD(object *manifest.Object) bool {
 	if strings.HasSuffix(u.GetName(), k8s.CNRMDomain) {
 		return true
 	}
-	return false
+	return isMCLOrSyncerCRD(object)
+}
+
+func isMCLOrSyncerCRD(object *manifest.Object) bool {
+	u := object.UnstructuredObject()
+	return u.GetName() == "krmsyncers.syncer.gkelabs.io" ||
+		u.GetName() == "multiclusterleases.multicluster.core.cnrm.cloud.google.com"
 }
 
 func containsVersion(object *manifest.Object, version string) (bool, error) {
