@@ -32,6 +32,7 @@ import (
 	"google.golang.org/api/option"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/client-go/tools/clientcmd"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/yaml"
 
@@ -100,6 +101,18 @@ func runCreate(cmd *cobra.Command, options *createOptions) error {
 			return fmt.Errorf("invalid --output-dir %q: relative path traversal sequences ('..') are prohibited", options.outputDir)
 		}
 		options.outputDir = filepath.Clean(options.outputDir)
+	}
+
+	if options.ClusterOptions.Context == "" && options.cluster != "" {
+		rawConfig, err := clientcmd.NewDefaultClientConfigLoadingRules().Load()
+		if err == nil {
+			for ctxName := range rawConfig.Contexts {
+				if ctxName == options.cluster || strings.Contains(ctxName, "_"+options.cluster) || strings.HasSuffix(ctxName, options.cluster) {
+					options.ClusterOptions.Context = ctxName
+					break
+				}
+			}
+		}
 	}
 
 	kubeClient, err := kubecli.NewClient(ctx, options.ClusterOptions)
@@ -350,6 +363,9 @@ func backupObject(ctx context.Context, gcsClient, replicaClient *storage.Client,
 
 	name := obj.GetName()
 	namespace := obj.GetNamespace()
+	if namespace == "" {
+		namespace = "_cluster_scoped"
+	}
 	kind := strings.ToLower(obj.GetKind())
 	relPath := fmt.Sprintf("%s/%s/%s.yaml", namespace, kind, name)
 
@@ -412,6 +428,8 @@ func sanitizeObject(obj *unstructured.Unstructured) {
 	unstructured.RemoveNestedField(obj.Object, "metadata", "managedFields")
 	unstructured.RemoveNestedField(obj.Object, "metadata", "creationTimestamp")
 	unstructured.RemoveNestedField(obj.Object, "metadata", "ownerReferences")
+	unstructured.RemoveNestedField(obj.Object, "metadata", "finalizers")
+	unstructured.RemoveNestedField(obj.Object, "status")
 
 	annotations := obj.GetAnnotations()
 	if annotations != nil {

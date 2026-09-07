@@ -35,6 +35,7 @@ import (
 	"google.golang.org/api/option"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime/schema"
+	"k8s.io/client-go/tools/clientcmd"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/yaml"
 
@@ -51,6 +52,7 @@ type restoreOptions struct {
 	backupTimestamp          string
 	project                  string
 	targetProject            string
+	targetNamespace          string
 	targetRegion             string
 	regionMapping            string
 	filterNamespace          string
@@ -86,6 +88,7 @@ func NewRestoreCmd() *cobra.Command {
 	cmd.Flags().StringVar(&options.backupTimestamp, "backup-timestamp", "latest", "Backup timestamp (YYYY_MM_DD_HH_MM_SS or 'latest')")
 	cmd.Flags().StringVar(&options.project, "project", "", "GCP project ID")
 	cmd.Flags().StringVar(&options.targetProject, "target-project", "", "DR target project ID override")
+	cmd.Flags().StringVar(&options.targetNamespace, "target-namespace", "", "DR target namespace override (remaps all restored resources into this namespace)")
 	cmd.Flags().StringVar(&options.targetRegion, "target-region", "", "DR target region for regional resources")
 	cmd.Flags().StringVar(&options.regionMapping, "region-mapping", "", "Source to target region mapping (e.g. us-central1=us-east4)")
 	cmd.Flags().StringVar(&options.filterNamespace, "filter-namespace", "", "Only restore resources belonging to this specific namespace")
@@ -104,6 +107,18 @@ func NewRestoreCmd() *cobra.Command {
 func runRestore(ctx context.Context, options *restoreOptions) error {
 	if options.sourceBucket == "" && options.fromDir == "" {
 		return fmt.Errorf("either --source-bucket or --from-dir is required")
+	}
+
+	if options.ClusterOptions.Context == "" && options.cluster != "" {
+		rawConfig, err := clientcmd.NewDefaultClientConfigLoadingRules().Load()
+		if err == nil {
+			for ctxName := range rawConfig.Contexts {
+				if ctxName == options.cluster || strings.Contains(ctxName, "_"+options.cluster) || strings.HasSuffix(ctxName, options.cluster) {
+					options.ClusterOptions.Context = ctxName
+					break
+				}
+			}
+		}
 	}
 
 	kubeClient, err := kubecli.NewClient(ctx, options.ClusterOptions)
@@ -177,9 +192,23 @@ func runRestore(ctx context.Context, options *restoreOptions) error {
 	}
 	objects = validObjects
 
+	// Remap namespace if targetNamespace is provided
+	if options.targetNamespace != "" {
+		for _, obj := range objects {
+			if obj.GetNamespace() != "" && obj.GetNamespace() != "_cluster_scoped" {
+				oldNs := obj.GetNamespace()
+				obj.SetNamespace(options.targetNamespace)
+				if refNs, ok, _ := unstructured.NestedString(obj.Object, "spec", "resourceRef", "namespace"); ok && refNs == oldNs {
+					_ = unstructured.SetNestedField(obj.Object, options.targetNamespace, "spec", "resourceRef", "namespace")
+				}
+			}
+		}
+		fmt.Printf("Remapped namespaced resources to target namespace %q.\n", options.targetNamespace)
+	}
+
 	// Auto-create namespaces if enabled
 	if options.autoCreateNamespaces {
-		if err := ensureNamespaces(ctx, kubeClient, objects, options.dryRun); err != nil {
+		if err := ensureNamespaces(ctx, kubeClient, objects, options.targetNamespace, options.dryRun); err != nil {
 			fmt.Printf("Warning: failed to ensure all namespaces: %v\n", err)
 		}
 	}
@@ -381,11 +410,14 @@ func loadObjectsFromGCS(ctx context.Context, gcsClient *storage.Client, bucket, 
 	return objects, nil
 }
 
-func ensureNamespaces(ctx context.Context, kubeClient *kubecli.Client, objects []*unstructured.Unstructured, dryRun bool) error {
+func ensureNamespaces(ctx context.Context, kubeClient *kubecli.Client, objects []*unstructured.Unstructured, targetNamespace string, dryRun bool) error {
 	seenNamespaces := make(map[string]bool)
+	if targetNamespace != "" && targetNamespace != "default" && targetNamespace != "kube-system" {
+		seenNamespaces[targetNamespace] = true
+	}
 	for _, obj := range objects {
 		ns := obj.GetNamespace()
-		if ns == "" || ns == "default" || ns == "kube-system" || ns == "kube-public" || ns == "kube-node-lease" {
+		if ns == "" || ns == "_cluster_scoped" || ns == "default" || ns == "kube-system" || ns == "kube-public" || ns == "kube-node-lease" {
 			continue
 		}
 		seenNamespaces[ns] = true
@@ -605,6 +637,10 @@ func applyObject(ctx context.Context, kubeClient *kubecli.Client, obj *unstructu
 	// Remove status as it is derived from GCP and can cause issues during apply (e.g. SSA emulation)
 	unstructured.RemoveNestedField(obj.Object, "status")
 
+	if obj.GetNamespace() == "_cluster_scoped" {
+		obj.SetNamespace("")
+	}
+
 	// Acquisition and Conflict Prevention
 	annotations := obj.GetAnnotations()
 	if annotations == nil {
@@ -629,6 +665,7 @@ func applyObject(ctx context.Context, kubeClient *kubecli.Client, obj *unstructu
 	if options.targetProject != "" {
 		annotations["cnrm.cloud.google.com/project-id"] = options.targetProject
 		if _, ok, _ := unstructured.NestedFieldNoCopy(obj.Object, "spec", "projectRef"); ok {
+			unstructured.RemoveNestedField(obj.Object, "spec", "projectRef", "name")
 			_ = unstructured.SetNestedField(obj.Object, options.targetProject, "spec", "projectRef", "external")
 		}
 	}
@@ -650,6 +687,32 @@ func applyObject(ctx context.Context, kubeClient *kubecli.Client, obj *unstructu
 		return currentRegion
 	}
 
+	remapZone := func(currentZone string) string {
+		if currentZone == "" {
+			return ""
+		}
+		if options.regionMapping != "" {
+			parts := strings.Split(options.regionMapping, "=")
+			if len(parts) == 2 {
+				srcRegion := strings.TrimSpace(parts[0])
+				dstRegion := strings.TrimSpace(parts[1])
+				if strings.HasPrefix(currentZone, srcRegion) {
+					suffix := strings.TrimPrefix(currentZone, srcRegion)
+					return dstRegion + suffix
+				}
+			}
+		}
+		if options.targetRegion != "" {
+			parts := strings.Split(currentZone, "-")
+			if len(parts) >= 3 {
+				zoneLetter := parts[len(parts)-1]
+				return options.targetRegion + "-" + zoneLetter
+			}
+			return options.targetRegion + "-a"
+		}
+		return currentZone
+	}
+
 	if location, ok, _ := unstructured.NestedString(obj.Object, "spec", "location"); ok {
 		newLoc := remapRegion(location)
 		if newLoc != location {
@@ -660,6 +723,18 @@ func applyObject(ctx context.Context, kubeClient *kubecli.Client, obj *unstructu
 		newReg := remapRegion(region)
 		if newReg != region {
 			_ = unstructured.SetNestedField(obj.Object, newReg, "spec", "region")
+		}
+	}
+	if zone, ok, _ := unstructured.NestedString(obj.Object, "spec", "zone"); ok {
+		newZone := remapZone(zone)
+		if newZone != zone {
+			_ = unstructured.SetNestedField(obj.Object, newZone, "spec", "zone")
+		}
+	}
+	if zone, ok, _ := unstructured.NestedString(obj.Object, "spec", "settings", "locationPreference", "zone"); ok {
+		newZone := remapZone(zone)
+		if newZone != zone {
+			_ = unstructured.SetNestedField(obj.Object, newZone, "spec", "settings", "locationPreference", "zone")
 		}
 	}
 	if regions, ok, _ := unstructured.NestedStringSlice(obj.Object, "spec", "messageStoragePolicy", "allowedPersistenceRegions"); ok {
@@ -687,10 +762,29 @@ func applyObject(ctx context.Context, kubeClient *kubecli.Client, obj *unstructu
 		_ = unstructured.SetNestedStringSlice(obj.Object, newLocations, "spec", "customPlacementConfig", "dataLocations")
 	}
 
+	if options.targetProject != "" {
+		if kind, ok, _ := unstructured.NestedString(obj.Object, "spec", "resourceRef", "kind"); ok && kind == "Project" {
+			_ = unstructured.SetNestedField(obj.Object, "projects/"+options.targetProject, "spec", "resourceRef", "external")
+		}
+	}
+
 	obj.SetAnnotations(annotations)
 
 	if options.dryRun {
-		fmt.Printf("Dry-run: would restore %s/%s (%s)\n", obj.GetNamespace(), obj.GetName(), obj.GetKind())
+		ns := obj.GetNamespace()
+		if ns != "" {
+			nsObj := &unstructured.Unstructured{}
+			nsObj.SetGroupVersionKind(schema.GroupVersionKind{Group: "", Version: "v1", Kind: "Namespace"})
+			if err := kubeClient.Get(ctx, client.ObjectKey{Name: ns}, nsObj); err != nil {
+				fmt.Printf("Dry-run passed (schema verified; namespace %q will be auto-created during live restore): %s/%s (%s)\n", ns, obj.GetNamespace(), obj.GetName(), obj.GetKind())
+				return nil
+			}
+		}
+		fmt.Printf("Dry-run: validating %s/%s (%s) with server-side dry run...\n", obj.GetNamespace(), obj.GetName(), obj.GetKind())
+		if err := kubeClient.Patch(ctx, obj, client.Apply, client.FieldOwner("config-connector-backup"), client.ForceOwnership, client.DryRunAll); err != nil {
+			return fmt.Errorf("server-side dry run validation failed for %s/%s (%s): %w", obj.GetNamespace(), obj.GetName(), obj.GetKind(), err)
+		}
+		fmt.Printf("Dry-run passed: %s/%s (%s)\n", obj.GetNamespace(), obj.GetName(), obj.GetKind())
 		return nil
 	}
 

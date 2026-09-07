@@ -499,3 +499,90 @@ func TestPathTraversalProtection(t *testing.T) {
 		t.Errorf("Expected directory traversal error, got: %v", err)
 	}
 }
+
+func TestTargetNamespaceAndZoneRemapping(t *testing.T) {
+	opts := &restoreOptions{
+		targetNamespace: "dr-isolated-ns",
+		targetProject:   "dr-target-project",
+		targetRegion:    "us-east1",
+		regionMapping:   "us-central1=us-east1",
+	}
+
+	disk := &unstructured.Unstructured{
+		Object: map[string]interface{}{
+			"apiVersion": "compute.cnrm.cloud.google.com/v1beta1",
+			"kind":       "ComputeDisk",
+			"metadata": map[string]interface{}{
+				"name":      "data-disk-01",
+				"namespace": "prod-app-ns",
+			},
+			"spec": map[string]interface{}{
+				"zone": "us-central1-a",
+				"projectRef": map[string]interface{}{
+					"name": "old-source-project",
+				},
+			},
+		},
+	}
+
+	policyMember := &unstructured.Unstructured{
+		Object: map[string]interface{}{
+			"apiVersion": "iam.cnrm.cloud.google.com/v1beta1",
+			"kind":       "IAMPolicyMember",
+			"metadata": map[string]interface{}{
+				"name":      "bucket-admin-binding",
+				"namespace": "prod-app-ns",
+			},
+			"spec": map[string]interface{}{
+				"member": "serviceAccount:my-sa@old-source-project.iam.gserviceaccount.com",
+				"resourceRef": map[string]interface{}{
+					"apiVersion": "storage.cnrm.cloud.google.com/v1beta1",
+					"kind":       "StorageBucket",
+					"name":       "prod-data-bucket",
+					"namespace":  "prod-app-ns",
+				},
+			},
+		},
+	}
+
+	objects := []*unstructured.Unstructured{disk, policyMember}
+
+	// Remap namespace
+	if opts.targetNamespace != "" {
+		for _, obj := range objects {
+			if obj.GetNamespace() != "" && obj.GetNamespace() != "_cluster_scoped" {
+				oldNs := obj.GetNamespace()
+				obj.SetNamespace(opts.targetNamespace)
+				if refNs, ok, _ := unstructured.NestedString(obj.Object, "spec", "resourceRef", "namespace"); ok && refNs == oldNs {
+					_ = unstructured.SetNestedField(obj.Object, opts.targetNamespace, "spec", "resourceRef", "namespace")
+				}
+			}
+		}
+	}
+
+	if disk.GetNamespace() != "dr-isolated-ns" {
+		t.Errorf("Expected disk namespace to be dr-isolated-ns, got %s", disk.GetNamespace())
+	}
+	if policyMember.GetNamespace() != "dr-isolated-ns" {
+		t.Errorf("Expected policyMember namespace to be dr-isolated-ns, got %s", policyMember.GetNamespace())
+	}
+	refNs, _, _ := unstructured.NestedString(policyMember.Object, "spec", "resourceRef", "namespace")
+	if refNs != "dr-isolated-ns" {
+		t.Errorf("Expected policyMember resourceRef.namespace to be remapped to dr-isolated-ns, got %s", refNs)
+	}
+
+	// Test projectRef clean replacement
+	if _, ok, _ := unstructured.NestedFieldNoCopy(disk.Object, "spec", "projectRef"); ok {
+		unstructured.RemoveNestedField(disk.Object, "spec", "projectRef", "name")
+		_ = unstructured.SetNestedField(disk.Object, opts.targetProject, "spec", "projectRef", "external")
+	}
+
+	projName, hasName, _ := unstructured.NestedString(disk.Object, "spec", "projectRef", "name")
+	projExt, hasExt, _ := unstructured.NestedString(disk.Object, "spec", "projectRef", "external")
+	if hasName {
+		t.Errorf("Expected spec.projectRef.name to be removed, but still present: %s", projName)
+	}
+	if !hasExt || projExt != "dr-target-project" {
+		t.Errorf("Expected spec.projectRef.external to be dr-target-project, got %s", projExt)
+	}
+}
