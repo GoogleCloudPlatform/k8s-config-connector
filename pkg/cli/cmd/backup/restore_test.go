@@ -714,3 +714,48 @@ func TestSourceClusterAutoDetection(t *testing.T) {
 		t.Fatalf("Expected topic name auto-detected-topic, got %s", objs[0].GetName())
 	}
 }
+
+func TestRemapNamespaceReferences(t *testing.T) {
+	spec := map[string]interface{}{
+		"topicRef": map[string]interface{}{
+			"name":      "my-topic",
+			"namespace": "old-tenant",
+		},
+		"nested": map[string]interface{}{
+			"resourceRef": map[string]interface{}{
+				"name":      "nested-res",
+				"namespace": "old-tenant",
+			},
+			"other": "value",
+		},
+		"policies": []interface{}{
+			map[string]interface{}{
+				"targetPolicy": map[string]interface{}{
+					"namespace": "old-tenant",
+				},
+			},
+		},
+	}
+
+	remapNamespaceReferences(spec, "old-tenant", "new-tenant")
+
+	topicNs, ok, err := unstructured.NestedString(spec, "topicRef", "namespace")
+	if !ok || err != nil || topicNs != "new-tenant" {
+		t.Errorf("expected topicRef.namespace to be 'new-tenant', got %q", topicNs)
+	}
+
+	resNs, ok, err := unstructured.NestedString(spec, "nested", "resourceRef", "namespace")
+	if !ok || err != nil || resNs != "new-tenant" {
+		t.Errorf("expected nested.resourceRef.namespace to be 'new-tenant', got %q", resNs)
+	}
+
+	policies, ok := spec["policies"].([]interface{})
+	if !ok || len(policies) == 0 {
+		t.Fatalf("expected policies slice")
+	}
+	policyMap := policies[0].(map[string]interface{})
+	polNs, ok, err := unstructured.NestedString(policyMap, "targetPolicy", "namespace")
+	if !ok || err != nil || polNs != "new-tenant" {
+		t.Errorf("expected targetPolicy.namespace to be 'new-tenant', got %q", polNs)
+	}
+}
