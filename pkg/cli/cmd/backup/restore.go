@@ -188,6 +188,9 @@ func runRestore(ctx context.Context, options *restoreOptions) error {
 		}
 		objects = filtered
 		fmt.Printf("Filtered to %d resources in namespace %q.\n", len(objects), options.filterNamespace)
+		if len(objects) == 0 {
+			return fmt.Errorf("no resources found in backup matching namespace filter %q", options.filterNamespace)
+		}
 	}
 
 	fmt.Printf("Found %d resources in backup. Validating against target cluster...\n", len(objects))
@@ -203,8 +206,8 @@ func runRestore(ctx context.Context, options *restoreOptions) error {
 			if obj.GetNamespace() != "" && obj.GetNamespace() != "_cluster_scoped" {
 				oldNs := obj.GetNamespace()
 				obj.SetNamespace(options.targetNamespace)
-				if refNs, ok, _ := unstructured.NestedString(obj.Object, "spec", "resourceRef", "namespace"); ok && refNs == oldNs {
-					_ = unstructured.SetNestedField(obj.Object, options.targetNamespace, "spec", "resourceRef", "namespace")
+				if spec, ok := obj.Object["spec"].(map[string]interface{}); ok {
+					remapNamespaceReferences(spec, oldNs, options.targetNamespace)
 				}
 			}
 		}
@@ -238,6 +241,25 @@ func runRestore(ctx context.Context, options *restoreOptions) error {
 		return fmt.Errorf("restore encountered %d errors", failureCount)
 	}
 	return nil
+}
+
+func remapNamespaceReferences(m map[string]interface{}, oldNs, newNs string) {
+	for k, v := range m {
+		if subMap, ok := v.(map[string]interface{}); ok {
+			if strings.HasSuffix(k, "Ref") || strings.HasSuffix(k, "Policy") {
+				if ns, ok := subMap["namespace"].(string); ok && ns == oldNs {
+					subMap["namespace"] = newNs
+				}
+			}
+			remapNamespaceReferences(subMap, oldNs, newNs)
+		} else if slice, ok := v.([]interface{}); ok {
+			for _, item := range slice {
+				if itemMap, ok := item.(map[string]interface{}); ok {
+					remapNamespaceReferences(itemMap, oldNs, newNs)
+				}
+			}
+		}
+	}
 }
 
 func loadObjectsFromDir(rootDir, cluster, timestamp string, verifyIntegrity bool) ([]*unstructured.Unstructured, error) {
