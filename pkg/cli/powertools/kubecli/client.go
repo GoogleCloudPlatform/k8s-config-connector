@@ -33,7 +33,6 @@ import (
 	"k8s.io/client-go/tools/clientcmd"
 	"k8s.io/client-go/util/homedir"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-	"sigs.k8s.io/controller-runtime/pkg/client/config"
 )
 
 type Client struct {
@@ -43,25 +42,23 @@ type Client struct {
 
 func NewClient(ctx context.Context, options ClusterOptions) (*Client, error) {
 	var restConfig *rest.Config
+	loadingRules := clientcmd.NewDefaultClientConfigLoadingRules()
 	if options.Kubeconfig != "" {
-		rc, err := clientcmd.BuildConfigFromFlags("", options.Kubeconfig)
-		if err != nil {
-			return nil, fmt.Errorf("loading kubernetes configuration from %q: %w", options.Kubeconfig, err)
-		}
-		restConfig = rc
-		restConfig.QPS = 1000.0
-		restConfig.Burst = 2000
-		restConfig.Timeout = 0
-	} else {
-		rc, err := config.GetConfig()
-		if err != nil {
-			return nil, fmt.Errorf("getting kubernetes configuration: %w", err)
-		}
-		restConfig = rc
-		restConfig.QPS = 1000.0
-		restConfig.Burst = 2000
-		restConfig.Timeout = 0
+		loadingRules.ExplicitPath = options.Kubeconfig
 	}
+	configOverrides := &clientcmd.ConfigOverrides{}
+	if options.Context != "" {
+		configOverrides.CurrentContext = options.Context
+	}
+	clientConfig := clientcmd.NewNonInteractiveDeferredLoadingClientConfig(loadingRules, configOverrides)
+	rc, err := clientConfig.ClientConfig()
+	if err != nil {
+		return nil, fmt.Errorf("loading kubernetes configuration: %w", err)
+	}
+	restConfig = rc
+	restConfig.QPS = 1000.0
+	restConfig.Burst = 2000
+	restConfig.Timeout = 0
 
 	if options.Impersonate != nil {
 		restConfig.Impersonate = *options.Impersonate
