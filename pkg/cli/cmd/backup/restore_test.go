@@ -685,3 +685,32 @@ func TestCMEKAndIAMMemberRemapping(t *testing.T) {
 		t.Errorf("Expected Workload Identity member remapped to %s, got %s", expectedWI, newMemberWI)
 	}
 }
+
+func TestSourceClusterAutoDetection(t *testing.T) {
+	tempDir := t.TempDir()
+	sourceCluster := "primary-cluster-01"
+	targetCluster := "standby-cluster-02"
+	timestamp := "2026_09_07_01_00_00"
+
+	manifestDir := filepath.Join(tempDir, sourceCluster, timestamp, "default", "pubsubtopic")
+	if err := os.MkdirAll(manifestDir, 0755); err != nil {
+		t.Fatalf("Failed to create manifest dir: %v", err)
+	}
+
+	manifestContent := "apiVersion: pubsub.cnrm.cloud.google.com/v1beta1\nkind: PubSubTopic\nmetadata:\n  name: auto-detected-topic\n  namespace: default\n"
+	if err := os.WriteFile(filepath.Join(manifestDir, "auto-detected-topic.yaml"), []byte(manifestContent), 0644); err != nil {
+		t.Fatalf("Failed to write manifest: %v", err)
+	}
+
+	// Passing targetCluster ("standby-cluster-02") should auto-detect "primary-cluster-01"
+	objs, err := loadObjectsFromDir(tempDir, targetCluster, timestamp, false)
+	if err != nil {
+		t.Fatalf("loadObjectsFromDir with auto-detection failed: %v", err)
+	}
+	if len(objs) != 1 {
+		t.Fatalf("Expected 1 object after auto-detecting source cluster, got %d", len(objs))
+	}
+	if objs[0].GetName() != "auto-detected-topic" {
+		t.Fatalf("Expected topic name auto-detected-topic, got %s", objs[0].GetName())
+	}
+}

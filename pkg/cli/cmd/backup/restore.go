@@ -45,6 +45,7 @@ import (
 type restoreOptions struct {
 	kubecli.ClusterOptions
 	cluster                  string
+	sourceCluster            string
 	targetClusterLocation    string
 	sourceBucket             string
 	fallbackBucket           string
@@ -80,7 +81,8 @@ func NewRestoreCmd() *cobra.Command {
 	}
 
 	options.ClusterOptions.AddFlags(cmd)
-	cmd.Flags().StringVar(&options.cluster, "cluster", "", "Name of the cluster")
+	cmd.Flags().StringVar(&options.cluster, "cluster", "", "Name of the target cluster")
+	cmd.Flags().StringVar(&options.sourceCluster, "source-cluster", "", "Name of the source cluster whose backup is being restored (defaults to --cluster, or auto-detected if backup contains a single cluster)")
 	cmd.Flags().StringVar(&options.targetClusterLocation, "target-cluster-location", "", "Location of the target cluster")
 	cmd.Flags().StringVar(&options.sourceBucket, "source-bucket", "", "Source GCS bucket name")
 	cmd.Flags().StringVar(&options.fallbackBucket, "fallback-bucket", "", "Fallback GCS bucket name if source bucket is unreachable during outage")
@@ -126,9 +128,12 @@ func runRestore(ctx context.Context, options *restoreOptions) error {
 		return fmt.Errorf("creating kubernetes client: %w", err)
 	}
 
-	clusterName := options.cluster
-	if clusterName == "" {
-		clusterName = "default-cluster"
+	sourceCluster := options.sourceCluster
+	if sourceCluster == "" {
+		sourceCluster = options.cluster
+	}
+	if sourceCluster == "" {
+		sourceCluster = "default-cluster"
 	}
 
 	var objects []*unstructured.Unstructured
@@ -137,7 +142,7 @@ func runRestore(ctx context.Context, options *restoreOptions) error {
 			return fmt.Errorf("invalid --from-dir %q: relative path traversal sequences ('..') are prohibited", options.fromDir)
 		}
 		cleanDir := filepath.Clean(options.fromDir)
-		objs, err := loadObjectsFromDir(cleanDir, clusterName, options.backupTimestamp, options.verifyIntegrity)
+		objs, err := loadObjectsFromDir(cleanDir, sourceCluster, options.backupTimestamp, options.verifyIntegrity)
 		if err != nil {
 			return fmt.Errorf("loading objects from directory %s: %w", options.fromDir, err)
 		}
@@ -153,11 +158,11 @@ func runRestore(ctx context.Context, options *restoreOptions) error {
 		}
 		defer gcsClient.Close()
 
-		objs, err := loadObjectsFromGCS(ctx, gcsClient, options.sourceBucket, clusterName, options.backupTimestamp, options.verifyIntegrity)
+		objs, err := loadObjectsFromGCS(ctx, gcsClient, options.sourceBucket, sourceCluster, options.backupTimestamp, options.verifyIntegrity)
 		if err != nil {
 			if options.fallbackBucket != "" {
 				fmt.Printf("Notice: primary bucket gs://%s failed (%v). Failing over to replica fallback bucket gs://%s...\n", options.sourceBucket, err, options.fallbackBucket)
-				fallbackObjs, fallbackErr := loadObjectsFromGCS(ctx, gcsClient, options.fallbackBucket, clusterName, options.backupTimestamp, options.verifyIntegrity)
+				fallbackObjs, fallbackErr := loadObjectsFromGCS(ctx, gcsClient, options.fallbackBucket, sourceCluster, options.backupTimestamp, options.verifyIntegrity)
 				if fallbackErr != nil {
 					return fmt.Errorf("primary bucket gs://%s failed (%v) and fallback bucket gs://%s also failed: %w", options.sourceBucket, err, options.fallbackBucket, fallbackErr)
 				}
@@ -243,6 +248,22 @@ func loadObjectsFromDir(rootDir, cluster, timestamp string, verifyIntegrity bool
 	searchDir := filepath.Clean(rootDir)
 	// Check if rootDir contains cluster/timestamp subdirectories
 	clusterDir := filepath.Join(searchDir, cluster)
+	if fi, err := os.Stat(clusterDir); err != nil || !fi.IsDir() {
+		// Attempt auto-detect single cluster directory in searchDir
+		if entries, err := os.ReadDir(searchDir); err == nil {
+			var subDirs []string
+			for _, e := range entries {
+				if e.IsDir() && !strings.HasPrefix(e.Name(), ".") {
+					subDirs = append(subDirs, e.Name())
+				}
+			}
+			if len(subDirs) == 1 {
+				fmt.Printf("Notice: cluster %q not found in directory; auto-detected source cluster %q\n", cluster, subDirs[0])
+				cluster = subDirs[0]
+				clusterDir = filepath.Join(searchDir, cluster)
+			}
+		}
+	}
 	if fi, err := os.Stat(clusterDir); err == nil && fi.IsDir() {
 		if timestamp == "latest" || timestamp == "" {
 			entries, err := os.ReadDir(clusterDir)
@@ -335,11 +356,20 @@ func loadObjectsFromDir(rootDir, cluster, timestamp string, verifyIntegrity bool
 }
 
 func loadObjectsFromGCS(ctx context.Context, gcsClient *storage.Client, bucket, cluster, timestamp string, verifyIntegrity bool) ([]*unstructured.Unstructured, error) {
-	fmt.Printf("Loading backup from gs://%s/%s/%s/...\n", bucket, cluster, timestamp)
+	resolvedCluster := cluster
+	// Check if cluster exists in bucket; if not, attempt auto-detection
+	if _, err := findLatestBackup(ctx, gcsClient, bucket, resolvedCluster); err != nil {
+		if detected, detectErr := autoDetectClusterInGCS(ctx, gcsClient, bucket); detectErr == nil && detected != "" {
+			fmt.Printf("Notice: cluster %q not found in bucket gs://%s; auto-detected source cluster %q\n", resolvedCluster, bucket, detected)
+			resolvedCluster = detected
+		}
+	}
+
+	fmt.Printf("Loading backup from gs://%s/%s/%s/...\n", bucket, resolvedCluster, timestamp)
 
 	backupTimestamp := timestamp
 	if backupTimestamp == "latest" || backupTimestamp == "" {
-		latest, err := findLatestBackup(ctx, gcsClient, bucket, cluster)
+		latest, err := findLatestBackup(ctx, gcsClient, bucket, resolvedCluster)
 		if err != nil {
 			return nil, fmt.Errorf("finding latest backup in bucket %s: %w", bucket, err)
 		}
@@ -349,7 +379,7 @@ func loadObjectsFromGCS(ctx context.Context, gcsClient *storage.Client, bucket, 
 
 	// Read summary.json for integrity checking if available
 	var integrityMap map[string]string
-	summaryName := fmt.Sprintf("%s/%s/summary.json", cluster, backupTimestamp)
+	summaryName := fmt.Sprintf("%s/%s/summary.json", resolvedCluster, backupTimestamp)
 	summaryRc, err := gcsClient.Bucket(bucket).Object(summaryName).NewReader(ctx)
 	if err == nil {
 		defer summaryRc.Close()
@@ -371,7 +401,7 @@ func loadObjectsFromGCS(ctx context.Context, gcsClient *storage.Client, bucket, 
 		}
 	}
 
-	prefix := fmt.Sprintf("%s/%s/", cluster, backupTimestamp)
+	prefix := fmt.Sprintf("%s/%s/", resolvedCluster, backupTimestamp)
 	it := gcsClient.Bucket(bucket).Objects(ctx, &storage.Query{Prefix: prefix})
 
 	var objects []*unstructured.Unstructured
@@ -476,6 +506,33 @@ func findLatestBackup(ctx context.Context, gcsClient *storage.Client, bucket, cl
 
 	sort.Strings(timestamps)
 	return timestamps[len(timestamps)-1], nil
+}
+
+func autoDetectClusterInGCS(ctx context.Context, gcsClient *storage.Client, bucket string) (string, error) {
+	it := gcsClient.Bucket(bucket).Objects(ctx, &storage.Query{Delimiter: "/"})
+	var clusters []string
+	for {
+		attrs, err := it.Next()
+		if errors.Is(err, iterator.Done) {
+			break
+		}
+		if err != nil {
+			return "", err
+		}
+		if attrs.Prefix != "" {
+			c := strings.TrimSuffix(attrs.Prefix, "/")
+			if c != "" && c != "lost+found" {
+				clusters = append(clusters, c)
+			}
+		}
+	}
+	if len(clusters) == 1 {
+		return clusters[0], nil
+	}
+	if len(clusters) > 1 {
+		return "", fmt.Errorf("multiple clusters found in gs://%s (%s); please specify --source-cluster", bucket, strings.Join(clusters, ", "))
+	}
+	return "", fmt.Errorf("no cluster backups found in gs://%s", bucket)
 }
 
 func loadObject(ctx context.Context, gcsClient *storage.Client, bucket, objectName string) (*unstructured.Unstructured, []byte, error) {
