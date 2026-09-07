@@ -766,6 +766,101 @@ func applyObject(ctx context.Context, kubeClient *kubecli.Client, obj *unstructu
 		if kind, ok, _ := unstructured.NestedString(obj.Object, "spec", "resourceRef", "kind"); ok && kind == "Project" {
 			_ = unstructured.SetNestedField(obj.Object, "projects/"+options.targetProject, "spec", "resourceRef", "external")
 		}
+
+		// Remap IAM member project & workload identity references
+		if member, ok, _ := unstructured.NestedString(obj.Object, "spec", "member"); ok {
+			if strings.HasPrefix(member, "serviceAccount:") && strings.Contains(member, ".iam.gserviceaccount.com") {
+				parts := strings.Split(member, "@")
+				if len(parts) == 2 {
+					oldProj := strings.TrimSuffix(parts[1], ".iam.gserviceaccount.com")
+					if oldProj != "" && oldProj != options.targetProject {
+						newMember := fmt.Sprintf("%s@%s.iam.gserviceaccount.com", parts[0], options.targetProject)
+						_ = unstructured.SetNestedField(obj.Object, newMember, "spec", "member")
+					}
+				}
+			}
+			if strings.HasPrefix(member, "serviceAccount:") && strings.Contains(member, ".svc.id.goog") {
+				parts := strings.Split(member, ".svc.id.goog")
+				if len(parts) == 2 {
+					newMember := fmt.Sprintf("serviceAccount:%s.svc.id.goog%s", options.targetProject, parts[1])
+					_ = unstructured.SetNestedField(obj.Object, newMember, "spec", "member")
+				}
+			}
+		}
+	}
+
+	// Remap CMEK KMS Key references
+	remapKMSKey := func(keyPath string) string {
+		if keyPath == "" {
+			return ""
+		}
+		newPath := keyPath
+		if options.targetProject != "" && strings.HasPrefix(newPath, "projects/") {
+			parts := strings.Split(newPath, "/")
+			if len(parts) >= 2 {
+				parts[1] = options.targetProject
+				newPath = strings.Join(parts, "/")
+			}
+		}
+		if (options.regionMapping != "" || options.targetRegion != "") && strings.Contains(newPath, "/locations/") {
+			parts := strings.Split(newPath, "/")
+			for idx, part := range parts {
+				if part == "locations" && idx+1 < len(parts) {
+					parts[idx+1] = remapRegion(parts[idx+1])
+				}
+			}
+			newPath = strings.Join(parts, "/")
+		}
+		return newPath
+	}
+
+	if kmsKey, ok, _ := unstructured.NestedString(obj.Object, "spec", "kmsKeyRef", "external"); ok {
+		newKey := remapKMSKey(kmsKey)
+		if newKey != kmsKey {
+			_ = unstructured.SetNestedField(obj.Object, newKey, "spec", "kmsKeyRef", "external")
+		}
+	}
+	if kmsKey, ok, _ := unstructured.NestedString(obj.Object, "spec", "customerManagedEncryption", "kmsKeyName"); ok {
+		newKey := remapKMSKey(kmsKey)
+		if newKey != kmsKey {
+			_ = unstructured.SetNestedField(obj.Object, newKey, "spec", "customerManagedEncryption", "kmsKeyName")
+		}
+	}
+	if kmsKey, ok, _ := unstructured.NestedString(obj.Object, "spec", "encryption", "defaultKmsKeyName"); ok {
+		newKey := remapKMSKey(kmsKey)
+		if newKey != kmsKey {
+			_ = unstructured.SetNestedField(obj.Object, newKey, "spec", "encryption", "defaultKmsKeyName")
+		}
+	}
+	if kmsKey, ok, _ := unstructured.NestedString(obj.Object, "spec", "encryption", "kmsKeyName"); ok {
+		newKey := remapKMSKey(kmsKey)
+		if newKey != kmsKey {
+			_ = unstructured.SetNestedField(obj.Object, newKey, "spec", "encryption", "kmsKeyName")
+		}
+	}
+
+	// Remap Subnetwork references (projects/.../regions/.../subnetworks/...)
+	if subnet, ok, _ := unstructured.NestedString(obj.Object, "spec", "subnetworkRef", "external"); ok {
+		newSubnet := subnet
+		if options.targetProject != "" && strings.HasPrefix(newSubnet, "projects/") {
+			parts := strings.Split(newSubnet, "/")
+			if len(parts) >= 2 {
+				parts[1] = options.targetProject
+				newSubnet = strings.Join(parts, "/")
+			}
+		}
+		if (options.regionMapping != "" || options.targetRegion != "") && strings.Contains(newSubnet, "/regions/") {
+			parts := strings.Split(newSubnet, "/")
+			for idx, part := range parts {
+				if part == "regions" && idx+1 < len(parts) {
+					parts[idx+1] = remapRegion(parts[idx+1])
+				}
+			}
+			newSubnet = strings.Join(parts, "/")
+		}
+		if newSubnet != subnet {
+			_ = unstructured.SetNestedField(obj.Object, newSubnet, "spec", "subnetworkRef", "external")
+		}
 	}
 
 	obj.SetAnnotations(annotations)
