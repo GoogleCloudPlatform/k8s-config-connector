@@ -67,3 +67,40 @@ func TestExtractProjectID(t *testing.T) {
 		})
 	}
 }
+
+func TestIsShortName(t *testing.T) {
+	tests := []struct {
+		name string
+		ref  string
+		want bool
+	}{
+		{
+			name: "empty string",
+			ref:  "",
+			want: false,
+		},
+		{
+			name: "plain name",
+			ref:  "my-router",
+			want: true,
+		},
+		{
+			name: "relative path",
+			ref:  "projects/p1/regions/r1/routers/my-router",
+			want: false,
+		},
+		{
+			name: "full URI",
+			ref:  "https://www.googleapis.com/compute/v1/projects/p1/regions/r1/routers/my-router",
+			want: false,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := IsShortName(tt.ref); got != tt.want {
+				t.Errorf("IsShortName() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}

@@ -113,6 +113,7 @@ pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computerouterinterface
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computerouterinterface/computerouterinterface-direct
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computerouternat/computerouternat
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computerouternat/computerouternat-direct
+pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computerouternat/computerouternat-shortname-direct
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computerouternat/computerouternatbasic
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computerouternat/computerouternatbasic-direct
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computerouternat/computerouternatprivate

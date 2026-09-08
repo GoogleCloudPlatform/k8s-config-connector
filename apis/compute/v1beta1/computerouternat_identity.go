@@ -17,6 +17,7 @@ package v1beta1
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	apirefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
@@ -92,27 +93,46 @@ func getIdentityFromComputeRouterNATSpec(ctx context.Context, reader client.Read
 	if routerExternal == "" {
 		return nil, fmt.Errorf("cannot resolve routerRef")
 	}
+
+	// 1. Short external name
+	if !strings.Contains(routerExternal, "/") {
+		projectID, err := refs.ResolveProjectID(ctx, reader, obj)
+		if err != nil || projectID == "" {
+			return nil, fmt.Errorf("cannot resolve project: please set the 'cnrm.cloud.google.com/project-id' annotation on the ComputeRouterNAT resource when routerRef is a short name")
+		}
+
+		region := obj.Spec.Region
+		if region == "" {
+			return nil, fmt.Errorf("spec.region is required when routerRef is a short name")
+		}
+
+		identity := &ComputeRouterNATIdentity{
+			Project:          projectID,
+			Region:           region,
+			Router:           routerExternal,
+			ComputeRouterNAT: resourceID,
+		}
+		return identity, nil
+	}
+
+	// 2. Long canonical path / Full URI (or KRM Object Reference)
 	routerIdentity, err := ParseComputeRouterExternal(routerExternal)
 	if err != nil {
 		return nil, fmt.Errorf("cannot parse resolved routerRef external=%q: %w", routerExternal, err)
 	}
 
-	region := obj.Spec.Region
-	if region == "" {
-		region = routerIdentity.Region
-	}
-	if region == "" {
-		return nil, fmt.Errorf("cannot resolve region: spec.region is empty")
+	if obj.Spec.Region != "" && obj.Spec.Region != routerIdentity.Region {
+		return nil, fmt.Errorf("spec.region (%q) does not match routerRef region (%q)", obj.Spec.Region, routerIdentity.Region)
 	}
 
-	projectID, err := refs.ResolveProjectID(ctx, reader, obj)
-	if err != nil {
-		return nil, fmt.Errorf("cannot resolve project")
+	annotationProject := obj.GetAnnotations()["cnrm.cloud.google.com/project-id"]
+	if annotationProject != "" && annotationProject != routerIdentity.Project {
+		return nil, fmt.Errorf("project-id annotation (%q) does not match routerRef project (%q)", annotationProject, routerIdentity.Project)
 	}
 
 	identity := &ComputeRouterNATIdentity{
-		Project:          projectID,
-		Region:           region,
+		Project:          routerIdentity.Project,
+		Region:           routerIdentity.Region,
 		Router:           routerIdentity.Router,
 		ComputeRouterNAT: resourceID,
 	}

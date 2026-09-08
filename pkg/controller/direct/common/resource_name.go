@@ -43,3 +43,12 @@ func ExtractProjectID(resourceName string) string {
 	}
 	return ""
 }
+
+// IsShortName checks if a reference string is a simple resource identifier.
+// It returns true if the string is not empty and does not contain any path separators ("/").
+func IsShortName(name string) bool {
+	if name == "" {
+		return false
+	}
+	return !strings.Contains(name, "/")
+}

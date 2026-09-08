@@ -16,6 +16,7 @@ package v1beta1
 
 import (
 	"context"
+	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
@@ -69,6 +70,9 @@ func (r *ComputeRouterRef) SetExternal(ref string) {
 
 func (r *ComputeRouterRef) ValidateExternal(ref string) error {
 	trimmedRef := apirefs.TrimComputeURIPrefix(ref)
+	if !strings.Contains(trimmedRef, "/") {
+		return nil
+	}
 	id := &ComputeRouterIdentity{}
 	if err := id.FromExternal(trimmedRef); err != nil {
 		return err
