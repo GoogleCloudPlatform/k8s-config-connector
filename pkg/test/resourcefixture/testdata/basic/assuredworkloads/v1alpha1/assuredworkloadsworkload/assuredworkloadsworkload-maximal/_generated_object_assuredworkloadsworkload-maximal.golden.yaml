@@ -12,7 +12,7 @@ metadata:
   namespace: ${uniqueId}
 spec:
   billingAccountRef:
-    external: billingAccounts/${billingAccountID}
+    external: billingAccounts/123456-777777-000001
   complianceRegime: FEDRAMP_HIGH
   displayName: Upd Max ${uniqueId}
   location: us-central1

@@ -719,6 +719,12 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 		})
 	}
 
+	if billingAccountID := testgcp.TestBillingAccountID.Get(); billingAccountID != "" && billingAccountID != "123456-777777-000001" {
+		visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+			return strings.ReplaceAll(s, billingAccountID, "123456-777777-000001")
+		})
+	}
+
 	// Specific to RapidMigrationAssessment
 	if u.GroupVersionKind().Group == "rapidmigrationassessment.cnrm.cloud.google.com" {
 		visitor.ReplacePath(".status.observedState.bucket", "normalized-bucket")
@@ -1100,11 +1106,6 @@ func findLinksInKRMObject(t *testing.T, replacement *Replacements, u *unstructur
 		case ".spec.organizationRef.external":
 			id := strings.TrimPrefix(s, "organizations/")
 			replacement.PathIDs[id] = "${organizationID}"
-		case ".spec.billingAccountRef.external":
-			id := strings.TrimPrefix(s, "billingAccounts/")
-			if id == testgcp.TestBillingAccountID.Get() && id != "" {
-				replacement.PathIDs[id] = "${billingAccountID}"
-			}
 		case ".status.writerIdentity":
 			if strings.HasPrefix(s, "serviceAccount:service-org-") && strings.HasSuffix(s, "@gcp-sa-logging.iam.gserviceaccount.com") {
 				id := strings.TrimSuffix(strings.TrimPrefix(s, "serviceAccount:service-org-"), "@gcp-sa-logging.iam.gserviceaccount.com")
