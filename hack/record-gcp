@@ -46,12 +46,17 @@ export RUN_TESTS
 if [[ -z "${GCP_PROJECT_ID:-}" ]]; then
   GCP_PROJECT_ID=$(gcloud config get-value project)
 fi
+export GCP_PROJECT_ID
 echo "Using project: ${GCP_PROJECT_ID}"
 
-TEST_FOLDER_ID=$(gcloud projects describe ${GCP_PROJECT_ID} --format='value(parent.id)')
+if [[ -z "${TEST_FOLDER_ID:-}" ]]; then
+  TEST_FOLDER_ID=$(gcloud projects describe ${GCP_PROJECT_ID} --format='value(parent.id)')
+fi
 export TEST_FOLDER_ID
 
-TEST_ORG_ID=$(gcloud projects get-ancestors ${GCP_PROJECT_ID} | grep organization | cut -f1 -d ' ')
+if [[ -z "${TEST_ORG_ID:-}" ]]; then
+  TEST_ORG_ID=$(gcloud projects get-ancestors ${GCP_PROJECT_ID} | grep organization | cut -f1 -d ' ')
+fi
 export TEST_ORG_ID
 
 if [[ -z "${TEST_BILLING_ACCOUNT_ID:-}" ]]; then

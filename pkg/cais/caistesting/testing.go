@@ -157,6 +157,16 @@ func NormalizeDynamicIDs(s string) string {
 				lines[i] = line[:start] + "${folderId}"
 			}
 		}
+		// Normalize AssuredWorkloads Workload IDs: locations/.../workloads/<workloadId>
+		if idx := strings.Index(line, "/workloads/"); idx != -1 {
+			start := idx + len("/workloads/")
+			end := strings.Index(line[start:], "/")
+			if end != -1 {
+				lines[i] = line[:start] + "${workloadID}" + line[start+end:]
+			} else {
+				lines[i] = line[:start] + "${workloadID}"
+			}
+		}
 	}
 	return strings.Join(lines, "\n")
 }

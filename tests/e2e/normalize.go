@@ -110,6 +110,7 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 	visitor.replacePaths[".status.observedState.creationTimestamp"] = mockgcpregistry.PlaceholderTime
 	visitor.replacePaths[".status.observedState.oauth2ClientID"] = "888888888888888888888"
 	visitor.replacePaths[".status.observedState.deleteLockExpireTime"] = mockgcpregistry.PlaceholderTime
+	visitor.replacePaths[".status.observedState.resources[].resourceID"] = int64(12345678)
 
 	// LicenseManager
 	visitor.replacePaths[".status.observedState.currentBillingInfo.startTime"] = mockgcpregistry.PlaceholderTimestamp
@@ -652,6 +653,11 @@ func buildKRMNormalizer(t *testing.T, u *unstructured.Unstructured, project test
 					visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
 						return strings.ReplaceAll(s, uuid, "${keyHandleID}")
 					})
+				case "workloads":
+					workloadId := tokens[len(tokens)-1]
+					visitor.stringTransforms = append(visitor.stringTransforms, func(path string, s string) string {
+						return strings.ReplaceAll(s, workloadId, "${workloadID}")
+					})
 				}
 			}
 		}
@@ -1094,6 +1100,11 @@ func findLinksInKRMObject(t *testing.T, replacement *Replacements, u *unstructur
 		case ".spec.organizationRef.external":
 			id := strings.TrimPrefix(s, "organizations/")
 			replacement.PathIDs[id] = "${organizationID}"
+		case ".spec.billingAccountRef.external":
+			id := strings.TrimPrefix(s, "billingAccounts/")
+			if id == testgcp.TestBillingAccountID.Get() && id != "" {
+				replacement.PathIDs[id] = "${billingAccountID}"
+			}
 		case ".status.writerIdentity":
 			if strings.HasPrefix(s, "serviceAccount:service-org-") && strings.HasSuffix(s, "@gcp-sa-logging.iam.gserviceaccount.com") {
 				id := strings.TrimSuffix(strings.TrimPrefix(s, "serviceAccount:service-org-"), "@gcp-sa-logging.iam.gserviceaccount.com")
@@ -1120,6 +1131,13 @@ func findLinksInKRMObject(t *testing.T, replacement *Replacements, u *unstructur
 				if len(parts) > 0 {
 					phraseMatcherID := parts[len(parts)-1]
 					replacement.PathIDs[phraseMatcherID] = "${phraseMatcherID}"
+				}
+			}
+			if u.GetKind() == "AssuredWorkloadsWorkload" {
+				parts := strings.Split(s, "/")
+				if len(parts) > 0 {
+					workloadID := parts[len(parts)-1]
+					replacement.PathIDs[workloadID] = "${workloadID}"
 				}
 			}
 		}
@@ -1151,6 +1169,9 @@ func NormalizeHTTPLog(t *testing.T, events test.LogEntries, services mockgcpregi
 	}
 	if uniqueID != "" {
 		normalizer.Replacements.PathIDs[uniqueID] = "${uniqueId}"
+	}
+	if billingAccountID := testgcp.TestBillingAccountID.Get(); billingAccountID != "" {
+		normalizer.Replacements.PathIDs[billingAccountID] = "${billingAccountID}"
 	}
 
 	// Find any URLs
@@ -1192,6 +1213,34 @@ func NormalizeHTTPLog(t *testing.T, events test.LogEntries, services mockgcpregi
 				for _, match := range matches {
 					if len(match) > 1 {
 						normalizer.Replacements.PathIDs[match[1]] = "${viewId}"
+					}
+				}
+			}
+		}
+	}
+
+	// Find AssuredWorkloads workload IDs in URL or Body and add to PathIDs
+	workloadIDRegex := regexp.MustCompile(`/workloads/([a-zA-Z0-9_-]+)`)
+	for _, event := range events {
+		if !strings.Contains(event.Request.URL, "assuredworkloads") {
+			continue
+		}
+		if matches := workloadIDRegex.FindStringSubmatch(event.Request.URL); len(matches) > 1 {
+			normalizer.Replacements.PathIDs[matches[1]] = "${workloadID}"
+		}
+		if event.Response.Body != "" {
+			if matches := workloadIDRegex.FindAllStringSubmatch(event.Response.Body, -1); len(matches) > 0 {
+				for _, match := range matches {
+					if len(match) > 1 {
+						normalizer.Replacements.PathIDs[match[1]] = "${workloadID}"
+					}
+				}
+			}
+			workloadResourceIDRegex := regexp.MustCompile(`"resourceId":\s*"?(\d+)"?`)
+			if matches := workloadResourceIDRegex.FindAllStringSubmatch(event.Response.Body, -1); len(matches) > 0 {
+				for _, match := range matches {
+					if len(match) > 1 {
+						normalizer.Replacements.PathIDs[match[1]] = "${folderID}"
 					}
 				}
 			}

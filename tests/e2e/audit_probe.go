@@ -91,6 +91,9 @@ func runAutoRESTProbe(ctx context.Context, t *testing.T, h *create.Harness, fixt
 			t.Logf("Warning: failed to create probe GET request for %q: %v", u, err)
 			continue
 		}
+		if project.ProjectID != "" {
+			req.Header.Set("X-Goog-User-Project", project.ProjectID)
+		}
 		resp, err := probeClient.Do(req)
 		if err != nil {
 			t.Logf("Warning: failed to execute probe GET request for %q: %v", u, err)

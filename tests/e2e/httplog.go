@@ -119,6 +119,16 @@ func RemoveExtraEvents(events test.LogEntries) test.LogEntries {
 		return true
 	})
 
+	// Remove retried DeleteWorkload requests while child resources are being deleted
+	events = events.KeepIf(func(e *test.LogEntry) bool {
+		if e.Request.Method == "DELETE" && strings.Contains(e.Request.URL, "assuredworkloads.googleapis.com") {
+			if e.Response.StatusCode == 400 && strings.Contains(e.Response.Body, "contains projects or other resources that are not deleted") {
+				return false
+			}
+		}
+		return true
+	})
+
 	return events
 }
 
