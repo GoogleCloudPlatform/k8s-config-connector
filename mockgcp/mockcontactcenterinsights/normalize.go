@@ -31,15 +31,35 @@ func (s *MockService) ConfigureVisitor(url string, replacements mockgcpregistry.
 	replacements.ReplacePath("updateTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath("activationUpdateTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath("revisionCreateTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath("startTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath("messageTime", "1970-01-01T00:00:01Z")
 
 	replacements.ReplacePath(".createTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".updateTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".activationUpdateTime", mockgcpregistry.PlaceholderTimestamp)
 	replacements.ReplacePath(".revisionCreateTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".startTime", mockgcpregistry.PlaceholderTimestamp)
+	replacements.ReplacePath(".messageTime", "1970-01-01T00:00:01Z")
 
 	replacements.RemovePath("source")
 	replacements.RemovePath(".source")
 	replacements.RemovePath(".response.source")
+
+	replacements.TransformObject("", func(m map[string]any) {
+		// Under qualityMetadata.agentInfo[], transform "team" to "teams" list.
+		if qm, ok := m["qualityMetadata"].(map[string]any); ok {
+			if agentInfo, ok := qm["agentInfo"].([]any); ok {
+				for _, a := range agentInfo {
+					if agent, ok := a.(map[string]any); ok {
+						if team, ok := agent["team"].(string); ok {
+							agent["teams"] = []any{team}
+							delete(agent, "team")
+						}
+					}
+				}
+			}
+		}
+	})
 }
 
 func (s *MockService) Previsit(event mockgcpregistry.Event, replacements mockgcpregistry.NormalizingVisitor) {
