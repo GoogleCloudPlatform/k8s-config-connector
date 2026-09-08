@@ -17,10 +17,18 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
+# Avoid git config errors when GIT_CONFIG_GLOBAL/SYSTEM are set to /dev/null
+if [[ "${GIT_CONFIG_GLOBAL:-}" == "/dev/null" ]]; then
+  export GIT_CONFIG_GLOBAL=""
+fi
+if [[ "${GIT_CONFIG_SYSTEM:-}" == "/dev/null" ]]; then
+  export GIT_CONFIG_SYSTEM=""
+fi
+
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd ${REPO_ROOT}
 
 if [[ -z "${KUBEBUILDER_ASSETS:-}" ]] || [[ ! -d "${KUBEBUILDER_ASSETS}" ]]; then
   echo "Downloading envtest assets..."
-  export KUBEBUILDER_ASSETS=$(go run sigs.k8s.io/controller-runtime/tools/setup-envtest@release-0.22 use -p path)
+  export KUBEBUILDER_ASSETS=$(GIT_CONFIG_GLOBAL="" GIT_CONFIG_SYSTEM="" go run sigs.k8s.io/controller-runtime/tools/setup-envtest@release-0.22 use -p path)
 fi
