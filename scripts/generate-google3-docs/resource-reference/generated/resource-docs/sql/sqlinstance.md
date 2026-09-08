@@ -203,6 +203,13 @@ settings:
     minLength: integer
     passwordChangeInterval: string
     reuseInterval: integer
+  performanceCaptureConfig:
+    enabled: boolean
+    probeThreshold: integer
+    probingIntervalSeconds: integer
+    runningThreadsThreshold: integer
+    secondsBehindSourceThreshold: integer
+    transactionDurationThreshold: integer
   pricingPlan: string
   replicationType: string
   sqlServerAuditConfig:
@@ -1531,6 +1538,76 @@ settings:
         <td>
             <p><code class="apitype">integer</code></p>
             <p>Number of previous passwords that cannot be reused.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>settings.performanceCaptureConfig</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">object</code></p>
+            <p></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>settings.performanceCaptureConfig.enabled</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">boolean</code></p>
+            <p>True if Performance Capture feature is enabled.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>settings.performanceCaptureConfig.probeThreshold</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>Specifies the minimum number of consecutive probe threshold that triggers performance capture.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>settings.performanceCaptureConfig.probingIntervalSeconds</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>Specifies the interval in seconds between consecutive probes that check if any trigger condition thresholds have been reached.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>settings.performanceCaptureConfig.runningThreadsThreshold</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>Specifies the minimum number of MySQL `Threads_running` to trigger the performance capture on the primary instance.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>settings.performanceCaptureConfig.secondsBehindSourceThreshold</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>Specifies the minimum number of seconds replica must be lagging behind primary instance to trigger the performance capture on replica.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>settings.performanceCaptureConfig.transactionDurationThreshold</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">integer</code></p>
+            <p>Specifies the amount of time in seconds that a transaction needs to have been open before the watcher starts recording it.</p>
         </td>
     </tr>
     <tr>
