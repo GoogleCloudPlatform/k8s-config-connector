@@ -1,0 +1,5 @@
+- gvk:
+    group: datamigration.cnrm.cloud.google.com
+    kind: DatabaseMigrationConnectionProfile
+    version: v1alpha1
+  resourceID: db-cp-max-${uniqueId}

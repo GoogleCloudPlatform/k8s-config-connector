@@ -25,9 +25,11 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/k8s"
 	"google.golang.org/protobuf/proto"
 	corev1 "k8s.io/api/core/v1"
+	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/klog/v2"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -199,9 +201,27 @@ func (o *operationBase) UpdateStatus(ctx context.Context, typedStatus any, ready
 	}
 
 	u := o.object
+	if u.GetResourceVersion() == "" && u.GetName() != "" {
+		latest := &unstructured.Unstructured{}
+		latest.SetGroupVersionKind(u.GroupVersionKind())
+		if err := o.client.Get(ctx, types.NamespacedName{Name: u.GetName(), Namespace: u.GetNamespace()}, latest); err == nil {
+			u.SetResourceVersion(latest.GetResourceVersion())
+		}
+	}
 	u.Object["status"] = status
 
 	if err := o.client.Status().Update(ctx, u); err != nil {
+		if apierrors.IsConflict(err) {
+			latest := &unstructured.Unstructured{}
+			latest.SetGroupVersionKind(u.GroupVersionKind())
+			if getErr := o.client.Get(ctx, types.NamespacedName{Name: u.GetName(), Namespace: u.GetNamespace()}, latest); getErr == nil {
+				latest.Object["status"] = status
+				if updateErr := o.client.Status().Update(ctx, latest); updateErr == nil {
+					*u = *latest
+					return nil
+				}
+			}
+		}
 		return fmt.Errorf("updating object status: %w", err)
 	}
 

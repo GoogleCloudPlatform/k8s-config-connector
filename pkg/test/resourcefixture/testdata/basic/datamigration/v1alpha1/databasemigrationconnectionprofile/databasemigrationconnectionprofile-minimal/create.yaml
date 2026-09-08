@@ -1,0 +1,15 @@
+apiVersion: datamigration.cnrm.cloud.google.com/v1alpha1
+kind: DatabaseMigrationConnectionProfile
+metadata:
+  name: db-cp-min-${uniqueId}
+spec:
+  projectRef:
+    external: ${projectId}
+  location: us-central1
+  displayName: Sample Connection Profile
+  postgresql:
+    host: "10.0.0.1"
+    port: 5432
+    username: "postgres"
+    password: "Password123!"
+    staticIPConnectivity: {}
