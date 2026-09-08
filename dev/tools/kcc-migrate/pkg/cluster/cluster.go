@@ -152,3 +152,12 @@ func (k *KubectlClient) ApplyDirectory(dirPath string, dryRun bool) (string, err
 	}
 	return k.RunCommand(args...)
 }
+
+// ApplyFile applies a single manifest file to the target cluster.
+func (k *KubectlClient) ApplyFile(filePath string, dryRun bool) (string, error) {
+	args := []string{"apply", "-f", filePath}
+	if dryRun {
+		args = append(args, "--dry-run=server")
+	}
+	return k.RunCommand(args...)
+}
