@@ -2,8 +2,6 @@
 [naming_violation] file=apis/agentsearch/v1alpha1/agentsearchservingconfig_reference.go prefix=agentsearchservingconfig (expected a valid resource kind prefix)
 [naming_violation] file=apis/aiplatform/v1alpha1/recursive_types.go prefix=recursive (expected a valid resource kind prefix)
 [naming_violation] file=apis/cloudbuild/v1beta1/repository_reference.go prefix=repository (expected a valid resource kind prefix)
-[naming_violation] file=apis/clouddms/v1alpha1/connectionprofile_identity.go prefix=connectionprofile (expected a valid resource kind prefix)
-[naming_violation] file=apis/clouddms/v1alpha1/connectionprofile_reference.go prefix=connectionprofile (expected a valid resource kind prefix)
 [naming_violation] file=apis/cloudsecuritycompliance/v1alpha1/cloudsecuritycompliancecloudcontrolgroup_identity.go prefix=cloudsecuritycompliancecloudcontrolgroup (expected a valid resource kind prefix)
 [naming_violation] file=apis/cloudsecuritycompliance/v1alpha1/cloudsecuritycompliancecloudcontrolgroup_reference.go prefix=cloudsecuritycompliancecloudcontrolgroup (expected a valid resource kind prefix)
 [naming_violation] file=apis/cloudsecuritycompliance/v1alpha1/cloudsecuritycompliancecontrol_identity.go prefix=cloudsecuritycompliancecontrol (expected a valid resource kind prefix)
