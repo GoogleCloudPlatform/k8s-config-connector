@@ -117,6 +117,7 @@ BLOCKED_KINDS=(
     "CloudBatchResourceAllowance"
     "CloudBuildConnection"
     "CloudIdentityDevice"
+    "CloudNumberRegistryIpamAdminScope"
     "CloudRunInstance"
     "CloudRunWorkerPool"
     "CloudSecurityComplianceCloudControl"

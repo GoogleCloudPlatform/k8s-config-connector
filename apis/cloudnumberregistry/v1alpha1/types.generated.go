@@ -17,82 +17,49 @@
 // krm.group: cloudnumberregistry.cnrm.cloud.google.com
 // krm.version: v1alpha1
 // proto.service: google.cloud.numberregistry.v1alpha
-// resource: CloudNumberRegistryRegistryBook:RegistryBook
+// resource: CloudNumberRegistryIpamAdminScope:IpamAdminScope
 
 package v1alpha1
 
-/* found existing non-generated go type with proto tag "google.cloud.numberregistry.v1alpha.RegistryBook", skipping
+/* found existing non-generated go type with proto tag "google.cloud.numberregistry.v1alpha.IpamAdminScope", skipping
 
-// +kcc:proto=google.cloud.numberregistry.v1alpha.RegistryBook
-type RegistryBook struct {
-	// Required. Identifier. The resource name of the RegistryBook.
-	// +kcc:proto:field=google.cloud.numberregistry.v1alpha.RegistryBook.name
+// +kcc:proto=google.cloud.numberregistry.v1alpha.IpamAdminScope
+type IpamAdminScope struct {
+	// Required. Identifier. The resource name of the IpamAdminScope.
+	// +kcc:proto:field=google.cloud.numberregistry.v1alpha.IpamAdminScope.name
 	Name *string `json:"name,omitempty"`
 
+	// Required. Add-on platforms that are enabled for this IpamAdminScope. Cloud
+	//  Number Registry only discovers the IP addresses from the enabled platforms.
+	// +kcc:proto:field=google.cloud.numberregistry.v1alpha.IpamAdminScope.enabled_addon_platforms
+	EnabledAddonPlatforms []string `json:"enabledAddonPlatforms,omitempty"`
+
+	// Required. Administrative scopes enabled for IP address discovery and
+	//  management. For example, "organizations/1234567890". Minimum of 1 scope is
+	//  required. In preview, only one organization scope is allowed.
+	// +kcc:proto:field=google.cloud.numberregistry.v1alpha.IpamAdminScope.scopes
+	Scopes []string `json:"scopes,omitempty"`
+
 	// Optional. User-defined labels.
-	// +kcc:proto:field=google.cloud.numberregistry.v1alpha.RegistryBook.labels
+	// +kcc:proto:field=google.cloud.numberregistry.v1alpha.IpamAdminScope.labels
 	Labels map[string]string `json:"labels,omitempty"`
-
-	// Optional. List of scopes claimed by the RegistryBook. In Preview, Only
-	//  project scope is supported. Each scope is in the format of
-	//  projects/{project}. Each scope can only be claimed once.
-	// +kcc:proto:field=google.cloud.numberregistry.v1alpha.RegistryBook.claimed_scopes
-	ClaimedScopes []string `json:"claimedScopes,omitempty"`
 }
 */
 
-/* found existing non-generated go type with proto tag "google.cloud.numberregistry.v1alpha.RegistryBook.AggregatedData", skipping
+/* found existing non-generated go type with proto tag "google.cloud.numberregistry.v1alpha.IpamAdminScope", skipping
 
-// +kcc:proto=google.cloud.numberregistry.v1alpha.RegistryBook.AggregatedData
-type RegistryBook_AggregatedData struct {
-}
-*/
+// +kcc:observedstate:proto=google.cloud.numberregistry.v1alpha.IpamAdminScope
+type IpamAdminScopeObservedState struct {
+	// Output only. State of resource discovery pipeline.
+	// +kcc:proto:field=google.cloud.numberregistry.v1alpha.IpamAdminScope.state
+	State *string `json:"state,omitempty"`
 
-/* found existing non-generated go type with proto tag "google.cloud.numberregistry.v1alpha.RegistryBook", skipping
-
-// +kcc:observedstate:proto=google.cloud.numberregistry.v1alpha.RegistryBook
-type RegistryBookObservedState struct {
-	// Output only. The time at which the RegistryBook was created.
-	// +kcc:proto:field=google.cloud.numberregistry.v1alpha.RegistryBook.create_time
+	// Output only. The time at which the IpamAdminScope was created.
+	// +kcc:proto:field=google.cloud.numberregistry.v1alpha.IpamAdminScope.create_time
 	CreateTime *string `json:"createTime,omitempty"`
 
-	// Output only. The time at which the RegistryBook was last updated.
-	// +kcc:proto:field=google.cloud.numberregistry.v1alpha.RegistryBook.update_time
+	// Output only. The time at which the IpamAdminScope was last updated.
+	// +kcc:proto:field=google.cloud.numberregistry.v1alpha.IpamAdminScope.update_time
 	UpdateTime *string `json:"updateTime,omitempty"`
-
-	// Output only. Whether the RegistryBook is the default one.
-	// +kcc:proto:field=google.cloud.numberregistry.v1alpha.RegistryBook.is_default
-	IsDefault *bool `json:"isDefault,omitempty"`
-
-	// Output only. Aggregated data for the RegistryBook. Populated only when the
-	//  view is AGGREGATE.
-	// +kcc:proto:field=google.cloud.numberregistry.v1alpha.RegistryBook.aggregated_data
-	AggregatedData *RegistryBook_AggregatedDataObservedState `json:"aggregatedData,omitempty"`
-}
-*/
-
-/* found existing non-generated go type "RegistryBook_AggregatedDataObservedState", skipping
-
-// +kcc:observedstate:proto=google.cloud.numberregistry.v1alpha.RegistryBook.AggregatedData
-type RegistryBook_AggregatedDataObservedState struct {
-	// Output only. Number of scopes unique to the RegistryBook.
-	// +kcc:proto:field=google.cloud.numberregistry.v1alpha.RegistryBook.AggregatedData.unique_scopes_count
-	UniqueScopesCount *int32 `json:"uniqueScopesCount,omitempty"`
-
-	// Output only. Number of discovered Realms in the RegistryBook.
-	// +kcc:proto:field=google.cloud.numberregistry.v1alpha.RegistryBook.AggregatedData.discovered_realms_count
-	DiscoveredRealmsCount *int32 `json:"discoveredRealmsCount,omitempty"`
-
-	// Output only. Number of DiscoveredRanges in the RegistryBook.
-	// +kcc:proto:field=google.cloud.numberregistry.v1alpha.RegistryBook.AggregatedData.discovered_ranges_count
-	DiscoveredRangesCount *int32 `json:"discoveredRangesCount,omitempty"`
-
-	// Output only. Number of custom Realms in the RegistryBook.
-	// +kcc:proto:field=google.cloud.numberregistry.v1alpha.RegistryBook.AggregatedData.custom_realms_count
-	CustomRealmsCount *int32 `json:"customRealmsCount,omitempty"`
-
-	// Output only. Number of CustomRanges in the RegistryBook.
-	// +kcc:proto:field=google.cloud.numberregistry.v1alpha.RegistryBook.AggregatedData.custom_ranges_count
-	CustomRangesCount *int32 `json:"customRangesCount,omitempty"`
 }
 */
