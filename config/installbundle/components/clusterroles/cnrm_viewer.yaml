@@ -831,6 +831,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - lustre.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - managedkafka.cnrm.cloud.google.com
   resources:
   - '*'
