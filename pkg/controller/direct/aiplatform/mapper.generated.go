@@ -32,7 +32,7 @@ import (
 	krmcomputev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
-	apiextensionsv1 "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/aiplatform/apiextensionsv1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/aiplatform/apiextensionsv1"
 )
 
 /* found existing non-generated mapping function "AIPlatformModelObservedState_FromProto", skipping
