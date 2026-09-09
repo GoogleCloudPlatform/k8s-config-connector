@@ -30,6 +30,50 @@ import (
 	pb "github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct/cloudnumberregistry/pb"
 )
 
+func CloudNumberRegistryIpamAdminScopeObservedState_FromProto(mapCtx *direct.MapContext, in *pb.IpamAdminScope) *krm.CloudNumberRegistryIpamAdminScopeObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CloudNumberRegistryIpamAdminScopeObservedState{}
+	// MISSING: Name
+	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
+	out.CreateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetCreateTime())
+	out.UpdateTime = direct.StringTimestamp_FromProto(mapCtx, in.GetUpdateTime())
+	return out
+}
+func CloudNumberRegistryIpamAdminScopeObservedState_ToProto(mapCtx *direct.MapContext, in *krm.CloudNumberRegistryIpamAdminScopeObservedState) *pb.IpamAdminScope {
+	if in == nil {
+		return nil
+	}
+	out := &pb.IpamAdminScope{}
+	// MISSING: Name
+	out.State = direct.Enum_ToProto[pb.IpamAdminScope_DiscoveryPipelineState](mapCtx, in.State)
+	out.CreateTime = direct.StringTimestamp_ToProto(mapCtx, in.CreateTime)
+	out.UpdateTime = direct.StringTimestamp_ToProto(mapCtx, in.UpdateTime)
+	return out
+}
+func CloudNumberRegistryIpamAdminScopeSpec_FromProto(mapCtx *direct.MapContext, in *pb.IpamAdminScope) *krm.CloudNumberRegistryIpamAdminScopeSpec {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CloudNumberRegistryIpamAdminScopeSpec{}
+	// MISSING: Name
+	out.EnabledAddonPlatforms = direct.EnumSlice_FromProto(mapCtx, in.EnabledAddonPlatforms)
+	out.Scopes = in.Scopes
+	out.Labels = in.Labels
+	return out
+}
+func CloudNumberRegistryIpamAdminScopeSpec_ToProto(mapCtx *direct.MapContext, in *krm.CloudNumberRegistryIpamAdminScopeSpec) *pb.IpamAdminScope {
+	if in == nil {
+		return nil
+	}
+	out := &pb.IpamAdminScope{}
+	// MISSING: Name
+	out.EnabledAddonPlatforms = direct.EnumSlice_ToProto[pb.IpamAdminScope_AddOnPlatform](mapCtx, in.EnabledAddonPlatforms)
+	out.Scopes = in.Scopes
+	out.Labels = in.Labels
+	return out
+}
 func CloudNumberRegistryRegistryBookObservedState_FromProto(mapCtx *direct.MapContext, in *pb.RegistryBook) *krm.CloudNumberRegistryRegistryBookObservedState {
 	if in == nil {
 		return nil

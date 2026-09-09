@@ -18,8 +18,34 @@
 // krm.version: v1alpha1
 // proto.service: google.cloud.numberregistry.v1alpha
 // resource: CloudNumberRegistryRegistryBook:RegistryBook
+// resource: CloudNumberRegistryIpamAdminScope:IpamAdminScope
 
 package v1alpha1
+
+/* found existing non-generated go type with proto tag "google.cloud.numberregistry.v1alpha.IpamAdminScope", skipping
+
+// +kcc:proto=google.cloud.numberregistry.v1alpha.IpamAdminScope
+type IpamAdminScope struct {
+	// Required. Identifier. The resource name of the IpamAdminScope.
+	// +kcc:proto:field=google.cloud.numberregistry.v1alpha.IpamAdminScope.name
+	Name *string `json:"name,omitempty"`
+
+	// Required. Add-on platforms that are enabled for this IpamAdminScope. Cloud
+	//  Number Registry only discovers the IP addresses from the enabled platforms.
+	// +kcc:proto:field=google.cloud.numberregistry.v1alpha.IpamAdminScope.enabled_addon_platforms
+	EnabledAddonPlatforms []string `json:"enabledAddonPlatforms,omitempty"`
+
+	// Required. Administrative scopes enabled for IP address discovery and
+	//  management. For example, "organizations/1234567890". Minimum of 1 scope is
+	//  required. In preview, only one organization scope is allowed.
+	// +kcc:proto:field=google.cloud.numberregistry.v1alpha.IpamAdminScope.scopes
+	Scopes []string `json:"scopes,omitempty"`
+
+	// Optional. User-defined labels.
+	// +kcc:proto:field=google.cloud.numberregistry.v1alpha.IpamAdminScope.labels
+	Labels map[string]string `json:"labels,omitempty"`
+}
+*/
 
 /* found existing non-generated go type with proto tag "google.cloud.numberregistry.v1alpha.RegistryBook", skipping
 
@@ -45,6 +71,24 @@ type RegistryBook struct {
 
 // +kcc:proto=google.cloud.numberregistry.v1alpha.RegistryBook.AggregatedData
 type RegistryBook_AggregatedData struct {
+}
+*/
+
+/* found existing non-generated go type with proto tag "google.cloud.numberregistry.v1alpha.IpamAdminScope", skipping
+
+// +kcc:observedstate:proto=google.cloud.numberregistry.v1alpha.IpamAdminScope
+type IpamAdminScopeObservedState struct {
+	// Output only. State of resource discovery pipeline.
+	// +kcc:proto:field=google.cloud.numberregistry.v1alpha.IpamAdminScope.state
+	State *string `json:"state,omitempty"`
+
+	// Output only. The time at which the IpamAdminScope was created.
+	// +kcc:proto:field=google.cloud.numberregistry.v1alpha.IpamAdminScope.create_time
+	CreateTime *string `json:"createTime,omitempty"`
+
+	// Output only. The time at which the IpamAdminScope was last updated.
+	// +kcc:proto:field=google.cloud.numberregistry.v1alpha.IpamAdminScope.update_time
+	UpdateTime *string `json:"updateTime,omitempty"`
 }
 */
 
