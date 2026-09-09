@@ -29,7 +29,12 @@ if [[ -z "${CONTROLLERBUILDER}" ]]; then
 fi
 source "${REPO_ROOT}/dev/tools/goimports.sh"
 cd ${REPO_ROOT}/dev/tools/controllerbuilder
-./generate-proto.sh
+
+# We need a newer googleapis to get google.cloud.aiplatform.v1beta1.OnlineEvaluator
+PROTO_SHA="62cbe9611031cb808431dc0806d5042c4b7fefd8"
+PROTO_OUT="${REPO_ROOT}/.build/googleapis-${PROTO_SHA}.pb"
+
+./generate-proto.sh ${PROTO_SHA} ${PROTO_OUT}
 
 
 ${CONTROLLERBUILDER} generate-types \
@@ -43,14 +48,16 @@ ${CONTROLLERBUILDER} generate-types \
     --resource VertexAIStudy:Study \
     --resource VertexAITrainingPipeline:TrainingPipeline \
     --resource VertexAISchedule:Schedule \
-    --resource AIPlatformOnlineEvaluator:google.cloud.aiplatform.v1beta1.OnlineEvaluator
+    --resource AIPlatformOnlineEvaluator:google.cloud.aiplatform.v1beta1.OnlineEvaluator \
+    --proto-source-path ${PROTO_OUT}
 
 # Handled recursive self-referential fields by defining ListValue, Value, and ExplanationParameters manually in recursive_types.go
 
 ${CONTROLLERBUILDER} generate-mapper \
     --service google.cloud.aiplatform.v1 \
     --api-version aiplatform.cnrm.cloud.google.com/v1alpha1 \
-    --include-skipped-output
+    --include-skipped-output \
+    --proto-source-path ${PROTO_OUT}
 
 cd ${REPO_ROOT}
 dev/tasks/generate-crds
