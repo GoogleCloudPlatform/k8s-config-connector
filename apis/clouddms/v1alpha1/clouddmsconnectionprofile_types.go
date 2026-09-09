@@ -175,6 +175,10 @@ type CloudDMSConnectionProfileObservedState struct {
 	// +kcc:proto:field=google.cloud.clouddms.v1.ConnectionProfile.postgresql
 	Postgresql *PostgreSQLConnectionProfileObservedState `json:"postgresql,omitempty"`
 
+	// An Oracle database connection profile.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ConnectionProfile.oracle
+	Oracle *OracleConnectionProfileObservedState `json:"oracle,omitempty"`
+
 	// A CloudSQL database connection profile.
 	// +kcc:proto:field=google.cloud.clouddms.v1.ConnectionProfile.cloudsql
 	Cloudsql *CloudSQLConnectionProfileObservedState `json:"cloudsql,omitempty"`
@@ -358,4 +362,11 @@ type PostgreSQLConnectionProfileObservedState struct {
 	//  the network architecture it's associated with.
 	// +kcc:proto:field=google.cloud.clouddms.v1.PostgreSqlConnectionProfile.network_architecture
 	NetworkArchitecture *string `json:"networkArchitecture,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.clouddms.v1.OracleConnectionProfile
+type OracleConnectionProfileObservedState struct {
+	// Output only. Indicates If this connection profile password is stored.
+	// +kcc:proto:field=google.cloud.clouddms.v1.OracleConnectionProfile.password_set
+	PasswordSet *bool `json:"passwordSet,omitempty"`
 }

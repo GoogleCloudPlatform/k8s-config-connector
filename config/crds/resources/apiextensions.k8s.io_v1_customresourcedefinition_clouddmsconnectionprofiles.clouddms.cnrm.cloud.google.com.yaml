@@ -799,6 +799,14 @@ spec:
                             type: string
                         type: object
                     type: object
+                  oracle:
+                    description: An Oracle database connection profile.
+                    properties:
+                      passwordSet:
+                        description: Output only. Indicates If this connection profile
+                          password is stored.
+                        type: boolean
+                    type: object
                   postgresql:
                     description: A PostgreSQL database connection profile.
                     properties:

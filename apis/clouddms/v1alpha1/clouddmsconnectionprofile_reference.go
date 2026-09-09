@@ -65,7 +65,7 @@ func (r *CloudDMSConnectionProfileRef) SetExternal(ref string) {
 
 func (r *CloudDMSConnectionProfileRef) ValidateExternal(ref string) error {
 	id := &CloudDMSConnectionProfileIdentity{}
-	if err := id.FromExternal(r.GetExternal()); err != nil {
+	if err := id.FromExternal(ref); err != nil {
 		return err
 	}
 	return nil

@@ -178,6 +178,7 @@ func CloudDMSConnectionProfileObservedState_FromProto(mapCtx *direct.MapContext,
 	out.State = direct.Enum_FromProto(mapCtx, in.GetState())
 	out.Mysql = MySQLConnectionProfileObservedState_FromProto(mapCtx, in.GetMysql())
 	out.Postgresql = PostgreSQLConnectionProfileObservedState_FromProto(mapCtx, in.GetPostgresql())
+	out.Oracle = OracleConnectionProfileObservedState_FromProto(mapCtx, in.GetOracle())
 	out.Cloudsql = CloudSQLConnectionProfileObservedState_FromProto(mapCtx, in.GetCloudsql())
 	out.Error = CloudDMSPrivateConnectionStatus_FromProto(mapCtx, in.GetError())
 	return out
@@ -197,6 +198,9 @@ func CloudDMSConnectionProfileObservedState_ToProto(mapCtx *direct.MapContext, i
 	}
 	if oneof := PostgreSQLConnectionProfileObservedState_ToProto(mapCtx, in.Postgresql); oneof != nil {
 		out.ConnectionProfile = &pb.ConnectionProfile_Postgresql{Postgresql: oneof}
+	}
+	if oneof := OracleConnectionProfileObservedState_ToProto(mapCtx, in.Oracle); oneof != nil {
+		out.ConnectionProfile = &pb.ConnectionProfile_Oracle{Oracle: oneof}
 	}
 	if oneof := CloudSQLConnectionProfileObservedState_ToProto(mapCtx, in.Cloudsql); oneof != nil {
 		out.ConnectionProfile = &pb.ConnectionProfile_Cloudsql{Cloudsql: oneof}

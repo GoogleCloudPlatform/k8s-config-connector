@@ -676,6 +676,40 @@ func OracleConnectionProfile_ToProto(mapCtx *direct.MapContext, in *krm.OracleCo
 	}
 	return out
 }
+func OracleConnectionProfileObservedState_FromProto(mapCtx *direct.MapContext, in *pb.OracleConnectionProfile) *krm.OracleConnectionProfileObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.OracleConnectionProfileObservedState{}
+	// MISSING: Host
+	// MISSING: Port
+	// MISSING: Username
+	// MISSING: Password
+	out.PasswordSet = direct.LazyPtr(in.GetPasswordSet())
+	// MISSING: DatabaseService
+	// MISSING: SSL
+	// MISSING: StaticServiceIPConnectivity
+	// MISSING: ForwardSSHConnectivity
+	// MISSING: PrivateConnectivity
+	return out
+}
+func OracleConnectionProfileObservedState_ToProto(mapCtx *direct.MapContext, in *krm.OracleConnectionProfileObservedState) *pb.OracleConnectionProfile {
+	if in == nil {
+		return nil
+	}
+	out := &pb.OracleConnectionProfile{}
+	// MISSING: Host
+	// MISSING: Port
+	// MISSING: Username
+	// MISSING: Password
+	out.PasswordSet = direct.ValueOf(in.PasswordSet)
+	// MISSING: DatabaseService
+	// MISSING: SSL
+	// MISSING: StaticServiceIPConnectivity
+	// MISSING: ForwardSSHConnectivity
+	// MISSING: PrivateConnectivity
+	return out
+}
 func PostgreSQLConnectionProfileObservedState_FromProto(mapCtx *direct.MapContext, in *pb.PostgreSqlConnectionProfile) *krm.PostgreSQLConnectionProfileObservedState {
 	if in == nil {
 		return nil
