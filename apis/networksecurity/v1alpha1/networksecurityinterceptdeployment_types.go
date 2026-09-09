@@ -16,6 +16,7 @@ package v1alpha1
 
 import (
 	computev1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/compute/v1beta1"
+	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/kccscheme"
 	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/apis/k8s/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -120,4 +121,5 @@ type NetworkSecurityInterceptDeploymentList struct {
 
 func init() {
 	SchemeBuilder.Register(&NetworkSecurityInterceptDeployment{}, &NetworkSecurityInterceptDeploymentList{})
+	kccscheme.RegisterType(NetworkSecurityInterceptDeploymentGVK, &NetworkSecurityInterceptDeployment{})
 }
