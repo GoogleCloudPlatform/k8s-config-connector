@@ -25,6 +25,7 @@
 // resource: VertexAIStudy:Study
 // resource: VertexAITrainingPipeline:TrainingPipeline
 // resource: VertexAISchedule:Schedule
+// resource: AIPlatformReasoningEngine:ReasoningEngine
 
 package v1alpha1
 
@@ -1538,6 +1539,32 @@ type Schedule_RunResponse struct {
 	// The response of the scheduled run.
 	// +kcc:proto:field=google.cloud.aiplatform.v1.Schedule.RunResponse.run_response
 	RunResponse *string `json:"runResponse,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.SecretEnvVar
+type SecretEnvVar struct {
+	// Required. Name of the secret environment variable.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.SecretEnvVar.name
+	Name *string `json:"name,omitempty"`
+
+	// Required. Reference to a secret stored in the Cloud Secret Manager that
+	//  will provide the value for this environment variable.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.SecretEnvVar.secret_ref
+	SecretRef *SecretRef `json:"secretRef,omitempty"`
+}
+
+// +kcc:proto=google.cloud.aiplatform.v1.SecretRef
+type SecretRef struct {
+	// Required. The name of the secret in Cloud Secret Manager.
+	//  Format: {secret_name}.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.SecretRef.secret
+	Secret *string `json:"secret,omitempty"`
+
+	// The Cloud Secret Manager secret version.
+	//  Can be 'latest' for the latest version, an integer for a specific
+	//  version, or a version alias.
+	// +kcc:proto:field=google.cloud.aiplatform.v1.SecretRef.version
+	Version *string `json:"version,omitempty"`
 }
 
 // +kcc:proto=google.cloud.aiplatform.v1.SmoothGradConfig
