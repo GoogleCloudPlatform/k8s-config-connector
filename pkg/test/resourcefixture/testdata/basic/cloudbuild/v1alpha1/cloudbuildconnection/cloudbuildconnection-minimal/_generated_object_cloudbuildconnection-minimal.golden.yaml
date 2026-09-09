@@ -1,0 +1,40 @@
+apiVersion: cloudbuild.cnrm.cloud.google.com/v1alpha1
+kind: CloudBuildConnection
+metadata:
+  finalizers:
+  - cnrm.cloud.google.com/finalizer
+  - cnrm.cloud.google.com/deletion-defender
+  generation: 1
+  labels:
+    cnrm-test: "true"
+  name: cloudbuildconnection-min-${uniqueId}
+  namespace: ${uniqueId}
+spec:
+  githubConfig:
+    authorizerCredential:
+      oauthTokenSecretVersionRef:
+        name: secretmanagersecretversion-${uniqueId}
+  location: us-central1
+  projectRef:
+    external: ${projectId}
+status:
+  conditions:
+  - lastTransitionTime: "1970-01-01T00:00:00Z"
+    message: The resource is up to date
+    reason: UpToDate
+    status: "True"
+    type: Ready
+  externalRef: projects/${projectId}/locations/us-central1/connections/cloudbuildconnection-min-${uniqueId}
+  observedGeneration: 1
+  observedState:
+    createTime: "1970-01-01T00:00:00Z"
+    etag: abcdef123456
+    githubConfig:
+      authorizerCredential: {}
+    installationState:
+      actionURI: https://accounts.google.com/AccountChooser?continue=https%3A%2F%2Fconsole.cloud.google.com%2Fm%2Fgcb%2Fgithub%2Flocations%2Fus-central1%2Foauth_v2%3Fconnection_name%3Dprojects%252F${projectNumber}%252Flocations%252Fus-central1%252Fconnections%252Fcloudbuildconnection-min-${uniqueId}
+      message: Please log in to https://github.com using a robot account and then
+        follow this link to authorize Cloud Build to access that account. After authorization,
+        your GitHub authorization token will be stored in Cloud Secret Manager.
+      stage: PENDING_USER_OAUTH
+    updateTime: "1970-01-01T00:00:00Z"
