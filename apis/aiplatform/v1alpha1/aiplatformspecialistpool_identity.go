@@ -26,41 +26,46 @@ import (
 )
 
 var (
-	_ identity.IdentityV2 = &VertexAISpecialistPoolIdentity{}
-	_ identity.Resource   = &VertexAISpecialistPool{}
+	_ identity.IdentityV2 = &AIPlatformSpecialistPoolIdentity{}
+	_ identity.Resource   = &AIPlatformSpecialistPool{}
 )
 
-var VertexAISpecialistPoolIdentityFormat = gcpurls.Template[VertexAISpecialistPoolIdentity]("aiplatform.googleapis.com", "projects/{project}/locations/{location}/specialistPools/{specialistPool}")
+var AIPlatformSpecialistPoolIdentityFormat = gcpurls.Template[AIPlatformSpecialistPoolIdentity]("aiplatform.googleapis.com", "projects/{project}/locations/{location}/specialistPools/{specialistPool}")
 
+// AIPlatformSpecialistPoolIdentity is the identity of a GCP AIPlatformSpecialistPool resource.
 // +k8s:deepcopy-gen=false
-type VertexAISpecialistPoolIdentity struct {
+type AIPlatformSpecialistPoolIdentity struct {
 	Project        string
 	Location       string
 	SpecialistPool string
 }
 
-func (i *VertexAISpecialistPoolIdentity) String() string {
-	return VertexAISpecialistPoolIdentityFormat.ToString(*i)
+func (i *AIPlatformSpecialistPoolIdentity) String() string {
+	return AIPlatformSpecialistPoolIdentityFormat.ToString(*i)
 }
 
-func (i *VertexAISpecialistPoolIdentity) FromExternal(ref string) error {
-	parsed, match, err := VertexAISpecialistPoolIdentityFormat.Parse(ref)
+func (i *AIPlatformSpecialistPoolIdentity) ParentString() string {
+	return "projects/" + i.Project + "/locations/" + i.Location
+}
+
+func (i *AIPlatformSpecialistPoolIdentity) FromExternal(ref string) error {
+	parsed, match, err := AIPlatformSpecialistPoolIdentityFormat.Parse(ref)
 	if err != nil {
-		return fmt.Errorf("format of VertexAISpecialistPool external=%q was not known (use %s): %w", ref, VertexAISpecialistPoolIdentityFormat.CanonicalForm(), err)
+		return fmt.Errorf("format of AIPlatformSpecialistPool external=%q was not known (use %s): %w", ref, AIPlatformSpecialistPoolIdentityFormat.CanonicalForm(), err)
 	}
 	if !match {
-		return fmt.Errorf("format of VertexAISpecialistPool external=%q was not known (use %s)", ref, VertexAISpecialistPoolIdentityFormat.CanonicalForm())
+		return fmt.Errorf("format of AIPlatformSpecialistPool external=%q was not known (use %s)", ref, AIPlatformSpecialistPoolIdentityFormat.CanonicalForm())
 	}
 
 	*i = *parsed
 	return nil
 }
 
-func (i *VertexAISpecialistPoolIdentity) Host() string {
-	return VertexAISpecialistPoolIdentityFormat.Host()
+func (i *AIPlatformSpecialistPoolIdentity) Host() string {
+	return AIPlatformSpecialistPoolIdentityFormat.Host()
 }
 
-func getIdentityFromVertexAISpecialistPoolSpec(ctx context.Context, reader client.Reader, obj client.Object) (*VertexAISpecialistPoolIdentity, error) {
+func getIdentityFromAIPlatformSpecialistPoolSpec(ctx context.Context, reader client.Reader, obj client.Object) (*AIPlatformSpecialistPoolIdentity, error) {
 	resourceID, err := refs.GetResourceID(obj)
 	if err != nil {
 		return nil, fmt.Errorf("cannot resolve resource ID")
@@ -76,7 +81,7 @@ func getIdentityFromVertexAISpecialistPoolSpec(ctx context.Context, reader clien
 		return nil, fmt.Errorf("cannot resolve project")
 	}
 
-	identity := &VertexAISpecialistPoolIdentity{
+	identity := &AIPlatformSpecialistPoolIdentity{
 		Project:        projectID,
 		Location:       location,
 		SpecialistPool: resourceID,
@@ -84,8 +89,8 @@ func getIdentityFromVertexAISpecialistPoolSpec(ctx context.Context, reader clien
 	return identity, nil
 }
 
-func (obj *VertexAISpecialistPool) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
-	specIdentity, err := getIdentityFromVertexAISpecialistPoolSpec(ctx, reader, obj)
+func (obj *AIPlatformSpecialistPool) GetIdentity(ctx context.Context, reader client.Reader) (identity.Identity, error) {
+	specIdentity, err := getIdentityFromAIPlatformSpecialistPoolSpec(ctx, reader, obj)
 	if err != nil {
 		return nil, err
 	}
@@ -93,13 +98,13 @@ func (obj *VertexAISpecialistPool) GetIdentity(ctx context.Context, reader clien
 	externalRef := common.ValueOf(obj.Status.ExternalRef)
 	if externalRef != "" {
 		// Validate desired with actual
-		statusIdentity := &VertexAISpecialistPoolIdentity{}
+		statusIdentity := &AIPlatformSpecialistPoolIdentity{}
 		if err := statusIdentity.FromExternal(externalRef); err != nil {
 			return nil, err
 		}
 
 		if statusIdentity.String() != specIdentity.String() {
-			return nil, fmt.Errorf("cannot change VertexAISpecialistPool identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
+			return nil, fmt.Errorf("cannot change AIPlatformSpecialistPool identity (old=%q, new=%q)", statusIdentity.String(), specIdentity.String())
 		}
 	}
 
