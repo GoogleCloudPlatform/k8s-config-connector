@@ -275,7 +275,7 @@ you create the resource.</p>
         </td>
         <td>
             <p><code class="apitype">string</code></p>
-            <p>Immutable. Type of network endpoints in this network endpoint group. Defaults to SERVERLESS Default value: "SERVERLESS" Possible values: ["SERVERLESS", "PRIVATE_SERVICE_CONNECT"].</p>
+            <p>Immutable. Type of network endpoints in this network endpoint group. Defaults to SERVERLESS. Default value: "SERVERLESS" Possible values: ["SERVERLESS", "PRIVATE_SERVICE_CONNECT", "INTERNET_IP_PORT", "INTERNET_FQDN_PORT", "GCE_VM_IP_PORTMAP"].</p>
         </td>
     </tr>
     <tr>
