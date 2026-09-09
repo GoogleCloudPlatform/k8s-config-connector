@@ -272,6 +272,7 @@ func (a *interceptDeploymentAdapter) Delete(ctx context.Context, deleteOp *direc
 	return true, nil
 }
 
+// compareInterceptDeployment compares the actual and desired InterceptDeployment state, returning the diff and update field mask.
 func compareInterceptDeployment(ctx context.Context, actual, desired *pb.InterceptDeployment) (*structuredreporting.Diff, *fieldmaskpb.FieldMask, error) {
 	maskedActual, err := mappers.OnlySpecFields(actual, NetworkSecurityInterceptDeploymentSpec_v1alpha1_FromProto, NetworkSecurityInterceptDeploymentSpec_v1alpha1_ToProto)
 	if err != nil {
