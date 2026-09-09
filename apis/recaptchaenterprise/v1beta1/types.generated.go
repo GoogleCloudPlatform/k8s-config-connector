@@ -64,6 +64,7 @@ type AppleDeveloperID struct {
 
 /* unreachable type ExpressKeySettings
 // +kcc:proto=google.cloud.recaptchaenterprise.v1.ExpressKeySettings
+// +kubebuilder:validation:XPreserveUnknownFields
 type ExpressKeySettings struct {
 }
 */

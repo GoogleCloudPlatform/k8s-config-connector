@@ -85,6 +85,7 @@ type Index_IndexField_VectorConfig struct {
 
 /* unreachable type Index_IndexField_VectorConfig_FlatIndex
 // +kcc:proto=google.firestore.admin.v1.Index.IndexField.VectorConfig.FlatIndex
+// +kubebuilder:validation:XPreserveUnknownFields
 type Index_IndexField_VectorConfig_FlatIndex struct {
 }
 */

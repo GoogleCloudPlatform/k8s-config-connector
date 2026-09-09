@@ -1,0 +1,6 @@
+- caisURL: //binaryauthorization.googleapis.com/projects/${projectId}/platforms/gke/policies/binauthz-maximal-${uniqueId}
+  group: binaryauthorization.cnrm.cloud.google.com
+  kind: BinaryAuthorizationPlatformPolicy
+  name: binauthz-maximal-${uniqueId}
+  namespace: ${uniqueId}
+  version: v1alpha1

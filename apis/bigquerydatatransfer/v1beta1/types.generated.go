@@ -29,6 +29,7 @@ type EmailPreferences struct {
 }
 
 // +kcc:proto=google.cloud.bigquery.datatransfer.v1.ManualSchedule
+// +kubebuilder:validation:XPreserveUnknownFields
 type ManualSchedule struct {
 }
 

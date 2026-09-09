@@ -325,6 +325,7 @@ spec:
                       invokes StartManualTransferRuns.  This is equivalent to disable_auto_scheduling
                       = true.
                     type: object
+                    x-kubernetes-preserve-unknown-fields: true
                   timeBasedSchedule:
                     description: Time based transfer schedule options. This is the
                       default schedule option.
@@ -804,6 +805,7 @@ spec:
                       invokes StartManualTransferRuns.  This is equivalent to disable_auto_scheduling
                       = true.
                     type: object
+                    x-kubernetes-preserve-unknown-fields: true
                   timeBasedSchedule:
                     description: Time based transfer schedule options. This is the
                       default schedule option.

@@ -285,6 +285,7 @@ type KeyHandle struct {
 
 /* unreachable type KeyOperationAttestation
 // +kcc:proto=google.cloud.kms.v1.KeyOperationAttestation
+// +kubebuilder:validation:XPreserveUnknownFields
 type KeyOperationAttestation struct {
 }
 */
@@ -307,6 +308,7 @@ type KeyOperationAttestation_CertificateChains struct {
 /* found existing non-generated go type with proto tag "google.cloud.kms.v1.KeyRing", skipping
 
 // +kcc:proto=google.cloud.kms.v1.KeyRing
+// +kubebuilder:validation:XPreserveUnknownFields
 type KeyRing struct {
 }
 */

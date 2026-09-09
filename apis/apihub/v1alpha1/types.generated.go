@@ -162,6 +162,7 @@ type ConfigVariableTemplate struct {
 }
 
 // +kcc:proto=google.cloud.apihub.v1.Curation.PluginInstanceActionID
+// +kubebuilder:validation:XPreserveUnknownFields
 type Curation_PluginInstanceActionID struct {
 }
 
@@ -292,10 +293,12 @@ type PluginActionConfig struct {
 }
 
 // +kcc:proto=google.cloud.apihub.v1.SourceMetadata
+// +kubebuilder:validation:XPreserveUnknownFields
 type SourceMetadata struct {
 }
 
 // +kcc:proto=google.cloud.apihub.v1.SourceMetadata.PluginInstanceActionSource
+// +kubebuilder:validation:XPreserveUnknownFields
 type SourceMetadata_PluginInstanceActionSource struct {
 }
 

@@ -205,6 +205,7 @@ spec:
                         Operations. For more information, see [Use Sensitive Data
                         Protection data in context-aware analytics](https://cloud.google.com/chronicle/docs/detection/usecase-dlp-high-risk-user-download).
                       type: object
+                      x-kubernetes-preserve-unknown-fields: true
                     publishToDataplexCatalog:
                       description: Publishes a portion of each profile to Dataplex
                         Catalog with the aspect type Sensitive Data Protection Profile.
@@ -222,6 +223,7 @@ spec:
                       description: Publishes findings to Security Command Center for
                         each data profile.
                       type: object
+                      x-kubernetes-preserve-unknown-fields: true
                     tagResources:
                       description: Tags the profiled resources with the specified
                         tag values.
@@ -337,10 +339,12 @@ spec:
                       globalProcessing:
                         description: Processing will happen in the global region.
                         type: object
+                        x-kubernetes-preserve-unknown-fields: true
                       multiRegionProcessing:
                         description: Processing will happen in a multi-region that
                           contains the current region if available.
                         type: object
+                        x-kubernetes-preserve-unknown-fields: true
                     type: object
                 type: object
               projectRef:
@@ -489,6 +493,7 @@ spec:
                           description: Tables that match this filter will not have
                             profiles created.
                           type: object
+                          x-kubernetes-preserve-unknown-fields: true
                         filter:
                           description: Required. The tables the discovery cadence
                             applies to. The first target with a matching filter will
@@ -501,6 +506,7 @@ spec:
                                 If none is specified, a default one will be added
                                 automatically.
                               type: object
+                              x-kubernetes-preserve-unknown-fields: true
                             tableReference:
                               description: The table to scan. Discovery configurations
                                 including this can only include one DiscoveryTarget
@@ -585,6 +591,7 @@ spec:
                           description: Disable profiling for database resources that
                             match this filter.
                           type: object
+                          x-kubernetes-preserve-unknown-fields: true
                         filter:
                           description: Required. The tables the discovery cadence
                             applies to. The first target with a matching filter will
@@ -665,6 +672,7 @@ spec:
                                 If none is specified, a default one will be added
                                 automatically.
                               type: object
+                              x-kubernetes-preserve-unknown-fields: true
                           type: object
                         generationCadence:
                           description: How often and when to update profiles. New
@@ -748,6 +756,7 @@ spec:
                           description: Optional. Disable profiling for buckets that
                             match this filter.
                           type: object
+                          x-kubernetes-preserve-unknown-fields: true
                         filter:
                           description: Required. The buckets the generation_cadence
                             applies to. The first target with a matching filter will
@@ -813,6 +822,7 @@ spec:
                                 configuration. If none is specified, a default one
                                 will be added automatically.
                               type: object
+                              x-kubernetes-preserve-unknown-fields: true
                           type: object
                         generationCadence:
                           description: Optional. How often and when to update profiles.
@@ -876,10 +886,12 @@ spec:
                           description: 'Required. The type of data profiles generated
                             by this discovery target. Supported values are: * aws/s3/bucket'
                           type: object
+                          x-kubernetes-preserve-unknown-fields: true
                         disabled:
                           description: Disable profiling for resources that match
                             this filter.
                           type: object
+                          x-kubernetes-preserve-unknown-fields: true
                         filter:
                           description: Required. The resources that the discovery
                             cadence applies to. The first target with a matching filter
@@ -929,6 +941,7 @@ spec:
                                 configuration. If none is specified, a default one
                                 will be added automatically.
                               type: object
+                              x-kubernetes-preserve-unknown-fields: true
                             singleResource:
                               description: The resource to scan. Configs using this
                                 filter can only have one target (the target with this
@@ -981,6 +994,7 @@ spec:
                         as vulnerabilities to Security Command Center. Only one target
                         of this type is allowed.
                       type: object
+                      x-kubernetes-preserve-unknown-fields: true
                     vertexDatasetTarget:
                       description: Vertex AI dataset target for Discovery. The first
                         target to match a dataset will be the one applied. Note that
@@ -1008,6 +1022,7 @@ spec:
                           description: Disable profiling for datasets that match this
                             filter.
                           type: object
+                          x-kubernetes-preserve-unknown-fields: true
                         filter:
                           description: Required. The datasets the discovery cadence
                             applies to. The first target with a matching filter will
@@ -1045,6 +1060,7 @@ spec:
                                 If none is specified, a default one will be added
                                 automatically.
                               type: object
+                              x-kubernetes-preserve-unknown-fields: true
                             vertexDatasetResourceReference:
                               description: The dataset resource to scan. Targets including
                                 this can only include one target (the target with
