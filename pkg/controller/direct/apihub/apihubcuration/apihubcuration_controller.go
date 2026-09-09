@@ -175,11 +175,12 @@ func (a *Adapter) Update(ctx context.Context, updateOp *directbase.UpdateOperati
 
 	if !diffs.HasDiff() {
 		log.V(2).Info("no field needs update", "name", a.id.String())
-		return nil
+		return a.updateStatus(ctx, updateOp, a.actual)
 	}
 
 	for _, path := range diffs.Fields {
 		if path.ID == "endpoint" {
+			_ = a.updateStatus(ctx, updateOp, a.actual)
 			return fmt.Errorf("field %q is immutable and cannot be updated", path.ID)
 		}
 	}
