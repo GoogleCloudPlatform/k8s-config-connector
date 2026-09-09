@@ -17,6 +17,7 @@ package v1beta1
 import (
 	"fmt"
 	"reflect"
+	"strings"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -104,4 +105,13 @@ func ValidateNameAndExternal(name, external string) error {
 		return fmt.Errorf("must specify either name or external")
 	}
 	return nil
+}
+
+// IsShortName checks if a reference string is a simple resource identifier.
+// It returns true if the string is not empty and does not contain any path separators ("/").
+func IsShortName(name string) bool {
+	if name == "" {
+		return false
+	}
+	return !strings.Contains(name, "/")
 }

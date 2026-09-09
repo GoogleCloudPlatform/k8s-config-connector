@@ -17,7 +17,6 @@ package v1beta1
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/GoogleCloudPlatform/k8s-config-connector/apis/common/identity"
 	apirefs "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs"
@@ -86,18 +85,15 @@ func getIdentityFromComputeRouterNATSpec(ctx context.Context, reader client.Read
 	}
 
 	routerRef := &obj.Spec.RouterRef
-	if err := routerRef.Normalize(ctx, reader, obj.Namespace); err != nil {
-		return nil, fmt.Errorf("cannot normalize routerRef: %w", err)
-	}
 	routerExternal := routerRef.External
-	if routerExternal == "" {
-		return nil, fmt.Errorf("cannot resolve routerRef")
-	}
 
 	// 1. Short external name
-	if !strings.Contains(routerExternal, "/") {
+	if routerExternal != "" && refs.IsShortName(routerExternal) {
 		projectID, err := refs.ResolveProjectID(ctx, reader, obj)
 		if err != nil || projectID == "" {
+			if err != nil {
+				return nil, fmt.Errorf("cannot resolve project: please set the 'cnrm.cloud.google.com/project-id' annotation on the ComputeRouterNAT resource when routerRef is a short name: %w", err)
+			}
 			return nil, fmt.Errorf("cannot resolve project: please set the 'cnrm.cloud.google.com/project-id' annotation on the ComputeRouterNAT resource when routerRef is a short name")
 		}
 
@@ -115,7 +111,16 @@ func getIdentityFromComputeRouterNATSpec(ctx context.Context, reader client.Read
 		return identity, nil
 	}
 
-	// 2. Long canonical path / Full URI (or KRM Object Reference)
+	// 2. Standard reference format (long URI or KRM reference)
+	if err := routerRef.Normalize(ctx, reader, obj.Namespace); err != nil {
+		return nil, fmt.Errorf("cannot normalize routerRef: %w", err)
+	}
+	routerExternal = routerRef.External
+	if routerExternal == "" {
+		return nil, fmt.Errorf("cannot resolve routerRef")
+	}
+
+	// 3. Long canonical path / Full URI (or KRM Object Reference)
 	routerIdentity, err := ParseComputeRouterExternal(routerExternal)
 	if err != nil {
 		return nil, fmt.Errorf("cannot parse resolved routerRef external=%q: %w", routerExternal, err)

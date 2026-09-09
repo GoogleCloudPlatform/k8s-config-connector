@@ -375,7 +375,8 @@ X-Xss-Protection: 0
   "nats": [
     {
       "autoNetworkTier": "PREMIUM",
-      "effectiveTcpTimeWaitTimeoutSec": 120,
+      "effectiveTcpTimeWaitTimeoutSec": 30,
+      "enableEndpointIndependentMapping": false,
       "endpointTypes": [
         "ENDPOINT_TYPE_VM"
       ],
@@ -489,7 +490,8 @@ X-Xss-Protection: 0
   "nats": [
     {
       "autoNetworkTier": "PREMIUM",
-      "effectiveTcpTimeWaitTimeoutSec": 120,
+      "effectiveTcpTimeWaitTimeoutSec": 30,
+      "enableEndpointIndependentMapping": false,
       "endpointTypes": [
         "ENDPOINT_TYPE_VM"
       ],
@@ -595,7 +597,8 @@ X-Xss-Protection: 0
   "nats": [
     {
       "autoNetworkTier": "PREMIUM",
-      "effectiveTcpTimeWaitTimeoutSec": 120,
+      "effectiveTcpTimeWaitTimeoutSec": 30,
+      "enableEndpointIndependentMapping": false,
       "endpointTypes": [
         "ENDPOINT_TYPE_VM"
       ],
