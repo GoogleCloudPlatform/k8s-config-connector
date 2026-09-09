@@ -48,7 +48,7 @@ type ComputeNetworkEndpointGroupSpec struct {
 	INTERNAL_MANAGED, and INTERNAL_SELF_MANAGED and 2) support the RATE or
 	CONNECTION balancing modes.
 
-	Possible values include: GCE_VM_IP, GCE_VM_IP_PORT, and NON_GCP_PRIVATE_IP_PORT. Default value: "GCE_VM_IP_PORT" Possible values: ["GCE_VM_IP", "GCE_VM_IP_PORT", "NON_GCP_PRIVATE_IP_PORT"]. */
+	Possible values include: GCE_VM_IP, GCE_VM_IP_PORT, NON_GCP_PRIVATE_IP_PORT, INTERNET_IP_PORT, INTERNET_FQDN_PORT, SERVERLESS, and PRIVATE_SERVICE_CONNECT. Default value: "GCE_VM_IP_PORT" Possible values: ["GCE_VM_IP", "GCE_VM_IP_PORT", "NON_GCP_PRIVATE_IP_PORT", "INTERNET_IP_PORT", "INTERNET_FQDN_PORT", "SERVERLESS", "PRIVATE_SERVICE_CONNECT", "GCE_VM_IP_DEDICATED_BACKEND"]`. */
 	// +optional
 	// +kcc:proto:field=google.cloud.compute.v1.NetworkEndpointGroup.network_endpoint_type
 	NetworkEndpointType *string `json:"networkEndpointType,omitempty"`

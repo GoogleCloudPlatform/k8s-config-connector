@@ -1,0 +1,348 @@
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "autoCreateSubnetworks": true,
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "description": "Default network for the project",
+  "id": "000000000000000000000",
+  "kind": "compute#network",
+  "name": "${networkID}",
+  "networkFirewallPolicyEnforcementOrder": "AFTER_CLASSIC_FIREWALL",
+  "peerings": [
+    {
+      "autoCreateRoutes": true,
+      "connectionStatus": {
+        "trafficConfiguration": {
+          "exportCustomRoutesToPeer": false,
+          "exportSubnetRoutesWithPublicIpToPeer": false,
+          "importCustomRoutesFromPeer": false,
+          "importSubnetRoutesWithPublicIpFromPeer": false,
+          "stackType": "IPV4_ONLY"
+        },
+        "updateStrategy": "INDEPENDENT"
+      },
+      "exchangeSubnetRoutes": true,
+      "exportCustomRoutes": true,
+      "exportSubnetRoutesWithPublicIp": true,
+      "importCustomRoutes": false,
+      "importSubnetRoutesWithPublicIp": false,
+      "name": "metastore-resourcegroup-37cf3c63-0e1d-401b-827",
+      "network": "https://www.googleapis.com/compute/beta/projects/k52f3131829ef7aafp-tp/global/networks/slm-resourcegroup-37cf3c63-0e1d-401b-827",
+      "stackType": "IPV4_ONLY",
+      "state": "ACTIVE",
+      "stateDetails": "[2025-10-29T17:11:33.725-07:00]: Connected.",
+      "updateStrategy": "INDEPENDENT"
+    },
+    {
+      "autoCreateRoutes": true,
+      "connectionStatus": {
+        "trafficConfiguration": {
+          "exportCustomRoutesToPeer": false,
+          "exportSubnetRoutesWithPublicIpToPeer": true,
+          "importCustomRoutesFromPeer": false,
+          "importSubnetRoutesWithPublicIpFromPeer": true,
+          "stackType": "IPV4_ONLY"
+        },
+        "updateStrategy": "INDEPENDENT"
+      },
+      "exchangeSubnetRoutes": true,
+      "exportCustomRoutes": false,
+      "exportSubnetRoutesWithPublicIp": true,
+      "importCustomRoutes": false,
+      "importSubnetRoutesWithPublicIp": true,
+      "name": "redis-peer-980021000070",
+      "network": "https://www.googleapis.com/compute/beta/projects/ka77b776554c75cb6p-tp/global/networks/${networkID}-redis-e619463a-57d4-4053-a70d-b8c275ad4d49",
+      "stackType": "IPV4_ONLY",
+      "state": "ACTIVE",
+      "stateDetails": "[2026-07-21T23:16:08.219-07:00]: Connected.",
+      "updateStrategy": "INDEPENDENT"
+    },
+    {
+      "autoCreateRoutes": true,
+      "connectionStatus": {
+        "trafficConfiguration": {
+          "exportCustomRoutesToPeer": false,
+          "exportSubnetRoutesWithPublicIpToPeer": false,
+          "importCustomRoutesFromPeer": false,
+          "importSubnetRoutesWithPublicIpFromPeer": false,
+          "stackType": "IPV4_ONLY"
+        },
+        "updateStrategy": "INDEPENDENT"
+      },
+      "exchangeSubnetRoutes": true,
+      "exportCustomRoutes": false,
+      "exportSubnetRoutesWithPublicIp": false,
+      "importCustomRoutes": false,
+      "importSubnetRoutesWithPublicIp": false,
+      "name": "servicenetworking-googleapis-com",
+      "network": "https://www.googleapis.com/compute/beta/projects/c726f0127ef7ca98bp-tp/global/networks/servicenetworking",
+      "stackType": "IPV4_ONLY",
+      "state": "ACTIVE",
+      "stateDetails": "[2026-08-11T20:05:37.347-07:00]: Connected.",
+      "updateStrategy": "INDEPENDENT"
+    }
+  ],
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "selfLinkWithId": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "subnetworks": [
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/africa-south1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-east1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-east2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-northeast3/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-south1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-south2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/asia-southeast3/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/australia-southeast2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-central2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-north2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-southwest1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west10/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west12/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west3/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west4/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west6/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west8/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/europe-west9/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/me-central1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/me-central2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/me-west1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-northeast1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-northeast2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/northamerica-south1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/southamerica-east1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/southamerica-west1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/aet-uscentral1-test--182aa3e1553630c5-sbnt",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/aet-uscentral1-vpcacooqbrjcgubaf77i-sbnt",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-central1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east4/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east5/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-east7/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-south1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west1/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west2/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west3/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west4/subnetworks/${networkID}",
+    "https://www.googleapis.com/compute/v1/projects/${projectId}/regions/us-west8/subnetworks/${networkID}"
+  ]
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/networkEndpointGroups/${networkEndpointGroupID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+404 Not Found
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "error": {
+    "code": 404,
+    "errors": [
+      {
+        "domain": "global",
+        "message": "The resource 'projects/${projectId}/zones/us-central1-a/networkEndpointGroups/${networkEndpointGroupID}' was not found",
+        "reason": "notFound"
+      }
+    ],
+    "message": "The resource 'projects/${projectId}/zones/us-central1-a/networkEndpointGroups/${networkEndpointGroupID}' was not found"
+  }
+}
+
+---
+
+POST https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/networkEndpointGroups?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+{
+  "${networkID}Port": 90,
+  "name": "${networkEndpointGroupID}",
+  "network": "projects/${projectId}/global/networks/${networkID}",
+  "networkEndpointType": "NON_GCP_PRIVATE_IP_PORT",
+  "zone": "projects/${projectId}/global/zones/us-central1-a"
+}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${networkEndpointGroupID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/networkEndpointGroups/${networkEndpointGroupID}",
+  "user": "user@example.com",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "insert",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${networkEndpointGroupID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/networkEndpointGroups/${networkEndpointGroupID}",
+  "user": "user@example.com",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/networkEndpointGroups/${networkEndpointGroupID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "creationTimestamp": "2024-04-01T12:34:56.123456Z",
+  "${networkID}Port": 90,
+  "id": "000000000000000000000",
+  "kind": "compute#networkEndpointGroup",
+  "loadBalancer": {
+    "${networkID}Port": 90,
+    "network": "https://www.googleapis.com/compute/beta/projects/${projectId}/global/networks/${networkID}",
+    "zone": "https://www.googleapis.com/compute/beta/projects/${projectId}/zones/us-central1-a"
+  },
+  "name": "${networkEndpointGroupID}",
+  "network": "https://www.googleapis.com/compute/v1/projects/${projectId}/global/networks/${networkID}",
+  "networkEndpointType": "NON_GCP_PRIVATE_IP_PORT",
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/networkEndpointGroups/${networkEndpointGroupID}",
+  "size": 0,
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
+}
+
+---
+
+DELETE https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/networkEndpointGroups/${networkEndpointGroupID}?alt=json
+Content-Type: application/json
+User-Agent: kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 0,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "RUNNING",
+  "targetId": "${networkEndpointGroupID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/networkEndpointGroups/${networkEndpointGroupID}",
+  "user": "user@example.com",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
+}
+
+---
+
+GET https://compute.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}?alt=json&prettyPrint=false
+User-Agent: google-api-go-client/0.5 kcc/${kccVersion} (+https://github.com/GoogleCloudPlatform/k8s-config-connector) kcc/controller-manager/${kccVersion}
+
+200 OK
+Content-Type: application/json; charset=UTF-8
+Server: ESF
+Vary: Origin
+Vary: X-Origin
+Vary: Referer
+X-Content-Type-Options: nosniff
+X-Frame-Options: SAMEORIGIN
+X-Xss-Protection: 0
+
+{
+  "endTime": "2024-04-01T12:34:56.123456Z",
+  "id": "000000000000000000000",
+  "insertTime": "2024-04-01T12:34:56.123456Z",
+  "kind": "compute#operation",
+  "name": "${operationID}",
+  "operationType": "delete",
+  "progress": 100,
+  "selfLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/operations/${operationID}",
+  "startTime": "2024-04-01T12:34:56.123456Z",
+  "status": "DONE",
+  "targetId": "${networkEndpointGroupID}",
+  "targetLink": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a/networkEndpointGroups/${networkEndpointGroupID}",
+  "user": "user@example.com",
+  "zone": "https://www.googleapis.com/compute/v1/projects/${projectId}/zones/us-central1-a"
+}

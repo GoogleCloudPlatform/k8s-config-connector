@@ -838,6 +838,10 @@ func normalizeRepresentation(obj interface{}) interface{} {
 		for k, val := range v {
 			v[k] = normalizeRepresentation(val)
 		}
+		// deprecated field
+		if kind, ok := v["kind"].(string); ok && kind == "compute#networkEndpointGroup" {
+			delete(v, "loadBalancer")
+		}
 		return v
 	case []interface{}:
 		for i, item := range v {

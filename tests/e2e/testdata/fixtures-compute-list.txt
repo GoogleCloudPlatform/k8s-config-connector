@@ -88,7 +88,9 @@ pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computeinterconnectattac
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computemanagedsslcertificate
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computenetwork/computenetworkautocreatesubnets
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computenetwork/computenetworkbasic
-pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computenetworkendpointgroup
+pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computenetworkendpointgroup/computenetworkendpointgroup-nongcp
+pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computenetworkendpointgroup/computenetworkendpointgroup-serverless
+pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computenetworkendpointgroup/computenetworkendpointgroup
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computenetworkfirewallpolicy
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computenetworkfirewallpolicyassociation
 pkg/test/resourcefixture/testdata/basic/compute/v1beta1/computenetworkpeering
