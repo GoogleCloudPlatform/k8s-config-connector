@@ -38,6 +38,7 @@ ${CONTROLLERBUILDER} generate-types \
     --resource AIPlatformPersistentResource:PersistentResource \
     --resource VertexAISpecialistPool:SpecialistPool \
     --resource AIPlatformModel:Model \
+    --resource AIPlatformModelDeploymentMonitoringJob:ModelDeploymentMonitoringJob \
     --resource VertexAIFeatureOnlineStore:FeatureOnlineStore \
     --resource VertexAIPipelineJob:PipelineJob \
     --resource VertexAITuningJob:TuningJob \
