@@ -155,6 +155,7 @@ func DiffSettings(desired *api.Settings, actual *api.Settings) *structuredreport
 	diff.AddDiff(DiffLocationPreference(desired.LocationPreference, actual.LocationPreference))
 	diff.AddDiff(DiffMaintenanceWindow(desired.MaintenanceWindow, actual.MaintenanceWindow))
 	diff.AddDiff(DiffPasswordValidationPolicy(desired.PasswordValidationPolicy, actual.PasswordValidationPolicy))
+	diff.AddDiff(DiffPerformanceCaptureConfig(desired.PerformanceCaptureConfig, actual.PerformanceCaptureConfig))
 	if desired.PricingPlan != actual.PricingPlan {
 		diff.AddField(".settings.pricingPlan", actual.PricingPlan, desired.PricingPlan)
 	}
@@ -733,5 +734,41 @@ func DiffReplicationCluster(desired *api.ReplicationCluster, actual *api.Replica
 	}
 	// Ignore PsaWriteEndpoint. It is output only.
 	// Ignore DrReplica. It is output only.
+	return diff
+}
+
+func DiffPerformanceCaptureConfig(desired *api.PerformanceCaptureConfig, actual *api.PerformanceCaptureConfig) *structuredreporting.Diff {
+	diff := &structuredreporting.Diff{}
+	if desired == nil {
+		// If performanceCaptureConfig is not specified in KRM, it is equivalent to being disabled.
+		// If actual is enabled, report a diff. Otherwise, no diff.
+		if actual != nil && actual.Enabled {
+			diff.AddField(".settings.performanceCaptureConfig.enabled", actual.Enabled, false)
+		}
+		return diff
+	}
+	if actual == nil {
+		actual = &api.PerformanceCaptureConfig{}
+	}
+	if desired.Enabled != actual.Enabled {
+		diff.AddField(".settings.performanceCaptureConfig.enabled", actual.Enabled, desired.Enabled)
+	}
+
+	if desired.ProbeThreshold != 0 && desired.ProbeThreshold != actual.ProbeThreshold {
+		diff.AddField(".settings.performanceCaptureConfig.probeThreshold", actual.ProbeThreshold, desired.ProbeThreshold)
+	}
+	if desired.ProbingIntervalSeconds != 0 && desired.ProbingIntervalSeconds != actual.ProbingIntervalSeconds {
+		diff.AddField(".settings.performanceCaptureConfig.probingIntervalSeconds", actual.ProbingIntervalSeconds, desired.ProbingIntervalSeconds)
+	}
+	if desired.RunningThreadsThreshold != 0 && desired.RunningThreadsThreshold != actual.RunningThreadsThreshold {
+		diff.AddField(".settings.performanceCaptureConfig.runningThreadsThreshold", actual.RunningThreadsThreshold, desired.RunningThreadsThreshold)
+	}
+	if desired.SecondsBehindSourceThreshold != 0 && desired.SecondsBehindSourceThreshold != actual.SecondsBehindSourceThreshold {
+		diff.AddField(".settings.performanceCaptureConfig.secondsBehindSourceThreshold", actual.SecondsBehindSourceThreshold, desired.SecondsBehindSourceThreshold)
+	}
+	if desired.TransactionDurationThreshold != 0 && desired.TransactionDurationThreshold != actual.TransactionDurationThreshold {
+		diff.AddField(".settings.performanceCaptureConfig.transactionDurationThreshold", actual.TransactionDurationThreshold, desired.TransactionDurationThreshold)
+	}
+
 	return diff
 }
