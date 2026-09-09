@@ -37,6 +37,7 @@ ${CONTROLLERBUILDER} generate-types \
     --api-version aiplatform.cnrm.cloud.google.com/v1alpha1 \
     --resource VertexAISpecialistPool:SpecialistPool \
     --resource AIPlatformModel:Model \
+    --resource AIPlatformModelDeploymentMonitoringJob:ModelDeploymentMonitoringJob \
     --resource VertexAIFeatureOnlineStore:FeatureOnlineStore \
     --resource VertexAIPipelineJob:PipelineJob \
     --resource VertexAITuningJob:TuningJob \
