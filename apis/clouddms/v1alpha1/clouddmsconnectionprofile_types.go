@@ -73,6 +73,7 @@ type CloudDMSConnectionProfileSpec struct {
 // +kcc:proto=google.cloud.clouddms.v1.AlloyDbConnectionProfile
 type AlloyDbConnectionProfile struct {
 	// Required. The AlloyDB cluster ID that this connection profile is associated with.
+	// +required
 	// +kcc:proto:field=google.cloud.clouddms.v1.AlloyDbConnectionProfile.cluster_id
 	ClusterRef *alloydbv1beta1.ClusterRef `json:"clusterRef,omitempty"`
 
@@ -182,6 +183,10 @@ type CloudDMSConnectionProfileObservedState struct {
 	// A CloudSQL database connection profile.
 	// +kcc:proto:field=google.cloud.clouddms.v1.ConnectionProfile.cloudsql
 	Cloudsql *CloudSQLConnectionProfileObservedState `json:"cloudsql,omitempty"`
+
+	// An AlloyDB cluster connection profile.
+	// +kcc:proto:field=google.cloud.clouddms.v1.ConnectionProfile.alloydb
+	Alloydb *AlloyDbConnectionProfileObservedState `json:"alloydb,omitempty"`
 }
 
 // +genclient
@@ -369,4 +374,11 @@ type OracleConnectionProfileObservedState struct {
 	// Output only. Indicates If this connection profile password is stored.
 	// +kcc:proto:field=google.cloud.clouddms.v1.OracleConnectionProfile.password_set
 	PasswordSet *bool `json:"passwordSet,omitempty"`
+}
+
+// +kcc:observedstate:proto=google.cloud.clouddms.v1.AlloyDbConnectionProfile
+type AlloyDbConnectionProfileObservedState struct {
+	// Immutable. Metadata used to create the destination AlloyDB cluster.
+	// +kcc:proto:field=google.cloud.clouddms.v1.AlloyDbConnectionProfile.settings
+	Settings *AlloyDbSettingsObservedState `json:"settings,omitempty"`
 }

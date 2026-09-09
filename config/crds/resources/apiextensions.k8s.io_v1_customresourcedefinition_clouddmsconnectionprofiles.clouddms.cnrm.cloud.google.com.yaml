@@ -169,6 +169,8 @@ spec:
                           This is required to create a cluster.'
                         type: string
                     type: object
+                required:
+                - clusterRef
                 type: object
               cloudsql:
                 description: A CloudSQL database connection profile.
@@ -733,6 +735,32 @@ spec:
                 description: ObservedState is the state of the resource as most recently
                   observed in GCP.
                 properties:
+                  alloydb:
+                    description: An AlloyDB cluster connection profile.
+                    properties:
+                      settings:
+                        description: Immutable. Metadata used to create the destination
+                          AlloyDB cluster.
+                        properties:
+                          initialUser:
+                            description: Required. Input only. Initial user to setup
+                              during cluster creation. Required.
+                            properties:
+                              passwordSet:
+                                description: Output only. Indicates if the initial_user.password
+                                  field has been set.
+                                type: boolean
+                            type: object
+                          primaryInstanceSettings:
+                            properties:
+                              privateIP:
+                                description: Output only. The private IP address for
+                                  the Instance. This is the connection endpoint for
+                                  an end-user application.
+                                type: string
+                            type: object
+                        type: object
+                    type: object
                   cloudsql:
                     description: A CloudSQL database connection profile.
                     properties:

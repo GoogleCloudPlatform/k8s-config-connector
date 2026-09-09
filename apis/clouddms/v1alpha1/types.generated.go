@@ -384,7 +384,6 @@ type SSLConfig struct {
 	CACertificate *string `json:"caCertificate,omitempty"`
 }
 
-/* unreachable type AlloyDbSettingsObservedState
 // +kcc:observedstate:proto=google.cloud.clouddms.v1.AlloyDbSettings
 type AlloyDbSettingsObservedState struct {
 	// Required. Input only. Initial user to setup during cluster creation.
@@ -395,9 +394,7 @@ type AlloyDbSettingsObservedState struct {
 	// +kcc:proto:field=google.cloud.clouddms.v1.AlloyDbSettings.primary_instance_settings
 	PrimaryInstanceSettings *AlloyDbSettings_PrimaryInstanceSettingsObservedState `json:"primaryInstanceSettings,omitempty"`
 }
-*/
 
-/* unreachable type AlloyDbSettings_PrimaryInstanceSettingsObservedState
 // +kcc:observedstate:proto=google.cloud.clouddms.v1.AlloyDbSettings.PrimaryInstanceSettings
 type AlloyDbSettings_PrimaryInstanceSettingsObservedState struct {
 	// Output only. The private IP address for the Instance.
@@ -405,16 +402,13 @@ type AlloyDbSettings_PrimaryInstanceSettingsObservedState struct {
 	// +kcc:proto:field=google.cloud.clouddms.v1.AlloyDbSettings.PrimaryInstanceSettings.private_ip
 	PrivateIP *string `json:"privateIP,omitempty"`
 }
-*/
 
-/* unreachable type AlloyDbSettings_UserPasswordObservedState
 // +kcc:observedstate:proto=google.cloud.clouddms.v1.AlloyDbSettings.UserPassword
 type AlloyDbSettings_UserPasswordObservedState struct {
 	// Output only. Indicates if the initial_user.password field has been set.
 	// +kcc:proto:field=google.cloud.clouddms.v1.AlloyDbSettings.UserPassword.password_set
 	PasswordSet *bool `json:"passwordSet,omitempty"`
 }
-*/
 
 // +kcc:observedstate:proto=google.cloud.clouddms.v1.CloudSqlSettings
 type CloudSQLSettingsObservedState struct {

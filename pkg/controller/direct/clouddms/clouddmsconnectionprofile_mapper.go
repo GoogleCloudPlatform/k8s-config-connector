@@ -180,6 +180,7 @@ func CloudDMSConnectionProfileObservedState_FromProto(mapCtx *direct.MapContext,
 	out.Postgresql = PostgreSQLConnectionProfileObservedState_FromProto(mapCtx, in.GetPostgresql())
 	out.Oracle = OracleConnectionProfileObservedState_FromProto(mapCtx, in.GetOracle())
 	out.Cloudsql = CloudSQLConnectionProfileObservedState_FromProto(mapCtx, in.GetCloudsql())
+	out.Alloydb = AlloyDbConnectionProfileObservedState_FromProto(mapCtx, in.GetAlloydb())
 	out.Error = CloudDMSPrivateConnectionStatus_FromProto(mapCtx, in.GetError())
 	return out
 }
@@ -204,6 +205,9 @@ func CloudDMSConnectionProfileObservedState_ToProto(mapCtx *direct.MapContext, i
 	}
 	if oneof := CloudSQLConnectionProfileObservedState_ToProto(mapCtx, in.Cloudsql); oneof != nil {
 		out.ConnectionProfile = &pb.ConnectionProfile_Cloudsql{Cloudsql: oneof}
+	}
+	if oneof := AlloyDbConnectionProfileObservedState_ToProto(mapCtx, in.Alloydb); oneof != nil {
+		out.ConnectionProfile = &pb.ConnectionProfile_Alloydb{Alloydb: oneof}
 	}
 	out.Error = CloudDMSPrivateConnectionStatus_ToProto(mapCtx, in.Error)
 	return out

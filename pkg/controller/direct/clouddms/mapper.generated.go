@@ -32,6 +32,24 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
+func AlloyDbConnectionProfileObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AlloyDbConnectionProfile) *krm.AlloyDbConnectionProfileObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AlloyDbConnectionProfileObservedState{}
+	// MISSING: ClusterID
+	out.Settings = AlloyDbSettingsObservedState_FromProto(mapCtx, in.GetSettings())
+	return out
+}
+func AlloyDbConnectionProfileObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AlloyDbConnectionProfileObservedState) *pb.AlloyDbConnectionProfile {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AlloyDbConnectionProfile{}
+	// MISSING: ClusterID
+	out.Settings = AlloyDbSettingsObservedState_ToProto(mapCtx, in.Settings)
+	return out
+}
 func AlloyDbSettings_FromProto(mapCtx *direct.MapContext, in *pb.AlloyDbSettings) *krm.AlloyDbSettings {
 	if in == nil {
 		return nil
@@ -54,6 +72,30 @@ func AlloyDbSettings_ToProto(mapCtx *direct.MapContext, in *krm.AlloyDbSettings)
 	out.Labels = in.Labels
 	out.PrimaryInstanceSettings = AlloyDbSettings_PrimaryInstanceSettings_ToProto(mapCtx, in.PrimaryInstanceSettings)
 	out.EncryptionConfig = AlloyDbSettings_EncryptionConfig_ToProto(mapCtx, in.EncryptionConfig)
+	return out
+}
+func AlloyDbSettingsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AlloyDbSettings) *krm.AlloyDbSettingsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AlloyDbSettingsObservedState{}
+	out.InitialUser = AlloyDbSettings_UserPasswordObservedState_FromProto(mapCtx, in.GetInitialUser())
+	// MISSING: VPCNetwork
+	// MISSING: Labels
+	out.PrimaryInstanceSettings = AlloyDbSettings_PrimaryInstanceSettingsObservedState_FromProto(mapCtx, in.GetPrimaryInstanceSettings())
+	// MISSING: EncryptionConfig
+	return out
+}
+func AlloyDbSettingsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AlloyDbSettingsObservedState) *pb.AlloyDbSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AlloyDbSettings{}
+	out.InitialUser = AlloyDbSettings_UserPasswordObservedState_ToProto(mapCtx, in.InitialUser)
+	// MISSING: VPCNetwork
+	// MISSING: Labels
+	out.PrimaryInstanceSettings = AlloyDbSettings_PrimaryInstanceSettingsObservedState_ToProto(mapCtx, in.PrimaryInstanceSettings)
+	// MISSING: EncryptionConfig
 	return out
 }
 func AlloyDbSettings_EncryptionConfig_FromProto(mapCtx *direct.MapContext, in *pb.AlloyDbSettings_EncryptionConfig) *krm.AlloyDbSettings_EncryptionConfig {
@@ -96,6 +138,30 @@ func AlloyDbSettings_PrimaryInstanceSettings_ToProto(mapCtx *direct.MapContext, 
 	// MISSING: PrivateIP
 	return out
 }
+func AlloyDbSettings_PrimaryInstanceSettingsObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AlloyDbSettings_PrimaryInstanceSettings) *krm.AlloyDbSettings_PrimaryInstanceSettingsObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AlloyDbSettings_PrimaryInstanceSettingsObservedState{}
+	// MISSING: ID
+	// MISSING: MachineConfig
+	// MISSING: DatabaseFlags
+	// MISSING: Labels
+	out.PrivateIP = direct.LazyPtr(in.GetPrivateIp())
+	return out
+}
+func AlloyDbSettings_PrimaryInstanceSettingsObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AlloyDbSettings_PrimaryInstanceSettingsObservedState) *pb.AlloyDbSettings_PrimaryInstanceSettings {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AlloyDbSettings_PrimaryInstanceSettings{}
+	// MISSING: ID
+	// MISSING: MachineConfig
+	// MISSING: DatabaseFlags
+	// MISSING: Labels
+	out.PrivateIp = direct.ValueOf(in.PrivateIP)
+	return out
+}
 func AlloyDbSettings_PrimaryInstanceSettings_MachineConfig_FromProto(mapCtx *direct.MapContext, in *pb.AlloyDbSettings_PrimaryInstanceSettings_MachineConfig) *krm.AlloyDbSettings_PrimaryInstanceSettings_MachineConfig {
 	if in == nil {
 		return nil
@@ -130,6 +196,26 @@ func AlloyDbSettings_UserPassword_ToProto(mapCtx *direct.MapContext, in *krm.All
 	out.User = direct.ValueOf(in.User)
 	out.Password = direct.ValueOf(in.Password)
 	// MISSING: PasswordSet
+	return out
+}
+func AlloyDbSettings_UserPasswordObservedState_FromProto(mapCtx *direct.MapContext, in *pb.AlloyDbSettings_UserPassword) *krm.AlloyDbSettings_UserPasswordObservedState {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AlloyDbSettings_UserPasswordObservedState{}
+	// MISSING: User
+	// MISSING: Password
+	out.PasswordSet = direct.LazyPtr(in.GetPasswordSet())
+	return out
+}
+func AlloyDbSettings_UserPasswordObservedState_ToProto(mapCtx *direct.MapContext, in *krm.AlloyDbSettings_UserPasswordObservedState) *pb.AlloyDbSettings_UserPassword {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AlloyDbSettings_UserPassword{}
+	// MISSING: User
+	// MISSING: Password
+	out.PasswordSet = direct.ValueOf(in.PasswordSet)
 	return out
 }
 func CloudDMSConnectionProfileSpec_FromProto(mapCtx *direct.MapContext, in *pb.ConnectionProfile) *krm.CloudDMSConnectionProfileSpec {
