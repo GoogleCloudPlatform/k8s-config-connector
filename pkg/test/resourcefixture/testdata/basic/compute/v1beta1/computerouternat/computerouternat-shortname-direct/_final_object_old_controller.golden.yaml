@@ -18,7 +18,7 @@ spec:
   natIpAllocateOption: AUTO_ONLY
   region: us-west1
   routerRef:
-    name: ${routerID}
+    external: ${routerID}
   sourceSubnetworkIpRangesToNat: ALL_SUBNETWORKS_ALL_IP_RANGES
 status:
   conditions:
