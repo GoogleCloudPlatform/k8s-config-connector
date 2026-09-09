@@ -32,24 +32,6 @@ import (
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
 
-func AlloyDbConnectionProfile_FromProto(mapCtx *direct.MapContext, in *pb.AlloyDbConnectionProfile) *krm.AlloyDbConnectionProfile {
-	if in == nil {
-		return nil
-	}
-	out := &krm.AlloyDbConnectionProfile{}
-	// MISSING: ClusterID
-	out.Settings = AlloyDbSettings_FromProto(mapCtx, in.GetSettings())
-	return out
-}
-func AlloyDbConnectionProfile_ToProto(mapCtx *direct.MapContext, in *krm.AlloyDbConnectionProfile) *pb.AlloyDbConnectionProfile {
-	if in == nil {
-		return nil
-	}
-	out := &pb.AlloyDbConnectionProfile{}
-	// MISSING: ClusterID
-	out.Settings = AlloyDbSettings_ToProto(mapCtx, in.Settings)
-	return out
-}
 func AlloyDbSettings_FromProto(mapCtx *direct.MapContext, in *pb.AlloyDbSettings) *krm.AlloyDbSettings {
 	if in == nil {
 		return nil
@@ -354,30 +336,6 @@ func CloudDMSMigrationJobSpec_ToProto(mapCtx *direct.MapContext, in *krm.CloudDM
 	out.PerformanceConfig = MigrationJob_PerformanceConfig_ToProto(mapCtx, in.PerformanceConfig)
 	return out
 }
-func CloudSQLConnectionProfile_FromProto(mapCtx *direct.MapContext, in *pb.CloudSqlConnectionProfile) *krm.CloudSQLConnectionProfile {
-	if in == nil {
-		return nil
-	}
-	out := &krm.CloudSQLConnectionProfile{}
-	// MISSING: CloudSQLID
-	out.Settings = CloudSQLSettings_FromProto(mapCtx, in.GetSettings())
-	// MISSING: PrivateIP
-	// MISSING: PublicIP
-	// MISSING: AdditionalPublicIP
-	return out
-}
-func CloudSQLConnectionProfile_ToProto(mapCtx *direct.MapContext, in *krm.CloudSQLConnectionProfile) *pb.CloudSqlConnectionProfile {
-	if in == nil {
-		return nil
-	}
-	out := &pb.CloudSqlConnectionProfile{}
-	// MISSING: CloudSQLID
-	out.Settings = CloudSQLSettings_ToProto(mapCtx, in.Settings)
-	// MISSING: PrivateIP
-	// MISSING: PublicIP
-	// MISSING: AdditionalPublicIP
-	return out
-}
 func CloudSQLConnectionProfileObservedState_FromProto(mapCtx *direct.MapContext, in *pb.CloudSqlConnectionProfile) *krm.CloudSQLConnectionProfileObservedState {
 	if in == nil {
 		return nil
@@ -650,34 +608,6 @@ func MigrationJob_PerformanceConfig_ToProto(mapCtx *direct.MapContext, in *krm.M
 	out.DumpParallelLevel = direct.Enum_ToProto[pb.MigrationJob_PerformanceConfig_DumpParallelLevel](mapCtx, in.DumpParallelLevel)
 	return out
 }
-func MySQLConnectionProfile_FromProto(mapCtx *direct.MapContext, in *pb.MySqlConnectionProfile) *krm.MySQLConnectionProfile {
-	if in == nil {
-		return nil
-	}
-	out := &krm.MySQLConnectionProfile{}
-	out.Host = direct.LazyPtr(in.GetHost())
-	out.Port = direct.LazyPtr(in.GetPort())
-	out.Username = direct.LazyPtr(in.GetUsername())
-	out.Password = direct.LazyPtr(in.GetPassword())
-	// MISSING: PasswordSet
-	out.SSL = SSLConfig_FromProto(mapCtx, in.GetSsl())
-	out.CloudSQLID = direct.LazyPtr(in.GetCloudSqlId())
-	return out
-}
-func MySQLConnectionProfile_ToProto(mapCtx *direct.MapContext, in *krm.MySQLConnectionProfile) *pb.MySqlConnectionProfile {
-	if in == nil {
-		return nil
-	}
-	out := &pb.MySqlConnectionProfile{}
-	out.Host = direct.ValueOf(in.Host)
-	out.Port = direct.ValueOf(in.Port)
-	out.Username = direct.ValueOf(in.Username)
-	out.Password = direct.ValueOf(in.Password)
-	// MISSING: PasswordSet
-	out.Ssl = SSLConfig_ToProto(mapCtx, in.SSL)
-	out.CloudSqlId = direct.ValueOf(in.CloudSQLID)
-	return out
-}
 func MySQLConnectionProfileObservedState_FromProto(mapCtx *direct.MapContext, in *pb.MySqlConnectionProfile) *krm.MySQLConnectionProfileObservedState {
 	if in == nil {
 		return nil
@@ -743,44 +673,6 @@ func OracleConnectionProfile_ToProto(mapCtx *direct.MapContext, in *krm.OracleCo
 	}
 	if oneof := PrivateConnectivity_ToProto(mapCtx, in.PrivateConnectivity); oneof != nil {
 		out.Connectivity = &pb.OracleConnectionProfile_PrivateConnectivity{PrivateConnectivity: oneof}
-	}
-	return out
-}
-func PostgreSQLConnectionProfile_FromProto(mapCtx *direct.MapContext, in *pb.PostgreSqlConnectionProfile) *krm.PostgreSQLConnectionProfile {
-	if in == nil {
-		return nil
-	}
-	out := &krm.PostgreSQLConnectionProfile{}
-	out.Host = direct.LazyPtr(in.GetHost())
-	out.Port = direct.LazyPtr(in.GetPort())
-	out.Username = direct.LazyPtr(in.GetUsername())
-	out.Password = direct.LazyPtr(in.GetPassword())
-	// MISSING: PasswordSet
-	out.SSL = SSLConfig_FromProto(mapCtx, in.GetSsl())
-	out.CloudSQLID = direct.LazyPtr(in.GetCloudSqlId())
-	// MISSING: NetworkArchitecture
-	out.StaticIPConnectivity = StaticIPConnectivity_FromProto(mapCtx, in.GetStaticIpConnectivity())
-	out.PrivateServiceConnectConnectivity = PrivateServiceConnectConnectivity_FromProto(mapCtx, in.GetPrivateServiceConnectConnectivity())
-	return out
-}
-func PostgreSQLConnectionProfile_ToProto(mapCtx *direct.MapContext, in *krm.PostgreSQLConnectionProfile) *pb.PostgreSqlConnectionProfile {
-	if in == nil {
-		return nil
-	}
-	out := &pb.PostgreSqlConnectionProfile{}
-	out.Host = direct.ValueOf(in.Host)
-	out.Port = direct.ValueOf(in.Port)
-	out.Username = direct.ValueOf(in.Username)
-	out.Password = direct.ValueOf(in.Password)
-	// MISSING: PasswordSet
-	out.Ssl = SSLConfig_ToProto(mapCtx, in.SSL)
-	out.CloudSqlId = direct.ValueOf(in.CloudSQLID)
-	// MISSING: NetworkArchitecture
-	if oneof := StaticIPConnectivity_ToProto(mapCtx, in.StaticIPConnectivity); oneof != nil {
-		out.Connectivity = &pb.PostgreSqlConnectionProfile_StaticIpConnectivity{StaticIpConnectivity: oneof}
-	}
-	if oneof := PrivateServiceConnectConnectivity_ToProto(mapCtx, in.PrivateServiceConnectConnectivity); oneof != nil {
-		out.Connectivity = &pb.PostgreSqlConnectionProfile_PrivateServiceConnectConnectivity{PrivateServiceConnectConnectivity: oneof}
 	}
 	return out
 }

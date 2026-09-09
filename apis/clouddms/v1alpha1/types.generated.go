@@ -107,14 +107,6 @@ type AlloyDbSettings_UserPassword struct {
 	Password *string `json:"password,omitempty"`
 }
 
-// +kcc:proto=google.cloud.clouddms.v1.CloudSqlConnectionProfile
-type CloudSQLConnectionProfile struct {
-
-	// Immutable. Metadata used to create the destination Cloud SQL database.
-	// +kcc:proto:field=google.cloud.clouddms.v1.CloudSqlConnectionProfile.settings
-	Settings *CloudSQLSettings `json:"settings,omitempty"`
-}
-
 // +kcc:proto=google.cloud.clouddms.v1.CloudSqlSettings
 type CloudSQLSettings struct {
 	// The database engine type and version.
@@ -306,80 +298,6 @@ type MigrationJob_PerformanceConfig struct {
 	DumpParallelLevel *string `json:"dumpParallelLevel,omitempty"`
 }
 
-// +kcc:proto=google.cloud.clouddms.v1.MySqlConnectionProfile
-type MySQLConnectionProfile struct {
-	// Required. The IP or hostname of the source MySQL database.
-	// +kcc:proto:field=google.cloud.clouddms.v1.MySqlConnectionProfile.host
-	Host *string `json:"host,omitempty"`
-
-	// Required. The network port of the source MySQL database.
-	// +kcc:proto:field=google.cloud.clouddms.v1.MySqlConnectionProfile.port
-	Port *int32 `json:"port,omitempty"`
-
-	// Required. The username that Database Migration Service will use to connect
-	//  to the database. The value is encrypted when stored in Database Migration
-	//  Service.
-	// +kcc:proto:field=google.cloud.clouddms.v1.MySqlConnectionProfile.username
-	Username *string `json:"username,omitempty"`
-
-	// Required. Input only. The password for the user that Database Migration
-	//  Service will be using to connect to the database. This field is not
-	//  returned on request, and the value is encrypted when stored in Database
-	//  Migration Service.
-	// +kcc:proto:field=google.cloud.clouddms.v1.MySqlConnectionProfile.password
-	Password *string `json:"password,omitempty"`
-
-	// SSL configuration for the destination to connect to the source database.
-	// +kcc:proto:field=google.cloud.clouddms.v1.MySqlConnectionProfile.ssl
-	SSL *SSLConfig `json:"ssl,omitempty"`
-
-	// If the source is a Cloud SQL database, use this field to
-	//  provide the Cloud SQL instance ID of the source.
-	// +kcc:proto:field=google.cloud.clouddms.v1.MySqlConnectionProfile.cloud_sql_id
-	CloudSQLID *string `json:"cloudSQLID,omitempty"`
-}
-
-// +kcc:proto=google.cloud.clouddms.v1.PostgreSqlConnectionProfile
-type PostgreSQLConnectionProfile struct {
-	// Required. The IP or hostname of the source PostgreSQL database.
-	// +kcc:proto:field=google.cloud.clouddms.v1.PostgreSqlConnectionProfile.host
-	Host *string `json:"host,omitempty"`
-
-	// Required. The network port of the source PostgreSQL database.
-	// +kcc:proto:field=google.cloud.clouddms.v1.PostgreSqlConnectionProfile.port
-	Port *int32 `json:"port,omitempty"`
-
-	// Required. The username that Database Migration Service will use to connect
-	//  to the database. The value is encrypted when stored in Database Migration
-	//  Service.
-	// +kcc:proto:field=google.cloud.clouddms.v1.PostgreSqlConnectionProfile.username
-	Username *string `json:"username,omitempty"`
-
-	// Required. Input only. The password for the user that Database Migration
-	//  Service will be using to connect to the database. This field is not
-	//  returned on request, and the value is encrypted when stored in Database
-	//  Migration Service.
-	// +kcc:proto:field=google.cloud.clouddms.v1.PostgreSqlConnectionProfile.password
-	Password *string `json:"password,omitempty"`
-
-	// SSL configuration for the destination to connect to the source database.
-	// +kcc:proto:field=google.cloud.clouddms.v1.PostgreSqlConnectionProfile.ssl
-	SSL *SSLConfig `json:"ssl,omitempty"`
-
-	// If the source is a Cloud SQL database, use this field to
-	//  provide the Cloud SQL instance ID of the source.
-	// +kcc:proto:field=google.cloud.clouddms.v1.PostgreSqlConnectionProfile.cloud_sql_id
-	CloudSQLID *string `json:"cloudSQLID,omitempty"`
-
-	// Static ip connectivity data (default, no additional details needed).
-	// +kcc:proto:field=google.cloud.clouddms.v1.PostgreSqlConnectionProfile.static_ip_connectivity
-	StaticIPConnectivity *StaticIPConnectivity `json:"staticIPConnectivity,omitempty"`
-
-	// Private service connect connectivity.
-	// +kcc:proto:field=google.cloud.clouddms.v1.PostgreSqlConnectionProfile.private_service_connect_connectivity
-	PrivateServiceConnectConnectivity *PrivateServiceConnectConnectivity `json:"privateServiceConnectConnectivity,omitempty"`
-}
-
 // +kcc:proto=google.cloud.clouddms.v1.PrivateServiceConnectConnectivity
 type PrivateServiceConnectConnectivity struct {
 	// Required. A service attachment that exposes a database, and has the
@@ -498,64 +416,11 @@ type AlloyDbSettings_UserPasswordObservedState struct {
 }
 */
 
-// +kcc:observedstate:proto=google.cloud.clouddms.v1.CloudSqlConnectionProfile
-type CloudSQLConnectionProfileObservedState struct {
-	// Output only. The Cloud SQL instance ID that this connection profile is
-	//  associated with.
-	// +kcc:proto:field=google.cloud.clouddms.v1.CloudSqlConnectionProfile.cloud_sql_id
-	CloudSQLID *string `json:"cloudSQLID,omitempty"`
-
-	// Immutable. Metadata used to create the destination Cloud SQL database.
-	// +kcc:proto:field=google.cloud.clouddms.v1.CloudSqlConnectionProfile.settings
-	Settings *CloudSQLSettingsObservedState `json:"settings,omitempty"`
-
-	// Output only. The Cloud SQL database instance's private IP.
-	// +kcc:proto:field=google.cloud.clouddms.v1.CloudSqlConnectionProfile.private_ip
-	PrivateIP *string `json:"privateIP,omitempty"`
-
-	// Output only. The Cloud SQL database instance's public IP.
-	// +kcc:proto:field=google.cloud.clouddms.v1.CloudSqlConnectionProfile.public_ip
-	PublicIP *string `json:"publicIP,omitempty"`
-
-	// Output only. The Cloud SQL database instance's additional (outgoing) public
-	//  IP. Used when the Cloud SQL database availability type is REGIONAL (i.e.
-	//  multiple zones / highly available).
-	// +kcc:proto:field=google.cloud.clouddms.v1.CloudSqlConnectionProfile.additional_public_ip
-	AdditionalPublicIP *string `json:"additionalPublicIP,omitempty"`
-}
-
 // +kcc:observedstate:proto=google.cloud.clouddms.v1.CloudSqlSettings
 type CloudSQLSettingsObservedState struct {
 	// Output only. Indicates If this connection profile root password is stored.
 	// +kcc:proto:field=google.cloud.clouddms.v1.CloudSqlSettings.root_password_set
 	RootPasswordSet *bool `json:"rootPasswordSet,omitempty"`
-}
-
-// +kcc:observedstate:proto=google.cloud.clouddms.v1.MySqlConnectionProfile
-type MySQLConnectionProfileObservedState struct {
-	// Output only. Indicates If this connection profile password is stored.
-	// +kcc:proto:field=google.cloud.clouddms.v1.MySqlConnectionProfile.password_set
-	PasswordSet *bool `json:"passwordSet,omitempty"`
-
-	// SSL configuration for the destination to connect to the source database.
-	// +kcc:proto:field=google.cloud.clouddms.v1.MySqlConnectionProfile.ssl
-	SSL *SSLConfigObservedState `json:"ssl,omitempty"`
-}
-
-// +kcc:observedstate:proto=google.cloud.clouddms.v1.PostgreSqlConnectionProfile
-type PostgreSQLConnectionProfileObservedState struct {
-	// Output only. Indicates If this connection profile password is stored.
-	// +kcc:proto:field=google.cloud.clouddms.v1.PostgreSqlConnectionProfile.password_set
-	PasswordSet *bool `json:"passwordSet,omitempty"`
-
-	// SSL configuration for the destination to connect to the source database.
-	// +kcc:proto:field=google.cloud.clouddms.v1.PostgreSqlConnectionProfile.ssl
-	SSL *SSLConfigObservedState `json:"ssl,omitempty"`
-
-	// Output only. If the source is a Cloud SQL database, this field indicates
-	//  the network architecture it's associated with.
-	// +kcc:proto:field=google.cloud.clouddms.v1.PostgreSqlConnectionProfile.network_architecture
-	NetworkArchitecture *string `json:"networkArchitecture,omitempty"`
 }
 
 // +kcc:observedstate:proto=google.cloud.clouddms.v1.SslConfig

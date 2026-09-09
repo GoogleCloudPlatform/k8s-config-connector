@@ -21,9 +21,151 @@ package clouddms
 
 import (
 	pb "cloud.google.com/go/clouddms/apiv1/clouddmspb"
+	alloydbv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/alloydb/v1beta1"
 	krm "github.com/GoogleCloudPlatform/k8s-config-connector/apis/clouddms/v1alpha1"
+	refsv1beta1 "github.com/GoogleCloudPlatform/k8s-config-connector/apis/refs/v1beta1"
 	"github.com/GoogleCloudPlatform/k8s-config-connector/pkg/controller/direct"
 )
+
+func AlloyDbConnectionProfile_FromProto(mapCtx *direct.MapContext, in *pb.AlloyDbConnectionProfile) *krm.AlloyDbConnectionProfile {
+	if in == nil {
+		return nil
+	}
+	out := &krm.AlloyDbConnectionProfile{}
+	if in.GetClusterId() != "" {
+		out.ClusterRef = &alloydbv1beta1.ClusterRef{
+			External: in.GetClusterId(),
+		}
+	}
+	out.Settings = AlloyDbSettings_FromProto(mapCtx, in.GetSettings())
+	return out
+}
+
+func AlloyDbConnectionProfile_ToProto(mapCtx *direct.MapContext, in *krm.AlloyDbConnectionProfile) *pb.AlloyDbConnectionProfile {
+	if in == nil {
+		return nil
+	}
+	out := &pb.AlloyDbConnectionProfile{}
+	if in.ClusterRef != nil {
+		if in.ClusterRef.External == "" {
+			mapCtx.Errorf("reference %s was not pre-resolved", in.ClusterRef.Name)
+		}
+		out.ClusterId = in.ClusterRef.External
+	}
+	out.Settings = AlloyDbSettings_ToProto(mapCtx, in.Settings)
+	return out
+}
+
+func CloudSQLConnectionProfile_FromProto(mapCtx *direct.MapContext, in *pb.CloudSqlConnectionProfile) *krm.CloudSQLConnectionProfile {
+	if in == nil {
+		return nil
+	}
+	out := &krm.CloudSQLConnectionProfile{}
+	if in.GetCloudSqlId() != "" {
+		out.InstanceRef = &refsv1beta1.SQLInstanceRef{
+			External: in.GetCloudSqlId(),
+		}
+	}
+	out.Settings = CloudSQLSettings_FromProto(mapCtx, in.GetSettings())
+	return out
+}
+
+func CloudSQLConnectionProfile_ToProto(mapCtx *direct.MapContext, in *krm.CloudSQLConnectionProfile) *pb.CloudSqlConnectionProfile {
+	if in == nil {
+		return nil
+	}
+	out := &pb.CloudSqlConnectionProfile{}
+	if in.InstanceRef != nil {
+		if in.InstanceRef.External == "" {
+			mapCtx.Errorf("reference %s was not pre-resolved", in.InstanceRef.Name)
+		}
+		out.CloudSqlId = in.InstanceRef.External
+	}
+	out.Settings = CloudSQLSettings_ToProto(mapCtx, in.Settings)
+	return out
+}
+
+func MySQLConnectionProfile_FromProto(mapCtx *direct.MapContext, in *pb.MySqlConnectionProfile) *krm.MySQLConnectionProfile {
+	if in == nil {
+		return nil
+	}
+	out := &krm.MySQLConnectionProfile{}
+	out.Host = direct.LazyPtr(in.GetHost())
+	out.Port = direct.LazyPtr(in.GetPort())
+	out.Username = direct.LazyPtr(in.GetUsername())
+	out.Password = direct.LazyPtr(in.GetPassword())
+	out.SSL = SSLConfig_FromProto(mapCtx, in.GetSsl())
+	if in.GetCloudSqlId() != "" {
+		out.InstanceRef = &refsv1beta1.SQLInstanceRef{
+			External: in.GetCloudSqlId(),
+		}
+	}
+	return out
+}
+
+func MySQLConnectionProfile_ToProto(mapCtx *direct.MapContext, in *krm.MySQLConnectionProfile) *pb.MySqlConnectionProfile {
+	if in == nil {
+		return nil
+	}
+	out := &pb.MySqlConnectionProfile{}
+	out.Host = direct.ValueOf(in.Host)
+	out.Port = direct.ValueOf(in.Port)
+	out.Username = direct.ValueOf(in.Username)
+	out.Password = direct.ValueOf(in.Password)
+	out.Ssl = SSLConfig_ToProto(mapCtx, in.SSL)
+	if in.InstanceRef != nil {
+		if in.InstanceRef.External == "" {
+			mapCtx.Errorf("reference %s was not pre-resolved", in.InstanceRef.Name)
+		}
+		out.CloudSqlId = in.InstanceRef.External
+	}
+	return out
+}
+
+func PostgreSQLConnectionProfile_FromProto(mapCtx *direct.MapContext, in *pb.PostgreSqlConnectionProfile) *krm.PostgreSQLConnectionProfile {
+	if in == nil {
+		return nil
+	}
+	out := &krm.PostgreSQLConnectionProfile{}
+	out.Host = direct.LazyPtr(in.GetHost())
+	out.Port = direct.LazyPtr(in.GetPort())
+	out.Username = direct.LazyPtr(in.GetUsername())
+	out.Password = direct.LazyPtr(in.GetPassword())
+	out.SSL = SSLConfig_FromProto(mapCtx, in.GetSsl())
+	if in.GetCloudSqlId() != "" {
+		out.InstanceRef = &refsv1beta1.SQLInstanceRef{
+			External: in.GetCloudSqlId(),
+		}
+	}
+	out.StaticIPConnectivity = StaticIPConnectivity_FromProto(mapCtx, in.GetStaticIpConnectivity())
+	out.PrivateServiceConnectConnectivity = PrivateServiceConnectConnectivity_FromProto(mapCtx, in.GetPrivateServiceConnectConnectivity())
+	return out
+}
+
+func PostgreSQLConnectionProfile_ToProto(mapCtx *direct.MapContext, in *krm.PostgreSQLConnectionProfile) *pb.PostgreSqlConnectionProfile {
+	if in == nil {
+		return nil
+	}
+	out := &pb.PostgreSqlConnectionProfile{}
+	out.Host = direct.ValueOf(in.Host)
+	out.Port = direct.ValueOf(in.Port)
+	out.Username = direct.ValueOf(in.Username)
+	out.Password = direct.ValueOf(in.Password)
+	out.Ssl = SSLConfig_ToProto(mapCtx, in.SSL)
+	if in.InstanceRef != nil {
+		if in.InstanceRef.External == "" {
+			mapCtx.Errorf("reference %s was not pre-resolved", in.InstanceRef.Name)
+		}
+		out.CloudSqlId = in.InstanceRef.External
+	}
+	if oneof := StaticIPConnectivity_ToProto(mapCtx, in.StaticIPConnectivity); oneof != nil {
+		out.Connectivity = &pb.PostgreSqlConnectionProfile_StaticIpConnectivity{StaticIpConnectivity: oneof}
+	}
+	if oneof := PrivateServiceConnectConnectivity_ToProto(mapCtx, in.PrivateServiceConnectConnectivity); oneof != nil {
+		out.Connectivity = &pb.PostgreSqlConnectionProfile_PrivateServiceConnectConnectivity{PrivateServiceConnectConnectivity: oneof}
+	}
+	return out
+}
 
 func CloudDMSConnectionProfileObservedState_FromProto(mapCtx *direct.MapContext, in *pb.ConnectionProfile) *krm.CloudDMSConnectionProfileObservedState {
 	if in == nil {

@@ -86,16 +86,14 @@ spec:
                       - external
                     properties:
                       external:
-                        description: 'The type of instance. Possible values: ["PRIMARY",
-                          "READ_POOL", "SECONDARY"]'
+                        description: A reference to an externally managed AlloyDBCluster
+                          resource. Should be in the format "projects/{{projectID}}/locations/{{location}}/clusters/{{clusterID}}".
                         type: string
                       name:
-                        description: The `metadata.name` field of a `AlloyDBCluster`
-                          resource.
+                        description: The name of an AlloyDBCluster resource.
                         type: string
                       namespace:
-                        description: The `metadata.namespace` field of a `AlloyDBCluster`
-                          resource.
+                        description: The namespace of an AlloyDBCluster resource.
                         type: string
                     type: object
                   settings:
@@ -175,6 +173,35 @@ spec:
               cloudsql:
                 description: A CloudSQL database connection profile.
                 properties:
+                  instanceRef:
+                    description: Required. The Cloud SQL instance ID that this connection
+                      profile is associated with.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: The SQLInstance selfLink, when not managed by
+                          Config Connector.
+                        type: string
+                      name:
+                        description: The `name` field of a `SQLInstance` resource.
+                        type: string
+                      namespace:
+                        description: The `namespace` field of a `SQLInstance` resource.
+                        type: string
+                    type: object
                   settings:
                     description: Immutable. Metadata used to create the destination
                       Cloud SQL database.
@@ -348,14 +375,39 @@ spec:
               mysql:
                 description: A MySQL database connection profile.
                 properties:
-                  cloudSQLID:
-                    description: If the source is a Cloud SQL database, use this field
-                      to provide the Cloud SQL instance ID of the source.
-                    type: string
                   host:
                     description: Required. The IP or hostname of the source MySQL
                       database.
                     type: string
+                  instanceRef:
+                    description: If the source is a Cloud SQL database, use this field
+                      to provide the Cloud SQL instance ID of the source.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: The SQLInstance selfLink, when not managed by
+                          Config Connector.
+                        type: string
+                      name:
+                        description: The `name` field of a `SQLInstance` resource.
+                        type: string
+                      namespace:
+                        description: The `namespace` field of a `SQLInstance` resource.
+                        type: string
+                    type: object
                   password:
                     description: Required. Input only. The password for the user that
                       Database Migration Service will be using to connect to the database.
@@ -506,14 +558,39 @@ spec:
               postgresql:
                 description: A PostgreSQL database connection profile.
                 properties:
-                  cloudSQLID:
-                    description: If the source is a Cloud SQL database, use this field
-                      to provide the Cloud SQL instance ID of the source.
-                    type: string
                   host:
                     description: Required. The IP or hostname of the source PostgreSQL
                       database.
                     type: string
+                  instanceRef:
+                    description: If the source is a Cloud SQL database, use this field
+                      to provide the Cloud SQL instance ID of the source.
+                    oneOf:
+                    - not:
+                        required:
+                        - external
+                      required:
+                      - name
+                    - not:
+                        anyOf:
+                        - required:
+                          - name
+                        - required:
+                          - namespace
+                      required:
+                      - external
+                    properties:
+                      external:
+                        description: The SQLInstance selfLink, when not managed by
+                          Config Connector.
+                        type: string
+                      name:
+                        description: The `name` field of a `SQLInstance` resource.
+                        type: string
+                      namespace:
+                        description: The `namespace` field of a `SQLInstance` resource.
+                        type: string
+                    type: object
                   password:
                     description: Required. Input only. The password for the user that
                       Database Migration Service will be using to connect to the database.
