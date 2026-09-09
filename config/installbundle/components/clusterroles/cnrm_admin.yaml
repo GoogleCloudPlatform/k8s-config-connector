@@ -548,6 +548,18 @@ rules:
   - patch
   - delete
 - apiGroups:
+  - cloudsupport.cnrm.cloud.google.com
+  resources:
+  - '*'
+  verbs:
+  - get
+  - list
+  - watch
+  - create
+  - update
+  - patch
+  - delete
+- apiGroups:
   - cloudtalentsolution.cnrm.cloud.google.com
   resources:
   - '*'
