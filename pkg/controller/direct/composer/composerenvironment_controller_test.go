@@ -40,6 +40,8 @@ import (
 // buildPatches is a test helper that evaluates fieldUpdaters against desired and actual,
 // collecting the generated patch protos keyed by update mask.
 func buildPatches(desired *krm.ComposerEnvironment, desiredPb, actualPb *composerpb.Environment) map[string]*composerpb.Environment {
+	populateDesiredWithDefaults(desired, desiredPb)
+	populateDesiredWithActualIfComputed(desired, desiredPb, actualPb)
 	updates := make(map[string]*composerpb.Environment)
 	for _, u := range fieldUpdaters {
 		if patch := u.build(desired, desiredPb, actualPb); patch != nil {
@@ -94,11 +96,7 @@ func TestFieldUpdatersBuild(t *testing.T) {
 		}
 		actual := &composerpb.Environment{
 			Config: &composerpb.EnvironmentConfig{
-				RecoveryConfig: &composerpb.RecoveryConfig{
-					ScheduledSnapshotsConfig: &composerpb.ScheduledSnapshotsConfig{
-						Enabled: false,
-					},
-				},
+				RecoveryConfig: nil,
 			},
 		}
 		mapCtx := &direct.MapContext{}
@@ -281,11 +279,7 @@ func TestFieldUpdatersBuild(t *testing.T) {
 		actual := &composerpb.Environment{
 			Config: &composerpb.EnvironmentConfig{
 				ResilienceMode: composerpb.EnvironmentConfig_RESILIENCE_MODE_UNSPECIFIED,
-				RecoveryConfig: &composerpb.RecoveryConfig{
-					ScheduledSnapshotsConfig: &composerpb.ScheduledSnapshotsConfig{
-						Enabled: false,
-					},
-				},
+				RecoveryConfig: nil,
 				WorkloadsConfig: &composerpb.WorkloadsConfig{
 					Scheduler: &composerpb.WorkloadsConfig_SchedulerResource{
 						Cpu: 0.5, MemoryGb: 1.875, StorageGb: 1, Count: 1,
@@ -421,7 +415,7 @@ func TestFieldUpdatersBuild(t *testing.T) {
 		}
 	})
 
-	t.Run("disabling scheduled snapshots preserves existing location and schedule from actual to avoid drift", func(t *testing.T) {
+	t.Run("disabling scheduled snapshots produces patch and avoids drift on subsequent reconciliation", func(t *testing.T) {
 		desired := &krm.ComposerEnvironment{
 			Spec: krm.ComposerEnvironmentSpec{
 				Config: &krm.EnvironmentConfig{
@@ -464,28 +458,12 @@ func TestFieldUpdatersBuild(t *testing.T) {
 		if snCfg.GetEnabled() {
 			t.Errorf("expected enabled to be false in patch")
 		}
-		if snCfg.GetSnapshotLocation() != "gs://tf-solution-xyz/snapshots" {
-			t.Errorf("expected location to be preserved from actual, got %q", snCfg.GetSnapshotLocation())
-		}
-		if snCfg.GetSnapshotCreationSchedule() != "0 5 * * *" {
-			t.Errorf("expected schedule to be preserved from actual, got %q", snCfg.GetSnapshotCreationSchedule())
-		}
-		if snCfg.GetTimeZone() != "UTC" {
-			t.Errorf("expected timezone to be preserved from actual, got %q", snCfg.GetTimeZone())
-		}
 
-		// Second reconciliation: GCP returns actual with enabled=false and retained location/schedule.
-		// KCC should produce NO pending updates (no drift / update loop).
+		// Second reconciliation: verify no drift against both GCP disabled representations:
+		// Representation 1: API disablement (RecoveryConfig: nil)
 		actualDisabled := &composerpb.Environment{
 			Config: &composerpb.EnvironmentConfig{
-				RecoveryConfig: &composerpb.RecoveryConfig{
-					ScheduledSnapshotsConfig: &composerpb.ScheduledSnapshotsConfig{
-						Enabled:                  false,
-						SnapshotCreationSchedule: "0 5 * * *",
-						SnapshotLocation:         "gs://tf-solution-xyz/snapshots",
-						TimeZone:                 "UTC",
-					},
-				},
+				RecoveryConfig: nil,
 			},
 		}
 		mapCtx2 := &direct.MapContext{}
@@ -497,9 +475,28 @@ func TestFieldUpdatersBuild(t *testing.T) {
 		if len(updates2) != 0 {
 			t.Errorf("expected 0 pending updates on second reconcile after snapshots disabled, got %d: %v", len(updates2), updates2)
 		}
+
+		// Representation 2: Cloud Console disablement (retained strings with enabled=false)
+		actualDisabledConsole := &composerpb.Environment{
+			Config: &composerpb.EnvironmentConfig{
+				RecoveryConfig: &composerpb.RecoveryConfig{
+					ScheduledSnapshotsConfig: &composerpb.ScheduledSnapshotsConfig{
+						Enabled:                  false,
+						SnapshotCreationSchedule: "0 5 * * *",
+						SnapshotLocation:         "gs://tf-solution-xyz/snapshots",
+						TimeZone:                 "UTC",
+					},
+				},
+			},
+		}
+		desiredPb3 := ComposerEnvironmentSpec_ToProto(mapCtx2, &desired.Spec)
+		updates3 := buildPatches(desired, desiredPb3, actualDisabledConsole)
+		if len(updates3) != 0 {
+			t.Errorf("expected 0 pending updates when actual has console-disabled snapshots, got %d: %v", len(updates3), updates3)
+		}
 	})
 
-	t.Run("initial spec has enabled == false with nil or already-disabled actual snapshots", func(t *testing.T) {
+	t.Run("initial spec has enabled == false with nil or console-disabled actual snapshots", func(t *testing.T) {
 		desired := &krm.ComposerEnvironment{
 			Spec: krm.ComposerEnvironmentSpec{
 				Config: &krm.EnvironmentConfig{
@@ -517,26 +514,30 @@ func TestFieldUpdatersBuild(t *testing.T) {
 			t.Fatalf("unexpected error converting desired spec: %v", mapCtx.Err())
 		}
 
-		// Case 1: actual has nil RecoveryConfig
+		// Case 1: Actual state has nil RecoveryConfig as returned by API/KCC
 		actualNil := &composerpb.Environment{Config: &composerpb.EnvironmentConfig{}}
 		updatesNil := buildPatches(desired, desiredPb, actualNil)
 		if len(updatesNil) != 0 {
 			t.Errorf("expected 0 pending updates when actual has nil snapshots config, got %d: %v", len(updatesNil), updatesNil)
 		}
 
-		// Case 2: actual has ScheduledSnapshotsConfig with enabled=false
-		actualDisabled := &composerpb.Environment{
+		// Case 2: Actual state has retained fields with enabled=false as returned by Cloud Console
+		actualConsole := &composerpb.Environment{
 			Config: &composerpb.EnvironmentConfig{
 				RecoveryConfig: &composerpb.RecoveryConfig{
 					ScheduledSnapshotsConfig: &composerpb.ScheduledSnapshotsConfig{
-						Enabled: false,
+						Enabled:                  false,
+						SnapshotCreationSchedule: "0 5 * * *",
+						SnapshotLocation:         "gs://tf-solution-xyz/snapshots",
+						TimeZone:                 "UTC",
 					},
 				},
 			},
 		}
-		updatesDisabled := buildPatches(desired, desiredPb, actualDisabled)
-		if len(updatesDisabled) != 0 {
-			t.Errorf("expected 0 pending updates when actual is already disabled, got %d: %v", len(updatesDisabled), updatesDisabled)
+		desiredPbConsole := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+		updatesConsole := buildPatches(desired, desiredPbConsole, actualConsole)
+		if len(updatesConsole) != 0 {
+			t.Errorf("expected 0 pending updates when actual has console-disabled snapshots, got %d: %v", len(updatesConsole), updatesConsole)
 		}
 	})
 
@@ -591,22 +592,113 @@ func TestFieldUpdatersBuild(t *testing.T) {
 			t.Errorf("expected user-specified schedule 0 5 * * *, got %q", snCfg.GetSnapshotCreationSchedule())
 		}
 
-		// When actual already matches the disabled spec with those fields
-		actualMatches := &composerpb.Environment{
+		// Case 1: When snapshots are disabled via API (RecoveryConfig: nil), verify no drift.
+		actualDisabled := &composerpb.Environment{
+			Config: &composerpb.EnvironmentConfig{
+				RecoveryConfig: nil,
+			},
+		}
+		desiredPbDisabled := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+		updatesDisabled := buildPatches(desired, desiredPbDisabled, actualDisabled)
+		if len(updatesDisabled) != 0 {
+			t.Errorf("expected 0 updates when actual has snapshots disabled via nil, got %d: %v", len(updatesDisabled), updatesDisabled)
+		}
+
+		// Case 2: When snapshots are disabled via Cloud Console (retained strings), verify no drift.
+		actualDisabledConsole := &composerpb.Environment{
 			Config: &composerpb.EnvironmentConfig{
 				RecoveryConfig: &composerpb.RecoveryConfig{
 					ScheduledSnapshotsConfig: &composerpb.ScheduledSnapshotsConfig{
 						Enabled:                  false,
-						SnapshotLocation:         "gs://my-bucket/snapshots",
+						SnapshotLocation:         "gs://tf-solution-xyz/snapshots",
 						SnapshotCreationSchedule: "0 5 * * *",
 						TimeZone:                 "UTC",
 					},
 				},
 			},
 		}
-		updatesMatches := buildPatches(desired, desiredPb, actualMatches)
-		if len(updatesMatches) != 0 {
-			t.Errorf("expected 0 updates when actual matches disabled spec, got %d: %v", len(updatesMatches), updatesMatches)
+		desiredPbDisabledConsole := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+		updatesDisabledConsole := buildPatches(desired, desiredPbDisabledConsole, actualDisabledConsole)
+		if len(updatesDisabledConsole) != 0 {
+			t.Errorf("expected 0 updates when actual has console-disabled snapshots, got %d: %v", len(updatesDisabledConsole), updatesDisabledConsole)
+		}
+	})
+
+	t.Run("omitted scheduledSnapshotsConfig leaves live state unmanaged", func(t *testing.T) {
+		desired := &krm.ComposerEnvironment{
+			Spec: krm.ComposerEnvironmentSpec{
+				Config: &krm.EnvironmentConfig{},
+			},
+		}
+		mapCtx := &direct.MapContext{}
+
+		// Case 1: Actual has nil snapshots -> 0 updates
+		actualNil := &composerpb.Environment{Config: &composerpb.EnvironmentConfig{}}
+		desiredPb1 := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+		updates1 := buildPatches(desired, desiredPb1, actualNil)
+		if len(updates1) != 0 {
+			t.Errorf("expected 0 updates for omitted spec against nil actual, got %d: %v", len(updates1), updates1)
+		}
+
+		// Case 2: Actual has console-disabled snapshots -> 0 updates
+		actualConsole := &composerpb.Environment{
+			Config: &composerpb.EnvironmentConfig{
+				RecoveryConfig: &composerpb.RecoveryConfig{
+					ScheduledSnapshotsConfig: &composerpb.ScheduledSnapshotsConfig{
+						Enabled:                  false,
+						SnapshotCreationSchedule: "0 5 * * *",
+						SnapshotLocation:         "gs://tf-solution-xyz/snapshots",
+						TimeZone:                 "UTC",
+					},
+				},
+			},
+		}
+		desiredPb2 := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+		updates2 := buildPatches(desired, desiredPb2, actualConsole)
+		if len(updates2) != 0 {
+			t.Errorf("expected 0 updates for omitted spec against console-disabled actual, got %d: %v", len(updates2), updates2)
+		}
+
+		// Case 3: Actual has enabled snapshots -> 0 updates (omitted is unmanaged)
+		actualEnabled := &composerpb.Environment{
+			Config: &composerpb.EnvironmentConfig{
+				RecoveryConfig: &composerpb.RecoveryConfig{
+					ScheduledSnapshotsConfig: &composerpb.ScheduledSnapshotsConfig{
+						Enabled:                  true,
+						SnapshotCreationSchedule: "0 5 * * *",
+						SnapshotLocation:         "gs://tf-solution-xyz/snapshots",
+						TimeZone:                 "UTC",
+					},
+				},
+			},
+		}
+		desiredPb3 := ComposerEnvironmentSpec_ToProto(mapCtx, &desired.Spec)
+		updates3 := buildPatches(desired, desiredPb3, actualEnabled)
+		if len(updates3) != 0 {
+			t.Errorf("expected 0 updates for omitted spec against enabled actual (unmanaged), got %d: %v", len(updates3), updates3)
+		}
+
+		// Case 4: Explicit empty scheduledSnapshotsConfig ({}) disables snapshots on GCP
+		desiredExplicitEmpty := &krm.ComposerEnvironment{
+			Spec: krm.ComposerEnvironmentSpec{
+				Config: &krm.EnvironmentConfig{
+					RecoveryConfig: &krm.RecoveryConfig{
+						ScheduledSnapshotsConfig: &krm.ScheduledSnapshotsConfig{},
+					},
+				},
+			},
+		}
+		desiredPb4 := ComposerEnvironmentSpec_ToProto(mapCtx, &desiredExplicitEmpty.Spec)
+		updates4 := buildPatches(desiredExplicitEmpty, desiredPb4, actualEnabled)
+		if len(updates4) != 1 {
+			t.Fatalf("expected 1 update to disable snapshots for explicit empty spec, got %d", len(updates4))
+		}
+		patch, ok := updates4["config.recovery_config.scheduled_snapshots_config"]
+		if !ok {
+			t.Fatalf("expected update for config.recovery_config.scheduled_snapshots_config, but was missing")
+		}
+		if patch.GetConfig().GetRecoveryConfig().GetScheduledSnapshotsConfig().GetEnabled() {
+			t.Errorf("expected enabled=false in patch, got true")
 		}
 	})
 }

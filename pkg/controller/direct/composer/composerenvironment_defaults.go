@@ -193,4 +193,34 @@ func populateDesiredWithActualIfComputed(desired *krm.ComposerEnvironment, desir
 			pair.Desired.Set(fd, pair.Actual.Get(fd))
 		}
 	}
+
+	// 4. RecoveryConfig.ScheduledSnapshotsConfig handling:
+	// When snapshots are disabled in desired spec and live GCP state, align desiredPb with actualPb
+	// to avoid false drift and update loops.
+	populateScheduledSnapshotsDefaults(desired, desiredPb, actualPb)
+}
+
+// populateScheduledSnapshotsDefaults aligns desiredPb with actualPb when scheduled snapshots are disabled
+// in both desired spec and live state (adopting nil or retained console fields) to prevent false drift.
+func populateScheduledSnapshotsDefaults(desired *krm.ComposerEnvironment, desiredPb, actualPb *composerpb.Environment) {
+	if actualPb == nil || desiredPb == nil {
+		return
+	}
+	actualRecovery := actualPb.GetConfig().GetRecoveryConfig()
+	actualSnapshots := actualRecovery.GetScheduledSnapshotsConfig()
+	desiredSnapshots := desiredPb.GetConfig().GetRecoveryConfig().GetScheduledSnapshotsConfig()
+
+	if !actualSnapshots.GetEnabled() && !desiredSnapshots.GetEnabled() {
+		if actualSnapshots != nil {
+			if desiredPb.Config == nil {
+				desiredPb.Config = &composerpb.EnvironmentConfig{}
+			}
+			if desiredPb.Config.RecoveryConfig == nil {
+				desiredPb.Config.RecoveryConfig = &composerpb.RecoveryConfig{}
+			}
+			desiredPb.Config.RecoveryConfig.ScheduledSnapshotsConfig = actualSnapshots
+		} else if desiredPb.GetConfig().GetRecoveryConfig() != nil {
+			desiredPb.Config.RecoveryConfig.ScheduledSnapshotsConfig = nil
+		}
+	}
 }
