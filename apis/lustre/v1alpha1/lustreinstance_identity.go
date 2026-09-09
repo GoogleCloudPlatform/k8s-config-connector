@@ -61,6 +61,26 @@ func (i *LustreInstanceIdentity) Host() string {
 	return LustreInstanceIdentityFormat.Host()
 }
 
+type LustreInstanceParent struct {
+	ProjectID string
+	Location  string
+}
+
+func (p *LustreInstanceParent) String() string {
+	return fmt.Sprintf("projects/%s/locations/%s", p.ProjectID, p.Location)
+}
+
+func (i *LustreInstanceIdentity) Parent() *LustreInstanceParent {
+	return &LustreInstanceParent{
+		ProjectID: i.Project,
+		Location:  i.Location,
+	}
+}
+
+func (i *LustreInstanceIdentity) ID() string {
+	return i.Instance
+}
+
 func getIdentityFromLustreInstanceSpec(ctx context.Context, reader client.Reader, obj *LustreInstance) (*LustreInstanceIdentity, error) {
 	resourceID, err := refs.GetResourceID(obj)
 	if err != nil {
@@ -103,4 +123,16 @@ func (obj *LustreInstance) GetIdentity(ctx context.Context, reader client.Reader
 		}
 	}
 	return specIdentity, nil
+}
+
+func NewLustreInstanceIdentity(ctx context.Context, reader client.Reader, obj *LustreInstance) (*LustreInstanceIdentity, error) {
+	id, err := obj.GetIdentity(ctx, reader)
+	if err != nil {
+		return nil, err
+	}
+	return id.(*LustreInstanceIdentity), nil
+}
+
+func NewInstanceIdentity(ctx context.Context, reader client.Reader, obj *LustreInstance) (*LustreInstanceIdentity, error) {
+	return NewLustreInstanceIdentity(ctx, reader, obj)
 }
