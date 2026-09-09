@@ -160,6 +160,7 @@ type CloudStorageConfig_AvroConfig struct {
 
 /* unreachable type CloudStorageConfig_TextConfig
 // +kcc:proto=google.pubsub.v1.CloudStorageConfig.TextConfig
+// +kubebuilder:validation:XPreserveUnknownFields
 type CloudStorageConfig_TextConfig struct {
 }
 */
@@ -376,12 +377,14 @@ type IngestionDataSourceSettings_CloudStorage struct {
 
 /* unreachable type IngestionDataSourceSettings_CloudStorage_AvroFormat
 // +kcc:proto=google.pubsub.v1.IngestionDataSourceSettings.CloudStorage.AvroFormat
+// +kubebuilder:validation:XPreserveUnknownFields
 type IngestionDataSourceSettings_CloudStorage_AvroFormat struct {
 }
 */
 
 /* unreachable type IngestionDataSourceSettings_CloudStorage_PubSubAvroFormat
 // +kcc:proto=google.pubsub.v1.IngestionDataSourceSettings.CloudStorage.PubSubAvroFormat
+// +kubebuilder:validation:XPreserveUnknownFields
 type IngestionDataSourceSettings_CloudStorage_PubSubAvroFormat struct {
 }
 */
@@ -609,6 +612,7 @@ type PushConfig_OIDCToken struct {
 
 /* unreachable type PushConfig_PubsubWrapper
 // +kcc:proto=google.pubsub.v1.PushConfig.PubsubWrapper
+// +kubebuilder:validation:XPreserveUnknownFields
 type PushConfig_PubsubWrapper struct {
 }
 */

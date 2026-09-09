@@ -226,6 +226,7 @@ spec:
               featureOnlineStoreSpec:
                 description: FeatureonlineStore spec for Vertex AI Feature Store.
                 type: object
+                x-kubernetes-preserve-unknown-fields: true
               filesetSpec:
                 description: Specification that applies to a fileset resource. Valid
                   only for entries with the `FILESET` type.
@@ -260,12 +261,15 @@ spec:
                               csv:
                                 description: Marks a CSV-encoded data source.
                                 type: object
+                                x-kubernetes-preserve-unknown-fields: true
                               orc:
                                 description: Marks an ORC-encoded data source.
                                 type: object
+                                x-kubernetes-preserve-unknown-fields: true
                               parquet:
                                 description: Marks a Parquet-encoded data source.
                                 type: object
+                                x-kubernetes-preserve-unknown-fields: true
                               protobuf:
                                 description: Schema in protocol buffer format.
                                 properties:
@@ -850,12 +854,15 @@ spec:
                                   csv:
                                     description: Marks a CSV-encoded data source.
                                     type: object
+                                    x-kubernetes-preserve-unknown-fields: true
                                   orc:
                                     description: Marks an ORC-encoded data source.
                                     type: object
+                                    x-kubernetes-preserve-unknown-fields: true
                                   parquet:
                                     description: Marks a Parquet-encoded data source.
                                     type: object
+                                    x-kubernetes-preserve-unknown-fields: true
                                   protobuf:
                                     description: Schema in protocol buffer format.
                                     properties:

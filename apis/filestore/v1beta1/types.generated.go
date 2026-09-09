@@ -174,6 +174,7 @@ type Instance_PerformanceConfig struct {
 
 /* unreachable type Instance_PerformanceLimits
 // +kcc:proto=google.cloud.filestore.v1.Instance.PerformanceLimits
+// +kubebuilder:validation:XPreserveUnknownFields
 type Instance_PerformanceLimits struct {
 }
 */

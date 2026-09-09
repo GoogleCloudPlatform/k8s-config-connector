@@ -202,6 +202,7 @@ type ClusterMaintenancePolicy struct {
 
 /* unreachable type ClusterMaintenanceSchedule
 // +kcc:proto=google.cloud.redis.cluster.v1.ClusterMaintenanceSchedule
+// +kubebuilder:validation:XPreserveUnknownFields
 type ClusterMaintenanceSchedule struct {
 }
 */
@@ -289,6 +290,7 @@ type CrossClusterReplicationConfig struct {
 
 /* unreachable type CrossClusterReplicationConfig_Membership
 // +kcc:proto=google.cloud.redis.cluster.v1.CrossClusterReplicationConfig.Membership
+// +kubebuilder:validation:XPreserveUnknownFields
 type CrossClusterReplicationConfig_Membership struct {
 }
 */
@@ -306,12 +308,14 @@ type CrossClusterReplicationConfig_RemoteCluster struct {
 
 /* unreachable type DiscoveryEndpoint
 // +kcc:proto=google.cloud.redis.cluster.v1.DiscoveryEndpoint
+// +kubebuilder:validation:XPreserveUnknownFields
 type DiscoveryEndpoint struct {
 }
 */
 
 /* unreachable type EncryptionInfo
 // +kcc:proto=google.cloud.redis.cluster.v1.EncryptionInfo
+// +kubebuilder:validation:XPreserveUnknownFields
 type EncryptionInfo struct {
 }
 */
@@ -381,6 +385,7 @@ type PSCConnection struct {
 
 /* unreachable type PSCServiceAttachment
 // +kcc:proto=google.cloud.redis.cluster.v1.PscServiceAttachment
+// +kubebuilder:validation:XPreserveUnknownFields
 type PSCServiceAttachment struct {
 }
 */
@@ -599,6 +604,7 @@ type MaintenanceSchedule struct {
 
 /* unreachable type NodeInfo
 // +kcc:proto=google.cloud.redis.v1.NodeInfo
+// +kubebuilder:validation:XPreserveUnknownFields
 type NodeInfo struct {
 }
 */

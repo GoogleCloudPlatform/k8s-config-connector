@@ -260,6 +260,7 @@ type AuthenticatorGroupsConfig struct {
 
 /* unreachable type AutoIpamConfig
 // +kcc:proto=google.container.v1.AutoIpamConfig
+// +kubebuilder:validation:XPreserveUnknownFields
 type AutoIpamConfig struct {
 }
 */
@@ -276,6 +277,7 @@ type AutoMonitoringConfig struct {
 /* found existing non-generated go type with proto tag "google.container.v1.AutoUpgradeOptions", skipping
 
 // +kcc:proto=google.container.v1.AutoUpgradeOptions
+// +kubebuilder:validation:XPreserveUnknownFields
 type AutoUpgradeOptions struct {
 }
 */
@@ -3233,6 +3235,7 @@ type RbacBindingConfig struct {
 /* found existing non-generated go type "RangeInfo", skipping
 
 // +kcc:proto=google.container.v1.RangeInfo
+// +kubebuilder:validation:XPreserveUnknownFields
 type RangeInfo struct {
 }
 */
@@ -3442,6 +3445,7 @@ type SecondaryBootDisk struct {
 
 /* unreachable type SecondaryBootDiskUpdateStrategy
 // +kcc:proto=google.container.v1.SecondaryBootDiskUpdateStrategy
+// +kubebuilder:validation:XPreserveUnknownFields
 type SecondaryBootDiskUpdateStrategy struct {
 }
 */
