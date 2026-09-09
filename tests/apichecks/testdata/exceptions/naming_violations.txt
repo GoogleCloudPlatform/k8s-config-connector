@@ -36,3 +36,5 @@
 [naming_violation] file=pkg/controller/direct/dlp/dlp_controller.go prefix=dlp (expected a valid resource kind prefix)
 [naming_violation] file=pkg/controller/direct/sql/sqlinstance_legacy_fuzzer.go prefix=sqlinstance_legacy (expected a valid resource kind prefix)
 [naming_violation] file=pkg/controller/direct/sql/sqlinstance_legacy_fuzzer_test.go prefix=sqlinstance_legacy (expected a valid resource kind prefix)
+[naming_violation] file=apis/aiplatform/v1alpha1/dialogflowcxagent_identity.go prefix=dialogflowcxagent (expected a valid resource kind prefix)
+[naming_violation] file=apis/aiplatform/v1alpha1/dialogflowcxagent_reference.go prefix=dialogflowcxagent (expected a valid resource kind prefix)

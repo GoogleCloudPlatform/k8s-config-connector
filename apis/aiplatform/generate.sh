@@ -42,12 +42,13 @@ ${CONTROLLERBUILDER} generate-types \
     --resource VertexAITuningJob:TuningJob \
     --resource VertexAIStudy:Study \
     --resource VertexAITrainingPipeline:TrainingPipeline \
-    --resource VertexAISchedule:Schedule
+    --resource VertexAISchedule:Schedule \
+    --resource AIPlatformOnlineEvaluator:google.cloud.aiplatform.v1beta1.OnlineEvaluator
 
 # Handled recursive self-referential fields by defining ListValue, Value, and ExplanationParameters manually in recursive_types.go
 
 ${CONTROLLERBUILDER} generate-mapper \
-    --service google.cloud.aiplatform.v1,google.cloud.aiplatform.v1beta1 \
+    --service google.cloud.aiplatform.v1 \
     --api-version aiplatform.cnrm.cloud.google.com/v1alpha1 \
     --include-skipped-output
 
