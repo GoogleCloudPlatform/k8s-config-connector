@@ -152,6 +152,7 @@ template:
       volumeMounts:
       - mountPath: string
         name: string
+        subPath: string
       workingDir: string
     encryptionKeyRef:
       external: string
@@ -1055,6 +1056,16 @@ template:
         <td>
             <p><code class="apitype">string</code></p>
             <p>Required. This must match the Name of a Volume.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p><code>template.template.containers[].volumeMounts[].subPath</code></p>
+            <p><i>Optional</i></p>
+        </td>
+        <td>
+            <p><code class="apitype">string</code></p>
+            <p>Optional. Path within the volume from which the container's volume should be mounted. Defaults to "" (volume's root).</p>
         </td>
     </tr>
     <tr>
