@@ -25,6 +25,8 @@ type APIHubAPIExpansion interface{}
 
 type APIHubAttributeExpansion interface{}
 
+type APIHubCurationExpansion interface{}
+
 type APIHubDependencyExpansion interface{}
 
 type APIHubDeploymentExpansion interface{}
