@@ -31,7 +31,7 @@ type AIPlatformSpecialistPoolSpec struct {
 
 	// The location of this resource.
 	// +required
-	Location string `json:"location"`
+	Location *string `json:"location"`
 
 	// The AIPlatformSpecialistPool name. If not given, the metadata.name will be used.
 	// +optional
@@ -39,7 +39,7 @@ type AIPlatformSpecialistPoolSpec struct {
 
 	// Required. The user-defined name of the SpecialistPool. The name can be up to 128 characters long and can consist of any UTF-8 characters. This field should be unique on project-level.
 	// +required
-	DisplayName string `json:"displayName"`
+	DisplayName *string `json:"displayName"`
 
 	// The email addresses of the managers in the SpecialistPool.
 	// +optional

@@ -447,8 +447,18 @@ func (in *AIPlatformSpecialistPoolSpec) DeepCopyInto(out *AIPlatformSpecialistPo
 		*out = new(v1beta1.ProjectRef)
 		**out = **in
 	}
+	if in.Location != nil {
+		in, out := &in.Location, &out.Location
+		*out = new(string)
+		**out = **in
+	}
 	if in.ResourceID != nil {
 		in, out := &in.ResourceID, &out.ResourceID
+		*out = new(string)
+		**out = **in
+	}
+	if in.DisplayName != nil {
+		in, out := &in.DisplayName, &out.DisplayName
 		*out = new(string)
 		**out = **in
 	}

@@ -179,7 +179,7 @@ func AIPlatformSpecialistPoolSpec_FromProto(mapCtx *direct.MapContext, in *pb.Sp
 	}
 	out := &krm.AIPlatformSpecialistPoolSpec{}
 	// MISSING: Name
-	out.DisplayName = in.GetDisplayName()
+	out.DisplayName = direct.LazyPtr(in.GetDisplayName())
 	out.SpecialistManagerEmails = in.SpecialistManagerEmails
 	out.SpecialistWorkerEmails = in.SpecialistWorkerEmails
 	return out
@@ -190,7 +190,7 @@ func AIPlatformSpecialistPoolSpec_ToProto(mapCtx *direct.MapContext, in *krm.AIP
 	}
 	out := &pb.SpecialistPool{}
 	// MISSING: Name
-	out.DisplayName = AIPlatformSpecialistPoolSpec_DisplayName_ToProto(mapCtx, in.DisplayName)
+	out.DisplayName = direct.ValueOf(in.DisplayName)
 	out.SpecialistManagerEmails = in.SpecialistManagerEmails
 	out.SpecialistWorkerEmails = in.SpecialistWorkerEmails
 	return out
