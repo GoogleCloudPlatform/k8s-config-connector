@@ -61,6 +61,10 @@ func (i *CloudNumberRegistryRegistryBookIdentity) Host() string {
 	return CloudNumberRegistryRegistryBookIdentityFormat.Host()
 }
 
+func (i *CloudNumberRegistryRegistryBookIdentity) ParentString() string {
+	return fmt.Sprintf("projects/%s/locations/%s", i.Project, i.Location)
+}
+
 func getIdentityFromCloudNumberRegistryRegistryBookSpec(ctx context.Context, reader client.Reader, obj *CloudNumberRegistryRegistryBook) (*CloudNumberRegistryRegistryBookIdentity, error) {
 	resourceID, err := refs.GetResourceID(obj)
 	if err != nil {
