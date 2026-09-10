@@ -37,6 +37,25 @@ type CsvOptions struct {
 	HeaderRequired *bool `json:"headerRequired,omitempty"`
 }
 
+// +kcc:proto=google.type.Date
+type Date struct {
+	// Year of the date. Must be from 1 to 9999, or 0 to specify a date without
+	//  a year.
+	// +kcc:proto:field=google.type.Date.year
+	Year *int32 `json:"year,omitempty"`
+
+	// Month of a year. Must be from 1 to 12, or 0 to specify a year without a
+	//  month and day.
+	// +kcc:proto:field=google.type.Date.month
+	Month *int32 `json:"month,omitempty"`
+
+	// Day of a month. Must be from 1 to 31 and valid for the year and month, or 0
+	//  to specify a year by itself or a year and month where the day isn't
+	//  significant.
+	// +kcc:proto:field=google.type.Date.day
+	Day *int32 `json:"day,omitempty"`
+}
+
 // +kcc:proto=google.cloud.storageinsights.v1.FrequencyOptions
 type FrequencyOptions struct {
 	// Frequency of report generation.
@@ -67,23 +86,4 @@ type ObjectMetadataReportOptions struct {
 	// Cloud Storage as the storage system.
 	// +kcc:proto:field=google.cloud.storageinsights.v1.ObjectMetadataReportOptions.storage_destination_options
 	StorageDestinationOptions *CloudStorageDestinationOptions `json:"storageDestinationOptions,omitempty"`
-}
-
-// +kcc:proto=google.type.Date
-type Date struct {
-	// Year of the date. Must be from 1 to 9999, or 0 to specify a date without
-	//  a year.
-	// +kcc:proto:field=google.type.Date.year
-	Year *int32 `json:"year,omitempty"`
-
-	// Month of a year. Must be from 1 to 12, or 0 to specify a year without a
-	//  month and day.
-	// +kcc:proto:field=google.type.Date.month
-	Month *int32 `json:"month,omitempty"`
-
-	// Day of a month. Must be from 1 to 31 and valid for the year and month, or 0
-	//  to specify a year by itself or a year and month where the day isn't
-	//  significant.
-	// +kcc:proto:field=google.type.Date.day
-	Day *int32 `json:"day,omitempty"`
 }
